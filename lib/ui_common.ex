@@ -3,13 +3,11 @@ defmodule Bonfire.UI.Common do
   A library of common utils and helpers used across Bonfire extensions
   """
   use Bonfire.Common.Utils
-  import Bonfire.Common.URIs
 
   defmacro __using__(opts) do
     quote do
       use Bonfire.Common.Utils
       import Bonfire.UI.Common
-      import Bonfire.Common.URIs
     end
   end
 
@@ -84,7 +82,6 @@ defmodule Bonfire.UI.Common do
     |> deep_merge(new)
     # |> IO.inspect
   end
-
 
   def rich(content) do
     case content do
