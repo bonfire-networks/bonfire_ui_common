@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.ExtensionDiffLive do
-  use Bonfire.UI.Common.Web, {:live_view, [layout: {Bonfire.UI.Social.Web.LayoutView, "without_sidebar.html"}]}
+  use Bonfire.UI.Common.Web, :live_view
   import Bonfire.Common.Extensions.Diff
   import Where
   alias Bonfire.Me.Web.LivePlugs
@@ -23,7 +23,8 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
         socket
         |> assign(
         page_title: "Loading...",
-        diffs: []
+        diffs: [],
+        without_sidebar: true
         )}
     end
   end
@@ -45,7 +46,8 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
         socket
         |> assign(
         page_title: "Extension",
-        diffs: diffs
+        diffs: diffs,
+        without_sidebar: true
         )}
   end
 
