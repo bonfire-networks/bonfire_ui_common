@@ -101,7 +101,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   defp mod_delegate(mod, fun, params, socket) do
     debug("LiveHandler: attempt delegating to #{inspect fun} in #{inspect mod}...")
 
-    case maybe_str_to_module("#{mod}.LiveHandler") || maybe_str_to_module(mod) do
+    case maybe_to_module("#{mod}.LiveHandler") || maybe_to_module(mod) do
       module when is_atom(module) ->
         # debug(module)
         if module_enabled?(module), do: apply(module, fun, params ++ [socket]),
