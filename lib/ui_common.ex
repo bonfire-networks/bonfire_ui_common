@@ -290,7 +290,7 @@ defmodule Bonfire.UI.Common do
 
   defp live_exception(socket, {:mount, return_key}, msg, exception, stacktrace, kind) do
     with {:error, msg} <- debug_exception(msg, exception, stacktrace, kind) do
-      {return_key, Phoenix.LiveView.put_flash(socket, :error, error_msg(msg)) |> Phoenix.LiveView.push_redirect(to: "/error")}
+      {return_key, Phoenix.LiveView.put_flash(socket, :error, error_msg(msg)) |> Phoenix.LiveView.push_redirect(to: path(:error))}
     end
   end
 
@@ -306,7 +306,7 @@ defmodule Bonfire.UI.Common do
     end
   rescue
     FunctionClauseError -> # for cases where the live_path may need param(s) which we don't know about
-      {return_key, Phoenix.LiveView.put_flash(socket, :error, error_msg(msg)) |> Phoenix.LiveView.push_redirect(to: "/error")}
+      {return_key, Phoenix.LiveView.put_flash(socket, :error, error_msg(msg)) |> Phoenix.LiveView.push_redirect(to: path(:error))}
   end
 
 end
