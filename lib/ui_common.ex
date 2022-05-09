@@ -134,9 +134,8 @@ defmodule Bonfire.UI.Common do
   end
 
   defp socket_connected_or_user?(%Phoenix.LiveView.Socket{}), do: true
-  defp socket_connected_or_user?(%Bonfire.Data.Identity.User{}), do: true
+  defp socket_connected_or_user?(other), do: if current_user(other), do: true, else: false
   defp socket_connected_or_user?(_), do: false
-
 
 
   @doc """
@@ -148,33 +147,26 @@ defmodule Bonfire.UI.Common do
     Enum.each(topics, &pubsub_subscribe(&1, socket))
   end
 
-  def pubsub_subscribe(topic, %Phoenix.LiveView.Socket{} = socket) when is_binary(topic) do
+  def pubsub_subscribe(topic, socket_etc) when is_binary(topic) do
     # debug(socket)
-    if socket_connected_or_user?(socket) do
+    if socket_connected_or_user?(socket_etc) do
       pubsub_subscribe(topic)
     else
-      debug("PubSub: LiveView is not connected so we skip subscribing to #{inspect topic}")
+      debug(topic, "LiveView is not connected so we skip subscribing to")
     end
   end
-
-  def pubsub_subscribe(topic, _) when is_binary(topic), do: pubsub_subscribe(topic)
 
   def pubsub_subscribe(topic, socket) when not is_binary(topic) do
     with t when is_binary(t) <- maybe_to_string(topic) do
-      debug("PubSub: transformed the topic #{inspect topic} into a string we can subscribe to: #{inspect t}")
+      debug(t, "transformed the topic into a string we can subscribe to")
       pubsub_subscribe(t, socket)
     else _ ->
-      warn("PubSub: could not transform the topic into a string we can subscribe to: #{inspect topic}")
+      warn(topic, "could not transform the topic into a string we can subscribe to")
     end
   end
 
-  def pubsub_subscribe(topic, _) do
-    warn("PubSub can not subscribe to a non-string topic: #{inspect topic}")
-    false
-  end
-
   defp pubsub_subscribe(topic) when is_binary(topic) and topic !="" do
-    debug("PubSub subscribed to: #{topic}")
+    debug(topic, "subscribed")
 
     endpoint = Config.get(:endpoint_module, Bonfire.Web.Endpoint)
 
