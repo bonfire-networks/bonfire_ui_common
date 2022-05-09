@@ -51,4 +51,36 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
         )}
   end
 
+  def render_diff(patch) do
+
+    #IO.inspect(patch)
+    Phoenix.View.render_to_iodata(Bonfire.Common.Web.DiffRenderView, "diff_render.html", patch: patch)
+
+  end
+
+  def render_diff_stream(package, repo_path, stream) do
+    path = tmp_path("html-#{package}-")
+
+    # TODO: figure out how to stream the data to LiveView as it becomes available, in which case use something like this instead of `render_diff`
+
+    File.open!(path, [:write, :raw, :binary, :write_delay], fn file ->
+      Enum.each(stream, fn
+        {:ok, patch} ->
+
+          html_patch =
+            Phoenix.View.render_to_iodata(Bonfire.Common.Web.DiffRenderView, "diff_render.html", patch: patch)
+
+          IO.binwrite(file, html_patch)
+
+        error ->
+          error("Failed to parse diff stream of #{package} at #{repo_path} with: #{inspect(error)}")
+          throw({:error, :invalid_diff})
+      end)
+    end)
+
+    # path
+
+    File.read(path)
+
+  end
 end

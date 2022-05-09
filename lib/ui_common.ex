@@ -138,6 +138,77 @@ defmodule Bonfire.UI.Common do
   defp socket_connected_or_user?(_), do: false
 
 
+
+  @doc """
+  Subscribe to something for realtime updates, like a feed or thread
+  """
+  # def pubsub_subscribe(topics, socket \\ nil)
+
+  def pubsub_subscribe(topics, socket) when is_list(topics) do
+    Enum.each(topics, &pubsub_subscribe(&1, socket))
+  end
+
+  def pubsub_subscribe(topic, %Phoenix.LiveView.Socket{} = socket) when is_binary(topic) do
+    # debug(socket)
+    if socket_connected_or_user?(socket) do
+      pubsub_subscribe(topic)
+    else
+      debug("PubSub: LiveView is not connected so we skip subscribing to #{inspect topic}")
+    end
+  end
+
+  def pubsub_subscribe(topic, _) when is_binary(topic), do: pubsub_subscribe(topic)
+
+  def pubsub_subscribe(topic, socket) when not is_binary(topic) do
+    with t when is_binary(t) <- maybe_to_string(topic) do
+      debug("PubSub: transformed the topic #{inspect topic} into a string we can subscribe to: #{inspect t}")
+      pubsub_subscribe(t, socket)
+    else _ ->
+      warn("PubSub: could not transform the topic into a string we can subscribe to: #{inspect topic}")
+    end
+  end
+
+  def pubsub_subscribe(topic, _) do
+    warn("PubSub can not subscribe to a non-string topic: #{inspect topic}")
+    false
+  end
+
+  defp pubsub_subscribe(topic) when is_binary(topic) and topic !="" do
+    debug("PubSub subscribed to: #{topic}")
+
+    endpoint = Config.get(:endpoint_module, Bonfire.Web.Endpoint)
+
+    # endpoint.unsubscribe(maybe_to_string(topic)) # to avoid duplicate subscriptions?
+    endpoint.subscribe(topic)
+    # Phoenix.PubSub.subscribe(Bonfire.PubSub, topic)
+  end
+
+
+  @doc """
+  Broadcast some data for realtime updates, for example to a feed or thread
+  """
+  def pubsub_broadcast(topics, payload) when is_list(topics) do
+    Enum.each(topics, &pubsub_broadcast(&1, payload))
+  end
+
+  def pubsub_broadcast(topic, {payload_type, _data} = payload) do
+    debug("pubsub_broadcast: #{inspect topic} / #{inspect payload_type}")
+    do_broadcast(topic, payload)
+  end
+  def pubsub_broadcast(topic, data)
+  when (is_atom(topic) or is_binary(topic)) and topic !="" and not is_nil(data) do
+    debug("pubsub_broadcast: #{inspect topic}")
+    do_broadcast(topic, data)
+  end
+  def pubsub_broadcast(_, _), do: warn("pubsub did not broadcast")
+
+  defp do_broadcast(topic, data) do
+    # endpoint = Config.get(:endpoint_module, Bonfire.Web.Endpoint)
+    # endpoint.broadcast_from(self(), topic, step, state)
+    Phoenix.PubSub.broadcast(Bonfire.PubSub, maybe_to_string(topic), data)
+  end
+
+
   def assigns_subscribe(%Phoenix.LiveView.Socket{} = socket, assign_names)
   when is_list(assign_names) or is_atom(assign_names) or is_binary(assign_names) do
 
@@ -309,4 +380,51 @@ defmodule Bonfire.UI.Common do
       {return_key, Phoenix.LiveView.put_flash(socket, :error, error_msg(msg)) |> Phoenix.LiveView.push_redirect(to: path(:error))}
   end
 
+
+  @doc "Save a `go` redirection path in the session (for redirecting somewhere after auth flows)"
+  def set_go_after(conn, path \\ nil) do
+    path = path || conn.request_path
+    conn
+    |> Plug.Conn.put_session(
+      :go,
+      path
+    )
+  end
+
+  @doc """
+  Generate a query string adding a `go` redirection path to the URI (for redirecting somewhere after auth flows).
+  It is recommended to use `set_go_after/2` where possible instead.
+  """
+  def go_query(url) when is_binary(url), do: "?" <> Plug.Conn.Query.encode(go: url)
+  def go_query(conn), do: "?" <> Plug.Conn.Query.encode(go: conn.request_path)
+
+  @doc "copies the `go` param into a query string, if any"
+  def copy_go(%{go: go}), do: "?" <> Plug.Conn.Query.encode(go: go)
+  def copy_go(%{"go" => go}), do: "?" <> Plug.Conn.Query.encode(go: go)
+  def copy_go(_), do: ""
+
+  # TODO: we should validate this a bit harder. Phoenix will prevent
+  # us from sending the user to an external URL, but it'll do so by
+  # means of a 500 error.
+  defp internal_go_path?("/" <> _), do: true
+  defp internal_go_path?(_), do: false
+
+  def go_where?(conn, %Ecto.Changeset{}=cs, default) do
+    go_where?(conn, cs.changes, default)
+  end
+
+  def go_where?(conn, params, default) do
+    case Plug.Conn.get_session(conn, :go) |> debug do
+      go when is_binary(go) ->
+        if internal_go_path?(go), do: [to: go], else: [external: go] # needs to support external for oauth/openid
+      _ ->
+        go = (Utils.e(params, :go, nil) || default) |> debug
+        if internal_go_path?(go), do: [to: go], else: [to: default]
+    end
+  end
+
+  def redirect_to_previous_go(conn, params, default) do
+    go_where?(conn, params, default)
+    |> Phoenix.Controller.redirect(Plug.Conn.delete_session(conn, :go), ...)
+  end
 end

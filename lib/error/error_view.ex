@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.ErrorView do
   use Bonfire.UI.Common.Web, :view
 
   @codes %{
-    404=> "Not allowed",
+    403=> "Not allowed",
     404=> "Not found",
     500=> "Something went wrong"
   }
@@ -73,51 +73,51 @@ defmodule Bonfire.UI.Common.ErrorView do
   defp show_html(error, details) do
     raw """
     <!DOCTYPE html>
-<html lang="en" class="dark">
-  <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="Bonfire instance">
-    <meta name="keywords" content="bonfire, fediverse">
-    <meta name="author" content="Bonfire">
-    <title data-suffix=" · Bonfire">Error · Bonfire</title>
-    <link phx-track-static rel='stylesheet' href='/css/bonfire.css'/>
-  </head>
+    <html lang="en" class="dark">
+    <head>
+      <meta charset="utf-8"/>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <meta name="description" content="Bonfire instance">
+      <meta name="keywords" content="bonfire, fediverse">
+      <meta name="author" content="Bonfire">
+      <title data-suffix=" · Bonfire">Error · Bonfire</title>
+      <link phx-track-static rel='stylesheet' href='/css/bonfire.css'/>
+    </head>
 
-  <body id="layout-root" class="bg-base-200">
-<div data-phx-main="true"><div id="layout-error">
-<div class="">
-<div class="flex flex-col mx-auto overflow-hidden lg:mt-4">
-  <div class="relative z-10 flex justify-between flex-shrink-0 h-16">
-      <div class="flex items-center flex-shrink-0 lg:px-4">
-        <a data-phx-link="redirect" data-phx-link-state="push" href="/">
-          <div class="flex items-center px-4 py-2 rounded">
+    <body id="layout-root" class="bg-base-200">
+    <div data-phx-main="true">
+      <div id="layout-error">
+        <div class="">
+          <div class="flex flex-col mx-auto overflow-hidden lg:mt-4">
+            <div class="relative z-10 flex justify-between flex-shrink-0 h-16">
+                <div class="flex items-center flex-shrink-0 lg:px-4">
+                  <a data-phx-link="redirect" data-phx-link-state="push" href="/">
+                    <div class="flex items-center px-4 py-2 rounded">
 
-            <div class="w-10 h-10 bg-center bg-no-repeat bg-contain" style="background-image: url(https://bonfirenetworks.org/img/bonfire.png)"></div>
+                      <div class="w-10 h-10 bg-center bg-no-repeat bg-contain" style="background-image: url(https://bonfirenetworks.org/img/bonfire.png)"></div>
+                    </div>
+                  </a>
+
+                  <div class="flex flex-1">
+                  </div>
+                </div>
+            </div>
           </div>
-        </a>
 
-        <div class="flex flex-1">
+          <div class="mx-auto mt-12 w-center">
+            <div class="prose">
+              <h1 class="text-primary-content">
+                #{error}
+              </h1>
+
+              #{details}
+            </div>
+          </div>
         </div>
       </div>
-
-  </div>
-</div>
-
-    <div class="mx-auto mt-12 w-center">
-      <div class="prose">
-        <h1 class="text-primary-content">
-          #{error}
-        </h1>
-
-        #{details}
-      </div>
     </div>
-    </div>
-</div>
-</div>
-</html>
+    </html>
     """
   end
 end
