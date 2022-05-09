@@ -1,5 +1,6 @@
 defmodule Bonfire.UI.Common.ExtensionDiffLive do
   use Bonfire.UI.Common.Web, :live_view
+
   import Bonfire.Common.Extensions.Diff
   import Where
   alias Bonfire.Me.Web.LivePlugs
@@ -30,8 +31,7 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
   end
 
   defp mounted_connected(params, session, socket) do
-    # diff = generate_diff(package, repo_path)
-    diffs = with {:ok, patches} <- generate_diff(:bonfire_me, "./forks/bonfire_me") do
+    diffs = with {:ok, patches} <- generate_diff(params["local"]) do
       patches
     else
       {:error, error} ->
@@ -54,7 +54,7 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
   def render_diff(patch) do
 
     #IO.inspect(patch)
-    Phoenix.View.render_to_iodata(Bonfire.Common.Web.DiffRenderView, "diff_render.html", patch: patch)
+    Phoenix.View.render_to_iodata(Bonfire.UI.Common.DiffRenderView, "diff_render_view.html", patch: patch)
 
   end
 
@@ -68,7 +68,7 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
         {:ok, patch} ->
 
           html_patch =
-            Phoenix.View.render_to_iodata(Bonfire.Common.Web.DiffRenderView, "diff_render.html", patch: patch)
+            Phoenix.View.render_to_iodata(Bonfire.UI.Common.DiffRenderView, "diff_render_view.html", patch: patch)
 
           IO.binwrite(file, html_patch)
 

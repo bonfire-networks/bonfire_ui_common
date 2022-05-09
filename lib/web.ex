@@ -68,6 +68,15 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
+  def function_component(opts \\ []) do
+    quote do
+      use Phoenix.Component, unquote(opts)
+
+      unquote(live_view_helpers())
+
+    end
+  end
+
   def live_handler(_opts \\ []) do
     quote do
       import Phoenix.LiveView
