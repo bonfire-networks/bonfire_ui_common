@@ -13,6 +13,7 @@ defmodule Bonfire.UI.Common.MixProject do
         {:phoenix_live_reload, "~> 1.2", only: :dev},
         {:dbg, "~> 1.0", only: :dev},
         {:zest, "~> 0.1", optional: true},
+        # {:bonfire_search, "https://github.com/bonfire-networks/bonfire_search#main", optional: true}
         # {:bonfire_boundaries, git: "https://github.com/bonfire-networks/bonfire_boundaries#main", optional: true}
       ]
     ]
