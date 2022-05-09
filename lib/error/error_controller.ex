@@ -5,7 +5,7 @@ defmodule Bonfire.UI.Common.ErrorController do
     # debug(get_flash(conn)) # TODO
 
     conn
-    |> put_view(Bonfire.UI.Social.ErrorView)
+    |> put_view(Bonfire.UI.Common.ErrorView)
     |> render(:app, conn.assigns)
   end
 end

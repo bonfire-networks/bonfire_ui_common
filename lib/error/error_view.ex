@@ -1,4 +1,4 @@
-defmodule Bonfire.UI.Social.ErrorView do
+defmodule Bonfire.UI.Common.ErrorView do
   use Bonfire.UI.Common.Web, :view
 
   @codes %{
