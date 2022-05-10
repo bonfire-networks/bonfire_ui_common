@@ -14,7 +14,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   def handle_params(params, uri, socket, source_module \\ nil) do
     undead(socket, fn ->
-      debug("LiveHandler: handle_params for #{inspect uri} via #{source_module || "delegation"}")
+      info("LiveHandler: handle_params for #{inspect uri} via #{source_module || "delegation"}")
       ## debug(params: params)
       do_handle_params(params, uri, socket
                                     |> assign_global(
@@ -99,14 +99,17 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
 
   defp mod_delegate(mod, fun, params, socket) do
-    debug("LiveHandler: attempt delegating to #{inspect fun} in #{inspect mod}...")
+    # debug("attempt delegating to #{inspect fun} in #{inspect mod}...")
 
     case maybe_to_module("#{mod}.LiveHandler") || maybe_to_module(mod) do
       module when is_atom(module) ->
+        info(params, "LiveHandler: delegating to #{inspect fun} in #{module} with params")
         # debug(module)
         if module_enabled?(module), do: apply(module, fun, params ++ [socket]),
         else: empty(socket)
-      _ -> empty(socket)
+      _ ->
+        error(mod, "LiveHandler: could not find a LiveHandler for")
+        empty(socket)
     end
   end
 
