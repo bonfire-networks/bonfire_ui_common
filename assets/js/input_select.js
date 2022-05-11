@@ -6,7 +6,7 @@ InputSelectHooks.InputOrSelectOne = {
 
     initInputOrSelectOne() {
         let hook = this,
-            $input = hook.el.querySelector("input"),
+            $input = hook.el.querySelector("input#tagify"),
             $select = hook.el.querySelector("select");
 
         var suggestions = []
@@ -30,17 +30,38 @@ InputSelectHooks.InputOrSelectOne = {
             `
         }
 
-        new Tagify($input, {
-            tagTextProp: 'text',
-            enforceWhitelist: false,
-            mode: "select",
+        function onInput(e){
+            console.log("onInput: ", e.detail);
+            tagify.whitelist = null; // reset current whitelist
+            tagify.loading(true) // show the loader animation
+        
+            // get new whitelist from a delayed mocked request (Promise)
+            
+            tagify.settings.whitelist = suggestions.concat(tagify.value) // add already-existing tags to the new whitelist array
+
+            tagify
+            .loading(false)
+            // render the suggestions dropdown.
+            .dropdown.show(e.detail.value);
+            }
+
+        const tagify = new Tagify($input, {
+            enforceWhitelist: true,
             whitelist: suggestions,
+            dropdown: {
+                maxItems: 20,           // <- mixumum allowed rendered suggestions
+                classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+                enabled: 0,             // <- show suggestions on focus
+                closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+                },
             // blacklist: ['foo', 'bar'],
             templates: {
                 dropdownItem: suggestionItemTemplate
             },
-        })
-    },
+          })
+          tagify.on('input', onInput)
+        },
+
 
     mounted() {
         this.initInputOrSelectOne();
