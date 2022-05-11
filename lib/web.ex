@@ -141,7 +141,9 @@ defmodule Bonfire.UI.Common.Web do
       # use instead: Bonfire's voodoo routing, eg: `path(Bonfire.Social.Web.HomeLive):
       import Bonfire.Common.URIs
 
-      import Bonfire.Common.Config, only: [repo: 0]
+      alias Bonfire.Me.Settings
+      alias Bonfire.Common.Config
+      import Config, only: [repo: 0]
 
       import Bonfire.Common.Extend
 
