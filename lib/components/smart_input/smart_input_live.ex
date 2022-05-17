@@ -19,6 +19,8 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop preset_boundary, :any, default: "public"
   prop title_open, :boolean, default: false
   prop title_prompt, :string
+  prop preloaded_recipients, :list
+  prop show_select_recipients, :boolean, default: false
 
   # Classes to customize the smart input appearance
   prop textarea_class, :string, default: "textarea w-full prose prose-sm bg-slate-50 text-slate-800"

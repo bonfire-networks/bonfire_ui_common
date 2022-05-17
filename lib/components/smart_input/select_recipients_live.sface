@@ -1,0 +1,26 @@
+<div
+  class="mb-3"
+  id={:select_recipients}
+  phx-hook="InputOrSelectOne"
+  >
+  <div class="flex items-center space-x-6">
+    <div class="flex items-center w-16 h-10 text-sm font-bold "><span>To</span></div>
+
+    <!-- <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
+      selected_options={e(assigns, :to_circles, [])}
+      label={"Send to:"}
+      form_input_name="to_circles[]"
+      context_id={e(assigns, :context_id, nil)}
+    /> -->
+
+    <input name="to_circles" class="tagify flex-1 bg-transparent border-t-0 border-b-2 border-l-0 border-r-0 border-base-content border-opacity-30" />
+    <select class="tagify hidden">
+      {#for user <- @preloaded_recipients}
+        <option value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
+      {/for}
+    </select>
+
+
+  </div>
+
+</div>

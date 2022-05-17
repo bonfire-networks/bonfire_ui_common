@@ -6,8 +6,8 @@ InputSelectHooks.InputOrSelectOne = {
 
     initInputOrSelectOne() {
         let hook = this,
-            $input = hook.el.querySelector("input#tagify"),
-            $select = hook.el.querySelector("select");
+            $input = hook.el.querySelector("input.tagify"),
+            $select = hook.el.querySelector("select.tagify");
 
         var suggestions = []
         
@@ -17,7 +17,7 @@ InputSelectHooks.InputOrSelectOne = {
             entry.text = opt.text;
             suggestions.push(entry);
         });
-        console.log(suggestions)
+        console.log("suggestions: ", suggestions)
 
         suggestionItemTemplate = function(tagData){
             return `
@@ -30,36 +30,55 @@ InputSelectHooks.InputOrSelectOne = {
             `
         }
 
-        function onInput(e){
-            console.log("onInput: ", e.detail);
-            tagify.whitelist = null; // reset current whitelist
-            tagify.loading(true) // show the loader animation
-        
-            // get new whitelist from a delayed mocked request (Promise)
-            
-            tagify.settings.whitelist = suggestions.concat(tagify.value) // add already-existing tags to the new whitelist array
+        tagTemplate = function (tagData) {
+            return `
+            <tag 
+                    contenteditable='false'
+                    spellcheck='false'
+                    tabIndex="-1"
+                    class="tagify__tag ${tagData.class ? tagData.class : ""}"
+                    ${this.getAttributes(tagData)}>
+                <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+                <div>
+                    <span class='tagify__tag-text'>${tagData.text}</span>
+                </div>
+            </tag>
+            `
+        }
 
-            tagify
-            .loading(false)
-            // render the suggestions dropdown.
-            .dropdown.show(e.detail.value);
-            }
+        // function onInput(e){
+        //     console.log("onInput: ", e.detail);
+        //     tagify.whitelist = null; // reset current whitelist
+        //     tagify.loading(true) // show the loader animation
+        
+        //     // get new whitelist from a delayed mocked request (Promise)
+            
+        //     tagify.settings.whitelist = suggestions.concat(tagify.value) // add already-existing tags to the new whitelist array
+
+        //     tagify
+        //     .loading(false)
+        //     // render the suggestions dropdown.
+        //     .dropdown.show(e.detail.value);
+        // }
 
         const tagify = new Tagify($input, {
             enforceWhitelist: true,
             whitelist: suggestions,
+            originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
             dropdown: {
                 maxItems: 20,           // <- mixumum allowed rendered suggestions
                 classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
                 enabled: 0,             // <- show suggestions on focus
-                closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+                closeOnSelect: true,    // <- do not hide the suggestions dropdown once an item has been selected
+                searchKeys: ['text']  // very important to set by which keys to search for suggesttions when typing
                 },
             // blacklist: ['foo', 'bar'],
             templates: {
-                dropdownItem: suggestionItemTemplate
+                dropdownItem: suggestionItemTemplate,
+                tag: tagTemplate
             },
           })
-          tagify.on('input', onInput)
+        //tagify.on('input', onInput)
         },
 
 
