@@ -37,7 +37,7 @@
       </div>
       <div
         :if={e(assigns, :without_sidebar, nil) != true}
-        class="w-[285px] justify-start hidden  h-full  pointer-events-none tablet:flex">
+        class="w-[285px] justify-start hidden  h-full tablet:flex">
         <div class="">
           <div class="sticky z-50 w-full mb-3 top-3 background-invisible before:bottom-[-8px]">
             <Surface.Components.Dynamic.Component
