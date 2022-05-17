@@ -1,7 +1,10 @@
 <Bonfire.UI.Common.WidgetLive 
   widget_title={e(assigns, :widget_title, nil)}
 >
-  <div class="p-3 prose">
-    {rich e(assigns, :text, "text goes here")}
+  <div>
+    <div class="bg-bottom bg-no-repeat bg-cover h-[250px]" style={"background-image: url(#{Bonfire.Common.Config.get([:ui, :theme, :instance_image], nil)})"}></div>
+    <div class="p-3 prose">
+      {rich e(assigns, :text, "text goes here")}
+    </div>
   </div>
 </Bonfire.UI.Common.WidgetLive>

@@ -18,7 +18,7 @@
         <span class="-mt-0.5 text-sm font-light text-base-content text-opacity-80">@{e(assigns, :current_user, :character, :username, "Unknown")}</span>
       </div>
       <div>
-        <Solid.ChevronDownIcon class="w-5 h-5" />
+        <Solid.DotsHorizontalIcon class="w-5 h-5" />
       </div>
     </label>
     <ul
