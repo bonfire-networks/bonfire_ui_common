@@ -37,33 +37,33 @@
       </div>
       <div
         :if={e(assigns, :without_sidebar, nil) != true}
-        class="w-[285px] justify-start hidden mt-3 h-full  pointer-events-none tablet:flex">
-        <div class="w-full space-y-3 pointer-events-auto">
-          <div class="mb-3">
+        class="w-[285px] justify-start hidden  h-full  pointer-events-none tablet:flex">
+        <div class="">
+          <div class="sticky z-50 w-full mb-3 top-3 background-invisible before:bottom-[-8px]">
             <Surface.Components.Dynamic.Component
               :if={module_enabled?(Bonfire.Search.Web.FormLive)}
               module={Bonfire.Search.Web.FormLive}
               search_limit={5}
             />
           </div>
+          <div class="flex flex-col mt-6 space-y-3">
+            <Surface.Components.Dynamic.Component
+              :if={current_user(assigns)}
+              :for={{component, component_assigns} <- @sidebar_widgets[:users][:secondary] || [ 
+                {Bonfire.UI.Social.WidgetTimelinesLive, [page: e(assigns, :page, nil)]},
+              ]}
+              module={component}
+              current_user={current_user(assigns)}
+              {...component_assigns}
+            />
 
-          <Surface.Components.Dynamic.Component
-            :if={current_user(assigns)}
-            :for={{component, component_assigns} <- @sidebar_widgets[:users][:secondary] || [ 
-              {Bonfire.UI.Social.WidgetTimelinesLive, [page: e(assigns, :page, nil)]},
-            ]}
-            module={component}
-            current_user={current_user(assigns)}
-            {...component_assigns}
-          />
-
-          <Surface.Components.Dynamic.Component
-            :if={!current_user(assigns)}
-            :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || []}
-            module={component}
-            {...component_assigns}
-          />
-
+            <Surface.Components.Dynamic.Component
+              :if={!current_user(assigns)}
+              :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || []}
+              module={component}
+              {...component_assigns}
+            />
+          </div>
         </div>
       </div>
     </div>
