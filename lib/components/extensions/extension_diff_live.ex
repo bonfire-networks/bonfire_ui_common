@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
 
   import Bonfire.Common.Extensions.Diff
   import Where
-  alias Bonfire.Me.Web.LivePlugs
+  alias Bonfire.UI.Me.LivePlugs
 
   def mount(params, session, socket) do
     live_plug params, session, socket, [

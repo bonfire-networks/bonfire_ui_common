@@ -138,7 +138,7 @@ defmodule Bonfire.UI.Common.Web do
 
       # deprecated: Phoenix's Helpers
       alias Bonfire.Web.Router.Helpers, as: Routes
-      # use instead: Bonfire's voodoo routing, eg: `path(Bonfire.Social.Web.HomeLive):
+      # use instead: Bonfire's voodoo routing, eg: `path(Bonfire.UI.Social.HomeLive):
       import Bonfire.Common.URIs
 
       alias Bonfire.Me.Settings

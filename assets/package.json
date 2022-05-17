@@ -1,7 +1,8 @@
 {
   "version": "0.0.0",
   "dependencies": {
-    "@yaireo/tagify": "^4.9.4"
+    "@yaireo/tagify": "^4.9.4",
+    "theme-change": "^2.0.2"
   },
   "devDependencies": {
     "prop-types": "^15.8.0"
