@@ -3,6 +3,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   import Plug.Conn
   import Phoenix.ConnTest
   import Phoenix.LiveViewTest
+  alias Bonfire.Common.Utils
   alias Bonfire.Me.Users
   alias Bonfire.Data.Identity.Account
   alias Bonfire.Data.Identity.User
@@ -23,6 +24,20 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     {user, conn} = fake_user_and_conn!(account)
     {:ok, user} = Users.make_admin(user)
     {user, conn}
+  end
+
+  @doc """
+  Render stateless Surface or LiveView components
+  """
+  def render_stateless(component, assigns \\ [], context \\ []) do
+    render_component(&component.render/1, Utils.deep_merge([__context__: context], assigns))
+  end
+
+  @doc """
+  Render stateful Surface or LiveView components
+  """
+  def render_stateful(component, assigns \\ [], context \\ []) do
+    render_component(component, Utils.deep_merge([__context__: context], assigns))
   end
 
   def session_conn(conn \\ build_conn()), do: Plug.Test.init_test_session(conn, %{})
