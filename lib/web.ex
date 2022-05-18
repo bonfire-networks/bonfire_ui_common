@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Common.Web do
   def controller(opts \\ []) do
     opts =
       opts
-      |> Keyword.put_new(:namespace, Bonfire.Common.Config.get!(:default_web_namespace))
+      |> Keyword.put_new(:namespace, Bonfire.Common.Config.get(:default_web_namespace, Bonfire.UI.Common))
 
     quote do
       use Phoenix.Controller, unquote(opts)
