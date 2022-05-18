@@ -11,7 +11,7 @@
       <figcaption class="sr-only">{ entry.client_name }</figcaption>
     </figure>
 
-    <progress :if={ 0 < entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress>
+    <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress>
 
     <!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 -->
     <button 

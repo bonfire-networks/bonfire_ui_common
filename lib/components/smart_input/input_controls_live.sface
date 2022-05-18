@@ -16,7 +16,6 @@
       <Bonfire.UI.Common.UploadButtonLive
         :if={module_enabled?(Bonfire.Files)}
         uploads={e(assigns, :uploads, nil)}
-        uploaded_files={e(assigns, :uploaded_files, [])}
       />
 
       <div 

@@ -30,7 +30,7 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
     end
   end
 
-  defp mounted_connected(params, session, socket) do
+  defp mounted_connected(params, _session, socket) do
     diffs = with {:ok, patches} <- generate_diff(params["local"]) do
       patches
     else

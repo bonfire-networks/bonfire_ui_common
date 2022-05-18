@@ -1,6 +1,5 @@
 defmodule Bonfire.UI.Common.SidebarLive do
   use Bonfire.UI.Common.Web, :stateless_component
-  alias Surface.Components.LivePatch
 
   # prop name, :string, required: true
   # prop user_image, :string, required: true

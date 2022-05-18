@@ -5,6 +5,7 @@ defmodule Bonfire.UI.Common do
   use Bonfire.Common.Utils
 
   defmacro __using__(opts) do
+    # TODO: pass opts to the nested `use`
     quote do
       use Bonfire.Common.Utils
       import Bonfire.UI.Common
@@ -135,7 +136,6 @@ defmodule Bonfire.UI.Common do
 
   defp socket_connected_or_user?(%Phoenix.LiveView.Socket{}), do: true
   defp socket_connected_or_user?(other), do: if current_user(other), do: true, else: false
-  defp socket_connected_or_user?(_), do: false
 
 
   @doc """

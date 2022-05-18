@@ -1,7 +1,7 @@
 defmodule Bonfire.Notifications.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
 
-  def handle_event("request", attrs, socket) do
+  def handle_event("request", _attrs, socket) do
     Bonfire.Notifications.do_notify(%{tile: "Receive notifications?", message: "OK"}, socket)
   end
 

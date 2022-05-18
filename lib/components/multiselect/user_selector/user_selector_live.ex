@@ -30,7 +30,7 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
 
     {:ok, socket
       |> assigns_merge(assigns,
-      preloaded_options: preloaded_options,
+      preloaded_options: preloaded_options
       )}
   end
 

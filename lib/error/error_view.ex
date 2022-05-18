@@ -33,7 +33,7 @@ defmodule Bonfire.UI.Common.ErrorView do
   def render("403.json", assigns) do
     show_error(403, reason(assigns), false)
   end
-  def render("404.json", assigns) do
+  def render("404.json", _assigns) do
     show_error(404, nil, false)
   end
   def render("500.json", assigns) do

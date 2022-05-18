@@ -4,7 +4,5 @@
     <div :if={@widget_title} class="flex-1 text-lg font-bold text-base-content">{@widget_title}</div> 
     <#slot name="action" />
   </div>
-  <#slot>
-    <div class="text-sm font-medium text-center capitalize text-base-content">{l "A sample widget"}</div>
-  </#slot>
+  <#slot />
 </aside>

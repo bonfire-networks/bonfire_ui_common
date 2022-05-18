@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   alias Bonfire.Data.Identity.Account
   alias Bonfire.Data.Identity.User
 
-  @endpoint Bonfire.Common.Config.get!(:endpoint_module)
+  @endpoint Bonfire.Common.Config.get(:endpoint_module)
 
   def fake_account!(attrs \\ %{}, opts \\ []), do: Bonfire.Me.Fake.fake_account!(attrs, opts)
 

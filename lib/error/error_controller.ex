@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.ErrorController do
   use Bonfire.UI.Common.Web, :controller
 
-  def call(conn, params) do
+  def call(conn, _params) do
     # debug(get_flash(conn)) # TODO
 
     conn

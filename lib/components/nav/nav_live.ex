@@ -1,6 +1,5 @@
 defmodule Bonfire.UI.Common.NavLive do
   use Bonfire.UI.Common.Web, :stateless_component
-  alias Bonfire.Me.Fake
 
   prop page, :any
   prop inner_content, :any

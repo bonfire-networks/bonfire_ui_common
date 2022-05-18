@@ -1,6 +1,5 @@
 defmodule Bonfire.UI.Common.NotificationLive do
   use Bonfire.UI.Common.Web, :stateful_component
-  alias Bonfire.UI.Me.LivePlugs
   import Where
 
   prop notification, :any

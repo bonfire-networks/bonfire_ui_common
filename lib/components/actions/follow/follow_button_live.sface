@@ -1,3 +1,4 @@
+<span>
   <a 
     :if={!e(assigns, :my_follow, nil)}
     data-cid={@id}
@@ -32,4 +33,5 @@
       class={"truncate ellipsis", "ml-2": !e(assigns, :hide_text, nil)}>
       {l "Unfollow"} { e(assigns, :label, "")}</span>
   </a>
+</span>
 

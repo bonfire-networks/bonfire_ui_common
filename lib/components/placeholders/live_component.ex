@@ -25,10 +25,10 @@ defmodule Bonfire.UI.Common.LiveComponent do
   defp mounted(_params, _session, socket), do: {:ok, socket}
 
   def render(assigns) do
-      ~L"""
-      <%= if Map.has_key?(assigns, :load_live_component) and module_enabled?(assigns.load_live_component), do: live_component(
-      @socket,
-      assigns.load_live_component,
+    load_live_component= e(assigns, :load_live_component, nil)
+    ~L"""
+      <%= if load_live_component and module_enabled?(load_live_component), do: live_component(
+      load_live_component,
       assigns
     ) %>
     """
