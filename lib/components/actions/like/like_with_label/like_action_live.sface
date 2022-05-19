@@ -6,11 +6,7 @@
   phx-value-id={e(@object, :id, nil)}
   phx-value-component={__MODULE__}
   phx-value-current_count={e(@like_count, 0)}
-  class={
-    "btn btn-ghost btn-circle like like_with_label",
-    "btn-xs ": e(assigns, :showing_within, "") == :thread,
-    "btn-sm": e(assigns, :showing_within, "") != :thread
-  }> 
+  class={"btn btn-ghost btn-circle like like_with_label btn-sm"}> 
   <span 
      class={"text-base-content text-opacity-70", "text-yellow-500 text-opacity-100": e(@my_like, nil)}>
     <Solid.StarIcon 

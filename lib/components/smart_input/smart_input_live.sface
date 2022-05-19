@@ -1,8 +1,8 @@
   <div 
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
-    class={"flex h-full",
-     "sticky bottom-0": e(assigns, :showing_within, nil) == :message}
+    class={"flex",
+     "bottom-0": e(assigns, :showing_within, nil) == :message}
     x-data={"{
       title_open: false, 
       open_boundaries: false,

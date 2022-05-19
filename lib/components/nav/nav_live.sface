@@ -24,7 +24,7 @@
       <div 
         class={
           "flex-grow w-full flex flex-col h-main mx-auto rounded-t-xl shrink-0 mx-3 w-center",
-          "max-w-[580px]": e(assigns, :without_sidebar, nil) != true
+          "max-w-[600px]": e(assigns, :without_sidebar, nil) != true
           }>
         <Bonfire.UI.Common.HeaderUserLive 
           :if={e(assigns, :without_sidebar, nil) != true or current_user(assigns) }
