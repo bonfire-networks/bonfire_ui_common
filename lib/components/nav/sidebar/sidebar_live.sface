@@ -25,7 +25,7 @@
               <Bonfire.UI.Common.UserMenuLive  current_user={current_user(assigns)} />
             </div>
             <div 
-              :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}
+              :if={current_user(assigns) != nil and e(assigns, :showing_within, nil) != :message and e(assigns, :hide_smart_input, nil) != true}
               data-id="smart_input">
               <Bonfire.UI.Common.SmartInputLive
                 id={:smart_input} 
