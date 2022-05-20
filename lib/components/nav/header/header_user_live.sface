@@ -1,4 +1,4 @@
-<div class="sticky z-50 w-full top-3 background-invisible">
+<div class="fixed w-[600px] z-50 w-full top-3 background-invisible">
   {#if current_user(assigns)}
     <div class="flex-grow w-full py-2 mb-3 rounded-xl shrink-0 bg-base-100">
       <div class="flex items-center w-full justify-evenly tabs tab-boxed">
