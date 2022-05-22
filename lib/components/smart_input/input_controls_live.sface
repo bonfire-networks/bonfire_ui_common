@@ -31,16 +31,18 @@
             class="text-xs font-medium text-slate-800 text-opacity-70">{l "CW"}</span>
         </button>
       </div>
-      <!-- <div 
+      
+      <div 
         data-tip="Full-screen mode" 
-        :if={@create_activity_type != :message}
         class="relative z-20 flex items-center tooltip tooltip-bottom">
-        <LivePatch
-          to="/write"
-          class="btn btn-ghost btn-square btn-sm">
-          <Solid.EyeIcon class="w-4 h-4 text-opacity-70 text-base-content" />
-        </LivePatch>
-      </div> -->
+          <button 
+            type="button"
+            @click="distraction_free = !distraction_free"
+            :class="{'bg-slate-300' : distraction_free}"
+            class="flex items-center btn btn-outline border-slate-800 border-opacity-60 btn-square btn-sm">
+          <Solid.EyeIcon class="w-4 h-4 mx-auto text-slate-800 text-opacity-70" />
+        </button>
+      </div>
 
     </div>
 

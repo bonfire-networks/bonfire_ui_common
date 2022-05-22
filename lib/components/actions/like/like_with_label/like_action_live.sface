@@ -1,6 +1,6 @@
 
 <div 
-  class="tooltip tooltip-bottom" 
+  class="relative z-20 tooltip tooltip-bottom" 
   data-tip={l "Favourite this post"}
   >
   <button

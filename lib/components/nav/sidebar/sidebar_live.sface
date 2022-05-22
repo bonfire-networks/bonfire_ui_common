@@ -8,7 +8,7 @@
     :class="show_smart_input ? 'w-full' : 'flex-col justify-end mt-0 tablet-lg:flex w-[285px] hidden'"
     >
     <div 
-      :class="show_smart_input ? 'fixed bottom-0 p-2 w-full z-50' : 'fixed z-50 top-3 w-[285px]'"
+      :class="show_smart_input ? 'fixed bottom-0 p-2 w-full z-[60]' : 'fixed z-[60] top-3 w-[285px]'"
       class="">
       <div class="w-full h-full">    
         <div class="flex flex-col space-y-4">
