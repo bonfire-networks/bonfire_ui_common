@@ -2,29 +2,18 @@
 <html class="overflow-x-hidden overflow-y-auto bg-base-300" lang="en" data-theme={ Bonfire.Me.Settings.get([:ui, :theme, :instance_theme], "bonfire", assigns)}>
   <head>
     <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= live_title_tag to_string(assigns[:page_title]) || "Home", suffix: " · Bonfire" %>
+
     <meta name="description" content="Bonfire instance">
     <meta name="keywords" content="bonfire, fediverse">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-        
-<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
-
-
     <meta name="author" content="Bonfire">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+    <%= raw Config.get!(:endpoint_module).include_assets(@conn, :top)%>
 
     <%= csrf_meta_tag() %>
-    
-    <%= live_title_tag to_string(assigns[:page_title]) || "Home", suffix: " · Bonfire" %>
-    
-    <%= raw Config.get!(:endpoint_module).include_assets(@conn)%>
-  
   </head>
   <body id="layout-root" class="min-h-main bg-base-300">
     <style>
@@ -33,6 +22,9 @@
       }
     </style>
     <%= if Code.ensure_loaded?(Thesis.View), do: Thesis.View.thesis_editor(@conn) %>
+    
     <%= @inner_content %>
+
+    <%= raw Config.get!(:endpoint_module).include_assets(@conn, :bottom)%>
   </body>
 </html>

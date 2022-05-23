@@ -14,7 +14,7 @@
     /> -->
 
     <input name="to_circles" class="tagify flex-1 bg-transparent border-t-0 border-b-2 border-l-0 border-r-0 border-base-content border-opacity-30" />
-    <select class="tagify hidden">
+    <select class="tagify hide">
       {#for user <- @preloaded_recipients}
         <option value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
       {/for}
