@@ -1,5 +1,4 @@
 defmodule Bonfire.UI.Common.LivePlugs.Locale do
-
   import Phoenix.LiveView
 
   @local_session_key Cldr.Plug.SetLocale.session_key()

@@ -1,5 +1,4 @@
 defmodule Bonfire.UI.Common.LivePlugs.Csrf do
-
   import Phoenix.LiveView
 
   def mount(_, %{"_csrf_token" => token}, socket), do: {:ok, assign(socket, :csrf_token, token)}

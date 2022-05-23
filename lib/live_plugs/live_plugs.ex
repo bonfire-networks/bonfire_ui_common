@@ -5,8 +5,10 @@ defmodule Bonfire.UI.Common.LivePlugs do
 
   @compile {:inline, live_plug_: 4}
 
-  def live_plug(params, session, socket, list),
-    do: live_plug_(list, {:ok, socket}, params, session)
+  @extra_plugs [Bonfire.UI.Common.LivePlugs.AllowTestSandbox]
+
+  def live_plug(params, session, socket, list) when is_list(list),
+    do: live_plug_(@extra_plugs ++ list, {:ok, socket}, params, session)
 
   defp live_plug_([], ret, _, _), do: ret
 
