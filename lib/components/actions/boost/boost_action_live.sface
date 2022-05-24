@@ -12,7 +12,7 @@
   phx-value-id={e(@object, :id, nil)}
   phx-value-component={__MODULE__}
   class={"btn btn-ghost btn-circle boost btn-sm"}> 
-  <span class={"text-base-content text-opacity-70", "text-opacity-100 text-info": e(assigns, :my_boost, nil)}>
+  <span class={"text-base-content text-opacity-50", "text-opacity-100 text-info": e(assigns, :my_boost, nil)}>
     <svg 
       viewBox="0 0 24 24" 
       width="24" 

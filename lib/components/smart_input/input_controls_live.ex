@@ -11,6 +11,6 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop with_rich_editor, :boolean, default: true, required: false
   prop uploads, :any
   prop uploaded_files, :list
-
+  prop thread_mode, :string
 
 end
