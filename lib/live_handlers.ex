@@ -16,11 +16,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     undead(socket, fn ->
       info("LiveHandler: handle_params for #{inspect uri} via #{source_module || "delegation"}")
       ## debug(params: params)
-      do_handle_params(params, uri, socket
-                                    |> assign_global(
-                                      current_url: URI.parse(uri)
-                                                   |> maybe_get(:path)
-                                    ))
+      do_handle_params(params, uri, params_to_socket(params, uri, socket))
     end)
   end
 
@@ -97,6 +93,14 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   defp do_handle_params(_, _, socket), do: empty(socket)
 
+  def params_to_socket(params, uri, socket) do
+    socket
+      |> assign_global(
+        current_params: params,
+        current_url: URI.parse(uri)
+                      |> maybe_get(:path)
+      )
+  end
 
   defp mod_delegate(mod, fun, params, socket) do
     # debug("attempt delegating to #{inspect fun} in #{inspect mod}...")

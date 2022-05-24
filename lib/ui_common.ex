@@ -112,6 +112,20 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  def current_url(socket_or_assigns, default \\ nil) do
+    case socket_or_assigns do
+      %{current_url: url} when is_binary(url) -> url
+      %{context: context}       = _api_opts   -> current_url(context, default)
+      %{__context__: context}   = _assigns    -> current_url(context, default)
+      %{assigns: assigns}       = _socket     -> current_url(assigns, default)
+      %{socket: socket}         = _socket     -> current_url(socket, default)
+      url when is_binary(url)                 -> url
+      options when is_list(options)           -> current_url(Map.new(options), default)
+      other ->
+        debug("No current_url found in #{inspect other}")
+        default
+    end
+  end
 
   # defdelegate content(conn, name, type, opts \\ [do: ""]), to: Bonfire.UI.Common.ContentAreas
 
@@ -341,8 +355,8 @@ defmodule Bonfire.UI.Common do
       :ok -> {return_key, socket} # shortcut to return nothing
       {:ok, _other} -> {return_key, socket}
       %Ecto.Changeset{} = cs -> live_exception(socket, return_key, "The data provided seems invalid and could not be inserted or updated: "<>error_msg(cs), cs)
-      %{__struct__: struct} = act when struct == Bonfire.Epics.Act -> live_exception(socket, return_key, "The act was not completed: ", act)
-      %{__struct__: struct} = epic when struct == Bonfire.Epics.Epic -> live_exception(socket, return_key, "There epic was not completed: "<>error_msg(epic), epic.errors)
+      %{__struct__: struct} = act when struct == Bonfire.Epics.Act -> live_exception(socket, return_key, "Could not complete this action: ", act)
+      %{__struct__: struct} = epic when struct == Bonfire.Epics.Epic -> live_exception(socket, return_key, "Could not complete this request: "<>error_msg(epic), epic.errors)
       not_found when not_found in [:not_found, "Not found", 404] -> live_exception(socket, return_key, "Not found")
       msg when is_binary(msg) -> live_exception(socket, return_key, msg)
       ret -> live_exception(socket, return_key, "Oops, this resulted in something unexpected", ret)
@@ -365,7 +379,7 @@ defmodule Bonfire.UI.Common do
 
   defp live_exception(socket, return_key, msg, exception, stacktrace, kind) do
     with {:error, msg} <- debug_exception(msg, exception, stacktrace, kind) do
-      {return_key, Phoenix.LiveView.put_flash(socket, :error, error_msg(msg)) |> Phoenix.LiveView.push_patch(to: path(socket.view))}
+      {return_key, Phoenix.LiveView.put_flash(socket, :error, error_msg(msg)) |> Phoenix.LiveView.push_patch(to: current_url(socket) || path(socket.view))}
     end
   rescue
     FunctionClauseError -> # for cases where the live_path may need param(s) which we don't know about
