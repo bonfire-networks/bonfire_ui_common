@@ -1,6 +1,6 @@
 <div class="fixed w-[600px] z-50 w-full top-3 background-invisible">
   {#if current_user(assigns)}
-    <div class="flex-grow w-full py-2 mb-3 rounded-xl shrink-0 bg-base-100">
+    <div class="flex-grow w-full py-2 mb-3 rounded-md shrink-0 bg-base-100">
       <div class="flex items-center w-full justify-evenly tabs tab-boxed">
         
         <!-- MOBILE INSTANCE ICON -->
@@ -69,7 +69,7 @@
       </div>
     </div>
   {#else}
-    <div class="flex-grow hidden w-full py-2 mb-3 rounded-xl bg-base-100 shrink-0 lg:block">
+    <div class="flex-grow hidden w-full py-2 mb-3 rounded-md bg-base-100 shrink-0 lg:block">
       <div class="items-center hidden w-full px-3 lg:flex">
         <LiveRedirect 
           class="flex items-center flex-1 space-x-2"

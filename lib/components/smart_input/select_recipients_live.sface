@@ -1,15 +1,14 @@
 
-<div class="mb-3">
-  <div class="flex items-center space-x-6">
-    <div class="flex items-center w-16 h-10 text-sm font-bold ">
-      <span>{l "To"}</span>
-    </div>
+<div class="w-full mb-3 rounded-lg bg-base-100">
+  <div class="flex items-center rounded-lg">
+    <span class="inline-flex items-center h-10 px-3 rounded-l-lg text-base-content text-opacity-70 bg-base-200 sm:text-sm"> {l "To"} </span>
 
     {#if is_list(e(assigns, :to_circles, nil)) and length(e(assigns, :to_circles, []))>0}
       <input 
         :for={{name, id} <- e(assigns, :to_circles, [])} 
         type="hidden" 
-        name="to_circles[]" 
+        name="to_circles[]"
+        placeholder={l "Select the participants"} 
         label={name} 
         value={id} 
       />
@@ -24,13 +23,14 @@
       /> -->
 
       <div
-      id={:select_recipients}
-      phx-hook="InputOrSelectOne"
-      >
-        <input name="to_circles" class="tagify flex-1 bg-transparent border-t-0 border-b-2 border-l-0 border-r-0 border-base-content border-opacity-30" />
-        <select class="tagify hide">
+        class="w-full"
+        id={:select_recipients}
+        phx-hook="InputOrSelectOne"
+        >
+        <input name="to_circles" class="!text-slate-800 flex-1 w-full h-10 bg-transparent border-0 tagify border-base-content" />
+        <select class="tagify hide !text-slate-800">
           {#for user <- @preloaded_recipients}
-            <option value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
+            <option class="!text-slate-800" value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
           {/for}
         </select>
       </div>

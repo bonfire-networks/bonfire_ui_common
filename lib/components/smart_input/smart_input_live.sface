@@ -3,7 +3,7 @@
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
     class={
-      "flex",
+      "flex bg-transparent",
       "bottom-0": e(assigns, :showing_within, nil) == :message
     }
     x-data={"{

@@ -25,7 +25,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   # Classes to customize the smart input appearance
   prop textarea_class, :string, default: "textarea w-full prose prose-sm bg-base-100 text-base-component_maybe_in_reply_to"
   prop smart_input_class, :string, default: "rounded-md shadow bg-base-100 flex h-full flex-1"
-  prop replied_activity_class, :string, default: "relative p-3 mb-2 rounded-none border-b border-base-content border-opacity-10 bg-base-100 hover:!bg-base-100 hover:!bg-opacity-100 showing_within:smart_input"
+  prop replied_activity_class, :string, default: "relative p-3 mb-2 rounded-lg  bg-base-100 hover:!bg-base-100 hover:!bg-opacity-100 showing_within:smart_input"
 
 
   def mount(socket),
