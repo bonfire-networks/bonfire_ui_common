@@ -337,6 +337,8 @@ defmodule Bonfire.UI.Common do
   catch
     :exit, error ->
       live_exception(socket, return_key, "An exceptional error caused the operation to stop", error, __STACKTRACE__)
+    :throw, {:error, error} when is_binary(error) ->
+      live_exception(socket, return_key, error, nil, __STACKTRACE__)
     :throw, error ->
       live_exception(socket, return_key, "An exceptional error was thrown", error, __STACKTRACE__)
     error ->

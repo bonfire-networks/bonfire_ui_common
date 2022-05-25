@@ -82,7 +82,7 @@ defmodule Bonfire.UI.Common.ErrorView do
       <meta name="keywords" content="bonfire, fediverse">
       <meta name="author" content="Bonfire">
       <title data-suffix=" · Bonfire">Error · Bonfire</title>
-      <link phx-track-static rel='stylesheet' href='/css/bonfire.css'/>
+      <link phx-track-static rel='stylesheet' href='/assets/bonfire_basic.css'/>
     </head>
 
     <body id="layout-root" class="bg-base-200">
