@@ -84,13 +84,14 @@ defmodule Bonfire.UI.Common do
     # |> IO.inspect
   end
 
+
   def rich(content) do
     case content do
       _ when is_binary(content) ->
 
         content
-        |> Text.maybe_markdown_to_html()
-        |> Text.external_links() # transform internal links for LiveView navigation
+        # |> Text.maybe_markdown_to_html() # now being done on save instead
+        |> Text.external_links() # transform internal links to use LiveView navigation
         |> Phoenix.HTML.raw() # for use in views
 
       {:ok, msg} when is_binary(msg) -> msg
@@ -112,9 +113,19 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  def markdown(content) when is_binary(content) do
+    content
+    |> Text.maybe_markdown_to_html()
+    |> rich()
+  end
+  def markdown(content) do
+    rich(content)
+  end
+
   def templated(content, data) when is_binary(content) do
     content
     |> Text.maybe_render_templated(data)
+    |> Text.maybe_markdown_to_html()
     |> rich()
   end
   def templated(content, _data) do
@@ -360,6 +371,7 @@ defmodule Bonfire.UI.Common do
       {:ok, %Phoenix.LiveView.Socket{} = socket} -> {:ok, socket}
       {:ok, %Phoenix.LiveView.Socket{} = socket, data} -> {:ok, socket, data}
       {:noreply, %Phoenix.LiveView.Socket{} = socket} -> {:noreply, socket}
+      {:noreply, %Plug.Conn{} = conn} -> {:noreply, conn}
       {:reply, data, %Phoenix.LiveView.Socket{} = socket} -> {:reply, data, socket}
       {:error, reason} -> undead_error(reason, socket, return_key)
       {:error, reason, extra} -> live_exception(socket, return_key, "There was an error: #{inspect reason}", extra)
@@ -378,25 +390,82 @@ defmodule Bonfire.UI.Common do
 
   defp live_exception(socket, {:mount, return_key}, msg, exception, stacktrace, kind) do
     with {:error, msg} <- debug_exception(msg, exception, stacktrace, kind) do
-      {return_key, Phoenix.LiveView.put_flash(socket, :error, error_msg(msg)) |> Phoenix.LiveView.push_redirect(to: path(:error))}
+      {return_key, assign_flash(socket, :error, error_msg(msg))
+      |> redirect_to()}
     end
   end
 
   defp live_exception(%{assigns: %{__context__: %{current_url: current_url}}} = socket, return_key, msg, exception, stacktrace, kind) when is_binary(current_url) do
     with {:error, msg} <- debug_exception(msg, exception, stacktrace, kind) do
-      {return_key, Phoenix.LiveView.put_flash(socket, :error, error_msg(msg)) |> Phoenix.LiveView.push_patch(to: current_url)}
+      {return_key, assign_flash(socket, :error, error_msg(msg))
+      |> patch_to(current_url)}
     end
   end
 
   defp live_exception(socket, return_key, msg, exception, stacktrace, kind) do
     with {:error, msg} <- debug_exception(msg, exception, stacktrace, kind) do
-      {return_key, Phoenix.LiveView.put_flash(socket, :error, error_msg(msg)) |> Phoenix.LiveView.push_patch(to: current_url(socket) || path(socket.view))}
+      {return_key, assign_flash(socket, :error, error_msg(msg))
+      |> patch_to(current_url(socket) || path(e(socket, :view, :error)))}
     end
   rescue
     FunctionClauseError -> # for cases where the live_path may need param(s) which we don't know about
-      {return_key, Phoenix.LiveView.put_flash(socket, :error, error_msg(msg)) |> Phoenix.LiveView.push_redirect(to: path(:error))}
+      {return_key, assign_flash(socket, :error, error_msg(msg))
+      |> redirect_to()}
   end
 
+  def redirect_to(socket_or_conn, to \\ nil, opts \\ [])
+  def redirect_to(%Phoenix.LiveView.Socket{} = socket, to, opts) do
+    Phoenix.LiveView.push_redirect(socket, [to: to || path_fallback(opts)] ++ opts)
+  rescue e in ArgumentError ->
+    error(e)
+    redirect_to(socket, path_fallback(opts))
+  end
+  def redirect_to(%Plug.Conn{} = conn, to, opts) do
+    Phoenix.Controller.redirect(conn, [to: to || path_fallback(opts)] ++ opts)
+  end
+
+  def patch_to(socket_or_conn, to \\ nil, opts \\ [])
+  def patch_to(%Phoenix.LiveView.Socket{} = socket, to, opts) do
+    Phoenix.LiveView.push_patch(socket, [to: to || path_fallback(opts)] ++ opts)
+  rescue e in ArgumentError ->
+    error(e)
+    patch_to(socket, path_fallback(opts))
+  end
+  def patch_to(%Plug.Conn{} = conn, to, opts) do
+    redirect_to(conn, to, opts)
+  end
+
+  def path_fallback(opts \\ []) do
+    opts[:fallback] || path(:error) || "/error"
+  end
+
+  def assign_flash(%Phoenix.LiveView.Socket{} = socket, type, message) do
+    Phoenix.LiveView.put_flash(socket, type, message)
+  end
+  def assign_flash(%Plug.Conn{} = conn, type, message) do
+    conn
+    |> Plug.Conn.fetch_session()
+    |> Phoenix.Controller.fetch_flash()
+    |> Phoenix.Controller.put_flash(type, message)
+  end
+
+  def maybe_consume_uploaded_entries(%Phoenix.LiveView.Socket{} = socket, key, fun) do
+    Phoenix.LiveView.consume_uploaded_entries(socket, key, fun)
+  end
+
+  def maybe_consume_uploaded_entries(_conn, key, _fun) do
+    error(key, "Upload not implemented without LiveView")
+    []
+  end
+
+  def maybe_consume_uploaded_entry(%Phoenix.LiveView.Socket{} = socket, key, fun) do
+    Phoenix.LiveView.consume_uploaded_entry(socket, key, fun)
+  end
+
+  def maybe_consume_uploaded_entry(_conn, key, _fun) do
+    error(key, "Upload not implemented without LiveView")
+    nil
+  end
 
   @doc "Save a `go` redirection path in the session (for redirecting somewhere after auth flows)"
   def set_go_after(conn, path \\ nil) do

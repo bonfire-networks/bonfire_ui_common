@@ -21,7 +21,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop title_prompt, :string
   prop preloaded_recipients, :list
   prop show_select_recipients, :boolean, default: false
-  prop thread_mode, :string 
+  prop thread_mode, :string
   # Classes to customize the smart input appearance
   prop textarea_class, :string, default: "textarea w-full prose prose-sm bg-base-100 text-base-component_maybe_in_reply_to"
   prop smart_input_class, :string, default: "rounded-md shadow bg-base-100 flex h-full flex-1"
@@ -72,7 +72,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   #   if entry.done? and entry.valid? and user do
   #     with %{} = uploaded_media <-
-  #       consume_uploaded_entry(socket, entry, fn %{path: path} = meta ->
+  #       maybe_consume_uploaded_entry(socket, entry, fn %{path: path} = meta ->
   #         # debug(meta, "icon consume_uploaded_entry meta")
   #         Bonfire.Files.upload(nil, user, path)
   #         |> debug("uploaded")
@@ -81,7 +81,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   #         {:noreply,
   #           socket
   #           |> update(:uploaded_files, &(&1 ++ [uploaded_media]))
-  #           |> put_flash(:info, l "File uploaded!")
+  #           |> assign_flash(:info, l "File uploaded!")
   #         }
   #     end
   #   else
