@@ -4,13 +4,13 @@
     phx-drop-target={@uploads.files.ref}
     class={
       "flex bg-transparent",
-      "bottom-0": e(assigns, :showing_within, nil) == :message
+      "bottom-0": e(assigns, :showing_within, nil) == :messages
     }
     x-data={"{
       title_open: false, 
       open_boundaries: false,
       distraction_free: false,
-      boundary_selected: '#{if e(assigns, :create_activity_type, nil) == :message, do: "message", else: e(assigns, :preset_boundary, "public")}' 
+      boundary_selected: '#{if e(assigns, :create_activity_type, nil) == :messages, do: "message", else: e(assigns, :preset_boundary, "public")}' 
     }"}
     >
     <div 
@@ -26,7 +26,7 @@
       class={"flex flex-col flex-1 w-full"}>
       
       <div 
-        :if={e(assigns, :showing_within, nil) != :message and length(all_smart_input_components())>1}
+        :if={e(assigns, :showing_within, nil) != :messages and length(all_smart_input_components())>1}
         class="dropdown dropdown-hover"
         >
         <label tabindex="0" class="m-1 btn">{smart_input_name(active_smart_input_component(assigns))}</label>
