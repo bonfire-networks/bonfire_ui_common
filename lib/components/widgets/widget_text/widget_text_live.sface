@@ -7,7 +7,7 @@
       class="bg-bottom bg-no-repeat bg-cover h-[250px]" style={"background-image: url(#{e(assigns, :banner_image, nil)})"}></div>
 
     <div class="p-3 prose">
-      {rich e(assigns, :text, "text goes here")}
+      {templated e(assigns, :text, "text goes here"), e(assigns, :info, nil)}
     </div>
   </div>
 </Bonfire.UI.Common.WidgetLive>

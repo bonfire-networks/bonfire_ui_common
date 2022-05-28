@@ -112,6 +112,15 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  def templated(content, data) when is_binary(content) do
+    content
+    |> Text.maybe_render_templated(data)
+    |> rich()
+  end
+  def templated(content, _data) do
+    rich(content)
+  end
+
   def current_url(socket_or_assigns, default \\ nil) do
     case socket_or_assigns do
       %{current_url: url} when is_binary(url) -> url
