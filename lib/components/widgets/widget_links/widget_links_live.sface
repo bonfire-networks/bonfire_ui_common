@@ -1,6 +1,6 @@
 <Bonfire.UI.Common.WidgetLive 
   :if={!Bonfire.Me.Settings.get([:ui, :show_instance_links, :disabled], nil, assigns)}
-  widget_title={e(assigns, :widget_title, "Links")}
+  widget_title={e(assigns, :widget_title, l "Links")}
   current_user={current_user(assigns)}
 >
 

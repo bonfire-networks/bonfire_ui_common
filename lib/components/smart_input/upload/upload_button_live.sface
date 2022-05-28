@@ -1,5 +1,5 @@
   <div 
-    data-tip="Upload an image" 
+    data-tip={l "Upload an image"} 
     class="relative z-20 tooltip tooltip-bottom" >
     
     <label for={@uploads.files.ref} class="flex items-center btn btn-ghost btn-sm btn-circle">

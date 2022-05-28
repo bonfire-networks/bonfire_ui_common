@@ -18,7 +18,7 @@
         />
 
         <div 
-          data-tip="Add a content warning" 
+          data-tip={l "Add a content warning" }
           class="relative z-20 flex items-center tooltip tooltip-bottom">
           <button
             :if={Bonfire.Common.Config.get([:ui, :smart_input, :cw], []) == true}
@@ -32,7 +32,7 @@
         </div>
         
         <div 
-          data-tip="Full-screen mode" 
+          data-tip={l "Full-screen mode" }
           class="relative z-20 flex items-center tooltip tooltip-bottom">
             <button 
               type="button"
