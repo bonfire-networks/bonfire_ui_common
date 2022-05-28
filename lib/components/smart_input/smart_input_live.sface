@@ -19,12 +19,16 @@
       @click="distraction_free = !distraction_free"
       class="cursor-pointer bg-white/30 fixed z-[60] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"></div>
     <div 
-      :class="{'fixed z-[70] max-w-[720px] top-3 bottom-[20px] w-full -translate-x-1/2 left-1/2': distraction_free}"
+      :class="{
+          'fixed z-[70] max-w-[720px] top-3 bottom-[20px] w-full -translate-x-1/2 left-1/2': distraction_free,
+          'max-w-[285px]': !distraction_free
+        }"
       class={"flex flex-col flex-1 w-full"}>
+      
       <div 
         :if={e(assigns, :showing_within, nil) != :message and length(all_smart_input_components())>1}
         class="dropdown dropdown-hover"
-      >
+        >
         <label tabindex="0" class="m-1 btn">{smart_input_name(active_smart_input_component(assigns))}</label>
         <ul tabindex="0" class="p-2 shadow dropdown-content menu bg-base-100 rounded-box w-52">
           <li :for={{name, component} <- all_smart_input_components()}>
