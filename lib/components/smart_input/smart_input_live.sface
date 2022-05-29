@@ -2,16 +2,21 @@
     data-theme="winter"
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
-    class={
-      "flex bg-transparent",
-      "bottom-0": e(assigns, :showing_within, nil) == :messages
-    }
     x-data={"{
       title_open: false, 
       open_boundaries: false,
       distraction_free: false,
       boundary_selected: '#{if e(assigns, :create_activity_type, nil) == :messages, do: "message", else: e(assigns, :preset_boundary, "public")}' 
     }"}
+    :class="{
+      'smart-input-open': title_open,
+      'smart-input-open-boundaries': open_boundaries,
+      'smart-input-distraction-free  max-w-[285px] break-words': ! distraction_free
+    }"
+    class={
+      "flex bg-transparent",
+      "bottom-0 !max-w-full": e(assigns, :thread_mode, nil) == :flat
+    }
     >
     <div 
       x-cloak

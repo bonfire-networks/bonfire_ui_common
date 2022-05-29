@@ -8,8 +8,8 @@
     :class="show_smart_input ? 'w-full' : 'flex-col justify-end mt-0 tablet-lg:flex w-[285px] hidden'"
     >
     <div 
-      :class="show_smart_input ? 'fixed bottom-0 p-2 w-full z-[30]' : 'fixed z-[30] top-3 w-[285px]'"
-      class="h-main">
+      :class="show_smart_input ? 'fixed bottom-0 p-2 w-full z-[70]' : 'fixed z-[70] top-3 w-[285px]'"
+      class="overflow-x-hidden overflow-y-auto h-main ">
       <div class="w-full h-full">    
         <div class="flex flex-col space-y-4">
           <LiveRedirect 
