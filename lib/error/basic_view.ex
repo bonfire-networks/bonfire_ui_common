@@ -20,20 +20,18 @@ defmodule Bonfire.UI.Common.BasicView do
       <link phx-track-static rel='stylesheet' href='/assets/bonfire_basic.css'/>
     </head>
 
-    <body id="layout-root" class="bg-base-200">
+    <body id="layout-root" class="h-screen">
     <div data-phx-main="true">
       <div id="layout-error">
         <div class="">
-          <div class="flex flex-col mx-auto overflow-hidden lg:mt-4">
+          <div class="flex flex-col items-center mx-auto mt-16 overflow-hidden">
             <div class="relative z-10 flex justify-between flex-shrink-0 h-16">
                 <div class="flex items-center flex-shrink-0 lg:px-4">
                   <a data-phx-link="redirect" data-phx-link-state="push" href="/">
                     <div class="flex items-center px-4 py-2 rounded">
-
-                      <div class="w-10 h-10 bg-center bg-no-repeat bg-contain" style="background-image: url(https://bonfirenetworks.org/img/bonfire.png)"></div>
+                      <div class="w-12 h-12 mb-4 bg-center bg-no-repeat bg-contain" style="background-image: url(https://bonfirenetworks.org/img/bonfire.png)"></div>
                     </div>
                   </a>
-
                   <div class="flex flex-1">
                   </div>
                 </div>
@@ -41,11 +39,10 @@ defmodule Bonfire.UI.Common.BasicView do
           </div>
 
           <div class="mx-auto mt-12 w-center">
-            <div class="prose">
-              <h1 class="text-primary-content">
+            <div class="prose text-center">
+              <h1 class="text-base-content">
                 #{title}
               </h1>
-
               #{body}
             </div>
           </div>

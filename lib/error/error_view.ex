@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Common.ErrorView do
   end
 
   def render("500.html", assigns) do
-    show_error(500, (reason(assigns) || "Please try again or contact the instance admins.")<>"<p><img src='https://media2.giphy.com/media/QMHoU66sBXqqLqYvGO/giphy.gif'/>", true)
+    show_error(500, (reason(assigns) || "Please try again or contact the instance admins.")<>"<p><img class='mx-auto' src='https://media2.giphy.com/media/QMHoU66sBXqqLqYvGO/giphy.gif'/>", true)
   end
 
   def render("app.html", assigns) do
