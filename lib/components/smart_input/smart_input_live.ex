@@ -14,6 +14,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop showing_within, :any
   prop with_rich_editor, :boolean, required: false
   prop activity, :any
+  prop hide_smart_input, :boolean, default: false
   prop object, :any
   prop activity_inception, :any
   prop preset_boundary, :any, default: "public"
@@ -24,7 +25,6 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop thread_mode, :string
   # Classes to customize the smart input appearance
   prop textarea_class, :string, default: "textarea w-full prose prose-sm bg-base-100 text-base-component_maybe_in_reply_to"
-  prop smart_input_class, :string, default: "rounded-md shadow bg-base-100 flex h-full flex-1"
   prop replied_activity_class, :string, default: "relative p-3 mb-2 rounded-lg  bg-base-100 hover:!bg-base-100 hover:!bg-opacity-100 showing_within:smart_input"
 
 

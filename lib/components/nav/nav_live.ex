@@ -14,4 +14,5 @@ defmodule Bonfire.UI.Common.NavLive do
   prop without_sidebar, :boolean, required: false, default: nil
   prop sidebar_widgets, :list, default: []
   prop hide_smart_input, :boolean, default: false
+  prop thread_mode,  :string
 end

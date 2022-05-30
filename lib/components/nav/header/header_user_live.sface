@@ -1,4 +1,8 @@
-<div class="fixed w-[600px] z-50 w-full top-3 background-invisible">
+<div
+  class={
+    "fixed w-[600px] z-[90] w-full top-3 background-invisible",
+    "-translate-x-1/2 left-1/2": !current_user(assigns)
+  }>
   {#if current_user(assigns)}
     <div class="flex-grow w-full py-2 mb-3 rounded-md shrink-0 bg-base-100">
       <div class="flex items-center w-full justify-evenly tabs tab-boxed">

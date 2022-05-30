@@ -1,54 +1,46 @@
-<div 
-  class="flex flex-col h-full"
+<div
   x-data="{show_smart_input: false}" 
-  >
-  <nav
+  x-on:resize.window="show_smart_input = (window.innerWidth > 1200) ? false : show_smart_input"
+>
+<div class="flex flex-col h-full ">
+  <nav 
     role="navigation"
-    class=""
-    :class="show_smart_input ? 'w-full' : 'flex-col justify-end mt-0 tablet-lg:flex w-[285px] hidden'"
-    >
+    :class="show_smart_input ? '!flex' : ''"
+    class="flex-col justify-end mt-0 mr-3 tablet-lg:flex hidden tablet-lg:w-[285px]"
+  >
     <div 
-      :class="show_smart_input ? 'fixed bottom-0 p-2 w-full z-[70]' : 'fixed z-[70] top-3 w-[285px]'"
-      class="overflow-x-hidden overflow-y-auto h-main ">
+      :class="show_smart_input ? 'bg-base-300 left-0 right-0 bottom-0 !z-[70]' : ''"
+      class="overflow-x-hidden overflow-y-auto h-main fixed z-[70] top-3 tablet-lg:w-[285px]">
       <div class="w-full h-full">    
         <div class="flex flex-col space-y-4">
-          <LiveRedirect 
-            :if={current_user(assigns)}
-            class="flex items-center h-12 space-x-2"
-            to={if current_user(assigns), do: path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Bonfire.Common.Config.get(:home_page, Bonfire.Web.HomeLive))}>
-            <div class="w-8 h-8 bg-center bg-no-repeat bg-contain" style={"background-image: url(#{ Bonfire.Common.Config.get([:ui, :theme, :instance_icon], nil)})"}></div>
-            <div class="text-lg font-bold text-base-content">{Bonfire.Common.Config.get([:ui, :theme, :instance_name], '')}</div>
-          </LiveRedirect>
-          <!-- IF CURRENT USER -->
           {#if current_user(assigns)}
-            <div class="items-center hidden w-full space-x-1 lg:flex">
-              <Bonfire.UI.Common.UserMenuLive  current_user={current_user(assigns)} />
-            </div>
-            <div 
-              :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}
-              data-id="smart_input">
-              <Bonfire.UI.Common.SmartInputLive
-                id={:smart_input} 
-                current_user={current_user(assigns)}
-                showing_within={e(assigns, :showing_within, nil)}
-                reply_to_id={e(assigns, :reply_to_id, "")}
-                thread_id={@thread_id}
-                create_activity_type={e(assigns, :create_activity_type, nil)}
-                to_circles={e(assigns, :to_circles, [])}
-                smart_input_prompt={@smart_input_prompt}
-                smart_input_text={@smart_input_text}
-              />
-            </div>
+            <Bonfire.UI.Common.LogoLive />
+            <Bonfire.UI.Common.UserMenuLive  current_user={current_user(assigns)} />
+            <Bonfire.UI.Common.SmartInputLive
+              :if={e(assigns, :thread_mode, nil) != :flat}
+              id={:smart_input} 
+              hide_smart_input={e(assigns, :hide_smart_input, nil)}
+              current_user={current_user(assigns)}
+              showing_within={e(assigns, :showing_within, nil)}
+              reply_to_id={e(assigns, :reply_to_id, "")}
+              thread_id={@thread_id}
+              create_activity_type={e(assigns, :create_activity_type, nil)}
+              thread_mode={e(assigns, :thread_mode, nil)}
+              to_circles={e(assigns, :to_circles, [])}
+              smart_input_prompt={@smart_input_prompt}
+              smart_input_text={@smart_input_text}
+            />
 
-            {#if is_list(@sidebar_widgets[:users][:main])}
-              <Surface.Components.Dynamic.Component
-                :for={{component, component_assigns} <- @sidebar_widgets[:users][:main]}
-                module={component}
-                current_user={current_user(assigns)}
-                {...component_assigns}
-              />
-            {/if}
-
+            <div class="hidden tablet-lg:flex">
+              {#if is_list(@sidebar_widgets[:users][:main])}
+                <Surface.Components.Dynamic.Component
+                  :for={{component, component_assigns} <- @sidebar_widgets[:users][:main]}
+                  module={component}
+                  current_user={current_user(assigns)}
+                  {...component_assigns}
+                />
+              {/if}
+            </div>
           {#else}
           <!-- GUESTS -->
             <Surface.Components.Dynamic.Component
@@ -60,19 +52,22 @@
               {...component_assigns}
             />
           {/if}
+
         </div>
       </div>
     </div>
   </nav>
-
-
-  <div class="fixed bottom-0 z-40 left-3 right-3 bottom-3 tablet-lg:hidden">
-    <button 
-      @click="show_smart_input = true"
-      type="button" 
-      class="flex items-center w-full py-4 rounded-lg text-base-300 place-content-center bg-slate-100">
-      <Solid.PencilIcon class="w-5 h-5 mr-2" />
-      <span>Type a message</span>
-    </button>
-  </div>
+   <div class="fixed bottom-0 z-[70] right-3 bottom-3 tablet-lg:hidden">
+      <button 
+        @click="show_smart_input = true"
+        type="button" 
+        class="items-center btn btn-circle btn-primary btn-lg place-content-center ">
+        <Solid.PencilAltIcon class="w-6 h-6" />
+      </button>
+    </div>
 </div>
+
+
+
+
+  </div>

@@ -19,11 +19,12 @@
         smart_input_prompt={@smart_input_prompt}
         smart_input_text={@smart_input_text}
         sidebar_widgets={@sidebar_widgets}
+        thread_mode={e(assigns, :thread_mode, nil)}
         hide_smart_input={e(assigns, :hide_smart_input, false)}
       />
       <div 
         class={
-          "flex-grow w-full flex flex-col h-main mx-auto rounded-t-md shrink-0 mx-3 w-center",
+          "flex-grow w-full flex flex-col h-main mx-0 rounded-t-md shrink-0 w-center",
           "max-w-[600px]": e(assigns, :without_sidebar, nil) != true
           }>
         <Bonfire.UI.Common.HeaderUserLive 
@@ -37,11 +38,11 @@
       </div>
       <div
         :if={e(assigns, :without_sidebar, nil) != true}
-        class="w-[285px] justify-start hidden  h-full tablet:flex">
+        class="w-[285px] ml-3 justify-start hidden  h-full tablet:flex">
         <div class="w-full">
           <div 
             :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(assigns)}
-            class="fixed w-[285px] z-50 w-full mb-3 top-3 background-invisible before:bottom-[-8px]">
+            class="fixed w-[285px] z-[70] w-full mb-3 top-3 background-invisible before:bottom-[-8px]">
             <Surface.Components.Dynamic.Component
               
               module={Bonfire.Search.Web.FormLive}

@@ -44,7 +44,14 @@
         </div>
 
       </div>
-
+        <button
+          :class="show_smart_input ? 'block' : 'hidden'" 
+          @click="show_smart_input = false"
+          type="button" 
+          class="capitalize btn-sm justify-self-end btn btn-error">
+        <!-- {if e(assigns, :create_activity_type, nil) == :message, do: l "Message", else: l "Post"} -->
+        {l "cancel"}
+      </button>
       <button type="submit" class="capitalize btn-sm justify-self-end btn btn-primary">
         <!-- {if e(assigns, :create_activity_type, nil) == :message, do: l "Message", else: l "Post"} -->
         {l "Post"}
