@@ -27,7 +27,7 @@
       x-cloak
       x-show="distraction_free" 
       @click="distraction_free = !distraction_free"
-      class="cursor-pointer bg-white/30 fixed z-[60] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"></div>
+      class="cursor-pointer bg-white/30 fixed z-[10] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"></div>
     <div 
       :class="{
           'fixed z-[70] max-w-[720px] top-3 bottom-[20px] w-full -translate-x-1/2 left-1/2': distraction_free

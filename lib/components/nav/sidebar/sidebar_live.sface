@@ -9,8 +9,8 @@
     class="flex-col justify-end mt-0 mr-3 tablet-lg:flex hidden tablet-lg:w-[285px]"
   >
     <div 
-      :class="show_smart_input ? 'bg-base-300 left-0 right-0 bottom-0 !z-[70]' : ''"
-      class="overflow-x-hidden overflow-y-auto h-main fixed z-[70] top-3 tablet-lg:w-[285px]">
+      :class="show_smart_input ? 'bg-base-300 left-0 right-0 bottom-0 !z-[90]' : ''"
+      class="overflow-x-hidden overflow-y-auto h-main fixed z-[90] top-3 tablet-lg:w-[285px]">
       <div class="w-full h-full">    
         <div class="flex flex-col space-y-4">
           {#if current_user(assigns)}

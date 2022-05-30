@@ -1,6 +1,6 @@
 <div
   class={
-    "fixed w-[600px] z-[90] w-full top-3 background-invisible",
+    "fixed w-[600px] z-[80] w-full top-3 background-invisible",
     "-translate-x-1/2 left-1/2": !current_user(assigns)
   }>
   {#if current_user(assigns)}
