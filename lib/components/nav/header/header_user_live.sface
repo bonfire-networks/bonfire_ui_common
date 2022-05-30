@@ -1,6 +1,6 @@
 <div
   class={
-    "fixed w-[600px] z-[80] w-full top-3 background-invisible",
+    "fixed max-w-[600px] z-[80] px-3 tablet:px-0 w-full top-3 background-invisible",
     "-translate-x-1/2 left-1/2": !current_user(assigns)
   }>
   {#if current_user(assigns)}
@@ -28,7 +28,7 @@
               <span class="sr-only">{l "Notifications"}</span>
           </LiveRedirect>
         </div>
-        <div class="relative z-50 flex tooltip tooltip-bottom" data-tip={l "Messages"}>
+        <div class="relative z-50 flex hidden tablet-lg:flex tooltip tooltip-bottom" data-tip={l "Messages"}>
           <LiveRedirect to={path(Bonfire.Data.Social.Message)} class={"tab flex-1 hover:bg-base-content hover:bg-opacity-5 hover:rounded-lg text-base-content text-opacity-70", "tab-active text-opacity-60 relative lined": @page == "messages"}>
               <Solid.MailIcon class="w-5 h-5" />
               <span class="sr-only">{l "Messages"}</span>
@@ -55,12 +55,12 @@
         <!-- / MENU -->
 
         <!-- MOBILE MENU -->
-        <div class="relative z-50 tablet-lg:hidden tooltip tooltip-bottom" data-tip={l "Notifications"}>
+        <!-- <div class="relative z-50 tablet-lg:hidden tooltip tooltip-bottom" data-tip={l "Notifications"}>
           <LiveRedirect to={path(:notifications)} class={"tab flex-1 hover:bg-base-content hover:bg-opacity-5 hover:rounded-lg text-base-content text-opacity-70", "tab-active text-opacity-60 relative lined": @page == "notifications"}>
             <Solid.BellIcon class={"w-5 h-5"} />
             <span class="sr-only">{l "Notifications"}</span>
           </LiveRedirect>
-        </div>
+        </div> -->
 
         <div class="relative z-50 tablet:hidden tooltip tooltip-bottom" data-tip={l "Search"}>
           <LiveRedirect to={"/search"} class={"tab flex-1 hover:bg-base-content hover:bg-opacity-5 hover:rounded-lg text-base-content text-opacity-70"}>

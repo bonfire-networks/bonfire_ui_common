@@ -32,7 +32,7 @@
           page={@page}
           current_user={current_user(assigns)}  
         />
-        <div class="flex-1 mt-[72px]">
+        <div class="flex-1 mt-[72px] px-3 tablet:px-0">
           {@inner_content}
         </div>
       </div>
