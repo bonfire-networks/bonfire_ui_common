@@ -1,5 +1,6 @@
 {
   "version": "0.0.0",
+  "license": "AGPL-3.0",
   "dependencies": {
     "@yaireo/tagify": "^4.9.4",
     "theme-change": "^2.0.2"

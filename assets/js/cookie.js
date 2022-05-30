@@ -3,7 +3,7 @@ export const Cookie = (document => {
   return { set: set }
 
   function set(name, locale) {
-    document.cookie = `${name}=${locale}; expires=${expires()}`
+    document.cookie = `${name}=${locale}; path=/; expires=${expires()}`
   }
 
   function expires() {
