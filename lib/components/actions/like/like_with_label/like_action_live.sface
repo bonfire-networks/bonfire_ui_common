@@ -4,32 +4,33 @@
   data-tip={l "Favourite this post"}
   >
   <button
-    data-id="like_action"
+    :if={@object} 
     id={@id}
+    data-id="like_action"
     phx-click="Bonfire.Social.Likes:like"
-    phx-value-direction={"#{if e(@my_like, nil), do: "down", else: "up"}"}
+    phx-value-direction={"#{if @my_like, do: "down", else: "up"}"}
     phx-value-id={e(@object, :id, nil)}
     phx-value-component={__MODULE__}
     phx-value-current_count={e(@like_count, 0)}
     class={"btn btn-ghost btn-circle like like_with_label btn-sm"}> 
     <span 
-      class={"text-base-content text-opacity-50", "text-yellow-500 text-opacity-100": e(@my_like, nil)}>
+      class={"text-base-content text-opacity-50", "text-yellow-500 text-opacity-100": @my_like}>
       <Solid.StarIcon 
-        :if={e(@my_like, nil)}
+        :if={@my_like}
         class="w-5 h-5" />
       <Outline.StarIcon 
-        :if={!e(@my_like, nil)}
+        :if={!@my_like}
         class="w-4 h-4" />
     </span>
 
     <span 
-      :if={!e(@my_like, nil)}
+      :if={!@my_like}
       class="sr-only">
         {l "Like"}
         <span :if={(e(@like_count, 0)) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, assigns)}>{e(@like_count, 0)}</span>
     </span>
     <span 
-      :if={e(@my_like, nil)}
+      :if={@my_like}
       class="sr-only">
         {l "Liked"}
         <span :if={(e(@like_count, 0)) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, assigns)}>{e(@like_count, 0)}</span>
