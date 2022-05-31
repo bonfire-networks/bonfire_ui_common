@@ -1,5 +1,6 @@
 
   <div 
+    x-data="{show_smart_input: false}" 
     class="flex flex-col">
     <Bonfire.UI.Common.HeaderUserLive 
       :if={e(assigns, :without_sidebar, nil) && !current_user(assigns) }

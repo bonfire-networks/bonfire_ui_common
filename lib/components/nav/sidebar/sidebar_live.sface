@@ -1,5 +1,4 @@
 <div
-  x-data="{show_smart_input: false}" 
   x-on:resize.window="show_smart_input = (window.innerWidth > 1200) ? false : show_smart_input"
 >
 <div class="flex flex-col h-full ">
@@ -18,7 +17,7 @@
             <Bonfire.UI.Common.UserMenuLive  current_user={current_user(assigns)} />
             <Bonfire.UI.Common.SmartInputLive
               :if={e(assigns, :thread_mode, nil) != :flat}
-              id={:smart_input} 
+              id={:sidebar_smart_input} 
               hide_smart_input={e(assigns, :hide_smart_input, nil)}
               current_user={current_user(assigns)}
               showing_within={e(assigns, :showing_within, nil)}
