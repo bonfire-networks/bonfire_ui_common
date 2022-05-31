@@ -451,10 +451,14 @@ defmodule Bonfire.UI.Common do
 
   def maybe_consume_uploaded_entries(%Phoenix.LiveView.Socket{} = socket, key, fun) do
     Phoenix.LiveView.consume_uploaded_entries(socket, key, fun)
+  rescue
+    error in ArgumentError ->
+      error(error, "Could not upload")
+      []
   end
 
   def maybe_consume_uploaded_entries(_conn, key, _fun) do
-    error(key, "Upload not implemented without LiveView")
+    error(key, "Upload not currently implemented without LiveView")
     []
   end
 

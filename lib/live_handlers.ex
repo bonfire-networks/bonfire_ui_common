@@ -22,14 +22,14 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   def handle_event(action, attrs, socket, source_module \\ nil) do
     undead(socket, fn ->
-      debug("LiveHandler: handle_event #{action} via #{source_module || "delegation"}")
+      info("LiveHandler: handle_event #{action} via #{source_module || "delegation"}")
       do_handle_event(action, attrs, socket)
     end)
   end
 
   def handle_info(blob, socket, source_module \\ nil) do
     undead(socket, fn ->
-      debug("LiveHandler: handle_info via #{source_module || "delegation"}")
+      info("LiveHandler: handle_info via #{source_module || "delegation"}")
       do_handle_info(blob, socket)
     end)
   end
@@ -65,8 +65,8 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     mod_delegate(mod, :handle_info, [data], socket)
   end
 
-  defp do_handle_info(_, socket) do
-    warn("LiveHandler: could not find info handler")
+  defp do_handle_info(data, socket) do
+    warn(data, "LiveHandler: could not find info handler for")
     empty(socket)
   end
 

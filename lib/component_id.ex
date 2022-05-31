@@ -31,11 +31,10 @@ defmodule Bonfire.UI.Common.ComponentID do
   def send_assigns(component_module, id, set, socket) do
 
     Utils.maybe_to_atom(component_module)
-    |>
-    send_updates(id, set)
+    |> send_updates(id, set)
 
-    # {:noreply, Phoenix.LiveView.assign(socket, set)}
-    {:noreply, socket}
+    {:noreply, Phoenix.LiveView.assign(socket, set)}
+    # {:noreply, socket}
   end
 
 
