@@ -20,7 +20,7 @@
     }"
     class={
       "flex bg-transparent",
-      "bottom-0 !max-w-full": e(assigns, :thread_mode, nil) == :flat
+      "bottom-0 !max-w-full": e(assigns, :thread_mode, nil) == :flat or e(assigns, :showing_within, nil) == :messages
     }
     >
     <div 

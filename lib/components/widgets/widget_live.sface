@@ -1,7 +1,10 @@
 <aside 
-  class="relative w-full mx-auto rounded-md bg-base-100">
-  <div class="flex items-center p-3 pb-2 rounded-t-md bg-base-100" role="banner">
-    <div :if={@widget_title} class="flex-1 font-bold text-base-content">{@widget_title}</div> 
+  class={@class}>
+  <div 
+    :if={@widget_title} 
+    class="flex items-center p-3 pb-2 rounded-t-md bg-base-100" 
+    role="banner">
+    <div class="flex-1 font-bold text-base-content">{@widget_title}</div> 
     <#slot name="action" />
   </div>
   <#slot />

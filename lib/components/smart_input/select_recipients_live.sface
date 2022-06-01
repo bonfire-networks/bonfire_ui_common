@@ -12,7 +12,7 @@
         label={name} 
         value={id} 
       />
-      {Enum.map_join(e(assigns, :to_circles, []), " ; ", &elem(&1, 0))} 
+      <span class="px-3">{Enum.map_join(e(assigns, :to_circles, []), " ; ", &elem(&1, 0))}</span>
     {#else}
 
       <!-- <Bonfire.UI.Common.MultiselectLive.UserSelectorLive

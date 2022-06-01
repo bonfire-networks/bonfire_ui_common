@@ -6,9 +6,9 @@
   <LiveRedirect 
     :for={{item, route} <- Bonfire.Common.Config.get([:ui, :profile, :navigation], [timeline: "timeline"])}
     to={"/user/#{e(@user, :character, :username, "")}/#{route}"} 
-    class={"hover:bg-base-content hover:bg-opacity-10 flex-1 pt-2 font-normal place-content-center flex capitalize text-base"}
+    class={"hover:bg-base-content/10 group flex-1 pt-2 font-normal place-content-center flex capitalize text-base"}
   > 
-    <div class={"tab tab-bordered", "tab-active": @selected_tab == Atom.to_string(item)}>
+    <div class={"tab tab-bordered group-hover:text-opacity-100", "tab-active": @selected_tab == Atom.to_string(item)}>
       {item}
     </div>
   </LiveRedirect>
