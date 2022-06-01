@@ -79,13 +79,13 @@
                 <LivePatch to="/switch-user" class="flex items-center py-2 text-base font-medium rounded-md text-base-content">
                   <Solid.UsersIcon class="flex-shrink-0 w-6 h-6 mr-3 -ml-1 text-base-content text-opacity-80" />
                   <span class="truncate">
-                    {l "Switch User"}
+                    {l "Switch user profile"}
                   </span>
                 </LivePatch>
                 <LivePatch to={path(Bonfire.Data.Social.Message)} class="flex items-center py-2 text-base font-medium rounded-md text-base-content">
                   <Solid.MailIcon class="flex-shrink-0 w-6 h-6 mr-3 -ml-1 text-base-content text-opacity-80" />
                   <span class="truncate">
-                    {l "Direct Messages"}
+                    {l "Messages"}
                   </span>
                 </LivePatch>
                 <LivePatch to="/settings" class="flex items-center py-2 text-base font-medium rounded-md text-base-content">
@@ -97,7 +97,7 @@
                 <LivePatch to={"#{path(:home)}"} class="flex items-center py-2 text-base font-medium rounded-md text-base-content">
                   <Solid.HomeIcon class="flex-shrink-0 w-6 h-6 mr-3 -ml-1 text-base-content text-opacity-80" />
                   <span class="truncate">
-                    {l "Home"}
+                    {l "Homepage"}
                   </span>
                 </LivePatch>
               </nav>
