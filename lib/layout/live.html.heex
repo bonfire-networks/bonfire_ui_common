@@ -4,10 +4,11 @@
   <% info = live_flash(@flash, :info) %>
   <% error = live_flash(@flash, :error) %>
     <div id="flash-messages" class="fixed absolute z-[90] right-8 top-20">
-      <Bonfire.UI.Common.NotificationLive.render
-      id={"notification"} 
-      notification={e(assigns, :notification, nil)}
-      myself={nil}
+      <.live_component 
+        module={Bonfire.UI.Common.NotificationLive} 
+        id="notification" 
+        notification={e(assigns, :notification, nil)}
+        current_user={current_user(assigns)}
       />
       <%= if info do %>
         <div class="max-w-md alert alert-info fade-out" role="alert alert-warning"

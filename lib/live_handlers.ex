@@ -47,21 +47,21 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     end)
   end
 
-  defp do_handle_info({{mod, name}, data}, socket) do
-    debug("LiveHandler: do_handle_info with {{#{mod}, #{name}}, data}")
+  defp do_handle_info({{mod, name}, data}, socket) when is_atom(mod) do
+    debug("LiveHandler: do_handle_info with {{#{inspect mod}, #{inspect name}}, data}")
     mod_delegate(mod, :handle_info, [{name, data}], socket)
   end
 
   defp do_handle_info({info, data}, socket) when is_binary(info) do
-    debug("LiveHandler: do_handle_info with {#{info}, data}")
+    debug("LiveHandler: do_handle_info with {#{inspect info}, data}")
     case String.split(info, ":", parts: 2) do
       [mod, name] -> mod_delegate(mod, :handle_info, [{name, data}], socket)
       _ -> empty(socket)
     end
   end
 
-  defp do_handle_info({mod, data}, socket) do
-    debug("LiveHandler: do_handle_info with {#{mod}, data}")
+  defp do_handle_info({mod, data}, socket) when is_atom(mod) do
+    debug("LiveHandler: do_handle_info with {#{inspect mod}, data}")
     mod_delegate(mod, :handle_info, [data], socket)
   end
 

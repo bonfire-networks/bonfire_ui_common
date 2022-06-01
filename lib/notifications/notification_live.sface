@@ -2,7 +2,6 @@
   id="notification" 
   phx-hook="Notification" 
   role="alert" 
-  phx-click="lv:clear-flash"
 >
 <div class="alert alert-info fade-out" :if={@notification}>
   <h3>{e(@notification, :title, "Notification")}</h3>

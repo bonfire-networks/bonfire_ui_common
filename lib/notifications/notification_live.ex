@@ -1,20 +1,23 @@
 defmodule Bonfire.UI.Common.NotificationLive do
   use Bonfire.UI.Common.Web, :stateful_component
-  import Where
 
   prop notification, :any
 
-  def mount(socket) do
-    feed_id = Bonfire.Social.Feeds.my_feed_id(:notifications, socket)
+  def update(assigns, socket) do
+    feed_id = Bonfire.Social.Feeds.my_feed_id(:notifications, current_user(assigns))
 
     if feed_id do
-        pubsub_subscribe(feed_id, socket)
+      debug(feed_id, "subscribed to push notifications")
+      pubsub_subscribe(feed_id, socket)
     else
       debug("no feed_id, not subscribing to push notifications")
     end
 
-    {:ok, socket}
+    {:ok, socket
+          |> assign(assigns)
+    }
   end
+
 
   # defdelegate handle_params(params, attrs, socket), to: Bonfire.UI.Common.LiveHandlers
   # def handle_event(action, attrs, socket), do: Bonfire.UI.Common.LiveHandlers.handle_event(action, attrs, socket, __MODULE__)
