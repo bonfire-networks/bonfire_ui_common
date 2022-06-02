@@ -60,7 +60,9 @@
       </div>
     </div>
   </nav>
-   <div class="fixed bottom-0 z-[70] right-3 bottom-3 tablet-lg:hidden">
+   <div 
+      :if={current_user(assigns)}
+      class="fixed bottom-0 z-[90] right-3 bottom-16 tablet:bottom-3 tablet-lg:hidden">
       <button 
         @click="show_smart_input = true"
         type="button" 

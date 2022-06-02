@@ -5,9 +5,10 @@
     <Bonfire.UI.Common.HeaderUserLive 
       :if={e(assigns, :without_sidebar, nil) && !current_user(assigns) }
       page={@page}
+      without_sidebar={@without_sidebar}
       current_user={current_user(assigns)}  
     />
-    <div class="items-start justify-center w-full lg:max-w-screen-xl lg:mx-auto h-main md:flex ">
+    <div class="flex items-start justify-center w-full lg:max-w-screen-xl lg:mx-auto h-main ">
       <Bonfire.UI.Common.SidebarLive
         :if={e(assigns, :without_sidebar, nil) != true}
         current_user={current_user(assigns)}
@@ -31,9 +32,10 @@
         <Bonfire.UI.Common.HeaderUserLive 
           :if={e(assigns, :without_sidebar, nil) != true or current_user(assigns) }
           page={@page}
+          without_sidebar={@without_sidebar}
           current_user={current_user(assigns)}  
         />
-        <div class="flex-1 mt-[72px] px-3 tablet:px-0">
+        <div class="flex-1 mt-0 tablet:mt-[72px] px-3 tablet:px-0">
           {@inner_content}
         </div>
       </div>
@@ -53,7 +55,7 @@
           <div 
             class={
               "flex flex-col w-full space-y-3",
-              "mt-[72px]": current_user(assigns),
+              "mt-0 tablet:mt-[72px]": current_user(assigns),
               "mt-3": !current_user(assigns)
             }>
             <Surface.Components.Dynamic.Component
@@ -68,7 +70,9 @@
 
             <Surface.Components.Dynamic.Component
               :if={!current_user(assigns)}
-              :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || []}
+              :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || [
+                 {Bonfire.UI.Social.WidgetTagsLive , []}
+              ]}
               module={component}
               {...component_assigns}
             />

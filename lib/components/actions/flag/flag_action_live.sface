@@ -22,7 +22,7 @@
       <button 
         phx-click={"Bonfire.Social.Flags:flag"} 
         phx-value-id={e(@object, :id, "")}
-        class="btn btn-error">
+        class="btn btn-sm btn-error">
       {l "Flag"}
     </button>
     </:action_btns>
