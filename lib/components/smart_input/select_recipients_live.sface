@@ -23,7 +23,7 @@
       /> -->
 
       <div
-        class="w-full"
+        class="flex-1"
         id={:select_recipients}
         phx-hook="InputOrSelectOne"
         >

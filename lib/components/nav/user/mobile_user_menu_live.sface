@@ -1,5 +1,5 @@
 <div 
-  class="flex items-center tablet-lg:hidden place-content-center " 
+  class="flex items-center place-content-center " 
   x-data="{ open: false }" 
   @keydown.window.escape="open = false">
   <div
@@ -17,7 +17,7 @@
     aria-labelledby="slide-over-title" 
     x-ref="dialog" 
     aria-modal="true">
-      <div class="fixed inset-y-0 right-0 flex max-w-full">
+      <div class="fixed inset-y-0 left-0 flex max-w-full">
         <div 
           x-show="open" 
           style="display: none"
