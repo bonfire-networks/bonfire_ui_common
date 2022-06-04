@@ -40,6 +40,14 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     render_component(component, Utils.deep_merge([__context__: context], assigns))
   end
 
+  @doc """
+  Wait for the LiveView to receive any queued PubSub broadcasts
+  """
+  def live_pubsub_wait(live_view) do
+    # see https://elixirforum.com/t/testing-liveviews-that-rely-on-pubsub-for-updates/40938/5
+    _ = :sys.get_state(live_view.pid)
+  end
+
   def session_conn(conn \\ build_conn()), do: Plug.Test.init_test_session(conn, %{})
 
   def conn(), do: conn(session_conn(), [])
