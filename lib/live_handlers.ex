@@ -104,13 +104,21 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   defp mod_delegate(mod, fun, params, socket) do
     # debug("attempt delegating to #{inspect fun} in #{inspect mod}...")
-
-    case maybe_to_module("#{mod}.LiveHandler") || maybe_to_module(mod) do
+    fallback = maybe_to_module(mod)
+    case maybe_to_module("#{mod}.LiveHandler") || fallback do
       module when is_atom(module) ->
         info(params, "LiveHandler: delegating to #{inspect fun} in #{module} with params")
         # debug(module)
-        if module_enabled?(module), do: apply(module, fun, params ++ [socket]),
-        else: empty(socket)
+        if module_enabled?(module) do
+          apply(module, fun, params ++ [socket])
+        else
+          if module !=fallback and module_enabled?(fallback) do
+            apply(fallback, fun, params ++ [socket])
+          else
+            empty(socket)
+          end
+        end
+
       _ ->
         error(mod, "LiveHandler: could not find a LiveHandler for")
         empty(socket)

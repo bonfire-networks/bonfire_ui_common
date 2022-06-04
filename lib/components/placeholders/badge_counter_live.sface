@@ -1,6 +1,6 @@
 <span 
 id={"badge_counter_#{@id}"} 
-class={@class}>
+class={if @count !=0, do: @class}>
     <span :if={@count !=0}>
         {@count}
     </span> 
