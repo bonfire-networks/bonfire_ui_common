@@ -13,27 +13,29 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
   def update(assigns, socket) do
     # debug(assigns, "assigns")
 
-    case e(assigns, :id, nil) do
-      id when is_binary(id) ->
+    socket = assign(socket, assigns)
+    current_user = current_user(socket)
 
-        # TODO: fetch
-        unseen_count = Bonfire.Social.FeedActivities.unseen_count(id)
-        |> debug("unseen_count for #{id}")
+    case e(assigns, :id, nil) do
+      feed_name when not is_nil(feed_name) and not is_nil(current_user) ->
+
+        debug(feed_name, "show badge for")
+        feed_id = Bonfire.Social.Feeds.my_feed_id(feed_name, current_user)
+
+        unseen_count = Bonfire.Social.FeedActivities.unseen_count(feed_id, current_user: current_user)
+        |> debug("unseen_count for #{feed_name}")
 
         # subscribe to count updates
-        pubsub_subscribe("unseen_count:#{id}", socket)
+        pubsub_subscribe("unseen_count:#{feed_id}", socket)
 
         {:ok, socket
-          |> assign(assigns)
           |> assign(count: unseen_count)
         }
 
       _ ->
         error("No id, so could not fetch count or pub-subscribe to counter")
 
-        {:ok, socket
-          |> assign(assigns)
-        }
+        {:ok, socket}
     end
   end
 

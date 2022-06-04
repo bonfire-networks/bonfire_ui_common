@@ -26,7 +26,7 @@
         </div>
         <div class="relative z-50 flex tooltip tooltip-bottom" data-tip={l "Notifications"}>
           <LiveRedirect to={path(:notifications)} class={"indicator tab flex-1 hover:bg-base-content/5 hover:rounded-lg text-base-content/70", "tab-active text-opacity-60 relative lined": @page == "notifications"}>
-            <BadgeCounterLive id={Bonfire.Social.Feeds.my_feed_id(:notifications, current_user(assigns))} class="indicator-item badge badge-secondary"/> 
+            <BadgeCounterLive id={:notifications} class="indicator-item badge badge-secondary"/> 
               <button type="button">
                 <Solid.BellIcon class="w-5 h-5" />
                 <span class="sr-only">{l "Notifications"}</span>
@@ -35,7 +35,7 @@
         </div>
         <div class="relative z-50 flex tooltip tooltip-bottom" data-tip={l "Messages"}>
           <LiveRedirect to={path(Bonfire.Data.Social.Message)} class={"indicator tab flex-1 hover:bg-base-content/5 hover:rounded-lg text-base-content/70", "tab-active text-opacity-60 relative lined": @page == "messages"}>
-            <BadgeCounterLive id={Bonfire.Social.Feeds.my_feed_id(:inbox, current_user(assigns))} class="indicator-item badge badge-secondary"/>
+            <BadgeCounterLive id={:inbox} class="indicator-item badge badge-secondary"/>
               <button type="button">
                 <Solid.MailIcon class="w-5 h-5"/>
                 <span class="sr-only">{l "Messages"}</span>
