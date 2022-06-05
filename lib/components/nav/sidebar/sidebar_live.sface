@@ -62,6 +62,7 @@
   </nav>
    <div 
       :if={current_user(assigns)}
+      x-show="!show_smart_input"
       class="fixed bottom-0 z-[90] right-3 bottom-16 tablet:bottom-3 tablet-lg:hidden">
       <button 
         @click="show_smart_input = true"

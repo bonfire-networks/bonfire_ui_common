@@ -13,8 +13,17 @@
             <Outline.ChevronLeftIcon class="w-4 h-4 stroke-current" />
           </a>
 
-          <div class="block tablet:hidden">
-            <Bonfire.UI.Common.MobileUserMenuLive current_user={current_user(assigns)} /> 
+          <div class="flex tablet:hidden">
+            <div
+              @keydown.window.escape="open_drawer = false"
+              class="btn btn-ghost btn-circle btn-sm" 
+              @click="open_drawer = true">
+              <LazyImage
+                class="w-8 h-8 rounded-full bg-base-200"
+                src={avatar_url(current_user(assigns))}
+                alt="current user profile image"
+              />
+            </div>
           </div>
 
           <#slot>
