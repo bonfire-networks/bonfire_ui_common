@@ -48,7 +48,7 @@
           <!-- GUESTS -->
             <Surface.Components.Dynamic.Component
               :for={{component, component_assigns} <- @sidebar_widgets[:guests][:main] || [ 
-                {Bonfire.UI.Common.HomeBannerLive, []},
+                {Bonfire.UI.Common.WidgetInstanceInfoLive, []},
                 {Bonfire.UI.Social.WidgetTimelinesLive, []},
               ]}
               module={component}

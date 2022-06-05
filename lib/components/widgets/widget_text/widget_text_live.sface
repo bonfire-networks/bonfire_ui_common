@@ -1,4 +1,6 @@
-<Bonfire.UI.Common.WidgetLive class="relative w-full mx-auto rounded-b-md bg-base-100">   
+<Bonfire.UI.Common.WidgetLive 
+widget_title={@widget_title}
+class="relative w-full mx-auto rounded-b-md bg-base-100">   
   <div class="p-3 prose">
     {templated e(assigns, :text, "text goes here"), e(assigns, :info, nil)}
   </div>
