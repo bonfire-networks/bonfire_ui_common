@@ -1,25 +1,12 @@
 <div id="without-sidebar-live">
- <% info = live_flash(@flash, :info) %>
-  <% error = live_flash(@flash, :error) %>
-    <div id="flash-messages" class="absolute z-50 bg-base right-8 top-20 ">
-      <.live_component 
-        module={Bonfire.UI.Common.NotificationLive} 
-        id="notification" 
-        notification={e(assigns, :notification, nil)}
-        current_user={current_user(assigns)}
-      />
-      <%= if info do %>
-        <div class="alert alert-info " role="alert alert-warning"
-          phx-click="lv:clear-flash"
-          phx-value-key="info"><%= rich info %></div>
-      <% end %>
-      <%= if error do %>
-        <div class="alert alert-error prose" role="alert"
-          phx-click="lv:clear-flash"
-          phx-value-key="error"><%= rich error %></div>
-      <% end %>
-    </div> 
-    <Bonfire.UI.Common.WithoutSidebarLive.render
+  <.live_component 
+    module={Bonfire.UI.Common.NotificationLive} 
+    id="notification" 
+    notification={e(assigns, :notification, nil)}
+    current_user={current_user(assigns)}
+  />
+
+  <Bonfire.UI.Common.WithoutSidebarLive.render
     __context__={%{}}
     current_user={current_user(assigns)}
     current_account={current_account(assigns)}

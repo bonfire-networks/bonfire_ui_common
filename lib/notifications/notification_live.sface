@@ -1,10 +1,38 @@
-<div 
-  id="notification" 
-  phx-hook="Notification" 
-  role="alert" 
->
-<div class="alert alert-info fade-out" :if={@notification}>
-  <h3>{e(@notification, :title, "Notification")}</h3>
-  <p>{e(@notification, :message, "")}</p>
-</div>
-</div>
+<div id="flash-messages" class="fixed absolute z-[90] right-8 top-20">
+
+  <div 
+    id="notification" 
+    phx-hook="Notification" 
+    role="alert" 
+    >
+    <div class="alert alert-info fade-out" :if={@notification}>
+      <h3>{e(@notification, :title, "Notification")}</h3>
+      <p>{rich e(@notification, :message, "")}</p>
+    </div>
+  </div>
+
+  {#case e(assigns, :info, nil) || live_flash(@flash, :info)}
+    {#match nil}
+    {#match info}
+    <div class="max-w-md alert alert-info fade-out" 
+      role="alert alert-warning"
+      phx-click="clear-flash"
+      phx-target={@myself}
+      phx-value-key="info">
+        {rich info}
+    </div>
+  {/case}
+
+  {#case e(assigns, :error, nil) || live_flash(@flash, :error)}
+    {#match nil}
+    {#match error}
+    <div class="max-w-md alert alert-error" 
+      role="alert"
+      phx-click="clear-flash"
+      phx-target={@myself}
+      phx-value-key="error">
+        {rich error}
+    </div>
+  {/case}
+
+</div> 

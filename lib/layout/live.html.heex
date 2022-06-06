@@ -1,26 +1,12 @@
 <div 
   id="layout-live" 
 >
-  <% info = live_flash(@flash, :info) %>
-  <% error = live_flash(@flash, :error) %>
-    <div id="flash-messages" class="fixed absolute z-[90] right-8 top-20">
-      <.live_component 
-        module={Bonfire.UI.Common.NotificationLive} 
-        id="notification" 
-        notification={e(assigns, :notification, nil)}
-        current_user={current_user(assigns)}
-      />
-      <%= if info do %>
-        <div class="max-w-md alert alert-info fade-out" role="alert alert-warning"
-          phx-click="lv:clear-flash"
-          phx-value-key="info"><%= rich info %></div>
-      <% end %>
-      <%= if error do %>
-        <div class="max-w-md alert alert-error" role="alert"
-          phx-click="lv:clear-flash"
-          phx-value-key="error"><%= rich error %></div>
-      <% end %>
-    </div> 
+    <.live_component 
+      module={Bonfire.UI.Common.NotificationLive} 
+      id="notification" 
+      notification={e(assigns, :notification, nil)}
+      current_user={current_user(assigns)}
+    />
 
    <Bonfire.UI.Common.NavLive.render
     __context__={e(assigns, :__context__, %{})}
