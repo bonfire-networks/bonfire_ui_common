@@ -27,7 +27,7 @@
       x-cloak
       x-show="distraction_free" 
       @click="distraction_free = !distraction_free"
-      class="cursor-pointer bg-white/30 fixed z-[10] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"></div>
+      class="cursor-pointer bg-white/30 fixed z-[70] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"></div>
     <div 
       :class="{
           'fixed z-[70] max-w-[720px] top-3 bottom-[20px] w-full -translate-x-1/2 left-1/2': distraction_free
@@ -46,14 +46,18 @@
         </ul>
       </div>
 
-      <button 
-         @click="show_smart_input = false"
+      <div
+        x-cloak
         x-show="show_smart_input == true" 
-        class="flex items-center mb-3 space-x-3 text-base-100">
-        <Outline.ChevronLeftIcon class="w-5 h-5" />
-        <span>{l "Back"}</span>
-      </button>
-
+        class="flex items-center p-3 border-b rounded-t bg-base-100 border-base-content/10">
+        <div class="flex-1 font-bold text-base-content">{l "Create a post"}</div>
+        <button 
+          @click="show_smart_input = false"
+          class="btn btn-sm btn-circle btn-outline">
+          <Outline.XIcon class="w-5 h-5" />
+        </button>
+      </div>
+     
       <!-- show what we're replying to, if any -->
       <Surface.Components.Dynamic.LiveComponent
         module={Bonfire.UI.Social.ActivityLive}

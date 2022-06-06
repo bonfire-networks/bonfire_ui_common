@@ -8,7 +8,7 @@
     class="flex-col justify-end mt-0 mr-3 tablet-lg:flex hidden tablet-lg:w-[285px]"
   >
     <div 
-      :class="show_smart_input ? 'bg-base-300 left-0 right-0 bottom-0 !z-[90]' : ''"
+      :class="show_smart_input ? 'bg-slate-600/60 h-screen backdrop-blur-md left-0 right-0 bottom-0 !top-0 !z-[90]' : ''"
       class={
         "h-main fixed z-[90] top-3 tablet-lg:w-[285px]",
         "overflow-x-hidden overflow-y-auto": e(assigns, :hide_smart_input, nil)}>
@@ -61,7 +61,7 @@
     </div>
   </nav>
    <div 
-      :if={current_user(assigns)}
+      :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}
       x-show="!show_smart_input"
       class="fixed bottom-0 z-[90] right-3 bottom-16 tablet:bottom-3 tablet-lg:hidden">
       <button 

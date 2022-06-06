@@ -38,7 +38,10 @@
           without_sidebar={@without_sidebar}
           current_user={current_user(assigns)}  
         />
-        <div class="flex-1 mt-0 tablet:mt-[72px] px-0 overflow-y-auto overflow-x-hidden tablet:overflow-visible">
+        <div class={
+          "flex-1 mt-0 tablet:mt-[72px] px-0 overflow-y-auto overflow-x-hidden tablet:overflow-visible",
+          "mt-[64px]": current_user(assigns) == nil
+          }>
           {@inner_content}
         </div>
       </div>

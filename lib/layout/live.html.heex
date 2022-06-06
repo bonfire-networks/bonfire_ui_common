@@ -1,12 +1,7 @@
 <div 
   id="layout-live" 
 >
-    <.live_component 
-      module={Bonfire.UI.Common.NotificationLive} 
-      id="notification" 
-      notification={e(assigns, :notification, nil)}
-      current_user={current_user(assigns)}
-    />
+
 
    <Bonfire.UI.Common.NavLive.render
     __context__={e(assigns, :__context__, %{})}
@@ -31,4 +26,11 @@
 <.live_component 
   module={Bonfire.UI.Common.ReusableModalLive} 
   id="modal" 
+/>
+
+<.live_component 
+  module={Bonfire.UI.Common.NotificationLive} 
+  id="notification" 
+  notification={e(assigns, :notification, nil)}
+  current_user={current_user(assigns)}
 />

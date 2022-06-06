@@ -75,7 +75,8 @@
       </div>
     </div>
   {#else}
-    <div class="flex items-center flex-grow w-full px-3 py-2 mb-3 rounded-md bg-base-100 shrink-0">
+    <div 
+      class="flex items-center flex-grow w-full px-3 py-4 mb-3 tablet:py-2 tablet:rounded-md bg-base-100 shrink-0">
       <LiveRedirect 
         class="flex items-center flex-1 space-x-2"
         to={if current_user(assigns), do: path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Bonfire.Common.Config.get(:home_page, Bonfire.Web.HomeLive))}>

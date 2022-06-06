@@ -1,3 +1,112 @@
+<div 
+  aria-live="assertive" 
+  class="fixed inset-0 flex items-end px-4 py-6 z-[90] pointer-events-none sm:p-6 sm:items-start">
+  <div class="flex flex-col items-center w-full space-y-4 sm:items-end">
+    <div 
+      id="notification" 
+      phx-hook="Notification" 
+      :if={@notification}
+      class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto ring-1 ring-black ring-opacity-5">
+      <div class="p-4">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+              <Outline.CheckCircleIcon class="w-6 h-6 text-green-400" />
+          </div>
+          <div class="ml-3 w-0 flex-1 pt-0.5">
+            <p class="text-sm font-medium text-gray-900">{e(@notification, :title, "Notification")}</p>
+            <p class="mt-1 text-sm text-gray-500">{rich e(@notification, :message, "")}</p>
+          </div>
+          <div class="flex flex-shrink-0 ml-4">
+            <button type="button" class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              <span class="sr-only">{l "Close"}</span>
+              <Solid.XIcon class="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  {#case e(assigns, :info, nil) || live_flash(@flash, :info)}
+    {#match nil}
+    {#match info}
+    <div 
+     
+      class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto ring-1 ring-black ring-opacity-5">
+      <div class="p-4">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+            <Solid.SpeakerphoneIcon class="w-6 h-6 text-info" />
+          </div>
+          <div class="ml-3 w-0 flex-1 pt-0.5">
+            <p class="mt-1 text-sm text-gray-500">{rich info}</p>
+          </div>
+          <div class="flex flex-shrink-0 ml-4">
+            <button 
+               phx-click="clear-flash"
+              phx-target={@myself}
+              phx-value-key="info"
+              type="button" 
+              class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              <span class="sr-only">{l "Close"}</span>
+              <Solid.XIcon class="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- <div class="max-w-md alert alert-info fade-out" 
+      role="alert alert-warning"
+      phx-click="clear-flash"
+      phx-target={@myself}
+      phx-value-key="info">
+        {rich info}
+    </div> -->
+  {/case}
+
+  {#case e(assigns, :error, nil) || live_flash(@flash, :error)}
+    {#match nil}
+    {#match error}
+    <div 
+      phx-click="clear-flash"
+      phx-target={@myself}
+      phx-value-key="error"
+      class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto ring-1 ring-black ring-opacity-5">
+      <div class="p-4">
+        <div class="flex items-start">
+          <div class="flex-shrink-0">
+              <Outline.ExclamationIcon class="w-6 h-6 text-red-500" />
+          </div>
+          <div class="ml-3 w-0 flex-1 pt-0.5">
+            <p class="mt-1 text-sm text-gray-500">{rich error}</p>
+          </div>
+          <div class="flex flex-shrink-0 ml-4">
+            <button type="button" class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              <span class="sr-only">{l "Close"}</span>
+              <Solid.XIcon class="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="max-w-md alert alert-error" 
+      role="alert"
+      phx-click="clear-flash"
+      phx-target={@myself}
+      phx-value-key="error">
+        {rich error}
+    </div> -->
+  {/case}
+
+
+
+  </div>
+
+<!-- 
+
 <div id="flash-messages" class="fixed absolute z-[90] right-8 top-20">
 
   <div 
@@ -35,4 +144,5 @@
     </div>
   {/case}
 
-</div> 
+</div> -->
+</div>
