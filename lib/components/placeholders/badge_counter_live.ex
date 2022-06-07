@@ -10,6 +10,12 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
     |> assign(count: e(socket.assigns, :count, 0) + inc)}
   end
 
+  def update(assigns, %{assigns: %{loaded: true}} = socket) do
+    debug("count already loaded")
+    {:ok, socket
+    |> assign(assigns)}
+  end
+
   def update(assigns, socket) do
     # debug(assigns, "assigns")
 
@@ -29,7 +35,10 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
         pubsub_subscribe("unseen_count:#{feed_name}:#{feed_id}", socket)
 
         {:ok, socket
-          |> assign(count: unseen_count)
+          |> assign(
+            loaded: true,
+            count: unseen_count
+          )
         }
 
       _ ->
