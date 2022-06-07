@@ -440,10 +440,12 @@ defmodule Bonfire.UI.Common do
   end
 
   def assign_flash(%Phoenix.LiveView.Socket{} = socket, type, message) do
+    info(message, type)
     Bonfire.UI.Common.Notifications.receive_notification(Map.put(%{}, type, message))
     Phoenix.LiveView.put_flash(socket, type, message)
   end
   def assign_flash(%Plug.Conn{} = conn, type, message) do
+    info(message, type)
     conn
     |> Plug.Conn.fetch_session()
     |> Phoenix.Controller.fetch_flash()

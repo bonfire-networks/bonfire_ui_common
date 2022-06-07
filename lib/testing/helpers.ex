@@ -3,6 +3,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   import Plug.Conn
   import Phoenix.ConnTest
   import Phoenix.LiveViewTest
+  import Where
   alias Bonfire.Common.Utils
   alias Bonfire.Me.Users
   alias Bonfire.Data.Identity.Account
@@ -69,8 +70,10 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   def conn(conn, {:user, user_id}) when is_binary(user_id),
     do: put_session(conn, :user_id, user_id)
 
-  def find_flash(doc) do
-    messages = Floki.find(doc, "#flash-messages .alert")
+  def find_flash(view_or_doc) do
+    messages = Floki.find(view_or_doc, "#flash-notifications .flash")
+    # messages = Floki.find(doc, "data-id=\"flash-notifications\" data-role=\"alert\"")
+    |> info()
     case messages do
       [_, _ | _] -> throw :too_many_flashes
       short -> short
@@ -83,15 +86,15 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   end
 
   def assert_flash_kind(flash, :error) do
-    classes = floki_attr(flash, :class)
-    assert "alert" in classes
-    assert "alert-error" in classes
+    id = floki_attr(flash, "data-id")
+    # assert "alert" in classes
+    assert "error" =~ id
   end
 
   def assert_flash_kind(flash, :info) do
-    classes = floki_attr(flash, :class)
-    assert "alert" in classes
-    assert "alert-info" in classes
+    id = floki_attr(flash, "data-id")
+    # assert "alert" in classes
+    assert "info" =~ id
   end
 
   def assert_flash_message(flash, %Regex{}=r),
