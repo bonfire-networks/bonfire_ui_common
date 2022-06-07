@@ -34,7 +34,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
       |> clear_flash(key)
       |> assign(key, nil)
     }
-    |> debug
+    # |> debug
   end
 
   def handle_event(action, attrs, socket), do: Bonfire.UI.Common.LiveHandlers.handle_event(action, attrs, socket, __MODULE__)
