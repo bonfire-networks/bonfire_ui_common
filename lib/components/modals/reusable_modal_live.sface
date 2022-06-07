@@ -5,10 +5,10 @@
   <form {...e(assigns, :form_opts, [])}>
     <div
       :on-click="close"
-      class="fixed inset-0 transition-opacity bg-base-100 bg-opacity-20" 
+      class="fixed inset-0 transition-opacity bg-slate-600/60 backdrop-blur-md" 
       aria-hidden="true">
     </div>
-    <div class="relative border-4 modal-box border-base-content border-opacity-20 max-w-[420px] min-w-[320px] w-full">
+    <div class="relative border-4 modal-box border-base-content border-opacity-20 max-w-[600px] min-w-[320px] w-full">
 
       <h3 class={e(assigns, :title_class, nil)} id={"#{@id}-title"}>
         <#slot name="title">{e(assigns, :title_text, nil)}</#slot>

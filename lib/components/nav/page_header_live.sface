@@ -1,5 +1,5 @@
 <!-- <div class="relative"> -->
-  <div role="banner" class="backdrop-blur-md tablet-lg:backdrop-blur-none w-full sticky top-0 tablet:top-[72px] z-40 border-b bg-base-200 bg-opacity-50 tablet:bg-opacity-100 border-base-content/10 tablet:rounded-t-md">  
+  <div role="banner" class="backdrop-blur-md tablet-lg:backdrop-blur-none w-full sticky top-0 tablet:top-[72px] z-[60] border-b bg-base-200 bg-opacity-50 tablet:bg-opacity-100 border-base-content/10 tablet:rounded-t-md">  
     <div class="relative">
       <div class="flex items-center p-3">
         <div class="flex items-center flex-1 text-left">

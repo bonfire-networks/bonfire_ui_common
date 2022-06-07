@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
     "w-6 h-6"
   end
   def classes(_) do
-    "w-8 h-8"
+    "w-10 h-10"
   end
 
 end
