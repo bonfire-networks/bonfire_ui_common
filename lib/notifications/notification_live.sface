@@ -87,6 +87,20 @@
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
             <p data-id="content" class="mt-1 text-sm text-gray-500">{rich error}</p>
+
+            {#case not module_enabled?(Sentry) || Sentry.get_last_event_id_and_source()}
+              {#match {event_id, source} when is_binary(event_id)}
+                  <script
+                    src="https://browser.sentry-cdn.com/7.0.0/bundle.min.js"
+                    integrity="sha384-Kc6uzuQrNbSFm9z6sChm6mccIO2d1VB6s6Tc+bqIzPHbPeMldDCGFbayQRXCIa6T"
+                    crossorigin="anonymous"
+                  ></script>                
+                  <script>
+                  Sentry.init({ dsn: '{Sentry.Config.dsn()}' });
+                  Sentry.showReportDialog({raw %{eventId: event_id} |> Jason.encode!() })
+                </script>
+              {#match _}
+            {/case}
           </div>
           <div class="flex flex-shrink-0 ml-4">
             <button 

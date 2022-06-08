@@ -413,6 +413,10 @@ defmodule Bonfire.UI.Common do
       |> redirect_to()}
   end
 
+  def assign_error(socket)  do
+    Sentry.get_last_event_id_and_source() # TODO
+  end
+
   def redirect_to(socket_or_conn, to \\ nil, opts \\ [])
   def redirect_to(%Phoenix.LiveView.Socket{} = socket, to, opts) do
     Phoenix.LiveView.push_redirect(socket, [to: to || path_fallback(opts)] ++ opts)
