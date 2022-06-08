@@ -17,7 +17,7 @@
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
             <p class="text-sm font-medium text-gray-900">{e(@notification, :title, "Notification")}</p>
-            <p data-id="content" class="mt-1 text-sm text-gray-500">{rich e(@notification, :message, "")}</p>
+            <p data-id="content" class="text-sm text-gray-500">{rich e(@notification, :message, "")}</p>
           </div>
           <div class="flex flex-shrink-0 ml-4">
             <button 
@@ -47,7 +47,7 @@
             <Outline.SpeakerphoneIcon class="w-5 h-5 text-gray-600" />
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
-            <p data-id="content" class="mt-1 text-sm text-gray-500">{rich info}</p>
+            <p data-id="content" class="text-sm text-gray-500">{rich info}</p>
           </div>
           <div class="flex flex-shrink-0 ml-4">
             <button 
@@ -81,12 +81,12 @@
       data-role="alert"
       class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash ring-1 ring-black ring-opacity-5">
       <div class="p-4">
-        <div class="flex items-start">
+        <div class="flex items-center">
           <div class="flex-shrink-0">
               <Outline.ExclamationIcon class="w-6 h-6 text-red-500" />
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
-            <p data-id="content" class="mt-1 text-sm text-gray-500">{rich error}</p>
+            <p data-id="content" class="text-sm text-gray-500">{rich error}</p>
 
             {#case not module_enabled?(Sentry) || Sentry.get_last_event_id_and_source()}
               {#match {event_id, source} when is_binary(event_id)}

@@ -34,7 +34,7 @@
               </button>
           </LiveRedirect>
         </div>
-        <div class="relative z-50 flex tablet:tooltip tooltip-bottom" data-tip={l "Messages"}>
+        <div class="relative z-50 flex tooltip tooltip-bottom" data-tip={l "Messages"}>
           <LiveRedirect to={path(Bonfire.Data.Social.Message)} class={"indicator tab flex-1 hover:bg-base-content/5 hover:rounded-lg text-base-content/70", "tab-active text-opacity-60 relative lined": @page == "messages"}>
             <BadgeCounterLive id={:inbox} class="indicator-item badge badge-secondary"/>
               <button type="button">
