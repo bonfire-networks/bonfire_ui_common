@@ -88,8 +88,8 @@
           <div class="ml-3 w-0 flex-1 pt-0.5">
             <p data-id="content" class="text-sm text-gray-500">{rich error}</p>
 
-            {#case not module_enabled?(Sentry) || Sentry.get_last_event_id_and_source()}
-              {#match {event_id, source} when is_binary(event_id)}
+            {#case not module_enabled?(Sentry) || e(assigns, :error_sentry_event_id, nil) || maybe_last_sentry_event_id()}
+              {#match event_id when is_binary(event_id)}
                   <script
                     src="https://browser.sentry-cdn.com/7.0.0/bundle.min.js"
                     integrity="sha384-Kc6uzuQrNbSFm9z6sChm6mccIO2d1VB6s6Tc+bqIzPHbPeMldDCGFbayQRXCIa6T"

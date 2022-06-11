@@ -4,6 +4,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
   prop notification, :any, default: nil
   prop error, :any, default: nil
   prop info, :any, default: nil
+  prop error_sentry_event_id, :any, default: nil
 
   def update(assigns, %{assigns: %{subscribed: true}} = socket) do
     {:ok, socket

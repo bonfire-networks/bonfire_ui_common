@@ -390,31 +390,53 @@ defmodule Bonfire.UI.Common do
 
   defp live_exception(socket, {:mount, return_key}, msg, exception, stacktrace, kind) do
     with {:error, msg} <- debug_exception(msg, exception, stacktrace, kind) do
-      {return_key, assign_flash(socket, :error, error_msg(msg))
-      |> redirect_to()}
+      {return_key, socket
+      |> assign_error(msg)
+      |> redirect_to()
+      }
     end
   end
 
   defp live_exception(%{assigns: %{__context__: %{current_url: current_url}}} = socket, return_key, msg, exception, stacktrace, kind) when is_binary(current_url) do
     with {:error, msg} <- debug_exception(msg, exception, stacktrace, kind) do
-      {return_key, assign_flash(socket, :error, error_msg(msg))
-      |> patch_to(current_url)}
+      {return_key, socket
+      |> assign_error(msg)
+      # |> patch_to(current_url)
+      }
     end
   end
 
   defp live_exception(socket, return_key, msg, exception, stacktrace, kind) do
     with {:error, msg} <- debug_exception(msg, exception, stacktrace, kind) do
-      {return_key, assign_flash(socket, :error, error_msg(msg))
-      |> patch_to(current_url(socket) || path(e(socket, :view, :error)))}
+      {return_key, socket
+      |> assign_error(msg)
+      # |> patch_to(current_url(socket) || path(e(socket, :view, :error)))
+      }
     end
   rescue
-    FunctionClauseError -> # for cases where the live_path may need param(s) which we don't know about
-      {return_key, assign_flash(socket, :error, error_msg(msg))
-      |> redirect_to()}
+    FunctionClauseError -> # FIXME: handle cases where the live_path requires param(s)
+      {return_key, socket
+      |> assign_error(msg)
+      |> redirect_to()
+      }
   end
 
-  def assign_error(socket)  do
-    Sentry.get_last_event_id_and_source() # TODO
+  def assign_error(socket, msg)  do
+    assigns = %{error_sentry_event_id: maybe_last_sentry_event_id()}
+
+    socket
+      |> Phoenix.LiveView.assign(assigns)
+      |> assign_flash(:error, error_msg(msg), assigns)
+  end
+
+  def maybe_last_sentry_event_id() do
+    if module_enabled?(Sentry) do
+      with {id, _source} when is_binary(id) <- Sentry.get_last_event_id_and_source() do
+        id
+      else _ ->
+        nil
+      end
+    end
   end
 
   def redirect_to(socket_or_conn, to \\ nil, opts \\ [])
@@ -443,13 +465,15 @@ defmodule Bonfire.UI.Common do
     opts[:fallback] || path(:error) || "/error"
   end
 
-  def assign_flash(%Phoenix.LiveView.Socket{} = socket, type, message) do
+  def assign_flash(socket_or_conn, type, message, assigns \\ %{})
+  def assign_flash(%Phoenix.LiveView.Socket{} = socket, type, message, assigns) do
     info(message, type)
-    Bonfire.UI.Common.Notifications.receive_notification(Map.put(%{}, type, message))
+    Bonfire.UI.Common.Notifications.receive_notification(Map.put(assigns, type, message))
     Phoenix.LiveView.put_flash(socket, type, message)
   end
-  def assign_flash(%Plug.Conn{} = conn, type, message) do
+  def assign_flash(%Plug.Conn{} = conn, type, message, assigns) do
     info(message, type)
+    # TODO: use assigns too
     conn
     |> Plug.Conn.fetch_session()
     |> Phoenix.Controller.fetch_flash()
