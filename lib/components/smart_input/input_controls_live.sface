@@ -4,11 +4,10 @@
 
 <div class="">
   <Surface.Components.Dynamic.Component
-    :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesLive) and e(assigns, :thread_mode, nil) != :flat  }
+    :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesLive)}
     module={Bonfire.Boundaries.Web.BoundariesLive}
     to_circles={e(assigns, :to_circles, [])}
     />
-
 
     <div class="flex items-center justify-between p-2 space-x-2 border-t rounded-b-md border-slate-300 bg-slate-200 sm:px-3">
       <div class="flex items-center flex-1 space-x-1">
