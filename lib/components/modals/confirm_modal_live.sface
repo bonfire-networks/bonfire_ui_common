@@ -3,7 +3,7 @@
   class="fixed inset-0 z-50 hidden overflow-y-auto" 
   aria-labelledby="modal-title" aria-modal="true">
   <div 
-    class="flex items-end justify-center min-h-main px-4 pt-4 pb-20 text-center sm:block sm:p-0">   
+    class="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">   
     <div
       phx-click={JS.hide(to: "#confirm_modal-#{@object_id}", transition: "fade-out-scale")}
       class="fixed inset-0 transition-opacity bg-base-100 bg-opacity-60" 

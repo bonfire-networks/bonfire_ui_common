@@ -84,4 +84,4 @@
 </div>
 <div 
   :if={e(assigns, :thread_mode, nil) == :flat}
-  class="w-[600px] -translate-x-1/2 left-1/2 fixed h-6 bg-base-300 z-[60] bottom-0"></div>
+  class="hidden tablet:block w-[600px] -translate-x-1/2 left-1/2 fixed h-6 bg-base-300 z-[60] bottom-0"></div>

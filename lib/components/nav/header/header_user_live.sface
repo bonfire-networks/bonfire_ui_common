@@ -1,6 +1,6 @@
 <div
   class={
-    "fixed max-w-[600px] z-[80] tablet:px-0 w-full bottom-0 tablet:bottom-auto tablet:top-3 background-invisible",
+    "fixed max-w-[600px] z-[100] tablet:px-0 w-full bottom-0 tablet:bottom-auto tablet:top-3 background-invisible",
     "-translate-x-1/2 left-1/2": !current_user(assigns) and e(assigns, :without_sidebar, nil) == true, 
     "!top-0 tablet:!top-3 !bottom-auto before:relative": !current_user(assigns)
   }>
