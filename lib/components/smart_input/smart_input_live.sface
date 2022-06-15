@@ -15,8 +15,8 @@
     :class="{
       'smart-input-open': title_open,
       'smart-input-open-boundaries': open_boundaries,
-      'not-distraction-free max-w-[285px] break-words': ! distraction_free,
-      'mt-12 w-full mx-auto !max-w-[600px] tablet:!max-w-[910px] px-3 tablet:pr-0': show_smart_input
+      'not-distraction-free break-words': ! distraction_free,
+      'w-full mx-auto !max-w-[600px] tablet:!max-w-[910px] px-3 tablet:pr-0': show_mobile_composer
     }"
     class={
       "flex bg-transparent",
@@ -48,30 +48,34 @@
 
       <div
         x-cloak
-        x-show="show_smart_input == true" 
+        x-show="show_mobile_composer == true" 
         class="flex items-center p-3 border-b rounded-t bg-base-100 border-base-content/10">
         <div class="flex-1 font-bold text-base-content">{l "Create a post"}</div>
         <button 
-          @click="show_smart_input = false"
+          @click="show_mobile_composer = false"
           class="btn btn-sm btn-circle btn-outline">
           <Outline.XIcon class="w-5 h-5" />
         </button>
       </div>
      
-      <!-- show what we're replying to, if any -->
-      <Surface.Components.Dynamic.LiveComponent
-        module={Bonfire.UI.Social.ActivityLive}
-        :if={@activity}
-        id={"cap:" <> e(assigns, :activity, :id, "")}
-        activity={@activity}
-        object={@object}
-        thread_mode={:nested}
-        class={@replied_activity_class}
-        showing_within={:smart_input}
-        activity_inception={e(assigns, :activity_inception, nil)}
-        object_boundary={:skip}
-      />
-    
+     <div 
+      :if={@activity}
+      :class="show_mobile_composer ? 'bg-base-100 !rounded-none mb-0 border-b border-base-content/10' : ''"
+      class="overflow-y-auto h-full max-h-[300px] mb-2 rounded-md">
+        <!-- show what we're replying to, if any -->
+        <Surface.Components.Dynamic.LiveComponent
+          module={Bonfire.UI.Social.ActivityLive}
+         
+          id={"cap:" <> e(assigns, :activity, :id, "")}
+          activity={@activity}
+          object={@object}
+          thread_mode={:nested}
+          class={@replied_activity_class}
+          showing_within={:smart_input}
+          activity_inception={e(assigns, :activity_inception, nil)}
+          object_boundary={:skip}
+        />
+      </div>
       <Surface.Components.Dynamic.Component
           module={active_smart_input_component(assigns)}
           {...assigns}
@@ -82,6 +86,3 @@
    
   </div>
 </div>
-<div 
-  :if={e(assigns, :thread_mode, nil) == :flat}
-  class="hidden tablet:block w-[600px] -translate-x-1/2 left-1/2 fixed h-6 bg-base-300 z-[60] bottom-0"></div>

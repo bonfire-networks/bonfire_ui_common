@@ -7,6 +7,7 @@
     :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesLive)}
     module={Bonfire.Boundaries.Web.BoundariesLive}
     to_circles={e(assigns, :to_circles, [])}
+    thread_mode={e(assigns, :thread_mode, nil)}
     />
 
     <div class="flex items-center justify-between p-2 space-x-2 border-t rounded-b-md border-slate-300 bg-slate-200 sm:px-3">
@@ -14,11 +15,16 @@
         <Bonfire.UI.Common.UploadButtonLive
           :if={module_enabled?(Bonfire.Files)}
           uploads={e(assigns, :uploads, nil)}
+          thread_mode={e(assigns, :thread_mode, nil)}
         />
 
         <div 
           data-tip={l "Add a content warning" }
-          class="relative z-20 flex items-center tooltip tooltip-bottom">
+          class={
+            "relative z-20 flex items-center tooltip",
+            "tooltip-top": e(assigns, :thread_mode, nil) == :flat,
+            "tooltip-bottom": e(assigns, :thread_mode, nil) != :flat
+          }>
           <button
             :if={Bonfire.Common.Config.get([:ui, :smart_input, :cw], []) == true}
             type="button"
@@ -32,7 +38,11 @@
         
         <div 
           data-tip={l "Full-screen mode" }
-          class="relative z-20 flex items-center tooltip tooltip-bottom">
+          class={
+            "relative z-20 flex items-center tooltip",
+            "tooltip-top": e(assigns, :thread_mode, nil) == :flat,
+            "tooltip-bottom": e(assigns, :thread_mode, nil) != :flat
+          }>
             <button 
               type="button"
               @click="distraction_free = !distraction_free"

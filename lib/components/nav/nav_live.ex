@@ -2,6 +2,9 @@ defmodule Bonfire.UI.Common.NavLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
   prop page, :any
+  prop page_title, :string
+  prop page_header_aside, :any
+  prop page_header_drawer, :boolean
   prop inner_content, :any
   # need to pass down props for SmartInput:
   prop reply_to_id, :string, default: ""

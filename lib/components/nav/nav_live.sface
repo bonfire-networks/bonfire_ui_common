@@ -1,91 +1,98 @@
-
+<div 
+  x-data="{
+    show_mobile_composer: false, 
+    open_sidebar_drawer: false,
+    open_drawer: false
+  }"
+  :class="show_mobile_composer ? '!grid-cols-1 !place-content-start' : ''"
+  class={"h-screen max-w-screen-xl mx-auto px-3 justify-center place-content-center grid-cols-1 tablet:grid-cols-[minmax(580px,_1fr)_290px] tablet-lg:grid-cols-[repeat(auto-fill,_280px)] grid gap-3 overflow-hidden bonfire_layout"}>
+  <Bonfire.UI.Common.SidebarLive
+    current_user={current_user(assigns)}
+    page={@page}
+    reply_to_id={@reply_to_id}
+    thread_id={@thread_id}
+    showing_within={e(assigns, :showing_within, nil)}
+    create_activity_type={e(assigns, :create_activity_type, nil)}
+    to_circles={e(assigns, :to_circles, [])}
+    smart_input_prompt={@smart_input_prompt}
+    smart_input_text={@smart_input_text}
+    sidebar_widgets={@sidebar_widgets}
+    thread_mode={e(assigns, :thread_mode, nil)}
+    hide_smart_input={e(assigns, :hide_smart_input, false)}
+  />
   <div 
-    x-data="{
-      show_smart_input: false, 
-      open_drawer: false
-    }" 
-    class="flex flex-col">
+    :class="show_mobile_composer ? '!hidden' : ''"
+    class="my-3 w-full tablet:col-span-1  tablet-lg:col-span-2 grid grid-rows-[48px_1fr] gap-3">
     <Bonfire.UI.Common.HeaderUserLive 
-      :if={e(assigns, :without_sidebar, nil) && !current_user(assigns) }
       page={@page}
       without_sidebar={@without_sidebar}
       current_user={current_user(assigns)}  
     />
-    <div class="flex items-start justify-center w-full h-screen lg:max-w-screen-xl lg:mx-auto ">
-      <Bonfire.UI.Common.SidebarLive
-        :if={e(assigns, :without_sidebar, nil) != true}
+    <div class="grid grid-rows-[60px_1fr]">
+      <Bonfire.UI.Common.PageHeaderLive
+        page_title={e(assigns, :page_title, nil)}
+        page_header_drawer={e(assigns, :page_header_drawer, false)}
         current_user={current_user(assigns)}
-        page={@page}
-        reply_to_id={@reply_to_id}
-        thread_id={@thread_id}
-        showing_within={e(assigns, :showing_within, nil)}
-        create_activity_type={e(assigns, :create_activity_type, nil)}
-        to_circles={e(assigns, :to_circles, [])}
-        smart_input_prompt={@smart_input_prompt}
-        smart_input_text={@smart_input_text}
-        sidebar_widgets={@sidebar_widgets}
-        thread_mode={e(assigns, :thread_mode, nil)}
-        hide_smart_input={e(assigns, :hide_smart_input, false)}
-      />
-      <div 
-        class={
-          "flex-grow w-full flex flex-col h-screen mx-0 rounded-t-md shrink-0 w-center overflow-hidden tablet:overflow-visible",
-          "max-w-[600px]": e(assigns, :without_sidebar, nil) != true
-          }>
-        <Bonfire.UI.Common.HeaderUserLive 
-          :if={e(assigns, :without_sidebar, nil) != true or current_user(assigns) }
-          page={@page}
-          without_sidebar={@without_sidebar}
-          current_user={current_user(assigns)}  
-        />
-        <div class={
-          "flex-1 mt-0 tablet:mt-[72px] px-0 overflow-y-auto overflow-x-hidden tablet:overflow-visible",
-          "mt-[64px]": current_user(assigns) == nil
-          }>
-          {@inner_content}
-        </div>
-      </div>
-      <div
-        :if={e(assigns, :without_sidebar, nil) != true}
-        class="w-[285px] ml-3 justify-start hidden  h-full tablet:flex">
-        <div class="w-full">
-          <div 
-            :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(assigns)}
-            class="fixed w-[285px] z-[70] w-full mb-3 top-3 background-invisible before:bottom-[-8px]">
-            <Surface.Components.Dynamic.Component
-              
-              module={Bonfire.Search.Web.FormLive}
-              search_limit={5}
-            />
-          </div>
-          <div 
-            class={
-              "flex flex-col w-full space-y-3",
-              "mt-0 tablet:mt-[72px]": current_user(assigns),
-              "mt-3": !current_user(assigns)
-            }>
-            <Surface.Components.Dynamic.Component
-              :if={current_user(assigns)}
-              :for={{component, component_assigns} <- @sidebar_widgets[:users][:secondary] || [ 
-                {Bonfire.UI.Social.WidgetTimelinesLive, [page: e(assigns, :page, nil)]},
-              ]}
-              module={component}
-              current_user={current_user(assigns)}
-              {...component_assigns}
-            />
-
-            <Surface.Components.Dynamic.Component
-              :if={!current_user(assigns)}
-              :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || [
-                 {Bonfire.UI.Social.WidgetTagsLive , []}
-              ]}
-              module={component}
-              {...component_assigns}
-            />
-          </div>
-        </div>
+      >
+        <:right_action>
+          <Surface.Components.Dynamic.Component
+            :if={current_user(assigns) && e(assigns, :page_header_aside, nil)}
+            :for={{component, component_assigns} <- e(assigns, :page_header_aside, [])}
+            module={component}
+            current_user={current_user(assigns)}
+            {...component_assigns}
+          />
+        </:right_action>
+        
+      </Bonfire.UI.Common.PageHeaderLive>
+      <!-- This example requires Tailwind CSS v2.0+ -->
+      <div class="overflow-x-hidden overflow-y-auto feed bg-base-100 rounded-b-md">
+        {@inner_content}
       </div>
     </div>
+
+  </div>
+  <div 
+    :class="show_mobile_composer ? '!hidden' : ''"
+    class="items-start hidden grid-flow-row gap-3 my-3 overflow-x-hidden overflow-y-auto tablet:grid auto-rows-min ">
+    <div 
+      :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(assigns)}
+      class="sticky top-0 z-50">
+      <Surface.Components.Dynamic.Component
+        module={Bonfire.Search.Web.FormLive}
+        search_limit={5}
+      />
+    </div>
+    <Surface.Components.Dynamic.Component
+      :if={current_user(assigns)}
+      :for={{component, component_assigns} <- @sidebar_widgets[:users][:secondary] || [ 
+        {Bonfire.UI.Social.WidgetTimelinesLive, [page: e(assigns, :page, nil)]},
+      ]}
+      module={component}
+      current_user={current_user(assigns)}
+      {...component_assigns}
+    />
+
+    <Surface.Components.Dynamic.Component
+      :if={!current_user(assigns)}
+      :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || [
+          {Bonfire.UI.Social.WidgetTagsLive , []}
+      ]}
+      module={component}
+      {...component_assigns}
+    />
   </div>
 
+  <div 
+    :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}
+    x-show="!show_mobile_composer"
+    class="fixed bottom-0 z-[90] right-3 bottom-3 tablet-lg:hidden">
+    <button 
+      @click="show_mobile_composer = true"
+      type="button" 
+      class="items-center btn btn-circle btn-primary btn-lg place-content-center ">
+      <Solid.PencilAltIcon class="w-6 h-6" />
+    </button>
+  </div>
 
+</div>

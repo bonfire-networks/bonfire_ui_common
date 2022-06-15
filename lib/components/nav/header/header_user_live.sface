@@ -1,82 +1,73 @@
-<div
-  class={
-    "fixed max-w-[600px] z-[100] tablet:px-0 w-full bottom-0 tablet:bottom-auto tablet:top-3 background-invisible",
-    "-translate-x-1/2 left-1/2": !current_user(assigns) and e(assigns, :without_sidebar, nil) == true, 
-    "!top-0 tablet:!top-3 !bottom-auto before:relative": !current_user(assigns)
-  }>
-
-  {#if current_user(assigns)}
-    <div class="flex-grow w-full py-2 border-t tablet:mb-3 tablet:rounded-md shrink-0 bg-base-100 border-base-content/10 tablet:border-none">
-      <div class="flex items-center w-full justify-evenly tabs tab-boxed">
-        
-        <!-- MOBILE INSTANCE ICON -->
-        <LiveRedirect 
-          class={"flex items-center hover:rounded-lg hover:bg-base-content/5 tablet-lg:hidden tab",  "tab-active text-opacity-60 relative lined": @page == "home"}
-          to={if current_user(assigns), do: path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Bonfire.Common.Config.get(:home_page, Bonfire.Web.HomeLive))}>
-            <Solid.HomeIcon class="w-5 h-5" />
-            <span class="sr-only">{l "Home"}</span>
-        </LiveRedirect>
-        <!-- / MOBILE INSTANCE ICON -->
-        
-        <!-- MENU -->
-        <div class="relative z-50 hidden tablet-lg:flex tooltip tooltip-bottom" data-tip={l "My home"}>
-          <LiveRedirect to={"/feed"} class={"tab flex-1 hover:bg-base-content/5 hover:rounded-lg text-base-content/70", "tab-active text-opacity-60 relative lined": @page == "home"}>
-              <Solid.HomeIcon class="w-5 h-5" />
-              <span class="sr-only">{l "Home"}</span>
-          </LiveRedirect>
-        </div>
-        <div class="relative z-50 flex tooltip tooltip-bottom" data-tip={l "Notifications"}>
-          <LiveRedirect to={path(:notifications)} class={"indicator tab flex-1 hover:bg-base-content/5 hover:rounded-lg text-base-content/70", "tab-active text-opacity-60 relative lined": @page == "notifications"}>
-            <BadgeCounterLive id={:notifications} class="indicator-item badge badge-secondary"/> 
-              <button type="button">
-                <Solid.BellIcon class="w-5 h-5" />
-                <span class="sr-only">{l "Notifications"}</span>
-              </button>
-          </LiveRedirect>
-        </div>
-        <div class="relative z-50 flex tooltip tooltip-bottom" data-tip={l "Messages"}>
-          <LiveRedirect to={path(Bonfire.Data.Social.Message)} class={"indicator tab flex-1 hover:bg-base-content/5 hover:rounded-lg text-base-content/70", "tab-active text-opacity-60 relative lined": @page == "messages"}>
-            <BadgeCounterLive id={:inbox} class="indicator-item badge badge-secondary"/>
-              <button type="button">
-                <Solid.MailIcon class="w-5 h-5"/>
-                <span class="sr-only">{l "Messages"}</span>
-              </button>
-          </LiveRedirect>
-        </div>
-  
-        <div class="relative z-50 hidden tooltip tooltip-bottom tablet-lg:flex" data-tip={l "My Favourites"}>
-          <LivePatch to={"/my/likes"} class={"tab flex-1 hover:bg-base-content/5 hover:rounded-lg text-base-content/70", "tab-active text-opacity-60 relative lined": @page == "likes"}>
-              <Solid.StarIcon class="w-5 h-5" />
-              <span class="sr-only">{l "My Favourites"}</span>
-          </LivePatch>
-        </div>
-        <!-- / MENU -->
-
-        <!-- MOBILE MENU -->
-        <div class="relative z-50 tablet:hidden tooltip tooltip-bottom" data-tip={l "Search"}>
-          <LiveRedirect to={"/search"} class={"tab flex-1 hover:bg-base-content/5 hover:rounded-lg text-base-content/70"}>
-            <Solid.SearchIcon class="w-5 h-5" />   
-          </LiveRedirect>
-        </div>
-
-        <div class="hidden tablet:flex tablet-lg:hidden">
-            <div
-              @keydown.window.escape="open_drawer = false"
-              class="btn btn-ghost btn-circle btn-sm" 
-              @click="open_drawer = true">
-              <LazyImage
-                class="w-8 h-8 rounded-full bg-base-200"
-                src={avatar_url(current_user(assigns))}
-                alt="current user profile image"
-              />
-            </div>
-        </div>
-        <!-- / MOBILE MENU -->
-      </div>
+{#if current_user(assigns)}
+  <div class="bg-base-100 rounded-md flex h-[48px] place-content-center items-center w-full justify-evenly tabs tab-boxed">
+    
+    <!-- MOBILE INSTANCE ICON -->
+    <LiveRedirect 
+      class={"flex items-center hover:rounded-lg hover:bg-base-content/5 tablet-lg:hidden tab",  "tab-active text-opacity-60 relative lined": @page == "home"}
+      to={if current_user(assigns), do: path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Bonfire.Common.Config.get(:home_page, Bonfire.Web.HomeLive))}>
+        <Solid.HomeIcon class="w-5 h-5" />
+        <span class="sr-only">{l "Home"}</span>
+    </LiveRedirect>
+    <!-- / MOBILE INSTANCE ICON -->
+    
+    <!-- MENU -->
+    <div class="relative z-50 hidden tablet-lg:flex tooltip tooltip-bottom" data-tip={l "My home"}>
+      <LiveRedirect to={"/feed"} class={"tab flex-1 hover:bg-base-content/5 hover:rounded-lg text-base-content/70", "tab-active text-opacity-60 relative lined": @page == "home"}>
+          <Solid.HomeIcon class="w-5 h-5" />
+          <span class="sr-only">{l "Home"}</span>
+      </LiveRedirect>
     </div>
+    <div class="relative z-50 flex tooltip tooltip-bottom" data-tip={l "Notifications"}>
+      <LiveRedirect to={path(:notifications)} class={"indicator tab flex-1 hover:bg-base-content/5 hover:rounded-lg text-base-content/70", "tab-active text-opacity-60 relative lined": @page == "notifications"}>
+        <BadgeCounterLive id={:notifications} class="indicator-item badge badge-secondary"/> 
+          <button type="button">
+            <Solid.BellIcon class="w-5 h-5" />
+            <span class="sr-only">{l "Notifications"}</span>
+          </button>
+      </LiveRedirect>
+    </div>
+    <div class="relative z-50 flex tooltip tooltip-bottom" data-tip={l "Messages"}>
+      <LiveRedirect to={path(Bonfire.Data.Social.Message)} class={"indicator tab flex-1 hover:bg-base-content/5 hover:rounded-lg text-base-content/70", "tab-active text-opacity-60 relative lined": @page == "messages"}>
+        <BadgeCounterLive id={:inbox} class="indicator-item badge badge-secondary"/>
+          <button type="button">
+            <Solid.MailIcon class="w-5 h-5"/>
+            <span class="sr-only">{l "Messages"}</span>
+          </button>
+      </LiveRedirect>
+    </div>
+
+    <div class="relative z-50 hidden tooltip tooltip-bottom tablet-lg:flex" data-tip={l "My Favourites"}>
+      <LivePatch to={"/my/likes"} class={"tab flex-1 hover:bg-base-content/5 hover:rounded-lg text-base-content/70", "tab-active text-opacity-60 relative lined": @page == "likes"}>
+          <Solid.StarIcon class="w-5 h-5" />
+          <span class="sr-only">{l "My Favourites"}</span>
+      </LivePatch>
+    </div>
+    <!-- / MENU -->
+
+    <!-- MOBILE MENU -->
+    <div class="relative z-50 tablet:hidden tooltip tooltip-bottom" data-tip={l "Search"}>
+      <LiveRedirect to={"/search"} class={"tab flex-1 hover:bg-base-content/5 hover:rounded-lg text-base-content/70"}>
+        <Solid.SearchIcon class="w-5 h-5" />   
+      </LiveRedirect>
+    </div>
+
+    <div class="hidden tablet:flex tablet-lg:hidden">
+        <div
+          @keydown.window.escape="open_drawer = false"
+          class="btn btn-ghost btn-circle btn-sm" 
+          @click="open_drawer = true">
+          <LazyImage
+            class="w-8 h-8 rounded-full bg-base-200"
+            src={avatar_url(current_user(assigns))}
+            alt="current user profile image"
+          />
+        </div>
+    </div>
+    <!-- / MOBILE MENU -->
+  </div>
   {#else}
     <div 
-      class="flex items-center flex-grow w-full px-3 py-4 mb-3 tablet:py-2 tablet:rounded-md bg-base-100 shrink-0">
+      class="bg-base-100 rounded-md flex h-[48px] place-content-center items-center flex w-full px-3">
       <LiveRedirect 
         class="flex items-center flex-1 space-x-2"
         to={if current_user(assigns), do: path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Bonfire.Common.Config.get(:home_page, Bonfire.Web.HomeLive))}>
@@ -109,10 +100,4 @@
     </div>
   {/if}
 
-
-          <Bonfire.UI.Common.MobileUserMenuLive current_user={current_user(assigns)} /> 
-
-
-
-  
-</div>
+<Bonfire.UI.Common.MobileUserMenuLive current_user={current_user(assigns)} /> 

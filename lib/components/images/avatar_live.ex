@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
     "w-12 h-12"
   end
   def classes(%{comment: true}) do
-    "w-6 h-6"
+    "w-8 h-8"
   end
   def classes(_) do
     "w-10 h-10"
