@@ -19,6 +19,9 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   prop form_opts, :any, default: []
 
+  @doc "Optional prop to hide the actions at the bottom of the modal"
+  prop no_actions, :boolean, default: false
+  
   @doc """
   Additional attributes to add onto the modal wrapper
   """
