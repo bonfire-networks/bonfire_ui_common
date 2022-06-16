@@ -15,7 +15,7 @@
       "!border-none !bg-base-100 mt-2 !p-0": e(assigns, :thread_mode, nil) == :flat}>
       <div class="flex items-center flex-1 space-x-1">
         <Bonfire.UI.Common.UploadButtonLive
-          :if={module_enabled?(Bonfire.Files)}
+          :if={e(assigns, :showing_within, nil) != :messages && module_enabled?(Bonfire.Files)}
           uploads={e(assigns, :uploads, nil)}
           thread_mode={e(assigns, :thread_mode, nil)}
         />
@@ -50,7 +50,7 @@
               @click="distraction_free = !distraction_free"
               :class="{'border-base-content/30' : distraction_free}"
               class="flex items-center btn btn-ghost btn-sm btn-circle">
-            <Solid.EyeIcon class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
+            <Outline.ArrowsExpandIcon class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
           </button>
         </div>
 

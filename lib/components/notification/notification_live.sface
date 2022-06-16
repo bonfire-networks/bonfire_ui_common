@@ -1,5 +1,5 @@
 <div 
-  id="flash-notifications"
+  id="app_notifications"
   aria-live="assertive" 
   class="fixed inset-0 flex items-end px-4 py-6 z-[90] pointer-events-none sm:p-6 sm:items-start">
   <div class="flex flex-col items-center w-full space-y-4 sm:items-end">
@@ -8,7 +8,7 @@
       id="notification" 
       phx-hook="Notification" 
       :if={@notification}
-      data-role="alert"
+      role="alert"
       class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash ring-1 ring-black ring-opacity-5">
       <div class="p-4">
         <div class="flex items-start">
@@ -34,12 +34,12 @@
       </div>
     </div>
 
-  {#case e(assigns, :info, nil) || live_flash(@flash, :info)}
+  {#case e(assigns, :info, nil) || live_flash(@parent_flash || @flash, :info)}
     {#match nil}
     {#match info}
     <div 
       data-id="info"
-      data-role="alert"
+      role="alert"
       class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash ring-1 ring-black ring-opacity-5">
       <div class="p-4">
         <div class="flex items-center">
@@ -73,12 +73,12 @@
     </div> -->
   {/case}
 
-  {#case e(assigns, :error, nil) || live_flash(@flash, :error)}
+  {#case e(assigns, :error, nil) || live_flash(@parent_flash || @flash, :error)}
     {#match nil}
     {#match error}
     <div 
       data-id="error"
-      data-role="alert"
+      role="alert"
       class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash ring-1 ring-black ring-opacity-5">
       <div class="p-4">
         <div class="flex items-center">

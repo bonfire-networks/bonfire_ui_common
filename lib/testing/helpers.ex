@@ -71,9 +71,11 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     do: put_session(conn, :user_id, user_id)
 
   def find_flash(view_or_doc) do
-    messages = Floki.find(view_or_doc, "#flash-notifications .flash")
-    # messages = Floki.find(doc, "data-id=\"flash-notifications\" data-role=\"alert\"")
-    |> info()
+    # Floki.find(view_or_doc, "#app_notifications")
+    # |> info()
+    messages = Floki.find(view_or_doc, "#app_notifications .flash")
+    # messages = Floki.find(view_or_doc, "data-id=\"app_notifications\" role=\"alert\"")
+    # |> info()
     case messages do
       [_, _ | _] -> throw :too_many_flashes
       short -> short
@@ -87,14 +89,12 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
 
   def assert_flash_kind(flash, :error) do
     id = floki_attr(flash, "data-id")
-    # assert "alert" in classes
-    assert "error" =~ id
+    assert "error" in id
   end
 
   def assert_flash_kind(flash, :info) do
     id = floki_attr(flash, "data-id")
-    # assert "alert" in classes
-    assert "info" =~ id
+    assert "info" in id
   end
 
   def assert_flash_message(flash, %Regex{}=r),

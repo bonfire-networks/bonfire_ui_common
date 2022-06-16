@@ -1,6 +1,7 @@
 defmodule Bonfire.UI.Common.NotificationLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
+  prop parent_flash, :any, default: nil
   prop notification, :any, default: nil
   prop error, :any, default: nil
   prop info, :any, default: nil
