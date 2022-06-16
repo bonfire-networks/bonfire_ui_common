@@ -4,13 +4,15 @@
 
 <div class="">
   <Surface.Components.Dynamic.Component
-    :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesLive)}
+    :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesLive) && e(assigns, :thread_mode, nil) != :flat}
     module={Bonfire.Boundaries.Web.BoundariesLive}
     to_circles={e(assigns, :to_circles, [])}
     thread_mode={e(assigns, :thread_mode, nil)}
     />
 
-    <div class="flex items-center justify-between p-2 space-x-2 border-t rounded-b-md border-slate-300 bg-slate-200 sm:px-3">
+    <div class={
+      "flex items-center justify-between p-2 space-x-2 border-t rounded-b-md border-base-content/10 bg-base-200 sm:px-3",
+      "!border-none !bg-base-100 mt-2 !p-0": e(assigns, :thread_mode, nil) == :flat}>
       <div class="flex items-center flex-1 space-x-1">
         <Bonfire.UI.Common.UploadButtonLive
           :if={module_enabled?(Bonfire.Files)}
@@ -29,7 +31,7 @@
             :if={Bonfire.Common.Config.get([:ui, :smart_input, :cw], []) == true}
             type="button"
             @click="title_open = !title_open"
-            :class="{'bg-slate-300' : title_open}"
+            :class="{'border-base-content/30' : title_open}"
             class="flex items-center btn btn-ghost btn-sm btn-circle">
             <span 
               class="text-xs font-medium text-base-content text-opacity-70">{l "CW"}</span>
@@ -46,7 +48,7 @@
             <button 
               type="button"
               @click="distraction_free = !distraction_free"
-              :class="{'bg-slate-300' : distraction_free}"
+              :class="{'border-base-content/30' : distraction_free}"
               class="flex items-center btn btn-ghost btn-sm btn-circle">
             <Solid.EyeIcon class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
           </button>
@@ -54,8 +56,11 @@
 
       </div>
       <button type="submit" class="capitalize btn-sm justify-self-end btn btn-primary">
-        <!-- {if e(assigns, :create_activity_type, nil) == :message, do: l "Message", else: l "Post"} -->
+        {#if e(assigns, :showing_within, nil) == :messages}
+         {l "Message"}
+        {#else}
         {l "Post"}
+        {/if}
       </button>
     </div>
   

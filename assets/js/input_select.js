@@ -22,7 +22,7 @@ InputSelectHooks.InputOrSelectOne = {
         suggestionItemTemplate = function(tagData){
             return `
             <div ${this.getAttributes(tagData)}
-                class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
+                class='tagify__dropdown__item !text-slate-800 ${tagData.class ? tagData.class : ""}'
                 tabindex="0"
                 role="option">
                 <span>${tagData.text}</span>
@@ -67,7 +67,7 @@ InputSelectHooks.InputOrSelectOne = {
             originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
             dropdown: {
                 maxItems: 20,           // <- mixumum allowed rendered suggestions
-                classname: "tags-look text-slate-800", // <- custom classname for this dropdown, so it could be targeted
+                classname: "tags-look !text-slate-800", // <- custom classname for this dropdown, so it could be targeted
                 enabled: 0,             // <- show suggestions on focus
                 closeOnSelect: true,    // <- do not hide the suggestions dropdown once an item has been selected
                 searchKeys: ['text']  // very important to set by which keys to search for suggesttions when typing

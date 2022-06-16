@@ -3,7 +3,7 @@
   :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}
   data-id="smart_input">
   <div 
-    data-theme="winter"
+    data-theme={if e(assigns, :thread_mode, nil) != :flat, do: "winter"}
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
     x-data={"{

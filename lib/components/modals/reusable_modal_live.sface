@@ -13,7 +13,7 @@
       <h3 class={e(assigns, :title_class, nil)} id={"#{@id}-title"}>
         <#slot name="title">{e(assigns, :title_text, nil)}</#slot>
       </h3>
-      <div class="absolute top-0 right-0 hidden pt-5 pr-4 sm:block">
+      <div class="absolute top-0 right-0 block pt-5 pr-4">
         <button 
           :on-click="close"
           type="button" 
