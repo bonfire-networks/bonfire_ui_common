@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.NotificationLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
-  prop parent_flash, :any, default: nil
+  prop root_flash, :any, default: nil
   prop notification, :any, default: nil
   prop error, :any, default: nil
   prop info, :any, default: nil
@@ -29,11 +29,12 @@ defmodule Bonfire.UI.Common.NotificationLive do
     }
   end
 
-  def handle_event("clear-flash", %{"key"=> key}, socket) do
-    key = maybe_to_atom(key)
+  def handle_event("clear-flash", %{"key"=> type}, socket) do
+    key = maybe_to_atom(type)
 
     {:noreply, socket
       |> clear_flash(key)
+      |> assign(:root_flash, Map.drop(e(socket.assigns, :root_flash, %{}), [type]))
       |> assign(key, nil)
     }
     # |> debug

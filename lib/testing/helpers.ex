@@ -100,7 +100,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   def assert_flash_message(flash, %Regex{}=r),
     do: assert(Floki.text(flash) =~ r)
   def assert_flash_message(flash, bin) when is_binary(bin),
-    do: assert(Floki.text(flash) == bin)
+    do: assert(Floki.text(flash) =~ bin)
 
   def find_form_error(doc, name),
     do: Floki.find(doc, "span.invalid-feedback[phx-feedback-for='#{name}']")

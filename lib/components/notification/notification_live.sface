@@ -34,7 +34,7 @@
       </div>
     </div>
 
-  {#case e(assigns, :info, nil) || live_flash(@parent_flash || @flash, :info)}
+  {#case e(assigns, :info, nil) || live_flash(@root_flash || @flash, :info)}
     {#match nil}
     {#match info}
     <div 
@@ -73,7 +73,7 @@
     </div> -->
   {/case}
 
-  {#case e(assigns, :error, nil) || live_flash(@parent_flash || @flash, :error)}
+  {#case e(assigns, :error, nil) || live_flash(@root_flash || @flash, :error)}
     {#match nil}
     {#match error}
     <div 

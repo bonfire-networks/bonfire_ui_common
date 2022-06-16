@@ -35,5 +35,5 @@
   id="notification" 
   notification={e(assigns, :notification, nil)}
   current_user={current_user(assigns)}
-  parent_flash={@flash}
+  root_flash={@flash |> debug("root_flash")}
 />
