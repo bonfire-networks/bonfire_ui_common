@@ -38,7 +38,7 @@ defmodule Bonfire.UI.Common.BasicView do
             </div>
           </div>
 
-          <div class="mx-auto mt-12 w-center">
+          <div class="mx-auto mt-12">
             <div class="prose text-center">
               <h1 class="text-base-content">
                 #{title}

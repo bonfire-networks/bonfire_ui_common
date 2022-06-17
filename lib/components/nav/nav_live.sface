@@ -5,7 +5,7 @@
     open_drawer: false
   }"
   :class="show_mobile_composer ? '!grid-cols-1 !place-content-start' : ''"
-  class={"h-screen max-w-screen-xl mx-auto px-3 justify-center place-content-center grid-cols-1 tablet:grid-cols-[minmax(580px,_1fr)_290px] tablet-lg:grid-cols-[repeat(auto-fill,_280px)] grid gap-3 overflow-hidden bonfire_layout"}>
+  class={"h-screen max-w-screen-xl mx-auto px-3 justify-center place-content-center grid-cols-1 tablet:grid-cols-[minmax(580px,_1fr)_290px] tablet-lg:grid-cols-[repeat(auto-fill,_290px)] grid gap-3 overflow-hidden bonfire_layout"}>
   <Bonfire.UI.Common.SidebarLive
     current_user={current_user(assigns)}
     page={@page}
@@ -57,7 +57,7 @@
     class="items-start hidden grid-flow-row gap-3 my-3 overflow-x-hidden overflow-y-auto tablet:grid auto-rows-min ">
     <div 
       :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(assigns)}
-      class="sticky top-0 z-50">
+      class="sticky top-0 z-20">
       <Surface.Components.Dynamic.Component
         module={Bonfire.Search.Web.FormLive}
         search_limit={5}
@@ -67,6 +67,8 @@
       :if={current_user(assigns)}
       :for={{component, component_assigns} <- @sidebar_widgets[:users][:secondary] || [ 
         {Bonfire.UI.Social.WidgetTimelinesLive, [page: e(assigns, :page, nil)]},
+        {Bonfire.UI.Social.WidgetTagsLive, []},
+        {Bonfire.UI.Common.WidgetFeedbackLive, []}
       ]}
       module={component}
       current_user={current_user(assigns)}
@@ -76,7 +78,8 @@
     <Surface.Components.Dynamic.Component
       :if={!current_user(assigns)}
       :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || [
-          {Bonfire.UI.Social.WidgetTagsLive , []}
+          {Bonfire.UI.Social.WidgetTagsLive, []},
+          {Bonfire.UI.Common.WidgetFeedbackLive, []}
       ]}
       module={component}
       {...component_assigns}

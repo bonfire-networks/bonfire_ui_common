@@ -1,0 +1,14 @@
+
+
+<Bonfire.UI.Common.WidgetLive 
+  widget_title="Do you have any feedback?"
+  class="relative w-full mx-auto rounded-md bg-base-100">   
+  <div class="p-3 pt-0 prose-sm prose">
+    <p>{l "We are all ears If you want to signal a bug, suggest an improvement or a whole new feature."}</p>
+
+    <button 
+      :on-click="Bonfire.Social.Posts:post_error"
+      class="w-full mt-2 normal-case btn btn-sm btn-info btn-wide">{l "Share a suggestion"}</button>
+  </div>
+</Bonfire.UI.Common.WidgetLive>
+

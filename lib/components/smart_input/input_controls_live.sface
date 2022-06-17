@@ -38,6 +38,13 @@
           </button>
         </div>
         
+        <Surface.Components.Dynamic.Component
+          :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesLive) && e(assigns, :thread_mode, nil) == :flat}
+          module={Bonfire.Boundaries.Web.BoundariesLive}
+          to_circles={e(assigns, :to_circles, [])}
+          thread_mode={e(assigns, :thread_mode, nil)}
+        />
+        
         <div 
           data-tip={l "Full-screen mode" }
           class={

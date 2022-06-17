@@ -3,7 +3,7 @@
     :class="show_mobile_composer ? '!grid !overflow-hidden' : ''"
     class="items-start hidden grid-flow-row gap-3 my-3 overflow-x-hidden overflow-y-auto tablet-lg:grid auto-rows-min ">
     {#if current_user(assigns)}
-      <div class="sticky top-0 z-50">
+      <div class="sticky top-0 z-20">
         <Bonfire.UI.Common.LogoLive />
       </div>
       <Bonfire.UI.Common.UserMenuLive  current_user={current_user(assigns)} />
