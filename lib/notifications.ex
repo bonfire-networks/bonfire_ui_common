@@ -7,13 +7,13 @@ defmodule Bonfire.UI.Common.Notifications do
   end
 
   def handle_info(attrs, socket) do
-    debug(attrs, "TODO: receive_notification")
+    # debug(attrs, "receive_notification")
     receive_notification(attrs, socket)
   end
 
   def notify_feeds(feed_ids, title, message) do
     %{title: title, message: text_only(message)}
-    |> debug("#{feed_ids}")
+    |> debug("to: #{inspect feed_ids}")
     |> pubsub_broadcast(feed_ids, {Bonfire.UI.Common.Notifications, ...}) # send to feed users' handle_info in this same module
   end
 
