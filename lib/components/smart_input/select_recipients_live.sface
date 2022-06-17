@@ -1,7 +1,7 @@
 
-<div class="w-full mb-3 rounded-lg bg-base-100">
+<div class="w-full border rounded-lg border-base-content/30">
   <div class="flex items-center rounded-lg">
-    <span class="inline-flex items-center h-10 px-3 rounded-l-lg text-base-content text-opacity-70 bg-base-200 sm:text-sm"> {l "To"} </span>
+    <span class="inline-flex items-center h-10 px-3 border-r rounded-l-lg border-base-content/30 text-base-content text-opacity-70 sm:text-sm"> {l "To"} </span>
 
     {#if is_list(e(assigns, :to_circles, nil)) and length(e(assigns, :to_circles, []))>0}
       <input 
