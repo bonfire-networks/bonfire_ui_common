@@ -8,8 +8,11 @@ defmodule Bonfire.UI.Common.Routes do
         pipe_through :browser
 
         get "/guest/error", Bonfire.UI.Common.ErrorController, as: :error_guest
+
         post "/LiveHandler/:live_handler", Bonfire.UI.Common.FormsLiveHandlerFallbackController, :fallback
         get "/LiveHandler/:live_handler", Bonfire.UI.Common.FormsLiveHandlerFallbackController, :fallback
+
+        post "/session_redirect", Bonfire.UI.Common.SessionRedirectController, :set_and_redirect
       end
 
       # pages only guests can view

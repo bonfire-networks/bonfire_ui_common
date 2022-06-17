@@ -1,0 +1,8 @@
+<Form for={:feedback} action={"/session_redirect"} > <!--  opts={"target": "_blank"} -->
+  <input type="hidden" name="to" value="/write" />
+  <input type="hidden" name="smart_input_text" value={@text} />
+  <button 
+    class={@class}>
+    {l "Share feedback"}
+  </button>
+</Form>

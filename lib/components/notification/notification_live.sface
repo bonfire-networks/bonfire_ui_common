@@ -88,7 +88,8 @@
           <div class="ml-3 w-0 flex-1 pt-0.5">
             <p data-id="content" class="text-sm text-gray-500">{rich error}</p>
 
-            <button class="mt-2 normal-case btn btn-sm btn-error" :on-click="Bonfire.Social.Posts:post_error">{l "Share feedback"}</button>
+            <!-- <button class="mt-2 normal-case btn btn-sm btn-error" :on-click="Bonfire.Social.Posts:write_error">{l "Share feedback"}</button> -->
+            <Bonfire.UI.Common.FeedbackButtonLive text={error_template(assigns)} class="mt-2 normal-case btn btn-sm btn-error" />
   
           </div>
           <div class="flex flex-shrink-0 ml-4">

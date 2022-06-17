@@ -1,14 +1,12 @@
 
 
 <Bonfire.UI.Common.WidgetLive 
-  widget_title="Do you have any feedback?"
+  widget_title={l "Have some feedback?"}
   class="relative w-full mx-auto rounded-md bg-base-100">   
   <div class="p-3 pt-0 prose-sm prose">
-    <p>{l "We are all ears If you want to signal a bug, suggest an improvement or a whole new feature."}</p>
+    <p>{l "The Bonfire team is all ears if you want to report a bug, suggest an improvement or a new feature, or just say hi :)"}</p>
 
-    <button 
-      :on-click="Bonfire.Social.Posts:post_error"
-      class="w-full mt-2 normal-case btn btn-sm btn-info btn-wide">{l "Share a suggestion"}</button>
+  <Bonfire.UI.Common.FeedbackButtonLive text={Settings.get([:ui, :feedback_post_template], "I have a suggestion about Bonfire: \n\n@admins @bonfire_builders #bonfire_feedback", assigns)} />
+
   </div>
 </Bonfire.UI.Common.WidgetLive>
-

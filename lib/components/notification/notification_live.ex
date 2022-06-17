@@ -43,4 +43,21 @@ defmodule Bonfire.UI.Common.NotificationLive do
   def handle_event(action, attrs, socket), do: Bonfire.UI.Common.LiveHandlers.handle_event(action, attrs, socket, __MODULE__)
   def handle_info(info, socket), do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
 
+  def error_template(assigns) do
+    link = case maybe_last_sentry_event_id() do
+      id when is_binary(id) ->
+        org = Settings.get(:sentry_org, "bonfire-networks")
+        "https://sentry.io/organizations/#{org}/issues/?query=#{id}"
+      _ -> nil
+    end
+
+    # dump(assigns)
+    error = e(assigns, :error, nil) || live_flash((e(assigns, :root_flash, nil) || e(assigns, :flash, nil) || %{}), :error)
+    # debug(error)
+
+    Settings.get([:ui, :error_post_template], "I encountered this issue while using Bonfire: \n\n%{error_message}\n\n@admins @bonfire_builders #bonfire_feedback \n\n%{error_link}", assigns)
+    |> String.replace("%{error_message}", error || "")
+    |> String.replace("%{error_link}", link || "")
+    # |> debug()
+  end
 end
