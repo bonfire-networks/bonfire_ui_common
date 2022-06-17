@@ -88,19 +88,8 @@
           <div class="ml-3 w-0 flex-1 pt-0.5">
             <p data-id="content" class="text-sm text-gray-500">{rich error}</p>
 
-            {#case not module_enabled?(Sentry) || e(assigns, :error_sentry_event_id, nil) || maybe_last_sentry_event_id()}
-              {#match event_id when is_binary(event_id)}
-                  <script
-                    src="https://browser.sentry-cdn.com/7.0.0/bundle.min.js"
-                    integrity="sha384-Kc6uzuQrNbSFm9z6sChm6mccIO2d1VB6s6Tc+bqIzPHbPeMldDCGFbayQRXCIa6T"
-                    crossorigin="anonymous"
-                  ></script>                
-                  <script>
-                  Sentry.init({ dsn: '{Sentry.Config.dsn()}' });
-                  Sentry.showReportDialog({raw %{eventId: event_id} |> Jason.encode!() })
-                </script>
-              {#match _}
-            {/case}
+            <button class="button button-error" phx-click="Bonfire.Social.Posts:post_error">Share feedback</button>
+  
           </div>
           <div class="flex flex-shrink-0 ml-4">
             <button 
