@@ -30,6 +30,13 @@
 <li
   class="hover:bg-neutral hover:bg-opacity-20 text-neutral"
   >
+  <LiveRedirect to="/terms/code-of-conduct" class="flex items-center p-4 text-sm text-neutral">
+    {l "Code of conduct"}
+  </LiveRedirect>
+</li>
+<li
+  class="hover:bg-neutral hover:bg-opacity-20 text-neutral"
+  >
   <LiveRedirect to={path(:home)} class="flex items-center p-4 text-sm text-neutral">
     {l "Homepage"}
   </LiveRedirect>
