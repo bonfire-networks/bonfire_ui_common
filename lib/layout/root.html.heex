@@ -13,6 +13,10 @@
         
     <%= raw Config.get!(:endpoint_module).include_assets(@conn, :top)%>
 
+    <%= if assigns[:no_index] do %>
+      <meta name="robots" content="noindex" />
+    <% end %>
+
     <%= csrf_meta_tag() %>
   </head>
   <body id="layout-root" class="h-screen bg-base-300">
