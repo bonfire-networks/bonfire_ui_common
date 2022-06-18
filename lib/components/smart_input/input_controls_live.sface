@@ -46,7 +46,7 @@
         />
         
         <div 
-          :if={e(assigns, :showing_within, nil) != :page})}
+          :if={e(assigns, :showing_within, nil) != :page}
           data-tip={l "Full-screen mode" }
           class={
             "relative z-20 flex items-center tooltip",

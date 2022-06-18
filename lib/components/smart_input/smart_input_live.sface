@@ -9,10 +9,10 @@
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
     x-data={"{
-      title_open: false, 
+      title_open: #{e(assigns, :title_open, false)}, 
       open_boundaries: false,
       distraction_free: false,
-      boundary_selected: '#{if e(assigns, :create_activity_type, nil) in [:message, "message"], do: "message", else: e(assigns, :preset_boundary, "public")}' 
+      boundary_selected: \"#{if e(assigns, :create_activity_type, nil) in [:message, "message"], do: "message", else: e(assigns, :preset_boundary, "public")}\"
     }"}
     :class="{
       'smart-input-open': title_open,
