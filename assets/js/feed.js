@@ -2,7 +2,6 @@ let FeedHooks = {};
 
 FeedHooks.OpenActivity = {
   mounted() {
-    console.log("TEST")
     this.el.addEventListener("click", e => {
       const node_type = e.target.tagName.toLowerCase()  
       const accepted_node_types = ["article", "p"]

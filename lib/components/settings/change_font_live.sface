@@ -10,6 +10,6 @@ class="w-full max-w-xs select select-bordered"
     {f}
     </option>
   {#else}
-    <option>No known fonts</option>
+    <option>{l "No known fonts"}</option>
   {/for}
 </select>
