@@ -132,6 +132,20 @@ defmodule Bonfire.UI.Common do
     rich(content)
   end
 
+  def templated_or_remote_markdown(content, data) do
+    debug(content)
+    if Bonfire.Common.URIs.is_uri?(content) do
+      with {:ok, %{body: body}} when is_binary(body) <- Bonfire.Common.HTTP.get_cached(content) do
+        templated(body, data)
+      else e ->
+        debug(e, "Could not fetch remote content")
+        templated(content, data)
+      end
+    else
+      templated(content, data)
+    end
+  end
+
   def current_url(socket_or_assigns, default \\ nil) do
     case socket_or_assigns do
       %{current_url: url} when is_binary(url) -> url
