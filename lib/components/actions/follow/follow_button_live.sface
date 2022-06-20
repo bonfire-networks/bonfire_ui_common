@@ -6,6 +6,7 @@
     :on-click="Bonfire.Social.Follows:follow" 
     href={if !current_user(assigns), do: path(@object)<>"/follow"}
     target="_blank"
+    rel="noopener noreferrer"
     phx-value-id={e(@object, :id, nil)} 
     class={e(assigns, :class, "btn btn-sm btn-outline rounded-full border-opacity-70 normal-case")}>
     <Solid.UserAddIcon

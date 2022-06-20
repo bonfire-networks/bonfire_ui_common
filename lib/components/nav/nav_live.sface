@@ -5,7 +5,7 @@
     open_drawer: false
   }"
   :class="show_mobile_composer ? '!grid-cols-1 !place-content-start' : ''"
-  class={"h-screen max-w-screen-xl mx-auto px-3 justify-center place-content-center grid-cols-1 tablet:grid-cols-[minmax(580px,_1fr)_290px] tablet-lg:grid-cols-[repeat(auto-fill,_290px)] grid gap-3 overflow-hidden bonfire_layout"}>
+  class={"h-screen max-w-screen-xl mx-auto px-3 justify-center place-content-center grid-cols-1 tablet:grid-cols-[minmax(580px,_1fr)_290px] tablet-lg:grid-cols-[repeat(auto-fill,_290px)] grid gap-3  bonfire_layout"}>
   <Bonfire.UI.Common.SidebarLive
     current_user={current_user(assigns)}
     page={@page}
@@ -22,7 +22,7 @@
   />
   <div 
     :class="show_mobile_composer ? '!hidden' : ''"
-    class="my-3 w-full tablet:col-span-1  tablet-lg:col-span-2 grid grid-rows-[48px_1fr] gap-3">
+    class="w-full tablet:col-span-1  tablet-lg:col-span-2 grid grid-rows-[48px_1fr] gap-3">
     <Bonfire.UI.Common.HeaderUserLive 
       page={@page}
       without_sidebar={@without_sidebar}
@@ -54,7 +54,7 @@
   </div>
   <div 
     :class="show_mobile_composer ? '!hidden' : ''"
-    class="items-start hidden grid-flow-row gap-3 my-3 overflow-x-hidden overflow-y-auto tablet:grid auto-rows-min ">
+    class="items-start hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto tablet:grid auto-rows-min ">
     <div 
       :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(assigns)}
       class="sticky top-0 z-20">

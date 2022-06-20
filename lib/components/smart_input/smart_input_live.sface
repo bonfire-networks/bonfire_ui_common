@@ -33,7 +33,7 @@
       class="cursor-pointer bg-white/30 fixed z-[70] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"></div>
     <div 
       :class="{
-          'fixed z-[70] max-w-[720px] top-3 bottom-[20px] w-full -translate-x-1/2 left-1/2': distraction_free
+          'px-3 fixed z-[70] max-w-[720px] top-3 bottom-[20px] w-full -translate-x-1/2 left-1/2': distraction_free
         }"
       class={"flex flex-col flex-1 w-full"}>
       
