@@ -55,7 +55,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
     error = e(assigns, :error, nil) || live_flash((e(assigns, :root_flash, nil) || e(assigns, :flash, nil) || %{}), :error)
     # debug(error)
 
-    Settings.get([:ui, :error_post_template], "I encountered this issue while using Bonfire: \n\n%{error_message}\n\n@admins @bonfire_builders #bonfire_feedback \n\n%{error_link}", assigns)
+    Settings.get([:ui, :error_post_template], "I encountered this issue while using Bonfire: \n\n%{error_message}\n\n@BonfireBuilders #bonfire_feedback \n\n%{error_link}", assigns)
     |> String.replace("%{error_message}", error || "")
     |> String.replace("%{error_link}", link || "")
     # |> debug()

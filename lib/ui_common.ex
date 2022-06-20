@@ -122,6 +122,7 @@ defmodule Bonfire.UI.Common do
     rich(content)
   end
 
+  def templated(content, data \\ nil)
   def templated(content, data) when is_binary(content) do
     content
     |> Text.maybe_render_templated(data)
@@ -132,7 +133,7 @@ defmodule Bonfire.UI.Common do
     rich(content)
   end
 
-  def templated_or_remote_markdown(content, data) do
+  def templated_or_remote_markdown(content, data \\ nil) do
     debug(content)
     if Bonfire.Common.URIs.is_uri?(content) do
       with {:ok, %{body: body}} when is_binary(body) <- Bonfire.Common.HTTP.get_cached(content) do

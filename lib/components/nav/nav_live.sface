@@ -78,8 +78,7 @@
     <Surface.Components.Dynamic.Component
       :if={!current_user(assigns)}
       :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || [
-          {Bonfire.UI.Social.WidgetTagsLive, []},
-          {Bonfire.UI.Common.WidgetFeedbackLive, []}
+          {Bonfire.UI.Social.WidgetTagsLive, []}
       ]}
       module={component}
       {...component_assigns}
