@@ -564,4 +564,13 @@ defmodule Bonfire.UI.Common do
     |> debug()
     |> Phoenix.Controller.redirect(Plug.Conn.delete_session(conn, :go), ...)
   end
+
+  def maybe_cute_gif do
+    num_gifs = 67 # TODO: detect
+    dir = "data/uploads/cute-gifs/"
+    if File.exists?(dir) do
+      "/#{dir}#{Enum.random(1..num_gifs)}.gif"
+    end
+  end
+
 end
