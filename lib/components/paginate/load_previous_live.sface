@@ -10,7 +10,7 @@
   x-data="{show: true}"
 > 
   <a href={"#"<>e(@page_info, :start_cursor, "unknown")} class="w-full p-1 normal-case btn-ghost btn btn-sm btn-wide" style="display: none" x-show="show">
-    {l "Show more"}
+    {l "Load more"}
   </a>
   <a href={"?#{@live_handler}[before]=" <> e(@page_info, :start_cursor, "unknown")} class="text-underline" x-show="!show">
     {l "Previous page"}
