@@ -72,7 +72,7 @@
         class="flex items-center flex-1 space-x-2"
         to={if current_user(assigns), do: path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Bonfire.Common.Config.get(:home_page, Bonfire.Web.HomeLive))}>
         <div class="w-8 h-8 bg-center bg-no-repeat bg-contain" style={"background-image: url(#{ Bonfire.Common.Config.get([:ui, :theme, :instance_icon], nil)})"}></div>
-        <div class="text-lg font-bold text-base-content">{Bonfire.Common.Config.get([:ui, :theme, :instance_name], '')}</div>
+        <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
       </LiveRedirect>
 
       <div class="flex justify-end">

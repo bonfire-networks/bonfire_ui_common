@@ -10,7 +10,7 @@
             <div 
               :if={current_user(assigns) == nil} 
               class="text-base font-bold">
-              {Bonfire.Common.Config.get([:ui, :theme, :instance_name], '')}
+              {Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}
             </div>
           </div>
         </LiveRedirect>

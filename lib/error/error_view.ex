@@ -80,6 +80,9 @@ defmodule Bonfire.UI.Common.ErrorView do
   end
 
   def show_html(error_code, details) when is_integer(error_code), do: show_html(@codes[error_code], details)
+  def show_html(error, %{message: details}) do
+    Bonfire.UI.Common.BasicView.show_html(error, details)
+  end
   def show_html(error, details) do
     Bonfire.UI.Common.BasicView.show_html(error, details)
   end
