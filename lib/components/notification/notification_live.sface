@@ -47,7 +47,7 @@
             <Outline.SpeakerphoneIcon class="w-5 h-5 text-gray-600" />
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
-            <p data-id="content" class="text-sm text-gray-500">{rich info}</p>
+            <p data-id="content" class="text-sm font-semibold text-gray-500">{rich info}</p>
           </div>
           <div class="flex flex-shrink-0 ml-4">
             <button 

@@ -67,6 +67,12 @@
                   {l "Messages"}
                 </span>
               </LivePatch>
+              <LivePatch to={"/my/likes"} class="flex items-center py-2 text-sm font-medium rounded-md text-base-content">
+                <Solid.StarIcon class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
+                <span class="truncate">
+                  {l "My Favourites"}
+                </span>
+              </LivePatch>
               <LivePatch to="/settings" class="flex items-center py-2 text-sm font-medium rounded-md text-base-content">
                 <Solid.CogIcon class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
                 <span class="truncate">
