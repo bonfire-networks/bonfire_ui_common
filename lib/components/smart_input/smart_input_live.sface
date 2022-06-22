@@ -53,7 +53,22 @@
         x-cloak
         x-show="show_mobile_composer == true" 
         class="flex items-center p-3 border-b rounded-t bg-base-100 border-base-content/10">
-        <div class="flex-1 font-bold text-base-content">{l "Create a post"}</div>
+        {#if e(assigns, :showing_within, nil) == :messages}
+          <div class="flex-1 font-bold text-base-content">{l "Send a message"}</div>
+        {#elseif length(all_smart_input_components())>1}
+          <div 
+            class="dropdown dropdown-hover"
+            >
+            <label tabindex="0" class="m-1 btn">{smart_input_name(active_smart_input_component(assigns))}</label>
+            <ul tabindex="0" class="p-2 shadow dropdown-content menu bg-base-100 rounded-box w-52">
+              <li :for={{name, component} <- all_smart_input_components()}>
+                <div phx-click="select_smart_input" phx-target={@myself} phx-value-component={component}>{display_name(name)}</div>
+              </li>
+            </ul>
+          </div>
+        {#else}
+          <div class="flex-1 font-bold text-base-content">{e(assigns, :smart_input_prompt, l "Write a post")}</div>
+        {/if}
         <button 
           @click="show_mobile_composer = false"
           class="btn btn-sm btn-circle btn-outline">
