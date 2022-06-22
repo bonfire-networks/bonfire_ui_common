@@ -65,6 +65,16 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     mod_delegate(mod, :handle_info, [data], socket)
   end
 
+  defp do_handle_info({_ref, {:phoenix, :send_update, _}}, socket) do
+    info("LiveHandler: send_update completed")
+    empty(socket)
+  end
+
+  defp do_handle_info({status, _, :process, _, return_status}, socket) do
+    info(return_status, "LiveHandler: process #{status}")
+    empty(socket)
+  end
+
   defp do_handle_info(data, socket) do
     warn(data, "LiveHandler: could not find info handler for")
     empty(socket)

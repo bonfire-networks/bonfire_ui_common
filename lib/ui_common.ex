@@ -557,14 +557,14 @@ defmodule Bonfire.UI.Common do
         go = (Utils.e(params, :go, nil) || default) #|> debug
         if current_path !=go and internal_go_path?(go), do: [to: go], else: [to: default]
     end
+    |> debug()
   end
 
   def redirect_to_previous_go(conn, params, default, current_path) do
     # debug(conn.request_path)
     conn
-    |> go_where?(params, default, current_path)
-    |> debug()
-    |> Phoenix.Controller.redirect(Plug.Conn.delete_session(conn, :go), ...)
+    |> Phoenix.Controller.redirect(go_where?(conn, params, default, current_path))
+    |> Plug.Conn.delete_session(:go)
   end
 
   def maybe_cute_gif do
