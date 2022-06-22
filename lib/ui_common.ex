@@ -545,12 +545,12 @@ defmodule Bonfire.UI.Common do
   defp internal_go_path?("/" <> _), do: true
   defp internal_go_path?(_), do: false
 
-  defp go_where?(conn, %Ecto.Changeset{}=cs, default, current_path) do
-    go_where?(conn, cs.changes, default, current_path)
+  defp go_where?(session_go, %Ecto.Changeset{}=cs, default, current_path) do
+    go_where?(session_go, cs.changes, default, current_path)
   end
 
-  defp go_where?(conn, params, default, current_path) do
-    case Plug.Conn.get_session(conn, :go) do
+  defp go_where?(session_go, params, default, current_path) do
+    case session_go do
       go when is_binary(go) and current_path !=go ->
         if internal_go_path?(go), do: [to: go], else: [external: go] # needs to support external for oauth/openid
       _ ->
@@ -562,9 +562,12 @@ defmodule Bonfire.UI.Common do
 
   def redirect_to_previous_go(conn, params, default, current_path) do
     # debug(conn.request_path)
+    where = Plug.Conn.get_session(conn, :go)
+    |> go_where?(params, default, current_path)
+
     conn
-    |> Phoenix.Controller.redirect(go_where?(conn, params, default, current_path))
     |> Plug.Conn.delete_session(:go)
+    |> Phoenix.Controller.redirect(where)
   end
 
   def maybe_cute_gif do

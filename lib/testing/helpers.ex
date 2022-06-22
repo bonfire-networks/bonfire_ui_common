@@ -38,7 +38,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   Render stateful Surface or LiveView components
   """
   def render_stateful(component, assigns \\ [], context \\ []) do
-    render_component(component, Utils.deep_merge([__context__: context], assigns))
+    render_component(component, Utils.deep_merge([__context__: context, id: Pointers.ULID.generate()], assigns))
   end
 
   @doc """
