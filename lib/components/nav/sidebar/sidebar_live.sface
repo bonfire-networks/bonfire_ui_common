@@ -1,7 +1,7 @@
 <div 
     x-on:resize.window="show_mobile_composer = (window.innerWidth > 1200) ? false : show_mobile_composer"
     :class="show_mobile_composer ? '!grid !overflow-hidden' : ''"
-    class="items-start hidden grid-flow-row gap-3 tablet-lg:grid auto-rows-min ">
+    class="items-start hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget tablet-lg:grid auto-rows-min ">
     {#if current_user(assigns)}
       <div class="sticky top-0 z-20">
         <Bonfire.UI.Common.LogoLive />
