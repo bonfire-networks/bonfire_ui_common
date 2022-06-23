@@ -4,12 +4,12 @@
   aria-label="Switch between timeline, posts, boosts, media tabs"
 >
   <LivePatch 
-    :for={{item, route} <- Bonfire.Common.Config.get([:ui, :profile, :navigation], [timeline: "timeline"])}
-    to={"/user/#{e(@user, :character, :username, "")}/#{route}"} 
+    :for={{item, tab_name} <- Bonfire.Common.Config.get([:ui, :profile, :navigation], [timeline: "timeline"])}
+    to={"/user/#{e(@user, :character, :username, "")}/#{tab_name}"} 
     class={"hover:bg-base-content/10 group flex-1 pt-2 font-normal place-content-center flex capitalize text-base"}
   > 
-    <div class={"tab tab-bordered group-hover:text-opacity-100", "tab-active": @selected_tab == Atom.to_string(item)}>
-      {item}
+    <div class={"tab tab-bordered group-hover:text-opacity-100", "tab-active": @selected_tab == tab_name}>
+      {localise_dynamic(item)}
     </div>
   </LivePatch>
 </nav>
