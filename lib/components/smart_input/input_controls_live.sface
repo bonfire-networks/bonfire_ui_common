@@ -39,7 +39,7 @@
         </div>
         
         <Surface.Components.Dynamic.Component
-          :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesLive) && e(assigns, :thread_mode, nil) == :flat}
+          :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesLive) && e(assigns, :thread_mode, nil) == :flat || e(assigns, :showing_within, nil) == :page }
           module={Bonfire.Boundaries.Web.BoundariesLive}
           to_circles={e(assigns, :to_circles, [])}
           thread_mode={e(assigns, :thread_mode, nil)}
