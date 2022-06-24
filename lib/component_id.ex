@@ -20,6 +20,7 @@ defmodule Bonfire.UI.Common.ComponentID do
 
 
   def send_updates(component_module, object_id, assigns) do
+    component_module = Utils.maybe_to_atom(component_module)
     debug("ComponentID: try to send_updates to #{component_module} for object id #{object_id}")
 
     for component_id <- ids(component_module, object_id) do
@@ -30,13 +31,11 @@ defmodule Bonfire.UI.Common.ComponentID do
 
   def send_assigns(component_module, id, set, socket) do
 
-    Utils.maybe_to_atom(component_module)
-    |> send_updates(id, set)
+    send_updates(component_module, id, set)
 
     {:noreply, Phoenix.LiveView.assign(socket, set)}
     # {:noreply, socket}
   end
-
 
   def ids(component_module, object_id), do: dictionary_key_id(component_module, object_id) |> ids()
 

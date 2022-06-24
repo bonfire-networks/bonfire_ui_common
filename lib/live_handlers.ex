@@ -120,7 +120,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
         if module_enabled?(module) do
           info(args, "LiveHandler: delegating to #{inspect fun} in #{module} with args")
           apply(module, fun, args ++ [socket])
-          |> debug("applied")
+          # |> debug("applied")
         else
           if module !=fallback and module_enabled?(fallback) do
             info(args, "LiveHandler: delegating to #{inspect fallback} in #{module} with args")
