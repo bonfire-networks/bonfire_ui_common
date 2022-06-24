@@ -14,8 +14,8 @@
             </svg>
           </button>
         </div>
-        <div class="flex flex-col h-full py-6 overflow-y-auto shadow-xl bg-base-100">
-          <div class="relative flex flex-col flex-1 px-4 mt-6 sm:px-6">
+        <div class="flex flex-col h-full overflow-y-auto shadow-xl bg-base-100">
+          <div class="relative flex flex-col flex-1 p-4">
             <div class="flex flex-col space-y-6">
               <div class="flex items-center space-x-2">
                 <LazyImage
@@ -78,13 +78,14 @@
                   {l "Homepage"}
                 </span>
               </LivePatch>
-            </nav>
-            <a href="/logout" class="w-full btn btn-wide btn-error">
+              <a href="/logout" class="w-full mt-12 btn btn-wide btn-error">
               <Outline.LogoutIcon class="flex-shrink-0 w-6 h-6 mr-2 stroke-current" />
               <span class="truncate">
                 {l "Logout"}
               </span>
-            </a>
+              </a>
+            </nav>
+            
           </div>
         </div>
       </div>
