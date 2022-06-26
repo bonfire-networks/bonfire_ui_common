@@ -10,7 +10,7 @@
         aria-expanded="true"
       >
         <LazyImage
-          class="w-10 h-10 rounded bg-base-100"
+          class="w-10 h-10 rounded"
           src={avatar_url(current_user(assigns))}
           alt="current user profile image"
         />
