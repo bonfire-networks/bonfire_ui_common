@@ -1,6 +1,6 @@
 
 <div class="relative z-20 tooltip tooltip-bottom" data-tip={@alt}>
-{#case Bonfire.Files.Blurred.blurred(@src) |> debug("blurred")}
+{#case Bonfire.Files.Blurred.blurred(@src)}
   {#match blurred when is_binary(blurred) and blurred != @src}
     <img 
       src={blurred}
