@@ -29,7 +29,7 @@ defmodule Bonfire.UI.Common.BasicView do
                 <div class="flex items-center flex-shrink-0 lg:px-4">
                   <a data-phx-link="redirect" data-phx-link-state="push" href="/">
                     <div class="flex items-center px-4 py-2 rounded">
-                      <div class="w-16 h-16 mb-4 bg-center bg-no-repeat bg-contain" style="background-image: url(https://bonfirenetworks.org/img/bonfire.png)"></div>
+                      <div class="w-16 h-16 mb-4 bg-center bg-no-repeat bg-contain" style="background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"></div>
                     </div>
                   </a>
                   <div class="flex flex-1">

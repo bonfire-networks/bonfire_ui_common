@@ -483,7 +483,7 @@ defmodule Bonfire.UI.Common do
   def assign_flash(socket_or_conn, type, message, assigns \\ %{})
   def assign_flash(%Phoenix.LiveView.Socket{} = socket, type, message, assigns) do
     info(message, type)
-    Bonfire.UI.Common.Notifications.receive_notification(Map.put(assigns, type, message))
+    Bonfire.UI.Common.Notifications.receive_flash(Map.put(assigns, type, message))
     Phoenix.LiveView.put_flash(socket, type, message)
   end
   def assign_flash(%Plug.Conn{} = conn, type, message, assigns) do

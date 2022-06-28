@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.Notifications do
   import Where
 
   def handle_event("request", _attrs, socket) do
-    receive_notification(%{title: l("Notifications enabled"), message: l("You will now receive notifications of messages, mentions, and other relevant activities.")}, socket)
+    receive_notification(%{title: l("Notifications enabled"), message: l("You will now receive notifications of messages, mentions, and other relevant activities."), icon: Config.get([:ui, :theme, :instance_icon], nil)}, socket)
   end
 
   def handle_info(attrs, socket) do
@@ -11,25 +11,29 @@ defmodule Bonfire.UI.Common.Notifications do
     receive_notification(attrs, socket)
   end
 
-  def notify_feeds(feed_ids, title, message) do
-    %{title: title, message: text_only(message)}
+  def notify_feeds(feed_ids, title, message, icon \\ nil) do
+    %{title: title, message: text_only(message), icon: icon || Config.get([:ui, :theme, :instance_icon], nil)}
     |> debug("to: #{inspect feed_ids}")
     |> pubsub_broadcast(feed_ids, {Bonfire.UI.Common.Notifications, ...}) # send to feed users' handle_info in this same module
   end
 
-  def notify_me(title, message, socket \\ nil) do
+  def notify_me(title, message, icon, socket \\ nil) do
     receive_notification(
-      %{title: title, message: text_only(message)},
+      %{title: title, message: text_only(message), icon: icon},
       socket
     )
+  end
+
+  def receive_flash(attrs) do
+    Map.merge(%{id: "notification"}, attrs)
+    |> debug()
+    |> send_update(Bonfire.UI.Common.NotificationLive, ...)
   end
 
   def receive_notification(attrs, socket \\ nil)
 
   def receive_notification(attrs, nil) do
-    Map.merge(%{id: "notification"}, attrs)
-    |> debug()
-    |> send_update(Bonfire.UI.Common.NotificationLive, ...)
+    receive_flash(attrs)
   end
 
   def receive_notification(attrs, socket) do

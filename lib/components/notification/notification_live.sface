@@ -13,7 +13,12 @@
       <div class="p-4">
         <div class="flex items-start">
           <div class="flex-shrink-0">
-              <Outline.CheckCircleIcon class="w-6 h-6 text-green-400" />
+            {#case e(@notification, :icon, nil)}
+              {#match icon when is_binary(icon)}
+                <img src={icon} class="w-10 h-10 rounded" />
+              {#match _}
+                <Outline.SpeakerphoneIcon class="w-5 h-5 text-gray-600" />
+            {/case}
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
             <p class="text-sm font-medium text-gray-900">{e(@notification, :title, "Notification")}</p>
@@ -43,8 +48,8 @@
       class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash ring-1 ring-black ring-opacity-5">
       <div class="p-4">
         <div class="flex items-center">
-          <div class="flex-shrink-0 p-2 rounded bg-info/30">
-            <Outline.SpeakerphoneIcon class="w-5 h-5 text-gray-600" />
+          <div class="flex-shrink-0 p-2 rounded">
+              <Outline.CheckCircleIcon class="w-6 h-6 text-green-400" />
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
             <p data-id="content" class="text-sm font-semibold text-gray-500">{rich info}</p>

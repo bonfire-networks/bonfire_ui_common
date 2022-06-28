@@ -9,16 +9,21 @@ NotificationsHooks.Notification = {
             console.debug("notification permission is already granted ")
         }
 
-        this.handleEvent("notify", ({ title, message }) => sendNotification(title, message));
+        this.handleEvent("notify", ({ title, message, icon }) => sendNotification(title, message, icon));
     }
 } 
 
-function sendNotification(title, message) {
-    console.debug("notification: " + title)
+function sendNotification(title, message, icon) {
+    console.debug("notification received: " + title)
+    // console.debug(title + message + icon)
     console.debug("notification permission: " + Notification.permission)
     if (Notification.permission === "granted") {
         try {
-            new Notification(title, { body: message, requireInteraction: false });
+            new Notification(title, {
+                body: message,
+                icon: icon,
+                requireInteraction: false
+            });
             console.debug("notification attempted...")
         } catch (e) {
             console.debug("notification error: " + e)
