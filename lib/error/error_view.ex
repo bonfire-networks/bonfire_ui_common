@@ -51,7 +51,7 @@ defmodule Bonfire.UI.Common.ErrorView do
   end
 
   defp show_error(error_or_error_code, details, as_html?) do
-    error(details)
+    # error(details)
 
     if as_html?, do: show_html(error_or_error_code, details),
     else: Jason.encode!(%{

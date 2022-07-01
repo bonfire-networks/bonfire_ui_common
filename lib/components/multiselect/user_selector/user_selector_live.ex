@@ -21,7 +21,7 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
 
     current_user = current_user(assigns)
 
-    followed = if current_user, do: Bonfire.Social.Follows.list_my_followed(current_user, false) # TODO: paginate
+    followed = if current_user, do: Bonfire.Social.Follows.list_my_followed(current_user, paginate: false) # TODO: paginate
     |> Enum.map(&follow_to_tuple/1), else: []
 
     debug(followed: followed)
