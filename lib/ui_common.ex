@@ -578,4 +578,16 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  def hero_icons_list do
+    with {:ok, list} <- :application.get_key(:surface_heroicons, :modules) do
+      list
+      |> Enum.filter(& &1 |> Module.split |> Enum.at(1) == "Solid")
+      |> debug
+      |> Enum.map(& {&1 |> Module.split |> Enum.at(2) |> to_string |> String.trim_trailing("Icon") |> Recase.to_sentence(), &1})
+      |> Map.new()
+      # |> Enum.reduce(user_data, fn m, acc -> apply(m, :create, acc) end)
+    end
+  end
+
+
 end
