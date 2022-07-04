@@ -397,7 +397,7 @@ defmodule Bonfire.UI.Common do
       %{__struct__: struct} = epic when struct == Bonfire.Epics.Epic -> live_exception(socket, return_key, "Could not complete this request: "<>error_msg(epic), epic.errors)
       not_found when not_found in [:not_found, "Not found", 404] -> live_exception(socket, return_key, "Not found")
       msg when is_binary(msg) -> live_exception(socket, return_key, msg)
-      ret -> live_exception(socket, return_key, "Oops, this resulted in something unexpected", ret)
+      ret -> live_exception(socket, return_key, "Oops, this resulted in something unexpected: ", ret)
     end
   end
 

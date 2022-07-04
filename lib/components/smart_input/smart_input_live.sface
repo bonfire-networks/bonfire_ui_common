@@ -4,8 +4,16 @@
   data-id="smart_input"
   class="h-full"
   >
+  <button 
+    :if={Settings.get([:ui, :smart_input_as], nil, assigns) == :fullscreen}
+    x-show="!show_mobile_composer"  
+    @click="show_mobile_composer = true"
+    type="button" 
+    class="items-center btn btn-rounded btn-primary place-content-center w-full">
+    <Solid.PencilAltIcon class="w-6 h-6 mr-2" /> 
+    {l "Write a post"}
+  </button>
   <div 
-    data-theme={if e(assigns, :thread_mode, nil) != :flat, do: "winter"}
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
     x-data={"{
@@ -14,12 +22,14 @@
       distraction_free: false,
       boundary_selected: \"#{if e(assigns, :create_activity_type, nil) in [:message, "message"], do: "message", else: e(assigns, :preset_boundary, "public")}\"
     }"}
-    :class="{
+    x-cloak
+    :class={"{
       'smart-input-open': title_open,
       'smart-input-open-boundaries': open_boundaries,
-      'not-distraction-free break-words': ! distraction_free,
-      'w-full mx-auto !max-w-[600px] tablet:!max-w-[910px] px-3 tablet:pr-0': show_mobile_composer
-    }"
+      'not-distraction-free break-words': !distraction_free,
+      'w-full mx-auto !max-w-[600px] tablet:!max-w-[910px] px-3 tablet:pr-0': show_mobile_composer,
+      'hidden': !show_mobile_composer && #{Settings.get([:ui, :smart_input_as], nil, assigns) == :fullscreen}
+    }"}
     class={
       "flex bg-transparent",
       "bottom-0 !max-w-full": e(assigns, :thread_mode, nil) == :flat or e(assigns, :showing_within, nil) == :messages,
@@ -28,7 +38,7 @@
     >
     <div 
       x-cloak
-      x-show="distraction_free || show_mobile_composer" 
+      x-show="distraction_free || show_mobile_composer"
       @click="distraction_free = !distraction_free"
       class="cursor-pointer bg-white/30 fixed z-[70] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"></div>
     <div 
