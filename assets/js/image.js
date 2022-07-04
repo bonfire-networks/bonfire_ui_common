@@ -1,7 +1,6 @@
 let ImageHooks = {};
 
-import exifr from 'exifr'
-
+// import exifr from 'exifr'
 // async function imageParseMeta(image) {
 //   let options = {
 //     // setting false on these blocks does not read them at all, except for IFD0 which is necessary
