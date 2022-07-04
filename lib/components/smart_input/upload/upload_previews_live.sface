@@ -1,4 +1,4 @@
-{#for {entry, i} <- Enum.with_index(@uploads.files.entries) |> debug}
+{#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
   <article 
     id={"upload-preview-#{i}"}
     phx-hook="imageMetadata"
@@ -52,12 +52,6 @@
     </div>
   </article>
 
-<script type="module">
-  let files = Array.from(document.querySelector('').files)
-  let exifs = await Promise.all(files.map(exifr.parse))
-  let dates = exifs.map(exif => exif.DateTimeOriginal.toGMTString())
-  console.log(`${files.length} photos taken on:`, dates)
-</script>
 {/for}
 
 {#for err <- upload_errors(@uploads.files)}
