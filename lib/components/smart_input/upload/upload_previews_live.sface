@@ -1,5 +1,9 @@
-{#for entry <- @uploads.files.entries}
+{#for {entry, i} <- Enum.with_index(@uploads.files.entries) |> debug}
   <article 
+    id={"upload-preview-#{i}"}
+    phx-hook="imageMetadata"
+    data-img={"phx-preview-#{i}"}
+    data-ref={entry.upload_ref}
     x-data="{show_alt: false}"
     class="relative m-3 mb-0 upload-entry">
     <div class="absolute top-0 z-10 w-full rounded-lg l-0 r-0 h-14 bg-gradient-to-b from-gray-900 to-transparent"></div>
@@ -47,6 +51,13 @@
       <input name={"upload_metadata[#{entry.ref}][label]"} type="text" placeholder="Type here" class="w-full h-8 max-w-xs rounded-sm border-slate-300 text-slate-700 bg-slate-200 input input-bordered">
     </div>
   </article>
+
+<script type="module">
+  let files = Array.from(document.querySelector('').files)
+  let exifs = await Promise.all(files.map(exifr.parse))
+  let dates = exifs.map(exif => exif.DateTimeOriginal.toGMTString())
+  console.log(`${files.length} photos taken on:`, dates)
+</script>
 {/for}
 
 {#for err <- upload_errors(@uploads.files)}

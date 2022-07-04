@@ -7,6 +7,11 @@
   resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.12.0.tgz#4e5cd6d37fa80cb70f029dce879843b047844e3d"
   integrity sha512-3PErDt0dWGsrpxFcfoCXiCKJDil4J8hdts2GApS7z6KAKkkBMYxD9pSyF28TdkdehcuC/E64TMVwU9e2TdjTxw==
 
+exifr@^7.1.3:
+  version "7.1.3"
+  resolved "https://registry.yarnpkg.com/exifr/-/exifr-7.1.3.tgz#f6218012c36dbb7d843222011b27f065fddbab6f"
+  integrity sha512-g/aje2noHivrRSLbAUtBPWFbxKdKhgj/xr1vATDdUXPOFYJlQ62Ft0oy+72V6XLIpDJfHs6gXLbBLAolqOXYRw==
+
 "js-tokens@^3.0.0 || ^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
