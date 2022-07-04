@@ -1,9 +1,27 @@
 
 <div class="align-middle avatar">
-  <div class={classes(assigns)<>" bg-base-200 rounded"}>
+  <div class={classes(assigns)<>" rounded"}>
+  
+  {#case @src || avatar_url(@user)}
+  {#match url when is_binary(url) and url not in ["/images/avatar.png", ""]}
     <LazyImage 
-      class="subject_avatar" 
-      src={avatar_url(@profile)}
+      class="avatar" 
+      src={url}
       />
+  {#match _}
+    {#if Settings.get([__MODULE__, :animal_avatars], true)}
+      <div 
+        id={"#avatar-#{ulid(@user)}"} 
+        phx-hook="randomAnimalAvatar" d
+        data-size={size(assigns)} 
+        data-seed={ulid(@user) || ulid(@src) || @src} 
+      />
+    {#else}
+      <LazyImage 
+        class="avatar" 
+        src={"/images/avatar.png"}
+      />
+    {/if}
+  {/case}
   </div>
 </div>

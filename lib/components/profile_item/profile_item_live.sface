@@ -1,6 +1,6 @@
 <div class="flex items-center">
   <LiveRedirect to={if String.starts_with?(e(@character, :username, ""), "http"), do: e(@character, :username, nil), else: "/user/#{e(@character, :username, "")}"} class="flex items-center flex-1 space-x-3 profile-item group ">
-    <Bonfire.UI.Common.AvatarLive profile={@profile} />
+    <Bonfire.UI.Common.AvatarLive user={@profile} />
     <div class="flex-1">
       <p class="text-base font-semibold group-hover:underline text-base-content">
         {e(@profile, :name, "Anon")}

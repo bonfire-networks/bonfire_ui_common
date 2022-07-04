@@ -34,16 +34,33 @@ let ImageHooks = {};
 //   return data;
 // }
 
-ImageHooks.imageMetadata = {
-  mounted() {
-    // let img = document.getElementById(this.el.dataset.img)
-    // if (img) img.addEventListener("load", async e => {
-    //   let file = e.target.currentSrc || e.target.src;
-    //   console.log(file)
-    //   imageParseMeta(file).then(ret => console.log('Ret:', ret))
-    // })
+// ImageHooks.imageMetadata = {
+//   mounted() {
+// let img = document.getElementById(this.el.dataset.img)
+// if (img) img.addEventListener("load", async e => {
+//   let file = e.target.currentSrc || e.target.src;
+//   console.log(file)
+//   imageParseMeta(file).then(ret => console.log('Ret:', ret))
+// })
+//   }
+// }
 
+import avatar from 'animal-avatar-generator'
+ImageHooks.randomAnimalAvatar = {
+  mounted() {
+    if (this.el.innerHTML.length < 1) {
+      const svg = avatar((this.el.dataset.seed || this.el.id), {
+        size: this.el.dataset.size,
+        blackout: false,
+        round: false,
+        avatarColors: ['#801100', '#B62203', '#D73502', '#FC6400', '#FF7500', '#FAC000'],
+        backgroundColors: ['none']
+      })
+      this.el.innerHTML = svg
+    }
   }
 }
+
+
 
 export { ImageHooks }

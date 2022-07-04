@@ -29,10 +29,10 @@
           >
             <div class="relative flex items-center space-x-3 ">
               <div class="flex-shrink-0">
-                <LazyImage 
+                <Bonfire.UI.Common.AvatarLive 
                   class="w-10 h-10 rounded-full" 
-                  src={avatar_url(e(user, :edge, :object, nil))}
-                  alt="user profile image" />
+                  user={e(user, :edge, :object, nil)}
+                />
               </div>
               <div class="flex-1 min-w-0">
                 <span class="absolute inset-0" aria-hidden="true"></span>

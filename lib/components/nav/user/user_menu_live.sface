@@ -9,10 +9,9 @@
         aria-haspopup="true"
         aria-expanded="true"
       >
-        <LazyImage
+        <Bonfire.UI.Common.AvatarLive
           class="w-10 h-10 rounded"
-          src={avatar_url(current_user(assigns))}
-          alt="current user profile image"
+          user={current_user(assigns)}
         />
         <div class="flex flex-col items-start flex-1 min-w-0">
           <div class="text-left text-sm font-semibold w-[210px] truncate text-ellipsis text-base-content">{e(assigns, :current_user, :profile, :name, "Unknown")}</div>

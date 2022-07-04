@@ -7,6 +7,11 @@
   resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.12.0.tgz#4e5cd6d37fa80cb70f029dce879843b047844e3d"
   integrity sha512-3PErDt0dWGsrpxFcfoCXiCKJDil4J8hdts2GApS7z6KAKkkBMYxD9pSyF28TdkdehcuC/E64TMVwU9e2TdjTxw==
 
+animal-avatar-generator@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/animal-avatar-generator/-/animal-avatar-generator-1.0.5.tgz#2bb82e2de1c5e2093d7adc1d0cc51be912f75b5f"
+  integrity sha512-E0s7fIbdNSOmaE0cge4XI+Hng3IMCa+gTybGd0n5BdXUJ4/aX5eXPQ+Nnsct+wTovVoQsQ10VjBAa29c/wr6Bg==
+
 exifr@^7.1.3:
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/exifr/-/exifr-7.1.3.tgz#f6218012c36dbb7d843222011b27f065fddbab6f"

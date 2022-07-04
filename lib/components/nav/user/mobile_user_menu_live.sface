@@ -18,10 +18,9 @@
           <div class="relative flex flex-col flex-1 p-4">
             <div class="flex flex-col space-y-6">
               <div class="flex items-center space-x-2">
-                <LazyImage
+                <Bonfire.UI.Common.AvatarLive
                   class="w-10 h-10 rounded-full bg-base-200"
-                  src={avatar_url(current_user(assigns))}
-                  alt="current user profile image"
+                  user={current_user(assigns)}
                 />
                 <div class="flex flex-col">
                   <div class="text-lg font-bold text-base-content">{e(@current_user, :profile, :name, :nil)}</div>
