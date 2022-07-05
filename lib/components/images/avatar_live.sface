@@ -7,6 +7,7 @@
     <LazyImage 
       class="avatar" 
       src={url}
+      alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) || l "Avatar"}
       />
   {#match _}
     {#if Settings.get([__MODULE__, :animal_avatars], true)}
@@ -20,6 +21,7 @@
       <LazyImage 
         class="avatar" 
         src={"/images/avatar.png"}
+        alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) || l "Avatar"}
       />
     {/if}
   {/case}

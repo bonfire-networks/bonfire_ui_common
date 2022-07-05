@@ -343,9 +343,9 @@ defmodule Bonfire.UI.Common do
     |> undead_error(socket, return_key)
   rescue
     error in Ecto.Query.CastError ->
-      live_exception(socket, return_key, "You seem to have provided an incorrect data type (eg. an invalid ID)", error, __STACKTRACE__)
+      live_exception(socket, return_key, "You seem to have provided an incorrect data type (eg. an invalid ID): ", error, __STACKTRACE__)
     error in Ecto.ConstraintError ->
-      live_exception(socket, return_key, "You seem to be referencing an invalid object ID, or trying to insert duplicated data", error, __STACKTRACE__)
+      live_exception(socket, return_key, "You seem to be referencing an invalid object ID, or trying to insert duplicated data: ", error, __STACKTRACE__)
     error in FunctionClauseError ->
       # debug(error)
       with %{
@@ -353,32 +353,36 @@ defmodule Bonfire.UI.Common do
         function: function,
         module: module
       } <- error do
-        live_exception(socket, return_key, "The function #{function}/#{arity} in module #{module} didn't receive data in a format it can recognise", error, __STACKTRACE__)
+        live_exception(socket, return_key, "The function #{function}/#{arity} in module #{module} didn't receive data in a format it can recognise: ", error, __STACKTRACE__)
       else error ->
-        live_exception(socket, return_key, "A function didn't receive data in a format it can recognise", error, __STACKTRACE__)
+        live_exception(socket, return_key, "A function didn't receive data in a format it could recognise: ", error, __STACKTRACE__)
       end
     error in WithClauseError ->
-      with %{
-        term: provided
-      } <- error do
-        live_exception(socket, return_key, "A 'with condition' didn't receive data in a format it can recognise", provided, __STACKTRACE__)
-      else error ->
-        live_exception(socket, return_key, "A 'with condition' didn't receive data in a format it can recognise", error, __STACKTRACE__)
-      end
+      live_exception(socket, return_key, "A `with` condition didn't receive data in a format it could recognise: ", term_error(error), __STACKTRACE__)
+    error in CaseClauseError ->
+      live_exception(socket, return_key, "A `case` condition didn't receive data in a format it could recognise: ", term_error(error), __STACKTRACE__)
     cs in Ecto.Changeset ->
         live_exception(socket, return_key, "The data provided caused an exceptional error and could do not be inserted or updated: "<>error_msg(cs), cs, nil)
     error ->
-      live_exception(socket, return_key, "The app encountered an unexpected error", error, __STACKTRACE__)
+      live_exception(socket, return_key, "The app encountered an unexpected error: ", error, __STACKTRACE__)
   catch
     :exit, error ->
-      live_exception(socket, return_key, "An exceptional error caused the operation to stop", error, __STACKTRACE__)
+      live_exception(socket, return_key, "An exceptional error caused the operation to stop: ", error, __STACKTRACE__)
     :throw, {:error, error} when is_binary(error) ->
       live_exception(socket, return_key, error, nil, __STACKTRACE__)
     :throw, error ->
-      live_exception(socket, return_key, "An exceptional error was thrown", error, __STACKTRACE__)
+      live_exception(socket, return_key, "An exceptional error was thrown: ", error, __STACKTRACE__)
     error ->
       # error(error)
-      live_exception(socket, return_key, "An exceptional error occured", error, __STACKTRACE__)
+      live_exception(socket, return_key, "An exceptional error occured: ", error, __STACKTRACE__)
+  end
+
+  defp term_error(error) do
+    with %{term: provided} <- error do
+      error_msg(provided)
+    else _ ->
+      error
+    end
   end
 
   def undead_error(error, socket, return_key \\ :noreply) do
