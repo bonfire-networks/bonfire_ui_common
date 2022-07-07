@@ -1,4 +1,4 @@
-<div class="items-center hidden w-full space-x-1 tablet-lg:flex">
+<div class="items-center hidden w-full space-x-1 md:flex">
   <div 
     class="items-center flex-1">
     <div class="dropdown">

@@ -1,5 +1,9 @@
 
-<div class="relative tooltip tooltip-bottom" data-tip={@alt}>
+<div class={
+  "relative w-full h-full",
+  "tooltip tooltip-bottom": String.length(@alt) > 0
+  }
+  data-tip={@alt}>
 {#case !@src || Bonfire.Files.Blurred.blurred(@src)}
   {#match blurred when is_binary(blurred) and blurred != @src}
     <img 

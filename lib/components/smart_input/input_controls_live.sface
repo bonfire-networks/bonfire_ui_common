@@ -3,12 +3,7 @@
 
 
 <div class="">
-  <Surface.Components.Dynamic.Component
-    :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesLive) && e(assigns, :thread_mode, nil) != :flat}
-    module={Bonfire.Boundaries.Web.BoundariesLive}
-    to_circles={e(assigns, :to_circles, [])}
-    thread_mode={e(assigns, :thread_mode, nil)}
-    />
+
 
     <div class={
       "flex items-center justify-between p-2 space-x-2 border-t rounded-b-md border-base-content/10 bg-base-200 sm:px-3",
@@ -22,11 +17,7 @@
 
         <div 
           data-tip={l "Add a content warning" }
-          class={
-            "relative z-20 flex items-center tooltip",
-            "tooltip-top": e(assigns, :thread_mode, nil) == :flat,
-            "tooltip-bottom": e(assigns, :thread_mode, nil) != :flat
-          }>
+          class={"relative z-20 flex items-center tooltip tooltip-top"}>
           <button
             :if={Bonfire.Common.Config.get([:ui, :smart_input, :cw], []) == true}
             type="button"
@@ -38,21 +29,17 @@
           </button>
         </div>
         
-        <Surface.Components.Dynamic.Component
+        <!-- <Surface.Components.Dynamic.Component
           :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesLive) && e(assigns, :thread_mode, nil) == :flat || e(assigns, :showing_within, nil) == :page }
           module={Bonfire.Boundaries.Web.BoundariesLive}
           to_circles={e(assigns, :to_circles, [])}
           thread_mode={e(assigns, :thread_mode, nil)}
-        />
+        /> -->
         
-        <div 
+        <!-- <div 
           :if={e(assigns, :showing_within, nil) != :page and e(assigns, :thread_mode, nil) != :flat}
           data-tip={l "Full-screen mode" }
-          class={
-            "relative z-20 flex items-center tooltip",
-            "tooltip-top": e(assigns, :thread_mode, nil) == :flat,
-            "tooltip-bottom": e(assigns, :thread_mode, nil) != :flat
-          }>
+          class={"relative z-20 flex items-center tooltip tooltip-top"}>
             <button 
               type="button"
               @click="distraction_free = !distraction_free"
@@ -60,7 +47,7 @@
               class="flex items-center btn btn-ghost btn-sm btn-circle">
             <Outline.ArrowsExpandIcon class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
           </button>
-        </div>
+        </div> -->
 
       </div>
       <button type="submit" phx-disable-with={l "Posting..."} class="capitalize btn-sm justify-self-end btn btn-primary">

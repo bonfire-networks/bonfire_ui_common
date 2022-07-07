@@ -2,6 +2,7 @@
 <div 
   :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}
   data-id="smart_input"
+  data-theme="winter"
   class="h-full"
   >
   <button 
@@ -9,7 +10,7 @@
     x-show="!show_mobile_composer"  
     @click="show_mobile_composer = true"
     type="button" 
-    class="items-center btn btn-rounded btn-primary place-content-center w-full">
+    class="items-center w-full btn btn-rounded btn-primary place-content-center">
     <Solid.PencilAltIcon class="w-6 h-6 mr-2" /> 
     {l "Write a post"}
   </button>
