@@ -12,14 +12,14 @@ defmodule Bonfire.UI.Common.Notifications do
   end
 
   def notify_feeds(feed_ids, title, message, icon \\ nil) do
-    %{title: title, message: text_only(message), icon: icon || Config.get([:ui, :theme, :instance_icon], nil)}
+    %{title: title, message: Text.text_only(message), icon: icon || Config.get([:ui, :theme, :instance_icon], nil)}
     |> debug("to: #{inspect feed_ids}")
     |> pubsub_broadcast(feed_ids, {Bonfire.UI.Common.Notifications, ...}) # send to feed users' handle_info in this same module
   end
 
   def notify_me(title, message, icon, socket \\ nil) do
     receive_notification(
-      %{title: title, message: text_only(message), icon: icon},
+      %{title: title, message: Text.text_only(message), icon: icon},
       socket
     )
   end
