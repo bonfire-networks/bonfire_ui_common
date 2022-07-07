@@ -10,7 +10,6 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop to_circles, :list
   prop smart_input_prompt, :string, required: false
   prop smart_input_text, :string, required: false
-  prop full_screen, :boolean, default: false
   prop showing_within, :any
   prop with_rich_editor, :boolean, required: false
   prop activity, :any
@@ -62,6 +61,49 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   defp display_name(name) do
     name
     |> maybe_to_string()
+  end
+
+  def set_smart_input_text(socket, text \\ "\n") do
+    socket
+    |> push_event("smart_input:set_body", %{text: text})
+  end
+
+  def reset_input(%{assigns: %{showing_within: :thread}} = socket) do
+    # debug("THREad")
+    socket
+    |> set_smart_input_text()
+    |> assign(
+      activity: nil,
+      to_circles: nil,
+      reply_to_id: e(socket.assigns, :thread_id, nil),
+      preset_boundary: nil
+    )
+  end
+
+  def reset_input(%{assigns: %{showing_within: :messages}} = socket) do
+    # debug("messages")
+
+    socket
+    |> set_smart_input_text()
+    |> assign(
+      activity: nil,
+      smart_input_text: nil
+    )
+  end
+
+  def reset_input(socket) do
+    # debug("VOID")
+
+    socket
+    |> set_smart_input_text()
+    |> assign(
+      reply_to_id: nil,
+      thread_id: nil,
+      to_circles: nil,
+      activity: nil,
+      smart_input_text: nil,
+      preset_boundary: nil
+    )
   end
 
   # defp handle_progress(_, entry, socket) do
@@ -117,6 +159,9 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   def handle_event("validate", _params, socket) do
     {:noreply, socket}
+  end
+  def handle_event("reset", _params, socket) do
+    {:noreply, reset_input(socket)}
   end
   def handle_event("cancel-upload", %{"ref" => ref}, socket) do
     {:noreply, cancel_upload(socket, :files, ref)}

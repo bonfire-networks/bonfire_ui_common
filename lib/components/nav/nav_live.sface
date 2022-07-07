@@ -1,10 +1,11 @@
 <div 
   x-data="{
-    show_mobile_composer: false, 
+    show_smart_input_modal: false, 
+    show_smart_input_fullscreen: false, 
     open_sidebar_drawer: false,
     open_drawer: false
   }"
-  :class="show_mobile_composer ? '!grid-cols-1 !place-content-start' : ''"
+  :class="show_smart_input_fullscreen ? '!grid-cols-1 !place-content-start' : ''"
   class={"h-screen max-w-screen-lg tablet:max-w-screen-xl tablet-lg:max-w-screen-2xl mx-auto my-3 px-3 justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)] tablet-lg:grid-cols-[repeat(auto-fit,_290px)] grid gap-3  bonfire_layout"}>
   <Bonfire.UI.Common.SidebarLive
     current_user={current_user(assigns)}
@@ -21,7 +22,7 @@
     hide_smart_input={e(assigns, :hide_smart_input, false)}
   />
   <div 
-    :class="show_mobile_composer ? '!hidden' : ''"
+    :class="show_smart_input_fullscreen ? '!hidden' : ''"
     class="w-full tablet:col-span-1 tablet-lg:col-span-2">
     <!-- <Bonfire.UI.Common.HeaderUserLive 
       page={@page}
@@ -53,7 +54,7 @@
 
   </div>
   <div 
-    :class="show_mobile_composer ? '!hidden' : ''"
+    :class="show_smart_input_fullscreen ? '!hidden' : ''"
     class="items-start hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget tablet-lg:grid auto-rows-min ">
     <div 
       :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(assigns)}
@@ -84,61 +85,18 @@
     />
   </div>
 
-  <div 
-    :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}
-    x-show="!show_mobile_composer"
-    class="fixed bottom-0 z-[90] right-3 bottom-3 tablet-lg:hidden">
-    <button 
-      @click="show_mobile_composer = true"
-      type="button" 
-      class="items-center btn btn-circle btn-primary btn-lg place-content-center ">
-      <Solid.PencilAltIcon class="w-6 h-6" />
-    </button>
-  </div>
+  <!-- <Bonfire.UI.Common.SmartInputContainerLive
+    :if={e(assigns, :hide_smart_input, nil) != true}
+    hide_smart_input={e(assigns, :hide_smart_input, nil)}
+    current_user={current_user(assigns)}
+    showing_within={e(assigns, :showing_within, nil)}
+    reply_to_id={e(assigns, :reply_to_id, "")}
+    thread_id={@thread_id}
+    create_activity_type={e(assigns, :create_activity_type, nil)}
+    thread_mode={e(assigns, :thread_mode, nil)}
+    to_circles={e(assigns, :to_circles, [])}
+    smart_input_prompt={@smart_input_prompt}
+    smart_input_text={@smart_input_text}
+  /> -->
 
-  <div class="absolute z-50 bottom-0 transition-all right-4 w-[40rem]">
-    <header class="flex flex-row w-full px-2 py-1.5 rounded-t bg-base-200 flex-align-items-stretch flex-nowrap">
-      <span class="flex-1 text-sm cursor-move text-ellipsis user-select-none">{l "New post"}</span>
-      <div class="flex items-center space-x-3">
-        <button 
-          type="button" 
-          class="flex " 
-          data-testid="composer:minimize-button" 
-          aria-describedby="tooltip-5527">
-          <Outline.MinusIcon class="w-4 h-4 stroke-1 text-base-content/70" />
-          <span class="sr-only">{l "Minimize"}</span>
-        </button>
-        <button 
-          type="button" 
-          class="flex " 
-          data-testid="composer:maximize-button" 
-          aria-describedby="tooltip-5528">
-          <Outline.ArrowsExpandIcon class="w-4 h-4 stroke-1 text-base-content/70" />
-          <span class="sr-only">{l "Expand full screen"}</span>
-        </button>
-        <button 
-          type="button" 
-          class="flex" 
-          data-testid="composer:close-button" 
-          aria-describedby="tooltip-5529">
-          <Outline.XIcon class="w-4 h-4 stroke-1 text-base-content/70" />
-          <span class="sr-only">{l "Close"}</span>
-        </button>
-      </div>
-    </header>
-   <Bonfire.UI.Common.SmartInputLive
-      :if={e(assigns, :thread_mode, nil) != :flat and e(assigns, :hide_smart_input, nil) != true}
-      id={:smart_input} 
-      hide_smart_input={e(assigns, :hide_smart_input, nil)}
-      current_user={current_user(assigns)}
-      showing_within={e(assigns, :showing_within, nil)}
-      reply_to_id={e(assigns, :reply_to_id, "")}
-      thread_id={@thread_id}
-      create_activity_type={e(assigns, :create_activity_type, nil)}
-      thread_mode={e(assigns, :thread_mode, nil)}
-      to_circles={e(assigns, :to_circles, [])}
-      smart_input_prompt={@smart_input_prompt}
-      smart_input_text={@smart_input_text}
-    />
-  </div>
 </div>

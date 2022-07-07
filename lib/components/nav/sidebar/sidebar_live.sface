@@ -1,96 +1,114 @@
+  <!-- x-on:resize.window="show_smart_input_fullscreen = (window.innerWidth > 1200) ? false : show_smart_input_fullscreen" -->
+
 <div 
-    x-on:resize.window="show_mobile_composer = (window.innerWidth > 1200) ? false : show_mobile_composer"
-    :class="show_mobile_composer ? '!grid !overflow-hidden' : ''"
-    class="items-start hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget md:grid auto-rows-min ">
-    {#if current_user(assigns)}
-      <div class="sticky top-0 z-20">
-        <Bonfire.UI.Common.LogoLive />
-      </div>
-      <Bonfire.UI.Common.UserMenuLive  current_user={current_user(assigns)} />
+  :class="show_smart_input_fullscreen ? '!grid !overflow-hidden' : ''"
+  class="items-start hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget md:grid auto-rows-min ">
+  {#if current_user(assigns)}
+  
+    <div class="sticky top-0 z-20">
+      <Bonfire.UI.Common.LogoLive />
+    </div>
 
-      <button class="normal-case btn btn-primary">{l "Compose a post"}</button>
+    <Bonfire.UI.Common.UserMenuLive current_user={current_user(assigns)} />
 
-      <nav 
-        role="navigation"
-        aria-label={l "Main navigation"}>
-        <ul class="menu">
-          <li>
-            <LiveRedirect 
-              to={if current_user(assigns), do: path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Bonfire.Common.Config.get(:home_page, Bonfire.Web.HomeLive))} 
-              class={"rounded relative",  "lined bg-base-content/10": @page == "home"}
-            >
-              <Solid.HomeIcon class="w-5 h-5 text-base-content/80" />
-              <span :if={@page == "home"} class="sr-only">{l "Current Page:"} </span>
-              {l "Home"}
-            </LiveRedirect>
-          </li>
-          <li class="tablet-lg:hidden">
-            <LiveRedirect 
-              to={"/search"}
-              class={"rounded relative",  "lined bg-base-content/10": @page == "search"}
-            >
-              <Solid.SearchIcon class="w-5 h-5 text-base-content/80" />
-              <span :if={@page == "search"} class="sr-only">{l "Current Page:"} </span>
-              {l "Search"}
-            </LiveRedirect>
-          </li>
-          <li>
-            <LiveRedirect 
-              to={path(:notifications)}
-              class={"rounded relative",  "lined bg-base-content/10": @page == "notifications"}
-            >
-              <Solid.BellIcon class="w-5 h-5 text-base-content/80" />
-              <span :if={@page == "notifications"} class="sr-only">{l "Current Page:"} </span>
-              {l "Notifications"}
-              <Bonfire.UI.Common.BadgeCounterLive id={:notifications} class="indicator-item badge badge-secondary"/> 
-            </LiveRedirect>
-          </li>
-          <li>
-            <LiveRedirect 
-              class={
-              "rounded relative",  "lined bg-base-content/10": @page == "local"} 
-              to={if current_user(@current_user), do: "/feed/local", else: "/local"}>
-              <Solid.LocationMarkerIcon class="w-5 h-5 text-base-content/80" />
-              <span :if={@page == "local"} class="sr-only">{l "Current Page:"} </span>
-              <span class="truncate ellipsis">{l "Local"}</span>
-            </LiveRedirect> 
-          </li>
-          <li :if={current_user(@current_user) || Settings.get([:bonfire_social, :feeds, :federation, :show_guests], false, assigns)}>
-            <LiveRedirect 
-              class={
-                "rounded relative",  "lined bg-base-content/10": @page == "federation"} 
-              to={"/feed/federation"}>
-              <Solid.GlobeIcon class="w-5 h-5 text-base-content/80" />
-              <span :if={@page == "federation"} class="sr-only">{l "Current Page:"} </span>
-              <span class="truncate ellipsis">{l "Federated"}</span>
-            </LiveRedirect> 
-          </li>
-          <li>
-            <LiveRedirect 
-              to={path(Bonfire.Data.Social.Message)} 
-              class={
-                "rounded relative",  "lined bg-base-content/10": @page == "messages"}>
-                <Solid.MailIcon class="w-5 h-5 text-base-content/80"/>
-                <span :if={@page == "messages"} class="sr-only">{l "Current Page:"} </span>
-                {l "Messages"}
-                <Bonfire.UI.Common.BadgeCounterLive id={:inbox} class="indicator-item badge badge-secondary"/>
-            </LiveRedirect>
-          </li>
-          <li>
-            <LiveRedirect 
-              to={"/my/likes"} 
-              class={
-                "rounded relative",  "lined bg-base-content/10": @page == "likes"}>
-                <Solid.StarIcon  class="w-5 h-5 text-base-content/80"/>
-                <span :if={@page == "likes"} class="sr-only">{l "Current Page:"} </span>
-                {l "My favourites"}
-            </LiveRedirect>
-          </li>
-        </ul>
-      </nav>
-     
+    <Bonfire.UI.Common.SmartInputContainerLive
+      :if={e(assigns, :hide_smart_input, nil) != true}
+      hide_smart_input={e(assigns, :hide_smart_input, nil)}
+      current_user={current_user(assigns)}
+      showing_within={e(assigns, :showing_within, nil)}
+      reply_to_id={e(assigns, :reply_to_id, "")}
+      thread_id={@thread_id}
+      create_activity_type={e(assigns, :create_activity_type, nil)}
+      thread_mode={e(assigns, :thread_mode, nil)}
+      to_circles={e(assigns, :to_circles, [])}
+      smart_input_prompt={@smart_input_prompt}
+      smart_input_text={@smart_input_text}
+    />
 
-      <div class="flex-col hidden gap-3 tablet:flex">
+    <nav 
+      role="navigation"
+      aria-label={l "Main navigation"}>
+      <ul class="menu text-sm">
+        <li>
+          <LiveRedirect 
+            to={if current_user(assigns), do: path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Bonfire.Common.Config.get(:home_page, Bonfire.Web.HomeLive))} 
+            class={"rounded relative",  "lined bg-base-content/10": @page == "home"}
+          >
+            <Solid.HomeIcon class="w-5 h-5 text-base-content/80" />
+            <span :if={@page == "home"} class="sr-only">{l "Current Page:"} </span>
+            {l "Home"}
+          </LiveRedirect>
+        </li>
+        <li class="tablet-lg:hidden">
+          <LiveRedirect 
+            to={"/search"}
+            class={"rounded relative",  "lined bg-base-content/10": @page == "search"}
+          >
+            <Solid.SearchIcon class="w-5 h-5 text-base-content/80" />
+            <span :if={@page == "search"} class="sr-only">{l "Current Page:"} </span>
+            {l "Search"}
+          </LiveRedirect>
+        </li>
+        
+        <li>
+          <LiveRedirect 
+            class={
+            "rounded relative",  "lined bg-base-content/10": @page == "local"} 
+            to={if current_user(@current_user), do: "/feed/local", else: "/local"}>
+            <Solid.LocationMarkerIcon class="w-5 h-5 text-base-content/80" />
+            <span :if={@page == "local"} class="sr-only">{l "Current Page:"} </span>
+            <span class="truncate ellipsis">{l "Local"}</span>
+          </LiveRedirect> 
+        </li>
+        <li :if={current_user(@current_user) || Settings.get([:bonfire_social, :feeds, :federation, :show_guests], false, assigns)}>
+          <LiveRedirect 
+            class={
+              "rounded relative",  "lined bg-base-content/10": @page == "federation"} 
+            to={"/feed/federation"}>
+            <Solid.GlobeIcon class="w-5 h-5 text-base-content/80" />
+            <span :if={@page == "federation"} class="sr-only">{l "Current Page:"} </span>
+            <span class="truncate ellipsis">{l "Federated"}</span>
+          </LiveRedirect> 
+        </li>
+
+        <li>
+          <LiveRedirect 
+            to={path(:notifications)}
+            class={"rounded relative",  "lined bg-base-content/10": @page == "notifications"}
+          >
+            <Solid.BellIcon class="w-5 h-5 text-base-content/80" />
+            <span :if={@page == "notifications"} class="sr-only">{l "Current Page:"} </span>
+            {l "Notifications"}
+            <Bonfire.UI.Common.BadgeCounterLive id={:notifications} class="indicator-item badge badge-secondary"/> 
+          </LiveRedirect>
+        </li>
+        <li>
+          <LiveRedirect 
+            to={path(Bonfire.Data.Social.Message)} 
+            class={
+              "rounded relative",  "lined bg-base-content/10": @page == "messages"}>
+              <Solid.MailIcon class="w-5 h-5 text-base-content/80"/>
+              <span :if={@page == "messages"} class="sr-only">{l "Current Page:"} </span>
+              {l "Messages"}
+              <Bonfire.UI.Common.BadgeCounterLive id={:inbox} class="indicator-item badge badge-secondary"/>
+          </LiveRedirect>
+        </li>
+
+        <li>
+          <LiveRedirect 
+            to={"/my/likes"} 
+            class={
+              "rounded relative",  "lined bg-base-content/10": @page == "likes"}>
+              <Solid.StarIcon  class="w-5 h-5 text-base-content/80"/>
+              <span :if={@page == "likes"} class="sr-only">{l "Current Page:"} </span>
+              {l "My favourites"}
+          </LiveRedirect>
+        </li>
+      </ul>
+    </nav>
+    
+
+    <div class="flex-col hidden gap-3 tablet:flex">
       {#if is_list(@sidebar_widgets[:users][:main])}
         <Surface.Components.Dynamic.Component
           :for={{component, component_assigns} <- @sidebar_widgets[:users][:main]}
@@ -99,17 +117,17 @@
           {...component_assigns}
         />
       {/if}
-      </div>
-    {#else}
-      <!-- GUESTS -->
-      <Surface.Components.Dynamic.Component
-        :for={{component, component_assigns} <- @sidebar_widgets[:guests][:main] || [ 
-          {Bonfire.UI.Common.WidgetInstanceInfoLive, []},
-          {Bonfire.UI.Social.WidgetTimelinesLive, []},
-        ]}
-        module={component}
-        {...component_assigns}
-      />
-    {/if} 
-    
-  </div>
+    </div>
+
+  {#else} <!-- GUESTS -->
+    <Surface.Components.Dynamic.Component
+      :for={{component, component_assigns} <- @sidebar_widgets[:guests][:main] || [ 
+        {Bonfire.UI.Common.WidgetInstanceInfoLive, []},
+        {Bonfire.UI.Social.WidgetTimelinesLive, []},
+      ]}
+      module={component}
+      {...component_assigns}
+    />
+  {/if} 
+  
+</div>

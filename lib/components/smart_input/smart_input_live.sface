@@ -2,34 +2,25 @@
 <div 
   :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}
   data-id="smart_input"
-  data-theme="winter"
+  data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, assigns), do: "winter"}
   class="h-full"
   >
-  <button 
-    :if={Settings.get([:ui, :smart_input_as], nil, assigns) == :fullscreen}
-    x-show="!show_mobile_composer"  
-    @click="show_mobile_composer = true"
-    type="button" 
-    class="items-center w-full btn btn-rounded btn-primary place-content-center">
-    <Solid.PencilAltIcon class="w-6 h-6 mr-2" /> 
-    {l "Write a post"}
-  </button>
+
   <div 
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
     x-data={"{
       title_open: #{e(assigns, :title_open, false)}, 
       open_boundaries: false,
-      distraction_free: false,
       boundary_selected: \"#{if e(assigns, :create_activity_type, nil) in [:message, "message"], do: "message", else: e(assigns, :preset_boundary, "public")}\"
     }"}
     x-cloak
     :class={"{
       'smart-input-open': title_open,
       'smart-input-open-boundaries': open_boundaries,
-      'not-distraction-free break-words': !distraction_free,
-      'w-full mx-auto !max-w-[600px] tablet:!max-w-[910px] px-3 tablet:pr-0': show_mobile_composer,
-      'hidden': !show_mobile_composer && #{Settings.get([:ui, :smart_input_as], nil, assigns) == :fullscreen}
+      'not-distraction-free break-words': !show_smart_input_fullscreen,
+      'w-full mx-auto !max-w-[600px] tablet:!max-w-[910px] px-3 tablet:pr-0': show_smart_input_fullscreen,
+      'hidden': !show_smart_input_modal && !show_smart_input_fullscreen && #{Settings.get([:ui, :smart_input_as], nil, assigns) != :sidebar}
     }"}
     class={
       "flex bg-transparent",
@@ -39,12 +30,14 @@
     >
     <div 
       x-cloak
-      x-show="distraction_free || show_mobile_composer"
-      @click="distraction_free = !distraction_free"
-      class="cursor-pointer bg-white/30 fixed z-[70] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"></div>
+      x-show="show_smart_input_fullscreen"
+      @click="show_smart_input_fullscreen = !show_smart_input_fullscreen"
+      class="cursor-pointer bg-white/30 fixed z-[70] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"> 
+      <!-- modal backdrop -->
+    </div>
     <div 
       :class="{
-          'px-3 fixed z-[70] max-w-[720px] top-3 bottom-[20px] w-full -translate-x-1/2 left-1/2': distraction_free || show_mobile_composer,
+          'px-3 fixed z-[70] max-w-[860px] top-3 bottom-[20px] w-full -translate-x-1/2 left-1/2': show_smart_input_fullscreen,
         }"
       class={"flex flex-col flex-1 w-full"}>
       
@@ -62,7 +55,7 @@
 
       <div
         x-cloak
-        x-show="show_mobile_composer == true" 
+        x-show="show_smart_input_fullscreen == true" 
         class="flex items-center p-3 border-b rounded-t bg-base-100 border-base-content/10">
         {#if e(assigns, :showing_within, nil) == :messages}
           <div class="flex-1 font-bold text-base-content">{l "Send a message"}</div>
@@ -81,7 +74,7 @@
           <div class="flex-1 font-bold text-base-content">{e(assigns, :smart_input_prompt, l "Write a post")}</div>
         {/if}
         <button 
-          @click="show_mobile_composer = false"
+          @click="show_smart_input_fullscreen = false"
           class="btn btn-sm btn-circle btn-outline">
           <Outline.XIcon class="w-5 h-5" />
         </button>
@@ -89,12 +82,14 @@
      
      <div 
       :if={@activity}
-      :class="show_mobile_composer ? 'bg-base-100 !rounded-none mb-0 border-b border-base-content/10' : ''"
-      class="overflow-y-auto h-full max-h-[300px] mb-2 rounded-md">
+      :class="show_smart_input_fullscreen ? 'bg-base-100 !rounded-none mb-0 border-b border-base-content/10' : ''"
+      class={
+        "overflow-y-auto mb-2 rounded-md",
+        "h-full max-h-[300px]": Settings.get([:ui, :smart_input_as], nil, assigns) != :sidebar
+      }>
         <!-- show what we're replying to, if any -->
         <Surface.Components.Dynamic.LiveComponent
           module={Bonfire.UI.Social.ActivityLive}
-         
           id={"cap:" <> e(assigns, :activity, :id, "")}
           activity={@activity}
           object={@object}
@@ -105,6 +100,7 @@
           object_boundary={:skip}
         />
       </div>
+
       <Surface.Components.Dynamic.Component
           module={active_smart_input_component(assigns)}
           {...assigns}

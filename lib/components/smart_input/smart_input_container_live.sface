@@ -1,0 +1,101 @@
+<div 
+  :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}>
+  
+   <Bonfire.UI.Common.SmartInputLive
+    :if={Settings.get([:ui, :smart_input_as], nil, assigns)==:sidebar and e(assigns, :thread_mode, nil) != :flat}
+    id={:smart_input} 
+    hide_smart_input={e(assigns, :hide_smart_input, nil)}
+    current_user={current_user(assigns)}
+    showing_within={e(assigns, :showing_within, nil)}
+    reply_to_id={e(assigns, :reply_to_id, "")}
+    thread_id={@thread_id}
+    create_activity_type={e(assigns, :create_activity_type, nil)}
+    thread_mode={e(assigns, :thread_mode, nil)}
+    to_circles={e(assigns, :to_circles, [])}
+    smart_input_prompt={@smart_input_prompt}
+    smart_input_text={@smart_input_text}
+  />
+
+  <div 
+    :if={Settings.get([:ui, :smart_input_as], nil, assigns) != :sidebar}>
+    
+    <button 
+      :if={Settings.get([:ui, :smart_input_as], nil, assigns) != :sidebar}
+      @click="show_smart_input_modal = true"
+      type="button" 
+      class="btn btn-primary normal-case w-full">
+      <Solid.PencilAltIcon class="w-6 h-6 mr-2" /> 
+      {l "Write a post"}
+    </button>
+
+    <div 
+      x-show="!show_smart_input_fullscreen"
+      class="fixed bottom-0 z-[90] right-3 bottom-3 tablet-lg:hidden">
+      <button 
+        @click="show_smart_input_fullscreen = true"
+        type="button" 
+        class="items-center btn btn-circle btn-primary btn-lg place-content-center ">
+        <Solid.PencilAltIcon class="w-6 h-6" />
+      </button>
+    </div>
+
+    <div class="absolute z-50 bottom-0 transition-all right-4 w-[40rem]">
+      <header 
+        class="flex flex-row w-full px-2 py-1.5 rounded-t bg-base-200 flex-align-items-stretch flex-nowrap">
+        <span 
+          @click="show_smart_input_modal = ! show_smart_input_modal"
+          class="flex-1 text-sm cursor-move text-ellipsis user-select-none">
+          {l "New post"}
+        </span>
+        <div class="flex items-center space-x-3">
+          <button 
+            @click="show_smart_input_modal = ! show_smart_input_modal"
+            type="button" 
+            class="flex " 
+            data-testid="composer:minimize-button" 
+            aria-describedby="tooltip-5527">
+            <Outline.MinusIcon class="w-4 h-4 stroke-1 text-base-content/70" />
+            <span class="sr-only">{l "Minimize"}</span>
+          </button>
+          <button 
+            x-show="!show_smart_input_fullscreen"
+            @click="show_smart_input_fullscreen = ! show_smart_input_fullscreen"
+            type="button" 
+            class="flex " 
+            data-testid="composer:maximize-button" 
+            aria-describedby="tooltip-5528">
+            <Outline.ArrowsExpandIcon class="w-4 h-4 stroke-1 text-base-content/70" />
+            <span class="sr-only">{l "Expand full screen"}</span>
+          </button>
+          <button 
+            phx-click="reset"
+            phx-target="#smart_input"
+            @click="show_smart_input_modal = false"
+            type="button" 
+            class="flex" 
+            data-testid="composer:close-button" 
+            aria-describedby="tooltip-5529">
+            <Outline.XIcon class="w-4 h-4 stroke-1 text-base-content/70" />
+            <span class="sr-only">{l "Close"}</span>
+          </button>
+        </div>
+      </header>
+
+      <Bonfire.UI.Common.SmartInputLive
+        :if={e(assigns, :thread_mode, nil) != :flat and e(assigns, :hide_smart_input, nil) != true}
+        id={:smart_input} 
+        hide_smart_input={e(assigns, :hide_smart_input, nil)}
+        current_user={current_user(assigns)}
+        showing_within={e(assigns, :showing_within, nil)}
+        reply_to_id={e(assigns, :reply_to_id, "")}
+        thread_id={@thread_id}
+        create_activity_type={e(assigns, :create_activity_type, nil)}
+        thread_mode={e(assigns, :thread_mode, nil)}
+        to_circles={e(assigns, :to_circles, [])}
+        smart_input_prompt={@smart_input_prompt}
+        smart_input_text={@smart_input_text}
+      />
+
+    </div>
+  </div>
+</div>
