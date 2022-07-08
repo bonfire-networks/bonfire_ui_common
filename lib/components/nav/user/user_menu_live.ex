@@ -5,5 +5,4 @@ defmodule Bonfire.UI.Common.UserMenuLive do
   # prop name, :string, required: true
   # prop username, :string, required: true
 
-
 end

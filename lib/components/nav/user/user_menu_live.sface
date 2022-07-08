@@ -1,33 +1,46 @@
 <div class="items-center hidden w-full space-x-1 md:flex">
-  <div 
-    class="items-center flex-1">
-    <div class="dropdown">
+  <div class="flex items-center flex-1">
+    <LivePatch to={path(current_user(assigns))}>
+      <Bonfire.UI.Common.AvatarLive
+        class="w-10 h-10 rounded bg-base-100"
+        user={current_user(assigns)}
+      />
+    </LivePatch>
+    <LivePatch 
+      class="link link-hover" 
+      to={path(current_user(assigns))}>
+      <div class="flex flex-col items-start flex-1 min-w-0 ml-3">
+        <div class="text-left text-sm font-semibold w-[190px] truncate text-ellipsis text-base-content">{e(assigns, :current_user, :profile, :name, "Unknown")}</div>
+        <span class="hover:no-underline -mt-0.5 text-sm font-light text-base-content text-opacity-80">@{e(assigns, :current_user, :character, :username, "Unknown")}</span>
+      </div>
+    </LivePatch>
+    <div class="dropdown dropdown-end">
       <label
         tabindex="0"
-        class="flex px-0 flex-1 w-full gap-2 h-[44px] mx-0 normal-case cursor-pointer btn btn-ghost btn-sm text-base-content"
+        class="flex btn btn-square btn-ghost"
         id="user-profile-menu"
         aria-haspopup="true"
         aria-expanded="true"
       >
-        <Bonfire.UI.Common.AvatarLive
-          class="w-10 h-10 rounded"
-          user={current_user(assigns)}
-        />
-        <div class="flex flex-col items-start flex-1 min-w-0">
-          <div class="text-left text-sm font-semibold w-[210px] truncate text-ellipsis text-base-content">{e(assigns, :current_user, :profile, :name, "Unknown")}</div>
-          <span class="-mt-0.5 text-sm font-light text-base-content text-opacity-80">@{e(assigns, :current_user, :character, :username, "Unknown")}</span>
-        </div>
-        <div class="mr-2">
+        <div class="">
           <Solid.DotsHorizontalIcon class="w-5 h-5" />
         </div>
       </label>
       <ul
         tabindex="0"
-        class="rounded shadow w-52 menu dropdown-content bg-neutral-content"
+        class="rounded shadow w-72 menu dropdown-content bg-neutral-content"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="user-profile-menu"
       >
+      <!-- We can display a lighter switch users list here -->
+      <!-- {#for user <- @current_account_users }
+        <Bonfire.UI.Common.ProfileItemLive 
+          profile={@profile}
+          character={@character}
+        />
+      {/for} -->
+
         <Bonfire.UI.Common.UserMenuLinksLive current_user={current_user(assigns)} />
       </ul>
     </div>
