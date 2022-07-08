@@ -1,8 +1,6 @@
 <div 
   :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}
-  x-data="{
-    title_text: null
-  }">
+  >
   
    <Bonfire.UI.Common.SmartInputLive
     :if={Settings.get([:ui, :smart_input_as], nil, assigns)==:sidebar and e(assigns, :thread_mode, nil) != :flat}

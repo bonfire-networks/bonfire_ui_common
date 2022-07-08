@@ -39,6 +39,83 @@
   </div>
 
   <div x-show="open_boundaries">
+
+    <ul class="mt-3"> 
+
+      <li class="flex items-center justify-between flex-1 p-3 mb-3 border rounded hover:bg-base-content/5 border-base-content/30">
+
+        <label phx-click={JS.push("select_boundary", value: %{id: "public", name: l "Public"}, target: "#smart_input")}>
+          <div class="">
+            <div class="flex items-center space-x-2">
+              <Solid.GlobeIcon/>
+              <div class="text-base font-semibold">{l "Public"}</div>
+            </div>
+            <div class="text-sm text-base-content/80">
+             {l "Publicly visible to everyone on the fediverse and in search engines"}
+            </div>
+          </div>
+
+          <div class="flex-none">
+            <!-- <input 
+              value={acl.id}
+              type="checkbox"
+            /> -->
+            <Solid.PlusCircleIcon/>
+
+          </div>
+        </label>
+      </li>
+
+      <li class="flex items-center justify-between flex-1 p-3 mb-3 border rounded hover:bg-base-content/5 border-base-content/30">
+
+        <label phx-click={JS.push("select_boundary", value: %{id: "local", name: l "Local Instance"}, target: "#smart_input")}>
+          <div class="">
+            <div class="flex items-center space-x-2">
+              <Solid.LocationMarkerIcon/>
+              <div class="text-base font-semibold">{l "Local Instance"}</div>
+            </div>
+            <div class="text-sm text-base-content/80">
+             {l "Visible to all members of this instance"}
+            </div>
+          </div>
+
+          <div class="flex-none">
+            <!-- <input 
+              value={acl.id}
+              type="checkbox"
+            /> -->
+            <Solid.PlusCircleIcon/>
+
+          </div>
+        </label>
+      </li>
+
+      <li class="flex items-center justify-between flex-1 p-3 mb-3 border rounded hover:bg-base-content/5 border-base-content/30">
+
+        <label phx-click={JS.push("select_boundary", value: %{id: "mentions", name: l "Mentions"}, target: "#smart_input")}>
+          <div class="">
+            <div class="flex items-center space-x-2">
+              <Solid.AtSymbolIcon/> 
+              <div class="text-base font-semibold">{l "Mentions"}</div>
+            </div>
+            <div class="text-sm text-base-content/80">
+             {l "Visible only to those mentioned, across the fediverse"}
+            </div>
+          </div>
+
+          <div class="flex-none">
+            <!-- <input 
+              value={acl.id}
+              type="checkbox"
+            /> -->
+            <Solid.PlusCircleIcon/>
+
+          </div>
+        </label>
+      </li>
+
+  </ul>
+
     <Surface.Components.Dynamic.LiveComponent
       :if={@open_boundaries && module_enabled?(Bonfire.Boundaries.Web.MyAclsListLive)}
       module={Bonfire.Boundaries.Web.MyAclsListLive}
@@ -46,7 +123,7 @@
       to_boundaries={e(assigns, :to_boundaries, [])}
       to_circles={e(assigns, :to_circles, [])}
       hide_breakdown={true}  
-      show_checkboxes={true}
+      ui_for_setting_boundaries={true}
       click_override={true}
       select_event="select_boundary"
     />
