@@ -243,6 +243,7 @@ defmodule Bonfire.UI.Common.Web do
         prop current_user, :any
 
         alias Surface.Components.Link
+        alias Surface.Components.Link.Button
         alias Surface.Components.LivePatch
         alias Surface.Components.LiveRedirect
 

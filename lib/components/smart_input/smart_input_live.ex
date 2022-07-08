@@ -3,10 +3,12 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   # prop user_image, :string, required: true
   # prop target_component, :string
+  prop preset_boundary, :any, default: "public"
+  prop create_activity_type, :any, default: nil
   prop reply_to_id, :string, default: ""
   prop thread_id, :string, default: "", required: false
-  prop create_activity_type, :any
   prop smart_input_component, :atom
+  prop to_boundaries, :list, default: nil
   prop to_circles, :list
   prop smart_input_prompt, :string, required: false
   prop smart_input_text, :string, required: false
@@ -16,7 +18,6 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop hide_smart_input, :boolean, default: false
   prop object, :any
   prop activity_inception, :any
-  prop preset_boundary, :any, default: "public"
   prop title_open, :boolean, default: false
   prop title_prompt, :string
   prop preloaded_recipients, :list
@@ -106,6 +107,34 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     )
   end
 
+  def activity_type_or_reply(assigns) do
+    debug(e(assigns, :reply_to_id, ""), "reply to id")
+    debug(e(assigns, :thread_id, ""), "thread_id")
+    if e(assigns, :reply_to_id, "") !="" or e(assigns, :thread_id, "") !="",
+    do: "reply",
+    else: e(assigns, :create_activity_type, "post")
+  end
+
+  def boundary_ids(preset_boundary, to_boundaries, create_activity_type) do
+    if is_list(to_boundaries) and length(to_boundaries)>0 do
+      Enum.map_join(to_boundaries, "\", \"", &elem(&1, 1))
+    else
+      if create_activity_type in [:message, "message"],
+        do: "message",
+        else: preset_boundary || "public"
+    end
+  end
+
+  def boundary_names(preset_boundary, to_boundaries, create_activity_type) do
+    if is_list(to_boundaries) and length(to_boundaries)>0 do
+      Enum.map_join(to_boundaries, "\", \"", &elem(&1, 0))
+    else
+      if create_activity_type in [:message, "message"],
+        do: "Message",
+        else: preset_boundary || "Public"
+    end
+  end
+
   # defp handle_progress(_, entry, socket) do
   #   debug(entry, "progress")
 
@@ -157,15 +186,33 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     }
   end
 
-  def handle_event("validate", _params, socket) do
-    {:noreply, socket}
+  def handle_event("open_boundaries", _params, socket) do
+    {:noreply, socket
+      |> assign(:open_boundaries, true)
+    }
   end
-  def handle_event("reset", _params, socket) do
-    {:noreply, reset_input(socket)}
+
+  def handle_event("select_boundary", %{"id" => acl_id} = params, socket) do
+    debug(acl_id)
+    {:noreply, socket
+      |> assign(
+        :to_boundaries,
+        e(socket.assigns, :to_boundaries, []) ++ [{e(params, "name", acl_id), acl_id}]
+      )
+    }
+  end
+
+  def handle_event("validate", _params, socket) do # for uploads
+    {:noreply, socket}
   end
   def handle_event("cancel-upload", %{"ref" => ref}, socket) do
     {:noreply, cancel_upload(socket, :files, ref)}
   end
+
+  def handle_event("reset", _params, socket) do
+    {:noreply, reset_input(socket)}
+  end
+
 
   def handle_event(action, attrs, socket), do: Bonfire.UI.Common.LiveHandlers.handle_event(action, attrs, socket, __MODULE__)
 

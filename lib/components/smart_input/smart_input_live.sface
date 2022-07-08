@@ -5,14 +5,18 @@
   data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, assigns), do: "winter"}
   class="h-full"
   >
-
+    <!-- 
+      to_boundaries: [\"#{boundary_ids(@preset_boundary, @to_boundaries, @create_activity_type)}\"],
+      to_boundaries_names: [\"#{boundary_names(@preset_boundary, @to_boundaries, @create_activity_type)}\"]
+       -->
   <div 
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
     x-data={"{
       title_open: #{e(assigns, :title_open, false)}, 
-      open_boundaries: false,
-      boundary_selected: \"#{if e(assigns, :create_activity_type, nil) in [:message, "message"], do: "message", else: e(assigns, :preset_boundary, "public")}\"
+      open_boundaries: #{e(assigns, :open_boundaries, false)},
+      to_boundaries: [],
+      to_boundaries_names: []
     }"}
     x-cloak
     :class={"{

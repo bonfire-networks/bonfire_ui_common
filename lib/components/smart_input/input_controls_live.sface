@@ -30,8 +30,9 @@
         </div>
         
         <!-- <Surface.Components.Dynamic.Component
-          :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesLive) && e(assigns, :thread_mode, nil) == :flat || e(assigns, :showing_within, nil) == :page }
-          module={Bonfire.Boundaries.Web.BoundariesLive}
+          :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesDropdownLive) && e(assigns, :thread_mode, nil) == :flat || e(assigns, :showing_within, nil) == :page }
+          module={Bonfire.Boundaries.Web.BoundariesDropdownLive}
+          to_boundaries={e(assigns, :to_boundaries, [])}
           to_circles={e(assigns, :to_circles, [])}
           thread_mode={e(assigns, :thread_mode, nil)}
         /> -->

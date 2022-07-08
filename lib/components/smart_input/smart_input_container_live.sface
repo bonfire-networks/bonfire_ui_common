@@ -14,6 +14,7 @@
     thread_id={@thread_id}
     create_activity_type={e(assigns, :create_activity_type, nil)}
     thread_mode={e(assigns, :thread_mode, nil)}
+    to_boundaries={e(assigns, :to_boundaries, [])}
     to_circles={e(assigns, :to_circles, [])}
     smart_input_prompt={@smart_input_prompt}
     smart_input_text={@smart_input_text}
@@ -105,6 +106,7 @@
         thread_id={@thread_id}
         create_activity_type={e(assigns, :create_activity_type, nil)}
         thread_mode={e(assigns, :thread_mode, nil)}
+        to_boundaries={e(assigns, :to_boundaries, [])}
         to_circles={e(assigns, :to_circles, [])}
         smart_input_prompt={@smart_input_prompt}
         smart_input_text={@smart_input_text}

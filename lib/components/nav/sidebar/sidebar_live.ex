@@ -10,6 +10,7 @@ defmodule Bonfire.UI.Common.SidebarLive do
   prop thread_id, :string, default: "", required: false
   prop create_activity_type, :any
   prop showing_within, :any
+  prop to_boundaries, :list
   prop to_circles, :list
   prop hide_smart_input, :boolean, default: false
   prop smart_input_prompt, :string, required: false

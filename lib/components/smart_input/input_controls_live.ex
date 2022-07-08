@@ -6,6 +6,7 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop reply_to_id, :string
   prop thread_id, :string
   prop create_activity_type, :any
+  prop to_boundaries, :list
   prop to_circles, :list
   prop showing_within, :any
   prop with_rich_editor, :boolean, default: true, required: false
