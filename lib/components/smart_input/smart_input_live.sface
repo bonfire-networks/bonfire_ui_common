@@ -71,7 +71,11 @@
             </ul>
           </div>
         {#else}
-          <div class="flex-1 font-bold text-base-content">{e(assigns, :smart_input_prompt, l "Write a post")}</div>
+          <div 
+            class="flex-1 font-bold text-base-content"
+            >
+            {e(assigns, :smart_input_prompt, l "New post")}
+          </div>
         {/if}
         <button 
           @click="show_smart_input_fullscreen = false"

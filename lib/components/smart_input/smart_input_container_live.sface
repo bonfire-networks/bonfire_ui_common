@@ -1,5 +1,8 @@
 <div 
-  :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}>
+  :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}
+  x-data="{
+    title_text: null
+  }">
   
    <Bonfire.UI.Common.SmartInputLive
     :if={Settings.get([:ui, :smart_input_as], nil, assigns)==:sidebar and e(assigns, :thread_mode, nil) != :flat}
@@ -25,7 +28,7 @@
       type="button" 
       class="btn btn-primary normal-case w-full">
       <Solid.PencilAltIcon class="w-6 h-6 mr-2" /> 
-      {l "Write a post"}
+      {e(assigns, :smart_input_prompt, l "Compose a post")}
     </button>
 
     <div 
@@ -39,13 +42,18 @@
       </button>
     </div>
 
-    <div class="absolute z-50 bottom-0 transition-all right-4 w-[40rem]">
+    <div 
+      class="absolute z-50 bottom-0 transition-all right-4 "
+      :class="show_smart_input_modal ? 'w-[40rem]' : 'w-[16rem]'"
+    >
       <header 
         class="flex flex-row w-full px-2 py-1.5 rounded-t bg-base-200 flex-align-items-stretch flex-nowrap">
         <span 
           @click="show_smart_input_modal = ! show_smart_input_modal"
-          class="flex-1 text-sm cursor-move text-ellipsis user-select-none">
-          {l "New post"}
+          class="flex-1 text-sm cursor-move text-ellipsis user-select-none"
+          x-text={"title_text || '#{e(assigns, :smart_input_prompt, l "New post")}'"}
+          >
+          {e(assigns, :smart_input_prompt, l "New post")}
         </span>
         <div class="flex items-center space-x-3">
           <button 
@@ -54,8 +62,14 @@
             class="flex " 
             data-testid="composer:minimize-button" 
             aria-describedby="tooltip-5527">
-            <Outline.MinusIcon class="w-4 h-4 stroke-1 text-base-content/70" />
-            <span class="sr-only">{l "Minimize"}</span>
+            <span x-show="show_smart_input_modal">
+              <Outline.MinusIcon  class="w-4 h-4 stroke-1 text-base-content/70" />
+              <span class="sr-only">{l "Minimize"}</span>
+            </span>
+            <span x-show="!show_smart_input_modal">
+              <Solid.PencilAltIcon class="w-4 h-4 stroke-1 text-base-content/70" />
+              <span class="sr-only">{l "Maximise"}</span>
+            </span>
           </button>
           <button 
             x-show="!show_smart_input_fullscreen"
