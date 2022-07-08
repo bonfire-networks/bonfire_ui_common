@@ -1,44 +1,37 @@
 
 
   {#if Config.get(:experimental_features_enabled)}
-    <div   
-    class="flex"
-    >
-    <Surface.Components.Dynamic.Component
-      :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesDropdownLive) && e(assigns, :thread_mode, nil) != :flat}
-      module={Bonfire.Boundaries.Web.BoundariesDropdownLive}
-      to_boundaries={e(assigns, :to_boundaries, [])}
-      to_circles={e(assigns, :to_circles, [])}
-      thread_mode={e(assigns, :thread_mode, nil)}
-    />
-    <Surface.Components.Dynamic.Component
-      :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesSelectionLive) && e(assigns, :thread_mode, nil) != :flat}
-      module={Bonfire.Boundaries.Web.BoundariesSelectionLive}
-      to_boundaries={e(assigns, :to_boundaries, [])}
-      to_circles={e(assigns, :to_circles, [])}
-      thread_mode={e(assigns, :thread_mode, nil)}
-      activity_type_or_reply={Bonfire.UI.Common.SmartInputLive.activity_type_or_reply(assigns)}
-    />
+    <div class="flex items-center py-1 bg-base-content/10">
+      <Surface.Components.Dynamic.Component
+        :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesDropdownLive) && e(assigns, :thread_mode, nil) != :flat}
+        module={Bonfire.Boundaries.Web.BoundariesDropdownLive}
+        to_boundaries={e(assigns, :to_boundaries, [])}
+        to_circles={e(assigns, :to_circles, [])}
+        thread_mode={e(assigns, :thread_mode, nil)}
+      />
+      <Surface.Components.Dynamic.Component
+        :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesSelectionLive) && e(assigns, :thread_mode, nil) != :flat}
+        module={Bonfire.Boundaries.Web.BoundariesSelectionLive}
+        to_boundaries={e(assigns, :to_boundaries, [])}
+        to_circles={e(assigns, :to_circles, [])}
+        thread_mode={e(assigns, :thread_mode, nil)}
+        activity_type_or_reply={Bonfire.UI.Common.SmartInputLive.activity_type_or_reply(assigns)}
+      />
 
-    <button type="button" 
-      x-show="!open_boundaries"
-      class="btn btn-ghost" 
-      phx-click="open_boundaries"
-      phx-target="#smart_input"
-      @click="open_boundaries = true">
-      <Solid.ChevronRightIcon />
-    </button>
+      <button type="button" 
+        x-show="!open_boundaries"
+        class="mr-2 btn btn-ghost btn-sm btn-circle" 
+        phx-click="open_boundaries"
+        phx-target="#smart_input"
+        @click="open_boundaries = true">
+        <Solid.ChevronRightIcon />
+      </button>
 
-    <button type="button" 
-      x-show="open_boundaries"
-      class="btn btn-ghost" 
-      @click="open_boundaries = false">
-      <Outline.CheckIcon />
-    </button>
+      
+    </div>
 
-  </div>
-
-  <div x-show="open_boundaries">
+  <div 
+    x-show="open_boundaries">
     <Surface.Components.Dynamic.LiveComponent
       :if={@open_boundaries && module_enabled?(Bonfire.Boundaries.Web.MyAclsListLive)}
       module={Bonfire.Boundaries.Web.MyAclsListLive}
@@ -50,6 +43,18 @@
       click_override={true}
       select_event="select_boundary"
     />
+  </div>
+
+  <div 
+    x-cloak
+    x-show="open_boundaries"
+    class="p-2 pt-0">
+    <button type="button" 
+      class="w-full normal-case btn btn-primary btn-sm btn-wide" 
+      @click="open_boundaries = false">
+      <Outline.CheckIcon />
+      {l "Add selected boundaries"}
+    </button>
   </div>
 
   {#else}
