@@ -1,7 +1,5 @@
 <div 
   x-data="{
-    show_smart_input_modal: false, 
-    show_smart_input_fullscreen: false, 
     open_sidebar_drawer: false,
     open_drawer: false
   }"

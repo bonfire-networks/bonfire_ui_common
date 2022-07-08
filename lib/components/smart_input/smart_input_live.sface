@@ -14,9 +14,7 @@
     phx-drop-target={@uploads.files.ref}
     x-data={"{
       title_open: #{e(assigns, :title_open, false)}, 
-      open_boundaries: #{e(assigns, :open_boundaries, false)},
-      to_boundaries: [],
-      to_boundaries_names: []
+      open_boundaries: #{e(assigns, :open_boundaries, false)}
     }"}
     x-cloak
     :class={"{

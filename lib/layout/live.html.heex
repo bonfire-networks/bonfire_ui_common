@@ -1,5 +1,12 @@
 <div 
   id="layout-live" 
+  x-data="{
+    title_text: null,
+    to_boundaries: [],
+    to_boundaries_names: [],
+    show_smart_input_modal: false, 
+    show_smart_input_fullscreen: false
+  }"
 >
    <Bonfire.UI.Common.NavLive.render
     __context__={e(assigns, :__context__, %{})}
