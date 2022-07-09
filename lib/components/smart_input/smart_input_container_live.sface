@@ -25,7 +25,7 @@
       @click="show_smart_input_modal = true"
       type="button" 
       class="w-full normal-case btn btn-primary">
-      <Solid.PencilAltIcon class="w-6 h-6 mr-2" /> 
+      <!-- <Solid.PencilAltIcon class="w-6 h-6 mr-2" />  -->
       {e(assigns, :smart_input_prompt, l "Compose a post")}
     </button>
 
@@ -42,10 +42,10 @@
 
     <div 
       class="absolute bottom-0 z-50 transition-all shadow-xl right-4 max-h-[100vh] overflow-x-auto"
-      :class="show_smart_input_modal ? 'w-[40rem]' : 'w-[16rem]'"
+      :class="show_smart_input_modal ? 'w-[40rem]' : 'w-[24rem]'"
     >
       <header 
-        class="flex flex-row w-full px-2 py-1.5 rounded-t bg-base-200 flex-align-items-stretch flex-nowrap">
+        class="flex flex-row w-full p-2 rounded-t bg-base-200 flex-align-items-stretch flex-nowrap">
         <span 
           @click="show_smart_input_modal = ! show_smart_input_modal"
           class="flex-1 text-sm cursor-move text-ellipsis user-select-none"
@@ -53,19 +53,19 @@
           >
           {e(assigns, :smart_input_prompt, l "New post")}
         </span>
-        <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-5">
           <button 
             @click="show_smart_input_modal = ! show_smart_input_modal"
             type="button" 
-            class="flex " 
+            class="flex btn btn-xs btn-ghost btn-square" 
             data-testid="composer:minimize-button" 
             aria-describedby="tooltip-5527">
             <span x-show="show_smart_input_modal">
-              <Outline.MinusIcon  class="w-4 h-4 stroke-1 text-base-content/70" />
+              <Outline.ChevronDoubleDownIcon class="w-4 h-4 stroke-1 text-base-content/70" />
               <span class="sr-only">{l "Minimize"}</span>
             </span>
             <span x-show="!show_smart_input_modal">
-              <Solid.PencilAltIcon class="w-4 h-4 stroke-1 text-base-content/70" />
+              <Outline.ChevronDoubleUpIcon class="w-4 h-4 stroke-1 text-base-content/70" />
               <span class="sr-only">{l "Maximise"}</span>
             </span>
           </button>
@@ -73,7 +73,7 @@
             x-show="!show_smart_input_fullscreen"
             @click="show_smart_input_fullscreen = ! show_smart_input_fullscreen"
             type="button" 
-            class="flex " 
+            class="flex btn btn-xs btn-ghost btn-square" 
             data-testid="composer:maximize-button" 
             aria-describedby="tooltip-5528">
             <Outline.ArrowsExpandIcon class="w-4 h-4 stroke-1 text-base-content/70" />
@@ -84,7 +84,7 @@
             phx-target="#smart_input"
             @click="show_smart_input_modal = false"
             type="button" 
-            class="flex" 
+            class="flex btn btn-xs btn-ghost btn-square" 
             data-testid="composer:close-button" 
             aria-describedby="tooltip-5529">
             <Outline.XIcon class="w-4 h-4 stroke-1 text-base-content/70" />

@@ -14,7 +14,7 @@
   class="p-3 pb-0">
   <Bonfire.UI.Common.SelectRecipientsLive
     preloaded_recipients={e(assigns, :preloaded_recipients, [])}
-  to_boundaries={default_boundaries(assigns)}
+    to_boundaries={default_boundaries(assigns)}
     to_circles={e(assigns, :to_circles, [])}
     open_boundaries={@open_boundaries}
   />

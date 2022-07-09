@@ -43,7 +43,7 @@
           </div> 
 
         </div>
-        <button type="submit" phx-disable-with={l "Posting..."} class="capitalize btn-sm justify-self-end btn btn-primary">
+        <button type="submit" phx-disable-with={l "Posting..."} class="capitalize btn-sm justify-self-end btn w-[8rem] btn-primary">
           {#if e(assigns, :showing_within, nil) == :messages}
           {l "Message"}
           {#else}
