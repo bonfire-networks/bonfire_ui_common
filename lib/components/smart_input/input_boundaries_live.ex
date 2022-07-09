@@ -1,6 +1,5 @@
 defmodule Bonfire.UI.Common.InputBoundariesLive do
   use Bonfire.UI.Common.Web, :stateless_component
-  use Bonfire.Common.Utils
 
   prop create_activity_type, :any
   prop to_boundaries, :list

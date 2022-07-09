@@ -12,10 +12,11 @@
   {#match _}
     {#if Settings.get([__MODULE__, :animal_avatars], true)}
       <div 
-        id={"#avatar-#{ulid(@user)}"} 
+        id={Pointers.ULID.generate()} 
         phx-hook="randomAnimalAvatar" d
         data-size={size(assigns)} 
         data-seed={ulid(@user) || ulid(@src) || @src} 
+        phx-update="ignore"
       />
     {#else}
       <LazyImage 

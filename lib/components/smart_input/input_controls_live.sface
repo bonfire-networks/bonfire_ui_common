@@ -1,82 +1,74 @@
+<div x-show="!open_boundaries">
 
-<Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
+  <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
 
+  <div class="">
 
-<div class="">
+      <div class={
+        "flex items-center justify-between p-2 space-x-2 border-t rounded-b-md border-base-content/10 bg-base-200 sm:px-3",
+        "!border-none !bg-base-100 mt-2 !p-0": e(assigns, :thread_mode, nil) == :flat}>
+        <div class="flex items-center flex-1 space-x-1">
+          <Bonfire.UI.Common.UploadButtonLive
+            :if={e(assigns, :showing_within, nil) != :messages && module_enabled?(Bonfire.Files)}
+            uploads={e(assigns, :uploads, nil)}
+            thread_mode={e(assigns, :thread_mode, nil)}
+          />
 
-
-    <div class={
-      "flex items-center justify-between p-2 space-x-2 border-t rounded-b-md border-base-content/10 bg-base-200 sm:px-3",
-      "!border-none !bg-base-100 mt-2 !p-0": e(assigns, :thread_mode, nil) == :flat}>
-      <div class="flex items-center flex-1 space-x-1">
-        <Bonfire.UI.Common.UploadButtonLive
-          :if={e(assigns, :showing_within, nil) != :messages && module_enabled?(Bonfire.Files)}
-          uploads={e(assigns, :uploads, nil)}
-          thread_mode={e(assigns, :thread_mode, nil)}
-        />
-
-        <div 
-          data-tip={l "Add a content warning" }
-          class={"relative z-20 flex items-center tooltip tooltip-top"}>
-          <button
-            :if={Bonfire.Common.Config.get([:ui, :smart_input, :cw], []) == true}
-            type="button"
-            @click="title_open = !title_open"
-            :class="{'border-base-content/30' : title_open}"
-            class="flex items-center btn btn-ghost btn-sm btn-circle">
-            <span 
-              class="text-xs font-medium text-base-content text-opacity-70">{l "CW"}</span>
-          </button>
-        </div>
-        
-        <!-- <Surface.Components.Dynamic.Component
-          :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesDropdownLive) && e(assigns, :thread_mode, nil) == :flat || e(assigns, :showing_within, nil) == :page }
-          module={Bonfire.Boundaries.Web.BoundariesDropdownLive}
-          to_boundaries={e(assigns, :to_boundaries, [])}
-          to_circles={e(assigns, :to_circles, [])}
-          thread_mode={e(assigns, :thread_mode, nil)}
-        /> -->
-        
-        <div 
-          :if={e(assigns, :showing_within, nil) != :page and e(assigns, :thread_mode, nil) != :flat}
-          x-show="!show_smart_input_modal"
-          data-tip={l "Full-screen mode" }
-          class={"relative z-20 flex items-center tooltip tooltip-top"}>
-            <button 
+          <div 
+            data-tip={l "Add a content warning" }
+            class={"relative z-20 flex items-center tooltip tooltip-top"}>
+            <button
+              :if={Bonfire.Common.Config.get([:ui, :smart_input, :cw], []) == true}
               type="button"
-              @click="show_smart_input_fullscreen = !show_smart_input_fullscreen"
-              :class="{'border-base-content/30' : show_smart_input_fullscreen}"
+              @click="title_open = !title_open"
+              :class="{'border-base-content/30' : title_open}"
               class="flex items-center btn btn-ghost btn-sm btn-circle">
-            <Outline.ArrowsExpandIcon class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
-          </button>
-        </div> 
+              <span 
+                class="text-xs font-medium text-base-content text-opacity-70">{l "CW"}</span>
+            </button>
+          </div>
+          
+          <div 
+            :if={e(assigns, :showing_within, nil) != :page and e(assigns, :thread_mode, nil) != :flat}
+            x-show="!show_smart_input_modal"
+            data-tip={l "Full-screen mode" }
+            class={"relative z-20 flex items-center tooltip tooltip-top"}>
+              <button 
+                type="button"
+                @click="show_smart_input_fullscreen = !show_smart_input_fullscreen"
+                :class="{'border-base-content/30' : show_smart_input_fullscreen}"
+                class="flex items-center btn btn-ghost btn-sm btn-circle">
+              <Outline.ArrowsExpandIcon class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
+            </button>
+          </div> 
 
+        </div>
+        <button type="submit" phx-disable-with={l "Posting..."} class="capitalize btn-sm justify-self-end btn btn-primary">
+          {#if e(assigns, :showing_within, nil) == :messages}
+          {l "Message"}
+          {#else}
+          {l "Post"}
+          {/if}
+        </button>
       </div>
-      <button type="submit" phx-disable-with={l "Posting..."} class="capitalize btn-sm justify-self-end btn btn-primary">
-        {#if e(assigns, :showing_within, nil) == :messages}
-         {l "Message"}
-        {#else}
-        {l "Post"}
-        {/if}
-      </button>
-    </div>
-  
-  <input type="hidden" 
-    name="reply_to[reply_to_id]" 
-    value={@reply_to_id} />
-  <input type="hidden"  
-    name="reply_to[thread_id]" 
-    value={@thread_id} />
+    
+    <input type="hidden" 
+      name="reply_to[reply_to_id]" 
+      value={@reply_to_id} />
+    <input type="hidden"  
+      name="reply_to[thread_id]" 
+      value={@thread_id} />
 
-  <input type="hidden" 
-    name={:create_activity_type}
-    value={@create_activity_type} />
+    <input type="hidden" 
+      name={:create_activity_type}
+      value={@create_activity_type} />
 
-  <input 
-    :for={circle <- e(assigns, :to_circles, [])} 
-    type="hidden" 
-    name="to_circles[]" 
-    label={if is_tuple(circle), do: elem(circle, 0)} 
-    value={if is_tuple(circle), do: elem(circle, 1), else: circle} 
-  />
+    <input 
+      :for={circle <- e(assigns, :to_circles, [])} 
+      type="hidden" 
+      name="to_circles[]" 
+      label={if is_tuple(circle), do: elem(circle, 0)} 
+      value={if is_tuple(circle), do: elem(circle, 1), else: circle} 
+    />
+  </div>
 </div>

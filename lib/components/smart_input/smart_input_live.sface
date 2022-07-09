@@ -13,8 +13,8 @@
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
     x-data={"{
-      title_open: #{e(assigns, :title_open, false)}, 
-      open_boundaries: #{e(assigns, :open_boundaries, false)}
+      title_open: #{@title_open}, 
+      open_boundaries: #{@open_boundaries}
     }"}
     x-cloak
     :class={"{
@@ -22,7 +22,7 @@
       'smart-input-open-boundaries': open_boundaries,
       'not-distraction-free break-words': !show_smart_input_fullscreen,
       'w-full mx-auto !max-w-[600px] tablet:!max-w-[910px] px-3 tablet:pr-0': show_smart_input_fullscreen,
-      'hidden': !show_smart_input_modal && !show_smart_input_fullscreen && #{Settings.get([:ui, :smart_input_as], nil, assigns) != :sidebar}
+      'hidden': !show_smart_input_modal && !show_smart_input_fullscreen && #{Settings.get([:ui, :smart_input_as], nil, assigns) != :sidebar && e(assigns, :thread_mode, nil) != :flat}
     }"}
     class={
       "flex bg-transparent",

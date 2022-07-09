@@ -48,6 +48,7 @@ let ImageHooks = {};
 import avatar from 'animal-avatar-generator'
 ImageHooks.randomAnimalAvatar = {
   mounted() {
+    console.log("avatar!")
     if (this.el.innerHTML.length < 1) {
       const svg = avatar((this.el.dataset.seed || this.el.id), {
         size: this.el.dataset.size,
