@@ -136,6 +136,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     end
   end
 
+
   # defp handle_progress(_, entry, socket) do
   #   debug(entry, "progress")
 

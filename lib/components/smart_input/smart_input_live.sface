@@ -5,10 +5,6 @@
   data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, assigns), do: "winter"}
   class="h-full"
   >
-    <!-- 
-      to_boundaries: [\"#{boundary_ids(@preset_boundary, @to_boundaries, @create_activity_type)}\"],
-      to_boundaries_names: [\"#{boundary_names(@preset_boundary, @to_boundaries, @create_activity_type)}\"]
-       -->
   <div 
     id="smart_input"
     phx-drop-target={@uploads.files.ref}

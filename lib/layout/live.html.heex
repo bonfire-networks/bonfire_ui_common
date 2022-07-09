@@ -1,9 +1,9 @@
+<%# to_boundaries: ['#{if is_messaging?(assigns), do: "message", else: "public"}'],
+    to_boundaries_names: ['#{if is_messaging?(assigns), do: "Message", else: "Public"}'], %>
 <div 
   id="layout-live" 
   x-data={"{
     title_text: null,
-    to_boundaries: ['#{if is_messaging?(assigns), do: "message", else: "public"}'],
-    to_boundaries_names: ['#{if is_messaging?(assigns), do: "Message", else: "Public"}'],
     show_smart_input_modal: false, 
     show_smart_input_fullscreen: false
   }"}
