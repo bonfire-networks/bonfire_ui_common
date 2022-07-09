@@ -14,7 +14,7 @@ defmodule Bonfire.UI.Common.InputBoundariesLive do
 
   def default_boundaries(_assigns) do
     # TODO: configurable
-    [{l("Public"), "public"}]
+    [{"public", l("Public")}]
   end
 
 end

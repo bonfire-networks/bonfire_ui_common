@@ -116,25 +116,25 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     else: e(assigns, :create_activity_type, "post")
   end
 
-  def boundary_ids(preset_boundary, to_boundaries, create_activity_type) do
-    if is_list(to_boundaries) and length(to_boundaries)>0 do
-      Enum.map_join(to_boundaries, "\", \"", &elem(&1, 1))
-    else
-      if create_activity_type in [:message, "message"],
-        do: "message",
-        else: preset_boundary || "public"
-    end
-  end
+  # def boundary_ids(preset_boundary, to_boundaries, create_activity_type) do
+  #   if is_list(to_boundaries) and length(to_boundaries)>0 do
+  #     Enum.map_join(to_boundaries, "\", \"", &elem(&1, 1))
+  #   else
+  #     if create_activity_type in [:message, "message"],
+  #       do: "message",
+  #       else: preset_boundary || "public"
+  #   end
+  # end
 
-  def boundary_names(preset_boundary, to_boundaries, create_activity_type) do
-    if is_list(to_boundaries) and length(to_boundaries)>0 do
-      Enum.map_join(to_boundaries, "\", \"", &elem(&1, 0))
-    else
-      if create_activity_type in [:message, "message"],
-        do: "Message",
-        else: preset_boundary || "Public"
-    end
-  end
+  # def boundary_names(preset_boundary, to_boundaries, create_activity_type) do
+  #   if is_list(to_boundaries) and length(to_boundaries)>0 do
+  #     Enum.map_join(to_boundaries, "\", \"", &elem(&1, 0))
+  #   else
+  #     if create_activity_type in [:message, "message"],
+  #       do: "Message",
+  #       else: preset_boundary || "Public"
+  #   end
+  # end
 
 
   # defp handle_progress(_, entry, socket) do
@@ -195,11 +195,21 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   end
 
   def handle_event("select_boundary", %{"id" => acl_id} = params, socket) do
-    debug(acl_id)
+    # debug(acl_id)
     {:noreply, socket
       |> assign(
         :to_boundaries,
-        e(socket.assigns, :to_boundaries, []) ++ [{e(params, "name", acl_id), acl_id}]
+        e(socket.assigns, :to_boundaries, []) ++ [{acl_id, e(params, "name", acl_id)}]
+      )
+    }
+  end
+
+  def handle_event("remove_boundary", %{"id" => acl_id} = params, socket) do
+    # debug(acl_id)
+    {:noreply, socket
+      |> assign(
+        :to_boundaries,
+        e(socket.assigns, :to_boundaries, []) |> Keyword.drop([acl_id])
       )
     }
   end
