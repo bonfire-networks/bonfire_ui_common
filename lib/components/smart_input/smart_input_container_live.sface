@@ -29,16 +29,7 @@
       {e(assigns, :smart_input_prompt, l "Compose a post")}
     </button>
 
-    <div 
-      x-show="!show_smart_input_fullscreen"
-      class="fixed bottom-0 z-[90] right-3 bottom-3 tablet-lg:hidden">
-      <button 
-        @click="show_smart_input_fullscreen = true"
-        type="button" 
-        class="items-center btn btn-circle btn-primary btn-lg place-content-center ">
-        <Solid.PencilAltIcon class="w-6 h-6" />
-      </button>
-    </div>
+    
 
     <div 
       class="absolute bottom-0 z-50 transition-all shadow-xl right-4 max-h-[100vh] overflow-x-auto"

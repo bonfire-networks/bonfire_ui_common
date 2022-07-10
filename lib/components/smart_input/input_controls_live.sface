@@ -16,7 +16,7 @@
 
           <div 
             data-tip={l "Add a content warning" }
-            class={"relative z-20 flex items-center tooltip tooltip-top"}>
+            class={"relative z-30 flex items-center tooltip tooltip-right"}>
             <button
               :if={Bonfire.Common.Config.get([:ui, :smart_input, :cw], []) == true}
               type="button"
@@ -32,7 +32,7 @@
             :if={e(assigns, :showing_within, nil) != :page and e(assigns, :thread_mode, nil) != :flat}
             x-show="!show_smart_input_modal"
             data-tip={l "Full-screen mode" }
-            class={"relative z-20 flex items-center tooltip tooltip-top"}>
+            class={"relative z-20 flex items-center tooltip tooltip-right"}>
               <button 
                 type="button"
                 @click="show_smart_input_fullscreen = !show_smart_input_fullscreen"
