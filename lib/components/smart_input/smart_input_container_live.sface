@@ -28,10 +28,12 @@
       <Solid.PencilAltIcon class="inline-block w-5 h-5 mr-2" />
       {e(assigns, :smart_input_prompt, l "Compose a post")}
     </button>
-
     <div 
-      class="absolute bottom-0 z-50 transition-all shadow-xl right-4 max-h-[100vh] overflow-x-auto"
-      :class="show_smart_input_modal ? 'w-[40rem]' : 'w-[24rem]'"
+      class="absolute bottom-0 z-50 transition-all w-[24rem] shadow-xl right-4 max-h-[100vh] overflow-x-auto"
+      :class="{
+        '!w-[40rem]': show_smart_input_modal,
+        '!w-auto left-8 top-8': show_smart_input_modal_fullscreen 
+        }"
     >
       <header 
         class="flex flex-row w-full p-2 rounded-t bg-base-200 flex-align-items-stretch flex-nowrap">
@@ -44,7 +46,7 @@
         </span>
         <div class="flex items-center space-x-5">
           <button 
-            @click="show_smart_input_modal = ! show_smart_input_modal"
+            @click="show_smart_input_modal = ! show_smart_input_modal ; show_smart_input_modal_fullscreen = false"
             type="button" 
             class="flex btn btn-xs btn-ghost btn-square" 
             data-testid="composer:minimize-button" 
@@ -59,8 +61,7 @@
             </span>
           </button>
           <button 
-            x-show="!show_smart_input_fullscreen"
-            @click="show_smart_input_fullscreen = ! show_smart_input_fullscreen"
+            @click="show_smart_input_modal_fullscreen = ! show_smart_input_modal_fullscreen"
             type="button" 
             class="flex btn btn-xs btn-ghost btn-square" 
             data-testid="composer:maximize-button" 
@@ -71,7 +72,7 @@
           <button 
             phx-click="reset"
             phx-target="#smart_input"
-            @click="show_smart_input_modal = false"
+            @click="show_smart_input_modal = false; show_smart_input_modal_fullscreen = false "
             type="button" 
             class="flex btn btn-xs btn-ghost btn-square" 
             data-testid="composer:close-button" 

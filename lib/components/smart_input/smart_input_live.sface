@@ -3,7 +3,12 @@
   :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}
   data-id="smart_input"
   data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, assigns) &&  e(assigns, :thread_mode, nil) != :flat, do: "winter"}
-  class="h-full"
+    {#if Settings.get([:ui, :smart_input_as], nil, assigns)==:sidebar and e(assigns, :thread_mode, nil) != :flat}
+
+  class={
+    "h-full",
+    "h-[calc(100%-40px)]": Settings.get([:ui, :smart_input_as], nil, assigns)!=:sidebar and e(assigns, :thread_mode, nil) != :flat
+  }
   >
   <div 
     id="smart_input"
@@ -18,6 +23,7 @@
       'smart-input-open-boundaries': open_boundaries,
       'not-distraction-free break-words': !show_smart_input_fullscreen,
       'w-full mx-auto !max-w-[600px] tablet:!max-w-[910px] px-3 tablet:pr-0': show_smart_input_fullscreen,
+      'h-full': show_smart_input_modal_fullscreen,
       'hidden': !show_smart_input_modal && !show_smart_input_fullscreen && #{Settings.get([:ui, :smart_input_as], nil, assigns) != :sidebar && e(assigns, :thread_mode, nil) != :flat}
     }"}
     class={
