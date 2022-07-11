@@ -106,7 +106,7 @@
               "rounded relative",  "lined bg-base-content/10": @page == "likes"}>
               <Solid.StarIcon  class="w-5 h-5 text-base-content/80"/>
               <span :if={@page == "likes"} class="sr-only">{l "Current Page:"} </span>
-              {l "My favourites"}
+              {l "Favourites"}
           </LiveRedirect>
         </li>
 
@@ -115,7 +115,7 @@
             to={"/settings"} 
             class={
               "rounded relative",  "lined bg-base-content/10": @page == "settings"}>
-              <Solid.CogIcon  class="w-5 h-5 text-base-content/80"/>
+              <Solid.AdjustmentsIcon  class="w-5 h-5 text-base-content/80"/>
               <span :if={@page == "settings"} class="sr-only">{l "Current Page:"} </span>
               {l "Settings"}
           </LiveRedirect>
