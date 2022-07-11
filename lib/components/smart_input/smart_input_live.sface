@@ -2,7 +2,7 @@
 <div 
   :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}
   data-id="smart_input"
-  data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, assigns), do: "winter"}
+  data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, assigns) &&  e(assigns, :thread_mode, nil) != :flat, do: "winter"}
   class="h-full"
   >
   <div 
