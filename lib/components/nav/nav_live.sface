@@ -4,13 +4,13 @@
     open_drawer: false
   }"
   :class="show_smart_input_fullscreen ? '!grid-cols-1 !place-content-start' : ''"
-  class={"h-screen max-w-screen-lg tablet:max-w-screen-xl tablet-lg:max-w-screen-2xl mx-auto my-3 px-3 justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)] tablet-lg:grid-cols-[repeat(auto-fit,_290px)] grid gap-3  bonfire_layout"}>
+  class={"h-screen max-w-screen-lg tablet:max-w-screen-xl tablet-lg:max-w-screen-2xl mx-auto my-3 px-3 justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)] tablet-lg:grid-cols-[repeat(auto-fit,_290px)] grid gap-3 md:gap-6 tablet-lg:gap-8 bonfire_layout"}>
   <Bonfire.UI.Common.SidebarLive
     current_user={current_user(assigns)}
     page={@page}
     reply_to_id={@reply_to_id}
     thread_id={@thread_id}
-    showing_within={e(assigns, :showing_within, nil)}
+    showing_within={e(assigns, :showing_within, nil)} 
     create_activity_type={e(assigns, :create_activity_type, nil)}
     to_boundaries={e(assigns, :to_boundaries, [])}
     to_circles={e(assigns, :to_circles, [])}
@@ -28,7 +28,11 @@
       without_sidebar={@without_sidebar}
       current_user={current_user(assigns)}  
     /> -->
-    <div class="grid grid-rows-[60px_1fr]">
+    <div 
+      class={"grid ",
+      "grid-rows-[60px_1fr]": !Settings.get([:ui, :compact], false, assigns),
+      "grid-rows-[40px_1fr]": Settings.get([:ui, :compact], false, assigns)
+      }>
       <Bonfire.UI.Common.PageHeaderLive
         page_title={e(assigns, :page_title, nil)}
         page_header_drawer={e(assigns, :page_header_drawer, false)}
@@ -43,10 +47,9 @@
             {...component_assigns}
           />
         </:right_action>
-        
       </Bonfire.UI.Common.PageHeaderLive>
-      <!-- This example requires Tailwind CSS v2.0+ -->
-      <div class="overflow-x-hidden overflow-y-auto feed bg-base-100 rounded-b-md">
+
+      <div data-id="inner_content" class="overflow-x-hidden overflow-y-auto feed bg-base-100 rounded-b-md">
         {@inner_content}
       </div>
     </div>

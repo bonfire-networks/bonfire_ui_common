@@ -30,7 +30,10 @@
       :if={e(assigns, :hide_smart_input, nil) != true}
       role="navigation"
       aria-label={l "Main navigation"}>
-      <ul class="text-sm menu">
+      <ul 
+        class={"text-sm menu menu-compact",
+        "lg:menu-normal": !Settings.get([:ui, :compact], false, assigns)
+        }>
         <li>
           <LiveRedirect 
             to={if current_user(assigns), do: path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Bonfire.Common.Config.get(:home_page, Bonfire.Web.HomeLive))} 

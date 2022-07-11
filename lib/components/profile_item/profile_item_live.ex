@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.ProfileItemLive do
 
   prop profile, :any
   prop character, :any
-  prop class, :string
+  prop class, :css_class
   prop show_controls, :list, default: [:follow]
 
   slot default, required: false

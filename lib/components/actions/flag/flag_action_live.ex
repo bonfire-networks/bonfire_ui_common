@@ -4,6 +4,6 @@ defmodule Bonfire.UI.Common.FlagActionLive do
   prop object, :any
   prop label, :string
   prop my_flag, :any
-  prop class, :string
+  prop class, :css_class
 
 end

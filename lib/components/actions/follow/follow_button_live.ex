@@ -2,8 +2,8 @@ defmodule Bonfire.UI.Common.FollowButtonLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
   prop object, :any
-  prop class, :string
-  prop icon_class, :string
+  prop class, :css_class
+  prop icon_class, :css_class
   prop label, :string
   prop my_follow, :boolean
   prop hide_icon, :boolean, default: false

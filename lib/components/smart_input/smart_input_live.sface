@@ -105,6 +105,11 @@
 
       <Surface.Components.Dynamic.Component
           module={active_smart_input_component(assigns)}
+          textarea_class={"editor_area h-full",
+            "!min-h-[120px]": Settings.get([:ui, :smart_input_as], nil, assigns)==:sidebar and e(assigns, :thread_mode, nil) != :flat,
+            "!h-full !min-h-[420px]": e(assigns, :showing_within, nil) in [:page, :compose],
+            "h-auto rounded-lg border border-base-content/30": e(assigns, :thread_mode, nil) == :flat
+            }
           {...assigns}
         />
 

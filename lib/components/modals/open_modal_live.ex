@@ -9,10 +9,10 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   prop title_text, :string
 
   @doc "The classes of the title of the modal"
-  prop title_class, :string, default: "font-bold text-base"
+  prop title_class, :css_class, default: "font-bold text-base"
 
   @doc "The classes of the close/cancel button on the modal. Only used if no close_btn slot is passed."
-  prop cancel_btn_class, :string, default: "btn btn-outline btn-sm normal-case"
+  prop cancel_btn_class, :css_class, default: "btn btn-outline btn-sm normal-case"
 
   @doc "Force modal to be open"
   prop show, :boolean, default: false
@@ -21,7 +21,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   @doc "Optional prop to hide the actions at the bottom of the modal"
   prop no_actions, :boolean, default: false
-  
+
   @doc """
   Additional attributes to add onto the modal wrapper
   """

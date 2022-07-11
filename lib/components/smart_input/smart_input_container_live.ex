@@ -22,5 +22,4 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop show_select_recipients, :boolean, default: false
   prop thread_mode, :string
 
-
 end

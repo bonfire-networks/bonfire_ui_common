@@ -25,8 +25,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop show_select_recipients, :boolean, default: false
   prop thread_mode, :string
   # Classes to customize the smart input appearance
-  prop textarea_class, :string, default: "textarea w-full prose prose-sm bg-base-100 text-base-component_maybe_in_reply_to"
-  prop replied_activity_class, :string, default: "relative  p-3 bg-base-100 hover:!bg-base-100 hover:!bg-opacity-100 showing_within:smart_input overflow-hidden"
+  prop replied_activity_class, :css_class, default: "relative  p-3 bg-base-100 hover:!bg-base-100 hover:!bg-opacity-100 showing_within:smart_input overflow-hidden"
 
   def mount(socket),
     do: {:ok,

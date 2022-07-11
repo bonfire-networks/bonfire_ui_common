@@ -11,7 +11,7 @@
 
 <div 
   :if={@show_select_recipients}
-  class="p-3 pb-0">
+  class="my-3">
   <Bonfire.UI.Common.SelectRecipientsLive
     preloaded_recipients={e(assigns, :preloaded_recipients, [])}
     to_boundaries={default_boundaries(assigns)}
