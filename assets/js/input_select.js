@@ -18,7 +18,6 @@ InputSelectHooks.InputOrSelectOne = {
             suggestions.push(entry);
         });
         console.log("suggestions: ", suggestions)
-
         suggestionItemTemplate = function(tagData){
             return `
             <div ${this.getAttributes(tagData)}
@@ -63,8 +62,17 @@ InputSelectHooks.InputOrSelectOne = {
 
         const tagify = new Tagify($input, {
             enforceWhitelist: true,
+            id: $input.id,
             whitelist: suggestions,
             originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
+            callbacks: {
+              "add": (e) => {
+                this.pushEventTo("#" + $input.id, "add", {add: e.detail.data.value})
+              },
+              "remove": (e) => {
+                this.pushEventTo("#" + $input.id, "remove_from_acl", {subject_id: e.detail.data.value})
+            }
+            },
             dropdown: {
                 maxItems: 20,           // <- mixumum allowed rendered suggestions
                 classname: "tags-look !text-slate-800", // <- custom classname for this dropdown, so it could be targeted
