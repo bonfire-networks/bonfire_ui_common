@@ -34,7 +34,7 @@ let ImageHooks = {};
 //   return data;
 // }
 
-// ImageHooks.imageMetadata = {
+ImageHooks.imageMetadata = {
 //   mounted() {
 // let img = document.getElementById(this.el.dataset.img)
 // if (img) img.addEventListener("load", async e => {
@@ -43,7 +43,7 @@ let ImageHooks = {};
 //   imageParseMeta(file).then(ret => console.log('Ret:', ret))
 // })
 //   }
-// }
+}
 
 import avatar from 'animal-avatar-generator'
 ImageHooks.randomAnimalAvatar = {

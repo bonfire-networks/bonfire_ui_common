@@ -503,7 +503,7 @@ defmodule Bonfire.UI.Common do
     Phoenix.LiveView.consume_uploaded_entries(socket, key, fun)
   rescue
     error in ArgumentError ->
-      error(error, "Could not upload")
+      error(error, "Did not upload")
       []
   end
 
