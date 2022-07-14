@@ -29,7 +29,7 @@
         <input 
           id="recipients_tagify"
           name="to_circles" 
-          class="flex-1 w-full bg-transparent border-0 tagify tagify--outside " />
+          class="flex-1 w-full bg-transparent border-0 tagify " />
         <select class="hidden tagify">
           {#for user <- @preloaded_recipients}
             <option 
