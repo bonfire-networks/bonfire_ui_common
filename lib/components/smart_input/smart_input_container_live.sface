@@ -24,7 +24,7 @@
     <button 
       @click="show_smart_input_modal = true"
       type="button" 
-      class="items-center hidden w-full mb-1 normal-case tablet:flex btn-wide btn btn-primary"> 
+      class="flex items-center w-full mb-1 normal-case btn-wide btn btn-primary"> 
       <Solid.PencilAltIcon class="inline-block w-5 h-5 mr-2" />
       {e(assigns, :smart_input_prompt, l "Compose a post")}
     </button>
@@ -61,7 +61,7 @@
             </span>
           </button>
           <button 
-            @click="show_smart_input_modal_fullscreen = ! show_smart_input_modal_fullscreen"
+            @click="maximize_smart_input_modal()"
             type="button" 
             class="flex btn btn-xs btn-ghost btn-square" 
             data-testid="composer:maximize-button" 

@@ -103,7 +103,7 @@
   /> -->
     <div 
       x-show="!show_smart_input_fullscreen"
-      class="fixed bottom-0 z-[90] right-3 bottom-3 tablet-lg:hidden">
+      class="fixed bottom-0 z-[90] right-3 bottom-3 md:hidden">
       <button 
         @click="show_smart_input_fullscreen = true"
         type="button" 

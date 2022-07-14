@@ -150,7 +150,7 @@
     <Surface.Components.Dynamic.Component
       :for={{component, component_assigns} <- @sidebar_widgets[:guests][:main] || [ 
         {Bonfire.UI.Common.WidgetInstanceInfoLive, []},
-        {Bonfire.UI.Social.WidgetTimelinesLive, []},
+        {Bonfire.UI.Social.WidgetTimelinesLive, [page: @page, widget_title: "Menu"]},
       ]}
       module={component}
       {...component_assigns}

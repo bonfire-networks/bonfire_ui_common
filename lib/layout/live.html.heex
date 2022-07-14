@@ -2,12 +2,20 @@
     to_boundaries_names: ['#{if is_messaging?(assigns), do: "Message", else: "Public"}'], %>
 <div 
   id="layout-live" 
-  x-data={"{
+  x-data="{
     title_text: null,
-    show_smart_input_modal: false, 
+    show_smart_input_modal: false,
     show_smart_input_fullscreen: false,
-    show_smart_input_modal_fullscreen: false
-  }"}
+    show_smart_input_modal_fullscreen: false, 
+    maximize_smart_input_modal() {
+      if (!this.show_smart_input_modal) {
+        this.show_smart_input_modal = true;
+        return this.show_smart_input_modal_fullscreen = true 
+      } else {
+        return this.show_smart_input_modal_fullscreen = true 
+      }
+    }
+  }"
 >
    <Bonfire.UI.Common.NavLive.render
     __context__={e(assigns, :__context__, %{})}

@@ -8,7 +8,6 @@ InputSelectHooks.InputOrSelectOne = {
         let hook = this,
             $input = hook.el.querySelector("input.tagify"),
             $select = hook.el.querySelector("select.tagify");
-
         var suggestions = []
         
         Array.from($select.options).forEach(opt => {
@@ -67,10 +66,10 @@ InputSelectHooks.InputOrSelectOne = {
             originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
             callbacks: {
               "add": (e) => {
-                this.pushEventTo("#" + $input.id, "add", {add: e.detail.data.value})
+                this.pushEventTo("#" + $input.id, "tagify_add", {add: e.detail.data.value})
               },
               "remove": (e) => {
-                this.pushEventTo("#" + $input.id, "remove_from_acl", {subject_id: e.detail.data.value})
+                this.pushEventTo("#" + $input.id, "tagify_remove", {remove: e.detail.data.value})
             }
             },
             dropdown: {
