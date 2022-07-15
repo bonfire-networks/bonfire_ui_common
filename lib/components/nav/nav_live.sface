@@ -22,12 +22,7 @@
   />
   <div 
     :class="show_smart_input_fullscreen ? '!hidden' : ''"
-    class="w-full tablet:col-span-1 tablet-lg:col-span-2">
-    <!-- <Bonfire.UI.Common.HeaderUserLive 
-      page={@page}
-      without_sidebar={@without_sidebar}
-      current_user={current_user(assigns)}  
-    /> -->
+    class="h-[calc(100vh-21px)] gap-2 md:gap-0 md:h-screen w-full tablet:col-span-1 tablet-lg:col-span-2 grid grid-rows-[1fr_48px] md:grid-rows-1">
     <div 
       class={"grid ",
       "grid-rows-[60px_1fr]": !Settings.get([:ui, :compact], false, assigns),
@@ -37,7 +32,7 @@
         page_title={e(assigns, :page_title, nil)}
         page_header_drawer={e(assigns, :page_header_drawer, false)}
         current_user={current_user(assigns)}
-      >
+        >
         <:right_action>
           <Surface.Components.Dynamic.Component
             :if={current_user(assigns) && e(assigns, :page_header_aside, nil)}
@@ -52,8 +47,9 @@
       <div data-id="inner_content" class="overflow-x-hidden overflow-y-auto feed bg-base-100 rounded-b-md">
         {@inner_content}
       </div>
+      
     </div>
-
+    <Bonfire.UI.Common.HeaderUserLive current_user={current_user(assigns)} page={@page} />
   </div>
   <div 
     :class="show_smart_input_fullscreen ? '!hidden' : ''"
@@ -103,7 +99,7 @@
   /> -->
     <div 
       x-show="!show_smart_input_fullscreen"
-      class="fixed bottom-0 z-[90] right-3 bottom-3 md:hidden">
+      class="fixed bottom-0 z-[90] right-3 bottom-12 md:hidden">
       <button 
         @click="show_smart_input_fullscreen = true"
         type="button" 
