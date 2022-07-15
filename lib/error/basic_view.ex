@@ -43,7 +43,7 @@ defmodule Bonfire.UI.Common.BasicView do
               <h1 class="text-base-content">
                 #{title}
               </h1>
-              <div class="flex place-content-center">
+              <div class="flex flex-col place-content-center">
                 #{body}
               </div>
             </div>

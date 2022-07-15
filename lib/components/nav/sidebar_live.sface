@@ -37,9 +37,9 @@
         <li>
           <LiveRedirect 
             to={if current_user(assigns), do: path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Bonfire.Common.Config.get(:home_page, Bonfire.Web.HomeLive))} 
-            class={"rounded relative",  "lined bg-base-content/10": @page == "home"}
+            class={"rounded-full relative",  "font-bold bg-base-content/10": @page == "home"}
           >
-            <Solid.HomeIcon class="w-5 h-5 text-base-content/80" />
+            <Solid.HomeIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "home"} />
             <span :if={@page == "home"} class="sr-only">{l "Current Page:"} </span>
             {l "Home"}
           </LiveRedirect>
@@ -47,9 +47,9 @@
         <li class="tablet-lg:hidden">
           <LiveRedirect 
             to={"/search"}
-            class={"rounded relative",  "lined bg-base-content/10": @page == "search"}
+            class={"rounded-full relative",  "font-bold bg-base-content/10": @page == "search"}
           >
-            <Solid.SearchIcon class="w-5 h-5 text-base-content/80" />
+            <Solid.SearchIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "search"} />
             <span :if={@page == "search"} class="sr-only">{l "Current Page:"} </span>
             {l "Search"}
           </LiveRedirect>
@@ -58,9 +58,9 @@
         <li>
           <LiveRedirect 
             class={
-            "rounded relative",  "lined bg-base-content/10": @page == "local"} 
+            "rounded-full relative",  "font-bold bg-base-content/10": @page == "local"} 
             to={if current_user(@current_user), do: "/feed/local", else: "/local"}>
-            <Solid.LocationMarkerIcon class="w-5 h-5 text-base-content/80" />
+            <Solid.LocationMarkerIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "local"} />
             <span :if={@page == "local"} class="sr-only">{l "Current Page:"} </span>
             <span class="truncate ellipsis">{l "Local"}</span>
           </LiveRedirect> 
@@ -68,9 +68,9 @@
         <li :if={current_user(@current_user) || Settings.get([:bonfire_social, :feeds, :federation, :show_guests], false, assigns)}>
           <LiveRedirect 
             class={
-              "rounded relative",  "lined bg-base-content/10": @page == "federation"} 
+              "rounded-full relative",  "font-bold bg-base-content/10": @page == "federation"} 
             to={"/feed/federation"}>
-            <Solid.GlobeIcon class="w-5 h-5 text-base-content/80" />
+            <Solid.GlobeIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "federation"} />
             <span :if={@page == "federation"} class="sr-only">{l "Current Page:"} </span>
             <span class="truncate ellipsis">{l "Federated"}</span>
           </LiveRedirect> 
@@ -79,9 +79,9 @@
         <li>
           <LiveRedirect 
             to={path(:notifications)}
-            class={"rounded relative",  "lined bg-base-content/10": @page == "notifications"}
+            class={"rounded-full relative",  "font-bold bg-base-content/10": @page == "notifications"}
           >
-            <Solid.BellIcon class="w-5 h-5 text-base-content/80" />
+            <Solid.BellIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "notifications"} />
             <span :if={@page == "notifications"} class="sr-only">{l "Current Page:"} </span>
             {l "Notifications"}
             <Bonfire.UI.Common.BadgeCounterLive id={:notifications} class="indicator-item badge badge-secondary"/> 
@@ -91,8 +91,8 @@
           <LiveRedirect 
             to={path(Bonfire.Data.Social.Message)} 
             class={
-              "rounded relative",  "lined bg-base-content/10": @page == "messages"}>
-              <Solid.MailIcon class="w-5 h-5 text-base-content/80"/>
+              "rounded-full relative",  "font-bold bg-base-content/10": @page == "messages"}>
+              <Solid.MailIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "messages"}/>
               <span :if={@page == "messages"} class="sr-only">{l "Current Page:"} </span>
               {l "Messages"}
               <Bonfire.UI.Common.BadgeCounterLive id={:inbox} class="indicator-item badge badge-secondary"/>
@@ -103,8 +103,8 @@
           <LiveRedirect 
             to={"/my/likes"} 
             class={
-              "rounded relative",  "lined bg-base-content/10": @page == "likes"}>
-              <Solid.StarIcon  class="w-5 h-5 text-base-content/80"/>
+              "rounded-full relative",  "font-bold bg-base-content/10": @page == "likes"}>
+              <Solid.StarIcon  class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "likes"}/>
               <span :if={@page == "likes"} class="sr-only">{l "Current Page:"} </span>
               {l "Favourites"}
           </LiveRedirect>
@@ -114,8 +114,8 @@
           <LiveRedirect 
             to={"/settings"} 
             class={
-              "rounded relative",  "lined bg-base-content/10": @page == "settings"}>
-              <Solid.AdjustmentsIcon  class="w-5 h-5 text-base-content/80"/>
+              "rounded-full relative",  "font-bold bg-base-content/10": @page == "settings"}>
+              <Solid.AdjustmentsIcon  class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "settings"}/>
               <span :if={@page == "settings"} class="sr-only">{l "Current Page:"} </span>
               {l "Settings"}
           </LiveRedirect>
@@ -124,9 +124,8 @@
         <li>
           <LiveRedirect 
             to={"/logout"} 
-            class={
-              "rounded relative"}>
-              <Solid.LogoutIcon  class="w-5 h-5 text-base-content/80"/>
+            class={"rounded-full relative"}>
+              <Solid.LogoutIcon  class={"w-5 h-5 text-base-content/80"}/>
               {l "Logout"}
           </LiveRedirect>
         </li>
@@ -135,7 +134,7 @@
     </nav>
     
 
-    <div class="flex-col hidden gap-3 tablet:flex">
+    <div class="flex-col hidden gap-3 md:flex">
       {#if is_list(@sidebar_widgets[:users][:main])}
         <Surface.Components.Dynamic.Component
           :for={{component, component_assigns} <- @sidebar_widgets[:users][:main]}

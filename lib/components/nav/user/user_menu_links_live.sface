@@ -13,20 +13,6 @@
     {l "Switch profile"}
   </LiveRedirect>
 </li>
-<li 
-  class="hover:bg-neutral hover:bg-opacity-20 text-neutral"
-  :if={current_user(assigns)}>
-  <LiveRedirect to="/settings" class="flex items-center p-4 text-sm text-neutral">
-    {l "Settings"}
-  </LiveRedirect>
-</li>
-<li 
-  class="hover:bg-neutral hover:bg-opacity-20 text-neutral"
-  :if={current_user(assigns) &&  Bonfire.Me.Users.is_admin?(current_user(assigns))}>
-  <LiveRedirect to="/settings/admin/instance" class="flex items-center p-4 text-sm text-neutral">
-    {l "Admin panel"}
-  </LiveRedirect>
-</li>
 <li
   class="hover:bg-neutral hover:bg-opacity-20 text-neutral"
   >
