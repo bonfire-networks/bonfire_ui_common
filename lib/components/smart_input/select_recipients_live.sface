@@ -33,7 +33,7 @@
         <select class="hidden tagify">
           {#for user <- @preloaded_recipients}
             <option 
-              class="!text-slate-800" 
+              class="" 
               value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
           {/for}
         </select>

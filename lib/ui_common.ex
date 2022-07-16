@@ -25,8 +25,16 @@ defmodule Bonfire.UI.Common do
   def assign_global(socket, {_, _} = assign) do
     assign_global(socket, [assign])
   end
-  def assign_global(socket, assign, value) do
-    assign_global(socket, {assign, value})
+  def assign_global(socket, key, value) when is_atom(key) do
+    assign_global(socket, {key, value})
+  end
+  def assign_global(socket, key, value) when is_binary(key) do
+    case maybe_to_atom(key) do
+      key when is_atom(key) -> assign_global(socket, key, value)
+      _ ->
+        warn(key, "Could not assign (not an existing atom)")
+        socket
+    end
   end
   # def assign_global(socket, assign, value) do
   #   socket
@@ -593,5 +601,19 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  @message_types [:message, "message", :messages, "messages"]
 
+  def is_messaging?(assigns) do
+    e(assigns, :create_activity_type, nil) in @message_types or e(assigns, :page, nil) in @message_types or e(assigns, :showing_within, nil) in @message_types
+  end
+
+  def default_boundaries(to_boundaries) when is_list(to_boundaries) and length(to_boundaries)>0 do
+    to_boundaries
+  end
+
+  def default_boundaries(_) do
+    # default in case no custom ones are set
+    # TODO: make default user-configurable
+    [{"public", l("Public")}]
+  end
 end

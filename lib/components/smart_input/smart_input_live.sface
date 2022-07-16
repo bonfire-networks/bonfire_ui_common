@@ -28,7 +28,7 @@
     }"}
     class={
       "flex bg-transparent",
-      "bottom-0 !max-w-full": e(assigns, :thread_mode, nil) == :flat or e(assigns, :showing_within, nil) == :messages,
+      "bottom-0 !max-w-full": e(assigns, :thread_mode, nil) == :flat or is_messaging?(assigns),
       "h-full": e(assigns, :showing_within, nil) == :page
     }
     >
@@ -46,7 +46,7 @@
       class={"flex flex-col flex-1 w-full"}>
       
       <div 
-        :if={e(assigns, :showing_within, nil) != :messages and length(all_smart_input_components())>1}
+        :if={!is_messaging?(assigns) and length(all_smart_input_components())>1}
         class="dropdown dropdown-hover"
         >
         <label tabindex="0" class="m-1 btn">{smart_input_name(active_smart_input_component(assigns))}</label>
@@ -61,7 +61,7 @@
         x-cloak
         x-show="show_smart_input_fullscreen == true" 
         class="flex items-center p-3 border-b rounded-t bg-base-100 border-base-content/10">
-        {#if e(assigns, :showing_within, nil) == :messages}
+        {#if is_messaging?(assigns)}
           <div class="flex-1 font-bold text-base-content">{l "Send a message"}</div>
         {#elseif length(all_smart_input_components())>1}
           <div 

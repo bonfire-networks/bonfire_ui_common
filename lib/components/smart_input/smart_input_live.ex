@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop reply_to_id, :string, default: ""
   prop thread_id, :string, default: "", required: false
   prop smart_input_component, :atom
-  prop to_boundaries, :list, default: nil
+  prop to_boundaries, :list, default: []
   prop to_circles, :list
   prop open_boundaries, :boolean, default: false
   prop smart_input_prompt, :string, required: false
@@ -181,6 +181,14 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   #   {:ok, socket |> assign(assigns)}
   # end
 
+  defp clean_existing(to_boundaries, acl_id) when acl_id in ["public", "local", "mentions"] do
+    to_boundaries
+    |> Keyword.drop(["public", "local", "mentions"])
+  end
+  defp clean_existing(to_boundaries, _) do
+    to_boundaries
+  end
+
   def handle_event("select_smart_input", %{"component" => component}, socket) do
     {:noreply, socket
       |> assign(smart_input_component: maybe_to_module(component))
@@ -194,23 +202,33 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   end
 
   def handle_event("select_boundary", %{"id" => acl_id} = params, socket) do
-    # debug(acl_id)
+    debug(acl_id, "select_boundary")
     {:noreply, socket
       |> assign(
         :to_boundaries,
-        e(socket.assigns, :to_boundaries, []) ++ [{acl_id, e(params, "name", acl_id)}]
+        clean_existing(e(socket.assigns, :to_boundaries, []), acl_id)
+          ++ [{acl_id, e(params, "name", acl_id)}]
       )
     }
   end
 
-  def handle_event("remove_boundary", %{"id" => acl_id} = params, socket) do
-    # debug(acl_id)
+  def handle_event("remove_boundary", %{"id" => acl_id} = _params, socket) do
+    debug(acl_id, "remove_boundary")
     {:noreply, socket
       |> assign(
         :to_boundaries,
-        e(socket.assigns, :to_boundaries, []) |> Keyword.drop([acl_id])
+        e(socket.assigns, :to_boundaries, [])
+          |> Keyword.drop([acl_id])
       )
     }
+  end
+
+  def handle_event("tagify_add", attrs, socket) do
+    handle_event("select_boundary", attrs, socket)
+  end
+
+  def handle_event("tagify_remove", attrs, socket) do
+    handle_event("remove_boundary", attrs, socket)
   end
 
   def handle_event("validate", _params, socket) do # for uploads

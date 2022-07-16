@@ -20,7 +20,7 @@ InputSelectHooks.InputOrSelectOne = {
         suggestionItemTemplate = function(tagData){
             return `
             <div ${this.getAttributes(tagData)}
-                class='tagify__dropdown__item !text-slate-800 ${tagData.class ? tagData.class : ""}'
+                class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
                 tabindex="0"
                 role="option">
                 <span>${tagData.text}</span>
@@ -66,18 +66,18 @@ InputSelectHooks.InputOrSelectOne = {
             originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
             callbacks: {
               "add": (e) => {
-                this.pushEventTo("#" + $input.id, "tagify_add", {add: e.detail.data.value})
+                    this.pushEventTo("#" + $input.id, "tagify_add", { id: e.detail.data.value, name: e.detail.data.text })
               },
               "remove": (e) => {
-                this.pushEventTo("#" + $input.id, "tagify_remove", {remove: e.detail.data.value})
+                this.pushEventTo("#" + $input.id, "tagify_remove", {id: e.detail.data.value})
             }
             },
             dropdown: {
-                maxItems: 20,           // <- mixumum allowed rendered suggestions
-                classname: "tags-look !text-slate-800", // <- custom classname for this dropdown, so it could be targeted
+                maxItems: 50,           // <- maximum allowed rendered suggestions
+                classname: "InputOrSelectOne-dropdown", // <- custom classname(s) for the dropdown
                 enabled: 0,             // <- show suggestions on focus
                 closeOnSelect: true,    // <- do not hide the suggestions dropdown once an item has been selected
-                searchKeys: ['text']  // very important to set by which keys to search for suggesttions when typing
+                searchKeys: ['text']  // which keys to search for suggestions when typing
                 },
             // blacklist: ['foo', 'bar'],
             templates: {
@@ -89,10 +89,15 @@ InputSelectHooks.InputOrSelectOne = {
         },
 
 
-    mounted() {
+    mounted() { 
         this.initInputOrSelectOne();
     },
 
+    updated() {
+        console.log("input_select updated")
+        // FIXME: not ideal to completely re-initialise tagify here rather than update the values
+        this.initInputOrSelectOne();
+    },
     // selected(hook, event) {
     //     let id = event.params.data.id;
     //     hook.pushEvent("country_selected", { country: id })

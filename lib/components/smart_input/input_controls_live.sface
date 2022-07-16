@@ -9,7 +9,7 @@
         "!border-none !bg-base-100 mt-2 !p-0": e(assigns, :thread_mode, nil) == :flat}>
         <div class="flex items-center flex-1 space-x-1">
           <Bonfire.UI.Common.UploadButtonLive
-            :if={e(assigns, :showing_within, nil) != :messages && module_enabled?(Bonfire.Files)}
+            :if={!is_messaging?(assigns) && module_enabled?(Bonfire.Files)}
             uploads={e(assigns, :uploads, nil)}
             thread_mode={e(assigns, :thread_mode, nil)}
           />
@@ -43,11 +43,11 @@
           </div> 
 
         </div>
-        <button type="submit" phx-disable-with={if e(assigns, :showing_within, nil) == :messages || e(assigns, :create_activity_type, nil) == :message, do: l("Sending..."), else: l "Posting..."} class="capitalize btn-sm justify-self-end btn w-[8rem] btn-primary">
-          {#if e(assigns, :showing_within, nil) == :messages || e(assigns, :create_activity_type, nil) == :message }
-          {l "Send"}
+        <button type="submit" phx-disable-with={if is_messaging?(assigns), do: l("Sending..."), else: l "Posting..."} class="capitalize btn-sm justify-self-end btn w-[8rem] btn-primary">
+          {#if is_messaging?(assigns)}
+            {l "Send"}
           {#else}
-          {l "Post"}
+            {l "Post"}
           {/if}
         </button>
       </div>

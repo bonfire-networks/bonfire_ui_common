@@ -10,13 +10,4 @@ defmodule Bonfire.UI.Common.InputBoundariesLive do
   prop open_boundaries, :boolean, default: false
   prop thread_mode, :string
 
-  def default_boundaries(%{to_boundaries: to_boundaries}) when is_list(to_boundaries) and length(to_boundaries)>0 do
-    to_boundaries
-  end
-
-  def default_boundaries(_assigns) do
-    # TODO: configurable
-    [{"public", l("Public")}]
-  end
-
 end

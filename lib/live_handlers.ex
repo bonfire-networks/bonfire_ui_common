@@ -77,18 +77,32 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     empty(socket)
   end
 
+  # global event handler to set assigns of a view or component
+  defp do_handle_event("assign", attrs, socket) do
+    debug(attrs, "LiveHandler: do_handle_event - assign")
+    {:noreply,
+      Enum.reduce(
+        attrs,
+        socket,
+        fn {k, v}, socket -> assign_global(socket, k, v) end
+      )
+    }
+  end
+
   defp do_handle_event(event, attrs, socket) when is_binary(event) do
     # debug(handle_event: event)
     case String.split(event, ":", parts: 2) do
       [mod, action] -> mod_delegate(mod, :handle_event, [action, attrs], socket)
       _ ->
-        warn("LiveHandler: could not find event handler")
+        warn(event, "LiveHandler: could not find event handler")
+        debug(attrs, "attrs")
         empty(socket)
     end
   end
 
-  defp do_handle_event(_, _, socket) do
-    warn("LiveHandler: could not find event handler")
+  defp do_handle_event(event, attrs, socket) do
+    warn(event, "LiveHandler: could not find event handler")
+    debug(attrs, "attrs")
     empty(socket)
   end
 
