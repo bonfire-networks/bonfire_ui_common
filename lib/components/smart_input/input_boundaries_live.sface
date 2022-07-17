@@ -2,7 +2,7 @@
   :if={!is_messaging?(assigns) and module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
   module={Bonfire.Boundaries.Web.SetBoundariesLive}
   showing_within={@showing_within}
-  to_boundaries={e(assigns, :to_boundaries, []) |> debug("to_boundaries")}
+  to_boundaries={e(assigns, :to_boundaries, [])}
   to_circles={e(assigns, :to_circles, [])}
   open_boundaries={@open_boundaries}
   thread_mode={e(assigns, :thread_mode, nil)}
