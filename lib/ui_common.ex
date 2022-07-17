@@ -12,7 +12,14 @@ defmodule Bonfire.UI.Common do
     end
   end
 
-  def assign_global(socket, assigns) when is_map(assigns), do: assign_global(socket, Map.to_list(assigns))
+  def assign_global(socket, assigns) when is_map(assigns) do
+    # assign_global(socket, Map.to_list(assigns))
+    Enum.reduce(
+      assigns,
+      socket,
+      fn {k, v}, socket -> assign_global(socket, k, v) end
+    )
+  end
   def assign_global(socket, assigns) when is_list(assigns) do
     socket
     |> Phoenix.LiveView.assign(assigns)
@@ -23,14 +30,15 @@ defmodule Bonfire.UI.Common do
     ) #|> debug("assign_global")
   end
   def assign_global(socket, {_, _} = assign) do
-    assign_global(socket, [assign])
+    assign_global(socket, Keyword.new([assign]))
   end
+
   def assign_global(socket, key, value) when is_atom(key) do
-    assign_global(socket, {key, value})
+    assign_global(socket, Keyword.new([{key, value}]))
   end
   def assign_global(socket, key, value) when is_binary(key) do
     case maybe_to_atom(key) do
-      key when is_atom(key) -> assign_global(socket, key, value)
+      key when is_atom(key) -> assign_global(socket, Keyword.new([{key, value}]))
       _ ->
         warn(key, "Could not assign (not an existing atom)")
         socket

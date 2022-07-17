@@ -36,7 +36,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   # global handler to set a view's assigns from a component
   defp do_handle_info({:assign, {assign, value}}, socket) do
-    debug("LiveHandler: do_handle_info, assign data with {:assign, {#{assign}, value}}")
+    debug("LiveHandler: handle_info, assign data with {:assign, {#{assign}, value}}")
     {:noreply,
       socket
       |> assign_global(assign, value)
@@ -45,12 +45,12 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   end
 
   defp do_handle_info({{mod, name}, data}, socket) when is_atom(mod) do
-    debug("LiveHandler: do_handle_info with {{#{inspect mod}, #{inspect name}}, data}")
+    debug("LiveHandler: handle_info with {{#{inspect mod}, #{inspect name}}, data}")
     mod_delegate(mod, :handle_info, [{name, data}], socket)
   end
 
   defp do_handle_info({info, data}, socket) when is_binary(info) do
-    debug("LiveHandler: do_handle_info with {#{inspect info}, data}")
+    debug("LiveHandler: handle_info with {#{inspect info}, data}")
     case String.split(info, ":", parts: 2) do
       [mod, name] -> mod_delegate(mod, :handle_info, [{name, data}], socket)
       _ -> empty(socket)
@@ -58,7 +58,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   end
 
   defp do_handle_info({mod, data}, socket) when is_atom(mod) do
-    debug("LiveHandler: do_handle_info with {#{inspect mod}, data}")
+    debug("LiveHandler: handle_info with {#{inspect mod}, data}")
     mod_delegate(mod, :handle_info, [data], socket)
   end
 
@@ -79,14 +79,8 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   # global event handler to set assigns of a view or component
   defp do_handle_event("assign", attrs, socket) do
-    debug(attrs, "LiveHandler: do_handle_event - assign")
-    {:noreply,
-      Enum.reduce(
-        attrs,
-        socket,
-        fn {k, v}, socket -> assign_global(socket, k, v) end
-      )
-    }
+    debug(attrs, "LiveHandler: assign")
+    {:noreply, assign_global(socket, attrs)}
   end
 
   defp do_handle_event(event, attrs, socket) when is_binary(event) do
