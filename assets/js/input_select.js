@@ -8,6 +8,13 @@ InputSelectHooks.InputOrSelectOne = {
         let hook = this,
             $input = hook.el.querySelector("input.tagify"),
             $select = hook.el.querySelector("select.tagify");
+
+
+        let userInput = true
+        if ($input.dataset.userInput) {
+            userInput = $input.dataset.userInput
+        } 
+        
         var suggestions = []
         
         Array.from($select.options).forEach(opt => {
@@ -58,10 +65,12 @@ InputSelectHooks.InputOrSelectOne = {
         //     // render the suggestions dropdown.
         //     .dropdown.show(e.detail.value);
         // }
-
+        console.log($input.dataset)
+        console.log(userInput)
         const tagify = new Tagify($input, {
             enforceWhitelist: true,
             id: $input.id,
+            userInput: userInput === 'false' ? false : true,
             whitelist: suggestions,
             originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
             callbacks: {

@@ -32,7 +32,7 @@
   </div>
   {#else}
     <div 
-      class="bg-base-100 rounded-md flex h-[48px] place-content-center items-center flex w-full px-3">
+      class="md:hidden bg-base-100 rounded-md flex h-[48px] place-content-center items-center flex w-full px-3">
       <LiveRedirect 
         class="flex items-center flex-1 space-x-2"
         to={if current_user(assigns), do: path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Bonfire.Common.Config.get(:home_page, Bonfire.Web.HomeLive))}>

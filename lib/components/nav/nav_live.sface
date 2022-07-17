@@ -98,6 +98,7 @@
     smart_input_text={@smart_input_text}
   /> -->
     <div 
+      :if={current_user(assigns)}
       x-show="!show_smart_input_fullscreen"
       class="fixed bottom-0 z-[90] right-3 bottom-12 md:hidden">
       <button 
