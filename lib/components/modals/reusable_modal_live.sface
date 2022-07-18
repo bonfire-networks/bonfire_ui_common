@@ -1,5 +1,5 @@
-<input type="checkbox" id={@id} class="modal-toggle" />
 <div
+  id={@id}
   class={"modal max-h-[100%] ",
   "modal-closed": !@show,
   "modal-open": @show}
@@ -16,7 +16,7 @@
       <h3 class={@title_class || "font-bold text-base"}>
         <#slot name="title">{@title_text}</#slot>
       </h3>
-      <label for={@id} class="absolute top-0 right-0 block pt-5 pr-4">
+      <div class="absolute top-0 right-0 block pt-5 pr-4">
         <button 
           phx-click="close"
           phx-target={"##{@id}"}
@@ -25,7 +25,7 @@
           <span class="sr-only">{l "Close"}</span>
           <Outline.XIcon class="w-4 h-4" />
         </button>
-      </label>
+      </div>
 
       <div class="mt-2" data-id="modal-contents">
         <#slot></#slot>

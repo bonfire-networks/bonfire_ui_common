@@ -12,6 +12,19 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  def assign_generic(%Phoenix.LiveView.Socket{} = socket, assigns) do
+    Phoenix.LiveView.assign(socket, assigns)
+  end
+  def assign_generic(%Plug.Conn{} = conn, assigns) do
+    Plug.Conn.merge_assigns(conn, maybe_to_keyword_list(assigns, false))
+  end
+  def assign_generic(%Phoenix.LiveView.Socket{} = socket, key, value) do
+    Phoenix.LiveView.assign(socket, key, value)
+  end
+  def assign_generic(%Plug.Conn{} = conn, key, value) do
+    Plug.Conn.assign(conn, key, value)
+  end
+
   def assign_global(socket, assigns) when is_map(assigns) do
     # assign_global(socket, Map.to_list(assigns))
     Enum.reduce(
@@ -22,9 +35,9 @@ defmodule Bonfire.UI.Common do
   end
   def assign_global(socket, assigns) when is_list(assigns) do
     socket
-    |> Phoenix.LiveView.assign(assigns)
+    |> assign_generic(assigns)
     # being naughty here, let's see how long until Surface breaks it:
-    |> Phoenix.LiveView.assign(:__context__,
+    |> assign_generic(:__context__,
                           Map.get(socket.assigns, :__context__, %{})
                           |> Map.merge(maybe_to_map(assigns))
     ) #|> debug("assign_global")
@@ -46,8 +59,8 @@ defmodule Bonfire.UI.Common do
   end
   # def assign_global(socket, assign, value) do
   #   socket
-  #   |> Phoenix.LiveView.assign(assign, value)
-  #   |> Phoenix.LiveView.assign(:global_assigns, [assign] ++ Map.get(socket.assigns, :global_assigns, []))
+  #   |> assign_generic(assign, value)
+  #   |> assign_generic(:global_assigns, [assign] ++ Map.get(socket.assigns, :global_assigns, []))
   # end
 
   # TODO: get rid of assigning everything to a component, and then we'll no longer need this
@@ -89,7 +102,7 @@ defmodule Bonfire.UI.Common do
     # |> IO.inspect
   end
 
-  def assigns_merge(%Phoenix.LiveView.Socket{} = socket, assigns, new) when is_map(assigns) or is_list(assigns), do: socket |> Phoenix.LiveView.assign(assigns_merge(assigns, new))
+  def assigns_merge(%Phoenix.LiveView.Socket{} = socket, assigns, new) when is_map(assigns) or is_list(assigns), do: socket |> assign_generic(assigns_merge(assigns, new))
   def assigns_merge(assigns, new) when is_map(assigns), do: assigns_merge(Map.to_list(assigns), new)
   def assigns_merge(assigns, new) when is_map(new), do: assigns_merge(assigns, Map.to_list(new))
   def assigns_merge(assigns, new) when is_list(assigns) and is_list(new) do
@@ -460,7 +473,7 @@ defmodule Bonfire.UI.Common do
     assigns = %{error_sentry_event_id: maybe_last_sentry_event_id()}
 
     socket
-      |> Phoenix.LiveView.assign(assigns)
+      |> assign_generic(assigns)
       |> assign_flash(:error, error_msg(msg), assigns)
   end
 
