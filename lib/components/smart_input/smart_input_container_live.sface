@@ -51,11 +51,11 @@
             class="flex btn btn-xs btn-ghost btn-square" 
             data-testid="composer:minimize-button" 
             aria-describedby="tooltip-5527">
-            <span x-show="show_smart_input_modal">
+            <span x-cloak x-show="show_smart_input_modal">
               <Outline.ChevronDoubleDownIcon class="w-4 h-4 stroke-1 text-base-content/70" />
               <span class="sr-only">{l "Minimize"}</span>
             </span>
-            <span x-show="!show_smart_input_modal">
+            <span x-cloak x-show="!show_smart_input_modal">
               <Outline.ChevronDoubleUpIcon class="w-4 h-4 stroke-1 text-base-content/70" />
               <span class="sr-only">{l "Maximise"}</span>
             </span>
