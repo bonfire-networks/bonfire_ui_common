@@ -36,12 +36,12 @@
         }>
         <li>
           <LiveRedirect 
-            to={if current_user(assigns), do: path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Bonfire.Common.Config.get(:home_page, Bonfire.Web.HomeLive))} 
+            to={path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive))} 
             class={"rounded-full relative",  "font-bold bg-base-content/10": @page == "home"}
           >
-            <Solid.HomeIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "home"} />
-            <span :if={@page == "home"} class="sr-only">{l "Current Page:"} </span>
-            {l "Home"}
+            <Solid.NewspaperIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "feed"} />
+            <span :if={@page == "feed"} class="sr-only">{l "Current Page:"} </span>
+            {l "My feed"}
           </LiveRedirect>
         </li>
         <li class="tablet-lg:hidden">

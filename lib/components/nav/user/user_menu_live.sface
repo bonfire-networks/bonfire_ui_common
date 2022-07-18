@@ -14,7 +14,10 @@
         <span class="hover:no-underline -mt-0.5 text-sm font-light text-base-content text-opacity-80">@{e(assigns, :current_user, :character, :username, "Unknown")}</span>
       </div>
     </LivePatch>
-    <div class="dropdown dropdown-end">
+    <LiveRedirect to="/switch-user" class="btn btn-square btn-ghost">
+      <Outline.FingerPrintIcon class="w-5 h-5 text-base-content/70" />
+    </LiveRedirect>
+    <!-- <div class="dropdown dropdown-end">
       <label
         tabindex="0"
         class="flex btn btn-square btn-ghost"
@@ -33,17 +36,9 @@
         aria-orientation="vertical"
         aria-labelledby="user-profile-menu"
       >
-      <!-- We can display a lighter switch users list here -->
-      <!-- {#for user <- @current_account_users }
-        <Bonfire.UI.Common.ProfileItemLive 
-          profile={@profile}
-          character={@character}
-        />
-      {/for} -->
-
         <Bonfire.UI.Common.UserMenuLinksLive current_user={current_user(assigns)} />
       </ul>
-    </div>
+    </div> -->
   </div>
 </div>
 
