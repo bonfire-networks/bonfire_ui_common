@@ -27,7 +27,6 @@
     />
 
     <nav 
-      :if={e(assigns, :hide_smart_input, nil) != true}
       role="navigation"
       aria-label={l "Main navigation"}>
       <ul 
@@ -44,6 +43,7 @@
             {l "My feed"}
           </LiveRedirect>
         </li>
+
         <li class="tablet-lg:hidden">
           <LiveRedirect 
             to={"/search"}
@@ -55,17 +55,18 @@
           </LiveRedirect>
         </li>
         
-        <li>
+        <li :if={!@show_less_menu_items}>
           <LiveRedirect 
             class={
             "rounded-full relative",  "font-bold bg-base-content/10": @page == "local"} 
-            to={if current_user(@current_user), do: "/feed/local", else: "/local"}>
+            to={"/feed/local"}>
             <Solid.LocationMarkerIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "local"} />
             <span :if={@page == "local"} class="sr-only">{l "Current Page:"} </span>
             <span class="truncate ellipsis">{l "Local"}</span>
           </LiveRedirect> 
         </li>
-        <li :if={current_user(@current_user) || Settings.get([:bonfire_social, :feeds, :federation, :show_guests], false, assigns)}>
+
+        <li :if={!@show_less_menu_items}>
           <LiveRedirect 
             class={
               "rounded-full relative",  "font-bold bg-base-content/10": @page == "federation"} 
@@ -87,6 +88,7 @@
             <Bonfire.UI.Common.BadgeCounterLive id={:notifications} class="indicator-item badge badge-secondary"/> 
           </LiveRedirect>
         </li>
+
         <li>
           <LiveRedirect 
             to={path(Bonfire.Data.Social.Message)} 
@@ -99,7 +101,7 @@
           </LiveRedirect>
         </li>
 
-        <li>
+        <li :if={!@show_less_menu_items}>
           <LiveRedirect 
             to={"/my/likes"} 
             class={
@@ -110,7 +112,7 @@
           </LiveRedirect>
         </li>
 
-        <li>
+        <li :if={!@show_less_menu_items}>
           <LiveRedirect 
             to={"/settings"} 
             class={
@@ -121,7 +123,7 @@
           </LiveRedirect>
         </li>
 
-        <li>
+        <li :if={!@show_less_menu_items}>
           <LiveRedirect 
             to={"/logout"} 
             class={"rounded-full relative"}>
@@ -145,7 +147,8 @@
       {/if}
     </div>
 
-  {#else} <!-- GUESTS -->
+  {#else} <!-- GUEST SIDEBAR -->
+
     <Surface.Components.Dynamic.Component
       :for={{component, component_assigns} <- @sidebar_widgets[:guests][:main] || [ 
         {Bonfire.UI.Common.WidgetInstanceInfoLive, []},

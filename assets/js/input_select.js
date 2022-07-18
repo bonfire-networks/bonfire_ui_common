@@ -5,10 +5,8 @@ import Tagify from '@yaireo/tagify'
 InputSelectHooks.InputOrSelectOne = {
 
     initInputOrSelectOne() {
-        let hook = this,
-            $input = hook.el.querySelector("input.tagify"),
-            $select = hook.el.querySelector("select.tagify");
-
+        let $input = this.el.querySelector("input.tagify"),
+            $select = this.el.querySelector("select.tagify");
 
         let userInput = true
         if ($input.dataset.userInput) {
@@ -24,7 +22,8 @@ InputSelectHooks.InputOrSelectOne = {
             suggestions.push(entry);
         });
         console.log("suggestions: ", suggestions)
-        suggestionItemTemplate = function(tagData){
+
+        const suggestionItemTemplate = function(tagData){
             return `
             <div ${this.getAttributes(tagData)}
                 class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
@@ -35,14 +34,14 @@ InputSelectHooks.InputOrSelectOne = {
             `
         }
 
-        tagTemplate = function (tagData) {
+        const tagTemplate = function (tagData) {
             return `
             <tag 
-                    contenteditable='false'
-                    spellcheck='false'
-                    tabIndex="-1"
-                    class="tagify__tag ${tagData.class ? tagData.class : ""}"
-                    ${this.getAttributes(tagData)}>
+                contenteditable='false'
+                spellcheck='false'
+                tabIndex="-1"
+                class="tagify__tag ${tagData.class ? tagData.class : ""}"
+                ${this.getAttributes(tagData)}>
                 <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
                 <div>
                     <span class='tagify__tag-text'>${tagData.text}</span>
@@ -66,19 +65,24 @@ InputSelectHooks.InputOrSelectOne = {
         //     .dropdown.show(e.detail.value);
         // }
         console.log($input.dataset)
-        console.log(userInput)
+        // console.log(userInput)
         const tagify = new Tagify($input, {
-            enforceWhitelist: true,
-            id: $input.id,
+            id: this.el.id,
             userInput: userInput === 'false' ? false : true,
             whitelist: suggestions,
+            enforceWhitelist: true, // only tags from suggestions list are valid?
+            keepInvalidTags: true, // keep tags that aren't in the suggestion list anyway?
             originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
             callbacks: {
               "add": (e) => {
+                if (e.detail.data) {
                     this.pushEventTo("#" + $input.id, "tagify_add", { id: e.detail.data.value, name: e.detail.data.text })
+                }
               },
               "remove": (e) => {
-                this.pushEventTo("#" + $input.id, "tagify_remove", {id: e.detail.data.value})
+                if(e.detail.data){
+                    this.pushEventTo("#" + $input.id, "tagify_remove", { id: e.detail.data.value })
+                }
             }
             },
             dropdown: {
@@ -90,12 +94,19 @@ InputSelectHooks.InputOrSelectOne = {
                 },
             // blacklist: ['foo', 'bar'],
             templates: {
+                // wrapper: wrapperTemplate,
                 dropdownItem: suggestionItemTemplate,
                 tag: tagTemplate
             },
           })
         //tagify.on('input', onInput)
-        },
+
+        if (window.InputOrSelectOnes == undefined) {
+            window.InputOrSelectOnes = {};
+        }
+
+        window.InputOrSelectOnes[this.el.id] = tagify;
+    },
 
 
     mounted() { 
@@ -104,6 +115,9 @@ InputSelectHooks.InputOrSelectOne = {
 
     updated() {
         console.log("input_select updated")
+        // const tagify = window.InputOrSelectOnes[this.el.id]; // FIXME: doesn't work because we can't have phx-ignore and also update the input value in LV
+        // tagify.loadOriginalValues();
+
         // FIXME: not ideal to completely re-initialise tagify here rather than update the values
         this.initInputOrSelectOne();
     },

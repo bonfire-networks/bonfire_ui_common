@@ -19,6 +19,7 @@
     sidebar_widgets={@sidebar_widgets}
     thread_mode={e(assigns, :thread_mode, nil)}
     hide_smart_input={e(assigns, :hide_smart_input, false)}
+    show_less_menu_items={@show_less_menu_items}
   />
   <div 
     :class="show_smart_input_fullscreen ? '!hidden' : ''"

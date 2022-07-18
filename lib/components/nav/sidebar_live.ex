@@ -17,4 +17,5 @@ defmodule Bonfire.UI.Common.SidebarLive do
   prop smart_input_text, :string, required: false
   prop sidebar_widgets, :list, default: []
   prop thread_mode, :string
+  prop show_less_menu_items, :boolean, default: false
 end
