@@ -1,0 +1,20 @@
+<div 
+  class="font-bold text-xs uppercase text-base-content text-opacity-80 border-b mt-8 border-base-content border-opacity-30 pb-2">{l "Default avatars"}</div>
+  
+  <div class="form-control mt-2">
+    <label class="label cursor-pointer justify-start">
+      <input 
+        name="Bonfire.UI.Common.AvatarLive[animal_avatars]" 
+        value="false" 
+        type="hidden" 
+      />
+      <input 
+        name="Bonfire.UI.Common.AvatarLive[animal_avatars]" 
+        value="true"
+        type="checkbox" 
+        checked={if Bonfire.Me.Settings.get([Bonfire.UI.Common.AvatarLive, :animal_avatars], true, @scope || assigns), do: "checked"} 
+        class="checkbox" 
+      />
+      <span class="ml-2 label-text">{l "Show randomly-generated animal avatars for users without a profile picture"}</span> 
+    </label>
+  </div>

@@ -1,0 +1,77 @@
+<div 
+  class="font-bold text-xs uppercase text-base-content text-opacity-80 border-b mt-8 border-base-content border-opacity-30 pb-2">{l "Content creator and text editor"}</div>
+  
+  <div class="form-control mt-2">
+    <label class="label cursor-pointer justify-start">
+      <input 
+        name="ui[smart_input_light_theme]" 
+        value="false"
+        type="hidden" 
+      />
+      <input 
+        name="ui[smart_input_light_theme]" 
+        value="true"
+        type="checkbox" 
+        checked={if Bonfire.Me.Settings.get([:ui, :smart_input_light_theme], nil, @scope || assigns), do: "checked"} 
+        class="checkbox" 
+      />
+      <span class="ml-2 label-text">{l "Use light colours for the editor"}</span> 
+    </label>
+  </div>
+
+<div class="px-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-base-200 sm:pt-5">
+    <label class="block text-sm font-medium text-base-content sm:mt-px sm:pt-2">
+    {l "Preference for writing posts"}
+    </label>
+    <div class="mt-1 sm:mt-0 sm:col-span-2">
+    <fieldset>
+        <!-- <legend class="sr-only">
+        {l "Smart input"}
+        </legend> -->
+        <div class="-space-y-px bg-base-100 rounded-box">
+        <!-- Checked: "bg-base-200 border-indigo-200 z-10", Not Checked: "border-gray-200" -->
+        <label class="relative flex p-4 border cursor-pointer border-base-200 rounded-tl-md rounded-tr-md focus:outline-none">
+            <input
+            type="radio"
+            name="ui[smart_input_as]"
+            value="sidebar"
+            checked={if Settings.get([:ui, :smart_input_as], nil, @scope)==:sidebar, do: "checked"} 
+            class="radio radio-secondary"
+            >
+            <div class="flex flex-col ml-3">
+            <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
+            <span class="block text-sm font-medium">
+                {l "Small editor in the sidebar (on desktop)"}
+            </span>
+            <span class="block text-sm">
+                {l "Good for micro-blogging. Includes a button to switch to full-screen when you want to write longer posts."}
+            </span>
+            </div>
+        </label>
+
+        <!-- Checked: "bg-base-200 border-indigo-200 z-10", Not Checked: "border-gray-200" -->
+        <label class="relative flex p-4 border cursor-pointer border-base-200  focus:outline-none">
+            <input
+            type="radio"
+            name="ui[smart_input_as]"
+            value="modal"
+            checked={if Settings.get([:ui, :smart_input_as], nil, @scope)==:modal, do: "checked"} 
+            class="radio radio-secondary"
+            >
+            <div class="flex flex-col ml-3">
+            <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
+            <span class="block text-sm font-medium">
+                {l "Large floating editor window"}
+            </span>
+            <span class="block text-sm">
+                {l "Always give yourself the space to write."}
+            </span>
+            </div>
+        </label>
+        </div>
+    </fieldset>
+    </div>
+</div>
+
+
+
