@@ -4,8 +4,8 @@
   type="button"
   >
   <#slot name="open_btn">
-    <button class={e(assigns, :open_btn_class, nil)} type="button">
-      {e(assigns, :open_btn_text, "Open modal")}
+    <button class={@open_btn_class} type="button">
+      {@open_btn_text || "Open modal"}
     </button>
   </#slot>
 </button>

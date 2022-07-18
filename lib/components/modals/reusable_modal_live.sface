@@ -1,39 +1,43 @@
+<input type="checkbox" id={@id} class="modal-toggle" />
 <div
-  class={"modal max-h-[100%] "<>(if e(assigns, :show, nil), do: "modal-open", else: "")}
-  id={@id}
-  :attrs={e(assigns, :opts, [])}>
-  <form {...e(assigns, :form_opts, [])}>
+  class={"modal max-h-[100%] ",
+  "modal-closed": !@show,
+  "modal-open": @show}
+  :attrs={@opts}>
+  <form {...@form_opts}>
     <div
-      :on-click="close"
+      phx-click="close"
+      phx-target={"##{@id}"}
       class="fixed inset-0 transition-opacity bg-slate-600/60 backdrop-blur-md" 
       aria-hidden="true">
     </div>
     <div class="relative border-4 modal-box border-base-content border-opacity-20 max-w-[100%] min-w-[320px] min-h-[100px]">
 
-      <h3 class={e(assigns, :title_class, nil)} id={"#{@id}-title"}>
-        <#slot name="title">{e(assigns, :title_text, nil)}</#slot>
+      <h3 class={@title_class || "font-bold text-base"}>
+        <#slot name="title">{@title_text}</#slot>
       </h3>
-      <div class="absolute top-0 right-0 block pt-5 pr-4">
+      <label for={@id} class="absolute top-0 right-0 block pt-5 pr-4">
         <button 
-          :on-click="close"
+          phx-click="close"
+          phx-target={"##{@id}"}
           type="button" 
           class="normal-case btn btn-ghost btn-circle btn-sm">
           <span class="sr-only">{l "Close"}</span>
           <Outline.XIcon class="w-4 h-4" />
         </button>
-      </div>
+      </label>
 
       <div class="mt-2" data-id="modal-contents">
         <#slot></#slot>
       </div>
 
       <div 
-        :if={!e(assigns, :no_actions, false)} 
+        :if={!@no_actions} 
         class="modal-action">
         <#slot name="action_btns"></#slot>
         <div :on-click="close">
           <#slot name="cancel_btn">
-            <button class={e(assigns, :cancel_btn_class, nil)} type="button">{l "Cancel"}</button>
+            <button class={@cancel_btn_class || "btn btn-outline btn-sm normal-case"} type="button">{l "Cancel"}</button>
           </#slot>
         </div>
     </div>

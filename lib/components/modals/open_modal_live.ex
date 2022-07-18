@@ -22,6 +22,9 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   @doc "Optional prop to hide the actions at the bottom of the modal"
   prop no_actions, :boolean, default: false
 
+  @doc "The classes of the title of the modal"
+  prop reusable_modal_id, :string, default: "modal"
+
   @doc """
   Additional attributes to add onto the modal wrapper
   """
@@ -42,14 +45,15 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   end
 
   def close() do
+    debug("close!")
     set(show: false)
   end
 
   def set(assigns) when is_list(assigns) do
-    send_update(ReusableModalLive, Keyword.put(assigns, :id, "modal"))
+    send_update(ReusableModalLive, Keyword.put(assigns, :id, e(assigns, :reusable_modal_id, "modal")))
   end
   def set(assigns) when is_map(assigns) do
-    send_update(ReusableModalLive, Map.put(assigns, :id, "modal"))
+    send_update(ReusableModalLive, Map.put(assigns, :id, e(assigns, :reusable_modal_id, "modal")))
   end
 
   # Default event handlers
@@ -58,7 +62,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
     socket = socket
     |> assign(show: true)
 
-    set(socket.assigns)
+    set(socket.assigns) # copy all of this component's assigns to the reusable modal (including slots!)
 
     {:noreply, socket}
   end

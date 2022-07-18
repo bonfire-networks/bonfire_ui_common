@@ -41,7 +41,7 @@
             <div class="flex flex-col ml-3">
             <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
             <span class="block text-sm font-medium">
-                {l "Small editor in the sidebar (on desktop)"}
+                {l "Small editor in the sidebar (on large screens)"}
             </span>
             <span class="block text-sm">
                 {l "Good for micro-blogging. Includes a button to switch to full-screen when you want to write longer posts."}
@@ -61,7 +61,7 @@
             <div class="flex flex-col ml-3">
             <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
             <span class="block text-sm font-medium">
-                {l "Large floating editor window"}
+                {l "Large floating editor"}
             </span>
             <span class="block text-sm">
                 {l "Always give yourself the space to write."}
