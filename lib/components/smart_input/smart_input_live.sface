@@ -93,7 +93,7 @@
       :class="show_smart_input_fullscreen ? 'bg-base-100 !rounded-none mb-0 border-b border-base-content/10' : ''"
       class={
         "overflow-y-auto mb-2 rounded-md",
-        "h-full max-h-[300px]": Settings.get([:ui, :smart_input_as], nil, assigns) != :sidebar
+        "h-full !mb-0 !rounded-none max-h-[300px]": Settings.get([:ui, :smart_input_as], nil, assigns) != :sidebar
       }>
         <!-- show what we're replying to, if any -->
         <Surface.Components.Dynamic.LiveComponent
