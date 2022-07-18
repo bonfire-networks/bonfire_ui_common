@@ -37,7 +37,7 @@
         <li>
           <LiveRedirect 
             to={path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive))} 
-            class={"rounded-full relative",  "font-bold bg-base-content/10": @page == "home"}
+            class={"rounded-full relative",  "font-bold bg-base-content/10": @page == "feed"}
           >
             <Solid.NewspaperIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "feed"} />
             <span :if={@page == "feed"} class="sr-only">{l "Current Page:"} </span>
