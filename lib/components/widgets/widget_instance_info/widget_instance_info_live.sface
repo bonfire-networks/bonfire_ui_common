@@ -20,13 +20,13 @@
           🔥
           {Bonfire.Application.name()} 
         </a>
-        <div class="mt-2 text-xs badge badge-ghost">
+        <LivePatch to="/terms/changelog" class="mt-2 text-xs badge badge-ghost">
           {Bonfire.Application.version()} 
           <span class="ml-1" x-data="{msg: 'JS'}">
             <span x-text="msg">no JS</span>
           </span>
           <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
-        </div>
+        </LivePatch>
       </div>
     </div>
 </Bonfire.UI.Common.WidgetLive>
