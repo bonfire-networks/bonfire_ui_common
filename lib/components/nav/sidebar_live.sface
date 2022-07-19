@@ -26,15 +26,14 @@
       smart_input_text={@smart_input_text}
     />
 
-     <Bonfire.UI.Common.SidebarNavigationDropdownLive
-      page={@page}
+    <Bonfire.UI.Common.SidebarNavigationDropdownLive
       :if={@show_less_menu_items}
+      page={@page}
     />
     
-    
     <Bonfire.UI.Common.SidebarNavigationLive
+      :if={!@show_less_menu_items}
       page={@page}
-      hide_smart_input={e(assigns, :hide_smart_input, nil)}
     />
     
     <div class="flex-col hidden gap-3 md:flex">
