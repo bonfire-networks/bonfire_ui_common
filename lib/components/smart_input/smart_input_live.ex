@@ -3,7 +3,6 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   # prop user_image, :string, required: true
   # prop target_component, :string
-  prop preset_boundary, :any, default: "public"
   prop create_activity_type, :any, default: nil
   prop reply_to_id, :string, default: ""
   prop thread_id, :string, default: "", required: false
@@ -77,7 +76,8 @@ defmodule Bonfire.UI.Common.SmartInputLive do
       activity: nil,
       to_circles: nil,
       reply_to_id: e(socket.assigns, :thread_id, nil),
-      preset_boundary: nil
+      to_boundaries: default_boundaries(socket),
+      # open_boundaries: false
     )
   end
 
@@ -103,7 +103,8 @@ defmodule Bonfire.UI.Common.SmartInputLive do
       to_circles: nil,
       activity: nil,
       smart_input_text: nil,
-      preset_boundary: nil
+      to_boundaries: default_boundaries(socket),
+      # open_boundaries: false
     )
   end
 
@@ -198,6 +199,12 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   def handle_event("open_boundaries", _params, socket) do
     {:noreply, socket
       |> assign(:open_boundaries, true)
+    }
+  end
+
+  def handle_event("close_boundaries", _params, socket) do
+    {:noreply, socket
+      |> assign(:open_boundaries, false)
     }
   end
 

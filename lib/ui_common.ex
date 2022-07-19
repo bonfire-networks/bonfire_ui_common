@@ -628,13 +628,17 @@ defmodule Bonfire.UI.Common do
     e(assigns, :create_activity_type, nil) in @message_types or e(assigns, :page, nil) in @message_types or e(assigns, :showing_within, nil) in @message_types
   end
 
-  def default_boundaries(to_boundaries) when is_list(to_boundaries) and length(to_boundaries)>0 do
+  def boundaries_or_default(to_boundaries, _opts) when is_list(to_boundaries) and length(to_boundaries)>0 do
     to_boundaries
   end
+  def boundaries_or_default(_, opts) do
+    default_boundaries(opts)
+  end
 
-  def default_boundaries(_) do
-    # default in case no custom ones are set
+  def default_boundaries(_opts \\ []) do
+    # default boundaries for new stuff
     # TODO: make default user-configurable
     [{"public", l("Public")}]
   end
+
 end

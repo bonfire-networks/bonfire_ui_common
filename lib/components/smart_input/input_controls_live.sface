@@ -43,7 +43,11 @@
           </div> 
 
         </div>
-        <button type="submit" phx-disable-with={if is_messaging?(assigns), do: l("Sending..."), else: l "Posting..."} class="capitalize btn-sm justify-self-end btn w-[8rem] btn-primary">
+        <button 
+          type="submit" 
+          @click="$dispatch('submit')"
+          phx-disable-with={if is_messaging?(assigns), do: l("Sending..."), else: l "Posting..."} 
+          class="capitalize btn-sm justify-self-end btn w-[8rem] btn-primary">
           {#if is_messaging?(assigns)}
             {l "Send"}
           {#else}

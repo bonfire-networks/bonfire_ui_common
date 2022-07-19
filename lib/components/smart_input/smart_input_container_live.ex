@@ -15,7 +15,6 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop hide_smart_input, :boolean, default: false
   prop object, :any
   prop activity_inception, :any
-  prop preset_boundary, :any, default: "public"
   prop title_open, :boolean, default: false
   prop title_prompt, :string
   prop preloaded_recipients, :list

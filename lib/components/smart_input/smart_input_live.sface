@@ -15,8 +15,9 @@
     phx-drop-target={@uploads.files.ref}
     x-data={"{
       title_open: #{@title_open}, 
-      open_boundaries: #{@open_boundaries}
+      open_boundaries: false
     }"}
+    @submit="open_boundaries = false"
     x-cloak
     :class={"{
       'smart-input-open': title_open,
