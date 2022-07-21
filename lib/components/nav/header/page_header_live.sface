@@ -5,7 +5,7 @@
       "p-3": !Settings.get([:ui, :compact], false, assigns),
       "px-2 py-1": Settings.get([:ui, :compact], false, assigns)
       }>
-        <div class="flex items-center flex-1 text-left">
+        <div class="flex items-center flex-1 space-x-3 text-left">
           <#slot name="left_action">
             {#if e(assigns, :page_header_drawer, nil)}
               <div 
@@ -37,7 +37,7 @@
           
           <div class="flex-1">
             <#slot>
-              <h1 class="ml-3 font-bold text-base-content">{@page_title}</h1> 
+              <h1 class="font-bold text-base-content">{@page_title}</h1> 
             </#slot>
           </div>
           <#slot name="right_action">

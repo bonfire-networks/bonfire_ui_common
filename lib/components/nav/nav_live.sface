@@ -23,7 +23,7 @@
   />
   <div 
     :class="show_smart_input_fullscreen ? '!hidden' : ''"
-    class="gap-2 md:gap-0 md:h-screen w-full tablet:col-span-1 tablet-lg:col-span-2 grid grid-rows-[1fr_48px] md:grid-rows-1">
+    class="gap-2 md:gap-0  w-full tablet:col-span-1 tablet-lg:col-span-2 grid grid-rows-[1fr_48px] md:grid-rows-1">
     <Bonfire.UI.Common.HeaderMobileGuestLive 
       :if={!current_user(assigns)}
     />
