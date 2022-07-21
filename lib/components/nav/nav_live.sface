@@ -4,7 +4,7 @@
     open_drawer: false
   }"
   :class="show_smart_input_fullscreen ? '!grid-cols-1 !place-content-start' : ''"
-  class={"h-screen max-w-screen-lg tablet:max-w-screen-xl tablet-lg:max-w-screen-2xl mx-auto my-3 px-3 justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)] tablet-lg:grid-cols-[repeat(auto-fit,_290px)] grid gap-3 bonfire_layout"}>
+  class={"max-w-screen-lg tablet:max-w-screen-xl tablet-lg:max-w-screen-2xl mx-auto my-3 px-3 justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)] tablet-lg:grid-cols-[repeat(auto-fit,_290px)] grid gap-3 bonfire_layout"}>
   <Bonfire.UI.Common.SidebarLive
     current_user={current_user(assigns)}
     page={@page}
@@ -23,7 +23,10 @@
   />
   <div 
     :class="show_smart_input_fullscreen ? '!hidden' : ''"
-    class="h-[calc(100vh-21px)] gap-2 md:gap-0 md:h-screen w-full tablet:col-span-1 tablet-lg:col-span-2 grid grid-rows-[1fr_48px] md:grid-rows-1">
+    class="gap-2 md:gap-0 md:h-screen w-full tablet:col-span-1 tablet-lg:col-span-2 grid grid-rows-[1fr_48px] md:grid-rows-1">
+    <Bonfire.UI.Common.HeaderMobileGuestLive 
+      :if={!current_user(assigns)}
+    />
     <div 
       class={"grid ",
       "grid-rows-[60px_1fr]": !Settings.get([:ui, :compact], false, assigns),
@@ -50,7 +53,11 @@
       </div>
       
     </div>
-    <Bonfire.UI.Common.HeaderUserLive current_user={current_user(assigns)} page={@page} />
+    <Bonfire.UI.Common.HeaderUserLive 
+      :if={current_user(assigns)}
+      current_user={current_user(assigns)} 
+      page={@page} 
+    />
   </div>
   <div 
     :class="show_smart_input_fullscreen ? '!hidden' : ''"
@@ -99,7 +106,7 @@
     smart_input_text={@smart_input_text}
   /> -->
     <div 
-      :if={current_user(assigns)}
+      :if={current_user(assigns) && e(assigns, :showing_within, nil) != :messages}
       x-show="!show_smart_input_fullscreen"
       class="fixed bottom-0 z-[90] right-3 bottom-12 md:hidden">
       <button 

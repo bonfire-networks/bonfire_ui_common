@@ -9,7 +9,7 @@
           <#slot name="left_action">
             {#if e(assigns, :page_header_drawer, nil)}
               <div 
-                class="flex tablet:hidden">
+                class="flex md:hidden">
                 <div
                   @keydown.window.escape="open_drawer = false"
                   class="btn btn-ghost btn-circle btn-sm" 

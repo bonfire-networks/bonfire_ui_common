@@ -1,0 +1,33 @@
+<div 
+  class="md:hidden bg-base-100 rounded-md flex h-[48px] place-content-center items-center flex w-full px-3">
+  <LiveRedirect 
+    class="flex items-center flex-1 space-x-2"
+    to={path(Bonfire.Common.Config.get(:home_page, Bonfire.Web.HomeLive))}>
+    <div class="bg-center bg-no-repeat bg-contain w-7 h-7" style={"background-image: url(#{ Bonfire.Common.Config.get([:ui, :theme, :instance_icon], nil)})"}></div>
+    <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
+  </LiveRedirect>
+
+  <div class="flex justify-end">
+    {#if current_account(assigns) != nil }
+      <span class="inline-flex rounded-md shadow-sm">
+        <Link to={path(:switch_user)} class="normal-case btn btn-secondary btn-sm">
+          {l "Select User"}
+        </Link>
+      </span>
+    {#else}
+      <span class="inline-flex ">
+        <Link to={path(:login, :index)} class="normal-case btn btn-sm btn-primary">
+          {l "Login"}
+        </Link>
+      </span>
+      {#if !Bonfire.Me.Accounts.instance_is_invite_only? }
+        <span class="inline-flex ml-3 ">
+          <Link to={path(:signup, :index)} class="normal-case btn btn-sm btn-outline btn-primary">
+            {l "Signup"}
+          </Link>
+        </span>
+      {/if}
+    {/if}
+  </div>
+</div>
+{/if}
