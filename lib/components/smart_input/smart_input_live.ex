@@ -47,7 +47,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   end
 
   def active_smart_input_component(assigns) do
-    e(assigns, :smart_input_component, nil) || Bonfire.Common.Config.get([:ui, :default_smart_input]) || Bonfire.UI.Social.WritePostContentLive
+    e(assigns, :smart_input_component, nil) || e(all_smart_input_components(), e(assigns, :create_activity_type, nil), nil) || Bonfire.Common.Config.get([:ui, :default_smart_input]) || Bonfire.UI.Social.WritePostContentLive
   end
 
   def smart_input_name(component) do

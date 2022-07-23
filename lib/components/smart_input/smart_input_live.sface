@@ -47,13 +47,13 @@
       class={"flex flex-col flex-1 w-full"}>
       
       <div 
-        :if={!is_messaging?(assigns) and length(all_smart_input_components())>1}
+        :if={!is_messaging?(assigns) and length(Config.get([:ui, :smart_input_activities], []))>1}
         class="dropdown dropdown-hover"
         >
         <label tabindex="0" class="m-1 btn">{smart_input_name(active_smart_input_component(assigns))}</label>
         <ul tabindex="0" class="p-2 shadow dropdown-content menu bg-base-100 rounded-box w-52">
-          <li :for={{name, component} <- all_smart_input_components()}>
-            <div phx-click="select_smart_input" phx-target={@myself} phx-value-component={component}>{display_name(name)}</div>
+          <li :for={{name, label} <- Config.get([:ui, :smart_input_activities], [])}>
+            <div phx-click="select_smart_input" phx-target={@myself} phx-value-component={all_smart_input_components()[name] || Bonfire.UI.Social.WritePostContentLive}>{label}</div>
           </li>
         </ul>
       </div>
@@ -64,14 +64,14 @@
         class="flex items-center p-3 border-b rounded-t bg-base-100 border-base-content/10">
         {#if is_messaging?(assigns)}
           <div class="flex-1 font-bold text-base-content">{l "Send a message"}</div>
-        {#elseif length(all_smart_input_components())>1}
+        {#elseif length(Config.get([:ui, :smart_input_activities], []))>1}
           <div 
             class="dropdown dropdown-hover"
             >
             <label tabindex="0" class="m-1 btn">{smart_input_name(active_smart_input_component(assigns))}</label>
             <ul tabindex="0" class="p-2 shadow dropdown-content menu bg-base-100 rounded-box w-52">
-              <li :for={{name, component} <- all_smart_input_components()}>
-                <div phx-click="select_smart_input" phx-target={@myself} phx-value-component={component}>{display_name(name)}</div>
+              <li :for={{name, label} <- Config.get([:ui, :smart_input_activities], [])}>
+                <div phx-click="select_smart_input" phx-target={@myself} phx-value-component={all_smart_input_components()[name] || Bonfire.UI.Social.WritePostContentLive}>{label}</div>
               </li>
             </ul>
           </div>
