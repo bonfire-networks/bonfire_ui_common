@@ -120,7 +120,7 @@ defmodule Bonfire.UI.Common do
 
         content
         # |> Text.maybe_markdown_to_html() # now being done on save instead
-        |> Text.external_links() # transform internal links to use LiveView navigation
+        |> Text.normalise_links() # transform internal links to use LiveView navigation
         |> Phoenix.HTML.raw() # for use in views
 
       {:ok, msg} when is_binary(msg) -> msg
