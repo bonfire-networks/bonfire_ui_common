@@ -8,7 +8,7 @@
     target="_blank"
     rel="noopener noreferrer"
     phx-value-id={e(@object, :id, nil)} 
-    class={e(assigns, :class, "btn btn-sm btn-outline rounded-full border-opacity-70 normal-case")}>
+    class={e(assigns, :class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}>
     <Solid.UserAddIcon
       :if={!e(assigns, :hide_icon, false)} 
       
@@ -25,7 +25,7 @@
     data-id="unfollow"
     :on-click="Bonfire.Social.Follows:unfollow" 
     phx-value-id={e(@object, :id, nil)} 
-    class={e(assigns, :class, "btn btn-sm btn-outline rounded-full border-opacity-70 normal-case")}>
+    class={e(assigns, :class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}>
     <Solid.UserRemoveIcon 
       :if={!e(assigns, :hide_icon, false)} 
       class={e(assigns, :icon_class, "w-4 h-4 shrink-0")} />
