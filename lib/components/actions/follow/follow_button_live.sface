@@ -4,7 +4,7 @@
     data-cid={@id}
     data-id="follow"
     :on-click="Bonfire.Social.Follows:follow" 
-    href={if !current_user(assigns), do: path(@object)<>"/follow"}
+    href={if !current_user(@__context__), do: path(@object)<>"/follow"}
     target="_blank"
     rel="noopener noreferrer"
     phx-value-id={e(@object, :id, nil)} 

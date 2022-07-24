@@ -7,15 +7,15 @@
     }" 
     class="flex flex-col">
     <Bonfire.UI.Common.HeaderUserLive 
-      :if={e(assigns, :without_sidebar, nil) && !current_user(assigns) }
+      :if={e(assigns, :without_sidebar, nil) && !current_user(@__context__) }
       page={@page}
       without_sidebar={@without_sidebar}
-      current_user={current_user(assigns)}  
+      current_user={current_user(@__context__)}  
     />
     <div class="flex items-start justify-center w-full h-screen lg:max-w-screen-xl lg:mx-auto ">
       <Bonfire.UI.Common.SidebarLive
         :if={e(assigns, :without_sidebar, nil) != true}
-        current_user={current_user(assigns)}
+        current_user={current_user(@__context__)}
         page={@page}
         reply_to_id={@reply_to_id}
         thread_id={@thread_id}
@@ -35,14 +35,14 @@
           "max-w-[600px]": e(assigns, :without_sidebar, nil) != true
           }>
         <Bonfire.UI.Common.HeaderUserLive 
-          :if={e(assigns, :without_sidebar, nil) != true or current_user(assigns) }
+          :if={e(assigns, :without_sidebar, nil) != true or current_user(@__context__) }
           page={@page}
           without_sidebar={@without_sidebar}
-          current_user={current_user(assigns)}  
+          current_user={current_user(@__context__)}  
         />
         <div class={
           "flex-1 mt-0 tablet:mt-[72px] px-0 overflow-y-auto overflow-x-hidden tablet:overflow-visible",
-          "mt-[64px]": current_user(assigns) == nil
+          "mt-[64px]": current_user(@__context__) == nil
           }>
           {@inner_content}
         </div>
@@ -52,7 +52,7 @@
         class="w-[285px] ml-3 justify-start hidden  h-full tablet:flex">
         <div class="w-full">
           <div 
-            :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(assigns)}
+            :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(@__context__)}
             class="fixed w-[285px] z-[70] w-full mb-3 top-3 background-invisible before:bottom-[-8px]">
             <Surface.Components.Dynamic.Component
               
@@ -63,21 +63,21 @@
           <div 
             class={
               "flex flex-col w-full space-y-3",
-              "mt-0 tablet:mt-[72px]": current_user(assigns),
-              "mt-3": !current_user(assigns)
+              "mt-0 tablet:mt-[72px]": current_user(@__context__),
+              "mt-3": !current_user(@__context__)
             }>
             <Surface.Components.Dynamic.Component
-              :if={current_user(assigns)}
+              :if={current_user(@__context__)}
               :for={{component, component_assigns} <- @sidebar_widgets[:users][:secondary] || [ 
                 {Bonfire.UI.Social.WidgetTimelinesLive, [page: e(assigns, :page, nil)]},
               ]}
               module={component}
-              current_user={current_user(assigns)}
+              current_user={current_user(@__context__)}
               {...component_assigns}
             />
 
             <Surface.Components.Dynamic.Component
-              :if={!current_user(assigns)}
+              :if={!current_user(@__context__)}
               :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || [
                  {Bonfire.UI.Social.WidgetTagsLive , []}
               ]}

@@ -1,17 +1,17 @@
 <div class="items-center hidden w-full space-x-1 md:flex">
   <div class="flex items-center flex-1">
-    <LivePatch to={path(current_user(assigns))}>
+    <LivePatch to={path(current_user(@__context__))}>
       <Bonfire.UI.Common.AvatarLive
         class="w-10 h-10 rounded bg-base-100"
-        user={current_user(assigns)}
+        user={current_user(@__context__)}
       />
     </LivePatch>
     <LivePatch 
       class="" 
-      to={path(current_user(assigns))}>
+      to={path(current_user(@__context__))}>
       <div class="flex flex-col items-start flex-1 min-w-0 ml-3">
-        <div class="text-left text-sm font-semibold w-[190px] truncate text-ellipsis text-base-content">{e(assigns, :current_user, :profile, :name, "Unknown")}</div>
-        <span class="hover:no-underline -mt-0.5 text-sm font-light text-base-content text-opacity-80">@{e(assigns, :current_user, :character, :username, "Unknown")}</span>
+        <div class="text-left text-sm font-semibold w-[190px] truncate text-ellipsis text-base-content">{e(current_user(@__context__), :profile, :name, "Unknown")}</div>
+        <span class="hover:no-underline -mt-0.5 text-sm font-light text-base-content text-opacity-80">@{e(current_user(@__context__), :character, :username, "Unknown")}</span>
       </div>
     </LivePatch>
     <LiveRedirect to="/switch-user" class="btn btn-square btn-ghost">
@@ -36,7 +36,7 @@
         aria-orientation="vertical"
         aria-labelledby="user-profile-menu"
       >
-        <Bonfire.UI.Common.UserMenuLinksLive current_user={current_user(assigns)} />
+        <Bonfire.UI.Common.UserMenuLinksLive current_user={current_user(@__context__)} />
       </ul>
     </div> -->
   </div>

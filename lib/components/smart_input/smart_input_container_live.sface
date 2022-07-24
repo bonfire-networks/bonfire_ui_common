@@ -1,20 +1,20 @@
 <div 
-  :if={current_user(assigns) != nil and e(assigns, :hide_smart_input, nil) != true}
+  :if={current_user(@__context__) != nil and e(@hide_smart_input, nil) != true}
   >
   
-  {#if Settings.get([:ui, :smart_input_as], nil, assigns)==:sidebar and e(assigns, :thread_mode, nil) != :flat}
+  {#if Settings.get([:ui, :smart_input_as], nil, assigns)==:sidebar and e(@thread_mode, nil) != :flat}
 
     <Bonfire.UI.Common.SmartInputLive
       id={:smart_input} 
-      hide_smart_input={e(assigns, :hide_smart_input, nil)}
-      current_user={current_user(assigns)}
-      showing_within={e(assigns, :showing_within, nil)}
-      reply_to_id={e(assigns, :reply_to_id, "")}
+      hide_smart_input={e(@hide_smart_input, nil)}
+      current_user={current_user(@__context__)}
+      showing_within={e(@showing_within, nil)}
+      reply_to_id={e(@reply_to_id, "")}
       thread_id={@thread_id}
-      create_activity_type={e(assigns, :create_activity_type, nil)}
-      thread_mode={e(assigns, :thread_mode, nil)}
+      create_activity_type={e(@create_activity_type, nil)}
+      thread_mode={e(@thread_mode, nil)}
       to_boundaries={@to_boundaries |> debug("to_boundaries")}
-      to_circles={e(assigns, :to_circles, [])}
+      to_circles={e(@to_circles, [])}
       smart_input_prompt={@smart_input_prompt}
       smart_input_text={@smart_input_text}
     />
@@ -26,7 +26,7 @@
       type="button" 
       class="flex items-center w-full mb-1 normal-case rounded-full btn-wide btn btn-primary"> 
       <Solid.PencilAltIcon class="inline-block w-5 h-5 mr-2" />
-      {e(assigns, :smart_input_prompt, l "Compose a post")}
+      {e(@smart_input_prompt, l "Compose a post")}
     </button>
     <div 
       class="absolute bottom-0 z-50 transition-all w-[24rem] shadow-xl right-4 max-h-[100vh] overflow-x-auto"
@@ -40,9 +40,9 @@
         <span 
           @click="show_smart_input_modal = ! show_smart_input_modal"
           class="flex-1 text-sm cursor-move text-ellipsis user-select-none"
-          x-text={"title_text || '#{e(assigns, :smart_input_prompt, l "New post")}'"}
+          x-text={"title_text || '#{e(@smart_input_prompt, l "New post")}'"}
           >
-          {e(assigns, :smart_input_prompt, l "New post")}
+          {e(@smart_input_prompt, l "New post")}
         </span>
         <div class="flex items-center space-x-5">
           <button 
@@ -85,15 +85,15 @@
 
       <Bonfire.UI.Common.SmartInputLive
         id={:smart_input} 
-        hide_smart_input={e(assigns, :hide_smart_input, nil)}
-        current_user={current_user(assigns)}
-        showing_within={e(assigns, :showing_within, nil)}
-        reply_to_id={e(assigns, :reply_to_id, "")}
+        hide_smart_input={e(@hide_smart_input, nil)}
+        current_user={current_user(@__context__)}
+        showing_within={e(@showing_within, nil)}
+        reply_to_id={e(@reply_to_id, "")}
         thread_id={@thread_id}
-        create_activity_type={e(assigns, :create_activity_type, nil)}
-        thread_mode={e(assigns, :thread_mode, nil)}
+        create_activity_type={e(@create_activity_type, nil)}
+        thread_mode={e(@thread_mode, nil)}
         to_boundaries={@to_boundaries}
-        to_circles={e(assigns, :to_circles, [])}
+        to_circles={e(@to_circles, [])}
         smart_input_prompt={@smart_input_prompt}
         smart_input_text={@smart_input_text}
       />

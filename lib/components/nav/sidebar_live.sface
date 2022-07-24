@@ -3,25 +3,24 @@
 <div 
   :class="show_smart_input_fullscreen ? '!grid !overflow-hidden' : ''"
   class="items-start hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget md:grid auto-rows-min ">
-  {#if current_user(assigns)}
+  {#if current_user(@__context__)}
 
     <div class="sticky top-0 z-20">
       <Bonfire.UI.Common.LogoLive />
     </div>
 
-    <Bonfire.UI.Common.UserMenuLive current_user={current_user(assigns)} />
+    <Bonfire.UI.Common.UserMenuLive />
 
     <Bonfire.UI.Common.SmartInputContainerLive
-      :if={e(assigns, :hide_smart_input, nil) != true}
-      hide_smart_input={e(assigns, :hide_smart_input, nil)}
-      current_user={current_user(assigns)}
-      showing_within={e(assigns, :showing_within, nil)}
-      reply_to_id={e(assigns, :reply_to_id, "")}
+      :if={e(@hide_smart_input, nil) != true}
+      hide_smart_input={e(@hide_smart_input, nil)}
+      showing_within={e(@showing_within, nil)}
+      reply_to_id={e(@reply_to_id, "")}
       thread_id={@thread_id}
-      create_activity_type={e(assigns, :create_activity_type, nil)}
-      thread_mode={e(assigns, :thread_mode, nil)}
+      create_activity_type={e(@create_activity_type, nil)}
+      thread_mode={e(@thread_mode, nil)}
       to_boundaries={@to_boundaries}
-      to_circles={e(assigns, :to_circles, [])}
+      to_circles={e(@to_circles, [])}
       smart_input_prompt={@smart_input_prompt}
       smart_input_text={@smart_input_text}
     />
@@ -41,7 +40,6 @@
         <Surface.Components.Dynamic.Component
           :for={{component, component_assigns} <- @sidebar_widgets[:users][:main]}
           module={component}
-          current_user={current_user(assigns)}
           {...component_assigns}
         />
       {/if}

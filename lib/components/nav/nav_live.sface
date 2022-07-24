@@ -6,26 +6,25 @@
   :class="show_smart_input_fullscreen ? '!grid-cols-1 !place-content-start' : ''"
   class={"max-w-screen-lg tablet:max-w-screen-xl tablet-lg:max-w-screen-2xl mx-auto my-3 px-3 justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)] tablet-lg:grid-cols-[repeat(auto-fit,_290px)] grid gap-3 bonfire_layout"}>
   <Bonfire.UI.Common.SidebarLive
-    current_user={current_user(assigns)}
     page={@page}
     reply_to_id={@reply_to_id}
     thread_id={@thread_id}
-    showing_within={e(assigns, :showing_within, nil)} 
-    create_activity_type={e(assigns, :create_activity_type, nil)}
+    showing_within={e(@showing_within, nil)} 
+    create_activity_type={e(@create_activity_type, nil)}
     to_boundaries={@to_boundaries}
-    to_circles={e(assigns, :to_circles, [])}
+    to_circles={e(@to_circles, [])}
     smart_input_prompt={@smart_input_prompt}
     smart_input_text={@smart_input_text}
     sidebar_widgets={@sidebar_widgets}
-    thread_mode={e(assigns, :thread_mode, nil)}
-    hide_smart_input={e(assigns, :hide_smart_input, false)}
+    thread_mode={e(@thread_mode, nil)}
+    hide_smart_input={e(@hide_smart_input, false)}
     show_less_menu_items={@show_less_menu_items}
   />
   <div 
     :class="show_smart_input_fullscreen ? '!hidden' : ''"
     class="gap-2 md:gap-0  w-full tablet:col-span-1 tablet-lg:col-span-2 grid grid-rows-[1fr_48px] md:grid-rows-1">
     <Bonfire.UI.Common.HeaderMobileGuestLive 
-      :if={!current_user(assigns)}
+      :if={!current_user(@__context__)}
     />
     <div 
       class={"grid ",
@@ -33,16 +32,14 @@
       "grid-rows-[40px_1fr]": Settings.get([:ui, :compact], false, assigns)
       }>
       <Bonfire.UI.Common.PageHeaderLive
-        page_title={e(assigns, :page_title, nil)}
-        page_header_drawer={e(assigns, :page_header_drawer, false)}
-        current_user={current_user(assigns)}
+        page_title={e(@page_title, nil)}
+        page_header_drawer={e(@page_header_drawer, false)}
         >
         <:right_action>
           <Surface.Components.Dynamic.Component
-            :if={current_user(assigns) && e(assigns, :page_header_aside, nil)}
-            :for={{component, component_assigns} <- e(assigns, :page_header_aside, [])}
+            :if={current_user(@__context__) && e(@page_header_aside, nil)}
+            :for={{component, component_assigns} <- e(@page_header_aside, [])}
             module={component}
-            current_user={current_user(assigns)}
             {...component_assigns}
           />
         </:right_action>
@@ -54,8 +51,7 @@
       
     </div>
     <Bonfire.UI.Common.HeaderUserLive 
-      :if={current_user(assigns)}
-      current_user={current_user(assigns)} 
+      :if={current_user(@__context__)}
       page={@page} 
     />
   </div>
@@ -63,7 +59,7 @@
     :class="show_smart_input_fullscreen ? '!hidden' : ''"
     class="items-start hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget tablet-lg:grid auto-rows-min ">
     <div 
-      :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(assigns)}
+      :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(@__context__)}
       class="sticky top-0 z-20">
       <Surface.Components.Dynamic.Component
         module={Bonfire.Search.Web.FormLive}
@@ -71,18 +67,17 @@
       />
     </div>
     <Surface.Components.Dynamic.Component
-      :if={current_user(assigns)}
+      :if={current_user(@__context__)}
       :for={{component, component_assigns} <- @sidebar_widgets[:users][:secondary] || [ 
         {Bonfire.UI.Social.WidgetTagsLive, []},
         {Bonfire.UI.Common.WidgetFeedbackLive, []}
       ]}
       module={component}
-      current_user={current_user(assigns)}
       {...component_assigns}
     />
 
     <Surface.Components.Dynamic.Component
-      :if={!current_user(assigns)}
+      :if={!current_user(@__context__)}
       :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || [
           {Bonfire.UI.Social.WidgetTagsLive, []}
       ]}
@@ -92,21 +87,21 @@
   </div>
 
   <!-- <Bonfire.UI.Common.SmartInputContainerLive
-    :if={e(assigns, :hide_smart_input, nil) != true}
-    hide_smart_input={e(assigns, :hide_smart_input, nil)}
-    current_user={current_user(assigns)}
-    showing_within={e(assigns, :showing_within, nil)}
-    reply_to_id={e(assigns, :reply_to_id, "")}
+    :if={e(@hide_smart_input, nil) != true}
+    hide_smart_input={e(@hide_smart_input, nil)}
+    current_user={current_user(@__context__)}
+    showing_within={e(@showing_within, nil)}
+    reply_to_id={e(@reply_to_id, "")}
     thread_id={@thread_id}
-    create_activity_type={e(assigns, :create_activity_type, nil)}
-    thread_mode={e(assigns, :thread_mode, nil)}
-    to_boundaries={e(assigns, :to_boundaries, [])}
-    to_circles={e(assigns, :to_circles, [])}
+    create_activity_type={e(@create_activity_type, nil)}
+    thread_mode={e(@thread_mode, nil)}
+    to_boundaries={e(@to_boundaries, [])}
+    to_circles={e(@to_circles, [])}
     smart_input_prompt={@smart_input_prompt}
     smart_input_text={@smart_input_text}
   /> -->
     <div 
-      :if={current_user(assigns) && e(assigns, :showing_within, nil) != :messages}
+      :if={current_user(@__context__) && e(@showing_within, nil) != :messages}
       x-show="!show_smart_input_fullscreen"
       class="fixed bottom-0 z-[90] right-3 bottom-12 md:hidden">
       <button 

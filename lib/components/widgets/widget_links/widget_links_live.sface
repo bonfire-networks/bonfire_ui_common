@@ -1,7 +1,7 @@
 <Bonfire.UI.Common.WidgetLive 
   :if={!Bonfire.Me.Settings.get([:ui, :show_instance_links, :disabled], nil, assigns)}
   widget_title={e(assigns, :widget_title, l "Links")}
-  current_user={current_user(assigns)}
+  current_user={current_user(@__context__)}
 >
 
 <ul class="p-2 menu">

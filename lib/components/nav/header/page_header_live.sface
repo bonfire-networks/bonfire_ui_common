@@ -7,7 +7,7 @@
       }>
         <div class="flex items-center flex-1 space-x-3 text-left">
           <#slot name="left_action">
-            {#if e(assigns, :page_header_drawer, nil)}
+            {#if e(@page_header_drawer, nil)}
               <div 
                 class="flex md:hidden">
                 <div
@@ -16,7 +16,7 @@
                   @click="open_drawer = true">
                   <Bonfire.UI.Common.AvatarLive
                     class="w-8 h-8 rounded-full bg-base-200"
-                    user={current_user(assigns)}
+                    user={current_user(@__context__)}
                   />
                 </div>
               </div>
@@ -28,7 +28,7 @@
               href="javascript:window.history.back()"
               class={
                 "flex btn btn-circle btn-ghost btn-sm",
-                "hidden tablet:flex": e(assigns, :page_header_drawer, nil)
+                "hidden tablet:flex": e(@page_header_drawer, nil)
               }
               >
               <Outline.ChevronLeftIcon class="w-4 h-4 stroke-current" />
@@ -37,7 +37,7 @@
           
           <div class="flex-1">
             <#slot>
-              <h1 class="font-bold text-base-content">{@page_title}</h1> 
+              <h1 :if={@page_title} class="font-bold text-base-content">{@page_title}</h1> 
             </#slot>
           </div>
           <#slot name="right_action">
