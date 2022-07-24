@@ -28,7 +28,7 @@
     />
     <div 
       class={"grid ",
-      "grid-rows-[48px_1fr]": !Settings.get([:ui, :compact], false, assigns),
+      "grid-rows-[60px_1fr]": !Settings.get([:ui, :compact], false, assigns),
       "grid-rows-[40px_1fr]": Settings.get([:ui, :compact], false, assigns)
       }>
       <Bonfire.UI.Common.PageHeaderLive
