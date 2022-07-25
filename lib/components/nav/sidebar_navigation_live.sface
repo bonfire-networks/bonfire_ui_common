@@ -8,7 +8,7 @@
     <li>
       <LiveRedirect 
         to={path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive))} 
-        class={"rounded-full relative",  "font-bold bg-base-content/10": @page == "feed"}
+        class={"rounded relative",  "font-bold bg-base-content/10": @page == "feed"}
       >
         <Solid.NewspaperIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "feed"} />
         <span :if={@page == "feed"} class="sr-only">{l "Current Page:"} </span>
@@ -19,7 +19,7 @@
     <li class="tablet-lg:hidden">
       <LiveRedirect 
         to={"/search"}
-        class={"rounded-full relative",  "font-bold bg-base-content/10": @page == "search"}
+        class={"rounded relative",  "font-bold bg-base-content/10": @page == "search"}
       >
         <Solid.SearchIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "search"} />
         <span :if={@page == "search"} class="sr-only">{l "Current Page:"} </span>
@@ -30,7 +30,7 @@
     <li>
       <LiveRedirect 
         class={
-        "rounded-full relative",  "font-bold bg-base-content/10": @page == "local"} 
+        "rounded relative",  "font-bold bg-base-content/10": @page == "local"} 
         to={"/feed/local"}>
         <Solid.LocationMarkerIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "local"} />
         <span :if={@page == "local"} class="sr-only">{l "Current Page:"} </span>
@@ -41,7 +41,7 @@
     <li>
       <LiveRedirect 
         class={
-          "rounded-full relative",  "font-bold bg-base-content/10": @page == "federation"} 
+          "rounded relative",  "font-bold bg-base-content/10": @page == "federation"} 
         to={"/feed/federation"}>
         <Solid.GlobeIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "federation"} />
         <span :if={@page == "federation"} class="sr-only">{l "Current Page:"} </span>
@@ -52,7 +52,7 @@
     <li>
       <LiveRedirect 
         to={path(:notifications)}
-        class={"rounded-full relative",  "font-bold bg-base-content/10": @page == "notifications"}
+        class={"rounded relative",  "font-bold bg-base-content/10": @page == "notifications"}
       >
         <Solid.BellIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "notifications"} />
         <span :if={@page == "notifications"} class="sr-only">{l "Current Page:"} </span>
@@ -65,7 +65,7 @@
       <LiveRedirect 
         to={path(Bonfire.Data.Social.Message)} 
         class={
-          "rounded-full relative",  "font-bold bg-base-content/10": @page == "messages"}>
+          "rounded relative",  "font-bold bg-base-content/10": @page == "messages"}>
           <Solid.MailIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "messages"}/>
           <span :if={@page == "messages"} class="sr-only">{l "Current Page:"} </span>
           {l "Messages"}
@@ -77,7 +77,7 @@
       <LiveRedirect 
         to={"/my/likes"} 
         class={
-          "rounded-full relative",  "font-bold bg-base-content/10": @page == "likes"}>
+          "rounded relative",  "font-bold bg-base-content/10": @page == "likes"}>
           <Solid.StarIcon  class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "likes"}/>
           <span :if={@page == "likes"} class="sr-only">{l "Current Page:"} </span>
           {l "Favourites"}
@@ -88,7 +88,7 @@
       <LiveRedirect 
         to={"/topics"} 
         class={
-          "rounded-full relative",  "font-bold bg-base-content/10": @page == "topics"}>
+          "rounded relative",  "font-bold bg-base-content/10": @page == "topics"}>
           <Solid.CollectionIcon  class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "topics"}/>
           <span :if={@page == "topics"} class="sr-only">{l "Current Page:"} </span>
           {l "Topics"}
@@ -99,7 +99,7 @@
       <LiveRedirect 
         to={"/settings"} 
         class={
-          "rounded-full relative",  "font-bold bg-base-content/10": @page == "settings"}>
+          "rounded relative",  "font-bold bg-base-content/10": @page == "settings"}>
           <Solid.AdjustmentsIcon  class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "settings"}/>
           <span :if={@page == "settings"} class="sr-only">{l "Current Page:"} </span>
           {l "Settings"}
@@ -109,7 +109,7 @@
     <li>
       <LiveRedirect 
         to={"/logout"} 
-        class={"rounded-full relative"}>
+        class={"rounded relative"}>
           <Solid.LogoutIcon  class={"w-5 h-5 text-base-content/80"}/>
           {l "Logout"}
       </LiveRedirect>
