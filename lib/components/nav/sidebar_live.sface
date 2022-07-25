@@ -2,12 +2,10 @@
 
 <div 
   :class="show_smart_input_fullscreen ? '!grid !overflow-hidden' : ''"
-  class="items-start hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget md:grid auto-rows-min ">
+  class="sticky z-[100] items-start hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto top-3 widget md:grid auto-rows-min ">
   {#if current_user(@__context__)}
 
-    <div class="sticky top-0 z-20">
-      <Bonfire.UI.Common.LogoLive />
-    </div>
+    <Bonfire.UI.Common.LogoLive />
 
     <Bonfire.UI.Common.UserMenuLive />
 
@@ -34,6 +32,9 @@
       :if={!@show_less_menu_items}
       page={@page}
     />
+
+    <!-- WIP: CATEGORIES NAVIGATION DUMMY -->
+    <Bonfire.Classify.Web.CategoriesNavLive />
     
     <div class="flex-col hidden gap-3 md:flex">
       {#if is_list(@sidebar_widgets[:users][:main])}

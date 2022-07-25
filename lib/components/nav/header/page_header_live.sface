@@ -1,5 +1,5 @@
 <!-- <div class="relative"> -->
-  <div role="banner" class="w-full border-b bg-base-200/70 tablet:bg-opacity-100 border-base-content/10 rounded-t-md">  
+  <div role="banner" class="sticky z-[100] w-full border-b top-3 bg-base-200 tablet:bg-opacity-100 border-base-content/10 rounded-t-md">  
     <div class="relative">
       <div class={"flex items-center ",
       "p-3": !Settings.get([:ui, :compact], false, assigns),

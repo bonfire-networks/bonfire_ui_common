@@ -4,7 +4,10 @@
     open_drawer: false
   }"
   :class="show_smart_input_fullscreen ? '!grid-cols-1 !place-content-start' : ''"
-  class={"max-w-screen-lg tablet:max-w-screen-xl tablet-lg:max-w-screen-2xl mx-auto my-3 px-3 justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)] tablet-lg:grid-cols-[repeat(auto-fit,_290px)] grid gap-3 bonfire_layout"}>
+  class={
+      "max-w-screen-lg tablet:max-w-screen-xl tablet-lg:max-w-screen-2xl mx-auto p-3 justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)] tablet-lg:grid-cols-[repeat(auto-fit,_290px)] grid gap-3 bonfire_layout",
+       "!gap-8": !Settings.get([:ui, :compact], false, assigns)
+    }>
   <Bonfire.UI.Common.SidebarLive
     page={@page}
     reply_to_id={@reply_to_id}
@@ -22,12 +25,10 @@
   />
   <div 
     :class="show_smart_input_fullscreen ? '!hidden' : ''"
-    class="gap-2 md:gap-0  w-full tablet:col-span-1 tablet-lg:col-span-2 grid grid-rows-[1fr_48px] md:grid-rows-1">
-    <Bonfire.UI.Common.HeaderMobileGuestLive 
-      :if={!current_user(@__context__)}
-    />
+    class="gap-2 md:gap-0 relative  w-full tablet:col-span-1 tablet-lg:col-span-2 grid grid-rows-[1fr_48px] md:grid-rows-1">
+    <Bonfire.UI.Common.HeaderMobileGuestLive  :if={!current_user(@__context__)} />
     <div 
-      class={"grid ",
+      class={"grid relative invisible_frame",
       "grid-rows-[60px_1fr]": !Settings.get([:ui, :compact], false, assigns),
       "grid-rows-[40px_1fr]": Settings.get([:ui, :compact], false, assigns)
       }>
@@ -45,7 +46,7 @@
         </:right_action>
       </Bonfire.UI.Common.PageHeaderLive>
 
-      <div data-id="inner_content" class="overflow-x-hidden overflow-y-auto feed bg-base-100 rounded-b-md">
+      <div data-id="inner_content" class="rounded-b-none feed bg-base-100">
         {@inner_content}
       </div>
       
@@ -57,7 +58,10 @@
   </div>
   <div 
     :class="show_smart_input_fullscreen ? '!hidden' : ''"
-    class="items-start hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget tablet-lg:grid auto-rows-min ">
+    class={
+      "items-start sticky z-[100] top-3 hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget tablet-lg:grid auto-rows-min",
+       "!gap-5": !Settings.get([:ui, :compact], false, assigns),
+    }>
     <div 
       :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(@__context__)}
       class="sticky top-0 z-20">

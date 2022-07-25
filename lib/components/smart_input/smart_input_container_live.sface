@@ -29,7 +29,7 @@
       {e(@smart_input_prompt, l "Compose a post")}
     </button>
     <div 
-      class="absolute bottom-0 z-50 transition-all w-[24rem] shadow-xl right-4 max-h-[100vh] overflow-x-auto"
+      class="fixed bottom-0 z-50 transition-all w-[24rem] shadow-xl right-4 max-h-[100vh] overflow-x-auto"
       :class="{
         '!w-[40rem]': show_smart_input_modal,
         '!w-auto left-8 top-8': show_smart_input_modal_fullscreen 
