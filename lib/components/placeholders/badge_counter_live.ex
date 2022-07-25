@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
   prop class, :css_class, default: ""
-  # prop count, :integer, default: 0
+  prop count, :integer, default: 0
 
   def update(%{count_increment: inc}, socket) do
     debug(inc, "count_increment")
@@ -11,7 +11,7 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
   end
 
   def update(assigns, %{assigns: %{count_loaded: true}} = socket) do
-    debug(assigns, "count already loaded")
+    # debug(assigns, "count already loaded")
     {:ok, socket
     |> assign(assigns)}
   end

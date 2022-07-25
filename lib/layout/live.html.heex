@@ -16,7 +16,7 @@
   }"
 >
    <Bonfire.UI.Common.NavLive.render
-    __context__={e(assigns, :__context__, %{})}
+    __context__={@__context__}
     without_sidebar={e(assigns, :without_sidebar, nil)}
     showing_within={e(assigns, :showing_within, nil)}
     hide_smart_input={e(assigns, :hide_smart_input, nil)}
@@ -48,6 +48,6 @@
   module={Bonfire.UI.Common.NotificationLive} 
   id="notification" 
   notification={e(assigns, :notification, nil)}
-  current_user={current_user(@__context__)}
+  __context__={@__context__}
   root_flash={@flash |> debug("root_flash")}
 />

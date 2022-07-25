@@ -24,11 +24,17 @@ defmodule Bonfire.UI.Common.Web do
       opts
       |> Keyword.put_new(:root, "lib")
       |> maybe_put_layout("app.html")
+
     quote do
       use Phoenix.View, unquote(opts)
+
       # Import convenience functions from controllers
       import Phoenix.Controller,
         only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
+
+      use Surface.View, unquote(opts) # to support Surface components in the app layout and in non-LiveViews
+      # Bonfire.Common.Extend.quoted_use_if_enabled(Surface.View)
+      Bonfire.Common.Extend.quoted_import_if_enabled(Surface)
 
       unquote(live_view_helpers())
 
@@ -36,8 +42,8 @@ defmodule Bonfire.UI.Common.Web do
   end
 
   defp maybe_put_layout(opts, file) do
-    if !Bonfire.Common.Config.get(:default_layout_module), do: opts, else: opts
-      |> Keyword.put_new(:layout, {Bonfire.Common.Config.get(:default_layout_module), file})
+    opts
+    |> Keyword.put_new(:layout, {Bonfire.Common.Config.get(:default_layout_module, Bonfire.UI.Common.LayoutView), file})
   end
 
   def layout_view(opts \\ []) do
@@ -198,7 +204,7 @@ defmodule Bonfire.UI.Common.Web do
   end
 
   if Bonfire.Common.Extend.module_exists?(Surface) do
-    def surface_view(opts \\ []) do
+    def surface_live_view(opts \\ []) do
       opts =
         opts
         |> maybe_put_layout("live.html")

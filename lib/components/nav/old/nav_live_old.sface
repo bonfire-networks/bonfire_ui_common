@@ -7,35 +7,35 @@
     }" 
     class="flex flex-col">
     <Bonfire.UI.Common.HeaderUserLive 
-      :if={e(assigns, :without_sidebar, nil) && !current_user(@__context__) }
+      :if={e(@without_sidebar, nil) && !current_user(@__context__) }
       page={@page}
       without_sidebar={@without_sidebar}
       current_user={current_user(@__context__)}  
     />
     <div class="flex items-start justify-center w-full h-screen lg:max-w-screen-xl lg:mx-auto ">
       <Bonfire.UI.Common.SidebarLive
-        :if={e(assigns, :without_sidebar, nil) != true}
+        :if={e(@without_sidebar, nil) != true}
         current_user={current_user(@__context__)}
         page={@page}
         reply_to_id={@reply_to_id}
         thread_id={@thread_id}
-        showing_within={e(assigns, :showing_within, nil)}
-        create_activity_type={e(assigns, :create_activity_type, nil)}
-        to_boundaries={e(assigns, :to_boundaries, [])}
-        to_circles={e(assigns, :to_circles, [])}
+        showing_within={e(@showing_within, nil)}
+        create_activity_type={e(@create_activity_type, nil)}
+        to_boundaries={e(@to_boundaries, [])}
+        to_circles={e(@to_circles, [])}
         smart_input_prompt={@smart_input_prompt}
         smart_input_text={@smart_input_text}
         sidebar_widgets={@sidebar_widgets}
-        thread_mode={e(assigns, :thread_mode, nil)}
-        hide_smart_input={e(assigns, :hide_smart_input, false)}
+        thread_mode={e(@thread_mode, nil)}
+        hide_smart_input={e(@hide_smart_input, false)}
       />
       <div 
         class={
           "flex-grow w-full flex flex-col h-screen mx-0 rounded-t-md shrink-0 w-center overflow-hidden tablet:overflow-visible",
-          "max-w-[600px]": e(assigns, :without_sidebar, nil) != true
+          "max-w-[600px]": e(@without_sidebar, nil) != true
           }>
         <Bonfire.UI.Common.HeaderUserLive 
-          :if={e(assigns, :without_sidebar, nil) != true or current_user(@__context__) }
+          :if={e(@without_sidebar, nil) != true or current_user(@__context__) }
           page={@page}
           without_sidebar={@without_sidebar}
           current_user={current_user(@__context__)}  
@@ -48,7 +48,7 @@
         </div>
       </div>
       <div
-        :if={e(assigns, :without_sidebar, nil) != true}
+        :if={e(@without_sidebar, nil) != true}
         class="w-[285px] ml-3 justify-start hidden  h-full tablet:flex">
         <div class="w-full">
           <div 
@@ -69,7 +69,7 @@
             <Surface.Components.Dynamic.Component
               :if={current_user(@__context__)}
               :for={{component, component_assigns} <- @sidebar_widgets[:users][:secondary] || [ 
-                {Bonfire.UI.Social.WidgetTimelinesLive, [page: e(assigns, :page, nil)]},
+                {Bonfire.UI.Social.WidgetTimelinesLive, [page: e(@page, nil)]},
               ]}
               module={component}
               current_user={current_user(@__context__)}

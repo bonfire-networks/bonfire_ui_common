@@ -2,7 +2,7 @@
   :if={current_user(@__context__) != nil and e(@hide_smart_input, nil) != true}
   >
   
-  {#if Settings.get([:ui, :smart_input_as], nil, assigns)==:sidebar and e(@thread_mode, nil) != :flat}
+  {#if Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and e(@thread_mode, nil) != :flat}
 
     <Bonfire.UI.Common.SmartInputLive
       id={:smart_input} 

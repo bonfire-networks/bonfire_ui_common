@@ -28,8 +28,8 @@
     />
     <div 
       class={"grid ",
-      "grid-rows-[60px_1fr]": !Settings.get([:ui, :compact], false, assigns),
-      "grid-rows-[40px_1fr]": Settings.get([:ui, :compact], false, assigns)
+      "grid-rows-[60px_1fr]": !Settings.get([:ui, :compact], false, @__context__),
+      "grid-rows-[40px_1fr]": Settings.get([:ui, :compact], false, @__context__)
       }>
       <Bonfire.UI.Common.PageHeaderLive
         page_title={e(@page_title, nil)}

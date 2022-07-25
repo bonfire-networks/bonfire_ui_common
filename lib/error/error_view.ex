@@ -69,7 +69,10 @@ defmodule Bonfire.UI.Common.ErrorView do
   defp reason(%{message: reason}), do: reason
   defp reason(reason) when is_binary(reason), do: reason
   defp reason(reason) when not is_map(reason), do: inspect reason
-  defp reason(_), do: nil
+  defp reason(other) do
+    # debug(other)
+    nil
+  end
 
   # By default, Phoenix returns the status message from
   # the template name. For example, "404.html" becomes

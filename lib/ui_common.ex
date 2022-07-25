@@ -624,9 +624,10 @@ defmodule Bonfire.UI.Common do
 
   @message_types [:message, "message", :messages, "messages"]
 
-  def is_messaging?(assigns) do
-    e(assigns, :create_activity_type, nil) in @message_types or e(assigns, :page, nil) in @message_types or e(assigns, :showing_within, nil) in @message_types
-  end
+  def is_messaging?(%{page: page}) when page in @message_types, do: true
+  def is_messaging?(%{showing_within: showing_within}) when showing_within in @message_types, do: true
+  def is_messaging?(%{create_activity_type: create_activity_type}) when create_activity_type in @message_types, do: true
+  def is_messaging?(_), do: false
 
   def boundaries_or_default(to_boundaries, _opts) when is_list(to_boundaries) and length(to_boundaries)>0 do
     to_boundaries

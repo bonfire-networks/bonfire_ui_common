@@ -9,7 +9,7 @@
   disabled={if @object_type in [Bonfire.Data.Social.Message], do: "disabled"}
   phx-click={"#{if @my_boost, do: "Bonfire.Social.Boosts:undo", else: "Bonfire.Social.Boosts:boost"}"}
   phx-target={@myself}
-  phx-value-id={e(@object, :id, nil)}
+  phx-value-id={ulid(@object)}
   phx-value-component={__MODULE__}
   class={"btn btn-ghost btn-circle boost btn-sm"}> 
   <span class={"text-base-content text-opacity-50", "text-opacity-100 text-info": @my_boost}>
@@ -27,7 +27,7 @@
   </span>
   <span class={"feed_activity_text sr-only", "font-medium": @my_boost}>
     {if @my_boost, do: l("Boosted"), else: l("Boost")}
-    <span :if={e(@boost_count, 0) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, assigns)}>{e(@boost_count, 0)}</span>
+    <span :if={e(@boost_count, 0) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@boost_count, 0)}</span>
   </span>
 
 </button>

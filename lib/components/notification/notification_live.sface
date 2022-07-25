@@ -39,7 +39,7 @@
       </div>
     </div>
 
-  {#case e(assigns, :info, nil) || live_flash(@root_flash || @flash, :info)}
+  {#case e(@info, nil) || live_flash(@root_flash || @flash, :info)}
     {#match nil}
     {#match info}
     <div 
@@ -78,7 +78,7 @@
     </div> -->
   {/case}
 
-  {#case e(assigns, :error, nil) || live_flash(@root_flash || @flash, :error)}
+  {#case e(@error, nil) || live_flash(@root_flash || @flash, :error)}
     {#match nil}
     {#match error}
     <div 
@@ -94,7 +94,7 @@
             <p data-id="content" class="text-sm text-gray-500">{rich error}</p>
 
             <!-- <button class="mt-2 normal-case btn btn-sm btn-error" :on-click="Bonfire.Social.Posts:write_error">{l "Share feedback"}</button> -->
-            <Bonfire.UI.Common.FeedbackButtonLive text={error_template(assigns)} class="mt-2 normal-case btn btn-sm btn-error" />
+            <Bonfire.UI.Common.FeedbackButtonLive text={error_template(%{flash: @flash, root_flash: @root_flash, error: @error, context: @__context__})} class="mt-2 normal-case btn btn-sm btn-error" />
   
           </div>
           <div class="flex flex-shrink-0 ml-4">
@@ -138,7 +138,7 @@
     </div>
   </div>
 
-  {#case e(assigns, :info, nil) || live_flash(@flash, :info)}
+  {#case e(@info, nil) || live_flash(@flash, :info)}
     {#match nil}
     {#match info}
     <div class="max-w-md alert alert-info fade-out" 
@@ -150,7 +150,7 @@
     </div>
   {/case}
 
-  {#case e(assigns, :error, nil) || live_flash(@flash, :error)}
+  {#case e(@error, nil) || live_flash(@flash, :error)}
     {#match nil}
     {#match error}
     <div class="max-w-md alert alert-error" 

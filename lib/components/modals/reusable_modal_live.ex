@@ -37,7 +37,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   slot title
 
   def mount(socket) do
-    debug("mounting")
+    # debug("mounting")
     # need this because ReusableModalLive used in the HEEX doesn't set Surface defaults
     {:ok, socket
       |> assign(

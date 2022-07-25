@@ -2,7 +2,7 @@
 name="ui[font_family]"
 class="w-full max-w-xs select select-bordered" 
 >
-  {#for f <- Settings.get([:ui, :font_families], ["Inter"], assigns)}
+  {#for f <- Settings.get([:ui, :font_families], ["Inter"], @__context__)}
     <option class=""
       value={f}
       selected={if @font_family==f, do: "selected"}

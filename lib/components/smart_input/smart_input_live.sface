@@ -2,12 +2,12 @@
 <div 
   :if={current_user(@__context__) != nil and e(@hide_smart_input, nil) != true}
   data-id="smart_input"
-  data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, assigns) &&  e(@thread_mode, nil) != :flat, do: "winter"}
-    {#if Settings.get([:ui, :smart_input_as], nil, assigns)==:sidebar and e(@thread_mode, nil) != :flat}
+  data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, @__context__) &&  e(@thread_mode, nil) != :flat, do: "winter"}
+    {#if Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and e(@thread_mode, nil) != :flat}
 
   class={
     "h-full",
-    "h-[calc(100%-40px)]": Settings.get([:ui, :smart_input_as], nil, assigns)!=:sidebar and e(@thread_mode, nil) != :flat
+    "h-[calc(100%-40px)]": Settings.get([:ui, :smart_input_as], nil, @__context__)!=:sidebar and e(@thread_mode, nil) != :flat
   }
   >
   <div 
@@ -25,11 +25,11 @@
       'not-distraction-free break-words': !show_smart_input_fullscreen,
       'w-full mx-auto !max-w-[600px] tablet:!max-w-[910px] px-3 tablet:pr-0': show_smart_input_fullscreen,
       'h-full': show_smart_input_modal_fullscreen,
-      'hidden': !show_smart_input_modal && !show_smart_input_fullscreen && #{Settings.get([:ui, :smart_input_as], nil, assigns) != :sidebar && e(@thread_mode, nil) != :flat}
+      'hidden': !show_smart_input_modal && !show_smart_input_fullscreen && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && e(@thread_mode, nil) != :flat}
     }"}
     class={
       "flex bg-transparent",
-      "bottom-0 !max-w-full": e(@thread_mode, nil) == :flat or is_messaging?(assigns),
+      "bottom-0 !max-w-full": e(@thread_mode, nil) == :flat or is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}),
       "h-full": e(@showing_within, nil) == :page
     }
     >
@@ -47,10 +47,10 @@
       class={"flex flex-col flex-1 w-full"}>
       
       <div 
-        :if={!is_messaging?(assigns) and length(Config.get([:ui, :smart_input_activities], []))>1}
+        :if={!is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}) and length(Config.get([:ui, :smart_input_activities], []))>1}
         class="dropdown dropdown-hover"
         >
-        <label tabindex="0" class="m-1 btn">{smart_input_name(active_smart_input_component(assigns))}</label>
+        <label tabindex="0" class="m-1 btn">{smart_input_name(active_smart_input_component(@smart_input_component, @create_activity_type))}</label>
         <ul tabindex="0" class="p-2 shadow dropdown-content menu bg-base-100 rounded-box w-52">
           <li :for={{name, label} <- Config.get([:ui, :smart_input_activities], [])}>
             <div phx-click="select_smart_input" phx-target={@myself} phx-value-component={all_smart_input_components()[name] || Bonfire.UI.Social.WritePostContentLive}>{label}</div>
@@ -62,13 +62,13 @@
         x-cloak
         x-show="show_smart_input_fullscreen == true" 
         class="flex items-center p-3 border-b rounded-t bg-base-100 border-base-content/10">
-        {#if is_messaging?(assigns)}
+        {#if is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type})}
           <div class="flex-1 font-bold text-base-content">{l "Send a message"}</div>
         {#elseif length(Config.get([:ui, :smart_input_activities], []))>1}
           <div 
             class="dropdown dropdown-hover"
             >
-            <label tabindex="0" class="m-1 btn">{smart_input_name(active_smart_input_component(assigns))}</label>
+            <label tabindex="0" class="m-1 btn">{smart_input_name(active_smart_input_component(@smart_input_component, @create_activity_type))}</label>
             <ul tabindex="0" class="p-2 shadow dropdown-content menu bg-base-100 rounded-box w-52">
               <li :for={{name, label} <- Config.get([:ui, :smart_input_activities], [])}>
                 <div phx-click="select_smart_input" phx-target={@myself} phx-value-component={all_smart_input_components()[name] || Bonfire.UI.Social.WritePostContentLive}>{label}</div>
@@ -94,7 +94,7 @@
       :class="show_smart_input_fullscreen ? 'bg-base-100 !rounded-none mb-0 border-b border-base-content/10' : ''"
       class={
         "overflow-y-auto mb-2 rounded-md",
-        "h-full !mb-0 !rounded-none max-h-[300px]": Settings.get([:ui, :smart_input_as], nil, assigns) != :sidebar
+        "h-full !mb-0 !rounded-none max-h-[300px]": Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar
       }>
         <!-- show what we're replying to, if any -->
         <Surface.Components.Dynamic.LiveComponent
@@ -111,9 +111,9 @@
       </div>
 
       <Surface.Components.Dynamic.Component
-          module={active_smart_input_component(assigns)}
+          module={active_smart_input_component(@smart_input_component, @create_activity_type)}
           textarea_class={"editor_area h-full",
-            "!min-h-[120px]": Settings.get([:ui, :smart_input_as], nil, assigns)==:sidebar and e(@thread_mode, nil) != :flat,
+            "!min-h-[120px]": Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and e(@thread_mode, nil) != :flat,
             "!h-full !min-h-[420px]": e(@showing_within, nil) in [:page, :compose],
             "h-auto rounded-lg border border-base-content/30": e(@thread_mode, nil) == :flat
             }
