@@ -34,7 +34,7 @@
     />
 
     <!-- WIP: CATEGORIES NAVIGATION DUMMY -->
-    <Bonfire.Classify.Web.CategoriesNavLive />
+    <!-- <Bonfire.Classify.Web.CategoriesNavLive /> -->
     
     <div class="flex-col hidden gap-3 md:flex">
       {#if is_list(@sidebar_widgets[:users][:main])}
