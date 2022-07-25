@@ -3,15 +3,15 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   use Bonfire.Common.Utils
 
   # prop target_component, :string
-  prop reply_to_id, :string
-  prop thread_id, :string
-  prop create_activity_type, :any
+  prop reply_to_id, :string, default: nil
+  prop thread_id, :string, default: nil
+  prop create_activity_type, :any, default: nil
   prop to_boundaries, :list, default: []
-  prop to_circles, :list
-  prop showing_within, :any
-  prop with_rich_editor, :boolean, default: true, required: false
-  prop uploads, :any
-  prop uploaded_files, :list
-  prop thread_mode, :string
+  prop to_circles, :list, default: nil
+  prop showing_within, :any, default: nil
+  prop uploads, :any, default: nil
+  prop uploaded_files, :list, default: []
+  prop thread_mode, :atom, default: nil
+  prop page, :any, default: nil
 
 end

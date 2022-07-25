@@ -1,5 +1,5 @@
 <div class="flex items-center">
-  <LiveRedirect to={if String.starts_with?(e(@character, :username, ""), "http"), do: e(@character, :username, nil), else: "/user/#{e(@character, :username, "")}"} class="flex items-center flex-1 space-x-3 profile-item group ">
+  <LiveRedirect to={if String.starts_with?(e(@character, :username, ""), "http"), do: e(@character, :username, nil), else: "/character/#{e(@character, :username, "")}"} class="flex items-center flex-1 space-x-3 profile-item group ">
     <Bonfire.UI.Common.AvatarLive user={@profile} />
     <div class="flex-1">
       <p class="text-base font-semibold group-hover:underline text-base-content">
@@ -13,12 +13,12 @@
 
   <div
     class="" 
-    :if={:follow in @show_controls and e(current_user(@__context__), :id, nil) != maybe_get(@profile, :id) and e(current_user(@__context__), :id, nil)}>
+    :if={:follow in @show_controls and ulid(current_user(@__context__)) != maybe_get(@profile, :id) and ulid(current_user(@__context__))}>
     <Bonfire.UI.Common.FollowButtonLive 
       id={ComponentID.new(Bonfire.UI.Common.FollowButtonLive, @profile)}
       object={@profile} 
       hide_text
-      class={e(assigns, :class, nil)}
+      class={e(@class, nil)}
       current_user={current_user(@__context__)} 
     />
   </div>

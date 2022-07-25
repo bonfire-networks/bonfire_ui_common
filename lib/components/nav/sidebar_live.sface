@@ -1,4 +1,4 @@
-  <!-- x-on:resize.window="show_smart_input_fullscreen = (window.innerWidth > 1200) ? false : show_smart_input_fullscreen" -->
+<!-- x-on:resize.window="show_smart_input_fullscreen = (window.innerWidth > 1200) ? false : show_smart_input_fullscreen" -->
 
 <div 
   :class="show_smart_input_fullscreen ? '!grid !overflow-hidden' : ''"

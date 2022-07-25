@@ -93,6 +93,6 @@
     }
     </style>
   </div>
-    <div class="mt-2 text-lg font-semibold text-center text-base-content">{e(assigns, :feedback_title, l "This feed is empty")}</div>
-    <div class="mt-1 text-sm font-medium text-center text-base-content/80">{e(assigns, :feedback_message, l "Take a deep breath...")}</div>
+    <div class="mt-2 text-lg font-semibold text-center text-base-content">{e(@feedback_title, l "This feed is empty")}</div>
+    <div class="mt-1 text-sm font-medium text-center text-base-content/80">{e(@feedback_message, l "Take a deep breath...")}</div>
 </div>

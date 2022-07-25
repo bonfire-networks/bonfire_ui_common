@@ -1,11 +1,10 @@
 defmodule Bonfire.UI.Common.AvatarLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-
   prop user, :any, default: nil
   prop src, :any, default: nil
-  prop viewing_main_object, :boolean
-  prop comment, :boolean
+  prop viewing_main_object, :boolean, default: false
+  prop comment, :boolean, default: false
   prop size, :any, default: nil
   prop class, :any, default: nil
 

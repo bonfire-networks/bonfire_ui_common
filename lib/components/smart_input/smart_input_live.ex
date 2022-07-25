@@ -6,23 +6,25 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop create_activity_type, :any, default: nil
   prop reply_to_id, :string, default: ""
   prop thread_id, :string, default: "", required: false
-  prop smart_input_component, :atom
+  prop smart_input_component, :atom, default: nil
   prop to_boundaries, :list, default: []
-  prop to_circles, :list
+  prop to_circles, :list, default: nil
   prop open_boundaries, :boolean, default: false
   prop smart_input_prompt, :string, required: false
   prop smart_input_text, :string, required: false
-  prop showing_within, :any
-  prop with_rich_editor, :boolean, required: false
-  prop activity, :any
+  prop showing_within, :any, default: nil
+  prop with_rich_editor, :boolean, default: true, required: false
+  prop activity, :any, default: nil
   prop hide_smart_input, :boolean, default: false
-  prop object, :any
-  prop activity_inception, :any
+  prop object, :any, default: nil
+  prop activity_inception, :any, default: nil
   prop title_open, :boolean, default: false
-  prop title_prompt, :string
-  prop preloaded_recipients, :list
+  prop title_prompt, :string, default: nil
+  prop preloaded_recipients, :list, default: nil
   prop show_select_recipients, :boolean, default: false
-  prop thread_mode, :string
+  prop thread_mode, :any, default: nil
+  prop page, :any, default: nil
+
   # Classes to customize the smart input appearance
   prop replied_activity_class, :css_class, default: "relative  p-3 bg-base-100 hover:!bg-base-100 hover:!bg-opacity-100 showing_within:smart_input overflow-hidden"
 
@@ -46,8 +48,8 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     Bonfire.Common.Config.get([:ui, :smart_input_components], [post: Bonfire.UI.Social.WritePostContentLive])
   end
 
-  def active_smart_input_component(assigns) do
-    e(assigns, :smart_input_component, nil) || e(all_smart_input_components(), e(assigns, :create_activity_type, nil), nil) || Bonfire.Common.Config.get([:ui, :default_smart_input]) || Bonfire.UI.Social.WritePostContentLive
+  def active_smart_input_component(smart_input_component, create_activity_type) do
+    smart_input_component || e(all_smart_input_components(), create_activity_type, nil) || Bonfire.Common.Config.get([:ui, :default_smart_input]) || Bonfire.UI.Social.WritePostContentLive
   end
 
   def smart_input_name(component) do
@@ -76,7 +78,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
       activity: nil,
       to_circles: nil,
       reply_to_id: e(socket.assigns, :thread_id, nil),
-      to_boundaries: default_boundaries(socket),
+      to_boundaries: default_boundaries(socket)
       # open_boundaries: false
     )
   end
@@ -103,14 +105,14 @@ defmodule Bonfire.UI.Common.SmartInputLive do
       to_circles: nil,
       activity: nil,
       smart_input_text: nil,
-      to_boundaries: default_boundaries(socket),
+      to_boundaries: default_boundaries(socket)
       # open_boundaries: false
     )
   end
 
   def activity_type_or_reply(assigns) do
-    debug(e(assigns, :reply_to_id, ""), "reply to id")
-    debug(e(assigns, :thread_id, ""), "thread_id")
+    # debug(e(assigns, :reply_to_id, ""), "reply to id")
+    # debug(e(assigns, :thread_id, ""), "thread_id")
     if e(assigns, :reply_to_id, "") !="" or e(assigns, :thread_id, "") !="",
     do: "reply",
     else: e(assigns, :create_activity_type, "post")

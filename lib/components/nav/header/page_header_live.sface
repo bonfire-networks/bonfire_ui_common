@@ -2,8 +2,8 @@
   <div role="banner" class="sticky z-[100] w-full border-b top-3 bg-base-200 tablet:bg-opacity-100 border-base-content/10 rounded-t-md">  
     <div class="relative">
       <div class={"flex items-center ",
-      "p-3": !Settings.get([:ui, :compact], false, assigns),
-      "px-2 py-1": Settings.get([:ui, :compact], false, assigns)
+      "p-3": !Settings.get([:ui, :compact], false, @__context__),
+      "px-2 py-1": Settings.get([:ui, :compact], false, @__context__)
       }>
         <div class="flex items-center flex-1 space-x-3 text-left">
           <#slot name="left_action">

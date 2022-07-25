@@ -7,6 +7,20 @@ defmodule Bonfire.UI.Common.NotificationLive do
   prop info, :any, default: nil
   prop error_sentry_event_id, :any, default: nil
 
+  def mount(socket) do
+    # debug("mounting")
+    # need this because ReusableModalLive used in the HEEX doesn't set Surface prop defaults
+    {:ok, socket
+      |> assign(
+        root_flash: nil,
+        notification: nil,
+        error: nil,
+        info: nil,
+        error_sentry_event_id: nil
+      )
+    }
+  end
+
   def update(assigns, %{assigns: %{subscribed: true}} = socket) do
     {:ok, socket
           |> assign(assigns)
@@ -14,13 +28,19 @@ defmodule Bonfire.UI.Common.NotificationLive do
   end
 
   def update(assigns, socket) do
-    feed_id = Bonfire.Social.Feeds.my_feed_id(:notifications, current_user(assigns))
+    current_user = current_user(socket) || current_user(assigns)
 
-    if feed_id do
-      debug(feed_id, "subscribed to push notifications")
-      pubsub_subscribe(feed_id, socket)
+    if current_user do
+      feed_id = Bonfire.Social.Feeds.my_feed_id(:notifications, current_user)
+
+      if feed_id do
+        debug(feed_id, "subscribed to push notifications")
+        pubsub_subscribe(feed_id, socket)
+      else
+        debug("no feed_id, not subscribing to push notifications")
+      end
     else
-      debug("no feed_id, not subscribing to push notifications")
+      debug("no current_user, not subscribing to push notifications")
     end
 
     {:ok, socket
@@ -55,7 +75,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
     error = e(assigns, :error, nil) || live_flash((e(assigns, :root_flash, nil) || e(assigns, :flash, nil) || %{}), :error)
     # debug(error)
 
-    Settings.get([:ui, :error_post_template], "I encountered this issue while using Bonfire: \n\n%{error_message}\n\n@BonfireBuilders #bonfire_feedback \n\n%{error_link}", assigns)
+    Settings.get([:ui, :error_post_template], "I encountered this issue while using Bonfire: \n\n%{error_message}\n\n@BonfireBuilders #bonfire_feedback \n\n%{error_link}", e(assigns, :context, nil))
     |> String.replace("%{error_message}", error || "")
     |> String.replace("%{error_link}", link || "")
     # |> debug()

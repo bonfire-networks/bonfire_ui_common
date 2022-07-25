@@ -6,7 +6,7 @@
   class="w-full dropdown dropdown-end">
   <div tabindex="0" class="w-full gap-2 normal-case btn-wide btn btn-outline border-base-content border-opacity-20 ">
     <span class="flex-1 e">
-      {e(assigns, :selected, l "Choose theme")}
+      {e(@selected, l "Choose theme")}
     </span> 
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +20,7 @@
   <div class="dropdown-content bg-base-200 text-base-content rounded-t-box rounded-b-box top-px max-h-96 h-[70vh] w-52 overflow-y-auto shadow-2xl mt-16">
     <div class="grid grid-cols-1 gap-3 p-3" tabindex="0">
 
-      {#for f <- Settings.get([:ui, :themes], ["bonfire"], assigns)}
+      {#for f <- Settings.get([:ui, :themes], ["bonfire"], @__context__)}
         <div 
           data-set-theme={f}
           data-act-class="ACTIVECLASS"

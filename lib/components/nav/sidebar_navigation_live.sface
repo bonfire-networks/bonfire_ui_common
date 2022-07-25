@@ -3,7 +3,7 @@
   aria-label={l "Main navigation"}>
   <ul 
     class={"text-sm menu menu-compact",
-    "lg:menu-normal": !Settings.get([:ui, :compact], false, assigns)
+    "lg:menu-normal": !Settings.get([:ui, :compact], false, @__context__)
     }>
     <li>
       <LiveRedirect 

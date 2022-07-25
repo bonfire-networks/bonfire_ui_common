@@ -1,38 +1,38 @@
 <span>
   <a 
-    :if={!e(assigns, :my_follow, nil)}
+    :if={!e(@my_follow, nil)}
     data-cid={@id}
     data-id="follow"
     :on-click="Bonfire.Social.Follows:follow" 
     href={if !current_user(@__context__), do: path(@object)<>"/follow"}
     target="_blank"
     rel="noopener noreferrer"
-    phx-value-id={e(@object, :id, nil)} 
-    class={e(assigns, :class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}>
+    phx-value-id={ulid(@object)} 
+    class={e(@class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}>
     <Solid.UserAddIcon
-      :if={!e(assigns, :hide_icon, false)} 
+      :if={!e(@hide_icon, false)} 
       
-      class={e(assigns, :icon_class, "w-4 h-4 shrink-0")} />
+      class={e(@icon_class, "w-4 h-4 shrink-0")} />
     <span
-      :if={!e(assigns, :hide_text, false)} 
-      class={"truncate ellipsis", "ml-2": !e(assigns, :hide_text, nil)}>
-      {l "Follow"} {e(assigns, :label, "")}</span>
+      :if={!e(@hide_text, false)} 
+      class={"truncate ellipsis", "ml-2": !e(@hide_text, nil)}>
+      {l "Follow"} {e(@label, "")}</span>
   </a>
 
   <a 
-    :if={e(assigns, :my_follow, nil)}
+    :if={e(@my_follow, nil)}
     data-cid={@id}
     data-id="unfollow"
     :on-click="Bonfire.Social.Follows:unfollow" 
-    phx-value-id={e(@object, :id, nil)} 
-    class={e(assigns, :class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}>
+    phx-value-id={ulid(@object)} 
+    class={e(@class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}>
     <Solid.UserRemoveIcon 
-      :if={!e(assigns, :hide_icon, false)} 
-      class={e(assigns, :icon_class, "w-4 h-4 shrink-0")} />
+      :if={!e(@hide_icon, false)} 
+      class={e(@icon_class, "w-4 h-4 shrink-0")} />
     <span 
-      :if={!e(assigns, :hide_text, false)}
-      class={"truncate ellipsis", "ml-2": !e(assigns, :hide_text, nil)}>
-      {l "Unfollow"} { e(assigns, :label, "")}</span>
+      :if={!e(@hide_text, false)}
+      class={"truncate ellipsis", "ml-2": !e(@hide_text, nil)}>
+      {l "Unfollow"} { e(@label, "")}</span>
   </a>
 </span>
 

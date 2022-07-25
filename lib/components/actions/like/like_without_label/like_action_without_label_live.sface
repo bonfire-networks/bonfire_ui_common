@@ -2,12 +2,12 @@
   data-id="like_action"
   id={@id}
   phx-click="Bonfire.Social.Likes:like"
-  phx-value-direction={"#{if e(assigns, :my_like, nil), do: "down", else: "up"}"}
-  phx-value-id={e(@object, :id, nil)}
+  phx-value-direction={"#{if e(@my_like, nil), do: "down", else: "up"}"}
+  phx-value-id={ulid(@object)}
   phx-value-component={__MODULE__}
   class="flex items-center rounded cursor-pointer like group">
 
-  {#if e(assigns, :my_like, nil)}
+  {#if e(@my_like, nil)}
     <svg
       class="w-5 h-5 text-yellow-500 group-hover:text-yellow-700"
       stroke="currentColor"
