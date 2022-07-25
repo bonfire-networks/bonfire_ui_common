@@ -33,9 +33,8 @@
       page={@page}
     />
 
-    <!-- WIP: CATEGORIES NAVIGATION DUMMY -->
     <Surface.Components.Dynamic.LiveComponent
-      :if={e(@hide_smart_input, nil) != true}
+      :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive) && current_user(@__context__) && e(@hide_smart_input, nil) != true}
       module={Bonfire.Classify.Web.CategoriesNavLive}
       id={:subscribed_topics}
     />
