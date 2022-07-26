@@ -1,5 +1,5 @@
 <div class="items-center hidden w-full space-x-1 md:flex">
-  <div class="flex items-center flex-1">
+  <div class="flex items-center flex-1 w-full">
     <LivePatch to={path(current_user(@__context__))}>
       <Bonfire.UI.Common.AvatarLive
         class="w-10 h-10 rounded bg-base-100"
@@ -7,20 +7,20 @@
       />
     </LivePatch>
     <LivePatch 
-      class="" 
+      class="flex-1" 
       to={path(current_user(@__context__))}>
-      <div class="flex flex-col items-start flex-1 min-w-0 ml-3">
-        <div class="text-left text-sm font-semibold w-[190px] truncate text-ellipsis text-base-content">{e(current_user(@__context__), :profile, :name, "Unknown")}</div>
+      <div class="flex flex-col items-start flex-1 min-w-full ml-3">
+        <div class="text-sm font-semibold text-left truncate text-ellipsis text-base-content">{e(current_user(@__context__), :profile, :name, "Unknown")}</div>
         <span class="hover:no-underline -mt-0.5 text-sm font-light text-base-content text-opacity-80">@{e(current_user(@__context__), :character, :username, "Unknown")}</span>
       </div>
     </LivePatch>
-    <LiveRedirect to="/switch-user" class="btn btn-square btn-ghost">
+    <!-- <LiveRedirect to="/switch-user" class="btn btn-square btn-ghost">
       <Outline.FingerPrintIcon class="w-5 h-5 text-base-content/70" />
-    </LiveRedirect>
-    <!-- <div class="dropdown dropdown-end">
+    </LiveRedirect> -->
+    <div class="dropdown dropdown-end">
       <label
         tabindex="0"
-        class="flex btn btn-square btn-ghost"
+        class="flex btn btn-sm btn-square btn-ghost"
         id="user-profile-menu"
         aria-haspopup="true"
         aria-expanded="true"
@@ -31,14 +31,14 @@
       </label>
       <ul
         tabindex="0"
-        class="rounded shadow w-72 menu dropdown-content bg-neutral-content"
+        class="mt-3 rounded shadow w-72 menu dropdown-content bg-neutral-content"
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="user-profile-menu"
       >
         <Bonfire.UI.Common.UserMenuLinksLive current_user={current_user(@__context__)} />
       </ul>
-    </div> -->
+    </div>
   </div>
 </div>
 

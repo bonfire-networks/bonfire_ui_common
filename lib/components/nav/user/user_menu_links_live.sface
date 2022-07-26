@@ -1,34 +1,33 @@
-
 <li
-  class="hover:bg-neutral hover:bg-opacity-20 text-neutral"
-  :if={current_user(@__context__)}>
-  <LiveRedirect to={path(current_user(@__context__))} class="flex items-center p-4 text-sm text-neutral">
-    {l "My profile"}
-  </LiveRedirect>
-</li>
-<li
-  class="hover:bg-neutral hover:bg-opacity-20 text-neutral"
+  class="hover:bg-neutral/10 text-neutral"
  :if={current_user(@__context__)}>
   <LiveRedirect to="/switch-user" class="flex items-center p-4 text-sm text-neutral">
     {l "Switch profile"}
   </LiveRedirect>
 </li>
 <li
-  class="hover:bg-neutral hover:bg-opacity-20 text-neutral"
+  class="hover:bg-neutral/10 text-neutral"
+  :if={current_user(@__context__)}>
+  <LiveRedirect to="/settings" class="flex items-center p-4 text-sm text-neutral">
+    {l "Settings"}
+  </LiveRedirect>
+</li>
+<li
+  class="hover:bg-neutral/10 text-neutral"
   >
   <LiveRedirect to="/terms/code-of-conduct" class="flex items-center p-4 text-sm text-neutral">
     {l "Code of conduct"}
   </LiveRedirect>
 </li>
 <li
-  class="hover:bg-neutral hover:bg-opacity-20 text-neutral"
+  class="hover:bg-neutral/10 text-neutral"
   >
   <LiveRedirect to={path(:home)} class="flex items-center p-4 text-sm text-neutral">
     {l "Homepage"}
   </LiveRedirect>
 </li>
 <li 
-  class="hover:bg-neutral hover:bg-opacity-20 text-neutral"
+  class="hover:bg-neutral/10 text-neutral"
   :if={current_user(@__context__)}>  
   <LiveRedirect to="/logout" class="flex items-center p-4 text-sm text-neutral">
     {l "Logout"}

@@ -46,7 +46,7 @@
         }"
       class={"flex flex-col flex-1 w-full"}>
       
-      <div 
+      <!-- <div 
         :if={!is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}) and length(Config.get([:ui, :smart_input_activities], []))>1}
         class="dropdown dropdown-hover"
         >
@@ -56,9 +56,9 @@
             <div phx-click="select_smart_input" phx-target={@myself} phx-value-component={all_smart_input_components()[name] || Bonfire.UI.Social.WritePostContentLive}>{label}</div>
           </li>
         </ul>
-      </div>
+      </div> -->
 
-      <div
+      <!-- <div
         x-cloak
         x-show="show_smart_input_fullscreen == true" 
         class="flex items-center p-3 border-b rounded-t bg-base-100 border-base-content/10">
@@ -87,8 +87,8 @@
           class="btn btn-sm btn-circle btn-outline">
           <Outline.XIcon class="w-5 h-5" />
         </button>
-      </div>
-     
+      </div> 
+      -->
      <div 
       :if={@activity}
       :class="show_smart_input_fullscreen ? 'bg-base-100 !rounded-none mb-0 border-b border-base-content/10' : ''"

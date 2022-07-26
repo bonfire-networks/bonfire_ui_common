@@ -95,7 +95,7 @@
       </LiveRedirect>
     </li>
 
-    <li>
+    <!-- <li>
       <LiveRedirect 
         to={"/settings"} 
         class={
@@ -113,7 +113,7 @@
           <Solid.LogoutIcon  class={"w-5 h-5 text-base-content/80"}/>
           {l "Logout"}
       </LiveRedirect>
-    </li>
+    </li> -->
 
   </ul>
 </nav>
