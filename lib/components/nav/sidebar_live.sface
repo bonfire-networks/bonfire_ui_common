@@ -34,7 +34,7 @@
     />
 
     <Surface.Components.Dynamic.LiveComponent
-      :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive) && current_user(@__context__) && e(@hide_smart_input, nil) != true}
+      :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive) && Bonfire.Me.Settings.get([:ui, :topics_list_in_sidebar], true, @__context__) && e(@hide_smart_input, nil) != true}
       module={Bonfire.Classify.Web.CategoriesNavLive}
       id={:subscribed_topics}
     />
