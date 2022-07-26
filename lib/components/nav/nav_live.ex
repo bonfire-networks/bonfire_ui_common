@@ -6,7 +6,6 @@ defmodule Bonfire.UI.Common.NavLive do
   prop page_header_aside, :any
   prop page_header_drawer, :boolean
   prop inner_content, :any
-  # need to pass down props for SmartInput:
   prop reply_to_id, :string, default: ""
   prop thread_id, :string, default: "", required: false
   prop create_activity_type, :any
