@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Common.SidebarLive do
   # need to pass down props for SmartInput:
   prop reply_to_id, :string, default: ""
   prop thread_id, :string, default: "", required: false
-  prop create_activity_type, :any
+  prop create_activity_type, :atom
   prop showing_within, :any
   prop to_boundaries, :list, default: []
   prop to_circles, :list

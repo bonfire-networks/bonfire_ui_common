@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.SmartInputHeaderLive do
 
   prop smart_input_prompt, :string, required: false
   prop smart_input_component, :atom, default: nil
-  prop create_activity_type, :any, default: nil
+  prop create_activity_type, :atom, default: nil
 
   def all_smart_input_components do
     Bonfire.Common.Config.get([:ui, :smart_input_components], [post: Bonfire.UI.Social.WritePostContentLive])

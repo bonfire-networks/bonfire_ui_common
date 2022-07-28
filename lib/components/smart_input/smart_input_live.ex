@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   # prop user_image, :string, required: true
   # prop target_component, :string
-  prop create_activity_type, :any, default: nil
+  prop create_activity_type, :atom, default: nil
   prop reply_to_id, :string, default: ""
   prop thread_id, :string, default: "", required: false
   prop smart_input_component, :atom, default: nil

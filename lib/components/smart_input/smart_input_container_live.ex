@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
 
   prop reply_to_id, :string, default: ""
   prop thread_id, :string, default: "", required: false
-  prop create_activity_type, :any, default: nil
+  prop create_activity_type, :atom, default: nil
   prop smart_input_component, :atom, default: nil
   prop to_boundaries, :list, default: []
   prop to_circles, :list, default: nil

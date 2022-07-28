@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.InputBoundariesLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop create_activity_type, :any, default: nil
+  prop create_activity_type, :atom, default: nil
   prop preloaded_recipients, :list, default: nil
   prop to_boundaries, :list, default: nil
   prop to_circles, :list, default: nil
