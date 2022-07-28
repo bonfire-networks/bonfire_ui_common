@@ -14,7 +14,7 @@
     thread_id={@thread_id}
     showing_within={e(@showing_within, nil)} 
     create_activity_type={e(@create_activity_type, nil)}
-    to_boundaries={@to_boundaries}
+    to_boundaries={e(@to_boundaries, [])}
     to_circles={e(@to_circles, [])}
     smart_input_prompt={@smart_input_prompt}
     smart_input_text={@smart_input_text}

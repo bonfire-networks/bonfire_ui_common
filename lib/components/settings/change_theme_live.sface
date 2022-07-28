@@ -3,8 +3,8 @@
   phx-hook="Themeable" 
   name="ui[theme][default_name]"
   title="Change Theme" 
-  class="w-full dropdown dropdown-end">
-  <div tabindex="0" class="w-full gap-2 normal-case btn-wide btn btn-outline border-base-content border-opacity-20 ">
+  class="w-full max-w-xs text-left dropdown dropdown-end">
+  <div tabindex="0" class="w-full gap-2 text-left normal-case btn-wide btn btn-outline border-base-content border-opacity-20 ">
     <span class="flex-1 e">
       {e(@selected, l "Choose theme")}
     </span> 

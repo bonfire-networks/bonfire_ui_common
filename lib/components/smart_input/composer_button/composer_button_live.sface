@@ -1,0 +1,56 @@
+<div 
+  x-data="{expanded_all_activities: false}"
+  @keydown.escape.stop="expanded_all_activities = false;"
+  @click.outside="expanded_all_activities = false"
+  class="relative z-20 flex w-full rounded-md shadow-sm">
+  <button 
+    @click="show_smart_input_modal = true"
+    type="button" 
+    class="relative flex items-center flex-1 w-full px-4 py-3 text-sm font-medium text-center border place-content-center border-primary-content/30 text-primary-content bg-primary/90 rounded-l-md hover:bg-primary focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
+    <Solid.PencilAltIcon class="inline-block w-5 h-5 mr-2" />
+    {e(@smart_input_prompt, l "Compose a post")}
+  </button>
+  <div class="block -ml-px">
+    <button 
+      @click="expanded_all_activities = ! expanded_all_activities"
+      type="button" 
+      class="inline-flex items-center px-3 py-4 text-sm font-medium border text-primary-content bg-primary/90 border-primary-content/30 rounded-r-md hover:bg-primary focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500" id="option-menu-button" aria-expanded="true" aria-haspopup="true">
+      <span class="sr-only">{l "Open options"}</span>
+      <Outline.ViewGridAddIcon class="w-5 h-5" />
+    </button>
+    <div  
+      x-show="expanded_all_activities"
+      x-transition:enter="transition ease-out duration-100" 
+      x-transition:enter-start="transform opacity-0 scale-95" 
+      x-transition:enter-end="transform opacity-100 scale-100" 
+      x-transition:leave="transition ease-in duration-75" 
+      x-transition:leave-start="transform opacity-100 scale-100" 
+      x-transition:leave-end="transform opacity-0 scale-95"
+      class="absolute left-0 right-0 z-20 w-full mt-2 origin-top-right rounded-md shadow-lg bg-base-100 ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="option-menu-button" tabindex="-1">
+      <div class="p-1" role="none">
+
+        <div
+          phx-click="select_smart_input" 
+          phx-target={"#smart_input"} 
+          phx-value-component={all_smart_input_components()[name] || Bonfire.UI.Social.WritePostContentLive}
+          @click="show_smart_input_modal = true; expanded_all_activities = false"
+          :for={{name, label} <- Config.get([:ui, :smart_input_activities], [])} 
+          class="flex items-center p-4 space-x-2 text-sm rounded-md cursor-pointer hover:bg-base-content/10 text-base-content" 
+          role="menuitem" 
+          tabindex="-1" 
+        > 
+          {#case name}
+            {#match :post}
+              <Outline.PencilIcon class="w-4 h-4" />
+            {#match :category}
+              <Outline.CollectionIcon class="w-4 h-4" />
+            {#match _}
+              <Outline.PencilIcon class="w-4 h-4" />
+          {/case}
+          <span>{label}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
