@@ -7,7 +7,7 @@
     }>
     <li>
       <LiveRedirect 
-        to={path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive))} 
+        to={path(Config.get(:user_home_page, Bonfire.UI.Social.HomeLive))} 
         class={"rounded relative",  "font-bold bg-base-content/10": @page == "feed"}
       >
         <Solid.NewspaperIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "feed"} />

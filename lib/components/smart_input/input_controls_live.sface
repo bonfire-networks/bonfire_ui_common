@@ -18,7 +18,7 @@
             data-tip={l "Add a content warning" }
             class={"relative z-30 flex items-center tooltip tooltip-right"}>
             <button
-              :if={Bonfire.Common.Config.get([:ui, :smart_input, :cw], []) == true}
+              :if={Config.get([:ui, :smart_input, :cw], []) == true}
               type="button"
               @click="title_open = !title_open"
               :class="{'border-base-content/30' : title_open}"

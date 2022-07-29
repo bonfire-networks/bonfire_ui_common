@@ -390,6 +390,8 @@ defmodule Bonfire.UI.Common do
       live_exception(socket, return_key, "A `with` condition didn't receive data in a format it could recognise: ", term_error(error), __STACKTRACE__)
     error in CaseClauseError ->
       live_exception(socket, return_key, "A `case` condition didn't receive data in a format it could recognise: ", term_error(error), __STACKTRACE__)
+    error in MatchError ->
+      live_exception(socket, return_key, "A condition didn't receive data that matched a format it could recognise: ", term_error(error), __STACKTRACE__)
     cs in Ecto.Changeset ->
         live_exception(socket, return_key, "The data provided caused an exceptional error and could do not be inserted or updated: "<>error_msg(cs), cs, nil)
     error ->

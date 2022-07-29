@@ -1,6 +1,6 @@
 <div class="flex items-center border rounded-lg border-base-content/30">
   <LiveRedirect 
-    to={path(Bonfire.Common.Config.get(:user_home_page, Bonfire.UI.Social.HomeLive))} 
+    to={path(Config.get(:user_home_page, Bonfire.UI.Social.HomeLive))} 
     class={"pl-3 border-r border-base-content/30 relative flex items-center flex-1 space-x-2"}
   >
     <Solid.NewspaperIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "feed"} />
