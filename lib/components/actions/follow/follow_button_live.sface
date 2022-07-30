@@ -19,7 +19,7 @@
       {l "Follow"} {e(@label, "")}</span>
   </a>
 
-  <a 
+  <a @
     :if={e(@my_follow, nil)}
     data-cid={@id}
     data-id="unfollow"

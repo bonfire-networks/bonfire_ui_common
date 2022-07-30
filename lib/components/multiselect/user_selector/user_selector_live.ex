@@ -1,13 +1,13 @@
 defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop form_input_name, :string
-  prop label, :string
-  prop pick_event, :string
-  prop remove_event, :string
-  prop selected_options, :any
-  prop preloaded_options, :any
-  prop context_id, :string
+  prop form_input_name, :string, default: nil
+  prop label, :string, default: nil
+  prop pick_event, :string, default: nil
+  prop remove_event, :string, default: nil
+  prop selected_options, :any, default: nil
+  prop preloaded_options, :any, default: nil
+  prop context_id, :string, default: nil
 
   # FIXME! update no longer works in stateless
   def update(%{preloaded_options: pre} = assigns, socket) when is_list(pre) do
