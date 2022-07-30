@@ -26,11 +26,12 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   """
   prop opts, :keyword, default: []
 
+  prop autocomplete, :list, default: []
 
   @doc """
   Slots for the contents of the modal, title, buttons...
   """
-  slot default
+  slot default, args: [:autocomplete]
   slot open_btn
   slot action_btns
   slot cancel_btn
@@ -57,4 +58,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
     {:noreply, assign(socket, show: false)}
   end
 
+  def handle_event(action, attrs, socket), do: Bonfire.UI.Common.LiveHandlers.handle_event(action, attrs, socket, __MODULE__)
+
+  def handle_info(info, socket), do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
 end
