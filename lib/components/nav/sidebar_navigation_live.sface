@@ -86,11 +86,11 @@
 
     <li :if={!Bonfire.Me.Settings.get([:ui, :topics_list_in_sidebar], true, @__context__)}>
       <LiveRedirect 
-        to={"/topics"} 
+        to={"/topics/followed"} 
         class={
-          "rounded relative",  "font-bold bg-base-content/10": @page == "topics"}>
-          <Solid.CollectionIcon  class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "topics"}/>
-          <span :if={@page == "topics"} class="sr-only">{l "Current Page:"} </span>
+          "rounded relative",  "font-bold bg-base-content/10": @page == "topics" || @page == "topics_followed"}>
+          <Solid.CollectionIcon  class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "topics" || @page == "topics_followed"}/>
+          <span :if={@page == "topics" || @page == "topics_followed"} class="sr-only">{l "Current Page:"} </span>
           {l "Topics"}
       </LiveRedirect>
     </li>

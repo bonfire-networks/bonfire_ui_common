@@ -6,4 +6,7 @@ defmodule Bonfire.UI.Common.LoadPreviousLive do
   prop target, :any
   prop context, :any
 
+  def unwrap(list) when is_list(list), do: List.first(list)
+  def unwrap(other), do: other
+
 end
