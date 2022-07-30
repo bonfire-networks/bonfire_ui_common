@@ -17,7 +17,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:reply_to_id, fn -> nil end)
     |> assign_new(:thread_id, fn -> nil end)
     |> assign_new(:create_activity_type, fn -> nil end)
-    |> assign_new(:to_boundaries, fn -> [] end)
+    |> assign_new(:to_boundaries, fn -> boundaries_or_default(e(assigns, :to_boundaries, nil), assigns) end)
     |> assign_new(:to_circles, fn -> [] end)
     |> assign_new(:smart_input_prompt, fn -> nil end)
     |> assign_new(:smart_input_text, fn -> nil end)
