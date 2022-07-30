@@ -23,7 +23,7 @@
             {/if}
 
             <a
-              x-show="history.length > 2 && document.referrer.indexOf(window.location.host) !== -1"
+              x-show="history.length > 2"
               aria-label="Navigate to the previous page"
               href="javascript:window.history.back()"
               class={
