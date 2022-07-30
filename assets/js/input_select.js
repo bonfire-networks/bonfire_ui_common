@@ -78,11 +78,11 @@ InputSelectHooks.InputOrSelectOne = {
         }
 
         const tagify = new Tagify($input, {
-            id: this.el.id,
+            id: id,
             userInput: userCanInput === 'false' ? false : true,
             whitelist: suggestions,
             enforceWhitelist: true, // only tags from suggestions list are valid?
-            keepInvalidTags: true, // keep tags that aren't in the suggestion list anyway?
+            keepInvalidTags: false, // keep tags that aren't in the suggestion list anyway?
             originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
             callbacks: {
                 "input": (e) => {
@@ -123,7 +123,7 @@ InputSelectHooks.InputOrSelectOne = {
             window.InputOrSelectOnes = {};
         }
 
-        window.InputOrSelectOnes[this.el.id] = tagify;
+        window.InputOrSelectOnes[id] = tagify;
     },
 
 
