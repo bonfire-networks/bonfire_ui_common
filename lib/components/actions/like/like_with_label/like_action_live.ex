@@ -3,8 +3,8 @@ defmodule Bonfire.UI.Common.LikeActionLive do
 
   prop object, :any
   prop like_count, :any, default: 0
-  prop label, :string
-  prop showing_within, :any
+  # prop label, :string, default: nil
+  # prop showing_within, :any, default: nil
 
   def preload(list_of_assigns), do: Bonfire.Social.Likes.LiveHandler.preload(list_of_assigns)
 
