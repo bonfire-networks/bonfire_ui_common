@@ -2,7 +2,7 @@
 
 <Bonfire.UI.Common.WidgetLive 
   widget_title={l "Have some feedback?"}
-  class="relative w-full mx-auto rounded-md bg-base-100">   
+  class="relative w-full mx-auto rounded-md shadow bg-base-100">   
   <div class={"p-3 pt-0 prose-sm prose ",
   "text-xs": Settings.get([:ui, :compact], false, @__context__)
   }>

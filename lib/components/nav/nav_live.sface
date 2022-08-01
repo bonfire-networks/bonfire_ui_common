@@ -5,7 +5,7 @@
   }"
   :class="show_smart_input_fullscreen ? '!grid-cols-1 !place-content-start' : ''"
   class={
-      "max-w-screen-lg tablet:max-w-screen-xl tablet-lg:max-w-screen-xl mx-auto p-3 justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)] tablet-lg:grid-cols-[290px_1fr_290px] grid gap-3 bonfire_layout",
+      "justify-between w-full wide:max-w-screen-xl mx-auto p-3 wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)] tablet:grid-cols-[280px_620px_280px]  tablet-lg:grid-cols-[290px_680px_290px] grid gap-3 bonfire_layout",
        "!gap-6": !Settings.get([:ui, :compact], false, assigns)
     }>
   <Bonfire.UI.Common.SidebarLive
@@ -46,7 +46,7 @@
         </:right_action>
       </Bonfire.UI.Common.PageHeaderLive>
 
-      <div data-id="inner_content" class="overflow-y-auto rounded-b-none md:overflow-y-visible full-height bg-base-100">
+      <div data-id="inner_content" class="overflow-y-auto rounded-b-none md:overflow-y-visible full-height ">
         {@inner_content}
       </div>
       
@@ -59,7 +59,7 @@
   <div 
     :class="show_smart_input_fullscreen ? '!hidden' : ''"
     class={
-      "items-start sticky z-[100] top-3 hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget tablet-lg:grid auto-rows-min",
+      "items-start sticky z-[100] top-3 hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget tablet:grid auto-rows-min",
        "!gap-5": !Settings.get([:ui, :compact], false, assigns),
     }>
     <div 

@@ -1,7 +1,7 @@
 
 
 <Bonfire.UI.Common.WidgetLive 
-  class="relative w-full mx-auto rounded-md bg-base-100">   
+  class="relative w-full mx-auto rounded-md shadow bg-base-100">   
     <div class="flex flex-col items-center w-full text-center">
       <div class="p-6 pb-2 w-[120px] h-[120px] mx-auto rounded-full">
         <div class="h-full bg-bottom bg-no-repeat bg-contain" style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}></div>
