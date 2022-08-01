@@ -15,7 +15,7 @@
       class={e(@icon_class, "w-4 h-4 shrink-0")} />
     <span
       :if={!e(@hide_text, false)} 
-      class={"truncate ellipsis", "ml-2": !e(@hide_text, nil)}>
+      class={"truncate ellipsis", "ml-2": !e(@hide_icon, nil)}>
       {l "Follow"} {e(@label, "")}</span>
   </a>
 
@@ -31,7 +31,7 @@
       class={e(@icon_class, "w-4 h-4 shrink-0")} />
     <span 
       :if={!e(@hide_text, false)}
-      class={"truncate ellipsis", "ml-2": !e(@hide_text, nil)}>
+      class={"truncate ellipsis", "ml-2": !e(@hide_icon, nil)}>
       {l "Unfollow"} { e(@label, "")}</span>
   </a>
 </span>
