@@ -2,7 +2,7 @@
   x-data="{expanded_all_activities: false}"
   @keydown.escape.stop="expanded_all_activities = false;"
   @click.outside="expanded_all_activities = false"
-  class="relative z-20 flex w-full rounded-md shadow-sm">
+  class="relative z-20 flex w-full mt-2 rounded-md shadow-sm">
   <button 
     @click="show_smart_input_modal = true"
     type="button" 

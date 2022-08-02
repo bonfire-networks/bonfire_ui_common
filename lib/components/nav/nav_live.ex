@@ -6,6 +6,7 @@ defmodule Bonfire.UI.Common.NavLive do
   prop page, :any, default: nil
   prop page_header_aside, :list, default: nil
   prop page_header_drawer, :boolean, default: false
+  prop without_header, :boolean, default: false
   prop inner_content, :any, default: nil
   prop reply_to_id, :string, default: nil
   prop thread_id, :string, default: nil

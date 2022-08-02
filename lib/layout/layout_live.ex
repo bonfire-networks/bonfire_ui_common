@@ -13,6 +13,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:notification, fn -> nil end)
     |> assign_new(:page_header_aside, fn -> nil end)
     |> assign_new(:page_header_drawer, fn -> false end)
+    |> assign_new(:without_header, fn -> false end)
     |> assign_new(:inner_content, fn -> nil end)
     |> assign_new(:reply_to_id, fn -> nil end)
     |> assign_new(:thread_id, fn -> nil end)

@@ -1,5 +1,7 @@
 <!-- <div class="relative"> -->
-  <div role="banner" class="sticky z-[100] w-full top-3 bg-base-100 tablet:bg-opacity-100 shadow rounded-md">  
+  <div 
+    :if={e(@without_header, false) != true}
+    role="banner" class="sticky z-[100] w-full top-3 bg-base-100 tablet:bg-opacity-100 shadow rounded-md">  
     <div class="relative">
       <div class={"flex items-center ",
       "p-3": !Settings.get([:ui, :compact], false, @__context__),

@@ -34,6 +34,7 @@
       }>
       <Bonfire.UI.Common.PageHeaderLive
         page_title={e(@page_title, nil)}
+        without_header={e(@without_header, false)}
         page_header_drawer={e(@page_header_drawer, false)}
         >
         <:right_action>
