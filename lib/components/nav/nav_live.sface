@@ -4,10 +4,7 @@
     open_drawer: false
   }"
   :class="show_smart_input_fullscreen ? '!grid-cols-1 !place-content-start' : ''"
-  class={
-      "justify-center tablet-lg:justify-between w-full wide:max-w-screen-xl mx-auto p-3 wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)]  tablet-lg:grid-cols-[290px_580px_290px] 2xl:grid-cols-[290px_680px_290px] grid gap-3 bonfire_layout",
-       "!gap-6": !Settings.get([:ui, :compact], false, assigns)
-    }>
+  class={"justify-center tablet-lg:justify-between w-full wide:max-w-screen-xl mx-auto p-3 wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)]  tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid gap-8 bonfire_layout"}>
   <Bonfire.UI.Common.SidebarLive
     page={@page}
     reply_to_id={@reply_to_id}
