@@ -5,7 +5,7 @@
   }"
   :class="show_smart_input_fullscreen ? '!grid-cols-1 !place-content-start' : ''"
   class={
-      "justify-between w-full wide:max-w-screen-xl mx-auto p-3 wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)] tablet:grid-cols-[280px_620px_280px]  tablet-lg:grid-cols-[290px_680px_290px] grid gap-3 bonfire_layout",
+      "justify-center tablet-lg:justify-between w-full wide:max-w-screen-xl mx-auto p-3 wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)]  tablet-lg:grid-cols-[290px_580px_290px] 2xl:grid-cols-[290px_680px_290px] grid gap-3 bonfire_layout",
        "!gap-6": !Settings.get([:ui, :compact], false, assigns)
     }>
   <Bonfire.UI.Common.SidebarLive
