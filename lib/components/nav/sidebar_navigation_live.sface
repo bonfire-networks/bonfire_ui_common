@@ -14,7 +14,7 @@
       </LiveRedirect>
     </li>
 
-    <li class="tablet-lg:hidden">
+    <!-- <li class="tablet-lg:hidden">
       <LiveRedirect 
         to={"/search"}
         class={"rounded relative",  "font-bold bg-base-content/10": @page == "search"}
@@ -23,7 +23,7 @@
         <span :if={@page == "search"} class="sr-only">{l "Current Page:"} </span>
         {l "Search"}
       </LiveRedirect>
-    </li>
+    </li> -->
     
     <li>
       <LiveRedirect 

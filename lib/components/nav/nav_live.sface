@@ -63,14 +63,14 @@
       "items-start sticky z-[100] top-3 hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget tablet:grid auto-rows-min",
        "!gap-5": !Settings.get([:ui, :compact], false, assigns),
     }>
-    <div 
+    <!-- <div 
       :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(@__context__)}
       class="sticky top-0 z-20">
       <Surface.Components.Dynamic.Component
         module={Bonfire.Search.Web.FormLive}
         search_limit={5}
       />
-    </div>
+    </div> -->
     <Surface.Components.Dynamic.Component
       :if={current_user(@__context__)}
       :for={{component, component_assigns} <- @sidebar_widgets[:users][:secondary] || [ 
