@@ -3,6 +3,7 @@
   aria-label={l "Main navigation"}>
   <ul 
     class={"menu"}>
+    
     <li>
       <LiveRedirect 
         to={path(Config.get(:user_home_page, Bonfire.UI.Social.HomeLive))} 

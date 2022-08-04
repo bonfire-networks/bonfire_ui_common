@@ -2,11 +2,12 @@
   
   {#if Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and e(@thread_mode, nil) != :flat}
 
-    <Bonfire.UI.Common.SmartInputHeaderLive 
+    <!-- <Bonfire.UI.Common.SmartInputHeaderLive 
       smart_input_prompt={@smart_input_prompt}
       smart_input_component={e(@smart_input_component, nil)}
       create_activity_type={e(@create_activity_type, nil)}
-    />
+    /> -->
+    <div class="pl-3">
     <Bonfire.UI.Common.SmartInputLive
       id={:smart_input} 
       hide_smart_input={e(@hide_smart_input, nil)}
@@ -21,7 +22,7 @@
       smart_input_prompt={@smart_input_prompt}
       smart_input_text={@smart_input_text}
     />
-
+    </div>
   {#else}
  
     <Bonfire.UI.Common.ComposerButtonLive

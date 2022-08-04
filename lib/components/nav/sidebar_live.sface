@@ -5,10 +5,12 @@
   class="sticky z-[110] items-start hidden grid-flow-row gap-6 overflow-x-hidden overflow-y-auto top-3 widget md:grid auto-rows-min ">
   {#if current_user(@__context__)}
 
-    <Bonfire.UI.Common.LogoLive />
-
-    <Bonfire.UI.Common.UserMenuLive />
-
+    <div class="pl-3">
+      <Bonfire.UI.Common.LogoLive />
+    </div>
+    <div class="pl-3">
+      <Bonfire.UI.Common.UserMenuLive />
+    </div>
     <Bonfire.UI.Common.SmartInputContainerLive
       :if={e(@hide_smart_input, nil) != true}
       hide_smart_input={e(@hide_smart_input, nil)}
@@ -31,6 +33,7 @@
     <Bonfire.UI.Common.SidebarNavigationLive
       :if={!@show_less_menu_items}
       page={@page}
+      smart_input_prompt={@smart_input_prompt}
     />
 
     <Surface.Components.Dynamic.LiveComponent
