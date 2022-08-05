@@ -21,6 +21,9 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   @doc "Optional prop to hide the actions at the bottom of the modal"
   prop no_actions, :boolean, default: false
 
+  @doc "Optional prop to hide the header at the top of the modal"
+  prop no_header, :boolean, default: false, required: false
+
   @doc """
   Additional attributes to add onto the modal wrapper
   """
@@ -48,6 +51,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
         show: false,
         form_opts: [],
         no_actions: false,
+        no_header: false,
         opts: []
       )
     }

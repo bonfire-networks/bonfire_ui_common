@@ -12,8 +12,9 @@
       aria-hidden="true">
     </div>
     <div class="relative border-4 modal-box border-base-content border-opacity-20 max-w-[100%] min-w-[320px] min-h-[100px]">
-
-      <h3 class={@title_class || "font-bold text-base"}>
+      <h3 
+        :if={e(!@no_header, false)}
+        class={@title_class || "font-bold text-base"}>
         <#slot name="title">{@title_text}</#slot>
       </h3>
       <div class="absolute top-0 right-0 block pt-5 pr-4">

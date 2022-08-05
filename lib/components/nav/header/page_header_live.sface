@@ -1,7 +1,7 @@
 <!-- <div class="relative"> -->
   <div 
     :if={e(@without_header, false) != true}
-    role="banner" class="sticky z-[100] w-full top-3 bg-base-100 tablet:bg-opacity-100 shadow rounded-md">  
+    role="banner" class="sticky z-[100] h-[60px] place-content-center w-full top-3 bg-base-100 tablet:bg-opacity-100 shadow rounded-md">  
     <div class="relative">
       <div class={"flex items-center ",
       "p-3": !Settings.get([:ui, :compact], false, @__context__),
@@ -25,7 +25,7 @@
             {/if}
 
             <a
-              x-show="history.length > 2"
+              x-show="history.length > 1"
               aria-label="Navigate to the previous page"
               href="javascript:window.history.back()"
               class={
