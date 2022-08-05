@@ -26,8 +26,8 @@
     <Bonfire.UI.Common.HeaderMobileGuestLive  :if={!current_user(@__context__)} />
     <div 
       class={"grid relative invisible_frame",
-      "grid-rows-[60px_1fr]": !Settings.get([:ui, :compact], false, assigns),
-      "grid-rows-[40px_1fr]": Settings.get([:ui, :compact], false, assigns)
+      "grid-rows-[60px_1fr]": !Settings.get([:ui, :compact], false, @__context__),
+      "grid-rows-[40px_1fr]": Settings.get([:ui, :compact], false, @__context__)
       }>
       <Bonfire.UI.Common.PageHeaderLive
         page_title={e(@page_title, nil)}
@@ -58,7 +58,7 @@
     :class="show_smart_input_fullscreen ? '!hidden' : ''"
     class={
       "items-start sticky z-[100] top-3 hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget tablet:grid auto-rows-min",
-       "!gap-5": !Settings.get([:ui, :compact], false, assigns),
+       "!gap-5": !Settings.get([:ui, :compact], false, @__context__),
     }>
     <!-- <div 
       :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(@__context__)}

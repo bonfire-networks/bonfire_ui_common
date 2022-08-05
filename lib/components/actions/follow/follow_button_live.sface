@@ -1,6 +1,6 @@
 <span>
   <a 
-    :if={!e(@my_follow, nil)}
+    :if={!@my_follow}
     data-cid={@id}
     data-id="follow"
     :on-click="Bonfire.Social.Follows:follow" 
@@ -10,29 +10,28 @@
     phx-value-id={ulid(@object)} 
     class={e(@class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}>
     <Solid.UserAddIcon
-      :if={!e(@hide_icon, false)} 
-      
+      :if={!@hide_icon} 
       class={e(@icon_class, "w-4 h-4 shrink-0")} />
     <span
-      :if={!e(@hide_text, false)} 
-      class={"truncate ellipsis", "ml-2": !e(@hide_icon, nil)}>
-      {l "Follow"} {e(@label, "")}</span>
+      :if={!@hide_text} 
+      class={"truncate ellipsis", "ml-2": !@hide_icon}>
+      {l "Follow"} {@label}</span>
   </a>
 
-  <a @
-    :if={e(@my_follow, nil)}
+  <a 
+    :if={@my_follow}
     data-cid={@id}
     data-id="unfollow"
     :on-click="Bonfire.Social.Follows:unfollow" 
     phx-value-id={ulid(@object)} 
     class={e(@class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}>
     <Solid.UserRemoveIcon 
-      :if={!e(@hide_icon, false)} 
+      :if={!@hide_icon} 
       class={e(@icon_class, "w-4 h-4 shrink-0")} />
     <span 
-      :if={!e(@hide_text, false)}
-      class={"truncate ellipsis", "ml-2": !e(@hide_icon, nil)}>
-      {l "Unfollow"} { e(@label, "")}</span>
+      :if={!@hide_text}
+      class={"truncate ellipsis", "ml-2": !@hide_icon}>
+      {l "Unfollow"} {@label}</span>
   </a>
 </span>
 
