@@ -38,6 +38,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         show_smart_input_modal: false,
         show_smart_input_fullscreen: false,
         show_smart_input_modal_fullscreen: false,
+        minimize: false,
         maximize_smart_input_modal() {
           if (!this.show_smart_input_modal) {
             this.show_smart_input_modal = true;

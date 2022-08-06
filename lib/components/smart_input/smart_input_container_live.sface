@@ -32,8 +32,10 @@
     />
 
     <div 
+      x-show="show_smart_input_modal || minimize"
       class="fixed bottom-0 z-[110] transition-all w-[24rem] shadow-xl right-4 max-h-[100vh] overflow-x-auto"
       :class="{
+        '!w-[24rem]': minimize,
         '!w-[40rem]': show_smart_input_modal,
         '!w-auto left-8 top-8': show_smart_input_modal_fullscreen 
         }"
@@ -42,6 +44,9 @@
         smart_input_prompt={@smart_input_prompt}
       />
 
+    <div 
+      x-show="!minimize && show_smart_input_modal"
+      class="">
       <Bonfire.UI.Common.SmartInputLive
         id={:smart_input} 
         hide_smart_input={e(@hide_smart_input, nil)}
@@ -56,7 +61,7 @@
         smart_input_prompt={@smart_input_prompt}
         smart_input_text={@smart_input_text}
       />
-
+    </div>
     </div>
   {/if}
 </div>

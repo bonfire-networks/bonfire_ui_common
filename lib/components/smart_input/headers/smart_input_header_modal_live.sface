@@ -1,7 +1,8 @@
 <header 
+  
   class="flex flex-row w-full p-2 rounded-t bg-base-200 flex-align-items-stretch flex-nowrap">
   <span 
-    @click="show_smart_input_modal = ! show_smart_input_modal"
+    @click="minimize = ! minimize"
     class="flex-1 text-sm cursor-move text-ellipsis user-select-none"
     x-text={"title_text || '#{e(@smart_input_prompt, l "New post")}'"}
     >
@@ -9,16 +10,16 @@
   </span>
   <div class="flex items-center space-x-5">
     <button 
-      @click="show_smart_input_modal = ! show_smart_input_modal ; show_smart_input_modal_fullscreen = false"
+      @click="minimize = ! minimize ; show_smart_input_modal_fullscreen = false"
       type="button" 
       class="flex btn btn-xs btn-ghost btn-square" 
       data-testid="composer:minimize-button" 
       aria-describedby="tooltip-5527">
-      <span x-cloak x-show="show_smart_input_modal">
+      <span x-cloak x-show="!minimize">
         <Outline.ChevronDoubleDownIcon class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l "Minimize"}</span>
       </span>
-      <span x-cloak x-show="!show_smart_input_modal">
+      <span x-cloak x-show="minimize">
         <Outline.ChevronDoubleUpIcon class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l "Maximise"}</span>
       </span>
