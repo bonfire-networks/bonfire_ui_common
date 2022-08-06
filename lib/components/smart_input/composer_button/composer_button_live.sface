@@ -1,8 +1,11 @@
 <div class="pl-3">
 <button 
+  phx-click="select_smart_input" 
+  phx-target={"#smart_input"} 
+  phx-value-component={Bonfire.UI.Social.WritePostContentLive}
   @click="show_smart_input_modal = true"
   type="button" 
-  class="w-full normal-case btn btn-primary">
+  class="normal-case btn btn-primary">
   <Solid.PencilAltIcon class="inline-block w-5 h-5 mr-2" />
   {e(@smart_input_prompt, l "Compose a post")}
 </button>

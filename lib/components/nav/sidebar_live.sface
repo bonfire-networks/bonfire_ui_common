@@ -4,7 +4,7 @@
   :class="show_smart_input_fullscreen ? '!grid !overflow-hidden' : ''"
   class={
     "sticky z-[110] items-start hidden grid-flow-row overflow-x-hidden overflow-y-auto top-3 widget md:grid auto-rows-min", 
-    "gap-6": !Settings.get([:ui, :compact], false, @__context__),
+    "gap-4": !Settings.get([:ui, :compact], false, @__context__),
     "gap-3": Settings.get([:ui, :compact], false, @__context__)
     }>
 
