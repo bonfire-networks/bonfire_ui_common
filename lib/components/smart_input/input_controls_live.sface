@@ -38,7 +38,7 @@
                 @click="show_smart_input_fullscreen = !show_smart_input_fullscreen"
                 :class="{'border-base-content/30' : show_smart_input_fullscreen}"
                 class="flex items-center btn btn-ghost btn-sm btn-circle">
-              <Outline.ArrowsExpandIcon class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
+              <Icon outline="ArrowsExpand" class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
             </button>
           </div> 
 

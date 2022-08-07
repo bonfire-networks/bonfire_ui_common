@@ -85,7 +85,7 @@
         <button 
           @click="show_smart_input_fullscreen = false"
           class="btn btn-sm btn-circle btn-outline">
-          <Outline.XIcon class="w-5 h-5" />
+          <Icon outline="X" class="w-5 h-5" />
         </button>
       </div> 
       -->

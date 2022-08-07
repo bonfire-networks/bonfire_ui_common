@@ -9,7 +9,7 @@
     rel="noopener noreferrer"
     phx-value-id={ulid(@object)} 
     class={e(@class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}>
-    <Solid.UserAddIcon
+    <Icon solid="UserAdd"
       :if={!@hide_icon} 
       class={e(@icon_class, "w-4 h-4 shrink-0")} />
     <span
@@ -25,7 +25,7 @@
     :on-click="Bonfire.Social.Follows:unfollow" 
     phx-value-id={ulid(@object)} 
     class={e(@class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}>
-    <Solid.UserRemoveIcon 
+    <Icon solid="UserRemove" 
       :if={!@hide_icon} 
       class={e(@icon_class, "w-4 h-4 shrink-0")} />
     <span 

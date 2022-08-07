@@ -14,7 +14,7 @@
         class="normal-case tooltip tooltip-left font-regular btn btn-xs btn-ghost btn-square"
         :class="btn-active : expanded_all_activities == true"
         :if={length(Config.get([:ui, :smart_input_activities], []))>1}
-        @click="expanded_all_activities = ! expanded_all_activities"><Outline.ViewGridAddIcon class="w-4 h-4" />
+        @click="expanded_all_activities = ! expanded_all_activities"><Icon outline="ViewGridAdd" class="w-4 h-4" />
       </button>
     </div>
   </header>
@@ -30,11 +30,11 @@
         :for={{name, label} <- Config.get([:ui, :smart_input_activities], [])}>
          {#case name}
           {#match :post}
-            <Outline.PencilIcon class="w-4 h-4" />
+            <Icon outline="Pencil" class="w-4 h-4" />
           {#match :category}
-            <Outline.CollectionIcon class="w-4 h-4" />
+            <Icon outline="Collection" class="w-4 h-4" />
           {#match _}
-            <Outline.PencilIcon class="w-4 h-4" />
+            <Icon outline="Pencil" class="w-4 h-4" />
           {/case}
           <span>{label}</span>
       </li>

@@ -33,7 +33,7 @@
                 "hidden tablet:flex": e(@page_header_drawer, nil)
               }
               >
-              <Outline.ChevronLeftIcon class="w-4 h-4 stroke-current" />
+              <Icon outline="ChevronLeft" class="w-4 h-4 stroke-current" />
             </a>
           </#slot>
           

@@ -17,7 +17,7 @@
               {#match icon when is_binary(icon)}
                 <img src={icon} class="w-10 h-10 rounded" />
               {#match _}
-                <Outline.SpeakerphoneIcon class="w-5 h-5 text-gray-600" />
+                <Icon outline="Speakerphone" class="w-5 h-5 text-gray-600" />
             {/case}
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
@@ -32,7 +32,7 @@
             type="button" 
             class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               <span class="sr-only">{l "Close"}</span>
-              <Solid.XIcon class="w-5 h-5" />
+              <Icon solid="X" class="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -49,7 +49,7 @@
       <div class="p-4">
         <div class="flex items-center">
           <div class="flex-shrink-0 p-2 rounded">
-              <Outline.CheckCircleIcon class="w-6 h-6 text-green-400" />
+              <Icon outline="CheckCircle" class="w-6 h-6 text-green-400" />
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
             <p data-id="content" class="text-sm font-semibold text-gray-500">{rich info}</p>
@@ -62,7 +62,7 @@
               type="button" 
               class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               <span class="sr-only">{l "Close"}</span>
-              <Solid.XIcon class="w-5 h-5" />
+              <Icon solid="X" class="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -88,7 +88,7 @@
       <div class="p-4">
         <div class="flex items-top">
           <div class="flex-shrink-0">
-              <Outline.ExclamationIcon class="w-6 h-6 text-red-500" />
+              <Icon outline="Exclamation" class="w-6 h-6 text-red-500" />
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
             <p data-id="content" class="text-sm text-gray-500">{rich error}</p>
@@ -105,7 +105,7 @@
             type="button" 
             class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               <span class="sr-only">{l "Close"}</span>
-              <Solid.XIcon class="w-5 h-5" />
+              <Icon solid="X" class="w-5 h-5" />
             </button>
           </div>
         </div>

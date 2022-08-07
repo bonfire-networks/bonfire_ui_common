@@ -24,7 +24,7 @@
           type="button" 
           class="normal-case btn btn-ghost btn-circle btn-sm">
           <span class="sr-only">{l "Close"}</span>
-          <Outline.XIcon class="w-4 h-4" />
+          <Icon outline="X" class="w-4 h-4" />
         </button>
       </div>
 

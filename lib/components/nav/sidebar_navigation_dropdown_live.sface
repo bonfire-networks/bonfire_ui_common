@@ -4,7 +4,7 @@
     class={"pl-3 border-r border-base-content/30 relative flex items-center flex-1 space-x-2", 
       "text-sm": Settings.get([:ui, :compact], false, @__context__)}
   >
-    <Solid.NewspaperIcon class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "feed"} />
+    <Icon solid="Newspaper" class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "feed"} />
     <span>{l "My feed"}</span>
   </LiveRedirect>
   <div class="dropdown dropdown-end">
@@ -17,7 +17,7 @@
       aria-expanded="true"
     >
       <div class="">
-        <Solid.ChevronDownIcon class="w-5 h-5" />
+        <Icon solid="ChevronDown" class="w-5 h-5" />
       </div>
     </label>
     <ul

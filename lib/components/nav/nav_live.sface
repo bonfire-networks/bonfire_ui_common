@@ -110,7 +110,7 @@
         @click="show_smart_input_fullscreen = true"
         type="button" 
         class="items-center btn btn-circle btn-primary btn-lg place-content-center ">
-        <Solid.PencilAltIcon class="w-6 h-6" />
+        <Icon solid="PencilAlt" class="w-6 h-6" />
       </button>
     </div>
 </div>

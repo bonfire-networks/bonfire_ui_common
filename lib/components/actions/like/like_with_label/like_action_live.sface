@@ -15,10 +15,10 @@
     class={"btn btn-ghost btn-circle like like_with_label btn-sm"}> 
     <span 
       class={"text-base-content text-opacity-50", "text-yellow-500 text-opacity-100": @my_like}>
-      <Solid.StarIcon 
+      <Icon solid="Star" 
         :if={@my_like}
         class="w-5 h-5" />
-      <Outline.StarIcon 
+      <Icon outline="Star" 
         :if={!@my_like}
         class="w-4 h-4" />
     </span>

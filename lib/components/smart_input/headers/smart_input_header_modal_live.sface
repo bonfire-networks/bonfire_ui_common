@@ -16,11 +16,11 @@
       data-testid="composer:minimize-button" 
       aria-describedby="tooltip-5527">
       <span x-cloak x-show="!minimize">
-        <Outline.ChevronDoubleDownIcon class="w-4 h-4 stroke-1 text-base-content/70" />
+        <Icon outline="ChevronDoubleDown" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l "Minimize"}</span>
       </span>
       <span x-cloak x-show="minimize">
-        <Outline.ChevronDoubleUpIcon class="w-4 h-4 stroke-1 text-base-content/70" />
+        <Icon outline="ChevronDoubleUp" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l "Maximise"}</span>
       </span>
     </button>
@@ -30,7 +30,7 @@
       class="flex btn btn-xs btn-ghost btn-square" 
       data-testid="composer:maximize-button" 
       aria-describedby="tooltip-5528">
-      <Outline.ArrowsExpandIcon class="w-4 h-4 stroke-1 text-base-content/70" />
+      <Icon outline="ArrowsExpand" class="w-4 h-4 stroke-1 text-base-content/70" />
       <span class="sr-only">{l "Expand full screen"}</span>
     </button>
     <button 
@@ -41,7 +41,7 @@
       class="flex btn btn-xs btn-ghost btn-square" 
       data-testid="composer:close-button" 
       aria-describedby="tooltip-5529">
-      <Outline.XIcon class="w-4 h-4 stroke-1 text-base-content/70" />
+      <Icon outline="X" class="w-4 h-4 stroke-1 text-base-content/70" />
       <span class="sr-only">{l "Close"}</span>
     </button>
   </div>

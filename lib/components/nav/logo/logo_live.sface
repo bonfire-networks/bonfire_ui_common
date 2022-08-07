@@ -20,7 +20,7 @@
       type="button" 
       class="btn btn-square" id="option-menu-button" aria-expanded="true" aria-haspopup="true">
       <span class="sr-only">{l "Open options"}</span>
-      <Outline.ViewGridAddIcon class="w-5 h-5" />
+      <Icon outline="ViewGridAdd" class="w-5 h-5" />
     </button>
     <div  
       x-show="expanded_all_activities"
@@ -46,15 +46,15 @@
           {#case name}
             {#match :post}
               <span class="flex items-center w-10 h-10 rounded-full bg-base-content/10 place-content-center">
-                <Solid.PencilAltIcon class="w-5 h-5" />
+                <Icon solid="PencilAlt" class="w-5 h-5" />
               </span>
             {#match :category}
               <span class="flex items-center w-10 h-10 rounded-full bg-base-content/10 place-content-center">
-                <Solid.CollectionIcon class="w-6 h-6" />
+                <Icon solid="Collection" class="w-6 h-6" />
               </span>
             {#match _}
               <span class="flex items-center w-10 h-10 rounded-full bg-base-content/10 place-content-center">
-                <Solid.PencilAltIcon class="w-5 h-5" />
+                <Icon solid="PencilAlt" class="w-5 h-5" />
               </span>
           {/case}
           <span class="text-base">{label}</span>

@@ -15,7 +15,7 @@
       </div>
     </LivePatch>
     <!-- <LiveRedirect to="/switch-user" class="btn btn-square btn-ghost">
-      <Outline.FingerPrintIcon class="w-5 h-5 text-base-content/70" />
+      <Icon outline="FingerPrint" class="w-5 h-5 text-base-content/70" />
     </LiveRedirect> -->
     <div class="dropdown dropdown-end">
       <label
@@ -26,7 +26,7 @@
         aria-expanded="true"
       >
         <div class="">
-          <Solid.DotsHorizontalIcon class="w-5 h-5" />
+          <Icon solid="DotsHorizontal" class="w-5 h-5" />
         </div>
       </label>
       <ul

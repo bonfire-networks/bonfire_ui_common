@@ -2,7 +2,7 @@
   <LiveRedirect 
     class={"flex items-center hover:rounded-lg hover:bg-base-content/5 tab",  "tab-active": @page == "home"}
     to={if current_user(@__context__), do: path(Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Config.get(:home_page, Bonfire.Web.HomeLive))}>
-      <Solid.HomeIcon class="w-6 h-6" />
+      <Icon solid="Home" class="w-6 h-6" />
       <span class="sr-only">{l "Home"}</span>
   </LiveRedirect>
 
@@ -10,14 +10,14 @@
     to={"/search"} 
     class={"flex items-center hover:rounded-lg hover:bg-base-content/5 tab",  "tab-active": @page == "search"}
   >
-    <Solid.SearchIcon class="w-6 h-6" />  
+    <Icon solid="Search" class="w-6 h-6" />  
     <span class="sr-only">{l "Search"}</span> 
   </LiveRedirect>
 
   <LiveRedirect 
     to={path(:notifications)} 
     class={"flex items-center hover:rounded-lg hover:bg-base-content/5 tab",  "tab-active": @page == "notifications"}>
-    <Solid.BellIcon class="w-6 h-6" />
+    <Icon solid="Bell" class="w-6 h-6" />
     <span class="sr-only">{l "Notifications"}</span>
   </LiveRedirect>
 
@@ -25,7 +25,7 @@
     to={path(Bonfire.Data.Social.Message)} 
     class={"flex items-center hover:rounded-lg hover:bg-base-content/5 tab",  "tab-active": @page == "messages"}
   >
-    <Solid.MailIcon class="w-6 h-6"/>
+    <Icon solid="Mail" class="w-6 h-6"/>
     <span class="sr-only">{l "Messages"}</span>
   </LiveRedirect>
 </div>

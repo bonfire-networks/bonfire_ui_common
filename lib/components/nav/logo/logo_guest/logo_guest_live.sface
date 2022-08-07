@@ -8,7 +8,7 @@
         <LiveRedirect  
           to={path(Config.get(:home_page, Bonfire.Web.HomeLive))} 
           class="inline-flex mb-2 normal-case btn btn-xs">
-          <Outline.ChevronLeftIcon class="w-4 h-4" />
+          <Icon outline="ChevronLeft" class="w-4 h-4" />
           {l "Home"}
         </LiveRedirect>
         <LiveRedirect 

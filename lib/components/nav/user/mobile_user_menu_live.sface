@@ -31,7 +31,7 @@
                   </div>
                 </div>
                 <div class="flex items-center mt-6 mb-4 space-x-2 text-base-content">
-                  <Solid.UsersIcon class="w-5 h-5" />
+                  <Icon solid="Users" class="w-5 h-5" />
                   <div class="text-sm">
                     <b>{e(current_user(@__context__), :character, :follow_count, :follower_count, 0)}</b>
                     {l "Followers"}
@@ -47,43 +47,43 @@
               <!-- <Bonfire.UI.Common.SidebarNavigationLive page={e(@page, "")} /> -->
               <nav class="flex-1 mt-6 space-y-2" aria-label="Sidebar">
                 <LivePatch to={path(current_user(@__context__))} class="flex items-center py-2 text-sm font-medium rounded-md text-base-content">
-                  <Solid.UserIcon class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
+                  <Icon solid="User" class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
                   <span class="truncate">
                     {l "Profile"}
                   </span>
                 </LivePatch>
                 <LivePatch to="/switch-user" class="flex items-center py-2 text-sm font-medium rounded-md text-base-content">
-                  <Solid.UsersIcon class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
+                  <Icon solid="Users" class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
                   <span class="truncate">
                     {l "Switch user profile"}
                   </span>
                 </LivePatch>
                 <LivePatch to={path(Bonfire.Data.Social.Message)} class="flex items-center py-2 text-sm font-medium rounded-md text-base-content">
-                  <Solid.MailIcon class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
+                  <Icon solid="Mail" class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
                   <span class="truncate">
                     {l "Messages"}
                   </span>
                 </LivePatch>
                 <LivePatch to={"/my/likes"} class="flex items-center py-2 text-sm font-medium rounded-md text-base-content">
-                  <Solid.StarIcon class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
+                  <Icon solid="Star" class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
                   <span class="truncate">
                     {l "My Favourites"}
                   </span>
                 </LivePatch>
                 <LivePatch to="/settings" class="flex items-center py-2 text-sm font-medium rounded-md text-base-content">
-                  <Solid.CogIcon class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
+                  <Icon solid="Cog" class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
                   <span class="truncate">
                     {l "Settings"}
                   </span>
                 </LivePatch>
                 <LivePatch to={"#{path(:home)}"} class="flex items-center py-2 text-sm font-medium rounded-md text-base-content">
-                  <Solid.HomeIcon class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
+                  <Icon solid="Home" class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
                   <span class="truncate">
                     {l "Homepage"}
                   </span>
                 </LivePatch>
                 <a href="/logout" class="w-full mt-12 btn btn-wide btn-error">
-                <Outline.LogoutIcon class="flex-shrink-0 w-6 h-6 mr-2 stroke-current" />
+                <Icon outline="Logout" class="flex-shrink-0 w-6 h-6 mr-2 stroke-current" />
                 <span class="truncate">
                   {l "Logout"}
                 </span>

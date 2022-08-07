@@ -25,7 +25,7 @@
       phx-target="#smart_input"
       phx-value-ref={entry.ref} 
       aria-label="cancel">
-      <Solid.XIcon class="w-4 h-4 mr-1" />
+      <Icon solid="X" class="w-4 h-4 mr-1" />
       <span>{l "Delete"}</span>
     </button>
 
@@ -34,7 +34,7 @@
       class="absolute z-20 normal-case btn btn-ghost text-slate-50 btn-xs right-1 top-1"
       @click="show_alt = ! show_alt"
       aria-label="Add description">
-      <Solid.PencilIcon class="w-4 h-4 mr-1" />
+      <Icon solid="Pencil" class="w-4 h-4 mr-1" />
       <span>{l "Add description"}</span>
     </button>
     {#for err <- upload_errors(@uploads.files, entry)}

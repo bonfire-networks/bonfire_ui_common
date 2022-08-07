@@ -6,7 +6,7 @@
   @click="show_smart_input_modal = true"
   type="button" 
   class="normal-case btn btn-primary">
-  <Solid.PencilAltIcon class="inline-block w-5 h-5 mr-2" />
+  <Icon solid="PencilAlt" class="inline-block w-5 h-5 mr-2" />
   {e(@smart_input_prompt, l "Compose a post")}
 </button>
 </div>
