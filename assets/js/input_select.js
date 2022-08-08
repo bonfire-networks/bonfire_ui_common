@@ -149,10 +149,10 @@ InputSelectHooks.InputOrSelectOne = {
             this.initInputOrSelectOne();
         }
     },
-    // selected(hook, event) {
-    //     let id = event.params.data.id;
-    //     hook.pushEvent("country_selected", { country: id })
-    // }
+    selected(hook, event) {
+        let id = event.params.data.id;
+        hook.pushEvent("country_selected", { country: id })
+    }
 }
 
 export { InputSelectHooks }

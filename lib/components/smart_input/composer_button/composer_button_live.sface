@@ -3,7 +3,7 @@
   phx-click="select_smart_input" 
   phx-target={"#smart_input"} 
   phx-value-component={Bonfire.UI.Social.WritePostContentLive}
-  @click="show_smart_input_modal = true"
+  @click="show_smart_input_modal = true; minimize = false"
   type="button" 
   class="normal-case btn btn-primary">
   <Icon solid="PencilAlt" class="inline-block w-5 h-5 mr-2" />

@@ -13,7 +13,7 @@
         value="true"
         type="checkbox" 
         checked={if Bonfire.Me.Settings.get([:ui, :smart_input_light_theme], nil, @scope || assigns), do: "checked"} 
-        class="checkbox" 
+        class="toggle toggle-primary" 
       />
       <span class="ml-2 label-text">{l "Use light colours for the editor"}</span> 
     </label>
