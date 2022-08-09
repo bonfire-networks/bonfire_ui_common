@@ -28,9 +28,15 @@
       'hidden': !show_smart_input_modal && !show_smart_input_fullscreen && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && @thread_mode != :flat}
     }"}
     class={
+<<<<<<< HEAD
       "flex bg-transparent",
       "bottom-0 !max-w-full": @thread_mode == :flat or is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}),
       "h-full": @showing_within == :page
+=======
+      "flex bg-transparent shadow-xl",
+      "bottom-0 !max-w-full !shadow-none": e(@thread_mode, nil) == :flat or is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}),
+      "h-full": e(@showing_within, nil) == :page
+>>>>>>> 074ccb4 (ui)
     }
     >
     <div 
