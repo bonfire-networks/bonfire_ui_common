@@ -6,7 +6,7 @@
     to_boundaries={e(@to_boundaries, [])}
     to_circles={e(@to_circles, [])}
     open_boundaries={@open_boundaries}
-    thread_mode={e(@thread_mode, nil)}
+    thread_mode={@thread_mode}
     activity_type_or_reply={Bonfire.UI.Common.SmartInputLive.activity_type_or_reply(%{reply_to_id: @reply_to_id, thread_id: @thread_id, create_activity_type: @create_activity_type})}
   />
 

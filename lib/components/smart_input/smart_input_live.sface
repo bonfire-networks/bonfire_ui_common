@@ -1,13 +1,13 @@
 
 <div 
-  :if={current_user(@__context__) != nil and e(@hide_smart_input, nil) != true}
+  :if={current_user(@__context__) != nil and @hide_smart_input != true}
   data-id="smart_input"
-  data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, @__context__) &&  e(@thread_mode, nil) != :flat, do: "winter"}
-    {#if Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and e(@thread_mode, nil) != :flat}
+  data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, @__context__) &&  @thread_mode != :flat, do: "winter"}
+    {#if Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and @thread_mode != :flat}
 
   class={
     "h-full",
-    "h-[calc(100%-40px)]": Settings.get([:ui, :smart_input_as], nil, @__context__)!=:sidebar and e(@thread_mode, nil) != :flat
+    "h-[calc(100%-40px)]": Settings.get([:ui, :smart_input_as], nil, @__context__)!=:sidebar and @thread_mode != :flat
   }
   >
   <div 
@@ -25,12 +25,12 @@
       'not-distraction-free break-words': !show_smart_input_fullscreen,
       'w-full mx-auto !max-w-[600px] tablet:!max-w-[910px] px-3 tablet:pr-0': show_smart_input_fullscreen,
       'h-full': show_smart_input_modal_fullscreen,
-      'hidden': !show_smart_input_modal && !show_smart_input_fullscreen && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && e(@thread_mode, nil) != :flat}
+      'hidden': !show_smart_input_modal && !show_smart_input_fullscreen && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && @thread_mode != :flat}
     }"}
     class={
       "flex bg-transparent",
-      "bottom-0 !max-w-full": e(@thread_mode, nil) == :flat or is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}),
-      "h-full": e(@showing_within, nil) == :page
+      "bottom-0 !max-w-full": @thread_mode == :flat or is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}),
+      "h-full": @showing_within == :page
     }
     >
     <div 
@@ -105,7 +105,7 @@
           thread_mode={:nested}
           class={@replied_activity_class}
           showing_within={:smart_input}
-          activity_inception={e(@activity_inception, nil)}
+          activity_inception={@activity_inception}
           object_boundary={:skip}
         />
       </div>
@@ -113,9 +113,9 @@
       <Surface.Components.Dynamic.Component
           module={active_smart_input_component(@smart_input_component, @create_activity_type)}
           textarea_class={"editor_area h-full",
-            "!min-h-[120px]": Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and e(@thread_mode, nil) != :flat,
-            "!h-full !min-h-[420px]": e(@showing_within, nil) in [:page, :compose],
-            "h-auto rounded-lg border border-base-content/30": e(@thread_mode, nil) == :flat
+            "!min-h-[120px]": Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and @thread_mode != :flat,
+            "!h-full !min-h-[420px]": @showing_within in [:page, :compose],
+            "h-auto rounded-lg border border-base-content/30": @thread_mode == :flat
             }
           {...assigns}
         />

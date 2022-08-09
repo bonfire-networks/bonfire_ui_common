@@ -18,7 +18,7 @@
       id={ComponentID.new(Bonfire.UI.Common.FollowButtonLive, @profile)}
       object={@profile} 
       hide_text
-      class={e(@class, nil)}
+      class={@class}
       current_user={current_user(@__context__)} 
     />
   </div>

@@ -9,14 +9,14 @@
     page={@page}
     reply_to_id={@reply_to_id}
     thread_id={@thread_id}
-    showing_within={e(@showing_within, nil)} 
-    create_activity_type={e(@create_activity_type, nil)}
+    showing_within={@showing_within} 
+    create_activity_type={@create_activity_type}
     to_boundaries={e(@to_boundaries, [])}
     to_circles={e(@to_circles, [])}
     smart_input_prompt={@smart_input_prompt}
     smart_input_text={@smart_input_text}
     sidebar_widgets={@sidebar_widgets}
-    thread_mode={e(@thread_mode, nil)}
+    thread_mode={@thread_mode}
     hide_smart_input={e(@hide_smart_input, false)}
     show_less_menu_items={@show_less_menu_items}
   />
@@ -30,13 +30,13 @@
       "grid-rows-[40px_1fr]": Settings.get([:ui, :compact], false, @__context__)
       }>
       <Bonfire.UI.Common.PageHeaderLive
-        page_title={e(@page_title, nil)}
+        page_title={@page_title}
         without_header={e(@without_header, false)}
         page_header_drawer={e(@page_header_drawer, false)}
         >
         <:right_action>
           <Surface.Components.Dynamic.Component
-            :if={current_user(@__context__) && e(@page_header_aside, nil)}
+            :if={current_user(@__context__) && @page_header_aside}
             :for={{component, component_assigns} <- e(@page_header_aside, [])}
             module={component}
             {...component_assigns}
@@ -89,21 +89,21 @@
   </div>
 
   <!-- <Bonfire.UI.Common.SmartInputContainerLive
-    :if={e(@hide_smart_input, nil) != true}
-    hide_smart_input={e(@hide_smart_input, nil)}
+    :if={@hide_smart_input != true}
+    hide_smart_input={@hide_smart_input}
     current_user={current_user(@__context__)}
-    showing_within={e(@showing_within, nil)}
+    showing_within={@showing_within}
     reply_to_id={e(@reply_to_id, "")}
     thread_id={@thread_id}
-    create_activity_type={e(@create_activity_type, nil)}
-    thread_mode={e(@thread_mode, nil)}
+    create_activity_type={@create_activity_type}
+    thread_mode={@thread_mode}
     to_boundaries={e(@to_boundaries, [])}
     to_circles={e(@to_circles, [])}
     smart_input_prompt={@smart_input_prompt}
     smart_input_text={@smart_input_text}
   /> -->
     <div 
-      :if={current_user(@__context__) && e(@showing_within, nil) != :messages}
+      :if={current_user(@__context__) && @showing_within != :messages}
       x-show="!show_smart_input_fullscreen"
       class="fixed bottom-0 z-[90] right-3 bottom-12 md:hidden">
       <button 

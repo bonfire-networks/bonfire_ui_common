@@ -1,17 +1,17 @@
 <Bonfire.UI.Common.SmartInputHeaderLive 
   smart_input_prompt={@smart_input_prompt}
-  smart_input_component={e(@smart_input_component, nil)}
-  create_activity_type={e(@create_activity_type, nil)}
+  smart_input_component={@smart_input_component}
+  create_activity_type={@create_activity_type}
 />
 <Bonfire.UI.Common.SmartInputLive
   id={:mobile_composer} 
-  hide_smart_input={e(@hide_smart_input, nil)}
+  hide_smart_input={@hide_smart_input}
   current_user={current_user(@__context__)}
-  showing_within={e(@showing_within, nil)}
+  showing_within={@showing_within}
   reply_to_id={e(@reply_to_id, "")}
   thread_id={@thread_id}
-  create_activity_type={e(@create_activity_type, nil)}
-  thread_mode={e(@thread_mode, nil)}
+  create_activity_type={@create_activity_type}
+  thread_mode={@thread_mode}
   to_boundaries={@to_boundaries |> debug("to_boundaries")}
   to_circles={e(@to_circles, [])}
   smart_input_prompt={@smart_input_prompt}

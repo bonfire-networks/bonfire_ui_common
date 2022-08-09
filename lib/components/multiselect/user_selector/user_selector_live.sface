@@ -3,7 +3,7 @@
   selected_options={@selected_options}
   label={e(@label, "Select someone...")}
   form_input_name={@form_input_name}
-  context_id={e(@context_id, nil)}
-  pick_event={e(@pick_event, nil)}
-  remove_event={e(@remove_event, nil)}
+  context_id={@context_id}
+  pick_event={@pick_event}
+  remove_event={@remove_event}
   />

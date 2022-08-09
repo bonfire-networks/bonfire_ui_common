@@ -39,7 +39,7 @@
       </div>
     </div>
 
-  {#case e(@info, nil) || live_flash(@root_flash || @flash, :info)}
+  {#case @info || live_flash(@root_flash || @flash, :info)}
     {#match nil}
     {#match info}
     <div 
@@ -78,7 +78,7 @@
     </div> -->
   {/case}
 
-  {#case e(@error, nil) || live_flash(@root_flash || @flash, :error)}
+  {#case @error || live_flash(@root_flash || @flash, :error)}
     {#match nil}
     {#match error}
     <div 
@@ -138,7 +138,7 @@
     </div>
   </div>
 
-  {#case e(@info, nil) || live_flash(@flash, :info)}
+  {#case @info || live_flash(@flash, :info)}
     {#match nil}
     {#match info}
     <div class="max-w-md alert alert-info fade-out" 
@@ -150,7 +150,7 @@
     </div>
   {/case}
 
-  {#case e(@error, nil) || live_flash(@flash, :error)}
+  {#case @error || live_flash(@flash, :error)}
     {#match nil}
     {#match error}
     <div class="max-w-md alert alert-error" 

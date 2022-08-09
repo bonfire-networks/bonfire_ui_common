@@ -34,7 +34,7 @@
             :on-click={e(@remove_event, "Bonfire.UI.Common.MultiselectLive:deselect")}
             phx-value-id={"#{id}"}
             phx-value-field={"#{@form_input_name}"}
-            phx-value-context_id={e(@context_id, nil)}
+            phx-value-context_id={@context_id}
             type="button"
             class="inline-flex items-center justify-center flex-shrink-0 w-4 h-4 ml-1 mr-2 text-primary-content-400 hover:bg-neutral hover:bg-opacity-30 -300 hover:text-primary-content-700 focus:outline-none  focus:text-white">
             <span class="sr-only">Remove {raw (name_content || id)}</span>
@@ -87,7 +87,7 @@
             phx-value-id={"#{id}"}
             phx-value-name={"#{name_content}"}
             phx-value-field={"#{@form_input_name}"}
-            phx-value-context_id={e(@context_id, nil)}
+            phx-value-context_id={@context_id}
             >
               {raw name_content}
             </li>

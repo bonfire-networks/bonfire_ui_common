@@ -6,12 +6,12 @@
 
       <div class={
         "flex items-center justify-between p-2 space-x-2 border-t rounded-b-md border-base-content/10 bg-base-200 sm:px-3",
-        "!border-none !bg-base-100 mt-2 !p-0": e(@thread_mode, nil) == :flat}>
+        "!border-none !bg-base-100 mt-2 !p-0": @thread_mode == :flat}>
         <div class="flex items-center flex-1 space-x-1">
           <Bonfire.UI.Common.UploadButtonLive
             :if={!is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}) && module_enabled?(Bonfire.Files)}
-            uploads={e(@uploads, nil)}
-            thread_mode={e(@thread_mode, nil)}
+            uploads={@uploads}
+            thread_mode={@thread_mode}
           />
 
           <div 
@@ -29,7 +29,7 @@
           </div>
           
           <div 
-            :if={e(@showing_within, nil) != :page and e(@thread_mode, nil) != :flat}
+            :if={@showing_within != :page and @thread_mode != :flat}
             x-show="!show_smart_input_modal"
             data-tip={l "Full-screen mode" }
             class={"relative z-20 flex items-center tooltip tooltip-right"}>

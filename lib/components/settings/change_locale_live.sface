@@ -3,7 +3,7 @@ id="change_locale"
 name="locale"
 class="w-full max-w-xs select select-bordered" 
 phx-hook="ChangeLocaleHook"
-phx-change={e(@live_handler, nil)}
+phx-change={@live_handler}
 >
   {#for l <- Localise.known_locales()}
     <option class=""

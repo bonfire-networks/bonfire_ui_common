@@ -2,7 +2,7 @@
   <div class="flex items-center rounded-lg">
     <span class="inline-flex items-center h-10 px-3 border-r rounded-l-lg border-base-content/30 text-base-content text-opacity-70 sm:text-sm"> {l "To"} </span>
 
-    {#if is_list(e(@to_circles, nil)) and length(e(@to_circles, []))>0}
+    {#if is_list(@to_circles) and length(e(@to_circles, []))>0}
       <input 
         :for={{name, id} <- e(@to_circles, [])} 
         type="hidden" 
@@ -18,7 +18,7 @@
         selected_options={e(@to_circles, [])}
         label={"Send to:"}
         form_input_name="to_circles[]"
-        context_id={e(@context_id, nil)}
+        context_id={@context_id}
       /> -->
       <div
         class="flex-1"

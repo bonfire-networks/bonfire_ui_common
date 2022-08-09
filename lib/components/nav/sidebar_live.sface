@@ -17,13 +17,13 @@
       <Bonfire.UI.Common.UserMenuLive />
     </div>
     <Bonfire.UI.Common.SmartInputContainerLive
-      :if={e(@hide_smart_input, nil) != true}
-      hide_smart_input={e(@hide_smart_input, nil)}
-      showing_within={e(@showing_within, nil)}
+      :if={@hide_smart_input != true}
+      hide_smart_input={@hide_smart_input}
+      showing_within={@showing_within}
       reply_to_id={e(@reply_to_id, "")}
       thread_id={@thread_id}
-      create_activity_type={e(@create_activity_type, nil)}
-      thread_mode={e(@thread_mode, nil)}
+      create_activity_type={@create_activity_type}
+      thread_mode={@thread_mode}
       to_boundaries={@to_boundaries}
       to_circles={e(@to_circles, [])}
       smart_input_prompt={@smart_input_prompt}
@@ -42,7 +42,7 @@
     />
 
     <Surface.Components.Dynamic.LiveComponent
-      :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive) && Bonfire.Me.Settings.get([:ui, :topics_list_in_sidebar], true, @__context__) && e(@hide_smart_input, nil) != true}
+      :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive) && Bonfire.Me.Settings.get([:ui, :topics_list_in_sidebar], true, @__context__) && @hide_smart_input != true}
       module={Bonfire.Classify.Web.CategoriesNavLive}
       id={:subscribed_topics}
     />
