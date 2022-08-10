@@ -1,4 +1,4 @@
-<div class="pl-3">
+<div class="pl-3 mt-2">
 <button 
   phx-click="select_smart_input" 
   phx-target={"#smart_input"} 

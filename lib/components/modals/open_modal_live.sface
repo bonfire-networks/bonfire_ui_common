@@ -2,6 +2,7 @@
 <button 
   :on-click={"open"}
   type="button"
+  class="w-full h-full"
   >
   <#slot name="open_btn">
     <button class={@open_btn_class} type="button">
