@@ -14,8 +14,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   def handle_params(params, uri, socket, source_module \\ nil) do
     undead(socket, fn ->
-      debug("LiveHandler: handle_params for #{inspect uri} via #{source_module || "delegation"}")
-      ## debug(params: params)
+      debug(params, "LiveHandler: handle_params for #{inspect uri} via #{source_module || "delegation"}")
       do_handle_params(params, uri, assign_params(params, uri, socket))
     end)
   end

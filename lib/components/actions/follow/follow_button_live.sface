@@ -5,7 +5,6 @@
     data-id="follow"
     :on-click="Bonfire.Social.Follows:follow" 
     href={if !current_user(@__context__), do: path(@object)<>"/follow"}
-    target="_blank"
     rel="noopener noreferrer"
     phx-value-id={ulid(@object)} 
     class={e(@class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}>
