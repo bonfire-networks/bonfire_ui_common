@@ -1,9 +1,7 @@
-<header 
-  
-  class="flex flex-row w-full p-2 rounded-t bg-base-200 flex-align-items-stretch flex-nowrap">
+<header class="flex flex-row w-full p-3 rounded-t bg-base-200 flex-align-items-stretch flex-nowrap">
   <span 
     @click="minimize = ! minimize"
-    class="flex-1 text-sm cursor-move text-ellipsis user-select-none"
+     class="flex-1 text-xl font-semibold text-center text-ellipsis"
     x-text={"title_text || '#{e(@smart_input_prompt, l "New post")}'"}
     >
     {e(@smart_input_prompt, l "New post")}
@@ -24,15 +22,15 @@
         <span class="sr-only">{l "Maximise"}</span>
       </span>
     </button>
-    <button 
-      @click="maximize_smart_input_modal()"
+    <!-- <button 
+      @click="open_sm_modal = true"
       type="button" 
       class="flex btn btn-xs btn-ghost btn-square" 
       data-testid="composer:maximize-button" 
       aria-describedby="tooltip-5528">
       <Icon outline="ArrowsExpand" class="w-4 h-4 stroke-1 text-base-content/70" />
       <span class="sr-only">{l "Expand full screen"}</span>
-    </button>
+    </button> -->
     <button 
       phx-click="reset"
       phx-target="#smart_input"

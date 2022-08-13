@@ -1,6 +1,7 @@
 
 <div 
   :if={current_user(@__context__) != nil and @hide_smart_input != true}
+  id="composer_container"
   data-id="smart_input"
   data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, @__context__) &&  @thread_mode != :flat, do: "winter"}
     {#if Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and @thread_mode != :flat}
@@ -10,6 +11,7 @@
     "h-[calc(100%-40px)]": Settings.get([:ui, :smart_input_as], nil, @__context__)!=:sidebar and @thread_mode != :flat
   }
   >
+      <!-- 'hidden': !show_smart_input_modal  && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && @thread_mode != :flat} -->
   <div 
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
@@ -22,10 +24,6 @@
     :class={"{
       'smart-input-open': title_open,
       'smart-input-open-boundaries': open_boundaries,
-      'not-distraction-free break-words': !show_smart_input_fullscreen,
-      'w-full mx-auto !max-w-[600px] tablet:!max-w-[910px] px-3 tablet:pr-0': show_smart_input_fullscreen,
-      'h-full': show_smart_input_modal_fullscreen,
-      'hidden': !show_smart_input_modal && !show_smart_input_fullscreen && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && @thread_mode != :flat}
     }"}
     class={
       "flex bg-transparent shadow-xl",
@@ -33,17 +31,14 @@
       "h-full": e(@showing_within, nil) == :page
     }
     >
-    <div 
+    <!-- <div 
       x-cloak
       x-show="show_smart_input_fullscreen"
       @click="show_smart_input_fullscreen = !show_smart_input_fullscreen"
       class="cursor-pointer bg-white/30 fixed z-[70] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"> 
-      <!-- modal backdrop -->
-    </div>
+    </div> -->
     <div 
-      :class="{
-          'px-3 fixed z-[70] max-w-[860px] top-3 bottom-[20px] w-full -translate-x-1/2 left-1/2': show_smart_input_fullscreen,
-        }"
+      
       class={"flex flex-col flex-1 w-full"}>
       
       <!-- <div 
@@ -91,7 +86,6 @@
       -->
      <div 
       :if={@activity}
-      :class="show_smart_input_fullscreen ? 'bg-base-100 !rounded-none mb-0 border-b border-base-content/10' : ''"
       class={
         "overflow-y-auto mb-2 rounded-md",
         "h-full !mb-0 !rounded-none max-h-[300px]": Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar

@@ -1,7 +1,6 @@
 <!-- x-on:resize.window="show_smart_input_fullscreen = (window.innerWidth > 1200) ? false : show_smart_input_fullscreen" -->
 
 <div 
-  :class="show_smart_input_fullscreen ? '!grid !overflow-hidden' : ''"
   class={
     "sticky z-[110] items-start hidden grid-flow-row overflow-x-hidden overflow-y-auto top-3 widget md:grid auto-rows-min", 
     "gap-4": !Settings.get([:ui, :compact], false, @__context__),
@@ -17,7 +16,6 @@
       <Bonfire.UI.Common.UserMenuLive />
     </div>
     <Bonfire.UI.Common.SmartInputContainerLive
-      :if={@hide_smart_input != true}
       hide_smart_input={@hide_smart_input}
       showing_within={@showing_within}
       reply_to_id={e(@reply_to_id, "")}

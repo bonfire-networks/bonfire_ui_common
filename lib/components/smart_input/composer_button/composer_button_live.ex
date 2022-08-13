@@ -4,7 +4,7 @@ defmodule Bonfire.UI.Common.ComposerButtonLive do
   prop smart_input_prompt, :string, required: false
   prop smart_input_component, :atom, default: nil
   prop create_activity_type, :atom, default: nil
-
+  prop composer_type, :atom, default: :sidebar
 
 
 end

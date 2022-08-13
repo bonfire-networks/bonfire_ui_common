@@ -24,6 +24,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop show_select_recipients, :boolean, default: false
   prop thread_mode, :any, default: nil
   prop page, :any, default: nil
+  prop boundaries_modal_id, :string, default: :sidebar_composer
 
   # Classes to customize the smart input appearance
   prop replied_activity_class, :css_class, default: "relative  p-3 bg-base-100 hover:!bg-base-100 hover:!bg-opacity-100 showing_within:smart_input overflow-hidden"

@@ -61,16 +61,35 @@
             <div class="flex flex-col ml-3">
             <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
             <span class="block text-base font-medium">
-                {l "Large floating editor"}
+                {l "Editor in a modal"}
             </span>
             <span class="block text-sm text-base-content/80">
-                {l "Always give yourself the space to write."}
+                {l "It keeps you focused on the post."}
             </span>
             </div>
         </label>
-        </div>
+
+        <label class="relative flex p-4 border rounded-md cursor-pointer border-base-content/30 focus:outline-none">
+            <input
+              type="radio"
+              name="ui[smart_input_as]"
+              value="mail"
+              checked={if Settings.get([:ui, :smart_input_as], nil, @__context__)==:mail, do: "checked"} 
+              class="radio"
+              >
+            <div class="flex flex-col ml-3">
+              <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
+              <span class="block text-base font-medium">
+                  {l "Large floating editor"}
+              </span>
+              <span class="block text-sm text-base-content/80">
+                  {l "You are able to navigate through the app while composing a post."}
+              </span>
+            </div>
+        </label>
+      </div>
     </fieldset>
-    </div>
+  </div>
 </div>
 
 

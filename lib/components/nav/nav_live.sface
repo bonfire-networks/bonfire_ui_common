@@ -1,27 +1,28 @@
 <div 
   x-data="{
     open_sidebar_drawer: false,
-    open_drawer: false
+    open_drawer: false,
+    open_sm_modal: false,
+    width: window.innerWidth,
   }"
-  :class="show_smart_input_fullscreen ? '!grid-cols-1 !place-content-start' : ''"
-  class={"justify-center tablet-lg:justify-between w-full wide:max-w-screen-xl mx-auto p-3 wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)]  tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid gap-8 bonfire_layout"}>
-  <Bonfire.UI.Common.SidebarLive
-    page={@page}
-    reply_to_id={@reply_to_id}
-    thread_id={@thread_id}
-    showing_within={@showing_within} 
-    create_activity_type={@create_activity_type}
-    to_boundaries={e(@to_boundaries, [])}
-    to_circles={e(@to_circles, [])}
-    smart_input_prompt={@smart_input_prompt}
-    smart_input_text={@smart_input_text}
-    sidebar_widgets={@sidebar_widgets}
-    thread_mode={@thread_mode}
-    hide_smart_input={e(@hide_smart_input, false)}
-    show_less_menu_items={@show_less_menu_items}
-  />
+  @resize.window.debounce.100="width = window.innerWidth"
+  class={"justify-center tablet-lg:justify-between w-full wide:max-w-screen-xl mx-auto md:p-3 wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)]  tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid gap-8 bonfire_layout"}>
+    <Bonfire.UI.Common.SidebarLive
+      page={@page}
+      reply_to_id={@reply_to_id}
+      thread_id={@thread_id}
+      showing_within={@showing_within} 
+      create_activity_type={@create_activity_type}
+      to_boundaries={e(@to_boundaries, [])}
+      to_circles={e(@to_circles, [])}
+      smart_input_prompt={@smart_input_prompt}
+      smart_input_text={@smart_input_text}
+      sidebar_widgets={@sidebar_widgets}
+      thread_mode={@thread_mode}
+      hide_smart_input={e(@hide_smart_input, false)}
+      show_less_menu_items={@show_less_menu_items}
+    />
   <div 
-    :class="show_smart_input_fullscreen ? '!hidden' : ''"
     class="gap-2 md:gap-0 relative  w-full col-span-1 grid grid-rows-[1fr_48px] md:grid-rows-1">
     <Bonfire.UI.Common.HeaderMobileGuestLive  :if={!current_user(@__context__)} />
     <div 
@@ -44,7 +45,7 @@
         </:right_action>
       </Bonfire.UI.Common.PageHeaderLive>
 
-      <div data-id="inner_content" class="overflow-y-auto rounded-b-none md:overflow-y-visible full-height ">
+      <div data-id="inner_content" class="px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height ">
         {@inner_content}
       </div>
       
@@ -55,9 +56,8 @@
     />
   </div>
   <div 
-    :class="show_smart_input_fullscreen ? '!hidden' : ''"
     class={
-      "items-start sticky z-[100] top-3 hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget tablet:grid auto-rows-min",
+      "items-start sticky z-[100] top-3 hidden grid-flow-row gap-3 overflow-x-hidden overflow-y-auto widget tablet-lg:grid auto-rows-min",
        "!gap-5": !Settings.get([:ui, :compact], false, @__context__),
     }>
     <!-- <div 
@@ -102,15 +102,31 @@
     smart_input_prompt={@smart_input_prompt}
     smart_input_text={@smart_input_text}
   /> -->
-    <div 
-      :if={current_user(@__context__) && @showing_within != :messages}
-      x-show="!show_smart_input_fullscreen"
-      class="fixed bottom-0 z-[90] right-3 bottom-12 md:hidden">
+
+
+
+  <!-- <div 
+  :if={current_user(@__context__) && @showing_within != :messages}
+  x-show="!show_smart_input_fullscreen"
+  class="fixed bottom-0 z-[90] right-3 bottom-14 md:hidden">
+    <button 
+      @click="show_smart_input_fullscreen = true"
+      type="button" 
+      class="items-center btn btn-circle btn-primary btn-lg place-content-center ">
+      <Icon solid="PencilAlt" class="w-6 h-6" />
+    </button>
+  </div> -->
+
+    <div>
       <button 
-        @click="show_smart_input_fullscreen = true"
-        type="button" 
-        class="items-center btn btn-circle btn-primary btn-lg place-content-center ">
-        <Icon solid="PencilAlt" class="w-6 h-6" />
+        x-on:click="open_sm_modal = true"
+        class="btn items-center btn-circle btn-primary btn-lg place-content-center modal-button fixed bottom-0 z-[90] right-3 bottom-14 md:hidden">
+          <Icon solid="Plus" class="w-6 h-6" />
       </button>
+
+      
+      <Bonfire.UI.Common.MobileComposerLive 
+        smart_input_prompt={@smart_input_prompt}
+      />
     </div>
 </div>

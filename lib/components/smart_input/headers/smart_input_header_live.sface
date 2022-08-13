@@ -3,7 +3,7 @@
     class="flex flex-row items-center w-full p-2 border-b rounded-t border-base-content/10 bg-base-200 flex-align-items-stretch flex-nowrap">
     <span 
       @click="show_smart_input_modal = ! show_smart_input_modal"
-      class="flex-1 text-sm cursor-move text-ellipsis user-select-none"
+      class="flex-1 text-lg font-medium cursor-move text-ellipsis user-select-none"
       x-text={"title_text || '#{e(@smart_input_prompt, l "New post")}'"}
       >
       {e(@smart_input_prompt, l "New post")}

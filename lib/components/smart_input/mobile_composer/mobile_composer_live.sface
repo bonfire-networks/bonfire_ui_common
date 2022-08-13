@@ -1,19 +1,32 @@
-<Bonfire.UI.Common.SmartInputHeaderLive 
-  smart_input_prompt={@smart_input_prompt}
-  smart_input_component={@smart_input_component}
-  create_activity_type={@create_activity_type}
-/>
-<Bonfire.UI.Common.SmartInputLive
-  id={:mobile_composer} 
-  hide_smart_input={@hide_smart_input}
-  current_user={current_user(@__context__)}
-  showing_within={@showing_within}
-  reply_to_id={e(@reply_to_id, "")}
-  thread_id={@thread_id}
-  create_activity_type={@create_activity_type}
-  thread_mode={@thread_mode}
-  to_boundaries={@to_boundaries |> debug("to_boundaries")}
-  to_circles={e(@to_circles, [])}
-  smart_input_prompt={@smart_input_prompt}
-  smart_input_text={@smart_input_text}
-/>
+<div
+  x-on:keydown.escape.prevent.stop="open_sm_modal = false"
+  role="dialog"
+  aria-modal="true"
+  :class="{'visible opacity-100 pointer-events-auto' : open_sm_modal == true}"
+  class="modal modal-bottom sm:modal-middle md:hidden">
+  <div 
+    x-on:click="open_sm_modal = false"
+    x-transition.opacity 
+    class="absolute pointer left-0 z-[50] bg-white/30 right-0 top-0 bottom-0">
+  </div>
+  <div class="p-0 relative z-[110] modal-box">
+    <header 
+      class="flex flex-row items-center w-full p-4 border-b border-base-content/10 bg-base-200 flex-align-items-stretch flex-nowrap">
+      <span 
+        class="flex-1 text-xl font-semibold text-center text-ellipsis"
+        x-text={"title_text || '#{e(@smart_input_prompt, l "New post")}'"}
+        >
+        {e(@smart_input_prompt, l "New post")}
+      </span>
+      <div class="flex items-center space-x-5">
+        <button 
+          x-on:click="open_sm_modal = false" 
+          class="normal-case font-regular btn btn-sm btn-circle">
+          <Icon outline="X" class="w-4 h-4" />
+        </button>
+      </div>
+    </header>
+    <div id="smart_input_mobile">
+    </div>
+  </div>
+</div>
