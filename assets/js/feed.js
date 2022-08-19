@@ -1,5 +1,16 @@
 let FeedHooks = {};
 
+FeedHooks.PreviewActivity = {
+  mounted() {
+    this.el.addEventListener("click", e => {
+      e.preventDefault(); // TODO: find a better way to hook a simple event on an anchor without needing a hook
+      uri = this.el.dataset.permalink
+      this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
+      history.pushState({}, '', uri)
+    })
+  }
+} 
+
 FeedHooks.OpenActivity = {
   mounted() {
     this.el.addEventListener("click", e => {
@@ -8,9 +19,9 @@ FeedHooks.OpenActivity = {
       // console.log(e.target.tagName.toLowerCase())
       if (e && (e.button == 0 && this.el.dataset.navigate_to_thread == "true" && (accepted_node_types.includes(e.target.tagName.toLowerCase()) || e.target.classList.contains("feed-clickable")) && !window.getSelection().toString() && !e.ctrlKey && !e.metaKey)) {
         e.preventDefault();
-        this.pushEvent("Bonfire.Social.Feeds:open_activity", {permalink: this.el.dataset.permalink})
+        this.pushEvent("Bonfire.Social.Feeds:open_activity", { permalink: this.el.dataset.permalink })
       }
-    }) 
+    })
   }
 } 
 

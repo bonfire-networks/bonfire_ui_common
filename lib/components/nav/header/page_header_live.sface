@@ -28,6 +28,8 @@
               x-show="history.length > 1"
               aria-label="Navigate to the previous page"
               href="javascript:window.history.back()"
+              phx-click="assign"
+              phx-value-preview_module=""
               class={
                 "flex btn btn-circle btn-ghost btn-sm",
                 "hidden tablet:flex": @page_header_drawer

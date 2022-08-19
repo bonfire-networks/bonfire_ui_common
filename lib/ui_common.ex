@@ -46,6 +46,9 @@ defmodule Bonfire.UI.Common do
     assign_global(socket, Keyword.new([assign]))
   end
 
+  def assign_global(socket, key, "") do
+    assign_global(socket, key, nil)
+  end
   def assign_global(socket, key, value) when is_atom(key) do
     assign_global(socket, Keyword.new([{key, value}]))
   end
@@ -111,6 +114,13 @@ defmodule Bonfire.UI.Common do
     |> assigns_clean()
     |> deep_merge(new)
     # |> IO.inspect
+  end
+
+  def maybe_assign(socket, key, value) when is_atom(key) and not is_nil(value) and value !="" do
+    assign_generic(socket, key, value)
+  end
+  def maybe_assign(socket, key, _) do
+    socket
   end
 
 

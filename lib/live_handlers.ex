@@ -15,7 +15,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   def handle_params(params, uri, socket, source_module \\ nil) do
     undead(socket, fn ->
       debug(params, "LiveHandler: handle_params for #{inspect uri} via #{source_module || "delegation"}")
-      do_handle_params(params, uri, assign_params(params, uri, socket))
+      do_handle_params(params, uri, assign_default_params(params, uri, socket))
     end)
   end
 
@@ -78,7 +78,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   # global event handler to set assigns of a view or component
   defp do_handle_event("assign", attrs, socket) do
-    debug(attrs, "LiveHandler: assign")
+    debug(attrs, "LiveHandler: simple assign")
     {:noreply, assign_global(socket, attrs)}
   end
 
@@ -109,12 +109,13 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   defp do_handle_params(_, _, socket), do: empty(socket)
 
-  def assign_params(params, uri, socket) do
+  def assign_default_params(params, uri, socket) do
     socket
       |> assign_global(
         current_params: params,
         current_url: URI.parse(uri)
-                      |> maybe_get(:path)
+                      |> maybe_get(:path),
+        preview_module: nil
       )
   end
 
