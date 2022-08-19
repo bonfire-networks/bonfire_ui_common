@@ -21,7 +21,7 @@
 
 <div class="mt-4">
     <label class="block text-sm font-medium text-base-content sm:mt-px sm:pt-2">
-    {l "Preference for writing posts"}
+    {l "Where to show the editor"}
     </label>
     <div class="mt-3">
     <fieldset>
@@ -41,7 +41,7 @@
             <div class="flex flex-col ml-3">
             <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
             <span class="block text-base font-medium">
-                {l "Small editor in the sidebar (on large screens)"}
+                {l "Sidebar (on large screens)"}
             </span>
             <span class="block text-sm text-base-content/80">
                 {l "Good for micro-blogging. Includes a button to switch to full-screen when you want to write longer posts."}
@@ -61,7 +61,7 @@
             <div class="flex flex-col ml-3">
             <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
             <span class="block text-base font-medium">
-                {l "Editor in a modal"}
+                {l "Pop-up modal"}
             </span>
             <span class="block text-sm text-base-content/80">
                 {l "It keeps you focused on the post."}
@@ -73,14 +73,14 @@
             <input
               type="radio"
               name="ui[smart_input_as]"
-              value="mail"
-              checked={if Settings.get([:ui, :smart_input_as], nil, @__context__)==:mail, do: "checked"} 
+              value="floating"
+              checked={if Settings.get([:ui, :smart_input_as], nil, @__context__)==:floating, do: "checked"} 
               class="radio"
               >
             <div class="flex flex-col ml-3">
               <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
               <span class="block text-base font-medium">
-                  {l "Large floating editor"}
+                  {l "Floating at the bottom"}
               </span>
               <span class="block text-sm text-base-content/80">
                   {l "You are able to navigate through the app while composing a post."}

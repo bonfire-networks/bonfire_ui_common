@@ -22,6 +22,9 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop thread_mode, :atom, default: nil
   prop page, :any, default: nil
 
+  def set_smart_input_as(:flat, _), do: :sidebar
+  def set_smart_input_as(_, context), do: Settings.get([:ui, :smart_input_as], :floating, context)
+
   def all_smart_input_components do
     Bonfire.Common.Config.get([:ui, :smart_input_components], [post: Bonfire.UI.Social.WritePostContentLive])
   end

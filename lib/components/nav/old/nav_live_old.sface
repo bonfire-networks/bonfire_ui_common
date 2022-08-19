@@ -1,8 +1,8 @@
 
   <div 
     x-data="{
-      show_smart_input_modal: false, 
-      show_smart_input_fullscreen: false, 
+      smart_input_open: false, 
+      smart_input_fullscreen: false, 
       open_drawer: false
     }" 
     class="flex flex-col">

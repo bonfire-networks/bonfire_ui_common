@@ -1,10 +1,10 @@
-<div x-data="{expanded_all_activities: false}">
+<div x-data="{smart_input_activity_types_expanded: false}">
   <header 
     class="flex flex-row items-center w-full p-2 border-b rounded-t border-base-content/10 bg-base-200 flex-align-items-stretch flex-nowrap">
     <span 
-      @click="show_smart_input_modal = ! show_smart_input_modal"
+      @click="smart_input_open = ! smart_input_open"
       class="flex-1 text-lg font-medium cursor-move text-ellipsis user-select-none"
-      x-text={"title_text || '#{e(@smart_input_prompt, l "New post")}'"}
+      x-text={"smart_input_title_text || '#{e(@smart_input_prompt, l "New post")}'"}
       >
       {e(@smart_input_prompt, l "New post")}
     </span>
@@ -12,21 +12,21 @@
       <button
         data-tip={l "Select the activity type"}
         class="normal-case tooltip tooltip-left font-regular btn btn-xs btn-ghost btn-square"
-        :class="btn-active : expanded_all_activities == true"
+        :class="btn-active : smart_input_activity_types_expanded == true"
         :if={length(Config.get([:ui, :smart_input_activities], []))>1}
-        @click="expanded_all_activities = ! expanded_all_activities"><Icon outline="ViewGridAdd" class="w-4 h-4" />
+        @click="smart_input_activity_types_expanded = ! smart_input_activity_types_expanded"><Icon outline="ViewGridAdd" class="w-4 h-4" />
       </button>
     </div>
   </header>
   <div 
     class="p-2 border-b bg-base-200 border-base-content/10"
-    x-show="expanded_all_activities" 
+    x-show="smart_input_activity_types_expanded" 
     x-collapse>
     <ul tabindex="0" class="flex flex-col w-full space-y-2">
       <li 
         class="flex items-center p-2 space-x-2 text-xs cursor-pointer rounded-box hover:bg-base-content/10"
         phx-click="select_smart_input" phx-target={"#smart_input"} phx-value-component={all_smart_input_components()[name] || Bonfire.UI.Social.WritePostContentLive}
-        @click="expanded_all_activities = false"
+        @click="smart_input_activity_types_expanded = false"
         :for={{name, label} <- Config.get([:ui, :smart_input_activities], [])}>
          {#case name}
           {#match :post}

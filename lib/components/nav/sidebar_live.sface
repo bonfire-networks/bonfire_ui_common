@@ -1,8 +1,8 @@
-<!-- x-on:resize.window="show_smart_input_fullscreen = (window.innerWidth > 1200) ? false : show_smart_input_fullscreen" -->
+<!-- x-on:resize.window="smart_input_fullscreen = (window.innerWidth > 1200) ? false : smart_input_fullscreen" -->
 
 <div 
   class={
-    "sticky z-[110] items-start hidden grid-flow-row overflow-x-hidden overflow-y-auto top-3 widget md:grid auto-rows-min", 
+    "sticky z-[110] items-start grid grid-flow-row overflow-x-hidden overflow-y-auto top-3 widget auto-rows-min invisible md:visible w-0 md:w-auto h-0 md:h-auto ", 
     "gap-4": !Settings.get([:ui, :compact], false, @__context__),
     "gap-3": Settings.get([:ui, :compact], false, @__context__)
     }>

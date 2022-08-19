@@ -11,7 +11,7 @@
     "h-[calc(100%-40px)]": Settings.get([:ui, :smart_input_as], nil, @__context__)!=:sidebar and @thread_mode != :flat
   }
   >
-      <!-- 'hidden': !show_smart_input_modal  && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && @thread_mode != :flat} -->
+      <!-- 'hidden': !smart_input_open  && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && @thread_mode != :flat} -->
   <div 
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
@@ -33,8 +33,8 @@
     >
     <!-- <div 
       x-cloak
-      x-show="show_smart_input_fullscreen"
-      @click="show_smart_input_fullscreen = !show_smart_input_fullscreen"
+      x-show="smart_input_fullscreen"
+      @click="smart_input_fullscreen = !smart_input_fullscreen"
       class="cursor-pointer bg-white/30 fixed z-[70] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"> 
     </div> -->
     <div 
@@ -55,7 +55,7 @@
 
       <!-- <div
         x-cloak
-        x-show="show_smart_input_fullscreen == true" 
+        x-show="smart_input_fullscreen == true" 
         class="flex items-center p-3 border-b rounded-t bg-base-100 border-base-content/10">
         {#if is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type})}
           <div class="flex-1 font-bold text-base-content">{l "Send a message"}</div>
@@ -78,7 +78,7 @@
           </div>
         {/if}
         <button 
-          @click="show_smart_input_fullscreen = false"
+          @click="smart_input_fullscreen = false"
           class="btn btn-sm btn-circle btn-outline">
           <Icon outline="X" class="w-5 h-5" />
         </button>
@@ -106,11 +106,21 @@
 
       <Surface.Components.Dynamic.Component
           module={active_smart_input_component(@smart_input_component, @create_activity_type)}
+          textarea_container_class={
+            "h-full flex-1 flex flex-col grow",
+            "min-h-[50px]": @thread_mode == :flat,
+            "min-h-[120px]": Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and @thread_mode != :flat,
+            "min-h-[calc(50vh-50px)]": Settings.get([:ui, :smart_input_as], nil, @__context__) !=:sidebar and @thread_mode != :flat
+          }
+          textarea_container_class_alpine="{
+            '!min-h-[calc(100vh-50px)]': smart_input_fullscreen
+          }"
           textarea_class={"editor_area h-full",
+            "min-h-[50px] rounded-lg border border-base-content/30": @thread_mode == :flat,
             "!min-h-[120px]": Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and @thread_mode != :flat,
-            "!h-full !min-h-[420px]": @showing_within in [:page, :compose],
-            "h-auto rounded-lg border border-base-content/30": @thread_mode == :flat
-            }
+            "!min-h-[calc(50vh-50px)]": Settings.get([:ui, :smart_input_as], nil, @__context__) !=:sidebar and @thread_mode != :flat,
+            "!h-full !min-h-[420px]": @showing_within in [:page, :compose]
+          }
           {...assigns}
         />
 

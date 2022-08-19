@@ -1,0 +1,22 @@
+<!-- BTN FOR MOBILE: -->
+
+<!-- <div 
+:if={current_user(@__context__) && @showing_within != :messages}
+x-show="!smart_input_fullscreen"
+class="fixed bottom-0 z-[90] right-3 bottom-14 md:hidden">
+  <button 
+    x-on:click="show_smart_input(); smart_input_fullscreen = true"
+    type="button" 
+    class="items-center btn btn-circle btn-primary btn-lg place-content-center ">
+    <Icon solid="PencilAlt" class="w-6 h-6" />
+  </button>
+</div> -->
+
+<div>
+  <button 
+    x-on:click="show_smart_input(); smart_input_fullscreen = true"
+    class="btn items-center btn-circle btn-primary btn-lg place-content-center modal-button fixed bottom-0 z-[90] right-3 bottom-14 md:hidden">
+      <Icon solid="Plus" class="w-6 h-6" />
+  </button>
+</div>
+

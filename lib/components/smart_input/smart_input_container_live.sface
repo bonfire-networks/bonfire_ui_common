@@ -1,71 +1,53 @@
 <div :if={current_user(@__context__) != nil and @hide_smart_input != true}>
-  
-  {#if Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and @thread_mode != :flat}
+  {#case set_smart_input_as(@thread_mode, @__context__)}
+    {#match smart_input_as}
 
-    <div id="smart_input_desktop" class="pl-3">
-      <Bonfire.UI.Common.SmartInputLive
-        id={:smart_input} 
-        boundaries_modal_id={:sidebar_composer}
-        hide_smart_input={@hide_smart_input}
-        current_user={current_user(@__context__)}
-        showing_within={@showing_within}
-        reply_to_id={e(@reply_to_id, "")}
-        thread_id={@thread_id}
+    <div x-data={"{
+        smart_input_as: '#{smart_input_as}'
+      }"}>
+
+      <Bonfire.UI.Common.SmartInputButtonLive
+        smart_input_as={smart_input_as}
+        smart_input_prompt={@smart_input_prompt}
+        smart_input_component={@smart_input_component}
         create_activity_type={@create_activity_type}
-        thread_mode={@thread_mode}
-        to_boundaries={@to_boundaries |> debug("to_boundaries")}
-        to_circles={e(@to_circles, [])}
-        smart_input_prompt={@smart_input_prompt}
-        smart_input_text={@smart_input_text}
-      />
-    </div>
-
-  
-
-  {#else}
-
-    <Bonfire.UI.Common.ComposerButtonLive
-      composer_type={Settings.get([:ui, :smart_input_as], nil, @__context__)}
-      smart_input_prompt={@smart_input_prompt}
-      smart_input_component={@smart_input_component}
-      create_activity_type={@create_activity_type}
-    />
-
-    <div 
-      x-show="show_smart_input_modal || minimize"
-      class="smart_input_floating fixed bottom-0 z-[110] transition-all w-[24rem] shadow-xl right-4 max-h-[100vh] overflow-x-auto"
-      :class="{
-        '!w-[24rem]': minimize,
-        'w-[40rem]': show_smart_input_modal,
-        '!w-auto left-8 top-8': show_smart_input_modal_fullscreen 
-        }"
-    >
-      <Bonfire.UI.Common.SmartInputHeaderModalLive 
-        smart_input_prompt={@smart_input_prompt}
       />
 
       <div 
-        id="smart_input_desktop"
-        x-show="!minimize && show_smart_input_modal"
-        class="">
-        <Bonfire.UI.Common.SmartInputLive
-          id={:smart_input} 
-          boundaries_modal_id={:modal_composer}
-          hide_smart_input={@hide_smart_input}
-          current_user={current_user(@__context__)}
-          showing_within={@showing_within}
-          reply_to_id={e(@reply_to_id, "")}
-          thread_id={@thread_id}
-          create_activity_type={@create_activity_type}
-          thread_mode={@thread_mode}
-          to_boundaries={@to_boundaries}
-          to_circles={e(@to_circles, [])}
+        x-show="smart_input_open || smart_input_as == 'sidebar'"
+        class="smart_input_container"
+        :class="{
+          'visible fixed bottom-0 z-[110] transition-all shadow-xl right-4 max-w-[calc(100vw-2rem)] max-h-[100vh] overflow-x-auto': smart_input_as != 'sidebar' || smart_input_open,
+          'w-[24rem]': smart_input_minimized,
+          'w-[40rem]': smart_input_open,
+          '!w-auto !h-auto left-4 top-2': smart_input_fullscreen 
+          }"
+        x-on:keydown.escape.prevent.stop="smart_input_minimized = true"
+      >
+        <Bonfire.UI.Common.SmartInputHeaderModalLive 
           smart_input_prompt={@smart_input_prompt}
-          smart_input_text={@smart_input_text}
         />
+
+        <div 
+          x-show="!smart_input_minimized"
+          class="">
+          <Bonfire.UI.Common.SmartInputLive
+            id={:smart_input} 
+            boundaries_modal_id={:modal_composer}
+            hide_smart_input={@hide_smart_input}
+            current_user={current_user(@__context__)}
+            showing_within={@showing_within}
+            reply_to_id={e(@reply_to_id, "")}
+            thread_id={@thread_id}
+            create_activity_type={@create_activity_type}
+            thread_mode={@thread_mode}
+            to_boundaries={@to_boundaries}
+            to_circles={e(@to_circles, [])}
+            smart_input_prompt={@smart_input_prompt}
+            smart_input_text={@smart_input_text}
+          />
+        </div>
       </div>
     </div>
-  {/if}
-
+  {/case}
 </div>
-

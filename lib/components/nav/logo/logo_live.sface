@@ -1,7 +1,7 @@
 <div 
-  x-data="{expanded_all_activities: false}"
-  @keydown.escape.stop="expanded_all_activities = false;"
-  @click.outside="expanded_all_activities = false"
+  x-data="{smart_input_activity_types_expanded: false}"
+  @keydown.escape.stop="smart_input_activity_types_expanded = false;"
+  @click.outside="smart_input_activity_types_expanded = false"
   class="items-center bg-base-300 hidden h-[48px] space-x-3 md:flex">
   <LiveRedirect 
     to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}>
@@ -16,7 +16,7 @@
   </div>
   <div class="block">
     <button 
-      @click="expanded_all_activities = ! expanded_all_activities"
+      @click="smart_input_activity_types_expanded = ! smart_input_activity_types_expanded"
       type="button" 
       class="btn btn-square" id="option-menu-button" aria-expanded="true" aria-haspopup="true">
       <span class="sr-only">{l "Open options"}</span>
@@ -24,7 +24,7 @@
     </button>
     <div  
       x-cloak
-      x-show="expanded_all_activities"
+      x-show="smart_input_activity_types_expanded"
       x-transition:enter="transition ease-out duration-100" 
       x-transition:enter-start="transform opacity-0 scale-95" 
       x-transition:enter-end="transform opacity-100 scale-100" 
@@ -38,7 +38,7 @@
           phx-click="select_smart_input" 
           phx-target={"#smart_input"} 
           phx-value-component={all_smart_input_components()[name] || Bonfire.UI.Social.WritePostContentLive}
-          @click="show_smart_input_modal = true; expanded_all_activities = false"
+          @click="show_smart_input(); smart_input_activity_types_expanded = false"
           :for={{name, label} <- Config.get([:ui, :smart_input_activities], [])} 
           class="flex items-center p-2 space-x-2 text-sm rounded-md cursor-pointer hover:bg-base-content/10 text-neutral-content" 
           role="menuitem" 

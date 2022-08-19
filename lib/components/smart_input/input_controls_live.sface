@@ -30,13 +30,13 @@
           
           <!-- <div 
             :if={@showing_within != :page and @thread_mode != :flat}
-            x-show="!show_smart_input_modal"
+            x-show="!smart_input_open"
             data-tip={l "Full-screen mode" }
             class={"relative z-20 flex items-center tooltip tooltip-right"}>
               <button 
                 type="button"
-                @click="show_smart_input_fullscreen = !show_smart_input_fullscreen"
-                :class="{'border-base-content/30' : show_smart_input_fullscreen}"
+                @click="smart_input_fullscreen = !smart_input_fullscreen"
+                :class="{'border-base-content/30' : smart_input_fullscreen}"
                 class="flex items-center btn btn-ghost btn-sm btn-circle">
               <Icon outline="ArrowsExpand" class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
             </button>

@@ -34,18 +34,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
     <div
       id="layout-live"
       x-data="{
-        title_text: null,
-        show_smart_input_modal: false,
-        show_smart_input_fullscreen: false,
-        show_smart_input_modal_fullscreen: false,
-        minimize: false,
-        maximize_smart_input_modal() {
-          if (!this.show_smart_input_modal) {
-            this.show_smart_input_modal = true;
-            return this.show_smart_input_modal_fullscreen = true
-          } else {
-            return this.show_smart_input_modal_fullscreen = true
-          }
+        smart_input_title_text: null,
+        smart_input_open: false,
+        smart_input_fullscreen: false,
+        smart_input_minimized: false,
+        show_smart_input() {
+          this.smart_input_open = true
+          this.smart_input_minimized = false
         }
       }"
     >
