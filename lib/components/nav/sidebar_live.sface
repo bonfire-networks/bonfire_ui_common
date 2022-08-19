@@ -2,7 +2,7 @@
 
 <div 
   class={
-    "sticky z-[110] items-start grid grid-flow-row overflow-x-hidden overflow-y-auto top-3 widget auto-rows-min invisible md:visible w-0 md:w-auto h-0 md:h-auto ", 
+    "sticky z-[110] items-start grid grid-flow-row overflow-x-hidden overflow-y-auto top-3 widget auto-rows-min invisible md:visible w-0 md:w-auto h-0 md:h-[100vh] ", 
     "gap-4": !Settings.get([:ui, :compact], false, @__context__),
     "gap-3": Settings.get([:ui, :compact], false, @__context__)
     }>
