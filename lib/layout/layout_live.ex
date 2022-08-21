@@ -73,6 +73,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
           hide_smart_input={e(@hide_smart_input, false)}
           show_less_menu_items={@show_less_menu_items}
         />
+        
+
         <div
           class="gap-2 md:gap-0 relative  w-full col-span-1 grid grid-rows-[1fr_48px] md:grid-rows-1">
           <Bonfire.UI.Common.HeaderMobileGuestLive :if={!current_user(@__context__)} />
