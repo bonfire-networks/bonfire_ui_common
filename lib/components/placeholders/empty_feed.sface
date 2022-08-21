@@ -1,4 +1,4 @@
-<div class="p-5 pb-8 bg-base-200/30 w-[60%] mx-auto">
+<div class="py-10 bg-base-100 w-full shadow rounded-md mx-auto">
     <div class="mo-fire">
       <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
       width="125px" height="189.864px" viewBox="0 0 125 189.864" enable-background="new 0 0 125 189.864" xml:space="preserve">

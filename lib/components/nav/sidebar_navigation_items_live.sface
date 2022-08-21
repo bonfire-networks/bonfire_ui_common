@@ -2,7 +2,7 @@
 <li>
   <LiveRedirect 
     to={path(Config.get(:user_home_page, Bonfire.UI.Social.HomeLive))} 
-    class={"rounded relative",  "font-bold bg-base-content/10": @page == "feed"}
+    class={"text-sm rounded relative",  "font-bold bg-base-content/10": @page == "feed"}
   >
     <Icon solid="Newspaper" class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "feed"} />
     <span :if={@page == "feed"} class="sr-only">{l "Current Page:"} </span>
@@ -13,7 +13,7 @@
 <!-- <li class="tablet-lg:hidden">
   <LiveRedirect 
     to={"/search"}
-    class={"rounded relative",  "font-bold bg-base-content/10": @page == "search"}
+    class={"text-sm rounded relative",  "font-bold bg-base-content/10": @page == "search"}
   >
     <Icon solid="Search" class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "search"} />
     <span :if={@page == "search"} class="sr-only">{l "Current Page:"} </span>
@@ -24,7 +24,7 @@
 <li>
   <LiveRedirect 
     class={
-    "rounded relative",  "font-bold bg-base-content/10": @page == "local"} 
+    "text-sm rounded relative",  "font-bold bg-base-content/10": @page == "local"} 
     to={"/feed/local"}>
     <Icon solid="LocationMarker" class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "local"} />
     <span :if={@page == "local"} class="sr-only">{l "Current Page:"} </span>
@@ -35,7 +35,7 @@
 <li>
   <LiveRedirect 
     class={
-      "rounded relative",  "font-bold bg-base-content/10": @page == "federation"} 
+      "text-sm rounded relative",  "font-bold bg-base-content/10": @page == "federation"} 
     to={"/feed/federation"}>
     <Icon solid="Globe" class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "federation"} />
     <span :if={@page == "federation"} class="sr-only">{l "Current Page:"} </span>
@@ -46,7 +46,7 @@
 <li>
   <LiveRedirect 
     to={path(:notifications)}
-    class={"rounded relative",  "font-bold bg-base-content/10": @page == "notifications"}
+    class={"text-sm rounded relative",  "font-bold bg-base-content/10": @page == "notifications"}
   >
     <Icon solid="Bell" class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "notifications"} />
     <span :if={@page == "notifications"} class="sr-only">{l "Current Page:"} </span>
@@ -59,7 +59,7 @@
   <LiveRedirect 
     to={path(Bonfire.Data.Social.Message)} 
     class={
-      "rounded relative",  "font-bold bg-base-content/10": @page == "messages"}>
+      "text-sm rounded relative",  "font-bold bg-base-content/10": @page == "messages"}>
       <Icon solid="Mail" class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "messages"}/>
       <span :if={@page == "messages"} class="sr-only">{l "Current Page:"} </span>
       {l "Messages"}
@@ -71,7 +71,7 @@
   <LiveRedirect 
     to={"/my/likes"} 
     class={
-      "rounded relative",  "font-bold bg-base-content/10": @page == "likes"}>
+      "text-sm rounded relative",  "font-bold bg-base-content/10": @page == "likes"}>
       <Icon solid="Star"  class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "likes"}/>
       <span :if={@page == "likes"} class="sr-only">{l "Current Page:"} </span>
       {l "Favourites"}
@@ -82,7 +82,7 @@
   <LiveRedirect 
     to={"/topics/followed"} 
     class={
-      "rounded relative",  "font-bold bg-base-content/10": @page == "topics" || @page == "topics_followed"}>
+      "text-sm rounded relative",  "font-bold bg-base-content/10": @page == "topics" || @page == "topics_followed"}>
       <Icon solid="Collection"  class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "topics" || @page == "topics_followed"}/>
       <span :if={@page == "topics" || @page == "topics_followed"} class="sr-only">{l "Current Page:"} </span>
       {l "Topics"}
@@ -93,7 +93,7 @@
   <LiveRedirect 
     to={"/settings"} 
     class={
-      "rounded relative",  "font-bold bg-base-content/10": @page == "settings"}>
+      "text-sm rounded relative",  "font-bold bg-base-content/10": @page == "settings"}>
       <Icon solid="Adjustments"  class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "settings"}/>
       <span :if={@page == "settings"} class="sr-only">{l "Current Page:"} </span>
       {l "Settings"}

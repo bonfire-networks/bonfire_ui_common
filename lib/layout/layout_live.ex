@@ -57,7 +57,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           width: window.innerWidth,
         }"
         @resize.window.debounce.100="width = window.innerWidth"
-        class={"bonfire_layout justify-center tablet-lg:justify-between w-full wide:max-w-screen-xl mx-auto md:p-3 wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)]  tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid md:gap-8 "}>
+        class={"bonfire_layout justify-center w-full wide:max-w-screen-xl mx-auto wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)]  tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid md:gap-8 "}>
         <Bonfire.UI.Common.SidebarLive
           page={@page}
           reply_to_id={@reply_to_id}
@@ -96,7 +96,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               </:right_action>
             </Bonfire.UI.Common.PageHeaderLive>
 
-            <div data-id="inner_content" class="px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height ">
+            <div data-id="inner_content" class="mt-3 px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height ">
               {#if @preview_module !=nil and is_atom(@preview_module)}
                 <Surface.Components.Dynamic.Component
                   module={@preview_module}
