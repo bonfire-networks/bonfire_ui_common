@@ -44,7 +44,7 @@
                 {l "Sidebar (on large screens)"}
             </span>
             <span class="block text-sm text-base-content/80">
-                {l "Good for micro-blogging. Includes a button to switch to full-screen when you want to write longer posts."}
+                {l "Good for micro-blogging. On mobile the modal will be used instead."}
             </span>
             </div>
         </label>
