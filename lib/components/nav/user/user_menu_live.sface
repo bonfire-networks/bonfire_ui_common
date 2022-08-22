@@ -14,13 +14,13 @@
         <span class="hover:no-underline -mt-0.5 text-sm font-light text-base-content text-opacity-80">@{e(current_user(@__context__), :character, :username, "Unknown")}</span>
       </div>
     </LivePatch>
-    <!-- <LiveRedirect to="/switch-user" class="btn btn-square btn-ghost">
+    <!-- LiveRedirect to="/switch-user" class="btn btn-square btn-ghost">
       <Icon outline="FingerPrint" class="w-5 h-5 text-base-content/70" />
-    </LiveRedirect> -->
+    </LiveRedirect -->
     <div class="dropdown dropdown-end">
       <label
         tabindex="0"
-        class="flex btn btn-sm btn-square btn-ghost"
+        class="flex btn btn-square btn-ghost"
         id="user-profile-menu"
         aria-haspopup="true"
         aria-expanded="true"

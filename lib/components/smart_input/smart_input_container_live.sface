@@ -5,7 +5,6 @@
     <div x-data={"{
         smart_input_as: '#{smart_input_as}'
       }"}>
-
       <Bonfire.UI.Common.SmartInputButtonLive
         smart_input_as={smart_input_as}
         smart_input_prompt={@smart_input_prompt}

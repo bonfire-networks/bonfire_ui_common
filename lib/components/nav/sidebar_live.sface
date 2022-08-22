@@ -12,26 +12,37 @@
     <div class="pl-3">
       <Bonfire.UI.Common.LogoLive />
     </div>
-    <div class="pl-3">
-      <Bonfire.UI.Common.UserMenuLive />
+    <div class="p-3 shadow-xl bg-base-100 rounded-md border-base-content/10">
+      <Bonfire.UI.Common.UserMenuLive />   
+      <div 
+        class={
+          "p-3 pb-0 border-t border-base-content/10 mt-3 -mx-3",
+          "!p-0 -mb-3": Settings.get([:ui, :smart_input_as], nil, @__context__) == :sidebar
+        }>
+        <Bonfire.UI.Common.SmartInputContainerLive
+          hide_smart_input={@hide_smart_input}
+          showing_within={@showing_within}
+          reply_to_id={e(@reply_to_id, "")}
+          thread_id={@thread_id}
+          create_activity_type={@create_activity_type}
+          thread_mode={@thread_mode}
+          to_boundaries={@to_boundaries}
+          to_circles={e(@to_circles, [])}
+          smart_input_prompt={@smart_input_prompt}
+          smart_input_text={@smart_input_text}
+        />
+        <div class={
+          "m-3": Settings.get([:ui, :smart_input_as], nil, @__context__) == :sidebar
+        }>
+          <Bonfire.UI.Common.SidebarNavigationDropdownLive
+            :if={@show_less_menu_items}
+            page={@page}
+          />
+        </div>
+      </div>
     </div>
-    <Bonfire.UI.Common.SmartInputContainerLive
-      hide_smart_input={@hide_smart_input}
-      showing_within={@showing_within}
-      reply_to_id={e(@reply_to_id, "")}
-      thread_id={@thread_id}
-      create_activity_type={@create_activity_type}
-      thread_mode={@thread_mode}
-      to_boundaries={@to_boundaries}
-      to_circles={e(@to_circles, [])}
-      smart_input_prompt={@smart_input_prompt}
-      smart_input_text={@smart_input_text}
-    />
 
-    <Bonfire.UI.Common.SidebarNavigationDropdownLive
-      :if={@show_less_menu_items}
-      page={@page}
-    />
+
     
     <Bonfire.UI.Common.SidebarNavigationLive
       :if={!@show_less_menu_items}
