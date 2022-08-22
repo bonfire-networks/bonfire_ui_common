@@ -37,16 +37,18 @@ defmodule Bonfire.UI.Common.LayoutLive do
     ~F"""
     <div
       id="layout-live"
-      x-data="{
+      x-data={"{
         smart_input_title_text: null,
         smart_input_open: false,
         smart_input_fullscreen: false,
         smart_input_minimized: false,
         show_smart_input() {
-          this.smart_input_open = true
-          this.smart_input_minimized = false
+          if (#{Settings.get([:ui, :smart_input_as], nil, @__context__) !=:sidebar} || ((window.innerWidth > 0) ? window.innerWidth : screen.width) <= 768) {
+            this.smart_input_open = true
+            this.smart_input_minimized = false
+          }
         }
-      }"
+      }"}
       >
 
       <div
@@ -73,7 +75,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           hide_smart_input={e(@hide_smart_input, false)}
           show_less_menu_items={@show_less_menu_items}
         />
-        
+
 
         <div
           class="gap-2 md:gap-0 relative  w-full col-span-1 grid grid-rows-[1fr_48px] md:grid-rows-1">

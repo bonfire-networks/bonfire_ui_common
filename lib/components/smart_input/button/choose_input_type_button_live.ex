@@ -1,5 +1,7 @@
-defmodule Bonfire.UI.Common.ActivitySwitcherButtonLive do
+defmodule Bonfire.UI.Common.ChooseInputTypeButtonLive do
   use Bonfire.UI.Common.Web, :stateless_component
+
+  prop class, :css_class, default: "btn btn-square btn-outline rounded border-base-content/30"
 
   def all_smart_input_components do
     Bonfire.Common.Config.get([:ui, :smart_input_components], [post: Bonfire.UI.Social.WritePostContentLive])

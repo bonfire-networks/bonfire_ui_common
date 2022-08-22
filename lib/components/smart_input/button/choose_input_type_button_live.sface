@@ -6,7 +6,9 @@
     <button 
       @click="smart_input_activity_types_expanded = ! smart_input_activity_types_expanded"
       type="button" 
-      class="btn btn-square btn-outline rounded border-base-content/30" id="option-menu-button" aria-expanded="true" aria-haspopup="true">
+      class={@class} 
+      id="option-menu-button" 
+      aria-expanded="true" aria-haspopup="true">
       <span class="sr-only">{l "Open options"}</span>
       <Icon outline="ViewGridAdd" class="w-5 h-5" />
     </button>
@@ -23,11 +25,11 @@
       <div class="p-1" role="none">
         <div class="p-2 text-base font-bold tracking-wider">{l "Create"}</div>
         <div
+          :for={{name, label} <- Config.get([:ui, :smart_input_activities], [])} 
           phx-click="select_smart_input" 
           phx-target={"#smart_input"} 
           phx-value-component={all_smart_input_components()[name] || Bonfire.UI.Social.WritePostContentLive}
-          @click="show_smart_input(); smart_input_activity_types_expanded = false"
-          :for={{name, label} <- Config.get([:ui, :smart_input_activities], [])} 
+          @click={"show_smart_input(); smart_input_activity_types_expanded = false; smart_input_title_text = '#{label}'"}
           class="flex items-center p-2 space-x-2 text-sm rounded-md cursor-pointer hover:bg-base-content/10 text-neutral-content" 
           role="menuitem" 
           tabindex="-1" 

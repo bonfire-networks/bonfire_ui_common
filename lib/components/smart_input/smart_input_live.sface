@@ -113,7 +113,7 @@
             "min-h-[calc(50vh-50px)]": Settings.get([:ui, :smart_input_as], nil, @__context__) !=:sidebar and @thread_mode != :flat
           }
           textarea_container_class_alpine="{
-            '!min-h-[calc(100vh-50px)]': smart_input_fullscreen
+            '!min-h-[calc(var(--vh)-150px)]': smart_input_fullscreen
           }"
           textarea_class={"editor_area h-full",
             "min-h-[50px] rounded-lg border border-base-content/30": @thread_mode == :flat,
