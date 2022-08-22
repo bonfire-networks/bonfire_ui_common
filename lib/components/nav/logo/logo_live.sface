@@ -11,4 +11,7 @@
       search_limit={5}
     />
   </div>
+  <div :if={Settings.get([:ui, :smart_input_as], nil, @__context__) == :sidebar}>
+    <Bonfire.UI.Common.ActivitySwitcherButtonLive />
+  </div>
 </div>
