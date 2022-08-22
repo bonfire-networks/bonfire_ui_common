@@ -7,7 +7,7 @@
     phx-value-component={Bonfire.UI.Social.WritePostContentLive}
     @click={if @smart_input_as == :modal, do: "smart_input_fullscreen = true; show_smart_input()", else: "show_smart_input()"}
     type="button" 
-    class="normal-case flex-1 btn-wide rounded btn btn-primary">
+    class="normal-case flex-1 rounded btn btn-primary">
     <Icon solid="PencilAlt" class="inline-block w-5 h-5 mr-2" />
     {@smart_input_prompt || l "Compose a post"}
   </button>
