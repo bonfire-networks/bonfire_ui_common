@@ -1,4 +1,4 @@
-defmodule Bonfire.UI.Common.FormsLiveHandlerFallbackController do
+defmodule Bonfire.UI.Common.LiveHandlers.GracefulDegradation.Controller do
   use Bonfire.UI.Common.Web, :controller
   alias Bonfire.UI.Common.LiveHandlers
 

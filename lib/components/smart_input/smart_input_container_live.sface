@@ -16,7 +16,7 @@
         x-show="smart_input_open || smart_input_as == 'sidebar'"
         class="smart_input_container"
         :class="{
-          'visible fixed bottom-0 z-[110] transition-all shadow-xl right-4 max-w-[calc(100vw-2rem)] max-h-[var(--vh)] overflow-x-auto': smart_input_as != 'sidebar' || smart_input_open,
+          'visible fixed bottom-0 z-[110] transition-all shadow-xl right-4 max-w-[calc(100vw-2rem)] max-h-[var(--inner-window-height)] overflow-x-auto': smart_input_as != 'sidebar' || smart_input_open,
           'w-[24rem]': smart_input_minimized,
           'w-[40rem]': smart_input_open,
           '!w-auto !h-auto left-4 top-2': smart_input_fullscreen 

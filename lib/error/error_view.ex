@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common.ErrorView do
 
   def render("404.html", %{conn: %{assigns: %{reason: %{conn: %{params: %{"LiveHandler" => live_handler} = params} = conn}}}}) do
     debug(params, "404 params")
-    with %{title: title, body: body} <- Bonfire.UI.Common.FormsLiveHandlerFallbackController.handle_fallback(live_handler, params, conn) do
+    with %{title: title, body: body} <- Bonfire.UI.Common.LiveHandlers.GracefulDegradation.Controller.handle_fallback(live_handler, params, conn) do
       show_html(title, body)
     end
   end
