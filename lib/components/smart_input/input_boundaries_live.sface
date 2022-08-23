@@ -1,4 +1,4 @@
-<div>
+<div class="input_boundaries">
   <Surface.Components.Dynamic.Component
     :if={!is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}) and module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
     module={Bonfire.Boundaries.Web.SetBoundariesLive}

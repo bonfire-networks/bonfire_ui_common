@@ -68,14 +68,14 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   def set_smart_input_text(socket, text \\ "\n") do
     socket
-    |> push_event("smart_input:set_body", %{text: text})
+    |> maybe_push_event("smart_input:set_body", %{text: text})
   end
 
   def reset_input(%{assigns: %{showing_within: :thread}} = socket) do
     # debug("THREad")
     socket
     |> set_smart_input_text()
-    |> assign(
+    |> assign_generic(
       activity: nil,
       to_circles: nil,
       reply_to_id: e(socket.assigns, :thread_id, nil),
@@ -89,7 +89,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
     socket
     |> set_smart_input_text()
-    |> assign(
+    |> assign_generic(
       activity: nil,
       smart_input_text: nil
     )
@@ -100,7 +100,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
     socket
     |> set_smart_input_text()
-    |> assign(
+    |> assign_generic(
       reply_to_id: nil,
       thread_id: nil,
       to_circles: nil,

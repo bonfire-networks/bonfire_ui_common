@@ -441,6 +441,7 @@ defmodule Bonfire.UI.Common do
       {:noreply, %Phoenix.LiveView.Socket{} = socket} -> {:noreply, socket}
       {:noreply, %Plug.Conn{} = conn} -> {:noreply, conn}
       {:reply, data, %Phoenix.LiveView.Socket{} = socket} -> {:reply, data, socket}
+      %Phoenix.LiveView.Socket{} = socket -> {return_key, socket}
       {:error, reason} -> undead_error(reason, socket, return_key)
       {:error, reason, extra} -> live_exception(socket, return_key, "There was an error: #{inspect reason}", extra)
       :ok -> {return_key, socket} # shortcut to return nothing
@@ -531,6 +532,17 @@ defmodule Bonfire.UI.Common do
 
   def path_fallback(opts \\ []) do
     opts[:fallback] || path(:error) || "/error"
+  end
+
+  def maybe_push_event(%Phoenix.LiveView.Socket{} = socket, name, data) do
+    debug(data, name)
+    socket
+    |> Phoenix.LiveView.push_event(name, data)
+  end
+
+  def maybe_push_event(conn, name, _data) do
+    debug(name, "No socket, so could not push_event")
+    conn
   end
 
   def assign_flash(socket_or_conn, type, message, assigns \\ %{})

@@ -114,7 +114,7 @@
           textarea_container_class_alpine="{
             '!min-h-[calc(var(--inner-window-height)-150px)]': smart_input_fullscreen
           }"
-          textarea_class={"editor_area h-full",
+          textarea_class={"editor_area textarea p-0 h-full w-full",
             "min-h-[50px] rounded-lg border border-base-content/30": @thread_mode == :flat,
             "!min-h-[120px]": Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and @thread_mode != :flat,
             "!min-h-[calc(50vh-50px)]": Settings.get([:ui, :smart_input_as], nil, @__context__) !=:sidebar and @thread_mode != :flat,
@@ -126,4 +126,12 @@
     </div>
 
   </div>
+  <noscript>
+  <!-- make sure the smart input is displayed and usable with JS disabled -->
+    <style type="text/css">
+        #smart_input {display: block !important;}
+        .smart_input_container header {display: none;}
+        .input_boundaries button {display: none;} /* FIXME: make boundary selection work without JS */
+    </style>
+  </noscript>
 </div>

@@ -2,7 +2,9 @@
     x-data="{smart_input_activity_types_expanded: false}"
     @keydown.escape.stop="smart_input_activity_types_expanded = false;"
     @click.outside="smart_input_activity_types_expanded = false"
-    class="block">
+    class="block"
+    x-cloak
+    >
     <button 
       @click="smart_input_activity_types_expanded = ! smart_input_activity_types_expanded"
       type="button" 

@@ -41,7 +41,7 @@ defmodule Bonfire.UI.Common.Notifications do
     {:noreply,
       socket
       |> assign(notification: attrs)
-      |> push_event("notify", attrs)
+      |> maybe_push_event("notify", attrs)
     }
   end
 

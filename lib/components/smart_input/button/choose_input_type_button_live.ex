@@ -26,7 +26,7 @@ defmodule Bonfire.UI.Common.ChooseInputTypeButtonLive do
 
   def set_smart_input_text(socket, text \\ "\n") do
     socket
-    |> push_event("smart_input:set_body", %{text: text})
+    |> maybe_push_event("smart_input:set_body", %{text: text})
   end
 
 end
