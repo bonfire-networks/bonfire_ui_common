@@ -1,12 +1,15 @@
 
-<button 
+<a 
   :on-click={"open"}
   type="button"
   class=""
+  phx-hook={@open_btn_hook}
+  href={@href}
+  :attrs={@open_btn_opts}
   >
   <#slot name="open_btn">
-    <button class={@open_btn_class} type="button">
+    <span class={@open_btn_class}>
       {@open_btn_text || "Open modal"}
-    </button>
+    </span>
   </#slot>
-</button>
+</a>

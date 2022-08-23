@@ -32,6 +32,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:thread_mode,  fn -> nil end)
     |> assign_new(:show_less_menu_items, fn -> false end)
     |> assign_new(:preview_module, fn -> nil end)
+    |> assign_new(:preview_assigns, fn -> nil end)
     # |> debug()
 
     ~F"""
@@ -100,14 +101,21 @@ defmodule Bonfire.UI.Common.LayoutLive do
               </:right_action>
             </Bonfire.UI.Common.PageHeaderLive>
 
-            <div data-id="inner_content" class="mt-3 px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height ">
+            <Bonfire.UI.Common.PreviewContentLive
+              id="preview_content"
+              modal_class="mt-3 px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height absolute w-[680px] min-h-[var(--innner-window-height)] "
+            />
+            <div class="mt-3 px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height ">
               {#if @preview_module !=nil and is_atom(@preview_module)}
                 <Surface.Components.Dynamic.Component
                   module={@preview_module}
-                  {...assigns}
+                  {...(@preview_assigns || %{})}
                 />
+                <style>
+                #inner_content {visibility: hidden}
+                </style>
               {/if}
-              <div x-show={if @preview_module, do: "false", else: "true"}>
+              <div id="inner_content">
                 {@inner_content}
               </div>
             </div>
@@ -119,6 +127,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           />
         </div>
         <div
+          x-show={if @preview_module, do: "false", else: "true"}
           class={
             "items-start sticky z-[100] top-3  grid-flow-row gap-3 overflow-x-hidden overflow-y-auto auto-rows-min widget hidden tablet-lg:grid ",
             "!gap-5": !Settings.get([:ui, :compact], false, @__context__),

@@ -18,11 +18,18 @@ defmodule Bonfire.UI.Common do
   def assign_generic(%Plug.Conn{} = conn, assigns) do
     Plug.Conn.merge_assigns(conn, maybe_to_keyword_list(assigns, false))
   end
+  def assign_generic(%{} = map, assigns) do
+    Map.merge(map, Map.new(assigns))
+  end
+
   def assign_generic(%Phoenix.LiveView.Socket{} = socket, key, value) do
     Phoenix.LiveView.assign(socket, key, value)
   end
   def assign_generic(%Plug.Conn{} = conn, key, value) do
     Plug.Conn.assign(conn, key, value)
+  end
+  def assign_generic(%{} = map, key, value) do
+    Map.put(map, key, value)
   end
 
   def assign_global(socket, assigns) when is_map(assigns) do
