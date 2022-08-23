@@ -201,6 +201,14 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  def current_user_or_remote_interaction(socket, verb, object) do
+    case current_user(socket) do
+      current_user when is_binary(current_user) -> {:ok, current_user}
+      _ -> socket
+           |> redirect_to("/remote_interaction?type=#{verb}&name=#{e(object, :post_content, :name, nil) || e(object, :name, nil)}&url=#{canonical_url(object)}")
+    end
+  end
+
   # defdelegate content(conn, name, type, opts \\ [do: ""]), to: Bonfire.UI.Common.ContentAreas
 
   @doc """
