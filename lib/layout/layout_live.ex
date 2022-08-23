@@ -61,6 +61,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }"
         @resize.window.debounce.100="width = window.innerWidth"
         class={"bonfire_layout justify-center w-full wide:max-w-screen-xl mx-auto wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)]  tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid md:gap-8 "}>
+
         <Bonfire.UI.Common.SidebarLive
           page={@page}
           reply_to_id={@reply_to_id}
@@ -77,9 +78,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
           show_less_menu_items={@show_less_menu_items}
         />
 
-
         <div
-          class="gap-2 md:gap-0 relative  w-full col-span-1 grid grid-rows-[1fr_48px] md:grid-rows-1">
+          class="gap-2 md:gap-0 relative z-[105] w-full col-span-1 grid grid-rows-[1fr_48px] md:grid-rows-1">
           <Bonfire.UI.Common.HeaderMobileGuestLive :if={!current_user(@__context__)} />
           <div
             class={"grid relative invisible_frame",
@@ -101,12 +101,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
               </:right_action>
             </Bonfire.UI.Common.PageHeaderLive>
 
-            <Bonfire.UI.Common.PreviewContentLive
-              id="preview_content"
-              modal_class="mt-3 px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height absolute w-[680px] min-h-[var(--innner-window-height)] "
-            />
             <div class="mt-3 px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height ">
-              {#if @preview_module !=nil and is_atom(@preview_module)}
+              <!-- {#if @preview_module !=nil and is_atom(@preview_module)}
                 <Surface.Components.Dynamic.Component
                   module={@preview_module}
                   {...(@preview_assigns || %{})}
@@ -114,7 +110,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 <style>
                 #inner_content {visibility: hidden}
                 </style>
-              {/if}
+              {/if} -->
               <div id="inner_content">
                 {@inner_content}
               </div>
@@ -129,7 +125,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <div
           x-show={if @preview_module, do: "false", else: "true"}
           class={
-            "items-start sticky z-[100] top-3  grid-flow-row gap-3 overflow-x-hidden overflow-y-auto auto-rows-min widget hidden tablet-lg:grid ",
+            "items-start sticky z-[97] top-3  grid-flow-row gap-3 overflow-x-hidden overflow-y-auto auto-rows-min widget hidden tablet-lg:grid ",
             "!gap-5": !Settings.get([:ui, :compact], false, @__context__),
           }>
           <!-- <div
