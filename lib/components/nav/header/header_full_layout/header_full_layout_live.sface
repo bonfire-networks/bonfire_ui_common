@@ -1,0 +1,9 @@
+<div class="flex items-center justify-between px-4 sticky z-[999] h-[60px] top-0 bg-base-100 shadow">
+    <div class="flex-1 flex items-center gap-3 w-full max-w-[360px]">
+        <Bonfire.UI.Common.LogoLive />
+        <Bonfire.UI.Common.ChooseInputTypeButtonLive />
+    </div>
+    <div class="flex items-center gap-3">
+    <Bonfire.UI.Common.UserMenuLive />   
+    </div>
+</div>

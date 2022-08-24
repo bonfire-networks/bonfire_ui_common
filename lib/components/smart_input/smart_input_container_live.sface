@@ -32,6 +32,7 @@
           class="">
           <Bonfire.UI.Common.SmartInputLive
             id={:smart_input} 
+            layout_mode={e(@layout_mode, nil)}
             boundaries_modal_id={:modal_composer}
             hide_smart_input={@hide_smart_input}
             current_user={current_user(@__context__)}

@@ -26,9 +26,10 @@
       'smart-input-open-boundaries': open_boundaries,
     }"}
     class={
-      "flex bg-transparent shadow-xl",
-      "bottom-0 !max-w-full !shadow-none": e(@thread_mode, nil) == :flat or is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}),
-      "h-full": e(@showing_within, nil) == :page
+      "flex bg-transparent border border-base-content/10 rounded",
+      "bottom-0 !max-w-full !border-none !rounded-none": e(@thread_mode, nil) == :flat or is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}),
+      "h-full": e(@showing_within, nil) == :page,
+      "!shadow-none border border-base-content/10": e(@layout_mode, nil) == "full"
     }
     >
     <!-- <div 

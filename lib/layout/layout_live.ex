@@ -64,13 +64,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
         class={
           "bonfire_layout justify-center w-full wide:max-w-screen-xl mx-auto wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)]  tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid md:gap-8 ",
-          "!grid-cols-1 !max-w-screen-xl": e(@layout_mode, nil) == "full"
+          "!grid-cols-[360px_1fr] !justify-between": e(@layout_mode, nil) == "full"
 
         }>
 
         <Bonfire.UI.Common.SidebarLive
-          :if={e(@layout_mode, nil) != "full"}
           page={@page}
+          layout_mode={e(@layout_mode, nil)}
           reply_to_id={@reply_to_id}
           thread_id={@thread_id}
           showing_within={@showing_within}
@@ -85,8 +85,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
           show_less_menu_items={@show_less_menu_items}
         />
 
-        <div
-          class="gap-2 md:gap-0 relative z-[105] w-full col-span-1 grid grid-rows-[1fr_48px] md:grid-rows-1">
+        <div class={
+          "gap-2 md:gap-0 relative z-[105] w-full col-span-1 grid grid-rows-[1fr_48px] md:grid-rows-1",
+          "max-w-screen-lg mx-auto": e(@layout_mode, nil) == "full"
+          }>
           <Bonfire.UI.Common.HeaderMobileGuestLive :if={!current_user(@__context__)} />
           <div
             class={"grid relative invisible_frame",
@@ -108,7 +110,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
               </:right_action>
             </Bonfire.UI.Common.PageHeaderLive>
 
-            <div class="mt-3 px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height ">
+            <div class={
+              "mt-6 px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height"
+            }
+            >
               <!-- {#if @preview_module !=nil and is_atom(@preview_module)}
                 <Surface.Components.Dynamic.Component
                   module={@preview_module}

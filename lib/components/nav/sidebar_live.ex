@@ -5,6 +5,7 @@ defmodule Bonfire.UI.Common.SidebarLive do
   # prop user_image, :string, required: true
   # prop username, :string, required: true
   prop page, :string, required: true
+  prop layout_mode, :string, required: false, default: nil
   # need to pass down props for SmartInput:
   prop reply_to_id, :string, default: ""
   prop thread_id, :string, default: "", required: false

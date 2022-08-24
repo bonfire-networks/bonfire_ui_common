@@ -8,7 +8,7 @@
       id="notification" 
       phx-hook="Notification" 
       role="alert"
-      class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash ring-1 ring-black ring-opacity-5">
+      class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash">
       <div 
         :if={@notification} 
         class="p-4">
@@ -52,7 +52,7 @@
     <div 
       data-id="info"
       role="alert"
-      class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash ring-1 ring-black ring-opacity-5">
+      class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash">
       <div class="p-4">
         <div class="flex items-center">
           <div class="flex-shrink-0 p-2 rounded">
@@ -91,7 +91,7 @@
     <div 
       data-id="error"
       role="alert"
-      class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash ring-1 ring-black ring-opacity-5">
+      class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash">
       <div class="p-4">
         <div class="flex items-top">
           <div class="flex-shrink-0">
