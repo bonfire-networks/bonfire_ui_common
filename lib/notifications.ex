@@ -11,8 +11,8 @@ defmodule Bonfire.UI.Common.Notifications do
     receive_notification(attrs, socket)
   end
 
-  def notify_feeds(feed_ids, title, message, icon \\ nil) do
-    %{title: title, message: Text.text_only(message), icon: icon || Config.get([:ui, :theme, :instance_icon], nil)}
+  def notify_feeds(feed_ids, title, message, url \\ nil, icon \\ nil) do
+    %{title: title, message: Text.text_only(message), url: url, icon: icon || Config.get([:ui, :theme, :instance_icon], nil)}
     |> debug("to: #{inspect feed_ids}")
     |> pubsub_broadcast(feed_ids, {Bonfire.UI.Common.Notifications, ...}) # send to feed users' handle_info in this same module
   end
@@ -26,7 +26,7 @@ defmodule Bonfire.UI.Common.Notifications do
 
   def receive_flash(attrs) do
     Map.merge(%{id: "notification"}, attrs)
-    |> debug()
+    # |> debug()
     |> send_update(Bonfire.UI.Common.NotificationLive, ...)
   end
 

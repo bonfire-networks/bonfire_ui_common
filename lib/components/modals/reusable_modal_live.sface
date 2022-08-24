@@ -1,6 +1,6 @@
 <div
   id={@id}
-  class={"modal max-h-[100%] ",
+  class={(@modal_class || "modal max-h-[100%] "),
   "modal-closed": !@show,
   "modal-open": @show}
   :attrs={@opts}>

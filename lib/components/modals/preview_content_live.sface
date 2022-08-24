@@ -1,0 +1,42 @@
+<div
+  id={@id}
+  class={"#{@modal_class} px-3 overflow-y-auto rounded-b-none absolute w-[1072px] h-[calc(var(--innner-window-height)-72px)] bg-base-300 bg-opacity-100",
+  "invisible": !@show,
+  "visible z-[998]": @show}
+  :attrs={@opts}>
+  <div 
+    :if={@show}
+    class="">
+
+    <div class="flex space-x-3"> 
+      <button 
+        id={"close-#{@id}"}
+        phx-click="close"
+        phx-hook="ClosePreview"
+        phx-target={"##{@id}"}
+        type="button" 
+        class="flex btn btn-circle btn-ghost btn-sm">
+        <span class="sr-only">{l "Close preview"}</span>
+        <Icon outline="ChevronLeft" class="w-4 h-4" />
+      </button>
+      <h3 
+        :if={e(!@no_header, false)}
+        class={@title_class || "font-bold text-base"}>
+        <#slot name="title">{@title_text}</#slot>
+      </h3>
+    </div>
+
+    <div class="mt-2" data-id="modal-contents">
+      <#slot>
+        <Surface.Components.Dynamic.LiveComponent
+          :if={e(@modal_assigns, :preview_component, nil)}
+          id={"preview_component"}
+          module={e(@modal_assigns, :preview_component, nil)}
+          {...(@modal_assigns || %{}) |> debug("modal_assigns")}
+        />
+      </#slot>
+    </div>
+
+  </div>  
+</div>
+

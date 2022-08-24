@@ -33,6 +33,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:thread_mode,  fn -> nil end)
     |> assign_new(:show_less_menu_items, fn -> false end)
     |> assign_new(:preview_module, fn -> nil end)
+    |> assign_new(:preview_assigns, fn -> nil end)
     # |> debug()
 
     ~F"""
@@ -60,11 +61,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
           width: window.innerWidth,
         }"
         @resize.window.debounce.100="width = window.innerWidth"
+
         class={
           "bonfire_layout justify-center w-full wide:max-w-screen-xl mx-auto wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)]  tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid md:gap-8 ",
           "!grid-cols-1 !max-w-screen-xl": e(@layout_mode, nil) == "full"
 
         }>
+
         <Bonfire.UI.Common.SidebarLive
           :if={e(@layout_mode, nil) != "full"}
           page={@page}
@@ -82,9 +85,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
           show_less_menu_items={@show_less_menu_items}
         />
 
-
         <div
-          class="gap-2 md:gap-0 relative  w-full col-span-1 grid grid-rows-[1fr_48px] md:grid-rows-1">
+          class="gap-2 md:gap-0 relative z-[105] w-full col-span-1 grid grid-rows-[1fr_48px] md:grid-rows-1">
           <Bonfire.UI.Common.HeaderMobileGuestLive :if={!current_user(@__context__)} />
           <div
             class={"grid relative invisible_frame",
@@ -106,14 +108,17 @@ defmodule Bonfire.UI.Common.LayoutLive do
               </:right_action>
             </Bonfire.UI.Common.PageHeaderLive>
 
-            <div data-id="inner_content" class="mt-3 px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height ">
-              {#if @preview_module !=nil and is_atom(@preview_module)}
+            <div class="mt-3 px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height ">
+              <!-- {#if @preview_module !=nil and is_atom(@preview_module)}
                 <Surface.Components.Dynamic.Component
                   module={@preview_module}
-                  {...assigns}
+                  {...(@preview_assigns || %{})}
                 />
-              {/if}
-              <div x-show={if @preview_module, do: "false", else: "true"}>
+                <style>
+                #inner_content {visibility: hidden}
+                </style>
+              {/if} -->
+              <div id="inner_content">
                 {@inner_content}
               </div>
             </div>
@@ -127,8 +132,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
         <div
           :if={e(@layout_mode, nil) != "full"}
+          x-show={if @preview_module, do: "false", else: "true"}
           class={
-            "items-start sticky z-[100] top-3  grid-flow-row gap-3 overflow-x-hidden overflow-y-auto auto-rows-min widget hidden tablet-lg:grid ",
+            "items-start sticky z-[97] top-3  grid-flow-row gap-3 overflow-x-hidden overflow-y-auto auto-rows-min widget hidden tablet-lg:grid ",
             "!gap-5": !Settings.get([:ui, :compact], false, @__context__),
           }>
           <!-- <div

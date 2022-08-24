@@ -30,6 +30,7 @@
               href="javascript:window.history.back()"
               phx-click="assign"
               phx-value-preview_module=""
+              phx-value-preview_assigns=""
               class={
                 "flex btn btn-circle btn-ghost btn-sm",
                 "hidden tablet:flex": @page_header_drawer
@@ -43,11 +44,16 @@
             <#slot>
               <h1 :if={@page_title} class="font-bold text-base-content">{@page_title}</h1> 
             </#slot>
+
           </div>
           <#slot name="right_action">
           </#slot>
         </div>
       </div>
+
+      <Bonfire.UI.Common.PreviewContentLive
+        id="preview_content"
+      />
     </div>
   </div>
 <!-- </div> -->
