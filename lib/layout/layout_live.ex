@@ -15,6 +15,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:page_header_aside, fn -> nil end)
     |> assign_new(:page_header_drawer, fn -> false end)
     |> assign_new(:without_header, fn -> false end)
+    |> assign_new(:layout_mode, fn -> nil end)
     |> assign_new(:inner_content, fn -> nil end)
     |> assign_new(:object_id, fn -> nil end)
     |> assign_new(:post_id, fn -> nil end)
@@ -59,8 +60,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
           width: window.innerWidth,
         }"
         @resize.window.debounce.100="width = window.innerWidth"
-        class={"bonfire_layout justify-center w-full wide:max-w-screen-xl mx-auto wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)]  tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid md:gap-8 "}>
+        class={
+          "bonfire_layout justify-center w-full wide:max-w-screen-xl mx-auto wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)]  tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid md:gap-8 ",
+          "!grid-cols-1 !max-w-screen-xl": e(@layout_mode, nil) == "full"
+
+        }>
         <Bonfire.UI.Common.SidebarLive
+          :if={e(@layout_mode, nil) != "full"}
           page={@page}
           reply_to_id={@reply_to_id}
           thread_id={@thread_id}
@@ -118,7 +124,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
             page={@page}
           />
         </div>
+
         <div
+          :if={e(@layout_mode, nil) != "full"}
           class={
             "items-start sticky z-[100] top-3  grid-flow-row gap-3 overflow-x-hidden overflow-y-auto auto-rows-min widget hidden tablet-lg:grid ",
             "!gap-5": !Settings.get([:ui, :compact], false, @__context__),
