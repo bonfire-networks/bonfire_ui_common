@@ -1,6 +1,6 @@
 <div
   id={@id}
-  class={"#{@modal_class} px-3 overflow-y-auto rounded-b-none absolute w-[1072px] h-[calc(var(--innner-window-height)-72px)] bg-base-300 bg-opacity-100",
+  class={"#{@modal_class} absolute h-[var(--inner-window-height)] bg-base-300 inset-0",
   "invisible": !@show,
   "visible z-[998]": @show}
   :attrs={@opts}>
