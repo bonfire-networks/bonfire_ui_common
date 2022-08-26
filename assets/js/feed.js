@@ -6,7 +6,19 @@ FeedHooks.PreviewActivity = {
       e.preventDefault(); // TODO: find a better way to hook a simple event on an anchor without needing a hook
       uri = this.el.dataset.permalink
       // this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
-      history.pushState({ 'previous_url': document.location.href }, '', uri)
+      const layout = document.getElementById("bonfire_layout")
+      let previous_scroll = null
+      if (layout) {
+        previous_scroll = layout.scrollTop
+      }
+
+      history.pushState(
+        {
+          'previous_url': document.location.href,
+          'previous_scroll': previous_scroll
+        },
+        '',
+        uri)
     })
   }
 } 
@@ -15,8 +27,15 @@ FeedHooks.ClosePreview = {
   mounted() {
     this.el.addEventListener("click", e => {
       location_before_preview = history.state["previous_url"]
+      previous_scroll = history.state["previous_scroll"]
+      console.log(previous_scroll)
       if (location_before_preview) {
         history.pushState({}, '', location_before_preview)
+      }
+      if (previous_scroll) {
+        const layout = document.getElementById("bonfire_layout")
+        layout.scrollTo({top: previous_scroll, behavior: 'instant'})
+        // window.scrollTo(0, previous_scroll);
       }
     })
   }

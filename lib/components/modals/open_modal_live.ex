@@ -74,17 +74,29 @@ defmodule Bonfire.UI.Common.OpenModalLive do
     set(show: false)
   end
 
-  def set(assigns) when is_list(assigns) do
-    send_update(
+  def set(assigns) do
+    maybe_send_update(
       e(assigns, :reusable_modal_component, Bonfire.UI.Common.ReusableModalLive),
-      Keyword.put(assigns, :id, e(assigns, :reusable_modal_id, "modal"))
+      e(assigns, :reusable_modal_id, "modal"),
+      assigns
     )
   end
-  def set(assigns) when is_map(assigns) do
-    send_update(
-      e(assigns, :reusable_modal_component, Bonfire.UI.Common.ReusableModalLive),
-      Map.put(assigns, :id, e(assigns, :reusable_modal_id, "modal"))
+
+  def maybe_send_update(pid \\ self(), component, id, assigns) when is_atom(component) and not is_nil(id) do
+    # Phoenix.LiveView.Channel.ping(self())
+    # GenServer.call(Phoenix.LiveView.Channel, :ping)
+    # |> debug()
+    # :sys.get_state(pid)
+    Process.get()
+    |> debug()
+
+    Phoenix.LiveView.Channel.send_update(
+      pid,
+      component,
+      id,
+      Enum.into(assigns, %{})
     )
+    |> debug("send")
   end
 
   # Default event handlers

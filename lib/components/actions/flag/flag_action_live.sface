@@ -8,7 +8,7 @@
     </button>
   {#else}
     <Bonfire.UI.Common.OpenModalLive
-    id={ComponentID.new(Bonfire.UI.Common.OpenModalLive, @object)} 
+    id={Pointers.ULID.generate()} 
     title_text={e(@label, l "Flag this object")}
   >
     {l "The admins will review the content and might get in touch with you or the author for clarification. They may then delete it and/or block the person or originating instance if appropriate."}

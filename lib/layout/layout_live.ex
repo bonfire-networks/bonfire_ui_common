@@ -61,9 +61,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
           width: window.innerWidth,
         }"
         @resize.window.debounce.100="width = window.innerWidth"
-
+        id="bonfire_layout"
         class={
-          "bonfire_layout justify-center w-full wide:max-w-screen-xl mx-auto wide:justify-center grid-cols-1 md:grid-cols-[290px_minmax(auto,_580px)]  tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid md:gap-8 ",
+          " justify-center w-full wide:max-w-screen-xl mx-auto wide:justify-center grid-cols-1  grid-cols-[repeat(auto-fit, 280px)] md:grid-cols-[290px_minmax(auto,_580px)] tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid md:gap-8 ",
           "!grid-cols-[360px_1fr] !justify-between": e(@layout_mode, nil) == "full"
 
         }>
@@ -96,8 +96,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "grid-rows-[40px_1fr]": Settings.get([:ui, :compact], false, @__context__)
             }>
             <Bonfire.UI.Common.PageHeaderLive
+              :if={!@without_header}
               page_title={@page_title}
-              without_header={e(@without_header, false)}
               page_header_drawer={e(@page_header_drawer, false)}
               >
               <:right_action>

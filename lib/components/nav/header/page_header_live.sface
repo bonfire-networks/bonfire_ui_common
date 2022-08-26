@@ -1,14 +1,15 @@
 <!-- <div class="relative"> -->
   <div 
-    :if={e(@without_header, false) != true}
-    role="banner" class="sticky z-[100] place-content-center w-full md:top-3 bg-base-100 tablet:bg-opacity-100 shadow md:rounded-md">  
+    role="banner" 
+    class="sticky z-[100] place-content-center w-full md:top-3 bg-base-100 tablet:bg-opacity-100 shadow md:rounded-md">  
     <div class="relative">
-      <div class={"flex items-center ",
-      "p-3": !Settings.get([:ui, :compact], false, @__context__),
-      "px-2 py-1": Settings.get([:ui, :compact], false, @__context__)
-      }>
+      <div 
+        class={"flex items-center ",
+        "p-3": !Settings.get([:ui, :compact], false, @__context__),
+        "px-2 py-1": Settings.get([:ui, :compact], false, @__context__)
+        }>
         <div class="flex items-center flex-1 space-x-3 text-left">
-          <#slot name="left_action">
+
             {#if @page_header_drawer}
               <div 
                 class="flex md:hidden">
@@ -23,7 +24,8 @@
                 </div>
               </div>
             {/if}
-
+            
+          <#slot name="left_action">
             <a
               x-show="history.length > 1"
               aria-label="Navigate to the previous page"
@@ -44,8 +46,8 @@
             <#slot>
               <h1 :if={@page_title} class="font-bold text-base-content">{@page_title}</h1> 
             </#slot>
-
           </div>
+
           <#slot name="right_action">
           </#slot>
         </div>
