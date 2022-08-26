@@ -11,5 +11,5 @@
     <Icon solid="PencilAlt" class="inline-block w-5 h-5 mr-2" />
     {@smart_input_prompt || l "Compose a post"}
   </button>
-  <Bonfire.UI.Common.ChooseInputTypeButtonLive />
+  <!-- Bonfire.UI.Common.ChooseInputTypeButtonLive / -->
 </div>

@@ -1,4 +1,4 @@
 defmodule Bonfire.UI.Common.AppsLive do
-  use Bonfire.UI.Common.Web, :live_component
+  use Bonfire.UI.Common.Web, :stateless_component
 
 end

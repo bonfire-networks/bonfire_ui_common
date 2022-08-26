@@ -1,0 +1,84 @@
+<div x-data="{ open: false }">
+  <button 
+    @click="open = ! open"
+    type="button" 
+    class={"btn btn-square btn-outline rounded border-base-content/30"} 
+    id="option-menu-button" 
+    aria-expanded="true" 
+    aria-haspopup="true">
+    <span class="sr-only">{l "Open options"}</span>
+    <Icon outline="ViewGrid" class="w-5 h-5" />
+  </button>
+
+
+  <div 
+    x-cloak
+    x-show="open" 
+    @keydown.window.escape="open = false;" 
+    class="fixed inset-0 z-50 overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden">
+      <section @click.outside="open = false;" class="absolute inset-y-0 left-0 flex max-w-full pr-10" aria-labelledby="slide-over-heading">
+        <div class="w-screen max-w-sm" x-description="Slide-over panel, show/hide based on slide-over state."
+          x-show="open"
+          x-transition:enter="transform transition ease-in-out duration-300 sm:duration-500"
+          x-transition:enter-start="-translate-x-full"
+          x-transition:enter-end="-translate-x-0"
+          x-transition:leave="transform transition ease-in-out duration-300 sm:duration-500"
+          x-transition:leave-start="-translate-x-0"
+          x-transition:leave-end="-translate-x-full">
+          <div class="flex flex-col h-full py-6 overflow-hidden bg-base-100 shadow-xl">
+            <div class="px-4 sm:px-6">
+              <div class="flex items-start justify-between">
+                <h2 id="slide-over-heading" class="ml-1 text-xl font-bold text-primary-content-800">
+                  {l "Bonfire apps"}
+                </h2>
+                <div class="flex items-center ml-3 h-7">
+                  <button @click="open = false;" class="text-primary-content-400 bg-base-100 rounded-md hover:text-primary-content-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-500">
+                    <span class="sr-only">Close panel</span>
+                    <Icon outline="X" class="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
+            </div>
+              <ul class="menu bg-base-100 p-2 mt-6 mb-3">
+                <li class="menu-title text-xs font-medium tracking-wider text-primary-content-800 uppercase">
+                  <span>{"Enabled extensions"}</span>
+                </li>
+                <li>
+                <LiveRedirect to={path(:feed)}>
+                  <div class="flex items-center w-full">
+                    <Icon outline="Globe" class="w-5 h-5" />
+                    <h3 class="ml-2 text-base font-normal text-primary-content-800 flex-1">Bonfire social</h3>
+                    <Icon outline="ChevronRight" class="w-5 h-5" />
+                  </div>
+                </LiveRedirect>
+                </li>
+                <li>
+                  <LiveRedirect 
+                    :if={module_enabled?(Bonfire.Classify.Web.CategoriesLive)}
+                    to={path(Bonfire.Classify.Web.CategoriesLive)}>
+                      <div class="flex items-center w-full">
+                        <Icon outline="Collection" class="w-5 h-5" />
+                        <h3 class="ml-2 text-base font-normal text-primary-content-800 flex-1">{l "Topics"}</h3>
+                        <Icon outline="ChevronRight" class="w-5 h-5" />
+                      </div>
+                  </LiveRedirect>
+                </li>
+                <li>
+                  <LiveRedirect 
+                    :if={module_enabled?(Bonfire.Breadpub.BreadDashboardLive)}
+                    to={path(Bonfire.Breadpub.BreadDashboardLive)}>
+                      <div class="flex items-center w-full">
+                        <Icon outline="ChevronRight" class="w-5 h-5" />
+                        <h3 class="ml-2 text-base font-normal text-primary-content-800 flex-1">BreadPub</h3>
+                        <Icon outline="ChevronRight" class="w-5 h-5" />
+                      </div>
+                  </LiveRedirect>
+                </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
