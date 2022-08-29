@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.StaticFallbackController do
   use Bonfire.UI.Common.Web, :controller
 
   def fallback(conn, %{"path" => path} = _params) do
-    url = Path.join("/", path)
+    url = Path.join(["/"] ++ List.wrap(path))
     info(url, "static page does not yet exist")
 
     with :ok <- Bonfire.UI.Common.StaticGenerator.generate(url) do

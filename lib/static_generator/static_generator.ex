@@ -3,7 +3,8 @@ defmodule Bonfire.UI.Common.StaticGenerator do
   @moduledoc """
   Static-site generator which can take a list of URLs served by the current Phoenix server and output static HTML for them
   """
-  use Phoenix.ConnTest
+  import Plug.Conn
+  import Phoenix.ConnTest
   import Where
   alias Bonfire.Common.Config
 
@@ -11,9 +12,16 @@ defmodule Bonfire.UI.Common.StaticGenerator do
 
   def base_path, do: "public"
 
+  defp static_dir() do
+    src = ["priv","static", base_path()] |> Path.join()
+    src <> "/"
+  end
+
   def generate(urls, opts \\ []) when is_list(urls) do
     conn = Phoenix.ConnTest.build_conn()
-    dest = opts[:output_dir] || Config.get([__MODULE__, :output_dir]) || "#{static_dir()}#{base_path()}"
+
+    dest = ( opts[:output_dir] || Config.get([__MODULE__, :output_dir]) || static_dir() )
+    |> Path.expand(Bonfire.Common.Config.get(:root_path)) |> debug("output_dir")
 
     maybe_clean_and_copy_assets(dest, opts)
 
@@ -32,12 +40,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
     end
   end
 
-  def static_dir() do
-    src = ["priv","static"] |> Path.join() |> Path.relative_to_cwd()
-    src <> "/"
-  end
-
-  def generate_html(conn, url) do
+  defp generate_html(conn, url) do
     with html when is_binary(html) <- html_response(get(conn, url), 200) do
       {url, html}
     else e ->
@@ -45,7 +48,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
     end
   end
 
-  def write_file(path, content, dest) do
+  defp write_file(path, content, dest) do
     full_path = Path.join([dest, path, "index.html"])
     dirname   = Path.dirname(full_path)
     with :ok <- File.mkdir_p(dirname),
@@ -57,14 +60,8 @@ defmodule Bonfire.UI.Common.StaticGenerator do
   end
 
   defp maybe_clean_and_copy_assets(dest, opts) do
-    static_dir = static_dir()
-    if not String.starts_with?(dest, static_dir) do
-      debug("Copy all static assets as well")
-      if opts[:delete_dest_first], do: clean_files(dest)
-      copy_assets(static_dir, dest)
-    else
-      debug("Skip copying static assets")
-    end
+    if opts[:first_delete_output_dir], do: clean_files(dest)
+    if opts[:copy_static_assets], do: copy_assets(static_dir(), dest)
   end
 
   defp clean_files(dest) do
@@ -75,7 +72,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
     end
   end
 
-  def copy_assets(src, dest) do
+  defp copy_assets(src, dest) do
     pars = ["-r", src, dest]
     with {_out, 0} <- System.cmd("rsync", pars) do
       :ok
