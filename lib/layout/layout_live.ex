@@ -63,7 +63,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         @resize.window.debounce.100="width = window.innerWidth"
         id="bonfire_layout"
         class={
-          " justify-center w-full wide:max-w-screen-xl mx-auto wide:justify-center grid-cols-1  grid-cols-[repeat(auto-fit, 280px)] md:grid-cols-[290px_minmax(auto,_580px)] tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid md:gap-8 ",
+          " justify-center w-full mx-auto wide:justify-center grid-cols-1  grid-cols-[repeat(auto-fit, 280px)] md:grid-cols-[290px_minmax(auto,_580px)] tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid md:gap-8 ",
           "!grid-cols-[360px_1fr] !justify-between": e(@layout_mode, nil) == "full"
         }>
 

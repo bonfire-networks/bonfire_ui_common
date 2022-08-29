@@ -8,7 +8,7 @@
     :if={@show}
     class="relative">
 
-    <div class="flex sticky top-0 space-x-3 z-[995] bg-base-300"> 
+    <div class="flex sticky top-0 space-x-3 z-[995] flex sticky top-0 space-x-3 z-[995] items-center p-3 bg-base-100 rounded-md shadow"> 
       <button 
         id={"close-#{@id}"}
         phx-click="close"
@@ -26,7 +26,7 @@
       </h3>
     </div>
 
-    <div class="mt-2 z-[910]" data-id="modal-contents">
+    <div class="mt-2 z-[910] modal_invisible relative" data-id="modal-contents">
       <#slot>
         <Surface.Components.Dynamic.LiveComponent
           :if={e(@modal_assigns, :preview_component, nil)}
