@@ -131,7 +131,7 @@
   <!-- make sure the smart input is displayed and usable with JS disabled -->
     <style type="text/css">
         #smart_input {display: block !important;}
-        .smart_input_container header {display: none;}
+        /* .smart_input_container header {display: none;} */
         .input_boundaries button {display: none;} /* FIXME: make boundary selection work without JS */
     </style>
   </noscript>
