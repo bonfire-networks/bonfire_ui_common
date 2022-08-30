@@ -20,8 +20,8 @@ defmodule Bonfire.UI.Common.StaticGenerator do
   def generate(urls, opts \\ []) when is_list(urls) do
     conn = Phoenix.ConnTest.build_conn()
 
-    dest = ( opts[:output_dir] || Config.get([__MODULE__, :output_dir]) || static_dir() )
-    |> Path.expand(Bonfire.Common.Config.get(:root_path)) |> debug("output_dir")
+    dest = Application.app_dir(:bonfire, opts[:output_dir] || Config.get([__MODULE__, :output_dir]) || static_dir())
+    |> debug("output_dir")
 
     maybe_clean_and_copy_assets(dest, opts)
 
