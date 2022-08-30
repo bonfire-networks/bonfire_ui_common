@@ -412,11 +412,11 @@ defmodule Bonfire.UI.Common do
         live_exception(socket, return_key, "A function didn't receive data in a format it could recognise: ", error, __STACKTRACE__)
       end
     error in WithClauseError ->
-      live_exception(socket, return_key, "A `with` condition didn't receive data in a format it could recognise: ", term_error(error), __STACKTRACE__)
+      term_error("A `with` condition didn't receive data in a format it could recognise: ", socket, return_key, error, __STACKTRACE__)
     error in CaseClauseError ->
-      live_exception(socket, return_key, "A `case` condition didn't receive data in a format it could recognise: ", term_error(error), __STACKTRACE__)
+      term_error("A `case` condition didn't receive data in a format it could recognise: ", socket, return_key, error, __STACKTRACE__)
     error in MatchError ->
-      live_exception(socket, return_key, "A condition didn't receive data that matched a format it could recognise: ", term_error(error), __STACKTRACE__)
+      term_error("A condition didn't receive data that matched a format it could recognise: ", socket, return_key, error, __STACKTRACE__)
     cs in Ecto.Changeset ->
         live_exception(socket, return_key, "The data provided caused an exceptional error and could do not be inserted or updated: "<>error_msg(cs), cs, nil)
     error ->
@@ -431,6 +431,13 @@ defmodule Bonfire.UI.Common do
     error ->
       # error(error)
       live_exception(socket, return_key, "An exceptional error occured: ", error, __STACKTRACE__)
+  end
+
+  defp term_error(_msg, socket, return_key, %{term: {:error, :not_found}}, stacktrace) do
+    live_exception(socket, return_key, l("Not found"), nil, stacktrace)
+  end
+  defp term_error(msg, socket, return_key, error, stacktrace) do
+    live_exception(socket, return_key, msg, term_error(error), stacktrace)
   end
 
   defp term_error(error) do
