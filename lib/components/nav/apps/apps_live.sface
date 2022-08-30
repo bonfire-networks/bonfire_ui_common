@@ -66,6 +66,18 @@
                 </li>
                 <li>
                   <LiveRedirect 
+                    :if={module_enabled?(Bonfire.UI.Coordination.MyTasksLive)}
+                    to={path(Bonfire.UI.Coordination.MyTasksLive)}>
+                      <div class="flex items-center w-full">
+                        <Icon iconify="vscode-icons:file-type-todo" class="w-5 h-5" />
+                        <h3 class="ml-2 text-base font-normal text-primary-content-800 flex-1">{l "Coordination"}</h3>
+                        <Icon outline="ChevronRight" class="w-5 h-5" />
+                      </div>
+                  </LiveRedirect>
+                </li>
+                
+                <li>
+                  <LiveRedirect 
                     :if={module_enabled?(Bonfire.Breadpub.BreadDashboardLive)}
                     to={path(Bonfire.Breadpub.BreadDashboardLive)}>
                       <div class="flex items-center w-full">

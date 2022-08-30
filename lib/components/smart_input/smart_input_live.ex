@@ -67,6 +67,10 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     |> maybe_to_string()
   end
 
+  def set(assigns) do
+    maybe_send_update(Bonfire.UI.Common.SmartInputLive, :smart_input, assigns)
+  end
+
   def set_smart_input_text(socket, text \\ "\n") do
     socket
     |> maybe_push_event("smart_input:set_body", %{text: text})
@@ -197,6 +201,11 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   def handle_event("select_smart_input", %{"component" => component}, socket) do
     {:noreply, socket
       |> assign(smart_input_component: maybe_to_module(component))
+    }
+  end
+  def handle_event("select_smart_input", %{"create_activity_type" => type}, socket) do
+    {:noreply, socket
+      |> assign(create_activity_type: maybe_to_atom(type))
     }
   end
 

@@ -5,11 +5,11 @@
     <div class="w-8 h-10 bg-center bg-no-repeat bg-cover" style={"background-image: url(#{ Config.get([:ui, :theme, :instance_icon], nil)})"}></div>
     <!-- <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div> -->
   </LiveRedirect>
+  <Bonfire.UI.Common.AppsLive />
   <div class="flex-1">
     <Surface.Components.Dynamic.Component
       module={Bonfire.Search.Web.FormLive}
       search_limit={5}
     />
   </div>
-  <Bonfire.UI.Common.AppsLive />
 </div>

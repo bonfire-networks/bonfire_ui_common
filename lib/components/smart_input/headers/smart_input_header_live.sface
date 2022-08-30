@@ -25,7 +25,7 @@
     <ul tabindex="0" class="flex flex-col w-full space-y-2">
       <li 
         class="flex items-center p-2 space-x-2 text-xs cursor-pointer rounded-box hover:bg-base-content/10"
-        phx-click="select_smart_input" phx-target={"#smart_input"} phx-value-component={all_smart_input_components()[name] || Bonfire.UI.Social.WritePostContentLive}
+        phx-click="select_smart_input" phx-target={"#smart_input"} phx-value-component={Bonfire.UI.Common.SmartInputLive.all_smart_input_components()[name] || Bonfire.UI.Social.WritePostContentLive}
         @click="smart_input_activity_types_expanded = false"
         :for={{name, label} <- Config.get([:ui, :smart_input_activities], [])}>
          {#case name}

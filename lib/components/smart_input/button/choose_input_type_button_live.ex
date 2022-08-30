@@ -3,30 +3,5 @@ defmodule Bonfire.UI.Common.ChooseInputTypeButtonLive do
 
   prop class, :css_class, default: "btn btn-square btn-outline rounded border-base-content/30"
 
-  def all_smart_input_components do
-    Bonfire.Common.Config.get([:ui, :smart_input_components], [post: Bonfire.UI.Social.WritePostContentLive])
-  end
-
-  def active_smart_input_component(smart_input_component, create_activity_type) do
-    smart_input_component || e(all_smart_input_components(), create_activity_type, nil) || Bonfire.Common.Config.get([:ui, :default_smart_input]) || Bonfire.UI.Social.WritePostContentLive
-  end
-
-  def smart_input_name(component) do
-    all_smart_input_components()
-    |> Keyword.filter(fn {_key, val} -> val==component end)
-    |> Keyword.keys()
-    |> List.first()
-    |> display_name()
-  end
-
-  defp display_name(name) do
-    name
-    |> maybe_to_string()
-  end
-
-  def set_smart_input_text(socket, text \\ "\n") do
-    socket
-    |> maybe_push_event("smart_input:set_body", %{text: text})
-  end
 
 end

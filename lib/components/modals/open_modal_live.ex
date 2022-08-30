@@ -82,23 +82,6 @@ defmodule Bonfire.UI.Common.OpenModalLive do
     )
   end
 
-  def maybe_send_update(pid \\ self(), component, id, assigns) when is_atom(component) and not is_nil(id) do
-    # Phoenix.LiveView.Channel.ping(self())
-    # GenServer.call(Phoenix.LiveView.Channel, :ping)
-    # |> debug()
-    # :sys.get_state(pid)
-    Process.get()
-    |> debug()
-
-    Phoenix.LiveView.Channel.send_update(
-      pid,
-      component,
-      id,
-      Enum.into(assigns, %{})
-    )
-    |> debug("send")
-  end
-
   # Default event handlers
 
   def handle_event("open", _, socket) do
