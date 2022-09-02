@@ -7,7 +7,7 @@
   href={@href}
   :attrs={@open_btn_opts}
   >
-  <#slot name="open_btn">
+  <#slot {@open_btn}>
     <span class={@open_btn_class}>
       {@open_btn_text || "Open modal"}
     </span>

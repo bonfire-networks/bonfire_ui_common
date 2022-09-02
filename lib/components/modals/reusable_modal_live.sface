@@ -15,7 +15,7 @@
       <h3 
         :if={e(!@no_header, false)}
         class={@title_class || "font-bold text-base"}>
-        <#slot name="title">{@title_text}</#slot>
+        <#slot {@title}>{@title_text}</#slot>
       </h3>
       <div class="absolute top-0 right-0 block pt-5 pr-4">
         <button 
@@ -29,15 +29,15 @@
       </div>
 
       <div class="mt-2" data-id="modal-contents">
-        <#slot :args={autocomplete: @autocomplete}></#slot>
+        <#slot {@default, autocomplete: @autocomplete}></#slot>
       </div>
 
       <div 
         :if={!@no_actions} 
         class="modal-action">
-        <#slot name="action_btns"></#slot>
+        <#slot {@action_btns}></#slot>
         <div :on-click="close">
-          <#slot name="cancel_btn">
+          <#slot {@cancel_btn}>
             <button class={@cancel_btn_class || "btn btn-outline btn-sm normal-case"} type="button">{l "Cancel"}</button>
           </#slot>
         </div>

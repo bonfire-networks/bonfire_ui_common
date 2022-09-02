@@ -25,9 +25,7 @@ defmodule Bonfire.UI.Common.Notifications do
   end
 
   def receive_flash(attrs) do
-    Map.merge(%{id: "notification"}, attrs)
-    # |> debug()
-    |> send_update(Bonfire.UI.Common.NotificationLive, ...)
+    maybe_send_update(Bonfire.UI.Common.NotificationLive, "notification", attrs)
   end
 
   def receive_notification(attrs, socket \\ nil)

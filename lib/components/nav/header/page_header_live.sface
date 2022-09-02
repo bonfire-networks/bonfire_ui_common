@@ -25,7 +25,7 @@
               </div>
             {/if}
             
-          <#slot name="left_action">
+          <#slot {@left_action}>
             <a
               x-show="history.length > 1"
               aria-label="Navigate to the previous page"
@@ -48,7 +48,7 @@
             </#slot>
           </div>
 
-          <#slot name="right_action">
+          <#slot {@right_action}>
           </#slot>
         </div>
       </div>

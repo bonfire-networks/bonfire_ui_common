@@ -74,11 +74,11 @@ defmodule Bonfire.UI.Common do
   # end
 
   # TODO: get rid of assigning everything to a component, and then we'll no longer need this
-  def assigns_clean(%{} = assigns) when is_map(assigns), do: assigns_clean(Map.to_list(assigns))
+  # def assigns_clean(%{} = assigns) when is_map(assigns), do: assigns_clean(Map.to_list(assigns))
   def assigns_clean(assigns) do
     (
     assigns
-    ++ [{:current_user, current_user(assigns)}]
+    # ++ [{:current_user, current_user(assigns)}]
     ) # temp workaround
     # |> IO.inspect
     |> Enum.reject( fn
@@ -256,9 +256,9 @@ defmodule Bonfire.UI.Common do
       pid,
       component,
       id,
-      Enum.into(assigns, %{})
+      Enum.into(assigns_clean(assigns), %{})
     )
-    |> debug()
+    |> debug("to #{component} - id: #{id}")
   end
 
 

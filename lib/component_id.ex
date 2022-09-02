@@ -25,7 +25,7 @@ defmodule Bonfire.UI.Common.ComponentID do
 
     for component_id <- ids(component_module, object_id) do
       debug("ComponentID: try stateful component with ID #{component_id}")
-      Phoenix.LiveView.send_update(component_module, [id: component_id] ++ assigns)
+      Bonfire.UI.Common.maybe_send_update(component_module, component_id, assigns)
     end
   end
 

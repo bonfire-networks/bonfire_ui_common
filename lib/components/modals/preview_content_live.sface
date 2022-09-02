@@ -22,7 +22,7 @@
       <h3 
         :if={e(!@no_header, false)}
         class={@title_class || "font-bold text-base"}>
-        <#slot name="title">{@title_text}</#slot>
+        <#slot {@title}>{@title_text}</#slot>
       </h3>
     </div>
 
