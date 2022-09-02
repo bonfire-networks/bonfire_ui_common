@@ -1,4 +1,4 @@
-<div :if={current_user(@__context__) != nil and @hide_smart_input != true}>
+<div :if={@current_user != nil and @hide_smart_input != true}>
   {#case set_smart_input_as(@thread_mode, @__context__)}
     {#match smart_input_as}
 
@@ -35,7 +35,7 @@
             layout_mode={e(@layout_mode, nil)}
             boundaries_modal_id={:modal_composer}
             hide_smart_input={@hide_smart_input}
-            current_user={current_user(@__context__)}
+            
             showing_within={@showing_within}
             reply_to_id={e(@reply_to_id, "")}
             thread_id={@thread_id}

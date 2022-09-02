@@ -13,13 +13,13 @@
 
   <div
     class="" 
-    :if={:follow in @show_controls and ulid(current_user(@__context__)) != maybe_get(@profile, :id) and ulid(current_user(@__context__))}>
+    :if={:follow in @show_controls and ulid(@current_user) != maybe_get(@profile, :id) and ulid(@current_user)}>
     <Bonfire.UI.Common.FollowButtonLive 
       id={ComponentID.new(Bonfire.UI.Common.FollowButtonLive, @profile)}
       object={@profile} 
       hide_text
       class={@class}
-      current_user={current_user(@__context__)} 
+       
     />
   </div>
 

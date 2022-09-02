@@ -19,7 +19,7 @@
                   @click="open_drawer = true">
                   <Bonfire.UI.Common.AvatarLive
                     class="w-8 h-8 rounded-full bg-base-200"
-                    user={current_user(@__context__)}
+                    user={@current_user}
                   />
                 </div>
               </div>

@@ -224,7 +224,7 @@ defmodule Bonfire.UI.Common.Web do
       quote do
         use Surface.LiveComponent, unquote(opts)
 
-        unquote(surface_helpers())
+        unquote(surface_component_helpers())
 
       end
     end
@@ -234,7 +234,18 @@ defmodule Bonfire.UI.Common.Web do
 
         use Surface.Component, unquote(opts)
 
+        unquote(surface_component_helpers())
+
+      end
+    end
+
+    defp surface_component_helpers do
+      quote do
+
         unquote(surface_helpers())
+
+        data current_account, :any, from_context: :current_account
+        data current_user, :any, from_context: :current_user
 
       end
     end
@@ -244,9 +255,8 @@ defmodule Bonfire.UI.Common.Web do
 
         unquote(live_view_helpers())
 
-        # prop globals, :map, default: %{}
-        prop current_account, :any
-        prop current_user, :any
+        # prop current_account, :any
+        # prop current_user, :any
 
         alias Surface.Components.Link
         alias Surface.Components.Link.Button

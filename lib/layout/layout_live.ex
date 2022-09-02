@@ -88,7 +88,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           "gap-2 md:gap-0 relative z-[105] w-full col-span-1 grid grid-rows-[1fr_48px] md:grid-rows-1",
           "max-w-screen-lg mx-auto": e(@layout_mode, nil) == "full"
           }>
-          <Bonfire.UI.Common.HeaderMobileGuestLive :if={!current_user(@__context__)} />
+          <Bonfire.UI.Common.HeaderMobileGuestLive :if={!@current_user} />
           <div
             class={"grid relative invisible_frame",
             "grid-rows-[60px_1fr]": !Settings.get([:ui, :compact], false, @__context__),
@@ -101,7 +101,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               >
               <:right_action>
                 <Surface.Components.Dynamic.Component
-                  :if={current_user(@__context__) && @page_header_aside}
+                  :if={@current_user && @page_header_aside}
                   :for={{component, component_assigns} <- e(@page_header_aside, [])}
                   module={component}
                   {...component_assigns}
@@ -129,7 +129,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
           </div>
           <Bonfire.UI.Common.HeaderUserLive
-            :if={current_user(@__context__)}
+            :if={@current_user}
             page={@page}
           />
         </div>
@@ -142,7 +142,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "!gap-5": !Settings.get([:ui, :compact], false, @__context__),
           }>
           <!-- <div
-            :if={module_enabled?(Bonfire.Search.Web.FormLive) && current_user(@__context__)}
+            :if={module_enabled?(Bonfire.Search.Web.FormLive) && @current_user}
             class="sticky top-0 z-20">
             <Surface.Components.Dynamic.Component
               module={Bonfire.Search.Web.FormLive}
@@ -150,7 +150,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             />
           </div> -->
           <Surface.Components.Dynamic.Component
-            :if={current_user(@__context__)}
+            :if={@current_user}
             :for={{component, component_assigns} <- @sidebar_widgets[:users][:secondary] || [
               {Bonfire.UI.Social.WidgetTagsLive, []},
               {Bonfire.UI.Common.WidgetFeedbackLive, []}
@@ -160,7 +160,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           />
 
           <Surface.Components.Dynamic.Component
-            :if={!current_user(@__context__)}
+            :if={!@current_user}
             :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || [
                 {Bonfire.UI.Social.WidgetTagsLive, []}
             ]}

@@ -1,13 +1,13 @@
 <li
   class="hover:bg-neutral/10 text-neutral"
- :if={current_user(@__context__)}>
+ :if={@current_user}>
   <LiveRedirect to="/switch-user" class="flex items-center p-4 text-sm text-neutral">
     {l "Switch profile"}
   </LiveRedirect>
 </li>
 <li
   class="hover:bg-neutral/10 text-neutral"
-  :if={current_user(@__context__)}>
+  :if={@current_user}>
   <LiveRedirect to="/settings" class="flex items-center p-4 text-sm text-neutral">
     {l "Settings"}
   </LiveRedirect>
@@ -28,7 +28,7 @@
 </li>
 <li 
   class="hover:bg-neutral/10 text-neutral"
-  :if={current_user(@__context__)}>  
+  :if={@current_user}>  
   <LiveRedirect to="/logout" class="flex items-center p-4 text-sm text-neutral">
     {l "Logout"}
   </LiveRedirect>

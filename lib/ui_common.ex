@@ -33,37 +33,43 @@ defmodule Bonfire.UI.Common do
   end
 
   def assign_global(socket, assigns) when is_map(assigns) do
-    # assign_global(socket, Map.to_list(assigns))
+    # need this so any non-atom keys are turned into atoms
     Enum.reduce(
       assigns,
       socket,
       fn {k, v}, socket -> assign_global(socket, k, v) end
     )
   end
+
   def assign_global(socket, assigns) when is_list(assigns) do
     socket
-    |> assign_generic(assigns)
-    # being naughty here, let's see how long until Surface breaks it:
-    |> assign_generic(:__context__,
-                          Map.get(socket.assigns, :__context__, %{})
-                          |> Map.merge(maybe_to_map(assigns))
-    ) #|> debug("assign_global")
+    |> assign_generic(assigns) # also put in non-context assigns
+    |> Surface.Components.Context.put(assigns)
+    # |> dump("put in context")
   end
+  # def assign_global(socket, assigns) when is_list(assigns) do
+  #   socket
+  #   |> assign_generic(assigns)
+  #   # [no longer] being naughty here, let's see how long until Surface breaks it:
+  #   |> assign_generic(:__context__,
+  #                         Map.get(socket.assigns, :__context__, %{})
+  #                         |> Map.merge(maybe_to_map(assigns))
+  #   )
+  # end
   def assign_global(socket, {_, _} = assign) do
     assign_global(socket, Keyword.new([assign]))
   end
-
   def assign_global(socket, key, "") do
     assign_global(socket, key, nil)
   end
   def assign_global(socket, key, value) when is_atom(key) do
-    assign_global(socket, Keyword.new([{key, value}]))
+    assign_global(socket, {key, value})
   end
   def assign_global(socket, key, value) when is_binary(key) do
     case maybe_to_atom(key) do
-      key when is_atom(key) -> assign_global(socket, Keyword.new([{key, value}]))
+      key when is_atom(key) -> assign_global(socket, {key, value})
       _ ->
-        warn(key, "Could not assign (not an existing atom)")
+        warn(key, "Could not assign (key is not an existing atom)")
         socket
     end
   end

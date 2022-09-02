@@ -8,7 +8,7 @@
   </LiveRedirect>
 
   <div class="flex justify-end">
-    {#if current_account(@__context__) != nil }
+    {#if @current_account != nil }
       <span class="inline-flex rounded-md shadow-sm">
         <Link to={path(:switch_user)} class="normal-case btn btn-secondary btn-sm">
           {l "Select User"}

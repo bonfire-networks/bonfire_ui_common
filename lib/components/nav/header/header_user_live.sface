@@ -1,7 +1,7 @@
 <div class="bg-base-100 z-[100] sticky bottom-[10px] md:hidden md:rounded-md flex h-[60px] border-t place-content-center border-base-content/10 justify-evenly items-center">
   <LiveRedirect 
     class={"flex items-center h-[60px] hover:rounded-lg hover:bg-base-content/5 tab h-full",  "tab-active": @page == "home"}
-    to={if current_user(@__context__), do: path(Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Config.get(:home_page, Bonfire.Web.HomeLive))}>
+    to={if @current_user, do: path(Config.get(:user_home_page, Bonfire.UI.Social.HomeLive)), else:  path(Config.get(:home_page, Bonfire.Web.HomeLive))}>
       <Icon solid="Home" class="w-6 h-6" />
       <span class="sr-only">{l "Home"}</span>
   </LiveRedirect>
@@ -31,6 +31,6 @@
 </div>
 
 <Bonfire.UI.Common.MobileUserMenuLive 
-  current_user={current_user(@__context__)}
+  
   page={@page}
 /> 

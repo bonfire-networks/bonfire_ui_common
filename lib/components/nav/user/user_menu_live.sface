@@ -1,17 +1,17 @@
 <div class="items-center hidden w-full space-x-1 md:flex">
   <div class="flex items-center flex-1 w-full">
-    <LivePatch to={path(current_user(@__context__))}>
+    <LivePatch to={path(@current_user)}>
       <Bonfire.UI.Common.AvatarLive
         class="w-10 h-10 rounded bg-base-100"
-        user={current_user(@__context__)}
+        user={@current_user}
       />
     </LivePatch>
     <LivePatch 
       class="flex-1" 
-      to={path(current_user(@__context__))}>
+      to={path(@current_user)}>
       <div class="flex flex-col items-start flex-1 min-w-full ml-3">
-        <div class="text-sm font-semibold text-left truncate text-ellipsis text-base-content">{e(current_user(@__context__), :profile, :name, "Unknown")}</div>
-        <span class="hover:no-underline -mt-0.5 text-sm font-light text-base-content text-opacity-80">@{e(current_user(@__context__), :character, :username, "Unknown")}</span>
+        <div class="text-sm font-semibold text-left truncate text-ellipsis text-base-content">{e(@current_user, :profile, :name, "Unknown")}</div>
+        <span class="hover:no-underline -mt-0.5 text-sm font-light text-base-content text-opacity-80">@{e(@current_user, :character, :username, "Unknown")}</span>
       </div>
     </LivePatch>
     <!-- LiveRedirect to="/switch-user" class="btn btn-square btn-ghost">
@@ -37,7 +37,7 @@
         aria-orientation="vertical"
         aria-labelledby="user-profile-menu"
       >
-        <Bonfire.UI.Common.UserMenuLinksLive current_user={current_user(@__context__)} />
+        <Bonfire.UI.Common.UserMenuLinksLive  />
       </ul>
     </div>
   </div>
