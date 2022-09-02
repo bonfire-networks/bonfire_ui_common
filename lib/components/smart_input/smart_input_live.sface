@@ -4,8 +4,6 @@
   id="composer_container"
   data-id="smart_input"
   data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, @__context__) &&  @thread_mode != :flat, do: "winter"}
-    {#if Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and @thread_mode != :flat}
-
   class={
     "h-full",
     "h-[calc(100%-40px)]": Settings.get([:ui, :smart_input_as], nil, @__context__)!=:sidebar and @thread_mode != :flat

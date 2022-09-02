@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   import Plug.Conn
   import Phoenix.ConnTest
   import Phoenix.LiveViewTest
-  import Where
+  import Untangle
   alias Bonfire.Common.Utils
   alias Bonfire.Me.Users
   alias Bonfire.Data.Identity.Account

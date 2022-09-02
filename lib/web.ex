@@ -128,7 +128,7 @@ defmodule Bonfire.UI.Common.Web do
   def channel(opts \\ []) do
     quote do
       use Phoenix.Channel, unquote(opts)
-      import Where
+      import Untangle
 
     end
   end
@@ -153,7 +153,7 @@ defmodule Bonfire.UI.Common.Web do
 
       import Bonfire.Common.Extend
 
-      import Where
+      import Untangle
       import Bonfire.UI.Common.ErrorHelpers
     end
   end

@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.Plugs.ActivityPub do
   import Plug.Conn
-  import Where
+  import Untangle
 
   def init(_opts), do: nil
 

@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
   use Plug.Builder
-  import Where
+  import Untangle
 
   plug :maybe_add_index_html
 

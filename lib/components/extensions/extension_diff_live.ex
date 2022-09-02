@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
   use Bonfire.UI.Common.Web, :live_view
 
   import Bonfire.Common.Extensions.Diff
-  import Where
+  import Untangle
   alias Bonfire.UI.Me.LivePlugs
 
   def mount(params, session, socket) do

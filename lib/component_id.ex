@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.ComponentID do
-  import Where
+  import Untangle
   alias Bonfire.Common.Utils
 
   def new(component_module, object_id) when is_binary(object_id) or is_number(object_id) do

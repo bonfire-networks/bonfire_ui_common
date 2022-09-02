@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.StaticGeneratorPlug do
   use Plug.Builder
-  import Where
+  import Untangle
 
   plug :add_index_html
 

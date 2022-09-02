@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   """
   use Bonfire.UI.Common.Web, :live_handler
-  import Where
+  import Untangle
 
   def handle_params(params, uri, socket, source_module \\ nil) do
     undead(socket, fn ->

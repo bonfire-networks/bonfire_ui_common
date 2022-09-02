@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.Notifications do
   use Bonfire.UI.Common.Web, :live_handler
-  import Where
+  import Untangle
 
   def handle_event("request", _attrs, socket) do
     receive_notification(%{title: l("Notifications enabled"), message: l("You will now receive notifications of messages, mentions, and other relevant activities."), icon: Config.get([:ui, :theme, :instance_icon], nil)}, socket)
