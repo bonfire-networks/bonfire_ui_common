@@ -483,6 +483,8 @@ defmodule Bonfire.UI.Common do
       {:noreply, %Plug.Conn{} = conn} -> {:noreply, conn}
       {:reply, data, %Phoenix.LiveView.Socket{} = socket} -> {:reply, data, socket}
       %Phoenix.LiveView.Socket{} = socket -> {return_key, socket}
+      {:ok, {:error, reason}} -> undead_error(reason, socket, return_key)
+      {:noreply, {:error, reason}} -> undead_error(reason, socket, return_key)
       {:error, reason} -> undead_error(reason, socket, return_key)
       {:error, reason, extra} -> live_exception(socket, return_key, "There was an error: #{inspect reason}", extra)
       :ok -> {return_key, socket} # shortcut to return nothing
@@ -502,7 +504,7 @@ defmodule Bonfire.UI.Common do
     with {:error, msg} <- debug_exception(msg, exception, stacktrace, kind) do
       {return_key, socket
       |> assign_error(msg)
-      |> redirect_to()
+      |> redirect_to("/error")
       }
     end
   end
@@ -527,7 +529,7 @@ defmodule Bonfire.UI.Common do
     FunctionClauseError -> # FIXME: handle cases where the live_path requires param(s)
       {return_key, socket
       |> assign_error(msg)
-      |> redirect_to()
+      |> redirect_to("/error")
       }
   end
 
@@ -551,28 +553,28 @@ defmodule Bonfire.UI.Common do
 
   def redirect_to(socket_or_conn, to \\ nil, opts \\ [])
   def redirect_to(%Phoenix.LiveView.Socket{} = socket, to, opts) do
-    Phoenix.LiveView.push_redirect(socket, [to: to || path_fallback(opts)] ++ opts)
+    Phoenix.LiveView.push_redirect(socket, [to: to || path_fallback(socket, opts)] ++ opts)
   rescue e in ArgumentError ->
     error(e)
-    redirect_to(socket, path_fallback(opts))
+    redirect_to(socket, path_fallback(socket, opts))
   end
   def redirect_to(%Plug.Conn{} = conn, to, opts) do
-    Phoenix.Controller.redirect(conn, [to: to || path_fallback(opts)] ++ opts)
+    Phoenix.Controller.redirect(conn, [to: to || path_fallback(conn, opts)] ++ opts)
   end
 
   def patch_to(socket_or_conn, to \\ nil, opts \\ [])
   def patch_to(%Phoenix.LiveView.Socket{} = socket, to, opts) do
-    Phoenix.LiveView.push_patch(socket, [to: to || path_fallback(opts)] ++ opts)
+    Phoenix.LiveView.push_patch(socket, [to: to || path_fallback(socket, opts)] ++ opts)
   rescue e in ArgumentError ->
     error(e)
-    patch_to(socket, path_fallback(opts))
+    patch_to(socket, path_fallback(socket, opts))
   end
   def patch_to(%Plug.Conn{} = conn, to, opts) do
     redirect_to(conn, to, opts)
   end
 
-  def path_fallback(opts \\ []) do
-    opts[:fallback] || path(:error) || "/error"
+  def path_fallback(socket_or_conn, opts) do
+    opts[:fallback] || current_url(socket_or_conn) || path(:error) || "/error"
   end
 
   def maybe_push_event(%Phoenix.LiveView.Socket{} = socket, name, data) do
