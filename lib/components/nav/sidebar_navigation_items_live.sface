@@ -2,9 +2,9 @@
 <li>
   <LiveRedirect 
     to={path(Config.get(:user_home_page, Bonfire.UI.Social.HomeLive))} 
-    class={"text-sm rounded relative",  "font-bold bg-base-content/10": @page == "feed"}
+    class={"flex items-center border-l pl-4 -ml-px border-transparent hover:border-base-content text-base-content/70 hover:text-base-content",  "!text-primary hover:!border-current border-current font-semibold": @page == "feed"}
   >
-    <Icon solid="Newspaper" class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "feed"} />
+    <Icon solid="Newspaper" class={"mr-2 w-4 h-4 text-base-content/80", "!text-primary": @page == "feed"} />
     <span :if={@page == "feed"} class="sr-only">{l "Current Page:"} </span>
     {l "My feed"}
   </LiveRedirect>
@@ -13,9 +13,9 @@
 <!-- <li class="tablet-lg:hidden">
   <LiveRedirect 
     to={"/search"}
-    class={"text-sm rounded relative",  "font-bold bg-base-content/10": @page == "search"}
+    class={"flex items-center border-l pl-4 -ml-px border-transparent hover:border-base-content  text-base-content/70 hover:text-base-content",  "!text-primary border-current font-semibold": @page == "search"}
   >
-    <Icon solid="Search" class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "search"} />
+    <Icon solid="Search" class={"mr-2 w-4 h-4 text-base-content/80", "!text-primary": @page == "search"} />
     <span :if={@page == "search"} class="sr-only">{l "Current Page:"} </span>
     {l "Search"}
   </LiveRedirect>
@@ -24,9 +24,9 @@
 <li>
   <LiveRedirect 
     class={
-    "text-sm rounded relative",  "font-bold bg-base-content/10": @page == "local"} 
+    "flex items-center border-l pl-4 -ml-px border-transparent hover:border-base-content  text-base-content/70 hover:text-base-content",  "!text-primary border-current font-semibold": @page == "local"} 
     to={"/feed/local"}>
-    <Icon solid="LocationMarker" class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "local"} />
+    <Icon solid="LocationMarker" class={"mr-2 w-4 h-4 text-base-content/80", "!text-primary": @page == "local"} />
     <span :if={@page == "local"} class="sr-only">{l "Current Page:"} </span>
     <span class="truncate ellipsis">{l "Local"}</span>
   </LiveRedirect> 
@@ -35,55 +35,55 @@
 <li>
   <LiveRedirect 
     class={
-      "text-sm rounded relative",  "font-bold bg-base-content/10": @page == "federation"} 
+      "flex items-center border-l pl-4 -ml-px border-transparent hover:border-base-content  text-base-content/70 hover:text-base-content",  "!text-primary border-current font-semibold": @page == "federation"} 
     to={"/feed/federation"}>
-    <Icon solid="Globe" class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "federation"} />
+    <Icon solid="Globe" class={"mr-2 w-4 h-4 text-base-content/80", "!text-primary": @page == "federation"} />
     <span :if={@page == "federation"} class="sr-only">{l "Current Page:"} </span>
     <span class="truncate ellipsis">{l "Federated"}</span>
   </LiveRedirect> 
 </li>
 
-<li>
+<!-- <li>
   <LiveRedirect 
     to={path(:notifications)}
-    class={"text-sm rounded relative",  "font-bold bg-base-content/10": @page == "notifications"}
+    class={"flex items-center border-l pl-4 -ml-px border-transparent hover:border-base-content  text-base-content/70 hover:text-base-content",  "!text-primary border-current font-semibold": @page == "notifications"}
   >
-    <Icon solid="Bell" class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "notifications"} />
+    <Icon solid="Bell" class={"mr-2 w-4 h-4 text-base-content/80", "!text-primary": @page == "notifications"} />
     <span :if={@page == "notifications"} class="sr-only">{l "Current Page:"} </span>
     {l "Notifications"}
     <Bonfire.UI.Common.BadgeCounterLive id={:notifications} class="indicator-item badge badge-secondary"/> 
   </LiveRedirect>
-</li>
+</li> -->
 
-<li>
+<!-- <li>
   <LiveRedirect 
     to={path(Bonfire.Data.Social.Message)} 
     class={
-      "text-sm rounded relative",  "font-bold bg-base-content/10": @page == "messages"}>
-      <Icon solid="Mail" class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "messages"}/>
+      "flex items-center border-l pl-4 -ml-px border-transparent hover:border-base-content  text-base-content/70 hover:text-base-content",  "!text-primary border-current font-semibold": @page == "messages"}>
+      <Icon solid="Mail" class={"mr-2 w-4 h-4 text-base-content/80", "!text-primary": @page == "messages"}/>
       <span :if={@page == "messages"} class="sr-only">{l "Current Page:"} </span>
       {l "Messages"}
       <Bonfire.UI.Common.BadgeCounterLive id={:inbox} class="indicator-item badge badge-secondary"/>
   </LiveRedirect>
-</li>
+</li> -->
 
 <li>
   <LiveRedirect 
     to={"/my/likes"} 
     class={
-      "text-sm rounded relative",  "font-bold bg-base-content/10": @page == "likes"}>
-      <Icon solid="Star"  class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "likes"}/>
+      "flex items-center border-l pl-4 -ml-px border-transparent hover:border-base-content  text-base-content/70 hover:text-base-content",  "!text-primary border-current font-semibold": @page == "likes"}>
+      <Icon solid="Star"  class={"mr-2 w-4 h-4 text-base-content/80", "!text-primary": @page == "likes"}/>
       <span :if={@page == "likes"} class="sr-only">{l "Current Page:"} </span>
       {l "Favourites"}
   </LiveRedirect>
 </li>
 
-<li :if={!Bonfire.Me.Settings.get([:ui, :topics_list_in_sidebar], true, @__context__)}>
+<li>
   <LiveRedirect 
     to={"/topics"} 
     class={
-      "text-sm rounded relative",  "font-bold bg-base-content/10": @page == "topics" || @page == "topics_followed"}>
-      <Icon solid="Collection"  class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "topics" || @page == "topics_followed"}/>
+      "flex items-center border-l pl-4 -ml-px border-transparent hover:border-base-content  text-base-content/70 hover:text-base-content",  "!text-primary border-current font-semibold": @page == "topics" || @page == "topics_followed"}>
+      <Icon solid="Collection"  class={"mr-2 w-4 h-4 text-base-content/80", "!text-primary": @page == "topics" || @page == "topics_followed"}/>
       <span :if={@page == "topics" || @page == "topics_followed"} class="sr-only">{l "Current Page:"} </span>
       {l "Topics"}
   </LiveRedirect>
@@ -93,8 +93,8 @@
   <LiveRedirect 
     to={"/settings"} 
     class={
-      "text-sm rounded relative",  "font-bold bg-base-content/10": @page == "settings"}>
-      <Icon solid="Adjustments"  class={"w-5 h-5 text-base-content/80", "!text-base-content": @page == "settings"}/>
+      "flex items-center border-l pl-4 -ml-px border-transparent hover:border-base-content  text-base-content/70 hover:text-base-content",  "!text-primary border-current font-semibold": @page == "settings"}>
+      <Icon solid="Adjustments"  class={"mr-2 w-4 h-4 text-base-content/80", "!text-primary": @page == "settings"}/>
       <span :if={@page == "settings"} class="sr-only">{l "Current Page:"} </span>
       {l "Settings"}
   </LiveRedirect>
@@ -104,7 +104,7 @@
   <LiveRedirect 
     to={"/logout"} 
     class={"rounded relative"}>
-      <Icon solid="Logout"  class={"w-5 h-5 text-base-content/80"}/>
+      <Icon solid="Logout"  class={"mr-2 w-4 h-4 text-base-content/80"}/>
       {l "Logout"}
   </LiveRedirect>
 </li> -->

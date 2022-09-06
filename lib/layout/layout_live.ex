@@ -43,6 +43,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         smart_input_title_text: null,
         smart_input_open: false,
         smart_input_fullscreen: false,
+        open_extensions_sidebar: false,
         smart_input_minimized: false,
         show_smart_input() {
           if (#{Settings.get([:ui, :smart_input_as], nil, @__context__) !=:sidebar} || ((window.innerWidth > 0) ? window.innerWidth : screen.width) <= 768) {
@@ -52,25 +53,96 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }
       }"}
       >
+      
+      <div 
+          x-cloak
+          x-show="open_extensions_sidebar" 
+          @keydown.window.escape="open_extensions_sidebar = false;" 
+          class="fixed top-0 bottom-0 left-0 z-50 overflow-hidden">
+          <div class="inset-0 h-full">
+            <section class="h-full" aria-labelledby="slide-over-heading">
+              <div class="h-full w-[260px]" x-description="Slide-over panel, show/hide based on slide-over state."
+                x-show="open_extensions_sidebar"
+                x-transition:enter="transform transition ease-in-out duration-150 sm:duration-500"
+                x-transition:enter-start="-translate-x-full"
+                x-transition:enter-end="-translate-x-0"
+                x-transition:leave="transform transition ease-in-out duration-150 sm:duration-500"
+                x-transition:leave-start="-translate-x-0"
+                x-transition:leave-end="-translate-x-full">
+                <div class="w-full bg-base-100">
+                  <div class="px-4">
+                    <div class="flex items-start justify-between">
+                      <h2 id="slide-over-heading" class="pt-4 text-lg font-bold text-primary-content-800">
+                        {l "Bonfire apps"}
+                      </h2>
+                    </div>
+                  </div>
+                    <ul class="p-2 mt-6 mb-3 menu bg-base-100">
+                      <li class="text-xs font-medium tracking-wider uppercase menu-title text-primary-content-800">
+                        <span>{"Enabled extensions"}</span>
+                      </li>
+                      <li>
+                      <LiveRedirect to={path(:feed)}>
+                        <div class="flex items-center w-full">
+                          <Icon outline="Globe" class="w-5 h-5" />
+                          <h3 class="flex-1 ml-2 text-base font-normal text-primary-content-800">Bonfire social</h3>
+                          <Icon outline="ChevronRight" class="w-5 h-5" />
+                        </div>
+                      </LiveRedirect>
+                      </li>
+                      <li>
+                        <LiveRedirect 
+                          :if={module_enabled?(Bonfire.Classify.Web.CategoriesLive)}
+                          to={path(Bonfire.Classify.Web.CategoriesLive)}>
+                            <div class="flex items-center w-full">
+                              <Icon outline="Collection" class="w-5 h-5" />
+                              <h3 class="flex-1 ml-2 text-base font-normal text-primary-content-800">{l "Topics"}</h3>
+                              <Icon outline="ChevronRight" class="w-5 h-5" />
+                            </div>
+                        </LiveRedirect>
+                      </li>
+                      <li>
+                        <LiveRedirect 
+                          :if={module_enabled?(Bonfire.UI.Coordination.MyTasksLive)}
+                          to={path(Bonfire.UI.Coordination.MyTasksLive)}>
+                            <div class="flex items-center w-full">
+                              <Icon iconify="vscode-icons:file-type-todo" class="w-5 h-5" />
+                              <h3 class="flex-1 ml-2 text-base font-normal text-primary-content-800">{l "Coordination"}</h3>
+                              <Icon outline="ChevronRight" class="w-5 h-5" />
+                            </div>
+                        </LiveRedirect>
+                      </li>
+                      
+                      <li>
+                        <LiveRedirect 
+                          :if={module_enabled?(Bonfire.Breadpub.BreadDashboardLive)}
+                          to={path(Bonfire.Breadpub.BreadDashboardLive)}>
+                            <div class="flex items-center w-full">
+                              <Icon outline="ChevronRight" class="w-5 h-5" />
+                              <h3 class="flex-1 ml-2 text-base font-normal text-primary-content-800">BreadPub</h3>
+                              <Icon outline="ChevronRight" class="w-5 h-5" />
+                            </div>
+                        </LiveRedirect>
+                      </li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
 
       <div
-        x-data="{
-          open_sidebar_drawer: false,
-          open_drawer: false,
-          smart_input_open: false,
-          width: window.innerWidth,
-        }"
-        @resize.window.debounce.100="width = window.innerWidth"
-        id="bonfire_layout"
-        class={
-          " justify-center w-full mx-auto wide:justify-center grid-cols-1  grid-cols-[repeat(auto-fit, 280px)] md:grid-cols-[290px_minmax(auto,_580px)] tablet-lg:grid-cols-[280px_minmax(500px,_680px)_280px] desktop-lg:grid-cols-[360px_680px_360px] grid md:gap-8 ",
-          "!grid-cols-[360px_1fr] !justify-between": e(@layout_mode, nil) == "full"
-        }>
+        x-transition:enter="transform transition ease-in-out duration-150 sm:duration-500"
+        x-transition:enter-start="-translate-x-full"
+        x-transition:enter-end="-translate-x-0"
+        x-transition:leave="transform transition ease-in-out duration-150 sm:duration-500"
+        x-transition:leave-start="-translate-x-0"
+        x-transition:leave-end="-translate-x-full"  
+      :class="{'pl-[260px]': open_extensions_sidebar}">
 
-        <Bonfire.UI.Common.SidebarLive
-          page={@page}
-          layout_mode={e(@layout_mode, nil)}
+        <Bonfire.UI.Common.HeaderFullLayoutLive 
           reply_to_id={@reply_to_id}
+          layout_mode={e(@layout_mode, nil)}
           thread_id={@thread_id}
           showing_within={@showing_within}
           create_activity_type={@create_activity_type}
@@ -82,98 +154,133 @@ defmodule Bonfire.UI.Common.LayoutLive do
           thread_mode={@thread_mode}
           hide_smart_input={e(@hide_smart_input, false)}
           show_less_menu_items={@show_less_menu_items}
-        />
+          user={@current_user} 
+          page={@page} />
 
-        <div class={
-          "gap-2 md:gap-0 relative z-[105] w-full col-span-1 grid grid-rows-[1fr_48px] md:grid-rows-1",
-          "max-w-screen-lg mx-auto": e(@layout_mode, nil) == "full"
-          }>
-          <Bonfire.UI.Common.HeaderMobileGuestLive :if={!@current_user} />
-          <div
-            class={"grid relative invisible_frame",
-            "grid-rows-[60px_1fr]": !Settings.get([:ui, :compact], false, @__context__),
-            "grid-rows-[40px_1fr]": Settings.get([:ui, :compact], false, @__context__)
+        <div
+          x-data="{
+            open_sidebar_drawer: false,
+            open_drawer: false,
+            smart_input_open: false,
+            width: window.innerWidth,
+          }"
+          @resize.window.debounce.100="width = window.innerWidth"
+          id="bonfire_layout"
+          class={
+            "w-full mx-auto grid-cols-1",
+            "grid-cols-[240px_1fr]": e(@layout_mode, nil) == "full"        }>
+
+          <Bonfire.UI.Common.SidebarLive
+            page={@page}
+            layout_mode={e(@layout_mode, nil)}
+            reply_to_id={@reply_to_id}
+            thread_id={@thread_id}
+            showing_within={@showing_within}
+            create_activity_type={@create_activity_type}
+            to_boundaries={e(@to_boundaries, [])}
+            to_circles={e(@to_circles, [])}
+            smart_input_prompt={@smart_input_prompt}
+            smart_input_text={@smart_input_text}
+            sidebar_widgets={@sidebar_widgets}
+            thread_mode={@thread_mode}
+            hide_smart_input={e(@hide_smart_input, false)}
+            show_less_menu_items={@show_less_menu_items}
+          />
+
+          <div class={
+            "gap-2 md:gap-0 relative z-[105] w-full col-span-1",
+            "max-w-screen-lg mx-auto": e(@layout_mode, nil) == "full"
             }>
-            <Bonfire.UI.Common.PageHeaderLive
-              :if={!@without_header}
-              page_title={@page_title}
-              page_header_drawer={e(@page_header_drawer, false)}
-              >
-              <:right_action>
+            <Bonfire.UI.Common.HeaderMobileGuestLive :if={!@current_user} />
+            
+            <div class={"justify-center mt-6 grid grid-cols-[680px_320px] gap-4",
+            "!grid-cols-[1020px]": !is_list(@sidebar_widgets[:users][:secondary])
+            }>
+              <div
+                class={"grid relative invisible_frame",
+                "grid-rows-[60px_1fr]": !Settings.get([:ui, :compact], false, @__context__),
+                "grid-rows-[40px_1fr]": Settings.get([:ui, :compact], false, @__context__)
+                }>
+                <Bonfire.UI.Common.PageHeaderLive
+                  :if={!@without_header}
+                  page_title={@page_title}
+                  page_header_drawer={e(@page_header_drawer, false)}
+                  >
+                  <:right_action>
+                    <Surface.Components.Dynamic.Component
+                      :if={@current_user && @page_header_aside}
+                      :for={{component, component_assigns} <- e(@page_header_aside, [])}
+                      module={component}
+                      {...component_assigns}
+                    />
+                  </:right_action>
+                </Bonfire.UI.Common.PageHeaderLive>
+
+                <div class={
+                  "mt-4 px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height"
+                }
+                >
+                  <!-- {#if @preview_module !=nil and is_atom(@preview_module)}
+                    <Surface.Components.Dynamic.Component
+                      module={@preview_module}
+                      {...(@preview_assigns || %{})}
+                    />
+                    <style>
+                    #inner_content {visibility: hidden}
+                    </style>
+                  {/if} -->
+                  <div id="inner_content">
+                    {@inner_content}
+                  </div>
+                </div>
+
+              </div>
+
+            
+              <div
+                :if={is_list(@sidebar_widgets[:users][:secondary])}
+                x-show={if @preview_module, do: "false", else: "true"}
+                class={
+                  "items-start sticky z-[97] top-6 grid-flow-row gap-3 overflow-x-hidden overflow-y-auto auto-rows-min widget hidden tablet-lg:grid ",
+                  "!gap-5": !Settings.get([:ui, :compact], false, @__context__),
+                }>
                 <Surface.Components.Dynamic.Component
-                  :if={@current_user && @page_header_aside}
-                  :for={{component, component_assigns} <- e(@page_header_aside, [])}
+                  :if={@current_user}
+                  :for={{component, component_assigns} <- @sidebar_widgets[:users][:secondary] || [
+                    {Bonfire.UI.Social.WidgetTagsLive, []},
+                    {Bonfire.UI.Common.WidgetFeedbackLive, []}
+                  ]}
                   module={component}
                   {...component_assigns}
                 />
-              </:right_action>
-            </Bonfire.UI.Common.PageHeaderLive>
 
-            <div class={
-              "mt-6 px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height"
-            }
-            >
-              <!-- {#if @preview_module !=nil and is_atom(@preview_module)}
                 <Surface.Components.Dynamic.Component
-                  module={@preview_module}
-                  {...(@preview_assigns || %{})}
+                  :if={!@current_user}
+                  :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || [
+                      {Bonfire.UI.Social.WidgetTagsLive, []}
+                  ]}
+                  module={component}
+                  {...component_assigns}
                 />
-                <style>
-                #inner_content {visibility: hidden}
-                </style>
-              {/if} -->
-              <div id="inner_content">
-                {@inner_content}
               </div>
+
             </div>
 
-          </div>
-          <Bonfire.UI.Common.HeaderUserLive
-            :if={@current_user}
-            page={@page}
-          />
-        </div>
 
-        <div
-          :if={e(@layout_mode, nil) != "full"}
-          x-show={if @preview_module, do: "false", else: "true"}
-          class={
-            "items-start sticky z-[97] top-3  grid-flow-row gap-3 overflow-x-hidden overflow-y-auto auto-rows-min widget hidden tablet-lg:grid ",
-            "!gap-5": !Settings.get([:ui, :compact], false, @__context__),
-          }>
-          <!-- <div
-            :if={module_enabled?(Bonfire.Search.Web.FormLive) && @current_user}
-            class="sticky top-0 z-20">
-            <Surface.Components.Dynamic.Component
-              module={Bonfire.Search.Web.FormLive}
-              search_limit={5}
+
+            <Bonfire.UI.Common.HeaderUserLive
+              :if={@current_user}
+              page={@page}
             />
-          </div> -->
-          <Surface.Components.Dynamic.Component
-            :if={@current_user}
-            :for={{component, component_assigns} <- @sidebar_widgets[:users][:secondary] || [
-              {Bonfire.UI.Social.WidgetTagsLive, []},
-              {Bonfire.UI.Common.WidgetFeedbackLive, []}
-            ]}
-            module={component}
-            {...component_assigns}
-          />
+          </div>
 
-          <Surface.Components.Dynamic.Component
-            :if={!@current_user}
-            :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || [
-                {Bonfire.UI.Social.WidgetTagsLive, []}
-            ]}
-            module={component}
-            {...component_assigns}
+          
+
+          <Bonfire.UI.Common.MobileSmartInputButtonLive
+            smart_input_prompt={@smart_input_prompt}
           />
         </div>
-
-        <Bonfire.UI.Common.MobileSmartInputButtonLive
-          smart_input_prompt={@smart_input_prompt}
-        />
       </div>
-
     </div>
 
     <Bonfire.UI.Common.ReusableModalLive

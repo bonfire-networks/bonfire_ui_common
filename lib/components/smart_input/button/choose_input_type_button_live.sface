@@ -12,7 +12,7 @@
       id="option-menu-button" 
       aria-expanded="true" aria-haspopup="true">
       <span class="sr-only">{l "Open options"}</span>
-      <Icon outline="ViewGridAdd" class="w-5 h-5" />
+      <Icon outline="Menu" class="w-4 h-4" />
     </button>
     <div  
       x-cloak

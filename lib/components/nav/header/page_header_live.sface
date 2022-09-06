@@ -1,7 +1,7 @@
 <!-- <div class="relative"> -->
   <div 
     role="banner" 
-    class="sticky z-[100] place-content-center w-full md:top-3 bg-base-100 tablet:bg-opacity-100 shadow md:rounded-md">  
+    class="z-[100] sticky top-0 place-content-center w-full bg-base-100 tablet:bg-opacity-100 shadow md:rounded-md">  
     <div class="relative">
       <div 
         class={"flex items-center ",

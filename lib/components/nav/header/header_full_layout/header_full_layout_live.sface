@@ -1,9 +1,87 @@
-<div class="flex items-center justify-between px-4 sticky z-[999] h-[60px] top-0 bg-base-100 shadow">
-    <div class="flex-1 flex items-center gap-3 w-full max-w-[360px]">
-        <Bonfire.UI.Common.LogoLive />
-        <Bonfire.UI.Common.ChooseInputTypeButtonLive />
+<div class="flex items-center shadow justify-between px-4 py-2 bg-base-100 sticky z-[999] top-0">
+  <div class="flex-1 flex items-center gap-3 w-full max-w-[360px]">
+    <Bonfire.UI.Common.AppsLive />
+    <LiveRedirect 
+      to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}>
+      <div class="w-8 h-10 bg-center bg-no-repeat bg-cover" style={"background-image: url(#{ Config.get([:ui, :theme, :instance_icon], nil)})"}></div>
+      <!-- <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div> -->
+    </LiveRedirect>
+    <!-- <button 
+      type="button" 
+      class="normal-case rounded btn btn-sm btn-primary">
+      <Icon solid="PencilAlt" class="inline-block w-5 h-5 mr-2" />
+      {l "Compose"}
+    </button> -->
+    <Bonfire.UI.Common.SmartInputContainerLive
+        hide_smart_input={@hide_smart_input}
+        showing_within={@showing_within}
+        reply_to_id={e(@reply_to_id, "")}
+        thread_id={@thread_id}
+        create_activity_type={@create_activity_type}
+        thread_mode={@thread_mode}
+        layout_mode={e(@layout_mode, nil)}
+        to_boundaries={@to_boundaries}
+        to_circles={e(@to_circles, [])}
+        smart_input_prompt={@smart_input_prompt}
+        smart_input_text={@smart_input_text}
+      />
+  </div>
+  <div class="flex items-center gap-4">
+     <!-- <Surface.Components.Dynamic.Component
+      module={Bonfire.Search.Web.FormLive}
+      search_limit={5}
+    /> -->
+
+    <Surface.Components.Dynamic.Component
+      module={Bonfire.Search.Web.FormLive}
+      search_limit={5}
+    />
+
+    <LivePatch to={path(@current_user)}>
+      <Bonfire.UI.Common.AvatarLive
+        class="inline-block object-cover w-10 h-10 rounded-full ring-2 ring-base-100 bg-base-300"
+        size=40
+        user={@user}
+      />
+    </LivePatch>
+
+    <LiveRedirect to={path(Bonfire.Data.Social.Message)} 
+      class={"btn btn-circle h-[40px] w-[40px] btn-sm btn-outline border-base-content/30 border",  "!text-primary border-current": @page == "messages"}>
+        <Icon solid="Mail" class={"w-5 h-5", "!text-primary": @page == "messages"}/>
+        <span :if={@page == "messages"} class="sr-only">{l "Current Page:"} </span>
+        <Bonfire.UI.Common.BadgeCounterLive id={:inbox} class="indicator-item badge badge-secondary"/>
+    </LiveRedirect>
+
+    <LiveRedirect 
+        to={path(:notifications)}
+        class={"btn btn-circle btn-sm h-[40px] w-[40px] btn-outline border-base-content/30 border",  "!text-primary border-current": @page == "notifications"}
+      >
+      <Icon solid="Bell" class={"w-5 h-5", "!text-primary": @page == "notifications"} />
+      <span :if={@page == "notifications"} class="sr-only">{l "Current Page:"} </span>
+      <Bonfire.UI.Common.BadgeCounterLive id={:notifications} class="indicator-item badge badge-secondary"/> 
+    </LiveRedirect>
+
+    <div class="dropdown dropdown-end">
+      <label
+        tabindex="0"
+        id="user-profile-menu"
+        aria-haspopup="true"
+        aria-expanded="true"
+      >
+        <div class="border btn btn-circle h-[40px] w-[40px] btn-sm btn-outline border-base-content/30">
+          <Icon solid="DotsHorizontal" class="w-5 h-5" />
+        </div>
+      </label>
+      <ul
+        tabindex="0"
+        class={"mt-3 rounded shadow w-56 menu dropdown-content bg-neutral-content", 
+          "menu-compact": Settings.get([:ui, :compact], false, @__context__)}
+        role="menu"
+        aria-orientation="vertical"
+        aria-labelledby="user-profile-menu"
+      >
+        <Bonfire.UI.Common.UserMenuLinksLive  />
+      </ul>
     </div>
-    <div class="flex items-center gap-3">
-    <Bonfire.UI.Common.UserMenuLive />   
-    </div>
+  </div>
 </div>

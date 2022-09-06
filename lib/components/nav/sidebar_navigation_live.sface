@@ -2,8 +2,7 @@
   role="navigation"
   aria-label={l "Main navigation"}>
   <ul 
-    class={"menu", 
-      "menu-compact": Settings.get([:ui, :compact], false, @__context__)}>
+    class={"space-y-6 border-l border-base-content/30"}>
     
     <Bonfire.UI.Common.SidebarNavigationItemsLive
       page={@page}

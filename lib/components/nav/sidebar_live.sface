@@ -1,61 +1,10 @@
 <!-- x-on:resize.window="smart_input_fullscreen = (window.innerWidth > 1200) ? false : smart_input_fullscreen" -->
 
 <div 
-  class={
-    "sticky z-[110] items-start grid grid-flow-row overflow-x-hidden overflow-y-auto top-3 widget auto-rows-min invisible md:visible w-0 md:w-auto", 
-    "bg-base-100 p-2 !top-0 !h-[var(--inner-window-height)]": e(@layout_mode, nil) == "full",
-    "gap-4": !Settings.get([:ui, :compact], false, @__context__),
-    "gap-3": Settings.get([:ui, :compact], false, @__context__),
-    }>
+  class={"absolute top-[80px] left-[30px] z-[110] items-start grid grid-flow-row overflow-x-hidden overflow-y-auto top-6 auto-rows-min invisible md:visible w-0 md:w-auto"}>
 
-  {#if @current_user}
-
-    <div class="pl-3">
-      <Bonfire.UI.Common.LogoLive />
-    </div>
-    <div class="p-2 pb-0">
-      <Bonfire.UI.Common.UserMenuLive />   
-      <div 
-        class="mt-3">
-        <Bonfire.UI.Common.SmartInputContainerLive
-          hide_smart_input={@hide_smart_input}
-          showing_within={@showing_within}
-          reply_to_id={e(@reply_to_id, "")}
-          thread_id={@thread_id}
-          create_activity_type={@create_activity_type}
-          thread_mode={@thread_mode}
-          layout_mode={e(@layout_mode, nil)}
-          to_boundaries={@to_boundaries}
-          to_circles={e(@to_circles, [])}
-          smart_input_prompt={@smart_input_prompt}
-          smart_input_text={@smart_input_text}
-        />
-        <div class={
-          "m-3": Settings.get([:ui, :smart_input_as], nil, @__context__) == :sidebar
-        }>
-          <Bonfire.UI.Common.SidebarNavigationDropdownLive
-            :if={@show_less_menu_items}
-            page={@page}
-          />
-        </div>
-      </div>
-    </div>
-
-
-    
-    <Bonfire.UI.Common.SidebarNavigationLive
-      :if={!@show_less_menu_items}
-      page={@page}
-      smart_input_prompt={@smart_input_prompt}
-    />
-
-    <Surface.Components.Dynamic.LiveComponent
-      :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive) && Bonfire.Me.Settings.get([:ui, :topics_list_in_sidebar], true, @__context__) && @hide_smart_input != true}
-      module={Bonfire.Classify.Web.CategoriesNavLive}
-      id={:subscribed_topics}
-    />
-    
-    <div class="flex-col hidden gap-3 md:flex">
+    {#if @current_user}
+ 
       {#if is_list(@sidebar_widgets[:users][:main])}
         <Surface.Components.Dynamic.Component
           :for={{component, component_assigns} <- @sidebar_widgets[:users][:main]}
@@ -63,7 +12,6 @@
           {...component_assigns}
         />
       {/if}
-    </div>
 
   {#else} 
   <!-- GUEST SIDEBAR -->
