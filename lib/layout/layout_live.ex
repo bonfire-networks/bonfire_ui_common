@@ -54,14 +54,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
       }"}
       >
       
-      <div 
+        <div 
           x-cloak
           x-show="open_extensions_sidebar" 
           @keydown.window.escape="open_extensions_sidebar = false;" 
-          class="fixed top-0 bottom-0 left-0 z-50 overflow-hidden">
+          class="fixed top-0 bottom-0 left-0 z-[200] overflow-hidden">
           <div class="inset-0 h-full">
             <section class="h-full" aria-labelledby="slide-over-heading">
-              <div class="h-full w-[260px]" x-description="Slide-over panel, show/hide based on slide-over state."
+              <div class="h-full w-[230px]" x-description="Slide-over panel, show/hide based on slide-over state."
                 x-show="open_extensions_sidebar"
                 x-transition:enter="transform transition ease-in-out duration-150 sm:duration-500"
                 x-transition:enter-start="-translate-x-full"
@@ -69,35 +69,63 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 x-transition:leave="transform transition ease-in-out duration-150 sm:duration-500"
                 x-transition:leave-start="-translate-x-0"
                 x-transition:leave-end="-translate-x-full">
-                <div class="w-full bg-base-100">
-                  <div class="px-4">
-                    <div class="flex items-start justify-between">
-                      <h2 id="slide-over-heading" class="pt-4 text-lg font-bold text-primary-content-800">
-                        {l "Bonfire apps"}
-                      </h2>
+                <div class="w-full h-full bg-base-100">
+                  <div class="px-2">
+                    <div class="flex items-start justify-between py-4">
+                      <LiveRedirect 
+                        class="flex items-center gap-2"
+                        to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}>
+                        <div class="w-8 h-8 bg-center bg-no-repeat bg-cover" style={"background-image: url(#{ Config.get([:ui, :theme, :instance_icon], nil)})"}></div>
+                        <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
+                      </LiveRedirect>
                     </div>
                   </div>
-                    <ul class="p-2 mt-6 mb-3 menu bg-base-100">
+                    <ul class="p-2 mb-3 menu">
                       <li class="text-xs font-medium tracking-wider uppercase menu-title text-primary-content-800">
-                        <span>{"Enabled extensions"}</span>
+                        <span>{"Timelines"}</span>
                       </li>
                       <li>
-                      <LiveRedirect to={path(:feed)}>
-                        <div class="flex items-center w-full">
-                          <Icon outline="Globe" class="w-5 h-5" />
-                          <h3 class="flex-1 ml-2 text-base font-normal text-primary-content-800">Bonfire social</h3>
-                          <Icon outline="ChevronRight" class="w-5 h-5" />
-                        </div>
-                      </LiveRedirect>
+                        <LiveRedirect 
+                          :if={module_enabled?(Bonfire.Classify.Web.CategoriesLive)}
+                          to={path(Config.get(:user_home_page, Bonfire.UI.Social.HomeLive))} >
+                            <div class="flex items-center w-full">
+                              <Icon solid="Newspaper" class="w-5 h-5" />
+                              <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l "My feed"}</div>
+                            </div>
+                        </LiveRedirect>
+                      </li>
+                      <li>
+                        <LiveRedirect 
+                          :if={module_enabled?(Bonfire.Classify.Web.CategoriesLive)}
+                          to={"/feed/local"} >
+                            <div class="flex items-center w-full">
+                              <Icon solid="LocationMarker" class="w-5 h-5" />
+                              <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l "Local"}</div>
+                            </div>
+                        </LiveRedirect>
+                      </li>
+                      <li>
+                        <LiveRedirect 
+                          :if={module_enabled?(Bonfire.Classify.Web.CategoriesLive)}
+                          to={"/feed/federation"} >
+                            <div class="flex items-center w-full">
+                              <Icon solid="Globe" class="w-5 h-5" />
+                              <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l "Federated"}</div>
+                            </div>
+                        </LiveRedirect>
+                      </li>
+                    </ul>
+                    <ul class="p-2 mb-3 menu">
+                      <li class="text-xs font-medium tracking-wider uppercase menu-title text-primary-content-800">
+                        <span>{"Extensions"}</span>
                       </li>
                       <li>
                         <LiveRedirect 
                           :if={module_enabled?(Bonfire.Classify.Web.CategoriesLive)}
                           to={path(Bonfire.Classify.Web.CategoriesLive)}>
                             <div class="flex items-center w-full">
-                              <Icon outline="Collection" class="w-5 h-5" />
-                              <h3 class="flex-1 ml-2 text-base font-normal text-primary-content-800">{l "Topics"}</h3>
-                              <Icon outline="ChevronRight" class="w-5 h-5" />
+                              <Icon solid="Collection" class="w-5 h-5" />
+                              <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l "Topics"}</div>
                             </div>
                         </LiveRedirect>
                       </li>
@@ -106,9 +134,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
                           :if={module_enabled?(Bonfire.UI.Coordination.MyTasksLive)}
                           to={path(Bonfire.UI.Coordination.MyTasksLive)}>
                             <div class="flex items-center w-full">
-                              <Icon iconify="vscode-icons:file-type-todo" class="w-5 h-5" />
-                              <h3 class="flex-1 ml-2 text-base font-normal text-primary-content-800">{l "Coordination"}</h3>
-                              <Icon outline="ChevronRight" class="w-5 h-5" />
+                              <Icon solid="LightningBolt" class="w-5 h-5" />
+                              <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l "Coordination"}</div>
                             </div>
                         </LiveRedirect>
                       </li>
@@ -118,9 +145,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
                           :if={module_enabled?(Bonfire.Breadpub.BreadDashboardLive)}
                           to={path(Bonfire.Breadpub.BreadDashboardLive)}>
                             <div class="flex items-center w-full">
-                              <Icon outline="ChevronRight" class="w-5 h-5" />
-                              <h3 class="flex-1 ml-2 text-base font-normal text-primary-content-800">BreadPub</h3>
-                              <Icon outline="ChevronRight" class="w-5 h-5" />
+                              <Icon solid="ChevronRight" class="w-5 h-5" />
+                              <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">BreadPub</div>
                             </div>
                         </LiveRedirect>
                       </li>
@@ -131,15 +157,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           </div>
         </div>
 
-      <div
-        x-transition:enter="transform transition ease-in-out duration-150 sm:duration-500"
-        x-transition:enter-start="-translate-x-full"
-        x-transition:enter-end="-translate-x-0"
-        x-transition:leave="transform transition ease-in-out duration-150 sm:duration-500"
-        x-transition:leave-start="-translate-x-0"
-        x-transition:leave-end="-translate-x-full"  
-      :class="{'pl-[260px]': open_extensions_sidebar}">
-
+      <div :class="{'pl-[230px]': open_extensions_sidebar}">
         <Bonfire.UI.Common.HeaderFullLayoutLive 
           reply_to_id={@reply_to_id}
           layout_mode={e(@layout_mode, nil)}
@@ -167,8 +185,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
           @resize.window.debounce.100="width = window.innerWidth"
           id="bonfire_layout"
           class={
-            "w-full mx-auto grid-cols-1",
-            "grid-cols-[240px_1fr]": e(@layout_mode, nil) == "full"        }>
+            "w-full mx-auto grid grid-cols-[280px_auto] justify-center",
+            "grid-cols-[240px_auto]": e(@layout_mode, nil) == "full"        }>
 
           <Bonfire.UI.Common.SidebarLive
             page={@page}
@@ -193,13 +211,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
             }>
             <Bonfire.UI.Common.HeaderMobileGuestLive :if={!@current_user} />
             
-            <div class={"justify-center mt-6 grid grid-cols-[680px_320px] gap-4",
+            <div class={"justify-center mt-6 grid grid-cols-[680px_320px] gap-8",
             "!grid-cols-[1020px]": !is_list(@sidebar_widgets[:users][:secondary])
             }>
               <div
                 class={"grid relative invisible_frame",
-                "grid-rows-[60px_1fr]": !Settings.get([:ui, :compact], false, @__context__),
-                "grid-rows-[40px_1fr]": Settings.get([:ui, :compact], false, @__context__)
+                "grid-rows-[60px_auto]": !Settings.get([:ui, :compact], false, @__context__),
+                "grid-rows-[40px_auto]": Settings.get([:ui, :compact], false, @__context__)
                 }>
                 <Bonfire.UI.Common.PageHeaderLive
                   :if={!@without_header}

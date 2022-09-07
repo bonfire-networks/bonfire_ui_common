@@ -1,9 +1,13 @@
 <nav 
   role="navigation"
-  aria-label={l "Main navigation"}>
+  aria-label={l "Social navigation"}>
+  <div class="flex items-center gap-2 mb-4 text-base font-light">
+   <Icon solid="Inbox" class="w-5 h-5" />
+   <span>{l "Feeds"}</span>
+  </div>
   <ul 
-    class={"space-y-6 border-l border-base-content/30"}>
-    
+    class={"ml-2 space-y-6 border-l border-base-content/30"}>
+
     <Bonfire.UI.Common.SidebarNavigationItemsLive
       page={@page}
     />

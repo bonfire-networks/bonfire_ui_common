@@ -1,7 +1,7 @@
 <!-- x-on:resize.window="smart_input_fullscreen = (window.innerWidth > 1200) ? false : smart_input_fullscreen" -->
 
 <div 
-  class={"absolute top-[80px] left-[30px] z-[110] items-start grid grid-flow-row overflow-x-hidden overflow-y-auto top-6 auto-rows-min invisible md:visible w-0 md:w-auto"}>
+  class={"p-4 pt-10 relative z-[110]"}>
 
     {#if @current_user}
  

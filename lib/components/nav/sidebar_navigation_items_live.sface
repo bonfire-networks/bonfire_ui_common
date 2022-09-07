@@ -78,7 +78,7 @@
   </LiveRedirect>
 </li>
 
-<li>
+<!-- <li>
   <LiveRedirect 
     to={"/topics"} 
     class={
@@ -87,7 +87,7 @@
       <span :if={@page == "topics" || @page == "topics_followed"} class="sr-only">{l "Current Page:"} </span>
       {l "Topics"}
   </LiveRedirect>
-</li>
+</li> -->
 
 <!-- <li>
   <LiveRedirect 
