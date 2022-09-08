@@ -1,42 +1,45 @@
 <div class="flex items-center shadow justify-between px-4 py-2 bg-base-100 sticky z-[999] top-0">
-  <div class="flex-1 flex items-center gap-3 w-full max-w-[360px]">
+  <div class="flex items-center flex-1 w-full gap-3 ">
     <Bonfire.UI.Common.AppsLive />
     <LiveRedirect 
       to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}>
       <div class="w-8 h-10 bg-center bg-no-repeat bg-cover" style={"background-image: url(#{ Config.get([:ui, :theme, :instance_icon], nil)})"}></div>
-      <!-- <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div> -->
     </LiveRedirect>
-    <!-- <button 
-      type="button" 
-      class="normal-case rounded btn btn-sm btn-primary">
-      <Icon solid="PencilAlt" class="inline-block w-5 h-5 mr-2" />
-      {l "Compose"}
-    </button> -->
-    <Bonfire.UI.Common.SmartInputContainerLive
-        hide_smart_input={@hide_smart_input}
-        showing_within={@showing_within}
-        reply_to_id={e(@reply_to_id, "")}
-        thread_id={@thread_id}
-        create_activity_type={@create_activity_type}
-        thread_mode={@thread_mode}
-        layout_mode={e(@layout_mode, nil)}
-        to_boundaries={@to_boundaries}
-        to_circles={e(@to_circles, [])}
-        smart_input_prompt={@smart_input_prompt}
-        smart_input_text={@smart_input_text}
-      />
-  </div>
-  <div class="flex items-center gap-4">
-     <!-- <Surface.Components.Dynamic.Component
-      module={Bonfire.Search.Web.FormLive}
-      search_limit={5}
-    /> -->
-
     <Surface.Components.Dynamic.Component
       module={Bonfire.Search.Web.FormLive}
       search_limit={5}
     />
-
+    <Bonfire.UI.Common.PageHeaderLive
+      page_title={@page_title}
+      page_header_drawer={e(@page_header_drawer, false)}
+      >
+      <:right_action>
+        <Surface.Components.Dynamic.Component
+          :if={@current_user && @page_header_aside}
+          :for={{component, component_assigns} <- e(@page_header_aside, [])}
+          module={component}
+          {...component_assigns}
+        />
+      </:right_action>
+    </Bonfire.UI.Common.PageHeaderLive>
+  </div>
+    
+    
+  <div class="flex items-center gap-4">
+    <Bonfire.UI.Common.SmartInputContainerLive
+      hide_smart_input={@hide_smart_input}
+      showing_within={@showing_within}
+      reply_to_id={e(@reply_to_id, "")}
+      thread_id={@thread_id}
+      create_activity_type={@create_activity_type}
+      thread_mode={@thread_mode}
+      layout_mode={e(@layout_mode, nil)}
+      to_boundaries={@to_boundaries}
+      to_circles={e(@to_circles, [])}
+      smart_input_prompt={@smart_input_prompt}
+      smart_input_text={@smart_input_text}
+    />
+    
     <LivePatch to={path(@current_user)}>
       <Bonfire.UI.Common.AvatarLive
         class="inline-block object-cover w-10 h-10 rounded-full ring-2 ring-base-100 bg-base-300"

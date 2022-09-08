@@ -4,7 +4,9 @@ defmodule Bonfire.UI.Common.HeaderFullLayoutLive do
 
   prop page, :string
   prop user, :map
-
+  prop page_title, :string
+  prop page_header_drawer, :boolean 
+  prop page_header_aside, :any
   # need to pass down props for SmartInput:
   prop reply_to_id, :string, default: ""
   prop thread_id, :string, default: "", required: false

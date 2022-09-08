@@ -6,7 +6,7 @@
   :attrs={@opts}>
   <div 
     :if={@show}
-    class="relative">
+    class="relative max-w-screen-xl mx-auto mt-4">
 
     <div class="flex sticky top-0 space-x-3 z-[995] flex sticky top-0 space-x-3 z-[995] items-center p-3 bg-base-100 rounded-md shadow"> 
       <button 

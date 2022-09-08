@@ -1,7 +1,7 @@
 <!-- x-on:resize.window="smart_input_fullscreen = (window.innerWidth > 1200) ? false : smart_input_fullscreen" -->
 
 <div 
-  class={"p-4 pt-10 relative z-[110]"}>
+  class={"p-4 pt-6 relative z-[110]"}>
 
     {#if @current_user}
  

@@ -1,13 +1,9 @@
 <!-- <div class="relative"> -->
   <div 
     role="banner" 
-    class="z-[100] sticky top-6 place-content-center w-full bg-base-100 tablet:bg-opacity-100 shadow md:rounded-md">  
-    <div class="relative">
+    class="">  
       <div 
-        class={"flex items-center ",
-        "p-3": !Settings.get([:ui, :compact], false, @__context__),
-        "px-2 py-1": Settings.get([:ui, :compact], false, @__context__)
-        }>
+        class={"flex items-center"}>
         <div class="flex items-center flex-1 space-x-3 text-left">
 
             {#if @page_header_drawer}
@@ -52,10 +48,8 @@
           </#slot>
         </div>
       </div>
-
       <Bonfire.UI.Common.PreviewContentLive
         id="preview_content"
       />
-    </div>
   </div>
 <!-- </div> -->
