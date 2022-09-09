@@ -28,7 +28,7 @@
 
     <div class="mt-2 z-[910] modal_invisible relative" data-id="modal-contents">
       <#slot>
-        <Surface.Components.Dynamic.LiveComponent
+        <Dynamic.LiveComponent
           :if={e(@modal_assigns, :preview_component, nil)}
           id={"preview_component"}
           module={e(@modal_assigns, :preview_component, nil)}

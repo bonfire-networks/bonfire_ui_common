@@ -89,7 +89,7 @@
         "h-full !mb-0 bg-base-300 !rounded-none max-h-[150px]": Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar
       }>
         <!-- show what we're replying to, if any -->
-        <Surface.Components.Dynamic.LiveComponent
+        <Dynamic.LiveComponent
           module={Bonfire.UI.Social.ActivityLive}
           id={"cap:" <> e(@activity, :id, "")}
           activity={@activity}
@@ -102,7 +102,7 @@
         />
       </div>
 
-      <Surface.Components.Dynamic.Component
+      <Dynamic.Component
           module={active_smart_input_component(@smart_input_component, @create_activity_type)}
           textarea_container_class={
             "h-full flex-1 flex flex-col grow",

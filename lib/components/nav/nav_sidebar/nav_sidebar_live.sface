@@ -22,7 +22,7 @@
   {#if ulid(@current_user)}
     <!-- USER NAV SIDEBAR -->
     {#if is_list(@sidebar_widgets[:users][:main])}
-      <Surface.Components.Dynamic.Component
+      <Dynamic.Component
         :for={{component, component_assigns} <- @sidebar_widgets[:users][:main]}
         module={component}
         {...component_assigns}
@@ -31,7 +31,7 @@
 
   {#else}
     <!-- GUEST NAV SIDEBAR -->
-    <Surface.Components.Dynamic.Component
+    <Dynamic.Component
       :for={{component, component_assigns} <- @sidebar_widgets[:guests][:main] || []}
       module={component}
       {...component_assigns}

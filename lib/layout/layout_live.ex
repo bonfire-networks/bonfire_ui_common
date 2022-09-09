@@ -65,17 +65,18 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <div class="flex items-center flex-1 w-full gap-3 ">
           <Bonfire.UI.Common.AppsLive />
           <Bonfire.UI.Common.LogoLive />
-          <Surface.Components.Dynamic.Component
+          <Dynamic.Component
             :if={module_enabled?(Bonfire.Search.Web.FormLive)}
             module={Bonfire.Search.Web.FormLive}
             search_limit={5}
           />
           <Bonfire.UI.Common.PageHeaderLive
+            :if={!@without_header}
             page_title={@page_title}
             page_header_drawer={e(@page_header_drawer, false)}
             >
             <:right_action>
-              <Surface.Components.Dynamic.Component
+              <Dynamic.Component
                 :if={@current_user && @page_header_aside}
                 :for={{component, component_assigns} <- e(@page_header_aside, [])}
                 module={component}
@@ -178,7 +179,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   "!gap-5": !Settings.get([:ui, :compact], false, @__context__),
                 }>
             <!-- USER WIDGET SIDEBAR -->
-                <Surface.Components.Dynamic.Component
+                <Dynamic.Component
                   :if={ulid(@current_user)}
                   :for={{component, component_assigns} <- @sidebar_widgets[:users][:secondary] || [
                     {Bonfire.UI.Social.WidgetTagsLive, []},
@@ -189,7 +190,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 />
 
             <!-- GUEST WIDGET SIDEBAR -->
-                <Surface.Components.Dynamic.Component
+                <Dynamic.Component
                   :if={!@current_user}
                   :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || []}
                   module={component}

@@ -18,14 +18,14 @@
 
   {#match Surface.Component}
 
-    <Surface.Components.Dynamic.Component
+    <Dynamic.Component
       module={@widget[:module]}
       page={@page}
     />
 
   {#match Surface.LiveComponent}
 
-    <Surface.Components.Dynamic.LiveComponent
+    <Dynamic.LiveComponent
       id={Pointers.ULID.generate()}
       module={@widget[:module]}
       page={@page}

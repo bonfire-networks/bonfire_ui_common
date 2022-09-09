@@ -22,10 +22,16 @@
             {/if}
             
           <#slot {@left_action}>
-            <LiveRedirect to={Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:href]} class="normal-case rounded btn btn-sm btn-outline border-base-content/30">
-              {Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name]}
-            </LiveRedirect>
-            <Icon solid="ChevronRight" class="w-5 h-5 text-base-content/80" />
+            {#case Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])}
+              {#match nil}
+              {#match extension}
+                <LiveRedirect 
+                  to={extension[:href]} 
+                  class="normal-case rounded btn btn-sm btn-outline border-base-content/30">
+                  {extension[:name]}
+                </LiveRedirect>
+                <Icon solid="ChevronRight" class="w-5 h-5 text-base-content/80" />
+            {/case}
           </#slot>
           
           <div class="flex-1">
