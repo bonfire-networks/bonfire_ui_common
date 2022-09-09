@@ -1,15 +1,6 @@
-<div 
-  class="items-center hidden h-[48px] space-x-3 md:flex">
-  <LiveRedirect 
-    to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}>
-    <div class="w-8 h-8 bg-center bg-no-repeat bg-cover" style={"background-image: url(#{ Config.get([:ui, :theme, :instance_icon], nil)})"}></div>
-    <!-- <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div> -->
-  </LiveRedirect>
-  <Bonfire.UI.Common.AppsLive />
-  <div class="flex-1">
-    <Surface.Components.Dynamic.Component
-      module={Bonfire.Search.Web.FormLive}
-      search_limit={5}
-    />
-  </div>
-</div>
+<LiveRedirect 
+  class={@container_class}
+  to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}>
+  <div class={@image_class} style={"background-image: url(#{ Config.get([:ui, :theme, :instance_icon], nil)})"}></div>
+  <div :if={@with_name} class={@name_class}>{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
+</LiveRedirect>

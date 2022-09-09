@@ -1,4 +1,4 @@
-<Bonfire.UI.Common.WidgetLive 
+<Bonfire.UI.Common.WidgetBlockLive 
   :if={!Bonfire.Me.Settings.get([:ui, :show_instance_links, :disabled], nil, @__context__)}
   widget_title={e(@widget_title, l "Links")}
   
@@ -32,4 +32,4 @@
   </li>
 </ul>
 
-</Bonfire.UI.Common.WidgetLive>
+</Bonfire.UI.Common.WidgetBlockLive>

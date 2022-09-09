@@ -1,0 +1,48 @@
+{#if ulid(@current_user)}
+<li class="tracking-wider menu-title">
+  <span class="text-xs font-medium !text-neutral">@{e(@current_user, :character, :username, "unknown")}</span>
+</li>
+<li
+  class="hover:bg-neutral/10 ">
+  <LiveRedirect to={path(@current_user)} class="flex items-center p-4 text-sm text-neutral">
+    {l "My profile"}
+  </LiveRedirect>
+</li>
+<li
+  class="hover:bg-neutral/10">
+  <LiveRedirect to="/settings" class="flex items-center p-4 text-sm text-neutral">
+    {l "Settings"}
+  </LiveRedirect>
+</li>
+<li
+  class="hover:bg-neutral/10">
+  <LiveRedirect to="/switch-user" class="flex items-center p-4 text-sm text-neutral">
+    {l "Switch profile"}
+  </LiveRedirect>
+</li>
+<li 
+  class="hover:bg-neutral/10"
+  :if={ulid(@current_user)}>  
+  <LiveRedirect to="/logout" class="flex items-center p-4 text-sm text-neutral">
+    {l "Logout"}
+  </LiveRedirect>
+</li>
+{/if}
+
+<li class="tracking-wider menu-title">
+  <span class="text-xs font-medium !text-neutral">{l "Instance"}</span>
+</li>
+<li
+  class="hover:bg-neutral/10"
+  >
+  <LiveRedirect to={path(:home)} class="flex items-center p-4 text-sm text-neutral">
+    {l "Homepage"}
+  </LiveRedirect>
+</li>
+<li
+  class="hover:bg-neutral/10"
+  >
+  <LiveRedirect to="/terms/code-of-conduct" class="flex items-center p-4 text-sm text-neutral">
+    {l "Code of conduct"}
+  </LiveRedirect>
+</li>

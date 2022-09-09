@@ -7,10 +7,6 @@ defmodule Icon do
 
   prop class, :css_class, default: "w-4 h-4"
 
-  def render(%{iconify: icon} = assigns) when is_binary(icon) or is_atom(icon) and not is_nil(icon) do
-    component(&Iconify.iconify/1, prepare_assigns(assigns, icon))
-  end
-
   def render(%{solid: icon} = assigns) when is_binary(icon) or is_atom(icon) and not is_nil(icon) do
     component(&Iconify.iconify/1, prepare_assigns(assigns, "heroicons-solid:"<>icon))
   end
@@ -18,12 +14,16 @@ defmodule Icon do
   def render(%{outline: icon} = assigns) when is_binary(icon) or is_atom(icon) and not is_nil(icon) do
     component(&Iconify.iconify/1, prepare_assigns(assigns, "heroicons-outline:"<>icon))
   end
+  def render(%{iconify: icon} = assigns) do
+    component(&Iconify.iconify/1, prepare_assigns(assigns, icon))
+  end
 
   defp prepare_assigns(assigns, icon) do
     assigns
     |> assign(
       icon: icon,
-      class: class_to_string(Map.get(assigns, :class))
+      class: class_to_string(Map.get(assigns, :class)),
+      __context__: nil # never need context in icons
     )
   end
 

@@ -44,12 +44,12 @@
                 </div>
               </div>
 
-              <!-- <Bonfire.UI.Common.SidebarNavigationLive page={e(@page, "")} /> -->
+              <!-- <Bonfire.UI.Social.SidebarNavigationLive page={e(@page, "")} /> -->
               <nav class="flex-1 mt-6 space-y-2" aria-label="Sidebar">
                 <LivePatch to={path(@current_user)} class="flex items-center py-2 text-sm font-medium rounded-md text-base-content">
                   <Icon solid="User" class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
                   <span class="truncate">
-                    {l "Profile"}
+                    {l "My profile"}
                   </span>
                 </LivePatch>
                 <LivePatch to="/switch-user" class="flex items-center py-2 text-sm font-medium rounded-md text-base-content">

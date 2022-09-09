@@ -1,6 +1,6 @@
 
 
-<Bonfire.UI.Common.WidgetLive 
+<Bonfire.UI.Common.WidgetBlockLive 
   widget_title={l "Have some feedback?"}
   class="relative w-full mx-auto rounded-xl bg-base-100">   
   <div class={"p-3 pt-0 prose-sm prose ",
@@ -11,4 +11,4 @@
   <Bonfire.UI.Common.FeedbackButtonLive text={Settings.get([:ui, :feedback_post_template], "I have a suggestion for Bonfire: \n\n@BonfireBuilders #bonfire_feedback", @__context__)} />
 
   </div>
-</Bonfire.UI.Common.WidgetLive>
+</Bonfire.UI.Common.WidgetBlockLive>

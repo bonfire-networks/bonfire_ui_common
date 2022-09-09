@@ -1,11 +1,9 @@
 <div 
   class="md:hidden bg-base-100 rounded-md flex h-[48px] place-content-center items-center flex w-full px-3">
-  <LiveRedirect 
-    class="flex items-center flex-1 space-x-2"
-    to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}>
-    <div class="bg-center bg-no-repeat bg-contain w-7 h-7" style={"background-image: url(#{ Config.get([:ui, :theme, :instance_icon], nil)})"}></div>
-    <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
-  </LiveRedirect>
+  <Bonfire.UI.Common.LogoLive 
+    container_class="flex items-center flex-1 space-x-2"
+    with_name={true}
+  />
 
   <div class="flex justify-end">
     {#if @current_account != nil }

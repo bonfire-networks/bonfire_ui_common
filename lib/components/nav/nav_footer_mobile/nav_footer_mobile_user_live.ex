@@ -1,4 +1,4 @@
-defmodule Bonfire.UI.Common.HeaderMobileLive do
+defmodule Bonfire.UI.Common.NavFooterMobileUserLive do
   use Bonfire.UI.Common.Web, :stateless_component
   alias Bonfire.UI.Common.BadgeCounterLive
 

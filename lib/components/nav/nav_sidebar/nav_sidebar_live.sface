@@ -1,0 +1,40 @@
+<nav 
+  role="navigation"
+  aria-label={l "Extension navigation"}>
+
+  <ul class="menu">
+  
+    {#for nav <- @items}
+      {#case nav}
+        {#match %{} = nav}
+          <li :if={!nav[:exclude_from_nav]}>
+            <Bonfire.UI.Common.WidgetLive widget={nav} page={@page} selected_tab={@selected_tab} />
+          </li>
+        {#match _}
+          <li :for={subnav <- nav} :if={!nav[:exclude_from_nav]}>
+            <Bonfire.UI.Common.WidgetLive widget={subnav} page={@page} selected_tab={@selected_tab} />
+          </li>
+      {/case}
+    {/for}
+  </ul>
+
+  <!-- TODO: deprecate -->
+  {#if ulid(@current_user)}
+    <!-- USER NAV SIDEBAR -->
+    {#if is_list(@sidebar_widgets[:users][:main])}
+      <Surface.Components.Dynamic.Component
+        :for={{component, component_assigns} <- @sidebar_widgets[:users][:main]}
+        module={component}
+        {...component_assigns}
+      />
+    {/if}
+
+  {#else}
+    <!-- GUEST NAV SIDEBAR -->
+    <Surface.Components.Dynamic.Component
+      :for={{component, component_assigns} <- @sidebar_widgets[:guests][:main] || []}
+      module={component}
+      {...component_assigns}
+    />
+  {/if}
+</nav>

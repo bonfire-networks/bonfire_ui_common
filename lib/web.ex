@@ -144,7 +144,7 @@ defmodule Bonfire.UI.Common.Web do
 
       # deprecated: Phoenix's Helpers
       alias Bonfire.Web.Router.Helpers, as: Routes
-      # use instead: Bonfire's voodoo routing, eg: `path(Bonfire.UI.Social.HomeLive):
+      # use instead: Bonfire's voodoo routing, eg: `path(Bonfire.UI.Social.FeedsLive):
       import Bonfire.Common.URIs
 
       alias Bonfire.Me.Settings
@@ -165,11 +165,9 @@ defmodule Bonfire.UI.Common.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      # icons
-      alias Heroicons.Solid
-      alias Heroicons.Outline
-
       # unquote(Bonfire.Common.Extend.quoted_use_if_enabled(Thesis.View, Bonfire.UI.Common.ContentAreas))
+
+      import Bonfire.Common.Modularity.DeclareExtensions
 
     end
   end

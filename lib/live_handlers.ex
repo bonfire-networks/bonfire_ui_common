@@ -111,10 +111,13 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   def assign_default_params(params, uri, socket) do
     socket
+      # |> dump()
       |> assign_global(
         current_params: params,
         current_url: URI.parse(uri)
                       |> maybe_get(:path),
+        current_view: socket.view,
+        current_app: Application.get_application(socket.view),
         preview_module: nil
       )
   end

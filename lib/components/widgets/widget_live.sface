@@ -1,11 +1,36 @@
-<aside 
-  class={@class}>
-  <div 
-    :if={@widget_title} 
-    class="flex items-center p-3 pb-2 rounded-t-md" 
-    role="banner">
-    <div class="flex-1 font-bold text-base-content">{@widget_title}</div> 
-    <#slot {@action} />
-  </div>
-  <#slot />
-</aside>
+{#case @widget[:type]}
+
+  {#match :link}
+
+    <LiveRedirect 
+      to={@widget[:href]} 
+      class={
+        "flex items-center rounded-md", 
+        "bg-base-content/10": e(@__context__, :current_view, nil) == @widget[:module] || @page == @widget[:page] || @selected_tab == @widget[:page]
+      }
+      >
+      <Icon iconify={@widget[:icon]} class="w-5 h-5 text-base-content/80" />
+
+      <span :if={e(@__context__, :current_view, nil) == @widget[:module] || @page == @widget[:page] || @selected_tab == @widget[:page]} class="sr-only">{l "Current Page:"} </span>
+
+      {@widget[:text] || @widget[:name]}
+    </LiveRedirect>
+
+  {#match Surface.Component}
+
+    <Surface.Components.Dynamic.Component
+      module={@widget[:module]}
+      page={@page}
+    />
+
+  {#match Surface.LiveComponent}
+
+    <Surface.Components.Dynamic.LiveComponent
+      id={Pointers.ULID.generate()}
+      module={@widget[:module]}
+      page={@page}
+    />
+
+  {#match _}
+    TODO
+{/case}
