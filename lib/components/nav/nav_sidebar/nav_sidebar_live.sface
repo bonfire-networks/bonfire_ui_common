@@ -2,7 +2,7 @@
   role="navigation"
   aria-label={l "Extension navigation"}>
 
-  <ul class="menu">
+  <ul class="space-y-1 menu">
   
     {#for nav <- @items}
       {#case nav}

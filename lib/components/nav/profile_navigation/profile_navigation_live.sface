@@ -1,6 +1,6 @@
 <nav
   role="tabpanel"
-  class="flex justify-between w-full mb-2 tabs bg-base-100"
+  class="flex justify-between w-full mt-8 mb-2 rounded-b-xl tabs bg-base-100"
   aria-label="Switch between timeline, posts, boosts, media tabs"
 >
   <LivePatch 

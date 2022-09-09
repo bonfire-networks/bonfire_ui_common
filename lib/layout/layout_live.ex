@@ -135,13 +135,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
           @resize.window.debounce.100="width = window.innerWidth"
           id="bonfire_layout"
           class={
-            "w-full mx-auto grid grid-cols-[280px_auto] gap-8 justify-center",
+            "w-full items-start mx-auto grid grid-cols-[280px_auto] gap-8 justify-center",
             "grid-cols-[240px_auto]": @without_sidebar
           }>
 
           <div
             :if={!@without_sidebar}
-            class={"p-4 pt-6 relative z-[110]"}>
+            class={"p-4 pt-6 relative z-[110] sticky top-0"}>
 
             <Bonfire.UI.Common.NavSidebarLive
               items={@nav_items}
