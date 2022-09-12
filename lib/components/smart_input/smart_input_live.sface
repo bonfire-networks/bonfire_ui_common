@@ -1,16 +1,17 @@
-
-<div 
+<div
   :if={@current_user != nil and @hide_smart_input != true}
   id="composer_container"
   data-id="smart_input"
-  data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, @__context__) &&  @thread_mode != :flat, do: "winter"}
+  data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, @__context__) && @thread_mode != :flat,
+    do: "winter"}
   class={
     "h-full",
-    "h-[calc(100%-40px)]": Settings.get([:ui, :smart_input_as], nil, @__context__)!=:sidebar and @thread_mode != :flat
+    "h-[calc(100%-40px)]":
+      Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar and @thread_mode != :flat
   }
-  >
+>
   <!-- 'hidden': !smart_input_open  && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && @thread_mode != :flat} -->
-  <div 
+  <div
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
     x-data={"{
@@ -19,26 +20,30 @@
     }"}
     @submit="open_boundaries = false"
     x-cloak
-    :class={"{
+    :class="{
       'smart-input-open': title_open,
       'smart-input-open-boundaries': open_boundaries,
-    }"}
+    }"
     class={
       "flex bg-transparent border border-base-content/10 rounded",
-      "bottom-0 !max-w-full !border-none !rounded-none": e(@thread_mode, nil) == :flat or is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}),
+      "bottom-0 !max-w-full !border-none !rounded-none":
+        e(@thread_mode, nil) == :flat or
+          is_messaging?(%{
+            page: @page,
+            showing_within: @showing_within,
+            create_activity_type: @create_activity_type
+          }),
       "h-full": e(@showing_within, nil) == :page,
       "!shadow-none border border-base-content/10": @without_sidebar
     }
-    >
+  >
     <!-- <div 
       x-cloak
       x-show="smart_input_fullscreen"
       @click="smart_input_fullscreen = !smart_input_fullscreen"
       class="cursor-pointer bg-white/30 fixed z-[70] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"> 
     </div> -->
-    <div 
-      class={"flex flex-col flex-1 w-full"}>
-      
+    <div class="flex flex-col flex-1 w-full">
       <!-- <div 
         :if={!is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}) and length(Config.get([:ui, :smart_input_activities], []))>1}
         class="dropdown dropdown-hover"
@@ -82,12 +87,14 @@
         </button>
       </div> 
       -->
-     <div 
-      :if={@activity}
-      class={
-        "overflow-y-auto mb-2 rounded-md",
-        "h-full !mb-0 bg-base-300 !rounded-none max-h-[150px]": Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar
-      }>
+      <div
+        :if={@activity}
+        class={
+          "overflow-y-auto mb-2 rounded-md",
+          "h-full !mb-0 bg-base-300 !rounded-none max-h-[150px]":
+            Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar
+        }
+      >
         <!-- show what we're replying to, if any -->
         <Dynamic.LiveComponent
           module={Bonfire.UI.Social.ActivityLive}
@@ -103,34 +110,37 @@
       </div>
 
       <Dynamic.Component
-          module={active_smart_input_component(@smart_input_component, @create_activity_type)}
-          textarea_container_class={
-            "h-full flex-1 flex flex-col grow",
-            "min-h-[50px]": @thread_mode == :flat,
-            "min-h-[120px]": Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and @thread_mode != :flat,
-            "min-h-[calc(50vh-50px)]": Settings.get([:ui, :smart_input_as], nil, @__context__) !=:sidebar and @thread_mode != :flat
-          }
-          textarea_container_class_alpine="{
+        module={active_smart_input_component(@smart_input_component, @create_activity_type)}
+        textarea_container_class={
+          "h-full flex-1 flex flex-col grow",
+          "min-h-[50px]": @thread_mode == :flat,
+          "min-h-[120px]":
+            Settings.get([:ui, :smart_input_as], nil, @__context__) == :sidebar and @thread_mode != :flat,
+          "min-h-[calc(50vh-50px)]":
+            Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar and @thread_mode != :flat
+        }
+        textarea_container_class_alpine="{
             '!min-h-[calc(var(--inner-window-height)-150px)]': smart_input_fullscreen
           }"
-          textarea_class={"editor_area textarea p-0 h-full w-full",
-            "min-h-[50px] rounded-lg border border-base-content/30": @thread_mode == :flat,
-            "!min-h-[120px]": Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and @thread_mode != :flat,
-            "!min-h-[calc(50vh-50px)]": Settings.get([:ui, :smart_input_as], nil, @__context__) !=:sidebar and @thread_mode != :flat,
-            "!h-full !min-h-[420px]": @showing_within in [:page, :compose]
-          }
-          {...assigns}
-        />
-
+        textarea_class={
+          "editor_area textarea p-0 h-full w-full",
+          "min-h-[50px] rounded-lg border border-base-content/30": @thread_mode == :flat,
+          "!min-h-[120px]":
+            Settings.get([:ui, :smart_input_as], nil, @__context__) == :sidebar and @thread_mode != :flat,
+          "!min-h-[calc(50vh-50px)]":
+            Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar and @thread_mode != :flat,
+          "!h-full !min-h-[420px]": @showing_within in [:page, :compose]
+        }
+        {...assigns}
+      />
     </div>
-
   </div>
   <noscript>
-  <!-- make sure the smart input is displayed and usable with JS disabled -->
+    <!-- make sure the smart input is displayed and usable with JS disabled -->
     <style type="text/css">
-        #smart_input {display: block !important;}
-        /* .smart_input_container header {display: none;} */
-        .input_boundaries button {display: none;} /* FIXME: make boundary selection work without JS */
+      #smart_input {display: block !important;}
+      /* .smart_input_container header {display: none;} */
+      .input_boundaries button {display: none;} /* FIXME: make boundary selection work without JS */
     </style>
   </noscript>
 </div>

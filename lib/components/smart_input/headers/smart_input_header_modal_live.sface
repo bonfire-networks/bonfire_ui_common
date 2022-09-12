@@ -1,50 +1,54 @@
-<header 
+<header
   x-show="smart_input_open"
-  class="flex flex-row w-full p-3 rounded-t bg-base-200 flex-align-items-stretch flex-nowrap">
-  <span 
+  class="flex flex-row w-full p-3 rounded-t bg-base-200 flex-align-items-stretch flex-nowrap"
+>
+  <span
     @click="smart_input_minimized = ! smart_input_minimized"
-     class="flex-1 text-xl font-semibold text-center text-ellipsis"
-    x-text={"smart_input_title_text || '#{e(@smart_input_prompt, l "New post")}'"}
-    >
-    {e(@smart_input_prompt, l "New post")}
+    class="flex-1 text-xl font-semibold text-center text-ellipsis"
+    x-text={"smart_input_title_text || '#{e(@smart_input_prompt, l("New post"))}'"}
+  >
+    {e(@smart_input_prompt, l("New post"))}
   </span>
   <div class="flex items-center space-x-5">
-    <button 
+    <button
       @click="smart_input_minimized = !smart_input_minimized; smart_input_fullscreen = false"
-      type="button" 
-      class="flex btn btn-xs btn-ghost btn-square" 
-      data-testid="composer:smart_input_minimized-button" 
-      aria-describedby="tooltip-5527">
+      type="button"
+      class="flex btn btn-xs btn-ghost btn-square"
+      data-testid="composer:smart_input_minimized-button"
+      aria-describedby="tooltip-5527"
+    >
       <span x-cloak x-show="!smart_input_minimized">
         <Icon outline="ChevronDoubleDown" class="w-4 h-4 stroke-1 text-base-content/70" />
-        <span class="sr-only">{l "Minimize"}</span>
+        <span class="sr-only">{l("Minimize")}</span>
       </span>
       <span x-cloak x-show="smart_input_minimized">
         <Icon outline="ChevronDoubleUp" class="w-4 h-4 stroke-1 text-base-content/70" />
-        <span class="sr-only">{l "Maximise"}</span>
+        <span class="sr-only">{l("Maximise")}</span>
       </span>
     </button>
-    <button 
+    <button
       x-show="!smart_input_minimized"
       @click="smart_input_fullscreen = !smart_input_fullscreen"
-      type="button" 
-      class="btn btn-xs btn-ghost btn-square hidden md:flex" 
+      type="button"
+      class="btn btn-xs btn-ghost btn-square hidden md:flex"
       :class="{'!flex': !smart_input_minimized && !smart_input_fullscreen}"
-      data-testid="composer:maximize-button" 
-      aria-describedby="tooltip-5528">
+      data-testid="composer:maximize-button"
+      aria-describedby="tooltip-5528"
+    >
       <Icon outline="ArrowsExpand" class="w-4 h-4 stroke-1 text-base-content/70" />
-      <span class="sr-only">{l "Toggle full-screen"}</span>
+      <span class="sr-only">{l("Toggle full-screen")}</span>
     </button>
-    <button 
+    <button
       phx-click="reset"
       phx-target="#smart_input"
       @click="if (confirm('Your draft will be lost. Continue?')){smart_input_open = false; smart_input_fullscreen = false; smart_input_title_text = null;}"
-      type="button" 
-      class="flex btn btn-xs btn-ghost btn-square" 
-      data-testid="composer:close-button" 
-      aria-describedby="tooltip-5529">
+      type="button"
+      class="flex btn btn-xs btn-ghost btn-square"
+      data-testid="composer:close-button"
+      aria-describedby="tooltip-5529"
+    >
       <Icon outline="X" class="w-4 h-4 stroke-1 text-base-content/70" />
-      <span class="sr-only">{l "Close"}</span>
+      <span class="sr-only">{l("Close")}</span>
     </button>
   </div>
 </header>

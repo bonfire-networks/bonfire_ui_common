@@ -1,16 +1,22 @@
-<div 
-  :if={@smart_input_as != :sidebar}
-  class="flex items-center gap-3">
-  <button 
-    phx-click="select_smart_input" 
-    phx-target={"#smart_input"} 
-    phx-value-component={Bonfire.UI.Common.SmartInputLive.active_smart_input_component(@smart_input_component, @create_activity_type)}
-    @click={if @smart_input_as == :modal, do: "smart_input_fullscreen = true; show_smart_input(); smart_input_title_text = '#{@smart_input_prompt || l "Compose a post"}'", else: "show_smart_input(); smart_input_title_text = '#{@smart_input_prompt || l "Compose a post"}'"}
-    type="button" 
-    class="flex-1 normal-case rounded btn-sm btn btn-primary">
+<div :if={@smart_input_as != :sidebar} class="flex items-center gap-3">
+  <button
+    phx-click="select_smart_input"
+    phx-target="#smart_input"
+    phx-value-component={Bonfire.UI.Common.SmartInputLive.active_smart_input_component(
+      @smart_input_component,
+      @create_activity_type
+    )}
+    @click={if @smart_input_as == :modal,
+      do:
+        "smart_input_fullscreen = true; show_smart_input(); smart_input_title_text = '#{@smart_input_prompt || l("Compose a post")}'",
+      else:
+        "show_smart_input(); smart_input_title_text = '#{@smart_input_prompt || l("Compose a post")}'"}
+    type="button"
+    class="flex-1 normal-case rounded btn-sm btn btn-primary"
+  >
     <Icon solid="PencilAlt" class="inline-block w-5 h-5 mr-2" />
-    {@smart_input_prompt || l "Compose"}
+    {@smart_input_prompt || l("Compose")}
   </button>
-    <!-- phx-value-create_activity_type={:post} -->
+  <!-- phx-value-create_activity_type={:post} -->
   <!-- Bonfire.UI.Common.ChooseInputTypeButtonLive / -->
 </div>

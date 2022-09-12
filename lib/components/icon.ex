@@ -1,37 +1,50 @@
 defmodule Icon do
   use Surface.Component
 
-  prop iconify, :string, required: false # any icon from iconify: https://icones.js.org
-  prop solid, :string, required: false # shorthand for heroicons
-  prop outline, :string, required: false # shorthand for heroicons
+  # any icon from iconify: https://icones.js.org
+  prop iconify, :string, required: false
+  # shorthand for heroicons
+  prop solid, :string, required: false
+  # shorthand for heroicons
+  prop outline, :string, required: false
 
   prop class, :css_class, default: "w-4 h-4"
 
-  def render(%{solid: icon} = assigns) when is_binary(icon) or is_atom(icon) and not is_nil(icon) do
-    component(&Iconify.iconify/1, prepare_assigns(assigns, "heroicons-solid:"<>icon))
+  def render(%{solid: icon} = assigns)
+      when is_binary(icon) or (is_atom(icon) and not is_nil(icon)) do
+    component(
+      &Iconify.iconify/1,
+      prepare_assigns(assigns, "heroicons-solid:" <> icon)
+    )
   end
 
-  def render(%{outline: icon} = assigns) when is_binary(icon) or is_atom(icon) and not is_nil(icon) do
-    component(&Iconify.iconify/1, prepare_assigns(assigns, "heroicons-outline:"<>icon))
+  def render(%{outline: icon} = assigns)
+      when is_binary(icon) or (is_atom(icon) and not is_nil(icon)) do
+    component(
+      &Iconify.iconify/1,
+      prepare_assigns(assigns, "heroicons-outline:" <> icon)
+    )
   end
+
   def render(%{iconify: icon} = assigns) do
     component(&Iconify.iconify/1, prepare_assigns(assigns, icon))
   end
 
   defp prepare_assigns(assigns, icon) do
-    assigns
-    |> assign(
+    assign(
+      assigns,
       icon: icon,
       class: class_to_string(Map.get(assigns, :class)),
-      __context__: nil # never need context in icons
+      # never need context in icons
+      __context__: nil
     )
   end
 
   def class_to_string(class) when is_binary(class) do
     class
   end
+
   def class_to_string(class) do
     Surface.css_class(class)
   end
-
 end

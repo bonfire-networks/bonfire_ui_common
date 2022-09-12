@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Common.BasicView do
   end
 
   def show_html(title, body) do
-    raw """
+    raw("""
     <!DOCTYPE html>
     <html lang="en" class="dark">
     <head>
@@ -52,6 +52,6 @@ defmodule Bonfire.UI.Common.BasicView do
       </div>
     </div>
     </html>
-    """
+    """)
   end
 end

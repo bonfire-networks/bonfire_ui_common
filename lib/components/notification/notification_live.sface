@@ -1,74 +1,45 @@
-<div 
+<div
   id="app_notifications"
-  aria-live="assertive" 
-  class="fixed inset-0 flex items-end px-4 py-6 z-[999] pointer-events-none sm:p-6 sm:items-start">
+  aria-live="assertive"
+  class="fixed inset-0 flex items-end px-4 py-6 z-[999] pointer-events-none sm:p-6 sm:items-start"
+>
   <div class="flex flex-col items-center w-full space-y-4 sm:items-end">
-
-    <div 
-      id="notification" 
-      phx-hook="Notification" 
+    <div
+      id="notification"
+      phx-hook="Notification"
       role="alert"
-      class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash">
-      <div 
-        :if={@notification} 
-        class="p-4">
+      class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash"
+    >
+      <div :if={@notification} class="p-4">
         <div class="flex items-start">
           <div class="flex-shrink-0">
             {#case e(@notification, :icon, nil)}
               {#match icon when is_binary(icon)}
-                <img src={icon} class="w-10 h-10 rounded" />
+                <img src={icon} class="w-10 h-10 rounded">
               {#match _}
                 <Icon outline="Speakerphone" class="w-5 h-5 text-gray-600" />
             {/case}
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
             <p class="text-sm font-medium text-gray-900">{e(@notification, :title, "Notification")}</p>
-            <p data-id="content" class="text-sm text-gray-500">{rich e(@notification, :message, "")}</p>
-            <LiveRedirect 
-              :if={e(@notification, :url, nil)} 
-              to={e(@notification, :url, nil)} 
-              class='text-sm text-gray-500 capitalize link'>
-                {l "Show"}
+            <p data-id="content" class="text-sm text-gray-500">{rich(e(@notification, :message, ""))}</p>
+            <LiveRedirect
+              :if={e(@notification, :url, nil)}
+              to={e(@notification, :url, nil)}
+              class="text-sm text-gray-500 capitalize link"
+            >
+              {l("Show")}
             </LiveRedirect>
           </div>
           <div class="flex flex-shrink-0 ml-4">
-            <button 
-            phx-click="clear-flash"
-            phx-target={@myself}
-            phx-value-key="notification"
-            type="button" 
-            class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              <span class="sr-only">{l "Close"}</span>
-              <Icon solid="X" class="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  {#case @info || live_flash(@root_flash || @flash, :info)}
-    {#match nil}
-    {#match info}
-    <div 
-      data-id="info"
-      role="alert"
-      class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash">
-      <div class="p-4">
-        <div class="flex items-center">
-          <div class="flex-shrink-0 p-2 rounded">
-              <Icon outline="CheckCircle" class="w-6 h-6 text-green-400" />
-          </div>
-          <div class="ml-3 w-0 flex-1 pt-0.5">
-            <p data-id="content" class="text-sm font-semibold text-gray-500">{rich info}</p>
-          </div>
-          <div class="flex flex-shrink-0 ml-4">
-            <button 
+            <button
               phx-click="clear-flash"
               phx-target={@myself}
-              phx-value-key="info"
-              type="button" 
-              class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              <span class="sr-only">{l "Close"}</span>
+              phx-value-key="notification"
+              type="button"
+              class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              <span class="sr-only">{l("Close")}</span>
               <Icon solid="X" class="w-5 h-5" />
             </button>
           </div>
@@ -76,61 +47,96 @@
       </div>
     </div>
 
-    <!-- <div class="max-w-md alert alert-info fade-out" 
+    {#case @info || live_flash(@root_flash || @flash, :info)}
+      {#match nil}
+      {#match info}
+        <div
+          data-id="info"
+          role="alert"
+          class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash"
+        >
+          <div class="p-4">
+            <div class="flex items-center">
+              <div class="flex-shrink-0 p-2 rounded">
+                <Icon outline="CheckCircle" class="w-6 h-6 text-green-400" />
+              </div>
+              <div class="ml-3 w-0 flex-1 pt-0.5">
+                <p data-id="content" class="text-sm font-semibold text-gray-500">{rich(info)}</p>
+              </div>
+              <div class="flex flex-shrink-0 ml-4">
+                <button
+                  phx-click="clear-flash"
+                  phx-target={@myself}
+                  phx-value-key="info"
+                  type="button"
+                  class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  <span class="sr-only">{l("Close")}</span>
+                  <Icon solid="X" class="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="max-w-md alert alert-info fade-out" 
       role="alert alert-warning"
       phx-click="clear-flash"
       phx-target={@myself}
       phx-value-key="info">
         {rich info}
     </div> -->
-  {/case}
+    {/case}
 
-  {#case @error || live_flash(@root_flash || @flash, :error)}
-    {#match nil}
-    {#match error}
-    <div 
-      data-id="error"
-      role="alert"
-      class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash">
-      <div class="p-4">
-        <div class="flex items-top">
-          <div class="flex-shrink-0">
-              <Icon outline="Exclamation" class="w-6 h-6 text-red-500" />
-          </div>
-          <div class="ml-3 w-0 flex-1 pt-0.5">
-            <p data-id="content" class="text-sm text-gray-500">{rich error}</p>
+    {#case @error || live_flash(@root_flash || @flash, :error)}
+      {#match nil}
+      {#match error}
+        <div
+          data-id="error"
+          role="alert"
+          class="w-full max-w-sm overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash"
+        >
+          <div class="p-4">
+            <div class="flex items-top">
+              <div class="flex-shrink-0">
+                <Icon outline="Exclamation" class="w-6 h-6 text-red-500" />
+              </div>
+              <div class="ml-3 w-0 flex-1 pt-0.5">
+                <p data-id="content" class="text-sm text-gray-500">{rich(error)}</p>
 
-            <!-- <button class="mt-2 normal-case btn btn-sm btn-error" :on-click="Bonfire.Social.Posts:write_error">{l "Share feedback"}</button> -->
-            <Bonfire.UI.Common.FeedbackButtonLive text={error_template(%{flash: @flash, root_flash: @root_flash, error: @error, context: @__context__})} class="mt-2 normal-case btn btn-sm btn-error" />
-  
-          </div>
-          <div class="flex flex-shrink-0 ml-4">
-            <button 
-            phx-click="clear-flash"
-            phx-target={@myself}
-            phx-value-key="error"
-            type="button" 
-            class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              <span class="sr-only">{l "Close"}</span>
-              <Icon solid="X" class="w-5 h-5" />
-            </button>
+                <!-- <button class="mt-2 normal-case btn btn-sm btn-error" :on-click="Bonfire.Social.Posts:write_error">{l "Share feedback"}</button> -->
+                <Bonfire.UI.Common.FeedbackButtonLive
+                  text={error_template(%{flash: @flash, root_flash: @root_flash, error: @error, context: @__context__})}
+                  class="mt-2 normal-case btn btn-sm btn-error"
+                />
+              </div>
+              <div class="flex flex-shrink-0 ml-4">
+                <button
+                  phx-click="clear-flash"
+                  phx-target={@myself}
+                  phx-value-key="error"
+                  type="button"
+                  class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  <span class="sr-only">{l("Close")}</span>
+                  <Icon solid="X" class="w-5 h-5" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- <div class="max-w-md alert alert-error" 
+        <!-- <div class="max-w-md alert alert-error" 
       role="alert"
       phx-click="clear-flash"
       phx-target={@myself}
       phx-value-key="error">
         {rich error}
     </div> -->
-  {/case}
-
+    {/case}
   </div>
 
-<!-- 
+  <!-- 
 
 <div id="flash-messages" class="fixed absolute z-[90] right-8 top-20">
 
@@ -170,5 +176,4 @@
   {/case}
 
 </div> -->
-
 </div>

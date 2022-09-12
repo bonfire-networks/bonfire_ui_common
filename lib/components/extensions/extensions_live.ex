@@ -12,5 +12,4 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
   prop settings_section_title, :string, default: "Bonfire extensions"
   prop selected_tab, :string
   prop ading_tab, :string
-
 end

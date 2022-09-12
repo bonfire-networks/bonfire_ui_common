@@ -3,5 +3,4 @@ defmodule Bonfire.UI.Common.WidgetLinksLive do
 
   prop links, :any
   prop widget_title, :string
-
 end

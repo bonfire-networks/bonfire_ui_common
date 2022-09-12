@@ -1,15 +1,9 @@
-<select 
-name="ui[font_family]"
-class="w-full max-w-xs select select-bordered" 
->
+<select name="ui[font_family]" class="w-full max-w-xs select select-bordered">
   {#for f <- Settings.get([:ui, :font_families], ["Inter"], @__context__)}
-    <option class=""
-      value={f}
-      selected={if @font_family==f, do: "selected"}
-    >
-    {f}
+    <option class="" value={f} selected={if @font_family == f, do: "selected"}>
+      {f}
     </option>
   {#else}
-    <option>{l "No known fonts"}</option>
+    <option>{l("No known fonts")}</option>
   {/for}
 </select>

@@ -1,34 +1,38 @@
 <div x-show="!open_boundaries">
-
   <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
 
   <div class="">
+    <div class={
+      "flex items-center justify-between p-2 space-x-2 border-t rounded-b-md border-base-content/10 bg-base-200 sm:px-3",
+      "!border-none !bg-base-100 mt-2 !p-0": @thread_mode == :flat
+    }>
+      <div class="flex items-center flex-1 space-x-1">
+        <Bonfire.UI.Common.UploadButtonLive
+          :if={!is_messaging?(%{
+            page: @page,
+            showing_within: @showing_within,
+            create_activity_type: @create_activity_type
+          }) && module_enabled?(Bonfire.Files)}
+          uploads={@uploads}
+          thread_mode={@thread_mode}
+        />
 
-      <div class={
-        "flex items-center justify-between p-2 space-x-2 border-t rounded-b-md border-base-content/10 bg-base-200 sm:px-3",
-        "!border-none !bg-base-100 mt-2 !p-0": @thread_mode == :flat}>
-        <div class="flex items-center flex-1 space-x-1">
-          <Bonfire.UI.Common.UploadButtonLive
-            :if={!is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}) && module_enabled?(Bonfire.Files)}
-            uploads={@uploads}
-            thread_mode={@thread_mode}
-          />
+        <div
+          data-tip={l("Add a content warning")}
+          class="relative z-30 flex items-center tooltip tooltip-right"
+        >
+          <button
+            :if={Config.get([:ui, :smart_input, :cw], []) == true}
+            type="button"
+            @click="title_open = !title_open"
+            :class="{'border-base-content/30' : title_open}"
+            class="flex items-center btn btn-ghost btn-sm btn-circle"
+          >
+            <span class="text-xs font-medium text-base-content text-opacity-70">{l("CW")}</span>
+          </button>
+        </div>
 
-          <div 
-            data-tip={l "Add a content warning" }
-            class={"relative z-30 flex items-center tooltip tooltip-right"}>
-            <button
-              :if={Config.get([:ui, :smart_input, :cw], []) == true}
-              type="button"
-              @click="title_open = !title_open"
-              :class="{'border-base-content/30' : title_open}"
-              class="flex items-center btn btn-ghost btn-sm btn-circle">
-              <span 
-                class="text-xs font-medium text-base-content text-opacity-70">{l "CW"}</span>
-            </button>
-          </div>
-          
-          <!-- <div 
+        <!-- <div 
             :if={@showing_within != :page and @thread_mode != :flat}
             x-show="!smart_input_open"
             data-tip={l "Full-screen mode" }
@@ -41,38 +45,42 @@
               <Icon outline="ArrowsExpand" class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
             </button>
           </div>  -->
-
-        </div>
-        <button 
-          type="submit" 
-          @click="$dispatch('submit')"
-          phx-disable-with={if is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}), do: l("Sending..."), else: l "Posting..."} 
-          class="capitalize btn-sm justify-self-end btn w-[8rem] btn-primary">
-          {#if is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type})}
-            {l "Send"}
-          {#else}
-            {l "Post"}
-          {/if}
-        </button>
       </div>
-    
-    <input type="hidden" 
-      name="reply_to[reply_to_id]" 
-      value={@reply_to_id} />
-    <input type="hidden"  
-      name="reply_to[thread_id]" 
-      value={@thread_id} />
+      <button
+        type="submit"
+        @click="$dispatch('submit')"
+        phx-disable-with={if is_messaging?(%{
+             page: @page,
+             showing_within: @showing_within,
+             create_activity_type: @create_activity_type
+           }),
+           do: l("Sending..."),
+           else: l("Posting...")}
+        class="capitalize btn-sm justify-self-end btn w-[8rem] btn-primary"
+      >
+        {#if is_messaging?(%{
+            page: @page,
+            showing_within: @showing_within,
+            create_activity_type: @create_activity_type
+          })}
+          {l("Send")}
+        {#else}
+          {l("Post")}
+        {/if}
+      </button>
+    </div>
 
-    <input type="hidden" 
-      name={:create_activity_type}
-      value={@create_activity_type} />
+    <input type="hidden" name="reply_to[reply_to_id]" value={@reply_to_id}>
+    <input type="hidden" name="reply_to[thread_id]" value={@thread_id}>
 
-    <input 
-      :for={circle <- e(@to_circles, [])} 
-      type="hidden" 
-      name="to_circles[]" 
-      label={if is_tuple(circle), do: elem(circle, 0)} 
-      value={if is_tuple(circle), do: elem(circle, 1), else: circle} 
+    <input type="hidden" name={:create_activity_type} value={@create_activity_type}>
+
+    <input
+      :for={circle <- e(@to_circles, [])}
+      type="hidden"
+      name="to_circles[]"
+      label={if is_tuple(circle), do: elem(circle, 0)}
+      value={if is_tuple(circle), do: elem(circle, 1), else: circle}
     />
   </div>
 </div>

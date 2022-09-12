@@ -3,13 +3,15 @@
   class="flex justify-between w-full mt-8 mb-2 rounded-b-xl tabs bg-base-100"
   aria-label="Switch between timeline, posts, boosts, media tabs"
 >
-  <LivePatch 
+  <LivePatch
     :for={{tab, tab_name} <- @tabs}
-    to={"#{@path_prefix}#{tab}"} 
-    class={"hover:bg-base-content/10 group flex-1 pt-2 font-normal place-content-center flex capitalize text-base"}
-  > 
-    <div class={"tab tab-bordered group-hover:text-opacity-100", 
-      "tab-active": @selected_tab == tab || @selected_tab == to_string(tab) }>
+    to={"#{@path_prefix}#{tab}"}
+    class="hover:bg-base-content/10 group flex-1 pt-2 font-normal place-content-center flex capitalize text-base"
+  >
+    <div class={
+      "tab tab-bordered group-hover:text-opacity-100",
+      "tab-active": @selected_tab == tab || @selected_tab == to_string(tab)
+    }>
       {localise_dynamic(tab_name)}
     </div>
   </LivePatch>

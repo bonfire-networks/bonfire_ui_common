@@ -7,5 +7,4 @@ defmodule Bonfire.UI.Common.MobileUserMenuLive do
   # prop username, :string, required: true
 
   prop page, :string, default: ""
-  
 end

@@ -13,5 +13,4 @@ defmodule Bonfire.UI.Common.InputBoundariesLive do
   prop reply_to_id, :string, default: nil
   prop thread_id, :string, default: nil
   prop boundaries_modal_id, :string, default: :sidebar_composer
-
 end

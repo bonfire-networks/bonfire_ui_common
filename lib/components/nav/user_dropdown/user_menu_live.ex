@@ -4,5 +4,4 @@ defmodule Bonfire.UI.Common.UserMenuLive do
   # prop user_image, :string, required: true
   # prop name, :string, required: true
   # prop username, :string, required: true
-
 end

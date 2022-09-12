@@ -13,5 +13,4 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop uploaded_files, :list, default: []
   prop thread_mode, :atom, default: nil
   prop page, :any, default: nil
-
 end

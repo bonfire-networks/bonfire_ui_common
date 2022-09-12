@@ -1,14 +1,16 @@
+<Bonfire.UI.Common.WidgetBlockLive
+  widget_title={l("Have some feedback?")}
+  class="relative w-full mx-auto rounded-xl bg-base-100"
+>
+  <div class={"p-3 pt-0 prose-sm prose ", "text-xs": Settings.get([:ui, :compact], false, @__context__)}>
+    <p>{l(
+        "The Bonfire team is all ears if you want to report a bug, suggest an improvement or a new feature, or just say hi :)"
+      )}</p>
 
-
-<Bonfire.UI.Common.WidgetBlockLive 
-  widget_title={l "Have some feedback?"}
-  class="relative w-full mx-auto rounded-xl bg-base-100">   
-  <div class={"p-3 pt-0 prose-sm prose ",
-  "text-xs": Settings.get([:ui, :compact], false, @__context__)
-  }>
-    <p>{l "The Bonfire team is all ears if you want to report a bug, suggest an improvement or a new feature, or just say hi :)"}</p>
-
-  <Bonfire.UI.Common.FeedbackButtonLive text={Settings.get([:ui, :feedback_post_template], "I have a suggestion for Bonfire: \n\n@BonfireBuilders #bonfire_feedback", @__context__)} />
-
+    <Bonfire.UI.Common.FeedbackButtonLive text={Settings.get(
+      [:ui, :feedback_post_template],
+      "I have a suggestion for Bonfire: \n\n@BonfireBuilders #bonfire_feedback",
+      @__context__
+    )} />
   </div>
 </Bonfire.UI.Common.WidgetBlockLive>

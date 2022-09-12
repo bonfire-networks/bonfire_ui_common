@@ -1,5 +1,6 @@
 defmodule Bonfire.UI.Common.ReusableModalLive do
   use Bonfire.UI.Common.Web, :stateful_component
+
   @moduledoc """
   The classic **modal**
   """
@@ -8,9 +9,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   prop title_text, :string, default: nil
 
   @doc "The classes of the title of the modal"
-  prop title_class, :css_class, default:
-
-  @doc "The classes of the modal."
+  prop title_class, :css_class, default: @doc("The classes of the modal.")
   prop modal_class, :string, default: nil
 
   @doc "The classes of the close/cancel button on the modal. Only used if no close_btn slot is passed."
@@ -46,19 +45,19 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   def mount(socket) do
     # debug("mounting")
     # need this because ReusableModalLive used in the HEEX doesn't set Surface defaults
-    {:ok, socket
-      |> assign(
-        title_text: nil,
-        title_class: nil,
-        cancel_btn_class: nil,
-        modal_class: nil,
-        show: false,
-        form_opts: [],
-        no_actions: false,
-        no_header: false,
-        opts: []
-      )
-    }
+    {:ok,
+     assign(
+       socket,
+       title_text: nil,
+       title_class: nil,
+       cancel_btn_class: nil,
+       modal_class: nil,
+       show: false,
+       form_opts: [],
+       no_actions: false,
+       no_header: false,
+       opts: []
+     )}
   end
 
   def handle_event("close", _, socket) do
@@ -66,7 +65,15 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
     {:noreply, assign(socket, show: false)}
   end
 
-  def handle_event(action, attrs, socket), do: Bonfire.UI.Common.LiveHandlers.handle_event(action, attrs, socket, __MODULE__)
+  def handle_event(action, attrs, socket),
+    do:
+      Bonfire.UI.Common.LiveHandlers.handle_event(
+        action,
+        attrs,
+        socket,
+        __MODULE__
+      )
 
-  def handle_info(info, socket), do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
+  def handle_info(info, socket),
+    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
 end

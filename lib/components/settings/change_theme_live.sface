@@ -1,50 +1,51 @@
-<div 
-  id="theme-change" 
-  phx-hook="Themeable" 
+<div
+  id="theme-change"
+  phx-hook="Themeable"
   name="ui[theme][default_name]"
-  title="Change Theme" 
-  class="w-full max-w-xs text-left dropdown dropdown-end">
-  <div tabindex="0" class="w-full gap-2 text-left normal-case btn-wide btn btn-outline border-base-content border-opacity-20 ">
+  title="Change Theme"
+  class="w-full max-w-xs text-left dropdown dropdown-end"
+>
+  <div
+    tabindex="0"
+    class="w-full gap-2 text-left normal-case btn-wide btn btn-outline border-base-content border-opacity-20"
+  >
     <span class="flex-1 e">
-      {e(@selected, l "Choose theme")}
-    </span> 
+      {e(@selected, l("Choose theme"))}
+    </span>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 1792 1792"
       class="inline-block w-4 h-4 ml-1 fill-current"
     >
-      <path d="M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z"></path>
+      <path d="M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z" />
     </svg>
-  </div> 
+  </div>
 
   <div class="dropdown-content bg-base-200 text-base-content rounded-t-box rounded-b-box top-px max-h-96 h-[70vh] w-52 overflow-y-auto shadow-2xl mt-16">
     <div class="grid grid-cols-1 gap-3 p-3" tabindex="0">
-
       {#for f <- Settings.get([:ui, :themes], ["bonfire"], @__context__)}
-        <div 
+        <div
           data-set-theme={f}
           data-act-class="ACTIVECLASS"
-          class="overflow-hidden rounded-lg outline-base-content ">
-        <div 
-          data-theme={f} 
-          class="w-full font-sans cursor-pointer bg-base-100 text-base-content">
-          <div class="grid grid-cols-5 grid-rows-3">
-            <div class="flex col-span-5 row-span-3 row-start-1 gap-1 px-4 py-3">
-              <div class="flex-grow text-sm font-bold">{f}</div> 
-              <div class="flex flex-wrap flex-shrink-0 gap-1">
-                <div class="w-2 rounded bg-primary"></div> 
-                <div class="w-2 rounded bg-secondary"></div> 
-                <div class="w-2 rounded bg-accent"></div> 
-                <div class="w-2 rounded bg-neutral"></div>
+          class="overflow-hidden rounded-lg outline-base-content"
+        >
+          <div data-theme={f} class="w-full font-sans cursor-pointer bg-base-100 text-base-content">
+            <div class="grid grid-cols-5 grid-rows-3">
+              <div class="flex col-span-5 row-span-3 row-start-1 gap-1 px-4 py-3">
+                <div class="flex-grow text-sm font-bold">{f}</div>
+                <div class="flex flex-wrap flex-shrink-0 gap-1">
+                  <div class="w-2 rounded bg-primary" />
+                  <div class="w-2 rounded bg-secondary" />
+                  <div class="w-2 rounded bg-accent" />
+                  <div class="w-2 rounded bg-neutral" />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-        {#else}
-          <option>{l "No known themes"}</option>
-        {/for}
-  
+      {#else}
+        <option>{l("No known themes")}</option>
+      {/for}
     </div>
   </div>
 </div>

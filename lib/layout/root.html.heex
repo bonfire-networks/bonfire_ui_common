@@ -1,17 +1,21 @@
 <!DOCTYPE html>
-<html class="overflow-hidden bg-base-300" lang="en" data-theme={ Bonfire.Me.Settings.get([:ui, :theme, :instance_theme], "bonfire", assigns)}>
+<html
+  class="overflow-hidden bg-base-300"
+  lang="en"
+  data-theme={Bonfire.Me.Settings.get([:ui, :theme, :instance_theme], "bonfire", assigns)}
+>
   <head>
-    <meta charset="utf-8"/>
-    <%= live_title_tag to_string(assigns[:page_title]) || "Home", suffix: " · Bonfire" %>
+    <meta charset="utf-8" />
+    <%= live_title_tag(to_string(assigns[:page_title]) || "Home", suffix: " · Bonfire") %>
 
-    <meta name="description" content="Bonfire instance">
-    <meta name="keywords" content="bonfire, fediverse">
-    <meta name="author" content="Bonfire">
-    
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        
-    <%= raw Config.get!(:endpoint_module).include_assets(@conn, :top)%>
+    <meta name="description" content="Bonfire instance" />
+    <meta name="keywords" content="bonfire, fediverse" />
+    <meta name="author" content="Bonfire" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <%= raw(Config.get!(:endpoint_module).include_assets(@conn, :top)) %>
 
     <%= if assigns[:no_index] do %>
       <meta name="robots" content="noindex" />
@@ -26,9 +30,9 @@
       }
     </style>
     <%= if Code.ensure_loaded?(Thesis.View), do: Thesis.View.thesis_editor(@conn) %>
-    
+
     <%= @inner_content %>
 
-    <%= raw Config.get!(:endpoint_module).include_assets(@conn, :bottom)%>
+    <%= raw(Config.get!(:endpoint_module).include_assets(@conn, :bottom)) %>
   </body>
 </html>

@@ -4,5 +4,4 @@ defmodule Bonfire.UI.Common.UploadButtonLive do
   prop uploads, :any, default: nil
   prop thread_mode, :atom, default: nil
   prop uploaded_files, :list, default: []
-
 end

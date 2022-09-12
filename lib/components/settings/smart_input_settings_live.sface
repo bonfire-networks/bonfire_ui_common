@@ -1,96 +1,89 @@
 <!-- <div 
   class="pb-2 mt-8 text-xs font-bold uppercase border-b text-base-content text-opacity-80 border-base-content border-opacity-30">{l "Content creator and text editor"}</div>
    -->
-  <div class="mt-2 form-control">
-    <label class="justify-start cursor-pointer label">
-      <input 
-        name="ui[smart_input_light_theme]" 
-        value="false"
-        type="hidden" 
-      />
-      <input 
-        name="ui[smart_input_light_theme]" 
-        value="true"
-        type="checkbox" 
-        checked={if Bonfire.Me.Settings.get([:ui, :smart_input_light_theme], nil, @scope || assigns), do: "checked"} 
-        class="toggle toggle-primary" 
-      />
-      <span class="ml-2 label-text">{l "Use light colours for the editor"}</span> 
-    </label>
-  </div>
+<div class="mt-2 form-control">
+  <label class="justify-start cursor-pointer label">
+    <input name="ui[smart_input_light_theme]" value="false" type="hidden">
+    <input
+      name="ui[smart_input_light_theme]"
+      value="true"
+      type="checkbox"
+      checked={if Bonfire.Me.Settings.get([:ui, :smart_input_light_theme], nil, @scope || assigns), do: "checked"}
+      class="toggle toggle-primary"
+    />
+    <span class="ml-2 label-text">{l("Use light colours for the editor")}</span>
+  </label>
+</div>
 
 <div class="mt-4">
-    <label class="block text-sm font-medium text-base-content sm:mt-px sm:pt-2">
-    {l "Where to show the editor"}
-    </label>
-    <div class="mt-3">
+  <label class="block text-sm font-medium text-base-content sm:mt-px sm:pt-2">
+    {l("Where to show the editor")}
+  </label>
+  <div class="mt-3">
     <fieldset>
-        <!-- <legend class="sr-only">
+      <!-- <legend class="sr-only">
         {l "Smart input"}
         </legend> -->
-        <div class="flex flex-col space-y-2">
+      <div class="flex flex-col space-y-2">
         <!-- Checked: "bg-base-200 border-indigo-200 z-10", Not Checked: "border-gray-200" -->
         <label class="relative flex p-4 border rounded-md cursor-pointer border-base-content/30 focus:outline-none">
-            <input
+          <input
             type="radio"
             name="ui[smart_input_as]"
             value="sidebar"
-            checked={if Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar, do: "checked"} 
+            checked={if Settings.get([:ui, :smart_input_as], nil, @__context__) == :sidebar, do: "checked"}
             class="radio"
-            >
-            <div class="flex flex-col ml-3">
+          />
+          <div class="flex flex-col ml-3">
             <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
             <span class="block text-base font-medium">
-                {l "Sidebar (on large screens)"}
+              {l("Sidebar (on large screens)")}
             </span>
             <span class="block text-sm text-base-content/80">
-                {l "Good for micro-blogging. On mobile the modal will be used instead."}
+              {l("Good for micro-blogging. On mobile the modal will be used instead.")}
             </span>
-            </div>
+          </div>
         </label>
 
         <!-- Checked: "bg-base-200 border-indigo-200 z-10", Not Checked: "border-gray-200" -->
         <label class="relative flex p-4 border rounded-md cursor-pointer border-base-content/30 focus:outline-none">
-            <input
+          <input
             type="radio"
             name="ui[smart_input_as]"
             value="modal"
-            checked={if Settings.get([:ui, :smart_input_as], nil, @__context__)==:modal, do: "checked"} 
+            checked={if Settings.get([:ui, :smart_input_as], nil, @__context__) == :modal, do: "checked"}
             class="radio"
-            >
-            <div class="flex flex-col ml-3">
+          />
+          <div class="flex flex-col ml-3">
             <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
             <span class="block text-base font-medium">
-                {l "Pop-up modal"}
+              {l("Pop-up modal")}
             </span>
             <span class="block text-sm text-base-content/80">
-                {l "It keeps you focused on the post."}
+              {l("It keeps you focused on the post.")}
             </span>
-            </div>
+          </div>
         </label>
 
         <label class="relative flex p-4 border rounded-md cursor-pointer border-base-content/30 focus:outline-none">
-            <input
-              type="radio"
-              name="ui[smart_input_as]"
-              value="floating"
-              checked={if Settings.get([:ui, :smart_input_as], nil, @__context__)==:floating, do: "checked"} 
-              class="radio"
-              >
-            <div class="flex flex-col ml-3">
-              <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
-              <span class="block text-base font-medium">
-                  {l "Floating at the bottom"}
-              </span>
-              <span class="block text-sm text-base-content/80">
-                  {l "You are able to navigate through the app while composing a post."}
-              </span>
-            </div>
+          <input
+            type="radio"
+            name="ui[smart_input_as]"
+            value="floating"
+            checked={if Settings.get([:ui, :smart_input_as], nil, @__context__) == :floating, do: "checked"}
+            class="radio"
+          />
+          <div class="flex flex-col ml-3">
+            <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
+            <span class="block text-base font-medium">
+              {l("Floating at the bottom")}
+            </span>
+            <span class="block text-sm text-base-content/80">
+              {l("You are able to navigate through the app while composing a post.")}
+            </span>
+          </div>
         </label>
       </div>
     </fieldset>
   </div>
 </div>
-
-
-

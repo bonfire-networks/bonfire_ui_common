@@ -1,4 +1,3 @@
-
 defmodule Bonfire.UI.Common.StaticGenerator do
   @moduledoc """
   Static-site generator which can take a list of URLs served by the current Phoenix server and output static HTML for them
@@ -13,15 +12,20 @@ defmodule Bonfire.UI.Common.StaticGenerator do
   def base_path, do: "public"
 
   defp static_dir() do
-    src = ["priv","static", base_path()] |> Path.join()
+    src = Path.join(["priv", "static", base_path()])
     src <> "/"
   end
 
   def generate(urls, opts \\ []) when is_list(urls) do
     conn = Phoenix.ConnTest.build_conn()
 
-    dest = Application.app_dir(:bonfire, opts[:output_dir] || Config.get([__MODULE__, :output_dir]) || static_dir())
-    |> debug("output_dir")
+    dest =
+      Application.app_dir(
+        :bonfire,
+        opts[:output_dir] || Config.get([__MODULE__, :output_dir]) ||
+          static_dir()
+      )
+      |> debug("output_dir")
 
     maybe_clean_and_copy_assets(dest, opts)
 
@@ -34,6 +38,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
     end)
     |> info()
   end
+
   def generate(url, opts) do
     with [ok: _] <- generate([url], opts) do
       :ok
@@ -43,14 +48,16 @@ defmodule Bonfire.UI.Common.StaticGenerator do
   defp generate_html(conn, url) do
     with html when is_binary(html) <- html_response(get(conn, url), 200) do
       {url, html}
-    else e ->
-      {:error, e}
+    else
+      e ->
+        {:error, e}
     end
   end
 
   defp write_file(path, content, dest) do
     full_path = Path.join([dest, path, "index.html"])
-    dirname   = Path.dirname(full_path)
+    dirname = Path.dirname(full_path)
+
     with :ok <- File.mkdir_p(dirname),
          :ok <- File.write(full_path, content) do
       {:ok, path}
@@ -74,11 +81,11 @@ defmodule Bonfire.UI.Common.StaticGenerator do
 
   defp copy_assets(src, dest) do
     pars = ["-r", src, dest]
+
     with {_out, 0} <- System.cmd("rsync", pars) do
       :ok
     else
       error -> error(error)
     end
   end
-
 end

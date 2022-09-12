@@ -3,5 +3,4 @@ defmodule Bonfire.UI.Common.MobileSmartInputButtonLive do
 
   prop smart_input_prompt, :string, required: false
   # prop create_activity_type, :atom, default: nil
-
 end

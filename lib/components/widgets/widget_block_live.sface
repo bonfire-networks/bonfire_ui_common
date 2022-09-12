@@ -1,10 +1,6 @@
-<aside 
-  class={@class}>
-  <div 
-    :if={@widget_title} 
-    class="flex items-center p-3 pb-2 rounded-t-md" 
-    role="banner">
-    <div class="flex-1 font-bold text-base-content">{@widget_title}</div> 
+<aside class={@class}>
+  <div :if={@widget_title} class="flex items-center p-3 pb-2 rounded-t-md" role="banner">
+    <div class="flex-1 font-bold text-base-content">{@widget_title}</div>
     <#slot {@action} />
   </div>
   <#slot />

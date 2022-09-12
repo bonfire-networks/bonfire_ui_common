@@ -1,6 +1,7 @@
-<LiveRedirect 
-  class={@container_class}
-  to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}>
-  <div class={@image_class} style={"background-image: url(#{ Config.get([:ui, :theme, :instance_icon], nil)})"}></div>
+<LiveRedirect class={@container_class} to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}>
+  <div
+    class={@image_class}
+    style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}
+  />
   <div :if={@with_name} class={@name_class}>{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
 </LiveRedirect>

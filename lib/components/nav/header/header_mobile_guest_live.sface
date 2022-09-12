@@ -1,27 +1,23 @@
-<div 
-  class="md:hidden bg-base-100 rounded-md flex h-[48px] place-content-center items-center flex w-full px-3">
-  <Bonfire.UI.Common.LogoLive 
-    container_class="flex items-center flex-1 space-x-2"
-    with_name={true}
-  />
+<div class="md:hidden bg-base-100 rounded-md flex h-[48px] place-content-center items-center flex w-full px-3">
+  <Bonfire.UI.Common.LogoLive container_class="flex items-center flex-1 space-x-2" with_name />
 
   <div class="flex justify-end">
-    {#if @current_account != nil }
+    {#if @current_account != nil}
       <span class="inline-flex rounded-md shadow-sm">
         <Link to={path(:switch_user)} class="normal-case btn btn-secondary btn-sm">
-          {l "Select User"}
+          {l("Select User")}
         </Link>
       </span>
     {#else}
-      <span class="inline-flex ">
+      <span class="inline-flex">
         <Link to={path(:login, :index)} class="normal-case btn btn-sm btn-primary">
-          {l "Login"}
+          {l("Login")}
         </Link>
       </span>
-      {#if !Bonfire.Me.Accounts.instance_is_invite_only? }
-        <span class="inline-flex ml-3 ">
+      {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+        <span class="inline-flex ml-3">
           <Link to={path(:signup, :index)} class="normal-case btn btn-sm btn-outline btn-primary">
-            {l "Signup"}
+            {l("Signup")}
           </Link>
         </span>
       {/if}

@@ -8,5 +8,4 @@ defmodule Bonfire.UI.Common.LoadPreviousLive do
 
   def unwrap(list) when is_list(list), do: List.first(list)
   def unwrap(other), do: other
-
 end

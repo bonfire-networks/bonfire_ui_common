@@ -11,12 +11,15 @@ defmodule Bonfire.UI.Common.AvatarLive do
   def classes(%{class: class}) when not is_nil(class) do
     class
   end
+
   def classes(%{viewing_main_object: true}) do
     "w-12 h-12"
   end
+
   def classes(%{comment: true}) do
     "w-8 h-8"
   end
+
   def classes(_) do
     "w-10 h-10"
   end
@@ -24,14 +27,16 @@ defmodule Bonfire.UI.Common.AvatarLive do
   def size(%{size: size}) when not is_nil(size) do
     size
   end
+
   def size(%{viewing_main_object: true}) do
     48
   end
+
   def size(%{comment: true}) do
     32
   end
+
   def size(_) do
     "100%"
   end
-
 end

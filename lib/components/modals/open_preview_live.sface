@@ -9,7 +9,7 @@
       {l "View discussion"}
   </a> -->
   <Bonfire.UI.Common.OpenModalLive
-    id={Pointers.ULID.generate()} 
+    id={Pointers.ULID.generate()}
     reusable_modal_component={Bonfire.UI.Common.PreviewContentLive}
     reusable_modal_id="preview_content"
     open_btn_hook="PreviewActivity"

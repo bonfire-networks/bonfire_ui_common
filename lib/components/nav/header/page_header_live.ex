@@ -9,5 +9,4 @@ defmodule Bonfire.UI.Common.PageHeaderLive do
   slot default
   slot left_action
   slot right_action
-
 end

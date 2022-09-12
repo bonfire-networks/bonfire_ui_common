@@ -28,43 +28,54 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop without_sidebar, :string, default: nil
 
   # Classes to customize the smart input appearance
-  prop replied_activity_class, :css_class, default: "relative  p-3 bg-base-100 hover:!bg-base-100 hover:!bg-opacity-100 showing_within:smart_input overflow-hidden"
+  prop replied_activity_class, :css_class,
+    default:
+      "relative  p-3 bg-base-100 hover:!bg-base-100 hover:!bg-opacity-100 showing_within:smart_input overflow-hidden"
 
   def mount(socket),
-    do: {:ok,
-      socket
-      |> assign(
-        trigger_submit: false,
-        uploaded_files: []
-      )
-      |> allow_upload(:files,
-        accept: ~w(.jpg .jpeg .png .gif .svg .tiff .webp .pdf .md .rtf .mp3 .mp4), # make configurable
-        max_file_size: 10_000_000, # make configurable, expecially once we have resizing
-        max_entries: 10,
-        auto_upload: false
-        # progress: &handle_progress/3
-      )
-    } # |> IO.inspect
+    do:
+      {:ok,
+       socket
+       |> assign(
+         trigger_submit: false,
+         uploaded_files: []
+       )
+       |> allow_upload(:files,
+         # make configurable
+         accept: ~w(.jpg .jpeg .png .gif .svg .tiff .webp .pdf .md .rtf .mp3 .mp4),
+         # make configurable, expecially once we have resizing
+         max_file_size: 10_000_000,
+         max_entries: 10,
+         auto_upload: false
+
+         # progress: &handle_progress/3
+       )}
+
+  # |> IO.inspect
 
   def all_smart_input_components do
-    Bonfire.Common.Config.get([:ui, :smart_input_components], [post: Bonfire.UI.Social.WritePostContentLive])
+    Bonfire.Common.Config.get([:ui, :smart_input_components],
+      post: Bonfire.UI.Social.WritePostContentLive
+    )
   end
 
   def active_smart_input_component(smart_input_component, create_activity_type) do
-    smart_input_component || e(all_smart_input_components(), create_activity_type, nil) || Bonfire.Common.Config.get([:ui, :default_smart_input]) || Bonfire.UI.Social.WritePostContentLive
+    smart_input_component ||
+      e(all_smart_input_components(), create_activity_type, nil) ||
+      Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
+      Bonfire.UI.Social.WritePostContentLive
   end
 
   def smart_input_name(component) do
     all_smart_input_components()
-    |> Keyword.filter(fn {_key, val} -> val==component end)
+    |> Keyword.filter(fn {_key, val} -> val == component end)
     |> Keyword.keys()
     |> List.first()
     |> display_name()
   end
 
   defp display_name(name) do
-    name
-    |> maybe_to_string()
+    maybe_to_string(name)
   end
 
   def set(assigns) do
@@ -72,8 +83,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   end
 
   def set_smart_input_text(socket, text \\ "\n") do
-    socket
-    |> maybe_push_event("smart_input:set_body", %{text: text})
+    maybe_push_event(socket, "smart_input:set_body", %{text: text})
   end
 
   def reset_input(%{assigns: %{showing_within: :thread}} = socket) do
@@ -85,6 +95,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
       to_circles: nil,
       reply_to_id: e(socket.assigns, :thread_id, nil),
       to_boundaries: default_boundaries(socket)
+
       # open_boundaries: false
     )
   end
@@ -112,6 +123,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
       activity: nil,
       smart_input_text: nil,
       to_boundaries: default_boundaries(socket)
+
       # open_boundaries: false
     )
   end
@@ -119,9 +131,9 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   def activity_type_or_reply(assigns) do
     # debug(e(assigns, :reply_to_id, ""), "reply to id")
     # debug(e(assigns, :thread_id, ""), "thread_id")
-    if e(assigns, :reply_to_id, "") !="" or e(assigns, :thread_id, "") !="",
-    do: "reply",
-    else: e(assigns, :create_activity_type, "post")
+    if e(assigns, :reply_to_id, "") != "" or e(assigns, :thread_id, "") != "",
+      do: "reply",
+      else: e(assigns, :create_activity_type, "post")
   end
 
   # def boundary_ids(preset_boundary, to_boundaries, create_activity_type) do
@@ -144,10 +156,8 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   #   end
   # end
 
-
   # defp handle_progress(_, entry, socket) do
   #   debug(entry, "progress")
-
   #   user = current_user(socket)
 
   #   if entry.done? and entry.valid? and user do
@@ -169,7 +179,6 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   #   end
   # end
 
-
   # def update(%{activity: activity, object: object, reply_to_id: reply_to_id, thread_id: thread_id} = assigns, socket) do
   #   socket = assign(socket, activity: activity, reply_to_id: reply_to_id, thread_id: thread_id)
   #   {:ok, socket
@@ -190,57 +199,63 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   #   {:ok, socket |> assign(assigns)}
   # end
 
-  defp clean_existing(to_boundaries, acl_id) when acl_id in ["public", "local", "mentions"] do
-    to_boundaries
-    |> Keyword.drop(["public", "local", "mentions"])
+  defp clean_existing(to_boundaries, acl_id)
+       when acl_id in ["public", "local", "mentions"] do
+    Keyword.drop(to_boundaries, ["public", "local", "mentions"])
   end
+
   defp clean_existing(to_boundaries, _) do
     to_boundaries
   end
 
   def handle_event("select_smart_input", %{"component" => component}, socket) do
-    {:noreply, socket
-      |> assign(smart_input_component: maybe_to_module(component))
-    }
+    {:noreply,
+     assign(socket,
+       smart_input_component: maybe_to_module(component)
+     )}
   end
-  def handle_event("select_smart_input", %{"create_activity_type" => type}, socket) do
-    {:noreply, socket
-      |> assign(create_activity_type: maybe_to_atom(type))
-    }
+
+  def handle_event(
+        "select_smart_input",
+        %{"create_activity_type" => type},
+        socket
+      ) do
+    {:noreply,
+     assign(socket,
+       create_activity_type: maybe_to_atom(type)
+     )}
   end
 
   def handle_event("open_boundaries", _params, socket) do
-    {:noreply, socket
-      |> assign(:open_boundaries, true)
-    }
+    {:noreply, assign(socket, :open_boundaries, true)}
   end
 
   def handle_event("close_boundaries", _params, socket) do
-    {:noreply, socket
-      |> assign(:open_boundaries, false)
-    }
+    {:noreply, assign(socket, :open_boundaries, false)}
   end
 
   def handle_event("select_boundary", %{"id" => acl_id} = params, socket) do
     debug(acl_id, "select_boundary")
-    {:noreply, socket
-      |> assign(
-        :to_boundaries,
-        clean_existing(e(socket.assigns, :to_boundaries, []), acl_id)
-          ++ [{acl_id, e(params, "name", acl_id)}]
-      )
-    }
+
+    {:noreply,
+     assign(
+       socket,
+       :to_boundaries,
+       clean_existing(e(socket.assigns, :to_boundaries, []), acl_id) ++
+         [{acl_id, e(params, "name", acl_id)}]
+     )}
   end
 
   def handle_event("remove_boundary", %{"id" => acl_id} = _params, socket) do
     debug(acl_id, "remove_boundary")
-    {:noreply, socket
-      |> assign(
-        :to_boundaries,
-        e(socket.assigns, :to_boundaries, [])
-          |> Keyword.drop([acl_id])
-      )
-    }
+
+    {:noreply,
+     assign(
+       socket,
+       :to_boundaries,
+       e(socket.assigns, :to_boundaries, [])
+       |> Keyword.drop([acl_id])
+     )}
   end
 
   def handle_event("tagify_add", attrs, socket) do
@@ -251,9 +266,11 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     handle_event("remove_boundary", attrs, socket)
   end
 
-  def handle_event("validate", _params, socket) do # for uploads
+  # for uploads
+  def handle_event("validate", _params, socket) do
     {:noreply, socket}
   end
+
   def handle_event("cancel-upload", %{"ref" => ref}, socket) do
     {:noreply, cancel_upload(socket, :files, ref)}
   end
@@ -262,11 +279,18 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     {:noreply, reset_input(socket)}
   end
 
+  def handle_event(action, attrs, socket),
+    do:
+      Bonfire.UI.Common.LiveHandlers.handle_event(
+        action,
+        attrs,
+        socket,
+        __MODULE__
+      )
 
-  def handle_event(action, attrs, socket), do: Bonfire.UI.Common.LiveHandlers.handle_event(action, attrs, socket, __MODULE__)
+  def handle_info(info, socket),
+    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
 
-  def handle_info(info, socket), do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
-  defdelegate handle_params(params, attrs, socket), to: Bonfire.UI.Common.LiveHandlers
-
-
+  defdelegate handle_params(params, attrs, socket),
+    to: Bonfire.UI.Common.LiveHandlers
 end

@@ -1,44 +1,38 @@
 <div class="w-full border rounded-lg border-base-content/30">
   <div class="flex items-center rounded-lg">
-    <span class="inline-flex items-center h-10 px-3 border-r rounded-l-lg border-base-content/30 text-base-content text-opacity-70 sm:text-sm"> {l "To"} </span>
+    <span class="inline-flex items-center h-10 px-3 border-r rounded-l-lg border-base-content/30 text-base-content text-opacity-70 sm:text-sm">
+      {l("To")}
+    </span>
 
-    {#if is_list(@to_circles) and length(e(@to_circles, []))>0}
-      <input 
-        :for={{name, id} <- e(@to_circles, [])} 
-        type="hidden" 
+    {#if is_list(@to_circles) and length(e(@to_circles, [])) > 0}
+      <input
+        :for={{name, id} <- e(@to_circles, [])}
+        type="hidden"
         name="to_circles[]"
-        placeholder={l "Select the participants"} 
-        label={name} 
-        value={id} 
+        placeholder={l("Select the participants")}
+        label={name}
+        value={id}
       />
       <span class="px-3">{Enum.map_join(e(@to_circles, []), " ; ", &elem(&1, 0))}</span>
     {#else}
-
       <!-- <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
         selected_options={e(@to_circles, [])}
         label={"Send to:"}
         form_input_name="to_circles[]"
         context_id={@context_id}
       /> -->
-      <div
-        class="flex-1"
-        id={:select_recipients}
-        phx-update="ignore"
-        phx-hook="InputOrSelectOne"
-        >
-        <input 
+      <div class="flex-1" id={:select_recipients} phx-update="ignore" phx-hook="InputOrSelectOne">
+        <input
           id="recipients_tagify"
-          name="to_circles" 
-          class="flex-1 w-full bg-transparent border-0 tagify " />
+          name="to_circles"
+          class="flex-1 w-full bg-transparent border-0 tagify"
+        />
         <select class="hidden tagify">
           {#for user <- @preloaded_recipients}
-            <option 
-              class="" 
-              value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
+            <option class="" value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
           {/for}
         </select>
       </div>
     {/if}
-
   </div>
 </div>

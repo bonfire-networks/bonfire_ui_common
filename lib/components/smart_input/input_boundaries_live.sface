@@ -1,6 +1,10 @@
 <div class="input_boundaries">
   <Dynamic.Component
-    :if={!is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}) and module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
+    :if={!is_messaging?(%{
+      page: @page,
+      showing_within: @showing_within,
+      create_activity_type: @create_activity_type
+    }) and module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
     module={Bonfire.Boundaries.Web.SetBoundariesLive}
     showing_within={@showing_within}
     to_boundaries={e(@to_boundaries, [])}
@@ -8,12 +12,14 @@
     open_boundaries={@open_boundaries}
     thread_mode={@thread_mode}
     boundaries_modal_id={@boundaries_modal_id}
-    activity_type_or_reply={Bonfire.UI.Common.SmartInputLive.activity_type_or_reply(%{reply_to_id: @reply_to_id, thread_id: @thread_id, create_activity_type: @create_activity_type})}
+    activity_type_or_reply={Bonfire.UI.Common.SmartInputLive.activity_type_or_reply(%{
+      reply_to_id: @reply_to_id,
+      thread_id: @thread_id,
+      create_activity_type: @create_activity_type
+    })}
   />
 
-  <div 
-    :if={@show_select_recipients}
-    class="my-3">
+  <div :if={@show_select_recipients} class="my-3">
     <Bonfire.UI.Common.SelectRecipientsLive
       preloaded_recipients={e(@preloaded_recipients, [])}
       to_boundaries={e(@to_boundaries, [])}

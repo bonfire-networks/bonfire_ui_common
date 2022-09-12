@@ -1,6 +1,6 @@
 {#case !@src || Bonfire.Files.Blurred.blurred(@src)}
   {#match blurred when is_binary(blurred) and blurred != @src}
-    <img 
+    <img
       src={blurred}
       alt={@alt}
       class={@class}
@@ -10,10 +10,5 @@
       onerror="this.style.background='#6AA4DA'"
     />
   {#match _}
-    <img 
-      src={@src}
-      alt={@alt}
-      class={@class}
-      onerror="this.style.background='#6AA4DA'"
-    />
+    <img src={@src} alt={@alt} class={@class} onerror="this.style.background='#6AA4DA'">
 {/case}

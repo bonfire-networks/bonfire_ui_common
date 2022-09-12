@@ -5,5 +5,4 @@ defmodule Bonfire.UI.Common.WidgetLive do
 
   prop page, :string, default: nil
   prop selected_tab, :any, default: nil
-
 end

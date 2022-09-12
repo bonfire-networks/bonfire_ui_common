@@ -11,9 +11,11 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
 
   @endpoint Application.compile_env!(:bonfire, :endpoint_module)
 
-  def fake_account!(attrs \\ %{}, opts \\ []), do: Bonfire.Me.Fake.fake_account!(attrs, opts)
+  def fake_account!(attrs \\ %{}, opts \\ []),
+    do: Bonfire.Me.Fake.fake_account!(attrs, opts)
 
-  def fake_user!(account \\ %{}, attrs \\ %{}), do: Bonfire.Me.Fake.fake_user!(account, attrs)
+  def fake_user!(account \\ %{}, attrs \\ %{}),
+    do: Bonfire.Me.Fake.fake_user!(account, attrs)
 
   def fake_user_and_conn!(account \\ fake_account!()) do
     user = fake_user!(account)
@@ -31,14 +33,23 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   Render stateless Surface or LiveView components
   """
   def render_stateless(component, assigns \\ [], context \\ []) do
-    render_component(&component.render/1, Utils.deep_merge([__context__: context], assigns))
+    render_component(
+      &component.render/1,
+      Utils.deep_merge([__context__: context], assigns)
+    )
   end
 
   @doc """
   Render stateful Surface or LiveView components
   """
   def render_stateful(component, assigns \\ [], context \\ []) do
-    render_component(component, Utils.deep_merge([__context__: context, id: Pointers.ULID.generate()], assigns))
+    render_component(
+      component,
+      Utils.deep_merge(
+        [__context__: context, id: Pointers.ULID.generate()],
+        assigns
+      )
+    )
   end
 
   @doc """
@@ -49,10 +60,11 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     _ = :sys.get_state(live_view.pid)
   end
 
-  def session_conn(conn \\ build_conn()), do: Plug.Test.init_test_session(conn, %{})
+  def session_conn(conn \\ build_conn()),
+    do: Plug.Test.init_test_session(conn, %{})
 
   def conn(), do: conn(session_conn(), [])
-  def conn(%Plug.Conn{}=conn), do: conn(conn, [])
+  def conn(%Plug.Conn{} = conn), do: conn(conn, [])
   def conn(filters) when is_list(filters), do: conn(session_conn(), filters)
 
   def conn(conn, filters) when is_list(filters),
@@ -74,10 +86,11 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     # Floki.find(view_or_doc, "#app_notifications")
     # |> info()
     messages = Floki.find(view_or_doc, "#app_notifications .flash")
+
     # messages = Floki.find(view_or_doc, "data-id=\"app_notifications\" role=\"alert\"")
     # |> info()
     case messages do
-      [_, _ | _] -> throw :too_many_flashes
+      [_, _ | _] -> throw(:too_many_flashes)
       short -> short
     end
   end
@@ -97,8 +110,9 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     assert "info" in id
   end
 
-  def assert_flash_message(flash, %Regex{}=r),
+  def assert_flash_message(flash, %Regex{} = r),
     do: assert(Floki.text(flash) =~ r)
+
   def assert_flash_message(flash, bin) when is_binary(bin),
     do: assert(Floki.text(flash) =~ bin)
 
@@ -121,7 +135,11 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   ### floki_attr
 
   def floki_attr(elem, :class),
-    do: Enum.flat_map(floki_attr(elem, "class"), &String.split(&1, ~r/\s+/, trim: true))
+    do:
+      Enum.flat_map(
+        floki_attr(elem, "class"),
+        &String.split(&1, ~r/\s+/, trim: true)
+      )
 
   def floki_attr(elem, attr) when is_binary(attr),
     do: Floki.attribute(elem, attr)
@@ -158,7 +176,12 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     doc
   end
 
-  def floki_submit(conn_or_view \\ conn(), path_or_event, event_or_value \\ %{}, value \\ %{})
+  def floki_submit(
+        conn_or_view \\ conn(),
+        path_or_event,
+        event_or_value \\ %{},
+        value \\ %{}
+      )
 
   def floki_submit(%Plug.Conn{} = conn, path, event, value) do
     {view, _doc} = floki_live(conn, path)
@@ -169,5 +192,4 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     assert {:ok, doc} = Floki.parse_fragment(render_submit(view, event, value))
     doc
   end
-
 end

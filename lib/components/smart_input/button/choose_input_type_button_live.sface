@@ -1,57 +1,65 @@
- <div 
-    x-data="{smart_input_activity_types_expanded: false}"
-    @keydown.escape.stop="smart_input_activity_types_expanded = false;"
-    @click.outside="smart_input_activity_types_expanded = false"
-    class="block"
+<div
+  x-data="{smart_input_activity_types_expanded: false}"
+  @keydown.escape.stop="smart_input_activity_types_expanded = false;"
+  @click.outside="smart_input_activity_types_expanded = false"
+  class="block"
+  x-cloak
+>
+  <button
+    @click="smart_input_activity_types_expanded = ! smart_input_activity_types_expanded"
+    type="button"
+    class={@class}
+    id="option-menu-button"
+    aria-expanded="true"
+    aria-haspopup="true"
+  >
+    <span class="sr-only">{l("Open options")}</span>
+    <Icon outline="Menu" class="w-4 h-4" />
+  </button>
+  <div
     x-cloak
-    >
-    <button 
-      @click="smart_input_activity_types_expanded = ! smart_input_activity_types_expanded"
-      type="button" 
-      class={@class} 
-      id="option-menu-button" 
-      aria-expanded="true" aria-haspopup="true">
-      <span class="sr-only">{l "Open options"}</span>
-      <Icon outline="Menu" class="w-4 h-4" />
-    </button>
-    <div  
-      x-cloak
-      x-show="smart_input_activity_types_expanded"
-      x-transition:enter="transition ease-out duration-100" 
-      x-transition:enter-start="transform opacity-0 scale-95" 
-      x-transition:enter-end="transform opacity-100 scale-100" 
-      x-transition:leave="transition ease-in duration-75" 
-      x-transition:leave-start="transform opacity-100 scale-100" 
-      x-transition:leave-end="transform opacity-0 scale-95"
-      class="absolute left-0 right-0 z-50 w-full mt-2 origin-top-right rounded-md shadow bg-neutral ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="option-menu-button" tabindex="-1">
-      <div class="p-1" role="none">
-        <div class="p-2 text-base font-bold tracking-wider">{l "Create"}</div>
-        <div
-          :for={{name, label} <- Config.get([:ui, :smart_input_activities], [])} 
-          phx-click="select_smart_input" 
-          phx-target={"#smart_input"} 
-          phx-value-component={Bonfire.UI.Common.SmartInputLive.all_smart_input_components()[name] || Bonfire.UI.Social.WritePostContentLive}
-          @click={"show_smart_input(); smart_input_activity_types_expanded = false; smart_input_title_text = '#{label}'"}
-          class="flex items-center p-2 space-x-2 text-sm rounded-md cursor-pointer hover:bg-base-content/10 text-neutral-content" 
-          role="menuitem" 
-          tabindex="-1" 
-        > 
-          {#case name}
-            {#match :post}
-              <span class="flex items-center w-10 h-10 rounded-full bg-base-content/10 place-content-center">
-                <Icon solid="PencilAlt" class="w-5 h-5" />
-              </span>
-            {#match :category}
-              <span class="flex items-center w-10 h-10 rounded-full bg-base-content/10 place-content-center">
-                <Icon solid="Collection" class="w-6 h-6" />
-              </span>
-            {#match _}
-              <span class="flex items-center w-10 h-10 rounded-full bg-base-content/10 place-content-center">
-                <Icon solid="PencilAlt" class="w-5 h-5" />
-              </span>
-          {/case}
-          <span class="text-base">{label}</span>
-        </div>
+    x-show="smart_input_activity_types_expanded"
+    x-transition:enter="transition ease-out duration-100"
+    x-transition:enter-start="transform opacity-0 scale-95"
+    x-transition:enter-end="transform opacity-100 scale-100"
+    x-transition:leave="transition ease-in duration-75"
+    x-transition:leave-start="transform opacity-100 scale-100"
+    x-transition:leave-end="transform opacity-0 scale-95"
+    class="absolute left-0 right-0 z-50 w-full mt-2 origin-top-right rounded-md shadow bg-neutral ring-1 ring-black ring-opacity-5 focus:outline-none"
+    role="menu"
+    aria-orientation="vertical"
+    aria-labelledby="option-menu-button"
+    tabindex="-1"
+  >
+    <div class="p-1" role="none">
+      <div class="p-2 text-base font-bold tracking-wider">{l("Create")}</div>
+      <div
+        :for={{name, label} <- Config.get([:ui, :smart_input_activities], [])}
+        phx-click="select_smart_input"
+        phx-target="#smart_input"
+        phx-value-component={Bonfire.UI.Common.SmartInputLive.all_smart_input_components()[name] ||
+          Bonfire.UI.Social.WritePostContentLive}
+        @click={"show_smart_input(); smart_input_activity_types_expanded = false; smart_input_title_text = '#{label}'"}
+        class="flex items-center p-2 space-x-2 text-sm rounded-md cursor-pointer hover:bg-base-content/10 text-neutral-content"
+        role="menuitem"
+        tabindex="-1"
+      >
+        {#case name}
+          {#match :post}
+            <span class="flex items-center w-10 h-10 rounded-full bg-base-content/10 place-content-center">
+              <Icon solid="PencilAlt" class="w-5 h-5" />
+            </span>
+          {#match :category}
+            <span class="flex items-center w-10 h-10 rounded-full bg-base-content/10 place-content-center">
+              <Icon solid="Collection" class="w-6 h-6" />
+            </span>
+          {#match _}
+            <span class="flex items-center w-10 h-10 rounded-full bg-base-content/10 place-content-center">
+              <Icon solid="PencilAlt" class="w-5 h-5" />
+            </span>
+        {/case}
+        <span class="text-base">{label}</span>
       </div>
     </div>
   </div>
+</div>

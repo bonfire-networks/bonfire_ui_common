@@ -10,21 +10,23 @@ defmodule Bonfire.UI.Common.NotificationLive do
   def mount(socket) do
     # debug("mounting")
     # need this because ReusableModalLive used in the HEEX doesn't set Surface prop defaults
-    {:ok, socket
-      |> assign(
-        root_flash: nil,
-        notification: nil,
-        error: nil,
-        info: nil,
-        error_sentry_event_id: nil
-      )
-    }
+    {:ok,
+     assign(
+       socket,
+       root_flash: nil,
+       notification: nil,
+       error: nil,
+       info: nil,
+       error_sentry_event_id: nil
+     )}
   end
 
   def update(assigns, %{assigns: %{subscribed: true}} = socket) do
-    {:ok, socket
-          |> assign(assigns)
-    }
+    {:ok,
+     assign(
+       socket,
+       assigns
+     )}
   end
 
   def update(assigns, socket) do
@@ -43,41 +45,68 @@ defmodule Bonfire.UI.Common.NotificationLive do
       debug("no current_user, not subscribing to push notifications")
     end
 
-    {:ok, socket
-          |> assign(assigns)
-          |> assign(subscribed: true)
-    }
+    {:ok,
+     socket
+     |> assign(assigns)
+     |> assign(subscribed: true)}
   end
 
-  def handle_event("clear-flash", %{"key"=> type}, socket) do
+  def handle_event("clear-flash", %{"key" => type}, socket) do
     key = maybe_to_atom(type)
 
-    {:noreply, socket
-      |> clear_flash(key)
-      |> assign(:root_flash, Map.drop(e(socket.assigns, :root_flash, %{}), [type]))
-      |> assign(key, nil)
-    }
+    {:noreply,
+     socket
+     |> clear_flash(key)
+     |> assign(
+       :root_flash,
+       Map.drop(e(socket.assigns, :root_flash, %{}), [type])
+     )
+     |> assign(key, nil)}
+
     # |> debug
   end
 
-  def handle_event(action, attrs, socket), do: Bonfire.UI.Common.LiveHandlers.handle_event(action, attrs, socket, __MODULE__)
-  def handle_info(info, socket), do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
+  def handle_event(action, attrs, socket),
+    do:
+      Bonfire.UI.Common.LiveHandlers.handle_event(
+        action,
+        attrs,
+        socket,
+        __MODULE__
+      )
+
+  def handle_info(info, socket),
+    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
 
   def error_template(assigns) do
-    link = case maybe_last_sentry_event_id() do
-      id when is_binary(id) ->
-        org = Settings.get(:sentry_org, "bonfire-networks")
-        "https://sentry.io/organizations/#{org}/issues/?query=#{id}"
-      _ -> nil
-    end
+    link =
+      case maybe_last_sentry_event_id() do
+        id when is_binary(id) ->
+          org = Settings.get(:sentry_org, "bonfire-networks")
+          "https://sentry.io/organizations/#{org}/issues/?query=#{id}"
 
-    # dump(assigns)
-    error = e(assigns, :error, nil) || live_flash((e(assigns, :root_flash, nil) || e(assigns, :flash, nil) || %{}), :error)
+        _ ->
+          nil
+      end
+
+    # debug(assigns)
+    error =
+      e(assigns, :error, nil) ||
+        live_flash(
+          e(assigns, :root_flash, nil) || e(assigns, :flash, nil) || %{},
+          :error
+        )
+
     # debug(error)
 
-    Settings.get([:ui, :error_post_template], "I encountered this issue while using Bonfire: \n\n%{error_message}\n\n@BonfireBuilders #bonfire_feedback \n\n%{error_link}", e(assigns, :context, nil))
+    Settings.get(
+      [:ui, :error_post_template],
+      "I encountered this issue while using Bonfire: \n\n%{error_message}\n\n@BonfireBuilders #bonfire_feedback \n\n%{error_link}",
+      e(assigns, :context, nil)
+    )
     |> String.replace("%{error_message}", error || "")
     |> String.replace("%{error_link}", link || "")
+
     # |> debug()
   end
 end

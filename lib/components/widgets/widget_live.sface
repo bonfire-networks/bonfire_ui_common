@@ -1,36 +1,29 @@
 {#case @widget[:type]}
-
   {#match :link}
-
-    <LiveRedirect 
-      to={@widget[:href]} 
+    <LiveRedirect
+      to={@widget[:href]}
       class={
-        "flex items-center rounded-md", 
-        "bg-base-content/10": e(@__context__, :current_view, nil) == @widget[:module] || @page == @widget[:page] || @selected_tab == @widget[:page]
+        "flex items-center rounded-md",
+        "bg-base-content/10":
+          e(@__context__, :current_view, nil) == @widget[:module] || @page == @widget[:page] ||
+            @selected_tab == @widget[:page]
       }
-      >
+    >
       <Icon iconify={@widget[:icon]} class="w-5 h-5 text-base-content/80" />
 
-      <span :if={e(@__context__, :current_view, nil) == @widget[:module] || @page == @widget[:page] || @selected_tab == @widget[:page]} class="sr-only">{l "Current Page:"} </span>
+      <span
+        :if={e(@__context__, :current_view, nil) == @widget[:module] || @page == @widget[:page] ||
+          @selected_tab == @widget[:page]}
+        class="sr-only"
+      >{l("Current Page:")}
+      </span>
 
       {@widget[:text] || @widget[:name]}
     </LiveRedirect>
-
   {#match Surface.Component}
-
-    <Dynamic.Component
-      module={@widget[:module]}
-      page={@page}
-    />
-
+    <Dynamic.Component module={@widget[:module]} page={@page} />
   {#match Surface.LiveComponent}
-
-    <Dynamic.LiveComponent
-      id={Pointers.ULID.generate()}
-      module={@widget[:module]}
-      page={@page}
-    />
-
+    <Dynamic.LiveComponent id={Pointers.ULID.generate()} module={@widget[:module]} page={@page} />
   {#match _}
     TODO
 {/case}

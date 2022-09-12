@@ -1,35 +1,36 @@
+<Bonfire.UI.Common.WidgetBlockLive class="relative w-full mx-auto rounded-xl bg-base-100">
+  <div class="flex flex-col items-center w-full text-center">
+    <Bonfire.UI.Common.LogoLive
+      :if={@display_banner}
+      container_class="p-6 pb-2 w-[120px] h-[120px] mx-auto rounded-full"
+      image_class="h-full bg-bottom bg-no-repeat bg-contain"
+      with_name={false}
+    />
+    <div class="p-3 rounded-b-lg">
+      <LiveRedirect
+        class="text-xl font-extrabold link link-hover text-base-content"
+        to={path(Config.get!(:home_page))}
+      >
+        {Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}
+      </LiveRedirect>
+      <p
+        :if={Config.get([:ui, :theme, :instance_description], nil)}
+        class="mt-1 text-sm text-base-content text-opacity-70"
+      >
+        {Config.get([:ui, :theme, :instance_description], "")}
+      </p>
 
-
-<Bonfire.UI.Common.WidgetBlockLive 
-  class="relative w-full mx-auto rounded-xl bg-base-100">   
-    <div class="flex flex-col items-center w-full text-center">
-      <Bonfire.UI.Common.LogoLive 
-        :if={@display_banner}
-        container_class="p-6 pb-2 w-[120px] h-[120px] mx-auto rounded-full"
-        image_class="h-full bg-bottom bg-no-repeat bg-contain"
-        with_name={false}
-      />
-      <div class="p-3 rounded-b-lg">
-        <LiveRedirect class="text-xl font-extrabold link link-hover text-base-content" to={path(Config.get!(:home_page))}>
-          {Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}
-        </LiveRedirect>
-        <p
-          :if={Config.get([:ui, :theme, :instance_description], nil)} 
-          class="mt-1 text-sm text-base-content text-opacity-70">
-          { Config.get([:ui, :theme, :instance_description], "")}
-        </p>
-
-        <a href="https://bonfirenetworks.org/" class="mt-2 text-xs badge badge-primary">
-          🔥
-          {Bonfire.Application.name()} 
-        </a>
-        <LivePatch to="/terms/changelog" class="mt-2 text-xs badge badge-ghost">
-          {Bonfire.Application.version()} 
-          <span class="ml-1" x-data="{msg: 'JS'}">
-            <span x-text="msg">no JS</span>
-          </span>
-          <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
-        </LivePatch>
-      </div>
+      <a href="https://bonfirenetworks.org/" class="mt-2 text-xs badge badge-primary">
+        🔥
+        {Bonfire.Application.name()}
+      </a>
+      <LivePatch to="/terms/changelog" class="mt-2 text-xs badge badge-ghost">
+        {Bonfire.Application.version()}
+        <span class="ml-1" x-data="{msg: 'JS'}">
+          <span x-text="msg">no JS</span>
+        </span>
+        <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
+      </LivePatch>
     </div>
+  </div>
 </Bonfire.UI.Common.WidgetBlockLive>

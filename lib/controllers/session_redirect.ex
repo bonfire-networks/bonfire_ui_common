@@ -11,7 +11,7 @@ defmodule Bonfire.UI.Common.SessionRedirectController do
   defp store(conn, key, val) do
     debug(key, "key")
     debug(val, "val")
-    conn
-    |> put_session(key, val)
+
+    put_session(conn, key, val)
   end
 end

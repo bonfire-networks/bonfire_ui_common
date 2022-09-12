@@ -16,7 +16,7 @@ defmodule Bonfire.UI.Common.ContentAreas.Render do
   def render_editable(%{content_type: "html"} = page_content, opts) do
     raw("""
       <div #{wrapper_attributes(page_content, opts)}>
-        #{(page_content.content)}
+        #{page_content.content}
       </div>
     """)
   end
@@ -58,23 +58,42 @@ defmodule Bonfire.UI.Common.ContentAreas.Render do
   defp wrapper_attributes(%{content_type: content_type} = page_content, opts) do
     # TODO: Refactor into nicer pipeline
     # TODO: Update to String.trim when we only support Elixir >= 1.3 in the future.
-    empty_class = (String.trim("#{page_content.content}") == "") && "thesis-content-empty" || ""
-    classes = "class=\"thesis-content thesis-content-#{content_type} #{empty_class} #{opts[:classes]}\""
+    empty_class =
+      (String.trim("#{page_content.content}") == "" && "thesis-content-empty") ||
+        ""
+
+    classes =
+      "class=\"thesis-content thesis-content-#{content_type} #{empty_class} #{opts[:classes]}\""
+
     id = "id=\"#{opts[:id] || parameterize("thesis-content-" <> page_content.name)}\""
+
     data_content_type = "data-thesis-content-type=\"#{content_type}\""
+
     data_content_id = "data-thesis-content-id=\"#{escape_entities(page_content.name)}\""
+
     data_content_meta = "data-thesis-content-meta=\"#{escape_entities(page_content.meta)}\""
-    data_global = (opts[:global]) && "data-thesis-content-global=\"true\"" || ""
-    styles = "style=\"#{opts[:styles]}\"" # add the following when required: box-shadow: none; outline: none;
-    [id, classes, data_content_type, data_content_id, data_global, data_content_meta, styles]
+
+    data_global = (opts[:global] && "data-thesis-content-global=\"true\"") || ""
+    # add the following when required: box-shadow: none; outline: none;
+    styles = "style=\"#{opts[:styles]}\""
+
+    [
+      id,
+      classes,
+      data_content_type,
+      data_content_id,
+      data_global,
+      data_content_meta,
+      styles
+    ]
     |> Enum.reject(fn s -> String.trim(s) == "" end)
     |> Enum.join(" ")
   end
 
   defp image_attributes(page_content) do
     page_content
-    |> Bonfire.UI.Common.ContentAreas.meta_attributes
-    |> Enum.map(fn ({k, v}) -> "#{k}=\"#{escape_entities(v)}\"" end)
+    |> Bonfire.UI.Common.ContentAreas.meta_attributes()
+    |> Enum.map(fn {k, v} -> "#{k}=\"#{escape_entities(v)}\"" end)
     |> Enum.join(" ")
   end
 
@@ -84,8 +103,8 @@ defmodule Bonfire.UI.Common.ContentAreas.Render do
 
   def escape_entities(unsafe) do
     unsafe
-    |> html_escape
-    |> safe_to_string
+    |> html_escape()
+    |> safe_to_string()
   end
 
   @doc """
@@ -101,16 +120,16 @@ defmodule Bonfire.UI.Common.ContentAreas.Render do
   """
   def parameterize(str) when is_atom(str) do
     str
-    |> Atom.to_string
+    |> Atom.to_string()
     |> String.replace("_", " ")
     |> parameterize()
   end
+
   def parameterize(str) do
     str = Regex.replace(~r/[^a-z0-9\-\s\.]/i, str, "")
+
     Regex.split(~r/\%20|\s/, str)
     |> Enum.join("-")
-    |> String.downcase
+    |> String.downcase()
   end
-
-
 end

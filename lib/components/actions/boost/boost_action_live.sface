@@ -1,34 +1,33 @@
- <div 
-  class="relative z-20 tooltip tooltip-bottom" 
-  data-tip={l "Boost this post"}
->
-<button
-  :if={@object} 
-  id={@id}
-  data-id={"boost_action"}
-  disabled={if @object_type in [Bonfire.Data.Social.Message], do: "disabled"}
-  phx-click={"#{if @my_boost, do: "Bonfire.Social.Boosts:undo", else: "Bonfire.Social.Boosts:boost"}"}
-  phx-target={@myself}
-  phx-value-id={ulid(@object)}
-  phx-value-component={__MODULE__}
-  class={"btn btn-ghost btn-circle boost btn-sm"}> 
-  <span class={"text-base-content text-opacity-50", "text-opacity-100 text-info": @my_boost}>
-    <svg 
-      viewBox="0 0 24 24" 
-      width="24" 
-      height="24" 
-      stroke="currentColor" 
-      stroke-width="2" 
-      fill="none" 
-      stroke-linecap="round" 
-      stroke-linejoin="round" 
-      class={"w-4 h-4"}>
-      <polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
-  </span>
-  <span class={"feed_activity_text sr-only", "font-medium": @my_boost}>
-    {if @my_boost, do: l("Boosted"), else: l("Boost")}
-    <span :if={e(@boost_count, 0) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@boost_count, 0)}</span>
-  </span>
-
-</button>
+<div class="relative z-20 tooltip tooltip-bottom" data-tip={l("Boost this post")}>
+  <button
+    :if={@object}
+    id={@id}
+    data-id="boost_action"
+    disabled={if @object_type in [Bonfire.Data.Social.Message], do: "disabled"}
+    phx-click={"#{if @my_boost, do: "Bonfire.Social.Boosts:undo", else: "Bonfire.Social.Boosts:boost"}"}
+    phx-target={@myself}
+    phx-value-id={ulid(@object)}
+    phx-value-component={__MODULE__}
+    class="btn btn-ghost btn-circle boost btn-sm"
+  >
+    <span class={"text-base-content text-opacity-50", "text-opacity-100 text-info": @my_boost}>
+      <svg
+        viewBox="0 0 24 24"
+        width="24"
+        height="24"
+        stroke="currentColor"
+        stroke-width="2"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="w-4 h-4"
+      >
+        <polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></svg>
+    </span>
+    <span class={"feed_activity_text sr-only", "font-medium": @my_boost}>
+      {if @my_boost, do: l("Boosted"), else: l("Boost")}
+      <span :if={e(@boost_count, 0) > 0 and
+        Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@boost_count, 0)}</span>
+    </span>
+  </button>
 </div>

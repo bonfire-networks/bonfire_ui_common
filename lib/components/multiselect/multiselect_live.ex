@@ -19,5 +19,4 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   def options(selected_options) do
     selected_options
   end
-
 end

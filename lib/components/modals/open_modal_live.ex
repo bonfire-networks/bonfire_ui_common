@@ -63,7 +63,6 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   slot cancel_btn
   slot title
 
-
   def open() do
     debug("open!")
     set(show: true)
@@ -76,7 +75,11 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   def set(assigns) do
     maybe_send_update(
-      e(assigns, :reusable_modal_component, Bonfire.UI.Common.ReusableModalLive),
+      e(
+        assigns,
+        :reusable_modal_component,
+        Bonfire.UI.Common.ReusableModalLive
+      ),
       e(assigns, :reusable_modal_id, "modal"),
       assigns
     )
@@ -86,10 +89,14 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   def handle_event("open", _, socket) do
     debug("open!")
-    socket = socket
-    |> assign(show: true)
 
-    set(socket.assigns) # copy all of this component's assigns to the reusable modal (including slots!)
+    socket =
+      assign(socket,
+        show: true
+      )
+
+    # copy all of this component's assigns to the reusable modal (including slots!)
+    set(socket.assigns)
 
     {:noreply, socket}
   end
@@ -99,8 +106,15 @@ defmodule Bonfire.UI.Common.OpenModalLive do
     {:noreply, socket}
   end
 
+  def handle_event(action, attrs, socket),
+    do:
+      Bonfire.UI.Common.LiveHandlers.handle_event(
+        action,
+        attrs,
+        socket,
+        __MODULE__
+      )
 
-  def handle_event(action, attrs, socket), do: Bonfire.UI.Common.LiveHandlers.handle_event(action, attrs, socket, __MODULE__)
-
-  def handle_info(info, socket), do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
+  def handle_info(info, socket),
+    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
 end

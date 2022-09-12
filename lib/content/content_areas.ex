@@ -34,14 +34,13 @@ defmodule Bonfire.UI.Common.ContentAreas do
     render_content(conn, name, type, opts)
   end
 
-  def content(conn, name, type, opts, [do: block]) do
+  def content(conn, name, type, opts, do: block) do
     render_content(conn, name, type, Keyword.put(opts, :do, block))
   end
 
   defp render_content(_conn, name, type, opts) do
     make_content(name, type, stringify(opts[:do]), Keyword.delete(opts, :do))
-    |>
-    Render.render_editable(opts)
+    |> Render.render_editable(opts)
   end
 
   defp make_content(name, type, content, meta) do
@@ -63,12 +62,11 @@ defmodule Bonfire.UI.Common.ContentAreas do
   def meta_serialize(keyword_list) when is_list(keyword_list) do
     keyword_list
     |> Enum.into(%{})
-    |> meta_serialize
+    |> meta_serialize()
   end
 
   def meta_serialize(map) when is_map(map) do
-    map
-    |> Jason.encode!
+    Jason.encode!(map)
   end
 
   @doc """
@@ -79,9 +77,9 @@ defmodule Bonfire.UI.Common.ContentAreas do
       %{test: "Thing", test2: "123"}
   """
   def meta_attributes(%{meta: nil}), do: []
+
   def meta_attributes(%{} = page_content) do
-    page_content.meta
-    |> Jason.decode!(keys: :atoms)
+    Jason.decode!(page_content.meta, keys: :atoms)
   end
 
   defp stringify(str) when is_binary(str), do: str
@@ -92,5 +90,4 @@ defmodule Bonfire.UI.Common.ContentAreas do
       import unquote(__MODULE__)
     end
   end
-
 end

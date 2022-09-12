@@ -7,7 +7,5 @@ defmodule Bonfire.UI.Common.FeedbackButtonLive do
   @doc "Classes to style the link/button"
   prop class, :css_class, default: "w-full mt-2 normal-case btn btn-sm btn-info btn-wide"
 
-
   declare_nav_component("Open to composer ready to provide feedback")
-
 end

@@ -22,7 +22,6 @@
 #     end
 #   end
 
-
 #   defp do_put_locale(locale, conn) do
 #     Bonfire.Common.Localise.put_locale(locale)
 

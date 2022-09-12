@@ -1,18 +1,8 @@
-  <div 
-    data-tip={l "Upload an image"} 
-    class={"relative z-40 tooltip tooltip-right"}>
-    <label for={@uploads.files.ref} class="flex items-center btn btn-ghost btn-sm btn-circle">
-      <Icon solid="PaperClip" class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
-      { live_file_input @uploads.files, class: "sr-only" }
-    </label>
-    
-    <input 
-      :for={file <- e(@uploaded_files, [])} 
-      type="hidden" 
-      name="files[]" 
-      value={ulid(file)} 
-    />
+<div data-tip={l("Upload an image")} class="relative z-40 tooltip tooltip-right">
+  <label for={@uploads.files.ref} class="flex items-center btn btn-ghost btn-sm btn-circle">
+    <Icon solid="PaperClip" class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
+    {live_file_input(@uploads.files, class: "sr-only")}
+  </label>
 
-  </div>
-
-  
+  <input :for={file <- e(@uploaded_files, [])} type="hidden" name="files[]" value={ulid(file)}>
+</div>

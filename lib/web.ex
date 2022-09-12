@@ -5,17 +5,21 @@ defmodule Bonfire.UI.Common.Web do
 
   def controller(opts \\ []) do
     opts =
-      opts
-      |> Keyword.put_new(:namespace, Bonfire.Common.Config.get(:default_web_namespace, Bonfire.UI.Common))
+      Keyword.put_new(
+        opts,
+        :namespace,
+        Bonfire.Common.Config.get(:default_web_namespace, Bonfire.UI.Common)
+      )
 
     quote do
       use Phoenix.Controller, unquote(opts)
       import Plug.Conn
-      alias Bonfire.UI.Common.Plugs.{MustBeGuest, MustLogIn}
+      alias Bonfire.UI.Common.Plugs.MustBeGuest
+      alias Bonfire.UI.Common.Plugs.MustLogIn
+
       import Phoenix.LiveView.Controller
 
       unquote(basic_view_helpers())
-
     end
   end
 
@@ -32,18 +36,24 @@ defmodule Bonfire.UI.Common.Web do
       import Phoenix.Controller,
         only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
 
-      use Surface.View, unquote(opts) # to support Surface components in the app layout and in non-LiveViews
+      # to support Surface components in the app layout and in non-LiveViews
+      use Surface.View, unquote(opts)
       # Bonfire.Common.Extend.quoted_use_if_enabled(Surface.View)
       Bonfire.Common.Extend.quoted_import_if_enabled(Surface)
 
       unquote(live_view_helpers())
-
     end
   end
 
   defp maybe_put_layout(opts, file) do
-    opts
-    |> Keyword.put_new(:layout, {Bonfire.Common.Config.get(:default_layout_module, Bonfire.UI.Common.LayoutView), file})
+    Keyword.put_new(
+      opts,
+      :layout,
+      {Bonfire.Common.Config.get(
+         :default_layout_module,
+         Bonfire.UI.Common.LayoutView
+       ), file}
+    )
   end
 
   def layout_view(opts \\ []) do
@@ -51,17 +61,15 @@ defmodule Bonfire.UI.Common.Web do
   end
 
   def live_view(opts \\ []) do
-    #IO.inspect(live_view: opts)
-    opts =
-      opts
-      |> maybe_put_layout("live.html")
+    # IO.inspect(live_view: opts)
+    opts = maybe_put_layout(opts, "live.html")
+
     quote do
       use Phoenix.LiveView, unquote(opts)
 
       unquote(live_view_helpers())
 
       import Bonfire.UI.Common.LivePlugs
-
     end
   end
 
@@ -70,7 +78,6 @@ defmodule Bonfire.UI.Common.Web do
       use Phoenix.LiveComponent, unquote(opts)
 
       unquote(live_view_helpers())
-
     end
   end
 
@@ -79,7 +86,6 @@ defmodule Bonfire.UI.Common.Web do
       use Phoenix.Component, unquote(opts)
 
       unquote(live_view_helpers())
-
     end
   end
 
@@ -107,7 +113,6 @@ defmodule Bonfire.UI.Common.Web do
 
       import Plug.Conn
       import Phoenix.Controller
-
     end
   end
 
@@ -121,7 +126,6 @@ defmodule Bonfire.UI.Common.Web do
       import Phoenix.LiveView.Router
 
       # unquote(Bonfire.Common.Extend.quoted_use_if_enabled(Thesis.Router))
-
     end
   end
 
@@ -129,10 +133,8 @@ defmodule Bonfire.UI.Common.Web do
     quote do
       use Phoenix.Channel, unquote(opts)
       import Untangle
-
     end
   end
-
 
   defp common_helpers do
     quote do
@@ -144,6 +146,7 @@ defmodule Bonfire.UI.Common.Web do
 
       # deprecated: Phoenix's Helpers
       alias Bonfire.Web.Router.Helpers, as: Routes
+
       # use instead: Bonfire's voodoo routing, eg: `path(Bonfire.UI.Social.FeedsLive):
       import Bonfire.Common.URIs
 
@@ -168,7 +171,6 @@ defmodule Bonfire.UI.Common.Web do
       # unquote(Bonfire.Common.Extend.quoted_use_if_enabled(Thesis.View, Bonfire.UI.Common.ContentAreas))
 
       import Bonfire.Common.Modularity.DeclareExtensions
-
     end
   end
 
@@ -180,13 +182,11 @@ defmodule Bonfire.UI.Common.Web do
       import Phoenix.View
 
       # unquote(Bonfire.Common.Extend.quoted_use_if_enabled(Thesis.View, Bonfire.UI.Common.ContentAreas))
-
     end
   end
 
   defp live_view_helpers do
     quote do
-
       unquote(view_helpers())
 
       # Import LiveView helpers (live_render, live_component, live_patch, etc)
@@ -197,24 +197,23 @@ defmodule Bonfire.UI.Common.Web do
 
       # Import Surface if any dep is using it
       Bonfire.Common.Extend.quoted_import_if_enabled(Surface)
-
     end
   end
 
   if Bonfire.Common.Extend.module_exists?(Surface) do
     def surface_live_view(opts \\ []) do
       opts =
-        opts
-        |> maybe_put_layout("live.html")
+        maybe_put_layout(
+          opts,
+          "live.html"
+        )
 
       quote do
-
         use Surface.LiveView, unquote(opts)
 
         unquote(surface_helpers())
 
         import Bonfire.UI.Common.LivePlugs
-
       end
     end
 
@@ -223,34 +222,28 @@ defmodule Bonfire.UI.Common.Web do
         use Surface.LiveComponent, unquote(opts)
 
         unquote(surface_component_helpers())
-
       end
     end
 
     def stateless_component(opts \\ []) do
       quote do
-
         use Surface.Component, unquote(opts)
 
         unquote(surface_component_helpers())
-
       end
     end
 
     defp surface_component_helpers do
       quote do
-
         unquote(surface_helpers())
 
         data current_account, :any, from_context: :current_account
         data current_user, :any, from_context: :current_user
-
       end
     end
 
     defp surface_helpers do
       quote do
-
         unquote(live_view_helpers())
 
         # prop current_account, :any
@@ -295,7 +288,6 @@ defmodule Bonfire.UI.Common.Web do
         alias Surface.Components.Form.TextArea
 
         alias Bonfire.UI.Common.LazyImage
-
       end
     end
   end

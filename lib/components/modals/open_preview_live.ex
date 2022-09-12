@@ -20,6 +20,4 @@ defmodule Bonfire.UI.Common.OpenPreviewLive do
   Additional assigns to pass on to the modal component
   """
   prop modal_assigns, :any, default: []
-
-
 end

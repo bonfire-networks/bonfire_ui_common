@@ -6,5 +6,4 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
   prop to_boundaries, :list
   prop to_circles, :list
   prop showing_within, :any
-
 end

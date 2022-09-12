@@ -5,5 +5,4 @@ defmodule Bonfire.UI.Common.SmartInputButtonLive do
   prop smart_input_component, :atom, default: nil
   prop create_activity_type, :atom, default: nil
   prop smart_input_as, :atom, default: :sidebar
-
 end

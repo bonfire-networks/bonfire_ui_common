@@ -1,18 +1,26 @@
-
-<div 
+<div
   data-id="load_more"
   :if={unwrap(e(@page_info, :end_cursor, nil))}
-  phx-click={"#{@live_handler}:load_more" }
+  phx-click={"#{@live_handler}:load_more"}
   phx-target={@target}
-  phx-value-context={e(@context, "")} 
-  phx-value-after={unwrap(e(@page_info, :end_cursor, ""))} 
+  phx-value-context={e(@context, "")}
+  phx-value-after={unwrap(e(@page_info, :end_cursor, ""))}
   class="flex items-center mt-3 place-content-center"
   x-data="{show: true}"
-> 
-  <a href={"#"<>unwrap(e(@page_info, :end_cursor, "unknown"))} class="normal-case btn" style="display: none" x-show="show">
-    {l "Load more"}
+>
+  <a
+    href={"#" <> unwrap(e(@page_info, :end_cursor, "unknown"))}
+    class="normal-case btn"
+    style="display: none"
+    x-show="show"
+  >
+    {l("Load more")}
   </a>
-  <a href={"?#{@live_handler}[after]=" <> unwrap(e(@page_info, :end_cursor, "unknown"))} class="text-underline" x-show="!show">
-    {l "Next page"}
+  <a
+    href={"?#{@live_handler}[after]=" <> unwrap(e(@page_info, :end_cursor, "unknown"))}
+    class="text-underline"
+    x-show="!show"
+  >
+    {l("Next page")}
   </a>
 </div>

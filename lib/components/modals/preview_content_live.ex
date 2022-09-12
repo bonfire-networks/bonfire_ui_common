@@ -1,5 +1,6 @@
 defmodule Bonfire.UI.Common.PreviewContentLive do
   use Bonfire.UI.Common.Web, :stateful_component
+
   @moduledoc """
   The classic **modal**
   """
@@ -8,9 +9,7 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
   prop title_text, :string, default: nil
 
   @doc "The classes of the title of the modal"
-  prop title_class, :css_class, default:
-
-  @doc "Force modal to be open"
+  prop title_class, :css_class, default: @doc("Force modal to be open")
   prop show, :boolean, default: false
 
   @doc "Optional prop to hide the header at the top of the modal"
@@ -29,7 +28,6 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
   """
   prop opts, :keyword, default: []
 
-
   @doc """
   Slots for the contents of the modal, title, buttons...
   """
@@ -42,16 +40,16 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
   def mount(socket) do
     # debug("mounting")
     # need this because when used in the HEEX it doesn't set Surface defaults
-    {:ok, socket
-      |> assign(
-        title_text: nil,
-        title_class: nil,
-        modal_class: nil,
-        show: false,
-        no_header: false,
-        opts: []
-      )
-    }
+    {:ok,
+     assign(
+       socket,
+       title_text: nil,
+       title_class: nil,
+       modal_class: nil,
+       show: false,
+       no_header: false,
+       opts: []
+     )}
   end
 
   def handle_event("close", _, socket) do
@@ -59,7 +57,15 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
     {:noreply, assign(socket, show: false)}
   end
 
-  def handle_event(action, attrs, socket), do: Bonfire.UI.Common.LiveHandlers.handle_event(action, attrs, socket, __MODULE__)
+  def handle_event(action, attrs, socket),
+    do:
+      Bonfire.UI.Common.LiveHandlers.handle_event(
+        action,
+        attrs,
+        socket,
+        __MODULE__
+      )
 
-  def handle_info(info, socket), do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
+  def handle_info(info, socket),
+    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
 end

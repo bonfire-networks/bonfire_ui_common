@@ -4,5 +4,4 @@ defmodule Bonfire.UI.Common.ChangeLocaleLive do
 
   prop locale, :any
   prop live_handler, :string
-
 end
