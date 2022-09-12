@@ -21,7 +21,6 @@
   </label>
   <div class="mt-3">
     <fieldset>
-<<<<<<< HEAD
       <!-- <legend class="sr-only">
         {l "Smart input"}
         </legend> -->
@@ -57,18 +56,6 @@
           />
           <div class="flex flex-col ml-3">
             <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
-=======
-      <div class="flex flex-col space-y-2">
-        <label class="relative flex p-4 border rounded-md cursor-pointer border-base-content/30 focus:outline-none">
-        <input
-          type="radio"
-          name="ui[smart_input_as]"
-          value="modal"
-          checked={if Settings.get([:ui, :smart_input_as], nil, @__context__)==:modal, do: "checked"} 
-          class="radio"
-          >
-          <div class="flex flex-col ml-3">
->>>>>>> 199b5bd (ui)
             <span class="block text-base font-medium">
               {l("Pop-up modal")}
             </span>

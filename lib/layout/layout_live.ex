@@ -164,7 +164,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "grid-cols-[240px_auto]": @without_sidebar
           }
         >
-          <div :if={!@without_sidebar} class="p-4 pt-6 relative z-[110] sticky top-0">
+          <div :if={!@without_sidebar} class="px-0 pt-6 relative z-[110] sticky top-0">
             <Bonfire.UI.Common.NavSidebarLive
               items={@nav_items}
               sidebar_widgets={@sidebar_widgets}
@@ -183,7 +183,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               "justify-center mt-6 grid grid-cols-[680px_320px] gap-8",
               "!grid-cols-[1020px]": !is_list(@sidebar_widgets[:users][:secondary])
             }>
-              <div class="grid relative invisible_frame">
+              <div class="relative grid invisible_frame">
                 <div class="px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height">
                   <div id="inner_content">
                     {@inner_content}

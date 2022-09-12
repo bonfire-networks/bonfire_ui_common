@@ -1,15 +1,7 @@
-<<<<<<< HEAD
-<header
-  x-show="smart_input_open"
-  class="flex flex-row w-full p-3 rounded-t bg-base-200 flex-align-items-stretch flex-nowrap"
->
-  <span
-=======
 <header 
   x-cloak
   class="relative flex flex-row w-full p-3 rounded-t bg-base-100 flex-align-items-stretch flex-nowrap">
   <span 
->>>>>>> 199b5bd (ui)
     @click="smart_input_minimized = ! smart_input_minimized"
     class="flex-1 text-xl font-semibold text-center text-ellipsis"
     x-text={"smart_input_title_text || '#{e(@smart_input_prompt, l("New post"))}'"}
@@ -17,12 +9,8 @@
     {e(@smart_input_prompt, l("New post"))}
   </span>
   <div class="flex items-center space-x-5">
-<<<<<<< HEAD
-    <button
-=======
     <button 
       x-show="smart_input_as == 'floating'"
->>>>>>> 199b5bd (ui)
       @click="smart_input_minimized = !smart_input_minimized; smart_input_fullscreen = false"
       type="button"
       class="flex btn btn-xs btn-ghost btn-square"
@@ -38,33 +26,19 @@
         <span class="sr-only">{l("Maximise")}</span>
       </span>
     </button>
-<<<<<<< HEAD
-    <button
-      x-show="!smart_input_minimized"
-      @click="smart_input_fullscreen = !smart_input_fullscreen"
-      type="button"
-      class="btn btn-xs btn-ghost btn-square hidden md:flex"
-=======
     <!-- <button 
       x-show="!smart_input_minimized"
       @click="smart_input_fullscreen = !smart_input_fullscreen"
       type="button" 
       class="hidden btn btn-xs btn-ghost btn-square md:flex" 
->>>>>>> 199b5bd (ui)
       :class="{'!flex': !smart_input_minimized && !smart_input_fullscreen}"
       data-testid="composer:maximize-button"
       aria-describedby="tooltip-5528"
     >
       <Icon outline="ArrowsExpand" class="w-4 h-4 stroke-1 text-base-content/70" />
-<<<<<<< HEAD
-      <span class="sr-only">{l("Toggle full-screen")}</span>
-    </button>
-    <button
-=======
       <span class="sr-only">{l "Toggle full-screen"}</span>
     </button> -->
     <button 
->>>>>>> 199b5bd (ui)
       phx-click="reset"
       phx-target="#smart_input"
       @click="if (confirm('Your draft will be lost. Continue?')){smart_input_open = false; smart_input_fullscreen = false; smart_input_title_text = null;}"
