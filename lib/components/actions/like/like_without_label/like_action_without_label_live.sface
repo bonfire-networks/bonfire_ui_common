@@ -5,6 +5,7 @@
   phx-value-direction={"#{if @my_like, do: "down", else: "up"}"}
   phx-value-id={ulid(@object)}
   phx-value-component={__MODULE__}
+<<<<<<< HEAD
   class="flex items-center rounded cursor-pointer like group"
 >
   {#if @my_like}
@@ -38,4 +39,13 @@
       />
     </svg>
   {/if}
+=======
+  class="">
+  <Icon solid="Star" 
+    :if={@my_like}
+    class="w-5 h-5" />
+  <Icon outline="Star" 
+    :if={!@my_like}
+    class="w-4 h-4" />
+>>>>>>> 199b5bd (ui)
 </button>
