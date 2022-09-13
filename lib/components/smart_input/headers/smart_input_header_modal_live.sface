@@ -1,7 +1,8 @@
-<header 
+<header
   x-cloak
-  class="relative flex flex-row w-full p-3 rounded-t bg-base-100 flex-align-items-stretch flex-nowrap">
-  <span 
+  class="relative flex flex-row w-full p-3 rounded-t bg-base-100 flex-align-items-stretch flex-nowrap"
+>
+  <span
     @click="smart_input_minimized = ! smart_input_minimized"
     class="flex-1 text-xl font-semibold text-center text-ellipsis"
     x-text={"smart_input_title_text || '#{e(@smart_input_prompt, l("New post"))}'"}
@@ -9,7 +10,7 @@
     {e(@smart_input_prompt, l("New post"))}
   </span>
   <div class="flex items-center space-x-5">
-    <button 
+    <button
       x-show="smart_input_as == 'floating'"
       @click="smart_input_minimized = !smart_input_minimized; smart_input_fullscreen = false"
       type="button"
@@ -38,7 +39,7 @@
       <Icon outline="ArrowsExpand" class="w-4 h-4 stroke-1 text-base-content/70" />
       <span class="sr-only">{l "Toggle full-screen"}</span>
     </button> -->
-    <button 
+    <button
       phx-click="reset"
       phx-target="#smart_input"
       @click="if (confirm('Your draft will be lost. Continue?')){smart_input_open = false; smart_input_fullscreen = false; smart_input_title_text = null;}"

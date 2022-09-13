@@ -26,8 +26,14 @@
     }"
     class={
       "flex bg-transparent",
-      "bottom-0 !max-w-full !border-none !rounded-none": e(@thread_mode, nil) == :flat or is_messaging?(%{page: @page, showing_within: @showing_within, create_activity_type: @create_activity_type}),
-      "h-full": e(@showing_within, nil) == :page,
+      "bottom-0 !max-w-full !border-none !rounded-none":
+        e(@thread_mode, nil) == :flat or
+          is_messaging?(%{
+            page: @page,
+            showing_within: @showing_within,
+            create_activity_type: @create_activity_type
+          }),
+      "h-full": e(@showing_within, nil) == :page
     }
   >
     <!-- <div 
@@ -36,16 +42,15 @@
       @click="smart_input_fullscreen = !smart_input_fullscreen"
       class="cursor-pointer bg-white/30 fixed z-[70] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"> 
     </div> -->
-    <div 
-      class={"flex flex-col flex-1 w-full"}>
-      
-  
-     <div 
-      :if={@activity}
-      class={
-        "overflow-y-auto mb-2 rounded-md",
-        "h-full !mb-0 bg-base-300 !rounded-none max-h-[150px]": Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar
-      }>
+    <div class="flex flex-col flex-1 w-full">
+      <div
+        :if={@activity}
+        class={
+          "overflow-y-auto mb-2 rounded-md",
+          "h-full !mb-0 bg-base-300 !rounded-none max-h-[150px]":
+            Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar
+        }
+      >
         <!-- show what we're replying to, if any -->
         <Dynamic.LiveComponent
           module={Bonfire.UI.Social.ActivityLive}
@@ -61,22 +66,25 @@
       </div>
 
       <Dynamic.Component
-          module={active_smart_input_component(@smart_input_component, @create_activity_type)}
-          textarea_container_class={
-            "h-full flex-1 flex flex-col grow",
-            "min-h-[50px]": @thread_mode == :flat,
-            "min-h-[120px]": Settings.get([:ui, :smart_input_as], nil, @__context__)==:sidebar and @thread_mode != :flat,
-            "min-h-[calc(50vh-50px)]": Settings.get([:ui, :smart_input_as], nil, @__context__) !=:sidebar and @thread_mode != :flat
-          }
-          textarea_container_class_alpine="{}"
-          textarea_class={"editor_area textarea p-0 h-full w-full",
-            "min-h-[50px] border border-base-content/30": @thread_mode == :flat,
-            "!min-h-[calc(50vh-50px)] rounded-none border-t border-base-content/10": Settings.get([:ui, :smart_input_as], nil, @__context__) !=:sidebar and @thread_mode != :flat,
-            "!h-full !min-h-[420px]": @showing_within in [:page, :compose]
-          }
-          {...assigns}
-        />
-
+        module={active_smart_input_component(@smart_input_component, @create_activity_type)}
+        textarea_container_class={
+          "h-full flex-1 flex flex-col grow",
+          "min-h-[50px]": @thread_mode == :flat,
+          "min-h-[120px]":
+            Settings.get([:ui, :smart_input_as], nil, @__context__) == :sidebar and @thread_mode != :flat,
+          "min-h-[calc(50vh-50px)]":
+            Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar and @thread_mode != :flat
+        }
+        textarea_container_class_alpine="{}"
+        textarea_class={
+          "editor_area textarea p-0 h-full w-full",
+          "min-h-[50px] border border-base-content/30": @thread_mode == :flat,
+          "!min-h-[calc(50vh-50px)] rounded-none border-t border-base-content/10":
+            Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar and @thread_mode != :flat,
+          "!h-full !min-h-[420px]": @showing_within in [:page, :compose]
+        }
+        {...assigns}
+      />
     </div>
   </div>
   <!-- <noscript>

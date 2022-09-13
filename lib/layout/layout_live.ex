@@ -10,10 +10,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> debug("current_app")
 
     nav_items =
-      assigns[:nav_items] ||
-        Bonfire.Common.ExtensionModules.default_nav(current_app) ||
-        Bonfire.Common.NavModules.nav(current_app)
-        |> debug("nav_items")
+      (assigns[:nav_items] ||
+         Bonfire.Common.ExtensionModules.default_nav(current_app) ||
+         Bonfire.Common.NavModules.nav(current_app))
+      |> debug("nav_items")
 
     # Note: since this is not a Surface component, we need to set default props this way
     # TODO: make this list of assigns config-driven so other extensions can add what they need?

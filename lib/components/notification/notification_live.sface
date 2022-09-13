@@ -31,7 +31,7 @@
               {l("Show")}
             </LiveRedirect>
           </div>
-          <div class="flex flex-shrink-0 ml-4">
+          <div class="flex flex-shrink-0 ml-4 h-5">
             <button
               phx-click="clear-flash"
               phx-target={@myself}
@@ -63,7 +63,7 @@
               <div class="ml-3 w-0 flex-1 pt-0.5">
                 <p data-id="content" class="text-sm font-semibold text-gray-500">{rich(info)}</p>
               </div>
-              <div class="flex flex-shrink-0 ml-4">
+              <div class="flex flex-shrink-0 ml-4 h-5">
                 <button
                   phx-click="clear-flash"
                   phx-target={@myself}
@@ -110,7 +110,7 @@
                   class="mt-2 normal-case btn btn-sm btn-error"
                 />
               </div>
-              <div class="flex flex-shrink-0 ml-4">
+              <div class="flex flex-shrink-0 ml-4 h-5">
                 <button
                   phx-click="clear-flash"
                   phx-target={@myself}

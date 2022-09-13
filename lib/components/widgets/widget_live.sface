@@ -21,9 +21,14 @@
       {@widget[:text] || @widget[:name]}
     </LiveRedirect>
   {#match Surface.Component}
-    <Dynamic.Component module={@widget[:module]} page={@page} />
+    <Dynamic.Component module={@widget[:module]} page={@page} {...@data} />
   {#match Surface.LiveComponent}
-    <Dynamic.LiveComponent id={Pointers.ULID.generate()} module={@widget[:module]} page={@page} />
+    <Dynamic.LiveComponent
+      id={Pointers.ULID.generate()}
+      module={@widget[:module]}
+      page={@page}
+      {...@data}
+    />
   {#match _}
     TODO
 {/case}

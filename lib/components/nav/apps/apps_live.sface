@@ -145,8 +145,8 @@
               </li>
               <li>
                 <LiveRedirect 
-                  :if={module_enabled?(Bonfire.UI.Coordination.MyTasksLive)}
-                  to={path(Bonfire.UI.Coordination.MyTasksLive)}>
+                  :if={module_enabled?(Bonfire.UI.Coordination.TasksLive)}
+                  to={path(Bonfire.UI.Coordination.TasksLive)}>
                     <div class="flex items-center w-full">
                       <Icon solid="LightningBolt" class="w-5 h-5" />
                       <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l "Coordination"}</div>
