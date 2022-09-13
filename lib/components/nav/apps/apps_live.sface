@@ -12,24 +12,24 @@
 
 <div
   x-cloak
-  class="fixed top-[56px] bottom-0 left-0 z-[200] overflow-hidden w-[65px]"
+  class="hidden desktop-lg:block fixed top-[56px] bottom-0 left-0 z-[200] overflow-hidden w-[65px]"
   x-show="!open_extensions_sidebar"
 >
   <div class="inset-0 h-full bg-base-100">
     <div class="flex flex-col items-center py-4 space-y-1">
       <LiveRedirect
-        class="btn btn-square btn-ghost"
+        class={"btn btn-square btn-ghost", "!bg-base-content/10":  Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social }
         to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
       >
         <Icon solid="Newspaper" class="w-5 h-5" />
       </LiveRedirect>
       <LiveRedirect
         :for={{app, extension} <- Bonfire.Common.ExtensionModules.extensions()}
-        class="btn btn-square btn-ghost"
+        class={"btn btn-square btn-ghost", "!bg-base-content/10": Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == extension[:name] }
         :if={!extension[:exclude_from_nav] and extension_enabled?(app)}
         to={extension[:href]}
       >
-        <Icon iconify={extension[:icon]} class="w-5 h-5 text-primary-content-800" />
+        <Icon iconify={extension[:icon]} class="w-5 h-5" />
       </LiveRedirect>
     </div>
   </div>
@@ -58,7 +58,7 @@
         x-transition:leave-start="-translate-x-0"
         x-transition:leave-end="-translate-x-full"
       >
-        <div class="w-full h-full bg-base-100">
+        <div class="w-full h-full bg-base-300 relative after:content-[''] after:absolute after:right-[-100px] after:w-[100px] after:top-0 after:bottom-0 after:bg-gradient-to-r after:from-base-300 after:to-transparent">
           <div class="flex items-center gap-2 p-4 pb-2">
             <div @click="open_extensions_sidebar = false" class="btn btn-ghost btn-square btn-sm">
               <Icon outline="Menu" class="w-5 h-5" />
@@ -74,95 +74,33 @@
               <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
             </LiveRedirect>
           </div>
-          <ul class="p-2 menu">
+          <ul class="p-2 space-y-2 menu">
             <!-- <li class="text-xs font-medium tracking-wider uppercase menu-title text-primary-content-800">
                 <span>{"Timelines"}</span>
               </li> -->
             <li>
-              <LiveRedirect to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}>
+              <LiveRedirect 
+                class={"active": Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social}
+                to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}>
                 <div class="flex items-center w-full">
                   <Icon solid="Newspaper" class="w-6 h-6" />
                   <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l("Feeds")}</div>
                 </div>
               </LiveRedirect>
             </li>
-            <!-- <li>
-                <LiveRedirect 
-                  :if={module_enabled?(Bonfire.Classify.Web.CategoriesLive)}
-                  to={"/feed/local"} >
-                    <div class="flex items-center w-full">
-                      <Icon solid="LocationMarker" class="w-5 h-5" />
-                      <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l "Local"}</div>
-                    </div>
-                </LiveRedirect>
-              </li>
-              <li>
-                <LiveRedirect 
-                  :if={module_enabled?(Bonfire.Classify.Web.CategoriesLive)}
-                  to={"/feed/federation"} >
-                    <div class="flex items-center w-full">
-                      <Icon solid="Globe" class="w-5 h-5" />
-                      <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l "Federated"}</div>
-                    </div>
-                </LiveRedirect>
-              </li> -->
-          </ul>
-          <ul class="p-2 mb-3 border-t menu border-base-content/20">
-            <li class="text-xs font-medium tracking-wider uppercase menu-title text-primary-content-800">
-              <span>{"Extensions"}</span>
-            </li>
-            <li :for={{app, extension} <- Bonfire.Common.ExtensionModules.extensions()}>
-              <LiveRedirect
-                :if={!extension[:exclude_from_nav] and extension_enabled?(app)}
-                to={extension[:href]}
+            <li 
+              :for={{app, extension} <- Bonfire.Common.ExtensionModules.extensions()}
+              :if={!extension[:exclude_from_nav] and extension_enabled?(app)}
               >
+              <LiveRedirect 
+                class={"active": Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == extension[:name]}
+                to={extension[:href]}>
                 <div class="flex items-center w-full">
                   <Icon iconify={extension[:icon]} class="w-6 h-6 text-primary-content-800" />
                   <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{extension[:name]}</div>
                 </div>
               </LiveRedirect>
             </li>
-
-            <!-- <li>
-                <LiveRedirect 
-                  :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesLive)}
-                  to={path(Bonfire.Boundaries.Web.BoundariesLive)}>
-                    <div class="flex items-center w-full">
-                      <Icon solid="LockClosed" class="w-5 h-5" />
-                      <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l "Boundaries & Circles"}</div>
-                    </div>
-                </LiveRedirect>
-              </li>
-              <li>
-                <LiveRedirect 
-                  :if={module_enabled?(Bonfire.Classify.Web.CategoriesLive)}
-                  to={path(Bonfire.Classify.Web.CategoriesLive)}>
-                    <div class="flex items-center w-full">
-                      <Icon solid="Collection" class="w-5 h-5" />
-                      <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l "Topics"}</div>
-                    </div>
-                </LiveRedirect>
-              </li>
-              <li>
-                <LiveRedirect 
-                  :if={module_enabled?(Bonfire.UI.Coordination.TasksLive)}
-                  to={path(Bonfire.UI.Coordination.TasksLive)}>
-                    <div class="flex items-center w-full">
-                      <Icon solid="LightningBolt" class="w-5 h-5" />
-                      <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l "Coordination"}</div>
-                    </div>
-                </LiveRedirect>
-              </li>
-              <li>
-                <LiveRedirect 
-                  :if={module_enabled?(Bonfire.Breadpub.BreadDashboardLive)}
-                  to={path(Bonfire.Breadpub.BreadDashboardLive)}>
-                    <div class="flex items-center w-full">
-                      <Icon solid="ChevronRight" class="w-5 h-5" />
-                      <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">BreadPub</div>
-                    </div>
-                </LiveRedirect>
-              </li> -->
           </ul>
         </div>
       </div>

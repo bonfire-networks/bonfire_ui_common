@@ -160,7 +160,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           @resize.window.debounce.100="width = window.innerWidth"
           id="bonfire_layout"
           class={
-            "w-full items-start mx-auto grid grid-cols-[280px_auto] gap-8 justify-center",
+            "w-full desktop-lg:ml-[32px] items-start mx-auto grid grid-cols-[230px_auto] desktop-lg:grid-cols-[280px_auto] gap-4 desktop-lg:gap-8 justify-center",
             "grid-cols-[240px_auto]": @without_sidebar
           }
         >
@@ -180,7 +180,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             <Bonfire.UI.Common.HeaderMobileGuestLive :if={!@current_user} />
 
             <div class={
-              "justify-center mt-6 grid grid-cols-[680px_320px] gap-8",
+              "justify-center mt-6 grid tablet-lg:grid-cols-[620px_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
               "!grid-cols-[1020px]": !is_list(@sidebar_widgets[:users][:secondary])
             }>
               <div class="relative grid invisible_frame">

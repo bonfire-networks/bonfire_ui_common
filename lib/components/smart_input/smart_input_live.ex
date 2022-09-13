@@ -30,7 +30,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   # Classes to customize the smart input appearance
   prop replied_activity_class, :css_class,
     default:
-      "relative  p-3 bg-base-100 hover:!bg-base-100 hover:!bg-opacity-100 showing_within:smart_input overflow-hidden"
+      "relative !rounded-none !border-t !border-base-content/10 p-3 !bg-base-200 hover:!bg-base-200 hover:!bg-opacity-100 showing_within:smart_input overflow-hidden"
 
   def mount(socket),
     do:
