@@ -2,8 +2,8 @@
   {#case set_smart_input_as(@thread_mode, @__context__)}
     {#match smart_input_as}
       <div x-data={"{
-              smart_input_as: '#{smart_input_as}'
-            }"}>
+                    smart_input_as: '#{smart_input_as}'
+                  }"}>
         <Bonfire.UI.Common.SmartInputButtonLive
           smart_input_as={smart_input_as}
           smart_input_prompt={@smart_input_prompt}
