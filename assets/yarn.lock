@@ -3,9 +3,9 @@
 
 
 "@yaireo/tagify@^4.13.2":
-  version "4.13.2"
-  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.13.2.tgz#836b7c1eca9c4bee6d07a2a2534836300e9ade8d"
-  integrity sha512-D0BGUiNKzR3hbysqSKEC4E9+W0mnRBMqz5TprilXSOwD8BRIjots0uyDtK9sQECCeX8ghKPwUWmn0/KfafI0og==
+  version "4.16.4"
+  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.16.4.tgz#78d2cbb56cd083af175d3cb48178ada0b37d9872"
+  integrity sha512-7x13aVfYPGUUMXWkV11/Zw4w1RkkTWtaO/rEAkaOFNwGIFXDBeG5Wr4gWF6JSHXLZAreS53nHq6b6mJrtpUgYA==
 
 animal-avatar-generator@^1.0.5:
   version "1.0.5"
@@ -32,7 +32,7 @@ loose-envify@^1.4.0:
 object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
-  integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
+  integrity sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==
 
 prop-types@^15.8.0:
   version "15.8.1"
@@ -49,6 +49,6 @@ react-is@^16.13.1:
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
 theme-change@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/theme-change/-/theme-change-2.0.2.tgz#142aa0669fde5ca7e625f5d3c09074ebb5bdb374"
-  integrity sha512-YvQqavf8nlGB3J7PdO0zLLhSLlgYhrqZL6By3FuzFIlWBsPTSPG/V98cHJllK3mmU97Jecei8XYiHalhy2umUw==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/theme-change/-/theme-change-2.2.0.tgz#dcc48ffe6b806258bc5f1caf8220527589e354c0"
+  integrity sha512-vvgZEEfmH3yZGq2bWHyzs2AOG1SRfNnCvWbEnPzGpdvvCmAWtOsEdg4H6k/OMapegG+LEQvQ76tQoN9B+FT7rg==

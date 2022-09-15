@@ -5,15 +5,15 @@ defmodule Bonfire.UI.Common.LayoutLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
   def render(assigns) do
-    current_app =
-      assigns[:__context__][:current_app]
-      |> debug("current_app")
+    current_app = assigns[:__context__][:current_app]
+    # |> debug("current_app")
 
     nav_items =
-      (assigns[:nav_items] ||
-         Bonfire.Common.ExtensionModules.default_nav(current_app) ||
-         Bonfire.Common.NavModules.nav(current_app))
-      |> debug("nav_items")
+      assigns[:nav_items] ||
+        Bonfire.Common.ExtensionModules.default_nav(current_app) ||
+        Bonfire.Common.NavModules.nav(current_app)
+
+    # |> debug("nav_items")
 
     # Note: since this is not a Surface component, we need to set default props this way
     # TODO: make this list of assigns config-driven so other extensions can add what they need?
@@ -68,7 +68,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         open_extensions_sidebar: false,
         smart_input_minimized: false,
         show_smart_input() {
-          if (#{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar} || ((window.innerWidth > 0) ? window.innerWidth : screen.width) <= 768) {
+          if (#{Settings.get([:ui, :smart_input_as], nil, @current_user || @__context__) != :sidebar} || ((window.innerWidth > 0) ? window.innerWidth : screen.width) <= 768) {
             this.smart_input_open = true
             this.smart_input_minimized = false
           }
