@@ -25,6 +25,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         boundaries_or_default(e(assigns, :to_boundaries, nil), assigns)
       )
       |> assign_new(:page_title, fn -> nil end)
+      |> assign_new(:without_guest_header, fn -> nil end)
       |> assign_new(:page, fn -> nil end)
       |> assign_new(:selected_tab, fn -> nil end)
       |> assign_new(:notification, fn -> nil end)
@@ -75,79 +76,28 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }
       }"}
     >
-      <div class="flex items-center shadow justify-between px-4 py-2 bg-base-100 sticky z-[999] top-0">
-        <div class="flex items-center flex-1 w-full gap-3">
-          <Bonfire.UI.Common.AppsLive />
-          <Bonfire.UI.Common.LogoLive />
-          <Dynamic.Component
-            :if={module_enabled?(Bonfire.Search.Web.FormLive)}
-            module={Bonfire.Search.Web.FormLive}
-            search_limit={5}
-          />
-          <Bonfire.UI.Common.PageHeaderLive
-            :if={!@without_header}
-            page_title={@page_title}
-            page_header_drawer={e(@page_header_drawer, false)}
-          >
-            <:right_action>
-              <Dynamic.Component
-                :if={@current_user && @page_header_aside}
-                :for={{component, component_assigns} <- e(@page_header_aside, [])}
-                module={component}
-                {...component_assigns}
-              />
-            </:right_action>
-          </Bonfire.UI.Common.PageHeaderLive>
-        </div>
+      
 
-        <div class="flex items-center gap-4">
-          <Bonfire.UI.Common.SmartInputContainerLive
-            hide_smart_input={@hide_smart_input}
-            showing_within={@showing_within}
-            reply_to_id={e(@reply_to_id, "")}
-            thread_id={@thread_id}
-            create_activity_type={@create_activity_type}
-            thread_mode={@thread_mode}
-            without_sidebar={@without_sidebar}
-            to_boundaries={@to_boundaries}
-            to_circles={e(@to_circles, [])}
-            smart_input_prompt={@smart_input_prompt}
-            smart_input_text={@smart_input_text}
-          />
-
-          <LiveRedirect
-            to={path(Bonfire.Data.Social.Message)}
-            class={
-              "btn btn-circle h-[40px] w-[40px] btn-sm btn-outline border-base-content/30 border",
-              "!text-primary border-current": @page == "messages"
-            }
-          >
-            <Icon solid="Mail" class={"w-5 h-5", "!text-primary": @page == "messages"} />
-            <span :if={@page == "messages"} class="sr-only">{l("Current Page:")}
-            </span>
-            <Bonfire.UI.Common.BadgeCounterLive id={:inbox} class="indicator-item badge badge-secondary" />
-          </LiveRedirect>
-
-          <LiveRedirect
-            to={path(:notifications)}
-            class={
-              "btn btn-circle btn-sm h-[40px] w-[40px] btn-outline border-base-content/30 border",
-              "!text-primary border-current": @page == "notifications"
-            }
-          >
-            <Icon solid="Bell" class={"w-5 h-5", "!text-primary": @page == "notifications"} />
-            <span :if={@page == "notifications"} class="sr-only">{l("Current Page:")}
-            </span>
-            <Bonfire.UI.Common.BadgeCounterLive
-              id={:notifications}
-              class="indicator-item badge badge-secondary"
-            />
-          </LiveRedirect>
-
-          <Bonfire.UI.Common.UserMenuLive />
-        </div>
-      </div>
-
+      <Bonfire.UI.Common.LoggedHeaderLive 
+        :if={@current_user}
+        page_header_aside={@page_header_aside}
+        page_title={@page_title}
+        page_header_drawer={e(@page_header_drawer, false)}
+        hide_smart_input={@hide_smart_input}
+        showing_within={@showing_within}
+        reply_to_id={e(@reply_to_id, "")}
+        thread_id={@thread_id}
+        create_activity_type={@create_activity_type}
+        thread_mode={@thread_mode}
+        without_sidebar={@without_sidebar}
+        to_boundaries={@to_boundaries}
+        to_circles={e(@to_circles, [])}
+        smart_input_prompt={@smart_input_prompt}
+        smart_input_text={@smart_input_text}
+      />
+      <Bonfire.UI.Common.GuestHeaderLive
+      :if={!@current_user && @without_guest_header != true}
+      />
       <div class="transition duration-150 ease-in-out transform">
         <!-- :class="{'ml-[240px]': open_extensions_sidebar}" -->
         <div
@@ -160,8 +110,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
           @resize.window.debounce.100="width = window.innerWidth"
           id="bonfire_layout"
           class={
-            "w-full desktop-lg:ml-[32px] items-start mx-auto grid grid-cols-[230px_auto] desktop-lg:grid-cols-[280px_auto] gap-4 desktop-lg:gap-8 justify-center",
-            "grid-cols-[240px_auto]": @without_sidebar
+            "w-full desktop-lg:pl-[32px] items-start mx-auto grid grid-cols-[230px_auto] desktop-lg:grid-cols-[280px_auto] gap-4 desktop-lg:gap-8 justify-center",
+            "!grid-cols-1": @without_sidebar,
+            "!pl-3": !@current_user
           }
         >
           <div :if={!@without_sidebar} class="px-0 pt-6 relative z-[110] sticky top-0">
@@ -181,7 +132,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
             <div class={
               "justify-center mt-6 grid tablet-lg:grid-cols-[620px_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
-              "!grid-cols-[1020px]": !is_list(@sidebar_widgets[:users][:secondary])
+              "!grid-cols-[1024px]": !is_list(@sidebar_widgets[:users][:secondary])
             }>
               <div class="relative grid invisible_frame">
                 <div class="px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height">

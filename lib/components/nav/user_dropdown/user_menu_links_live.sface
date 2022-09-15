@@ -1,39 +1,39 @@
 {#if ulid(@current_user)}
   <li class="tracking-wider menu-title">
-    <span class="text-xs font-medium !text-neutral">@{e(@current_user, :character, :username, "unknown")}</span>
+    <span class="mt-2 ml-3 rounded-full badge-outline badge badge-primary !text-primary-content">@{e(@current_user, :character, :username, "unknown")}</span>
   </li>
   <li class="hover:bg-neutral/10">
-    <LiveRedirect to={path(@current_user)} class="flex items-center p-4 text-sm text-neutral">
+    <LiveRedirect to={path(@current_user)} class="flex items-center p-4 text-sm text-neutral-content">
       {l("My profile")}
     </LiveRedirect>
   </li>
   <li class="hover:bg-neutral/10">
-    <LiveRedirect to="/settings" class="flex items-center p-4 text-sm text-neutral">
+    <LiveRedirect to="/settings" class="flex items-center p-4 text-sm text-neutral-content">
       {l("Settings")}
     </LiveRedirect>
   </li>
   <li class="hover:bg-neutral/10">
-    <LiveRedirect to="/switch-user" class="flex items-center p-4 text-sm text-neutral">
+    <LiveRedirect to="/switch-user" class="flex items-center p-4 text-sm text-neutral-content">
       {l("Switch profile")}
     </LiveRedirect>
   </li>
   <li class="hover:bg-neutral/10" :if={ulid(@current_user)}>
-    <LiveRedirect to="/logout" class="flex items-center p-4 text-sm text-neutral">
+    <LiveRedirect to="/logout" class="flex items-center p-4 text-sm text-neutral-content">
       {l("Logout")}
     </LiveRedirect>
   </li>
 {/if}
 
-<li class="tracking-wider menu-title">
-  <span class="text-xs font-medium !text-neutral">{l("Instance")}</span>
+<li class="pt-2 tracking-wider border-t menu-title border-neutral-content/30">
+  <span class="!text-neutral-content uppercase font-light">{l("Instance")}</span>
 </li>
 <li class="hover:bg-neutral/10">
-  <LiveRedirect to={path(:home)} class="flex items-center p-4 text-sm text-neutral">
+  <LiveRedirect to={path(:home)} class="flex items-center p-4 text-sm text-neutral-content">
     {l("Homepage")}
   </LiveRedirect>
 </li>
 <li class="hover:bg-neutral/10">
-  <LiveRedirect to="/terms/code-of-conduct" class="flex items-center p-4 text-sm text-neutral">
+  <LiveRedirect to="/terms/code-of-conduct" class="flex items-center p-4 text-sm text-neutral-content">
     {l("Code of conduct")}
   </LiveRedirect>
 </li>

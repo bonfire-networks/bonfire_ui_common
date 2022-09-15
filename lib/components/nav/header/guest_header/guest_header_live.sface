@@ -1,0 +1,16 @@
+<div class="flex items-center justify-between max-w-screen-lg px-4 py-2 mx-auto mt-3 rounded-md shadow bg-base-100">
+  <div class="flex items-center flex-1 w-full gap-3">
+    <Bonfire.UI.Common.LogoLive 
+      with_name={true}  
+    />  
+    <ul class="text-sm menu menu-horizontal">
+      <li><a>Profile directory</a></li>
+      <li><a>About</a></li>
+    </ul>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <LiveRedirect to={path(:login, :index)} class="normal-case btn btn-sm">{l "Log in"}</LiveRedirect>
+    <LiveRedirect to={path(:signup)} class="normal-case btn btn-sm">{l "Sign up"}</LiveRedirect>
+  </div>
+</div>
