@@ -1,5 +1,5 @@
 <nav role="navigation" aria-label={l("Extension navigation")}>
-  <ul class="space-y-1 menu">
+  <ul class="hidden space-y-1 menu md:block">
     {#for nav <- @items}
       {#case nav}
         {#match %{} = nav}
@@ -23,6 +23,13 @@
       {/case}
     {/for}
   </ul>
+
+  <div class="mx-3">
+    <select class="block w-full md:hidden select select-bordered">
+      <option disabled selected>Who shot first?</option>
+      <option>Greedo</option>
+    </select>
+  </div>
 
   <!-- TODO: deprecate -->
   {#if ulid(@current_user)}

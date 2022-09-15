@@ -2,11 +2,13 @@
   <div class="flex items-center flex-1 w-full gap-3">
     <Bonfire.UI.Common.AppsLive />
     <Bonfire.UI.Common.LogoLive />
-    <Dynamic.Component
-      :if={module_enabled?(Bonfire.Search.Web.FormLive)}
-      module={Bonfire.Search.Web.FormLive}
-      search_limit={5}
-    />
+    <div class="hidden md:block">
+      <Dynamic.Component
+        :if={module_enabled?(Bonfire.Search.Web.FormLive)}
+        module={Bonfire.Search.Web.FormLive}
+        search_limit={5}
+      />
+    </div>
     <Bonfire.UI.Common.PageHeaderLive
       page_title={@page_title}
       page_header_drawer={e(@page_header_drawer, false)}
@@ -40,7 +42,7 @@
     <LiveRedirect
       to={path(Bonfire.Data.Social.Message)}
       class={
-        "btn btn-circle h-[40px] w-[40px] btn-sm btn-outline border-base-content/30 border",
+        "hidden md:flex btn btn-circle h-[40px] w-[40px] btn-sm btn-outline border-base-content/30 border",
         "!text-primary border-current": @page == "messages"
       }
     >
@@ -53,7 +55,7 @@
     <LiveRedirect
       to={path(:notifications)}
       class={
-        "btn btn-circle btn-sm h-[40px] w-[40px] btn-outline border-base-content/30 border",
+        "hidden md:flex btn btn-circle btn-sm h-[40px] w-[40px] btn-outline border-base-content/30 border",
         "!text-primary border-current": @page == "notifications"
       }
     >

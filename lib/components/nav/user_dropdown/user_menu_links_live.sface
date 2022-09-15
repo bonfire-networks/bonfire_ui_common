@@ -1,6 +1,6 @@
 {#if ulid(@current_user)}
-  <li class="tracking-wider menu-title">
-    <span class="mt-2 ml-3 rounded-full badge-outline badge badge-primary !text-primary-content">@{e(@current_user, :character, :username, "unknown")}</span>
+  <li class="p-3 tracking-wider bg-base-100 menu-title">
+    <span class="!text-base-content !text-sm">@{e(@current_user, :character, :username, "unknown")}</span>
   </li>
   <li class="hover:bg-neutral/10">
     <LiveRedirect to={path(@current_user)} class="flex items-center p-4 text-sm text-neutral-content">

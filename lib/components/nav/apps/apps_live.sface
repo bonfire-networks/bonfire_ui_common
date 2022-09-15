@@ -78,6 +78,26 @@
             <!-- <li class="text-xs font-medium tracking-wider uppercase menu-title text-primary-content-800">
                 <span>{"Timelines"}</span>
               </li> -->
+            <!-- <li class="block md:hidden">
+              <LiveRedirect 
+                class={"active": Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social}
+                to={path(Bonfire.Data.Social.Message)}>
+                <div class="flex items-center w-full">
+                  <Icon solid="Mail" class="w-6 h-6" />
+                  <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l("Direct Messages")}</div>
+                </div>
+              </LiveRedirect>
+            </li>
+            <li class="block md:hidden">
+              <LiveRedirect 
+                class={"active": Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social}
+                to={path(Bonfire.Data.Social.Message)}>
+                <div class="flex items-center w-full">
+                  <Icon solid="Bell" class="w-6 h-6" />
+                  <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l("Notifications")}</div>
+                </div>
+              </LiveRedirect>
+            </li> -->
             <li>
               <LiveRedirect 
                 class={"active": Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social}

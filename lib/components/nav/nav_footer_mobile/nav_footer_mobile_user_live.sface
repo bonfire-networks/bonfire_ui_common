@@ -1,8 +1,8 @@
-<div class="bg-base-100 z-[100] sticky bottom-[10px] md:hidden md:rounded-md flex h-[60px] border-t place-content-center border-base-content/10 justify-evenly items-center">
+<div class="bottom-0 flex btm-nav md:hidden">
   <LiveRedirect
     class={
-      "flex items-center h-[60px] hover:rounded-lg hover:bg-base-content/5 tab h-full",
-      "tab-active": @page == "home"
+      "",
+      "active": @page == "home"
     }
     to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
   >
@@ -13,8 +13,8 @@
   <LiveRedirect
     to="/search"
     class={
-      "flex items-center hover:rounded-lg hover:bg-base-content/5 tab",
-      "tab-active": @page == "search"
+      "",
+      "active": @page == "search"
     }
   >
     <Icon solid="Search" class="w-6 h-6" />
@@ -24,8 +24,8 @@
   <LiveRedirect
     to={path(:notifications)}
     class={
-      "flex items-center hover:rounded-lg hover:bg-base-content/5 tab",
-      "tab-active": @page == "notifications"
+      "",
+      "active": @page == "notifications"
     }
   >
     <Icon solid="Bell" class="w-6 h-6" />
@@ -35,8 +35,8 @@
   <LiveRedirect
     to={path(Bonfire.Data.Social.Message)}
     class={
-      "flex items-center hover:rounded-lg hover:bg-base-content/5 tab",
-      "tab-active": @page == "messages"
+      "",
+      "active": @page == "messages"
     }
   >
     <Icon solid="Mail" class="w-6 h-6" />
@@ -44,4 +44,4 @@
   </LiveRedirect>
 </div>
 
-<Bonfire.UI.Common.MobileUserMenuLive page={@page} />
+<!-- <Bonfire.UI.Common.MobileUserMenuLive page={@page} /> -->

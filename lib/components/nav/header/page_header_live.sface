@@ -2,18 +2,6 @@
 <div role="banner" class="">
   <div class="flex items-center">
     <div class="flex items-center flex-1 space-x-3 text-left">
-      {#if @page_header_drawer}
-        <div class="flex md:hidden">
-          <div
-            @keydown.window.escape="open_drawer = false"
-            class="btn btn-ghost btn-circle btn-sm"
-            @click="open_drawer = true"
-          >
-            <Bonfire.UI.Common.AvatarLive class="w-8 h-8 rounded-full bg-base-200" user={@current_user} />
-          </div>
-        </div>
-      {/if}
-
       <#slot {@left_action}>
         {#case Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])}
           {#match nil}

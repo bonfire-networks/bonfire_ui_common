@@ -110,12 +110,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
           @resize.window.debounce.100="width = window.innerWidth"
           id="bonfire_layout"
           class={
-            "w-full desktop-lg:pl-[32px] items-start mx-auto grid grid-cols-[230px_auto] desktop-lg:grid-cols-[280px_auto] gap-4 desktop-lg:gap-8 justify-center",
+            "w-full desktop-lg:pl-[32px] items-start mx-auto grid grid-cols-1 md:grid-cols-[230px_auto] desktop-lg:grid-cols-[280px_auto] gap-4 desktop-lg:gap-8 justify-center",
             "!grid-cols-1": @without_sidebar,
             "!pl-3": !@current_user
           }
         >
-          <div :if={!@without_sidebar} class="px-0 pt-6 relative z-[110] sticky top-0">
+          <div 
+            :if={!@without_sidebar} 
+            class="px-0 pt-6 relative z-[110] sticky top-0">
             <Bonfire.UI.Common.NavSidebarLive
               items={@nav_items}
               sidebar_widgets={@sidebar_widgets}
@@ -128,11 +130,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "gap-2 md:gap-0 relative z-[105] w-full col-span-1",
             "max-w-screen-lg mx-auto": @without_sidebar
           }>
-            <Bonfire.UI.Common.HeaderMobileGuestLive :if={!@current_user} />
 
             <div class={
               "justify-center mt-6 grid tablet-lg:grid-cols-[620px_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
-              "!grid-cols-[1024px]": !is_list(@sidebar_widgets[:users][:secondary])
+              "!grid-cols-1": !is_list(@sidebar_widgets[:users][:secondary])
             }>
               <div class="relative grid invisible_frame">
                 <div class="px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height">
@@ -173,13 +174,16 @@ defmodule Bonfire.UI.Common.LayoutLive do
               </div>
             </div>
 
-            <Bonfire.UI.Common.NavFooterMobileUserLive :if={ulid(@current_user)} page={@page} />
           </div>
 
-          <Bonfire.UI.Common.MobileSmartInputButtonLive smart_input_prompt={@smart_input_prompt} />
+          <Bonfire.UI.Common.MobileSmartInputButtonLive 
+            :if={ulid(@current_user)}
+            smart_input_prompt={@smart_input_prompt} />
         </div>
       </div>
+      <Bonfire.UI.Common.NavFooterMobileUserLive :if={ulid(@current_user)} page={@page} />
     </div>
+
 
     <Bonfire.UI.Common.ReusableModalLive id="modal" />
 
