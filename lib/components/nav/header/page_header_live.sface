@@ -3,23 +3,23 @@
   <div class="flex items-center">
     <div class="flex items-center flex-1 space-x-3 text-left">
       <#slot {@left_action}>
-        {#case Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])}
-          {#match nil}
-          {#match extension}
-            <LiveRedirect
-              to={extension[:href]}
-              class="normal-case rounded btn btn-sm btn-outline border-base-content/30"
-            >
-              {extension[:name]}
-            </LiveRedirect>
-            <Icon solid="ChevronRight" class="w-5 h-5 text-base-content/80" />
-        {/case}
       </#slot>
 
       <div class="flex-1">
-        <#slot>
-          <h1 :if={@page_title} class="font-bold text-base-content">{@page_title}</h1>
-        </#slot>
+        <div class="text-sm breadcrumbs">
+          <ul>
+            <li>
+              {#case Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])}
+                {#match nil}
+                {#match extension}
+                  <LiveRedirect to={extension[:href]}>
+                    {extension[:name]}
+                  </LiveRedirect>
+              {/case}
+            </li> 
+            <li class="truncate text-ellipsis" :if={@page_title}>{@page_title}</li>
+          </ul>
+        </div>  
       </div>
 
       <#slot {@right_action}>

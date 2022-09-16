@@ -69,5 +69,63 @@
     </LiveRedirect>
 
     <Bonfire.UI.Common.UserMenuLive />
+
+    <button
+      @click="toggle_sidebar_widgets = true"
+      :if={is_list(@sidebar_widgets[:users][:secondary])}
+      class="btn btn-circle btn-sm h-[40px] w-[40px] tablet-lg:hidden">
+      <Icon iconify="majesticons:view-columns" class="w-5 h-5 text-base-content/70" />
+    </button>
+  </div>
+</div>
+
+<div
+  :if={is_list(@sidebar_widgets[:users][:secondary])}
+  x-cloak
+  x-show="toggle_sidebar_widgets"
+  @keydown.window.escape="toggle_sidebar_widgets = false;"
+  class="fixed top-[0] right-0 bottom-0 left-0 z-[9999] overflow-hidden"
+  >
+  <div class="inset-0 h-full overflow-hidden">
+    <div
+      @click="toggle_sidebar_widgets = false"
+      class="absolute inset-0 overflow-hidden bg-base-300/30"
+    />
+    <section class="h-full" aria-labelledby="slide-over-heading">
+      <div
+        class="absolute right-0 h-full w-[360px]"
+        x-description="Slide-over panel, show/hide based on slide-over state."
+        x-show="toggle_sidebar_widgets"
+        x-transition:enter="transform transition ease-in-out duration-150 sm:duration-200"
+        x-transition:enter-start="translate-x-full"
+        x-transition:enter-end="translate-x-0"
+        x-transition:leave="transform transition ease-in-out duration-150 sm:duration-200"
+        x-transition:leave-start="translate-x-0"
+        x-transition:leave-end="translate-x-full"
+      >
+        <div class="relative w-full h-full p-4 bg-base-100">
+            <!-- USER WIDGET SIDEBAR -->
+            <Dynamic.Component
+              :if={ulid(@current_user)}
+              :for={{component, component_assigns} <-
+                @sidebar_widgets[:users][:secondary] ||
+                  [
+                    {Bonfire.UI.Social.WidgetTagsLive, []},
+                    {Bonfire.UI.Common.WidgetFeedbackLive, []}
+                  ]}
+              module={component}
+              {...component_assigns}
+            />
+
+            <!-- GUEST WIDGET SIDEBAR -->
+            <Dynamic.Component
+              :if={!@current_user}
+              :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || []}
+              module={component}
+              {...component_assigns}
+            />
+        </div>
+      </div>
+    </section>
   </div>
 </div>

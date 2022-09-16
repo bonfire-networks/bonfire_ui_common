@@ -1,14 +1,13 @@
 <div
   id={@id}
   class={
-    "#{@modal_class} absolute !top-[56px] h-[var(--inner-window-height)] overflow-y-auto overflow-x-hidden inset-0 bg-base-300 ",
+    "#{@modal_class} absolute h-[var(--inner-window-height)] overflow-y-auto overflow-x-hidden inset-0 bg-base-300 ",
     invisible: !@show,
     "visible z-[900]": @show
   }
   {...@opts}
 >
-  <div :if={@show} class="relative max-w-screen-lg mx-auto mt-4">
-    <div class="flex sticky top-0 space-x-3 z-[995] flex sticky top-0 space-x-3 z-[995] items-center p-3 bg-base-100 rounded-md shadow">
+    <div :if={@show} class="flex sticky top-0 space-x-3 z-[995] flex sticky top-0 space-x-3 z-[995] items-center p-3 bg-base-100 rounded-md shadow">
       <button
         id={"close-#{@id}"}
         phx-click="close"
@@ -24,6 +23,7 @@
         <#slot {@title}>{@title_text}</#slot>
       </h3>
     </div>
+  <div :if={@show} class="relative max-w-screen-lg mx-auto mt-4">
 
     <div class="mt-2 z-[910] modal_invisible relative" data-id="modal-contents">
       <#slot>

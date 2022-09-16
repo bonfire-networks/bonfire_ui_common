@@ -24,11 +24,35 @@
     {/for}
   </ul>
 
-  <div class="mx-3">
-    <select class="block w-full md:hidden select select-bordered">
-      <option disabled selected>Who shot first?</option>
-      <option>Greedo</option>
-    </select>
+  <div class="mx-3 md:hidden">
+    <div class="w-full dropdown">
+      <label tabindex="0" class="w-full capitalize border-base-content/30 btn btn-outline">{@page}</label>
+      <ul tabindex="0" class="w-full p-2 shadow dropdown-content menu bg-base-100 rounded-box">
+        {#for nav <- @items}
+          {#case nav}
+            {#match %{} = nav}
+              <li :if={!nav[:exclude_from_nav]}>
+                <Bonfire.UI.Common.WidgetLive
+                  widget={nav}
+                  page={@page}
+                  selected_tab={@selected_tab}
+                  data={e(nav, :props, [])}
+                />
+              </li>
+            {#match _}
+              <li :for={subnav <- nav} :if={!subnav[:exclude_from_nav]}>
+                <Bonfire.UI.Common.WidgetLive
+                  widget={subnav}
+                  page={@page}
+                  selected_tab={@selected_tab}
+                  data={e(subnav, :props, [])}
+                />
+              </li>
+            {/case}
+        {/for}   
+      </ul>
+    </div>
+
   </div>
 
   <!-- TODO: deprecate -->

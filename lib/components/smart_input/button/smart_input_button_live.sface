@@ -11,8 +11,8 @@
     else:
       "show_smart_input(); smart_input_title_text = '#{@smart_input_prompt || l("Compose a post")}'"}
   type="button"
-  class="flex-1 hidden normal-case rounded md:block btn-sm btn btn-primary"
+  class="flex-1 hidden w-[40px] h-[40px] items-center tablet-lg:px-3 normal-case tablet-lg:w-auto tablet-lg:rounded md:flex btn-circle btn-sm btn btn-primary"
 >
-  <Icon solid="PencilAlt" class="inline-block w-5 h-5 mr-2" />
-  {@smart_input_prompt || l("Compose")}
+  <Icon solid="PencilAlt" class="inline-block w-5 h-5 tablet-lg:mr-2" />
+  <span class="hidden tablet-lg:inline-block">{@smart_input_prompt || l("Compose")}</span>
 </button>
