@@ -138,7 +138,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
               "!grid-cols-1": !is_list(@sidebar_widgets[:users][:secondary])
             }>
               <div class="relative grid invisible_frame">
-                <div class="px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 full-height">
+                <div class={
+                  "h-[calc(var(--inner-window-height)-117px)] px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 md:h-full",
+                  "h-[calc(var(--inner-window-height)-207px)]": !@without_sidebar
+                  }>
                   <div id="inner_content">
                     {@inner_content}
                   </div>

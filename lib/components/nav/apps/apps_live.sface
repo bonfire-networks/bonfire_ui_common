@@ -21,7 +21,7 @@
         class={"btn btn-square btn-ghost", "!bg-base-content/10":  Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social }
         to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
       >
-        <Icon solid="Newspaper" class="w-5 h-5" />
+      <Icon iconify="noto:rolled-up-newspaper" class="w-5 h-5" />
       </LiveRedirect>
       <LiveRedirect
         :for={{app, extension} <- Bonfire.Common.ExtensionModules.extensions()}
@@ -103,7 +103,7 @@
                 class={"active": Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social}
                 to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}>
                 <div class="flex items-center w-full">
-                  <Icon solid="Newspaper" class="w-6 h-6" />
+                  <Icon iconify="noto:rolled-up-newspaper" class="w-6 h-6" />
                   <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l("Feeds")}</div>
                 </div>
               </LiveRedirect>

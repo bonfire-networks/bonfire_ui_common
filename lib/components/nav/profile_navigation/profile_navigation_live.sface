@@ -1,12 +1,12 @@
 <nav
   role="tabpanel"
-  class="flex justify-between w-full mt-8 mb-2 rounded-b-xl tabs bg-base-100"
+  class="flex justify-between w-full mt-4 mb-2 rounded-b-xl tabs bg-base-100"
   aria-label="Switch between timeline, posts, boosts, media tabs"
 >
   <LivePatch
     :for={{tab, tab_name} <- @tabs}
     to={"#{@path_prefix}#{tab}"}
-    class="hover:bg-base-content/10 group flex-1 pt-2 font-normal place-content-center flex capitalize text-base"
+    class="flex flex-1 pt-2 text-base font-normal capitalize hover:bg-base-content/10 group place-content-center"
   >
     <div class={
       "tab tab-bordered group-hover:text-opacity-100",
