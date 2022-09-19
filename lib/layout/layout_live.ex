@@ -29,7 +29,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:notification, fn -> nil end)
       |> assign_new(:page_header_aside, fn -> nil end)
       |> assign_new(:page_header_drawer, fn -> false end)
-      |> assign_new(:without_header, fn -> false end)
+      |> assign_new(:custom_page_header, fn -> nil end)
       |> assign_new(:inner_content, fn -> nil end)
       |> assign_new(:object_id, fn -> nil end)
       |> assign_new(:post_id, fn -> nil end)
@@ -87,6 +87,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         create_activity_type={@create_activity_type}
         thread_mode={@thread_mode}
         without_sidebar={@without_sidebar}
+        custom_page_header={@custom_page_header}
         to_boundaries={@to_boundaries}
         to_circles={e(@to_circles, [])}
         smart_input_prompt={@smart_input_prompt}

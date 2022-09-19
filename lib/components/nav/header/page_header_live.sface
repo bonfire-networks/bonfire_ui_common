@@ -16,9 +16,13 @@
                     {name}
                   </LiveRedirect>
                 </li>
-                <li class="truncate text-ellipsis" :if={not is_nil(@page_title) and @page_title != name}>{@page_title}</li>
+                <#slot {@breadcrumbs}>
+                  <li class="truncate text-ellipsis" :if={not is_nil(@page_title) and @page_title != name}>{@page_title}</li>
+                </#slot>
               {#match _}
-                <li class="truncate text-ellipsis" :if={@page_title}>{@page_title}</li>
+                <#slot {@breadcrumbs}>
+                  <li class="truncate text-ellipsis" :if={@page_title}>{@page_title}</li>
+                </#slot>
             {/case}
           </ul>
         </div>

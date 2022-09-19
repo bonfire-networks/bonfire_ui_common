@@ -8,5 +8,6 @@ defmodule Bonfire.UI.Common.PageHeaderLive do
 
   slot default
   slot left_action
+  slot breadcrumbs
   slot right_action
 end

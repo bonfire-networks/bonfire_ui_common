@@ -9,9 +9,11 @@
         search_limit={5}
       />
     </div>
-    <Bonfire.UI.Common.PageHeaderLive
+    <Dynamic.Component
+      module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, nil}, 0)}
       page_title={@page_title}
       page_header_drawer={e(@page_header_drawer, false)}
+      {...elem(@custom_page_header || {nil, []}, 1) |> debug("custom_page_header")}
     >
       <:right_action>
         <Dynamic.Component
@@ -21,7 +23,7 @@
           {...component_assigns}
         />
       </:right_action>
-    </Bonfire.UI.Common.PageHeaderLive>
+    </Dynamic.Component>
   </div>
 
   <div class="flex items-center gap-4">
