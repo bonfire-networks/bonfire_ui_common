@@ -6,8 +6,7 @@
     do: "winter"}
   class={
     "h-full",
-    "h-[calc(100%-40px)]":
-      Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar and @thread_mode != :flat
+    "h-[calc(100%-40px)]": @thread_mode != :flat
   }
 >
   <!-- 'hidden': !smart_input_open  && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && @thread_mode != :flat} -->
@@ -45,11 +44,7 @@
     <div class="flex flex-col flex-1 w-full">
       <div
         :if={@activity}
-        class={
-          "overflow-y-auto mb-2 rounded-md",
-          "h-full !mb-0 bg-base-300 !rounded-none max-h-[150px]":
-            Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar
-        }
+        class={"overflow-y-auto h-full mb-0 bg-base-300 !rounded-none max-h-[150px]"}
       >
         <!-- show what we're replying to, if any -->
         <Dynamic.LiveComponent

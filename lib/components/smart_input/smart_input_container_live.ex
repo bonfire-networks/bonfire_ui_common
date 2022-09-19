@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop page, :any, default: nil
   prop without_sidebar, :string, default: nil
 
-  def set_smart_input_as(:flat, _), do: :sidebar
+  def set_smart_input_as(:flat, _), do: :modal
 
   def set_smart_input_as(_, context),
     do: Settings.get([:ui, :smart_input_as], :floating, context)
