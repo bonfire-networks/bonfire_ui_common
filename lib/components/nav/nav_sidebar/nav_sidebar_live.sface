@@ -25,7 +25,7 @@
   </ul>
 
   <div class="mx-3 md:hidden">
-      <ul class="justify-between w-full rounded menu menu-horizontal bg-base-100">
+    <ul class="justify-between w-full rounded menu menu-horizontal bg-base-100">
       {#for nav <- @items}
         {#case nav}
           {#match %{} = nav}
@@ -42,8 +42,8 @@
                 <div class="text-xs font-light uppercase text-base-content/70">{e(nav, :name, "")}</div>
               </LiveRedirect>
             </li>
-          {/case}
-      {/for}   
+        {/case}
+      {/for}
     </ul>
 
     <!-- <div class="w-full dropdown">
@@ -73,7 +73,6 @@
         {/for}   
       </ul>
     </div> -->
-
   </div>
 
   <!-- TODO: deprecate -->

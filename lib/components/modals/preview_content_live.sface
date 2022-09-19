@@ -7,24 +7,26 @@
   }
   {...@opts}
 >
-    <div :if={@show} class="flex sticky top-0 space-x-3 z-[995] flex sticky top-0 space-x-3 z-[995] items-center p-3 bg-base-100 rounded-md shadow">
-      <button
-        id={"close-#{@id}"}
-        phx-click="close"
-        phx-hook="ClosePreview"
-        phx-target={"#close-#{@id}"}
-        type="button"
-        class="flex btn btn-circle btn-ghost btn-sm"
-      >
-        <span class="sr-only">{l("Close preview")}</span>
-        <Icon outline="ChevronLeft" class="w-4 h-4" />
-      </button>
-      <h3 :if={e(!@no_header, false)} class={@title_class || "font-bold text-base"}>
-        <#slot {@title}>{@title_text}</#slot>
-      </h3>
-    </div>
+  <div
+    :if={@show}
+    class="flex sticky top-0 space-x-3 z-[995] flex sticky top-0 space-x-3 z-[995] items-center p-3 bg-base-100 rounded-md shadow"
+  >
+    <button
+      id={"close-#{@id}"}
+      phx-click="close"
+      phx-hook="ClosePreview"
+      phx-target={"#close-#{@id}"}
+      type="button"
+      class="flex btn btn-circle btn-ghost btn-sm"
+    >
+      <span class="sr-only">{l("Close preview")}</span>
+      <Icon outline="ChevronLeft" class="w-4 h-4" />
+    </button>
+    <h3 :if={e(!@no_header, false)} class={@title_class || "font-bold text-base"}>
+      <#slot {@title}>{@title_text}</#slot>
+    </h3>
+  </div>
   <div :if={@show} class="relative max-w-screen-lg mx-auto mt-4">
-
     <div class="mt-2 z-[910] modal_invisible relative" data-id="modal-contents">
       <#slot>
         <Dynamic.LiveComponent

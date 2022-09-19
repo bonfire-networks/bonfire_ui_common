@@ -3,5 +3,4 @@ defmodule Bonfire.UI.Common.GuestHeaderLive do
 
   prop page_title, :string, default: nil
   prop page, :string, default: nil
-
 end

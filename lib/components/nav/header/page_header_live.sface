@@ -8,18 +8,20 @@
       <div class="flex-1">
         <div class="text-sm breadcrumbs">
           <ul>
-            <li>
-              {#case Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])}
-                {#match nil}
-                {#match extension}
-                  <LiveRedirect to={extension[:href]}>
-                    {extension[:name]}
+            {#case Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])}
+              {#match %{name: name} = extension}
+                <li>
+                  <LiveRedirect to={extension[:href] || "/"}>
+                    <Icon :if={extension[:icon]} iconify={extension[:icon]} class="w-5 h-5 pr-2" />
+                    {name}
                   </LiveRedirect>
-              {/case}
-            </li> 
-            <li class="truncate text-ellipsis" :if={@page_title}>{@page_title}</li>
+                </li>
+                <li class="truncate text-ellipsis" :if={not is_nil(@page_title) and @page_title != name}>{@page_title}</li>
+              {#match _}
+                <li class="truncate text-ellipsis" :if={@page_title}>{@page_title}</li>
+            {/case}
           </ul>
-        </div>  
+        </div>
       </div>
 
       <#slot {@right_action}>

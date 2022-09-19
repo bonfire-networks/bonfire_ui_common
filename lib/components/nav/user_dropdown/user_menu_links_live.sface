@@ -33,7 +33,10 @@
   </LiveRedirect>
 </li>
 <li class="hover:bg-neutral/10">
-  <LiveRedirect to="/terms/code-of-conduct" class="flex items-center p-4 text-sm text-neutral-content">
+  <LiveRedirect
+    to="/terms/code-of-conduct"
+    class="flex items-center p-4 text-sm text-neutral-content"
+  >
     {l("Code of conduct")}
   </LiveRedirect>
 </li>

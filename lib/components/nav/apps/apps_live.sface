@@ -14,18 +14,27 @@
   x-cloak
   class="hidden desktop-lg:block fixed top-[56px] bottom-0 left-0 z-[200] overflow-hidden w-[65px]"
   x-show="!open_extensions_sidebar"
-  >
+>
   <div class="inset-0 h-full bg-base-100">
     <div class="flex flex-col items-center py-4 space-y-1">
       <LiveRedirect
-        class={"btn btn-square btn-ghost", "!bg-base-content/10":  Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social }
+        class={
+          "btn btn-square btn-ghost",
+          "!bg-base-content/10":
+            Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social
+        }
         to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
       >
-      <Icon iconify="noto:rolled-up-newspaper" class="w-5 h-5" />
+        <Icon iconify="noto:newspaper" class="w-5 h-5" />
       </LiveRedirect>
       <LiveRedirect
         :for={{app, extension} <- Bonfire.Common.ExtensionModules.extensions()}
-        class={"btn btn-square btn-ghost", "!bg-base-content/10": Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == extension[:name] }
+        class={
+          "btn btn-square btn-ghost",
+          "!bg-base-content/10":
+            Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] ==
+              extension[:name]
+        }
         :if={!extension[:exclude_from_nav] and extension_enabled?(app)}
         to={extension[:href]}
       >
@@ -40,7 +49,7 @@
   x-show="open_extensions_sidebar"
   @keydown.window.escape="open_extensions_sidebar = false;"
   class="fixed top-[0] right-0 bottom-0 left-0 z-[200] overflow-hidden"
-  >
+>
   <div class="inset-0 h-full overflow-hidden">
     <div
       @click="open_extensions_sidebar = false"
@@ -99,22 +108,28 @@
               </LiveRedirect>
             </li> -->
             <li>
-              <LiveRedirect 
-                class={"active": Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social}
-                to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}>
+              <LiveRedirect
+                class={active: Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social}
+                to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
+              >
                 <div class="flex items-center w-full">
-                  <Icon iconify="noto:rolled-up-newspaper" class="w-6 h-6" />
+                  <Icon iconify="noto:newspaper" class="w-6 h-6" />
                   <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l("Feeds")}</div>
                 </div>
               </LiveRedirect>
             </li>
-            <li 
+            <li
               :for={{app, extension} <- Bonfire.Common.ExtensionModules.extensions()}
               :if={!extension[:exclude_from_nav] and extension_enabled?(app)}
+            >
+              <LiveRedirect
+                class={
+                  active:
+                    Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] ==
+                      extension[:name]
+                }
+                to={extension[:href]}
               >
-              <LiveRedirect 
-                class={"active": Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == extension[:name]}
-                to={extension[:href]}>
                 <div class="flex items-center w-full">
                   <Icon iconify={extension[:icon]} class="w-6 h-6 text-primary-content-800" />
                   <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{extension[:name]}</div>

@@ -13,7 +13,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
         Bonfire.Common.ExtensionModules.default_nav(current_app) ||
         Bonfire.Common.NavModules.nav(current_app)
 
-
     # Note: since this is not a Surface component, we need to set default props this way
     # TODO: make this list of assigns config-driven so other extensions can add what they need?
     assigns =
@@ -76,9 +75,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }
       }"}
     >
-      
-
-      <Bonfire.UI.Common.LoggedHeaderLive 
+      <Bonfire.UI.Common.LoggedHeaderLive
         :if={@current_user}
         page_header_aside={@page_header_aside}
         page_title={@page_title}
@@ -95,11 +92,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
         smart_input_prompt={@smart_input_prompt}
         smart_input_text={@smart_input_text}
         sidebar_widgets={@sidebar_widgets}
-
       />
-      <Bonfire.UI.Common.GuestHeaderLive
-      :if={!@current_user && @without_guest_header != true}
-      />
+      <Bonfire.UI.Common.GuestHeaderLive :if={!@current_user && @without_guest_header != true} />
       <div class="transition duration-150 ease-in-out transform">
         <!-- :class="{'ml-[240px]': open_extensions_sidebar}" -->
         <div
@@ -117,9 +111,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "!pl-3": !@current_user
           }
         >
-          <div 
-            :if={!@without_sidebar} 
-            class="px-0 pt-3 md:pt-6 relative z-[110] sticky top-0">
+          <div :if={!@without_sidebar} class="px-0 pt-3 md:pt-6 relative z-[110] sticky top-0">
             <Bonfire.UI.Common.NavSidebarLive
               items={@nav_items}
               sidebar_widgets={@sidebar_widgets}
@@ -132,7 +124,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "gap-2 md:gap-0 relative z-[105] w-full col-span-1",
             "!max-w-screen-lg mx-auto": @without_sidebar
           }>
-
             <div class={
               "justify-center md:mt-6 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
               "!grid-cols-1": !is_list(@sidebar_widgets[:users][:secondary])
@@ -141,7 +132,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 <div class={
                   "h-[calc(var(--inner-window-height)-117px)] px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 md:h-full",
                   "h-[calc(var(--inner-window-height)-207px)]": !@without_sidebar
-                  }>
+                }>
                   <div id="inner_content">
                     {@inner_content}
                   </div>
@@ -155,7 +146,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   "items-start sticky z-[97] top-6 grid-flow-row gap-3 overflow-x-hidden overflow-y-auto auto-rows-min widget hidden tablet-lg:grid ",
                   "!gap-5": !Settings.get([:ui, :compact], false, @__context__)
                 }
-                >
+              >
                 <!-- USER WIDGET SIDEBAR -->
                 <Dynamic.Component
                   :if={ulid(@current_user)}
@@ -178,17 +169,16 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 />
               </div>
             </div>
-
           </div>
 
-          <Bonfire.UI.Common.MobileSmartInputButtonLive 
+          <Bonfire.UI.Common.MobileSmartInputButtonLive
             :if={ulid(@current_user)}
-            smart_input_prompt={@smart_input_prompt} />
+            smart_input_prompt={@smart_input_prompt}
+          />
         </div>
       </div>
       <Bonfire.UI.Common.NavFooterMobileUserLive :if={ulid(@current_user)} page={@page} />
     </div>
-
 
     <Bonfire.UI.Common.ReusableModalLive id="modal" />
 
