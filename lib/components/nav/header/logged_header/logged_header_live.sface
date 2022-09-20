@@ -1,6 +1,6 @@
 <div class="flex items-center shadow justify-between px-4 py-2 bg-base-100 sticky z-[999] top-0">
   <div class="flex items-center flex-1 w-full gap-3">
-    <Bonfire.UI.Common.AppsLive />
+    <Bonfire.UI.Common.AppsLive current_extension={Bonfire.Common.ExtensionModules.extension(@__context__[:current_app]) || %{}} />
     <Bonfire.UI.Common.LogoLive />
     <div class="hidden md:block">
       <Dynamic.Component

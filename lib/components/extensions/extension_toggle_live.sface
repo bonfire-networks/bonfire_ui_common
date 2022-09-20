@@ -1,0 +1,41 @@
+{#if to_string(@id) not in Bonfire.Application.required_deps()}
+  {#case Config.get([@id, :disabled], nil)}
+    {#match globally_disabled}
+      {#if @current_user && Bonfire.Me.Settings.get([@id, :disabled], nil, current_user: @current_user)}
+        <button
+          :if={globally_disabled != true}
+          phx-click="Bonfire.Me.Settings:extension:enable"
+          phx-target={@myself}
+          phx-value-extension={@id}
+          class="button btn-success rounded button-xs ml-2"
+        >{l("Enable for me")}</button>
+      {#else}
+        <button
+          phx-click="Bonfire.Me.Settings:extension:disable"
+          phx-target={@myself}
+          phx-value-extension={@id}
+          class="button btn-warning rounded button-xs ml-2"
+        >{l("Disable for me")}</button>
+      {/if}
+
+      {#if @can_instance_wide}
+        {#if globally_disabled}
+          <button
+            phx-click="Bonfire.Me.Settings:extension:enable"
+            phx-target={@myself}
+            phx-value-scope={:instance}
+            phx-value-extension={@id}
+            class="button btn-info rounded button-xs ml-2"
+          >{l("Enable by default")}</button>
+        {#else}
+          <button
+            phx-click="Bonfire.Me.Settings:extension:disable"
+            phx-target={@myself}
+            phx-value-scope={:instance}
+            phx-value-extension={@id}
+            class="button btn-error rounded button-xs ml-2"
+          >{l("Disable for everyone")}</button>
+        {/if}
+      {/if}
+  {/case}
+{/if}

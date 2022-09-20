@@ -20,22 +20,21 @@
       <LiveRedirect
         class={
           "btn btn-square btn-ghost",
-          "!bg-base-content/10":
-            Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social
+          "!bg-base-content/10": @current_extension[:name] == :social
         }
         to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
       >
         <Icon iconify="noto:newspaper" class="w-5 h-5" />
       </LiveRedirect>
       <LiveRedirect
-        :for={{app, extension} <- Bonfire.Common.ExtensionModules.extensions()}
+        :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModules.extensions()}
+        :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__) |> debug(app)}
         class={
           "btn btn-square btn-ghost",
           "!bg-base-content/10":
-            Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] ==
+            @current_extension[:name] ==
               extension[:name]
         }
-        :if={!extension[:exclude_from_nav] and extension_enabled?(app)}
         to={extension[:href]}
       >
         <Icon iconify={extension[:icon]} class="w-5 h-5" />
@@ -89,7 +88,7 @@
               </li> -->
             <!-- <li class="block md:hidden">
               <LiveRedirect 
-                class={"active": Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social}
+                class={"active": @current_extension[:name] == :social}
                 to={path(Bonfire.Data.Social.Message)}>
                 <div class="flex items-center w-full">
                   <Icon solid="Mail" class="w-6 h-6" />
@@ -99,7 +98,7 @@
             </li>
             <li class="block md:hidden">
               <LiveRedirect 
-                class={"active": Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social}
+                class={"active": @current_extension[:name] == :social}
                 to={path(Bonfire.Data.Social.Message)}>
                 <div class="flex items-center w-full">
                   <Icon solid="Bell" class="w-6 h-6" />
@@ -109,7 +108,7 @@
             </li> -->
             <li>
               <LiveRedirect
-                class={active: Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] == :social}
+                class={active: @current_extension[:name] == :social}
                 to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
               >
                 <div class="flex items-center w-full">
@@ -125,7 +124,7 @@
               <LiveRedirect
                 class={
                   active:
-                    Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])[:name] ==
+                    @current_extension[:name] ==
                       extension[:name]
                 }
                 to={extension[:href]}
