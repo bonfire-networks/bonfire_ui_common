@@ -13,6 +13,7 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   prop remove_event, :string, default: nil
   prop event_target, :any, default: nil
   prop context_id, :string, default: nil
+  prop class, :css_class, default: nil
 
   def selected_options(selected_options, field_name, context) do
     Enum.map(e(context, field_name, nil) || selected_options || [], &prepare_entry/1)

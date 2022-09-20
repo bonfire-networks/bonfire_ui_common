@@ -9,6 +9,7 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   prop preloaded_options, :any, default: nil
   prop context_id, :string, default: nil
   prop event_target, :any, default: nil
+  prop class, :css_class, default: nil
 
   def users(preloaded_options, context) do
     preloaded_options || context[:preloaded_users] || load_users(current_user(context))
