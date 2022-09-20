@@ -4,8 +4,8 @@ defmodule Bonfire.UI.Common.InputControlsLive do
 
   # prop target_component, :string
   prop reply_to_id, :string, default: nil
-  prop thread_id, :string, default: nil
-  prop create_activity_type, :atom, default: nil
+  prop context_id, :string, default: nil
+  prop create_object_type, :atom, default: nil
   prop to_boundaries, :list, default: []
   prop to_circles, :list, default: nil
   prop showing_within, :any, default: nil

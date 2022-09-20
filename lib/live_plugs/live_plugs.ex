@@ -58,7 +58,7 @@ defmodule Bonfire.UI.Common.LivePlugs do
        do:
          live_plug_(
            y,
-           apply_undead(socket, fun, [params, session, socket]),
+           apply_undead_mounted(socket, fun, params, session),
            params,
            session
          )
@@ -68,19 +68,34 @@ defmodule Bonfire.UI.Common.LivePlugs do
        do:
          live_plug_(
            y,
-           apply_undead(socket, fun, [params, session, socket]),
+           apply_undead_mounted(socket, fun, params, session),
            params,
            session
          )
 
   defp live_plug_(_, other, _, _), do: other
 
-  defp apply_undead(socket, fun, args) do
+  defp apply_undead_mounted(socket, fun, :not_mounted_at_router, session) do
+    # for embedding views in views/components using `live_render`
+    # note that these views can't contain any handle_params
+    socket
+    |> apply_undead_mounted(fun, stringify_keys(session["params"]), session)
+  end
+
+  defp apply_undead_mounted(socket, fun, params, session) do
     # needed if using Surface in a normal LiveView
     #  debug(surfacing: module_enabled?(Surface))
     if(module_enabled?(Surface), do: Surface.init(socket), else: socket)
     |> undead_mount(fn ->
-      apply(fun, args)
+      apply(fun, [
+        params,
+        session,
+        socket
+        |> assign_global(
+          current_view: socket.view,
+          current_app: Application.get_application(socket.view)
+        )
+      ])
     end)
   end
 end

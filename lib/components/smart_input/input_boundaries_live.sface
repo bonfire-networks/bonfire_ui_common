@@ -3,7 +3,7 @@
     :if={!is_messaging?(%{
       page: @page,
       showing_within: @showing_within,
-      create_activity_type: @create_activity_type
+      create_object_type: @create_object_type
     }) and module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
     module={Bonfire.Boundaries.Web.SetBoundariesLive}
     showing_within={@showing_within}
@@ -14,8 +14,8 @@
     boundaries_modal_id={@boundaries_modal_id}
     activity_type_or_reply={Bonfire.UI.Common.SmartInputLive.activity_type_or_reply(%{
       reply_to_id: @reply_to_id,
-      thread_id: @thread_id,
-      create_activity_type: @create_activity_type
+      context_id: @context_id,
+      create_object_type: @create_object_type
     })}
   />
 

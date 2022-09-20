@@ -1,10 +1,11 @@
 defmodule Bonfire.UI.Common.SmartInputContainerLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop reply_to_id, :string, default: ""
-  prop thread_id, :string, default: "", required: false
-  prop create_activity_type, :atom, default: nil
+  prop reply_to_id, :string, default: nil
+  prop context_id, :string, default: nil, required: false
+  prop create_object_type, :atom, default: nil
   prop smart_input_component, :atom, default: nil
+  prop smart_input_as, :atom, default: nil
   prop to_boundaries, :list, default: []
   prop to_circles, :list, default: nil
   prop smart_input_prompt, :string, required: false
@@ -22,9 +23,4 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop thread_mode, :atom, default: nil
   prop page, :any, default: nil
   prop without_sidebar, :string, default: nil
-
-  def set_smart_input_as(:flat, _), do: :modal
-
-  def set_smart_input_as(_, context),
-    do: Settings.get([:ui, :smart_input_as], :floating, context)
 end

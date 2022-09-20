@@ -45,8 +45,15 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     {
       :noreply,
       assign_global(socket, assign, value)
+    }
+  end
 
-      # |> debug(limit: :infinity)
+  defp do_handle_info({:assign, assign}, socket) do
+    debug("LiveHandler: handle_info, assign data with {:assign, ...}")
+
+    {
+      :noreply,
+      assign_global(socket, assign)
     }
   end
 
@@ -131,10 +138,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
       current_params: params,
       current_url:
         URI.parse(uri)
-        |> maybe_get(:path),
-      current_view: socket.view,
-      current_app: Application.get_application(socket.view),
-      preview_module: nil
+        |> maybe_get(:path)
     )
   end
 

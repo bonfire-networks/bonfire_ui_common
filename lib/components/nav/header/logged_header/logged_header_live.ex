@@ -8,13 +8,14 @@ defmodule Bonfire.UI.Common.LoggedHeaderLive do
   prop custom_page_header, :any, default: nil
   prop hide_smart_input, :boolean, default: false
   prop showing_within, :any, default: nil
-  prop reply_to_id, :string, default: ""
+  prop reply_to_id, :string, default: nil
   prop without_sidebar, :boolean, default: false
-  prop thread_id, :string, default: "", required: false
-  prop create_activity_type, :atom, default: nil
+  prop context_id, :string, default: nil, required: false
+  prop create_object_type, :atom, default: nil
   prop thread_mode, :atom, default: nil
   prop to_boundaries, :list, default: []
   prop to_circles, :list, default: nil
+  prop smart_input_as, :atom, default: nil
   prop smart_input_prompt, :string, required: false
   prop smart_input_text, :string, required: false
   prop sidebar_widgets, :list, default: []

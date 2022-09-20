@@ -35,6 +35,12 @@
           module={e(@modal_assigns, :preview_component, nil)}
           {...(@modal_assigns || %{}) |> debug("modal_assigns")}
         />
+        {if e(@modal_assigns, :preview_view, nil) && module_enabled?(@modal_assigns[:preview_view]),
+          do:
+            live_render(@socket, @modal_assigns[:preview_view],
+              id: "preview_view",
+              session: %{"params" => @modal_assigns}
+            )}
       </#slot>
     </div>
   </div>

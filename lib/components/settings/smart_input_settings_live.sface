@@ -25,8 +25,7 @@
         {l "Smart input"}
         </legend> -->
       <div class="flex flex-col space-y-2">
-        <!-- Checked: "bg-base-200 border-indigo-200 z-10", Not Checked: "border-gray-200" -->
-        <label class="relative flex p-4 border rounded-md cursor-pointer border-base-content/30 focus:outline-none">
+        <!-- <label class="relative flex p-4 border rounded-md cursor-pointer border-base-content/30 focus:outline-none">
           <input
             type="radio"
             name="ui[smart_input_as]"
@@ -35,7 +34,6 @@
             class="radio"
           />
           <div class="flex flex-col ml-3">
-            <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
             <span class="block text-base font-medium">
               {l("Sidebar (on large screens)")}
             </span>
@@ -43,7 +41,7 @@
               {l("Good for micro-blogging. On mobile the modal will be used instead.")}
             </span>
           </div>
-        </label>
+        </label> -->
 
         <!-- Checked: "bg-base-200 border-indigo-200 z-10", Not Checked: "border-gray-200" -->
         <label class="relative flex p-4 border rounded-md cursor-pointer border-base-content/30 focus:outline-none">

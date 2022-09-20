@@ -3,9 +3,9 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   # prop user_image, :string, required: true
   # prop target_component, :string
-  prop create_activity_type, :atom, default: nil
-  prop reply_to_id, :string, default: ""
-  prop thread_id, :string, default: "", required: false
+  prop create_object_type, :atom, default: nil
+  prop reply_to_id, :string, default: nil
+  prop context_id, :string, default: nil, required: false
   prop smart_input_component, :atom, default: nil
   prop to_boundaries, :list, default: []
   prop to_circles, :list, default: nil
@@ -59,11 +59,12 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     )
   end
 
-  def active_smart_input_component(smart_input_component, create_activity_type) do
-    smart_input_component ||
-      e(all_smart_input_components(), create_activity_type, nil) ||
-      Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
-      Bonfire.UI.Social.WritePostContentLive
+  def active_smart_input_component(smart_input_component, create_object_type) do
+    (smart_input_component ||
+       e(all_smart_input_components(), create_object_type, nil) ||
+       Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
+       Bonfire.UI.Social.WritePostContentLive)
+    |> debug()
   end
 
   def smart_input_name(component) do
@@ -133,24 +134,24 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     # debug(e(assigns, :thread_id, ""), "thread_id")
     if e(assigns, :reply_to_id, "") != "" or e(assigns, :thread_id, "") != "",
       do: "reply",
-      else: e(assigns, :create_activity_type, "post")
+      else: e(assigns, :create_object_type, "post")
   end
 
-  # def boundary_ids(preset_boundary, to_boundaries, create_activity_type) do
+  # def boundary_ids(preset_boundary, to_boundaries, create_object_type) do
   #   if is_list(to_boundaries) and length(to_boundaries)>0 do
   #     Enum.map_join(to_boundaries, "\", \"", &elem(&1, 1))
   #   else
-  #     if create_activity_type in [:message, "message"],
+  #     if create_object_type in [:message, "message"],
   #       do: "message",
   #       else: preset_boundary || "public"
   #   end
   # end
 
-  # def boundary_names(preset_boundary, to_boundaries, create_activity_type) do
+  # def boundary_names(preset_boundary, to_boundaries, create_object_type) do
   #   if is_list(to_boundaries) and length(to_boundaries)>0 do
   #     Enum.map_join(to_boundaries, "\", \"", &elem(&1, 0))
   #   else
-  #     if create_activity_type in [:message, "message"],
+  #     if create_object_type in [:message, "message"],
   #       do: "Message",
   #       else: preset_boundary || "Public"
   #   end
@@ -217,12 +218,12 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   def handle_event(
         "select_smart_input",
-        %{"create_activity_type" => type},
+        %{"create_object_type" => type},
         socket
       ) do
     {:noreply,
      assign(socket,
-       create_activity_type: maybe_to_atom(type)
+       create_object_type: maybe_to_atom(type)
      )}
   end
 

@@ -7,6 +7,7 @@ defmodule Bonfire.UI.Common.MultiselectLive.LiveHandler do
         socket
       )
       when is_binary(id) do
+    field = maybe_to_atom(field)
     debug("selected for #{field} : #{name}")
     # TODO, handle cases when we want to select multiple
     {:noreply,
@@ -21,6 +22,8 @@ defmodule Bonfire.UI.Common.MultiselectLive.LiveHandler do
         %{"id" => _deselected, "field" => field} = _attrs,
         socket
       ) do
+    field = maybe_to_atom(field)
+
     {:noreply,
      assign_global(
        socket,

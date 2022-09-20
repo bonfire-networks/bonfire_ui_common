@@ -1,13 +1,4 @@
 <div>
-  <!-- <a 
-    href={@permalink} 
-    id={"open-#{ulid(@activity)}"}
-    phx-hook="PreviewActivity"
-    data-id={@thread_id}
-    data-permalink={@permalink}
-    class="px-1 font-normal normal-case btn btn-sm btn-ghost">
-      {l "View discussion"}
-  </a> -->
   <Bonfire.UI.Common.OpenModalLive
     id={Pointers.ULID.generate()}
     reusable_modal_component={Bonfire.UI.Common.PreviewContentLive}

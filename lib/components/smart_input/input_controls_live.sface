@@ -11,7 +11,7 @@
           :if={!is_messaging?(%{
             page: @page,
             showing_within: @showing_within,
-            create_activity_type: @create_activity_type
+            create_object_type: @create_object_type
           }) && module_enabled?(Bonfire.Files)}
           uploads={@uploads}
           thread_mode={@thread_mode}
@@ -52,7 +52,7 @@
         phx-disable-with={if is_messaging?(%{
              page: @page,
              showing_within: @showing_within,
-             create_activity_type: @create_activity_type
+             create_object_type: @create_object_type
            }),
            do: l("Sending..."),
            else: l("Posting...")}
@@ -61,7 +61,7 @@
         {#if is_messaging?(%{
             page: @page,
             showing_within: @showing_within,
-            create_activity_type: @create_activity_type
+            create_object_type: @create_object_type
           })}
           {l("Send")}
         {#else}
@@ -71,9 +71,9 @@
     </div>
 
     <input type="hidden" name="reply_to[reply_to_id]" value={@reply_to_id}>
-    <input type="hidden" name="reply_to[thread_id]" value={@thread_id}>
+    <input type="hidden" name="reply_to[thread_id]" value={@context_id}>
 
-    <input type="hidden" name={:create_activity_type} value={@create_activity_type}>
+    <input type="hidden" name={:create_object_type} value={@create_object_type}>
 
     <input
       :for={circle <- e(@to_circles, [])}

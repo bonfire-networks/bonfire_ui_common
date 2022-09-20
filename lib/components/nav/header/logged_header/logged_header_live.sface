@@ -31,12 +31,13 @@
       hide_smart_input={@hide_smart_input}
       showing_within={@showing_within}
       reply_to_id={e(@reply_to_id, "")}
-      thread_id={@thread_id}
-      create_activity_type={@create_activity_type}
+      context_id={@context_id}
+      create_object_type={@create_object_type}
       thread_mode={@thread_mode}
       without_sidebar={@without_sidebar}
       to_boundaries={@to_boundaries}
       to_circles={e(@to_circles, [])}
+      smart_input_as={@smart_input_as}
       smart_input_prompt={@smart_input_prompt}
       smart_input_text={@smart_input_text}
     />

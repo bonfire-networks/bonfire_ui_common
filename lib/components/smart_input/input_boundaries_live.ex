@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.InputBoundariesLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop create_activity_type, :atom, default: nil
+  prop create_object_type, :atom, default: nil
   prop preloaded_recipients, :list, default: nil
   prop to_boundaries, :list, default: nil
   prop to_circles, :list, default: nil
@@ -11,6 +11,6 @@ defmodule Bonfire.UI.Common.InputBoundariesLive do
   prop thread_mode, :atom, default: nil
   prop page, :any, default: nil
   prop reply_to_id, :string, default: nil
-  prop thread_id, :string, default: nil
+  prop context_id, :string, default: nil
   prop boundaries_modal_id, :string, default: :sidebar_composer
 end

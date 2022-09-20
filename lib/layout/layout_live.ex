@@ -33,12 +33,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:inner_content, fn -> nil end)
       |> assign_new(:object_id, fn -> nil end)
       |> assign_new(:post_id, fn -> nil end)
-      |> assign_new(:thread_id, fn -> nil end)
+      |> assign_new(:context_id, fn -> nil end)
       |> assign_new(:reply_to_id, fn -> nil end)
-      |> assign_new(:create_activity_type, fn -> nil end)
+      |> assign_new(:create_object_type, fn -> nil end)
       |> assign_new(:to_circles, fn -> [] end)
       |> assign_new(:smart_input_prompt, fn -> nil end)
       |> assign_new(:smart_input_text, fn -> nil end)
+      |> assign_new(:smart_input_as, fn -> set_smart_input_as(assigns[:thread_mode], assigns) end)
       |> assign_new(:showing_within, fn -> nil end)
       |> assign_new(:sidebar_widgets, fn -> [] end)
       |> assign_new(:nav_items, fn -> nav_items end)
@@ -67,11 +68,15 @@ defmodule Bonfire.UI.Common.LayoutLive do
         open_extensions_sidebar: false,
         toggle_sidebar_widgets: false,
         smart_input_minimized: false,
-        show_smart_input() {
-          if (#{Settings.get([:ui, :smart_input_as], nil, @current_user || @__context__) != :sidebar} || ((window.innerWidth > 0) ? window.innerWidth : screen.width) <= 768) {
-            this.smart_input_open = true
-            this.smart_input_minimized = false
-          }
+        smart_input_as: '#{@smart_input_as}',
+        show_smart_input(title) {
+          console.log('show_smart_input');
+          if(title !==undefined){ this.smart_input_title_text = title }
+          console.log(this.smart_input_open);
+          this.smart_input_open = true;
+          console.log(this.smart_input_open);
+          this.smart_input_minimized = false;
+          #{if @smart_input_as == :modal, do: "this.smart_input_fullscreen = true;"}
         }
       }"}
     >
@@ -83,13 +88,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
         hide_smart_input={@hide_smart_input}
         showing_within={@showing_within}
         reply_to_id={e(@reply_to_id, "")}
-        thread_id={@thread_id}
-        create_activity_type={@create_activity_type}
+        context_id={@context_id}
+        create_object_type={@create_object_type}
         thread_mode={@thread_mode}
         without_sidebar={@without_sidebar}
         custom_page_header={@custom_page_header}
         to_boundaries={@to_boundaries}
         to_circles={e(@to_circles, [])}
+        smart_input_as={@smart_input_as}
         smart_input_prompt={@smart_input_prompt}
         smart_input_text={@smart_input_text}
         sidebar_widgets={@sidebar_widgets}
@@ -191,4 +197,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
     />
     """
   end
+
+  def set_smart_input_as(:flat, _), do: :modal
+
+  def set_smart_input_as(_, context),
+    do: Settings.get([:ui, :smart_input_as], :floating, context)
 end

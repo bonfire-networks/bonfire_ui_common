@@ -3,13 +3,9 @@
   phx-target="#smart_input"
   phx-value-component={Bonfire.UI.Common.SmartInputLive.active_smart_input_component(
     @smart_input_component,
-    @create_activity_type
+    @create_object_type
   )}
-  @click={if @smart_input_as == :modal,
-    do:
-      "smart_input_fullscreen = true; show_smart_input(); smart_input_title_text = '#{@smart_input_prompt || l("Compose a post")}'",
-    else:
-      "show_smart_input(); smart_input_title_text = '#{@smart_input_prompt || l("Compose a post")}'"}
+  @click={"show_smart_input('#{@smart_input_prompt || l("Compose a post")}')"}
   type="button"
   class="flex-1 hidden w-[40px] h-[40px] items-center tablet-lg:px-3 normal-case tablet-lg:w-auto tablet-lg:rounded md:flex btn-circle btn-sm btn btn-primary"
 >

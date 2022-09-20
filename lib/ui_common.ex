@@ -440,11 +440,16 @@ defmodule Bonfire.UI.Common do
       assign_and_broadcast(socket, assigns_to_broadcast, assign_target_ids)
     else
       debug(
-        "cast_self: Cannot send via PubSub without an account and/or user in socket. Falling back to only setting an assign."
+        "cast_self: Cannot send via PubSub without an account and/or user in socket. Falling back to setting an assign in the current view and component."
       )
 
-      assign_global(socket, assigns_to_broadcast)
+      send_self(socket, assigns_to_broadcast)
     end
+  end
+
+  def send_self(socket, assigns_to_broadcast) do
+    send(self(), {:assign, assigns_to_broadcast})
+    assign_generic(socket, assigns_to_broadcast)
   end
 
   @doc "Warning: this will set assigns for any/all users who subscribe to them. You want to `cast_self/2` instead if dealing with user-specific actions or private data."
@@ -458,7 +463,7 @@ defmodule Bonfire.UI.Common do
          assign_target_ids \\ []
        ) do
     assigns_broadcast(assigns_to_broadcast, assign_target_ids)
-    assign_global(socket, assigns_to_broadcast)
+    assign_generic(socket, assigns_to_broadcast)
   end
 
   defp assigns_broadcast(assigns, assign_target_ids \\ [])
@@ -1030,8 +1035,8 @@ defmodule Bonfire.UI.Common do
       when showing_within in @message_types,
       do: true
 
-  def is_messaging?(%{create_activity_type: create_activity_type})
-      when create_activity_type in @message_types,
+  def is_messaging?(%{create_object_type: create_object_type})
+      when create_object_type in @message_types,
       do: true
 
   def is_messaging?(_), do: false
