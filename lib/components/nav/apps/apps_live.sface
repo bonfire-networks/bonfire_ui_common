@@ -20,7 +20,7 @@
       <LiveRedirect
         class={
           "btn btn-square btn-ghost",
-          "!bg-base-content/10": @current_extension[:name] == :social
+          "!bg-base-content/10": @current_extension[:name] == "Social"
         }
         to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
       >
@@ -38,8 +38,19 @@
         to={extension[:href]}
       >
         <Icon iconify={extension[:icon]} class="w-5 h-5" />
-      </LiveRedirect>
+      </LiveRedirect>      
     </div>
+  </div>
+  <div class="sticky flex w-[48px] mx-auto items-center bottom-2">
+    <LiveRedirect
+        class={
+          "btn btn-square btn-ghost",
+          "!bg-base-content/10": @current_extension[:name] == "Settings"
+        }
+        to="/settings"
+      >
+      <Icon iconify="noto:gear" class="w-5 h-5" />
+    </LiveRedirect>
   </div>
 </div>
 
@@ -108,7 +119,7 @@
             </li> -->
             <li>
               <LiveRedirect
-                class={active: @current_extension[:name] == :social}
+                class={active: @current_extension[:name] == "Social"}
                 to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
               >
                 <div class="flex items-center w-full">

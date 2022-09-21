@@ -1,4 +1,4 @@
-<span>
+
   <a
     :if={!@my_follow}
     data-cid={@id}
@@ -26,4 +26,3 @@
     <span :if={!@hide_text} class={"truncate ellipsis", "ml-2": !@hide_icon}>
       {l("Unfollow")} {@label}</span>
   </a>
-</span>

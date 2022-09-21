@@ -2,7 +2,7 @@
   <div class="flex items-center flex-1 w-full gap-3">
     <Bonfire.UI.Common.AppsLive current_extension={Bonfire.Common.ExtensionModules.extension(@__context__[:current_app]) || %{}} />
     <Bonfire.UI.Common.LogoLive />
-    <div class="hidden md:block">
+    <div class="hidden md:block w-[240px]">
       <Dynamic.Component
         :if={module_enabled?(Bonfire.Search.Web.FormLive)}
         module={Bonfire.Search.Web.FormLive}
@@ -45,21 +45,20 @@
     <LiveRedirect
       to={path(Bonfire.Data.Social.Message)}
       class={
-        "hidden md:flex btn btn-circle h-[40px] w-[40px] btn-sm btn-outline border-base-content/30 border",
+        "hidden md:flex btn btn-circle h-[40px] w-[40px] relative btn-sm btn-outline border-base-content/30 border",
         "!text-primary border-current": @page == "messages"
       }
     >
       <Icon solid="Mail" class={"w-5 h-5", "!text-primary": @page == "messages"} />
       <span :if={@page == "messages"} class="sr-only">{l("Current Page:")}
       </span>
-      <Bonfire.UI.Common.BadgeCounterLive id={:inbox} class="indicator-item badge badge-secondary" />
+      <Bonfire.UI.Common.BadgeCounterLive id={:inbox} class="absolute -right-3 indicator-item badge -top-2 badge-primary" />
     </LiveRedirect>
 
     <LiveRedirect
       to={path(:notifications)}
       class={
-        "hidden md:flex btn btn-circle btn-sm h-[40px] w-[40px] btn-outline border-base-content/30 border",
-        "!text-primary border-current": @page == "notifications"
+        "hidden md:flex btn btn-circle btn-sm h-[40px] relative w-[40px] btn-outline border-base-content/30 border"
       }
     >
       <Icon solid="Bell" class={"w-5 h-5", "!text-primary": @page == "notifications"} />
@@ -67,7 +66,7 @@
       </span>
       <Bonfire.UI.Common.BadgeCounterLive
         id={:notifications}
-        class="indicator-item badge badge-secondary"
+        class="absolute -right-3 indicator-item badge -top-2 badge-primary"
       />
     </LiveRedirect>
 
