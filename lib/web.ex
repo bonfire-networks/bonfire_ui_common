@@ -92,7 +92,7 @@ defmodule Bonfire.UI.Common.Web do
   def live_handler(_opts \\ []) do
     quote do
       import Phoenix.LiveView
-      import Phoenix.LiveView.Helpers
+      import Phoenix.Component
       alias Bonfire.UI.Common.ComponentID
 
       unquote(view_helpers())
@@ -181,6 +181,9 @@ defmodule Bonfire.UI.Common.Web do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
+      # Import component helpers
+      import Phoenix.Component
+
       # unquote(Bonfire.Common.Extend.quoted_use_if_enabled(Thesis.View, Bonfire.UI.Common.ContentAreas))
     end
   end
@@ -189,8 +192,9 @@ defmodule Bonfire.UI.Common.Web do
     quote do
       unquote(view_helpers())
 
-      # Import LiveView helpers (live_render, live_component, live_patch, etc)
+      # Import LiveView helpers TODO: deprecate after LV 0.18
       import Phoenix.LiveView.Helpers
+
       alias Bonfire.UI.Common.ComponentID
 
       alias Phoenix.LiveView.JS
