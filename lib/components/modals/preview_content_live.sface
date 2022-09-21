@@ -1,7 +1,7 @@
 <div
   id={@id}
   class={
-    "#{@modal_class} absolute h-[var(--inner-window-height)] overflow-y-auto overflow-x-hidden inset-0 bg-base-300 ",
+    "#{@modal_class} absolute h-[var(--inner-window-height)] overflow-y-auto overflow-x-hidden inset-0 bg-base-300 top-[56px] left-[65px]",
     invisible: !@show,
     "visible z-[900]": @show
   }
@@ -9,7 +9,7 @@
 >
   <div
     :if={@show}
-    class="flex sticky top-0 space-x-3 z-[995] flex sticky top-0 space-x-3 z-[995] items-center p-3 bg-base-100 rounded-md shadow"
+    class="m-4 flex sticky top-0 space-x-3 z-[995] items-center p-3 bg-base-100 rounded-md shadow"
   >
     <button
       id={"close-#{@id}"}
