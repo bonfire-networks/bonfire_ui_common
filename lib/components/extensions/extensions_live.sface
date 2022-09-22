@@ -6,13 +6,13 @@
           <a href="https://bonfirenetworks.org/" class="">
             {Bonfire.Application.name()}
           </a>
-          <LivePatch to="/terms/changelog" class="">
+          <LiveRedirect to="/terms/changelog" class="">
             {Bonfire.Application.version()}
             <span class="ml-1" x-data="{msg: 'JS'}">
               <span x-text="msg">no JS</span>
             </span>
             <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
-          </LivePatch>
+          </LiveRedirect>
         </h1>
 
         <div class="">

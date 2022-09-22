@@ -65,9 +65,9 @@
         <div class="relative flex flex-col flex-1 p-4">
           <div class="flex flex-col space-y-6">
             <div class="flex items-center space-x-2">
-              <LivePatch to={path(@current_user)}>
+              <LiveRedirect to={path(@current_user)}>
                 <Bonfire.UI.Common.AvatarLive class="w-10 h-10 rounded bg-base-100" user={@current_user} />
-              </LivePatch>
+              </LiveRedirect>
               <div class="flex flex-col">
                 <div class="text-lg font-bold text-base-content">{e(@current_user, :profile, :name, nil)}</div>
                 <div class="-mt-1 text-sm text-base-content/80">@{e(@current_user, :character, :username, nil)}</div>
@@ -89,7 +89,7 @@
 
           <!-- <Bonfire.UI.Social.SidebarNavigationLive page={e(@page, "")} /> -->
           <nav class="flex-1 mt-6 space-y-2" aria-label="Sidebar">
-            <LivePatch
+            <LiveRedirect
               to={path(@current_user)}
               class="flex items-center py-2 text-sm font-medium rounded-md text-base-content"
             >
@@ -97,8 +97,8 @@
               <span class="truncate">
                 {l("My profile")}
               </span>
-            </LivePatch>
-            <LivePatch
+            </LiveRedirect>
+            <LiveRedirect
               to="/switch-user"
               class="flex items-center py-2 text-sm font-medium rounded-md text-base-content"
             >
@@ -106,8 +106,8 @@
               <span class="truncate">
                 {l("Switch user profile")}
               </span>
-            </LivePatch>
-            <LivePatch
+            </LiveRedirect>
+            <LiveRedirect
               to={path(Bonfire.Data.Social.Message)}
               class="flex items-center py-2 text-sm font-medium rounded-md text-base-content"
             >
@@ -115,8 +115,8 @@
               <span class="truncate">
                 {l("Messages")}
               </span>
-            </LivePatch>
-            <LivePatch
+            </LiveRedirect>
+            <LiveRedirect
               to="/my/likes"
               class="flex items-center py-2 text-sm font-medium rounded-md text-base-content"
             >
@@ -124,8 +124,8 @@
               <span class="truncate">
                 {l("My Favourites")}
               </span>
-            </LivePatch>
-            <LivePatch
+            </LiveRedirect>
+            <LiveRedirect
               to="/settings"
               class="flex items-center py-2 text-sm font-medium rounded-md text-base-content"
             >
@@ -133,8 +133,8 @@
               <span class="truncate">
                 {l("Settings")}
               </span>
-            </LivePatch>
-            <LivePatch
+            </LiveRedirect>
+            <LiveRedirect
               to={"#{path(:home)}"}
               class="flex items-center py-2 text-sm font-medium rounded-md text-base-content"
             >
@@ -142,7 +142,7 @@
               <span class="truncate">
                 {l("Homepage")}
               </span>
-            </LivePatch>
+            </LiveRedirect>
             <a href="/logout" class="w-full mt-12 btn btn-wide btn-error">
               <Icon outline="Logout" class="flex-shrink-0 w-6 h-6 mr-2 stroke-current" />
               <span class="truncate">
