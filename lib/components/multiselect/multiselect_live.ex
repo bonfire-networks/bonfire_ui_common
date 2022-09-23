@@ -15,24 +15,42 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   prop context_id, :string, default: nil
   prop class, :css_class, default: nil
 
-  def selected_options(selected_options, field_name, context) do
-    Enum.map(e(context, field_name, nil) || selected_options || [], &prepare_entry/1)
-  end
-
   def preloaded_options(preloaded_options) do
     Enum.map(preloaded_options || [], &prepare_entry/1)
   end
 
-  defp prepare_entry({name, id}) do
+  def selected_options(selected_options, field_name, context, preloaded_options) do
+    do_selected_options(e(context, field_name, nil) || selected_options || [], preloaded_options)
+  end
+
+  defp do_selected_options(selected_options, preloaded_options) do
+    Enum.map(List.wrap(selected_options), fn e -> prepare_entry(e, preloaded_options) end)
+  end
+
+  defp prepare_entry(entry, _preloaded_options \\ [])
+
+  defp prepare_entry({name, id}, _preloaded_options) do
     {name, id}
   end
 
-  defp prepare_entry(%{} = object) do
+  defp prepare_entry(%{} = object, _preloaded_options) do
     {e(object, :name, nil) || e(object, :profile, :name, nil) ||
        e(object, :post_content, :name, "Unnamed"), ulid(object)}
   end
 
-  defp prepare_entry(_) do
+  defp prepare_entry(entry, preloaded_options)
+       when is_binary(entry) and is_list(preloaded_options) and preloaded_options != [] do
+    preloaded_options(preloaded_options)
+    # |> debug(entry)
+    |> Enum.filter(fn
+      {name, id} when id == entry -> true
+      _ -> false
+    end)
+    |> List.first() ||
+      {l("Already selected"), entry}
+  end
+
+  defp prepare_entry(_, _) do
     nil
   end
 

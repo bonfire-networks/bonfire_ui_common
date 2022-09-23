@@ -15,7 +15,7 @@
     class="flex items-center w-full px-2 bg-opacity-75 border border-gray-300 rounded-md shadow-sm cursor-pointer bg-base-100 focus:ring-gray-500 focus:border-gray-500 sm:text-sm hover:bg-neutral hover:bg-opacity-30"
   >
     <!-- <div class="h-9"></div> -->
-    {#case selected_options(@selected_options, @form_input_name, @__context__)}
+    {#case selected_options(@selected_options, @form_input_name, @__context__, @preloaded_options)}
       {#match selected_options when not is_list(selected_options) or selected_options == []}
         <label class="flex-1 w-full py-2 h-9">{@label}</label>
       {#match selected_options}
@@ -31,11 +31,11 @@
             {raw(name_content)}
             <input :if={id} type="hidden" name={"#{@form_input_name}"} value={"#{id}"} class="input">
             <button
-              :if={id && @remove_event}
-              phx-click={e(@remove_event, "Bonfire.UI.Common.MultiselectLive:deselect")}
+              :if={id}
+              phx-click={@remove_event || "Bonfire.UI.Common.MultiselectLive:deselect"}
               phx-target={@event_target || @myself}
-              phx-value-id={"#{id}"}
-              phx-value-field={"#{@form_input_name}"}
+              phx-value-id={id}
+              phx-value-field={@form_input_name}
               phx-value-context_id={@context_id}
               type="button"
               class="inline-flex items-center justify-center flex-shrink-0 w-4 h-4 ml-1 mr-2 text-primary-content-400 hover:bg-neutral hover:bg-opacity-30 -300 hover:text-primary-content-700 focus:outline-none focus:text-white"

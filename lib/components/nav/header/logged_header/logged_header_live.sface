@@ -52,14 +52,15 @@
       <Icon solid="Mail" class={"w-5 h-5", "!text-primary": @page == "messages"} />
       <span :if={@page == "messages"} class="sr-only">{l("Current Page:")}
       </span>
-      <Bonfire.UI.Common.BadgeCounterLive id={:inbox} class="absolute -right-3 indicator-item badge -top-2 badge-primary" />
+      <Bonfire.UI.Common.BadgeCounterLive
+        id={:inbox}
+        class="absolute -right-3 indicator-item badge -top-2 badge-primary"
+      />
     </LiveRedirect>
 
     <LiveRedirect
       to={path(:notifications)}
-      class={
-        "hidden md:flex btn btn-circle btn-sm h-[40px] relative w-[40px] btn-outline border-base-content/30 border"
-      }
+      class="hidden md:flex btn btn-circle btn-sm h-[40px] relative w-[40px] btn-outline border-base-content/30 border"
     >
       <Icon solid="Bell" class={"w-5 h-5", "!text-primary": @page == "notifications"} />
       <span :if={@page == "notifications"} class="sr-only">{l("Current Page:")}

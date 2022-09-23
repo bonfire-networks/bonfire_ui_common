@@ -27,7 +27,10 @@ defmodule Bonfire.UI.Common.MultiselectLive.LiveHandler do
     {:noreply,
      assign_global(
        socket,
-       {field, []}
+       [
+         {field, []},
+         {:preloaded_options, []}
+       ]
      )}
   end
 end
