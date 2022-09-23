@@ -63,11 +63,11 @@ defmodule Bonfire.UI.Common.LayoutLive do
       id="layout-live"
       x-data={"{
         smart_input_title_text: null,
-        smart_input_open: false,
+        smart_input_open: #{@smart_input_as == :floating},
         smart_input_fullscreen: false,
         open_extensions_sidebar: false,
         toggle_sidebar_widgets: false,
-        smart_input_minimized: false,
+        smart_input_minimized: #{@smart_input_as == :floating},
         smart_input_as: '#{@smart_input_as}',
         show_smart_input(title) {
           console.log('show_smart_input');
