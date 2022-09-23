@@ -179,7 +179,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           </div>
 
           <Bonfire.UI.Common.MobileSmartInputButtonLive
-            :if={ulid(@current_user)}
+            :if={ulid(@current_user) && !@hide_smart_input}
             smart_input_prompt={@smart_input_prompt}
           />
         </div>
