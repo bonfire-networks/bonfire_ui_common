@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.LivePlugs.AllowTestSandbox do
-  import Phoenix.LiveView
+  use Bonfire.UI.Common.Web, :live_plug
 
   def on_mount(:default, _params, _session, socket) do
     # to use with LV :on_mount

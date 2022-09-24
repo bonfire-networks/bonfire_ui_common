@@ -1,6 +1,5 @@
 defmodule Bonfire.UI.Common.ComponentID do
-  import Untangle
-  alias Bonfire.Common.Utils
+  use Bonfire.UI.Common
 
   def new(component_module, object_id)
       when is_binary(object_id) or is_number(object_id) do
@@ -44,7 +43,7 @@ defmodule Bonfire.UI.Common.ComponentID do
   def send_assigns(component_module, id, set, socket) do
     send_updates(component_module, id, set)
 
-    {:noreply, Phoenix.LiveView.assign(socket, set)}
+    {:noreply, assign_generic(socket, set)}
     # {:noreply, socket}
   end
 

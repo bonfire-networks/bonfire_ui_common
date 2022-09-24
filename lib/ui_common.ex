@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common do
   end
 
   def assign_generic(%Phoenix.LiveView.Socket{} = socket, assigns) do
-    Phoenix.LiveView.assign(socket, assigns)
+    Phoenix.Component.assign(socket, assigns)
   end
 
   def assign_generic(%Plug.Conn{} = conn, assigns) do
@@ -25,7 +25,7 @@ defmodule Bonfire.UI.Common do
   end
 
   def assign_generic(%Phoenix.LiveView.Socket{} = socket, key, value) do
-    Phoenix.LiveView.assign(socket, key, value)
+    Phoenix.Component.assign(socket, key, value)
   end
 
   def assign_generic(%Plug.Conn{} = conn, key, value) do

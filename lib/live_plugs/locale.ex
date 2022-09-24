@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.LivePlugs.Locale do
-  use Bonfire.UI.Common
+  use Bonfire.UI.Common.Web, :live_plug
 
   @local_session_key Cldr.Plug.SetLocale.session_key()
 

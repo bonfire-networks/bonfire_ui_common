@@ -1,6 +1,5 @@
 defmodule Bonfire.UI.Common.LivePlugs do
   @moduledoc "Like a plug, but for a liveview"
-
   use Bonfire.UI.Common
 
   @compile {:inline, live_plug_: 4}

@@ -16,7 +16,10 @@ defmodule Bonfire.UI.Common.LayoutView do
     <html class="overflow-hidden bg-base-300" lang="en" data-theme={ Bonfire.Me.Settings.get([:ui, :theme, :instance_theme], "bonfire", @__context__)}>
       <head>
         <meta charset="utf-8"/>
-        {live_title_tag to_string(e(assigns, :page_title, l "Home")), suffix: " · Bonfire"}
+
+        <.live_title prefix="Bonfire – ">
+          <%= assigns[:page_title] || l "Welcome" %>
+        </.live_title>
 
         <meta name="description" content="Bonfire instance">
         <meta name="keywords" content="bonfire, fediverse">

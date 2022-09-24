@@ -6,7 +6,10 @@
 >
   <head>
     <meta charset="utf-8" />
-    <%= live_title_tag(to_string(assigns[:page_title]) || "Home", suffix: " · Bonfire") %>
+
+    <.live_title prefix="Bonfire – ">
+      <%= assigns[:page_title] || l("Welcome") %>
+    </.live_title>
 
     <meta name="description" content="Bonfire instance" />
     <meta name="keywords" content="bonfire, fediverse" />

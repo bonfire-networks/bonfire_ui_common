@@ -19,7 +19,7 @@ defmodule Bonfire.UI.Common.Web do
 
       import Phoenix.LiveView.Controller
 
-      unquote(basic_view_helpers())
+      unquote(live_view_basic_helpers())
     end
   end
 
@@ -39,6 +39,7 @@ defmodule Bonfire.UI.Common.Web do
       # to support Surface components in the app layout and in non-LiveViews
       use Surface.View, unquote(opts)
       # Bonfire.Common.Extend.quoted_use_if_enabled(Surface.View)
+
       Bonfire.Common.Extend.quoted_import_if_enabled(Surface)
 
       unquote(live_view_helpers())
@@ -104,6 +105,7 @@ defmodule Bonfire.UI.Common.Web do
       unquote(common_helpers())
 
       import Phoenix.LiveView
+      import Phoenix.Component
     end
   end
 
@@ -179,10 +181,7 @@ defmodule Bonfire.UI.Common.Web do
       unquote(basic_view_helpers())
 
       # Import basic rendering functionality (render, render_layout, etc)
-      import Phoenix.View
-
-      # Import component helpers
-      import Phoenix.Component
+      # import Phoenix.View
 
       # unquote(Bonfire.Common.Extend.quoted_use_if_enabled(Thesis.View, Bonfire.UI.Common.ContentAreas))
     end
@@ -190,10 +189,16 @@ defmodule Bonfire.UI.Common.Web do
 
   defp live_view_helpers do
     quote do
-      unquote(view_helpers())
+      unquote(live_view_basic_helpers())
 
-      # Import LiveView helpers TODO: deprecate after LV 0.18
-      import Phoenix.LiveView.Helpers
+      # Import component helpers
+      import Phoenix.Component
+    end
+  end
+
+  defp live_view_basic_helpers do
+    quote do
+      unquote(view_helpers())
 
       alias Bonfire.UI.Common.ComponentID
 
@@ -248,7 +253,7 @@ defmodule Bonfire.UI.Common.Web do
 
     defp surface_helpers do
       quote do
-        unquote(live_view_helpers())
+        unquote(live_view_basic_helpers())
 
         # prop current_account, :any
         # prop current_user, :any

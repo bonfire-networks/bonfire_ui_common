@@ -1,5 +1,6 @@
 defmodule Icon do
   use Surface.Component
+  import Phoenix.LiveView.HTMLEngine
 
   # any icon from iconify: https://icones.js.org
   prop iconify, :string, required: false
@@ -14,7 +15,8 @@ defmodule Icon do
       when is_binary(icon) or (is_atom(icon) and not is_nil(icon)) do
     component(
       &Iconify.iconify/1,
-      prepare_assigns(assigns, "heroicons-solid:" <> icon)
+      prepare_assigns(assigns, "heroicons-solid:" <> icon),
+      {__ENV__.module, __ENV__.function, __ENV__.file, __ENV__.line}
     )
   end
 
@@ -22,12 +24,17 @@ defmodule Icon do
       when is_binary(icon) or (is_atom(icon) and not is_nil(icon)) do
     component(
       &Iconify.iconify/1,
-      prepare_assigns(assigns, "heroicons-outline:" <> icon)
+      prepare_assigns(assigns, "heroicons-outline:" <> icon),
+      {__ENV__.module, __ENV__.function, __ENV__.file, __ENV__.line}
     )
   end
 
   def render(%{iconify: icon} = assigns) do
-    component(&Iconify.iconify/1, prepare_assigns(assigns, icon))
+    component(
+      &Iconify.iconify/1,
+      prepare_assigns(assigns, icon),
+      {__ENV__.module, __ENV__.function, __ENV__.file, __ENV__.line}
+    )
   end
 
   defp prepare_assigns(assigns, icon) do
