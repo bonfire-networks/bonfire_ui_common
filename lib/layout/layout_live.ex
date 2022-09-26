@@ -205,6 +205,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
         </div>
       </div>
       <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(@current_user)} page={@page} />
+
+      {if module_enabled?(RauversionExtension.UI.TrackLive.Player),
+        do:
+          live_render(@socket, RauversionExtension.UI.TrackLive.Player,
+            id: "global-main-player",
+            session: %{},
+            sticky: true
+          )}
     </div>
 
     <Bonfire.UI.Common.ReusableModalLive id="modal" />
