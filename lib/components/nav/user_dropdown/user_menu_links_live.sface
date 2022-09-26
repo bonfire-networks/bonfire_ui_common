@@ -1,6 +1,9 @@
 {#if ulid(@current_user)}
   <li class="hover:bg-neutral/10">
-    <LiveRedirect to={path(@current_user)} class="flex flex-col items-start p-4 text-sm text-neutral-content">
+    <LiveRedirect
+      to={path(@current_user)}
+      class="flex flex-col items-start p-4 text-sm text-neutral-content"
+    >
       <div class="font-bold">@{e(@current_user, :character, :username, "unknown")}</div>
       <div class="-mt-2 text-neutral-content/70">{l("View profile")}</div>
     </LiveRedirect>

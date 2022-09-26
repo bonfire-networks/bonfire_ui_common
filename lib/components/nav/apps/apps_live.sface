@@ -7,7 +7,7 @@
   aria-haspopup="true"
 >
   <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
-  <Icon outline="Menu" class="w-5 h-5 " />
+  <Icon outline="Menu" class="w-5 h-5" />
 </button>
 
 <button
@@ -25,18 +25,17 @@
     user={@current_user}
   /></button>
 
-
 <div
   x-cloak
   class="hidden desktop-lg:block fixed top-[56px] bottom-0 left-0 z-[200] overflow-hidden w-[65px]"
   x-show="!open_extensions_sidebar"
-  >
+>
   <div class="inset-0 h-full bg-base-100">
     <div class="flex flex-col items-center py-4 space-y-1">
       <LiveRedirect
         class={
           "btn btn-square btn-ghost",
-          "!bg-base-content/10": @current_extension[:name] == "Social"
+          "!bg-base-content/10": @__context__[:current_extension][:name] == "Social"
         }
         to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
       >
@@ -44,11 +43,11 @@
       </LiveRedirect>
       <LiveRedirect
         :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModules.extensions()}
-        :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__) |> debug(app)}
+        :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
         class={
           "btn btn-square btn-ghost",
           "!bg-base-content/10":
-            @current_extension[:name] ==
+            @__context__[:current_extension][:name] ==
               extension[:name]
         }
         to={extension[:href]}
@@ -61,7 +60,7 @@
     <LiveRedirect
       class={
         "btn btn-square btn-ghost",
-        "!bg-base-content/10": @current_extension[:name] == "Settings"
+        "!bg-base-content/10": @__context__[:current_extension][:name] == "Settings"
       }
       to="/settings"
     >
@@ -110,9 +109,7 @@
             </LiveRedirect>
           </div>
 
-          <div 
-            x-data="{expanded: false}" 
-            class="flex flex-col md:hidden">
+          <div x-data="{expanded: false}" class="flex flex-col md:hidden">
             <div class="flex items-center p-3 m-2 rounded-md shadow bg-base-100">
               <LiveRedirect to={path(@current_user)} class="flex items-center flex-1 gap-2">
                 <Bonfire.UI.Common.AvatarLive
@@ -126,43 +123,38 @@
                 </div>
               </LiveRedirect>
               <span @click="expanded = !expanded" class="flex items-center btn btn-square btn-sm btn-ghost">
-                <Icon outline="ChevronDown" class="w-4 h-4 text-base-content/70"/>
+                <Icon outline="ChevronDown" class="w-4 h-4 text-base-content/70" />
               </span>
             </div>
 
             <ul x-show="expanded" x-collapse class="mt-1 menu menu-compact">
               {#if ulid(@current_user)}
-             
-              <li class="hover:bg-neutral/10">
-                <LiveRedirect to="/settings" class="flex items-center p-4 text-sm text-base-content">
-                  {l("Settings")}
+                <li class="hover:bg-neutral/10">
+                  <LiveRedirect to="/settings" class="flex items-center p-4 text-sm text-base-content">
+                    {l("Settings")}
+                  </LiveRedirect>
+                </li>
+                <li class="hover:bg-base/10">
+                  <LiveRedirect to="/switch-user" class="flex items-center p-4 text-sm text-base-content">
+                    {l("Switch profile")}
+                  </LiveRedirect>
+                </li>
+              {/if}
+
+              <li class="hover:bg-base/10">
+                <LiveRedirect to={path(:home)} class="flex items-center p-4 text-sm text-base-content">
+                  {l("Homepage")}
                 </LiveRedirect>
               </li>
               <li class="hover:bg-base/10">
-                <LiveRedirect to="/switch-user" class="flex items-center p-4 text-sm text-base-content">
-                  {l("Switch profile")}
+                <LiveRedirect to="/terms/code-of-conduct" class="flex items-center p-4 text-sm text-base-content">
+                  {l("Code of conduct")}
                 </LiveRedirect>
               </li>
-            {/if}
-
-            <li class="hover:bg-base/10">
-              <LiveRedirect to={path(:home)} class="flex items-center p-4 text-sm text-base-content">
-                {l("Homepage")}
-              </LiveRedirect>
-            </li>
-            <li class="hover:bg-base/10">
-              <LiveRedirect
-                to="/terms/code-of-conduct"
-                class="flex items-center p-4 text-sm text-base-content"
-              >
-                {l("Code of conduct")}
-              </LiveRedirect>
-            </li>
-
             </ul>
           </div>
           <ul class="p-2 md:hidden menu">
-            <li class="menu-title"><span>{l "Navigation"}</span></li>
+            <li class="menu-title"><span>{l("Navigation")}</span></li>
             {#for nav <- @nav_items}
               {#case nav}
                 {#match %{} = nav}
@@ -188,10 +180,10 @@
           </ul>
 
           <ul class="p-2 space-y-2 border-t menu border-base-content/10">
-          <li class="menu-title"><span>{l "Extensions"}</span></li>
+            <li class="menu-title"><span>{l("Extensions")}</span></li>
             <li>
               <LiveRedirect
-                class={active: @current_extension[:name] == "Social"}
+                class={active: @__context__[:current_extension][:name] == "Social"}
                 to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
               >
                 <div class="flex items-center w-full">
@@ -207,7 +199,7 @@
               <LiveRedirect
                 class={
                   active:
-                    @current_extension[:name] ==
+                    @__context__[:current_extension][:name] ==
                       extension[:name]
                 }
                 to={extension[:href]}

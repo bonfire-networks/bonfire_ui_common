@@ -1,13 +1,14 @@
+import { Hook, makeHook } from "phoenix_typed_hook";
 import { Cookie } from "./cookie"
 
-export const ChangeLocaleHook = {
-destroyed() {
-    Cookie.set("locale", this.el.value)
-}
+class ChangeLocaleHook extends Hook {
+    destroyed() {
+        Cookie.set("locale", this.el.value)
+    }
 }
 
 let ChangeLocaleHooks = {};
 
-ChangeLocaleHooks.ChangeLocaleHook = ChangeLocaleHook;
+ChangeLocaleHooks.ChangeLocaleHook = makeHook(ChangeLocaleHook);
 
 export { ChangeLocaleHooks } 

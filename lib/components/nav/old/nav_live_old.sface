@@ -20,7 +20,7 @@
       showing_within={@showing_within}
       create_object_type={@create_object_type}
       to_boundaries={e(@to_boundaries, [])}
-      to_circles={e(@to_circles, [])}
+      to_circles={@to_circles}
       smart_input_prompt={@smart_input_prompt}
       smart_input_text={@smart_input_text}
       sidebar_widgets={@sidebar_widgets}

@@ -4,19 +4,19 @@
       {l("To")}
     </span>
 
-    {#if is_list(@to_circles) and length(e(@to_circles, [])) > 0}
+    {#if is_list(@to_circles) and length(@to_circles) > 0}
       <input
-        :for={{name, id} <- e(@to_circles, [])}
+        :for={{name, id} <- @to_circles}
         type="hidden"
         name="to_circles[]"
         placeholder={l("Select the participants")}
         label={name}
         value={id}
       />
-      <span class="px-3">{Enum.map_join(e(@to_circles, []), " ; ", &elem(&1, 0))}</span>
+      <span class="px-3">{Enum.map_join(@to_circles, " ; ", &elem(&1, 0))}</span>
     {#else}
       <!-- <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
-        selected_options={e(@to_circles, [])}
+        selected_options={@to_circles}
         label={"Send to:"}
         form_input_name="to_circles[]"
         context_id={@context_id}

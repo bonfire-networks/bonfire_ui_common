@@ -86,15 +86,36 @@ defmodule Bonfire.UI.Common.LivePlugs do
     #  debug(surfacing: module_enabled?(Surface))
     if(module_enabled?(Surface), do: Surface.init(socket), else: socket)
     |> undead_mount(fn ->
-      apply(fun, [
-        params,
-        session,
-        socket
-        |> assign_global(
-          current_view: socket.view,
-          current_app: Application.get_application(socket.view)
-        )
-      ])
+      current_app = Application.get_application(socket.view)
+      current_extension = Bonfire.Common.ExtensionModules.extension(current_app)
+
+      if not is_nil(current_app) and not extension_enabled?(current_app, socket) do
+        if not extension_enabled?(current_app) do
+          error(
+            l(
+              "Sorry, %{app} is not enabled on this instance. You may want to get in touch with your instance admin(s)...",
+              app: current_extension[:name] || current_app
+            )
+          )
+        else
+          error(
+            l("You have not enabled %{app}. You can do so in Settings -> Extensions.",
+              app: current_extension[:name] || current_app
+            )
+          )
+        end
+      else
+        apply(fun, [
+          params,
+          session,
+          socket
+          |> assign_global(
+            current_view: socket.view,
+            current_app: current_app,
+            current_extension: current_extension
+          )
+        ])
+      end
     end)
   end
 end

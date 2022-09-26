@@ -8,7 +8,7 @@
       <div class="flex-1">
         <div class="breadcrumbs">
           <ul>
-            {#case Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])}
+            {#case @__context__[:current_extension]}
               {#match %{name: name} = extension}
                 <li>
                   <LiveRedirect to={extension[:href] || "/"}>

@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop smart_input_component, :atom, default: nil
   prop smart_input_as, :atom, default: nil
   prop to_boundaries, :list, default: []
-  prop to_circles, :list, default: nil
+  prop to_circles, :list, default: []
   prop smart_input_prompt, :string, required: false
   prop smart_input_text, :string, required: false
   prop showing_within, :any, default: nil

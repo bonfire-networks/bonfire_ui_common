@@ -1,3 +1,4 @@
+import { Hook, makeHook } from "phoenix_typed_hook";
 let ImageHooks = {};
 
 // import exifr from 'exifr'
@@ -34,7 +35,7 @@ let ImageHooks = {};
 //   return data;
 // }
 
-ImageHooks.imageMetadata = {
+class imageMetadata extends Hook {
 //   mounted() {
 // let img = document.getElementById(this.el.dataset.img)
 // if (img) img.addEventListener("load", async e => {
@@ -46,7 +47,7 @@ ImageHooks.imageMetadata = {
 }
 
 import avatar from 'animal-avatar-generator'
-ImageHooks.randomAnimalAvatar = {
+class randomAnimalAvatar extends Hook {
   mounted() {
     console.log("avatar!")
     if (this.el.innerHTML.length < 1) {
@@ -63,5 +64,7 @@ ImageHooks.randomAnimalAvatar = {
 }
 
 
+ImageHooks.imageMetadata = makeHook(imageMetadata);
+ImageHooks.randomAnimalAvatar = makeHook(randomAnimalAvatar);
 
 export { ImageHooks }

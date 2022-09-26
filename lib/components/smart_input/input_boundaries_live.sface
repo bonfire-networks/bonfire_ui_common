@@ -8,7 +8,7 @@
     module={Bonfire.Boundaries.Web.SetBoundariesLive}
     showing_within={@showing_within}
     to_boundaries={e(@to_boundaries, [])}
-    to_circles={e(@to_circles, [])}
+    to_circles={@to_circles}
     open_boundaries={@open_boundaries}
     thread_mode={@thread_mode}
     boundaries_modal_id={@boundaries_modal_id}
@@ -23,7 +23,7 @@
     <Bonfire.UI.Common.SelectRecipientsLive
       preloaded_recipients={e(@preloaded_recipients, [])}
       to_boundaries={e(@to_boundaries, [])}
-      to_circles={e(@to_circles, [])}
+      to_circles={@to_circles}
       open_boundaries={@open_boundaries}
     />
   </div>

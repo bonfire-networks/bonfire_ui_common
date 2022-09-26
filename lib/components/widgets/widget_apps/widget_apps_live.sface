@@ -1,13 +1,13 @@
 <Bonfire.UI.Common.WidgetBlockLive
-  widget_title={"Active extensions"}
+  widget_title={l("Extensions on this instance")}
   class="relative w-full mx-auto rounded-xl bg-base-100"
 >
-<ul class="p-2 space-y-2 menu menu-compact ">
+  <ul class="p-2 space-y-2 menu menu-compact">
     <li>
       <LiveRedirect to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}>
         <div class="flex items-center w-full">
           <Icon iconify="noto:newspaper" class="w-6 h-6" />
-          <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l("Feeds")}</div>
+          <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l("Social")}</div>
         </div>
       </LiveRedirect>
     </li>
@@ -23,4 +23,4 @@
       </LiveRedirect>
     </li>
   </ul>
-  </Bonfire.UI.Common.WidgetBlockLive>
+</Bonfire.UI.Common.WidgetBlockLive>

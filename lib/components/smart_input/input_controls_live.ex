@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop context_id, :string, default: nil
   prop create_object_type, :atom, default: nil
   prop to_boundaries, :list, default: []
-  prop to_circles, :list, default: nil
+  prop to_circles, :list, default: []
   prop showing_within, :any, default: nil
   prop uploads, :any, default: nil
   prop uploaded_files, :list, default: []

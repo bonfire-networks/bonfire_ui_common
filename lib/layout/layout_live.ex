@@ -114,18 +114,15 @@ defmodule Bonfire.UI.Common.LayoutLive do
         without_sidebar={@without_sidebar}
         custom_page_header={@custom_page_header}
         to_boundaries={@to_boundaries}
-        to_circles={e(@to_circles, [])}
+        to_circles={@to_circles}
         smart_input_as={@smart_input_as}
         smart_input_prompt={@smart_input_prompt}
         smart_input_text={@smart_input_text}
         sidebar_widgets={@sidebar_widgets}
         nav_items={e(@nav_items, [])}
-        sidebar_widgets={@sidebar_widgets}
       />
       <Bonfire.UI.Common.GuestHeaderLive :if={is_nil(@current_user) and @without_guest_header != true} />
-      <div 
-        id="bonfire_layout"
-        class="transition duration-150 ease-in-out transform">
+      <div id="bonfire_layout" class="transition duration-150 ease-in-out transform">
         <!-- :class="{'ml-[240px]': open_extensions_sidebar}" -->
         <div
           x-data="{
@@ -141,7 +138,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "!pl-6": is_nil(@current_user)
           }
         >
-          <div :if={!@without_sidebar} class="px-0 pt-3 md:pt-6 hidden relative z-[110]  md:block sticky top-0">
+          <div
+            :if={!@without_sidebar}
+            class="px-0 pt-3 md:pt-6 hidden relative z-[110]  md:block sticky top-0"
+          >
             <Bonfire.UI.Common.NavSidebarLive
               items={@nav_items}
               sidebar_widgets={@sidebar_widgets}
@@ -159,8 +159,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               "!grid-cols-1": !is_list(@sidebar_widgets[:users][:secondary])
             }>
               <div class="relative grid invisible_frame">
-                <div class={
-                  "h-[calc(var(--inner-window-height)-68px)] px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 md:h-full"}>
+                <div class="h-[calc(var(--inner-window-height)-68px)] px-3 overflow-y-auto rounded-b-none md:px-0 md:h-full">
                   <div id="inner_content">
                     {@inner_content}
                   </div>
@@ -207,13 +206,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
       </div>
       <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(@current_user)} page={@page} />
 
-      {if module_enabled?(RauversionExtension.UI.TrackLive.Player),
+      <!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player),
         do:
           live_render(@socket, RauversionExtension.UI.TrackLive.Player,
             id: "global-main-player",
             session: %{},
             sticky: true
-          )}
+          )} -->
     </div>
 
     <Bonfire.UI.Common.ReusableModalLive id="modal" />

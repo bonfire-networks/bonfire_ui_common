@@ -771,6 +771,7 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  # when is_binary(current_url)
   defp live_exception(
          %{assigns: %{__context__: %{current_url: current_url}}} = socket,
          return_key,
@@ -778,8 +779,7 @@ defmodule Bonfire.UI.Common do
          exception,
          stacktrace,
          kind
-       )
-       when is_binary(current_url) do
+       ) do
     with {:error, msg} <- debug_exception(msg, exception, stacktrace, kind) do
       {
         return_key,

@@ -1,11 +1,11 @@
 <div class="flex items-center shadow justify-between px-4 py-2 bg-base-100 sticky z-[999] top-0">
   <div class="flex items-center flex-1 w-full gap-3">
-    <Bonfire.UI.Common.AppsLive 
+    <Bonfire.UI.Common.AppsLive
       nav_items={@nav_items}
       sidebar_widgets={@sidebar_widgets}
       page={@page}
       selected_tab={@selected_tab}
-      current_extension={Bonfire.Common.ExtensionModules.extension(@__context__[:current_app]) || %{}} />
+    />
     <div class="hidden md:block">
       <Bonfire.UI.Common.LogoLive />
     </div>
@@ -43,7 +43,7 @@
       thread_mode={@thread_mode}
       without_sidebar={@without_sidebar}
       to_boundaries={@to_boundaries}
-      to_circles={e(@to_circles, [])}
+      to_circles={@to_circles}
       smart_input_as={@smart_input_as}
       smart_input_prompt={@smart_input_prompt}
       smart_input_text={@smart_input_text}
@@ -81,7 +81,7 @@
     <div class="hidden md:block">
       <Bonfire.UI.Common.UserMenuLive />
     </div>
-    
+
     <button
       @click="toggle_sidebar_widgets = true"
       :if={is_list(@sidebar_widgets[:users][:secondary])}

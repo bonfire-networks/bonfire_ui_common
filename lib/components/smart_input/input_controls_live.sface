@@ -76,7 +76,7 @@
     <input type="hidden" name={:create_object_type} value={@create_object_type}>
 
     <input
-      :for={circle <- e(@to_circles, [])}
+      :for={circle <- @to_circles}
       type="hidden"
       name="to_circles[]"
       label={if is_tuple(circle), do: elem(circle, 0)}

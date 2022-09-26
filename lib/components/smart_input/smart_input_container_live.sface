@@ -32,7 +32,7 @@
         create_object_type={@create_object_type}
         thread_mode={@thread_mode}
         to_boundaries={@to_boundaries}
-        to_circles={e(@to_circles, [])}
+        to_circles={@to_circles}
         smart_input_prompt={@smart_input_prompt}
         smart_input_text={@smart_input_text}
       />

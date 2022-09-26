@@ -14,7 +14,7 @@ defmodule Bonfire.UI.Common.LoggedHeaderLive do
   prop create_object_type, :atom, default: nil
   prop thread_mode, :atom, default: nil
   prop to_boundaries, :list, default: []
-  prop to_circles, :list, default: nil
+  prop to_circles, :list, default: []
   prop smart_input_as, :atom, default: nil
   prop smart_input_prompt, :string, required: false
   prop smart_input_text, :string, required: false
@@ -22,5 +22,4 @@ defmodule Bonfire.UI.Common.LoggedHeaderLive do
 
   prop selected_tab, :any, default: nil
   prop nav_items, :list, default: []
-
 end

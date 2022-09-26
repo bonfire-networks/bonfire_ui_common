@@ -13,7 +13,7 @@
             <label
               phx-click="Bonfire.Social.Messages:select_recipient"
               phx-value-action={if Enum.member?(
-                   e(@to_circles, []),
+                   @to_circles,
                    {e(user, :edge, :object, :profile, :name, "Anon"), e(user, :edge, :object, :id, nil)}
                  ),
                  do: "deselect"}
@@ -39,7 +39,7 @@
               <input
                 type="checkbox"
                 checked={if Enum.member?(
-                     e(@to_circles, []),
+                     @to_circles,
                      {e(user, :edge, :object, :profile, :name, "Anon"), e(user, :edge, :object, :id, nil)}
                    ),
                    do: "checked"}
