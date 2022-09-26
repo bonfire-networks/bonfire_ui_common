@@ -14,7 +14,7 @@
   x-cloak
   class="hidden desktop-lg:block fixed top-[56px] bottom-0 left-0 z-[200] overflow-hidden w-[65px]"
   x-show="!open_extensions_sidebar"
->
+  >
   <div class="inset-0 h-full bg-base-100">
     <div class="flex flex-col items-center py-4 space-y-1">
       <LiveRedirect
@@ -93,30 +93,31 @@
               <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
             </LiveRedirect>
           </div>
+
+          <div class="flex flex-col p-2 md:hidden">
+            {#if ulid(@current_user)}
+              <LiveRedirect to={path(@current_user)} class="flex items-center gap-2">
+                <Bonfire.UI.Common.AvatarLive
+                  class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer ring-2 ring-base-100 bg-base-300"
+                  size="32"
+                  user={@current_user}
+                />
+                <div class="flex flex-col">
+                  <span class="font-medium text-base-content">{e(@current_user, :profile, :name, "unknown")}</span>
+                  <span class="text-sm font-light text-base-content/70">@{e(@current_user, :character, :username, "unknown")}</span>
+                </div>
+              </LiveRedirect>
+            {#else}
+              <div class="border btn btn-circle h-[40px] w-[40px] btn-sm btn-outline border-base-content/30">
+                <Icon solid="DotsHorizontal" class="w-5 h-5" />
+              </div>
+            {/if}
+            <ul class="menu">
+              <Bonfire.UI.Common.UserMenuLinksLive />
+            </ul>
+          </div>
+
           <ul class="p-2 space-y-2 menu">
-            <!-- <li class="text-xs font-medium tracking-wider uppercase menu-title text-primary-content-800">
-                <span>{"Timelines"}</span>
-              </li> -->
-            <!-- <li class="block md:hidden">
-              <LiveRedirect 
-                class={"active": @current_extension[:name] == :social}
-                to={path(Bonfire.Data.Social.Message)}>
-                <div class="flex items-center w-full">
-                  <Icon solid="Mail" class="w-6 h-6" />
-                  <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l("Direct Messages")}</div>
-                </div>
-              </LiveRedirect>
-            </li>
-            <li class="block md:hidden">
-              <LiveRedirect 
-                class={"active": @current_extension[:name] == :social}
-                to={path(Bonfire.Data.Social.Message)}>
-                <div class="flex items-center w-full">
-                  <Icon solid="Bell" class="w-6 h-6" />
-                  <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l("Notifications")}</div>
-                </div>
-              </LiveRedirect>
-            </li> -->
             <li>
               <LiveRedirect
                 class={active: @current_extension[:name] == "Social"}
