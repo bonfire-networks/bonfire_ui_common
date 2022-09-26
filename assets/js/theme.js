@@ -2,8 +2,8 @@ let ThemeHooks = {};
 
 import { themeChange } from "theme-change"
 
-// run to load previously chosen theme when first loading any page
-themeChange()
+// run to load previously chosen theme when first loading any page (note: not need if using data-theme param on HTML wrapper instead)
+// themeChange()
 
 ThemeHooks.Themeable = {
 

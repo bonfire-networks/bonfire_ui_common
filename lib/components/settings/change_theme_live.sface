@@ -1,16 +1,22 @@
 <div
   id="theme-change"
-  phx-hook="Themeable"
-  name="ui[theme][default_name]"
+  x-data={"{ theme: '#{@theme}'}"}
   title="Change Theme"
   class="w-full max-w-xs text-left dropdown dropdown-end"
 >
+  <!-- phx-hook="Themeable" -->
+  <!-- note: the phx-hook has the advantage of changing the theme instantly without reloading, but it's an odd behaviour if changing the light theme while we're using the dark theme, or if changing the default instance theme while we have a different one in user preferences... -->
+
+  <input name={"ui[theme][#{@key}]"} x-model="theme" type="hidden">
+  <!-- note: LV phx-change seems to ignore alpine changing this hidden input, so using phx-click on the options below instead -->
+
   <div
     tabindex="0"
     class="w-full gap-2 text-left normal-case btn-wide btn btn-outline border-base-content border-opacity-20"
   >
     <span class="flex-1 e">
-      {e(@selected, l("Choose theme"))}
+      {if @theme, do: "#{@label || l("Choose theme")}: ", else: @label || l("Choose theme")}
+      <span x-text="theme">{@theme}</span>
     </span>
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -23,16 +29,20 @@
 
   <div class="dropdown-content bg-base-200 text-base-content rounded-t-box rounded-b-box top-px max-h-96 h-[70vh] w-52 overflow-y-auto shadow-2xl mt-16">
     <div class="grid grid-cols-1 gap-3 p-3" tabindex="0">
-      {#for f <- Settings.get([:ui, :themes], ["bonfire"], @__context__)}
+      {#for t <- @themes}
         <div
-          data-set-theme={f}
+          data-set-theme={t}
           data-act-class="ACTIVECLASS"
+          x-on:click={"theme = '#{t}'"}
+          phx-click="Bonfire.Me.Settings:put"
+          phx-value-keys={"ui:theme:#{@key}"}
+          phx-value-value={t}
           class="overflow-hidden rounded-lg outline-base-content"
         >
-          <div data-theme={f} class="w-full font-sans cursor-pointer bg-base-100 text-base-content">
+          <div data-theme={t} class="w-full font-sans cursor-pointer bg-base-100 text-base-content">
             <div class="grid grid-cols-5 grid-rows-3">
               <div class="flex col-span-5 row-span-3 row-start-1 gap-1 px-4 py-3">
-                <div class="flex-grow text-sm font-bold">{f}</div>
+                <div class="flex-grow text-sm font-bold">{t}</div>
                 <div class="flex flex-wrap flex-shrink-0 gap-1">
                   <div class="w-2 rounded bg-primary" />
                   <div class="w-2 rounded bg-secondary" />
@@ -44,7 +54,7 @@
           </div>
         </div>
       {#else}
-        <option>{l("No known themes")}</option>
+        {l("No known themes")}
       {/for}
     </div>
   </div>

@@ -1,0 +1,13 @@
+<Bonfire.UI.Common.ChangeThemeLive
+  label={l("Dark theme")}
+  key="instance_theme"
+  theme={@theme}
+  themes={Settings.get([:ui, :themes], ["bonfire"], @__context__)}
+/>
+
+<Bonfire.UI.Common.ChangeThemeLive
+  label={l("Light theme")}
+  key="instance_theme_light"
+  theme={@theme_light}
+  themes={Settings.get([:ui, :themes_light], ["light"], @__context__)}
+/>

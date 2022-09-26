@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.LayoutLive do
   @moduledoc """
-  A simple Phoenix function component that sets default assigns needed for every view (eg. used in nav) and then embeds some Surface stateful and stateless components (passing along inner_content to be shown in one of them)
+  A simple Surface stateless component that sets default assigns needed for every view (eg. used in nav) and then shows some global components and the @inner_content
   """
   use Bonfire.UI.Common.Web, :stateless_component
 
@@ -55,6 +55,20 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:show_less_menu_items, fn -> false end)
       |> assign_new(:preview_module, fn -> nil end)
       |> assign_new(:preview_assigns, fn -> nil end)
+      |> assign_new(:theme, fn ->
+        Settings.get(
+          [:ui, :theme, :instance_theme],
+          "bonfire",
+          assigns[:__context__] || assigns[:current_user]
+        )
+      end)
+      |> assign_new(:theme_light, fn ->
+        Settings.get(
+          [:ui, :theme, :instance_theme_light],
+          "light",
+          assigns[:__context__] || assigns[:current_user]
+        )
+      end)
 
     # |> debug()
 
@@ -77,8 +91,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
           console.log(this.smart_input_open);
           this.smart_input_minimized = false;
           #{if @smart_input_as == :modal, do: "this.smart_input_fullscreen = true;"}
-        }
+        },
+        prefersDarkTheme: window.matchMedia('(prefers-color-scheme: dark)').matches
       }"}
+      x-init="window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => { prefersDarkTheme = e.matches; });"
+      data-theme={@theme}
+      x-bind:data-theme={"
+        prefersDarkTheme ? '#{@theme}' : '#{@theme_light}'
+      "}
     >
       <Bonfire.UI.Common.LoggedHeaderLive
         :if={@current_user}
@@ -100,7 +120,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         smart_input_text={@smart_input_text}
         sidebar_widgets={@sidebar_widgets}
       />
-      <Bonfire.UI.Common.GuestHeaderLive :if={!@current_user && @without_guest_header != true} />
+      <Bonfire.UI.Common.GuestHeaderLive :if={is_nil(@current_user) and @without_guest_header != true} />
       <div class="transition duration-150 ease-in-out transform">
         <!-- :class="{'ml-[240px]': open_extensions_sidebar}" -->
         <div
@@ -115,7 +135,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           class={
             "w-full md:px-4  desktop-lg:pl-[32px] items-start mx-auto grid grid-cols-1 md:grid-cols-[230px_1fr] desktop-lg:grid-cols-[280px_minmax(min-content,_980px)] gap-4 desktop-lg:gap-8 justify-center",
             "!grid-cols-1": @without_sidebar,
-            "!pl-3": !@current_user
+            "!pl-3": is_nil(@current_user)
           }
         >
           <div :if={!@without_sidebar} class="px-0 pt-3 md:pt-6 relative z-[110] sticky top-0">
@@ -156,7 +176,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               >
                 <!-- USER WIDGET SIDEBAR -->
                 <Dynamic.Component
-                  :if={ulid(@current_user)}
+                  :if={not is_nil(@current_user)}
                   :for={{component, component_assigns} <-
                     @sidebar_widgets[:users][:secondary] ||
                       [
@@ -169,7 +189,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
                 <!-- GUEST WIDGET SIDEBAR -->
                 <Dynamic.Component
-                  :if={!@current_user}
+                  :if={is_nil(@current_user)}
                   :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || []}
                   module={component}
                   {...component_assigns}
@@ -179,12 +199,12 @@ defmodule Bonfire.UI.Common.LayoutLive do
           </div>
 
           <Bonfire.UI.Common.MobileSmartInputButtonLive
-            :if={ulid(@current_user) && !@hide_smart_input}
+            :if={not is_nil(@current_user) and !@hide_smart_input}
             smart_input_prompt={@smart_input_prompt}
           />
         </div>
       </div>
-      <Bonfire.UI.Common.NavFooterMobileUserLive :if={ulid(@current_user)} page={@page} />
+      <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(@current_user)} page={@page} />
     </div>
 
     <Bonfire.UI.Common.ReusableModalLive id="modal" />
@@ -192,7 +212,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
     <Bonfire.UI.Common.NotificationLive
       id="notification"
       notification={@notification}
-      __context__={@__context__}
       root_flash={@flash}
     />
     """
