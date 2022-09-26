@@ -85,7 +85,7 @@
     <button
       @click="toggle_sidebar_widgets = true"
       :if={is_list(@sidebar_widgets[:users][:secondary])}
-      class="-my-2 -mr-4 rounded-none border-none btn btn-sm btn-ghost !border-l border-base-content/10 h-[56px] w-[56px] tablet-lg:hidden"
+      class="-my-2 -mr-4 rounded-none border-none btn btn-sm btn-ghost !border-l !border-base-content/10 h-[56px] w-[56px] tablet-lg:hidden"
     >
       <Icon iconify="majesticons:view-columns" class="w-5 h-5 text-base-content/70" />
     </button>
