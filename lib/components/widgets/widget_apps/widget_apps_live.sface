@@ -1,0 +1,26 @@
+<Bonfire.UI.Common.WidgetBlockLive
+  widget_title={"Active extensions"}
+  class="relative w-full mx-auto rounded-xl bg-base-100"
+>
+<ul class="p-2 space-y-2 menu menu-compact ">
+    <li>
+      <LiveRedirect to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}>
+        <div class="flex items-center w-full">
+          <Icon iconify="noto:newspaper" class="w-6 h-6" />
+          <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l("Feeds")}</div>
+        </div>
+      </LiveRedirect>
+    </li>
+    <li
+      :for={{app, extension} <- Bonfire.Common.ExtensionModules.extensions()}
+      :if={!extension[:exclude_from_nav] and extension_enabled?(app)}
+    >
+      <LiveRedirect to={extension[:href]}>
+        <div class="flex items-center w-full">
+          <Icon iconify={extension[:icon]} class="w-6 h-6 text-primary-content-800" />
+          <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{extension[:name]}</div>
+        </div>
+      </LiveRedirect>
+    </li>
+  </ul>
+  </Bonfire.UI.Common.WidgetBlockLive>
