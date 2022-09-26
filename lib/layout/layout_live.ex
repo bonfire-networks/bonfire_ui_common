@@ -74,7 +74,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
     ~F"""
     <div
-      id="layout-live"
+      class="bg-base-200"
       x-data={"{
         smart_input_title_text: null,
         smart_input_open: #{@smart_input_as == :floating},
@@ -119,9 +119,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
         smart_input_prompt={@smart_input_prompt}
         smart_input_text={@smart_input_text}
         sidebar_widgets={@sidebar_widgets}
+        nav_items={e(@nav_items, [])}
+        sidebar_widgets={@sidebar_widgets}
       />
       <Bonfire.UI.Common.GuestHeaderLive :if={is_nil(@current_user) and @without_guest_header != true} />
-      <div class="transition duration-150 ease-in-out transform">
+      <div 
+        id="bonfire_layout"
+        class="transition duration-150 ease-in-out transform">
         <!-- :class="{'ml-[240px]': open_extensions_sidebar}" -->
         <div
           x-data="{
@@ -131,14 +135,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
             width: window.innerWidth,
           }"
           @resize.window.debounce.100="width = window.innerWidth"
-          id="bonfire_layout"
           class={
             "w-full md:px-4  desktop-lg:pl-[32px] items-start mx-auto grid grid-cols-1 md:grid-cols-[230px_1fr] desktop-lg:grid-cols-[280px_minmax(min-content,_980px)] gap-4 desktop-lg:gap-8 justify-center",
             "!grid-cols-1": @without_sidebar,
-            "!pl-3": is_nil(@current_user)
+            "!pl-6": is_nil(@current_user)
           }
         >
-          <div :if={!@without_sidebar} class="px-0 pt-3 md:pt-6 relative z-[110] sticky top-0">
+          <div :if={!@without_sidebar} class="px-0 pt-3 md:pt-6 hidden relative z-[110]  md:block sticky top-0">
             <Bonfire.UI.Common.NavSidebarLive
               items={@nav_items}
               sidebar_widgets={@sidebar_widgets}
@@ -152,14 +155,12 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "!max-w-screen-lg mx-auto": @without_sidebar
           }>
             <div class={
-              "justify-center md:mt-6 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
+              "justify-center md:mt-6 mt-3 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
               "!grid-cols-1": !is_list(@sidebar_widgets[:users][:secondary])
             }>
               <div class="relative grid invisible_frame">
                 <div class={
-                  "h-[calc(var(--inner-window-height)-117px)] px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 md:h-full",
-                  "h-[calc(var(--inner-window-height)-207px)]": !@without_sidebar
-                }>
+                  "h-[calc(var(--inner-window-height)-68px)] px-3 overflow-y-auto rounded-b-none md:overflow-y-visible md:px-0 md:h-full"}>
                   <div id="inner_content">
                     {@inner_content}
                   </div>

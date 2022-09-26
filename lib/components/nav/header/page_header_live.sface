@@ -6,13 +6,13 @@
       </#slot>
 
       <div class="flex-1">
-        <div class="text-sm breadcrumbs">
+        <div class="breadcrumbs">
           <ul>
             {#case Bonfire.Common.ExtensionModules.extension(@__context__[:current_app])}
               {#match %{name: name} = extension}
                 <li>
                   <LiveRedirect to={extension[:href] || "/"}>
-                    <Icon :if={extension[:icon]} iconify={extension[:icon]} class="w-5 h-5 pr-2" />
+                    <Icon :if={extension[:icon]} iconify={extension[:icon]} class="w-[40px] pr-3" />
                     {name}
                   </LiveRedirect>
                 </li>

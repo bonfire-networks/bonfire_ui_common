@@ -1,14 +1,30 @@
 <button
   @click="open_extensions_sidebar = ! open_extensions_sidebar"
   type="button"
-  class="btn btn-square btn-ghost btn-sm"
+  class="hidden btn btn-square md:flex btn-ghost btn-sm"
   id="option-menu-button"
   aria-expanded="true"
   aria-haspopup="true"
 >
   <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
-  <Icon outline="Menu" class="w-5 h-5" />
+  <Icon outline="Menu" class="w-5 h-5 " />
 </button>
+
+<button
+  @click="open_extensions_sidebar = ! open_extensions_sidebar"
+  type="button"
+  class="flex md:hidden"
+  id="option-menu-button"
+  aria-expanded="true"
+  aria-haspopup="true"
+>
+  <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
+  <Bonfire.UI.Common.AvatarLive
+    class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer md:hidden bg-base-300"
+    size="40"
+    user={@current_user}
+  /></button>
+
 
 <div
   x-cloak
@@ -67,7 +83,7 @@
     />
     <section class="h-full" aria-labelledby="slide-over-heading">
       <div
-        class="relative h-full w-[240px]"
+        class="relative h-full overflow-auto w-80 bg-base-200"
         x-description="Slide-over panel, show/hide based on slide-over state."
         x-show="open_extensions_sidebar"
         x-transition:enter="transform transition ease-in-out duration-150 sm:duration-200"
@@ -77,8 +93,8 @@
         x-transition:leave-start="-translate-x-0"
         x-transition:leave-end="-translate-x-full"
       >
-        <div class="w-full h-full bg-base-300 relative after:content-[''] after:absolute after:right-[-100px] after:w-[100px] after:top-0 after:bottom-0 after:bg-gradient-to-r after:from-base-300 after:to-transparent">
-          <div class="flex items-center gap-2 p-4 pb-2">
+        <div class="relative w-full h-full bg-base-200">
+          <div class="flex items-center gap-2 p-4">
             <div @click="open_extensions_sidebar = false" class="btn btn-ghost btn-square btn-sm">
               <Icon outline="Menu" class="w-5 h-5" />
             </div>
@@ -94,30 +110,85 @@
             </LiveRedirect>
           </div>
 
-          <div class="flex flex-col p-2 md:hidden">
-            {#if ulid(@current_user)}
-              <LiveRedirect to={path(@current_user)} class="flex items-center gap-2">
+          <div 
+            x-data="{expanded: false}" 
+            class="flex flex-col md:hidden">
+            <div class="flex items-center p-3 m-2 rounded-md shadow bg-base-100">
+              <LiveRedirect to={path(@current_user)} class="flex items-center flex-1 gap-2">
                 <Bonfire.UI.Common.AvatarLive
-                  class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer ring-2 ring-base-100 bg-base-300"
+                  class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer bg-base-300"
                   size="32"
                   user={@current_user}
                 />
                 <div class="flex flex-col">
                   <span class="font-medium text-base-content">{e(@current_user, :profile, :name, "unknown")}</span>
-                  <span class="text-sm font-light text-base-content/70">@{e(@current_user, :character, :username, "unknown")}</span>
+                  <span class="-mt-1 text-sm font-light text-base-content/70">@{e(@current_user, :character, :username, "unknown")}</span>
                 </div>
               </LiveRedirect>
-            {#else}
-              <div class="border btn btn-circle h-[40px] w-[40px] btn-sm btn-outline border-base-content/30">
-                <Icon solid="DotsHorizontal" class="w-5 h-5" />
-              </div>
+              <span @click="expanded = !expanded" class="flex items-center btn btn-square btn-sm btn-ghost">
+                <Icon outline="ChevronDown" class="w-4 h-4 text-base-content/70"/>
+              </span>
+            </div>
+
+            <ul x-show="expanded" x-collapse class="mt-1 menu menu-compact">
+              {#if ulid(@current_user)}
+             
+              <li class="hover:bg-neutral/10">
+                <LiveRedirect to="/settings" class="flex items-center p-4 text-sm text-base-content">
+                  {l("Settings")}
+                </LiveRedirect>
+              </li>
+              <li class="hover:bg-base/10">
+                <LiveRedirect to="/switch-user" class="flex items-center p-4 text-sm text-base-content">
+                  {l("Switch profile")}
+                </LiveRedirect>
+              </li>
             {/if}
-            <ul class="menu">
-              <Bonfire.UI.Common.UserMenuLinksLive />
+
+            <li class="hover:bg-base/10">
+              <LiveRedirect to={path(:home)} class="flex items-center p-4 text-sm text-base-content">
+                {l("Homepage")}
+              </LiveRedirect>
+            </li>
+            <li class="hover:bg-base/10">
+              <LiveRedirect
+                to="/terms/code-of-conduct"
+                class="flex items-center p-4 text-sm text-base-content"
+              >
+                {l("Code of conduct")}
+              </LiveRedirect>
+            </li>
+
             </ul>
           </div>
+          <ul class="p-2 md:hidden menu">
+            <li class="menu-title"><span>{l "Navigation"}</span></li>
+            {#for nav <- @nav_items}
+              {#case nav}
+                {#match %{} = nav}
+                  <li :if={!nav[:exclude_from_nav]}>
+                    <Bonfire.UI.Common.WidgetLive
+                      widget={nav}
+                      page={@page}
+                      selected_tab={@selected_tab}
+                      data={e(nav, :props, [])}
+                    />
+                  </li>
+                {#match _}
+                  <li :for={subnav <- nav} :if={!subnav[:exclude_from_nav]}>
+                    <Bonfire.UI.Common.WidgetLive
+                      widget={subnav}
+                      page={@page}
+                      selected_tab={@selected_tab}
+                      data={e(subnav, :props, [])}
+                    />
+                  </li>
+              {/case}
+            {/for}
+          </ul>
 
-          <ul class="p-2 space-y-2 menu">
+          <ul class="p-2 space-y-2 border-t menu border-base-content/10">
+          <li class="menu-title"><span>{l "Extensions"}</span></li>
             <li>
               <LiveRedirect
                 class={active: @current_extension[:name] == "Social"}

@@ -1,4 +1,4 @@
-<div class="items-center place-content-center modal-button fixed bottom-0 z-[110] right-3 bottom-5 md:hidden">
+<div class="items-center place-content-center modal-button fixed z-[110] right-3 bottom-20 tablet-lg:hidden">
   <div
     class="btn btn-circle btn-primary btn-lg"
     x-on:click="show_smart_input(); smart_input_fullscreen = true"

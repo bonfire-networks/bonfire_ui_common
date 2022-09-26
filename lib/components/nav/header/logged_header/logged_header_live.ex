@@ -19,4 +19,8 @@ defmodule Bonfire.UI.Common.LoggedHeaderLive do
   prop smart_input_prompt, :string, required: false
   prop smart_input_text, :string, required: false
   prop sidebar_widgets, :list, default: []
+
+  prop selected_tab, :any, default: nil
+  prop nav_items, :list, default: []
+
 end
