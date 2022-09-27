@@ -1,5 +1,5 @@
 <Bonfire.UI.Common.WidgetBlockLive
-  widget_title={l("Extensions on this instance")}
+  widget_title={l("Bonfire extensions available")}
   class="relative w-full mx-auto rounded-xl bg-base-100"
 >
   <ul class="p-2 space-y-2 menu menu-compact">
@@ -13,8 +13,9 @@
     </li>
     <li
       :for={{app, extension} <- Bonfire.Common.ExtensionModules.extensions()}
-      :if={!extension[:exclude_from_nav] and extension_enabled?(app)}
-    >
+      :if={!extension[:exclude_from_nav]}
+      >
+      <!-- and extension_enabled?(app) -->
       <LiveRedirect to={extension[:href]}>
         <div class="flex items-center w-full">
           <Icon iconify={extension[:icon]} class="w-6 h-6 text-primary-content-800" />
