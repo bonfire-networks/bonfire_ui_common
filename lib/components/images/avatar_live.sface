@@ -2,7 +2,7 @@
   <div class={classes(%{viewing_main_object: @viewing_main_object, comment: @comment, class: @class}) <>
     " rounded"}>
     {#case @src || avatar_url(@user)}
-      {#match url when is_binary(url) and url not in ["/images/avatar.png", ""]}
+      {#match url when is_binary(url) and url != @avatar_fallback}
         <LazyImage
           class="avatar"
           src={url}
@@ -20,9 +20,9 @@
             phx-update="ignore"
           />
         {#else}
-          <LazyImage
+          <img
             class="avatar"
-            src="/images/avatar.png"
+            src={@avatar_fallback}
             alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
               l("Avatar")}
           />

@@ -856,7 +856,11 @@ defmodule Bonfire.UI.Common do
 
   def patch_to(socket_or_conn, to \\ nil, opts \\ [])
 
-  def patch_to(%Phoenix.LiveView.Socket{} = socket, to, opts) do
+  def patch_to(socket_or_conn, %URI{path: path}, opts) do
+    patch_to(socket_or_conn, path, opts)
+  end
+
+  def patch_to(%Phoenix.LiveView.Socket{} = socket, to, opts) when is_binary(to) do
     Phoenix.LiveView.push_patch(
       socket,
       [to: to || path_fallback(socket, opts)] ++ opts
@@ -865,6 +869,10 @@ defmodule Bonfire.UI.Common do
     e in ArgumentError ->
       error(e)
       patch_to(socket, path_fallback(socket, opts))
+  end
+
+  def patch_to(%Phoenix.LiveView.Socket{} = socket, _, opts) do
+    patch_to(socket, path_fallback(socket, opts))
   end
 
   def patch_to(%Plug.Conn{} = conn, to, opts) do

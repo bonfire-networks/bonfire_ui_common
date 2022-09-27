@@ -14,7 +14,7 @@
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
     x-data={"{
-      title_open: #{@title_open}, 
+      title_open: #{if is_nil(@title_open) and @create_object_type not in [:post, :section], do: true, else: @title_open == true}, 
       open_boundaries: false
     }"}
     @submit="open_boundaries = false"

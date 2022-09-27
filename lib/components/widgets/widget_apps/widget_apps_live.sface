@@ -14,7 +14,7 @@
     <li
       :for={{app, extension} <- Bonfire.Common.ExtensionModules.extensions()}
       :if={!extension[:exclude_from_nav]}
-      >
+    >
       <!-- and extension_enabled?(app) -->
       <LiveRedirect to={extension[:href]}>
         <div class="flex items-center w-full">

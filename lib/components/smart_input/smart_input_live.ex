@@ -18,7 +18,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop hide_smart_input, :boolean, default: false
   prop object, :any, default: nil
   prop activity_inception, :any, default: nil
-  prop title_open, :boolean, default: false
+  prop title_open, :boolean, default: nil
   prop title_prompt, :string, default: nil
   prop preloaded_recipients, :list, default: nil
   prop show_select_recipients, :boolean, default: false
