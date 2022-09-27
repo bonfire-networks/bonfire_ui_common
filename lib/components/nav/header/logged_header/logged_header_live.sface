@@ -1,6 +1,7 @@
 <div class={
   "flex items-center shadow justify-between px-4 py-2 bg-base-100 sticky z-[999] top-0",
-  "hidden md:flex": @without_mobile_logged_header}>
+  "hidden md:flex": @without_mobile_logged_header
+}>
   <div class="flex items-center flex-1 w-full gap-3">
     <Bonfire.UI.Common.AppsLive
       nav_items={@nav_items}
@@ -100,7 +101,7 @@
   x-show="toggle_sidebar_widgets"
   @keydown.window.escape="toggle_sidebar_widgets = false;"
   class="fixed top-[0] right-0 bottom-0 w-80 z-[9999] overflow-hidden"
-  >
+>
   <div class="inset-0 h-full overflow-hidden">
     <div
       @click="toggle_sidebar_widgets = false"
