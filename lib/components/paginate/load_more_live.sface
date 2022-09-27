@@ -5,7 +5,7 @@
   phx-target={@target}
   phx-value-context={e(@context, "")}
   phx-value-after={unwrap(e(@page_info, :end_cursor, ""))}
-  class="flex items-center mt-3 mb-20 place-content-center"
+  class="flex items-center mt-3 place-content-center"
   x-data="{show: true}"
 >
   <a

@@ -12,8 +12,8 @@
               {#match %{name: name} = extension}
                 <li>
                   <LiveRedirect to={extension[:href] || "/"}>
-                    <Icon :if={extension[:icon]} iconify={extension[:icon]} class="w-[40px] pr-3" />
-                    {name}
+                    <Icon :if={extension[:icon]} iconify={extension[:icon]} class="w-[40px]" />
+                    <span class="hidden pl-2 md:inline-block">{name}</span>
                   </LiveRedirect>
                 </li>
                 <#slot {@breadcrumbs}>

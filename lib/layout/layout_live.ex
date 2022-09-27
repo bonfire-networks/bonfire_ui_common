@@ -24,6 +24,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       )
       |> assign_new(:page_title, fn -> nil end)
       |> assign_new(:without_guest_header, fn -> nil end)
+      |> assign_new(:without_mobile_logged_header, fn -> nil end)
       |> assign_new(:page, fn -> nil end)
       |> assign_new(:selected_tab, fn -> nil end)
       |> assign_new(:notification, fn -> nil end)
@@ -106,6 +107,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         page_title={@page_title}
         page_header_drawer={e(@page_header_drawer, false)}
         hide_smart_input={@hide_smart_input}
+        without_mobile_logged_header={@without_mobile_logged_header}
         showing_within={@showing_within}
         reply_to_id={e(@reply_to_id, "")}
         context_id={@context_id}
@@ -155,11 +157,11 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "!max-w-screen-lg mx-auto": @without_sidebar
           }>
             <div class={
-              "justify-center md:mt-6 mt-3 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
+              "justify-center md:mt-6 mt-0 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
               "!grid-cols-1": !is_list(@sidebar_widgets[:users][:secondary])
             }>
               <div class="relative grid invisible_frame">
-                <div class="h-[calc(var(--inner-window-height)-68px)] px-3 overflow-y-auto rounded-b-none md:px-0 md:h-full">
+                <div class="h-[calc(var(--inner-window-height)-68px)] md:px-3 overflow-y-auto md:overflow-y-visible rounded-b-none md:px-0 md:h-full">
                   <div id="inner_content">
                     {@inner_content}
                   </div>
