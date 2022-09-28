@@ -517,6 +517,15 @@ defmodule Bonfire.UI.Common do
     # |> debug()
     undead_error(fun.(), socket, return_key)
   rescue
+    msg in Bonfire.Fail ->
+      live_exception(
+        socket,
+        return_key,
+        msg,
+        nil,
+        __STACKTRACE__
+      )
+
     error in Ecto.Query.CastError ->
       live_exception(
         socket,

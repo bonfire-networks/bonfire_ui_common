@@ -41,7 +41,8 @@ defmodule Bonfire.UI.Common.ErrorView do
     # debug(assigns, "404 assigns")
     show_html(
       404,
-      "<img src='https://i.pinimg.com/originals/98/8d/ef/988def4abdcba22f2c9e907d041a56ce.gif'/>"
+      "<img src='https://i.pinimg.com/originals/98/8d/ef/988def4abdcba22f2c9e907d041a56ce.gif'/>",
+      "dark bg-black"
     )
   end
 
@@ -138,14 +139,16 @@ defmodule Bonfire.UI.Common.ErrorView do
     )
   end
 
-  def show_html(error_code, details) when is_integer(error_code),
-    do: show_html(@codes[error_code], details)
+  def show_html(error_code, details, class \\ nil)
 
-  def show_html(error, %{message: details}) do
-    Bonfire.UI.Common.BasicView.show_html(error, details)
+  def show_html(error_code, details, class) when is_integer(error_code),
+    do: show_html(@codes[error_code], details, class)
+
+  def show_html(error, %{message: details}, class) do
+    Bonfire.UI.Common.BasicView.show_html(error, details, class)
   end
 
-  def show_html(error, details) do
-    Bonfire.UI.Common.BasicView.show_html(error, details)
+  def show_html(error, details, class) do
+    Bonfire.UI.Common.BasicView.show_html(error, details, class)
   end
 end

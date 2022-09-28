@@ -5,10 +5,10 @@ defmodule Bonfire.UI.Common.BasicView do
     show_html(attrs[:title], attrs[:body])
   end
 
-  def show_html(title, body) do
+  def show_html(title, body, class \\ nil) do
     raw("""
     <!DOCTYPE html>
-    <html lang="en" class="dark">
+    <html lang="en" class="#{class || "dark"}">
     <head>
       <meta charset="utf-8"/>
       <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
