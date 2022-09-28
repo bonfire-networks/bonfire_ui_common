@@ -135,7 +135,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }"
           @resize.window.debounce.100="width = window.innerWidth"
           class={
-            "w-full md:px-4  desktop-lg:pl-[32px] items-start mx-auto grid grid-cols-1 md:grid-cols-[230px_1fr] desktop-lg:grid-cols-[280px_minmax(min-content,_980px)] gap-4 desktop-lg:gap-8 justify-center",
+            "w-full md:px-4 pb-6  desktop-lg:pl-[32px] items-start mx-auto grid grid-cols-1 md:grid-cols-[230px_1fr] desktop-lg:grid-cols-[280px_minmax(min-content,_980px)] gap-4 desktop-lg:gap-8 justify-center",
             "!grid-cols-1": @without_sidebar,
             "!pl-6": is_nil(@current_user)
           }
