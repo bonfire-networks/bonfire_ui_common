@@ -125,7 +125,10 @@
                   </LiveRedirect>
                 </li>
                 <li class="hover:bg-base/10">
-                  <LiveRedirect to={path(Bonfire.Data.Social.Message)} class="flex items-center p-4 text-sm text-base-content">
+                  <LiveRedirect
+                    to={path(Bonfire.Data.Social.Message)}
+                    class="flex items-center p-4 text-sm text-base-content"
+                  >
                     {l("Messages")}
                   </LiveRedirect>
                 </li>

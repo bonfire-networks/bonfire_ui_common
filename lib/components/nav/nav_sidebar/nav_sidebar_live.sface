@@ -1,6 +1,4 @@
-<nav 
-  role="navigation" 
-  aria-label={l("Extension navigation")}>
+<nav role="navigation" aria-label={l("Extension navigation")}>
   <ul class="space-y-1 menu">
     {#for nav <- @items}
       {#case nav}

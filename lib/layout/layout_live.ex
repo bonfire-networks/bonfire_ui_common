@@ -154,7 +154,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
           <div class={
             "gap-2 md:gap-0 relative z-[105] w-full col-span-1",
-            "!max-w-screen-lg mx-auto": @without_sidebar or is_nil(@current_user),
+            "!max-w-screen-lg mx-auto": @without_sidebar or is_nil(@current_user)
           }>
             <div class={
               "justify-center md:mt-6 mt-0 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",

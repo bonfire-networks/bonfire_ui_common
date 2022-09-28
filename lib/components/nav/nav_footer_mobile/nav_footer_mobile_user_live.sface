@@ -32,10 +32,8 @@
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>
 
-
-
   <LiveRedirect
-    to={path(@current_user)}    
+    to={path(@current_user)}
     class={
       "",
       active: @page == "profile"
