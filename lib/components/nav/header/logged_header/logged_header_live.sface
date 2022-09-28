@@ -1,5 +1,5 @@
 <div class={
-  "flex items-center shadow justify-between px-4 py-2 bg-base-100 sticky z-[999] top-0",
+  "flex items-center shadow justify-between px-4 py-1 h-[56px] bg-base-100 sticky z-[999] top-0",
   "hidden md:flex": @without_mobile_logged_header
 }>
   <div class="flex items-center flex-1 w-full gap-3">
@@ -88,9 +88,9 @@
     <button
       @click="toggle_sidebar_widgets = true"
       :if={is_list(@sidebar_widgets[:users][:secondary])}
-      class="-my-2 -mr-4 rounded-none border-none btn btn-sm btn-ghost !border-l !border-base-content/10 h-[56px] w-[56px] tablet-lg:hidden"
+      class="-my-2 -mr-4 rounded-none !border-t-0 !border-b-0 !border-r-0 btn btn-sm btn-ghost !border-l !border-base-content/10 h-[56px] w-[56px] tablet-lg:hidden"
     >
-      <Icon iconify="majesticons:view-columns" class="w-5 h-5 text-base-content/70" />
+      <Icon iconify="akar-icons:sidebar-right" class="w-5 h-5 text-base-content/70" />
     </button>
   </div>
 </div>
@@ -109,7 +109,7 @@
     />
     <section class="h-full" aria-labelledby="slide-over-heading">
       <div
-        class="absolute right-0 h-full w-[360px]"
+        class="absolute right-0 h-full w-80"
         x-description="Slide-over panel, show/hide based on slide-over state."
         x-show="toggle_sidebar_widgets"
         x-transition:enter="transform transition ease-in-out duration-150 sm:duration-200"

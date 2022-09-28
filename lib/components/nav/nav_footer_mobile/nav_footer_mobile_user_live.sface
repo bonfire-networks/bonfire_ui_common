@@ -32,15 +32,21 @@
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>
 
+
+
   <LiveRedirect
-    to={path(Bonfire.Data.Social.Message)}
+    to={path(@current_user)}    
     class={
       "",
-      active: @page == "messages"
+      active: @page == "profile"
     }
   >
-    <Icon solid="Mail" class="w-6 h-6" />
-    <span class="sr-only">{l("Messages")}</span>
+    <Bonfire.UI.Common.AvatarLive
+      class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer md:hidden bg-base-300"
+      size="40"
+      user={@current_user}
+    />
+    <span class="sr-only">{l("Your profile")}</span>
   </LiveRedirect>
 </div>
 

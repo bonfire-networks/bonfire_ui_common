@@ -1,33 +1,18 @@
 <button
   @click="open_extensions_sidebar = ! open_extensions_sidebar"
   type="button"
-  class="hidden btn btn-square md:flex btn-ghost btn-sm"
+  class="flex -my-2 -ml-4 rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost !border-r !border-base-content/10 h-[56px] w-[65px]"
   id="option-menu-button"
   aria-expanded="true"
   aria-haspopup="true"
 >
   <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
-  <Icon outline="Menu" class="w-5 h-5" />
+  <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
 </button>
-
-<button
-  @click="open_extensions_sidebar = ! open_extensions_sidebar"
-  type="button"
-  class="flex md:hidden"
-  id="option-menu-button"
-  aria-expanded="true"
-  aria-haspopup="true"
->
-  <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
-  <Bonfire.UI.Common.AvatarLive
-    class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer md:hidden bg-base-300"
-    size="40"
-    user={@current_user}
-  /></button>
 
 <div
   x-cloak
-  class="hidden desktop-lg:block fixed top-[56px] bottom-0 left-0 z-[200] overflow-hidden w-[65px]"
+  class="hidden desktop-lg:block fixed border-r border-base-content/10 top-[56px] bottom-0 left-0 z-[200] overflow-hidden w-[65px]"
   x-show="!open_extensions_sidebar"
 >
   <div class="inset-0 h-full bg-base-100">
@@ -95,14 +80,14 @@
         <div class="relative w-full h-full bg-base-200">
           <div class="flex items-center gap-2 p-4">
             <div @click="open_extensions_sidebar = false" class="btn btn-ghost btn-square btn-sm">
-              <Icon outline="Menu" class="w-5 h-5" />
+              <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
             </div>
             <LiveRedirect
               class="flex items-center gap-2"
               to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}
             >
               <div
-                class="w-8 h-8 bg-center bg-no-repeat bg-cover"
+                class="w-8 h-8 bg-center bg-no-repeat bg-contain"
                 style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}
               />
               <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
@@ -137,6 +122,11 @@
                 <li class="hover:bg-base/10">
                   <LiveRedirect to="/switch-user" class="flex items-center p-4 text-sm text-base-content">
                     {l("Switch profile")}
+                  </LiveRedirect>
+                </li>
+                <li class="hover:bg-base/10">
+                  <LiveRedirect to={path(Bonfire.Data.Social.Message)} class="flex items-center p-4 text-sm text-base-content">
+                    {l("Messages")}
                   </LiveRedirect>
                 </li>
               {/if}

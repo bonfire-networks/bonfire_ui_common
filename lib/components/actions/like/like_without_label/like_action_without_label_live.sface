@@ -5,8 +5,8 @@
   phx-value-direction={"#{if @my_like, do: "down", else: "up"}"}
   phx-value-id={ulid(@object)}
   phx-value-component={__MODULE__}
-  class=""
+  class="btn btn-sm btn-ghost btn-circle"
 >
-  <Icon solid="Star" :if={@my_like} class="w-5 h-5" />
+  <Icon solid="Star" :if={@my_like} class="w-4 h-4" />
   <Icon outline="Star" :if={!@my_like} class="w-4 h-4" />
 </button>

@@ -11,14 +11,11 @@
             {#case @__context__[:current_extension]}
               {#match %{name: name} = extension}
                 <li>
-                  <LiveRedirect to={extension[:href] || "/"}>
-                    <Icon :if={extension[:icon]} iconify={extension[:icon]} class="w-[40px]" />
-                    <span class="hidden pl-2 md:inline-block">{name}</span>
+                  <LiveRedirect class="btn btn-sm btn-ghost btn-circle" to={extension[:href] || "/"}>
+                    <Icon :if={extension[:icon]} iconify={extension[:icon]} class="w-[20px]" />
                   </LiveRedirect>
+                  <span class="ml-2 truncate text-ellipsis" :if={not is_nil(@page_title) and @page_title != name}>{@page_title}</span>
                 </li>
-                <#slot {@breadcrumbs}>
-                  <li class="truncate text-ellipsis" :if={not is_nil(@page_title) and @page_title != name}>{@page_title}</li>
-                </#slot>
               {#match _}
                 <#slot {@breadcrumbs}>
                   <li class="truncate text-ellipsis" :if={@page_title}>{@page_title}</li>

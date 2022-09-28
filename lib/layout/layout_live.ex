@@ -136,12 +136,12 @@ defmodule Bonfire.UI.Common.LayoutLive do
           @resize.window.debounce.100="width = window.innerWidth"
           class={
             "w-full md:px-4 pb-6  desktop-lg:pl-[32px] items-start mx-auto grid grid-cols-1 md:grid-cols-[230px_1fr] desktop-lg:grid-cols-[280px_minmax(min-content,_980px)] gap-4 desktop-lg:gap-8 justify-center",
-            "!grid-cols-1": @without_sidebar,
-            "!pl-6": is_nil(@current_user)
+            "!grid-cols-1": @without_sidebar or is_nil(@current_user),
+            "!pl-4": is_nil(@current_user)
           }
         >
           <div
-            :if={!@without_sidebar}
+            :if={!@without_sidebar and @current_user}
             class="px-0 pt-3 md:pt-6 hidden relative z-[110]  md:block sticky top-0"
           >
             <Bonfire.UI.Common.NavSidebarLive
@@ -154,7 +154,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
           <div class={
             "gap-2 md:gap-0 relative z-[105] w-full col-span-1",
-            "!max-w-screen-lg mx-auto": @without_sidebar
+            "!max-w-screen-lg mx-auto": @without_sidebar or is_nil(@current_user),
           }>
             <div class={
               "justify-center md:mt-6 mt-0 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
