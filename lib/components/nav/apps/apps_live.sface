@@ -78,76 +78,82 @@
         x-transition:leave-end="-translate-x-full"
       >
         <div class="relative w-full h-full bg-base-200">
-          <div class="flex items-center gap-2 p-4">
-            <div @click="open_extensions_sidebar = false" class="btn btn-ghost btn-square btn-sm">
-              <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
-            </div>
-            <LiveRedirect
-              class="flex items-center gap-2"
-              to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}
-            >
-              <div
-                class="w-8 h-8 bg-center bg-no-repeat bg-contain"
-                style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}
-              />
-              <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
-            </LiveRedirect>
-          </div>
-
-          <div x-data="{expanded: false}" class="flex flex-col md:hidden">
-            <div class="flex items-center p-3 m-2 rounded-md shadow bg-base-100">
-              <LiveRedirect to={path(@current_user)} class="flex items-center flex-1 gap-2">
-                <Bonfire.UI.Common.AvatarLive
-                  class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer bg-base-300"
-                  size="32"
-                  user={@current_user}
+          
+          <div class="shadow bg-base-100">
+            <div class="flex items-center gap-2 p-4">
+              <div @click="open_extensions_sidebar = false" class="btn btn-ghost btn-square btn-sm">
+                <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
+              </div>
+              <LiveRedirect
+                class="flex items-center gap-2"
+                to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}
+              >
+                <div
+                  class="w-8 h-8 bg-center bg-no-repeat bg-contain"
+                  style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}
                 />
-                <div class="flex flex-col">
-                  <span class="font-medium text-base-content">{e(@current_user, :profile, :name, "unknown")}</span>
-                  <span class="-mt-1 text-sm font-light text-base-content/70">@{e(@current_user, :character, :username, "unknown")}</span>
-                </div>
+                <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
               </LiveRedirect>
-              <span @click="expanded = !expanded" class="flex items-center btn btn-square btn-sm btn-ghost">
-                <Icon outline="ChevronDown" class="w-4 h-4 text-base-content/70" />
-              </span>
             </div>
 
-            <ul x-show="expanded" x-collapse class="mt-1 menu menu-compact">
-              {#if ulid(@current_user)}
-                <li class="hover:bg-neutral/10">
-                  <LiveRedirect to="/settings" class="flex items-center p-4 text-sm text-base-content">
-                    {l("Settings")}
-                  </LiveRedirect>
-                </li>
-                <li class="hover:bg-base/10">
-                  <LiveRedirect to="/switch-user" class="flex items-center p-4 text-sm text-base-content">
-                    {l("Switch profile")}
-                  </LiveRedirect>
-                </li>
-                <li class="hover:bg-base/10">
-                  <LiveRedirect
-                    to={path(Bonfire.Data.Social.Message)}
-                    class="flex items-center p-4 text-sm text-base-content"
-                  >
-                    {l("Messages")}
-                  </LiveRedirect>
-                </li>
-              {/if}
+            <div x-data="{expanded: false}" class="flex flex-col pb-4 md:hidden">
+              <div class="flex flex-col gap-1 m-2 mx-4">
+                <LiveRedirect to={path(@current_user)}>
+                  <Bonfire.UI.Common.AvatarLive
+                    class="inline-block object-cover w-[52px] h-[52px] rounded-full cursor-pointer bg-base-300"
+                    size="52"
+                    user={@current_user}
+                  />
+                </LiveRedirect>
+                  <div class="flex items-center">
+                    <div class="flex flex-col flex-1">
+                      <span class="font-bold text-base-content">{e(@current_user, :profile, :name, "unknown")}</span>
+                      <span class="text-sm font-light text-base-content/70">{Bonfire.Me.Characters.display_username(@current_user, true)}</span>
+                    </div>
+                    <span @click="expanded = !expanded" class="btn btn-circle btn-sm btn-ghost">
+                      <Icon solid="ChevronDown" class="w-5 h-5 text-base-content/70" />
+                    </span>
+                  </div>
+              </div>
 
-              <li class="hover:bg-base/10">
-                <LiveRedirect to={path(:home)} class="flex items-center p-4 text-sm text-base-content">
-                  {l("Homepage")}
-                </LiveRedirect>
-              </li>
-              <li class="hover:bg-base/10">
-                <LiveRedirect to="/terms/code-of-conduct" class="flex items-center p-4 text-sm text-base-content">
-                  {l("Code of conduct")}
-                </LiveRedirect>
-              </li>
-            </ul>
+              <ul x-show="expanded" x-collapse class="mt-1 menu menu-compact">
+                {#if ulid(@current_user)}
+                  <li class="hover:bg-neutral/10">
+                    <LiveRedirect to="/settings" class="flex items-center p-4 text-sm text-base-content">
+                      {l("Settings")}
+                    </LiveRedirect>
+                  </li>
+                  <li class="hover:bg-base/10">
+                    <LiveRedirect to="/switch-user" class="flex items-center p-4 text-sm text-base-content">
+                      {l("Switch profile")}
+                    </LiveRedirect>
+                  </li>
+                  <li class="hover:bg-base/10">
+                    <LiveRedirect
+                      to={path(Bonfire.Data.Social.Message)}
+                      class="flex items-center p-4 text-sm text-base-content"
+                    >
+                      {l("Messages")}
+                    </LiveRedirect>
+                  </li>
+                {/if}
+
+                <li class="hover:bg-base/10">
+                  <LiveRedirect to={path(:home)} class="flex items-center p-4 text-sm text-base-content">
+                    {l("Homepage")}
+                  </LiveRedirect>
+                </li>
+                <li class="hover:bg-base/10">
+                  <LiveRedirect to="/terms/code-of-conduct" class="flex items-center p-4 text-sm text-base-content">
+                    {l("Code of conduct")}
+                  </LiveRedirect>
+                </li>
+              </ul>
+            </div>
           </div>
-          <ul class="p-2 md:hidden menu">
-            <li class="menu-title"><span>{l("Navigation")}</span></li>
+
+
+          <ul class="md:hidden menu">
             {#for nav <- @nav_items}
               {#case nav}
                 {#match %{} = nav}

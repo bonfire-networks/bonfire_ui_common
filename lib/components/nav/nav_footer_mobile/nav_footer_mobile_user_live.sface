@@ -1,4 +1,4 @@
-<div class="bottom-0 flex btm-nav md:hidden">
+<div class="bottom-0 flex border-t btm-nav md:hidden border-base-content/10">
   <LiveRedirect
     class={
       "",

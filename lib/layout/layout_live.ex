@@ -124,7 +124,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         nav_items={e(@nav_items, [])}
       />
       <Bonfire.UI.Common.GuestHeaderLive :if={is_nil(@current_user) and @without_guest_header != true} />
-      <div id="bonfire_layout" class="transition duration-150 ease-in-out transform">
+      <div id="bonfire_live" class="transition duration-150 ease-in-out transform">
         <!-- :class="{'ml-[240px]': open_extensions_sidebar}" -->
         <div
           x-data="{
@@ -135,14 +135,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }"
           @resize.window.debounce.100="width = window.innerWidth"
           class={
-            "w-full md:px-4 pb-6  desktop-lg:pl-[32px] items-start mx-auto grid grid-cols-1 md:grid-cols-[230px_1fr] desktop-lg:grid-cols-[280px_minmax(min-content,_980px)] gap-4 desktop-lg:gap-8 justify-center",
+            "w-full md:px-4 pb-6  desktop-lg:pl-[64px] items-start mx-auto grid grid-cols-1 md:grid-cols-[230px_1fr] desktop-lg:grid-cols-[280px_minmax(min-content,_980px)] gap-4 desktop-lg:gap-8 justify-center",
             "!grid-cols-1": @without_sidebar or is_nil(@current_user),
             "!pl-4": is_nil(@current_user)
           }
         >
           <div
             :if={!@without_sidebar and @current_user}
-            class="px-0 pt-3 md:pt-6 hidden relative z-[110]  md:block sticky top-0"
+            class="px-0 pt-3 md:pt-6 hidden relative z-[110]  md:block sticky top-[56px]"
           >
             <Bonfire.UI.Common.NavSidebarLive
               items={@nav_items}
@@ -161,7 +161,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               "!grid-cols-1": !is_list(@sidebar_widgets[:users][:secondary])
             }>
               <div class="relative grid invisible_frame">
-                <div class="h-[calc(var(--inner-window-height)-68px)] md:px-3 overflow-y-auto md:overflow-y-visible rounded-b-none md:px-0 md:h-full">
+                <div class="rounded-b-none md:px-3 md:overflow-y-visible md:px-0 md:h-full">
                   <div id="inner_content">
                     {@inner_content}
                   </div>
@@ -171,11 +171,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               <div
                 :if={is_list(@sidebar_widgets[:users][:secondary])}
                 x-show={if @preview_module, do: "false", else: "true"}
-                class={
-                  "items-start sticky z-[97] top-6 grid-flow-row gap-3 overflow-x-hidden overflow-y-auto auto-rows-min widget hidden tablet-lg:grid ",
-                  "!gap-5": !Settings.get([:ui, :compact], false, @__context__)
-                }
-              >
+                class={"items-start grid-flow-row gap-3 auto-rows-min hidden tablet-lg:grid "}>
                 <!-- USER WIDGET SIDEBAR -->
                 <Dynamic.Component
                   :if={not is_nil(@current_user)}

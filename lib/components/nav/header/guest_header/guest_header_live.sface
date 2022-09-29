@@ -7,7 +7,7 @@
     </ul> -->
   </div>
 
-  <div class="flex items-center gap-2">
+  <div :if={!@current_user || !@current_account} class="flex items-center gap-2">
     <LiveRedirect to={path(:login, :index)} class="normal-case btn btn-sm">{l("Log in")}</LiveRedirect>
     <LiveRedirect to={path(:signup)} class="normal-case btn btn-sm">{l("Sign up")}</LiveRedirect>
   </div>

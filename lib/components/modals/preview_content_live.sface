@@ -1,29 +1,16 @@
 <div
   id={@id}
   class={
-    "#{@modal_class} absolute h-[var(--inner-window-height)] overflow-y-auto overflow-x-hidden inset-0 bg-base-200 top-[56px] tablet-lg:left-[65px]",
+    "#{@modal_class} absolute h-[calc(var(--inner-window-height)_-_56px)] overflow-y-auto overflow-x-hidden inset-0 bg-base-200 top-[56px] desktop-lg:left-[64px]",
     invisible: !@show,
     "visible z-[900]": @show
   }
   {...@opts}
 >
   <div :if={@show} class="relative max-w-screen-lg mx-auto">
-    <div :if={@show} class="flex sticky top-0 space-x-3 z-[995] items-center p-3 bg-base-300">
-      <h3 :if={e(!@no_header, false)} class={@title_class || "font-bold flex-1 text-base"}>
-        <#slot {@title}>{@title_text}</#slot>
-      </h3>
-      <button
-        id={"close-#{@id}"}
-        phx-click="close"
-        phx-hook="ClosePreview"
-        phx-target={"#close-#{@id}"}
-        type="button"
-        class="flex gap-3 normal-case btn btn-ghost btn-sm"
-      >
-        <span class="text-sm">{l("Close preview")}</span>
-        <Icon outline="X" class="w-4 h-4" />
-      </button>
-    </div>
+
+    
+
     <div class="p-4 z-[910] modal_invisible relative" data-id="modal-contents">
       <#slot>
         <Dynamic.LiveComponent
