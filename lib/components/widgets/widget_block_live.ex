@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.WidgetBlockLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop widget_title, :string
+  prop widget_title, :string, default: nil
 
   prop class, :css_class, default: "relative w-full mx-auto rounded-xl bg-base-100"
 

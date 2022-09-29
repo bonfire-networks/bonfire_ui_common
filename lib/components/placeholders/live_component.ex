@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.LiveComponent do
   @moduledoc """
-  Special LiveView used for a helper function which allows loading LiveComponents in regular Phoenix views: `live_render_component(@conn, MyLiveComponent)`
+  Special LiveView used for a helper function which allows loading LiveComponents directly in regular non-live Phoenix views: `live_render_component(@conn, MyLiveComponent)`
   """
 
   use Bonfire.UI.Common.Web, :live_view

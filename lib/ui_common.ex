@@ -286,7 +286,7 @@ defmodule Bonfire.UI.Common do
     end
   end
 
-  # defdelegate content(conn, name, type, opts \\ [do: ""]), to: Bonfire.UI.Common.ContentAreas
+  # defdelegate content(conn, name, type, opts \\ [do: ""]), to: Bonfire.PublisherThesis.ContentAreas
 
   @doc """
   Special LiveView helper function which allows loading LiveComponents in regular Phoenix views: `live_render_component(@conn, MyLiveComponent)`

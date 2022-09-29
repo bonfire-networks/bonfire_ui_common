@@ -170,7 +170,7 @@ defmodule Bonfire.UI.Common.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      # unquote(Bonfire.Common.Extend.quoted_use_if_enabled(Thesis.View, Bonfire.UI.Common.ContentAreas))
+      # unquote(Bonfire.Common.Extend.quoted_use_if_enabled(Thesis.View, Bonfire.PublisherThesis.ContentAreas))
 
       import Bonfire.Common.Modularity.DeclareExtensions
     end
@@ -183,7 +183,7 @@ defmodule Bonfire.UI.Common.Web do
       # Import basic rendering functionality (render, render_layout, etc)
       # import Phoenix.View
 
-      # unquote(Bonfire.Common.Extend.quoted_use_if_enabled(Thesis.View, Bonfire.UI.Common.ContentAreas))
+      # unquote(Bonfire.Common.Extend.quoted_use_if_enabled(Thesis.View, Bonfire.PublisherThesis.ContentAreas))
     end
   end
 
