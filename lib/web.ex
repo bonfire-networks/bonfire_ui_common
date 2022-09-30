@@ -70,7 +70,10 @@ defmodule Bonfire.UI.Common.Web do
 
       unquote(live_view_helpers())
 
+      # TODO: replace LivePlugs with on_mount?
       import Bonfire.UI.Common.LivePlugs
+
+      on_mount(PhoenixProfiler)
     end
   end
 
@@ -223,6 +226,8 @@ defmodule Bonfire.UI.Common.Web do
         unquote(surface_helpers())
 
         import Bonfire.UI.Common.LivePlugs
+
+        on_mount(PhoenixProfiler)
       end
     end
 
