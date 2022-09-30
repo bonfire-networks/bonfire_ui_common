@@ -1,5 +1,26 @@
 <!DOCTYPE html>
-<html class="" lang="en">
+<html
+  class=""
+  lang="en"
+  data-theme={
+    Settings.get(
+      [:ui, :theme, :instance_theme],
+      "bonfire",
+      assigns[:__context__] || assigns[:current_user] || @conn
+    )
+  }
+  x-data={"{
+    prefersDarkTheme: window.matchMedia('(prefers-color-scheme: dark)').matches,
+    dark_theme: $el.dataset.theme,
+    light_theme: '#{Settings.get(
+          [:ui, :theme, :instance_theme_light],
+          "light",
+          assigns[:__context__] || assigns[:current_user] || @conn
+        )}'
+    }"}
+  x-init="window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => { prefersDarkTheme = e.matches; });"
+  x-bind:data-theme="prefersDarkTheme ? dark_theme : light_theme"
+>
   <head>
     <meta charset="utf-8" />
 
@@ -22,7 +43,7 @@
 
     <%= csrf_meta_tag() %>
   </head>
-  <body id="layout-root" class="">
+  <body id="layout-root">
     <style>
       .shadow {
         box-shadow: 0 1px 2px rgba(0,0,0,.2)

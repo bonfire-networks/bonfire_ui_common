@@ -8,23 +8,27 @@
   {...@opts}
 >
   <div :if={@show} class="relative max-w-screen-lg mx-auto">
-
-    
-
     <div class="p-4 z-[910] modal_invisible relative" data-id="modal-contents">
       <#slot>
-        <Dynamic.LiveComponent
-          :if={e(@modal_assigns, :preview_component, nil)}
-          id="preview_component"
-          module={e(@modal_assigns, :preview_component, nil)}
-          {...(@modal_assigns || %{}) |> debug("modal_assigns")}
-        />
-        {if e(@modal_assigns, :preview_view, nil) && module_enabled?(@modal_assigns[:preview_view]),
-          do:
-            live_render(@socket, @modal_assigns[:preview_view],
-              id: "preview_view",
-              session: %{"params" => @modal_assigns}
-            )}
+        {#case merge_as_map(@modal_assigns, %{showing_within: :preview})
+          |> debug("preview_component modal_assigns")}
+          {#match modal_assigns}
+            {#if not is_nil(e(modal_assigns, :preview_component, nil)) and
+                module_enabled?(modal_assigns[:preview_component])}
+              <Dynamic.LiveComponent
+                id="preview_component"
+                module={modal_assigns[:preview_component]}
+                {...modal_assigns}
+              />
+            {#elseif not is_nil(e(modal_assigns, :preview_view, nil)) and module_enabled?(modal_assigns[:preview_view])}
+              {live_render(@socket, modal_assigns[:preview_view],
+                id: "preview_view",
+                session: %{"params" => modal_assigns}
+              )}
+            {#else}
+              {l("No preview component or view is available.")}
+            {/if}
+        {/case}
       </#slot>
     </div>
   </div>

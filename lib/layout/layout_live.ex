@@ -56,20 +56,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:show_less_menu_items, fn -> false end)
       |> assign_new(:preview_module, fn -> nil end)
       |> assign_new(:preview_assigns, fn -> nil end)
-      |> assign_new(:theme, fn ->
-        Settings.get(
-          [:ui, :theme, :instance_theme],
-          "bonfire",
-          assigns[:__context__] || assigns[:current_user]
-        )
-      end)
-      |> assign_new(:theme_light, fn ->
-        Settings.get(
-          [:ui, :theme, :instance_theme_light],
-          "light",
-          assigns[:__context__] || assigns[:current_user]
-        )
-      end)
 
     # |> debug()
 
@@ -92,14 +78,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
           console.log(this.smart_input_open);
           this.smart_input_minimized = false;
           #{if @smart_input_as == :modal, do: "this.smart_input_fullscreen = true;"}
-        },
-        prefersDarkTheme: window.matchMedia('(prefers-color-scheme: dark)').matches
+        }
       }"}
-      x-init="window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => { prefersDarkTheme = e.matches; });"
-      data-theme={@theme}
-      x-bind:data-theme={"
-        prefersDarkTheme ? '#{@theme}' : '#{@theme_light}'
-      "}
     >
       <Bonfire.UI.Common.LoggedHeaderLive
         :if={@current_user}
@@ -171,7 +151,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
               <div
                 :if={is_list(@sidebar_widgets[:users][:secondary])}
                 x-show={if @preview_module, do: "false", else: "true"}
-                class={"items-start grid-flow-row gap-3 auto-rows-min hidden tablet-lg:grid "}>
+                class="items-start grid-flow-row gap-3 auto-rows-min hidden tablet-lg:grid"
+              >
                 <!-- USER WIDGET SIDEBAR -->
                 <Dynamic.Component
                   :if={not is_nil(@current_user)}
