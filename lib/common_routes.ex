@@ -18,7 +18,8 @@ defmodule Bonfire.UI.Common.Routes do
         plug(:accepts, ["html", "activity+json", "json", "ld+json"])
 
         plug(PhoenixGon.Pipeline,
-          assets: Map.new(Config.get(:js_config, []))
+          # FIXME: this doesn't take into account runtime config
+          assets: &Bonfire.UI.Common.Routes.gon_js_config/0
         )
 
         plug(Cldr.Plug.SetLocale, Bonfire.Common.Localise.set_locale_config())
@@ -98,5 +99,9 @@ defmodule Bonfire.UI.Common.Routes do
         pipe_through(:admin_required)
       end
     end
+  end
+
+  def gon_js_config() do
+    Map.new(Config.get(:js_config, []))
   end
 end
