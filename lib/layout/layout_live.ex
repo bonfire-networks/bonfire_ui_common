@@ -151,7 +151,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               <div
                 :if={is_list(@sidebar_widgets[:users][:secondary])}
                 x-show={if @preview_module, do: "false", else: "true"}
-                class="items-start grid-flow-row gap-3 auto-rows-min hidden tablet-lg:grid"
+                class="items-start hidden grid-flow-row gap-3 auto-rows-min tablet-lg:grid"
               >
                 <!-- USER WIDGET SIDEBAR -->
                 <Dynamic.Component
@@ -177,12 +177,12 @@ defmodule Bonfire.UI.Common.LayoutLive do
             </div>
           </div>
 
+          </div>
+          </div>
           <Bonfire.UI.Common.MobileSmartInputButtonLive
             :if={not is_nil(@current_user) and !@hide_smart_input}
             smart_input_prompt={@smart_input_prompt}
           />
-        </div>
-      </div>
       <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(@current_user)} page={@page} />
 
       <!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player),
