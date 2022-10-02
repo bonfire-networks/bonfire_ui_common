@@ -214,7 +214,7 @@ defmodule Bonfire.UI.Common do
     rich(content)
   end
 
-  def templated(content, data \\ nil)
+  def templated(content, data \\ %{})
 
   def templated(content, data) when is_binary(content) do
     content
