@@ -176,13 +176,12 @@ defmodule Bonfire.UI.Common.LayoutLive do
               </div>
             </div>
           </div>
-
-          </div>
-          </div>
-          <Bonfire.UI.Common.MobileSmartInputButtonLive
-            :if={not is_nil(@current_user) and !@hide_smart_input}
-            smart_input_prompt={@smart_input_prompt}
-          />
+        </div>
+      </div>
+      <Bonfire.UI.Common.MobileSmartInputButtonLive
+        :if={not is_nil(@current_user) and !@hide_smart_input}
+        smart_input_prompt={@smart_input_prompt}
+      />
       <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(@current_user)} page={@page} />
 
       <!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player),
