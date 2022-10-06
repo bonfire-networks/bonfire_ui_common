@@ -75,7 +75,7 @@
             :for={{component, component_assigns} <-
               @sidebar_widgets[:guests][:secondary] ||
                 [
-                  {Bonfire.UI.Social.WidgetTagsLive, []}
+                  {Bonfire.Tag.Web.WidgetTagsLive, []}
                 ]}
             module={component}
             {...component_assigns}

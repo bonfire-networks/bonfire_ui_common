@@ -159,7 +159,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   :for={{component, component_assigns} <-
                     @sidebar_widgets[:users][:secondary] ||
                       [
-                        {Bonfire.UI.Social.WidgetTagsLive, []},
+                        {Bonfire.Tag.Web.WidgetTagsLive, []},
                         {Bonfire.UI.Common.WidgetFeedbackLive, []}
                       ]}
                   module={component}
