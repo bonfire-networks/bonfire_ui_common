@@ -25,7 +25,7 @@
   </li>
 {/if}
 
-<li class="pt-2 tracking-wider border-t menu-title border-neutral-content/30">
+<!-- <li class="pt-2 tracking-wider border-t menu-title border-neutral-content/30">
   <span class="!text-neutral-content uppercase font-light">{l("Instance")}</span>
 </li>
 <li class="hover:bg-neutral/10">
@@ -40,4 +40,4 @@
   >
     {l("Code of conduct")}
   </LiveRedirect>
-</li>
+</li> -->
