@@ -5,7 +5,7 @@
     phx-hook="ClosePreview"
     aria-label={l("Go back to the previous page")}
     data-tip={l("Go back to the previous page")}
-    class="btn btn-ghost btn-sm btn-circle !inline-flex tooltip"
+    class="btn normal-case btn-ghost btn-sm btn-circle !inline-flex tooltip"
   >
     <Icon outline="ArrowLeft" class="w-4 h-4 text-base-content" />
   </button>
@@ -15,7 +15,7 @@
     href="javascript:window.history.back()"
     aria-label={l("Go back to the previous page")}
     data-tip={l("Go back to the previous page")}
-    class="btn btn-ghost btn-sm btn-circle !inline-flex tooltip"
+    class="btn normal-case  btn-ghost btn-sm btn-circle !inline-flex tooltip"
   >
     <Icon outline="ArrowLeft" class="w-4 h-4 text-base-content" />
   </a>
