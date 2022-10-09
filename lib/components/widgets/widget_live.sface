@@ -3,8 +3,8 @@
     <LiveRedirect
       to={@widget[:href]}
       class={
-        "flex items-center rounded-md",
-        "bg-base-content/10":
+        "flex items-center rounded-md gap-5",
+        "font-bold":
           e(@__context__, :current_view, nil) == @widget[:module] || @page == @widget[:page] ||
             @selected_tab == @widget[:page]
       }

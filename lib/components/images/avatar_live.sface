@@ -1,4 +1,4 @@
-<div class="align-middle rounded avatar bg-base-content/10">
+<div class="align-middle rounded avatar ">
   <div class={classes(%{viewing_main_object: @viewing_main_object, comment: @comment, class: @class}) <>
     " rounded"}>
     {#case @src || avatar_url(@user)}

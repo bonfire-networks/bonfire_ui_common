@@ -1,7 +1,7 @@
 <button
   @click="open_extensions_sidebar = ! open_extensions_sidebar"
   type="button"
-  class="flex -my-2 -ml-4 rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost !border-r !border-base-content/10 h-[56px] w-[65px]"
+  class="flex -my-2 -ml-4 rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px] w-[65px]"
   id="option-menu-button"
   aria-expanded="true"
   aria-haspopup="true"
@@ -12,7 +12,7 @@
 
 <div
   x-cloak
-  class="hidden desktop-lg:block fixed border-r border-base-content/10 top-[56px] bottom-0 left-0 z-[200] overflow-hidden w-[65px]"
+  class="hidden desktop-lg:block fixed  top-[57px] bottom-0 left-0 z-[200] overflow-hidden w-[65px]"
   x-show="!open_extensions_sidebar"
 >
   <div class="inset-0 h-full bg-base-100">
@@ -67,7 +67,7 @@
     />
     <section class="h-full" aria-labelledby="slide-over-heading">
       <div
-        class="relative h-full overflow-auto w-80 bg-base-200"
+        class="relative w-3/4 h-full overflow-auto md:w-80 bg-base-200"
         x-description="Slide-over panel, show/hide based on slide-over state."
         x-show="open_extensions_sidebar"
         x-transition:enter="transform transition ease-in-out duration-150 sm:duration-200"

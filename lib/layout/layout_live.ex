@@ -61,7 +61,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
     ~F"""
     <div
-      class="bg-base-200"
       x-data={"{
         smart_input_title_text: null,
         smart_input_open: #{@smart_input_as == :floating},
@@ -115,14 +114,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }"
           @resize.window.debounce.100="width = window.innerWidth"
           class={
-            "w-full md:px-4 pb-6  desktop-lg:pl-[64px] items-start mx-auto grid grid-cols-1 md:grid-cols-[230px_1fr] desktop-lg:grid-cols-[280px_minmax(min-content,_980px)] gap-4 desktop-lg:gap-8 justify-center",
+            "w-full md:px-4 pb-6 desktop-lg:pl-[64px] items-start mx-auto grid grid-cols-1 md:grid-cols-[230px_1fr] desktop-lg:grid-cols-[280px_minmax(min-content,_980px)] gap-4 desktop-lg:gap-8 justify-center",
             "!grid-cols-1": @without_sidebar or is_nil(@current_user),
             "!pl-4": is_nil(@current_user)
           }
         >
           <div
             :if={!@without_sidebar and @current_user}
-            class="px-0 pt-3 md:pt-6 hidden relative z-[110]  md:block sticky top-[56px]"
+            class="px-3 pt-3 md:pt-6 hidden relative z-[110]  md:block sticky top-[56px]"
           >
             <Bonfire.UI.Common.NavSidebarLive
               items={@nav_items}
