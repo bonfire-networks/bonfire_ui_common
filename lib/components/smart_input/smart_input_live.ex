@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop smart_input_prompt, :string, required: false
   prop smart_input_text, :string, required: false
   prop showing_within, :any, default: nil
-  prop with_rich_editor, :boolean, default: true, required: false
+  prop with_rich_editor, :boolean, default: true
   prop activity, :any, default: nil
   prop hide_smart_input, :boolean, default: false
   prop object, :any, default: nil

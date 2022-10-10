@@ -13,20 +13,21 @@ defmodule Bonfire.UI.Common.WriteEditorLive do
   prop smart_input_prompt, :string, default: ""
   prop smart_input_text, :string, default: "", required: false
   prop showing_within, :string, default: nil
-  prop with_rich_editor, :boolean, default: true, required: false
+  prop with_rich_editor, :boolean, default: true
   prop insert_text, :string, default: nil
   prop thread_mode, :atom, default: nil
   # Classes to customize the smart input appearance
   prop textarea_class, :css_class, default: nil
   prop boundaries_modal_id, :string, default: :sidebar_composer
+  prop advanced_mode, :boolean, default: false
 
   def use_rich_editor?(with_rich_editor, context) do
-    with_rich_editor |> debug() != false &&
-      !Bonfire.Me.Settings.get([:ui, :rich_text_editor_disabled], false, context)
+    with_rich_editor == true and
+      Bonfire.Me.Settings.get([:ui, :rich_text_editor_disabled], false, context) != true
   end
 
   def rich_editor_module(with_rich_editor, context) do
-    if use_rich_editor?(with_rich_editor, context) |> debug() do
+    if use_rich_editor?(with_rich_editor, context) do
       default = Bonfire.Editor.Quill
       module = Bonfire.Me.Settings.get([:ui, :rich_text_editor], default, context)
 

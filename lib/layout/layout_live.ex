@@ -60,8 +60,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     # |> debug()
 
     ~F"""
-    <div
-      x-data={"{
+    <div x-data={"{
         smart_input_title_text: null,
         smart_input_open: #{@smart_input_as == :floating},
         smart_input_fullscreen: false,
@@ -78,8 +77,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           this.smart_input_minimized = false;
           #{if @smart_input_as == :modal, do: "this.smart_input_fullscreen = true;"}
         }
-      }"}
-    >
+      }"}>
       <Bonfire.UI.Common.LoggedHeaderLive
         :if={@current_user}
         page_header_aside={@page_header_aside}
