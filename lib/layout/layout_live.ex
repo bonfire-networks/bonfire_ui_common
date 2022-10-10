@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         boundaries_or_default(e(assigns, :to_boundaries, nil), assigns)
       )
       |> assign_new(:page_title, fn -> nil end)
-      |> assign_new(:without_guest_header, fn -> nil end)
+      |> assign_new(:without_header, fn -> nil end)
       |> assign_new(:without_mobile_logged_header, fn -> nil end)
       |> assign_new(:page, fn -> nil end)
       |> assign_new(:selected_tab, fn -> nil end)
@@ -79,7 +79,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }
       }"}>
       <Bonfire.UI.Common.LoggedHeaderLive
-        :if={@current_user}
+        :if={@without_header != true and not is_nil(@current_user)}
         page_header_aside={@page_header_aside}
         page_title={@page_title}
         page_header_drawer={e(@page_header_drawer, false)}
@@ -100,7 +100,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         sidebar_widgets={@sidebar_widgets}
         nav_items={e(@nav_items, [])}
       />
-      <Bonfire.UI.Common.GuestHeaderLive :if={is_nil(@current_user) and @without_guest_header != true} />
+      <Bonfire.UI.Common.GuestHeaderLive :if={@without_header != true and is_nil(@current_user)} />
       <div id="bonfire_live" class="transition duration-150 ease-in-out transform">
         <!-- :class="{'ml-[240px]': open_extensions_sidebar}" -->
         <div
@@ -134,7 +134,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "!max-w-screen-lg mx-auto": @without_sidebar or is_nil(@current_user)
           }>
             <div class={
-              "justify-center md:mt-6 mt-0 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
+              "justify-center mt-0 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
+              "md:mt-6": @without_header != true,
               "!grid-cols-1": !is_list(@sidebar_widgets[:users][:secondary])
             }>
               <div class="relative grid invisible_frame">

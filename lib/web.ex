@@ -73,7 +73,7 @@ defmodule Bonfire.UI.Common.Web do
       # TODO: replace LivePlugs with on_mount?
       import Bonfire.UI.Common.LivePlugs
 
-      on_mount(PhoenixProfiler)
+      # on_mount(PhoenixProfiler)
     end
   end
 
@@ -227,7 +227,7 @@ defmodule Bonfire.UI.Common.Web do
 
         import Bonfire.UI.Common.LivePlugs
 
-        on_mount(PhoenixProfiler)
+        # on_mount(PhoenixProfiler)
       end
     end
 
