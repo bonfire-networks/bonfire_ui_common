@@ -6,5 +6,4 @@ defmodule Bonfire.UI.Common.PagesHeaderLive do
   prop page, :string, default: nil
   prop selected_tab, :any, default: nil
   prop nav_items, :list, default: []
-  
 end

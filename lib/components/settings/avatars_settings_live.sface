@@ -10,11 +10,11 @@
       value="true"
       type="checkbox"
       checked={if Bonfire.Me.Settings.get(
-          [Bonfire.UI.Common.AvatarLive, :animal_avatars],
-          true,
-          @scope || assigns
-        ),
-        do: "checked"}
+           [Bonfire.UI.Common.AvatarLive, :animal_avatars],
+           true,
+           @scope || assigns
+         ),
+         do: "checked"}
       class="toggle"
     />
   </div>

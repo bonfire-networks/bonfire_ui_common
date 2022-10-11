@@ -20,7 +20,7 @@
     x-show="hovered_apps"
     @mouseenter="hovered_apps = true"
     @mouseleave="hovered_apps = false"
-    >
+  >
     <div class="inset-0 h-full bg-base-100">
       <div class="flex flex-col items-center py-4 space-y-1">
         <LiveRedirect
@@ -65,7 +65,7 @@
     x-show="open_extensions_sidebar"
     @keydown.window.escape="open_extensions_sidebar = false;"
     class="fixed top-[0] right-0 bottom-0 left-0 z-[200] overflow-hidden"
-    >
+  >
     <div class="inset-0 h-full overflow-hidden">
       <div
         @click="open_extensions_sidebar = false"

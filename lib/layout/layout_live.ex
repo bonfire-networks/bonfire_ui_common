@@ -103,13 +103,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
         nav_items={e(@nav_items, [])}
       />
       <Bonfire.UI.Common.GuestHeaderLive :if={@without_header != true and @page != "page" and is_nil(@current_user)} />
-      <Bonfire.UI.Common.PagesHeaderLive 
+      <Bonfire.UI.Common.PagesHeaderLive
         sidebar_widgets={@sidebar_widgets}
         nav_items={e(@nav_items, [])}
         page_title={@page_title}
         page={@page}
-        :if={@page == "page"}/>
-      
+        :if={@page == "page"}
+      />
+
       <div id="bonfire_live" class="transition duration-150 ease-in-out transform">
         <!-- :class="{'ml-[240px]': open_extensions_sidebar}" -->
         <div
@@ -125,10 +126,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "!pl-4": is_nil(@current_user)
           }
         >
-          <div
-            :if={!@without_sidebar}
-            class="px-3 pt-3 md:pt-6 hidden z-[110]  md:block sticky top-[56px]"
-          >
+          <div :if={!@without_sidebar} class="px-3 pt-3 md:pt-6 hidden z-[110]  md:block sticky top-[56px]">
             <Bonfire.UI.Common.NavSidebarLive
               items={@nav_items}
               sidebar_widgets={@sidebar_widgets}
