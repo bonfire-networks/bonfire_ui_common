@@ -17,7 +17,7 @@ defmodule Bonfire.UI.Common.LoggedHeaderLive do
   prop to_circles, :list, default: []
   prop smart_input_as, :atom, default: nil
   prop smart_input_prompt, :string, required: false
-  prop smart_input_text, :string, required: false
+  prop smart_input_opts, :any, required: false
   prop sidebar_widgets, :list, default: []
 
   prop selected_tab, :any, default: nil

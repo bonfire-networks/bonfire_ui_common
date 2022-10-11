@@ -8,7 +8,7 @@
       <TextArea
         name={"fallback_#{@field_name}"}
         opts={
-          value: @smart_input_text,
+          value: e(@smart_input_opts, :text, nil),
           placeholder: @smart_input_prompt
         }
         class={@textarea_class}
@@ -17,7 +17,7 @@
   {#match _}
     <TextArea
       opts={
-        value: @smart_input_text,
+        value: e(@smart_input_opts, :text, nil),
         placeholder: @smart_input_prompt
       }
       class={@textarea_class}

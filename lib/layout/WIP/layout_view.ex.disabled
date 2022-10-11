@@ -90,7 +90,7 @@ defmodule Bonfire.UI.Common.LayoutView do
         to_circles={e(assigns, :to_circles, [])}
         thread_mode={e(assigns, :thread_mode, nil)}
         smart_input_prompt={e(assigns, :smart_input_prompt, nil)}
-        smart_input_text={e(assigns, :smart_input_text, nil)}
+        smart_input_opts={e(assigns, :smart_input_opts, nil)}
         sidebar_widgets={e(assigns, :sidebar_widgets, [])}
         show_less_menu_items={e(assigns, :show_less_menu_items, false)}
       />

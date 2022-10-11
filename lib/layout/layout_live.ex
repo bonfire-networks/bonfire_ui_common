@@ -39,7 +39,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:create_object_type, fn -> nil end)
       |> assign_new(:to_circles, fn -> [] end)
       |> assign_new(:smart_input_prompt, fn -> nil end)
-      |> assign_new(:smart_input_text, fn -> nil end)
+      |> assign_new(:smart_input_opts, fn -> nil end)
       |> assign_new(:smart_input_as, fn -> set_smart_input_as(assigns[:thread_mode], assigns) end)
       |> assign_new(:showing_within, fn -> nil end)
       |> assign_new(:sidebar_widgets, fn -> [] end)
@@ -62,18 +62,18 @@ defmodule Bonfire.UI.Common.LayoutLive do
     ~F"""
     <div x-data={"{
         smart_input_title_text: null,
-        smart_input_open: #{@smart_input_as == :floating},
+        smart_input_open: #{e(@smart_input_opts, :open, nil) == true},
         smart_input_fullscreen: false,
         open_extensions_sidebar: false,
         toggle_sidebar_widgets: false,
-        smart_input_minimized: #{@smart_input_as == :floating},
+        smart_input_minimized: #{e(@smart_input_opts, :open, nil) != true and @smart_input_as == :floating},
         smart_input_as: '#{@smart_input_as}',
         show_smart_input(title) {
-          console.log('show_smart_input');
+          // console.log('show_smart_input');
           if(title !==undefined){ this.smart_input_title_text = title }
-          console.log(this.smart_input_open);
+          // console.log(this.smart_input_open);
           this.smart_input_open = true;
-          console.log(this.smart_input_open);
+          // console.log(this.smart_input_open);
           this.smart_input_minimized = false;
           #{if @smart_input_as == :modal, do: "this.smart_input_fullscreen = true;"}
         }
@@ -96,7 +96,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         to_circles={@to_circles}
         smart_input_as={@smart_input_as}
         smart_input_prompt={@smart_input_prompt}
-        smart_input_text={@smart_input_text}
+        smart_input_opts={@smart_input_opts}
         sidebar_widgets={@sidebar_widgets}
         nav_items={e(@nav_items, [])}
       />
@@ -107,7 +107,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
           x-data="{
             open_sidebar_drawer: false,
             open_drawer: false,
-            smart_input_open: false,
             width: window.innerWidth,
           }"
           @resize.window.debounce.100="width = window.innerWidth"

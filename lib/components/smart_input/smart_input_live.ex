@@ -11,7 +11,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop to_circles, :list, default: []
   prop open_boundaries, :boolean, default: false
   prop smart_input_prompt, :string, required: false
-  prop smart_input_text, :string, required: false
+  prop smart_input_opts, :any, required: false
   prop showing_within, :any, default: nil
   prop with_rich_editor, :boolean, default: true
   prop activity, :any, default: nil
@@ -130,10 +130,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
     socket
     |> set_smart_input_text()
-    |> assign_generic(
-      activity: nil,
-      smart_input_text: nil
-    )
+    |> assign_generic(activity: nil)
   end
 
   def reset_input(socket) do
@@ -146,9 +143,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
       thread_id: nil,
       to_circles: [],
       activity: nil,
-      smart_input_text: nil,
       to_boundaries: default_boundaries(socket)
-
       # open_boundaries: false
     )
   end
