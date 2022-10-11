@@ -11,7 +11,7 @@ defmodule Bonfire.UI.Common.LoggedHeaderLive do
   prop reply_to_id, :string, default: nil
   prop without_sidebar, :boolean, default: false
   prop context_id, :string, default: nil, required: false
-  prop create_object_type, :atom, default: nil
+  prop create_object_type, :any, default: nil
   prop thread_mode, :atom, default: nil
   prop to_boundaries, :list, default: []
   prop to_circles, :list, default: []

@@ -1,0 +1,23 @@
+<div class="flex">
+  {#case Bonfire.UI.Common.SmartInputLive.active_smart_input_components(
+      @smart_input_component,
+      @create_object_type
+    )}
+    {#match components}
+      <SmartInputButtonLive
+        :for={component <- components}
+        component={component}
+        smart_input_prompt={@smart_input_prompt || l("Compose")}
+        icon="gridicons:create"
+      />
+
+      <SmartInputButtonLive
+        :if={(Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
+           Bonfire.UI.Social.WritePostContentLive) not in components}
+        component={Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
+          Bonfire.UI.Social.WritePostContentLive}
+        smart_input_prompt={l("Compose")}
+        icon="heroicons-solid:pencil-alt"
+      />
+  {/case}
+</div>

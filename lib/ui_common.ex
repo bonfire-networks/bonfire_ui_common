@@ -219,7 +219,9 @@ defmodule Bonfire.UI.Common do
   def templated(content, data) when is_binary(content) do
     content
     |> Text.maybe_render_templated(data)
+    |> debug(content)
     |> Text.maybe_markdown_to_html()
+    |> debug()
     |> rich()
   end
 
@@ -517,14 +519,23 @@ defmodule Bonfire.UI.Common do
     # |> debug()
     undead_error(fun.(), socket, return_key)
   rescue
+    msg in Bonfire.Fail.Auth ->
+      go_login(msg, socket, return_key)
+
     msg in Bonfire.Fail ->
-      live_exception(
-        socket,
-        return_key,
-        msg,
-        nil,
-        __STACKTRACE__
-      )
+      case msg do
+        %{code: :needs_login} ->
+          go_login(msg, socket, return_key)
+
+        _ ->
+          live_exception(
+            socket,
+            return_key,
+            msg,
+            nil,
+            __STACKTRACE__
+          )
+      end
 
     error in Ecto.Query.CastError ->
       live_exception(
@@ -645,6 +656,15 @@ defmodule Bonfire.UI.Common do
         error,
         __STACKTRACE__
       )
+  end
+
+  defp go_login(msg, socket, {_, return_key}), do: go_login(msg, socket, return_key)
+
+  defp go_login(msg, socket, return_key) do
+    {return_key,
+     socket
+     |> assign_error(e(msg, :message, l("You need to log in first.")))
+     |> redirect_to("/login")}
   end
 
   defp term_error(
@@ -872,7 +892,7 @@ defmodule Bonfire.UI.Common do
   def patch_to(%Phoenix.LiveView.Socket{} = socket, to, opts) when is_binary(to) do
     Phoenix.LiveView.push_patch(
       socket,
-      [to: to || path_fallback(socket, opts)] ++ opts
+      [to: to] ++ opts
     )
   rescue
     e in ArgumentError ->

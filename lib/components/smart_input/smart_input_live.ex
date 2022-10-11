@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   # prop user_image, :string, required: true
   # prop target_component, :string
-  prop create_object_type, :atom, default: nil
+  prop create_object_type, :any, default: nil
   prop reply_to_id, :string, default: nil
   prop context_id, :string, default: nil, required: false
   prop smart_input_component, :atom, default: nil
@@ -59,12 +59,36 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     )
   end
 
+  def active_smart_input_components(smart_input_component, create_object_type) do
+    List.wrap(
+      smart_input_component ||
+        components_by_type(create_object_type) ||
+        active_smart_input_component(smart_input_component, create_object_type)
+    )
+  end
+
   def active_smart_input_component(smart_input_component, create_object_type) do
     (smart_input_component ||
-       e(all_smart_input_components(), create_object_type, nil) ||
+       component_by_type(create_object_type) ||
        Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
        Bonfire.UI.Social.WritePostContentLive)
     |> debug()
+  end
+
+  defp component_by_type(create_object_type) when is_atom(create_object_type) do
+    e(all_smart_input_components(), create_object_type, nil)
+  end
+
+  defp component_by_type(_) do
+    nil
+  end
+
+  defp components_by_type(create_object_types) when is_list(create_object_types) do
+    Enum.map(create_object_types, &component_by_type/1)
+  end
+
+  defp components_by_type(create_object_type) do
+    component_by_type(create_object_type)
   end
 
   def smart_input_name(component) do
