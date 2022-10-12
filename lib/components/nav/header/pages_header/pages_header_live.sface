@@ -29,7 +29,7 @@
             <li>
               <a
                 href="/docs"
-                class="{{ 'underline decoration-wavy decoration-amber-400 underline-offset-8' if '/docs' in page.url {{"
+                class=""
               >
                 <span class="text-base font-regular">Documentation</span>
               </a>
@@ -37,7 +37,7 @@
             <li>
               <a
                 href="/faq"
-                class="{{ 'underline decoration-wavy decoration-amber-400 underline-offset-8' if '/faq' in page.url {{"
+                class=""
               >
                 <span class="text-base font-regular">FAQs</span>
               </a>
@@ -45,7 +45,7 @@
             <li>
               <a
                 href="/blog"
-                class="{{ 'underline decoration-wavy decoration-amber-400 underline-offset-8' if '/blog' in page.url {{"
+                class=""
               >
                 <span class="text-base font-regular">Blog</span>
               </a>
@@ -53,7 +53,7 @@
             <li>
               <a
                 href="/contribute"
-                class="{{ 'underline decoration-wavy decoration-amber-400 underline-offset-8' if '/contribute' in page.url {{"
+                class=""
               >
                 <span class="text-base font-regular">Contribute</span>
               </a>
@@ -131,7 +131,7 @@
       <li>
         <a
           href="/docs"
-          class="{{ 'underline decoration-wavy decoration-amber-400 underline-offset-8' if '/docs' in page.url {{"
+          class=""
         >
           <span class="text-base font-regular">Documentation</span>
         </a>
@@ -139,7 +139,7 @@
       <li>
         <a
           href="/faq"
-          class="{{ 'underline decoration-wavy decoration-amber-400 underline-offset-8' if '/faq' in page.url {{"
+          class=""
         >
           <span class="text-base font-regular">FAQs</span>
         </a>
@@ -147,7 +147,7 @@
       <li>
         <a
           href="/blog"
-          class="{{ 'underline decoration-wavy decoration-amber-400 underline-offset-8' if '/blog' in page.url {{"
+          class=""
         >
           <span class="text-base font-regular">Blog</span>
         </a>
@@ -155,7 +155,7 @@
       <li>
         <a
           href="/contribute"
-          class="{{ 'underline decoration-wavy decoration-amber-400 underline-offset-8' if '/contribute' in page.url {{"
+          class=""
         >
           <span class="text-base font-regular">Contribute</span>
         </a>
