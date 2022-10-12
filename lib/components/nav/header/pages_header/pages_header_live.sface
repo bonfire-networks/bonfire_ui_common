@@ -163,9 +163,7 @@
 
       <li>
         <a
-          href="https://github.com/bonfire-networks/bonfire-app"
-          class="{{ 'underline decoration-wavy decoration-amber-400 underline-offset-8' if '/contribute' in page.url {{"
-        >
+          href="https://github.com/bonfire-networks/bonfire-app">
           <span class="text-base font-regular">Get the code</span>
         </a>
       </li>
