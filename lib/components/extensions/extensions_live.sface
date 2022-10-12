@@ -1,162 +1,119 @@
-<div class="py-4 mb-6 text-2xl font-bold border-b border-base-content/10 text-base-content">
-  {l("Extensions")}
+<div class="flex items-center justify-between py-8 mb-6">
+<div class="flex flex-col">
+  <div class="text-2xl font-bold text-base-content">
+    {l("Instance modules")}
+  </div>
+  <div class="flex items-center gap-2 mt-1">
+    <a href="https://bonfirenetworks.org/" class="badge">
+      {Bonfire.Application.name()}
+    </a>
+    <LiveRedirect to="/terms/changelog" data-tip="changelog" class="badge badge-outline tooltip tooltip-bottom">
+      {Bonfire.Application.version()}
+      <span class="ml-1" x-data="{msg: 'JS'}">
+        <span x-text="msg">no JS</span>
+      </span>
+      <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
+    </LiveRedirect>
+  </div>
+</div>
 </div>
 {#case Bonfire.Boundaries.can?(@__context__, :toggle, :instance)}
   {#match can_instance_wide}
-    <div class="">
-      <div class="flex flex-col space-y-6">
-        <h1 class="px-4 pt-4 leading-4">
-          <a href="https://bonfirenetworks.org/" class="">
-            {Bonfire.Application.name()}
-          </a>
-          <LiveRedirect to="/terms/changelog" class="">
-            {Bonfire.Application.version()}
-            <span class="ml-1" x-data="{msg: 'JS'}">
-              <span x-text="msg">no JS</span>
-            </span>
-            <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
-          </LiveRedirect>
-        </h1>
 
-        <div class="">
-          <div class="">
-            <h2 class="text-lg font-medium leading-6 text-base-content">{l("Bonfire UI extensions")}</h2>
-            <p class="mt-1 text-sm text-base-content text-opacity-70">
-              <!-- {l "These are the data schemas currently installed on this instance, which can be shared among multiple apps and extensions."} -->
-            </p>
-          </div>
-          <div class="flex flex-col lg:flex-row">
-            <div class="flex-grow space-y-3 lg:mt-0">
-              {#for dep <- e(@data, :ui, @ui)}
-                <div class="p-3 text-sm font-medium text-base-content border-base-200">
-                  <a href={get_link(dep)} target="_blank">
-                    <span class="flex-1 hover:underline">{e(dep, :app, "Unknown")}</span>
-                  </a>
 
-                  <a href={get_version_link(dep)} target="_blank">
-                    <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-primary-content">{get_version(dep)}</span>
-                  </a>
-
-                  <Bonfire.UI.Common.ExtensionToggleLive
-                    can_instance_wide={can_instance_wide}
-                    id={e(dep, :app, nil)}
-                  />
-                </div>
-              {/for}
+    <div class="mb-3 text-xs tracking-wide uppercase text-base-content">{l("Bonfire UI extensions")}</div>
+    <div class="divide-y divide-base-300">
+      {#for dep <- e(@data, :ui, @ui)}
+      <div class="p-6 shadow rounder-t bg-base-100">
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col gap-2">
+            <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+            <div class="flex items-center gap-3">
+              <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l "View code"}</a>
+              <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
             </div>
           </div>
+          <Bonfire.UI.Common.ExtensionToggleLive
+            can_instance_wide={can_instance_wide}
+            id={e(dep, :app, nil)}
+          />
         </div>
-
-        <div class="">
-          <div class="">
-            <h2 class="text-lg font-medium leading-6 text-base-content">{l("Bonfire Extensions")}</h2>
-            <p class="mt-1 text-sm text-base-content text-opacity-70">
-              <!-- {l "These are the data schemas currently installed on this instance, which can be shared among multiple apps and extensions."} -->
-            </p>
-          </div>
-          <div class="flex flex-col lg:flex-row">
-            <div class="flex-grow space-y-3 lg:mt-0">
-              {#for dep <- e(@data, :feature_extensions, @feature_extensions)}
-                <div class="p-3 text-sm font-medium text-base-content border-base-200">
-                  <a href={get_link(dep)} target="_blank">
-                    <span class="flex-1 hover:underline">{e(dep, :app, "Unknown")}</span>
-                  </a>
-
-                  <a href={get_version_link(dep)} target="_blank">
-                    <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-primary-content">{get_version(dep)}</span>
-                  </a>
-
-                  <Bonfire.UI.Common.ExtensionToggleLive
-                    can_instance_wide={can_instance_wide}
-                    id={e(dep, :app, nil)}
-                  />
-                </div>
-              {/for}
+      </div>
+      {/for}
+    </div>
+    
+    <div class="mt-12 mb-3 text-xs tracking-wide uppercase text-base-content">{l("Bonfire extensions")}</div>
+    <div class="divide-y divide-base-300">
+      {#for dep <- e(@data, :feature_extensions, @feature_extensions)}
+      <div class="p-6 shadow rounder-t bg-base-100">
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col gap-2">
+            <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+            <div class="flex items-center gap-3">
+              <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l "View code"}</a>
+              <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
             </div>
           </div>
+          <Bonfire.UI.Common.ExtensionToggleLive
+            can_instance_wide={can_instance_wide}
+            id={e(dep, :app, nil)}
+          />
         </div>
+      </div>
+      {/for}
+    </div>
 
-        <div class="">
-          <div class="">
-            <h2 class="text-lg font-medium leading-6 text-base-content">{l("Bonfire schemas")}</h2>
-            <p class="mt-1 text-sm text-base-content text-opacity-70">
-              {l(
-                "These are the data schemas currently installed on this instance, which can be shared among multiple apps and extensions."
-              )}
-            </p>
-          </div>
-          <div class="flex flex-col lg:flex-row">
-            <div class="flex-grow space-y-3 lg:mt-0">
-              {#for dep <- e(@data, :schemas, @schemas)}
-                <div class="p-3 text-sm font-medium text-base-content border-base-200">
-                  <a href={get_link(dep)} target="_blank">
-                    <span class="flex-1 hover:underline">{e(dep, :app, "Unknown")}</span>
-                  </a>
-
-                  <a href={get_version_link(dep)} target="_blank">
-                    <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-primary-content">{get_version(dep)}</span>
-                  </a>
-
-                  <!-- <Bonfire.UI.Common.ExtensionToggleLive can_instance_wide={can_instance_wide} id={e(dep, :app, nil)} /> -->
-                </div>
-              {/for}
-            </div>
-          </div>
-        </div>
-
-        <div class="">
-          <div class="">
-            <h2 class="text-lg font-medium leading-6text-primary-content-800">{l("Bonfire Ecosystem Libraries")}</h2>
-            <p class="mt-1 text-sm text-base-content text-opacity-70">
-              <!-- {l "These are other libre / open source software projects used by the app and/or installed extensions."} -->
-            </p>
-          </div>
-          <div class="flex flex-col lg:flex-row">
-            <div class="flex-grow space-y-3 lg:mt-0">
-              {#for dep <- e(@data, :ecosystem_libs, @ecosystem_libs)}
-                <div class="p-3 text-sm font-medium text-base-content border-base-200">
-                  <a href={get_link(dep)} target="_blank">
-                    <span class="flex-1 hover:underline">{e(dep, :app, "Unknown")}</span>
-                  </a>
-
-                  <a href={get_version_link(dep)} target="_blank">
-                    <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-primary-content">{get_version(dep)}</span>
-                  </a>
-
-                  <!-- <Bonfire.UI.Common.ExtensionToggleLive can_instance_wide={can_instance_wide} id={e(dep, :app, nil)} /> -->
-                </div>
-              {/for}
-            </div>
-          </div>
-        </div>
-
-        <div class="">
-          <div class="">
-            <h2 class="text-lg font-medium leading-6text-primary-content-800">{l("Other Libraries")}</h2>
-            <p class="mt-1 text-sm text-base-content text-opacity-70">
-              {l(
-                "These are other libre / open source software projects used by the app and/or installed extensions."
-              )}
-            </p>
-          </div>
-          <div class="flex flex-col lg:flex-row">
-            <div class="flex-grow space-y-3 lg:mt-0">
-              {#for dep <- e(@data, :other_deps, @other_deps)}
-                <div class="p-3 text-sm font-medium text-base-content border-base-200">
-                  <a href={get_link(dep)} target="_blank">
-                    <span class="flex-1 hover:underline">{e(dep, :app, "Unknown")}</span>
-                  </a>
-
-                  <a href={get_version_link(dep)} target="_blank">
-                    <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-primary-content">{get_version(dep)}</span>
-                  </a>
-
-                  <!-- <Bonfire.UI.Common.ExtensionToggleLive can_instance_wide={can_instance_wide} id={e(dep, :app, nil)} /> -->
-                </div>
-              {/for}
+    <div class="mt-12 mb-3 text-xs tracking-wide uppercase text-base-content">{l("Bonfire schemas")}</div>
+    <div class="divide-y divide-base-300">
+      {#for dep <- e(@data, :schemas, @schemas)}
+      <div class="p-6 shadow rounder-t bg-base-100">
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col gap-2">
+            <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+            <div class="flex items-center gap-3">
+              <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l "View code"}</a>
+              <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
             </div>
           </div>
         </div>
       </div>
+      {/for}
     </div>
+
+    <div class="mt-12 mb-3 text-xs tracking-wide uppercase text-base-content">{l("Bonfire Ecosystem libraries")}</div>
+    <div class="divide-y divide-base-300">
+      {#for dep <-  e(@data, :ecosystem_libs, @ecosystem_libs)}
+      <div class="p-6 shadow rounder-t bg-base-100">
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col gap-2">
+            <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+            <div class="flex items-center gap-3">
+              <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l "View code"}</a>
+              <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/for}
+    </div>
+
+
+    <div class="mt-12 mb-3 text-xs tracking-wide uppercase text-base-content">{l("Other libraries")}</div>
+    <div class="divide-y divide-base-300">
+      {#for dep <- e(@data, :other_deps, @other_deps)}
+      <div class="p-6 shadow rounder-t bg-base-100">
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col gap-2">
+            <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+            <div class="flex items-center gap-3">
+              <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l "View code"}</a>
+              <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/for}
+    </div>
+    
+
 {/case}

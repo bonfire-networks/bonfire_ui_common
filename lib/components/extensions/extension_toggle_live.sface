@@ -1,3 +1,4 @@
+<div class="flex items-center gap-2">
 {#if to_string(@id) not in Bonfire.Application.required_deps()}
   {#case Config.get([@id, :disabled], nil)}
     {#match globally_disabled}
@@ -7,14 +8,14 @@
           phx-click="Bonfire.Me.Settings:extension:enable"
           phx-target={@myself}
           phx-value-extension={@id}
-          class="button btn-success rounded button-xs ml-2"
+          class="rounded button btn-success btn-sm"
         >{l("Enable for me")}</button>
       {#else}
         <button
           phx-click="Bonfire.Me.Settings:extension:disable"
           phx-target={@myself}
           phx-value-extension={@id}
-          class="button btn-warning rounded button-xs ml-2"
+          class="rounded button btn-warning btn-sm"
         >{l("Disable for me")}</button>
       {/if}
 
@@ -25,7 +26,7 @@
             phx-target={@myself}
             phx-value-scope={:instance}
             phx-value-extension={@id}
-            class="button btn-info rounded button-xs ml-2"
+            class="rounded button btn-info btn-sm"
           >{l("Enable by default")}</button>
         {#else}
           <button
@@ -33,9 +34,10 @@
             phx-target={@myself}
             phx-value-scope={:instance}
             phx-value-extension={@id}
-            class="button btn-error rounded button-xs ml-2"
+            class="rounded button btn-error btn-sm"
           >{l("Disable for everyone")}</button>
         {/if}
       {/if}
   {/case}
 {/if}
+</div>
