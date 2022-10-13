@@ -27,34 +27,22 @@
           </div>
           <ul class="flex-row hidden p-0 sm:flex menu menu-horizontal">
             <li>
-              <a
-                href="/docs"
-                class=""
-              >
+              <a href="/docs" class="">
                 <span class="text-base font-regular">Documentation</span>
               </a>
             </li>
             <li>
-              <a
-                href="/faq"
-                class=""
-              >
+              <a href="/faq" class="">
                 <span class="text-base font-regular">FAQs</span>
               </a>
             </li>
             <li>
-              <a
-                href="/blog"
-                class=""
-              >
+              <a href="/blog" class="">
                 <span class="text-base font-regular">Blog</span>
               </a>
             </li>
             <li>
-              <a
-                href="/contribute"
-                class=""
-              >
+              <a href="/contribute" class="">
                 <span class="text-base font-regular">Contribute</span>
               </a>
             </li>
@@ -129,41 +117,28 @@
   >
     <ul class="p-0 menu">
       <li>
-        <a
-          href="/docs"
-          class=""
-        >
+        <a href="/docs" class="">
           <span class="text-base font-regular">Documentation</span>
         </a>
       </li>
       <li>
-        <a
-          href="/faq"
-          class=""
-        >
+        <a href="/faq" class="">
           <span class="text-base font-regular">FAQs</span>
         </a>
       </li>
       <li>
-        <a
-          href="/blog"
-          class=""
-        >
+        <a href="/blog" class="">
           <span class="text-base font-regular">Blog</span>
         </a>
       </li>
       <li>
-        <a
-          href="/contribute"
-          class=""
-        >
+        <a href="/contribute" class="">
           <span class="text-base font-regular">Contribute</span>
         </a>
       </li>
 
       <li>
-        <a
-          href="https://github.com/bonfire-networks/bonfire-app">
+        <a href="https://github.com/bonfire-networks/bonfire-app">
           <span class="text-base font-regular">Get the code</span>
         </a>
       </li>

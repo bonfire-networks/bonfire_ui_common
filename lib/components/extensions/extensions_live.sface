@@ -1,119 +1,118 @@
 <div class="flex items-center justify-between py-8 mb-6">
-<div class="flex flex-col">
-  <div class="text-2xl font-bold text-base-content">
-    {l("Instance modules")}
+  <div class="flex flex-col">
+    <div class="text-2xl font-bold text-base-content">
+      {l("Instance modules")}
+    </div>
+    <div class="flex items-center gap-2 mt-1">
+      <a href="https://bonfirenetworks.org/" class="badge">
+        {Bonfire.Application.name()}
+      </a>
+      <LiveRedirect
+        to="/terms/changelog"
+        data-tip="changelog"
+        class="badge badge-outline tooltip tooltip-bottom"
+      >
+        {Bonfire.Application.version()}
+        <span class="ml-1" x-data="{msg: 'JS'}">
+          <span x-text="msg">no JS</span>
+        </span>
+        <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
+      </LiveRedirect>
+    </div>
   </div>
-  <div class="flex items-center gap-2 mt-1">
-    <a href="https://bonfirenetworks.org/" class="badge">
-      {Bonfire.Application.name()}
-    </a>
-    <LiveRedirect to="/terms/changelog" data-tip="changelog" class="badge badge-outline tooltip tooltip-bottom">
-      {Bonfire.Application.version()}
-      <span class="ml-1" x-data="{msg: 'JS'}">
-        <span x-text="msg">no JS</span>
-      </span>
-      <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
-    </LiveRedirect>
-  </div>
-</div>
 </div>
 {#case Bonfire.Boundaries.can?(@__context__, :toggle, :instance)}
   {#match can_instance_wide}
-
-
     <div class="mb-3 text-xs tracking-wide uppercase text-base-content">{l("Bonfire UI extensions")}</div>
     <div class="divide-y divide-base-300">
       {#for dep <- e(@data, :ui, @ui)}
-      <div class="p-6 shadow rounder-t bg-base-100">
-        <div class="flex items-center justify-between">
-          <div class="flex flex-col gap-2">
-            <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
-            <div class="flex items-center gap-3">
-              <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l "View code"}</a>
-              <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
+        <div class="p-6 shadow rounder-t bg-base-100">
+          <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-2">
+              <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+              <div class="flex items-center gap-3">
+                <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l("View code")}</a>
+                <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
+              </div>
             </div>
+            <Bonfire.UI.Common.ExtensionToggleLive
+              can_instance_wide={can_instance_wide}
+              id={e(dep, :app, nil)}
+            />
           </div>
-          <Bonfire.UI.Common.ExtensionToggleLive
-            can_instance_wide={can_instance_wide}
-            id={e(dep, :app, nil)}
-          />
         </div>
-      </div>
       {/for}
     </div>
-    
+
     <div class="mt-12 mb-3 text-xs tracking-wide uppercase text-base-content">{l("Bonfire extensions")}</div>
     <div class="divide-y divide-base-300">
       {#for dep <- e(@data, :feature_extensions, @feature_extensions)}
-      <div class="p-6 shadow rounder-t bg-base-100">
-        <div class="flex items-center justify-between">
-          <div class="flex flex-col gap-2">
-            <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
-            <div class="flex items-center gap-3">
-              <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l "View code"}</a>
-              <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
+        <div class="p-6 shadow rounder-t bg-base-100">
+          <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-2">
+              <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+              <div class="flex items-center gap-3">
+                <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l("View code")}</a>
+                <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
+              </div>
             </div>
+            <Bonfire.UI.Common.ExtensionToggleLive
+              can_instance_wide={can_instance_wide}
+              id={e(dep, :app, nil)}
+            />
           </div>
-          <Bonfire.UI.Common.ExtensionToggleLive
-            can_instance_wide={can_instance_wide}
-            id={e(dep, :app, nil)}
-          />
         </div>
-      </div>
       {/for}
     </div>
 
     <div class="mt-12 mb-3 text-xs tracking-wide uppercase text-base-content">{l("Bonfire schemas")}</div>
     <div class="divide-y divide-base-300">
       {#for dep <- e(@data, :schemas, @schemas)}
-      <div class="p-6 shadow rounder-t bg-base-100">
-        <div class="flex items-center justify-between">
-          <div class="flex flex-col gap-2">
-            <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
-            <div class="flex items-center gap-3">
-              <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l "View code"}</a>
-              <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
+        <div class="p-6 shadow rounder-t bg-base-100">
+          <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-2">
+              <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+              <div class="flex items-center gap-3">
+                <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l("View code")}</a>
+                <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       {/for}
     </div>
 
     <div class="mt-12 mb-3 text-xs tracking-wide uppercase text-base-content">{l("Bonfire Ecosystem libraries")}</div>
     <div class="divide-y divide-base-300">
-      {#for dep <-  e(@data, :ecosystem_libs, @ecosystem_libs)}
-      <div class="p-6 shadow rounder-t bg-base-100">
-        <div class="flex items-center justify-between">
-          <div class="flex flex-col gap-2">
-            <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
-            <div class="flex items-center gap-3">
-              <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l "View code"}</a>
-              <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
+      {#for dep <- e(@data, :ecosystem_libs, @ecosystem_libs)}
+        <div class="p-6 shadow rounder-t bg-base-100">
+          <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-2">
+              <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+              <div class="flex items-center gap-3">
+                <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l("View code")}</a>
+                <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       {/for}
     </div>
-
 
     <div class="mt-12 mb-3 text-xs tracking-wide uppercase text-base-content">{l("Other libraries")}</div>
     <div class="divide-y divide-base-300">
       {#for dep <- e(@data, :other_deps, @other_deps)}
-      <div class="p-6 shadow rounder-t bg-base-100">
-        <div class="flex items-center justify-between">
-          <div class="flex flex-col gap-2">
-            <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
-            <div class="flex items-center gap-3">
-              <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l "View code"}</a>
-              <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
+        <div class="p-6 shadow rounder-t bg-base-100">
+          <div class="flex items-center justify-between">
+            <div class="flex flex-col gap-2">
+              <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+              <div class="flex items-center gap-3">
+                <a href={get_link(dep)} target="_blank" class="badge badge-sm">{l("View code")}</a>
+                <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       {/for}
     </div>
-    
-
 {/case}
