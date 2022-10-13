@@ -89,16 +89,12 @@
                 <div @click="open_extensions_sidebar = false" class="btn btn-ghost btn-square btn-sm">
                   <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
                 </div>
-                <LiveRedirect
-                  class="flex items-center gap-2"
-                  to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}
-                >
-                  <div
-                    class="w-8 h-8 bg-center bg-no-repeat bg-contain"
-                    style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}
-                  />
-                  <div class="text-lg font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
-                </LiveRedirect>
+                <Bonfire.UI.Common.LogoLinkLive
+                  with_name
+                  container_class="flex items-center gap-2"
+                  image_class="w-8 h-8 bg-center bg-no-repeat bg-contain"
+                  name_class="text-lg font-bold text-base-content"
+                />
               </div>
 
               <div x-data="{expanded: false}" class="flex flex-col pb-4 md:hidden">

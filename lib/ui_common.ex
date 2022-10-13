@@ -866,7 +866,7 @@ defmodule Bonfire.UI.Common do
   def redirect_to(socket_or_conn, to \\ nil, opts \\ [])
 
   def redirect_to(%Phoenix.LiveView.Socket{} = socket, to, opts) do
-    Phoenix.LiveView.push_redirect(
+    Phoenix.LiveView.push_navigate(
       socket,
       [to: to || path_fallback(socket, opts)] ++ opts
     )

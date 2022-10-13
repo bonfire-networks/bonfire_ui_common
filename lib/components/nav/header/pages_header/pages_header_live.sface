@@ -16,35 +16,37 @@
       <div class="flex items-center flex-1">
         <div class="flex items-center justify-center flex-1 sm:items-stretch sm:justify-start">
           <div class="flex items-center flex-1 flex-shrink-0">
-            <a href="/" class="flex items-center">
-              <Bonfire.UI.Common.LogoLive
-                name_class="text-2xl font-bold tracking-wider text-base-content"
-                image_class="w-10 h-10 bg-center bg-no-repeat bg-contain"
-                with_name
-              />
-              <div class="ml-2 badge badge-primary">Beta</div>
-            </a>
+            <div class="flex items-center">
+              <LivePatch to="/" class="flex items-center">
+                <Bonfire.UI.Common.LogoLive
+                  name_class="text-2xl font-bold tracking-wider text-base-content"
+                  image_class="w-10 h-10 bg-center bg-no-repeat bg-contain"
+                  with_name
+                />
+                <div class="ml-2 badge badge-primary">Beta</div>
+              </LivePatch>
+            </div>
           </div>
           <ul class="flex-row hidden p-0 sm:flex menu menu-horizontal">
             <li>
-              <a href="/docs" class="">
+              <LivePatch to="/docs" class="">
                 <span class="text-base font-regular">Documentation</span>
-              </a>
+              </LivePatch>
             </li>
             <li>
-              <a href="/faq" class="">
+              <LivePatch to="/faq" class="">
                 <span class="text-base font-regular">FAQs</span>
-              </a>
+              </LivePatch>
             </li>
             <li>
-              <a href="/blog" class="">
+              <LivePatch to="/blog" class="">
                 <span class="text-base font-regular">Blog</span>
-              </a>
+              </LivePatch>
             </li>
             <li>
-              <a href="/contribute" class="">
+              <LivePatch to="/contribute" class="">
                 <span class="text-base font-regular">Contribute</span>
-              </a>
+              </LivePatch>
             </li>
             <li>
               <a target="_blank" href="https://github.com/bonfire-networks/bonfire-app">

@@ -1,5 +1,5 @@
 <div class="flex flex-col items-center my-12">
-  <Bonfire.UI.Common.LogoLive
+  <Bonfire.UI.Common.LogoLinkLive
     image_class="flex-shrink-0 w-16 h-20 bg-center bg-no-repeat bg-cover"
     with_name={false}
   />

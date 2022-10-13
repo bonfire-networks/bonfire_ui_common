@@ -1,5 +1,5 @@
 <div class="md:hidden bg-base-100 rounded-md flex h-[48px] place-content-center items-center flex w-full px-3">
-  <Bonfire.UI.Common.LogoLive container_class="flex items-center flex-1 space-x-2" with_name />
+  <Bonfire.UI.Common.LogoLinkLive container_class="flex items-center flex-1 space-x-2" with_name />
 
   <div class="flex justify-end">
     {#if @current_account != nil}
