@@ -47,8 +47,6 @@ defmodule Bonfire.UI.Common.SEO do
     <SEO.Site.meta item={SEO.Build.site(@item, config(SEO.Site))} page_title={@page_title} />
     <SEO.OpenGraph.meta item={SEO.Build.open_graph(@item, config(SEO.OpenGraph))} />
     <SEO.Twitter.meta item={SEO.Build.twitter(@item, config(SEO.Twitter))} />
-    <%!-- <SEO.Unfurl.meta item={SEO.Build.unfurl(@item, config(SEO.Unfurl))} /> --%>
-    <%!-- <SEO.Facebook.meta item={SEO.Build.facebook(@item, config(SEO.Facebook))} /> --%>
     <SEO.Breadcrumb.meta
       item={SEO.Build.breadcrumb_list(@item, config(SEO.Breadcrumb))}
       json_library={@json_library}
