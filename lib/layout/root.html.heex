@@ -24,14 +24,7 @@
   <head>
     <meta charset="utf-8" />
 
-    <%!-- 
-    <.live_title prefix="Bonfire – ">
-      <%= assigns[:page_title] || l("Welcome") %>
-    </.live_title> 
-    <meta name="description" content="Bonfire instance" />
-    <meta name="keywords" content="bonfire, fediverse" />
-    <meta name="author" content="Bonfire" />
-    --%>
+
     <Bonfire.UI.Common.SEO.juice item={assigns[:seo] || []} page_title={assigns[:page_title]} />
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
