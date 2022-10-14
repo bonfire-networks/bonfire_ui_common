@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.LogoLive do
 
   prop with_name, :boolean, default: false
 
-  prop image_class, :css_class, default: "w-8 h-8 bg-center bg-no-repeat bg-contain"
+  prop image_class, :css_class, default: nil
 
-  prop name_class, :css_class, default: "text-lg font-bold text-base-content"
+  prop name_class, :css_class, default: nil
 end
