@@ -1,5 +1,5 @@
 <div
-  :if={@current_user != nil and @hide_smart_input != true}
+  :if={@current_user != nil}
   id="composer_container"
   data-id="smart_input"
   data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, @__context__) && @thread_mode != :flat,
@@ -32,7 +32,7 @@
             showing_within: @showing_within,
             create_object_type: @create_object_type
           }),
-      "h-full": e(@showing_within, nil) == :page
+      "h-full": @showing_within == :page
     }
   >
     <!-- <div 

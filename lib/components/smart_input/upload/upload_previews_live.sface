@@ -9,9 +9,9 @@
   >
     <div class="absolute top-0 z-10 w-full rounded-lg l-0 r-0 h-14 bg-gradient-to-b from-gray-900 to-transparent" />
     <figure>
-      <!-- Phoenix.LiveView.Helpers.live_img_preview/2 renders a client-side preview -->
+      <!-- render a client-side preview -->
       <span :if={String.starts_with?(entry.client_type, "image")}>
-        {live_img_preview(entry)}
+        <.live_img_preview entry={entry} />
       </span>
       <figcaption class="sr-only">{entry.client_name}</figcaption>
     </figure>

@@ -22,8 +22,12 @@ defmodule Bonfire.UI.Common.LayoutLive do
         :to_boundaries,
         boundaries_or_default(e(assigns, :to_boundaries, nil), assigns)
       )
+      |> assign_new(:nav_header, fn ->
+        if is_nil(current_user(assigns)),
+          do: Bonfire.UI.Common.GuestHeaderLive,
+          else: Bonfire.UI.Common.LoggedHeaderLive
+      end)
       |> assign_new(:page_title, fn -> nil end)
-      |> assign_new(:without_header, fn -> nil end)
       |> assign_new(:without_mobile_logged_header, fn -> nil end)
       |> assign_new(:full_page, fn -> false end)
       |> assign_new(:page, fn -> nil end)
@@ -47,9 +51,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:nav_items, fn -> nav_items end)
       |> assign_new(:without_sidebar, fn ->
         empty?(nav_items) &&
-          ((ulid(current_user(assigns)) &&
+          ((not is_nil(current_user(assigns)) &&
               empty?(e(assigns, :sidebar_widgets, :users, :main, nil))) ||
-             (!ulid(current_user(assigns)) &&
+             (!is_nil(current_user(assigns)) &&
                 empty?(e(assigns, :sidebar_widgets, :guests, :main, nil))))
       end)
       |> assign_new(:hide_smart_input, fn -> false end)
@@ -79,8 +83,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
           #{if @smart_input_as == :modal, do: "this.smart_input_fullscreen = true;"}
         }
       }"}>
-      <Bonfire.UI.Common.LoggedHeaderLive
-        :if={@without_header != true and not is_nil(@current_user) and @page != "page"}
+      <Dynamic.Component
+        :if={@nav_header != false and module_enabled?(@nav_header)}
+        module={@nav_header}
         page_header_aside={@page_header_aside}
         page_title={@page_title}
         page={@page}
@@ -101,14 +106,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
         smart_input_opts={@smart_input_opts}
         sidebar_widgets={@sidebar_widgets}
         nav_items={e(@nav_items, [])}
-      />
-      <Bonfire.UI.Common.GuestHeaderLive :if={@without_header != true and @page != "page" and is_nil(@current_user)} />
-      <Bonfire.UI.Common.PagesHeaderLive
-        sidebar_widgets={@sidebar_widgets}
-        nav_items={e(@nav_items, [])}
-        page_title={@page_title}
-        page={@page}
-        :if={@page == "page"}
       />
 
       <div id="bonfire_live" class="transition duration-150 ease-in-out transform">
@@ -142,7 +139,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }>
             <div class={
               "justify-center mt-0 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
-              "md:mt-6": @without_header != true,
+              "md:mt-6": @nav_header == false,
               "!grid-cols-1": !is_list(@sidebar_widgets[:users][:secondary])
             }>
               <div class="relative grid invisible_frame">

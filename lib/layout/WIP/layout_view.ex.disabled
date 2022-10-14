@@ -76,7 +76,7 @@ defmodule Bonfire.UI.Common.LayoutView do
       <Bonfire.UI.Common.NavLive
         context={@__context__}
         without_sidebar={e(assigns, :without_sidebar, nil)}
-        showing_within={e(assigns, :showing_within, nil)}
+        showing_within={@showing_within}
         hide_smart_input={e(assigns, :hide_smart_input, nil)}
         page_header_aside={e(assigns, :page_header_aside, nil)}
         page_header_drawer={e(assigns, :page_header_drawer, false)}

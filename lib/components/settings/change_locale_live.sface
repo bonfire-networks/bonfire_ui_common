@@ -6,7 +6,7 @@
   phx-change={@live_handler}
 >
   {#for l <- Localise.known_locales()}
-    <option class="" value={l} selected={if @locale == l, do: "selected"}>
+    <option class="" value={l} selected={if "#{@locale}" == "#{l}", do: "selected"}>
       {Localise.locale_name(l)}
     </option>
   {#else}
