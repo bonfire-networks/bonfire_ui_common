@@ -14,7 +14,7 @@
     </div>
     <div class="hidden md:block w-[46px] tablet-lg:w-[240px]">
       <Dynamic.Component
-        :if={module_enabled?(Bonfire.Search.Web.FormLive)}
+        :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
         module={Bonfire.Search.Web.FormLive}
         search_limit={5}
       />

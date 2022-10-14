@@ -90,7 +90,7 @@ defmodule Bonfire.UI.Common.LivePlugs do
       current_extension = Bonfire.Common.ExtensionModules.extension(current_app)
 
       if not is_nil(current_app) and not extension_enabled?(current_app, socket) do
-        if not extension_enabled?(current_app) do
+        if not extension_enabled?(current_app, :instance) do
           error(
             l(
               "Sorry, %{app} is not enabled on this instance. You may want to get in touch with your instance admin(s)...",

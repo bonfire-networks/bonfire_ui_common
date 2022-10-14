@@ -193,7 +193,7 @@
               </li>
               <li
                 :for={{app, extension} <- Bonfire.Common.ExtensionModules.extensions()}
-                :if={!extension[:exclude_from_nav] and extension_enabled?(app)}
+                :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
               >
                 <LiveRedirect
                   class={

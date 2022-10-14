@@ -84,7 +84,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }
       }"}>
       <Dynamic.Component
-        :if={@nav_header != false and module_enabled?(@nav_header)}
+        :if={@nav_header != false and module_enabled?(@nav_header, @current_user)}
         module={@nav_header}
         page_header_aside={@page_header_aside}
         page_title={@page_title}
@@ -187,7 +187,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       />
       <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(@current_user)} page={@page} />
 
-      <!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player),
+      <!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player, @current_user),
         do:
           live_render(@socket, RauversionExtension.UI.TrackLive.Player,
             id: "global-main-player",

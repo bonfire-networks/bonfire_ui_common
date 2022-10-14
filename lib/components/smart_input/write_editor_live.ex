@@ -31,7 +31,7 @@ defmodule Bonfire.UI.Common.WriteEditorLive do
       default = Bonfire.Editor.Quill
       module = Bonfire.Me.Settings.get([:ui, :rich_text_editor], default, context)
 
-      if module_enabled?(module),
+      if module_enabled?(module, context),
         do: module,
         else: error(nil, "#{module} is not available or enabled")
     end

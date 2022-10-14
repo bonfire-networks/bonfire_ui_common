@@ -12,7 +12,7 @@
             page: @page,
             showing_within: @showing_within,
             create_object_type: @create_object_type
-          }) && module_enabled?(Bonfire.Files)}
+          }) && module_enabled?(Bonfire.Files, @__context__)}
           uploads={@uploads}
           thread_mode={@thread_mode}
         />

@@ -49,7 +49,7 @@
     >
       <div class="w-full">
         <div
-          :if={module_enabled?(Bonfire.Search.Web.FormLive) && @current_user}
+          :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__) && @current_user}
           class="fixed w-[285px] z-[70] w-full mb-3 top-3 background-invisible before:bottom-[-8px]"
         >
           <Dynamic.Component module={Bonfire.Search.Web.FormLive} search_limit={5} />
