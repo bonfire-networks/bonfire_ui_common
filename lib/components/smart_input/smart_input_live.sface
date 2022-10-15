@@ -2,8 +2,6 @@
   :if={@current_user != nil}
   id="composer_container"
   data-id="smart_input"
-  data-theme={if Settings.get([:ui, :smart_input_light_theme], nil, @__context__) && @thread_mode != :flat,
-    do: "winter"}
   class={
     "h-full",
     "h-[calc(100%-40px)]": @thread_mode != :flat

@@ -1,11 +1,11 @@
-{#if @showing_within |> debug("showing_withinz") == :preview}
+{#if @showing_within == :preview}
   <button
     id="close_preview"
     phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
     phx-hook="ClosePreview"
     aria-label={l("Go back to the previous page")}
     data-tip={l("Go back to the previous page")}
-    class="btn normal-case btn-ghost btn-sm btn-circle !inline-flex tooltip"
+    class="btn font-normal normal-case btn-ghost btn-sm btn-circle !inline-flex tooltip tooltip-bottom"
   >
     <Icon outline="ArrowLeft" class="w-4 h-4 text-base-content" />
   </button>
@@ -15,7 +15,7 @@
     href="javascript:window.history.back()"
     aria-label={l("Go back to the previous page")}
     data-tip={l("Go back to the previous page")}
-    class="btn normal-case  btn-ghost btn-sm btn-circle !inline-flex tooltip"
+    class="btn normal-case  btn-ghost btn-sm btn-circle !inline-flex tooltip tooltip-bottom"
   >
     <Icon outline="ArrowLeft" class="w-4 h-4 text-base-content" />
   </a>

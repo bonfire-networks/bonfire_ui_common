@@ -15,7 +15,7 @@ defmodule Bonfire.UI.Common.LoggedHeaderLive do
   prop thread_mode, :atom, default: nil
   prop to_boundaries, :list, default: []
   prop to_circles, :list, default: []
-  prop smart_input_as, :atom, default: nil
+  prop smart_input_as, :any, default: nil
   prop smart_input_prompt, :string, required: false
   prop smart_input_opts, :any, required: false
   prop sidebar_widgets, :list, default: []

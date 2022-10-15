@@ -1,4 +1,4 @@
-<div class="relative m-4 mb-2 md:mb-6 md:m-0">
+<div class="relative m-4 mb-2 md:mb-6 md:m-0 md:mt-6">
   <div class="z-50 flex items-start justify-between">
     <div class="flex items-center gap-3">
       <Bonfire.UI.Common.BackButtonLive />

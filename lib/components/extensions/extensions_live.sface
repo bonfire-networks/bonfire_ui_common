@@ -22,13 +22,13 @@
   </div>
 </div>
 
-<Bonfire.UI.Common.WidgetAppsLive title={l("Apps")} cols="6" />
+<Bonfire.UI.Common.WidgetAppsLive title={l("Active Apps")} cols="4" />
 
 {#case Bonfire.Application.required_deps()}
   {#match required_deps}
     {#case Bonfire.Boundaries.can?(@__context__, :toggle, :instance)}
       {#match can_instance_wide}
-        <div class="mb-3 text-xs tracking-wide uppercase text-base-content">{l("Bonfire UI extensions")}</div>
+        <div class="mt-6 mb-3 text-xs tracking-wide uppercase text-base-content">{l("Bonfire UI extensions")}</div>
         <div class="divide-y divide-base-300">
           {#for dep <- e(@data, :ui, @ui)}
             <div class="p-6 shadow rounder-t bg-base-100">

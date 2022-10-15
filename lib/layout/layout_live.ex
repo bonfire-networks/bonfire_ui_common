@@ -154,7 +154,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(ulid(@current_user))) or
                   (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(ulid(@current_user)))}
                 x-show={if @preview_module, do: "false", else: "true"}
-                class="items-start hidden grid-flow-row gap-3 auto-rows-min tablet-lg:grid"
+                class="items-start hidden grid-flow-row gap-3 md:mt-6 auto-rows-min tablet-lg:grid"
               >
                 <!-- USER WIDGET SIDEBAR -->
                 <Dynamic.Component
