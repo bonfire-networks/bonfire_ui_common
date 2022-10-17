@@ -13,7 +13,7 @@
     </li>
     <li
       :for={{app, extension} <- Bonfire.Common.ExtensionModules.extensions()}
-      :if={!extension[:exclude_from_nav]}
+      :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
     >
       <!-- and extension_enabled?(app) -->
       <LiveRedirect to={extension[:href]}>
