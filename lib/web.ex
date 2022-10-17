@@ -302,6 +302,8 @@ defmodule Bonfire.UI.Common.Web do
         alias Surface.Components.Form.TextArea
 
         alias Bonfire.UI.Common.LazyImage
+        alias Bonfire.UI.Common.LinkLive
+        alias Bonfire.UI.Common.Icon
       end
     end
   end

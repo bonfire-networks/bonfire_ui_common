@@ -1,4 +1,4 @@
-defmodule Icon do
+defmodule Bonfire.UI.Common.Icon do
   use Surface.Component
   import Phoenix.LiveView.HTMLEngine
 

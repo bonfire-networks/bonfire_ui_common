@@ -9,4 +9,6 @@ defmodule Bonfire.UI.Common.LogoLinkLive do
   prop image_class, :css_class, default: nil
 
   prop name_class, :css_class, default: nil
+
+  slot default
 end

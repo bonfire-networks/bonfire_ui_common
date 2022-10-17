@@ -1,10 +1,12 @@
-<a
+<LinkLive
   class={@container_class}
-  href={@href || "#{path(Config.get(:home_page, Bonfire.Web.HomeLive))}?dashboard"}
+  to={@href ||
+    "#{Config.get([:ui, :homepage_redirect_to]) || path(Config.get(:home_page, Bonfire.Web.HomeLive))}?dashboard"}
 >
   <Bonfire.UI.Common.LogoLive
     with_name={@with_name}
     image_class="w-8 h-8 bg-center bg-no-repeat bg-contain"
     name_class="text-lg font-bold text-base-content"
   />
-</a>
+  <#slot />
+</LinkLive>
