@@ -275,6 +275,22 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  def socket_connected?(%Phoenix.LiveView.Socket{} = socket) do
+    Phoenix.LiveView.connected?(socket)
+  end
+
+  def socket_connected?(%{socket_connected?: bool}) do
+    bool
+  end
+
+  def socket_connected?(%{__context__: assigns}) do
+    socket_connected?(assigns)
+  end
+
+  def socket_connected?(%{assigns: assigns}) do
+    socket_connected?(assigns)
+  end
+
   def current_user_or_remote_interaction(socket, verb, object) do
     case current_user(socket) do
       %{id: _} = current_user ->
@@ -309,7 +325,8 @@ defmodule Bonfire.UI.Common do
     Phoenix.LiveView.Controller.live_render(conn, live_view, session: %{"conn" => conn})
   end
 
-  defp socket_connected_or_user?(%Phoenix.LiveView.Socket{}), do: true
+  defp socket_connected_or_user?(%Phoenix.LiveView.Socket{} = socket),
+    do: socket_connected?(socket)
 
   defp socket_connected_or_user?(other),
     do: if(current_user(other), do: true, else: false)

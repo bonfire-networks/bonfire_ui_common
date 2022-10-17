@@ -69,6 +69,18 @@ defmodule Bonfire.UI.Common.Routes do
         )
 
         post(
+          "/LiveHandler/:live_handler/:action",
+          Bonfire.UI.Common.LiveHandlers.GracefulDegradation.Controller,
+          :fallback
+        )
+
+        get(
+          "/LiveHandler/:live_handler/:action",
+          Bonfire.UI.Common.LiveHandlers.GracefulDegradation.Controller,
+          :fallback
+        )
+
+        post(
           "/session_redirect",
           Bonfire.UI.Common.SessionRedirectController,
           :set_and_redirect

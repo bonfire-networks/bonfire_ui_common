@@ -2,15 +2,11 @@ defmodule Bonfire.UI.Common.LiveHandlers.GracefulDegradation.Controller do
   use Bonfire.UI.Common.Web, :controller
   alias Bonfire.UI.Common.LiveHandlers
 
-  def call(conn, _) do
-    params = e(conn, :params, %{})
-
+  def call(%{params: params} = conn, _) do
     with %{} = assigns <-
-           handle_fallback(e(params, "live_handler", nil), params, conn) do
+           handle_fallback(handler_from_params(params), params, conn) do
       conn = assigns[:conn] || conn
       locations = Plug.Conn.get_resp_header(conn, "location")
-
-      # |> debug("location")
 
       if is_list(locations) and length(locations) > 0 do
         halt(conn)
@@ -22,7 +18,16 @@ defmodule Bonfire.UI.Common.LiveHandlers.GracefulDegradation.Controller do
     end
   end
 
-  def handle_fallback(action, attrs, conn) do
+  defp handler_from_params(%{"live_handler" => module, "action" => action})
+       when is_binary(action) do
+    {module, action}
+  end
+
+  defp handler_from_params(%{"live_handler" => module}) do
+    module
+  end
+
+  defp handle_fallback(action, attrs, conn) do
     # debug(conn)
     with {:noreply, conn} <-
            LiveHandlers.handle_event(action, attrs, conn, __MODULE__)

@@ -112,7 +112,8 @@ defmodule Bonfire.UI.Common.LivePlugs do
           |> assign_global(
             current_view: socket.view,
             current_app: current_app,
-            current_extension: current_extension
+            current_extension: current_extension,
+            socket_connected?: Phoenix.LiveView.connected?(socket)
           )
         ])
       end

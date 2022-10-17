@@ -25,7 +25,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   def handle_event(action, attrs, socket, source_module \\ nil) do
     undead(socket, fn ->
-      debug("LiveHandler: handle_event #{action} via #{source_module || "delegation"}")
+      debug("LiveHandler: handle_event #{inspect(action)} via #{source_module || "delegation"}")
 
       do_handle_event(action, attrs, socket)
     end)
@@ -101,14 +101,18 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   defp do_handle_event(event, attrs, socket) when is_binary(event) do
     # debug(handle_event: event)
     case String.split(event, ":", parts: 2) do
-      [mod, action] ->
-        mod_delegate(mod, :handle_event, [action, attrs], socket)
+      [module, action] ->
+        do_handle_event({module, action}, attrs, socket)
 
       _ ->
         warn(event, "LiveHandler: could not find event handler")
         debug(attrs, "attrs")
         empty(socket)
     end
+  end
+
+  defp do_handle_event({module, action}, attrs, socket) do
+    mod_delegate(module, :handle_event, [action, attrs], socket)
   end
 
   defp do_handle_event(event, attrs, socket) do
