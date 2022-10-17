@@ -1,7 +1,6 @@
 <LinkLive
   class={@container_class}
-  to={@href ||
-    "#{Config.get([:ui, :homepage_redirect_to]) || path(Config.get(:home_page, Bonfire.Web.HomeLive))}?dashboard"}
+  to={@href || "#{path(Config.get(:home_page, Bonfire.Web.HomeLive))}?dashboard"}
 >
   <Bonfire.UI.Common.LogoLive
     with_name={@with_name}

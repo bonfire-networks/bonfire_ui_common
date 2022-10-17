@@ -10,7 +10,7 @@
       selected_tab={@selected_tab}
     />
     <div class="hidden md:block">
-      <Bonfire.UI.Common.LogoLinkLive />
+      <Bonfire.UI.Common.LogoLinkLive href="/?dashboard" />
     </div>
     <div class="hidden md:block w-[46px] tablet-lg:w-[240px]">
       <Dynamic.Component

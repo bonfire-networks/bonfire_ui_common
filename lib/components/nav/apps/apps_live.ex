@@ -5,4 +5,5 @@ defmodule Bonfire.UI.Common.AppsLive do
   prop sidebar_widgets, :list, default: []
   prop page, :string, default: nil
   prop selected_tab, :any, default: nil
+  prop homepage_link, :any, default: nil
 end

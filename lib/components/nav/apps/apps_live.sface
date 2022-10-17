@@ -91,6 +91,7 @@
                 </div>
                 <Bonfire.UI.Common.LogoLinkLive
                   with_name
+                  href={@homepage_link}
                   container_class="flex items-center gap-2"
                   image_class="w-8 h-8 bg-center bg-no-repeat bg-contain"
                   name_class="text-lg font-bold text-base-content"
