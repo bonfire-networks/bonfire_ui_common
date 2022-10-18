@@ -1,7 +1,7 @@
 <div
   id={@id}
   class={
-    "#{@modal_class} absolute h-[calc(var(--inner-window-height)_-_56px)] overflow-y-auto overflow-x-hidden inset-0 bg-base-200 top-[56px] desktop-lg:left-[64px]",
+    "#{@modal_class} absolute h-[calc(var(--inner-window-height)_-_56px)] overflow-y-auto overflow-x-hidden inset-0 bg-base-200 top-[56px]",
     invisible: !@show,
     "visible z-[900]": @show
   }
