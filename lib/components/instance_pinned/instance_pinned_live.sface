@@ -8,9 +8,9 @@
   {#match []}
   {#match pins}
     <div class="mt-6 rounded-lg shadow bg-base-100">
-      <div class="w-full pt-3 border-b tabs border-base-content/10">
+      <!-- <div class="w-full pt-3 border-b tabs border-base-content/10">
         <a class="tab tab-bordered tab-active">{@title || l("Pinned")}</a>
-      </div>
+      </div> -->
       <div style="overflow-x: scroll; width: 680px;" class="flex items-stretch gap-4 p-4 max-h-[200px]">
         <div
           class="relative p-6 border rounded-lg border-base-content/10 min-w-[260px] w-[260px]"
