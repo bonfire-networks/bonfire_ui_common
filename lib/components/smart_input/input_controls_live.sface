@@ -18,6 +18,7 @@
         />
 
         <div
+          :if={@show_cw_toggle}
           data-tip={l("Add a content warning")}
           class="relative z-30 flex items-center tooltip tooltip-right"
         >

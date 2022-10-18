@@ -16,14 +16,15 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   end
 
   def load_users(current_user) do
-    # debug(userSelectorLive: assigns)
+    debug(current_user)
 
     # TODO: paginate?
     followed =
       if current_user,
         do:
           Bonfire.Social.Follows.list_my_followed(current_user, paginate: false)
-          |> e(:edges, [])
+          |> debug()
+          # |> e(:edges, [])
           |> Enum.map(&e(&1, :edge, :object, nil)),
         else: []
 
