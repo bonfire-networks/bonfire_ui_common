@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.InputBoundariesLive do
   prop open_boundaries, :boolean, default: false
   prop thread_mode, :atom, default: nil
   prop page, :any, default: nil
-  prop reply_to_id, :string, default: nil
+  prop reply_to_id, :any, default: nil
   prop context_id, :string, default: nil
   prop boundaries_modal_id, :string, default: :sidebar_composer
 end

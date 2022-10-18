@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Common.LoggedHeaderLive do
   prop custom_page_header, :any, default: nil
   prop hide_smart_input, :boolean, default: false
   prop showing_within, :any, default: nil
-  prop reply_to_id, :string, default: nil
+  prop reply_to_id, :any, default: nil
   prop without_sidebar, :boolean, default: false
   prop context_id, :string, default: nil, required: false
   prop create_object_type, :any, default: nil

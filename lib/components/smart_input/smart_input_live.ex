@@ -4,7 +4,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   # prop user_image, :string, required: true
   # prop target_component, :string
   prop create_object_type, :any, default: nil
-  prop reply_to_id, :string, default: nil
+  prop reply_to_id, :any, default: nil
   prop context_id, :string, default: nil, required: false
   prop smart_input_component, :atom, default: nil
   prop to_boundaries, :list, default: []
@@ -47,7 +47,6 @@ defmodule Bonfire.UI.Common.SmartInputLive do
          max_file_size: 10_000_000,
          max_entries: 10,
          auto_upload: false
-
          # progress: &handle_progress/3
        )}
 
