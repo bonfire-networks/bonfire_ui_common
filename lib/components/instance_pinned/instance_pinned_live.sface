@@ -7,22 +7,24 @@
   |> debug()}
   {#match []}
   {#match pins}
-    <div class="mt-6 rounded-lg shadow bg-base-100">
+    <div class="mt-6">
       <!-- <div class="w-full pt-3 border-b tabs border-base-content/10">
         <a class="tab tab-bordered tab-active">{@title || l("Pinned")}</a>
       </div> -->
-      <div style="overflow-x: scroll; width: 680px;" class="flex items-stretch gap-4 p-4 max-h-[200px]">
+      <div class="mt-4 mb-3 text-sm font-semibold text-base-content/70">{@title || l("Pinned")}</div>
+
+      <div class="overflow-x-auto w-[680px] flex items-stretch gap-4 pb-2 max-h-[200px]">
         <div
-          class="relative p-6 border rounded-lg border-base-content/10 min-w-[260px] w-[260px]"
+          class="relative p-6 rounded-lg bg-base-100 min-w-[260px] w-[260px]"
           :for={%{edge: %{object: pin}} <- pins}
-        >
+          >
           <Icon iconify="bi:pin-angle-fill" class="absolute w-5 h-5 text-base-content/30 right-3 top-3" />
-          <LiveRedirect to={path(pin)} class="text-xl font-bold tracking-wider link link-hover">{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
+          <LiveRedirect to={path(pin)} class="text-lg leading-[1.5rem] font-bold tracking-wider link link-hover">{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
               rich(e(pin, :post_content, :html_body, ""))}</LiveRedirect>
           <div
             :if={e(pin, :post_content, :name, nil) ||
               (e(pin, :name, nil) && e(pin, :post_content, :html_body, nil))}
-            class="mt-2 text-sm line-clamp-3"
+            class="mt-2 text-sm text-base-content/80 line-clamp-3"
           >{rich(e(pin, :post_content, :html_body, nil))}</div>
         </div>
       </div>

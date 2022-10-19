@@ -39,7 +39,7 @@
       @click="smart_input_fullscreen = !smart_input_fullscreen"
       class="cursor-pointer bg-white/30 fixed z-[70] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"> 
     </div> -->
-    <div class="relative flex flex-col flex-1 w-full">
+    <div class="relative flex flex-col flex-1 w-full bg-base-100">
       <div
         :if={is_map(@activity) || is_map(@reply_to_id)}
         class="overflow-y-auto h-full mb-0 bg-base-300 !rounded-none max-h-[150px]"
