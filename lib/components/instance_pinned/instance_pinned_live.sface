@@ -18,7 +18,7 @@
           class="relative p-6 rounded-lg bg-base-100 min-w-[260px] w-[260px]"
           :for={%{edge: %{object: pin}} <- pins}
         >
-          <Icon iconify="bi:pin-angle-fill" class="absolute w-5 h-5 text-base-content/30 right-3 top-3" />
+          <Icon iconify="bi:pin-angle-fill" class="absolute w-5 h-5 text-error/70 right-3 top-3" />
           <LiveRedirect
             to={path(pin)}
             class="text-lg leading-[1.5rem] font-bold tracking-wider link link-hover"
