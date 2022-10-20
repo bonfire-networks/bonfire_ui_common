@@ -227,21 +227,21 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     to_boundaries
   end
 
-  def handle_event("select_smart_input", %{"component" => component}, socket) do
-    {:noreply,
-     assign(socket,
-       smart_input_component: maybe_to_module(component)
-     )}
+  defp reply_to_param(%{"reply_to" => "{" <> _ = reply_to}) do
+    Jason.decode!(reply_to)
   end
 
-  def handle_event(
-        "select_smart_input",
-        %{"create_object_type" => type},
-        socket
-      ) do
+  defp reply_to_param(params) do
+    e(params, "reply_to_id", nil) || e(params, "reply_to", nil)
+  end
+
+  def handle_event("select_smart_input", params, socket) do
     {:noreply,
      assign(socket,
-       create_object_type: maybe_to_atom(type)
+       smart_input_component:
+         maybe_to_module(e(params, "component", nil) || e(params, "smart_input_component", nil)),
+       create_object_type: maybe_to_atom(e(params, "create_object_type", nil)),
+       reply_to_id: reply_to_param(params)
      )}
   end
 
