@@ -227,8 +227,19 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     to_boundaries
   end
 
+  defp maybe_from_json("{" <> _ = json) do
+    with {:ok, data} <- Jason.decode(json) do
+      data
+    else
+      _ ->
+        nil
+    end
+  end
+
+  defp maybe_from_json(_), do: nil
+
   defp reply_to_param(%{"reply_to" => "{" <> _ = reply_to}) do
-    Jason.decode!(reply_to)
+    maybe_from_json(reply_to)
   end
 
   defp reply_to_param(params) do
@@ -241,7 +252,9 @@ defmodule Bonfire.UI.Common.SmartInputLive do
        smart_input_component:
          maybe_to_module(e(params, "component", nil) || e(params, "smart_input_component", nil)),
        create_object_type: maybe_to_atom(e(params, "create_object_type", nil)),
-       reply_to_id: reply_to_param(params)
+       reply_to_id: reply_to_param(params),
+       smart_input_opts: maybe_from_json(e(params, "opts", nil)),
+       activity_inception: "reply_to"
      )}
   end
 
