@@ -175,7 +175,7 @@ defmodule Bonfire.UI.Common.Web do
 
       # unquote(Bonfire.Common.Extend.quoted_use_if_enabled(Thesis.View, Bonfire.PublisherThesis.ContentAreas))
 
-      import Bonfire.Common.Modularity.DeclareExtensions
+      import Bonfire.Common.Modularity.DeclareHelpers
     end
   end
 

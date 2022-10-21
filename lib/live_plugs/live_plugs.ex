@@ -87,7 +87,7 @@ defmodule Bonfire.UI.Common.LivePlugs do
     if(module_enabled?(Surface), do: Surface.init(socket), else: socket)
     |> undead_mount(fn ->
       current_app = Application.get_application(socket.view)
-      current_extension = Bonfire.Common.ExtensionModules.extension(current_app)
+      current_extension = Bonfire.Common.ExtensionModule.extension(current_app)
 
       if not is_nil(current_app) and not extension_enabled?(current_app, socket) do
         if not extension_enabled?(current_app, :instance) do

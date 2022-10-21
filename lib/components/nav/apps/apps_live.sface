@@ -33,7 +33,7 @@
           <Icon iconify="noto:newspaper" class="w-5 h-5" />
         </LinkLive>
         <LinkLive
-          :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModules.extensions()}
+          :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
           :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
           class={
             "btn btn-square btn-ghost",
@@ -193,7 +193,7 @@
                 </LinkLive>
               </li>
               <li
-                :for={{app, extension} <- Bonfire.Common.ExtensionModules.extensions()}
+                :for={{app, extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
                 :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
               >
                 <LinkLive
