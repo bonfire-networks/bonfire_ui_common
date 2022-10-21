@@ -1,5 +1,5 @@
 <nav role="navigation" aria-label={l("Extension navigation")}>
-  <ul class="space-y-1 menu">
+  <ul class="space-y-1 menu menu-compact">
     {#for nav <- @items}
       {#case nav}
         {#match %{} = nav}

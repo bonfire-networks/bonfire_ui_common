@@ -6,8 +6,8 @@
     <li>
       <LiveRedirect to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}>
         <div class="flex flex-col items-center w-full">
-          <Icon iconify="noto:newspaper" class="w-12 h-12" />
-          <div class="flex-1 mt-3 text-sm font-medium text-center mt text-base-content">{l("Social")}</div>
+          <Icon iconify="noto:newspaper" class="w-10 h-10" />
+          <div class="flex-1 mt-2 text-sm font-semibold text-center text-base-content/80">{l("Social")}</div>
         </div>
       </LiveRedirect>
     </li>
@@ -18,8 +18,8 @@
       <!-- and extension_enabled?(app) -->
       <LiveRedirect to={extension[:href]}>
         <div class="flex flex-col items-center w-full">
-          <Icon iconify={extension[:icon]} class="w-12 h-12" />
-          <div class="flex-1 mt-3 text-sm font-medium text-center mt text-base-content">{extension[:name]}</div>
+          <Icon iconify={extension[:icon]} class="w-10 h-10" />
+          <div class="flex-1 mt-2 text-sm font-semibold text-center text-base-content/80">{extension[:name]}</div>
         </div>
       </LiveRedirect>
     </li>

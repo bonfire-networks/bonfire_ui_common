@@ -123,7 +123,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "!pl-4": is_nil(@current_user)
           }
         >
-          <div :if={!@without_sidebar} class="px-3 pt-3 md:pt-6 hidden z-[110]  md:block sticky top-[56px]">
+          <div :if={!@without_sidebar} class="px-3 border-r border-base-content/10 widget pt-3 md:pt-6 hidden z-[110]  md:block sticky top-[56px]">
             <Bonfire.UI.Common.NavSidebarLive
               items={@nav_items}
               sidebar_widgets={@sidebar_widgets}
