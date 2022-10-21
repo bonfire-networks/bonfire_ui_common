@@ -9,7 +9,7 @@
             @selected_tab == @widget[:page]
       }
     >
-      <Icon iconify={@widget[:icon]} class="w-5 h-5 text-base-content/80" />
+      <Icon iconify={widget(@widget, @__context__)[:icon]} class="w-5 h-5 text-base-content/80" />
 
       <span
         :if={e(@__context__, :current_view, nil) == @widget[:module] || @page == @widget[:page] ||
@@ -18,7 +18,7 @@
       >{l("Current Page:")}
       </span>
 
-      {@widget[:text] || @widget[:name]}
+      {@widget[:text] || widget(@widget, @__context__)[:name]}
     </LiveRedirect>
   {#match Surface.Component}
     <Dynamic.Component module={@widget[:module]} page={@page} {...@data} />

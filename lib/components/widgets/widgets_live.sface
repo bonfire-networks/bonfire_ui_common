@@ -1,0 +1,20 @@
+{#for widgets <- @widgets}
+  {#case widgets}
+    {#match %{}}
+      <Bonfire.UI.Common.WidgetLive
+        widget={widgets}
+        page={@page}
+        selected_tab={@selected_tab}
+        data={e(widgets, :props, [])}
+      />
+    {#match _ when is_list(widgets)}
+      <div :for={widget <- widgets}>
+        <Bonfire.UI.Common.WidgetLive
+          widget={widget}
+          page={@page}
+          selected_tab={@selected_tab}
+          data={e(widget, :props, [])}
+        />
+      </div>
+  {/case}
+{/for}
