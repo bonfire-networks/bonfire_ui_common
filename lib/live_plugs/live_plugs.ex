@@ -105,6 +105,8 @@ defmodule Bonfire.UI.Common.LivePlugs do
           )
         end
       else
+        Process.put(:phoenix_endpoint_module, socket.endpoint)
+
         apply(fun, [
           params,
           session,
