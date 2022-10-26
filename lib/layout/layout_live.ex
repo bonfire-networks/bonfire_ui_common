@@ -49,13 +49,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:showing_within, fn -> nil end)
       |> assign_new(:sidebar_widgets, fn -> [] end)
       |> assign_new(:nav_items, fn -> nav_items end)
-      |> assign_new(:without_sidebar, fn ->
-        empty?(nav_items) &&
-          ((not is_nil(current_user(assigns)) &&
-              empty?(e(assigns, :sidebar_widgets, :users, :main, nil))) ||
-             (!is_nil(current_user(assigns)) &&
-                empty?(e(assigns, :sidebar_widgets, :guests, :main, nil))))
-      end)
+      |> assign_new(:without_sidebar, fn -> nil end)
+      #   empty?(nav_items) &&
+      #     ((not is_nil(current_user(assigns)) &&
+      #         empty?(e(assigns, :sidebar_widgets, :users, :main, nil))) ||
+      #        (!is_nil(current_user(assigns)) &&
+      #           empty?(e(assigns, :sidebar_widgets, :guests, :main, nil))))
+      # end)
       |> assign_new(:hide_smart_input, fn -> false end)
       |> assign_new(:thread_mode, fn -> nil end)
       |> assign_new(:show_less_menu_items, fn -> false end)
@@ -118,17 +118,17 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }"
           @resize.window.debounce.100="width = window.innerWidth"
           class={
-            "w-full md:px-4 pb-6  items-start mx-auto grid grid-cols-1 md:grid-cols-[230px_1fr] desktop-lg:grid-cols-[280px_minmax(min-content,_980px)] gap-4 desktop-lg:gap-8 justify-center",
+            "w-full md:px-4 pb-6  items-start mx-auto grid grid-cols-1 md:grid-cols-[230px_1fr] desktop-lg:grid-cols-[320px_minmax(min-content,_1fr)] gap-4 desktop-lg:gap-8",
             "!grid-cols-1": @without_sidebar,
             "!pl-4": is_nil(@current_user)
           }
         >
           <div
             :if={!@without_sidebar}
-            class="px-3 border-r border-base-content/10 widget pt-3 md:pt-6 hidden z-[110]  md:block sticky top-[56px]"
+            class="widget pt-3 pr-4 border-r border-base-content/10 md:pt-6 hidden z-[110]  md:block sticky top-[56px]"
           >
             <Bonfire.UI.Common.NavSidebarLive
-              items={@nav_items}
+              items={@nav_items || []}
               sidebar_widgets={@sidebar_widgets}
               page={@page}
               selected_tab={@selected_tab}
@@ -141,7 +141,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "!max-w-full": @full_page
           }>
             <div class={
-              "justify-center mt-0 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[680px_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
+              "justify-between mt-0 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[1fr_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
               "md:mt-6": @nav_header == false,
               "!grid-cols-1": !is_list(@sidebar_widgets[:users][:secondary])
             }>

@@ -1,0 +1,38 @@
+<ul class="space-y-1 menu menu-compact">
+  <li>
+    <LiveRedirect
+      to="/feed"
+      class={"flex items-center rounded-md gap-5", "bg-base-content/10 font-semibold": @page == "feed"}
+    >
+      <Icon iconify="noto:newspaper" class="w-5 h-5 text-base-content/80" />
+      {l("My feed")}
+    </LiveRedirect>
+  </li>
+  <li>
+    <LiveRedirect
+      to="/feed/local"
+      class={"flex items-center rounded-md gap-5", "bg-base-content/10 font-semibold": @page == "local"}
+    >
+      <Icon iconify="material-symbols:camping-rounded" class="w-5 h-5 text-base-content/80" />
+      {l("Local")}
+    </LiveRedirect>
+  </li>
+  <li>
+    <LiveRedirect
+      to="/feed/federation"
+      class={"flex items-center rounded-md gap-5", "bg-base-content/10 font-semibold": @page == "federation"}
+    >
+      <Icon iconify="el:network" class="w-5 h-5 text-base-content/80" />
+      {l("Remote")}
+    </LiveRedirect>
+  </li>
+  <li>
+    <LiveRedirect
+      to="/my/likes"
+      class={"flex items-center rounded-md gap-5", "bg-base-content/10 font-semibold": @page == "likes"}
+    >
+      <Icon iconify="bi:stars" class="w-5 h-5 text-base-content/80" />
+      {l("Favourites")}
+    </LiveRedirect>
+  </li>
+</ul>

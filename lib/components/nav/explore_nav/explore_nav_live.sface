@@ -1,0 +1,33 @@
+<ul class="space-y-1 menu menu-compact">
+  <li>
+    <LinkLive
+      class={
+        "flex items-center gap-5 rounded-md",
+        "!bg-base-content/10":
+          @__context__[:current_extension][:name] ==
+            :bonfire_ui_social
+      }
+      to="/feed"
+    >
+      <Icon iconify="noto:newspaper" class="w-5 h-5" />
+      <span>{l("Social")}</span>
+    </LinkLive>
+  </li>
+  <li
+    :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
+    :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
+  >
+    <LinkLive
+      class={
+        "flex items-center gap-5 rounded-md",
+        "!bg-base-content/10":
+          @__context__[:current_extension][:name] ==
+            extension[:name]
+      }
+      to={extension[:href]}
+    >
+      <Icon iconify={extension[:icon]} class="w-5 h-5" />
+      <span>{extension[:name]}</span>
+    </LinkLive>
+  </li>
+</ul>

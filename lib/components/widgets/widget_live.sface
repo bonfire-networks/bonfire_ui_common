@@ -3,16 +3,14 @@
     <LiveRedirect
       to={@widget[:href]}
       class={
-        "flex items-center rounded-md gap-5",
-        "font-bold":
-          e(@__context__, :current_view, nil) == @widget[:module] || @page == @widget[:page] ||
-            @selected_tab == @widget[:page]
+        "flex items-center rounded-md gap-3",
+        "bg-base-content/10 font-semibold": @page == @widget[:page]
       }
     >
       <Icon iconify={widget(@widget, @__context__)[:icon]} class="w-5 h-5 text-base-content/80" />
 
       <span
-        :if={e(@__context__, :current_view, nil) == @widget[:module] || @page == @widget[:page] ||
+        :if={@page == @widget[:page] || e(@__context__, :current_view, nil) == @widget[:module] ||
           @selected_tab == @widget[:page]}
         class="sr-only"
       >{l("Current Page:")}

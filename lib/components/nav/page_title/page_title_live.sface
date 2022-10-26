@@ -1,8 +1,35 @@
-<div class="relative m-4 mb-2 md:mb-6 md:m-0 md:mt-6">
-  <div class="z-50 flex items-start justify-between">
-    <div class="flex items-center gap-3">
-      <Bonfire.UI.Common.BackButtonLive />
-      <span class="text-2xl font-bold capitalize">{@page_title}</span>
+<div x-data="{open: false}" class="p-3 px-4 rounded-md shadow bg-base-100">
+  <div class="flex items-center justify-between">
+    <div class="font-medium">{@page_title}</div>
+    <div @click="open = ! open" class="btn btn-sm btn-square btn-ghost">
+      <Icon solid="Adjustments" class="w-4 h-4" />
     </div>
   </div>
+  <ul
+    x-cloak
+    x-show="open"
+    x-collapse
+    class="flex items-center gap-1 pt-3 overflow-x-hidden truncate menu menu-horizontal menu-compact"
+  >
+    <li>
+      <a class="rounded-lg bg-base-content/10">All</a>
+    </li>
+    <li
+      :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
+      :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
+    >
+      <LinkLive
+        class={
+          "flex items-center gap-4 rounded-lg",
+          "!bg-base-content/10":
+            @__context__[:current_extension][:name] ==
+              extension[:name]
+        }
+        to={extension[:href]}
+      >
+        <Icon iconify={extension[:icon]} class="w-5 h-5" />
+        <span>{extension[:name]}</span>
+      </LinkLive>
+    </li>
+  </ul>
 </div>
