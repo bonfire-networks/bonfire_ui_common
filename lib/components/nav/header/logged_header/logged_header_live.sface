@@ -2,13 +2,13 @@
   "flex items-center shadow justify-between px-4 py-1 gap-4 h-[56px] bg-base-100 sticky z-[999] top-0",
   "hidden md:flex": @without_mobile_logged_header
 }>
-  <div class="flex items-center w-[320px] gap-3">
-    <!-- <Bonfire.UI.Common.AppsLive
+  <div class="flex items-center md:w-[230px] desktop-lg:w-[320px] gap-3">
+    <Bonfire.UI.Common.AppsLive
       nav_items={@nav_items}
       sidebar_widgets={@sidebar_widgets}
       page={@page}
       selected_tab={@selected_tab}
-    /> -->
+    />
     <div class="hidden md:block">
       <Bonfire.UI.Common.LogoLinkLive href="/?dashboard" />
     </div>
@@ -37,33 +37,45 @@
   </div>
 
   <ul class="justify-between gap-2 flex items-center w-[680px] menu menu-horizontal menu-compact">
-    <li class={"flex-1", "border-b-2 border-primary": @page == "feed"}>
-      <LiveRedirect to="/feed" class="rounded-md place-content-center w-full pb-3">
+    <li
+      data-tip={l("My feed")}
+      class={"tooltip tooltip-bottom flex-1", "border-b-2 border-primary": @page == "feed"}
+    >
+      <LiveRedirect to="/feed" class="w-full pb-3 rounded-md place-content-center">
         <Icon iconify="noto:newspaper" class="w-6 h-6 text-base-content/80" />
         <span class="sr-only">{l("My feed")}</span>
       </LiveRedirect>
     </li>
-    <li class={"flex-1", "border-b-2 border-primary": @page == "local"}>
-      <LiveRedirect to="/local" class="rounded-md place-content-center w-full pb-3">
+    <li
+      data-tip={l("Local feed")}
+      class={"flex-1 tooltip tooltip-bottom", "border-b-2 border-primary": @page == "local"}
+    >
+      <LiveRedirect to="/local" class="w-full pb-3 rounded-md place-content-center">
         <Icon iconify="material-symbols:camping-rounded" class="w-6 h-6 text-base-content/80" />
         <span class="sr-only">{l("Local")}</span>
       </LiveRedirect>
     </li>
-    <li class={"flex-1", "border-b-2 border-primary": @page == "federation"}>
-      <LiveRedirect to="/feed/federation" class="rounded-md place-content-center w-full pb-3">
+    <li
+      data-tip={l("Remote feed")}
+      class={"flex-1 tooltip tooltip-bottom", "border-b-2 border-primary": @page == "federation"}
+    >
+      <LiveRedirect to="/feed/federation" class="w-full pb-3 rounded-md place-content-center">
         <Icon iconify="el:network" class="w-6 h-6 text-base-content/80" />
         <span class="sr-only">{l("Remote")}</span>
       </LiveRedirect>
     </li>
-    <li class={"flex-1", "border-b-2 border-primary": @page == "likes"}>
-      <LiveRedirect to="/my/likes" class="rounded-md place-content-center w-full pb-3">
+    <li
+      data-tip={l("My favourites")}
+      class={"flex-1 tooltip tooltip-bottom", "border-b-2 border-primary": @page == "likes"}
+    >
+      <LiveRedirect to="/my/likes" class="w-full pb-3 rounded-md place-content-center">
         <Icon iconify="bi:stars" class="w-6 h-6 text-base-content/80" />
         <span class="sr-only">{l("Favourites")}</span>
       </LiveRedirect>
     </li>
   </ul>
 
-  <div class="flex items-center gap-4 w-[320px]">
+  <div class="flex items-center gap-4 tablet-lg:w-[320px]">
     <Bonfire.UI.Common.SmartInputContainerLive
       hide_smart_input={@hide_smart_input}
       showing_within={@showing_within}

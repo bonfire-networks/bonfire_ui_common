@@ -1,10 +1,10 @@
-<div x-data="{hovered_apps: false}">
+<div class="md:hidden" x-data="{hovered_apps: false}">
   <button
     @click="open_extensions_sidebar = ! open_extensions_sidebar"
     @mouseenter="hovered_apps = true"
     @mouseleave="hovered_apps = false"
     type="button"
-    class="flex -my-2 -ml-4 rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px] w-[65px]"
+    class="flex border-r border-base-content/10 -my-2 -ml-4 rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px] w-[65px]"
     id="option-menu-button"
     aria-expanded="true"
     aria-haspopup="true"
@@ -13,14 +13,14 @@
     <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
   </button>
 
-  <div
+  <!-- <div
     x-cloak
     x-transition
     class="hidden desktop-lg:block fixed  top-[57px] bottom-0 left-0 z-[200] overflow-hidden w-[65px]"
     x-show="hovered_apps"
     @mouseenter="hovered_apps = true"
     @mouseleave="hovered_apps = false"
-  >
+    >
     <div class="inset-0 h-full bg-base-100">
       <div class="flex flex-col items-center py-4 space-y-1">
         <LinkLive
@@ -42,7 +42,7 @@
                 extension[:name]
           }
           to={extension[:href]}
-        >
+          >
           <Icon iconify={extension[:icon]} class="w-5 h-5" />
         </LinkLive>
       </div>
@@ -58,7 +58,7 @@
         <Icon iconify="noto:gear" class="w-5 h-5" />
       </LinkLive>
     </div>
-  </div>
+  </div> -->
 
   <div
     x-cloak
