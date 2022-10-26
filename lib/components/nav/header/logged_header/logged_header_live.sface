@@ -75,7 +75,7 @@
     </li>
   </ul>
 
-  <div class="flex items-center gap-4 tablet-lg:w-[320px]">
+  <div class="flex items-center gap-4 tablet-lg:w-[320px] justify-end">
     <Bonfire.UI.Common.SmartInputContainerLive
       hide_smart_input={@hide_smart_input}
       showing_within={@showing_within}
