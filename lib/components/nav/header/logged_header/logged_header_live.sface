@@ -50,7 +50,10 @@
       data-tip={l("Local feed")}
       class={"flex-1 tooltip tooltip-bottom", "border-b-2 border-primary": @page == "local"}
     >
-      <LiveRedirect to="/local" class="w-full pb-3 rounded-md place-content-center">
+      <LiveRedirect
+        to={if current_user(@current_user), do: "/feed/local", else: "/local"}
+        class="w-full pb-3 rounded-md place-content-center"
+      >
         <Icon iconify="material-symbols:camping-rounded" class="w-6 h-6 text-base-content/80" />
         <span class="sr-only">{l("Local")}</span>
       </LiveRedirect>
@@ -59,7 +62,10 @@
       data-tip={l("Remote feed")}
       class={"flex-1 tooltip tooltip-bottom", "border-b-2 border-primary": @page == "federation"}
     >
-      <LiveRedirect to="/feed/federation" class="w-full pb-3 rounded-md place-content-center">
+      <LiveRedirect
+        to={if current_user(@current_user), do: "/feed/federation", else: "/federation"}
+        class="w-full pb-3 rounded-md place-content-center"
+      >
         <Icon iconify="el:network" class="w-6 h-6 text-base-content/80" />
         <span class="sr-only">{l("Remote")}</span>
       </LiveRedirect>

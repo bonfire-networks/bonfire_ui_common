@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.NavSidebarLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop items, :list, required: false, default: []
+  prop nav_items, :list, required: false, default: []
   prop sidebar_widgets, :list, default: []
 
   prop page, :any, default: nil
