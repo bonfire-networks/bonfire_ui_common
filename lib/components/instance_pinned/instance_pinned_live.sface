@@ -1,18 +1,3 @@
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/css/splide.min.css"
-/>
-<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/js/splide.min.js" />
-
-<style>
-  .splide__pagination__page.is-active {
-  background: #333;
-  }
-  .splide__arrow:disabled {
-  opacity: 0;
-  }
-</style>
-
 {#case Bonfire.Social.Pins.list_instance_pins(
     object_type: @object_types,
     current_user: @current_user,
@@ -21,23 +6,7 @@
   |> e(:edges, [])}
   {#match []}
   {#match pins}
-    <div
-      x-data="{
-        init() {
-            new Splide(this.$refs.splide, {
-                perPage: 2,
-                gap: '1rem',
-                breakpoints: {
-                    640: {
-                        perPage: 1,
-                    },
-                },
-            }).mount()
-        },
-    }"
-      x-ref="splide"
-      class="px-3 splide md:px-0"
-    >
+    <div phx-hook="CarouselHook" class="px-3 splide md:px-0">
       <div class="p-4 rounded-lg shadow bg-base-100">
         <div :if={@title} class="mb-3 text-lg font-medium tracking-wide text-base-content">{@title}</div>
         <div class="splide__track flex items-stretch gap-4 max-h-[200px]">

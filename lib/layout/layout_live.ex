@@ -148,6 +148,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               <div class="relative grid invisible_frame">
                 <div class="rounded-b-none md:px-3 md:overflow-y-visible md:px-0 md:h-full">
                   <div id="inner_content">
+                    <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
                     {@inner_content}
                   </div>
                 </div>

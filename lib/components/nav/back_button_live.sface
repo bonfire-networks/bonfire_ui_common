@@ -15,7 +15,7 @@
     href="javascript:window.history.back()"
     aria-label={l("Go back to the previous page")}
     data-tip={l("Go back to the previous page")}
-    class="btn normal-case  btn-ghost btn-sm btn-circle !inline-flex tooltip tooltip-bottom"
+    class="btn normal-case relative z-50 font-normal btn-ghost btn-sm btn-circle !inline-flex tooltip tooltip-bottom"
   >
     <Icon outline="ArrowLeft" class="w-4 h-4 text-base-content" />
   </a>

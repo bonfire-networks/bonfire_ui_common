@@ -69,8 +69,8 @@
         textarea_class={Surface.css_class([
           "editor_area textarea p-0 h-full w-full rounded-none",
           "min-h-[50px] border border-base-content/30": @thread_mode == :flat,
-          "!min-h-[240px]": @thread_mode != :flat,
-          "!h-full !min-h-[420px]": @showing_within in [:page, :compose]
+          "!min-h-[240px]": @thread_mode != :flat or @showing_within in [:page],
+          "!h-full !min-h-[420px]": @showing_within in [:compose]
         ])}
         {...assigns}
       />

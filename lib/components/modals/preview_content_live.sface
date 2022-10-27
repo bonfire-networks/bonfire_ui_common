@@ -1,14 +1,14 @@
 <div
   id={@id}
   class={
-    "#{@modal_class} absolute h-[calc(var(--inner-window-height)_-_56px)] overflow-y-auto overflow-x-hidden inset-0 bg-base-200 top-[56px]",
+    "#{@modal_class} absolute h-full overflow-y-auto overflow-x-hidden inset-0 bg-base-300",
     invisible: !@show,
     "visible z-[900]": @show
   }
   {...@opts}
 >
   <div :if={@show} class="relative max-w-screen-lg mx-auto">
-    <div class="p-4 z-[910] modal_invisible relative" data-id="modal-contents">
+    <div class="p-0 z-[910] modal_invisible relative" data-id="modal-contents">
       <#slot>
         {#case merge_as_map(@modal_assigns, %{showing_within: :preview})
           |> debug("preview_component modal_assigns")}

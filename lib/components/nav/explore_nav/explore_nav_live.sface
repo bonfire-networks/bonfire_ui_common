@@ -16,10 +16,7 @@
   <li
     :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
     :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
-    class={
-      "rounded-md",
-      "!bg-base-content/7": @__context__[:current_extension][:name] == extension[:name]
-    }
+    x-data="{open: true}"
   >
     <LinkLive
       class={
@@ -29,34 +26,39 @@
       to={extension[:href]}
     >
       <Icon iconify={extension[:icon]} class="w-5 h-5" />
-      <span>{extension[:name]}</span>
+      <span class="flex-1">{extension[:name]}</span>
+      <!-- <span class="border-l border-base-content/10" @click="open = ! open" :if={@__context__[:current_extension][:name] == extension[:name] && Enum.count(@nav_items) > 0}>
+        <Icon solid="ChevronDown" />
+      </span> -->
     </LinkLive>
 
-    {#if @__context__[:current_extension][:name] == extension[:name]}
-      <!-- <ul class="space-y-1 menu menu-compact"> -->
-      {#for nav <- @nav_items}
-        {#case nav}
-          {#match %{} = nav}
-            <li class="ml-3" :if={!nav[:exclude_from_nav]}>
-              <Bonfire.UI.Common.WidgetLive
-                widget={nav}
-                page={@page}
-                selected_tab={@selected_tab}
-                data={e(nav, :props, [])}
-              />
-            </li>
-          {#match _}
-            <li class="ml-3" :for={subnav <- nav} :if={!subnav[:exclude_from_nav]}>
-              <Bonfire.UI.Common.WidgetLive
-                widget={subnav}
-                page={@page}
-                selected_tab={@selected_tab}
-                data={e(subnav, :props, [])}
-              />
-            </li>
-        {/case}
-      {/for}
-      <!-- </ul> -->
+    {#if @__context__[:current_extension][:name] == extension[:name] && Enum.count(@nav_items) > 0}
+      <div x-show="open" x-cloak x-collapse class="px-0 mt-2 rounded-lg bg-base-100">
+        <ul class="w-full px-2 space-y-1 menu menu-compact">
+          {#for nav <- @nav_items}
+            {#case nav}
+              {#match %{} = nav}
+                <li class="" :if={!nav[:exclude_from_nav]}>
+                  <Bonfire.UI.Common.WidgetLive
+                    widget={nav}
+                    page={@page}
+                    selected_tab={@selected_tab}
+                    data={e(nav, :props, [])}
+                  />
+                </li>
+              {#match _}
+                <li class="" :for={subnav <- nav} :if={!subnav[:exclude_from_nav]}>
+                  <Bonfire.UI.Common.WidgetLive
+                    widget={subnav}
+                    page={@page}
+                    selected_tab={@selected_tab}
+                    data={e(subnav, :props, [])}
+                  />
+                </li>
+            {/case}
+          {/for}
+        </ul>
+      </div>
     {/if}
   </li>
 </ul>
