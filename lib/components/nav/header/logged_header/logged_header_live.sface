@@ -36,7 +36,7 @@
     </Dynamic.Component> -->
   </div>
 
-  <ul class="justify-between gap-2 flex items-center w-[680px] menu menu-horizontal menu-compact">
+  <ul class="justify-between gap-2 flex items-center max-w-[500px] w-full menu menu-horizontal menu-compact">
     <li
       data-tip={l("My feed")}
       class={"tooltip tooltip-bottom flex-1", "border-b-2 border-primary": @page == "feed"}
