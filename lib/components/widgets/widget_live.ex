@@ -3,7 +3,9 @@ defmodule Bonfire.UI.Common.WidgetLive do
 
   prop widget, :any, required: true
   prop data, :any, default: []
-
+  prop without_icon, :boolean, default: false
+  prop text_class, :css_class, required: false, default: "" 
+  prop icon_class, :css_class, required: false, default: "w-5 h-5 text-base-content/80" 
   prop page, :string, default: nil
   prop selected_tab, :any, default: nil
 

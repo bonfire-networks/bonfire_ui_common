@@ -1,20 +1,14 @@
 <div class="dropdown dropdown-end">
   <label tabindex="0" id="user-profile-menu" aria-haspopup="true" aria-expanded="true">
-    {#if ulid(@current_user)}
-      <Bonfire.UI.Common.AvatarLive
-        class="inline-block object-cover w-10 h-10 cursor-pointer"
-        size="40"
-        user={@current_user}
-      />
-    {#else}
-      <div class="border btn btn-circle h-[40px] w-[40px] btn-sm btn-outline border-base-content/30">
-        <Icon solid="DotsHorizontal" class="w-5 h-5" />
-      </div>
-    {/if}
+    <Bonfire.UI.Common.AvatarLive
+      class="inline-block object-cover w-10 h-10 cursor-pointer"
+      size="40"
+      user={@current_user}
+    />
   </label>
   <ul
     tabindex="0"
-    class="w-56 mt-3 rounded shadow menu dropdown-content bg-neutral"
+    class="mt-3 rounded shadow w-60 menu dropdown-content bg-neutral"
     role="menu"
     aria-orientation="vertical"
     aria-labelledby="user-profile-menu"

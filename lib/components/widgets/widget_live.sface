@@ -3,11 +3,11 @@
     <LiveRedirect
       to={@widget[:href]}
       class={
-        "flex items-center rounded-md gap-3",
+        "flex items-center rounded-md gap-3 py-1.5",
         "bg-base-content/10 font-semibold": @page == @widget[:page]
       }
     >
-      <Icon iconify={widget(@widget, @__context__)[:icon]} class="w-5 h-5 text-base-content/80" />
+      <Icon :if={!@without_icon} iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />
 
       <span
         :if={@page == @widget[:page] || e(@__context__, :current_view, nil) == @widget[:module] ||
@@ -16,7 +16,7 @@
       >{l("Current Page:")}
       </span>
 
-      {@widget[:text] || widget(@widget, @__context__)[:name]}
+      <span class={@text_class}>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
     </LiveRedirect>
   {#match Surface.Component}
     <Dynamic.Component module={@widget[:module]} page={@page} {...@data} />

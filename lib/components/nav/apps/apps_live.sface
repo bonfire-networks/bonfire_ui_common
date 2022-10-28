@@ -188,7 +188,7 @@
                 >
                   <div class="flex items-center w-full">
                     <Icon iconify="noto:newspaper" class="w-6 h-6" />
-                    <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{l("Feeds")}</div>
+                    <div class="flex-1 ml-2 text-sm font-normal">{l("Feeds")}</div>
                   </div>
                 </LinkLive>
               </li>
@@ -205,8 +205,8 @@
                   to={extension[:href]}
                 >
                   <div class="flex items-center w-full">
-                    <Icon iconify={extension[:icon]} class="w-6 h-6 text-primary-content-800" />
-                    <div class="flex-1 ml-2 text-sm font-normal text-primary-content-800">{extension[:name]}</div>
+                    <Icon iconify={extension[:icon]} class="w-6 h-6" />
+                    <div class="flex-1 ml-2 text-sm font-normal">{extension[:name]}</div>
                   </div>
                 </LinkLive>
               </li>

@@ -1,4 +1,3 @@
-<div class="flex flex-col items-stretch" x-data="{modal_flagging_activity: false}">
   {#if e(@my_flag, :id, nil)}
     <button disabled="disabled" class="flex items-center p-2 text-neutral">
       {l("You already flagged this")}
@@ -12,10 +11,9 @@
         "The admins will review the content and might get in touch with you or the author for clarification. They may then delete it and/or block the person or originating instance if appropriate."
       )}
       <:open_btn>
-        <div class="flex items-center text-sm text-neutral">
-          <Icon solid="Flag" class="w-4 h-4 mr-2 shrink-0 text-neutral text-opacity-70" />
-          <span class="truncate ellipsis">
-            {e(@label, l("Flag this object"))}</span>
+        <div class="flex items-center gap-2 text-sm text-neutral-content/80">
+          <Icon solid="Flag" class="w-4 h-4 shrink-0" />
+          <span class="truncate ellipsis">{e(@label, l("Flag"))}</span>
         </div>
       </:open_btn>
       <:action_btns>
@@ -29,4 +27,3 @@
       </:action_btns>
     </Bonfire.UI.Common.OpenModalLive>
   {/if}
-</div>
