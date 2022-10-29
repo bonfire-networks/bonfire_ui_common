@@ -118,14 +118,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }"
           @resize.window.debounce.100="width = window.innerWidth"
           class={
-            "w-full md:px-4 pb-6  items-start mx-auto grid grid-cols-1 md:grid-cols-[230px_1fr] desktop-lg:grid-cols-[320px_minmax(min-content,_1fr)] gap-4 desktop-lg:gap-8",
+            "w-full md:pr-4 tablet-lg:px-4 pb-6  items-start mx-auto grid grid-cols-1 md:grid-cols-[65px_1fr] tablet-lg:grid-cols-[250px_minmax(min-content,_1fr)] gap-2 tablet-lg:gap-8",
             "!grid-cols-1": @without_sidebar,
             "!pl-4": is_nil(@current_user)
           }
         >
           <div
             :if={!@without_sidebar}
-            class="widget pt-3 pr-4 border-r border-base-content/10 md:pt-6 hidden z-[110]  md:block sticky top-[56px]"
+            class="widget pt-3 pr-4  md:pt-6 hidden z-[110]  md:block sticky top-[56px]"
           >
             <Bonfire.UI.Common.NavSidebarLive
               page={@page}

@@ -1,8 +1,21 @@
 <div class={
-  "flex items-center shadow md:justify-between md:px-4 py-1 md:gap-4 h-[56px] bg-base-100 sticky z-[999] top-0",
+  "flex items-center border-b border-base-content/5 md:justify-between pr-4 py-1 md:gap-4 h-[56px] bg-base-100 sticky z-[999] top-0",
   "hidden md:flex": @without_mobile_logged_header
 }>
   <div class="flex items-center md:w-[230px] desktop-lg:w-[320px] gap-3">
+    <div class="hidden md:block">
+      <button
+        @click="toggle_nav_sidebar = ! toggle_nav_sidebar"
+        type="button"
+        class="flex -my-2  rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px] w-[65px]"
+        id="nav_sidebar_toggler"
+        aria-expanded="true"
+        aria-haspopup="true"
+        >
+      <span class="sr-only">{l("toggle_nav_sidebar options")}</span>
+      <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
+    </button>
+    </div>
     <Bonfire.UI.Common.AppsLive
       nav_items={@nav_items}
       sidebar_widgets={@sidebar_widgets}
@@ -10,15 +23,15 @@
       selected_tab={@selected_tab}
     />
     <div class="hidden md:block">
-      <Bonfire.UI.Common.LogoLinkLive href="/?dashboard" />
+      <Bonfire.UI.Common.LogoLinkLive with_name href="/?dashboard" />
     </div>
-    <div class="hidden md:block w-[46px] tablet-lg:w-full">
+    <!-- <div class="hidden md:block tablet-lg:w-full">
       <Dynamic.Component
         :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
         module={Bonfire.Search.Web.FormLive}
         search_limit={5}
       />
-    </div>
+    </div> -->
     <!-- <Dynamic.Component
       module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, nil}, 0)}
       page_title={@page_title}
@@ -38,11 +51,20 @@
   <div class="flex-1 md:hidden">
     <Bonfire.UI.Common.LogoLinkLive with_name href="/?dashboard" />
   </div>
-  <ul class="hidden justify-between gap-2 md:flex items-center max-w-[500px] w-full menu menu-horizontal menu-compact">
+
+  <div class="hidden md:block max-w-[420px] w-full">
+  <Dynamic.Component
+    :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
+    module={Bonfire.Search.Web.FormLive}
+    search_limit={5}
+  />
+  </div>
+
+  <!-- <ul class="hidden justify-between gap-2 md:flex items-center max-w-[500px] w-full menu menu-horizontal menu-compact">
     <li
       data-tip={l("My feed")}
       class={"tooltip tooltip-bottom flex-1", "border-b-2 border-primary": @page == "feed"}
-    >
+      >
       <LiveRedirect to="/feed" class="w-full pb-3 rounded-md place-content-center">
         <Icon iconify="noto:newspaper" class="w-6 h-6 text-base-content/80" />
         <span class="sr-only">{l("My feed")}</span>
@@ -81,9 +103,9 @@
         <span class="sr-only">{l("Favourites")}</span>
       </LiveRedirect>
     </li>
-  </ul>
+  </ul> -->
 
-  <div class="flex items-center gap-4 tablet-lg:w-[320px] justify-end">
+  <div class="flex items-center gap-2 tablet-lg:w-[320px] justify-end">
     <Bonfire.UI.Common.SmartInputContainerLive
       hide_smart_input={@hide_smart_input}
       showing_within={@showing_within}
@@ -102,11 +124,11 @@
     <LiveRedirect
       to={path(Bonfire.Data.Social.Message)}
       class={
-        "hidden md:flex btn btn-circle h-[40px] w-[40px] relative btn-sm btn-outline border-base-content/30 border",
-        "!text-primary border-current": @page == "messages"
+        "hidden md:flex btn btn-circle h-[40px] w-[40px] relative btn-sm",
+        "btn-primary": @page == "messages"
       }
     >
-      <Icon solid="Mail" class={"w-5 h-5", "!text-primary": @page == "messages"} />
+      <Icon solid="Mail" class={"w-5 h-5"} />
       <span :if={@page == "messages"} class="sr-only">{l("Current Page:")}
       </span>
       <Bonfire.UI.Common.BadgeCounterLive
@@ -117,9 +139,9 @@
 
     <LiveRedirect
       to={path(:notifications)}
-      class="hidden md:flex btn btn-circle btn-sm h-[40px] relative w-[40px] btn-outline border-base-content/30 border"
+      class="hidden md:flex btn btn-circle btn-sm h-[40px] relative w-[40px]"
     >
-      <Icon solid="Bell" class={"w-5 h-5", "!text-primary": @page == "notifications"} />
+      <Icon solid="Bell" class={"w-5 h-5", "btn-primary": @page == "notifications"} />
       <span :if={@page == "notifications"} class="sr-only">{l("Current Page:")}
       </span>
       <Bonfire.UI.Common.BadgeCounterLive

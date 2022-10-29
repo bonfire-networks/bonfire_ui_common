@@ -2,58 +2,55 @@
   <li
     :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
     :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
-    x-data={"{open: #{@__context__[:current_extension][:name] == extension[:name]}}"}
     >
-    <button
-      @click="open = ! open" 
-      :class="{'!bg-transparent': open}"
-      class={
-        "flex items-center text-left gap-5 rounded-md",
-        "bg-base-content/5": @__context__[:current_extension][:name] == extension[:name]
-      }
-      >
-      <Icon iconify={extension[:icon]} class="w-5 h-5" />
-      <span class="flex-1">{extension[:name]}</span>
-      <span 
-        class="transition-transform" 
-        :class="{'rotate-180': open}"        
-        :if={Bonfire.Common.ExtensionModule.default_nav(app)}>
-        <Icon 
-          class="w-5 h-5 text-base-content/70 " solid="ChevronDown" />
-      </span>
-    </button>
-
-    <div 
-      :if={Bonfire.Common.ExtensionModule.default_nav(app)}
-      x-show="open" x-cloak x-collapse class="p-0 m-0 hover:bg-base-300">
-      <ul class="w-full py-2 menu menu-compact hover:bg-base-300 pl-[2.25rem]">
-        {#for nav <- Bonfire.Common.ExtensionModule.default_nav(app)}
-          {#case nav}
-            {#match %{} = nav}
-              <li class="" :if={!nav[:exclude_from_nav]}>
-                <Bonfire.UI.Common.WidgetLive
-                  widget={nav}
-                  icon_class="w-4 h-4 text-base-content/70"
-                  text_class="text-[13px] text-base-content/70"
-                  page={@page}
-                  selected_tab={@selected_tab}
-                  data={e(nav, :props, [])}
-                />
-              </li>
-            {#match _}
-              <li class="" :for={subnav <- nav} :if={!subnav[:exclude_from_nav]}>
-                <Bonfire.UI.Common.WidgetLive
-                  widget={subnav}
-                  icon_class="w-4 h-4 text-base-content/70"
-                  text_class="text-[13px] text-base-content/70"
-                  page={@page}
-                  selected_tab={@selected_tab}
-                  data={e(subnav, :props, [])}
-                />
-              </li>
-          {/case}
-        {/for}
-      </ul>
+    <div class={
+      "flex items-center justify-between rounded-md",
+      "bg-base-content/5": @__context__[:current_extension][:name] == extension[:name]
+    }>
+      <LinkLive
+        to={extension[:href]}
+        class={
+          "flex items-center text-left gap-5 "
+        }
+        >
+        <Icon iconify={extension[:icon]} class="w-5 h-5" />
+        <span class="flex-1">{extension[:name]}</span>
+      </LinkLive>
+      <div 
+        :if={Bonfire.Common.ExtensionModule.default_nav(app)}
+        class="dropdown dropdown-end">
+        <label class="btn btn-xs btn-ghost btn-square" tabindex="0">
+          <Icon  class="w-4 h-4 text-base-content/70 " solid="DotsHorizontal" />
+        </label>
+        <ul tabindex="0" class="rounded shadow dropdown-content menu menu-compact bg-neutral w-52">
+          {#for nav <- Bonfire.Common.ExtensionModule.default_nav(app)}
+            {#case nav}
+              {#match %{} = nav}
+                <li class="" :if={!nav[:exclude_from_nav]}>
+                  <Bonfire.UI.Common.WidgetLive
+                    widget={nav}
+                    without_icon
+                    text_class="text-sm text-neutral-content"
+                    page={@page}
+                    selected_tab={@selected_tab}
+                    data={e(nav, :props, [])}
+                  />
+                </li>
+              {#match _}
+                <li class="" :for={subnav <- nav} :if={!subnav[:exclude_from_nav]}>
+                  <Bonfire.UI.Common.WidgetLive
+                    widget={subnav}
+                    without_icon
+                    text_class="text-sm"
+                    page={@page}
+                    selected_tab={@selected_tab}
+                    data={e(subnav, :props, [])}
+                  />
+                </li>
+            {/case}
+          {/for}
+        </ul>
+      </div>
     </div>
   </li>
 </ul>
