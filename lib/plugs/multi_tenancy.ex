@@ -8,10 +8,8 @@ defmodule Bonfire.UI.Common.MultiTenancyPlug do
   end
 
   @impl true
-  def call(%{private: %{phoenix_endpoint: Bonfire.Web.FakeRemoteEndpoint}} = conn, _opts) do
-    Process.put(:phoenix_endpoint_module, Bonfire.Web.FakeRemoteEndpoint)
-    Process.put(:ecto_repo_module, Bonfire.Common.TestInstanceRepo)
-    info(self())
+  def call(%{private: %{phoenix_endpoint: phoenix_endpoint}} = conn, _opts) do
+    Bonfire.Common.TestInstanceRepo.maybe_declare_test_instance(phoenix_endpoint)
     conn
   end
 

@@ -105,7 +105,7 @@ defmodule Bonfire.UI.Common.LivePlugs do
           )
         end
       else
-        Process.put(:phoenix_endpoint_module, socket.endpoint)
+        Bonfire.Common.TestInstanceRepo.maybe_declare_test_instance(socket.endpoint)
 
         apply(fun, [
           params,

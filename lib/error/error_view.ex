@@ -1,11 +1,13 @@
 defmodule Bonfire.UI.Common.ErrorView do
   use Bonfire.UI.Common.Web, :view
 
-  @codes %{
-    403 => "Not allowed",
-    404 => "Not found",
-    500 => "Something went wrong"
-  }
+  def codes,
+    do: %{
+      403 => l("Not allowed"),
+      404 => l("Not found"),
+      409 => l("Attempted to update out-of-date data"),
+      500 => l("Something went wrong")
+    }
 
   def render("403.html", assigns) do
     show_error(
@@ -71,6 +73,10 @@ defmodule Bonfire.UI.Common.ErrorView do
     show_error(404, nil, false)
   end
 
+  def render("409.activity+json", assigns) do
+    show_error(409, reason(assigns), false)
+  end
+
   def render("500.activity+json", assigns) do
     show_error(
       500,
@@ -109,7 +115,7 @@ defmodule Bonfire.UI.Common.ErrorView do
                   do: error_or_error_code,
                   else: 500
                 ),
-              "title" => @codes[error_or_error_code] || error_or_error_code,
+              "title" => codes()[error_or_error_code] || error_or_error_code,
               "detail" => details
             }
           ]
@@ -135,14 +141,14 @@ defmodule Bonfire.UI.Common.ErrorView do
     show_error(
       Phoenix.Controller.status_message_from_template(template),
       Map.get(assigns, :reason, "Unknown Error"),
-      true
+      false
     )
   end
 
   def show_html(error_code, details, class \\ nil)
 
   def show_html(error_code, details, class) when is_integer(error_code),
-    do: show_html(@codes[error_code], details, class)
+    do: show_html(codes()[error_code], details, class)
 
   def show_html(error, %{message: details}, class) do
     Bonfire.UI.Common.BasicView.show_html(error, details, class)
