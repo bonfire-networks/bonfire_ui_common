@@ -1,4 +1,4 @@
-{#case Bonfire.Social.Pins.list_instance_pins(
+{#case Bonfire.Social.Pins.list_my(
     object_type: @object_types,
     current_user: @current_user,
     load_pointer: @load_pointer
@@ -6,10 +6,10 @@
   |> e(:edges, [])}
   {#match []}
   {#match pins}
-    <div class="px-3 md:px-0">
-      <div class="p-4 rounded-lg shadow bg-base-100">
+    <div class="">
+      <div class="">
         <div :if={@title} class="mb-3 text-lg font-medium tracking-wide text-base-content">{@title}</div>
-        <section phx-hook="CarouselHook" id={:instance_pinned_stuff} aria-label="pinned stuff" class="splide">
+        <section phx-hook="CarouselHook" id={:my_pinned_stuff} aria-label="pinned stuff" class="splide">
           <div class="splide__track max-h-[200px]">
             <ul class="splide__list">
               {#if @object_types != Elixir.Bonfire.Data.Social.Post}

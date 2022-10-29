@@ -1,7 +1,6 @@
 <nav role="navigation" aria-label={l("Extension navigation")}>
   <div class="pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
   <Bonfire.UI.Common.ExploreNavLive
-    nav_items={@nav_items}
     page={@page}
     selected_tab={@selected_tab}
   />

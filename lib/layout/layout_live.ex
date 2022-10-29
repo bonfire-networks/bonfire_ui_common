@@ -128,8 +128,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
             class="widget pt-3 pr-4 border-r border-base-content/10 md:pt-6 hidden z-[110]  md:block sticky top-[56px]"
           >
             <Bonfire.UI.Common.NavSidebarLive
-              nav_items={@nav_items || []}
-              sidebar_widgets={@sidebar_widgets}
               page={@page}
               selected_tab={@selected_tab}
             />

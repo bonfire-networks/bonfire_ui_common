@@ -4,7 +4,7 @@
     @mouseenter="hovered_apps = true"
     @mouseleave="hovered_apps = false"
     type="button"
-    class="flex border-r border-base-content/10 -my-2 -ml-4 rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px] w-[65px]"
+    class="flex -my-2  rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px] w-[65px]"
     id="option-menu-button"
     aria-expanded="true"
     aria-haspopup="true"
@@ -99,7 +99,7 @@
               </div>
 
               <div x-data="{expanded: false}" class="flex flex-col pb-4 md:hidden">
-                <div class="flex flex-col gap-1 m-2 mx-4">
+                <div class="flex flex-col gap-1 m-2 mx-4 mr-3">
                   <LinkLive to={path(@current_user)}>
                     <Bonfire.UI.Common.AvatarLive
                       class="inline-block object-cover w-[52px] h-[52px] rounded-full cursor-pointer bg-base-300"
@@ -117,8 +117,8 @@
                     </span>
                   </div>
                 </div>
-
-                <ul x-show="expanded" x-collapse class="mt-1 menu menu-compact">
+                <div  x-show="expanded" x-collapse>
+                <ul class="mt-1 menu menu-compact">
                   {#if ulid(@current_user)}
                     <li class="hover:bg-neutral/10">
                       <LinkLive to="/settings" class="flex items-center p-4 text-sm text-base-content">
@@ -151,10 +151,18 @@
                     </LinkLive>
                   </li>
                 </ul>
+                </div>
               </div>
             </div>
-
-            <ul class="md:hidden menu">
+            
+            <nav role="navigation" aria-label={l("Extension navigation")}>
+              <div class="pb-3 mt-4 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
+              <Bonfire.UI.Common.ExploreNavLive
+                page={@page}
+                selected_tab={@selected_tab}
+              />
+            </nav>
+            <!-- <ul class="md:hidden menu">
               {#for nav <- @nav_items}
                 {#case nav}
                   {#match %{} = nav}
@@ -210,7 +218,7 @@
                   </div>
                 </LinkLive>
               </li>
-            </ul>
+            </ul> -->
           </div>
         </div>
       </section>

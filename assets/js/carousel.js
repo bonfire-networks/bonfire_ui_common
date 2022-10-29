@@ -6,8 +6,9 @@ let CarouselHooks = {};
 CarouselHooks.CarouselHook = {
   mounted() {
     new Splide('.splide', {
-      perPage: 2,
+      perPage: 1,
       gap: '1rem',
+      width: '100%',
       breakpoints: {
         640: {
             perPage: 1,

@@ -1,5 +1,5 @@
 <div class={
-  "flex items-center shadow justify-between px-4 py-1 gap-4 h-[56px] bg-base-100 sticky z-[999] top-0",
+  "flex items-center shadow md:justify-between md:px-4 py-1 md:gap-4 h-[56px] bg-base-100 sticky z-[999] top-0",
   "hidden md:flex": @without_mobile_logged_header
 }>
   <div class="flex items-center md:w-[230px] desktop-lg:w-[320px] gap-3">
@@ -35,8 +35,10 @@
       </:right_action>
     </Dynamic.Component> -->
   </div>
-
-  <ul class="justify-between gap-2 flex items-center max-w-[500px] w-full menu menu-horizontal menu-compact">
+  <div class="flex-1 md:hidden">
+    <Bonfire.UI.Common.LogoLinkLive with_name href="/?dashboard" />
+  </div>
+  <ul class="hidden justify-between gap-2 md:flex items-center max-w-[500px] w-full menu menu-horizontal menu-compact">
     <li
       data-tip={l("My feed")}
       class={"tooltip tooltip-bottom flex-1", "border-b-2 border-primary": @page == "feed"}
@@ -133,7 +135,7 @@
     <button
       @click="toggle_sidebar_widgets = true"
       :if={is_list(@sidebar_widgets[:users][:secondary])}
-      class="-my-2 -mr-4 rounded-none !border-t-0 !border-b-0 !border-r-0 btn btn-sm btn-ghost !border-l !border-base-content/10 h-[56px] w-[56px] tablet-lg:hidden"
+      class="btn btn-sm btn-ghost tablet-lg:hidden"
     >
       <Icon iconify="akar-icons:sidebar-right" class="w-5 h-5 text-base-content/70" />
     </button>
