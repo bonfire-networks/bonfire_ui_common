@@ -3,5 +3,4 @@ defmodule Bonfire.UI.Common.MyPinnedLive do
 
   prop title, :string, default: nil
   prop object_types, :any, default: []
-  prop load_pointer, :boolean, default: false
 end

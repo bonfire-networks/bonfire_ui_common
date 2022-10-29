@@ -1,0 +1,14 @@
+{#case Bonfire.Social.Pins.list_instance_pins(
+    object_type: @object_types,
+    current_user: @current_user
+  )
+  |> e(:edges, [])}
+  {#match []}
+  {#match pins}
+    <div class="px-3 md:px-0">
+      <div class="p-4 rounded-lg shadow bg-base-100">
+        <div :if={@title} class="mb-3 text-lg font-medium tracking-wide text-base-content">{@title}</div>
+        <Bonfire.UI.Common.PinnedCarouselLive pins={pins} />
+      </div>
+    </div>
+{/case}
