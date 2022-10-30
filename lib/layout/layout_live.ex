@@ -118,7 +118,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }"
           @resize.window.debounce.100="width = window.innerWidth"
           class={
-            "w-full md:pr-4 tablet-lg:px-4 pb-6  items-start mx-auto grid grid-cols-1 md:grid-cols-[65px_1fr] tablet-lg:grid-cols-[250px_minmax(min-content,_1fr)] gap-2 tablet-lg:gap-8",
+            "w-full md:pr-4 tablet-lg:px-4 pb-6  items-start mx-auto grid grid-cols-1 md:grid-cols-[250px_minmax(min-content,_1fr)] gap-2 tablet-lg:gap-8",
             "!grid-cols-1": @without_sidebar,
             "!pl-4": is_nil(@current_user)
           }
@@ -130,6 +130,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             <Bonfire.UI.Common.NavSidebarLive
               page={@page}
               selected_tab={@selected_tab}
+              nav_items={@nav_items}
             />
           </div>
 

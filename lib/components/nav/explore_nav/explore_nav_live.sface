@@ -1,3 +1,19 @@
+<div class="flex items-center gap-2">
+<button
+  @click="open_extensions_sidebar = ! open_extensions_sidebar"
+  @mouseenter="hovered_apps = true"
+  @mouseleave="hovered_apps = false"
+  type="button"
+  class="btn btn-ghost btn-square"
+  id="option-menu-button"
+  aria-expanded="true"
+  aria-haspopup="true"
+  >
+  <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
+  <Icon iconify="mdi:dots-grid" class="w-5 h-5" />
+</button>
+<div class="text-sm font-medium tracking-wider text-base-content/60">{l("Explore extensions")}</div>
+</div>
 <ul class="space-y-1 menu menu-compact">
   <li
     :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
@@ -16,7 +32,7 @@
         <Icon iconify={extension[:icon]} class="w-5 h-5" />
         <span class="flex-1">{extension[:name]}</span>
       </LinkLive>
-      <div 
+      <!-- <div 
         :if={Bonfire.Common.ExtensionModule.default_nav(app)}
         class="dropdown dropdown-end">
         <label class="btn btn-xs btn-ghost btn-square" tabindex="0">
@@ -50,7 +66,7 @@
             {/case}
           {/for}
         </ul>
-      </div>
+      </div> -->
     </div>
   </li>
 </ul>

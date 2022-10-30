@@ -3,8 +3,8 @@
     <LiveRedirect
       to={@widget[:href]}
       class={
-        "flex items-center rounded-md gap-3 py-1.5",
-        "bg-base-content/10 font-semibold": @page == @widget[:page]
+        "flex items-center gap-5",
+        "": @page == @widget[:page]
       }
     >
       <Icon :if={!@without_icon} iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />

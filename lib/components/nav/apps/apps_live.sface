@@ -8,19 +8,16 @@
     id="option-menu-button"
     aria-expanded="true"
     aria-haspopup="true"
-  >
+    >
     <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
     <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
   </button>
-
-
-
   <div
     x-cloak
     x-show="open_extensions_sidebar"
     @keydown.window.escape="open_extensions_sidebar = false;"
     class="fixed top-[0] right-0 bottom-0 left-0 z-[200] overflow-hidden"
-  >
+    >
     <div class="inset-0 h-full overflow-hidden">
       <div
         @click="open_extensions_sidebar = false"
@@ -175,6 +172,55 @@
               </li>
             </ul> -->
           </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="hidden md:block" x-data="hovered_apps: false">
+  <button
+    @click="open_extensions_sidebar = ! open_extensions_sidebar"
+    @mouseenter="hovered_apps = true"
+    @mouseleave="hovered_apps = false"
+    type="button"
+    class="flex -my-2  rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px] w-[65px]"
+    id="option-menu-button"
+    aria-expanded="true"
+    aria-haspopup="true"
+    >
+    <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
+    <Icon iconify="mdi:dots-grid" class="w-5 h-5" />
+  </button>
+
+   <div
+    x-cloak
+    x-show="open_extensions_sidebar"
+    @keydown.window.escape="open_extensions_sidebar = false;"
+    class="fixed top-[0] right-0 bottom-0 left-0 z-[200] overflow-hidden"
+    >
+    <div class="inset-0 h-full overflow-hidden">
+      <div
+        @click="open_extensions_sidebar = false"
+        class="absolute inset-0 overflow-hidden bg-base-300/30"
+      />
+      <section class="h-full" aria-labelledby="slide-over-heading">
+        <div
+          class="relative w-3/4 p-4 overflow-auto rounded-tl-none shadow-lg rounded-xl md:w-80 bg-neutral"
+          x-description="Slide-over panel, show/hide based on slide-over state."
+          x-show="open_extensions_sidebar"
+          x-transition:enter="transform transition ease-in-out duration-150 sm:duration-200"
+          x-transition:enter-start="-translate-x-full"
+          x-transition:enter-end="-translate-x-0"
+          x-transition:leave="transform transition ease-in-out duration-150 sm:duration-200"
+          x-transition:leave-start="-translate-x-0"
+          x-transition:leave-end="-translate-x-full"
+        >
+          
+          <Bonfire.UI.Common.ExploreNavLive
+            page={@page}
+            selected_tab={@selected_tab}
+          />
         </div>
       </section>
     </div>

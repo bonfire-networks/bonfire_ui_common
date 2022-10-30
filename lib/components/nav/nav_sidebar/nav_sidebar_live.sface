@@ -1,9 +1,38 @@
-<nav class="hidden tablet-lg:block" role="navigation" aria-label={l("Extension navigation")}>
-  <div class="pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
-  <Bonfire.UI.Common.ExploreNavLive
+<nav class="hidden md:block" role="navigation" aria-label={l("Extension navigation")}>
+  <!-- <div class="pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div> -->
+  <!-- <Bonfire.UI.Common.ExploreNavLive
     page={@page}
     selected_tab={@selected_tab}
-  />
+  /> -->
+  <div class="flex items-center gap-5 pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">
+    <Icon iconify={@__context__[:current_extension][:icon]} />
+    <span>{@__context__[:current_extension][:name]}</span>
+  </div>
+  <div class="space-y-1 rounded-none menu menu-compact">
+
+  {#for nav <- @nav_items}
+    {#case nav}
+      {#match %{} = nav} 
+        <li class={"rounded-lg", 'bg-base-content/5': nav[:page] == @selected_tab} :if={!nav[:exclude_from_nav]}>
+          <Bonfire.UI.Common.WidgetLive
+            widget={nav}
+            page={@page}
+            selected_tab={@selected_tab}
+            data={e(nav, :props, [])}
+          />
+        </li>
+      {#match _}
+        <li class={"rounded-lg", 'bg-base-content/5': nav[:page] == @selected_tab} :for={subnav <- nav} :if={!subnav[:exclude_from_nav]}>
+          <Bonfire.UI.Common.WidgetLive
+            widget={subnav}
+            page={@page}
+            selected_tab={@selected_tab}
+            data={e(subnav, :props, [])}
+          />
+        </li>
+    {/case}
+  {/for}
+  </div>
   <Dynamic.LiveComponent
     :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive) and @current_user}
     module={Bonfire.Classify.Web.CategoriesNavLive}
@@ -18,7 +47,7 @@
   />
 </nav>
 
-<nav class="tablet-lg:hidden">
+<!-- <nav class="tablet-lg:hidden">
   <div class="fixed top-0 bottom-0 left-0 z-[200] overflow-hidden w-[65px]">
     <div class="inset-0 h-full">
       <div class="flex flex-col items-center py-4 space-y-1">
@@ -53,4 +82,4 @@
       </div>
     </div>
   </div>
-</nav>
+</nav> -->
