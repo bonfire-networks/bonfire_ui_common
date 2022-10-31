@@ -50,11 +50,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:sidebar_widgets, fn -> [] end)
       |> assign_new(:nav_items, fn -> nav_items end)
       |> assign_new(:without_sidebar, fn -> nil end)
-      #   empty?(nav_items) &&
-      #     ((not is_nil(current_user(assigns)) &&
+      #     fn -> (not is_nil(current_user(assigns)) &&
       #         empty?(e(assigns, :sidebar_widgets, :users, :main, nil))) ||
       #        (!is_nil(current_user(assigns)) &&
-      #           empty?(e(assigns, :sidebar_widgets, :guests, :main, nil))))
+      #           empty?(e(assigns, :sidebar_widgets, :guests, :main, nil)))
       # end)
       |> assign_new(:hide_smart_input, fn -> false end)
       |> assign_new(:thread_mode, fn -> nil end)
@@ -119,14 +118,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
           @resize.window.debounce.100="width = window.innerWidth"
           class={
             "w-full md:pr-4 tablet-lg:px-4 pb-6  items-start mx-auto grid grid-cols-1 md:grid-cols-[250px_minmax(min-content,_1fr)] gap-2 tablet-lg:gap-8",
-            "!grid-cols-1": @without_sidebar,
+            "!grid-cols-1": @without_sidebar || is_nil(@current_user),
             "!pl-4": is_nil(@current_user)
           }
         >
           <div
-            :if={!@without_sidebar}
+            :if={!@without_sidebar && @current_user}
             class="widget pt-3 pr-4  md:pt-6 hidden z-[110]  md:block sticky top-[56px]"
-          >
+            >
             <Bonfire.UI.Common.NavSidebarLive
               page={@page}
               selected_tab={@selected_tab}
@@ -142,7 +141,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
             <div class={
               "justify-between mt-0 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[1fr_320px] gap-4 desktop-lg:gap-8 grid-cols-1",
               "md:mt-6": @nav_header == false,
-              "!grid-cols-1": !is_list(@sidebar_widgets[:users][:secondary])
+              "!grid-cols-1": @current_user && !is_list(@sidebar_widgets[:users][:secondary]),
+              "!grid-cols-1": is_nil(@current_user) && !is_list(@sidebar_widgets[:guests][:secondary])
             }>
               <div class="relative grid invisible_frame">
                 <div class="rounded-b-none md:px-3 md:overflow-y-visible md:px-0 md:h-full">
