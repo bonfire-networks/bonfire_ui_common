@@ -3,7 +3,7 @@
     <LiveRedirect
       to={@widget[:href]}
       class={
-        "flex items-center gap-5",
+        "flex items-center gap-5 rounded-md",
         "": @page == @widget[:page]
       }
     >
