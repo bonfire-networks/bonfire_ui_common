@@ -126,9 +126,9 @@
 
     <LiveRedirect
       to={path(:notifications)}
-      class="hidden md:flex btn btn-circle btn-sm h-[40px] relative w-[40px]"
+      class={"hidden md:flex btn btn-circle btn-sm h-[40px] relative w-[40px]", "btn-primary": @page == "notifications"}
     >
-      <Icon solid="Bell" class={"w-5 h-5", "btn-primary": @page == "notifications"} />
+      <Icon solid="Bell" class={"w-5 h-5"} />
       <span :if={@page == "notifications"} class="sr-only">{l("Current Page:")}
       </span>
       <Bonfire.UI.Common.BadgeCounterLive
