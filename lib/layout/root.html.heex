@@ -10,17 +10,7 @@
       assigns[:__context__] || assigns[:current_user] || @conn
     )
   }
-  x-data={"{
-    prefersDarkTheme: window.matchMedia('(prefers-color-scheme: dark)').matches,
-    dark_theme: $el.dataset.theme,
-    light_theme: '#{Settings.get(
-          [:ui, :theme, :instance_theme_light],
-          "light",
-          assigns[:__context__] || assigns[:current_user] || @conn
-        )}'
-    }"}
-  x-init="window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => { prefersDarkTheme = e.matches; });"
-  x-bind:data-theme="prefersDarkTheme ? dark_theme : light_theme"
+  
 >
   <head>
     <meta charset="utf-8" />

@@ -1,19 +1,35 @@
+
+<!-- x-data={"{
+    prefersDarkTheme: window.matchMedia('(prefers-color-scheme: dark)').matches,
+    dark_theme: $el.dataset.theme,
+    light_theme: '#{Settings.get(
+          [:ui, :theme, :instance_theme_light],
+          "light",
+          assigns[:__context__] || assigns[:current_user] || @conn
+        )}'
+    }"}
+  x-init="window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => { prefersDarkTheme = e.matches; });"
+  x-bind:data-theme="prefersDarkTheme ? dark_theme : light_theme"
+ -->
+
+
+
 {#case Settings.get([:ui, :themes], ["bonfire"], @__context__)}
   {#match themes}
     {#case Settings.get([:ui, :themes_light], ["light"], @__context__)}
       {#match themes_light}
         <Bonfire.UI.Common.ChangeThemeLive
-          label={l("Dark theme")}
+          label={l("Change theme")}
           key="instance_theme"
           theme={@theme}
           themes={Enum.uniq(themes ++ themes_light)}
         />
 
-        <Bonfire.UI.Common.ChangeThemeLive
+        <!-- <Bonfire.UI.Common.ChangeThemeLive
           label={l("Light theme")}
           key="instance_theme_light"
           theme={@theme_light}
           themes={Enum.uniq(themes_light ++ themes)}
-        />
+        /> -->
     {/case}
 {/case}
