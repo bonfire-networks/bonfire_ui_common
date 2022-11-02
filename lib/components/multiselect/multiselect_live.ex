@@ -13,7 +13,10 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   prop remove_event, :string, default: nil
   prop event_target, :any, default: nil
   prop context_id, :string, default: nil
-  prop class, :css_class, default: "flex items-center w-full px-2 bg-opacity-75 border rounded-md cursor-pointer border-base-content/30 bg-base-100 sm:text-sm"
+
+  prop class, :css_class,
+    default:
+      "flex items-center w-full px-2 bg-opacity-75 border rounded-md cursor-pointer border-base-content/30 bg-base-100 sm:text-sm"
 
   def preloaded_options(preloaded_options) do
     Enum.map(preloaded_options || [], &prepare_entry/1)

@@ -40,11 +40,11 @@
   </div>
 
   <div class="hidden md:block max-w-[420px] w-full">
-  <Dynamic.Component
-    :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
-    module={Bonfire.Search.Web.FormLive}
-    search_limit={5}
-  />
+    <Dynamic.Component
+      :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
+      module={Bonfire.Search.Web.FormLive}
+      search_limit={5}
+    />
   </div>
 
   <!-- <ul class="hidden justify-between gap-2 md:flex items-center max-w-[500px] w-full menu menu-horizontal menu-compact">
@@ -85,7 +85,7 @@
       data-tip={l("My favourites")}
       class={"flex-1 tooltip tooltip-bottom", "border-b-2 border-primary": @page == "likes"}
     >
-      <LiveRedirect to="/my/likes" class="w-full pb-3 rounded-md place-content-center">
+      <LiveRedirect to="/feed/likes" class="w-full pb-3 rounded-md place-content-center">
         <Icon iconify="bi:stars" class="w-6 h-6 text-base-content/80" />
         <span class="sr-only">{l("Favourites")}</span>
       </LiveRedirect>
@@ -115,7 +115,7 @@
         "btn-primary": @page == "messages"
       }
     >
-      <Icon solid="Mail" class={"w-5 h-5"} />
+      <Icon solid="Mail" class="w-5 h-5" />
       <span :if={@page == "messages"} class="sr-only">{l("Current Page:")}
       </span>
       <Bonfire.UI.Common.BadgeCounterLive
@@ -126,9 +126,12 @@
 
     <LiveRedirect
       to={path(:notifications)}
-      class={"hidden md:flex btn btn-circle btn-sm h-[40px] relative w-[40px]", "btn-primary": @page == "notifications"}
+      class={
+        "hidden md:flex btn btn-circle btn-sm h-[40px] relative w-[40px]",
+        "btn-primary": @page == "notifications"
+      }
     >
-      <Icon solid="Bell" class={"w-5 h-5"} />
+      <Icon solid="Bell" class="w-5 h-5" />
       <span :if={@page == "notifications"} class="sr-only">{l("Current Page:")}
       </span>
       <Bonfire.UI.Common.BadgeCounterLive

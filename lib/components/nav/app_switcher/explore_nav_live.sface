@@ -1,0 +1,56 @@
+<ul class="space-y-1 menu menu-compact">
+  <li
+    :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
+    :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
+  >
+    <div class={
+      "flex items-center justify-between rounded-md",
+      "bg-base-content/5": @__context__[:current_extension][:name] == extension[:name]
+    }>
+      <LinkLive to={extension[:href]} class="flex items-center text-left gap-5 w-full">
+        <Icon iconify={extension[:icon]} class="w-5 h-5" />
+        <span class="flex-1">{extension[:name]}</span>
+      </LinkLive>
+
+      {#case @show_extensions_nav and Bonfire.Common.ExtensionModule.default_nav(app)}
+        {#match app_nav_items when is_list(app_nav_items)}
+          <div class="dropdown dropdown-hover dropdown-right">
+            <label class="btn btn-xs btn-ghost btn-square" tabindex="0">
+              <Icon class="w-4 h-4 text-base-content/70" solid="ChevronRight" />
+            </label>
+            <ul tabindex="0" class="rounded shadow dropdown-content menu menu-compact w-52">
+              {#for nav <- app_nav_items}
+                {#case nav}
+                  {#match %{}}
+                    <li class="" :if={!nav[:exclude_from_nav]}>
+                      <Bonfire.UI.Common.WidgetLive
+                        widget={nav}
+                        without_icon
+                        text_class="text-sm text-neutral-content"
+                        page={@page}
+                        selected_tab={@selected_tab}
+                        data={e(nav, :props, [])}
+                      />
+                    </li>
+                  {#match _ when is_list(nav)}
+                    <li class="" :for={subnav <- nav} :if={!subnav[:exclude_from_nav]}>
+                      <Bonfire.UI.Common.WidgetLive
+                        widget={subnav}
+                        without_icon
+                        text_class="text-sm"
+                        page={@page}
+                        selected_tab={@selected_tab}
+                        data={e(subnav, :props, [])}
+                      />
+                    </li>
+                  {#match _}
+                    <!-- nothing -->
+                {/case}
+              {/for}
+            </ul>
+          </div>
+        {#match _}
+      {/case}
+    </div>
+  </li>
+</ul>

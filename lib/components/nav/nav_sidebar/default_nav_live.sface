@@ -28,7 +28,7 @@
   </li>
   <li>
     <LiveRedirect
-      to="/my/likes"
+      to="/feed/likes"
       class={"flex items-center rounded-md gap-5", "bg-base-content/10 font-semibold": @page == "likes"}
     >
       <Icon iconify="bi:stars" class="w-5 h-5 text-base-content/80" />

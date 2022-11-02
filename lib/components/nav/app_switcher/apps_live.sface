@@ -8,7 +8,7 @@
     id="option-menu-button"
     aria-expanded="true"
     aria-haspopup="true"
-    >
+  >
     <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
     <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
   </button>
@@ -17,7 +17,7 @@
     x-show="open_extensions_sidebar"
     @keydown.window.escape="open_extensions_sidebar = false;"
     class="fixed top-[0] right-0 bottom-0 left-0 z-[200] overflow-hidden"
-    >
+  >
     <div class="inset-0 h-full overflow-hidden">
       <div
         @click="open_extensions_sidebar = false"
@@ -69,50 +69,47 @@
                     </span>
                   </div>
                 </div>
-                <div  x-show="expanded" x-collapse>
-                <ul class="mt-1 menu menu-compact">
-                  {#if ulid(@current_user)}
-                    <li class="hover:bg-neutral/10">
-                      <LinkLive to="/settings" class="flex items-center p-4 text-sm text-base-content">
-                        {l("Settings")}
-                      </LinkLive>
-                    </li>
-                    <li class="hover:bg-base/10">
-                      <LinkLive to="/switch-user" class="flex items-center p-4 text-sm text-base-content">
-                        {l("Switch profile")}
-                      </LinkLive>
-                    </li>
-                    <li class="hover:bg-base/10">
-                      <LinkLive
-                        to={path(Bonfire.Data.Social.Message)}
-                        class="flex items-center p-4 text-sm text-base-content"
-                      >
-                        {l("Messages")}
-                      </LinkLive>
-                    </li>
-                  {/if}
+                <div x-show="expanded" x-collapse>
+                  <ul class="mt-1 menu menu-compact">
+                    {#if ulid(@current_user)}
+                      <li class="hover:bg-neutral/10">
+                        <LinkLive to="/settings" class="flex items-center p-4 text-sm text-base-content">
+                          {l("Settings")}
+                        </LinkLive>
+                      </li>
+                      <li class="hover:bg-base/10">
+                        <LinkLive to="/switch-user" class="flex items-center p-4 text-sm text-base-content">
+                          {l("Switch profile")}
+                        </LinkLive>
+                      </li>
+                      <li class="hover:bg-base/10">
+                        <LinkLive
+                          to={path(Bonfire.Data.Social.Message)}
+                          class="flex items-center p-4 text-sm text-base-content"
+                        >
+                          {l("Messages")}
+                        </LinkLive>
+                      </li>
+                    {/if}
 
-                  <li class="hover:bg-base/10">
-                    <LinkLive to={path(:home)} class="flex items-center p-4 text-sm text-base-content">
-                      {l("Homepage")}
-                    </LinkLive>
-                  </li>
-                  <li class="hover:bg-base/10">
-                    <LinkLive to="/terms/code-of-conduct" class="flex items-center p-4 text-sm text-base-content">
-                      {l("Code of conduct")}
-                    </LinkLive>
-                  </li>
-                </ul>
+                    <li class="hover:bg-base/10">
+                      <LinkLive to={path(:home)} class="flex items-center p-4 text-sm text-base-content">
+                        {l("Homepage")}
+                      </LinkLive>
+                    </li>
+                    <li class="hover:bg-base/10">
+                      <LinkLive to="/terms/code-of-conduct" class="flex items-center p-4 text-sm text-base-content">
+                        {l("Code of conduct")}
+                      </LinkLive>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
-            
+
             <nav role="navigation" aria-label={l("Extension navigation")}>
               <div class="pb-3 mt-4 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
-              <Bonfire.UI.Common.ExploreNavLive
-                page={@page}
-                selected_tab={@selected_tab}
-              />
+              <Bonfire.UI.Common.ExploreNavLive page={@page} selected_tab={@selected_tab} />
             </nav>
             <!-- <ul class="md:hidden menu">
               {#for nav <- @nav_items}
@@ -188,17 +185,17 @@
     id="option-menu-button"
     aria-expanded="true"
     aria-haspopup="true"
-    >
+  >
     <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
     <Icon iconify="mdi:dots-grid" class="w-5 h-5" />
   </button>
 
-   <div
+  <div
     x-cloak
     x-show="open_extensions_sidebar"
     @keydown.window.escape="open_extensions_sidebar = false;"
     class="fixed top-[0] right-0 bottom-0 left-0 z-[200] overflow-hidden"
-    >
+  >
     <div class="inset-0 h-full overflow-hidden">
       <div
         @click="open_extensions_sidebar = false"
@@ -226,16 +223,13 @@
               id="option-menu-button"
               aria-expanded="true"
               aria-haspopup="true"
-              >
+            >
               <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
               <Icon iconify="mdi:dots-grid" class="w-5 h-5" />
             </button>
             <div class="text-sm font-medium tracking-wider text-base-content/60">{l("Explore extensions")}</div>
           </div>
-          <Bonfire.UI.Common.ExploreNavLive
-            page={@page}
-            selected_tab={@selected_tab}
-          />
+          <Bonfire.UI.Common.ExploreNavLive page={@page} selected_tab={@selected_tab} />
         </div>
       </section>
     </div>

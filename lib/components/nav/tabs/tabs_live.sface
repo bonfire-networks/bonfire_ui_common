@@ -1,18 +1,21 @@
 <nav
   role="tabpanel"
   class="flex justify-start pt-2 mx-3 mt-8 border-t border-b md:mb-2 md:border-b-0 border-base-content/10 md:rounded-b-xl tabs bg-base-100"
-  aria-label="Switch between timeline, posts, boosts, media tabs or other extensions enabled tabs"
+  aria-label="Switch between tabs"
 >
-  <LivePatch
+  <LinkPatchLive
     :for={{tab, tab_name} <- @tabs}
     to={"#{@path_prefix}#{tab}"}
+    name={"#{tab}"}
+    event_handler={@event_handler}
+    event_target={@event_target}
     class="flex px-2 pt-2 text-base capitalize md:px-4 hover:bg-base-content/10 group place-content-center"
   >
     <div class={
       "tab tab-bordered group-hover:text-opacity-100",
-      "tab-active": @selected_tab == tab || @selected_tab == to_string(tab)
+      "tab-active": @selected_tab == tab || to_string(@selected_tab) == to_string(tab)
     }>
       {localise_dynamic(tab_name)}
     </div>
-  </LivePatch>
+  </LinkPatchLive>
 </nav>

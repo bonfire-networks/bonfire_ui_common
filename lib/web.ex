@@ -304,6 +304,7 @@ defmodule Bonfire.UI.Common.Web do
         alias Bonfire.UI.Common.LazyImage
         alias Bonfire.UI.Common.LinkLive
         alias Bonfire.UI.Common.Icon
+        alias Bonfire.UI.Common.LinkPatchLive
       end
     end
   end

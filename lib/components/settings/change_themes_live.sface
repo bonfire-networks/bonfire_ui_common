@@ -1,4 +1,3 @@
-
 <!-- x-data={"{
     prefersDarkTheme: window.matchMedia('(prefers-color-scheme: dark)').matches,
     dark_theme: $el.dataset.theme,
@@ -11,8 +10,6 @@
   x-init="window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => { prefersDarkTheme = e.matches; });"
   x-bind:data-theme="prefersDarkTheme ? dark_theme : light_theme"
  -->
-
-
 
 {#case Settings.get([:ui, :themes], ["bonfire"], @__context__)}
   {#match themes}

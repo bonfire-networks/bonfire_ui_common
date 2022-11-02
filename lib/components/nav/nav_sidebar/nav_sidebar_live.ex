@@ -3,5 +3,4 @@ defmodule Bonfire.UI.Common.NavSidebarLive do
   prop page, :any, default: nil
   prop selected_tab, :any, default: nil
   prop nav_items, :any, default: nil
-
 end

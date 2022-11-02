@@ -1,56 +1,58 @@
-  <li class="border-b border-neutral-content/30">
-    <div class="flex items-center gap-3 py-2">
-      <Bonfire.UI.Common.AvatarLive
-        class="inline-block object-cover w-10 h-10 cursor-pointer"
-        size="40"
-        user={@current_user}
-      />
-      <div class="flex flex-col">
-        <div class="font-semibold text-neutral-content">{e(@current_user, :profile, :name, "unknown")}</div>
-        <div class="text-sm font-normal text-neutral-content/70">@{e(@current_user, :character, :username, "unknown")}</div>
-      </div>
+<li class="border-b border-neutral-content/30">
+  <div class="flex items-center gap-3 py-2">
+    <Bonfire.UI.Common.AvatarLive
+      class="inline-block object-cover w-10 h-10 cursor-pointer"
+      size="40"
+      user={@current_user}
+    />
+    <div class="flex flex-col">
+      <div class="font-semibold text-neutral-content">{e(@current_user, :profile, :name, "unknown")}</div>
+      <div class="text-sm font-normal text-neutral-content/70">@{e(@current_user, :character, :username, "unknown")}</div>
     </div>
-  </li>
-  <li>
-    <LiveRedirect
-      to={path(@current_user)}
-      class="flex items-start gap-2 text-sm text-neutral-content/80"
-    >
-      <Icon solid="UserCircle" class="w-5 h-5" />
-      <div>{l("View profile")}</div>
-    </LiveRedirect>
-  </li>
-  <li>
-    <LiveRedirect to="/settings" class="flex items-start gap-2 text-sm text-neutral-content/80">
-      <Icon solid="Cog" class="w-5 h-5" />
-      {l("Settings")}
-    </LiveRedirect>
-  </li>
-  <li>
-    <LiveRedirect to="/switch-user" class="flex items-start gap-2 text-sm text-neutral-content/80">
-      <Icon iconify="material-symbols:switch-account" class="w-5 h-5" />
-      {l("Switch profile")}
-    </LiveRedirect>
-  </li>
-  <li>
-    <LiveRedirect to="/logout" class="flex items-start gap-2 text-sm text-neutral-content/80">
-      <Icon iconify="material-symbols:logout" class="w-5 h-5" />
-      {l("Logout")}
-    </LiveRedirect>
-  </li>
+  </div>
+</li>
+<li>
+  <LiveRedirect
+    to={path(@current_user)}
+    class="flex items-start gap-2 text-sm text-neutral-content/80"
+  >
+    <Icon solid="UserCircle" class="w-5 h-5" />
+    <div>{l("View profile")}</div>
+  </LiveRedirect>
+</li>
+<li>
+  <LiveRedirect to="/settings" class="flex items-start gap-2 text-sm text-neutral-content/80">
+    <Icon solid="Cog" class="w-5 h-5" />
+    {l("Settings")}
+  </LiveRedirect>
+</li>
+<li>
+  <LiveRedirect to="/switch-user" class="flex items-start gap-2 text-sm text-neutral-content/80">
+    <Icon iconify="material-symbols:switch-account" class="w-5 h-5" />
+    {l("Switch profile")}
+  </LiveRedirect>
+</li>
+<li>
+  <LiveRedirect to="/logout" class="flex items-start gap-2 text-sm text-neutral-content/80">
+    <Icon iconify="material-symbols:logout" class="w-5 h-5" />
+    {l("Logout")}
+  </LiveRedirect>
+</li>
 <li class="border-t border-neutral-content/30">
   <Form for={:feedback} action="/session_redirect">
     <!-- opts={"target": "_blank"} -->
     <input type="hidden" name="to" value="/write">
-    <input type="hidden" name="smart_input_text" value={
-      Settings.get(
+    <input
+      type="hidden"
+      name="smart_input_text"
+      value={Settings.get(
         [:ui, :feedback_post_template],
         "I have a suggestion for Bonfire: \n\n@BonfireBuilders #bonfire_feedback",
         @__context__
-      )
-    }>
+      )}
+    />
     <input type="hidden" name="create_object_type" value="task">
-    <button class="flex items-start gap-2 text-sm text-neutral-content/80"> 
+    <button class="flex items-start gap-2 text-sm text-neutral-content/80">
       <Icon iconify="ic:round-feedback" class="w-5 h-5" />
       {l("Share feedback")}
     </button>

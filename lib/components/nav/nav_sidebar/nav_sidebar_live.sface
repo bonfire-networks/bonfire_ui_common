@@ -1,16 +1,13 @@
 <nav class="hidden md:block" role="navigation" aria-label={l("Extension navigation")}>
-  
-  
-  <div 
-    :if={!@nav_items}
-    class="pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
+  <div :if={!@nav_items} class="pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
   <Bonfire.UI.Common.ExploreNavLive
     page={@page}
     :if={!@nav_items}
     selected_tab={@selected_tab}
+    show_extensions_nav
   />
 
-  <Bonfire.UI.Common.ExtensionMenuNavLive 
+  <Bonfire.UI.Common.ExtensionMenuNavLive
     :if={@nav_items}
     selected_tab={@selected_tab}
     page={@page}

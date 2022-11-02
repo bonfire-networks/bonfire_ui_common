@@ -125,7 +125,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           <div
             :if={!@without_sidebar && @current_user}
             class="widget pt-3 pr-4  md:pt-6 hidden z-[110]  md:block sticky top-[56px]"
-            >
+          >
             <Bonfire.UI.Common.NavSidebarLive
               page={@page}
               selected_tab={@selected_tab}
