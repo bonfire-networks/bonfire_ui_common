@@ -7,12 +7,12 @@
       "flex items-center justify-between rounded-md",
       "bg-base-content/5": @__context__[:current_extension][:name] == extension[:name]
     }>
-      <LinkLive to={extension[:href]} class="flex items-center text-left gap-5 w-full">
+      <LinkLive to={extension[:href]} class="flex items-center w-full gap-5 text-left">
         <Icon iconify={extension[:icon]} class="w-5 h-5" />
         <span class="flex-1">{extension[:name]}</span>
       </LinkLive>
 
-      {#case @show_extensions_nav and Bonfire.Common.ExtensionModule.default_nav(app)}
+      <!-- {#case @show_extensions_nav and Bonfire.Common.ExtensionModule.default_nav(app)}
         {#match app_nav_items when is_list(app_nav_items)}
           <div class="dropdown dropdown-hover dropdown-right">
             <label class="btn btn-xs btn-ghost btn-square" tabindex="0">
@@ -44,13 +44,12 @@
                       />
                     </li>
                   {#match _}
-                    <!-- nothing -->
                 {/case}
               {/for}
             </ul>
           </div>
         {#match _}
-      {/case}
+      {/case} -->
     </div>
   </li>
 </ul>
