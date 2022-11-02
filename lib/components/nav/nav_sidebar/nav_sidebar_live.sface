@@ -13,6 +13,7 @@
     page={@page}
     nav_items={@nav_items}
   />
+
   <Dynamic.LiveComponent
     :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive) and @current_user}
     module={Bonfire.Classify.Web.CategoriesNavLive}
