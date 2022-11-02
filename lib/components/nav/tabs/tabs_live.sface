@@ -9,11 +9,12 @@
     name={"#{tab}"}
     event_handler={@event_handler}
     event_target={@event_target}
-     class={
+    class={
       "tab hover:bg-base-content/5 rounded-lg",
-      "tab-active hover:bg-primary": @selected_tab == tab || to_string(@selected_tab) == to_string(tab)
+      "tab-active hover:bg-primary":
+        @selected_tab == tab || to_string(@selected_tab) == to_string(tab)
     }
   >
-      {localise_dynamic(tab_name)}
+    {localise_dynamic(tab_name)}
   </LinkPatchLive>
 </nav>

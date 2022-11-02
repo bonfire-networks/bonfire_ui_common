@@ -86,7 +86,7 @@
                           to={path(Bonfire.Data.Social.Message)}
                           class="flex items-start gap-2 text-sm text-base-content/80"
                         >
-                        <Icon solid="Mail" class="w-5 h-5" />
+                          <Icon solid="Mail" class="w-5 h-5" />
                           {l("Messages")}
                         </LinkLive>
                       </li>
@@ -128,8 +128,6 @@
                           </button>
                         </Form>
                       </li>
-
-                      
                     {/if}
                   </ul>
                 </div>
