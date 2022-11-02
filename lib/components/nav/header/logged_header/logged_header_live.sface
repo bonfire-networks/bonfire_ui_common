@@ -154,77 +154,85 @@
   </div>
 </div>
 
-<div 
-  @keydown.window.escape="toggle_sidebar_widgets = false" 
-  x-show="toggle_sidebar_widgets" 
-  class="relative z-10" 
+<div
+  @keydown.window.escape="toggle_sidebar_widgets = false"
+  x-show="toggle_sidebar_widgets"
+  class="relative z-10"
   :if={is_list(@sidebar_widgets[:users][:secondary])}
-  aria-labelledby="slide-over-title" 
-  x-ref="dialog" 
-  aria-modal="true">
-  <div x-description="Background backdrop, show/hide based on slide-over state." class="fixed inset-0"></div>
+  aria-labelledby="slide-over-title"
+  x-ref="dialog"
+  aria-modal="true"
+>
+  <div
+    x-description="Background backdrop, show/hide based on slide-over state."
+    class="fixed inset-0"
+  />
 
   <div class="fixed inset-0 overflow-hidden">
     <div class="absolute inset-0 overflow-hidden">
       <div class="fixed inset-y-0 right-0 top-[56px] flex max-w-full pl-10 pointer-events-none">
-        
-          <div 
-            x-cloak
-            x-show="toggle_sidebar_widgets" 
-            x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700" 
-            x-transition:enter-start="translate-x-full" 
-            x-transition:enter-end="translate-x-0" 
-            x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700" 
-            x-transition:leave-start="translate-x-0" 
-            x-transition:leave-end="translate-x-full" 
-            class="w-screen max-w-md pointer-events-auto" 
-            x-description="Slide-over panel, show/hide based on slide-over state." 
-            @click.away="toggle_sidebar_widgets = false">
-            <div class="flex flex-col h-full py-3 overflow-y-scroll shadow-xl bg-base-300">
-              <div class="px-4 sm:px-6">
-                <div class="flex items-start justify-between">
-                  <h2 class="text-lg font-medium sr-only text-base-content" id="slide-over-title">{l "Widgets"}</h2>
-                  <div class="flex items-center">
-                    <button type="button" class="btn btn-sm btn-circle" @click="toggle_sidebar_widgets = false">
-                      <span class="sr-only">Close panel</span>
-                      <svg class="w-5 h-5" x-description="Heroicon name: outline/x-mark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                      </svg>
-                    </button>
-                  </div>
+        <div
+          x-cloak
+          x-show="toggle_sidebar_widgets"
+          x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+          x-transition:enter-start="translate-x-full"
+          x-transition:enter-end="translate-x-0"
+          x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+          x-transition:leave-start="translate-x-0"
+          x-transition:leave-end="translate-x-full"
+          class="w-screen max-w-md pointer-events-auto"
+          x-description="Slide-over panel, show/hide based on slide-over state."
+          @click.away="toggle_sidebar_widgets = false"
+        >
+          <div class="flex flex-col h-full py-3 overflow-y-scroll shadow-xl bg-base-300">
+            <div class="px-4 sm:px-6">
+              <div class="flex items-start justify-between">
+                <h2 class="text-lg font-medium sr-only text-base-content" id="slide-over-title">{l("Widgets")}</h2>
+                <div class="flex items-center">
+                  <button type="button" class="btn btn-sm btn-circle" @click="toggle_sidebar_widgets = false">
+                    <span class="sr-only">Close panel</span>
+                    <svg
+                      class="w-5 h-5"
+                      x-description="Heroicon name: outline/x-mark"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
                 </div>
               </div>
-              <div class="relative flex flex-col flex-1 gap-3 px-4 mt-3 sm:px-6">
-                <Dynamic.Component
-                  :if={ulid(@current_user)}
-                  :for={{component, component_assigns} <-
-                    @sidebar_widgets[:users][:secondary] ||
-                      [
-                        {Bonfire.Tag.Web.WidgetTagsLive, []},
-                        {Bonfire.UI.Common.WidgetFeedbackLive, []}
-                      ]}
-                  module={component}
-                  {...component_assigns}
-                />
+            </div>
+            <div class="relative flex flex-col flex-1 gap-3 px-4 mt-3 sm:px-6">
+              <Dynamic.Component
+                :if={ulid(@current_user)}
+                :for={{component, component_assigns} <-
+                  @sidebar_widgets[:users][:secondary] ||
+                    [
+                      {Bonfire.Tag.Web.WidgetTagsLive, []},
+                      {Bonfire.UI.Common.WidgetFeedbackLive, []}
+                    ]}
+                module={component}
+                {...component_assigns}
+              />
 
-                <Dynamic.Component
-                  :if={!@current_user}
-                  :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || []}
-                  module={component}
-                  {...component_assigns}
-                />
-              </div>
+              <Dynamic.Component
+                :if={!@current_user}
+                :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || []}
+                module={component}
+                {...component_assigns}
+              />
             </div>
           </div>
-        
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-
-
-
 
 <!-- 
 <div

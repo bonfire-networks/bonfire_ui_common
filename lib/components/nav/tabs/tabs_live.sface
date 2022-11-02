@@ -1,8 +1,4 @@
-<nav
-  role="tabpanel"
-  class={@class}
-  aria-label="Switch between tabs"
->
+<nav role="tabpanel" class={@class} aria-label="Switch between tabs">
   <LinkPatchLive
     :for={{tab, tab_name} <- @tabs}
     to={"#{@path_prefix}#{tab}"}
