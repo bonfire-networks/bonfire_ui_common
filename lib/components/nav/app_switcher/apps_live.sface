@@ -72,36 +72,65 @@
                 <div x-show="expanded" x-collapse>
                   <ul class="mt-1 menu menu-compact">
                     {#if ulid(@current_user)}
-                      <li class="hover:bg-neutral/10">
-                        <LinkLive to="/settings" class="flex items-center p-4 text-sm text-base-content">
-                          {l("Settings")}
-                        </LinkLive>
-                      </li>
-                      <li class="hover:bg-base/10">
-                        <LinkLive to="/switch-user" class="flex items-center p-4 text-sm text-base-content">
-                          {l("Switch profile")}
-                        </LinkLive>
+                      <li>
+                        <LiveRedirect
+                          to={path(@current_user)}
+                          class="flex items-start gap-2 text-sm text-base-content/80"
+                        >
+                          <Icon solid="UserCircle" class="w-5 h-5" />
+                          <div>{l("View profile")}</div>
+                        </LiveRedirect>
                       </li>
                       <li class="hover:bg-base/10">
                         <LinkLive
                           to={path(Bonfire.Data.Social.Message)}
-                          class="flex items-center p-4 text-sm text-base-content"
+                          class="flex items-start gap-2 text-sm text-base-content/80"
                         >
+                        <Icon solid="Mail" class="w-5 h-5" />
                           {l("Messages")}
                         </LinkLive>
                       </li>
-                    {/if}
+                      <li>
+                        <LiveRedirect to="/settings" class="flex items-start gap-2 text-sm text-base-content/80">
+                          <Icon solid="Cog" class="w-5 h-5" />
+                          {l("Settings")}
+                        </LiveRedirect>
+                      </li>
+                      <li>
+                        <LiveRedirect to="/switch-user" class="flex items-start gap-2 text-sm text-base-content/80">
+                          <Icon iconify="material-symbols:switch-account" class="w-5 h-5" />
+                          {l("Switch profile")}
+                        </LiveRedirect>
+                      </li>
+                      <li>
+                        <LiveRedirect to="/logout" class="flex items-start gap-2 text-sm text-base-content/80">
+                          <Icon iconify="material-symbols:logout" class="w-5 h-5" />
+                          {l("Logout")}
+                        </LiveRedirect>
+                      </li>
+                      <li class="">
+                        <Form for={:feedback} action="/session_redirect">
+                          <!-- opts={"target": "_blank"} -->
+                          <input type="hidden" name="to" value="/write">
+                          <input
+                            type="hidden"
+                            name="smart_input_text"
+                            value={Settings.get(
+                              [:ui, :feedback_post_template],
+                              "I have a suggestion for Bonfire: \n\n@BonfireBuilders #bonfire_feedback",
+                              @__context__
+                            )}
+                          />
+                          <input type="hidden" name="create_object_type" value="task">
+                          <button class="flex items-start gap-2 text-sm text-base-content/80">
+                            <Icon iconify="ic:round-feedback" class="w-5 h-5" />
+                            {l("Share feedback")}
+                          </button>
+                        </Form>
+                      </li>
 
-                    <li class="hover:bg-base/10">
-                      <LinkLive to={path(:home)} class="flex items-center p-4 text-sm text-base-content">
-                        {l("Homepage")}
-                      </LinkLive>
-                    </li>
-                    <li class="hover:bg-base/10">
-                      <LinkLive to="/terms/code-of-conduct" class="flex items-center p-4 text-sm text-base-content">
-                        {l("Code of conduct")}
-                      </LinkLive>
-                    </li>
+                      
+                    {/if}
                   </ul>
                 </div>
               </div>
