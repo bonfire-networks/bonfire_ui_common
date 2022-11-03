@@ -6,9 +6,11 @@ defmodule Bonfire.UI.Common.BasicView do
   end
 
   def show_html(title, body, class \\ nil)
+
   def show_html(title, %{message: details}, class) do
     show_html(title, details, class)
   end
+
   def show_html(title, body, class) do
     raw("""
     <!DOCTYPE html>
