@@ -7,22 +7,26 @@
     {#case nav}
       {#match %{}}
         <li
-          class={"rounded-lg", "bg-base-content/5": nav[:page] == @selected_tab}
           :if={!nav[:exclude_from_nav]}
+          class={"rounded-lg", 
+          "bg-base-content/5": nav[:href]==current_url(@__context__)}
         >
+        <!-- (not is_nil(nav[:page]) and is_nil(@selected_tab) and (nav[:page] == @page or nav[:page] == @selected_tab)) or  -->
           <Bonfire.UI.Common.WidgetLive
             widget={nav}
             page={@page}
             selected_tab={@selected_tab}
-            data={e(nav, :props, [])}
+            data={e(nav, :props, [])} 
           />
         </li>
       {#match _ when is_list(nav)}
         <li
-          class={"rounded-lg", "bg-base-content/5": nav[:page] == @selected_tab}
           :for={subnav <- nav}
           :if={!subnav[:exclude_from_nav]}
+          class={"rounded-lg", 
+          "bg-base-content/5": subnav[:href]==current_url(@__context__)}
         >
+        <!-- (not is_nil(subnav[:page]) and (subnav[:page] == @page or subnav[:page] == @selected_tab)) or  -->
           <Bonfire.UI.Common.WidgetLive
             widget={subnav}
             page={@page}
