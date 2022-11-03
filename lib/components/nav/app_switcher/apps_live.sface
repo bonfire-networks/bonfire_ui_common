@@ -207,7 +207,7 @@
   </div>
 </div>
 
-<div class="hidden md:block" x-data="hovered_apps: false">
+<div class="hidden md:block" x-data="{hovered_apps: false}">
   <button
     @click="open_extensions_sidebar = ! open_extensions_sidebar"
     @mouseenter="hovered_apps = true"

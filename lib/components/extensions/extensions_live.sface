@@ -22,7 +22,8 @@
   </div>
 </div>
 
-<Bonfire.UI.Common.WidgetAppsLive title={l("Active Apps")} cols="4" />
+<Bonfire.UI.Common.WidgetAppsLive showing_within={:settings} title={l("Active Apps")} cols="4" />
+<!-- <Bonfire.UI.Common.WidgetAppsLive showing_within={:settings} show_disabled_only={true} title={l("Disabled Apps")} cols="4" /> -->
 
 {#case Bonfire.Application.required_deps()}
   {#match required_deps}

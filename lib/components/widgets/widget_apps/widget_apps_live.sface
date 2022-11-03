@@ -13,9 +13,13 @@
     </li>
     <li
       :for={{app, extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
-      :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
+      :if={(@showing_within != :nav or extension[:exclude_from_nav] != true) |> debug("nav? #{app}") and
+        ((@show_disabled_only == true and !extension_enabled?(app, @current_user))
+         |> debug("disabled? #{app}") or
+           (@show_enabled_only == true and extension_enabled?(app, @current_user))
+           |> debug("enabled? #{app}") or
+           (@show_enabled_only == false or @show_disabled_only == false) |> debug("any? #{app}"))}
     >
-      <!-- and extension_enabled?(app) -->
       <LiveRedirect to={extension[:href]}>
         <div class="flex flex-col items-center w-full">
           <Icon iconify={extension[:icon]} class="w-10 h-10" />

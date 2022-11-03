@@ -27,6 +27,7 @@
       page={@page}
       {...@data}
     />
-  {#match _}
-    TODO
+  {#match nil}
+  {#match other}
+    {error(other) && "..."}
 {/case}

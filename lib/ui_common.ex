@@ -12,6 +12,10 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  def assign_generic(socket_or_conn, {:error, error}) do
+    assign_error(socket_or_conn, error)
+  end
+
   def assign_generic(%Phoenix.LiveView.Socket{} = socket, assigns) do
     Phoenix.Component.assign(socket, assigns)
   end
@@ -34,6 +38,10 @@ defmodule Bonfire.UI.Common do
 
   def assign_generic(%{} = map, key, value) do
     Map.put(map, key, value)
+  end
+
+  def assign_generic(nil, assigns) do
+    Map.new(assigns)
   end
 
   def assign_global(socket, assigns) when is_map(assigns) do
@@ -332,6 +340,13 @@ defmodule Bonfire.UI.Common do
     do: if(current_user(other), do: true, else: false)
 
   def maybe_send_update(pid \\ self(), component, id, assigns)
+
+  def maybe_send_update(pid, component, id, {:error, error})
+      when is_atom(component) and not is_nil(id) do
+    assign_error(nil, error, pid)
+  end
+
+  def maybe_send_update(pid, component, id, assigns)
       when is_atom(component) and not is_nil(id) do
     # Phoenix.LiveView.Channel.ping(self())
 
@@ -860,14 +875,6 @@ defmodule Bonfire.UI.Common do
        |> redirect_to("/error")}
   end
 
-  def assign_error(socket, msg) do
-    assigns = %{error_sentry_event_id: maybe_last_sentry_event_id()}
-
-    socket
-    |> assign_generic(assigns)
-    |> assign_flash(:error, error_msg(msg), assigns)
-  end
-
   def maybe_last_sentry_event_id() do
     if module_enabled?(Sentry) do
       with {id, _source} when is_binary(id) <-
@@ -940,23 +947,37 @@ defmodule Bonfire.UI.Common do
     conn
   end
 
-  def assign_flash(socket_or_conn, type, message, assigns \\ %{})
+  def assign_flash(socket_or_conn, type, message, assigns \\ %{}, pid \\ self())
 
-  def assign_flash(%Phoenix.LiveView.Socket{} = socket, type, message, assigns) do
+  def assign_flash(%Phoenix.LiveView.Socket{} = socket, type, message, assigns, pid) do
     info(message, type)
 
-    Bonfire.UI.Common.Notifications.receive_flash(Map.put(assigns, type, message))
+    Bonfire.UI.Common.Notifications.receive_flash(Map.put(assigns, type, message), pid)
 
     Phoenix.LiveView.put_flash(socket, type, message)
   end
 
-  def assign_flash(%Plug.Conn{} = conn, type, message, assigns) do
+  def assign_flash(%Plug.Conn{} = conn, type, message, assigns, pid) do
     info(message, type)
     # TODO: use assigns too
     conn
     |> Plug.Conn.fetch_session()
     |> Phoenix.Controller.fetch_flash()
     |> Phoenix.Controller.put_flash(type, message)
+  end
+
+  def assign_flash(_, type, message, assigns, pid) do
+    info(message, type)
+
+    Bonfire.UI.Common.Notifications.receive_flash(Map.put(assigns, type, message), pid)
+  end
+
+  def assign_error(socket, msg, pid \\ self()) do
+    assigns = %{error_sentry_event_id: maybe_last_sentry_event_id()}
+
+    socket
+    |> assign_generic(assigns)
+    |> assign_flash(:error, error_msg(msg), assigns, pid)
   end
 
   def live_upload_files(current_user, metadata, socket) do

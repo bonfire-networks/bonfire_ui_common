@@ -252,8 +252,9 @@ defmodule Bonfire.UI.Common.SmartInputLive do
        smart_input_component:
          maybe_to_module(e(params, "component", nil) || e(params, "smart_input_component", nil)),
        create_object_type: maybe_to_atom(e(params, "create_object_type", nil)),
-       reply_to_id: reply_to_param(params),
-       smart_input_opts: maybe_from_json(e(params, "opts", nil)),
+       reply_to_id: reply_to_param(params) || e(socket.assigns, :reply_to_id, nil),
+       smart_input_opts:
+         maybe_from_json(e(params, "opts", nil)) || e(socket.assigns, :smart_input_opts, nil),
        activity_inception: "reply_to"
      )}
   end

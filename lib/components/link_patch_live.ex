@@ -61,35 +61,45 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
       when is_binary(event_handler) and is_binary(to) and is_binary(name) do
     # TODO: How can I have a phx-click on an anchor without the browser also triggering the default navigation?
     # <a href={@to}
-    ~F"""
-    <span
-      href={@to}
-      phx-click={event_handler}
-      phx-value-name={name}
-      phx-value-to={to}
-      phx-target={@event_target}
-      class={@class}
-      opts={@opts}
-    >
-      <#slot>{@label}</#slot>
-    </span>
-    """
+    if socket_connected?(assigns) do
+      ~F"""
+      <span
+        href={@to}
+        phx-click={event_handler}
+        phx-value-name={name}
+        phx-value-to={to}
+        phx-target={@event_target}
+        class={@class}
+        opts={@opts}
+      >
+        <#slot>{@label}</#slot>
+      </span>
+      """
+    else
+      # fallback to only using a link when LiveView is not available
+      render(Map.drop(assigns, [:event_handler]))
+    end
   end
 
   def render(%{event_handler: event_handler, name: name} = assigns)
       when is_binary(event_handler) and is_binary(name) do
-    ~F"""
-    <a
-      href="#%{name}"
-      phx-click={event_handler}
-      phx-value-name={name}
-      phx-target={@event_target}
-      class={@class}
-      opts={@opts}
-    >
-      <#slot>{@label}</#slot>
-    </a>
-    """
+    if socket_connected?(assigns) do
+      ~F"""
+      <a
+        href="#%{name}"
+        phx-click={event_handler}
+        phx-value-name={name}
+        phx-target={@event_target}
+        class={@class}
+        opts={@opts}
+      >
+        <#slot>{@label}</#slot>
+      </a>
+      """
+    else
+      # fallback to only using a link when LiveView is not available
+      render(Map.drop(assigns, [:event_handler]))
+    end
   end
 
   def render(assigns) do
