@@ -117,13 +117,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }"
           @resize.window.debounce.100="width = window.innerWidth"
           class={
-            "w-full md:pr-4 tablet-lg:px-4 items-start mx-auto grid grid-cols-1 md:grid-cols-[250px_minmax(min-content,_1fr)]",
+            "w-full items-start mx-auto grid grid-cols-1 md:grid-cols-[250px_minmax(min-content,_1fr)]",
             "!grid-cols-1": @without_sidebar || is_nil(@current_user)
           }
         >
           <div
             :if={!@without_sidebar && @current_user}
-            class="border-r border-base-content/10 overflow-y-auto overflow-x-hidden widget pt-3 pr-4  md:pt-6 hidden z-[110]  md:block sticky top-[56px]"
+            class="border-r border-base-content/10 overflow-y-auto overflow-x-hidden widget pt-3 px-4 md:pt-6 hidden z-[110]  md:block sticky top-[56px]"
           >
             <Bonfire.UI.Common.NavSidebarLive
               page={@page}
@@ -156,7 +156,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(ulid(@current_user))) or
                   (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(ulid(@current_user)))}
                 x-show={if @preview_module, do: "false", else: "true"}
-                class="items-start hidden min-h-[calc(100vh-56px)] grid-flow-row gap-3 pl-4 overflow-x-hidden overflow-y-auto border-l border-base-content/10 md:pt-6 auto-rows-min tablet-lg:grid"
+                class="items-start hidden min-h-[calc(100vh-56px)] grid-flow-row gap-3 px-4 overflow-x-hidden overflow-y-auto border-l border-base-content/10 md:pt-6 auto-rows-min tablet-lg:grid"
               >
                 <!-- USER WIDGET SIDEBAR -->
                 <Dynamic.Component
