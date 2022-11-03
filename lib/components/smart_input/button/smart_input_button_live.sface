@@ -4,7 +4,7 @@
   phx-value-component={@component}
   @click={"show_smart_input('#{@smart_input_prompt || l("Compose")}')"}
   type="button"
-  class="ml-2 hidden w-[40px] tablet-lg:w-auto tablet-lg:rounded tablet-lg:flex h-[40px] items-center tablet-lg:px-3 normal-case btn-circle btn-sm btn btn-primary"
+  class="hidden w-[40px] tablet-lg:w-auto tablet-lg:rounded tablet-lg:flex h-[40px] items-center tablet-lg:px-3 normal-case btn-circle btn-sm btn btn-primary"
 >
   <Icon iconify={@icon} class="inline-block w-5 h-5 tablet-lg:mr-2" />
   <span class="hidden tablet-lg:inline-block">{@smart_input_prompt || l("Compose")}</span>

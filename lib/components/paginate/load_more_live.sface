@@ -5,12 +5,12 @@
   phx-target={@target}
   phx-value-context={e(@context, "")}
   phx-value-after={unwrap(e(@page_info, :end_cursor, ""))}
-  class="flex items-center mt-3 mb-10 place-content-center"
+  class="flex items-center my-3 place-content-center"
   x-data={"{show: #{socket_connected?(@__context__)}}"}
 >
   <a
     href={"#" <> unwrap(e(@page_info, :end_cursor, "unknown"))}
-    class="normal-case btn"
+    class="normal-case btn btn-wide btn-sm"
     style="display: none"
     x-show="show"
   >
