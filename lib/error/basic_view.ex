@@ -5,7 +5,11 @@ defmodule Bonfire.UI.Common.BasicView do
     show_html(attrs[:title], attrs[:body])
   end
 
-  def show_html(title, body, class \\ nil) do
+  def show_html(title, body, class \\ nil)
+  def show_html(end, %{message: details}, class) do
+    show_html(title, details, class)
+  end
+  def show_html(title, body, class) do
     raw("""
     <!DOCTYPE html>
     <html lang="en" class="#{class || "dark"}">
