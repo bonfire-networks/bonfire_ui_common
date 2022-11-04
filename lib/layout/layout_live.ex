@@ -125,11 +125,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
             :if={!@without_sidebar && @current_user}
             class="border-r border-base-content/10 overflow-y-auto overflow-x-hidden widget pt-3 px-4 md:pt-6 hidden z-[110]  md:block sticky top-[56px]"
           >
+            <div class="fixed">
             <Bonfire.UI.Common.NavSidebarLive
               page={@page}
               selected_tab={@selected_tab}
               nav_items={@nav_items}
             />
+            </div>
           </div>
 
           <div class={
