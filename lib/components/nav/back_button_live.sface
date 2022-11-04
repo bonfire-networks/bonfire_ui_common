@@ -7,7 +7,7 @@
     data-tip={l("Go back to the previous page")}
     class="btn font-normal normal-case btn-ghost btn-sm btn-circle !inline-flex tooltip tooltip-bottom"
   >
-    <Icon outline="ArrowLeft" class="w-4 h-4 text-base-content" />
+    <Icon outline="ArrowLeft" class="w-5 h-5 text-base-content" />
   </button>
 {#else}
   <a
@@ -17,6 +17,6 @@
     data-tip={l("Go back to the previous page")}
     class="btn normal-case relative z-50 font-normal btn-ghost btn-sm btn-circle !inline-flex tooltip tooltip-bottom"
   >
-    <Icon outline="ArrowLeft" class="w-4 h-4 text-base-content" />
+    <Icon outline="ArrowLeft" class="w-5 h-5 text-base-content" />
   </a>
 {/if}

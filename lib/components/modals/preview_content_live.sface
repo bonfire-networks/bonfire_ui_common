@@ -7,7 +7,7 @@
   }
   {...@opts}
 >
-  <div :if={@show} class="relative max-w-[768px] mx-auto">
+  <div :if={@show} class="relative">
     <div class="p-0 z-[910] modal_invisible relative" data-id="modal-contents">
       <#slot>
         {#case merge_as_map(@modal_assigns, %{showing_within: :preview})

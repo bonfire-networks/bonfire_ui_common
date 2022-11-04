@@ -117,7 +117,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }"
           @resize.window.debounce.100="width = window.innerWidth"
           class={
-            "w-full items-start mx-auto grid grid-cols-1 md:grid-cols-[250px_minmax(min-content,_1fr)]",
+            "w-full items-start mx-auto grid grid-cols-1 md:grid-cols-[300px_minmax(min-content,_1fr)]",
             "!grid-cols-1": @without_sidebar || is_nil(@current_user)
           }
         >
@@ -125,13 +125,11 @@ defmodule Bonfire.UI.Common.LayoutLive do
             :if={!@without_sidebar && @current_user}
             class="border-r border-base-content/10 overflow-y-auto overflow-x-hidden widget pt-3 px-4 md:pt-6 hidden z-[110]  md:block sticky top-[56px]"
           >
-            <div class="fixed">
             <Bonfire.UI.Common.NavSidebarLive
               page={@page}
               selected_tab={@selected_tab}
               nav_items={@nav_items}
             />
-            </div>
           </div>
 
           <div class={
@@ -140,7 +138,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "!max-w-full": @full_page
           }>
             <div class={
-              "justify-between mt-0 grid tablet-lg:grid-cols-[1fr_320px] desktop-lg:grid-cols-[1fr_320px] grid-cols-1",
+              "justify-between mt-0 grid tablet-lg:grid-cols-[1fr_420px] desktop-lg:grid-cols-[1fr_420px] grid-cols-1",
               "md:mt-6": @nav_header == false,
               "!grid-cols-1": @current_user && !is_list(@sidebar_widgets[:users][:secondary]),
               "!grid-cols-1": is_nil(@current_user) && !is_list(@sidebar_widgets[:guests][:secondary])
@@ -158,7 +156,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(ulid(@current_user))) or
                   (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(ulid(@current_user)))}
                 x-show={if @preview_module, do: "false", else: "true"}
-                class="items-start hidden min-h-[calc(100vh-56px)] grid-flow-row gap-3 px-4 overflow-x-hidden overflow-y-auto border-l border-base-content/10 md:pt-6 auto-rows-min tablet-lg:grid"
+                class="items-start hidden min-h-[calc(100vh-56px)] grid-flow-row gap-6 px-6 overflow-x-hidden overflow-y-auto border-l border-base-content/10 md:pt-6 auto-rows-min tablet-lg:grid"
               >
                 <!-- USER WIDGET SIDEBAR -->
                 <Dynamic.Component

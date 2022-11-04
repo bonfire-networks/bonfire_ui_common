@@ -1,15 +1,15 @@
 <header
   x-cloak
-  class="relative flex flex-row w-full p-3 rounded-t bg-base-100 flex-align-items-stretch flex-nowrap"
+  class="relative flex flex-row w-full px-3 py-1.5 rounded-t bg-base-content/5 items-center flex-align-items-stretch flex-nowrap"
 >
   <span
     @click="smart_input_minimized = ! smart_input_minimized"
-    class="flex-1 text-xl font-semibold text-center text-ellipsis"
+    class="flex-1 text-sm font-normal text-left text-ellipsis"
     x-text={"smart_input_title_text || '#{e(@smart_input_prompt, l("New post"))}'"}
   >
     {e(@smart_input_prompt, l("New post"))}
   </span>
-  <div class="flex items-center space-x-5">
+  <div class="flex items-center gap-3">
     <button
       x-show="smart_input_as == 'floating'"
       @click="smart_input_minimized = !smart_input_minimized; smart_input_fullscreen = false"
@@ -19,7 +19,7 @@
       aria-describedby="tooltip-5527"
     >
       <span x-cloak x-show="!smart_input_minimized">
-        <Icon outline="ChevronDoubleDown" class="w-4 h-4 stroke-1 text-base-content/70" />
+        <Icon outline="Minus" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l("Minimize")}</span>
       </span>
       <span x-cloak x-show="smart_input_minimized">
