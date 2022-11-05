@@ -1,6 +1,7 @@
 defmodule Bonfire.UI.Common.ErrorView do
   use Bonfire.UI.Common.Web, :view
 
+  # TODO: use errors from Bonfire.Fail instead
   def codes,
     do: %{
       403 => l("Not allowed"),
