@@ -1,7 +1,7 @@
 <!-- <div class="relative"> -->
-<div role="banner" class="">
+<div role="banner" class="flex-1 w-full ">
   <div class="flex items-center">
-    <div class="flex items-center flex-1 space-x-3 text-left">
+    <div class="flex items-center flex-1 space-x-3 text-center">
       <#slot {@left_action}>
       </#slot>
 
@@ -14,21 +14,22 @@
                   <LiveRedirect class="btn btn-sm btn-ghost btn-circle" to={extension[:href] || "/"}>
                     <Icon :if={extension[:icon]} iconify={extension[:icon]} class="w-[20px]" />
                   </LiveRedirect>
-                  <span class="ml-2 truncate text-ellipsis" :if={not is_nil(@page_title) and @page_title != name}>{@page_title}</span>
+                  <span class="ml-2 text-lg font-semibold truncate text-ellipsis" :if={not is_nil(@page_title)}>{@page_title}</span>
                 </li>
               {#match _}
                 <#slot {@breadcrumbs}>
-                  <li class="truncate text-ellipsis" :if={@page_title}>{@page_title}</li>
+                  <li class="text-lg font-semibold truncate text-ellipsis" :if={@page_title}>{@page_title}</li>
                 </#slot>
             {/case}
           </ul>
         </div>
       </div>
-
-      <#slot {@right_action}>
-      </#slot>
+      <div class="flex items-center w-auto">
+        <#slot {@right_action}>
+        </#slot>
+      </div>
     </div>
   </div>
-  <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
+  <!-- <Bonfire.UI.Common.PreviewContentLive id="preview_content" /> -->
 </div>
 <!-- </div> -->

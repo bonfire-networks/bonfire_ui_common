@@ -22,4 +22,7 @@ defmodule Bonfire.UI.Common.LoggedHeaderLive do
 
   prop selected_tab, :any, default: nil
   prop nav_items, :list, default: []
+
+  @doc "The page title"
+  slot hero
 end

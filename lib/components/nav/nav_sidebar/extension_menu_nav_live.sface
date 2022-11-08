@@ -2,7 +2,7 @@
   <Icon iconify={@__context__[:current_extension][:icon]} />
   <span>{@__context__[:current_extension][:name]}</span>
 </div>
-<div class="space-y-1 rounded-none menu menu-compact">
+<div class="mb-6 space-y-1 rounded-none menu menu-compact">
   {#for nav <- @nav_items}
     {#case nav}
       {#match %{}}

@@ -1,4 +1,4 @@
-<div class="flex">
+<div class="flex w-full">
   {#case Bonfire.UI.Common.SmartInputLive.active_smart_input_components(
       @smart_input_component,
       @create_object_type
@@ -7,6 +7,7 @@
       <SmartInputButtonLive
         :for={component <- components}
         component={component}
+        class={@class}
         smart_input_prompt={@smart_input_prompt || l("Compose")}
         icon="gridicons:create"
       />
@@ -17,6 +18,7 @@
         component={Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
           Bonfire.UI.Social.WritePostContentLive}
         smart_input_prompt={l("Compose")}
+        class={@class}
         icon="heroicons-solid:pencil-alt"
       />
   {/case}

@@ -207,8 +207,9 @@
   </div>
 </div>
 
-<div class="hidden md:block" x-data="{hovered_apps: false}">
-  <button
+<div class="min-w-[64px] hidden md:flex items-center place-content-center bg-base-300 w-[65px] h-[56px] mr-4" x-data="{hovered_apps: false}">
+  <Bonfire.UI.Common.LogoLinkLive href="/?dashboard" />
+  <!-- <button
     @click="open_extensions_sidebar = ! open_extensions_sidebar"
     @mouseenter="hovered_apps = true"
     @mouseleave="hovered_apps = false"
@@ -217,7 +218,7 @@
     id="option-menu-button"
     aria-expanded="true"
     aria-haspopup="true"
-  >
+    >
     <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
     <Icon iconify="mdi:dots-grid" class="w-5 h-5" />
   </button>
@@ -227,7 +228,7 @@
     x-show="open_extensions_sidebar"
     @keydown.window.escape="open_extensions_sidebar = false;"
     class="fixed top-[0] right-0 bottom-0 left-0 z-[200] overflow-hidden"
-  >
+    >
     <div class="inset-0 h-full overflow-hidden">
       <div
         @click="open_extensions_sidebar = false"
@@ -265,5 +266,5 @@
         </div>
       </section>
     </div>
-  </div>
+  </div> -->
 </div>

@@ -3,7 +3,7 @@
   class={
     "#{@modal_class} absolute h-full overflow-y-auto overflow-x-hidden inset-0 bg-base-300",
     invisible: !@show,
-    "visible z-[900]": @show
+    "visible z-[999]": @show
   }
   {...@opts}
 >

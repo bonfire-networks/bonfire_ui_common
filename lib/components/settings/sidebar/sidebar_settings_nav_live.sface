@@ -4,9 +4,9 @@
   </span>
 </li> -->
 <nav class="" role="navigation" aria-label={l("Settings navigation")}>
-  <ul class="mt-5 space-y-1 menu menu-compact">
+  <ul class="flex flex-col gap-1 menu menu-compact">
     <li>
-      <LiveRedirect to="/settings" class={"", active: @selected_tab == "dashboard"}>
+      <LiveRedirect to="/settings" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "dashboard"}>
         <Icon outline="Home" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "dashboard"} />
         {l("Dashboard")}
       </LiveRedirect>
@@ -25,13 +25,13 @@
 
     <div x-cloak x-show="open" x-collapse>
       <li :if={ulid(@current_user)}>
-        <LivePatch to="/settings/profile" class={"", active: @selected_tab == "profile"}>
+        <LivePatch to="/settings/profile" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "profile"}>
           <Icon outline="User" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "profile"} />
           {l("Profile")}
         </LivePatch>
       </li>
       <li>
-        <LivePatch to="/settings/preferences" class={"", active: @selected_tab == "preferences"}>
+        <LivePatch to="/settings/preferences" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "preferences"}>
           <Icon
             outline="Adjustments"
             class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "preferences"}
@@ -41,7 +41,7 @@
       </li>
 
       <li>
-        <LivePatch to="/settings/account" class={"", active: @selected_tab == "account"}>
+        <LivePatch to="/settings/account" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "account"}>
           <Icon outline="Key" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "account"} />
           {l("Account Settings")}
         </LivePatch>
@@ -49,7 +49,7 @@
 
       <li :if={module_enabled?(Bonfire.Data.SharedUser, @__context__) &&
         Settings.get(:experimental_features_enabled, false, @__context__)}>
-        <LivePatch to="/settings/shared_user" class={"", active: @selected_tab == "shared_user"}>
+        <LivePatch to="/settings/shared_user" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "shared_user"}>
           <Icon
             outline="UserGroup"
             class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "shared_user"}
@@ -71,14 +71,14 @@
     </li>
     <ul x-cloak x-show="open" x-collapse class="menu menu-compact">
       <li>
-        <LivePatch to="/settings/members" class={"", active: @selected_tab == "members"}>
+        <LivePatch to="/settings/members" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "members"}>
           <Icon outline="Users" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "members"} />
           {l("Members")}
         </LivePatch>
       </li>
 
       <li>
-        <LivePatch to="/settings/roles" class={"", active: @selected_tab == "roles"}>
+        <LivePatch to="/settings/roles" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "roles"}>
           <Icon
             iconify="bx:ShapeCircle"
             class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "roles"}
@@ -88,7 +88,7 @@
       </li>
 
       <li>
-        <LivePatch to="/settings/invites" class={"", active: @selected_tab == "invites"}>
+        <LivePatch to="/settings/invites" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "invites"}>
           <Icon outline="Mail" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "invites"} />
           {l("Invites")}
         </LivePatch>
@@ -108,20 +108,20 @@
 
     <div x-cloak x-show="open" x-collapse>
       <li>
-        <LivePatch to="/settings/flags" class={"", active: @selected_tab == "flags"}>
+        <LivePatch to="/settings/flags" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "flags"}>
           <Icon outline="Flag" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "flags"} />
           {l("Flagged")}
         </LivePatch>
       </li>
 
       <li>
-        <LivePatch to="/settings/ghosted" class={"", active: @selected_tab == "ghosted"}>
+        <LivePatch to="/settings/ghosted" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "ghosted"}>
           <Icon solid="MinusCircle" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "ghosted"} />
           {l("Ghosted")}
         </LivePatch>
       </li>
       <li>
-        <LivePatch to="/settings/silenced" class={"", active: @selected_tab == "silenced"}>
+        <LivePatch to="/settings/silenced" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "silenced"}>
           <Icon outline="Ban" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "silenced"} />
           {l("Silenced")}
         </LivePatch>
@@ -187,7 +187,7 @@
 
     <div x-cloak x-show="open" x-collapse>
       <li>
-        <LivePatch to="/settings/extensions" class={"", active: @selected_tab == "extensions"}>
+        <LivePatch to="/settings/extensions" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "extensions"}>
           <Icon outline="Puzzle" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "extensions"} />
           {l("Manage Extensions")}
         </LivePatch>
@@ -210,7 +210,7 @@
       to="/posts"
       class={
         "",
-        active: @selected_tab == "posts"
+     rounded-md   'bg-base-content/10 ': @selected_tab == "posts"
       }
     >
       <Icon outline="ChatAlt" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "posts"} />
@@ -221,7 +221,7 @@
 <!-- <li>
   <LivePatch 
     to={"/settings/ghosted"}
-    class={"",  "active": @selected_tab == "ghosted"}>
+    class={""rounded-md,  "'bg-base-content/10 '": @selected_tab == "ghosted"}>
     <Icon outline="MinusCircle" class={"inline-block w-4 h-4 mr-2 stroke-current", "": @selected_tab == "ghosted"} />
     {l "Ghosted"}
   </LivePatch>
@@ -229,7 +229,7 @@
 <li>
   <LivePatch 
     to={"/settings/silenced"}
-    class={"",  "active": @selected_tab == "silenced"}>
+    class={""rounded-md,  "'bg-base-content/10 '": @selected_tab == "silenced"}>
     <Icon outline="VolumeOff" class={"inline-block w-4 h-4 mr-2 stroke-current", "": @selected_tab == "silenced"} />
     {l "Silenced"}
   </LivePatch>
@@ -247,7 +247,7 @@
     to="/settings/instance_info"
     class={
       "",
-      active: @selected_tab == "instance_info"
+   rounded-md   'bg-base-content/10 ': @selected_tab == "instance_info"
     }
   >
     <Icon
@@ -264,7 +264,7 @@
     to="/settings/instance"
     class={
       "",
-      active: @selected_tab == "instance"
+   rounded-md   'bg-base-content/10 ': @selected_tab == "instance"
     }
   >
     <Icon
@@ -278,7 +278,7 @@
 <!-- <li :if={Bonfire.Boundaries.can?(@__context__, :toggle, :instance)}>
   <LivePatch 
     to="/settings/extensions"
-    class={"",  "active": @selected_tab == "extensions"}>
+    class={""rounded-md,  "'bg-base-content/10 '": @selected_tab == "extensions"}>
   <Icon outline="Puzzle" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "feed"} />
   {l "Extensions"}
   </LivePatch>
@@ -289,7 +289,7 @@
     to="/settings/terms"
     class={
       "",
-      active: @selected_tab == "terms"
+   rounded-md   'bg-base-content/10 ': @selected_tab == "terms"
     }
   >
     <Icon
@@ -308,7 +308,7 @@
     to="/settings/invites"
     class={
       "",
-      active: @selected_tab == "invites"
+   rounded-md   'bg-base-content/10 ': @selected_tab == "invites"
     }
   >
     <Icon
@@ -324,7 +324,7 @@
   >
   <LivePatch 
     to={"/settings/instance_circles"}
-    class={"",  "active": @selected_tab == "instance_circles"}>
+    class={""rounded-md,  "'bg-base-content/10 '": @selected_tab == "instance_circles"}>
     <Icon iconify="bx:ShapeCircle" class="inline-block w-5 h-5 mr-2" />
     {l "Instance Roles / Circles"}
   </LivePatch>
@@ -335,7 +335,7 @@
   >
   <LivePatch 
     to={"/settings/instance_acls"}
-    class={"",  "active": @selected_tab == "instance_acls"}>
+    class={""rounded-md,  "'bg-base-content/10 '": @selected_tab == "instance_acls"}>
     <Icon outline="LockClosed" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "feed"} />
     {l "Local Boundaries"}
   </LivePatch>
@@ -344,7 +344,7 @@
 <!-- <li>
   <LivePatch 
     to={"/settings/acl/#{Bonfire.Boundaries.Fixtures.instance_acl}"}
-    class={"",  "active": @id == Bonfire.Boundaries.Fixtures.instance_acl}>
+    class={""rounded-md,  "'bg-base-content/10 '": @id == Bonfire.Boundaries.Fixtures.instance_acl}>
     <Icon iconify="bxs:EditLocation" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "feed"} />
     {l "Instance Boundaries"}
   </LivePatch>
@@ -359,7 +359,7 @@
   >
   <LivePatch 
     to={"/settings/flags"}
-    class={"",  "active": @selected_tab == "flags"}>
+    class={""rounded-md,  "'bg-base-content/10 '": @selected_tab == "flags"}>
     <Icon outline="Flag" class={"inline-block w-4 h-4 mr-2 stroke-current", "": @selected_tab == "extensions"} />
     {l "Flags"}
   </LivePatch>
@@ -368,7 +368,7 @@
 <!-- <li :if={Bonfire.Boundaries.can?(@__context__, :block, :instance)}>
   <LivePatch 
     to={"/settings/instance_ghosted"}
-    class={"",  "active": @selected_tab == "instance_ghosted"}>
+    class={""rounded-md,  "'bg-base-content/10 '": @selected_tab == "instance_ghosted"}>
     <Icon outline="MinusCircle" class={"inline-block w-4 h-4 mr-2 stroke-current", "": @selected_tab == "extensions"} />
     {l "Ghosted instance-wide"}
   </LivePatch>
@@ -376,7 +376,7 @@
 <li :if={Bonfire.Boundaries.can?(@__context__, :block, :instance)}>
   <LivePatch 
     to={"/settings/instance_silenced"}
-    class={"",  "active": @selected_tab == "instance_silenced"}>
+    class={""rounded-md,  "'bg-base-content/10 '": @selected_tab == "instance_silenced"}>
     <Icon outline="VolumeOff" class={"inline-block w-4 h-4 mr-2 stroke-current", "": @selected_tab == "extensions"} />
     {l "Silenced instance-wide"}
   </LivePatch>

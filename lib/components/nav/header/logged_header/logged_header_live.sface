@@ -1,98 +1,49 @@
 <div class={
-  "flex items-center border-b border-base-content/5 md:justify-between pr-4 py-1 md:gap-4 h-[56px] bg-base-100 sticky z-[999] top-0",
+  "flex items-center md:justify-between md:gap-6 h-[56px] bg-base-300 sticky z-[999] top-0",
   "hidden md:flex": @without_mobile_logged_header
 }>
-  <div class="flex items-center md:w-[230px] desktop-lg:w-[320px]">
+  <div class="flex flex-1 desktop-lg:max-w-[350px] items-center tablet-lg:w-[300px] md:w-[300px] tablet-lg:max-w-[300px] md:min-w-[300px] md:max-w-[300px] w-full h-[56px] pr-4 md:border-r border-base-content/10 desktop-lg:w-[350px]">
     <Bonfire.UI.Common.AppsLive
       nav_items={@nav_items}
       sidebar_widgets={@sidebar_widgets}
       page={@page}
       selected_tab={@selected_tab}
     />
-    <div class="hidden md:block">
-      <Bonfire.UI.Common.LogoLinkLive with_name href="/?dashboard" />
-    </div>
-    <!-- <div class="hidden md:block tablet-lg:w-full">
+    <div class="hidden md:block max-w-[420px] w-full">
       <Dynamic.Component
         :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
         module={Bonfire.Search.Web.FormLive}
         search_limit={5}
       />
+    </div>
+    <!-- <div class="hidden md:block">
+      <Bonfire.UI.Common.LogoLinkLive with_name href="/?dashboard" />
     </div> -->
-    <!-- <Dynamic.Component
-      module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, nil}, 0)}
-      page_title={@page_title}
-      page_header_drawer={e(@page_header_drawer, false)}
-      {...elem(@custom_page_header || {nil, []}, 1) |> debug("custom_page_header")}
-    >
-      <:right_action>
-        <Dynamic.Component
-          :if={@current_user && @page_header_aside}
-          :for={{component, component_assigns} <- e(@page_header_aside, [])}
-          module={component}
-          {...component_assigns}
-        />
-      </:right_action>
-    </Dynamic.Component> -->
+    
   </div>
-  <div class="flex-1 md:hidden">
+  <!-- <div class="flex-1 md:hidden">
     <Bonfire.UI.Common.LogoLinkLive with_name href="/?dashboard" />
-  </div>
+  </div> -->
 
-  <div class="hidden md:block max-w-[420px] w-full">
+  
+<Dynamic.Component
+  module={Bonfire.UI.Common.PageHeaderLive}
+  page_title={@page_title}
+  page_header_drawer={e(@page_header_drawer, false)}
+  {...elem(@custom_page_header || {nil, []}, 1) |> debug("custom_page_header")}
+>
+  <:right_action>
     <Dynamic.Component
-      :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
-      module={Bonfire.Search.Web.FormLive}
-      search_limit={5}
+      :if={@current_user && @page_header_aside}
+      :for={{component, component_assigns} <- e(@page_header_aside, [])}
+      module={component}
+      {...component_assigns}
     />
-  </div>
+  </:right_action>
+</Dynamic.Component>
 
-  <!-- <ul class="hidden justify-between gap-2 md:flex items-center max-w-[500px] w-full menu menu-horizontal menu-compact">
-    <li
-      data-tip={l("My feed")}
-      class={"tooltip tooltip-bottom flex-1", "border-b-2 border-primary": @page == "feed"}
-      >
-      <LiveRedirect to="/feed" class="w-full pb-3 rounded-md place-content-center">
-        <Icon iconify="noto:newspaper" class="w-6 h-6 text-base-content/80" />
-        <span class="sr-only">{l("My feed")}</span>
-      </LiveRedirect>
-    </li>
-    <li
-      data-tip={l("Local feed")}
-      class={"flex-1 tooltip tooltip-bottom", "border-b-2 border-primary": @page == "local"}
-    >
-      <LiveRedirect
-        to={if current_user(@current_user), do: "/feed/local", else: "/local"}
-        class="w-full pb-3 rounded-md place-content-center"
-      >
-        <Icon iconify="material-symbols:camping-rounded" class="w-6 h-6 text-base-content/80" />
-        <span class="sr-only">{l("Local")}</span>
-      </LiveRedirect>
-    </li>
-    <li
-      data-tip={l("Remote feed")}
-      class={"flex-1 tooltip tooltip-bottom", "border-b-2 border-primary": @page == "federation"}
-    >
-      <LiveRedirect
-        to={if current_user(@current_user), do: "/feed/federation", else: "/federation"}
-        class="w-full pb-3 rounded-md place-content-center"
-      >
-        <Icon iconify="el:network" class="w-6 h-6 text-base-content/80" />
-        <span class="sr-only">{l("Remote")}</span>
-      </LiveRedirect>
-    </li>
-    <li
-      data-tip={l("My favourites")}
-      class={"flex-1 tooltip tooltip-bottom", "border-b-2 border-primary": @page == "likes"}
-    >
-      <LiveRedirect to="/feed/likes" class="w-full pb-3 rounded-md place-content-center">
-        <Icon iconify="bi:stars" class="w-6 h-6 text-base-content/80" />
-        <span class="sr-only">{l("Favourites")}</span>
-      </LiveRedirect>
-    </li>
-  </ul> -->
-
-  <div class="flex items-center gap-2 justify-end">
+  
+  <div class="flex flex-1 tablet-lg:w-[300px] tablet-lg:max-w-[300px] desktop-lg:w-[420px] desktop-lg:max-w-[420px] h-[56px] px-6 tablet-lg:border-l border-base-content/10 items-center justify-end gap-4">
     <Bonfire.UI.Common.SmartInputContainerLive
       hide_smart_input={@hide_smart_input}
       showing_within={@showing_within}
