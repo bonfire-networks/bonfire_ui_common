@@ -1,8 +1,8 @@
-<div class="flex items-center gap-5 pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">
+<div class="flex items-center gap-5 pb-3 mt-6 ml-4 text-sm font-medium tracking-wider text-base-content/60">
   <Icon iconify={@__context__[:current_extension][:icon]} />
   <span>{@__context__[:current_extension][:name]}</span>
 </div>
-<div class="mb-6 space-y-1 rounded-none menu menu-compact">
+<div class="space-y-1 rounded-none menu menu-compact">
   {#for nav <- @nav_items}
     {#case nav}
       {#match %{}}

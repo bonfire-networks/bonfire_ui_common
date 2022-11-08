@@ -1,9 +1,41 @@
 
     {#if !is_list(@sidebar_widgets[:users][:main])}
   <div class="flex gap-4">
+    <nav class="">
+      <div class="bg-base-200 widget sticky top-0 w-[50px]">
+        <div class="inset-0 h-full">
+          <div class="flex flex-col items-center gap-3 py-4">
+            <div
+              class="relative z-50 tooltip tooltip-right"
+              data-tip={extension[:name]}
+              :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
+              :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}>
+            <LinkLive
+              class={
+                "btn btn-square btn-sm btn-ghost",
+                "!bg-base-content/10":
+                  @__context__[:current_extension][:name] ==
+                    extension[:name]
+              }
+              to={extension[:href]}
+              >
+              <Icon iconify={extension[:icon]} class="w-5 h-5" />
 
+            </LinkLive>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
 
-    <nav class="hidden w-full pt-6 mx-2 md:block" role="navigation" aria-label={l("Extension navigation")}>
+    <nav class="hidden w-full mr-4 md:block" role="navigation" aria-label={l("Extension navigation")}>
+      <!-- <div :if={!@nav_items} class="pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
+      <Bonfire.UI.Common.ExploreNavLive
+        page={@page}
+        :if={!@nav_items}
+        selected_tab={@selected_tab}
+        show_extensions_nav
+      /> -->
 
       <Bonfire.UI.Common.ExtensionMenuNavLive
         :if={@nav_items}
@@ -11,14 +43,7 @@
         page={@page}
         nav_items={@nav_items}
       />
-      
-      <div class="pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
 
-      <Bonfire.UI.Common.ExploreNavLive
-        page={@page}
-        selected_tab={@selected_tab}
-        show_extensions_nav
-      />
       <Dynamic.LiveComponent
         :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive) and @current_user}
         module={Bonfire.Classify.Web.CategoriesNavLive}
