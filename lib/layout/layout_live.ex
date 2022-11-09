@@ -134,11 +134,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
             />
           </div>
 
-          <div class={
+          <div 
+          id="main_section"  
+          class={
             "gap-2 md:gap-0 relative z-[105] w-full col-span-1",
             "!max-w-screen-lg mx-auto": @without_sidebar,
             "!max-w-full": @full_page
-          }>
+            }>
             <div class={
               "justify-between mt-0 grid tablet-lg:grid-cols-[1fr_300px] desktop-lg:grid-cols-[1fr_420px] grid-cols-1",
               "md:mt-6": @nav_header == false,
@@ -147,8 +149,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
             }>
               <div class="relative grid invisible_frame">
                 <div class="pb-12 md:mb-0 md:overflow-y-visible md:h-full">
-                  <div class="h-full" id="inner_content">
-                    <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
+                  <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
+                  <div class="h-full" id="inner">
                     {@inner_content}
                   </div>
                 </div>

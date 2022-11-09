@@ -4,8 +4,7 @@
     phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
     phx-hook="ClosePreview"
     aria-label={l("Go back to the previous page")}
-    data-tip={l("Go back to the previous page")}
-    class="btn font-normal normal-case btn-ghost btn-sm btn-circle !inline-flex tooltip tooltip-bottom"
+    class="btn font-normal normal-case btn-ghost btn-sm btn-circle !inline-flex"
   >
     <Icon outline="ArrowLeft" class="w-5 h-5 text-base-content" />
   </button>
@@ -14,8 +13,7 @@
     x-show="history.length > 1 && document.referrer.indexOf(window.location.host) !== -1"
     href="javascript:window.history.back()"
     aria-label={l("Go back to the previous page")}
-    data-tip={l("Go back to the previous page")}
-    class="btn normal-case relative z-50 font-normal btn-ghost btn-sm btn-circle !inline-flex tooltip tooltip-bottom"
+    class="btn normal-case relative z-50 font-normal btn-ghost btn-sm btn-circle !inline-flex"
   >
     <Icon outline="ArrowLeft" class="w-5 h-5 text-base-content" />
   </a>

@@ -1,4 +1,3 @@
-<div>
   <Bonfire.UI.Common.OpenModalLive
     id={Pointers.ULID.generate()}
     reusable_modal_component={Bonfire.UI.Common.PreviewContentLive}
@@ -11,4 +10,3 @@
     title_text={@title_text}
     modal_assigns={@modal_assigns}
   />
-</div>
