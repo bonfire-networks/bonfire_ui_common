@@ -4,6 +4,6 @@ defmodule Bonfire.UI.Social.SelectRecipientsLive do
   prop users, :list
   prop tab_id, :string
   prop to_boundaries, :list
-  prop to_circles, :list
+  prop to_circles, :list, default: []
 
 end

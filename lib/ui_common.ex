@@ -643,7 +643,7 @@ defmodule Bonfire.UI.Common do
       live_exception(
         socket,
         return_key,
-        "The data provided caused an exceptional error and could do not be inserted or updated: " <>
+        "The data provided caused an unexpected error and could do not be inserted or updated: " <>
           error_msg(cs),
         cs,
         nil
@@ -684,7 +684,7 @@ defmodule Bonfire.UI.Common do
       live_exception(
         socket,
         return_key,
-        "An exceptional error occured: ",
+        "An exceptional error occurred: ",
         error,
         __STACKTRACE__
       )
