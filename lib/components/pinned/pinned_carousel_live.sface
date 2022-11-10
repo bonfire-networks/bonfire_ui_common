@@ -1,7 +1,9 @@
-<section phx-hook="CarouselHook" id="pinned_carousel" aria-label="pinned stuff" class="carousel">
+<section  class="glider-contain" aria-label="pinned stuff">
+  <div phx-hook="CarouselHook" id="pinned_carousel" class="gap-3 glider">
   {#for %{edge: %{object: pin}} <- @pins}
     {#case pin}
       {#match %{post_content: %{id: _}}}
+      <div>
         <div class="relative w-full p-4 rounded-lg shadow-xl bg-base-300 ">
           <Icon iconify="bi:pin-angle-fill" class="absolute w-5 h-5 text-error/70 right-3 top-3" />
           <LiveRedirect
@@ -15,6 +17,7 @@
             class="mt-2 text-sm text-base-content/80 line-clamp-3"
           >{rich(e(pin, :post_content, :html_body, nil))}</div>
         </div>
+      </div>
       {#match _}
         <div class="">
           <div class="flex items-center gap-2">
@@ -34,7 +37,6 @@
         </div>
     {/case}
   {/for}
-  <button aria-label="Previous" class="glider-prev">«</button>
-  <button aria-label="Next" class="glider-next">»</button>
+  </div>
   <div role="tablist" class="dots"></div>
 </section>

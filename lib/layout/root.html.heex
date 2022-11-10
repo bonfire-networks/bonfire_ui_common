@@ -3,7 +3,6 @@
   id="root"
   data-open="false"
   class="bg-base-300"
-  style="overflow-x: hidden"
   lang="en"
   data-theme={
     Settings.get(
@@ -18,6 +17,7 @@
 
     <Bonfire.UI.Common.SEO.juice item={assigns[:seo] || []} page_title={assigns[:page_title]} />
 
+   
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -28,6 +28,7 @@
     <% end %>
 
     <%= csrf_meta_tag() %>
+
   </head>
   <body id="layout-root">
     <style>

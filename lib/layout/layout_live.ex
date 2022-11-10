@@ -150,7 +150,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               <div class="relative grid border-t invisible_frame border-base-content/10">
                 <div class="pb-12 md:pb-0 md:overflow-y-visible md:h-full">
                   <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
-                  <div id="inner">
+                  <div id="inner" class="">
                     {@inner_content}
                   </div>
                 </div>
