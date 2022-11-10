@@ -147,7 +147,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               "!grid-cols-1": @current_user && !is_list(@sidebar_widgets[:users][:secondary]),
               "!grid-cols-1": is_nil(@current_user) && !is_list(@sidebar_widgets[:guests][:secondary])
             }>
-              <div class="relative grid invisible_frame">
+              <div class="relative grid border-t invisible_frame border-base-content/10">
                 <div class="pb-12 md:mb-0 md:overflow-y-visible md:h-full">
                   <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
                   <div class="h-full" id="inner">
