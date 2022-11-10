@@ -2,9 +2,9 @@
 <div role="banner" class="flex-1 w-full ">
   <div class="flex items-center">
     <div class="flex items-center flex-1 space-x-3 text-center">
-      <#slot {@left_action}>
-      </#slot>
-
+      <Bonfire.UI.Common.BackButtonLive 
+        :if={@back}
+        showing_within={@showing_within} />
       <div class="flex-1">
         <div class="breadcrumbs">
           <ul>

@@ -29,6 +29,7 @@
 <Dynamic.Component
   module={Bonfire.UI.Common.PageHeaderLive}
   page_title={@page_title}
+  showing_within={@showing_within}
   page_header_drawer={e(@page_header_drawer, false)}
   {...elem(@custom_page_header || {nil, []}, 1) |> debug("custom_page_header")}
 >

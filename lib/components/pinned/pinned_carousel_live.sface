@@ -1,41 +1,40 @@
-<section phx-hook="CarouselHook" id="pinned_carousel" aria-label="pinned stuff" class="splide">
-  <div class="splide__track max-h-[200px]">
-    <ul class="splide__list">
-      {#for %{edge: %{object: pin}} <- @pins}
-        {#case pin}
-          {#match %{post_content: %{id: _}}}
-            <li class="relative w-full p-4 border rounded-lg shadow border-base-content/5 bg-base-100 splide__slide">
-              <Icon iconify="bi:pin-angle-fill" class="absolute w-5 h-5 text-error/70 right-3 top-3" />
-              <LiveRedirect
-                to={path(pin)}
-                class="text-lg leading-[1.5rem] font-bold tracking-wider link link-hover"
-              >{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
-                  rich(e(pin, :post_content, :html_body, ""))}</LiveRedirect>
+<section phx-hook="CarouselHook" id="pinned_carousel" aria-label="pinned stuff" class="carousel">
+  {#for %{edge: %{object: pin}} <- @pins}
+    {#case pin}
+      {#match %{post_content: %{id: _}}}
+        <div class="relative w-full p-4 rounded-lg shadow-xl bg-base-300 ">
+          <Icon iconify="bi:pin-angle-fill" class="absolute w-5 h-5 text-error/70 right-3 top-3" />
+          <LiveRedirect
+            to={path(pin)}
+            class="text-lg leading-[1.5rem] font-bold tracking-wider link link-hover"
+          >{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
+              rich(e(pin, :post_content, :html_body, ""))}</LiveRedirect>
+          <div
+            :if={e(pin, :post_content, :name, nil) ||
+              (e(pin, :name, nil) && e(pin, :post_content, :html_body, nil))}
+            class="mt-2 text-sm text-base-content/80 line-clamp-3"
+          >{rich(e(pin, :post_content, :html_body, nil))}</div>
+        </div>
+      {#match _}
+        <div class="">
+          <div class="flex items-center gap-2">
+            <div class="rounded w-7 h-7 bg-accent" />
+            <LiveRedirect to={path(pin)} class="flex-1 text-sm font-semibold link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
+            </LiveRedirect>
+          </div>
+          <div class="flex items-center gap-2 mt-4">
+            <div class="flex flex-1 w-full h-3 text-xs rounded-full bg-base-content/10">
               <div
-                :if={e(pin, :post_content, :name, nil) ||
-                  (e(pin, :name, nil) && e(pin, :post_content, :html_body, nil))}
-                class="mt-2 text-sm text-base-content/80 line-clamp-3"
-              >{rich(e(pin, :post_content, :html_body, nil))}</div>
-            </li>
-          {#match _}
-            <li class="splide__slide">
-              <div class="flex items-center gap-2">
-                <div class="rounded w-7 h-7 bg-accent" />
-                <LiveRedirect to={path(pin)} class="flex-1 text-sm font-semibold link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
-                </LiveRedirect>
-              </div>
-              <div class="flex items-center gap-2 mt-4">
-                <div class="flex flex-1 w-full h-3 text-xs rounded-full bg-base-content/10">
-                  <div
-                    style="width: 0%"
-                    class="flex flex-col justify-center shadow-none bg-success whitespace-nowrap"
-                  />
-                </div>
-                <div class="text-xs font-medium text-base-content/80">0 of 3</div>
-              </div>
-            </li>
-        {/case}
-      {/for}
-    </ul>
-  </div>
+                style="width: 0%"
+                class="flex flex-col justify-center shadow-none bg-success whitespace-nowrap"
+              />
+            </div>
+            <div class="text-xs font-medium text-base-content/80">0 of 3</div>
+          </div>
+        </div>
+    {/case}
+  {/for}
+  <button aria-label="Previous" class="glider-prev">«</button>
+  <button aria-label="Next" class="glider-next">»</button>
+  <div role="tablist" class="dots"></div>
 </section>
