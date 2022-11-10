@@ -66,7 +66,7 @@
           })}
           {l("Send")}
         {#else}
-          {l("Post")}
+          {@submit_label || l("Post")}
         {/if}
       </button>
     </div>

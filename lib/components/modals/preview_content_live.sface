@@ -9,7 +9,7 @@
 >
   <div :if={@show} class="relative z-30">
     <div class="p-0 z-[910] modal_invisible relative" data-id="modal-contents">
-        <!-- <button
+      <!-- <button
           id="close_preview"
           phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
           phx-hook="ClosePreview"

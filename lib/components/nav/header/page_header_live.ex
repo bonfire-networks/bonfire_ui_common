@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Common.PageHeaderLive do
   prop back, :boolean, default: false, required: false
   prop page_header_drawer, :boolean, default: false
   prop showing_within, :string, default: nil
-  
+
   slot default
   slot left_action
   slot breadcrumbs

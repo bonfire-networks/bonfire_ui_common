@@ -6,7 +6,10 @@
 <nav class="" role="navigation" aria-label={l("Settings navigation")}>
   <ul class="flex flex-col gap-1 menu menu-compact">
     <li>
-      <LiveRedirect to="/settings" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "dashboard"}>
+      <LiveRedirect
+        to="/settings"
+        class={"rounded-md", "bg-base-content/10 ": @selected_tab == "dashboard"}
+      >
         <Icon outline="Home" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "dashboard"} />
         {l("Dashboard")}
       </LiveRedirect>
@@ -25,13 +28,19 @@
 
     <div x-cloak x-show="open" x-collapse>
       <li :if={ulid(@current_user)}>
-        <LivePatch to="/settings/profile" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "profile"}>
+        <LivePatch
+          to="/settings/profile"
+          class={"rounded-md", "bg-base-content/10 ": @selected_tab == "profile"}
+        >
           <Icon outline="User" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "profile"} />
           {l("Profile")}
         </LivePatch>
       </li>
       <li>
-        <LivePatch to="/settings/preferences" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "preferences"}>
+        <LivePatch
+          to="/settings/preferences"
+          class={"rounded-md", "bg-base-content/10 ": @selected_tab == "preferences"}
+        >
           <Icon
             outline="Adjustments"
             class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "preferences"}
@@ -41,7 +50,10 @@
       </li>
 
       <li>
-        <LivePatch to="/settings/account" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "account"}>
+        <LivePatch
+          to="/settings/account"
+          class={"rounded-md", "bg-base-content/10 ": @selected_tab == "account"}
+        >
           <Icon outline="Key" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "account"} />
           {l("Account Settings")}
         </LivePatch>
@@ -49,7 +61,10 @@
 
       <li :if={module_enabled?(Bonfire.Data.SharedUser, @__context__) &&
         Settings.get(:experimental_features_enabled, false, @__context__)}>
-        <LivePatch to="/settings/shared_user" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "shared_user"}>
+        <LivePatch
+          to="/settings/shared_user"
+          class={"rounded-md", "bg-base-content/10 ": @selected_tab == "shared_user"}
+        >
           <Icon
             outline="UserGroup"
             class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "shared_user"}
@@ -108,20 +123,29 @@
 
     <div x-cloak x-show="open" x-collapse>
       <li>
-        <LivePatch to="/settings/flags" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "flags"}>
+        <LivePatch
+          to="/settings/flags"
+          class={"rounded-md", "bg-base-content/10 ": @selected_tab == "flags"}
+        >
           <Icon outline="Flag" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "flags"} />
           {l("Flagged")}
         </LivePatch>
       </li>
 
       <li>
-        <LivePatch to="/settings/ghosted" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "ghosted"}>
+        <LivePatch
+          to="/settings/ghosted"
+          class={"rounded-md", "bg-base-content/10 ": @selected_tab == "ghosted"}
+        >
           <Icon solid="MinusCircle" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "ghosted"} />
           {l("Ghosted")}
         </LivePatch>
       </li>
       <li>
-        <LivePatch to="/settings/silenced" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "silenced"}>
+        <LivePatch
+          to="/settings/silenced"
+          class={"rounded-md", "bg-base-content/10 ": @selected_tab == "silenced"}
+        >
           <Icon outline="Ban" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "silenced"} />
           {l("Silenced")}
         </LivePatch>
@@ -187,7 +211,10 @@
 
     <div x-cloak x-show="open" x-collapse>
       <li>
-        <LivePatch to="/settings/extensions" class={"rounded-md", 'bg-base-content/10 ': @selected_tab == "extensions"}>
+        <LivePatch
+          to="/settings/extensions"
+          class={"rounded-md", "bg-base-content/10 ": @selected_tab == "extensions"}
+        >
           <Icon outline="Puzzle" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "extensions"} />
           {l("Manage Extensions")}
         </LivePatch>

@@ -106,7 +106,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         smart_input_opts={@smart_input_opts}
         sidebar_widgets={@sidebar_widgets}
         nav_items={e(@nav_items, [])}
-      /> 
+      />
 
       <div id="bonfire_live" class="transition duration-150 ease-in-out transform">
         <!-- :class="{'ml-[240px]': open_extensions_sidebar}" -->
@@ -134,13 +134,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
             />
           </div>
 
-          <div 
-          id="main_section"  
-          class={
-            "gap-2 md:gap-0 relative z-[105] w-full col-span-1",
-            "!max-w-screen-lg mx-auto": @without_sidebar,
-            "!max-w-full": @full_page
-            }>
+          <div
+            id="main_section"
+            class={
+              "gap-2 md:gap-0 relative z-[105] w-full col-span-1",
+              "!max-w-screen-lg mx-auto": @without_sidebar,
+              "!max-w-full": @full_page
+            }
+          >
             <div class={
               "justify-between mt-0 grid tablet-lg:grid-cols-[1fr_300px] desktop-lg:grid-cols-[1fr_420px] grid-cols-1",
               "md:mt-6": @nav_header == false,
@@ -161,7 +162,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(ulid(@current_user)))}
                 x-show={if @preview_module, do: "false", else: "true"}
                 class="items-start hidden min-h-[calc(100vh-56px)] grid-flow-row gap-6 px-6 overflow-x-hidden overflow-y-auto border-l border-base-content/10 md:pt-6 auto-rows-min tablet-lg:grid"
-                >
+              >
                 <!-- USER WIDGET SIDEBAR -->
                 <Dynamic.Component
                   :if={not is_nil(ulid(@current_user))}
