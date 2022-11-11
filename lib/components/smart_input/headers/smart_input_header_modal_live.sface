@@ -23,7 +23,7 @@
         <span class="sr-only">{l("Minimize")}</span>
       </span>
       <span x-cloak x-show="smart_input_minimized">
-        <Icon outline="ChevronDoubleUp" class="w-4 h-4 stroke-1 text-base-content/70" />
+        <Icon iconify="pajamas:expand-up" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l("Maximise")}</span>
       </span>
     </button>

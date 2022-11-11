@@ -143,13 +143,17 @@ defmodule Bonfire.UI.Common.LayoutLive do
             }
           >
             <div class={
-              "justify-between mt-0 grid tablet-lg:grid-cols-[1fr_300px] desktop-lg:grid-cols-[1fr_420px] grid-cols-1",
+              "mt-0 grid tablet-lg:grid-cols-[1fr_300px] desktop-lg:grid-cols-[1fr_420px] grid-cols-1",
               "md:mt-6": @nav_header == false,
               "!grid-cols-1": @current_user && !is_list(@sidebar_widgets[:users][:secondary]),
-              "!grid-cols-1": is_nil(@current_user)
+              "!grid-cols-1": is_nil(@current_user) && !is_list(@sidebar_widgets[:guests][:secondary]),
+              "max-w-screen-lg gap-4 mx-auto": is_nil(@current_user),
+              "justify-between": @current_user
             }>
-              <div class="relative grid border-t invisible_frame border-base-content/10">
-                <div class="pb-12 md:pb-0 md:overflow-y-visible md:h-full">
+              <div class={
+                "relative grid invisible_frame",
+                " border-t border-base-content/10": @current_user }>
+                <div class="pb-16 md:pb-0 md:overflow-y-visible md:h-full">
                   <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
                   <div id="inner" class="">
                     {@inner_content}
@@ -161,8 +165,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(ulid(@current_user))) or
                   (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(ulid(@current_user)))}
                 x-show={if @preview_module, do: "false", else: "true"}
-                class="items-start hidden min-h-[calc(100vh-56px)] grid-flow-row gap-6 px-6 overflow-x-hidden overflow-y-auto border-l border-base-content/10 md:pt-6 auto-rows-min tablet-lg:grid"
-              >
+                class={
+                  "items-start hidden min-h-[calc(100vh-56px)] grid-flow-row gap-6 overflow-x-hidden overflow-y-auto md:pt-6 auto-rows-min tablet-lg:grid",
+                  "px-6 border-l border-base-content/10": @current_user
+                }>
                 <!-- USER WIDGET SIDEBAR -->
                 <Dynamic.Component
                   :if={not is_nil(ulid(@current_user))}

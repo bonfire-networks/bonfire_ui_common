@@ -3,7 +3,7 @@
 
   <div class="">
     <div class={
-      "flex items-center justify-between p-2 space-x-2 border-t rounded-b-md border-base-content/10 bg-base-200 sm:px-3",
+      "flex flex-col md:flex-row md:items-center justify-between p-2 gap-3 border-t rounded-b-md border-base-content/10 bg-base-200 sm:px-3",
       "!border-none !bg-base-100 mt-2 !p-0": @thread_mode == :flat
     }>
       <div class="flex items-center flex-1 space-x-1">
@@ -57,7 +57,7 @@
            }),
            do: l("Sending..."),
            else: l("Posting...")}
-        class="capitalize btn-sm justify-self-end btn w-[8rem] btn-primary"
+        class="capitalize md:btn-sm justify-self-end btn w-full md:w-[8rem] btn-primary"
       >
         {#if is_messaging?(%{
             page: @page,
