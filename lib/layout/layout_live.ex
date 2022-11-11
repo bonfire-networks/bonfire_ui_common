@@ -146,7 +146,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               "justify-between mt-0 grid tablet-lg:grid-cols-[1fr_300px] desktop-lg:grid-cols-[1fr_420px] grid-cols-1",
               "md:mt-6": @nav_header == false,
               "!grid-cols-1": @current_user && !is_list(@sidebar_widgets[:users][:secondary]),
-              "!grid-cols-1": is_nil(@current_user) && !is_list(@sidebar_widgets[:guests][:secondary])
+              "!grid-cols-1": is_nil(@current_user)
             }>
               <div class="relative grid border-t invisible_frame border-base-content/10">
                 <div class="pb-12 md:pb-0 md:overflow-y-visible md:h-full">
