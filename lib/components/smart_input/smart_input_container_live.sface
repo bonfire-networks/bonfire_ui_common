@@ -12,7 +12,7 @@
     class="smart_input_container"
     :class="{
     'visible bg-base-200 fixed bottom-0 z-[901] transition-all shadow-xl right-0 md:right-4 top-0 md:top-auto left-0 md:left-auto max-w-full md:max-w-[calc(100vw-2rem)] max-h-[var(--inner-window-height)] overflow-x-auto':  smart_input_open,
-    '!w-[24rem] top-auto': smart_input_minimized,
+    'hidden md:block !w-[24rem] top-auto': smart_input_minimized,
     '!max-w-[500px] !bottom-auto !right-auto w-full !rounded-xl !left-1/2 -ml-[250px]':  smart_input_as == 'modal',
     'w-[40rem] bg-base-100': smart_input_open
     }"
