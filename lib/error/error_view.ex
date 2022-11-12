@@ -58,7 +58,7 @@ defmodule Bonfire.UI.Common.ErrorView do
     )
   end
 
-  def render("app.html", assigns) do
+  def render(:app, assigns) do
     show_error(
       500,
       reason(assigns) || "Please try again or contact the instance admins.",

@@ -52,4 +52,11 @@ defmodule Bonfire.UI.Common.LayoutView do
     </html>
     """
   end
+
+  def render("app.html", assigns) do
+    ~H"""
+    <%= @inner_content %>
+    """
+  end
+
 end

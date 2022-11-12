@@ -49,7 +49,7 @@ defmodule Bonfire.UI.Common.Web do
     opts =
       opts
       |> Keyword.put_new(:root, "lib")
-      |> maybe_put_layout("app.html")
+      |> maybe_put_layout(:app)
 
     quote do
       use Phoenix.Component
