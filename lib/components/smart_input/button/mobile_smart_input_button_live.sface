@@ -1,8 +1,9 @@
 <div class="items-center place-content-center modal-button fixed z-[110] right-3 bottom-20 tablet-lg:hidden">
-  <div 
+  <div
     @click="smart_input_minimized = ! smart_input_minimized"
     :class="{'!flex md:!hidden btn mb-2 mx-auto place-content-center btn-square rounded bg-base-content/10': smart_input_minimized}"
-    class="hidden">
+    class="hidden"
+  >
     <Icon iconify="fluent:drafts-16-filled" class="w-5 h-5 mx-auto" />
   </div>
   <div

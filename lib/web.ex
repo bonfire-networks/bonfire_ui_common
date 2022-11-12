@@ -3,6 +3,28 @@ defmodule Bonfire.UI.Common.Web do
 
   alias Bonfire.Common.Utils
 
+  # TODO: configurable
+  def static_paths,
+    do:
+      ~w(public assets css fonts images js favicon.ico pwa pwabuilder-sw.js robots.txt cache_manifest.json source.tar.gz index.html)
+
+  def verified_routes do
+    quote do
+      #  use Phoenix.VerifiedRoutes,
+      #    endpoint: Bonfire.Web.Endpoint,
+      #    router: Bonfire.Web.Router,
+      #    statics: Bonfire.UI.Common.Web.static_paths() ++ ["data"]
+
+      # NOTE: the above is the official way to use VerifiedRoutes but `path` conflicts with our existing reverse routing helper
+      # Phoenix.VerifiedRoutes.__using__(__MODULE__,
+      #  endpoint: Bonfire.Web.Endpoint,
+      #  router: Bonfire.Web.Router,
+      #  statics: Bonfire.UI.Common.Web.static_paths() ++ ["data"])
+
+      # import Phoenix.VerifiedRoutes, except: [path: 2, path: 3]
+    end
+  end
+
   def controller(opts \\ []) do
     opts =
       Keyword.put_new(
@@ -30,14 +52,14 @@ defmodule Bonfire.UI.Common.Web do
       |> maybe_put_layout("app.html")
 
     quote do
-      use Phoenix.View, unquote(opts)
+      use Phoenix.Component
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
-        only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
+        only: [view_module: 1, view_template: 1]
 
-      # to support Surface components in the app layout and in non-LiveViews
-      use Surface.View, unquote(opts)
+      # to support Surface components in the app layout and in non-LiveViews - FIXME: not compatible with phx 1.7?
+      # use Surface.View, unquote(opts)
       # Bonfire.Common.Extend.quoted_use_if_enabled(Surface.View)
 
       Bonfire.Common.Extend.quoted_import_if_enabled(Surface)
@@ -63,7 +85,7 @@ defmodule Bonfire.UI.Common.Web do
 
   def live_view(opts \\ []) do
     # IO.inspect(live_view: opts)
-    opts = maybe_put_layout(opts, "live.html")
+    opts = maybe_put_layout(opts, :live)
 
     quote do
       use Phoenix.LiveView, unquote(opts)
@@ -176,6 +198,8 @@ defmodule Bonfire.UI.Common.Web do
       # unquote(Bonfire.Common.Extend.quoted_use_if_enabled(Thesis.View, Bonfire.PublisherThesis.ContentAreas))
 
       import Bonfire.Common.Modularity.DeclareHelpers
+
+      unquote(verified_routes())
     end
   end
 
@@ -217,7 +241,7 @@ defmodule Bonfire.UI.Common.Web do
       opts =
         maybe_put_layout(
           opts,
-          "live.html"
+          :live
         )
 
       quote do

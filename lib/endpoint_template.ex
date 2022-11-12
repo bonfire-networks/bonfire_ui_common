@@ -41,8 +41,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         at: "/",
         from: :bonfire,
         gzip: true,
-        only:
-          ~w(public assets css fonts images js favicon.ico pwa pwabuilder-sw.js robots.txt cache_manifest.json source.tar.gz index.html)
+        only: Bonfire.UI.Common.Web.static_paths()
       )
 
       plug(Plug.Static,

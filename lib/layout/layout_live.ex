@@ -152,7 +152,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
             }>
               <div class={
                 "relative grid invisible_frame",
-                " border-t border-base-content/10": @current_user }>
+                " border-t border-base-content/10": @current_user
+              }>
                 <div class="pb-16 md:pb-0 md:overflow-y-visible md:h-full">
                   <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
                   <div id="inner" class="">
@@ -168,7 +169,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 class={
                   "items-start hidden min-h-[calc(100vh-56px)] grid-flow-row gap-6 overflow-x-hidden overflow-y-auto md:pt-6 auto-rows-min tablet-lg:grid",
                   "px-6 border-l border-base-content/10": @current_user
-                }>
+                }
+              >
                 <!-- USER WIDGET SIDEBAR -->
                 <Dynamic.Component
                   :if={not is_nil(ulid(@current_user))}
