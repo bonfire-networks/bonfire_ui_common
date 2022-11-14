@@ -11,7 +11,7 @@
   </LiveRedirect>
 
   <LiveRedirect
-    to="/search"
+    to={~p"/search"}
     class={
       "",
       active: @page == "search"

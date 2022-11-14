@@ -58,5 +58,4 @@ defmodule Bonfire.UI.Common.LayoutView do
     <%= @inner_content %>
     """
   end
-
 end

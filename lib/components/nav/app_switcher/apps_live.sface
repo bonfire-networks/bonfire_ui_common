@@ -91,27 +91,27 @@
                         </LinkLive>
                       </li>
                       <li>
-                        <LiveRedirect to="/settings" class="flex items-start gap-2 text-sm text-base-content/80">
+                        <LiveRedirect to={~p"/settings"} class="flex items-start gap-2 text-sm text-base-content/80">
                           <Icon solid="Cog" class="w-5 h-5" />
                           {l("Settings")}
                         </LiveRedirect>
                       </li>
                       <li>
-                        <LiveRedirect to="/switch-user" class="flex items-start gap-2 text-sm text-base-content/80">
+                        <LiveRedirect to={~p"/switch-user"} class="flex items-start gap-2 text-sm text-base-content/80">
                           <Icon iconify="material-symbols:switch-account" class="w-5 h-5" />
                           {l("Switch profile")}
                         </LiveRedirect>
                       </li>
                       <li>
-                        <LiveRedirect to="/logout" class="flex items-start gap-2 text-sm text-base-content/80">
+                        <LiveRedirect to={~p"/logout"} class="flex items-start gap-2 text-sm text-base-content/80">
                           <Icon iconify="material-symbols:logout" class="w-5 h-5" />
                           {l("Logout")}
                         </LiveRedirect>
                       </li>
                       <li class="">
-                        <Form for={:feedback} action="/session_redirect">
+                        <Form for={:feedback} action={~p"/session_redirect"}>
                           <!-- opts={"target": "_blank"} -->
-                          <input type="hidden" name="to" value="/write">
+                          <input type="hidden" name="to" value={~p"/write"}>
                           <input
                             type="hidden"
                             name="smart_input_text"

@@ -9,19 +9,31 @@ defmodule Bonfire.UI.Common.Web do
       ~w(public assets css fonts images js favicon.ico pwa pwabuilder-sw.js robots.txt cache_manifest.json source.tar.gz index.html)
 
   def verified_routes do
-    quote do
-      #  use Phoenix.VerifiedRoutes,
-      #    endpoint: Bonfire.Web.Endpoint,
-      #    router: Bonfire.Web.Router,
-      #    statics: Bonfire.UI.Common.Web.static_paths() ++ ["data"]
+    if Code.ensure_loaded?(Bonfire.Web.Endpoint) and Code.ensure_loaded?(Bonfire.Web.Router) do
+      quote do
+        #  use Phoenix.VerifiedRoutes,
+        #    endpoint: Bonfire.Web.Endpoint,
+        #    router: Bonfire.Web.Router,
+        #    statics: Bonfire.UI.Common.Web.static_paths() ++ ["data"]
 
-      # NOTE: the above is the official way to use VerifiedRoutes but `path` conflicts with our existing reverse routing helper
-      # Phoenix.VerifiedRoutes.__using__(__MODULE__,
-      #  endpoint: Bonfire.Web.Endpoint,
-      #  router: Bonfire.Web.Router,
-      #  statics: Bonfire.UI.Common.Web.static_paths() ++ ["data"])
+        # NOTE: the above is the official way to use VerifiedRoutes but `path` conflicts with our existing reverse routing helper
+        Phoenix.VerifiedRoutes.__using__(__MODULE__,
+          endpoint: Bonfire.Web.Endpoint,
+          router: Bonfire.Web.Router,
+          statics: Bonfire.UI.Common.Web.static_paths() ++ ["data"]
+        )
 
-      # import Phoenix.VerifiedRoutes, except: [path: 2, path: 3]
+        import Phoenix.VerifiedRoutes, except: [path: 2, path: 3]
+      end
+    else
+      quote do
+        # fallback for when router or endpoint are not available
+        defmacro sigil_p({:<<>>, _meta, _segments} = route, extra) do
+          quote do
+            Phoenix.VerifiedRoutes.unverified_path(%URI{}, nil, unquote(route), unquote(extra))
+          end
+        end
+      end
     end
   end
 

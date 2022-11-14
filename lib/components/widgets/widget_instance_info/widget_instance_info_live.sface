@@ -24,7 +24,7 @@
         🔥
         {Bonfire.Application.name()}
       </a>
-      <LiveRedirect to="/terms/changelog" class="mt-2 text-xs badge badge-ghost">
+      <LiveRedirect to={~p"/terms/changelog"} class="mt-2 text-xs badge badge-ghost">
         {Bonfire.Application.version()}
         <span class="ml-1" x-data="{msg: 'JS'}">
           <span x-text="msg">no JS</span>

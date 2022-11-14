@@ -99,7 +99,7 @@
               </span>
             </LiveRedirect>
             <LiveRedirect
-              to="/switch-user"
+              to={~p"/switch-user"}
               class="flex items-center py-2 text-sm font-medium rounded-md text-base-content"
             >
               <Icon solid="Users" class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
@@ -117,7 +117,7 @@
               </span>
             </LiveRedirect>
             <LiveRedirect
-              to="/feed/likes"
+              to={~p"/feed/likes"}
               class="flex items-center py-2 text-sm font-medium rounded-md text-base-content"
             >
               <Icon solid="Star" class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
@@ -126,7 +126,7 @@
               </span>
             </LiveRedirect>
             <LiveRedirect
-              to="/settings"
+              to={~p"/settings"}
               class="flex items-center py-2 text-sm font-medium rounded-md text-base-content"
             >
               <Icon solid="Cog" class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
@@ -135,7 +135,7 @@
               </span>
             </LiveRedirect>
             <LiveRedirect
-              to={"#{path(:home)}"}
+              to={~p"#{path(:home)}"}
               class="flex items-center py-2 text-sm font-medium rounded-md text-base-content"
             >
               <Icon solid="Home" class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />

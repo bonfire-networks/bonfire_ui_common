@@ -8,7 +8,7 @@
         {Bonfire.Application.name()}
       </a>
       <LiveRedirect
-        to="/terms/changelog"
+        to={~p"/terms/changelog"}
         data-tip="changelog"
         class="badge badge-outline tooltip tooltip-bottom"
       >
