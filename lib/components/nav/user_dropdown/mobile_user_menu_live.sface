@@ -135,7 +135,7 @@
               </span>
             </LiveRedirect>
             <LiveRedirect
-              to={~p"#{path(:home)}"}
+              to={path(:home)}
               class="flex items-center py-2 text-sm font-medium rounded-md text-base-content"
             >
               <Icon solid="Home" class="flex-shrink-0 w-5 h-5 mr-3 text-base-content text-opacity-80" />
