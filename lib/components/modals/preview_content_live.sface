@@ -1,23 +1,36 @@
+
 <div
   id={@id}
   class={
-    "#{@modal_class} absolute z-[99999999999] md:h-full h-[calc(var(--inner-window-height)_-_58px)] overflow-y-auto overflow-x-hidden inset-0 bg-base-300",
+    "#{@modal_class} absolute rounded-t-[1rem] top-0  h-[calc(var(--inner-window-height)_-_58px)] overflow-y-auto overflow-x-hidden inset-0 bg-base-300",
     invisible: !@show,
-    "visible z-[999]": @show
+    "visible z-[99999999999]": @show
   }
   {...@opts}
 >
+
+<!-- <div 
+  phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
+  phx-hook="ClosePreview"
+  class={
+  "absolute inset-0 bg-base-content/50",
+  invisible: !@show,
+  "visible z-[9999999999]": @show
+  }>
+ <button
+  id="close_preview"
+  phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
+  phx-hook="ClosePreview"
+  aria-label={l("Go back to the previous page")}
+  class="absolute font-normal normal-case top-2 right-4 btn btn-sm btn-circle"
+  >
+  <Icon outline="X" class="w-5 h-5 text-base-content" />
+</button>
+</div> -->
+
   <div :if={@show} class="relative z-30">
     <div class="p-0 z-[910] modal_invisible relative" data-id="modal-contents">
-      <!-- <button
-          id="close_preview"
-          phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
-          phx-hook="ClosePreview"
-          aria-label={l("Go back to the previous page")}
-          class="absolute font-normal normal-case top-4 left-4 btn btn-circle"
-        >
-          <Icon outline="X" class="w-5 h-5 text-base-content" />
-        </button> -->
+     
       <#slot>
         {#case merge_as_map(@modal_assigns, %{showing_within: :preview})
           |> debug("preview_component modal_assigns")}

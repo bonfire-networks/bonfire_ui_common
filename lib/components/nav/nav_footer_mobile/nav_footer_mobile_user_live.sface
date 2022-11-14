@@ -47,5 +47,3 @@
     <span class="sr-only">{l("Your profile")}</span>
   </LiveRedirect>
 </div>
-
-<!-- <Bonfire.UI.Common.MobileUserMenuLive page={@page} /> -->

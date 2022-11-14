@@ -35,7 +35,18 @@
         selected_tab={@selected_tab}
         show_extensions_nav
       /> -->
+      <div class="pr-3 mt-2 tablet-lg:pr-0">
 
+      <Bonfire.UI.Common.SmartInputButtonsLive
+        :if={@hide_smart_input != true}
+        smart_input_as={@smart_input_as}
+        smart_input_prompt={@smart_input_prompt}
+        smart_input_component={@smart_input_component}
+        create_object_type={@create_object_type}
+      />
+        
+        
+      </div>
       <Bonfire.UI.Common.ExtensionMenuNavLive
         :if={@nav_items}
         selected_tab={@selected_tab}

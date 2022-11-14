@@ -1,4 +1,5 @@
 let InputSelectHooks = {};
+import live_select from "live_select"
 
 import Tagify from '@yaireo/tagify'
 
@@ -155,4 +156,4 @@ InputSelectHooks.InputOrSelectOne = {
     }
 }
 
-export { InputSelectHooks }
+export { InputSelectHooks, live_select }

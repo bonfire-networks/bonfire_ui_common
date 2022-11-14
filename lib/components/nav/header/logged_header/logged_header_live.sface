@@ -42,20 +42,7 @@
   </Dynamic.Component>
 
   <div class="flex flex-1 tablet-lg:w-[300px] px-0 md:px-3 lg:px-6 tablet-lg:max-w-[300px] desktop-lg:w-[420px] desktop-lg:max-w-[420px] h-[56px] tablet-lg:border-l border-base-content/10 items-center justify-end gap-4">
-    <Bonfire.UI.Common.SmartInputContainerLive
-      hide_smart_input={@hide_smart_input}
-      showing_within={@showing_within}
-      reply_to_id={e(@reply_to_id, "")}
-      context_id={@context_id}
-      create_object_type={@create_object_type}
-      thread_mode={@thread_mode}
-      without_sidebar={@without_sidebar}
-      to_boundaries={@to_boundaries}
-      to_circles={@to_circles}
-      smart_input_as={@smart_input_as}
-      smart_input_prompt={@smart_input_prompt}
-      smart_input_opts={@smart_input_opts}
-    />
+    
 
     <LiveRedirect
       to={path(Bonfire.Data.Social.Message)}

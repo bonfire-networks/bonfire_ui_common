@@ -55,6 +55,7 @@
           showing_within={:smart_input}
           activity_inception={@activity_inception}
           object_boundary={:skip}
+          class="!pl-16"
         />
       </div>
 

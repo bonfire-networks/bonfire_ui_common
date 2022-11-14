@@ -83,6 +83,22 @@ defmodule Bonfire.UI.Common.LayoutLive do
           #{if @smart_input_as == :modal, do: "this.smart_input_fullscreen = true;"}
         }
       }"}>
+
+      <Bonfire.UI.Common.SmartInputContainerLive
+        hide_smart_input={@hide_smart_input}
+        showing_within={@showing_within}
+        reply_to_id={e(@reply_to_id, "")}
+        context_id={@context_id}
+        create_object_type={@create_object_type}
+        thread_mode={@thread_mode}
+        without_sidebar={@without_sidebar}
+        to_boundaries={@to_boundaries}
+        to_circles={@to_circles}
+        smart_input_as={@smart_input_as}
+        smart_input_prompt={@smart_input_prompt}
+        smart_input_opts={@smart_input_opts}
+      />
+      
       <Dynamic.Component
         :if={@nav_header != false and module_enabled?(@nav_header, @current_user)}
         module={@nav_header}
@@ -126,11 +142,25 @@ defmodule Bonfire.UI.Common.LayoutLive do
             :if={!@without_sidebar && @current_user}
             class="border-r border-base-content/10 overflow-y-auto overflow-x-hidden widget hidden z-[110]  md:block sticky top-[56px]"
           >
+          
             <Bonfire.UI.Common.NavSidebarLive
               page={@page}
               selected_tab={@selected_tab}
               nav_items={@nav_items}
               sidebar_widgets={@sidebar_widgets}
+
+              hide_smart_input={@hide_smart_input}
+              showing_within={@showing_within}
+              reply_to_id={e(@reply_to_id, "")}
+              context_id={@context_id}
+              create_object_type={@create_object_type}
+              thread_mode={@thread_mode}
+              without_sidebar={@without_sidebar}
+              to_boundaries={@to_boundaries}
+              to_circles={@to_circles}
+              smart_input_as={@smart_input_as}
+              smart_input_prompt={@smart_input_prompt}
+              smart_input_opts={@smart_input_opts}
             />
           </div>
 

@@ -1,4 +1,4 @@
-<li class="border-b border-neutral-content/30">
+<!-- <li class="border-b border-neutral-content/30">
   <LiveRedirect to={path(@current_user)} class="flex items-center gap-3 py-2">
     <Bonfire.UI.Common.AvatarLive
       class="inline-block object-cover w-10 h-10 cursor-pointer"
@@ -10,7 +10,7 @@
       <div class="text-sm font-normal text-neutral-content/70">@{e(@current_user, :character, :username, "unknown")}</div>
     </div>
   </LiveRedirect>
-</li>
+</li> -->
 <li>
   <LiveRedirect
     to={path(@current_user)}

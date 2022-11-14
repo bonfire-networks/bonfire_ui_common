@@ -10,5 +10,5 @@ defmodule Bonfire.UI.Common.SmartInputButtonsLive do
 
   prop class, :css_class,
     default:
-      "hidden w-[40px] gap-2 tablet-lg:w-full tablet-lg:rounded tablet-lg:flex h-[40px] items-center tablet-lg:px-3 normal-case btn-circle btn-sm btn btn-primary"
+      "hidden w-full h-[40px] md:flex items-center gap-2 normal-case  btn-sm btn btn-primary"
 end
