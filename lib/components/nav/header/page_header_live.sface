@@ -12,11 +12,11 @@
                   <LiveRedirect class="btn btn-sm btn-ghost btn-circle" to={extension[:href] || "/"}>
                     <Icon :if={extension[:icon]} iconify={extension[:icon]} class="w-[20px]" />
                   </LiveRedirect>
-                  <span class="ml-2 text-lg font-semibold truncate text-ellipsis" :if={not is_nil(@page_title)}>{@page_title}</span>
+                  <span class="ml-2 max-w-[200px] md:max-w-max text-sm md:text-base font-semibold truncate text-ellipsis" :if={not is_nil(@page_title)}>{@page_title}</span>
                 </li>
               {#match _}
                 <#slot {@breadcrumbs}>
-                  <li class="text-lg font-semibold truncate text-ellipsis" :if={@page_title}>{@page_title}</li>
+                  <li class="text-base font-semibold truncate text-ellipsis" :if={@page_title}>{@page_title}</li>
                 </#slot>
             {/case}
           </ul>
