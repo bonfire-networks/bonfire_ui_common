@@ -1,7 +1,7 @@
 {#if !is_list(@sidebar_widgets[:users][:main])}
   <div class="flex gap-4">
     <nav class="">
-      <div class="bg-base-200 widget sticky top-0 w-[50px]">
+      <div class="bg-base-100 widget sticky top-0 w-[50px]">
         <div class="inset-0 h-full">
           <div class="flex flex-col items-center gap-3 py-4">
             <div
@@ -64,7 +64,7 @@
         :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__)}
         module={Bonfire.UI.ValueFlows.ProcessesListLive}
         process_url="/coordination/list"
-        title="Favourited lists"
+        title="Favourited milestones"
       />
     </nav>
   </div>

@@ -1,5 +1,7 @@
 <!-- <div class="relative"> -->
-<div role="banner" class="flex-1 w-full">
+<div 
+  role="banner" 
+  class="flex-1 backdrop-blur-md bg-base-300/60 h-[56px] md:px-6 w-full">
   <div class="flex items-center">
     <div class="flex items-center flex-1 space-x-3 text-center">
       <!-- <Bonfire.UI.Common.BackButtonLive  showing_within={@showing_within} /> -->
