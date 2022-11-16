@@ -4,8 +4,8 @@
       {#case pin}
         {#match %{post_content: %{id: _}}}
           <div>
-            <div class="relative w-full p-4 rounded-lg shadow-xl bg-base-300">
-              <Icon iconify="bi:pin-angle-fill" class="absolute w-5 h-5 text-error/70 right-3 top-3" />
+            <div class="">
+              <!-- <Icon iconify="bi:pin-angle-fill" class="absolute w-5 h-5 text-error/70 right-3 top-3" /> -->
               <LiveRedirect
                 to={path(pin)}
                 class="text-lg leading-[1.5rem] font-bold tracking-wider link link-hover"
@@ -21,7 +21,7 @@
         {#match _}
           <div class="">
             <div class="flex items-center gap-2">
-              <div class="rounded w-7 h-7 bg-accent" />
+              <!-- <div class="rounded w-7 h-7 bg-accent" /> -->
               <LiveRedirect to={path(pin)} class="flex-1 text-sm font-semibold link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
               </LiveRedirect>
             </div>

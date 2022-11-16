@@ -4,14 +4,15 @@ let CarouselHooks = {};
 
 CarouselHooks.CarouselHook = {
   mounted() {
-    const glider = document.querySelector('.glider')
-    console.log(glider)
+    console.log("glider")
     new Glider(document.querySelector('.glider'), {
-      // Mobile-first defaults
-      slidesToShow: 3,
+      slidesToShow: 1,
+      dots: '#dots',
       draggable: true,
-      slidesToScroll: 1,
-      dots: '.dots'
+      arrows: {
+        prev: '.glider-prev',
+        next: '.glider-next'
+      }
     });
   }
 }
