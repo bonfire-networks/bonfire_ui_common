@@ -1,8 +1,8 @@
 <div class={
-  "flex items-center md:justify-between h-[56px] bg-base-300 sticky z-[999] top-0",
+  "flex items-center md:justify-between h-[56px] sticky z-[999] top-0",
   "hidden md:flex": @without_mobile_logged_header
 }>
-  <div class="flex flex-1 desktop-lg:max-w-[350px] items-center tablet-lg:w-[300px] md:w-[300px] tablet-lg:max-w-[300px] md:min-w-[300px] md:max-w-[300px] w-full h-[56px] pr-4 md:border-r border-base-content/10 desktop-lg:w-[350px]">
+  <div class="flex h-[56px] bg-base-300 flex-1 desktop-lg:max-w-[350px] items-center tablet-lg:w-[300px] md:w-[300px] tablet-lg:max-w-[300px] md:min-w-[300px] md:max-w-[300px] w-full pr-4 md:border-r border-base-content/10 desktop-lg:w-[350px]">
     <Bonfire.UI.Common.AppsLive
       nav_items={@nav_items}
       sidebar_widgets={@sidebar_widgets}
@@ -30,7 +30,7 @@
     showing_within={@showing_within}
     page_header_drawer={e(@page_header_drawer, false)}
     {...elem(@custom_page_header || {nil, []}, 1) |> debug("custom_page_header")}
-  >
+    >
     <:right_action>
       <Dynamic.Component
         :if={@current_user && @page_header_aside}
@@ -41,7 +41,7 @@
     </:right_action>
   </Dynamic.Component>
 
-  <div class="flex flex-1 tablet-lg:w-[300px] px-0 md:px-3 lg:px-6 tablet-lg:max-w-[300px] desktop-lg:w-[420px] desktop-lg:max-w-[420px] h-[56px] tablet-lg:border-l border-base-content/10 items-center justify-end gap-4">
+  <div class="flex flex-1 tablet-lg:w-[300px] bg-base-300 px-0 md:px-3 lg:px-6 tablet-lg:max-w-[300px] desktop-lg:w-[420px] desktop-lg:max-w-[420px] h-[56px] tablet-lg:border-l border-base-content/10 items-center justify-end gap-4">
     
 
     <LiveRedirect
