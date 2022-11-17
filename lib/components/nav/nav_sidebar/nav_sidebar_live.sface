@@ -1,7 +1,7 @@
 {#if !is_list(@sidebar_widgets[:users][:main])}
   <div class="flex gap-4">
     <nav class="">
-      <div class="bg-base-100 widget sticky top-0 w-[50px]">
+      <div class="bg-base-100 widget sticky top-0 w-[68px]">
         <div class="inset-0 h-full">
           <div class="flex flex-col items-center gap-3 py-4">
             <div
@@ -12,7 +12,7 @@
             >
               <LinkLive
                 class={
-                  "btn btn-square btn-sm btn-ghost",
+                  "btn btn-square btn-ghost",
                   "!bg-base-content/10":
                     @__context__[:current_extension][:name] ==
                       extension[:name]
