@@ -1,10 +1,11 @@
 <!-- <div class="relative"> -->
-<div 
-  role="banner" 
-  class="flex-1 flex items-center backdrop-blur-md bg-base-300/60 h-[56px] md:px-6 w-full">
+<div
+  role="banner"
+  class="flex-1 flex items-center backdrop-blur-md bg-base-300/60 h-[56px] md:px-6 w-full"
+>
   <div class="flex items-center">
     <div class="flex items-center flex-1 space-x-3 text-center">
-      <Bonfire.UI.Common.BackButtonLive  showing_within={@showing_within} />
+      <Bonfire.UI.Common.BackButtonLive showing_within={@showing_within} />
       <div class="flex-1">
         <div class="breadcrumbs">
           <ul>
@@ -14,7 +15,10 @@
                   <LiveRedirect class="btn btn-sm btn-ghost btn-circle" to={extension[:href] || "/"}>
                     <Icon :if={extension[:icon]} iconify={extension[:icon]} class="w-[20px]" />
                   </LiveRedirect>
-                  <span class="ml-2 max-w-[200px] md:max-w-max text-sm md:text-base font-semibold truncate text-ellipsis" :if={not is_nil(@page_title)}>{@page_title}</span>
+                  <span
+                    class="ml-2 max-w-[200px] md:max-w-max text-sm md:text-base font-semibold truncate text-ellipsis"
+                    :if={not is_nil(@page_title)}
+                  >{@page_title}</span>
                 </li>
               {#match _}
                 <#slot {@breadcrumbs}>

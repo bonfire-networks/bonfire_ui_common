@@ -1,6 +1,6 @@
 <Bonfire.UI.Common.MultiselectLive
   id={Pointers.ULID.generate()}
-  preloaded_options={users(@preloaded_options, @__context__)}
+  preloaded_options={users(@preloaded_options, @__context__, @type)}
   selected_options={@selected_options}
   label={e(@label, "Select someone...")}
   form_input_name={@form_input_name}
@@ -9,4 +9,5 @@
   remove_event={@remove_event}
   event_target={@event_target}
   class={@class}
+  is_editable={@is_editable}
 />

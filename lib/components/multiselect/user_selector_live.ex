@@ -10,19 +10,21 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   prop context_id, :string, default: nil
   prop event_target, :any, default: nil
   prop class, :css_class, default: nil
+  prop is_editable, :boolean, default: true
+  prop type, :any, default: Bonfire.Data.Identity.User
 
-  def users(preloaded_options, context) do
-    preloaded_options || context[:preloaded_users] || load_users(current_user(context))
+  def users(preloaded_options, context, type) do
+    preloaded_options || context[:preloaded_users] || load_users(current_user(context), type)
   end
 
-  def load_users(current_user) do
+  def load_users(current_user, type) do
     debug(current_user)
 
     # TODO: paginate?
     followed =
       if current_user,
         do:
-          Bonfire.Social.Follows.list_my_followed(current_user, paginate: false)
+          Bonfire.Social.Follows.list_my_followed(current_user, paginate: false, type: type)
           |> debug()
           # |> e(:edges, [])
           |> Enum.map(&e(&1, :edge, :object, nil)),

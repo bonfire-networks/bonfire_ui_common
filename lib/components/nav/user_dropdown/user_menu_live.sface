@@ -1,5 +1,11 @@
-<div class=" dropdown dropdown-end">
-  <label class="flex items-center gap-3 cursor-pointer hover:base-base-content/5" tabindex="0" id="user-profile-menu" aria-haspopup="true" aria-expanded="true">
+<div class="dropdown dropdown-end">
+  <label
+    class="flex items-center gap-3 cursor-pointer hover:base-base-content/5"
+    tabindex="0"
+    id="user-profile-menu"
+    aria-haspopup="true"
+    aria-expanded="true"
+  >
     <Bonfire.UI.Common.AvatarLive
       class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer bg-base-content/10"
       size="40"

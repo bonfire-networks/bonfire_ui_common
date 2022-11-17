@@ -13,6 +13,7 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   prop remove_event, :string, default: nil
   prop event_target, :any, default: nil
   prop context_id, :string, default: nil
+  prop is_editable, :boolean, default: true
 
   prop class, :css_class,
     default:

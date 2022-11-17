@@ -1,6 +1,4 @@
 <div class="w-full" :if={@current_user != nil}>
-  
-
   <div
     x-show="smart_input_open"
     class="smart_input_container"
