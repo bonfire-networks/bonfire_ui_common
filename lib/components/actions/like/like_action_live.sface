@@ -1,4 +1,4 @@
-<div class="relative z-20 tooltip tooltip-bottom" data-tip={l("Favourite this post")}>
+<div class="relative z-20 tooltip tooltip-bottom" data-tip={l("Favourite this")}>
   <button
     :if={@object}
     id={@id}

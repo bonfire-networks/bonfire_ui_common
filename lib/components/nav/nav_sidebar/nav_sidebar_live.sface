@@ -52,16 +52,16 @@
       />
 
       <Dynamic.LiveComponent
-        :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive) and @current_user}
+        :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive, @__context__) and @current_user}
         module={Bonfire.Classify.Web.CategoriesNavLive}
         selected_tab={@selected_tab}
         id="fav_topics"
       />
       <Dynamic.Component
-        :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__)}
+        :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__) and @current_user}
         module={Bonfire.UI.ValueFlows.ProcessesListLive}
         process_url="/coordination/list"
-        title="Favourited milestones"
+        title={l "Favourite milestones"}
       />
     </nav>
   </div>
