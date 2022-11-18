@@ -14,25 +14,40 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   prop type, :any, default: Bonfire.Data.Identity.User
 
   def users(preloaded_options, context, type) do
-    preloaded_options || context[:preloaded_users] || load_users(current_user(context), type)
+    preloaded_options || context[:preloaded_options][type] || load_users(current_user(context), type)
+  end
+
+  def load_users(current_user, Bonfire.Data.Identity.User = type) do
+    [{e(current_user, :profile, :name, "Me"), e(current_user, :id, "me")}] ++
+      load_followed(current_user, type)
   end
 
   def load_users(current_user, type) do
-    debug(current_user)
+    (load_favs(current_user, type) ++ load_followed(current_user, type))
+    |> Enum.uniq_by(& &1.id)
+  end
+
+  def load_followed(current_user, type) do
 
     # TODO: paginate?
-    followed =
-      if current_user,
-        do:
-          Bonfire.Social.Follows.list_my_followed(current_user, paginate: false, type: type)
-          |> debug()
-          # |> e(:edges, [])
-          |> Enum.map(&e(&1, :edge, :object, nil)),
-        else: []
+    if current_user,
+      do:
+        Bonfire.Social.Follows.list_my_followed(current_user, paginate: false, type: type)
+        |> debug()
+        # |> e(:edges, [])
+        |> Enum.map(&e(&1, :edge, :object, nil)),
+      else: []
+  end
 
-    debug(followed)
+  def load_favs(current_user, type) do
 
-    [{e(current_user, :profile, :name, "Me"), e(current_user, :id, "me")}] ++
-      followed
+    # TODO: paginate?
+    if current_user,
+      do:
+        Bonfire.Social.Likes.list_my(current_user: current_user, paginate: false, object_type: type)
+        |> debug()
+        # |> e(:edges, [])
+        |> Enum.map(&e(&1, :edge, :object, nil)),
+      else: []
   end
 end

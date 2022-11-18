@@ -51,11 +51,10 @@
         nav_items={@nav_items}
       />
 
-      <Dynamic.LiveComponent
+      <Dynamic.Component
         :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive, @__context__) and @current_user}
         module={Bonfire.Classify.Web.CategoriesNavLive}
         selected_tab={@selected_tab}
-        id="fav_topics"
       />
       <Dynamic.Component
         :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__) and @current_user}

@@ -51,7 +51,10 @@ defmodule Bonfire.UI.Common.MultiselectLive do
       _ -> false
     end)
     |> List.first() ||
-      {l("Already selected"), entry}
+      {
+        (if is_ulid?(entry), do: l("Already selected"), else: entry),
+        entry
+      }
   end
 
   defp prepare_entry(_, _) do
