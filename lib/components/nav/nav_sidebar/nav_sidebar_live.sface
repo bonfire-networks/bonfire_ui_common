@@ -60,7 +60,7 @@
         :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__) and @current_user}
         module={Bonfire.UI.ValueFlows.ProcessesListLive}
         process_url="/coordination/list"
-        title={l "Favourite milestones"}
+        title={l("Favourite milestones")}
       />
     </nav>
   </div>

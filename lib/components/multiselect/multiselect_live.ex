@@ -52,7 +52,7 @@ defmodule Bonfire.UI.Common.MultiselectLive do
     end)
     |> List.first() ||
       {
-        (if is_ulid?(entry), do: l("Already selected"), else: entry),
+        if(is_ulid?(entry), do: l("Already selected"), else: entry),
         entry
       }
   end

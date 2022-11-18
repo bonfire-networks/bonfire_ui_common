@@ -14,7 +14,8 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   prop type, :any, default: Bonfire.Data.Identity.User
 
   def users(preloaded_options, context, type) do
-    preloaded_options || context[:preloaded_options][type] || load_users(current_user(context), type)
+    preloaded_options || context[:preloaded_options][type] ||
+      load_users(current_user(context), type)
   end
 
   def load_users(current_user, Bonfire.Data.Identity.User = type) do
@@ -28,7 +29,6 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   end
 
   def load_followed(current_user, type) do
-
     # TODO: paginate?
     if current_user,
       do:
@@ -40,11 +40,14 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   end
 
   def load_favs(current_user, type) do
-
     # TODO: paginate?
     if current_user,
       do:
-        Bonfire.Social.Likes.list_my(current_user: current_user, paginate: false, object_type: type)
+        Bonfire.Social.Likes.list_my(
+          current_user: current_user,
+          paginate: false,
+          object_type: type
+        )
         |> debug()
         # |> e(:edges, [])
         |> Enum.map(&e(&1, :edge, :object, nil)),
