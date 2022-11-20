@@ -6,8 +6,8 @@
     event_handler={@event_handler}
     event_target={@event_target}
     class={
-      "tab h-[2.75rem] py-2 capitalize !border-primary tab-bordered hover:bg-base-content/5",
-      "tab-active": @selected_tab == tab || to_string(@selected_tab) == to_string(tab)
+      "badge cursor-pointer badge-lg text-sm",
+      "badge-primary": @selected_tab == tab || to_string(@selected_tab) == to_string(tab)
     }
   >
     {localise_dynamic(tab_name)}

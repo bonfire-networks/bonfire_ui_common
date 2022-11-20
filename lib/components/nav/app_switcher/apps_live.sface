@@ -208,7 +208,7 @@
 </div>
 
 <div
-  class="min-w-[68px] hidden md:flex items-center place-content-center bg-base-100 w-[68px] h-[56px] mr-4"
+  class="hidden md:flex items-center place-content-center h-[56px] mx-4"
   x-data="{hovered_apps: false}"
 >
   <Bonfire.UI.Common.LogoLinkLive href="/?dashboard" />

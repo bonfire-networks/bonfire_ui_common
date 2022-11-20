@@ -165,7 +165,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             id="main_section"
             class={
               "gap-2 md:gap-0 relative z-[105] w-full col-span-1",
-              "!max-w-screen-lg mx-auto": @without_sidebar,
+              "!max-w-full mx-auto": @without_sidebar,
               "!max-w-full": @full_page
             }
           >
@@ -179,11 +179,16 @@ defmodule Bonfire.UI.Common.LayoutLive do
             }>
               <div class={
                 "relative grid invisible_frame",
-                " border-t border-base-content/10": @current_user
+                "": @current_user && !@without_sidebar
               }>
                 <div class="pb-16 md:pb-0 md:overflow-y-visible md:h-full">
                   <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
                   <div id="inner" class="">
+                    <!-- Bonfire.UI.Common.ExtensionHorizontalMenuLive
+                    nav_items={@nav_items}
+                    page={@page}
+                    selected_tab={@selected_tab}
+                    /-->
                     {@inner_content}
                   </div>
                 </div>
@@ -194,7 +199,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(ulid(@current_user)))}
                 x-show={if @preview_module, do: "false", else: "true"}
                 class={
-                  "items-start hidden min-h-[calc(100vh-56px)] grid-flow-row gap-6 overflow-x-hidden overflow-y-auto md:pt-6 auto-rows-min tablet-lg:grid",
+                  "items-start hidden min-h-[calc(100vh-56px)] grid-flow-row gap-6 overflow-x-hidden overflow-y-auto md:pt-3 auto-rows-min tablet-lg:grid",
                   "px-6 border-l border-base-content/10": @current_user
                 }
               >

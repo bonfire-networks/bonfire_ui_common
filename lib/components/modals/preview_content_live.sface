@@ -25,6 +25,15 @@
   <Icon outline="X" class="w-5 h-5 text-base-content" />
 </button>
 </div> -->
+  <button
+    id="close_preview"
+    phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
+    phx-hook="ClosePreview"
+    aria-label={l("Go back to the previous page")}
+    class="absolute font-normal normal-case top-2 right-4 btn btn-sm btn-circle"
+  >
+    <Icon outline="X" class="w-5 h-5 text-base-content" />
+  </button>
 
   <div :if={@show} class="relative z-30">
     <div class="p-0 z-[910] modal_invisible relative" data-id="modal-contents">

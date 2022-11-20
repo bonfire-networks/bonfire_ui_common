@@ -1,13 +1,15 @@
-<!-- <div class="relative"> -->
 <div
   role="banner"
   class="flex-1 flex items-center backdrop-blur-md bg-base-300/60 h-[56px] md:px-6 w-full"
->
-  <div class="flex items-center">
-    <div class="flex items-center flex-1 space-x-3 text-center">
-      <Bonfire.UI.Common.BackButtonLive showing_within={@showing_within} />
-      <div class="flex-1">
-        <div class="breadcrumbs">
+  >
+  <div class="flex w-full items-center">
+    <div class="flex w-full items-center flex-1 space-x-3">
+
+        <span
+          class="max-w-[200px] md:max-w-max text-sm md:text-base font-semibold truncate text-ellipsis"
+          :if={not is_nil(@page_title)}
+        >{@page_title}</span>
+        <!-- <div class="breadcrumbs">
           <ul>
             {#case @__context__[:current_extension]}
               {#match %{name: name} = extension}
@@ -26,8 +28,8 @@
                 </#slot>
             {/case}
           </ul>
-        </div>
-      </div>
+        </div> -->
+
       <div class="flex items-center w-auto">
         <#slot {@right_action}>
         </#slot>
@@ -36,4 +38,3 @@
   </div>
   <!-- <Bonfire.UI.Common.PreviewContentLive id="preview_content" /> -->
 </div>
-<!-- </div> -->

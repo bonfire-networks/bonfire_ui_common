@@ -1,6 +1,6 @@
 {#if !is_list(@sidebar_widgets[:users][:main])}
   <div class="flex gap-4">
-    <nav class="">
+    <!-- <nav class="">
       <div class="bg-base-100 widget sticky top-0 w-[68px]">
         <div class="inset-0 h-full">
           <div class="flex flex-col items-center gap-1 py-4">
@@ -25,9 +25,9 @@
           </div>
         </div>
       </div>
-    </nav>
+    </nav> -->
 
-    <nav class="hidden w-full mr-4 md:block" role="navigation" aria-label={l("Extension navigation")}>
+    <nav class="hidden w-full mx-2 md:block" role="navigation" aria-label={l("Extension navigation")}>
       <!-- <div :if={!@nav_items} class="pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
       <Bonfire.UI.Common.ExploreNavLive
         page={@page}
@@ -35,7 +35,29 @@
         selected_tab={@selected_tab}
         show_extensions_nav
       /> -->
-      <div class="pr-3 mt-2 tablet-lg:pr-0">
+      <div class="grid grid-cols-3 gap-2 m-3 border border-base-content/10 rounded-xl p-1">
+        <div
+          class=""
+          data-tip={extension[:name]}
+          :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
+          :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
+          >
+          <LinkLive
+            class={
+              "flex hover:bg-base-content/5 text-sm text-base-content/70 truncate py-2 flex-col items-center gap-2 place-content-center rounded-md",
+              "!bg-base-content/10":
+                @__context__[:current_extension][:name] ==
+                  extension[:name]
+            }
+            to={extension[:href]}
+          >
+            <Icon iconify={extension[:icon]} class="w-5 h-5" />
+            <span>{extension[:name]}</span>
+          </LinkLive>
+
+        </div>
+      </div>
+      <div class="mt-4 m-3">
         <Bonfire.UI.Common.SmartInputButtonsLive
           :if={@hide_smart_input != true}
           smart_input_as={@smart_input_as}
@@ -45,7 +67,6 @@
         />
       </div>
       <Bonfire.UI.Common.ExtensionMenuNavLive
-        :if={@nav_items}
         selected_tab={@selected_tab}
         page={@page}
         nav_items={@nav_items}
