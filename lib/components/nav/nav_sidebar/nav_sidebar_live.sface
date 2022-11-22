@@ -35,7 +35,7 @@
         selected_tab={@selected_tab}
         show_extensions_nav
       /> -->
-      <div class="grid grid-cols-3 gap-2 m-3 border border-base-content/10 rounded-xl p-1">
+      <div class="grid grid-cols-4 gap-1.5 mx-2 mt-2">
         <div
           class=""
           data-tip={extension[:name]}
@@ -44,8 +44,8 @@
           >
           <LinkLive
             class={
-              "flex hover:bg-base-content/5 text-sm text-base-content/70 truncate py-2 flex-col items-center gap-2 place-content-center rounded-md",
-              "!bg-base-content/10":
+              "flex bg-base-content/5  text-base-content/70 truncate py-2 flex-col items-center gap-2 place-content-center hover:bg-base-content/10 rounded-md text-[13px]",
+              "!bg-primary/20 !border-primary/60 border":
                 @__context__[:current_extension][:name] ==
                   extension[:name]
             }
