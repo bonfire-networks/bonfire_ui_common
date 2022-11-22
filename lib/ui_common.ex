@@ -481,9 +481,9 @@ defmodule Bonfire.UI.Common do
     end
   end
 
-  def send_self(socket, assigns_to_broadcast) do
+  def send_self(socket \\ nil, assigns_to_broadcast) do
     send(self(), {:assign, assigns_to_broadcast})
-    assign_generic(socket, assigns_to_broadcast)
+    if not is_nil(socket), do: assign_generic(socket, assigns_to_broadcast)
   end
 
   @doc "Warning: this will set assigns for any/all users who subscribe to them. You want to `cast_self/2` instead if dealing with user-specific actions or private data."
