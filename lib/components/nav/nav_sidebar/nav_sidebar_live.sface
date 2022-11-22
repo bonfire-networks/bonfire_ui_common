@@ -41,7 +41,7 @@
           data-tip={extension[:name]}
           :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
           :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
-          >
+        >
           <LinkLive
             class={
               "flex bg-base-content/5  text-base-content/70 truncate py-2 flex-col items-center gap-2 place-content-center hover:bg-base-content/10 rounded-md text-[13px]",
@@ -54,7 +54,6 @@
             <Icon iconify={extension[:icon]} class="w-5 h-5" />
             <span>{extension[:name]}</span>
           </LinkLive>
-
         </div>
       </div>
       <div class="mt-4 m-3">
