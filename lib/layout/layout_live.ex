@@ -19,14 +19,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
       assigns
       # |> debug
       |> assign(
-        :to_boundaries,
-        boundaries_or_default(e(assigns, :to_boundaries, nil), assigns)
+        to_boundaries: boundaries_or_default(e(assigns, :to_boundaries, nil), assigns)
       )
       |> assign_new(:nav_header, fn ->
         if is_nil(current_user(assigns)),
           do: Bonfire.UI.Common.GuestHeaderLive,
           else: Bonfire.UI.Common.LoggedHeaderLive
       end)
+      |> assign_new(:session_topic_id, fn -> Phoenix.HTML.Tag.csrf_token_value() end)
       |> assign_new(:hero, fn -> nil end)
       |> assign_new(:page_title, fn -> nil end)
       |> assign_new(:without_mobile_logged_header, fn -> nil end)
@@ -46,7 +46,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:to_circles, fn -> [] end)
       |> assign_new(:smart_input_prompt, fn -> nil end)
       |> assign_new(:smart_input_opts, fn -> nil end)
-      |> assign_new(:smart_input_as, fn -> set_smart_input_as(assigns[:thread_mode], assigns) end)
+      |> assign_new(:smart_input_as, fn -> Bonfire.UI.Common.SmartInputLive.set_smart_input_as(assigns[:thread_mode], assigns) end)
       |> assign_new(:showing_within, fn -> nil end)
       |> assign_new(:sidebar_widgets, fn -> [] end)
       |> assign_new(:nav_items, fn -> nav_items end)
@@ -83,10 +83,11 @@ defmodule Bonfire.UI.Common.LayoutLive do
           #{if @smart_input_as == :modal, do: "this.smart_input_fullscreen = true;"}
         }
       }"}>
-      <Bonfire.UI.Common.SmartInputContainerLive
+      <!--<Bonfire.UI.Common.SmartInputContainerLive
+        :if={not is_nil @current_user}
         hide_smart_input={@hide_smart_input}
         showing_within={@showing_within}
-        reply_to_id={e(@reply_to_id, "")}
+        reply_to_id={@reply_to_id}
         context_id={@context_id}
         create_object_type={@create_object_type}
         thread_mode={@thread_mode}
@@ -96,7 +97,27 @@ defmodule Bonfire.UI.Common.LayoutLive do
         smart_input_as={@smart_input_as}
         smart_input_prompt={@smart_input_prompt}
         smart_input_opts={@smart_input_opts}
-      />
+      />-->
+      {if not is_nil(@current_user), do: live_render(@socket, Bonfire.UI.Common.SmartInputContainerLive, sticky: true, id: :smart_input_sticky, session: %{
+        "__context__"=> Map.merge(@__context__, %{
+          # avoid too big a session
+          current_user: ulid(@current_user),
+          current_account: ulid(@current_account),
+          session_topic_id: @session_topic_id
+        }),
+        "hide_smart_input"=> @hide_smart_input,
+        "showing_within"=> @showing_within,
+        "reply_to_id"=> @reply_to_id,
+        "context_id"=> @context_id,
+        "create_object_type"=> @create_object_type,
+        "thread_mode"=> @thread_mode,
+        "without_sidebar"=> @without_sidebar,
+        "to_boundaries"=> @to_boundaries,
+        "to_circles"=> @to_circles,
+        "smart_input_as"=> @smart_input_as,
+        "smart_input_prompt"=> @smart_input_prompt,
+        "smart_input_opts"=> @smart_input_opts
+      })}
 
       <Dynamic.Component
         :if={@nav_header != false and module_enabled?(@nav_header, @current_user)}
@@ -253,8 +274,4 @@ defmodule Bonfire.UI.Common.LayoutLive do
     """
   end
 
-  def set_smart_input_as(:flat, _), do: :modal
-
-  def set_smart_input_as(_, context),
-    do: Settings.get([:ui, :smart_input_as], :floating, context)
 end
