@@ -66,10 +66,11 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   end
 
   def active_smart_input_component(smart_input_component, create_object_type) do
-    (smart_input_component ||
-       component_by_type(create_object_type) ||
-       Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
-       Bonfire.UI.Social.WritePostContentLive)
+    smart_input_component ||
+      component_by_type(create_object_type) ||
+      Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
+      Bonfire.UI.Social.WritePostContentLive
+
     # |> debug()
   end
 
@@ -110,11 +111,13 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
     if e(context, :csrf_token, nil) do
       # send to sticky liveview
-      # e(context, :session_topic_id, nil)
       e(context, :csrf_token, nil)
       |> pubsub_broadcast({:assign, assigns})
     else
-      debug(context, "no csrf_token in context so can't send to sticky smart input LV (if used)")
+      debug(
+        context,
+        "no csrf_token available in context so can't send to sticky smart input LV (if used)"
+      )
     end
   end
 
@@ -243,7 +246,6 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   defp clean_existing(to_boundaries, _) do
     to_boundaries
   end
-
 
   defp maybe_from_json("{" <> _ = json) do
     with {:ok, data} <- Jason.decode(json) do

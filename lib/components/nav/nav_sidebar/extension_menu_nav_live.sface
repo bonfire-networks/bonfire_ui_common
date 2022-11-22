@@ -1,5 +1,3 @@
-
-
 <!-- <div class="flex items-center gap-5 pb-2 mt-6 ml-4 text-sm font-medium tracking-wider text-base-content/60">
   <Icon iconify={@__context__[:current_extension][:icon]} />
   <span>{@__context__[:current_extension][:name]}</span>

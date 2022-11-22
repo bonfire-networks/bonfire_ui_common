@@ -142,8 +142,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
       current_params: params,
       current_url:
         URI.parse(uri)
-        |> maybe_get(:path),
-      session_topic_id: Phoenix.HTML.Tag.csrf_token_value()
+        |> maybe_get(:path)
     )
   end
 

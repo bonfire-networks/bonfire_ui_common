@@ -1,15 +1,14 @@
 <div
   role="banner"
   class="flex-1 flex items-center backdrop-blur-md bg-base-300/60 h-[56px] md:px-6 w-full"
-  >
+>
   <div class="flex w-full items-center">
     <div class="flex w-full items-center flex-1 space-x-3">
-
-        <span
-          class="max-w-[200px] md:max-w-max text-sm md:text-base font-semibold truncate text-ellipsis"
-          :if={not is_nil(@page_title)}
-        >{@page_title}</span>
-        <!-- <div class="breadcrumbs">
+      <span
+        class="max-w-[200px] md:max-w-max text-sm md:text-base font-semibold truncate text-ellipsis"
+        :if={not is_nil(@page_title)}
+      >{@page_title}</span>
+      <!-- <div class="breadcrumbs">
           <ul>
             {#case @__context__[:current_extension]}
               {#match %{name: name} = extension}
