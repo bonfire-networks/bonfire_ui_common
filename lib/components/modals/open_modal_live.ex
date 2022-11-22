@@ -47,6 +47,11 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   prop modal_assigns, :any, default: []
 
   @doc """
+  Additional assigns to send up to the top-level LiveView
+  """
+  prop root_assigns, :any, default: []
+
+  @doc """
   Additional attributes to add onto the modal wrapper
   """
   prop opts, :keyword, default: []
@@ -74,6 +79,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   end
 
   def set(assigns) do
+
     maybe_send_update(
       e(
         assigns,
@@ -83,6 +89,13 @@ defmodule Bonfire.UI.Common.OpenModalLive do
       e(assigns, :reusable_modal_id, "modal"),
       assigns
     )
+
+    # case assigns[:root_assigns] do
+    #   root_assigns when is_list(root_assigns) and root_assigns !=[] ->
+    #     send_self(assigns[:root_assigns])
+
+    #   _ -> nil
+    # end
   end
 
   # Default event handlers
