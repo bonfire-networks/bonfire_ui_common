@@ -70,7 +70,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
        component_by_type(create_object_type) ||
        Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
        Bonfire.UI.Social.WritePostContentLive)
-    |> debug()
+    # |> debug()
   end
 
   defp component_by_type(create_object_type) when is_atom(create_object_type) do
@@ -101,8 +101,21 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     maybe_to_string(name)
   end
 
-  def set(assigns) do
+  @doc """
+  Set assigns in the smart input from anywhere in the app (whether using a live component or sticky live view)
+  """
+  def set(context \\ nil, assigns) do
+    # send to this stateful component (if used in same LV)
     maybe_send_update(Bonfire.UI.Common.SmartInputLive, :smart_input, assigns)
+
+    if e(context, :csrf_token, nil) do
+      # send to sticky liveview
+      # e(context, :session_topic_id, nil)
+      e(context, :csrf_token, nil)
+      |> pubsub_broadcast({:assign, assigns})
+    else
+      debug(context, "no csrf_token in context so can't send to sticky smart input LV (if used)")
+    end
   end
 
   def set_smart_input_text(socket, text \\ "\n") do
@@ -145,6 +158,11 @@ defmodule Bonfire.UI.Common.SmartInputLive do
       # open_boundaries: false
     )
   end
+
+  def set_smart_input_as(:flat, _), do: :modal
+
+  def set_smart_input_as(_, context),
+    do: Settings.get([:ui, :smart_input_as], :floating, context)
 
   def activity_type_or_reply(assigns) do
     # debug(e(assigns, :reply_to_id, ""), "reply to id")
@@ -225,6 +243,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   defp clean_existing(to_boundaries, _) do
     to_boundaries
   end
+
 
   defp maybe_from_json("{" <> _ = json) do
     with {:ok, data} <- Jason.decode(json) do

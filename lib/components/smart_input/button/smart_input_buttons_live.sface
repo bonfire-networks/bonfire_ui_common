@@ -12,7 +12,7 @@
         icon="gridicons:create"
       />
 
-      <!-- <SmartInputButtonLive
+      <SmartInputButtonLive
         :if={(Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
            Bonfire.UI.Social.WritePostContentLive) not in components}
         component={Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
@@ -20,6 +20,6 @@
         smart_input_prompt={l("Compose")}
         class={@class}
         icon="heroicons-solid:pencil-alt"
-      /> -->
+      />
   {/case}
 </div>
