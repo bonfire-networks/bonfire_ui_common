@@ -52,7 +52,7 @@
             to={extension[:href]}
           >
             <Icon iconify={extension[:icon]} class="w-5 h-5" />
-            <span>{extension[:name]}</span>
+            <span class="truncate max-w-[65px]">{extension[:name]}</span>
           </LinkLive>
         </div>
       </div>

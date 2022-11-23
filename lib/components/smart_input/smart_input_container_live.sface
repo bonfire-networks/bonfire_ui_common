@@ -1,4 +1,23 @@
-<div class="w-full">
+<div 
+  x-data={"{
+      smart_input_title_text: null,
+      smart_input_open: #{e(@smart_input_opts, :open, nil) == true},
+      smart_input_fullscreen: false,
+      open_extensions_sidebar: false,
+      toggle_sidebar_widgets: false,
+      smart_input_minimized: #{e(@smart_input_opts, :open, nil) != true and @smart_input_as == :floating},
+      smart_input_as: '#{@smart_input_as}',
+      show_smart_input(title) {
+        console.log('show_smart_input');
+        if(title !==undefined){ this.smart_input_title_text = title }
+        console.log(this.smart_input_open);
+        this.smart_input_open = true;
+        // console.log(this.smart_input_open);
+        this.smart_input_minimized = false;
+        #{if @smart_input_as == :modal, do: "this.smart_input_fullscreen = true;"}
+      }
+    }"}
+  class="w-full">
   <div
     x-show="smart_input_open"
     class="smart_input_container"
@@ -9,7 +28,7 @@
     'w-[40rem] bg-base-100': smart_input_open
     }"
     x-on:keydown.escape.prevent.stop="smart_input_minimized = true"
-  >
+    >
     <div x-cloak x-show="smart_input_as == 'modal'" class="fixed inset-0 bg-white/30" />
     <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_prompt={@smart_input_prompt} />
     <div x-show="!smart_input_minimized" class="">
@@ -34,3 +53,8 @@
     </div>
   </div>
 </div>
+
+<!-- <Bonfire.UI.Common.MobileSmartInputButtonLive
+  :if={not is_nil(@current_user) and !@hide_smart_input}
+  smart_input_prompt={@smart_input_prompt}
+/> -->
