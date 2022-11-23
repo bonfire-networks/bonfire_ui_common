@@ -39,7 +39,6 @@
         phx-target="#smart_input"
         phx-value-component={Bonfire.UI.Common.SmartInputLive.all_smart_input_components()[name] ||
           Bonfire.UI.Social.WritePostContentLive}
-        @click={"show_smart_input('#{label}'); smart_input_activity_types_expanded = false;"}
         class="flex items-center p-2 space-x-2 text-sm rounded-md cursor-pointer hover:bg-base-content/10 text-neutral-content"
         role="menuitem"
         tabindex="-1"

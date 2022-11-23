@@ -65,22 +65,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
     ~F"""
     <div x-data={"{
-        smart_input_title_text: null,
-        smart_input_open: #{e(@smart_input_opts, :open, nil) == true},
-        smart_input_fullscreen: false,
         open_extensions_sidebar: false,
         toggle_sidebar_widgets: false,
-        smart_input_minimized: #{e(@smart_input_opts, :open, nil) != true and @smart_input_as == :floating},
-        smart_input_as: '#{@smart_input_as}',
-        show_smart_input(title) {
-          // console.log('show_smart_input');
-          if(title !==undefined){ this.smart_input_title_text = title }
-          // console.log(this.smart_input_open);
-          this.smart_input_open = true;
-          // console.log(this.smart_input_open);
-          this.smart_input_minimized = false;
-          #{if @smart_input_as == :modal, do: "this.smart_input_fullscreen = true;"}
-        }
       }"}>
       <!--<Bonfire.UI.Common.SmartInputContainerLive
         :if={not is_nil @current_user}

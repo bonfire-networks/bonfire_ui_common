@@ -267,6 +267,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   end
 
   def handle_event("select_smart_input", params, socket) do
+    # send_self(socket, smart_input_opts: [open: e(params, :open, nil)])
     {:noreply,
      assign(socket,
        smart_input_component:
