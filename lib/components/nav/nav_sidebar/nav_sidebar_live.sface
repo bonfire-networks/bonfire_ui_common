@@ -35,7 +35,7 @@
         selected_tab={@selected_tab}
         show_extensions_nav
       /> -->
-      <div class="grid grid-cols-4 gap-1.5 mx-2 mt-2">
+      <!-- <div class="grid grid-cols-4 gap-1.5 mx-2 mt-2">
         <div
           class=""
           data-tip={extension[:name]}
@@ -55,8 +55,9 @@
             <span class="truncate max-w-[65px]">{extension[:name]}</span>
           </LinkLive>
         </div>
-      </div>
-      <div class="mt-4 m-3">
+      </div> -->
+  
+      <div class="m-3">
         <Bonfire.UI.Common.SmartInputButtonsLive
           :if={@hide_smart_input != true}
           smart_input_as={@smart_input_as}
@@ -65,6 +66,12 @@
           create_object_type={@create_object_type}
         />
       </div>
+
+      <div class="flex items-center gap-3 m-3 mt-5 text-base font-semibold tracking-wide" :if={@__context__[:current_extension][:name]}>
+        <Icon iconify={@__context__[:current_extension][:icon]} class="w-8 h-8" />
+        <span>{@__context__[:current_extension][:name]}</span>
+      </div>
+      
       <Bonfire.UI.Common.ExtensionMenuNavLive
         selected_tab={@selected_tab}
         page={@page}
