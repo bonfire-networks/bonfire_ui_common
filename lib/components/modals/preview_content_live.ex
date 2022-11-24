@@ -52,19 +52,24 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
      )}
   end
 
-  def handle_event("close", _, socket) do
+  def do_handle_event("close", _, socket) do
     debug("close")
     {:noreply, assign(socket, show: false)}
   end
 
-  def handle_event(action, attrs, socket),
-    do:
-      Bonfire.UI.Common.LiveHandlers.handle_event(
+  def handle_event(
         action,
         attrs,
-        socket,
-        __MODULE__
-      )
+        socket
+      ),
+      do:
+        Bonfire.UI.Common.LiveHandlers.handle_event(
+          action,
+          attrs,
+          socket,
+          __MODULE__,
+          &do_handle_event/3
+        )
 
   def handle_info(info, socket),
     do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)

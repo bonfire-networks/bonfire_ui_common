@@ -271,6 +271,10 @@ defmodule Bonfire.UI.Common.Web do
       quote do
         use Surface.LiveComponent, unquote(opts)
 
+        data current_account, :any, from_context: :current_account
+        data current_user, :any, from_context: :current_user
+        # data socket, :any
+
         unquote(surface_component_helpers())
       end
     end
@@ -279,6 +283,10 @@ defmodule Bonfire.UI.Common.Web do
       quote do
         use Surface.Component, unquote(opts)
 
+        prop current_account, :any, from_context: :current_account
+        prop current_user, :any, from_context: :current_user
+        prop socket, :any
+
         unquote(surface_component_helpers())
       end
     end
@@ -286,18 +294,12 @@ defmodule Bonfire.UI.Common.Web do
     defp surface_component_helpers do
       quote do
         unquote(surface_helpers())
-
-        data current_account, :any, from_context: :current_account
-        data current_user, :any, from_context: :current_user
       end
     end
 
     defp surface_helpers do
       quote do
         unquote(live_view_basic_helpers())
-
-        # prop current_account, :any
-        # prop current_user, :any
 
         alias Surface.Components.Dynamic
 

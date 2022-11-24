@@ -1,4 +1,4 @@
-<div class="flex w-full gap-1">
+<div class="sticky top-0 hidden md:flex w-full gap-1" :class="{'!flex': open_sidebar}">
   {#case Bonfire.UI.Common.SmartInputLive.active_smart_input_components(
       @smart_input_component,
       @create_object_type
@@ -8,7 +8,7 @@
         :for={component <- components}
         component={component}
         class={@class}
-        smart_input_prompt={@smart_input_prompt || l("Compose")}
+        smart_input_opts={@smart_input_opts}
         icon="gridicons:create"
       />
 
@@ -17,9 +17,11 @@
            Bonfire.UI.Social.WritePostContentLive) not in components}
         component={Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
           Bonfire.UI.Social.WritePostContentLive}
-        smart_input_prompt={l("Compose")}
+        smart_input_opts={[prompt: l("Compose")]}
         class={@class}
         icon="heroicons-solid:pencil-alt"
       />
   {/case}
 </div>
+
+<Bonfire.UI.Common.MobileSmartInputButtonLive smart_input_opts={@smart_input_opts} />

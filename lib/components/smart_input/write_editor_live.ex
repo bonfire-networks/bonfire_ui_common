@@ -10,10 +10,8 @@ defmodule Bonfire.UI.Common.WriteEditorLive do
 
   prop field_name, :string, default: "post[post_content][html_body]", required: false
   prop create_object_type, :any, default: nil
-  prop smart_input_prompt, :string, default: ""
   prop smart_input_opts, :any, default: nil, required: false
   prop showing_within, :string, default: nil
-  prop with_rich_editor, :boolean, default: true
   prop insert_text, :string, default: nil
   prop thread_mode, :atom, default: nil
   # Classes to customize the smart input appearance

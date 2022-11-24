@@ -51,7 +51,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
      |> assign(subscribed: true)}
   end
 
-  def handle_event("clear-flash", %{"key" => type}, socket) do
+  def do_handle_event("clear-flash", %{"key" => type}, socket) do
     key = maybe_to_atom(type)
 
     {:noreply,
@@ -66,14 +66,19 @@ defmodule Bonfire.UI.Common.NotificationLive do
     # |> debug
   end
 
-  def handle_event(action, attrs, socket),
-    do:
-      Bonfire.UI.Common.LiveHandlers.handle_event(
+  def handle_event(
         action,
         attrs,
-        socket,
-        __MODULE__
-      )
+        socket
+      ),
+      do:
+        Bonfire.UI.Common.LiveHandlers.handle_event(
+          action,
+          attrs,
+          socket,
+          __MODULE__,
+          &do_handle_event/3
+        )
 
   def handle_info(info, socket),
     do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)

@@ -77,9 +77,7 @@ defmodule Bonfire.UI.Common.LayoutView do
         context={@__context__}
         without_sidebar={e(assigns, :without_sidebar, nil)}
         showing_within={@showing_within}
-        hide_smart_input={e(assigns, :hide_smart_input, nil)}
         page_header_aside={e(assigns, :page_header_aside, nil)}
-        page_header_drawer={e(assigns, :page_header_drawer, false)}
         page={e(assigns, :page, "")}
         page_title={e(assigns, :page_title, "")}
         inner_content={@inner_content}
@@ -89,7 +87,6 @@ defmodule Bonfire.UI.Common.LayoutView do
         to_boundaries={boundaries_or_default(e(assigns, :to_boundaries, nil), assigns)}
         to_circles={e(assigns, :to_circles, [])}
         thread_mode={e(assigns, :thread_mode, nil)}
-        smart_input_prompt={e(assigns, :smart_input_prompt, nil)}
         smart_input_opts={e(assigns, :smart_input_opts, nil)}
         sidebar_widgets={e(assigns, :sidebar_widgets, [])}
         show_less_menu_items={e(assigns, :show_less_menu_items, false)}

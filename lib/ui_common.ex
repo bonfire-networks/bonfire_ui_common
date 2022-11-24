@@ -481,9 +481,10 @@ defmodule Bonfire.UI.Common do
     end
   end
 
-  def send_self(socket \\ nil, assigns_to_broadcast) do
-    send(self(), {:assign, assigns_to_broadcast})
-    if not is_nil(socket), do: assign_generic(socket, assigns_to_broadcast)
+  def send_self(socket \\ nil, assigns) do
+    assigns = assigns_clean(assigns)
+    send(self(), {:assign, assigns})
+    if not is_nil(socket), do: assign_generic(socket, assigns)
   end
 
   @doc "Warning: this will set assigns for any/all users who subscribe to them. You want to `cast_self/2` instead if dealing with user-specific actions or private data."
@@ -503,7 +504,8 @@ defmodule Bonfire.UI.Common do
   defp assigns_broadcast(assigns, assign_target_ids \\ [])
 
   defp assigns_broadcast(assigns, assign_target_ids) when is_list(assigns) do
-    Enum.each(assigns, &assigns_broadcast(&1, assign_target_ids))
+    assigns_clean(assigns)
+    |> Enum.each(&assigns_broadcast(&1, assign_target_ids))
   end
 
   # defp assigns_broadcast({{assign_name, assign_id}, data}, assign_target_ids) do
@@ -512,7 +514,7 @@ defmodule Bonfire.UI.Common do
   # end
   defp assigns_broadcast({assign_name, data}, assign_target_ids) do
     names_of_assign_topics(assign_target_ids, assign_name)
-    |> pubsub_broadcast({:assign, {assign_name, data}})
+    |> pubsub_broadcast({:assign, {assign_name, assigns_clean(data)}})
   end
 
   defp names_of_assign_topics(assign_target_ids \\ [], assign_names)

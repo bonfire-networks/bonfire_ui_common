@@ -10,15 +10,11 @@ defmodule Bonfire.UI.Common.NavSidebarLive do
   prop context_id, :string, default: nil, required: false
   prop create_object_type, :any, default: nil
   prop smart_input_component, :atom, default: nil
-  prop smart_input_as, :any, default: nil
   prop to_boundaries, :list, default: []
   prop to_circles, :list, default: []
-  prop smart_input_prompt, :string, required: false
   prop smart_input_opts, :any, required: false
   prop showing_within, :any, default: nil
-  prop with_rich_editor, :boolean, default: true, required: false
   prop activity, :any, default: nil
-  prop hide_smart_input, :boolean, default: false
   prop object, :any, default: nil
   prop activity_inception, :any, default: nil
   prop title_open, :boolean, default: nil

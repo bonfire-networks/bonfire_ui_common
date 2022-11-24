@@ -1,7 +1,7 @@
-{#if !is_list(@sidebar_widgets[:users][:main])}
-  <div class="flex gap-4">
+<div data-id="nav_sidebar" class="sticky top-0 max-w-[300px]">
+  {#if !is_list(@sidebar_widgets[:users][:main])}
     <!-- <nav class="">
-      <div class="bg-base-100 widget sticky top-0 w-[68px]">
+      <div class="bg-base-100 widget w-[68px]">
         <div class="inset-0 h-full">
           <div class="flex flex-col items-center gap-1 py-4">
             <div
@@ -27,15 +27,16 @@
       </div>
     </nav> -->
 
-    <nav class="hidden w-full mx-2 md:block" role="navigation" aria-label={l("Extension navigation")}>
-      <!-- <div :if={!@nav_items} class="pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
+    <!-- 
+    <nav class="hidden md:block w-full mx-2" role="navigation" aria-label={l("Extension navigation")}>      
+      <div :if={!@nav_items} class="pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
       <Bonfire.UI.Common.ExploreNavLive
         page={@page}
         :if={!@nav_items}
         selected_tab={@selected_tab}
         show_extensions_nav
       /> -->
-      <!-- <div class="grid grid-cols-4 gap-1.5 mx-2 mt-2">
+    <!-- <div class="grid grid-cols-4 gap-1.5 mx-2 mt-2">
         <div
           class=""
           data-tip={extension[:name]}
@@ -56,22 +57,37 @@
           </LinkLive>
         </div>
       </div> -->
-  
-      <div class="m-3">
-        <Bonfire.UI.Common.SmartInputButtonsLive
-          :if={@hide_smart_input != true}
-          smart_input_as={@smart_input_as}
-          smart_input_prompt={@smart_input_prompt}
-          smart_input_component={@smart_input_component}
-          create_object_type={@create_object_type}
-        />
-      </div>
 
-      <div class="flex items-center gap-3 m-3 mt-5 text-base font-semibold tracking-wide" :if={@__context__[:current_extension][:name]}>
+    <div class="m-3 w-full">
+      <Bonfire.UI.Common.SmartInputContainerLive
+        :if={not is_nil(@current_user) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
+        id={:smart_input}
+        showing_within={@showing_within}
+        reply_to_id={@reply_to_id}
+        context_id={@context_id}
+        create_object_type={@create_object_type}
+        thread_mode={@thread_mode}
+        without_sidebar={@without_sidebar}
+        to_boundaries={@to_boundaries}
+        to_circles={@to_circles}
+        smart_input_opts={@smart_input_opts}
+      />
+    </div>
+
+    <nav
+      class="hidden md:block sticky top-0 w-full mx-2"
+      :class="{'!block': open_sidebar}"
+      role="navigation"
+      aria-label={l("Extension navigation")}
+    >
+      <div
+        class="flex items-center gap-3 m-3 mt-5 text-base font-semibold tracking-wide"
+        :if={@__context__[:current_extension][:name]}
+      >
         <Icon iconify={@__context__[:current_extension][:icon]} class="w-8 h-8" />
         <span>{@__context__[:current_extension][:name]}</span>
       </div>
-      
+
       <Bonfire.UI.Common.ExtensionMenuNavLive
         selected_tab={@selected_tab}
         page={@page}
@@ -90,17 +106,19 @@
         title={l("Favourite milestones")}
       />
     </nav>
-  </div>
-{#else}
-  <Dynamic.Component
-    :if={not is_nil(ulid(@current_user))}
-    :for={{component, component_assigns} <-
-      @sidebar_widgets[:users][:main] ||
-        [
-          {Bonfire.Tag.Web.WidgetTagsLive, []},
-          {Bonfire.UI.Common.WidgetFeedbackLive, []}
-        ]}
-    module={component}
-    {...component_assigns}
-  />
-{/if}
+  {#else}
+    <nav class="hidden md:block sticky top-0 w-full mx-2" :class="{'!block': open_sidebar}">
+      <Dynamic.Component
+        :if={not is_nil(ulid(@current_user))}
+        :for={{component, component_assigns} <-
+          @sidebar_widgets[:users][:main] ||
+            [
+              {Bonfire.Tag.Web.WidgetTagsLive, []},
+              {Bonfire.UI.Common.WidgetFeedbackLive, []}
+            ]}
+        module={component}
+        {...component_assigns}
+      />
+    </nav>
+  {/if}
+</div>
