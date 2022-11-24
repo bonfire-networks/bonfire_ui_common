@@ -2,7 +2,7 @@
   <Icon iconify={@__context__[:current_extension][:icon]} />
   <span>{@__context__[:current_extension][:name]}</span>
 </div> -->
-<div :if={@nav_items} class="gap-1 menu menu-compact mt-4">
+<div :if={@nav_items} class="gap-1 mt-4 menu">
   {#for nav <- @nav_items}
     {#case nav}
       {#match %{}}

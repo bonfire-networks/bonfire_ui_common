@@ -1,7 +1,7 @@
 <div
   id={@id}
   class={
-    "#{@modal_class} absolute rounded-t-[1rem] top-0  h-[calc(var(--inner-window-height)_-_58px)] overflow-y-auto overflow-x-hidden inset-0 bg-base-300",
+    "#{@modal_class} absolute top-0  overflow-y-auto overflow-x-hidden inset-0 bg-base-200",
     invisible: !@show,
     "visible z-[99999999999]": @show
   }
@@ -36,7 +36,7 @@
   </button>
 
   <div :if={@show} class="relative z-30">
-    <div class="p-0 z-[910] modal_invisible relative" data-id="modal-contents">
+    <div class="p-0 z-[910] max-w-screen-lg mx-auto modal_invisible relative" data-id="modal-contents">
       <#slot>
         {#case merge_as_map(@modal_assigns, %{showing_within: :preview})
           |> debug("preview_component modal_assigns")}

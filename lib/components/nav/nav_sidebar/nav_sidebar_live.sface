@@ -1,4 +1,4 @@
-<div data-id="nav_sidebar" class="sticky top-0 max-w-[300px]">
+<div data-id="nav_sidebar" class="sticky top-0 max-w-[360px] w-full">
   {#if !is_list(@sidebar_widgets[:users][:main])}
     <!-- <nav class="">
       <div class="bg-base-100 widget w-[68px]">
@@ -28,7 +28,7 @@
     </nav> -->
 
     <!-- 
-    <nav class="hidden md:block w-full mx-2" role="navigation" aria-label={l("Extension navigation")}>      
+    <nav class="hidden w-full mx-2 md:block" role="navigation" aria-label={l("Extension navigation")}>      
       <div :if={!@nav_items} class="pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
       <Bonfire.UI.Common.ExploreNavLive
         page={@page}
@@ -58,7 +58,24 @@
         </div>
       </div> -->
 
-    <div class="m-3 w-full">
+    <!-- <div class="w-full m-3">
+    </div> -->
+
+    <nav
+      class="hidden w-full md:block"
+      :class="{'!block': open_sidebar}"
+      role="navigation"
+      aria-label={l("Extension navigation")}
+    >
+      <div
+        class="flex items-center gap-3 my-5 text-base font-semibold tracking-wide"
+        :if={@__context__[:current_extension][:name]}
+      >
+        <Icon iconify={@__context__[:current_extension][:icon]} class="w-8 h-8" />
+        <span>{@__context__[:current_extension][:name]}</span>
+      </div>
+      
+      <div class="mt-6">
       <Bonfire.UI.Common.SmartInputContainerLive
         :if={not is_nil(@current_user) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
         id={:smart_input}
@@ -72,22 +89,7 @@
         to_circles={@to_circles}
         smart_input_opts={@smart_input_opts}
       />
-    </div>
-
-    <nav
-      class="hidden md:block sticky top-0 w-full mx-2"
-      :class="{'!block': open_sidebar}"
-      role="navigation"
-      aria-label={l("Extension navigation")}
-    >
-      <div
-        class="flex items-center gap-3 m-3 mt-5 text-base font-semibold tracking-wide"
-        :if={@__context__[:current_extension][:name]}
-      >
-        <Icon iconify={@__context__[:current_extension][:icon]} class="w-8 h-8" />
-        <span>{@__context__[:current_extension][:name]}</span>
       </div>
-
       <Bonfire.UI.Common.ExtensionMenuNavLive
         selected_tab={@selected_tab}
         page={@page}
@@ -107,7 +109,7 @@
       />
     </nav>
   {#else}
-    <nav class="hidden md:block sticky top-0 w-full mx-2" :class="{'!block': open_sidebar}">
+    <nav class="sticky top-0 hidden w-full mx-2 md:block" :class="{'!block': open_sidebar}">
       <Dynamic.Component
         :if={not is_nil(ulid(@current_user))}
         :for={{component, component_assigns} <-

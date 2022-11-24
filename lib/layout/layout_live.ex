@@ -55,9 +55,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }"
         @resize.window.debounce.100="width = window.innerWidth"
         class={
-          "w-full items-start mx-auto grid grid-cols-1 md:grid-cols-[300px_1fr_300px]",
+          "w-full items-start mx-auto",
           "!grid-cols-1": @without_sidebar || is_nil(@current_user),
-          "mt-[56px]": @nav_header != false
+          "": @nav_header != false
         }
       >
         <PersistentLive
@@ -77,18 +77,18 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <div
           data-id="main_section"
           class={
-            "gap-2 md:gap-0 relative z-[105] w-full col-span-1",
+            "gap-2 relative overflow-y-auto overflow-x-hidden md:gap-0 z-[105] w-full col-span-1 h-[calc(var(--inner-window-height)_-_64px)]",
             "!max-w-full mx-auto": @without_sidebar,
             "!max-w-full": @full_page
           }
-        >
+          >
           <div class={
-            "mt-0 grid tablet-lg:grid-cols-[1fr] desktop-lg:grid-cols-[1fr] grid-cols-1",
+            "h-full",
             "md:mt-6": @nav_header == false,
             "max-w-screen-lg gap-4 mx-auto": is_nil(@current_user),
             "justify-between": not is_nil(@current_user)
           }>
-            <div class="relative grid invisible_frame">
+            <div class="relative grid h-full invisible_frame">
               <div class="pb-16 md:pb-0 md:overflow-y-visible md:h-full">
                 <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
                 <div id="inner" class="">

@@ -1,13 +1,13 @@
 <div
   data-id="logged_header"
-  class="flex w-full items-center md:justify-between border-b bg-base-300 border-base-content/10"
+  class="sticky top-0 z-30 flex justify-center w-full h-16 transition-all duration-100 shadow-sm bg-opacity-90 backdrop-blur bg-base-100 text-base-content"
 >
-  <div class="flex md:flex-1 desktop-lg:max-w-[350px] items-center tablet-lg:w-[300px] tablet-lg:max-w-[300px] md:min-w-[300px] md:max-w-[300px] md:w-full px-4 desktop-lg:w-[350px]">
+  <div class="flex items-center px-4">
     <div data-id="mobile_nav_btn" class="md:hidden">
       <button
         @click="open_sidebar = ! open_sidebar"
         type="button"
-        class="flex -my-2 rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px]"
+        class="flex -my-2 rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[64px]"
         id="option-menu-button"
         aria-expanded="true"
         aria-haspopup="true"
@@ -21,12 +21,27 @@
       <Bonfire.UI.Common.LogoLinkLive href="/dashboard" />
     </div>
 
-    <div class="hidden md:block ml-4 max-w-[420px] w-full">
+    <div class="hidden md:block ml-4 max-w-[320px] w-full">
       <Dynamic.Component
         :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
         module={Bonfire.Search.Web.FormLive}
         search_limit={5}
       />
+    </div>
+    <div class="pl-3">
+    <Bonfire.UI.Common.SmartInputContainerLive
+      :if={not is_nil(@current_user) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
+      id={:smart_input}
+      showing_within={@showing_within}
+      reply_to_id={@reply_to_id}
+      context_id={@context_id}
+      create_object_type={@create_object_type}
+      thread_mode={@thread_mode}
+      without_sidebar={@without_sidebar}
+      to_boundaries={@to_boundaries}
+      to_circles={@to_circles}
+      smart_input_opts={@smart_input_opts}
+    />
     </div>
     <!-- <div class="hidden md:block">
       <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
@@ -36,7 +51,7 @@
     <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
   </div> -->
 
-  <div :class="{'hidden': open_sidebar}">
+  <div class="flex flex-1" :class="{'hidden': open_sidebar}">
     <Dynamic.Component
       module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
       page_title={@page_title}
@@ -64,7 +79,7 @@
   </button> -->
 
   <div
-    class="hidden md:flex flex-1 tablet-lg:w-[300px] bg-base-300 px-0 md:px-3 lg:px-6 tablet-lg:max-w-[300px] desktop-lg:w-[420px] desktop-lg:max-w-[420px] items-center justify-end gap-4"
+    class="hidden md:flex flex-1 tablet-lg:w-[300px] px-0 md:px-3 lg:px-6 tablet-lg:max-w-[300px] desktop-lg:w-[420px] desktop-lg:max-w-[420px] items-center justify-end gap-4"
     :class="{'!flex': open_sidebar}"
   >
     <div class="dropdown dropdown-end">
