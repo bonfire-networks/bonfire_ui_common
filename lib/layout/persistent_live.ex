@@ -3,9 +3,8 @@ defmodule Bonfire.UI.Common.PersistentLive do
   alias Bonfire.UI.Common.SmartInputLive
 
   def mount(_params, session, socket) do
-    assigns =
-      input_to_atoms(session)
-      # |> info("assigns from session")
+    assigns = input_to_atoms(session)
+    # |> info("assigns from session")
 
     # subscribe
     assigns[:context][:csrf_token]
@@ -57,7 +56,26 @@ defmodule Bonfire.UI.Common.PersistentLive do
   defp persistent_assigns_filter(assigns) do
     assigns
     |> Map.new()
-    |> Map.take([:showing_within, :reply_to_id, :context_id, :create_object_type, :smart_input_component, :thread_mode, :without_sidebar, :to_boundaries, :to_circles, :smart_input_opts, :nav_header, :nav_items, :custom_page_header, :page_header_aside, :sidebar_widgets, :page, :page_title, :selected_tab])
+    |> Map.take([
+      :showing_within,
+      :reply_to_id,
+      :context_id,
+      :create_object_type,
+      :smart_input_component,
+      :thread_mode,
+      :without_sidebar,
+      :to_boundaries,
+      :to_circles,
+      :smart_input_opts,
+      :nav_header,
+      :nav_items,
+      :custom_page_header,
+      :page_header_aside,
+      :sidebar_widgets,
+      :page,
+      :page_title,
+      :selected_tab
+    ])
     |> Map.put(:__context__, Map.merge(assigns[:__context__] || %{}, %{sticky: true}))
   end
 
@@ -90,21 +108,23 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
   def handle_info({:assign, {:smart_input, assigns}}, socket) do
     debug("forward assigns from PersistentLive to the smart input stateful component")
+
     assigns
     |> Map.new()
     |> Map.put_new(:smart_input_component, nil)
     |> maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, ...)
+
     {:noreply, socket}
   end
 
   def handle_info({:assign, assigns}, socket) do
-    {:noreply, assigns
-      |> Map.new()
-      |> Map.put_new(:nav_items, nil)
-      |> Map.put_new(:smart_input_component, nil)
-      |> debug("set received assigns for PersistentLive")
-      |> assign(socket, ...)
-    }
+    {:noreply,
+     assigns
+     |> Map.new()
+     |> Map.put_new(:nav_items, nil)
+     |> Map.put_new(:smart_input_component, nil)
+     |> debug("set received assigns for PersistentLive")
+     |> assign(socket, ...)}
   end
 
   def handle_info(info, socket),

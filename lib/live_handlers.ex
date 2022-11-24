@@ -24,9 +24,13 @@ defmodule Bonfire.UI.Common.LiveHandlers do
              do_handle_params(params, uri, assign_default_params(params, uri, socket)),
            {:noreply, socket} <-
              if(is_function(fun), do: fun.(params, uri, socket), else: {:noreply, socket}) do
-
         # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
-        if socket_connected?(socket), do: Bonfire.UI.Common.PersistentLive.maybe_set(socket.assigns[:__context__], socket.assigns)
+        if socket_connected?(socket),
+          do:
+            Bonfire.UI.Common.PersistentLive.maybe_set(
+              socket.assigns[:__context__],
+              socket.assigns
+            )
 
         {:noreply, socket}
       end
@@ -158,6 +162,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
         URI.parse(uri)
         |> maybe_get(:path)
     )
+
     # see also more assigns set in `LivePlugs.apply_undead_mounted`
   end
 

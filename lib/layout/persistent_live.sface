@@ -15,31 +15,29 @@
       class="absolute top-[-56px] z-[999] w-full w-max-[300px] overflow-visible border-r border-base-content/10"
       :class="{'min-h-[calc(100vh/1.5)]': open_sidebar}"
     >
-      <div 
-      :if={@nav_header != false} 
-      class="sticky top-0 h-[56px]">
-      {#case (if is_nil(current_user(@__context__)),
-          do: Bonfire.UI.Common.GuestHeaderLive,
-          else: Bonfire.UI.Common.LoggedHeaderLive)}
-        {#match module}
-        <Dynamic.Component
-          :if={module_enabled?(module, current_user(@__context__))}
-          module={module}
-          page_header_aside={@page_header_aside}
-          page_title={@page_title}
-          page={@page}
-          showing_within={@showing_within}
-          reply_to_id={@reply_to_id}
-          context_id={@context_id}
-          create_object_type={@create_object_type}
-          thread_mode={@thread_mode}
-          without_sidebar={@without_sidebar}
-          custom_page_header={@custom_page_header}
-          to_boundaries={@to_boundaries}
-          to_circles={@to_circles}
-          smart_input_opts={@smart_input_opts}
-          sidebar_widgets={@sidebar_widgets}
-        />
+      <div :if={@nav_header != false} class="sticky top-0 h-[56px]">
+        {#case if is_nil(current_user(@__context__)),
+            do: Bonfire.UI.Common.GuestHeaderLive,
+            else: Bonfire.UI.Common.LoggedHeaderLive}
+          {#match module}
+            <Dynamic.Component
+              :if={module_enabled?(module, current_user(@__context__))}
+              module={module}
+              page_header_aside={@page_header_aside}
+              page_title={@page_title}
+              page={@page}
+              showing_within={@showing_within}
+              reply_to_id={@reply_to_id}
+              context_id={@context_id}
+              create_object_type={@create_object_type}
+              thread_mode={@thread_mode}
+              without_sidebar={@without_sidebar}
+              custom_page_header={@custom_page_header}
+              to_boundaries={@to_boundaries}
+              to_circles={@to_circles}
+              smart_input_opts={@smart_input_opts}
+              sidebar_widgets={@sidebar_widgets}
+            />
         {/case}
       </div>
     </div>
@@ -49,8 +47,8 @@
       page={@page}
       selected_tab={@selected_tab}
       nav_items={@nav_items ||
-         Bonfire.Common.ExtensionModule.default_nav(@__context__[:current_app]) ||
-         Bonfire.Common.NavModule.nav(@__context__[:current_app]) || []}
+        Bonfire.Common.ExtensionModule.default_nav(@__context__[:current_app]) ||
+        Bonfire.Common.NavModule.nav(@__context__[:current_app]) || []}
       sidebar_widgets={@sidebar_widgets}
       showing_within={@showing_within}
       reply_to_id={@reply_to_id}

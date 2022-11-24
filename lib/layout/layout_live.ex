@@ -46,7 +46,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:thread_mode, fn -> nil end)
       |> assign_new(:show_less_menu_items, fn -> false end)
 
-
     ~F"""
     <div data-id="bonfire_live" class="transition duration-150 ease-in-out transform">
       <div
@@ -65,13 +64,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
           id={:persistent}
           sticky
           session={%{
-             "context"=> %{
-                sticky: true,
-                csrf_token: @__context__[:csrf_token],
-                current_user_id: ulid(@current_user),
-                current_account_id: ulid(@current_account),
-                current_app: @__context__[:current_app]
-             }
+            "context" => %{
+              sticky: true,
+              csrf_token: @__context__[:csrf_token],
+              current_user_id: ulid(@current_user),
+              current_account_id: ulid(@current_account),
+              current_app: @__context__[:current_app]
+            }
           }}
         />
 

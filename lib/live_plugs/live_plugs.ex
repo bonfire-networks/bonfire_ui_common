@@ -107,7 +107,8 @@ defmodule Bonfire.UI.Common.LivePlugs do
       else
         Bonfire.Common.TestInstanceRepo.maybe_declare_test_instance(socket.endpoint)
 
-        socket = socket
+        socket =
+          socket
           |> assign_global(
             current_view: socket.view,
             current_app: current_app,
@@ -116,7 +117,12 @@ defmodule Bonfire.UI.Common.LivePlugs do
           )
 
         # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
-        if socket_connected?(socket), do: Bonfire.UI.Common.PersistentLive.maybe_set(socket.assigns[:__context__], socket.assigns)
+        if socket_connected?(socket),
+          do:
+            Bonfire.UI.Common.PersistentLive.maybe_set(
+              socket.assigns[:__context__],
+              socket.assigns
+            )
 
         apply(fun, [
           params,
