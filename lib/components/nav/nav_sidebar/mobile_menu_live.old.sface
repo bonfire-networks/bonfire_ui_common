@@ -1,0 +1,275 @@
+<div data-id="mobile_nav" class="md:hidden" x-data="{hovered_apps: false}">
+  <button
+    @click="open_sidebar = ! open_sidebar"
+    @mouseenter="hovered_apps = true"
+    @mouseleave="hovered_apps = false"
+    type="button"
+    class="flex -my-2  rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px] w-[65px]"
+    id="option-menu-button"
+    aria-expanded="true"
+    aria-haspopup="true"
+  >
+    <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
+    <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
+  </button>
+  <div
+    x-cloak
+    x-show="open_sidebar"
+    @keydown.window.escape="open_sidebar = false;"
+    class="fixed top-[0] right-0 bottom-0 left-0 z-[200] overflow-hidden"
+  >
+    <div class="inset-0 h-full overflow-hidden">
+      <div @click="open_sidebar = false" class="absolute inset-0 overflow-hidden bg-base-300/30" />
+      <section class="h-full" aria-labelledby="slide-over-heading">
+        <div
+          class="relative w-3/4 h-full overflow-auto md:w-80 bg-base-200"
+          x-description="Slide-over panel, show/hide based on slide-over state."
+          x-show="open_sidebar"
+          x-transition:enter="transform transition ease-in-out duration-150 sm:duration-200"
+          x-transition:enter-start="-translate-x-full"
+          x-transition:enter-end="-translate-x-0"
+          x-transition:leave="transform transition ease-in-out duration-150 sm:duration-200"
+          x-transition:leave-start="-translate-x-0"
+          x-transition:leave-end="-translate-x-full"
+        >
+          <div class="relative w-full h-full bg-base-200">
+            <div class="shadow bg-base-100">
+              <div class="flex items-center gap-2 p-4">
+                <div @click="open_sidebar = false" class="btn btn-ghost btn-square btn-sm">
+                  <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
+                </div>
+                <Bonfire.UI.Common.LogoLinkLive
+                  with_name
+                  href={@homepage_link}
+                  container_class="flex items-center gap-2"
+                  image_class="w-8 h-8 bg-center bg-no-repeat bg-contain"
+                  name_class="text-lg font-bold text-base-content"
+                />
+              </div>
+
+              <div x-data="{expanded: false}" class="flex flex-col pb-4 md:hidden">
+                <div class="flex flex-col gap-1 m-2 mx-4 mr-3">
+                  <LinkLive to={path(@current_user)}>
+                    <Bonfire.UI.Common.AvatarLive
+                      class="inline-block object-cover w-[52px] h-[52px] rounded-full cursor-pointer bg-base-300"
+                      size="52"
+                      user={@current_user}
+                    />
+                  </LinkLive>
+                  <div class="flex items-center">
+                    <div class="flex flex-col flex-1">
+                      <span class="font-bold text-base-content">{e(@current_user, :profile, :name, "unknown")}</span>
+                      <span class="text-sm font-light text-base-content/70">{Bonfire.Me.Characters.display_username(@current_user, true)}</span>
+                    </div>
+                    <span @click="expanded = !expanded" class="btn btn-circle btn-sm btn-ghost">
+                      <Icon solid="ChevronDown" class="w-5 h-5 text-base-content/70" />
+                    </span>
+                  </div>
+                </div>
+                <div x-show="expanded" x-collapse>
+                  <ul class="mt-1 menu menu-compact">
+                    {#if ulid(@current_user)}
+                      <li>
+                        <LiveRedirect
+                          to={path(@current_user)}
+                          class="flex items-start gap-2 text-sm text-base-content/80"
+                        >
+                          <Icon solid="UserCircle" class="w-5 h-5" />
+                          <div>{l("View profile")}</div>
+                        </LiveRedirect>
+                      </li>
+                      <li class="hover:bg-base/10">
+                        <LinkLive
+                          to={path(Bonfire.Data.Social.Message)}
+                          class="flex items-start gap-2 text-sm text-base-content/80"
+                        >
+                          <Icon solid="Mail" class="w-5 h-5" />
+                          {l("Messages")}
+                        </LinkLive>
+                      </li>
+                      <li>
+                        <LiveRedirect to={~p"/settings"} class="flex items-start gap-2 text-sm text-base-content/80">
+                          <Icon solid="Cog" class="w-5 h-5" />
+                          {l("Settings")}
+                        </LiveRedirect>
+                      </li>
+                      <li>
+                        <LiveRedirect to={~p"/switch-user"} class="flex items-start gap-2 text-sm text-base-content/80">
+                          <Icon iconify="material-symbols:switch-account" class="w-5 h-5" />
+                          {l("Switch profile")}
+                        </LiveRedirect>
+                      </li>
+                      <li>
+                        <LiveRedirect to={~p"/logout"} class="flex items-start gap-2 text-sm text-base-content/80">
+                          <Icon iconify="material-symbols:logout" class="w-5 h-5" />
+                          {l("Logout")}
+                        </LiveRedirect>
+                      </li>
+                      <li class="">
+                        <Form for={:feedback} action={~p"/session_redirect"}>
+                          <!-- opts={"target": "_blank"} -->
+                          <input type="hidden" name="to" value={~p"/write"}>
+                          <input
+                            type="hidden"
+                            name="smart_input_text"
+                            value={Settings.get(
+                              [:ui, :feedback_post_template],
+                              "I have a suggestion for Bonfire: \n\n@BonfireBuilders #bonfire_feedback",
+                              @__context__
+                            )}
+                          />
+                          <input type="hidden" name="create_object_type" value="task">
+                          <button class="flex items-start gap-2 text-sm text-base-content/80">
+                            <Icon iconify="ic:round-feedback" class="w-5 h-5" />
+                            {l("Share feedback")}
+                          </button>
+                        </Form>
+                      </li>
+                    {/if}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <nav
+              :if={is_list(@nav_items) and @nav_items != []}
+              role="navigation"
+              aria-label={l("Extension navigation")}
+            >
+              <div class="pb-3 mt-4 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Menu")}</div>
+              <ul class="menu menu-compact">
+                {#for nav <- @nav_items}
+                  {#case nav}
+                    {#match %{} = nav}
+                      <li :if={!nav[:exclude_from_nav]}>
+                        <Bonfire.UI.Common.WidgetLive
+                          widget={nav}
+                          page={@page}
+                          selected_tab={@selected_tab}
+                          data={e(nav, :props, [])}
+                        />
+                      </li>
+                    {#match _}
+                      <li :for={subnav <- nav || []} :if={!subnav[:exclude_from_nav]}>
+                        <Bonfire.UI.Common.WidgetLive
+                          widget={subnav}
+                          page={@page}
+                          selected_tab={@selected_tab}
+                          data={e(subnav, :props, [])}
+                        />
+                      </li>
+                  {/case}
+                {/for}
+              </ul>
+            </nav>
+
+            <nav role="navigation" aria-label={l("Extension navigation")}>
+              <div class="pb-3 mt-4 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
+              <Bonfire.UI.Common.ExploreNavLive page={@page} selected_tab={@selected_tab} />
+            </nav>
+
+            <!-- 
+            <ul class="p-2 space-y-2 border-t menu border-base-content/10">
+              <li class="menu-title"><span>{l("Extensions")}</span></li>
+              <li>
+                <LinkLive
+                  class={active: @__context__[:current_extension][:name] == "Social"}
+                  to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
+                >
+                  <div class="flex items-center w-full">
+                    <Icon iconify="noto:newspaper" class="w-6 h-6" />
+                    <div class="flex-1 ml-2 text-sm font-normal">{l("Feeds")}</div>
+                  </div>
+                </LinkLive>
+              </li>
+              <li
+                :for={{app, extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
+                :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
+              >
+                <LinkLive
+                  class={
+                    active:
+                      @__context__[:current_extension][:name] ==
+                        extension[:name]
+                  }
+                  to={extension[:href]}
+                >
+                  <div class="flex items-center w-full">
+                    <Icon iconify={extension[:icon]} class="w-6 h-6" />
+                    <div class="flex-1 ml-2 text-sm font-normal">{extension[:name]}</div>
+                  </div>
+                </LinkLive>
+              </li>
+            </ul> -->
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div
+  data-id="desktop_logo"
+  class="hidden md:flex items-center place-content-center h-[56px] mx-4"
+  x-data="{hovered_apps: false}"
+>
+  <Bonfire.UI.Common.LogoLinkLive href="/dashboard" />
+  <!-- <button
+    @click="open_sidebar = ! open_sidebar"
+    @mouseenter="hovered_apps = true"
+    @mouseleave="hovered_apps = false"
+    type="button"
+    class="flex -my-2  rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px] w-[65px]"
+    id="option-menu-button"
+    aria-expanded="true"
+    aria-haspopup="true"
+    >
+    <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
+    <Icon iconify="mdi:dots-grid" class="w-5 h-5" />
+  </button>
+
+  <div
+    x-cloak
+    x-show="open_sidebar"
+    @keydown.window.escape="open_sidebar = false;"
+    class="fixed top-[0] right-0 bottom-0 left-0 z-[200] overflow-hidden"
+    >
+    <div class="inset-0 h-full overflow-hidden">
+      <div
+        @click="open_sidebar = false"
+        class="absolute inset-0 overflow-hidden bg-base-300/30"
+      />
+      <section class="h-full" aria-labelledby="slide-over-heading">
+        <div
+          class="relative w-3/4 p-4 overflow-auto rounded-tl-none shadow-lg rounded-xl md:w-80 bg-neutral"
+          x-description="Slide-over panel, show/hide based on slide-over state."
+          x-show="open_sidebar"
+          x-transition:enter="transform transition ease-in-out duration-150 sm:duration-200"
+          x-transition:enter-start="-translate-x-full"
+          x-transition:enter-end="-translate-x-0"
+          x-transition:leave="transform transition ease-in-out duration-150 sm:duration-200"
+          x-transition:leave-start="-translate-x-0"
+          x-transition:leave-end="-translate-x-full"
+        >
+          <div class="flex items-center gap-2">
+            <button
+              @click="open_sidebar = ! open_sidebar"
+              @mouseenter="hovered_apps = true"
+              @mouseleave="hovered_apps = false"
+              type="button"
+              class="btn btn-ghost btn-square"
+              id="option-menu-button"
+              aria-expanded="true"
+              aria-haspopup="true"
+            >
+              <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
+              <Icon iconify="mdi:dots-grid" class="w-5 h-5" />
+            </button>
+            <div class="text-sm font-medium tracking-wider text-base-content/60">{l("Explore extensions")}</div>
+          </div>
+          <Bonfire.UI.Common.ExploreNavLive page={@page} selected_tab={@selected_tab} />
+        </div>
+      </section>
+    </div>
+  </div> -->
+</div>

@@ -7,13 +7,14 @@
     aria-expanded="true"
   >
     <Bonfire.UI.Common.AvatarLive
+      :if={is_map(@current_user)}
       class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer bg-base-content/10"
       size="40"
       user={@current_user}
     />
-    <div class="flex flex-col mr-4 max-w-[50px] desktop-lg:max-w-[140px]">
-      <div class="font-semibold truncate text-neutral-content">{e(@current_user, :profile, :name, "unknown")}</div>
-      <div class="-mt-1 text-sm font-normal truncate text-neutral-content/70">@{e(@current_user, :character, :username, "unknown")}</div>
+    <div class="flex flex-col mr-4 max-w-[60px] sm:max-w-[80px] desktop-lg:max-w-[140px]">
+      <div class="font-semibold truncate text-neutral-content">{e(@current_user, :profile, :name, l "Me")}</div>
+      <div :if={e(@current_user, :character, :username, nil)} class="-mt-1 text-sm font-normal truncate text-neutral-content/70">@{e(@current_user, :character, :username, nil)}</div>
     </div>
     <Icon iconify="pepicons:triangle-down-filled" class="w-3 h-3 text-base-content/70" />
   </label>

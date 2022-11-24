@@ -5,9 +5,9 @@
   <span
     @click="smart_input_minimized = ! smart_input_minimized"
     class="flex-1 text-sm font-normal text-left text-ellipsis"
-    x-text={"smart_input_title_text || '#{e(@smart_input_prompt, l("New post"))}'"}
+    x-text={"smart_input_title_text || '#{e(@smart_input_opts, :prompt, l("New post"))}'"}
   >
-    {e(@smart_input_prompt, l("New post"))}
+    {e(@smart_input_opts, :prompt, l("New post"))}
   </span>
   <div class="flex items-center gap-3">
     <button

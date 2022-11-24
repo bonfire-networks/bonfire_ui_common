@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.SmartInputLive do
-  use Bonfire.UI.Common.Web, :stateful_component
+  use Bonfire.UI.Common.Web, :stateless_component
 
   # prop user_image, :string, required: true
   # prop target_component, :string
@@ -10,12 +10,9 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop to_boundaries, :list, default: []
   prop to_circles, :list, default: []
   prop open_boundaries, :boolean, default: false
-  prop smart_input_prompt, :string, required: false
   prop smart_input_opts, :any, required: false
   prop showing_within, :any, default: nil
-  prop with_rich_editor, :boolean, default: true
   prop activity, :any, default: nil
-  prop hide_smart_input, :boolean, default: false
   prop object, :any, default: nil
   prop activity_inception, :any, default: nil
   prop title_open, :boolean, default: nil
@@ -27,29 +24,13 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop boundaries_modal_id, :string, default: :sidebar_composer
   prop without_sidebar, :string, default: nil
 
+  prop uploads, :any, default: nil
+  prop uploaded_files, :any, default: nil
+  prop trigger_submit, :boolean, default: nil
+
   # Classes to customize the smart input appearance
   prop replied_activity_class, :css_class,
     default: "!m-3 !rounded-md !shadow !bg-base-content/5 !p-3 !overflow-hidden"
-
-  def mount(socket),
-    do:
-      {:ok,
-       socket
-       |> assign(
-         trigger_submit: false,
-         uploaded_files: []
-       )
-       |> allow_upload(:files,
-         # make configurable
-         accept: ~w(.jpg .jpeg .png .gif .svg .tiff .webp .pdf .md .rtf .mp3 .mp4),
-         # make configurable, expecially once we have resizing
-         max_file_size: 10_000_000,
-         max_entries: 10,
-         auto_upload: false
-         # progress: &handle_progress/3
-       )}
-
-  # |> IO.inspect
 
   def all_smart_input_components do
     Bonfire.Common.Config.get([:ui, :smart_input_components],
@@ -103,22 +84,23 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   end
 
   @doc """
+  Open the composer and set assigns
+  """
+  def open(context, assigns) do
+    set(
+      context,
+      Keyword.merge(assigns,
+        smart_input_opts: Keyword.merge(assigns[:smart_input_opts] || [], open: true)
+      )
+    )
+  end
+
+  @doc """
   Set assigns in the smart input from anywhere in the app (whether using a live component or sticky live view)
   """
-  def set(context \\ nil, assigns) do
-    # send to this stateful component (if used in same LV)
-    maybe_send_update(Bonfire.UI.Common.SmartInputLive, :smart_input, assigns)
-
-    if e(context, :csrf_token, nil) do
-      # send to sticky liveview
-      e(context, :csrf_token, nil)
-      |> pubsub_broadcast({:assign, assigns})
-    else
-      debug(
-        context,
-        "no csrf_token available in context so can't send to sticky smart input LV (if used)"
-      )
-    end
+  def set(context, assigns) do
+    Bonfire.UI.Common.PersistentLive.maybe_send(context, {:smart_input, assigns}) ||
+      maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, assigns)
   end
 
   def set_smart_input_text(socket, text \\ "\n") do
@@ -238,16 +220,16 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   #   {:ok, socket |> assign(assigns)}
   # end
 
-  defp clean_existing(to_boundaries, acl_id)
-       when acl_id in ["public", "local", "mentions"] do
+  def clean_existing(to_boundaries, acl_id)
+      when acl_id in ["public", "local", "mentions"] do
     Keyword.drop(to_boundaries, ["public", "local", "mentions"])
   end
 
-  defp clean_existing(to_boundaries, _) do
+  def clean_existing(to_boundaries, _) do
     to_boundaries
   end
 
-  defp maybe_from_json("{" <> _ = json) do
+  def maybe_from_json("{" <> _ = json) do
     with {:ok, data} <- Jason.decode(json) do
       data
     else
@@ -256,95 +238,13 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     end
   end
 
-  defp maybe_from_json(_), do: nil
+  def maybe_from_json(_), do: nil
 
-  defp reply_to_param(%{"reply_to" => "{" <> _ = reply_to}) do
+  def reply_to_param(%{"reply_to" => "{" <> _ = reply_to}) do
     maybe_from_json(reply_to)
   end
 
-  defp reply_to_param(params) do
+  def reply_to_param(params) do
     e(params, "reply_to_id", nil) || e(params, "reply_to", nil)
   end
-
-  def handle_event("select_smart_input", params, socket) do
-    # send_self(socket, smart_input_opts: [open: e(params, :open, nil)])
-    {:noreply,
-     assign(socket,
-       smart_input_component:
-         maybe_to_module(e(params, "component", nil) || e(params, "smart_input_component", nil)),
-       create_object_type: maybe_to_atom(e(params, "create_object_type", nil)),
-       reply_to_id: reply_to_param(params) || e(socket.assigns, :reply_to_id, nil),
-       smart_input_opts:
-         maybe_from_json(e(params, "opts", nil)) || e(socket.assigns, :smart_input_opts, nil),
-       activity_inception: "reply_to"
-     )}
-  end
-
-  def handle_event("open_boundaries", _params, socket) do
-    {:noreply, assign(socket, :open_boundaries, true)}
-  end
-
-  def handle_event("close_boundaries", _params, socket) do
-    {:noreply, assign(socket, :open_boundaries, false)}
-  end
-
-  def handle_event("select_boundary", %{"id" => acl_id} = params, socket) do
-    debug(acl_id, "select_boundary")
-
-    {:noreply,
-     assign(
-       socket,
-       :to_boundaries,
-       clean_existing(e(socket.assigns, :to_boundaries, []), acl_id) ++
-         [{acl_id, e(params, "name", acl_id)}]
-     )}
-  end
-
-  def handle_event("remove_boundary", %{"id" => acl_id} = _params, socket) do
-    debug(acl_id, "remove_boundary")
-
-    {:noreply,
-     assign(
-       socket,
-       :to_boundaries,
-       e(socket.assigns, :to_boundaries, [])
-       |> Keyword.drop([acl_id])
-     )}
-  end
-
-  def handle_event("tagify_add", attrs, socket) do
-    handle_event("select_boundary", attrs, socket)
-  end
-
-  def handle_event("tagify_remove", attrs, socket) do
-    handle_event("remove_boundary", attrs, socket)
-  end
-
-  # for uploads
-  def handle_event("validate", _params, socket) do
-    {:noreply, socket}
-  end
-
-  def handle_event("cancel-upload", %{"ref" => ref}, socket) do
-    {:noreply, cancel_upload(socket, :files, ref)}
-  end
-
-  def handle_event("reset", _params, socket) do
-    {:noreply, reset_input(socket)}
-  end
-
-  def handle_event(action, attrs, socket),
-    do:
-      Bonfire.UI.Common.LiveHandlers.handle_event(
-        action,
-        attrs,
-        socket,
-        __MODULE__
-      )
-
-  def handle_info(info, socket),
-    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
-
-  defdelegate handle_params(params, attrs, socket),
-    to: Bonfire.UI.Common.LiveHandlers
 end

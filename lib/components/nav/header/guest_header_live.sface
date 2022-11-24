@@ -7,6 +7,8 @@
     </ul> -->
   </div>
 
+  <Bonfire.UI.Common.PageHeaderLive page_title={@page_title} page={@page} />
+
   <div :if={!@current_user} class="flex items-center gap-2">
     <LiveRedirect to={path(:login, :index)} class="normal-case btn btn-sm">{l("Log in")}</LiveRedirect>
 

@@ -1,0 +1,114 @@
+<div
+  data-id="logged_header"
+  class="flex w-full items-center md:justify-between border-b bg-base-300 border-base-content/10"
+>
+  <div class="flex md:flex-1 desktop-lg:max-w-[350px] items-center tablet-lg:w-[300px] tablet-lg:max-w-[300px] md:min-w-[300px] md:max-w-[300px] md:w-full px-4 desktop-lg:w-[350px]">
+    <div data-id="mobile_nav_btn" class="md:hidden">
+      <button
+        @click="open_sidebar = ! open_sidebar"
+        type="button"
+        class="flex -my-2 rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px]"
+        id="option-menu-button"
+        aria-expanded="true"
+        aria-haspopup="true"
+      >
+        <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
+        <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
+      </button>
+    </div>
+
+    <div data-id="logo" class="items-center place-content-center" :class="{'hidden': open_sidebar}">
+      <Bonfire.UI.Common.LogoLinkLive href="/dashboard" />
+    </div>
+
+    <div class="hidden md:block ml-4 max-w-[420px] w-full">
+      <Dynamic.Component
+        :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
+        module={Bonfire.Search.Web.FormLive}
+        search_limit={5}
+      />
+    </div>
+    <!-- <div class="hidden md:block">
+      <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
+    </div> -->
+  </div>
+  <!-- <div class="flex-1 md:hidden">
+    <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
+  </div> -->
+
+  <div :class="{'hidden': open_sidebar}">
+    <Dynamic.Component
+      module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
+      page_title={@page_title}
+      page={@page}
+      selected_tab={@selected_tab}
+      {...elem(@custom_page_header || {nil, []}, 1)}
+    >
+      <:right_action>
+        <Dynamic.Component
+          :if={@current_user && @page_header_aside}
+          :for={{component, component_assigns} <- e(@page_header_aside, [])}
+          module={component}
+          {...component_assigns}
+        />
+      </:right_action>
+    </Dynamic.Component>
+  </div>
+
+  <!-- <button
+    @click="open_widgets_sidebar = !open_widgets_sidebar"
+    :if={is_list(@sidebar_widgets[:users][:secondary])}
+    class="btn btn-sm btn-ghost tablet-lg:hidden"
+  >
+    <Icon iconify="akar-icons:sidebar-right" class="w-5 h-5 text-base-content/70" />
+  </button> -->
+
+  <div
+    class="hidden md:flex flex-1 tablet-lg:w-[300px] bg-base-300 px-0 md:px-3 lg:px-6 tablet-lg:max-w-[300px] desktop-lg:w-[420px] desktop-lg:max-w-[420px] items-center justify-end gap-4"
+    :class="{'!flex': open_sidebar}"
+  >
+    <div class="dropdown dropdown-end">
+      <label tabindex="0" class="btn btn-circle h-[40px] w-[40px] relative btn-sm">
+        <Icon iconify="ci:grid-round" class="w-5 h-5" />
+      </label>
+      <div tabindex="0" class="p-2 shadow dropdown-content bg-neutral rounded-box w-60">
+        <Bonfire.UI.Common.AppsLive />
+      </div>
+    </div>
+    <LiveRedirect
+      to={path(Bonfire.Data.Social.Message)}
+      class={
+        "btn btn-circle h-[40px] w-[40px] relative btn-sm",
+        "btn-primary": @page == "messages"
+      }
+    >
+      <Icon solid="Mail" class="w-5 h-5" />
+      <span :if={@page == "messages"} class="sr-only">{l("Current Page:")}
+      </span>
+      <Bonfire.UI.Common.BadgeCounterLive
+        id={:inbox}
+        class="absolute -right-2 indicator-item badge-sm badge -top-1 badge-primary !border-none"
+      />
+    </LiveRedirect>
+
+    <LiveRedirect
+      to={path(:notifications)}
+      class={
+        "btn btn-circle btn-sm h-[40px] relative w-[40px]",
+        "btn-primary": @page == "notifications"
+      }
+    >
+      <Icon solid="Bell" class="w-5 h-5" />
+      <span :if={@page == "notifications"} class="sr-only">{l("Current Page:")}
+      </span>
+      <Bonfire.UI.Common.BadgeCounterLive
+        id={:notifications}
+        class="absolute -right-2 indicator-item badge badge-sm -top-1 badge-primary !border-none"
+      />
+    </LiveRedirect>
+
+    <div class="block">
+      <Bonfire.UI.Common.UserMenuLive />
+    </div>
+  </div>
+</div>

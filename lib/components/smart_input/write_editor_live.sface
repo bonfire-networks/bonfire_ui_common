@@ -1,4 +1,4 @@
-{#case rich_editor_module(@with_rich_editor, @__context__)}
+{#case rich_editor_module(e(@smart_input_opts, :wysiwyg, true), @__context__)}
   {#match component when is_atom(component) and not is_nil(component)}
     <!-- editor component from user's preferred extension -->
     <Dynamic.Component module={component} {...assigns} />
@@ -9,7 +9,7 @@
         name={"fallback_#{@field_name}"}
         opts={
           value: e(@smart_input_opts, :text, nil),
-          placeholder: @smart_input_prompt
+          placeholder: e(@smart_input_opts, :prompt, nil)
         }
         class={@textarea_class}
       />
@@ -18,7 +18,7 @@
     <TextArea
       opts={
         value: e(@smart_input_opts, :text, nil),
-        placeholder: @smart_input_prompt
+        placeholder: e(@smart_input_opts, :prompt, nil)
       }
       class={@textarea_class}
     />

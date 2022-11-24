@@ -1,5 +1,9 @@
-<aside :class="{'!bg-base-content/5': toggle_sidebar_widgets}" class={@class}>
-  <div :if={@widget_title} class="flex items-center p-3 pb-2 rounded-t-md" role="banner">
+<aside class={@class}>
+  <div
+    :if={@widget_title}
+    class="flex items-center p-3 pb-2 rounded-t-md bg-base-content/5"
+    role="banner"
+  >
     <div class="flex-1 text-lg font-bold text-base-content">{@widget_title}</div>
     <#slot {@action} />
   </div>

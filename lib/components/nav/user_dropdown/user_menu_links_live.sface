@@ -13,7 +13,7 @@
 </li> -->
 <li>
   <LiveRedirect
-    to={path(@current_user)}
+    to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
     class="flex items-start gap-2 text-sm text-neutral-content/80"
   >
     <Icon solid="UserCircle" class="w-5 h-5" />

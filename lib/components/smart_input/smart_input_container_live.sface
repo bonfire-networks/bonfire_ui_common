@@ -1,12 +1,10 @@
-<div 
+<div
   x-data={"{
       smart_input_title_text: null,
-      smart_input_open: #{e(@smart_input_opts, :open, nil) == true},
+      smart_input_open: false,
       smart_input_fullscreen: false,
-      open_extensions_sidebar: false,
-      toggle_sidebar_widgets: false,
-      smart_input_minimized: #{e(@smart_input_opts, :open, nil) != true and @smart_input_as == :floating},
-      smart_input_as: '#{@smart_input_as}',
+      smart_input_minimized: false,
+      smart_input_as: 'floating',
       show_smart_input(title) {
         console.log('show_smart_input');
         if(title !==undefined){ this.smart_input_title_text = title }
@@ -14,29 +12,38 @@
         this.smart_input_open = true;
         // console.log(this.smart_input_open);
         this.smart_input_minimized = false;
-        #{if @smart_input_as == :modal, do: "this.smart_input_fullscreen = true;"}
+        #{if e(@smart_input_opts, :as, nil) == :modal, do: "this.smart_input_fullscreen = true;"}
       }
     }"}
-  class="w-full">
+  x-init={"smart_input_open = #{e(@smart_input_opts |> debug("smart_input_opts"), :open, nil) == true}; smart_input_minimized = #{e(@smart_input_opts, :open, nil) != true and e(@smart_input_opts, :as, :floating) == :floating}; smart_input_as = '#{e(@smart_input_opts, :as, :floating)}'; "}
+>
+  <Bonfire.UI.Common.SmartInputButtonsLive
+    :if={!@smart_input_opts[:hide_buttons]}
+    smart_input_opts={@smart_input_opts}
+    smart_input_component={@smart_input_component}
+    create_object_type={@create_object_type}
+  />
+
   <div
     x-show="smart_input_open"
     class="smart_input_container"
     :class="{
-    'visible bg-base-200 fixed bottom-0 z-[9999] transition-all shadow-xl right-0 md:right-4 top-0 md:top-auto left-0 md:left-auto max-w-full md:max-w-[calc(100vw-2rem)] max-h-[var(--inner-window-height)] overflow-x-auto': smart_input_open,
-    'hidden md:block !w-[24rem] top-auto': smart_input_minimized,
-    '!max-w-[500px] !bottom-auto !right-auto w-full !rounded-xl !left-1/2 -ml-[250px]':  smart_input_as == 'modal',
-    'w-[40rem] bg-base-100': smart_input_open
+    'fixed visible w-full max-w-full w-[40rem] md:max-w-[calc(100vw-2rem)] bg-base-200 bottom-0 z-[9999] transition-all shadow-xl right-0 md:right-4 top-0 md:top-auto left-0 md:left-auto max-h-[var(--inner-window-height)] overflow-x-auto': smart_input_as != 'modal' && smart_input_fullscreen !=true,
+    'fixed w-full max-w-[500px] top-0 md:top-auto left-0 md:left-1/2 md:-ml-[250px] bottom-0 md:bottom-auto right-0 md:right-auto rounded-xl bg-base-100 overflow-x-auto':  smart_input_as == 'modal' || smart_input_fullscreen==true,
+    'hidden md:block w-[24rem] top-auto': smart_input_minimized
     }"
     x-on:keydown.escape.prevent.stop="smart_input_minimized = true"
-    >
-    <div x-cloak x-show="smart_input_as == 'modal'" class="fixed inset-0 bg-white/30" />
-    <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_prompt={@smart_input_prompt} />
+  >
+    <div
+      x-cloak
+      x-show="smart_input_as == 'modal' || smart_input_fullscreen==true"
+      class="fixed inset-0 bg-white/30"
+    />
+    <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
     <div x-show="!smart_input_minimized" class="">
       <Bonfire.UI.Common.SmartInputLive
-        id={:smart_input}
         without_sidebar={@without_sidebar}
         boundaries_modal_id={:modal_composer}
-        hide_smart_input={@hide_smart_input}
         showing_within={@showing_within}
         reply_to_id={@reply_to_id}
         context_id={@context_id}
@@ -48,13 +55,10 @@
         smart_input_opts={@smart_input_opts}
         activity={@activity}
         object={@object}
+        uploads={@uploads}
+        uploaded_files={@uploaded_files}
+        trigger_submit={@trigger_submit}
       />
-      <!-- smart_input_prompt={@smart_input_prompt} -->
     </div>
   </div>
 </div>
-
-<!-- <Bonfire.UI.Common.MobileSmartInputButtonLive
-  :if={not is_nil(@current_user) and !@hide_smart_input}
-  smart_input_prompt={@smart_input_prompt}
-/> -->

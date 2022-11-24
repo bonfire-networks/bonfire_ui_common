@@ -12,22 +12,36 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   use Bonfire.UI.Common.Web, :live_handler
   import Untangle
 
-  def handle_params(params, uri, socket, source_module \\ nil) do
+  def handle_params(params, uri, socket, source_module \\ nil, fun \\ nil)
+      when is_atom(source_module) do
     undead(socket, fn ->
       debug(
         params,
         "LiveHandler: handle_params for #{inspect(uri)} via #{source_module || "delegation"}"
       )
 
-      do_handle_params(params, uri, assign_default_params(params, uri, socket))
+      with {:noreply, socket} <-
+             do_handle_params(params, uri, assign_default_params(params, uri, socket)),
+           {:noreply, socket} <-
+             if(is_function(fun), do: fun.(params, uri, socket), else: {:noreply, socket}) do
+
+        # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
+        if socket_connected?(socket), do: Bonfire.UI.Common.PersistentLive.maybe_set(socket.assigns[:__context__], socket.assigns)
+
+        {:noreply, socket}
+      end
     end)
   end
 
-  def handle_event(action, attrs, socket, source_module \\ nil) do
+  def handle_event(action, attrs, socket, source_module \\ nil, fun \\ nil) do
     undead(socket, fn ->
       debug("LiveHandler: handle_event #{inspect(action)} via #{source_module || "delegation"}")
 
-      do_handle_event(action, attrs, socket)
+      with {:noreply, socket} <- do_handle_event(action, attrs, socket),
+           {:noreply, socket} <-
+             if(is_function(fun), do: fun.(action, attrs, socket), else: {:noreply, socket}) do
+        {:noreply, socket}
+      end
     end)
   end
 
@@ -144,6 +158,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
         URI.parse(uri)
         |> maybe_get(:path)
     )
+    # see also more assigns set in `LivePlugs.apply_undead_mounted`
   end
 
   defp mod_delegate(mod, fun, args, socket) do

@@ -32,12 +32,6 @@
       "h-full": @showing_within == :page
     }
   >
-    <!-- <div 
-      x-cloak
-      x-show="smart_input_fullscreen"
-      @click="smart_input_fullscreen = !smart_input_fullscreen"
-      class="cursor-pointer bg-white/30 fixed z-[70] left-0 right-0 top-0 bottom-0 backdrop-blur-sm flex-none transition-colors duration-500"> 
-    </div> -->
     <div
       :if={not is_nil(current_user(@__context__))}
       class="relative flex flex-col flex-1 w-full gap-3 bg-base-300"
