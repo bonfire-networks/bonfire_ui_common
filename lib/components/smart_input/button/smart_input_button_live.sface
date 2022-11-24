@@ -4,8 +4,8 @@
   phx-value-component={@component}
   @click={"show_smart_input('#{@smart_input_opts[:prompt] || l("Compose")}')"}
   type="button"
-  class={@class}
+  class={@class || "flex-row grow h-[40px] items-center normal-case gap-2 btn-sm btn btn-primary"}
 >
   <Icon iconify={@icon} class="inline-block w-5 h-5" />
-  <span class="">{@smart_input_opts[:prompt] || l("Compose")}</span>
+  <span class="hidden md:block">{@smart_input_opts[:prompt] || l("Compose")}</span>
 </button>

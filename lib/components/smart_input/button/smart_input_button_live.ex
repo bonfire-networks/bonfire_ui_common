@@ -5,6 +5,5 @@ defmodule Bonfire.UI.Common.SmartInputButtonLive do
   prop component, :any, default: nil
   prop icon, :any, default: nil
 
-  prop class, :css_class,
-    default: "flex grow h-[40px] items-center normal-case gap-2 btn-sm btn btn-primary"
+  prop class, :css_class, default: nil
 end

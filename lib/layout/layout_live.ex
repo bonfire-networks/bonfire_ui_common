@@ -55,8 +55,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }"
         @resize.window.debounce.100="width = window.innerWidth"
         class={
-          "w-full items-start mx-auto",
-          "!grid-cols-1": @without_sidebar || is_nil(@current_user),
+          "w-full items-start mx-auto grid grid-cols-1 md:grid-cols-[300px_1fr_300px]",
+          "!grid-cols-[1fr_300px]": @without_sidebar || is_nil(@current_user),
           "": @nav_header != false
         }
       >
@@ -72,6 +72,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               current_app: @__context__[:current_app]
             }
           }}
+          container={{:div, class: "contents"}}
         />
 
         <div
@@ -81,7 +82,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "!max-w-full mx-auto": @without_sidebar,
             "!max-w-full": @full_page
           }
-          >
+        >
           <div class={
             "h-full",
             "md:mt-6": @nav_header == false,

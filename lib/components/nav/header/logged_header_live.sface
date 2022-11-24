@@ -28,28 +28,7 @@
         search_limit={5}
       />
     </div>
-    <div class="pl-3">
-    <Bonfire.UI.Common.SmartInputContainerLive
-      :if={not is_nil(@current_user) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
-      id={:smart_input}
-      showing_within={@showing_within}
-      reply_to_id={@reply_to_id}
-      context_id={@context_id}
-      create_object_type={@create_object_type}
-      thread_mode={@thread_mode}
-      without_sidebar={@without_sidebar}
-      to_boundaries={@to_boundaries}
-      to_circles={@to_circles}
-      smart_input_opts={@smart_input_opts}
-    />
-    </div>
-    <!-- <div class="hidden md:block">
-      <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
-    </div> -->
   </div>
-  <!-- <div class="flex-1 md:hidden">
-    <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
-  </div> -->
 
   <div class="flex flex-1" :class="{'hidden': open_sidebar}">
     <Dynamic.Component
@@ -82,6 +61,22 @@
     class="hidden md:flex flex-1 tablet-lg:w-[300px] px-0 md:px-3 lg:px-6 tablet-lg:max-w-[300px] desktop-lg:w-[420px] desktop-lg:max-w-[420px] items-center justify-end gap-4"
     :class="{'!flex': open_sidebar}"
   >
+    <div class="pl-3">
+      <Bonfire.UI.Common.SmartInputContainerLive
+        :if={not is_nil(@current_user) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
+        id={:smart_input}
+        showing_within={@showing_within}
+        reply_to_id={@reply_to_id}
+        context_id={@context_id}
+        create_object_type={@create_object_type}
+        thread_mode={@thread_mode}
+        without_sidebar={@without_sidebar}
+        to_boundaries={@to_boundaries}
+        to_circles={@to_circles}
+        smart_input_opts={@smart_input_opts}
+      />
+    </div>
+
     <div class="dropdown dropdown-end">
       <label tabindex="0" class="btn btn-circle h-[40px] w-[40px] relative btn-sm">
         <Icon iconify="ci:grid-round" class="w-5 h-5" />
@@ -90,6 +85,7 @@
         <Bonfire.UI.Common.AppsLive />
       </div>
     </div>
+
     <LiveRedirect
       to={path(Bonfire.Data.Social.Message)}
       class={

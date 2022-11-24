@@ -1,4 +1,4 @@
-<div class="sticky top-0 hidden md:flex w-full gap-1" :class="{'!flex': open_sidebar}">
+<div class="sticky top-0 w-full gap-1">
   {#case Bonfire.UI.Common.SmartInputLive.active_smart_input_components(
       @smart_input_component,
       @create_object_type
@@ -24,4 +24,4 @@
   {/case}
 </div>
 
-<Bonfire.UI.Common.MobileSmartInputButtonLive smart_input_opts={@smart_input_opts} />
+<!-- <Bonfire.UI.Common.MobileSmartInputButtonLive smart_input_opts={@smart_input_opts} /> -->

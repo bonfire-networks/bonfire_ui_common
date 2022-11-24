@@ -1,4 +1,4 @@
-<div data-id="nav_sidebar" class="sticky top-0 max-w-[360px] w-full">
+<div data-id="nav_sidebar" class="sticky top-[56px] max-w-[360px] w-full">
   {#if !is_list(@sidebar_widgets[:users][:main])}
     <!-- <nav class="">
       <div class="bg-base-100 widget w-[68px]">
@@ -74,8 +74,8 @@
         <Icon iconify={@__context__[:current_extension][:icon]} class="w-8 h-8" />
         <span>{@__context__[:current_extension][:name]}</span>
       </div>
-      
-      <div class="mt-6">
+
+      <!-- <div class="mt-6">
       <Bonfire.UI.Common.SmartInputContainerLive
         :if={not is_nil(@current_user) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
         id={:smart_input}
@@ -89,7 +89,7 @@
         to_circles={@to_circles}
         smart_input_opts={@smart_input_opts}
       />
-      </div>
+      </div> -->
       <Bonfire.UI.Common.ExtensionMenuNavLive
         selected_tab={@selected_tab}
         page={@page}
