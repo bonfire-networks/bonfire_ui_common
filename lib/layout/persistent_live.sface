@@ -8,7 +8,7 @@
 >
   <div
     data-id="header_and_nav"
-    class="flex w-full top-0 z-[110] overflow-visible max-w-[1464px] mx-auto justify-between"
+    class="flex w-full top-0 z-[110] overflow-visible"
     :class="{'min-h-[100vh]': open_sidebar}"
   >
     <div
@@ -76,7 +76,7 @@
     data-id="secondary_sidebar_widgets"
     class="order-last max-w-[360px] w-full tablet-lg:grid min-h-[calc(100vh-56px)] grid-flow-row gap-6 overflow-x-hidden overflow-y-auto md:pt-6 auto-rows-min items-start"
   >
-    <div class="sticky top-[56px]">
+    <div class="">
       <Dynamic.Component
         :if={not is_nil(current_user(@__context__))}
         :for={{component, component_assigns} <-

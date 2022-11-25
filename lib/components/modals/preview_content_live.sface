@@ -37,7 +37,7 @@
 
   <div :if={@show} class="relative z-30">
     <div
-      class="p-0 z-[910] max-w-screen-lg mx-auto modal_invisible relative"
+      class="p-0 z-[910] max-w-screen-md mx-auto modal_invisible relative mt-6"
       data-id="modal-contents"
     >
       <#slot>
