@@ -1,4 +1,4 @@
-defmodule Bonfire.UI.Common.SettingsViewLive.SidebarSettingsNavLive do
+defmodule Bonfire.UI.Common.SidebarSettingsNavLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
   prop page, :string
@@ -6,4 +6,5 @@ defmodule Bonfire.UI.Common.SettingsViewLive.SidebarSettingsNavLive do
   prop id, :string, default: nil
 
   declare_nav_component("Links to sections of settings")
+  # exclude_from_nav: true
 end

@@ -4,5 +4,5 @@ defmodule Bonfire.UI.Common.LivePlugs.Csrf do
   def mount(_, %{"_csrf_token" => token}, socket),
     do: {:ok, assign_global(socket, :csrf_token, token)}
 
-  def mount(_, _, socket), do: {:ok, socket}
+  def mount(_, _, socket), do: {:ok, assign_global(socket, :csrf_token, nil)}
 end

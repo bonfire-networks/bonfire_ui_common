@@ -116,19 +116,26 @@ defmodule Bonfire.UI.Common.LivePlugs do
             socket_connected?: Phoenix.LiveView.connected?(socket)
           )
 
-        # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
-        if socket_connected?(socket),
-          do:
-            Bonfire.UI.Common.PersistentLive.maybe_set(
-              socket.assigns[:__context__],
-              socket.assigns
-            )
+        with {:ok, socket} <-
+               apply(fun, [
+                 params,
+                 session,
+                 socket
+               ]) do
+          # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
+          if socket_connected?(socket),
+            do:
+              Bonfire.UI.Common.PersistentLive.maybe_set(
+                socket.assigns[:__context__],
+                socket.assigns
+                |> Map.new()
+                |> Map.put_new(:nav_items, nil)
+              )
 
-        apply(fun, [
-          params,
-          session,
-          socket
-        ])
+          {:ok, socket}
+        else
+          other -> other
+        end
       end
     end)
   end

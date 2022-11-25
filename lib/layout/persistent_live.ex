@@ -92,7 +92,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
         if e(context, :csrf_token, nil) do
           e(context, :csrf_token, nil)
-          |> pubsub_broadcast({:assign, assigns_clean(assigns)})
+          |> pubsub_broadcast({:assign, assigns})
 
           true
         else
@@ -121,8 +121,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     {:noreply,
      assigns
      |> Map.new()
-     |> Map.put_new(:nav_items, nil)
-     |> Map.put_new(:smart_input_component, nil)
+     |> Map.put(:smart_input_component, nil)
      |> debug("set received assigns for PersistentLive")
      |> assign(socket, ...)}
   end

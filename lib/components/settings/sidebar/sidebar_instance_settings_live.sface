@@ -1,0 +1,237 @@
+<nav class="" role="navigation" aria-label={l("Settings navigation")}>
+  <ul class="mt-5 menu menu-compact">
+    <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
+      <LiveRedirect to={~p"/settings/instance"} class={"", active: @selected_tab == "dashboard"}>
+        <Icon outline="Home" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "dashboard"} />
+        {l("Dashboard")}
+      </LiveRedirect>
+    </li>
+
+    <div x-data="{open: true}">
+      <li @click="open = ! open">
+        <div class="flex items-center justify-between">
+          <span class="font-light text-base-content/70">{l("Website")}</span>
+          <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
+            <Icon solid="ChevronDown" class="w-4 h-4" />
+          </div>
+        </div>
+      </li>
+
+      <ul x-show="open" x-collapse class="menu menu-compact">
+        <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
+          <LivePatch
+            to={~p"/settings/instance/preferences"}
+            class={"!text-sm", active: @selected_tab == "preferences"}
+          >
+            <Icon outline="Cog" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "preferences"} />
+            {l("Preferences")}
+          </LivePatch>
+        </li>
+
+        <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
+          <LivePatch to={~p"/settings/instance/design"} class={"", active: @selected_tab == "design"}>
+            <Icon outline="ColorSwatch" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "design"} />
+            {l("Design")}
+          </LivePatch>
+        </li>
+
+        <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
+          <LivePatch
+            to={~p"/settings/instance/navigation"}
+            class={"", active: @selected_tab == "navigation"}
+          >
+            <Icon
+              outline="PaperAirplane"
+              class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "navigation"}
+            />
+            {l("Navigation")}
+          </LivePatch>
+        </li>
+
+        <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
+          <LivePatch to={~p"/settings/instance/terms"} class={"", active: @selected_tab == "terms"}>
+            <Icon outline="Scale" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "terms"} />
+            {l("Terms / Policies")}
+          </LivePatch>
+        </li>
+      </ul>
+    </div>
+
+    <div x-data="{open: false}">
+      <li @click="open = ! open" class="mt-4">
+        <div class="flex items-center justify-between">
+          <span class="font-light text-base-content/70">{l("Members")}</span>
+          <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
+            <Icon solid="ChevronDown" class="w-4 h-4" />
+          </div>
+        </div>
+      </li>
+      <ul x-cloak x-show="open" x-collapse class="menu menu-compact">
+        <li>
+          <LivePatch
+            :if={module_enabled?(Bonfire.Invite.Links, @__context__) and
+              Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
+            to={~p"/settings/instance/members"}
+            class={
+              "",
+              active: @selected_tab == "members"
+            }
+          >
+            <Icon outline="Users" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "members"} />
+            {l("Members")}
+          </LivePatch>
+        </li>
+
+        <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
+          <LivePatch to={~p"/boundaries/instance_circles"} class={"", active: @selected_tab == "roles"}>
+            <Icon
+              iconify="bx:ShapeCircle"
+              class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "roles"}
+            />
+            {l("Roles")}
+          </LivePatch>
+        </li>
+
+        <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
+          <LivePatch
+            to={~p"/boundaries/acl/#{Bonfire.Boundaries.Fixtures.instance_acl()}"}
+            class={"", active: @selected_tab == "roles"}
+          >
+            <Icon
+              iconify="bxs:EditLocation"
+              class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "roles"}
+            />
+            {l("Boundaries")}
+          </LivePatch>
+        </li>
+
+        <li>
+          <LivePatch
+            :if={module_enabled?(Bonfire.Invite.Links, @__context__) and
+              Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
+            to={~p"/settings/instance/invites"}
+            class={"", active: @selected_tab == "invites"}
+          >
+            <Icon outline="Mail" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "invites"} />
+            {l("Invites")}
+          </LivePatch>
+        </li>
+      </ul>
+    </div>
+
+    <div x-data="{open: false}">
+      <li @click="open = ! open" class="mt-4">
+        <div class="flex items-center justify-between">
+          <span class="font-light text-base-content/70">{l("Moderation")}</span>
+          <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
+            <Icon solid="ChevronDown" class="w-4 h-4" />
+          </div>
+        </div>
+      </li>
+      <ul x-cloak x-show="open" x-collapse class="menu menu-compact">
+        <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
+          <LivePatch to={~p"/settings/instance/flagged"} class={"", active: @selected_tab == "flagged"}>
+            <Icon outline="Flag" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "flagged"} />
+            {l("Flagged")}
+          </LivePatch>
+        </li>
+
+        <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
+          <LivePatch
+            to={~p"/boundaries/instance_ghosted"}
+            class={"", active: @selected_tab == "instance_ghosted"}
+          >
+            <Icon
+              solid="MinusCircle"
+              class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "instance_ghosted"}
+            />
+            {l("Ghosted")}
+          </LivePatch>
+        </li>
+        <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
+          <LivePatch
+            to={~p"/boundaries/instance_silenced"}
+            class={"", active: @selected_tab == "instance_silenced"}
+          >
+            <Icon
+              outline="Ban"
+              class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "instance_silenced"}
+            />
+            {l("Silenced")}
+          </LivePatch>
+        </li>
+      </ul>
+    </div>
+
+    <div x-data="{open: false}">
+      <li @click="open = ! open" class="mt-4">
+        <div class="flex items-center justify-between">
+          <span class="font-light text-base-content/70">{l("Advanced")}</span>
+          <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
+            <Icon solid="ChevronDown" class="w-4 h-4" />
+          </div>
+        </div>
+      </li>
+
+      <ul x-cloak x-show="open" x-collapse class="menu menu-compact">
+        <li :if={Bonfire.Boundaries.can?(@__context__, :toggle, :instance)}>
+          <LivePatch
+            to={~p"/settings/instance/extensions"}
+            class={"", active: @selected_tab == "extensions"}
+          >
+            <Icon outline="Puzzle" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "extensions"} />
+            {l("Extensions")}
+          </LivePatch>
+        </li>
+      </ul>
+    </div>
+
+    <li>
+      <LivePatch
+        :if={module_enabled?(Bonfire.Invite.Links, @__context__) and
+          Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
+        to={~p"/settings/instance/pages"}
+        class={
+          "mt-8",
+          active: @selected_tab == "pages"
+        }
+      >
+        <Icon
+          outline="DocumentDuplicate"
+          class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "pages"}
+        />
+        {l("Pages")}
+      </LivePatch>
+    </li>
+
+    <li>
+      <LivePatch
+        :if={module_enabled?(Bonfire.Invite.Links, @__context__) and
+          Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
+        to={~p"/posts"}
+        class={
+          "",
+          active: @selected_tab == "posts"
+        }
+      >
+        <Icon outline="ChatAlt" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "posts"} />
+        {l("Posts")}
+      </LivePatch>
+    </li>
+
+    <li>
+      <LivePatch
+        :if={module_enabled?(Bonfire.Invite.Links, @__context__) and
+          Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
+        to={~p"/settings/instance/tags"}
+        class={
+          "",
+          active: @selected_tab == "tags"
+        }
+      >
+        <Icon outline="Tag" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "tags"} />
+        {l("Tags")}
+      </LivePatch>
+    </li>
+  </ul>
+</nav>

@@ -102,7 +102,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   end
 
   def do_handle_event("cancel-upload", %{"ref" => ref}, socket) do
-    {:noreply, SmartInputLive.cancel_upload(socket, :files, ref)}
+    {:noreply, Phoenix.LiveView.cancel_upload(socket, :files, ref)}
   end
 
   def do_handle_event("reset", _params, socket) do

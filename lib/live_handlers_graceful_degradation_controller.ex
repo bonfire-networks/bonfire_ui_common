@@ -27,7 +27,7 @@ defmodule Bonfire.UI.Common.LiveHandlers.GracefulDegradation.Controller do
     module
   end
 
-  defp handle_fallback(action, attrs, conn) do
+  def handle_fallback(action, attrs, conn) do
     # debug(conn)
     with {:noreply, conn} <-
            LiveHandlers.handle_event(action, attrs, conn, __MODULE__)

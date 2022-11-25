@@ -30,6 +30,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
             Bonfire.UI.Common.PersistentLive.maybe_set(
               socket.assigns[:__context__],
               socket.assigns
+              |> Map.put_new(:nav_items, nil)
             )
 
         {:noreply, socket}
