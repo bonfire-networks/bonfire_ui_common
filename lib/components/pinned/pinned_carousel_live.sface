@@ -4,7 +4,7 @@
       {#case pin}
         {#match %{post_content: %{id: _}}}
           <div>
-            <div class="">
+            <div class="rounded-lg shadow bg-base-200">
               <!-- <Icon iconify="bi:pin-angle-fill" class="absolute w-5 h-5 text-error/70 right-3 top-3" /> -->
               <LiveRedirect
                 to={path(pin)}

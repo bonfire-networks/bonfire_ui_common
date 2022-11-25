@@ -60,7 +60,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         class={
           "w-full items-start mx-auto grid grid-cols-1 md:grid-cols-[300px_1fr_300px]",
           "!grid-cols-1": @without_sidebar || is_nil(@current_user),
-          "mt-[56px]": @nav_header != false
+          "mt-[65px]": @nav_header != false
         }
       >
         <PersistentLive
@@ -93,7 +93,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "max-w-screen-lg gap-4 mx-auto": is_nil(@current_user),
             "justify-between": not is_nil(@current_user)
           }>
-            <div class="relative grid invisible_frame">
+            <div class="relative invisible_frame">
               <div class="pb-16 md:pb-0 md:overflow-y-visible md:h-full">
                 <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
                 <div id="inner" class="">

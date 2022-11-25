@@ -6,7 +6,7 @@ CarouselHooks.CarouselHook = {
   mounted() {
     console.log("glider")
     new Glider(document.querySelector('.glider'), {
-      slidesToShow: 1,
+      slidesToShow: 3,
       dots: '#dots',
       draggable: true,
       arrows: {
