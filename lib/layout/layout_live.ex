@@ -51,9 +51,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
     ~F"""
     <div data-id="bonfire_live" class="transition duration-150 ease-in-out transform">
-    <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
+      <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
 
-    <div
+      <div
         x-data="{
           open_sidebar_drawer: false,
           width: window.innerWidth,
