@@ -44,5 +44,7 @@
             <!-- no nav -->
         {/case}
       {/for}
+    {#match _}
+    <!-- no nav_items -->
   {/case}
 </div>
