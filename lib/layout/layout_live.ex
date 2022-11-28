@@ -60,8 +60,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }"
         @resize.window.debounce.100="width = window.innerWidth"
         class={
-          "w-full widget items-start mx-auto grid grid-cols-1 max-w-[1440px] md:grid-cols-[300px_1fr_300px]",
-          "!grid-cols-1": @without_sidebar || is_nil(@current_user),
+          "w-full widget items-start mx-auto grid grid-cols-1 max-w-[1280px] md:grid-cols-[260px_1fr_320px]",
+          "!grid-cols-1 !max-w-full": @without_sidebar || is_nil(@current_user),
           "mt-[65px]": @nav_header != false
         }
       >

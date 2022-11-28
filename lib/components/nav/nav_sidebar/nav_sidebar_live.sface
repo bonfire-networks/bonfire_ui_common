@@ -1,92 +1,15 @@
-<div data-id="nav_sidebar" class="sticky top-[56px] max-w-[360px] w-full">
-  <!-- <nav class="">
-      <div class="bg-base-100 widget w-[68px]">
-        <div class="inset-0 h-full">
-          <div class="flex flex-col items-center gap-1 py-4">
-            <div
-              class="relative z-50 tooltip tooltip-right"
-              data-tip={extension[:name]}
-              :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
-              :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
-            >
-              <LinkLive
-                class={
-                  "btn btn-square btn-ghost",
-                  "!bg-base-content/10":
-                    @__context__[:current_extension][:name] ==
-                      extension[:name]
-                }
-                to={extension[:href]}
-              >
-                <Icon iconify={extension[:icon]} class="w-5 h-5" />
-              </LinkLive>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav> -->
-
-  <!-- 
-    <nav class="hidden w-full mx-2 md:block" role="navigation" aria-label={l("Extension navigation")}>      
-      <div :if={!@nav_items} class="pb-3 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
-      <Bonfire.UI.Common.ExploreNavLive
-        page={@page}
-        :if={!@nav_items}
-        selected_tab={@selected_tab}
-        show_extensions_nav
-      /> -->
-  <!-- <div class="grid grid-cols-4 gap-1.5 mx-2 mt-2">
-        <div
-          class=""
-          data-tip={extension[:name]}
-          :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
-          :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
-        >
-          <LinkLive
-            class={
-              "flex bg-base-content/5  text-base-content/70 truncate py-2 flex-col items-center gap-2 place-content-center hover:bg-base-content/10 rounded-md text-[13px]",
-              "!bg-primary/20 !border-primary/60 border":
-                @__context__[:current_extension][:name] ==
-                  extension[:name]
-            }
-            to={extension[:href]}
-          >
-            <Icon iconify={extension[:icon]} class="w-5 h-5" />
-            <span class="truncate max-w-[65px]">{extension[:name]}</span>
-          </LinkLive>
-        </div>
-      </div> -->
-
-  <!-- <div class="w-full m-3">
-    </div> -->
-
-  <!-- <div class="mt-6">
-    <Bonfire.UI.Common.SmartInputContainerLive
-      :if={not is_nil(@current_user) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
-      id={:smart_input}
-      showing_within={@showing_within}
-      reply_to_id={@reply_to_id}
-      context_id={@context_id}
-      create_object_type={@create_object_type}
-      thread_mode={@thread_mode}
-      without_sidebar={@without_sidebar}
-      to_boundaries={@to_boundaries}
-      to_circles={@to_circles}
-      smart_input_opts={@smart_input_opts}
-    />
-    </div> -->
-
-  <nav
+<div data-id="nav_sidebar" class="sticky pt-6 top-[56px] max-w-[360px] w-full">
+   <nav
     class="hidden w-full md:block"
     :class="{'!block': open_sidebar}"
     role="navigation"
     aria-label={l("Extension navigation")}
   >
     <div
-      class="flex items-center gap-3 my-5 text-base font-semibold tracking-wide"
+      class="flex h-[45px] items-center gap-3 py-3 mx-3 text-sm font-medium tracking-wide text-base-content/60"
       :if={@__context__[:current_extension][:name]}
     >
-      <Icon iconify={@__context__[:current_extension][:icon]} class="w-8 h-8" />
+      <Icon iconify={@__context__[:current_extension][:icon]} class="w-6 h-6" />
       <span>{@__context__[:current_extension][:name]}</span>
     </div>
 

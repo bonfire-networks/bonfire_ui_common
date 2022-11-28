@@ -1,6 +1,6 @@
 <div
   data-id="logged_header"
-  class="sticky top-0 z-30 flex justify-center w-full h-16 transition-all duration-100 shadow-sm bg-opacity-90 backdrop-blur bg-base-100 text-base-content"
+  class="sticky top-0 z-30 flex justify-center w-full h-16 transition-all duration-100 border-b shadow-sm border-base-content/10 bg-opacity-90 backdrop-blur bg-base-100 text-base-content"
 >
   <div class="flex items-center px-4">
     <div data-id="mobile_nav_btn" class="md:hidden">
@@ -58,7 +58,7 @@
   </button> -->
 
   <div
-    class="hidden md:flex flex-1 tablet-lg:w-[300px] px-0 md:px-3 lg:px-6 tablet-lg:max-w-[300px] desktop-lg:w-[420px] desktop-lg:max-w-[420px] items-center justify-end gap-4"
+    class="hidden md:flex flex-1 tablet-lg:w-[300px] px-0 md:px-3 lg:px-6 tablet-lg:max-w-[300px] desktop-lg:w-[450px] desktop-lg:max-w-[450px] items-center justify-end gap-4"
     :class="{'!flex': open_sidebar}"
   >
     <div class="pl-3">
