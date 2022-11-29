@@ -39,10 +39,17 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       plug(Plug.Static,
         at: "/",
-        from: Bonfire.Common.Config.get!(:otp_app),
+        from: :bonfire_ui_common,
         gzip: true,
         only: Bonfire.UI.Common.Web.static_paths()
       )
+
+      # plug(Plug.Static,
+      #   at: "/",
+      #   from: :bonfire,
+      #   gzip: true,
+      #   only: Bonfire.UI.Common.Web.static_paths()
+      # )
 
       plug(Plug.Static,
         at: "/data/uploads/",
