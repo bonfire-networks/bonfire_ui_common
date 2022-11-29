@@ -1,0 +1,543 @@
+digraph "xref graph" {
+  "lib/common_routes.ex"
+  "lib/component_id.ex"
+  "lib/component_id.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/ui_common.ex" -> "lib/components/placeholders/live_component.ex"
+  "lib/components/placeholders/live_component.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/placeholders/live_component.ex" -> "lib/live_plugs/csrf.ex"
+  "lib/live_plugs/csrf.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/live_plugs/csrf.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/live_plugs/csrf.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/web.ex" -> "lib/layout/layout_view.ex"
+  "lib/layout/layout_view.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/layout/layout_view.ex" -> "lib/layout/layout_live.ex"
+  "lib/layout/layout_live.ex" -> "lib/components/modals/preview_content_live.ex" [label="(export)"]
+  "lib/components/modals/preview_content_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/modals/preview_content_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/modals/preview_content_live.ex" -> "lib/live_handlers.ex"
+  "lib/live_handlers.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/live_handlers.ex" -> "lib/layout/persistent_live.ex"
+  "lib/layout/persistent_live.ex" -> "lib/components/nav/header/guest_header_live.ex"
+  "lib/components/nav/header/guest_header_live.ex" -> "lib/components/nav/header/page_header_live.ex" [label="(export)"]
+  "lib/components/nav/header/page_header_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/header/page_header_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/header/page_header_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/header/guest_header_live.ex" -> "lib/components/nav/logo/logo_link_live.ex" [label="(export)"]
+  "lib/components/nav/logo/logo_link_live.ex" -> "lib/components/link_live.ex" [label="(export)"]
+  "lib/components/link_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/link_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/link_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/logo/logo_link_live.ex" -> "lib/components/nav/logo/logo_live.ex" [label="(export)"]
+  "lib/components/nav/logo/logo_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/logo/logo_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/logo/logo_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/logo/logo_link_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/logo/logo_link_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/logo/logo_link_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/header/guest_header_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/header/guest_header_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/header/guest_header_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/layout/persistent_live.ex" -> "lib/components/nav/header/logged_header_live.ex"
+  "lib/components/nav/header/logged_header_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/nav/header/logged_header_live.ex" -> "lib/components/nav/app_switcher/apps_live.ex" [label="(export)"]
+  "lib/components/nav/app_switcher/apps_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/nav/app_switcher/apps_live.ex" -> "lib/components/link_live.ex" [label="(export)"]
+  "lib/components/nav/app_switcher/apps_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/app_switcher/apps_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/app_switcher/apps_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/header/logged_header_live.ex" -> "lib/components/nav/header/page_header_live.ex"
+  "lib/components/nav/header/logged_header_live.ex" -> "lib/components/nav/logo/logo_link_live.ex" [label="(export)"]
+  "lib/components/nav/header/logged_header_live.ex" -> "lib/components/nav/user_dropdown/user_menu_live.ex" [label="(export)"]
+  "lib/components/nav/user_dropdown/user_menu_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/nav/user_dropdown/user_menu_live.ex" -> "lib/components/images/avatar_live.ex" [label="(export)"]
+  "lib/components/images/avatar_live.ex" -> "lib/components/images/lazy_image.ex" [label="(export)"]
+  "lib/components/images/lazy_image.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/images/lazy_image.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/images/lazy_image.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/images/avatar_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/images/avatar_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/images/avatar_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/user_dropdown/user_menu_live.ex" -> "lib/components/nav/user_dropdown/user_menu_links_live.ex" [label="(export)"]
+  "lib/components/nav/user_dropdown/user_menu_links_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/nav/user_dropdown/user_menu_links_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/user_dropdown/user_menu_links_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/user_dropdown/user_menu_links_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/user_dropdown/user_menu_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/user_dropdown/user_menu_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/user_dropdown/user_menu_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/header/logged_header_live.ex" -> "lib/components/placeholders/badge_counter_live.ex" [label="(export)"]
+  "lib/components/placeholders/badge_counter_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/placeholders/badge_counter_live.ex" -> "lib/live_handlers.ex"
+  "lib/components/placeholders/badge_counter_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/placeholders/badge_counter_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/header/logged_header_live.ex" -> "lib/components/smart_input/smart_input_container_live.ex" [label="(export)"]
+  "lib/components/smart_input/smart_input_container_live.ex" -> "lib/components/smart_input/button/smart_input_buttons_live.ex" [label="(export)"]
+  "lib/components/smart_input/button/smart_input_buttons_live.ex" -> "lib/components/smart_input/button/smart_input_button_live.ex" [label="(export)"]
+  "lib/components/smart_input/button/smart_input_button_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/smart_input/button/smart_input_button_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/button/smart_input_button_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/button/smart_input_button_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/button/smart_input_buttons_live.ex" -> "lib/components/smart_input/smart_input_live.ex"
+  "lib/components/smart_input/smart_input_live.ex" -> "lib/components/smart_input/smart_input_container_live.ex"
+  "lib/components/smart_input/smart_input_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/smart_input_live.ex" -> "lib/layout/persistent_live.ex"
+  "lib/components/smart_input/smart_input_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/smart_input_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/button/smart_input_buttons_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/button/smart_input_buttons_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/button/smart_input_buttons_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/smart_input_container_live.ex" -> "lib/components/smart_input/headers/smart_input_header_modal_live.ex" [label="(export)"]
+  "lib/components/smart_input/headers/smart_input_header_modal_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/smart_input/headers/smart_input_header_modal_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/headers/smart_input_header_modal_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/headers/smart_input_header_modal_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/smart_input_container_live.ex" -> "lib/components/smart_input/smart_input_live.ex" [label="(export)"]
+  "lib/components/smart_input/smart_input_container_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/smart_input_container_live.ex" -> "lib/live_handlers.ex"
+  "lib/components/smart_input/smart_input_container_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/smart_input_container_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/header/logged_header_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/header/logged_header_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/header/logged_header_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/layout/persistent_live.ex" -> "lib/components/nav/nav_sidebar/nav_sidebar_live.ex" [label="(export)"]
+  "lib/components/nav/nav_sidebar/nav_sidebar_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/nav/nav_sidebar/nav_sidebar_live.ex" -> "lib/components/nav/extension_menu/extension_menu_nav_live.ex" [label="(export)"]
+  "lib/components/nav/extension_menu/extension_menu_nav_live.ex" -> "lib/components/widgets/widget_live.ex" [label="(export)"]
+  "lib/components/widgets/widget_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/widgets/widget_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/widgets/widget_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/widgets/widget_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/extension_menu/extension_menu_nav_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/extension_menu/extension_menu_nav_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/extension_menu/extension_menu_nav_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/nav_sidebar/nav_sidebar_live.ex" -> "lib/components/widgets/widget_feedbacks/widget_feedback_live.ex"
+  "lib/components/widgets/widget_feedbacks/widget_feedback_live.ex" -> "lib/components/widgets/widget_block_live.ex" [label="(export)"]
+  "lib/components/widgets/widget_block_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/widgets/widget_block_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/widgets/widget_block_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/widgets/widget_feedbacks/widget_feedback_live.ex" -> "lib/components/widgets/widget_feedbacks/feedback_button_live.ex" [label="(export)"]
+  "lib/components/widgets/widget_feedbacks/feedback_button_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/widgets/widget_feedbacks/feedback_button_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/widgets/widget_feedbacks/feedback_button_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/widgets/widget_feedbacks/widget_feedback_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/widgets/widget_feedbacks/widget_feedback_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/widgets/widget_feedbacks/widget_feedback_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/nav_sidebar/nav_sidebar_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/nav_sidebar/nav_sidebar_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/nav_sidebar/nav_sidebar_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/layout/persistent_live.ex" -> "lib/components/smart_input/smart_input_container_live.ex"
+  "lib/layout/persistent_live.ex" -> "lib/components/widgets/widget_feedbacks/widget_feedback_live.ex"
+  "lib/layout/persistent_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/layout/persistent_live.ex" -> "lib/live_handlers.ex"
+  "lib/layout/persistent_live.ex" -> "lib/live_plugs/live_plugs.ex" [label="(export)"]
+  "lib/live_plugs/live_plugs.ex" -> "lib/layout/persistent_live.ex"
+  "lib/live_plugs/live_plugs.ex" -> "lib/live_plugs/allow_test_sandbox.ex"
+  "lib/live_plugs/allow_test_sandbox.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/live_plugs/allow_test_sandbox.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/live_plugs/allow_test_sandbox.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/live_plugs/live_plugs.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/layout/persistent_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/layout/persistent_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/live_handlers.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/live_handlers.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/modals/preview_content_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/modals/preview_content_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/layout/layout_live.ex" -> "lib/components/modals/reusable_modal_live.ex" [label="(export)"]
+  "lib/components/modals/reusable_modal_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/modals/reusable_modal_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/modals/reusable_modal_live.ex" -> "lib/live_handlers.ex"
+  "lib/components/modals/reusable_modal_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/modals/reusable_modal_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/layout/layout_live.ex" -> "lib/components/nav/nav_footer_mobile/nav_footer_mobile_user_live.ex" [label="(export)"]
+  "lib/components/nav/nav_footer_mobile/nav_footer_mobile_user_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/nav/nav_footer_mobile/nav_footer_mobile_user_live.ex" -> "lib/components/images/avatar_live.ex" [label="(export)"]
+  "lib/components/nav/nav_footer_mobile/nav_footer_mobile_user_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/nav_footer_mobile/nav_footer_mobile_user_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/nav_footer_mobile/nav_footer_mobile_user_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/layout/layout_live.ex" -> "lib/components/notification/notification_live.ex" [label="(export)"]
+  "lib/components/notification/notification_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/notification/notification_live.ex" -> "lib/components/widgets/widget_feedbacks/feedback_button_live.ex" [label="(export)"]
+  "lib/components/notification/notification_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/notification/notification_live.ex" -> "lib/live_handlers.ex"
+  "lib/components/notification/notification_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/notification/notification_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/layout/layout_live.ex" -> "lib/components/smart_input/smart_input_live.ex"
+  "lib/layout/layout_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/layout/layout_live.ex" -> "lib/layout/persistent_live.ex" [label="(export)"]
+  "lib/layout/layout_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/layout/layout_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/layout/layout_view.ex" -> "lib/seo.ex"
+  "lib/layout/layout_view.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/layout/layout_view.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/web.ex" -> "lib/ui_common.ex"
+  "lib/components/placeholders/live_component.ex" -> "lib/live_plugs/live_plugs.ex" [label="(export)"]
+  "lib/components/placeholders/live_component.ex" -> "lib/live_plugs/locale.ex"
+  "lib/live_plugs/locale.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/live_plugs/locale.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/live_plugs/locale.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/placeholders/live_component.ex" -> "lib/live_plugs/static_changed.ex"
+  "lib/live_plugs/static_changed.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/live_plugs/static_changed.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/live_plugs/static_changed.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/placeholders/live_component.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/placeholders/live_component.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/ui_common.ex" -> "lib/notifications.ex"
+  "lib/notifications.ex" -> "lib/components/notification/notification_live.ex"
+  "lib/notifications.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/notifications.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/notifications.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/actions/boost/boost_action_live.ex"
+  "lib/components/actions/boost/boost_action_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/actions/boost/boost_action_live.ex" -> "lib/live_handlers.ex"
+  "lib/components/actions/boost/boost_action_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/actions/boost/boost_action_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/actions/flag/flag_action_live.ex"
+  "lib/components/actions/flag/flag_action_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/actions/flag/flag_action_live.ex" -> "lib/components/modals/open_modal_live.ex" [label="(export)"]
+  "lib/components/modals/open_modal_live.ex" -> "lib/components/modals/reusable_modal_live.ex" [label="(compile)"]
+  "lib/components/modals/open_modal_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/modals/open_modal_live.ex" -> "lib/live_handlers.ex"
+  "lib/components/modals/open_modal_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/modals/open_modal_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/actions/flag/flag_action_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/actions/flag/flag_action_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/actions/flag/flag_action_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/actions/flag/follow/follow_button_live.ex"
+  "lib/components/actions/flag/follow/follow_button_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/actions/flag/follow/follow_button_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/actions/flag/follow/follow_button_live.ex" -> "lib/live_handlers.ex"
+  "lib/components/actions/flag/follow/follow_button_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/actions/flag/follow/follow_button_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/actions/like/like_action_live.ex"
+  "lib/components/actions/like/like_action_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/actions/like/like_action_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/actions/like/like_action_live.ex" -> "lib/live_handlers.ex"
+  "lib/components/actions/like/like_action_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/actions/like/like_action_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/extensions/extension_diff_live.ex"
+  "lib/components/extensions/extension_diff_live.ex" -> "lib/diff_render/diff_render_view.ex"
+  "lib/diff_render/diff_render_view.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/diff_render/diff_render_view.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/diff_render/diff_render_view.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/extensions/extension_diff_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/extensions/extension_diff_live.ex" -> "lib/live_plugs/csrf.ex"
+  "lib/components/extensions/extension_diff_live.ex" -> "lib/live_plugs/live_plugs.ex" [label="(export)"]
+  "lib/components/extensions/extension_diff_live.ex" -> "lib/live_plugs/locale.ex"
+  "lib/components/extensions/extension_diff_live.ex" -> "lib/live_plugs/static_changed.ex"
+  "lib/components/extensions/extension_diff_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/extensions/extension_diff_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/extensions/extension_toggle_live.ex"
+  "lib/components/extensions/extension_toggle_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/extensions/extension_toggle_live.ex" -> "lib/live_handlers.ex"
+  "lib/components/extensions/extension_toggle_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/extensions/extension_toggle_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/extensions/extensions_live.ex"
+  "lib/components/extensions/extensions_live.ex" -> "lib/components/extensions/extension_toggle_live.ex" [label="(export)"]
+  "lib/components/extensions/extensions_live.ex" -> "lib/components/widgets/widget_apps/widget_apps_live.ex" [label="(export)"]
+  "lib/components/widgets/widget_apps/widget_apps_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/widgets/widget_apps/widget_apps_live.ex" -> "lib/components/widgets/widget_block_live.ex" [label="(export)"]
+  "lib/components/widgets/widget_apps/widget_apps_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/widgets/widget_apps/widget_apps_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/widgets/widget_apps/widget_apps_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/extensions/extensions_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/extensions/extensions_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/extensions/extensions_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/icon.ex"
+  "lib/components/images/avatar_live.ex"
+  "lib/components/images/lazy_image.ex"
+  "lib/components/link_live.ex"
+  "lib/components/link_patch_live.ex"
+  "lib/components/link_patch_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/link_patch_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/link_patch_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/modals/open_modal_live.ex"
+  "lib/components/modals/open_preview_live.ex"
+  "lib/components/modals/open_preview_live.ex" -> "lib/components/modals/open_modal_live.ex" [label="(export)"]
+  "lib/components/modals/open_preview_live.ex" -> "lib/components/modals/preview_content_live.ex"
+  "lib/components/modals/open_preview_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/modals/open_preview_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/modals/open_preview_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/modals/preview_content_live.ex"
+  "lib/components/modals/reusable_modal_live.ex"
+  "lib/components/multiselect/live_handler.ex"
+  "lib/components/multiselect/live_handler.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/multiselect/live_handler.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/multiselect/live_handler.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/multiselect/multiselect_live.ex"
+  "lib/components/multiselect/multiselect_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/multiselect/multiselect_live.ex" -> "lib/live_handlers.ex"
+  "lib/components/multiselect/multiselect_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/multiselect/multiselect_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/multiselect/user_selector_live.ex"
+  "lib/components/multiselect/user_selector_live.ex" -> "lib/components/multiselect/multiselect_live.ex" [label="(export)"]
+  "lib/components/multiselect/user_selector_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/multiselect/user_selector_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/multiselect/user_selector_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/app_switcher/apps_live.ex"
+  "lib/components/nav/app_switcher/explore_nav_live.ex"
+  "lib/components/nav/app_switcher/explore_nav_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/nav/app_switcher/explore_nav_live.ex" -> "lib/components/link_live.ex" [label="(export)"]
+  "lib/components/nav/app_switcher/explore_nav_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/app_switcher/explore_nav_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/app_switcher/explore_nav_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/back_button_live.ex"
+  "lib/components/nav/back_button_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/nav/back_button_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/back_button_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/back_button_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/extension_menu/extension_horizontal_menu_live.ex"
+  "lib/components/nav/extension_menu/extension_horizontal_menu_live.ex" -> "lib/components/widgets/widget_live.ex" [label="(export)"]
+  "lib/components/nav/extension_menu/extension_horizontal_menu_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/extension_menu/extension_horizontal_menu_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/extension_menu/extension_horizontal_menu_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/extension_menu/extension_menu_nav_live.ex"
+  "lib/components/nav/header/guest_header_live.ex"
+  "lib/components/nav/header/logged_header_live.ex"
+  "lib/components/nav/header/page_header_live.ex"
+  "lib/components/nav/logo/logo_link_live.ex"
+  "lib/components/nav/logo/logo_live.ex"
+  "lib/components/nav/nav_footer_mobile/nav_footer_mobile_user_live.ex"
+  "lib/components/nav/nav_sidebar/default_nav_live.ex"
+  "lib/components/nav/nav_sidebar/default_nav_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/nav/nav_sidebar/default_nav_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/nav_sidebar/default_nav_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/nav_sidebar/default_nav_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/nav_sidebar/nav_sidebar_live.ex"
+  "lib/components/nav/page_title/page_title_live.ex"
+  "lib/components/nav/page_title/page_title_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/nav/page_title/page_title_live.ex" -> "lib/components/link_live.ex" [label="(export)"]
+  "lib/components/nav/page_title/page_title_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/page_title/page_title_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/page_title/page_title_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/tabs/tabs_live.ex"
+  "lib/components/nav/tabs/tabs_live.ex" -> "lib/components/link_patch_live.ex" [label="(export)"]
+  "lib/components/nav/tabs/tabs_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/nav/tabs/tabs_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/nav/tabs/tabs_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/nav/user_dropdown/user_menu_links_live.ex"
+  "lib/components/nav/user_dropdown/user_menu_live.ex"
+  "lib/components/notification/notification_live.ex"
+  "lib/components/paginate/load_more_live.ex"
+  "lib/components/paginate/load_more_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/paginate/load_more_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/paginate/load_more_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/paginate/load_previous_live.ex"
+  "lib/components/paginate/load_previous_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/paginate/load_previous_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/paginate/load_previous_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/pinned/instance_pinned_live.ex"
+  "lib/components/pinned/instance_pinned_live.ex" -> "lib/components/pinned/pinned_carousel_live.ex" [label="(export)"]
+  "lib/components/pinned/pinned_carousel_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/pinned/pinned_carousel_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/pinned/pinned_carousel_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/pinned/instance_pinned_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/pinned/instance_pinned_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/pinned/instance_pinned_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/pinned/my_pinned_live.ex"
+  "lib/components/pinned/my_pinned_live.ex" -> "lib/components/pinned/pinned_carousel_live.ex" [label="(export)"]
+  "lib/components/pinned/my_pinned_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/pinned/my_pinned_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/pinned/my_pinned_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/pinned/pinned_carousel_live.ex"
+  "lib/components/placeholders/badge_counter_live.ex"
+  "lib/components/placeholders/empty_feed.ex"
+  "lib/components/placeholders/empty_feed.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/placeholders/empty_feed.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/placeholders/empty_feed.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/placeholders/live_component.ex"
+  "lib/components/profile_item/profile_item_live.ex"
+  "lib/components/profile_item/profile_item_live.ex" -> "lib/component_id.ex"
+  "lib/components/profile_item/profile_item_live.ex" -> "lib/components/actions/flag/follow/follow_button_live.ex" [label="(export)"]
+  "lib/components/profile_item/profile_item_live.ex" -> "lib/components/images/avatar_live.ex" [label="(export)"]
+  "lib/components/profile_item/profile_item_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/profile_item/profile_item_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/profile_item/profile_item_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/settings/avatars_settings_live.ex"
+  "lib/components/settings/avatars_settings_live.ex" -> "lib/components/images/avatar_live.ex"
+  "lib/components/settings/avatars_settings_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/settings/avatars_settings_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/settings/avatars_settings_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/settings/change_font_live.ex"
+  "lib/components/settings/change_font_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/settings/change_font_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/settings/change_font_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/settings/change_locale_live.ex"
+  "lib/components/settings/change_locale_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/settings/change_locale_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/settings/change_locale_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/settings/change_theme_live.ex"
+  "lib/components/settings/change_theme_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/settings/change_theme_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/settings/change_theme_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/settings/change_themes_lives.ex"
+  "lib/components/settings/change_themes_lives.ex" -> "lib/components/settings/change_theme_live.ex" [label="(export)"]
+  "lib/components/settings/change_themes_lives.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/settings/change_themes_lives.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/settings/change_themes_lives.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/settings/sidebar/sidebar_instance_settings_live.ex"
+  "lib/components/settings/sidebar/sidebar_instance_settings_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/settings/sidebar/sidebar_instance_settings_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/settings/sidebar/sidebar_instance_settings_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/settings/sidebar/sidebar_instance_settings_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/settings/sidebar/sidebar_settings_nav_live.ex"
+  "lib/components/settings/sidebar/sidebar_settings_nav_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/settings/sidebar/sidebar_settings_nav_live.ex" -> "lib/components/widgets/widget_live.ex" [label="(export)"]
+  "lib/components/settings/sidebar/sidebar_settings_nav_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/settings/sidebar/sidebar_settings_nav_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/settings/sidebar/sidebar_settings_nav_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/settings/smart_input_settings_live.ex"
+  "lib/components/settings/smart_input_settings_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/settings/smart_input_settings_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/settings/smart_input_settings_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/button/choose_input_type_button_live.ex"
+  "lib/components/smart_input/button/choose_input_type_button_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/smart_input/button/choose_input_type_button_live.ex" -> "lib/components/smart_input/smart_input_live.ex"
+  "lib/components/smart_input/button/choose_input_type_button_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/button/choose_input_type_button_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/button/choose_input_type_button_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/button/mobile_smart_input_button_live.ex"
+  "lib/components/smart_input/button/mobile_smart_input_button_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/smart_input/button/mobile_smart_input_button_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/button/mobile_smart_input_button_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/button/mobile_smart_input_button_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/button/smart_input_button_live.ex"
+  "lib/components/smart_input/button/smart_input_buttons_live.ex"
+  "lib/components/smart_input/headers/smart_input_header_live.ex"
+  "lib/components/smart_input/headers/smart_input_header_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/smart_input/headers/smart_input_header_live.ex" -> "lib/components/smart_input/smart_input_live.ex"
+  "lib/components/smart_input/headers/smart_input_header_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/headers/smart_input_header_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/headers/smart_input_header_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/headers/smart_input_header_modal_live.ex"
+  "lib/components/smart_input/input_boundaries_live.ex"
+  "lib/components/smart_input/input_boundaries_live.ex" -> "lib/components/smart_input/select_recipients_live.ex" [label="(export)"]
+  "lib/components/smart_input/select_recipients_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/select_recipients_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/select_recipients_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/input_boundaries_live.ex" -> "lib/components/smart_input/smart_input_live.ex"
+  "lib/components/smart_input/input_boundaries_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/input_boundaries_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/input_boundaries_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/input_controls_live.ex"
+  "lib/components/smart_input/input_controls_live.ex" -> "lib/components/smart_input/upload/upload_button_live.ex" [label="(export)"]
+  "lib/components/smart_input/upload/upload_button_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/smart_input/upload/upload_button_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/upload/upload_button_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/upload/upload_button_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/input_controls_live.ex" -> "lib/components/smart_input/upload/upload_previews_live.ex" [label="(export)"]
+  "lib/components/smart_input/upload/upload_previews_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/smart_input/upload/upload_previews_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/upload/upload_previews_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/upload/upload_previews_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/input_controls_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/input_controls_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/input_controls_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/select_recipients_live.ex"
+  "lib/components/smart_input/smart_input_container_live.ex"
+  "lib/components/smart_input/smart_input_inline_live.ex"
+  "lib/components/smart_input/smart_input_inline_live.ex" -> "lib/components/smart_input/smart_input_container_live.ex"
+  "lib/components/smart_input/smart_input_inline_live.ex" -> "lib/components/smart_input/smart_input_live.ex" [label="(export)"]
+  "lib/components/smart_input/smart_input_inline_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/smart_input_inline_live.ex" -> "lib/live_handlers.ex"
+  "lib/components/smart_input/smart_input_inline_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/smart_input_inline_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/smart_input/smart_input_live.ex"
+  "lib/components/smart_input/upload/upload_button_live.ex"
+  "lib/components/smart_input/upload/upload_previews_live.ex"
+  "lib/components/smart_input/write_editor_live.ex"
+  "lib/components/smart_input/write_editor_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/smart_input/write_editor_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/smart_input/write_editor_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/team/team_live.ex"
+  "lib/components/team/team_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/team/team_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/team/team_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/team/team_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/widgets/widget_app_menu/widget_app_menu_live.ex"
+  "lib/components/widgets/widget_app_menu/widget_app_menu_live.ex" -> "lib/components/widgets/widget_block_live.ex" [label="(export)"]
+  "lib/components/widgets/widget_app_menu/widget_app_menu_live.ex" -> "lib/components/widgets/widget_live.ex" [label="(export)"]
+  "lib/components/widgets/widget_app_menu/widget_app_menu_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/widgets/widget_app_menu/widget_app_menu_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/widgets/widget_app_menu/widget_app_menu_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/widgets/widget_apps/widget_apps_live.ex"
+  "lib/components/widgets/widget_block_live.ex"
+  "lib/components/widgets/widget_feedbacks/feedback_button_live.ex"
+  "lib/components/widgets/widget_feedbacks/widget_feedback_live.ex"
+  "lib/components/widgets/widget_instance_info/widget_instance_info_live.ex"
+  "lib/components/widgets/widget_instance_info/widget_instance_info_live.ex" -> "lib/components/nav/logo/logo_link_live.ex" [label="(export)"]
+  "lib/components/widgets/widget_instance_info/widget_instance_info_live.ex" -> "lib/components/widgets/widget_block_live.ex" [label="(export)"]
+  "lib/components/widgets/widget_instance_info/widget_instance_info_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/widgets/widget_instance_info/widget_instance_info_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/widgets/widget_instance_info/widget_instance_info_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/widgets/widget_links/widget_links_live.ex"
+  "lib/components/widgets/widget_links/widget_links_live.ex" -> "lib/components/icon.ex" [label="(export)"]
+  "lib/components/widgets/widget_links/widget_links_live.ex" -> "lib/components/widgets/widget_block_live.ex" [label="(export)"]
+  "lib/components/widgets/widget_links/widget_links_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/widgets/widget_links/widget_links_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/widgets/widget_links/widget_links_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/widgets/widget_live.ex"
+  "lib/components/widgets/widget_text/widget_text_live.ex"
+  "lib/components/widgets/widget_text/widget_text_live.ex" -> "lib/components/widgets/widget_block_live.ex" [label="(export)"]
+  "lib/components/widgets/widget_text/widget_text_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/widgets/widget_text/widget_text_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/widgets/widget_text/widget_text_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/components/widgets/widgets_live.ex"
+  "lib/components/widgets/widgets_live.ex" -> "lib/components/widgets/widget_live.ex" [label="(export)"]
+  "lib/components/widgets/widgets_live.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/components/widgets/widgets_live.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/components/widgets/widgets_live.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/controllers/session_redirect.ex"
+  "lib/controllers/session_redirect.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/controllers/session_redirect.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/controllers/session_redirect.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/diff_render/diff_render_view.ex"
+  "lib/endpoint_template.ex"
+  "lib/error/basic_view.ex"
+  "lib/error/basic_view.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/error/basic_view.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/error/basic_view.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/error/error_controller.ex"
+  "lib/error/error_controller.ex" -> "lib/error/error_view.ex"
+  "lib/error/error_view.ex" -> "lib/error/basic_view.ex"
+  "lib/error/error_view.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/error/error_view.ex" -> "lib/live_handlers_graceful_degradation_controller.ex"
+  "lib/live_handlers_graceful_degradation_controller.ex" -> "lib/error/basic_view.ex"
+  "lib/live_handlers_graceful_degradation_controller.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/live_handlers_graceful_degradation_controller.ex" -> "lib/live_handlers.ex"
+  "lib/live_handlers_graceful_degradation_controller.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/live_handlers_graceful_degradation_controller.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/error/error_view.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/error/error_view.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/error/error_controller.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/error/error_controller.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/error/error_controller.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/error/error_view.ex"
+  "lib/error_helpers.ex"
+  "lib/layout/layout_live.ex"
+  "lib/layout/layout_view.ex"
+  "lib/layout/persistent_live.ex"
+  "lib/live_handlers.ex"
+  "lib/live_handlers_graceful_degradation_controller.ex"
+  "lib/live_plugs/allow_test_sandbox.ex"
+  "lib/live_plugs/csrf.ex"
+  "lib/live_plugs/live_plugs.ex"
+  "lib/live_plugs/locale.ex"
+  "lib/live_plugs/static_changed.ex"
+  "lib/notifications.ex"
+  "lib/plugs/activity_pub.ex"
+  "lib/plugs/error_reporting.ex"
+  "lib/plugs/multi_tenancy.ex"
+  "lib/seo.ex"
+  "lib/static_generator/maybe_static_generator_plug.ex"
+  "lib/static_generator/maybe_static_generator_plug.ex" -> "lib/static_generator/static_generator.ex" [label="(compile)"]
+  "lib/static_generator/static_fallback_controller.ex"
+  "lib/static_generator/static_fallback_controller.ex" -> "lib/error_helpers.ex" [label="(export)"]
+  "lib/static_generator/static_fallback_controller.ex" -> "lib/static_generator/static_generator.ex"
+  "lib/static_generator/static_fallback_controller.ex" -> "lib/ui_common.ex" [label="(compile)"]
+  "lib/static_generator/static_fallback_controller.ex" -> "lib/web.ex" [label="(compile)"]
+  "lib/static_generator/static_generator.ex"
+  "lib/static_generator/static_generator_plug.ex"
+  "lib/testing/helpers.ex"
+  "lib/ui_common.ex"
+  "lib/web.ex"
+}
