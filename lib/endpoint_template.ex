@@ -39,7 +39,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       plug(Plug.Static,
         at: "/",
-        from: :bonfire,
+        from: Bonfire.Common.Config.get!(:otp_app),
         gzip: true,
         only: Bonfire.UI.Common.Web.static_paths()
       )
@@ -50,19 +50,19 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         gzip: true
       )
 
-      plug(Plug.Static,
-        at: "/",
-        from: :livebook,
-        gzip: true,
-        only: ~w(images js)
-      )
+      # plug(Plug.Static,
+      #   at: "/",
+      #   from: :livebook,
+      #   gzip: true,
+      #   only: ~w(images js)
+      # )
 
-      plug(Plug.Static,
-        at: "/livebook/",
-        from: :livebook,
-        gzip: true,
-        only: ~w(css images js favicon.ico robots.txt cache_manifest.json)
-      )
+      # plug(Plug.Static,
+      #   at: "/livebook/",
+      #   from: :livebook,
+      #   gzip: true,
+      #   only: ~w(css images js favicon.ico robots.txt cache_manifest.json)
+      # )
 
       # TODO: serve priv/static from any extensions that have one as well?
 
