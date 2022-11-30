@@ -26,17 +26,13 @@
                 />
               </li>
             </div>
-            <div 
-              data-id="nav_components" class="gap-1 mt-4">
+            <div data-id="nav_components" class="gap-1 mt-4">
               <!-- <li
                 :for={%{type: type} = subnav when type != :link <- nav}
                 :if={!subnav[:exclude_from_nav]}
                 class={"rounded-lg", "bg-base-content/5": subnav[:href] == current_url(@__context__)}
               > -->
-              <div 
-                :for={%{type: type} = subnav when type != :link <- nav}
-                :if={!subnav[:exclude_from_nav]}
-                >
+              <div :for={%{type: type} = subnav when type != :link <- nav} :if={!subnav[:exclude_from_nav]}>
                 <Bonfire.UI.Common.WidgetLive
                   widget={subnav}
                   page={@page}

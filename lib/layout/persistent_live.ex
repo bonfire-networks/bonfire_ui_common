@@ -33,6 +33,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
      |> assign_new(:title_prompt, fn -> nil end)
      |> assign_new(:preloaded_recipients, fn -> nil end)
      |> assign_new(:without_sidebar, fn -> nil end)
+     |> assign_new(:full_page, fn -> nil end)
      |> assign_new(:nav_header, fn -> nil end)
      |> assign_new(:nav_items, fn -> nil end)
      |> assign_new(:sidebar_widgets, fn -> [] end)
@@ -64,6 +65,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       :smart_input_component,
       :thread_mode,
       :without_sidebar,
+      :full_page,
       :to_boundaries,
       :to_circles,
       :smart_input_opts,

@@ -1,5 +1,5 @@
-<div data-id="nav_sidebar" class="sticky pt-6 top-[56px] max-w-[360px] w-full">
-   <nav
+<div data-id="nav_sidebar" class="order-first sticky pt-6 top-[56px] max-w-[360px] w-full">
+  <nav
     class="hidden w-full md:block"
     :class="{'!block': open_sidebar}"
     role="navigation"
@@ -20,20 +20,7 @@
     />
   </nav>
 
-  {#if !is_list(@sidebar_widgets[:users][:main])}
-    <!-- FIXME: use the widget system instead (see below) -->
-    <Dynamic.Component
-      :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive, @__context__) and @current_user}
-      module={Bonfire.Classify.Web.CategoriesNavLive}
-      selected_tab={@selected_tab}
-    />
-    <Dynamic.Component
-      :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__) and @current_user}
-      module={Bonfire.UI.ValueFlows.ProcessesListLive}
-      process_url="/coordination/list"
-      title={l("Favourite milestones")}
-    />
-  {#else}
+  {#if is_list(@sidebar_widgets[:users][:main])}
     <nav class="sticky top-0 hidden w-full mx-2 md:block" :class="{'!block': open_sidebar}">
       <Dynamic.Component
         :if={not is_nil(ulid(@current_user))}

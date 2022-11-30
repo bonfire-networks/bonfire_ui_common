@@ -1,9 +1,5 @@
 <aside class={@class}>
-  <div
-    :if={@widget_title}
-    class={@title_class}
-    role="banner"
-  >
+  <div :if={@widget_title} class={@title_class} role="banner">
     <div>{@widget_title}</div>
     <#slot {@action} />
   </div>

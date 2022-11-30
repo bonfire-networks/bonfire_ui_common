@@ -2,7 +2,6 @@
   data-id="persistent"
   class="contents"
   x-data="{
-    open_sidebar: false,
     open_widgets_sidebar: false,
   }"
 >
@@ -15,11 +14,12 @@
       data-id="top_header"
       class="absolute top-[-65px] left-0 z-[999] w-full overflow-visible border-r border-base-content/10"
       :class="{'min-h-[calc(100vh/1.5)]': open_sidebar}"
-      >
+    >
       <div :if={@nav_header != false} class="sticky top-0 h-[64px]">
-        {#case if is_nil(current_user(@__context__)),
-            do: Bonfire.UI.Common.GuestHeaderLive,
-            else: Bonfire.UI.Common.LoggedHeaderLive}
+        {#case @nav_header ||
+            if is_nil(current_user(@__context__)),
+              do: Bonfire.UI.Common.GuestHeaderLive,
+              else: Bonfire.UI.Common.LoggedHeaderLive}
           {#match module}
             <Dynamic.Component
               :if={module_enabled?(module, current_user(@__context__))}
@@ -51,32 +51,33 @@
         /> -->
       </div>
     </div>
-
-    <Bonfire.UI.Common.NavSidebarLive
-      :if={!@without_sidebar && current_user(@__context__)}
-      page={@page}
-      selected_tab={@selected_tab}
-      nav_items={@nav_items}
-      sidebar_widgets={@sidebar_widgets}
-      showing_within={@showing_within}
-      reply_to_id={@reply_to_id}
-      context_id={@context_id}
-      create_object_type={@create_object_type}
-      thread_mode={@thread_mode}
-      without_sidebar={@without_sidebar}
-      to_boundaries={@to_boundaries}
-      to_circles={@to_circles}
-      smart_input_opts={@smart_input_opts}
-    />
   </div>
 
   <div
-    :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(current_user(@__context__))) or
-      (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(current_user(@__context__)))}
     data-id="secondary_sidebar_widgets"
+    :if={!@full_page}
     class="order-last max-w-[360px] w-full tablet-lg:grid min-h-[calc(100vh-56px)] grid-flow-row gap-6 overflow-x-hidden overflow-y-auto md:pt-6 auto-rows-min items-start"
   >
-    <div class="">
+    <!-- FIXME: use the widget system instead (see below) -->
+    <Dynamic.Component
+      :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive, @__context__) and
+        not is_nil(current_user(@__context__))}
+      module={Bonfire.Classify.Web.CategoriesNavLive}
+      selected_tab={@selected_tab}
+    />
+    <Dynamic.Component
+      :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__) and
+        not is_nil(current_user(@__context__))}
+      module={Bonfire.UI.ValueFlows.ProcessesListLive}
+      process_url="/coordination/list"
+      title={l("Favourite milestones")}
+    />
+
+    <div
+      :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(current_user(@__context__))) or
+        (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(current_user(@__context__)))}
+      class=""
+    >
       <Dynamic.Component
         :if={not is_nil(current_user(@__context__))}
         :for={{component, component_assigns} <-

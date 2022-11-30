@@ -55,7 +55,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
       <div
         x-data="{
-          open_sidebar_drawer: false,
+          open_sidebar: false,
           width: window.innerWidth,
         }"
         @resize.window.debounce.100="width = window.innerWidth"
@@ -79,6 +79,23 @@ defmodule Bonfire.UI.Common.LayoutLive do
               # current_app: @__context__[:current_app]
             }
           }}
+        />
+
+        <Bonfire.UI.Common.NavSidebarLive
+          :if={!@without_sidebar && current_user(@__context__)}
+          page={@page}
+          selected_tab={@selected_tab}
+          nav_items={@nav_items}
+          sidebar_widgets={@sidebar_widgets}
+          showing_within={@showing_within}
+          reply_to_id={@reply_to_id}
+          context_id={@context_id}
+          create_object_type={@create_object_type}
+          thread_mode={@thread_mode}
+          without_sidebar={@without_sidebar}
+          to_boundaries={@to_boundaries}
+          to_circles={@to_circles}
+          smart_input_opts={@smart_input_opts}
         />
 
         <div
