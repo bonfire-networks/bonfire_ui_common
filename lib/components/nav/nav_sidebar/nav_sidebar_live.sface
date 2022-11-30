@@ -1,10 +1,9 @@
-<div data-id="nav_sidebar" class="order-first sticky pt-6 top-[56px] max-w-[360px] w-full">
-  <nav
-    class="hidden w-full md:block"
-    :class="{'!block': open_sidebar}"
-    role="navigation"
-    aria-label={l("Extension navigation")}
-  >
+<div
+  data-id="nav_sidebar"
+  class="hidden md:block order-first sticky pt-6 top-[56px] max-w-[360px] w-full"
+  :class="{'!block': open_sidebar}"
+>
+  <nav class="w-full" role="navigation" aria-label={l("Extension navigation")}>
     <div
       class="flex h-[45px] items-center gap-3 py-3 mx-3 text-sm font-medium tracking-wide text-base-content/60"
       :if={@__context__[:current_extension][:name]}
@@ -21,15 +20,10 @@
   </nav>
 
   {#if is_list(@sidebar_widgets[:users][:main])}
-    <nav class="sticky top-0 hidden w-full mx-2 md:block" :class="{'!block': open_sidebar}">
+    <nav class="w-full mx-2">
       <Dynamic.Component
         :if={not is_nil(ulid(@current_user))}
-        :for={{component, component_assigns} <-
-          @sidebar_widgets[:users][:main] ||
-            [
-              {Bonfire.Tag.Web.WidgetTagsLive, []},
-              {Bonfire.UI.Common.WidgetFeedbackLive, []}
-            ]}
+        :for={{component, component_assigns} <- @sidebar_widgets[:users][:main]}
         module={component}
         {...component_assigns}
       />

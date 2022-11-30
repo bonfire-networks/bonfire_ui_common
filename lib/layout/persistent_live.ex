@@ -33,12 +33,12 @@ defmodule Bonfire.UI.Common.PersistentLive do
      |> assign_new(:title_prompt, fn -> nil end)
      |> assign_new(:preloaded_recipients, fn -> nil end)
      |> assign_new(:without_sidebar, fn -> nil end)
-     |> assign_new(:full_page, fn -> nil end)
+     |> assign_new(:without_widgets, fn -> nil end)
      |> assign_new(:nav_header, fn -> nil end)
-     |> assign_new(:nav_items, fn -> nil end)
+     #  |> assign_new(:nav_items, fn -> nil end)
      |> assign_new(:sidebar_widgets, fn -> [] end)
-     |> assign_new(:page_header_aside, fn -> nil end)
-     |> assign_new(:custom_page_header, fn -> nil end)
+     #  |> assign_new(:page_header_aside, fn -> nil end)
+     #  |> assign_new(:custom_page_header, fn -> nil end)
      |> info("socket prepared via session"), layout: false}
   end
 
@@ -65,14 +65,14 @@ defmodule Bonfire.UI.Common.PersistentLive do
       :smart_input_component,
       :thread_mode,
       :without_sidebar,
-      :full_page,
+      :without_widgets,
       :to_boundaries,
       :to_circles,
       :smart_input_opts,
       :nav_header,
-      :nav_items,
-      :custom_page_header,
-      :page_header_aside,
+      # :nav_items,
+      # :custom_page_header,
+      # :page_header_aside,
       :sidebar_widgets,
       :page,
       :page_title,

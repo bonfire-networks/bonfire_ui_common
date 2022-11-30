@@ -2,26 +2,14 @@
   data-id="logged_header"
   class="sticky top-0 z-30 flex justify-center w-full h-16 transition-all duration-100 border-b shadow-sm border-base-content/10 bg-opacity-90 backdrop-blur bg-base-100 text-base-content"
 >
-  <div class="flex items-center px-4">
-    <div data-id="mobile_nav_btn" class="md:hidden">
-      <button
-        @click="open_sidebar = ! open_sidebar"
-        type="button"
-        class="flex -my-2 rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[64px]"
-        id="option-menu-button"
-        aria-expanded="true"
-        aria-haspopup="true"
-      >
-        <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
-        <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
-      </button>
-    </div>
+  <div class="flex items-center px-4" :class="{'w-full': open_sidebar}">>
+    <Bonfire.UI.Common.OpenSidebarBtnLive />
 
-    <div data-id="logo" class="items-center place-content-center" :class="{'hidden': open_sidebar}">
+    <div data-id="logo" class="items-center place-content-center">
       <Bonfire.UI.Common.LogoLinkLive href="/dashboard" />
     </div>
 
-    <div class="hidden md:block ml-4 max-w-[320px] w-full">
+    <div class="hidden md:block ml-4 max-w-[320px] w-full" :class="{'!block': open_sidebar}">
       <Dynamic.Component
         :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
         module={Bonfire.Search.Web.FormLive}
@@ -49,77 +37,22 @@
     </Dynamic.Component>
   </div>
 
-  <!-- <button
-    @click="open_widgets_sidebar = !open_widgets_sidebar"
-    :if={is_list(@sidebar_widgets[:users][:secondary])}
-    class="btn btn-sm btn-ghost tablet-lg:hidden"
-  >
-    <Icon iconify="akar-icons:sidebar-right" class="w-5 h-5 text-base-content/70" />
-  </button> -->
-
-  <div
-    class="hidden md:flex flex-1 tablet-lg:w-[300px] px-0 md:px-3 lg:px-6 tablet-lg:max-w-[300px] desktop-lg:w-[450px] desktop-lg:max-w-[450px] items-center justify-end gap-4"
-    :class="{'!flex': open_sidebar}"
-  >
-    <div class="pl-3">
-      <Bonfire.UI.Common.SmartInputContainerLive
-        :if={not is_nil(@current_user) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
-        id={:smart_input}
-        showing_within={@showing_within}
-        reply_to_id={@reply_to_id}
-        context_id={@context_id}
-        create_object_type={@create_object_type}
-        thread_mode={@thread_mode}
-        without_sidebar={@without_sidebar}
-        to_boundaries={@to_boundaries}
-        to_circles={@to_circles}
-        smart_input_opts={@smart_input_opts}
-      />
-    </div>
-
-    <div class="dropdown dropdown-end">
-      <label tabindex="0" class="btn btn-circle h-[40px] w-[40px] relative btn-sm">
-        <Icon iconify="ci:grid-round" class="w-5 h-5" />
-      </label>
-      <div tabindex="0" class="p-2 shadow dropdown-content bg-neutral rounded-box w-60">
-        <Bonfire.UI.Common.AppsLive />
-      </div>
-    </div>
-
-    <LiveRedirect
-      to={path(Bonfire.Data.Social.Message)}
-      class={
-        "btn btn-circle h-[40px] w-[40px] relative btn-sm",
-        "btn-primary": @page == "messages"
-      }
-    >
-      <Icon solid="Mail" class="w-5 h-5" />
-      <span :if={@page == "messages"} class="sr-only">{l("Current Page:")}
-      </span>
-      <Bonfire.UI.Common.BadgeCounterLive
-        id={:inbox}
-        class="absolute -right-2 indicator-item badge-sm badge -top-1 badge-primary !border-none"
-      />
-    </LiveRedirect>
-
-    <LiveRedirect
-      to={path(:notifications)}
-      class={
-        "btn btn-circle btn-sm h-[40px] relative w-[40px]",
-        "btn-primary": @page == "notifications"
-      }
-    >
-      <Icon solid="Bell" class="w-5 h-5" />
-      <span :if={@page == "notifications"} class="sr-only">{l("Current Page:")}
-      </span>
-      <Bonfire.UI.Common.BadgeCounterLive
-        id={:notifications}
-        class="absolute -right-2 indicator-item badge badge-sm -top-1 badge-primary !border-none"
-      />
-    </LiveRedirect>
-
-    <div class="block">
-      <Bonfire.UI.Common.UserMenuLive />
-    </div>
-  </div>
+  <Bonfire.UI.Common.LoggedActionsLive
+    :if={@without_widgets}
+    page_title={@page_title}
+    page={@page}
+    current_user={current_user(@__context__)}
+    showing_within={@showing_within}
+    reply_to_id={@reply_to_id}
+    context_id={@context_id}
+    create_object_type={@create_object_type}
+    thread_mode={@thread_mode}
+    without_sidebar={@without_sidebar}
+    without_widgets={@without_widgets}
+    custom_page_header={@custom_page_header}
+    to_boundaries={@to_boundaries}
+    to_circles={@to_circles}
+    smart_input_opts={@smart_input_opts}
+    sidebar_widgets={@sidebar_widgets}
+  />
 </div>

@@ -90,7 +90,7 @@
       />
       <div class="w-full rounded-b-md">
         <ul
-          id="autocomplete-options--destination"
+          data-id="autocomplete-options--destination"
           class="divide-y"
           role="listbox"
           aria-labelledby="multiselect_label"

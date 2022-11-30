@@ -9,7 +9,7 @@
     @click="smart_input_activity_types_expanded = ! smart_input_activity_types_expanded"
     type="button"
     class={@class}
-    id="option-menu-button"
+    data-id="option-menu-button"
     aria-expanded="true"
     aria-haspopup="true"
   >

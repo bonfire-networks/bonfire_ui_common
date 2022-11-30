@@ -16,7 +16,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:nav_header, fn -> nil end)
       |> assign_new(:hero, fn -> nil end)
       |> assign_new(:page_title, fn -> nil end)
-      |> assign_new(:full_page, fn -> false end)
       |> assign_new(:page, fn -> nil end)
       |> assign_new(:selected_tab, fn -> nil end)
       |> assign_new(:notification, fn -> nil end)
@@ -39,8 +38,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
         ]
       end)
       |> assign_new(:showing_within, fn -> nil end)
-      |> assign_new(:sidebar_widgets, fn -> [] end)
       |> assign_new(:without_sidebar, fn -> nil end)
+      |> assign_new(:without_widgets, fn -> false end)
+      |> assign_new(:sidebar_widgets, fn -> [] end)
       #     fn -> (not is_nil(current_user(assigns)) &&
       #         empty?(e(assigns, :sidebar_widgets, :users, :main, nil))) ||
       #        (!is_nil(current_user(assigns)) &&
@@ -50,39 +50,60 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:show_less_menu_items, fn -> false end)
 
     ~F"""
-    <div data-id="bonfire_live" class="transition duration-150 ease-in-out transform">
+    <div
+      data-id="bonfire_live"
+      class="transition duration-150 ease-in-out transform"
+      x-data="{
+          open_sidebar: false
+        }"
+    >
+      <div :if={@nav_header != false} class="sticky top-0 z-[999]">
+        {#case @nav_header ||
+            if is_nil(current_user(@__context__)),
+              do: Bonfire.UI.Common.GuestHeaderLive,
+              else: Bonfire.UI.Common.LoggedHeaderLive}
+          {#match module}
+            <Dynamic.Component
+              :if={module_enabled?(module, current_user(@__context__))}
+              module={module}
+              page_header_aside={@page_header_aside}
+              page_title={@page_title}
+              page={@page}
+              current_user={current_user(@__context__)}
+              showing_within={@showing_within}
+              reply_to_id={@reply_to_id}
+              context_id={@context_id}
+              create_object_type={@create_object_type}
+              thread_mode={@thread_mode}
+              without_sidebar={@without_sidebar}
+              without_widgets={@without_widgets}
+              custom_page_header={@custom_page_header}
+              to_boundaries={@to_boundaries}
+              to_circles={@to_circles}
+              smart_input_opts={@smart_input_opts}
+              sidebar_widgets={@sidebar_widgets}
+            />
+        {/case}
+      </div>
+
       <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
 
       <div
         x-data="{
-          open_sidebar: false,
           width: window.innerWidth,
         }"
         @resize.window.debounce.100="width = window.innerWidth"
         class={
-          "w-full widget items-start mx-auto grid grid-cols-1 max-w-[1280px] md:grid-cols-[260px_1fr_320px]",
-          "!grid-cols-1 !max-w-full": @without_sidebar || is_nil(@current_user),
-          "mt-[65px]": @nav_header != false
+          "w-full widget items-start mx-auto grid ",
+          "grid-cols-1": @without_sidebar && @without_widgets,
+          "grid-cols-1 md:grid-cols-[1fr_360px]": @without_sidebar && !@without_widgets,
+          "grid-cols-1 md:grid-cols-[260px_1fr]": @without_widgets && !@without_sidebar,
+          "grid-cols-1 md:grid-cols-[260px_1fr] lg:grid-cols-[260px_1fr_360px] ":
+            !@without_sidebar && !@without_widgets
         }
       >
-        <PersistentLive
-          id={:persistent}
-          sticky
-          container={{:div, class: "contents"}}
-          session={%{
-            "context" => %{
-              sticky: true,
-              csrf_token: @csrf_token,
-              current_app: @current_app,
-              current_user_id: @current_user_id,
-              current_account_id: @current_account_id
-              # current_app: @__context__[:current_app]
-            }
-          }}
-        />
-
         <Bonfire.UI.Common.NavSidebarLive
-          :if={!@without_sidebar && current_user(@__context__)}
+          :if={!@without_sidebar}
           page={@page}
           selected_tab={@selected_tab}
           nav_items={@nav_items}
@@ -101,16 +122,16 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <div
           data-id="main_section"
           class={
-            "gap-2 md:gap-0 relative z-[105] w-full col-span-1 h-full",
-            "!max-w-full": @full_page || @without_sidebar,
+            "relative w-full max-w-[1280px] h-full gap-2 md:gap-0 z-[105] col-span-1 ",
+            "!max-w-full": @without_widgets,
             "mx-auto": @without_sidebar
           }
         >
           <div class={
             "h-full mt-0 grid tablet-lg:grid-cols-[1fr] desktop-lg:grid-cols-[1fr] grid-cols-1",
             "md:mt-6": @nav_header == false,
-            "max-w-screen-lg gap-4 mx-auto": is_nil(@current_user),
-            "justify-between": not is_nil(@current_user)
+            "max-w-screen-lg gap-4 mx-auto": @without_widgets,
+            "justify-between": !@without_widgets
           }>
             <div class="relative invisible_frame">
               <div class="h-full pb-16 md:pb-0 md:overflow-y-visible md:h-full">
@@ -125,6 +146,22 @@ defmodule Bonfire.UI.Common.LayoutLive do
             </div>
           </div>
         </div>
+
+        <PersistentLive
+          id={:persistent}
+          sticky
+          container={{:div, class: "contents"}}
+          session={%{
+            "context" => %{
+              sticky: true,
+              csrf_token: @csrf_token,
+              current_app: @current_app,
+              current_user_id: @current_user_id,
+              current_account_id: @current_account_id
+              # current_app: @__context__[:current_app]
+            }
+          }}
+        />
       </div>
 
       <!-- <Bonfire.UI.Common.MobileSmartInputButtonLive

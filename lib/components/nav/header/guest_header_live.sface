@@ -1,6 +1,9 @@
-<div class="flex items-center justify-between max-w-screen-lg px-4 py-2 mx-3 mt-3 rounded-md shadow lg:mx-auto bg-base-100">
+<div class="flex h-[56px] w-full px-4 py-2 mx-3 items-center justify-between  rounded-md shadow lg:mx-auto bg-base-100">
   <div class="flex items-center flex-1 w-full gap-3">
+    <Bonfire.UI.Common.OpenSidebarBtnLive />
+
     <Bonfire.UI.Common.LogoLinkLive with_name />
+
     <!-- <ul class="hidden text-sm md:flex menu menu-horizontal">
       <li><a>Profile directory</a></li>
       <li><a>About</a></li>
@@ -9,11 +12,5 @@
 
   <Bonfire.UI.Common.PageHeaderLive page_title={@page_title} page={@page} />
 
-  <div :if={!@current_user} class="flex items-center gap-2">
-    <LiveRedirect to={path(:login, :index)} class="normal-case btn btn-sm">{l("Log in")}</LiveRedirect>
-
-    {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-      <LiveRedirect to={path(:signup)} class="normal-case btn btn-sm">{l("Sign up")}</LiveRedirect>
-    {/if}
-  </div>
+  <Bonfire.UI.Common.GuestActionsLive :if={@without_widgets && !@current_user} />
 </div>

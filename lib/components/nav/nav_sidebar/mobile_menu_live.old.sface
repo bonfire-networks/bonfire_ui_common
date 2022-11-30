@@ -5,7 +5,7 @@
     @mouseleave="hovered_apps = false"
     type="button"
     class="flex -my-2  rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px] w-[65px]"
-    id="option-menu-button"
+    data-id="option-menu-button"
     aria-expanded="true"
     aria-haspopup="true"
   >
@@ -220,7 +220,7 @@
     @mouseleave="hovered_apps = false"
     type="button"
     class="flex -my-2  rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px] w-[65px]"
-    id="option-menu-button"
+    data-id="option-menu-button"
     aria-expanded="true"
     aria-haspopup="true"
     >
@@ -258,7 +258,7 @@
               @mouseleave="hovered_apps = false"
               type="button"
               class="btn btn-ghost btn-square"
-              id="option-menu-button"
+              data-id="option-menu-button"
               aria-expanded="true"
               aria-haspopup="true"
             >

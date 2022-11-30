@@ -1,4 +1,4 @@
-defmodule Bonfire.UI.Common.LoggedHeaderLive do
+defmodule Bonfire.UI.Common.LoggedActionsLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
   prop page_title, :string, default: nil
@@ -8,7 +8,6 @@ defmodule Bonfire.UI.Common.LoggedHeaderLive do
   prop showing_within, :any, default: nil
   prop reply_to_id, :any, default: nil
   prop without_sidebar, :boolean, default: false
-  prop without_widgets, :boolean, default: false
   prop context_id, :string, default: nil, required: false
   prop create_object_type, :any, default: nil
   prop thread_mode, :atom, default: nil
