@@ -71,7 +71,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           "grid-cols-1": @without_sidebar && @without_widgets,
           "grid-cols-1 md:grid-cols-1": @without_sidebar && !@without_widgets,
           "grid-cols-1 md:grid-cols-[260px_1fr]": @without_widgets && !@without_sidebar,
-          "grid-cols-1 md:grid-cols-[260px_1fr] lg:grid-cols-[260px_1fr_460px] ":
+          "grid-cols-1 md:grid-cols-[260px_1fr] lg:grid-cols-[260px_1fr_360px] ":
             !@without_sidebar && !@without_widgets
         }
       >
