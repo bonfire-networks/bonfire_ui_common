@@ -26,14 +26,14 @@
     />
   </div>
 
-  <div class="dropdown dropdown-end">
+  <!-- <div class="dropdown dropdown-end">
     <label tabindex="0" class="btn btn-circle  relative btn-sm">
       <Icon iconify="ci:grid-round" class="w-5 h-5" />
     </label>
     <div tabindex="0" class="p-2 shadow dropdown-content bg-neutral rounded-box w-60">
       <Bonfire.UI.Common.AppsLive />
     </div>
-  </div>
+  </div> -->
 
   <LiveRedirect
     to={path(Bonfire.Data.Social.Message)}

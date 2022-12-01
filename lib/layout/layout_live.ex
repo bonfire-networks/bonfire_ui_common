@@ -67,11 +67,11 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }"
         @resize.window.debounce.100="width = window.innerWidth"
         class={
-          "w-full mx-auto grid ",
+          "w-full mx-auto grid max-w-[1260px]",
           "grid-cols-1": @without_sidebar && @without_widgets,
           "grid-cols-1 md:grid-cols-1": @without_sidebar && !@without_widgets,
-          "grid-cols-1 md:grid-cols-[260px_1fr]": @without_widgets && !@without_sidebar,
-          "grid-cols-1 md:grid-cols-[260px_1fr] lg:grid-cols-[260px_1fr_360px] ":
+          "grid-cols-1 md:grid-cols-[280px_1fr]": @without_widgets && !@without_sidebar,
+          "grid-cols-1 md:grid-cols-[280px_1fr] lg:grid-cols-[280px_1fr_320px] ":
             !@without_sidebar && !@without_widgets
         }
       >
@@ -108,7 +108,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }>
             <div class="relative invisible_frame">
               <div class="pb-16 md:pb-0 md:overflow-y-visible">
-                <div id="inner" class="">
+                <div id="inner" class="bg-base-content/5 widget">
                   <!-- Bonfire.UI.Common.ExtensionHorizontalMenuLive
                 page={@page}
                 selected_tab={@selected_tab}
