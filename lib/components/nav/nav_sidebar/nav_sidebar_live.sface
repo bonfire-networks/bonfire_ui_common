@@ -1,16 +1,32 @@
 <div
   data-id="nav_sidebar"
-  class="hidden md:block order-first sticky pt-6 top-[56px] max-w-[360px] w-full"
+  class="hidden self-start md:block top-0 order-first sticky max-w-[380px] w-full"
   :class="{'!block': open_sidebar}"
 >
+ <div class="flex items-center px-4 h-[64px]" :class="{'w-full': open_sidebar}">
+    <Bonfire.UI.Common.OpenSidebarBtnLive />
+
+    <div data-id="logo" class="items-center place-content-center">
+      <Bonfire.UI.Common.LogoLinkLive href="/dashboard" />
+    </div>
+
+    <div class="hidden md:block ml-4 max-w-[200px] w-full" :class="{'!block': open_sidebar}">
+      <Dynamic.Component
+        :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
+        module={Bonfire.Search.Web.FormLive}
+        search_limit={5}
+      />
+    </div>
+  </div>
+
   <nav class="w-full" role="navigation" aria-label={l("Extension navigation")}>
-    <div
+    <!-- <div
       class="flex h-[45px] items-center gap-3 py-3 mx-3 text-sm font-medium tracking-wide text-base-content/60"
       :if={@__context__[:current_extension][:name]}
     >
       <Icon iconify={@__context__[:current_extension][:icon]} class="w-6 h-6" />
       <span>{@__context__[:current_extension][:name]}</span>
-    </div>
+    </div> -->
 
     <Bonfire.UI.Common.ExtensionMenuNavLive
       selected_tab={@selected_tab}

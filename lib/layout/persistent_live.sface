@@ -5,16 +5,18 @@
     open_widgets_sidebar: false
   }"
 >
+
+
   <div
     :if={!@without_widgets}
     data-id="right_nav_and_widgets"
-    class="order-last top-0  z-[9998] max-w-[360px] w-full h-[100px]  overflow-y-visible grid-flow-row gap-6 auto-rows-min items-start bg-base-200"
+    class="order-last top-0 self-start z-[9998] w-full  overflow-y-visible grid-flow-row gap-6 auto-rows-min items-start"
     :class="{
-      'sticky hidden lg:grid mt-[-56px]': !open_widgets_sidebar,
-      'absolute lg:sticky lg:grid right-0 lg:right-auto mt-0 lg:mt-[-56px]': open_widgets_sidebar,
+      'sticky hidden lg:grid': !open_widgets_sidebar,
+      'absolute lg:sticky lg:grid right-0 lg:right-auto mt-0': open_widgets_sidebar,
     }"
   >
-    <div data-id="user_actions" :if={@nav_header != false} class="w-full h-[56px] overflow-visible">
+    <div data-id="user_actions" :if={@nav_header != false} class="w-full h-[64px] overflow-visible flex place-content-center px-3">
       {#case if is_nil(current_user(@__context__)),
           do: Bonfire.UI.Common.GuestActionsLive,
           else: Bonfire.UI.Common.LoggedActionsLive}
@@ -39,18 +41,11 @@
           />
       {/case}
 
-      <!-- <Bonfire.UI.Common.ExtensionHorizontalMenuLive
-        nav_items={@nav_items ||
-            Bonfire.Common.ExtensionModule.default_nav(@__context__[:current_app]) ||
-            Bonfire.Common.NavModule.nav(@__context__[:current_app]) || []}
-        page={@page}
-        selected_tab={@selected_tab}
-      /> -->
     </div>
 
     <div
       data-id="secondary_sidebar_widgets"
-      class="hidden md:block overflow-x-hidden overflow-y-auto bg-base-200"
+      class="hidden md:block overflow-x-hidden overflow-y-auto"
     >
       <!-- FIXME: use the widget system instead (see below) -->
       <Dynamic.Component

@@ -57,34 +57,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           open_sidebar: false
         }"
     >
-      <div :if={@nav_header != false} class="sticky top-0 z-[999]">
-        {#case @nav_header ||
-            if is_nil(current_user(@__context__)),
-              do: Bonfire.UI.Common.GuestHeaderLive,
-              else: Bonfire.UI.Common.LoggedHeaderLive}
-          {#match module}
-            <Dynamic.Component
-              :if={module_enabled?(module, current_user(@__context__))}
-              module={module}
-              page_header_aside={@page_header_aside}
-              page_title={@page_title}
-              page={@page}
-              current_user={current_user(@__context__)}
-              showing_within={@showing_within}
-              reply_to_id={@reply_to_id}
-              context_id={@context_id}
-              create_object_type={@create_object_type}
-              thread_mode={@thread_mode}
-              without_sidebar={@without_sidebar}
-              without_widgets={@without_widgets}
-              custom_page_header={@custom_page_header}
-              to_boundaries={@to_boundaries}
-              to_circles={@to_circles}
-              smart_input_opts={@smart_input_opts}
-              sidebar_widgets={@sidebar_widgets}
-            />
-        {/case}
-      </div>
+     
 
       <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
 
@@ -94,11 +67,11 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }"
         @resize.window.debounce.100="width = window.innerWidth"
         class={
-          "w-full widget items-start mx-auto grid ",
+          "w-full mx-auto grid ",
           "grid-cols-1": @without_sidebar && @without_widgets,
-          "grid-cols-1 md:grid-cols-[1fr_360px]": @without_sidebar && !@without_widgets,
+          "grid-cols-1 md:grid-cols-1": @without_sidebar && !@without_widgets,
           "grid-cols-1 md:grid-cols-[260px_1fr]": @without_widgets && !@without_sidebar,
-          "grid-cols-1 md:grid-cols-[260px_1fr] lg:grid-cols-[260px_1fr_360px] ":
+          "grid-cols-1 md:grid-cols-[260px_1fr] lg:grid-cols-[260px_1fr_460px] ":
             !@without_sidebar && !@without_widgets
         }
       >
@@ -122,7 +95,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <div
           data-id="main_section"
           class={
-            "relative w-full max-w-[1280px] h-full gap-2 md:gap-0 z-[105] col-span-1 ",
+            "relative w-full max-w-[1280px]  gap-2 md:gap-0 z-[105] col-span-1 ",
             "!max-w-full": @without_widgets,
             "mx-auto": @without_sidebar
           }
@@ -134,12 +107,30 @@ defmodule Bonfire.UI.Common.LayoutLive do
             "justify-between": !@without_widgets
           }>
             <div class="relative invisible_frame">
-              <div class="h-full pb-16 md:pb-0 md:overflow-y-visible md:h-full">
+              <div class="pb-16 md:pb-0 md:overflow-y-visible">
                 <div id="inner" class="">
                   <!-- Bonfire.UI.Common.ExtensionHorizontalMenuLive
                 page={@page}
                 selected_tab={@selected_tab}
                 /-->
+                  <div class="flex flex-1 sticky top-0 bg-base-100 z-[99999999]" :class="{'hidden': open_sidebar}">
+                    <Dynamic.Component
+                      module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
+                      page_title={@page_title}
+                      page={@page}
+                      selected_tab={@selected_tab}
+                      {...elem(@custom_page_header || {nil, []}, 1)}
+                    >
+                      <:right_action>
+                        <Dynamic.Component
+                          :if={@current_user && @page_header_aside}
+                          :for={{component, component_assigns} <- e(@page_header_aside, [])}
+                          module={component}
+                          {...component_assigns}
+                        />
+                      </:right_action>
+                    </Dynamic.Component>
+                  </div>
                   {@inner_content}
                 </div>
               </div>

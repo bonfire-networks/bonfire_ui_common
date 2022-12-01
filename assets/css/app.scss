@@ -154,7 +154,7 @@ body {
 }
 
 .widget {
-  height: calc(var(--inner-window-height) - 65px) ;
+  height: calc(var(--inner-window-height)) ;
 }
 
 
@@ -312,6 +312,9 @@ body {
 
 /* Handle on hover */
 
+.dropdown .dropdown-content {
+  overflow: auto;
+}
 
 .menu .menu-title>a, .menu .menu-title>span {
   font-weight: normal

@@ -1,5 +1,5 @@
 <div
-  class="hidden md:flex flex-1 items-center justify-end gap-4"
+  class="hidden md:flex flex-1 items-center justify-end gap-3"
   :class="{'!flex': open_sidebar}"
 >
   <!-- <button
@@ -27,7 +27,7 @@
   </div>
 
   <div class="dropdown dropdown-end">
-    <label tabindex="0" class="btn btn-circle h-[40px] w-[40px] relative btn-sm">
+    <label tabindex="0" class="btn btn-circle  relative btn-sm">
       <Icon iconify="ci:grid-round" class="w-5 h-5" />
     </label>
     <div tabindex="0" class="p-2 shadow dropdown-content bg-neutral rounded-box w-60">
@@ -38,7 +38,7 @@
   <LiveRedirect
     to={path(Bonfire.Data.Social.Message)}
     class={
-      "btn btn-circle h-[40px] w-[40px] relative btn-sm",
+      "btn btn-circle  relative btn-sm",
       "btn-primary": @page == "messages"
     }
   >
@@ -54,7 +54,7 @@
   <LiveRedirect
     to={path(:notifications)}
     class={
-      "btn btn-circle btn-sm h-[40px] relative w-[40px]",
+      "btn btn-circle btn-sm relative",
       "btn-primary": @page == "notifications"
     }
   >

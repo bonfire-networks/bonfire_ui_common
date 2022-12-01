@@ -1,4 +1,4 @@
-<div role="banner" class="flex items-center flex-1 w-full md:px-6">
+<div role="banner" class="flex items-center h-[64px] flex-1 w-full ">
   <div class="flex items-center w-full">
     <div class="flex items-center flex-1 w-full space-x-3">
       <span
