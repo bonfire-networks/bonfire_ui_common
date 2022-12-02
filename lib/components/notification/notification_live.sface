@@ -1,7 +1,7 @@
 <div
   id="app_notifications"
   aria-live="assertive"
-  class="fixed inset-0 flex items-end px-4 py-6 z-[999] pointer-events-none sm:p-6 sm:items-start"
+  class="fixed inset-0 flex items-end px-4 py-6 sm:px-6 sm:pt-10 z-[999] pointer-events-none sm:items-start"
 >
   <div class="flex flex-col items-center w-full space-y-4 sm:items-end">
     <div
@@ -31,7 +31,7 @@
               {l("Show")}
             </LiveRedirect>
           </div>
-          <div class="flex flex-shrink-0 ml-4 h-5">
+          <div :if={socket_connected?(@socket)} class="flex flex-shrink-0 ml-4 h-5">
             <button
               phx-click="clear-flash"
               phx-target={@myself}
@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    {#case @info || live_flash(@root_flash || @flash, :info)}
+    {#case @info || e(@root_flash || @flash, :info, nil)}
       {#match nil}
       {#match info}
         <div
@@ -63,7 +63,7 @@
               <div class="ml-3 w-0 flex-1 pt-0.5">
                 <p data-id="content" class="text-sm font-semibold text-gray-500">{rich(info)}</p>
               </div>
-              <div class="flex flex-shrink-0 ml-4 h-5">
+              <div :if={socket_connected?(@socket)} class="flex flex-shrink-0 ml-4 h-5">
                 <button
                   phx-click="clear-flash"
                   phx-target={@myself}
@@ -88,7 +88,8 @@
     </div> -->
     {/case}
 
-    {#case @error || live_flash(@root_flash || @flash, :error)}
+    {#case @error |> debug("e") ||
+        e(@root_flash |> debug("rf") || @flash |> debug("f"), :error, nil) |> debug("result")}
       {#match nil}
       {#match error}
         <div
@@ -110,7 +111,7 @@
                   class="mt-2 normal-case btn btn-sm btn-error"
                 />
               </div>
-              <div class="flex flex-shrink-0 ml-4 h-5">
+              <div :if={socket_connected?(@socket)} class="flex flex-shrink-0 ml-4 h-5">
                 <button
                   phx-click="clear-flash"
                   phx-target={@myself}
@@ -151,7 +152,7 @@
     </div>
   </div>
 
-  {#case @info || live_flash(@flash, :info)}
+  {#case @info || e(@flash, :info, nil)}
     {#match nil}
     {#match info}
     <div class="max-w-md alert alert-info fade-out" 
@@ -163,7 +164,7 @@
     </div>
   {/case}
 
-  {#case @error || live_flash(@flash, :error)}
+  {#case @error || e(@flash, :error, nil)}
     {#match nil}
     {#match error}
     <div class="max-w-md alert alert-error" 

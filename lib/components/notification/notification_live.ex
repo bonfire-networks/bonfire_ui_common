@@ -9,7 +9,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
 
   def mount(socket) do
     # debug("mounting")
-    # need this because ReusableModalLive used in the HEEX doesn't set Surface prop defaults
+    # need this if included in a non-Surface view/component which doesn't set Surface prop defaults
     {:ok,
      assign(
        socket,
@@ -30,6 +30,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
   end
 
   def update(assigns, socket) do
+    debug(assigns, "assigns")
     current_user = current_user(socket) || current_user(assigns)
 
     if current_user do
@@ -56,10 +57,11 @@ defmodule Bonfire.UI.Common.NotificationLive do
 
     {:noreply,
      socket
-     |> clear_flash(key)
+     |> clear_flash(type)
      |> assign(
        :root_flash,
-       Map.drop(e(socket.assigns, :root_flash, %{}), [type])
+       e(socket.assigns, :root_flash, %{})
+       |> Map.drop([type, key])
      )
      |> assign(key, nil)}
 
@@ -97,9 +99,10 @@ defmodule Bonfire.UI.Common.NotificationLive do
     # debug(assigns)
     error =
       e(assigns, :error, nil) ||
-        live_flash(
-          e(assigns, :root_flash, nil) || e(assigns, :flash, nil) || %{},
-          :error
+        e(
+          e(assigns, :root_flash, nil) || e(assigns, :flash, %{}),
+          :error,
+          nil
         )
 
     # debug(error)

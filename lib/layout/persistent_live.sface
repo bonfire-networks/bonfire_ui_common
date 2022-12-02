@@ -36,7 +36,7 @@
             thread_mode={@thread_mode}
             without_sidebar={@without_sidebar}
             without_widgets={@without_widgets}
-            to_boundaries={@to_boundaries}
+            to_boundaries={@to_boundaries || []}
             to_circles={@to_circles}
             smart_input_opts={@smart_input_opts}
             sidebar_widgets={@sidebar_widgets}
@@ -107,4 +107,6 @@
       <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
     </button>
   </div>
+
+  <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@root_flash} />
 </div>

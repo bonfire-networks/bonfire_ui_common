@@ -39,6 +39,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
      |> assign_new(:sidebar_widgets, fn -> [] end)
      #  |> assign_new(:page_header_aside, fn -> nil end)
      #  |> assign_new(:custom_page_header, fn -> nil end)
+     |> assign_new(:root_flash, fn -> nil end)
      |> info("socket prepared via session"), layout: false}
   end
 
@@ -76,7 +77,8 @@ defmodule Bonfire.UI.Common.PersistentLive do
       :sidebar_widgets,
       :page,
       :page_title,
-      :selected_tab
+      :selected_tab,
+      :root_flash
     ])
     |> Map.put(:__context__, Map.merge(assigns[:__context__] || %{}, %{sticky: true}))
   end
@@ -100,7 +102,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
         else
           debug(
             context,
-            "no csrf_token available in context so can't send to sticky smart input LV (if used)"
+            "no csrf_token available in context so can't send to sticky LV (if used)"
           )
 
           :skip
@@ -109,12 +111,20 @@ defmodule Bonfire.UI.Common.PersistentLive do
   end
 
   def handle_info({:assign, {:smart_input, assigns}}, socket) do
-    debug("forward assigns from PersistentLive to the smart input stateful component")
+    debug("forward assigns from PersistentLive to the SmartInputContainerLive stateful component")
 
     assigns
     |> Map.new()
     |> Map.put_new(:smart_input_component, nil)
     |> maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, ...)
+
+    {:noreply, socket}
+  end
+
+  def handle_info({:assign, {:notification, assigns}}, socket) do
+    debug("forward assigns from PersistentLive to the NotificationLive stateful component")
+
+    maybe_send_update(Bonfire.UI.Common.NotificationLive, :notification, assigns)
 
     {:noreply, socket}
   end

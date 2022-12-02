@@ -141,13 +141,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
           sticky
           container={{:div, class: "contents"}}
           session={%{
+            "root_flash" => @flash,
             "context" => %{
               sticky: true,
               csrf_token: @csrf_token,
               current_app: @current_app,
               current_user_id: @current_user_id,
               current_account_id: @current_account_id
-              # current_app: @__context__[:current_app]
             }
           }}
         />
@@ -169,12 +169,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
     </div>
 
     <Bonfire.UI.Common.ReusableModalLive id="modal" />
-
-    <Bonfire.UI.Common.NotificationLive
-      id={:notification}
-      notification={@notification}
-      root_flash={@flash}
-    />
     """
   end
 end

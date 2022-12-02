@@ -209,7 +209,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     do:
       {:noreply,
        socket
-       |> assign(
+       |> assign_generic(
          :no_live_event_handler,
          socket.assigns[:no_live_event_handler] || %{} |> Map.put(event, true)
        )}

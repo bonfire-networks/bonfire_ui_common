@@ -379,16 +379,16 @@ defmodule Bonfire.UI.Common do
   def pubsub_subscribe(topic, socket_etc) when is_binary(topic) do
     # debug(socket)
     if socket_connected_or_user?(socket_etc) do
-      pubsub_subscribe(topic)
+      do_pubsub_subscribe(topic)
     else
       debug(topic, "LiveView is not connected so we skip subscribing to")
     end
   end
 
-  def pubsub_subscribe(topic, socket) when not is_binary(topic) do
-    with t when is_binary(t) <- maybe_to_string(topic) do
-      debug(t, "transformed the topic into a string we can subscribe to")
-      pubsub_subscribe(t, socket)
+  def pubsub_subscribe(topic, socket) do
+    with topic when is_binary(topic) and topic != "" <- maybe_to_string(topic) do
+      debug(topic, "transformed the topic into a string we can subscribe to")
+      pubsub_subscribe(topic, socket)
     else
       _ ->
         warn(
@@ -398,7 +398,7 @@ defmodule Bonfire.UI.Common do
     end
   end
 
-  defp pubsub_subscribe(topic) when is_binary(topic) and topic != "" do
+  defp do_pubsub_subscribe(topic) when is_binary(topic) and topic != "" do
     debug(topic, "subscribed")
 
     endpoint = Config.get(:endpoint_module, Bonfire.Web.Endpoint)
@@ -954,7 +954,11 @@ defmodule Bonfire.UI.Common do
   def assign_flash(%Phoenix.LiveView.Socket{} = socket, type, message, assigns, pid) do
     info(message, type)
 
-    Bonfire.UI.Common.Notifications.receive_flash(Map.put(assigns, type, message), pid)
+    Bonfire.UI.Common.Notifications.receive_flash(
+      Map.put(assigns, type, message),
+      pid,
+      socket.assigns[:__context__]
+    )
 
     Phoenix.LiveView.put_flash(socket, type, message)
   end
