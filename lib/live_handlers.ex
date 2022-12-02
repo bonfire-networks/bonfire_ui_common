@@ -42,10 +42,15 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     undead(socket, fn ->
       debug("LiveHandler: handle_event #{inspect(action)} via #{source_module || "delegation"}")
 
-      with {:noreply, socket} <- do_handle_event(action, attrs, socket),
+      with {:noreply, %{assigns: %{no_live_event_handler: %{^action => true}}} = socket} <-
+             do_handle_event(action, attrs, socket) |> debug,
            {:noreply, socket} <-
              if(is_function(fun), do: fun.(action, attrs, socket), else: {:noreply, socket}) do
         {:noreply, socket}
+      else
+        other ->
+          debug(other)
+          other
       end
     end)
   end
@@ -126,7 +131,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
       _ ->
         warn(event, "LiveHandler: could not find event handler")
         debug(attrs, "attrs")
-        empty(socket)
+        no_live_handler({:handle_event, event}, socket)
     end
   end
 
@@ -137,7 +142,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   defp do_handle_event(event, attrs, socket) do
     warn(event, "LiveHandler: could not find event handler")
     debug(attrs, "attrs")
-    empty(socket)
+    no_live_handler({:handle_event, event}, socket)
   end
 
   defp do_handle_params(params, uri, socket)
@@ -190,15 +195,25 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
             apply(fallback, fun, args ++ [socket])
           else
-            empty(socket)
+            no_live_handler({fun, List.first(args)}, socket)
           end
         end
 
       _ ->
         error(mod, "LiveHandler: could not find a LiveHandler for")
-        empty(socket)
+        no_live_handler({fun, List.first(args)}, socket)
     end
   end
 
+  defp no_live_handler({:handle_event, event}, socket),
+    do:
+      {:noreply,
+       socket
+       |> assign(
+         :no_live_event_handler,
+         socket.assigns[:no_live_event_handler] || %{} |> Map.put(event, true)
+       )}
+
+  defp no_live_handler(_, socket), do: empty(socket)
   defp empty(socket), do: {:noreply, socket}
 end

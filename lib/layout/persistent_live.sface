@@ -5,8 +5,6 @@
     open_widgets_sidebar: false
   }"
 >
-
-
   <div
     :if={!@without_widgets}
     data-id="right_nav_and_widgets"
@@ -16,7 +14,11 @@
       'absolute lg:sticky lg:grid right-0 lg:right-auto mt-0': open_widgets_sidebar,
     }"
   >
-    <div data-id="user_actions" :if={@nav_header != false} class="w-full h-[64px] overflow-visible flex place-content-center px-3">
+    <div
+      data-id="user_actions"
+      :if={@nav_header != false}
+      class="w-full h-[64px] overflow-visible flex place-content-center px-3"
+    >
       {#case if is_nil(current_user(@__context__)),
           do: Bonfire.UI.Common.GuestActionsLive,
           else: Bonfire.UI.Common.LoggedActionsLive}
@@ -40,7 +42,6 @@
             sidebar_widgets={@sidebar_widgets}
           />
       {/case}
-
     </div>
 
     <div

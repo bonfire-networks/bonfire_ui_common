@@ -99,7 +99,7 @@ defmodule Bonfire.UI.Common.LayoutView do
     />
 
     <Bonfire.UI.Common.NotificationLive
-      id="notification"
+      id={:notification}
       notification={e(assigns, :notification, nil)}
       root_flash={@flash}
     />

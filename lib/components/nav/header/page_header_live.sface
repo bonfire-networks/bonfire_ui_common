@@ -1,4 +1,7 @@
-<div role="banner" class="flex items-center h-[48px] rounded-t flex-1 w-full bg-base-content/10 px-4 mt-3">
+<div
+  role="banner"
+  class="flex items-center h-[48px] rounded-t flex-1 w-full bg-base-content/10 px-4 mt-3"
+>
   <div class="flex items-center w-full">
     <div class="flex items-center flex-1 w-full space-x-3">
       <span

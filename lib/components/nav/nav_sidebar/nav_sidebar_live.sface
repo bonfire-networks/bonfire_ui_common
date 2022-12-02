@@ -3,7 +3,7 @@
   class="hidden self-start md:block top-0 order-first sticky max-w-[380px] w-full"
   :class="{'!block': open_sidebar}"
 >
- <div class="flex items-center px-4 h-[64px]" :class="{'w-full': open_sidebar}">
+  <div class="flex items-center px-4 h-[64px]" :class="{'w-full': open_sidebar}">
     <Bonfire.UI.Common.OpenSidebarBtnLive />
 
     <div data-id="logo" class="items-center place-content-center">

@@ -57,8 +57,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
           open_sidebar: false
         }"
     >
-     
-
       <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
 
       <div
@@ -173,7 +171,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     <Bonfire.UI.Common.ReusableModalLive id="modal" />
 
     <Bonfire.UI.Common.NotificationLive
-      id="notification"
+      id={:notification}
       notification={@notification}
       root_flash={@flash}
     />

@@ -551,7 +551,7 @@ defmodule Bonfire.UI.Common do
 
   def undead(socket, fun, return_key \\ :noreply) do
     # |> debug()
-    undead_error(fun.(), socket, return_key)
+    undead_maybe_handle_error(fun.(), socket, return_key)
   rescue
     msg in Bonfire.Fail.Auth ->
       go_login(msg, socket, return_key)
@@ -724,7 +724,7 @@ defmodule Bonfire.UI.Common do
     end
   end
 
-  def undead_error(error, socket, return_key \\ :noreply) do
+  defp undead_maybe_handle_error(error, socket, return_key \\ :noreply) do
     case error do
       {:ok, %Phoenix.LiveView.Socket{} = socket} ->
         {:ok, socket}
@@ -745,13 +745,13 @@ defmodule Bonfire.UI.Common do
         {return_key, socket}
 
       {:ok, {:error, reason}} ->
-        undead_error(reason, socket, return_key)
+        undead_maybe_handle_error(reason, socket, return_key)
 
       {:noreply, {:error, reason}} ->
-        undead_error(reason, socket, return_key)
+        undead_maybe_handle_error(reason, socket, return_key)
 
       {:error, reason} ->
-        undead_error(reason, socket, return_key)
+        undead_maybe_handle_error(reason, socket, return_key)
 
       {:error, reason, extra} ->
         live_exception(
