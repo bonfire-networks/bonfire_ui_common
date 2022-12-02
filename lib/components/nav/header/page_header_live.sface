@@ -1,9 +1,9 @@
 <div
   role="banner"
-  class="flex items-center h-[48px] rounded-t flex-1 w-full bg-base-content/10 px-4 mt-3"
+  class="flex items-center h-[48px] rounded-t flex-1 w-full bg-base-content/10 px-4"
 >
   <div class="flex items-center w-full">
-    <div class="flex items-center flex-1 w-full space-x-3">
+    <div class="flex items-center flex-1 w-full justify-between">
       <span
         class="max-w-[200px] md:max-w-max text-sm md:text-base font-semibold truncate text-ellipsis"
         :if={not is_nil(@page_title)}

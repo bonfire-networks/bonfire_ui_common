@@ -11,7 +11,7 @@ defmodule Bonfire.UI.Common.LayoutView do
     <html
       id="root"
       data-open="false"
-      class="bg-base-100"
+      class="bg-base-300"
       lang="en"
       data-theme={
         Settings.get(

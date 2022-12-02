@@ -10,7 +10,7 @@
     <Icon iconify="akar-icons:sidebar-right" class="w-5 h-5 text-base-content/70" />
   </button> -->
 
-  <div>
+  
     <Bonfire.UI.Common.SmartInputContainerLive
       :if={not is_nil(@current_user) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
       id={:smart_input}
@@ -24,8 +24,7 @@
       to_circles={@to_circles}
       smart_input_opts={@smart_input_opts}
     />
-  </div>
-
+  
   <!-- <div class="dropdown dropdown-end">
     <label tabindex="0" class="btn btn-circle  relative btn-sm">
       <Icon iconify="ci:grid-round" class="w-5 h-5" />

@@ -6,5 +6,5 @@ defmodule Bonfire.UI.Common.SmartInputButtonLive do
   prop icon, :any, default: nil
 
   prop class, :css_class,
-    default: "btn btn-sm rounded btn-primary flex items-center gap-2 normal-case"
+    default: "btn btn-sm w-full rounded btn-primary flex items-center gap-2 normal-case"
 end

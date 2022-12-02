@@ -57,7 +57,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
           open_sidebar: false
         }"
     >
-      <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
 
       <div
         x-data="{
@@ -65,7 +64,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }"
         @resize.window.debounce.100="width = window.innerWidth"
         class={
-          "w-full mx-auto grid max-w-[1260px]",
+          "w-full mx-auto grid max-w-[1260px] gap-4",
           "grid-cols-1": @without_sidebar && @without_widgets,
           "grid-cols-1 md:grid-cols-1": @without_sidebar && !@without_widgets,
           "grid-cols-1 md:grid-cols-[280px_1fr]": @without_widgets && !@without_sidebar,
@@ -106,12 +105,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }>
             <div class="relative invisible_frame">
               <div class="pb-16 md:pb-0 md:overflow-y-visible">
-                <div id="inner" class="bg-base-content/5 widget">
+              <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
+                <div id="inner" class="bg-base-100 widget">
                   <!-- Bonfire.UI.Common.ExtensionHorizontalMenuLive
                 page={@page}
                 selected_tab={@selected_tab}
                 /-->
-                  <div class="flex flex-1 sticky top-0 bg-base-100 z-[99999999]" :class="{'hidden': open_sidebar}">
+                  <div class="flex flex-1 sticky top-3 bg-base-100 z-[99999999]" :class="{'hidden': open_sidebar}">
                     <Dynamic.Component
                       module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
                       page_title={@page_title}
@@ -129,6 +129,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                       </:right_action>
                     </Dynamic.Component>
                   </div>
+
                   {@inner_content}
                 </div>
               </div>

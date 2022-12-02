@@ -1,4 +1,5 @@
 <div
+  class="flex-1"
   x-data={"{
       smart_input_title_text: null,
       smart_input_open: false,

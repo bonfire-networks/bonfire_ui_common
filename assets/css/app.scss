@@ -133,7 +133,9 @@ body {
   transition: 0s;
   border-color: var(--tags-focus-border-color);
 }
-
+.prose-sm {
+  font-size: 14px !important;
+}
 .badge-lg {
   height: 2rem;
 }
@@ -154,7 +156,7 @@ body {
 }
 
 .widget {
-  height: calc(var(--inner-window-height)) ;
+  min-height: calc(var(--inner-window-height)) ;
 }
 
 

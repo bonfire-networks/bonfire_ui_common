@@ -1,12 +1,12 @@
 <div class="dropdown dropdown-end">
   <label
-    class="flex items-center gap-3 cursor-pointer hover:base-base-content/5"
+    class="btn btn-circle  relative btn-sm"
     tabindex="0"
     id="user-profile-menu"
     aria-haspopup="true"
     aria-expanded="true"
   >
-    <Bonfire.UI.Common.AvatarLive
+    <!-- <Bonfire.UI.Common.AvatarLive
       :if={is_map(current_user(@__context__))}
       class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer bg-base-content/10"
       size="40"
@@ -18,8 +18,8 @@
         :if={e(current_user(@__context__), :character, :username, nil)}
         class="-mt-1 text-sm font-normal truncate text-base-content/70"
       >@{e(current_user(@__context__), :character, :username, nil)}</div>
-    </div>
-    <Icon iconify="pepicons:triangle-down-filled" class="w-3 h-3 text-base-content/70" />
+    </div> -->
+    <Icon iconify="material-symbols:more-horiz" class="w-5 h-5" />
   </label>
   <ul
     tabindex="0"

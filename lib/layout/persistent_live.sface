@@ -8,7 +8,7 @@
   <div
     :if={!@without_widgets}
     data-id="right_nav_and_widgets"
-    class="order-last top-0 self-start z-[9998] w-full  overflow-y-visible grid-flow-row gap-6 auto-rows-min items-start"
+    class="order-last top-0 self-start z-[9998] w-full  overflow-y-visible grid-flow-row gap-1 auto-rows-min items-start"
     :class="{
       'sticky hidden lg:grid': !open_widgets_sidebar,
       'absolute lg:sticky lg:grid right-0 lg:right-auto mt-0': open_widgets_sidebar,
@@ -17,7 +17,7 @@
     <div
       data-id="user_actions"
       :if={@nav_header != false}
-      class="w-full h-[64px] overflow-visible flex place-content-center px-3"
+      class="w-full h-[60px] overflow-visible flex place-content-center"
     >
       {#case if is_nil(current_user(@__context__)),
           do: Bonfire.UI.Common.GuestActionsLive,

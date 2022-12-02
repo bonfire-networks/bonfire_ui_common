@@ -1,16 +1,16 @@
 <div
   data-id="nav_sidebar"
-  class="hidden self-start md:block top-0 order-first sticky max-w-[380px] w-full"
+  class="hidden self-start md:block top-0 order-first sticky w-full"
   :class="{'!block': open_sidebar}"
 >
-  <div class="flex items-center px-4 h-[64px]" :class="{'w-full': open_sidebar}">
+  <div class="flex items-center pl-2 h-[60px]" :class="{'w-full': open_sidebar}">
     <Bonfire.UI.Common.OpenSidebarBtnLive />
 
     <div data-id="logo" class="items-center place-content-center">
       <Bonfire.UI.Common.LogoLinkLive href="/dashboard" />
     </div>
 
-    <div class="hidden md:block ml-4 max-w-[200px] w-full" :class="{'!block': open_sidebar}">
+    <div class="hidden md:block ml-4 w-full" :class="{'!block': open_sidebar}">
       <Dynamic.Component
         :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
         module={Bonfire.Search.Web.FormLive}
