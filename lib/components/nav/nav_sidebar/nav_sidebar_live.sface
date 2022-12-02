@@ -27,7 +27,21 @@
       <Icon iconify={@__context__[:current_extension][:icon]} class="w-6 h-6" />
       <span>{@__context__[:current_extension][:name]}</span>
     </div> -->
-
+    <LiveRedirect to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"} class="flex items-center px-1 mx-2 my-2 justify-start gap-2 btn rounded-full btn-ghost items-start normal-case">
+      <Bonfire.UI.Common.AvatarLive
+        :if={is_map(current_user(@__context__))}
+        class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer bg-base-content/10"
+        size="40"
+        user={current_user(@__context__)}
+      />
+      <div class="flex flex-col">
+        <div class="-ml-0.5 font-semibold text-sm truncate text-base-content">{e(current_user(@__context__), :profile, :name, l("Me"))}</div>
+        <div
+          :if={e(current_user(@__context__), :character, :username, nil)}
+          class="-mt-0.5 text-sm font-normal truncate text-base-content/60"
+        >@{e(current_user(@__context__), :character, :username, nil)}</div>
+      </div>
+    </LiveRedirect>
     <Bonfire.UI.Common.ExtensionMenuNavLive
       selected_tab={@selected_tab}
       page={@page}
