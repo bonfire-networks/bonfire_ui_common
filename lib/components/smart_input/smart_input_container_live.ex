@@ -7,6 +7,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop create_object_type, :any, default: nil
   prop smart_input_component, :atom, default: nil
   prop smart_input_as, :any, default: nil
+  prop open_boundaries, :boolean, default: false
   prop to_boundaries, :any, default: nil
   prop to_circles, :list, default: []
   prop smart_input_opts, :any, required: false
@@ -57,10 +58,12 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   end
 
   def do_handle_event("open_boundaries", _params, socket) do
+    debug("open_boundaries")
     {:noreply, assign(socket, :open_boundaries, true)}
   end
 
   def do_handle_event("close_boundaries", _params, socket) do
+    debug("close_boundaries")
     {:noreply, assign(socket, :open_boundaries, false)}
   end
 

@@ -211,7 +211,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
        socket
        |> assign_generic(
          :no_live_event_handler,
-         socket.assigns[:no_live_event_handler] || %{} |> Map.put(event, true)
+         (socket.assigns[:no_live_event_handler] || %{}) |> Map.put(event, true)
        )}
 
   defp no_live_handler(_, socket), do: empty(socket)

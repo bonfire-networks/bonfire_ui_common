@@ -12,7 +12,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     assigns =
       assigns
       # |> debug
-      |> assign(to_boundaries: boundaries_or_default(e(assigns, :to_boundaries, nil), assigns))
+      |> assign_new(:to_boundaries, fn -> nil end)
       |> assign_new(:nav_header, fn -> nil end)
       |> assign_new(:hero, fn -> nil end)
       |> assign_new(:page_title, fn -> nil end)

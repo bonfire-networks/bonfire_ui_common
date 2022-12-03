@@ -1143,6 +1143,8 @@ defmodule Bonfire.UI.Common do
 
   def is_messaging?(_), do: false
 
+  def boundaries_or_default(to_boundaries, opts \\ [])
+
   def boundaries_or_default(to_boundaries, _opts)
       when is_list(to_boundaries) and length(to_boundaries) > 0 do
     to_boundaries
