@@ -11,7 +11,7 @@ defmodule Bonfire.UI.Common.LoggedActionsLive do
   prop context_id, :string, default: nil, required: false
   prop create_object_type, :any, default: nil
   prop thread_mode, :atom, default: nil
-  prop to_boundaries, :list, default: []
+  prop to_boundaries, :any, default: nil
   prop to_circles, :list, default: []
   prop smart_input_opts, :any, required: false
   prop sidebar_widgets, :list, default: []

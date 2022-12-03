@@ -57,7 +57,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
           open_sidebar: false
         }"
     >
-
       <div
         x-data="{
           width: window.innerWidth,
@@ -105,7 +104,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }>
             <div class="relative invisible_frame">
               <div class="pb-16 md:pb-0 md:overflow-y-visible">
-              <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
+                <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
                 <div id="inner" class="bg-base-100 widget">
                   <!-- Bonfire.UI.Common.ExtensionHorizontalMenuLive
                 page={@page}

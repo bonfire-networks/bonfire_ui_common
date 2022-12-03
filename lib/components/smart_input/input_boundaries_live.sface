@@ -7,7 +7,7 @@
     }) and module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
     module={Bonfire.Boundaries.Web.SetBoundariesLive}
     showing_within={@showing_within}
-    to_boundaries={e(@to_boundaries, [])}
+    to_boundaries={@to_boundaries}
     to_circles={@to_circles}
     open_boundaries={@open_boundaries}
     thread_mode={@thread_mode}
@@ -22,7 +22,7 @@
   <div :if={@show_select_recipients} class="my-3">
     <Bonfire.UI.Common.SelectRecipientsLive
       preloaded_recipients={e(@preloaded_recipients, [])}
-      to_boundaries={e(@to_boundaries, [])}
+      to_boundaries={@to_boundaries}
       to_circles={@to_circles}
       open_boundaries={@open_boundaries}
     />

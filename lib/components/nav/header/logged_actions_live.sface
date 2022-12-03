@@ -10,21 +10,20 @@
     <Icon iconify="akar-icons:sidebar-right" class="w-5 h-5 text-base-content/70" />
   </button> -->
 
-  
-    <Bonfire.UI.Common.SmartInputContainerLive
-      :if={not is_nil(@current_user) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
-      id={:smart_input}
-      showing_within={@showing_within}
-      reply_to_id={@reply_to_id}
-      context_id={@context_id}
-      create_object_type={@create_object_type}
-      thread_mode={@thread_mode}
-      without_sidebar={@without_sidebar}
-      to_boundaries={@to_boundaries}
-      to_circles={@to_circles}
-      smart_input_opts={@smart_input_opts}
-    />
-  
+  <Bonfire.UI.Common.SmartInputContainerLive
+    :if={not is_nil(@current_user) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
+    id={:smart_input}
+    showing_within={@showing_within}
+    reply_to_id={@reply_to_id}
+    context_id={@context_id}
+    create_object_type={@create_object_type}
+    thread_mode={@thread_mode}
+    without_sidebar={@without_sidebar}
+    to_boundaries={@to_boundaries}
+    to_circles={@to_circles}
+    smart_input_opts={@smart_input_opts}
+  />
+
   <!-- <div class="dropdown dropdown-end">
     <label tabindex="0" class="btn btn-circle  relative btn-sm">
       <Icon iconify="ci:grid-round" class="w-5 h-5" />

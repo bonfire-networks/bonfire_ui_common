@@ -7,36 +7,25 @@
   }
   {...@opts}
 >
-
-
-<div
-  role="banner"
-  class="flex sticky top-0 items-center h-[48px] rounded-t flex-1 w-full bg-base-content/10 px-4 mt-3"
+  <div
+    role="banner"
+    class="flex sticky top-0 items-center h-[48px] rounded-t flex-1 w-full bg-base-content/10 px-4 mt-3"
   >
-  <div class="flex items-center w-full">
-    <div class="flex items-center flex-1 w-full gap-2">
-    <button
-      id="close_preview"
-      phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
-      phx-hook="ClosePreview"
-      aria-label={l("Go back to the previous page")}
-      class="font-normal normal-case btn btn-sm btn-circle btn-ghost"
-    >
-      <Icon outline="ChevronLeft" class="w-4 h-4 text-base-content" />
-    </button>
-      <span
-        class="max-w-[200px] md:max-w-max text-sm md:text-base font-semibold truncate text-ellipsis"
-      >{l "Discussion"}</span>
-
-
-      
+    <div class="flex items-center w-full">
+      <div class="flex items-center flex-1 w-full gap-2">
+        <button
+          id="close_preview"
+          phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
+          phx-hook="ClosePreview"
+          aria-label={l("Go back to the previous page")}
+          class="font-normal normal-case btn btn-sm btn-circle btn-ghost"
+        >
+          <Icon outline="ChevronLeft" class="w-4 h-4 text-base-content" />
+        </button>
+        <span class="max-w-[200px] md:max-w-max text-sm md:text-base font-semibold truncate text-ellipsis">{l("Discussion")}</span>
+      </div>
     </div>
   </div>
-</div>
-
-
-
-  
 
   <div :if={@show} class="relative z-30">
     <div

@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.InputBoundariesLive do
 
   prop create_object_type, :any, default: nil
   prop preloaded_recipients, :list, default: nil
-  prop to_boundaries, :list, default: nil
+  prop to_boundaries, :any, default: nil
   prop to_circles, :list, default: []
   prop showing_within, :any, default: nil
   prop show_select_recipients, :boolean, default: false
