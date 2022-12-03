@@ -10,7 +10,5 @@
     </ul> -->
   </div>
 
-  <Bonfire.UI.Common.PageHeaderLive page_title={@page_title} page={@page} />
-
-  <Bonfire.UI.Common.GuestActionsLive :if={@without_widgets && !@current_user} />
+  <Bonfire.UI.Common.GuestActionsLive />
 </div>

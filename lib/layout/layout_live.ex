@@ -52,27 +52,33 @@ defmodule Bonfire.UI.Common.LayoutLive do
     ~F"""
     <div
       data-id="bonfire_live"
-      class="transition duration-150 ease-in-out transform"
+      class=""
       x-data="{
           open_sidebar: false
         }"
     >
+      <div 
+        :if={!@current_user}
+        class="mt-3 max-w-[680px] mx-auto">
+        <Bonfire.UI.Common.GuestHeaderLive
+          page_title={@page_title}
+          page={@page}
+        />
+      </div>
+
       <div
-        x-data="{
-          width: window.innerWidth,
-        }"
-        @resize.window.debounce.100="width = window.innerWidth"
         class={
           "w-full mx-auto grid max-w-[1260px] gap-4",
           "grid-cols-1": @without_sidebar && @without_widgets,
-          "grid-cols-1 md:grid-cols-1": @without_sidebar && !@without_widgets,
-          "grid-cols-1 md:grid-cols-[280px_1fr]": @without_widgets && !@without_sidebar,
+          "grid-cols-1": !@current_user,
+          "grid-cols-1 md:grid-cols-1": @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)),
+          "grid-cols-1 md:grid-cols-[280px_1fr]": @current_user && @without_widgets && !@without_sidebar,
           "grid-cols-1 md:grid-cols-[280px_1fr] lg:grid-cols-[280px_1fr_320px] ":
-            !@without_sidebar && !@without_widgets
+           @current_user && !@without_sidebar && !@without_widgets
         }
       >
         <Bonfire.UI.Common.NavSidebarLive
-          :if={!@without_sidebar}
+          :if={@current_user && !@without_sidebar}
           page={@page}
           selected_tab={@selected_tab}
           nav_items={@nav_items}
@@ -105,12 +111,16 @@ defmodule Bonfire.UI.Common.LayoutLive do
             <div class="relative invisible_frame">
               <div class="pb-16 md:pb-0 md:overflow-y-visible">
                 <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
-                <div id="inner" class="bg-base-100 widget">
-                  <!-- Bonfire.UI.Common.ExtensionHorizontalMenuLive
-                page={@page}
-                selected_tab={@selected_tab}
-                /-->
-                  <div class="flex flex-1 sticky top-3 bg-base-100 z-[99999999]" :class="{'hidden': open_sidebar}">
+                <div 
+                  id="inner" 
+                  class={
+                    "bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)]": @current_user
+                  }>
+
+                  <div 
+                    :if={@current_user}
+                    class="flex flex-1 sticky top-3 bg-base-100 z-[99999999]" 
+                    :class="{'hidden': open_sidebar}">
                     <Dynamic.Component
                       module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
                       page_title={@page_title}
@@ -135,9 +145,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
             </div>
           </div>
         </div>
-
         <PersistentLive
           id={:persistent}
+          :if={@current_user}
           sticky
           container={{:div, class: "contents"}}
           session={%{
