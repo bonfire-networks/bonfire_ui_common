@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Common.OpenPreviewLive do
 
   prop(root_assigns, :any, default: [])
 
-  def do_handle_event("close", _, socket) do
+  def handle_event("close", _, socket) do
     close()
     {:noreply, assign(socket, show: false)}
   end

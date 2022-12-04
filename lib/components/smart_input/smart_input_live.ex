@@ -219,32 +219,4 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   # def update(assigns, socket) do
   #   {:ok, socket |> assign(assigns)}
   # end
-
-  def clean_existing(to_boundaries, acl_id)
-      when acl_id in ["public", "local", "mentions"] do
-    Keyword.drop(to_boundaries, ["public", "local", "mentions"])
-  end
-
-  def clean_existing(to_boundaries, _) do
-    to_boundaries
-  end
-
-  def maybe_from_json("{" <> _ = json) do
-    with {:ok, data} <- Jason.decode(json) do
-      data
-    else
-      _ ->
-        nil
-    end
-  end
-
-  def maybe_from_json(_), do: nil
-
-  def reply_to_param(%{"reply_to" => "{" <> _ = reply_to}) do
-    maybe_from_json(reply_to)
-  end
-
-  def reply_to_param(params) do
-    e(params, "reply_to_id", nil) || e(params, "reply_to", nil)
-  end
 end

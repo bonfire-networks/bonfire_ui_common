@@ -57,26 +57,20 @@ defmodule Bonfire.UI.Common.LayoutLive do
           open_sidebar: false
         }"
     >
-      <div 
-        :if={!@current_user}
-        class="mt-3 max-w-[680px] mx-auto">
-        <Bonfire.UI.Common.GuestHeaderLive
-          page_title={@page_title}
-          page={@page}
-        />
+      <div :if={!@current_user} class="mt-3 max-w-[680px] mx-auto">
+        <Bonfire.UI.Common.GuestHeaderLive page_title={@page_title} page={@page} />
       </div>
 
-      <div
-        class={
-          "w-full mx-auto grid max-w-[1260px] gap-4",
-          "grid-cols-1": @without_sidebar && @without_widgets,
-          "grid-cols-1": !@current_user,
-          "grid-cols-1 md:grid-cols-1": @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)),
-          "grid-cols-1 md:grid-cols-[280px_1fr]": @current_user && @without_widgets && !@without_sidebar,
-          "grid-cols-1 md:grid-cols-[280px_1fr] lg:grid-cols-[280px_1fr_320px] ":
-           @current_user && !@without_sidebar && !@without_widgets
-        }
-      >
+      <div class={
+        "w-full mx-auto grid max-w-[1260px] gap-4",
+        "grid-cols-1": @without_sidebar && @without_widgets,
+        "grid-cols-1": !@current_user,
+        "grid-cols-1 md:grid-cols-1":
+          @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)),
+        "grid-cols-1 md:grid-cols-[280px_1fr]": @current_user && @without_widgets && !@without_sidebar,
+        "grid-cols-1 md:grid-cols-[280px_1fr] lg:grid-cols-[280px_1fr_320px] ":
+          @current_user && !@without_sidebar && !@without_widgets
+      }>
         <Bonfire.UI.Common.NavSidebarLive
           :if={@current_user && !@without_sidebar}
           page={@page}
@@ -111,16 +105,17 @@ defmodule Bonfire.UI.Common.LayoutLive do
             <div class="relative invisible_frame">
               <div class="pb-16 md:pb-0 md:overflow-y-visible">
                 <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
-                <div 
-                  id="inner" 
+                <div
+                  id="inner"
                   class={
                     "bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)]": @current_user
-                  }>
-
-                  <div 
+                  }
+                >
+                  <div
                     :if={@current_user}
-                    class="flex flex-1 sticky top-3 bg-base-100 z-[99999999]" 
-                    :class="{'hidden': open_sidebar}">
+                    class="flex flex-1 sticky top-3 bg-base-100 z-[99999999]"
+                    :class="{'hidden': open_sidebar}"
+                  >
                     <Dynamic.Component
                       module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
                       page_title={@page_title}

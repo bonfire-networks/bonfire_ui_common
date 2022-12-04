@@ -44,15 +44,22 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
 
   def do_handle_event("select_smart_input", params, socket) do
     # send_self(socket, smart_input_opts: [open: e(params, :open, nil)])
+
+    opts =
+      (maybe_from_json(e(params, "opts", nil)) ||
+         e(socket.assigns, :smart_input_opts, %{}))
+      |> merge_as_map(%{open: true})
+
     {:noreply,
      assign(socket,
        smart_input_component:
          maybe_to_module(e(params, "component", nil) || e(params, "smart_input_component", nil)),
        create_object_type: maybe_to_atom(e(params, "create_object_type", nil)),
-       reply_to_id: SmartInputLive.reply_to_param(params) || e(socket.assigns, :reply_to_id, nil),
-       smart_input_opts:
-         SmartInputLive.maybe_from_json(e(params, "opts", nil)) ||
-           e(socket.assigns, :smart_input_opts, nil),
+       reply_to_id:
+         reply_to_param(params) || reply_to_param(opts) || e(socket.assigns, :reply_to_id, nil),
+       smart_input_opts: opts,
+       activity: nil,
+       object: nil,
        activity_inception: "reply_to"
      )}
   end
@@ -74,7 +81,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
      assign(
        socket,
        :to_boundaries,
-       SmartInputLive.clean_existing(e(socket.assigns, :to_boundaries, []), acl_id) ++
+       clean_existing(e(socket.assigns, :to_boundaries, []), acl_id) ++
          [{acl_id, e(params, "name", acl_id)}]
      )}
   end
@@ -110,6 +117,42 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
 
   def do_handle_event("reset", _params, socket) do
     {:noreply, SmartInputLive.reset_input(socket)}
+  end
+
+  def maybe_from_json("{" <> _ = json) do
+    with {:ok, data} <- Jason.decode(json) do
+      data
+    else
+      _ ->
+        nil
+    end
+  end
+
+  def maybe_from_json(_), do: nil
+
+  def reply_to_param(%{"reply_to" => "{" <> _ = reply_to}) do
+    maybe_from_json(reply_to)
+  end
+
+  def reply_to_param(%{"reply_to_id" => reply_to_id}) when is_binary(reply_to_id) do
+    reply_to_id
+  end
+
+  def reply_to_param(%{"reply_to" => reply_to}) when is_binary(reply_to) do
+    reply_to
+  end
+
+  def reply_to_param(_) do
+    nil
+  end
+
+  def clean_existing(to_boundaries, acl_id)
+      when acl_id in ["public", "local", "mentions"] do
+    Keyword.drop(to_boundaries, ["public", "local", "mentions"])
+  end
+
+  def clean_existing(to_boundaries, _) do
+    to_boundaries
   end
 
   def handle_event(
