@@ -1,5 +1,6 @@
 <nav role="tabpanel" class={@class} aria-label="Switch between tabs">
-  <LinkPatchLive
+  <Dynamic.Component
+    module={@link_component}
     :for={{tab, tab_name} <- @tabs}
     to={"#{@path_prefix}#{tab}"}
     name={"#{tab}"}
@@ -11,5 +12,5 @@
     }
   >
     {localise_dynamic(tab_name)}
-  </LinkPatchLive>
+  </Dynamic.Component>
 </nav>

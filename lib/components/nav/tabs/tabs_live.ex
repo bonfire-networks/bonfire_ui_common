@@ -4,6 +4,7 @@ defmodule Bonfire.UI.Common.TabsLive do
   prop tabs, :list, required: true
   prop selected_tab, :string, default: nil
   prop path_prefix, :string, default: "?tab="
+  prop link_component, :atom, default: LinkPatchLive
 
   prop class, :css_class,
     default: "flex justify-start gap-3 p-4 mb-3 rounded-md shadow tabs-boxed tabs bg-base-100"
