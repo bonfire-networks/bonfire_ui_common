@@ -2,7 +2,9 @@
   <ul class="mt-5 menu menu-compact">
     <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
       <LiveRedirect to={~p"/settings/instance"} class={"", active: @selected_tab == "dashboard"}>
-        <Icon outline="Home" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "dashboard"} />
+        <span class={"rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
+          <Icon outline="Home" class={"w-4 h-4 font-normal ", "": @selected_tab == "dashboard"} />
+        </span>
         {l("Dashboard")}
       </LiveRedirect>
     </li>
@@ -12,7 +14,9 @@
         <div class="flex items-center justify-between">
           <span class="font-light text-base-content/70">{l("Website")}</span>
           <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
+        
             <Icon solid="ChevronDown" class="w-4 h-4" />
+        
           </div>
         </div>
       </li>
@@ -23,14 +27,22 @@
             to={~p"/settings/instance/preferences"}
             class={"!text-sm", active: @selected_tab == "preferences"}
           >
-            <Icon outline="Cog" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "preferences"} />
+             <span class={
+        "rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
+        
+            <Icon outline="Cog" class={"w-4 h-4 font-normal ", "": @selected_tab == "preferences"} />
+        </span>
             {l("Preferences")}
           </LivePatch>
         </li>
 
         <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
           <LivePatch to={~p"/settings/instance/design"} class={"", active: @selected_tab == "design"}>
-            <Icon outline="ColorSwatch" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "design"} />
+             <span class={
+        "rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
+        
+            <Icon outline="ColorSwatch" class={"w-4 h-4 font-normal ", "": @selected_tab == "design"} />
+        </span>
             {l("Design")}
           </LivePatch>
         </li>
@@ -42,7 +54,7 @@
           >
             <Icon
               outline="PaperAirplane"
-              class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "navigation"}
+              class={"w-4 h-4 font-normal ", "": @selected_tab == "navigation"}
             />
             {l("Navigation")}
           </LivePatch>
@@ -50,7 +62,11 @@
 
         <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
           <LivePatch to={~p"/settings/instance/terms"} class={"", active: @selected_tab == "terms"}>
-            <Icon outline="Scale" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "terms"} />
+             <span class={
+        "rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
+        
+            <Icon outline="Scale" class={"w-4 h-4 font-normal ", "": @selected_tab == "terms"} />
+        </span>
             {l("Terms / Policies")}
           </LivePatch>
         </li>
@@ -62,7 +78,9 @@
         <div class="flex items-center justify-between">
           <span class="font-light text-base-content/70">{l("Members")}</span>
           <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
+        
             <Icon solid="ChevronDown" class="w-4 h-4" />
+        
           </div>
         </div>
       </li>
@@ -77,7 +95,11 @@
               active: @selected_tab == "members"
             }
           >
-            <Icon outline="Users" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "members"} />
+             <span class={
+        "rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
+        
+            <Icon outline="Users" class={"w-4 h-4 font-normal ", "": @selected_tab == "members"} />
+        </span>
             {l("Members")}
           </LivePatch>
         </li>
@@ -86,7 +108,7 @@
           <LivePatch to={~p"/boundaries/instance_circles"} class={"", active: @selected_tab == "roles"}>
             <Icon
               iconify="bx:ShapeCircle"
-              class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "roles"}
+              class={"w-4 h-4 font-normal ", "": @selected_tab == "roles"}
             />
             {l("Roles")}
           </LivePatch>
@@ -99,7 +121,7 @@
           >
             <Icon
               iconify="bxs:EditLocation"
-              class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "roles"}
+              class={"w-4 h-4 font-normal ", "": @selected_tab == "roles"}
             />
             {l("Boundaries")}
           </LivePatch>
@@ -112,7 +134,11 @@
             to={~p"/settings/instance/invites"}
             class={"", active: @selected_tab == "invites"}
           >
-            <Icon outline="Mail" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "invites"} />
+             <span class={
+        "rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
+        
+            <Icon outline="Mail" class={"w-4 h-4 font-normal ", "": @selected_tab == "invites"} />
+        </span>
             {l("Invites")}
           </LivePatch>
         </li>
@@ -124,14 +150,20 @@
         <div class="flex items-center justify-between">
           <span class="font-light text-base-content/70">{l("Moderation")}</span>
           <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
+        
             <Icon solid="ChevronDown" class="w-4 h-4" />
+        
           </div>
         </div>
       </li>
       <ul x-cloak x-show="open" x-collapse class="menu menu-compact">
         <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
           <LivePatch to={~p"/settings/instance/flagged"} class={"", active: @selected_tab == "flagged"}>
-            <Icon outline="Flag" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "flagged"} />
+             <span class={
+        "rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
+        
+            <Icon outline="Flag" class={"w-4 h-4 font-normal ", "": @selected_tab == "flagged"} />
+        </span>
             {l("Flagged")}
           </LivePatch>
         </li>
@@ -143,7 +175,7 @@
           >
             <Icon
               solid="MinusCircle"
-              class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "instance_ghosted"}
+              class={"w-4 h-4 font-normal ", "": @selected_tab == "instance_ghosted"}
             />
             {l("Ghosted")}
           </LivePatch>
@@ -155,7 +187,7 @@
           >
             <Icon
               outline="Ban"
-              class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "instance_silenced"}
+              class={"w-4 h-4 font-normal ", "": @selected_tab == "instance_silenced"}
             />
             {l("Silenced")}
           </LivePatch>
@@ -168,7 +200,9 @@
         <div class="flex items-center justify-between">
           <span class="font-light text-base-content/70">{l("Advanced")}</span>
           <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
+        
             <Icon solid="ChevronDown" class="w-4 h-4" />
+        
           </div>
         </div>
       </li>
@@ -179,7 +213,11 @@
             to={~p"/settings/instance/extensions"}
             class={"", active: @selected_tab == "extensions"}
           >
-            <Icon outline="Puzzle" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "extensions"} />
+             <span class={
+        "rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
+        
+            <Icon outline="Puzzle" class={"w-4 h-4 font-normal ", "": @selected_tab == "extensions"} />
+        </span>
             {l("Extensions")}
           </LivePatch>
         </li>
@@ -198,7 +236,7 @@
       >
         <Icon
           outline="DocumentDuplicate"
-          class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "pages"}
+          class={"w-4 h-4 font-normal ", "": @selected_tab == "pages"}
         />
         {l("Pages")}
       </LivePatch>
@@ -214,7 +252,11 @@
           active: @selected_tab == "posts"
         }
       >
-        <Icon outline="ChatAlt" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "posts"} />
+         <span class={
+        "rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
+        
+        <Icon outline="ChatAlt" class={"w-4 h-4 font-normal ", "": @selected_tab == "posts"} />
+        </span>
         {l("Posts")}
       </LivePatch>
     </li>
@@ -229,7 +271,11 @@
           active: @selected_tab == "tags"
         }
       >
-        <Icon outline="Tag" class={"mr-2 w-5 h-5 font-normal ", "": @selected_tab == "tags"} />
+         <span class={
+        "rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
+        
+        <Icon outline="Tag" class={"w-4 h-4 font-normal ", "": @selected_tab == "tags"} />
+        </span>
         {l("Tags")}
       </LivePatch>
     </li>

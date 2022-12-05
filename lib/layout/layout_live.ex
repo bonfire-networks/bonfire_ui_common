@@ -111,27 +111,30 @@ defmodule Bonfire.UI.Common.LayoutLive do
                     "bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)]": @current_user
                   }
                 >
-                  <div
+                  <div 
                     :if={@current_user}
-                    class="flex flex-1 sticky top-3 bg-base-100 z-[99999999]"
-                    :class="{'hidden': open_sidebar}"
-                  >
-                    <Dynamic.Component
-                      module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
-                      page_title={@page_title}
-                      page={@page}
-                      selected_tab={@selected_tab}
-                      {...elem(@custom_page_header || {nil, []}, 1)}
-                    >
-                      <:right_action>
-                        <Dynamic.Component
-                          :if={@current_user && @page_header_aside}
-                          :for={{component, component_assigns} <- e(@page_header_aside, [])}
-                          module={component}
-                          {...component_assigns}
-                        />
-                      </:right_action>
-                    </Dynamic.Component>
+                    class="sticky top-0 -mt-3 pt-3 bg-base-300 z-[99999999]">
+                    <div
+                      class="flex flex-1 bg-base-100"
+                      :class="{'hidden': open_sidebar}"
+                      >
+                      <Dynamic.Component
+                        module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
+                        page_title={@page_title}
+                        page={@page}
+                        selected_tab={@selected_tab}
+                        {...elem(@custom_page_header || {nil, []}, 1)}
+                      >
+                        <:right_action>
+                          <Dynamic.Component
+                            :if={@current_user && @page_header_aside}
+                            :for={{component, component_assigns} <- e(@page_header_aside, [])}
+                            module={component}
+                            {...component_assigns}
+                          />
+                        </:right_action>
+                      </Dynamic.Component>
+                    </div>
                   </div>
 
                   {@inner_content}

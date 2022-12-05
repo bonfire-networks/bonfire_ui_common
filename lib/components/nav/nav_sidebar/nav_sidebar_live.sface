@@ -1,6 +1,6 @@
 <div
   data-id="nav_sidebar"
-  class="hidden self-start md:block top-0 order-first sticky w-full"
+  class="sticky top-0 self-start order-first hidden w-full md:block"
   :class="{'!block': open_sidebar}"
 >
   <div class="flex items-center pl-2 h-[60px]" :class="{'w-full': open_sidebar}">
@@ -10,7 +10,7 @@
       <Bonfire.UI.Common.LogoLinkLive href="/dashboard" />
     </div>
 
-    <div class="hidden md:block ml-4 w-full" :class="{'!block': open_sidebar}">
+    <div class="hidden w-full ml-4 md:block" :class="{'!block': open_sidebar}">
       <Dynamic.Component
         :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
         module={Bonfire.Search.Web.FormLive}
@@ -29,11 +29,11 @@
     </div> -->
     <LiveRedirect
       to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
-      class="flex items-center px-1 mx-1 my-2 justify-start gap-2 btn rounded-full btn-ghost items-start normal-case"
+      class="flex items-start items-center justify-start gap-2 px-1 mx-2 my-2 normal-case rounded-full btn btn-ghost"
     >
       <Bonfire.UI.Common.AvatarLive
         :if={is_map(current_user(@__context__))}
-        class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer bg-base-content/10"
+        class="inline-block object-cover w-10 h-10 rounded cursor-pointer bg-base-content/10"
         size="40"
         user={current_user(@__context__)}
       />

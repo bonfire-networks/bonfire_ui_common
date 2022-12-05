@@ -531,6 +531,15 @@ emoji-picker {
   height: 200px;
 }
 
+em-emoji-picker {
+ 
+  --border-radius: 14px;
+  --category-icon-size: 16px;
+  --font-size: 13px;
+  height: 300px;
+  min-height: 300px;
+}
+
 .no-padding {
   padding: 0 !important;
 }

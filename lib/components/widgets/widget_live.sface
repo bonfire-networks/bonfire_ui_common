@@ -7,9 +7,13 @@
         "tab-active": @page == @widget[:page]
       }
     >
-      <Icon :if={!@without_icon} iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />
-
-      <span
+      <span 
+        :if={!@without_icon}
+        class={
+        "rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
+        <Icon iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />
+      </span>
+      <span 
         :if={@page == @widget[:page] || e(@__context__, :current_view, nil) == @widget[:module] ||
           @selected_tab == @widget[:page]}
         class="sr-only"

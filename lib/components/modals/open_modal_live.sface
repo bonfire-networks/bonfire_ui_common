@@ -1,7 +1,7 @@
 <a
   :on-click="open"
   type="button"
-  class=""
+  class={@open_btn_wrapper_class}
   phx-hook={@open_btn_hook}
   href={@href}
   {...@open_btn_opts}
