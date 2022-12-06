@@ -42,7 +42,7 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
           |> debug("unseen_count for #{feed_name}")
 
         # subscribe to count updates
-        pubsub_subscribe("unseen_count:#{feed_name}:#{feed_id}", socket)
+        PubSub.subscribe("unseen_count:#{feed_name}:#{feed_id}", socket)
 
         {:ok,
          assign(

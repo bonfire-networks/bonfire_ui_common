@@ -5,7 +5,7 @@
     <div class={
       "flex flex-col md:flex-row md:items-center justify-between p-2 gap-3 border-t rounded-b-md border-base-content/10 bg-base-200 sm:px-3",
       "!border-none !bg-base-100 mt-2 !p-0": @thread_mode == :flat
-      }>
+    }>
       <div class="flex items-center flex-1 gap-3">
         <Bonfire.UI.Common.UploadButtonLive
           :if={!is_messaging?(%{
@@ -16,12 +16,12 @@
           uploads={@uploads}
           thread_mode={@thread_mode}
         />
-      
+
         <div
           :if={@show_cw_toggle}
           data-tip={l("Add a content warning")}
           class="relative z-30 flex items-center tooltip tooltip-right"
-          >
+        >
           <button
             :if={Config.get([:ui, :smart_input, :cw], []) == true}
             type="button"
@@ -33,10 +33,10 @@
           </button>
         </div>
 
-      <div 
-        id="editor_emoji"
-       phx-hook="QuillEditor"
-        x-data="{
+        <div
+          id="editor_emoji"
+          phx-hook="QuillEditor"
+          x-data="{
           open: false,
           close(focusAfter) {
             if (! this.open) return
@@ -44,31 +44,29 @@
             focusAfter && focusAfter.focus()
           }
         }"
-        x-on:keydown.escape.prevent.stop="close($refs.button)">
-        <div
-          @click="open = ! open"
-          class="btn btn-ghost btn-sm text-[22px] btn-circle"
+          x-on:keydown.escape.prevent.stop="close($refs.button)"
+        >
+          <div @click="open = ! open" class="btn btn-ghost btn-sm text-[22px] btn-circle">
+            <Icon iconify="entypo:emoji-happy" class="w-4 h-4 text-base-content text-opacity-70" />
+          </div>
+          <div
+            x-cloak
+            x-ref="panel"
+            x-show="open"
+            x-transition.origin.top.left
+            x-on:click.outside="close($refs.button)"
+            x-show="open"
+            class={
+              "absolute z-50",
+              "bottom-10 left-3": @thread_mode == :flat,
+              "bottom-10 left-3": @thread_mode != :flat,
+              "!top-10 right-0 bottom-[auto]": @showing_within == :page
+            }
+            role="tooltip"
           >
-          <Icon iconify="entypo:emoji-happy" class="w-4 h-4 text-base-content text-opacity-70" />
+            <div id="picker" />
+          </div>
         </div>
-        <div
-          x-cloak
-          x-ref="panel"
-          x-show="open"
-          x-transition.origin.top.left
-          x-on:click.outside="close($refs.button)"
-          x-show="open"
-          class={
-            "absolute z-50",
-            "bottom-10 left-3": @thread_mode == :flat,
-            "bottom-10 left-3": @thread_mode != :flat,
-            "!top-10 right-0 bottom-[auto]": @showing_within == :page
-          }
-          role="tooltip"
-          >
-          <div id="picker" />
-        </div>
-      </div>
         <!-- <div 
             :if={@showing_within != :page and @thread_mode != :flat}
             x-show="!smart_input_open"

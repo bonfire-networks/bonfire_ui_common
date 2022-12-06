@@ -3,12 +3,14 @@ defmodule Bonfire.UI.Common do
   A library of common utils and helpers used across Bonfire extensions
   """
   use Bonfire.Common.Utils
+  alias Bonfire.PubSub
 
   defmacro __using__(opts) do
     # TODO: pass opts to the nested `use`
     quote do
       use Bonfire.Common.Utils
       import Bonfire.UI.Common
+      alias Bonfire.PubSub
     end
   end
 
@@ -366,82 +368,12 @@ defmodule Bonfire.UI.Common do
     |> debug("to #{component} - id: #{id}")
   end
 
-  @doc """
-  Subscribe to something for realtime updates, like a feed or thread
-  """
-
-  # def pubsub_subscribe(topics, socket \\ nil)
-
-  def pubsub_subscribe(topics, socket) when is_list(topics) do
-    Enum.each(topics, &pubsub_subscribe(&1, socket))
-  end
-
-  def pubsub_subscribe(topic, socket_etc) when is_binary(topic) do
-    # debug(socket)
-    if socket_connected_or_user?(socket_etc) do
-      do_pubsub_subscribe(topic)
-    else
-      debug(topic, "LiveView is not connected so we skip subscribing to")
-    end
-  end
-
-  def pubsub_subscribe(topic, socket) do
-    with topic when is_binary(topic) and topic != "" <- maybe_to_string(topic) do
-      debug(topic, "transformed the topic into a string we can subscribe to")
-      pubsub_subscribe(topic, socket)
-    else
-      _ ->
-        warn(
-          topic,
-          "could not transform the topic into a string we can subscribe to"
-        )
-    end
-  end
-
-  defp do_pubsub_subscribe(topic) when is_binary(topic) and topic != "" do
-    debug(topic, "subscribed")
-
-    endpoint = Config.get(:endpoint_module, Bonfire.Web.Endpoint)
-
-    # endpoint.unsubscribe(maybe_to_string(topic)) # to avoid duplicate subscriptions?
-    endpoint.subscribe(topic)
-
-    # Phoenix.PubSub.subscribe(Bonfire.PubSub, topic)
-  end
-
-  @doc """
-  Broadcast some data for realtime updates, for example to a feed or thread
-  """
-  def pubsub_broadcast(topics, payload) when is_list(topics) do
-    Enum.each(topics, &pubsub_broadcast(&1, payload))
-  end
-
-  def pubsub_broadcast(topic, {payload_type, _data} = payload) do
-    debug("pubsub_broadcast: #{inspect(topic)} / #{inspect(payload_type)}")
-    do_broadcast(topic, payload)
-  end
-
-  def pubsub_broadcast(topic, data)
-      when (is_atom(topic) or is_binary(topic)) and topic != "" and
-             not is_nil(data) do
-    debug("pubsub_broadcast: #{inspect(topic)}")
-    do_broadcast(topic, data)
-  end
-
-  def pubsub_broadcast(_, _), do: warn("pubsub did not broadcast")
-
-  defp do_broadcast(topic, data) do
-    # endpoint = Config.get(:endpoint_module, Bonfire.Web.Endpoint)
-    # endpoint.broadcast_from(self(), topic, step, state)
-    Phoenix.PubSub.broadcast(Bonfire.PubSub, maybe_to_string(topic), data)
-  end
-
   def assigns_subscribe(%Phoenix.LiveView.Socket{} = socket, assign_names)
       when is_list(assign_names) or is_atom(assign_names) or
              is_binary(assign_names) do
     # subscribe to god-level assign + object ID based assign if ID provided in tuple
     names_of_assign_topics(assign_names)
-    |> pubsub_subscribe(socket)
+    |> PubSub.subscribe(socket)
 
     # also subscribe to assigns for current user
     self_subscribe(
@@ -459,7 +391,7 @@ defmodule Bonfire.UI.Common do
     if is_list(target_ids) and target_ids != [] do
       target_ids
       |> names_of_assign_topics(assign_names)
-      |> pubsub_subscribe(socket)
+      |> PubSub.subscribe(socket)
     else
       debug(target_ids, "cannot_self_subscribe")
     end
@@ -510,11 +442,11 @@ defmodule Bonfire.UI.Common do
 
   # defp assigns_broadcast({{assign_name, assign_id}, data}, assign_target_ids) do
   #   names_of_assign_topics([assign_id] ++ assign_target_ids, assign_name)
-  #   |> pubsub_broadcast({:assign, {assign_name, data}})
+  #   |> PubSub.broadcast({:assign, {assign_name, data}})
   # end
   defp assigns_broadcast({assign_name, data}, assign_target_ids) do
     names_of_assign_topics(assign_target_ids, assign_name)
-    |> pubsub_broadcast({:assign, {assign_name, assigns_clean(data)}})
+    |> PubSub.broadcast({:assign, {assign_name, assigns_clean(data)}})
   end
 
   defp names_of_assign_topics(assign_target_ids \\ [], assign_names)

@@ -9,7 +9,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     # subscribe
     assigns[:context][:csrf_token]
     |> info("session_topic")
-    |> pubsub_subscribe(socket)
+    |> PubSub.subscribe(socket)
 
     {:ok,
      socket
@@ -96,7 +96,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
         if e(context, :csrf_token, nil) do
           e(context, :csrf_token, nil)
-          |> pubsub_broadcast({:assign, assigns})
+          |> PubSub.broadcast({:assign, assigns})
 
           true
         else

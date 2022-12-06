@@ -10,8 +10,8 @@
         to={~p"/settings"}
         class={"rounded-md", "bg-base-content/10 ": @selected_tab == "dashboard"}
       >
-        <span class={"rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
-        <Icon solid="Home" class={"w-4 h-4 font-normal ", "": @selected_tab == "dashboard"} />
+        <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
+          <Icon solid="Home" class={"w-4 h-4 font-normal ", "": @selected_tab == "dashboard"} />
         </span>
         {l("Dashboard")}
       </LiveRedirect>
@@ -34,8 +34,8 @@
           to={~p"/settings/profile"}
           class={"rounded-md", "bg-base-content/10 ": @selected_tab == "profile"}
         >
-          <span class={"rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
-          <Icon solid="User" class={"w-4 h-4 font-normal ", "": @selected_tab == "profile"} />
+          <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
+            <Icon solid="User" class={"w-4 h-4 font-normal ", "": @selected_tab == "profile"} />
           </span>
           {l("Profile")}
         </LivePatch>
@@ -45,11 +45,8 @@
           to={~p"/settings/preferences"}
           class={"rounded-md", "bg-base-content/10 ": @selected_tab == "preferences"}
         >
-          <span class={"rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
-          <Icon
-            solid="Adjustments"
-            class={"w-4 h-4 font-normal ", "": @selected_tab == "preferences"}
-          />
+          <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
+            <Icon solid="Adjustments" class={"w-4 h-4 font-normal ", "": @selected_tab == "preferences"} />
           </span>
           {l("Preferences")}
         </LivePatch>
@@ -60,8 +57,8 @@
           to={~p"/settings/account"}
           class={"rounded-md", "bg-base-content/10 ": @selected_tab == "account"}
         >
-          <span class={"rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
-          <Icon solid="Key" class={"w-4 h-4 font-normal ", "": @selected_tab == "account"} />
+          <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
+            <Icon solid="Key" class={"w-4 h-4 font-normal ", "": @selected_tab == "account"} />
           </span>
           {l("Account Settings")}
         </LivePatch>
@@ -72,8 +69,8 @@
           to={~p"/settings/circles"}
           class={"rounded-md", "bg-base-content/10 ": @selected_tab == "account"}
         >
-          <span class={"rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
-          <Icon solid="Key" class={"w-4 h-4 font-normal ", "": @selected_tab == "account"} />
+          <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
+            <Icon solid="Key" class={"w-4 h-4 font-normal ", "": @selected_tab == "account"} />
           </span>
           {l("Circles")}
         </LivePatch>
@@ -84,8 +81,8 @@
           to={~p"/settings/roles"}
           class={"rounded-md", "bg-base-content/10 ": @selected_tab == "account"}
         >
-          <span class={"rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
-          <Icon solid="Key" class={"w-4 h-4 font-normal ", "": @selected_tab == "account"} />
+          <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
+            <Icon solid="Key" class={"w-4 h-4 font-normal ", "": @selected_tab == "account"} />
           </span>
           {l("Roles")}
         </LivePatch>
@@ -97,11 +94,8 @@
           to={~p"/settings/shared_user"}
           class={"rounded-md", "bg-base-content/10 ": @selected_tab == "shared_user"}
         >
-          <span class={"rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
-          <Icon
-            solid="UserGroup"
-            class={"w-4 h-4 font-normal ", "": @selected_tab == "shared_user"}
-          />
+          <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
+            <Icon solid="UserGroup" class={"w-4 h-4 font-normal ", "": @selected_tab == "shared_user"} />
           </span>
           {l("Team Profiles")}
         </LivePatch>
@@ -165,8 +159,8 @@
           to={~p"/settings/flags"}
           class={"rounded-md", "bg-base-content/10 ": @selected_tab == "flags"}
         >
-          <span class={"rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
-          <Icon solid="Flag" class={"w-4 h-4 font-normal ", "": @selected_tab == "flags"} />
+          <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
+            <Icon solid="Flag" class={"w-4 h-4 font-normal ", "": @selected_tab == "flags"} />
           </span>
           {l("Flagged")}
         </LivePatch>
@@ -177,8 +171,8 @@
           to={~p"/settings/ghosted"}
           class={"rounded-md", "bg-base-content/10 ": @selected_tab == "ghosted"}
         >
-          <span class={"rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
-          <Icon solid="MinusCircle" class={"w-4 h-4 font-normal ", "": @selected_tab == "ghosted"} />
+          <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
+            <Icon solid="MinusCircle" class={"w-4 h-4 font-normal ", "": @selected_tab == "ghosted"} />
           </span>
           {l("Ghosted")}
         </LivePatch>
@@ -188,8 +182,8 @@
           to={~p"/settings/silenced"}
           class={"rounded-md", "bg-base-content/10 ": @selected_tab == "silenced"}
         >
-          <span class={"rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
-          <Icon solid="Ban" class={"w-4 h-4 font-normal ", "": @selected_tab == "silenced"} />
+          <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
+            <Icon solid="Ban" class={"w-4 h-4 font-normal ", "": @selected_tab == "silenced"} />
           </span>
           {l("Silenced")}
         </LivePatch>
@@ -259,8 +253,8 @@
           to={~p"/settings/extensions"}
           class={"rounded-md", "bg-base-content/10 ": @selected_tab == "extensions"}
         >
-          <span class={"rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
-          <Icon solid="Puzzle" class={"w-4 h-4 font-normal ", "": @selected_tab == "extensions"} />
+          <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
+            <Icon solid="Puzzle" class={"w-4 h-4 font-normal ", "": @selected_tab == "extensions"} />
           </span>
           {l("Manage Extensions")}
         </LivePatch>
@@ -268,8 +262,8 @@
 
       <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
         <LivePatch to={~p"/settings/instance"}>
-          <span class={"rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"}>
-          <Icon solid="Adjustments" class="w-5 h-5 mr-2 font-normal" />
+          <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
+            <Icon solid="Adjustments" class="w-5 h-5 mr-2 font-normal" />
           </span>
           {l("Instance Settings")} →
         </LivePatch>

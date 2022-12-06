@@ -30,7 +30,7 @@ defmodule Bonfire.UI.Common.Notifications do
     }
     |> debug("to: #{inspect(feed_ids)}")
     # send to feed users' handle_info in this same module
-    |> pubsub_broadcast(feed_ids, {Bonfire.UI.Common.Notifications, ...})
+    |> PubSub.broadcast(feed_ids, {Bonfire.UI.Common.Notifications, ...})
   end
 
   def notify_me(title, message, icon, socket \\ nil) do

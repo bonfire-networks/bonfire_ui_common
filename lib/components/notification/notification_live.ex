@@ -38,7 +38,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
 
       if feed_id do
         debug(feed_id, "subscribed to push notifications")
-        pubsub_subscribe(feed_id, socket)
+        PubSub.subscribe(feed_id, socket)
       else
         debug("no feed_id, not subscribing to push notifications")
       end

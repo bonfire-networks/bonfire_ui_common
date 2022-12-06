@@ -19,9 +19,12 @@
     })}
   />
   <div :if={is_messaging?(%{page: @page})}>test</div>
-  <div :if={is_messaging?(%{
+  <div
+    :if={is_messaging?(%{
       page: @page
-    })} class="my-3">
+    })}
+    class="my-3"
+  >
     <Bonfire.UI.Common.SelectRecipientsLive
       preloaded_recipients={e(@preloaded_recipients, [])}
       to_boundaries={@to_boundaries}

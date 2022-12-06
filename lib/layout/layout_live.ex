@@ -111,13 +111,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
                     "bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)]": @current_user
                   }
                 >
-                  <div 
-                    :if={@current_user}
-                    class="sticky top-0 -mt-3 pt-3 bg-base-300 z-[99999999]">
-                    <div
-                      class="flex flex-1 bg-base-100"
-                      :class="{'hidden': open_sidebar}"
-                      >
+                  <div :if={@current_user} class="sticky top-0 -mt-3 pt-3 bg-base-300 z-[99999999]">
+                    <div class="flex flex-1 bg-base-100" :class="{'hidden': open_sidebar}">
                       <Dynamic.Component
                         module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
                         page_title={@page_title}
