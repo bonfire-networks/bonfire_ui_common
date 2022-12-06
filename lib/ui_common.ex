@@ -335,12 +335,6 @@ defmodule Bonfire.UI.Common do
     Phoenix.LiveView.Controller.live_render(conn, live_view, session: %{"conn" => conn})
   end
 
-  defp socket_connected_or_user?(%Phoenix.LiveView.Socket{} = socket),
-    do: socket_connected?(socket)
-
-  defp socket_connected_or_user?(other),
-    do: if(current_user(other), do: true, else: false)
-
   def maybe_send_update(pid \\ self(), component, id, assigns)
 
   def maybe_send_update(pid, component, id, {:error, error})
