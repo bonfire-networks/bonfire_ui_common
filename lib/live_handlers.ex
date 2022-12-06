@@ -43,7 +43,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
       debug("LiveHandler: handle_event #{inspect(action)} via #{source_module || "delegation"}")
 
       with {:noreply, %{assigns: %{no_live_event_handler: %{^action => true}}} = socket} <-
-             do_handle_event(action, attrs, socket) |> debug,
+             do_handle_event(action, attrs, socket),
            {:noreply, socket} <-
              if(is_function(fun), do: fun.(action, attrs, socket), else: {:noreply, socket}) do
         {:noreply, socket}

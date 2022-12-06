@@ -88,8 +88,8 @@
     </div> -->
     {/case}
 
-    {#case @error |> debug("e") ||
-        e(@root_flash |> debug("rf") || @flash |> debug("f"), :error, nil) |> debug("result")}
+    {#case @error ||
+        e(@root_flash || @flash, :error, nil)}
       {#match nil}
       {#match error}
         <div

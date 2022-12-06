@@ -63,6 +63,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
        e(socket.assigns, :root_flash, %{})
        |> Map.drop([type, key])
      )
+     |> assign(type, nil)
      |> assign(key, nil)}
 
     # |> debug
