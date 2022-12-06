@@ -44,15 +44,23 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
       with {:noreply, %{assigns: %{no_live_event_handler: %{^action => true}}} = socket} <-
              do_handle_event(action, attrs, socket),
-           {:noreply, socket} <-
-             if(is_function(fun), do: fun.(action, attrs, socket), else: {:noreply, socket}) do
+           {:noreply, socket} <- maybe_handle_event_fun(action, attrs, socket, fun) do
         {:noreply, socket}
       else
         other ->
-          debug(other)
+          # debug(other)
           other
       end
     end)
+  end
+
+  defp maybe_handle_event_fun(action, attrs, socket, fun) when is_function(fun) do
+    fun.(action, attrs, socket)
+  end
+
+  defp maybe_handle_event_fun(action, attrs, socket, _fun) do
+    warn(action, "LiveHandler: could not find an event handler")
+    {:noreply, socket}
   end
 
   def handle_info(blob, socket, source_module \\ nil) do
@@ -129,7 +137,6 @@ defmodule Bonfire.UI.Common.LiveHandlers do
         do_handle_event({module, action}, attrs, socket)
 
       _ ->
-        warn(event, "LiveHandler: could not find event handler")
         debug(attrs, "attrs")
         no_live_handler({:handle_event, event}, socket)
     end
@@ -140,7 +147,6 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   end
 
   defp do_handle_event(event, attrs, socket) do
-    warn(event, "LiveHandler: could not find event handler")
     debug(attrs, "attrs")
     no_live_handler({:handle_event, event}, socket)
   end

@@ -1,14 +1,16 @@
 <nav role="tabpanel" class={@class} aria-label="Switch between tabs">
   <Dynamic.Component
     module={@link_component}
-    :for={{tab, tab_name} <- @tabs}
+    :for={{{tab, tab_name}, i} <- Enum.with_index(@tabs)}
     to={"#{@path_prefix}#{tab}"}
     name={"#{tab}"}
     event_handler={@event_handler}
     event_target={@event_target}
     class={
       @tab_class,
-      active: @selected_tab == tab || to_string(@selected_tab) == to_string(tab)
+      active:
+        @selected_tab |> debug("ssst") == tab or to_string(@selected_tab) == to_string(tab) or
+          (is_nil(@selected_tab) and i == 0)
     }
   >
     {localise_dynamic(tab_name)}

@@ -108,6 +108,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
 
   # for uploads
   def do_handle_event("validate", _params, socket) do
+    debug("validate: OK")
     {:noreply, socket}
   end
 
