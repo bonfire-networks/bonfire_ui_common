@@ -33,14 +33,10 @@
           </button>
         </div>
 
-      <div
-        phx-hook="EmojiPicker"
-        id="editor_emoji"
-      >
-        <div
-          
-          phx-update="ignore"
-          x-data="{
+        <div phx-hook="EmojiPicker" id="editor_emoji">
+          <div
+            phx-update="ignore"
+            x-data="{
           open: false,
           close(focusAfter) {
             if (! this.open) return
@@ -48,30 +44,30 @@
             focusAfter && focusAfter.focus()
           }
         }"
-          x-on:keydown.escape.prevent.stop="close($refs.button)"
-        >
-          <div @click="open = ! open" class="btn btn-ghost btn-sm text-[22px] btn-circle">
-            <Icon iconify="entypo:emoji-happy" class="w-4 h-4 text-base-content text-opacity-70" />
-          </div>
-          <div
-            x-cloak
-            x-ref="panel"
-            x-show="open"
-            x-transition.origin.top.left
-            x-on:click.outside="close($refs.button)"
-            x-show="open"
-            class={
-              "absolute z-50",
-              "bottom-10 left-3": @thread_mode == :flat,
-              "bottom-10 left-3": @thread_mode != :flat,
-              "!top-10 right-0 bottom-[auto]": @showing_within == :page
-            }
-            role="tooltip"
+            x-on:keydown.escape.prevent.stop="close($refs.button)"
           >
-            <div id="picker" />
+            <div @click="open = ! open" class="btn btn-ghost btn-sm text-[22px] btn-circle">
+              <Icon iconify="entypo:emoji-happy" class="w-4 h-4 text-base-content text-opacity-70" />
+            </div>
+            <div
+              x-cloak
+              x-ref="panel"
+              x-show="open"
+              x-transition.origin.top.left
+              x-on:click.outside="close($refs.button)"
+              x-show="open"
+              class={
+                "absolute z-50",
+                "bottom-10 left-3": @thread_mode == :flat,
+                "bottom-10 left-3": @thread_mode != :flat,
+                "!top-10 right-0 bottom-[auto]": @showing_within == :page
+              }
+              role="tooltip"
+            >
+              <div id="picker" />
+            </div>
           </div>
         </div>
-      </div>
         <!-- <div 
             :if={@showing_within != :page and @thread_mode != :flat}
             x-show="!smart_input_open"

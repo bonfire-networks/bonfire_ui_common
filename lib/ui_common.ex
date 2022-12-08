@@ -178,7 +178,7 @@ defmodule Bonfire.UI.Common do
     case content do
       _ when is_binary(content) ->
         content
-        # |> Text.maybe_markdown_to_html() # now being done on save instead
+        |> Text.maybe_markdown_to_html()
         # transform internal links to use LiveView navigation
         |> Text.normalise_links()
         # for use in views
