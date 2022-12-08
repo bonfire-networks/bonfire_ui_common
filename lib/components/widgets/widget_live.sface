@@ -3,13 +3,13 @@
     <LiveRedirect
       to={@widget[:href]}
       class={
-        "flex items-center gap-3 rounded-md py-2",
+        "flex items-center gap-3 rounded-md py-1.5",
         "tab-active": @page == @widget[:page]
       }
     >
       <span
         :if={!@without_icon}
-        class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg"
+        class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[26px] flex place-content-center h-[26px] items-center shadow-lg"
       >
         <Icon iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />
       </span>

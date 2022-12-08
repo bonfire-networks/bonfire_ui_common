@@ -42,7 +42,8 @@ ComposerHooks.Composer = {
         textarea.focus()         
       })
 
-      textarea.addEventListener("input", () => {
+      textarea.addEventListener("input", (e) => {  
+
         // Get the input text from the textarea
         const inputText = textarea.value;
 

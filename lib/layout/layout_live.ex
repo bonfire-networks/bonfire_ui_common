@@ -61,6 +61,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <Bonfire.UI.Common.GuestHeaderLive page_title={@page_title} page={@page} />
       </div>
 
+
       <div class={
         "w-full mx-auto grid max-w-[1260px] gap-4",
         "grid-cols-1": @without_sidebar && @without_widgets,
