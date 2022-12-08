@@ -225,6 +225,11 @@
     read-package-json-fast "^3.0.0"
     which "^3.0.0"
 
+"@popperjs/core@^2.11.6", "@popperjs/core@^2.9.0":
+  version "2.11.6"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"
+  integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
+
 "@splidejs/splide@^4.1.3":
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/@splidejs/splide/-/splide-4.1.4.tgz#02d029360569e7d75d28357a9727fc48322015a3"
@@ -1035,6 +1040,11 @@ electron-to-chromium@^1.4.251:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.284.tgz#61046d1e4cab3a25238f6bf7413795270f125592"
   integrity sha512-M8WEXFuKXMYMVr45fo8mq0wUrrJHheiKZf6BArTKk9ZBYCKJEOU5H8cdWgDT+qCVZf7Na4lVUaZsA+h6uA9+PA==
 
+emoji-mart@^5.0.0:
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/emoji-mart/-/emoji-mart-5.3.3.tgz#f079700be84d5b13653378cf7bba45fb0217452b"
+  integrity sha512-rr3wXUimYFQ5Mf50P/5UOsRibr5JSJE3Nj4zw0aDglb3GSHzn/wGKBoXoSkjtWaji8UcmXcYn3cdilD2Eix6iQ==
+
 emoji-regex@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/emoji-regex/-/emoji-regex-8.0.0.tgz#e818fd69ce5ccfcb404594f842963bf53164cc37"
@@ -1586,6 +1596,11 @@ init-package-json@^4.0.1:
     semver "^7.3.5"
     validate-npm-package-license "^3.0.4"
     validate-npm-package-name "^5.0.0"
+
+insert-text-at-cursor@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/insert-text-at-cursor/-/insert-text-at-cursor-0.3.0.tgz#1819607680ec1570618347c4cd475e791faa25da"
+  integrity sha512-/nPtyeX9xPUvxZf+r0518B7uqNKlP+LqNJqSiXFEaa2T71rWIwTVXGH7hB9xO/EVdwa5/pWlFCPwShOW81XIxQ==
 
 ip-regex@^4.1.0:
   version "4.3.0"
@@ -3219,6 +3234,11 @@ text-table@~0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==
 
+textarea-caret@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/textarea-caret/-/textarea-caret-3.1.0.tgz#5d5a35bb035fd06b2ff0e25d5359e97f2655087f"
+  integrity sha512-cXAvzO9pP5CGa6NKx0WYHl+8CHKZs8byMkt3PCJBCmq2a34YA9pO1NrQET5pzeqnBjBdToF5No4rrmkDUgQC2Q==
+
 theme-change@^2.0.2:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/theme-change/-/theme-change-2.2.0.tgz#dcc48ffe6b806258bc5f1caf8220527589e354c0"
@@ -3233,6 +3253,13 @@ tiny-relative-date@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/tiny-relative-date/-/tiny-relative-date-1.3.0.tgz#fa08aad501ed730f31cc043181d995c39a935e07"
   integrity sha512-MOQHpzllWxDCHHaDno30hhLfbouoYlOI8YlMNtvKe1zXbjEVhbcEovQxvZrPvtiYW630GQDoMMarCnjfyfHA+A==
+
+tippy.js@^6.3.7:
+  version "6.3.7"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.7.tgz#8ccfb651d642010ed9a32ff29b0e9e19c5b8c61c"
+  integrity sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==
+  dependencies:
+    "@popperjs/core" "^2.9.0"
 
 to-regex-range@^5.0.1:
   version "5.0.1"

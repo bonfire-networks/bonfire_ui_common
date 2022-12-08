@@ -33,9 +33,13 @@
           </button>
         </div>
 
+      <div
+        phx-hook="EmojiPicker"
+        id="editor_emoji"
+      >
         <div
-          id="editor_emoji"
-          phx-hook="QuillEditor"
+          
+          phx-update="ignore"
           x-data="{
           open: false,
           close(focusAfter) {
@@ -67,6 +71,7 @@
             <div id="picker" />
           </div>
         </div>
+      </div>
         <!-- <div 
             :if={@showing_within != :page and @thread_mode != :flat}
             x-show="!smart_input_open"

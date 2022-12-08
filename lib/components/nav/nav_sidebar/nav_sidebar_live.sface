@@ -29,7 +29,7 @@
     </div> -->
     <LiveRedirect
       to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
-      class="flex items-start items-center justify-start gap-2 px-1 mx-2 my-2 normal-case rounded-full btn btn-ghost"
+      class="flex items-center justify-start gap-2 px-1 ml-2 my-2 normal-case rounded btn btn-ghost"
     >
       <Bonfire.UI.Common.AvatarLive
         :if={is_map(current_user(@__context__))}

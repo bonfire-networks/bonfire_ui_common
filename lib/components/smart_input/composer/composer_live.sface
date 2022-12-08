@@ -1,0 +1,4 @@
+  <div phx-hook="Composer" id="editor" class="p-2 relative h-full">
+    <textarea class="textarea w-full h-[240px]" name="html_body" placeholder="Start typing..."></textarea>
+    <ul class="absolute hidden menu w-56 menu-compact bg-neutral p-1 divide-y divide-neutral-content/10"></ul>
+  </div>
