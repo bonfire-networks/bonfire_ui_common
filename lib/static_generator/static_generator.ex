@@ -21,7 +21,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
 
     dest =
       Application.app_dir(
-        :bonfire,
+        Config.get(:umbrella_otp_app, :bonfire),
         opts[:output_dir] || Config.get([__MODULE__, :output_dir]) ||
           static_dir()
       )
