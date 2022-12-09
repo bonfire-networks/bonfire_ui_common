@@ -17,4 +17,5 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop page, :any, default: nil
   prop show_cw_toggle, :boolean, default: false
   prop submit_label, :string, default: nil
+  prop open_boundaries, :boolean, default: false
 end
