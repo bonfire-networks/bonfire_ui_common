@@ -44,12 +44,12 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         only: Bonfire.UI.Common.Web.static_paths()
       )
 
-      # plug(Plug.Static,
-      #   at: "/",
-      #   from: :bonfire,
-      #   gzip: true,
-      #   only: Bonfire.UI.Common.Web.static_paths()
-      # )
+      plug(Plug.Static,
+        at: "/",
+        from: :bonfire_umbrella,
+        gzip: true,
+        only: Bonfire.UI.Common.Web.static_paths()
+      )
 
       plug(Plug.Static,
         at: "/data/uploads/",
