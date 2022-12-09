@@ -18,11 +18,13 @@
       create_object_type: @create_object_type
     })}
   />
-  <div :if={is_messaging?(%{page: @page})}>test</div>
   <div
-    :if={is_messaging?(%{
-      page: @page
-    })}
+    :if={@show_select_recipients ||
+      is_messaging?(%{
+        page: @page,
+        showing_within: @showing_within,
+        create_object_type: @create_object_type
+      })}
     class="my-3"
   >
     <Bonfire.UI.Common.SelectRecipientsLive
@@ -30,6 +32,7 @@
       to_boundaries={@to_boundaries}
       to_circles={@to_circles}
       open_boundaries={@open_boundaries}
+      context_id={@context_id}
     />
   </div>
 </div>

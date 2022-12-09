@@ -515,6 +515,25 @@ defmodule Bonfire.UI.Common do
         __STACKTRACE__
       )
 
+    error in DBConnection.ConnectionError ->
+      live_exception(
+        socket,
+        return_key,
+        "A connection error prevented the database from being accessed. Please try again later.",
+        error,
+        __STACKTRACE__
+      )
+
+    cs in Ecto.Changeset ->
+      live_exception(
+        socket,
+        return_key,
+        "The data provided caused an unexpected error and could do not be inserted or updated: " <>
+          error_msg(cs),
+        cs,
+        nil
+      )
+
     error in FunctionClauseError ->
       # debug(error)
       with %{
@@ -565,16 +584,6 @@ defmodule Bonfire.UI.Common do
         return_key,
         error,
         __STACKTRACE__
-      )
-
-    cs in Ecto.Changeset ->
-      live_exception(
-        socket,
-        return_key,
-        "The data provided caused an unexpected error and could do not be inserted or updated: " <>
-          error_msg(cs),
-        cs,
-        nil
       )
 
     error ->

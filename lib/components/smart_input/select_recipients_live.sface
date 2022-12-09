@@ -15,24 +15,29 @@
       />
       <span class="px-3">{Enum.map_join(@to_circles, " ; ", &elem(&1, 0))}</span>
     {#else}
-      <!-- <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
-        selected_options={@to_circles}
-        label={"Send to:"}
-        form_input_name="to_circles[]"
-        context_id={@context_id}
-      /> -->
-      <div class="flex-1" id={:select_recipients} phx-update="ignore" phx-hook="InputOrSelectOne">
-        <input
-          id="recipients_tagify"
-          name="to_circles"
-          class="flex-1 w-full bg-transparent border-0 tagify"
-        />
-        <select class="hidden tagify">
-          {#for user <- @preloaded_recipients}
-            <option class="" value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
-          {/for}
-        </select>
-      </div>
+      {#case @implementation}
+        {#match nil}
+          <div class="flex-1" id={:select_recipients} phx-update="ignore" phx-hook="InputOrSelectOne">
+            <input
+              id="recipients_tagify"
+              name="to_circles"
+              class="flex-1 w-full bg-transparent border-0 tagify"
+            />
+            <select class="hidden tagify">
+              {#for user <- @preloaded_recipients}
+                <option class="" value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
+              {/for}
+            </select>
+          </div>
+        {#match _}
+          <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
+            selected_options={@to_circles}
+            label="Send to:"
+            form_input_name="to_circles[]"
+            context_id={@context_id}
+            implementation={@implementation}
+          />
+      {/case}
     {/if}
   </div>
 </div>

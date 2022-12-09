@@ -2,6 +2,7 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   use Bonfire.UI.Common.Web, :stateful_component
   use Bonfire.Common.Utils
 
+  prop form, :any, default: :multi_select
   prop form_input_name, :string, required: true
   prop label, :string, default: nil
   prop preloaded_options, :any, default: nil
@@ -14,6 +15,7 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   prop event_target, :any, default: nil
   prop context_id, :string, default: nil
   prop is_editable, :boolean, default: true
+  prop implementation, :atom, default: nil
 
   prop class, :css_class,
     default:

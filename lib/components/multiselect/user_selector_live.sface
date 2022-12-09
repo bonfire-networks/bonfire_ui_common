@@ -3,6 +3,7 @@
   preloaded_options={users(@preloaded_options, @__context__, @type)}
   selected_options={@selected_options}
   label={e(@label, "Select someone...")}
+  form={@form}
   form_input_name={@form_input_name}
   context_id={@context_id}
   pick_event={@pick_event}
@@ -10,4 +11,5 @@
   event_target={@event_target}
   class={@class}
   is_editable={@is_editable}
+  implementation={@implementation}
 />

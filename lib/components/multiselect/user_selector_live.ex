@@ -1,6 +1,7 @@
 defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
+  prop form, :any, default: :user_selector
   prop form_input_name, :string, default: nil
   prop label, :string, default: nil
   prop pick_event, :string, default: nil
@@ -12,6 +13,7 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   prop class, :css_class, default: nil
   prop is_editable, :boolean, default: true
   prop type, :any, default: Bonfire.Data.Identity.User
+  prop implementation, :atom, default: nil
 
   def users(preloaded_options, context, type) do
     preloaded_options || context[:preloaded_options][type] ||
