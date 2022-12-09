@@ -68,6 +68,20 @@
             </div>
           </div>
         </div>
+
+        <Bonfire.UI.Common.InputBoundariesLive
+          thread_mode={@thread_mode}
+          create_object_type={@create_object_type}
+          to_boundaries={@to_boundaries}
+          to_circles={@to_circles}
+          preloaded_recipients={e(@preloaded_recipients, [])}
+          showing_within={@showing_within}
+          open_boundaries={@open_boundaries}
+          show_select_recipients={@show_select_recipients}
+          boundaries_modal_id={@boundaries_modal_id}
+        />
+
+
         <!-- <div 
             :if={@showing_within != :page and @thread_mode != :flat}
             x-show="!smart_input_open"
