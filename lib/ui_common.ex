@@ -661,14 +661,17 @@ defmodule Bonfire.UI.Common do
       {:noreply, %Phoenix.LiveView.Socket{} = socket} ->
         {:noreply, socket}
 
+      %Phoenix.LiveView.Socket{} = socket ->
+        {return_key, socket}
+
       {:noreply, %Plug.Conn{} = conn} ->
         {:noreply, conn}
 
+      %Plug.Conn{} = conn ->
+        {return_key, conn}
+
       {:reply, data, %Phoenix.LiveView.Socket{} = socket} ->
         {:reply, data, socket}
-
-      %Phoenix.LiveView.Socket{} = socket ->
-        {return_key, socket}
 
       {:ok, {:error, reason}} ->
         undead_maybe_handle_error(reason, socket, return_key)
