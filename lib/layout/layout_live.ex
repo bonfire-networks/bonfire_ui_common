@@ -29,7 +29,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:create_object_type, fn -> nil end)
       |> assign_new(:nav_items, fn -> nil end)
       |> assign_new(:current_app, fn -> nil end)
+      |> assign_new(:current_account, fn -> nil end)
       |> assign_new(:current_account_id, fn -> nil end)
+      |> assign_new(:current_user, fn -> nil end)
       |> assign_new(:current_user_id, fn -> nil end)
       |> assign_new(:to_circles, fn -> [] end)
       |> assign_new(:smart_input_opts, fn ->
@@ -149,6 +151,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
               sticky: true,
               csrf_token: @csrf_token,
               current_app: @current_app,
+              current_user: @current_user,
+              current_account: @current_account,
               current_user_id: @current_user_id,
               current_account_id: @current_account_id
             }
