@@ -2,11 +2,11 @@
   <div x-data="{open: false}" class="p-3 px-4 rounded-md shadow bg-base-100">
     <div class="flex items-center justify-between">
       <div class="font-medium">{@page_title}</div>
-      <div @click="open = ! open" class="btn btn-sm btn-square btn-ghost">
+      <!-- <div @click="open = ! open" class="btn btn-sm btn-square btn-ghost">
         <Icon solid="Adjustments" class="w-4 h-4" />
-      </div>
+      </div> -->
     </div>
-    <ul
+    <!-- <ul
       x-cloak
       x-show="open"
       x-collapse
@@ -32,6 +32,6 @@
           <span>{extension[:name]}</span>
         </LinkLive>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </div>
