@@ -44,7 +44,11 @@
       <p class="alert alert-danger">{error_to_string(err)}</p>
     {/for}
 
-    <div x-show="show_alt" x-collapse class="w-full absolute z-20 bottom-1 left-1 right-1 rounded form-control">
+    <div
+      x-show="show_alt"
+      x-collapse
+      class="w-full absolute z-20 bottom-1 left-1 right-1 rounded form-control"
+    >
       <input
         name={"upload_metadata[#{entry.ref}][label]"}
         type="text"

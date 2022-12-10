@@ -18,4 +18,6 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop show_cw_toggle, :boolean, default: false
   prop submit_label, :string, default: nil
   prop open_boundaries, :boolean, default: false
+  prop show_select_recipients, :boolean, default: false
+  prop boundaries_modal_id, :string, default: :sidebar_composer
 end

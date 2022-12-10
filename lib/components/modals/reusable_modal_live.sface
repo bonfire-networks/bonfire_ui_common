@@ -16,10 +16,12 @@
         <#slot {@title}>{@title_text}</#slot>
       </h3>
       <div class="absolute top-0 right-0 block pt-5 pr-4">
-        <button 
+        <button
           phx-click="close"
           phx-target={"[id='#{@id}']"}
-          type="button" class="normal-case btn btn-ghost btn-circle btn-sm">
+          type="button"
+          class="normal-case btn btn-ghost btn-circle btn-sm"
+        >
           <span class="sr-only">{l("Close")}</span>
           <Icon outline="X" class="w-4 h-4" />
         </button>
@@ -30,10 +32,7 @@
       </div>
 
       <div :if={!@no_actions} class="modal-action">
-        <div 
-          phx-click="close"
-          phx-target={"[id='#{@id}']"}
-          >
+        <div phx-click="close" phx-target={"[id='#{@id}']"}>
           <#slot {@cancel_btn}>
             <button class={@cancel_btn_class || "btn btn-ghost rounded btn-sm normal-case"} type="button">{l("Cancel")}</button>
           </#slot>

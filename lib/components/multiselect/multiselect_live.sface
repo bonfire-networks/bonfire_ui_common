@@ -1,7 +1,12 @@
 <div class="w-full">
   {#if @is_editable}
     {#if @implementation == :live_select}
-      {LiveSelect.live_select(@form, @form_input_name, mode: :tags, placeholder: @label, style: :daisyui, container_extra_class: "w-full")}
+      {LiveSelect.live_select(@form, @form_input_name,
+        mode: :tags,
+        placeholder: @label,
+        style: :daisyui,
+        container_extra_class: "w-full"
+      )}
     {#else}
       <div
         data-id="multiselect"
