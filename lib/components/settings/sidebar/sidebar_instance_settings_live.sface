@@ -133,9 +133,9 @@
       </li>
       <ul x-cloak x-show="open" x-collapse class="menu menu-compact">
         <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
-          <LivePatch to={~p"/settings/instance/flagged"} class={"", active: @selected_tab == "flagged"}>
+          <LivePatch to={~p"/settings/instance/flags"} class={"", active: @selected_tab == "flags"}>
             <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
-              <Icon outline="Flag" class={"w-4 h-4 font-normal ", "": @selected_tab == "flagged"} />
+              <Icon outline="Flag" class={"w-4 h-4 font-normal ", "": @selected_tab == "flags"} />
             </span>
             {l("Flagged")}
           </LivePatch>

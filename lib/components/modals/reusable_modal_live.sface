@@ -3,7 +3,7 @@
   class={@modal_class || "modal max-h-[100%] ", "modal-closed": !@show, "modal-open": @show}
   {...@opts}
 >
-  <form {...@form_opts}>
+  <form id="reusable_modal_form" {...@form_opts}>
     <div
       phx-click="close"
       phx-target={"[id='#{@id}']"}
@@ -16,12 +16,7 @@
         <#slot {@title}>{@title_text}</#slot>
       </h3>
       <div class="absolute top-0 right-0 block pt-5 pr-4">
-        <button
-          phx-click="close"
-          phx-target={"[id='#{@id}']"}
-          type="button"
-          class="normal-case btn btn-ghost btn-circle btn-sm"
-        >
+        <button :on-click="close" type="button" class="normal-case btn btn-ghost btn-circle btn-sm">
           <span class="sr-only">{l("Close")}</span>
           <Icon outline="X" class="w-4 h-4" />
         </button>
