@@ -19,7 +19,11 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   prop show, :boolean, default: false
 
   prop form_opts, :any, default: []
-
+  
+  @doc "The ID of the form to submit"
+  prop form_id, :string, default: "#reusable_modal_form"
+  
+  
   @doc "Optional prop to hide the actions at the bottom of the modal"
   prop no_actions, :boolean, default: false
 

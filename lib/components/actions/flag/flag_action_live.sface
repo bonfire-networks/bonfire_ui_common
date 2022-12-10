@@ -19,7 +19,7 @@
     <:action_btns>
       <button
         phx-click="Bonfire.Social.Flags:flag"
-        phx-target="#reusable_modal_form"
+        phx-target="#flag_form"
         phx-value-id={e(@object, :id, "")}
         class="btn btn-sm btn-error"
       >

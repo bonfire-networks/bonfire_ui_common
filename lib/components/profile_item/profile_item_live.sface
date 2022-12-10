@@ -7,7 +7,7 @@
   >
     <Bonfire.UI.Common.AvatarLive user={@profile} />
     <div class="flex-1">
-      <p class="text-base font-semibold group-hover:underline text-base-content">
+      <p class="text-sm font-semibold group-hover:underline text-base-content">
         {e(@profile, :name, "Anon")}
       </p>
       <p class="-mt-1 text-base text-base-content/80">

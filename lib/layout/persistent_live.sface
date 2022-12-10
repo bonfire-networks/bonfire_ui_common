@@ -8,7 +8,7 @@
   <div
     :if={!@without_widgets}
     data-id="right_nav_and_widgets"
-    class="order-last top-0 self-start z-[9998] w-full  overflow-y-visible grid-flow-row gap-1 auto-rows-min items-start"
+    class="order-last top-0 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-1 auto-rows-min items-start"
     :class="{
       'sticky hidden lg:grid': !open_widgets_sidebar,
       'absolute lg:sticky lg:grid right-0 lg:right-auto mt-0': open_widgets_sidebar,
@@ -93,7 +93,7 @@
   <div
     :if={!@without_widgets}
     data-id="open_widgets_sidebar"
-    class="absolute top-0 right-0 flex lg:hidden flex-1 items-center justify-end gap-4 z-[9999]"
+    class="absolute top-0 right-0 flex lg:hidden flex-1 items-center justify-end gap-4 z-[999]"
   >
     <button
       @click="open_widgets_sidebar = ! open_widgets_sidebar"
@@ -109,4 +109,5 @@
   </div>
 
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@root_flash} />
+  <Bonfire.UI.Common.ReusableModalLive form_id="boundary_form" id="persistent_modal" />
 </div>
