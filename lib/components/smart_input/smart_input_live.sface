@@ -35,26 +35,26 @@
     <div
       :if={not is_nil(current_user(@__context__))}
       class="relative flex flex-col flex-1 w-full bg-base-300"
-      >
+    >
       <div
         x-show="!open_boundaries"
         :if={is_map(@activity) || is_map(@reply_to_id)}
         class="bg-base-300 !rounded-none  relative"
-        >
+      >
         <div class="overflow-y-auto max-h-[150px] min-h-[90px]">
-        <!-- show what we're replying to, if any -->
-        <Dynamic.LiveComponent
-          module={Bonfire.UI.Social.ActivityLive}
-          id={"cap:#{ulid(@activity || @reply_to_id)}"}
-          activity={@activity}
-          object={@object || @reply_to_id}
-          thread_mode={:nested}
-          class={@replied_activity_class}
-          showing_within={:smart_input}
-          activity_inception={@activity_inception}
-          object_boundary={:skip}
-          class="!pl-16"
-        />
+          <!-- show what we're replying to, if any -->
+          <Dynamic.LiveComponent
+            module={Bonfire.UI.Social.ActivityLive}
+            id={"cap:#{ulid(@activity || @reply_to_id)}"}
+            activity={@activity}
+            object={@object || @reply_to_id}
+            thread_mode={:nested}
+            class={@replied_activity_class}
+            showing_within={:smart_input}
+            activity_inception={@activity_inception}
+            object_boundary={:skip}
+            class="!pl-16"
+          />
         </div>
         <div class="h-6 bg-gradient-to-t from-base-300 to-transparent absolute bottom-0 w-full" />
       </div>
