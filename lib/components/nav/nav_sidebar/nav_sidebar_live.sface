@@ -3,7 +3,7 @@
   class="sticky top-0 self-start order-first hidden w-full md:block"
   :class="{'!block': open_sidebar}"
 >
-  <div class="flex items-center pl-2 h-[60px]" :class="{'w-full': open_sidebar}">
+  <div class="flex items-center pl-0.5 h-[60px]" :class="{'w-full': open_sidebar}">
     <Bonfire.UI.Common.OpenSidebarBtnLive />
 
     <div data-id="logo" class="items-center place-content-center">
@@ -29,7 +29,7 @@
     </div> -->
     <LiveRedirect
       to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
-      class="flex items-center justify-start gap-2 px-1 ml-2 my-2 normal-case rounded btn btn-ghost"
+      class="flex items-center justify-start gap-2 px-1 ml-0.5 my-2 normal-case rounded btn btn-ghost"
     >
       <Bonfire.UI.Common.AvatarLive
         :if={is_map(current_user(@__context__))}

@@ -14,30 +14,30 @@
 <li>
   <LiveRedirect
     to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
-    class="flex items-start gap-2 text-sm text-neutral-content/80"
+    class="flex items-center gap-2 text-sm text-neutral-content/80"
   >
-    <Icon solid="UserCircle" class="w-5 h-5" />
+    <Icon solid="UserCircle" class="w-4 h-4" />
     <div>{l("View profile")}</div>
   </LiveRedirect>
 </li>
 <li>
-  <LiveRedirect to={~p"/settings"} class="flex items-start gap-2 text-sm text-neutral-content/80">
-    <Icon solid="Cog" class="w-5 h-5" />
+  <LiveRedirect to={~p"/settings"} class="flex items-center gap-2 text-sm text-neutral-content/80">
+    <Icon solid="Cog" class="w-4 h-4" />
     {l("Settings")}
   </LiveRedirect>
 </li>
 <li>
   <LiveRedirect
     to={~p"/switch-user"}
-    class="flex items-start gap-2 text-sm text-neutral-content/80"
+    class="flex items-center gap-2 text-sm text-neutral-content/80"
   >
-    <Icon iconify="material-symbols:switch-account" class="w-5 h-5" />
+    <Icon iconify="material-symbols:switch-account" class="w-4 h-4" />
     {l("Switch profile")}
   </LiveRedirect>
 </li>
 <li>
-  <LiveRedirect to={~p"/logout"} class="flex items-start gap-2 text-sm text-neutral-content/80">
-    <Icon iconify="material-symbols:logout" class="w-5 h-5" />
+  <LiveRedirect to={~p"/logout"} class="flex items-center gap-2 text-sm text-neutral-content/80">
+    <Icon iconify="material-symbols:logout" class="w-4 h-4" />
     {l("Logout")}
   </LiveRedirect>
 </li>
@@ -55,8 +55,8 @@
       )}
     />
     <input type="hidden" name="create_object_type" value="task">
-    <button class="flex items-start gap-2 text-sm text-neutral-content/80">
-      <Icon iconify="ic:round-feedback" class="w-5 h-5" />
+    <button class="flex items-center gap-2 text-sm text-neutral-content/80">
+      <Icon iconify="ic:round-feedback" class="w-4 h-4" />
       {l("Share feedback")}
     </button>
   </Form>

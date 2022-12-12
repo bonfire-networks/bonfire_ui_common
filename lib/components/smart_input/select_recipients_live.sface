@@ -1,9 +1,4 @@
-<div class="w-full border rounded-lg border-base-content/30">
-  <div class="flex items-center rounded-lg">
-    <span class="inline-flex items-center h-10 px-3 border-r rounded-l-lg border-base-content/30 text-base-content text-opacity-70 sm:text-sm">
-      {l("To")}
-    </span>
-
+<div class="w-full">
     {#if is_list(@to_circles) and length(@to_circles) > 0}
       <input
         :for={{name, id} <- @to_circles}
@@ -39,5 +34,4 @@
           />
       {/case}
     {/if}
-  </div>
 </div>

@@ -18,7 +18,7 @@
       create_object_type: @create_object_type
     })}
   />
-  <div
+  <!-- <div
     :if={@show_select_recipients ||
       is_messaging?(%{
         page: @page,
@@ -34,5 +34,5 @@
       open_boundaries={@open_boundaries}
       context_id={@context_id}
     />
-  </div>
+  </div> -->
 </div>
