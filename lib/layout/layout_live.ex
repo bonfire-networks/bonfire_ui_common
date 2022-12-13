@@ -64,7 +64,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       </div>
 
       <div class={
-        "w-full mx-auto grid max-w-[1260px] gap-4",
+        "w-full mx-auto grid max-w-[1260px] gap-4 widget",
         "grid-cols-1": @without_sidebar && @without_widgets,
         "grid-cols-1": !@current_user,
         "grid-cols-1 md:grid-cols-1":

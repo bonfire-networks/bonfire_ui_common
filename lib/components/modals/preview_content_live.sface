@@ -3,13 +3,13 @@
   class={
     "#{@modal_class} bg-base-300",
     "invisible h-0": !@show,
-    "visible absolute inset-0 widget z-[99999999999]": @show
+    "visible inset-0 widget z-[99999999999]": @show
   }
   {...@opts}
 >
   <div
     role="banner"
-    class="flex sticky top-0 items-center h-[48px] rounded-t flex-1 w-full bg-base-content/10 px-4 mt-3"
+    class="flex before sticky top-3 bg-base-100 z-50 items-center h-[48px] rounded-t flex-1 w-full px-4 mt-3"
   >
     <div class="flex items-center w-full">
       <div class="flex items-center flex-1 w-full gap-2">
@@ -26,7 +26,6 @@
       </div>
     </div>
   </div>
-
   <div :if={@show} class="relative z-30">
     <div
       class="p-0 z-[910] max-w-screen-md mx-auto modal_invisible relative"
