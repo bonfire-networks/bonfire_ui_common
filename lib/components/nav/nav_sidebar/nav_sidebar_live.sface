@@ -37,7 +37,7 @@
         size="40"
         user={current_user(@__context__)}
       />
-      <div class="flex flex-col">
+      <div class="flex items-start flex-col">
         <div class="-ml-0.5 font-semibold text-sm truncate text-base-content">{e(current_user(@__context__), :profile, :name, l("Me"))}</div>
         <div
           :if={e(current_user(@__context__), :character, :username, nil)}

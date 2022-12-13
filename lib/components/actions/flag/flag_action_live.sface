@@ -21,7 +21,7 @@
         phx-click="Bonfire.Social.Flags:flag"
         phx-target="#flag_form"
         phx-value-id={e(@object, :id, "")}
-        class="btn btn-sm btn-error"
+        class="btn btn-sm btn-error rounded"
       >
         {l("Flag")}
       </button>

@@ -60,14 +60,18 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }"
     >
       <div :if={!@current_user} class="mt-3 max-w-[680px] mx-auto">
-        <Bonfire.UI.Common.GuestHeaderLive page_title={@page_title} page={@page} />
+        <Bonfire.UI.Common.GuestHeaderLive 
+          current_user={@current_user}
+          current_account={@current_account}
+          page_title={@page_title} 
+          page={@page} />
       </div>
 
       <div class={
         "w-full mx-auto grid max-w-[1260px] gap-4 widget",
-        "grid-cols-1": @without_sidebar && @without_widgets,
+        "grid-cols-1 content-start": @without_sidebar && @without_widgets,
         "grid-cols-1": !@current_user,
-        "grid-cols-1 md:grid-cols-1":
+        "grid-cols-1 md:grid-cols-1 content-start":
           @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)),
         "grid-cols-1 md:grid-cols-[280px_1fr]": @current_user && @without_widgets && !@without_sidebar,
         "grid-cols-1 md:grid-cols-[280px_1fr] lg:grid-cols-[280px_1fr_320px] ":
@@ -95,7 +99,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           class={
             "relative w-full max-w-[1280px]  gap-2 md:gap-0 z-[105] col-span-1 ",
             "!max-w-full": @without_widgets,
-            "mx-auto": @without_sidebar
+            "mx-auto order-last": @without_sidebar
           }
         >
           <div class={
@@ -110,10 +114,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 <div
                   id="inner"
                   class={
-                    "bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)]": @current_user
+                    "bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)]": @current_user && !@without_sidebar
                   }
-                >
-                  <div :if={@current_user} class="sticky top-0 -mt-3 pt-3 bg-base-300 z-[99999999]">
+                  >
+                  <div :if={@current_user && !@without_sidebar} class="sticky top-0 -mt-3 pt-3 bg-base-300 z-[99999999]">
                     <div class="flex flex-1 bg-base-100" :class="{'hidden': open_sidebar}">
                       <Dynamic.Component
                         module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
@@ -144,7 +148,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           id={:persistent}
           :if={@current_user}
           sticky
-          container={{:div, class: "contents"}}
+          container={{:div, class: ""}}
           session={%{
             "root_flash" => @flash,
             "context" => %{

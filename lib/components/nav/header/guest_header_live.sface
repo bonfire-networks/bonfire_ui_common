@@ -10,5 +10,5 @@
     </ul> -->
   </div>
 
-  <Bonfire.UI.Common.GuestActionsLive />
+  <Bonfire.UI.Common.GuestActionsLive  />
 </div>
