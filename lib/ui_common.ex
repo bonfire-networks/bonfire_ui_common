@@ -301,6 +301,11 @@ defmodule Bonfire.UI.Common do
     socket_connected?(assigns)
   end
 
+  def socket_connected?(assigns) do
+    info(assigns, "Unable to find :socket_connected? info in provided assigns")
+    nil
+  end
+
   def current_user_or_remote_interaction(socket, verb, object) do
     case current_user(socket) do
       %{id: _} = current_user ->
@@ -353,11 +358,10 @@ defmodule Bonfire.UI.Common do
     # Process.get()
     # |> debug()
 
-    Phoenix.LiveView.Channel.send_update(
+    Phoenix.LiveView.send_update(
       pid,
       component,
-      id,
-      Enum.into(assigns_clean(assigns), %{})
+      Enum.into(assigns_clean(assigns), %{id: id})
     )
     |> debug("to #{component} - id: #{id}")
   end
@@ -1096,5 +1100,75 @@ defmodule Bonfire.UI.Common do
     # default boundaries for new stuff
     # TODO: make default user-configurable
     [{"public", l("Public")}]
+  end
+
+  def the_object(assigns) do
+    e(assigns, :object, nil) || e(assigns, :activity, :object, nil) ||
+      e(assigns, :object_id, nil) || e(assigns, :activity, :object_id, nil) ||
+      e(assigns, :id, nil)
+  end
+
+  def preload_assigns_async(list_of_assigns, assigns_to_params_fn, preload_fn, opts \\ [])
+      when is_list(list_of_assigns) and is_function(assigns_to_params_fn, 1) and
+             is_function(preload_fn, 3) do
+    first = List.first(list_of_assigns)
+    current_user = current_user(first)
+    connected? = socket_connected?(first)
+    # |> info("current_user")
+
+    list_of_components =
+      list_of_assigns
+      |> debug("list of assigns")
+      #  avoid re-preloading
+      |> Enum.filter(&is_nil(Map.get(&1, opts[:skip_if_set] || :preloaded_async_assigns)))
+      |> debug("process these assigns")
+      |> Enum.map(&assigns_to_params_fn.(&1))
+      |> debug("list_of_components")
+
+    list_of_ids =
+      list_of_components
+      |> Enum.map(fn %{object_id: object_id} ->
+        object_id
+      end)
+      |> filter_empty([])
+      |> Enum.uniq()
+      |> debug("list_of_ids")
+
+    if connected? == true and Config.get(:env) != :test and not is_nil(current_user) and
+         not is_nil(opts[:caller_module]) do
+      debug("preloading using async :-)")
+      pid = self()
+
+      Task.start(fn ->
+        preload_fn.(list_of_components, list_of_ids, current_user)
+        |> Enum.each(fn {component_id, assigns} ->
+          maybe_send_update(
+            pid,
+            opts[:caller_module],
+            component_id,
+            Map.put(assigns, :preloaded_async_assigns, true)
+          )
+        end)
+      end)
+
+      list_of_assigns
+    else
+      if not is_nil(current_user) do
+        debug("wait to preload once socket is connected")
+        list_of_assigns
+      else
+        info("preloading WITHOUT using async")
+
+        preloaded_assigns =
+          preload_fn.(list_of_components, list_of_ids, current_user)
+          |> debug("preloaded_assigns")
+
+        list_of_assigns
+        |> Enum.map(fn %{id: component_id} = assigns ->
+          assigns
+          |> Map.merge(preloaded_assigns[component_id] || %{})
+        end)
+      end
+    end
   end
 end

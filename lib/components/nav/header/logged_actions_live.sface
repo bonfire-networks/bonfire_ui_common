@@ -45,6 +45,7 @@
     </span>
     <Bonfire.UI.Common.BadgeCounterLive
       id={:inbox}
+      feed_id={e(@current_user, :character, :inbox_id, nil)}
       class="absolute -right-2 indicator-item badge-sm badge -top-1 badge-primary !border-none"
     />
   </LiveRedirect>
@@ -61,6 +62,7 @@
     </span>
     <Bonfire.UI.Common.BadgeCounterLive
       id={:notifications}
+      feed_id={e(@current_user, :character, :notifications_id, nil)}
       class="absolute -right-2 indicator-item badge badge-sm -top-1 badge-primary !border-none"
     />
   </LiveRedirect>
