@@ -3,7 +3,7 @@
   phx-target="#smart_input"
   phx-value-component={@component}
   phx-value-opts={Jason.encode!(merge_as_map(%{}, @smart_input_opts))}
-  @click={"show_smart_input('#{@smart_input_opts[:prompt] || l("Compose")}')"}
+  @click.stop={"show_smart_input('#{@smart_input_opts[:prompt] || l("Compose")}')"}
   type="button"
   class={@class || "flex-row grow h-[40px] items-center normal-case gap-2 btn-sm btn btn-primary"}
 >

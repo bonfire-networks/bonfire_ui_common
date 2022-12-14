@@ -43,6 +43,7 @@ defmodule Bonfire.UI.Common.Notifications do
   def receive_flash(attrs, pid \\ self(), context \\ nil) do
     Bonfire.UI.Common.PersistentLive.maybe_send(context, {:notification, attrs}) ||
       maybe_send_update(pid, Bonfire.UI.Common.NotificationLive, :notification, attrs)
+
   end
 
   def receive_notification(attrs, socket \\ nil)
@@ -58,7 +59,6 @@ defmodule Bonfire.UI.Common.Notifications do
 
   def assign_notification(attrs, socket) do
     debug(attrs)
-
     {:noreply,
      socket
      |> assign(notification: attrs)

@@ -25,7 +25,8 @@ function sendNotification(title, message, url, icon) {
                 requireInteraction: false
             });
             console.debug("notification attempted...")
-
+            // Hide the notification after 5 seconds
+            setTimeout(n.close.bind(n), 2000); 
             if (url && url !="") {
                 n.onclick = function() {
                     window.location.href = url;

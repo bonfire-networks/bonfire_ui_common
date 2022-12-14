@@ -84,18 +84,18 @@
           <div
             phx-update="ignore"
             x-data="{
-          open: false,
-          close(focusAfter) {
-            if (! this.open) return
-            this.open = false
-            focusAfter && focusAfter.focus()
-          }
-        }"
+              open: false,
+              close(focusAfter) {
+                if (! this.open) return
+                this.open = false
+                focusAfter && focusAfter.focus()
+              }
+            }"
             x-on:keydown.escape.prevent.stop="close($refs.button)"
           >
-            <div @click="open = ! open" class="btn btn-ghost btn-sm text-[22px] btn-circle">
+            <button type="button" @click="open = ! open" class="btn btn-ghost btn-sm text-[22px] btn-circle">
               <Icon iconify="entypo:emoji-happy" class="w-4 h-4 text-base-content text-opacity-70" />
-            </div>
+            </button>
             <div
               x-cloak
               x-ref="panel"
@@ -103,7 +103,7 @@
               x-transition.origin.top.left
               x-on:click.outside="close($refs.button)"
               class={
-                "absolute z-50",
+                "absolute z-50 emoji-picker",
                 "bottom-10 left-3": @thread_mode == :flat,
                 "bottom-10 left-3": @thread_mode != :flat,
                 "!top-10 right-0 bottom-[auto]": @showing_within == :page
@@ -149,7 +149,7 @@
            }),
            do: l("Sending..."),
            else: l("Posting...")}
-        class="capitalize md:btn-sm justify-self-end btn w-full md:w-[8rem] btn-primary"
+        class="capitalize md:btn-sm rounded justify-self-end btn w-full md:w-[8rem] btn-primary"
       >
         {#if is_messaging?(%{
             page: @page,

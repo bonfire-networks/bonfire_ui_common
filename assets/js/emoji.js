@@ -36,8 +36,17 @@ EmojiHooks.EmojiPicker = {
         onEmojiSelect: function (emoji) {
           
           // Insert the emoji at the cursor position
-          const area = document.querySelector("#editor");
+          const area = document.querySelector(".composer");
+          
+          // if area is not focused, focus it
+          if (!area.matches(":focus")) {
+            area.focus();
+          }
+
           insertText(area, emoji.native + " ")
+
+          // close the emojipicker adding style="display: none;"
+          // document.querySelector(".emoji-picker").setAttribute("style", "display: none;")
         },
         data: async () => {
           const response = await fetch(

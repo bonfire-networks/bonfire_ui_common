@@ -6,12 +6,12 @@
       smart_input_fullscreen: false,
       smart_input_minimized: false,
       smart_input_as: 'floating',
+      composer: $refs.smart_input,
       show_smart_input(title) {
-        console.log('show_smart_input');
         if(title !==undefined){ this.smart_input_title_text = title }
-        console.log(this.smart_input_open);
+        this.composer.querySelector('textarea').focus()
         this.smart_input_open = true;
-        // console.log(this.smart_input_open);
+        this.composer.querySelector('textarea').focus()
         this.smart_input_minimized = false;
         #{if e(@smart_input_opts, :as, nil) == :modal, do: "this.smart_input_fullscreen = true;"}
       }
@@ -41,7 +41,8 @@
       class="fixed inset-0 bg-white/30"
     />
     <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
-    <div x-show="!smart_input_minimized" class="">
+    <div 
+      x-ref="smart_input" x-show="!smart_input_minimized" class="">
       <Bonfire.UI.Common.SmartInputLive
         without_sidebar={@without_sidebar}
         boundaries_modal_id={:modal_composer}

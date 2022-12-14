@@ -19,9 +19,60 @@ ComposerHooks.Composer = {
 
       const textarea = this.el.querySelector("textarea")
       const suggestions_menu = this.el.querySelector(".menu")
+      const container = document.querySelector("#smart_input");
 
 
 
+      setFileInput = function (data, input, name, defaultType = "image/jpeg") {
+        // console.log(data)
+        var split = data.toString().split(";base64,");
+        var type = data.type || defaultType;
+        var ext = type.split("/")[1];
+        // console.log(split)
+        file = new File([split[1] || data], name + "." + ext, {
+          type: type,
+        });
+        console.log(file);
+        let container = new DataTransfer();
+        container.items.add(file);
+        input.files = container.files;
+        var event = document.createEvent("HTMLEvents"); // bubble up to LV
+        event.initEvent("input", true, true);
+        input.dispatchEvent(event);
+      }
+
+      // Detect if the user is holding shift and the key is enter
+      textarea.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && e.shiftKey) {
+          // Prevent the default behavior
+          e.preventDefault();
+          return;
+        }
+      })
+
+      // Add a listener to the textarea to detect when the user paste an image
+      textarea.addEventListener("paste", (e) => {
+        // Get the clipboard data
+        const clipboardData = e.clipboardData || window.clipboardData;
+        // Get the image from the clipboard
+        const image = clipboardData.items[0].getAsFile();
+        const input = container.querySelector("input[type=file]");
+        // If the image is not null
+        if (image) {
+          setFileInput(image, input, "image")
+        }
+      })
+
+      // Add a listener to the textarea to detect when the user drag and drop an image
+      // textarea.addEventListener("drop", (e) => {
+      //   // Get the image from the clipboard
+      //   const image = e.dataTransfer.files[0];
+      //   const input = container.querySelector("input[type=file]");
+      //   // If the image is not null
+      //   if (image) {
+      //     setFileInput(image, input, "image")
+      //   }
+      // })
         
       suggestions_menu.addEventListener("click", (e) => {
         // get the data-id attribute from the button child element
