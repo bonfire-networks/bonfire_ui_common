@@ -1,3 +1,50 @@
+<div x-show="open_boundaries" class="p-3 bg-base-100">
+  <Dynamic.Component
+    :if={!is_messaging?(%{
+      page: @page,
+      showing_within: @showing_within,
+      create_object_type: @create_object_type
+    }) and module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
+    module={Bonfire.Boundaries.Web.SetBoundariesLive}
+    to_boundaries={@to_boundaries}
+    preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)}
+    to_circles={@to_circles}
+    open_boundaries={@open_boundaries}
+    showing_within={@showing_within}
+    create_object_type={@create_object_type}
+    thread_mode={@thread_mode}
+    boundaries_modal_id={@boundaries_modal_id}
+    context_id={@context_id}
+    hide_breakdown
+    setting_boundaries
+    click_override
+  />
+  <!-- activity_type_or_reply={Bonfire.UI.Common.SmartInputLive.activity_type_or_reply(%{
+            reply_to_id: @reply_to_id,
+            context_id: @context_id,
+            create_object_type: @create_object_type
+          })} -->
+</div>
+
+<!-- FIXME: select message recipients
+  <div
+    :if={@show_select_recipients ||
+      is_messaging?(%{
+        page: @page,
+        showing_within: @showing_within,
+        create_object_type: @create_object_type
+      })}
+    class="my-3"
+  >
+    <Bonfire.UI.Common.SelectRecipientsLive
+      preloaded_recipients={e(@preloaded_recipients, [])}
+      to_boundaries={@to_boundaries}
+      to_circles={@to_circles}
+      open_boundaries={@open_boundaries}
+      context_id={@context_id}
+    />
+  </div> -->
+
 <div x-show="!open_boundaries">
   <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
 
@@ -55,7 +102,6 @@
               x-show="open"
               x-transition.origin.top.left
               x-on:click.outside="close($refs.button)"
-              x-show="open"
               class={
                 "absolute z-50",
                 "bottom-10 left-3": @thread_mode == :flat,
@@ -69,16 +115,14 @@
           </div>
         </div>
 
-        <Bonfire.UI.Common.InputBoundariesLive
-          thread_mode={@thread_mode}
-          create_object_type={@create_object_type}
-          to_boundaries={@to_boundaries}
-          to_circles={@to_circles}
-          preloaded_recipients={e(@preloaded_recipients, [])}
-          showing_within={@showing_within}
-          open_boundaries={@open_boundaries}
-          show_select_recipients={@show_select_recipients}
-          boundaries_modal_id={@boundaries_modal_id}
+        <Dynamic.Component
+          :if={!is_messaging?(%{
+            page: @page,
+            showing_within: @showing_within,
+            create_object_type: @create_object_type
+          }) and module_enabled?(Bonfire.Boundaries.Web.SetBoundariesButtonLive)}
+          module={Bonfire.Boundaries.Web.SetBoundariesButtonLive}
+          preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)}
         />
 
         <!-- <div 
@@ -126,11 +170,17 @@
 
     <input type="hidden" name={:create_object_type} value={@create_object_type}>
 
+    <Bonfire.Boundaries.Web.BoundariesSelectionLive
+      to_boundaries={@to_boundaries}
+      to_circles={@to_circles}
+      thread_mode={@thread_mode}
+    />
+
     <input
       :for={circle <- @to_circles}
       type="hidden"
       name="to_circles[]"
-      label={if is_tuple(circle), do: elem(circle, 0)}
+      label={if is_tuple(circle), do: elem(circle, 0) |> e(..., :name, ...)}
       value={if is_tuple(circle), do: elem(circle, 1), else: circle}
     />
   </div>

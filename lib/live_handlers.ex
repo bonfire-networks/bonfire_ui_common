@@ -90,13 +90,13 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   end
 
   defp do_handle_info({{mod, name}, data}, socket) when is_atom(mod) do
-    debug("LiveHandler: handle_info with {{#{inspect(mod)}, #{inspect(name)}}, data}")
+    debug("LiveHandler: handle_info with {{#{mod}, #{inspect(name)}}, data}")
 
     mod_delegate(mod, :handle_info, [{name, data}], socket)
   end
 
   defp do_handle_info({info, data}, socket) when is_binary(info) do
-    debug("LiveHandler: handle_info with {#{inspect(info)}, data}")
+    debug("LiveHandler: handle_info with {#{info}, data}")
 
     case String.split(info, ":", parts: 2) do
       [mod, name] -> mod_delegate(mod, :handle_info, [{name, data}], socket)
@@ -105,7 +105,12 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   end
 
   defp do_handle_info({mod, data}, socket) when is_atom(mod) do
-    debug("LiveHandler: handle_info with {#{inspect(mod)}, data}")
+    debug("LiveHandler: handle_info with {#{mod}, data}")
+    mod_delegate(mod, :handle_info, [data], socket)
+  end
+
+  defp do_handle_info(%LiveSelect.ChangeMsg{field: mod} = data, socket) when is_atom(mod) do
+    debug("LiveHandler: handle_info with {#{mod}, data}")
     mod_delegate(mod, :handle_info, [data], socket)
   end
 
@@ -178,7 +183,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     # see also more assigns set in `LivePlugs.apply_undead_mounted`
   end
 
-  defp mod_delegate(mod, fun, args, socket) do
+  def mod_delegate(mod, fun, args, socket) do
     # debug("attempt delegating to #{inspect fun} in #{inspect mod}...")
     fallback = maybe_to_module(mod)
 

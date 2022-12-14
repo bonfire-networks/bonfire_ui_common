@@ -60,11 +60,12 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }"
     >
       <div :if={!@current_user} class="mt-3 max-w-[680px] mx-auto">
-        <Bonfire.UI.Common.GuestHeaderLive 
+        <Bonfire.UI.Common.GuestHeaderLive
           current_user={@current_user}
           current_account={@current_account}
-          page_title={@page_title} 
-          page={@page} />
+          page_title={@page_title}
+          page={@page}
+        />
       </div>
 
       <div class={
@@ -114,10 +115,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 <div
                   id="inner"
                   class={
-                    "bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)]": @current_user && !@without_sidebar
+                    "bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)]":
+                      @current_user && !@without_sidebar
                   }
+                >
+                  <div
+                    :if={@current_user && !@without_sidebar}
+                    class="sticky top-0 -mt-3 pt-3 bg-base-300 z-[99999999]"
                   >
-                  <div :if={@current_user && !@without_sidebar} class="sticky top-0 -mt-3 pt-3 bg-base-300 z-[99999999]">
                     <div class="flex flex-1 bg-base-100" :class="{'hidden': open_sidebar}">
                       <Dynamic.Component
                         module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}

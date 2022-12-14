@@ -69,6 +69,10 @@ defmodule Bonfire.UI.Common.NotificationLive do
     # |> debug
   end
 
+  def do_handle_event("click_away", _, socket) do
+    {:noreply, socket}
+  end
+
   def handle_event(
         action,
         attrs,

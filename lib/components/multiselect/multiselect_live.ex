@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.MultiselectLive do
-  use Bonfire.UI.Common.Web, :stateful_component
+  use Bonfire.UI.Common.Web, :stateless_component
   use Bonfire.Common.Utils
 
   prop form, :any, default: :multi_select
@@ -62,21 +62,4 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   defp prepare_entry(_, _) do
     nil
   end
-
-  def handle_event(
-        action,
-        attrs,
-        socket
-      ),
-      do:
-        Bonfire.UI.Common.LiveHandlers.handle_event(
-          action,
-          attrs,
-          socket,
-          __MODULE__
-          # &do_handle_event/3
-        )
-
-  def handle_info(info, socket),
-    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
 end

@@ -81,8 +81,11 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
      assign(
        socket,
        :to_boundaries,
-       clean_existing(e(socket.assigns, :to_boundaries, []), acl_id) ++
-         [{acl_id, e(params, "name", acl_id)}]
+       Bonfire.Boundaries.Web.SetBoundariesLive.set_clean_boundaries(
+         e(socket.assigns, :to_boundaries, []),
+         acl_id,
+         e(params, "name", acl_id)
+       )
      )}
   end
 
@@ -106,9 +109,18 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     handle_event("remove_boundary", attrs, socket)
   end
 
+  def do_handle_event(
+        "validate",
+        %{"_target" => ["multi_select", module], "multi_select" => data},
+        socket
+      ) do
+    debug(data, "multi_select")
+    Bonfire.UI.Common.LiveHandlers.mod_delegate(module, :handle_event, ["change", data], socket)
+  end
+
   # for uploads
-  def do_handle_event("validate", _params, socket) do
-    debug("validate: OK")
+  def do_handle_event("validate", params, socket) do
+    debug(params, "validate")
     {:noreply, socket}
   end
 
@@ -145,15 +157,6 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
 
   def reply_to_param(_) do
     nil
-  end
-
-  def clean_existing(to_boundaries, acl_id)
-      when acl_id in ["public", "local", "mentions"] do
-    Keyword.drop(to_boundaries, ["public", "local", "mentions"])
-  end
-
-  def clean_existing(to_boundaries, _) do
-    to_boundaries
   end
 
   def handle_event(
