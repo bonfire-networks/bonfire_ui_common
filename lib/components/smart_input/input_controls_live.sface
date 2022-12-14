@@ -66,14 +66,14 @@
 
         <div
           :if={@show_cw_toggle}
-          data-tip={l("Add a content warning")}
-          class="relative z-30 flex items-center tooltip tooltip-right"
+          title={l("Add a content warning")}
+          class="relative z-30 flex items-center"
         >
           <button
             :if={Config.get([:ui, :smart_input, :cw], []) == true}
             type="button"
             @click="title_open = !title_open"
-            :class="{'border-base-content/30' : title_open}"
+            :class="{'btn-active' : title_open}"
             class="flex items-center btn btn-ghost btn-sm btn-circle"
           >
             <span class="text-xs font-medium text-base-content text-opacity-70">{l("CW")}</span>
@@ -93,7 +93,7 @@
             }"
             x-on:keydown.escape.prevent.stop="close($refs.button)"
           >
-            <button type="button" @click="open = ! open" class="btn btn-ghost btn-sm text-[22px] btn-circle">
+            <button title={l "Insert emoji"} type="button" @click="open = ! open" class="btn btn-ghost btn-sm text-[22px] btn-circle">
               <Icon iconify="entypo:emoji-happy" class="w-4 h-4 text-base-content text-opacity-70" />
             </button>
             <div

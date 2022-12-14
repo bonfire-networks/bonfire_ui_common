@@ -29,9 +29,9 @@
     x-show="smart_input_open"
     class="smart_input_container"
     :class="{
-    'fixed visible max-w-full w-[40rem] bg-base-200 bottom-0 z-[9999] transition-all shadow-xl right-0 md:right-4 left-0 md:left-auto overflow-x-auto': smart_input_as != 'modal' && smart_input_fullscreen !=true,
+    'fixed visible max-w-full w-[36rem] bg-base-200 bottom-0 z-[9999] transition-all shadow-xl right-0 md:right-4 left-0 md:left-auto overflow-x-auto': smart_input_as != 'modal' && smart_input_fullscreen !=true,
     'fixed w-full max-w-[500px] top-0 md:top-auto left-0 md:left-1/2 md:-ml-[250px] bottom-0 md:bottom-auto right-0 md:right-auto rounded-xl bg-base-100 overflow-x-auto':  smart_input_as == 'modal' || smart_input_fullscreen==true,
-    'hidden md:block w-[24rem] bottom-0': smart_input_minimized
+    'hidden md:block !w-[24rem] bottom-0': smart_input_minimized
     }"
     x-on:keydown.escape.prevent.stop="smart_input_minimized = true"
   >

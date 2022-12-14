@@ -1,6 +1,6 @@
 <header
   x-cloak
-  class="relative flex flex-row w-full px-3 py-1.5 rounded-t bg-base-content/5 items-center flex-align-items-stretch flex-nowrap"
+  class="relative flex flex-row w-full px-3 py-1.5 rounded-t-lg bg-base-content/5 items-center flex-align-items-stretch flex-nowrap"
 >
   <span
     @click="smart_input_minimized = ! smart_input_minimized"
