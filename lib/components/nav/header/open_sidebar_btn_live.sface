@@ -2,7 +2,7 @@
   <button
     @click="open_sidebar = ! open_sidebar"
     type="button"
-    class="flex -my-2 rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[60px]"
+    class="flex rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[53px]"
     data-id="option-menu-button"
     aria-expanded="true"
     aria-haspopup="true"

@@ -1,11 +1,11 @@
 <div
   role="banner"
-  class="flex items-center h-[48px] rounded-t flex-1 w-full bg-base-content/10 px-4"
+  class="flex items-center h-[42px] rounded-t flex-1 w-full bg-base-content/10 px-4"
 >
   <div class="flex items-center w-full">
-    <div class="flex items-center flex-1 w-full justify-between">
+    <div class="flex items-center justify-between flex-1 w-full">
       <span
-        class="max-w-[200px] md:max-w-max text-sm md:text-base font-semibold truncate text-ellipsis"
+        class="max-w-[200px] md:max-w-max text-sm  font-semibold truncate text-ellipsis"
         :if={not is_nil(@page_title)}
       >{@page_title}</span>
       <!-- <div class="breadcrumbs">

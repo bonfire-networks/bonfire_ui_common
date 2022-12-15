@@ -1,5 +1,6 @@
 <div
   id={@id}
+  :if={@show}
   class={
     "#{@modal_class} bg-base-300",
     "invisible h-0": !@show,
@@ -9,7 +10,7 @@
 >
   <div
     role="banner"
-    class="flex before sticky top-3 bg-base-100 z-50 items-center h-[48px] rounded-t flex-1 w-full px-4 mt-3"
+    class="flex before sticky top-3 bg-base-100 z-50 items-center h-[42px] rounded-t flex-1 w-full px-4 mt-3"
   >
     <div class="flex items-center w-full">
       <div class="flex items-center flex-1 w-full gap-2">
@@ -22,11 +23,11 @@
         >
           <Icon outline="ChevronLeft" class="w-4 h-4 text-base-content" />
         </button>
-        <span class="max-w-[200px] md:max-w-max text-sm md:text-base font-semibold truncate text-ellipsis">{l("Discussion")}</span>
+        <span class="max-w-[200px] md:max-w-max text-sm font-semibold truncate text-ellipsis">{l("Discussion")}</span>
       </div>
     </div>
   </div>
-  <div :if={@show} class="relative z-30">
+  <div  class="relative z-30">
     <div
       class="p-0 z-[910] max-w-screen-md mx-auto modal_invisible relative"
       data-id="modal-contents"

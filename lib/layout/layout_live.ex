@@ -69,7 +69,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       </div>
 
       <div class={
-        "w-full mx-auto grid max-w-[1260px] gap-4 widget",
+        "w-full mx-auto grid max-w-[1260px] gap-0 md:gap-4 widget",
         "grid-cols-1 content-start": @without_sidebar && @without_widgets,
         "grid-cols-1": !@current_user,
         "grid-cols-1 md:grid-cols-1 content-start":
@@ -115,14 +115,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 <div
                   id="inner"
                   class={
-                    "bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)]":
+                    "mt-[53px] md:mt-0 bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)] pb-[1px]":
                       @current_user && !@without_sidebar
                   }
-                >
+                  >
                   <div
                     :if={@current_user && !@without_sidebar}
-                    class="sticky top-0 -mt-3 pt-3 bg-base-300 z-[99999999]"
-                  >
+                    class="sticky hidden md:block top-0  md:pt-3 bg-base-300 z-[99999999]"
+                    >
                     <div class="flex flex-1 bg-base-100" :class="{'hidden': open_sidebar}">
                       <Dynamic.Component
                         module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
@@ -153,7 +153,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           id={:persistent}
           :if={@current_user}
           sticky
-          container={{:div, class: ""}}
+          container={{:div, class: "order-first md:order-none md:static fixed left-0 right-0 top-0 z-[9999999999999999999]"}}
           session={%{
             "root_flash" => @flash,
             "context" => %{

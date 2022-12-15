@@ -1,5 +1,5 @@
 <div data-id="mobile_nav" class="md:hidden" x-data="{hovered_apps: false}">
-  <button
+  <!-- <button
     @click="open_sidebar = ! open_sidebar"
     @mouseenter="hovered_apps = true"
     @mouseleave="hovered_apps = false"
@@ -11,7 +11,7 @@
   >
     <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
     <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
-  </button>
+  </button> -->
   <div
     x-cloak
     x-show="open_sidebar"
@@ -19,7 +19,7 @@
     class="fixed top-[0] right-0 bottom-0 left-0 z-[200] overflow-hidden"
   >
     <div class="inset-0 h-full overflow-hidden">
-      <div @click="open_sidebar = false" class="absolute inset-0 overflow-hidden bg-base-300/30" />
+      <div @click="open_sidebar = false" class="absolute inset-0 overflow-hidden bg-base-content/30" />
       <section class="h-full" aria-labelledby="slide-over-heading">
         <div
           class="relative w-3/4 h-full overflow-auto md:w-80 bg-base-200"
@@ -114,9 +114,10 @@
             <nav
               :if={is_list(@nav_items) and @nav_items != []}
               role="navigation"
+              class="mx-3"
               aria-label={l("Extension navigation")}
-            >
-              <div class="pb-3 mt-4 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Menu")}</div>
+              > 
+              <div class="pb-3 mt-4 ml-1.5 text-sm font-medium tracking-wider text-base-content/60">{l("Menu")}</div>
               <ul class="menu menu-compact">
                 {#for nav <- @nav_items}
                   {#case nav}
@@ -143,10 +144,10 @@
               </ul>
             </nav>
 
-            <nav role="navigation" aria-label={l("Extension navigation")}>
-              <div class="pb-3 mt-4 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
-              <Bonfire.UI.Common.ExploreNavLive page={@page} selected_tab={@selected_tab} />
-            </nav>
+              <!-- <nav role="navigation" aria-label={l("Extension navigation")}>
+                <div class="pb-3 mt-4 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
+                <Bonfire.UI.Common.ExploreNavLive page={@page} selected_tab={@selected_tab} />
+              </nav> -->
 
             <!-- 
             <ul class="p-2 space-y-2 border-t menu border-base-content/10">
@@ -186,70 +187,4 @@
       </section>
     </div>
   </div>
-</div>
-
-<div
-  data-id="desktop_logo"
-  class="hidden md:flex items-center place-content-center h-[56px] mx-4"
-  x-data="{hovered_apps: false}"
->
-  <Bonfire.UI.Common.LogoLinkLive href="/dashboard" />
-  <!-- <button
-    @click="open_sidebar = ! open_sidebar"
-    @mouseenter="hovered_apps = true"
-    @mouseleave="hovered_apps = false"
-    type="button"
-    class="flex -my-2  rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[56px] w-[65px]"
-    data-id="option-menu-button"
-    aria-expanded="true"
-    aria-haspopup="true"
-    >
-    <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
-    <Icon iconify="mdi:dots-grid" class="w-5 h-5" />
-  </button>
-
-  <div
-    x-cloak
-    x-show="open_sidebar"
-    @keydown.window.escape="open_sidebar = false;"
-    class="fixed top-[0] right-0 bottom-0 left-0 z-[200] overflow-hidden"
-    >
-    <div class="inset-0 h-full overflow-hidden">
-      <div
-        @click="open_sidebar = false"
-        class="absolute inset-0 overflow-hidden bg-base-300/30"
-      />
-      <section class="h-full" aria-labelledby="slide-over-heading">
-        <div
-          class="relative w-3/4 p-4 overflow-auto rounded-tl-none shadow-lg rounded-xl md:w-80 bg-neutral"
-          x-description="Slide-over panel, show/hide based on slide-over state."
-          x-show="open_sidebar"
-          x-transition:enter="transform transition ease-in-out duration-150 sm:duration-200"
-          x-transition:enter-start="-translate-x-full"
-          x-transition:enter-end="-translate-x-0"
-          x-transition:leave="transform transition ease-in-out duration-150 sm:duration-200"
-          x-transition:leave-start="-translate-x-0"
-          x-transition:leave-end="-translate-x-full"
-        >
-          <div class="flex items-center gap-2">
-            <button
-              @click="open_sidebar = ! open_sidebar"
-              @mouseenter="hovered_apps = true"
-              @mouseleave="hovered_apps = false"
-              type="button"
-              class="btn btn-ghost btn-square"
-              data-id="option-menu-button"
-              aria-expanded="true"
-              aria-haspopup="true"
-            >
-              <span class="sr-only">{l("Open_extensions_sidebar options")}</span>
-              <Icon iconify="mdi:dots-grid" class="w-5 h-5" />
-            </button>
-            <div class="text-sm font-medium tracking-wider text-base-content/60">{l("Explore extensions")}</div>
-          </div>
-          <Bonfire.UI.Common.ExploreNavLive page={@page} selected_tab={@selected_tab} />
-        </div>
-      </section>
-    </div>
-  </div> -->
 </div>

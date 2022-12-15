@@ -5,24 +5,31 @@
     open_widgets_sidebar: false
   }"
 >
+
+<div class="flex md:hidden items-center h-[53px] order-first bg-base-300/70 backdrop-blur-md" :class="{'w-full': open_sidebar}">
+  <Bonfire.UI.Common.OpenSidebarBtnLive />
+  <span class="text-sm font-semibold truncate text-ellipsis">{@page_title}</span>
+</div>
+
+  
   <div
     :if={!@without_widgets}
     data-id="right_nav_and_widgets"
     class={
-      "order-last top-0 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-1 auto-rows-min items-start",
+      "order-last top-3 mt-3 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start",
       "!flex items-center justify-between bg-base-100 mt-3 rounded shadow": @without_sidebar
     }
     :class="{
       'sticky hidden lg:grid': !open_widgets_sidebar,
       'absolute lg:sticky lg:grid right-0 lg:right-auto mt-0': open_widgets_sidebar,
     }"
-  >
+    >
     <Bonfire.UI.Common.LogoLinkLive :if={@without_sidebar} with_name />
 
     <div
       data-id="user_actions"
       :if={@nav_header != false}
-      class="w-full h-[60px] overflow-visible flex place-content-center"
+      class="flex w-full overflow-visible place-content-center"
     >
       {#case if is_nil(current_user(@__context__)),
           do: Bonfire.UI.Common.GuestActionsLive,
@@ -51,7 +58,7 @@
 
     <div
       data-id="secondary_sidebar_widgets"
-      class="hidden md:block overflow-x-hidden overflow-y-auto"
+      class="hidden overflow-x-hidden overflow-y-auto md:block"
     >
       <!-- FIXME: use the widget system instead (see below) -->
       <Dynamic.Component
@@ -95,11 +102,11 @@
     </div>
   </div>
 
-  <div
+  <!-- <div
     :if={!@without_widgets}
     data-id="open_widgets_sidebar"
     class="absolute top-0 right-0 flex lg:hidden flex-1 items-center justify-end gap-4 z-[999]"
-  >
+    >
     <button
       @click="open_widgets_sidebar = ! open_widgets_sidebar"
       type="button"
@@ -111,8 +118,12 @@
       <span class="sr-only">{l("Open extensions navigation sidebar")}</span>
       <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
     </button>
-  </div>
+  </div> -->
 
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@root_flash} />
   <Bonfire.UI.Common.ReusableModalLive form_id="boundary_form" id="persistent_modal" />
 </div>
+  <Bonfire.UI.Common.MobileMenuLive 
+    homepage_link={"/"}
+    nav_items={Bonfire.Common.ExtensionModule.default_nav(:bonfire_ui_social)}
+  />

@@ -35,7 +35,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
      |> assign_new(:without_sidebar, fn -> nil end)
      |> assign_new(:without_widgets, fn -> nil end)
      |> assign_new(:nav_header, fn -> nil end)
-     #  |> assign_new(:nav_items, fn -> nil end)
+    #  |> assign_new(:nav_items, fn -> nil end)
      |> assign_new(:sidebar_widgets, fn -> [] end)
      #  |> assign_new(:page_header_aside, fn -> nil end)
      #  |> assign_new(:custom_page_header, fn -> nil end)

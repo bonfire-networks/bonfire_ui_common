@@ -9,7 +9,7 @@
         component={component}
         class={@class}
         smart_input_opts={@smart_input_opts}
-        icon="gridicons:create"
+        icon="mdi:pencil-outline"
       />
 
       <SmartInputButtonLive
@@ -19,7 +19,7 @@
           Bonfire.UI.Social.WritePostContentLive}
         smart_input_opts={[prompt: l("Compose")]}
         class={@class}
-        icon="heroicons-solid:pencil-alt"
+        icon="mdi:pencil-outline"
       />
   {/case}
 </div>

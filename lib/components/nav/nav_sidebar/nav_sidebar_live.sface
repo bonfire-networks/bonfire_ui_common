@@ -1,16 +1,13 @@
 <div
   data-id="nav_sidebar"
-  class="sticky top-0 self-start order-first hidden w-full md:block"
-  :class="{'!block': open_sidebar}"
+  class="sticky self-start order-first hidden w-full mt-3 top-3 md:block"
 >
-  <div class="flex items-center pl-0.5 h-[60px]" :class="{'w-full': open_sidebar}">
-    <Bonfire.UI.Common.OpenSidebarBtnLive />
-
+  <div class="flex items-center pl-0.5">
     <div data-id="logo" class="items-center place-content-center">
       <Bonfire.UI.Common.LogoLinkLive href="/dashboard" />
     </div>
 
-    <div class="hidden w-full ml-4 md:block" :class="{'!block': open_sidebar}">
+    <div class="hidden w-full ml-4 md:block">
       <Dynamic.Component
         :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
         module={Bonfire.Search.Web.FormLive}
@@ -37,7 +34,7 @@
         size="40"
         user={current_user(@__context__)}
       />
-      <div class="flex items-start flex-col">
+      <div class="flex flex-col items-start">
         <div class="-ml-0.5 font-semibold text-sm truncate text-base-content">{e(current_user(@__context__), :profile, :name, l("Me"))}</div>
         <div
           :if={e(current_user(@__context__), :character, :username, nil)}
