@@ -83,6 +83,12 @@ defmodule Bonfire.UI.Common.PersistentLive do
     |> Map.put(:__context__, Map.merge(assigns[:__context__] || %{}, %{sticky: true}))
   end
 
+  def maybe_send(%{assigns: %{__context__: context}} = _socket, assigns),
+    do: maybe_send(context, assigns)
+
+  def maybe_send(%{__context__: context} = _socket_assigns, assigns),
+    do: maybe_send(context, assigns)
+
   def maybe_send(context, assigns) do
     debug(assigns, "send persistent assigns")
 

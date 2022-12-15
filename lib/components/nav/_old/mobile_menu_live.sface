@@ -105,26 +105,6 @@
                           {l("Logout")}
                         </LiveRedirect>
                       </li>
-                      <li class="">
-                        <Form for={:feedback} action={~p"/session_redirect"}>
-                          <!-- opts={"target": "_blank"} -->
-                          <input type="hidden" name="to" value={~p"/write"}>
-                          <input
-                            type="hidden"
-                            name="smart_input_text"
-                            value={Settings.get(
-                              [:ui, :feedback_post_template],
-                              "I have a suggestion for Bonfire: \n\n@BonfireBuilders #bonfire_feedback",
-                              @__context__
-                            )}
-                          />
-                          <input type="hidden" name="create_object_type" value="task">
-                          <button class="flex items-start gap-2 text-sm text-base-content/80">
-                            <Icon iconify="ic:round-feedback" class="w-5 h-5" />
-                            {l("Share feedback")}
-                          </button>
-                        </Form>
-                      </li>
                     {/if}
                   </ul>
                 </div>

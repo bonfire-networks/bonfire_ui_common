@@ -41,8 +41,7 @@
       class="fixed inset-0 bg-white/30"
     />
     <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
-    <div 
-      x-ref="smart_input" x-show="!smart_input_minimized" class="">
+    <div x-ref="smart_input" x-show="!smart_input_minimized" class="">
       <Bonfire.UI.Common.SmartInputLive
         without_sidebar={@without_sidebar}
         boundaries_modal_id={:modal_composer}

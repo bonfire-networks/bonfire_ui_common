@@ -104,7 +104,10 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   end
 
   def set_smart_input_text(socket, text \\ "\n") do
-    maybe_push_event(socket, "smart_input:set_body", %{text: text})
+    # TODO: only trigger if using Quill as editor
+    # maybe_push_event(socket, "smart_input:set_body", %{text: text})
+    set(socket, smart_input_opts: [text: text, open: true])
+    socket
   end
 
   def reset_input(%{assigns: %{showing_within: :thread}} = socket) do

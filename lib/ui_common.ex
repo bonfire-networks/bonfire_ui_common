@@ -903,7 +903,6 @@ defmodule Bonfire.UI.Common do
     )
 
     Phoenix.LiveView.put_flash(socket, type, message)
-
   end
 
   def assign_flash(%Plug.Conn{} = conn, type, message, assigns, pid) do
@@ -913,7 +912,6 @@ defmodule Bonfire.UI.Common do
     |> Plug.Conn.fetch_session()
     |> Phoenix.Controller.fetch_flash()
     |> Phoenix.Controller.put_flash(type, message)
-    
   end
 
   def assign_flash(_, type, message, assigns, pid) do

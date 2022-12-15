@@ -105,10 +105,9 @@
               <div class="ml-3 w-0 flex-1 pt-0.5">
                 <div data-id="content" class="text-sm text-gray-500">{markdown(error)}</div>
 
-                <!-- <button class="mt-2 normal-case btn btn-sm btn-error" :on-click="Bonfire.Social.Posts:write_error">{l "Share feedback"}</button> -->
                 <Bonfire.UI.Common.FeedbackButtonLive
-                  text={error_template(%{flash: @flash, root_flash: @root_flash, error: @error, context: @__context__})}
                   class="mt-2 normal-case btn btn-sm btn-error"
+                  event="Bonfire.Social.Posts:write_error"
                 />
               </div>
               <div :if={socket_connected?(@socket)} class="flex flex-shrink-0 ml-4 h-5">
