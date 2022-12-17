@@ -1,7 +1,7 @@
-<div :if={!@current_account} class="flex items-center gap-2">
-  <LiveRedirect to={path(:login, :index)} class="normal-case btn btn-sm">{l("Log in")}</LiveRedirect>
+<div :if={!@current_account} class="flex items-center gap-4">
+  <LiveRedirect to={path(:login, :index)} class="normal-case rounded btn-sm btn btn-ghost">{l("Log in")}</LiveRedirect>
 
   {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-    <LiveRedirect to={path(:signup)} class="normal-case btn btn-sm">{l("Sign up")}</LiveRedirect>
+    <LiveRedirect to={path(:signup)} class="normal-case rounded btn btn-sm btn-primary">{l("Sign up")}</LiveRedirect>
   {/if}
 </div>

@@ -5,6 +5,5 @@
   |> e(:edges, [])}
   {#match []}
   {#match pins}
-    <div :if={@title} class="mb-3 text-lg font-medium tracking-wide text-base-content">{@title}</div>
-    <Bonfire.UI.Common.PinnedCarouselLive pins={pins} />
+    <Bonfire.UI.Common.PinnedCarouselLive title={@title} pins={pins} />
 {/case}

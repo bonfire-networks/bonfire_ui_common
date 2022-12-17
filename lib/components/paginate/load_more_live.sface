@@ -18,7 +18,7 @@
   </a>
   <a
     href={"?#{@live_handler}[after]=" <> unwrap(e(@page_info, :end_cursor, "unknown"))}
-    class="text-underline"
+    class="normal-case rounded btn btn-sm btn-outline opacity-70"
     x-show="!show"
   >
     {l("Next page")}

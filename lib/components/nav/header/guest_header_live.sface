@@ -1,13 +1,15 @@
-<div class="flex h-[56px] w-full px-4 py-2 mx-3 items-center justify-between  rounded-md shadow lg:mx-auto bg-base-100">
+<div class="flex h-[56px] w-full mb-4 py-2 items-center justify-between lg:mx-auto">
   <div class="flex items-center flex-1 w-full gap-3">
-    <Bonfire.UI.Common.OpenSidebarBtnLive />
-
     <Bonfire.UI.Common.LogoLinkLive with_name />
 
-    <!-- <ul class="hidden text-sm md:flex menu menu-horizontal">
+    <ul class="hidden text-sm font-medium md:flex menu menu-horizontal">
+      <li><a class="">About</a></li>
       <li><a>Profile directory</a></li>
-      <li><a>About</a></li>
-    </ul> -->
+      <li><a>Collections</a></li>
+      <li><a>Contact us</a></li>
+    </ul>
+  
+  
   </div>
 
   <Bonfire.UI.Common.GuestActionsLive />

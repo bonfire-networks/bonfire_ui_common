@@ -1,6 +1,6 @@
 <Bonfire.UI.Common.WidgetBlockLive
   widget_title={@widget_title}
-  class="relative w-full mx-auto rounded bg-base-100"
+  class=""
 >
   <div class="p-2 prose-sm">
     {templated_or_remote_markdown(e(@text, "text goes here"), @info)}
