@@ -77,15 +77,6 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     maybe_apply(Bonfire.Boundaries.LiveHandler, :handle_event, [action, params, socket])
   end
 
-  def do_handle_event(
-        "validate",
-        %{"_target" => ["multi_select", module], "multi_select" => data},
-        socket
-      ) do
-    debug(data, "multi_select")
-    Bonfire.UI.Common.LiveHandlers.mod_delegate(module, :handle_event, ["change", data], socket)
-  end
-
   # for uploads
   def do_handle_event("validate", params, socket) do
     debug(params, "validate")

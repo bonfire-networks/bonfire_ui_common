@@ -135,6 +135,41 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     {:noreply, assign_global(socket, attrs)}
   end
 
+  # helper for when a user selects an option in `LiveSelect`
+  defp do_handle_event(
+         action,
+         %{"_target" => ["multi_select", module], "multi_select" => params},
+         socket
+       )
+       when action in ["select", "change", "validate", "multi_select"] do
+    debug(
+      params,
+      "try to delegate to `#{module}` (should be the module/component that is handling this multi_select)"
+    )
+
+    input_name = module <> "_text_input"
+
+    case params do
+      %{^module => "", ^input_name => _} ->
+        {:noreply, socket}
+
+      %{^module => data, ^input_name => text} ->
+        with {:ok, data} <- Jason.decode(data) do
+          mod_delegate(module, :handle_event, ["multi_select", %{text: text, data: data}], socket)
+        else
+          e ->
+            error(e)
+
+            mod_delegate(
+              module,
+              :handle_event,
+              ["multi_select", %{text: text, data: data}],
+              socket
+            )
+        end
+    end
+  end
+
   defp do_handle_event(event, attrs, socket) when is_binary(event) do
     # debug(handle_event: event)
     case String.split(event, ":", parts: 2) do
