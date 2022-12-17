@@ -56,18 +56,19 @@
   <div role="tablist" class="dots" />
 </section> -->
 
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/css/splide.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/js/splide.min.js" />
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/css/splide.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.0.7/dist/js/splide.min.js"></script>
- 
 <style>
-    .splide__pagination__page.is-active {
-        background: #333;
-    }
+  .splide__pagination__page.is-active {
+  background: #333;
+  }
 </style>
- 
-<div
-    x-data="{
+
+<div x-data="{
         init() {
             new Splide(this.$refs.splide, {
                 perPage: 3,
@@ -79,73 +80,69 @@
                 },
             }).mount()
         },
-    }"
->
-    <section x-ref="splide" class="splide" aria-label="pinned items">
+    }">
+  <section x-ref="splide" class="splide" aria-label="pinned items">
+    <div class="flex justify-between pb-2 mb-6 border-b border-base-content/10">
+      <div
+        :if={@title}
+        class="text-xs font-medium tracking-wider uppercase text-base-content/70 text-base-content"
+      >{@title}</div>
+      <div class="flex gap-3 splide__arrows">
+        <button class="splide__arrow splide__arrow--prev !static !bg-base-content/5">
+          <Icon iconify="heroicons:arrow-long-right-20-solid" class="w-5 h-5" />
+        </button>
+        <button class="splide__arrow splide__arrow--next !static !bg-base-content/5">
+          <Icon iconify="heroicons:arrow-long-right-20-solid" class="w-5 h-5" />
+        </button>
+      </div>
+    </div>
 
-        <div class="flex justify-between pb-2 mb-6 border-b border-base-content/10 ">
-          <div :if={@title} class="text-xs font-medium tracking-wider uppercase text-base-content/70 text-base-content">{@title}</div>
-          <div class="flex gap-3 splide__arrows" >
-            <button class="splide__arrow splide__arrow--prev !static !bg-base-content/5">
-                  <Icon iconify="heroicons:arrow-long-right-20-solid" class="w-5 h-5" />
-
-            </button>
-            <button class="splide__arrow splide__arrow--next !static !bg-base-content/5">
-                  <Icon iconify="heroicons:arrow-long-right-20-solid" class="w-5 h-5" />
-
-            </button>
-          </div>
-        </div>
-        
-
-
-        <div class="splide__track">
-            <ul class="items-start splide__list">
-              {#for %{edge: %{object: pin}} <- @pins}
-                {#case pin}
-                  {#match %{post_content: %{id: _}}}
-                    <li class="flex flex-col items-center justify-center pb-8 splide__slide">
-                      <LiveRedirect
-                        to={path(pin)}
-                        class="flex flex-col w-full gap-3">
-                        <div 
-                          style={"background-image: url(https://picsum.photos/200/300)"}
-                          class="bg-center mx-auto bg-no-repeat bg-cover rounded h-[180px] bg-base-content/5 w-full">
-                        </div>
-                        <div class="text-base font-medium tracking-wide line-clamp-2">{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
-                            rich(e(pin, :post_content, :html_body, ""))}</div>
-                        <!-- <LiveRedirect
+    <div class="splide__track">
+      <ul class="items-start splide__list">
+        {#for %{edge: %{object: pin}} <- @pins}
+          {#case pin}
+            {#match %{post_content: %{id: _}}}
+              <li class="flex flex-col items-center justify-center pb-8 splide__slide">
+                <LiveRedirect to={path(pin)} class="flex flex-col w-full gap-3">
+                  <div
+                    style="background-image: url(https://picsum.photos/200/300)"
+                    class="bg-center mx-auto bg-no-repeat bg-cover rounded h-[180px] bg-base-content/5 w-full"
+                  >
+                  </div>
+                  <div class="text-base font-medium tracking-wide line-clamp-2">{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
+                      rich(e(pin, :post_content, :html_body, ""))}</div>
+                  <!-- <LiveRedirect
                           to={path(pin)}
                           class="text-lg leading-[1.5rem] font-bold tracking-wider link link-hover"
                         ></LiveRedirect> -->
-                        <!-- <div class="">{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
+                  <!-- <div class="">{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
                           rich(e(pin, :post_content, :html_body, ""))}</div> -->
-                        <!-- <div
+                  <!-- <div
                           :if={e(pin, :post_content, :name, nil) ||
                             (e(pin, :name, nil) && e(pin, :post_content, :html_body, nil))}
                           class="mt-2 text-sm text-base-content/80 line-clamp-3"
                         >{rich(e(pin, :post_content, :html_body, nil))}</div> -->
-                      </LiveRedirect>
-                    </li>
-                  {#match _}
-                    <li class="flex flex-col items-center justify-center pb-8 splide__slide">>
-                      <div class="flex items-center gap-2">
-                        <LiveRedirect to={path(pin)} class="flex-1 text-sm font-semibold link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
-                        </LiveRedirect>
-                      </div>
-                      <div class="flex items-center gap-2 mt-4">
-                        <div class="flex flex-1 w-full h-3 text-xs rounded-full bg-base-content/10">
-                          <div
-                            style="width: 0%"
-                            class="flex flex-col justify-center shadow-none bg-success whitespace-nowrap"
-                          />
-                        </div>
-                        <div class="text-xs font-medium text-base-content/80">0 of 3</div>
-                      </div>
-                    </li>
-                {/case}
-              {/for}
-            </ul>
-        </div>
-    </section>
+                </LiveRedirect>
+              </li>
+            {#match _}
+              <li class="flex flex-col items-center justify-center pb-8 splide__slide">>
+                <div class="flex items-center gap-2">
+                  <LiveRedirect to={path(pin)} class="flex-1 text-sm font-semibold link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
+                  </LiveRedirect>
+                </div>
+                <div class="flex items-center gap-2 mt-4">
+                  <div class="flex flex-1 w-full h-3 text-xs rounded-full bg-base-content/10">
+                    <div
+                      style="width: 0%"
+                      class="flex flex-col justify-center shadow-none bg-success whitespace-nowrap"
+                    />
+                  </div>
+                  <div class="text-xs font-medium text-base-content/80">0 of 3</div>
+                </div>
+              </li>
+          {/case}
+        {/for}
+      </ul>
+    </div>
+  </section>
 </div>

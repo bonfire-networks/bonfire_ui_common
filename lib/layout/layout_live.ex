@@ -59,7 +59,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
           open_sidebar: false
         }"
     >
-      <div :if={!@current_user} class="mx-auto max-w-[1260px] pt-3 sticky top-0 bg-base-300 z-[99999999999999999999999999999]">
+      <div
+        :if={!@current_user}
+        class="mx-auto max-w-[1260px] pt-3 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
+      >
         <Bonfire.UI.Common.GuestHeaderLive
           current_user={@current_user}
           current_account={@current_account}

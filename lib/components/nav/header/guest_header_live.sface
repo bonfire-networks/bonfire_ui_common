@@ -8,8 +8,6 @@
       <li><a>Collections</a></li>
       <li><a>Contact us</a></li>
     </ul>
-  
-  
   </div>
 
   <Bonfire.UI.Common.GuestActionsLive />

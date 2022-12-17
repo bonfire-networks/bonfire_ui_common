@@ -34,7 +34,7 @@
       <div :if={!@no_actions} class="modal-action">
         <div phx-click="close" phx-target={"[id='#{@id}']"}>
           <#slot {@cancel_btn}>
-            <button class={@cancel_btn_class || "btn btn-ghost rounded btn-sm normal-case"} type="button">{l("Cancel")}</button>
+            <button class={@cancel_btn_class || "btn btn-ghost rounded btn-sm normal-case"} type="button">{l("Close")}</button>
           </#slot>
         </div>
         <#slot {@action_btns} />
