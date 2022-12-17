@@ -5,13 +5,14 @@
     open_widgets_sidebar: false
   }"
 >
+  <div
+    class="flex md:hidden items-center h-[53px] order-first bg-base-300/70 backdrop-blur-md"
+    :class="{'w-full': open_sidebar}"
+  >
+    <Bonfire.UI.Common.OpenSidebarBtnLive />
+    <span class="text-sm font-semibold truncate text-ellipsis">{@page_title}</span>
+  </div>
 
-<div class="flex md:hidden items-center h-[53px] order-first bg-base-300/70 backdrop-blur-md" :class="{'w-full': open_sidebar}">
-  <Bonfire.UI.Common.OpenSidebarBtnLive />
-  <span class="text-sm font-semibold truncate text-ellipsis">{@page_title}</span>
-</div>
-
-  
   <div
     :if={!@without_widgets}
     data-id="right_nav_and_widgets"
@@ -23,7 +24,7 @@
       'sticky hidden lg:grid': !open_widgets_sidebar,
       'absolute lg:sticky lg:grid right-0 lg:right-auto mt-0': open_widgets_sidebar,
     }"
-    >
+  >
     <Bonfire.UI.Common.LogoLinkLive :if={@without_sidebar} with_name />
 
     <div
@@ -123,7 +124,7 @@
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@root_flash} />
   <Bonfire.UI.Common.ReusableModalLive form_id="boundary_form" id="persistent_modal" />
 </div>
-  <Bonfire.UI.Common.MobileMenuLive 
-    homepage_link={"/"}
-    nav_items={Bonfire.Common.ExtensionModule.default_nav(:bonfire_ui_social)}
-  />
+<Bonfire.UI.Common.MobileMenuLive
+  homepage_link="/"
+  nav_items={Bonfire.Common.ExtensionModule.default_nav(:bonfire_ui_social)}
+/>

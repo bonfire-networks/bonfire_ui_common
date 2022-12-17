@@ -64,49 +64,17 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
      )}
   end
 
-  def do_handle_event("open_boundaries", _params, socket) do
-    debug("open_boundaries")
-    {:noreply, assign(socket, :open_boundaries, true)}
-  end
-
-  def do_handle_event("close_boundaries", _params, socket) do
-    debug("close_boundaries")
-    {:noreply, assign(socket, :open_boundaries, false)}
-  end
-
-  def do_handle_event("select_boundary", %{"id" => acl_id} = params, socket) do
-    debug(acl_id, "select_boundary")
-
-    {:noreply,
-     assign(
-       socket,
-       :to_boundaries,
-       Bonfire.Boundaries.Web.SetBoundariesLive.set_clean_boundaries(
-         e(socket.assigns, :to_boundaries, []),
-         acl_id,
-         e(params, "name", acl_id)
-       )
-     )}
-  end
-
-  def do_handle_event("remove_boundary", %{"id" => acl_id} = _params, socket) do
-    debug(acl_id, "remove_boundary")
-
-    {:noreply,
-     assign(
-       socket,
-       :to_boundaries,
-       e(socket.assigns, :to_boundaries, [])
-       |> Keyword.drop([acl_id])
-     )}
-  end
-
-  def do_handle_event("tagify_add", attrs, socket) do
-    handle_event("select_boundary", attrs, socket)
-  end
-
-  def do_handle_event("tagify_remove", attrs, socket) do
-    handle_event("remove_boundary", attrs, socket)
+  def do_handle_event(action, params, socket)
+      when action in [
+             "open_boundaries",
+             "close_boundaries",
+             "select_boundary",
+             "remove_boundary",
+             "tagify_add",
+             "tagify_remove",
+             "remove_circle"
+           ] do
+    maybe_apply(Bonfire.Boundaries.LiveHandler, :handle_event, [action, params, socket])
   end
 
   def do_handle_event(

@@ -116,7 +116,7 @@
               role="navigation"
               class="mx-3"
               aria-label={l("Extension navigation")}
-              > 
+            >
               <div class="pb-3 mt-4 ml-1.5 text-sm font-medium tracking-wider text-base-content/60">{l("Menu")}</div>
               <ul class="menu menu-compact">
                 {#for nav <- @nav_items}
@@ -144,7 +144,7 @@
               </ul>
             </nav>
 
-              <!-- <nav role="navigation" aria-label={l("Extension navigation")}>
+            <!-- <nav role="navigation" aria-label={l("Extension navigation")}>
                 <div class="pb-3 mt-4 ml-4 text-sm font-medium tracking-wider text-base-content/60">{l("Explore")}</div>
                 <Bonfire.UI.Common.ExploreNavLive page={@page} selected_tab={@selected_tab} />
               </nav> -->
