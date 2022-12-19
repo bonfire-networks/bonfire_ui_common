@@ -5,7 +5,7 @@
         placeholder: @label,
         style: :daisyui,
         container_extra_class: "w-full dropdown-top",
-        text_input_extra_class: "h-9 rounded-full bg-base-content/5 border-none",
+        text_input_extra_class: "h-9 rounded text-sm bg-base-content/5 border-none",
         update_min_len: 2
       )}
       <!--        

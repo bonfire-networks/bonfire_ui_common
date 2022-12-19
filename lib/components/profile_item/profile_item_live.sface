@@ -10,7 +10,7 @@
       <p class="text-sm font-medium group-hover:underline text-base-content">
         {e(@profile, :name, "Anon")}
       </p>
-      <p class="-mt-1 text-base text-base-content/80">
+      <p class="text-sm text-base-content/80">
         {e(@character, :username, "")}
       </p>
     </div>

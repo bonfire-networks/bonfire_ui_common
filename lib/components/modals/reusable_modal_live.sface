@@ -11,7 +11,7 @@
       aria-hidden="true"
     >
     </div>
-    <div class="relative border modal-box border-base-content overflow-visible border-opacity-20 w-full max-w-[500px] min-w-[460px] min-h-[100px] overflow-y-auto">
+    <div class="relative border modal-box border-base-content overflow-visible border-opacity-20 w-full max-w-[500px] min-w-[460px] min-h-[100px]">
       <h3 :if={e(!@no_header, false)} class={@title_class || "font-bold text-base"}>
         <#slot {@title}>{@title_text}</#slot>
       </h3>
