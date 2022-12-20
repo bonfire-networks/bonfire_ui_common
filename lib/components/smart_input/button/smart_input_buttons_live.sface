@@ -10,7 +10,7 @@
         class={@class}
         smart_input_opts={@smart_input_opts}
         prompt={@smart_input_opts[:prompt]}
-        icon="mdi:pencil-outline"
+        icon={e(@smart_input_opts[:icon], "mdi:pencil-outline")}
       />
 
       <SmartInputButtonLive
@@ -19,7 +19,7 @@
         component={Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
           Bonfire.UI.Social.WritePostContentLive}
         class={@class}
-        icon="mdi:pencil-outline"
+        icon={e(@smart_input_opts[:icon], "mdi:pencil-outline")}
       />
   {/case}
 </div>

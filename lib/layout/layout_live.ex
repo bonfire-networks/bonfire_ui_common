@@ -124,7 +124,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 >
                   <div
                     :if={@current_user && !@without_sidebar}
-                    class="sticky hidden md:block top-0  md:pt-3 bg-base-300 z-[99999999]"
+                    class="sticky hidden md:block top-0  md:pt-3 bg-base-300 z-[999]"
                   >
                     <div class="flex flex-1 bg-base-100" :class="{'hidden': open_sidebar}">
                       <Dynamic.Component
@@ -158,7 +158,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           sticky
           container={
             {:div,
-             class: "order-first md:order-none md:static fixed left-0 right-0 top-0 z-[9999999999999999999]"}
+             class: "order-first md:order-none md:static fixed left-0 right-0 top-0 z-[999]"}
           }
           session={%{
             "root_flash" => @flash,

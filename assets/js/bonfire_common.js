@@ -18,6 +18,7 @@ const winnerDimension = () => {
   document.documentElement.style.setProperty('--full-document-height', `${document.documentElement.scrollHeight}px`);
 }
 
+
 winnerDimension()
 window.addEventListener('resize', winnerDimension)
 
