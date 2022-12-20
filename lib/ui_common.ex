@@ -3,14 +3,14 @@ defmodule Bonfire.UI.Common do
   A library of common utils and helpers used across Bonfire extensions
   """
   use Bonfire.Common.Utils
-  alias Bonfire.PubSub
+  alias Bonfire.Common.PubSub
 
   defmacro __using__(opts) do
     # TODO: pass opts to the nested `use`
     quote do
       use Bonfire.Common.Utils
       import Bonfire.UI.Common
-      alias Bonfire.PubSub
+      alias Bonfire.Common.PubSub
     end
   end
 
@@ -283,27 +283,6 @@ defmodule Bonfire.UI.Common do
         debug("No current_url found in #{inspect(other)}")
         default
     end
-  end
-
-  def socket_connected?(%Phoenix.LiveView.Socket{} = socket) do
-    Phoenix.LiveView.connected?(socket)
-  end
-
-  def socket_connected?(%{socket_connected?: bool}) do
-    bool
-  end
-
-  def socket_connected?(%{__context__: assigns}) do
-    socket_connected?(assigns)
-  end
-
-  def socket_connected?(%{assigns: assigns}) do
-    socket_connected?(assigns)
-  end
-
-  def socket_connected?(assigns) do
-    info(assigns, "Unable to find :socket_connected? info in provided assigns")
-    nil
   end
 
   def current_user_or_remote_interaction(socket, verb, object) do

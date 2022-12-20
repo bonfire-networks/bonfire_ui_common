@@ -1,46 +1,62 @@
 defmodule Bonfire.UI.Common.PersistentLive do
   use Bonfire.UI.Common.Web, :surface_live_view
   alias Bonfire.UI.Common.SmartInputLive
+  alias Bonfire.Common.Presence
+
+  @session_key :csrf_token
 
   def mount(_params, session, socket) do
-    assigns = input_to_atoms(session)
-    # |> info("assigns from session")
+    session =
+      input_to_atoms(session)
+      |> debug("data from session")
 
     # subscribe
-    assigns[:context][:csrf_token]
-    |> info("session_topic")
-    |> PubSub.subscribe(socket)
+    # session[:context][@session_key]
+    # |> debug("session_topic")
+    # |> PubSub.subscribe(socket)
 
     {:ok,
      socket
-     |> assign(Map.drop(assigns, [:context]))
-     |> assign(:__context__, assigns[:context])
-     |> assign_new(:showing_within, fn -> nil end)
-     |> assign_new(:context_id, fn -> nil end)
-     |> assign_new(:reply_to_id, fn -> nil end)
-     |> assign_new(:create_object_type, fn -> nil end)
-     |> assign_new(:to_boundaries, fn -> [] end)
-     |> assign_new(:to_circles, fn -> [] end)
-     |> assign_new(:smart_input_opts, fn -> nil end)
-     |> assign_new(:showing_within, fn -> nil end)
-     |> assign_new(:show_select_recipients, fn -> false end)
-     |> assign_new(:thread_mode, fn -> nil end)
-     |> assign_new(:page, fn -> nil end)
-     |> assign_new(:page_title, fn -> nil end)
-     |> assign_new(:selected_tab, fn -> nil end)
-     |> assign_new(:activity_inception, fn -> nil end)
-     |> assign_new(:title_open, fn -> nil end)
-     |> assign_new(:title_prompt, fn -> nil end)
-     |> assign_new(:preloaded_recipients, fn -> nil end)
-     |> assign_new(:without_sidebar, fn -> nil end)
-     |> assign_new(:without_widgets, fn -> nil end)
-     |> assign_new(:nav_header, fn -> nil end)
-     #  |> assign_new(:nav_items, fn -> nil end)
-     |> assign_new(:sidebar_widgets, fn -> [] end)
-     #  |> assign_new(:page_header_aside, fn -> nil end)
-     #  |> assign_new(:custom_page_header, fn -> nil end)
-     |> assign_new(:root_flash, fn -> nil end)
-     |> info("socket prepared via session"), layout: false}
+     |> debug("socket before assigns")
+     |> assign(Map.drop(session, [:context]))
+     |> assign_new(:__context__, fn -> session[:context] end)
+     |> assign_defaults()
+     |> Presence.present!(%{@session_key => session[:context][@session_key]})
+     |> debug("socket prepared via session"), layout: false}
+  end
+
+  defp assign_defaults(socket, fun \\ &assign_new/3) do
+    socket
+    |> fun.(:showing_within, fn -> nil end)
+    |> fun.(:context_id, fn -> nil end)
+    |> fun.(:reply_to_id, fn -> nil end)
+    |> fun.(:create_object_type, fn -> nil end)
+    |> fun.(:to_boundaries, fn -> [] end)
+    |> fun.(:to_circles, fn -> [] end)
+    |> fun.(:smart_input_opts, fn -> nil end)
+    |> fun.(:showing_within, fn -> nil end)
+    |> fun.(:show_select_recipients, fn -> false end)
+    |> fun.(:thread_mode, fn -> nil end)
+    |> fun.(:page, fn -> nil end)
+    |> fun.(:page_title, fn -> nil end)
+    |> fun.(:selected_tab, fn -> nil end)
+    |> fun.(:activity_inception, fn -> nil end)
+    |> fun.(:title_open, fn -> nil end)
+    |> fun.(:title_prompt, fn -> nil end)
+    |> fun.(:preloaded_recipients, fn -> nil end)
+    |> fun.(:without_sidebar, fn -> nil end)
+    |> fun.(:without_widgets, fn -> nil end)
+    |> fun.(:nav_header, fn -> nil end)
+    #  |> fun.(:nav_items, fn -> nil end)
+    |> fun.(:sidebar_widgets, fn -> [] end)
+    #  |> fun.(:page_header_aside, fn -> nil end)
+    #  |> fun.(:custom_page_header, fn -> nil end)
+    |> fun.(:root_flash, fn -> nil end)
+  end
+
+  def maybe_send_assigns(assigns) do
+    # send(self(), {:assign_persistent, persistent_assigns_filter(assigns)})
+    maybe_send(assigns[:__context__], persistent_assigns_filter(assigns))
   end
 
   @doc """
@@ -49,10 +65,6 @@ defmodule Bonfire.UI.Common.PersistentLive do
   def set(context, assigns) do
     assigns = persistent_assigns_filter(assigns)
     maybe_send(context, assigns) || send_self(assigns)
-  end
-
-  def maybe_set(context, assigns) do
-    maybe_send(context, persistent_assigns_filter(assigns))
   end
 
   defp persistent_assigns_filter(assigns) do
@@ -80,7 +92,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       :selected_tab,
       :root_flash
     ])
-    |> Map.put(:__context__, Map.merge(assigns[:__context__] || %{}, %{sticky: true}))
+    |> Map.put(:__context__, Enum.into(assigns[:__context__] || %{}, %{sticky: true}))
   end
 
   def maybe_send(%{assigns: %{__context__: context}} = _socket, assigns),
@@ -100,9 +112,16 @@ defmodule Bonfire.UI.Common.PersistentLive do
       _ ->
         debug("send to PersistentLive liveview process")
 
-        if e(context, :csrf_token, nil) do
-          e(context, :csrf_token, nil)
-          |> PubSub.broadcast({:assign, assigns})
+        if e(context, @session_key, nil) do
+          session_id = e(context, @session_key, nil)
+
+          user_id =
+            (current_user_id(context) || current_user_id(assigns))
+            |> debug("user_id")
+
+          try_send_self(user_id, session_id, assigns)
+
+          # PubSub.broadcast(session_id, {:assign, assigns})
 
           true
         else
@@ -114,6 +133,41 @@ defmodule Bonfire.UI.Common.PersistentLive do
           :skip
         end
     end
+  end
+
+  defp try_send_self(user_id, session_id, assigns, attempt \\ 1) do
+    pid =
+      Presence.present_meta(user_id)
+      |> debug("present_meta - attempt ##{attempt}")
+      |> Enum.filter(fn
+        %{@session_key => presence_session_id} when presence_session_id == session_id -> true
+        _ -> false
+      end)
+      |> List.first()
+      |> Utils.e(:pid, nil)
+      |> debug("present for session")
+
+    if pid do
+      send(pid, {:assign, assigns})
+      |> debug("send to PID")
+    else
+      if attempt < 10 do
+        Process.send_after(
+          self(),
+          {__MODULE__, {:try_send_self, [user_id, session_id, assigns, attempt + 1]}},
+          200
+        )
+        |> debug("send_after to self, to check again for the PID until found")
+      else
+        warn("give up sending assigns to PersistentLive since we can't find the PID in Presence")
+      end
+    end
+  end
+
+  def handle_info({:try_send_self, [user_id, session_id, assigns, attempt]}, socket) do
+    try_send_self(user_id, session_id, assigns, attempt)
+
+    {:noreply, socket}
   end
 
   def handle_info({:assign, {:smart_input, assigns}}, socket) do
@@ -140,6 +194,13 @@ defmodule Bonfire.UI.Common.PersistentLive do
      assigns
      |> Map.new()
      |> Map.put(:smart_input_component, nil)
+     |> assign_defaults(&Map.put_new_lazy/3)
+     |> Map.put(
+       ...,
+       :__context__,
+       Map.merge(socket.assigns[:__context__] || %{}, assigns[:__context__] || %{})
+       |> merge_keeping_only_first_keys(...)
+     )
      |> debug("set received assigns for PersistentLive")
      |> assign(socket, ...)}
   end

@@ -34,7 +34,7 @@
     <button
       type="button"
       class="absolute z-20 normal-case btn btn-ghost text-slate-50 btn-xs right-1 top-1"
-      @click="show_alt = ! show_alt"
+      x-on:click="show_alt = ! show_alt"
       aria-label="Add description"
     >
       <Icon solid="Pencil" class="w-4 h-4 mr-1" />

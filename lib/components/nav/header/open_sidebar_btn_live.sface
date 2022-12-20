@@ -1,6 +1,6 @@
 <div data-id="mobile_nav_btn" class="md:hidden">
   <button
-    @click="open_sidebar = ! open_sidebar"
+    x-on:click="open_sidebar = ! open_sidebar"
     type="button"
     class="flex rounded-none !border-t-0 !border-b-0 !border-l-0 btn btn-sm btn-ghost h-[53px]"
     data-id="option-menu-button"

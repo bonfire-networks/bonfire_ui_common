@@ -2,11 +2,11 @@
   data-id="multiselect"
   class="relative"
   x-cloak
-  @click.outside="show = false"
+  x-on:click.outside="show = false"
   x-data="{show: false}"
 >
   <div
-    @click="if(show === true) {
+    x-on:click="if(show === true) {
     return show = false
   } else {
     show = true

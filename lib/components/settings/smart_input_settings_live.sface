@@ -6,7 +6,7 @@
       <div class="flex flex-col gap-1">
         <div class="text-sm font-bold">{l("Composer preferences")}</div>
       </div>
-      <button type="button" @click="open = !open" class="normal-case btn btn-sm">{l("Expand")}</button>
+      <button type="button" x-on:click="open = !open" class="normal-case btn btn-sm">{l("Expand")}</button>
     </div>
     <div x-show="open" x-collapse>
       <div class="mt-4 sm:col-span-2">

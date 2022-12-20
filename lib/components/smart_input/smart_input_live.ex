@@ -39,11 +39,14 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   end
 
   def active_smart_input_components(smart_input_component, create_object_type) do
+    # debug(smart_input_component, "smart_input_component")
+    # debug(create_object_type, "create_object_type")
     List.wrap(
       smart_input_component ||
         components_by_type(create_object_type) ||
         active_smart_input_component(smart_input_component, create_object_type)
     )
+    |> debug("components")
   end
 
   def active_smart_input_component(smart_input_component, create_object_type) do

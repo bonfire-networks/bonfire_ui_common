@@ -126,8 +126,7 @@ defmodule Bonfire.UI.Common.LivePlugs do
           # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
           if socket_connected?(socket),
             do:
-              Bonfire.UI.Common.PersistentLive.maybe_set(
-                socket.assigns[:__context__],
+              Bonfire.UI.Common.PersistentLive.maybe_send_assigns(
                 socket.assigns
                 |> Map.new()
                 |> Map.put_new(:nav_items, nil)

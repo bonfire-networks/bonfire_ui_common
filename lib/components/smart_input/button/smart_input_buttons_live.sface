@@ -9,6 +9,7 @@
         component={component}
         class={@class}
         smart_input_opts={@smart_input_opts}
+        prompt={@smart_input_opts[:prompt]}
         icon="mdi:pencil-outline"
       />
 
@@ -17,7 +18,6 @@
            Bonfire.UI.Social.WritePostContentLive) not in components}
         component={Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
           Bonfire.UI.Social.WritePostContentLive}
-        smart_input_opts={[prompt: l("Compose")]}
         class={@class}
         icon="mdi:pencil-outline"
       />

@@ -3,7 +3,7 @@
   :class="{'!flex': open_sidebar}"
 >
   <!-- <button
-    @click="open_widgets_sidebar = !open_widgets_sidebar"
+    x-on:click="open_widgets_sidebar = !open_widgets_sidebar"
     :if={is_list(@sidebar_widgets[:users][:secondary])}
     class="btn btn-sm btn-ghost tablet-lg:hidden"
   >

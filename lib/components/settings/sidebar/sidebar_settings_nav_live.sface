@@ -19,7 +19,7 @@
   </ul>
 
   <ul x-data="{open: true}" class="menu menu-compact">
-    <li @click="open = ! open">
+    <li x-on:click="open = ! open">
       <div class="flex items-center justify-between">
         <span class="font-light text-base-content/70">{l("General")}</span>
         <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
@@ -104,7 +104,7 @@
   </ul>
 
   <!-- <div x-data="{open: true}">
-    <li @click="open = ! open" class="mt-4">
+    <li x-on:click="open = ! open" class="mt-4">
       <div class="flex items-center justify-between">
         <span class="font-light text-base-content/70">{l("Members")}</span>
         <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
@@ -144,7 +144,7 @@
   </div> -->
 
   <ul x-data="{open: true}" class="menu menu-compact">
-    <li @click="open = ! open" class="mt-4">
+    <li x-on:click="open = ! open" class="mt-4">
       <div class="flex items-center justify-between">
         <span class="font-light text-base-content/70">{l("Moderation")}</span>
         <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
@@ -192,7 +192,7 @@
   </ul>
 
   <ul x-data="{open: true}" class="menu menu-compact">
-    <li @click="open = ! open" class="mt-4">
+    <li x-on:click="open = ! open" class="mt-4">
       <div class="flex items-center justify-between">
         <span class="font-light text-base-content/70">{l("Extension Settings")}</span>
         <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
@@ -238,7 +238,7 @@
   </ul>
 
   <ul x-data="{open: true}" class="menu menu-compact">
-    <li @click="open = ! open" class="mt-4">
+    <li x-on:click="open = ! open" class="mt-4">
       <div class="flex items-center justify-between">
         <span class="font-light text-base-content/70">{l("Advanced")}</span>
         <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">

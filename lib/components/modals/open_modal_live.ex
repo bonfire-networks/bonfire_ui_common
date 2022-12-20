@@ -3,6 +3,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   The classic **modal**
   """
   use Bonfire.UI.Common.Web, :stateful_component
+  alias Bonfire.UI.Common.ReusableModalLive
 
   @doc "The title of the button used to open the modal. Only used if no `open_btn` slot is passed."
   prop open_btn_text, :string, default: nil
@@ -38,7 +39,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   prop no_actions, :boolean, default: false
 
   @doc "The classes of the title of the modal"
-  prop reusable_modal_component, :atom, default: Bonfire.UI.Common.ReusableModalLive
+  prop reusable_modal_component, :atom, default: ReusableModalLive
 
   @doc "The ID of this instance of the modal"
   prop reusable_modal_id, :string, default: "modal"
@@ -77,7 +78,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   def close() do
     debug("close!")
-    set(show: false)
+    set([show: false] ++ ReusableModalLive.default_assigns())
   end
 
   def set(assigns) do
@@ -85,7 +86,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
       e(
         assigns,
         :reusable_modal_component,
-        Bonfire.UI.Common.ReusableModalLive
+        ReusableModalLive
       ),
       e(assigns, :reusable_modal_id, "modal"),
       assigns

@@ -1,6 +1,6 @@
 <div data-id="mobile_nav" class="md:hidden" x-data="{hovered_apps: false}">
   <!-- <button
-    @click="open_sidebar = ! open_sidebar"
+    x-on:click="open_sidebar = ! open_sidebar"
     @mouseenter="hovered_apps = true"
     @mouseleave="hovered_apps = false"
     type="button"
@@ -19,7 +19,10 @@
     class="fixed top-[0] right-0 bottom-0 left-0 z-[200] overflow-hidden"
   >
     <div class="inset-0 h-full overflow-hidden">
-      <div @click="open_sidebar = false" class="absolute inset-0 overflow-hidden bg-base-content/30" />
+      <div
+        x-on:click="open_sidebar = false"
+        class="absolute inset-0 overflow-hidden bg-base-content/30"
+      />
       <section class="h-full" aria-labelledby="slide-over-heading">
         <div
           class="relative w-3/4 h-full overflow-auto md:w-80 bg-base-200"
@@ -35,7 +38,7 @@
           <div class="relative w-full h-full bg-base-200">
             <div class="shadow bg-base-100">
               <div class="flex items-center gap-2 p-4">
-                <div @click="open_sidebar = false" class="btn btn-ghost btn-square btn-sm">
+                <div x-on:click="open_sidebar = false" class="btn btn-ghost btn-square btn-sm">
                   <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
                 </div>
                 <Bonfire.UI.Common.LogoLinkLive
@@ -61,7 +64,7 @@
                       <span class="font-bold text-base-content">{e(@current_user, :profile, :name, "unknown")}</span>
                       <span class="text-sm font-light text-base-content/70">{Bonfire.Me.Characters.display_username(@current_user, true)}</span>
                     </div>
-                    <span @click="expanded = !expanded" class="btn btn-circle btn-sm btn-ghost">
+                    <span x-on:click="expanded = !expanded" class="btn btn-circle btn-sm btn-ghost">
                       <Icon solid="ChevronDown" class="w-5 h-5 text-base-content/70" />
                     </span>
                   </div>

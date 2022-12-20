@@ -27,8 +27,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
         # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
         if socket_connected?(socket),
           do:
-            Bonfire.UI.Common.PersistentLive.maybe_set(
-              socket.assigns[:__context__],
+            Bonfire.UI.Common.PersistentLive.maybe_send_assigns(
               socket.assigns
               # |> Map.put_new(:nav_items, nil)
             )
@@ -54,15 +53,6 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     end)
   end
 
-  defp maybe_handle_event_fun(action, attrs, socket, fun) when is_function(fun) do
-    fun.(action, attrs, socket)
-  end
-
-  defp maybe_handle_event_fun(action, attrs, socket, _fun) do
-    warn(action, "LiveHandler: could not find an event handler")
-    {:noreply, socket}
-  end
-
   def handle_info(blob, socket, source_module \\ nil) do
     undead(socket, fn ->
       debug("LiveHandler: handle_info via #{source_module || "delegation"}")
@@ -80,12 +70,23 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     }
   end
 
-  defp do_handle_info({:assign, assign}, socket) do
+  defp do_handle_info({:assign, assigns}, socket) do
     debug("LiveHandler: handle_info, assign data with {:assign, ...}")
 
     {
       :noreply,
-      assign_global(socket, assign)
+      assign_global(socket, assigns)
+    }
+  end
+
+  defp do_handle_info({:assign_persistent, assigns}, socket) do
+    debug("LiveHandler: handle_info, send data to PersistentLive with {:assign_persistent, ...}")
+
+    Bonfire.UI.Common.PersistentLive.maybe_send_assigns(assigns)
+
+    {
+      :noreply,
+      socket
     }
   end
 
@@ -189,6 +190,15 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   defp do_handle_event(event, attrs, socket) do
     debug(attrs, "attrs")
     no_live_handler({:handle_event, event}, socket)
+  end
+
+  defp maybe_handle_event_fun(action, attrs, socket, fun) when is_function(fun) do
+    fun.(action, attrs, socket)
+  end
+
+  defp maybe_handle_event_fun(action, attrs, socket, _fun) do
+    warn(action, "LiveHandler: could not find an event handler")
+    {:noreply, socket}
   end
 
   defp do_handle_params(params, uri, socket)

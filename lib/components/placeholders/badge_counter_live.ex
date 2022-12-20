@@ -25,7 +25,7 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
   end
 
   def update(assigns, %{assigns: %{count_loaded: true}} = socket) do
-    debug(assigns, "count already loaded")
+    # debug(assigns, "count already loaded")
 
     {:ok,
      assign(

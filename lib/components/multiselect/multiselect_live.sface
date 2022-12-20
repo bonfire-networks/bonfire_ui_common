@@ -4,7 +4,8 @@
       {LiveSelect.live_select(@form, @form_input_name,
         placeholder: @label,
         style: :daisyui,
-        dropdown_class: "cursor-pointer dropdown-content menu menu-compact shadow w-full !bg-neutral !rounded",
+        dropdown_class:
+          "cursor-pointer dropdown-content menu menu-compact shadow w-full !bg-neutral !rounded",
         container_extra_class: "w-full dropdown-top",
         text_input_extra_class: "h-9 rounded text-sm bg-base-content/5 border-none",
         update_min_len: 2

@@ -35,7 +35,7 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
     if current_user,
       do:
         Bonfire.Social.Follows.list_my_followed(current_user, paginate: false, type: type)
-        |> debug()
+        # |> debug()
         # |> e(:edges, [])
         |> Enum.map(&e(&1, :edge, :object, nil)),
       else: []
@@ -50,7 +50,7 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
           paginate: false,
           object_type: type
         )
-        |> debug()
+        # |> debug()
         # |> e(:edges, [])
         |> Enum.map(&e(&1, :edge, :object, nil)),
       else: []

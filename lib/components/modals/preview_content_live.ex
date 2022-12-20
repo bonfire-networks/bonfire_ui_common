@@ -9,11 +9,13 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
   prop title_text, :string, default: nil
 
   @doc "The classes of the title of the modal"
-  prop title_class, :css_class, default: @doc("Force modal to be open")
+  prop title_class, :css_class, default: nil
+
+  @doc "Force modal to be open"
   prop show, :boolean, default: false
 
   @doc "Optional prop to hide the header at the top of the modal"
-  prop no_header, :boolean, default: false, required: false
+  prop no_header, :boolean, default: false
 
   @doc "The classes of the modal."
   prop modal_class, :string, default: nil

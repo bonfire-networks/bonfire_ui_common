@@ -1,12 +1,12 @@
 <div
   x-data="{smart_input_activity_types_expanded: false}"
   @keydown.escape.stop="smart_input_activity_types_expanded = false;"
-  @click.outside="smart_input_activity_types_expanded = false"
+  x-on:click.outside="smart_input_activity_types_expanded = false"
   class="block"
   x-cloak
 >
   <button
-    @click="smart_input_activity_types_expanded = ! smart_input_activity_types_expanded"
+    x-on:click="smart_input_activity_types_expanded = ! smart_input_activity_types_expanded"
     type="button"
     class={@class}
     data-id="option-menu-button"

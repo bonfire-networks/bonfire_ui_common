@@ -10,7 +10,7 @@
     </li>
 
     <div x-data="{open: true}">
-      <li @click="open = ! open">
+      <li x-on:click="open = ! open">
         <div class="flex items-center justify-between">
           <span class="font-light text-base-content/70">{l("Website")}</span>
           <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
@@ -63,7 +63,7 @@
     </div>
 
     <div x-data="{open: false}">
-      <li @click="open = ! open" class="mt-4">
+      <li x-on:click="open = ! open" class="mt-4">
         <div class="flex items-center justify-between">
           <span class="font-light text-base-content/70">{l("Members")}</span>
           <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
@@ -123,7 +123,7 @@
     </div>
 
     <div x-data="{open: false}">
-      <li @click="open = ! open" class="mt-4">
+      <li x-on:click="open = ! open" class="mt-4">
         <div class="flex items-center justify-between">
           <span class="font-light text-base-content/70">{l("Moderation")}</span>
           <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
@@ -166,7 +166,7 @@
     </div>
 
     <div x-data="{open: false}">
-      <li @click="open = ! open" class="mt-4">
+      <li x-on:click="open = ! open" class="mt-4">
         <div class="flex items-center justify-between">
           <span class="font-light text-base-content/70">{l("Advanced")}</span>
           <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">

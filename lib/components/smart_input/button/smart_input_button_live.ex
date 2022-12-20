@@ -4,6 +4,7 @@ defmodule Bonfire.UI.Common.SmartInputButtonLive do
   prop smart_input_opts, :any, default: []
   prop component, :any, default: nil
   prop icon, :any, default: nil
+  prop prompt, :any, default: nil
 
   prop class, :css_class,
     default: "btn btn-sm w-full rounded btn-primary flex items-center gap-2 normal-case"
