@@ -103,6 +103,17 @@
           {#case pin}
             {#match %{post_content: %{id: _}}}
               <li class="flex flex-col items-center justify-center pb-8 splide__slide">
+                <!-- <div
+                  :if={is_admin?(@current_user)}
+                  data-id="pin_action"
+                  phx-click="Bonfire.Social.Pins:pin"
+                  phx-value-direction="down"
+                  phx-value-id={ulid(pin)}
+                  phx-value-scope={:instance}
+                  phx-value-component={__MODULE__}
+                >
+                  <Icon iconify="bi:pin-angle-fill" class="w-5 h-5" />
+                </div> -->
                 <LiveRedirect to={path(pin)} class="flex flex-col w-full gap-3">
                   <div
                     style="background-image: url(https://picsum.photos/200/300)"
@@ -111,17 +122,6 @@
                   </div>
                   <div class="text-base font-medium tracking-wide line-clamp-2">{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
                       rich(e(pin, :post_content, :html_body, ""))}</div>
-                  <!-- <LiveRedirect
-                          to={path(pin)}
-                          class="text-lg leading-[1.5rem] font-bold tracking-wider link link-hover"
-                        ></LiveRedirect> -->
-                  <!-- <div class="">{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
-                          rich(e(pin, :post_content, :html_body, ""))}</div> -->
-                  <!-- <div
-                          :if={e(pin, :post_content, :name, nil) ||
-                            (e(pin, :name, nil) && e(pin, :post_content, :html_body, nil))}
-                          class="mt-2 text-sm text-base-content/80 line-clamp-3"
-                        >{rich(e(pin, :post_content, :html_body, nil))}</div> -->
                 </LiveRedirect>
               </li>
             {#match _}
