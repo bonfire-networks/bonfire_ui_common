@@ -157,8 +157,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           :if={@current_user}
           sticky
           container={
-            {:div,
-             class: "order-first md:order-none md:static fixed left-0 right-0 top-0 z-[999]"}
+            {:div, class: "order-first md:order-none md:static fixed left-0 right-0 top-0 z-[999]"}
           }
           session={%{
             "root_flash" => @flash,

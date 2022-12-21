@@ -1,7 +1,5 @@
-{#if Bonfire.Boundaries.can?(@__context__, :like, @object)}
-  <div 
-    class="relative z-20" 
-    title={l("Favourite this")}>
+{#if Bonfire.Boundaries.can?(@__context__, :like, @object_boundary)}
+  <div class="relative z-20" title={l("Like this")}>
     <button
       :if={@object}
       id={@id}
@@ -11,8 +9,7 @@
       phx-value-id={ulid(@object)}
       phx-value-component={__MODULE__}
       phx-value-current_count={e(@like_count, 0)}
-      class={
-        "btn btn-ghost btn-circle like like_with_label btn-sm"}
+      class="btn btn-ghost btn-circle like like_with_label btn-sm"
     >
       <span class={"text-base-content text-opacity-50", "text-yellow-500 text-opacity-100": @my_like}>
         <Icon solid="Star" :if={@my_like} class="w-5 h-5" />
@@ -29,35 +26,15 @@
       </span>
     </button>
   </div>
-
 {#else}
-  <div 
-    class="relative z-20" 
-    title={l("You can't favourite this")}>
-    <button
-      :if={@object}
-      id={@id}
-      disabled
-      data-id="like_action"
-      phx-click="Bonfire.Social.Likes:like"
-      phx-value-direction={"#{if @my_like, do: "down", else: "up"}"}
-      phx-value-id={ulid(@object)}
-      phx-value-component={__MODULE__}
-      phx-value-current_count={e(@like_count, 0)}
-      class={
-        "btn btn-ghost btn-circle like like_with_label btn-sm btn-disabled"}
-    >
-      <span class={"text-base-content text-opacity-50", "text-yellow-500 text-opacity-100": @my_like}>
-        <Icon solid="Star" :if={@my_like} class="w-5 h-5" />
-        <Icon outline="Star" :if={!@my_like} class="w-4 h-4" />
+  <div class="relative z-20" title={l("You can't like this")}>
+    <button disabled class="btn btn-circle like like_with_label btn-sm btn-disabled">
+      <span class="text-base-content text-opacity-50">
+        <Icon outline="Star" class="w-4 h-4" />
       </span>
 
-      <span :if={!@my_like} class="sr-only">
-        {l("Like")}
-        <span :if={e(@like_count, 0) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@like_count, 0)}</span>
-      </span>
-      <span :if={@my_like} class="sr-only">
-        {l("Liked")}
+      <span class="sr-only">
+        {l("Cannot Like")}
         <span :if={e(@like_count, 0) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@like_count, 0)}</span>
       </span>
     </button>
