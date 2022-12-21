@@ -137,7 +137,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
   defp try_send_self(user_id, session_id, assigns, attempt \\ 1) do
     pid =
-      Presence.present_meta(user_id)
+      (Presence.present_meta(user_id) || [])
       |> debug("present_meta - attempt ##{attempt}")
       |> Enum.filter(fn
         %{@session_key => presence_session_id} when presence_session_id == session_id -> true
