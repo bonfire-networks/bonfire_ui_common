@@ -1,12 +1,12 @@
-<div phx-hook="Composer" id="editor" class="p-2 relative h-full">
+<div phx-hook="Composer" id="editor" class="relative h-full p-2">
   <textarea
     phx-debounce="blur"
     class="composer textarea w-full h-[240px] focus:outline-none focus:ring-0"
     name="html_body"
-    placeholder="Start typing..."
+    placeholder={l "Start typing..."}
   >{@smart_input_opts[:text]}</textarea>
   <ul
     tabindex="1"
-    class="absolute hidden menu w-56 menu-compact bg-neutral p-1 divide-y divide-neutral-content/10"
+    class="absolute hidden w-56 p-1 divide-y menu menu-compact bg-neutral divide-neutral-content/10"
   />
 </div>

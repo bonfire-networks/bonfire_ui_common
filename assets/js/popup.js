@@ -9,10 +9,8 @@ PopupHooks.Popup = {
 
     mounted() {
 
-      console.log(this.el.querySelector('.tippy'))
       // Instanciate tippy
       const template = this.el.querySelector('.template');
-      console.log(template)
       const instance = tippy(this.el.querySelector('.tippy'), {
         content: template.innerHTML,
         arrow: false,

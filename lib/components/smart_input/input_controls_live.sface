@@ -146,7 +146,7 @@
       </div>
       <button
         type="submit"
-        x-on:click="$dispatch('submit')"
+        x-on:click="$dispatch('submit'); smart_input_open = false"
         phx-disable-with={if is_messaging?(%{
              page: @page,
              showing_within: @showing_within,

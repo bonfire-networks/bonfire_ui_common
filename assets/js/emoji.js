@@ -2,11 +2,13 @@ let EmojiHooks = {};
 
 import { Picker } from "emoji-mart";
 import insertText from 'insert-text-at-cursor';
+import data from '@emoji-mart/data'
 
 EmojiHooks.EmojiPicker = {
 
     mounted() {
       const picker = new Picker({
+        data: data,
         emojiButtonSize: 30,
         emojiSize: 20,
         previewPosition: "none",
@@ -24,16 +26,13 @@ EmojiHooks.EmojiPicker = {
 
           // close the emojipicker adding style="display: none;"
           // document.querySelector(".emoji-picker").setAttribute("style", "display: none;")
-        },
-        data: async () => {
-          const response = await fetch(
-            "https://cdn.jsdelivr.net/npm/@emoji-mart/data",
-          );
-  
-          return response.json()
-        },
+        }
+        
       });
-      this.el.querySelector("#picker").appendChild(picker);
+      // wait 1 second and append the picker to the DOM
+      setTimeout(() => {
+        this.el.querySelector("#picker").appendChild(picker);
+      }, 1000);
     
     },
     updated() {
