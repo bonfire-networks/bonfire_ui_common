@@ -7,53 +7,53 @@
   }
   {...@opts}
 >
-{#if @show}
-  <div
-    role="banner"
-    class="flex before sticky top-3 bg-base-100 z-50 items-center h-[42px] rounded-t flex-1 w-full px-4 mt-3"
-  >
-    <div class="flex items-center w-full">
-      <div class="flex items-center flex-1 w-full gap-2">
-        <button
-          id="close_preview"
-          phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
-          phx-hook="ClosePreview"
-          aria-label={l("Go back to the previous page")}
-          class="font-normal normal-case btn btn-sm btn-circle btn-ghost"
-        >
-          <Icon outline="ChevronLeft" class="w-4 h-4 text-base-content" />
-        </button>
-        <span class="max-w-[200px] md:max-w-max text-sm font-semibold truncate text-ellipsis">{l("Discussion")}</span>
+  {#if @show}
+    <div
+      role="banner"
+      class="flex before sticky top-3 bg-base-100 z-50 items-center h-[42px] rounded-t flex-1 w-full px-4 mt-3"
+    >
+      <div class="flex items-center w-full">
+        <div class="flex items-center flex-1 w-full gap-2">
+          <button
+            id="close_preview"
+            phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
+            phx-hook="ClosePreview"
+            aria-label={l("Go back to the previous page")}
+            class="font-normal normal-case btn btn-sm btn-circle btn-ghost"
+          >
+            <Icon outline="ChevronLeft" class="w-4 h-4 text-base-content" />
+          </button>
+          <span class="max-w-[200px] md:max-w-max text-sm font-semibold truncate text-ellipsis">{l("Discussion")}</span>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="relative z-30">
-    <div
-      class="p-0 z-[910] max-w-screen-md mx-auto modal_invisible relative"
-      data-id="modal-contents"
-    >
-      <#slot>
-        {#case merge_as_map(@modal_assigns, %{showing_within: :preview})
-          |> debug("preview_component modal_assigns")}
-          {#match modal_assigns}
-            {#if not is_nil(e(modal_assigns, :preview_component, nil)) and
-                module_enabled?(modal_assigns[:preview_component])}
-              <Dynamic.LiveComponent
-                id="preview_component"
-                module={modal_assigns[:preview_component]}
-                {...modal_assigns}
-              />
-            {#elseif not is_nil(e(modal_assigns, :preview_view, nil)) and module_enabled?(modal_assigns[:preview_view])}
-              {live_render(@socket, modal_assigns[:preview_view],
-                id: "preview_view",
-                session: %{"params" => modal_assigns}
-              )}
-            {#else}
-              {l("No preview component or view is available.")}
-            {/if}
-        {/case}
-      </#slot>
+    <div class="relative z-30">
+      <div
+        class="p-0 z-[910] max-w-screen-md mx-auto modal_invisible relative"
+        data-id="modal-contents"
+      >
+        <#slot>
+          {#case merge_as_map(@modal_assigns, %{showing_within: :preview})
+            |> debug("preview_component modal_assigns")}
+            {#match modal_assigns}
+              {#if not is_nil(e(modal_assigns, :preview_component, nil)) and
+                  module_enabled?(modal_assigns[:preview_component])}
+                <Dynamic.LiveComponent
+                  id="preview_component"
+                  module={modal_assigns[:preview_component]}
+                  {...modal_assigns}
+                />
+              {#elseif not is_nil(e(modal_assigns, :preview_view, nil)) and module_enabled?(modal_assigns[:preview_view])}
+                {live_render(@socket, modal_assigns[:preview_view],
+                  id: "preview_view",
+                  session: %{"params" => modal_assigns}
+                )}
+              {#else}
+                {l("No preview component or view is available.")}
+              {/if}
+          {/case}
+        </#slot>
+      </div>
     </div>
-  </div>
   {/if}
 </div>

@@ -1,31 +1,31 @@
 {#case @href}
-{#match nil}
-  <div
-    :on-click={@click_open_event}
-    class={@open_btn_wrapper_class}
-    phx-hook={@open_btn_hook}
-    href={@href}
-    {...@open_btn_opts}
-  >
-    <#slot {@open_btn}>
-      <span class={@open_btn_class}>
-        {@open_btn_text || "Open modal"}
-      </span>
-    </#slot>
-  </div>
-{#match href}
-  <a
-    :on-click={@click_open_event}
-    type="button"
-    class={@open_btn_wrapper_class}
-    phx-hook={@open_btn_hook}
-    href={@href}
-    {...@open_btn_opts}
-  >
-    <#slot {@open_btn}>
-      <span class={@open_btn_class}>
-        {@open_btn_text || "Open modal"}
-      </span>
-    </#slot>
-  </a>
+  {#match nil}
+    <div
+      :on-click={@click_open_event}
+      class={@open_btn_wrapper_class}
+      phx-hook={@open_btn_hook}
+      href={@href}
+      {...@open_btn_opts}
+    >
+      <#slot {@open_btn}>
+        <span class={@open_btn_class}>
+          {@open_btn_text || "Open modal"}
+        </span>
+      </#slot>
+    </div>
+  {#match href}
+    <a
+      :on-click={@click_open_event}
+      type="button"
+      class={@open_btn_wrapper_class}
+      phx-hook={@open_btn_hook}
+      href={@href}
+      {...@open_btn_opts}
+    >
+      <#slot {@open_btn}>
+        <span class={@open_btn_class}>
+          {@open_btn_text || "Open modal"}
+        </span>
+      </#slot>
+    </a>
 {/case}

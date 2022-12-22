@@ -5,11 +5,11 @@ FeedHooks.PreviewActivity = {
     this.el.addEventListener("click", e => {
       e.preventDefault(); // TODO: find a better way to hook a simple event on an anchor without needing a hook
       console.log("PreviewActivity clicked")
-      
+
       let uri = this.el.dataset.permalink
 
       // push event to load up the PreviewContent
-      this.pushEventTo(this.el, "open", {})
+      this.pushEventTo(this.el, "open", {}) 
 
       let previous_scroll = null
       // this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
