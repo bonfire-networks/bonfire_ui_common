@@ -1,8 +1,8 @@
+<div class="open_preview">
 <Bonfire.UI.Common.OpenModalLive
   id={Pointers.ULID.generate()}
   reusable_modal_component={Bonfire.UI.Common.PreviewContentLive}
   reusable_modal_id="preview_content"
-  open_btn_hook="PreviewActivity"
   click_open_event={nil}
   href={nil}
   open_btn_opts={"data-permalink": @href}
@@ -13,3 +13,4 @@
   root_assigns={@root_assigns}
   open_btn={@open_btn}
 />
+</div>

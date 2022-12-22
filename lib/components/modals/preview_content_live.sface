@@ -3,27 +3,29 @@
   class={
     "#{@modal_class} bg-base-300",
     "invisible h-0": !@show,
-    "visible absolute inset-0 widget z-[99999999999]": @show
+    "visible inset-0 widget z-[99999999999]": @show
   }
   {...@opts}
 >
   {#if @show}
-    <div
-      role="banner"
-      class="flex before sticky top-3 bg-base-100 z-50 items-center h-[42px] rounded-t flex-1 w-full px-4 mt-3"
-    >
-      <div class="flex items-center w-full">
-        <div class="flex items-center flex-1 w-full gap-2">
-          <button
-            id="close_preview"
-            phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
-            phx-hook="ClosePreview"
-            aria-label={l("Go back to the previous page")}
-            class="font-normal normal-case btn btn-sm btn-circle btn-ghost"
-          >
-            <Icon outline="ChevronLeft" class="w-4 h-4 text-base-content" />
-          </button>
-          <span class="max-w-[200px] md:max-w-max text-sm font-semibold truncate text-ellipsis">{l("Discussion")}</span>
+    <div class="sticky block top-0  md:pt-3 bg-base-100 z-[999]">
+      <div
+        role="banner"
+        class="flex bg-base-content/10  items-center h-[42px] rounded-t flex-1 w-full px-4"
+        >
+        <div class="flex items-center w-full">
+          <div class="flex items-center flex-1 w-full gap-2">
+            <button
+              id="close_preview"
+              phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
+              phx-hook="ClosePreview"
+              aria-label={l("Go back to the previous page")}
+              class="font-normal normal-case btn btn-sm btn-circle btn-ghost"
+            >
+              <Icon outline="ChevronLeft" class="w-4 h-4 text-base-content" />
+            </button>
+            <span class="max-w-[200px] md:max-w-max text-sm font-semibold truncate text-ellipsis">{l("Discussion")}</span>
+          </div>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-<div class="flex h-[56px] w-full mb-4 py-2 items-center justify-between lg:mx-auto">
+<div class="flex h-[56px] w-full items-center justify-between lg:mx-auto">
   <div class="flex items-center flex-1 w-full gap-3">
     <Bonfire.UI.Common.LogoLinkLive with_name />
 

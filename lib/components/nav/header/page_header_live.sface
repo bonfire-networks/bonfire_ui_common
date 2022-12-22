@@ -1,33 +1,20 @@
 <div
   role="banner"
-  class="flex items-center h-[42px] rounded-t flex-1 w-full bg-base-content/10 px-4"
+  class="flex items-center h-[46px] rounded-t flex-1 w-full bg-base-content/10 px-4"
 >
   <div class="flex items-center w-full">
     <div class="flex items-center justify-between flex-1 w-full">
+      <div class="flex items-center gap-3">
+      <!-- <div id="back_button" phx-hook="Back" class="hidden">
+        <span class="btn btn-sm btn-circle btn-ghost">
+          <Icon iconify="mdi:arrow-left" class="w-4 h-4 text-base-content" />
+        </span>
+      </div> -->
       <span
         class="max-w-[200px] md:max-w-max text-sm  font-semibold truncate text-ellipsis"
         :if={not is_nil(@page_title)}
       >{@page_title}</span>
-      <!-- <div class="breadcrumbs">
-          <ul>
-            {#case @__context__[:current_extension]}
-              {#match %{name: name} = extension}
-                <li>
-                  <LiveRedirect class="btn btn-sm btn-ghost btn-circle" to={extension[:href] || "/"}>
-                    <Icon :if={extension[:icon]} iconify={extension[:icon]} class="w-[20px]" />
-                  </LiveRedirect>
-                  <span
-                    class="ml-2 max-w-[200px] md:max-w-max text-sm md:text-base font-semibold truncate text-ellipsis"
-                    :if={not is_nil(@page_title)}
-                  >{@page_title}</span>
-                </li>
-              {#match _}
-                <#slot {@breadcrumbs}>
-                  <li class="text-base font-semibold truncate text-ellipsis" :if={@page_title}>{@page_title}</li>
-                </#slot>
-            {/case}
-          </ul>
-        </div> -->
+      </div>
 
       <div class="flex items-center w-auto">
         <#slot {@right_action}>
@@ -35,5 +22,4 @@
       </div>
     </div>
   </div>
-  <!-- <Bonfire.UI.Common.PreviewContentLive id="preview_content" /> -->
 </div>

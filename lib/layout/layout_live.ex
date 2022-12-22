@@ -61,14 +61,16 @@ defmodule Bonfire.UI.Common.LayoutLive do
     >
       <div
         :if={!@current_user}
-        class="mx-auto max-w-[1260px] pt-3 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
+        class="py-3 border-b border-base-content/10 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
       >
-        <Bonfire.UI.Common.GuestHeaderLive
-          current_user={@current_user}
-          current_account={@current_account}
-          page_title={@page_title}
-          page={@page}
-        />
+        <div class="mx-auto max-w-[1260px]">
+          <Bonfire.UI.Common.GuestHeaderLive
+            current_user={@current_user}
+            current_account={@current_account}
+            page_title={@page_title}
+            page={@page}
+          />
+        </div>
       </div>
 
       <div class={
