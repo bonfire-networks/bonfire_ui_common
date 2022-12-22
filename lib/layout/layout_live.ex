@@ -13,7 +13,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
       assigns
       # |> debug
       |> assign_new(:to_boundaries, fn -> nil end)
-      |> assign_new(:nav_header, fn -> nil end)
       |> assign_new(:hero, fn -> nil end)
       |> assign_new(:page_title, fn -> nil end)
       |> assign_new(:page, fn -> nil end)
@@ -60,7 +59,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }"
     >
       <div
-        :if={!@current_user}
+        :if={!@current_user or @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil))}
         class="py-3 border-b border-base-content/10 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
       >
         <div class="mx-auto max-w-[1260px]">
@@ -110,7 +109,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
         >
           <div class={
             "h-full mt-0 grid tablet-lg:grid-cols-[1fr] desktop-lg:grid-cols-[1fr] grid-cols-1",
-            "md:mt-6": @nav_header == false,
             "max-w-screen-lg gap-4 mx-auto": @without_widgets,
             "justify-between": !@without_widgets
           }>

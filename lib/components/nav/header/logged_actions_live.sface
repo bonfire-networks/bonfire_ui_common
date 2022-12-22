@@ -1,5 +1,5 @@
 <div
-  class="hidden md:flex flex-1 items-center justify-end gap-3"
+  class="items-center justify-end flex-1 hidden gap-3 md:flex"
   :class="{'!flex': open_sidebar}"
 >
   <!-- <button
@@ -24,8 +24,10 @@
     smart_input_opts={@smart_input_opts}
   />
 
+  
+
   <div :if={!Config.get([:ui, :hide_app_switcher])} class="dropdown dropdown-end">
-    <label tabindex="0" class="btn btn-circle  relative btn-sm">
+    <label tabindex="0" class="relative btn btn-circle btn-sm">
       <Icon iconify="ci:grid-round" class="w-5 h-5" />
     </label>
     <div tabindex="0" class="p-2 shadow dropdown-content bg-neutral rounded-box w-60">

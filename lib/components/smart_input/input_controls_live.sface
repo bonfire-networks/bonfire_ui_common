@@ -72,7 +72,7 @@
           <button
             :if={Config.get([:ui, :smart_input, :cw], []) == true}
             type="button"
-            x-on:click="title_open = !title_open"
+            @click="title_open = !title_open"
             :class="{'btn-active' : title_open}"
             class="flex items-center btn btn-ghost btn-sm btn-circle"
           >
@@ -96,7 +96,7 @@
             <button
               title={l("Insert emoji")}
               type="button"
-              x-on:click="open = ! open"
+              @click="open = ! open"
               class="btn btn-ghost btn-sm text-[22px] btn-circle"
             >
               <Icon iconify="entypo:emoji-happy" class="w-4 h-4 text-base-content text-opacity-70" />
@@ -137,7 +137,7 @@
             class={"relative z-20 flex items-center tooltip tooltip-right"}>
               <button 
                 type="button"
-                x-on:click="smart_input_fullscreen = !smart_input_fullscreen"
+                @click="smart_input_fullscreen = !smart_input_fullscreen"
                 :class="{'border-base-content/30' : smart_input_fullscreen}"
                 class="flex items-center btn btn-ghost btn-sm btn-circle">
               <Icon outline="ArrowsExpand" class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
@@ -146,7 +146,7 @@
       </div>
       <button
         type="submit"
-        x-on:click="$dispatch('submit'); smart_input_open = false"
+        @click="$dispatch('submit')"
         phx-disable-with={if is_messaging?(%{
              page: @page,
              showing_within: @showing_within,
