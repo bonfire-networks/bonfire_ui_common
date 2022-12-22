@@ -23,6 +23,11 @@ defmodule Bonfire.UI.Common.OpenPreviewLive do
 
   prop(root_assigns, :any, default: [])
 
+  @doc """
+  Slot for the button that opens the modal
+  """
+  slot open_btn
+
   def handle_event("close", _, socket) do
     close()
     {:noreply, assign(socket, show: false)}

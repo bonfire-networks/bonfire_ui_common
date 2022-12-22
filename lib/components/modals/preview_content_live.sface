@@ -1,6 +1,5 @@
 <div
   id={@id}
-  :if={@show}
   class={
     "#{@modal_class} bg-base-300",
     "invisible h-0": !@show,
@@ -8,6 +7,7 @@
   }
   {...@opts}
 >
+{#if @show}
   <div
     role="banner"
     class="flex before sticky top-3 bg-base-100 z-50 items-center h-[42px] rounded-t flex-1 w-full px-4 mt-3"
@@ -55,4 +55,5 @@
       </#slot>
     </div>
   </div>
+  {/if}
 </div>

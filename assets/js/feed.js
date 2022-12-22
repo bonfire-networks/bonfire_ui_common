@@ -5,14 +5,23 @@ FeedHooks.PreviewActivity = {
     this.el.addEventListener("click", e => {
       e.preventDefault(); // TODO: find a better way to hook a simple event on an anchor without needing a hook
       console.log("PreviewActivity clicked")
-      uri = this.el.dataset.permalink
+      
+      let uri = this.el.dataset.permalink
+
+      // push event to load up the PreviewContent
+      this.pushEventTo(this.el, "open", {})
+
+      let previous_scroll = null
       // this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
       const layout = document.getElementById("root")
       const main = document.getElementById("inner")
       const preview_content = document.getElementById("preview_content")
-      preview_content.classList.remove("hidden")
-      main.classList.add("hidden")
-      let previous_scroll = null
+      if (preview_content) {
+        preview_content.classList.remove("hidden")
+      }
+      if (main) {
+        main.classList.add("hidden")
+      }
       if (layout) {
         previous_scroll = layout.scrollTop
       }
@@ -35,7 +44,9 @@ FeedHooks.ClosePreview = {
       const layout = document.getElementById("root")
       const main = document.getElementById("inner")
       const preview_content = document.getElementById("preview_content")
-      preview_content.classList.add("hidden")
+      if (preview_content) {
+        preview_content.classList.add("hidden")
+      }
       if (history.state) {
         location_before_preview = history.state["previous_url"]
         previous_scroll = history.state["previous_scroll"]
