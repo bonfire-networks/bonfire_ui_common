@@ -62,25 +62,25 @@ FeedHooks.PreviewActivity = {
 } 
 
 
-// FeedHooks.Back = {
-//   mounted() {
+FeedHooks.Back = {
+  mounted() {
     
-//     if (window.history.length > 1) {
-//       // show the back icon svg
-//       this.el.classList.remove("hidden")
+    if (window.history.length > 1) {
+      // show the back icon svg
+      this.el.classList.remove("hidden")
       
-//       this.el.addEventListener("click", e => {
-//         console.log(window.history)
-//         e.preventDefault();
-//         // window.history.back();
+      this.el.addEventListener("click", e => {
+        console.log(window.history)
+        e.preventDefault();
+        // window.history.back();
       
-//        })
-//       } else {
-//       // se la cronologia del browser è vuota, non fare nulla
-//     }
+       })
+      } else {
+      // se la cronologia del browser è vuota, non fare nulla
+    }
 
-//     }
-// }
+    }
+}
 
 
 FeedHooks.ClosePreview = {
