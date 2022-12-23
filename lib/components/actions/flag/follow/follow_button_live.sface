@@ -1,27 +1,27 @@
-<a
-  :if={!@my_follow}
-  data-cid={@id}
-  data-id="follow"
-  :on-click="Bonfire.Social.Follows:follow"
-  href={if !@current_user, do: path(@object) <> "/follow"}
-  rel="noopener noreferrer"
-  phx-value-id={ulid(@object)}
-  class={e(@class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}
->
-  <Icon solid="UserAdd" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
-  <span :if={!@hide_text} class={"truncate ellipsis", "ml-2": !@hide_icon}>
-    {l("Follow")} {@label}</span>
-</a>
+  <a
+    :if={!@my_follow}
+    data-cid={@id}
+    data-id="follow"
+    :on-click="Bonfire.Social.Follows:follow"
+    href={if !@current_user, do: path(@object) <> "/follow"}
+    rel="noopener noreferrer"
+    phx-value-id={ulid(@object)}
+    class={e(@class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}
+  >
+    <Icon solid="UserAdd" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
+    <span :if={!@hide_text} class={"truncate ellipsis", "ml-2": !@hide_icon}>
+      {l("Follow")} {@label}</span>
+  </a>
 
-<a
-  :if={@my_follow}
-  data-cid={@id}
-  data-id="unfollow"
-  :on-click="Bonfire.Social.Follows:unfollow"
-  phx-value-id={ulid(@object)}
-  class={e(@class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}
->
-  <Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
-  <span :if={!@hide_text} class={"truncate ellipsis", "ml-2": !@hide_icon}>
-    {l("Unfollow")} {@label}</span>
-</a>
+  <a
+    :if={@my_follow}
+    data-cid={@id}
+    data-id="unfollow"
+    :on-click="Bonfire.Social.Follows:unfollow"
+    phx-value-id={ulid(@object)}
+    class={e(@class, "btn btn-sm btn-outline rounded-full border-base-content/40 normal-case")}
+  >
+    <Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
+    <span :if={!@hide_text} class={"truncate ellipsis", "ml-2": !@hide_icon}>
+      {l("Unfollow")} {@label}</span>
+  </a>

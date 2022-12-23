@@ -61,8 +61,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
       <div
         :if={!@current_user or
           (@without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)))}
-        class="py-3 border-b border-base-content/10 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
-      >
+        class="py-3 mb-6 border-b border-base-content/10 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
+        >
         <div class="mx-auto max-w-[1260px]">
           <Bonfire.UI.Common.GuestHeaderLive
             current_user={@current_user}
@@ -76,8 +76,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
       <div class={
         "w-full mx-auto grid max-w-[1260px] gap-0 md:gap-4 widget",
         "grid-cols-1 content-start": @without_sidebar && @without_widgets,
-        "grid-cols-1": !@current_user,
-        "grid-cols-1 md:grid-cols-1 content-start":
+        "grid-cols-1 !max-w-full": !@current_user,
+        "grid-cols-1 md:grid-cols-1 content-start !max-w-full":
           @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)),
         "grid-cols-1 md:grid-cols-[280px_1fr]": @current_user && @without_widgets && !@without_sidebar,
         "grid-cols-1 md:grid-cols-[280px_1fr] lg:grid-cols-[280px_1fr_320px] ":
@@ -105,6 +105,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           class={
             "relative w-full max-w-[1280px]  gap-2 md:gap-0 z-[105] col-span-1 ",
             "!max-w-full": @without_widgets,
+            "!max-w-full": !@current_user,
             "mx-auto order-last": @without_sidebar
           }
         >
