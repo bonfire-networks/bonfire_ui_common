@@ -6,23 +6,23 @@ FeedHooks.PreviewActivity = {
       e.preventDefault(); // TODO: find a better way to hook a simple event on an anchor without needing a hook
       console.log("PreviewActivity clicked")
 
-      let trigger = this.el.querySelector('.open_preview a')
+      let trigger = this.el.querySelector('.open_preview_link')
 
       if (trigger) {
-        if (e.target.closest('a:not(.open_preview_link)') || e.target.closest('button') || e.target.closest('.dropdown') || window.getSelection().toString()) {
+        if (e.ctrlKey || e.metaKey || window.getSelection().toString() || e.target.closest('a:not(.open_preview_link)') || e.target.closest('button') || e.target.closest('.dropdown')) {
 
-          console.log("PreviewActivity: ignore in favour of another link or button's action")
+          console.log("PreviewActivity: ignore in favour of another link or button's action (or opening in new tab)")
           return;
 
         } else {
           let previous_scroll = null
           let uri = trigger.getAttribute('href') //this.el.dataset.permalink
-          const feed = document.querySelector(".feed")
+          // const feed = document.querySelector(".feed")
           const main = document.getElementById("inner")
           const layout = document.getElementById("root")
           const preview_content = document.getElementById("preview_content")
 
-          console.log("feed.scrollTop")
+          console.log("layout.scrollTop")
           console.log(layout.scrollTop)
 
           // push event to load up the PreviewContent
@@ -30,7 +30,7 @@ FeedHooks.PreviewActivity = {
           this.pushEventTo(trigger, "open", {}) 
           // this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
          
-          if (feed) {
+          if (layout) {
             previous_scroll = layout.scrollTop
           }
           
@@ -53,7 +53,7 @@ FeedHooks.PreviewActivity = {
         } 
 
       } else {
-        console.log("PreviewActivity: no trigger found matching '.open_preview a'")
+        console.log("PreviewActivity: no trigger found matching '.open_preview_link'")
       }
 
 

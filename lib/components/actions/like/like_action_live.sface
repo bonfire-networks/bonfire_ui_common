@@ -1,7 +1,7 @@
-{#case Bonfire.Boundaries.can?(@__context__, :like, @object_boundary)}
-  {#match nil}
-  {#match true}
-    <div class="relative z-20" title={l("Like this")}>
+<div class="relative z-20">
+  {#case Bonfire.Boundaries.can?(@__context__, :like, @object_boundary)}
+    {#match nil}
+    {#match true}
       <button
         :if={@object}
         id={@id}
@@ -12,6 +12,7 @@
         phx-value-component={__MODULE__}
         phx-value-current_count={e(@like_count, 0)}
         class="btn btn-ghost btn-circle like like_with_label btn-sm"
+        title={l("Like this")}
       >
         <span class={"text-base-content text-opacity-50", "text-yellow-500 text-opacity-100": @my_like}>
           <Icon solid="Star" :if={@my_like} class="w-5 h-5" />
@@ -27,9 +28,7 @@
           <span :if={e(@like_count, 0) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@like_count, 0)}</span>
         </span>
       </button>
-    </div>
-  {#match false}
-    <div class="relative z-20">
+    {#match false}
       <button
         type="button"
         class="btn btn-ghost btn-circle like like_with_label btn-sm cursor-not-allowed"
@@ -44,5 +43,5 @@
           <span :if={e(@like_count, 0) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@like_count, 0)}</span>
         </span>
       </button>
-    </div>
-{/case}
+  {/case}
+</div>

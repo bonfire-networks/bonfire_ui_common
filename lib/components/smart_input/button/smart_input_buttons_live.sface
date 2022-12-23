@@ -11,6 +11,7 @@
         smart_input_opts={@smart_input_opts}
         prompt={@smart_input_opts[:prompt]}
         icon={e(@smart_input_opts[:icon], "mdi:pencil-outline")}
+        showing_within={:smart_input}
       />
 
       <SmartInputButtonLive
@@ -20,6 +21,7 @@
           Bonfire.UI.Social.WritePostContentLive}
         class={@class}
         icon={e(@smart_input_opts[:icon], "mdi:pencil-outline")}
+        showing_within={:smart_input}
       />
   {/case}
 </div>

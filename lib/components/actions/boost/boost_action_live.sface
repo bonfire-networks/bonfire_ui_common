@@ -1,7 +1,7 @@
-{#case Bonfire.Boundaries.can?(@__context__, :boost, @object_boundary)}
-  {#match nil}
-  {#match true}
-    <div class="relative z-20" title={l("Boost this")}>
+<div class="relative z-20">
+  {#case Bonfire.Boundaries.can?(@__context__, :boost, @object_boundary)}
+    {#match nil}
+    {#match true}
       <button
         :if={@object}
         id={@id}
@@ -12,6 +12,7 @@
         phx-value-id={ulid(@object)}
         phx-value-component={__MODULE__}
         class="btn btn-ghost btn-circle boost btn-sm"
+        title={l("Boost this")}
       >
         <span class={"text-base-content text-opacity-50", "text-opacity-100 text-info": @my_boost}>
           <svg
@@ -33,9 +34,7 @@
             Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@boost_count, 0)}</span>
         </span>
       </button>
-    </div>
-  {#match false}
-    <div class="relative z-20">
+    {#match false}
       <button
         type="button"
         class="boost btn btn-circle btn-ghost btn-sm cursor-not-allowed"
@@ -61,5 +60,5 @@
             Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@boost_count, 0)}</span>
         </span>
       </button>
-    </div>
-{/case}
+  {/case}
+</div>
