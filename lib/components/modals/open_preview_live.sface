@@ -1,16 +1,17 @@
 <div class="open_preview">
-<Bonfire.UI.Common.OpenModalLive
-  id={Pointers.ULID.generate()}
-  reusable_modal_component={Bonfire.UI.Common.PreviewContentLive}
-  reusable_modal_id="preview_content"
-  click_open_event={nil}
-  href={nil}
-  open_btn_opts={"data-permalink": @href}
-  open_btn_text={@open_btn_text}
-  open_btn_class={@open_btn_class}
-  title_text={@title_text}
-  modal_assigns={@modal_assigns}
-  root_assigns={@root_assigns}
-  open_btn={@open_btn}
-/>
+  <Bonfire.UI.Common.OpenModalLive
+    id={Pointers.ULID.generate()}
+    reusable_modal_component={Bonfire.UI.Common.PreviewContentLive}
+    reusable_modal_id="preview_content"
+    click_open_event={nil}
+    href={@href}
+    open_btn_text={@open_btn_text}
+    open_btn_wrapper_class="open_preview_link"
+    open_btn_class={@open_btn_class}
+    title_text={@title_text}
+    modal_assigns={@modal_assigns}
+    root_assigns={@root_assigns}
+    open_btn={@open_btn}
+  />
+  <!-- open_btn_opts={"data-permalink": @href} -->
 </div>

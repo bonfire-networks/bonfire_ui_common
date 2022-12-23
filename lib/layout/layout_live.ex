@@ -59,7 +59,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }"
     >
       <div
-        :if={!@current_user or @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil))}
+        :if={!@current_user or
+          (@without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)))}
         class="py-3 border-b border-base-content/10 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
       >
         <div class="mx-auto max-w-[1260px]">

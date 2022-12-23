@@ -5,15 +5,15 @@
   <div class="flex items-center w-full">
     <div class="flex items-center justify-between flex-1 w-full">
       <div class="flex items-center gap-3">
-      <!-- <div id="back_button" phx-hook="Back" class="hidden">
+        <!-- <div id="back_button" phx-hook="Back" class="hidden">
         <span class="btn btn-sm btn-circle btn-ghost">
           <Icon iconify="mdi:arrow-left" class="w-4 h-4 text-base-content" />
         </span>
       </div> -->
-      <span
-        class="max-w-[200px] md:max-w-max text-sm  font-semibold truncate text-ellipsis"
-        :if={not is_nil(@page_title)}
-      >{@page_title}</span>
+        <span
+          class="max-w-[200px] md:max-w-max text-sm  font-semibold truncate text-ellipsis"
+          :if={not is_nil(@page_title)}
+        >{@page_title}</span>
       </div>
 
       <div class="flex items-center w-auto">

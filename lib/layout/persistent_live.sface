@@ -5,9 +5,10 @@
     open_widgets_sidebar: false
   }"
 >
-  <Bonfire.UI.Common.MobileSmartInputButtonLive  
-    :if={not is_nil(current_user(@__context__)) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
-    smart_input_opts={@smart_input_opts} 
+  <Bonfire.UI.Common.MobileSmartInputButtonLive
+    :if={not is_nil(current_user(@__context__)) and !@smart_input_opts[:inline_only] and
+      !@smart_input_opts[:disable]}
+    smart_input_opts={@smart_input_opts}
   />
   <div
     class="flex md:hidden items-center h-[53px] order-first bg-base-300/70 backdrop-blur-md"
@@ -19,7 +20,7 @@
 
   <div
     data-id="right_nav_and_widgets"
-    class={"order-last top-3 mt-3 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"}
+    class="order-last top-3 mt-3 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
     :class="{
       'sticky hidden lg:grid': !open_widgets_sidebar,
       'absolute lg:sticky lg:grid right-0 lg:right-auto mt-0': open_widgets_sidebar,
@@ -31,7 +32,6 @@
       data-id="user_actions"
       class="flex w-full overflow-visible place-content-center"
     >
-
       <Dynamic.Component
         :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
         module={Bonfire.UI.Common.LoggedActionsLive}

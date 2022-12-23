@@ -16,7 +16,6 @@
   {#match href}
     <a
       :on-click={@click_open_event}
-      type="button"
       class={@open_btn_wrapper_class}
       phx-hook={@open_btn_hook}
       href={@href}

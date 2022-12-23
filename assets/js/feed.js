@@ -6,31 +6,30 @@ FeedHooks.PreviewActivity = {
       e.preventDefault(); // TODO: find a better way to hook a simple event on an anchor without needing a hook
       console.log("PreviewActivity clicked")
 
-      let uri = this.el.dataset.permalink
-
-      let link = e.target.closest('a');
-      let button = e.target.closest('button');
-      let trigger = this.el.querySelector('.open_preview button')
-      const layout = document.getElementById("root")
-      const main = document.getElementById("inner")
-      const feed = document.querySelector(".feed")
-
-
-      console.log("feed.scrollTop")
-      console.log(layout.scrollTop)
-
+      let trigger = this.el.querySelector('.open_preview a')
 
       if (trigger) {
-        if (link || button || window.getSelection().toString()) {
+        if (e.target.closest('a:not(.open_preview_link)') || e.target.closest('button') || e.target.closest('.dropdown') || window.getSelection().toString()) {
+
+          console.log("PreviewActivity: ignore in favour of another link or button's action")
           return;
+
         } else {
+          let previous_scroll = null
+          let uri = trigger.getAttribute('href') //this.el.dataset.permalink
+          const feed = document.querySelector(".feed")
+          const main = document.getElementById("inner")
+          const layout = document.getElementById("root")
+          const preview_content = document.getElementById("preview_content")
+
+          console.log("feed.scrollTop")
+          console.log(layout.scrollTop)
+
           // push event to load up the PreviewContent
           console.log(history)
-          this.pushEventTo(this.el.querySelector('.open_preview button'), "open", {}) 
-          let previous_scroll = null
+          this.pushEventTo(trigger, "open", {}) 
           // this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
          
-          const preview_content = document.getElementById("preview_content")
           if (feed) {
             previous_scroll = layout.scrollTop
           }
@@ -41,15 +40,20 @@ FeedHooks.PreviewActivity = {
           if (main) {
             main.classList.add("hidden")
           }
-          history.pushState(
-            {
-              'previous_url': document.location.href,
-              'previous_scroll': previous_scroll
-            },
-            '',
-            uri)
+          if (uri) {
+            history.pushState(
+              {
+                'previous_url': document.location.href,
+                'previous_scroll': previous_scroll
+              },
+              '',
+              uri)
+          }
+          
         } 
 
+      } else {
+        console.log("PreviewActivity: no trigger found matching '.open_preview a'")
       }
 
 
