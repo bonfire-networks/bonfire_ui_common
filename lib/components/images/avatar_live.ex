@@ -8,7 +8,8 @@ defmodule Bonfire.UI.Common.AvatarLive do
   prop size, :any, default: nil
   prop class, :any, default: nil
   prop avatar_fallback, :string, default: avatar_fallback()
-
+  prop title, :string, default: ""
+  
   def classes(%{class: class}) when not is_nil(class) do
     class
   end

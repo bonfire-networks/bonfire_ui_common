@@ -4,6 +4,7 @@
     {#case @src || avatar_url(@user)}
       {#match url when is_binary(url) and url != @avatar_fallback}
         <LazyImage
+          title={@title}
           class="avatar"
           src={url}
           alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
@@ -14,13 +15,14 @@
           <div
             id={Pointers.ULID.generate()}
             phx-hook="randomAnimalAvatar"
-            d
+            title={@title}
             data-size={size(%{viewing_main_object: @viewing_main_object, comment: @comment, size: @size})}
             data-seed={ulid(@user) || ulid(@src) || @src}
             phx-update="ignore"
           />
         {#else}
           <img
+            title={@title}
             class="avatar"
             src={@avatar_fallback}
             alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
