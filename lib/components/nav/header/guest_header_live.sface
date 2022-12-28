@@ -1,15 +1,13 @@
-<div   
-  x-data="{actions_width: $refs.container.offsetWidth}"
-  class="mx-auto max-w-[1120px]">
+<div x-data="{actions_width: $refs.container.offsetWidth}" class="mx-auto max-w-[1120px]">
   <div class="flex h-[56px] w-full items-center justify-between lg:mx-auto">
     <div class="flex items-center justify-between flex-1 w-full gap-3">
       <div class="" x-bind:style="{width: actions_width + 'px'}">
         <Bonfire.UI.Common.LogoLinkLive />
       </div>
-      <div  class={"text-2xl tracking-wider font-bold text-base-content"}>{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
+      <div class="text-2xl tracking-wider font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
       <div x-ref="container" class="">
         <Bonfire.UI.Common.GuestActionsLive />
       </div>
     </div>
-</div>
+  </div>
 </div>
