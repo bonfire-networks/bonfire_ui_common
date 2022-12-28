@@ -14,6 +14,7 @@ PopupHooks.Popup = {
       const instance = tippy(this.el.querySelector('.tippy'), {
         content: template.innerHTML,
         arrow: false,
+        placement: "left",
         animation: 'shift-away',
         theme: 'translucent',
         interactive: true,

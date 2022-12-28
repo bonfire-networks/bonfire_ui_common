@@ -128,7 +128,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                     :if={@current_user && !@without_sidebar}
                     class="sticky hidden md:block top-0  md:pt-3 bg-base-300 z-[999]"
                   >
-                    <div class="flex flex-1 bg-base-100" :class="{'hidden': open_sidebar}">
+                    <div class="flex flex-1 rounded-t bg-base-100" :class="{'hidden': open_sidebar}">
                       <Dynamic.Component
                         module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
                         page_title={@page_title}
