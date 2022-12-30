@@ -1,6 +1,6 @@
 <div class="dropdown dropdown-end">
   <label
-    class="btn btn-circle  relative btn-sm"
+    class="relative btn btn-circle btn-ghost btn-sm"
     tabindex="0"
     id="user-profile-menu"
     aria-haspopup="true"

@@ -1,5 +1,5 @@
 <div
-  class="items-center justify-end flex-1 hidden gap-3 md:flex"
+  class="flex items-center justify-end flex-1 gap-3"
   :class="{'!flex': open_sidebar}"
 >
   <!-- <button
@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  <LiveRedirect
+  <!-- <LiveRedirect
     to={path(Bonfire.Data.Social.Message)}
     class={
       "btn btn-circle  relative btn-sm",
@@ -48,9 +48,9 @@
       feed_id={e(@current_user, :character, :inbox_id, nil)}
       class="absolute -right-2 indicator-item badge-sm badge -top-1 badge-primary !border-none"
     />
-  </LiveRedirect>
+  </LiveRedirect> -->
 
-  <LiveRedirect
+  <!-- <LiveRedirect
     to={path(:notifications)}
     class={
       "btn btn-circle btn-sm relative",
@@ -65,9 +65,9 @@
       feed_id={e(@current_user, :character, :notifications_id, nil)}
       class="absolute -right-2 indicator-item badge badge-sm -top-1 badge-primary !border-none"
     />
-  </LiveRedirect>
+  </LiveRedirect> -->
 
-  <div class="block">
+  <!-- <div class="block">
     <Bonfire.UI.Common.UserMenuLive />
-  </div>
+  </div> -->
 </div>

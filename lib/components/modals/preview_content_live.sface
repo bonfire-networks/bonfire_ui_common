@@ -31,7 +31,7 @@
     </div>
     <div class="relative z-30">
       <div
-        class="p-0 z-[910] max-w-screen-md mx-auto modal_invisible relative"
+        class="p-0 z-[910] modal_invisible relative"
         data-id="modal-contents"
       >
         <#slot>

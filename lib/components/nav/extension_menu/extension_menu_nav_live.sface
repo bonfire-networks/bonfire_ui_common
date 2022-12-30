@@ -12,7 +12,7 @@
       {#for nav <- nav_items}
         {#case List.wrap(nav)}
           {#match nav when nav != []}
-            <div data-id="nav_links" class="gap-1 mt-3 menu">
+            <div data-id="nav_links" class="gap-2 menu">
               <li
                 :for={%{type: :link} = subnav <- nav}
                 :if={!subnav[:exclude_from_nav]}
@@ -29,7 +29,7 @@
                 />
               </li>
             </div>
-            <div data-id="nav_components" class="gap-1 mt-4">
+            <div data-id="nav_components" class="gap-2">
               <!-- <li
                 :for={%{type: type} = subnav when type != :link <- nav}
                 :if={!subnav[:exclude_from_nav]}
