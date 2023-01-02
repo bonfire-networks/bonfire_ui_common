@@ -160,7 +160,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
             {:div, class: "order-first md:order-none md:static fixed left-0 right-0 top-0 z-[999]"}
           }
           session={%{
-            "root_flash" => @flash,
             "context" => %{
               sticky: true,
               csrf_token: @csrf_token,
@@ -190,6 +189,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     </div>
 
     <Bonfire.UI.Common.ReusableModalLive id="modal" />
+    <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} />
     """
   end
 end

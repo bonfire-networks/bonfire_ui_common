@@ -3,7 +3,9 @@ import "./bonfire_common"
 let Hooks = {}; 
 
 import { ImageHooks } from "./image"
-Object.assign(Hooks, ImageHooks);
+import { FeedHooks } from "./feed"
+
+Object.assign(Hooks, ImageHooks, FeedHooks);
 
 // run LiveView Hooks without LiveView
 (function () {

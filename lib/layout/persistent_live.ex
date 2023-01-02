@@ -48,9 +48,10 @@ defmodule Bonfire.UI.Common.PersistentLive do
     |> fun.(:without_widgets, fn -> nil end)
     #  |> fun.(:nav_items, fn -> nil end)
     |> fun.(:sidebar_widgets, fn -> [] end)
+
     #  |> fun.(:page_header_aside, fn -> nil end)
     #  |> fun.(:custom_page_header, fn -> nil end)
-    |> fun.(:root_flash, fn -> nil end)
+    # |> fun.(:root_flash, fn -> nil end)
   end
 
   def maybe_send_assigns(assigns) do
@@ -84,11 +85,11 @@ defmodule Bonfire.UI.Common.PersistentLive do
       # :nav_items,
       # :custom_page_header,
       # :page_header_aside,
+      # :root_flash,
       :sidebar_widgets,
       :page,
       :page_title,
-      :selected_tab,
-      :root_flash
+      :selected_tab
     ])
     |> Map.put(:__context__, Enum.into(assigns[:__context__] || %{}, %{sticky: true}))
   end
@@ -179,13 +180,13 @@ defmodule Bonfire.UI.Common.PersistentLive do
     {:noreply, socket}
   end
 
-  def handle_info({:assign, {:notification, assigns}}, socket) do
-    debug("forward assigns from PersistentLive to the NotificationLive stateful component")
+  # def handle_info({:assign, {:notification, assigns}}, socket) do
+  #   debug("forward assigns from PersistentLive to the NotificationLive stateful component")
 
-    maybe_send_update(Bonfire.UI.Common.NotificationLive, :notification, assigns)
+  #   maybe_send_update(Bonfire.UI.Common.NotificationLive, :notification, assigns)
 
-    {:noreply, socket}
-  end
+  #   {:noreply, socket}
+  # end
 
   def handle_info({:assign, assigns}, socket) do
     {:noreply,

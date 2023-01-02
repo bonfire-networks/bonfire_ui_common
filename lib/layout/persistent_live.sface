@@ -5,7 +5,6 @@
     open_widgets_sidebar: false
   }"
 >
-
   <div
     class="flex md:hidden items-center h-[53px] order-first bg-base-300/70 backdrop-blur-md"
     :class="{'w-full': open_sidebar}"
@@ -51,7 +50,7 @@
     <div
       data-id="secondary_sidebar_widgets"
       class="hidden mt-4 overflow-x-hidden overflow-y-auto tablet-lg:block"
-      >
+    >
       <!-- FIXME: use the widget system instead (see below) -->
       <Dynamic.Component
         :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive, @__context__) and
@@ -112,7 +111,7 @@
     </button>
   </div> -->
 
-  <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@root_flash} />
+  <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} />
   <Bonfire.UI.Common.ReusableModalLive form_id="boundary_form" id="persistent_modal" />
 </div>
 <Bonfire.UI.Common.MobileMenuLive

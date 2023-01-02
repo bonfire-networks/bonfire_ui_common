@@ -1,7 +1,4 @@
-<div
-  class="flex items-center justify-end flex-1 gap-3"
-  :class="{'!flex': open_sidebar}"
->
+<div class="flex items-center justify-end flex-1 gap-3" :class="{'!flex': open_sidebar}">
   <!-- <button
     x-on:click="open_widgets_sidebar = !open_widgets_sidebar"
     :if={is_list(@sidebar_widgets[:users][:secondary])}

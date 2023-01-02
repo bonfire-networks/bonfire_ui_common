@@ -11,7 +11,7 @@
             l("Avatar")}
         />
       {#match _}
-        {#if Settings.get([__MODULE__, :animal_avatars], true)}
+        {#if Settings.get([Bonfire.UI.Common.AvatarLive, :animal_avatars], true, @__context__)}
           <div
             id={Pointers.ULID.generate()}
             phx-hook="randomAnimalAvatar"

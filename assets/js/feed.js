@@ -15,39 +15,45 @@ FeedHooks.PreviewActivity = {
           return;
 
         } else {
-          let previous_scroll = null
           let uri = trigger.getAttribute('href') //this.el.dataset.permalink
-          // const feed = document.querySelector(".feed")
-          const main = document.getElementById("inner")
-          const layout = document.getElementById("root")
-          const preview_content = document.getElementById("preview_content")
 
-          console.log("layout.scrollTop")
-          console.log(layout.scrollTop)
+          if (window.liveSocket) {
+            // const feed = document.querySelector(".feed")
+            const main = document.getElementById("inner")
+            const layout = document.getElementById("root")
+            const preview_content = document.getElementById("preview_content")
+            let previous_scroll = null
 
-          // push event to load up the PreviewContent
-          console.log(history)
-          this.pushEventTo(trigger, "open", {}) 
-          // this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
-         
-          if (layout) {
-            previous_scroll = layout.scrollTop
-          }
-          
-          if (preview_content) {
-            preview_content.classList.remove("hidden")
-          }
-          if (main) {
-            main.classList.add("hidden")
-          }
-          if (uri) {
-            history.pushState(
-              {
-                'previous_url': document.location.href,
-                'previous_scroll': previous_scroll
-              },
-              '',
-              uri)
+            // console.log("layout.scrollTop")
+            // console.log(layout.scrollTop)
+
+            // push event to load up the PreviewContent
+            // console.log(history)
+            this.pushEventTo(trigger, "open", {})
+            // this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
+
+            if (layout) {
+              previous_scroll = layout.scrollTop
+            }
+
+            if (preview_content) {
+              preview_content.classList.remove("hidden")
+            }
+            if (main) {
+              main.classList.add("hidden")
+            }
+            if (uri) {
+              history.pushState(
+                {
+                  'previous_url': document.location.href,
+                  'previous_scroll': previous_scroll
+                },
+                '',
+                uri)
+            }
+          } else {
+            // fallback if not connected with live socket
+            window.location = uri;
           }
           
         } 
@@ -62,25 +68,25 @@ FeedHooks.PreviewActivity = {
 } 
 
 
-FeedHooks.Back = {
-  mounted() {
+// FeedHooks.Back = {
+//   mounted() {
     
-    if (window.history.length > 1) {
-      // show the back icon svg
-      this.el.classList.remove("hidden")
+//     if (window.history.length > 1) {
+//       // show the back icon svg
+//       this.el.classList.remove("hidden")
       
-      this.el.addEventListener("click", e => {
-        console.log(window.history)
-        e.preventDefault();
-        // window.history.back();
+//       this.el.addEventListener("click", e => {
+//         console.log(window.history)
+//         e.preventDefault();
+//         // window.history.back();
       
-       })
-      } else {
-      // se la cronologia del browser è vuota, non fare nulla
-    }
+//        })
+//       } else {
+//       // se la cronologia del browser è vuota, non fare nulla
+//     }
 
-    }
-}
+//     }
+// }
 
 
 FeedHooks.ClosePreview = {

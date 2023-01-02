@@ -4,7 +4,7 @@
     light_theme: '#{Settings.get(
           [:ui, :theme, :instance_theme_light],
           "light",
-          assigns[:__context__] || assigns[:current_user] || @conn
+          @__context__ || @__context__[:current_user] || @conn
         )}'
     }"}
   x-init="window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => { prefersDarkTheme = e.matches; });"

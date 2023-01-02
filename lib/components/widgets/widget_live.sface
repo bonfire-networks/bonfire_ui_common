@@ -7,10 +7,7 @@
         "bg-base-content/10": @page == @widget[:page]
       }
     >
-      <span
-        :if={!@without_icon}
-        class=""
-      >
+      <span :if={!@without_icon} class="">
         <Icon iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />
       </span>
       <span

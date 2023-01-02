@@ -28,7 +28,7 @@
       <LiveRedirect
         to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
         class="flex items-center justify-start flex-1 gap-2 px-1 my-2 mt-4 normal-case rounded btn btn-ghost"
-        >
+      >
         <Bonfire.UI.Common.AvatarLive
           :if={is_map(current_user(@__context__))}
           class="inline-block object-cover w-10 h-10 rounded cursor-pointer bg-base-content/10"
@@ -53,22 +53,20 @@
         nav_items={@nav_items}
       />
     </div>
-    <div  class="gap-2 my-2 menu">
-      <li class={"rounded-lg text-base-content font-medium"}>
+    <div class="gap-2 my-2 menu">
+      <li class="rounded-lg text-base-content font-medium">
         <LiveRedirect
           to={path(Bonfire.Data.Social.Message)}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2",
-             "bg-base-content/10": @page == "messages"
+            "bg-base-content/10": @page == "messages"
           }
         >
-          <span
-            class=""
-          >
-            <Icon solid="Mail" class={"w-5 h-5 text-base-content/80"} />
+          <span class="">
+            <Icon solid="Mail" class="w-5 h-5 text-base-content/80" />
           </span>
-        
-          <span class="text-sm text-base-content/80">{l "Direct Messages"}</span>
+
+          <span class="text-sm text-base-content/80">{l("Direct Messages")}</span>
           <Bonfire.UI.Common.BadgeCounterLive
             id={:inbox}
             feed_id={e(@current_user, :character, :inbox_id, nil)}
@@ -76,7 +74,7 @@
           />
         </LiveRedirect>
       </li>
-      <li class={"rounded-lg text-base-content font-medium"}>
+      <li class="rounded-lg text-base-content font-medium">
         <LiveRedirect
           to={path(:notifications)}
           class={
@@ -84,13 +82,11 @@
             "bg-base-content/10": @page == "notifications"
           }
         >
-          <span
-            class=""
-          >
-            <Icon solid="Bell" class={"w-5 h-5 text-base-content/80"} />
+          <span class="">
+            <Icon solid="Bell" class="w-5 h-5 text-base-content/80" />
           </span>
-        
-          <span class="flex-1 text-sm text-base-content/80">{l "Notifications"}</span>
+
+          <span class="flex-1 text-sm text-base-content/80">{l("Notifications")}</span>
           <Bonfire.UI.Common.BadgeCounterLive
             id={:notifications}
             feed_id={e(@current_user, :character, :notifications_id, nil)}
