@@ -54,7 +54,7 @@
       />
     </div>
     <div class="gap-2 my-2 menu">
-      <li class="rounded-lg text-base-content font-medium">
+      <li class="font-medium rounded-lg text-base-content">
         <LiveRedirect
           to={path(Bonfire.Data.Social.Message)}
           class={
@@ -74,7 +74,7 @@
           />
         </LiveRedirect>
       </li>
-      <li class="rounded-lg text-base-content font-medium">
+      <li class="font-medium rounded-lg text-base-content">
         <LiveRedirect
           to={path(:notifications)}
           class={
@@ -86,7 +86,7 @@
             <Icon solid="Bell" class="w-5 h-5 text-base-content/80" />
           </span>
 
-          <span class="flex-1 text-sm text-base-content/80">{l("Notifications")}</span>
+          <span class="text-sm text-base-content/80">{l("Notifications")}</span>
           <Bonfire.UI.Common.BadgeCounterLive
             id={:notifications}
             feed_id={e(@current_user, :character, :notifications_id, nil)}
