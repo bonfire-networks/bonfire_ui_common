@@ -42,11 +42,14 @@
   @apply border-neutral
 }
 .main_reply_to:before {
-  --spine-width: 2px;
+  --spine-width: 1px;
   --avatar-size: 26px;
   --gutter: 16px;
+  --reply-spacing: -4px;
   content: "";
   display: block;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
   position: absolute;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
