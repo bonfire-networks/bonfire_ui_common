@@ -1,15 +1,15 @@
 {#case !@src || Bonfire.Files.Blurred.blurred(@src)}
   {#match blurred when is_binary(blurred) and blurred != @src}
-    <img
-      src={blurred}
-      alt={@alt}
-      class={@class}
-      x-data={"{src: '#{blurred}' }"}
-      x-intersect.once={"src = '#{@src}'"}
-      x-bind:src="src"
-      onerror="this.style.background='#6AA4DA'"
-      {...@opts}
-    />
+    <div x-data={"{src: '#{blurred}' }"} x-intersect.once={"src = '#{@src}'"}>
+      <img
+        src={blurred}
+        alt={@alt}
+        class={@class}
+        x-bind:src="src"
+        onerror="this.style.background='#6AA4DA'"
+        {...@opts}
+      />
+    </div>
   {#match _}
     <img src={@src} alt={@alt} class={@class} onerror="this.style.background='#6AA4DA'" {...@opts}>
 {/case}
