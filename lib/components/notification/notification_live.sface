@@ -1,11 +1,22 @@
 <div
-  id="app_notifications"
   aria-live="assertive"
-  class="fixed inset-0 flex  px-4 py-6 sm:px-6 sm:pt-10 z-[99999999999999999] pointer-events-none items-start"
+  class="app_notifications fixed inset-0 flex  px-4 py-6 sm:px-6 sm:pt-10 z-[99999999999999999] pointer-events-none items-start"
 >
   <div class="flex flex-col items-center w-full space-y-4 sm:items-end">
     <div
-      id="notification"
+      :if={@i == 2}
+      id="connection-status"
+      class="hidden rounded-md bg-red-50 p-4 fixed top-1 right-1 width-[280px] fade-in-scale z-50"
+      js-show={show("#connection-status")}
+      js-hide={hide("#connection-status")}
+    >
+      <p class="text-sm font-medium text-red-800" role="alert">
+        {l("Offline - waiting to reconnect...")}
+      </p>
+    </div>
+
+    <div
+      id={"notification-#{@i}"}
       phx-hook="Notification"
       role="alert"
       class="w-full max-w-md overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash"
@@ -123,55 +134,6 @@
             </div>
           </div>
         </div>
-
-        <!-- <div class="max-w-md alert alert-error" 
-      role="alert"
-      phx-click="clear-flash"
-      phx-target={@myself}
-      phx-value-key="error">
-        {rich error}
-    </div> -->
     {/case}
   </div>
-
-  <!-- 
-
-<div id="flash-messages" class="fixed absolute z-[90] right-8 top-20">
-
-  <div 
-    id="notification" 
-    phx-hook="Notification" 
-    role="alert" 
-    >
-    <div class="alert alert-info fade-out" :if={@notification}>
-      <h3>{e(@notification, :title, "Notification")}</h3>
-      <p>{rich e(@notification, :message, "")}</p>
-    </div>
-  </div>
-
-  {#case @info || e(@flash, :info, nil)}
-    {#match nil}
-    {#match info}
-    <div class="max-w-md alert alert-info fade-out" 
-      role="alert alert-warning"
-      phx-click="clear-flash"
-      phx-target={@myself}
-      phx-value-key="info">
-        {rich info}
-    </div>
-  {/case}
-
-  {#case @error || e(@flash, :error, nil)}
-    {#match nil}
-    {#match error}
-    <div class="max-w-md alert alert-error" 
-      role="alert"
-      phx-click="clear-flash"
-      phx-target={@myself}
-      phx-value-key="error">
-        {rich error}
-    </div>
-  {/case}
-
-</div> -->
 </div>

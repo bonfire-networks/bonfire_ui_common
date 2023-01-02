@@ -6,6 +6,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
   prop error, :any, default: nil
   prop info, :any, default: nil
   prop error_sentry_event_id, :any, default: nil
+  prop i, :integer, default: 1
 
   def mount(socket) do
     # debug("mounting")
@@ -50,6 +51,27 @@ defmodule Bonfire.UI.Common.NotificationLive do
      socket
      |> assign(assigns)
      |> assign(subscribed: true)}
+  end
+
+  def show(js \\ %JS{}, selector) do
+    JS.show(js,
+      to: selector,
+      time: 300,
+      display: "inline-block",
+      transition:
+        {"ease-out duration-300", "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95",
+         "opacity-100 translate-y-0 sm:scale-100"}
+    )
+  end
+
+  def hide(js \\ %JS{}, selector) do
+    JS.hide(js,
+      to: selector,
+      time: 300,
+      transition:
+        {"transition ease-in duration-300", "transform opacity-100 scale-100",
+         "transform opacity-0 scale-95"}
+    )
   end
 
   def do_handle_event("clear-flash", %{"key" => type}, socket) do

@@ -1,15 +1,18 @@
-// JS shared with non_live pages
+// first include JS shared with non_live pages
 import "./bonfire_common"
+
+// then define live JS
+import { Socket } from "../../../../deps/phoenix"
+import {LiveSocket} from "../../../../deps/phoenix_live_view"
+import NProgress from "nprogress"      
 
 // for JS features & extensions to hook into LiveView
 let Hooks = {}; 
 
-// Semi-boilerplate Phoenix+LiveView...
+let execJS = (selector, attr) => {
+  document.querySelectorAll(selector).forEach(el => liveSocket.execJS(el, el.getAttribute(attr)))
+}
 
-import { Socket } from "../../../../deps/phoenix"
-import {LiveSocket} from "../../../../deps/phoenix_live_view"
-import NProgress from "nprogress"      
- 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
     timeout: 60000,
@@ -26,6 +29,9 @@ let liveSocket = new LiveSocket("/live", Socket, {
 window.addEventListener("phx:page-loading-start", info => NProgress.start())
 window.addEventListener("phx:page-loading-stop", info => NProgress.done())
 
+// show socket connection status
+liveSocket.getSocket().onOpen(() => execJS("#connection-status", "js-hide"))
+liveSocket.getSocket().onError(() => execJS("#connection-status", "js-show"))
 // connect if there are any LiveViews on the page
 liveSocket.connect()
 // themeChange()

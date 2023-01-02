@@ -103,12 +103,8 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     do: put_session(conn, :user_id, user_id)
 
   def find_flash(view_or_doc) do
-    # Floki.find(view_or_doc, "#app_notifications")
-    # |> info()
-    # messages = Floki.find(view_or_doc, "data-id=\"app_notifications\" role=\"alert\"")
-
     messages =
-      Floki.find(view_or_doc, "#app_notifications .flash [data-id='flash']")
+      Floki.find(view_or_doc, ".app_notifications .flash [data-id='flash']")
       |> info()
 
     case messages do
