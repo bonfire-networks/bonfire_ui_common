@@ -4,5 +4,5 @@ defmodule Bonfire.UI.Common.LazyImage do
   prop src, :string
   prop class, :css_class
   prop alt, :string
-  prop opts, :list
+  prop opts, :any, default: %{}
 end

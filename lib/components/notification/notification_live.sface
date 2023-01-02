@@ -22,7 +22,7 @@
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
             <p class="text-sm font-medium text-gray-900">{e(@notification, :title, "Notification")}</p>
-            <p data-id="content" class="text-sm text-gray-500">{rich(e(@notification, :message, ""))}</p>
+            <p data-id="flash" data-type="notification" class="text-sm text-gray-500">{rich(e(@notification, :message, ""))}</p>
             <LiveRedirect
               :if={e(@notification, :url, nil)}
               to={e(@notification, :url, nil)}
@@ -51,7 +51,6 @@
       {#match nil}
       {#match info}
         <div
-          data-id="info"
           role="alert"
           class="w-full max-w-md overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash"
         >
@@ -61,7 +60,7 @@
                 <Icon outline="CheckCircle" class="w-6 h-6 text-green-400" />
               </div>
               <div class="ml-3 w-0 flex-1 pt-0.5">
-                <p data-id="content" class="text-sm font-semibold text-gray-500">{rich(info)}</p>
+                <p data-id="flash" data-type="info" class="text-sm font-semibold text-gray-500">{rich(info)}</p>
               </div>
               <div :if={socket_connected?(@socket)} class="flex flex-shrink-0 h-5 ml-4">
                 <button
@@ -93,7 +92,6 @@
       {#match nil}
       {#match error}
         <div
-          data-id="error"
           role="alert"
           class="w-full max-w-md overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash"
         >
@@ -103,7 +101,7 @@
                 <Icon outline="Exclamation" class="w-6 h-6 text-red-500" />
               </div>
               <div class="ml-3 w-0 flex-1 pt-0.5">
-                <div data-id="content" class="text-sm text-gray-500">{markdown(error)}</div>
+                <div data-id="flash" data-type="error" class="text-sm text-gray-500">{markdown(error)}</div>
 
                 <Bonfire.UI.Common.FeedbackButtonLive
                   class="mt-2 normal-case btn btn-sm btn-error"

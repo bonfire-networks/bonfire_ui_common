@@ -9,6 +9,7 @@
           src={url}
           alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
             l("Avatar")}
+          opts={@opts}
         />
       {#match _}
         {#if Settings.get([Bonfire.UI.Common.AvatarLive, :animal_avatars], true, @__context__)}
@@ -19,6 +20,7 @@
             data-size={size(%{viewing_main_object: @viewing_main_object, comment: @comment, size: @size})}
             data-seed={ulid(@user) || ulid(@src) || @src}
             phx-update="ignore"
+            {...@opts}
           />
         {#else}
           <img
@@ -27,6 +29,7 @@
             src={@avatar_fallback}
             alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
               l("Avatar")}
+            {...@opts}
           />
         {/if}
     {/case}

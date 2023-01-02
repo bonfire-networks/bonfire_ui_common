@@ -1,13 +1,15 @@
 defmodule Bonfire.UI.Common.Testing.Helpers do
+  use Surface.LiveViewTest
+  import Phoenix.LiveViewTest
   import ExUnit.Assertions
   import Plug.Conn
   import Phoenix.ConnTest
-  import Phoenix.LiveViewTest
   import Untangle
   alias Bonfire.Common.Utils
   alias Bonfire.Me.Users
   alias Bonfire.Data.Identity.Account
   alias Bonfire.Data.Identity.User
+  alias Surface.Components.Dynamic
 
   @endpoint Application.compile_env!(:bonfire, :endpoint_module)
 
@@ -33,9 +35,10 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   Render stateless Surface or LiveView components
   """
   def render_stateless(component, assigns \\ [], context \\ []) do
-    render_component(
+    # render_component(
+    render_stateless_component(
       &component.render/1,
-      Utils.deep_merge([__context__: context], assigns)
+      Utils.deep_merge(%{__context__: context}, assigns)
     )
   end
 
@@ -43,13 +46,30 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   Render stateful Surface or LiveView components
   """
   def render_stateful(component, assigns \\ [], context \\ []) do
-    render_component(
+    # render_component(
+    render_stateful_component(
       component,
       Utils.deep_merge(
-        [__context__: context, id: Pointers.ULID.generate()],
+        %{__context__: context, id: Pointers.ULID.generate()},
         assigns
       )
     )
+  end
+
+  def render_stateless_component(component, assigns) do
+    render_surface do
+      ~F"""
+      <Dynamic.Component module={component} {...assigns} />
+      """
+    end
+  end
+
+  def render_stateful_component(component, assigns) do
+    render_surface do
+      ~F"""
+      <Dynamic.LiveComponent module={component} {...assigns} />
+      """
+    end
   end
 
   @doc """
@@ -85,10 +105,12 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   def find_flash(view_or_doc) do
     # Floki.find(view_or_doc, "#app_notifications")
     # |> info()
-    messages = Floki.find(view_or_doc, "#app_notifications .flash")
-
     # messages = Floki.find(view_or_doc, "data-id=\"app_notifications\" role=\"alert\"")
-    # |> info()
+
+    messages =
+      Floki.find(view_or_doc, "#app_notifications .flash [data-id='flash']")
+      |> info()
+
     case messages do
       [_, _ | _] -> throw(:too_many_flashes)
       short -> short
@@ -101,12 +123,12 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   end
 
   def assert_flash_kind(flash, :error) do
-    id = floki_attr(flash, "data-id")
+    id = floki_attr(flash, "data-type")
     assert "error" in id
   end
 
   def assert_flash_kind(flash, :info) do
-    id = floki_attr(flash, "data-id")
+    id = floki_attr(flash, "data-type")
     assert "info" in id
   end
 
