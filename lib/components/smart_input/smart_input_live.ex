@@ -31,7 +31,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   # Classes to customize the smart input appearance
   prop replied_activity_class, :css_class,
     default:
-      "items-center !bg-base-300 opacity-80 !flex-row order-first !p-3 before:border-neutral-content/80"
+      "items-center !bg-base-300 opacity-80 !flex-row order-first !p-3 before:border-neutral-content/80 mr-[40px]"
 
   def all_smart_input_components do
     Bonfire.Common.Config.get([:ui, :smart_input_components],

@@ -1,4 +1,5 @@
-<div class="w-full">
+<div class="flex items-center w-full gap-2">
+  <Icon solid="Users" class="w-5 h-5 text-base-content/60" />
   {#if is_list(@to_circles) and length(@to_circles) > 0}
     <input
       :for={{name, id} <- @to_circles}
@@ -8,7 +9,12 @@
       label={name}
       value={id}
     />
-    <span class="px-3">{Enum.map_join(@to_circles, " ; ", &elem(&1, 0))}</span>
+    <div class="flex items-center gap-2">
+      <!-- Create a for loop on the @to_circles list -->
+      {#for {name, id} <- @to_circles}
+        <span class="badge">{name}</span>
+      {/for}
+    </div>
   {#else}
     {#case @implementation}
       {#match nil}

@@ -3,6 +3,7 @@
     phx-debounce="blur"
     class="composer textarea w-full h-[240px] focus:outline-none focus:ring-0"
     name="html_body"
+    resize="none"
     placeholder={l("Start typing...")}
   >{@smart_input_opts[:text]}</textarea>
   <ul
