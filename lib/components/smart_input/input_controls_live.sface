@@ -176,7 +176,9 @@
 
     <input type="hidden" name={:create_object_type} value={@create_object_type}>
 
-    <Bonfire.Boundaries.Web.BoundariesSelectionLive
+    <Dynamic.Component
+      :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesSelectionLive)}
+      module={Bonfire.Boundaries.Web.BoundariesSelectionLive}
       to_boundaries={@to_boundaries}
       to_circles={@to_circles}
       thread_mode={@thread_mode}
