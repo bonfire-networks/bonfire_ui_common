@@ -2,6 +2,7 @@
   data-id="persistent"
   class="contents"
   x-data="{
+    open_sidebar: false,
     open_widgets_sidebar: false
   }"
 >
@@ -113,8 +114,9 @@
 
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
   <Bonfire.UI.Common.ReusableModalLive form_id="boundary_form" id="persistent_modal" />
+
+  <Bonfire.UI.Common.MobileMenuLive
+    homepage_link="/"
+    nav_items={Bonfire.Common.ExtensionModule.default_nav(:bonfire_ui_social)}
+  />
 </div>
-<Bonfire.UI.Common.MobileMenuLive
-  homepage_link="/"
-  nav_items={Bonfire.Common.ExtensionModule.default_nav(:bonfire_ui_social)}
-/>

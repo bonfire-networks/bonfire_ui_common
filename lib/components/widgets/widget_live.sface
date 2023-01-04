@@ -1,34 +1,36 @@
-{#case @widget[:type]}
-  {#match :link}
-    <LiveRedirect
-      to={@widget[:href]}
-      class={
-        "flex items-center gap-3 rounded-md py-2 px-2",
-        "bg-base-content/10": @page == @widget[:page]
-      }
-    >
-      <span :if={!@without_icon} class="">
-        <Icon iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />
-      </span>
-      <span
-        :if={@page == @widget[:page] || e(@__context__, :current_view, nil) == @widget[:module] ||
-          @selected_tab == @widget[:page]}
-        class="sr-only"
-      >{l("Current Page:")}
-      </span>
+<div data-type="widget">
+  {#case @widget[:type]}
+    {#match :link}
+      <LiveRedirect
+        to={@widget[:href]}
+        class={
+          "flex items-center gap-3 rounded-md py-2 px-2",
+          "bg-base-content/10": @page == @widget[:page]
+        }
+      >
+        <span :if={!@without_icon} class="">
+          <Icon iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />
+        </span>
+        <span
+          :if={@page == @widget[:page] || e(@__context__, :current_view, nil) == @widget[:module] ||
+            @selected_tab == @widget[:page]}
+          class="sr-only"
+        >{l("Current Page:")}
+        </span>
 
-      <span class={@text_class}>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
-    </LiveRedirect>
-  {#match Surface.Component}
-    <Dynamic.Component module={@widget[:module]} page={@page} {...@data} />
-  {#match Surface.LiveComponent}
-    <Dynamic.LiveComponent
-      id={Pointers.ULID.generate()}
-      module={@widget[:module]}
-      page={@page}
-      {...@data}
-    />
-  {#match nil}
-  {#match other}
-    {error(other) && "..."}
-{/case}
+        <span class={@text_class}>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
+      </LiveRedirect>
+    {#match Surface.Component}
+      <Dynamic.Component module={@widget[:module]} page={@page} {...@data} />
+    {#match Surface.LiveComponent}
+      <Dynamic.LiveComponent
+        id={Pointers.ULID.generate()}
+        module={@widget[:module]}
+        page={@page}
+        {...@data}
+      />
+    {#match nil}
+    {#match other}
+      {error(other) && "..."}
+  {/case}
+</div>
