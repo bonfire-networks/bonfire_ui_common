@@ -1,4 +1,4 @@
-<div class="p-6 shadow bg-base-100">
+<div class="p-4">
   <div class="flex items-center justify-between">
     <div class="flex flex-col gap-1">
       <div class="text-sm font-bold">{l("Default avatars")}</div>
