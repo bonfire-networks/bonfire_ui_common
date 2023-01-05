@@ -66,6 +66,7 @@
           {l("Roles")}
         </LivePatch>
       </li> -->
+<<<<<<< HEAD
     <li :if={module_enabled?(Bonfire.Data.SharedUser, @__context__) &&
       Settings.get(:experimental_features_enabled, false, @__context__)}>
       <LivePatch
@@ -113,6 +114,31 @@
     </li>
 
     <!-- <li>
+=======
+      <li :if={module_enabled?(Bonfire.Data.SharedUser, @__context__) &&
+        Settings.get(:experimental_features_enabled, false, @__context__)}>
+        <LivePatch
+          to={~p"/settings/shared_user"}
+          class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10 ": @selected_tab == "shared_user"}
+        >
+            <Icon solid="UserGroup" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "shared_user"} />
+          <span class="text-sm text-base-content/80">{l("Team Profiles")}</span>
+        </LivePatch>
+      </li>
+  
+      <!-- 
+       <li>
+        <LivePatch to={~p"/settings/invites"} class={"flex items-center gap-3 rounded-md py-2 px-2", 'bg-base-content/10 ': @selected_tab == "invites"}>
+          <Icon solid="Mail" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "invites"} />
+          <span class="text-sm text-base-content/80">{l("Invites")}</span>
+        </LivePatch>
+      </li> -->
+
+
+      
+
+      <!-- <li>
+>>>>>>> 4b7803f (ui)
         <LivePatch
           to={~p"/settings/ghosted"}
           class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10 ": @selected_tab == "ghosted"}
@@ -178,6 +204,7 @@
       {/case}
     {/for}
 
+<<<<<<< HEAD
     <li>
       <LivePatch
         to={~p"/settings/extensions"}
@@ -193,6 +220,26 @@
         <span class="text-sm text-base-content/80">{l("Manage Extensions")}</span>
       </LivePatch>
     </li>
+=======
+      <li>
+        <LivePatch
+          to={~p"/settings/flags"}
+          class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10 ": @selected_tab == "flags"}
+        >
+            <Icon solid="Flag" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "flags"} />
+          <span class="text-sm text-base-content/80">{l("Your flags")}</span>
+        </LivePatch>
+      </li>
+      <li>
+        <LivePatch
+          to={~p"/settings/extensions"}
+          class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10 ": @selected_tab == "extensions"}
+        >
+            <Icon solid="Puzzle" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "extensions"} />
+          <span class="text-sm text-base-content/80">{l("Manage Extensions")}</span>
+        </LivePatch>
+      </li>
+>>>>>>> 4b7803f (ui)
 
     <!-- <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
         <LivePatch to={~p"/settings/instance"}>
