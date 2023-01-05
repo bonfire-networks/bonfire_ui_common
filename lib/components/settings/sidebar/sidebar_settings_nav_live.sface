@@ -1,5 +1,10 @@
 <nav class="" role="navigation" aria-label={l("Settings navigation")}>
   <ul class="gap-2 my-2 menu">
+    <li>
+      <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
+        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l "General"}</span>
+      </div>
+    </li>
     <li :if={ulid(@current_user)}>
       <LivePatch
         to={~p"/settings/profile"}
@@ -66,7 +71,6 @@
           {l("Roles")}
         </LivePatch>
       </li> -->
-<<<<<<< HEAD
     <li :if={module_enabled?(Bonfire.Data.SharedUser, @__context__) &&
       Settings.get(:experimental_features_enabled, false, @__context__)}>
       <LivePatch
@@ -114,31 +118,6 @@
     </li>
 
     <!-- <li>
-=======
-      <li :if={module_enabled?(Bonfire.Data.SharedUser, @__context__) &&
-        Settings.get(:experimental_features_enabled, false, @__context__)}>
-        <LivePatch
-          to={~p"/settings/shared_user"}
-          class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10 ": @selected_tab == "shared_user"}
-        >
-            <Icon solid="UserGroup" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "shared_user"} />
-          <span class="text-sm text-base-content/80">{l("Team Profiles")}</span>
-        </LivePatch>
-      </li>
-  
-      <!-- 
-       <li>
-        <LivePatch to={~p"/settings/invites"} class={"flex items-center gap-3 rounded-md py-2 px-2", 'bg-base-content/10 ': @selected_tab == "invites"}>
-          <Icon solid="Mail" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "invites"} />
-          <span class="text-sm text-base-content/80">{l("Invites")}</span>
-        </LivePatch>
-      </li> -->
-
-
-      
-
-      <!-- <li>
->>>>>>> 4b7803f (ui)
         <LivePatch
           to={~p"/settings/ghosted"}
           class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10 ": @selected_tab == "ghosted"}
@@ -166,36 +145,40 @@
             {#match extension_has_components?}
               {#if extension_has_components? or
                   (is_map(extension_nav) or (is_list(extension_nav) and extension_nav != []))}
-                <li class="flex justify-between" x-data="{open: false}" x-on:click="open = ! open">
+                <li class="flex justify-between">
                   <Bonfire.UI.Common.WidgetLive
                     widget={Bonfire.Common.ExtensionModule.extension(extension)
                     |> Map.merge(%{href: if(extension_has_components?, do: "/settings/#{extension}", else: nil)})}
                     page={@page}
+                    wrapper_class="p-0 border-b border-base-content/10 cursor-default	hover:bg-base-300"
+                    text_class="text-xs uppercase font-medium text-base-content/50 tracking-wider"
+                    without_icon
                     selected_tab={@selected_tab}
                   />
-                  <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
+                  <!-- <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
                     <Icon solid="ChevronDown" class="w-4 h-4" />
-                  </div>
+                  </div> -->
 
-                  <div class="flex flex-col" x-show="open" x-collapse>
+                  <div class="flex flex-col items-start p-0 cursor-default hover:bg-base-300" >
                     {#if is_map(extension_nav) and !extension_nav[:exclude_from_nav]}>
                       <li>
                         <Bonfire.UI.Common.WidgetLive
                           widget={extension_nav}
                           page={@page}
+                          wrapper_class="w-full"
                           selected_tab={@selected_tab}
                           data={e(extension_nav, :props, [])}
                         />
                       </li>
                     {#elseif is_list(extension_nav)}
-                      <div :for={subnav <- extension_nav} :if={!subnav[:exclude_from_nav]}>
                         <Bonfire.UI.Common.WidgetLive
-                          widget={subnav |> debug("widgett")}
+                          :for={subnav <- extension_nav} :if={!subnav[:exclude_from_nav]}
+                          widget={subnav}
                           page={@page}
+                          wrapper_class="w-full"
                           selected_tab={@selected_tab}
                           data={e(subnav, :props, [])}
                         />
-                      </div>
                     {/if}
                   </div>
                 </li>
@@ -203,8 +186,11 @@
           {/case}
       {/case}
     {/for}
-
-<<<<<<< HEAD
+    <li>
+      <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
+        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l "Advanced"}</span>
+      </div>
+    </li>
     <li>
       <LivePatch
         to={~p"/settings/extensions"}
@@ -220,26 +206,6 @@
         <span class="text-sm text-base-content/80">{l("Manage Extensions")}</span>
       </LivePatch>
     </li>
-=======
-      <li>
-        <LivePatch
-          to={~p"/settings/flags"}
-          class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10 ": @selected_tab == "flags"}
-        >
-            <Icon solid="Flag" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "flags"} />
-          <span class="text-sm text-base-content/80">{l("Your flags")}</span>
-        </LivePatch>
-      </li>
-      <li>
-        <LivePatch
-          to={~p"/settings/extensions"}
-          class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10 ": @selected_tab == "extensions"}
-        >
-            <Icon solid="Puzzle" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "extensions"} />
-          <span class="text-sm text-base-content/80">{l("Manage Extensions")}</span>
-        </LivePatch>
-      </li>
->>>>>>> 4b7803f (ui)
 
     <!-- <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
         <LivePatch to={~p"/settings/instance"}>

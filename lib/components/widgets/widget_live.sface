@@ -1,4 +1,4 @@
-<div data-type="widget">
+<div class={@wrapper_class} data-type="widget">
   {#case @widget[:type]}
     {#match :link}
       <LiveRedirect
