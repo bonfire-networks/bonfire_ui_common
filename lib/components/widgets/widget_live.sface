@@ -19,6 +19,15 @@
         </span>
 
         <span class={@text_class}>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
+        <div :if={widget(@widget, @__context__)[:badge]}>
+          <Dynamic.LiveComponent
+            id={Pointers.ULID.generate()}
+            module={Bonfire.UI.Common.BadgeCounterLive}
+            id={widget(@widget, @__context__)[:badge][:id]}
+            feed_id={widget(@widget, @__context__)[:badge][:feed_id]}
+          />
+        </div>
+
       </LiveRedirect>
     {#match Surface.Component}
       <Dynamic.Component module={@widget[:module]} page={@page} {...@data} />

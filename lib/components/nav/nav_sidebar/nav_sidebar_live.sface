@@ -53,48 +53,6 @@
         nav_items={@nav_items}
       />
     </div>
-    <div class="gap-2 my-2 menu">
-      <li class="font-medium rounded-lg text-base-content">
-        <LiveRedirect
-          to={path(Bonfire.Data.Social.Message)}
-          class={
-            "flex items-center gap-3 rounded-md py-2 px-2",
-            "bg-base-content/10": @page == "messages"
-          }
-        >
-          <span class="">
-            <Icon solid="Mail" class="w-5 h-5 text-base-content/80" />
-          </span>
-
-          <span class="text-sm text-base-content/80">{l("Direct Messages")}</span>
-          <Bonfire.UI.Common.BadgeCounterLive
-            id={:inbox}
-            feed_id={e(@current_user, :character, :inbox_id, nil)}
-            class="indicator-item badge badge-sm badge-primary !border-none"
-          />
-        </LiveRedirect>
-      </li>
-      <li class="font-medium rounded-lg text-base-content">
-        <LiveRedirect
-          to={path(:notifications)}
-          class={
-            "flex items-center gap-3 rounded-md py-2 px-2",
-            "bg-base-content/10": @page == "notifications"
-          }
-        >
-          <span class="">
-            <Icon solid="Bell" class="w-5 h-5 text-base-content/80" />
-          </span>
-
-          <span class="text-sm text-base-content/80">{l("Notifications")}</span>
-          <Bonfire.UI.Common.BadgeCounterLive
-            id={:notifications}
-            feed_id={e(@current_user, :character, :notifications_id, nil)}
-            class="indicator-item badge badge-sm badge-primary !border-none"
-          />
-        </LiveRedirect>
-      </li>
-    </div>
   </nav>
 
   {#if is_list(@sidebar_widgets[:users][:main])}

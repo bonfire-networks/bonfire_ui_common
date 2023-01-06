@@ -4,7 +4,9 @@
       <div class="" x-bind:style="{width: actions_width + 'px'}">
         <Bonfire.UI.Common.LogoLinkLive />
       </div>
-      <div class="text-2xl tracking-wider font-bold text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
+      <LiveRedirect to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}>
+        <div class="text-2xl font-bold tracking-wider text-base-content">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
+      </LiveRedirect>
       <div x-ref="container" class="">
         <Bonfire.UI.Common.GuestActionsLive />
       </div>

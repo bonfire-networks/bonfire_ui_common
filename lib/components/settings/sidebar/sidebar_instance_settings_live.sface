@@ -1,15 +1,6 @@
-<nav class="" role="navigation" aria-label={l("Settings navigation")}>
-  <ul class="mt-5 menu menu-compact">
-    <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
-      <LiveRedirect to={~p"/settings/instance"} class={"", active: @selected_tab == "dashboard"}>
-        <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
-          <Icon outline="Home" class={"w-4 h-4 font-normal ", "": @selected_tab == "dashboard"} />
-        </span>
-        {l("Dashboard")}
-      </LiveRedirect>
-    </li>
-
-    <div x-data="{open: true}">
+<nav class="" role="navigation" aria-label={l("Instance settings navigation")}>
+  <ul class="gap-2 my-2 menu"">
+    <!-- <div x-data="{open: true}">
       <li x-on:click="open = ! open">
         <div class="flex items-center justify-between">
           <span class="font-light text-base-content/70">{l("Website")}</span>
@@ -18,48 +9,50 @@
           </div>
         </div>
       </li>
-
-      <ul x-show="open" x-collapse class="menu menu-compact">
+      <ul x-show="open" x-collapse class="menu menu-compact"> -->
+        <li>
+          <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
+            <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l "Website"}</span>
+          </div>
+        </li>
         <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
           <LivePatch
             to={~p"/settings/instance/preferences"}
-            class={"!text-sm", active: @selected_tab == "preferences"}
+            class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10": @selected_tab == "preferences"}
           >
-            <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
-              <Icon outline="Cog" class={"w-4 h-4 font-normal ", "": @selected_tab == "preferences"} />
-            </span>
-            {l("Preferences")}
+            <Icon solid="Cog" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "preferences"} />
+            <span class="text-sm text-base-content/80">{l("Preferences")}</span>
           </LivePatch>
         </li>
 
-        <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
-          <LivePatch to={~p"/settings/instance/design"} class={"", active: @selected_tab == "design"}>
-            <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
-              <Icon outline="ColorSwatch" class={"w-4 h-4 font-normal ", "": @selected_tab == "design"} />
-            </span>
-            {l("Design")}
+        <!-- <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
+          <LivePatch to={~p"/settings/instance/design"} 
+            class={
+            "flex items-center gap-3 rounded-md py-2 px-2", 
+            "bg-base-content/10": @selected_tab == "design"}>
+            <Icon solid="ColorSwatch" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "design"} />
+            <span class="text-sm text-base-content/80">{l("Design")}</span>
           </LivePatch>
-        </li>
-
+        </li> -->
+<!-- 
         <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
           <LivePatch
             to={~p"/settings/instance/navigation"}
-            class={"", active: @selected_tab == "navigation"}
+            class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10": @selected_tab == "navigation"}
           >
-            <Icon outline="PaperAirplane" class={"w-4 h-4 font-normal ", "": @selected_tab == "navigation"} />
-            {l("Navigation")}
+            <Icon solid="PaperAirplane" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "navigation"} />
+            <span class="text-sm text-base-content/80">{l("Navigation")}</span>
           </LivePatch>
-        </li>
+        </li> -->
 
         <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
-          <LivePatch to={~p"/settings/instance/terms"} class={"", active: @selected_tab == "terms"}>
-            <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
-              <Icon outline="Scale" class={"w-4 h-4 font-normal ", "": @selected_tab == "terms"} />
-            </span>
-            {l("Terms / Policies")}
+          <LivePatch to={~p"/settings/instance/terms"} class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10": @selected_tab == "terms"}>
+            
+              <Icon solid="Scale" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "terms"} />
+            <span class="text-sm text-base-content/80">{l("Terms / Policies")}</span>
           </LivePatch>
         </li>
-      </ul>
+      <!-- </ul>
     </div>
 
     <div x-data="{open: false}">
@@ -71,38 +64,25 @@
           </div>
         </div>
       </li>
-      <ul x-cloak x-show="open" x-collapse class="menu menu-compact">
+      <ul x-cloak x-show="open" x-collapse class="menu menu-compact"> -->
+        <li>
+          <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
+            <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l "Members"}</span>
+          </div>
+        </li>
         <li>
           <LivePatch
             :if={module_enabled?(Bonfire.Invite.Links, @__context__) and
               Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
             to={~p"/settings/instance/members"}
             class={
-              "",
-              active: @selected_tab == "members"
+              "flex items-center gap-3 rounded-md py-2 px-2",
+              "bg-base-content/10": @selected_tab == "members"
             }
           >
-            <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
-              <Icon outline="Users" class={"w-4 h-4 font-normal ", "": @selected_tab == "members"} />
-            </span>
-            {l("Members")}
-          </LivePatch>
-        </li>
-
-        <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
-          <LivePatch to={~p"/boundaries/instance_circles"} class={"", active: @selected_tab == "roles"}>
-            <Icon iconify="bx:ShapeCircle" class={"w-4 h-4 font-normal ", "": @selected_tab == "roles"} />
-            {l("Roles")}
-          </LivePatch>
-        </li>
-
-        <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
-          <LivePatch
-            to={~p"/boundaries/acl/#{Bonfire.Boundaries.Fixtures.instance_acl()}"}
-            class={"", active: @selected_tab == "roles"}
-          >
-            <Icon iconify="bxs:EditLocation" class={"w-4 h-4 font-normal ", "": @selected_tab == "roles"} />
-            {l("Boundaries")}
+            
+              <Icon solid="Users" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "members"} />
+            <span class="text-sm text-base-content/80">{l("Members")}</span>
           </LivePatch>
         </li>
 
@@ -111,15 +91,86 @@
             :if={module_enabled?(Bonfire.Invite.Links, @__context__) and
               Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
             to={~p"/settings/instance/invites"}
-            class={"", active: @selected_tab == "invites"}
+            class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10": @selected_tab == "invites"}
           >
-            <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
-              <Icon outline="Mail" class={"w-4 h-4 font-normal ", "": @selected_tab == "invites"} />
-            </span>
-            {l("Invites")}
+            
+              <Icon solid="Mail" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "invites"} />
+            <span class="text-sm text-base-content/80">{l("Invites")}</span>
           </LivePatch>
         </li>
-      </ul>
+
+        <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
+          <LivePatch to={~p"/settings/instance/flags"} class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10": @selected_tab == "flags"}>
+            
+              <Icon solid="Flag" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "flags"} />
+            <span class="text-sm text-base-content/80">{l("Flagged")}</span>
+          </LivePatch>
+        </li>
+
+        <!-- <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
+          <LivePatch to={~p"/boundaries/instance_circles"} class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10": @selected_tab == "roles"}>
+            <Icon iconify="bx:ShapeCircle" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "roles"} />
+            <span class="text-sm text-base-content/80">{l("Roles")}</span>
+          </LivePatch>
+        </li>
+
+        <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
+          <LivePatch
+            to={~p"/boundaries/acl/#{Bonfire.Boundaries.Fixtures.instance_acl()}"}
+            class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10": @selected_tab == "roles"}
+          >
+            <Icon iconify="bxs:EditLocation" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "roles"} />
+            <span class="text-sm text-base-content/80">{l("Boundaries")}</span>
+          </LivePatch>
+        </li> -->
+        {#for {extension, modules} <- Bonfire.Common.SettingsModule.app_modules()}
+            {#case Bonfire.Common.SettingsModule.nav(extension)}
+              {#match extension_nav}
+                {#case Bonfire.Common.SettingsModule.extension_has_components?(extension, modules)}
+                  {#match extension_has_components?}
+                    {#if extension_has_components? or
+                        (is_map(extension_nav) or (is_list(extension_nav) and extension_nav != []))}
+                      <li class="flex justify-between">
+                        <Bonfire.UI.Common.WidgetLive
+                          widget={Bonfire.Common.ExtensionModule.extension(extension)
+                          |> Map.merge(%{href: if(extension_has_components?, do: "/settings/#{extension}", else: nil)})}
+                          page={@page}
+                          wrapper_class="p-0 border-b border-base-content/10 cursor-default	hover:bg-base-300"
+                          text_class="text-xs uppercase font-medium text-base-content/50 tracking-wider"
+                          without_icon
+                          selected_tab={@selected_tab}
+                        />
+
+                        <div class="flex flex-col items-start p-0 cursor-default hover:bg-base-300" >
+                          {#if is_map(extension_nav) and !extension_nav[:exclude_from_nav]}>
+                            <li>
+                              <Bonfire.UI.Common.WidgetLive
+                                widget={extension_nav}
+                                page={@page}
+                                wrapper_class="w-full"
+                                selected_tab={@selected_tab}
+                                data={e(extension_nav, :props, [])}
+                              />
+                            </li>
+                          {#elseif is_list(extension_nav)}
+                              <Bonfire.UI.Common.WidgetLive
+                                :for={subnav <- extension_nav} :if={!subnav[:exclude_from_nav]}
+                                widget={subnav}
+                                page={@page}
+                                wrapper_class="w-full"
+                                selected_tab={@selected_tab}
+                                data={e(subnav, :props, [])}
+                              />
+                          {/if}
+                        </div>
+                      </li>
+                    {/if}
+                {/case}
+            {/case}
+          {/for}
+          
+        
+      <!-- </ul>
     </div>
 
     <div x-data="{open: false}">
@@ -131,38 +182,31 @@
           </div>
         </div>
       </li>
-      <ul x-cloak x-show="open" x-collapse class="menu menu-compact">
-        <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
-          <LivePatch to={~p"/settings/instance/flags"} class={"", active: @selected_tab == "flags"}>
-            <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
-              <Icon outline="Flag" class={"w-4 h-4 font-normal ", "": @selected_tab == "flags"} />
-            </span>
-            {l("Flagged")}
-          </LivePatch>
-        </li>
+      <ul x-cloak x-show="open" x-collapse class="menu menu-compact"> -->
+        
 
-        <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
+        <!-- <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
           <LivePatch
             to={~p"/boundaries/instance_ghosted"}
-            class={"", active: @selected_tab == "instance_ghosted"}
+            class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10": @selected_tab == "instance_ghosted"}
           >
             <Icon
               solid="MinusCircle"
-              class={"w-4 h-4 font-normal ", "": @selected_tab == "instance_ghosted"}
+              class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "instance_ghosted"}
             />
-            {l("Ghosted")}
+            <span class="text-sm text-base-content/80">{l("Ghosted")}</span>
           </LivePatch>
         </li>
         <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
           <LivePatch
             to={~p"/boundaries/instance_silenced"}
-            class={"", active: @selected_tab == "instance_silenced"}
+            class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10": @selected_tab == "instance_silenced"}
           >
-            <Icon outline="Ban" class={"w-4 h-4 font-normal ", "": @selected_tab == "instance_silenced"} />
-            {l("Silenced")}
+            <Icon solid="Ban" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "instance_silenced"} />
+            <span class="text-sm text-base-content/80">{l("Silenced")}</span>
           </LivePatch>
-        </li>
-      </ul>
+        </li> -->
+      <!-- </ul>
     </div>
 
     <div x-data="{open: false}">
@@ -175,20 +219,24 @@
         </div>
       </li>
 
-      <ul x-cloak x-show="open" x-collapse class="menu menu-compact">
+      <ul x-cloak x-show="open" x-collapse class="menu menu-compact"> -->
+        <li>
+          <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
+            <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l "Advanced"}</span>
+          </div>
+        </li>
         <li :if={Bonfire.Boundaries.can?(@__context__, :toggle, :instance)}>
           <LivePatch
             to={~p"/settings/instance/extensions"}
-            class={"", active: @selected_tab == "extensions"}
+            class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10": @selected_tab == "extensions"}
           >
-            <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
-              <Icon outline="Puzzle" class={"w-4 h-4 font-normal ", "": @selected_tab == "extensions"} />
-            </span>
-            {l("Extensions")}
+            
+              <Icon solid="Puzzle" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "extensions"} />
+            <span class="text-sm text-base-content/80">{l("Extensions")}</span>
           </LivePatch>
         </li>
-      </ul>
-    </div>
+      <!-- </ul>
+    </div> -->
 
     <!-- <li>
       <LivePatch
@@ -197,10 +245,10 @@
         to={~p"/settings/instance/pages"}
         class={
           "mt-8",
-          active: @selected_tab == "pages"
+          "bg-base-content/10": @selected_tab == "pages"
         }
       >
-        <Icon outline="DocumentDuplicate" class={"w-4 h-4 font-normal ", "": @selected_tab == "pages"} />
+        <Icon solid="DocumentDuplicate" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "pages"} />
         {l("Pages")}
       </LivePatch>
     </li>
@@ -212,12 +260,11 @@
         to={~p"/posts"}
         class={
           "",
-          active: @selected_tab == "posts"
+          "bg-base-content/10": @selected_tab == "posts"
         }
       >
-        <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
-          <Icon outline="ChatAlt" class={"w-4 h-4 font-normal ", "": @selected_tab == "posts"} />
-        </span>
+        
+          <Icon solid="ChatAlt" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "posts"} />
         {l("Posts")}
       </LivePatch>
     </li>
@@ -229,12 +276,11 @@
         to={~p"/settings/instance/tags"}
         class={
           "",
-          active: @selected_tab == "tags"
+          "bg-base-content/10": @selected_tab == "tags"
         }
       >
-        <span class="rounded bg-gradient-to-b from-cyan-500 to-blue-500 w-[28px] flex place-content-center h-[28px] items-center shadow-lg">
-          <Icon outline="Tag" class={"w-4 h-4 font-normal ", "": @selected_tab == "tags"} />
-        </span>
+        
+          <Icon solid="Tag" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "tags"} />
         {l("Tags")}
       </LivePatch>
     </li> -->

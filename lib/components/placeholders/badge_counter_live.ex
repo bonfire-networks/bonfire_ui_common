@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.BadgeCounterLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
-  prop class, :css_class, default: ""
+  prop class, :css_class, default: "indicator-item badge badge-sm badge-primary !border-none"
   prop count, :integer, default: 0
   prop feed_id, :any, default: nil
 
