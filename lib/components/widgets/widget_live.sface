@@ -15,14 +15,16 @@
         </span>
 
         <span class={@text_class}>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
-        <div :if={widget(@widget, @__context__)[:badge]}>
-          <Dynamic.LiveComponent
-            id={Pointers.ULID.generate()}
-            module={Bonfire.UI.Common.BadgeCounterLive}
-            id={widget(@widget, @__context__)[:badge][:id]}
-            feed_id={widget(@widget, @__context__)[:badge][:feed_id]}
-          />
-        </div>
+
+        {#case widget(@widget, @__context__)[:badge]}
+        {#match nil}
+        {#match badge}
+            <Dynamic.LiveComponent
+              id={badge[:id] || Pointers.ULID.generate()}
+              module={Bonfire.UI.Common.BadgeCounterLive}
+              feed_id={badge[:feed_id] || e(@current_user, :character, badge[:feed_key], nil)}
+            />
+        {/case}
 
       </LiveRedirect>
     {#match Surface.Component}
