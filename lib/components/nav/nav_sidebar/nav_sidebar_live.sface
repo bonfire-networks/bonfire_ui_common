@@ -16,15 +16,9 @@
     </div>
   </div>
 
-  <nav class="w-full" role="navigation" aria-label={l("Extension navigation")}>
-    <!-- <div
-      class="flex h-[45px] items-center gap-3 py-3 mx-3 text-sm font-medium tracking-wide text-base-content/60"
-      :if={@__context__[:current_extension][:name]}
-    >
-      <Icon iconify={@__context__[:current_extension][:icon]} class="w-6 h-6" />
-      <span>{@__context__[:current_extension][:name]}</span>
-    </div> -->
-    <div class="flex items-center justify-between my-2 mt-4">
+  <nav class="w-full mt-4 overflow-y-auto max-h-[calc(var(--inner-window-height)_-_90px)]" role="navigation" aria-label={l("Extension navigation")}>
+
+    <div class="flex items-center justify-between mb-2 ">
       <LiveRedirect
         to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
         class="flex items-center justify-start flex-1 gap-2 px-1 normal-case rounded btn btn-ghost"
