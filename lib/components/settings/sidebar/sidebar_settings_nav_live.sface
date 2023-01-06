@@ -9,7 +9,7 @@
       <LivePatch
         to={~p"/settings/profile"}
         class={
-          "flex items-center gap-3 rounded-md py-2 px-2",
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "profile"
         }
       >
@@ -24,7 +24,7 @@
       <LivePatch
         to={~p"/settings/preferences"}
         class={
-          "flex items-center gap-3 rounded-md py-2 px-2",
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "preferences"
         }
       >
@@ -40,7 +40,7 @@
       <LivePatch
         to={~p"/settings/account"}
         class={
-          "flex items-center gap-3 rounded-md py-2 px-2",
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "account"
         }
       >
@@ -57,7 +57,7 @@
       <LivePatch
         to={~p"/settings/shared_user"}
         class={
-          "flex items-center gap-3 rounded-md py-2 px-2",
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "shared_user"
         }
       >
@@ -73,7 +73,7 @@
       <LivePatch
         to={~p"/settings/invites"}
         class={
-          "flex items-center gap-3 rounded-md py-2 px-2",
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "invites"
         }
       >
@@ -88,7 +88,7 @@
     <li>
       <LivePatch
         to={~p"/settings/flags"}
-        class={"flex items-center gap-3 rounded-md py-2 px-2", "bg-base-content/10 ": @selected_tab == "flags"}
+        class={"flex items-center gap-3 rounded-md py-2 px-2 w-full", "bg-base-content/10 ": @selected_tab == "flags"}
       >
         <Icon
           solid="Flag"
@@ -152,7 +152,7 @@
       <LivePatch
         to={~p"/settings/extensions"}
         class={
-          "flex items-center gap-3 rounded-md py-2 px-2",
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "extensions"
         }
       >

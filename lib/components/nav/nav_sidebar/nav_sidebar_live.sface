@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <nav class="w-full mt-4 overflow-y-auto max-h-[calc(var(--inner-window-height)_-_90px)]" role="navigation" aria-label={l("Extension navigation")}>
+  <nav class="w-full mt-4 overflow-y-auto max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]" role="navigation" aria-label={l("Extension navigation")}>
 
     <div class="flex items-center justify-between mb-2 ">
       <LiveRedirect

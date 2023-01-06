@@ -3,11 +3,7 @@
     {#match :link}
       <LiveRedirect
         to={@widget[:href]}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2",
-          "bg-base-content/10": @page == @widget[:page]
-        }
-      >
+        class={"flex items-center gap-3 rounded-md py-2 px-2 w-full"}>
         <span :if={!@without_icon} class="">
           <Icon iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />
         </span>
