@@ -116,39 +116,48 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   def reset_input(%{assigns: %{showing_within: :thread}} = socket) do
     # debug("THREad")
-    socket
-    |> set_smart_input_text()
-    |> assign_generic(
+    set(socket,
       activity: nil,
       to_circles: [],
       reply_to_id: e(socket.assigns, :thread_id, nil),
-      to_boundaries: default_boundaries(socket)
-
-      # open_boundaries: false
+      to_boundaries: default_boundaries(socket),
+      smart_input_opts: [
+        text: nil,
+        open: false
+      ]
     )
+
+    socket
   end
 
   def reset_input(%{assigns: %{showing_within: :messages}} = socket) do
     # debug("messages")
+    set(socket,
+      activity: nil,
+      smart_input_opts: [
+        text: nil,
+        open: false
+      ]
+    )
 
     socket
-    |> set_smart_input_text()
-    |> assign_generic(activity: nil)
   end
 
   def reset_input(socket) do
     # debug("VOID")
+    set(socket,
+      activity: nil,
+      to_circles: [],
+      reply_to_id: e(socket.assigns, :thread_id, nil),
+      thread_id: nil,
+      to_boundaries: default_boundaries(socket),
+      smart_input_opts: [
+        text: nil,
+        open: false
+      ]
+    )
 
     socket
-    |> set_smart_input_text()
-    |> assign_generic(
-      reply_to_id: nil,
-      thread_id: nil,
-      to_circles: [],
-      activity: nil,
-      to_boundaries: default_boundaries(socket)
-      # open_boundaries: false
-    )
   end
 
   def set_smart_input_as(:flat, _), do: :modal

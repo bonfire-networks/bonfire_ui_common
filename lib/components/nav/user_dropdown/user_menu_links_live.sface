@@ -24,40 +24,53 @@
 </li>
 <!-- if current user is also an admin -->
 <li :if={is_admin?(@current_user)}>
-  <LiveRedirect to={~p"/settings/instance"} class="flex items-center gap-2 text-sm text-neutral-content/80">
+  <LiveRedirect
+    to={~p"/settings/instance"}
+    class="flex items-center gap-2 text-sm text-neutral-content/80"
+  >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
     {l("Instance Settings")}
   </LiveRedirect>
 </li>
 
 <li class="border-t border-neutral-content/10">
-  <LiveRedirect to={~p"/boundaries/silenced"} class="flex items-center gap-2 text-sm text-neutral-content/80">
+  <LiveRedirect
+    to={~p"/boundaries/silenced"}
+    class="flex items-center gap-2 text-sm text-neutral-content/80"
+  >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
     {l("Silenced")}
   </LiveRedirect>
 </li>
 <li>
-  <LiveRedirect to={~p"/boundaries/ghosted"} class="flex items-center gap-2 text-sm text-neutral-content/80">
+  <LiveRedirect
+    to={~p"/boundaries/ghosted"}
+    class="flex items-center gap-2 text-sm text-neutral-content/80"
+  >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
     {l("Ghosted")}
   </LiveRedirect>
 </li>
 <li>
-  <LiveRedirect to={~p"/boundaries/circles"} class="flex items-center gap-2 text-sm text-neutral-content/80">
+  <LiveRedirect
+    to={~p"/boundaries/circles"}
+    class="flex items-center gap-2 text-sm text-neutral-content/80"
+  >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
     {l("Circles")}
   </LiveRedirect>
 </li>
 <li>
-  <LiveRedirect to={~p"/boundaries/acls"} class="flex items-center gap-2 text-sm text-neutral-content/80">
+  <LiveRedirect
+    to={~p"/boundaries/acls"}
+    class="flex items-center gap-2 text-sm text-neutral-content/80"
+  >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
     {l("Boundaries")}
   </LiveRedirect>
 </li>
 <li class="border-t border-neutral-content/10">
-  <Bonfire.UI.Common.FeedbackButtonLive
-    class="flex items-center gap-2 text-sm text-neutral-content/80"
-  />
+  <Bonfire.UI.Common.FeedbackButtonLive class="flex items-center gap-2 text-sm text-neutral-content/80" />
 </li>
 <li>
   <LiveRedirect to={~p"/logout"} class="flex items-center gap-2 text-sm text-neutral-content/80">

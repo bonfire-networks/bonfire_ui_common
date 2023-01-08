@@ -6,9 +6,9 @@
     |> debug("nav_items")}
     {#match nav_items when is_list(nav_items) and nav_items != []}
       <div data-id="nav_links" class="menu">
-      {#for nav <- nav_items}
-        {#case List.wrap(nav)}
-          {#match nav when nav != []}
+        {#for nav <- nav_items}
+          {#case List.wrap(nav)}
+            {#match nav when nav != []}
               <li
                 :for={%{type: :link} = subnav <- nav}
                 :if={!subnav[:exclude_from_nav]}
@@ -24,22 +24,22 @@
                   data={e(subnav, :props, [])}
                 />
               </li>
-            <div data-id="nav_components">
-              <div :for={%{type: type} = subnav when type != :link <- nav} >
-                <Bonfire.UI.Common.WidgetLive
-                  widget={subnav}
-                  page={@page}
-                  selected_tab={@selected_tab}
-                  data={e(subnav, :props, [])}
-                />
+              <div data-id="nav_components">
+                <div :for={%{type: type} = subnav when type != :link <- nav}>
+                  <Bonfire.UI.Common.WidgetLive
+                    widget={subnav}
+                    page={@page}
+                    selected_tab={@selected_tab}
+                    data={e(subnav, :props, [])}
+                  />
+                </div>
+                <!-- </li> -->
               </div>
-              <!-- </li> -->
-            </div>
-          {#match _}
-            <!-- no nav -->
-        {/case}
-      {/for}
-    </div>
+            {#match _}
+              <!-- no nav -->
+          {/case}
+        {/for}
+      </div>
     {#match _}
       <!-- no nav_items -->
   {/case}

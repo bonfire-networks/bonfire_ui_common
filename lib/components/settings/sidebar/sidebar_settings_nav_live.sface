@@ -2,7 +2,7 @@
   <ul class="gap-2 my-2 menu">
     <li>
       <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
-        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l "General"}</span>
+        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("General")}</span>
       </div>
     </li>
     <li :if={ulid(@current_user)}>
@@ -88,7 +88,10 @@
     <li>
       <LivePatch
         to={~p"/settings/flags"}
-        class={"flex items-center gap-3 rounded-md py-2 px-2 w-full", "bg-base-content/10 ": @selected_tab == "flags"}
+        class={
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+          "bg-base-content/10 ": @selected_tab == "flags"
+        }
       >
         <Icon
           solid="Flag"
@@ -116,7 +119,7 @@
                     selected_tab={@selected_tab}
                   />
 
-                  <div class="flex flex-col items-start p-0 cursor-default hover:bg-base-300" >
+                  <div class="flex flex-col items-start p-0 cursor-default hover:bg-base-300">
                     {#if is_map(extension_nav) and !extension_nav[:exclude_from_nav]}>
                       <li>
                         <Bonfire.UI.Common.WidgetLive
@@ -128,14 +131,15 @@
                         />
                       </li>
                     {#elseif is_list(extension_nav)}
-                        <Bonfire.UI.Common.WidgetLive
-                          :for={subnav <- extension_nav} :if={!subnav[:exclude_from_nav]}
-                          widget={subnav}
-                          page={@page}
-                          wrapper_class="w-full"
-                          selected_tab={@selected_tab}
-                          data={e(subnav, :props, [])}
-                        />
+                      <Bonfire.UI.Common.WidgetLive
+                        :for={subnav <- extension_nav}
+                        :if={!subnav[:exclude_from_nav]}
+                        widget={subnav}
+                        page={@page}
+                        wrapper_class="w-full"
+                        selected_tab={@selected_tab}
+                        data={e(subnav, :props, [])}
+                      />
                     {/if}
                   </div>
                 </li>
@@ -145,7 +149,7 @@
     {/for}
     <li>
       <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
-        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l "Advanced"}</span>
+        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("Advanced")}</span>
       </div>
     </li>
     <li>

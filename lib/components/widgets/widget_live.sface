@@ -1,9 +1,7 @@
 <div class={@wrapper_class} data-type="widget">
   {#case @widget[:type]}
     {#match :link}
-      <LiveRedirect
-        to={@widget[:href]}
-        class={"flex items-center gap-3 rounded-md py-2 px-2 w-full"}>
+      <LiveRedirect to={@widget[:href]} class="flex items-center gap-3 rounded-md py-2 px-2 w-full">
         <span :if={!@without_icon} class="">
           <Icon iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />
         </span>
@@ -17,15 +15,14 @@
         <span class={@text_class}>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
 
         {#case widget(@widget, @__context__)[:badge]}
-        {#match nil}
-        {#match badge}
+          {#match nil}
+          {#match badge}
             <Dynamic.LiveComponent
               id={badge[:id] || Pointers.ULID.generate()}
               module={Bonfire.UI.Common.BadgeCounterLive}
               feed_id={badge[:feed_id] || e(@current_user, :character, badge[:feed_key], nil)}
             />
         {/case}
-
       </LiveRedirect>
     {#match Surface.Component}
       <Dynamic.Component module={@widget[:module]} page={@page} {...@data} />
@@ -38,6 +35,6 @@
       />
     {#match nil}
     {#match other}
-      {error(other) && "..."}
+      {error(other) && "<!-- invalid widget -->"}
   {/case}
 </div>
