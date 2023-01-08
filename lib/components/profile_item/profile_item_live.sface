@@ -22,8 +22,9 @@
       ulid(@current_user)}
   >
     <Bonfire.UI.Common.FollowButtonLive
-      id={ComponentID.new(Bonfire.UI.Common.FollowButtonLive, @profile)}
-      object={@profile}
+      id={ComponentID.new(Bonfire.UI.Common.FollowButtonLive, ulid(@profile))}
+      object_id={ulid(@profile)}
+      path={path(@character)}
       hide_text
       class={@class}
     />

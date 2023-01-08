@@ -1,15 +1,14 @@
 <div class="relative z-20">
   {#case @current_user == nil or Bonfire.Boundaries.can?(@__context__, :boost, @object_boundary)}
-    {#match nil}
     {#match true}
       <button
-        :if={@object}
+        :if={@object_id}
         id={@id}
         data-id="boost_action"
         disabled={if @object_type in [Bonfire.Data.Social.Message], do: "disabled"}
         phx-click={"#{if @my_boost, do: "Bonfire.Social.Boosts:undo", else: "Bonfire.Social.Boosts:boost"}"}
         phx-target={@myself}
-        phx-value-id={ulid(@object)}
+        phx-value-id={@object_id}
         phx-value-component={__MODULE__}
         class="btn btn-ghost btn-circle boost btn-sm"
         title={l("Boost this")}
@@ -60,5 +59,6 @@
             Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@boost_count, 0)}</span>
         </span>
       </button>
+    {#match _}
   {/case}
 </div>

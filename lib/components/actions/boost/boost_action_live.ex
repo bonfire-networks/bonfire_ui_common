@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.BoostActionLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
-  prop object, :any
+  prop object_id, :any
   prop object_type, :any
   prop object_boundary, :any, default: nil
   prop boost_count, :any

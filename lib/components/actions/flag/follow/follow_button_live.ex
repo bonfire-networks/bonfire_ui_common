@@ -1,7 +1,8 @@
 defmodule Bonfire.UI.Common.FollowButtonLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
-  prop object, :any, required: true
+  prop object_id, :string, required: true
+  prop path, :string, default: nil
   prop class, :css_class, default: nil
   prop icon_class, :css_class, default: nil
   prop label, :string, default: nil

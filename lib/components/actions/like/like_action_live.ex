@@ -1,7 +1,8 @@
 defmodule Bonfire.UI.Common.LikeActionLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
-  prop object, :any
+  prop object_id, :any
+  prop object_type, :any
   prop object_boundary, :any, default: nil
   prop like_count, :any, default: 0
   # prop label, :string, default: nil
