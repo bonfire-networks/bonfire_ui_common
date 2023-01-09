@@ -1,4 +1,4 @@
-{#if e(@my_flag, :id, nil)}
+{#if e(@flagged, :id, nil)}
   <button disabled="disabled" class="flex items-center p-2 text-neutral">
     {l("You already flagged this")}
   </button>
@@ -7,9 +7,12 @@
     id={Pointers.ULID.generate()}
     title_text={e(@label, l("Flag this object"))}
   >
-    {l(
+    <div class="prose-sm prose">
+    
+    <p>{l(
       "The admins will review the content and might get in touch with you or the author for clarification. They may then delete it and/or block the person or originating instance if appropriate."
-    )}
+    )}</p>
+    </div>
     <:open_btn>
       <div class="flex items-center gap-2 text-sm text-neutral-content/80">
         <Icon solid="Flag" class="w-4 h-4 shrink-0" />
@@ -21,7 +24,7 @@
         phx-click="Bonfire.Social.Flags:flag"
         phx-target="#flag_form"
         phx-value-id={e(@object, :id, "")}
-        class="btn btn-sm btn-error rounded"
+        class="normal-case rounded btn btn-sm btn-error"
       >
         {l("Flag")}
       </button>

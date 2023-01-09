@@ -10,6 +10,7 @@
           <Icon iconify="mdi:arrow-left" class="w-4 h-4 text-base-content" />
         </span>
       </div> -->
+      <Bonfire.UI.Common.BackButtonLive  />
         <span
           class="max-w-[200px] md:max-w-max text-sm  font-semibold truncate text-ellipsis"
           :if={not is_nil(@page_title)}

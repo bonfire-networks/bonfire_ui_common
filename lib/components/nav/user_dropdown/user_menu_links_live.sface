@@ -57,7 +57,7 @@
     class="flex items-center gap-2 text-sm text-neutral-content/80"
   >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
-    {l("Circles")}
+    {l("My circles")}
   </LiveRedirect>
 </li>
 <li>
@@ -66,7 +66,7 @@
     class="flex items-center gap-2 text-sm text-neutral-content/80"
   >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
-    {l("Boundaries")}
+    {l("My boundaries")}
   </LiveRedirect>
 </li>
 <li class="border-t border-neutral-content/10">

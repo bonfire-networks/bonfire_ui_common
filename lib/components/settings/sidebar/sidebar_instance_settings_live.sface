@@ -1,5 +1,5 @@
 <nav class="" role="navigation" aria-label={l("Instance settings navigation")}>
-  <ul class="gap-2 my-2 menu" ">
+  <ul class="gap-1 my-2 menu" ">
     <!-- <div x-data="{open: true}">
       <li x-on:click="open = ! open">
         <div class="flex items-center justify-between">

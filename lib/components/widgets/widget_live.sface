@@ -1,7 +1,7 @@
 <div class={@wrapper_class} data-type="widget">
   {#case @widget[:type]}
     {#match :link}
-      <LiveRedirect to={@widget[:href]} class="flex items-center gap-3 rounded-md py-2 px-2 w-full">
+      <LiveRedirect to={@widget[:href]} class="flex items-center w-full gap-3 px-2 py-2 rounded-md">
         <span :if={!@without_icon} class="">
           <Icon iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />
         </span>

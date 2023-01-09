@@ -24,7 +24,7 @@
     <div class="flex items-center justify-between mb-2">
       <LiveRedirect
         to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
-        class="flex items-center justify-start flex-1 gap-2 px-1 normal-case rounded btn btn-ghost"
+        class="flex items-center justify-start flex-1 gap-2 px-1 normal-case rounded btn btn-ghost hover:bg-transparent"
       >
         <Bonfire.UI.Common.AvatarLive
           :if={is_map(current_user(@__context__))}

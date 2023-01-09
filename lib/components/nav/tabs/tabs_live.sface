@@ -8,7 +8,7 @@
     event_target={@event_target}
     class={
       @tab_class,
-      active:
+      "active !text-primary":
         @selected_tab |> debug("ssst") == tab or to_string(@selected_tab) == to_string(tab) or
           (is_nil(@selected_tab) and i == 0)
     }

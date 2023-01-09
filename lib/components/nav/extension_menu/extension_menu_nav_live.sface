@@ -13,7 +13,7 @@
                 :for={%{type: :link} = subnav <- nav}
                 :if={!subnav[:exclude_from_nav]}
                 class={
-                  "rounded-lg mb-2 text-base-content font-medium",
+                  "rounded-md mb-2 text-base-content font-medium",
                   "bg-base-content/5": subnav[:href] == current_url(@__context__)
                 }
               >

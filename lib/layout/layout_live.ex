@@ -48,7 +48,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
       #           empty?(e(assigns, :sidebar_widgets, :guests, :main, nil)))
       # end)
       |> assign_new(:thread_mode, fn -> nil end)
-      |> assign_new(:show_less_menu_items, fn -> false end)
 
     ~F"""
     <div

@@ -1,5 +1,5 @@
 <nav class="" role="navigation" aria-label={l("Settings navigation")}>
-  <ul class="gap-2 my-2 menu">
+  <ul class="gap-1 my-2 menu">
     <li>
       <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
         <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("General")}</span>
