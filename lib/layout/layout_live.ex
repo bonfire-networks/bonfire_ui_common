@@ -60,7 +60,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       <div
         :if={!@current_user or
           (@without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)))}
-        class="px-4 tablet-lg:px-0 py-3 mb-6 border-b border-base-content/10 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
+        class="px-4 tablet-lg:px-0 mb-6 border-b border-base-content/10 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
       >
         <Bonfire.UI.Common.GuestHeaderLive
           current_user={@current_user}

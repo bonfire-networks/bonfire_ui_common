@@ -7,7 +7,7 @@
   }"
 >
   <div
-    class="flex md:hidden items-center h-[53px] order-first bg-base-300/70 backdrop-blur-md"
+    class="flex md:hidden items-center h-[60px] order-first bg-base-200"
     :class="{'w-full': open_sidebar}"
   >
     <Bonfire.UI.Common.OpenSidebarBtnLive />

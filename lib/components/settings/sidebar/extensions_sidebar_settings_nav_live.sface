@@ -10,14 +10,14 @@
                 widget={Bonfire.Common.ExtensionModule.extension(extension)
                 |> Map.merge(%{href: if(extension_has_components?, do: "/settings/#{extension}", else: nil)})}
                 page={@page}
-                wrapper_class="p-0 border-b border-base-content/10 cursor-default	hover:bg-base-300"
+                wrapper_class="p-0 border-b border-base-content/10 cursor-default	hover:bg-base-300 bg-base-300 active:!bg-base-300"
                 text_class="text-xs uppercase font-medium text-base-content/50 tracking-wider"
                 without_icon
                 selected_tab={@selected_tab}
               />
 
-              <div class="flex flex-col items-start p-0 cursor-default hover:bg-base-300">
-                {#if is_map(extension_nav |> debug("eeen")) and !extension_nav[:exclude_from_nav] and
+              <div class="flex flex-col items-start p-0 cursor-default hover:bg-base-300 bg-base-300 active:!bg-base-300">
+                {#if is_map(extension_nav) and !extension_nav[:exclude_from_nav] and
                     extension_nav[:scope] == @scope}}>
                   <li>
                     <Bonfire.UI.Common.WidgetLive
