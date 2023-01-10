@@ -152,52 +152,11 @@
             <span class="text-sm text-base-content/80">{l("Boundaries")}</span>
           </LivePatch>
         </li> -->
-    {#for {extension, modules} <- Bonfire.Common.SettingsModule.app_modules()}
-      {#case Bonfire.Common.SettingsModule.nav(extension)}
-        {#match extension_nav}
-          {#case Bonfire.Common.SettingsModule.extension_has_components?(extension, modules)}
-            {#match extension_has_components?}
-              {#if extension_has_components? or
-                  (is_map(extension_nav) or (is_list(extension_nav) and extension_nav != []))}
-                <li class="flex justify-between">
-                  <Bonfire.UI.Common.WidgetLive
-                    widget={Bonfire.Common.ExtensionModule.extension(extension)
-                    |> Map.merge(%{href: if(extension_has_components?, do: "/settings/#{extension}", else: nil)})}
-                    page={@page}
-                    wrapper_class="p-0 border-b border-base-content/10 cursor-default	hover:bg-base-300"
-                    text_class="text-xs uppercase font-medium text-base-content/50 tracking-wider"
-                    without_icon
-                    selected_tab={@selected_tab}
-                  />
-
-                  <div class="flex flex-col items-start p-0 cursor-default hover:bg-base-300">
-                    {#if is_map(extension_nav) and !extension_nav[:exclude_from_nav]}>
-                      <li>
-                        <Bonfire.UI.Common.WidgetLive
-                          widget={extension_nav}
-                          page={@page}
-                          wrapper_class="w-full"
-                          selected_tab={@selected_tab}
-                          data={e(extension_nav, :props, [])}
-                        />
-                      </li>
-                    {#elseif is_list(extension_nav)}
-                      <Bonfire.UI.Common.WidgetLive
-                        :for={subnav <- extension_nav}
-                        :if={!subnav[:exclude_from_nav]}
-                        widget={subnav}
-                        page={@page}
-                        wrapper_class="w-full"
-                        selected_tab={@selected_tab}
-                        data={e(subnav, :props, [])}
-                      />
-                    {/if}
-                  </div>
-                </li>
-              {/if}
-          {/case}
-      {/case}
-    {/for}
+    <Bonfire.UI.Common.ExtensionsSidebarSettingsNavLive
+      page={@page}
+      selected_tab={@selected_tab}
+      scope={:instance}
+    />
 
     <!-- </ul>
     </div>

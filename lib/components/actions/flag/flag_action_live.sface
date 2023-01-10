@@ -8,10 +8,9 @@
     title_text={e(@label, l("Flag this object"))}
   >
     <div class="prose-sm prose">
-    
-    <p>{l(
-      "The admins will review the content and might get in touch with you or the author for clarification. They may then delete it and/or block the person or originating instance if appropriate."
-    )}</p>
+      <p>{l(
+          "The admins will review the content and might get in touch with you or the author for clarification. They may then delete it and/or block the person or originating instance if appropriate."
+        )}</p>
     </div>
     <:open_btn>
       <div class="flex items-center gap-2 text-sm text-neutral-content/80">
