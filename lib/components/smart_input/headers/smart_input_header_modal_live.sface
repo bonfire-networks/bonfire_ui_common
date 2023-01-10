@@ -2,6 +2,13 @@
   x-cloak
   class="relative flex flex-row w-full px-3 py-1.5 rounded-t-lg bg-base-content/5 items-center flex-align-items-stretch flex-nowrap"
 >
+  <span 
+    x-cloak
+    x-show="open_boundaries" 
+    class="flex mr-2 btn btn-xs btn-ghost btn-square" 
+    x-on:click="open_boundaries = false; smart_input_title_text = 'New post'">
+    <Icon solid="ChevronLeft" class="w-4 h-4 text-base-content/70" />
+  </span>
   <span
     x-on:click="smart_input_minimized = ! smart_input_minimized"
     class="flex-1 text-sm font-normal text-left text-ellipsis"

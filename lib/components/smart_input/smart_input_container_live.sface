@@ -1,6 +1,7 @@
 <div
   class="flex-1"
   x-data={"{
+      open_boundaries: false,
       smart_input_title_text: null,
       smart_input_open: false,
       smart_input_fullscreen: false,

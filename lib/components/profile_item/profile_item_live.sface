@@ -5,7 +5,7 @@
       else: "/character/#{e(@character, :username, "")}"}
     class="flex items-center space-x-3 profile-item group"
   >
-    <Bonfire.UI.Common.AvatarLive user={@profile} />
+    <Bonfire.UI.Common.AvatarLive comment user={@profile} />
     <div class="flex-1">
       <p class="text-sm font-medium group-hover:underline text-base-content">
         {e(@profile, :name, "Anon")}
