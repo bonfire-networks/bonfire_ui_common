@@ -1,6 +1,6 @@
 <header
   x-cloak
-  class="relative flex flex-row w-full px-3 py-1.5 rounded-t-lg bg-base-content/5 items-center flex-align-items-stretch flex-nowrap"
+  class="relative flex flex-row w-full px-3 py-1.5 rounded-t-lg bg-base-300 items-center flex-align-items-stretch flex-nowrap"
 >
   <span 
     x-cloak
@@ -11,7 +11,7 @@
   </span>
   <span
     x-on:click="smart_input_minimized = ! smart_input_minimized"
-    class="flex-1 text-sm font-normal text-left text-ellipsis"
+    class="flex-1 text-base font-medium text-left md:font-normal md:text-sm text-ellipsis text-base-content/70"
     x-text={"smart_input_title_text || '#{e(@smart_input_opts, :prompt, l("New post"))}'"}
   >
     {e(@smart_input_opts, :prompt, l("New post"))}

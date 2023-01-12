@@ -28,17 +28,17 @@
 
   <div
     x-show="smart_input_open"
-    class="smart_input_container"
+    class="smart_input_container fixed visible md:rounded-t-lg max-w-full md:w-[36rem] left-0 bg-base-200 top-0 mx-auto md:top-auto bottom-0 md:bottom-0 z-[9999] transition-all md:shadow-xl right-0 md:right-4 md:left-auto overflow-x-auto"
     :class="{
-    'fixed visible max-w-full w-full md:w-[36rem] left-1 bg-base-200 bottom-16 md:bottom-0 z-[9999] transition-all shadow-xl right-1 md:right-4 md:left-auto overflow-x-auto': smart_input_as != 'modal' && smart_input_fullscreen !=true,    'fixed w-full max-w-[500px] top-0 md:top-auto left-0 md:left-1/2 md:-ml-[250px] bottom-0 md:bottom-auto right-0 md:right-auto rounded-xl bg-base-100 overflow-x-auto':  smart_input_as == 'modal' || smart_input_fullscreen==true,
-    'hidden md:block !w-[24rem] bottom-0': smart_input_minimized
+      'hidden md:block !w-[24rem] bottom-0': smart_input_minimized
     }"
     x-on:keydown.escape.prevent.stop="smart_input_minimized = true"
   >
     <div
       x-cloak
-      x-show="smart_input_as == 'modal' || smart_input_fullscreen==true"
-      class="fixed inset-0 bg-white/30"
+      x-show="smart_input_open == true"
+      x-on:click="smart_input_open = false"
+      class="fixed inset-0 bg-black/80 kdrop-blur-md md:hidden"
     />
     <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
     <div x-ref="smart_input" x-show="!smart_input_minimized" class="">
@@ -63,4 +63,5 @@
       />
     </div>
   </div>
+
 </div>

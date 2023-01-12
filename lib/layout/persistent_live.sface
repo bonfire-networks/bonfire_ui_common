@@ -119,4 +119,5 @@
     homepage_link="/"
     nav_items={Bonfire.Common.ExtensionModule.default_nav(:bonfire_ui_social)}
   />
+  <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(current_user(@__context__))} page={@page} />
 </div>

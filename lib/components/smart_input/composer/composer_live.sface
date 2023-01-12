@@ -1,7 +1,7 @@
 <div phx-hook="Composer" id="editor" class="relative h-full p-2">
   <textarea
     phx-debounce="blur"
-    class="composer textarea w-full resize-none h-[240px] focus:outline-none focus:ring-0"
+    class="composer textarea w-full resize-none h-[calc(100vh_-_220px)] md:h-[240px] focus:outline-none focus:ring-0"
     name="html_body"
     resize="none"
     placeholder={l("Start typing...")}

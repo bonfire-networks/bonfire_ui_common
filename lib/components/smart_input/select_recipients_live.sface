@@ -9,11 +9,12 @@
       label={name}
       value={id}
     />
-    <div class="flex items-center gap-2">
-      <!-- Create a for loop on the @to_circles list -->
-      {#for {name, id} <- @to_circles}
-        <span class="badge">{name}</span>
-      {/for}
+    <div class="flex justify-between w-full">
+      <div class="flex items-center gap-2">
+        {#for {name, id} <- @to_circles}
+          <span class="badge">{name}</span>
+        {/for}
+      </div>
     </div>
   {#else}
     {#case @implementation}

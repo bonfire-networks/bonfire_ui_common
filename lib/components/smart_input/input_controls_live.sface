@@ -45,7 +45,7 @@
     />
   </div> -->
 
-<div x-show="!open_boundaries">
+<div class="fixed bottom-0 left-0 right-0 md:static" x-show="!open_boundaries">
   <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
 
   <div class="">
@@ -131,6 +131,23 @@
           preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)}
         />
 
+        <div :if={is_messaging?(%{
+            page: @page,
+            showing_within: @showing_within,
+            create_object_type: @create_object_type
+          })}>
+          <div class="flex items-center gap-2 mx">
+            <button
+              type="button"
+              class="flex items-center gap-2 normal-case rounded-full btn-sm btn opacity-90"
+            >
+               <span class="text-lg"><Icon iconify="twemoji:envelope" class="w-5 h-5" /></span>
+               <span>{l("Direct Message")}</span>
+            </button>
+          </div>
+        </div>
+
+        
         <!-- <div 
             :if={@showing_within != :page and @thread_mode != :flat}
             x-show="!smart_input_open"

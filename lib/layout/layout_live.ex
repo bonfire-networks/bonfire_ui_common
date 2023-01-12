@@ -161,7 +161,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }}
         />
       </div>
-      <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(@current_user)} page={@page} />
 
       <!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player, @current_user),
         do:
