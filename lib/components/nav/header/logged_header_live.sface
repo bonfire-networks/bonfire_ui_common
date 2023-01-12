@@ -1,6 +1,6 @@
 <div
   data-id="logged_header"
-  class="sticky top-0 z-30  flex justify-center w-full h-16 transition-all duration-100 border-b shadow-sm border-base-content/10 bg-opacity-90 backdrop-blur bg-base-100 text-base-content"
+  class="sticky top-0 z-30 flex justify-center w-full h-16 transition-all duration-100 border-b shadow-sm border-base-content/10 bg-opacity-90 backdrop-blur bg-base-100 text-base-content"
 >
   <div class="flex w-[260px] bg-base-300 items-center px-4" :class="{'w-full': open_sidebar}">
     <Bonfire.UI.Common.OpenSidebarBtnLive />
@@ -20,11 +20,10 @@
 
   <div class="flex flex-1" :class="{'hidden': open_sidebar}">
     <Dynamic.Component
-      module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
+      module={elem({Bonfire.UI.Common.PageHeaderLive, []}, 0)}
       page_title={@page_title}
       page={@page}
       selected_tab={@selected_tab}
-      {...elem(@custom_page_header || {nil, []}, 1)}
     >
       <:right_action>
         <Dynamic.Component
@@ -49,7 +48,6 @@
     thread_mode={@thread_mode}
     without_sidebar={@without_sidebar}
     without_widgets={@without_widgets}
-    custom_page_header={@custom_page_header}
     to_boundaries={@to_boundaries}
     to_circles={@to_circles}
     smart_input_opts={@smart_input_opts}

@@ -13,13 +13,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
       assigns
       # |> debug
       |> assign_new(:to_boundaries, fn -> nil end)
-      |> assign_new(:hero, fn -> nil end)
+      # |> assign_new(:hero, fn -> nil end)
       |> assign_new(:page_title, fn -> nil end)
       |> assign_new(:page, fn -> nil end)
       |> assign_new(:selected_tab, fn -> nil end)
       |> assign_new(:notification, fn -> nil end)
       |> assign_new(:page_header_aside, fn -> nil end)
-      |> assign_new(:custom_page_header, fn -> nil end)
+      # |> assign_new(:custom_page_header, fn -> nil end)
       |> assign_new(:inner_content, fn -> nil end)
       |> assign_new(:object_id, fn -> nil end)
       |> assign_new(:post_id, fn -> nil end)
@@ -86,15 +86,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
           selected_tab={@selected_tab}
           nav_items={@nav_items}
           sidebar_widgets={@sidebar_widgets}
-          showing_within={@showing_within}
-          reply_to_id={@reply_to_id}
-          context_id={@context_id}
-          create_object_type={@create_object_type}
-          thread_mode={@thread_mode}
-          without_sidebar={@without_sidebar}
-          to_boundaries={@to_boundaries}
-          to_circles={@to_circles}
-          smart_input_opts={@smart_input_opts}
         />
 
         <div
@@ -127,11 +118,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   >
                     <div class="flex flex-1 rounded-t bg-base-100" :class="{'hidden': open_sidebar}">
                       <Dynamic.Component
-                        module={elem(@custom_page_header || {Bonfire.UI.Common.PageHeaderLive, []}, 0)}
+                        module={Bonfire.UI.Common.PageHeaderLive}
                         page_title={@page_title}
                         page={@page}
                         selected_tab={@selected_tab}
-                        {...elem(@custom_page_header || {nil, []}, 1)}
                       >
                         <:right_action>
                           <Dynamic.Component
@@ -171,11 +161,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
           }}
         />
       </div>
-
-      <!-- <Bonfire.UI.Common.MobileSmartInputButtonLive
-        :if={not is_nil(@current_user) and !@hide_smart_input}
-        smart_input_opts={@smart_input_opts}
-      /> -->
       <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(@current_user)} page={@page} />
 
       <!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player, @current_user),

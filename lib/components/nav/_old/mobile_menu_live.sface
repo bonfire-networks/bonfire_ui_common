@@ -41,24 +41,28 @@
                 <div x-on:click="open_sidebar = false" class="btn btn-ghost btn-square btn-sm">
                   <Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
                 </div>
-                <Bonfire.UI.Common.LogoLinkLive
-                  with_name
-                  href={@homepage_link}
-                  container_class="flex items-center gap-2"
-                  image_class="w-8 h-8 bg-center bg-no-repeat bg-contain"
-                  name_class="text-lg font-bold text-base-content"
-                />
+                <div x-on:click="open_sidebar = false">
+                  <Bonfire.UI.Common.LogoLinkLive
+                    with_name
+                    href={@homepage_link}
+                    container_class="flex items-center gap-2"
+                    image_class="w-8 h-8 bg-center bg-no-repeat bg-contain"
+                    name_class="text-lg font-bold text-base-content"
+                  />
+                </div>
               </div>
 
               <div x-data="{expanded: false}" class="flex flex-col pb-4 md:hidden">
                 <div class="flex flex-col gap-1 m-2 mx-4 mr-3">
-                  <LinkLive to={path(@current_user)}>
-                    <Bonfire.UI.Common.AvatarLive
-                      class="inline-block object-cover w-[52px] h-[52px] rounded-full cursor-pointer bg-base-300"
-                      size="52"
-                      user={@current_user}
-                    />
-                  </LinkLive>
+                  <div x-on:click="open_sidebar = false">
+                    <LinkLive to={path(@current_user)}>
+                      <Bonfire.UI.Common.AvatarLive
+                        class="inline-block object-cover w-[52px] h-[52px] rounded-full cursor-pointer bg-base-300"
+                        size="52"
+                        user={@current_user}
+                      />
+                    </LinkLive>
+                  </div>
                   <div class="flex items-center">
                     <div class="flex flex-col flex-1">
                       <span class="font-bold text-base-content">{e(@current_user, :profile, :name, "unknown")}</span>
@@ -72,7 +76,7 @@
                 <div x-show="expanded" x-collapse>
                   <ul class="mt-1 menu menu-compact">
                     {#if ulid(@current_user)}
-                      <li>
+                      <li x-on:click="open_sidebar = false">
                         <LiveRedirect
                           to={path(@current_user)}
                           class="flex items-start gap-2 text-sm text-base-content/80"
@@ -81,28 +85,19 @@
                           <div>{l("View profile")}</div>
                         </LiveRedirect>
                       </li>
-                      <li class="hover:bg-base/10">
-                        <LinkLive
-                          to={path(Bonfire.Data.Social.Message)}
-                          class="flex items-start gap-2 text-sm text-base-content/80"
-                        >
-                          <Icon solid="Mail" class="w-5 h-5" />
-                          {l("Messages")}
-                        </LinkLive>
-                      </li>
-                      <li>
+                      <li x-on:click="open_sidebar = false">
                         <LiveRedirect to={~p"/settings"} class="flex items-start gap-2 text-sm text-base-content/80">
                           <Icon solid="Cog" class="w-5 h-5" />
                           {l("Settings")}
                         </LiveRedirect>
                       </li>
-                      <li>
+                      <li x-on:click="open_sidebar = false">
                         <LiveRedirect to={~p"/switch-user"} class="flex items-start gap-2 text-sm text-base-content/80">
                           <Icon iconify="material-symbols:switch-account" class="w-5 h-5" />
                           {l("Switch profile")}
                         </LiveRedirect>
                       </li>
-                      <li>
+                      <li x-on:click="open_sidebar = false">
                         <LiveRedirect to={~p"/logout"} class="flex items-start gap-2 text-sm text-base-content/80">
                           <Icon iconify="material-symbols:logout" class="w-5 h-5" />
                           {l("Logout")}
@@ -125,19 +120,21 @@
                 {#for nav <- @nav_items}
                   {#case nav}
                     {#match %{} = nav}
-                      <li :if={!nav[:exclude_from_nav]}>
+                      <li x-on:click="open_sidebar = false" :if={!nav[:exclude_from_nav]}>
                         <Bonfire.UI.Common.WidgetLive
                           widget={nav}
                           page={@page}
+                          text_class="text-base font-medium tracking-wider"
                           selected_tab={@selected_tab}
                           data={e(nav, :props, [])}
                         />
                       </li>
                     {#match _}
-                      <li :for={subnav <- nav || []} :if={!subnav[:exclude_from_nav]}>
+                      <li x-on:click="open_sidebar = false" :for={subnav <- nav || []} :if={!subnav[:exclude_from_nav]}>
                         <Bonfire.UI.Common.WidgetLive
                           widget={subnav}
                           page={@page}
+                          text_class="text-base font-medium tracking-wider"
                           selected_tab={@selected_tab}
                           data={e(subnav, :props, [])}
                         />
