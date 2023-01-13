@@ -5,11 +5,14 @@ FeedHooks.PreviewActivity = {
     this.el.addEventListener("click", e => {
       e.preventDefault(); // TODO: find a better way to hook a simple event on an anchor without needing a hook
       console.log("PreviewActivity clicked")
+      
+
 
       let trigger = this.el.querySelector('.open_preview_link')
 
-      if (trigger) {
-        if (e.ctrlKey || e.metaKey || window.getSelection().toString() || e.target.closest('a:not(.open_preview_link)') || e.target.closest('button') || e.target.closest('.dropdown')) {
+      if (trigger) {    
+        
+        if (!e.target.closest('.note') || e.ctrlKey || e.metaKey || window.getSelection().toString() || e.target.closest('a:not(.open_preview_link)') || e.target.closest('button') || e.target.closest('.dropdown')) {
 
           console.log("PreviewActivity: ignore in favour of another link or button's action (or opening in new tab)")
           return;

@@ -23,7 +23,7 @@
             fill="none"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="w-4 h-4"
+            class="w-5 h-5 md:w-4 md:h-4"
           >
             <polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></svg>
         </span>
@@ -36,7 +36,7 @@
     {#match false}
       <button
         type="button"
-        class="boost btn btn-circle btn-ghost btn-sm cursor-not-allowed"
+        class="cursor-not-allowed boost btn btn-circle btn-ghost btn-sm"
         title={l("You can't boost this activity")}
       >
         <span class="text-base-content text-opacity-20">
@@ -49,11 +49,11 @@
             fill="none"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="w-4 h-4"
+            class="w-5 h-5 md:w-4 md:h-4"
           >
             <polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></svg>
         </span>
-        <span class="feed_activity_text sr-only">
+        <span class="sr-only feed_activity_text">
           {l("Cannot Boost")}
           <span :if={e(@boost_count, 0) > 0 and
             Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@boost_count, 0)}</span>

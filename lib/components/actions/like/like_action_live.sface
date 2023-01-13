@@ -15,8 +15,8 @@
         title={l("Like this")}
       >
         <span class={"text-base-content text-opacity-50", "text-yellow-500 text-opacity-100": @my_like}>
-          <Icon solid="Star" :if={@my_like} class="w-5 h-5" />
-          <Icon outline="Star" :if={!@my_like} class="w-4 h-4" />
+          <Icon solid="Star" :if={@my_like} class="w-5 h-5 md:w-5 md:h-5" />
+          <Icon outline="Star" :if={!@my_like} class="w-5 h-5 md:w-4 md:h-4" />
         </span>
 
         <span :if={!@my_like} class="sr-only">
@@ -31,11 +31,11 @@
     {#match false}
       <button
         type="button"
-        class="btn btn-ghost btn-circle like like_with_label btn-sm cursor-not-allowed"
+        class="cursor-not-allowed btn btn-ghost btn-circle like like_with_label btn-sm"
         title={l("You can't like this")}
       >
         <span class="text-base-content text-opacity-20">
-          <Icon outline="Star" class="w-4 h-4" />
+          <Icon outline="Star" class="w-5 h-5 md:w-4 md:h-4" />
         </span>
 
         <span class="sr-only">

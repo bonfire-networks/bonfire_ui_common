@@ -1,7 +1,7 @@
 <li>
   <LiveRedirect
     to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
-    class="flex items-center gap-2 text-sm text-neutral-content/80"
+    class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80"
   >
     <!-- <Icon solid="UserCircle" class="w-4 h-4" /> -->
     <div>{l("View profile")}</div>
@@ -10,14 +10,14 @@
 <li>
   <LiveRedirect
     to={~p"/switch-user"}
-    class="flex items-center gap-2 text-sm text-neutral-content/80"
+    class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80"
   >
     <!-- <Icon iconify="material-symbols:switch-account" class="w-4 h-4" /> -->
     {l("Switch profile")}
   </LiveRedirect>
 </li>
 <li>
-  <LiveRedirect to={~p"/settings"} class="flex items-center gap-2 text-sm text-neutral-content/80">
+  <LiveRedirect to={~p"/settings"} class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80">
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
     {l("Settings")}
   </LiveRedirect>
@@ -26,7 +26,7 @@
 <li :if={is_admin?(@current_user)}>
   <LiveRedirect
     to={~p"/settings/instance"}
-    class="flex items-center gap-2 text-sm text-neutral-content/80"
+    class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80"
   >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
     {l("Instance Settings")}
@@ -36,7 +36,7 @@
 <li class="border-t border-neutral-content/10">
   <LiveRedirect
     to={~p"/boundaries/silenced"}
-    class="flex items-center gap-2 text-sm text-neutral-content/80"
+    class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80"
   >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
     {l("Silenced")}
@@ -45,7 +45,7 @@
 <li>
   <LiveRedirect
     to={~p"/boundaries/ghosted"}
-    class="flex items-center gap-2 text-sm text-neutral-content/80"
+    class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80"
   >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
     {l("Ghosted")}
@@ -54,7 +54,7 @@
 <li>
   <LiveRedirect
     to={~p"/boundaries/circles"}
-    class="flex items-center gap-2 text-sm text-neutral-content/80"
+    class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80"
   >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
     {l("My circles")}
@@ -63,17 +63,17 @@
 <li>
   <LiveRedirect
     to={~p"/boundaries/acls"}
-    class="flex items-center gap-2 text-sm text-neutral-content/80"
+    class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80"
   >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
     {l("My boundaries")}
   </LiveRedirect>
 </li>
 <li class="border-t border-neutral-content/10">
-  <Bonfire.UI.Common.FeedbackButtonLive class="flex items-center gap-2 text-sm text-neutral-content/80" />
+  <Bonfire.UI.Common.FeedbackButtonLive class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80" />
 </li>
 <li>
-  <LiveRedirect to={~p"/logout"} class="flex items-center gap-2 text-sm text-neutral-content/80">
+  <LiveRedirect to={~p"/logout"} class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80">
     <!-- <Icon iconify="material-symbols:logout" class="w-4 h-4" /> -->
     {l("Logout")}
   </LiveRedirect>
