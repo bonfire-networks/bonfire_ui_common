@@ -20,7 +20,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
   end
 
   def classes(%{comment: true}) do
-    "w-10 h-10 bg-base-content/5"
+    "w-8 h-8 bg-base-content/5"
   end
 
   def classes(_) do
