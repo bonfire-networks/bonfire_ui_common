@@ -93,6 +93,24 @@
           {...component_assigns}
         />
       </div>
+
+      <div class="mt-4 text-xs text-base-content/70">
+        <a href="https://bonfirenetworks.org/" class="mt-2 text-xs link link-hover text-base-content/70">
+        🔥
+        {Bonfire.Application.name()}
+        </a>
+         · 
+        <LiveRedirect
+          to={Bonfire.Application.repository()}
+          class="mt-2 text-xs link link-hover text-base-content/70"
+        >
+          {Bonfire.Application.version()}
+          <span class="ml-1" x-data="{msg: 'JS'}">
+            <span x-text="msg">no JS</span>
+          </span>
+          <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
+        </LiveRedirect>
+      </div>
     </div>
   </div>
 

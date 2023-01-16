@@ -5,7 +5,7 @@
   <Bonfire.UI.Common.LogoLive
     with_name={@with_name}
     image_class={@image_class}
-    name_class="text-lg font-bold text-base-content"
+    name_class={@name_class}
   />
   <#slot />
 </LinkLive>

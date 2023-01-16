@@ -109,8 +109,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 <div
                   id="inner"
                   class={
-                    "mt-[53px] md:mt-0 bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)] pb-[1px]":
-                      @current_user && !@without_sidebar
+                    "md:mt-0 bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)] pb-[1px]": !@without_sidebar
                   }
                 >
                   <div
