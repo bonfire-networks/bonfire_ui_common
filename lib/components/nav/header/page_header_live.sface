@@ -18,8 +18,13 @@
       </div>
 
       <div class="flex items-center w-auto">
+        {#if @current_user}
         <#slot {@right_action}>
         </#slot>
+        {#else}
+          
+          <Bonfire.UI.Common.GuestActionsLive page_header />
+        {/if}
       </div>
     </div>
   </div>

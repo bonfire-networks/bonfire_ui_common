@@ -72,7 +72,7 @@
         init() {
             new Splide(this.$refs.splide, {
                 perPage: 3,
-                gap: '2rem',
+                gap: '1rem',
                 breakpoints: {
                     640: {
                         perPage: 1,
@@ -82,10 +82,9 @@
         },
     }">
   <section x-ref="splide" class="splide" aria-label="pinned items">
-    <div class="flex justify-between pb-2 mb-6 border-b border-base-content/10">
-      <div
-        :if={@title}
-        class="text-xs font-medium tracking-wider uppercase text-base-content/70 text-base-content"
+    <div class="flex justify-between w-full pb-1 mb-6 text-sm font-medium tracking-wide border-b border-base-content/10 text-base-content/60">
+      <div :if={@title}
+        class=""
       >{@title}</div>
       <div class="flex gap-3 splide__arrows">
         <button class="splide__arrow splide__arrow--prev !static !bg-base-content/5">
@@ -117,7 +116,7 @@
                 <LiveRedirect to={path(pin)} class="flex flex-col w-full gap-3">
                   <div
                     style="background-image: url(https://picsum.photos/200/300)"
-                    class="bg-center mx-auto bg-no-repeat bg-cover rounded h-[180px] bg-base-content/5 w-full"
+                    class="bg-center mx-auto bg-no-repeat bg-cover rounded h-[100px] bg-base-content/5 w-full"
                   >
                   </div>
                   <div class="text-base font-medium tracking-wide line-clamp-2">{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||

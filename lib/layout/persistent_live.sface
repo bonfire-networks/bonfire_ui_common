@@ -6,13 +6,13 @@
     open_widgets_sidebar: false
   }"
 >
-  <div
+  <!-- <div
     class="flex md:hidden items-center h-[60px] order-first bg-base-200"
     :class="{'w-full': open_sidebar}"
   >
     <Bonfire.UI.Common.OpenSidebarBtnLive />
     <span class="text-sm font-semibold truncate text-ellipsis">{@page_title}</span>
-  </div>
+  </div> -->
 
   <div
     data-id="right_nav_and_widgets"
@@ -23,31 +23,33 @@
     }"
   >
     <!-- <Bonfire.UI.Common.LogoLinkLive :if={@without_sidebar} with_name /> -->
-    <div
-      :if={not is_nil(current_user(@__context__))}
-      data-id="user_actions"
-      class="flex w-full overflow-visible place-content-center"
-    >
-      <Dynamic.Component
-        :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
-        module={Bonfire.UI.Common.LoggedActionsLive}
-        page_title={@page_title}
-        page={@page}
-        current_user={current_user(@__context__)}
-        showing_within={@showing_within}
-        reply_to_id={@reply_to_id}
-        context_id={@context_id}
-        create_object_type={@create_object_type}
-        thread_mode={@thread_mode}
-        without_sidebar={@without_sidebar}
-        without_widgets={@without_widgets}
-        to_boundaries={@to_boundaries}
-        to_circles={@to_circles}
-        smart_input_opts={@smart_input_opts}
-        sidebar_widgets={@sidebar_widgets}
-      />
-    </div>
-
+    {#if not is_nil(current_user(@__context__))}
+      <div
+        data-id="user_actions"
+        class="flex w-full overflow-visible place-content-center"
+      >
+        <Dynamic.Component
+          :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
+          module={Bonfire.UI.Common.LoggedActionsLive}
+          page_title={@page_title}
+          page={@page}
+          current_user={current_user(@__context__)}
+          showing_within={@showing_within}
+          reply_to_id={@reply_to_id}
+          context_id={@context_id}
+          create_object_type={@create_object_type}
+          thread_mode={@thread_mode}
+          without_sidebar={@without_sidebar}
+          without_widgets={@without_widgets}
+          to_boundaries={@to_boundaries}
+          to_circles={@to_circles}
+          smart_input_opts={@smart_input_opts}
+          sidebar_widgets={@sidebar_widgets}
+        />
+      </div>
+    {#else}
+      <Bonfire.UI.Common.GuestActionsLive />
+    {/if}
     <div
       data-id="secondary_sidebar_widgets"
       class="hidden mt-4 overflow-x-hidden overflow-y-auto tablet-lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"

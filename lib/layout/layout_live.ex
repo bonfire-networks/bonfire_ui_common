@@ -57,7 +57,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           open_sidebar: false
         }"
     >
-      <div
+      <!-- div
         :if={!@current_user or
           (@without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)))}
         class="px-4 tablet-lg:px-0 mb-6 border-b border-base-content/10 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
@@ -68,12 +68,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
           page_title={@page_title}
           page={@page}
         />
-      </div>
+      </div -->
 
       <div class={
         "w-full px-0 md:px-4 grid max-w-[1260px] gap-0 md:gap-4 widget xl:px-0 mx-auto",
-        "grid-cols-1 content-start": @without_sidebar && @without_widgets,
-        "grid-cols-1 !max-w-full": !@current_user,
+        "!grid-cols-1 content-start": @without_sidebar && @without_widgets,
+        # "grid-cols-1 !max-w-full": !@current_user,
+        "grid-cols-1 md:grid-cols-[280px_1fr] tablet-lg:grid-cols-[280px_1fr_320px]": !@current_user,
         "grid-cols-1 md:grid-cols-1 content-start !max-w-full":
           @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)),
         "grid-cols-1 md:grid-cols-[280px_1fr]": @current_user && @without_widgets && !@without_sidebar,
@@ -81,7 +82,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           @current_user && !@without_sidebar && !@without_widgets
       }>
         <Bonfire.UI.Common.NavSidebarLive
-          :if={@current_user && !@without_sidebar}
+          :if={!@without_sidebar}
           page={@page}
           selected_tab={@selected_tab}
           nav_items={@nav_items}
@@ -113,8 +114,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   }
                 >
                   <div
-                    :if={@current_user && !@without_sidebar}
-                    class="sticky hidden md:block top-0  md:pt-3 bg-base-300 z-[999]"
+                    :if={!@without_sidebar}
+                    class="sticky top-0  md:pt-3 bg-base-300 z-[999]"
                   >
                     <div class="flex flex-1 rounded-t bg-base-100" :class="{'hidden': open_sidebar}">
                       <Dynamic.Component
@@ -125,7 +126,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                       >
                         <:right_action>
                           <Dynamic.Component
-                            :if={@current_user && @page_header_aside}
+                            :if={@page_header_aside}
                             :for={{component, component_assigns} <- e(@page_header_aside, [])}
                             module={component}
                             {...component_assigns}
@@ -143,7 +144,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         </div>
         <PersistentLive
           id={:persistent}
-          :if={@current_user}
+          :if={!@without_sidebar}
           sticky
           container={
             {:div, class: "order-first md:order-none md:static fixed left-0 right-0 top-0 z-[999]"}

@@ -4,10 +4,10 @@
 >
   <div class="flex items-center pl-0.5">
     <div data-id="logo" class="items-center place-content-center">
-      <Bonfire.UI.Common.LogoLinkLive href="/dashboard" />
+      <Bonfire.UI.Common.LogoLinkLive with_name={!@current_user} href="/" />
     </div>
 
-    <div class="hidden w-full ml-4 md:block">
+    <div :if={@current_user} class="hidden w-full ml-4 md:block">
       <Dynamic.Component
         :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
         module={Bonfire.Search.Web.FormLive}
@@ -19,9 +19,10 @@
   <nav
     class="w-full mt-6 overflow-y-auto max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
     role="navigation"
+    :if={@current_user}
     aria-label={l("Extension navigation")}
   >
-    <div class="flex items-center justify-between">
+    <div  class="flex items-center justify-between">
       <LiveRedirect
         to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
         class="flex items-center justify-start flex-1 gap-2 px-1 normal-case rounded btn btn-ghost hover:bg-transparent"
@@ -51,6 +52,36 @@
       />
     </div>
   </nav>
+
+  {#if !@current_user}
+    <nav>
+      <ul class="mt-4 menu">
+        <li class="p-0 m-0 rounded-md">
+          <LiveRedirect to={"/"} class={"flex items-center w-full gap-6 px-2 py-2 rounded-md"}>
+          <Icon iconify="ic:outline-explore" class={"w-[22px] h-[22px] text-base-content/80"} />
+          <span class={"text-sm font-normal text-base-content/80"}>{l "Explore"}</span>
+          </LiveRedirect>
+        </li>
+        <li class="p-0 m-0 rounded-md">
+          <LiveRedirect to={"/feed"} class={"flex items-center w-full gap-6 px-2 py-2 rounded-md"}>
+          <Icon iconify="ic:outline-explore" class={"w-[22px] h-[22px] text-base-content/80"} />
+          <span class={"text-sm font-normal text-base-content/80"}>{l "Feeds"}</span>
+          </LiveRedirect>
+        </li>
+        <li 
+          :if={Bonfire.Me.Settings.get(
+            [Bonfire.UI.Me.UsersDirectoryLive, :show_to],
+            :users
+          ) == :guests} 
+          class="p-0 m-0 rounded-md">
+          <LiveRedirect to={"/users"} class={"flex items-center w-full gap-6 px-2 py-2 rounded-md"}>
+          <Icon iconify="ic:outline-explore" class={"w-[22px] h-[22px] text-base-content/80"} />
+          <span class={"text-sm font-normal text-base-content/80"}>{l "Users directory"}</span>
+          </LiveRedirect>
+        </li>
+      </ul>
+    </nav>
+  {/if}
 
   {#if is_list(@sidebar_widgets[:users][:main])}
     <nav class="w-full mx-2">

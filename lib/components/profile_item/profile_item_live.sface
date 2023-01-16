@@ -1,17 +1,17 @@
-<div class="flex items-center">
+<div class={@wrapper_class}>
   <LiveRedirect
     to={if String.starts_with?(e(@character, :username, ""), "http"),
       do: e(@character, :username, nil),
       else: "/character/#{e(@character, :username, "")}"}
-    class="flex items-center space-x-3 profile-item group"
+    class="flex items-center gap-3 profile-item group"
   >
-    <Bonfire.UI.Common.AvatarLive comment user={@profile} />
+    <Bonfire.UI.Common.AvatarLive comment={if @lg, do: false, else: true} user={@profile} />
     <div class="flex-1">
-      <p class="text-sm font-medium group-hover:underline text-base-content">
+      <p class={"text-sm font-medium group-hover:underline text-base-content", "text-base": @lg}>
         {e(@profile, :name, "Anon")}
       </p>
-      <p class="text-sm text-base-content/80">
-        {e(@character, :username, "")}
+      <p class="text-sm text-base-content/70">
+        {Bonfire.Me.Characters.display_username(e(@character, :username, ""), true)}
       </p>
     </div>
   </LiveRedirect>
@@ -25,7 +25,7 @@
       id={ComponentID.new(Bonfire.UI.Common.FollowButtonLive, ulid(@profile))}
       object_id={ulid(@profile)}
       path={path(@character)}
-      hide_text
+      hide_icon
       class={@class}
     />
   </div>

@@ -69,7 +69,7 @@
       </LiveRedirect>
     </li>
 
-    <li>
+    <!-- <li>
       <LiveRedirect
         to={~p"/settings/invites"}
         class={
@@ -83,7 +83,7 @@
         />
         <span class="text-sm text-base-content/80">{l("Invites")}</span>
       </LiveRedirect>
-    </li>
+    </li> -->
 
     <li>
       <LiveRedirect

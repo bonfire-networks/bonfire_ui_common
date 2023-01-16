@@ -1,7 +1,16 @@
-<div :if={!@current_account} class="flex items-center gap-4">
-  <LiveRedirect to={path(:login, :index)} class="normal-case rounded btn-sm btn btn-ghost">{l("Log in")}</LiveRedirect>
+<div :if={!@current_account} class={
+  "hidden tablet-lg:flex items-center gap-3",
+  "!flex tablet-lg:!hidden w-60": @page_header
+  }>
+  <LiveRedirect to={path(:login, :index)} class={
+    "flex-1 normal-case rounded btn-primary btn-sm btn",
+    "btn-wide": !@page_header
+  }>{l("Log in")}</LiveRedirect>
 
   {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-    <LiveRedirect to={path(:signup)} class="normal-case rounded btn btn-sm btn-primary">{l("Sign up")}</LiveRedirect>
+    <LiveRedirect to={path(:signup)} class={
+      "flex-1 normal-case rounded btn-outline btn-primary btn btn-sm",
+      "btn-wide": !@page_header
+    }>{l("Sign up")}</LiveRedirect>
   {/if}
 </div>

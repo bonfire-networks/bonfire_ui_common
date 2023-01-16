@@ -1,7 +1,7 @@
-<div x-data="{actions_width: $refs.container.offsetWidth}" class="mx-auto max-w-[1120px]">
+<div class="mx-auto max-w-[1120px]">
   <div class="flex h-[70px] w-full items-center justify-between lg:mx-auto">
     <div class="flex items-center justify-between flex-1 w-full gap-3">
-      <div class="" x-bind:style="{width: actions_width + 'px'}">
+      <div class="">
         <Bonfire.UI.Common.LogoLinkLive with_name />
       </div>
       <!-- <LiveRedirect to={path(Config.get(:home_page, Bonfire.Web.HomeLive))}>

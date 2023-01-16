@@ -5,24 +5,26 @@
         {#match extension_has_components?}
           {#if extension_has_components? or
               (is_map(extension_nav) or (is_list(extension_nav) and extension_nav != []))}
-            <li class="flex justify-between">
+            <li class="">
               <Bonfire.UI.Common.WidgetLive
                 widget={Bonfire.Common.ExtensionModule.extension(extension)
                 |> Map.merge(%{href: if(extension_has_components?, do: "/settings/#{extension}", else: nil)})}
                 page={@page}
-                wrapper_class="p-0 border-b border-base-content/10 cursor-default	hover:bg-base-300 bg-base-300 active:!bg-base-300"
-                text_class="text-xs uppercase font-medium text-base-content/50 tracking-wider"
+                wrapper_class={if @showing_within != :dashboard, do: "p-0 border-b border-base-content/10 cursor-default	hover:bg-base-300 bg-base-300 active:!bg-base-300", else: "block"}
+                text_class={if @showing_within != :dashboard, do: "text-xs uppercase font-medium text-base-content/50 tracking-wider", else: "block pb-2 mt-12 mb-3 text-xs uppercase border-b text-base-content border-base-content/10"}
                 without_icon
+                showing_within={@showing_within}
                 selected_tab={@selected_tab}
               />
 
-              <div class="flex flex-col items-start p-0 cursor-default hover:bg-base-300 bg-base-300 active:!bg-base-300">
+              <div class={if @showing_within != :dashboard, do: "flex flex-col items-start p-0 cursor-default hover:bg-base-300 bg-base-300 active:!bg-base-300", else: ""}>
                 {#if is_map(extension_nav) and !extension_nav[:exclude_from_nav] and
                     extension_nav[:scope] == @scope}}>
                   <li>
                     <Bonfire.UI.Common.WidgetLive
                       widget={extension_nav}
                       page={@page}
+                      showing_within={@showing_within}
                       wrapper_class="w-full"
                       selected_tab={@selected_tab}
                       data={e(extension_nav, :props, [])}
@@ -34,6 +36,7 @@
                     :if={!subnav[:exclude_from_nav] and subnav[:scope] == @scope}
                     widget={subnav}
                     page={@page}
+                    showing_within={@showing_within}
                     wrapper_class="w-full"
                     selected_tab={@selected_tab}
                     data={e(subnav, :props, [])}
