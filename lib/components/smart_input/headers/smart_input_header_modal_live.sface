@@ -2,11 +2,12 @@
   x-cloak
   class="relative flex flex-row w-full px-3 py-1.5 rounded-t-lg bg-base-300 items-center flex-align-items-stretch flex-nowrap"
 >
-  <span 
+  <span
     x-cloak
-    x-show="open_boundaries" 
-    class="flex mr-2 btn btn-xs btn-ghost btn-square" 
-    x-on:click="open_boundaries = false; smart_input_title_text = 'New post'">
+    x-show="open_boundaries"
+    class="flex mr-2 btn btn-xs btn-ghost btn-square"
+    x-on:click="open_boundaries = false; smart_input_title_text = 'New post'"
+  >
     <Icon solid="ChevronLeft" class="w-4 h-4 text-base-content/70" />
   </span>
   <span

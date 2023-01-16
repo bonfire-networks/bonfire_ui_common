@@ -3,12 +3,14 @@ defmodule Bonfire.UI.Common do
   A library of common utils and helpers used across Bonfire extensions
   """
   use Bonfire.Common.Utils
+  use Untangle
   alias Bonfire.Common.PubSub
 
   defmacro __using__(opts) do
     # TODO: pass opts to the nested `use`
     quote do
       use Bonfire.Common.Utils
+      use Untangle
       import Bonfire.UI.Common
       alias Bonfire.Common.PubSub
     end
@@ -146,6 +148,9 @@ defmodule Bonfire.UI.Common do
 
     # |> IO.inspect
   end
+
+  @decorate time()
+  def assigns_merge(socket, assigns, new)
 
   def assigns_merge(%Phoenix.LiveView.Socket{} = socket, assigns, new)
       when is_map(assigns) or is_list(assigns),
