@@ -14,7 +14,7 @@ defmodule Bonfire.UI.Common.WidgetLive do
   prop selected_tab, :any, default: nil
   prop wrapper_class, :css_class, default: "m-0 p-0 rounded-md"
   prop showing_within, :atom, default: :sidebar
-  
+
   def widget(%{name: :extension, app: app}, context) do
     Bonfire.Common.ExtensionModule.extension(app)
   end

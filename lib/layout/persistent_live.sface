@@ -24,10 +24,7 @@
   >
     <!-- <Bonfire.UI.Common.LogoLinkLive :if={@without_sidebar} with_name /> -->
     {#if not is_nil(current_user(@__context__))}
-      <div
-        data-id="user_actions"
-        class="flex w-full overflow-visible place-content-center"
-      >
+      <div data-id="user_actions" class="flex w-full overflow-visible place-content-center">
         <Dynamic.Component
           :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
           module={Bonfire.UI.Common.LoggedActionsLive}
@@ -96,10 +93,10 @@
 
       <div class="mt-4 text-xs text-base-content/70">
         <a href="https://bonfirenetworks.org/" class="mt-2 text-xs link link-hover text-base-content/70">
-        🔥
-        {Bonfire.Application.name()}
+          🔥
+          {Bonfire.Application.name()}
         </a>
-         · 
+        ·
         <LiveRedirect
           to={Bonfire.Application.repository()}
           class="mt-2 text-xs link link-hover text-base-content/70"

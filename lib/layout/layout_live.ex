@@ -109,13 +109,11 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 <div
                   id="inner"
                   class={
-                    "md:mt-0 bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)] pb-[1px]": !@without_sidebar
+                    "md:mt-0 bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)] pb-[1px]":
+                      !@without_sidebar
                   }
                 >
-                  <div
-                    :if={!@without_sidebar}
-                    class="sticky top-0  md:pt-3 bg-base-300 z-[999]"
-                  >
+                  <div :if={!@without_sidebar} class="sticky top-0  md:pt-3 bg-base-300 z-[999]">
                     <div class="flex flex-1 rounded-t bg-base-100" :class="{'hidden': open_sidebar}">
                       <Dynamic.Component
                         module={Bonfire.UI.Common.PageHeaderLive}

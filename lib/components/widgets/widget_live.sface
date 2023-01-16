@@ -1,7 +1,12 @@
 <div class={@wrapper_class} data-type="widget">
   {#case @widget[:type]}
     {#match :link}
-      <LiveRedirect to={@widget[:href]} class={if @showing_within != :dashboard, do: "flex items-center w-full gap-6 px-2 py-2 rounded-md", else: "block w-full"}>
+      <LiveRedirect
+        to={@widget[:href]}
+        class={if @showing_within != :dashboard,
+          do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+          else: "block w-full"}
+      >
         <span :if={!@without_icon} class="">
           <Icon iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />
         </span>
@@ -24,7 +29,12 @@
         {/case}
       </LiveRedirect>
     {#match Surface.Component}
-      <Dynamic.Component module={@widget[:module]} showing_within={@showing_within} page={@page} {...@data} />
+      <Dynamic.Component
+        module={@widget[:module]}
+        showing_within={@showing_within}
+        page={@page}
+        {...@data}
+      />
     {#match Surface.LiveComponent}
       <Dynamic.LiveComponent
         id={Pointers.ULID.generate()}

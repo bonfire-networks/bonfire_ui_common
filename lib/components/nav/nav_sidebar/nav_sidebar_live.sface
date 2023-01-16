@@ -22,7 +22,7 @@
     :if={@current_user}
     aria-label={l("Extension navigation")}
   >
-    <div  class="flex items-center justify-between">
+    <div class="flex items-center justify-between">
       <LiveRedirect
         to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
         class="flex items-center justify-start flex-1 gap-2 px-1 normal-case rounded btn btn-ghost hover:bg-transparent"
@@ -57,26 +57,27 @@
     <nav>
       <ul class="mt-4 menu">
         <li class="p-0 m-0 rounded-md">
-          <LiveRedirect to={"/"} class={"flex items-center w-full gap-6 px-2 py-2 rounded-md"}>
-          <Icon iconify="ic:outline-explore" class={"w-[22px] h-[22px] text-base-content/80"} />
-          <span class={"text-sm font-normal text-base-content/80"}>{l "Explore"}</span>
+          <LiveRedirect to="/" class="flex items-center w-full gap-6 px-2 py-2 rounded-md">
+            <Icon iconify="ic:outline-explore" class="w-[22px] h-[22px] text-base-content/80" />
+            <span class="text-sm font-normal text-base-content/80">{l("Explore")}</span>
           </LiveRedirect>
         </li>
         <li class="p-0 m-0 rounded-md">
-          <LiveRedirect to={"/feed"} class={"flex items-center w-full gap-6 px-2 py-2 rounded-md"}>
-          <Icon iconify="ic:outline-explore" class={"w-[22px] h-[22px] text-base-content/80"} />
-          <span class={"text-sm font-normal text-base-content/80"}>{l "Feeds"}</span>
+          <LiveRedirect to="/feed" class="flex items-center w-full gap-6 px-2 py-2 rounded-md">
+            <Icon iconify="ic:outline-explore" class="w-[22px] h-[22px] text-base-content/80" />
+            <span class="text-sm font-normal text-base-content/80">{l("Feeds")}</span>
           </LiveRedirect>
         </li>
-        <li 
+        <li
           :if={Bonfire.Me.Settings.get(
             [Bonfire.UI.Me.UsersDirectoryLive, :show_to],
             :users
-          ) == :guests} 
-          class="p-0 m-0 rounded-md">
-          <LiveRedirect to={"/users"} class={"flex items-center w-full gap-6 px-2 py-2 rounded-md"}>
-          <Icon iconify="ic:outline-explore" class={"w-[22px] h-[22px] text-base-content/80"} />
-          <span class={"text-sm font-normal text-base-content/80"}>{l "Users directory"}</span>
+          ) == :guests}
+          class="p-0 m-0 rounded-md"
+        >
+          <LiveRedirect to="/users" class="flex items-center w-full gap-6 px-2 py-2 rounded-md">
+            <Icon iconify="ic:outline-explore" class="w-[22px] h-[22px] text-base-content/80" />
+            <span class="text-sm font-normal text-base-content/80">{l("Users directory")}</span>
           </LiveRedirect>
         </li>
       </ul>
