@@ -3,6 +3,7 @@ defmodule Bonfire.UI.Common.UserMenuLinksLive do
   import Bonfire.UI.Me.Integration
 
   alias Surface.Components.LiveRedirect
+  prop mobile, :boolean, default: false
   # prop name, type, options
   # prop user_image, :string, required: true
   # prop name, :string, required: true

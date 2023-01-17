@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 <div role="banner" class="flex items-center h-[46px] rounded-t flex-1 w-full bg-base-200 px-4">
+=======
+<div
+  role="banner"
+  class="flex items-center h-[56px] md:h-[46px] rounded-t flex-1 w-full bg-base-200 px-4"
+>
+>>>>>>> 18f383c (ui)
   <div class="flex items-center w-full">
     <div class="flex items-center justify-between flex-1 w-full">
       <div class="flex items-center gap-3">
@@ -7,9 +14,10 @@
           <Icon iconify="mdi:arrow-left" class="w-4 h-4 text-base-content" />
         </span>
       </div> -->
-        <Bonfire.UI.Common.BackButtonLive />
+        <Icon :if={@page_header_icon} iconify={@page_header_icon} class="w-5 h-5 text-base-content/80" />
+        <Bonfire.UI.Common.BackButtonLive :if={@back} />
         <span
-          class="max-w-[200px] md:max-w-max text-sm  font-semibold truncate text-ellipsis"
+          class="max-w-[200px] md:max-w-max text-base md:text-sm  font-semibold truncate text-ellipsis"
           :if={not is_nil(@page_title)}
         >{@page_title}</span>
       </div>

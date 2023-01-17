@@ -19,8 +19,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:selected_tab, fn -> nil end)
       |> assign_new(:notification, fn -> nil end)
       |> assign_new(:page_header_aside, fn -> nil end)
+      |> assign_new(:page_header_icon, fn -> nil end)
       # |> assign_new(:custom_page_header, fn -> nil end)
       |> assign_new(:inner_content, fn -> nil end)
+      |> assign_new(:back, fn -> false end)
       |> assign_new(:object_id, fn -> nil end)
       |> assign_new(:post_id, fn -> nil end)
       |> assign_new(:context_id, fn -> nil end)
@@ -118,6 +120,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
                       <Dynamic.Component
                         module={Bonfire.UI.Common.PageHeaderLive}
                         page_title={@page_title}
+                        page_header_icon={@page_header_icon}
+                        back={@back}
                         page={@page}
                         selected_tab={@selected_tab}
                       >

@@ -1,12 +1,17 @@
+<<<<<<< HEAD
 <div class="bottom-0 flex fixed z-[997] border-t btm-nav md:hidden border-base-content/10">
+=======
+<div 
+  class="bottom-0 h-[60px] flex fixed z-[997] border-t border-base-content/10 btm-nav md:hidden border-base-content/10">
+>>>>>>> 18f383c (ui)
   <LiveRedirect
     class={
       "",
-      active: @page == "home"
+      "text-primary": @page == "home"
     }
     to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
   >
-    <Icon solid="Home" class="w-6 h-6" />
+    <Icon iconify="ri:home-line" class="w-5 h-5" />
     <span class="sr-only">{l("Home")}</span>
   </LiveRedirect>
 
@@ -14,10 +19,10 @@
     to={~p"/search"}
     class={
       "",
-      active: @page == "search"
+      "text-primary": @page == "search"
     }
   >
-    <Icon solid="Search" class="w-6 h-6" />
+    <Icon outline="Search" class="w-5 h-5" />
     <span class="sr-only">{l("Search")}</span>
   </LiveRedirect>
 
@@ -25,25 +30,46 @@
     to={path(:notifications)}
     class={
       "",
-      active: @page == "notifications"
+      "text-primary": @page == "notifications"
     }
   >
-    <Icon solid="Bell" class="w-6 h-6" />
+    <Icon iconify="mdi:bell-outline" class="w-5 h-5" />
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>
-
+ 
   <LiveRedirect
     to={path(@current_user)}
     class={
-      "",
-      active: @page == "profile"
+      ""
     }
   >
     <Bonfire.UI.Common.AvatarLive
-      class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer md:hidden bg-base-300"
+      class={"inline-block object-cover w-8 h-8 rounded-full cursor-pointer md:hidden bg-base-300"}
       size="40"
       user={@current_user}
     />
     <span class="sr-only">{l("Your profile")}</span>
   </LiveRedirect>
+
+  <Bonfire.UI.Common.OpenModalLive
+    id={Pointers.ULID.generate()}
+    no_actions
+    wrapper_class=""
+    reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
+
+  >
+  <Bonfire.UI.Common.MobileMenuLive
+    homepage_link="/"
+    nav_items={Bonfire.Common.ExtensionModule.default_nav(:bonfire_ui_social)}
+  />
+  <:open_btn>
+    <div class="">
+      <Icon outline="DotsHorizontal" class="w-5 h-5" />
+     <span class="sr-only">{l("More")}</span>
+    </div>
+  </:open_btn>
+</Bonfire.UI.Common.OpenModalLive>
+
+
+
 </div>

@@ -2,8 +2,8 @@
   <input type="hidden" name="to" value="/write">
   <input type="hidden" name="smart_input_text" value={@text}>
   <input type="hidden" name="create_object_type" value="task"> -->
-<button class={@class} phx-click={@event} phx-target="#smart_input">
-  <Icon :if={@with_icon} iconify="ic:round-feedback" class="w-4 h-4" />
-  {l("Share feedback")}
+<button class={if @mobile, do: "flex items-center w-full gap-6 px-2 py-2 rounded-md" , else: @class} phx-click={@event} phx-target="#smart_input">
+  <Icon :if={@with_icon or @mobile} iconify="ic:round-feedback" class={if @mobile, do: "w-[22px] h-[22px] text-base-content/80", else: "w-4 h-4"} />
+  <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: "" }>{l("Share feedback")}</div>
 </button>
 <!-- </Form> -->

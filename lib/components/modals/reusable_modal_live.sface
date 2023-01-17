@@ -1,9 +1,9 @@
 <div
   id={@id}
-  class={@modal_class || "modal max-h-[100%] ", "modal-closed": !@show, "modal-open": @show}
+  class={@modal_class || "modal  modal-bottom sm:modal-middle max-h-[100%] ", "modal-closed": !@show, "modal-open": @show}
   {...@opts}
 >
-  <form id={@form_id} {...@form_opts}>
+  <form class="w-full" id={@form_id} {...@form_opts}>
     <div
       phx-click="close"
       phx-target={"[id='#{@id}']"}
@@ -11,7 +11,7 @@
       aria-hidden="true"
     >
     </div>
-    <div class="relative rounded-md border modal-box border-base-content overflow-visible border-opacity-20 max-w-[500px] w-[90%] md:min-w-[460px] min-h-[100px]">
+    <div class={"modal-box " <> @wrapper_class}>
       <h3 :if={e(!@no_header, false)} class={@title_class || "font-bold text-base"}>
         <#slot {@title}>{@title_text}</#slot>
       </h3>

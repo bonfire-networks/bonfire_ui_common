@@ -24,7 +24,10 @@
   >
     <!-- <Bonfire.UI.Common.LogoLinkLive :if={@without_sidebar} with_name /> -->
     {#if not is_nil(current_user(@__context__))}
+<<<<<<< HEAD
       <div data-id="user_actions" class="flex w-full overflow-visible place-content-center">
+=======
+>>>>>>> 18f383c (ui)
         <Dynamic.Component
           :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
           module={Bonfire.UI.Common.LoggedActionsLive}
@@ -43,13 +46,12 @@
           smart_input_opts={@smart_input_opts}
           sidebar_widgets={@sidebar_widgets}
         />
-      </div>
     {#else}
       <Bonfire.UI.Common.GuestActionsLive />
     {/if}
     <div
       data-id="secondary_sidebar_widgets"
-      class="hidden mt-4 overflow-x-hidden overflow-y-auto tablet-lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
+      class="hidden mt-3 overflow-x-hidden overflow-y-auto tablet-lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
     >
       <!-- FIXME: use the widget system instead (see below) -->
       <Dynamic.Component
@@ -111,6 +113,7 @@
         </LiveRedirect>
       </div>
     </div>
+    
   </div>
 
   <!-- <div
@@ -133,6 +136,7 @@
 
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
   <Bonfire.UI.Common.ReusableModalLive form_id="boundary_form" id="persistent_modal" />
+<<<<<<< HEAD
 
   <Bonfire.UI.Common.MobileMenuLive
     homepage_link="/"
@@ -142,4 +146,7 @@
     :if={not is_nil(current_user(@__context__))}
     page={@page}
   />
+=======
+  <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(current_user(@__context__))} page={@page} />
+>>>>>>> 18f383c (ui)
 </div>
