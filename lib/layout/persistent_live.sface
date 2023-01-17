@@ -74,18 +74,20 @@
         <Dynamic.Component
           :if={not is_nil(current_user(@__context__))}
           :for={{component, component_assigns} <-
-            @sidebar_widgets[:users][:secondary] ||
-              [
-                {Bonfire.Tag.Web.WidgetTagsLive, []},
-                {Bonfire.UI.Common.WidgetFeedbackLive, []}
-              ]}
+            List.wrap(
+              @sidebar_widgets[:users][:secondary] ||
+                [
+                  {Bonfire.Tag.Web.WidgetTagsLive, []},
+                  {Bonfire.UI.Common.WidgetFeedbackLive, []}
+                ]
+            )}
           module={component}
           {...component_assigns}
         />
 
         <Dynamic.Component
           :if={is_nil(current_user(@__context__))}
-          :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || []}
+          :for={{component, component_assigns} <- List.wrap(@sidebar_widgets[:guests][:secondary] || [])}
           module={component}
           {...component_assigns}
         />

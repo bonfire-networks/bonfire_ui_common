@@ -2,7 +2,7 @@
   <Dynamic.Component
     module={@link_component}
     :for={{{tab, tab_name}, i} <- Enum.with_index(@tabs)}
-    to={"#{@path_prefix}#{tab}"}
+    to={String.replace("#{@path_prefix}#{tab}#{@path_suffix}", "//", "/filter/")}
     name={"#{tab}"}
     event_handler={@event_handler}
     event_target={@event_target}

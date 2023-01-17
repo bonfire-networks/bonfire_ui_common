@@ -2,7 +2,9 @@
   {#case @widget[:type]}
     {#match :link}
       <LiveRedirect
-        to={@widget[:href]}
+        to={if is_function(@widget[:href]),
+          do: @widget[:href].(@__context__[:current_params]),
+          else: @widget[:href]}
         class={if @showing_within != :dashboard,
           do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
           else: "block w-full"}
