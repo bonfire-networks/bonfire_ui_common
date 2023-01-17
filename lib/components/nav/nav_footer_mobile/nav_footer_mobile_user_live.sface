@@ -1,5 +1,4 @@
-<div 
-  class="bottom-0 h-[60px] flex fixed z-[997] border-t border-base-content/10 btm-nav md:hidden border-base-content/10">
+<div class="bottom-0 h-[60px] flex fixed z-[997] border-t border-base-content/10 btm-nav md:hidden border-base-content/10">
   <LiveRedirect
     class={
       "",
@@ -32,15 +31,10 @@
     <Icon iconify="mdi:bell-outline" class="w-5 h-5" />
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>
- 
-  <LiveRedirect
-    to={path(@current_user)}
-    class={
-      ""
-    }
-  >
+
+  <LiveRedirect to={path(@current_user)} class="">
     <Bonfire.UI.Common.AvatarLive
-      class={"inline-block object-cover w-8 h-8 rounded-full cursor-pointer md:hidden bg-base-300"}
+      class="inline-block object-cover w-8 h-8 rounded-full cursor-pointer md:hidden bg-base-300"
       size="40"
       user={@current_user}
     />
@@ -52,20 +46,16 @@
     no_actions
     wrapper_class=""
     reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
-
   >
-  <Bonfire.UI.Common.MobileMenuLive
-    homepage_link="/"
-    nav_items={Bonfire.Common.ExtensionModule.default_nav(:bonfire_ui_social)}
-  />
-  <:open_btn>
-    <div class="">
-      <Icon outline="DotsHorizontal" class="w-5 h-5" />
-     <span class="sr-only">{l("More")}</span>
-    </div>
-  </:open_btn>
-</Bonfire.UI.Common.OpenModalLive>
-
-
-
+    <Bonfire.UI.Common.MobileMenuLive
+      homepage_link="/"
+      nav_items={Bonfire.Common.ExtensionModule.default_nav(:bonfire_ui_social)}
+    />
+    <:open_btn>
+      <div class="">
+        <Icon outline="DotsHorizontal" class="w-5 h-5" />
+        <span class="sr-only">{l("More")}</span>
+      </div>
+    </:open_btn>
+  </Bonfire.UI.Common.OpenModalLive>
 </div>

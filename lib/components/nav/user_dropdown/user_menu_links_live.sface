@@ -1,7 +1,9 @@
 <li class={if @mobile, do: "border-t border-neutral-content/10", else: ""}>
   <LiveRedirect
     to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
-    class={if @mobile, do: "flex items-center w-full gap-6 px-2 py-2 rounded-md" , else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
+    class={if @mobile,
+      do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+      else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
   >
     <Icon :if={@mobile} solid="UserCircle" class="w-[22px] h-[22px] text-base-content/80" />
     <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("View profile")}</div>
@@ -10,14 +12,25 @@
 <li>
   <LiveRedirect
     to={~p"/switch-user"}
-    class={if @mobile, do: "flex items-center w-full gap-6 px-2 py-2 rounded-md" , else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
+    class={if @mobile,
+      do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+      else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
   >
-    <Icon :if={@mobile} iconify="material-symbols:switch-account" class="w-[22px] h-[22px] text-base-content/80" />
+    <Icon
+      :if={@mobile}
+      iconify="material-symbols:switch-account"
+      class="w-[22px] h-[22px] text-base-content/80"
+    />
     <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("Switch profile")}</div>
   </LiveRedirect>
 </li>
 <li>
-  <LiveRedirect to={~p"/settings"} class={if @mobile, do: "flex items-center w-full gap-6 px-2 py-2 rounded-md" , else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}>
+  <LiveRedirect
+    to={~p"/settings"}
+    class={if @mobile,
+      do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+      else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
+  >
     <Icon :if={@mobile} solid="Cog" class="w-[22px] h-[22px] text-base-content/80" />
     <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("Settings")}</div>
   </LiveRedirect>
@@ -26,7 +39,9 @@
 <li :if={is_admin?(@current_user)}>
   <LiveRedirect
     to={~p"/settings/instance"}
-    class={if @mobile, do: "flex items-center w-full gap-6 px-2 py-2 rounded-md" , else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
+    class={if @mobile,
+      do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+      else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
   >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
     <Icon :if={@mobile} solid="Cog" class="w-[22px] h-[22px] text-base-content/80" />
@@ -37,7 +52,9 @@
 <li class="border-t border-neutral-content/10">
   <LiveRedirect
     to={~p"/boundaries/silenced"}
-    class={if @mobile, do: "flex items-center w-full gap-6 px-2 py-2 rounded-md" , else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
+    class={if @mobile,
+      do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+      else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
   >
     <Icon :if={@mobile} solid="VolumeOff" class="w-[22px] h-[22px] text-base-content/80" />
     <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("Silenced")}</div>
@@ -46,7 +63,9 @@
 <li>
   <LiveRedirect
     to={~p"/boundaries/ghosted"}
-    class={if @mobile, do: "flex items-center w-full gap-6 px-2 py-2 rounded-md" , else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
+    class={if @mobile,
+      do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+      else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
   >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
     <Icon :if={@mobile} solid="MinusCircle" class="w-[22px] h-[22px] text-base-content/80" />
@@ -56,10 +75,12 @@
 <li>
   <LiveRedirect
     to={~p"/boundaries/circles"}
-    class={if @mobile, do: "flex items-center w-full gap-6 px-2 py-2 rounded-md" , else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
+    class={if @mobile,
+      do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+      else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
   >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
-        <Icon :if={@mobile} iconify="bx:ShapeCircle" class="w-[22px] h-[22px] text-base-content/80" />
+    <Icon :if={@mobile} iconify="bx:ShapeCircle" class="w-[22px] h-[22px] text-base-content/80" />
 
     <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("My circles")}</div>
   </LiveRedirect>
@@ -67,19 +88,31 @@
 <li>
   <LiveRedirect
     to={~p"/boundaries/acls"}
-    class={if @mobile, do: "flex items-center w-full gap-6 px-2 py-2 rounded-md" , else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
+    class={if @mobile,
+      do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+      else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
   >
     <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
-      <Icon :if={@mobile} solid="LockClosed" class="w-[22px] h-[22px] text-base-content/80" />
+    <Icon :if={@mobile} solid="LockClosed" class="w-[22px] h-[22px] text-base-content/80" />
 
     <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("My boundaries")}</div>
   </LiveRedirect>
 </li>
 <li class="border-t border-neutral-content/10">
-  <Bonfire.UI.Common.FeedbackButtonLive mobile={@mobile} class={if @mobile, do: "flex items-center w-full gap-6 px-2 py-2 rounded-md" , else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"} />
+  <Bonfire.UI.Common.FeedbackButtonLive
+    mobile={@mobile}
+    class={if @mobile,
+      do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+      else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
+  />
 </li>
 <li>
-  <LiveRedirect to={~p"/logout"} class={if @mobile, do: "flex items-center w-full gap-6 px-2 py-2 rounded-md" , else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}>
+  <LiveRedirect
+    to={~p"/logout"}
+    class={if @mobile,
+      do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+      else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
+  >
     <!-- <Icon iconify="material-symbols:logout" class="w-4 h-4" /> -->
     <Icon :if={@mobile} iconify="uil:exit" class="w-[22px] h-[22px] text-error" />
 

@@ -1,5 +1,5 @@
 <div data-id="mobile_nav">
-  <div class="relative w-full h-full ">
+  <div class="relative w-full h-full">
     <LinkLive class="flex gap-3" to={path(@current_user)}>
       <Bonfire.UI.Common.AvatarLive
         class="inline-block object-cover w-10 h-10 rounded cursor-pointer bg-base-300"
@@ -44,7 +44,7 @@
               </li>
           {/case}
         {/for}
-        <Bonfire.UI.Common.UserMenuLinksLive mobile/>
+        <Bonfire.UI.Common.UserMenuLinksLive mobile />
       </ul>
     </nav>
   </div>

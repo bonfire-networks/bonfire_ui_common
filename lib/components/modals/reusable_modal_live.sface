@@ -1,6 +1,10 @@
 <div
   id={@id}
-  class={@modal_class || "modal  modal-bottom sm:modal-middle max-h-[100%] ", "modal-closed": !@show, "modal-open": @show}
+  class={
+    @modal_class || "modal  modal-bottom sm:modal-middle max-h-[100%] ",
+    "modal-closed": !@show,
+    "modal-open": @show
+  }
   {...@opts}
 >
   <form class="w-full" id={@form_id} {...@form_opts}>

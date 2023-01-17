@@ -24,24 +24,24 @@
   >
     <!-- <Bonfire.UI.Common.LogoLinkLive :if={@without_sidebar} with_name /> -->
     {#if not is_nil(current_user(@__context__))}
-        <Dynamic.Component
-          :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
-          module={Bonfire.UI.Common.LoggedActionsLive}
-          page_title={@page_title}
-          page={@page}
-          current_user={current_user(@__context__)}
-          showing_within={@showing_within}
-          reply_to_id={@reply_to_id}
-          context_id={@context_id}
-          create_object_type={@create_object_type}
-          thread_mode={@thread_mode}
-          without_sidebar={@without_sidebar}
-          without_widgets={@without_widgets}
-          to_boundaries={@to_boundaries}
-          to_circles={@to_circles}
-          smart_input_opts={@smart_input_opts}
-          sidebar_widgets={@sidebar_widgets}
-        />
+      <Dynamic.Component
+        :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
+        module={Bonfire.UI.Common.LoggedActionsLive}
+        page_title={@page_title}
+        page={@page}
+        current_user={current_user(@__context__)}
+        showing_within={@showing_within}
+        reply_to_id={@reply_to_id}
+        context_id={@context_id}
+        create_object_type={@create_object_type}
+        thread_mode={@thread_mode}
+        without_sidebar={@without_sidebar}
+        without_widgets={@without_widgets}
+        to_boundaries={@to_boundaries}
+        to_circles={@to_circles}
+        smart_input_opts={@smart_input_opts}
+        sidebar_widgets={@sidebar_widgets}
+      />
     {#else}
       <Bonfire.UI.Common.GuestActionsLive />
     {/if}
@@ -109,7 +109,6 @@
         </LiveRedirect>
       </div>
     </div>
-    
   </div>
 
   <!-- <div
@@ -132,5 +131,8 @@
 
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
   <Bonfire.UI.Common.ReusableModalLive form_id="boundary_form" id="persistent_modal" />
-  <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(current_user(@__context__))} page={@page} />
+  <Bonfire.UI.Common.NavFooterMobileUserLive
+    :if={not is_nil(current_user(@__context__))}
+    page={@page}
+  />
 </div>
