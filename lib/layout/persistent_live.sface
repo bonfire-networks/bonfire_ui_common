@@ -24,10 +24,6 @@
   >
     <!-- <Bonfire.UI.Common.LogoLinkLive :if={@without_sidebar} with_name /> -->
     {#if not is_nil(current_user(@__context__))}
-<<<<<<< HEAD
-      <div data-id="user_actions" class="flex w-full overflow-visible place-content-center">
-=======
->>>>>>> 18f383c (ui)
         <Dynamic.Component
           :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
           module={Bonfire.UI.Common.LoggedActionsLive}
@@ -136,17 +132,5 @@
 
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
   <Bonfire.UI.Common.ReusableModalLive form_id="boundary_form" id="persistent_modal" />
-<<<<<<< HEAD
-
-  <Bonfire.UI.Common.MobileMenuLive
-    homepage_link="/"
-    nav_items={Bonfire.Common.ExtensionModule.default_nav(:bonfire_ui_social)}
-  />
-  <Bonfire.UI.Common.NavFooterMobileUserLive
-    :if={not is_nil(current_user(@__context__))}
-    page={@page}
-  />
-=======
   <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(current_user(@__context__))} page={@page} />
->>>>>>> 18f383c (ui)
 </div>
