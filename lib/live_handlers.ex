@@ -116,7 +116,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   end
 
   defp do_handle_info({_ref, {:phoenix, :send_update, _}}, socket) do
-    info("LiveHandler: send_update completed")
+    debug("LiveHandler: send_update completed")
     empty(socket)
   end
 

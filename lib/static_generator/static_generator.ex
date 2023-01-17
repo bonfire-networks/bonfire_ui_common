@@ -36,7 +36,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
       {:error, e} -> {:error, e}
       {url, content} -> write_file(url, content, dest)
     end)
-    |> info()
+    |> debug()
   end
 
   def generate(url, opts) do

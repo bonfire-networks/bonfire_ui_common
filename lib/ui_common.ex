@@ -878,7 +878,7 @@ defmodule Bonfire.UI.Common do
   def assign_flash(socket_or_conn, type, message, assigns \\ %{}, pid \\ self())
 
   def assign_flash(%Phoenix.LiveView.Socket{} = socket, type, message, assigns, pid) do
-    info(message, type)
+    # info(message, type)
 
     Bonfire.UI.Common.Notifications.receive_flash(
       Map.put(assigns, type, message),
@@ -890,7 +890,7 @@ defmodule Bonfire.UI.Common do
   end
 
   def assign_flash(%Plug.Conn{} = conn, type, message, assigns, pid) do
-    info(message, type)
+    # info(message, type)
     # TODO: use assigns too
     conn
     |> Plug.Conn.fetch_session()
@@ -899,7 +899,7 @@ defmodule Bonfire.UI.Common do
   end
 
   def assign_flash(_, type, message, assigns, pid) do
-    info(message, type)
+    # info(message, type)
 
     Bonfire.UI.Common.Notifications.receive_flash(Map.put(assigns, type, message), pid)
   end
@@ -1141,7 +1141,7 @@ defmodule Bonfire.UI.Common do
         debug("wait to preload once socket is connected")
         list_of_assigns
       else
-        info("preloading WITHOUT using async")
+        debug("preloading WITHOUT using async")
 
         preloaded_assigns =
           preload_fn.(list_of_components, list_of_ids, current_user)
