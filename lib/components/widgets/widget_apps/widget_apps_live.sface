@@ -1,6 +1,6 @@
 <Bonfire.UI.Common.WidgetBlockLive
   widget_title={@title || l("Extensions")}
-  class="relative w-full mx-auto rounded-xl bg-base-100"
+  class="relative w-full mx-auto rounded bg-base-100"
 >
   <ul class={"grid grid-cols-#{@cols} p-2 menu menu-compact"}>
     <li>

@@ -2,7 +2,7 @@
   id="theme-change"
   x-data={"{ theme: '#{@theme}'}"}
   title="Change Theme"
-  class="w-full max-w-xs text-left dropdown dropdown-end"
+  class="text-left w-52 dropdown"
 >
   <!-- phx-hook="Themeable" -->
   <!-- note: the phx-hook has the advantage of changing the theme instantly without reloading, but it's an odd behaviour if changing the light theme while we're using the dark theme, or if changing the default instance theme while we have a different one in user preferences... -->
@@ -12,19 +12,9 @@
 
   <div
     tabindex="0"
-    class="w-full gap-2 text-left normal-case btn-wide btn btn-outline border-base-content border-opacity-20"
+    class="items-center w-52 select select-bordered"
   >
-    <span class="flex-1 e">
-      {if @theme, do: "#{@label || l("Choose theme")}: ", else: @label || l("Choose theme")}
-      <span x-text="theme">{@theme}</span>
-    </span>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1792 1792"
-      class="inline-block w-4 h-4 ml-1 fill-current"
-    >
-      <path d="M1395 736q0 13-10 23l-466 466q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l393 393 393-393q10-10 23-10t23 10l50 50q10 10 10 23z" />
-    </svg>
+    <span x-text="theme">{@theme}</span>
   </div>
 
   <div class="dropdown-content bg-base-200 text-base-content rounded-t-box rounded-b-box top-px max-h-96 h-[70vh] w-52 overflow-y-auto shadow-2xl mt-16">

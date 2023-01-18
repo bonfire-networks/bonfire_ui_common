@@ -19,7 +19,7 @@
       {#match selected_options when not is_list(selected_options) or selected_options == []}
         <label class="flex-1 w-full py-2 h-9">{@label}</label>
       {#match selected_options}
-        <div class="flex flex-wrap flex-1 h-9">
+        <div class="flex flex-wrap flex-1">
           <span
             :for={{name_content, id} <- selected_options}
             :if={name_content || id}

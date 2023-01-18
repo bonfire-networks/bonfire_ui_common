@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
 
   prop widget_title, :string, default: nil
 
-  prop class, :css_class, default: "relative w-full mx-auto rounded-xl bg-base-100"
+  prop class, :css_class, default: "relative w-full mx-auto rounded bg-base-100"
 
   prop title_class, :css_class,
     default: "flex items-center p-3 pb-2 rounded-t-md text-lg font-bold text-base-content"

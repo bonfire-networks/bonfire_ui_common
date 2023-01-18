@@ -1,7 +1,7 @@
 <select
   id="change_locale"
   name="locale"
-  class="w-full max-w-xs select bg-base-content/10"
+  class="w-full max-w-xs select select-bordered"
   phx-hook="ChangeLocaleHook"
   phx-change={@live_handler}
 >
