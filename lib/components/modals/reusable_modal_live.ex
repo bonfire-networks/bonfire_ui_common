@@ -35,9 +35,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   prop modal_class, :string, default: nil
 
   @doc "The classes of the modal wrapper."
-  prop wrapper_class, :css_class,
-    default:
-      "modal-box mx-auto overflow-hidden"
+  prop wrapper_class, :css_class, default: "modal-box mx-auto overflow-hidden"
 
   @doc "The classes of the close/cancel button on the modal. Only used if no close_btn slot is passed."
   prop cancel_btn_class, :css_class, default: nil

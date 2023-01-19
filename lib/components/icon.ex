@@ -25,7 +25,8 @@ defmodule Bonfire.UI.Common.Icon do
     render(Map.merge(assigns, %{svg: svg}))
   end
 
-  def render(%{iconify: icon} = assigns) when is_binary(icon) do
+  def render(%{iconify: icon} = assigns)
+      when is_binary(icon) or (is_atom(icon) and not is_nil(icon)) do
     component(
       &Iconify.iconify/1,
       prepare_assigns(assigns, icon),

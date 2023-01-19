@@ -1,4 +1,3 @@
-
 <!-- FIMXE: this should be in the main app layout to support dark/light themes 
 <div
   x-data={"{
@@ -50,6 +49,5 @@
           theme={@theme}
           themes={Enum.uniq(themes_light)}
         />
-
     {/case}
 {/case}

@@ -26,7 +26,7 @@
   class={e(@class, "btn btn-sm btn-outline rounded !border-base-content/40 normal-case")}
 >
   <Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
-  
-  <span  :if={!@hide_text} x-text="text" class={"truncate ellipsis", "ml-2": !@hide_icon}>
+
+  <span :if={!@hide_text} x-text="text" class={"truncate ellipsis", "ml-2": !@hide_icon}>
     {l("Following")} {@label}</span>
 </a>

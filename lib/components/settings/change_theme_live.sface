@@ -10,10 +10,7 @@
   <input name={"ui[theme][#{@key}]"} x-model="theme" type="hidden">
   <!-- note: LV phx-change seems to ignore alpine changing this hidden input, so using phx-click on the options below instead -->
 
-  <div
-    tabindex="0"
-    class="items-center w-52 select select-bordered"
-  >
+  <div tabindex="0" class="items-center w-52 select select-bordered">
     <span x-text="theme">{@theme}</span>
   </div>
 

@@ -1,1 +1,12 @@
-TODO
+<ul>
+  {#for {family, icons} <- list()}
+    <li>{family}:
+      <ul>
+        {#for icon <- icons}
+          <li><Icon iconify={icon} /> {String.split("#{icon}", ".", parts: 2)
+            |> Enum.at(1)}</li>
+        {/for}
+      </ul>
+    </li>
+  {/for}
+</ul>
