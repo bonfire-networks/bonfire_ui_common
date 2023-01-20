@@ -30,7 +30,7 @@
     x-show="smart_input_open"
     class="smart_input_container fixed visible md:rounded-t-lg max-w-full md:w-[36rem] left-0 bg-base-200 top-0 mx-auto md:top-auto bottom-0 md:bottom-0 z-[9999] transition-all md:shadow-xl right-0 md:right-4 md:left-auto overflow-x-auto"
     :class="{
-      'hidden md:block !w-[24rem] bottom-0': smart_input_minimized
+      'hidden md:block !w-[20rem] bottom-0': smart_input_minimized
     }"
     x-on:keydown.escape.prevent.stop="smart_input_minimized = true"
   >

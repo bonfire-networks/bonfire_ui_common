@@ -36,7 +36,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
   end
 
   def size(%{comment: true}) do
-    40
+    32
   end
 
   def size(_) do

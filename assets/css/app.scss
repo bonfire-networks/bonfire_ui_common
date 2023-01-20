@@ -155,7 +155,7 @@ article.unread-activity {
 }
 
 .feed_tab.active {
-  @apply bg-neutral-content text-neutral;
+  @apply bg-primary text-primary-content hover:bg-primary hover:text-primary-content;
 }
 
 .full_page {

@@ -11,8 +11,8 @@ defmodule Bonfire.UI.Common.TabsLive do
   prop class, :css_class,
     default: "flex justify-start gap-3 p-4 mb-3 rounded-md shadow tabs-boxed tabs bg-base-100"
 
-  prop tab_class, :css_class, default: "badge cursor-pointer badge-lg text-sm"
-  prop tab_primary_class, :css_class, default: "badge_primary"
+  prop tab_class, :css_class, default: "btn btn-sm rounded normal-case bg-base-content/10 feed_tab border-none"
+  prop tab_primary_class, :css_class, default: "btn-primary"
   @doc "What LiveHandler and/or event name to send the patch event to (optional)"
   prop event_handler, :string, default: nil
 

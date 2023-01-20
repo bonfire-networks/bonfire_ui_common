@@ -35,7 +35,7 @@
   <LiveRedirect to={path(@current_user)} class="">
     <Bonfire.UI.Common.AvatarLive
       class="inline-block object-cover w-8 h-8 rounded-full cursor-pointer md:hidden bg-base-300"
-      size="40"
+      size="32"
       user={@current_user}
     />
     <span class="sr-only">{l("Your profile")}</span>

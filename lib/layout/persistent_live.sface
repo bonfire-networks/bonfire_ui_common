@@ -91,22 +91,30 @@
         />
       </div>
 
+      
       <div class="mt-4 text-xs text-base-content/70">
-        <a href="https://bonfirenetworks.org/" class="mt-2 text-xs link link-hover text-base-content/70">
-          🔥
-          {Bonfire.Application.name()}
-        </a>
-        ·
-        <LiveRedirect
-          to={Bonfire.Application.repository()}
-          class="mt-2 text-xs link link-hover text-base-content/70"
-        >
-          {Bonfire.Application.version()}
-          <span class="ml-1" x-data="{msg: 'JS'}">
-            <span x-text="msg">no JS</span>
-          </span>
-          <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
-        </LiveRedirect>
+        <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get(:host)}</span>: 
+          <LiveRedirect class="text-xs link-hover link text-base-content/70" to={"/about"}>{l "About"}</LiveRedirect> · 
+          <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · 
+          <LiveRedirect class="text-xs link-hover link text-base-content/70" to={"/terms"}>{l "Terms"}</LiveRedirect> · 
+          <LiveRedirect class="text-xs link-hover link text-base-content/70" to={"/conduct"}>{l "Code of conduct"}</LiveRedirect> · 
+          <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/users">{l "Users directory"}</LiveRedirect></div> 
+        <div class="mt-4">
+          <a href="https://bonfirenetworks.org/" class="text-xs font-semibold link link-hover text-base-content/70">
+            {Bonfire.Application.name()}
+          </a>
+          ·
+          <LiveRedirect
+            to={Bonfire.Application.repository()}
+            class="text-xs link link-hover text-base-content/70"
+          >
+            {Bonfire.Application.version()}
+            <span class="ml-1" x-data="{msg: 'JS'}">
+              <span x-text="msg">no JS</span>
+            </span>
+            <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
+          </LiveRedirect>
+        </div>
       </div>
     </div>
   </div>
