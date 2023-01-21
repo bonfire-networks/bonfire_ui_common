@@ -25,7 +25,7 @@
         {Bonfire.Application.name()}
       </a>
       <LiveRedirect
-        to={Bonfire.Application.repository() || ~p"/terms/changelog"}
+        to={Bonfire.Application.repository() || ~p"/changelog"}
         class="mt-2 text-xs badge badge-ghost"
       >
         {Bonfire.Application.version()}

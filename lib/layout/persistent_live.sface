@@ -91,16 +91,18 @@
         />
       </div>
 
-      
       <div class="mt-4 text-xs text-base-content/70">
-        <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get(:host)}</span>: 
-          <LiveRedirect class="text-xs link-hover link text-base-content/70" to={"/about"}>{l "About"}</LiveRedirect> · 
-          <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · 
-          <LiveRedirect class="text-xs link-hover link text-base-content/70" to={"/terms"}>{l "Terms"}</LiveRedirect> · 
-          <LiveRedirect class="text-xs link-hover link text-base-content/70" to={"/conduct"}>{l "Code of conduct"}</LiveRedirect> · 
-          <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/users">{l "Users directory"}</LiveRedirect></div> 
+        <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:
+          <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·
+          <!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · -->
+          <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·
+          <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LiveRedirect> ·
+          <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/users">{l("Users")}</LiveRedirect></div>
         <div class="mt-4">
-          <a href="https://bonfirenetworks.org/" class="text-xs font-semibold link link-hover text-base-content/70">
+          <a
+            href="https://bonfirenetworks.org/"
+            class="text-xs font-semibold link link-hover text-base-content/70"
+          >
             {Bonfire.Application.name()}
           </a>
           ·
