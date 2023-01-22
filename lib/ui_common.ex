@@ -245,7 +245,8 @@ defmodule Bonfire.UI.Common do
   end
 
   def templated_or_remote_markdown(content, data \\ nil) do
-    debug(content)
+    content = to_string(content)
+    # debug(content)
 
     if Bonfire.Common.URIs.is_uri?(content) do
       with {:ok, %{body: body}} when is_binary(body) <-
