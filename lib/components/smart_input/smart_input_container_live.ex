@@ -49,9 +49,18 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       (maybe_from_json(e(params, "opts", nil)) ||
          e(socket.assigns, :smart_input_opts, %{}))
       |> merge_as_map(%{open: true})
+      |> debug("opts")
+
+    to_circles =
+      opts["to_circles"]
+      # |> maybe_from_json_string()
+      |> Enum.flat_map(&Enum.map(&1, fn {key, val} -> {key, val} end))
+      |> debug("to_circles")
 
     {:noreply,
-     assign(socket,
+     socket
+     |> assign(opts)
+     |> assign(
        smart_input_component:
          maybe_to_module(e(params, "component", nil) || e(params, "smart_input_component", nil)),
        create_object_type: maybe_to_atom(e(params, "create_object_type", nil)),
@@ -60,7 +69,10 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
        smart_input_opts: opts,
        activity: nil,
        object: nil,
-       activity_inception: "reply_to"
+       activity_inception: "reply_to",
+       to_circles:
+         (to_circles || e(socket.assigns, :to_circles, []))
+         |> debug("to_circles")
      )}
   end
 
@@ -91,11 +103,20 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     {:noreply, SmartInputLive.reset_input(socket)}
   end
 
+  def maybe_from_json_string("{" <> _ = json) do
+    json
+    |> String.replace(~s(\"), ~s("))
+    |> maybe_from_json()
+  end
+
+  def maybe_from_json_string(_), do: nil
+
   def maybe_from_json("{" <> _ = json) do
     with {:ok, data} <- Jason.decode(json) do
       data
     else
-      _ ->
+      e ->
+        warn(e)
         nil
     end
   end

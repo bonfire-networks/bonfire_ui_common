@@ -201,11 +201,25 @@
     />
 
     <input
+      :for={{label, value} <- @to_circles}
+      type="hidden"
+      name="to_circles[]"
+      label={e(label, :name, nil) || label}
+      value={value}
+    />
+    <input
+      :for={value when is_binary(value) <- @to_circles}
+      type="hidden"
+      name="to_circles[]"
+      value={value}
+    />
+    <!-- 
+    <input
       :for={circle <- @to_circles}
       type="hidden"
       name="to_circles[]"
       label={if is_tuple(circle), do: elem(circle, 0) |> e(..., :name, ...)}
       value={if is_tuple(circle), do: elem(circle, 1), else: circle}
-    />
+    /> -->
   </div>
 </div>
