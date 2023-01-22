@@ -1097,7 +1097,7 @@ defmodule Bonfire.UI.Common do
       when is_list(list_of_assigns) and is_function(assigns_to_params_fn, 1) and
              is_function(preload_fn, 3) do
     first = List.first(list_of_assigns)
-    current_user = current_user(first)
+    current_user = current_user(list_of_assigns)
     connected? = socket_connected?(first)
     # |> info("current_user")
 
