@@ -97,7 +97,11 @@
           <!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · -->
           <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·
           <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LiveRedirect> ·
-          <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/users">{l("Users")}</LiveRedirect></div>
+          <LiveRedirect
+            :if={current_user(@__context__) || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+            class="text-xs link-hover link text-base-content/70"
+            to="/users"
+          >{l("Users")}</LiveRedirect></div>
         <div class="mt-4">
           <a
             href="https://bonfirenetworks.org/"
