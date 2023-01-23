@@ -28,7 +28,7 @@
         type="button"
         class="grow"
       >
-        {l("Flag")}
+        {e(@label, l("Flag this object"))}
       </button>
     </:action_btns>
   </Bonfire.UI.Common.OpenModalLive>
