@@ -19,7 +19,7 @@
       id={"notification-#{@i}"}
       phx-hook="Notification"
       role="alert"
-      class="w-full max-w-md overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash"
+      class="w-full max-w-md overflow-hidden transition duration-300 ease-in-out transform rounded shadow-lg pointer-events-auto bg-info flash"
     >
       <div :if={@notification} class="p-4">
         <div class="flex items-start">
@@ -28,27 +28,27 @@
               {#match icon when is_binary(icon)}
                 <img src={icon} class="w-10 h-10 rounded">
               {#match _}
-                <Icon outline="Speakerphone" class="w-5 h-5 text-gray-600" />
+                <Icon outline="Speakerphone" class="w-5 h-5 text-info-content" />
             {/case}
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
-            <p class="text-sm font-medium text-gray-900">{e(@notification, :title, "Notification")}</p>
-            <p data-id="flash" data-type="notification" class="text-sm text-gray-500">{rich(e(@notification, :message, ""))}</p>
+            <p class="text-sm font-medium text-info-content">{e(@notification, :title, "Notification")}</p>
+            <div data-id="flash" data-type="notification" class="text-sm text-info-content/80">{rich(e(@notification, :message, ""))}</div>
             <LiveRedirect
               :if={e(@notification, :url, nil)}
               to={e(@notification, :url, nil)}
-              class="text-sm text-gray-500 capitalize link"
+              class="text-sm capitalize !text-info-content link"
             >
               {l("Show")}
             </LiveRedirect>
           </div>
-          <div :if={socket_connected?(@socket)} class="flex flex-shrink-0 h-5 ml-4">
+          <div :if={socket_connected?(@socket)} class="">
             <button
               phx-click="clear-flash"
               phx-target={@myself}
               phx-value-key="notification"
               type="button"
-              class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              class="btn btn-sm btn-ghost btn-circle"
             >
               <span class="sr-only">{l("Close")}</span>
               <Icon solid="X" class="w-5 h-5" />
@@ -63,23 +63,23 @@
       {#match info}
         <div
           role="alert"
-          class="w-full max-w-md overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash"
+          class="w-full max-w-md overflow-hidden transition duration-300 ease-in-out transform rounded shadow-lg pointer-events-auto bg-info flash"
         >
           <div class="p-4">
             <div class="flex items-center">
               <div class="flex-shrink-0 p-2 rounded">
-                <Icon outline="CheckCircle" class="w-6 h-6 text-green-400" />
+                <Icon outline="Speakerphone" class="w-5 h-5 text-info-content" />
               </div>
               <div class="ml-3 w-0 flex-1 pt-0.5">
-                <p data-id="flash" data-type="info" class="text-sm font-semibold text-gray-500">{rich(info)}</p>
+                <div data-id="flash" data-type="info" class="text-sm font-semibold text-info-content">{rich(info)}</div>
               </div>
-              <div :if={socket_connected?(@socket)} class="flex flex-shrink-0 h-5 ml-4">
+              <div :if={socket_connected?(@socket)} class="">
                 <button
                   phx-click="clear-flash"
                   phx-target={@myself}
                   phx-value-key="info"
                   type="button"
-                  class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  class="btn btn-sm btn-ghost btn-circle"
                 >
                   <span class="sr-only">{l("Close")}</span>
                   <Icon solid="X" class="w-5 h-5" />
@@ -104,28 +104,28 @@
       {#match error}
         <div
           role="alert"
-          class="w-full max-w-md overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg shadow-lg pointer-events-auto flash"
+          class="w-full max-w-md overflow-hidden transition duration-300 ease-in-out transform rounded shadow-lg pointer-events-auto bg-error flash"
         >
           <div class="p-4">
             <div class="flex items-top">
               <div class="flex-shrink-0">
-                <Icon outline="Exclamation" class="w-6 h-6 text-red-500" />
+                <Icon outline="Exclamation" class="w-6 h-6 text-error-content" />
               </div>
               <div class="ml-3 w-0 flex-1 pt-0.5">
-                <div data-id="flash" data-type="error" class="text-sm text-gray-500">{markdown(error)}</div>
+                <div data-id="flash" data-type="error" class="text-sm text-error-content">{markdown(error)}</div>
 
                 <Bonfire.UI.Common.FeedbackButtonLive
                   class="mt-2 normal-case btn btn-sm btn-error"
                   event="Bonfire.Social.Posts:write_error"
                 />
               </div>
-              <div :if={socket_connected?(@socket)} class="flex flex-shrink-0 h-5 ml-4">
+              <div :if={socket_connected?(@socket)} class="">
                 <button
                   phx-click="clear-flash"
                   phx-target={@myself}
                   phx-value-key="error"
                   type="button"
-                  class="inline-flex text-gray-400 bg-white rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  class="btn btn-sm btn-ghost btn-circle"
                 >
                   <span class="sr-only">{l("Close")}</span>
                   <Icon solid="X" class="w-5 h-5" />
