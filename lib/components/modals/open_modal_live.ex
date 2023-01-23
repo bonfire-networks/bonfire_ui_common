@@ -29,6 +29,15 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   prop click_open_event, :string, default: "open"
 
+  @doc "The classes of the modal wrapper."
+  prop wrapper_class, :css_class, default: nil
+
+  @doc "The classes of the modal"
+  prop modal_class, :css_class, default: "max-h-[100%]"
+
+  @doc "The classes around the action/submit button(s) on the modal"
+  prop action_btns_wrapper_class, :css_class, default: nil
+
   @doc "The classes of the close/cancel button on the modal. Only used if no `close_btn` slot is passed."
   prop cancel_btn_class, :css_class, default: "btn btn-ghost rounded btn-sm normal-case"
 
@@ -37,8 +46,13 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   prop form_opts, :any, default: []
 
+  @doc "Optional prop to hide the header at the top of the modal"
+  prop no_header, :boolean, default: false
+
   @doc "Optional prop to hide the actions at the bottom of the modal"
   prop no_actions, :boolean, default: false
+
+  prop enable_fallback, :boolean, default: false
 
   @doc "The classes of the title of the modal"
   prop reusable_modal_component, :atom, default: ReusableModalLive

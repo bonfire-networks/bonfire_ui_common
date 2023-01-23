@@ -1,37 +1,40 @@
-{#if @current_user}
-  {#if e(@flagged, :id, nil)}
-    <button disabled="disabled" class="flex items-center p-2 text-neutral">
-      {l("Already flagged")}
-    </button>
-  {#else}
-    <Bonfire.UI.Common.OpenModalLive
-      id={Pointers.ULID.generate()}
-      title_text={e(@label, l("Flag this object"))}
-    >
-      <div class="prose-sm prose">
-        <p>{l(
-            "The admins will review the content and might get in touch with you or the author for clarification. They may then delete it and/or block the person or originating instance if appropriate."
-          )}</p>
-      </div>
-      <:open_btn>
-        <div class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80">
-          <Icon solid="Flag" class="w-4 h-4 shrink-0" />
-          <span class="truncate ellipsis">{e(@label, l("Flag"))}</span>
-        </div>
-      </:open_btn>
-      <:action_btns>
-        <button
-          phx-click="Bonfire.Social.Flags:flag"
-          phx-target="#flag_form"
-          phx-value-id={e(@object, :id, "")}
-          class="normal-case rounded btn btn-sm btn-error"
-        >
-          {l("Flag")}
-        </button>
-      </:action_btns>
-    </Bonfire.UI.Common.OpenModalLive>
-  {/if}
+<!-- {#if @current_user} -->
+
+{#if e(@flagged, :id, nil)}
+  <button disabled="disabled" class="flex items-center p-2 text-neutral">
+    {l("Already flagged")}
+  </button>
 {#else}
+  <Bonfire.UI.Common.OpenModalLive
+    id={Pointers.ULID.generate()}
+    title_text={e(@label, l("Flag this object"))}
+    open_btn_wrapper_class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80"
+    action_btns_wrapper_class="normal-case rounded btn btn-sm btn-error"
+  >
+    <div class="prose-sm prose">
+      <p>{l(
+          "The admins will review the content and might get in touch with you or the author for clarification. They may then delete it and/or block the person or originating instance if appropriate."
+        )}</p>
+    </div>
+    <:open_btn>
+      <Icon solid="Flag" class="w-4 h-4 shrink-0" />
+      <span class="truncate ellipsis">{e(@label, l("Flag"))}</span>
+    </:open_btn>
+    <:action_btns>
+      <button
+        phx-click="Bonfire.Social.Flags:flag"
+        phx-target="#flag_form"
+        phx-value-id={e(@object, :id, "")}
+        type="button"
+        class="grow"
+      >
+        {l("Flag")}
+      </button>
+    </:action_btns>
+  </Bonfire.UI.Common.OpenModalLive>
+{/if}
+
+<!-- {#else}
   <div
     phx-click="Bonfire.Social.Flags:flag"
     phx-value-id={e(@object, :id, "")}
@@ -40,4 +43,4 @@
     <Icon solid="Flag" class="w-4 h-4 shrink-0" />
     <span class="truncate ellipsis">{e(@label, l("Flag"))}</span>
   </div>
-{/if}
+{/if} -->

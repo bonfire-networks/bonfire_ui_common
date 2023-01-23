@@ -1,13 +1,14 @@
 <div
   id={@id}
   class={
-    @modal_class || "modal  modal-bottom sm:modal-middle max-h-[100%] ",
+    "modal modal-bottom sm:modal-middle",
+    @modal_class,
     "modal-closed": !@show,
     "modal-open": @show
   }
   {...@opts}
 >
-  <form class="w-full" id={@form_id} {...@form_opts}>
+  <form id={@form_id} {...@form_opts}>
     <div
       phx-click="close"
       phx-target={"[id='#{@id}']"}
@@ -15,7 +16,7 @@
       aria-hidden="true"
     >
     </div>
-    <div class={"modal-box " <> @wrapper_class}>
+    <div class={@wrapper_class, "modal-box"}>
       <h3 :if={e(!@no_header, false)} class={@title_class || "font-bold text-base"}>
         <#slot {@title}>{@title_text}</#slot>
       </h3>
@@ -41,7 +42,9 @@
             <button class={@cancel_btn_class || "btn btn-ghost rounded btn-sm normal-case"} type="button">{l("Close")}</button>
           </#slot>
         </div>
-        <#slot {@action_btns} />
+        <div class={@action_btns_wrapper_class}>
+          <#slot {@action_btns} />
+        </div>
       </div>
     </div>
   </form>

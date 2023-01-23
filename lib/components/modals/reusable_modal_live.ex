@@ -5,15 +5,18 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   The classic **modal**
   """
 
+  @modal_class "max-h-[100%]"
+  @form_id "reusable_modal_form"
+
   # make sure to keep these and the Surface props in sync
   @default_assigns [
     title_text: nil,
     title_class: nil,
-    modal_class: nil,
+    modal_class: @modal_class,
     cancel_btn_class: nil,
     show: false,
     form_opts: [],
-    form_id: "#reusable_modal_form",
+    form_id: @form_id,
     no_actions: false,
     no_header: false,
     opts: [],
@@ -32,10 +35,13 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   prop title_class, :css_class, default: nil
 
   @doc "The classes of the modal."
-  prop modal_class, :string, default: nil
+  prop modal_class, :css_class, default: @modal_class
 
   @doc "The classes of the modal wrapper."
-  prop wrapper_class, :css_class, default: "modal-box mx-auto overflow-hidden"
+  prop wrapper_class, :css_class, default: nil
+
+  @doc "The classes around the action/submit button(s) on the modal"
+  prop action_btns_wrapper_class, :css_class, default: nil
 
   @doc "The classes of the close/cancel button on the modal. Only used if no close_btn slot is passed."
   prop cancel_btn_class, :css_class, default: nil
@@ -46,7 +52,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   prop form_opts, :any, default: []
 
   @doc "The ID of the form to submit"
-  prop form_id, :string, default: "#reusable_modal_form"
+  prop form_id, :string, default: @form_id
 
   @doc "Optional prop to hide the actions at the bottom of the modal"
   prop no_actions, :boolean, default: false
