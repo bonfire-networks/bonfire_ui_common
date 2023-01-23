@@ -1096,16 +1096,21 @@ defmodule Bonfire.UI.Common do
   def preload_assigns_async(list_of_assigns, assigns_to_params_fn, preload_fn, opts \\ [])
       when is_list(list_of_assigns) and is_function(assigns_to_params_fn, 1) and
              is_function(preload_fn, 3) do
-    first = List.first(list_of_assigns)
-    current_user = current_user(list_of_assigns)
-    connected? = socket_connected?(first)
-    # |> info("current_user")
+    connected? = socket_connected?(List.first(list_of_assigns))
+
+    current_user =
+      current_user(list_of_assigns)
+      |> info("current_user")
 
     list_of_components =
       list_of_assigns
       |> debug("list of assigns")
       #  avoid re-preloading
-      |> Enum.filter(&is_nil(Map.get(&1, opts[:skip_if_set] || :preloaded_async_assigns)))
+      |> Enum.filter(
+        &is_nil(
+          Map.get(&1, opts[:skip_if_set] || opts[:preload_status_key] || :preloaded_async_assigns)
+        )
+      )
       |> debug("process these assigns")
       |> Enum.map(&assigns_to_params_fn.(&1))
       |> debug("list_of_components")
@@ -1131,7 +1136,7 @@ defmodule Bonfire.UI.Common do
             pid,
             opts[:caller_module],
             component_id,
-            Map.put(assigns, :preloaded_async_assigns, true)
+            Map.put(assigns, opts[:preload_status_key] || :preloaded_async_assigns, true)
           )
         end)
       end)
@@ -1146,7 +1151,7 @@ defmodule Bonfire.UI.Common do
 
         preloaded_assigns =
           preload_fn.(list_of_components, list_of_ids, current_user)
-          |> debug("preloaded_assigns")
+          |> debug("preloaded assigns for components")
 
         list_of_assigns
         |> Enum.map(fn %{id: component_id} = assigns ->

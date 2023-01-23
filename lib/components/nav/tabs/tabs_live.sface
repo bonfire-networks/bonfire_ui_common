@@ -6,12 +6,12 @@
     name={"#{tab}"}
     event_handler={@event_handler}
     event_target={@event_target}
-    class={
+    class={Surface.css_class([
       @tab_class,
       "active text-base-content/100":
         @selected_tab == tab or to_string(@selected_tab) == to_string(tab) or
           (is_nil(@selected_tab) and i == 0)
-    }
+    ])}
   >
     {localise_dynamic(tab_name)}
   </Dynamic.Component>
