@@ -11,6 +11,19 @@
   </LiveRedirect>
 
   <LiveRedirect
+    :if={!@current_user}
+    class={
+      "",
+      "text-primary": @page == "feed"
+    }
+    to="/feed"
+  >
+    <Icon iconify="ic:outline-explore" class="w-5 h-5" />
+    <span class="sr-only">{l("Feeds")}</span>
+  </LiveRedirect>
+
+  <LiveRedirect
+    :if={@current_user}
     to={~p"/search"}
     class={
       "",
@@ -22,6 +35,7 @@
   </LiveRedirect>
 
   <LiveRedirect
+    :if={@current_user}
     to={path(:notifications)}
     class={
       "",
@@ -32,7 +46,9 @@
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>
 
-  <LiveRedirect to={path(@current_user)} class="">
+  <LiveRedirect 
+    :if={@current_user}
+    to={path(@current_user)} class="">
     <Bonfire.UI.Common.AvatarLive
       class="inline-block object-cover w-8 h-8 rounded-full cursor-pointer md:hidden bg-base-300"
       size="32"
@@ -42,6 +58,7 @@
   </LiveRedirect>
 
   <Bonfire.UI.Common.OpenModalLive
+    :if={@current_user}
     id={Pointers.ULID.generate()}
     no_actions
     wrapper_class=""

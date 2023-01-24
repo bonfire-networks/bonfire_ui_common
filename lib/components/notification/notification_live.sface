@@ -48,7 +48,7 @@
               phx-target={@myself}
               phx-value-key="notification"
               type="button"
-              class="btn btn-sm btn-ghost btn-circle"
+              class="btn btn-sm btn-circle btn-info"
             >
               <span class="sr-only">{l("Close")}</span>
               <Icon solid="X" class="w-5 h-5" />
@@ -79,7 +79,7 @@
                   phx-target={@myself}
                   phx-value-key="info"
                   type="button"
-                  class="btn btn-sm btn-ghost btn-circle"
+                  class="btn btn-sm btn-circle btn-info"
                 >
                   <span class="sr-only">{l("Close")}</span>
                   <Icon solid="X" class="w-5 h-5" />
@@ -125,7 +125,7 @@
                   phx-target={@myself}
                   phx-value-key="error"
                   type="button"
-                  class="btn btn-sm btn-ghost btn-circle"
+                  class="btn btn-sm btn-circle btn-error"
                 >
                   <span class="sr-only">{l("Close")}</span>
                   <Icon solid="X" class="w-5 h-5" />

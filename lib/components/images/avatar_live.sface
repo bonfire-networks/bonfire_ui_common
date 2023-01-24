@@ -1,11 +1,11 @@
-<div class="align-middle border-0 rounded avatar">
+<div class="border-0 avatar">
   <div class={classes(%{viewing_main_object: @viewing_main_object, comment: @comment, class: @class}) <>
     " rounded"}>
     {#case @src || avatar_url(@user)}
       {#match url when is_binary(url) and url != @avatar_fallback}
         <LazyImage
           title={@title}
-          class="avatar"
+          class=""
           src={url}
           alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
             l("Avatar")}
@@ -25,7 +25,7 @@
         {#else}
           <img
             title={@title}
-            class="avatar"
+            class=""
             src={@avatar_fallback}
             alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
               l("Avatar")}

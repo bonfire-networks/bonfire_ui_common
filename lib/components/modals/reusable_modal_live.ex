@@ -31,6 +31,9 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   @doc "The title of the modal. Only used if no title slot is passed."
   prop title_text, :string, default: nil
 
+  @doc "If the modal is a preview of an image, set this to true."
+  prop image_preview, :boolean, default: false
+
   @doc "The classes of the title of the modal"
   prop title_class, :css_class, default: nil
 
