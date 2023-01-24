@@ -1098,22 +1098,22 @@ defmodule Bonfire.UI.Common do
              is_function(preload_fn, 3) do
     connected? = socket_connected?(List.first(list_of_assigns))
 
-    current_user =
-      current_user(list_of_assigns)
-      |> info("current_user")
+    current_user = current_user(list_of_assigns)
+    # |> info("current_user")
 
     list_of_components =
       list_of_assigns
-      |> debug("list of assigns")
+      # |> debug("list of assigns")
       #  avoid re-preloading
       |> Enum.filter(
         &is_nil(
           Map.get(&1, opts[:skip_if_set] || opts[:preload_status_key] || :preloaded_async_assigns)
         )
       )
-      |> debug("process these assigns")
+      # |> debug("process these assigns")
       |> Enum.map(&assigns_to_params_fn.(&1))
-      |> debug("list_of_components")
+
+    # |> debug("list_of_components")
 
     list_of_ids =
       list_of_components
@@ -1122,11 +1122,13 @@ defmodule Bonfire.UI.Common do
       end)
       |> filter_empty([])
       |> Enum.uniq()
-      |> debug("list_of_ids")
 
-    if connected? == true and Config.get(:env) != :test and not is_nil(current_user) and
+    # |> debug("list_of_ids")
+
+    if ((connected? == true and Config.get(:env) != :test) or
+          Process.get(:enable_async_preloads) == true) and
          not is_nil(opts[:caller_module]) do
-      debug("preloading using async :-)")
+      debug(preload_fn, "preloading using async :-)")
       pid = self()
 
       Task.start(fn ->
@@ -1144,14 +1146,13 @@ defmodule Bonfire.UI.Common do
       list_of_assigns
     else
       if not is_nil(current_user) do
-        debug("wait to preload once socket is connected")
+        debug(preload_fn, "wait to preload once socket is connected")
         list_of_assigns
       else
-        debug("preloading WITHOUT using async")
+        debug(preload_fn, "preloading WITHOUT using async")
 
-        preloaded_assigns =
-          preload_fn.(list_of_components, list_of_ids, current_user)
-          |> debug("preloaded assigns for components")
+        preloaded_assigns = preload_fn.(list_of_components, list_of_ids, current_user)
+        # |> debug("preloaded assigns for components")
 
         list_of_assigns
         |> Enum.map(fn %{id: component_id} = assigns ->

@@ -4,4 +4,5 @@ defmodule Bonfire.UI.Common.FlagActionLive do
   prop object, :any
   prop label, :string, default: nil
   prop flagged, :any, default: nil
+  prop hide_icon, :boolean, default: false
 end

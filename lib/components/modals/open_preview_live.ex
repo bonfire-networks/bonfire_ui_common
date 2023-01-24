@@ -13,6 +13,8 @@ defmodule Bonfire.UI.Common.OpenPreviewLive do
   @doc "The classes of the open button for the modal. Only used if no `open_btn` slot is passed."
   prop(open_btn_class, :css_class, default: "")
 
+  prop(open_btn_wrapper_class, :css_class, default: "")
+
   @doc "Optional link on the open btn."
   prop(href, :string, default: nil)
 

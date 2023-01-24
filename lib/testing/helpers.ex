@@ -10,6 +10,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   alias Bonfire.Data.Identity.Account
   alias Bonfire.Data.Identity.User
   alias Surface.Components.Dynamic
+  alias Surface.Components.Context
 
   @endpoint Application.compile_env!(:bonfire, :endpoint_module)
 
@@ -35,39 +36,28 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   Render stateless Surface or LiveView components
   """
   def render_stateless(component, assigns \\ [], context \\ []) do
-    # render_component(
-    render_stateless_component(
-      &component.render/1,
-      Utils.deep_merge(%{__context__: context}, assigns)
-    )
+    assigns = assigns |> Enum.into(%{__context__: context})
+
+    render_surface do
+      ~F"""
+      <Dynamic.Component module={component} function={:render} {...assigns} />
+      """
+    end
   end
 
   @doc """
   Render stateful Surface or LiveView components
   """
-  def render_stateful(component, assigns \\ [], context \\ []) do
-    # render_component(
-    render_stateful_component(
-      component,
-      Utils.deep_merge(
-        %{__context__: context, id: Pointers.ULID.generate()},
-        assigns
-      )
-    )
-  end
+  def render_stateful(component, assigns \\ %{}, context \\ []) do
+    assigns = assigns |> Enum.into(%{__context__: context})
 
-  def render_stateless_component(component, assigns) do
     render_surface do
       ~F"""
-      <Dynamic.Component module={component} {...assigns} />
-      """
-    end
-  end
-
-  def render_stateful_component(component, assigns) do
-    render_surface do
-      ~F"""
-      <Dynamic.LiveComponent module={component} {...assigns} />
+      <Dynamic.LiveComponent
+        module={component}
+        id={Utils.e(assigns, :id, nil) || Pointers.ULID.generate()}
+        {...assigns}
+      />
       """
     end
   end

@@ -3,68 +3,69 @@ let FeedHooks = {};
 FeedHooks.PreviewActivity = {
   mounted() {
     this.el.addEventListener("click", e => {
-      e.preventDefault(); // TODO: find a better way to hook a simple event on an anchor without needing a hook
       console.log("PreviewActivity clicked")
-      
-
 
       let trigger = this.el.querySelector('.open_preview_link')
+      let a = e.target.closest('a')
+      // console.log(a)
+      
+      if (a == trigger || (e.target.closest('.note') && !a && !e.ctrlKey && !e.metaKey && !window.getSelection().toString() && !e.target.closest('button') && !e.target.closest('.dropdown'))) {
+        let uri = this.el.dataset.href || (trigger !==undefined && trigger.getAttribute('href')) //this.el.dataset.permalink
 
-      if (trigger) {    
-        
-        if (!e.target.closest('.note') || e.ctrlKey || e.metaKey || window.getSelection().toString() || e.target.closest('a:not(.open_preview_link)') || e.target.closest('button') || e.target.closest('.dropdown')) {
+        if (window.liveSocket) {
+          e.preventDefault();
 
-          console.log("PreviewActivity: ignore in favour of another link or button's action (or opening in new tab)")
-          return;
+          // const feed = document.querySelector(".feed")
+          const main = document.getElementById("inner")
+          const layout = document.getElementById("root")
+          const preview_content = document.getElementById("preview_content")
+          let previous_scroll = null
 
-        } else {
-          let uri = trigger.getAttribute('href') //this.el.dataset.permalink
-
-          if (window.liveSocket) {
-            // const feed = document.querySelector(".feed")
-            const main = document.getElementById("inner")
-            const layout = document.getElementById("root")
-            const preview_content = document.getElementById("preview_content")
-            let previous_scroll = null
-
-            // console.log("layout.scrollTop")
-            // console.log(layout.scrollTop)
-
-            // push event to load up the PreviewContent
-            // console.log(history)
+          if (trigger) {
+          // push event to load up the PreviewContent
             this.pushEventTo(trigger, "open", {})
-            // this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
-
-            if (layout) {
-              previous_scroll = layout.scrollTop
-            }
-
-            if (preview_content) {
-              preview_content.classList.remove("hidden")
-            }
-            if (main) {
-              main.classList.add("hidden")
-            }
-            if (uri) {
-              history.pushState(
-                {
-                  'previous_url': document.location.href,
-                  'previous_scroll': previous_scroll
-                },
-                '',
-                uri)
-            }
-          } else {
-            // fallback if not connected with live socket
-            window.location = uri;
           }
-          
-        } 
+          // this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
 
-      } else {
-        console.log("PreviewActivity: no trigger found matching '.open_preview_link'")
-      }
+          if (layout) {
+            previous_scroll = layout.scrollTop
+          }
 
+          if (preview_content) {
+            preview_content.classList.remove("hidden")
+          }
+          if (main) {
+            main.classList.add("hidden")
+          }
+          if (uri) {
+            history.pushState(
+              {
+                'previous_url': document.location.href,
+                'previous_scroll': previous_scroll
+              },
+              '',
+              uri)
+          }
+        } else {
+
+          // fallback if not connected with live socket
+            
+          if (uri) {
+            e.preventDefault();
+            window.location = uri;
+          } else {
+            console.log("No URL")
+          }
+        }
+
+    } else {
+
+      e.preventDefault();
+      console.log("PreviewActivity: ignore in favour of another link or button's action (or opening in new tab)")
+
+      return;
+
+    } 
 
     })
   }

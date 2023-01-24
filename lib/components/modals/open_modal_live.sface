@@ -75,12 +75,23 @@
       </div>
     </label>
   {#else}
-    <div class={@open_btn_wrapper_class} {...@open_btn_opts}>
-      <#slot {@action_btns}>
-        <span class={@open_btn_class}>
-          {@open_btn_text || "Open modal"}
-        </span>
-      </#slot>
-    </div>
+    {#case @href}
+      {#match nil}
+        <div class={@open_btn_wrapper_class} {...@open_btn_opts}>
+          <#slot {@action_btns}>
+            <span class={@open_btn_class}>
+              {@open_btn_text || "Open modal"}
+            </span>
+          </#slot>
+        </div>
+      {#match href}
+        <a class={@open_btn_wrapper_class} href={@href} {...@open_btn_opts}>
+          <#slot {@open_btn}>
+            <span class={@open_btn_class}>
+              {@open_btn_text || "Open"}
+            </span>
+          </#slot>
+        </a>
+    {/case}
   {/if}
 {/if}
