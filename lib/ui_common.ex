@@ -518,7 +518,7 @@ defmodule Bonfire.UI.Common do
         socket,
         return_key,
         "The data provided caused an unexpected error and could do not be inserted or updated: " <>
-          error_msg(cs),
+          Errors.error_msg(cs),
         cs,
         nil
       )
@@ -641,7 +641,7 @@ defmodule Bonfire.UI.Common do
 
   defp term_error(error) do
     with %{term: provided} <- error do
-      error_msg(provided)
+      Errors.error_msg(provided)
     else
       _ ->
         error
@@ -700,7 +700,7 @@ defmodule Bonfire.UI.Common do
           socket,
           return_key,
           "The data provided seems invalid and could not be inserted or updated: " <>
-            error_msg(cs),
+            Errors.error_msg(cs),
           cs
         )
 
@@ -716,7 +716,7 @@ defmodule Bonfire.UI.Common do
         live_exception(
           socket,
           return_key,
-          "Could not complete this request: " <> error_msg(epic),
+          "Could not complete this request: " <> Errors.error_msg(epic),
           epic.errors
         )
 
@@ -753,7 +753,7 @@ defmodule Bonfire.UI.Common do
          stacktrace,
          kind
        ) do
-    with {:error, msg} <- debug_exception(msg, exception, stacktrace, kind) do
+    with {:error, msg} <- Errors.debug_exception(msg, exception, stacktrace, kind) do
       {return_key,
        socket
        |> assign_error(msg)
@@ -770,7 +770,7 @@ defmodule Bonfire.UI.Common do
          stacktrace,
          kind
        ) do
-    with {:error, msg} <- debug_exception(msg, exception, stacktrace, kind) do
+    with {:error, msg} <- Errors.debug_exception(msg, exception, stacktrace, kind) do
       {
         return_key,
         assign_error(
@@ -784,7 +784,7 @@ defmodule Bonfire.UI.Common do
   end
 
   defp live_exception(socket, return_key, msg, exception, stacktrace, kind) do
-    with {:error, msg} <- debug_exception(msg, exception, stacktrace, kind) do
+    with {:error, msg} <- Errors.debug_exception(msg, exception, stacktrace, kind) do
       {
         return_key,
         assign_error(
@@ -910,7 +910,7 @@ defmodule Bonfire.UI.Common do
 
     socket
     |> assign_generic(assigns)
-    |> assign_flash(:error, error_msg(msg), assigns, pid)
+    |> assign_flash(:error, Errors.error_msg(msg), assigns, pid)
   end
 
   def live_upload_files(current_user, metadata, socket) do

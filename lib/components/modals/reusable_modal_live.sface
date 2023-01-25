@@ -32,11 +32,13 @@
         </button>
       </div>
 
-      <div class={
-        "",
-        "overflow-y-auto max-h-[calc(100vh_-_13rem)]": !@image_preview
-        } 
-        data-id="modal-contents">
+      <div
+        class={
+          "",
+          "overflow-y-auto max-h-[calc(100vh_-_13rem)]": !@image_preview
+        }
+        data-id="modal-contents"
+      >
         <#slot {@default, autocomplete: @autocomplete} />
       </div>
 

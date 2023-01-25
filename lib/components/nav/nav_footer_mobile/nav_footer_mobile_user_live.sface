@@ -46,9 +46,7 @@
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>
 
-  <LiveRedirect 
-    :if={@current_user}
-    to={path(@current_user)} class="">
+  <LiveRedirect :if={@current_user} to={path(@current_user)} class="">
     <Bonfire.UI.Common.AvatarLive
       class="inline-block object-cover w-8 h-8 rounded-full cursor-pointer md:hidden bg-base-300"
       size="32"

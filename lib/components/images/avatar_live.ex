@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
   prop comment, :boolean, default: false
   prop size, :any, default: nil
   prop class, :any, default: nil
-  prop avatar_fallback, :string, default: avatar_fallback()
+  prop avatar_fallback, :string, default: nil
   prop title, :string, default: ""
   prop opts, :any, default: %{}
 

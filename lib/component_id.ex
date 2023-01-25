@@ -16,7 +16,7 @@ defmodule Bonfire.UI.Common.ComponentID do
 
   def new(component_module, object)
       when is_map(object) or is_list(object) or is_tuple(object) do
-    new(component_module, Utils.ulid(object) || Pointers.ULID.generate())
+    new(component_module, Types.ulid(object) || Pointers.ULID.generate())
   end
 
   def new(component_module, other) do
@@ -25,7 +25,7 @@ defmodule Bonfire.UI.Common.ComponentID do
   end
 
   def send_updates(component_module, object_id, assigns) do
-    component_module = Utils.maybe_to_atom(component_module)
+    component_module = Types.maybe_to_atom(component_module)
 
     debug("ComponentID: try to send_updates to #{component_module} for object id #{object_id}")
 

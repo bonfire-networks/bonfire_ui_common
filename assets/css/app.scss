@@ -92,6 +92,11 @@ body {
   width: 0.75rem;
   @apply bg-primary rounded-full;
 }
+.replies .active-activity:after {
+  left: auto;
+  right: 20px;
+}
+
 article.unread-activity {
   @apply border-l-2 border-primary !bg-primary/5;
 }
