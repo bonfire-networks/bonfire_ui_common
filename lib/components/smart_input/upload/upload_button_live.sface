@@ -4,7 +4,7 @@
     for={@uploads.files.ref}
     class="flex items-center btn btn-ghost btn-sm btn-circle"
   >
-    <Icon solid="PaperClip" class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
+    <Icon solid="PaperClip" class="w-5 h-5 mx-auto md:w-4 md:h-4 text-base-content text-opacity-70" />
     {live_file_input(@uploads.files, tabindex: "-1", class: "sr-only")}
   </label>
 

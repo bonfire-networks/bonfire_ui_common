@@ -1,3 +1,5 @@
+<div class={
+  "grid grid-cols-2 gap-2 mx-3", "mt-14 mb-3": @uploads.files.entries !=[]}>
 {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
   <article
     id={"upload-preview-#{i}"}
@@ -5,7 +7,7 @@
     data-img={"phx-preview-#{i}"}
     data-ref={entry.upload_ref}
     x-data="{show_alt: false}"
-    class="relative m-3 mb-2 upload-entry"
+    class="relative upload-entry"
   >
     <div class="absolute top-0 z-10 w-full rounded-lg l-0 r-0 h-14 bg-gradient-to-b from-gray-900 to-transparent" />
     <figure>
@@ -47,7 +49,7 @@
     <div
       x-show="show_alt"
       x-collapse
-      class="w-full absolute z-20 bottom-1 left-1 right-1 rounded form-control"
+      class="absolute z-20 w-full rounded bottom-1 left-1 right-1 form-control"
     >
       <input
         name={"upload_metadata[#{entry.ref}][label]"}
@@ -58,7 +60,7 @@
     </div>
   </article>
 {/for}
-
+</div>
 {#for err <- upload_errors(@uploads.files)}
   <p class="alert alert-danger">{error_to_string(err)}</p>
 {/for}

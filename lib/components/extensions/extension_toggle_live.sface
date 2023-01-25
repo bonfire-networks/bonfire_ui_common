@@ -1,4 +1,3 @@
-<div class="flex items-center gap-2">
   {#if to_string(@id) not in @required_deps}
     {#case Config.get([@id, :disabled], nil)}
       {#match globally_disabled}
@@ -9,14 +8,14 @@
               phx-click="Bonfire.Me.Settings:extension:enable"
               phx-target={@myself}
               phx-value-extension={@id}
-              class="rounded button btn-success btn-sm"
+              class="w-full normal-case !rounded text-success-content py-1.5 btn btn-success btn-sm"
             >{l("Enable for me")}</button>
           {#else}
             <button
               phx-click="Bonfire.Me.Settings:extension:disable"
               phx-target={@myself}
               phx-value-extension={@id}
-              class="rounded button btn-warning btn-sm"
+              class="w-full normal-case !rounded text-error-content py-1.5 btn btn-error btn-sm"
             >{l("Disable for me")}</button>
           {/if}
         {#else}
@@ -27,7 +26,7 @@
                 phx-target={@myself}
                 phx-value-scope={:instance}
                 phx-value-extension={@id}
-                class="rounded button btn-info btn-sm"
+                class="w-full normal-case !rounded text-success-content py-1.5 btn btn-success btn-sm"
               >{l("Enable by default")}</button>
             {#else}
               <button
@@ -35,11 +34,10 @@
                 phx-target={@myself}
                 phx-value-scope={:instance}
                 phx-value-extension={@id}
-                class="rounded button btn-error btn-sm"
+                class="w-full normal-case !rounded text-error-content py-1.5 btn btn-error btn-sm"
               >{l("Disable for everyone")}</button>
             {/if}
           {/if}
         {/if}
     {/case}
   {/if}
-</div>

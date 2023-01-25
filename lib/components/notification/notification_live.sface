@@ -115,7 +115,7 @@
                 <div data-id="flash" data-type="error" class="text-sm text-error-content">{markdown(error)}</div>
 
                 <Bonfire.UI.Common.FeedbackButtonLive
-                  class="mt-2 normal-case btn btn-sm btn-error"
+                  class="mt-2 normal-case rounded btn btn-sm btn-ghost text-error-content"
                   event="Bonfire.Social.Posts:write_error"
                 />
               </div>

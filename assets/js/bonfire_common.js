@@ -15,7 +15,8 @@ Alpine.start()
 const winnerDimension = () => {
   // set the viewport inner height in a custom property on the root of the document
   document.documentElement.style.setProperty('--inner-window-height', `${window.innerHeight}px`);
-  document.documentElement.style.setProperty('--full-document-height', `${document.documentElement.scrollHeight}px`);
+  document.documentElement.style.setProperty('--visual-viewport-height', `${visualViewport.height}px`);
+  // document.documentElement.style.setProperty('--full-document-height', `${document.documentElement.scrollHeight}px`);
 }
 
 

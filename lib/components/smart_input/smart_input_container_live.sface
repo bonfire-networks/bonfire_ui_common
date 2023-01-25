@@ -28,7 +28,8 @@
 
   <div
     x-show="smart_input_open"
-    class="smart_input_container fixed visible md:rounded-t-lg max-w-full md:w-[36rem] left-0 bg-base-200 top-0 mx-auto md:top-auto bottom-0 md:bottom-0 z-[9999] transition-all md:shadow-xl right-0 md:right-4 md:left-auto overflow-x-auto"
+    style="bottom: 0"
+    class="smart_input_container fixed visible md:rounded-t-lg max-w-full md:w-[32rem] left-0 bg-base-200 top-0 mx-auto md:top-auto z-[9999] transition-all md:shadow-xl right-0 md:right-4 md:left-auto bottom-0  overflow-x-auto"
     :class="{
       'hidden md:block !w-[20rem] bottom-0': smart_input_minimized
     }"
@@ -38,10 +39,10 @@
       x-cloak
       x-show="smart_input_open == true"
       x-on:click="smart_input_open = false"
-      class="fixed inset-0 bg-black/80 kdrop-blur-md md:hidden"
+      class="fixed inset-0 bg-black/80 drop-blur-md md:hidden"
     />
     <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
-    <div x-ref="smart_input" x-show="!smart_input_minimized" class="">
+    <div x-ref="smart_input" x-show="!smart_input_minimized" class="flex-1 h-full grow">
       <Bonfire.UI.Common.SmartInputLive
         without_sidebar={@without_sidebar}
         boundaries_modal_id={:modal_composer}

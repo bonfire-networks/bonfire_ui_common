@@ -1,16 +1,8 @@
 <Bonfire.UI.Common.WidgetBlockLive
-  widget_title={@title || l("Extensions")}
-  class="relative w-full mx-auto rounded bg-base-100"
+  widget_title={@title}
+  class="relative w-full mx-auto rounded-lg bg-base-100"
 >
-  <ul class={"grid grid-cols-#{@cols} p-2 menu menu-compact"}>
-    <li>
-      <LiveRedirect to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}>
-        <div class="flex flex-col items-center w-full">
-          <Icon iconify="noto:newspaper" class="w-10 h-10" />
-          <div class="flex-1 mt-2 text-sm font-semibold text-center text-base-content/80">{l("Social")}</div>
-        </div>
-      </LiveRedirect>
-    </li>
+  <ul class={"grid grid-cols-#{@cols} p-2 menu menu-compact bg-base-content/5 divide-x divide-base-300"}>
     <li
       :for={{app, extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
       :if={(@showing_within != :nav or extension[:exclude_from_nav] != true) |> debug("nav? #{app}") and
@@ -22,8 +14,8 @@
     >
       <LiveRedirect to={extension[:href]}>
         <div class="flex flex-col items-center w-full">
-          <Icon iconify={extension[:icon]} class="w-10 h-10" />
-          <div class="flex-1 mt-2 text-sm font-semibold text-center text-base-content/80">{extension[:name]}</div>
+          <Icon iconify={extension[:icon]} class="w-8 h-8" />
+          <div class="flex-1 mt-3 text-xs font-medium text-center text-base-content/80">{extension[:name]}</div>
         </div>
       </LiveRedirect>
     </li>

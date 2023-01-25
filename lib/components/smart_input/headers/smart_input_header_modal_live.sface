@@ -1,6 +1,6 @@
 <header
   x-cloak
-  class="relative flex flex-row w-full px-3 py-1.5 rounded-t-lg bg-neutral items-center flex-align-items-stretch flex-nowrap"
+  class="relative hidden md:flex flex-row w-full px-3 py-1.5 rounded-t-lg bg-neutral items-center flex-align-items-stretch flex-nowrap"
 >
   <span
     x-cloak
@@ -35,6 +35,8 @@
         <span class="sr-only">{l("Maximise")}</span>
       </span>
     </button>
+
+ 
     <!-- <button 
       x-show="!smart_input_minimized"
       x-on:click="smart_input_fullscreen = !smart_input_fullscreen"

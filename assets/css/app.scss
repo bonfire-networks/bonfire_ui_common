@@ -160,7 +160,7 @@ article.unread-activity {
 }
 
 .feed_tab.active {
-  @apply bg-primary text-primary-content hover:bg-primary hover:text-primary-content;
+  @apply bg-base-content text-base-300 hover:bg-base-content hover:text-base-300;
 }
 
 .full_page {
