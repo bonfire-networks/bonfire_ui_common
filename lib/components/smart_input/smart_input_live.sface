@@ -1,4 +1,4 @@
-<div id="composer_container" data-id="smart_input" class="h-full grow flex-1">
+<div id="composer_container" data-id="smart_input" class="flex-1 h-full grow">
   <!-- 'hidden': !smart_input_open  && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && @thread_mode != :flat} -->
   <div
     id="smart_input"
@@ -28,25 +28,35 @@
       :if={not is_nil(current_user(@__context__))}
       class="relative flex flex-col flex-1 w-full bg-base-300"
     >
+      <div class="flex gap-3 m-2 md:hidden">
+        <div
+          x-cloak
+          x-on:click="smart_input_minimized = !smart_input_minimized; smart_input_fullscreen = false"
+          x-show="!open_boundaries"
+          class="flex items-center gap-2 p-2 border-b md:hidden border-base-300"
+        >
+          <Icon iconify="heroicons-solid:arrow-left" class="w-5 h-5 stroke-1 text-neutral-content" />
+          <span class="text-sm text-neutral-content">{l("Back")}</span>
+        </div>
+      </div>
       <div
         x-show="!open_boundaries"
         :if={is_map(@activity) || is_map(@reply_to_id)}
         class="bg-base-300 !rounded-none  relative"
       >
-        <div class="">
-          <!-- show what we're replying to, if any -->
-          <Dynamic.LiveComponent
-            module={Bonfire.UI.Social.ActivityLive}
-            id={"cap:#{ulid(@activity || @reply_to_id)}"}
-            activity={@activity}
-            object={@object || @reply_to_id}
-            thread_mode={:nested}
-            class={@replied_activity_class}
-            showing_within={:smart_input}
-            activity_inception={@activity_inception}
-            object_boundary={:skip}
-          />
-        </div>
+        <!-- show what we're replying to, if any -->
+        <Dynamic.LiveComponent
+          module={Bonfire.UI.Social.ActivityLive}
+          id={"cap:#{ulid(@activity || @reply_to_id)}"}
+          activity={@activity}
+          object={@object || @reply_to_id}
+          thread_mode={:nested}
+          class={@replied_activity_class}
+          show_minimal_subject_and_note={true}
+          showing_within={:smart_input}
+          activity_inception={@activity_inception}
+          object_boundary={:skip}
+        />
       </div>
 
       <Dynamic.Component

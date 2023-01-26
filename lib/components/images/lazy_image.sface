@@ -1,6 +1,6 @@
 {#case !@src || Bonfire.Files.Blurred.blurred(@src)}
   {#match blurred when is_binary(blurred) and blurred != @src}
-    <div x-data={"{src: '#{blurred}' }"} x-intersect.once={"src = '#{@src}'"}>
+    <div class="h-full" x-data={"{src: '#{blurred}' }"} x-intersect.once={"src = '#{@src}'"}>
       <img
         src={blurred}
         alt={@alt}

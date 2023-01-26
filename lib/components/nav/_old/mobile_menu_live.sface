@@ -1,6 +1,6 @@
 <div data-id="mobile_nav">
   <div class="relative w-full h-full">
-    <LinkLive class="flex gap-3" to={path(@current_user)}>
+    <LinkLive class="inline-flex gap-3" to={path(@current_user)}>
       <Bonfire.UI.Common.AvatarLive
         class="inline-block object-cover w-10 h-10 rounded cursor-pointer bg-base-300"
         size="32"
@@ -19,7 +19,7 @@
       class="mt-4"
       aria-label={l("Extension navigation")}
     >
-      <ul class="menu menu-compact">
+      <ul class="gap-1 menu menu-compact">
         {#for nav <- @nav_items}
           {#case nav}
             {#match %{} = nav}

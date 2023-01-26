@@ -1,25 +1,18 @@
-<div class="flex items-center justify-end flex-1 gap-3" :class="{'!flex': open_sidebar}">
-  <!-- <button
-    x-on:click="open_widgets_sidebar = !open_widgets_sidebar"
-    :if={is_list(@sidebar_widgets[:users][:secondary])}
-    class="btn btn-sm btn-ghost tablet-lg:hidden"
-  >
-    <Icon iconify="akar-icons:sidebar-right" class="w-5 h-5 text-base-content/70" />
-  </button> -->
+<div class="flex items-center justify-end flex-1">
 
-  <Bonfire.UI.Common.SmartInputContainerLive
-    :if={not is_nil(@current_user) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
-    id={:smart_input}
-    showing_within={@showing_within}
-    reply_to_id={@reply_to_id}
-    context_id={@context_id}
-    create_object_type={@create_object_type}
-    thread_mode={@thread_mode}
-    without_sidebar={@without_sidebar}
-    to_boundaries={@to_boundaries}
-    to_circles={@to_circles}
-    smart_input_opts={@smart_input_opts}
-  />
+    <Bonfire.UI.Common.SmartInputContainerLive
+      :if={not is_nil(@current_user) and !@smart_input_opts[:inline_only] and !@smart_input_opts[:disable]}
+      id={:smart_input}
+      showing_within={@showing_within}
+      reply_to_id={@reply_to_id}
+      context_id={@context_id}
+      create_object_type={@create_object_type}
+      thread_mode={@thread_mode}
+      without_sidebar={@without_sidebar}
+      to_boundaries={@to_boundaries}
+      to_circles={@to_circles}
+      smart_input_opts={@smart_input_opts}
+    />
 
   <div :if={!Config.get([:ui, :hide_app_switcher])} class="dropdown dropdown-end">
     <label tabindex="0" class="relative btn btn-circle btn-sm">
@@ -30,41 +23,4 @@
     </div>
   </div>
 
-  <!-- <LiveRedirect
-    to={path(Bonfire.Data.Social.Message)}
-    class={
-      "btn btn-circle  relative btn-sm",
-      "btn-primary": @page == "messages"
-    }
-  >
-    <Icon solid="Mail" class="w-5 h-5" />
-    <span :if={@page == "messages"} class="sr-only">{l("Current Page:")}
-    </span>
-    <Bonfire.UI.Common.BadgeCounterLive
-      id={:inbox}
-      feed_id={e(@current_user, :character, :inbox_id, nil)}
-      class="absolute -right-2 indicator-item badge-sm badge -top-1 badge-primary !border-none"
-    />
-  </LiveRedirect> -->
-
-  <!-- <LiveRedirect
-    to={path(:notifications)}
-    class={
-      "btn btn-circle btn-sm relative",
-      "btn-primary": @page == "notifications"
-    }
-  >
-    <Icon solid="Bell" class="w-5 h-5" />
-    <span :if={@page == "notifications"} class="sr-only">{l("Current Page:")}
-    </span>
-    <Bonfire.UI.Common.BadgeCounterLive
-      id={:notifications}
-      feed_id={e(@current_user, :character, :notifications_id, nil)}
-      class="absolute -right-2 indicator-item badge badge-sm -top-1 badge-primary !border-none"
-    />
-  </LiveRedirect> -->
-
-  <!-- <div class="block">
-    <Bonfire.UI.Common.UserMenuLive />
-  </div> -->
 </div>

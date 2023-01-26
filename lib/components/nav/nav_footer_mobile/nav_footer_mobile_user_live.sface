@@ -34,6 +34,7 @@
     <span class="sr-only">{l("Search")}</span>
   </LiveRedirect>
 
+
   <LiveRedirect
     :if={@current_user}
     to={path(:notifications)}
@@ -45,6 +46,7 @@
     <Icon iconify="mdi:bell-outline" class="w-5 h-5" />
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>
+
 
   <LiveRedirect :if={@current_user} to={path(@current_user)} class="">
     <Bonfire.UI.Common.AvatarLive

@@ -11,6 +11,10 @@
   padding-right: 1rem;
 }
 
+.minimal_subject_and_note p {
+  @apply line-clamp-1
+}
+
 .-secondary li a {
   @apply !leading-normal !h-auto !tracking-normal
 }
