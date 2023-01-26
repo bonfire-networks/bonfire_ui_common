@@ -1,6 +1,5 @@
 defmodule Bonfire.UI.Common.UserMenuLinksLive do
   use Bonfire.UI.Common.Web, :stateless_component
-  import Bonfire.UI.Me.Integration
 
   alias Surface.Components.LiveRedirect
   prop mobile, :boolean, default: false
