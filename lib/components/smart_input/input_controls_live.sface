@@ -40,8 +40,10 @@
     />
   </div> -->
 
-<div class="absolute top-[calc(var(--visual-viewport-height)_-_110px)] z-50 left-0 right-0 md:static" 
-  x-show="!open_boundaries">
+<div
+  class="absolute top-[calc(var(--visual-viewport-height)_-_110px)] z-50 left-0 right-0 md:static"
+  x-show="!open_boundaries"
+>
   <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
 
   <div class="">
@@ -96,7 +98,10 @@
               @click="open = ! open"
               class="btn btn-ghost btn-sm text-[22px] btn-circle"
             >
-              <Icon iconify="entypo:emoji-happy" class="w-5 h-5 md:w-4 md:h-4 text-base-content text-opacity-70" />
+              <Icon
+                iconify="entypo:emoji-happy"
+                class="w-5 h-5 md:w-4 md:h-4 text-base-content text-opacity-70"
+              />
             </button>
             <div
               x-cloak

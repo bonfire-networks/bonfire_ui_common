@@ -1,65 +1,67 @@
 <div class={
-  "grid grid-cols-2 gap-2 mx-3", "mt-14 mb-3": @uploads.files.entries !=[]}>
-{#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
-  <article
-    id={"upload-preview-#{i}"}
-    phx-hook="imageMetadata"
-    data-img={"phx-preview-#{i}"}
-    data-ref={entry.upload_ref}
-    x-data="{show_alt: false}"
-    class="relative upload-entry"
-  >
-    <div class="absolute top-0 z-10 w-full rounded-lg l-0 r-0 h-14 bg-gradient-to-b from-gray-900 to-transparent" />
-    <figure>
-      <!-- render a client-side preview -->
-      <span :if={String.starts_with?(entry.client_type, "image")}>
-        <.live_img_preview entry={entry} />
-      </span>
-      <figcaption class="sr-only">{entry.client_name}</figcaption>
-    </figure>
-
-    <!-- <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress> -->
-
-    <!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 -->
-    <button
-      type="button"
-      class="absolute z-20 normal-case btn btn-ghost text-slate-50 btn-xs left-1 top-1"
-      phx-click="cancel-upload"
-      phx-target="#smart_input"
-      phx-value-ref={entry.ref}
-      aria-label="cancel"
+  "grid grid-cols-2 gap-2 mx-3",
+  "mt-14 mb-3": @uploads.files.entries != []
+}>
+  {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
+    <article
+      id={"upload-preview-#{i}"}
+      phx-hook="imageMetadata"
+      data-img={"phx-preview-#{i}"}
+      data-ref={entry.upload_ref}
+      x-data="{show_alt: false}"
+      class="relative upload-entry"
     >
-      <Icon solid="X" class="w-4 h-4 mr-1" />
-      <span>{l("Delete")}</span>
-    </button>
+      <div class="absolute top-0 z-10 w-full rounded-lg l-0 r-0 h-14 bg-gradient-to-b from-gray-900 to-transparent" />
+      <figure>
+        <!-- render a client-side preview -->
+        <span :if={String.starts_with?(entry.client_type, "image")}>
+          <.live_img_preview entry={entry} />
+        </span>
+        <figcaption class="sr-only">{entry.client_name}</figcaption>
+      </figure>
 
-    <button
-      type="button"
-      class="absolute z-20 normal-case btn btn-ghost text-slate-50 btn-xs right-1 top-1"
-      x-on:click="show_alt = ! show_alt"
-      aria-label="Add description"
-    >
-      <Icon solid="Pencil" class="w-4 h-4 mr-1" />
-      <span>{l("Add description")}</span>
-    </button>
-    {#for err <- upload_errors(@uploads.files, entry)}
-      <p class="alert alert-danger">{error_to_string(err)}</p>
-    {/for}
+      <!-- <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress> -->
 
-    <div
-      x-show="show_alt"
-      x-collapse
-      class="absolute z-20 w-full rounded bottom-1 left-1 right-1 form-control"
-    >
-      <input
-        name={"upload_metadata[#{entry.ref}][label]"}
-        type="text"
-        placeholder="Type here"
-        class="w-full h-8 input input-bordered"
-      />
-    </div>
-  </article>
-{/for}
+      <!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 -->
+      <button
+        type="button"
+        class="absolute z-20 normal-case btn btn-ghost text-slate-50 btn-xs left-1 top-1"
+        phx-click="cancel-upload"
+        phx-target="#smart_input"
+        phx-value-ref={entry.ref}
+        aria-label="cancel"
+      >
+        <Icon solid="X" class="w-4 h-4 mr-1" />
+        <span>{l("Delete")}</span>
+      </button>
+
+      <button
+        type="button"
+        class="absolute z-20 normal-case btn btn-ghost text-slate-50 btn-xs right-1 top-1"
+        x-on:click="show_alt = ! show_alt"
+        aria-label="Add description"
+      >
+        <Icon solid="Pencil" class="w-4 h-4 mr-1" />
+        <span>{l("Add description")}</span>
+      </button>
+      {#for err <- upload_errors(@uploads.files, entry)}
+        <p class="alert alert-danger">{error_to_string(err)}</p>
+      {/for}
+
+      <div
+        x-show="show_alt"
+        x-collapse
+        class="absolute z-20 w-full rounded bottom-1 left-1 right-1 form-control"
+      >
+        <input
+          name={"upload_metadata[#{entry.ref}][label]"}
+          type="text"
+          placeholder="Type here"
+          class="w-full h-8 input input-bordered"
+        />
+      </div>
+    </article>
+  {/for}
 </div>
 {#for err <- upload_errors(@uploads.files)}
   <p class="alert alert-danger">{error_to_string(err)}</p>

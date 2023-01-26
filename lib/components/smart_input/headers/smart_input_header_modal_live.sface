@@ -36,7 +36,6 @@
       </span>
     </button>
 
- 
     <!-- <button 
       x-show="!smart_input_minimized"
       x-on:click="smart_input_fullscreen = !smart_input_fullscreen"

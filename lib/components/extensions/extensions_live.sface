@@ -1,11 +1,11 @@
-<div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l ("Active apps")}</div>
+<div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("Active apps")}</div>
 <div class="m-3"><Bonfire.UI.Common.WidgetAppsLive showing_within={:settings} cols="4" /></div>
 <!-- <Bonfire.UI.Common.WidgetAppsLive showing_within={:settings} show_disabled_only={true} title={l("Disabled Apps")} cols="4" /> -->
 {#case Bonfire.Application.required_deps()}
   {#match required_deps}
     {#case Bonfire.Boundaries.can?(@__context__, :toggle, :instance)}
       {#match can_instance_wide}
-        <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l ("User Interface extensions")}</div>
+        <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("User Interface extensions")}</div>
         <div class="m-3 divide-y rounded-lg bg-base-content/5 divide-base-300">
           {#for dep <- e(@data, :ui, @ui)}
             <div class="flex items-center justify-between p-4">
@@ -24,11 +24,11 @@
                   <li><a href={get_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View code")}</a></li>
                   {#if e(dep, :app, nil) not in required_deps}
                     <li><Bonfire.UI.Common.ExtensionToggleLive
-                      required_deps={required_deps}
-                      scope={@scope}
-                      can_instance_wide={can_instance_wide}
-                      id={e(dep, :app, nil)}
-                    />
+                        required_deps={required_deps}
+                        scope={@scope}
+                        can_instance_wide={can_instance_wide}
+                        id={e(dep, :app, nil)}
+                      />
                     </li>
                   {/if}
                 </ul>
@@ -36,8 +36,8 @@
             </div>
           {/for}
         </div>
-       
-        <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l ("Bonfire extensions")}</div>
+
+        <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("Bonfire extensions")}</div>
         <div class="m-3 divide-y rounded-lg bg-base-content/5 divide-base-300">
           {#for dep <- e(@data, :feature_extensions, @feature_extensions)}
             <div class="flex items-center justify-between p-4">
@@ -55,13 +55,13 @@
                 >
                   <li><a href={get_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View code")}</a></li>
                   {#if e(dep, :app, nil) not in required_deps}
-                  <li><Bonfire.UI.Common.ExtensionToggleLive
-                  required_deps={required_deps}
-                  scope={@scope}
-                  can_instance_wide={can_instance_wide}
-                  id={e(dep, :app, nil)}
-                />
-                  </li>
+                    <li><Bonfire.UI.Common.ExtensionToggleLive
+                        required_deps={required_deps}
+                        scope={@scope}
+                        can_instance_wide={can_instance_wide}
+                        id={e(dep, :app, nil)}
+                      />
+                    </li>
                   {/if}
                 </ul>
               </div>
@@ -69,7 +69,7 @@
           {/for}
         </div>
 
-        <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l ("Bonfire schemas")}</div>
+        <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("Bonfire schemas")}</div>
         <div class="m-3 divide-y rounded-lg bg-base-content/5 divide-base-300">
           {#for dep <- e(@data, :schemas, @schemas)}
             <div class="flex items-center justify-between p-4">
@@ -92,7 +92,7 @@
           {/for}
         </div>
 
-        <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l ("Ecosystem libraries")}</div>
+        <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("Ecosystem libraries")}</div>
         <div class="m-3 divide-y rounded-lg bg-base-content/5 divide-base-300">
           {#for dep <- e(@data, :ecosystem_libs, @ecosystem_libs)}
             <div class="flex items-center justify-between p-4">
@@ -115,7 +115,7 @@
           {/for}
         </div>
 
-        <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l ("External libraries")}</div>
+        <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("External libraries")}</div>
         <div class="m-3 divide-y rounded-lg bg-base-content/5 divide-base-300">
           {#for dep <- e(@data, :other_deps, @other_deps)}
             <div class="flex items-center justify-between p-4">
