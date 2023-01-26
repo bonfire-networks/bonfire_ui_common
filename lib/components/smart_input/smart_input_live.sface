@@ -45,9 +45,9 @@
         class="bg-base-300 !rounded-none  relative"
       >
         <!-- show what we're replying to, if any -->
-        <Dynamic.LiveComponent
+        <Dynamic.Component
           module={Bonfire.UI.Social.ActivityLive}
-          id={"cap:#{ulid(@activity || @reply_to_id)}"}
+          myself={nil}
           activity={@activity}
           object={@object || @reply_to_id}
           thread_mode={:nested}
