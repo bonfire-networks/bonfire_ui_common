@@ -36,7 +36,7 @@
   </LiveRedirect>
 </li>
 <!-- if current user is also an admin -->
-<li :if={is_admin?(@current_user)}>
+<li>
   <LiveRedirect
     to={~p"/settings/instance"}
     class={if @mobile,
