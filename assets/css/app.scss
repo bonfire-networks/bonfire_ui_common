@@ -11,6 +11,18 @@
   padding-right: 1rem;
 }
 
+.with_tab::after {
+  position: absolute;
+  height: 3px;
+  left: 12px;
+  right: 12px;
+  bottom: -12px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  content: "";
+  @apply bg-primary;
+}
+
 .minimal_subject_and_note p {
   @apply line-clamp-1
 }
