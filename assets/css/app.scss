@@ -102,15 +102,15 @@ body {
 .active-activity:after {
   position: absolute;
   content: "";
-  left: 25px;
-  top: 8px;
-  height: 0.75rem;
-  width: 0.75rem;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  width: 0.125rem;
   @apply bg-primary rounded-full;
 }
 .replies .active-activity:after {
   left: auto;
-  right: 20px;
+  right: 0px;
 }
 
 article.unread-activity {
