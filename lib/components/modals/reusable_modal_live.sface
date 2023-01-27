@@ -8,25 +8,28 @@
   }
   {...@opts}
 >
-    <div
-      x-transition:enter="ease-out duration-300"
-      x-transition:enter-start="opacity-0"
-      x-transition:enter-end="opacity-100"
-      x-transition:leave="ease-in duration-200"
-      x-transition:leave-start="opacity-100"
-      x-transition:leave-end="opacity-0"
-      x-description="Background backdrop, show/hide based on modal state."
-      phx-click="close"
-      phx-target={"[id='#{@id}']"}
-      class="fixed inset-0 transition-opacity bg-slate-600/60 backdrop-blur-md"
-      aria-hidden="true"
-    >
-    </div>
-  <form class={
-    "",
-    "modal-box": !@image_preview
-    } 
-    id={@form_id} {...@form_opts}>
+  <div
+    x-transition:enter="ease-out duration-300"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="ease-in duration-200"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    x-description="Background backdrop, show/hide based on modal state."
+    phx-click="close"
+    phx-target={"[id='#{@id}']"}
+    class="fixed inset-0 transition-opacity bg-slate-600/60 backdrop-blur-md"
+    aria-hidden="true"
+  >
+  </div>
+  <form
+    class={
+      "",
+      "modal-box": !@image_preview
+    }
+    id={@form_id}
+    {...@form_opts}
+  >
     <div
       x-transition:enter="ease-out duration-300"
       x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"

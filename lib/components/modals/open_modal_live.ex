@@ -46,7 +46,6 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   prop cancel_btn_text, :string, default: nil
 
-
   @doc "Force modal to be open"
   prop show, :boolean, default: false
 

@@ -35,15 +35,14 @@
         <span>{l("Delete")}</span>
       </button>
 
-
       <Bonfire.UI.Common.OpenModalLive
-        id={Pointers.ULID.generate()} 
+        id={Pointers.ULID.generate()}
         cancel_btn_text={l("Done")}
         cancel_btn_class="btn btn-primary capitalize btn-wide"
         reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
         title_text={l("Add an alternative description")}
-        >
-         <div class="mt-4">
+      >
+        <div class="mt-4">
           <div class="p-4 rounded-md bg-info/10">
             <div class="flex">
               <div class="flex-shrink-0">
@@ -51,7 +50,9 @@
               </div>
               <div class="flex-1 ml-3 md:flex md:justify-between">
                 <p class="text-sm text-info">
-                  {l("Adding an alternative description will improve the accessibility of your contents, helping screen reader and visually impaired users.")}</p>
+                  {l(
+                    "Adding an alternative description will improve the accessibility of your contents, helping screen reader and visually impaired users."
+                  )}</p>
               </div>
             </div>
           </div>
@@ -64,7 +65,7 @@
             name={"upload_metadata[#{entry.ref}][label]"}
             placeholder="Type here"
             class="w-full mt-3 textarea textarea-bordered"
-          ></textarea>
+          />
         </div>
         <:open_btn>
           <button
@@ -77,12 +78,10 @@
           </button>
         </:open_btn>
       </Bonfire.UI.Common.OpenModalLive>
-      
+
       {#for err <- upload_errors(@uploads.files, entry)}
         <p class="alert alert-danger">{error_to_string(err)}</p>
       {/for}
-
-      
     </article>
   {/for}
 </div>
