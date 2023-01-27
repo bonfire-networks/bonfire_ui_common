@@ -44,6 +44,9 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   @doc "The classes of the close/cancel button on the modal. Only used if no `close_btn` slot is passed."
   prop cancel_btn_class, :css_class, default: "btn btn-ghost rounded btn-sm normal-case"
 
+  prop cancel_btn_text, :string, default: nil
+
+
   @doc "Force modal to be open"
   prop show, :boolean, default: false
 

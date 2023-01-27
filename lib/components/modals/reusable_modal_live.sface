@@ -8,7 +8,6 @@
   }
   {...@opts}
 >
-  <form class="w-full md:w-auto" id={@form_id} {...@form_opts}>
     <div
       x-transition:enter="ease-out duration-300"
       x-transition:enter-start="opacity-0"
@@ -23,6 +22,11 @@
       aria-hidden="true"
     >
     </div>
+  <form class={
+    "",
+    "modal-box": !@image_preview
+    } 
+    id={@form_id} {...@form_opts}>
     <div
       x-transition:enter="ease-out duration-300"
       x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
@@ -31,7 +35,7 @@
       x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
       x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
       x-description="Modal panel, show/hide based on modal state."
-      class={@wrapper_class, "modal-box"}
+      class={@wrapper_class}
     >
       <h3 :if={e(!@no_header, false)} class={@title_class || "font-bold text-base"}>
         <#slot {@title}>{@title_text}</#slot>
@@ -61,7 +65,7 @@
       <div :if={!@no_actions} class="modal-action">
         <div phx-click="close" phx-target={"[id='#{@id}']"}>
           <#slot {@cancel_btn}>
-            <button class={@cancel_btn_class || "btn btn-ghost rounded btn-sm normal-case"} type="button">{l("Close")}</button>
+            <button class={@cancel_btn_class || "btn btn-ghost rounded btn-sm normal-case"} type="button">{@cancel_btn_text || l("Close")}</button>
           </#slot>
         </div>
         <div class={@action_btns_wrapper_class}>

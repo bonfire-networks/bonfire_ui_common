@@ -662,12 +662,16 @@ em-emoji-picker {
   --tw-translate-y: 0;
 }
 
+.image_in_preview img {
+  width: 100%;
+}
+
 .smart_input_container {
   --tw-shadow: 0 10px 35px -5px rgb(0 0 0 / 0.8), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 .upload-entry img {
-  @apply w-full h-[140px] object-cover rounded-lg;
+  @apply w-full h-[100px] object-cover rounded-lg;
 }
 
 .media_container img.media-image {
