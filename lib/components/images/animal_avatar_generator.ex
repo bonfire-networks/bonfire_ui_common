@@ -1,6 +1,6 @@
 defmodule AnimalAvatarGenerator do
   @moduledoc """
-  Generate SVG avatars on client side from a string seed. It should always return the same avatar for the corresponding seed.
+  Generate SVG avatars from a string seed. It should always return the same avatar for the corresponding seed.
 
   Based on https://www.npmjs.com/package/animal-avatar-generator (translated to Elixir, mostly by ChatGPT)
   """
