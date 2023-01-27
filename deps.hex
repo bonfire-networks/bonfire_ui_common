@@ -20,3 +20,5 @@ makeup_eex = "~> 0.1.1"
 solid = "~> 0.13"
 live_select = "~> 0.3.2"
 #plug_static_index_html = "~> 1.0" 
+
+chameleon= "~> 2.5"
