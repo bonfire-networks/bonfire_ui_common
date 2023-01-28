@@ -84,7 +84,7 @@
   {#if is_list(@sidebar_widgets[:users][:main])}
     <nav class="w-full mx-2">
       <Dynamic.Component
-        :if={not is_nil(ulid(@current_user))}
+        :if={not is_nil(current_user_id(@__context__))}
         :for={{component, component_assigns} <- @sidebar_widgets[:users][:main]}
         module={component}
         {...component_assigns}

@@ -41,7 +41,7 @@ defmodule Bonfire.UI.Common.MultiselectLive do
 
   defp prepare_entry(%{} = object, _preloaded_options) do
     {e(object, :name, nil) || e(object, :profile, :name, nil) ||
-       e(object, :post_content, :name, "Unnamed"), ulid(object)}
+       e(object, :post_content, :name, "Unnamed"), id(object)}
   end
 
   defp prepare_entry(entry, preloaded_options)

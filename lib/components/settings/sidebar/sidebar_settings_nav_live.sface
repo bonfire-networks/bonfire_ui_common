@@ -5,7 +5,7 @@
         <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("General")}</span>
       </div>
     </li>
-    <li :if={ulid(@current_user)}>
+    <li :if={current_user_id(@__context__)}>
       <LiveRedirect
         to={~p"/settings/profile"}
         class={

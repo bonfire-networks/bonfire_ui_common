@@ -20,7 +20,7 @@
                 phx-hook="randomAnimalAvatar"
                 title={@title}
                 data-size={size(%{viewing_main_object: @viewing_main_object, comment: @comment, size: @size})}
-                data-seed={ulid(@user) || ulid(@src) || @src}
+                data-seed={id(@user) || id(@src) || @src}
                 phx-update="ignore"
                 {...@opts}
               />

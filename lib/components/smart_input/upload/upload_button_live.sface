@@ -8,5 +8,5 @@
     {live_file_input(@uploads.files, tabindex: "-1", class: "sr-only")}
   </label>
 
-  <input :for={file <- e(@uploaded_files, [])} type="hidden" name="files[]" value={ulid(file)}>
+  <input :for={file <- e(@uploaded_files, [])} type="hidden" name="files[]" value={id(file)}>
 </div>
