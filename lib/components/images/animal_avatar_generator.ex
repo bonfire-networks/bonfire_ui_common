@@ -4,6 +4,9 @@ defmodule AnimalAvatarGenerator do
 
   Based on https://www.npmjs.com/package/animal-avatar-generator (translated to Elixir, mostly by ChatGPT)
   """
+
+  # TODO: optimise and extract into library
+
   @background_colors [
     "#fcf7d1",
     "#ece2e1",
@@ -23,16 +26,43 @@ defmodule AnimalAvatarGenerator do
 
   def avatar(
         seed,
-        opts \\ [
-          size: 150,
-          avatar_colors: @avatar_colors,
-          background_colors: @background_colors,
-          blackout: true,
-          round: true
-        ]
+        opts \\ []
       ) do
     seed_randomiser(seed)
+
+    opts =
+      [
+        size: 150,
+        # Palette for avatar colors
+        avatar_colors: @avatar_colors,
+        # Palette for background colors
+        background_colors: @background_colors,
+        # Blackout the right side of avatar
+        blackout: true,
+        # Use round or rectangle background 
+        round: true,
+        skip_randomizer: true
+      ]
+      |> Keyword.merge(opts)
+
     background_color = Enum.random(opts[:background_colors])
+
+    create_svg(opts[:size], [
+      create_background(opts[:round], background_color, opts[:background_class]),
+      avatar_face(
+        seed,
+        opts
+      ),
+      if(opts[:blackout], do: create_blackout(opts[:round]), else: "")
+    ])
+  end
+
+  def avatar_face(
+        seed,
+        opts \\ []
+      ) do
+    opts[:skip_randomizer] || seed_randomiser(seed)
+
     avatar_color = Enum.random(opts[:avatar_colors])
 
     shapes = [
@@ -45,18 +75,10 @@ defmodule AnimalAvatarGenerator do
       brows()
     ]
 
-    create_avatar = fn ->
-      Enum.map(shapes, &Enum.random(&1))
-      |> List.flatten()
-      |> Enum.map(& &1.(avatar_color))
-      |> Enum.join("")
-    end
-
-    create_svg(opts[:size], [
-      create_background(opts[:round], background_color),
-      create_avatar.(),
-      if(opts[:blackout], do: create_blackout(opts[:round]), else: "")
-    ])
+    Enum.map(shapes, &Enum.random(&1))
+    |> List.flatten()
+    |> Enum.map(& &1.(avatar_color))
+    |> Enum.join("")
   end
 
   def empty_shape do
@@ -433,13 +455,14 @@ defmodule AnimalAvatarGenerator do
     """
   end
 
-  def create_background(round, color) do
+  def create_background(round, color, class) do
     """
     <rect
       width='500'
       height='500'
       rx='#{if round, do: 250, else: 0}'
       fill='#{color}'
+      class='#{class}'
     />
     """
   end

@@ -2,7 +2,8 @@
   <div class="relative w-full h-full">
     <LinkLive class="inline-flex gap-3" to={path(@current_user)}>
       <Bonfire.UI.Common.AvatarLive
-        class="inline-block object-cover w-10 h-10 rounded cursor-pointer bg-base-300"
+        class="inline-block object-cover w-10 h-10 cursor-pointer"
+        bg_class="rounded bg-base-300"
         size="32"
         user={@current_user}
       />

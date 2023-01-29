@@ -1,4 +1,4 @@
-import { Hook, makeHook } from "phoenix_typed_hook";
+// import { Hook, makeHook } from "phoenix_typed_hook";
 let ImageHooks = {};
 
 // import exifr from 'exifr'
@@ -46,25 +46,25 @@ class imageMetadata extends Hook {
 //   }
 }
 
-import avatar from 'animal-avatar-generator'
-class randomAnimalAvatar extends Hook {
-  mounted() {
-    console.log("avatar!")
-    if (this.el.innerHTML.length < 1) {
-      const svg = avatar((this.el.dataset.seed || this.el.id), {
-        size: this.el.dataset.size,
-        blackout: false,
-        round: false,
-        avatarColors: ['#801100', '#B62203', '#D73502', '#FC6400', '#FF7500', '#FAC000'],
-        backgroundColors: ['none']
-      })
-      this.el.innerHTML = svg
-    }
-  }
-}
+// import avatar from 'animal-avatar-generator'
+// class randomAnimalAvatar extends Hook {
+//   mounted() {
+//     console.log("avatar!")
+//     if (this.el.innerHTML.length < 1) {
+//       const svg = avatar((this.el.dataset.seed || this.el.id), {
+//         size: this.el.dataset.size,
+//         blackout: false,
+//         round: false,
+//         avatarColors: ['#801100', '#B62203', '#D73502', '#FC6400', '#FF7500', '#FAC000'],
+//         backgroundColors: ['none']
+//       })
+//       this.el.innerHTML = svg
+//     }
+//   }
+// }
 
 
-ImageHooks.imageMetadata = makeHook(imageMetadata);
-ImageHooks.randomAnimalAvatar = makeHook(randomAnimalAvatar);
+// ImageHooks.imageMetadata = makeHook(imageMetadata);
+// ImageHooks.randomAnimalAvatar = makeHook(randomAnimalAvatar);
 
 export { ImageHooks }

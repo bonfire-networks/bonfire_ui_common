@@ -6,25 +6,39 @@ defmodule Bonfire.UI.Common.AvatarLive do
   prop viewing_main_object, :boolean, default: false
   prop comment, :boolean, default: false
   prop size, :any, default: nil
-  prop class, :any, default: nil
+  prop class, :css_class, default: nil
+  prop bg_class, :css_class, default: ["rounded"]
   prop avatar_fallback, :string, default: nil
   prop title, :string, default: ""
   prop opts, :any, default: %{}
+
+  def animal_avatar(id) do
+    # keeps avatars per-user cached 
+    Cache.maybe_apply_cached(&avatar_face/1, [id])
+  end
+
+  defp avatar_face(id) do
+    Pointers.ULID.encoded_randomness(id)
+    |> AnimalAvatarGenerator.avatar_face(
+      # TODO: colors in config
+      avatar_colors: ["#801100", "#B62203", "#D73502", "#FC6400", "#FF7500", "#FAC000"]
+    )
+  end
 
   def classes(%{class: class}) when not is_nil(class) do
     class
   end
 
   def classes(%{viewing_main_object: true}) do
-    "w-12 h-12 bg-base-content/5"
+    "w-12 h-12"
   end
 
   def classes(%{comment: true}) do
-    "w-8 h-8 bg-base-content/5"
+    "w-8 h-8"
   end
 
   def classes(_) do
-    "w-10 h-10 bg-base-content/5"
+    "w-10 h-10"
   end
 
   def size(%{size: size}) when not is_nil(size) do

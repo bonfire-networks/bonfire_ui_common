@@ -25,6 +25,7 @@
                 <div class="flex-shrink-0">
                   <Bonfire.UI.Common.AvatarLive
                     class="w-10 h-10 rounded-full"
+                    bg_class="rounded-full"
                     user={e(user, :edge, :object, nil)}
                   />
                 </div>

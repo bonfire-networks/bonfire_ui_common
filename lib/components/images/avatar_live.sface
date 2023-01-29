@@ -1,21 +1,39 @@
 <div class="border-0 avatar">
-  <div class={classes(%{viewing_main_object: @viewing_main_object, comment: @comment, class: @class}) <>
-    " rounded"}>
+  <div class={classes(%{viewing_main_object: @viewing_main_object, comment: @comment, class: @class})}>
     {#case @avatar_fallback || Media.avatar_fallback()}
       {#match avatar_fallback}
         {#case @src || Media.avatar_url(@user)}
           {#match url when is_binary(url) and url != avatar_fallback}
-            <LazyImage
-              title={@title}
-              class=""
-              src={url}
-              alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
-                l("Avatar")}
-              opts={@opts}
-            />
+            <div class={@bg_class}>
+              <LazyImage
+                title={@title}
+                src={url}
+                alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
+                  e(@user, :username, nil) ||
+                  l("Avatar")}
+                opts={@opts}
+              />
+            </div>
           {#match _}
             {#if Settings.get([Bonfire.UI.Common.AvatarLive, :animal_avatars], true, @__context__)}
-              <div
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                version="1.1"
+                width="100%"
+                height="100%"
+                viewBox="0 0 500 500"
+              >
+                <rect
+                  :if={@bg_class != ["rounded"]}
+                  width="500"
+                  height="500"
+                  rx="250"
+                  fill="none"
+                  class={@bg_class}
+                />
+                {raw(animal_avatar(id(@user)))}
+              </svg>
+              <!-- <div
                 id={Pointers.ULID.generate()}
                 phx-hook="randomAnimalAvatar"
                 title={@title}
@@ -23,16 +41,17 @@
                 data-seed={id(@user) || id(@src) || @src}
                 phx-update="ignore"
                 {...@opts}
-              />
+              /> -->
             {#else}
-              <img
-                title={@title}
-                class=""
-                src={avatar_fallback}
-                alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
-                  l("Avatar")}
-                {...@opts}
-              />
+              <div class={@bg_class}>
+                <img
+                  title={@title}
+                  src={avatar_fallback}
+                  alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
+                    l("Avatar")}
+                  {...@opts}
+                />
+              </div>
             {/if}
         {/case}
     {/case}

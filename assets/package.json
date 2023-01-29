@@ -33,7 +33,6 @@
     "@tailwindcss/typography": "^0.5.2",
     "@yaireo/tagify": "^4.13.2",
     "alpinejs": "^3.10.2",
-    "animal-avatar-generator": "^1.0.5",
     "daisyui": "^2.49.0",
     "emoji-mart": "^5.0.0",
     "exifr": "^7.1.3",
@@ -67,6 +66,7 @@
     "chromedriver": "^106.0.1"
   },
   "disabledDependencies": {
+    "animal-avatar-generator": "^1.0.5",
     "@rtvision/esbuild-dynamic-import": "^0.2.0",
     "@parcel/transformer-sass": "2.5.0",
     "parcel": "^2.5.0",
