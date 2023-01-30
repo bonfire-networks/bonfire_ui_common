@@ -343,12 +343,13 @@ defmodule Bonfire.UI.Common do
     # Process.get()
     # |> debug()
 
+    debug("Try sending to #{component} with id: #{id}")
+
     Phoenix.LiveView.send_update(
       pid || self(),
       component,
       Enum.into(assigns_clean(assigns), %{id: id})
     )
-    |> debug("to #{component} - id: #{id}")
   end
 
   def assigns_subscribe(%Phoenix.LiveView.Socket{} = socket, assign_names)
