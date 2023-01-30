@@ -344,7 +344,7 @@ defmodule Bonfire.UI.Common do
     # |> debug()
 
     Phoenix.LiveView.send_update(
-      pid,
+      pid || self(),
       component,
       Enum.into(assigns_clean(assigns), %{id: id})
     )
