@@ -14,6 +14,8 @@ defmodule Bonfire.UI.Common.Notifications do
       },
       socket
     )
+
+    {:noreply, socket}
   end
 
   def handle_info(attrs, socket) do
