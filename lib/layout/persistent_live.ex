@@ -19,7 +19,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
      socket
      #  |> debug("socket before assigns")
      |> assign(Map.drop(session, [:context]))
-     |> assign_new(:__context__, fn -> session[:context] end)
+     |> assign(:__context__, session[:context])
      |> assign_defaults()
      |> Presence.present!(%{@session_key => session[:context][@session_key]})
      |> debug("socket prepared via session"), layout: false}

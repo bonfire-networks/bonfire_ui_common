@@ -17,8 +17,18 @@ defmodule Bonfire.UI.Common.AvatarLive do
     Cache.maybe_apply_cached(&avatar_face/1, [id])
   end
 
-  defp avatar_face(id) do
+  defp avatar_face(id) when is_binary(id) do
     Pointers.ULID.encoded_randomness(id)
+    |> do_avatar_face()
+  end
+
+  defp avatar_face(id) do
+    warn(id, "expected an ID for generating an avatar")
+    do_avatar_face("random")
+  end
+
+  defp do_avatar_face(id) do
+    id
     |> AnimalAvatarGenerator.avatar_face(
       # TODO: colors in config
       avatar_colors: ["#801100", "#B62203", "#D73502", "#FC6400", "#FF7500", "#FAC000"]

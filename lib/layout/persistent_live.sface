@@ -23,7 +23,7 @@
     }"
   >
     <!-- <Bonfire.UI.Common.LogoLinkLive :if={@without_sidebar} with_name /> -->
-    {#if not is_nil(current_user(@__context__))}
+    {#if not is_nil(current_user_id(@__context__ |> debug("ctx")) |> debug("cuid"))}
       <Dynamic.Component
         :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
         module={Bonfire.UI.Common.LoggedActionsLive}
