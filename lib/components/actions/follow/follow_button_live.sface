@@ -1,32 +1,52 @@
-<a
-  :if={!@my_follow}
-  data-cid={@id}
-  data-id="follow"
-  :on-click="Bonfire.Social.Follows:follow"
-  href={if !@current_user, do: "#{@path}/follow"}
-  rel="noopener noreferrer"
-  phx-value-id={@object_id}
-  class={e(@class, "btn btn-sm btn-primary rounded border-base-content/40 normal-case")}
->
-  <Icon solid="UserAdd" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
-  <span :if={!@hide_text} class={"truncate ellipsis", "ml-2": !@hide_icon}>
-    {l("Follow")} {@label}</span>
-</a>
+<div>
+  {#if !@my_follow}
+    <a
+      :if={!@my_follow}
+      data-cid={@id}
+      data-id="follow"
+      :on-click="Bonfire.Social.Follows:follow"
+      href={if !@current_user, do: "#{@path}/follow"}
+      rel="noopener noreferrer"
+      phx-value-id={@object_id}
+      class={e(@class, "btn btn-sm btn-primary rounded border-base-content/40 normal-case")}
+    >
+      <Icon solid="UserAdd" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
+      <span :if={!@hide_text} class={"truncate ellipsis", "ml-2": !@hide_icon}>
+        {l("Follow")} {@label}</span>
+    </a>
+  {#elseif @my_follow == :requested}
+    <a
+      x-data={"{text: '#{l("Requested")}'}"}
+      x-on:mouseover={"text = '#{l("Cancel")}'"}
+      x-on:mouseover.away={"text = '#{l("Requested")}'"}
+      data-cid={@id}
+      data-id="unfollow"
+      :on-click="Bonfire.Social.Follows:unfollow"
+      phx-value-id={@object_id}
+      :class={"{ '!btn-error': text == '#{l("Cancel")}' }"}
+      class={e(@class, "btn btn-sm btn-outline rounded !border-base-content/40 normal-case")}
+    >
+      <Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
 
-<a
-  x-data="{text: 'Following'}"
-  :if={@my_follow}
-  x-on:mouseover="text = 'Unfollow'"
-  x-on:mouseover.away="text = 'Following'"
-  data-cid={@id}
-  data-id="unfollow"
-  :on-click="Bonfire.Social.Follows:unfollow"
-  phx-value-id={@object_id}
-  :class="{ '!btn-error': text == 'Unfollow' }"
-  class={e(@class, "btn btn-sm btn-outline rounded !border-base-content/40 normal-case")}
->
-  <Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
+      <span :if={!@hide_text} x-text="text" class={"truncate ellipsis", "ml-2": !@hide_icon}>
+        {l("Requested")} {@label}</span>
+    </a>
+  {#else}
+    <a
+      x-data={"{text: '#{l("Following")}'}"}
+      x-on:mouseover={"text = '#{l("Unfollow")}'"}
+      x-on:mouseover.away={"text = '#{l("Following")}'"}
+      data-cid={@id}
+      data-id="unfollow"
+      :on-click="Bonfire.Social.Follows:unfollow"
+      phx-value-id={@object_id}
+      :class={"{ '!btn-error': text == '#{l("Unfollow")}' }"}
+      class={e(@class, "btn btn-sm btn-outline rounded !border-base-content/40 normal-case")}
+    >
+      <Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
 
-  <span :if={!@hide_text} x-text="text" class={"truncate ellipsis", "ml-2": !@hide_icon}>
-    {l("Following")} {@label}</span>
-</a>
+      <span :if={!@hide_text} x-text="text" class={"truncate ellipsis", "ml-2": !@hide_icon}>
+        {l("Following")} {@label}</span>
+    </a>
+  {/if}
+</div>

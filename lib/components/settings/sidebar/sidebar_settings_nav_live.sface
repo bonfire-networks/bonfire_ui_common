@@ -86,6 +86,12 @@
     </li> -->
 
     <li>
+      <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
+        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("Safety")}</span>
+      </div>
+    </li>
+
+    <li>
       <LiveRedirect
         to={~p"/settings/flags"}
         class={
@@ -97,7 +103,58 @@
           solid="Flag"
           class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "flags"}
         />
-        <span class="text-sm text-base-content/80">{l("Your flags")}</span>
+        <span class="text-sm text-base-content/80">{l("Flags")}</span>
+      </LiveRedirect>
+    </li>
+
+    <li class={
+      "",
+      "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
+        @showing_within == :dashboard
+    }>
+      <LiveRedirect
+        to={~p"/boundaries/ghosted"}
+        class={
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+          "bg-base-content/10": @selected_tab == "ghosted"
+        }
+      >
+        <Icon
+          iconify="mingcute:ghost-fill"
+          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "ghosted"}
+        />
+        <div class="flex flex-col">
+          <span class={
+            "text-sm text-base-content/80",
+            "font-semibold": @showing_within == :dashboard
+          }>{l("Ghosted")}</span>
+          <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Circles are user defined group of users that shares similar characteristic")}</p>
+        </div>
+      </LiveRedirect>
+    </li>
+    <li class={
+      "",
+      "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
+        @showing_within == :dashboard
+    }>
+      <LiveRedirect
+        to={~p"/boundaries/silenced"}
+        class={
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+          "bg-base-content/10": @selected_tab == "silenced"
+        }
+      >
+        <Icon
+          solid="VolumeOff"
+          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "silenced"}
+        />
+        <div class="flex flex-col">
+          <span class={
+            "text-sm text-base-content/80",
+            "font-semibold": @showing_within == :dashboard
+          }>{l("Silenced")}</span>
+          <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Circles are user defined group of users that shares similar characteristic")}</p>
+        </div>
       </LiveRedirect>
     </li>
 

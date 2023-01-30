@@ -17,7 +17,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
     {:ok,
      socket
-     |> debug("socket before assigns")
+     #  |> debug("socket before assigns")
      |> assign(Map.drop(session, [:context]))
      |> assign_new(:__context__, fn -> session[:context] end)
      |> assign_defaults()

@@ -35,7 +35,7 @@ let ImageHooks = {};
 //   return data;
 // }
 
-class imageMetadata extends Hook {
+// class imageMetadata extends Hook {
 //   mounted() {
 // let img = document.getElementById(this.el.dataset.img)
 // if (img) img.addEventListener("load", async e => {
@@ -44,7 +44,7 @@ class imageMetadata extends Hook {
 //   imageParseMeta(file).then(ret => console.log('Ret:', ret))
 // })
 //   }
-}
+// }
 
 // import avatar from 'animal-avatar-generator'
 // class randomAnimalAvatar extends Hook {

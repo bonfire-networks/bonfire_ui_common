@@ -31,7 +31,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
   end
 
   def update(assigns, socket) do
-    debug(assigns, "assigns")
+    # debug(assigns, "assigns")
     current_user = current_user(socket) || current_user(assigns)
 
     if current_user do

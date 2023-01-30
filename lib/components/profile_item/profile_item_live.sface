@@ -16,19 +16,25 @@
     </div>
   </LiveRedirect>
 
-  <div
-    class=""
-    :if={:follow in @show_controls and current_user_id(@__context__) != maybe_get(@profile, :id) and
-      current_user_id(@__context__)}
+  <button
+    :if={:accept in @show_controls}
+    :on-click="Bonfire.Social.Follows:accept"
+    phx-value-id={id(@activity_id)}
+    type="button"
+    class="normal-case rounded btn btn-sm btn-primary"
   >
-    <Bonfire.UI.Common.FollowButtonLive
-      id={ComponentID.new(Bonfire.UI.Common.FollowButtonLive, id(@profile))}
-      object_id={id(@profile)}
-      path={path(@character)}
-      hide_icon
-      class={@class}
-    />
-  </div>
+    {l("Accept")}
+  </button>
+
+  <Bonfire.UI.Common.FollowButtonLive
+    :if={:follow in @show_controls and current_user_id(@__context__) &&
+      current_user_id(@__context__) != id(@profile)}
+    id={ComponentID.new(Bonfire.UI.Common.FollowButtonLive, id(@profile))}
+    object_id={id(@profile)}
+    path={path(@character)}
+    hide_icon
+    class={@class}
+  />
 
   <#slot />
 </div>

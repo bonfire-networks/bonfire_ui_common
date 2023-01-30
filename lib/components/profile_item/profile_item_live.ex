@@ -7,6 +7,7 @@ defmodule Bonfire.UI.Common.ProfileItemLive do
   prop character, :any
   prop class, :css_class
   prop show_controls, :list, default: [:follow]
+  prop activity_id, :any, default: nil
 
   slot default, required: false
 end
