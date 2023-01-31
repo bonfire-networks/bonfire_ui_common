@@ -34,7 +34,7 @@
 {/case} -->
 
 <div
-  class="w-full max-w-lg mt-4 form-control"
+  class="w-full mt-4 form-control"
   x-data="{
         light: true,
         dark: true,
@@ -91,12 +91,12 @@
       x-on:click="dark = false; light = false; custom_theme = !custom_theme"
       class="normal-case rounded btn btn-outline border-base-content/30"
     >
-      <span><Icon outline="ComputerDesktop" class="w-4 h-4" /></span>
+      <span><Icon iconify="lucide:paintbrush-2" class="w-4 h-4" /></span>
       <span class="ml-2">{l("Custom")}</span>
     </button>
   </div>
 
-  <div class="flex max-w-lg gap-3 mt-3">
+  <div class="flex gap-3 mt-3">
     {#case Settings.get([:ui, :themes], ["bonfire"], @scoped)}
       {#match themes}
         {#case Settings.get([:ui, :themes_light], ["light"], @scoped)}
@@ -121,24 +121,56 @@
     {/case}
   </div>
   <div x-show="custom_theme" x-cloak x-collapse>
-    <div class="flex items-center gap-2 mt-5 text-sm">
-      <Icon iconify="lucide:paintbrush-2" class="w-4 h-4" />
+    <div class="flex items-center gap-2 pb-3 my-5 text-lg font-semibold border-b place-content-center border-base-content/10">
+      <Icon iconify="lucide:paintbrush-2" class="w-6 h-6" />
       <span class="">{l("Customise theme colours")}</span>
     </div>
-    <div
-      :for={{key, colour} <-
-        DaisyTheme.theme(Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped)))}
-      id={key}
-      class="mt-1 mb-4 sm:mt-0 sm:col-span-2"
-      phx-hook="ColourPicker"
-      data-scope={@scope}
-      x-data="{
-        open: false
-      }"
-      x-on:click.outside="open = false"
-    >
-      <label x-on:click="open = !open"><div class="w-10">{key}:</div> <hex-input color={colour} /></label>
-      <hex-color-picker x-show="open" />
+
+    <div class="p-4 mt-6 mb-0 rounded-md bg-info/10">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <Icon solid="InformationCircle" class="w-5 h-5 text-info" />
+        </div>
+        <div class="flex-1 ml-3 md:flex md:justify-between">
+          <p class="text-sm text-info">
+            {l(
+              "Caution: Modifying color palette can potentially affect readability and accessibility for some users. Consider accessibility guidelines and user testing before making changes."
+            )}</p>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="grid grid-cols-1 gap-5 py-5">
+      <div
+        :for={{key, colour} <-
+          DaisyTheme.theme(Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped)))}
+        id={key}
+        class="relative"
+        phx-hook="ColourPicker"
+        data-scope={@scope}
+        x-data="{
+          open: false
+        }"
+        
+      >
+        <div 
+         
+          class="inline-flex items-center gap-2">
+          <div 
+            x-on:click="open = true" 
+            class="rounded-lg shadow-xl cursor-pointer w-7 h-7 border-neutral-content/10" 
+            style={"background-color: #{colour}"}></div>
+          <label 
+            x-on:click="open = true" 
+            class="flex items-baseline gap-2">
+            <div class="text-sm font-medium tracking-wider capitalize text-base-content">{key}</div> 
+            <hex-input 
+              color={colour} />
+          </label>
+        </div>
+        <hex-color-picker x-show="open" />
+      </div>
     </div>
   </div>
 </div>

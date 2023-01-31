@@ -307,6 +307,16 @@ article.unread-activity {
 /* Import with  */
 /* @import './scrollbar-color.css';  */
 
+.scrollable {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbarThumb) var(--scrollbarTrack);
+}
+
+.scrollable::-webkit-scrollbar {
+  height: 2px;
+}
+
 :root {
   --scrollbarTrack: hsla(var(--b2));
   --scrollbarThumb: hsla(var(--bc)/0.1);

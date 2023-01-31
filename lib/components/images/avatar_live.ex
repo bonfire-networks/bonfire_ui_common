@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
   prop opts, :any, default: %{}
 
   def animal_avatar(id) do
-    # keeps avatars per-user cached 
+    # keeps avatars per-user cached
     Cache.maybe_apply_cached(&avatar_face/1, [id])
   end
 
@@ -40,15 +40,15 @@ defmodule Bonfire.UI.Common.AvatarLive do
   end
 
   def classes(%{viewing_main_object: true}) do
-    "w-12 h-12"
+    "w-12 h-12 rounded-xl bg-base-200"
   end
 
   def classes(%{comment: true}) do
-    "w-8 h-8"
+    "w-8 h-8 rounded-xl bg-base-200"
   end
 
   def classes(_) do
-    "w-10 h-10"
+    "w-10 h-10 rounded-xl bg-base-200"
   end
 
   def size(%{size: size}) when not is_nil(size) do
