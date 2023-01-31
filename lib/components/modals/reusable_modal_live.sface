@@ -25,7 +25,7 @@
   <form
     class={
       "",
-      "modal-box": !@image_preview
+      "modal-box min-h-[400px]": !@image_preview
     }
     id={@form_id}
     {...@form_opts}
