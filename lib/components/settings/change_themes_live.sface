@@ -1,38 +1,3 @@
-<!-- FIMXE: this should be in the main app layout to support dark/light themes 
-<div
-  x-data={"{
-    prefersDarkTheme: window.matchMedia('(prefers-color-scheme: dark)').matches,
-    dark_theme: $el.dataset.theme,
-    light_theme: '#{Settings.get(
-          [:ui, :theme, :instance_theme_light],
-          "light",
-          @current_user || @__context__ || @conn
-        )}'
-    }"}
-  x-init="window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => { prefersDarkTheme = e.matches; });"
-  x-bind:data-theme="prefersDarkTheme ? dark_theme : light_theme"
--->
-
-<!-- {#case Settings.get([:ui, :themes], ["bonfire"], @__context__)}
-  {#match themes}
-    {#case Settings.get([:ui, :themes_light], ["light"], @__context__)}
-      {#match themes_light}
-        <Bonfire.UI.Common.ChangeThemeLive
-          label={l("Change theme")}
-          key="instance_theme"
-          theme={@theme}
-          themes={Enum.uniq(themes_light)}
-        />
-
-        <Bonfire.UI.Common.ChangeThemeLive
-          label={l("Light theme")}
-          key="instance_theme_light"
-          theme={@theme_light}
-          themes={Enum.uniq(themes_light ++ themes)}
-        />
-    {/case}
-{/case} -->
-
 <div
   class="w-full mt-4 form-control"
   x-data={"{
@@ -41,23 +6,7 @@
         custom_theme: #{Settings.get([:ui, :theme, :preferred], :system, @__context__) == :custom}
       }"}
 >
-  <!-- <div class="mt-1 mb-4 sm:mt-0 sm:col-span-2">
-              <div class="flex max-w-lg">
-                <div class="flex flex-col gap-1">
-                  <div class="text-sm font-bold">{l("Use device theme")}</div>
-                </div>
-                <form name="settings" phx-change="Bonfire.Me.Settings:set">
-                <input name="scope" value={:user} type="hidden">
-                <input
-                  type="radio"
-                  name="ui[device_theme]"
-                  {if Settings.get([:ui, :device_theme, false], false, :user), do: "checked", else: ""}
-                  value={Settings.get([:ui, :device_theme, false], false, :user)}
-                  class="toggle"
-                />
-                </form>
-              </div>
-            </div> -->
+
   <div class="flex items-center gap-2">
     <button
       type="button"
