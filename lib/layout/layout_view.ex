@@ -6,6 +6,7 @@ defmodule Bonfire.UI.Common.LayoutView do
   end
 
   def render("root.html", assigns) do
+    # TODO: optimised so the [:ui, :theme, :preferred] is only loaded once
     ~H"""
     <!DOCTYPE html>
     <html
@@ -14,11 +15,55 @@ defmodule Bonfire.UI.Common.LayoutView do
       class="bg-base-300"
       lang="en"
       data-theme={
-        Settings.get(
-          [:ui, :theme, :instance_theme],
-          "bonfire",
-          assigns[:__context__] || assigns[:current_user] || @conn
-        )
+        if Settings.get(
+             [:ui, :theme, :preferred],
+             :system,
+             assigns[:__context__] || assigns[:current_user] || @conn
+           ) == :light,
+           do:
+             Settings.get(
+               [:ui, :theme, :instance_theme_light],
+               "light",
+               assigns[:__context__] || assigns[:current_user] || @conn
+             ),
+           else:
+             Settings.get(
+               [:ui, :theme, :instance_theme],
+               "bonfire",
+               assigns[:__context__] || assigns[:current_user] || @conn
+             )
+      }
+      x-data={
+        if Settings.get(
+             [:ui, :theme, :preferred],
+             :system,
+             assigns[:__context__] || assigns[:current_user] || @conn
+           ) == :system,
+           do:
+             "{
+        prefersDarkTheme: window.matchMedia('(prefers-color-scheme: dark)').matches,
+        dark_theme: $el.dataset.theme,
+        light_theme: '#{Settings.get([:ui, :theme, :instance_theme_light],
+             "light",
+             @current_user || @__context__ || @conn)}'
+        }"
+      }
+      x-init={
+        if Settings.get(
+             [:ui, :theme, :preferred],
+             :system,
+             assigns[:__context__] || assigns[:current_user] || @conn
+           ) == :system,
+           do:
+             "window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => { prefersDarkTheme = e.matches; });"
+      }
+      x-bind:data-theme={
+        if Settings.get(
+             [:ui, :theme, :preferred],
+             :system,
+             assigns[:__context__] || assigns[:current_user] || @conn
+           ) == :system,
+           do: "prefersDarkTheme ? dark_theme : light_theme"
       }
     >
       <head>

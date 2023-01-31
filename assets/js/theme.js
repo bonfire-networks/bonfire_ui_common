@@ -22,6 +22,7 @@ ThemeHooks.ColourPicker = {
         const id = this.el.id;
         const picker = this.el.querySelector('hex-color-picker');
         const input = this.el.querySelector('hex-input');
+        const preview = this.el.querySelector('.colour_preview');
         const scope = this.el.dataset.scope;
         var count = 0;
         var debounceCount = 0;
@@ -29,7 +30,7 @@ ThemeHooks.ColourPicker = {
 
         let value = input.color.replace("#", "")
         picker.color = value;
-        // input.style.backgroundColor = "#" + value;
+        // this.el.style.backgroundColor = "#" + value;
 
 
         const maybe_set = function (hook) {
@@ -51,15 +52,17 @@ ThemeHooks.ColourPicker = {
 
                 // do the thing
                 console.log("set")
-                hook.pushEvent("Bonfire.Me.Settings:put", { keys: "ui:theme:custom:" + id, value: value, scope: scope })
+                hook.pushEvent("Bonfire.Me.Settings:put", { keys: "ui:theme:custom:" + id, values: value, scope: scope })
 
             }, 1000);
             
-            // input.style.backgroundColor = "#" + value;
         }
 
         picker.addEventListener('color-changed', (event) => {
             value = event.detail.value;
+            console.log(value)
+            preview.style.backgroundColor = value;
+            console.log(preview)
             input.color = value;
             maybe_set(this)
         });
@@ -67,6 +70,7 @@ ThemeHooks.ColourPicker = {
         input.addEventListener('color-changed', (event) => {
             value = event.detail.value;
             picker.color = value;
+            preview.style.backgroundColor = value;
             maybe_set(this)
         });	
 

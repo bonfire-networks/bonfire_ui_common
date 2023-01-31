@@ -20,7 +20,7 @@
           x-on:click={"theme = '#{t}'"}
           phx-click="Bonfire.Me.Settings:put"
           phx-value-keys={"ui:theme:#{@key}"}
-          phx-value-value={t}
+          phx-value-values={t}
           class="overflow-hidden rounded-lg outline-base-content"
         >
           <div data-theme={t} class="w-full font-sans cursor-pointer bg-base-100 text-base-content">

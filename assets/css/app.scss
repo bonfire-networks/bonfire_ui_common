@@ -786,5 +786,11 @@ em-emoji-picker {
 }
 
 .dropdown .dropdown-content {
-  height: 0;
+  height: 0; 
+}
+
+hex-input::part(input) {
+  @apply input input-sm w-16;
+  text-transform: uppercase;
+  text-align: center;
 }

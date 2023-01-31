@@ -35,11 +35,11 @@
 
 <div
   class="w-full mt-4 form-control"
-  x-data="{
-        light: true,
-        dark: true,
-        custom_theme: false
-      }"
+  x-data={"{
+        light: #{debug(Settings.get([:ui, :theme, :preferred], :system, @__context__), "prefff") in [:light, :system]},
+        dark: #{Settings.get([:ui, :theme, :preferred], :system, @__context__) in [:dark, :system]},
+        custom_theme: #{Settings.get([:ui, :theme, :preferred], :system, @__context__) == :custom}
+      }"}
 >
   <!-- <div class="mt-1 mb-4 sm:mt-0 sm:col-span-2">
               <div class="flex max-w-lg">
@@ -62,6 +62,10 @@
     <button
       type="button"
       x-on:click="dark = true; light = false; custom_theme=false"
+      :class="{'btn-primary' : dark && !light }"
+      phx-click="Bonfire.Me.Settings:put"
+      phx-value-keys="ui:theme:preferred"
+      phx-value-values={:dark}
       class="normal-case rounded btn btn-outline border-base-content/30"
     >
       <span><Icon outline="Moon" class="w-4 h-4" /></span>
@@ -71,6 +75,10 @@
     <button
       type="button"
       x-on:click="dark = false; light = true; custom_theme=false"
+      :class="{'btn-primary' : light && !dark }"
+      phx-click="Bonfire.Me.Settings:put"
+      phx-value-keys="ui:theme:preferred"
+      phx-value-values={:light}
       class="normal-case rounded btn btn-outline border-base-content/30"
     >
       <span><Icon outline="Sun" class="w-4 h-4" /></span>
@@ -80,6 +88,10 @@
     <button
       type="button"
       x-on:click="dark = true; light = true; custom_theme=false"
+      :class="{'btn-primary' : dark && light }"
+      phx-click="Bonfire.Me.Settings:put"
+      phx-value-keys="ui:theme:preferred"
+      phx-value-values={:system}
       class="normal-case rounded btn btn-outline border-base-content/30"
     >
       <span><Icon outline="ComputerDesktop" class="w-4 h-4" /></span>
@@ -89,6 +101,10 @@
     <button
       type="button"
       x-on:click="dark = false; light = false; custom_theme = !custom_theme"
+      :class="{'btn-primary' : custom_theme }"
+      phx-click="Bonfire.Me.Settings:put"
+      phx-value-keys="ui:theme:preferred"
+      phx-value-values={:custom}
       class="normal-case rounded btn btn-outline border-base-content/30"
     >
       <span><Icon iconify="lucide:paintbrush-2" class="w-4 h-4" /></span>
@@ -106,15 +122,15 @@
                 label={l("Dark theme")}
                 key="instance_theme"
                 theme={@theme}
-                themes={Enum.uniq(themes)}
+                themes={themes}
               />
             </div>
             <div x-show="light">
               <Bonfire.UI.Common.ChangeThemeLive
                 label={l("Light theme")}
                 key="instance_theme_light"
-                theme={@theme}
-                themes={Enum.uniq(themes_light)}
+                theme={@theme_light}
+                themes={themes_light}
               />
             </div>
         {/case}
@@ -126,7 +142,7 @@
       <span class="">{l("Customise theme colours")}</span>
     </div>
 
-    <div class="p-4 mt-6 mb-0 rounded-md bg-info/10">
+    <div :if={@scope == :instance} class="p-4 mt-6 mb-0 rounded-md bg-info/10">
       <div class="flex">
         <div class="flex-shrink-0">
           <Icon solid="InformationCircle" class="w-5 h-5 text-info" />
@@ -134,13 +150,12 @@
         <div class="flex-1 ml-3 md:flex md:justify-between">
           <p class="text-sm text-info">
             {l(
-              "Caution: Modifying color palette can potentially affect readability and accessibility for some users. Consider accessibility guidelines and user testing before making changes."
+              "Caution: Modifying the color palette can potentially affect readability and accessibility for some users. Please consider accessibility guidelines and user testing when making changes."
             )}</p>
         </div>
       </div>
     </div>
 
-    
     <div class="grid grid-cols-1 gap-5 py-5">
       <div
         :for={{key, colour} <-
@@ -152,24 +167,19 @@
         x-data="{
           open: false
         }"
-        
       >
-        <div 
-         
-          class="inline-flex items-center gap-2">
-          <div 
-            x-on:click="open = true" 
-            class="rounded-lg shadow-xl cursor-pointer w-7 h-7 border-neutral-content/10" 
-            style={"background-color: #{colour}"}></div>
-          <label 
-            x-on:click="open = true" 
-            class="flex items-baseline gap-2">
-            <div class="text-sm font-medium tracking-wider capitalize text-base-content">{key}</div> 
-            <hex-input 
-              color={colour} />
+        <div class="inline-flex items-center gap-2">
+          <div
+            x-on:click="open = true"
+            class="colour_preview rounded-lg shadow-xl cursor-pointer w-16 h-7 border-neutral-content/10"
+            style={"background-color: #{colour}"}
+          />
+          <label x-on:click="open = true" class="flex items-baseline gap-2">
+            <div class="text-sm font-medium tracking-wider capitalize text-base-content">{key}</div>
+            <hex-input color={colour} />
           </label>
         </div>
-        <hex-color-picker x-show="open" />
+        <hex-color-picker x-show="open" x-on:click.outside="open = false" />
       </div>
     </div>
   </div>

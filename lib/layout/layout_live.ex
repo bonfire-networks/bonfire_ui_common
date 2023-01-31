@@ -7,12 +7,16 @@ defmodule Bonfire.UI.Common.LayoutLive do
   alias Bonfire.UI.Common.PersistentLive
 
   def maybe_custom_theme(context) do
-    config =
-      Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, context))
-      |> debug("custom theme config")
+    if Settings.get([:ui, :theme, :preferred], nil, context) == :custom do
+      config =
+        Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, context))
+        |> debug("custom theme config")
 
-    # Cache.maybe_apply_cached(&custom_theme_attr/1, [config])
-    custom_theme_attr(config)
+      # Cache.maybe_apply_cached(&custom_theme_attr/1, [config])
+      custom_theme_attr(config)
+    else
+      ""
+    end
   end
 
   def custom_theme_attr(config), do: DaisyTheme.style_attr(config) |> debug("custom theme style")
