@@ -1,10 +1,7 @@
-<div
-  id="theme-change"
-  x-data={"{ theme: '#{@theme}'}"}
-  title="Change Theme"
-  class="text-left w-52 dropdown"
->
-  <!-- phx-hook="Themeable" -->
+<div x-data={"{ theme: '#{@theme}'}"} title="Change Theme" class="text-left w-52 dropdown">
+  <!--  
+   id="theme-change"
+  phx-hook="Themeable" -->
   <!-- note: the phx-hook has the advantage of changing the theme instantly without reloading, but it's an odd behaviour if changing the light theme while we're using the dark theme, or if changing the default instance theme while we have a different one in user preferences... -->
 
   <input name={"ui[theme][#{@key}]"} x-model="theme" type="hidden">

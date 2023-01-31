@@ -4,9 +4,9 @@ let ResponsiveTabsHooks = {};
 ResponsiveTabsHooks.ResponsiveTabsHook = {
   mounted() {
 
-  const container = document.querySelector('.responsive-tabs')
-  const primary = container.querySelector('.tabs-list')
-  const primaryItems = container.querySelectorAll('.tabs-list > li:not(.-more)')
+  const container = this.el
+    const primary = container.querySelector('.tabs-list')
+    const primaryItems = container.querySelectorAll('.tabs-list > li:not(.-more)')
 
   // insert "more" button and duplicate the list
 

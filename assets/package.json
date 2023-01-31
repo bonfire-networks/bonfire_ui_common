@@ -47,7 +47,8 @@
     "phoenix_typed_hook": "^0.18.0",
     "textarea-caret": "^3.1.0",
     "theme-change": "^2.0.2",
-    "tippy.js": "^6.3.7"
+    "tippy.js": "^6.3.7",
+    "vanilla-colorful": "^0.7.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.7",

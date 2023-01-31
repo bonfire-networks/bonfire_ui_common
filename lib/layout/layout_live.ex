@@ -6,6 +6,17 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
   alias Bonfire.UI.Common.PersistentLive
 
+  def maybe_custom_theme(context) do
+    config =
+      Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, context))
+      |> debug("custom theme config")
+
+    # Cache.maybe_apply_cached(&custom_theme_attr/1, [config])
+    custom_theme_attr(config)
+  end
+
+  def custom_theme_attr(config), do: DaisyTheme.style_attr(config) |> debug("custom theme style")
+
   def render(assigns) do
     # Note: since this is not a Surface component, we need to set default props this way
     # TODO: make this list of assigns config-driven so other extensions can add what they need?
@@ -34,6 +45,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:current_account_id, fn -> nil end)
       |> assign_new(:current_user, fn -> nil end)
       |> assign_new(:current_user_id, fn -> nil end)
+      |> assign_new(:instance_settings, fn -> nil end)
       |> assign_new(:to_circles, fn -> [] end)
       |> assign_new(:smart_input_opts, fn ->
         [
@@ -55,6 +67,11 @@ defmodule Bonfire.UI.Common.LayoutLive do
     <div
       data-id="bonfire_live"
       class=""
+      style={maybe_custom_theme(
+        current_user: @current_user,
+        current_account: @current_account,
+        instance_settings: @instance_settings
+      )}
       x-data="{
           open_sidebar: false
         }"
