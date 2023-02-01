@@ -6,7 +6,6 @@
         custom_theme: #{Settings.get([:ui, :theme, :preferred], :system, @__context__) == :custom}
       }"}
 >
-
   <div class="flex items-center gap-2">
     <button
       type="button"
