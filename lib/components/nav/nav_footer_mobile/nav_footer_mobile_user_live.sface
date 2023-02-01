@@ -6,7 +6,11 @@
     }
     to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
   >
+  {#if @page == "notifications"}
+    <Icon iconify="ri:home-fill" class="w-5 h-5" />
+  {#else}
     <Icon iconify="ri:home-line" class="w-5 h-5" />
+  {/if}
     <span class="sr-only">{l("Home")}</span>
   </LiveRedirect>
 
@@ -18,6 +22,7 @@
     }
     to="/feed"
   >
+    
     <Icon iconify="ic:outline-explore" class="w-5 h-5" />
     <span class="sr-only">{l("Feeds")}</span>
   </LiveRedirect>
@@ -37,18 +42,19 @@
   <LiveRedirect
     :if={@current_user}
     to={path(:notifications)}
-    class={
-      "",
-      "text-primary": @page == "notifications"
-    }
-  >
+    class=""
+  > 
+  {#if @page == "notifications"}
+    <Icon iconify="mdi:bell" class="w-5 h-5" />
+  {#else}
     <Icon iconify="mdi:bell-outline" class="w-5 h-5" />
+  {/if}
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>
 
   <LiveRedirect :if={@current_user} to={path(@current_user)} class="">
     <Bonfire.UI.Common.AvatarLive
-      class="inline-block object-cover w-8 h-8 cursor-pointer md:hidden"
+      class="inline-block object-cover w-8 h-8 cursor-pointer rounded-xl md:hidden"
       bg_class="rounded-full bg-base-300"
       size="32"
       user={@current_user}

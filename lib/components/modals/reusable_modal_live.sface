@@ -25,7 +25,7 @@
   <form
     class={
       "",
-      "modal-box min-h-[400px]": !@image_preview
+      "modal-box": !@image_preview
     }
     id={@form_id}
     {...@form_opts}
@@ -58,7 +58,7 @@
       <div
         class={
           "",
-          "overflow-y-auto max-h-[calc(100vh_-_13rem)]": !@image_preview
+          "overflow-y-auto max-h-[calc(100vh_-_13rem)] pb-16": !@image_preview
         }
         data-id="modal-contents"
       >

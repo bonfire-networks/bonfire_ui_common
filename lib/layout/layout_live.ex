@@ -115,7 +115,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <div
           data-id="main_section"
           class={
-            "relative w-full max-w-[1280px]  gap-2 md:gap-0 z-[105] col-span-1 ",
+            "relative w-full max-w-[1280px] gap-2 md:gap-0 z-[105] col-span-1 ",
             "!max-w-full": @without_widgets,
             "!max-w-full": !@current_user,
             "mx-auto order-last": @without_sidebar
@@ -132,7 +132,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 <div
                   id="inner"
                   class={
-                    "md:mt-0 bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)] pb-[1px]":
+                    "md:mt-0 bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)] pb-40 md:pb-[1px]":
                       !@without_sidebar
                   }
                 >
