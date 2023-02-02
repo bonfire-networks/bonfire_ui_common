@@ -126,7 +126,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
         else
           debug(
             context,
-            "no csrf_token available in context so can't send to sticky LV (if used)"
+            "no `#{@session_key}` value available in context so can't send to sticky LV (if used)"
           )
 
           :skip
@@ -135,20 +135,26 @@ defmodule Bonfire.UI.Common.PersistentLive do
   end
 
   defp try_send_self(user_id, session_id, assigns, attempt \\ 1) do
-    pid =
+    debug(session_id, "find a presence for session")
+
+    presences =
       (Presence.present_meta(user_id) || [])
       |> debug("present_meta - attempt ##{attempt}")
       |> Enum.filter(fn
         %{@session_key => presence_session_id} when presence_session_id == session_id -> true
         _ -> false
       end)
-      |> List.first()
-      |> Utils.e(:pid, nil)
-      |> debug("present for session")
 
-    if pid do
-      send(pid, {:assign, assigns})
-      |> debug("send to PID")
+    # |> List.first()
+    # |> Utils.e(:pid, nil)
+    # |> debug("PID present for session")
+
+    if presences != [] do
+      # FIXME: this sends to every open Bonfire tab in the current browser
+      Enum.map(
+        presences,
+        &(send(&1.pid, {:assign, assigns}) |> debug("send to PersistentLive view"))
+      )
     else
       if attempt < 10 do
         Process.send_after(
