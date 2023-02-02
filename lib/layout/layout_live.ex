@@ -35,6 +35,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:notification, fn -> nil end)
       |> assign_new(:page_header_aside, fn -> nil end)
       |> assign_new(:page_header_icon, fn -> nil end)
+      |> assign_new(:transparent_header, fn -> false end)
       # |> assign_new(:custom_page_header, fn -> nil end)
       |> assign_new(:inner_content, fn -> nil end)
       |> assign_new(:back, fn -> false end)
@@ -136,14 +137,28 @@ defmodule Bonfire.UI.Common.LayoutLive do
                       !@without_sidebar
                   }
                 >
-                  <div :if={!@without_sidebar} class="sticky top-0  md:pt-3 bg-base-300 z-[999]">
-                    <div class="flex flex-1 rounded-t bg-base-100" :class="{'hidden': open_sidebar}">
+                  <div
+                    :if={!@without_sidebar}
+                    class={
+                      "sticky top-0  md:pt-3 bg-base-300 z-[999]",
+                      "!bg-transparent md:!bg-base-300 !fixed left-0 right-0 md:!sticky": @transparent_header
+                    }>
+                    <div
+                      x-data="{atTop: false}"
+                      @scroll.window="atTop = (window.pageYOffset < 100) ? false: true"
+                      class={
+                        "flex flex-1 rounded-none md:rounded-t bg-base-100 transition-color duration-150 ease-in-out",
+                        "bg-transparent md:bg-base-100": @transparent_header
+                      }
+                      :class="{'!bg-base-100': atTop}">
+
                       <Dynamic.Component
                         module={Bonfire.UI.Common.PageHeaderLive}
                         page_title={@page_title}
                         page_header_icon={@page_header_icon}
                         back={@back}
                         page={@page}
+                        transparent_header={@transparent_header}
                         selected_tab={@selected_tab}
                       >
                         <:right_action>

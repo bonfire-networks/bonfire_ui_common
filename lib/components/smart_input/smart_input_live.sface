@@ -28,13 +28,12 @@
       :if={not is_nil(current_user(@__context__))}
       class="relative flex flex-col flex-1 w-full bg-base-300"
     >
-      <div class="flex gap-3 m-2 md:hidden">
-        <div
-          x-cloak
-          x-on:click="smart_input_minimized = !smart_input_minimized; smart_input_fullscreen = false"
-          x-show="!open_boundaries"
-          class="flex items-center gap-2 p-2 border-b md:hidden border-base-300"
-        >
+      <div 
+        x-cloak
+        x-on:click="smart_input_minimized = !smart_input_minimized; smart_input_fullscreen = false"
+        x-show="!open_boundaries"
+        class="flex gap-3 m-2 md:hidden">
+        <div class="flex items-center gap-2 p-2 border-b md:hidden border-base-300">
           <Icon iconify="heroicons-solid:arrow-left" class="w-5 h-5 stroke-1 text-neutral-content" />
           <span class="text-sm text-neutral-content">{l("Back")}</span>
         </div>

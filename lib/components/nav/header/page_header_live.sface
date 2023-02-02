@@ -2,7 +2,8 @@
   role="banner"
   class="flex items-center h-[56px] md:h-[46px] rounded-t flex-1 w-full md:bg-base-200 px-4"
 >
-  <div class="flex items-center w-full">
+ 
+  <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center justify-between flex-1 w-full">
       <div class="flex items-center gap-3">
         <!-- <div id="back_button" phx-hook="Back" class="hidden">
