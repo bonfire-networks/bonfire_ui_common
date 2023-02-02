@@ -22,6 +22,16 @@
     aria-hidden="true"
   >
   </div>
+  <!-- TODO if it contains a form use the form tag otherwise use a div -->
+  <!-- <Dynamic.Component 
+    module={if @form_opts !=[], do: Form, else: Field}
+    id={@form_id}
+    class={
+      "",
+      "modal-box": !@image_preview
+    }
+    {...@form_opts}
+  > -->
   <form
     class={
       "",
@@ -58,7 +68,7 @@
       <div
         class={
           "",
-          "overflow-y-auto max-h-[calc(100vh_-_13rem)] pb-16": !@image_preview
+          "max-h-[calc(100vh_-_13rem)]": !@image_preview
         }
         data-id="modal-contents"
       >

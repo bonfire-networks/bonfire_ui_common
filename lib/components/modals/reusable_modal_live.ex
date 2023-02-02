@@ -54,6 +54,8 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   @doc "Force modal to be open"
   prop show, :boolean, default: false
 
+  prop without_form, :boolean, default: false
+
   prop form_opts, :any, default: []
 
   @doc "The ID of the form to submit"

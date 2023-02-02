@@ -11,7 +11,7 @@
         phx-value-id={@object_id}
         phx-value-component={__MODULE__}
         phx-value-current_count={e(@like_count, 0)}
-        class="btn btn-ghost btn-circle like like_with_label btn-sm"
+        class="rounded btn btn-ghost btn-square like like_with_label btn-sm"
         title={l("Like this")}
       >
         <span class={"text-base-content text-opacity-50", "text-yellow-500 text-opacity-100": @my_like}>
@@ -31,7 +31,7 @@
     {#match false}
       <button
         type="button"
-        class="cursor-not-allowed btn btn-ghost btn-circle like like_with_label btn-sm"
+        class="rounded cursor-not-allowed btn btn-ghost btn-square like like_with_label btn-sm"
         title={l("You can't like this")}
       >
         <span class="text-base-content text-opacity-20">

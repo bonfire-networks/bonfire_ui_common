@@ -35,6 +35,8 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   @doc "The classes of the modal wrapper."
   prop wrapper_class, :css_class, default: nil
 
+  prop without_form, :boolean, default: false
+
   @doc "The classes of the modal"
   prop modal_class, :css_class, default: "max-h-[100%]"
 

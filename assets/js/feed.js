@@ -60,7 +60,7 @@ FeedHooks.PreviewActivity = {
 
     } else {
 
-      e.preventDefault();
+      // e.preventDefault();
       console.log("PreviewActivity: ignore in favour of another link or button's action (or opening in new tab)")
 
       return;

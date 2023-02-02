@@ -70,7 +70,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     ~F"""
     <div
       data-id="bonfire_live"
-      class=""
+      class="antialiased"
       style={maybe_custom_theme(
         current_user: @current_user,
         current_account: @current_account,
