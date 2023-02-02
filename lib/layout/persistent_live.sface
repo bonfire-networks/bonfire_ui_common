@@ -144,6 +144,6 @@
   </div> -->
 
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
-  <Bonfire.UI.Common.ReusableModalLive form_id="boundary_form" id="persistent_modal" />
+  <Bonfire.UI.Common.ReusableModalLive id="persistent_modal" />
   <Bonfire.UI.Common.NavFooterMobileUserLive page={@page} />
 </div>

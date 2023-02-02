@@ -6,7 +6,6 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   """
 
   @modal_class "max-h-[100%]"
-  @form_id "reusable_modal_form"
 
   # make sure to keep these and the Surface props in sync
   @default_assigns [
@@ -16,7 +15,6 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
     cancel_btn_class: nil,
     show: false,
     form_opts: [],
-    form_id: @form_id,
     no_actions: false,
     no_header: false,
     opts: [],
@@ -54,12 +52,9 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   @doc "Force modal to be open"
   prop show, :boolean, default: false
 
-  prop without_form, :boolean, default: false
+  # prop no_form, :boolean, default: false
 
   prop form_opts, :any, default: []
-
-  @doc "The ID of the form to submit"
-  prop form_id, :string, default: @form_id
 
   @doc "Optional prop to hide the actions at the bottom of the modal"
   prop no_actions, :boolean, default: false

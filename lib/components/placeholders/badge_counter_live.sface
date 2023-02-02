@@ -1,4 +1,3 @@
-
 <div id={"badge_counter_#{@id}"} class={if @count > 0, do: @class}>
   <span :if={@count > 0} class="text-primary-content">
     {@count}

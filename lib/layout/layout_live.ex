@@ -142,7 +142,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
                     class={
                       "sticky top-0  md:pt-3 bg-base-300 z-[999]",
                       "!bg-transparent md:!bg-base-300 !fixed left-0 right-0 md:!sticky": @transparent_header
-                    }>
+                    }
+                  >
                     <div
                       x-data="{atTop: false}"
                       @scroll.window="atTop = (window.pageYOffset < 100) ? false: true"
@@ -150,8 +151,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
                         "flex flex-1 rounded-none md:rounded-t bg-base-100 transition-color duration-150 ease-in-out",
                         "bg-transparent md:bg-base-100": @transparent_header
                       }
-                      :class="{'!bg-base-100': atTop}">
-
+                      :class="{'!bg-base-100': atTop}"
+                    >
                       <Dynamic.Component
                         module={Bonfire.UI.Common.PageHeaderLive}
                         page_title={@page_title}
