@@ -28,9 +28,7 @@
     id={@form_opts[:id] || "#{@id}_form"}
     for={@form_opts[:for] || :modal}
     name={:modal}
-    class={
-      "modal-box": !@image_preview
-    }
+    class={"modal-box": !@image_preview}
     opts={@form_opts}
   >
     <!-- <form

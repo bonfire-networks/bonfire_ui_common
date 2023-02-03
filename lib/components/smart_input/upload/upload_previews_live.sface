@@ -1,6 +1,6 @@
 <div class={
-  "grid grid-cols-2 gap-2 mx-3",
-  "mt-14 mb-3": @uploads.files.entries != []
+  "grid grid-cols-3 md:grid-cols-2 gap-2 mx-3",
+  "mt-3 md:mt-14 mb-3": @uploads.files.entries != []
 }>
   {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
     <article
@@ -8,10 +8,9 @@
       phx-hook="imageMetadata"
       data-img={"phx-preview-#{i}"}
       data-ref={entry.upload_ref}
-      x-data="{show_alt: false}"
       class="relative upload-entry"
     >
-      <div class="absolute top-0 z-10 w-full rounded-lg l-0 r-0 h-14 bg-gradient-to-b from-gray-900 to-transparent" />
+      <div class="absolute top-0 z-10 w-full h-10 rounded-lg l-0 r-0 md:h-14 bg-gradient-to-b from-gray-900 to-transparent" />
       <figure>
         <!-- render a client-side preview -->
         <span :if={String.starts_with?(entry.client_type, "image")}>
@@ -25,14 +24,14 @@
       <!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 -->
       <button
         type="button"
-        class="absolute z-20 normal-case btn btn-ghost text-error btn-xs left-1 top-1"
+        class="absolute z-20 gap-1 normal-case btn btn-ghost text-error btn-xs left-1 top-1"
         phx-click="cancel-upload"
         phx-target="#smart_input"
         phx-value-ref={entry.ref}
         aria-label="cancel"
       >
-        <Icon solid="X" class="w-4 h-4 mr-1" />
-        <span>{l("Delete")}</span>
+        <Icon solid="Trash" class="w-6 h-6 md:w-4 md:h-4" />
+        <span class="hidden md:block">{l("Delete")}</span>
       </button>
 
       <Bonfire.UI.Common.OpenModalLive
@@ -70,11 +69,11 @@
         <:open_btn>
           <button
             type="button"
-            class="absolute z-20 normal-case btn btn-ghost text-slate-50 btn-xs right-1 top-1"
+            class="absolute z-20 gap-1 normal-case btn btn-ghost text-slate-50 btn-xs right-1 top-1"
             aria-label="Add description"
           >
-            <Icon solid="Pencil" class="w-4 h-4 mr-1" />
-            <span>{l("Add description")}</span>
+            <Icon solid="Pencil" class="w-6 h-6 md:w-4 md:h-4 " />
+            <span class="hidden md:block">{l("Add description")}</span>
           </button>
         </:open_btn>
       </Bonfire.UI.Common.OpenModalLive>

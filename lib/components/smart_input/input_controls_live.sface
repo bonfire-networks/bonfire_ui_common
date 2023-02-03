@@ -44,8 +44,10 @@
   class="fixed top-[calc(var(--visual-viewport-height)_-_68px)] z-50 left-0 right-0 md:static"
   x-show="!open_boundaries"
 >
-  <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
-
+  <div class="hidden md:block">
+    <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
+  </div>
+  
   <div class="">
     <div class={
       "flex  md:items-center justify-between p-4 gap-3 border-t  border-base-content/5 bg-base-300 md:px-3 md:py-2",
