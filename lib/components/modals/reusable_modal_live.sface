@@ -24,10 +24,10 @@
   </div>
   <!-- TODO if it contains a form use the form tag otherwise use a div -->
   <Dynamic.Component
-    module={if empty?(@form_opts), do: Form, else: Field}
+    module={if @form_opts !=%{}, do: Form, else: Field}
     id={@form_opts[:id] || "#{@id}_form"}
     for={@form_opts[:for] || :modal}
-    name={@form_opts[:name] || :modal}
+    name={:modal}
     class={
       "modal-box": !@image_preview
     }
