@@ -72,7 +72,7 @@
             class="absolute z-20 gap-1 normal-case btn btn-ghost text-slate-50 btn-xs right-1 top-1"
             aria-label="Add description"
           >
-            <Icon solid="Pencil" class="w-6 h-6 md:w-4 md:h-4 " />
+            <Icon solid="Pencil" class="w-6 h-6 md:w-4 md:h-4" />
             <span class="hidden md:block">{l("Add description")}</span>
           </button>
         </:open_btn>

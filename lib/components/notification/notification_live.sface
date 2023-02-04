@@ -112,7 +112,16 @@
                 <Icon outline="Exclamation" class="w-6 h-6 text-error-content" />
               </div>
               <div class="ml-3 w-0 flex-1 pt-0.5">
-                <div data-id="flash" data-type="error" class="text-sm text-error-content">{markdown(error)}</div>
+                <div
+                  data-id="flash"
+                  data-type="error"
+                  class={
+                    "prose text-sm text-error-content",
+                    "!text-xs": Config.get(:env) == :dev
+                  }
+                >
+                  {markdown(error)}
+                </div>
 
                 <Bonfire.UI.Common.FeedbackButtonLive
                   class="mt-2 normal-case rounded btn btn-sm btn-ghost text-error-content"

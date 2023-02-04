@@ -1,0 +1,32 @@
+<div class="divide-y divide-gray-200 lg:col-span-9">
+  <div class="px-4 py-6 sm:p-6 lg:pb-8">
+    <!-- <div>
+      <h2 class="text-lg font-medium leading-6 text-base-content opacity-90">
+        Bonfire Extension - view code
+      </h2>
+      <p class="mt-1 text-sm text-base-content opacity-60">
+        
+      </p>
+    </div> -->
+
+    <Bonfire.UI.Common.CodeStylesLive.code_styles_live />
+
+    <div class="flex flex-col lg:flex-row">
+      <div class="flex-grow lg:mt-0 lg:mr-6 lg:flex-grow-0 lg:flex-shrink-0">
+        <section
+          :if={@code != nil}
+          phx-hook="loadHash"
+          data-line-number={@selected_line}
+          data-theme="night"
+          class="code ghd-container bg-primary-content"
+        >
+          <ul id="left_gutter">
+            <li :for={ln <- 1..@lines} phx-hook="updateHash" id={"L#{ln}"} data-line-number={ln} />
+          </ul>
+
+          {raw(Text.code_syntax(@code))}
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

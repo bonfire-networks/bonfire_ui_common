@@ -39,16 +39,16 @@ defmodule Bonfire.UI.Common.DiffRenderView do
   def line_type(line), do: to_string(line.type)
 
   def line_text("+" <> text),
-    do: [content_tag(:span, "+ ", class: "ghd-line-status"), text_content(text)]
+    do: [content_tag(:span, "+ ", class: "ghd-line-status"), code_syntax(text)]
 
   def line_text("-" <> text),
-    do: [content_tag(:span, "- ", class: "ghd-line-status"), text_content(text)]
+    do: [content_tag(:span, "- ", class: "ghd-line-status"), code_syntax(text)]
 
   def line_text(" " <> text),
-    do: [content_tag(:span, "  ", class: "ghd-line-status"), text_content(text)]
+    do: [content_tag(:span, "  ", class: "ghd-line-status"), code_syntax(text)]
 
-  def line_text(text), do: [text_content(text)]
+  def line_text(text), do: [code_syntax(text)]
 
-  # def text_content(text), do: content_tag(:span, text))
-  def text_content(text), do: raw(Makeup.highlight(text))
+  # def code_syntax(text), do: content_tag(:span, text))
+  def code_syntax(text), do: raw(Text.code_syntax(text))
 end

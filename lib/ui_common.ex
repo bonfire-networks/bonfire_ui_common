@@ -709,7 +709,7 @@ defmodule Bonfire.UI.Common do
         live_exception(
           socket,
           return_key,
-          "Could not complete this action: ",
+          "Could not complete this action",
           act
         )
 
@@ -718,7 +718,8 @@ defmodule Bonfire.UI.Common do
           socket,
           return_key,
           "Could not complete this request: " <> Errors.error_msg(epic),
-          epic.errors
+          epic.errors,
+          e(List.first(epic.errors), :stacktrace, nil)
         )
 
       not_found when not_found in [:not_found, "Not found", 404] ->
@@ -754,7 +755,8 @@ defmodule Bonfire.UI.Common do
          stacktrace,
          kind
        ) do
-    with {:error, msg} <- Errors.debug_exception(msg, exception, stacktrace, kind) do
+    with {:error, msg} <-
+           Errors.debug_exception(msg, exception, stacktrace, kind, as_markdown: true) do
       {return_key,
        socket
        |> assign_error(msg)
@@ -771,7 +773,8 @@ defmodule Bonfire.UI.Common do
          stacktrace,
          kind
        ) do
-    with {:error, msg} <- Errors.debug_exception(msg, exception, stacktrace, kind) do
+    with {:error, msg} <-
+           Errors.debug_exception(msg, exception, stacktrace, kind, as_markdown: true) do
       {
         return_key,
         assign_error(
@@ -785,7 +788,8 @@ defmodule Bonfire.UI.Common do
   end
 
   defp live_exception(socket, return_key, msg, exception, stacktrace, kind) do
-    with {:error, msg} <- Errors.debug_exception(msg, exception, stacktrace, kind) do
+    with {:error, msg} <-
+           Errors.debug_exception(msg, exception, stacktrace, kind, as_markdown: true) do
       {
         return_key,
         assign_error(
