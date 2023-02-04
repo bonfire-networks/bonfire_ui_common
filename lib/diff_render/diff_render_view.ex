@@ -50,5 +50,5 @@ defmodule Bonfire.UI.Common.DiffRenderView do
   def line_text(text), do: [code_syntax(text)]
 
   # def code_syntax(text), do: content_tag(:span, text))
-  def code_syntax(text), do: raw(Text.code_syntax(text))
+  def code_syntax(text), do: raw(Text.code_syntax(text, "file.diff"))
 end

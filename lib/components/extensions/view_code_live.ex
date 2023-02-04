@@ -23,6 +23,8 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
      assign(
        socket,
        page_title: l("View Code"),
+       module: nil,
+       filename: nil,
        code: nil,
        lines: 0,
        line: 0,
@@ -31,43 +33,21 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
      )}
   end
 
-  def do_handle_params(%{"module" => module, "function" => fun} = _params, url, socket)
-      when is_binary(module) do
+  def do_handle_params(%{"module" => module} = params, url, socket) when is_binary(module) do
     with true <- connected?(socket),
          module when not is_nil(module) <- Types.maybe_to_module(module),
-         {:ok, code} <- Extend.module_code(module),
-         line <- Extend.function_line_number(code, maybe_to_atom(fun)) || 0 do
+         {:ok, filename, code} <- Extend.module_file_code(module) do
       {:noreply,
        socket
        |> assign(
          page_title: l("View Code") <> ": #{module}",
          module: module,
+         filename: filename,
          code: code,
-         selected_line: line,
-         lines: String.split(code, "\n") |> length()
-       )}
-    else
-      false ->
-        {:noreply, socket}
-
-      {:error, e} ->
-        error(e)
-
-      _ ->
-        error(module, "Not a known module")
-    end
-  end
-
-  def do_handle_params(%{"module" => module} = _params, url, socket) when is_binary(module) do
-    with true <- connected?(socket),
-         module when not is_nil(module) <- Types.maybe_to_module(module),
-         {:ok, code} <- Extend.module_code(module) do
-      {:noreply,
-       socket
-       |> assign(
-         page_title: l("View Code") <> ": #{module}",
-         module: module,
-         code: code,
+         selected_line:
+           if(params["function"],
+             do: Extend.function_line_number(code, maybe_to_atom(params["function"]))
+           ) || 0,
          lines: String.split(code, "\n") |> length()
        )}
     else

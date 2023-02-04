@@ -11,7 +11,7 @@
       type="button"
       x-on:click="dark = true; light = false; custom_theme=false"
       :class="{'btn-primary' : dark && !light }"
-      phx-click="Bonfire.Me.Settings:put"
+      phx-click="Bonfire.Me.Settings:put_theme"
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:dark}
       class="normal-case rounded btn btn-outline border-base-content/30"
@@ -24,7 +24,7 @@
       type="button"
       x-on:click="dark = false; light = true; custom_theme=false"
       :class="{'btn-primary' : light && !dark }"
-      phx-click="Bonfire.Me.Settings:put"
+      phx-click="Bonfire.Me.Settings:put_theme"
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:light}
       class="normal-case rounded btn btn-outline border-base-content/30"
@@ -37,7 +37,7 @@
       type="button"
       x-on:click="dark = true; light = true; custom_theme=false"
       :class="{'btn-primary' : dark && light }"
-      phx-click="Bonfire.Me.Settings:put"
+      phx-click="Bonfire.Me.Settings:put_theme"
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:system}
       class="normal-case rounded btn btn-outline border-base-content/30"
@@ -50,7 +50,7 @@
       type="button"
       x-on:click="dark = false; light = false; custom_theme = !custom_theme"
       :class="{'btn-primary' : custom_theme }"
-      phx-click="Bonfire.Me.Settings:put"
+      phx-click="Bonfire.Me.Settings:put_theme"
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:custom}
       class="normal-case rounded btn btn-outline border-base-content/30"

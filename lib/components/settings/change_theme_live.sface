@@ -18,7 +18,7 @@
           data-set-theme={t}
           data-act-class="ACTIVECLASS"
           x-on:click={"theme = '#{t}'"}
-          phx-click="Bonfire.Me.Settings:put"
+          phx-click="Bonfire.Me.Settings:put_theme"
           phx-value-keys={"ui:theme:#{@key}"}
           phx-value-values={t}
           class="overflow-hidden rounded-lg outline-base-content"

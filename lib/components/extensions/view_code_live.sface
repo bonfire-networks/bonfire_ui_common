@@ -24,7 +24,7 @@
             <li :for={ln <- 1..@lines} phx-hook="updateHash" id={"L#{ln}"} data-line-number={ln} />
           </ul>
 
-          {raw(Text.code_syntax(@code))}
+          {raw(Text.code_syntax(@code, @filename))}
         </section>
       </div>
     </div>
