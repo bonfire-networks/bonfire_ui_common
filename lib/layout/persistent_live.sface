@@ -47,7 +47,7 @@
     {/if}
     <div
       data-id="secondary_sidebar_widgets"
-      class="hidden mt-3 overflow-x-hidden overflow-y-auto tablet-lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
+      class="hidden mt-4 overflow-x-hidden overflow-y-auto tablet-lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
     >
       <!-- FIXME: use the widget system instead (see below) -->
       <Dynamic.Component
@@ -67,7 +67,7 @@
       <div
         :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(current_user(@__context__))) or
           (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(current_user(@__context__)))}
-        class=""
+        class="flex flex-col gap-4"
       >
         <Dynamic.Component
           :if={not is_nil(current_user(@__context__))}

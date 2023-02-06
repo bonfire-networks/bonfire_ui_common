@@ -30,7 +30,7 @@
     >
       <div
         x-cloak
-        x-on:click="smart_input_minimized = !smart_input_minimized; smart_input_fullscreen = false"
+        phx-hook="reset"
         x-show="!open_boundaries"
         class="flex gap-3 m-2 md:hidden"
       >

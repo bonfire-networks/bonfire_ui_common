@@ -708,6 +708,10 @@ em-emoji-picker {
   word-break: break-word;
 }
 
+.prose a:hover {
+  text-decoration: underline;
+}
+
 .hide {
   display: none !important;
 }
