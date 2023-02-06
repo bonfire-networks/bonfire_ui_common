@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.WriteEditorLive do
 
   prop field_name, :string, default: "post[post_content][html_body]", required: false
   prop create_object_type, :any, default: nil
-  prop smart_input_opts, :any, default: nil, required: false
+  prop smart_input_opts, :list, default: []
   prop showing_within, :string, default: nil
   prop insert_text, :string, default: nil
   prop thread_mode, :atom, default: nil
@@ -26,7 +26,7 @@ defmodule Bonfire.UI.Common.WriteEditorLive do
 
   def rich_editor_module(with_rich_editor, context) do
     if use_rich_editor?(with_rich_editor, context) do
-      default = Bonfire.Editor.Quill
+      default = Bonfire.UI.Common.ComposerLive
       module = Bonfire.Me.Settings.get([:ui, :rich_text_editor], default, context)
 
       if module_enabled?(module, context),

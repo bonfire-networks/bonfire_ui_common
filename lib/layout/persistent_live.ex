@@ -33,7 +33,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     |> fun.(:create_object_type, fn -> nil end)
     |> fun.(:to_boundaries, fn -> [] end)
     |> fun.(:to_circles, fn -> [] end)
-    |> fun.(:smart_input_opts, fn -> nil end)
+    |> fun.(:smart_input_opts, fn -> [] end)
     |> fun.(:showing_within, fn -> nil end)
     |> fun.(:show_select_recipients, fn -> false end)
     |> fun.(:thread_mode, fn -> nil end)

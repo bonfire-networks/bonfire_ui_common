@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop to_boundaries, :any, default: nil
   prop to_circles, :list, default: []
   prop open_boundaries, :boolean, default: false
-  prop smart_input_opts, :any, required: false
+  prop smart_input_opts, :list, default: []
   prop showing_within, :any, default: nil
   prop activity, :any, default: nil
   prop object, :any, default: nil
@@ -23,6 +23,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop page, :any, default: nil
   prop boundaries_modal_id, :string, default: :sidebar_composer
   prop without_sidebar, :string, default: nil
+  prop reset_smart_input, :boolean, default: false
 
   prop uploads, :any, default: nil
   prop uploaded_files, :any, default: nil
@@ -99,6 +100,12 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     )
   end
 
+  # def open_and_reset_if_empty(text, socket_assigns, set_assigns) do
+  #   # if empty?(e(socket_assigns, :smart_input_opts, :text, nil) |> debug()), do: replace_input_next_time(socket_assigns)
+  #   set(socket_assigns, set_smart_input_text_if_empty: text)
+  #   set(socket_assigns[:__context__], set_assigns)
+  # end
+
   @doc """
   Set assigns in the smart input from anywhere in the app (whether using a live component or sticky live view)
   """
@@ -107,23 +114,45 @@ defmodule Bonfire.UI.Common.SmartInputLive do
       maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, assigns)
   end
 
-  def set_smart_input_text(socket, text \\ "\n") do
-    # TODO: only trigger if using Quill as editor
+  def open_smart_input_with_text_suggestion(text, set_assigns, socket_or_context) do
+    # TODO: only trigger if using Quill as editor?
     # maybe_push_event(socket, "smart_input:set_body", %{text: text})
-    set(socket, smart_input_opts: [text: text, open: true])
+    replace_input_next_time(socket_or_context)
+
+    set(
+      socket_or_context,
+      set_assigns ++
+        [smart_input_opts: [text_suggestion: text, open: true], reset_smart_input: false]
+    )
+  end
+
+  def set_smart_input_text(socket, text \\ "\n") do
+    # TODO: only trigger if using Quill as editor?
+    # maybe_push_event(socket, "smart_input:set_body", %{text: text})
+    replace_input_next_time(socket)
+    set(socket, smart_input_opts: [text: text, open: true], reset_smart_input: false)
     socket
+  end
+
+  def replace_input_next_time(socket_or_context) do
+    set(socket_or_context, reset_smart_input: true)
   end
 
   def reset_input(%{assigns: %{showing_within: :thread}} = socket) do
     # debug("THREad")
+    replace_input_next_time(socket.assigns)
+
     set(socket,
+      # avoid double-reset
+      reset_smart_input: false,
       activity: nil,
       to_circles: [],
       reply_to_id: e(socket.assigns, :thread_id, nil),
       to_boundaries: default_boundaries(socket),
       smart_input_opts: [
-        text: nil,
-        open: false
+        open: false,
+        text_suggestion: nil,
+        text: nil
       ]
     )
 
@@ -132,11 +161,16 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   def reset_input(%{assigns: %{showing_within: :messages}} = socket) do
     # debug("messages")
+    replace_input_next_time(socket)
+
     set(socket,
+      # avoid double-reset
+      reset_smart_input: false,
       activity: nil,
       smart_input_opts: [
-        text: nil,
-        open: false
+        open: false,
+        text_suggestion: nil,
+        text: nil
       ]
     )
 
@@ -144,16 +178,20 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   end
 
   def reset_input(socket) do
+    replace_input_next_time(socket)
     # debug("VOID")
     set(socket,
+      # avoid double-reset
+      reset_smart_input: false,
       activity: nil,
       to_circles: [],
       reply_to_id: e(socket.assigns, :thread_id, nil),
       thread_id: nil,
       to_boundaries: default_boundaries(socket),
       smart_input_opts: [
-        text: nil,
-        open: false
+        open: false,
+        text_suggestion: nil,
+        text: nil
       ]
     )
 

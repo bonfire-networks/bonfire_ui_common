@@ -61,6 +61,7 @@
         uploads={@uploads}
         uploaded_files={@uploaded_files}
         trigger_submit={@trigger_submit}
+        reset_smart_input={@reset_smart_input}
       />
     </div>
   </div>

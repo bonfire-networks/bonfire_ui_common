@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.SmartInputButtonLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop smart_input_opts, :any, default: []
+  prop smart_input_opts, :list, default: []
 
   prop component, :any, default: nil
   prop create_object_type, :any, default: nil

@@ -8,16 +8,17 @@
       <TextArea
         name={"fallback_#{@field_name}"}
         opts={
-          value: e(@smart_input_opts, :text, nil),
+          value: e(@smart_input_opts, :text, nil) || e(@smart_input_opts, :text_suggestion, nil),
           placeholder: e(@smart_input_opts, :prompt, nil)
         }
         class={@textarea_class}
       />
     </noscript>
   {#match _}
+    <!-- NOTE: this is only used if no other editor module (like `Bonfire.UI.Common.ComposerLive` by default) is configured -->
     <TextArea
       opts={
-        value: e(@smart_input_opts, :text, nil),
+        value: e(@smart_input_opts, :text, nil) || e(@smart_input_opts, :text_suggestion, nil),
         placeholder: e(@smart_input_opts, :prompt, nil)
       }
       class={@textarea_class}

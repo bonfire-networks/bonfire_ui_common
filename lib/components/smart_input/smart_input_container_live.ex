@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop open_boundaries, :boolean, default: false
   prop to_boundaries, :any, default: nil
   prop to_circles, :list, default: []
-  prop smart_input_opts, :any, required: false
+  prop smart_input_opts, :list, default: []
   prop showing_within, :any, default: nil
   prop activity, :any, default: nil
   prop hide_smart_input, :boolean, default: false
@@ -23,6 +23,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop thread_mode, :atom, default: nil
   prop page, :any, default: nil
   prop without_sidebar, :string, default: nil
+  prop reset_smart_input, :boolean, default: false
 
   def mount(socket),
     do:
@@ -42,13 +43,52 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
          # progress: &handle_progress/3
        )}
 
+  def update(
+        %{smart_input_opts: new_smart_input_opts} = assigns,
+        %{assigns: %{smart_input_opts: old_smart_input_opts}} = socket
+      )
+      when is_list(new_smart_input_opts) and is_list(old_smart_input_opts) do
+    {:ok,
+     socket
+     |> assign(assigns)
+     |> assign(:smart_input_opts, Keyword.merge(old_smart_input_opts, new_smart_input_opts))}
+  end
+
+  # def update(%{set_smart_input_text_if_empty: text} = assigns, %{assigns: %{smart_input_opts: smart_input_opts}} = socket) do
+  #   if empty?(smart_input_opts[:text] |> debug("texxxt") ) do
+
+  #     SmartInputLive.replace_input_next_time(socket)
+  #     SmartInputLive.set(socket, 
+  #       reset_smart_input: false, # don't do it twice
+  #       smart_input_opts: smart_input_opts
+  #         |> Keyword.put(:text_suggestion, text)
+  #         |> Keyword.put(:open, true)
+  #     )
+
+  #     {:ok,
+  #     socket
+  #     }
+  #   else
+  #     {:ok,
+  #     socket
+  #     |> assign(assigns)
+  #     }
+  #   end
+  # end
+
+  def update(assigns, socket) do
+    {:ok,
+     socket
+     |> assign(assigns)}
+  end
+
   def do_handle_event("select_smart_input", params, socket) do
     # send_self(socket, smart_input_opts: [open: e(params, :open, nil)])
 
     opts =
       (maybe_from_json(e(params, "opts", nil)) ||
-         e(socket.assigns, :smart_input_opts, %{}))
-      |> merge_as_map(%{open: true})
+         e(socket.assigns, :smart_input_opts, []))
+      |> Enum.into(open: true)
       |> debug("opts")
 
     to_circles =
@@ -89,10 +129,14 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     maybe_apply(Bonfire.Boundaries.LiveHandler, :handle_event, [action, params, socket])
   end
 
-  # for uploads
+  # needed for uploads, also used to avoid un-reset the input
   def do_handle_event("validate", params, socket) do
     debug(params, "validate")
-    {:noreply, socket}
+
+    {:noreply,
+     socket
+     |> assign(reset_smart_input: false)
+     |> update(:smart_input_opts, &Keyword.put(&1, :text, params["html_body"]))}
   end
 
   def do_handle_event("cancel-upload", %{"ref" => ref}, socket) do
