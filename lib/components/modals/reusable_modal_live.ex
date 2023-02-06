@@ -54,7 +54,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
 
   # prop no_form, :boolean, default: false
 
-  prop form_opts, :any, default: []
+  prop form_opts, :list, default: []
 
   @doc "Optional prop to hide the actions at the bottom of the modal"
   prop no_actions, :boolean, default: false
@@ -72,11 +72,13 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   @doc """
   Slots for the contents of the modal, title, buttons...
   """
-  slot default, args: [:autocomplete]
   slot open_btn
   slot action_btns
   slot cancel_btn
   slot title
+  slot default, args: [autocomplete: :list, value: :any]
+
+  data value, :any, default: nil
 
   def mount(socket) do
     # debug("mounting")

@@ -35,12 +35,14 @@
       </button>
 
       <Bonfire.UI.Common.OpenModalLive
-        id={Pointers.ULID.generate()}
-        cancel_btn_text={l("Done")}
-        cancel_btn_class="btn btn-primary capitalize btn-wide"
+        id={"#{entry.ref}-description"}
+        form_opts={"phx-submit": "set_value"}
         reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
         title_text={l("Add an alternative description")}
       >
+        <!--        cancel_btn_text={l("Cancel")}
+ cancel_btn_class="btn btn-primary capitalize btn-wide" -->
+
         <div class="mt-4">
           <div class="p-4 rounded-md bg-info/10">
             <div class="flex">
@@ -60,21 +62,18 @@
           <span class="image_in_preview" :if={String.starts_with?(entry.client_type, "image")}>
             <.live_img_preview entry={entry} />
           </span>
-          <textarea
-            name={"upload_metadata[#{entry.ref}][label]"}
-            placeholder="Type here"
-            class="w-full mt-3 textarea textarea-bordered"
-          />
+          <textarea name="value" placeholder="Type here" class="w-full mt-3 textarea textarea-bordered" />
         </div>
-        <:open_btn>
+        <:open_btn :let={value: value}>
           <button
             type="button"
             class="absolute z-20 gap-1 normal-case btn btn-ghost text-slate-50 btn-xs right-1 top-1"
             aria-label="Add description"
           >
             <Icon solid="Pencil" class="w-6 h-6 md:w-4 md:h-4" />
-            <span class="hidden md:block">{l("Add description")}</span>
+            <span class="hidden md:block">{value || l("Add description")}</span>
           </button>
+          <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}>
         </:open_btn>
       </Bonfire.UI.Common.OpenModalLive>
 

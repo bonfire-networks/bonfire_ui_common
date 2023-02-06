@@ -51,7 +51,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   @doc "Force modal to be open"
   prop show, :boolean, default: false
 
-  prop form_opts, :any, default: []
+  prop form_opts, :list, default: []
 
   @doc "Optional prop to hide the header at the top of the modal"
   prop no_header, :boolean, default: false
@@ -87,34 +87,36 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   @doc """
   Slot for the contents of the modal, title, buttons...
   """
-  slot default, args: [:autocomplete]
   slot title
   slot action_btns
   slot cancel_btn
+  slot default, args: [autocomplete: :list, value: :any]
+
+  data value, :any, default: nil
 
   @doc """
   Slot for the button that opens the modal
   """
-  slot open_btn
+  slot open_btn, args: [value: :any]
 
-  def open() do
+  def open(reusable_modal_id \\ nil) do
     debug("open!")
-    set(show: true)
+    set([show: true], reusable_modal_id)
   end
 
-  def close() do
+  def close(reusable_modal_id \\ nil) do
     debug("close!")
-    set([show: false] ++ ReusableModalLive.default_assigns())
+    set([show: false] ++ ReusableModalLive.default_assigns(), reusable_modal_id)
   end
 
-  def set(assigns) do
+  def set(assigns, reusable_modal_id \\ nil) do
     maybe_send_update(
       e(
         assigns,
         :reusable_modal_component,
         ReusableModalLive
       ),
-      e(assigns, :reusable_modal_id, "modal"),
+      reusable_modal_id || e(assigns, :reusable_modal_id, "modal"),
       assigns
     )
 
@@ -137,14 +139,19 @@ defmodule Bonfire.UI.Common.OpenModalLive do
       )
 
     # copy all of this component's assigns to the reusable modal (including slots!)
-    set(socket.assigns)
+    set(socket.assigns, e(socket.assigns, :reusable_modal_id, nil))
 
     {:noreply, socket}
   end
 
   def do_handle_event("close", _, socket) do
-    close()
+    close(e(socket.assigns, :reusable_modal_id, nil))
     {:noreply, socket}
+  end
+
+  def do_handle_event("set_value", %{"value" => value}, socket) do
+    close(e(socket.assigns, :reusable_modal_id, nil))
+    {:noreply, socket |> assign(:value, value)}
   end
 
   def handle_event(

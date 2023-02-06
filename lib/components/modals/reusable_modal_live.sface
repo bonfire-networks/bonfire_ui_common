@@ -24,12 +24,12 @@
   </div>
   <!-- TODO if it contains a form use the form tag otherwise use a div -->
   <Dynamic.Component
-    module={if @form_opts != %{}, do: Form, else: Field}
+    module={if @form_opts != [], do: Form, else: Field}
     id={@form_opts[:id] || "#{@id}_form"}
     for={@form_opts[:for] || :modal}
     name={:modal}
     class={Surface.css_class("modal-box": !@image_preview)}
-    opts={@form_opts}
+    opts={@form_opts |> Keyword.put_new(:"phx-target", @myself)}
   >
     <!-- <form
     class={
@@ -71,7 +71,7 @@
         }
         data-id="modal-contents"
       >
-        <#slot {@default, autocomplete: @autocomplete} />
+        <#slot {@default, autocomplete: @autocomplete, value: @value} />
       </div>
 
       <div :if={!@no_actions} class="modal-action">
@@ -81,7 +81,9 @@
           </#slot>
         </div>
         <div class={@action_btns_wrapper_class}>
-          <#slot {@action_btns} />
+          <#slot {@action_btns}>
+            <button :if={@form_opts != []} class="btn btn-primary rounded btn-sm normal-case" type="submit">{l("OK")}</button>
+          </#slot>
         </div>
       </div>
     </div>
