@@ -37,6 +37,12 @@
               class="w-full normal-case !rounded text-error-content py-1.5 btn btn-error btn-sm"
             >{l("Disable for everyone")}</button>
           {/if}
+        {#else}
+          {#if globally_disabled}
+            {l("Disabled on this instance")}
+          {#else}
+            {l("Enabled on this instance")}
+          {/if}
         {/if}
       {/if}
   {/case}

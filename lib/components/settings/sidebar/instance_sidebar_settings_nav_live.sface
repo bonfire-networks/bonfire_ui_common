@@ -123,7 +123,7 @@
       </div>
     </li>
 
-    <li>
+    <li :if={Bonfire.Boundaries.can?(@current_user, :mediate, :instance)}>
       <LivePatch
         to={~p"/settings/instance/flags"}
         class={
@@ -160,7 +160,9 @@
             "text-sm text-base-content/80",
             "font-semibold": @showing_within == :dashboard
           }>{l("Ghosted instance-wide")}</span>
-          <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Circles are user defined group of users that shares similar characteristic")}</p>
+          <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l(
+              "Users or instances on this list will not be able to see or interact with anyone on this instance "
+            )}</p>
         </div>
       </LiveRedirect>
     </li>
@@ -185,7 +187,7 @@
             "text-sm text-base-content/80",
             "font-semibold": @showing_within == :dashboard
           }>{l("Silenced instance-wide")}</span>
-          <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Circles are user defined group of users that shares similar characteristic")}</p>
+          <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Nobody on this instance will receive any updates from the users or instances on this list ")}</p>
         </div>
       </LiveRedirect>
     </li>

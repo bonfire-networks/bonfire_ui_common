@@ -128,7 +128,7 @@
             "text-sm text-base-content/80",
             "font-semibold": @showing_within == :dashboard
           }>{l("Ghosted")}</span>
-          <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Circles are user defined group of users that shares similar characteristic")}</p>
+          <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Users or instances on this list will not be able to see or interact with you or your content")}</p>
         </div>
       </LiveRedirect>
     </li>
@@ -153,7 +153,7 @@
             "text-sm text-base-content/80",
             "font-semibold": @showing_within == :dashboard
           }>{l("Silenced")}</span>
-          <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Circles are user defined group of users that shares similar characteristic")}</p>
+          <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("You will not receive any updates from the users or instances on this list")}</p>
         </div>
       </LiveRedirect>
     </li>
