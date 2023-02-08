@@ -139,14 +139,11 @@
       </LivePatch>
     </li>
 
-    <li
-      class={
-        "",
-        "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
-          @showing_within == :dashboard
-      }
-     
-    >
+    <li class={
+      "",
+      "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
+        @showing_within == :dashboard
+    }>
       <LiveRedirect
         to={~p"/boundaries/instance_ghosted"}
         class={
@@ -167,14 +164,11 @@
         </div>
       </LiveRedirect>
     </li>
-    <li
-      class={
-        "",
-        "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
-          @showing_within == :dashboard
-      }
-   
-    >
+    <li class={
+      "",
+      "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
+        @showing_within == :dashboard
+    }>
       <LiveRedirect
         to={~p"/boundaries/instance_silenced"}
         class={
