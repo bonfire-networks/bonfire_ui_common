@@ -32,12 +32,24 @@ EmojiHooks.EmojiPicker = {
       // wait 1 second and append the picker to the DOM
       setTimeout(() => {
         this.el.querySelector("#picker").appendChild(picker);
-      }, 1000);
+      }, 2000);
     
     },
     updated() {
       console.log("emoji updated");
-      
+      // load the emoji picker
+      const picker = new Picker({
+        data: data,
+        emojiButtonSize: 30,
+        emojiSize: 20,
+        previewPosition: "none",
+        onEmojiSelect: function (emoji) {
+          // Insert the emoji at the cursor position
+          const area = document.querySelector(".composer");
+          insertText(area, emoji.native + " ")
+        }
+      });
+      this.el.querySelector("#picker").appendChild(picker);
     },
 
 }

@@ -13,7 +13,7 @@
         <Icon :if={@page_header_icon} iconify={@page_header_icon} class="w-5 h-5 text-accent" />
         <Bonfire.UI.Common.BackButtonLive :if={@back} />
         <span
-          class="max-w-[200px] md:max-w-max text-base md:text-sm  font-semibold truncate text-base-content text-ellipsis"
+          class="max-w-[200px] first-letter:capitalize md:max-w-max text-base md:text-sm  font-semibold truncate text-base-content text-ellipsis"
           :if={not is_nil(@page_title)}
         >{@page_title}</span>
       </div>

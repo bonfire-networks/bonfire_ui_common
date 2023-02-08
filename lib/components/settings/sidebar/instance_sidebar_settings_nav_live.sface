@@ -15,7 +15,7 @@
         <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("Website")}</span>
       </div>
     </li>
-    <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
+    <li>
       <LivePatch
         to={~p"/settings/instance/preferences"}
         class={
@@ -51,7 +51,7 @@
           </LivePatch>
         </li> -->
 
-    <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
+    <li>
       <LivePatch
         to={~p"/settings/instance/terms"}
         class={
@@ -86,8 +86,6 @@
     </li>
     <li>
       <LivePatch
-        :if={module_enabled?(Bonfire.Invite.Links, @__context__) and
-          Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
         to={~p"/settings/instance/members"}
         class={
           "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -104,8 +102,7 @@
 
     <li>
       <LivePatch
-        :if={module_enabled?(Bonfire.Invite.Links, @__context__) and
-          Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
+        :if={module_enabled?(Bonfire.Invite.Links, @__context__)}
         to={~p"/settings/instance/invites"}
         class={
           "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -126,7 +123,7 @@
       </div>
     </li>
 
-    <li :if={Bonfire.Boundaries.can?(@__context__, :configure, :instance)}>
+    <li>
       <LivePatch
         to={~p"/settings/instance/flags"}
         class={
@@ -148,7 +145,7 @@
         "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
           @showing_within == :dashboard
       }
-      :if={Bonfire.Boundaries.can?(@__context__, :block, :instance)}
+     
     >
       <LiveRedirect
         to={~p"/boundaries/instance_ghosted"}
@@ -176,7 +173,7 @@
         "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
           @showing_within == :dashboard
       }
-      :if={Bonfire.Boundaries.can?(@__context__, :block, :instance)}
+   
     >
       <LiveRedirect
         to={~p"/boundaries/instance_silenced"}
@@ -210,7 +207,7 @@
         <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("Advanced")}</span>
       </div>
     </li>
-    <li :if={Bonfire.Boundaries.can?(@__context__, :toggle, :instance)}>
+    <li>
       <LivePatch
         to={~p"/settings/instance/extensions"}
         class={
