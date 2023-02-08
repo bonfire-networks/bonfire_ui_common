@@ -18,8 +18,10 @@
     <!-- NOTE: this is only used if no other editor module (like `Bonfire.UI.Common.ComposerLive` by default) is configured -->
     <TextArea
       opts={
-        value: e(@smart_input_opts, :text, nil) || e(@smart_input_opts, :text_suggestion, nil),
-        placeholder: e(@smart_input_opts, :prompt, nil)
+        value:
+          (e(@smart_input_opts, :text, nil) || e(@smart_input_opts, :text_suggestion, ""))
+          |> debug("vvvv"),
+        placeholder: e(@smart_input_opts, :prompt, "") |> debug("ppppp")
       }
       class={@textarea_class}
     />

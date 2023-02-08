@@ -53,9 +53,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:instance_settings, fn -> nil end)
       |> assign_new(:to_circles, fn -> [] end)
       |> assign_new(:smart_input_opts, fn ->
-        [
+        %{
           as: Bonfire.UI.Common.SmartInputLive.set_smart_input_as(assigns[:thread_mode], assigns)
-        ]
+        }
       end)
       |> assign_new(:showing_within, fn -> nil end)
       |> assign_new(:without_sidebar, fn -> nil end)

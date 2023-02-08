@@ -17,10 +17,10 @@
         #{if e(@smart_input_opts, :as, nil) == :modal, do: "this.smart_input_fullscreen = true;"}
       }
     }"}
-  x-init={"smart_input_open = #{e(@smart_input_opts, :open, nil) == true}; smart_input_minimized = #{e(@smart_input_opts, :open, nil) != true and e(@smart_input_opts, :as, :floating) == :floating}; smart_input_as = '#{e(@smart_input_opts, :as, :floating)}'; "}
+  x-init={"smart_input_open = #{e(@smart_input_opts, :open, nil) == true}; smart_input_minimized = #{e(@smart_input_opts, :open, nil) != true and as(@smart_input_opts) == :floating}; smart_input_as = '#{as(@smart_input_opts) |> debug("asss")}'; "}
 >
   <Bonfire.UI.Common.SmartInputButtonsLive
-    :if={!@smart_input_opts[:hide_buttons]}
+    :if={!e(@smart_input_opts, :hide_buttons, nil)}
     smart_input_opts={@smart_input_opts}
     smart_input_component={@smart_input_component}
     create_object_type={@create_object_type}

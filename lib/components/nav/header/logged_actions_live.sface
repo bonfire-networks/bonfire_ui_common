@@ -1,6 +1,6 @@
 <div
-  :if={not is_nil(current_user_id(@__context__)) and !@smart_input_opts[:inline_only] and
-    !@smart_input_opts[:disable]}
+  :if={not is_nil(current_user_id(@__context__)) and !e(@smart_input_opts, :inline_only, nil) and
+    !e(@smart_input_opts, :disable, nil)}
   class="flex items-center justify-end flex-1"
 >
   <Bonfire.UI.Common.SmartInputContainerLive

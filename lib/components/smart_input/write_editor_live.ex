@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.WriteEditorLive do
 
   prop field_name, :string, default: "post[post_content][html_body]", required: false
   prop create_object_type, :any, default: nil
-  prop smart_input_opts, :list, default: []
+  prop smart_input_opts, :map, default: %{}
   prop showing_within, :string, default: nil
   prop insert_text, :string, default: nil
   prop thread_mode, :atom, default: nil

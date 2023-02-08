@@ -4,7 +4,7 @@ defmodule Bonfire.UI.Common.InputControlsLive do
 
   # prop target_component, :string
   prop preloaded_recipients, :list, default: nil
-  prop smart_input_opts, :list, default: []
+  prop smart_input_opts, :map, default: %{}
   prop reply_to_id, :any, default: nil
   prop context_id, :string, default: nil
   prop create_object_type, :any, default: nil

@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop to_boundaries, :any, default: nil
   prop to_circles, :list, default: []
   prop open_boundaries, :boolean, default: false
-  prop smart_input_opts, :list, default: []
+  prop smart_input_opts, :map, default: %{}
   prop showing_within, :any, default: nil
   prop activity, :any, default: nil
   prop object, :any, default: nil
@@ -95,7 +95,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     set(
       context,
       Keyword.merge(assigns,
-        smart_input_opts: Keyword.merge(assigns[:smart_input_opts] || [], open: true)
+        smart_input_opts: Map.merge(assigns[:smart_input_opts] || %{}, %{open: true})
       )
     )
   end
@@ -122,7 +122,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     set(
       socket_or_context,
       set_assigns ++
-        [smart_input_opts: [text_suggestion: text, open: true], reset_smart_input: false]
+        [smart_input_opts: %{text_suggestion: text, open: true}, reset_smart_input: false]
     )
   end
 
@@ -130,7 +130,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     # TODO: only trigger if using Quill as editor?
     # maybe_push_event(socket, "smart_input:set_body", %{text: text})
     replace_input_next_time(socket)
-    set(socket, smart_input_opts: [text: text, open: true], reset_smart_input: false)
+    set(socket, smart_input_opts: %{text: text, open: true}, reset_smart_input: false)
     socket
   end
 
@@ -149,11 +149,11 @@ defmodule Bonfire.UI.Common.SmartInputLive do
       to_circles: [],
       reply_to_id: e(socket.assigns, :thread_id, nil),
       to_boundaries: default_boundaries(socket),
-      smart_input_opts: [
+      smart_input_opts: %{
         open: false,
         text_suggestion: nil,
         text: nil
-      ]
+      }
     )
 
     socket
@@ -167,11 +167,11 @@ defmodule Bonfire.UI.Common.SmartInputLive do
       # avoid double-reset
       reset_smart_input: false,
       activity: nil,
-      smart_input_opts: [
+      smart_input_opts: %{
         open: false,
         text_suggestion: nil,
         text: nil
-      ]
+      }
     )
 
     socket
@@ -188,11 +188,11 @@ defmodule Bonfire.UI.Common.SmartInputLive do
       reply_to_id: e(socket.assigns, :thread_id, nil),
       thread_id: nil,
       to_boundaries: default_boundaries(socket),
-      smart_input_opts: [
+      smart_input_opts: %{
         open: false,
         text_suggestion: nil,
         text: nil
-      ]
+      }
     )
 
     socket

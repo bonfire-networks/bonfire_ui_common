@@ -9,8 +9,8 @@
         component={component}
         class={@class}
         smart_input_opts={@smart_input_opts}
-        prompt={@smart_input_opts[:prompt]}
-        icon={e(@smart_input_opts[:icon], "mdi:pencil-outline")}
+        prompt={e(@smart_input_opts, :prompt, nil)}
+        icon={e(@smart_input_opts, :icon, "mdi:pencil-outline")}
         showing_within={:smart_input}
       />
 
@@ -20,7 +20,7 @@
         component={Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
           Bonfire.UI.Social.WritePostContentLive}
         class={@class}
-        icon={e(@smart_input_opts[:icon], "mdi:pencil-outline")}
+        icon={e(@smart_input_opts, :icon, "mdi:pencil-outline")}
         showing_within={:smart_input}
       />
   {/case}
