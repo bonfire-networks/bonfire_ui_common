@@ -29,7 +29,7 @@
   <div
     x-show="smart_input_open"
     style="bottom: 0"
-    class="smart_input_container fixed visible md:rounded-t-lg max-w-full md:w-[32rem] left-0 bg-base-200 top-0 mx-auto md:top-auto z-[9999] transition-all md:shadow-xl right-0 md:right-4 md:left-auto bottom-0  overflow-x-auto"
+    class="smart_input_container fixed visible md:rounded-t-lg max-w-full md:w-[32rem] left-0 bg-base-200 top-0 mx-auto md:top-auto z-[9999] transition-all shadow-composer right-0 md:right-4 md:left-auto bottom-0  overflow-x-auto"
     :class="{
       'hidden md:block !w-[20rem] bottom-0': smart_input_minimized
     }"
