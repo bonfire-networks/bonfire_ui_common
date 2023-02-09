@@ -1,9 +1,10 @@
 <Bonfire.UI.Common.WidgetBlockLive
   widget_title={@title}
-  class="relative w-full mx-auto rounded-lg bg-base-100"
+  class="relative w-full mx-auto rounded-lg"
 >
-  <ul class={"grid grid-cols-#{@cols} p-2 menu menu-compact bg-base-content/5 divide-x divide-base-300"}>
+  <ul class={"grid grid-cols-#{@cols} gap-3 menu menu-compact"}>
     <li
+      class="rounded-lg bg-base-content/5"
       :for={{app, extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
       :if={(@showing_within != :nav or extension[:exclude_from_nav] != true) |> debug("nav? #{app}") and
         ((@show_disabled_only == true and !extension_enabled?(app, @current_user))
@@ -12,10 +13,10 @@
            |> debug("enabled? #{app}") or
            (@show_enabled_only == false or @show_disabled_only == false) |> debug("any? #{app}"))}
     >
-      <LiveRedirect to={extension[:href]}>
-        <div class="flex flex-col items-center w-full">
+      <LiveRedirect class="hover:rounded-lg" to={extension[:href]}>
+        <div class="flex flex-col items-center w-full ">
           <Icon iconify={extension[:icon]} class="w-8 h-8" />
-          <div class="flex-1 mt-3 text-xs font-medium text-center text-base-content/80">{extension[:name]}</div>
+          <div class="flex-1 max-w-[100px] mt-3 text-xs font-medium text-center truncate text-base-content/80">{extension[:name]}</div>
         </div>
       </LiveRedirect>
     </li>
