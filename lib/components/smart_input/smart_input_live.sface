@@ -1,14 +1,30 @@
-<div
-  x-cloak
-  x-on:click="smart_input_minimized = !smart_input_minimized; smart_input_fullscreen = false"
-  x-show="!open_boundaries"
-  class="left-0 m-0 block right-0 border-base-300 border w-full bg-base-200 sticky top-0 z-[99999] cursor-pointer p-3 md:hidden"
->
-  <div class="flex items-center gap-2 p-2-b">
-    <Icon iconify="heroicons-solid:arrow-left" class="w-5 h-5 stroke-1 text-neutral-content" />
-    <span class="text-sm text-neutral-content">{l("Back")}</span>
+<div class="left-0 m-0 flex justify-between right-0 border-base-300 border w-full bg-base-200 sticky top-0 z-[99999]  p-3 md:hidden">
+  <div class="flex gap-3">
+    <Bonfire.UI.Common.AvatarLive
+      class="inline-block object-cover w-8 h-8 rounded-lg"
+      bg_class="bg-base-300 rounded"
+      size="32"
+      user={current_user(@__context__)}
+    />
+    <div class="flex items-center">
+      <div class="flex flex-col flex-1">
+        <span class="text-sm font-bold text-base-content">{e(current_user(@__context__), :profile, :name, "unknown")}</span>
+      </div>
+    </div>
+  </div>
+  <div 
+    x-cloak
+    x-on:click="smart_input_minimized = !smart_input_minimized; smart_input_fullscreen = false"
+    x-show="!open_boundaries"
+    class="normal-case btn btn-circle btn-sm">
+      <span class="sr-only">{l("Close")}</span>
+      <Icon outline="X" class="w-4 h-4" />
+    <!-- <Icon iconify="heroicons-solid:arrow-left" class="w-5 h-5 stroke-1 text-neutral-content" />
+    <span class="text-sm text-neutral-content">{l("Back")}</span> -->
   </div>
 </div>
+
+
 <div id="composer_container" data-id="smart_input" class="flex-1 h-full grow">
   <!-- 'hidden': !smart_input_open  && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && @thread_mode != :flat} -->
   <div

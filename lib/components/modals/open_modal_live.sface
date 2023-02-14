@@ -48,7 +48,7 @@
       <label class={@wrapper_class, "modal-box relative"} for="">
         <label
           for={@id}
-          class="absolute top-0 right-0 block pt-5 pr-4 normal-case btn btn-ghost btn-circle btn-sm"
+          class="absolute top-0 right-0 z-30 block pt-5 pr-4 normal-case btn btn-circle btn-sm"
         >
           <span class="sr-only">{l("Close")}</span>
           <Icon outline="X" class="w-4 h-4" />
