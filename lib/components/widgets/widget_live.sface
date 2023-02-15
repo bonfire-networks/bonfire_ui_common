@@ -23,13 +23,13 @@
         {#case widget(@widget, @__context__)[:badge]}
           {#match nil}
           {#match badge}
-          <div>
-            <Dynamic.LiveComponent
-              id={badge[:id] || Pointers.ULID.generate()}
-              module={Bonfire.UI.Common.BadgeCounterLive}
-              feed_id={badge[:feed_id] || e(@current_user, :character, badge[:feed_key], nil)}
-            />
-          </div>
+            <div>
+              <Dynamic.LiveComponent
+                id={badge[:id] || Pointers.ULID.generate()}
+                module={Bonfire.UI.Common.BadgeCounterLive}
+                feed_id={badge[:feed_id] || e(@current_user, :character, badge[:feed_key], nil)}
+              />
+            </div>
         {/case}
       </LiveRedirect>
     {#match Surface.Component}

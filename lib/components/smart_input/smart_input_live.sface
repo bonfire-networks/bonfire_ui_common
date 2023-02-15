@@ -12,18 +12,18 @@
       </div>
     </div>
   </div>
-  <div 
+  <div
     x-cloak
     x-on:click="smart_input_minimized = !smart_input_minimized; smart_input_fullscreen = false"
     x-show="!open_boundaries"
-    class="normal-case btn btn-circle btn-sm">
-      <span class="sr-only">{l("Close")}</span>
-      <Icon outline="X" class="w-4 h-4" />
+    class="normal-case btn btn-circle btn-sm"
+  >
+    <span class="sr-only">{l("Close")}</span>
+    <Icon outline="X" class="w-4 h-4" />
     <!-- <Icon iconify="heroicons-solid:arrow-left" class="w-5 h-5 stroke-1 text-neutral-content" />
     <span class="text-sm text-neutral-content">{l("Back")}</span> -->
   </div>
 </div>
-
 
 <div id="composer_container" data-id="smart_input" class="flex-1 h-full grow">
   <!-- 'hidden': !smart_input_open  && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && @thread_mode != :flat} -->

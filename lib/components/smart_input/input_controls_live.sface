@@ -81,7 +81,7 @@
         </div>
         <div phx-update="ignore" id="editor_emoji">
           <div
-           phx-hook="EmojiPicker"
+            phx-hook="EmojiPicker"
             id="EmojiPicker"
             x-data="{
               open: false,

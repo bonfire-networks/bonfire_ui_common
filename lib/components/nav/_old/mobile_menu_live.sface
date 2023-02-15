@@ -21,7 +21,7 @@
       aria-label={l("Extension navigation")}
     >
       <ul class="gap-1 menu menu-compact">
-        {#for nav <- @nav_items}
+        <!-- {#for nav <- @nav_items}
           {#case nav}
             {#match %{} = nav}
               <li x-on:click="open_sidebar = false" :if={!nav[:exclude_from_nav]}>
@@ -44,7 +44,8 @@
                 />
               </li>
           {/case}
-        {/for}
+        {/for} -->
+
         <Bonfire.UI.Common.UserMenuLinksLive mobile />
       </ul>
     </nav>
