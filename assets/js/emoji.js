@@ -1,6 +1,6 @@
 let EmojiHooks = {};
 
-const { Picker } = await import('emoji-mart')
+import { Picker } from "emoji-mart";
 import insertText from 'insert-text-at-cursor';
 const promise = import('@emoji-mart/data/sets/14/twitter.json').then(r => r.default)
 
