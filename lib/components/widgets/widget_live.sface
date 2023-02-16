@@ -23,7 +23,7 @@
         {#case widget(@widget, @__context__)[:badge]}
           {#match nil}
           {#match badge}
-            <div>
+            <div class="flex items-center place-content-center">
               <Dynamic.LiveComponent
                 id={badge[:id] || Pointers.ULID.generate()}
                 module={Bonfire.UI.Common.BadgeCounterLive}

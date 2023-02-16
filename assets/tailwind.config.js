@@ -103,10 +103,23 @@ module.exports = {
       {
         bonfire: {
           ...require("daisyui/src/colors/themes")["[data-theme=dracula]"],
-          "primary": "#fde047"
+          "primary": "#fde047",
+          "secondary": "#414558",
+          "secondary-content": "#C2CBF5"
         },
+        light: {
+          ...require("daisyui/src/colors/themes")["[data-theme=light]"],
+          "secondary": "#414558",
+          "secondary-content": "#444b5d",
+          "base-300": "#f0f2f5"
+        },
+        dark: {
+          ...require("daisyui/src/colors/themes")["[data-theme=dark]"],
+          "secondary": "#414558",
+          "secondary-content": "#C2CBF5"
+        }
       },
-      "dark", "light", "cupcake", "bumblebee", "emerald", "corporate", "synthwave", "retro", "cyberpunk", "valentine", "halloween", "garden", "forest", "aqua", "lofi", "pastel", "fantasy", "wireframe", "black", "luxury", "dracula", "cmyk", "autumn", "business", "acid", "lemonade", "night", "coffee", "winter"
+      "cupcake", "bumblebee", "emerald", "corporate", "synthwave", "retro", "cyberpunk", "valentine", "halloween", "garden", "forest", "aqua", "lofi", "pastel", "fantasy", "wireframe", "black", "luxury", "dracula", "cmyk", "autumn", "business", "acid", "lemonade", "night", "coffee", "winter"
     ]
   },
   variants: {
