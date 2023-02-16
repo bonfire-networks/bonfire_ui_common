@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.Web do
   @moduledoc false
 
-  alias Bonfire.Common.Utils
+  # alias Bonfire.Common.Utils
 
   # TODO: configurable
   def static_paths,

@@ -13,7 +13,7 @@
           </span>
         </#slot>
       </div>
-    {#match href}
+    {#match _href}
       <a
         :on-click={@click_open_event}
         class={@open_btn_wrapper_class}
@@ -84,7 +84,7 @@
             </span>
           </#slot>
         </div>
-      {#match href}
+      {#match _href}
         <a class={@open_btn_wrapper_class} href={@href} {...@open_btn_opts}>
           <#slot {@open_btn, value: @value}>
             <span class={@open_btn_class}>

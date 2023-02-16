@@ -6,7 +6,6 @@
           {#match url when is_binary(url) and url != avatar_fallback}
             <div class={@bg_class}>
               <LazyImage
-                title={@title}
                 src={url}
                 alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
                   e(@user, :username, nil) ||

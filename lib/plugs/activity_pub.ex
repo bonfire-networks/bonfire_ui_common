@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.Plugs.ActivityPub do
   import Plug.Conn
-  import Untangle
+  # import Untangle
 
   def init(_opts), do: nil
 
@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common.Plugs.ActivityPub do
   end
 
   def with_headers(
-        %{params: params} = conn,
+        %{params: _params} = conn,
         %{"accept" => "application/ld+json" <> _},
         _opts
       ) do
@@ -21,7 +21,7 @@ defmodule Bonfire.UI.Common.Plugs.ActivityPub do
   end
 
   def with_headers(
-        %{params: params} = conn,
+        %{params: _params} = conn,
         %{"accept" => "application/activity+json" <> _},
         _opts
       ) do
@@ -29,7 +29,7 @@ defmodule Bonfire.UI.Common.Plugs.ActivityPub do
   end
 
   def with_headers(
-        %{params: params} = conn,
+        %{params: _params} = conn,
         %{"accept" => "application/json" <> _},
         _opts
       ) do

@@ -11,7 +11,7 @@
     />
     <div class="flex justify-between w-full">
       <div class="flex items-center gap-2">
-        {#for {name, id} <- @to_circles}
+        {#for {name, _id} <- @to_circles}
           <span class="badge">{name}</span>
         {/for}
       </div>

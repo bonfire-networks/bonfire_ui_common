@@ -6,6 +6,25 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
   alias Bonfire.UI.Common.PersistentLive
 
+  prop page, :string, default: nil
+  prop page_title, :string, default: nil
+  prop selected_tab, :any, default: nil
+  prop notification, :any, default: nil
+  prop page_header_aside, :any, default: nil
+  prop page_header_icon, :string, default: nil
+  prop inner_content, :any, default: nil
+  prop back, :boolean, default: false
+  prop object_id, :string, default: nil
+  prop post_id, :string, default: nil
+  prop context_id,  :string, default: nil
+  prop reply_to_id, :string, default: nil
+  prop create_object_type, :any, default: nil
+  prop nav_items, :any, default: []
+  prop instance_settings, :any, default: nil
+  prop to_circles, :any, default: nil
+  prop smart_input_opts, :any, default: nil
+
+
   def maybe_custom_theme(context) do
     if Settings.get([:ui, :theme, :preferred], nil, context) == :custom do
       config =
@@ -158,9 +177,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
                         page_title={@page_title}
                         page_header_icon={@page_header_icon}
                         back={@back}
-                        page={@page}
-                        transparent_header={@transparent_header}
-                        selected_tab={@selected_tab}
                       >
                         <:right_action>
                           <Dynamic.Component

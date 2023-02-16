@@ -4,13 +4,13 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   import ExUnit.Assertions
   import Plug.Conn
   import Phoenix.ConnTest
-  import Untangle
+  # import Untangle
   alias Bonfire.Common.Utils
   alias Bonfire.Me.Users
   alias Bonfire.Data.Identity.Account
   alias Bonfire.Data.Identity.User
   alias Surface.Components.Dynamic
-  alias Surface.Components.Context
+  # alias Surface.Components.Context
 
   @endpoint Application.compile_env!(:bonfire, :endpoint_module)
 

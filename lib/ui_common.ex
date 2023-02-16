@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Common do
   use Untangle
   alias Bonfire.Common.PubSub
 
-  defmacro __using__(opts) do
+  defmacro __using__(_opts) do
     # TODO: pass opts to the nested `use`
     quote do
       use Bonfire.Common.Utils
@@ -895,7 +895,7 @@ defmodule Bonfire.UI.Common do
     Phoenix.LiveView.put_flash(socket, type, message)
   end
 
-  def assign_flash(%Plug.Conn{} = conn, type, message, assigns, pid) do
+  def assign_flash(%Plug.Conn{} = conn, type, message, assigns, _pid) do
     # info(message, type)
     # TODO: use assigns too
     conn

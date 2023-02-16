@@ -49,7 +49,7 @@ defmodule Bonfire.UI.Common.MultiselectLive do
     preloaded_options(preloaded_options)
     # |> debug(entry)
     |> Enum.filter(fn
-      {name, id} when id == entry -> true
+      {_name, id} when id == entry -> true
       _ -> false
     end)
     |> List.first() ||

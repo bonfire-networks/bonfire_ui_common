@@ -1,3 +1,4 @@
+<div>
 {#if to_string(@id) not in @required_deps}
   {#case Config.get([@id, :disabled], nil)}
     {#match globally_disabled}
@@ -47,3 +48,4 @@
       {/if}
   {/case}
 {/if}
+</div>

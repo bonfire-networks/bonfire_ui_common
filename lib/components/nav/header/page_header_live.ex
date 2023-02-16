@@ -4,9 +4,9 @@ defmodule Bonfire.UI.Common.PageHeaderLive do
   @doc "Title to show in header. Only used if no default slot is set"
   prop page_title, :string, default: nil
   # prop selected_tab, :string, default: nil
-  prop page, :string, default: nil
+  # prop page, :string, default: nil
   prop back, :boolean, default: false, required: false
-  prop transparent_header, :boolean, default: false
+  # prop transparent_header, :boolean, default: false
   prop page_header_icon, :string, default: nil
   # prop showing_within, :string, default: nil
 

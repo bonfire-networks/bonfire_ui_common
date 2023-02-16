@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
   @moduledoc """
   Static-site generator which can take a list of URLs served by the current Phoenix server and output static HTML for them
   """
-  import Plug.Conn
+  # import Plug.Conn
   import Phoenix.ConnTest
   import Untangle
   alias Bonfire.Common.Config

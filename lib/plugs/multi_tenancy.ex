@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.MultiTenancyPlug do
   @behaviour Plug
-  import Untangle
+  # import Untangle
 
   @impl true
   def init(_opts) do

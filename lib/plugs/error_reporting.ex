@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.ErrorReportingPlug do
   @behaviour Plug
-  import Untangle
+  # import Untangle
 
   defmacro __using__(_) do
     quote do

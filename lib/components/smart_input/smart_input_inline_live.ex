@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.SmartInputInlineLive do
   use Bonfire.UI.Common.Web, :stateful_component
-  alias Bonfire.UI.Common.SmartInputLive
+  # alias Bonfire.UI.Common.SmartInputLive
 
   prop reply_to_id, :any, default: nil
   prop context_id, :string, default: nil, required: false
