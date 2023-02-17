@@ -75,6 +75,7 @@ defmodule Bonfire.UI.Common.Web do
       # Include shared imports and aliases for views
       import Surface
       use Surface.View, unquote(opts)
+
       # to support Surface components in the app layout and in non-LiveViews ^ - FIXME: not compatible with phx 1.7? 
 
       unquote(live_view_helpers())

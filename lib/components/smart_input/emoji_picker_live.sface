@@ -1,0 +1,39 @@
+<div
+  x-data="{
+    open: false,
+    close(focusAfter) {
+      if (! this.open) return
+      this.open = false
+      focusAfter && focusAfter.focus()
+    }
+  }"
+  x-on:keydown.escape.prevent.stop="close($refs.button)"
+>
+  <button
+    title={l("Insert emoji")}
+    type="button"
+    @click="open = ! open"
+    class="btn btn-ghost btn-sm text-[22px] btn-circle"
+  >
+    <Icon
+      iconify="entypo:emoji-happy"
+      class="w-5 h-5 md:w-4 md:h-4 text-base-content text-opacity-70"
+    />
+  </button>
+
+  <div
+    x-ref="panel"
+    x-show="open"
+    x-transition.origin.top.left
+    x-on:click.outside="close($refs.button)"
+    class={
+      @class,
+      "absolute z-50 emoji-picker"
+    }
+    role="tooltip"
+  >
+    <div phx-update="ignore" phx-hook="EmojiPicker" data-target_field={@target_field} id={@id}>
+      <div class="picker" />
+    </div>
+  </div>
+</div>

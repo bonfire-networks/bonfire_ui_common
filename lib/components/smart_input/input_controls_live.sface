@@ -21,7 +21,6 @@
   />
 </div>
 
-
 <!-- FIXME: select message recipients
   <div
     :if={@show_select_recipients ||
@@ -80,52 +79,19 @@
             <span class="text-xs font-medium text-base-content text-opacity-70">{l("CW")}</span>
           </button>
         </div>
-        
-          <div
-            x-data="{
-              open: false,
-              close(focusAfter) {
-                if (! this.open) return
-                this.open = false
-                focusAfter && focusAfter.focus()
-              }
-            }"
-            x-on:keydown.escape.prevent.stop="close($refs.button)"
-          >
-          
-            <button
-              title={l("Insert emoji")}
-              type="button"
-              @click="open = ! open"
-              class="btn btn-ghost btn-sm text-[22px] btn-circle"
-            >
-              <Icon
-                iconify="entypo:emoji-happy"
-                class="w-5 h-5 md:w-4 md:h-4 text-base-content text-opacity-70"
-              />
-            </button>
 
-            <div
-              x-ref="panel"
-              x-show="open"
-              x-transition.origin.top.left
-              x-on:click.outside="close($refs.button)"
-              class={
-                "absolute z-50 emoji-picker",
-                "bottom-10 left-3": @thread_mode == :flat,
-                "bottom-10 left-3": @thread_mode != :flat,
-                "!top-10 right-0 bottom-[auto]": @showing_within == :page
-              }
-              role="tooltip"
-            >
-              <div 
-                phx-update="ignore" 
-                phx-hook="EmojiPicker" 
-                id="editor_emoji">
-                <div class="picker" />
-              </div>
-            </div>
-          </div>
+        <Dynamic.Component
+          :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
+          module={Bonfire.UI.Common.EmojiPickerLive}
+          target_field=".composer"
+          class={
+            "bottom-10 left-3": @thread_mode == :flat,
+            "bottom-10 left-3": @thread_mode != :flat,
+            "!top-10 right-0 bottom-[auto]": @showing_within == :page
+          }
+          }
+        />
+
         <Dynamic.Component
           :if={!is_messaging?(%{
             page: @page,

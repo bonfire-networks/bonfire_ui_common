@@ -97,6 +97,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:without_widgets, fn -> false end)
       |> assign_new(:sidebar_widgets, fn -> [] end)
       |> assign_new(:thread_mode, fn -> nil end)
+
     # |> assign_new(:hero, fn -> nil end)
     # |> assign_new(:custom_page_header, fn -> nil end)
     #     fn -> (not is_nil(current_user(assigns)) &&
