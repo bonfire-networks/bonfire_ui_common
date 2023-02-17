@@ -21,6 +21,7 @@
   />
 </div>
 
+
 <!-- FIXME: select message recipients
   <div
     :if={@show_select_recipients ||
@@ -118,7 +119,12 @@
               }
               role="tooltip"
             >
-              <div id="picker" />
+              <div 
+                phx-update="ignore" 
+                phx-hook="EmojiPicker" 
+                id="editor_emoji">
+                <div class="picker" />
+              </div>
             </div>
           </div>
         </div>

@@ -2,7 +2,7 @@ let EmojiHooks = {};
 
 import { Picker } from "emoji-mart";
 import insertText from 'insert-text-at-cursor';
-const promise = import('@emoji-mart/data/sets/14/twitter.json').then(r => r.default)
+import data from '@emoji-mart/data'
 
 
 
@@ -11,10 +11,9 @@ EmojiHooks.EmojiPicker = {
   
   mounted() {
     const picker = new Picker({
-      data: () => promise,
+      data: data,
       emojiButtonSize: 30,
       emojiSize: 20,
-      set: "twitter",
       previewPosition: "none",
       onEmojiSelect: function (emoji) {
         
@@ -34,7 +33,7 @@ EmojiHooks.EmojiPicker = {
       
     });
     // wait for the data to be loaded correctly before appending the picker
-    this.el.querySelector("#picker").appendChild(picker);
+    this.el.querySelector(".picker").appendChild(picker);
 
     
     }

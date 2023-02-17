@@ -20,4 +20,16 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop open_boundaries, :boolean, default: false
   prop show_select_recipients, :boolean, default: false
   prop boundaries_modal_id, :string, default: :sidebar_composer
+
+  def hide_modal(js \\ %JS{}) do
+    js
+    |> JS.hide(transition: "fade-out", to: "#picker")
+    |> JS.add_class("hidden", to: "#picker")
+  end
+
+  def show_modal(js \\ %JS{}) do
+    js
+    |> JS.show(transition: "fade-in", to: "#picker")
+    |> JS.remove_class("hidden", to: "#picker")
+  end
 end
