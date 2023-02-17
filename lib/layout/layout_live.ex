@@ -18,7 +18,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   # prop current_app, :any, default: nil
   prop flash, :any, default: nil
   prop csrf_token, :any, default: nil
-  prop instance_settings, :any, default: nil
+  prop instance_settings, :any, default: :settings, required: false
 
   prop notification, :any, default: nil
 
@@ -86,7 +86,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       style={maybe_custom_theme(
         current_user: @current_user,
         current_account: @current_account,
-        instance_settings: @instance_settings
+        instance_settings: e(assigns, :instance_settings, nil)
       )}
       x-data="{
           open_sidebar: false
@@ -100,43 +100,43 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <Bonfire.UI.Common.GuestHeaderLive
           current_user={@current_user}
           current_account={@current_account}
-          page_title={@page_title}
-          page={@page}
+          page_title={e(assigns, :page_title, nil)}
+          page={e(assigns, :page, nil)}
         />
       </div -->
 
       <div class={
         "w-full px-0 md:px-4 grid max-w-[1260px] gap-0 md:gap-4 widget xl:px-0 mx-auto",
-        "!grid-cols-1 content-start": @without_sidebar && @without_widgets,
+        "!grid-cols-1 content-start": e(assigns, :without_sidebar, nil) && e(assigns, :without_widgets, nil),
         # "grid-cols-1 !max-w-full": !@current_user,
         "grid-cols-1 md:grid-cols-[280px_1fr] tablet-lg:grid-cols-[280px_1fr_320px]": !@current_user,
         "grid-cols-1 md:grid-cols-1 content-start !max-w-full":
-          @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)),
-        "grid-cols-1 md:grid-cols-[280px_1fr]": @current_user && @without_widgets && !@without_sidebar,
+          e(assigns, :without_sidebar, nil) && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)),
+        "grid-cols-1 md:grid-cols-[280px_1fr]": @current_user && e(assigns, :without_widgets, nil) && !e(assigns, :without_sidebar, nil),
         "grid-cols-1 md:grid-cols-[280px_1fr] tablet-lg:grid-cols-[280px_1fr_320px] ":
-          @current_user && !@without_sidebar && !@without_widgets
+          @current_user && !e(assigns, :without_sidebar, nil) && !e(assigns, :without_widgets, nil)
       }>
         <Bonfire.UI.Common.NavSidebarLive
-          :if={!@without_sidebar}
-          page={@page}
-          selected_tab={@selected_tab}
-          nav_items={@nav_items}
-          sidebar_widgets={@sidebar_widgets}
+          :if={!e(assigns, :without_sidebar, nil)}
+          page={e(assigns, :page, nil)}
+          selected_tab={e(assigns, :selected_tab, nil)}
+          nav_items={e(assigns, :nav_items, nil)}
+          sidebar_widgets={e(assigns, :sidebar_widgets, [])}
         />
 
         <div
           data-id="main_section"
           class={
             "relative w-full max-w-[1280px] gap-2 md:gap-0 z-[105] col-span-1 ",
-            "!max-w-full": @without_widgets,
+            "!max-w-full": e(assigns, :without_widgets, nil),
             "!max-w-full": !@current_user,
-            "mx-auto order-last": @without_sidebar
+            "mx-auto order-last": e(assigns, :without_sidebar, nil)
           }
         >
           <div class={
             "h-full mt-0 grid tablet-lg:grid-cols-[1fr] desktop-lg:grid-cols-[1fr] grid-cols-1",
-            "max-w-screen-lg gap-4 mx-auto": @without_widgets,
-            "justify-between": !@without_widgets
+            "max-w-screen-lg gap-4 mx-auto": e(assigns, :without_widgets, nil),
+            "justify-between": !e(assigns, :without_widgets, nil)
           }>
             <div class="relative invisible_frame">
               <div class="pb-16 md:pb-0 md:overflow-y-visible">
@@ -145,14 +145,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   id="inner"
                   class={
                     "md:mt-0 bg-base-100 min-h-[calc(var(--inner-window-height)_-_22px)] pb-40 md:pb-[1px]":
-                      !@without_sidebar
+                      !e(assigns, :without_sidebar, nil)
                   }
                 >
                   <div
-                    :if={!@without_sidebar}
+                    :if={!e(assigns, :without_sidebar, nil)}
                     class={
                       "sticky top-0  md:pt-3 bg-base-300 z-[999]",
-                      "!bg-transparent md:!bg-base-300 !fixed left-0 right-0 md:!sticky": @transparent_header
+                      "!bg-transparent md:!bg-base-300 !fixed left-0 right-0 md:!sticky": e(assigns, :transparent_header, false)
                     }
                   >
                     <div
@@ -160,20 +160,20 @@ defmodule Bonfire.UI.Common.LayoutLive do
                       @scroll.window="atTop = (window.pageYOffset < 100) ? false: true"
                       class={
                         "flex flex-1 rounded-none md:rounded-t bg-base-100 transition-color duration-150 ease-in-out",
-                        "bg-transparent md:bg-base-100": @transparent_header
+                        "bg-transparent md:bg-base-100": e(assigns, :transparent_header, false)
                       }
                       :class="{'!bg-base-100': atTop}"
                     >
                       <Dynamic.Component
                         module={Bonfire.UI.Common.PageHeaderLive}
-                        page_title={@page_title}
-                        page_header_icon={@page_header_icon}
-                        back={@back}
+                        page_title={e(assigns, :page_title, nil)}
+                        page_header_icon={e(assigns, :page_header_icon, nil)}
+                        back={e(assigns, :back, nil)}
                       >
                         <:right_action>
                           <Dynamic.Component
-                            :if={@page_header_aside}
-                            :for={{component, component_assigns} <- e(@page_header_aside, [])}
+                            :if={e(assigns, :page_header_aside, nil)}
+                            :for={{component, component_assigns} <- e(e(assigns, :page_header_aside, nil), [])}
                             module={component}
                             {...component_assigns}
                           />
@@ -190,7 +190,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         </div>
         <PersistentLive
           id={:persistent}
-          :if={!@without_sidebar}
+          :if={!e(assigns, :without_sidebar, nil)}
           sticky
           container={
             {:div, class: "order-first md:order-none md:static fixed left-0 right-0 top-0 z-[999]"}
