@@ -1,0 +1,6 @@
+<div 
+          phx-update="ignore" 
+          phx-hook="EmojiPicker" 
+          id="editor_emoji">
+          <div class="picker" />
+        </div>

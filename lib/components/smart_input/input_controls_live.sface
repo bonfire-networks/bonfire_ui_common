@@ -80,10 +80,8 @@
             <span class="text-xs font-medium text-base-content text-opacity-70">{l("CW")}</span>
           </button>
         </div>
-        <div phx-update="ignore" id="editor_emoji">
+        
           <div
-            phx-hook="EmojiPicker"
-            id="EmojiPicker"
             x-data="{
               open: false,
               close(focusAfter) {
@@ -94,6 +92,7 @@
             }"
             x-on:keydown.escape.prevent.stop="close($refs.button)"
           >
+          
             <button
               title={l("Insert emoji")}
               type="button"
@@ -127,7 +126,6 @@
               </div>
             </div>
           </div>
-        </div>
         <Dynamic.Component
           :if={!is_messaging?(%{
             page: @page,
