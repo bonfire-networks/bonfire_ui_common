@@ -32,6 +32,10 @@ defmodule Bonfire.UI.Common do
     Map.merge(map, Map.new(assigns))
   end
 
+  def assign_generic(_, assigns) do
+    Map.new(assigns)
+  end
+
   def assign_generic(%Phoenix.LiveView.Socket{} = socket, key, value) do
     Phoenix.Component.assign(socket, key, value)
   end
@@ -44,8 +48,8 @@ defmodule Bonfire.UI.Common do
     Map.put(map, key, value)
   end
 
-  def assign_generic(nil, assigns) do
-    Map.new(assigns)
+  def assign_generic(_, key, value) do
+    %{} |> Map.put(key, value)
   end
 
   def assign_global(socket, assigns) when is_map(assigns) do
@@ -175,7 +179,7 @@ defmodule Bonfire.UI.Common do
     assign_generic(socket, key, value)
   end
 
-  def maybe_assign(socket, key, _) do
+  def maybe_assign(socket, _key, _) do
     socket
   end
 
@@ -417,7 +421,7 @@ defmodule Bonfire.UI.Common do
     assign_generic(socket, assigns_to_broadcast)
   end
 
-  defp assigns_broadcast(assigns, assign_target_ids \\ [])
+  defp assigns_broadcast(assigns, assign_target_ids)
 
   defp assigns_broadcast(assigns, assign_target_ids) when is_list(assigns) do
     assigns_clean(assigns)
@@ -458,6 +462,12 @@ defmodule Bonfire.UI.Common do
     {:assign, assign_name}
   end
 
+  defp db_error,
+    do:
+      l(
+        "Sorry, the data provided has missing fields or is invalid and could do not be inserted or updated"
+      )
+
   @doc """
   Run a function and expects tuple.
   If anything else is returned, like an error, a flash message is shown to the user.
@@ -491,7 +501,7 @@ defmodule Bonfire.UI.Common do
       live_exception(
         socket,
         return_key,
-        "You seem to have provided an incorrect data type (eg. an invalid ID): ",
+        l("Sorry, the app tried to use an invalid data type"),
         error,
         __STACKTRACE__
       )
@@ -500,7 +510,7 @@ defmodule Bonfire.UI.Common do
       live_exception(
         socket,
         return_key,
-        "You seem to be referencing an invalid object ID, or trying to insert duplicated data: ",
+        l("Sorry, the app tried to reference an invalid identifier or create a duplicate one"),
         error,
         __STACKTRACE__
       )
@@ -509,7 +519,7 @@ defmodule Bonfire.UI.Common do
       live_exception(
         socket,
         return_key,
-        "A connection error prevented the database from being accessed. Please try again later.",
+        "Sorry, could not connect to the database. Please try again later and/or contact the instance operators.",
         error,
         __STACKTRACE__
       )
@@ -518,8 +528,7 @@ defmodule Bonfire.UI.Common do
       live_exception(
         socket,
         return_key,
-        "The data provided caused an unexpected error and could do not be inserted or updated: " <>
-          Errors.error_msg(cs),
+        db_error() <> ": #{Errors.error_msg(cs)}",
         cs,
         nil
       )
@@ -534,7 +543,11 @@ defmodule Bonfire.UI.Common do
         live_exception(
           socket,
           return_key,
-          "The function #{function}/#{arity} in module #{module} didn't receive data in a format it can recognise: ",
+          l(
+            "Sorry, the function %{function_name} in module %{module_name} didn't receive the data it was expecting",
+            function_name: "`#{function}/#{arity}`",
+            module_name: "`#{module}`"
+          ),
           error,
           __STACKTRACE__
         )
@@ -543,7 +556,7 @@ defmodule Bonfire.UI.Common do
           live_exception(
             socket,
             return_key,
-            "A function didn't receive data in a format it could recognise: ",
+            l("Sorry, a function didn't receive the data it was expecting"),
             error,
             __STACKTRACE__
           )
@@ -551,7 +564,7 @@ defmodule Bonfire.UI.Common do
 
     error in WithClauseError ->
       term_error(
-        "A `with` condition didn't receive data in a format it could recognise: ",
+        l("Sorry, a condition didn't match `with` any of the data it was expecting"),
         socket,
         return_key,
         error,
@@ -560,7 +573,7 @@ defmodule Bonfire.UI.Common do
 
     error in CaseClauseError ->
       term_error(
-        "A `case` condition didn't receive data in a format it could recognise: ",
+        l("Sorry, a condition didn't have any `case` matching the data it was expecting"),
         socket,
         return_key,
         error,
@@ -569,7 +582,7 @@ defmodule Bonfire.UI.Common do
 
     error in MatchError ->
       term_error(
-        "A condition didn't receive data that matched a format it could recognise: ",
+        l("Sorry, a condition didn't receive data that matched a format it could recognise"),
         socket,
         return_key,
         error,
@@ -580,16 +593,19 @@ defmodule Bonfire.UI.Common do
       live_exception(
         socket,
         return_key,
-        "The app encountered an unexpected error: ",
+        l("Sorry, the app encountered an unexpected error"),
         error,
         __STACKTRACE__
       )
   catch
+    :exit, {:error, error} when is_binary(error) ->
+      live_exception(socket, return_key, error, nil, __STACKTRACE__)
+
     :exit, error ->
       live_exception(
         socket,
         return_key,
-        "An exceptional error caused the operation to stop: ",
+        l("Sorry, an operation encountered an error and stopped"),
         error,
         __STACKTRACE__
       )
@@ -597,21 +613,12 @@ defmodule Bonfire.UI.Common do
     :throw, {:error, error} when is_binary(error) ->
       live_exception(socket, return_key, error, nil, __STACKTRACE__)
 
-    :throw, error ->
-      live_exception(
-        socket,
-        return_key,
-        "An exceptional error was thrown: ",
-        error,
-        __STACKTRACE__
-      )
-
     error ->
       # error(error)
       live_exception(
         socket,
         return_key,
-        "An exceptional error occurred: ",
+        l("An exceptional error occurred"),
         error,
         __STACKTRACE__
       )
@@ -649,7 +656,7 @@ defmodule Bonfire.UI.Common do
     end
   end
 
-  defp undead_maybe_handle_error(error, socket, return_key \\ :noreply) do
+  defp undead_maybe_handle_error(error, socket, return_key) do
     case error do
       {:ok, %Phoenix.LiveView.Socket{} = socket} ->
         {:ok, socket}
@@ -685,7 +692,7 @@ defmodule Bonfire.UI.Common do
         live_exception(
           socket,
           return_key,
-          "There was an error: #{inspect(reason)}",
+          l("There was an error") <> ": #{inspect(reason)}",
           extra
         )
 
@@ -700,8 +707,7 @@ defmodule Bonfire.UI.Common do
         live_exception(
           socket,
           return_key,
-          "The data provided seems invalid and could not be inserted or updated: " <>
-            Errors.error_msg(cs),
+          db_error() <> ": #{Errors.error_msg(cs)}",
           cs
         )
 
@@ -709,7 +715,7 @@ defmodule Bonfire.UI.Common do
         live_exception(
           socket,
           return_key,
-          "Could not complete this action",
+          l("Sorry, an action could not be completed"),
           act
         )
 
@@ -717,13 +723,13 @@ defmodule Bonfire.UI.Common do
         live_exception(
           socket,
           return_key,
-          "Could not complete this request: " <> Errors.error_msg(epic),
+          l("Sorry, a series of actions could not be completed") <> ": #{Errors.error_msg(epic)}",
           epic.errors,
           e(List.first(epic.errors), :stacktrace, nil)
         )
 
       not_found when not_found in [:not_found, "Not found", 404] ->
-        live_exception(socket, return_key, "Not found")
+        live_exception(socket, return_key, l("Not found"))
 
       msg when is_binary(msg) ->
         live_exception(socket, return_key, msg)
@@ -732,7 +738,7 @@ defmodule Bonfire.UI.Common do
         live_exception(
           socket,
           return_key,
-          "Oops, this resulted in something unexpected: ",
+          l("Sorry, this resulted in something unexpected"),
           ret
         )
     end
@@ -764,28 +770,26 @@ defmodule Bonfire.UI.Common do
     end
   end
 
-  # when is_binary(current_url)
-  defp live_exception(
-         %{assigns: %{__context__: %{current_url: current_url}}} = socket,
-         return_key,
-         msg,
-         exception,
-         stacktrace,
-         kind
-       ) do
-    with {:error, msg} <-
-           Errors.debug_exception(msg, exception, stacktrace, kind, as_markdown: true) do
-      {
-        return_key,
-        assign_error(
-          socket,
-          msg
-        )
-
-        # |> patch_to(current_url)
-      }
-    end
-  end
+  # defp live_exception(
+  #        %{assigns: %{__context__: %{current_url: current_url}}} = socket,
+  #        return_key,
+  #        msg,
+  #        exception,
+  #        stacktrace,
+  #        kind
+  #      ) when is_binary(current_url) do
+  #   with {:error, msg} <-
+  #          Errors.debug_exception(msg, exception, stacktrace, kind, as_markdown: true) do
+  #     {
+  #       return_key,
+  #       assign_error(
+  #         socket,
+  #         msg
+  #       )
+  #       |> patch_to(current_url)
+  #     }
+  #   end
+  # end
 
   defp live_exception(socket, return_key, msg, exception, stacktrace, kind) do
     with {:error, msg} <-
@@ -796,7 +800,6 @@ defmodule Bonfire.UI.Common do
           socket,
           msg
         )
-
         # |> patch_to(current_url(socket) || path(e(socket, :view, :error)))
       }
     end
@@ -897,11 +900,11 @@ defmodule Bonfire.UI.Common do
 
   def assign_flash(%Plug.Conn{} = conn, type, message, assigns, _pid) do
     # info(message, type)
-    # TODO: use assigns too
     conn
     |> Plug.Conn.fetch_session()
     |> Phoenix.Controller.fetch_flash()
     |> Phoenix.Controller.put_flash(type, message)
+    |> assign_generic(assigns)
   end
 
   def assign_flash(_, type, message, assigns, pid) do
@@ -920,8 +923,8 @@ defmodule Bonfire.UI.Common do
 
   def live_upload_files(current_user, metadata, socket) do
     maybe_consume_uploaded_entries(socket, :files, fn %{path: path} = meta, entry ->
-      debug(meta, "consume_uploaded_entries meta")
-      debug(entry, "consume_uploaded_entries entry")
+      # debug(meta, "consume_uploaded_entries meta")
+      # debug(entry, "consume_uploaded_entries entry")
 
       with {:ok, uploaded} <-
              Bonfire.Files.upload(nil, current_user, path, %{

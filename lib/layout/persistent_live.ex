@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.PersistentLive do
   use Bonfire.UI.Common.Web, :surface_live_view
-  alias Bonfire.UI.Common.SmartInputLive
+  # alias Bonfire.UI.Common.SmartInputLive
   alias Bonfire.Common.Presence
 
   @session_key :csrf_token

@@ -76,7 +76,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   slot action_btns
   slot cancel_btn
   slot title
-  slot default, args: [autocomplete: :list, value: :any]
+  slot default, arg: [autocomplete: :list, value: :any]
 
   data value, :any, default: nil
 

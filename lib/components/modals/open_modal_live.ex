@@ -90,14 +90,14 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   slot title
   slot action_btns
   slot cancel_btn
-  slot default, args: [autocomplete: :list, value: :any]
+  slot default, arg: [autocomplete: :list, value: :any]
 
   data value, :any, default: nil
 
   @doc """
   Slot for the button that opens the modal
   """
-  slot open_btn, args: [value: :any]
+  slot open_btn, arg: [value: :any]
 
   def open(reusable_modal_id \\ nil) do
     debug("open!")

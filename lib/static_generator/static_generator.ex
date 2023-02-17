@@ -16,7 +16,9 @@ defmodule Bonfire.UI.Common.StaticGenerator do
     src <> "/"
   end
 
-  def generate(urls, opts \\ []) when is_list(urls) do
+  def generate(urls, opts \\ [])
+
+  def generate(urls, opts) when is_list(urls) do
     conn = Phoenix.ConnTest.build_conn()
 
     dest =

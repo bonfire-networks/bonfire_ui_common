@@ -57,11 +57,11 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
-  def view(opts \\ []) do
-    opts =
-      opts
-      |> Keyword.put_new(:root, "lib")
-      |> maybe_put_layout(:app)
+  def view(_opts \\ []) do
+    # opts =
+    #   opts
+    #   |> Keyword.put_new(:root, "lib")
+    #   |> maybe_put_layout(:app)
 
     quote do
       use Phoenix.Component

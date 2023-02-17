@@ -200,7 +200,7 @@ defmodule AnimalAvatarGenerator do
 
   def eyes do
     [
-      fn color ->
+      fn _color ->
         """
           <circle cx="169" cy="250" r="20.4" fill="#15212a"/>
           <circle cx="175.4" cy="255.8" r="9.6" fill="#fff"/>
@@ -283,7 +283,7 @@ defmodule AnimalAvatarGenerator do
 
   def hairs do
     [
-      fn color ->
+      fn _color ->
         """
           <path fill="#fef6f4" d="M332 100.7c-10.2-27.5-29.9-29.9-53.6-21.5C273.2 72.5 266 67 250 66.3c-15.9.6-23.2 6.2-28.4 13-23.8-8.5-43.4-6.1-53.5 21.4-39 19.8-5.9 84.7 33 64.8 10.9 12 24.4 19.1 48.9 5.7 24.5 13.4 38 6.3 48.9-5.7 38.9 19.9 72-45 33-64.8z"/>
         """

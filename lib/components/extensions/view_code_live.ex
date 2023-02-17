@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.ViewCodeLive do
   use Bonfire.UI.Common.Web, :surface_live_view
 
-  import Bonfire.Common.Extensions.Diff
+  # import Bonfire.Common.Extensions.Diff
   import Untangle
   alias Bonfire.UI.Me.LivePlugs
 
@@ -18,7 +18,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
     ])
   end
 
-  defp mounted(params, session, socket) do
+  defp mounted(_params, _session, socket) do
     {:ok,
      assign(
        socket,
@@ -33,7 +33,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
      )}
   end
 
-  def do_handle_params(%{"module" => module} = params, url, socket) when is_binary(module) do
+  def do_handle_params(%{"module" => module} = params, _url, socket) when is_binary(module) do
     with true <- connected?(socket),
          module when not is_nil(module) <- Types.maybe_to_module(module),
          {:ok, filename, code} <- Extend.module_file_code(module) do

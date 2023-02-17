@@ -33,7 +33,7 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
   @doc """
   Slots for the contents of the modal, title, buttons...
   """
-  slot default, args: [:autocomplete]
+  slot default, arg: [:autocomplete]
   slot open_btn
   slot action_btns
   slot cancel_btn

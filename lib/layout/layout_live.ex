@@ -9,21 +9,40 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop page, :string, default: nil
   prop page_title, :string, default: nil
   prop selected_tab, :any, default: nil
+
+  # prop current_account, :any, default: nil
+  prop current_account_id, :any, default: nil
+  # prop current_user, :any, default: nil
+  prop current_user_id, :any, default: nil
+
+  # prop current_app, :any, default: nil
+  prop flash, :any, default: nil
+  prop csrf_token, :any, default: nil
+  prop instance_settings, :any, default: nil
+
   prop notification, :any, default: nil
-  prop page_header_aside, :any, default: nil
-  prop page_header_icon, :string, default: nil
-  prop inner_content, :any, default: nil
-  prop back, :boolean, default: false
+
   prop object_id, :string, default: nil
   prop post_id, :string, default: nil
-  prop context_id,  :string, default: nil
+  prop context_id, :string, default: nil
   prop reply_to_id, :string, default: nil
-  prop create_object_type, :any, default: nil
-  prop nav_items, :any, default: []
-  prop instance_settings, :any, default: nil
-  prop to_circles, :any, default: nil
-  prop smart_input_opts, :any, default: nil
+  prop showing_within, :any, default: nil
 
+  prop inner_content, :any, default: nil
+  prop nav_items, :any, default: nil
+  prop without_widgets, :boolean, default: false
+  prop without_sidebar, :boolean, default: nil
+  prop sidebar_widgets, :list, default: []
+  prop thread_mode, :atom, default: nil
+  prop transparent_header, :boolean, default: false
+  prop back, :boolean, default: false
+  prop page_header_aside, :any, default: nil
+  prop page_header_icon, :string, default: nil
+
+  prop smart_input_opts, :any, default: nil
+  prop create_object_type, :any, default: nil
+  prop to_circles, :list, default: []
+  prop to_boundaries, :any, default: nil
 
   def maybe_custom_theme(context) do
     if Settings.get([:ui, :theme, :preferred], nil, context) == :custom do
@@ -46,46 +65,19 @@ defmodule Bonfire.UI.Common.LayoutLive do
     assigns =
       assigns
       # |> debug
-      |> assign_new(:to_boundaries, fn -> nil end)
-      # |> assign_new(:hero, fn -> nil end)
-      |> assign_new(:page_title, fn -> nil end)
-      |> assign_new(:page, fn -> nil end)
-      |> assign_new(:selected_tab, fn -> nil end)
-      |> assign_new(:notification, fn -> nil end)
-      |> assign_new(:page_header_aside, fn -> nil end)
-      |> assign_new(:page_header_icon, fn -> nil end)
-      |> assign_new(:transparent_header, fn -> false end)
-      # |> assign_new(:custom_page_header, fn -> nil end)
-      |> assign_new(:inner_content, fn -> nil end)
-      |> assign_new(:back, fn -> false end)
-      |> assign_new(:object_id, fn -> nil end)
-      |> assign_new(:post_id, fn -> nil end)
-      |> assign_new(:context_id, fn -> nil end)
-      |> assign_new(:reply_to_id, fn -> nil end)
-      |> assign_new(:create_object_type, fn -> nil end)
-      |> assign_new(:nav_items, fn -> nil end)
-      |> assign_new(:current_app, fn -> nil end)
-      |> assign_new(:current_account, fn -> nil end)
-      |> assign_new(:current_account_id, fn -> nil end)
-      |> assign_new(:current_user, fn -> nil end)
-      |> assign_new(:current_user_id, fn -> nil end)
-      |> assign_new(:instance_settings, fn -> nil end)
-      |> assign_new(:to_circles, fn -> [] end)
       |> assign_new(:smart_input_opts, fn ->
         %{
           as: Bonfire.UI.Common.SmartInputLive.set_smart_input_as(assigns[:thread_mode], assigns)
         }
       end)
-      |> assign_new(:showing_within, fn -> nil end)
-      |> assign_new(:without_sidebar, fn -> nil end)
-      |> assign_new(:without_widgets, fn -> false end)
-      |> assign_new(:sidebar_widgets, fn -> [] end)
-      #     fn -> (not is_nil(current_user(assigns)) &&
-      #         empty?(e(assigns, :sidebar_widgets, :users, :main, nil))) ||
-      #        (!is_nil(current_user(assigns)) &&
-      #           empty?(e(assigns, :sidebar_widgets, :guests, :main, nil)))
-      # end)
-      |> assign_new(:thread_mode, fn -> nil end)
+
+    # |> assign_new(:hero, fn -> nil end)
+    # |> assign_new(:custom_page_header, fn -> nil end)
+    #     fn -> (not is_nil(current_user(assigns)) &&
+    #         empty?(e(assigns, :sidebar_widgets, :users, :main, nil))) ||
+    #        (!is_nil(current_user(assigns)) &&
+    #           empty?(e(assigns, :sidebar_widgets, :guests, :main, nil)))
+    # end)
 
     ~F"""
     <div

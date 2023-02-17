@@ -36,12 +36,12 @@ defmodule Bonfire.UI.Common.Icon do
 
   def render(%{solid: icon} = assigns)
       when is_binary(icon) or (is_atom(icon) and not is_nil(icon)) do
-    render(Map.merge(assigns, %{iconify: "heroicons-solid:" <> icon}))
+    render(Map.merge(assigns, %{iconify: "heroicons-solid:#{icon}"}))
   end
 
   def render(%{outline: icon} = assigns)
       when is_binary(icon) or (is_atom(icon) and not is_nil(icon)) do
-    render(Map.merge(assigns, %{iconify: "heroicons-outline:" <> icon}))
+    render(Map.merge(assigns, %{iconify: "heroicons-outline:#{icon}"}))
   end
 
   def render(assigns) do

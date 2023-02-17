@@ -196,7 +196,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     fun.(action, attrs, socket)
   end
 
-  defp maybe_handle_event_fun(action, attrs, socket, _fun) do
+  defp maybe_handle_event_fun(action, _attrs, socket, _fun) do
     warn(action, "LiveHandler: could not find an event handler")
     {:noreply, socket}
   end
