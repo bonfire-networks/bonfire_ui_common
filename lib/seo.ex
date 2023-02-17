@@ -5,7 +5,7 @@ defmodule Bonfire.UI.Common.SEO do
   alias Bonfire.Common.Config
 
   def config do
-    name = Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())
+    name = Config.get([:ui, :theme, :instance_name]) || Bonfire.Application.name()
     description = Config.get([:ui, :theme, :instance_description])
 
     [
