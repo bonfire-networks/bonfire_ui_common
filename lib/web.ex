@@ -57,24 +57,25 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
-  def view(_opts \\ []) do
-    # opts =
-    #   opts
-    #   |> Keyword.put_new(:root, "lib")
-    #   |> maybe_put_layout(:app)
+  def view(opts \\ []) do
+    opts =
+      opts
+      |> Keyword.put_new(:namespace, Bonfire.UI.Common.Web)
+      |> Keyword.put_new(:root, "lib")
+      |> maybe_put_layout(:app)
 
     quote do
-      use Phoenix.Component
+      use Phoenix.View, unquote(opts)
+      # use Phoenix.Component # TODO: switch away from deprecated Phoenix.View?
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
         only: [view_module: 1, view_template: 1]
 
-      # to support Surface components in the app layout and in non-LiveViews - FIXME: not compatible with phx 1.7?
-      # use Surface.View, unquote(opts)
-      # Bonfire.Common.Extend.quoted_use_if_enabled(Surface.View)
-
-      Bonfire.Common.Extend.quoted_import_if_enabled(Surface)
+      # Include shared imports and aliases for views
+      import Surface
+      use Surface.View, unquote(opts)
+      # to support Surface components in the app layout and in non-LiveViews ^ - FIXME: not compatible with phx 1.7? 
 
       unquote(live_view_helpers())
     end

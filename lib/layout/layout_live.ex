@@ -60,17 +60,43 @@ defmodule Bonfire.UI.Common.LayoutLive do
   def custom_theme_attr(config), do: DaisyTheme.style_attr(config) |> debug("custom theme style")
 
   def render(assigns) do
-    # Note: since this is not a Surface component, we need to set default props this way
-    # TODO: make this list of assigns config-driven so other extensions can add what they need?
+    # Note: 
     assigns =
       assigns
-      # |> debug
       |> assign_new(:smart_input_opts, fn ->
         %{
           as: Bonfire.UI.Common.SmartInputLive.set_smart_input_as(assigns[:thread_mode], assigns)
         }
       end)
-
+      # NOTE: we need to also set default props this way until we can convert LayoutView to use Surface
+      |> assign_new(:to_boundaries, fn -> nil end)
+      |> assign_new(:page_title, fn -> nil end)
+      |> assign_new(:page, fn -> nil end)
+      |> assign_new(:selected_tab, fn -> nil end)
+      |> assign_new(:notification, fn -> nil end)
+      |> assign_new(:page_header_aside, fn -> nil end)
+      |> assign_new(:page_header_icon, fn -> nil end)
+      |> assign_new(:transparent_header, fn -> false end)
+      |> assign_new(:inner_content, fn -> nil end)
+      |> assign_new(:back, fn -> false end)
+      |> assign_new(:object_id, fn -> nil end)
+      |> assign_new(:post_id, fn -> nil end)
+      |> assign_new(:context_id, fn -> nil end)
+      |> assign_new(:reply_to_id, fn -> nil end)
+      |> assign_new(:create_object_type, fn -> nil end)
+      |> assign_new(:nav_items, fn -> nil end)
+      |> assign_new(:current_app, fn -> nil end)
+      |> assign_new(:current_account, fn -> nil end)
+      |> assign_new(:current_account_id, fn -> nil end)
+      |> assign_new(:current_user, fn -> nil end)
+      |> assign_new(:current_user_id, fn -> nil end)
+      |> assign_new(:instance_settings, fn -> nil end)
+      |> assign_new(:to_circles, fn -> [] end)
+      |> assign_new(:showing_within, fn -> nil end)
+      |> assign_new(:without_sidebar, fn -> nil end)
+      |> assign_new(:without_widgets, fn -> false end)
+      |> assign_new(:sidebar_widgets, fn -> [] end)
+      |> assign_new(:thread_mode, fn -> nil end)
     # |> assign_new(:hero, fn -> nil end)
     # |> assign_new(:custom_page_header, fn -> nil end)
     #     fn -> (not is_nil(current_user(assigns)) &&
