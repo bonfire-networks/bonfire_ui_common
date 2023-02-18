@@ -128,7 +128,7 @@ defmodule Bonfire.UI.Common.ErrorView do
   defp reason(reason) when is_binary(reason), do: reason
   defp reason(reason) when not is_map(reason), do: inspect(reason)
 
-  defp reason(other) do
+  defp reason(_other) do
     # debug(other)
     nil
   end

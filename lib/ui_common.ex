@@ -922,7 +922,7 @@ defmodule Bonfire.UI.Common do
   end
 
   def live_upload_files(current_user, metadata, socket) do
-    maybe_consume_uploaded_entries(socket, :files, fn %{path: path} = meta, entry ->
+    maybe_consume_uploaded_entries(socket, :files, fn %{path: path} = _meta, entry ->
       # debug(meta, "consume_uploaded_entries meta")
       # debug(entry, "consume_uploaded_entries entry")
 
