@@ -3,4 +3,6 @@ defmodule Bonfire.UI.Common.EmptyFeed do
 
   prop feedback_title, :string
   prop feedback_message, :string
+
+  slot empty_feed
 end
