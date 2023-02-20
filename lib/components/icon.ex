@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.Icon do
-  use Surface.Component
+  use Bonfire.UI.Common.Web, :stateless_component
   import Phoenix.LiveView.HTMLEngine
 
   # any icon from iconify: https://icones.js.org

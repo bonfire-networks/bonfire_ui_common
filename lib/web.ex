@@ -46,6 +46,7 @@ defmodule Bonfire.UI.Common.Web do
       )
 
     quote do
+      @moduledoc false
       use Phoenix.Controller, unquote(opts)
       import Plug.Conn
       alias Bonfire.UI.Common.Plugs.MustBeGuest
@@ -65,6 +66,8 @@ defmodule Bonfire.UI.Common.Web do
       |> maybe_put_layout(:app)
 
     quote do
+      @moduledoc false
+
       use Phoenix.View, unquote(opts)
       # use Phoenix.Component # TODO: switch away from deprecated Phoenix.View?
 
@@ -102,6 +105,7 @@ defmodule Bonfire.UI.Common.Web do
     opts = maybe_put_layout(opts, :live)
 
     quote do
+      @moduledoc false
       use Phoenix.LiveView, unquote(opts)
 
       unquote(live_view_helpers())
@@ -115,6 +119,7 @@ defmodule Bonfire.UI.Common.Web do
 
   def live_component(opts \\ []) do
     quote do
+      @moduledoc false
       use Phoenix.LiveComponent, unquote(opts)
 
       unquote(live_view_helpers())
@@ -123,6 +128,7 @@ defmodule Bonfire.UI.Common.Web do
 
   def function_component(opts \\ []) do
     quote do
+      @moduledoc false
       use Phoenix.Component, unquote(opts)
 
       unquote(live_view_helpers())
@@ -259,6 +265,7 @@ defmodule Bonfire.UI.Common.Web do
         )
 
       quote do
+        @moduledoc false
         use Surface.LiveView, unquote(opts)
 
         unquote(surface_helpers())
@@ -271,6 +278,7 @@ defmodule Bonfire.UI.Common.Web do
 
     def stateful_component(opts \\ []) do
       quote do
+        @moduledoc false
         use Surface.LiveComponent, unquote(opts)
 
         data current_account, :any, from_context: :current_account
@@ -283,6 +291,7 @@ defmodule Bonfire.UI.Common.Web do
 
     def stateless_component(opts \\ []) do
       quote do
+        @moduledoc false
         use Surface.Component, unquote(opts)
 
         prop current_account, :any, from_context: :current_account
