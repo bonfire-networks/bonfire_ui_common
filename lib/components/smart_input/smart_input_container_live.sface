@@ -17,7 +17,7 @@
         #{if e(@smart_input_opts, :as, nil) == :modal, do: "this.smart_input_fullscreen = true;"}
       }
     }"}
-  x-init={"smart_input_open = #{e(@smart_input_opts, :open, nil) == true}; smart_input_minimized = #{e(@smart_input_opts, :open, nil) != true and as(@smart_input_opts) == :floating}; smart_input_as = '#{as(@smart_input_opts) |> debug("asss")}'; "}
+  x-init={"smart_input_open = #{e(@smart_input_opts, :open, nil) == true}; smart_input_minimized = #{e(@smart_input_opts, :open, nil) != true and as(@smart_input_opts) == :floating}; smart_input_as = '#{as(@smart_input_opts)}'; "}
 >
   <Bonfire.UI.Common.SmartInputButtonsLive
     :if={!e(@smart_input_opts, :hide_buttons, nil)}
@@ -31,7 +31,7 @@
     style="bottom: 0"
     class="smart_input_container fixed visible md:rounded-t-lg max-w-full md:w-[32rem] left-0 bg-base-200 top-0 mx-auto md:top-auto z-[9999] transition-all shadow-composer right-0 md:right-4 md:left-auto bottom-0  overflow-x-auto"
     :class="{
-      'hidden md:block !w-[20rem] bottom-0': smart_input_minimized
+      'hidden tablet-lg:block !w-[20rem] bottom-0': smart_input_minimized
     }"
     x-on:keydown.escape.prevent.stop="smart_input_minimized = true"
   >

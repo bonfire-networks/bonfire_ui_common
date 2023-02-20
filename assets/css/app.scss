@@ -54,6 +54,10 @@
   overflow-y: auto;
 }
 
+.permissions_icon > div:first-child {
+  padding: 0 !important;
+}
+
 html,
 body {
  padding: 0;
