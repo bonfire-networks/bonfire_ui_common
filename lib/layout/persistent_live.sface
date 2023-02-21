@@ -124,7 +124,7 @@
       </div>
     </div>
   </div>
- 
+
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
   <Bonfire.UI.Common.ReusableModalLive id="persistent_modal" />
   <Bonfire.UI.Common.NavFooterMobileUserLive page={@page} />
