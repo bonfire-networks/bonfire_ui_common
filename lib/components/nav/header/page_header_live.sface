@@ -1,6 +1,6 @@
 <div
   role="banner"
-  class="flex items-center h-[56px] md:h-[46px] rounded-t flex-1 w-full md:bg-base-100 px-4"
+  class="flex items-center h-[56px] md:h-[46px] rounded-t flex-1 w-full md:bg-base-content/10 px-4"
 >
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center justify-between flex-1 w-full">
@@ -10,7 +10,7 @@
           <Icon iconify="mdi:arrow-left" class="w-4 h-4 text-base-content" />
         </span>
       </div> -->
-        <Icon :if={@page_header_icon} iconify={@page_header_icon} class="w-5 h-5 text-accent" />
+        <Icon :if={@page_header_icon} iconify={@page_header_icon} class="w-5 h-5 text-base-content/70" />
         <Bonfire.UI.Common.BackButtonLive :if={@back} />
         <span
           class="max-w-[200px] first-letter:capitalize md:max-w-max text-base md:text-sm  font-semibold truncate text-base-content text-ellipsis"

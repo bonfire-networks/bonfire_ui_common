@@ -1,28 +1,16 @@
-<div
-  data-id="nav_sidebar"
-  class="sticky self-start order-first hidden w-full mt-3 top-3 md:block"
->
-  <div class="flex items-center pl-0.5">
-    <div data-id="logo" class="items-center place-content-center">
-      <Bonfire.UI.Common.LogoLinkLive with_name={!@current_user} href="/" />
-    </div>
+<div class="flex flex-col flex-1 h-full">
+  <div class="flex flex-col flex-1 h-full" :if={@current_user}>
+    
 
-    <div :if={@current_user} class="hidden w-full ml-4 md:block">
-      <Dynamic.Component
-        :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
-        module={Bonfire.Search.Web.FormLive}
-        search_limit={5}
+    <div class="flex-1 h-full">
+      <Bonfire.UI.Common.ExtensionMenuNavLive
+        selected_tab={@selected_tab}
+        page={@page}
+        nav_items={@nav_items}
       />
     </div>
-  </div>
 
-  <nav
-    class="w-full mt-6 overflow-y-auto max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
-    role="navigation"
-    :if={@current_user}
-    aria-label={l("Extension navigation")}
-  >
-    <div class="flex items-center justify-between">
+    <div class="sticky bottom-0 flex items-center justify-between pt-4 border-t bg-base-300 border-base-content/10">
       <LiveRedirect
         to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
         class="flex items-center justify-start flex-1 gap-3 px-1 normal-case rounded btn btn-ghost hover:bg-transparent"
@@ -44,19 +32,10 @@
       </LiveRedirect>
       <Bonfire.UI.Common.UserMenuLive />
     </div>
-
-    <div class="mt-4">
-      <Bonfire.UI.Common.ExtensionMenuNavLive
-        selected_tab={@selected_tab}
-        page={@page}
-        nav_items={@nav_items}
-      />
-    </div>
-  </nav>
-
+  </div>
   {#if !@current_user}
     <nav>
-      <ul class="mt-4 menu">
+      <ul class="menu">
         <li class="p-0 m-0 rounded-md">
           <LiveRedirect to="/" class="flex items-center w-full gap-6 px-2 py-2 rounded-md">
             <Icon iconify="ri:home-line" class="h-5 w5 text-base-content/80" />
