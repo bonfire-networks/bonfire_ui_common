@@ -160,7 +160,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
               <div class="absolute top-[-14px] left-[10px]">
                 <Bonfire.UI.Common.BadgeCounterLive
                   id={:notifications}
-                  class="indicator-item badge badge-xs ring-2 ring-base-300 badge-sm border badge-primary rounded-full !border-none"
+                  class="indicator-item badge badge-xs ring-2 ring-base-300 badge-sm border rounded-full !border-none"
+                  counter_class=""
                   feed_id={e(@current_user, :character, :notifications_id, nil)}
                 />
               </div>
