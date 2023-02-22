@@ -149,7 +149,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           data-id="nav_sidebar"
           class="fixed md:sticky self-start order-first w-full mt-3 top-3 z-[9999] md:block"
         >
-          <div class="hidden md:flex items-center justify-between h-[42px] pb-4 border-b border-base-content/10 mb-4 mt-2">
+          <div class="hidden md:flex items-center justify-between h-[42px] pb-4 mt-2">
             <div data-id="logo" class="items-center place-content-center">
               <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
             </div>

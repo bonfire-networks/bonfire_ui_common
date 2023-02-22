@@ -1,7 +1,7 @@
 <div
   id={@id}
   class={
-    "modal modal-bottom sm:modal-middle",
+    "modal modal-bottom sm:modal-middle z-[9999]",
     @modal_class,
     "modal-closed": !@show,
     "modal-open": @show
@@ -82,7 +82,7 @@
         </div>
         <div class={@action_btns_wrapper_class}>
           <#slot {@action_btns}>
-            <button :if={@form_opts != []} class="btn btn-primary rounded btn-sm normal-case" type="submit">{l("OK")}</button>
+            <button :if={@form_opts != []} class="normal-case rounded btn btn-primary btn-sm" type="submit">{l("OK")}</button>
           </#slot>
         </div>
       </div>
