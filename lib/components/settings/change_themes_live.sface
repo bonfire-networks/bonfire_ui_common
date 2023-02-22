@@ -7,7 +7,7 @@
       }"}
 >
 
-  <div class="mb-3 text-sm font-semibold tracking-widest text-base-content/70">{l "Color mode"}</div>
+  <div class="mb-3 text-sm font-semibold tracking-widest text-base-content/70">{l "Colour mode"}</div>
   <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
     <!-- DARK -->
       <button
@@ -40,7 +40,7 @@
   
       <button
         type="button"
-        x-on:click="dark = false; light = false; custom_theme=false"
+        x-on:click="dark = true; light = true; custom_theme=false"
         :class="{'bg-base-content text-base-100' : dark && light }"
         phx-click="Bonfire.Me.Settings:put_theme"
         phx-value-keys="ui:theme:preferred"
@@ -77,15 +77,17 @@
         
         
       </div> -->
-      <div x-show="!custom_theme">
-      {#if Settings.get([:ui, :theme, :preferred], %{}, @__context__) not in [:custom, :system]} 
-        <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l "Pick your default "} {Settings.get([:ui, :theme, :preferred], %{}, @__context__)}  {l" theme"}</div>
+      <div>
+      {#if Settings.get([:ui, :theme, :preferred], %{}, @__context__) not in [:custom]} 
       
         {#case Settings.get([:ui, :themes], ["bonfire"], @scoped)}
           {#match themes}
             {#case Settings.get([:ui, :themes_light], ["light"], @scoped)}
               {#match themes_light}
                 <div x-show="dark">
+
+        <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l "Pick your preferred dark theme"}</div>
+
                   <Bonfire.UI.Common.ChangeThemeLive
                     label={l("Dark theme")}
                     key="instance_theme"
@@ -94,6 +96,9 @@
                   />
                 </div>
                 <div x-show="light">
+
+        <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l "Pick your preferred light theme"}</div>
+
                   <Bonfire.UI.Common.ChangeThemeLive
                     label={l("Light theme")}
                     key="instance_theme_light"
@@ -106,9 +111,9 @@
       {/if}
       </div>
     
-      {#if Settings.get([:ui, :theme, :preferred], :system, @__context__) in [:system]}
-        <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l "By selecting the system color mode, you will use the default dark or light theme, depending on your browser preference."}</div>
-      {/if}
+      <!-- {#if Settings.get([:ui, :theme, :preferred], :system, @__context__) in [:system]}
+        <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l "By selecting the system colour mode, you will use your preferred dark or light theme, depending on your browser or system settings (and possibily the time of day)."}</div>
+      {/if} -->
   
     <div class="p-3 mt-4 rounded-lg bg-base-content/5" x-show="custom_theme" x-cloak x-collapse>
       <div class="flex items-center gap-2 pb-3 mb-5 text-sm font-semibold border-b place-content-center border-base-content/10">
