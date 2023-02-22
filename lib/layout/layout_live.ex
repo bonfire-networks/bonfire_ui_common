@@ -263,7 +263,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         </div>
         <div
           :if={!@without_sidebar}
-          class="order-first md:order-none md:static z-[999]">
+          class="hidden tablet-lg:block order-first md:order-none md:static z-[999]">
           <div
             data-id="right_nav_and_widgets"
             class="order-last hidden tablet-lg:block tablet-lg:sticky  w-auto tablet-lg:top-3 mt-3 self-start z-[998] tablet-lg:w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"

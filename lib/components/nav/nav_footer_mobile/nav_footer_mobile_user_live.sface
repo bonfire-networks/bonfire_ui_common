@@ -1,4 +1,4 @@
-<div class="bottom-0 h-[60px] flex fixed z-[997] border-t border-base-content/10 btm-nav md:hidden border-base-content/10">
+<div class="bottom-0 h-[68px] flex fixed z-[997] btm-nav md:hidden">
   <LiveRedirect
     class={
       "",
@@ -6,10 +6,10 @@
     }
     to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
   >
-    {#if @page == "notifications"}
-      <Icon iconify="ri:home-fill" class="w-5 h-5" />
+    {#if @page == "home"}
+      <Icon iconify="ri:home-fill" class="w-6 h-6" />
     {#else}
-      <Icon iconify="ri:home-line" class="w-5 h-5" />
+      <Icon iconify="ri:home-line" class="w-6 h-6" />
     {/if}
     <span class="sr-only">{l("Home")}</span>
   </LiveRedirect>
@@ -22,7 +22,7 @@
     }
     to="/feed"
   >
-    <Icon iconify="ic:outline-explore" class="w-5 h-5" />
+    <Icon iconify="ic:outline-explore" class="w-6 h-6" />
     <span class="sr-only">{l("Feeds")}</span>
   </LiveRedirect>
 
@@ -34,22 +34,22 @@
       "text-primary": @page == "search"
     }
   >
-    <Icon outline="Search" class="w-5 h-5" />
+    <Icon outline="Search" class="w-6 h-6" />
     <span class="sr-only">{l("Search")}</span>
   </LiveRedirect>
 
   <LiveRedirect :if={@current_user} to={path(:notifications)} class="">
     {#if @page == "notifications"}
-      <Icon iconify="mdi:bell" class="w-5 h-5" />
+      <Icon iconify="mdi:bell" class="w-6 h-6" />
     {#else}
-      <Icon iconify="mdi:bell-outline" class="w-5 h-5" />
+      <Icon iconify="mdi:bell-outline" class="w-6 h-6" />
     {/if}
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>
 
   <LiveRedirect :if={@current_user} to={path(@current_user)} class="">
     <Bonfire.UI.Common.AvatarLive
-      class="inline-block object-cover w-8 h-8 cursor-pointer rounded-xl md:hidden"
+      class="inline-block object-cover w-8 h-8 rounded-lg cursor-pointer md:hidden"
       bg_class="rounded-full bg-base-300"
       size="32"
       user={@current_user}
@@ -57,7 +57,7 @@
     <span class="sr-only">{l("Your profile")}</span>
   </LiveRedirect>
 
-  <Bonfire.UI.Common.OpenModalLive
+  <!-- <Bonfire.UI.Common.OpenModalLive
     :if={@current_user}
     id={Pointers.ULID.generate()}
     no_actions
@@ -70,9 +70,9 @@
     />
     <:open_btn>
       <div class="">
-        <Icon outline="DotsHorizontal" class="w-5 h-5" />
+        <Icon outline="DotsHorizontal" class="w-6 h-6" />
         <span class="sr-only">{l("More")}</span>
       </div>
     </:open_btn>
-  </Bonfire.UI.Common.OpenModalLive>
+  </Bonfire.UI.Common.OpenModalLive> -->
 </div>
