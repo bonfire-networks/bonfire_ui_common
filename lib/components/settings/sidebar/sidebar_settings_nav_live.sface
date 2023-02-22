@@ -1,8 +1,8 @@
 <nav class="" role="navigation" aria-label={l("Settings navigation")}>
   <ul class="gap-1 my-2 menu">
     <li>
-      <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
-        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("General")}</span>
+      <div class="p-0 cursor-default hover:bg-base-300">
+        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/50">{l("General")}</span>
       </div>
     </li>
     <li :if={current_user_id(@__context__)}>
@@ -86,8 +86,8 @@
     </li> -->
 
     <li>
-      <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
-        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("Safety")}</span>
+      <div class="p-0 mt-6 cursor-default hover:bg-base-300">
+        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/50">{l("Safety")}</span>
       </div>
     </li>
 
@@ -164,8 +164,8 @@
       scope={:user}
     />
     <li>
-      <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
-        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("Advanced")}</span>
+      <div class="p-0 mt-6 cursor-default hover:bg-base-300">
+        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/50">{l("Advanced")}</span>
       </div>
     </li>
     <li>

@@ -11,8 +11,8 @@
       </li>
       <ul x-show="open" x-collapse class="menu menu-compact"> -->
     <li>
-      <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
-        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("Website")}</span>
+      <div class="p-0 cursor-default hover:bg-base-300 ">
+        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/50">{l("Website")}</span>
       </div>
     </li>
     <li>
@@ -80,8 +80,8 @@
       </li>
       <ul x-cloak x-show="open" x-collapse class="menu menu-compact"> -->
     <li>
-      <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
-        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("Members")}</span>
+      <div class="p-0 mt-6 cursor-default hover:bg-base-300">
+        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/50">{l("Members")}</span>
       </div>
     </li>
     <li>
@@ -118,8 +118,8 @@
     </li>
 
     <li>
-      <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
-        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("Safety")}</span>
+      <div class="p-0 mt-6 cursor-default hover:bg-base-300">
+        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/50">{l("Safety")}</span>
       </div>
     </li>
 
@@ -199,8 +199,8 @@
     />
 
     <li>
-      <div class="p-0 border-b cursor-default border-base-content/10 hover:bg-base-300">
-        <span class="px-2 py-2 text-xs font-medium tracking-wider uppercase text-base-content/50">{l("Advanced")}</span>
+      <div class="p-0 mt-6 cursor-default hover:bg-base-300">
+        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/50">{l("Advanced")}</span>
       </div>
     </li>
     <li>

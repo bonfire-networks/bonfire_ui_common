@@ -11,6 +11,12 @@
   padding-right: 1rem;
 }
 
+hex-color-picker {
+  position: absolute;
+  top: 40px;
+  z-index: 999;
+}
+
 .with_tab::after {
   position: absolute;
   height: 3px;
