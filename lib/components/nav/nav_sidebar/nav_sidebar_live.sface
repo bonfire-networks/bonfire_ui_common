@@ -26,7 +26,7 @@
           <div class="text-sm font-semibold truncate text-base-content">{e(current_user(@__context__), :profile, :name, l("Me"))}</div>
           <div
             :if={e(current_user(@__context__), :character, :username, nil)}
-            class="-mt-0.5 text-sm font-normal truncate text-base-content/60"
+            class="-mt-0.5 text-sm font-normal truncate text-base-content/70"
           >@{e(current_user(@__context__), :character, :username, nil)}</div>
         </div>
       </LiveRedirect>

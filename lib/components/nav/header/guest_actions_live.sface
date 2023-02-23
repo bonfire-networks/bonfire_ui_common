@@ -25,7 +25,7 @@
 
   <div class="dropdown dropdown-end md:hidden">
     <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-square">
-      <Icon solid="DotsVertical" class="w-[18px] h-[18px] md:w-4 md:h-4 text-base-content/60" />
+      <Icon solid="DotsVertical" class="w-[18px] h-[18px] md:w-4 md:h-4 text-base-content/70" />
     </label>
     <ul
       tabindex="0"

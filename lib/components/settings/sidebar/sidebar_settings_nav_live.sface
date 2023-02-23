@@ -2,7 +2,7 @@
   <ul class="gap-1 my-2 menu">
     <li>
       <div class="p-0 cursor-default hover:bg-base-300">
-        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/50">{l("General")}</span>
+        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("General")}</span>
       </div>
     </li>
     <li :if={current_user_id(@__context__)}>
@@ -87,7 +87,7 @@
 
     <li>
       <div class="p-0 mt-6 cursor-default hover:bg-base-300">
-        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/50">{l("Safety")}</span>
+        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Safety")}</span>
       </div>
     </li>
 
@@ -165,7 +165,7 @@
     />
     <li>
       <div class="p-0 mt-6 cursor-default hover:bg-base-300">
-        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/50">{l("Advanced")}</span>
+        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Advanced")}</span>
       </div>
     </li>
     <li>

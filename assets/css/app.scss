@@ -55,6 +55,10 @@ hex-color-picker {
   --inner-window-width: 100%;
 }
 
+.reply_in_thread svg {
+  @apply !text-base-100;
+}
+
 .overflowed {
   height: var(--inner-window-height);
   overflow-y: auto;

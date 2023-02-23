@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
 
   prop title_class, :css_class,
     default:
-      "mx-3 py-3 border-b border-base-content/10 text-sm font-medium tracking-wide text-base-content/60"
+      "mx-3 py-3 border-b border-base-content/10 text-sm font-medium tracking-wide text-base-content/70"
 
   @doc "A call to action, usually redirect to the specific page"
   slot action
