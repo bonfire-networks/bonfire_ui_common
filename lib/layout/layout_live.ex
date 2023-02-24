@@ -155,7 +155,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
             </div>
 
             <Bonfire.UI.Common.UserMenuLive />
-
           </div>
 
           <Bonfire.UI.Common.PersistentLive
@@ -175,9 +174,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             class="hidden w-full mt-4 md:flex gap-4 flex-col overflow-y-auto max-h-[calc(var(--inner-window-height)_-_150px)] min-h-[calc(var(--inner-window-height)_-_150px)]"
             role="navigation"
             aria-label={l("Extension navigation")}
-            >
-
-
+          >
             <Bonfire.UI.Common.NavSidebarLive
               :if={!@without_sidebar}
               page={@page}
@@ -252,107 +249,105 @@ defmodule Bonfire.UI.Common.LayoutLive do
           </div>
           <Bonfire.UI.Common.NavFooterMobileUserLive page={@page} />
         </div>
-    <div
-      :if={!@without_sidebar}
-      class="hidden tablet-lg:block order-first md:order-none md:static z-[999]">
-      <div
-        data-id="right_nav_and_widgets"
-        class="order-last hidden tablet-lg:block tablet-lg:sticky  w-auto tablet-lg:top-3 mt-3 self-start z-[998] tablet-lg:w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
-      >
-      {#if not is_nil(current_user_id(@__context__))}
-      <div class="w-full">
-        <Dynamic.Component
-          :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
-          module={Bonfire.Search.Web.FormLive}
-          search_limit={5}
-        />
-      </div>
-      {#else}
-      <Bonfire.UI.Common.GuestActionsLive />
-      {/if}
-      <div
-        data-id="secondary_sidebar_widgets"
-        class="hidden mt-4 overflow-x-hidden overflow-y-auto tablet-lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
-      >
-      <!-- FIXME: use the widget system instead (see below) -->
-      <Dynamic.Component
-        :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive, @__context__) and
-          not is_nil(current_user(@__context__))}
-        module={Bonfire.Classify.Web.CategoriesNavLive}
-        selected_tab={@selected_tab}
-      />
-      <Dynamic.Component
-        :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__) and
-          not is_nil(current_user(@__context__))}
-        module={Bonfire.UI.ValueFlows.ProcessesListLive}
-        process_url="/coordination/list"
-        title={l("Favourite milestones")}
-      />
-
-      <div
-        :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(current_user(@__context__))) or
-          (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(current_user(@__context__)))}
-        class="flex flex-col gap-4"
-      >
-        <Dynamic.Component
-          :if={not is_nil(current_user(@__context__))}
-          :for={{component, component_assigns} <-
-            List.wrap(
-              @sidebar_widgets[:users][:secondary] ||
-                [
-                  {Bonfire.Tag.Web.WidgetTagsLive, []},
-                  {Bonfire.UI.Common.WidgetFeedbackLive, []}
-                ]
-            )}
-          module={component}
-          {...component_assigns}
-        />
-
-        <Dynamic.Component
-          :if={is_nil(current_user(@__context__))}
-          :for={{component, component_assigns} <- List.wrap(@sidebar_widgets[:guests][:secondary] || [])}
-          module={component}
-          {...component_assigns}
-        />
-      </div>
-
-      <div class="mt-4 text-xs text-base-content/70">
-        <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:
-          <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·
-          <!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · -->
-          <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·
-          <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LiveRedirect> ·
-          <LiveRedirect
-            :if={current_user(@__context__) || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-            class="text-xs link-hover link text-base-content/70"
-            to="/users"
-          >{l("Users")}</LiveRedirect></div>
-        <div class="mt-4">
-          <a
-            href="https://bonfirenetworks.org/"
-            class="text-xs font-semibold link link-hover text-base-content/70"
+        <div
+          :if={!@without_sidebar}
+          class="hidden tablet-lg:block order-first md:order-none md:static z-[999]"
+        >
+          <div
+            data-id="right_nav_and_widgets"
+            class="order-last hidden tablet-lg:block tablet-lg:sticky  w-auto tablet-lg:top-3 mt-3 self-start z-[998] tablet-lg:w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
           >
-            {Bonfire.Application.name()}
-          </a>
-          ·
-          <LiveRedirect
-            to={Bonfire.Application.repository()}
-            class="text-xs link link-hover text-base-content/70"
-          >
-            {Bonfire.Application.version()}
-            <span class="ml-1" x-data="{msg: 'JS'}">
-              <span x-text="msg">no JS</span>
-            </span>
-            <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
-          </LiveRedirect>
-        </div>
-      </div>
-    </div>
+            {#if not is_nil(current_user_id(@__context__))}
+              <div class="w-full">
+                <Dynamic.Component
+                  :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
+                  module={Bonfire.Search.Web.FormLive}
+                  search_limit={5}
+                />
+              </div>
+            {#else}
+              <Bonfire.UI.Common.GuestActionsLive />
+            {/if}
+            <div
+              data-id="secondary_sidebar_widgets"
+              class="hidden mt-4 overflow-x-hidden overflow-y-auto tablet-lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
+            >
+              <!-- FIXME: use the widget system instead (see below) -->
+              <Dynamic.Component
+                :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive, @__context__) and
+                  not is_nil(current_user(@__context__))}
+                module={Bonfire.Classify.Web.CategoriesNavLive}
+                selected_tab={@selected_tab}
+              />
+              <Dynamic.Component
+                :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__) and
+                  not is_nil(current_user(@__context__))}
+                module={Bonfire.UI.ValueFlows.ProcessesListLive}
+                process_url="/coordination/list"
+                title={l("Favourite milestones")}
+              />
 
+              <div
+                :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(current_user(@__context__))) or
+                  (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(current_user(@__context__)))}
+                class="flex flex-col gap-4"
+              >
+                <Dynamic.Component
+                  :if={not is_nil(current_user(@__context__))}
+                  :for={{component, component_assigns} <-
+                    List.wrap(
+                      @sidebar_widgets[:users][:secondary] ||
+                        [
+                          {Bonfire.Tag.Web.WidgetTagsLive, []},
+                          {Bonfire.UI.Common.WidgetFeedbackLive, []}
+                        ]
+                    )}
+                  module={component}
+                  {...component_assigns}
+                />
 
+                <Dynamic.Component
+                  :if={is_nil(current_user(@__context__))}
+                  :for={{component, component_assigns} <- List.wrap(@sidebar_widgets[:guests][:secondary] || [])}
+                  module={component}
+                  {...component_assigns}
+                />
+              </div>
+
+              <div class="mt-4 text-xs text-base-content/70">
+                <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:
+                  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·
+                  <!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · -->
+                  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·
+                  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LiveRedirect> ·
+                  <LiveRedirect
+                    :if={current_user(@__context__) || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+                    class="text-xs link-hover link text-base-content/70"
+                    to="/users"
+                  >{l("Users")}</LiveRedirect></div>
+                <div class="mt-4">
+                  <a
+                    href="https://bonfirenetworks.org/"
+                    class="text-xs font-semibold link link-hover text-base-content/70"
+                  >
+                    {Bonfire.Application.name()}
+                  </a>
+                  ·
+                  <LiveRedirect
+                    to={Bonfire.Application.repository()}
+                    class="text-xs link link-hover text-base-content/70"
+                  >
+                    {Bonfire.Application.version()}
+                    <span class="ml-1" x-data="{msg: 'JS'}">
+                      <span x-text="msg">no JS</span>
+                    </span>
+                    <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
+                  </LiveRedirect>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
       </div>
 
       <!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player, @current_user),

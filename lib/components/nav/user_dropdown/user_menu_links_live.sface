@@ -1,25 +1,21 @@
-<!-- WIP: Find a better way to include navs in mobile with notification badges  -->
+<!-- WIP: Find a better way to include navs in mobile with notification badges -->
 <li :if={@mobile}>
   <LiveRedirect
-    to={"/feed"}
+    to="/feed"
     class={if @mobile,
       do: "flex items-center w-full gap-6 px-2 py-2 rounded-md"}
   >
     <Icon iconify="ri:home-line" class="w-5 h-5 text-base-content/70" />
-    <div class={"text-sm font-normal tracking-wide"}>{l("Activities")}</div>
+    <div class="text-sm font-normal tracking-wide">{l("Activities")}</div>
   </LiveRedirect>
 </li>
 
 <li :if={@mobile}>
-  <LiveRedirect
-    to={"/messages"}
-    class={"flex items-center w-full gap-6 px-2 py-2 rounded-md"}
-  >
+  <LiveRedirect to="/messages" class="flex items-center w-full gap-6 px-2 py-2 rounded-md">
     <Icon iconify="mdi:inbox" class="w-5 h-5 text-base-content/70" />
-    <div class={"text-sm font-normal tracking-wide"}>{l("Messages")}</div>
+    <div class="text-sm font-normal tracking-wide">{l("Messages")}</div>
   </LiveRedirect>
 </li>
-
 
 <li class={if @mobile, do: "border-t pt-2 border-neutral-content/10", else: ""}>
   <LiveRedirect
@@ -71,7 +67,6 @@
     <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("Instance Settings")}</div>
   </LiveRedirect>
 </li>
-
 
 <li class="border-t border-neutral-content/10">
   <Bonfire.UI.Common.FeedbackButtonLive

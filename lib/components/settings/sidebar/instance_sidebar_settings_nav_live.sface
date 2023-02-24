@@ -11,7 +11,7 @@
       </li>
       <ul x-show="open" x-collapse class="menu menu-compact"> -->
     <li>
-      <div class="p-0 cursor-default hover:bg-base-300 ">
+      <div class="p-0 cursor-default hover:bg-base-300">
         <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Website")}</span>
       </div>
     </li>

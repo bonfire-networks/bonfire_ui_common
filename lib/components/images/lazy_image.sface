@@ -1,11 +1,11 @@
 {#case @src || Media.media_url(@media)}
-{#match src}
-  {#case e(@media, :metadata, :blurhash, nil) || Bonfire.Files.Blurred.blurhash(src)}
-    {#match nil}
-      {#case is_binary(src) and Bonfire.Files.Blurred.blurred(src)}
-        {#match blurred when is_binary(blurred) and blurred != src}
+  {#match src}
+    {#case e(@media, :metadata, :blurhash, nil) || Bonfire.Files.Blurred.blurhash(src)}
+      {#match nil}
+        {#case is_binary(src) and Bonfire.Files.Blurred.blurred(src)}
+          {#match blurred when is_binary(blurred) and blurred != src}
             <img
-              x-data={"{src: '#{blurred}' }"} 
+              x-data={"{src: '#{blurred}' }"}
               x-intersect.once={"src = '#{src}'"}
               src={blurred}
               alt={@alt}
@@ -14,33 +14,29 @@
               onerror="this.style.background='#6AA4DA'"
               {...@opts}
             />
-        {#match _}
-          <img src={src} alt={@alt} class={@class} onerror="this.style.background='#6AA4DA'" {...@opts}>
-      {/case}
+          {#match _}
+            <img src={src} alt={@alt} class={@class} onerror="this.style.background='#6AA4DA'" {...@opts}>
+        {/case}
       {#match blurhash}
-
-        <div 
-          phx-hook="blurHash" id={id(@media) || Pointers.ULID.generate()}  
+        <div
+          phx-hook="blurHash"
+          id={id(@media) || Pointers.ULID.generate()}
           data-hash={blurhash}
-          x-data={"{src: null }"}  
-          x-intersect.once={"src = '#{src}'"}>
-          <canvas
-              class={@class}
-              x-show="!src"
-              x-transition
-              {...@opts}
-            />
+          x-data="{src: null }"
+          x-intersect.once={"src = '#{src}'"}
+        >
+          <canvas class={@class} x-show="!src" x-transition {...@opts} />
           <img
-              x-cloak
-              src="data:,"
-              alt={@alt}
-              class={@class}
-              x-show="src"
-              x-transition
-              x-bind:src="src"
-              onerror="this.style.background='#6AA4DA'"
-              {...@opts}
-            />
+            x-cloak
+            src="data:,"
+            alt={@alt}
+            class={@class}
+            x-show="src"
+            x-transition
+            x-bind:src="src"
+            onerror="this.style.background='#6AA4DA'"
+            {...@opts}
+          />
         </div>
-  {/case}
+    {/case}
 {/case}

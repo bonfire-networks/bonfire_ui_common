@@ -1,5 +1,5 @@
 <div>
-<!-- <div
+  <!-- <div
   data-id="persistent"
   class="contents"
   x-data="{
@@ -15,29 +15,29 @@
       'absolute lg:sticky lg:grid right-0 lg:right-auto mt-0': open_widgets_sidebar,
     }"
   > -->
-    <!-- <Bonfire.UI.Common.LogoLinkLive :if={@without_sidebar} with_name /> -->
-    {#if not is_nil(current_user_id(@__context__))}
-      <Dynamic.Component
-        :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
-        module={Bonfire.UI.Common.LoggedActionsLive}
-        page_title={@page_title}
-        page={@page}
-        current_user={current_user(@__context__)}
-        showing_within={@showing_within}
-        reply_to_id={@reply_to_id}
-        context_id={@context_id}
-        create_object_type={@create_object_type}
-        thread_mode={@thread_mode}
-        without_sidebar={@without_sidebar}
-        without_widgets={@without_widgets}
-        to_boundaries={@to_boundaries}
-        to_circles={@to_circles}
-        smart_input_opts={@smart_input_opts}
-        sidebar_widgets={@sidebar_widgets}
-      />
-    {#else}
-      <div />
-    {/if}
+  <!-- <Bonfire.UI.Common.LogoLinkLive :if={@without_sidebar} with_name /> -->
+  {#if not is_nil(current_user_id(@__context__))}
+    <Dynamic.Component
+      :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
+      module={Bonfire.UI.Common.LoggedActionsLive}
+      page_title={@page_title}
+      page={@page}
+      current_user={current_user(@__context__)}
+      showing_within={@showing_within}
+      reply_to_id={@reply_to_id}
+      context_id={@context_id}
+      create_object_type={@create_object_type}
+      thread_mode={@thread_mode}
+      without_sidebar={@without_sidebar}
+      without_widgets={@without_widgets}
+      to_boundaries={@to_boundaries}
+      to_circles={@to_circles}
+      smart_input_opts={@smart_input_opts}
+      sidebar_widgets={@sidebar_widgets}
+    />
+  {#else}
+    <div />
+  {/if}
 
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
   <Bonfire.UI.Common.ReusableModalLive id="persistent_modal" />

@@ -8,14 +8,11 @@
   x-transition:leave-start="opacity-100"
   x-transition:leave-end="opacity-0"
   x-description="Background backdrop, show/hide based on slide-over state."
-  class="z-[99999] md:hidden fixed inset-0 backdrop-blur transition-opacity bg-black/80"></div>
-<div
-  x-show="open_sidebar"
-  x-cloak
-  class="fixed z-[99999] inset-0 overflow-hidden">
+  class="z-[99999] md:hidden fixed inset-0 backdrop-blur transition-opacity bg-black/80"
+/>
+<div x-show="open_sidebar" x-cloak class="fixed z-[99999] inset-0 overflow-hidden">
   <div class="absolute inset-0 overflow-hidden">
     <div class="fixed inset-y-0 left-0 flex max-w-full pr-10 pointer-events-none">
-
       <div
         x-show="open_sidebar"
         x-transition:enter="transform transition ease-in-out duration-300"
@@ -26,53 +23,53 @@
         x-transition:leave-end="-translate-x-full"
         class="w-screen max-w-md pointer-events-auto"
         x-description="Slide-over panel, show/hide based on slide-over state."
-        @click.away="open_sidebar = false">
+        @click.away="open_sidebar = false"
+      >
         <div class="flex flex-col h-full py-6 overflow-y-scroll shadow-xl bg-base-300">
           <div class="relative flex-1 px-4 sm:px-6">
-
-          <div data-id="mobile_nav">
-            <div class="relative w-full h-full">
-              <div class="flex items-start justify-between">
-              <LinkLive class="inline-flex gap-3" to={path(@current_user)}>
-                <Bonfire.UI.Common.AvatarLive
-                  class="inline-block object-cover w-10 h-10 cursor-pointer rounded-xl"
-                  bg_class="rounded bg-base-300"
-                  size="32"
-                  user={@current_user}
-                />
-                <div class="flex items-center">
-                  <div class="flex flex-col flex-1">
-                    <span class="font-bold text-base-content">{e(@current_user, :profile, :name, "unknown")}</span>
-                    <span class="text-sm font-light text-base-content/70">{Bonfire.Me.Characters.display_username(@current_user, true)}</span>
+            <div data-id="mobile_nav">
+              <div class="relative w-full h-full">
+                <div class="flex items-start justify-between">
+                  <LinkLive class="inline-flex gap-3" to={path(@current_user)}>
+                    <Bonfire.UI.Common.AvatarLive
+                      class="inline-block object-cover w-10 h-10 cursor-pointer rounded-xl"
+                      bg_class="rounded bg-base-300"
+                      size="32"
+                      user={@current_user}
+                    />
+                    <div class="flex items-center">
+                      <div class="flex flex-col flex-1">
+                        <span class="font-bold text-base-content">{e(@current_user, :profile, :name, "unknown")}</span>
+                        <span class="text-sm font-light text-base-content/70">{Bonfire.Me.Characters.display_username(@current_user, true)}</span>
+                      </div>
+                    </div>
+                  </LinkLive>
+                  <div class="flex items-center ml-3 h-7">
+                    <button type="button" class="btn btn-circle btn-ghost" @click="open_sidebar = false">
+                      <span class="sr-only">Close panel</span>
+                      <svg
+                        class="w-6 h-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
                   </div>
                 </div>
-              </LinkLive>
-              <div class="flex items-center ml-3 h-7">
-                <button type="button" class="btn btn-circle btn-ghost" @click="open_sidebar = false">
-                  <span class="sr-only">Close panel</span>
-                  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-                  </svg>
-                </button>
+                <nav role="navigation" class="mt-4" aria-label={l("Extension navigation")}>
+                  <ul class="gap-1 menu menu-compact">
+                    <Bonfire.UI.Common.UserMenuLinksLive mobile />
+                  </ul>
+                </nav>
               </div>
-              </div>
-              <nav
-                role="navigation"
-                class="mt-4"
-                aria-label={l("Extension navigation")}
-              >
-                <ul class="gap-1 menu menu-compact">
-                  <Bonfire.UI.Common.UserMenuLinksLive mobile />
-                </ul>
-              </nav>
             </div>
-          </div>
-          
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>
-

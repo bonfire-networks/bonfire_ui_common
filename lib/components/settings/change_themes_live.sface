@@ -6,160 +6,155 @@
         custom_theme: #{Settings.get([:ui, :theme, :preferred], :system, @__context__) == :custom},
       }"}
 >
-
-  <div class="mb-3 text-sm font-semibold tracking-widest text-base-content/70">{l "Colour mode"}</div>
+  <div class="mb-3 text-sm font-semibold tracking-widest text-base-content/70">{l("Colour mode")}</div>
   <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
     <!-- DARK -->
-      <button
-        type="button"
-        x-on:click="dark = true; light = false; custom_theme=false"
-        :class="{'bg-base-content text-base-100' : dark && !light }"
-        phx-click="Bonfire.Me.Settings:put_theme"
-        phx-value-keys="ui:theme:preferred"
-        phx-value-values={:dark}
-        class="normal-case rounded btn btn-ghost border-base-content/30"
-      >
-        <div class="flex items-center">
-          <span><Icon outline="Moon" class="w-4 h-4" /></span>
-          <span class="ml-2">{l("Dark")}</span>
-        </div>
-      </button>
+    <button
+      type="button"
+      x-on:click="dark = true; light = false; custom_theme=false"
+      :class="{'bg-base-content text-base-100' : dark && !light }"
+      phx-click="Bonfire.Me.Settings:put_theme"
+      phx-value-keys="ui:theme:preferred"
+      phx-value-values={:dark}
+      class="normal-case rounded btn btn-ghost border-base-content/30"
+    >
+      <div class="flex items-center">
+        <span><Icon outline="Moon" class="w-4 h-4" /></span>
+        <span class="ml-2">{l("Dark")}</span>
+      </div>
+    </button>
 
-      <button
-        type="button"
-        x-on:click="dark = false; light = true; custom_theme=false"
-        :class="{'bg-base-content text-base-100' : light && !dark }"
-        phx-click="Bonfire.Me.Settings:put_theme"
-        phx-value-keys="ui:theme:preferred"
-        phx-value-values={:light}
-        class="normal-case rounded btn btn-outline border-base-content/30"
-      >
-        <span><Icon outline="Sun" class="w-4 h-4" /></span>
-        <span class="ml-2">{l("Light")}</span>
-      </button>
-  
-      <button
-        type="button"
-        x-on:click="dark = true; light = true; custom_theme=false"
-        :class="{'bg-base-content text-base-100' : dark && light }"
-        phx-click="Bonfire.Me.Settings:put_theme"
-        phx-value-keys="ui:theme:preferred"
-        phx-value-values={:system}
-        class="normal-case rounded btn btn-outline border-base-content/30"
-      >
-        <span><Icon outline="ComputerDesktop" class="w-4 h-4" /></span>
-        <span class="ml-2">{l("System")}</span>
-      </button>
-      
-      <button
-          type="button"
-          x-on:click="dark = false; light = false; custom_theme = !custom_theme"
-          :class="{'bg-base-content text-base-100' : custom_theme }"
-          phx-click="Bonfire.Me.Settings:put_theme"
-          phx-value-keys="ui:theme:preferred"
-          phx-value-values={:custom}
-          class="normal-case rounded btn btn-outline border-base-content/30"
-        >
-          <span><Icon iconify="lucide:paintbrush-2" class="w-4 h-4" /></span>
-          <span class="ml-2">{l("Custom")}</span>
-        </button>
-    </div>
-        
-      
-      <!-- <div 
+    <button
+      type="button"
+      x-on:click="dark = false; light = true; custom_theme=false"
+      :class="{'bg-base-content text-base-100' : light && !dark }"
+      phx-click="Bonfire.Me.Settings:put_theme"
+      phx-value-keys="ui:theme:preferred"
+      phx-value-values={:light}
+      class="normal-case rounded btn btn-outline border-base-content/30"
+    >
+      <span><Icon outline="Sun" class="w-4 h-4" /></span>
+      <span class="ml-2">{l("Light")}</span>
+    </button>
+
+    <button
+      type="button"
+      x-on:click="dark = true; light = true; custom_theme=false"
+      :class="{'bg-base-content text-base-100' : dark && light }"
+      phx-click="Bonfire.Me.Settings:put_theme"
+      phx-value-keys="ui:theme:preferred"
+      phx-value-values={:system}
+      class="normal-case rounded btn btn-outline border-base-content/30"
+    >
+      <span><Icon outline="ComputerDesktop" class="w-4 h-4" /></span>
+      <span class="ml-2">{l("System")}</span>
+    </button>
+
+    <button
+      type="button"
+      x-on:click="dark = false; light = false; custom_theme = !custom_theme"
+      :class="{'bg-base-content text-base-100' : custom_theme }"
+      phx-click="Bonfire.Me.Settings:put_theme"
+      phx-value-keys="ui:theme:preferred"
+      phx-value-values={:custom}
+      class="normal-case rounded btn btn-outline border-base-content/30"
+    >
+      <span><Icon iconify="lucide:paintbrush-2" class="w-4 h-4" /></span>
+      <span class="ml-2">{l("Custom")}</span>
+    </button>
+  </div>
+
+  <!-- <div 
         x-on:click="custom_theme = ! custom_theme"
         class="gap-3 normal-case rounded btn btn-sm btn-ghost">
         <span>{l("Edit")}</span>
         <Icon iconify="fluent:triangle-right-12-filled" class="w-3 h-3 text-base-content/70" />
       </div> -->
 
-      <!-- <div class="flex flex-col col-span-3 gap-2 p-3 rounded bg-base-content/5">
+  <!-- <div class="flex flex-col col-span-3 gap-2 p-3 rounded bg-base-content/5">
         
         
       </div> -->
-      <div>
-      {#if Settings.get([:ui, :theme, :preferred], %{}, @__context__) not in [:custom]} 
-      
-        {#case Settings.get([:ui, :themes], ["bonfire"], @scoped)}
-          {#match themes}
-            {#case Settings.get([:ui, :themes_light], ["light"], @scoped)}
-              {#match themes_light}
-                <div x-show="dark">
+  <div>
+    {#if Settings.get([:ui, :theme, :preferred], %{}, @__context__) not in [:custom]}
+      {#case Settings.get([:ui, :themes], ["bonfire"], @scoped)}
+        {#match themes}
+          {#case Settings.get([:ui, :themes_light], ["light"], @scoped)}
+            {#match themes_light}
+              <div x-show="dark">
+                <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l("Pick your preferred dark theme")}</div>
 
-        <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l "Pick your preferred dark theme"}</div>
+                <Bonfire.UI.Common.ChangeThemeLive
+                  label={l("Dark theme")}
+                  key="instance_theme"
+                  theme={@theme}
+                  themes={themes}
+                />
+              </div>
+              <div x-show="light">
+                <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l("Pick your preferred light theme")}</div>
 
-                  <Bonfire.UI.Common.ChangeThemeLive
-                    label={l("Dark theme")}
-                    key="instance_theme"
-                    theme={@theme}
-                    themes={themes}
-                  />
-                </div>
-                <div x-show="light">
+                <Bonfire.UI.Common.ChangeThemeLive
+                  label={l("Light theme")}
+                  key="instance_theme_light"
+                  theme={@theme_light}
+                  themes={themes_light}
+                />
+              </div>
+          {/case}
+      {/case}
+    {/if}
+  </div>
 
-        <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l "Pick your preferred light theme"}</div>
-
-                  <Bonfire.UI.Common.ChangeThemeLive
-                    label={l("Light theme")}
-                    key="instance_theme_light"
-                    theme={@theme_light}
-                    themes={themes_light}
-                  />
-                </div>
-            {/case}
-        {/case}
-      {/if}
-      </div>
-    
-      <!-- {#if Settings.get([:ui, :theme, :preferred], :system, @__context__) in [:system]}
+  <!-- {#if Settings.get([:ui, :theme, :preferred], :system, @__context__) in [:system]}
         <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l "By selecting the system colour mode, you will use your preferred dark or light theme, depending on your browser or system settings (and possibily the time of day)."}</div>
       {/if} -->
-  
-    <div class="p-3 mt-4 rounded-lg bg-base-content/5" x-show="custom_theme" x-cloak x-collapse>
-      <div class="flex items-center gap-2 pb-3 mb-5 text-sm font-semibold border-b place-content-center border-base-content/10">
-        <Icon iconify="lucide:paintbrush-2" class="w-4 h-4" />
-        <span class="">{l("Customise theme colours")}</span>
-      </div>
 
-      <div :if={@scope == :instance} class="p-4 mt-6 mb-0 rounded-md bg-info/10">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <Icon solid="InformationCircle" class="w-5 h-5 text-info" />
-          </div>
-          <div class="flex-1 ml-3 md:flex md:justify-between">
-            <p class="text-sm text-info">
-              {l(
-                "Caution: Modifying the color palette can potentially affect readability and accessibility for some users. Please consider accessibility guidelines and user testing when making changes."
-              )}</p>
-          </div>
+  <div class="p-3 mt-4 rounded-lg bg-base-content/5" x-show="custom_theme" x-cloak x-collapse>
+    <div class="flex items-center gap-2 pb-3 mb-5 text-sm font-semibold border-b place-content-center border-base-content/10">
+      <Icon iconify="lucide:paintbrush-2" class="w-4 h-4" />
+      <span class="">{l("Customise theme colours")}</span>
+    </div>
+
+    <div :if={@scope == :instance} class="p-4 mt-6 mb-0 rounded-md bg-info/10">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <Icon solid="InformationCircle" class="w-5 h-5 text-info" />
         </div>
-      </div>
-
-      <div class="grid grid-cols-1 gap-3 py-3">
-        <div
-          :for={{key, colour} <-
-            DaisyTheme.theme(Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped)))}
-          id={key}
-          class="relative flex items-center justify-between"
-          phx-hook="ColourPicker"
-          data-scope={@scope}
-          x-data="{
-            open: false
-          }"
-        >
-          <div class="mb-2 text-sm font-medium tracking-wider capitalize text-base-content">{key}</div>
-          <div class="relative inline-flex items-center gap-2">
-            <div
-              x-on:click="open = true"
-              class="w-10 rounded-lg shadow-xl cursor-pointer colour_preview h-7 border-neutral-content/10"
-              style={"background-color: #{colour}"}
-            />
-            <label x-on:click="open = true" class="flex items-baseline gap-2">
-              <hex-input color={colour} />
-            </label>
-            <hex-color-picker x-show="open" x-on:click.outside="open = false" />
-          </div>
+        <div class="flex-1 ml-3 md:flex md:justify-between">
+          <p class="text-sm text-info">
+            {l(
+              "Caution: Modifying the color palette can potentially affect readability and accessibility for some users. Please consider accessibility guidelines and user testing when making changes."
+            )}</p>
         </div>
       </div>
     </div>
+
+    <div class="grid grid-cols-1 gap-3 py-3">
+      <div
+        :for={{key, colour} <-
+          DaisyTheme.theme(Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped)))}
+        id={key}
+        class="relative flex items-center justify-between"
+        phx-hook="ColourPicker"
+        data-scope={@scope}
+        x-data="{
+            open: false
+          }"
+      >
+        <div class="mb-2 text-sm font-medium tracking-wider capitalize text-base-content">{key}</div>
+        <div class="relative inline-flex items-center gap-2">
+          <div
+            x-on:click="open = true"
+            class="w-10 rounded-lg shadow-xl cursor-pointer colour_preview h-7 border-neutral-content/10"
+            style={"background-color: #{colour}"}
+          />
+          <label x-on:click="open = true" class="flex items-baseline gap-2">
+            <hex-input color={colour} />
+          </label>
+          <hex-color-picker x-show="open" x-on:click.outside="open = false" />
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
