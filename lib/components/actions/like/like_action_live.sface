@@ -14,7 +14,7 @@
         class="rounded btn btn-ghost btn-square like like_with_label btn-sm"
         title={l("Like this")}
       >
-        <span class={"text-base-content text-opacity-50", "text-yellow-500 text-opacity-100": @my_like}>
+        <span class={"text-base-content/70", "text-yellow-500 text-opacity-100": @my_like}>
           <Icon solid="Star" class="w-5 h-5" />
         </span>
 

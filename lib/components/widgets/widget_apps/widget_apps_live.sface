@@ -16,7 +16,7 @@
       <LiveRedirect class="hover:rounded-lg" to={extension[:href]}>
         <div class="flex flex-col items-center w-full">
           <Icon iconify={extension[:icon]} class="w-8 h-8" />
-          <div class="flex-1 max-w-[100px] mt-3 text-xs font-medium text-center truncate text-base-content/80">{extension[:name]}</div>
+          <div class="flex-1 max-w-[100px] mt-3 text-xs font-medium text-center truncate text-base-content/70">{extension[:name]}</div>
         </div>
       </LiveRedirect>
     </li>

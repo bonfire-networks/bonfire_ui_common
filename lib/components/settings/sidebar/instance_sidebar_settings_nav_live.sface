@@ -25,9 +25,9 @@
       >
         <Icon
           solid="Cog"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "preferences"}
+          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "preferences"}
         />
-        <span class="text-sm text-base-content/80">{l("Preferences")}</span>
+        <span class="text-sm text-base-content/70">{l("Preferences")}</span>
       </LivePatch>
     </li>
 
@@ -36,8 +36,8 @@
             class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full", 
             "bg-base-content/10": @selected_tab == "design"}>
-            <Icon solid="ColorSwatch" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "design"} />
-            <span class="text-sm text-base-content/80">{l("Design")}</span>
+            <Icon solid="ColorSwatch" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "design"} />
+            <span class="text-sm text-base-content/70">{l("Design")}</span>
           </LivePatch>
         </li> -->
     <!-- 
@@ -46,8 +46,8 @@
             to={~p"/settings/instance/navigation"}
             class={"flex items-center gap-3 rounded-md py-2 px-2 w-full", "bg-base-content/10": @selected_tab == "navigation"}
           >
-            <Icon solid="PaperAirplane" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "navigation"} />
-            <span class="text-sm text-base-content/80">{l("Navigation")}</span>
+            <Icon solid="PaperAirplane" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "navigation"} />
+            <span class="text-sm text-base-content/70">{l("Navigation")}</span>
           </LivePatch>
         </li> -->
 
@@ -61,9 +61,9 @@
       >
         <Icon
           solid="Scale"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "terms"}
+          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "terms"}
         />
-        <span class="text-sm text-base-content/80">{l("Terms / Policies")}</span>
+        <span class="text-sm text-base-content/70">{l("Terms / Policies")}</span>
       </LivePatch>
     </li>
     <!-- </ul>
@@ -94,9 +94,9 @@
       >
         <Icon
           solid="Users"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "members"}
+          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "members"}
         />
-        <span class="text-sm text-base-content/80">{l("Members")}</span>
+        <span class="text-sm text-base-content/70">{l("Members")}</span>
       </LivePatch>
     </li>
 
@@ -111,9 +111,9 @@
       >
         <Icon
           solid="Mail"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "invites"}
+          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "invites"}
         />
-        <span class="text-sm text-base-content/80">{l("Invites")}</span>
+        <span class="text-sm text-base-content/70">{l("Invites")}</span>
       </LivePatch>
     </li>
 
@@ -133,9 +133,9 @@
       >
         <Icon
           solid="Flag"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "flags"}
+          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "flags"}
         />
-        <span class="text-sm text-base-content/80">{l("Flagged")}</span>
+        <span class="text-sm text-base-content/70">{l("Flagged")}</span>
       </LivePatch>
     </li>
 
@@ -153,11 +153,11 @@
       >
         <Icon
           iconify="mingcute:ghost-fill"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "instance_ghosted"}
+          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "instance_ghosted"}
         />
         <div class="flex flex-col">
           <span class={
-            "text-sm text-base-content/80",
+            "text-sm text-base-content/70",
             "font-semibold": @showing_within == :dashboard
           }>{l("Ghosted instance-wide")}</span>
           <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l(
@@ -180,11 +180,11 @@
       >
         <Icon
           solid="VolumeOff"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "instance_silenced"}
+          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "instance_silenced"}
         />
         <div class="flex flex-col">
           <span class={
-            "text-sm text-base-content/80",
+            "text-sm text-base-content/70",
             "font-semibold": @showing_within == :dashboard
           }>{l("Silenced instance-wide")}</span>
           <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Nobody on this instance will receive any updates from the users or instances on this list ")}</p>
@@ -213,9 +213,9 @@
       >
         <Icon
           solid="Puzzle"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "extensions"}
+          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
         />
-        <span class="text-sm text-base-content/80">{l("Extensions")}</span>
+        <span class="text-sm text-base-content/70">{l("Extensions")}</span>
       </LivePatch>
     </li>
     <!-- </ul>
@@ -231,7 +231,7 @@
           "bg-base-content/10": @selected_tab == "pages"
         }
       >
-        <Icon solid="DocumentDuplicate" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "pages"} />
+        <Icon solid="DocumentDuplicate" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "pages"} />
         {l("Pages")}
       </LivePatch>
     </li>
@@ -247,7 +247,7 @@
         }
       >
         
-          <Icon solid="ChatAlt" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "posts"} />
+          <Icon solid="ChatAlt" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "posts"} />
         {l("Posts")}
       </LivePatch>
     </li>
@@ -263,7 +263,7 @@
         }
       >
         
-          <Icon solid="Tag" class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "tags"} />
+          <Icon solid="Tag" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "tags"} />
         {l("Tags")}
       </LivePatch>
     </li> -->

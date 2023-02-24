@@ -15,9 +15,9 @@
       >
         <Icon
           solid="User"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "profile"}
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "profile"}
         />
-        <span class="text-sm text-base-content/80">{l("Profile")}</span>
+        <span class="text-sm text-base-content/70">{l("Profile")}</span>
       </LiveRedirect>
     </li>
     <li>
@@ -30,9 +30,9 @@
       >
         <Icon
           solid="Adjustments"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "preferences"}
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "preferences"}
         />
-        <span class="text-sm text-base-content/80">{l("Preferences")}</span>
+        <span class="text-sm text-base-content/70">{l("Preferences")}</span>
       </LiveRedirect>
     </li>
 
@@ -46,9 +46,9 @@
       >
         <Icon
           solid="Key"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "account"}
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "account"}
         />
-        <span class="text-sm text-base-content/80">{l("Account Settings")}</span>
+        <span class="text-sm text-base-content/70">{l("Account Settings")}</span>
       </LiveRedirect>
     </li>
 
@@ -63,9 +63,9 @@
       >
         <Icon
           solid="UserGroup"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "shared_user"}
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "shared_user"}
         />
-        <span class="text-sm text-base-content/80">{l("Team Profiles")}</span>
+        <span class="text-sm text-base-content/70">{l("Team Profiles")}</span>
       </LiveRedirect>
     </li>
 
@@ -79,9 +79,9 @@
       >
         <Icon
           solid="Mail"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "invites"}
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "invites"}
         />
-        <span class="text-sm text-base-content/80">{l("Invites")}</span>
+        <span class="text-sm text-base-content/70">{l("Invites")}</span>
       </LiveRedirect>
     </li> -->
 
@@ -101,9 +101,9 @@
       >
         <Icon
           solid="Flag"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "flags"}
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "flags"}
         />
-        <span class="text-sm text-base-content/80">{l("Flags")}</span>
+        <span class="text-sm text-base-content/70">{l("Flags")}</span>
       </LiveRedirect>
     </li>
 
@@ -121,11 +121,11 @@
       >
         <Icon
           iconify="mingcute:ghost-fill"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "ghosted"}
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "ghosted"}
         />
         <div class="flex flex-col">
           <span class={
-            "text-sm text-base-content/80",
+            "text-sm text-base-content/70",
             "font-semibold": @showing_within == :dashboard
           }>{l("Ghosted")}</span>
           <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Users or instances on this list will not be able to see or interact with you or your content")}</p>
@@ -146,11 +146,11 @@
       >
         <Icon
           solid="VolumeOff"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "silenced"}
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "silenced"}
         />
         <div class="flex flex-col">
           <span class={
-            "text-sm text-base-content/80",
+            "text-sm text-base-content/70",
             "font-semibold": @showing_within == :dashboard
           }>{l("Silenced")}</span>
           <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("You will not receive any updates from the users or instances on this list")}</p>
@@ -178,9 +178,9 @@
       >
         <Icon
           solid="Puzzle"
-          class={"w-5 h-5 font-normal text-base-content/80", "": @selected_tab == "extensions"}
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "extensions"}
         />
-        <span class="text-sm text-base-content/80">{l("Manage Extensions")}</span>
+        <span class="text-sm text-base-content/70">{l("Manage Extensions")}</span>
       </LiveRedirect>
     </li>
   </ul>

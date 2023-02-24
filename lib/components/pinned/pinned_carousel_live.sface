@@ -30,7 +30,7 @@
               <div
                 :if={e(pin, :post_content, :name, nil) ||
                   (e(pin, :name, nil) && e(pin, :post_content, :html_body, nil))}
-                class="mt-2 text-sm text-base-content/80 line-clamp-3"
+                class="mt-2 text-sm text-base-content/70 line-clamp-3"
               >{rich(e(pin, :post_content, :html_body, nil))}</div>
             </div>
           </div>
@@ -47,7 +47,7 @@
                   class="flex flex-col justify-center shadow-none bg-success whitespace-nowrap"
                 />
               </div>
-              <div class="text-xs font-medium text-base-content/80">0 of 3</div>
+              <div class="text-xs font-medium text-base-content/70">0 of 3</div>
             </div>
           </div>
       {/case}
@@ -135,7 +135,7 @@
                       class="flex flex-col justify-center shadow-none bg-success whitespace-nowrap"
                     />
                   </div>
-                  <div class="text-xs font-medium text-base-content/80">0 of 3</div>
+                  <div class="text-xs font-medium text-base-content/70">0 of 3</div>
                 </div>
               </li>
           {/case}

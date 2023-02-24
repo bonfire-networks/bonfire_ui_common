@@ -1,4 +1,4 @@
-<div class="bottom-0 h-[68px] flex fixed z-[997] btm-nav md:hidden">
+<div class="bottom-0 h-[68px] flex fixed z-[998] btm-nav md:hidden">
   <LiveRedirect
     class={
       "",
@@ -40,9 +40,9 @@
 
   <LiveRedirect :if={@current_user} to={path(:notifications)} class="">
     {#if @page == "notifications"}
-      <Icon iconify="mdi:bell" class="w-6 h-6" />
+      <Icon iconify="ph:bell-fill" class="w-6 h-6" />
     {#else}
-      <Icon iconify="mdi:bell-outline" class="w-6 h-6" />
+      <Icon iconify="ph:bell-bold" class="w-6 h-6" />
     {/if}
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>

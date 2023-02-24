@@ -30,7 +30,38 @@
           >@{e(current_user(@__context__), :character, :username, nil)}</div>
         </div>
       </LiveRedirect>
-      <Bonfire.UI.Common.UserMenuLive />
+      <div class="flex items-center gap-3">
+        <LiveRedirect 
+          to={"/messages"}
+          opts={"alt": "Direct messages"}
+          :if={@current_user}
+          class="relative pr-2">
+          <Icon iconify="mdi:inbox" class="w-5 h-5 text-base-content/70" />
+          <div class="absolute top-[-14px] left-[10px]">
+            <Bonfire.UI.Common.BadgeCounterLive
+              id={:inbox}
+              class="indicator-item badge badge-xs ring-2 ring-base-300 badge-sm border rounded-full !border-none"
+              counter_class=""
+              feed_id={e(@current_user, :character, :inbox_id, nil)}
+            />
+          </div>
+        </LiveRedirect>
+
+        <LiveRedirect to={path(:notifications)}
+          :if={@current_user}
+          opts={alt: "Notifications"}
+          class="relative pr-2">
+          <Icon iconify="ph:bell-fill" class="w-5 h-5 text-base-content/70" />
+          <div class="absolute top-[-14px] left-[10px]">
+            <Bonfire.UI.Common.BadgeCounterLive
+              id={:notifications}
+              class="indicator-item badge badge-xs ring-2 ring-base-300 badge-sm border rounded-full !border-none"
+              counter_class=""
+              feed_id={e(@current_user, :character, :notifications_id, nil)}
+            />
+          </div>
+        </LiveRedirect>
+        </div>
     </div>
   </div>
   {#if !@current_user}
@@ -38,14 +69,14 @@
       <ul class="menu">
         <li class="p-0 m-0 rounded-md">
           <LiveRedirect to="/" class="flex items-center w-full gap-6 px-2 py-2 rounded-md">
-            <Icon iconify="ri:home-line" class="h-5 w5 text-base-content/80" />
-            <span class="text-sm font-normal text-base-content/80">{l("Home")}</span>
+            <Icon iconify="ri:home-line" class="h-5 w5 text-base-content/70" />
+            <span class="text-sm font-normal text-base-content/70">{l("Home")}</span>
           </LiveRedirect>
         </li>
         <li class="p-0 m-0 rounded-md">
           <LiveRedirect to="/feed" class="flex items-center w-full gap-6 px-2 py-2 rounded-md">
-            <Icon iconify="ic:outline-explore" class="h-5 w5 text-base-content/80" />
-            <span class="text-sm font-normal text-base-content/80">{l("Recent activities")}</span>
+            <Icon iconify="ic:outline-explore" class="h-5 w5 text-base-content/70" />
+            <span class="text-sm font-normal text-base-content/70">{l("Recent activities")}</span>
           </LiveRedirect>
         </li>
         <li
@@ -53,8 +84,8 @@
           class="p-0 m-0 rounded-md"
         >
           <LiveRedirect to="/users" class="flex items-center w-full gap-6 px-2 py-2 rounded-md">
-            <Icon iconify={Iconify.HeroiconsOutline.Users} class="h-5 w5 text-base-content/80" />
-            <span class="text-sm font-normal text-base-content/80">{l("Users directory")}</span>
+            <Icon iconify={Iconify.HeroiconsOutline.Users} class="h-5 w5 text-base-content/70" />
+            <span class="text-sm font-normal text-base-content/70">{l("Users directory")}</span>
           </LiveRedirect>
         </li>
       </ul>
@@ -72,3 +103,5 @@
     </nav>
   {/if}
 </div>
+
+

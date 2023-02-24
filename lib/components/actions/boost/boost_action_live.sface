@@ -13,7 +13,7 @@
         class="rounded btn btn-ghost btn-square boost btn-sm"
         title={l("Boost this")}
       >
-        <span class={"text-base-content text-opacity-50", "text-opacity-100 text-info": @my_boost}>
+        <span class={"text-base-conten/70", "text-opacity-100 text-info": @my_boost}>
           <svg
             viewBox="0 0 24 24"
             width="24"

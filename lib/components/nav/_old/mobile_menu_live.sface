@@ -1,53 +1,78 @@
-<div data-id="mobile_nav">
-  <div class="relative w-full h-full">
-    <LinkLive class="inline-flex gap-3" to={path(@current_user)}>
-      <Bonfire.UI.Common.AvatarLive
-        class="inline-block object-cover w-10 h-10 cursor-pointer"
-        bg_class="rounded bg-base-300"
-        size="32"
-        user={@current_user}
-      />
-      <div class="flex items-center">
-        <div class="flex flex-col flex-1">
-          <span class="font-bold text-base-content">{e(@current_user, :profile, :name, "unknown")}</span>
-          <span class="text-sm font-light text-base-content/70">{Bonfire.Me.Characters.display_username(@current_user, true)}</span>
+<div
+  x-show="open_sidebar"
+  x-cloak
+  x-transition:enter="ease-in-out duration-300"
+  x-transition:enter-start="opacity-0"
+  x-transition:enter-end="opacity-100"
+  x-transition:leave="ease-in-out duration-300"
+  x-transition:leave-start="opacity-100"
+  x-transition:leave-end="opacity-0"
+  x-description="Background backdrop, show/hide based on slide-over state."
+  class="z-[99999] md:hidden fixed inset-0 backdrop-blur transition-opacity bg-black/80"></div>
+<div
+  x-show="open_sidebar"
+  x-cloak
+  class="fixed z-[99999] inset-0 overflow-hidden">
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="fixed inset-y-0 left-0 flex max-w-full pr-10 pointer-events-none">
+
+      <div
+        x-show="open_sidebar"
+        x-transition:enter="transform transition ease-in-out duration-300"
+        x-transition:enter-start="-translate-x-full"
+        x-transition:enter-end="-translate-x-0"
+        x-transition:leave="transform transition ease-in-out duration-300"
+        x-transition:leave-start="-translate-x-0"
+        x-transition:leave-end="-translate-x-full"
+        class="w-screen max-w-md pointer-events-auto"
+        x-description="Slide-over panel, show/hide based on slide-over state."
+        @click.away="open_sidebar = false">
+        <div class="flex flex-col h-full py-6 overflow-y-scroll shadow-xl bg-base-300">
+          <div class="relative flex-1 px-4 sm:px-6">
+
+          <div data-id="mobile_nav">
+            <div class="relative w-full h-full">
+              <div class="flex items-start justify-between">
+              <LinkLive class="inline-flex gap-3" to={path(@current_user)}>
+                <Bonfire.UI.Common.AvatarLive
+                  class="inline-block object-cover w-10 h-10 cursor-pointer rounded-xl"
+                  bg_class="rounded bg-base-300"
+                  size="32"
+                  user={@current_user}
+                />
+                <div class="flex items-center">
+                  <div class="flex flex-col flex-1">
+                    <span class="font-bold text-base-content">{e(@current_user, :profile, :name, "unknown")}</span>
+                    <span class="text-sm font-light text-base-content/70">{Bonfire.Me.Characters.display_username(@current_user, true)}</span>
+                  </div>
+                </div>
+              </LinkLive>
+              <div class="flex items-center ml-3 h-7">
+                <button type="button" class="btn btn-circle btn-ghost" @click="open_sidebar = false">
+                  <span class="sr-only">Close panel</span>
+                  <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+              </div>
+              <nav
+                role="navigation"
+                class="mt-4"
+                aria-label={l("Extension navigation")}
+              >
+                <ul class="gap-1 menu menu-compact">
+                  <Bonfire.UI.Common.UserMenuLinksLive mobile />
+                </ul>
+              </nav>
+            </div>
+          </div>
+          
+          </div>
         </div>
       </div>
-    </LinkLive>
-    <nav
-      :if={is_list(@nav_items) and @nav_items != []}
-      role="navigation"
-      class="mt-4"
-      aria-label={l("Extension navigation")}
-    >
-      <ul class="gap-1 menu menu-compact">
-        <!-- {#for nav <- @nav_items}
-          {#case nav}
-            {#match %{} = nav}
-              <li x-on:click="open_sidebar = false" :if={!nav[:exclude_from_nav]}>
-                <Bonfire.UI.Common.WidgetLive
-                  widget={nav}
-                  page={@page}
-                  text_class="text-sm font-normal tracking-wide"
-                  selected_tab={@selected_tab}
-                  data={e(nav, :props, [])}
-                />
-              </li>
-            {#match _}
-              <li x-on:click="open_sidebar = false" :for={subnav <- nav || []} :if={!subnav[:exclude_from_nav]}>
-                <Bonfire.UI.Common.WidgetLive
-                  widget={subnav}
-                  page={@page}
-                  text_class="text-sm font-normal tracking-wide"
-                  selected_tab={@selected_tab}
-                  data={e(subnav, :props, [])}
-                />
-              </li>
-          {/case}
-        {/for} -->
 
-        <Bonfire.UI.Common.UserMenuLinksLive mobile />
-      </ul>
-    </nav>
+    </div>
   </div>
 </div>
+

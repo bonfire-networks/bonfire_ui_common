@@ -3,6 +3,7 @@ defmodule Bonfire.UI.Common.InstanceSidebarSettingsNavLive do
 
   prop selected_tab, :string
   prop id, :string, default: nil
+  prop page, :string, default: nil
 
   declare_nav_component("Links to sections of instance settings")
 end

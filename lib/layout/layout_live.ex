@@ -143,29 +143,19 @@ defmodule Bonfire.UI.Common.LayoutLive do
         "grid-cols-1 md:grid-cols-[280px_1fr] tablet-lg:grid-cols-[280px_1fr_320px] ":
           @current_user && !@without_sidebar && !@without_widgets
       }>
-
+        <Bonfire.UI.Common.MobileMenuLive />
         <div
           :if={!@without_sidebar}
           data-id="nav_sidebar"
           class="fixed md:sticky self-start order-first w-full mt-3 top-3 z-[9999] md:block"
         >
-          <div class="hidden md:flex items-center mb-2 justify-between h-[42px] pb-4 mt-2">
+          <div class="hidden md:flex items-center mb-2 justify-between h-[50px] pb-4 mt-2">
             <div data-id="logo" class="items-center place-content-center">
               <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
             </div>
-            <LiveRedirect to={path(:notifications)}
-              :if={@current_user}
-              class="relative pr-2">
-              <Icon iconify="mdi:bell" class="w-5 h-5 text-base-content/70" />
-              <div class="absolute top-[-14px] left-[10px]">
-                <Bonfire.UI.Common.BadgeCounterLive
-                  id={:notifications}
-                  class="indicator-item badge badge-xs ring-2 ring-base-300 badge-sm border rounded-full !border-none"
-                  counter_class=""
-                  feed_id={e(@current_user, :character, :notifications_id, nil)}
-                />
-              </div>
-            </LiveRedirect>
+
+            <Bonfire.UI.Common.UserMenuLive />
+
           </div>
 
           <Bonfire.UI.Common.PersistentLive
@@ -200,7 +190,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <div
           data-id="main_section"
           class={
-            "relative w-full max-w-[1280px] gap-2 md:gap-0 z-[105] col-span-1 ",
+            "relative w-full max-w-[1280px] gap-2 md:gap-0 z-[99] col-span-1 ",
             "!max-w-full": @without_widgets,
             "!max-w-full": !@current_user,
             "mx-auto order-last": @without_sidebar
@@ -260,29 +250,30 @@ defmodule Bonfire.UI.Common.LayoutLive do
               </div>
             </div>
           </div>
+          <Bonfire.UI.Common.NavFooterMobileUserLive page={@page} />
         </div>
-        <div
-          :if={!@without_sidebar}
-          class="hidden tablet-lg:block order-first md:order-none md:static z-[999]">
-          <div
-            data-id="right_nav_and_widgets"
-            class="order-last hidden tablet-lg:block tablet-lg:sticky  w-auto tablet-lg:top-3 mt-3 self-start z-[998] tablet-lg:w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
-          >
-          {#if not is_nil(current_user_id(@__context__))}
-          <div class="w-full">
-            <Dynamic.Component
-              :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
-              module={Bonfire.Search.Web.FormLive}
-              search_limit={5}
-            />
-          </div>
-          {#else}
-          <Bonfire.UI.Common.GuestActionsLive />
-          {/if}
-          <div
-            data-id="secondary_sidebar_widgets"
-            class="hidden mt-4 overflow-x-hidden overflow-y-auto tablet-lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
-          >
+    <div
+      :if={!@without_sidebar}
+      class="hidden tablet-lg:block order-first md:order-none md:static z-[999]">
+      <div
+        data-id="right_nav_and_widgets"
+        class="order-last hidden tablet-lg:block tablet-lg:sticky  w-auto tablet-lg:top-3 mt-3 self-start z-[998] tablet-lg:w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
+      >
+      {#if not is_nil(current_user_id(@__context__))}
+      <div class="w-full">
+        <Dynamic.Component
+          :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
+          module={Bonfire.Search.Web.FormLive}
+          search_limit={5}
+        />
+      </div>
+      {#else}
+      <Bonfire.UI.Common.GuestActionsLive />
+      {/if}
+      <div
+        data-id="secondary_sidebar_widgets"
+        class="hidden mt-4 overflow-x-hidden overflow-y-auto tablet-lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
+      >
       <!-- FIXME: use the widget system instead (see below) -->
       <Dynamic.Component
         :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive, @__context__) and
@@ -325,58 +316,43 @@ defmodule Bonfire.UI.Common.LayoutLive do
         />
       </div>
 
-          <div class="mt-4 text-xs text-base-content/70">
-            <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:
-              <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·
-              <!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · -->
-              <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·
-              <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LiveRedirect> ·
-              <LiveRedirect
-                :if={current_user(@__context__) || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-                class="text-xs link-hover link text-base-content/70"
-                to="/users"
-              >{l("Users")}</LiveRedirect></div>
-            <div class="mt-4">
-              <a
-                href="https://bonfirenetworks.org/"
-                class="text-xs font-semibold link link-hover text-base-content/70"
-              >
-                {Bonfire.Application.name()}
-              </a>
-              ·
-              <LiveRedirect
-                to={Bonfire.Application.repository()}
-                class="text-xs link link-hover text-base-content/70"
-              >
-                {Bonfire.Application.version()}
-                <span class="ml-1" x-data="{msg: 'JS'}">
-                  <span x-text="msg">no JS</span>
-                </span>
-                <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
-              </LiveRedirect>
-            </div>
-          </div>
+      <div class="mt-4 text-xs text-base-content/70">
+        <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:
+          <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·
+          <!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · -->
+          <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·
+          <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LiveRedirect> ·
+          <LiveRedirect
+            :if={current_user(@__context__) || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+            class="text-xs link-hover link text-base-content/70"
+            to="/users"
+          >{l("Users")}</LiveRedirect></div>
+        <div class="mt-4">
+          <a
+            href="https://bonfirenetworks.org/"
+            class="text-xs font-semibold link link-hover text-base-content/70"
+          >
+            {Bonfire.Application.name()}
+          </a>
+          ·
+          <LiveRedirect
+            to={Bonfire.Application.repository()}
+            class="text-xs link link-hover text-base-content/70"
+          >
+            {Bonfire.Application.version()}
+            <span class="ml-1" x-data="{msg: 'JS'}">
+              <span x-text="msg">no JS</span>
+            </span>
+            <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
+          </LiveRedirect>
         </div>
+      </div>
+    </div>
 
 
           </div>
         </div>
-        <!-- PersistentLive
-          id={:persistent}
-          :if={!@without_sidebar}
-          sticky
-          container={
-            {:div, class: "order-first md:order-none md:static fixed left-0 right-0 top-0 z-[999]"}
-          }
-          session={%{
-            "context" => %{
-              sticky: true,
-              csrf_token: @csrf_token,
-              current_user_id: @current_user_id,
-              current_account_id: @current_account_id
-            }
-          }}
-        /-->
+
       </div>
 
       <!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player, @current_user),
@@ -387,7 +363,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
             sticky: true
           )} -->
     </div>
-    <Bonfire.UI.Common.NavFooterMobileUserLive page={@page} />
     <Bonfire.UI.Common.ReusableModalLive id="modal" />
     <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} />
     """

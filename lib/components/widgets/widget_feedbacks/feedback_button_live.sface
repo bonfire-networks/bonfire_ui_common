@@ -10,7 +10,7 @@
   <Icon
     :if={@with_icon or @mobile}
     iconify="ic:round-feedback"
-    class={if @mobile, do: "w5 h-5 text-base-content/80", else: "w-4 h-4"}
+    class={if @mobile, do: "w5 h-5 text-base-content/70", else: "w-4 h-4"}
   />
   <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("Share feedback")}</div>
 </button>
