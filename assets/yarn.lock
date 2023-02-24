@@ -1255,6 +1255,11 @@ extract-zip@^2.0.1:
   optionalDependencies:
     "@types/yauzl" "^2.9.1"
 
+fast-blurhash@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/fast-blurhash/-/fast-blurhash-1.1.2.tgz#9bf2c0c5cb0846c6e4b315cb349921eedcfcff3c"
+  integrity sha512-lJVOgYSlahqkRhrKumNx/SGB2F/qS0D1z7xjGYjb5EZJRtlzySGMniZjkQ9h9Rv8sPmM/V9orEgRiMwazDNH6A==
+
 fast-glob@^3.2.11, fast-glob@^3.2.12, fast-glob@^3.2.9:
   version "3.2.12"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.12.tgz#7f39ec99c2e6ab030337142da9e0c18f37afae80"
