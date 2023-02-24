@@ -12,7 +12,7 @@
   <button
     title={l("Insert emoji")}
     type="button"
-    @click="open = ! open"
+    x-on:click="open = ! open"
     class="btn btn-ghost btn-sm text-[22px] btn-circle"
   >
     <Icon
