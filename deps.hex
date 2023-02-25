@@ -1,6 +1,6 @@
 jason = "~> 1.4.0" # json parsing
 # phoenix framework
-phoenix = "~> 1.7.0-rc.0"
+phoenix = "~> 1.7.0"
 phoenix_html = "~> 3.2.0"
 # phoenix_live_dashboard = "~> 0.2"
 # phoenix_live_view = "~> 0.18.13" # usually should let surface decide the version
