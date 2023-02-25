@@ -4,8 +4,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
   """
   use Bonfire.UI.Common.Web, :stateless_component
 
-  alias Bonfire.UI.Common.PersistentLive
-
   prop page, :string, default: nil
   prop page_title, :string, default: nil
   prop selected_tab, :any, default: nil

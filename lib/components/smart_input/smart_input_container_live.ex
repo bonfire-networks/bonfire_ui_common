@@ -129,14 +129,66 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     maybe_apply(Bonfire.Boundaries.LiveHandler, :handle_event, [action, params, socket])
   end
 
-  # needed for uploads, also used to avoid un-reset the input
-  def do_handle_event("validate", params, socket) do
+  # needed for uploads
+
+  def max_length do
+    default = 2000
+
+    Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length], default)
+    |> Types.maybe_to_integer(default)
+    |> debug()
+  end
+
+  def do_handle_event("validate", %{"html_body" => html_body} = params, socket)
+      when is_binary(html_body) do
     debug(params, "validate")
+
+    max_length = max_length()
+
+    # Enum.join() |> String.length()
+    length =
+      html_body
+      |> String.split()
+      |> Enum.count()
+      |> debug("number of words")
+
+    if length > max_length do
+      {:noreply,
+       socket
+       |> assign(reset_smart_input: false)
+       |> update(
+         :smart_input_opts,
+         &Map.merge(&1, %{
+           submit_disabled: true,
+           submit_label: "(#{length}/#{max_length} words)"
+         })
+       )}
+    else
+      {:noreply,
+       socket
+       |> assign(
+         # to avoid un-reset the input
+         reset_smart_input: false
+       )
+       |> update(
+         :smart_input_opts,
+         &Map.merge(&1, %{
+           text: html_body,
+           submit_disabled: false,
+           submit_label: nil
+           # submit_label: "#{length}/#{max_length}"
+         })
+       )}
+    end
+  end
+
+  def do_handle_event("validate", params, socket) do
+    debug(params, "validate without body")
 
     {:noreply,
      socket
-     |> assign(reset_smart_input: false)
-     |> update(:smart_input_opts, &Map.put(&1, :text, params["html_body"]))}
+     # to avoid un-reset the input
+     |> assign(reset_smart_input: false)}
   end
 
   def do_handle_event("cancel-upload", %{"ref" => ref}, socket) do

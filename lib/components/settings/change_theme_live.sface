@@ -8,7 +8,7 @@
     {#for t <- @themes}
       <div
         data-set-theme={t}
-        data-act-class="ACTIVECLASS"
+        data-act-class="outline"
         x-on:click={"theme = '#{t}'"}
         phx-click="Bonfire.Me.Settings:put_theme"
         phx-value-keys={"ui:theme:#{@key}"}
@@ -17,7 +17,6 @@
           "overflow-hidden border rounded-lg border-base-content/20 hover:border-base-content/40 outline-base-content outline-2 outline-offset-2",
           "ring-2 ring-primary": to_string(t) == to_string(@theme)
         }
-        data-act-class="outline"
       >
         <div data-theme={t} class="w-full font-sans cursor-pointer bg-base-100 text-base-content">
           <div class="grid grid-cols-5 grid-rows-3">

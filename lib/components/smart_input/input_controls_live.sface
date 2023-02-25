@@ -143,6 +143,7 @@
            do: l("Sending..."),
            else: l("Posting...")}
         class="capitalize btn-sm rounded justify-self-end btn px-8 h-[2.25rem] btn-primary"
+        disabled={e(@smart_input_opts, :submit_disabled, nil)}
       >
         {#if is_messaging?(%{
             page: @page,
@@ -153,6 +154,8 @@
         {#else}
           {@submit_label || l("Post")}
         {/if}
+
+        {e(@smart_input_opts, :submit_label, nil)}
       </button>
     </div>
 

@@ -13,7 +13,6 @@
           :if={!@back}
           type="button"
           x-on:click="open_sidebar = true"
-          :if={!@back}
           class="rounded md:hidden btn btn-sm btn-square btn-ghost"
         >
           <Icon iconify="gg:menu-left-alt" class="w-6 h-6 text-base-content/70" />
