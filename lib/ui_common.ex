@@ -183,11 +183,17 @@ defmodule Bonfire.UI.Common do
     socket
   end
 
-  def rich(content) do
+  def rich(content, opts \\ []) do
     case content do
       _ when is_binary(content) ->
-        content
-        |> Text.maybe_markdown_to_html()
+        if opts[:skip_markdown] do
+          content
+        else
+          debug("use MD")
+
+          content
+          |> Text.maybe_markdown_to_html()
+        end
         # transform internal links to use LiveView navigation
         |> Text.normalise_links()
         # for use in views
@@ -225,7 +231,7 @@ defmodule Bonfire.UI.Common do
 
   def markdown(content) when is_binary(content) do
     content
-    |> Text.maybe_markdown_to_html()
+    # |> Text.maybe_markdown_to_html()
     |> rich()
   end
 
