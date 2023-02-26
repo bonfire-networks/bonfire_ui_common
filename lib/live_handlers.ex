@@ -110,8 +110,8 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     mod_delegate(mod, :handle_info, [data], socket)
   end
 
-  defp do_handle_info(%LiveSelect.ChangeMsg{field: mod} = data, socket) when is_atom(mod) do
-    debug("LiveHandler: handle_info with {#{mod}, data}")
+  defp do_handle_info(%LiveSelect.ChangeMsg{field: mod} = data, socket) do
+    debug("LiveSelect: handle_info with {#{mod}, data}")
     mod_delegate(mod, :handle_info, [data], socket)
   end
 
@@ -230,12 +230,14 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   def mod_delegate(mod, fun, args, socket) do
     # debug("attempt delegating to #{inspect fun} in #{inspect mod}...")
-    fallback = maybe_to_module(mod)
+    fallback =
+      if(is_atom(mod), do: mod, else: maybe_to_module(mod))
+      |> debug("fallback")
 
     case maybe_to_module("#{mod}.LiveHandler") || fallback do
-      module when is_atom(module) ->
+      module when is_atom(module) and not is_nil(module) ->
         if module_enabled?(module) do
-          info(
+          debug(
             args,
             "LiveHandler: delegating to #{inspect(fun)} in #{module} with args"
           )
@@ -244,13 +246,14 @@ defmodule Bonfire.UI.Common.LiveHandlers do
           # |> debug("applied")
         else
           if module != fallback and module_enabled?(fallback) do
-            info(
+            debug(
               args,
-              "LiveHandler: delegating to #{inspect(fallback)} in #{module} with args"
+              "LiveHandler: delegating to fallback module #{inspect(fallback)} in #{module} with args"
             )
 
             apply(fallback, fun, args ++ [socket])
           else
+            warn(module, "LiveHandler: handler module not enabled")
             no_live_handler({fun, List.first(args)}, socket)
           end
         end

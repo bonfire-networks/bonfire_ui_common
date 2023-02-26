@@ -110,6 +110,8 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   Set assigns in the smart input from anywhere in the app (whether using a live component or sticky live view)
   """
   def set(context, assigns) do
+    debug(assigns, "set assigns")
+
     Bonfire.UI.Common.PersistentLive.maybe_send(context, {:smart_input, assigns}) ||
       maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, assigns)
   end
@@ -167,6 +169,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
       # avoid double-reset
       reset_smart_input: false,
       activity: nil,
+      to_circles: [],
       smart_input_opts: %{
         open: false,
         text_suggestion: nil,
@@ -179,11 +182,13 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   def reset_input(socket) do
     replace_input_next_time(socket)
-    # debug("VOID")
+
     set(socket,
       # avoid double-reset
       reset_smart_input: false,
       activity: nil,
+      create_object_type: nil,
+      smart_input_component: nil,
       to_circles: [],
       reply_to_id: e(socket.assigns, :thread_id, nil),
       thread_id: nil,

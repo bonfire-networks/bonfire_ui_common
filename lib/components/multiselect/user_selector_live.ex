@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop form, :any, default: :user_selector
+  prop form, :any, default: :multi_select
   prop form_input_name, :string, default: nil
   prop label, :string, default: nil
   prop pick_event, :string, default: nil

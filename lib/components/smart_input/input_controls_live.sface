@@ -1,34 +1,32 @@
-<div x-show="open_boundaries" class="p-3 bg-base-100">
-  <Dynamic.Component
-    :if={!is_messaging?(%{
-      page: @page,
-      showing_within: @showing_within,
-      create_object_type: @create_object_type
-    }) and module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
-    module={Bonfire.Boundaries.Web.SetBoundariesLive}
-    to_boundaries={@to_boundaries}
-    preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)}
-    to_circles={@to_circles}
-    open_boundaries={@open_boundaries}
-    showing_within={@showing_within}
-    create_object_type={@create_object_type}
-    thread_mode={@thread_mode}
-    boundaries_modal_id={@boundaries_modal_id}
-    context_id={@context_id}
-    hide_breakdown
-    setting_boundaries
-    click_override
-  />
-</div>
+{#case is_messaging?(%{
+    page: @page,
+    showing_within: @showing_within,
+    create_object_type: @create_object_type
+  })}
+  {#match is_messaging?}
+    <div x-show="open_boundaries" class="p-3 bg-base-100">
+      <Dynamic.Component
+        :if={!is_messaging? and module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
+        module={Bonfire.Boundaries.Web.SetBoundariesLive}
+        to_boundaries={@to_boundaries}
+        preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)}
+        to_circles={@to_circles}
+        open_boundaries={@open_boundaries}
+        showing_within={@showing_within}
+        create_object_type={@create_object_type}
+        thread_mode={@thread_mode}
+        boundaries_modal_id={@boundaries_modal_id}
+        context_id={@context_id}
+        hide_breakdown
+        setting_boundaries
+        click_override
+      />
+    </div>
 
-<!-- FIXME: select message recipients
+    <!-- FIXME: select message recipients
   <div
     :if={@show_select_recipients ||
-      is_messaging?(%{
-        page: @page,
-        showing_within: @showing_within,
-        create_object_type: @create_object_type
-      })}
+      is_messaging?}
     class="my-3"
   >
     <Bonfire.UI.Common.SelectRecipientsLive
@@ -40,154 +38,133 @@
     />
   </div> -->
 
-<div
-  class="fixed top-[calc(var(--visual-viewport-height)_-_68px)] z-50 left-0 right-0 md:static"
-  x-show="!open_boundaries"
->
-  <div class="hidden md:block">
-    <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
-  </div>
+    <div
+      class="fixed top-[calc(var(--visual-viewport-height)_-_68px)] z-50 left-0 right-0 md:static"
+      x-show="!open_boundaries"
+    >
+      <div class="hidden md:block">
+        <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
+      </div>
 
-  <div class="">
-    <div class={
-      "flex  md:items-center justify-between p-4 gap-3 border-t  border-base-content/5 bg-base-300 md:px-3 md:py-2",
-      "!border-none !bg-base-100 mt-2 !p-0": @thread_mode == :flat
-    }>
-      <div class="flex items-center flex-1 gap-3">
-        <Bonfire.UI.Common.UploadButtonLive
-          :if={!is_messaging?(%{
-            page: @page,
-            showing_within: @showing_within,
-            create_object_type: @create_object_type
-          }) && module_enabled?(Bonfire.Files, @__context__)}
-          uploads={@uploads}
-          thread_mode={@thread_mode}
-        />
+      <div class="">
+        <div class={
+          "flex  md:items-center justify-between p-4 gap-3 border-t  border-base-content/5 bg-base-300 md:px-3 md:py-2",
+          "!border-none !bg-base-100 mt-2 !p-0": @thread_mode == :flat
+        }>
+          <div class="flex items-center flex-1 gap-3">
+            <Bonfire.UI.Common.UploadButtonLive
+              :if={!is_messaging? && module_enabled?(Bonfire.Files, @__context__)}
+              uploads={@uploads}
+              thread_mode={@thread_mode}
+            />
 
-        <div
-          :if={@show_cw_toggle}
-          title={l("Add a content warning")}
-          class="relative z-30 flex items-center"
-        >
-          <button
-            :if={Config.get([:ui, :smart_input, :cw], []) == true}
-            type="button"
-            @click="title_open = !title_open"
-            :class="{'btn-active' : title_open}"
-            class="flex items-center btn btn-ghost btn-sm btn-circle"
-          >
-            <span class="text-xs font-medium text-base-content text-opacity-70">{l("CW")}</span>
-          </button>
-        </div>
-
-        <Dynamic.Component
-          :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
-          module={Bonfire.UI.Common.EmojiPickerLive}
-          target_field=".composer"
-          class={
-            "bottom-10 left-3": @thread_mode == :flat,
-            "bottom-10 left-3": @thread_mode != :flat,
-            "!top-10 right-0 bottom-[auto]": @showing_within == :page
-          }
-          }
-        />
-
-        <Dynamic.Component
-          :if={!is_messaging?(%{
-            page: @page,
-            showing_within: @showing_within,
-            create_object_type: @create_object_type
-          }) and module_enabled?(Bonfire.Boundaries.Web.SetBoundariesButtonLive)}
-          module={Bonfire.Boundaries.Web.SetBoundariesButtonLive}
-          preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)}
-        />
-
-        <div :if={is_messaging?(%{
-          page: @page,
-          showing_within: @showing_within,
-          create_object_type: @create_object_type
-        })}>
-          <div class="flex items-center gap-2 mx">
-            <button
-              type="button"
-              class="flex items-center gap-2 normal-case rounded-full btn-ghost btn-sm btn opacity-90"
+            <div
+              :if={@show_cw_toggle}
+              title={l("Add a content warning")}
+              class="relative z-30 flex items-center"
             >
-              <span class="text-lg"><Icon iconify="twemoji:envelope" class="w-5 h-5" /></span>
-              <span>{l("Direct Message")}</span>
-            </button>
-          </div>
-        </div>
+              <button
+                :if={Config.get([:ui, :smart_input, :cw], []) == true}
+                type="button"
+                x-on:click="title_open = !title_open"
+                :class="{'btn-active' : title_open}"
+                class="flex items-center btn btn-ghost btn-sm btn-circle"
+              >
+                <span class="text-xs font-medium text-base-content text-opacity-70">{l("CW")}</span>
+              </button>
+            </div>
 
-        <!-- <div 
+            <Dynamic.Component
+              :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
+              module={Bonfire.UI.Common.EmojiPickerLive}
+              target_field=".composer"
+              class={
+                "bottom-10 left-3": @thread_mode == :flat,
+                "bottom-10 left-3": @thread_mode != :flat,
+                "!top-10 right-0 bottom-[auto]": @showing_within == :page
+              }
+            />
+
+            {#if is_messaging?}
+              <div class="flex items-center gap-2 mx">
+                <button
+                  type="button"
+                  class="flex items-center gap-2 normal-case rounded-full btn-ghost btn-sm btn opacity-90"
+                >
+                  <span class="text-lg"><Icon iconify="twemoji:envelope" class="w-5 h-5" /></span>
+                  <span>{l("Direct Message")}</span>
+                </button>
+              </div>
+            {#else}
+              <Dynamic.Component
+                :if={module_enabled?(Bonfire.Boundaries.Web.SetBoundariesButtonLive)}
+                module={Bonfire.Boundaries.Web.SetBoundariesButtonLive}
+                preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)}
+              />
+            {/if}
+
+            <!-- <div 
             :if={@showing_within != :page and @thread_mode != :flat}
             x-show="!smart_input_open"
             data-tip={l "Full-screen mode" }
             class={"relative z-20 flex items-center tooltip tooltip-right"}>
               <button 
                 type="button"
-                @click="smart_input_fullscreen = !smart_input_fullscreen"
+                x-on:click="smart_input_fullscreen = !smart_input_fullscreen"
                 :class="{'border-base-content/30' : smart_input_fullscreen}"
                 class="flex items-center btn btn-ghost btn-sm btn-circle">
               <Icon outline="ArrowsExpand" class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
             </button>
           </div>  -->
-      </div>
-      <button
-        type="submit"
-        x-on:click="$dispatch('submit')"
-        phx-disable-with={if is_messaging?(%{
-             page: @page,
-             showing_within: @showing_within,
-             create_object_type: @create_object_type
-           }),
-           do: l("Sending..."),
-           else: l("Posting...")}
-        class="capitalize btn-sm rounded justify-self-end btn px-8 h-[2.25rem] btn-primary"
-        disabled={e(@smart_input_opts, :submit_disabled, nil)}
-      >
-        {#if is_messaging?(%{
-            page: @page,
-            showing_within: @showing_within,
-            create_object_type: @create_object_type
-          })}
-          {l("Send")}
-        {#else}
-          {@submit_label || l("Post")}
-        {/if}
+          </div>
+          <button
+            type="submit"
+            x-on:click="$dispatch('submit')"
+            phx-disable-with={if is_messaging?,
+              do: l("Sending..."),
+              else: l("Posting...")}
+            class="capitalize btn-sm rounded justify-self-end btn px-8 h-[2.25rem] btn-primary"
+            disabled={e(@smart_input_opts, :submit_disabled, nil)}
+          >
+            {#if is_messaging?}
+              {l("Send")}
+            {#else}
+              {@submit_label || l("Post")}
+            {/if}
 
-        {e(@smart_input_opts, :submit_label, nil)}
-      </button>
-    </div>
+            {e(@smart_input_opts, :submit_label, nil)}
+          </button>
+        </div>
 
-    <input type="hidden" name="id" value={e(@smart_input_opts, :id, nil)}>
+        <input type="hidden" name="id" value={e(@smart_input_opts, :id, nil)}>
 
-    <input type="hidden" name="reply_to[reply_to_id]" value={@reply_to_id}>
-    <input type="hidden" name="reply_to[thread_id]" value={@context_id}>
+        <input type="hidden" name="reply_to[reply_to_id]" value={@reply_to_id}>
+        <input type="hidden" name="reply_to[thread_id]" value={@context_id}>
 
-    <input type="hidden" name={:create_object_type} value={@create_object_type}>
+        <input type="hidden" name={:create_object_type} value={@create_object_type}>
 
-    <Dynamic.Component
-      :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesSelectionLive)}
-      module={Bonfire.Boundaries.Web.BoundariesSelectionLive}
-      to_boundaries={@to_boundaries}
-      to_circles={@to_circles}
-      thread_mode={@thread_mode}
-    />
+        <Dynamic.Component
+          :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesSelectionLive)}
+          module={Bonfire.Boundaries.Web.BoundariesSelectionLive}
+          to_boundaries={@to_boundaries}
+          to_circles={@to_circles}
+          thread_mode={@thread_mode}
+        />
 
-    <input
-      :for={{label, value} <- @to_circles}
-      type="hidden"
-      name="to_circles[]"
-      label={e(label, :name, nil) || label}
-      value={value}
-    />
-    <input
-      :for={value when is_binary(value) <- @to_circles}
-      type="hidden"
-      name="to_circles[]"
-      value={value}
-    />
-    <!-- 
+        <input
+          :for={{label, value} <- @to_circles}
+          type="hidden"
+          name="to_circles[]"
+          label={e(label, :name, nil) || label}
+          value={value}
+        />
+        <input
+          :for={value when is_binary(value) <- @to_circles}
+          type="hidden"
+          name="to_circles[]"
+          value={value}
+        />
+        <!-- 
     <input
       :for={circle <- @to_circles}
       type="hidden"
@@ -195,5 +172,6 @@
       label={if is_tuple(circle), do: elem(circle, 0) |> e(..., :name, ...)}
       value={if is_tuple(circle), do: elem(circle, 1), else: circle}
     /> -->
-  </div>
-</div>
+      </div>
+    </div>
+{/case}

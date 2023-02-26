@@ -3,12 +3,16 @@
   phx-target="#smart_input"
   phx-value-component={@component}
   phx-value-create_object_type={@create_object_type}
-  phx-value-opts={Jason.encode!(merge_as_map(%{prompt: @prompt}, @smart_input_opts))}
-  x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{@prompt || l("Compose")}')"}
+  phx-value-opts={Jason.encode!(@smart_input_opts)}
+  x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{l("Compose")}')"}
   type="button"
   class={@class ||
     "fixed right-3 bottom-[72px] md:static flex-row btn-square grow md:h-[40px] items-center normal-case gap-2 md:btn-sm btn btn-primary"}
 >
+  <!-- 
+    phx-value-opts={Jason.encode!(merge_as_map(%{prompt: @prompt}, @smart_input_opts))}
+    x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{@prompt || l("Compose")}')"} -->
+
   <Icon iconify={@icon} class="inline-block w-9 h-9 md:w-5 md:h-5" />
   <span class="hidden md:block">{@prompt || l("Compose")}</span>
 </button>

@@ -23,7 +23,7 @@
         x-transition:leave-end="-translate-x-full"
         class="w-screen max-w-md pointer-events-auto"
         x-description="Slide-over panel, show/hide based on slide-over state."
-        @click.away="open_sidebar = false"
+        x-on:click.away="open_sidebar = false"
       >
         <div class="flex flex-col h-full py-6 overflow-y-scroll shadow-xl bg-base-300">
           <div class="relative flex-1 px-4 sm:px-6">
@@ -45,7 +45,7 @@
                     </div>
                   </LinkLive>
                   <div class="flex items-center ml-3 h-7">
-                    <button type="button" class="btn btn-circle btn-ghost" @click="open_sidebar = false">
+                    <button type="button" class="btn btn-circle btn-ghost" x-on:click="open_sidebar = false">
                       <span class="sr-only">Close panel</span>
                       <svg
                         class="w-6 h-6"
