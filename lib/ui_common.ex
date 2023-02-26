@@ -195,7 +195,7 @@ defmodule Bonfire.UI.Common do
           |> Text.maybe_markdown_to_html()
         end
         # transform internal links to use LiveView navigation
-        |> Text.normalise_links()
+        |> Text.make_local_links_live()
         # for use in views
         |> Phoenix.HTML.raw()
 
