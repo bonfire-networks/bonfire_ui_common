@@ -17,8 +17,8 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   def fake_account!(attrs \\ %{}, opts \\ []),
     do: Bonfire.Me.Fake.fake_account!(attrs, opts)
 
-  def fake_user!(account \\ %{}, attrs \\ %{}),
-    do: Bonfire.Me.Fake.fake_user!(account, attrs)
+  def fake_user!(account \\ %{}, attrs \\ %{}, opts \\ []),
+    do: Bonfire.Me.Fake.fake_user!(account, attrs, opts)
 
   def fake_user_and_conn!(account \\ fake_account!()) do
     user = fake_user!(account)
