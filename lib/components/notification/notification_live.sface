@@ -117,7 +117,7 @@
                   data-type="error"
                   class={
                     "prose text-sm text-error-content",
-                    "!text-xs": Config.get(:env) == :dev
+                    "!text-xs": Config.env() == :dev
                   }
                 >
                   {markdown(error)}
