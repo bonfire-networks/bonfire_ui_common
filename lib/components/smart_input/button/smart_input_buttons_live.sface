@@ -4,7 +4,7 @@
       @create_object_type
     )}
     {#match components}
-      <SmartInputButtonLive
+      <!-- <SmartInputButtonLive
         :for={component <- components}
         component={component}
         class={@class}
@@ -12,7 +12,7 @@
         prompt={e(@smart_input_opts, :prompt, nil)}
         icon={e(@smart_input_opts, :icon, "mdi:pencil")}
         showing_within={:smart_input}
-      />
+      /> -->
 
       <SmartInputButtonLive
         :if={(Bonfire.Common.Config.get([:ui, :default_smart_input]) ||

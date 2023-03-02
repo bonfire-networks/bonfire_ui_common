@@ -271,12 +271,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               class="hidden mt-4 overflow-x-hidden overflow-y-auto tablet-lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
             >
               <!-- FIXME: use the widget system instead (see below) -->
-              <Dynamic.Component
-                :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive, @__context__) and
-                  not is_nil(current_user(@__context__))}
-                module={Bonfire.Classify.Web.CategoriesNavLive}
-                selected_tab={@selected_tab}
-              />
+
               <Dynamic.Component
                 :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__) and
                   not is_nil(current_user(@__context__))}
