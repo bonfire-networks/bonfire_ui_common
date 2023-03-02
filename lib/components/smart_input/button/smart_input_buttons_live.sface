@@ -4,25 +4,56 @@
       @create_object_type
     )}
     {#match components}
-      <!-- <SmartInputButtonLive
-        :for={component <- components}
-        component={component}
-        class={@class}
-        smart_input_opts={@smart_input_opts}
-        prompt={e(@smart_input_opts, :prompt, nil)}
-        icon={e(@smart_input_opts, :icon, "mdi:pencil")}
-        showing_within={:smart_input}
-      /> -->
+      {#case Bonfire.Common.Config.get([:ui, :default_smart_input]) || Bonfire.UI.Social.WritePostContentLive}
+        {#match default_smart_input}
+          {#case List.first(components)}
+            {#match main_smart_input}
+              <SmartInputButtonLive
+                component={main_smart_input}
+                class={@class}
+                showing_within={:smart_input}
+                smart_input_opts={@smart_input_opts}
+                prompt={e(@smart_input_opts, :prompt, nil)}
+                icon={e(@smart_input_opts, :icon, "mdi:pencil")}
+              />
 
-      <SmartInputButtonLive
-        :if={(Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
-           Bonfire.UI.Social.WritePostContentLive) not in components}
-        component={Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
-          Bonfire.UI.Social.WritePostContentLive}
-        class={@class}
-        icon={e(@smart_input_opts, :icon, "mdi:pencil")}
-        showing_within={:smart_input}
-      />
+              {#case Enum.reject(components ++ [default_smart_input], &(&1 == main_smart_input))}
+                {#match extra_components}
+                  <div
+                    :if={extra_components != [] or main_smart_input != default_smart_input or
+                      module_enabled?(Bonfire.UI.Groups.SidebarGroupsLive)}
+                    class="dropdown dropdown-end"
+                  >
+                    <label
+                      class="w-[40px] h-[40px] rounded-tl-none rounded-bl-none  shadow-none !border-l !border-base-300 items-center place-content-center flex btn-primary btn-square relative rounded btn btn-sm"
+                      tabindex="0"
+                      id="composer dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="true"
+                    >
+                      <Icon iconify="mdi:chevron-down" class="w-6 h-6" />
+                    </label>
+                    <ul
+                      tabindex="0"
+                      class="mt-1 w-[280px] rounded menu-compact !block shadow menu dropdown-content bg-neutral"
+                      role="menu"
+                      aria-orientation="vertical"
+                      aria-labelledby="composer"
+                    >
+                      <li :for={component <- extra_components}>
+                        <SmartInputButtonLive component={component} showing_within={:smart_input} class="button" />
+                      </li>
+                      <li>
+                        <Dynamic.Component
+                          :if={module_enabled?(Bonfire.UI.Groups.NewGroupLive)}
+                          module={Bonfire.UI.Groups.NewGroupLive}
+                        />
+                      </li>
+                    </ul>
+                  </div>
+              {/case}
+          {/case}
+      {/case}
   {/case}
 </div>
 

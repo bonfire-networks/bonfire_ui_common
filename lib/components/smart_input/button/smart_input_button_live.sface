@@ -6,9 +6,11 @@
   phx-value-opts={Jason.encode!(@smart_input_opts)}
   x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{l("Compose")}')"}
   type="button"
-  class={@class ||
-    "fixed right-3 bottom-[72px] md:static flex-row btn-square grow md:h-[40px] items-center normal-case gap-2 md:btn-sm btn btn-primary",
-    "!rounded-r-none": module_enabled?(Bonfire.UI.Groups.SidebarGroupsLive)}
+  class={
+    @class ||
+      "fixed right-3 bottom-[72px] md:static flex-row btn-square grow md:h-[40px] items-center normal-case gap-2 md:btn-sm btn btn-primary",
+    "!rounded-r-none": module_enabled?(Bonfire.UI.Groups.SidebarGroupsLive)
+  }
 >
   <!-- 
     phx-value-opts={Jason.encode!(merge_as_map(%{prompt: @prompt}, @smart_input_opts))}
@@ -17,29 +19,3 @@
   <Icon iconify={@icon} class="inline-block w-9 h-9 md:w-5 md:h-5" />
   <span class="hidden md:block">{@prompt || l("Compose")}</span>
 </button>
-
-<div :if={module_enabled?(Bonfire.UI.Groups.SidebarGroupsLive)} class="dropdown dropdown-end">
-  <label
-    class="w-[40px] h-[40px] rounded-tl-none rounded-bl-none  shadow-none !border-l !border-base-300 items-center place-content-center flex btn-primary btn-square relative rounded btn btn-sm"
-    tabindex="0"
-    id="composer dropdown"
-    aria-haspopup="true"
-    aria-expanded="true"
-  >
-    <Icon iconify="mdi:chevron-down" class="w-6 h-6" />
-  </label>
-  <ul
-    tabindex="0"
-    class="mt-1 w-[280px] rounded menu-compact !block shadow menu dropdown-content bg-neutral"
-    role="menu"
-    aria-orientation="vertical"
-    aria-labelledby="composer "
-  >
-    <li>
-      <Dynamic.Component
-        :if={module_enabled?(Bonfire.UI.Groups.NewGroupLive)}
-        module={Bonfire.UI.Groups.NewGroupLive}
-      />
-    </li>
-  </ul>
-</div>

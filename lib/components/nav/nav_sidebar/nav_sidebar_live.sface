@@ -6,7 +6,7 @@
         page={@page}
         nav_items={@nav_items}
       />
-    
+
       <!-- Add the groups sidebar if the module is available -->
       <Dynamic.Component
         :if={module_enabled?(Bonfire.UI.Groups.SidebarGroupsLive)}

@@ -9,7 +9,10 @@
 >
   {#if @show}
     <div class="sticky block top-0  md:pt-3 bg-base-300 z-[999]">
-      <div role="banner" class="flex bg-base-100 border-b border-base-content/10 items-center h-[50px] rounded-t flex-1 w-full px-4">
+      <div
+        role="banner"
+        class="flex bg-base-100 border-b border-base-content/10 items-center h-[50px] rounded-t flex-1 w-full px-4"
+      >
         <div class="flex items-center w-full">
           <div class="flex items-center flex-1 w-full gap-2">
             <button
