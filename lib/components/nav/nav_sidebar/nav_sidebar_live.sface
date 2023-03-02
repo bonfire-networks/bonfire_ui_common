@@ -6,8 +6,13 @@
         page={@page}
         nav_items={@nav_items}
       />
+    
+      <!-- Add the groups sidebar if the module is available -->
+      <Dynamic.Component
+        :if={module_enabled?(Bonfire.UI.Groups.SidebarGroupsLive)}
+        module={Bonfire.UI.Groups.SidebarGroupsLive}
+      />
     </div>
-
     <div class="sticky bottom-0 flex items-center justify-between pt-4 border-t bg-base-300 border-base-content/10">
       <LiveRedirect
         to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
@@ -50,7 +55,7 @@
           to={path(:notifications)}
           :if={@current_user}
           opts={alt: "Notifications"}
-          class="relative pr-2"
+          class="relative pr-3"
         >
           <Icon iconify="ph:bell-fill" class="w-5 h-5 text-base-content/70" />
           <div class="absolute top-[-14px] left-[10px]">

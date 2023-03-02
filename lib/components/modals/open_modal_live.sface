@@ -1,4 +1,4 @@
-<div>
+<div class="w-full">
   {#if current_user(@__context__)}
     {#case @href}
       {#match nil}

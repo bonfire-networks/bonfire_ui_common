@@ -1,4 +1,4 @@
-<div class="sticky top-0 w-full gap-1">
+<div class="sticky top-0 flex items-center flex-1 w-full">
   {#case Bonfire.UI.Common.SmartInputLive.active_smart_input_components(
       @smart_input_component,
       @create_object_type
