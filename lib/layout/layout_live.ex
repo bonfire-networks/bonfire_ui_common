@@ -169,7 +169,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             }}
           />
           <nav
-            class="hidden w-full mt-4 md:flex gap-4 flex-col overflow-y-auto max-h-[calc(var(--inner-window-height)_-_150px)] min-h-[calc(var(--inner-window-height)_-_150px)]"
+            class="hidden w-full mt-4 md:flex gap-4 flex-col overflow-y-auto max-h-[calc(var(--inner-window-height)_-_130px)] min-h-[calc(var(--inner-window-height)_-_130px)]"
             role="navigation"
             aria-label={l("Extension navigation")}
           >

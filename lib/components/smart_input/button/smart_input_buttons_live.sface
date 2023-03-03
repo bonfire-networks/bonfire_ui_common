@@ -20,8 +20,7 @@
               {#case Enum.reject(components ++ [default_smart_input], &(&1 == main_smart_input))}
                 {#match extra_components}
                   <div
-                    :if={extra_components != [] or main_smart_input != default_smart_input or
-                      module_enabled?(Bonfire.UI.Groups.SidebarGroupsLive)}
+                    :if={extra_components != [] or main_smart_input != default_smart_input}
                     class="dropdown dropdown-end"
                   >
                     <label
@@ -42,12 +41,6 @@
                     >
                       <li :for={component <- extra_components}>
                         <SmartInputButtonLive component={component} showing_within={:smart_input} class="button" />
-                      </li>
-                      <li>
-                        <Dynamic.Component
-                          :if={module_enabled?(Bonfire.UI.Groups.NewGroupLive)}
-                          module={Bonfire.UI.Groups.NewGroupLive}
-                        />
                       </li>
                     </ul>
                   </div>

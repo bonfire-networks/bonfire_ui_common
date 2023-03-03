@@ -67,7 +67,12 @@
     <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("Instance Settings")}</div>
   </LiveRedirect>
 </li>
-
+<li>
+  <Dynamic.Component
+    :if={module_enabled?(Bonfire.UI.Groups.NewGroupLive)}
+    module={Bonfire.UI.Groups.NewGroupLive}
+  />
+</li>
 <li class="border-t border-neutral-content/10">
   <Bonfire.UI.Common.FeedbackButtonLive
     mobile={@mobile}

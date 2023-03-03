@@ -8,8 +8,7 @@
   type="button"
   class={
     @class ||
-      "fixed right-3 bottom-[72px] md:static flex-row btn-square grow md:h-[40px] items-center normal-case gap-2 md:btn-sm btn btn-primary",
-    "!rounded-r-none": module_enabled?(Bonfire.UI.Groups.SidebarGroupsLive)
+      "fixed right-3 bottom-[72px] md:static flex-row btn-square grow md:h-[40px] items-center normal-case gap-2 md:btn-sm btn btn-primary"
   }
 >
   <!-- 
