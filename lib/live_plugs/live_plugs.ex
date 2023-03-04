@@ -114,6 +114,7 @@ defmodule Bonfire.UI.Common.LivePlugs do
             current_view: socket.view,
             current_app: current_app,
             current_extension: current_extension,
+            live_action: e(socket, :assigns, :live_action, nil),
             socket_connected?: Phoenix.LiveView.connected?(socket)
           )
 
