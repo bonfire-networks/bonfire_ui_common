@@ -353,12 +353,14 @@ defmodule Bonfire.UI.Common do
     # Process.get()
     # |> debug()
 
-    debug("Try sending to #{component} with id: #{id}")
+    assigns = assigns_clean(assigns)
+
+    debug(assigns, "Try sending to #{component} with id: #{id}")
 
     Phoenix.LiveView.send_update(
       pid || self(),
       component,
-      Enum.into(assigns_clean(assigns), %{id: id})
+      Enum.into(assigns, %{id: id})
     )
   end
 
@@ -895,13 +897,18 @@ defmodule Bonfire.UI.Common do
   def assign_flash(%Phoenix.LiveView.Socket{} = socket, type, message, assigns, pid) do
     # info(message, type)
 
-    Bonfire.UI.Common.Notifications.receive_flash(
-      Map.put(assigns, type, message),
-      pid,
-      socket.assigns[:__context__]
-    )
+    if socket_connected?(socket) do
+      Bonfire.UI.Common.Notifications.receive_flash(
+        Map.put(assigns, type, message),
+        pid,
+        socket.assigns[:__context__]
+      )
 
-    Phoenix.LiveView.put_flash(socket, type, message)
+      Phoenix.LiveView.put_flash(socket, type, message)
+    else
+      # for non-live 
+      Phoenix.LiveView.put_flash(socket, type, string_for_cookie(message))
+    end
   end
 
   def assign_flash(%Plug.Conn{} = conn, type, message, assigns, _pid) do
@@ -909,7 +916,7 @@ defmodule Bonfire.UI.Common do
     conn
     |> Plug.Conn.fetch_session()
     |> Phoenix.Controller.fetch_flash()
-    |> Phoenix.Controller.put_flash(type, message)
+    |> Phoenix.Controller.put_flash(type, string_for_cookie(message))
     |> assign_generic(assigns)
   end
 
@@ -918,6 +925,11 @@ defmodule Bonfire.UI.Common do
 
     Bonfire.UI.Common.Notifications.receive_flash(Map.put(assigns, type, message), pid)
   end
+
+  defp string_for_cookie(message) when byte_size(message) > 2000,
+    do: binary_part(message, 0, 2000)
+
+  defp string_for_cookie(message), do: message
 
   def assign_error(socket, msg, pid \\ self()) do
     assigns = %{error_sentry_event_id: maybe_last_sentry_event_id()}

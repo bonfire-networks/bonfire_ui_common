@@ -6,7 +6,8 @@
   {#match is_messaging?}
     <div x-show="open_boundaries" class="p-3 bg-base-100">
       <Dynamic.Component
-        :if={!is_messaging? and module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
+        :if={!is_messaging? and clone_context(@to_boundaries) == false and
+          module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
         module={Bonfire.Boundaries.Web.SetBoundariesLive}
         to_boundaries={@to_boundaries}
         preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)}
@@ -96,11 +97,27 @@
                 </button>
               </div>
             {#else}
-              <Dynamic.Component
-                :if={module_enabled?(Bonfire.Boundaries.Web.SetBoundariesButtonLive)}
-                module={Bonfire.Boundaries.Web.SetBoundariesButtonLive}
-                preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)}
-              />
+              {#case clone_context(@to_boundaries)}
+                {#match false}
+                  <Dynamic.Component
+                    :if={module_enabled?(Bonfire.Boundaries.Web.SetBoundariesButtonLive)}
+                    module={Bonfire.Boundaries.Web.SetBoundariesButtonLive}
+                    preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(
+                      @to_boundaries
+                      |> debug("to_boundaries")
+                    )
+                    |> debug("preset_boundary")}
+                  />
+                {#match boundary_name}
+                  <div class="flex items-center gap-2 mx">
+                    <button
+                      type="button"
+                      class="flex items-center gap-2 normal-case rounded-full btn-ghost btn-sm btn opacity-90"
+                    >
+                      <span>{boundary_name}</span>
+                    </button>
+                  </div>
+              {/case}
             {/if}
 
             <!-- <div 
@@ -140,6 +157,8 @@
 
         <input type="hidden" name="reply_to[reply_to_id]" value={@reply_to_id}>
         <input type="hidden" name="reply_to[thread_id]" value={@context_id}>
+        <!-- FIXME: should not thread using context like a group or topic -->
+        <input type="hidden" name="context_id" value={@context_id}>
 
         <input type="hidden" name={:create_object_type} value={@create_object_type}>
 
@@ -149,6 +168,7 @@
           to_boundaries={@to_boundaries}
           to_circles={@to_circles}
           thread_mode={@thread_mode}
+          context_id={@context_id}
         />
 
         <input

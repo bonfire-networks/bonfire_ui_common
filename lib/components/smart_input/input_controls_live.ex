@@ -32,4 +32,11 @@ defmodule Bonfire.UI.Common.InputControlsLive do
     |> JS.show(transition: "fade-in", to: "#picker")
     |> JS.remove_class("hidden", to: "#picker")
   end
+
+  def clone_context(to_boundaries) do
+    case to_boundaries do
+      [{:clone_context, boundary_name}] -> boundary_name
+      _ -> false
+    end
+  end
 end
