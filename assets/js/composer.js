@@ -14,14 +14,14 @@ ComposerHooks.Composer = {
       const VALID_CHARS = '[\\w\\+_\\-:]'
       const MENTION_PREFIX = '(?:@)'
       // const HASH_PREFIX = '(?:#)'
-      const TOPIC_PREFIX = '(?:+)'
+      const TOPIC_PREFIX = '(?:\\+)'
       const MENTION_REGEX = new RegExp(`(?:\\s|^)(${MENTION_PREFIX}${VALID_CHARS}{${MIN_PREFIX_LENGTH},})$`)
       const TOPIC_REGEX = new RegExp(`(?:\\s|^)(${TOPIC_PREFIX}${VALID_CHARS}{${MIN_PREFIX_LENGTH},})$`)
 
       const textarea = this.el.querySelector("textarea")
+    console.log(textarea)
       const suggestions_menu = this.el.querySelector(".menu")
       const container = document.querySelector("#smart_input");
-
 
 
       setFileInput = function (data, input, name, defaultType = "image/jpeg") {
@@ -97,11 +97,12 @@ ComposerHooks.Composer = {
       textarea.addEventListener("input", (e) => {  
 
         // Get the input text from the textarea
-        const inputText = textarea.value;
+        const inputText = textarea.value; 
+        console.log(inputText)
 
         // Get the mentions from the input text, only if the character is followed by a word character and not an empty space
         const mentions = inputText.match(MENTION_REGEX)
-        const hashtags = inputText.match(TOPIC_REGEX)
+        const topics = inputText.match(TOPIC_REGEX)
       
         let list = ''
         const menu = this.el.querySelector('.menu')
@@ -126,9 +127,10 @@ ComposerHooks.Composer = {
             menu.innerHTML = list
           })
           
-        } else if (hashtags) {
-          const text = hashtags[0].split('#').pop()
-          getFeedItems(text, '#').then(res => {
+        } else if (topics) {
+          console.log(topics)
+          const text = topics[0].split('+').pop()
+          getFeedItems(text, '+').then(res => {
             // if suggestions is greater than 0 append below textarea a menu with the suggestions
               if (res.length > 0) {
                 console.log(res.length)
@@ -138,7 +140,7 @@ ComposerHooks.Composer = {
                 menu.style.left = caret.left + 'px'
 
                 res.forEach((item) => {
-                  list += hashtagItemRenderer(item)
+                  list += topicItemRenderer(item)
                 })
               } else {
                 list +=  ` `
@@ -166,10 +168,10 @@ const mentionItemRenderer = (item, text) => {
     </li>`
 }
 
-const hashtagItemRenderer = (item) => {
+const topicItemRenderer = (item) => {
   return `
     <li class="flex rounded flex-col py-1">
-      <button>
+      <button data-id="${item.id}">
         <div class="text-sm text-neutral-content font-semibold">#${item.value}</div>
       </button>
     </li>`
