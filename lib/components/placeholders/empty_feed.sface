@@ -1,6 +1,11 @@
 <div class="w-full py-16 mx-auto">
   <div class="mo-fire">
-    <img src="/images/bonfire-icon.png" title="bonfire logo" alt="bonfire" class="h-16 mx-auto grayscale" />
+    <img
+      src="/images/bonfire-icon.png"
+      title="bonfire logo"
+      alt="bonfire"
+      class="h-16 mx-auto grayscale"
+    />
   </div>
   <div class="px-6 mt-4 text-center text-base-content">
     <#slot {@empty_feed}>

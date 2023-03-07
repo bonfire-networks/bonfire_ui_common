@@ -8,8 +8,7 @@ defmodule Bonfire.UI.Common.TabsLive do
 
   prop link_component, :atom, default: LinkPatchLive
 
-  prop class, :css_class,
-    default: "flex gap-3 pt-1 md:pt-4 p-3 px-4 bg-base-100"
+  prop class, :css_class, default: "flex gap-3 pt-1 md:pt-4 p-3 px-4 bg-base-100"
 
   prop tab_class, :css_class,
     default:
