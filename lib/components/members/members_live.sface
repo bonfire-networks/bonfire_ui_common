@@ -61,12 +61,18 @@
               aria-orientation="vertical"
               aria-labelledby="user-profile-menu"
             >
+            <!-- IN GROUP / TOPICS -->
+              <li>
+                <div>{l "Leave group"}</div>
+              </li>
+              
               <li>
                 <Dynamic.Component
                   :if={module_enabled?(Bonfire.Boundaries.Web.BlockButtonLive)}
                   module={Bonfire.Boundaries.Web.BlockButtonLive}
                   id={ComponentID.new(Bonfire.Boundaries.Web.BlockButtonLive, id(user))}
                   object={user}
+                  hide_icon
                   label={e(user, :profile, :name, l("this user"))}
                   open_btn_label={l("Block")}
                   class="w-full normal-case rounded btn btn-error btn-xs"
