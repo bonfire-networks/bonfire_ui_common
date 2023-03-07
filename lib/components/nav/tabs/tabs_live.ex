@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common.TabsLive do
 
   prop tab_class, :css_class,
     default:
-      "btn hover:!text-base-300 btn-sm !max-h-[1.75rem] !min-h-[1.75rem] !h-[1.75rem] rounded-full font-normal capitalize bg-base-content/10 text-base-content/70 feed_tab border-none"
+      "btn hover:bg-base-content hover:!text-base-300 btn-sm !max-h-[1.75rem] !min-h-[1.75rem] !h-[1.75rem] rounded-full font-normal capitalize bg-base-content/10 text-base-content/70 feed_tab border-none"
 
   prop tab_primary_class, :css_class, default: "btn-primary"
   @doc "What LiveHandler and/or event name to send the patch event to (optional)"

@@ -13,9 +13,10 @@ ComposerHooks.Composer = {
       // Also this is rare. https://github.com/tootsuite/mastodon/pull/6844
       const VALID_CHARS = '[\\w\\+_\\-:]'
       const MENTION_PREFIX = '(?:@)'
-      const HASH_PREFIX = '(?:#)'
+      // const HASH_PREFIX = '(?:#)'
+      const TOPIC_PREFIX = '(?:+)'
       const MENTION_REGEX = new RegExp(`(?:\\s|^)(${MENTION_PREFIX}${VALID_CHARS}{${MIN_PREFIX_LENGTH},})$`)
-      const HASH_REGEX = new RegExp(`(?:\\s|^)(${HASH_PREFIX}${VALID_CHARS}{${MIN_PREFIX_LENGTH},})$`)
+      const TOPIC_REGEX = new RegExp(`(?:\\s|^)(${TOPIC_PREFIX}${VALID_CHARS}{${MIN_PREFIX_LENGTH},})$`)
 
       const textarea = this.el.querySelector("textarea")
       const suggestions_menu = this.el.querySelector(".menu")
@@ -100,7 +101,7 @@ ComposerHooks.Composer = {
 
         // Get the mentions from the input text, only if the character is followed by a word character and not an empty space
         const mentions = inputText.match(MENTION_REGEX)
-        const hashtags = inputText.match(HASH_REGEX)
+        const hashtags = inputText.match(TOPIC_REGEX)
       
         let list = ''
         const menu = this.el.querySelector('.menu')
@@ -125,21 +126,26 @@ ComposerHooks.Composer = {
             menu.innerHTML = list
           })
           
-        // } else if (hashtags) {
-        //   const text = hashtags[0].split('#').pop()
-        //   getFeedItems(text, '#').then(res => {
-        //     // if suggestions is greater than 0 append below textarea a menu with the suggestions
-        //       if (res.length > 0) {
-        //         console.log(res.length)
-        //         res.forEach((item) => {
-        //           list += hashtagItemRenderer(item)
-        //         })
-        //       } else {
-        //         list +=  ` `
-        //       }
-        //       menu.innerHTML = list
-        //     })
-        // 
+        } else if (hashtags) {
+          const text = hashtags[0].split('#').pop()
+          getFeedItems(text, '#').then(res => {
+            // if suggestions is greater than 0 append below textarea a menu with the suggestions
+              if (res.length > 0) {
+                console.log(res.length)
+                menu.classList.remove("hidden", false)
+                var caret = getCaretCoordinates(textarea, textarea.selectionEnd);
+                menu.style.top = caret.top + caret.height + 'px'
+                menu.style.left = caret.left + 'px'
+
+                res.forEach((item) => {
+                  list += hashtagItemRenderer(item)
+                })
+              } else {
+                list +=  ` `
+              }
+              menu.innerHTML = list
+            })
+        
           }  else {
           // no suggestions
           list +=  ` `
@@ -160,14 +166,14 @@ const mentionItemRenderer = (item, text) => {
     </li>`
 }
 
-// const hashtagItemRenderer = (item) => {
-//   return `
-//     <li class="flex rounded flex-col py-1">
-//       <button>
-//         <div class="text-sm text-neutral-content font-semibold">#${item.value}</div>
-//       </button>
-//     </li>`
-// }
+const hashtagItemRenderer = (item) => {
+  return `
+    <li class="flex rounded flex-col py-1">
+      <button>
+        <div class="text-sm text-neutral-content font-semibold">#${item.value}</div>
+      </button>
+    </li>`
+}
 
 
 
