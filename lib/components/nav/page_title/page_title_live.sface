@@ -1,7 +1,0 @@
-<div class="mx-3 md:mx-0">
-  <div x-data="{open: false}" class="p-3 px-4 rounded-md shadow bg-base-100">
-    <div class="flex items-center justify-between">
-      <div class="font-medium">{@page_title}</div>
-    </div>
-  </div>
-</div>
