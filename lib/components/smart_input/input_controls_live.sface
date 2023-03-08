@@ -40,7 +40,7 @@
   </div> -->
 
     <div
-      class="fixed top-[calc(var(--visual-viewport-height)_-_68px)] z-50 left-0 right-0 md:static"
+      class="fixed top-[calc(var(--visual-viewport-height)_-_112px)] z-50 left-0 right-0 md:static"
       x-show="!open_boundaries"
     >
       <div class="hidden md:block">
@@ -49,42 +49,56 @@
 
       <div class="">
         <div class={
-          "flex  md:items-center justify-between p-4 gap-3 border-t  border-base-content/5 bg-base-300 md:px-3 md:py-2",
-          "!border-none !bg-base-100 mt-2 !p-0": @thread_mode == :flat
-        }>
-          <div class="flex items-center flex-1 gap-3">
-            <Bonfire.UI.Common.UploadButtonLive
-              :if={!is_messaging? && module_enabled?(Bonfire.Files, @__context__)}
-              uploads={@uploads}
-              thread_mode={@thread_mode}
-            />
+          "flex flex-col md:items-center justify-between p-4 gap-3 bg-base-100 md:px-3 md:py-2"}>
+          <div class="flex items-center justify-between flex-1 w-full">
+            <div class="flex items-center gap-2">
+              <Bonfire.UI.Common.UploadButtonLive
+                :if={!is_messaging? && module_enabled?(Bonfire.Files, @__context__)}
+                uploads={@uploads}
+                thread_mode={@thread_mode}
+              />
 
-            <div
-              :if={@show_cw_toggle}
-              title={l("Add a content warning")}
-              class="relative z-30 flex items-center"
-            >
-              <button
-                :if={Config.get([:ui, :smart_input, :cw], []) == true}
-                type="button"
-                x-on:click="title_open = !title_open"
-                :class="{'btn-active' : title_open}"
-                class="flex items-center btn btn-ghost btn-sm btn-circle"
+              <div
+                :if={@show_cw_toggle}
+                title={l("Add a content warning")}
+                class="relative z-30 flex items-center"
               >
-                <span class="text-xs font-medium text-base-content text-opacity-70">{l("CW")}</span>
-              </button>
-            </div>
+                <button
+                  :if={Config.get([:ui, :smart_input, :cw], []) == true}
+                  type="button"
+                  x-on:click="title_open = !title_open"
+                  :class="{'btn-active' : title_open}"
+                  class="flex items-center btn btn-ghost btn-sm btn-circle"
+                >
+                  <Icon iconify="fluent:chat-warning-24-regular" class="w-5 h-5" />
+                </button>
+              </div>
 
-            <Dynamic.Component
-              :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
-              module={Bonfire.UI.Common.EmojiPickerLive}
-              target_field=".composer"
-              class={
-                "bottom-10 left-3": @thread_mode == :flat,
-                "bottom-10 left-3": @thread_mode != :flat,
-                "!top-10 right-0 bottom-[auto]": @showing_within == :page
-              }
-            />
+              <Dynamic.Component
+                :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
+                module={Bonfire.UI.Common.EmojiPickerLive}
+                target_field=".composer"
+                class={
+                  "bottom-10 left-3": @thread_mode == :flat,
+                  "bottom-10 left-3": @thread_mode != :flat,
+                  "!top-10 right-0 bottom-[auto]": @showing_within == :page
+                }
+              />
+        
+              <div class="text-xs text-base-content/70">
+                <span 
+                  :class={"{'text-error' : body.length > #{Bonfire.Me.Settings.get(
+                  [Bonfire.UI.Common.SmartInputLive, :max_length],
+                  :instance,
+                  @__context__[:instance_settings])}}"}
+                  x-text="body.length"></span> /
+                {Bonfire.Me.Settings.get(
+                  [Bonfire.UI.Common.SmartInputLive, :max_length],
+                  :instance,
+                  @__context__[:instance_settings])
+                }
+              </div>
+            </div>
 
             {#if is_messaging?}
               <div class="flex items-center gap-2 mx">
@@ -136,11 +150,15 @@
           </div>
           <button
             type="submit"
+            x-bind:disabled={"body.length == 0 || body.length > #{Bonfire.Me.Settings.get(
+              [Bonfire.UI.Common.SmartInputLive, :max_length],
+              :instance,
+              @__context__[:instance_settings])}"}
             x-on:click="$dispatch('submit')"
             phx-disable-with={if is_messaging?,
               do: l("Sending..."),
               else: l("Posting...")}
-            class="capitalize btn-sm rounded justify-self-end btn px-8 h-[2.25rem] btn-primary"
+            class="capitalize w-full btn-sm rounded justify-self-end btn px-8 h-[2.25rem] btn-primary"
             disabled={e(@smart_input_opts, :submit_disabled, nil)}
           >
             {#if is_messaging?}

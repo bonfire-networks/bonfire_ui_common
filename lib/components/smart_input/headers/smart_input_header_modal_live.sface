@@ -1,32 +1,32 @@
 <header
   x-cloak
-  class="relative flex-row items-center hidden w-full p-3 rounded-t-lg md:flex bg-base-300 flex-align-items-stretch flex-nowrap"
+  class="relative flex flex-row items-center w-full p-3 rounded-t-lg bg-base-100 flex-align-items-stretch flex-nowrap"
 >
   <span
     x-cloak
     x-show="open_boundaries"
-    class="flex mr-2 btn btn-xs btn-ghost btn-square"
+    class="flex mr-2 btn btn-xs btn-ghost btn-circle"
     x-on:click="open_boundaries = false; smart_input_title_text = 'New post'"
   >
     <Icon solid="ChevronLeft" class="w-4 h-4 text-base-content/70" />
   </span>
   <span
-    x-on:click="smart_input_minimized = ! smart_input_minimized"
-    class="flex-1 text-base font-medium text-left md:font-normal md:text-sm text-ellipsis text-base-content/70"
+    class="flex-1 text-lg font-semibold text-center text-ellipsis text-base-content/70"
     x-text={"smart_input_title_text || '#{e(@smart_input_opts, :prompt, l("New post"))}'"}
   >
     {e(@smart_input_opts, :prompt, l("New post"))}
   </span>
-  <div class="flex items-center gap-3">
+  <div class="absolute flex items-center gap-3 right-3">
     <button
+      :if={Bonfire.Me.Settings.get([:bonfire, :ui, :smart_input_type], :non_blocking, @current_user) == "non_blocking"}
       x-show="smart_input_as == 'floating'"
       x-on:click="smart_input_minimized = !smart_input_minimized; smart_input_fullscreen = false"
       type="button"
-      class="flex btn btn-xs btn-ghost btn-square"
+      class="flex btn btn-xs btn-ghost btn-circle"
       data-testid="composer:smart_input_minimized-button"
       aria-describedby="tooltip-5527"
     >
-      <span x-cloak x-show="!smart_input_minimized">
+      <span  x-cloak x-show="!smart_input_minimized">
         <Icon outline="Minus" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l("Minimize")}</span>
       </span>
@@ -53,7 +53,7 @@
       phx-target="#smart_input"
       x-on:click="if (confirm('Your draft will be lost. Continue?')){smart_input_open = false; smart_input_fullscreen = false; smart_input_title_text = null;}"
       type="button"
-      class="flex btn btn-xs btn-ghost btn-square"
+      class="flex btn btn-xs btn-ghost btn-circle"
       data-testid="composer:close-button"
       aria-describedby="tooltip-5529"
     >
