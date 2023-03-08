@@ -1,6 +1,6 @@
 <header
   x-cloak
-  class="relative hidden md:flex flex-row w-full px-3 py-1.5 rounded-t-lg bg-neutral items-center flex-align-items-stretch flex-nowrap"
+  class="relative flex-row items-center hidden w-full p-3 rounded-t-lg md:flex bg-base-300 flex-align-items-stretch flex-nowrap"
 >
   <span
     x-cloak
@@ -8,11 +8,11 @@
     class="flex mr-2 btn btn-xs btn-ghost btn-square"
     x-on:click="open_boundaries = false; smart_input_title_text = 'New post'"
   >
-    <Icon solid="ChevronLeft" class="w-4 h-4 text-neutral-content" />
+    <Icon solid="ChevronLeft" class="w-4 h-4 text-base-content/70" />
   </span>
   <span
     x-on:click="smart_input_minimized = ! smart_input_minimized"
-    class="flex-1 text-base font-medium text-left md:font-normal md:text-sm text-ellipsis text-neutral-content"
+    class="flex-1 text-base font-medium text-left md:font-normal md:text-sm text-ellipsis text-base-content/70"
     x-text={"smart_input_title_text || '#{e(@smart_input_opts, :prompt, l("New post"))}'"}
   >
     {e(@smart_input_opts, :prompt, l("New post"))}
@@ -27,11 +27,11 @@
       aria-describedby="tooltip-5527"
     >
       <span x-cloak x-show="!smart_input_minimized">
-        <Icon outline="Minus" class="w-4 h-4 stroke-1 text-neutral-content" />
+        <Icon outline="Minus" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l("Minimize")}</span>
       </span>
       <span x-cloak x-show="smart_input_minimized">
-        <Icon iconify="pajamas:expand-up" class="w-4 h-4 stroke-1 text-neutral-content" />
+        <Icon iconify="pajamas:expand-up" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l("Maximise")}</span>
       </span>
     </button>
@@ -45,7 +45,7 @@
       data-testid="composer:maximize-button"
       aria-describedby="tooltip-5528"
     >
-      <Icon outline="ArrowsExpand" class="w-4 h-4 stroke-1 text-neutral-content" />
+      <Icon outline="ArrowsExpand" class="w-4 h-4 stroke-1 text-base-content/70" />
       <span class="sr-only">{l "Toggle full-screen"}</span>
     </button> -->
     <button
@@ -57,7 +57,7 @@
       data-testid="composer:close-button"
       aria-describedby="tooltip-5529"
     >
-      <Icon outline="X" class="w-4 h-4 stroke-1 text-neutral-content" />
+      <Icon outline="X" class="w-4 h-4 stroke-1 text-base-content/70" />
       <span class="sr-only">{l("Close")}</span>
     </button>
   </div>

@@ -80,7 +80,7 @@
         textarea_container_class={Surface.css_class([
           "h-full flex-1 flex flex-col grow",
           "min-h-[50px]": @thread_mode == :flat,
-          "min-h-[240px]": @thread_mode != :flat
+          "min-h-[240px] md:max-h-[240px]": @thread_mode != :flat
         ])}
         textarea_container_class_alpine="{}"
         textarea_class={Surface.css_class([
