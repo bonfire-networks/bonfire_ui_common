@@ -171,8 +171,9 @@ const mentionItemRenderer = (item, text) => {
 const topicItemRenderer = (item) => {
   return `
     <li class="flex rounded flex-col py-1">
-      <button data-id="${item.id}">
-        <div class="text-sm text-neutral-content font-semibold">#${item.value}</div>
+      <button class="gap-1 rounded py-1.5" type="button" data-id="${item.id}">
+        <div class="text-sm text-neutral-content font-semibold">${item.value}</div>
+        <div class="text-xs text-secondary-content/70 font-regular">${item.id}</div>
       </button>
     </li>`
 }
