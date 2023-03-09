@@ -1,5 +1,5 @@
 <div class="flex items-center w-full gap-2">
-  <Icon solid="Users" class="w-5 h-5 text-base-content/70" />
+  <span class="px-1 text-xs font-medium uppercase text-base-content/70">{l "To"}</span>
   {#if is_list(@to_circles) and length(@to_circles) > 0}
     <input
       :for={{name, id} <- @to_circles}

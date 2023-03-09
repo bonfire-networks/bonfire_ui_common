@@ -43,15 +43,11 @@
       class="fixed top-[calc(var(--visual-viewport-height)_-_112px)] z-50 left-0 right-0 md:static"
       x-show="!open_boundaries"
     >
-      <div class="hidden md:block">
-        <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
-      </div>
-
       <div class="">
         <div class={
           "flex flex-col md:items-center justify-between p-4 gap-3 bg-base-100 md:px-3 md:py-2"}>
           <div class="flex items-center justify-between flex-1 w-full">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-4 md:gap-3">
               <Bonfire.UI.Common.UploadButtonLive
                 :if={!is_messaging? && module_enabled?(Bonfire.Files, @__context__)}
                 uploads={@uploads}
@@ -70,7 +66,7 @@
                   :class="{'btn-active' : title_open}"
                   class="flex items-center btn btn-ghost btn-sm btn-circle"
                 >
-                  <Icon iconify="fluent:chat-warning-24-regular" class="w-5 h-5" />
+                  <Icon iconify="fluent:chat-warning-24-regular" class="w-5 h-5 text-base-content/70" />
                 </button>
               </div>
 

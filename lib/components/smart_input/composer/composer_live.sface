@@ -2,7 +2,7 @@
   <textarea
     x-model="body"
     phx-debounce="blur"
-    class="w-full h-full p-2 resize-none md:p-1 composer textarea focus:outline-none focus:ring-0"
+    class="w-full h-full p-2 overflow-y-hidden min-h-[250px] break-words resize-none md:p-1 composer textarea focus:outline-none focus:ring-0"
     name="html_body"
     resize="none"
     placeholder={l("Start typing...")}

@@ -30,7 +30,7 @@
     x-show="smart_input_open"
     style="bottom: 0"
     class={
-      "smart_input_container fixed visible md:rounded-t-lg max-w-full md:w-[32rem] left-0 bg-base-200 top-0 mx-auto md:top-auto z-[9999] transition-all shadow-composer right-0 md:right-4 md:left-auto bottom-0  overflow-x-auto",
+      "smart_input_container fixed visible md:rounded-t-lg max-w-full md:w-[32rem] left-0 bg-base-200 top-0 mx-auto md:top-auto z-[9999] transition-all shadow-composer right-0 md:right-4 md:left-auto bottom-0 overflow-overlay md:overflow-x-auto",
       "!inset-0 md:!top-20 !h-auto md:!h-fit !shadow-2xl !rounded-2xl !overflow-visible": Bonfire.Me.Settings.get([:bonfire, :ui, :smart_input_type], :non_blocking, @current_user) == "focused"
     }
     :class="{

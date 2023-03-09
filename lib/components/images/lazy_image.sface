@@ -22,6 +22,7 @@
           phx-hook="blurHash"
           id={id(@media) || Pointers.ULID.generate()}
           data-hash={blurhash}
+          class="h-full"
           x-data="{src: null }"
           x-intersect.once={"src = '#{src}'"}
         >

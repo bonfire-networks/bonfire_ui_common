@@ -331,6 +331,10 @@ article.unread-activity {
   scrollbar-color: var(--scrollbarThumb) var(--scrollbarTrack);
 }
 
+.uploads_preview .scrollable::-webkit-scrollbar {
+  height: 8px;
+}
+
 .scrollable::-webkit-scrollbar {
   height: 2px;
 }
@@ -685,6 +689,9 @@ em-emoji-picker {
   margin: 0 3px
 }
 
+.object_cover .open_modal_wrapper {
+  height: 100%;
+}
 
 .modal-bottom :where(.modal-box) {
   --tw-translate-y: 0;
@@ -699,7 +706,7 @@ em-emoji-picker {
 }
 
 .upload-entry img {
-  @apply w-full h-[50px] md:h-[100px] object-cover rounded-lg;
+  @apply min-w-[160px] w-[160px] h-[90px] md:h-[100px] object-cover rounded-lg;
 }
 
 .media_container img.media-image {

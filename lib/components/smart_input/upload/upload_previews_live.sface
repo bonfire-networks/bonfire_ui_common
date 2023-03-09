@@ -1,6 +1,6 @@
 <div class={
-  "grid grid-cols-3 md:grid-cols-2 gap-2 mx-3",
-  "mt-3 md:mt-14 mb-3": @uploads.files.entries != []
+  "flex gap-3 bg-base-100 scrollable",
+  "pb-1": Enum.count(@uploads.files.entries) > 2
 }>
   {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
     <article
@@ -22,60 +22,80 @@
       <!-- <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress> -->
 
       <!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 -->
-      <button
-        type="button"
-        class="absolute z-20 gap-1 normal-case btn btn-ghost text-error btn-xs left-1 top-1"
-        phx-click="cancel-upload"
-        phx-target="#smart_input"
-        phx-value-ref={entry.ref}
-        aria-label="cancel"
-      >
-        <Icon solid="Trash" class="w-6 h-6 md:w-4 md:h-4" />
-        <span class="hidden md:block">{l("Delete")}</span>
-      </button>
+      <div class="absolute z-20 right-1 top-1 dropdown dropdown-end">
+        <label
+          class="relative gap-1 normal-case rounded btn btn-ghost btn-xs"
+          tabindex="0"
+          id="user-profile-menu"
+          aria-haspopup="true"
+          aria-expanded="true"
+        >
+          <Icon solid="DotsVertical" class="w-4 h-4" />
+          {l "Edit"}
+        </label>
+        <ul
+          tabindex="0"
+          class="rounded divide-y divide-neutral-content/10 gap-1 menu-compact !block shadow w-28 menu dropdown-content bg-neutral"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="user-profile-menu"
+        >
+          
 
-      <Bonfire.UI.Common.OpenModalLive
-        id={"#{entry.ref}-description"}
-        form_opts={"phx-submit": "set_value"}
-        reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
-        title_text={l("Add an alternative description")}
-      >
-        <!--        cancel_btn_text={l("Cancel")}
- cancel_btn_class="btn btn-primary capitalize btn-wide" -->
+          <Bonfire.UI.Common.OpenModalLive
+            id={"#{entry.ref}-description"}
+            form_opts={"phx-submit": "set_value"}
+            reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
+            title_text={l("Add an alternative description")}
+          >
 
-        <div class="mt-4">
-          <div class="p-4 rounded-md bg-info/10">
-            <div class="flex">
-              <div class="flex-shrink-0">
-                <Icon solid="InformationCircle" class="w-5 h-5 text-info" />
-              </div>
-              <div class="flex-1 ml-3 md:flex md:justify-between">
-                <p class="text-sm text-info">
-                  {l(
-                    "Adding an alternative description will improve the accessibility of your contents, helping screen reader and visually impaired users."
-                  )}</p>
+            <div class="mt-4">
+              <div class="p-4 rounded-md bg-info/10">
+                <div class="flex">
+                  <div class="flex-shrink-0">
+                    <Icon solid="InformationCircle" class="w-5 h-5 text-info" />
+                  </div>
+                  <div class="flex-1 ml-3 md:flex md:justify-between">
+                    <p class="text-sm text-info">
+                      {l(
+                        "Adding an alternative description will improve the accessibility of your contents, helping screen reader and visually impaired users."
+                      )}</p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="mt-3">
-          <span class="image_in_preview" :if={String.starts_with?(entry.client_type, "image")}>
-            <.live_img_preview entry={entry} />
-          </span>
-          <textarea name="value" placeholder="Type here" class="w-full mt-3 textarea textarea-bordered" />
-        </div>
-        <:open_btn :let={value: value}>
-          <button
-            type="button"
-            class="absolute z-20 gap-1 normal-case btn btn-ghost text-slate-50 btn-xs right-1 top-1"
-            aria-label="Add description"
-          >
-            <Icon solid="Pencil" class="w-6 h-6 md:w-4 md:h-4" />
-            <span class="hidden md:block">{value || l("Add description")}</span>
-          </button>
-          <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}>
-        </:open_btn>
-      </Bonfire.UI.Common.OpenModalLive>
+            <div class="mt-3">
+              <span class="image_in_preview" :if={String.starts_with?(entry.client_type, "image")}>
+                <.live_img_preview entry={entry} />
+              </span>
+              <textarea name="value" placeholder="Type here" class="w-full mt-3 textarea textarea-bordered" />
+            </div>
+            <:open_btn :let={value: value}>
+              <button
+                type="button"
+                class="z-20 flex items-center w-full gap-2 font-medium normal-case rounded btn btn-ghost btn-sm"
+                aria-label="Add description"
+              >
+                <Icon solid="Pencil" class="w-4 h-4" />
+                <span class="">{l("Describe")}</span>
+              </button>
+              <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}>
+            </:open_btn>
+          </Bonfire.UI.Common.OpenModalLive>
+            <button
+              type="button"
+              class="flex items-center w-full gap-2 font-medium normal-case rounded btn btn-ghost text-error btn-sm"
+              phx-click="cancel-upload"
+              phx-target="#smart_input"
+              phx-value-ref={entry.ref}
+              aria-label="cancel"
+            >
+              <Icon solid="Trash" class="w-4 h-4" />
+              <span class="">{l("Delete")}</span>
+            </button>
+        </ul>
+      </div>
+      
 
       {#for err <- upload_errors(@uploads.files, entry)}
         <p class="alert alert-danger">{error_to_string(err)}</p>
