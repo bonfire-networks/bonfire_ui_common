@@ -1,8 +1,9 @@
-<div phx-hook="Composer" id="editor" class="relative h-full px-0 md:p-2">
+<div phx-hook="Composer" id="editor" class="w-full input-sizer stacked md:p-2">
   <textarea
+    oninput="this.parentNode.dataset.value = this.value"
     x-model="body"
     phx-debounce="blur"
-    class="w-full h-full p-2 overflow-y-hidden min-h-[250px] break-words resize-none md:p-1 composer textarea focus:outline-none focus:ring-0"
+    class="w-full h-full p-2 resize-none md:p-1 composer textarea focus:outline-none focus:ring-0"
     name="html_body"
     resize="none"
     placeholder={l("Start typing...")}

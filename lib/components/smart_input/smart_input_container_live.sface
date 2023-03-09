@@ -10,9 +10,7 @@
       composer: $refs.smart_input,
       show_smart_input(title) {
         if(title !==undefined){ this.smart_input_title_text = title }
-        this.composer.querySelector('textarea').focus()
         this.smart_input_open = true;
-        this.composer.querySelector('textarea').focus()
         this.smart_input_minimized = false;
         #{if e(@smart_input_opts, :as, nil) == :modal, do: "this.smart_input_fullscreen = true;"}
       }
