@@ -21,6 +21,7 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
   prop thread_mode, :atom, default: nil
   prop page, :any, default: nil
   prop without_sidebar, :string, default: nil
+  prop smart_input_as, :atom, default: nil
 
   def mount(socket),
     do:

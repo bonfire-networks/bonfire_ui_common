@@ -1,11 +1,14 @@
 <div id="composer_container" data-id="smart_input" class="flex-1 h-full grow">
-  <!-- 'hidden': !smart_input_open  && #{Settings.get([:ui, :smart_input_as], nil, @__context__) != :sidebar && @thread_mode != :flat} -->
+  <!-- 'hidden': !smart_input_open  && #{@smart_input_as != :sidebar && @thread_mode != :flat} -->
   <div
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
     x-data={"{
-      body: '',
-      title_open: #{if is_nil(@title_open) and @create_object_type not in [:post], do: true, else: @title_open == true}, 
+          body: '',
+          body_length() { const value = this.body.trim()
+            if(!value) return 0
+            return value.split(/\s+/).length },
+          title_open: #{if is_nil(@title_open) and @create_object_type not in [:post], do: true, else: @title_open == true}, 
     }"}
     @submit="open_boundaries = false"
     x-cloak
@@ -52,7 +55,8 @@
         module={active_smart_input_component(@smart_input_component, @create_object_type)}
         textarea_class={Surface.css_class([
           "editor_area textarea p-0 h-full w-full rounded-none !min-h-[240px]",
-          "!h-full !min-h-[420px]": @showing_within in [:compose]
+          "!h-full !min-h-[420px]": @showing_within in [:compose],
+          "!max-h-full h-[420px]": @smart_input_as == :focused
         ])}
         {...assigns}
       />

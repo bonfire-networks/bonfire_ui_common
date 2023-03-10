@@ -31,7 +31,7 @@
           aria-expanded="true"
         >
           <Icon solid="DotsVertical" class="w-4 h-4" />
-          {l "Edit"}
+          {l("Edit")}
         </label>
         <ul
           tabindex="0"
@@ -40,15 +40,12 @@
           aria-orientation="vertical"
           aria-labelledby="user-profile-menu"
         >
-          
-
           <Bonfire.UI.Common.OpenModalLive
             id={"#{entry.ref}-description"}
             form_opts={"phx-submit": "set_value"}
             reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
             title_text={l("Add an alternative description")}
           >
-
             <div class="mt-4">
               <div class="p-4 rounded-md bg-info/10">
                 <div class="flex">
@@ -82,20 +79,19 @@
               <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}>
             </:open_btn>
           </Bonfire.UI.Common.OpenModalLive>
-            <button
-              type="button"
-              class="flex items-center w-full gap-2 font-medium normal-case rounded btn btn-ghost text-error btn-sm"
-              phx-click="cancel-upload"
-              phx-target="#smart_input"
-              phx-value-ref={entry.ref}
-              aria-label="cancel"
-            >
-              <Icon solid="Trash" class="w-4 h-4" />
-              <span class="">{l("Delete")}</span>
-            </button>
+          <button
+            type="button"
+            class="flex items-center w-full gap-2 font-medium normal-case rounded btn btn-ghost text-error btn-sm"
+            phx-click="cancel-upload"
+            phx-target="#smart_input"
+            phx-value-ref={entry.ref}
+            aria-label="cancel"
+          >
+            <Icon solid="Trash" class="w-4 h-4" />
+            <span class="">{l("Delete")}</span>
+          </button>
         </ul>
       </div>
-      
 
       {#for err <- upload_errors(@uploads.files, entry)}
         <p class="alert alert-danger">{error_to_string(err)}</p>

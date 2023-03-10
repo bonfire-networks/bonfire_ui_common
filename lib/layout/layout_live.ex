@@ -37,7 +37,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop page_header_aside, :any, default: nil
   prop page_header_icon, :string, default: nil
 
-  prop smart_input_opts, :any, default: nil
+  prop smart_input_opts, :any, default: %{}
   prop create_object_type, :any, default: nil
   prop to_circles, :list, default: []
   prop to_boundaries, :any, default: nil
@@ -61,11 +61,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     # Note:
     assigns =
       assigns
-      |> assign_new(:smart_input_opts, fn ->
-        %{
-          as: Bonfire.UI.Common.SmartInputLive.set_smart_input_as(assigns[:thread_mode], assigns)
-        }
-      end)
+      |> assign_new(:smart_input_opts, fn -> %{} end)
       # NOTE: we need to also set default props this way until we can convert LayoutView to use Surface
       |> assign_new(:to_boundaries, fn -> nil end)
       |> assign_new(:page_title, fn -> nil end)

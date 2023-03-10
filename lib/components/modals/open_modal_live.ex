@@ -92,7 +92,8 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   slot cancel_btn
   slot default, arg: [autocomplete: :list, value: :any]
 
-  data value, :any, default: nil
+  prop value, :any, default: nil
+  # data value, :any, default: nil
 
   @doc """
   Slot for the button that opens the modal

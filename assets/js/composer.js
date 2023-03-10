@@ -19,7 +19,7 @@ ComposerHooks.Composer = {
       const TOPIC_REGEX = new RegExp(`(?:\\s|^)(${TOPIC_PREFIX}${VALID_CHARS}{${MIN_PREFIX_LENGTH},})$`)
 
       const textarea = this.el.querySelector("textarea")
-    console.log(textarea)
+    // console.log(textarea)
       const suggestions_menu = this.el.querySelector(".menu")
       const container = document.querySelector("#smart_input");
 
@@ -98,7 +98,7 @@ ComposerHooks.Composer = {
 
         // Get the input text from the textarea
         const inputText = textarea.value; 
-        console.log(inputText)
+        // console.log(inputText)
 
         // Get the mentions from the input text, only if the character is followed by a word character and not an empty space
         const mentions = inputText.match(MENTION_REGEX)
@@ -128,7 +128,7 @@ ComposerHooks.Composer = {
           })
           
         } else if (topics) {
-          console.log(topics)
+          // console.log(topics)
           const text = topics[0].split('+').pop()
           getFeedItems(text, '+').then(res => {
             // if suggestions is greater than 0 append below textarea a menu with the suggestions

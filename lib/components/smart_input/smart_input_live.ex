@@ -1,5 +1,6 @@
 defmodule Bonfire.UI.Common.SmartInputLive do
   use Bonfire.UI.Common.Web, :stateless_component
+  alias Bonfire.UI.Common.SmartInputContainerLive
 
   # prop user_image, :string, required: true
   # prop target_component, :string
@@ -202,11 +203,6 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
     socket
   end
-
-  def set_smart_input_as(:flat, _), do: :modal
-
-  def set_smart_input_as(_, context),
-    do: Settings.get([:ui, :smart_input_as], :floating, context)
 
   def activity_type_or_reply(assigns) do
     # debug(e(assigns, :reply_to_id, ""), "reply to id")

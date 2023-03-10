@@ -1,78 +1,92 @@
-<div
-  class="flex-1"
-  x-data={"{
-      open_boundaries: false,
-      smart_input_title_text: null,
-      smart_input_open: false,
-      smart_input_fullscreen: false,
-      smart_input_minimized: false,
-      smart_input_as: 'floating',
-      composer: $refs.smart_input,
-      show_smart_input(title) {
+<div class="flex-1">
+  {#case set_smart_input_as(
+      @thread_mode || @showing_within,
+      current_user(@__context__)
+    )
+    |> debug("set_smart_input_as")}
+    {#match smart_input_as}
+      <div
+        x-data={"{
+              open_boundaries: false,
+              smart_input_title_text: null,
+              smart_input_open: false,
+              smart_input_fullscreen: false,
+              smart_input_minimized: false,
+              smart_input_as_non_blocking: true,
+              smart_input_as_focused: false,
+              composer: $refs.smart_input,
+              show_smart_input(title) {
         if(title !==undefined){ this.smart_input_title_text = title }
         this.smart_input_open = true;
         this.smart_input_minimized = false;
-        #{if e(@smart_input_opts, :as, nil) == :modal, do: "this.smart_input_fullscreen = true;"}
-      }
-    }"}
-  x-init={"smart_input_open = #{e(@smart_input_opts, :open, nil) == true}; smart_input_minimized = #{e(@smart_input_opts, :open, nil) != true and as(@smart_input_opts) == :floating}; smart_input_as = '#{as(@smart_input_opts)}'; "}
->
-  <Bonfire.UI.Common.SmartInputButtonsLive
-    :if={!e(@smart_input_opts, :hide_buttons, nil)}
-    smart_input_opts={@smart_input_opts}
-    smart_input_component={@smart_input_component}
-    create_object_type={@create_object_type}
-  />
+        #{if smart_input_as == :focused, do: "this.smart_input_fullscreen = true;"}
+              }
+            }"}
+        x-init={"smart_input_open = #{e(@smart_input_opts, :open, nil) == true}; smart_input_minimized = #{e(@smart_input_opts, :open, nil) != true and smart_input_as == :non_blocking}; smart_input_as_non_blocking = #{smart_input_as == :non_blocking}; smart_input_as_focused = #{smart_input_as == :focused}; "}
+      >
+        <Bonfire.UI.Common.SmartInputButtonsLive
+          :if={!e(@smart_input_opts, :hide_buttons, nil)}
+          smart_input_opts={@smart_input_opts}
+          smart_input_component={@smart_input_component}
+          create_object_type={@create_object_type}
+        />
 
-  <div
-    x-show="smart_input_open"
-    style="bottom: 0"
-    class={
-      "smart_input_container fixed visible md:rounded-t-lg max-w-full md:w-[32rem] left-0 bg-base-200 top-0 mx-auto md:top-auto z-[9999] transition-all shadow-composer right-0 md:right-4 md:left-auto bottom-0 overflow-overlay md:overflow-x-auto",
-      "!inset-0 md:!top-20 !h-auto md:!h-fit !shadow-2xl !rounded-2xl !overflow-visible": Bonfire.Me.Settings.get([:bonfire, :ui, :smart_input_type], :non_blocking, @current_user) == "focused"
-    }
-    :class="{
-      'hidden tablet-lg:block bottom-0': smart_input_minimized
+        <div
+          x-show="smart_input_open"
+          class="smart_input_container fixed visible md:rounded-t-lg max-w-full left-0 bg-base-200 top-0 mx-auto md:top-auto z-[9999] transition-all shadow-composer right-0 md:right-4 md:left-auto bottom-0"
+          style="bottom: 0"
+          x-bind:class="smart_input_as_focused ? 'md:!w-[42rem] !inset-0 md:!top-20 !h-auto md:!h-fit !shadow-2xl !rounded-2xl' : 'md:w-[36rem] max-h-screen overflow-overlay md:overflow-x-auto',
+      smart_input_minimized ? 'hidden tablet-lg:block bottom-0' : ''"
+          x-on:keydown.escape.prevent.stop="smart_input_minimized = true"
+        >
+          <div
+            x-cloak
+            x-show="smart_input_open == true"
+            x-on:click="smart_input_open = false"
+            class="fixed inset-0 bg-base-300/20 cursor-pointer backdrop-blur md:hidden"
+            style="-webkit-backdrop-filter: blur(10px);"
+            x-bind:class="{
+      '!block': smart_input_as_focused
     }"
-    x-on:keydown.escape.prevent.stop="smart_input_minimized = true"
-  >
-    <div
-      x-cloak
-      x-show="smart_input_open == true"
-      x-on:click="smart_input_open = false"
-      class={
-        "fixed inset-0 bg-base-300/20 cursor-pointer backdrop-blur md:hidden",
-        "!block":  Bonfire.Me.Settings.get([:bonfire, :ui, :smart_input_type], :non_blocking, @current_user) == "focused"
-      }
-    />
+          />
 
-    <div class={
-      "relative z-50 md:border md:rounded-lg border-base-content/5",
-      "!rounded-b-none":  Bonfire.Me.Settings.get([:bonfire, :ui, :smart_input_type], :non_blocking, @current_user) == "non_blocking"
-    }>
-    <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
-    <div x-ref="smart_input" x-show="!smart_input_minimized" class="flex-1 h-full grow">
-      <Bonfire.UI.Common.SmartInputLive
-        without_sidebar={@without_sidebar}
-        boundaries_modal_id={:modal_composer}
-        showing_within={@showing_within}
-        reply_to_id={@reply_to_id}
-        context_id={@context_id}
-        smart_input_component={@smart_input_component}
-        create_object_type={@create_object_type}
-        thread_mode={@thread_mode}
-        open_boundaries={@open_boundaries}
-        to_boundaries={boundaries_or_default(@to_boundaries)}
-        to_circles={@to_circles}
-        smart_input_opts={@smart_input_opts}
-        activity={@activity}
-        object={@object}
-        uploads={@uploads}
-        uploaded_files={@uploaded_files}
-        trigger_submit={@trigger_submit}
-        reset_smart_input={@reset_smart_input}
-      />
-    </div>
-    </div>
-  </div>
+          <div
+            class="relative z-50 md:border md:rounded-lg border-base-content/5"
+            x-bind:class="{
+      '!rounded-b-none': smart_input_as_non_blocking
+    }"
+          >
+            <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
+            <div
+              x-ref="smart_input"
+              x-show="!smart_input_minimized"
+              class="flex-1 h-full grow"
+              x-bind:class="smart_input_as_focused ? 'max-h-[calc(100vh-52px)] md:max-h-[calc(100vh-5rem-52px)] overflow-x-auto' : ''"
+            >
+              <Bonfire.UI.Common.SmartInputLive
+                without_sidebar={@without_sidebar}
+                boundaries_modal_id={:modal_composer}
+                showing_within={@showing_within}
+                reply_to_id={@reply_to_id}
+                context_id={@context_id}
+                smart_input_component={@smart_input_component}
+                create_object_type={@create_object_type}
+                thread_mode={@thread_mode}
+                open_boundaries={@open_boundaries}
+                to_boundaries={boundaries_or_default(@to_boundaries)}
+                to_circles={@to_circles}
+                smart_input_opts={@smart_input_opts}
+                activity={@activity}
+                object={@object}
+                uploads={@uploads}
+                uploaded_files={@uploaded_files}
+                trigger_submit={@trigger_submit}
+                reset_smart_input={@reset_smart_input}
+                smart_input_as={smart_input_as}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+  {/case}
 </div>

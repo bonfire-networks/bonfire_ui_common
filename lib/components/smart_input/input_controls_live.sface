@@ -44,8 +44,7 @@
       x-show="!open_boundaries"
     >
       <div class="">
-        <div class={
-          "flex flex-col md:items-center justify-between p-4 gap-3 bg-base-100 md:px-3 md:py-2"}>
+        <div class="flex flex-col md:items-center justify-between p-4 gap-3 bg-base-100 md:px-3 md:py-2">
           <div class="flex items-center justify-between flex-1 w-full">
             <div class="flex items-center gap-4 md:gap-3">
               <Bonfire.UI.Common.UploadButtonLive
@@ -80,19 +79,19 @@
                   "!top-10 right-0 bottom-[auto]": @showing_within == :page
                 }
               />
-        
+
               <div class="text-xs text-base-content/70">
-                <span 
-                  :class={"{'text-error' : body.length > #{Bonfire.Me.Settings.get(
-                  [Bonfire.UI.Common.SmartInputLive, :max_length],
+                <span
+                  :class={"{'text-error' : body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length],
                   :instance,
                   @__context__[:instance_settings])}}"}
-                  x-text="body.length"></span> /
+                  x-text="body_length()"
+                /> /
                 {Bonfire.Me.Settings.get(
                   [Bonfire.UI.Common.SmartInputLive, :max_length],
                   :instance,
-                  @__context__[:instance_settings])
-                }
+                  @__context__[:instance_settings]
+                )} {l("words")}
               </div>
             </div>
 
@@ -152,6 +151,9 @@
               else: l("Posting...")}
             class="capitalize w-full btn-sm rounded justify-self-end btn px-8 h-[2.25rem] btn-primary"
             disabled={e(@smart_input_opts, :submit_disabled, nil)}
+            x-bind:disabled={"body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length],
+            :instance,
+            @__context__[:instance_settings])}"}
           >
             {#if is_messaging?}
               {l("Send")}

@@ -1,6 +1,6 @@
 <header
   x-cloak
-  class="sticky top-0 z-50 flex flex-row items-center w-full p-3 rounded-t-lg md:z-auto md:relative bg-base-100 flex-align-items-stretch flex-nowrap"
+  class="sticky top-0 z-50 flex flex-row items-center w-full p-3 rounded-t-lg md:z-auto md:relative bg-base-100 flex-align-items-stretch flex-nowrap h-[52px]"
 >
   <span
     x-cloak
@@ -18,15 +18,15 @@
   </span>
   <div class="absolute flex items-center gap-3 right-3">
     <button
-      :if={Bonfire.Me.Settings.get([:bonfire, :ui, :smart_input_type], :non_blocking, @current_user) == "non_blocking"}
-      x-show="smart_input_as == 'floating'"
-      x-on:click="smart_input_minimized = !smart_input_minimized; smart_input_fullscreen = false"
+      x-show="smart_input_as_non_blocking"
+      x-on:click="smart_input_minimized = !smart_input_minimized"
       type="button"
       class="flex btn btn-xs btn-ghost btn-circle"
       data-testid="composer:smart_input_minimized-button"
       aria-describedby="tooltip-5527"
     >
-      <span  x-cloak x-show="!smart_input_minimized">
+      <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
+      <span x-cloak x-show="!smart_input_minimized">
         <Icon outline="Minus" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l("Minimize")}</span>
       </span>
