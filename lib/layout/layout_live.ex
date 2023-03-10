@@ -24,7 +24,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop post_id, :string, default: nil
   prop context_id, :string, default: nil
   prop reply_to_id, :string, default: nil
-  prop showing_within, :any, default: nil
+  prop showing_within, :atom, default: nil
 
   prop inner_content, :any, default: nil
   prop nav_items, :any, default: nil

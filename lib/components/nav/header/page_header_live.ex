@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Common.PageHeaderLive do
   prop back, :boolean, default: false, required: false
   # prop transparent_header, :boolean, default: false
   prop page_header_icon, :string, default: nil
-  # prop showing_within, :string, default: nil
+  # prop showing_within, :atom, default: nil
 
   slot default
   slot left_action

@@ -5,7 +5,7 @@ defmodule Bonfire.UI.Common.LoggedHeaderLive do
   prop page, :string, default: nil
   prop page_header_aside, :any, default: nil
   # prop custom_page_header, :any, default: nil
-  prop showing_within, :any, default: nil
+  prop showing_within, :atom, default: nil
   prop reply_to_id, :any, default: nil
   prop without_sidebar, :boolean, default: false
   prop without_widgets, :boolean, default: false

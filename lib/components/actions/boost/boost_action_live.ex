@@ -5,7 +5,7 @@ defmodule Bonfire.UI.Common.BoostActionLive do
   prop object_type, :any
   prop object_boundary, :any, default: nil
   prop boost_count, :any
-  prop showing_within, :any
+  prop showing_within, :atom
   prop my_boost, :any, default: nil
 
   def preload(list_of_assigns),

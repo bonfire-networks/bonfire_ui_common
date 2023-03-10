@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Common.LikeActionLive do
   prop object_boundary, :any, default: nil
   prop like_count, :any, default: 0
   # prop label, :string, default: nil
-  # prop showing_within, :any, default: nil
+  # prop showing_within, :atom, default: nil
   prop my_like, :any, default: nil
 
   def preload(list_of_assigns),

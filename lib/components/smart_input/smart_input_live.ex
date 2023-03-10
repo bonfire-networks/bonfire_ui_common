@@ -12,7 +12,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop to_circles, :list, default: []
   prop open_boundaries, :boolean, default: false
   prop smart_input_opts, :map, default: %{}
-  prop showing_within, :any, default: nil
+  prop showing_within, :atom, default: nil
   prop activity, :any, default: nil
   prop object, :any, default: nil
   prop activity_inception, :any, default: nil

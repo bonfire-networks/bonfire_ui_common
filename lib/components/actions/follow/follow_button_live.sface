@@ -12,7 +12,7 @@
     >
       <Icon solid="UserAdd" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
       <span :if={!@hide_text} class={"truncate ellipsis", "ml-2": !@hide_icon}>
-        {l("Follow")} {@label}</span>
+        {@verb || l("Follow")} {@label}</span>
     </a>
   {#elseif @my_follow == :requested}
     <a
@@ -33,20 +33,20 @@
     </a>
   {#else}
     <a
-      x-data={"{text: '#{l("Following")}'}"}
-      x-on:mouseover={"text = '#{l("Unfollow")}'"}
-      x-on:mouseover.away={"text = '#{l("Following")}'"}
+      x-data={"{text: '#{@verb_already || l("Following")}'}"}
+      x-on:mouseover={"text = '#{@verb_undo || l("Unfollow")}'"}
+      x-on:mouseover.away={"text = '#{@verb_already || l("Following")}'"}
       data-cid={@id}
       data-id="unfollow"
       :on-click="Bonfire.Social.Follows:unfollow"
       phx-value-id={@object_id}
-      :class={"{ '!btn-error': text == '#{l("Unfollow")}' }"}
+      :class={"{ '!btn-error': text == '#{@verb_undo || l("Unfollow")}' }"}
       class={e(@class, "btn btn-sm btn-outline rounded !border-base-content/40 normal-case")}
     >
       <Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
 
       <span :if={!@hide_text} x-text="text" class={"truncate ellipsis", "ml-2": !@hide_icon}>
-        {l("Following")} {@label}</span>
+        {@verb_already || l("Following")} {@label}</span>
     </a>
   {/if}
 </div>

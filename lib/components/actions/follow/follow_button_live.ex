@@ -6,6 +6,9 @@ defmodule Bonfire.UI.Common.FollowButtonLive do
   prop class, :css_class, default: nil
   prop icon_class, :css_class, default: nil
   prop label, :string, default: nil
+  prop verb, :string, default: nil
+  prop verb_already, :string, default: nil
+  prop verb_undo, :string, default: nil
   prop my_follow, :boolean, default: nil
   prop hide_icon, :boolean, default: false
   prop hide_text, :boolean, default: false
