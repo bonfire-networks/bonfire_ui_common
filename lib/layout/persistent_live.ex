@@ -69,7 +69,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
   defp persistent_assigns_filter(assigns) do
     assigns
-    |> debug("pre-filtering")
+    # |> debug("pre-filtering")
     |> Map.new()
     |> Map.take([
       :showing_within,
@@ -102,7 +102,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     do: maybe_send(context, assigns)
 
   def maybe_send(context, assigns) do
-    debug(assigns, "send persistent assigns")
+    # debug(assigns, "send persistent assigns")
 
     case e(context, :sticky, nil) do
       true ->
@@ -198,7 +198,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
   def handle_info({:assign, assigns}, socket) do
     {:noreply,
      assigns
-     |> debug("received assigns for PersistentLive")
+     #  |> debug("received assigns for PersistentLive")
      |> Map.new()
      |> Map.put(:smart_input_component, nil)
      |> assign_defaults(&Map.put_new_lazy/3)
@@ -208,7 +208,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
        Map.merge(socket.assigns[:__context__] || %{}, assigns[:__context__] || %{})
        |> merge_keeping_only_first_keys(...)
      )
-     |> debug("set prepared assigns received for PersistentLive")
+     #  |> debug("set prepared assigns received for PersistentLive")
      |> assign(socket, ...)}
   end
 

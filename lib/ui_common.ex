@@ -54,11 +54,22 @@ defmodule Bonfire.UI.Common do
 
   def assign_global(socket, assigns) when is_map(assigns) do
     # need this so any non-atom keys are turned into atoms
-    Enum.reduce(
-      assigns,
-      socket,
-      fn {k, v}, socket -> assign_global(socket, k, v) end
+    Enums.input_to_atoms(assigns, true, false)
+    |> Keyword.new()
+    |> assign_global(socket, ...)
+  end
+
+  def assign_global(
+        %{view: view, assigns: %{live_handler_via_module: component_or_view}} = socket,
+        assigns
+      )
+      when is_list(assigns) and view != component_or_view do
+    debug(
+      component_or_view,
+      "since we're assigning globally via a stateful component, send the assigns to parent view"
     )
+
+    send_self_global(socket, assigns)
   end
 
   def assign_global(socket, assigns) when is_list(assigns) do
@@ -70,15 +81,6 @@ defmodule Bonfire.UI.Common do
     # |> debug("put in context")
   end
 
-  # def assign_global(socket, assigns) when is_list(assigns) do
-  #   socket
-  #   |> assign_generic(assigns)
-  #   # [no longer] being naughty here, let's see how long until Surface breaks it:
-  #   |> assign_generic(:__context__,
-  #                         Map.get(socket.assigns, :__context__, %{})
-  #                         |> Map.merge(maybe_to_map(assigns))
-  #   )
-  # end
   def assign_global(socket, {_, _} = assign) do
     assign_global(socket, Keyword.new([assign]))
   end
@@ -110,6 +112,8 @@ defmodule Bonfire.UI.Common do
 
   # TODO: get rid of assigning everything to a component, and then we'll no longer need this
   # def assigns_clean(%{} = assigns) when is_map(assigns), do: assigns_clean(Map.to_list(assigns))
+  def assigns_clean({_, _} = tuple), do: assigns_clean([tuple])
+
   def assigns_clean(assigns) do
     # ++ [{:current_user, current_user(assigns)}]
 
@@ -413,6 +417,17 @@ defmodule Bonfire.UI.Common do
     assigns = assigns_clean(assigns)
     send(self(), {:assign, assigns})
     if not is_nil(socket), do: assign_generic(socket, assigns)
+  end
+
+  def send_self_global(socket \\ nil, assigns) do
+    assigns = assigns_clean(assigns)
+    send(self(), {:assign_global, assigns})
+
+    if not is_nil(socket),
+      do:
+        socket
+        |> assign_generic(assigns)
+        |> Surface.Components.Context.put(assigns)
   end
 
   @doc "Warning: this will set assigns for any/all users who subscribe to them. You want to `cast_self/2` instead if dealing with user-specific actions or private data."

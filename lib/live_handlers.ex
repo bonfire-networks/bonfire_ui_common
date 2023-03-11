@@ -38,7 +38,9 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   end
 
   def handle_event(action, attrs, socket, source_module \\ nil, fun \\ nil) do
-    undead(socket, fn ->
+    socket
+    |> assign(:live_handler_via_module, source_module)
+    |> undead(fn ->
       debug("LiveHandler: handle_event #{inspect(action)} via #{source_module || "delegation"}")
 
       with {:noreply, %{assigns: %{no_live_event_handler: %{^action => true}}} = socket} <-
@@ -50,6 +52,24 @@ defmodule Bonfire.UI.Common.LiveHandlers do
           # debug(other)
           other
       end
+    end)
+  end
+
+  def handle_progress(type, entry, socket, source_module, target_fn)
+      when is_function(target_fn) do
+    socket
+    |> assign(:live_handler_via_module, source_module)
+    |> undead(fn ->
+      target_fn.(type, entry, socket)
+    end)
+  end
+
+  def handle_progress(type, entry, socket, source_module, target_live_handler)
+      when is_atom(target_live_handler) do
+    socket
+    |> assign(:live_handler_via_module, source_module)
+    |> undead(fn ->
+      target_live_handler.handle_progress(type, entry, socket)
     end)
   end
 
@@ -66,11 +86,20 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
     {
       :noreply,
-      assign_global(socket, assign, value)
+      assign(socket, assign, value)
     }
   end
 
   defp do_handle_info({:assign, assigns}, socket) do
+    debug("LiveHandler: handle_info, assign data with {:assign, ...}")
+
+    {
+      :noreply,
+      assign(socket, assigns)
+    }
+  end
+
+  defp do_handle_info({:assign_global, assigns}, socket) do
     debug("LiveHandler: handle_info, assign data with {:assign, ...}")
 
     {
