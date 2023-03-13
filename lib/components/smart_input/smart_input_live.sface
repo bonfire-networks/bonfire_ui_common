@@ -35,7 +35,7 @@
       <div
         x-show="!open_boundaries"
         :if={is_map(@activity) || is_map(@reply_to_id)}
-        class="bg-base-300 !rounded-none  relative"
+        class="!rounded-none  relative border-b border-base-content/10 bg-base-100"
       >
         <!-- show what we're replying to, if any -->
         <Dynamic.Component

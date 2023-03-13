@@ -36,14 +36,14 @@
           class="smart_input_container fixed visible md:rounded-t-lg max-w-full left-0 bg-base-200 top-0 mx-auto md:top-auto z-[9999] transition-all shadow-composer right-0 md:right-4 md:left-auto bottom-0"
           style="bottom: 0"
           x-bind:class="smart_input_as_focused ? 'md:!w-[42rem] !inset-0 md:!top-20 !h-auto md:!h-fit !shadow-2xl !rounded-2xl' : 'md:w-[36rem] max-h-screen overflow-overlay md:overflow-x-auto',
-      smart_input_minimized ? 'hidden tablet-lg:block bottom-0' : ''"
+      smart_input_minimized ? 'hidden tablet-lg:block bottom-0 md:w-[24rem]' : ''"
           x-on:keydown.escape.prevent.stop="smart_input_minimized = true"
         >
           <div
             x-cloak
             x-show="smart_input_open == true"
             x-on:click="smart_input_open = false"
-            class="fixed inset-0 bg-base-300/20 cursor-pointer backdrop-blur md:hidden"
+            class="fixed inset-0 cursor-pointer bg-base-300/20 backdrop-blur md:hidden"
             style="-webkit-backdrop-filter: blur(10px);"
             x-bind:class="{
       '!block': smart_input_as_focused
