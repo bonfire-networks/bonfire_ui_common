@@ -166,6 +166,10 @@ article.unread-activity {
   border: 0;
 }
 
+.m-entry .open_modal_wrapper {
+  @apply h-full;
+}
+
 .tagify--outside .tagify__input{
   @apply rounded;
   order: -1;
