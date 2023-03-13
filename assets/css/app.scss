@@ -162,6 +162,8 @@ article.unread-activity {
 .tagify__dropdown__item--active {
 }
 
+
+
 .tagify--outside{
   border: 0;
 }
@@ -209,6 +211,9 @@ article.unread-activity {
   min-height: calc(var(--inner-window-height)) ;
 }
 
+.select_recipient input {
+  @apply !border-none;
+}
 
 #bonfire_layout {
   height: calc(var(--inner-window-height) - 60px);
