@@ -14,18 +14,7 @@
         title={l("Boost this")}
       >
         <span class={"text-base-content/70", "text-opacity-100 text-info": @my_boost}>
-          <svg
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-            stroke="currentColor"
-            stroke-width="2"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="w-[18px] h-[18px] md:w-4 md:h-4"
-          >
-            <polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></svg>
+          <Icon iconify="fa6-solid:retweet" class="w-[18px] h-[18px] md:w-4 md:h-4" />
         </span>
         <span class={"feed_activity_text sr-only", "font-medium": @my_boost}>
           {if @my_boost, do: l("Boosted"), else: l("Boost")}
@@ -40,18 +29,7 @@
         title={l("You can't boost this activity")}
       >
         <span class="text-base-content text-opacity-20">
-          <svg
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-            stroke="currentColor"
-            stroke-width="2"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="w-[18px] h-[18px] md:w-4 md:h-4"
-          >
-            <polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></svg>
+          <Icon iconify="fa6-solid:retweet" class="w-[18px] h-[18px] md:w-4 md:h-4" />
         </span>
         <span class="sr-only feed_activity_text">
           {l("Cannot Boost")}

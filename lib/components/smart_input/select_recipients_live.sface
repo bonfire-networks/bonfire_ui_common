@@ -32,15 +32,15 @@
           </select>
         </div>
       {#match _}
-      <div class="w-full select_recipient">
-        <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
-          selected_options={@to_circles}
-          label={@label || l("Send to")}
-          form_input_name={__MODULE__}
-          context_id={@context_id}
-          implementation={@implementation}
-        />
-      </div>
+        <div class="w-full select_recipient">
+          <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
+            selected_options={@to_circles}
+            label={@label || l("Send to")}
+            form_input_name={__MODULE__}
+            context_id={@context_id}
+            implementation={@implementation}
+          />
+        </div>
     {/case}
   {/if}
 </div>

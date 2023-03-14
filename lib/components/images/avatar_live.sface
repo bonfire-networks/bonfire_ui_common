@@ -7,7 +7,7 @@
             <div class={@bg_class}>
               <LazyImage
                 media={Media.avatar_media(@user)}
-                src={url |> debug("avurl")}
+                src={url}
                 alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
                   e(@user, :username, nil) ||
                   l("Avatar")}

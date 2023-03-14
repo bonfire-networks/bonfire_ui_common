@@ -12,5 +12,4 @@
   class={@class}
   is_editable={@is_editable}
   implementation={@implementation}
-
 />

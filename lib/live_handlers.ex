@@ -39,7 +39,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   def handle_event(action, attrs, socket, source_module \\ nil, fun \\ nil) do
     socket
-    |> assign(:live_handler_via_module, source_module)
+    |> assign_generic(:live_handler_via_module, source_module)
     |> undead(fn ->
       debug("LiveHandler: handle_event #{inspect(action)} via #{source_module || "delegation"}")
 
@@ -58,7 +58,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   def handle_progress(type, entry, socket, source_module, target_fn)
       when is_function(target_fn) do
     socket
-    |> assign(:live_handler_via_module, source_module)
+    |> assign_generic(:live_handler_via_module, source_module)
     |> undead(fn ->
       target_fn.(type, entry, socket)
     end)
@@ -67,7 +67,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   def handle_progress(type, entry, socket, source_module, target_live_handler)
       when is_atom(target_live_handler) do
     socket
-    |> assign(:live_handler_via_module, source_module)
+    |> assign_generic(:live_handler_via_module, source_module)
     |> undead(fn ->
       target_live_handler.handle_progress(type, entry, socket)
     end)

@@ -1,5 +1,5 @@
 <ul>
-  {#for {family, icons} <- list()}
+  {#for {family, icons} <- Iconify.list_components()}
     <li>{family}:
       <ul>
         {#for icon <- icons}

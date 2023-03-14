@@ -6,6 +6,8 @@ import Alpine from "alpinejs"
 import intersect from '@alpinejs/intersect'
 import collapse from '@alpinejs/collapse'
 
+// import SVGInject from '@iconfu/svg-inject'
+
 Alpine.plugin(intersect)
 Alpine.plugin(collapse)
 
