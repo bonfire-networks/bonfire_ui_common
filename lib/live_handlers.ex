@@ -288,7 +288,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
         end
 
       _ ->
-        error(mod, "LiveHandler: could not find a LiveHandler for")
+        warn(mod, "LiveHandler: could not find a LiveHandler for")
         no_live_handler({fun, List.first(args)}, socket)
     end
   end

@@ -520,6 +520,15 @@ defmodule Bonfire.UI.Common do
           )
       end
 
+    Pointers.NotFound ->
+      live_exception(
+        socket,
+        return_key,
+        l("Not found"),
+        nil,
+        __STACKTRACE__
+      )
+
     error in Ecto.Query.CastError ->
       live_exception(
         socket,
