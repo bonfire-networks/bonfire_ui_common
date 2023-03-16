@@ -4,11 +4,11 @@
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
     x-data={"{
-                                                                      body: '',
-                                                                      body_length() { const value = this.body.trim()
-                                                                        if(!value) return 0
-                                                                        return value.split(/\s+/).length },
-                                                                      title_open: #{if is_nil(@title_open) and @create_object_type not in [:post], do: true, else: @title_open == true}, 
+                                                                          body: '',
+                                                                          body_length() { const value = this.body.trim()
+                                                                            if(!value) return 0
+                                                                            return value.split(/\s+/).length },
+                                                                          title_open: #{if is_nil(@title_open) and @create_object_type not in [:post], do: true, else: @title_open == true}, 
     }"}
     @submit="open_boundaries = false"
     x-cloak
