@@ -1,4 +1,4 @@
-<div
+<!-- <div
   x-data="{
     open: false,
     close(focusAfter) {
@@ -30,6 +30,20 @@
     type="button"
     x-on:click="open = ! open"
     class="btn btn-ghost btn-sm text-[22px] btn-circle"
+  >
+    <Icon
+      iconify="entypo:emoji-happy"
+      class="w-5 h-5 md:w-4 md:h-4 text-base-content text-opacity-70"
+    />
+  </button>
+</div> -->
+
+<div phx-update="ignore" phx-hook="EmojiPicker" data-target_field={@target_field} id={@id}>
+
+<button
+    title={l("Insert emoji")}
+    type="button"
+    class=" emoji-button btn btn-ghost btn-sm text-[22px] btn-circle"
   >
     <Icon
       iconify="entypo:emoji-happy"

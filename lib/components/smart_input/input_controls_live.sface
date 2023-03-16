@@ -93,54 +93,6 @@
                 @__context__[:instance_settings]
               )} {l("words")}
             </div>
-
-            <!-- {#if is_messaging?}
-              <div class="flex items-center gap-2 mx">
-                <button
-                  type="button"
-                  class="flex items-center gap-2 normal-case rounded-full btn-ghost btn-sm btn opacity-90"
-                >
-                  <span class="text-lg"><Icon iconify="twemoji:envelope" class="w-5 h-5" /></span>
-                  <span>{l("Direct Message")}</span>
-                </button>
-              </div>
-            {#else} -->
-            <!-- {#case clone_context(@to_boundaries)}
-                {#match false}
-                  <Dynamic.Component
-                    :if={module_enabled?(Bonfire.Boundaries.Web.SetBoundariesButtonLive)}
-                    module={Bonfire.Boundaries.Web.SetBoundariesButtonLive}
-                    preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(
-                      @to_boundaries
-                      |> debug("to_boundaries")
-                    )
-                    |> debug("preset_boundary")}
-                  />
-                {#match boundary_name}
-                  <div class="flex items-center gap-2 mx">
-                    <button
-                      type="button"
-                      class="flex items-center gap-2 normal-case rounded-full btn-ghost btn-sm btn opacity-90"
-                    >
-                      <span>{boundary_name}</span>
-                    </button>
-                  </div>
-              {/case}
-            {/if} -->
-
-            <!-- <div 
-            :if={@showing_within != :page and @thread_mode != :flat}
-            x-show="!smart_input_open"
-            data-tip={l "Full-screen mode" }
-            class={"relative z-20 flex items-center tooltip tooltip-right"}>
-              <button 
-                type="button"
-                x-on:click="smart_input_fullscreen = !smart_input_fullscreen"
-                :class="{'border-base-content/30' : smart_input_fullscreen}"
-                class="flex items-center btn btn-ghost btn-sm btn-circle">
-              <Icon outline="ArrowsExpand" class="w-4 h-4 mx-auto text-base-content text-opacity-70" />
-            </button>
-          </div>  -->
           </div>
           <button
             type="submit"
