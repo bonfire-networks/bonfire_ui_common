@@ -15,7 +15,12 @@
     class={@class}
   >
     <!-- <div class="h-9"></div> -->
-    {#case selected_options(@selected_options, @form_input_name, @__context__, @preloaded_options)}
+    {#case MultiselectLive.selected_options(
+        @selected_options,
+        @form_input_name,
+        @__context__,
+        @preloaded_options
+      )}
       {#match selected_options when not is_list(selected_options) or selected_options == []}
         <label class="flex-1 w-full py-2 h-9">{@label}</label>
       {#match selected_options}
@@ -95,7 +100,7 @@
         aria-labelledby="multiselect_label"
       >
         <li
-          :for={{name_content, id} <- preloaded_options(@preloaded_options)}
+          :for={{name_content, id} <- MultiselectLive.preloaded_options(@preloaded_options)}
           class="p-2 text-sm cursor-pointer text-primary-content-800 hover:bg-neutral hover:bg-opacity-30"
           role="option"
           tabindex="1"

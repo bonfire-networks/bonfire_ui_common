@@ -1,7 +1,6 @@
 defmodule Bonfire.UI.Common.BasicMultiselectLive do
   use Bonfire.UI.Common.Web, :stateful_component
-  use Bonfire.Common.Utils
-  import Bonfire.UI.Common.MultiselectLive
+  alias Bonfire.UI.Common.MultiselectLive
 
   prop form, :any, default: :multi_select
   prop form_input_name, :string, required: true

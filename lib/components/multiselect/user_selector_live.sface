@@ -1,6 +1,6 @@
 <Bonfire.UI.Common.MultiselectLive
-  id={Pointers.ULID.generate()}
-  preloaded_options={users(@preloaded_options, @__context__, @type)}
+  implementation={@implementation}
+  preloaded_options={if @implementation != :live_select, do: users(@preloaded_options, @__context__, @type), else: []}
   selected_options={@selected_options}
   label={e(@label, "Select someone...")}
   form={@form}
@@ -11,5 +11,4 @@
   event_target={@event_target}
   class={@class}
   is_editable={@is_editable}
-  implementation={@implementation}
 />

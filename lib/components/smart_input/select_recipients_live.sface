@@ -39,6 +39,7 @@
             form_input_name={__MODULE__}
             context_id={@context_id}
             implementation={@implementation}
+            event_target="#smart_input"
           />
         </div>
     {/case}

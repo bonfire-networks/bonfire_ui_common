@@ -10,17 +10,17 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
   prop implementation, :any, default: :live_select
   prop label, :string, default: nil
 
-  def handle_info(%LiveSelect.ChangeMsg{text: search} = change_msg, socket) do
+  def do_handle_event("live_select_change", %{"id" => live_select_id, "text" => search}, socket) do
     # current_user = current_user(socket)
 
     Bonfire.Me.Users.search(search)
     |> results_for_multiselect()
-    |> LiveSelect.update_options(change_msg, ...)
+    |> maybe_send_update(LiveSelect.Component, live_select_id, options: ...)
 
     {:noreply, socket}
   end
 
-  def handle_event(
+  def do_handle_event(
         "multi_select",
         %{data: %{"field" => field, "id" => id, "username" => username}},
         socket
@@ -43,7 +43,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
          %{
            id: e(user, :id, nil),
            field: :to_circles,
-           icon: e(user, :profile, :icon, nil),
+           icon: Media.avatar_url(user),
            username: e(user, :character, :username, nil)
          }}
     end)

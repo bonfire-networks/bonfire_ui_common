@@ -139,11 +139,6 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     mod_delegate(mod, :handle_info, [data], socket)
   end
 
-  defp do_handle_info(%LiveSelect.ChangeMsg{field: mod} = data, socket) do
-    debug("LiveSelect: handle_info with {#{mod}, data}")
-    mod_delegate(mod, :handle_info, [data], socket)
-  end
-
   defp do_handle_info({_ref, {:phoenix, :send_update, _}}, socket) do
     debug("LiveHandler: send_update completed")
     empty(socket)
@@ -165,6 +160,12 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     {:noreply, assign_global(socket, attrs)}
   end
 
+  # helper for when a searches for an option in `LiveSelect`
+  defp do_handle_event("live_select_change" = event, %{"field" => mod} = data, socket) do
+    debug("LiveSelect: autocomplete: handle_event with {#{mod}, data}")
+    mod_delegate(mod, :do_handle_event, [event, data], socket)
+  end
+
   # helper for when a user selects an option in `LiveSelect`
   defp do_handle_event(
          action,
@@ -174,7 +175,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
        when action in ["select", "change", "validate", "multi_select"] do
     debug(
       params,
-      "try to delegate to `#{module}` (should be the module/component that is handling this multi_select)"
+      "LiveSelect: select an option: try to delegate to `#{module}` (should be the module/component that is handling this multi_select)"
     )
 
     input_name = module <> "_text_input"
@@ -185,14 +186,19 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
       %{^module => data, ^input_name => text} ->
         with {:ok, data} <- Jason.decode(data) do
-          mod_delegate(module, :handle_event, ["multi_select", %{text: text, data: data}], socket)
+          mod_delegate(
+            module,
+            :do_handle_event,
+            ["multi_select", %{text: text, data: data}],
+            socket
+          )
         else
           e ->
             error(e)
 
             mod_delegate(
               module,
-              :handle_event,
+              :do_handle_event,
               ["multi_select", %{text: text, data: data}],
               socket
             )

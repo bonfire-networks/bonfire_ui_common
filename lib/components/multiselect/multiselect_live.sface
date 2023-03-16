@@ -1,20 +1,19 @@
 <div class="w-full">
   {#if @is_editable}
     {#if @implementation == :live_select}
-      {LiveSelect.live_select(@form, @form_input_name,
-        placeholder: @label,
-        style: :daisyui,
-        dropdown_class:
-          "cursor-pointer dropdown-content menu menu-compact shadow w-full !bg-neutral !rounded",
-        container_extra_class: "w-full",
-        text_input_extra_class: "rounded text-sm h-9",
-        update_min_len: 2
-      )}
-      <!--        
- mode: :tags,
- -->
+      <LiveSelect.live_select
+        form={@form}
+        field={@form_input_name}
+        phx-target={@event_target}
+        placeholder={@label}
+        dropdown_class="cursor-pointer dropdown-content menu menu-compact shadow w-full !bg-neutral !rounded"
+        container_extra_class="w-full"
+        text_input_extra_class="rounded text-sm h-9"
+        update_min_len={2}
+      />
+      <!-- mode={:tags} style={:daisyui} -->
     {#else}
-      <Bonfire.UI.Common.MultiselectLive
+      <Bonfire.UI.Common.BasicMultiselectLive
         id={Pointers.ULID.generate()}
         preloaded_options={@preloaded_options}
         selected_options={@selected_options}
