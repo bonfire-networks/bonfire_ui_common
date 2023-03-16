@@ -1,6 +1,12 @@
 defmodule Bonfire.UI.Common.LivePlugs.Csrf do
   use Bonfire.UI.Common.Web, :live_plug
 
+  def on_mount(:default, params, session, socket) do
+    with {:ok, socket} <- mount(params, session, socket) do
+      {:cont, socket}
+    end
+  end
+
   def mount(_, %{"_csrf_token" => token}, socket),
     do:
       {:ok,

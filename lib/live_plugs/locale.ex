@@ -3,6 +3,12 @@ defmodule Bonfire.UI.Common.LivePlugs.Locale do
 
   @local_session_key Cldr.Plug.SetLocale.session_key()
 
+  def on_mount(:default, params, session, socket) do
+    with {:ok, socket} <- mount(params, session, socket) do
+      {:cont, socket}
+    end
+  end
+
   # `locale` in session as override
   def mount(_, %{"locale" => locale}, socket),
     do: {:ok, assign_put_locale(locale, socket)}

@@ -7,6 +7,12 @@ defmodule Bonfire.UI.Common.LivePlugs do
   @extra_plugs []
   # Bonfire.UI.Common.LivePlugs.AllowTestSandbox
 
+  def on_mount(module, params, session, socket) when is_atom(module) do
+    with {:ok, socket} <- maybe_apply(module, :on_mount, [:default, params, session, socket]) do
+      {:cont, socket}
+    end
+  end
+
   def live_plug(params, session, socket, list) when is_list(list),
     do: live_plug_(@extra_plugs ++ list, {:ok, socket}, params, session)
 

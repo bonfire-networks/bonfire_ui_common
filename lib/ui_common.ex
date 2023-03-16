@@ -944,10 +944,12 @@ defmodule Bonfire.UI.Common do
     |> assign_generic(assigns)
   end
 
-  def assign_flash(_, type, message, assigns, pid) do
-    # info(message, type)
+  def assign_flash(other, type, message, assigns, pid) do
+    warn(other, "Expected a conn or socket")
 
     Bonfire.UI.Common.Notifications.receive_flash(Map.put(assigns, type, message), pid)
+
+    other
   end
 
   defp string_for_cookie(message) when byte_size(message) > 2000,
