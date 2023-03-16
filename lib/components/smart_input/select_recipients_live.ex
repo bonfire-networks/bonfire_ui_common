@@ -25,10 +25,13 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
         %{data: %{"field" => field, "id" => id, "username" => username}},
         socket
       ) do
-    # TODO: support selecting more than one
+    # TODO: support selecting more than one?
     {:noreply,
      socket
-     |> assign(maybe_to_atom(field), [{username, id}])}
+     |> update(maybe_to_atom(field) |> debug("f"), fn current_to_circles ->
+       (List.wrap(current_to_circles) ++ [{username, id}])
+       |> debug("v")
+     end)}
   end
 
   def results_for_multiselect(results) do

@@ -1,47 +1,45 @@
 <div class="flex items-center w-full gap-2">
   <span class="px-1 text-xs font-medium uppercase text-base-content/70">{l("To")}</span>
-  {#if is_list(@to_circles) and length(@to_circles) > 0}
-    <input
-      :for={{name, id} <- @to_circles}
-      type="hidden"
-      name="to_circles[]"
-      placeholder={@label || l("Send to")}
-      label={name}
-      value={id}
-    />
+  {#if is_list(@to_circles) and @to_circles != []}
     <div class="flex justify-between w-full">
       <div class="flex items-center gap-2">
-        {#for {name, _id} <- @to_circles}
+        {#for {name, id} <- @to_circles}
           <span class="badge">{name}</span>
+          <input
+            type="hidden"
+            name="to_circles[]"
+            placeholder={@label || l("Send to")}
+            label={name}
+            value={id}
+          />
         {/for}
       </div>
     </div>
-  {#else}
-    {#case @implementation}
-      {#match nil}
-        <div class="flex-1" id={:select_recipients} phx-update="ignore" phx-hook="InputOrSelectOne">
-          <input
-            id="recipients_tagify"
-            name="to_circles"
-            class="flex-1 w-full bg-transparent border-0 tagify"
-          />
-          <select class="hidden tagify">
-            {#for user <- @preloaded_recipients}
-              <option class="" value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
-            {/for}
-          </select>
-        </div>
-      {#match _}
-        <div class="w-full select_recipient">
-          <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
-            selected_options={@to_circles}
-            label={@label || l("Send to")}
-            form_input_name={__MODULE__}
-            context_id={@context_id}
-            implementation={@implementation}
-            event_target="#smart_input"
-          />
-        </div>
-    {/case}
   {/if}
+  {#case @implementation}
+    {#match nil}
+      <div class="flex-1" id={:select_recipients} phx-update="ignore" phx-hook="InputOrSelectOne">
+        <input
+          id="recipients_tagify"
+          name="to_circles"
+          class="flex-1 w-full bg-transparent border-0 tagify"
+        />
+        <select class="hidden tagify">
+          {#for user <- @preloaded_recipients}
+            <option class="" value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
+          {/for}
+        </select>
+      </div>
+    {#match _}
+      <div class="w-full select_recipient">
+        <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
+          selected_options={@to_circles}
+          label={@label || l("Send to")}
+          form_input_name={__MODULE__}
+          context_id={@context_id}
+          implementation={@implementation}
+          event_target="#smart_input"
+        />
+      </div>
+  {/case}
 </div>
