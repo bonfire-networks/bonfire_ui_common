@@ -47,28 +47,26 @@
             x-bind:class="{'!block': smart_input_as_focused}"/>
 
           <div 
-            x-cloak
             x-show="smart_input_minimized"
             x-on:click="smart_input_minimized = false"
             type="button"
             class="h-[40px] cursor-pointer group justify-between rounded-t-2xl border-none border flex items-center gap-2 border-base-content/10 px-4">
-            <div class="flex items-center gap-3">
-            <Icon iconify="mdi:pencil" class="w-4 h-4 group-hover:text-primary/100 text-primary/70" />
-            <span class="text-sm text-primary/70 group-hover:text-primary/100">{l "Compose..."}</span>
-            </div>
-            <button
-              phx-click="reset"
-              phx-target="#smart_input"
-              x-on:click="if (confirm('Your draft will be lost. Continue?')){smart_input_open = false; smart_input_fullscreen = false; smart_input_title_text = null;}"
-              type="button"
-              class="flex btn btn-xs btn-ghost btn-circle"
-              data-testid="composer:close-button"            >
-              <Icon outline="X" class="w-4 h-4 stroke-1 group-hover:text-primary/100 text-primary/70" />
-              <span class="sr-only">{l("Close")}</span>
-            </button>
+              <div class="flex items-center gap-3">
+                <Icon iconify="mdi:pencil" class="w-4 h-4 group-hover:text-primary/100 text-primary/70" />
+                <span class="text-sm text-primary/70 group-hover:text-primary/100">{l "Compose..."}</span>
+              </div>
+              <button
+                phx-click="reset"
+                phx-target="#smart_input"
+                x-on:click="if (confirm('Your draft will be lost. Continue?')){smart_input_open = false; smart_input_fullscreen = false; smart_input_title_text = null;}"
+                type="button"
+                class="flex btn btn-xs btn-ghost btn-circle"
+                data-testid="composer:close-button"            >
+                <Icon outline="X" class="w-4 h-4 stroke-1 group-hover:text-primary/100 text-primary/70" />
+                <span class="sr-only">{l("Close")}</span>
+              </button>
           </div>
           <div
-            x-cloak
             x-show="!smart_input_minimized"
             class="relative z-50 md:border md:rounded-lg border-base-content/5"
             x-bind:class="{'!rounded-b-none': smart_input_as_non_blocking}">

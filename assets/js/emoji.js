@@ -18,7 +18,7 @@ EmojiHooks.EmojiPicker = {
     const picker = createPopup({}, {
       referenceElement: trigger,
       triggerElement: trigger,
-      emojiSize: '1.8rem',
+      emojiSize: '1.75rem',
       className: 'z-[9999]',
     });
     
