@@ -8,7 +8,7 @@
         placeholder={@label}
         dropdown_class="cursor-pointer dropdown-content menu menu-compact shadow w-full !bg-neutral !rounded"
         container_extra_class="w-full"
-        text_input_extra_class="rounded text-sm h-9"
+        text_input_extra_class="!bg-transparent !px-2 !text-sm rounded text-sm h-9"
         update_min_len={2}
       />
       <!-- mode={:tags} style={:daisyui} -->

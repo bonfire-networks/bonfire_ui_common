@@ -35,6 +35,16 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     default:
       "items-center opacity-80 !flex-row order-first !p-3 before:border-neutral-content/80 mr-[40px]  m-3 mb-0 -mb-1"
 
+
+
+
+
+
+
+
+
+
+
   def all_smart_input_components do
     Bonfire.Common.Config.get([:ui, :smart_input_components],
       post: Bonfire.UI.Social.WritePostContentLive
