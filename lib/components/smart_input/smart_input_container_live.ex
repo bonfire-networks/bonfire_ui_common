@@ -57,7 +57,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   #   if empty?(e(smart_input_opts, :text, nil) |> debug("texxxt") ) do
 
   #     SmartInputLive.replace_input_next_time(socket)
-  #     SmartInputLive.set(socket, 
+  #     SmartInputLive.set(socket,
   #       reset_smart_input: false, # don't do it twice
   #       smart_input_opts: smart_input_opts
   #         |> Keyword.put(:text_suggestion, text)

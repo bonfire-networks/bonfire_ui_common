@@ -1,4 +1,4 @@
-<div class="w-full">
+<div class="relative w-full dropdown">
   {#if @is_editable}
     {#if @implementation == :live_select}
       <LiveSelect.live_select
@@ -6,9 +6,9 @@
         field={@form_input_name}
         phx-target={@event_target}
         placeholder={@label}
-        dropdown_class="cursor-pointer dropdown-content menu menu-compact shadow w-full !bg-neutral !rounded"
-        container_extra_class="w-full"
-        text_input_extra_class="!bg-transparent !px-2 !text-sm rounded text-sm h-9"
+        dropdown_class="cursor-pointer absolute top-10 px-0 dropdown-content menu menu-compact shadow w-full bg-neutral text-neutral-content input rounded"
+        container_class="w-full"
+        text_input_class={@class}
         update_min_len={2}
       />
       <!-- mode={:tags} style={:daisyui} -->

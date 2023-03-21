@@ -5,13 +5,29 @@
 
 @tailwind base; 
 
+.write_post_content .phx-submit-loading {
+  @apply relative;
+}
+
+.write_post_content .phx-submit-loading::before {
+  @apply bg-base-300/70 absolute inset-0 top-[-52px] w-full h-full z-[999999999999999];
+  content: "";
+}
+
+.write_post_content .phx-submit-loading .loader {
+  @apply !block;
+}
+
+
 .badge.badge-lg {
   height: 2.25rem;
   padding-left: 1rem;
   padding-right: 1rem;
 }
 
-.create_new_topic .open_modal_wrapper {
+.create_new_topic > .open_modal_wrapper, 
+.edit_name > .open_modal_wrapper, 
+.delete_circle > .open_modal_wrapper {
   padding: 0 !important;
 }
 

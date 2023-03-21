@@ -3,7 +3,7 @@
     oninput="this.parentNode.dataset.value = this.value"
     x-model="body"
     phx-debounce="blur"
-    class="w-full min-h-[calc(var(--visual-viewport-height)_-_164px)] md:min-h-[240px] h-full p-2 resize-none md:p-1 composer textarea focus:outline-none focus:ring-0"
+    class="w-full min-h-[calc(var(--visual-viewport-height)_-_164px)] md:min-h-[280px] h-full p-2 resize-none md:p-1 composer textarea focus:outline-none focus:ring-0"
     name="html_body"
     resize="none"
     placeholder={l("Start typing...")}

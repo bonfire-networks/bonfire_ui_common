@@ -48,6 +48,7 @@
 
           <div 
             x-show="smart_input_minimized"
+            x-cloak
             x-on:click="smart_input_minimized = false"
             type="button"
             class="h-[40px] cursor-pointer group justify-between rounded-t-2xl border-none border flex items-center gap-2 border-base-content/10 px-4">
@@ -67,14 +68,14 @@
               </button>
           </div>
           <div
+            x-cloak
             x-show="!smart_input_minimized"
             class="relative z-50 md:border md:rounded-lg border-base-content/5"
             x-bind:class="{'!rounded-b-none': smart_input_as_non_blocking}">
             <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
             <div
               x-ref="smart_input"
-
-              class="flex-1 h-full grow"
+              class="flex-1 h-full grow relative z-[9999999999]"
               x-bind:class="smart_input_as_focused ? 'max-h-[calc(100vh-52px)] md:max-h-[calc(100vh-5rem-52px)] overflow-x-auto' : ''"
             >
               <Bonfire.UI.Common.SmartInputLive

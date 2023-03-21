@@ -37,6 +37,7 @@
           label={@label || l("Send to")}
           form_input_name={__MODULE__}
           context_id={@context_id}
+          class={@class}
           implementation={@implementation}
           event_target="#smart_input"
         />

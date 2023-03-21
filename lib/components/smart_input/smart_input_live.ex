@@ -29,19 +29,10 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop uploads, :any, default: nil
   prop uploaded_files, :any, default: nil
   prop trigger_submit, :boolean, default: nil
-
   # Classes to customize the smart input appearance
   prop replied_activity_class, :css_class,
     default:
       "items-center opacity-80 !flex-row order-first !p-3 before:border-neutral-content/80 mr-[40px]  m-3 mb-0 -mb-1"
-
-
-
-
-
-
-
-
 
 
 
