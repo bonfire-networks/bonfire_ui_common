@@ -1,6 +1,7 @@
 defmodule Bonfire.UI.Common.AvatarLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
+  prop parent_id, :string, default: nil
   prop user, :any, default: nil
   prop src, :any, default: nil
   prop viewing_main_object, :boolean, default: false

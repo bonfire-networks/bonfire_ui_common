@@ -1,6 +1,7 @@
 defmodule Bonfire.UI.Common.LazyImage do
   use Bonfire.UI.Common.Web, :stateless_component
 
+  prop parent_id, :string, default: nil
   prop media, :any, default: nil
   prop src, :string, default: nil
   prop alt, :string, default: nil

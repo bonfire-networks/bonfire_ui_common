@@ -14,7 +14,7 @@
         <span class="sr-only">{l("Minimize")}</span>
       </span>
     </button>
-    
+
     <button
       phx-click="reset"
       phx-target="#smart_input"

@@ -49,6 +49,7 @@
 
   <LiveRedirect :if={@current_user} to={path(@current_user)} class="">
     <Bonfire.UI.Common.AvatarLive
+      parent_id="nav_footer_mobile"
       class="inline-block object-cover w-8 h-8 rounded-lg cursor-pointer md:hidden"
       bg_class="rounded-full bg-base-300"
       size="32"

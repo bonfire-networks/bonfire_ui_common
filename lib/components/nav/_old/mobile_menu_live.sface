@@ -32,6 +32,7 @@
                 <div class="flex items-start justify-between">
                   <LinkLive class="inline-flex gap-3" to={path(@current_user)}>
                     <Bonfire.UI.Common.AvatarLive
+                      parent_id="mobile_menu"
                       class="inline-block object-cover w-10 h-10 cursor-pointer rounded-xl"
                       bg_class="rounded bg-base-300"
                       size="32"

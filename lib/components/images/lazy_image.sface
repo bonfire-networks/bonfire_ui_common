@@ -21,7 +21,7 @@
       {#match blurhash}
         <div
           phx-hook="blurHash"
-          id={Pointers.ULID.generate()}
+          id={"blurHash-#{@parent_id}-#{Text.hash(src)}"}
           data-hash={blurhash}
           class="h-full"
           x-data="{src: null }"
