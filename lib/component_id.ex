@@ -12,9 +12,7 @@ defmodule Bonfire.UI.Common.ComponentID do
 
     component_id = "#{component_module}-via-#{context}-for-#{object_id}"
 
-    debug(
-      "ComponentID: stateless component #{component_module} for object id #{object_id} now has ID: #{component_id}"
-    )
+    debug("created stateful component with ID: #{component_id}")
 
     save(component_module, object_id, component_id)
 
@@ -27,14 +25,14 @@ defmodule Bonfire.UI.Common.ComponentID do
   end
 
   def new(component_module, other, context) do
-    error(other, "expected an object id for #{component_module}, but got")
+    error(other, "expected an object id for #{component_module} with context #{context}, but got")
     Pointers.ULID.generate()
   end
 
   def send_updates(component_module, object_id, assigns) do
     component_module = Types.maybe_to_atom(component_module)
 
-    debug("ComponentID: try to send_updates to #{component_module} for object id #{object_id}")
+    debug("try to send_updates to #{component_module} for object id #{object_id}")
 
     for component_id <- ids(component_module, object_id) do
       debug("ComponentID: try stateful component with ID #{component_id}")

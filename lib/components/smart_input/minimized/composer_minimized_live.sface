@@ -1,6 +1,6 @@
 <div class="hidden maximizable">
   <div
-    phx-click={JS.show(to: ".minimizable") |> JS.hide(to: ".maximizable")}
+    phx-click={LiveHandler.maximize()}
     type="button"
     class="h-[40px] cursor-pointer group justify-between rounded-t-2xl border-none border flex items-center gap-2 border-base-content/10 px-4"
   >

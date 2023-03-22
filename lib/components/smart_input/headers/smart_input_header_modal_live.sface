@@ -4,7 +4,7 @@
   </span>
   <div class="absolute flex items-center gap-3 right-3">
     <button
-      phx-click={JS.hide(to: ".minimizable") |> JS.show(to: ".maximizable")}
+      phx-click={LiveHandler.minimize()}
       type="button"
       class="flex btn btn-xs btn-ghost btn-circle"
     >

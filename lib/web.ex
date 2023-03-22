@@ -141,6 +141,7 @@ defmodule Bonfire.UI.Common.Web do
       import Phoenix.LiveView
       import Phoenix.Component
       alias Bonfire.UI.Common.ComponentID
+      alias Phoenix.LiveView.JS
 
       unquote(view_helpers())
     end

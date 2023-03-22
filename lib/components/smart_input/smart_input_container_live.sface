@@ -1,5 +1,5 @@
 <div class="flex-1">
-  {#case set_smart_input_as(
+  {#case LiveHandler.set_smart_input_as(
       @showing_within,
       current_user(@__context__)
     )
@@ -65,7 +65,7 @@
               class="flex-1 h-full grow relative z-[9999999999]"
               x-bind:class="smart_input_as_focused ? 'max-h-[calc(100vh-52px)] md:max-h-[calc(100vh-5rem-52px)] overflow-x-auto' : ''"
             >
-              <Bonfire.UI.Common.SmartInputLive
+              <SmartInputLive
                 boundaries_modal_id={:modal_composer}
                 showing_within={@showing_within}
                 reply_to_id={@reply_to_id}
