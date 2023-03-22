@@ -5,27 +5,17 @@ defmodule Bonfire.UI.Common.LiveComponent do
 
   use Bonfire.UI.Common.Web, :live_view
 
-  alias Bonfire.UI.Me.LivePlugs
+  on_mount {LivePlugs, []}
 
-  def mount(params, session, socket) do
-    live_plug(params, session, socket, [
-      LivePlugs.LoadSessionAuth,
-      Bonfire.UI.Common.LivePlugs.StaticChanged,
-      Bonfire.UI.Common.LivePlugs.Csrf,
-      Bonfire.UI.Common.LivePlugs.Locale,
-      &mounted/3
-    ])
-  end
-
-  defp mounted(
-         _params,
-         %{"load_live_component" => load_live_component} = _session,
-         socket
-       ) do
+  def mount(
+        _params,
+        %{"load_live_component" => load_live_component} = _session,
+        socket
+      ) do
     {:ok, assign(socket, :load_live_component, load_live_component)}
   end
 
-  defp mounted(_params, _session, socket), do: {:ok, socket}
+  def mount(_params, _session, socket), do: {:ok, socket}
 
   def render(assigns) do
     load_live_component = e(assigns, :load_live_component, nil)

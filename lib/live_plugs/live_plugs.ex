@@ -4,17 +4,50 @@ defmodule Bonfire.UI.Common.LivePlugs do
 
   @compile {:inline, live_plug_: 4}
 
-  @extra_plugs []
+  # TODO: put in config
+  @default_plugs [
+    Bonfire.UI.Common.LivePlugs.StaticChanged,
+    Bonfire.UI.Common.LivePlugs.Csrf,
+    Bonfire.UI.Common.LivePlugs.Locale
+  ]
+
   # Bonfire.UI.Common.LivePlugs.AllowTestSandbox
 
+  def on_mount(modules, params, session, socket) when is_list(modules) do
+    socket
+    |> undead_on_mount(fn ->
+      case Enum.reduce_while(modules ++ @default_plugs, socket, fn module, socket ->
+             with {:halt, socket} <-
+                    maybe_apply(module, :on_mount, [:default, params, session, socket]) do
+               # to halt both the reduce and the on_mount
+               {:halt, {:halt, socket}}
+             end
+           end) do
+        {:halt, socket} -> {:halt, socket}
+        {:cont, socket} -> cont_init_socket(socket)
+        socket -> cont_init_socket(socket)
+      end
+    end)
+  end
+
   def on_mount(module, params, session, socket) when is_atom(module) do
-    with {:ok, socket} <- maybe_apply(module, :on_mount, [:default, params, session, socket]) do
+    socket
+    |> undead_on_mount(fn ->
+      with {:cont, socket} <- maybe_apply(module, :on_mount, [:default, params, session, socket]) do
+        cont_init_socket(socket)
+      end
+    end)
+  end
+
+  defp cont_init_socket(socket) do
+    with {:ok, socket} <- init_socket(socket) do
       {:cont, socket}
     end
   end
 
+  # TODO: deprecate in favour of on_mount
   def live_plug(params, session, socket, list) when is_list(list),
-    do: live_plug_(@extra_plugs ++ list, {:ok, socket}, params, session)
+    do: live_plug_(@default_plugs ++ list, {:ok, socket}, params, session)
 
   defp live_plug_([], ret, _, _), do: ret
 
@@ -93,57 +126,64 @@ defmodule Bonfire.UI.Common.LivePlugs do
     #  debug(surfacing: module_enabled?(Surface))
     if(module_enabled?(Surface), do: Surface.init(socket), else: socket)
     |> undead_mount(fn ->
-      current_app = Application.get_application(socket.view)
-      current_extension = Bonfire.Common.ExtensionModule.extension(current_app)
+      with {:ok, socket} <- init_socket(socket),
+           {:ok, socket} <-
+             apply(fun, [
+               params,
+               session,
+               socket
+             ]) do
+        maybe_send_persistent_assigns(socket)
 
-      if not is_nil(current_app) and not extension_enabled?(current_app, socket) do
-        if not extension_enabled?(current_app, :instance) do
-          error(
-            l(
-              "Sorry, %{app} is not enabled on this instance. You may want to get in touch with your instance admin(s)...",
-              app: current_extension[:name] || current_app
-            )
-          )
-        else
-          error(
-            l("You have not enabled %{app}. You can do so in Settings -> Extensions.",
-              app: current_extension[:name] || current_app
-            )
-          )
-        end
-      else
-        Bonfire.Common.TestInstanceRepo.maybe_declare_test_instance(socket.endpoint)
-
-        socket =
-          socket
-          |> assign_global(
-            current_view: socket.view,
-            current_app: current_app,
-            current_extension: current_extension,
-            live_action: e(socket, :assigns, :live_action, nil),
-            socket_connected?: Phoenix.LiveView.connected?(socket)
-          )
-
-        with {:ok, socket} <-
-               apply(fun, [
-                 params,
-                 session,
-                 socket
-               ]) do
-          # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
-          if socket_connected?(socket),
-            do:
-              Bonfire.UI.Common.PersistentLive.maybe_send_assigns(
-                socket.assigns
-                |> Map.new()
-                |> Map.put_new(:nav_items, nil)
-              )
-
-          {:ok, socket}
-        else
-          other -> other
-        end
+        {:ok, socket}
       end
     end)
+  end
+
+  defp init_socket(socket) do
+    current_app = Application.get_application(socket.view)
+    current_extension = Bonfire.Common.ExtensionModule.extension(current_app)
+
+    if not is_nil(current_app) and
+         (not extension_enabled?(current_app, :instance) or
+            not extension_enabled?(current_app, socket)) do
+      if not extension_enabled?(current_app, :instance) do
+        error(
+          l(
+            "Sorry, %{app} is not enabled on this instance. You may want to get in touch with your instance admin(s)...",
+            app: current_extension[:name] || current_app
+          )
+        )
+      else
+        error(
+          l("You have not enabled %{app}. You can do so in Settings -> Extensions.",
+            app: current_extension[:name] || current_app
+          )
+        )
+      end
+    else
+      Bonfire.Common.TestInstanceRepo.maybe_declare_test_instance(socket.endpoint)
+
+      {:ok,
+       socket
+       |> assign_global(
+         current_view: socket.view,
+         current_app: current_app,
+         current_extension: current_extension,
+         live_action: e(socket, :assigns, :live_action, nil),
+         socket_connected?: Phoenix.LiveView.connected?(socket)
+       )}
+    end
+  end
+
+  def maybe_send_persistent_assigns(assigns \\ nil, socket) do
+    # in case we're browsing between LVs, send some assigns (eg page_title to PersistentLive's process)
+    if socket_connected?(socket),
+      do:
+        Bonfire.UI.Common.PersistentLive.maybe_send_assigns(
+          assigns || socket.assigns
+          # |> Map.new()
+          # |> Map.put_new(:nav_items, nil)
+        )
   end
 end

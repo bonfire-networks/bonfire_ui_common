@@ -496,6 +496,7 @@ defmodule Bonfire.UI.Common do
   If anything else is returned, like an error, a flash message is shown to the user.
   """
   def undead_mount(socket, fun), do: undead(socket, fun, {:mount, :ok})
+  def undead_on_mount(socket, fun), do: undead(socket, fun, {:mount, :halt})
   def undead_params(socket, fun), do: undead(socket, fun, {:mount, :noreply})
 
   def undead(socket, fun, return_key \\ :noreply) do
@@ -698,6 +699,12 @@ defmodule Bonfire.UI.Common do
 
       {:noreply, %Phoenix.LiveView.Socket{} = socket} ->
         {:noreply, socket}
+
+      {:cont, %Phoenix.LiveView.Socket{} = socket} ->
+        {:cont, socket}
+
+      {:halt, %Phoenix.LiveView.Socket{} = socket} ->
+        {:halt, socket}
 
       %Phoenix.LiveView.Socket{} = socket ->
         {return_key, socket}

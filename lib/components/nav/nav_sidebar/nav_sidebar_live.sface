@@ -22,7 +22,7 @@
         <Bonfire.UI.Common.AvatarLive
           :if={is_map(current_user(@__context__))}
           class="inline-block object-cover w-10 h-10 rounded-lg cursor-pointer"
-          bg_class="rounded bg-base-content/10"
+          bg_class="rounded"
           size="40"
           user={current_user(@__context__)}
         />

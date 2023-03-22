@@ -10,6 +10,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   """
   use Bonfire.UI.Common.Web, :live_handler
+  alias Bonfire.UI.Common.LivePlugs
   import Untangle
 
   def handle_params(params, uri, socket, source_module \\ nil, fun \\ nil)
@@ -26,11 +27,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
              if(is_function(fun), do: fun.(params, uri, socket), else: {:noreply, socket}) do
         # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
         if socket_connected?(socket),
-          do:
-            Bonfire.UI.Common.PersistentLive.maybe_send_assigns(
-              socket.assigns
-              # |> Map.put_new(:nav_items, nil)
-            )
+          do: LivePlugs.maybe_send_persistent_assigns(socket)
 
         {:noreply, socket}
       end
@@ -111,7 +108,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   defp do_handle_info({:assign_persistent, assigns}, socket) do
     debug("LiveHandler: handle_info, send data to PersistentLive with {:assign_persistent, ...}")
 
-    Bonfire.UI.Common.PersistentLive.maybe_send_assigns(assigns)
+    LivePlugs.maybe_send_persistent_assigns(assigns, socket)
 
     {
       :noreply,

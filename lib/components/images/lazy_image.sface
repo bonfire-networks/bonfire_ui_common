@@ -1,9 +1,10 @@
 {#case @src || Media.media_url(@media)}
   {#match src}
-    {#case e(@media, :metadata, :blurhash, nil) || Bonfire.Files.Blurred.blurhash(src)}
+    {#case e(@media, :metadata, :blurhash, nil) || Bonfire.Files.Blurred.blurhash(@media, src: src)}
       {#match nil}
-        {#case is_binary(src) and Bonfire.Files.Blurred.blurred(src)}
+        {#case is_binary(src) and Bonfire.Files.Blurred.blurred(src, skip_creation: true)}
           {#match blurred when is_binary(blurred) and blurred != src}
+            <!-- TODO: deprecate -->
             <img
               x-data={"{src: '#{blurred}' }"}
               x-intersect.once={"src = '#{src}'"}

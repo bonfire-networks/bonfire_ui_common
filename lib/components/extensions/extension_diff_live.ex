@@ -3,20 +3,10 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
 
   import Bonfire.Common.Extensions.Diff
   import Untangle
-  alias Bonfire.UI.Me.LivePlugs
+
+  on_mount {LivePlugs, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
 
   def mount(params, session, socket) do
-    live_plug(params, session, socket, [
-      LivePlugs.LoadCurrentAccount,
-      LivePlugs.LoadCurrentUser,
-      Bonfire.UI.Common.LivePlugs.StaticChanged,
-      Bonfire.UI.Common.LivePlugs.Csrf,
-      Bonfire.UI.Common.LivePlugs.Locale,
-      &mounted/3
-    ])
-  end
-
-  defp mounted(params, session, socket) do
     # necessary to avoid running it twice (and interupting an already-running diffing)
     case connected?(socket) do
       true ->
