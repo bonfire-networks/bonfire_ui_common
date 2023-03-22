@@ -10,6 +10,7 @@ defmodule Bonfire.UI.Common.Web do
 
   def verified_routes do
     if Code.ensure_loaded?(Bonfire.Web.Endpoint) and Code.ensure_loaded?(Bonfire.Web.Router) do
+      # IO.warn("Enabling...")
       quote do
         #  use Phoenix.VerifiedRoutes,
         #    endpoint: Bonfire.Web.Endpoint,
@@ -26,8 +27,9 @@ defmodule Bonfire.UI.Common.Web do
         import Phoenix.VerifiedRoutes, except: [path: 2, path: 3]
       end
     else
+      # IO.warn("Disabling...")
       quote do
-        # fallback for when router or endpoint are not available
+        # fallback for when router and/or endpoint are not available
         defmacro sigil_p({:<<>>, _meta, _segments} = route, extra) do
           quote do
             Phoenix.VerifiedRoutes.unverified_path(%URI{}, nil, unquote(route), unquote(extra))
