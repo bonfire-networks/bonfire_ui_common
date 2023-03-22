@@ -60,7 +60,7 @@
 
   <!-- <Bonfire.UI.Common.OpenModalLive
     :if={@current_user}
-    id={Pointers.ULID.generate()}
+    id={"nav_footer_mobile_modal"}
     no_actions
     wrapper_class=""
     reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}

@@ -6,7 +6,7 @@
   </button>
 {#else}
   <Bonfire.UI.Common.OpenModalLive
-    id={Pointers.ULID.generate()}
+    id={"flag-modal-#{@parent_id}"}
     title_text={e(@label, l("Flag this object"))}
     open_btn_wrapper_class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80"
     action_btns_wrapper_class="normal-case rounded btn btn-sm btn-error"

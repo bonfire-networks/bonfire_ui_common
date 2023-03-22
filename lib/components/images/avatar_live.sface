@@ -35,7 +35,7 @@
                 {raw(animal_avatar(id(@user)))}
               </svg>
               <!-- <div
-                id={"randomAnimalAvatar-#{Text.hash(id(@user) || id(@src) || @src)}"}
+                id={"randomAnimalAvatar-#{id(@user) || id(@src) || Text.hash(@src)}"}
                 phx-hook="randomAnimalAvatar"
                 title={@title}
                 data-size={size(%{viewing_main_object: @viewing_main_object, comment: @comment, size: @size})}

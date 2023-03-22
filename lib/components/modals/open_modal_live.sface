@@ -1,4 +1,4 @@
-<div class="w-full open_modal_wrapper">
+<div class="w-full open_modal_wrapper" data-id={@id}>
   {#if current_user(@__context__)}
     {#case @href}
       {#match nil}

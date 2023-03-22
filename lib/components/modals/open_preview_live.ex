@@ -25,6 +25,8 @@ defmodule Bonfire.UI.Common.OpenPreviewLive do
 
   prop(root_assigns, :any, default: [])
 
+  prop(parent_id, :string, default: nil)
+
   @doc """
   Slot for the button that opens the modal
   """

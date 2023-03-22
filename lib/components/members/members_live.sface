@@ -16,6 +16,7 @@
         <td>
           <div class="flex items-center space-x-3">
             <Bonfire.UI.Common.AvatarLive
+              parent_id="members"
               class="inline-block object-cover w-8 h-8"
               bg_class="rounded bg-base-200"
               size="32"
@@ -71,8 +72,8 @@
                   <Dynamic.Component
                     :if={module_enabled?(Bonfire.Boundaries.Web.BlockButtonLive)}
                     module={Bonfire.Boundaries.Web.BlockButtonLive}
-                    id={ComponentID.new(Bonfire.Boundaries.Web.BlockButtonLive, id(user))}
                     object={user}
+                    parent_id="members"
                     hide_icon
                     label={e(user, :profile, :name, l("this user"))}
                     open_btn_label={l("Block")}

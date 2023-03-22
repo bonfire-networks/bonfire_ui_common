@@ -1,9 +1,16 @@
 defmodule Bonfire.UI.Common.ComponentID do
   use Bonfire.UI.Common
 
-  def new(component_module, object_id)
+  def new(component_module, object_id, context)
       when is_binary(object_id) or is_number(object_id) do
-    component_id = Pointers.ULID.generate()
+    context =
+      context ||
+        (
+          error(context, "expected a string or atom context for #{component_module}, but got")
+          Pointers.ULID.generate()
+        )
+
+    component_id = "#{component_module}-via-#{context}-for-#{object_id}"
 
     debug(
       "ComponentID: stateless component #{component_module} for object id #{object_id} now has ID: #{component_id}"
@@ -14,13 +21,13 @@ defmodule Bonfire.UI.Common.ComponentID do
     component_id
   end
 
-  def new(component_module, object)
+  def new(component_module, object, context)
       when is_map(object) or is_list(object) or is_tuple(object) do
-    new(component_module, Types.ulid(object) || Pointers.ULID.generate())
+    new(component_module, Enums.id(object) || Pointers.ULID.generate(), context)
   end
 
-  def new(component_module, other) do
-    warn(other, "expected an object id for #{component_module}, but got")
+  def new(component_module, other, context) do
+    error(other, "expected an object id for #{component_module}, but got")
     Pointers.ULID.generate()
   end
 

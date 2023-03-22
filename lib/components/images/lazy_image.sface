@@ -21,7 +21,7 @@
       {#match blurhash}
         <div
           phx-hook="blurHash"
-          id={"blurHash-#{@parent_id}-#{Text.hash(src)}"}
+          id={"blurHash-#{@parent_id}-#{Text.hash(blurhash)}"}
           data-hash={blurhash}
           class="h-full"
           x-data="{src: null }"
