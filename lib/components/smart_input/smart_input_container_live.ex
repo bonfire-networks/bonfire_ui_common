@@ -12,16 +12,16 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop smart_input_opts, :map, default: %{}
   prop showing_within, :atom, default: nil
   prop activity, :any, default: nil
-  prop hide_smart_input, :boolean, default: false
+  # prop hide_smart_input, :boolean, default: false
   prop object, :any, default: nil
   prop activity_inception, :any, default: nil
   prop title_open, :boolean, default: nil
   prop title_prompt, :string, default: nil
   prop preloaded_recipients, :list, default: nil
   prop show_select_recipients, :boolean, default: false
-  prop thread_mode, :atom, default: nil
+  # prop thread_mode, :atom, default: nil
   prop page, :any, default: nil
-  prop without_sidebar, :string, default: nil
+  # prop without_sidebar, :string, default: nil
   prop reset_smart_input, :boolean, default: false
 
   def mount(socket),
@@ -82,7 +82,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   end
 
   def do_handle_event("select_smart_input", params, socket) do
-    debug(params)
+    # debug(params)
     # send_self(socket, smart_input_opts: %{open: e(params, :open, nil)})
 
     opts =
@@ -135,29 +135,6 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       when is_binary(html_body) do
     debug(params, "validate")
 
-    # Enum.join() |> String.length()
-
-    # note: now done in FE
-    # max_length = max_length()
-
-    # length =
-    #   html_body
-    #   |> String.split()
-    #   |> Enum.count()
-    #   |> debug("number of words")
-
-    # if length > max_length do
-    #   {:noreply,
-    #    socket
-    #    |> assign(reset_smart_input: false)
-    #    |> update(
-    #      :smart_input_opts,
-    #      &Map.merge(&1, %{
-    #        submit_disabled: true,
-    #        submit_label: "(#{length}/#{max_length} words)"
-    #      })
-    #    )}
-    # else
     {
       :noreply,
       socket
@@ -240,7 +217,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     nil
   end
 
-  def set_smart_input_as(:flat, _), do: :focused
+  # def set_smart_input_as(:flat, _), do: :focused
   def set_smart_input_as(:messages, _), do: :focused
 
   def set_smart_input_as(_, context),

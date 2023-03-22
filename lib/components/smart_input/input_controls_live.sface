@@ -4,41 +4,6 @@
     create_object_type: @create_object_type
   })}
   {#match is_messaging?}
-    <!-- <div x-show="open_boundaries" class="p-3 bg-base-100">
-      <Dynamic.Component
-        :if={!is_messaging? and clone_context(@to_boundaries) == false and
-          module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
-        module={Bonfire.Boundaries.Web.SetBoundariesLive}
-        to_boundaries={@to_boundaries}
-        preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)}
-        to_circles={@to_circles}
-        open_boundaries={@open_boundaries}
-        showing_within={@showing_within}
-        create_object_type={@create_object_type}
-        thread_mode={@thread_mode}
-        boundaries_modal_id={@boundaries_modal_id}
-        context_id={@context_id}
-        hide_breakdown
-        setting_boundaries
-        click_override
-      />
-    </div> -->
-
-    <!-- FIXME: select message recipients
-  <div
-    :if={@show_select_recipients ||
-      is_messaging?}
-    class="my-3"
-  >
-    <Bonfire.UI.Common.SelectRecipientsLive
-      preloaded_recipients={e(@preloaded_recipients, [])}
-      to_boundaries={@to_boundaries}
-      to_circles={@to_circles}
-      open_boundaries={@open_boundaries}
-      context_id={@context_id}
-    />
-  </div> -->
-
     <div class="fixed top-[calc(var(--visual-viewport-height)_-_112px)] z-50 left-0 right-0 md:static">
       <div class="">
         <div class="flex flex-col justify-between gap-3 p-4 md:items-center bg-base-100 md:px-3 md:py-2">
@@ -47,7 +12,6 @@
               <Bonfire.UI.Common.UploadButtonLive
                 :if={!is_messaging? && module_enabled?(Bonfire.Files, @__context__)}
                 uploads={@uploads}
-                thread_mode={@thread_mode}
               />
 
               <div
@@ -58,9 +22,8 @@
                 <button
                   :if={Config.get([:ui, :smart_input, :cw], []) == true}
                   type="button"
-                  x-on:click="title_open = !title_open"
-                  :class="{'btn-active' : title_open}"
-                  class="flex items-center btn btn-ghost btn-sm btn-circle"
+                  phx-click={JS.toggle(to: ".toggle_cw") |> JS.add_class("btn-active", to: ".toggle_cw_btn")}
+                  class="flex items-center toggle_cw_btn btn btn-ghost btn-sm btn-circle"
                 >
                   <Icon iconify="fluent:chat-warning-24-regular" class="w-5 h-5 text-base-content/70" />
                 </button>
@@ -71,8 +34,7 @@
                 module={Bonfire.UI.Common.EmojiPickerLive}
                 target_field=".composer"
                 class={
-                  "bottom-10 left-3": @thread_mode == :flat,
-                  "bottom-10 left-3": @thread_mode != :flat,
+                  "bottom-10 left-3",
                   "!top-10 right-0 bottom-[auto]": @showing_within == :page
                 }
               />
@@ -127,7 +89,6 @@
           module={Bonfire.Boundaries.Web.BoundariesSelectionLive}
           to_boundaries={@to_boundaries}
           to_circles={@to_circles}
-          thread_mode={@thread_mode}
           context_id={@context_id}
         />
 

@@ -13,7 +13,6 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop showing_within, :atom, default: nil
   prop uploads, :any, default: nil
   prop uploaded_files, :list, default: []
-  prop thread_mode, :atom, default: nil
   prop page, :any, default: nil
   prop show_cw_toggle, :boolean, default: false
   prop submit_label, :string, default: nil
@@ -21,17 +20,17 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop show_select_recipients, :boolean, default: false
   prop boundaries_modal_id, :string, default: :sidebar_composer
 
-  def hide_modal(js \\ %JS{}) do
-    js
-    |> JS.hide(transition: "fade-out", to: "#picker")
-    |> JS.add_class("hidden", to: "#picker")
-  end
+  # def hide_modal(js \\ %JS{}) do
+  #   js
+  #   |> JS.hide(transition: "fade-out", to: "#picker")
+  #   |> JS.add_class("hidden", to: "#picker")
+  # end
 
-  def show_modal(js \\ %JS{}) do
-    js
-    |> JS.show(transition: "fade-in", to: "#picker")
-    |> JS.remove_class("hidden", to: "#picker")
-  end
+  # def show_modal(js \\ %JS{}) do
+  #   js
+  #   |> JS.show(transition: "fade-in", to: "#picker")
+  #   |> JS.remove_class("hidden", to: "#picker")
+  # end
 
   def clone_context(to_boundaries) do
     case to_boundaries do

@@ -1,5 +1,4 @@
 <div id="composer_container" data-id="smart_input" class="flex-1 h-full grow">
-  <!-- 'hidden': !smart_input_open  && #{@smart_input_as != :sidebar && @thread_mode != :flat} -->
   <div
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
@@ -19,9 +18,7 @@
     class={
       "flex bg-transparent h-full grow flex-1",
       "bottom-0 !max-w-full !border-none !rounded-none":
-        e(@thread_mode, nil) == :flat or
           is_messaging?(%{
-            page: @page,
             showing_within: @showing_within,
             create_object_type: @create_object_type
           }),

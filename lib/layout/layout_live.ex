@@ -31,7 +31,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop without_widgets, :boolean, default: false
   prop without_sidebar, :boolean, default: nil
   prop sidebar_widgets, :list, default: []
-  prop thread_mode, :atom, default: nil
   prop transparent_header, :boolean, default: false
   prop back, :boolean, default: false
   prop page_header_aside, :any, default: nil
@@ -90,7 +89,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:without_sidebar, fn -> nil end)
       |> assign_new(:without_widgets, fn -> false end)
       |> assign_new(:sidebar_widgets, fn -> [] end)
-      |> assign_new(:thread_mode, fn -> nil end)
 
     # |> assign_new(:hero, fn -> nil end)
     # |> assign_new(:custom_page_header, fn -> nil end)

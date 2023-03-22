@@ -1,50 +1,20 @@
 <header class="sticky top-0 z-50 flex flex-row items-center w-full p-3 rounded-t-lg md:z-auto md:relative bg-base-100 flex-align-items-stretch flex-nowrap h-[52px]">
-  <span
-    x-cloak
-    x-show="open_boundaries"
-    class="flex mr-2 btn btn-xs btn-ghost btn-circle"
-    x-on:click="open_boundaries = false; smart_input_title_text = 'New post'"
-  >
-    <Icon solid="ChevronLeft" class="w-4 h-4 text-base-content/70" />
-  </span>
-  <span
-    class="flex-1 text-lg font-semibold text-center text-ellipsis text-base-content/70"
-    x-text={"smart_input_title_text || '#{e(@smart_input_opts, :prompt, l("New post"))}'"}
-  >
+  <span class="flex-1 text-lg font-semibold text-center text-ellipsis text-base-content/70">
     {e(@smart_input_opts, :prompt, l("New post"))}
   </span>
   <div class="absolute flex items-center gap-3 right-3">
     <button
-      x-show="smart_input_as_non_blocking"
-      x-on:click="smart_input_minimized = !smart_input_minimized"
+      phx-click={JS.hide(to: ".minimizable") |> JS.show(to: ".maximizable")}
       type="button"
       class="flex btn btn-xs btn-ghost btn-circle"
-      data-testid="composer:smart_input_minimized-button"
-      aria-describedby="tooltip-5527"
     >
       <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
-      <span x-cloak x-show="!smart_input_minimized">
+      <span class="minimizable">
         <Icon outline="Minus" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l("Minimize")}</span>
       </span>
-      <span x-cloak x-show="smart_input_minimized">
-        <Icon iconify="pajamas:expand-up" class="w-4 h-4 stroke-1 text-base-content/70" />
-        <span class="sr-only">{l("Maximise")}</span>
-      </span>
     </button>
-
-    <!-- <button 
-      x-show="!smart_input_minimized"
-      x-on:click="smart_input_fullscreen = !smart_input_fullscreen"
-      type="button" 
-      class="hidden btn btn-xs btn-ghost btn-square md:flex" 
-      :class="{'!flex': !smart_input_minimized && !smart_input_fullscreen}"
-      data-testid="composer:maximize-button"
-      aria-describedby="tooltip-5528"
-    >
-      <Icon outline="ArrowsExpand" class="w-4 h-4 stroke-1 text-base-content/70" />
-      <span class="sr-only">{l "Toggle full-screen"}</span>
-    </button> -->
+    
     <button
       phx-click="reset"
       phx-target="#smart_input"
