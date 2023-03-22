@@ -39,6 +39,14 @@ defmodule Bonfire.UI.Common.LinkLive do
     """
   end
 
+  def render(%{to: "#" <> _} = assigns) do
+    ~F"""
+    <Link to={@to} class={@class} opts={@opts}>
+      <#slot>{@label}</#slot>
+    </Link>
+    """
+  end
+
   def render(%{__context__: %{current_app: :bonfire_pages}} = assigns) do
     # TODO: this should only apply to links to Page views, not internal pages
     ~F"""
