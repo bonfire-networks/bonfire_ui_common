@@ -21,7 +21,6 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop show_select_recipients, :boolean, default: false
   prop boundaries_modal_id, :string, default: :sidebar_composer
 
-
   def hide_modal(js \\ %JS{}) do
     js
     |> JS.hide(transition: "fade-out", to: "#picker")

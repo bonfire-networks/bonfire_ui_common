@@ -39,11 +39,10 @@
 </div> -->
 
 <div phx-update="ignore" phx-hook="EmojiPicker" data-target_field={@target_field} id={@id}>
-
-<button
+  <button
     title={l("Insert emoji")}
     type="button"
-    class=" emoji-button btn btn-ghost btn-sm text-[22px] btn-circle"
+    class="emoji-button btn btn-ghost btn-sm text-[22px] btn-circle"
   >
     <Icon
       iconify="entypo:emoji-happy"

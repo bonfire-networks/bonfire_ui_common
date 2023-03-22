@@ -1,6 +1,4 @@
-<header
-  class="sticky top-0 z-50 flex flex-row items-center w-full p-3 rounded-t-lg md:z-auto md:relative bg-base-100 flex-align-items-stretch flex-nowrap h-[52px]"
->
+<header class="sticky top-0 z-50 flex flex-row items-center w-full p-3 rounded-t-lg md:z-auto md:relative bg-base-100 flex-align-items-stretch flex-nowrap h-[52px]">
   <span
     x-cloak
     x-show="open_boundaries"
