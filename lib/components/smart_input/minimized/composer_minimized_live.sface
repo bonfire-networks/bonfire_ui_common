@@ -12,7 +12,6 @@
     <button
       phx-click="reset"
       phx-target="#smart_input"
-      x-on:click="if (confirm('Your draft will be lost. Continue?')){smart_input_open = false; smart_input_fullscreen = false; smart_input_title_text = null;}"
       type="button"
       class="flex btn btn-xs btn-ghost btn-circle"
       data-testid="composer:close-button"

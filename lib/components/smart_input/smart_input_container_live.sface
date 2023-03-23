@@ -5,8 +5,7 @@
     )
     |> debug("set_smart_input_as")}
     {#match smart_input_as}
-      <div
-        x-data={"{
+        <!-- x-data={"{
               smart_input_title_text: null,
               smart_input_open: false,
               smart_input_fullscreen: false,
@@ -25,8 +24,8 @@
           smart_input_minimized = #{e(@smart_input_opts, :open, nil) != true and smart_input_as == :non_blocking}; 
           smart_input_as_non_blocking = #{smart_input_as == :non_blocking}; 
           smart_input_as_focused = #{smart_input_as == :focused}; 
-        "}
-      >
+        "} -->
+      <div>
         <Bonfire.UI.Common.SmartInputButtonsLive
           :if={!e(@smart_input_opts, :hide_buttons, nil)}
           smart_input_opts={@smart_input_opts}
@@ -34,40 +33,37 @@
           create_object_type={@create_object_type}
         />
         <div
-          x-show="smart_input_open"
+          id="smart_input_container"
           class={
-            "smart_input_container fixed visible md:rounded-t-lg max-w-full left-0 bg-base-200 top-0 mx-auto md:top-auto z-[9999] transition-all shadow-composer right-0 md:right-4 md:left-auto bottom-0",
+            "smart_input_container fixed hidden visible md:rounded-t-lg max-w-full left-0 bg-base-200 top-0 mx-auto md:top-auto z-[9999] transition-all shadow-composer right-0 md:right-4 md:left-auto bottom-0",
             'md:!w-[42rem] !inset-0 md:!top-20 !h-auto md:!h-fit !shadow-2xl !rounded-2xl': smart_input_as == :focused, 
             'md:w-[36rem] max-h-screen overflow-overlay md:overflow-x-auto': smart_input_as != :focused, 
             'md:!w-[20rem] hidden tablet-lg:block bottom-0': e(@smart_input_opts, :minimized, nil) == true
           }
           style="bottom: 0"
-          x-on:keydown.escape.prevent.stop="smart_input_minimized = true"
-        >
-          <!-- x-bind:class="{
-            'md:!w-[42rem] !inset-0 md:!top-20 !h-auto md:!h-fit !shadow-2xl !rounded-2xl': smart_input_as_focused, 
-            'md:w-[36rem] max-h-screen overflow-overlay md:overflow-x-auto': ! smart_input_as_focused, 
-            'md:!w-[20rem] hidden tablet-lg:block bottom-0': smart_input_minimized 
-          }" -->
+          >
           <div
-            x-cloak
-            x-show="smart_input_open == true"
-            x-on:click="smart_input_open = false"
-            class="fixed inset-0 cursor-pointer bg-base-300/20 backdrop-blur md:hidden"
+            :if={e(@smart_input_opts, :open, false) && smart_input_as == :focused}
+            phx-click={LiveHandler.close_smart_input("#smart_input_container")}
+            phx-target="#smart_input"
+            class="fixed inset-0 hidden cursor-pointer bg-base-300/20 backdrop-blur"
             style="-webkit-backdrop-filter: blur(10px);"
-            x-bind:class="{'!block': smart_input_as_focused}"
           />
 
           <Bonfire.UI.Common.ComposerMinimizedLive />
           <div
-            class="relative z-50 minimizable md:border md:rounded-lg border-base-content/5"
-            x-bind:class="{'!rounded-b-none': smart_input_as_non_blocking}"
-          >
+            class={
+              "relative z-50 minimizable md:border md:rounded-lg border-base-content/5",
+              '!rounded-b-none': smart_input_as == :non_blocking
+            }
+            >
             <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
             <div
               x-ref="smart_input"
-              class="flex-1 h-full grow relative z-[9999999999]"
-              x-bind:class="smart_input_as_focused ? 'max-h-[calc(100vh-52px)] md:max-h-[calc(100vh-5rem-52px)] overflow-x-auto' : ''"
+              class={
+                "flex-1 h-full grow relative z-[9999999999]",
+                "max-h-[calc(100vh-52px)] md:max-h-[calc(100vh-5rem-52px)] overflow-x-auto": smart_input_as == :focused              
+              }
             >
               <SmartInputLive
                 boundaries_modal_id={:modal_composer}

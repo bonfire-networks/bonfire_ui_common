@@ -1,6 +1,22 @@
 defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
 
+
+  def close_smart_input(target, js \\ %JS{}) do
+    js
+    |> JS.push("reset", value: %{})
+    |> JS.hide(to: target)
+  end
+
+
+  def select_smart_input(target, component, create_object_type, opts \\ [], js \\ %JS{}) do
+    js
+    |> JS.show(
+      to: target
+    )
+    |> JS.push("select_smart_input", value: %{component: component, create_object_type: create_object_type, opts: opts})
+  end
+
   def handle_event("select_smart_input", params, socket) do
     # debug(params)
     # send_self(socket, smart_input_opts: %{open: e(params, :open, nil)})
@@ -113,7 +129,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     opts =
       e(socket.assigns, :smart_input_opts, %{})
       |> Map.merge(%{minimized: !status})
-      |> debug("opts")
     {:noreply, socket |> assign(smart_input_opts: opts)}
   end
 
