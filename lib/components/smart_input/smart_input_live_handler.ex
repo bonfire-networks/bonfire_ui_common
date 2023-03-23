@@ -9,8 +9,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def close_smart_input(target, js \\ %JS{}) do
     js
-    |> JS.push("reset", value: %{})
     |> JS.hide(to: target)
+    |> JS.push("reset", value: %{})
   end
 
   def select_smart_input(target, component, create_object_type, opts \\ [], js \\ %JS{}) do
@@ -222,9 +222,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   # def set_smart_input_as(:flat, _), do: :focused
-  def set_smart_input_as(:messages, _), do: :focused
+  # def set_smart_input_as(:messages, _), do: :focused
 
-  def set_smart_input_as(_, context),
+  def set_smart_input_as(context),
     do: Settings.get([:ui, :smart_input_as], :non_blocking, context)
 
   # def as(smart_input_opts) do

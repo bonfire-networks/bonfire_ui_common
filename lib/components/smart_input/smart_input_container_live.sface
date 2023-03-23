@@ -1,9 +1,5 @@
 <div class="flex-1">
-  {#case LiveHandler.set_smart_input_as(
-      @showing_within,
-      current_user(@__context__)
-    )
-    |> debug("set_smart_input_as")}
+  {#case LiveHandler.set_smart_input_as(current_user(@__context__))}
     {#match smart_input_as}
         <!-- x-data={"{
               smart_input_title_text: null,
