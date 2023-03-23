@@ -93,17 +93,58 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     {:noreply, reset_input(socket)}
   end
 
-  def minimize(js \\ %JS{}) do
+
+  def toggle_expanded(target, js \\ %JS{}) do
     js
-    |> JS.hide(to: ".minimizable")
-    |> JS.show(to: ".maximizable")
+    |> JS.toggle(
+      to: target
+    )
   end
 
-  def maximize(js \\ %JS{}) do
+  def toggle_minimize(target, status, js \\ %JS{}) do
     js
-    |> JS.hide(to: ".maximizable")
-    |> JS.show(to: ".minimizable")
+    |> JS.push("toggle_minimize", value: %{status: status})
+    |> JS.toggle(
+      to: target
+    )
   end
+
+  def handle_event("toggle_minimize", %{"status" => status} = _values, socket) do
+    opts =
+      e(socket.assigns, :smart_input_opts, %{})
+      |> Map.merge(%{minimized: !status})
+      |> debug("opts")
+    {:noreply, socket |> assign(smart_input_opts: opts)}
+  end
+
+  def toggle_expanded(target, btn, class, js \\ %JS{}) do
+    js
+    |> JS.toggle(
+      to: target
+    )
+    |> JS.remove_class(
+      class,
+      to: btn <> "." <> class
+    )
+    |> JS.add_class(
+      class,
+      to: btn <> ":not(." <> class <> ")"
+    )
+  end
+
+
+  # def minimize(js \\ %JS{}) do
+  #   js
+  #   |> JS.hide(to: ".minimizable")
+  #   |> JS.show(to: ".maximizable")
+
+  # end
+
+  # def maximize(js \\ %JS{}) do
+  #   js
+  #   |> JS.hide(to: ".maximizable")
+  #   |> JS.show(to: ".minimizable")
+  # end
 
   # def hide_modal(js \\ %JS{}) do
   #   js

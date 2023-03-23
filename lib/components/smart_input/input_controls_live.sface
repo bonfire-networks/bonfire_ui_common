@@ -22,8 +22,8 @@
                 <button
                   :if={Config.get([:ui, :smart_input, :cw], []) == true}
                   type="button"
-                  phx-click={JS.toggle(to: ".toggle_cw") |> JS.add_class("btn-active", to: ".toggle_cw_btn")}
-                  class="flex items-center toggle_cw_btn btn btn-ghost btn-sm btn-circle"
+                  phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded("#write_post_title_field", ".btn_cw_toggle", "btn-active")}
+                  class="flex items-center btn-active btn btn-ghost btn-sm btn-circle btn_cw_toggle"
                 >
                   <Icon iconify="fluent:chat-warning-24-regular" class="w-5 h-5 text-base-content/70" />
                 </button>

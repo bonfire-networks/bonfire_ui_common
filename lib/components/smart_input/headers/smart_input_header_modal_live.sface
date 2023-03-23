@@ -4,12 +4,13 @@
   </span>
   <div class="absolute flex items-center gap-3 right-3">
     <button
-      phx-click={LiveHandler.minimize()}
+      phx-click={LiveHandler.toggle_minimize(".minimizable", false)}
+      phx-target="#smart_input"
       type="button"
       class="flex btn btn-xs btn-ghost btn-circle"
     >
       <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
-      <span class="minimizable">
+      <span>
         <Icon outline="Minus" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l("Minimize")}</span>
       </span>
