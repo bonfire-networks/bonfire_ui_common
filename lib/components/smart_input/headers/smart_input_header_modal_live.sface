@@ -15,17 +15,32 @@
         <span class="sr-only">{l("Minimize")}</span>
       </span>
     </button>
-
-    <button
-      phx-click={LiveHandler.close_smart_input("#smart_input_container")}
-      phx-target="#smart_input"
-      type="button"
-      class="flex btn btn-xs btn-ghost btn-circle"
-      data-testid="composer:close-button"
-      aria-describedby="close-composer-button"
+    <Bonfire.UI.Common.OpenModalLive
+      id={"close-composer"}
+      reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
+      title_text={l("Delete the draft")}
+      open_btn_wrapper_class="flex btn btn-xs btn-ghost btn-circle"
+      action_btns_wrapper_class="normal-case rounded btn btn-sm btn-error"
     >
+    <div class="mt-3 prose-sm prose">
+      <p>{l(
+          "Closing the composer will discard your post. Are you sure you want to close it?"
+        )}</p>
+    </div>
+    <:open_btn>
       <Icon outline="X" class="w-4 h-4 stroke-1 text-base-content/70" />
       <span class="sr-only">{l("Close")}</span>
+    </:open_btn>
+    <:action_btns>
+      <button
+        phx-click={LiveHandler.confirm_close_smart_input("#smart_input_container", "persistent_modal")}
+        phx-target="#smart_input"
+        type="button"
+      >
+      <span class="">{l("Delete")}</span>
     </button>
+    </:action_btns>
+  </Bonfire.UI.Common.OpenModalLive>
+  
   </div>
 </header>

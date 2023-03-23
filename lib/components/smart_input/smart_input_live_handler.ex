@@ -2,12 +2,16 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
 
 
+  def confirm_close_smart_input(target, reusable_modal_id, js \\ %JS{}) do
+    close_smart_input(target, js)
+    # Bonfire.UI.Common.OpenModalLive.close(reusable_modal_id)
+  end
+
   def close_smart_input(target, js \\ %JS{}) do
     js
     |> JS.push("reset", value: %{})
     |> JS.hide(to: target)
   end
-
 
   def select_smart_input(target, component, create_object_type, opts \\ [], js \\ %JS{}) do
     js
