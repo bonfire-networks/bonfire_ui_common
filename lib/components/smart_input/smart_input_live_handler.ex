@@ -1,7 +1,6 @@
 defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
 
-
   def confirm_close_smart_input(target, reusable_modal_id, js \\ %JS{}) do
     close_smart_input(target, js)
     # Bonfire.UI.Common.OpenModalLive.close(reusable_modal_id)
@@ -15,10 +14,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def select_smart_input(target, component, create_object_type, opts \\ [], js \\ %JS{}) do
     js
-    |> JS.show(
-      to: target
+    |> JS.show(to: target)
+    |> JS.push("select_smart_input",
+      value: %{component: component, create_object_type: create_object_type, opts: opts}
     )
-    |> JS.push("select_smart_input", value: %{component: component, create_object_type: create_object_type, opts: opts})
   end
 
   def handle_event("select_smart_input", params, socket) do
@@ -113,34 +112,28 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     {:noreply, reset_input(socket)}
   end
 
-
   def toggle_expanded(target, js \\ %JS{}) do
     js
-    |> JS.toggle(
-      to: target
-    )
+    |> JS.toggle(to: target)
   end
 
   def toggle_minimize(target, status, js \\ %JS{}) do
     js
     |> JS.push("toggle_minimize", value: %{status: status})
-    |> JS.toggle(
-      to: target
-    )
+    |> JS.toggle(to: target)
   end
 
   def handle_event("toggle_minimize", %{"status" => status} = _values, socket) do
     opts =
       e(socket.assigns, :smart_input_opts, %{})
       |> Map.merge(%{minimized: !status})
+
     {:noreply, socket |> assign(smart_input_opts: opts)}
   end
 
   def toggle_expanded(target, btn, class, js \\ %JS{}) do
     js
-    |> JS.toggle(
-      to: target
-    )
+    |> JS.toggle(to: target)
     |> JS.remove_class(
       class,
       to: btn <> "." <> class
@@ -150,7 +143,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       to: btn <> ":not(." <> class <> ")"
     )
   end
-
 
   # def minimize(js \\ %JS{}) do
   #   js

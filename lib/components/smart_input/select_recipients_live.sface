@@ -5,13 +5,7 @@
       <div class="flex items-center gap-2">
         {#for {name, id} <- @to_circles}
           <span class="badge">{name}</span>
-          <input
-            type="hidden"
-            name="to_circles[]"
-            placeholder={@label || l("Send to")}
-            label={name}
-            value={id}
-          />
+          <input type="hidden" name="to_circles[]" placeholder={@label} label={name} value={id}>
         {/for}
       </div>
     </div>
@@ -34,7 +28,7 @@
       <div class="w-full select_recipient">
         <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
           selected_options={@to_circles}
-          label={@label || l("Send to")}
+          label={@label || l("Type a name")}
           form_input_name={__MODULE__}
           context_id={@context_id}
           class={@class}

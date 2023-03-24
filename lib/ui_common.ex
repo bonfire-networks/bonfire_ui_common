@@ -1115,20 +1115,6 @@ defmodule Bonfire.UI.Common do
     end
   end
 
-  @message_types [:message, "message", :messages, "messages"]
-
-  def is_messaging?(%{page: page}) when page in @message_types, do: true
-
-  def is_messaging?(%{showing_within: showing_within})
-      when showing_within in @message_types,
-      do: true
-
-  def is_messaging?(%{create_object_type: create_object_type})
-      when create_object_type in @message_types,
-      do: true
-
-  def is_messaging?(_), do: false
-
   def boundaries_or_default(to_boundaries, opts \\ [])
 
   def boundaries_or_default(to_boundaries, _opts)

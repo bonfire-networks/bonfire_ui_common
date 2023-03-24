@@ -3,19 +3,15 @@
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
     x-data={"{
-      body: '',
-      body_length() { const value = this.body.trim()
-        if(!value) return 0
-        return value.split(/\s+/).length },
-      title_open: #{if is_nil(@title_open) and @create_object_type not in [:post], do: true, else: @title_open == true}, 
+          body: '',
+          body_length() { const value = this.body.trim()
+            if(!value) return 0
+            return value.split(/\s+/).length },
+          title_open: #{if is_nil(@title_open) and @create_object_type not in [:post], do: true, else: @title_open == true}, 
     }"}
-   class={
+    class={
       "flex bg-transparent h-full grow flex-1",
-      "bottom-0 !max-w-full !border-none !rounded-none":
-        is_messaging?(%{
-          showing_within: @showing_within,
-          create_object_type: @create_object_type
-        }),
+      "bottom-0 !max-w-full !border-none !rounded-none": @create_object_type == :message,
       "h-full": @showing_within == :page
     }
   >

@@ -1,8 +1,8 @@
 <button
   phx-click={LiveHandler.select_smart_input(
     "#smart_input_container",
-    @component, 
-    @create_object_type, 
+    @component,
+    @create_object_type,
     Jason.encode!(Map.drop(@smart_input_opts, [:text]))
   )}
   phx-target="#smart_input"
@@ -14,11 +14,11 @@
     phx-value-opts={Jason.encode!(merge_as_map(%{prompt: @prompt}, @smart_input_opts))}
     x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{@prompt || l("Compose")}')"} -->
 
-  <Icon iconify={@icon} class="inline-block w-9 h-9 md:w-5 md:h-5" />
-  <span class="hidden md:block">{@prompt || l("Compose")}</span>
+  <Icon :if={@icon} iconify={@icon} class="inline-block w-9 h-9 md:w-5 md:h-5" />
+  <span :if={@prompt} class="hidden md:block">{l("Compose")}</span>
 </button>
 
-  <!-- phx-click="Bonfire.UI.Common.SmartInput:select_smart_input"
+<!-- phx-click="Bonfire.UI.Common.SmartInput:select_smart_input"
   phx-target="#smart_input"
   phx-value-component={@component}
   phx-value-create_object_type={@create_object_type}

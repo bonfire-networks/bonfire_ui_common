@@ -1,111 +1,109 @@
-{#case is_messaging?(%{
-    page: @page,
-    showing_within: @showing_within,
-    create_object_type: @create_object_type
-  })}
-  {#match is_messaging?}
-    <div class="fixed top-[calc(var(--visual-viewport-height)_-_112px)] z-50 left-0 right-0 md:static">
-      <div class="">
-        <div class="flex flex-col justify-between gap-3 p-4 md:items-center bg-base-100 md:px-3 md:py-2">
-          <div class="flex items-center justify-between flex-1 w-full">
-            <div class="flex items-center gap-4 md:gap-3">
-              <Bonfire.UI.Common.UploadButtonLive
-                :if={!is_messaging? && module_enabled?(Bonfire.Files, @__context__)}
-                uploads={@uploads}
-              />
+<div class="fixed top-[calc(var(--visual-viewport-height)_-_112px)] z-50 left-0 right-0 md:static">
+  <div class="">
+    <div class="flex flex-col justify-between gap-3 p-4 md:items-center bg-base-100 md:px-3 md:py-2">
+      <div class="flex items-center justify-between flex-1 w-full">
+        <div class="flex items-center gap-4 md:gap-3">
+          <Bonfire.UI.Common.UploadButtonLive
+            :if={@create_object_type != :message && module_enabled?(Bonfire.Files, @__context__)}
+            uploads={@uploads}
+          />
 
-              <div
-                :if={@show_cw_toggle}
-                title={l("Add a content warning")}
-                class="relative z-30 flex items-center"
-              >
-                <button
-                  :if={Config.get([:ui, :smart_input, :cw], []) == true}
-                  type="button"
-                  phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded("#write_post_title_field", ".btn_cw_toggle", "btn-active")}
-                  class="flex items-center btn-active btn btn-ghost btn-sm btn-circle btn_cw_toggle"
-                >
-                  <Icon iconify="fluent:chat-warning-24-regular" class="w-5 h-5 text-base-content/70" />
-                </button>
-              </div>
-
-              <Dynamic.Component
-                :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
-                module={Bonfire.UI.Common.EmojiPickerLive}
-                target_field=".composer"
-                class={
-                  "bottom-10 left-3",
-                  "!top-10 right-0 bottom-[auto]": @showing_within == :page
-                }
-              />
-            </div>
-            <div class="text-xs text-base-content/70">
-              <span
-                :class={"{'text-error' : body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length],
-                :instance,
-                @__context__[:instance_settings])}}"}
-                x-text="body_length()"
-              /> /
-              {Bonfire.Me.Settings.get(
-                [Bonfire.UI.Common.SmartInputLive, :max_length],
-                :instance,
-                @__context__[:instance_settings]
-              )} {l("words")}
-            </div>
-          </div>
-          <button
-            type="submit"
-            x-on:click="$dispatch('submit')"
-            phx-disable-with={if is_messaging?,
-              do: l("Sending..."),
-              else: l("Posting...")}
-            class="capitalize w-full btn-sm rounded justify-self-end btn px-8 h-[2.25rem] btn-primary"
-            disabled={e(@smart_input_opts, :submit_disabled, nil)}
-            x-bind:disabled={"body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length],
-            :instance,
-            @__context__[:instance_settings])}"}
+          <div
+            :if={@show_cw_toggle}
+            title={l("Add a content warning")}
+            class="relative z-30 flex items-center"
           >
-            {#if is_messaging?}
-              {l("Send")}
-            {#else}
-              {@submit_label || l("Post")}
-            {/if}
+            <button
+              :if={Config.get([:ui, :smart_input, :cw], []) == true}
+              type="button"
+              phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
+                "#write_post_title_field",
+                ".btn_cw_toggle",
+                "btn-active"
+              )}
+              class="flex items-center btn-active btn btn-ghost btn-sm btn-circle btn_cw_toggle"
+            >
+              <Icon iconify="fluent:chat-warning-24-regular" class="w-5 h-5 text-base-content/70" />
+            </button>
+          </div>
 
-            {e(@smart_input_opts, :submit_label, nil)}
-          </button>
+          <Dynamic.Component
+            :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
+            module={Bonfire.UI.Common.EmojiPickerLive}
+            target_field=".composer"
+            class={
+              "bottom-10 left-3",
+              "!top-10 right-0 bottom-[auto]": @showing_within == :page
+            }
+          />
         </div>
+        <div class="text-xs text-base-content/70">
+          <span
+            :class={"{'text-error' : body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length],
+            :instance,
+            @__context__[:instance_settings])}}"}
+            x-text="body_length()"
+          /> /
+          {Bonfire.Me.Settings.get(
+            [Bonfire.UI.Common.SmartInputLive, :max_length],
+            :instance,
+            @__context__[:instance_settings]
+          )} {l("words")}
+        </div>
+      </div>
+      <button
+        type="submit"
+        x-on:click="$dispatch('submit')"
+        phx-disable-with={if @create_object_type == :message,
+          do: l("Sending..."),
+          else: l("Posting...")}
+        class="capitalize w-full btn-sm rounded justify-self-end btn px-8 h-[2.25rem] btn-primary"
+        disabled={e(@smart_input_opts, :submit_disabled, nil)}
+        x-bind:disabled={"body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length],
+        :instance,
+        @__context__[:instance_settings])}"}
+      >
+        {#if @create_object_type == :message}
+          {l("Send")}
+        {#else}
+          {@submit_label || l("Post")}
+        {/if}
 
-        <input type="hidden" name="id" value={e(@smart_input_opts, :id, nil)}>
+        {e(@smart_input_opts, :submit_label, nil)}
+      </button>
+    </div>
 
-        <input type="hidden" name="reply_to[reply_to_id]" value={@reply_to_id}>
-        <input type="hidden" name="reply_to[thread_id]" value={@context_id}>
-        <!-- FIXME: should not thread using context like a group or topic -->
-        <input type="hidden" name="context_id" value={@context_id}>
+    <input type="hidden" name="id" value={e(@smart_input_opts, :id, nil)}>
 
-        <input type="hidden" name={:create_object_type} value={@create_object_type}>
+    <input type="hidden" name="reply_to[reply_to_id]" value={@reply_to_id}>
+    <input type="hidden" name="reply_to[thread_id]" value={@context_id}>
+    <!-- FIXME: should not thread using context like a group or topic -->
+    <input type="hidden" name="context_id" value={@context_id}>
 
-        <Dynamic.Component
-          :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesSelectionLive)}
-          module={Bonfire.Boundaries.Web.BoundariesSelectionLive}
-          to_boundaries={@to_boundaries}
-          to_circles={@to_circles}
-          context_id={@context_id}
-        />
+    <input type="hidden" name={:create_object_type} value={@create_object_type}>
 
-        <input
-          :for={{label, value} <- @to_circles}
-          type="hidden"
-          name="to_circles[]"
-          label={e(label, :name, nil) || label}
-          value={value}
-        />
-        <input
-          :for={value when is_binary(value) <- @to_circles}
-          type="hidden"
-          name="to_circles[]"
-          value={value}
-        />
-        <!-- 
+    <Dynamic.Component
+      :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesSelectionLive)}
+      module={Bonfire.Boundaries.Web.BoundariesSelectionLive}
+      to_boundaries={@to_boundaries}
+      to_circles={@to_circles}
+      context_id={@context_id}
+    />
+
+    <input
+      :for={{label, value} <- @to_circles}
+      type="hidden"
+      name="to_circles[]"
+      label={e(label, :name, nil) || label}
+      value={value}
+    />
+    <input
+      :for={value when is_binary(value) <- @to_circles}
+      type="hidden"
+      name="to_circles[]"
+      value={value}
+    />
+    <!-- 
     <input
       :for={circle <- @to_circles}
       type="hidden"
@@ -113,6 +111,5 @@
       label={if is_tuple(circle), do: elem(circle, 0) |> e(..., :name, ...)}
       value={if is_tuple(circle), do: elem(circle, 1), else: circle}
     /> -->
-      </div>
-    </div>
-{/case}
+  </div>
+</div>
