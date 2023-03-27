@@ -14,7 +14,7 @@
       /> -->
     </div>
 
-    <div class="sticky bottom-0 flex items-center justify-between pt-4 border-t bg-base-300 border-base-content/10">
+    <div class="sticky bottom-0 flex items-center justify-between pt-4 bg-base-300 border-base-content/10">
       <LiveRedirect
         to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
         class="flex items-center justify-start flex-1 gap-3 px-1 normal-case rounded btn btn-ghost hover:bg-transparent"

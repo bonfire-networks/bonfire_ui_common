@@ -1,4 +1,4 @@
-<div class="flex items-center w-full gap-2">
+<div class="flex items-center w-full gap-2 px-2">
   <span class="px-1 text-xs font-medium uppercase text-base-content/70">{l("To")}</span>
   {#if is_list(@to_circles) and @to_circles != []}
     <div class="flex justify-between w-full">

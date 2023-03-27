@@ -32,10 +32,26 @@ defmodule Bonfire.UI.Common.OpenPreviewLive do
   """
   slot open_btn
 
+
   def handle_event("close", _, socket) do
     close()
     {:noreply, assign(socket, show: false)}
   end
+
+  # def handle_event("open", _, socket) do
+  #   open()
+  #   {:noreply, assign(socket, show: true)}
+  # end
+
+  # def open() do
+  #   debug("open!")
+
+  #   Bonfire.UI.Common.OpenModalLive.set(
+  #     show: true,
+  #     reusable_modal_component: Bonfire.UI.Common.PreviewContentLive,
+  #     reusable_modal_id: "preview_content"
+  #   )
+  # end
 
   def close() do
     debug("close!")

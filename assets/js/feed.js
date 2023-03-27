@@ -8,13 +8,10 @@ FeedHooks.PreviewActivity = {
       let trigger = this.el.querySelector('.open_preview_link')
       let a = e.target.closest('a')
       // console.log(a)
-      
       if (a == trigger || (e.target.closest('.note') && !a && !e.ctrlKey && !e.metaKey && !window.getSelection().toString() && !e.target.closest('button') && !e.target.closest('.dropdown'))) {
         let uri = this.el.dataset.href || (trigger !==undefined && trigger.getAttribute('href')) //this.el.dataset.permalink
-
         if (window.liveSocket) {
           e.preventDefault();
-
           // const feed = document.querySelector(".feed")
           const main = document.getElementById("inner")
           const layout = document.getElementById("root")
@@ -23,6 +20,7 @@ FeedHooks.PreviewActivity = {
 
           if (trigger) {
           // push event to load up the PreviewContent
+          console.log(trigger)
             this.pushEventTo(trigger, "open", {})
           }
           // this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
