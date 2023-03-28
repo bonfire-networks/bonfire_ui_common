@@ -893,7 +893,7 @@ hex-input::part(input) {
 
 [iconify] {
   background-color: currentColor;
-  --webkit-mask-size: cover;
+  -webkit-mask-size: cover;
   mask-size: cover;
   min-width: 0.5rem;
   min-height: 0.5rem;
