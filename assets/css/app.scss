@@ -891,9 +891,8 @@ hex-input::part(input) {
   text-align: center;
 }
 
-.iconify_icon {
+[iconify] {
   background-color: currentColor;
-  display: inline-block;
   --webkit-mask-size: cover;
   mask-size: cover;
   min-width: 0.5rem;

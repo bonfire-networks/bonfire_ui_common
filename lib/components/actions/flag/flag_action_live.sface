@@ -17,7 +17,7 @@
         )}</p>
     </div>
     <:open_btn>
-      <Icon :if={!@hide_icon} solid="Flag" class="w-4 h-4 shrink-0" />
+      <#Icon :if={!@hide_icon} solid="Flag" class="w-4 h-4 shrink-0" />
       <span class="truncate ellipsis">{e(@label, l("Flag"))}</span>
     </:open_btn>
     <:action_btns>
@@ -39,7 +39,7 @@
     phx-value-id={e(@object, :id, "")}
     class="flex items-center gap-2 text-base md:text-sm text-neutral-content/80"
   >
-    <Icon :if={!@hide_icon} solid="Flag" class="w-4 h-4 shrink-0" />
+    <#Icon :if={!@hide_icon} solid="Flag" class="w-4 h-4 shrink-0" />
     <span class="truncate ellipsis">{e(@label, l("Flag"))}</span>
   </div>
 {/if} -->

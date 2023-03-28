@@ -6,7 +6,7 @@
     aria-label={l("Go back to the previous page")}
     class="btn font-normal normal-case btn-ghost btn-sm btn-circle !inline-flex"
   >
-    <Icon iconfiy="ion:chevron-back" class="w-5 h-5 text-base-content/70" />
+    <#Icon iconfiy="ion:chevron-back" class="w-5 h-5 text-base-content/70" />
   </button>
 {#else}
   <a
@@ -15,6 +15,6 @@
     aria-label={l("Go back to the previous page")}
     class="btn normal-case relative z-50 font-normal btn-ghost btn-sm btn-circle !inline-flex"
   >
-    <Icon iconify="ion:chevron-back" class="w-5 h-5 text-base-content/70" />
+    <#Icon iconify="ion:chevron-back" class="w-5 h-5 text-base-content/70" />
   </a>
 {/if}

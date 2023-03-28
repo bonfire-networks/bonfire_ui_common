@@ -5,14 +5,14 @@
     class={if @mobile,
       do: "flex items-center w-full gap-6 px-2 py-2 rounded-md"}
   >
-    <Icon iconify="ri:home-line" class="w-5 h-5 text-base-content/70" />
+    <#Icon iconify="ri:home-line" class="w-5 h-5 text-base-content/70" />
     <div class="text-sm font-normal tracking-wide">{l("Activities")}</div>
   </LiveRedirect>
 </li>
 
 <li :if={@mobile}>
   <LiveRedirect to="/messages" class="flex items-center w-full gap-6 px-2 py-2 rounded-md">
-    <Icon iconify="mdi:inbox" class="w-5 h-5 text-base-content/70" />
+    <#Icon iconify="mdi:inbox" class="w-5 h-5 text-base-content/70" />
     <div class="text-sm font-normal tracking-wide">{l("Messages")}</div>
   </LiveRedirect>
 </li>
@@ -24,7 +24,7 @@
       do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
       else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
   >
-    <Icon :if={@mobile} solid="UserCircle" class="w-5 h-5 text-base-content/70" />
+    <#Icon :if={@mobile} solid="UserCircle" class="w-5 h-5 text-base-content/70" />
     <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("View profile")}</div>
   </LiveRedirect>
 </li>
@@ -35,7 +35,7 @@
       do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
       else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
   >
-    <Icon
+    <#Icon
       :if={@mobile}
       iconify="material-symbols:switch-account"
       class="w-5 h-5 text-base-content/70"
@@ -50,7 +50,7 @@
       do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
       else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
   >
-    <Icon :if={@mobile} solid="Cog" class="w-5 h-5 text-base-content/70" />
+    <#Icon :if={@mobile} solid="Cog" class="w-5 h-5 text-base-content/70" />
     <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("Settings")}</div>
   </LiveRedirect>
 </li>
@@ -62,8 +62,8 @@
       do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
       else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
   >
-    <!-- <Icon solid="Cog" class="w-4 h-4" /> -->
-    <Icon :if={@mobile} solid="Cog" class="w-5 h-5 text-base-content/70" />
+    <!-- <#Icon solid="Cog" class="w-4 h-4" /> -->
+    <#Icon :if={@mobile} solid="Cog" class="w-5 h-5 text-base-content/70" />
     <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("Instance Settings")}</div>
   </LiveRedirect>
 </li>
@@ -88,8 +88,8 @@
       do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
       else: "flex items-center gap-2 text-base md:text-sm text-neutral-content/80"}
   >
-    <!-- <Icon iconify="material-symbols:logout" class="w-4 h-4" /> -->
-    <Icon :if={@mobile} iconify="uil:exit" class="w-[22px] h-[22px] text-base-content/70" />
+    <!-- <#Icon iconify="material-symbols:logout" class="w-4 h-4" /> -->
+    <#Icon :if={@mobile} iconify="uil:exit" class="w-[22px] h-[22px] text-base-content/70" />
 
     <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("Logout")}</div>
   </LiveRedirect>

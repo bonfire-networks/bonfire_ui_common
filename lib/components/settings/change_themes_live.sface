@@ -19,7 +19,7 @@
       class="normal-case rounded btn btn-ghost border-base-content/30"
     >
       <div class="flex items-center">
-        <span><Icon outline="Moon" class="w-4 h-4" /></span>
+        <span><#Icon outline="Moon" class="w-4 h-4" /></span>
         <span class="ml-2">{l("Dark")}</span>
       </div>
     </button>
@@ -33,7 +33,7 @@
       phx-value-values={:light}
       class="normal-case rounded btn btn-outline border-base-content/30"
     >
-      <span><Icon outline="Sun" class="w-4 h-4" /></span>
+      <span><#Icon outline="Sun" class="w-4 h-4" /></span>
       <span class="ml-2">{l("Light")}</span>
     </button>
 
@@ -46,7 +46,7 @@
       phx-value-values={:system}
       class="normal-case rounded btn btn-outline border-base-content/30"
     >
-      <span><Icon outline="ComputerDesktop" class="w-4 h-4" /></span>
+      <span><#Icon outline="ComputerDesktop" class="w-4 h-4" /></span>
       <span class="ml-2">{l("System")}</span>
     </button>
 
@@ -59,7 +59,7 @@
       phx-value-values={:custom}
       class="normal-case rounded btn btn-outline border-base-content/30"
     >
-      <span><Icon iconify="lucide:paintbrush-2" class="w-4 h-4" /></span>
+      <span><#Icon iconify="lucide:paintbrush-2" class="w-4 h-4" /></span>
       <span class="ml-2">{l("Custom")}</span>
     </button>
   </div>
@@ -68,7 +68,7 @@
         x-on:click="custom_theme = ! custom_theme"
         class="gap-3 normal-case rounded btn btn-sm btn-ghost">
         <span>{l("Edit")}</span>
-        <Icon iconify="fluent:triangle-right-12-filled" class="w-3 h-3 text-base-content/70" />
+        <#Icon iconify="fluent:triangle-right-12-filled" class="w-3 h-3 text-base-content/70" />
       </div> -->
 
   <!-- <div class="flex flex-col col-span-3 gap-2 p-3 rounded bg-base-content/5">
@@ -112,14 +112,14 @@
 
   <div class="p-3 mt-4 rounded-lg bg-base-content/5" x-show="custom_theme" x-cloak x-collapse>
     <div class="flex items-center gap-2 pb-3 mb-5 text-sm font-semibold border-b place-content-center border-base-content/10">
-      <Icon iconify="lucide:paintbrush-2" class="w-4 h-4" />
+      <#Icon iconify="lucide:paintbrush-2" class="w-4 h-4" />
       <span class="">{l("Customise theme colours")}</span>
     </div>
 
     <div :if={@scope == :instance} class="p-4 mt-6 mb-0 rounded-md bg-info/10">
       <div class="flex">
         <div class="flex-shrink-0">
-          <Icon solid="InformationCircle" class="w-5 h-5 text-info" />
+          <#Icon solid="InformationCircle" class="w-5 h-5 text-info" />
         </div>
         <div class="flex-1 ml-3 md:flex md:justify-between">
           <p class="text-sm text-info">

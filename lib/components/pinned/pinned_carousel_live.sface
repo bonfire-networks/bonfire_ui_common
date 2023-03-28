@@ -86,10 +86,10 @@
       <div :if={@title} class="">{@title}</div>
       <div class="flex gap-3 splide__arrows">
         <button class="splide__arrow splide__arrow--prev !static !bg-base-content/5">
-          <Icon iconify="heroicons:arrow-long-right-20-solid" class="w-5 h-5" />
+          <#Icon iconify="heroicons:arrow-long-right-20-solid" class="w-5 h-5" />
         </button>
         <button class="splide__arrow splide__arrow--next !static !bg-base-content/5">
-          <Icon iconify="heroicons:arrow-long-right-20-solid" class="w-5 h-5" />
+          <#Icon iconify="heroicons:arrow-long-right-20-solid" class="w-5 h-5" />
         </button>
       </div>
     </div>
@@ -109,7 +109,7 @@
                   phx-value-scope={:instance}
                   phx-value-component={__MODULE__}
                 >
-                  <Icon iconify="bi:pin-angle-fill" class="w-5 h-5" />
+                  <#Icon iconify="bi:pin-angle-fill" class="w-5 h-5" />
                 </div> 
                 -->
                 <LiveRedirect to={path(pin)} class="flex flex-col w-full gap-3">

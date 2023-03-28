@@ -304,6 +304,20 @@ defmodule Bonfire.UI.Common.Web do
       end
     end
 
+    def macro_component(opts \\ []) do
+      quote do
+        @moduledoc false
+        alias Surface.MacroComponent
+        alias Surface.AST
+        use MacroComponent, unquote(opts)
+        import Phoenix.Component
+
+        prop socket, :any
+
+        unquote(surface_component_helpers())
+      end
+    end
+
     defp surface_component_helpers do
       quote do
         unquote(surface_helpers())
@@ -354,8 +368,9 @@ defmodule Bonfire.UI.Common.Web do
 
         alias Bonfire.UI.Common.LazyImage
         alias Bonfire.UI.Common.LinkLive
-        alias Bonfire.UI.Common.Icon
         alias Bonfire.UI.Common.LinkPatchLive
+
+        alias Iconify.Icon
       end
     end
   end

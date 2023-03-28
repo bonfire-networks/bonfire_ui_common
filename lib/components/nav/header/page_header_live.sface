@@ -15,11 +15,11 @@
           x-on:click="open_sidebar = true"
           class="rounded md:hidden btn btn-sm btn-square btn-ghost"
         >
-          <Icon iconify="gg:menu-left-alt" class="w-6 h-6 text-base-content/70" />
+          <#Icon iconify="gg:menu-left-alt" class="w-6 h-6 text-base-content/70" />
         </button>
-        <Icon
+        <Iconify.iconify
           :if={@page_header_icon && !@back}
-          iconify={@page_header_icon}
+          icon={@page_header_icon}
           class="hidden w-5 h-5 text-base-content/70 md:block"
         />
         <Bonfire.UI.Common.BackButtonLive :if={@back} />

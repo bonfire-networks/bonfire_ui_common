@@ -54,7 +54,7 @@
                 aria-haspopup="true"
                 aria-expanded="true"
               >
-                <Icon iconify="material-symbols:more-horiz" class="w-5 h-5" />
+                <#Icon iconify="material-symbols:more-horiz" class="w-5 h-5" />
               </label>
               <ul
                 tabindex="0"

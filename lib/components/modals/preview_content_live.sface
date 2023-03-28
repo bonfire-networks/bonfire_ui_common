@@ -22,7 +22,7 @@
               aria-label={l("Go back to the previous page")}
               class="font-normal normal-case btn btn-sm btn-circle btn-ghost"
             >
-              <Icon outline="ChevronLeft" class="w-4 h-4 text-base-content" />
+              <#Icon outline="ChevronLeft" class="w-4 h-4 text-base-content" />
             </button>
             <span class="max-w-[200px] md:max-w-max text-sm font-semibold truncate text-ellipsis">{l("Discussion")}</span>
           </div>

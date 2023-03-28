@@ -31,7 +31,7 @@
     x-on:click="open = ! open"
     class="btn btn-ghost btn-sm text-[22px] btn-circle"
   >
-    <Icon
+    <#Icon
       iconify="entypo:emoji-happy"
       class="w-5 h-5 md:w-4 md:h-4 text-base-content text-opacity-70"
     />
@@ -44,7 +44,7 @@
     type="button"
     class="emoji-button btn btn-ghost btn-sm text-[22px] btn-circle"
   >
-    <Icon
+    <#Icon
       iconify="entypo:emoji-happy"
       class="w-5 h-5 md:w-4 md:h-4 text-base-content text-opacity-70"
     />

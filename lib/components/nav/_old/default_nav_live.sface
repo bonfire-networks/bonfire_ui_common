@@ -4,7 +4,7 @@
       to={~p"/feed"}
       class={"flex items-center rounded-md gap-5", "bg-base-content/10 font-semibold": @page == "feed"}
     >
-      <Icon iconify="noto:newspaper" class="w-5 h-5 text-base-content/70" />
+      <#Icon iconify="noto:newspaper" class="w-5 h-5 text-base-content/70" />
       {l("My feed")}
     </LiveRedirect>
   </li>
@@ -13,7 +13,7 @@
       to={~p"/feed/local"}
       class={"flex items-center rounded-md gap-5", "bg-base-content/10 font-semibold": @page == "local"}
     >
-      <Icon iconify="material-symbols:camping-rounded" class="w-5 h-5 text-base-content/70" />
+      <#Icon iconify="material-symbols:camping-rounded" class="w-5 h-5 text-base-content/70" />
       {l("Local")}
     </LiveRedirect>
   </li>
@@ -22,7 +22,7 @@
       to={~p"/feed/federation"}
       class={"flex items-center rounded-md gap-5", "bg-base-content/10 font-semibold": @page == "federation"}
     >
-      <Icon iconify="el:network" class="w-5 h-5 text-base-content/70" />
+      <#Icon iconify="el:network" class="w-5 h-5 text-base-content/70" />
       {l("Remote")}
     </LiveRedirect>
   </li>
@@ -31,7 +31,7 @@
       to={~p"/feed/likes"}
       class={"flex items-center rounded-md gap-5", "bg-base-content/10 font-semibold": @page == "likes"}
     >
-      <Icon iconify="bi:stars" class="w-5 h-5 text-base-content/70" />
+      <#Icon iconify="bi:stars" class="w-5 h-5 text-base-content/70" />
       {l("Favourites")}
     </LiveRedirect>
   </li>

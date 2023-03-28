@@ -23,7 +23,7 @@
               )}
               class="flex items-center btn-active btn btn-ghost btn-sm btn-circle btn_cw_toggle"
             >
-              <Icon iconify="fluent:chat-warning-24-regular" class="w-5 h-5 text-base-content/70" />
+              <#Icon iconify="fluent:chat-warning-24-regular" class="w-5 h-5 text-base-content/70" />
             </button>
           </div>
 

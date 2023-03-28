@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Common.ExtensionToggleLive do
   prop can_instance_wide, :boolean, default: false
 
   def update(assigns, socket) do
-    {:noreply,
+    {:ok,
      socket
      |> assign(assigns)
      |> assign_new(:globally_disabled, fn ->

@@ -12,7 +12,7 @@
     >
       <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
       <span>
-        <Icon outline="Minus" class="w-4 h-4 stroke-1 text-base-content/70" />
+        <#Icon outline="Minus" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l("Minimize")}</span>
       </span>
     </button>
@@ -26,7 +26,7 @@
     >
       <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
       <span>
-        <Icon
+        <#Icon
           iconify="fluent:window-new-16-filled"
           class="w-4 h-4 rotate-[270deg] stroke-1 text-base-content/70"
         />
@@ -43,7 +43,7 @@
     >
       <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
       <span>
-        <Icon
+        <#Icon
           iconify="fluent:window-new-16-filled"
           class="w-4 h-4 rotate-90 stroke-1 text-base-content/70"
         />
@@ -62,7 +62,7 @@
         <p>{l("Closing the composer will discard your post. Are you sure you want to close it?")}</p>
       </div>
       <:open_btn>
-        <Icon outline="X" class="w-4 h-4 stroke-1 text-base-content/70" />
+        <#Icon outline="X" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l("Close")}</span>
       </:open_btn>
       <:action_btns>

@@ -6,7 +6,7 @@
     class="h-[40px] cursor-pointer group justify-between rounded-t-2xl border-none border flex items-center gap-2 border-base-content/10 px-4"
   >
     <div class="flex items-center gap-3">
-      <Icon iconify="mdi:pencil" class="w-4 h-4 group-hover:text-primary/100 text-primary/70" />
+      <#Icon iconify="mdi:pencil" class="w-4 h-4 group-hover:text-primary/100 text-primary/70" />
       <span class="text-sm text-primary/70 group-hover:text-primary/100">{l("Compose...")}</span>
     </div>
     <button
@@ -16,7 +16,7 @@
       class="flex btn btn-xs btn-ghost btn-circle"
       data-testid="composer:close-button"
     >
-      <Icon outline="X" class="w-4 h-4 stroke-1 group-hover:text-primary/100 text-primary/70" />
+      <#Icon outline="X" class="w-4 h-4 stroke-1 group-hover:text-primary/100 text-primary/70" />
       <span class="sr-only">{l("Close")}</span>
     </button>
   </div>

@@ -7,9 +7,9 @@
     to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
   >
     {#if @page == "home"}
-      <Icon iconify="ri:home-fill" class="w-6 h-6" />
+      <#Icon iconify="ri:home-fill" class="w-6 h-6" />
     {#else}
-      <Icon iconify="ri:home-line" class="w-6 h-6" />
+      <#Icon iconify="ri:home-line" class="w-6 h-6" />
     {/if}
     <span class="sr-only">{l("Home")}</span>
   </LiveRedirect>
@@ -22,7 +22,7 @@
     }
     to="/feed"
   >
-    <Icon iconify="ic:outline-explore" class="w-6 h-6" />
+    <#Icon iconify="ic:outline-explore" class="w-6 h-6" />
     <span class="sr-only">{l("Feeds")}</span>
   </LiveRedirect>
 
@@ -34,15 +34,15 @@
       "text-primary": @page == "search"
     }
   >
-    <Icon outline="Search" class="w-6 h-6" />
+    <#Icon outline="Search" class="w-6 h-6" />
     <span class="sr-only">{l("Search")}</span>
   </LiveRedirect>
 
   <LiveRedirect :if={@current_user} to={path(:notifications)} class="">
     {#if @page == "notifications"}
-      <Icon iconify="ph:bell-fill" class="w-6 h-6" />
+      <#Icon iconify="ph:bell-fill" class="w-6 h-6" />
     {#else}
-      <Icon iconify="ph:bell-bold" class="w-6 h-6" />
+      <#Icon iconify="ph:bell-bold" class="w-6 h-6" />
     {/if}
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>
@@ -71,7 +71,7 @@
     />
     <:open_btn>
       <div class="">
-        <Icon outline="DotsHorizontal" class="w-6 h-6" />
+        <#Icon outline="DotsHorizontal" class="w-6 h-6" />
         <span class="sr-only">{l("More")}</span>
       </div>
     </:open_btn>

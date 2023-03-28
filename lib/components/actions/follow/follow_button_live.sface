@@ -10,7 +10,7 @@
       phx-value-id={@object_id}
       class={e(@class, "btn btn-sm btn-primary rounded border-base-content/40 normal-case")}
     >
-      <Icon solid="UserAdd" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
+      <#Icon solid="UserAdd" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
       <span :if={!@hide_text} class={"truncate ellipsis", "ml-2": !@hide_icon}>
         {@verb || l("Follow")} {@label}</span>
     </a>
@@ -26,7 +26,7 @@
       :class={"{ '!btn-error': text == '#{l("Cancel")}' }"}
       class={e(@class, "btn btn-sm btn-outline rounded !border-base-content/40 normal-case")}
     >
-      <Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
+      <#Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
 
       <span :if={!@hide_text} x-text="text" class={"truncate ellipsis", "ml-2": !@hide_icon}>
         {l("Requested")} {@label}</span>
@@ -43,7 +43,7 @@
       :class={"{ '!btn-error': text == '#{@verb_undo || l("Unfollow")}' }"}
       class={e(@class, "btn btn-sm btn-outline rounded !border-base-content/40 normal-case")}
     >
-      <Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
+      <#Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
 
       <span :if={!@hide_text} x-text="text" class={"truncate ellipsis", "ml-2": !@hide_icon}>
         {@verb_already || l("Following")} {@label}</span>

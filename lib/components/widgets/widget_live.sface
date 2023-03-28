@@ -10,7 +10,7 @@
           else: "block w-full"}
       >
         <span :if={!@without_icon} class="">
-          <Icon iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />
+          <Iconify.iconify icon={widget(@widget, @__context__)[:icon]} class={@icon_class} />
         </span>
         <span
           :if={(not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])) or

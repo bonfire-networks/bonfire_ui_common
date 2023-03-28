@@ -8,7 +8,7 @@
       "bg-base-content/5": @__context__[:current_extension][:name] == extension[:name]
     }>
       <LinkLive to={extension[:href]} class="flex items-center w-full gap-5 text-left">
-        <Icon iconify={extension[:icon]} class="w-5 h-5" />
+        <Iconify.iconify icon={extension[:icon]} class="w-5 h-5" />
         <span class="flex-1">{extension[:name]}</span>
       </LinkLive>
 
@@ -16,7 +16,7 @@
         {#match app_nav_items when is_list(app_nav_items)}
           <div class="dropdown dropdown-hover dropdown-right">
             <label class="btn btn-xs btn-ghost btn-square" tabindex="0">
-              <Icon class="w-4 h-4 text-base-content/70" solid="ChevronRight" />
+              <#Icon class="w-4 h-4 text-base-content/70" solid="ChevronRight" />
             </label>
             <ul tabindex="0" class="rounded shadow dropdown-content menu menu-compact w-52">
               {#for nav <- app_nav_items}

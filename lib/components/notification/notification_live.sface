@@ -28,7 +28,7 @@
               {#match icon when is_binary(icon)}
                 <img src={icon} class="w-10 h-10 rounded">
               {#match _}
-                <Icon outline="Speakerphone" class="w-5 h-5 text-info-content" />
+                <#Icon outline="Speakerphone" class="w-5 h-5 text-info-content" />
             {/case}
           </div>
           <div class="ml-3 w-0 flex-1 pt-0.5">
@@ -51,7 +51,7 @@
               class="btn btn-sm btn-circle btn-info"
             >
               <span class="sr-only">{l("Close")}</span>
-              <Icon solid="X" class="w-5 h-5" />
+              <#Icon solid="X" class="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -68,7 +68,7 @@
           <div class="p-4">
             <div class="flex items-center">
               <div class="flex-shrink-0 p-2 rounded">
-                <Icon outline="Speakerphone" class="w-5 h-5 text-info-content" />
+                <#Icon outline="Speakerphone" class="w-5 h-5 text-info-content" />
               </div>
               <div class="ml-3 w-0 flex-1 pt-0.5">
                 <div data-id="flash" data-type="info" class="text-sm font-semibold text-info-content">{rich(info)}</div>
@@ -82,7 +82,7 @@
                   class="btn btn-sm btn-circle btn-info"
                 >
                   <span class="sr-only">{l("Close")}</span>
-                  <Icon solid="X" class="w-5 h-5" />
+                  <#Icon solid="X" class="w-5 h-5" />
                 </button>
               </div>
             </div>
@@ -109,7 +109,7 @@
           <div class="p-4">
             <div class="flex items-top">
               <div class="flex-shrink-0">
-                <Icon outline="Exclamation" class="w-6 h-6 text-error-content" />
+                <#Icon outline="Exclamation" class="w-6 h-6 text-error-content" />
               </div>
               <div class="ml-3 w-0 flex-1 pt-0.5">
                 <div
@@ -137,7 +137,7 @@
                   class="btn btn-sm btn-circle btn-error"
                 >
                   <span class="sr-only">{l("Close")}</span>
-                  <Icon solid="X" class="w-5 h-5" />
+                  <#Icon solid="X" class="w-5 h-5" />
                 </button>
               </div>
             </div>

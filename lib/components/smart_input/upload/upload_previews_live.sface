@@ -30,7 +30,7 @@
           aria-haspopup="true"
           aria-expanded="true"
         >
-          <Icon solid="DotsVertical" class="w-4 h-4" />
+          <#Icon solid="DotsVertical" class="w-4 h-4" />
           {l("Edit")}
         </label>
         <ul
@@ -50,7 +50,7 @@
               <div class="p-4 rounded-md bg-info/10">
                 <div class="flex">
                   <div class="flex-shrink-0">
-                    <Icon solid="InformationCircle" class="w-5 h-5 text-info" />
+                    <#Icon solid="InformationCircle" class="w-5 h-5 text-info" />
                   </div>
                   <div class="flex-1 ml-3 md:flex md:justify-between">
                     <p class="text-sm text-info">
@@ -73,7 +73,7 @@
                 class="z-20 flex items-center w-full gap-2 font-medium normal-case rounded btn btn-ghost btn-sm"
                 aria-label="Add description"
               >
-                <Icon solid="Pencil" class="w-4 h-4" />
+                <#Icon solid="Pencil" class="w-4 h-4" />
                 <span class="">{l("Describe")}</span>
               </button>
               <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}>
@@ -87,7 +87,7 @@
             phx-value-ref={entry.ref}
             aria-label="cancel"
           >
-            <Icon solid="Trash" class="w-4 h-4" />
+            <#Icon solid="Trash" class="w-4 h-4" />
             <span class="">{l("Delete")}</span>
           </button>
         </ul>

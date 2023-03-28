@@ -30,7 +30,7 @@
                       aria-haspopup="true"
                       aria-expanded="true"
                     >
-                      <Icon iconify="mdi:chevron-down" class="w-6 h-6" />
+                      <#Icon iconify="mdi:chevron-down" class="w-6 h-6" />
                     </label>
                     <ul
                       tabindex="0"

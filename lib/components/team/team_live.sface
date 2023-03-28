@@ -27,7 +27,7 @@
         <td><span class="badge">Moderator</span></td>
         <td>
           <div class="flex justify-end">
-            <button class="btn btn-square btn-xs"><Icon solid="Cog" class="w-5 h-5" /></button>
+            <button class="btn btn-square btn-xs"><#Icon solid="Cog" class="w-5 h-5" /></button>
           </div>
         </td>
       </tr>
@@ -48,7 +48,7 @@
         <td><span class="badge">Moderator</span></td>
         <td>
           <div class="flex justify-end">
-            <button class="btn btn-square btn-xs"><Icon solid="Cog" class="w-5 h-5" /></button>
+            <button class="btn btn-square btn-xs"><#Icon solid="Cog" class="w-5 h-5" /></button>
           </div>
         </td>
       </tr>
@@ -69,7 +69,7 @@
         <td><span class="badge">Moderator</span></td>
         <td>
           <div class="flex justify-end">
-            <button class="btn btn-square btn-xs"><Icon solid="Cog" class="w-5 h-5" /></button>
+            <button class="btn btn-square btn-xs"><#Icon solid="Cog" class="w-5 h-5" /></button>
           </div>
         </td>
       </tr>
@@ -90,7 +90,7 @@
         <td><span class="badge">Moderator</span></td>
         <td>
           <div class="flex justify-end">
-            <button class="btn btn-square btn-xs"><Icon solid="Cog" class="w-5 h-5" /></button>
+            <button class="btn btn-square btn-xs"><#Icon solid="Cog" class="w-5 h-5" /></button>
           </div>
         </td>
       </tr>

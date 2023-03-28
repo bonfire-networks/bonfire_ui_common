@@ -5,7 +5,7 @@
         <div class="flex items-center justify-between">
           <span class="font-light text-base-content/70">{l("Website")}</span>
           <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
-            <Icon solid="ChevronDown" class="w-4 h-4" />
+            <#Icon solid="ChevronDown" class="w-4 h-4" />
           </div>
         </div>
       </li>
@@ -23,7 +23,7 @@
           "bg-base-content/10": @selected_tab == "preferences"
         }
       >
-        <Icon
+        <#Icon
           solid="Cog"
           class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "preferences"}
         />
@@ -36,7 +36,7 @@
             class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full", 
             "bg-base-content/10": @selected_tab == "design"}>
-            <Icon solid="ColorSwatch" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "design"} />
+            <#Icon solid="ColorSwatch" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "design"} />
             <span class="text-sm text-base-content/70">{l("Design")}</span>
           </LivePatch>
         </li> -->
@@ -46,7 +46,7 @@
             to={~p"/settings/instance/navigation"}
             class={"flex items-center gap-3 rounded-md py-2 px-2 w-full", "bg-base-content/10": @selected_tab == "navigation"}
           >
-            <Icon solid="PaperAirplane" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "navigation"} />
+            <#Icon solid="PaperAirplane" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "navigation"} />
             <span class="text-sm text-base-content/70">{l("Navigation")}</span>
           </LivePatch>
         </li> -->
@@ -59,7 +59,7 @@
           "bg-base-content/10": @selected_tab == "terms"
         }
       >
-        <Icon
+        <#Icon
           solid="Scale"
           class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "terms"}
         />
@@ -74,7 +74,7 @@
         <div class="flex items-center justify-between">
           <span class="font-light text-base-content/70">{l("Members")}</span>
           <div :class="{'rotate-180' : open}" class="transition-all btn btn-xs btn-ghost btn-circle">
-            <Icon solid="ChevronDown" class="w-4 h-4" />
+            <#Icon solid="ChevronDown" class="w-4 h-4" />
           </div>
         </div>
       </li>
@@ -92,7 +92,7 @@
           "bg-base-content/10": @selected_tab == "members"
         }
       >
-        <Icon
+        <#Icon
           solid="Users"
           class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "members"}
         />
@@ -109,7 +109,7 @@
           "bg-base-content/10": @selected_tab == "invites"
         }
       >
-        <Icon
+        <#Icon
           solid="Mail"
           class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "invites"}
         />
@@ -131,7 +131,7 @@
           "bg-base-content/10": @selected_tab == "flags"
         }
       >
-        <Icon
+        <#Icon
           solid="Flag"
           class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "flags"}
         />
@@ -151,7 +151,7 @@
           "bg-base-content/10": @selected_tab == "instance_ghosted"
         }
       >
-        <Icon
+        <#Icon
           iconify="mingcute:ghost-fill"
           class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "instance_ghosted"}
         />
@@ -178,7 +178,7 @@
           "bg-base-content/10": @selected_tab == "instance_silenced"
         }
       >
-        <Icon
+        <#Icon
           solid="VolumeOff"
           class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "instance_silenced"}
         />
@@ -211,7 +211,7 @@
           "bg-base-content/10": @selected_tab == "extensions"
         }
       >
-        <Icon
+        <#Icon
           solid="Puzzle"
           class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
         />
@@ -231,7 +231,7 @@
           "bg-base-content/10": @selected_tab == "pages"
         }
       >
-        <Icon solid="DocumentDuplicate" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "pages"} />
+        <#Icon solid="DocumentDuplicate" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "pages"} />
         {l("Pages")}
       </LivePatch>
     </li>
@@ -247,7 +247,7 @@
         }
       >
         
-          <Icon solid="ChatAlt" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "posts"} />
+          <#Icon solid="ChatAlt" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "posts"} />
         {l("Posts")}
       </LivePatch>
     </li>
@@ -263,7 +263,7 @@
         }
       >
         
-          <Icon solid="Tag" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "tags"} />
+          <#Icon solid="Tag" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "tags"} />
         {l("Tags")}
       </LivePatch>
     </li> -->
