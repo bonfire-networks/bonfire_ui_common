@@ -1,15 +1,7 @@
 <div class="flex items-center w-full gap-2 px-2">
   <span class="px-1 text-xs font-medium uppercase text-base-content/70">{l("To")}</span>
-  {#if is_list(@to_circles) and @to_circles != []}
-    <div class="flex justify-between w-full">
-      <div class="flex items-center gap-2">
-        {#for {name, id} <- @to_circles}
-          <span class="badge">{name}</span>
-          <input type="hidden" name="to_circles[]" placeholder={@label} label={name} value={id}>
-        {/for}
-      </div>
-    </div>
-  {/if}
+
+  <div class="flex flex-col flex-1 gap-1">
   {#case @implementation}
     {#match nil}
       <div class="flex-1" id={:select_recipients} phx-update="ignore" phx-hook="InputOrSelectOne">
@@ -37,4 +29,19 @@
         />
       </div>
   {/case}
+    {#if is_list(@to_circles) and @to_circles != []}
+    <div class="flex w-full">
+      <div class="flex items-center gap-2">
+        {#for {name, id} <- @to_circles}
+          <span class="gap-2 border-base-content/70 badge !h-[2rem] badge-lg badge-outline">
+            {name}
+            <svg phx-click="remove" phx-value-id={id} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-4 h-4 cursor-pointer stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </span>
+          
+          <input type="hidden" name="to_circles[]" placeholder={@label} label={name} value={id}>
+        {/for}
+      </div>
+    </div>
+    {/if}
+  </div>
 </div>

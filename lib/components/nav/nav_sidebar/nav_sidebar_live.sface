@@ -36,7 +36,7 @@
         </div>
       </LiveRedirect>
       <div class="flex items-center gap-3">
-        <LiveRedirect
+        <!-- <LiveRedirect
           to="/messages"
           opts={alt: "Direct messages"}
           :if={@current_user}
@@ -51,7 +51,7 @@
               feed_id={e(@current_user, :character, :inbox_id, nil)}
             />
           </div>
-        </LiveRedirect>
+        </LiveRedirect> -->
 
         <LiveRedirect
           to={path(:notifications)}
@@ -77,13 +77,13 @@
       <ul class="menu">
         <li class="p-0 m-0 rounded-md">
           <LiveRedirect to="/" class="flex items-center w-full gap-6 px-2 py-2 rounded-md">
-            <#Icon iconify="ri:home-line" class="h-5 w-5 text-base-content/70" />
+            <#Icon iconify="ri:home-line" class="w-5 h-5 text-base-content/70" />
             <span class="text-sm font-normal text-base-content/70">{l("Home")}</span>
           </LiveRedirect>
         </li>
         <li class="p-0 m-0 rounded-md">
           <LiveRedirect to="/feed" class="flex items-center w-full gap-6 px-2 py-2 rounded-md">
-            <#Icon iconify="ic:outline-explore" class="h-5 w-5 text-base-content/70" />
+            <#Icon iconify="ic:outline-explore" class="w-5 h-5 text-base-content/70" />
             <span class="text-sm font-normal text-base-content/70">{l("Recent activities")}</span>
           </LiveRedirect>
         </li>
@@ -92,7 +92,7 @@
           class="p-0 m-0 rounded-md"
         >
           <LiveRedirect to="/users" class="flex items-center w-full gap-6 px-2 py-2 rounded-md">
-            <#Icon iconify="heroicons:users" class="h-5 w-5 text-base-content/70" />
+            <#Icon iconify="heroicons:users" class="w-5 h-5 text-base-content/70" />
             <span class="text-sm font-normal text-base-content/70">{l("Users directory")}</span>
           </LiveRedirect>
         </li>

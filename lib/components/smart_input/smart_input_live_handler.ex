@@ -1,6 +1,18 @@
 defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
 
+
+  def switch_smart_input_type(type, js \\ %JS{}) do
+    js
+    |> JS.hide(to: ".composer_minimized")
+    |> JS.push("set",
+      value: %{
+        smart_input_as: type
+      }
+    )
+  end
+
+
   def handle_event("set", %{"smart_input_as" => smart_input_as}, socket) do
     # note: only works with phx-target being the smart input, in other cases use `set/2` instead
     {:noreply,
@@ -138,7 +150,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def confirm_close_smart_input(js \\ %JS{}, reusable_modal_id) do
-    # Bonfire.UI.Common.OpenModalLive.close(reusable_modal_id) 
+    # Bonfire.UI.Common.OpenModalLive.close(reusable_modal_id)
     js
     |> JS.push("close",
       target: "##{reusable_modal_id || "modal"}"
@@ -195,7 +207,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # TODO: only trigger if using Quill as editor?
     # maybe_push_event(socket, "smart_input:set_body", %{text: text})
     replace_input_next_time(socket_or_context)
-
     set(
       socket_or_context,
       set_assigns ++
@@ -283,17 +294,17 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   #   |> JS.toggle(to: target)
   # end
 
-  def toggle_mini_maxi(
-        js \\ %JS{},
-        smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
-        smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
-      ) do
-    js
-    |> JS.toggle(to: smart_input_show_on_minimize)
-    |> JS.toggle(to: smart_input_show_on_maximize)
+  # def toggle_mini_maxi(
+  #       js \\ %JS{},
+  #       smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
+  #       smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
+  #     ) do
+  #   js
+  #   |> JS.toggle(to: smart_input_show_on_minimize)
+  #   |> JS.toggle(to: smart_input_show_on_maximize)
 
-    # |> JS.push("toggle_mini_maxi")
-  end
+  #   # |> JS.push("toggle_mini_maxi")
+  # end
 
   def minimize(
         js \\ %JS{},

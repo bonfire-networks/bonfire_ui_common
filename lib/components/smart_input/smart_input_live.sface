@@ -39,11 +39,7 @@
       </div>
       <Dynamic.Component
         module={LiveHandler.active_smart_input_component(@smart_input_component, @create_object_type)}
-        textarea_class={Surface.css_class([
-          "editor_area textarea p-0 max-h-full w-full rounded-none",
-          "min-h-[240px]": @smart_input_as != :focused,
-          "h-full min-h-[420px]": @smart_input_as == :focused or @showing_within in [:compose]
-        ])}
+        textarea_class={Surface.css_class(["editor_area textarea p-0 max-h-full w-full rounded-none min-h-[240px]"])}
         {...assigns}
       />
     </div>

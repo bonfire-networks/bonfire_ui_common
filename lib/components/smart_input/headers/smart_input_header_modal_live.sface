@@ -18,34 +18,32 @@
     </button>
     <button
       :if={@smart_input_as != :focused}
-      phx-click="Bonfire.UI.Common.SmartInput:set"
+      phx-click={LiveHandler.switch_smart_input_type("focused")}
       phx-target="#smart_input"
-      phx-value-smart_input_as="focused"
       type="button"
-      class="flex btn btn-xs btn-ghost btn-circle"
+      class="hidden md:flex btn btn-xs btn-ghost btn-circle"
     >
       <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
       <span>
         <#Icon
-          iconify="fluent:window-new-16-filled"
-          class="w-4 h-4 rotate-[270deg] stroke-1 text-base-content/70"
+          iconify="bx:expand-alt"
+          class="w-4 h-4 stroke-1 text-base-content/70"
         />
         <span class="sr-only">{l("Maximise focus")}</span>
       </span>
     </button>
     <button
       :if={@smart_input_as == :focused}
-      phx-click="Bonfire.UI.Common.SmartInput:set"
+      phx-click={LiveHandler.switch_smart_input_type("non_blocking")}
       phx-target="#smart_input"
-      phx-value-smart_input_as="non_blocking"
       type="button"
-      class="flex btn btn-xs btn-ghost btn-circle"
+      class="hidden md:flex btn btn-xs btn-ghost btn-circle"
     >
       <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
       <span>
         <#Icon
-          iconify="fluent:window-new-16-filled"
-          class="w-4 h-4 rotate-90 stroke-1 text-base-content/70"
+          iconify="bx:collapse-alt"
+          class="w-4 h-4 stroke-1 text-base-content/70"
         />
         <span class="sr-only">{l("Get it out of the way")}</span>
       </span>

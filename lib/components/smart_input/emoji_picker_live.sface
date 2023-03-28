@@ -45,7 +45,7 @@
     class="emoji-button btn btn-ghost btn-sm text-[22px] btn-circle"
   >
     <#Icon
-      iconify="entypo:emoji-happy"
+      iconify="akar-icons:face-happy"
       class="w-5 h-5 md:w-4 md:h-4 text-base-content text-opacity-70"
     />
   </button>
