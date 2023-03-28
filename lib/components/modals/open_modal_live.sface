@@ -51,7 +51,7 @@
             for={@id}
             class="absolute top-0 right-0 z-30 block pt-5 pr-4 normal-case btn btn-circle btn-sm"
           >
-            <span class="sr-only">{l("Close")}</span>
+            <span class="sr-only">{@cancel_label || l("Close")}</span>
             <Icon outline="X" class="w-4 h-4" />
           </label>
 
@@ -67,7 +67,7 @@
         <div :if={!@no_actions} class="modal-action">
           <label for={@id}>
             <#slot {@cancel_btn}>
-              <button class={@cancel_btn_class || "btn btn-ghost rounded btn-sm normal-case"} type="button">{l("Close")}</button>
+              <button class={@cancel_btn_class || "btn btn-ghost rounded btn-sm normal-case"} type="button">{@cancel_label || l("Close")}</button>
             </#slot>
           </label>
           <div class={@action_btns_wrapper_class}>

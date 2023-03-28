@@ -47,7 +47,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   @doc "The classes of the close/cancel button on the modal. Only used if no close_btn slot is passed."
   prop cancel_btn_class, :css_class, default: nil
 
-  prop cancel_btn_text, :string, default: nil
+  prop cancel_label, :string, default: nil
 
   @doc "Force modal to be open"
   prop show, :boolean, default: false
@@ -93,7 +93,10 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   end
 
   def do_handle_event("close", _, socket) do
-    # debug("reset all assigns to defaults so they don't accidentally get re-used in a different modal")
+    debug(
+      "reset all assigns to defaults so they don't accidentally get re-used in a different modal"
+    )
+
     {:noreply, assign(socket, [show: false] ++ default_assigns())}
   end
 

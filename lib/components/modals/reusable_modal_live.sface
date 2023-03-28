@@ -77,7 +77,7 @@
       <div :if={!@no_actions} class="modal-action">
         <div phx-click="close" phx-target={"[id='#{@id}']"}>
           <#slot {@cancel_btn}>
-            <button class={@cancel_btn_class || "btn btn-ghost rounded btn-sm normal-case"} type="button">{@cancel_btn_text || l("Close")}</button>
+            <button class={@cancel_btn_class || "btn btn-ghost rounded btn-sm normal-case"} type="button">{@cancel_label || l("Close")}</button>
           </#slot>
         </div>
         <div class={@action_btns_wrapper_class}>

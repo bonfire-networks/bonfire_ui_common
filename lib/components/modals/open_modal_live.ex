@@ -5,6 +5,8 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   use Bonfire.UI.Common.Web, :stateful_component
   alias Bonfire.UI.Common.ReusableModalLive
 
+  @default_modal_id "modal"
+
   @doc "The title of the button used to open the modal. Only used if no `open_btn` slot is passed."
   prop open_btn_text, :string, default: nil
 
@@ -46,7 +48,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   @doc "The classes of the close/cancel button on the modal. Only used if no `close_btn` slot is passed."
   prop cancel_btn_class, :css_class, default: "btn btn-ghost rounded btn-sm normal-case"
 
-  prop cancel_btn_text, :string, default: nil
+  prop cancel_label, :string, default: nil
 
   @doc "Force modal to be open"
   prop show, :boolean, default: false
@@ -65,7 +67,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   prop reusable_modal_component, :atom, default: ReusableModalLive
 
   @doc "The ID of this instance of the modal"
-  prop reusable_modal_id, :string, default: "modal"
+  prop reusable_modal_id, :string, default: @default_modal_id
 
   @doc """
   Additional assigns to pass on to the modal component
@@ -102,12 +104,16 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   def open(reusable_modal_id \\ nil) do
     debug("open!")
-    set([show: true], reusable_modal_id)
+    set([show: true], reusable_modal_id || @default_modal_id)
   end
 
   def close(reusable_modal_id \\ nil) do
     debug("close!")
-    set([show: false] ++ ReusableModalLive.default_assigns(), reusable_modal_id)
+
+    set(
+      [show: false] ++ ReusableModalLive.default_assigns(),
+      reusable_modal_id || @default_modal_id
+    )
   end
 
   def set(assigns, reusable_modal_id \\ nil) do
@@ -117,7 +123,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
         :reusable_modal_component,
         ReusableModalLive
       ),
-      reusable_modal_id || e(assigns, :reusable_modal_id, "modal"),
+      reusable_modal_id || e(assigns, :reusable_modal_id, @default_modal_id),
       assigns
     )
 

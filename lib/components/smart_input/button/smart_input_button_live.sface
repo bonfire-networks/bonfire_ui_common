@@ -1,14 +1,16 @@
 <button
-  phx-click={LiveHandler.select_smart_input(
-    "#smart_input_container",
-    @component,
-    @create_object_type,
-    Jason.encode!(Map.drop(@smart_input_opts, [:text]))
-  )}
+  phx-click={if @create_object_type || @component,
+    do:
+      LiveHandler.open_type(
+        %JS{},
+        @component,
+        @create_object_type,
+        @smart_input_opts
+      ),
+    else: LiveHandler.open(%JS{}, @smart_input_opts)}
   phx-target="#smart_input"
   type="button"
-  class={@class ||
-    "fixed right-3 bottom-[72px] md:static flex-row btn-square grow md:h-[40px] items-center normal-case gap-2 md:btn-sm btn btn-primary"}
+  class={@class}
 >
   <!-- 
     phx-value-opts={Jason.encode!(merge_as_map(%{prompt: @prompt}, @smart_input_opts))}

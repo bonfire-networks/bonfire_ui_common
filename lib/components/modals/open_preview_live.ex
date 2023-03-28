@@ -32,7 +32,6 @@ defmodule Bonfire.UI.Common.OpenPreviewLive do
   """
   slot open_btn
 
-
   def handle_event("close", _, socket) do
     close()
     {:noreply, assign(socket, show: false)}

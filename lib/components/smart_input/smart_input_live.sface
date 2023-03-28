@@ -3,11 +3,11 @@
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
     x-data={"{
-          body: '',
-          body_length() { const value = this.body.trim()
-            if(!value) return 0
-            return value.split(/\s+/).length },
-          title_open: #{if is_nil(@title_open) and @create_object_type not in [:post], do: true, else: @title_open == true}, 
+                      body: '',
+                      body_length() { const value = this.body.trim()
+                        if(!value) return 0
+                        return value.split(/\s+/).length },
+                      title_open: #{if is_nil(@title_open) and @create_object_type not in [:post], do: true, else: @title_open == true}, 
     }"}
     class={
       "flex bg-transparent h-full grow flex-1",
@@ -40,9 +40,9 @@
       <Dynamic.Component
         module={LiveHandler.active_smart_input_component(@smart_input_component, @create_object_type)}
         textarea_class={Surface.css_class([
-          "editor_area textarea p-0 h-full w-full rounded-none !min-h-[240px]",
-          "!h-full !min-h-[420px]": @showing_within in [:compose],
-          "!max-h-full h-[420px]": @smart_input_as == :focused
+          "editor_area textarea p-0 max-h-full w-full rounded-none",
+          "min-h-[240px]": @smart_input_as != :focused,
+          "h-full min-h-[420px]": @smart_input_as == :focused or @showing_within in [:compose]
         ])}
         {...assigns}
       />
@@ -51,7 +51,7 @@
   <!-- <noscript>
     <style type="text/css">
       #smart_input {display: block !important;}
-      /* .smart_input_container header {display: none;} */
+      /* #smart_input_container header {display: none;} */
       .input_boundaries button {display: none;} /* FIXME: make boundary selection work without JS */
     </style>
   </noscript> -->

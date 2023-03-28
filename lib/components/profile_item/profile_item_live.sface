@@ -14,7 +14,7 @@
     <div class={
       "flex-1",
       "flex gap-2 items-baseline": @inline
-      }>
+    }>
       <p class={"text-sm font-medium group-hover:underline text-base-content", "text-base": @lg}>
         {e(@profile, :name, "Anon")}
       </p>

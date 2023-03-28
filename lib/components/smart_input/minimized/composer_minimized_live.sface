@@ -1,6 +1,6 @@
-<div class="hidden minimizable">
+<div class="smart_input_show_on_minimize hidden">
   <div
-    phx-click={LiveHandler.toggle_minimize(".minimizable", true)}
+    phx-click={LiveHandler.maximize()}
     phx-target="#smart_input"
     type="button"
     class="h-[40px] cursor-pointer group justify-between rounded-t-2xl border-none border flex items-center gap-2 border-base-content/10 px-4"

@@ -1,23 +1,11 @@
 defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
 
-  def confirm_close_smart_input(target, reusable_modal_id, js \\ %JS{}) do
-    close_smart_input(target, js)
-    # Bonfire.UI.Common.OpenModalLive.close(reusable_modal_id)
-  end
-
-  def close_smart_input(target, js \\ %JS{}) do
-    js
-    |> JS.hide(to: target)
-    |> JS.push("reset", value: %{})
-  end
-
-  def select_smart_input(target, component, create_object_type, opts \\ [], js \\ %JS{}) do
-    js
-    |> JS.show(to: target)
-    |> JS.push("select_smart_input",
-      value: %{component: component, create_object_type: create_object_type, opts: opts}
-    )
+  def handle_event("set", %{"smart_input_as" => smart_input_as}, socket) do
+    # note: only works with phx-target being the smart input, in other cases use `set/2` instead
+    {:noreply,
+     socket
+     |> assign(smart_input_as: maybe_to_atom(smart_input_as) |> debug("smart_input_as"))}
   end
 
   def handle_event("select_smart_input", params, socket) do
@@ -53,6 +41,17 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
          (to_circles || e(socket.assigns, :to_circles, []))
          |> debug("to_circles")
      )}
+  end
+
+  def handle_event("remove_data", _params, socket) do
+    assign_open(socket.assigns[:__context__],
+      activity: nil,
+      object: nil,
+      # default to replying to current thread
+      reply_to_id: e(socket, :assigns, :thread_id, nil)
+    )
+
+    {:noreply, socket}
   end
 
   def handle_event(action, params, socket)
@@ -112,50 +111,209 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     {:noreply, reset_input(socket)}
   end
 
-  def toggle_expanded(target, js \\ %JS{}) do
+  def open(js \\ %JS{}, opts \\ nil) do
     js
-    |> JS.toggle(to: target)
+    |> maximize()
+    |> JS.show(to: ".smart_input_show_on_open")
+    |> maybe_push_opts("select_smart_input", opts)
   end
 
-  def toggle_minimize(target, status, js \\ %JS{}) do
+  def open_type(js \\ %JS{}, component, create_object_type, opts \\ nil) do
     js
-    |> JS.push("toggle_minimize", value: %{status: status})
-    |> JS.toggle(to: target)
-  end
-
-  def handle_event("toggle_minimize", %{"status" => status} = _values, socket) do
-    opts =
-      e(socket.assigns, :smart_input_opts, %{})
-      |> Map.merge(%{minimized: !status})
-
-    {:noreply, socket |> assign(smart_input_opts: opts)}
-  end
-
-  def toggle_expanded(target, btn, class, js \\ %JS{}) do
-    js
-    |> JS.toggle(to: target)
-    |> JS.remove_class(
-      class,
-      to: btn <> "." <> class
-    )
-    |> JS.add_class(
-      class,
-      to: btn <> ":not(." <> class <> ")"
+    |> maximize()
+    |> JS.show(to: ".smart_input_show_on_open")
+    |> JS.push("select_smart_input",
+      value: %{
+        component: component,
+        create_object_type: create_object_type,
+        opts: encode_opts(opts)
+      }
     )
   end
 
-  # def minimize(js \\ %JS{}) do
-  #   js
-  #   |> JS.hide(to: ".minimizable")
-  #   |> JS.show(to: ".maximizable")
+  def close_smart_input(js \\ %JS{}) do
+    js
+    |> JS.hide(to: ".smart_input_show_on_open")
+    |> JS.push("reset")
+  end
 
+  def confirm_close_smart_input(js \\ %JS{}, reusable_modal_id) do
+    # Bonfire.UI.Common.OpenModalLive.close(reusable_modal_id) 
+    js
+    |> JS.push("close",
+      target: "##{reusable_modal_id || "modal"}"
+    )
+    |> close_smart_input()
+  end
+
+  defp maybe_push_opts(js \\ %JS{}, event, opts)
+
+  defp maybe_push_opts(js, event, {} = opts) when opts != %{} do
+    js
+    |> JS.push(event,
+      value: %{
+        opts: do_encode_opts(opts |> debug("opppp"))
+      }
+    )
+  end
+
+  defp maybe_push_opts(js, event, opts), do: js
+
+  defp encode_opts(%{} = opts) when opts != %{}, do: do_encode_opts(opts)
+  defp encode_opts(_), do: nil
+  defp do_encode_opts(opts), do: Jason.encode!(Map.drop(opts || %{}, [:text]))
+
+  @doc """
+  Open the composer by setting assigns
+  """
+  def assign_open(context, assigns) do
+    set(
+      context,
+      Keyword.merge(assigns,
+        smart_input_opts: Map.merge(assigns[:smart_input_opts] || %{}, %{open: true})
+      )
+    )
+  end
+
+  # def open_and_reset_if_empty(text, socket_assigns, set_assigns) do
+  #   # if empty?(e(socket_assigns, :smart_input_opts, :text, nil) |> debug()), do: replace_input_next_time(socket_assigns)
+  #   set(socket_assigns, set_smart_input_text_if_empty: text)
+  #   set(socket_assigns[:__context__], set_assigns)
   # end
 
-  # def maximize(js \\ %JS{}) do
+  @doc """
+  Set assigns in the smart input from anywhere in the app (whether using a live component or sticky live view)
+  """
+  def set(context, assigns) do
+    debug(assigns, "set assigns")
+
+    Bonfire.UI.Common.PersistentLive.maybe_send(context, {:smart_input, assigns}) ||
+      maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, assigns)
+  end
+
+  def open_with_text_suggestion(text, set_assigns, socket_or_context) do
+    # TODO: only trigger if using Quill as editor?
+    # maybe_push_event(socket, "smart_input:set_body", %{text: text})
+    replace_input_next_time(socket_or_context)
+
+    set(
+      socket_or_context,
+      set_assigns ++
+        [smart_input_opts: %{text_suggestion: text, open: true}, reset_smart_input: false]
+    )
+  end
+
+  def set_smart_input_text(socket, text \\ "\n") do
+    # TODO: only trigger if using Quill as editor?
+    # maybe_push_event(socket, "smart_input:set_body", %{text: text})
+    replace_input_next_time(socket)
+    set(socket, smart_input_opts: %{text: text, open: true}, reset_smart_input: false)
+    socket
+  end
+
+  def replace_input_next_time(socket_or_context) do
+    set(socket_or_context, reset_smart_input: true)
+  end
+
+  def reset_input(%{assigns: %{showing_within: :thread}} = socket) do
+    # debug("THREad")
+    replace_input_next_time(socket.assigns)
+
+    set(socket,
+      # avoid double-reset
+      reset_smart_input: false,
+      activity: nil,
+      to_circles: [],
+      reply_to_id: e(socket.assigns, :thread_id, nil),
+      to_boundaries: default_boundaries(socket),
+      smart_input_opts: %{
+        open: false,
+        text_suggestion: nil,
+        text: nil
+      }
+    )
+
+    socket
+  end
+
+  def reset_input(%{assigns: %{showing_within: :messages}} = socket) do
+    # debug("messages")
+    replace_input_next_time(socket)
+
+    set(socket,
+      # avoid double-reset
+      reset_smart_input: false,
+      activity: nil,
+      to_circles: [],
+      smart_input_opts: %{
+        open: false,
+        text_suggestion: nil,
+        text: nil
+      }
+    )
+
+    socket
+  end
+
+  def reset_input(socket) do
+    replace_input_next_time(socket)
+
+    set(socket,
+      # avoid double-reset
+      reset_smart_input: false,
+      activity: nil,
+      create_object_type: nil,
+      smart_input_component: nil,
+      to_circles: [],
+      reply_to_id: e(socket.assigns, :thread_id, nil),
+      thread_id: nil,
+      to_boundaries: default_boundaries(socket),
+      smart_input_opts: %{
+        open: false,
+        text_suggestion: nil,
+        text: nil
+      }
+    )
+
+    socket
+  end
+
+  # def toggle_expanded(js \\ %JS{}, target) do
   #   js
-  #   |> JS.hide(to: ".maximizable")
-  #   |> JS.show(to: ".minimizable")
+  #   |> JS.toggle(to: target)
   # end
+
+  def toggle_mini_maxi(
+        js \\ %JS{},
+        smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
+        smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
+      ) do
+    js
+    |> JS.toggle(to: smart_input_show_on_minimize)
+    |> JS.toggle(to: smart_input_show_on_maximize)
+
+    # |> JS.push("toggle_mini_maxi")
+  end
+
+  def minimize(
+        js \\ %JS{},
+        smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
+        smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
+      ) do
+    js
+    |> JS.hide(to: smart_input_show_on_maximize)
+    |> JS.show(to: smart_input_show_on_minimize)
+  end
+
+  def maximize(
+        js \\ %JS{},
+        smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
+        smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
+      ) do
+    js
+    |> JS.hide(to: smart_input_show_on_minimize)
+    |> JS.show(to: smart_input_show_on_maximize)
+  end
 
   # def hide_modal(js \\ %JS{}) do
   #   js
@@ -168,6 +326,29 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   #   |> JS.show(transition: "fade-in", to: "#picker")
   #   |> JS.remove_class("hidden", to: "#picker")
   # end
+
+  # def handle_event("toggle_mini_maxi", _values, socket) do
+  #   opts =
+  #     e(socket.assigns, :smart_input_opts, %{})
+  #     |> Map.merge(%{minimized: !status})
+  #   # note: can use this to toggle instead: https://hexdocs.pm/phoenix_live_view/Phoenix.Component.html#update/3
+  #   {:noreply, socket |> assign(smart_input_opts: opts)}
+  # end
+
+  def toggle_expanded(js \\ %JS{}, target, btn, class) do
+    # TODO: document
+    js
+    |> JS.toggle(to: target)
+    #  seems toggle as in and out classes we could use: https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.JS.html#toggle/1
+    |> JS.remove_class(
+      class,
+      to: btn <> "." <> class
+    )
+    |> JS.add_class(
+      class,
+      to: btn <> ":not(." <> class <> ")"
+    )
+  end
 
   def max_length do
     default = 2000
@@ -279,121 +460,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   defp display_name(name) do
     maybe_to_string(name)
-  end
-
-  @doc """
-  Open the composer and set assigns
-  """
-  def open(context, assigns) do
-    set(
-      context,
-      Keyword.merge(assigns,
-        smart_input_opts: Map.merge(assigns[:smart_input_opts] || %{}, %{open: true})
-      )
-    )
-  end
-
-  # def open_and_reset_if_empty(text, socket_assigns, set_assigns) do
-  #   # if empty?(e(socket_assigns, :smart_input_opts, :text, nil) |> debug()), do: replace_input_next_time(socket_assigns)
-  #   set(socket_assigns, set_smart_input_text_if_empty: text)
-  #   set(socket_assigns[:__context__], set_assigns)
-  # end
-
-  @doc """
-  Set assigns in the smart input from anywhere in the app (whether using a live component or sticky live view)
-  """
-  def set(context, assigns) do
-    debug(assigns, "set assigns")
-
-    Bonfire.UI.Common.PersistentLive.maybe_send(context, {:smart_input, assigns}) ||
-      maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, assigns)
-  end
-
-  def open_smart_input_with_text_suggestion(text, set_assigns, socket_or_context) do
-    # TODO: only trigger if using Quill as editor?
-    # maybe_push_event(socket, "smart_input:set_body", %{text: text})
-    replace_input_next_time(socket_or_context)
-
-    set(
-      socket_or_context,
-      set_assigns ++
-        [smart_input_opts: %{text_suggestion: text, open: true}, reset_smart_input: false]
-    )
-  end
-
-  def set_smart_input_text(socket, text \\ "\n") do
-    # TODO: only trigger if using Quill as editor?
-    # maybe_push_event(socket, "smart_input:set_body", %{text: text})
-    replace_input_next_time(socket)
-    set(socket, smart_input_opts: %{text: text, open: true}, reset_smart_input: false)
-    socket
-  end
-
-  def replace_input_next_time(socket_or_context) do
-    set(socket_or_context, reset_smart_input: true)
-  end
-
-  def reset_input(%{assigns: %{showing_within: :thread}} = socket) do
-    # debug("THREad")
-    replace_input_next_time(socket.assigns)
-
-    set(socket,
-      # avoid double-reset
-      reset_smart_input: false,
-      activity: nil,
-      to_circles: [],
-      reply_to_id: e(socket.assigns, :thread_id, nil),
-      to_boundaries: default_boundaries(socket),
-      smart_input_opts: %{
-        open: false,
-        text_suggestion: nil,
-        text: nil
-      }
-    )
-
-    socket
-  end
-
-  def reset_input(%{assigns: %{showing_within: :messages}} = socket) do
-    # debug("messages")
-    replace_input_next_time(socket)
-
-    set(socket,
-      # avoid double-reset
-      reset_smart_input: false,
-      activity: nil,
-      to_circles: [],
-      smart_input_opts: %{
-        open: false,
-        text_suggestion: nil,
-        text: nil
-      }
-    )
-
-    socket
-  end
-
-  def reset_input(socket) do
-    replace_input_next_time(socket)
-
-    set(socket,
-      # avoid double-reset
-      reset_smart_input: false,
-      activity: nil,
-      create_object_type: nil,
-      smart_input_component: nil,
-      to_circles: [],
-      reply_to_id: e(socket.assigns, :thread_id, nil),
-      thread_id: nil,
-      to_boundaries: default_boundaries(socket),
-      smart_input_opts: %{
-        open: false,
-        text_suggestion: nil,
-        text: nil
-      }
-    )
-
-    socket
   end
 
   def activity_type_or_reply(assigns) do

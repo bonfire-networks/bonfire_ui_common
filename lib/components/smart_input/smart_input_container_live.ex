@@ -52,7 +52,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
      socket
      |> assign(assigns)
      |> assign_new(:smart_input_as, fn ->
-       LiveHandler.set_smart_input_as(current_user(assigns))
+       LiveHandler.set_smart_input_as(e(assigns, :__context__, nil) || current_user(assigns))
      end)
      |> assign(:smart_input_opts, Map.merge(old_smart_input_opts, new_smart_input_opts))}
   end
@@ -84,7 +84,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
      socket
      |> assign(assigns)
      |> assign_new(:smart_input_as, fn ->
-       LiveHandler.set_smart_input_as(current_user(assigns))
+       LiveHandler.set_smart_input_as(e(assigns, :__context__, nil) || current_user(assigns))
      end)}
   end
 

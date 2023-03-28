@@ -4,7 +4,8 @@
   </span>
   <div class="absolute flex items-center gap-3 right-3">
     <button
-      phx-click={LiveHandler.toggle_minimize(".minimizable", false)}
+      :if={@smart_input_as != :focused}
+      phx-click={LiveHandler.minimize()}
       phx-target="#smart_input"
       type="button"
       class="flex btn btn-xs btn-ghost btn-circle"
@@ -15,10 +16,45 @@
         <span class="sr-only">{l("Minimize")}</span>
       </span>
     </button>
+    <button
+      :if={@smart_input_as != :focused}
+      phx-click="Bonfire.UI.Common.SmartInput:set"
+      phx-target="#smart_input"
+      phx-value-smart_input_as="focused"
+      type="button"
+      class="flex btn btn-xs btn-ghost btn-circle"
+    >
+      <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
+      <span>
+        <Icon
+          iconify="fluent:window-new-16-filled"
+          class="w-4 h-4 rotate-[270deg] stroke-1 text-base-content/70"
+        />
+        <span class="sr-only">{l("Maximise focus")}</span>
+      </span>
+    </button>
+    <button
+      :if={@smart_input_as == :focused}
+      phx-click="Bonfire.UI.Common.SmartInput:set"
+      phx-target="#smart_input"
+      phx-value-smart_input_as="non_blocking"
+      type="button"
+      class="flex btn btn-xs btn-ghost btn-circle"
+    >
+      <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
+      <span>
+        <Icon
+          iconify="fluent:window-new-16-filled"
+          class="w-4 h-4 rotate-90 stroke-1 text-base-content/70"
+        />
+        <span class="sr-only">{l("Get it out of the way")}</span>
+      </span>
+    </button>
     <Bonfire.UI.Common.OpenModalLive
       id="close-composer"
       reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
       title_text={l("Delete the draft")}
+      cancel_label={l("Cancel")}
       open_btn_wrapper_class="flex btn btn-xs btn-ghost btn-circle"
       action_btns_wrapper_class="normal-case rounded btn btn-sm btn-error"
     >
@@ -31,7 +67,7 @@
       </:open_btn>
       <:action_btns>
         <button
-          phx-click={LiveHandler.confirm_close_smart_input("#smart_input_container", "persistent_modal")}
+          phx-click={LiveHandler.confirm_close_smart_input(if @__context__[:sticky], do: "persistent_modal")}
           phx-target="#smart_input"
           type="button"
         >
