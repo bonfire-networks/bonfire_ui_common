@@ -1,7 +1,7 @@
 <div class={@wrapper_class} data-type="widget">
   {#case @widget[:type]}
     {#match :link}
-      <LiveRedirect
+      <LinkLive
         to={if is_function(@widget[:href]),
           do: @widget[:href].(@__context__[:current_params]),
           else: @widget[:href]}
@@ -13,8 +13,8 @@
           <Icon iconify={widget(@widget, @__context__)[:icon]} class={@icon_class} />
         </span>
         <span
-          :if={@page == @widget[:page] || e(@__context__, :current_view, nil) == @widget[:module] ||
-            @selected_tab == @widget[:page]}
+          :if={(not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])) or
+            (not is_nil(@widget[:module]) and e(@__context__, :current_view, nil) == @widget[:module])}
           class="sr-only"
         >{l("Current Page:")}
         </span>
@@ -31,7 +31,7 @@
               />
             </div>
         {/case}
-      </LiveRedirect>
+      </LinkLive>
     {#match Surface.Component}
       <Dynamic.Component
         module={@widget[:module]}

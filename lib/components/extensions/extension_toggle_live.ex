@@ -3,8 +3,16 @@ defmodule Bonfire.UI.Common.ExtensionToggleLive do
 
   # prop extension, :any, required: true
   prop scope, :atom, default: nil
-  prop required_deps, :list, default: []
   prop can_instance_wide, :boolean, default: false
+
+  def update(assigns, socket) do
+    {:noreply,
+     socket
+     |> assign(assigns)
+     |> assign_new(:globally_disabled, fn ->
+       Config.get([id(assigns) || id(socket.assigns), :disabled], nil)
+     end)}
+  end
 
   def handle_event(
         action,

@@ -56,11 +56,19 @@ defmodule Bonfire.UI.Common.LinkLive do
     """
   end
 
-  def render(assigns) do
+  def render(%{to: to} = assigns) when is_binary(to) and to != "" do
     ~F"""
     <LiveRedirect to={@to} class={@class} replace={@replace} opts={@opts}>
       <#slot>{@label}</#slot>
     </LiveRedirect>
+    """
+  end
+
+  def render(assigns) do
+    ~F"""
+    <Field name="none_link" class={@class} opts={@opts}>
+      <#slot>{@label}</#slot>
+    </Field>
     """
   end
 end
