@@ -41,7 +41,9 @@
       create_object_type={@create_object_type} -->
     </div>
 
+    <Bonfire.UI.Common.ComposerMinimizedLive :if={@smart_input_as != :focused} />
     <div
+      phx-hook="ScreenSize"
       id="smart_input_container"
       class={
         "smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full left-0 bg-base-200 mx-auto z-[9999] transition-all shadow-composer right-0 md:left-auto bottom-0",
@@ -66,7 +68,6 @@
         style="-webkit-backdrop-filter: blur(10px);"
       />
 
-      <Bonfire.UI.Common.ComposerMinimizedLive :if={@smart_input_as != :focused} />
 
       <div class={
         "smart_input_show_on_maximize relative z-50 md:border md:rounded-lg border-base-content/5",

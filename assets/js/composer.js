@@ -5,6 +5,22 @@ import getCaretCoordinates from 'textarea-caret';
 
 let ComposerHooks = {};
 
+ComposerHooks.ScreenSize = {
+  mounted() {
+    window.addEventListener("resize", (e) => {
+      if (window.innerWidth < 768) {
+        this.pushEventTo("#smart_input", "set", {smart_input_as: "focused"});
+      } else {
+        this.pushEventTo("#smart_input", "set", {smart_input_as: "non_blocking"});
+      }
+    });
+
+    if (window.innerWidth < 768) {
+      this.pushEventTo("#smart_input", "set", {smart_input_as: "focused"});
+    }
+  }
+}
+
 ComposerHooks.Composer = {
 
     mounted() {

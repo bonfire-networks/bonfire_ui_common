@@ -4,12 +4,68 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def switch_smart_input_type(type, js \\ %JS{}) do
     js
-    |> JS.hide(to: ".composer_minimized")
+    |> maximize()
     |> JS.push("set",
       value: %{
         smart_input_as: type
       }
     )
+  end
+
+  def open(js \\ %JS{}, opts \\ nil) do
+    js
+    |> maximize()
+    |> maybe_push_opts("select_smart_input", opts)
+  end
+
+  def open_type(js \\ %JS{}, component, create_object_type, opts \\ nil) do
+    js
+    |> maximize()
+    |> JS.show(to: ".smart_input_show_on_open")
+    |> JS.push("select_smart_input",
+      value: %{
+        component: component,
+        create_object_type: create_object_type,
+        opts: encode_opts(opts)
+      }
+    )
+  end
+
+  def close_smart_input(js \\ %JS{}) do
+    js
+    |> JS.hide(to: ".smart_input_show_on_open")
+    |> JS.push("reset")
+  end
+
+  def confirm_close_smart_input(js \\ %JS{}, reusable_modal_id) do
+    # Bonfire.UI.Common.OpenModalLive.close(reusable_modal_id)
+    js
+    |> JS.push("close",
+      target: "##{reusable_modal_id || "modal"}"
+    )
+    |> close_smart_input()
+  end
+
+  def minimize(
+    js \\ %JS{},
+    smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
+    smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
+  ) do
+  js
+  |> JS.hide(to: ".smart_input_show_on_open")
+  |> JS.hide(to: smart_input_show_on_maximize)
+  |> JS.show(to: smart_input_show_on_minimize)
+  end
+
+  def maximize(
+      js \\ %JS{},
+      smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
+      smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
+    ) do
+  js
+  |> JS.show(to: ".smart_input_show_on_open")
+  |> JS.hide(to: smart_input_show_on_minimize)
+  |> JS.show(to: smart_input_show_on_maximize)
   end
 
 
@@ -21,10 +77,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def handle_event("select_smart_input", params, socket) do
-    # debug(params)
-    # send_self(socket, smart_input_opts: %{open: e(params, :open, nil)})
-
-    opts =
+     opts =
       (maybe_from_json(e(params, "opts", nil)) ||
          e(socket.assigns, :smart_input_opts, []))
       |> Enum.into(%{open: true})
@@ -123,40 +176,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     {:noreply, reset_input(socket)}
   end
 
-  def open(js \\ %JS{}, opts \\ nil) do
-    js
-    |> maximize()
-    |> JS.show(to: ".smart_input_show_on_open")
-    |> maybe_push_opts("select_smart_input", opts)
-  end
 
-  def open_type(js \\ %JS{}, component, create_object_type, opts \\ nil) do
-    js
-    |> maximize()
-    |> JS.show(to: ".smart_input_show_on_open")
-    |> JS.push("select_smart_input",
-      value: %{
-        component: component,
-        create_object_type: create_object_type,
-        opts: encode_opts(opts)
-      }
-    )
-  end
-
-  def close_smart_input(js \\ %JS{}) do
-    js
-    |> JS.hide(to: ".smart_input_show_on_open")
-    |> JS.push("reset")
-  end
-
-  def confirm_close_smart_input(js \\ %JS{}, reusable_modal_id) do
-    # Bonfire.UI.Common.OpenModalLive.close(reusable_modal_id)
-    js
-    |> JS.push("close",
-      target: "##{reusable_modal_id || "modal"}"
-    )
-    |> close_smart_input()
-  end
 
   defp maybe_push_opts(js \\ %JS{}, event, opts)
 
@@ -289,64 +309,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     socket
   end
 
-  # def toggle_expanded(js \\ %JS{}, target) do
-  #   js
-  #   |> JS.toggle(to: target)
-  # end
-
-  # def toggle_mini_maxi(
-  #       js \\ %JS{},
-  #       smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
-  #       smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
-  #     ) do
-  #   js
-  #   |> JS.toggle(to: smart_input_show_on_minimize)
-  #   |> JS.toggle(to: smart_input_show_on_maximize)
-
-  #   # |> JS.push("toggle_mini_maxi")
-  # end
-
-  def minimize(
-        js \\ %JS{},
-        smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
-        smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
-      ) do
-    js
-    |> JS.hide(to: smart_input_show_on_maximize)
-    |> JS.show(to: smart_input_show_on_minimize)
-  end
-
-  def maximize(
-        js \\ %JS{},
-        smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
-        smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
-      ) do
-    js
-    |> JS.hide(to: smart_input_show_on_minimize)
-    |> JS.show(to: smart_input_show_on_maximize)
-  end
-
-  # def hide_modal(js \\ %JS{}) do
-  #   js
-  #   |> JS.hide(transition: "fade-out", to: "#picker")
-  #   |> JS.add_class("hidden", to: "#picker")
-  # end
-
-  # def show_modal(js \\ %JS{}) do
-  #   js
-  #   |> JS.show(transition: "fade-in", to: "#picker")
-  #   |> JS.remove_class("hidden", to: "#picker")
-  # end
-
-  # def handle_event("toggle_mini_maxi", _values, socket) do
-  #   opts =
-  #     e(socket.assigns, :smart_input_opts, %{})
-  #     |> Map.merge(%{minimized: !status})
-  #   # note: can use this to toggle instead: https://hexdocs.pm/phoenix_live_view/Phoenix.Component.html#update/3
-  #   {:noreply, socket |> assign(smart_input_opts: opts)}
-  # end
-
-  def toggle_expanded(js \\ %JS{}, target, btn, class) do
+   def toggle_expanded(js \\ %JS{}, target, btn, class) do
     # TODO: document
     js
     |> JS.toggle(to: target)
@@ -405,8 +368,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     nil
   end
 
-  # def set_smart_input_as(:flat, _), do: :focused
-  # def set_smart_input_as(:messages, _), do: :focused
 
   def set_smart_input_as(context),
     do: Settings.get([:ui, :smart_input_as], :non_blocking, context)
@@ -474,8 +435,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def activity_type_or_reply(assigns) do
-    # debug(e(assigns, :reply_to_id, ""), "reply to id")
-    # debug(e(assigns, :thread_id, ""), "thread_id")
     if e(assigns, :reply_to_id, "") != "" or e(assigns, :thread_id, "") != "",
       do: "reply",
       else: e(assigns, :create_object_type, "post")

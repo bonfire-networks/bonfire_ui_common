@@ -4,7 +4,6 @@
   </span>
   <div class="absolute flex items-center gap-3 right-3">
     <button
-      :if={@smart_input_as != :focused}
       phx-click={LiveHandler.minimize()}
       phx-target="#smart_input"
       type="button"

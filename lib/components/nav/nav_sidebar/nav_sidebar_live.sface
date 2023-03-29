@@ -59,7 +59,7 @@
           opts={alt: "Notifications"}
           class="relative pr-3"
         >
-          <#Icon iconify="ph:bell-fill" class="w-5 h-5 text-base-content/70" />
+          <#Icon iconify="ph:bell" class="w-5 h-5 text-base-content/70" />
           <div class="absolute top-[-14px] left-[10px]">
             <Bonfire.UI.Common.BadgeCounterLive
               id={:notifications}
