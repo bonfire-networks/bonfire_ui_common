@@ -1,13 +1,13 @@
 <div phx-hook="Composer" id="editor" class="w-full input-sizer stacked md:p-2">
+  <!-- x-model="body" -->
   <textarea
     oninput="this.parentNode.dataset.value = this.value"
-    x-model="body"
     phx-debounce="blur"
     class={@textarea_class, "p-2 resize-none md:p-1 composer textarea focus:outline-none focus:ring-0"}
     name="html_body"
     resize="none"
     placeholder={l("Start typing...")}
-  >{e(@smart_input_opts, :text, nil) || e(@smart_input_opts, :text_suggestion, nil)}</textarea>
+  >{e(@smart_input_opts, :text_suggestion, nil)}{e(@smart_input_opts, :text, nil)}</textarea>
   <ul
     tabindex="1"
     class="absolute z-50 hidden w-56 p-1 divide-y menu menu-compact bg-neutral divide-neutral-content/10"

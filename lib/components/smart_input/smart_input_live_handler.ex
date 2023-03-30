@@ -1,7 +1,6 @@
 defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
 
-
   def switch_smart_input_type(type, js \\ %JS{}) do
     js
     |> maximize()
@@ -47,27 +46,26 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def minimize(
-    js \\ %JS{},
-    smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
-    smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
-  ) do
-  js
-  |> JS.hide(to: ".smart_input_show_on_open")
-  |> JS.hide(to: smart_input_show_on_maximize)
-  |> JS.show(to: smart_input_show_on_minimize)
+        js \\ %JS{},
+        smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
+        smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
+      ) do
+    js
+    |> JS.hide(to: ".smart_input_show_on_open")
+    |> JS.hide(to: smart_input_show_on_maximize)
+    |> JS.show(to: smart_input_show_on_minimize)
   end
 
   def maximize(
-      js \\ %JS{},
-      smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
-      smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
-    ) do
-  js
-  |> JS.show(to: ".smart_input_show_on_open")
-  |> JS.hide(to: smart_input_show_on_minimize)
-  |> JS.show(to: smart_input_show_on_maximize)
+        js \\ %JS{},
+        smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
+        smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
+      ) do
+    js
+    |> JS.show(to: ".smart_input_show_on_open")
+    |> JS.hide(to: smart_input_show_on_minimize)
+    |> JS.show(to: smart_input_show_on_maximize)
   end
-
 
   def handle_event("set", %{"smart_input_as" => smart_input_as}, socket) do
     # note: only works with phx-target being the smart input, in other cases use `set/2` instead
@@ -77,7 +75,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def handle_event("select_smart_input", params, socket) do
-     opts =
+    opts =
       (maybe_from_json(e(params, "opts", nil)) ||
          e(socket.assigns, :smart_input_opts, []))
       |> Enum.into(%{open: true})
@@ -176,8 +174,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     {:noreply, reset_input(socket)}
   end
 
-
-
   defp maybe_push_opts(js \\ %JS{}, event, opts)
 
   defp maybe_push_opts(js, event, {} = opts) when opts != %{} do
@@ -224,9 +220,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def open_with_text_suggestion(text, set_assigns, socket_or_context) do
-    # TODO: only trigger if using Quill as editor?
-    # maybe_push_event(socket, "smart_input:set_body", %{text: text})
     replace_input_next_time(socket_or_context)
+
     set(
       socket_or_context,
       set_assigns ++
@@ -234,12 +229,11 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     )
   end
 
-  def set_smart_input_text(socket, text \\ "\n") do
-    # TODO: only trigger if using Quill as editor?
+  def set_smart_input_text(socket_or_context, text \\ "\n") do
     # maybe_push_event(socket, "smart_input:set_body", %{text: text})
-    replace_input_next_time(socket)
-    set(socket, smart_input_opts: %{text: text, open: true}, reset_smart_input: false)
-    socket
+    replace_input_next_time(socket_or_context)
+    set(socket_or_context, smart_input_opts: %{text: text, open: true}, reset_smart_input: false)
+    socket_or_context
   end
 
   def replace_input_next_time(socket_or_context) do
@@ -309,7 +303,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     socket
   end
 
-   def toggle_expanded(js \\ %JS{}, target, btn, class) do
+  def toggle_expanded(js \\ %JS{}, target, btn, class) do
     # TODO: document
     js
     |> JS.toggle(to: target)
@@ -367,7 +361,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   def reply_to_param(_) do
     nil
   end
-
 
   def set_smart_input_as(context),
     do: Settings.get([:ui, :smart_input_as], :non_blocking, context)

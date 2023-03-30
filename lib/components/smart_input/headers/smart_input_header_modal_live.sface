@@ -24,10 +24,7 @@
     >
       <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
       <span>
-        <#Icon
-          iconify="bx:expand-alt"
-          class="w-4 h-4 stroke-1 text-base-content/70"
-        />
+        <#Icon iconify="bx:expand-alt" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l("Maximise focus")}</span>
       </span>
     </button>
@@ -40,10 +37,7 @@
     >
       <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
       <span>
-        <#Icon
-          iconify="bx:collapse-alt"
-          class="w-4 h-4 stroke-1 text-base-content/70"
-        />
+        <#Icon iconify="bx:collapse-alt" class="w-4 h-4 stroke-1 text-base-content/70" />
         <span class="sr-only">{l("Get it out of the way")}</span>
       </span>
     </button>

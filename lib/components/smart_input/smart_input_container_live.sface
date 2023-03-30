@@ -68,7 +68,6 @@
         style="-webkit-backdrop-filter: blur(10px);"
       />
 
-
       <div class={
         "smart_input_show_on_maximize relative z-50 md:border md:rounded-lg border-base-content/5",
         "!rounded-b-none": @smart_input_as == :non_blocking
@@ -103,6 +102,7 @@
             trigger_submit={@trigger_submit}
             reset_smart_input={@reset_smart_input}
             smart_input_as={@smart_input_as}
+            activity_inception={@activity_inception}
           />
         </div>
       </div>

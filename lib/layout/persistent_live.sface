@@ -24,16 +24,11 @@
       page={@page}
       current_user={current_user(@__context__)}
       showing_within={@showing_within}
-      reply_to_id={@reply_to_id}
-      context_id={@context_id}
-      create_object_type={@create_object_type}
       thread_mode={@thread_mode}
       without_sidebar={@without_sidebar}
-      without_widgets={@without_widgets}
-      to_boundaries={@to_boundaries}
-      to_circles={@to_circles}
-      smart_input_opts={@smart_input_opts}
       sidebar_widgets={@sidebar_widgets}
+      without_widgets={@without_widgets}
+      smart_input_opts={@smart_input_opts}
     />
   {#else}
     <div />

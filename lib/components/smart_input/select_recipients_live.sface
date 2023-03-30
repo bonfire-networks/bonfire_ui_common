@@ -2,46 +2,53 @@
   <span class="px-1 text-xs font-medium uppercase text-base-content/70">{l("To")}</span>
 
   <div class="flex flex-col flex-1 gap-1">
-  {#case @implementation}
-    {#match nil}
-      <div class="flex-1" id={:select_recipients} phx-update="ignore" phx-hook="InputOrSelectOne">
-        <input
-          id="recipients_tagify"
-          name="to_circles"
-          class="flex-1 w-full bg-transparent border-0 tagify"
-        />
-        <select class="hidden tagify">
-          {#for user <- @preloaded_recipients}
-            <option class="" value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
-          {/for}
-        </select>
-      </div>
-    {#match _}
-      <div class="w-full select_recipient">
-        <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
-          selected_options={@to_circles}
-          label={@label || l("Type a name")}
-          form_input_name={__MODULE__}
-          context_id={@context_id}
-          class={@class}
-          implementation={@implementation}
-          event_target="#smart_input"
-        />
-      </div>
-  {/case}
+    {#case @implementation}
+      {#match nil}
+        <div class="flex-1" id={:select_recipients} phx-update="ignore" phx-hook="InputOrSelectOne">
+          <input
+            id="recipients_tagify"
+            name="to_circles"
+            class="flex-1 w-full bg-transparent border-0 tagify"
+          />
+          <select class="hidden tagify">
+            {#for user <- @preloaded_recipients}
+              <option class="" value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
+            {/for}
+          </select>
+        </div>
+      {#match _}
+        <div class="w-full select_recipient">
+          <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
+            selected_options={@to_circles}
+            label={@label || l("Type a name")}
+            form_input_name={__MODULE__}
+            context_id={@context_id}
+            class={@class}
+            implementation={@implementation}
+            event_target="#smart_input"
+          />
+        </div>
+    {/case}
     {#if is_list(@to_circles) and @to_circles != []}
-    <div class="flex w-full">
-      <div class="flex items-center gap-2">
-        {#for {name, id} <- @to_circles}
-          <span class="gap-2 border-base-content/70 badge !h-[2rem] badge-lg badge-outline">
-            {name}
-            <svg phx-click="remove" phx-value-id={id} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-4 h-4 cursor-pointer stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-          </span>
-          
-          <input type="hidden" name="to_circles[]" placeholder={@label} label={name} value={id}>
-        {/for}
+      <div class="flex w-full">
+        <div class="flex items-center gap-2">
+          {#for {name, id} <- @to_circles}
+            <span class="gap-2 border-base-content/70 badge !h-[2rem] badge-lg badge-outline">
+              {name}
+              <svg
+                phx-click="remove"
+                phx-value-id={id}
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                class="inline-block w-4 h-4 cursor-pointer stroke-current"
+              ><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </span>
+
+            <input type="hidden" name="to_circles[]" placeholder={@label} label={name} value={id}>
+          {/for}
+        </div>
       </div>
-    </div>
     {/if}
   </div>
 </div>

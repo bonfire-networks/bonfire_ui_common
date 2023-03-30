@@ -35,8 +35,6 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
      end)}
   end
 
-
-
   def results_for_multiselect(results) do
     results
     |> Enum.map(fn

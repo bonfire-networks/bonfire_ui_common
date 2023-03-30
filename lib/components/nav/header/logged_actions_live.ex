@@ -6,13 +6,13 @@ defmodule Bonfire.UI.Common.LoggedActionsLive do
   prop page_header_aside, :any, default: nil
   # prop custom_page_header, :any, default: nil
   prop showing_within, :atom, default: nil
-  prop reply_to_id, :any, default: nil
+  # prop reply_to_id, :any, default: nil
   prop without_sidebar, :boolean, default: false
-  prop context_id, :string, default: nil, required: false
-  prop create_object_type, :any, default: nil
+  # prop context_id, :string, default: nil, required: false
+  # prop create_object_type, :any, default: nil
   prop thread_mode, :atom, default: nil
-  prop to_boundaries, :any, default: nil
-  prop to_circles, :list, default: []
+  # prop to_boundaries, :any, default: nil
+  # prop to_circles, :list, default: []
   prop smart_input_opts, :map, default: %{}
   prop sidebar_widgets, :list, default: []
 

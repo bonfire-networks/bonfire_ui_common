@@ -28,11 +28,11 @@ defmodule Bonfire.UI.Common.PersistentLive do
   defp assign_defaults(socket, fun \\ &assign_new/3) do
     socket
     |> fun.(:showing_within, fn -> nil end)
-    |> fun.(:context_id, fn -> nil end)
-    |> fun.(:reply_to_id, fn -> nil end)
-    |> fun.(:create_object_type, fn -> nil end)
-    |> fun.(:to_boundaries, fn -> [] end)
-    |> fun.(:to_circles, fn -> [] end)
+    # |> fun.(:context_id, fn -> nil end)
+    # |> fun.(:reply_to_id, fn -> nil end)
+    # |> fun.(:create_object_type, fn -> nil end)
+    # |> fun.(:to_boundaries, fn -> [] end)
+    # |> fun.(:to_circles, fn -> [] end)
     |> fun.(:smart_input_opts, fn -> %{} end)
     |> fun.(:showing_within, fn -> nil end)
     |> fun.(:show_select_recipients, fn -> false end)
@@ -73,15 +73,15 @@ defmodule Bonfire.UI.Common.PersistentLive do
     |> Map.new()
     |> Map.take([
       :showing_within,
-      :reply_to_id,
-      :context_id,
-      :create_object_type,
-      :smart_input_component,
+      # :reply_to_id,
+      # :context_id,
+      # :create_object_type,
+      # :smart_input_component,
       :thread_mode,
       :without_sidebar,
       :without_widgets,
-      :to_boundaries,
-      :to_circles,
+      # :to_boundaries,
+      # :to_circles,
       :smart_input_opts,
       # :nav_items,
       # :custom_page_header,
