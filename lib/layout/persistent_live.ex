@@ -34,20 +34,20 @@ defmodule Bonfire.UI.Common.PersistentLive do
     # |> fun.(:to_boundaries, fn -> [] end)
     # |> fun.(:to_circles, fn -> [] end)
     |> fun.(:smart_input_opts, fn -> %{} end)
-    |> fun.(:showing_within, fn -> nil end)
+    # |> fun.(:showing_within, fn -> nil end)
     |> fun.(:show_select_recipients, fn -> false end)
     |> fun.(:thread_mode, fn -> nil end)
-    |> fun.(:page, fn -> nil end)
-    |> fun.(:page_title, fn -> nil end)
-    |> fun.(:selected_tab, fn -> nil end)
+    # |> fun.(:page, fn -> nil end)
+    # |> fun.(:page_title, fn -> nil end)
+    # |> fun.(:selected_tab, fn -> nil end)
     |> fun.(:activity_inception, fn -> nil end)
     |> fun.(:title_open, fn -> nil end)
     |> fun.(:title_prompt, fn -> nil end)
     |> fun.(:preloaded_recipients, fn -> nil end)
-    |> fun.(:without_sidebar, fn -> nil end)
-    |> fun.(:without_widgets, fn -> nil end)
+    # |> fun.(:without_sidebar, fn -> nil end)
+    # |> fun.(:without_widgets, fn -> nil end)
     #  |> fun.(:nav_items, fn -> nil end)
-    |> fun.(:sidebar_widgets, fn -> [] end)
+    # |> fun.(:sidebar_widgets, fn -> [] end)
 
     #  |> fun.(:page_header_aside, fn -> nil end)
     #  |> fun.(:custom_page_header, fn -> nil end)
@@ -78,8 +78,8 @@ defmodule Bonfire.UI.Common.PersistentLive do
       # :create_object_type,
       # :smart_input_component,
       :thread_mode,
-      :without_sidebar,
-      :without_widgets,
+      # :without_sidebar,
+      # :without_widgets,
       # :to_boundaries,
       # :to_circles,
       :smart_input_opts,
@@ -87,10 +87,10 @@ defmodule Bonfire.UI.Common.PersistentLive do
       # :custom_page_header,
       # :page_header_aside,
       # :root_flash,
-      :sidebar_widgets,
-      :page,
-      :page_title,
-      :selected_tab
+      # :sidebar_widgets,
+      # :page,
+      # :page_title,
+      # :selected_tab
     ])
     |> Map.put(:__context__, Enum.into(assigns[:__context__] || %{}, %{sticky: true}))
   end

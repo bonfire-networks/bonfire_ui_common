@@ -5,7 +5,6 @@
     id={:smart_input}
     showing_within={@showing_within}
     thread_mode={@thread_mode}
-    without_sidebar={@without_sidebar}
     smart_input_opts={@smart_input_opts}
   />
 
