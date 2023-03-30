@@ -20,26 +20,6 @@
       </figure>
 
       <!-- <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress> -->
-
-      <!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 -->
-      <div class="absolute z-20 right-1 top-1 dropdown dropdown-end">
-        <label
-          class="relative gap-1 normal-case rounded btn btn-ghost btn-xs"
-          tabindex="0"
-          id="user-profile-menu"
-          aria-haspopup="true"
-          aria-expanded="true"
-        >
-          <#Icon solid="DotsVertical" class="w-4 h-4" />
-          {l("Edit")}
-        </label>
-        <ul
-          tabindex="0"
-          class="rounded divide-y divide-neutral-content/10 gap-1 menu-compact !block shadow w-28 menu dropdown-content bg-neutral"
-          role="menu"
-          aria-orientation="vertical"
-          aria-labelledby="user-profile-menu"
-        >
           <Bonfire.UI.Common.OpenModalLive
             id={"#{entry.ref}-description"}
             form_opts={"phx-submit": "set_value"}
@@ -70,28 +50,27 @@
             <:open_btn :let={value: value}>
               <button
                 type="button"
-                class="z-20 flex items-center w-full gap-2 font-medium normal-case rounded btn btn-ghost btn-sm"
+                class="absolute z-20 font-medium normal-case rounded glass top-2 left-2 btn btn-xs"
                 aria-label="Add description"
               >
-                <#Icon solid="Pencil" class="w-4 h-4" />
-                <span class="">{l("Describe")}</span>
+                <span class="">{l("Edit")}</span>
               </button>
               <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}>
             </:open_btn>
           </Bonfire.UI.Common.OpenModalLive>
+
           <button
             type="button"
-            class="flex items-center w-full gap-2 font-medium normal-case rounded btn btn-ghost text-error btn-sm"
+            class="absolute z-20 rounded right-2 top-2 btn glass btn-xs"
             phx-click="cancel-upload"
             phx-target="#smart_input"
             phx-value-ref={entry.ref}
             aria-label="cancel"
           >
             <#Icon solid="Trash" class="w-4 h-4" />
-            <span class="">{l("Delete")}</span>
+            <span class="sr-only">{l("Delete")}</span>
           </button>
-        </ul>
-      </div>
+      <!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 -->
 
       {#for err <- upload_errors(@uploads.files, entry)}
         <p class="alert alert-danger">{error_to_string(err)}</p>

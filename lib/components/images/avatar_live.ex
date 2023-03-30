@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
   prop viewing_main_object, :boolean, default: false
   prop comment, :boolean, default: false
   prop size, :any, default: nil
-  prop class, :css_class, default: nil
+  prop class, :css_class, default: "w-8 h-8 rounded-lg bg-base-200"
   prop bg_class, :css_class, default: ["rounded"]
   prop avatar_fallback, :string, default: nil
   prop title, :string, default: ""
