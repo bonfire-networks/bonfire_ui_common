@@ -22,7 +22,7 @@
             Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@boost_count, 0)}</span>
         </span>
       </button>
-    {#match false}
+    {#match _}
       <button
         type="button"
         class="rounded cursor-not-allowed boost btn btn-square btn-ghost btn-sm"
@@ -37,6 +37,5 @@
             Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@boost_count, 0)}</span>
         </span>
       </button>
-    {#match _}
   {/case}
 </div>

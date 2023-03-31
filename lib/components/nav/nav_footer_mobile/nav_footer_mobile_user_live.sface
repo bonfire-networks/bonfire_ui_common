@@ -42,7 +42,7 @@
     {#if @page == "notifications"}
       <#Icon iconify="ph:bell-fill" class="w-6 h-6" />
     {#else}
-      <#Icon iconify="ph:bell-bold" class="w-6 h-6" />
+      <#Icon iconify="ph:bell" class="w-6 h-6" />
     {/if}
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>

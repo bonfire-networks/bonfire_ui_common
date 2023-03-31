@@ -38,7 +38,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
          accept: ~w(.jpg .jpeg .png .gif .svg .tiff .webp .pdf .md .rtf .mp3 .mp4),
          # make configurable, expecially once we have resizing
          max_file_size: 10_000_000,
-         max_entries: 1,
+         max_entries: 4,
          auto_upload: false
          # progress: &handle_progress/3
        )}

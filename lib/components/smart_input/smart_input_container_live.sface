@@ -47,7 +47,7 @@
       id="smart_input_container"
       class={
         "smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full left-0 bg-base-200 mx-auto z-[9999] transition-all shadow-composer right-0 md:left-auto bottom-0",
-        "md:w-[46rem] !inset-0 md:!top-20 !h-auto md:!h-fit !shadow-2xl !rounded-2xl":
+        "md:w-[40rem] !inset-0 md:!top-20 !h-auto md:!h-fit !shadow-2xl !rounded-2xl":
           @smart_input_as == :focused,
         "md:w-[36rem] md:right-4 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto":
           @smart_input_as != :focused,

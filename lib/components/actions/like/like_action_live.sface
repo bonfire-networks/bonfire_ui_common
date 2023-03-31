@@ -33,7 +33,7 @@
           <span :if={e(@like_count, 0) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@like_count, 0)}</span>
         </span>
       </button>
-    {#match false}
+    {#match _}
       <button
         type="button"
         class="rounded cursor-not-allowed btn btn-ghost btn-square like like_with_label btn-sm"
@@ -48,6 +48,5 @@
           <span :if={e(@like_count, 0) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@like_count, 0)}</span>
         </span>
       </button>
-    {#match _}
   {/case}
 </div>
