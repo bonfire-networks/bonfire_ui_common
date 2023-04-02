@@ -16,9 +16,13 @@
     phx-value-opts={Jason.encode!(merge_as_map(%{prompt: @prompt}, @smart_input_opts))}
     x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{@prompt || l("Compose")}')"} -->
 
-  <Iconify.iconify :if={@icon} icon={@icon} class={
-    "inline-block w-9 h-9 md:w-5 md:h-5",
-    "!w-5 !h-5 md:w-5 md:h-5 text-base-content/70": @as_icon} 
+  <Iconify.iconify
+    :if={@icon}
+    icon={@icon}
+    class={
+      "inline-block w-9 h-9 md:w-5 md:h-5",
+      "!w-5 !h-5 md:w-5 md:h-5 text-base-content/70": @as_icon
+    }
   />
   <span :if={@prompt} class="hidden md:block">{l("Compose")}</span>
 </button>

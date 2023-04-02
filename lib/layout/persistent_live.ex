@@ -44,6 +44,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     |> fun.(:title_open, fn -> nil end)
     |> fun.(:title_prompt, fn -> nil end)
     |> fun.(:preloaded_recipients, fn -> nil end)
+
     # |> fun.(:without_sidebar, fn -> nil end)
     # |> fun.(:without_widgets, fn -> nil end)
     #  |> fun.(:nav_items, fn -> nil end)
@@ -82,7 +83,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       # :without_widgets,
       # :to_boundaries,
       # :to_circles,
-      :smart_input_opts,
+      :smart_input_opts
       # :nav_items,
       # :custom_page_header,
       # :page_header_aside,

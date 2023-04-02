@@ -20,56 +20,56 @@
       </figure>
 
       <!-- <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress> -->
-          <Bonfire.UI.Common.OpenModalLive
-            id={"#{entry.ref}-description"}
-            form_opts={"phx-submit": "set_value"}
-            reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
-            title_text={l("Add an alternative description")}
-          >
-            <div class="mt-4">
-              <div class="p-4 rounded-md bg-info/10">
-                <div class="flex">
-                  <div class="flex-shrink-0">
-                    <#Icon solid="InformationCircle" class="w-5 h-5 text-info" />
-                  </div>
-                  <div class="flex-1 ml-3 md:flex md:justify-between">
-                    <p class="text-sm text-info">
-                      {l(
-                        "Adding an alternative description will improve the accessibility of your content, helping visually impaired people and others using screen reading tools."
-                      )}</p>
-                  </div>
-                </div>
+      <Bonfire.UI.Common.OpenModalLive
+        id={"#{entry.ref}-description"}
+        form_opts={"phx-submit": "set_value"}
+        reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
+        title_text={l("Add an alternative description")}
+      >
+        <div class="mt-4">
+          <div class="p-4 rounded-md bg-info/10">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <#Icon solid="InformationCircle" class="w-5 h-5 text-info" />
+              </div>
+              <div class="flex-1 ml-3 md:flex md:justify-between">
+                <p class="text-sm text-info">
+                  {l(
+                    "Adding an alternative description will improve the accessibility of your content, helping visually impaired people and others using screen reading tools."
+                  )}</p>
               </div>
             </div>
-            <div class="mt-3">
-              <span class="image_in_preview" :if={String.starts_with?(entry.client_type, "image")}>
-                <.live_img_preview entry={entry} />
-              </span>
-              <textarea name="value" placeholder="Type here" class="w-full mt-3 textarea textarea-bordered" />
-            </div>
-            <:open_btn :let={value: value}>
-              <button
-                type="button"
-                class="absolute z-20 font-medium normal-case rounded glass top-2 left-2 btn btn-xs"
-                aria-label="Add description"
-              >
-                <span class="">{l("Edit")}</span>
-              </button>
-              <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}>
-            </:open_btn>
-          </Bonfire.UI.Common.OpenModalLive>
-
+          </div>
+        </div>
+        <div class="mt-3">
+          <span class="image_in_preview" :if={String.starts_with?(entry.client_type, "image")}>
+            <.live_img_preview entry={entry} />
+          </span>
+          <textarea name="value" placeholder="Type here" class="w-full mt-3 textarea textarea-bordered" />
+        </div>
+        <:open_btn :let={value: value}>
           <button
             type="button"
-            class="absolute z-20 rounded right-2 top-2 btn glass btn-xs"
-            phx-click="cancel-upload"
-            phx-target="#smart_input"
-            phx-value-ref={entry.ref}
-            aria-label="cancel"
+            class="absolute z-20 font-medium normal-case rounded glass top-2 left-2 btn btn-xs"
+            aria-label="Add description"
           >
-            <#Icon solid="Trash" class="w-4 h-4" />
-            <span class="sr-only">{l("Delete")}</span>
+            <span class="">{l("Edit")}</span>
           </button>
+          <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}>
+        </:open_btn>
+      </Bonfire.UI.Common.OpenModalLive>
+
+      <button
+        type="button"
+        class="absolute z-20 rounded right-2 top-2 btn glass btn-xs"
+        phx-click="cancel-upload"
+        phx-target="#smart_input"
+        phx-value-ref={entry.ref}
+        aria-label="cancel"
+      >
+        <#Icon solid="Trash" class="w-4 h-4" />
+        <span class="sr-only">{l("Delete")}</span>
+      </button>
       <!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 -->
 
       {#for err <- upload_errors(@uploads.files, entry)}
