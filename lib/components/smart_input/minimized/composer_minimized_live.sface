@@ -1,4 +1,7 @@
-<div class="fixed bottom-0 hidden right-3 smart_input_show_on_minimize composer_minimized">
+<div
+  data-id="composer_minimized"
+  class="smart_input_show_on_minimize fixed bottom-0 hidden right-3"
+>
   <div
     phx-click={LiveHandler.maximize()}
     phx-target="#smart_input"

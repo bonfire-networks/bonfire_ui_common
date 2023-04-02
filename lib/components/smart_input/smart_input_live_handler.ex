@@ -45,26 +45,31 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     |> close_smart_input()
   end
 
-  def minimize(
-        js \\ %JS{},
-        smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
-        smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
-      ) do
+  def minimize(js \\ %JS{}) do
     js
-    |> JS.hide(to: ".smart_input_show_on_open")
-    |> JS.hide(to: smart_input_show_on_maximize)
-    |> JS.show(to: smart_input_show_on_minimize)
+    # transition: {"transition-all duration-200", "h-auto w-auto", "h-[40px] w-[20rem]"}, time: 200
+    |> JS.hide(to: ".smart_input_modal")
+    # |> JS.hide(to: ".smart_input_show_on_open")
+    |> JS.hide(
+      to: ".smart_input_backdrop",
+      transition: {"transition-opacity duration-200", "opacity-100", "opacity-0"}
+    )
+    |> JS.show(to: ".smart_input_show_on_minimize")
   end
 
-  def maximize(
-        js \\ %JS{},
-        smart_input_show_on_minimize \\ ".smart_input_show_on_minimize",
-        smart_input_show_on_maximize \\ ".smart_input_show_on_maximize"
-      ) do
+  def maximize(js \\ %JS{}) do
     js
     |> JS.show(to: ".smart_input_show_on_open")
-    |> JS.hide(to: smart_input_show_on_minimize)
-    |> JS.show(to: smart_input_show_on_maximize)
+    |> JS.hide(to: ".smart_input_show_on_minimize")
+    |> JS.show(
+      to: ".smart_input_backdrop",
+      transition: {"transition-opacity duration-200", "opacity-0", "opacity-100"}
+    )
+    |> JS.show(
+      to: ".smart_input_modal",
+      transition: {"transition-all duration-200", "h-[40px] w-[20rem]", "h-auto w-auto"},
+      time: 200
+    )
   end
 
   def handle_event("set", %{"smart_input_as" => smart_input_as}, socket) do

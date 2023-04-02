@@ -41,7 +41,9 @@
       create_object_type={@create_object_type} -->
     </div>
 
-    <Bonfire.UI.Common.ComposerMinimizedLive :if={@smart_input_as != :focused} />
+    <Bonfire.UI.Common.ComposerMinimizedLive />
+    <!-- :if={@smart_input_as != :focused} -->
+
     <div
       phx-hook="ScreenSize"
       id="smart_input_container"
@@ -62,14 +64,14 @@
         phx-click={LiveHandler.close_smart_input()}
         phx-target="#smart_input"
         class={
-          "smart_input_show_on_open smart_input_show_on_maximize fixed inset-0 cursor-pointer bg-base-300/20 backdrop-blur",
+          "smart_input_backdrop fixed inset-0 cursor-pointer bg-base-300/20 backdrop-blur",
           hidden: e(@smart_input_opts, :open, nil) == false
         }
-        style="-webkit-backdrop-filter: blur(10px);"
+        style="-webkit-backdrop-filter: blur(8px);"
       />
 
       <div class={
-        "smart_input_show_on_maximize relative z-50 md:border md:rounded-lg border-base-content/5",
+        "smart_input_modal relative z-50 md:border md:rounded-lg border-base-content/5",
         "!rounded-b-none": @smart_input_as == :non_blocking
       }>
         <Bonfire.UI.Common.SmartInputHeaderModalLive
