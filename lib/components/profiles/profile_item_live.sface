@@ -18,7 +18,7 @@
       <p class={"text-sm font-medium group-hover:underline text-base-content", "text-base": @lg}>
         {e(@profile, :name, "Anon")}
       </p>
-      <p class="text-sm text-base-content/70">
+      <p class="-mt-1 text-sm text-base-content/70">
         {Bonfire.Me.Characters.display_username(e(@character, :username, nil), true)}
       </p>
     </div>
