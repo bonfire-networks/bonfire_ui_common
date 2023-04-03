@@ -124,7 +124,7 @@
                 </div>
 
                 <Bonfire.UI.Common.FeedbackButtonLive
-                  class="mt-2 normal-case rounded btn btn-sm btn-ghost text-error-content"
+                  class="mt-2 normal-case rounded btn btn-sm btn-ghost text-error-content btn-active"
                   event="Bonfire.Social.Posts:write_error"
                 />
               </div>
