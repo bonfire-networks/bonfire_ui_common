@@ -32,7 +32,10 @@
             >
               {e(@user, :shared_user, :label, "")}
             </span>
-            <span :if={is_admin?(@user)} class="ml-3 badge-sm badge badge-info badge-outline">
+            <span
+              :if={maybe_apply(Bonfire.Me.Users, :is_admin?, @user) == true}
+              class="ml-3 badge-sm badge badge-info badge-outline"
+            >
               {l("Admin")}
             </span>
           </div>

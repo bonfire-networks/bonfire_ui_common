@@ -55,7 +55,7 @@
   </LiveRedirect>
 </li>
 <!-- if current user is also an admin -->
-<li :if={is_map(@current_user) && Bonfire.Me.Users.is_admin?(@current_user)}>
+<li :if={is_map(@current_user) and maybe_apply(Bonfire.Me.Users, :is_admin?, @current_user) == true}>
   <LiveRedirect
     to={~p"/settings/instance"}
     class={if @mobile,
