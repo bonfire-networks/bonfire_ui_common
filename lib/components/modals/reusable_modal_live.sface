@@ -26,7 +26,8 @@
   <Dynamic.Component
     module={if @form_opts != [], do: Form, else: Field}
     id={@form_opts[:id] || "#{@id}_form"}
-    for={@form_opts[:for] || :modal}
+    for={if not is_atom(@form_opts[:for]), do: @form_opts[:for], else: %{}}
+    as={if is_atom(@form_opts[:for]), do: @form_opts[:for] || :modal}
     name={:modal}
     class={Surface.css_class("modal-box": !@image_preview)}
     opts={@form_opts |> Keyword.put_new(:"phx-target", @myself)}

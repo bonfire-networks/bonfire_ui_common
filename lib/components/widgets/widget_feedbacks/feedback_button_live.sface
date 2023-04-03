@@ -1,4 +1,4 @@
-<!-- <Form for={:feedback} action="/session_redirect">
+<!-- <Form for={%{}} as={:feedback} action="/session_redirect">
   <input type="hidden" name="to" value="/write">
   <input type="hidden" name="smart_input_text" value={@text}>
   <input type="hidden" name="create_object_type" value="task"> -->

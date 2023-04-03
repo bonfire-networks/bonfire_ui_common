@@ -86,6 +86,9 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   prop autocomplete, :list, default: []
 
+  # prop value, :any, default: nil
+  data value, :any, default: nil
+
   @doc """
   Slot for the contents of the modal, title, buttons...
   """
@@ -94,13 +97,10 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   slot cancel_btn
   slot default, arg: [autocomplete: :list, value: :any]
 
-  prop value, :any, default: nil
-  # data value, :any, default: nil
-
   @doc """
   Slot for the button that opens the modal
   """
-  slot open_btn, arg: [value: :any]
+  slot open_btn, arg: [autocomplete: :list, value: :any]
 
   def open(reusable_modal_id \\ nil) do
     debug("open!")

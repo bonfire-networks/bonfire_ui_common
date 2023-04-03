@@ -69,16 +69,16 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
 
   prop autocomplete, :list, default: []
 
+  data value, :any, default: nil
+
   @doc """
   Slots for the contents of the modal, title, buttons...
   """
-  slot open_btn
+  slot open_btn, arg: [autocomplete: :list, value: :any]
   slot action_btns
   slot cancel_btn
   slot title
   slot default, arg: [autocomplete: :list, value: :any]
-
-  data value, :any, default: nil
 
   def mount(socket) do
     # debug("mounting")

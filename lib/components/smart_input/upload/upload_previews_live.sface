@@ -46,14 +46,15 @@
             <.live_img_preview entry={entry} />
           </span>
           <textarea name="value" placeholder="Type here" class="w-full mt-3 textarea textarea-bordered" />
+          <!-- TODO: edit previously entered desc -->
         </div>
         <:open_btn :let={value: value}>
           <button
             type="button"
-            class="absolute z-20 font-medium normal-case rounded glass top-2 left-2 btn btn-xs"
+            class="absolute z-20 font-medium normal-case rounded glass top-2 left-2 btn btn-xs truncate max-w-[100px]"
             aria-label="Add description"
           >
-            <span class="">{l("Edit")}</span>
+            <span class="">{value || l("Edit")}</span>
           </button>
           <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}>
         </:open_btn>
