@@ -12,6 +12,7 @@
                 alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
                   e(@user, :username, nil) ||
                   l("Avatar")}
+                fallback_icon={Icon.icon_name("material-symbols:person-2-rounded")}
                 opts={@opts}
               />
             </div>
@@ -45,13 +46,18 @@
               /> -->
             {#else}
               <div class={@bg_class}>
-                <img
+                <div
+                  class={@class, "iconify"}
+                  iconify="material-symbols:person-2-rounded"
                   title={@title}
+                  {...@opts}
+                />
+                <!-- <img
                   src={avatar_fallback}
                   alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
                     l("Avatar")}
                   {...@opts}
-                />
+                /> -->
               </div>
             {/if}
         {/case}

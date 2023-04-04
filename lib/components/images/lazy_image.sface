@@ -1,24 +1,8 @@
 {#case @src || Media.media_url(@media)}
   {#match src}
-    {#case e(@media, :metadata, :blurhash, nil) || Bonfire.Files.Blurred.blurhash(@media, src: src)}
-      {#match nil}
-        {#case is_binary(src) and Bonfire.Files.Blurred.blurred(src, skip_creation: true)}
-          {#match blurred when is_binary(blurred) and blurred != src}
-            <!-- TODO: deprecate -->
-            <img
-              x-data={"{src: '#{blurred}' }"}
-              x-intersect.once={"src = '#{src}'"}
-              src={blurred}
-              alt={@alt}
-              class={@class}
-              x-bind:src="src"
-              onerror="this.style.background='#6AA4DA'"
-              {...@opts}
-            />
-          {#match _}
-            <img src={src} alt={@alt} class={@class} onerror="this.style.background='#6AA4DA'" {...@opts}>
-        {/case}
-      {#match blurhash}
+    {#case socket_connected?(@__context__) and
+        (e(@media, :metadata, :blurhash, nil) || Bonfire.Files.Blurred.blurhash(@media, src: src))}
+      {#match blurhash when is_binary(blurhash)}
         <div
           phx-hook="blurHash"
           id={"blurHash-#{@parent_id}-#{Text.hash(blurhash)}"}
@@ -36,9 +20,33 @@
             x-show="src"
             x-transition
             x-bind:src="src"
-            onerror="this.style.background='#6AA4DA'"
+            onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"}
             {...@opts}
           />
         </div>
+      {#match _}
+        <!-- TODO: deprecate non-blurhash based blurred -->
+        {#case socket_connected?(@__context__) and
+            (is_binary(src) and Bonfire.Files.Blurred.blurred(src, skip_creation: true))}
+          {#match blurred when is_binary(blurred) and blurred != src}
+            <img
+              x-data={"{src: '#{blurred}' }"}
+              x-intersect.once={"src = '#{src}'"}
+              src={blurred}
+              alt={@alt}
+              class={@class}
+              x-bind:src="src"
+              onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"}
+              {...@opts}
+            />
+          {#match _}
+            <img
+              src={src}
+              alt={@alt}
+              class={@class}
+              onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"}
+              {...@opts}
+            />
+        {/case}
     {/case}
 {/case}

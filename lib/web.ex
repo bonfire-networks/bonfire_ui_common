@@ -371,6 +371,7 @@ defmodule Bonfire.UI.Common.Web do
         alias Bonfire.UI.Common.LinkPatchLive
 
         alias Iconify.Icon
+        require Iconify.Icon
       end
     end
   end

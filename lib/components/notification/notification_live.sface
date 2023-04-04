@@ -42,7 +42,7 @@
               {l("Show")}
             </LiveRedirect>
           </div>
-          <div :if={socket_connected?(@socket)} class="">
+          <div :if={socket_connected?(@__context__)} class="">
             <button
               phx-click="clear-flash"
               phx-target={@myself}
@@ -73,7 +73,7 @@
               <div class="ml-3 w-0 flex-1 pt-0.5">
                 <div data-id="flash" data-type="info" class="text-sm font-semibold text-info-content">{rich(info)}</div>
               </div>
-              <div :if={socket_connected?(@socket)} class="">
+              <div :if={socket_connected?(@__context__)} class="">
                 <button
                   phx-click="clear-flash"
                   phx-target={@myself}
@@ -128,7 +128,7 @@
                   event="Bonfire.Social.Posts:write_error"
                 />
               </div>
-              <div :if={socket_connected?(@socket)} class="">
+              <div :if={socket_connected?(@__context__)} class="">
                 <button
                   phx-click="clear-flash"
                   phx-target={@myself}
