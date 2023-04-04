@@ -1,26 +1,28 @@
-<div
-  data-id="composer_minimized"
-  class="smart_input_show_on_minimize fixed bottom-0 hidden right-3"
->
+<div class="hidden md:block">
   <div
-    phx-click={LiveHandler.maximize()}
-    phx-target="#smart_input"
-    type="button"
-    class="h-[40px] bg-base-100 w-[20rem] cursor-pointer group justify-between rounded-t-2xl border-none border flex items-center gap-2 border-base-content/10 px-4"
+    data-id="composer_minimized"
+    class="fixed bottom-0 hidden smart_input_show_on_minimize right-3"
   >
-    <div class="flex items-center gap-3">
-      <#Icon iconify="mdi:pencil" class="w-4 h-4 group-hover:text-primary/100 text-primary/70" />
-      <span class="text-sm text-primary/70 group-hover:text-primary/100">{l("Compose...")}</span>
-    </div>
-    <button
-      phx-click="reset"
+    <div
+      phx-click={LiveHandler.maximize()}
       phx-target="#smart_input"
       type="button"
-      class="flex btn btn-xs btn-ghost btn-circle"
-      data-testid="composer:close-button"
+      class="h-[40px] bg-base-100 w-[20rem] cursor-pointer group justify-between rounded-t-2xl border-none border flex items-center gap-2 border-base-content/10 px-4"
     >
-      <#Icon outline="X" class="w-4 h-4 stroke-1 group-hover:text-primary/100 text-primary/70" />
-      <span class="sr-only">{l("Close")}</span>
-    </button>
+      <div class="flex items-center gap-3">
+        <#Icon iconify="mdi:pencil" class="w-4 h-4 group-hover:text-primary/100 text-primary/70" />
+        <span class="text-sm text-primary/70 group-hover:text-primary/100">{l("Compose...")}</span>
+      </div>
+      <button
+        phx-click="reset"
+        phx-target="#smart_input"
+        type="button"
+        class="flex btn btn-xs btn-ghost btn-circle"
+        data-testid="composer:close-button"
+      >
+        <#Icon outline="X" class="w-4 h-4 stroke-1 group-hover:text-primary/100 text-primary/70" />
+        <span class="sr-only">{l("Close")}</span>
+      </button>
+    </div>
   </div>
 </div>

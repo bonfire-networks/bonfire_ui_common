@@ -1,12 +1,8 @@
 <div class="bottom-0 h-[68px] flex fixed z-[998] btm-nav md:hidden">
   <LiveRedirect
-    class={
-      "",
-      "text-primary": @page == "home"
-    }
     to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}
   >
-    {#if @page == "home"}
+    {#if @page == "feed"}
       <#Icon iconify="ri:home-fill" class="w-6 h-6" />
     {#else}
       <#Icon iconify="ri:home-line" class="w-6 h-6" />
@@ -16,10 +12,6 @@
 
   <LiveRedirect
     :if={!@current_user}
-    class={
-      "",
-      "text-primary": @page == "feed"
-    }
     to="/feed"
   >
     <#Icon iconify="ic:outline-explore" class="w-6 h-6" />
@@ -29,12 +21,12 @@
   <LiveRedirect
     :if={@current_user}
     to={~p"/search"}
-    class={
-      "",
-      "text-primary": @page == "search"
-    }
   >
-    <#Icon outline="Search" class="w-6 h-6" />
+    {#if @page == "search"}
+      <#Icon iconify="fluent:search-24-filled" class="w-6 h-6" />
+    {#else}
+      <#Icon iconify="fluent:search-24-regular" class="w-6 h-6" />
+    {/if}
     <span class="sr-only">{l("Search")}</span>
   </LiveRedirect>
 

@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="relative z-30">
-      <div class="p-0 z-[910] modal_invisible relative" data-id="modal-contents">
+      <div class="p-0 z-[910] modal_invisible relative pb-40 md:pb-2 bg-base-100" data-id="modal-contents">
         <#slot>
           {#case merge_as_map(@modal_assigns, %{showing_within: :preview})
             |> debug("preview_component modal_assigns")}
