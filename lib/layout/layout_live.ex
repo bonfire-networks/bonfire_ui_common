@@ -135,7 +135,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         "grid-cols-1 md:grid-cols-[280px_1fr] tablet-lg:grid-cols-[280px_1fr_320px] ":
           @current_user && !@without_sidebar && !@without_widgets
       }>
-        <Bonfire.UI.Common.MobileMenuLive />
+        <Bonfire.UI.Common.MobileMenuLive :if={@current_user} />
         <div
           :if={!@without_sidebar}
           data-id="nav_sidebar"

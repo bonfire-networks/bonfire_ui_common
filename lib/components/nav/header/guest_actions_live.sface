@@ -2,7 +2,7 @@
   :if={!@current_account}
   class={
     "hidden tablet-lg:flex justify-end items-center gap-3",
-    "!flex tablet-lg:!hidden w-60": @page_header
+    "!flex tablet-lg:!hidden": @page_header
   }
 >
   <LiveRedirect

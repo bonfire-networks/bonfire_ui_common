@@ -12,7 +12,7 @@
     <label tabindex="0" class="relative btn btn-circle btn-sm">
       <#Icon iconify="ci:grid-round" class="w-5 h-5" />
     </label>
-    <div tabindex="0" class="p-2 shadow dropdown-content bg-neutral rounded-box w-60">
+    <div tabindex="0" class="p-2 shadow dropdown-content bg-neutral rounded-box">
       <Bonfire.UI.Common.AppsLive />
     </div>
   </div>

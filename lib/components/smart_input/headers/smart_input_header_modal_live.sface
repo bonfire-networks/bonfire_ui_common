@@ -1,8 +1,8 @@
-<header class="sticky top-0 z-50 flex flex-row items-center w-full p-3 rounded-t-lg md:z-auto md:relative bg-base-100 flex-align-items-stretch flex-nowrap h-[52px]">
-  <span class="flex-1 text-lg font-semibold text-center text-ellipsis text-base-content/70">
+<header class="sticky top-0 z-50 flex flex-row items-center w-full p-3 md:rounded-t-lg bg-base-200/50 md:bg-base-100 md:z-auto md:relative flex-align-items-stretch flex-nowrap h-[52px]">
+  <span class="flex-1 text-base font-semibold md:text-center text-ellipsis">
     {e(@smart_input_opts, :prompt, l("Share your thoughts"))}
   </span>
-  <div class="absolute flex items-center gap-3 right-3">
+  <div class="absolute flex items-center gap-5 md:gap-3 right-3">
     <button
       phx-click={LiveHandler.minimize()}
       phx-target="#smart_input"
@@ -11,7 +11,7 @@
     >
       <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
       <span>
-        <#Icon outline="Minus" class="w-4 h-4 stroke-1 text-base-content/70" />
+        <#Icon outline="Minus" class="w-5 h-5 stroke-1 md:w-4 md:h-4 text-base-content/70" />
         <span class="sr-only">{l("Minimize")}</span>
       </span>
     </button>
@@ -24,7 +24,7 @@
     >
       <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
       <span>
-        <#Icon iconify="bx:expand-alt" class="w-4 h-4 stroke-1 text-base-content/70" />
+        <#Icon iconify="bx:expand-alt" class="w-5 h-5 stroke-1 md:w-4 md:h-4 text-base-content/70" />
         <span class="sr-only">{l("Maximise focus")}</span>
       </span>
     </button>
@@ -37,7 +37,7 @@
     >
       <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
       <span>
-        <#Icon iconify="bx:collapse-alt" class="w-4 h-4 stroke-1 text-base-content/70" />
+        <#Icon iconify="bx:collapse-alt" class="w-5 h-5 stroke-1 md:w-4 md:h-4 text-base-content/70" />
         <span class="sr-only">{l("Get it out of the way")}</span>
       </span>
     </button>
@@ -53,7 +53,7 @@
         <p>{l("Closing the composer will discard your post. Are you sure you want to close it?")}</p>
       </div>
       <:open_btn>
-        <#Icon outline="X" class="w-4 h-4 stroke-1 text-base-content/70" />
+        <#Icon outline="X" class="w-5 h-5 stroke-1 md:w-4 md:h-4 text-base-content/70" />
         <span class="sr-only">{l("Close")}</span>
       </:open_btn>
       <:action_btns>

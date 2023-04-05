@@ -5,6 +5,12 @@
 
 @tailwind base; 
 
+
+.phx-submit-loading .while-submitting { 
+ @apply !inline-flex; 
+}
+
+
 .write_post_content .phx-submit-loading {
   @apply relative;
 }

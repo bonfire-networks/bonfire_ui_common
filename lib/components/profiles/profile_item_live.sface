@@ -6,6 +6,7 @@
     class="flex items-center gap-3 profile-item group"
   >
     <Bonfire.UI.Common.AvatarLive
+      :if={!@inline}
       parent_id="profile_item"
       comment={if @lg, do: false, else: true}
       user={@profile}
@@ -13,13 +14,15 @@
     />
     <div class={
       "flex-1",
-      "flex gap-2 items-baseline": @inline
+      "flex gap-1 items-baseline": @inline
     }>
-      <p class={"text-sm font-medium group-hover:underline text-base-content", "text-base": @lg}>
+      <p class={"text-sm font-bold group-hover:underline text-base-content", "text-base": @lg}>
         {e(@profile, :name, "Anon")}
       </p>
       <p class="-mt-1 text-sm text-base-content/70">
+        <span :if={@inline}>( </span>
         {Bonfire.Me.Characters.display_username(e(@character, :username, nil), true)}
+        <span :if={@inline}> )</span>
       </p>
     </div>
   </LiveRedirect>

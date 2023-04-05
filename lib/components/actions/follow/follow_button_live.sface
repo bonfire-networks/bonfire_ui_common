@@ -1,18 +1,24 @@
 <div>
-  {#if !@my_follow}
+  {#if @my_follow == nil}
+    <button disabled class="normal-case rounded btn btn-disabled btn-sm">{l "loading..."}</button>
+  {#elseif !@my_follow}
     <a
       :if={!@my_follow}
       data-cid={@id}
       data-id="follow"
+      id={"#{@id}-btn"}
       :on-click="Bonfire.Social.Follows:follow"
       href={if !@current_user, do: "#{@path}/follow"}
       rel="noopener noreferrer"
+      phx-disable-with={l("loading...")}
       phx-value-id={@object_id}
       class={e(@class, "btn btn-sm btn-primary rounded border-base-content/40 normal-case")}
     >
-      <#Icon solid="UserAdd" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
-      <span :if={!@hide_text} class={"truncate ellipsis", "ml-2": !@hide_icon}>
-        {@verb || l("Follow")} {@label}</span>
+      <div id={@id} class="flex items-center gap-2">
+        <#Icon solid="UserAdd" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
+        <span :if={!@hide_text} class={"truncate ellipsis", "ml-2": !@hide_icon}>
+          {@verb || l("Follow")} {@label}</span>
+      </div>
     </a>
   {#elseif @my_follow == :requested}
     <a
@@ -33,9 +39,11 @@
     </a>
   {#else}
     <a
+      phx-disable-with={l("loading...")}
       x-data={"{text: '#{@verb_already || l("Following")}'}"}
       x-on:mouseover={"text = '#{@verb_undo || l("Unfollow")}'"}
       x-on:mouseover.away={"text = '#{@verb_already || l("Following")}'"}
+      id={"#{@id}-btn"}
       data-cid={@id}
       data-id="unfollow"
       :on-click="Bonfire.Social.Follows:unfollow"
@@ -43,10 +51,12 @@
       :class={"{ '!btn-error': text == '#{@verb_undo || l("Unfollow")}' }"}
       class={e(@class, "btn btn-sm btn-outline rounded !border-base-content/40 normal-case")}
     >
+       <div id={@id} class="flex items-center gap-2">
       <#Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
 
       <span :if={!@hide_text} x-text="text" class={"truncate ellipsis", "ml-2": !@hide_icon}>
         {@verb_already || l("Following")} {@label}</span>
+      </div>
     </a>
   {/if}
 </div>

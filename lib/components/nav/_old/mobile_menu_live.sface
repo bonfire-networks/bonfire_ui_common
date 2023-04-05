@@ -12,7 +12,7 @@
 />
 <div x-show="open_sidebar" x-cloak class="fixed z-[99999] inset-0 overflow-hidden">
   <div class="absolute inset-0 overflow-hidden">
-    <div class="fixed inset-y-0 left-0 flex max-w-full pr-10 pointer-events-none">
+    <div class="fixed inset-y-0 left-0 flex max-w-full pr-20 pointer-events-none">
       <div
         x-show="open_sidebar"
         x-transition:enter="transform transition ease-in-out duration-300"
@@ -25,17 +25,17 @@
         x-description="Slide-over panel, show/hide based on slide-over state."
         x-on:click.away="open_sidebar = false"
       >
-        <div class="flex flex-col h-full py-6 overflow-y-scroll shadow-xl bg-base-300">
-          <div class="relative flex-1 px-4 sm:px-6">
+        <div class="flex flex-col h-full overflow-y-scroll shadow-xl bg-base-300">
+          <div class="relative flex-1">
             <div data-id="mobile_nav">
               <div class="relative w-full h-full">
-                <div class="flex items-start justify-between">
-                  <LinkLive class="inline-flex gap-3" to={path(@current_user)}>
+                <div class="flex items-start justify-between p-6 bg-base-200">
+                  <LinkLive class="flex flex-col gap-3" to={path(@current_user)}>
                     <Bonfire.UI.Common.AvatarLive
                       parent_id="mobile_menu"
-                      class="inline-block object-cover w-10 h-10 cursor-pointer rounded-xl"
+                      class="inline-block object-cover w-16 h-16 rounded cursor-pointer bg-base-300"
                       bg_class="rounded bg-base-300"
-                      size="32"
+                      size="42"
                       user={@current_user}
                     />
                     <div class="flex items-center">
@@ -46,8 +46,8 @@
                     </div>
                   </LinkLive>
                   <div class="flex items-center ml-3 h-7">
-                    <button type="button" class="btn btn-circle btn-ghost" x-on:click="open_sidebar = false">
-                      <span class="sr-only">Close panel</span>
+                    <button type="button" class="btn btn-circle btn-sm" x-on:click="open_sidebar = false">
+                      <span class="sr-only">{l "Close drawer menu"}</span>
                       <svg
                         class="w-6 h-6"
                         fill="none"
@@ -61,8 +61,8 @@
                     </button>
                   </div>
                 </div>
-                <nav role="navigation" class="mt-4" aria-label={l("Extension navigation")}>
-                  <ul class="gap-1 menu menu-compact">
+                <nav role="navigation" class="p-4" aria-label={l("Extension navigation")}>
+                  <ul class="gap-1 menu">
                     <Bonfire.UI.Common.UserMenuLinksLive mobile />
                   </ul>
                 </nav>
