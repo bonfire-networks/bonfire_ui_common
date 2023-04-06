@@ -1,6 +1,6 @@
 <div>
   {#if @my_follow == nil}
-    <button disabled class="normal-case rounded btn btn-disabled btn-sm">{l "loading..."}</button>
+    <button disabled class="normal-case rounded btn btn-disabled btn-sm">{l("loading...")}</button>
   {#elseif !@my_follow}
     <a
       :if={!@my_follow}
@@ -51,11 +51,11 @@
       :class={"{ '!btn-error': text == '#{@verb_undo || l("Unfollow")}' }"}
       class={e(@class, "btn btn-sm btn-outline rounded !border-base-content/40 normal-case")}
     >
-       <div id={@id} class="flex items-center gap-2">
-      <#Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
+      <div id={@id} class="flex items-center gap-2">
+        <#Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
 
-      <span :if={!@hide_text} x-text="text" class={"truncate ellipsis", "ml-2": !@hide_icon}>
-        {@verb_already || l("Following")} {@label}</span>
+        <span :if={!@hide_text} x-text="text" class={"truncate ellipsis", "ml-2": !@hide_icon}>
+          {@verb_already || l("Following")} {@label}</span>
       </div>
     </a>
   {/if}

@@ -20,9 +20,11 @@
         {e(@profile, :name, "Anon")}
       </p>
       <p class="-mt-1 text-sm text-base-content/70">
-        <span :if={@inline}>( </span>
+        <span :if={@inline}>(
+        </span>
         {Bonfire.Me.Characters.display_username(e(@character, :username, nil), true)}
-        <span :if={@inline}> )</span>
+        <span :if={@inline}>
+          )</span>
       </p>
     </div>
   </LiveRedirect>
