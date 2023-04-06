@@ -4,7 +4,7 @@
   x-ref="dialog"
   aria-modal="true"
   role="banner"
-  class="flex items-center h-[56px] md:h-[50px] rounded-t flex-1 w-full md:border-b border-base-content/10 md:bg-base-100 px-4"
+  class="flex items-center h-[60px] md:h-[56px] flex-1 w-full md:border-b border-base-content/10 px-4"
 >
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center justify-between w-full tablet-lg:flex-1">
@@ -15,16 +15,16 @@
           x-on:click="open_sidebar = true"
           class="rounded md:hidden btn btn-sm btn-square btn-ghost"
         >
-          <#Icon iconify="gg:menu-left-alt" class="w-6 h-6" />
+          <#Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
         </button>
         <Iconify.iconify
           :if={@page_header_icon && !@back}
           icon={@page_header_icon}
-          class="hidden w-5 h-5 text-base-content/70 md:block"
+          class="hidden w-6 h-6 text-base-content md:block"
         />
         <Bonfire.UI.Common.BackButtonLive :if={@back} />
         <span
-          class="max-w-[200px] first-letter:capitalize md:max-w-max text-xl md:text-sm  font-semibold truncate text-base-content text-ellipsis"
+          class="max-w-[250px] first-letter:capitalize md:max-w-max text-base font-semibold truncate text-base-content text-ellipsis"
           :if={not is_nil(@page_title)}
         >{@page_title}</span>
       </div>

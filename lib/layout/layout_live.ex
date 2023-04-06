@@ -141,12 +141,12 @@ defmodule Bonfire.UI.Common.LayoutLive do
           data-id="nav_sidebar"
           class="fixed md:sticky self-start order-first w-full mt-3 top-3 z-[9999] md:block"
         >
-          <div class="hidden md:flex items-center justify-between h-[50px] pb-4 mt-2">
+          <div class="hidden md:flex items-center justify-between h-[50px] pb-4">
             <div data-id="logo" class="items-center place-content-center">
               <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
             </div>
 
-            <Bonfire.UI.Common.UserMenuLive />
+            <Bonfire.UI.Common.UserMenuLive :if={@current_user} />
           </div>
 
           <Bonfire.UI.Common.PersistentLive
@@ -196,26 +196,15 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 <div
                   id="inner"
                   class={
-                    "md:mt-0 bg-base-100 min-h-[calc(var(--inner-window-height)_-_16px)] pb-40 md:pb-[1px]":
+                    "md:mt-0 border-l border-r border-base-content/10 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]":
                       !@without_sidebar
                   }
                 >
                   <div
                     :if={!@without_sidebar}
-                    class={
-                      "sticky top-0  md:pt-3 bg-base-300 z-[999]",
-                      "!bg-transparent md:!bg-base-300 !fixed left-0 right-0 md:!sticky": @transparent_header
-                    }
+                    class={"sticky top-0 z-[999]"}
                   >
-                    <div
-                      x-data="{atTop: false}"
-                      @scroll.window="atTop = (window.pageYOffset < 100) ? false: true"
-                      class={
-                        "flex flex-1 rounded-none md:rounded-t bg-base-100 transition-color duration-150 ease-in-out",
-                        "bg-transparent md:bg-base-100": @transparent_header
-                      }
-                      :class="{'!bg-base-100': atTop}"
-                    >
+                    <div class={"flex flex-1 backdrop-blur-sm rounded-none md:rounded-t bg-base-300/70 transition-color duration-150 ease-in-out"}>
                       <Dynamic.Component
                         module={Bonfire.UI.Common.PageHeaderLive}
                         page_title={@page_title}

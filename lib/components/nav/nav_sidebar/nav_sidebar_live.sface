@@ -22,13 +22,13 @@
         <Bonfire.UI.Common.AvatarLive
           :if={is_map(current_user(@__context__))}
           parent_id="nav_sidebar"
-          class="inline-block object-cover w-10 h-10 rounded-lg cursor-pointer"
+          class="inline-block object-cover w-10 h-10 rounded-lg cursor-pointer bg-base-100"
           bg_class="rounded"
           size="40"
           user={current_user(@__context__)}
         />
         <div class="flex flex-col items-start">
-          <div class="text-sm font-semibold truncate text-base-content">{e(current_user(@__context__), :profile, :name, l("Me"))}</div>
+          <div class="text-base font-semibold truncate text-base-content">{e(current_user(@__context__), :profile, :name, l("Me"))}</div>
           <div
             :if={e(current_user(@__context__), :character, :username, nil)}
             class="-mt-0.5 text-sm font-normal truncate text-base-content/70"
@@ -74,7 +74,7 @@
   </div>
   {#if !@current_user}
     <nav>
-      <ul class="menu">
+      <ul class="gap-1 menu">
         <li class="p-0 m-0 rounded-md">
           <LiveRedirect to="/" class="flex items-center w-full gap-6 px-2 py-2 rounded-md">
             <#Icon iconify="ri:home-line" class="w-5 h-5 text-base-content/70" />

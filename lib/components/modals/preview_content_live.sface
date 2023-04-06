@@ -1,17 +1,17 @@
 <div
   id={@id}
   class={
-    "#{@modal_class} bg-base-100",
+    "#{@modal_class}",
     "invisible h-0": !@show,
-    "visible inset-0 widget z-[99999999999]": @show
+    "visible inset-0 widget border-l border-r border-base-content/10 z-[99999999999]": @show
   }
   {...@opts}
 >
   {#if @show}
-    <div class="sticky block top-0  md:pt-3 bg-base-300 z-[999]">
+    <div class="sticky block backdrop-blur-sm top-0 bg-base-300/70 z-[999]">
       <div
         role="banner"
-        class="flex bg-base-100 border-b border-base-content/10 items-center h-[50px] rounded-t flex-1 w-full px-4"
+        class="flex border-b border-base-content/10 items-center h-[60px] md:h-[56px] flex-1 w-full px-4"
       >
         <div class="flex items-center w-full">
           <div class="flex items-center flex-1 w-full gap-2">
@@ -24,14 +24,14 @@
             >
               <#Icon outline="ChevronLeft" class="w-5 h-5 md:w-4 md:h-4 text-base-content" />
             </button>
-            <span class="max-w-[200px] md:max-w-max text-xl md:text-sm font-semibold truncate text-ellipsis">{l("Discussion")}</span>
+            <span class="max-w-[250px] text-base-content md:max-w-max text-base font-semibold truncate text-ellipsis">{l("Discussion")}</span>
           </div>
         </div>
       </div>
     </div>
     <div class="relative z-30">
       <div
-        class="p-0 z-[910] modal_invisible relative pb-40 md:pb-2 bg-base-100"
+        class="p-0 z-[910] modal_invisible relative pb-40 md:pb-2 bg-base-300"
         data-id="modal-contents"
       >
         <#slot>
