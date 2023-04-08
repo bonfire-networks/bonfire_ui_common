@@ -33,7 +33,7 @@
       <div class="flex w-full">
         <div class="flex items-center gap-2">
           {#for {name, id} <- @to_circles}
-            <span class="gap-2 border-base-content/70 badge !h-[2rem] badge-lg badge-outline">
+            <span class="gap-2 border-base-content/50 badge !h-[1.75rem] rounded badge-outline">
               {name}
               <svg
                 phx-click="remove"
