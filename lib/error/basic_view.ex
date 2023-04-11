@@ -14,7 +14,7 @@ defmodule Bonfire.UI.Common.BasicView do
   def show_html(title, body, class) do
     raw("""
     <!DOCTYPE html>
-    <html lang="en" class="#{class || "dark"}">
+    <html lang="en" class="#{class || "dark"}"  style="background-color: black;">
     <head>
       <meta charset="utf-8"/>
       <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -31,11 +31,11 @@ defmodule Bonfire.UI.Common.BasicView do
       <div id="layout-error">
         <div class="">
           <div class="flex flex-col items-center mx-auto mt-16 overflow-hidden">
-            <div class="relative z-10 flex justify-between flex-shrink-0 h-16">
+            <div class="relative z-10 flex justify-between flex-shrink-0">
                 <div class="flex items-center flex-shrink-0 lg:px-4">
                   <a data-phx-link="redirect" data-phx-link-state="push" href="/">
                     <div class="flex items-center px-4 py-2 rounded">
-                      <div class="w-16 h-16 mb-4 bg-center bg-no-repeat bg-contain" style="background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"></div>
+                      <div class="w-16 h-20 mb-4 bg-center bg-no-repeat bg-contain" style="background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"></div>
                     </div>
                   </a>
                   <div class="flex flex-1">
@@ -45,7 +45,7 @@ defmodule Bonfire.UI.Common.BasicView do
           </div>
 
           <div class="w-full max-w-screen-md mx-auto mt-12">
-            <div class="prose text-center max-w-none">
+            <div class="prose text-center max-w-none" style="color: white;">
               <h1 class="text-base-content">
                 #{title}
               </h1>

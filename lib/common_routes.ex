@@ -55,6 +55,7 @@ defmodule Bonfire.UI.Common.Routes do
         pipe_through(:browser)
 
         get("/guest/error", Bonfire.UI.Common.ErrorController, as: :error_guest)
+        get("/guest/error/:code", Bonfire.UI.Common.ErrorController, as: :error_guest)
 
         post(
           "/LiveHandler/:live_handler",

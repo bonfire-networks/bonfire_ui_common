@@ -45,7 +45,7 @@ defmodule Bonfire.UI.Common.LayoutView do
         dark_theme: $el.dataset.theme,
         light_theme: '#{Settings.get([:ui, :theme, :instance_theme_light],
              "light",
-             @current_user || @__context__ || @conn)}'
+             assigns[:__context__] || assigns[:current_user] || @conn)}'
         }"
       }
       x-init={

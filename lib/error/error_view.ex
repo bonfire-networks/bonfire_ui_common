@@ -1,20 +1,10 @@
 defmodule Bonfire.UI.Common.ErrorView do
   use Bonfire.UI.Common.Web, :view
 
-  # TODO: use errors from Bonfire.Fail instead
-  def codes,
-    do: %{
-      403 => l("Not allowed"),
-      404 => l("Not found"),
-      409 => l("Attempted to update out-of-date data"),
-      500 => l("Something went wrong")
-    }
-
   def render("403.html", assigns) do
     show_error(
       403,
-      reason(assigns) <>
-        "<p><img src='https://media.sciencephoto.com/image/c0021814/800wm'/>",
+      "#{reason(assigns)}<p><img src='https://media.sciencephoto.com/image/c0021814/800wm'/>",
       true
     )
   end
@@ -59,8 +49,12 @@ defmodule Bonfire.UI.Common.ErrorView do
   end
 
   def render(:app, assigns) do
+    render("app.html", assigns)
+  end
+
+  def render("app.html", assigns) do
     show_error(
-      500,
+      assigns["code"] || 500,
       reason(assigns) || "Please try again or contact the instance admins.",
       true
     )
@@ -102,30 +96,37 @@ defmodule Bonfire.UI.Common.ErrorView do
     )
   end
 
+  def render(_, assigns) do
+    render("app.html", assigns)
+  end
+
   defp show_error(error_or_error_code, details, as_html?) do
     # error(details)
+    http_code =
+      Types.maybe_to_integer(error_or_error_code, 500)
+      |> debug(error_or_error_code)
 
-    if as_html?,
-      do: show_html(error_or_error_code, details),
-      else:
-        Jason.encode!(%{
-          "errors" => [
-            %{
-              "status" =>
-                if(is_number(error_or_error_code),
-                  do: error_or_error_code,
-                  else: 500
-                ),
-              "title" => codes()[error_or_error_code] || error_or_error_code,
-              "detail" => details
-            }
-          ]
-        })
+    {name, msg} = Bonfire.Fail.get_error_tuple(http_code) || {nil, error_or_error_code}
+
+    if as_html? do
+      show_html(msg || error_or_error_code, details)
+    else
+      Jason.encode!(%{
+        "errors" => [
+          %{
+            "status" => http_code,
+            "code" => name,
+            "title" => msg || error_or_error_code,
+            "detail" => details
+          }
+        ]
+      })
+    end
   end
 
   defp reason(%{reason: reason}), do: reason(reason)
   defp reason(%{message: reason}), do: reason
-  defp reason(reason) when is_binary(reason), do: reason
+  defp reason(reason) when is_binary(reason), do: Text.text_only(reason)
   defp reason(reason) when not is_map(reason), do: inspect(reason)
 
   defp reason(_other) do
@@ -148,14 +149,16 @@ defmodule Bonfire.UI.Common.ErrorView do
 
   def show_html(error_code, details, class \\ nil)
 
-  def show_html(error_code, details, class) when is_integer(error_code),
-    do: show_html(codes()[error_code], details, class)
+  def show_html(http_code, details, class) when is_integer(http_code) do
+    {_name, msg} = Bonfire.Fail.get_error_tuple(http_code) || {nil, http_code}
+    show_html(msg, details, class)
+  end
 
   def show_html(error, %{message: details}, class) do
-    Bonfire.UI.Common.BasicView.show_html(error, details, class)
+    Bonfire.UI.Common.BasicView.show_html(Text.text_only(error), details, class)
   end
 
   def show_html(error, details, class) do
-    Bonfire.UI.Common.BasicView.show_html(error, details, class)
+    Bonfire.UI.Common.BasicView.show_html(Text.text_only(error), details, class)
   end
 end
