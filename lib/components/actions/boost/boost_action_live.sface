@@ -6,6 +6,7 @@
         :if={@object_id}
         id={@id}
         data-id="boost_action"
+        data-role="boost_enabled"
         disabled={if @object_type in [Bonfire.Data.Social.Message], do: "disabled"}
         phx-click={"#{if @my_boost, do: "Bonfire.Social.Boosts:undo", else: "Bonfire.Social.Boosts:boost"}"}
         phx-target={@myself}
@@ -26,6 +27,7 @@
     {#match _}
       <button
         type="button"
+        data-role="boost_disabled"
         class="rounded cursor-not-allowed boost btn btn-square btn-ghost btn-sm"
         title={l("You can't boost this activity")}
       >
