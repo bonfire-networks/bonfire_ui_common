@@ -1,5 +1,5 @@
 <div phx-hook="Composer" id="editor" class="w-full input-sizer stacked md:p-2">
-  <!-- x-model="body" -->
+    <!-- x-model="body" -->
   <textarea
     oninput="this.parentNode.dataset.value = this.value"
     phx-debounce="blur"
