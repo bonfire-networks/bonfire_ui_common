@@ -1170,7 +1170,9 @@ defmodule Bonfire.UI.Common do
 
     # |> debug("list_of_ids")
 
-    if ((connected? == true and Config.env() != :test) or
+    env = Config.env()
+
+    if ((connected? == true and env != :test) or
           Process.get(:enable_async_preloads) == true) and
          not is_nil(opts[:caller_module]) do
       debug(preload_fn, "preloading using async :-)")
@@ -1190,7 +1192,7 @@ defmodule Bonfire.UI.Common do
 
       list_of_assigns
     else
-      if not is_nil(current_user) do
+      if env != :test and not is_nil(current_user) do
         debug(preload_fn, "wait to preload once socket is connected")
         list_of_assigns
       else
