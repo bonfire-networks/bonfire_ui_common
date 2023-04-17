@@ -24,7 +24,7 @@
       "!w-5 !h-5 md:w-5 md:h-5 text-base-content/70": @as_icon
     }
   />
-  <span :if={@prompt} class="hidden md:block">{l("Compose")}</span>
+  <span :if={@prompt} class="hidden md:block">{@prompt || l("Compose")}</span>
 </button>
 
 <!-- phx-click="Bonfire.UI.Common.SmartInput:select_smart_input"
