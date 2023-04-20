@@ -6,7 +6,7 @@
           do: @widget[:href].(@__context__[:current_params]),
           else: @widget[:href]}
         class={if @showing_within != :dashboard,
-          do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+          do: "flex items-center w-full gap-4 px-2 py-2 rounded-md",
           else: "block w-full"}
       >
         <span :if={!@without_icon} class="">

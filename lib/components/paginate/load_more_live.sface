@@ -10,7 +10,7 @@
 >
   <a
     href={"#" <> unwrap(e(@page_info, :end_cursor, "unknown"))}
-    class="normal-case btn btn-wide btn-sm btn-ghost"
+    class="normal-case btn btn-glass"
     style="display: none"
     x-show="show"
   >

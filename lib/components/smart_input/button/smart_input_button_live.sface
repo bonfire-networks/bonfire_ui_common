@@ -10,6 +10,7 @@
     else: LiveHandler.open(%JS{}, @smart_input_opts)}
   phx-target="#smart_input"
   type="button"
+  data-role="composer_button"
   class={@class}
 >
   <!-- 
@@ -24,7 +25,7 @@
       "!w-5 !h-5 md:w-5 md:h-5 text-base-content/70": @as_icon
     }
   />
-  <span :if={@prompt} class="hidden md:block">{@prompt || l("Compose")}</span>
+  <span :if={@prompt} class="hidden normal-case md:block">{@prompt || l("Compose")}</span>
 </button>
 
 <!-- phx-click="Bonfire.UI.Common.SmartInput:select_smart_input"
