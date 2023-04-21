@@ -22,7 +22,7 @@
       class="p-2 mt-4 rounded shadow menu dropdown-content bg-neutral w-60 md:w-48 text-neutral-content"
     >
       <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LiveRedirect to={path(:signup)}>{l("Sign up")}</LiveRedirect></li>
-      <li><LiveRedirect class="text-neutral-content" to="/about">{l("About")}</LiveRedirect></li>
+      <!-- <li><LiveRedirect class="text-neutral-content" to="/about">{l("About")}</LiveRedirect></li> -->
       <li><LiveRedirect class="text-neutral-content" to="/conduct">{l("Code of conduct")}</LiveRedirect></li>
       <li><LiveRedirect class="text-neutral-content" to="/privacy">{l("Privacy")}</LiveRedirect></li>
       <li><LiveRedirect
