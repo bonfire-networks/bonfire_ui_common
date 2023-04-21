@@ -24,7 +24,7 @@
         />
         <Bonfire.UI.Common.BackButtonLive :if={@back} />
         <span
-          class="max-w-[250px] first-letter:capitalize md:max-w-max text-base font-semibold truncate text-base-content text-ellipsis"
+          class="max-w-[250px] first-letter:capitalize md:max-w-full text-base font-semibold truncate text-base-content text-ellipsis"
           :if={not is_nil(@page_title)}
         >{@page_title}</span>
       </div>

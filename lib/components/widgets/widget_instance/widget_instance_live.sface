@@ -1,0 +1,5 @@
+<Bonfire.UI.Common.WidgetBlockLive widget_title={@widget_title} class="">
+  <div class="max-w-full p-6 prose">
+    {templated_or_remote_markdown(e(@text, "text goes here"), @info)}
+  </div>
+</Bonfire.UI.Common.WidgetBlockLive>

@@ -142,7 +142,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           class="fixed md:sticky self-start order-first w-full mt-3 top-3 z-[9999] md:block"
         >
           <div class="hidden md:flex items-center justify-between h-[50px] pb-4">
-            <div data-id="logo" class="items-center place-content-center">
+            <div data-id="logo" class="items-center ml-1 place-content-center">
               <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
             </div>
 
@@ -163,7 +163,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
             }}
           />
           <nav
-            class="hidden w-full mt-4 md:flex gap-4 flex-col overflow-y-auto max-h-[calc(var(--inner-window-height)_-_142px)] min-h-[calc(var(--inner-window-height)_-_142px)]"
+            class={
+              "hidden w-full md:flex gap-4 flex-col overflow-y-hidden max-h-[calc(var(--inner-window-height)_-_150px)] min-h-[calc(var(--inner-window-height)_-_150px)]",
+              "mt-4": @current_user
+            }
             role="navigation"
             aria-label={l("Extension navigation")}
           >
@@ -281,7 +284,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
                 <Dynamic.Component
                   :if={is_nil(current_user(@__context__))}
-                  :for={{component, component_assigns} <- List.wrap(@sidebar_widgets[:guests][:secondary] || [])}
+                  :for={{component, component_assigns} <- List.wrap(@sidebar_widgets[:guests][:secondary] || [
+                    {Bonfire.UI.Common.WidgetInstanceLive, []},
+                    {Bonfire.Tag.Web.WidgetTagsLive, []}
+                  ])}
                   module={component}
                   {...component_assigns}
                 />

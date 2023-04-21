@@ -7,6 +7,8 @@
         nav_items={@nav_items}
       />
 
+      
+
       <!-- Add the groups sidebar if the module is available NOTE: use extensions nav instead -->
       <!-- <Dynamic.LiveComponent
         :if={module_enabled?(Bonfire.UI.Groups.SidebarGroupsLive)}
@@ -22,7 +24,7 @@
         <Bonfire.UI.Common.AvatarLive
           :if={is_map(current_user(@__context__))}
           parent_id="nav_sidebar"
-          class="inline-block object-cover w-10 h-10 rounded-lg cursor-pointer bg-base-100"
+          class="inline-block object-cover w-12 h-12 rounded-full cursor-pointer bg-base-100"
           bg_class="rounded"
           size="40"
           user={current_user(@__context__)}
@@ -73,18 +75,18 @@
     </div>
   </div>
   {#if !@current_user}
-    <nav>
-      <ul class="gap-1 menu">
+    <nav class="mt-1">
+      <ul class="gap-3 menu">
         <li class="p-0 m-0 rounded-md">
           <LiveRedirect to="/" class="flex items-center w-full gap-4 px-2 py-2 rounded-md">
-            <#Icon iconify="ri:home-line" class="w-5 h-5 text-base-content" />
-            <span class="text-sm font-normal text-base-content">{l("Home")}</span>
+            <#Icon iconify="ri:home-line" class="w-6 h-6 text-base-content" />
+            <span class="text-lg font-medium text-base-content">{l("Home")}</span>
           </LiveRedirect>
         </li>
         <li class="p-0 m-0 rounded-md">
           <LiveRedirect to="/feed" class="flex items-center w-full gap-4 px-2 py-2 rounded-md">
-            <#Icon iconify="ic:outline-explore" class="w-5 h-5 text-base-content" />
-            <span class="text-sm font-normal text-base-content">{l("Recent activities")}</span>
+            <#Icon iconify="ic:outline-explore" class="w-6 h-6 text-base-content" />
+            <span class="text-lg font-medium text-base-content">{l("Explore")}</span>
           </LiveRedirect>
         </li>
         <li
@@ -92,12 +94,29 @@
           class="p-0 m-0 rounded-md"
         >
           <LiveRedirect to="/users" class="flex items-center w-full gap-4 px-2 py-2 rounded-md">
-            <#Icon iconify="heroicons:users" class="w-5 h-5 text-base-content" />
-            <span class="text-sm font-normal text-base-content">{l("Users directory")}</span>
+            <#Icon iconify="heroicons:users" class="w-6 h-6 text-base-content" />
+            <span class="text-lg font-medium text-base-content">{l("Users directory")}</span>
           </LiveRedirect>
         </li>
       </ul>
     </nav>
+
+    <div 
+      class="flex flex-col mt-6 gap-2">
+      <LiveRedirect
+        to={path(:login, :index)}
+        class={"md:flex-1  normal-case rounded btn-primary btn"}
+      >{l("Log in")}</LiveRedirect>
+
+      {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+        <LiveRedirect
+          to={path(:signup)}
+          class={
+            "md:flex-1 hidden md:flex normal-case rounded btn-outline btn-primary btn"
+          }
+        >{l("Sign up")}</LiveRedirect>
+      {/if}
+    </div>
   {/if}
 
   {#if is_list(@sidebar_widgets[:users][:main])}
