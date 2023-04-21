@@ -284,10 +284,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
                 <Dynamic.Component
                   :if={is_nil(current_user(@__context__))}
-                  :for={{component, component_assigns} <- List.wrap(@sidebar_widgets[:guests][:secondary] || [
-                    {Bonfire.UI.Common.WidgetInstanceLive, []},
-                    {Bonfire.Tag.Web.WidgetTagsLive, []}
-                  ])}
+                  :for={{component, component_assigns} <-
+                    List.wrap(
+                      @sidebar_widgets[:guests][:secondary] ||
+                        [
+                          {Bonfire.UI.Common.WidgetInstanceLive, []},
+                          {Bonfire.Tag.Web.WidgetTagsLive, []}
+                        ]
+                    )}
                   module={component}
                   {...component_assigns}
                 />

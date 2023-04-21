@@ -17,8 +17,7 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   prop is_editable, :boolean, default: true
   prop implementation, :atom, default: nil
 
-  prop class, :string,
-    default: "bg-transparent text-sm rounded h-10 w-full input liveselect"
+  prop class, :string, default: "bg-transparent text-sm rounded h-10 w-full input liveselect"
 
   def preloaded_options(preloaded_options) do
     Enum.map(preloaded_options || [], &prepare_entry/1)

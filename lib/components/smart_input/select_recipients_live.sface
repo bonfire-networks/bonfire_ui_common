@@ -35,11 +35,12 @@
           {#for {name, id} <- @to_circles}
             <span class="gap-2 text-xs border-base-content/30 badge !h-[34px] !pr-0 rounded badge-outline">
               {name}
-              <button 
+              <button
                 type="button"
                 phx-click="remove"
                 phx-value-id={id}
-                class="!rounded-none btn btn-sm  btn-square btn-ghost !border-l border-l-base-content/30 !border-l-solid">
+                class="!rounded-none btn btn-sm  btn-square btn-ghost !border-l border-l-base-content/30 !border-l-solid"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
