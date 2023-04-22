@@ -109,9 +109,11 @@ module.exports = {
         },
         light: {
           ...require("daisyui/src/colors/themes")["[data-theme=light]"],
-          "secondary": "#414558",
-          "secondary-content": "#444b5d",
-          "base-300": "#f0f2f5"
+          "primary": "#1B74E4",
+          "primary-content": "#fff",
+          "base-300": "#fff",
+          "base-200": "#F7F9F9",
+          "base-100": "#F0F2F5"
         },
         dark: {
           ...require("daisyui/src/colors/themes")["[data-theme=dark]"],

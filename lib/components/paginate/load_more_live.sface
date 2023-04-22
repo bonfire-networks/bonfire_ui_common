@@ -10,7 +10,7 @@
 >
   <a
     href={"#" <> unwrap(e(@page_info, :end_cursor, "unknown"))}
-    class="normal-case btn btn-glass"
+    class="normal-case btn btn-outline rounded-full btn-primary"
     style="display: none"
     x-show="show"
   >
@@ -18,7 +18,7 @@
   </a>
   <a
     href={"?#{@live_handler}[after]=" <> unwrap(e(@page_info, :end_cursor, "unknown"))}
-    class="normal-case rounded btn btn-sm btn-outline opacity-70"
+    class="normal-case btn btn-outline rounded-full btn-primary"
     x-show="!show"
   >
     {l("Next page")}
