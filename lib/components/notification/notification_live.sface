@@ -12,6 +12,7 @@
     >
       <p class="text-sm font-medium text-red-800" role="alert">
         {l("Offline - waiting to reconnect...")}
+        <a class="btn btn-success btn-sm" href="javascript:liveSocket.connect()">Try again</a>
       </p>
     </div>
 
