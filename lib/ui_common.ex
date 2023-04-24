@@ -127,7 +127,8 @@ defmodule Bonfire.UI.Common do
              :flash,
              :__changed__,
              :__surface__,
-             :socket
+             :socket,
+             :myself
            ] ->
         true
 
