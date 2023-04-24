@@ -27,13 +27,13 @@
       >
         <div class="flex flex-col h-full overflow-y-scroll shadow-xl bg-base-300">
           <div class="relative flex-1">
-            <div data-id="mobile_nav">
+            <div class="flex-1 h-full" data-id="mobile_nav">
               <div class="relative w-full h-full">
                 <div class="flex items-start justify-between p-6 bg-base-200">
                   <LinkLive class="flex flex-col gap-3" to={path(@current_user)}>
                     <Bonfire.UI.Common.AvatarLive
                       parent_id="mobile_menu"
-                      class="inline-block object-cover w-16 h-16 rounded cursor-pointer bg-base-300"
+                      class="inline-block object-cover w-16 h-16 rounded-full cursor-pointer bg-base-100"
                       bg_class="rounded bg-base-300"
                       size="42"
                       user={@current_user}
@@ -46,7 +46,7 @@
                     </div>
                   </LinkLive>
                   <div class="flex items-center ml-3 h-7">
-                    <button type="button" class="btn btn-circle btn-sm" x-on:click="open_sidebar = false">
+                    <button type="button" class="btn btn-circle btn-sm btn-ghost" x-on:click="open_sidebar = false">
                       <span class="sr-only">{l("Close drawer menu")}</span>
                       <svg
                         class="w-6 h-6"
@@ -66,6 +66,61 @@
                     <Bonfire.UI.Common.UserMenuLinksLive mobile />
                   </ul>
                 </nav>
+              </div>
+            </div>
+            <div class="sticky bottom-0 p-4">
+              <div class="my-4 text-xs text-base-content/70">
+                <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:
+                  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·
+                  <!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · -->
+                  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·
+                  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LiveRedirect> ·
+                  <LiveRedirect
+                    :if={current_user(@__context__) || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+                    class="text-xs link-hover link text-base-content/70"
+                    to="/users"
+                  >{l("Users")}</LiveRedirect></div>
+                <div class="mt-2">
+                  <a
+                    href="https://bonfirenetworks.org/"
+                    class="text-xs font-semibold link link-hover text-base-content/70"
+                  >
+                    {Bonfire.Application.name()}
+                  </a>
+                  ·
+                  <LiveRedirect
+                    to={Bonfire.Application.repository()}
+                    class="text-xs link link-hover text-base-content/70"
+                  >
+                    {Bonfire.Application.version()}
+                    <span class="ml-1" x-data="{msg: 'JS'}">
+                      <span x-text="msg">no JS</span>
+                    </span>
+                    <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
+                  </LiveRedirect>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2 justify-between">
+              <LiveRedirect
+                to={~p"/switch-user"}
+                class="flex items-center border-base-content/70 btn btn-outline gap-2 normal-case flex-1"
+              >
+                <!-- <#Icon iconify="material-symbols:logout" class="w-4 h-4" /> -->
+                <!-- <#Icon iconify="fluent-mdl2:switch-user" class="w-5 h-5" /> -->
+
+                <div class={"text-sm"}>{l("Switch profile")}</div>
+              </LiveRedirect>
+
+                <LiveRedirect
+                  to={~p"/logout"}
+                  class="flex items-center btn btn-outline btn-error gap-2 normal-case flex-1"
+                >
+                  <!-- <#Icon iconify="material-symbols:logout" class="w-4 h-4" /> -->
+                  <#Icon iconify="uil:exit" class="w-5 h-5" />
+
+                  <div class={"text-sm"}>{l("Logout")}</div>
+                </LiveRedirect>
               </div>
             </div>
           </div>

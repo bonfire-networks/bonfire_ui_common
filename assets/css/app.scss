@@ -6,6 +6,10 @@
 @tailwind base; 
 
 
+.multiselect_in_composer .input {
+  @apply bg-base-content/5;
+}
+
 .phx-submit-loading .while-submitting { 
  @apply !inline-flex; 
 }

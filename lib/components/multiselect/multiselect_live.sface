@@ -6,7 +6,7 @@
         field={@form_input_name}
         phx-target={@event_target}
         placeholder={@label}
-        dropdown_class="cursor-pointer absolute top-10 px-0 dropdown-content menu shadow w-full bg-neutral text-neutral-content input rounded"
+        dropdown_class="cursor-pointer absolute top-12 p-2 dropdown-content menu shadow w-full bg-base-300 shadow-lg text-base-content input rounded"
         container_class="w-full"
         text_input_class={@class}
         update_min_len={2}

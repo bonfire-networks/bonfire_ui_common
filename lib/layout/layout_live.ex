@@ -164,7 +164,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           />
           <nav
             class={
-              "hidden w-full md:flex gap-4 flex-col overflow-y-hidden max-h-[calc(var(--inner-window-height)_-_150px)] min-h-[calc(var(--inner-window-height)_-_150px)]",
+              "hidden w-full md:flex gap-4 flex-col overflow-y-auto pb-1 max-h-[calc(var(--inner-window-height)_-_150px)] min-h-[calc(var(--inner-window-height)_-_150px)]",
               "mt-4": @current_user
             }
             role="navigation"

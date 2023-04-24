@@ -15,7 +15,7 @@
           x-on:click="open_sidebar = true"
           class="rounded md:hidden btn btn-sm btn-square btn-ghost"
         >
-          <#Icon iconify="gg:menu-left-alt" class="w-5 h-5" />
+          <#Icon iconify="gg:menu-left-alt" class="w-6 h-6" />
         </button>
         <Iconify.iconify
           :if={@page_header_icon && !@back}

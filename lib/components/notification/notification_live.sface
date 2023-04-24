@@ -68,11 +68,11 @@
         >
           <div class="p-4">
             <div class="flex items-center">
-              <div class="flex-shrink-0 p-2 rounded">
-                <#Icon outline="Speakerphone" class="w-5 h-5 text-info-content" />
+              <div class="flex-shrink-0 p-2">
+                <#Icon outline="Speakerphone" class="w-5 h-5" />
               </div>
               <div class="ml-3 w-0 flex-1 pt-0.5">
-                <div data-id="flash" data-type="info" class="text-sm font-semibold text-info-content">{rich(info)}</div>
+                <div data-id="flash" data-type="info" class="text-sm">{rich(info)}</div>
               </div>
               <div :if={socket_connected?(@__context__)} class="">
                 <button
@@ -80,10 +80,10 @@
                   phx-target={@myself}
                   phx-value-key="info"
                   type="button"
-                  class="btn btn-sm btn-circle btn-info"
+                  class="btn btn-sm btn-circle btn-ghost"
                 >
                   <span class="sr-only">{l("Close")}</span>
-                  <#Icon solid="X" class="w-5 h-5" />
+                  <#Icon solid="X" class="w-4 h-4" />
                 </button>
               </div>
             </div>
