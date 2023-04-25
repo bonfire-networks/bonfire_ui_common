@@ -102,15 +102,15 @@
               </div>
 
               <div class="flex items-center gap-2 justify-between">
-              <LiveRedirect
-                to={~p"/switch-user"}
-                class="flex items-center border-base-content/70 btn btn-outline gap-2 normal-case flex-1"
-              >
-                <!-- <#Icon iconify="material-symbols:logout" class="w-4 h-4" /> -->
-                <!-- <#Icon iconify="fluent-mdl2:switch-user" class="w-5 h-5" /> -->
+                <LiveRedirect
+                  to={~p"/switch-user"}
+                  class="flex items-center border-base-content/70 btn btn-outline gap-2 normal-case flex-1"
+                >
+                  <!-- <#Icon iconify="material-symbols:logout" class="w-4 h-4" /> -->
+                  <!-- <#Icon iconify="fluent-mdl2:switch-user" class="w-5 h-5" /> -->
 
-                <div class={"text-sm"}>{l("Switch profile")}</div>
-              </LiveRedirect>
+                  <div class="text-sm">{l("Switch profile")}</div>
+                </LiveRedirect>
 
                 <LiveRedirect
                   to={~p"/logout"}
@@ -119,7 +119,7 @@
                   <!-- <#Icon iconify="material-symbols:logout" class="w-4 h-4" /> -->
                   <#Icon iconify="uil:exit" class="w-5 h-5" />
 
-                  <div class={"text-sm"}>{l("Logout")}</div>
+                  <div class="text-sm">{l("Logout")}</div>
                 </LiveRedirect>
               </div>
             </div>
