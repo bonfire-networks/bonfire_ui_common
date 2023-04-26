@@ -3,6 +3,7 @@
     {#case @href}
       {#match nil}
         <div
+          data-role="open_modal"
           :on-click={@click_open_event}
           class={@open_btn_wrapper_class}
           phx-hook={@open_btn_hook}

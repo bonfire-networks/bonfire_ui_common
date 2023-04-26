@@ -48,7 +48,7 @@
           phx-click="close"
           phx-target={"[id='#{@id}']"}
           type="button"
-          class="normal-case btn btn-circle btn-sm"
+          class="normal-case btn btn-circle btn-sm btn-ghost"
         >
           <span class="sr-only">{l("Close")}</span>
           <#Icon outline="X" class="w-4 h-4" />
