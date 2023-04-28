@@ -1,7 +1,7 @@
 <!-- {#if @current_user} -->
 
 {#if e(@flagged, :id, nil)}
-  <button disabled="disabled" class="flex items-center p-2 text-neutral">
+  <button data-role="object_already_flagged" disabled="disabled" class="flex items-center p-2 text-neutral">
     {l("Already flagged")}
   </button>
 {#else}
@@ -22,6 +22,7 @@
     </:open_btn>
     <:action_btns>
       <button
+        data-role="submit_flag"
         phx-click="Bonfire.Social.Flags:flag"
         phx-value-id={e(@object, :id, "")}
         type="button"

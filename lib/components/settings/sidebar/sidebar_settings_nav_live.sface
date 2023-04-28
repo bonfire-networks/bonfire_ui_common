@@ -103,7 +103,7 @@
           solid="Flag"
           class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "flags"}
         />
-        <span class="text-sm text-base-content/70">{l("Flags")}</span>
+        <span class="text-sm text-base-content/70">{l("My Flags")}</span>
       </LiveRedirect>
     </li>
 
