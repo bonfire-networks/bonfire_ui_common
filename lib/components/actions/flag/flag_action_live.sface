@@ -1,6 +1,6 @@
 <!-- {#if @current_user} -->
 
-{#if e(@flagged, :id, nil)}
+{#if id(@flagged)}
   <button
     data-role="object_already_flagged"
     disabled="disabled"
@@ -11,7 +11,7 @@
 {#else}
   <Bonfire.UI.Common.OpenModalLive
     id={"flag-modal-#{@parent_id}"}
-    title_text={e(@label, l("Flag this object"))}
+    title_text={e(@label, l("Flag %{user_or_thing}", user_or_thing: @object_type))}
     open_btn_wrapper_class="flex items-center gap-2 text-base md:text-sm text-base-content/80 truncate max-w-max"
     action_btns_wrapper_class="normal-case rounded btn btn-sm btn-error"
   >
@@ -22,18 +22,31 @@
     </div>
     <:open_btn>
       <#Icon :if={!@hide_icon} solid="Flag" class="w-4 h-4 shrink-0" />
-      <span class="truncate ellipsis">{e(@label, l("Flag"))}</span>
+      <span class="truncate ellipsis">{e(@label, l("Flag %{user_or_thing}", user_or_thing: @object_type))}</span>
     </:open_btn>
     <:action_btns>
-      <button
-        data-role="submit_flag"
-        phx-click="Bonfire.Social.Flags:flag"
-        phx-value-id={e(@object, :id, "")}
-        type="button"
-        class="grow"
-      >
-        {e(@label, l("Flag this object"))}
-      </button>
+      {#if id(@flagged) || Flags.flagged?(@current_user, @object) |> debug("SLOOOOOT flagged??")}
+        <button
+          data-role="object_already_flagged"
+          phx-click="close"
+          phx-target="#modal"
+          type="button"
+          class="grow"
+        >
+          {l("Already flagged")}
+        </button>
+      {#else}
+        <button
+          data-role="submit_flag"
+          phx-click="Bonfire.Social.Flags:flag"
+          phx-value-id={id(@object)}
+          phx-value-type={@object_type}
+          type="button"
+          class="grow"
+        >
+          {e(@label, l("Flag %{user_or_thing}", user_or_thing: @object_type))}
+        </button>
+      {/if}
     </:action_btns>
   </Bonfire.UI.Common.OpenModalLive>
 {/if}
