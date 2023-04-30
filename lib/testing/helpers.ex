@@ -20,15 +20,15 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   def fake_user!(account \\ %{}, attrs \\ %{}, opts \\ []),
     do: Bonfire.Me.Fake.fake_user!(account, attrs, opts)
 
+  def fake_admin!(account \\ %{}, attrs \\ %{}, opts \\ []) do
+    user = fake_user!(account, attrs, opts)
+    {:ok, user} = Users.make_admin(user)
+    user
+  end
+
   def fake_user_and_conn!(account \\ fake_account!()) do
     user = fake_user!(account)
     conn = conn(account: account, user: user)
-    {user, conn}
-  end
-
-  def fake_admin_and_conn!(account \\ fake_account!()) do
-    {user, conn} = fake_user_and_conn!(account)
-    {:ok, user} = Users.make_admin(user)
     {user, conn}
   end
 
