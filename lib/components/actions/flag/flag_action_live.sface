@@ -3,8 +3,8 @@
 {#if id(@flagged)}
   <button
     data-role="object_already_flagged"
-    disabled="disabled"
-    class="flex items-center p-2 text-neutral"
+    disabled="true"
+    class="flex btn-disabled items-center p-2 text-neutral"
   >
     {l("Already flagged")}
   </button>
@@ -25,7 +25,7 @@
       <span class="truncate ellipsis">{e(@label, l("Flag %{user_or_thing}", user_or_thing: @object_type))}</span>
     </:open_btn>
     <:action_btns>
-      {#if id(@flagged) || Flags.flagged?(@current_user, @object) |> debug("SLOOOOOT flagged??")}
+      {#if id(@flagged) || Flags.flagged?(@current_user, @object)}
         <button
           data-role="object_already_flagged"
           phx-click="close"
