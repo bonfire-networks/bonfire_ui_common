@@ -25,7 +25,8 @@
       <span class="truncate ellipsis">{e(@label, l("Flag %{user_or_thing}", user_or_thing: @object_type))}</span>
     </:open_btn>
     <:action_btns>
-      {#if id(@flagged) || Flags.flagged?(@current_user, @object)}
+    {#if @current_user}
+      {#if id(@flagged) ||  Flags.flagged?(@current_user || %{}, @object)}
         <button
           data-role="object_already_flagged"
           phx-click="close"
@@ -47,6 +48,7 @@
           {e(@label, l("Flag %{user_or_thing}", user_or_thing: @object_type))}
         </button>
       {/if}
+    {/if}
     </:action_btns>
   </Bonfire.UI.Common.OpenModalLive>
 {/if}

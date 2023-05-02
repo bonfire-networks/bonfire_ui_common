@@ -133,9 +133,23 @@ ComposerHooks.Composer = {
               menu.style.top = caret.top + caret.height + 'px'
               menu.style.left = caret.left + 'px'
 
-              res.forEach((item) => {
-                list += mentionItemRenderer(item, text)
-              })
+              let counter = 0;
+              res.some((item) => {
+                if (counter >= 4) {
+                  return true; // Stops the iteration
+                }
+
+                list += topicItemRenderer(item);
+                counter++;
+              });
+
+              // let maxItems = 4
+              // for (let i = 0; i < res.length && i < maxItems; i++) {
+              //   list += topicItemRenderer(res[i]);
+              // }
+              // res.forEach((item) => {
+              //   list += mentionItemRenderer(item, text)
+              // })
             } else {
               menu.classList.add("hidden", false)
               list +=  ` `
@@ -154,10 +168,10 @@ ComposerHooks.Composer = {
                 var caret = getCaretCoordinates(textarea, textarea.selectionEnd);
                 menu.style.top = caret.top + caret.height + 'px'
                 menu.style.left = caret.left + 'px'
-
-                res.forEach((item) => {
-                  list += topicItemRenderer(item)
-                })
+                let maxItems = 4
+                for (let i = 0; i < res.length && i < maxItems; i++) {
+                  list += topicItemRenderer(res[i]);
+                }
               } else {
                 list +=  ` `
               }
@@ -177,9 +191,9 @@ ComposerHooks.Composer = {
 const mentionItemRenderer = (item, text) => {
   return `
     <li class="flex rounded flex-col py-1">
-      <button class="gap-1 rounded py-1.5" type="button" data-id="${item.id}" data-input="${text}">
-        <div class="text-sm text-neutral-content font-semibold">${item.value}</div>
-        <div class="text-xs text-secondary-content/70 font-regular">${item.id}</div>
+      <button class="gap-0 items-start flex flex-col rounded py-1.5" type="button" data-id="${item.id}" data-input="${text}">
+        <div class="text-sm truncate max-w-[240px] text-base-content font-semibold">${item.value}</div>
+        <div class="text-xs truncate max-w-[240px] text-base-content/70 font-regular">${item.id}</div>
       </button>
     </li>`
 }
@@ -187,9 +201,9 @@ const mentionItemRenderer = (item, text) => {
 const topicItemRenderer = (item) => {
   return `
     <li class="flex rounded flex-col py-1">
-      <button class="gap-1 rounded py-1.5" type="button" data-id="${item.id}">
-        <div class="text-sm text-neutral-content font-semibold">${item.value}</div>
-        <div class="text-xs text-secondary-content/70 font-regular">${item.id}</div>
+      <button class="gap-0 items-start rounded py-1.5 flex flex-col" type="button" data-id="${item.id}">
+        <div class="text-sm truncate max-w-[240px] text-base-content font-semibold">${item.value}</div>
+        <div class="text-xs truncate max-w-[240px] text-base-content/70 font-regular">${item.id}</div>
       </button>
     </li>`
 }

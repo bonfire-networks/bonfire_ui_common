@@ -69,10 +69,10 @@
           <div class="p-4">
             <div class="flex items-center">
               <div class="flex-shrink-0 p-2">
-                <#Icon outline="Speakerphone" class="w-5 h-5" />
+                <#Icon outline="Speakerphone" class="w-5 h-5 text-info-content" />
               </div>
               <div class="ml-3 w-0 flex-1 pt-0.5">
-                <div data-id="flash" data-type="info" class="text-sm">{rich(info)}</div>
+                <div data-id="flash" data-type="info" class="text-sm text-info-content">{rich(info)}</div>
               </div>
               <div :if={socket_connected?(@__context__)} class="">
                 <button
