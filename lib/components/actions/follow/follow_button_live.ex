@@ -10,6 +10,10 @@ defmodule Bonfire.UI.Common.FollowButtonLive do
   prop verb_already, :string, default: nil
   prop verb_undo, :string, default: nil
   prop my_follow, :boolean, default: nil
+  prop ghosted?, :boolean, default: false
+  prop silenced?, :boolean, default: false
+  prop ghosted_instance_wide?, :boolean, default: false
+  prop silenced_instance_wide?, :boolean, default: false
   prop hide_icon, :boolean, default: false
   prop hide_text, :boolean, default: false
 
