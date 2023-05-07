@@ -25,13 +25,8 @@
       <span class="truncate ellipsis">{e(@label, l("Flag %{user_or_thing}", user_or_thing: @object_type))}</span>
     </:open_btn>
     <:action_btns>
-<<<<<<< HEAD
-    {#if @current_user}
-      {#if id(@flagged) ||  Flags.flagged?(@current_user || %{}, @object)}
-=======
       {#if id(@flagged) ||
           (@current_user && Flags.flagged?(@current_user, @object) |> debug("SLOOOOOT flagged??"))}
->>>>>>> ad8c1d3 (f)
         <button
           data-role="object_already_flagged"
           phx-click="close"
