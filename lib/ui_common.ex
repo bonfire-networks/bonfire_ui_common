@@ -938,7 +938,7 @@ defmodule Bonfire.UI.Common do
 
       Phoenix.LiveView.put_flash(socket, type, message)
     else
-      # for non-live 
+      # for non-live
       Phoenix.LiveView.put_flash(socket, type, string_for_cookie(message))
     end
   end
@@ -1189,6 +1189,7 @@ defmodule Bonfire.UI.Common do
             Map.put(assigns, opts[:preload_status_key] || :preloaded_async_assigns, true)
           )
         end)
+        # send(pid, :preload_done)
       end)
 
       list_of_assigns

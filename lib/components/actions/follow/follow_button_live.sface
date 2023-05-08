@@ -1,7 +1,7 @@
 <div>
   {#if @my_follow == nil}
     <button disabled class="normal-case rounded btn btn-disabled btn-sm">{l("loading...")}</button>
-  {#elseif @ghosted_instance_wide? or @silenced_instance_wide?}
+  <!-- {#elseif @ghosted_instance_wide? or @silenced_instance_wide?}
     <button 
       :if={@ghosted_instance_wide? and @silenced_instance_wide?}
       class="btn-disabled btn btn-sm btn-error gap-2 rounded normal-case">
@@ -21,9 +21,9 @@
       class="btn-disabled btn btn-sm btn-error gap-2 rounded normal-case">
       <#Icon iconify="heroicons-solid:volume-off" class="w-4 h-4 shrink-0" />
       <span>{l "silenced instance-wide"}</span>
-    </button> 
+    </button>  -->
   {#else}
-    <button 
+    <!-- <button 
       :on-click="Bonfire.Social.Follows:unblock"
       phx-value-id={@object_id}
       :if={@ghosted? and @silenced?}
@@ -47,9 +47,9 @@
       class="btn btn-sm btn-warning gap-2 rounded normal-case">
       <#Icon iconify="heroicons-solid:volume-off" class="w-4 h-4 shrink-0" />
       <span>{l "silenced"}</span>
-    </button>
+    </button> -->
     <a
-      :if={!@my_follow and !@ghosted? and !@silenced?}
+      :if={!@my_follow}
       data-cid={@id}
       data-id="follow"
       id={"#{@id}-btn"}
@@ -84,7 +84,7 @@
         {l("Requested")} {@label}</span>
     </a>
     <a
-      :if={@my_follow and !@ghosted? and !@silenced?}
+      :if={@my_follow}
       phx-disable-with={l("loading...")}
       x-data={"{text: '#{@verb_already || l("Following")}'}"}
       x-on:mouseover={"text = '#{@verb_undo || l("Unfollow")}'"}
