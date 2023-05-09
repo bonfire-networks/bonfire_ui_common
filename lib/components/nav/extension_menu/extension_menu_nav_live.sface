@@ -5,7 +5,7 @@
        ) || Bonfire.Common.NavModule.nav(@__context__[:current_app]) || [])
     |> debug("nav_items")}
     {#match nav_items when is_list(nav_items) and nav_items != []}
-      <div data-id="nav_links" class="gap-1 menu">
+      <div data-id="nav_links" class="menu">
         {#for nav <- nav_items}
           {#case List.wrap(nav)}
             {#match nav when nav != []}
@@ -24,16 +24,21 @@
                   data={e(subnav, :props, [])}
                 />
               </li>
-              <div data-id="nav_components">
-                <div :for={%{type: type} = subnav when type != :link <- nav}>
+              <div class="menu" data-id="nav_components">
+                <li 
+                  :for={%{type: type} = subnav when type != :link <- nav}
+                  class={
+                  "rounded-md text-base-content font-medium",
+                  "bg-base-content/5": subnav[:href] == current_url(@__context__)
+                }
+                  >
                   <Bonfire.UI.Common.WidgetLive
                     widget={subnav}
                     page={@page}
                     selected_tab={@selected_tab}
                     data={e(subnav, :props, [])}
                   />
-                </div>
-                <!-- </li> -->
+                </li>
               </div>
             {#match _}
               <!-- no nav -->

@@ -30,6 +30,7 @@
   </button>
   {#elseif @ghosted? or @silenced?}
     <button 
+      x-init={"{text: '#{l("Blocked")}'}"}
       x-data={"{text: '#{l("Blocked")}'}"}
       x-on:mouseover={"text = '#{l("Unblock")}'"}
       x-on:mouseover.away={"text = '#{l("Blocked")}'"}
@@ -41,6 +42,7 @@
       <span x-text="text">{l "blocked"}</span>
     </button>
     <button 
+      x-init={"{text: '#{l("Ghosted")}'}"}
       x-data={"{text: '#{l("Ghosted")}'}"}
       x-on:mouseover={"text = '#{l("Unghost")}'"}
       x-on:mouseover.away={"text = '#{l("Ghosted")}'"}
@@ -52,6 +54,7 @@
       <span x-text="text">{l "ghosted"}</span>
     </button>
     <button 
+      x-init={"{text: '#{l("Silenced")}'}"}
       x-data={"{text: '#{l("Silenced")}'}"}
       x-on:mouseover={"text = '#{l("Unsilence")}'"}
       x-on:mouseover.away={"text = '#{l("Silenced")}'"}

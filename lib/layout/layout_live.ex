@@ -33,6 +33,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop sidebar_widgets, :list, default: []
   prop transparent_header, :boolean, default: false
   prop back, :boolean, default: false
+  prop extra, :string, default: false
   prop page_header_aside, :any, default: nil
   prop page_header_icon, :string, default: nil
 
@@ -72,6 +73,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:transparent_header, fn -> false end)
       |> assign_new(:inner_content, fn -> nil end)
       |> assign_new(:back, fn -> false end)
+      |> assign_new(:extra, fn -> nil end)
       |> assign_new(:object_id, fn -> nil end)
       |> assign_new(:post_id, fn -> nil end)
       |> assign_new(:context_id, fn -> nil end)
@@ -210,6 +212,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                         page_title={@page_title}
                         page_header_icon={@page_header_icon}
                         back={@back}
+                        extra={@extra}
                       >
                         <:right_action>
                           <Dynamic.Component
