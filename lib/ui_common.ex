@@ -1143,7 +1143,6 @@ defmodule Bonfire.UI.Common do
       when is_list(list_of_assigns) and is_function(assigns_to_params_fn, 1) and
              is_function(preload_fn, 3) do
     connected? = socket_connected?(List.first(list_of_assigns))
-
     current_user = current_user(list_of_assigns)
     # |> info("current_user")
 
@@ -1159,7 +1158,7 @@ defmodule Bonfire.UI.Common do
       # |> debug("process these assigns")
       |> Enum.map(&assigns_to_params_fn.(&1))
 
-    # |> debug("list_of_components")
+    |> debug("list_of_components")
 
     list_of_ids =
       list_of_components
