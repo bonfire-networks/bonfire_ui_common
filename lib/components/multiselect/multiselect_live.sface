@@ -11,6 +11,9 @@
         text_input_class={@class}
         update_min_len={2}
       />
+      <div class="absolute top-[8px] right-[8px] z-30 flex items-center  w-[26px] h-[26px] min-h-[26px]">
+        <#Icon solid="Search" class="w-4 h-4 text-base-content/70" />
+      </div>
       <!-- mode={:tags} style={:daisyui} -->
     {#else}
       <Bonfire.UI.Common.BasicMultiselectLive

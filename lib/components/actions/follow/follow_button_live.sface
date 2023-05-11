@@ -1,53 +1,7 @@
-<div>
+
   {#if @my_follow == nil}
     <button disabled class="normal-case rounded btn btn-disabled btn-sm">{l("loading...")}</button>
-  <!-- {#elseif @ghosted_instance_wide? or @silenced_instance_wide?}
-    <button 
-      :if={@ghosted_instance_wide? and @silenced_instance_wide?}
-      class="btn-disabled btn btn-sm btn-error gap-2 rounded normal-case">
-      <#Icon iconify="heroicons-solid:ban" class="w-4 h-4 shrink-0" />
-      <span>{l "blocked instance-wide"}</span>
-    </button> 
-
-    <button 
-      :if={@ghosted_instance_wide? and !@silenced_instance_wide?}
-      class="btn-disabled btn btn-sm btn-error gap-2 rounded normal-case">
-      <#Icon iconify="mingcute:ghost-fill" class="w-4 h-4 shrink-0" />
-      <span>{l "ghosted instance-wide"}</span>
-    </button> 
-
-    <button 
-      :if={!@ghosted_instance_wide? and @silenced_instance_wide?}
-      class="btn-disabled btn btn-sm btn-error gap-2 rounded normal-case">
-      <#Icon iconify="heroicons-solid:volume-off" class="w-4 h-4 shrink-0" />
-      <span>{l "silenced instance-wide"}</span>
-    </button>  -->
   {#else}
-    <!-- <button 
-      :on-click="Bonfire.Social.Follows:unblock"
-      phx-value-id={@object_id}
-      :if={@ghosted? and @silenced?}
-      class="btn btn-sm btn-error gap-2 rounded normal-case">
-      <#Icon iconify="heroicons-solid:ban" class="w-4 h-4 shrink-0" />
-      <span>{l "blocked"}</span>
-    </button>
-
-    <button 
-      :on-click="Bonfire.Social.Follows:unghost"
-      phx-value-id={@object_id}
-      :if={@ghosted? and !@silenced?}
-      class="btn btn-sm btn-warning rounded normal-case gap-2">
-      <#Icon iconify="mingcute:ghost-fill" class="w-4 h-4 shrink-0" />
-      <span>{l "ghosted"}</span>
-    </button>
-    <button 
-      :on-click="Bonfire.Social.Follows:unsilence"
-      phx-value-id={@object_id}
-      :if={!@ghosted? and @silenced?}
-      class="btn btn-sm btn-warning gap-2 rounded normal-case">
-      <#Icon iconify="heroicons-solid:volume-off" class="w-4 h-4 shrink-0" />
-      <span>{l "silenced"}</span>
-    </button> -->
     <a
       :if={!@my_follow}
       data-cid={@id}
@@ -105,4 +59,3 @@
       </div>
     </a>
   {/if}
-</div>
