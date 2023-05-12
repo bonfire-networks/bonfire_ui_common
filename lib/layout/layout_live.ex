@@ -31,7 +31,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop without_widgets, :boolean, default: false
   prop without_sidebar, :boolean, default: nil
   prop sidebar_widgets, :list, default: []
-  prop transparent_header, :boolean, default: false
   prop back, :boolean, default: false
   prop extra, :string, default: false
   prop page_header_aside, :any, default: nil
@@ -70,7 +69,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:notification, fn -> nil end)
       |> assign_new(:page_header_aside, fn -> nil end)
       |> assign_new(:page_header_icon, fn -> nil end)
-      |> assign_new(:transparent_header, fn -> false end)
       |> assign_new(:inner_content, fn -> nil end)
       |> assign_new(:back, fn -> false end)
       |> assign_new(:extra, fn -> nil end)
