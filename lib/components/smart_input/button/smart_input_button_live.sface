@@ -22,7 +22,7 @@
     icon={@icon}
     class={
       "inline-block w-9 h-9 md:w-5 md:h-5",
-      "!w-5 !h-5 md:w-5 md:h-5 text-base-content/70": @as_icon
+      "!w-5 !h-5 md:w-5 md:h-5": @as_icon
     }
   />
   <span :if={@prompt} class="hidden normal-case md:block">{@prompt || l("Compose")}</span>
