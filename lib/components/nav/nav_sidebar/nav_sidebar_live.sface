@@ -52,23 +52,24 @@
             />
           </div>
         </LiveRedirect> -->
-
-        <LiveRedirect
+        <Bonfire.UI.Common.UserMenuLive :if={@current_user} />
+        <!-- <LiveRedirect
           to={path(:notifications)}
           :if={@current_user}
           opts={alt: "Notifications"}
           class="relative pr-3"
-        >
-          <#Icon iconify="ph:bell" class="w-6 h-6" />
-          <div class="absolute top-[-14px] left-[10px]">
+        >  -->
+
+          <!-- <#Icon iconify="ph:bell" class="w-6 h-6" /> -->
+          <!-- <div class="absolute top-[-14px] left-[10px]">
             <Bonfire.UI.Common.BadgeCounterLive
               id={:notifications}
               class="indicator-item badge badge-xs ring-2 ring-base-300 badge-sm border rounded !border-none"
               counter_class=""
               feed_id={e(@current_user, :character, :notifications_id, nil)}
             />
-          </div>
-        </LiveRedirect>
+          </div> -->
+        <!-- </LiveRedirect> -->
       </div>
     </div>
   </div>
@@ -101,12 +102,12 @@
     </nav>
 
     <div class="flex flex-col mt-6 gap-2">
-      <LiveRedirect to={path(:login, :index)} class="md:flex-1  normal-case rounded btn-primary btn">{l("Log in")}</LiveRedirect>
+      <LiveRedirect to={path(:login, :index)} class="md:flex-1  normal-case rounded-full btn-primary btn">{l("Log in")}</LiveRedirect>
 
       {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
         <LiveRedirect
           to={path(:signup)}
-          class="md:flex-1 hidden md:flex normal-case rounded btn-outline btn-primary btn"
+          class="md:flex-1 hidden md:flex normal-case rounded-full btn-outline btn-primary btn"
         >{l("Sign up")}</LiveRedirect>
       {/if}
     </div>

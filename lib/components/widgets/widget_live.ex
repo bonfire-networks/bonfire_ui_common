@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common.WidgetLive do
 
   prop text_class, :css_class,
     required: false,
-    default: "text-[16px] font-normal text-base-content"
+    default: "text-[16px] font-normal text-base-content flex-1"
 
   prop icon_class, :css_class, required: false, default: "w-5 h-5 text-base-content"
   prop page, :string, default: nil

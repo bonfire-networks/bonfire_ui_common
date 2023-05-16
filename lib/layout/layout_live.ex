@@ -145,8 +145,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
             <div data-id="logo" class="items-center ml-1 place-content-center">
               <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
             </div>
-
-            <Bonfire.UI.Common.UserMenuLive :if={@current_user} />
           </div>
 
           <Bonfire.UI.Common.PersistentLive
