@@ -21,7 +21,7 @@
                 ".btn_cw_toggle",
                 "btn-active"
               )}
-              class="flex items-center btn-active btn btn-ghost btn-sm btn-circle btn_cw_toggle"
+              class="flex items-center btn btn-ghost btn-sm btn-circle btn_cw_toggle"
             >
               <#Icon iconify="fluent:chat-warning-24-regular" class="w-5 h-5 text-base-content/70" />
             </button>
@@ -37,7 +37,7 @@
             }
           />
         </div>
-        <div class="text-xs text-base-content/70">
+        <!-- <div class="text-xs text-base-content/70">
           <span
             :class={"{'text-error' : body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length],
             :instance,
@@ -49,7 +49,7 @@
             :instance,
             @__context__[:instance_settings]
           )} {l("words")}
-        </div>
+        </div> -->
       </div>
       <button
         type="submit"

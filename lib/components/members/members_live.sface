@@ -1,3 +1,4 @@
+<div class="m-3">
 <div class="w-full">
   <table class="table w-full table-zebra">
     <!-- head -->
@@ -32,10 +33,29 @@
           </div>
         </td>
         <td class="flex-1">
-          <span class="badge badge-sm">Member</span>
+          {#if Bonfire.Me.Users.is_admin?(user)}
+          <span class="badge badge-success badge-sm">{l"Admin"}</span>
+          {#else}
+          <span class="badge badge-outline badge-sm">{l"Member"}</span>
+          {/if}
         </td>
         <td class="flex-1">
-          <span class="badge badge-sm badge-warning">Blocked</span>
+         {#if 
+            @ghosted_instance_wide? == nil and 
+            @silenced_instance_wide? == nil}
+            <div></div>
+            {#else}
+            <span :if={!@ghosted_instance_wide? and !@silenced_instance_wide?} class="badge badge-outline badge-sm">{l"Active"}</span>
+            <span 
+              :if={@ghosted_instance_wide? and @silenced_instance_wide?}
+              class="badge badge-error badge-sm">{l"Blocked"}</span>
+            <span 
+              :if={@ghosted_instance_wide? and !@silenced_instance_wide?}
+              class="badge badge-warning badge-sm">{l"Ghosted"}</span>
+            <span 
+              :if={!@ghosted_instance_wide? and @silenced_instance_wide?}
+              class="badge badge-warning badge-sm">{l"Silenced"}</span>              
+          {/if}
         </td>
         <td class="flex-1">
           <span class="text-xs">{DatesTimes.date_from_now(id(user))}</span>
@@ -87,4 +107,5 @@
       </tr>
     </tbody>
   </table>
+</div>
 </div>
