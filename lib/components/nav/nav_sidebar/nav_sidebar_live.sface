@@ -15,27 +15,30 @@
     </div>
 
     <div class="sticky bottom-0 flex items-center justify-between pt-4 bg-base-300 border-base-content/10">
-      <LiveRedirect
-        to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
-        class="flex items-center justify-start flex-1 gap-3 px-1 normal-case rounded btn btn-ghost hover:bg-transparent"
-      >
-        <Bonfire.UI.Common.AvatarLive
-          :if={is_map(current_user(@__context__))}
-          parent_id="nav_sidebar"
-          class="inline-block object-cover w-12 h-12 rounded-full cursor-pointer bg-base-100"
-          bg_class="rounded"
-          size="40"
-          user={current_user(@__context__)}
-        />
-        <div class="flex flex-col items-start">
-          <div class="text-base font-semibold truncate max-w-[180px] text-base-content">{e(current_user(@__context__), :profile, :name, l("Me"))}</div>
-          <div
-            :if={e(current_user(@__context__), :character, :username, nil)}
-            class="-mt-0.5 text-sm font-normal truncate text-base-content/70"
-          >@{e(current_user(@__context__), :character, :username, nil)}</div>
-        </div>
-      </LiveRedirect>
+      <Bonfire.UI.Common.UserMenuLive :if={@current_user} />
+      
       <div class="flex items-center gap-3">
+        <LiveRedirect
+          to={"/settings"}
+          class={"btn btn-sm btn-ghost btn-circle",
+          "btn-active": @selected_tab == "dashboard"}
+        >
+          <#Icon iconify="ri:settings-4-line" class="w-5 h-5 shrink-0 text-opacity-70" />
+          <span class="sr-only">{l("Settings")}</span>
+        </LiveRedirect>
+        <LiveRedirect
+          :if={is_admin?(@current_user)}
+          to={"/settings/instance"}
+          class={"btn btn-sm btn-ghost btn-circle",
+          "btn-active": @selected_tab == "instance_dashboard" }
+        >
+          <#Icon iconify="ri:apps-2-line" class="w-5 h-5 shrink-0 text-opacity-70" />
+          <span class="sr-only">{l("Instance Settings")}</span>
+        </LiveRedirect>
+        
+      </div>
+      
+      <!-- <div class="flex items-center gap-3"> -->
         <!-- <LiveRedirect
           to="/messages"
           opts={alt: "Direct messages"}
@@ -52,7 +55,6 @@
             />
           </div>
         </LiveRedirect> -->
-        <Bonfire.UI.Common.UserMenuLive :if={@current_user} />
         <!-- <LiveRedirect
           to={path(:notifications)}
           :if={@current_user}
@@ -70,7 +72,7 @@
             />
           </div> -->
         <!-- </LiveRedirect> -->
-      </div>
+      <!-- </div> -->
     </div>
   </div>
 

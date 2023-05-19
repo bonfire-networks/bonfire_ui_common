@@ -30,9 +30,23 @@
 <li :if={!@mobile}>
   <LiveRedirect
     to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
-    class="flex items-center gap-2 text-base md:text-sm text-base-content/80"
+    class="flex items-center border-b border-base-content/10 py-2 gap-3 text-base md:text-sm text-base-content/80"
   >
-    <div>{l("View profile")}</div>
+    <Bonfire.UI.Common.AvatarLive
+      :if={is_map(current_user(@__context__))}
+      parent_id="nav_sidebar"
+      class="inline-block object-cover w-9 h-9 rounded-full cursor-pointer bg-base-100"
+      bg_class="rounded"
+      size="40"
+      user={current_user(@__context__)}
+    />
+    <div class="flex flex-col items-start">
+      <div class="text-sm font-semibold truncate max-w-[180px] text-base-content">{e(current_user(@__context__), :profile, :name, l("Me"))}</div>
+      <div
+        :if={e(current_user(@__context__), :character, :username, nil)}
+        class="-mt-0.5 text-[13px] font-normal truncate text-base-content/70"
+      >@{e(current_user(@__context__), :character, :username, nil)}</div>
+    </div>
   </LiveRedirect>
 </li>
 <li :if={!@mobile}>
@@ -82,20 +96,20 @@
     module={Bonfire.UI.Groups.NewGroupLive}
   />
 </li>
-<li :if={!@mobile} class="border-t border-neutral-content/10">
+<!-- <li :if={!@mobile} class="border-t border-neutral-content/10">
   <Bonfire.UI.Common.FeedbackButtonLive
     mobile={@mobile}
     class={if @mobile,
       do: "flex items-center w-full gap-6 px-2 py-2 pt-4 rounded-md",
       else: "flex items-center gap-2 text-base md:text-sm text-base-content/80"}
   />
-</li>
+</li> -->
 <li>
   <LiveRedirect
     :if={!@mobile}
     to={~p"/logout"}
     class="flex items-center gap-2 text-base md:text-sm text-base-content/80"
   >
-    <div>{l("Logout")}</div>
+    <div>{l("Sing out")}</div>
   </LiveRedirect>
 </li>
