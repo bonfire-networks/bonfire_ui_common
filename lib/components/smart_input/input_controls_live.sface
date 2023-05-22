@@ -1,6 +1,6 @@
 <div class="fixed top-[calc(var(--visual-viewport-height)_-_112px)] z-50 left-0 right-0 md:static">
   <div class="">
-    <div class="flex flex-col justify-between gap-3 p-4 md:items-center bg-base-100 md:px-3 md:py-2">
+    <div class="flex flex-col justify-between gap-3 p-4 md:items-center bg-base-300 md:px-3 md:py-2">
       <div class="flex items-center justify-between flex-1 w-full">
         <div class="flex items-center gap-4 md:gap-3">
           <Bonfire.UI.Common.UploadButtonLive
@@ -23,7 +23,7 @@
               )}
               class="flex items-center btn btn-ghost btn-sm btn-circle btn_cw_toggle"
             >
-              <#Icon iconify="fluent:chat-warning-24-regular" class="w-5 h-5 text-base-content/70" />
+              <#Icon iconify="ri:alarm-warning-line" class="w-5 h-5 text-primary/80" />
             </button>
           </div>
 
@@ -37,6 +37,13 @@
             }
           />
         </div>
+
+        <Dynamic.Component
+            :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesPresetDescriptionLive, @__context__)}
+            module={Bonfire.Boundaries.Web.BoundariesPresetDescriptionLive}
+            to_boundaries={@to_boundaries}
+        />
+          
         <!-- <div class="text-xs text-base-content/70">
           <span
             :class={"{'text-error' : body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length],
@@ -57,7 +64,7 @@
         phx-disable-with={if @create_object_type == :message,
           do: l("Sending..."),
           else: l("Posting...")}
-        class="capitalize w-full btn-sm rounded justify-self-end btn px-8 h-[2.25rem] btn-primary"
+        class="capitalize w-full rounded-full justify-self-end btn px-8 btn-primary"
         disabled={e(@smart_input_opts, :submit_disabled, nil)}
         x-bind:disabled={"body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length],
         :instance,

@@ -11,8 +11,8 @@
     class="flex items-center btn btn-ghost btn-sm btn-circle"
   >
     <#Icon
-      solid="PaperClip"
-      class="w-5 h-5 mx-auto md:w-4 md:h-4 text-base-content text-opacity-70"
+      iconify="ri:image-add-line"
+      class="w-5 h-5 mx-auto text-primary text-opacity-80"
     />
     {live_file_input(@uploads.files, tabindex: "-1", class: "sr-only")}
   </label>

@@ -45,8 +45,8 @@
     class="emoji-button btn btn-ghost btn-sm text-[22px] btn-circle"
   >
     <#Icon
-      iconify="akar-icons:face-happy"
-      class="w-5 h-5 md:w-4 md:h-4 text-base-content text-opacity-70"
+      iconify="ri:emotion-happy-line"
+      class="w-5 h-5 text-primary text-opacity-80"
     />
   </button>
 </div>

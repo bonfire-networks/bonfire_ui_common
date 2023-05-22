@@ -1,5 +1,5 @@
 <div class={
-  "flex gap-3 bg-base-100 scrollable",
+  "flex gap-3 scrollable",
   "pb-1": Enum.count(@uploads.files.entries) > 2
 }>
   {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
