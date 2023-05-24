@@ -1,6 +1,5 @@
 defmodule Bonfire.UI.Common.NavSidebarLive do
   use Bonfire.UI.Common.Web, :stateless_component
-  import Bonfire.Boundaries.Integration, only: [is_admin?: 1]
 
   prop sidebar_widgets, :list, default: []
   prop page, :any, default: nil

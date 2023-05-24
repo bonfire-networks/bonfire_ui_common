@@ -27,7 +27,7 @@
           <span class="sr-only">{l("Settings")}</span>
         </LiveRedirect>
         <LiveRedirect
-          :if={is_admin?(@current_user)}
+          :if={maybe_apply(Bonfire.Me.Users, :is_admin?, @current_user)==true}
           to={"/settings/instance"}
           class={"btn btn-sm btn-ghost btn-circle",
           "btn-active": @selected_tab == "instance_dashboard" }
