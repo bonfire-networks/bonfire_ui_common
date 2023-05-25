@@ -13,98 +13,11 @@
     </thead>
     <tbody>
       <!-- row 1 -->
-      <tr :for={user <- @users}>
-        <td>
-          <div class="flex items-center space-x-3">
-            <Bonfire.UI.Common.AvatarLive
-              parent_id="members"
-              class="inline-block object-cover w-8 h-8"
-              bg_class="rounded bg-base-200"
-              size="32"
-              user={user}
-            />
-            <div>
-              <LiveRedirect
-                to={~p"/@" <> e(user, :character, :username, "")}
-                class="text-sm font-bold link link-hover"
-              >{e(user, :profile, :name, "Anonymous")}</LiveRedirect>
-              <div class="text-xs opacity-50">@{e(user, :character, :username, "")}</div>
-            </div>
-          </div>
-        </td>
-        <td class="flex-1">
-          {#if Bonfire.Me.Users.is_admin?(user)}
-          <span class="badge badge-success badge-sm">{l"Admin"}</span>
-          {#else}
-          <span class="badge badge-outline badge-sm">{l"Member"}</span>
-          {/if}
-        </td>
-        <td class="flex-1">
-         {#if 
-            @ghosted_instance_wide? == nil and 
-            @silenced_instance_wide? == nil}
-            <div></div>
-            {#else}
-            <span :if={!@ghosted_instance_wide? and !@silenced_instance_wide?} class="badge badge-outline badge-sm">{l"Active"}</span>
-            <span 
-              :if={@ghosted_instance_wide? and @silenced_instance_wide?}
-              class="badge badge-error badge-sm">{l"Blocked"}</span>
-            <span 
-              :if={@ghosted_instance_wide? and !@silenced_instance_wide?}
-              class="badge badge-warning badge-sm">{l"Ghosted"}</span>
-            <span 
-              :if={!@ghosted_instance_wide? and @silenced_instance_wide?}
-              class="badge badge-warning badge-sm">{l"Silenced"}</span>              
-          {/if}
-        </td>
-        <td class="flex-1">
-          <span class="text-xs">{DatesTimes.date_from_now(id(user))}</span>
-        </td>
-
-        <td class="">
-          <div class="flex justify-end">
-            <div
-              :if={@current_user && current_user_id(@__context__) != id(user)}
-              class="dropdown dropdown-end"
-            >
-              <label
-                class="relative rounded btn btn-square btn-ghost btn-sm"
-                tabindex="0"
-                id="user-profile-menu"
-                aria-haspopup="true"
-                aria-expanded="true"
-              >
-                <#Icon iconify="material-symbols:more-horiz" class="w-5 h-5" />
-              </label>
-              <ul
-                tabindex="0"
-                class="mt-3 rounded menu-compact !block shadow w-52 menu dropdown-content bg-base-100"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="user-profile-menu"
-              >
-                <!-- IN GROUP / TOPICS -->
-                <li>
-                  <div>{l("Leave group")}</div>
-                </li>
-
-                <li>
-                  <Dynamic.Component
-                    :if={module_enabled?(Bonfire.Boundaries.Web.BlockButtonLive)}
-                    module={Bonfire.Boundaries.Web.BlockButtonLive}
-                    object={user}
-                    parent_id="members"
-                    hide_icon
-                    label={e(user, :profile, :name, l("this user"))}
-                    open_btn_label={l("Block")}
-                    class="w-full normal-case rounded btn btn-error btn-xs"
-                  />
-                </li>
-              </ul>
-            </div>
-          </div>
-        </td>
-      </tr>
+      {#for user <- @users}
+        <Bonfire.UI.Common.MemberLive 
+          user={user} 
+        />
+      {/for}
     </tbody>
   </table>
 </div>
