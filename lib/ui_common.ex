@@ -1169,13 +1169,14 @@ defmodule Bonfire.UI.Common do
         end)
         |> filter_empty([])
         |> Enum.uniq()
+
       # |> debug("list_of_ids")
 
       env = Config.env()
 
       if ((connected? == true and env != :test) or
             Process.get(:enable_async_preloads) == true) and
-          not is_nil(opts[:caller_module]) do
+           not is_nil(opts[:caller_module]) do
         debug(preload_fn, "preloading using async :-)")
         pid = self()
 
@@ -1189,6 +1190,7 @@ defmodule Bonfire.UI.Common do
               Map.put(assigns, opts[:preload_status_key] || :preloaded_async_assigns, true)
             )
           end)
+
           # send(pid, :preload_done)
         end)
 
