@@ -1159,54 +1159,57 @@ defmodule Bonfire.UI.Common do
       |> Enum.map(&assigns_to_params_fn.(&1))
 
     |> debug("list_of_components")
-
-    list_of_ids =
-      list_of_components
-      |> Enum.map(fn %{object_id: object_id} ->
-        object_id
-      end)
-      |> filter_empty([])
-      |> Enum.uniq()
+    if length(list_of_components) == 0 do
+      list_of_assigns
+    else
+      list_of_ids =
+        list_of_components
+        |> Enum.map(fn %{object_id: object_id} ->
+          object_id
+        end)
+        |> filter_empty([])
+        |> Enum.uniq()
 
     # |> debug("list_of_ids")
 
-    env = Config.env()
+      env = Config.env()
 
-    if ((connected? == true and env != :test) or
-          Process.get(:enable_async_preloads) == true) and
-         not is_nil(opts[:caller_module]) do
-      debug(preload_fn, "preloading using async :-)")
-      pid = self()
+      if ((connected? == true and env != :test) or
+            Process.get(:enable_async_preloads) == true) and
+          not is_nil(opts[:caller_module]) do
+        debug(preload_fn, "preloading using async :-)")
+        pid = self()
 
-      Task.start(fn ->
-        preload_fn.(list_of_components, list_of_ids, current_user)
-        |> Enum.each(fn {component_id, assigns} ->
-          maybe_send_update(
-            pid,
-            opts[:caller_module],
-            component_id,
-            Map.put(assigns, opts[:preload_status_key] || :preloaded_async_assigns, true)
-          )
+        Task.start(fn ->
+          preload_fn.(list_of_components, list_of_ids, current_user)
+          |> Enum.each(fn {component_id, assigns} ->
+            maybe_send_update(
+              pid,
+              opts[:caller_module],
+              component_id,
+              Map.put(assigns, opts[:preload_status_key] || :preloaded_async_assigns, true)
+            )
+          end)
+          # send(pid, :preload_done)
         end)
-        # send(pid, :preload_done)
-      end)
 
-      list_of_assigns
-    else
-      if env != :test and not is_nil(current_user) do
-        debug(preload_fn, "wait to preload once socket is connected")
         list_of_assigns
       else
-        debug(preload_fn, "preloading WITHOUT using async")
+        if env != :test and not is_nil(current_user) do
+          debug(preload_fn, "wait to preload once socket is connected")
+          list_of_assigns
+        else
+          debug(preload_fn, "preloading WITHOUT using async")
 
-        preloaded_assigns = preload_fn.(list_of_components, list_of_ids, current_user)
-        # |> debug("preloaded assigns for components")
+          preloaded_assigns = preload_fn.(list_of_components, list_of_ids, current_user)
+          # |> debug("preloaded assigns for components")
 
-        list_of_assigns
-        |> Enum.map(fn %{id: component_id} = assigns ->
-          assigns
-          |> Map.merge(preloaded_assigns[component_id] || %{})
-        end)
+          list_of_assigns
+          |> Enum.map(fn %{id: component_id} = assigns ->
+            assigns
+            |> Map.merge(preloaded_assigns[component_id] || %{})
+          end)
+        end
       end
     end
   end
