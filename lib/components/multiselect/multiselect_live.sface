@@ -5,6 +5,7 @@
         form={@form}
         field={@form_input_name}
         phx-target={@event_target}
+        options={@preloaded_options || []}
         placeholder={@label}
         dropdown_class="cursor-pointer absolute top-12 p-2 z-50 dropdown-content menu shadow w-full bg-base-300 shadow-lg text-base-contentrounded"
         container_class="w-full"
