@@ -32,13 +32,13 @@
                   "bg-base-content/5": subnav[:href] == current_url(@__context__)
                 }
                   > -->
-                  <Bonfire.UI.Common.WidgetLive
-                    :for={%{type: type} = subnav when type != :link <- nav}
-                    widget={subnav}
-                    page={@page}
-                    selected_tab={@selected_tab}
-                    data={e(subnav, :props, [])}
-                  />
+                <Bonfire.UI.Common.WidgetLive
+                  :for={%{type: type} = subnav when type != :link <- nav}
+                  widget={subnav}
+                  page={@page}
+                  selected_tab={@selected_tab}
+                  data={e(subnav, :props, [])}
+                />
                 <!-- </li> -->
               </div>
             {#match _}

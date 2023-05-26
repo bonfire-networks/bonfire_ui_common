@@ -19,27 +19,32 @@
   </td>
   <td class="flex-1">
     {#if Bonfire.Me.Users.is_admin?(@user)}
-    <span class="badge badge-success badge-sm">{l"Admin"}</span>
+      <span class="badge badge-success badge-sm">{l("Admin")}</span>
     {#else}
-    <span class="badge badge-outline badge-sm">{l"Member"}</span>
+      <span class="badge badge-outline badge-sm">{l("Member")}</span>
     {/if}
   </td>
   <td class="flex-1">
-    {#if 
-      e(@user, :ghosted_instance_wide?, nil) == nil and 
-      e(@user, :silenced_instance_wide?, nil) == nil}
+    {#if e(@user, :ghosted_instance_wide?, nil) == nil and
+        e(@user, :silenced_instance_wide?, nil) == nil}
       <span class="btn btn-xs rounded-full normal-case loading btn-disabled">{l("loading")}</span>
-      {#else}
-      <span :if={!e(@user, :ghosted_instance_wide?, nil) and !e(@user, :silenced_instance_wide?, nil)} class="badge badge-outline badge-sm">{l"Active"}</span>
-      <span 
+    {#else}
+      <span
+        :if={!e(@user, :ghosted_instance_wide?, nil) and !e(@user, :silenced_instance_wide?, nil)}
+        class="badge badge-outline badge-sm"
+      >{l("Active")}</span>
+      <span
         :if={e(@user, :ghosted_instance_wide?, nil) and e(@user, :silenced_instance_wide?, nil)}
-        class="badge badge-error badge-sm">{l"Blocked"}</span>
-      <span 
+        class="badge badge-error badge-sm"
+      >{l("Blocked")}</span>
+      <span
         :if={e(@user, :ghosted_instance_wide?, nil) and !e(@user, :silenced_instance_wide?, nil)}
-        class="badge badge-warning badge-sm">{l"Ghosted"}</span>
-      <span 
+        class="badge badge-warning badge-sm"
+      >{l("Ghosted")}</span>
+      <span
         :if={!e(@user, :ghosted_instance_wide?, nil) and e(@user, :silenced_instance_wide?, nil)}
-        class="badge badge-warning badge-sm">{l"Silenced"}</span>              
+        class="badge badge-warning badge-sm"
+      >{l("Silenced")}</span>
     {/if}
   </td>
   <td class="flex-1">
@@ -67,7 +72,7 @@
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="user-profile-menu"
-        > 
+        >
           <li><LiveRedirect to={"/@#{e(@user, :character, :username, nil)}"}>{l("View profile")}</LiveRedirect></li>
           <li>
             <Dynamic.Component
@@ -82,7 +87,7 @@
               class="text-error"
             />
           </li>
-          <li><LiveRedirect class="text-error" to={"#"}>{l("Deactivate user")}</LiveRedirect></li>
+          <li><LiveRedirect class="text-error" to="#">{l("Deactivate user")}</LiveRedirect></li>
         </ul>
       </div>
     </div>

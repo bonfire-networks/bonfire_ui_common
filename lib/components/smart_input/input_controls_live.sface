@@ -39,11 +39,11 @@
         </div>
 
         <Dynamic.Component
-            :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesPresetDescriptionLive, @__context__)}
-            module={Bonfire.Boundaries.Web.BoundariesPresetDescriptionLive}
-            to_boundaries={@to_boundaries}
+          :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesPresetDescriptionLive, @__context__)}
+          module={Bonfire.Boundaries.Web.BoundariesPresetDescriptionLive}
+          to_boundaries={@to_boundaries}
         />
-          
+
         <!-- <div class="text-xs text-base-content/70">
           <span
             :class={"{'text-error' : body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length],

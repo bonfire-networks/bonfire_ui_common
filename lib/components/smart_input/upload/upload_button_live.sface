@@ -10,10 +10,7 @@
     for={@uploads.files.ref}
     class="flex items-center btn btn-ghost btn-sm btn-circle"
   >
-    <#Icon
-      iconify="ri:image-add-line"
-      class="w-5 h-5 mx-auto text-primary text-opacity-80"
-    />
+    <#Icon iconify="ri:image-add-line" class="w-5 h-5 mx-auto text-primary text-opacity-80" />
     {live_file_input(@uploads.files, tabindex: "-1", class: "sr-only")}
   </label>
 

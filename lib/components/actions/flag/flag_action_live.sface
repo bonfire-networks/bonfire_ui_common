@@ -47,7 +47,7 @@
         >
           {e(@label, l("Flag %{user_or_thing}", user_or_thing: @object_type))}
         </button>
-    {/if}
+      {/if}
     </:action_btns>
   </Bonfire.UI.Common.OpenModalLive>
 {/if}

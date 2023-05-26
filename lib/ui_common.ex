@@ -1157,9 +1157,9 @@ defmodule Bonfire.UI.Common do
       )
       # |> debug("process these assigns")
       |> Enum.map(&assigns_to_params_fn.(&1))
+      |> debug("list_of_components")
 
-    |> debug("list_of_components")
-    if length(list_of_components) == 0 do
+    if list_of_components == [] do
       list_of_assigns
     else
       list_of_ids =
@@ -1169,8 +1169,7 @@ defmodule Bonfire.UI.Common do
         end)
         |> filter_empty([])
         |> Enum.uniq()
-
-    # |> debug("list_of_ids")
+      # |> debug("list_of_ids")
 
       env = Config.env()
 

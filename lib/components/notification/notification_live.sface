@@ -12,7 +12,10 @@
     >
       <p class="text-sm font-medium text-red-800" role="alert">
         {l("Offline - waiting to reconnect...")}
-        <a class="btn btn-error btn-outline ml-2 btn-xs rounded normal-case" href="javascript:liveSocket.connect()">Try again</a>
+        <a
+          class="btn btn-error btn-outline ml-2 btn-xs rounded normal-case"
+          href="javascript:liveSocket.connect()"
+        >Try again</a>
       </p>
     </div>
 
