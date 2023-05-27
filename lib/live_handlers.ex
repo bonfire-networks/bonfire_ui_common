@@ -21,13 +21,13 @@ defmodule Bonfire.UI.Common.LiveHandlers do
         "LiveHandler: handle_params for #{inspect(uri)} via #{source_module || "delegation"}"
       )
 
+      # LivePlugs.assign_default_params(params, uri, socket)
       with {:noreply, socket} <-
-             do_handle_params(params, uri, assign_default_params(params, uri, socket)),
+             do_handle_params(params, uri, socket),
            {:noreply, socket} <-
              if(is_function(fun), do: fun.(params, uri, socket), else: {:noreply, socket}) do
         # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
-        if socket_connected?(socket),
-          do: LivePlugs.maybe_send_persistent_assigns(socket)
+        # if socket_connected?(socket), do: LivePlugs.maybe_send_persistent_assigns(socket)
 
         {:noreply, socket}
       end
@@ -247,18 +247,6 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   end
 
   defp do_handle_params(_, _, socket), do: empty(socket)
-
-  def assign_default_params(params, uri, socket) do
-    assign_global(
-      socket,
-      current_params: params,
-      current_url:
-        URI.parse(uri)
-        |> maybe_get(:path)
-    )
-
-    # see also more assigns set in `LivePlugs.apply_undead_mounted`
-  end
 
   def mod_delegate(mod, fun, args, socket) do
     # debug("attempt delegating to #{inspect fun} in #{inspect mod}...")
