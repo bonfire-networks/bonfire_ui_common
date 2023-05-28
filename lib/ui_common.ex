@@ -1214,4 +1214,20 @@ defmodule Bonfire.UI.Common do
       end
     end
   end
+
+  @doc """
+  Inserts items or updates existing items in the stream.
+  See `Phoenix.LiveView.stream_insert/4` for opts.
+  """
+  def stream_insert_many(socket, name, items, opts \\ [])
+
+  def stream_insert_many(%{assigns: %{streams: _}} = socket, name, items, opts) do
+    Enum.reduce(items, socket, fn item, acc ->
+      Phoenix.LiveView.stream_insert(acc, name, item, opts)
+    end)
+  end
+
+  def stream_insert_many(socket, name, items, opts) do
+    Phoenix.LiveView.stream(socket, name, items, opts)
+  end
 end

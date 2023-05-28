@@ -1,9 +1,13 @@
 <div
+  id={"load_more_#{@context}"}
   data-id="load_more"
+  data-entry-count={@entry_count}
   :if={unwrap(e(@page_info, :end_cursor, nil))}
+  phx-scroll={if @infinite_load, do: "#{@live_handler}:preload_more"}
+  phx-hook={if @infinite_load, do: "InfiniteScroll"}
   phx-click={"#{@live_handler}:load_more"}
   phx-target={@target}
-  phx-value-context={e(@context, "")}
+  phx-value-context={@context}
   phx-value-after={unwrap(e(@page_info, :end_cursor, ""))}
   class="flex items-center pt-3 my-3 border-t place-content-center border-base-content/10"
   x-data={"{show: #{socket_connected?(@__context__)}}"}
@@ -14,7 +18,7 @@
     style="display: none"
     x-show="show"
   >
-    {l("Load more")}
+    {if @entry_count, do: l("Show %{num} more", num: @entry_count), else: l("Load more")}
   </a>
   <a
     href={"?#{@live_handler}[after]=" <> unwrap(e(@page_info, :end_cursor, "unknown"))}

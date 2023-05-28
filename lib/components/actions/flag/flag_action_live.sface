@@ -10,6 +10,7 @@
   </button>
 {#else}
   <Bonfire.UI.Common.OpenModalLive
+    :if={@parent_id && @object}
     id={"flag-modal-#{@parent_id}"}
     title_text={e(@label, l("Flag %{user_or_thing}", user_or_thing: @object_type))}
     open_btn_wrapper_class="flex items-center gap-2 text-base md:text-sm text-base-content/80 truncate max-w-max"

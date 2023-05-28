@@ -66,10 +66,8 @@
           else: l("Posting...")}
         class="capitalize w-full rounded-full justify-self-end btn px-8 btn-primary"
         disabled={e(@smart_input_opts, :submit_disabled, nil)}
-        x-bind:disabled={"body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length],
-        :instance,
-        @__context__[:instance_settings])}"}
       >
+        <!-- x-bind:disabled={"body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length], :instance, @__context__[:instance_settings])}"} -->
         {#if @create_object_type == :message}
           {l("Send")}
         {#else}
