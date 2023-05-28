@@ -10,7 +10,7 @@
       parent_id="profile_item"
       comment={if @lg, do: false, else: true}
       user={@profile}
-      class={@avatar_class}
+      class={@avatar_class || "w-8 h-8"}
     />
     <div class={
       "flex-1",
@@ -19,7 +19,7 @@
       <p class={"text-sm font-bold group-hover:underline text-base-content", "text-base": @lg}>
         {e(@profile, :name, "Anon")}
       </p>
-      <p class="-mt-1 text-sm text-base-content/70">
+      <p class="-mt-1 text-[13px] text-base-content/70">
         <span :if={@inline}>(
         </span>
         {Bonfire.Me.Characters.display_username(e(@character, :username, nil), true)}
