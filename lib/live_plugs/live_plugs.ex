@@ -57,6 +57,10 @@ defmodule Bonfire.UI.Common.LivePlugs do
            |> init_socket(params, ...) do
       socket
     end
+  rescue
+    e in RuntimeError ->
+      warn(e)
+      init_socket(params, socket)
   end
 
   defp init_socket(params, socket) do
