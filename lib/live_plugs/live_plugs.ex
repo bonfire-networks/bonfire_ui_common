@@ -43,8 +43,7 @@ defmodule Bonfire.UI.Common.LivePlugs do
   defp init_mount(:not_mounted_at_router, session, socket) do
     # for embedding views in views/components using `live_render`
     # note that these views can't contain any handle_params
-    socket
-    |> init_mount(stringify_keys(session["params"]), session)
+    init_mount(stringify_keys(session["params"]), session, socket)
   end
 
   defp init_mount(params, _session, socket) do
