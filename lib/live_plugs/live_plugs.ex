@@ -59,6 +59,7 @@ defmodule Bonfire.UI.Common.LivePlugs do
     end
   rescue
     e in RuntimeError ->
+      # workaround to `cannot attach hook with id :params_to_assigns on :handle_params because the view was not mounted at the router with the live/3 macro` on hybrid views
       warn(e)
       init_socket(params, socket)
   end

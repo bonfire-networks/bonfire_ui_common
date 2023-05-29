@@ -32,7 +32,12 @@ defmodule Bonfire.UI.Common do
     Map.merge(map, Map.new(assigns))
   end
 
-  def assign_generic(_, assigns) do
+  def assign_generic({:ok, something}, assigns) do
+    assign_generic(something, assigns)
+  end
+
+  def assign_generic(other, assigns) do
+    warn(other, "Expected a Socket or Conn, got")
     Map.new(assigns)
   end
 
