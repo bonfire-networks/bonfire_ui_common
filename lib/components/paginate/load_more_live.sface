@@ -13,6 +13,7 @@
   x-data={"{show: #{socket_connected?(@__context__)}}"}
 >
   <a
+    data-role="load_more_button"
     href={"#" <> unwrap(e(@page_info, :end_cursor, "unknown"))}
     class="normal-case btn btn-outline rounded-full btn-primary"
     style="display: none"
