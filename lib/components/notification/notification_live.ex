@@ -22,6 +22,10 @@ defmodule Bonfire.UI.Common.NotificationLive do
      )}
   end
 
+  # def handle_info(:clear_flash, socket) do
+  #   {:noreply, clear_flash(socket)}
+  # end
+
   def update(assigns, %{assigns: %{subscribed: true}} = socket) do
     {:ok,
      assign(

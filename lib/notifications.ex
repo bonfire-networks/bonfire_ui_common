@@ -44,6 +44,7 @@ defmodule Bonfire.UI.Common.Notifications do
 
   def receive_flash(attrs, pid \\ self(), _context \\ nil) do
     # Bonfire.UI.Common.PersistentLive.maybe_send(context, {:notification, attrs}) ||
+    Process.send_after(pid, :clear_flash, 5000)
     maybe_send_update(pid, Bonfire.UI.Common.NotificationLive, :notification, attrs)
   end
 

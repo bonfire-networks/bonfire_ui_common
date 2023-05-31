@@ -83,7 +83,7 @@
                   phx-target={@myself}
                   phx-value-key="info"
                   type="button"
-                  class="btn btn-sm btn-circle btn-ghost"
+                  class="btn btn-sm text-info-content btn-circle btn-ghost"
                 >
                   <span class="sr-only">{l("Close")}</span>
                   <#Icon solid="X" class="w-4 h-4" />

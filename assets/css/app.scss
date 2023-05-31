@@ -143,6 +143,14 @@ body {
 }
 
 
+.add_to_circle .modal-box {
+  @apply !px-0;
+}
+
+.add_to_circle .modal-title {
+  @apply !px-4;
+}
+
 .active-activity:after {
   position: absolute;
   content: "";
