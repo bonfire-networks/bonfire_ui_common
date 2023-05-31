@@ -7,6 +7,7 @@ defmodule Bonfire.UI.Common.ErrorHelpers do
 
   @doc """
   Generates tag for inlined form input errors.
+  # TODO: use `Surface.Components.Form.ErrorTag` instead
   """
   def error_tag(form, field) do
     # debug(errors: form.errors)
