@@ -942,11 +942,9 @@ defmodule Bonfire.UI.Common do
       )
 
       Phoenix.LiveView.put_flash(socket, type, message)
-
     else
       # for non-live
       Phoenix.LiveView.put_flash(socket, type, string_for_cookie(message))
-
     end
   end
 
@@ -958,7 +956,6 @@ defmodule Bonfire.UI.Common do
     |> Phoenix.Controller.fetch_flash()
     |> Phoenix.Controller.put_flash(type, string_for_cookie(message))
     |> assign_generic(assigns)
-
   end
 
   def assign_flash(other, type, message, assigns, pid) do
