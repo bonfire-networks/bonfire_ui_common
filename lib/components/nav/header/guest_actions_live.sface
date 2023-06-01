@@ -19,7 +19,7 @@
     </label>
     <ul
       tabindex="0"
-      class="p-2 mt-4 rounded shadow menu dropdown-content bg-base-100 w-60 md:w-48 text-base-content"
+      class="p-2 mt-4 rounded-lg shadow menu md:menu-compact dropdown-content bg-base-200 w-60 md:w-48 text-base-content"
     >
       <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LiveRedirect to={path(:signup)}>{l("Sign up")}</LiveRedirect></li>
       <!-- <li><LiveRedirect class="text-neutral-content" to="/about">{l("About")}</LiveRedirect></li> -->

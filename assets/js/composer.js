@@ -190,7 +190,7 @@ ComposerHooks.Composer = {
 
 const mentionItemRenderer = (item, text) => {
   return `
-    <li class="flex rounded flex-col py-1">
+    <li class="flex rounded flex-col py-2 px-3">
       <button class="gap-0 items-start flex flex-col rounded py-1.5" type="button" data-id="${item.id}" data-input="${text}">
         <div class="text-sm truncate max-w-[240px] text-base-content font-semibold">${item.value}</div>
         <div class="text-xs truncate max-w-[240px] text-base-content/70 font-regular">${item.id}</div>
@@ -200,7 +200,7 @@ const mentionItemRenderer = (item, text) => {
 
 const topicItemRenderer = (item) => {
   return `
-    <li class="flex rounded flex-col py-1">
+    <li class="flex rounded flex-col py-2 px-3">
       <button class="gap-0 items-start rounded py-1.5 flex flex-col" type="button" data-id="${item.id}">
         <div class="text-sm truncate max-w-[240px] text-base-content font-semibold">${item.value}</div>
         <div class="text-xs truncate max-w-[240px] text-base-content/70 font-regular">${item.id}</div>

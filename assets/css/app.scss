@@ -418,10 +418,15 @@ article.unread-activity {
 
 .md\:menu-compact :where(li > *) {
   padding: 0 !important;
+  display: block !important;
 }
 
+.menu :where(li ul)::before {
+  display: none !important;
+}
 .menu-compact :where(li > *) {
   padding: 0 !important;
+  display: block !important;
 }
 
 .menu-compact li .open_modal_btn_wrapper{

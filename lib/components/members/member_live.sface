@@ -68,7 +68,7 @@
         </label>
         <ul
           tabindex="0"
-          class="mt-3 rounded menu-compact !block shadow w-52 menu dropdown-content bg-base-100"
+          class="relative z-50 mt-3 rounded-lg menu-compact !block shadow w-52 menu dropdown-content bg-base-200"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="user-profile-menu"

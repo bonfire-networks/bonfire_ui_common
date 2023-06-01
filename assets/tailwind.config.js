@@ -98,17 +98,12 @@ module.exports = {
     }
   },
   daisyui: {
-    darkTheme: "bonfire",
+    darkTheme: "dark",
+    themes: true,
     themes: [
       {
-        bonfire: {
-          ...require("daisyui/src/colors/themes")["[data-theme=dracula]"],
-          "primary": "#fde047",
-          "secondary": "#414558",
-          "secondary-content": "#C2CBF5"
-        },
         light: {
-          ...require("daisyui/src/colors/themes")["[data-theme=light]"],
+          ...require("daisyui/src/theming/themes")["[data-theme=light]"],
           "primary": "#1B74E4",
           "primary-content": "#fff",
           "base-300": "#fff",
@@ -116,7 +111,9 @@ module.exports = {
           "base-100": "#F0F2F5"
         },
         dark: {
-          ...require("daisyui/src/colors/themes")["[data-theme=dark]"],
+          ...require("daisyui/src/theming/themes")["[data-theme=dark]"],
+          "primary": "#fde047",
+          "primary-content": "#112A46",
           "secondary": "#414558",
           "secondary-content": "#C2CBF5"
         }
