@@ -416,6 +416,30 @@ article.unread-activity {
   font-weight: normal
 }
 
+.md\:menu-compact :where(li > *) {
+  padding: 0 !important;
+}
+
+.menu-compact :where(li > *) {
+  padding: 0 !important;
+}
+
+.menu-compact li .open_modal_btn_wrapper{
+  @apply !px-4 !py-2 !w-full;
+}
+
+.menu-compact :where(li > a) {
+  @apply !px-4 !py-2 !w-full;
+}
+
+.md\:menu-compact li .open_modal_btn_wrapper{
+  @apply !px-4 !py-2 !w-full;
+}
+
+.md\:menu-compact :where(li > a) {
+  @apply !px-4 !py-2 !w-full;
+}
+
 .feed_activity_action {
   @apply flex items-center space-x-1 rounded cursor-pointer;
 }
