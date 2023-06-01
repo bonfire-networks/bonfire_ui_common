@@ -32,7 +32,7 @@
     <LiveRedirect
       to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
       class="rounded-lg bg-base-100 flex items-center p-2 gap-3 text-sm text-base-content/80"
-      >
+    >
       <Bonfire.UI.Common.AvatarLive
         :if={is_map(current_user(@__context__))}
         parent_id="bottom_avatar_in_sidebar"
@@ -52,10 +52,7 @@
   </div>
 </li>
 <li :if={!@mobile}>
-  <LiveRedirect
-    to={~p"/switch-user"}
-    class="flex items-center gap-2 text-sm text-base-content/80"
-  >
+  <LiveRedirect to={~p"/switch-user"} class="flex items-center gap-2 text-sm text-base-content/80">
     <!-- <#Icon
       :if={@mobile}
       iconify="material-symbols:switch-account"
