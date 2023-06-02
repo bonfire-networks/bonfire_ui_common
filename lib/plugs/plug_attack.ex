@@ -16,6 +16,13 @@ defmodule Bonfire.UI.Common.PlugAttack do
   #   def allow_action(conn, _data, _opts), do: conn
 
   # Or when it's blocked
+  def block_action(%{path_info: ["login"]} = conn, _data, _opts) do
+    # for credential stuffing we don't want to give any hints 
+    conn
+    |> Plug.Conn.send_resp(403, "Forbidden")
+    |> Plug.Conn.halt()
+  end
+
   def block_action(conn, _data, _opts) do
     conn
     |> Plug.Conn.send_resp(429, "Too many requests, try again later")
