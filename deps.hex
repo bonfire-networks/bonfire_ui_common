@@ -6,6 +6,8 @@ phoenix_live_view = "~> 0.19." # usually should let surface decide the version
 #phoenix_html = "~> 3.3.0" # usually should let liveview decide the version
 # phoenix_live_dashboard = "~> 0.2"
 other:
+plug_attack = "~> 0.4.2"
+remote_ip = "~> 1.1"
 plug_cowboy = "~> 2.6.0"
 faker = "~> 0.17.0" # fake data generation, mostly for tests
 phoenix_gon = "~> 0.4.0" # for JS config keys 

@@ -6,6 +6,7 @@ defmodule Bonfire.UI.Common.Routes do
       pipeline :basic do
         plug(:fetch_session)
         plug(:put_root_layout, {Bonfire.UI.Common.LayoutView, :root})
+        plug(RemoteIp)
       end
 
       pipeline :basic_html do
@@ -32,6 +33,11 @@ defmodule Bonfire.UI.Common.Routes do
         plug(:fetch_live_flash)
 
         # plug Bonfire.UI.Me.Plugs.Locale # TODO: skip guessing a locale if the user has one in preferences
+      end
+
+      pipeline :throttle_plug_attacks do
+        plug(:basic)
+        plug Bonfire.UI.Common.PlugAttack
       end
 
       pipeline :static do
