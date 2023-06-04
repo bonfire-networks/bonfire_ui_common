@@ -27,10 +27,3 @@
   />
   <span :if={@prompt} class="hidden normal-case md:block">{@prompt || l("Compose")}</span>
 </button>
-
-<!-- phx-click="Bonfire.UI.Common.SmartInput:select_smart_input"
-  phx-target="#smart_input"
-  phx-value-component={@component}
-  phx-value-create_object_type={@create_object_type}
-  phx-value-opts={Jason.encode!(Map.drop(@smart_input_opts, [:text]))}
-  x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{l("Compose")}')"} -->

@@ -1,6 +1,6 @@
 {#if @my_follow == nil}
   <button disabled class="normal-case rounded btn btn-disabled btn-sm">{l("loading...")}</button>
-{#else}
+{#elseif !@my_follow}
   <a
     :if={!@my_follow}
     data-cid={@id}
@@ -19,8 +19,8 @@
         {@verb || l("Follow")} {@label}</span>
     </div>
   </a>
+{#elseif @my_follow == :requested}
   <a
-    :if={@my_follow == :requested}
     x-data={"{text: '#{l("Requested")}'}"}
     x-on:mouseover={"text = '#{l("Cancel")}'"}
     x-on:mouseover.away={"text = '#{l("Requested")}'"}
@@ -36,8 +36,8 @@
     <span :if={!@hide_text} x-text="text" class={"truncate ellipsis", "ml-2": !@hide_icon}>
       {l("Requested")} {@label}</span>
   </a>
+{#else}
   <a
-    :if={@my_follow}
     phx-disable-with={l("loading...")}
     x-data={"{text: '#{@verb_already || l("Following")}'}"}
     x-on:mouseover={"text = '#{@verb_undo || l("Unfollow")}'"}
@@ -57,4 +57,6 @@
         {@verb_already || l("Following")} {@label}</span>
     </div>
   </a>
+
+  <#slot {@if_followed} />
 {/if}

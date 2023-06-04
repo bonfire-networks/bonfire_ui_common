@@ -10,6 +10,7 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop create_object_type, :any, default: nil
   prop to_boundaries, :any, default: nil
   prop to_circles, :list, default: []
+  prop mentions, :list, default: []
   prop showing_within, :atom, default: nil
   prop uploads, :any, default: nil
   prop uploaded_files, :list, default: []

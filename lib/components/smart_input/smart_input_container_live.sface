@@ -96,6 +96,7 @@
             open_boundaries={@open_boundaries}
             to_boundaries={boundaries_or_default(@to_boundaries)}
             to_circles={@to_circles}
+            mentions={@mentions}
             smart_input_opts={@smart_input_opts}
             activity={@activity}
             object={@object}

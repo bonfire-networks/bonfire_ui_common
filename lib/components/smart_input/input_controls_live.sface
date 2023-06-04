@@ -84,7 +84,6 @@
     <input type="hidden" name="reply_to[thread_id]" value={@context_id}>
     <!-- FIXME: should not thread using context like a group or topic -->
     <input type="hidden" name="context_id" value={@context_id}>
-
     <input type="hidden" name={:create_object_type} value={@create_object_type}>
 
     <Dynamic.Component
@@ -95,15 +94,17 @@
       context_id={@context_id}
     />
 
+    <input :for={mention <- e(@mentions, [])} type="hidden" name="mentions[]" value={mention}>
+
     <input
-      :for={{label, value} <- @to_circles}
+      :for={{label, value} <- e(@to_circles, [])}
       type="hidden"
       name="to_circles[]"
       label={e(label, :name, nil) || label}
       value={value}
     />
     <input
-      :for={value when is_binary(value) <- @to_circles}
+      :for={value when is_binary(value) <- e(@to_circles, [])}
       type="hidden"
       name="to_circles[]"
       value={value}

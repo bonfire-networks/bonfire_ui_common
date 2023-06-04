@@ -88,27 +88,44 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     to_circles =
       (params["to_circles"] || e(opts, :to_circles, []))
-      # |> maybe_from_json_string()
       |> Enum.flat_map(&Enum.map(&1, fn {key, val} -> {key, val} end))
       |> debug("to_circles")
+
+    to_boundaries =
+      (params["to_boundaries"] || e(opts, :to_boundaries, []))
+      |> Enum.flat_map(
+        &Enum.map(&1, fn
+          {key, val} -> {key, val}
+        end)
+      )
+      |> debug("to_boundaries")
+
+    set_assigns =
+      [
+        smart_input_component:
+          maybe_to_module(e(params, "component", nil) || e(params, "smart_input_component", nil)),
+        create_object_type:
+          maybe_to_atom(
+            e(opts, "create_object_type", nil) || e(params, "create_object_type", nil)
+          ),
+        context_id: e(opts, "context_id", nil) || e(params, "context_id", nil),
+        reply_to_id:
+          reply_to_param(params) || reply_to_param(opts) || e(socket.assigns, :reply_to_id, nil),
+        # FIXME: do not pass everything blindly to smart_input_opts
+        smart_input_opts: opts,
+        activity: nil,
+        object: nil,
+        activity_inception: "reply_to",
+        to_boundaries: e(to_boundaries, nil) || e(socket.assigns, :to_boundaries, nil),
+        to_circles: to_circles,
+        mentions: e(opts, "mentions", nil) || e(params, "mentions", nil)
+      ]
+      |> debug("set_assigns")
 
     {:noreply,
      socket
      |> assign(opts)
-     |> assign(
-       smart_input_component:
-         maybe_to_module(e(params, "component", nil) || e(params, "smart_input_component", nil)),
-       create_object_type: maybe_to_atom(e(params, "create_object_type", nil)),
-       reply_to_id:
-         reply_to_param(params) || reply_to_param(opts) || e(socket.assigns, :reply_to_id, nil),
-       smart_input_opts: opts,
-       activity: nil,
-       object: nil,
-       activity_inception: "reply_to",
-       to_circles:
-         (to_circles || e(socket.assigns, :to_circles, []))
-         |> debug("to_circles")
-     )}
+     |> assign(set_assigns)}
   end
 
   def handle_event("remove_data", _params, socket) do
@@ -181,7 +198,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   defp maybe_push_opts(js \\ %JS{}, event, opts)
 
-  defp maybe_push_opts(js, event, {} = opts) when opts != %{} do
+  defp maybe_push_opts(js, event, %{} = opts) when opts != %{} do
     js
     |> JS.push(event,
       value: %{
@@ -190,7 +207,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     )
   end
 
-  defp maybe_push_opts(js, event, opts), do: js
+  defp maybe_push_opts(js, event, opts) do
+    warn(opts, "no smart_input_opts")
+    js
+  end
 
   defp encode_opts(%{} = opts) when opts != %{}, do: do_encode_opts(opts)
   defp encode_opts(_), do: nil

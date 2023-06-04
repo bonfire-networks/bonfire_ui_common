@@ -13,6 +13,8 @@ defmodule Bonfire.UI.Common.FollowButtonLive do
   prop hide_icon, :boolean, default: false
   prop hide_text, :boolean, default: false
 
+  slot if_followed
+
   def preload(list_of_assigns),
     do: Bonfire.Social.Follows.LiveHandler.preload(list_of_assigns, caller_module: __MODULE__)
 

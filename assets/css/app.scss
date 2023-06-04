@@ -424,6 +424,9 @@ article.unread-activity {
 .menu :where(li ul)::before {
   display: none !important;
 }
+.menu:empty, .menu:-moz-only-whitespace {
+  display: none !important;
+}
 .menu-compact :where(li > *) {
   padding: 0 !important;
   display: block !important;
