@@ -1068,12 +1068,13 @@ defmodule Bonfire.UI.Common do
   defp go_where?(session_go, params, default, current_path) do
     case session_go do
       go when is_binary(go) and current_path != go ->
+        go = URI.decode(go)
         # needs to support external for oauth/openid
         if internal_go_path?(go), do: [to: go], else: [external: go]
 
       _ ->
         # |> debug
-        go = Utils.e(params, :go, nil) || default
+        go = (Utils.e(params, :go, nil) || default) |> URI.decode()
 
         if current_path != go and internal_go_path?(go),
           do: [to: go],

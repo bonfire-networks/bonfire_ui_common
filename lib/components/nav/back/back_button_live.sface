@@ -8,7 +8,15 @@
   >
     <#Icon iconfiy="ion:chevron-back" class="w-5 h-5 text-base-content/70" />
   </button>
-{#else}
+{#elseif is_binary(@back) and @back != current_url(@__context__)}
+  <LinkLive
+    to={@back}
+    aria-label={l("Go back to the previous page")}
+    class="btn normal-case relative z-50 font-normal btn-ghost btn-sm btn-circle !inline-flex"
+  >
+    <#Icon iconify="ion:chevron-back" class="w-5 h-5 text-base-content/70" />
+  </LinkLive>
+{#elseif @back}
   <a
     x-show="history.length > 1 && document.referrer.indexOf(window.location.host) !== -1"
     href="javascript:window.history.back()"

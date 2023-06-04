@@ -22,7 +22,7 @@
           icon={@page_header_icon}
           class="hidden w-6 h-6 text-base-content md:block"
         />
-        <Bonfire.UI.Common.BackButtonLive :if={@back} />
+        <Bonfire.UI.Common.BackButtonLive :if={@back} back={@back} />
         <div class="flex flex-col">
           <span
             class="first-letter:capitalize md:max-w-full text-sm font-semibold truncate text-base-content text-ellipsis"
