@@ -93,6 +93,7 @@
   <Dynamic.Component
     :if={module_enabled?(Bonfire.UI.Groups.NewGroupLive)}
     module={Bonfire.UI.Groups.NewGroupLive}
+    parent_id="user_menu_links"
   />
 </li>
 <!-- <li :if={!@mobile} class="border-t border-neutral-content/10">

@@ -215,7 +215,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                             :if={@page_header_aside}
                             :for={{component, component_assigns} <- e(@page_header_aside, [])}
                             module={component}
-                            {...component_assigns}
+                            {...component_assigns || []}
                           />
                         </:right_action>
                       </Dynamic.Component>
