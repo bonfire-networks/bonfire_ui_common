@@ -118,7 +118,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         activity_inception: "reply_to",
         to_boundaries: e(to_boundaries, nil) || e(socket.assigns, :to_boundaries, nil),
         to_circles: to_circles,
-        mentions: e(opts, "mentions", nil) || e(params, "mentions", nil)
+        mentions: e(opts, "mentions", nil) || e(params, "mentions", [])
       ]
       |> debug("set_assigns")
 

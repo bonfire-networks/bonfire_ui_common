@@ -424,7 +424,7 @@ article.unread-activity {
 .menu :where(li ul)::before {
   display: none !important;
 }
-.menu:empty, .menu:-moz-only-whitespace {
+.menu:empty, .menu:-moz-only-whitespace, .dropdown-with-list:not(.dropdown-with-list:has(li)) {
   display: none !important;
 }
 .menu-compact :where(li > *) {
