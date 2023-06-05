@@ -12,7 +12,7 @@ defmodule Bonfire.UI.Common.WidgetLive do
   prop icon_class, :css_class, required: false, default: "w-5 h-5 text-base-content"
   prop page, :string, default: nil
   prop selected_tab, :any, default: nil
-  prop wrapper_class, :css_class, default: "m-0 p-0 rounded-md"
+  prop wrapper_class, :css_class, default: "m-0 p-0 rounded-md !block"
   prop showing_within, :atom, default: :sidebar
 
   def widget(%{name: :extension, app: app}, _context) do

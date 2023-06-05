@@ -9,17 +9,18 @@
           do: "flex items-center w-full gap-4 px-2 py-2 rounded-md",
           else: "block w-full"}
       >
-        <span :if={!@without_icon} class="">
-          <Iconify.iconify icon={widget(@widget, @__context__)[:icon]} class={@icon_class} />
-        </span>
-        <span
-          :if={(not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])) or
-            (not is_nil(@widget[:module]) and e(@__context__, :current_view, nil) == @widget[:module])}
-          class="sr-only"
-        >{l("Current Page:")}
-        </span>
-        <span class={@text_class}>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
-
+        <div class="flex-1 flex items-center gap-4">
+          <span :if={!@without_icon} class="">
+            <Iconify.iconify icon={widget(@widget, @__context__)[:icon]} class={@icon_class} />
+          </span>
+          <span
+            :if={(not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])) or
+              (not is_nil(@widget[:module]) and e(@__context__, :current_view, nil) == @widget[:module])}
+            class="sr-only"
+          >{l("Current Page:")}
+          </span>
+          <span class={@text_class}>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
+        </div>
         {#case widget(@widget, @__context__)[:badge]}
           {#match nil}
           {#match badge}
