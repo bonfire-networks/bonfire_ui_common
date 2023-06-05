@@ -14,7 +14,23 @@ defmodule Bonfire.UI.Common.BasicView do
   def show_html(title, body, class) do
     raw("""
     <!DOCTYPE html>
-    <html lang="en" class="#{class || "dark"}"  style="background-color: black;">
+    <html lang="en" class="#{class || "dark"}"  data-theme={if Settings.get(
+      [:ui, :theme, :preferred],
+      :system,
+      assigns[:__context__] || assigns[:current_user] || @conn
+    ) == :light,
+    do:
+      Settings.get(
+        [:ui, :theme, :instance_theme_light],
+        "light",
+        assigns[:__context__] || assigns[:current_user] || @conn
+      ),
+    else:
+      Settings.get(
+        [:ui, :theme, :instance_theme],
+        "bonfire",
+        assigns[:__context__] || assigns[:current_user] || @conn
+      )}>
     <head>
       <meta charset="utf-8"/>
       <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -44,8 +60,8 @@ defmodule Bonfire.UI.Common.BasicView do
             </div>
           </div>
 
-          <div class="w-full max-w-screen-md mx-auto mt-12">
-            <div class="prose text-center max-w-none" style="color: white;">
+          <div class="w-full max-w-screen-md mx-auto mt-4">
+            <div class="prose text-center max-w-none">
               <h1 class="text-base-content">
                 #{title}
               </h1>

@@ -43,7 +43,7 @@ defmodule Bonfire.UI.Common.ErrorView do
     show_error(
       500,
       (reason(assigns) || "Please try again or contact the instance admins.") <>
-        "\n<p><img class='mx-auto' src='https://media1.giphy.com/media/Z1BTGhofioRxK/giphy.gif'/>",
+        "\n<p><img class='mx-auto h-[300px]' src='https://media1.giphy.com/media/Z1BTGhofioRxK/giphy.gif'/>",
       true
     )
   end
