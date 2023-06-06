@@ -3,14 +3,14 @@ defmodule Bonfire.UI.Common.ComponentID do
 
   def new(component_module, object_id, context)
       when is_binary(object_id) or is_number(object_id) do
-    context =
-      context ||
-        (
-          error(context, "expected a string or atom context for #{component_module}, but got")
-          Pointers.ULID.generate()
-        )
+    # context =
+    #   context ||
+    #     (
+    #       warn(context, "expected a string or atom context for #{component_module}, but got")
+    #       Text.random_string(3)
+    #     )
 
-    component_id = "#{component_module}-via-#{context}-for-#{object_id}"
+    component_id = "#{Text.random_string(3)}-#{component_module}-via-#{context}-for-#{object_id}"
 
     debug("created stateful component with ID: #{component_id}")
 
@@ -20,13 +20,13 @@ defmodule Bonfire.UI.Common.ComponentID do
   end
 
   def new(component_module, object, context)
-      when is_map(object) or is_list(object) or is_tuple(object) do
-    new(component_module, Enums.id(object) || Pointers.ULID.generate(), context)
+      when not is_nil(object) and (is_map(object) or is_list(object) or is_tuple(object)) do
+    new(component_module, Enums.id(object), context)
   end
 
   def new(component_module, other, context) do
-    error(other, "expected an object id for #{component_module} with context #{context}, but got")
-    Pointers.ULID.generate()
+    error(other, "cannot save ComponentID to process, because expected an object id for #{component_module} with context #{context}, but got")
+    "#{Text.random_string(6)}-#{component_module}-via-#{context}"
   end
 
   def send_updates(component_module, object_id, assigns) do
