@@ -25,7 +25,11 @@ defmodule Bonfire.UI.Common.ComponentID do
   end
 
   def new(component_module, other, context) do
-    error(other, "cannot save ComponentID to process, because expected an object id for #{component_module} with context #{context}, but got")
+    error(
+      other,
+      "cannot save ComponentID to process, because expected an object id for #{component_module} with context #{context}, but got"
+    )
+
     "#{Text.random_string(6)}-#{component_module}-via-#{context}"
   end
 

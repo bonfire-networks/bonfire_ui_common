@@ -20,11 +20,4 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop open_boundaries, :boolean, default: false
   prop show_select_recipients, :boolean, default: false
   prop boundaries_modal_id, :string, default: :sidebar_composer
-
-  def clone_context(to_boundaries) do
-    case to_boundaries do
-      [{:clone_context, boundary_name}] -> boundary_name
-      _ -> false
-    end
-  end
 end
