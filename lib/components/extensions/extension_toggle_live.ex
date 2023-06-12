@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.ExtensionToggleLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
   # prop extension, :any, required: true
-  prop scope, :atom, default: nil
+  prop scope, :any, default: nil
   prop can_instance_wide, :boolean, default: false
 
   def update(assigns, socket) do

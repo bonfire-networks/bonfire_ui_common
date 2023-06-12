@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
   use Bonfire.UI.Common.Web, :stateless_component
   import Bonfire.Common.Extensions
 
-  prop scope, :atom, default: nil
+  prop scope, :any, default: nil
 
   prop feature_extensions, :list, default: []
   prop ui, :list, default: []

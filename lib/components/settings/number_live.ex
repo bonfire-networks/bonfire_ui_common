@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common.Settings.NumberLive do
   prop name, :string, required: true
   prop description, :string, default: nil
   prop unit, :string, default: nil
-  prop scope, :atom, default: nil
+  prop scope, :any, default: nil
   prop read_only, :boolean, default: false
   prop class, :css_class, default: "input input-sm w-20"
 end
