@@ -1164,7 +1164,8 @@ defmodule Bonfire.UI.Common do
       )
       # |> debug("process these assigns")
       |> Enum.map(&assigns_to_params_fn.(&1))
-      |> debug("list_of_components")
+
+    # |> debug("list_of_components")
 
     if list_of_components == [] do
       list_of_assigns
