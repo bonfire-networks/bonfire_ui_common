@@ -4,7 +4,7 @@
   x-ref="dialog"
   aria-modal="true"
   role="banner"
-  class="flex items-center h-[60px] md:h-[56px] flex-1 w-full md:border-b border-base-content/10 px-4"
+  class="flex items-center h-[60px] md:h-[56px] flex-1 w-full  px-4"
 >
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center justify-between w-full tablet-lg:flex-1">
@@ -17,15 +17,15 @@
         >
           <#Icon iconify="gg:menu-left-alt" class="w-6 h-6" />
         </button>
-        <Iconify.iconify
+        <!-- <Iconify.iconify
           :if={@page_header_icon && !@back}
           icon={@page_header_icon}
           class="hidden w-6 h-6 text-base-content md:block"
-        />
+        /> -->
         <Bonfire.UI.Common.BackButtonLive :if={@back} back={@back} />
         <div class="flex flex-col">
           <span
-            class="first-letter:capitalize md:max-w-full text-sm font-semibold truncate text-base-content text-ellipsis"
+            class="first-letter:capitalize md:max-w-full text-lg font-semibold text-base-content"
             :if={not is_nil(@page_title)}
           >{@page_title}</span>
           <div :if={@extra} class="text-xs text-base-content/80">{@extra}</div>

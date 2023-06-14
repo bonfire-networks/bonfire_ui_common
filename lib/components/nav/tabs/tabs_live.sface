@@ -1,6 +1,6 @@
 <nav
   role="tabpanel"
-  class={e(@class, "flex gap-3 pt-1 md:pt-4 p-3 px-4 scrollable")}
+  class={@class}
   aria-label="Switch between tabs"
 >
   <Dynamic.Component
