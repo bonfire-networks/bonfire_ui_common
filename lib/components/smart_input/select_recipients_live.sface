@@ -1,5 +1,5 @@
-<div class="flex items-center w-full gap-2 px-2">
-  <span class="px-1 text-xs font-medium uppercase text-base-content/70">{l("To")}</span>
+<div class="flex items-center w-full gap-2 mt-1 px-2">
+  <!-- <span class="px-1 text-xs font-medium uppercase text-base-content/70">{l("To")}</span> -->
 
   <div class="flex flex-col flex-1 gap-2">
     {#case @implementation}
@@ -33,13 +33,13 @@
       <div class="flex w-full">
         <div class="flex items-center gap-2">
           {#for {name, id} <- @to_circles}
-            <span class="gap-2 text-xs border-base-content/30 badge !h-[34px] !pr-0 rounded badge-outline">
+            <span class="gap-2 text-[15px] font-semibold pl-4 border-base-content/30 badge !h-[34px] !pr-0 rounded-full badge-outline">
               {name}
               <button
                 type="button"
                 phx-click="remove"
                 phx-value-id={id}
-                class="!rounded-none btn btn-sm  btn-square btn-ghost !border-l border-l-base-content/30 !border-l-solid"
+                class="btn btn-sm  btn-circle btn-ghost text-primary"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

@@ -9,7 +9,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
   prop showing_within, :atom, default: nil
   prop implementation, :any, default: :live_select
   prop label, :string, default: nil
-  prop class, :string, default: "w-full h-10 input input-bordered select_recipients_input"
+  prop class, :string, default: "w-full h-10 input rounded-full select_recipients_input"
 
   def do_handle_event("live_select_change", %{"id" => live_select_id, "text" => search}, socket) do
     # current_user = current_user(socket)
