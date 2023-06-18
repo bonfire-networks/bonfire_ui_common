@@ -1,8 +1,4 @@
-<nav
-  role="tabpanel"
-  class={@class}
-  aria-label="Switch between tabs"
->
+<nav role="tabpanel" class={@class} aria-label="Switch between tabs">
   <Dynamic.Component
     :for={{{tab, tab_name}, i} <- Enum.with_index(@tabs)}
     module={@link_component}
