@@ -199,11 +199,12 @@ defmodule Bonfire.UI.Common do
         if opts[:skip_markdown] do
           content
         else
-          debug("use MD")
+          # debug("use MD")
 
           content
           |> Text.maybe_markdown_to_html()
         end
+        # |> debug(content)
         # transform internal links to use LiveView navigation
         |> Text.make_local_links_live()
         # for use in views
