@@ -1,4 +1,4 @@
-<div class="border-0 avatar">
+<div class="border-0 avatar !flex">
   <div class={classes(%{viewing_main_object: @viewing_main_object, comment: @comment, class: @class})}>
     {#case @avatar_fallback || Media.avatar_fallback()}
       {#match avatar_fallback}
