@@ -153,12 +153,13 @@ body {
 
 .active-activity:after {
   position: absolute;
+  z-index: -1;
   content: "";
-  right: 0px;
-  top: 0px;
-  bottom: 0px;
-  width: 0.125rem;
-  @apply bg-primary rounded-full;
+  left: -8px;
+  right: -16px;
+  top: -12px;
+  bottom: -10px;
+  @apply bg-primary/5;
 }
 .replies .active-activity:after {
   left: auto;

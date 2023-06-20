@@ -125,7 +125,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       </div -->
 
       <div class={
-        "w-full px-0 md:px-4 grid max-w-[1260px] gap-0 md:gap-4 widget xl:px-0 mx-auto",
+        "w-full px-0 md:px-4 grid max-w-[1232px] gap-0 md:gap-4 widget xl:px-0 mx-auto",
         "!grid-cols-1 content-start": @without_sidebar && @without_widgets,
         # "grid-cols-1 !max-w-full": !@current_user_id,
         "grid-cols-1 md:grid-cols-[280px_1fr] tablet-lg:grid-cols-[280px_1fr_320px]": !@current_user_id,
