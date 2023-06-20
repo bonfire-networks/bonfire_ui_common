@@ -33,7 +33,7 @@
         title={l("You can't boost this activity")}
       >
         <span class="text-base-content text-opacity-20">
-           <Iconify.Bonfire.Boost.render class="w-5 h-5 stroke-1 fill-base-content/20" />
+          <Iconify.Bonfire.Boost.render class="w-5 h-5 stroke-1 fill-base-content/20" />
         </span>
         <span class="sr-only feed_activity_text">
           {l("Cannot Boost")}
