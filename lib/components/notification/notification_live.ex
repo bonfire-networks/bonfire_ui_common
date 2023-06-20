@@ -79,20 +79,21 @@ defmodule Bonfire.UI.Common.NotificationLive do
   end
 
   def do_handle_event("clear-flash", %{"key" => type}, socket) do
-    key = maybe_to_atom(type)
+    case maybe_to_atom!(type) do
+      nil ->
+        error(type, "invalid flash key")
 
-    {:noreply,
-     socket
-     |> clear_flash(type)
-     |> assign(
-       :root_flash,
-       e(socket.assigns, :root_flash, %{})
-       |> Map.drop([type, key])
-     )
-     |> assign(type, nil)
-     |> assign(key, nil)}
-
-    # |> debug
+      key ->
+        {:noreply,
+         socket
+         |> clear_flash(key)
+         |> assign(
+           :root_flash,
+           e(socket.assigns, :root_flash, %{})
+           |> Map.drop([type, key])
+         )
+         |> assign(key, nil)}
+    end
   end
 
   def do_handle_event("click_away", _, socket) do

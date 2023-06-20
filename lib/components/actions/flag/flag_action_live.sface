@@ -13,7 +13,7 @@
     :if={@parent_id && @object}
     id={ComponentID.new(
       Bonfire.UI.Common.OpenModalLive,
-      "flag-modal-#{@parent_id}-#{id(@object)}",
+      "flag_modal_#{@parent_id}_#{id(@object)}",
       __MODULE__
     )}
     title_text={e(@label, l("Flag %{user_or_thing}", user_or_thing: @object_type))}

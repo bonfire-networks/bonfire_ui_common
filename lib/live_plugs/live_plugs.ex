@@ -54,6 +54,11 @@ defmodule Bonfire.UI.Common.LivePlugs do
              :handle_params,
              &params_to_assigns/3
            )
+           #  |> Phoenix.LiveView.attach_hook(
+           #    :send_persistent_assigns_after_render,
+           #    :after_render,
+           #    &send_persistent_assigns_after_render/1
+           #  )
            |> init_socket(params, ...) do
       socket
     end
@@ -88,6 +93,8 @@ defmodule Bonfire.UI.Common.LivePlugs do
     else
       Bonfire.Common.TestInstanceRepo.maybe_declare_test_instance(socket.endpoint)
 
+      debug(Phoenix.LiveView.connected?(socket), "init socket")
+
       {:ok,
        if(module_enabled?(Surface), do: Surface.init(socket), else: socket)
        |> assign_global(
@@ -101,8 +108,14 @@ defmodule Bonfire.UI.Common.LivePlugs do
     end
   end
 
+  def send_persistent_assigns_after_render(socket) do
+    maybe_send_persistent_assigns(socket)
+
+    socket
+  end
+
   def maybe_send_persistent_assigns(assigns \\ nil, socket) do
-    # in case we're browsing between LVs, send some assigns (eg page_title to PersistentLive's process)
+    # in case we're browsing between LVs, send some assigns (eg current_user, page_title, etc to PersistentLive's process)
     if socket_connected?(socket),
       do:
         Bonfire.UI.Common.PersistentLive.maybe_send_assigns(
@@ -115,8 +128,8 @@ defmodule Bonfire.UI.Common.LivePlugs do
   defp params_to_assigns(params, uri, socket) do
     socket = assign_default_params(params, uri, socket)
 
-    # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
-    # if socket_connected?(socket), do: maybe_send_persistent_assigns(socket)
+    # in case we're browsing between LVs, send assigns (eg current_user to PersistentLive's process)
+    if socket_connected?(socket), do: maybe_send_persistent_assigns(socket)
 
     {:cont, socket}
   end

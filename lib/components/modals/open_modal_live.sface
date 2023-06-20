@@ -33,66 +33,29 @@
     {/case}
   {#else}
     {#if @enable_fallback}
-      <!-- FIXME: make this fallback modal (which doesn't require LV) work when this component is included in a dropdown
-      For now we simply don't render a modal and instead show action_btn if enable_fallback is not set
+      <!-- FIXME: make this fallback modal (which doesn't require LV) work when this component is included in a dropdown. For now we simply don't render a modal and instead show action_btn (or a link if href is provided) if enable_fallback is not set.
      -->
 
-      <label for={@id} class={@open_btn_wrapper_class}>
-        <#slot {@open_btn, value: @value}>
-          <div class={@open_btn_class}>
-            {@open_btn_text || "Open modal"}
-          </div>
-        </#slot>
-      </label>
-
-      <input type="checkbox" id={@id} class="modal-toggle">
-
-      <label for={@id} class={@modal_class, "modal modal-bottom sm:modal-middle cursor-pointer"}>
-        <label class={@wrapper_class, "modal-box relative"} for="">
-          <label
-            for={@id}
-            class="absolute top-0 right-0 z-30 block pt-5 pr-4 normal-case btn btn-circle btn-sm"
-          >
-            <span class="sr-only">{@cancel_label || l("Close")}</span>
-            <#Icon outline="X" class="w-4 h-4" />
-          </label>
-
-          <h3 :if={e(!@no_header, false)} class={@title_class || "font-bold text-base"}>
-            <#slot {@title}>{@title_text}</#slot>
-          </h3>
-
-          <div class="mt-2 overflow-y-auto max-h-[calc(100vh_-_13rem)]" data-id="modal-contents">
-            <#slot {@default, autocomplete: @autocomplete, value: @value} />
-          </div>
-        </label>
-
-        <div :if={!@no_actions} class="modal-action">
-          <label for={@id}>
-            <#slot {@cancel_btn}>
-              <button class={@cancel_btn_class || "btn btn-ghost rounded btn-sm normal-case"} type="button">{@cancel_label || l("Close")}</button>
-            </#slot>
-          </label>
-          <div class={@action_btns_wrapper_class}>
-            <#slot {@action_btns} />
-          </div>
-        </div>
-      </label>
+      <Bonfire.UI.Common.InlineModalLive
+        id={@id}
+        title={@title}
+        action_btns={@action_btns}
+        cancel_btn={@cancel_btn}
+        default={@default}
+        open_btn={@open_btn}
+        value={nil}
+        ...{assigns}
+      />
     {#else}
       {#case @href}
         {#match nil}
           <div class={@open_btn_wrapper_class} {...@open_btn_opts}>
             <#slot {@action_btns}>
-              <span class={@open_btn_class}>
-                {@open_btn_text || "Open modal"}
-              </span>
             </#slot>
           </div>
         {#match _href}
           <a class={@open_btn_wrapper_class} href={@href} {...@open_btn_opts}>
             <#slot {@open_btn, value: @value}>
-              <span class={@open_btn_class}>
-                {@open_btn_text || "Open"}
-              </span>
             </#slot>
           </a>
       {/case}

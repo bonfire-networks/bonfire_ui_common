@@ -19,7 +19,12 @@ defmodule Bonfire.UI.Common.PersistentLive do
      socket
      #  |> debug("socket before assigns")
      |> assign(Map.drop(session, [:context]))
-     |> assign(:__context__, session[:context])
+     |> assign(
+       :__context__,
+       Enum.into(socket.assigns[:__context__] || session[:context] || %{}, %{
+         socket_connected?: Phoenix.LiveView.connected?(socket)
+       })
+     )
      |> assign_defaults()
      |> Presence.present!(%{@session_key => session[:context][@session_key]})
      |> debug("socket prepared via session"), layout: false}
@@ -94,6 +99,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       # :selected_tab
     ])
     |> Map.put(:__context__, Enum.into(assigns[:__context__] || %{}, %{sticky: true}))
+    |> debug()
   end
 
   def maybe_send(%{assigns: %{__context__: context}} = _socket, assigns),

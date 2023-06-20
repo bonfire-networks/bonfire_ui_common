@@ -20,12 +20,14 @@
       </figure>
 
       <!-- <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress> -->
-      <Bonfire.UI.Common.OpenModalLive
-        id={"#{entry.ref}-description"}
-        form_opts={"phx-submit": "set_value"}
-        reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
+      <Bonfire.UI.Common.InlineModalLive
+        id={"upload_#{entry.ref}_description"}
         title_text={l("Add an alternative description")}
+        value={nil}
+        cancel_label={l("Done")}
       >
+        <!-- reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
+        form_opts={"phx-submit": "set_value"} -->
         <div class="mt-4">
           <div class="p-4 rounded-md bg-info/10">
             <div class="flex">
@@ -45,20 +47,24 @@
           <span class="image_in_preview" :if={String.starts_with?(entry.client_type, "image")}>
             <.live_img_preview entry={entry} />
           </span>
-          <textarea name="value" placeholder="Type here" class="w-full mt-3 textarea textarea-bordered" />
+          <textarea
+            name={"upload_metadata[#{entry.ref}][label]"}
+            placeholder="Type here"
+            class="w-full mt-3 textarea textarea-bordered"
+          />
           <!-- TODO: edit previously entered desc -->
         </div>
-        <:open_btn :let={value: value}>
+        <:open_btn>
           <button
             type="button"
             class="absolute z-20 font-medium normal-case rounded glass top-2 left-2 btn btn-xs truncate max-w-[100px]"
             aria-label="Add description"
           >
-            <span class="">{value || l("Edit")}</span>
+            <span class="">{l("Edit")}</span>
           </button>
-          <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}>
+          <!-- <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}> -->
         </:open_btn>
-      </Bonfire.UI.Common.OpenModalLive>
+      </Bonfire.UI.Common.InlineModalLive>
 
       <button
         type="button"

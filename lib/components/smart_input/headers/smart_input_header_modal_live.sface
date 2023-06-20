@@ -42,7 +42,7 @@
       </span>
     </button>
     <Bonfire.UI.Common.OpenModalLive
-      id="close-composer"
+      id="close_composer"
       reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
       title_text={l("Delete the draft")}
       cancel_label={l("Cancel")}

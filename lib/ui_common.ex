@@ -189,6 +189,11 @@ defmodule Bonfire.UI.Common do
     assign_generic(socket, key, value)
   end
 
+  def maybe_assign(socket, key, value)
+      when is_binary(key) and key != "" and not is_nil(value) and value != "" do
+    maybe_assign(socket, maybe_to_atom!(key), value)
+  end
+
   def maybe_assign(socket, _key, _) do
     socket
   end

@@ -1,5 +1,5 @@
 <Bonfire.UI.Common.OpenModalLive
-  id={"open_preview-#{@parent_id}"}
+  id={"open_preview_#{@parent_id}"}
   reusable_modal_component={Bonfire.UI.Common.PreviewContentLive}
   reusable_modal_id="preview_content"
   click_open_event={nil}

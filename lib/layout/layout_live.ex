@@ -112,7 +112,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         }"
     >
       <!-- div
-        :if={!@current_user or
+        :if={!@current_user_id or
           (@without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)))}
         class="px-4 tablet-lg:px-0 mb-6 border-b border-base-content/10 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
       >
@@ -127,15 +127,16 @@ defmodule Bonfire.UI.Common.LayoutLive do
       <div class={
         "w-full px-0 md:px-4 grid max-w-[1260px] gap-0 md:gap-4 widget xl:px-0 mx-auto",
         "!grid-cols-1 content-start": @without_sidebar && @without_widgets,
-        # "grid-cols-1 !max-w-full": !@current_user,
-        "grid-cols-1 md:grid-cols-[280px_1fr] tablet-lg:grid-cols-[280px_1fr_320px]": !@current_user,
+        # "grid-cols-1 !max-w-full": !@current_user_id,
+        "grid-cols-1 md:grid-cols-[280px_1fr] tablet-lg:grid-cols-[280px_1fr_320px]": !@current_user_id,
         "grid-cols-1 md:grid-cols-1 content-start !max-w-full":
           @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)),
-        "grid-cols-1 md:grid-cols-[280px_1fr]": @current_user && @without_widgets && !@without_sidebar,
+        "grid-cols-1 md:grid-cols-[280px_1fr]":
+          @current_user_id && @without_widgets && !@without_sidebar,
         "grid-cols-1 md:grid-cols-[280px_1fr] tablet-lg:grid-cols-[280px_1fr_320px] ":
-          @current_user && !@without_sidebar && !@without_widgets
+          @current_user_id && !@without_sidebar && !@without_widgets
       }>
-        <Bonfire.UI.Common.MobileMenuLive :if={@current_user} />
+        <Bonfire.UI.Common.MobileMenuLive :if={@current_user_id} />
         <div
           :if={!@without_sidebar}
           data-id="nav_sidebar"
@@ -150,7 +151,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           <Bonfire.UI.Common.PersistentLive
             id={:persistent}
             sticky
-            :if={@current_user}
+            :if={@current_user_id}
             session={%{
               "context" => %{
                 sticky: true,
@@ -163,7 +164,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           <nav
             class={
               "hidden w-full md:flex gap-4 flex-col overflow-y-auto pb-1 max-h-[calc(var(--inner-window-height)_-_150px)] min-h-[calc(var(--inner-window-height)_-_150px)]",
-              "mt-4": @current_user
+              "mt-4": @current_user_id
             }
             role="navigation"
             aria-label={l("Extension navigation")}
@@ -182,7 +183,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           class={
             "relative w-full max-w-[1280px] gap-2 md:gap-0 z-[99] col-span-1 ",
             "!max-w-full": @without_widgets,
-            "!max-w-full": !@current_user,
+            "!max-w-full": !@current_user_id,
             "mx-auto order-last": @without_sidebar
           }
         >
@@ -237,7 +238,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             data-id="right_nav_and_widgets"
             class="order-last hidden tablet-lg:block tablet-lg:sticky  w-auto tablet-lg:top-3 mt-3 self-start z-[998] tablet-lg:w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
           >
-            {#if not is_nil(current_user_id(@__context__))}
+            {#if not is_nil(@current_user_id)}
               <div class="w-full">
                 <Dynamic.Component
                   :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
@@ -256,19 +257,19 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
               <Dynamic.Component
                 :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__) and
-                  not is_nil(current_user(@__context__))}
+                  not is_nil(@current_user_id)}
                 module={Bonfire.UI.ValueFlows.ProcessesListLive}
                 process_url="/coordination/list"
                 title={l("Favourite milestones")}
               />
 
               <div
-                :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(current_user(@__context__))) or
-                  (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(current_user(@__context__)))}
+                :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(@current_user_id)) or
+                  (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(@current_user_id))}
                 class="flex flex-col gap-4"
               >
                 <Dynamic.Component
-                  :if={not is_nil(current_user(@__context__))}
+                  :if={not is_nil(@current_user_id)}
                   :for={{component, component_assigns} <-
                     List.wrap(
                       @sidebar_widgets[:users][:secondary] ||
@@ -282,7 +283,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 />
 
                 <Dynamic.Component
-                  :if={is_nil(current_user(@__context__))}
+                  :if={is_nil(@current_user_id)}
                   :for={{component, component_assigns} <-
                     List.wrap(
                       @sidebar_widgets[:guests][:secondary] ||
@@ -303,7 +304,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·
                   <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LiveRedirect> ·
                   <LiveRedirect
-                    :if={current_user(@__context__) || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+                    :if={@current_user_id || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
                     class="text-xs link-hover link text-base-content/70"
                     to="/users"
                   >{l("Users")}</LiveRedirect></div>

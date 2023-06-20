@@ -83,6 +83,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     opts =
       (maybe_from_json(e(params, "opts", nil)) ||
          e(socket.assigns, :smart_input_opts, []))
+      |> input_to_atoms()
       |> Enum.into(%{open: true})
       |> debug("opts")
 
