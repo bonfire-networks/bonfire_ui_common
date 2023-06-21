@@ -27,6 +27,23 @@
             </button>
           </div>
 
+          <div
+           :if={Config.get([:ui, :smart_input, :title], []) == true}
+            class="relative z-30 flex items-center"
+          >
+            <button 
+              type="button"
+              phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
+                "#thread_title_open",
+                ".btn_title_toggle",
+                "btn-active"
+              )}
+              class="flex items-center btn btn-ghost btn-sm btn-circle btn_title_toggle"
+            >
+              <#Icon iconify="solar:text-bold" class="w-5 h-5 text-primary/80" />
+            </button>
+          </div>
+
           <Dynamic.Component
             :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
             module={Bonfire.UI.Common.EmojiPickerLive}

@@ -807,7 +807,7 @@ em-emoji-picker {
 }
 
 .image_in_preview img {
-  width: 100%;
+  @apply !w-full !h-[240px] !object-cover !rounded;
 }
 
 #smart_input_container {
