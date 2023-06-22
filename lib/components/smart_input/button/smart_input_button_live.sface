@@ -21,7 +21,7 @@
     :if={@icon}
     icon={@icon}
     class={
-      "inline-block w-9 h-9 md:w-5 md:h-5",
+      "inline-block w-7 h-7 md:w-5 md:h-5",
       "!w-5 !h-5 md:w-5 md:h-5": @as_icon
     }
   />

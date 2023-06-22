@@ -1,4 +1,4 @@
-<div class="bottom-0 h-[60px] bg-base-300 flex fixed z-[998] btm-nav md:hidden">
+<div class="bottom-0 h-[60px] bg-base-300 flex fixed z-[998] btm-nav md:hidden border-t border-base-content/10">
   <LiveRedirect to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}>
     {#if @page == "feed"}
       <#Icon iconify="ri:home-fill" class="w-6 h-6" />
@@ -34,7 +34,7 @@
   <LiveRedirect :if={@current_user} to={path(@current_user)} class="">
     <Bonfire.UI.Common.AvatarLive
       parent_id="nav_footer_mobile"
-      class="inline-block object-cover w-10 h-10 rounded-full bg-base-content/5 cursor-pointer md:hidden"
+      class="inline-block object-cover w-8 h-8 rounded-full bg-base-content/5 cursor-pointer md:hidden"
       bg_class="rounded-full bg-base-300"
       size="32"
       user={@current_user}
