@@ -79,7 +79,7 @@
 
         <div
           class="hidden"
-          :if={Config.get([:ui, :smart_input, :title]) == true}
+                  :if={@enable_thread_title}
           id="smart_input_thread_title"
           phx-update={if @reset_smart_input, do: "replace", else: "ignore"}
         >
@@ -120,7 +120,7 @@
                 />
 
                 <div
-                  :if={Config.get([:ui, :smart_input, :title]) == true}
+                  :if={@enable_thread_title}
                   class="relative z-30 flex items-center"
                 >
                   <button

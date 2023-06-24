@@ -23,4 +23,11 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop boundaries_modal_id, :string, default: :sidebar_composer
 
   slot default
+
+  def render(assigns) do
+    assigns
+    |> assign(:enable_thread_title, !assigns[:reply_to_id] and Config.get([:ui, :smart_input, :title]) == true)
+    |> render_sface()
+  end
+
 end
