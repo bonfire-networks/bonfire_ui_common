@@ -21,7 +21,7 @@
           </span>
         {#else}
           <span class="">
-            <Iconify.Bonfire.LikeFire.render class="text-base-content/70 h-[20px] w-[18px]" />
+            <Iconify.Bonfire.LikeFire.render class="text-base-content/50 h-[20px] w-[18px]" />
           </span>
         {/if}
 

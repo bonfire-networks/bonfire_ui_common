@@ -17,7 +17,7 @@
         title={l("Boost this")}
       >
         <span class={"text-base-content/70", "text-opacity-100 text-info": @my_boost}>
-          <Iconify.Bonfire.Boost.render class={"h-5 w-5 fill-base-content/70", "fill-opacity-100 fill-info": @my_boost} />
+          <Iconify.Bonfire.Boost.render class={"h-5 w-5 fill-base-content/50", "fill-opacity-100 fill-info": @my_boost} />
         </span>
         <span class={"feed_activity_text sr-only", "font-medium": @my_boost}>
           {if @my_boost, do: l("Boosted"), else: l("Boost")}
