@@ -44,77 +44,74 @@
     <Bonfire.UI.Common.ComposerMinimizedLive />
     <!-- :if={@smart_input_as != :focused} -->
 
-      <div
-        phx-hook="ScreenSize"
-        id="smart_input_container"
-        class={
-          "smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full left-0 bg-base-200 mx-auto z-[9999] transition-all shadow-composer right-0 md:left-auto bottom-0",
-          "md:w-[40rem] !inset-0 md:!top-20 !h-auto md:!h-fit !shadow-2xl !rounded-2xl":
-            @smart_input_as == :focused,
-          "md:w-[36rem] md:right-4 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto":
-            @smart_input_as != :focused,
-          hidden: e(@smart_input_opts, :open, nil) != true
-        }
-        style="bottom: 0"
-        >
-        <div class="w-full rounded--t-lg bg-gradient-to-t from-transparent to-base-content/40 p-[0.05rem]">
-
+    <div
+      phx-hook="ScreenSize"
+      id="smart_input_container"
+      class={
+        "smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full left-0 bg-base-200 mx-auto z-[9999] transition-all shadow-composer right-0 md:left-auto bottom-0",
+        "md:w-[40rem] !inset-0 md:!top-20 !h-auto md:!h-fit !shadow-2xl !rounded-2xl":
+          @smart_input_as == :focused,
+        "md:w-[36rem] md:right-4 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto":
+          @smart_input_as != :focused,
+        hidden: e(@smart_input_opts, :open, nil) != true
+      }
+      style="bottom: 0"
+    >
+      <div class="w-full rounded--t-lg bg-gradient-to-t from-transparent to-base-content/40 p-[0.05rem]">
         <div class="w-full rounded-t-lg bg-base-200">
-        <!-- "md:!w-[20rem] tablet-lg:block bottom-0": e(@smart_input_opts, :minimized, nil) == true, -->
+          <!-- "md:!w-[20rem] tablet-lg:block bottom-0": e(@smart_input_opts, :minimized, nil) == true, -->
 
-        <div
-          :if={@smart_input_as == :focused}
-          phx-click={LiveHandler.close_smart_input()}
-          phx-target="#smart_input"
-          class={
-            "smart_input_backdrop fixed inset-0 cursor-pointer bg-base-300/20 backdrop-blur",
-            hidden: e(@smart_input_opts, :open, nil) == false
-          }
-          style="-webkit-backdrop-filter: blur(8px);"
-        />
-
-        <div class={
-          "smart_input_modal relative z-50 md:border md:rounded-lg border-base-content/5",
-          "!rounded-b-none": @smart_input_as == :non_blocking
-          }>
-          <Bonfire.UI.Common.SmartInputHeaderModalLive
-            smart_input_opts={@smart_input_opts}
-            smart_input_as={@smart_input_as}
-          />
           <div
-            x-ref="smart_input"
+            :if={@smart_input_as == :focused}
+            phx-click={LiveHandler.close_smart_input()}
+            phx-target="#smart_input"
             class={
-              "flex-1 h-full grow relative z-[9999999999]",
-              "max-h-[calc(100vh-52px)] md:max-h-[calc(100vh-5rem-52px)] overflow-x-auto":
-                @smart_input_as == :focused
+              "smart_input_backdrop fixed inset-0 cursor-pointer bg-base-300/20 backdrop-blur",
+              hidden: e(@smart_input_opts, :open, nil) == false
             }
-          >
-            <SmartInputLive
-              boundaries_modal_id={:modal_composer}
-              showing_within={@showing_within}
-              reply_to_id={@reply_to_id}
-              context_id={@context_id}
-              smart_input_component={@smart_input_component}
-              create_object_type={@create_object_type}
-              open_boundaries={@open_boundaries}
-              to_boundaries={boundaries_or_default(@to_boundaries)}
-              to_circles={@to_circles}
-              mentions={@mentions}
+            style="-webkit-backdrop-filter: blur(8px);"
+          />
+
+          <div class={
+            "smart_input_modal relative z-50 md:border md:rounded-lg border-base-content/5",
+            "!rounded-b-none": @smart_input_as == :non_blocking
+          }>
+            <Bonfire.UI.Common.SmartInputHeaderModalLive
               smart_input_opts={@smart_input_opts}
-              activity={@activity}
-              object={@object}
-              uploads={@uploads}
-              uploaded_files={@uploaded_files}
-              trigger_submit={@trigger_submit}
-              reset_smart_input={@reset_smart_input}
               smart_input_as={@smart_input_as}
-              activity_inception={@activity_inception}
             />
+            <div
+              x-ref="smart_input"
+              class={
+                "flex-1 h-full grow relative z-[9999999999]",
+                "max-h-[calc(100vh-52px)] md:max-h-[calc(100vh-5rem-52px)] overflow-x-auto":
+                  @smart_input_as == :focused
+              }
+            >
+              <SmartInputLive
+                boundaries_modal_id={:modal_composer}
+                showing_within={@showing_within}
+                reply_to_id={@reply_to_id}
+                context_id={@context_id}
+                smart_input_component={@smart_input_component}
+                create_object_type={@create_object_type}
+                open_boundaries={@open_boundaries}
+                to_boundaries={boundaries_or_default(@to_boundaries)}
+                to_circles={@to_circles}
+                mentions={@mentions}
+                smart_input_opts={@smart_input_opts}
+                activity={@activity}
+                object={@object}
+                uploads={@uploads}
+                uploaded_files={@uploaded_files}
+                trigger_submit={@trigger_submit}
+                reset_smart_input={@reset_smart_input}
+                smart_input_as={@smart_input_as}
+                activity_inception={@activity_inception}
+              />
+            </div>
           </div>
         </div>
-
-        </div>
-        
       </div>
     </div>
   </div>

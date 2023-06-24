@@ -19,5 +19,8 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop submit_label, :string, default: nil
   prop open_boundaries, :boolean, default: false
   prop show_select_recipients, :boolean, default: false
+  prop reset_smart_input, :boolean, default: false
   prop boundaries_modal_id, :string, default: :sidebar_composer
+
+  slot default
 end
