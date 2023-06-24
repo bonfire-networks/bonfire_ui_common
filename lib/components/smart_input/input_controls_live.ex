@@ -26,8 +26,10 @@ defmodule Bonfire.UI.Common.InputControlsLive do
 
   def render(assigns) do
     assigns
-    |> assign(:enable_thread_title, !assigns[:reply_to_id] and Config.get([:ui, :smart_input, :title]) == true)
+    |> assign(
+      :enable_thread_title,
+      !assigns[:reply_to_id] and Config.get([:ui, :smart_input, :title]) == true
+    )
     |> render_sface()
   end
-
 end
