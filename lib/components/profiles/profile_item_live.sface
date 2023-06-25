@@ -12,7 +12,9 @@
       user={@profile}
       class={@avatar_class || "w-8 h-8"}
     />
-    <div class={
+    <div 
+      :if={@only_img != true}
+      class={
       "flex-1",
       "flex gap-1 items-baseline": @inline
     }>

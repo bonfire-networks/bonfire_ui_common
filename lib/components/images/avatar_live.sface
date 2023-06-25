@@ -47,6 +47,7 @@
             {#else}
               <div class={@bg_class}>
                 <div
+                  alt={@alt}
                   class={@class, "iconify"}
                   iconify="material-symbols:person-2-rounded"
                   title={@title}
