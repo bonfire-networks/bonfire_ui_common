@@ -18,6 +18,6 @@
           (is_nil(@selected_tab) and i == 0)
     ])}
   >
-    {localise_dynamic(tab_name)}
+    <div class={@item_class}>{localise_dynamic(tab_name)}</div>
   </Dynamic.Component>
 </nav>

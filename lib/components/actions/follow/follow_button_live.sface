@@ -1,5 +1,5 @@
 {#if @my_follow == nil}
-  <button disabled class="normal-case rounded btn btn-disabled btn-sm">{l("loading...")}</button>
+  <button disabled class="normal-case rounded-full btn btn-disabled btn-sm">{l("loading...")}</button>
 {#elseif !@my_follow}
   <a
     :if={!@my_follow}
@@ -11,7 +11,7 @@
     rel="noopener noreferrer"
     phx-disable-with={l("loading...")}
     phx-value-id={@object_id}
-    class={e(@class, "btn btn-sm btn-primary rounded border-base-content/40 normal-case")}
+    class={e(@class, "btn btn-sm btn-primary rounded-full border-base-content/40 normal-case")}
   >
     <div id={@id} class="flex items-center gap-2">
       <#Icon solid="UserAdd" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
@@ -29,7 +29,7 @@
     :on-click="Bonfire.Social.Follows:unfollow"
     phx-value-id={@object_id}
     :class={"{ '!btn-error': text == '#{l("Cancel")}' }"}
-    class={e(@class, "btn btn-sm btn-outline rounded !border-base-content/40 normal-case")}
+    class={e(@class, "btn btn-sm btn-outline rounded-full !border-base-content/40 normal-case")}
   >
     <#Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
 
@@ -48,7 +48,7 @@
     :on-click="Bonfire.Social.Follows:unfollow"
     phx-value-id={@object_id}
     :class={"{ '!btn-error': text == '#{@verb_undo || l("Unfollow")}' }"}
-    class={e(@class, "btn btn-sm btn-outline rounded !border-base-content/40 normal-case")}
+    class={e(@class, "btn btn-sm btn-outline rounded-full !border-base-content/40 normal-case")}
   >
     <div id={@id} class="flex items-center gap-2">
       <#Icon solid="UserRemove" :if={!@hide_icon} class={e(@icon_class, "w-4 h-4 shrink-0")} />
