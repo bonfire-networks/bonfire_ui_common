@@ -1,4 +1,4 @@
-<div class="bottom-0 h-[60px] bg-base-300 flex fixed z-[998] btm-nav md:hidden border-t border-base-content/10">
+<div class="bottom-0 h-[60px] bg-base-300 flex fixed z-[998] btm-nav md:hidden border-t border-base-content/20">
   <LiveRedirect to={path(Config.get(:user_home_page, Bonfire.UI.Social.FeedsLive))}>
     {#if @page == "feed"}
       <#Icon iconify="ri:home-fill" class="w-6 h-6" />

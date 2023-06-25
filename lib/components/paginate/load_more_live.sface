@@ -9,7 +9,7 @@
   phx-target={@target}
   phx-value-context={@context}
   phx-value-after={unwrap(e(@page_info, :end_cursor, ""))}
-  class="flex items-center pt-3 my-3 border-t place-content-center border-base-content/10"
+  class="flex items-center pt-3 my-3 border-t place-content-center border-base-content/20"
   x-data={"{show: #{socket_connected?(@__context__)}}"}
 >
   <a

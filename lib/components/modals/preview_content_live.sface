@@ -3,7 +3,7 @@
   class={
     "#{@modal_class}",
     "invisible h-0": !@show,
-    "visible inset-0 widget border-l border-r border-base-content/10 z-[99999999999]": @show
+    "visible inset-0 widget border-l border-r border-base-content/20 z-[99999999999]": @show
   }
   {...@opts}
 >

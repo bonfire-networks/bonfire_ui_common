@@ -17,7 +17,7 @@
     >
       <div
         :if={is_map(@activity) || is_map(@reply_to_id)}
-        class="!rounded-none  relative border-b border-base-content/10 mb-2"
+        class="!rounded-none  relative border-b border-base-content/20 mb-2"
       >
         <!-- show what we're replying to, if any -->
         <Dynamic.Component
