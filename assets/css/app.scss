@@ -957,3 +957,6 @@ hex-input::part(input) {
   min-width: 0.5rem;
   min-height: 0.5rem;
 }
+
+.exdiff-del { color: red; text-decoration: line-through; }
+.exdiff-ins { color: green; }

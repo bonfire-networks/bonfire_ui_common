@@ -11,12 +11,13 @@
       user={@profile}
       class={@avatar_class || "w-8 h-8"}
     />
-    <div 
+    <div
       :if={@only_img != true}
       class={
-      "flex-1",
-      "flex gap-1 items-baseline": @inline
-    }>
+        "flex-1",
+        "flex gap-1 items-baseline": @inline
+      }
+    >
       <p class={"text-sm font-bold group-hover:underline text-base-content", "text-base": @lg}>
         {e(@profile, :name, "Anon")}
       </p>
