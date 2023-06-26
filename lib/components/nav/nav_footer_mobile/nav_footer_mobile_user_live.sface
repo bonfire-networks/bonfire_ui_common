@@ -31,7 +31,17 @@
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>
 
-  <LiveRedirect :if={@current_user} to={path(@current_user)} class="">
+ <LiveRedirect :if={@current_user} to={path(:messages)} class="">
+    {#if @page == "messages"}
+      <#Icon iconify="ri:mail-fill" class="w-6 h-6" />
+    {#else}
+      <#Icon iconify="ri:mail-line" class="w-6 h-6" />
+    {/if}
+    <span class="sr-only">{l("Direct Messages")}</span>
+  </LiveRedirect>
+
+
+  <!-- <LiveRedirect :if={@current_user} to={path(@current_user)} class="">
     <Bonfire.UI.Common.AvatarLive
       parent_id="nav_footer_mobile"
       class="inline-block object-cover w-8 h-8 rounded-full bg-base-content/5 cursor-pointer md:hidden"
@@ -40,7 +50,7 @@
       user={@current_user}
     />
     <span class="sr-only">{l("Your profile")}</span>
-  </LiveRedirect>
+  </LiveRedirect> -->
 
   <LiveRedirect :if={!@current_user} to="/about">
     <#Icon solid="DotsHorizontal" class="w-6 h-6" />

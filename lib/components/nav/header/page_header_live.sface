@@ -15,7 +15,13 @@
           x-on:click="open_sidebar = true"
           class="rounded md:hidden btn btn-sm btn-square btn-ghost"
         >
-          <#Icon iconify="gg:menu-left-alt" class="w-6 h-6" />
+          <Bonfire.UI.Common.AvatarLive
+            parent_id="nav_footer_mobile"
+            class="inline-block object-cover w-8 h-8 rounded-full bg-base-content/5 cursor-pointer md:hidden"
+            bg_class="rounded-full bg-base-300"
+            size="32"
+            user={@current_user}
+          />
         </button>
         <!-- <Iconify.iconify
           :if={@page_header_icon && !@back}
@@ -23,13 +29,26 @@
           class="hidden w-6 h-6 text-base-content md:block"
         /> -->
         <Bonfire.UI.Common.BackButtonLive :if={@back} back={@back} />
-        <div class="flex flex-col">
-          <span
-            class="first-letter:capitalize flex-1 text-lg font-semibold text-base-content"
-            :if={not is_nil(@page_title)}
-          >{@page_title}</span>
-          <div :if={@extra} class="text-xs text-base-content/80">{@extra}</div>
-        </div>
+        {#if !@back && @current_user}
+          <div class="flex md:hidden flex-col -ml-[32px] place-content-center items-center flex-1">
+            <Bonfire.UI.Common.LogoLinkLive />
+          </div>
+          <div class="hidden md:flex flex-col flex-1">
+            <span
+              class="first-letter:capitalize flex-1 text-lg font-semibold text-base-content"
+              :if={not is_nil(@page_title)}
+            >{@page_title}</span>
+            <div :if={@extra} class="text-xs text-base-content/80">{@extra}</div>
+          </div>
+        {#else}
+          <div class="flex flex-col flex-1">
+            <span
+              class="first-letter:capitalize flex-1 text-lg font-semibold text-base-content"
+              :if={not is_nil(@page_title)}
+            >{@page_title}</span>
+            <div :if={@extra} class="text-xs text-base-content/80">{@extra}</div>
+          </div>
+        {/if}
       </div>
 
       <div class="flex items-center w-auto">
