@@ -12,4 +12,5 @@ defmodule Bonfire.UI.Common.ProfileItemLive do
   prop avatar_class, :css_class, default: nil
   prop only_img, :boolean, default: false
   slot default, required: false
+  prop parent_id, :any, default: nil
 end
