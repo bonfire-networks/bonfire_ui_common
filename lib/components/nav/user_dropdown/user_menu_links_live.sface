@@ -110,6 +110,6 @@
     to={~p"/logout"}
     class="flex items-center gap-2 text-sm text-base-content/80"
   >
-    <div>{l("Sing out")}</div>
+    <div>{l("Sign out")}</div>
   </LiveRedirect>
 </li>
