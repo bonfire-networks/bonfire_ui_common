@@ -48,6 +48,7 @@
               </div>
 
               <div id="custom_boundaries" class="hidden flex px-2 mt-2 items-center gap-2">
+               <!-- #TODO this section should be a component in boundaries extension -->
                 {#for acl <-
                     Bonfire.Boundaries.Acls.list_my(current_user(@__context__))
                     |> Enum.map(fn
@@ -60,8 +61,7 @@
                         }
                     end)
                     |> Enum.filter(fn acl -> acl[:name] != nil end)
-
-                  # TODO: this section should be a component in boundaries extension}
+                  }
                   <button
                     type="button"
                     phx-click={JS.push("Bonfire.Boundaries:select_boundary",
