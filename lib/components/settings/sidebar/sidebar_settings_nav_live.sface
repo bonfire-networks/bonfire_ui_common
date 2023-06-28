@@ -163,6 +163,44 @@
       selected_tab={@selected_tab}
       scope={:user}
     />
+
+    <li>
+      <div class="p-0 mt-6 cursor-default hover:bg-base-300">
+        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Import & Export")}</span>
+      </div>
+    </li>
+    <li>
+      <LiveRedirect
+        to={~p"/settings/import"}
+        class={
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+          "bg-base-content/10 ": @selected_tab == "import"
+        }
+      >
+        <#Icon
+          iconify="pajamas:import"
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "import"}
+        />
+        <span class="text-sm text-base-content/70">{l("Import")}</span>
+      </LiveRedirect>
+    </li>
+     <li>
+      <LiveRedirect
+        to={~p"/settings/export"}
+        class={
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+          "bg-base-content/10 ": @selected_tab == "export"
+        }
+      >
+        <#Icon
+          iconify="pajamas:export"
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "export"}
+        />
+        <span class="text-sm text-base-content/70">{l("export")}</span>
+      </LiveRedirect>
+    </li>
+
+
     <li>
       <div class="p-0 mt-6 cursor-default hover:bg-base-300">
         <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Advanced")}</span>
