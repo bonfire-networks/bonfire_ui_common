@@ -196,7 +196,7 @@
           iconify="pajamas:export"
           class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "export"}
         />
-        <span class="text-sm text-base-content/70">{l("export")}</span>
+        <span class="text-sm text-base-content/70">{l("Export")}</span>
       </LiveRedirect>
     </li>
 

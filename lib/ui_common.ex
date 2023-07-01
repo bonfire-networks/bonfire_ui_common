@@ -1029,6 +1029,9 @@ defmodule Bonfire.UI.Common do
         fun
       ) do
     Phoenix.LiveView.consume_uploaded_entry(socket, key, fun)
+  rescue
+    error in ArgumentError ->
+      error(error, "Did not upload")
   end
 
   def maybe_consume_uploaded_entry(_conn, key, _fun) do
