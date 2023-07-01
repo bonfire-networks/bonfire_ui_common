@@ -58,8 +58,15 @@ hex-color-picker {
   @apply bg-primary;
 }
 
-.minimal_subject_and_note p {
+.p_line_clamp p {
   @apply line-clamp-1
+}
+
+.previewable_activity .previewable_truncate {
+  @apply line-clamp-6
+}
+.previewable_activity.previewable_expanded .previewable_truncate {
+  @apply line-clamp-none
 }
 
 .-secondary li a {

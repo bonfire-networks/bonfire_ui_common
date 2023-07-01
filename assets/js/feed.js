@@ -1,14 +1,29 @@
 let FeedHooks = {};
 
 FeedHooks.PreviewActivity = {
+  isTruncated(element) {
+    if (element && (element.offsetHeight < element.scrollHeight ||
+      element.offsetWidth < element.scrollWidth)) {
+      console.log("element has an overflow, ie. truncated with CSS line-clamp")
+      return true
+    } else {
+      console.log("element is not truncated")
+      return false
+    }
+  },
   mounted() {
     this.el.addEventListener("click", e => {
       console.log("PreviewActivity clicked")
 
       let trigger = this.el.querySelector('.open_preview_link')
-      let a = e.target.closest('a')
-      // console.log(a)
-      if (a == trigger || (e.target.closest('.note') && !a && !e.ctrlKey && !e.metaKey && !window.getSelection().toString() && !e.target.closest('button') && !e.target.closest('.dropdown'))) {
+      let anchor = e.target.closest('a')
+      let previewable_activity = e.target.closest('.previewable_activity')
+
+      if (anchor == trigger || (previewable_activity && (
+        previewable_activity.classList.contains('previewable_expanded')
+        || this.isTruncated(previewable_activity.querySelector('.previewable_truncate')) == false
+        ) && !anchor && !e.ctrlKey && !e.metaKey && !window.getSelection().toString() && !e.target.closest('button') && !e.target.closest('.dropdown')
+      )) {
         let uri = this.el.dataset.href || (trigger !==undefined && trigger.getAttribute('href')) //this.el.dataset.permalink
         if (window.liveSocket) {
           e.preventDefault();
@@ -19,8 +34,7 @@ FeedHooks.PreviewActivity = {
           let previous_scroll = null
 
           if (trigger) {
-          // push event to load up the PreviewContent
-          console.log(trigger)
+            console.log("push event to load up the PreviewContent")
             this.pushEventTo(trigger, "open", {})
           }
           // this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
@@ -36,6 +50,8 @@ FeedHooks.PreviewActivity = {
             main.classList.add("hidden")
           }
           if (uri) {
+            // console.log(uri)
+
             history.pushState(
               {
                 'previous_url': document.location.href,
@@ -49,6 +65,7 @@ FeedHooks.PreviewActivity = {
           // fallback if not connected with live socket
             
           if (uri) {
+            console.log(uri)
             e.preventDefault();
             window.location = uri;
           } else {
@@ -59,7 +76,10 @@ FeedHooks.PreviewActivity = {
     } else {
 
       // e.preventDefault();
-      console.log("PreviewActivity: ignore in favour of another link or button's action (or opening in new tab)")
+        console.log("PreviewActivity: ignore in favour of another link or button's action (or opening in new tab)")
+        
+        if (previewable_activity) { previewable_activity.classList.add("previewable_expanded") }
+      
 
       return;
 
