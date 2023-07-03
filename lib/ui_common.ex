@@ -762,6 +762,14 @@ defmodule Bonfire.UI.Common do
           cs
         )
 
+      %Ecto.ConstraintError{} = cs ->
+        live_exception(
+          socket,
+          return_key,
+          db_error() <> ": #{Errors.error_msg(cs)}",
+          nil
+        )
+
       %{__struct__: struct} = act when struct == Bonfire.Epics.Act ->
         live_exception(
           socket,
