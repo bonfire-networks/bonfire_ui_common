@@ -126,6 +126,8 @@ defmodule Bonfire.UI.Common.Web do
       use Phoenix.LiveComponent, unquote(opts)
 
       unquote(live_view_helpers())
+
+      # unquote(source_inspector())
     end
   end
 
@@ -135,6 +137,8 @@ defmodule Bonfire.UI.Common.Web do
       use Phoenix.Component, unquote(opts)
 
       unquote(live_view_helpers())
+
+      # unquote(source_inspector())
     end
   end
 
@@ -146,6 +150,14 @@ defmodule Bonfire.UI.Common.Web do
       alias Phoenix.LiveView.JS
 
       unquote(view_helpers())
+    end
+  end
+
+  def source_inspector() do
+    quote do
+      require SourceInspector
+      # mark the component as inspectable
+      SourceInspector.debuggable()
     end
   end
 
@@ -323,6 +335,12 @@ defmodule Bonfire.UI.Common.Web do
     defp surface_component_helpers do
       quote do
         unquote(surface_helpers())
+
+        require SourceInspector
+        alias Bonfire.UI.Common.Web
+        import Bonfire.UI.Common.Testing.Inspector
+
+        prop source_inspector_attrs, :map, default: %{}
       end
     end
 
