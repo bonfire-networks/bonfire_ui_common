@@ -9,7 +9,7 @@
   </div>
   <div class="px-6 mt-4 text-center text-base-content">
     <#slot {@empty_feed}>
-      <div class="text-lg font-semibold">{e(
+      <div class="text-lg font-semibold capitalise">{e(
           @feedback_title,
           if(@feed_name,
             do: l("%{feed_name} feed is empty", feed_name: @feed_name),
