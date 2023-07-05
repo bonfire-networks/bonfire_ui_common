@@ -164,11 +164,11 @@
                 />
               </div>
 
-              <Dynamic.Component
+              <!-- <Dynamic.Component
                 :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesPresetDescriptionLive, @__context__)}
                 module={Bonfire.Boundaries.Web.BoundariesPresetDescriptionLive}
                 to_boundaries={@to_boundaries}
-              />
+              /> -->
 
               <!-- <div class="text-xs text-base-content/70">
           <span
@@ -247,6 +247,14 @@
       </div>
     </div>
   </div>
+
+  <!-- BOUNDARIES PICKER -->
+  <div class="hidden" id="boundaries_picker">
+    <div class="flex flex-col h-full overflow-hidden">
+        <Bonfire.Boundaries.Web.BoundariesGeneralAccessLive preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)} />
+      </div>
+  </div>
+  <!-- EXTRA BOUNDARIES -->
   <div class="hidden" id="extra_boundaries">
     <div class="flex flex-col h-full overflow-hidden">
       <Dynamic.Component

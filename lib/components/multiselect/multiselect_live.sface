@@ -7,7 +7,8 @@
         phx-target={@event_target}
         options={@preloaded_options || []}
         placeholder={@label}
-        dropdown_class="cursor-pointer absolute top-12 p-2 z-50 dropdown-content menu shadow w-full bg-base-300 shadow-lg text-base-contentrounded"
+        option_class="rounded-box px-4 py-2"
+        dropdown_class="cursor-pointer absolute top-12 p-2 z-50 dropdown-content menu mrnu-lg shadow w-full bg-base-300 shadow-lg text-base-content rounded-box"
         container_class="w-full"
         text_input_class={@class}
         update_min_len={2}
