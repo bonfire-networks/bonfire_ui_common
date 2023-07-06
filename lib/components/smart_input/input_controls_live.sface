@@ -251,8 +251,12 @@
   <!-- BOUNDARIES PICKER -->
   <div class="hidden" id="boundaries_picker">
     <div class="flex flex-col h-full overflow-hidden">
-        <Bonfire.Boundaries.Web.BoundariesGeneralAccessLive preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)} />
-      </div>
+      <Dynamic.Component
+        :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesGeneralAccessLive)}
+        module={Bonfire.Boundaries.Web.BoundariesGeneralAccessLive}
+        preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)}
+      />
+    </div>
   </div>
   <!-- EXTRA BOUNDARIES -->
   <div class="hidden" id="extra_boundaries">
