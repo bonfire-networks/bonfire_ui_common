@@ -257,7 +257,12 @@
       <#Icon iconify="ri:arrow-left-line" class="w-5 h-5" />
       <span>{l "Back"}</span>
     </button>
-    <Bonfire.Boundaries.Web.RolesLive id="roles_in_composer" scope={:composer}/>
+    <Dynamic.LiveComponent
+      :if={module_enabled?(Bonfire.Boundaries.Web.RolesLive)}
+      module={Bonfire.Boundaries.Web.RolesLive}
+      id="roles_in_composer"
+      scope={:composer}
+    />
   </div>
   <!-- BOUNDARIES PICKER -->
   <div class="hidden" id="boundaries_picker">
