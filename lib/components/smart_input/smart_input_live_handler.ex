@@ -13,12 +13,20 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def open(js \\ %JS{}, opts \\ nil) do
     js
+    |> JS.hide(to: "#extra_boundaries")
+    |> JS.hide(to: "#boundaries_picker")
+    |> JS.hide(to: "#roles_detail")
+    |> JS.show(to: "#compose_content_wrapper")
     |> maximize()
     |> maybe_push_opts("select_smart_input", opts)
   end
 
   def open_type(js \\ %JS{}, component, create_object_type, opts \\ nil) do
     js
+    |> JS.hide(to: "#extra_boundaries")
+    |> JS.hide(to: "#boundaries_picker")
+    |> JS.hide(to: "#roles_detail")
+    |> JS.show(to: "#compose_content_wrapper")
     |> maximize()
     |> JS.show(to: ".smart_input_show_on_open")
     |> JS.push("select_smart_input",

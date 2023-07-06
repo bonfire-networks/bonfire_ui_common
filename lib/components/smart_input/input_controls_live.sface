@@ -248,6 +248,17 @@
     </div>
   </div>
 
+  <!-- ROLES DETAIL -->
+  <div class="hidden" id="roles_detail">
+    <button   
+      phx-click={JS.toggle(to: "#roles_detail") |> JS.toggle(to: "#extra_boundaries")}
+      type="button"
+      class="btn mt-2 btn-outline rounded-full ml-4 btn-primary normal-case">
+      <#Icon iconify="ri:arrow-left-line" class="w-5 h-5" />
+      <span>{l "Back"}</span>
+    </button>
+    <Bonfire.Boundaries.Web.RolesLive id="roles_in_composer" scope={:composer}/>
+  </div>
   <!-- BOUNDARIES PICKER -->
   <div class="hidden" id="boundaries_picker">
     <div class="flex flex-col h-full overflow-hidden">
