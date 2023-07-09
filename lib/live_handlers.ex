@@ -153,8 +153,22 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   # global event handler to set assigns of a view or component
   defp do_handle_event("assign", attrs, socket) do
-    debug(attrs, "LiveHandler: simple assign")
-    {:noreply, assign_global(socket, attrs)}
+    {:noreply,
+     attrs
+     |> Map.drop(["input_to_atoms", "assign_global", "send_self"])
+     |> (fn assigns ->
+           if attrs["input_to_atoms"] == "true",
+             do: input_to_atoms(assigns, true, true),
+             else: assigns
+         end).()
+     |> debug("LiveHandler: simple assign")
+     |> (fn assigns ->
+           if attrs["send_self"] == "true", do: send_self(assigns)
+
+           if attrs["assign_global"] == "true",
+             do: assign_global(socket, assigns),
+             else: assign_generic(socket, assigns)
+         end).()}
   end
 
   # helper for when a searches for an option in `LiveSelect`

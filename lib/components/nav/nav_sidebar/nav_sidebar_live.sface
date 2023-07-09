@@ -7,11 +7,21 @@
         nav_items={@nav_items}
       />
 
-      <!-- Add the groups sidebar if the module is available NOTE: use extensions nav instead -->
+      <!-- Add the groups sidebar if the module is available NOTE: should use extensions nav instead -->
       <!-- <Dynamic.LiveComponent
         :if={module_enabled?(Bonfire.UI.Groups.SidebarGroupsLive)}
         module={Bonfire.UI.Groups.SidebarGroupsLive}
       /> -->
+      {#if is_list(@sidebar_widgets[:users][:main])}
+        <nav class="w-full mx-2">
+          <Dynamic.Component
+            :if={not is_nil(current_user_id(@__context__))}
+            :for={{component, component_assigns} <- @sidebar_widgets[:users][:main]}
+            module={component}
+            {...component_assigns}
+          />
+        </nav>
+      {/if}
     </div>
 
     <div class="sticky bottom-0 flex items-center justify-between pt-4 bg-base-300 border-base-content/20">
@@ -119,16 +129,5 @@
         >{l("Sign up")}</LiveRedirect>
       {/if}
     </div>
-  {/if}
-
-  {#if is_list(@sidebar_widgets[:users][:main])}
-    <nav class="w-full mx-2">
-      <Dynamic.Component
-        :if={not is_nil(current_user_id(@__context__))}
-        :for={{component, component_assigns} <- @sidebar_widgets[:users][:main]}
-        module={component}
-        {...component_assigns}
-      />
-    </nav>
   {/if}
 </div>
