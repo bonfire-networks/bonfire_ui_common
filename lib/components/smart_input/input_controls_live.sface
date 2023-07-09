@@ -250,12 +250,13 @@
 
   <!-- ROLES DETAIL -->
   <div class="hidden" id="roles_detail">
-    <button   
+    <button
       phx-click={JS.toggle(to: "#roles_detail") |> JS.toggle(to: "#extra_boundaries")}
       type="button"
-      class="btn mt-2 btn-outline rounded-full ml-4 btn-primary normal-case">
+      class="btn mt-2 btn-outline rounded-full ml-4 btn-primary normal-case"
+    >
       <#Icon iconify="ri:arrow-left-line" class="w-5 h-5" />
-      <span>{l "Back"}</span>
+      <span>{l("Back")}</span>
     </button>
     <Dynamic.LiveComponent
       :if={module_enabled?(Bonfire.Boundaries.Web.RolesLive)}

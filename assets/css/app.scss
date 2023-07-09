@@ -163,7 +163,10 @@ body {
   @apply !px-4;
 }
 
-.active-activity:after {
+.active-activity, .activity:target, div.reply:target { 
+  @apply bg-primary/10;
+}
+/* .active-activity::after, div.activity:target::after, div.reply:target::after {
   position: absolute;
   z-index: -1;
   content: "";
@@ -173,10 +176,10 @@ body {
   bottom: -10px;
   @apply bg-primary/5;
 }
-.replies .active-activity:after {
+.replies .active-activity::after, .replies div.activity:target::after, div.reply:target::after {
   left: auto;
   right: 0px;
-}
+} */
 
 article.unread-activity {
   @apply border-l-2 border-primary !bg-primary/5;

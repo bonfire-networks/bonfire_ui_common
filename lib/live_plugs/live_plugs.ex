@@ -135,12 +135,12 @@ defmodule Bonfire.UI.Common.LivePlugs do
   end
 
   def assign_default_params(params, uri, socket) do
+    uri = URI.parse(uri)
+
     assign_global(
       socket,
       current_params: params,
-      current_url:
-        URI.parse(uri)
-        |> maybe_get(:path)
+      current_url: "#{uri.path}##{uri.fragment}"
     )
   end
 end

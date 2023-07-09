@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
   @moduledoc """
-  The classic **modal**
+  A special 'modal' for previewing objects from a feed without redirecting to a new view (so we can go back to where we were in the feed)
   """
 
   @doc "The title of the modal. Only used if no title slot is passed."
