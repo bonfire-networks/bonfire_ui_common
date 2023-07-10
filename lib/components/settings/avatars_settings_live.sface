@@ -1,22 +1,15 @@
-<div class="p-4">
-  <div class="flex items-center justify-between">
-    <div class="flex flex-col gap-1">
-      <div class="text-sm font-bold">{l("Default avatars")}</div>
-      <div class="text-sm font-light text-base-content/70">{l("Show randomly-generated animal avatars for users without a profile picture")}</div>
-    </div>
-    <input name="scope" value={@scope} type="hidden">
-    <input name="Bonfire.UI.Common.AvatarLive[animal_avatars]" value="false" type="hidden">
-    <input
-      name="Bonfire.UI.Common.AvatarLive[animal_avatars]"
-      value="true"
-      type="checkbox"
-      checked={if Bonfire.Me.Settings.get(
-           [Bonfire.UI.Common.AvatarLive, :animal_avatars],
-           true,
-           @scope || @__context__
-         ),
-         do: "checked"}
-      class="toggle"
-    />
-  </div>
-</div>
+<Bonfire.UI.Common.SettingsToggleLive
+  name={l("Avatars")}
+  description={l("Hide avatars throughout the app?")}
+  keys={[Bonfire.UI.Common.AvatarLive, :hide_avatars]}
+  default_value={false}
+  scope={@scope}
+/>
+
+<!-- name={l("Missing avatars")} -->
+<Bonfire.UI.Common.SettingsToggleLive
+  description={l("Show randomly-generated animal avatars for users without a profile picture?")}
+  keys={[Bonfire.UI.Common.AvatarLive, :animal_avatars]}
+  default_value
+  scope={@scope}
+/>

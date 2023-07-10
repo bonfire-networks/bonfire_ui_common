@@ -12,7 +12,8 @@
         )}</span>
     {#else}
       <input name="scope" value={@scope} type="hidden">
-      <NumberInput
+      <input
+        type="number"
         name={@field_key}
         value={Bonfire.Me.Settings.get(
           @settings_key,

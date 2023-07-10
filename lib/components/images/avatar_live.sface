@@ -1,4 +1,7 @@
-<div class="border-0 avatar !flex">
+<div
+  class="border-0 avatar !flex"
+  :if={!Settings.get([Bonfire.UI.Common.AvatarLive, :hide_avatars], false, @__context__)}
+>
   <div class={classes(%{viewing_main_object: @viewing_main_object, comment: @comment, class: @class})}>
     {#case @avatar_fallback || Media.avatar_fallback()}
       {#match avatar_fallback}
@@ -9,7 +12,8 @@
                 parent_id={@parent_id}
                 media={Media.avatar_media(@user)}
                 src={url}
-                alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
+                alt={@title || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
+                  e(@user, :name, nil) ||
                   e(@user, :username, nil) ||
                   l("Avatar")}
                 fallback_icon={Icon.icon_name("material-symbols:person-2-rounded")}
@@ -47,7 +51,6 @@
             {#else}
               <div class={@bg_class}>
                 <div
-                  alt={@alt}
                   class={@class, "iconify"}
                   iconify="material-symbols:person-2-rounded"
                   title={@title}
