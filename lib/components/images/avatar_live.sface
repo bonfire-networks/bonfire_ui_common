@@ -51,7 +51,7 @@
             {#else}
               <div class={@bg_class}>
                 <div
-                  class={@class, "iconify"}
+                  class={@class, "iconify -mt-0 md:-mt-0"}
                   iconify="material-symbols:person-2-rounded"
                   title={@title}
                   {...@opts}
