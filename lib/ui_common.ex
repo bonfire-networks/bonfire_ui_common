@@ -1241,18 +1241,27 @@ defmodule Bonfire.UI.Common do
   end
 
   @doc """
-  Inserts items or updates existing items in the stream.
+  Inserts onr or many items in an existing stream.
   See `Phoenix.LiveView.stream_insert/4` for opts.
   """
-  def stream_insert_many(socket, name, items, opts \\ [])
-
-  def stream_insert_many(%{assigns: %{streams: _}} = socket, name, items, opts) do
-    Enum.reduce(items, socket, fn item, acc ->
-      Phoenix.LiveView.stream_insert(acc, name, item, opts)
+  def maybe_stream_insert(%{assigns: %{streams: _}} = socket, name, items, opts)
+      when is_list(items) do
+    Enum.reduce(items, socket, fn item, socket ->
+      Phoenix.LiveView.stream_insert(socket, name, item, opts)
     end)
   end
 
-  def stream_insert_many(socket, name, items, opts) do
-    Phoenix.LiveView.stream(socket, name, items, opts)
+  def maybe_stream_insert(%{assigns: %{streams: _}} = socket, name, item, opts) do
+    Phoenix.LiveView.stream_insert(socket, name, item, opts)
+  end
+
+  def maybe_stream_insert(socket, name, items, _opts) do
+    error(
+      socket.assigns,
+      "Could not find stream '#{name}' to render data in. Will set as regular assign instead"
+    )
+
+    socket
+    |> assign_generic(name, items)
   end
 end
