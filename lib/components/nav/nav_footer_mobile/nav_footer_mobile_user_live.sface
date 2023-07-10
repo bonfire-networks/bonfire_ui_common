@@ -31,7 +31,7 @@
     <span class="sr-only">{l("Notifications")}</span>
   </LiveRedirect>
 
-  <LiveRedirect :if={@current_user} to={path(:messages)} class="">
+  <LiveRedirect :if={@current_user} to={path(Bonfire.Data.Social.Message)} class="">
     {#if @page == "messages"}
       <#Icon iconify="ri:mail-fill" class="w-6 h-6" />
     {#else}
