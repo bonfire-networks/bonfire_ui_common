@@ -24,8 +24,8 @@ defmodule Bonfire.UI.Common.LivePlugs do
              end
            end) do
         {:halt, socket} -> {:halt, socket}
-        {:cont, socket} -> {:cont, socket}
-        socket -> {:cont, socket}
+        {:cont, socket} -> mount_done(socket)
+        socket -> mount_done(socket)
       end
     end)
   end
@@ -35,7 +35,7 @@ defmodule Bonfire.UI.Common.LivePlugs do
       with {:cont, socket} <-
              init_mount(params, session, socket)
              |> maybe_apply(module, :on_mount, [:default, params, session, ...]) do
-        {:cont, socket}
+        mount_done(socket)
       end
     end)
   end
@@ -106,6 +106,15 @@ defmodule Bonfire.UI.Common.LivePlugs do
          socket_connected?: Phoenix.LiveView.connected?(socket)
        )}
     end
+  end
+
+  defp mount_done(socket) do
+    {:cont,
+     assign_global(
+       socket,
+       ui_compact: Settings.get([:ui, :compact], nil, socket.assigns)
+     )}
+    |> debug()
   end
 
   def send_persistent_assigns_after_render(socket) do
