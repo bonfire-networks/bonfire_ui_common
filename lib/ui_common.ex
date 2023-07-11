@@ -207,7 +207,7 @@ defmodule Bonfire.UI.Common do
           # debug("use MD")
 
           content
-          |> Text.maybe_markdown_to_html()
+          |> Text.maybe_markdown_to_html(Keyword.drop(opts, [:skip_markdown]))
         end
         # |> debug(content)
         # transform internal links to use LiveView navigation
@@ -1246,9 +1246,7 @@ defmodule Bonfire.UI.Common do
   """
   def maybe_stream_insert(%{assigns: %{streams: _}} = socket, name, items, opts)
       when is_list(items) do
-    Enum.reduce(items, socket, fn item, socket ->
-      Phoenix.LiveView.stream_insert(socket, name, item, opts)
-    end)
+    Phoenix.LiveView.stream(socket, name, items, opts)
   end
 
   def maybe_stream_insert(%{assigns: %{streams: _}} = socket, name, item, opts) do

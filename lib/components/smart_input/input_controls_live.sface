@@ -258,12 +258,13 @@
       <#Icon iconify="ri:arrow-left-line" class="w-5 h-5" />
       <span>{l("Back")}</span>
     </button>
-    <Dynamic.LiveComponent
+    <!-- FIXME: we should only load roles when clicked, rather than on every page load -->
+    <!-- <Dynamic.LiveComponent
       :if={module_enabled?(Bonfire.Boundaries.Web.RolesLive)}
       module={Bonfire.Boundaries.Web.RolesLive}
       id="roles_in_composer"
-      scope={:composer}
-    />
+      scope={:smart_input}
+    /> -->
   </div>
   <!-- BOUNDARIES PICKER -->
   <div class="hidden" id="boundaries_picker">
