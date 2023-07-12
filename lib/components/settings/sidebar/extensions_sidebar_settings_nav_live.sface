@@ -45,12 +45,12 @@
                     :if={!subnav[:exclude_from_nav] and subnav[:scope] == @scope}
                     widget={subnav}
                     page={@page}
-                    showing_within={@shwing_within}
+                    showing_within={@showing_within}
                     wrapper_class="w-full"
                     selected_tab={@selected_tab}
                     data={e(subnav, :props, [])}
                   />
-                {/if}o
+                {/if}
               </div>
             </li>
           {/if}
