@@ -28,6 +28,10 @@
 }
 
 
+.collapsed .subject {
+  @apply translate-x-6 transition-transform;
+}
+
 .badge.badge-lg {
   height: 2.25rem;
   padding-left: 1rem;
@@ -163,8 +167,14 @@ body {
   @apply !px-4;
 }
 
-.active-activity, .activity:target, div.reply:target { 
-  @apply bg-primary/10;
+.active-activity::after, .activity:target::after, div.reply:target::after { 
+  position: absolute;
+  z-index: -1;
+  content: "";
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  @apply border-r-2 border-primary;
 }
 /* .active-activity::after, div.activity:target::after, div.reply:target::after {
   position: absolute;

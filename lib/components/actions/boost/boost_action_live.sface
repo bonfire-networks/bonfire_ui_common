@@ -13,7 +13,7 @@
         phx-target={@myself}
         phx-value-id={@object_id}
         phx-value-component={__MODULE__}
-        class="rounded btn btn-ghost btn-square boost btn-sm"
+        class="btn btn-ghost btn-circle boost btn-sm"
         title={l("Boost this")}
       >
         <span class={"text-base-content/70", "text-opacity-100 text-info": @my_boost}>
@@ -29,7 +29,7 @@
       <button
         type="button"
         data-role="boost_disabled"
-        class="rounded cursor-not-allowed boost btn btn-square btn-ghost btn-sm"
+        class="cursor-not-allowed boost btn btn-circle btn-ghost btn-sm"
         title={l("You can't boost this activity")}
       >
         <span class="text-base-content text-opacity-20">

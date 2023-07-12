@@ -15,7 +15,7 @@
             />
           {#else}
             <div>
-              <div class="flex items-center px-2 gap-3 text-base md:text-sm text-base-content/80">
+              <div class="flex items-center px-2 gap-3 text-base md:text-sm text-base-content/70">
                 <!-- <Bonfire.UI.Common.AvatarLive
                       :if={is_map(current_user(@__context__))}
                       parent_id="nav_sidebar"
@@ -279,23 +279,25 @@
   <!-- EXTRA BOUNDARIES -->
   <div class="hidden" id="extra_boundaries">
     <div class="flex flex-col h-full overflow-hidden">
-      <Dynamic.Component
-        :if={@create_object_type != :message and
-          Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false and
-          module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
-        module={Bonfire.Boundaries.Web.SetBoundariesLive}
-        to_boundaries={@to_boundaries}
-        preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)}
-        to_circles={@to_circles}
-        open_boundaries={@open_boundaries}
-        showing_within={@showing_within}
-        create_object_type={@create_object_type}
-        boundaries_modal_id={@boundaries_modal_id}
-        context_id={@context_id}
-        hide_breakdown
-        setting_boundaries
-        click_override
-      />
+      <div class="flex w-full flex-1 h-full p-4">
+        <Dynamic.Component
+          :if={@create_object_type != :message and
+            Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false and
+            module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
+          module={Bonfire.Boundaries.Web.SetBoundariesLive}
+          to_boundaries={@to_boundaries}
+          preset_boundary={Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(@to_boundaries)}
+          to_circles={@to_circles}
+          open_boundaries={@open_boundaries}
+          showing_within={@showing_within}
+          create_object_type={@create_object_type}
+          boundaries_modal_id={@boundaries_modal_id}
+          context_id={@context_id}
+          hide_breakdown
+          setting_boundaries
+          click_override
+        />
+      </div>
     </div>
   </div>
 </div>

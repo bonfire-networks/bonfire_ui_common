@@ -32,7 +32,7 @@
           to="/settings"
           class={"btn btn-sm btn-ghost btn-circle", "btn-active": @selected_tab == "dashboard"}
         >
-          <#Icon iconify="ri:settings-4-line" class="w-5 h-5 shrink-0 text-base-content/80" />
+          <#Icon iconify="ri:settings-4-line" class="w-5 h-5 shrink-0 text-base-content/70" />
           <span class="sr-only">{l("Settings")}</span>
         </LiveRedirect>
         <LiveRedirect
@@ -40,7 +40,7 @@
           to="/settings/instance"
           class={"btn btn-sm btn-ghost btn-circle", "btn-active": @selected_tab == "instance_dashboard"}
         >
-          <#Icon iconify="ri:apps-2-line" class="w-5 h-5 shrink-0 text-base-content/80" />
+          <#Icon iconify="ri:apps-2-line" class="w-5 h-5 shrink-0 text-base-content/70" />
           <span class="sr-only">{l("Instance Settings")}</span>
         </LiveRedirect>
       </div>

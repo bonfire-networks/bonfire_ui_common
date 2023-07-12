@@ -12,7 +12,7 @@
         phx-value-id={@object_id}
         phx-value-component={__MODULE__}
         phx-value-current_count={e(@like_count, 0)}
-        class="rounded btn btn-ghost btn-square like like_with_label btn-sm"
+        class="btn btn-ghost btn-circle like like_with_label btn-sm"
         title={if @my_like, do: l("Un-like this"), else: l("Like this")}
       >
         {#if @my_like}
@@ -38,7 +38,7 @@
       <button
         type="button"
         data-role="like_disabled"
-        class="rounded cursor-not-allowed btn btn-ghost btn-square like like_with_label btn-sm"
+        class="cursor-not-allowed btn btn-ghost btn-circle like like_with_label btn-sm"
         title={l("You can't like this")}
       >
         <span class="text-base-content text-opacity-20">

@@ -31,7 +31,7 @@
   <div class="px-3 py-2 mb-1">
     <LiveRedirect
       to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
-      class="rounded-lg bg-base-100 flex items-center p-2 gap-3 text-sm text-base-content/80"
+      class="rounded-lg bg-base-100 flex items-center p-2 gap-3 text-sm text-base-content/70"
     >
       <Bonfire.UI.Common.AvatarLive
         :if={is_map(current_user(@__context__))}
@@ -52,7 +52,7 @@
   </div>
 </li>
 <li :if={!@mobile}>
-  <LiveRedirect to={~p"/switch-user"} class="flex items-center gap-2 text-sm text-base-content/80">
+  <LiveRedirect to={~p"/switch-user"} class="flex items-center gap-2 text-sm text-base-content/70">
     <!-- <#Icon
       :if={@mobile}
       iconify="material-symbols:switch-account"
@@ -66,7 +66,7 @@
     to={~p"/settings"}
     class={if @mobile,
       do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
-      else: "flex items-center gap-2 text-sm text-base-content/80"}
+      else: "flex items-center gap-2 text-sm text-base-content/70"}
   >
     <#Icon :if={@mobile} solid="Cog" class="w-6 h-6" />
     <div class={if @mobile, do: "text-[16px] font-medium", else: ""}>{l("Settings")}</div>
@@ -78,7 +78,7 @@
     to={~p"/settings/instance"}
     class={if @mobile,
       do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
-      else: "flex items-center gap-2 text-sm text-base-content/80"}
+      else: "flex items-center gap-2 text-sm text-base-content/70"}
   >
     <!-- <#Icon solid="Cog" class="w-4 h-4" /> -->
     <#Icon
@@ -101,14 +101,14 @@
     mobile={@mobile}
     class={if @mobile,
       do: "flex items-center w-full gap-6 px-2 py-2 pt-4 rounded-md",
-      else: "flex items-center gap-2 text-sm text-base-content/80"}
+      else: "flex items-center gap-2 text-sm text-base-content/70"}
   />
 </li> -->
 <li>
   <LiveRedirect
     :if={!@mobile}
     to={~p"/logout"}
-    class="flex items-center gap-2 text-sm text-base-content/80"
+    class="flex items-center gap-2 text-sm text-base-content/70"
   >
     <div>{l("Sign out")}</div>
   </LiveRedirect>
