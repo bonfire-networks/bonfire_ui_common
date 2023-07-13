@@ -380,6 +380,16 @@ defmodule Bonfire.UI.Common do
     )
   end
 
+  def maybe_send_update(_pid, component, id, _assigns)
+      when not is_nil(id) do
+    error(component, "expected a component module but got")
+  end
+
+  def maybe_send_update(_pid, component, id, _assigns)
+      when is_atom(component) do
+    error(id, "expected a component ID but got")
+  end
+
   def assigns_subscribe(%Phoenix.LiveView.Socket{} = socket, assign_names)
       when is_list(assign_names) or is_atom(assign_names) or
              is_binary(assign_names) do
