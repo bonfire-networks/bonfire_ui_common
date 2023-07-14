@@ -114,7 +114,8 @@ defmodule Bonfire.UI.Common.LivePlugs do
        socket,
        ui_compact: Settings.get([:ui, :compact], nil, socket.assigns)
      )}
-    |> debug()
+
+    # |> debug()
   end
 
   def send_persistent_assigns_after_render(socket) do
@@ -146,10 +147,14 @@ defmodule Bonfire.UI.Common.LivePlugs do
   def assign_default_params(params, uri, socket) do
     uri = URI.parse(uri)
 
-    assign_global(
-      socket,
+    socket
+    |> assign_global(
       current_params: params,
       current_url: "#{uri.path}##{uri.fragment}"
+    )
+    |> Iconify.maybe_set_favicon(
+      e(socket.assigns, :current_extension, :emoji, nil) ||
+        e(socket.assigns, :current_extension, :icon, nil)
     )
   end
 end
