@@ -803,6 +803,10 @@ defmodule Bonfire.UI.Common do
       msg when is_binary(msg) ->
         live_exception(socket, return_key, msg)
 
+      nil ->
+        IO.warn("Received nil instead of a socket")
+        live_exception(socket, return_key, l("Sorry, no answer was received"))
+
       ret ->
         live_exception(
           socket,
@@ -1148,23 +1152,6 @@ defmodule Bonfire.UI.Common do
 
       # |> Enum.reduce(user_data, fn m, acc -> apply(m, :create, acc) end)
     end
-  end
-
-  def boundaries_or_default(to_boundaries, opts \\ [])
-
-  def boundaries_or_default(to_boundaries, _opts)
-      when is_list(to_boundaries) and length(to_boundaries) > 0 do
-    to_boundaries
-  end
-
-  def boundaries_or_default(_, opts) do
-    default_boundaries(opts)
-  end
-
-  def default_boundaries(_opts \\ []) do
-    # default boundaries for new stuff
-    # TODO: make default user-configurable
-    [{"public", l("Public")}]
   end
 
   def the_object(assigns) do

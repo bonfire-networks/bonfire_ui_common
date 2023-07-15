@@ -96,8 +96,9 @@
                 smart_input_component={@smart_input_component}
                 create_object_type={@create_object_type}
                 open_boundaries={@open_boundaries}
-                to_boundaries={boundaries_or_default(@to_boundaries)}
+                to_boundaries={@to_boundaries}
                 to_circles={@to_circles}
+                exclude_circles={@exclude_circles}
                 mentions={@mentions}
                 smart_input_opts={@smart_input_opts}
                 activity={@activity}
@@ -109,6 +110,65 @@
                 smart_input_as={@smart_input_as}
                 activity_inception={@activity_inception}
               />
+
+              <form phx-change="select" phx-target={@myself}>
+                <!-- PRESET BOUNDARY PICKER -->
+                <div class="hidden" id="boundaries_picker">
+                  <div class="flex flex-col h-full overflow-hidden">
+                    <Dynamic.Component
+                      :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesGeneralAccessLive)}
+                      module={Bonfire.Boundaries.Web.BoundariesGeneralAccessLive}
+                      to_boundaries={@to_boundaries}
+                      preset_boundary={@preset_boundary}
+                    />
+                  </div>
+                </div>
+
+                <!-- CUSTOM BOUNDARIES -->
+                <div class="hidden" id="extra_boundaries">
+                  <div class="flex flex-col h-full overflow-hidden">
+                    <div class="flex w-full flex-1 h-full p-4">
+                      <Dynamic.Component
+                        :if={@create_object_type != :message and
+                          Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false and
+                          module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
+                        module={Bonfire.Boundaries.Web.SetBoundariesLive}
+                        to_boundaries={@to_boundaries}
+                        preset_boundary={@preset_boundary}
+                        to_circles={@to_circles}
+                        exclude_circles={@exclude_circles}
+                        open_boundaries={@open_boundaries}
+                        showing_within={@showing_within}
+                        create_object_type={@create_object_type}
+                        boundaries_modal_id={@boundaries_modal_id}
+                        context_id={@context_id}
+                        hide_breakdown
+                        setting_boundaries
+                        click_override
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ROLES DETAIL -->
+                <div class="hidden" id="roles_detail">
+                  <button
+                    phx-click={JS.toggle(to: "#roles_detail") |> JS.toggle(to: "#extra_boundaries")}
+                    type="button"
+                    class="btn mt-2 btn-outline rounded-full ml-4 btn-primary normal-case"
+                  >
+                    <#Icon iconify="ri:arrow-left-line" class="w-5 h-5" />
+                    <span>{l("Back")}</span>
+                  </button>
+                  <!-- FIXME: we should only load roles when clicked, rather than on every page load -->
+                  <Dynamic.LiveComponent
+                    :if={module_enabled?(Bonfire.Boundaries.Web.RolesLive)}
+                    module={Bonfire.Boundaries.Web.RolesLive}
+                    id="roles_in_composer"
+                    scope={:smart_input}
+                  />
+                </div>
+              </form>
             </div>
           </div>
         </div>

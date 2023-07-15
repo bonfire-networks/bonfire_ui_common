@@ -39,6 +39,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop smart_input_opts, :any, default: %{}
   prop create_object_type, :any, default: nil
   prop to_circles, :list, default: []
+  prop exclude_circles, :list, default: []
   prop to_boundaries, :any, default: nil
 
   def maybe_custom_theme(context) do

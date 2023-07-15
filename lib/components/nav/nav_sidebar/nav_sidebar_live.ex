@@ -14,6 +14,7 @@ defmodule Bonfire.UI.Common.NavSidebarLive do
   # prop smart_input_component, :atom, default: nil
   # prop to_boundaries, :any, default: nil
   # prop to_circles, :list, default: []
+  prop exclude_circles, :list, default: []
   # prop smart_input_opts, :map, default: %{}
   # prop showing_within, :atom, default: nil
   # prop activity, :any, default: nil

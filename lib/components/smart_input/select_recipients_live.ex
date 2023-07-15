@@ -5,6 +5,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
   prop preloaded_recipients, :list, default: nil
   prop to_boundaries, :any, default: nil
   prop to_circles, :list, default: []
+  prop exclude_circles, :list, default: []
   prop context_id, :string, default: nil
   prop showing_within, :atom, default: nil
   prop implementation, :any, default: :live_select

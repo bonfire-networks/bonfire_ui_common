@@ -10,6 +10,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop open_boundaries, :boolean, default: false
   prop to_boundaries, :any, default: nil
   prop to_circles, :list, default: []
+  prop exclude_circles, :list, default: []
   prop mentions, :list, default: []
   prop smart_input_opts, :map, default: %{}
   prop showing_within, :atom, default: nil
@@ -25,6 +26,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop page, :any, default: nil
   # prop without_sidebar, :string, default: nil
   prop reset_smart_input, :boolean, default: false
+  prop boundaries_modal_id, :string, default: :sidebar_composer
 
   def mount(socket),
     do:
@@ -55,7 +57,8 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
      |> assign_new(:smart_input_as, fn ->
        LiveHandler.set_smart_input_as(e(assigns, :__context__, nil) || current_user(assigns))
      end)
-     |> assign(:smart_input_opts, Map.merge(old_smart_input_opts, new_smart_input_opts))}
+     |> assign(smart_input_opts: Map.merge(old_smart_input_opts, new_smart_input_opts))
+     |> assign_boundaries()}
   end
 
   # def update(%{set_smart_input_text_if_empty: text} = assigns, %{assigns: %{smart_input_opts: smart_input_opts}} = socket) do
@@ -86,7 +89,25 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
      |> assign(assigns)
      |> assign_new(:smart_input_as, fn ->
        LiveHandler.set_smart_input_as(e(assigns, :__context__, nil) || current_user(assigns))
-     end)}
+     end)
+     |> assign_boundaries()}
+  end
+
+  def assign_boundaries({reply, socket}) do
+    {reply, socket |> assign_boundaries()}
+  end
+
+  def assign_boundaries(socket) do
+    to_boundaries =
+      Bonfire.Boundaries.boundaries_or_default(e(socket.assigns, :to_boundaries, nil))
+      |> debug()
+
+    socket
+    |> assign(
+      to_boundaries: to_boundaries,
+      preset_boundary:
+        Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(to_boundaries)
+    )
   end
 
   def handle_event(
@@ -102,6 +123,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
           __MODULE__,
           &LiveHandler.handle_event/3
         )
+        |> assign_boundaries()
 
   def handle_info(info, socket),
     do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)

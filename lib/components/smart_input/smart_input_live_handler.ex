@@ -11,23 +11,24 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     )
   end
 
-  def open(js \\ %JS{}, opts \\ nil) do
+  def show_main(js \\ %JS{}, _opts \\ nil) do
     js
     |> JS.hide(to: "#extra_boundaries")
     |> JS.hide(to: "#boundaries_picker")
     |> JS.hide(to: "#roles_detail")
     |> JS.show(to: "#compose_content_wrapper")
     |> maximize()
+  end
+
+  def open(js \\ %JS{}, opts \\ nil) do
+    js
+    |> show_main(opts)
     |> maybe_push_opts("select_smart_input", opts)
   end
 
   def open_type(js \\ %JS{}, component, create_object_type, opts \\ nil) do
     js
-    |> JS.hide(to: "#extra_boundaries")
-    |> JS.hide(to: "#boundaries_picker")
-    |> JS.hide(to: "#roles_detail")
-    |> JS.show(to: "#compose_content_wrapper")
-    |> maximize()
+    |> show_main(opts)
     |> JS.show(to: ".smart_input_show_on_open")
     |> JS.push("select_smart_input",
       value: %{
@@ -188,13 +189,26 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # end
   end
 
-  def handle_event("validate", params, socket) do
-    debug(params, "validate without body")
+  def handle_event("select", %{"to_circles" => to_circles} = _params, socket) do
+    debug(to_circles, "set_boundaries to_circles")
+
+    to_circles =
+      to_circles
+      |> Enum.map(fn
+        {circle, roles} ->
+          roles
+          |> Enum.map(&{circle, &1})
+      end)
+      |> List.flatten()
+      |> debug()
 
     {:noreply,
      socket
-     # to avoid un-reset the input
-     |> assign(reset_smart_input: false)}
+     |> assign(
+       to_circles: to_circles,
+       reset_smart_input: false
+       #  ^to avoid un-reset the input
+     )}
   end
 
   def handle_event("cancel-upload", %{"ref" => ref}, socket) do
@@ -203,6 +217,13 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def handle_event("reset", _params, socket) do
     {:noreply, reset_input(socket)}
+  end
+
+  def handle_event(_, params, socket) do
+    {:noreply,
+     socket
+     # to avoid un-reset the input
+     |> assign(reset_smart_input: false)}
   end
 
   defp maybe_push_opts(js \\ %JS{}, event, opts)
@@ -284,7 +305,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       activity: nil,
       to_circles: [],
       reply_to_id: e(socket.assigns, :thread_id, nil),
-      to_boundaries: default_boundaries(socket),
+      to_boundaries: Bonfire.Boundaries.default_boundaries(socket),
       smart_input_opts: %{
         open: false,
         text_suggestion: nil,
@@ -326,7 +347,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       to_circles: [],
       reply_to_id: e(socket.assigns, :thread_id, nil),
       thread_id: nil,
-      to_boundaries: default_boundaries(socket),
+      to_boundaries: Bonfire.Boundaries.default_boundaries(socket),
       smart_input_opts: %{
         open: false,
         text_suggestion: nil,

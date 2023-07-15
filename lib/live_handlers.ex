@@ -155,11 +155,11 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   defp do_handle_event("assign", attrs, socket) do
     {:noreply,
      attrs
-     |> Map.drop(["input_to_atoms", "assign_global", "send_self"])
+     |> Map.drop(["to_atoms", "assign_global", "send_self"])
      |> (fn assigns ->
-           if attrs["input_to_atoms"] == "true",
+           if attrs["to_atoms"] == "true",
              do: input_to_atoms(assigns, true, true),
-             else: assigns
+             else: input_to_atoms(assigns, true, false)
          end).()
      |> debug("LiveHandler: simple assign")
      |> (fn assigns ->

@@ -153,7 +153,8 @@ defmodule Bonfire.UI.Common.LivePlugs do
       current_url: "#{uri.path}##{uri.fragment}"
     )
     |> Iconify.maybe_set_favicon(
-      e(socket.assigns, :current_extension, :icon, nil) || e(socket.assigns, :current_extension, :emoji, nil)
+      e(socket.assigns, :current_extension, :icon, nil) ||
+        e(socket.assigns, :current_extension, :emoji, nil)
     )
   end
 end

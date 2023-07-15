@@ -26,8 +26,18 @@ let liveSocket = new LiveSocket("/live", Socket, {
 }) 
 
 // Show progress bar on live navigation and form submits
-window.addEventListener("phx:page-loading-start", info => NProgress.start())
-window.addEventListener("phx:page-loading-stop", info => NProgress.done())
+// Only displays if still loading after 120 msec
+let topBarScheduled = undefined;
+window.addEventListener("phx:page-loading-start", () => {
+  if (!topBarScheduled) {
+    topBarScheduled = setTimeout(() => NProgress.start(), 120);
+  };
+});
+window.addEventListener("phx:page-loading-stop", () => {
+  clearTimeout(topBarScheduled);
+  topBarScheduled = undefined;
+  NProgress.done()
+});
 
 // show socket connection status
 liveSocket.getSocket().onOpen(() => execJS("#connection-status", "js-hide"))
