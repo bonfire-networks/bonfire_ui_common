@@ -1243,11 +1243,18 @@ defmodule Bonfire.UI.Common do
   """
   def maybe_stream_insert(%{assigns: %{streams: _}} = socket, name, items, opts)
       when is_list(items) do
+    debug(opts)
     Phoenix.LiveView.stream(socket, name, items, opts)
   end
 
   def maybe_stream_insert(%{assigns: %{streams: _}} = socket, name, item, opts) do
-    Phoenix.LiveView.stream_insert(socket, name, item, opts)
+    debug(opts)
+
+    if opts[:reset] do
+      Phoenix.LiveView.stream(socket, name, [item], opts)
+    else
+      Phoenix.LiveView.stream_insert(socket, name, item, opts)
+    end
   end
 
   def maybe_stream_insert(socket, name, items, _opts) do

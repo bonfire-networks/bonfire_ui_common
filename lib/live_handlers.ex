@@ -153,22 +153,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   # global event handler to set assigns of a view or component
   defp do_handle_event("assign", attrs, socket) do
-    {:noreply,
-     attrs
-     |> Map.drop(["to_atoms", "assign_global", "send_self"])
-     |> (fn assigns ->
-           if attrs["to_atoms"] == "true",
-             do: input_to_atoms(assigns, true, true),
-             else: input_to_atoms(assigns, true, false)
-         end).()
-     |> debug("LiveHandler: simple assign")
-     |> (fn assigns ->
-           if attrs["send_self"] == "true", do: send_self(assigns)
-
-           if attrs["assign_global"] == "true",
-             do: assign_global(socket, assigns),
-             else: assign_generic(socket, assigns)
-         end).()}
+    {:noreply, assign_attrs(socket, attrs)}
   end
 
   # helper for when a searches for an option in `LiveSelect`
@@ -309,4 +294,22 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   defp no_live_handler(_, socket), do: empty(socket)
   defp empty(socket), do: {:noreply, socket}
+
+  def assign_attrs(socket, attrs) do
+    attrs
+    |> Map.drop(["to_atoms", "assign_global", "send_self", "value"])
+    |> (fn assigns ->
+          if attrs["to_atoms"] == "true",
+            do: input_to_atoms(assigns, true, true),
+            else: input_to_atoms(assigns, true, false)
+        end).()
+    |> debug("LiveHandler: simple assign")
+    |> (fn assigns ->
+          if attrs["send_self"] == "true", do: send_self(assigns)
+
+          if attrs["assign_global"] == "true",
+            do: assign_global(socket, assigns),
+            else: assign_generic(socket, assigns)
+        end).()
+  end
 end
