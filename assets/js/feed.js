@@ -19,24 +19,22 @@ FeedHooks.PreviewActivity = {
       let anchor = e.target.closest('a')
       let previewable_activity = e.target.closest('.previewable_activity')
 
-      if (anchor == trigger || (previewable_activity && (
+      if (trigger && (anchor == trigger || ((previewable_activity && (
         previewable_activity.classList.contains('previewable_expanded')
         || this.isTruncated(previewable_activity.querySelector('.previewable_truncate')) == false
-        ) && !anchor && !e.ctrlKey && !e.metaKey && !window.getSelection().toString() && !e.target.closest('button') && !e.target.closest('.dropdown')
-      )) {
+      ) || (!anchor || anchor.classList.contains('preview_activity_link'))) && !e.ctrlKey && !e.metaKey && !window.getSelection().toString() && !e.target.closest('button') && !e.target.closest('.dropdown')
+      ))) {
         let uri = this.el.dataset.href || (trigger !==undefined && trigger.getAttribute('href')) //this.el.dataset.permalink
         if (window.liveSocket) {
-          e.preventDefault();
           // const feed = document.querySelector(".feed")
           const main = document.getElementById("inner")
           const layout = document.getElementById("root")
           const preview_content = document.getElementById("preview_content")
           let previous_scroll = null
 
-          if (trigger) {
             console.log("push event to load up the PreviewContent")
             this.pushEventTo(trigger, "open", {})
-          }
+          
           // this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
 
           if (layout) {
@@ -60,14 +58,17 @@ FeedHooks.PreviewActivity = {
               '',
               uri)
           }
+
+          e.preventDefault();
+
         } else {
 
           // fallback if not connected with live socket
             
           if (uri) {
             console.log(uri)
-            e.preventDefault();
             window.location = uri;
+            e.preventDefault();
           } else {
             console.log("No URL")
           }
@@ -76,7 +77,7 @@ FeedHooks.PreviewActivity = {
     } else {
 
       // e.preventDefault();
-        console.log("PreviewActivity: ignore in favour of another link or button's action (or opening in new tab)")
+        console.log("PreviewActivity: do not trigger preview in favour of another link or button's action (or opening in new tab)")
         
         if (previewable_activity) { previewable_activity.classList.add("previewable_expanded") }
       
