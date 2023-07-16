@@ -5,7 +5,7 @@ defmodule Bonfire.UI.Common.LoggedActionsLive do
   # prop page, :string, default: nil
   # prop page_header_aside, :any, default: nil
   # prop custom_page_header, :any, default: nil
-  prop showing_within, :atom, default: nil
+  # prop showing_within, :atom, default: nil
   # prop reply_to_id, :any, default: nil
   # prop context_id, :string, default: nil, required: false
   # prop create_object_type, :any, default: nil

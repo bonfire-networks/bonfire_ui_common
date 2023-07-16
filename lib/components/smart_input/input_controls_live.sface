@@ -160,11 +160,16 @@
                 />
               </div>
 
-              <!-- <Dynamic.Component
-                :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesPresetDescriptionLive, @__context__)}
+              <!-- 
+    <button
+    :if={!Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) and module_enabled?(Bonfire.Boundaries.Web.BoundariesPresetDescriptionLive, @__context__)}
+      type="button"
+      phx-click={JS.toggle(to: "#compose_content_wrapper") |> JS.toggle(to: "#extra_boundaries")}
+      class="flex hover:underline text-[13px] pr-2 font-semibold text-primary/80 items-center gap-2"
+    ><Dynamic.Component         
                 module={Bonfire.Boundaries.Web.BoundariesPresetDescriptionLive}
                 to_boundaries={@to_boundaries}
-              /> -->
+              /></button> -->
 
               <!-- <div class="text-xs text-base-content/70">
           <span

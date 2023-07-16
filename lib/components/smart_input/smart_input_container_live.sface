@@ -143,7 +143,6 @@
                         boundaries_modal_id={@boundaries_modal_id}
                         context_id={@context_id}
                         hide_breakdown
-                        setting_boundaries
                         click_override
                       />
                     </div>

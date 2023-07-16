@@ -19,7 +19,7 @@
       <!-- mode={:tags} style={:daisyui} -->
     {#else}
       <Bonfire.UI.Common.BasicMultiselectLive
-        id={Pointers.ULID.generate()}
+        id={Text.random_string()}
         preloaded_options={@preloaded_options}
         selected_options={@selected_options}
         label={@label}

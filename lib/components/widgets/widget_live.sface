@@ -27,7 +27,7 @@
           {#match badge}
             <div class="flex items-center place-content-center">
               <Dynamic.LiveComponent
-                id={badge[:id] || Pointers.ULID.generate()}
+                id={badge[:id] || Text.random_string()}
                 module={Bonfire.UI.Common.BadgeCounterLive}
                 feed_id={badge[:feed_id] || e(@current_user, :character, badge[:feed_key], nil)}
               />
@@ -43,7 +43,7 @@
       />
     {#match Surface.LiveComponent}
       <Dynamic.LiveComponent
-        id={Pointers.ULID.generate()}
+        id={Text.random_string()}
         module={@widget[:module]}
         page={@page}
         showing_within={@showing_within}

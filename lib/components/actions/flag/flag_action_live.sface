@@ -11,11 +11,7 @@
 {#else}
   <Bonfire.UI.Common.OpenModalLive
     :if={@parent_id && @object}
-    id={ComponentID.new(
-      Bonfire.UI.Common.OpenModalLive,
-      "flag_modal_#{@parent_id}_#{id(@object)}",
-      __MODULE__
-    )}
+    id={Text.random_string()}
     title_text={e(@label, l("Flag %{user_or_thing}", user_or_thing: @object_type))}
     open_btn_wrapper_class="flex items-center gap-2 text-sm text-base-content/70 truncate max-w-max"
   >
