@@ -7,8 +7,13 @@ CopyHooks.Copy = {
 
     this.el.addEventListener("click", (ev) => {
       ev.preventDefault();
+      let el;
       let text;
-      let el = document.getElementById(to) || this.el
+      if (to) {
+        el = document.getElementById(to)
+      } else {
+        el = this.el
+      } 
       let link = el.getAttribute("href")
       console.log(link)
 
