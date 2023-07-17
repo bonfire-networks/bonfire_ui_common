@@ -119,7 +119,7 @@
                       :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesGeneralAccessLive)}
                       module={Bonfire.Boundaries.Web.BoundariesGeneralAccessLive}
                       to_boundaries={@to_boundaries}
-                      preset_boundary={@preset_boundary}
+                      boundary_preset={@boundary_preset}
                     />
                   </div>
                 </div>
@@ -134,7 +134,7 @@
                           module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
                         module={Bonfire.Boundaries.Web.SetBoundariesLive}
                         to_boundaries={@to_boundaries}
-                        preset_boundary={@preset_boundary}
+                        boundary_preset={@boundary_preset}
                         to_circles={@to_circles}
                         exclude_circles={@exclude_circles}
                         open_boundaries={@open_boundaries}

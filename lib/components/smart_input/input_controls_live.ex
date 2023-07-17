@@ -32,7 +32,7 @@ defmodule Bonfire.UI.Common.InputControlsLive do
       !assigns[:reply_to_id] and Config.get([:ui, :smart_input, :title]) == true
     )
     |> assign(
-      :preset_boundary,
+      :boundary_preset,
       Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(assigns[:to_boundaries])
     )
     |> render_sface()

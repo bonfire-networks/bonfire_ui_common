@@ -488,23 +488,23 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       else: e(assigns, :create_object_type, "post")
   end
 
-  # def boundary_ids(preset_boundary, to_boundaries, create_object_type) do
+  # def boundary_ids(boundary_preset, to_boundaries, create_object_type) do
   #   if is_list(to_boundaries) and length(to_boundaries)>0 do
   #     Enum.map_join(to_boundaries, "\", \"", &elem(&1, 1))
   #   else
   #     if create_object_type in [:message, "message"],
   #       do: "message",
-  #       else: preset_boundary || "public"
+  #       else: boundary_preset || "public"
   #   end
   # end
 
-  # def boundary_names(preset_boundary, to_boundaries, create_object_type) do
+  # def boundary_names(boundary_preset, to_boundaries, create_object_type) do
   #   if is_list(to_boundaries) and length(to_boundaries)>0 do
   #     Enum.map_join(to_boundaries, "\", \"", &elem(&1, 0))
   #   else
   #     if create_object_type in [:message, "message"],
   #       do: "Message",
-  #       else: preset_boundary || "Public"
+  #       else: boundary_preset || "Public"
   #   end
   # end
 end

@@ -31,7 +31,7 @@
                     :if={module_enabled?(Bonfire.Boundaries.Web.SetBoundariesButtonLive)}
                     module={Bonfire.Boundaries.Web.SetBoundariesButtonLive}
                     to_boundaries={@to_boundaries}
-                    preset_boundary={@preset_boundary}
+                    boundary_preset={@boundary_preset}
                   />
                 </div>
                 <!-- <div class="flex flex-col items-start">

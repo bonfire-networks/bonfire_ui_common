@@ -902,7 +902,7 @@ defmodule Bonfire.UI.Common do
   def redirect_to(%Phoenix.LiveView.Socket{} = socket, to, opts) do
     Phoenix.LiveView.push_navigate(
       socket,
-      [to: to || path_fallback(socket, opts)] ++ opts
+      [to: to || path_fallback(socket, opts)] ++ List.wrap(opts)
     )
   rescue
     e in ArgumentError ->
@@ -913,7 +913,7 @@ defmodule Bonfire.UI.Common do
   def redirect_to(%Plug.Conn{} = conn, to, opts) do
     Phoenix.Controller.redirect(
       conn,
-      [to: to || path_fallback(conn, opts)] ++ opts
+      [to: to || path_fallback(conn, opts)] ++ List.wrap(opts)
     )
   end
 
@@ -926,7 +926,7 @@ defmodule Bonfire.UI.Common do
   def patch_to(%Phoenix.LiveView.Socket{} = socket, to, opts) when is_binary(to) do
     Phoenix.LiveView.push_patch(
       socket,
-      [to: to] ++ opts
+      [to: to] ++ List.wrap(opts)
     )
   rescue
     e in ArgumentError ->

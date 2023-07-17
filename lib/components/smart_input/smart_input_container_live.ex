@@ -105,7 +105,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     socket
     |> assign(
       to_boundaries: to_boundaries,
-      preset_boundary:
+      boundary_preset:
         Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(to_boundaries)
     )
   end
