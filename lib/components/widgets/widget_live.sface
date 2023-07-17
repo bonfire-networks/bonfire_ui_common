@@ -20,7 +20,7 @@
           >{l("Current Page:")}
           </span>
           <span class={@text_class ||
-            ["font-normal text-base-content flex-1", "text-[18px]": @__context__[:ui_compact] != true]}>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
+            ["font-normal text-base-content/90 flex-1"]}>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
         </div>
         {#case widget(@widget, @__context__)[:badge]}
           {#match nil}

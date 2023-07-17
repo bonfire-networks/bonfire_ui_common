@@ -9,7 +9,7 @@ defmodule Bonfire.UI.Common.WidgetLive do
     required: false,
     default: nil
 
-  prop icon_class, :css_class, required: false, default: "w-5 h-5 text-base-content"
+  prop icon_class, :css_class, required: false, default: "w-5 h-5 text-base-content/90"
   prop page, :string, default: nil
   prop selected_tab, :any, default: nil
   prop wrapper_class, :css_class, default: "m-0 p-0 rounded-md !block"
