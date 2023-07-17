@@ -1,22 +1,35 @@
 let CopyHooks = {};
 
-
 CopyHooks.Copy = {
   
   mounted() {
     let { to } = this.el.dataset;
-    console.log(to)
+
     this.el.addEventListener("click", (ev) => {
       ev.preventDefault();
-    //   Find the element in the page with that id
-        let text = document.getElementById(to).value;
+      let text;
+      let el = document.getElementById(to) || this.el
+      let link = el.getAttribute("href")
+      console.log(link)
+
+      if (link) {
+        text = link;
+      } else {
+        text = el.value;
+      }
+
+      if (text !==undefined) {
         navigator.clipboard.writeText(text).then(() => {
-            console.log("All done again!")
-            this.flash("success", "Text copied to clipboard!");
+          console.log("Copied to clipboard!")
+          if (this.flash) {
+            this.flash("success", "It's in your clipboard!");
+          }
         })
+      }
     });
 
     }
 }
 
 export { CopyHooks }
+

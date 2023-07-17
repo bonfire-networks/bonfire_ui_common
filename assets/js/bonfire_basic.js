@@ -4,8 +4,9 @@ let Hooks = {};
 
 import { ImageHooks } from "./image"
 import { FeedHooks } from "./feed"
+import { CopyHooks } from "./copy"
 
-Object.assign(Hooks, ImageHooks, FeedHooks);
+Object.assign(Hooks, ImageHooks, FeedHooks, CopyHooks);
 
 // run LiveView Hooks without LiveView
 (function () {
