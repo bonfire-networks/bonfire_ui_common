@@ -9,6 +9,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop smart_input_component, :atom, default: nil
   prop open_boundaries, :boolean, default: false
   prop to_boundaries, :any, default: nil
+  prop boundary_preset, :any, default: nil
   prop to_circles, :list, default: []
   prop exclude_circles, :list, default: []
   prop mentions, :list, default: []
@@ -27,6 +28,9 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   # prop without_sidebar, :string, default: nil
   prop reset_smart_input, :boolean, default: false
   prop boundaries_modal_id, :string, default: :sidebar_composer
+  prop preview_boundary_for_id, :any, default: nil
+  prop preview_boundary_for_username, :any, default: nil
+  prop preview_boundary_verbs, :any, default: nil
 
   def mount(socket),
     do:

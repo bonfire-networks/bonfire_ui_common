@@ -167,6 +167,29 @@
                     scope={:smart_input}
                   />
                 </div>
+
+                <!-- PREVIEW BOUNDARIES -->
+                <div class="hidden" id="boundaries_preview">
+                  <button
+                    phx-click={JS.toggle(to: "#boundaries_preview") |> JS.toggle(to: "#extra_boundaries")}
+                    type="button"
+                    class="btn mt-2 btn-outline rounded-full ml-4 btn-primary normal-case"
+                  >
+                    <#Icon iconify="ri:arrow-left-line" class="w-5 h-5" />
+                    <span>{l("Back")}</span>
+                  </button>
+                  <Dynamic.LiveComponent
+                    :if={module_enabled?(Bonfire.Boundaries.Web.PreviewBoundariesLive)}
+                    module={Bonfire.Boundaries.Web.PreviewBoundariesLive}
+                    id="boundaries_preview"
+                    preview_boundary_for_id={@preview_boundary_for_id}
+                    preview_boundary_for_username={@preview_boundary_for_username}
+                    preview_boundary_verbs={@preview_boundary_verbs}
+                    boundary_preset={@boundary_preset}
+                    to_boundaries={@to_boundaries}
+                    to_circles={@to_circles}
+                  />
+                </div>
               </form>
             </div>
           </div>
