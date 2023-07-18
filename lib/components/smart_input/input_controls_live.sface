@@ -43,8 +43,7 @@
                 </div> -->
               </div>
 
-              <div id="custom_boundaries" class="hidden flex px-2 mt-2 items-center gap-2">
-                <!-- #TODO this section should be a component in boundaries extension -->
+              <!-- <div id="custom_boundaries" class="hidden flex px-2 mt-2 items-center gap-2">
                 {#for acl <-
                     Bonfire.Boundaries.Acls.list_my(current_user(@__context__))
                     |> Enum.map(fn
@@ -69,7 +68,7 @@
                     }
                   >{e(acl, :name, nil)}</button>
                 {/for}
-              </div>
+              </div> -->
             </div>
           {/if}
         </div>
