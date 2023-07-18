@@ -14,7 +14,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
     modal_class: @modal_class,
     cancel_btn_class: nil,
     show: false,
-    form_opts: [],
+    form_opts: %{},
     no_actions: false,
     no_header: false,
     opts: [],
@@ -54,7 +54,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
 
   # prop no_form, :boolean, default: false
 
-  prop form_opts, :list, default: []
+  prop form_opts, :map, default: %{}
 
   @doc "Optional prop to hide the actions at the bottom of the modal"
   prop no_actions, :boolean, default: false

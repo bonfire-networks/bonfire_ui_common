@@ -24,11 +24,11 @@
   </div>
   <!-- if the modal should be wrapped in a form use the form tag, otherwise use a div -->
   <.dynamic_tag
-    name={if @form_opts != [], do: "form", else: "div"}
+    name={if @form_opts != %{}, do: "form", else: "div"}
     id={@form_opts[:id] || "#{@id}_box"}
     class={Surface.css_class("modal-box": !@image_preview)}
     phx-target={e(@form_opts, "phx-target", nil) || @myself}
-    {...@form_opts}
+    {...input_to_atoms(@form_opts)}
   >
     <div
       x-transition:enter="ease-out duration-300"
@@ -73,7 +73,7 @@
         </div>
         <div class={@action_btns_wrapper_class}>
           <#slot {@action_btns}>
-            <button :if={@form_opts != []} class="normal-case rounded btn btn-primary btn-sm" type="submit">{l("OK")}</button>
+            <button :if={@form_opts != %{}} class="normal-case rounded btn btn-primary btn-sm" type="submit">{l("OK")}</button>
           </#slot>
         </div>
       </div>

@@ -53,7 +53,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   @doc "Force modal to be open"
   prop show, :boolean, default: false
 
-  prop form_opts, :list, default: []
+  prop form_opts, :map, default: %{}
 
   @doc "Optional prop to hide the header at the top of the modal"
   prop no_header, :boolean, default: false

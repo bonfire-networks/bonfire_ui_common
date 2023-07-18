@@ -9,10 +9,10 @@
 
   <dialog id={@id} class={@modal_class, "modal modal-bottom sm:modal-middle"}>
     <.dynamic_tag
-      name={if @form_opts != [], do: "form", else: "div"}
+      name={if @form_opts != %{}, do: "form", else: "div"}
       id={@form_opts[:id] || "#{@id}_box"}
       method="dialog"
-      class={Surface.css_class("modal-box": !@image_preview and @form_opts != [])}
+      class={Surface.css_class("modal-box": !@image_preview and @form_opts != %{})}
       phx-target={@event_target}
       {...@form_opts}
     >
@@ -54,7 +54,7 @@
     </.dynamic_tag>
 
     <.dynamic_tag
-      name={if @form_opts != [], do: "form", else: "div"}
+      name={if @form_opts != %{}, do: "form", else: "div"}
       method="dialog"
       class="modal-backdrop"
     >

@@ -27,7 +27,7 @@
         cancel_label={l("Done")}
       >
         <!-- reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
-        form_opts={"phx-submit": "set_value"} -->
+        form_opts={%{"phx-submit"=> "set_value"}} -->
         <div class="mt-4">
           <div class="p-4 rounded-md bg-info/10">
             <div class="flex">
