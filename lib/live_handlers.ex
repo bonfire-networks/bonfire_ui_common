@@ -300,8 +300,8 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     |> Map.drop(["to_atoms", "assign_global", "send_self", "value"])
     |> (fn assigns ->
           if attrs["to_atoms"] == "true",
-            do: input_to_atoms(assigns, true, true),
-            else: input_to_atoms(assigns, true, false)
+            do: input_to_atoms(assigns, discard_unknown: true, values: true),
+            else: input_to_atoms(assigns, discard_unknown: true, values: false)
         end).()
     |> debug("LiveHandler: simple assign")
     |> (fn assigns ->

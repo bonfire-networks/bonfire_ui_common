@@ -28,7 +28,7 @@
     id={@form_opts[:id] || "#{@id}_box"}
     class={Surface.css_class("modal-box": !@image_preview)}
     phx-target={e(@form_opts, "phx-target", nil) || @myself}
-    {...input_to_atoms(@form_opts)}
+    {...Enums.naughty_to_atoms!(@form_opts)}
   >
     <div
       x-transition:enter="ease-out duration-300"
