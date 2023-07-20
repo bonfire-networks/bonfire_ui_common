@@ -86,7 +86,7 @@
     </li> -->
 
     <li>
-      <div class="p-0 mt-2 cursor-default hover:bg-base-300">
+      <div class="p-0 mt-2 cursor-default pointer-events-none">
         <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Safety")}</span>
       </div>
     </li>
@@ -165,7 +165,7 @@
     />
 
     <li>
-      <div class="p-0 mt-2 cursor-default hover:bg-base-300">
+      <div class="p-0 mt-2 cursor-default pointer-events-none">
         <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Migration")}</span>
       </div>
     </li>
@@ -201,7 +201,7 @@
     </li>
 
     <li>
-      <div class="p-0 mt-2 cursor-default hover:bg-base-300">
+      <div class="p-0 mt-2 cursor-default pointer-events-none">
         <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Advanced")}</span>
       </div>
     </li>

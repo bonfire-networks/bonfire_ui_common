@@ -12,7 +12,7 @@
                 page={@page}
                 wrapper_class={if @showing_within != :dashboard,
                   do:
-                    "p-0 mt-2 cursor-default hover:bg-base-100 active:bg-base-100	md:hover:bg-base-300 md:bg-base-300 md:active:!bg-base-300",
+                    "p-0 mt-2 cursor-default pointer-events-none -mb-2",
                   else: "block"}
                 text_class={if @showing_within != :dashboard,
                   do: "text-[10px] uppercase font-semibold text-base-content/70 tracking-[0.175rem]",
@@ -25,7 +25,7 @@
 
               <div class={if @showing_within != :dashboard,
                 do:
-                  "flex flex-col items-start p-0 cursor-default hover:bg-base-100 active:bg-base-100	md:hover:bg-base-300 md:bg-base-300 md:active:!bg-base-300",
+                  "flex flex-col items-start p-0 cursor-default md:bg-base-300 hover:!bg-transparent",
                 else: ""}>
                 {#if is_map(extension_nav) and !extension_nav[:exclude_from_nav] and
                     extension_nav[:scope] == @scope}}>
