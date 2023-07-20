@@ -1,5 +1,5 @@
 <nav class="" role="navigation" aria-label={l("Settings navigation")}>
-  <ul class="my-2 menu menu-sm">
+  <ul class="-ml-2 menu menu-sm">
     <li>
       <div class="p-0 cursor-default hover:bg-base-300">
         <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("General")}</span>

@@ -11,7 +11,11 @@
       >
         <div class="flex-1 flex items-center gap-4">
           <span :if={!@without_icon} class="">
-            <Iconify.iconify icon={widget(@widget, @__context__)[:icon]} class={@icon_class} />
+            {#if (not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page]))}
+              <Iconify.iconify icon={widget(@widget, @__context__)[:icon_active]} class={@icon_class} />
+            {#else}
+              <Iconify.iconify icon={widget(@widget, @__context__)[:icon]} class={@icon_class} />
+            {/if}
           </span>
           <span
             :if={(not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])) or
@@ -20,7 +24,9 @@
           >{l("Current Page:")}
           </span>
           <span class={@text_class ||
-            ["font-normal text-base-content/90 flex-1"]}>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
+            ["font-normal text-base-content/90 flex-1"],
+            "!font-bold": (not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page]))
+            }>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
         </div>
         {#case widget(@widget, @__context__)[:badge]}
           {#match nil}
