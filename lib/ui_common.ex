@@ -1266,4 +1266,12 @@ defmodule Bonfire.UI.Common do
     socket
     |> assign_generic(name, items)
   end
+
+  defmacro live_aliases(aliases, path, live_view, action \\ nil, opts \\ []) do
+    quote bind_quoted: binding() do
+      for alt <- aliases do
+        live(String.replace(path, ":alias", alt), live_view, action, opts)
+      end
+    end
+  end
 end
