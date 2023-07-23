@@ -4,8 +4,9 @@ defmodule Bonfire.UI.Common.ErrorView do
   def render("403.html", assigns) do
     show_error(
       403,
-      "#{reason(assigns)}<p><img src='https://media.sciencephoto.com/image/c0021814/800wm'/>",
-      true
+      reason(assigns),
+      true,
+      "<p><img src='https://media.sciencephoto.com/image/c0021814/800wm'/>"
     )
   end
 
@@ -46,18 +47,18 @@ defmodule Bonfire.UI.Common.ErrorView do
   def render("500.html", assigns) do
     show_error(
       500,
-      (reason(assigns) || l("Please try again or contact the instance admins.")) <>
-        "\n<p><img class='mx-auto h-[300px]' src='https://media1.giphy.com/media/Z1BTGhofioRxK/giphy.gif'/>",
-      true
+      reason(assigns) || l("Please try again or contact the instance admins."),
+      true,
+      "\n<p><img class='mx-auto h-[300px]' src='https://media1.giphy.com/media/Z1BTGhofioRxK/giphy.gif'/>"
     )
   end
 
   def render("503.html", assigns) do
     show_error(
       503,
-      l("Please try again in a few minutes or contact the instance admins.") <>
-        "\n<p><img class='mx-auto h-[300px]' src='https://images.newrepublic.com/5c45fedc6977c22a8607892b8918c22ee8394bea.jpeg'/>",
-      true
+      l("Please try again in a few minutes or contact the instance admins."),
+      true,
+      "\n<p><img class='mx-auto h-[300px]' src='https://images.newrepublic.com/5c45fedc6977c22a8607892b8918c22ee8394bea.jpeg'/>"
     )
   end
 
@@ -113,13 +114,14 @@ defmodule Bonfire.UI.Common.ErrorView do
     render("app.html", assigns)
   end
 
-  defp show_error(error_or_error_code, details, as_html?) do
-    # error(details)
+  defp show_error(error_or_error_code, details, as_html?, extra_html \\ nil) do
+    error(details)
+
     http_code =
       Types.maybe_to_integer(error_or_error_code, 500)
       |> debug(error_or_error_code)
 
-    {name, msg} = Bonfire.Fail.get_error_tuple(http_code) || {nil, error_or_error_code}
+    {codename, msg} = Bonfire.Fail.get_error_tuple(http_code) || {nil, error_or_error_code}
 
     if as_html? do
       show_html(msg || error_or_error_code, details)
@@ -128,7 +130,7 @@ defmodule Bonfire.UI.Common.ErrorView do
         "errors" => [
           %{
             "status" => http_code,
-            "code" => name,
+            "code" => codename,
             "title" => msg || error_or_error_code,
             "detail" => details
           }
@@ -140,6 +142,7 @@ defmodule Bonfire.UI.Common.ErrorView do
   defp reason(%{reason: reason}), do: reason(reason)
   defp reason(%{message: reason}), do: reason
   defp reason(reason) when is_binary(reason), do: Text.text_only(reason)
+  defp reason(reason) when is_atom(reason), do: Bonfire.Fail.get_error_msg(reason) || reason
   defp reason(reason) when not is_map(reason), do: inspect(reason)
 
   defp reason(_other) do
