@@ -25,27 +25,18 @@
     {/if}
   </td>
   <td class="flex-1">
-    {#if e(@user, :ghosted_instance_wide?, nil) == nil and
-        e(@user, :silenced_instance_wide?, nil) == nil}
-      <span class="btn btn-xs rounded-full normal-case loading btn-disabled">{l("loading")}</span>
-    {#else}
-      <span
-        :if={!e(@user, :ghosted_instance_wide?, nil) and !e(@user, :silenced_instance_wide?, nil)}
-        class="badge badge-outline badge-sm"
-      >{l("Active")}</span>
-      <span
-        :if={e(@user, :ghosted_instance_wide?, nil) and e(@user, :silenced_instance_wide?, nil)}
-        class="badge badge-error badge-sm"
-      >{l("Blocked")}</span>
-      <span
-        :if={e(@user, :ghosted_instance_wide?, nil) and !e(@user, :silenced_instance_wide?, nil)}
-        class="badge badge-warning badge-sm"
-      >{l("Ghosted")}</span>
-      <span
-        :if={!e(@user, :ghosted_instance_wide?, nil) and e(@user, :silenced_instance_wide?, nil)}
-        class="badge badge-warning badge-sm"
-      >{l("Silenced")}</span>
-    {/if}
+    {#case {e(@user, :ghosted_instance_wide?, nil), e(@user, :silenced_instance_wide?, nil)}}
+      {#match {nil, nil}}
+        <span class="btn btn-xs rounded-full normal-case loading btn-disabled">{l("loading")}</span>
+      {#match {true, true}}
+        <span class="badge badge-error badge-sm">{l("Blocked")}</span>
+      {#match {true, _}}
+        <span class="badge badge-warning badge-sm">{l("Ghosted")}</span>
+      {#match {_, true}}
+        <span class="badge badge-warning badge-sm">{l("Silenced")}</span>
+      {#match {_, _}}
+        <span class="badge badge-outline badge-sm">{l("Active")}</span>
+    {/case}
   </td>
   <td class="flex-1">
     <span class="text-xs">{DatesTimes.date_from_now(id(@user))}</span>
@@ -87,7 +78,7 @@
               class="text-error"
             />
           </li>
-          <li><LiveRedirect class="text-error" to="#">{l("Deactivate user")}</LiveRedirect></li>
+          <!-- <li><LiveRedirect class="text-error" to="#">{l("Deactivate user")}</LiveRedirect></li> -->
         </ul>
       </div>
     </div>

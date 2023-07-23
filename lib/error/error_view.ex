@@ -39,11 +39,24 @@ defmodule Bonfire.UI.Common.ErrorView do
     )
   end
 
+  def render("500.html", %{reason: %{reason: :queue_timeout}} = assigns) do
+    render("503.html", assigns)
+  end
+
   def render("500.html", assigns) do
     show_error(
       500,
-      (reason(assigns) || "Please try again or contact the instance admins.") <>
+      (reason(assigns) || l("Please try again or contact the instance admins.")) <>
         "\n<p><img class='mx-auto h-[300px]' src='https://media1.giphy.com/media/Z1BTGhofioRxK/giphy.gif'/>",
+      true
+    )
+  end
+
+  def render("503.html", assigns) do
+    show_error(
+      503,
+      l("Please try again in a few minutes or contact the instance admins.") <>
+        "\n<p><img class='mx-auto h-[300px]' src='https://images.newrepublic.com/5c45fedc6977c22a8607892b8918c22ee8394bea.jpeg'/>",
       true
     )
   end
@@ -55,7 +68,7 @@ defmodule Bonfire.UI.Common.ErrorView do
   def render("app.html", assigns) do
     show_error(
       assigns["code"] || 500,
-      reason(assigns) || "Please try again or contact the instance admins.",
+      reason(assigns) || l("Please try again or contact the instance admins."),
       true
     )
   end
@@ -75,7 +88,7 @@ defmodule Bonfire.UI.Common.ErrorView do
   def render("500.activity+json", assigns) do
     show_error(
       500,
-      reason(assigns) || "Please try again or contact the instance admins.",
+      reason(assigns) || l("Please try again or contact the instance admins."),
       false
     )
   end
@@ -91,7 +104,7 @@ defmodule Bonfire.UI.Common.ErrorView do
   def render("500.json", assigns) do
     show_error(
       500,
-      reason(assigns) || "Please try again or contact the instance admins.",
+      reason(assigns) || l("Please try again or contact the instance admins."),
       false
     )
   end
