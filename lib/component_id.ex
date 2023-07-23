@@ -38,7 +38,7 @@ defmodule Bonfire.UI.Common.ComponentID do
 
     debug("try to send_updates to #{component_module} for object id #{object_id}")
 
-    for component_id <- ids(component_module, object_id) do
+    for component_id <- component_ids(component_module, object_id) do
       debug("ComponentID: try stateful component with ID #{component_id}")
 
       Bonfire.UI.Common.maybe_send_update(
@@ -56,10 +56,10 @@ defmodule Bonfire.UI.Common.ComponentID do
     # {:noreply, socket}
   end
 
-  def ids(component_module, object_id),
-    do: dictionary_key_id(component_module, object_id) |> ids()
+  defp component_ids(component_module, object_id),
+    do: dictionary_key_id(component_module, object_id) |> component_ids()
 
-  defp ids(dictionary_key_id) when is_binary(dictionary_key_id) do
+  defp component_ids(dictionary_key_id) when is_binary(dictionary_key_id) do
     Process.get(dictionary_key_id, [])
   end
 
@@ -73,7 +73,7 @@ defmodule Bonfire.UI.Common.ComponentID do
 
     Process.put(
       dictionary_key_id,
-      ids(dictionary_key_id) ++ [component_id]
+      component_ids(dictionary_key_id) ++ [component_id]
       # |> debug()
     )
   end
