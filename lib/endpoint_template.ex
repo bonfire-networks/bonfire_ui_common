@@ -18,6 +18,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       socket("/live", Phoenix.LiveView.Socket,
         websocket: [
+          check_origin: :conn,
           connect_info: [
             :user_agent,
             session: EndpointTemplate.session_options()
