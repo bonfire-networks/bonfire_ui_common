@@ -1,5 +1,7 @@
 <div class="">
-  {#if not is_nil(current_user_id(@__context__))}
+
+  <!-- {#if not is_nil(current_user_id(@__context__))} -->
+    
     <Dynamic.Component
       :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
       module={Bonfire.UI.Common.LoggedActionsLive}
@@ -7,9 +9,9 @@
       showing_within={@showing_within}
       smart_input_opts={@smart_input_opts}
     />
-  {#else}
+  <!-- {#else}
     <div />
-  {/if}
+  {/if} -->
 
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
   <Bonfire.UI.Common.ReusableModalLive id="persistent_modal" />

@@ -9,7 +9,7 @@
         data-id="nav_links"
         class={
           "menu p-0",
-          menu: !@__context__[:ui_compact]
+          "menu-lg": !@__context__[:ui_compact]
         }
       >
         {#for nav <- nav_items}
@@ -30,7 +30,7 @@
               <div
                 class={
                   "menu p-0",
-                  menu: !@__context__[:ui_compact]
+                  "menu-lg": !@__context__[:ui_compact]
                 }
                 data-id="nav_components"
               >

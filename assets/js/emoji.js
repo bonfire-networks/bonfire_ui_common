@@ -9,7 +9,8 @@ EmojiHooks.EmojiPicker = {
   
   mounted() {
     const target_field = document.querySelector(this.el.dataset.targetField || ".composer");
-
+    console.log(target_field)
+    console.log("target_field")
     const trigger = document.querySelector('.emoji-button');
     trigger.addEventListener('click', () => {
       picker.toggle();

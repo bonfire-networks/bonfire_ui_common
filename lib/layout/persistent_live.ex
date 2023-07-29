@@ -14,7 +14,6 @@ defmodule Bonfire.UI.Common.PersistentLive do
     # session[:context][@session_key]
     # |> debug("session_topic")
     # |> PubSub.subscribe(socket)
-
     {:ok,
      socket
      #  |> debug("socket before assigns")

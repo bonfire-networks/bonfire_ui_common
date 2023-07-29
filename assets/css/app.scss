@@ -27,6 +27,32 @@
   @apply !block;
 }
 
+.milkdown {
+  height: 240px;
+  overflow-y: overlay;
+  width: 100%;
+}
+
+.editor p br.ProseMirror-trailingBreak::before {
+  display: none;
+}
+
+.editor p br.ProseMirror-trailingBreak:only-child::before {
+  display: block;
+  content: "Start writing...";
+}
+
+.milkdown .emoji {
+  height: 1em;
+  width: 1em;
+  margin: 0 1px 0 1.5px;
+  vertical-align: -1.5px;
+  display: inline;
+}
+
+.ProseMirror-separator {
+  display: none;
+}
 
 .collapsed .subject {
   @apply translate-x-6 transition-transform;
