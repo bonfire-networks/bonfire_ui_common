@@ -358,7 +358,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     socket
   end
 
-  def toggle_expanded(js \\ %JS{}, target, btn, class) do
+  def toggle_expanded(js \\ %JS{}, target, btn, class) when is_binary(btn) and is_binary(class) do
     # TODO: document
     js
     |> JS.toggle(to: target)
@@ -378,7 +378,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length], default)
     |> Types.maybe_to_integer(default)
-    |> debug()
+    #|> debug()
   end
 
   def maybe_from_json_string("{" <> _ = json) do
