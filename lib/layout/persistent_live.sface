@@ -1,14 +1,13 @@
 <div class="">
-
   <!-- {#if not is_nil(current_user_id(@__context__))} -->
-    
-    <Dynamic.Component
-      :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
-      module={Bonfire.UI.Common.LoggedActionsLive}
-      current_user={current_user(@__context__)}
-      showing_within={@showing_within}
-      smart_input_opts={@smart_input_opts}
-    />
+
+  <Dynamic.Component
+    :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive, current_user(@__context__))}
+    module={Bonfire.UI.Common.LoggedActionsLive}
+    current_user={current_user(@__context__)}
+    showing_within={@showing_within}
+    smart_input_opts={@smart_input_opts}
+  />
   <!-- {#else}
     <div />
   {/if} -->

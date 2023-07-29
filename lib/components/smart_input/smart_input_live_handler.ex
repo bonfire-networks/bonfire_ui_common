@@ -378,7 +378,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length], default)
     |> Types.maybe_to_integer(default)
-    #|> debug()
+
+    # |> debug()
   end
 
   def maybe_from_json_string("{" <> _ = json) do
