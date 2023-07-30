@@ -306,6 +306,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   def assign_attrs(socket, attrs) do
     attrs
     |> Map.drop(["to_atoms", "assign_global", "send_self", "value"])
+    |> debug("LiveHandler: attrs")
     |> (fn assigns ->
           if attrs["to_atoms"] == "true",
             do: input_to_atoms(assigns, discard_unknown: true, values: true),
