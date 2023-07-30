@@ -166,7 +166,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def handle_event("validate", %{"html_body" => html_body} = params, socket)
       when is_binary(html_body) do
-    debug(params, "validate")
+    # debug(params, "validate")
 
     {
       :noreply,
@@ -279,8 +279,11 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     set(
       socket_or_context,
-      set_assigns ++
-        [smart_input_opts: %{text_suggestion: text, open: true}, reset_smart_input: false]
+      Enums.deep_merge(set_assigns,
+        smart_input_opts: [text_suggestion: text, open: true],
+        reset_smart_input: false
+      )
+      |> debug("params")
     )
   end
 

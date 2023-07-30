@@ -180,27 +180,35 @@ defmodule Bonfire.UI.Common.LiveHandlers do
       %{^module => "", ^input_name => _} ->
         {:noreply, socket}
 
-      %{^module => data, ^input_name => text} ->
-        with {:ok, data} <- Jason.decode(data) do
-          mod_delegate(
-            module,
-            :do_handle_event,
-            ["multi_select", %{text: text, data: data}],
-            socket
-          )
-        else
-          e ->
-            error(e)
+      %{^module => data, ^input_name => text} when is_binary(data) ->
+        mod_delegate(
+          module,
+          :do_handle_event,
+          ["multi_select", %{text: text, data: maybe_from_json(data)}],
+          socket
+        )
 
-            mod_delegate(
-              module,
-              :do_handle_event,
-              ["multi_select", %{text: text, data: data}],
-              socket
-            )
-        end
+      %{^module => data, ^input_name => text} when is_list(data) ->
+        mod_delegate(
+          module,
+          :do_handle_event,
+          ["multi_select", %{text: text, data: Enum.map(data, &maybe_from_json/1)}],
+          socket
+        )
     end
   end
+
+  def maybe_from_json("{" <> _ = json) do
+    with {:ok, data} <- Jason.decode(json) do
+      data
+    else
+      e ->
+        warn(e)
+        json
+    end
+  end
+
+  def maybe_from_json(other), do: other
 
   defp do_handle_event(event, attrs, socket) when is_binary(event) do
     # debug(handle_event: event)

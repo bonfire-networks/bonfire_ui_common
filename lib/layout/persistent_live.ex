@@ -39,7 +39,6 @@ defmodule Bonfire.UI.Common.PersistentLive do
     # |> fun.(:to_circles, fn -> [] end)
     |> fun.(:smart_input_opts, fn -> %{} end)
     # |> fun.(:showing_within, fn -> nil end)
-    |> fun.(:show_select_recipients, fn -> false end)
     |> fun.(:thread_mode, fn -> nil end)
     # |> fun.(:page, fn -> nil end)
     # |> fun.(:page_title, fn -> nil end)

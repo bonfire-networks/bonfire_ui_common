@@ -10,9 +10,12 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
   prop showing_within, :atom, default: nil
   prop implementation, :any, default: :live_select
   prop label, :string, default: nil
+  prop mode, :atom, default: :tags
   prop class, :string, default: "w-full h-10 input rounded-full select_recipients_input"
+  prop is_editable, :boolean, default: false
 
   def do_handle_event("live_select_change", %{"id" => live_select_id, "text" => search}, socket) do
+    debug(live_select_id, search)
     # current_user = current_user(socket)
 
     Bonfire.Me.Users.search(search)
@@ -27,13 +30,44 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
         %{data: %{"field" => field, "id" => id, "username" => username}},
         socket
       ) do
-    # TODO: support selecting more than one?
     {:noreply,
      socket
      |> update(maybe_to_atom(field) |> debug("f"), fn current_to_circles ->
-       (List.wrap(current_to_circles) ++ [{username, id}])
+       (List.wrap(current_to_circles) ++ [{id, username}])
        |> debug("v")
      end)}
+  end
+
+  def do_handle_event(
+        "multi_select",
+        %{data: data},
+        socket
+      )
+      when is_list(data) do
+    first = List.first(data)
+
+    field =
+      maybe_to_atom(e(first, :field, :to_circles))
+      |> debug("field")
+
+    updated =
+      Enum.map(
+        data,
+        &{id(&1), e(&1, "username", nil)}
+      )
+      |> filter_empty([])
+      |> debug("new value")
+
+    if updated != e(socket.assigns, field, nil) |> debug("existing") do
+      {:noreply,
+       socket
+       |> assign(
+         field,
+         updated
+       )}
+    else
+      {:noreply, socket}
+    end
   end
 
   def results_for_multiselect(results) do

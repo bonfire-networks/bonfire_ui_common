@@ -22,7 +22,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop title_open, :boolean, default: nil
   prop title_prompt, :string, default: nil
   prop preloaded_recipients, :list, default: nil
-  prop show_select_recipients, :boolean, default: false
+
   # prop thread_mode, :atom, default: nil
   prop page, :any, default: nil
   # prop without_sidebar, :string, default: nil
@@ -118,16 +118,18 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
         action,
         attrs,
         socket
-      ),
-      do:
-        Bonfire.UI.Common.LiveHandlers.handle_event(
-          action,
-          attrs,
-          socket,
-          __MODULE__,
-          &LiveHandler.handle_event/3
-        )
-        |> assign_boundaries()
+      ) do
+    debug(attrs)
+
+    Bonfire.UI.Common.LiveHandlers.handle_event(
+      action,
+      attrs,
+      socket,
+      __MODULE__,
+      &LiveHandler.handle_event/3
+    )
+    |> assign_boundaries()
+  end
 
   def handle_info(info, socket),
     do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)

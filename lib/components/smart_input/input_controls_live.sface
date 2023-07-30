@@ -5,13 +5,14 @@
       <div class="md:h-full flex flex-col md:min-h-[240px]  overflow-y-hidden">
         <!-- DM RECIPIENTS -->
         <div class="relative bg-base-300">
-          {#if @show_select_recipients || @create_object_type == :message}
+          {#if @create_object_type == :message || e(@smart_input_opts, :recipients_editable, nil)}
             <Bonfire.UI.Common.SelectRecipientsLive
               preloaded_recipients={e(@preloaded_recipients, [])}
               to_boundaries={@to_boundaries}
               to_circles={@to_circles}
               open_boundaries={@open_boundaries}
               context_id={@context_id}
+              is_editable={e(@smart_input_opts, :recipients_editable, true)}
             />
           {#else}
             <div>
@@ -225,12 +226,14 @@
           <input
             :for={{circle, role} <- e(@to_circles, []) |> debug("to_circless")}
             type="hidden"
+            data-role="circle-enum"
             name={"to_circles[#{id(circle)}][]"}
             value={role}
           />
           <input
             :for={value when is_binary(value) <- e(@to_circles, [])}
             type="hidden"
+            data-role="circle-binary"
             name="to_circles[]"
             value={value}
           />

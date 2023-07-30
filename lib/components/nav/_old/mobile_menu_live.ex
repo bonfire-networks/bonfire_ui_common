@@ -21,7 +21,7 @@ defmodule Bonfire.UI.Common.MobileMenuLive do
   prop title_open, :boolean, default: nil
   prop title_prompt, :string, default: nil
   prop preloaded_recipients, :list, default: nil
-  prop show_select_recipients, :boolean, default: false
+
   prop thread_mode, :atom, default: nil
   prop without_sidebar, :string, default: nil
 end

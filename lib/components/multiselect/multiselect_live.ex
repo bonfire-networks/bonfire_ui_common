@@ -16,8 +16,20 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   prop context_id, :string, default: nil
   prop is_editable, :boolean, default: true
   prop implementation, :atom, default: nil
+  prop mode, :atom, default: :single
 
   prop class, :string, default: "bg-transparent text-sm rounded-full h-10 w-full input liveselect"
+
+  def render(%{form: form_name} = assigns) when is_atom(form_name) do
+    assigns
+    |> assign(:form, to_form(%{}, as: form_name))
+    |> render_sface()
+  end
+
+  def render(assigns) do
+    assigns
+    |> render_sface()
+  end
 
   def preloaded_options(preloaded_options) do
     Enum.map(preloaded_options || [], &prepare_entry/1)
@@ -33,13 +45,21 @@ defmodule Bonfire.UI.Common.MultiselectLive do
 
   defp prepare_entry(entry, _preloaded_options \\ [])
 
-  defp prepare_entry({name, id}, _preloaded_options) do
-    {name, id}
+  defp prepare_entry({id, name}, _preloaded_options) do
+    {id, name}
+  end
+
+  defp prepare_entry(%{value: %{id: id}, label: name}, _preloaded_options) do
+    {id, name}
   end
 
   defp prepare_entry(%{} = object, _preloaded_options) do
-    {e(object, :name, nil) || e(object, :profile, :name, nil) ||
-       e(object, :post_content, :name, "Unnamed"), id(object)}
+    debug(object)
+
+    {id(object),
+     e(object, :name, nil) || e(object, :username, nil) || e(object, :profile, :name, nil) ||
+       e(object, :character, :username, nil) ||
+       e(object, :post_content, :name, "Unnamed")}
   end
 
   defp prepare_entry(entry, preloaded_options)

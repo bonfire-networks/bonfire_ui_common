@@ -3,7 +3,7 @@
 
   <div class="flex flex-col flex-1 gap-2">
     {#case @implementation}
-      {#match nil}
+      {#match :tagify}
         <div class="flex-1" id={:select_recipients} phx-update="ignore" phx-hook="InputOrSelectOne">
           <input
             id="recipients_tagify"
@@ -19,16 +19,24 @@
       {#match _}
         <div class="w-full select_recipient">
           <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
-            selected_options={@to_circles}
+            mode={@mode}
+            selected_options={@to_circles
+            |> Enum.map(fn
+              {id, name} -> %{label: name, value: %{id: id, username: name}}
+              other -> other
+            end)}
             label={@label || l("Type a name")}
             form_input_name={__MODULE__}
             context_id={@context_id}
             class={@class}
             implementation={@implementation}
+            is_editable={@is_editable}
             event_target="#smart_input"
           />
         </div>
     {/case}
+
+    <!-- no longer needed since using live_select tags mode
     {#if is_list(@to_circles) and @to_circles != []}
       <div class="flex w-full">
         <div class="flex items-center gap-2">
@@ -54,6 +62,6 @@
           {/for}
         </div>
       </div>
-    {/if}
+    {/if} -->
   </div>
 </div>

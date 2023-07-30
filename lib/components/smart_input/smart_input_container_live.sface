@@ -111,7 +111,7 @@
                 activity_inception={@activity_inception}
               />
 
-              <form phx-change="select" phx-target={@myself}>
+              <form :if={@create_object_type != :message} phx-change="select" phx-target={@myself}>
                 <!-- PRESET BOUNDARY PICKER -->
                 <div class="hidden" id="boundaries_picker">
                   <div class="flex flex-col h-full">

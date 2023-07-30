@@ -1,22 +1,24 @@
 <div class="relative w-full dropdown">
   {#if @is_editable}
     {#if @implementation == :live_select}
-      <LiveSelect.live_select
+      <Bonfire.UI.Common.LiveSelectIntegrationLive.live_select
         form={@form}
         field={@form_input_name}
-        phx-target={@event_target}
+        mode={@mode}
+        event_target={@event_target}
         options={@preloaded_options || []}
+        value={@selected_options}
         placeholder={@label}
-        option_class="rounded-box px-4 py-2"
-        dropdown_class="cursor-pointer absolute top-12 p-2 z-50 dropdown-content menu mrnu-lg shadow w-full bg-base-300 shadow-lg text-base-content rounded-box"
-        container_class="w-full"
         text_input_class={@class}
-        update_min_len={2}
+        disabled={!@is_editable}
+        update_min_len={1}
       />
-      <div class="absolute top-[8px] right-[8px] z-30 flex items-center  w-[26px] h-[26px] min-h-[26px]">
+      <div
+        class="absolute top-[8px] right-[8px] z-30 flex items-center w-[26px] h-[26px] min-h-[26px]"
+        phx-click={JS.dispatch("change", to: "#smart_input_form")}
+      >
         <#Icon solid="Search" class="w-4 h-4 text-base-content/70" />
       </div>
-      <!-- mode={:tags} style={:daisyui} -->
     {#else}
       <Bonfire.UI.Common.BasicMultiselectLive
         id={Text.random_string()}
@@ -35,11 +37,12 @@
     {/if}
   {#else}
     {#case selected_options(@selected_options, @form_input_name, @__context__, @preloaded_options)}
-      {#match selected_options when not is_list(selected_options) or selected_options == []}
+      {#match selected_options
+        when (not is_list(selected_options) and not is_map(selected_options)) or selected_options == []}
         <span class="flex-1 w-full py-2 h-9">{@label}</span>
       {#match selected_options}
         <span
-          :for={{name_content, id} <- selected_options}
+          :for={{id, name_content} <- selected_options}
           :if={name_content || id}
           class="flex m-0.5 rounded-sm items-center py-0.5 pl-2 text-sm font-medium bg-base-100/40 text-base-content/70"
         >

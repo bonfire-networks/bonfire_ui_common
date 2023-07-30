@@ -1,5 +1,6 @@
 <Bonfire.UI.Common.MultiselectLive
   implementation={@implementation}
+  mode={@mode}
   preloaded_options={if @implementation != :live_select, do: users(@preloaded_options, @__context__, @type), else: []}
   selected_options={@selected_options}
   label={e(@label, "Select someone...")}

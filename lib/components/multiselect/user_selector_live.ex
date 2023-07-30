@@ -14,6 +14,7 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   prop is_editable, :boolean, default: true
   prop type, :any, default: Bonfire.Data.Identity.User
   prop implementation, :atom, default: nil
+  prop mode, :atom, default: :single
 
   def users(preloaded_options, context, type) do
     preloaded_options || context[:preloaded_options][type] ||
