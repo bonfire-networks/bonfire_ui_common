@@ -3,6 +3,7 @@
     {#if @implementation == :live_select}
       <Bonfire.UI.Common.LiveSelectIntegrationLive.live_select
         form={@form}
+        class={@class}
         field={@form_input_name}
         mode={@mode}
         event_target={@event_target}
