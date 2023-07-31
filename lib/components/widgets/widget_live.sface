@@ -12,7 +12,7 @@
         <div class="flex-1 flex items-center gap-4">
           <span :if={!@without_icon} class="">
             {#if not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])}
-              <Iconify.iconify icon={widget(@widget, @__context__)[:icon_active]} class={@icon_class} />
+              <Iconify.iconify icon={widget(@widget, @__context__)[:icon_active]} class={@icon_class, "!text-base-content"} />
             {#else}
               <Iconify.iconify icon={widget(@widget, @__context__)[:icon]} class={@icon_class} />
             {/if}
@@ -25,8 +25,8 @@
           </span>
           <span class={
             @text_class ||
-              ["font-normal text-base-content/90 flex-1"],
-            "!font-bold":
+              ["font-medium text-base-content/60 flex-1"],
+            "!font-bold !text-base-content":
               not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
           }>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
         </div>

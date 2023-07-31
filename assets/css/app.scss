@@ -848,7 +848,7 @@ em-emoji-picker {
 }
 
 .lined_tab.active > div {
-  @apply !border-primary !text-base-content/100;
+  @apply !border-primary !font-bold !text-base-content/100;
 }
 
 .object_cover .open_modal_wrapper {
