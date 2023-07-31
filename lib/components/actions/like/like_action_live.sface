@@ -38,8 +38,8 @@
         class="cursor-not-allowed btn btn-ghost btn-circle like like_with_label btn-sm flex gap-1"
         title={l("You can't like this")}
       >
-        <span class="text-base-content text-opacity-20">
-          <#Icon iconify="material-symbols:star-rounded" class="w-5 h-5" />
+        <span class="text-base-content/50 text-opacity-20">
+          <Iconify.Bonfire.LikeFire.render class="h-[20px] w-[18px]" />
         </span>
 
         <span class="sr-only">
