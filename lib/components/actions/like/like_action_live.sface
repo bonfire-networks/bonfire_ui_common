@@ -10,35 +10,32 @@
         phx-click="Bonfire.Social.Likes:like"
         phx-value-direction={if @my_like, do: "down", else: "up"}
         phx-value-id={@object_id}
+        phx-target={@myself}
         phx-value-component={__MODULE__}
         phx-value-current_count={e(@like_count, 0)}
-        class="btn btn-ghost btn-circle like like_with_label btn-sm"
+        class="btn btn-ghost btn-circle like like_with_label btn-sm flex gap-1"
         title={if @my_like, do: l("Un-like this"), else: l("Like this")}
       >
         {#if @my_like}
-          <span class="">
-            <Iconify.Bonfire.LikeFire.render class="text-amber-400 h-[20px] w-[18px]" />
-          </span>
+          <Iconify.Bonfire.LikeFire.render class="text-amber-400 h-[20px] w-[18px]" />
         {#else}
-          <span class="">
-            <Iconify.Bonfire.LikeFire.render class="text-base-content/50 h-[20px] w-[18px]" />
-          </span>
+          <Iconify.Bonfire.LikeFire.render class="text-base-content/50 h-[20px] w-[18px]" />
         {/if}
 
         <span :if={!@my_like} class="sr-only">
           {l("Favourite")}
-          <span :if={e(@like_count, 0) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@like_count, 0)}</span>
+          <span :if={e(@like_count, 0) > 0}>{e(@like_count, 0)}</span>
         </span>
         <span :if={@my_like} class="sr-only">
           {l("Favourited")}
-          <span :if={e(@like_count, 0) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@like_count, 0)}</span>
         </span>
+        <span :if={e(@like_count, 0) > 0}>{e(@like_count, 0)}</span>
       </button>
     {#match _}
       <button
         type="button"
         data-role="like_disabled"
-        class="cursor-not-allowed btn btn-ghost btn-circle like like_with_label btn-sm"
+        class="cursor-not-allowed btn btn-ghost btn-circle like like_with_label btn-sm flex gap-1"
         title={l("You can't like this")}
       >
         <span class="text-base-content text-opacity-20">
@@ -47,8 +44,8 @@
 
         <span class="sr-only">
           {l("Cannot Like")}
-          <span :if={e(@like_count, 0) > 0 and Bonfire.Me.Settings.get([:ui, :show_activity_counts], nil, @__context__)}>{e(@like_count, 0)}</span>
         </span>
+        <span :if={e(@like_count, 0) > 0}>{e(@like_count, 0)}</span>
       </button>
   {/case}
 </div>
