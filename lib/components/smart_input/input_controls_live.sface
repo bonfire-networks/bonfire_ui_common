@@ -161,10 +161,8 @@
               </div>
               <button
                 type="button"
-                phx-click={
-                  JS.show(to: "#boundaries_preview") 
-                  |> JS.hide(to: "#compose_content_wrapper")
-                }
+                phx-click={JS.show(to: "#boundaries_preview")
+                |> JS.hide(to: "#compose_content_wrapper")}
                 class="flex items-center btn normal-case rounded-full btn-ghost btn-sm"
               >
                 <#Icon iconify="mdi:eye-outline" class="w-5 h-5 text-primary" />
