@@ -309,8 +309,18 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     |> debug("LiveHandler: attrs")
     |> (fn assigns ->
           if attrs["to_atoms"] == "true",
-            do: input_to_atoms(assigns, discard_unknown: true, values: true),
-            else: input_to_atoms(assigns, discard_unknown: true, values: false)
+            do:
+              input_to_atoms(assigns,
+                discard_unknown: true,
+                values: true,
+                values_to_integers: attrs["to_integers"] == "true"
+              ),
+            else:
+              input_to_atoms(assigns,
+                discard_unknown: true,
+                values: false,
+                values_to_integers: attrs["to_integers"] == "true"
+              )
         end).()
     |> debug("LiveHandler: simple assign")
     |> (fn assigns ->

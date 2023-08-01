@@ -17,4 +17,6 @@ defmodule Bonfire.UI.Common.TabsLive do
 
   @doc "What element (and it's parent view or stateful component) to send the event to (optional)"
   prop event_target, :string, default: nil
+
+  slot default, required: false
 end
