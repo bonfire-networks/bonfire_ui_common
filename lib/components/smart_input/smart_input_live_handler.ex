@@ -16,7 +16,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     |> JS.hide(to: "#extra_boundaries")
     |> JS.hide(to: "#boundaries_picker")
     |> JS.hide(to: "#roles_detail")
-    |> JS.show(to: "#compose_content_wrapper")
+    |> JS.show(to: "#composer_container")
     |> maximize()
   end
 

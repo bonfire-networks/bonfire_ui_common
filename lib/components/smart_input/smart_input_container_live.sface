@@ -48,20 +48,19 @@
       phx-hook="ScreenSize"
       id="smart_input_container"
       class={
-        "smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full left-0 bg-base-200 mx-auto z-[9999] transition-all shadow-composer right-0 md:left-auto bottom-0",
-        "md:w-[40rem] !inset-0 md:!top-20 !h-auto md:!h-fit !shadow-2xl !rounded-2xl":
+        "h-full w-full md:h-auto !min-h-[420px] bottom-0 block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0",
+        "!left-1 !right-1 xl:!left-auto xl:!right-auto w-full top-0 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto xl:max-w-[1200px] !left-auto !right-auto":
           @smart_input_as == :focused,
         "md:w-[36rem] md:right-4 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto":
           @smart_input_as != :focused,
         hidden: e(@smart_input_opts, :open, nil) != true
       }
-      style="bottom: 0"
     >
-      <div class="w-full rounded--t-lg bg-gradient-to-t from-transparent to-base-content/40 p-[0.05rem]">
-        <div class="w-full rounded-t-lg bg-base-200">
+      <div class="w-full rounded-t-lg bg-gradient-to-t from-transparent to-base-content/40 p-[0.05rem] flex flex-col flex-1 h-full grow">
+        <div class="w-full rounded-t-lg bg-base-200 flex flex-col flex-1 h-full grow">
           <!-- "md:!w-[20rem] tablet-lg:block bottom-0": e(@smart_input_opts, :minimized, nil) == true, -->
 
-          <div
+          <!-- <div
             :if={@smart_input_as == :focused}
             phx-click={LiveHandler.close_smart_input()}
             phx-target="#smart_input"
@@ -70,22 +69,24 @@
               hidden: e(@smart_input_opts, :open, nil) == false
             }
             style="-webkit-backdrop-filter: blur(8px);"
-          />
+          /> -->
 
           <div class={
-            "smart_input_modal relative z-50 md:border md:rounded-lg border-base-content/5",
+            "overflow-hidden smart_input_modal relative z-50 md:border md:rounded-lg border-base-content/5 flex flex-col grow h-full",
             "!rounded-b-none": @smart_input_as == :non_blocking
           }>
+            <div class="h-[2px] relative bg-base-content/5 rounded-t-lg" id="gutter">
+              <div class="absolute inset-0 top-[-2px] bottom-[-2px] hover:bg-base-content/10 left-0 right-0 cursor-row-resize" id="gutter-inner"></div>
+            </div>
             <Bonfire.UI.Common.SmartInputHeaderModalLive
               smart_input_opts={@smart_input_opts}
               smart_input_as={@smart_input_as}
             />
             <div
               x-ref="smart_input"
+              id="smart_input_live"
               class={
-                "flex-1 bg-base-300 h-full grow relative z-[9999999999]",
-                "max-h-[calc(100vh-52px)] md:max-h-[calc(100vh-5rem-52px)] overflow-x-auto":
-                  @smart_input_as == :focused
+                "flex-1 h-full bg-base-300 grow relative z-[9999999999]"
               }
             >
               <SmartInputLive
@@ -111,9 +112,9 @@
                 activity_inception={@activity_inception}
               />
 
-              <form :if={@create_object_type != :message} phx-change="select" phx-target={@myself}>
+              <form class="flex-1 h-full grow" :if={@create_object_type != :message} phx-change="select" phx-target={@myself}>
                 <!-- PRESET BOUNDARY PICKER -->
-                <div class="hidden" id="boundaries_picker">
+                <div class="hidden flex-1 h-full grow" id="boundaries_picker">
                   <div class="flex flex-col h-full">
                     <Dynamic.Component
                       :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesGeneralAccessLive)}
@@ -125,7 +126,7 @@
                 </div>
 
                 <!-- CUSTOM BOUNDARIES -->
-                <div class="hidden" id="extra_boundaries">
+                <div class="hidden flex-1 h-full grow" id="extra_boundaries">
                   <div class="flex flex-col h-full">
                     <div class="flex w-full flex-1 h-full p-4">
                       <Dynamic.Component
@@ -150,7 +151,7 @@
                 </div>
 
                 <!-- ROLES DETAIL -->
-                <div class="hidden" id="roles_detail">
+                <div class="hidden flex-1 h-full grow" id="roles_detail">
                   <button
                     phx-click={JS.toggle(to: "#roles_detail") |> JS.toggle(to: "#extra_boundaries")}
                     type="button"
@@ -169,8 +170,8 @@
                 </div>
 
                 <!-- PREVIEW BOUNDARIES -->
-                <div class="hidden" id="boundaries_preview">
-                  <div class="flex flex-col min-h-[374px] w-full flex-1 h-full p-4">
+                <div class="hidden flex-1 h-full grow" id="boundaries_preview">
+                  <div class="flex flex-col w-full flex-1 h-full p-4">
                     <Dynamic.LiveComponent
                       :if={module_enabled?(Bonfire.Boundaries.Web.PreviewBoundariesLive)}
                       module={Bonfire.Boundaries.Web.PreviewBoundariesLive}

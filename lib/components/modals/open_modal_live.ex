@@ -22,7 +22,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   @doc "The classes of the open button for the modal. Only used if no `open_btn` slot is passed."
   prop open_btn_class, :css_class, default: ""
 
-  prop open_btn_wrapper_class, :css_class, default: ""
+  prop open_btn_wrapper_class, :css_class, default: "open_modal_btn_wrapper"
 
   prop open_btn_opts, :any, default: []
 

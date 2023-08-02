@@ -1,11 +1,10 @@
 <div class="flex-1 h-full bg-base-300">
-  <div id="compose_content_wrapper">
+  <div class="flex-1 h-full grow" id="compose_content_wrapper">
     <div class="relative !flex flex-col flex-1 h-full">
       <!-- here was old/loader.svg -->
-      <div class="md:h-full flex flex-col md:min-h-[240px]  overflow-y-hidden">
         <!-- DM RECIPIENTS -->
-        <div class="relative bg-base-300">
-          {#if @create_object_type == :message || e(@smart_input_opts, :recipients_editable, nil)}
+        {#if @create_object_type == :message || e(@smart_input_opts, :recipients_editable, nil)}
+          <div class="mb-2 relative bg-base-300">
             <Bonfire.UI.Common.SelectRecipientsLive
               preloaded_recipients={e(@preloaded_recipients, [])}
               to_boundaries={@to_boundaries}
@@ -14,204 +13,198 @@
               context_id={@context_id}
               is_editable={e(@smart_input_opts, :recipients_editable, true)}
             />
-          {#else}
-            <div>
-              <div class="flex items-center px-2 gap-3 text-base md:text-sm text-base-content/70">
-                <!-- <Bonfire.UI.Common.AvatarLive
-                      :if={is_map(current_user(@__context__))}
-                      parent_id="nav_sidebar"
-                      class="inline-block object-cover w-10 h-10 rounded-full cursor-pointer bg-base-100"
-                      bg_class="rounded"
-                      size="40"
-                      user={current_user(@__context__)}
-                    /> -->
-                <div class="flex items-center w-full">
-                  <!-- <span class="px-1 text-xs font-medium uppercase text-base-content/70">{l("To")}</span> -->
+          </div>
+        {/if}
+          <div class="flex items-center gap-2 p-2 pt-0 border-b border-base-content/20">
+              
+            <Bonfire.UI.Common.UploadButtonLive
+              :if={@create_object_type != :message && module_enabled?(Bonfire.Files, @__context__)}
+              uploads={@uploads}
+            />
 
+            <div :if={@enable_thread_title} class="relative z-30 flex items-center">
+              <button
+                type="button"
+                phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
+                  "#smart_input_thread_title",
+                  ".btn_title_toggle",
+                  "btn-active"
+                )}
+                class="flex items-center btn btn-ghost btn-sm btn-circle btn_title_toggle"
+              >
+                <#Icon iconify="solar:text-bold" class="w-4 h-4 text-base-content/70 " />
+              </button>
+            </div>
+
+            <div
+              :if={@show_cw_toggle}
+              title={l("Add a content warning")}
+              class="relative z-30 flex items-center"
+            >
+              <button
+                :if={Config.get([:ui, :smart_input, :cw]) == true and @create_object_type in [:message, :post, nil]}
+                type="button"
+                phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
+                  "#smart_input_post_title",
+                  ".btn_cw_toggle",
+                  "btn-active"
+                )}
+                class="flex items-center btn btn-ghost btn-sm btn-circle btn_cw_toggle"
+              >
+                <#Icon iconify="ri:alarm-warning-line" class="w-4 h-4 text-base-content/70 " />
+              </button>
+            </div>
+
+            <!-- HEADING -->
+              <button
+                id="heading_btn"
+                type="button"
+                class="flex items-center btn btn-ghost btn-sm btn-circle heading_btn"
+              >
+                <#Icon iconify="ri:heading" class="w-4 h-4 text-base-content/70 " />
+              </button>
+
+              <!-- BOLD -->
+              <button
+                id="bold_btn"
+                type="button"
+                class="flex items-center btn btn-ghost btn-sm btn-circle bold_btn"
+              >
+                <#Icon iconify="ri:bold" class="w-4 h-4 text-base-content/70 " />
+              </button>
+
+              <!-- ITALIC -->
+              <button
+                id="italic_btn"
+                type="button"
+                class="flex items-center btn btn-ghost btn-sm btn-circle italic_btn"
+              >
+                <#Icon iconify="ri:italic" class="w-4 h-4 text-base-content/70 " />
+              </button>
+
+               <!-- STRIKE -->
+              <button
+                id="strike_btn"
+                type="button"
+                class="flex items-center btn btn-ghost btn-sm btn-circle"
+              >
+                <#Icon iconify="ri:strikethrough-2" class="w-4 h-4 text-base-content/70 " />
+              </button>
+
+              <!-- QUOTE -->
+              <!-- <button
+                id="quote_btn"
+                type="button"
+                class="flex items-center btn btn-ghost btn-sm btn-circle"
+              >
+                <#Icon iconify="ri:double-quotes-l" class="w-4 h-4 text-base-content/70 " />
+              </button>
+            -->
+              <!-- TABLE -->
+              <!-- <button
+                id="table_btn"
+                type="button"
+                class="flex items-center btn btn-ghost btn-sm btn-circle"
+              >
+                <#Icon iconify="ri:table-line" class="w-4 h-4 text-base-content/70 " />
+              </button> -->
+
+            <Dynamic.Component
+              :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
+              module={Bonfire.UI.Common.EmojiPickerLive}
+              target_field=".composer"
+              class={
+                "bottom-10 left-3",
+                "!top-10 right-0 bottom-[auto]": @showing_within == :page
+              }
+            />
+
+            
+          </div>
+      <div id="composer_wrapper" class="min-h-[320px] h-full flex flex-col overflow-y-auto">
+            
+          <div class="h-full flex flex-col flex-1 grow relative">
+            <div
+              class="hidden"
+              :if={@enable_thread_title}
+              id="smart_input_thread_title"
+              phx-update={if @reset_smart_input, do: "replace", else: "ignore"}
+            >
+              <div class="relative p-2 border-b bg-base-300 border-base-content/20">
+                <#Icon
+                  iconify="solar:text-bold"
+                  class="absolute w-5 h-5 stroke-1 top-[14px] left-3 text-base-content/70"
+                />
+                <label class="sr-only">{l("Title")}</label>
+                <TextInput
+                  name={:thread_title}
+                  opts={
+                    placeholder: l("Type a title"),
+                    "phx-debounce": "blur"
+                  }
+                  class="w-full h-8 pl-12 text-sm bg-transparent rounded input"
+                />
+              </div>
+            </div>
+
+            <!-- UPLOADS PREVIEWS -->
+            <div class={"p-2 border-b border-base-content/20 uploads_preview": @uploads.files.entries != []}>
+              <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
+            </div>
+
+            <!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE -->
+            <#slot {@default} />
+        </div>
+      </div>
+
+      <div class="z-50 sticky bottom-0">
+        <div class="">
+          <div class="flex justify-between gap-3 p-4 md:items-center bg-base-300 md:px-3 md:py-2">
+              
+              <div class="flex items-center gap-3">
+                {#if @create_object_type != :message && !e(@smart_input_opts, :recipients_editable, nil)}
                   <Dynamic.Component
                     :if={module_enabled?(Bonfire.Boundaries.Web.SetBoundariesButtonLive)}
                     module={Bonfire.Boundaries.Web.SetBoundariesButtonLive}
                     to_boundaries={@to_boundaries}
                     boundary_preset={@boundary_preset}
                   />
-                </div>
-                <!-- <div class="flex flex-col items-start">
-                  <div class="text-sm font-semibold truncate max-w-[180px] text-base-content">{e(current_user(@__context__), :profile, :name, l("Me"))}</div>
-                  <div
-                    :if={e(current_user(@__context__), :character, :username, nil)}
-                    class="-mt-0.5 text-[13px] font-normal truncate text-base-content/70"
-                  >@{e(current_user(@__context__), :character, :username, nil)}</div>
-                </div> -->
-              </div>
-
-              <!-- <div id="custom_boundaries" class="hidden flex px-2 mt-2 items-center gap-2">
-                {#for acl <-
-                    Bonfire.Boundaries.Acls.list_my(current_user(@__context__))
-                    |> Enum.map(fn
-                      %struct{} = acl when struct == Bonfire.Data.AccessControl.Acl ->
-                        %{
-                          id: e(acl, :id, nil),
-                          field: :to_boundaries,
-                          description: e(acl, :extra_info, :summary, nil),
-                          name: e(acl, :named, :name, nil) || e(acl, :sterotyped, :named, :name, nil)
-                        }
-                    end)
-                    |> Enum.filter(fn acl -> acl[:name] != nil end)}
+                  
                   <button
                     type="button"
-                    phx-click={JS.push("Bonfire.Boundaries:select_boundary",
-                      value: %{id: e(acl, :id, nil), name: e(acl, :name, nil)},
-                      target: "#smart_input"
-                    )}
-                    class={
-                      "badge !h-[1.5rem] badge-outline border-base-content/50",
-                      "badge-primary": e(acl, :name, "") in @to_boundaries
+                    phx-click={
+                      JS.show(to: "#boundaries_preview") 
+                      |> JS.hide(to: "#composer_container")
                     }
-                  >{e(acl, :name, nil)}</button>
-                {/for}
-              </div> -->
-            </div>
-          {/if}
-        </div>
-
-        <div
-          class="hidden"
-          :if={@enable_thread_title}
-          id="smart_input_thread_title"
-          phx-update={if @reset_smart_input, do: "replace", else: "ignore"}
-        >
-          <div class="relative p-2 border-b bg-base-300 border-base-content/20">
-            <#Icon
-              iconify="solar:text-bold"
-              class="absolute w-5 h-5 stroke-1 top-[14px] left-3 text-base-content/70"
-            />
-            <label class="sr-only">{l("Title")}</label>
-            <TextInput
-              name={:thread_title}
-              opts={
-                placeholder: l("Type a title"),
-                "phx-debounce": "blur"
-              }
-              class="w-full h-8 pl-12 text-sm bg-transparent rounded input"
-            />
-          </div>
-        </div>
-
-        <!-- UPLOADS PREVIEWS -->
-        <div class={"p-2 border-b border-base-content/20 uploads_preview": @uploads.files.entries != []}>
-          <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
-        </div>
-
-        <!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE -->
-        <#slot {@default} />
-      </div>
-
-      <div class="z-50">
-        <div class="">
-          <div class="flex flex-col justify-between gap-3 p-4 md:items-center bg-base-300 md:px-3 md:py-2">
-            <div class="flex flex-col md:flex-row gap-3 md:items-center justify-between flex-1 w-full">
-              <div class="flex items-center gap-4 md:gap-3">
-                <Bonfire.UI.Common.UploadButtonLive
-                  :if={@create_object_type != :message && module_enabled?(Bonfire.Files, @__context__)}
-                  uploads={@uploads}
-                />
-
-                <div :if={@enable_thread_title} class="relative z-30 flex items-center">
-                  <button
-                    type="button"
-                    phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
-                      "#smart_input_thread_title",
-                      ".btn_title_toggle",
-                      "btn-active"
-                    )}
-                    class="flex items-center btn btn-ghost btn-sm btn-circle btn_title_toggle"
+                    class="flex items-center btn btn-outline btn-sm !border !border-base-content/30 btn-circle"
                   >
-                    <#Icon iconify="solar:text-bold" class="w-5 h-5 text-primary/80" />
+                    <#Icon iconify="mdi:eye-outline" class="w-4 h-4 !text-opacity-70" />
+                    <span class="sr-only">{l("Preview boundary")}</span>
                   </button>
-                </div>
-
-                <div
-                  :if={@show_cw_toggle}
-                  title={l("Add a content warning")}
-                  class="relative z-30 flex items-center"
-                >
-                  <button
-                    :if={Config.get([:ui, :smart_input, :cw]) == true and @create_object_type in [:message, :post, nil]}
-                    type="button"
-                    phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
-                      "#smart_input_post_title",
-                      ".btn_cw_toggle",
-                      "btn-active"
-                    )}
-                    class="flex items-center btn btn-ghost btn-sm btn-circle btn_cw_toggle"
-                  >
-                    <#Icon iconify="ri:alarm-warning-line" class="w-5 h-5 text-primary/80" />
-                  </button>
-                </div>
-
-                <Dynamic.Component
-                  :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
-                  module={Bonfire.UI.Common.EmojiPickerLive}
-                  target_field=".composer"
-                  class={
-                    "bottom-10 left-3",
-                    "!top-10 right-0 bottom-[auto]": @showing_within == :page
-                  }
-                />
+                {/if}
               </div>
+
+
+
               <button
-                type="button"
-                phx-click={JS.show(to: "#boundaries_preview")
-                |> JS.hide(to: "#compose_content_wrapper")}
-                class="flex items-center btn normal-case rounded-full btn-ghost btn-sm"
+                type="submit"
+                x-on:click="$dispatch('submit')"
+                phx-disable-with={if @create_object_type == :message,
+                  do: l("Sending..."),
+                  else: l("Posting...")}
+                class="capitalize rounded-full justify-self-end btn-sm btn px-8 btn-primary"
+                disabled={e(@smart_input_opts, :submit_disabled, nil)}
               >
-                <#Icon iconify="mdi:eye-outline" class="w-5 h-5 text-primary" />
-                <span class="text-sm text-primary/90">{l("Preview boundary")}</span>
+                <!-- x-bind:disabled={"body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length], :instance, @__context__[:instance_settings])}"} -->
+                {#if @create_object_type == :message}
+                  {l("Send")}
+                {#else}
+                  {@submit_label || l("Post")}
+                {/if}
+
+                {e(@smart_input_opts, :submit_label, nil)}
               </button>
-              <!-- 
-            
-    <button
-    :if={!Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) and module_enabled?(Bonfire.Boundaries.Web.BoundariesPresetDescriptionLive, @__context__)}
-      type="button"
-      phx-click={JS.toggle(to: "#compose_content_wrapper") |> JS.toggle(to: "#extra_boundaries")}
-      class="flex hover:underline text-[13px] pr-2 font-semibold text-primary/80 items-center gap-2"
-    ><Dynamic.Component         
-                module={Bonfire.Boundaries.Web.BoundariesPresetDescriptionLive}
-                to_boundaries={@to_boundaries}
-              /></button> -->
-
-              <!-- <div class="text-xs text-base-content/70">
-          <span
-            :class={"{'text-error' : body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length],
-            :instance,
-            @__context__[:instance_settings])}}"}
-            x-text="body_length()"
-          /> /
-          {Bonfire.Me.Settings.get(
-            [Bonfire.UI.Common.SmartInputLive, :max_length],
-            :instance,
-            @__context__[:instance_settings]
-          )} {l("words")}
-        </div> -->
             </div>
-            <button
-              type="submit"
-              x-on:click="$dispatch('submit')"
-              phx-disable-with={if @create_object_type == :message,
-                do: l("Sending..."),
-                else: l("Posting...")}
-              class="capitalize w-full rounded-full justify-self-end btn px-8 btn-primary"
-              disabled={e(@smart_input_opts, :submit_disabled, nil)}
-            >
-              <!-- x-bind:disabled={"body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length], :instance, @__context__[:instance_settings])}"} -->
-              {#if @create_object_type == :message}
-                {l("Send")}
-              {#else}
-                {@submit_label || l("Post")}
-              {/if}
-
-              {e(@smart_input_opts, :submit_label, nil)}
-            </button>
           </div>
 
           <input type="hidden" name="id" value={e(@smart_input_opts, :id, nil)}>
@@ -246,15 +239,6 @@
             name="to_circles[]"
             value={value}
           />
-          <!-- 
-    <input
-      :for={circle <- @to_circles}
-      type="hidden"
-      name="to_circles[]"
-      label={if is_tuple(circle), do: elem(circle, 0) |> e(..., :name, ...)}
-      value={if is_tuple(circle), do: elem(circle, 1), else: circle}
-    /> -->
-        </div>
       </div>
     </div>
   </div>

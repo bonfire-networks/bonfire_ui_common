@@ -36,7 +36,7 @@
       </div>
       <Dynamic.Component
         module={LiveHandler.active_smart_input_component(@smart_input_component, @create_object_type)}
-        textarea_class={Surface.css_class(["editor_area textarea p-0 w-full rounded-none h-[240px] max-h-[240px]"])}
+        textarea_class={Surface.css_class(["editor_area textarea p-0 w-full rounded-none"])}
         {...assigns}
       />
     </div>

@@ -1,5 +1,5 @@
 <div class="relative z-20">
-  {#case is_nil(@current_user) or @object_type in [Bonfire.Data.Social.Message] or !@object_boundary or
+  {#case is_nil(@current_user) or !@object_boundary or
       Bonfire.Boundaries.can?(@__context__, :like, @object_boundary)}
     {#match true}
       <button

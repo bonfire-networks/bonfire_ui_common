@@ -8,7 +8,6 @@ import { createPopup } from '@picmo/popup-picker';
 EmojiHooks.EmojiPicker = {
   
   mounted() {
-    console.log("SADDSA")
     const trigger = document.querySelector('.emoji-button');
     trigger.addEventListener('click', () => {
       picker.toggle();
@@ -23,7 +22,6 @@ EmojiHooks.EmojiPicker = {
     
 
     picker.addEventListener('emoji:select', event => {
-      console.log("TEST EMOJI")
       return event.emoji
     });
 
