@@ -67,8 +67,12 @@ defmodule Bonfire.UI.Common.PersistentLive do
   Set assigns for the persistent view
   """
   def set(context, assigns) do
-    assigns = persistent_assigns_filter(assigns)
-    maybe_send(context, assigns) || send_self(assigns)
+    persistent_assigns_filter(assigns)
+    |> maybe_send(context, ...)
+  end
+
+  def notify(context, attrs) do
+    maybe_send(context, {:notification, attrs})
   end
 
   defp persistent_assigns_filter(assigns) do
@@ -112,7 +116,8 @@ defmodule Bonfire.UI.Common.PersistentLive do
     case e(context, :sticky, nil) do
       true ->
         debug("already in PersistentLive process")
-        false
+        send_self(assigns)
+        true
 
       _ ->
         debug("send to PersistentLive liveview process")
@@ -192,13 +197,13 @@ defmodule Bonfire.UI.Common.PersistentLive do
     {:noreply, socket}
   end
 
-  # def handle_info({:assign, {:notification, assigns}}, socket) do
-  #   debug("forward assigns from PersistentLive to the NotificationLive stateful component")
+   def handle_info({:assign, {:notification, assigns}}, socket) do
+     debug("forward assigns from PersistentLive to the NotificationLive stateful component")
 
-  #   maybe_send_update(Bonfire.UI.Common.NotificationLive, :notification, assigns)
+     maybe_send_update(Bonfire.UI.Common.NotificationLive, :notification, assigns)
 
-  #   {:noreply, socket}
-  # end
+     {:noreply, socket}
+   end
 
   def handle_info({:assign, assigns}, socket) do
     {:noreply,
