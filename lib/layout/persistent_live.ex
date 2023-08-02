@@ -197,13 +197,13 @@ defmodule Bonfire.UI.Common.PersistentLive do
     {:noreply, socket}
   end
 
-   def handle_info({:assign, {:notification, assigns}}, socket) do
-     debug("forward assigns from PersistentLive to the NotificationLive stateful component")
+  def handle_info({:assign, {:notification, assigns}}, socket) do
+    debug("forward assigns from PersistentLive to the NotificationLive stateful component")
 
-     maybe_send_update(Bonfire.UI.Common.NotificationLive, :notification, assigns)
+    maybe_send_update(Bonfire.UI.Common.NotificationLive, :notification, assigns)
 
-     {:noreply, socket}
-   end
+    {:noreply, socket}
+  end
 
   def handle_info({:assign, assigns}, socket) do
     {:noreply,

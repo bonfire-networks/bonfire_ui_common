@@ -42,7 +42,7 @@
         when (not is_list(selected_options) and not is_map(selected_options)) or selected_options == []}
         <span class="flex-1 w-full py-2 h-9">{@label}</span>
       {#match selected_options}
-        <span class="text-base-content/70 text-xs font-medium tracking-wider mx-2">{l"TO"}</span>
+        <span class="text-base-content/70 text-xs font-medium tracking-wider mx-2">{l("TO")}</span>
         <span
           :for={{id, name_content} <- selected_options}
           :if={name_content || id}

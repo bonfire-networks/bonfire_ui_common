@@ -44,6 +44,6 @@
     type="button"
     class="emoji-button btn btn-ghost btn-sm text-[22px] btn-circle"
   >
-    <#Icon iconify="ri:emotion-happy-line" class="w-4 h-4 text-base-content/70 " />
+    <#Icon iconify="ri:emotion-happy-line" class="w-4 h-4 text-base-content/70" />
   </button>
 </div>

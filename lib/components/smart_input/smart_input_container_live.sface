@@ -76,7 +76,10 @@
             "!rounded-b-none": @smart_input_as == :non_blocking
           }>
             <div class="h-[2px] relative bg-base-content/5 rounded-t-lg" id="gutter">
-              <div class="absolute inset-0 top-[-2px] bottom-[-2px] hover:bg-base-content/10 left-0 right-0 cursor-row-resize" id="gutter-inner"></div>
+              <div
+                class="absolute inset-0 top-[-2px] bottom-[-2px] hover:bg-base-content/10 left-0 right-0 cursor-row-resize"
+                id="gutter-inner"
+              />
             </div>
             <Bonfire.UI.Common.SmartInputHeaderModalLive
               smart_input_opts={@smart_input_opts}
@@ -85,9 +88,7 @@
             <div
               x-ref="smart_input"
               id="smart_input_live"
-              class={
-                "flex-1 h-full bg-base-300 grow relative z-[9999999999]"
-              }
+              class="flex-1 h-full bg-base-300 grow relative z-[9999999999]"
             >
               <SmartInputLive
                 boundaries_modal_id={:modal_composer}
@@ -112,7 +113,12 @@
                 activity_inception={@activity_inception}
               />
 
-              <form class="flex-1 h-full grow" :if={@create_object_type != :message} phx-change="select" phx-target={@myself}>
+              <form
+                class="flex-1 h-full grow"
+                :if={@create_object_type != :message}
+                phx-change="select"
+                phx-target={@myself}
+              >
                 <!-- PRESET BOUNDARY PICKER -->
                 <div class="hidden flex-1 h-full grow" id="boundaries_picker">
                   <div class="flex flex-col h-full">
