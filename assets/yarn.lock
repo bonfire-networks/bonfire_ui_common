@@ -405,11 +405,6 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.1.5.tgz#74ee3aad995d0a3996a6bb9533d4d280514ede03"
   integrity sha512-oJ4F3TnvpXaQwZJNF3ZK+kLPHKarDmJjJ6jyzVNDKH9md1dptjC7lWR//jrGuLdek/U6iltWxqAnYOu8gCiOvA==
 
-"@yaireo/tagify@^4.13.2":
-  version "4.17.8"
-  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.17.8.tgz#2696570843e3cd14318f305e80699d457aad918a"
-  integrity sha512-MqU3JhE/35r8qZPgfLshXfOkTkgtFEXh2Ja8J3Nn1rPuut28yorJLtxH67jbrbanE1gFH2vCvxe6meqM6oZ8rA==
-
 abbrev@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -983,7 +978,7 @@ csso@^4.2.0:
   dependencies:
     css-tree "^1.1.2"
 
-daisyui@^3.0.0:
+daisyui@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-3.5.0.tgz#eec347c9f18f76daa932000624eb0e4bf71e64e0"
   integrity sha512-wSaeXwaYdMv4yURv9wj7kKQQN9Jyumfh/skIpZfCNkCb2jLf/so+iNKSM8l4rDN0TRvB5OccMlAvsf2UAtk2gg==
@@ -1509,11 +1504,6 @@ get-stream@^5.1.0:
   integrity sha512-nBF+F1rAZVCu/p7rjzgA+Yb4lfYXrpl7a6VmJrU8wF9I1CKvP/QwPNZHnOlwbTkY6dvtFIzFMSyQXbLoTQPRpA==
   dependencies:
     pump "^3.0.0"
-
-glider-js@^1.7.8:
-  version "1.7.8"
-  resolved "https://registry.yarnpkg.com/glider-js/-/glider-js-1.7.8.tgz#b9a50bf86d23ec42b58539a8d80400efd710c92a"
-  integrity sha512-env4+yfoNYaeHJmEBGygjcZDpZ5LRUjGhCB6Ag+XNQfvuLVD5PhCYQShBVCAd5On7XfknM57O+V2Fwfcsii3Dw==
 
 glob-gitignore@^1.0.14:
   version "1.0.14"

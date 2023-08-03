@@ -2,21 +2,7 @@
   <!-- <span class="px-1 text-xs font-medium uppercase text-base-content/70">{l("To")}</span> -->
 
   <div class="flex flex-col flex-1 gap-2">
-    {#case @implementation}
-      {#match :tagify}
-        <div class="flex-1" id={:select_recipients} phx-update="ignore" phx-hook="InputOrSelectOne">
-          <input
-            id="recipients_tagify"
-            name="to_circles"
-            class="flex-1 w-full bg-transparent border-0 tagify"
-          />
-          <select class="hidden tagify">
-            {#for user <- @preloaded_recipients}
-              <option class="" value={e(user, :edge, :object, :id, nil)}>{e(user, :edge, :object, :profile, :name, "")} - {Bonfire.Me.Characters.display_username(e(user, :edge, :object, nil))}</option>
-            {/for}
-          </select>
-        </div>
-      {#match _}
+
         <div class="w-full select_recipient">
           <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
             mode={@mode}
@@ -34,8 +20,7 @@
             event_target="#smart_input"
           />
         </div>
-    {/case}
-
+    
     <!-- no longer needed since using live_select tags mode
     {#if is_list(@to_circles) and @to_circles != []}
       <div class="flex w-full">

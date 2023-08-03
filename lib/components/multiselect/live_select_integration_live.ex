@@ -21,7 +21,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       text_input_extra_class={@text_input_class}
       container_extra_class="flex flex-col w-full "
       option_extra_class="rounded-box px-4 py-2"
-      dropdown_class="cursor-pointer absolute top-11 p-2 z-50 dropdown-content menu shadow w-full bg-base-300 shadow-lg text-base-content rounded-box"
+      dropdown_class="cursor-pointer absolute top-12 p-2 z-50 dropdown-content menu shadow w-full bg-base-100 shadow-lg text-base-content rounded"
       tags_container_extra_class="order-last"
       tag_extra_class="badge-lg"
     />

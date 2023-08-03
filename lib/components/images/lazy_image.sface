@@ -1,6 +1,6 @@
 {#case @src || Media.media_url(@media)}
   {#match src}
-    {#case socket_connected?(@__context__) and
+   <!--  {#case socket_connected?(@__context__) and
         (e(@media, :metadata, :blurhash, nil) || Bonfire.Files.Blurred.blurhash(@media, src: src))}
       {#match blurhash when is_binary(blurhash)}
         <div
@@ -25,7 +25,6 @@
           />
         </div>
       {#match _}
-        <!-- TODO: deprecate non-blurhash based blurred -->
         {#case socket_connected?(@__context__) and
             (is_binary(src) and Bonfire.Files.Blurred.blurred(src, skip_creation: true))}
           {#match blurred when is_binary(blurred) and blurred != src}
@@ -39,7 +38,7 @@
               onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"}
               {...@opts}
             />
-          {#match _}
+          {#match _} -->
             <img
               src={src}
               alt={@alt}
@@ -47,6 +46,6 @@
               onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"}
               {...@opts}
             />
-        {/case}
-    {/case}
+        <!-- {/case}
+    {/case} -->
 {/case}

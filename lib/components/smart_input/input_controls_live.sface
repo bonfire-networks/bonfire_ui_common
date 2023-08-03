@@ -114,7 +114,7 @@
           }
         />
       </div>
-      <div id="composer_wrapper" class="min-h-[320px] h-full flex flex-col overflow-y-auto">
+      <div id="composer_wrapper" class="min-h-[320px] h-[320px] h-full flex flex-col overflow-y-auto">
         <div class="h-full flex flex-col flex-1 grow relative">
           <div
             class="hidden"
@@ -175,6 +175,7 @@
 
             <button
               type="submit"
+              id="submit_btn"
               x-on:click="$dispatch('submit')"
               phx-disable-with={if @create_object_type == :message,
                 do: l("Sending..."),
