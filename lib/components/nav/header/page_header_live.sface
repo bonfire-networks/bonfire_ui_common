@@ -30,10 +30,10 @@
         /> -->
         <Bonfire.UI.Common.BackButtonLive :if={@back} back={@back} />
         {#if !@back && @current_user}
-          <div class="flex md:hidden flex-col -ml-[32px] place-content-center items-center flex-1">
+          <!-- <div class="flex md:hidden flex-col -ml-[32px] place-content-center items-center flex-1">
             <Bonfire.UI.Common.LogoLinkLive />
-          </div>
-          <div class="hidden md:flex flex-col flex-1">
+          </div> -->
+          <div class="flex flex-col flex-1">
             <span
               class="first-letter:capitalize flex-1 text-lg font-semibold text-base-content"
               :if={not is_nil(@page_title)}
