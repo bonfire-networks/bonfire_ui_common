@@ -13,7 +13,7 @@
         module={Bonfire.UI.Groups.SidebarGroupsLive}
       /> -->
       {#if is_list(@sidebar_widgets[:users][:main])}
-        <nav class="w-full mx-2">
+        <nav class="w-full">
           <Dynamic.Component
             :if={not is_nil(current_user_id(@__context__))}
             :for={{component, component_assigns} <- @sidebar_widgets[:users][:main]}
