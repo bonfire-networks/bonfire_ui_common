@@ -8,4 +8,5 @@ defmodule Bonfire.UI.Common.LazyImage do
   prop class, :css_class, default: nil
   prop fallback_icon, :string, default: Icon.icon_name("circum:image-off")
   prop opts, :any, default: %{}
+  prop title, :string, default: ""
 end

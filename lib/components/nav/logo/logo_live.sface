@@ -1,5 +1,5 @@
 <div
-  class={@image_class || "w-8 h-8 bg-center bg-no-repeat bg-contain"}
+  class={@image_class || "w-10 h-10 bg-center bg-no-repeat bg-contain"}
   style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}
 />
 <div :if={@with_name} class={@name_class || "text-xl font-bold text-base-content"}>{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>

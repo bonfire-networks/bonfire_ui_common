@@ -1,4 +1,5 @@
 <div
+  title={e(@user, :profile, :name, nil)}
   class="border-0 avatar !flex"
   :if={!Settings.get([Bonfire.UI.Common.AvatarLive, :hide_avatars], false, @__context__)}
 >
@@ -7,11 +8,17 @@
       {#match avatar_fallback}
         {#case @src || Media.avatar_url(@user)}
           {#match url when is_binary(url) and url != avatar_fallback}
-            <div class={@bg_class}>
+            <div 
+              title={e(@user, :profile, :name, nil)}
+              class={@bg_class}>
               <LazyImage
                 parent_id={@parent_id}
                 media={Media.avatar_media(@user)}
                 src={url}
+                title={@title || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
+                  e(@user, :name, nil) ||
+                  e(@user, :username, nil) ||
+                  l("Avatar")}
                 alt={@title || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
                   e(@user, :name, nil) ||
                   e(@user, :username, nil) ||
@@ -23,6 +30,10 @@
           {#match _}
             {#if Settings.get([Bonfire.UI.Common.AvatarLive, :animal_avatars], true, @__context__)}
               <svg
+                title={@title || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
+                  e(@user, :name, nil) ||
+                  e(@user, :username, nil) ||
+                  l("Avatar")}
                 xmlns="http://www.w3.org/2000/svg"
                 version="1.1"
                 width="100%"
@@ -51,6 +62,10 @@
             {#else}
               <div class={@bg_class}>
                 <div
+                  title={@title || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
+                  e(@user, :name, nil) ||
+                  e(@user, :username, nil) ||
+                  l("Avatar")}
                   class={@class, "iconify -mt-0 md:-mt-0"}
                   iconify="material-symbols:person-2-rounded"
                   title={@title}

@@ -182,14 +182,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <div
           data-id="main_section"
           class={
-            "relative w-full max-w-[1280px] gap-2 md:gap-0 z-[99] col-span-1 ",
+            "relative w-full max-w-[600px] gap-2 md:gap-0 z-[99] col-span-1 ",
             "!max-w-full": @without_widgets,
             "!max-w-full": !@current_user_id,
             "mx-auto order-last": @without_sidebar
           }
         >
           <div class={
-            "h-full mt-0 grid tablet-lg:grid-cols-[1fr] desktop-lg:grid-cols-[1fr] grid-cols-1",
+            "h-full mt-0",
             "max-w-screen-lg gap-4 mx-auto": @without_widgets,
             "justify-between": !@without_widgets
           }>
@@ -240,7 +240,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             class="order-last hidden tablet-lg:block tablet-lg:sticky  w-auto tablet-lg:top-3 mt-3 self-start z-[998] tablet-lg:w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
           >
             {#if not is_nil(@current_user_id)}
-              <div class="w-full">
+              <div class="w-full mb-4">
                 <Dynamic.Component
                   :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
                   module={Bonfire.Search.Web.FormLive}
@@ -252,7 +252,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             {/if}
             <div
               data-id="secondary_sidebar_widgets"
-              class="hidden mt-4 overflow-x-hidden overflow-y-auto tablet-lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
+              class="hidden overflow-x-hidden overflow-y-auto tablet-lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
             >
               <!-- FIXME: use the widget system instead (see below) -->
 

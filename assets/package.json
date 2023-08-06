@@ -25,7 +25,7 @@
   "dependencies": {
     "@alpinejs/collapse": "^3.10.2",
     "@alpinejs/intersect": "^3.10.2",
-    "@floating-ui/dom": "^1.0.9",
+    "@floating-ui/dom": "^1.5.1",
     "@iconfu/svg-inject": "^1.2.3",
     "@picmo/popup-picker": "^5.8.1",
     "@splidejs/splide": "^4.1.3",

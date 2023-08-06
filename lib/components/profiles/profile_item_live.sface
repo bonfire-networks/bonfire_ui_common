@@ -9,6 +9,7 @@
       parent_id={"profile_item_#{@parent_id}"}
       comment={if @lg, do: false, else: true}
       user={@profile}
+      title={e(@profile, :name, "")}
       class={@avatar_class || "w-8 h-8"}
     />
     <div

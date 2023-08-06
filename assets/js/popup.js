@@ -10,14 +10,13 @@ PopupHooks.Popup = {
     mounted() {
 
       // Instanciate tippy
-      const template = this.el.querySelector('.template');
-      const instance = tippy(this.el.querySelector('.tippy'), {
+      const template = this.el.querySelector('.tippy_template');
+      tippy(this.el.querySelector('.tippy'), {
         content: template.innerHTML,
-        arrow: false,
-        placement: "left",
-        animation: 'shift-away',
-        theme: 'translucent',
+        arrow: true,
         interactive: true,
+        animation: 'shift-away',
+        delay: [500, 200],
         allowHTML: true,
       }); 
 
