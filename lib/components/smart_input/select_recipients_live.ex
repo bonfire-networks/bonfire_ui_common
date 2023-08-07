@@ -63,7 +63,8 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
        socket
        |> assign(
          field,
-         updated
+         Enum.uniq(updated) 
+         |> debug("update value")
        )}
     else
       {:noreply, socket}
