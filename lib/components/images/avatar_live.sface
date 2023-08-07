@@ -8,9 +8,7 @@
       {#match avatar_fallback}
         {#case @src || Media.avatar_url(@user)}
           {#match url when is_binary(url) and url != avatar_fallback}
-            <div 
-              title={e(@user, :profile, :name, nil)}
-              class={@bg_class}>
+            <div title={e(@user, :profile, :name, nil)} class={@bg_class}>
               <LazyImage
                 parent_id={@parent_id}
                 media={Media.avatar_media(@user)}
@@ -63,9 +61,9 @@
               <div class={@bg_class}>
                 <div
                   title={@title || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
-                  e(@user, :name, nil) ||
-                  e(@user, :username, nil) ||
-                  l("Avatar")}
+                    e(@user, :name, nil) ||
+                    e(@user, :username, nil) ||
+                    l("Avatar")}
                   class={@class, "iconify -mt-0 md:-mt-0"}
                   iconify="material-symbols:person-2-rounded"
                   title={@title}

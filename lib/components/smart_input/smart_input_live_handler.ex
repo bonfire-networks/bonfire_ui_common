@@ -139,14 +139,14 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def handle_event("remove_data", _params, socket) do
-    assign_open(socket.assigns[:__context__],
-      activity: nil,
-      object: nil,
-      # default to replying to current thread
-      reply_to_id: e(socket, :assigns, :thread_id, nil)
-    )
-
-    {:noreply, socket}
+    {:noreply,
+     assign(socket,
+       activity: nil,
+       object: nil,
+       # default to replying to current thread
+       reply_to_id: e(socket, :assigns, :thread_id, nil),
+       thread_id: nil
+     )}
   end
 
   def handle_event(action, params, socket)

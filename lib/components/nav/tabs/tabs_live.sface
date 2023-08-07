@@ -14,7 +14,7 @@
           "btn hover:bg-base-content hover:!text-base-300 btn-sm !max-h-[1.75rem] !min-h-[1.75rem] !h-[1.75rem] rounded-full font-normal capitalize bg-base-content/10 text-base-content/70 feed_tab border-none"
         ),
         "active text-base-content/100":
-          @selected_tab |> debug("selllll") == tab or to_string(@selected_tab) == to_string(tab) or
+          @selected_tab == tab or to_string(@selected_tab) == to_string(tab) or
             (is_nil(@selected_tab) and i == 0)
       ])}
     >

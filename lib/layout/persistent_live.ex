@@ -111,12 +111,12 @@ defmodule Bonfire.UI.Common.PersistentLive do
     do: maybe_send(context, assigns)
 
   def maybe_send(context, assigns) do
-    # debug(assigns, "send persistent assigns")
+    debug(assigns, "send persistent assigns")
 
     case e(context, :sticky, nil) do
       true ->
         debug("already in PersistentLive process")
-        send_self(assigns)
+        send(self(), {:assign, assigns})
         true
 
       _ ->
@@ -222,8 +222,10 @@ defmodule Bonfire.UI.Common.PersistentLive do
      |> assign(socket, ...)}
   end
 
-  def handle_info(info, socket),
-    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
+  def handle_info(info, socket) do
+    debug(info)
+    Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
+  end
 
   def handle_event(
         action,
