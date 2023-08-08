@@ -12,6 +12,7 @@
         placeholder={@label}
         text_input_class={@class}
         disabled={!@is_editable}
+        type={@type}
         update_min_len={1}
       />
       <div

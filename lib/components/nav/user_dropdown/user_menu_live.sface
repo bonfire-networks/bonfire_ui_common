@@ -14,7 +14,7 @@
       size="40"
       user={current_user(@__context__)}
     />
-    <#Icon iconify="bi:chevron-down" class="w-4 h-4" />
+    <#Icon solid="ChevronDown" class="w-4 h-4" />
   </label>
   <ul
     tabindex="0"

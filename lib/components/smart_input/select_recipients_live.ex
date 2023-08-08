@@ -79,10 +79,11 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
       #    %{id: e(circle, :id, nil), field: :to_circles}}
 
       user ->
-        {"#{e(user, :profile, :name, nil)} - #{e(user, :character, :username, nil)}",
+        {"#{e(user, :profile, :name, nil)} - #{e(user, :id, nil)}",
          %{
            id: e(user, :id, nil),
            field: :to_circles,
+           name: e(user, :profile, :name, nil),
            icon: Media.avatar_url(user),
            username: e(user, :character, :username, nil)
          }}

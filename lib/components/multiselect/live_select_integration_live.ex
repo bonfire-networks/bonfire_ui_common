@@ -24,7 +24,28 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       tag_class="text-sm badge badge-outline badge-lg !border !border-base-content/30 gap-2 !h-[2rem]"
       dropdown_class="cursor-pointer absolute top-12 p-1 z-50 dropdown-content menu shadow w-full bg-base-100 shadow-lg text-base-content rounded"
       tags_container_class="flex flex-wrap gap-1 pt-2 order-last"
-    />
+    >
+
+      <:option :if={@type == :user} :let={option}>
+        <div class="flex gap-2 items-center">
+        <div class="w-8 h-8">
+          <img src={option.value.icon} alt={option.value.username} class="w-full h-full rounded-full" />
+        </div>
+        <div class="">
+          <p class="font-semibold"><%= option.value.name %></p>
+          <p class="font-light text-base-content/70"><%= option.value.username %></p>
+        </div>
+        </div>
+      </:option>
+
+      <:tag :let={option}>
+        <div class="flex items-center gap-2">
+          <p class="font-semibold text-sm">
+            <%= option.label %>
+          </p>
+        </div>
+      </:tag>
+    </LiveSelect.live_select>
     """
   end
 end

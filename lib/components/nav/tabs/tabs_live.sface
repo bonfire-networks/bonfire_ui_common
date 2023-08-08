@@ -1,26 +1,62 @@
 <nav role="tabpanel" class={@class} aria-label="Switch between tabs">
-  {#for {{tab, tab_name}, i} <- Enum.with_index(@tabs)}
-    <Dynamic.Component
-      module={@link_component}
-      to={if String.starts_with?(to_string(tab), "/"),
-        do: tab,
-        else: String.replace("#{@path_prefix}#{tab}#{@path_suffix}", "//", "/filter/")}
-      name={"#{tab}"}
-      event_handler={@event_handler}
-      event_target={@event_target}
-      class={Surface.css_class([
-        e(
-          @tab_class,
-          "btn hover:bg-base-content hover:!text-base-300 btn-sm !max-h-[1.75rem] !min-h-[1.75rem] !h-[1.75rem] rounded-full font-normal capitalize bg-base-content/10 text-base-content/70 feed_tab border-none"
-        ),
-        "active text-base-content/100":
-          @selected_tab == tab or to_string(@selected_tab) == to_string(tab) or
-            (is_nil(@selected_tab) and i == 0)
-      ])}
-    >
-      <div class={@item_class}>{localise_dynamic(tab_name)}</div>
-    </Dynamic.Component>
-    <#slot :if={@selected_tab == tab or to_string(@selected_tab) == to_string(tab) or
-      (is_nil(@selected_tab) and i == 0)} />
-  {/for}
+
+  {#if @type == :select}
+    <div class="flex justify-between items-center w-full pb-2 px-4">
+      <div class="dropdown">
+        <label tabindex="0" class="btn rounded-full btn-outline !border !border-base-content/30 btn-sm capitalize">
+        {e(@selected_tab, "My feed")}
+        <#Icon solid="ChevronDown" class="w-4 h-4" />
+        </label>
+        <ul tabindex="0" class="mt-1 dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+          {#for {{tab, tab_name}, i} <- Enum.with_index(@tabs)}
+            <li>
+            <Dynamic.Component
+                module={@link_component}
+                to={if String.starts_with?(to_string(tab), "/"),
+                  do: tab,
+                  else: String.replace("#{@path_prefix}#{tab}#{@path_suffix}", "//", "/filter/")}
+                name={"#{tab}"}
+                event_handler={@event_handler}
+                event_target={@event_target}
+                class={Surface.css_class([
+                  "",
+                  "text-base-content/100":
+                    @selected_tab == tab or to_string(@selected_tab) == to_string(tab) or
+                      (is_nil(@selected_tab) and i == 0)
+                ])}
+              >
+              <div class="">{localise_dynamic(tab_name)}</div>
+          </Dynamic.Component>
+            </li>
+          {/for}
+        </ul>
+      </div>
+      <#slot />
+    </div>
+  {#else}
+    {#for {{tab, tab_name}, i} <- Enum.with_index(@tabs)}
+      <Dynamic.Component
+        module={@link_component}
+        to={if String.starts_with?(to_string(tab), "/"),
+          do: tab,
+          else: String.replace("#{@path_prefix}#{tab}#{@path_suffix}", "//", "/filter/")}
+        name={"#{tab}"}
+        event_handler={@event_handler}
+        event_target={@event_target}
+        class={Surface.css_class([
+          e(
+            @tab_class,
+            "btn hover:bg-base-content hover:!text-base-300 btn-sm !max-h-[1.75rem] !min-h-[1.75rem] !h-[1.75rem] rounded-full font-normal capitalize bg-base-content/10 text-base-content/70 feed_tab border-none"
+          ),
+          "active text-base-content/100":
+            @selected_tab == tab or to_string(@selected_tab) == to_string(tab) or
+              (is_nil(@selected_tab) and i == 0)
+        ])}
+      >
+        <div class={@item_class}>{localise_dynamic(tab_name)}</div>
+      <#slot :if={@selected_tab == tab or to_string(@selected_tab) == to_string(tab) or
+        (is_nil(@selected_tab) and i == 0)} />
+      </Dynamic.Component>
+    {/for}
+  {/if}
 </nav>

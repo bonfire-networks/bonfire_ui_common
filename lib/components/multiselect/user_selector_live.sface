@@ -11,5 +11,6 @@
   remove_event={@remove_event}
   event_target={@event_target}
   class={@class}
+  type={:user}
   is_editable={@is_editable}
 />

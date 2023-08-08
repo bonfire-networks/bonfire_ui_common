@@ -1,6 +1,7 @@
 defmodule Bonfire.UI.Common.TabsLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
+  prop type, :atom, default: nil
   prop tabs, :any, required: true
   prop selected_tab, :string, default: nil
   prop path_prefix, :string, default: "?tab="

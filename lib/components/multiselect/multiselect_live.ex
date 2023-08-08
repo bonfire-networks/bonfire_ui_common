@@ -17,7 +17,7 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   prop is_editable, :boolean, default: true
   prop implementation, :atom, default: nil
   prop mode, :atom, default: :single
-
+  prop type, :atom, default: nil
   prop class, :string, default: "bg-transparent text-sm rounded-full h-10 w-full input liveselect"
 
   def render(%{form: form_name} = assigns) when is_atom(form_name) do
