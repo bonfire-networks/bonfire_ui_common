@@ -8,7 +8,7 @@
         mode={@mode}
         event_target={@event_target}
         options={@preloaded_options || []}
-        value={@selected_options}
+        value={if @field not in (@__context__[:_already_live_selected_] || []), do: @selected_options}
         placeholder={@label}
         text_input_class={@class}
         disabled={!@is_editable}

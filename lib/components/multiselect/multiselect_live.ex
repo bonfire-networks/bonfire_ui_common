@@ -4,6 +4,7 @@ defmodule Bonfire.UI.Common.MultiselectLive do
 
   prop form, :any, default: :multi_select
   prop form_input_name, :any, required: true
+  prop field, :any, default: nil
   prop label, :string, default: nil
   prop preloaded_options, :any, default: nil
   prop selected_options, :any, default: nil

@@ -209,6 +209,7 @@
           module={Bonfire.Boundaries.Web.BoundariesSelectionLive}
           to_boundaries={@to_boundaries}
           to_circles={@to_circles}
+          exclude_circles={@exclude_circles}
           context_id={@context_id}
         />
 
@@ -221,6 +222,14 @@
           name={"to_circles[#{id(circle)}][]"}
           value={role}
         />
+        <input
+          :for={{circle, role} <- e(@exclude_circles, []) |> debug("exclude_circless")}
+          type="hidden"
+          data-role="circle-enum"
+          name={"to_circles[#{id(circle)}][]"}
+          value={role}
+        />
+
         <input
           :for={value when is_binary(value) <- e(@to_circles, [])}
           type="hidden"

@@ -119,7 +119,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
         attrs,
         socket
       ) do
-    debug(attrs)
+    # debug(attrs)
 
     Bonfire.UI.Common.LiveHandlers.handle_event(
       action,

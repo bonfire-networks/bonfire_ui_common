@@ -189,26 +189,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # end
   end
 
-  def handle_event("select", %{"to_circles" => to_circles} = _params, socket) do
-    debug(to_circles, "set_boundaries to_circles")
-
-    to_circles =
-      to_circles
-      |> Enum.map(fn
-        {circle, roles} ->
-          roles
-          |> Enum.map(&{circle, &1})
-      end)
-      |> List.flatten()
-      |> debug()
-
-    {:noreply,
-     socket
-     |> assign(
-       to_circles: to_circles,
-       reset_smart_input: false
-       #  ^to avoid un-reset the input
-     )}
+  def handle_event("select", params, socket) do
+    Bonfire.Boundaries.LiveHandler.handle_event("select", params, socket)
   end
 
   def handle_event("cancel-upload", %{"ref" => ref}, socket) do
