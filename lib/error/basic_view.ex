@@ -1,20 +1,18 @@
 defmodule Bonfire.UI.Common.BasicView do
   use Bonfire.UI.Common.Web, :view
 
-  def render(_, attrs) do
-    show_html(attrs[:title], attrs[:body])
+  def render(key, assigns) do
+    debug(key)
+   # debug(assigns)
+    
+    assigns = case key do
+      "error.html" -> Map.put(assigns, :title, l "Error")
+      _ -> assigns
   end
 
-  def show_html(title, body, class \\ nil)
-
-  def show_html(title, %{message: details}, class) do
-    show_html(title, details, class)
-  end
-
-  def show_html(title, body, class) do
-    raw("""
+  ~H"""
     <!DOCTYPE html>
-    <html lang="en" class="#{class || "dark"}"  data-theme={if Settings.get(
+    <html lang="en" class={"#{assigns[:class] || "dark"}"}  data-theme={if Settings.get(
       [:ui, :theme, :preferred],
       :system,
       assigns[:__context__] || assigns[:current_user] || @conn
@@ -38,7 +36,7 @@ defmodule Bonfire.UI.Common.BasicView do
       <meta name="description" content="Bonfire instance">
       <meta name="keywords" content="bonfire, fediverse">
       <meta name="author" content="Bonfire">
-      <title data-suffix=" · Bonfire">#{title} · Bonfire</title>
+      <title data-suffix=" · Bonfire"><%= assigns[:title] %> · Bonfire</title>
       <link phx-track-static rel='stylesheet' href='/assets/bonfire_basic.css'/>
     </head>
 
@@ -51,7 +49,7 @@ defmodule Bonfire.UI.Common.BasicView do
                 <div class="flex items-center flex-shrink-0 lg:px-4">
                   <a data-phx-link="redirect" data-phx-link-state="push" href="/">
                     <div class="flex items-center px-4 py-2 rounded">
-                      <div class="w-16 h-20 mb-4 bg-center bg-no-repeat bg-contain" style="background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"></div>
+                      <div class="w-16 h-20 mb-4 bg-center bg-no-repeat bg-contain" style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}></div>
                     </div>
                   </a>
                   <div class="flex flex-1">
@@ -62,18 +60,22 @@ defmodule Bonfire.UI.Common.BasicView do
 
           <div class="w-full max-w-screen-md mx-auto mt-4">
             <div class="prose text-center max-w-none">
-              <h1 class="text-base-content">
-                #{title}
-              </h1>
+              <%!-- <h1 class="text-base-content">
+                <%= assigns[:title] %>
+              </h1> --%>
               <div class="flex flex-col place-content-center">
-                #{body}
+                <%= assigns[:inner_content] %>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    </body>
     </html>
-    """)
+    """
+  
   end
+
+
 end
