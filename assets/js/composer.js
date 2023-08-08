@@ -10,8 +10,15 @@ ComposerHooks.ScreenSize = {
   mounted() {
     const composer = this.el
     const gutter = composer.querySelector("#gutter");
-    const milkdown = document.getElementById("editor_milkdown_container");
     const composerWrapper = document.getElementById("composer_wrapper");
+    
+    // boundaries general
+    const boundaries_general = document.getElementById("boundaries_general_access");
+    // boundaries preview
+    const boundaries_preview = document.getElementById("preview_boundaries_container");
+    // set boundaries
+    const set_boundaries = document.getElementById("set_boundaries"); 
+    
     
     function resizer(e) {
       disableBodyScroll(document.body);
@@ -31,7 +38,9 @@ ComposerHooks.ScreenSize = {
         // console.log(smartInput.style.height)
         // milkdown.style.height = composer.getBoundingClientRect().height - 110 - 108 + "px";
         composerWrapper.style.height = composer.getBoundingClientRect().height - 54 - 52 - 42 + "px";
-        
+        boundaries_general.style.height = composer.getBoundingClientRect().height - 54 - 64 + "px";
+        boundaries_preview.style.height = composer.getBoundingClientRect().height - 54 - 64 + "px";
+        set_boundaries.style.height = composer.getBoundingClientRect().height - 54 - 64 + "px";
       }
 
       function mouseup() {
