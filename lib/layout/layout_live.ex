@@ -58,7 +58,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   def custom_theme_attr(config), do: DaisyTheme.style_attr(config) |> debug("custom theme style")
 
   def render(assigns) do
-      # NOTE: we need to also set default props this way until we can convert LayoutView to use Surface
+    # NOTE: we need to also set default props this way until we can convert LayoutView to use Surface
     assigns =
       assigns
       |> assign_new(:smart_input_opts, fn -> %{} end)

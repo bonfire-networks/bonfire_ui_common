@@ -44,21 +44,22 @@ defmodule Bonfire.UI.Common.ErrorView do
     render("503.html", assigns)
   end
 
-  def render("401.html",  %{reason: %{code: :needs_login, message: message} = _reason} = _assigns) do
+  def render("401.html", %{reason: %{code: :needs_login, message: message} = _reason} = _assigns) do
     debug("show login form")
     assigns = %{form: Bonfire.UI.Me.LoginController.form_cs(), title: message}
-    #Bonfire.UI.Me.LoginLive.custom_render()
+    # Bonfire.UI.Me.LoginLive.custom_render()
     # Bonfire.UI.Me.LoginViewLive.render(assigns)
     ~H"""
     <h1 class="text-base-content">
-                <%= @title %>
-              </h1>
+      <%= @title %>
+    </h1>
     <Bonfire.UI.Me.LoginViewLive.render form={@form} error={nil} __context__={%{}} />
     """
   end
-  
+
   def render("500.html", assigns) do
     debug(assigns)
+
     show_error(
       500,
       reason(assigns) || l("Please try again or contact the instance admins."),
@@ -130,7 +131,6 @@ defmodule Bonfire.UI.Common.ErrorView do
   end
 
   defp show_error(error_or_error_code, details, as_html?, extra_html \\ nil) do
-
     http_code =
       Types.maybe_to_integer(error_or_error_code, 500)
       |> debug(error_or_error_code)
@@ -197,7 +197,7 @@ defmodule Bonfire.UI.Common.ErrorView do
     <h1 class="text-base-content">
       <%= @title %>
     </h1>
-    <%= raw @details %>
+    <%= raw(@details) %>
     """
   end
 
@@ -210,5 +210,4 @@ defmodule Bonfire.UI.Common.ErrorView do
   # def show_html(title, body, class) do
   #   Bonfire.UI.Common.BasicView.render(Bonfire.UI.Common.BasicView, %{title: title, inner_content: body, class: class})
   # end
-    
 end

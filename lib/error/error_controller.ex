@@ -8,8 +8,7 @@ defmodule Bonfire.UI.Common.ErrorController do
   def call(%{params: %{"crash" => code}} = conn, _params) do
     raise Bonfire.Fail.fail(code)
   end
-  
-  
+
   def call(%{params: %{"code" => code}} = conn, _params) do
     conn
     |> put_view(Bonfire.UI.Common.ErrorView)
