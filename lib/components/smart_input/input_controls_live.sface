@@ -166,9 +166,10 @@
                   phx-click={JS.show(to: "#boundaries_preview")
                   |> JS.hide(to: "#composer_container")}
                   class="flex items-center btn btn-outline btn-sm !border !border-base-content/30 btn-circle"
+                  title={l("Preview boundaries")}
                 >
                   <#Icon iconify="mdi:eye-outline" class="w-4 h-4 !text-opacity-70" />
-                  <span class="sr-only">{l("Preview boundary")}</span>
+                  <span class="sr-only">{l("Preview boundaries")}</span>
                 </button>
               {/if}
             </div>
