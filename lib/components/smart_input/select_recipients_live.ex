@@ -65,6 +65,10 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
          field,
          Enum.uniq(updated)
          |> debug("update value")
+       )
+       |> assign_global(
+         _already_live_selected_:
+           Enum.uniq(e(socket.assigns, :__context, :_already_live_selected_, []) ++ [field])
        )}
     else
       {:noreply, socket}
@@ -79,13 +83,16 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
       #    %{id: e(circle, :id, nil), field: :to_circles}}
 
       user ->
-        {"#{e(user, :profile, :name, nil)} - #{e(user, :id, nil)}",
+        name = e(user, :profile, :name, nil)
+        username = e(user, :character, :username, nil)
+
+        {"#{name} - #{username}",
          %{
-           id: e(user, :id, nil),
+           id: id(user),
            field: :to_circles,
-           name: e(user, :profile, :name, nil),
+           name: name,
            icon: Media.avatar_url(user),
-           username: e(user, :character, :username, nil)
+           username: username
          }}
     end)
     # Filter to remove any nils
