@@ -299,9 +299,12 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
               <div class="mt-4 text-xs text-base-content/70">
                 <div class="flex flex-col gap-2 mb-4">
-                  <img src={Config.get([:ui, :theme, :instance_image])} class="h-[180px] object-cover w-full rounded" />
+                  <img
+                    src={Config.get([:ui, :theme, :instance_image])}
+                    class="h-[180px] object-cover w-full rounded"
+                  />
                   <div class="prose prose-sm !text-xs">{Config.get([:ui, :theme, :instance_description])}</div>
-                  </div>
+                </div>
                 <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:
                   <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·
                   <!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · -->

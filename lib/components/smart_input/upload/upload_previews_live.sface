@@ -13,7 +13,7 @@
       <div class="absolute top-0 z-10 w-full h-10 rounded-lg l-0 r-0 md:h-14 bg-gradient-to-b from-black to-transparent" />
       <figure :if={String.starts_with?(entry.client_type, "image")}>
         <!-- render a client-side preview -->
-        <span >
+        <span>
           <.live_img_preview entry={entry} />
         </span>
         <figcaption class="sr-only">{entry.client_name}</figcaption>
