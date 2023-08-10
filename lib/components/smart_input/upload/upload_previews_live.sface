@@ -11,14 +11,23 @@
     >
       <!-- phx-hook="imageMetadata" -->
       <div class="absolute top-0 z-10 w-full h-10 rounded-lg l-0 r-0 md:h-14 bg-gradient-to-b from-black to-transparent" />
-      <figure>
+      <figure :if={String.starts_with?(entry.client_type, "image")}>
         <!-- render a client-side preview -->
-        <span :if={String.starts_with?(entry.client_type, "image")}>
+        <span >
           <.live_img_preview entry={entry} />
         </span>
         <figcaption class="sr-only">{entry.client_name}</figcaption>
       </figure>
-
+      <div :if={String.contains?(entry.client_type, "pdf")} class="">
+        <div class="w-[160px] rounded h-[100px] flex items-center place-content-center justify-center">
+          <#Icon iconify="bxs:file-pdf" class="w-12 h-12" />
+        </div>
+      </div>
+      <div :if={String.starts_with?(entry.client_type, "video")} class="">
+        <div class="w-[160px] rounded h-[100px] flex items-center place-content-center justify-center">
+          <#Icon iconify="entypo:video" class="w-12 h-12" />
+        </div>
+      </div>
       <!-- <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress> -->
       <Bonfire.UI.Common.InlineModalLive
         id={"upload_#{entry.ref}_description"}
