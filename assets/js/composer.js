@@ -277,7 +277,8 @@ function getFeedItems(queryText, prefix) {
           let values = data.map((item) => ({
             id: item.id,
             value: item.name,
-            link: item.link,
+            // link: item.link,
+            icon: item.icon
           }));
           resolve(values);
         })
