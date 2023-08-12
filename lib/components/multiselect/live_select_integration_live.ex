@@ -26,7 +26,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       tags_container_class="flex flex-wrap gap-1 pt-2 order-last"
     >
       <:tag :let={option}>
-        <%!-- <%= if (debug(@type) || e(debug(option.value), :type, nil)) in [:user, "user"] do %> --%>
+        <!-- if (debug(@type) || e(debug(option.value), :type, nil)) in [:user, "user"] do -->
         <%= if Map.has_key?(debug(option.value), :icon) or Map.has_key?(option.value, "icon") do %>
           <div class="flex gap-2 items-center">
             <div class="w-8 h-8">

@@ -75,9 +75,6 @@ defmodule Bonfire.UI.Common.BasicView do
 
               <div class="w-full max-w-screen-md mx-auto mt-4">
                 <div class="prose text-center max-w-none">
-                  <%!-- <h1 class="text-base-content">
-                <%= assigns[:title] %>
-              </h1> --%>
                   <div class="flex flex-col place-content-center">
                     <%= assigns[:inner_content] %>
                   </div>
@@ -90,4 +87,8 @@ defmodule Bonfire.UI.Common.BasicView do
     </html>
     """
   end
+
+  #  <h1 class="text-base-content">
+  #               <%= assigns[:title] %>
+  #             </h1> 
 end
