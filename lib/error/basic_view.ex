@@ -7,15 +7,20 @@ defmodule Bonfire.UI.Common.BasicView do
 
     assigns =
       case key do
-        "error.html" -> Map.put(assigns, :title, l("Error"))
-        _ -> assigns
+        "error.html" ->
+          assigns
+          |> Map.put(:title, l("Error"))
+          |> Map.put_new(:class, "bg-black")
+
+        _ ->
+          assigns
       end
 
     ~H"""
     <!DOCTYPE html>
     <html
       lang="en"
-      class={"#{assigns[:class] || "dark"}"}
+      class={"#{assigns[:class]}"}
       data-theme={
         if Settings.get(
              [:ui, :theme, :preferred],

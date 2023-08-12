@@ -36,7 +36,7 @@ defmodule Bonfire.UI.Common.ErrorView do
     show_html(
       404,
       "<img src='https://i.pinimg.com/originals/98/8d/ef/988def4abdcba22f2c9e907d041a56ce.gif'/>",
-      "dark bg-black"
+      "bg-black"
     )
   end
 

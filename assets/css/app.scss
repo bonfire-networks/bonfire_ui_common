@@ -4,6 +4,7 @@
 
 @tailwind base; 
 
+
 .multiselect_in_composer .input {
   @apply bg-base-content/5;
 }
@@ -150,6 +151,7 @@ body {
  text-size-adjust: none;
  -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
+
 
 [type='checkbox'], [type='radio'] {
   background-color: transparent;
