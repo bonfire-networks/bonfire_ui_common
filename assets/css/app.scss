@@ -30,6 +30,14 @@
   width: 100%;
 }
 
+.milkdown img[title^=":"] {
+  height: 1em;
+  width: 1em;
+  margin: 0 1px 0 1.5px;
+  vertical-align: -1.5px;
+  display: inline;
+}
+
 .editor p br.ProseMirror-trailingBreak::before {
   display: none;
 }
