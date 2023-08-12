@@ -1,11 +1,11 @@
-<div class="w-full open_modal_wrapper" id={@id}>
+<div class={"open_modal_wrapper", @main_wrapper_class} class="w-full open_modal_wrapper" id={@id}>
   {#if current_user(@__context__)}
     {#case @href}
       {#match nil}
         <div
           data-role="open_modal"
           :on-click={@click_open_event}
-          class={@open_btn_wrapper_class}
+          class={"open_modal_btn_wrapper", @open_btn_wrapper_class}
           phx-hook={@open_btn_hook}
           {...@open_btn_opts}
         >

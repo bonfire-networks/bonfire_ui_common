@@ -19,10 +19,10 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   @doc "The classes of the title of the modal"
   prop title_class, :css_class, default: "font-bold text-base flex-1 modal-title"
 
+  prop main_wrapper_class, :css_class, default: "w-full"
+  prop open_btn_wrapper_class, :css_class, default: ""
   @doc "The classes of the open button for the modal. Only used if no `open_btn` slot is passed."
   prop open_btn_class, :css_class, default: ""
-
-  prop open_btn_wrapper_class, :css_class, default: "open_modal_btn_wrapper"
 
   prop open_btn_opts, :any, default: []
 

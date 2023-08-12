@@ -20,6 +20,13 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         websocket: [
           check_origin: false,
           # check_origin: :conn,
+          # whether to enable per message compression on all data frames
+          compress: false,
+          # the timeout for keeping websocket connections open after it last received data, usually defaults to 60_000ms (1 minute)
+          timeout: String.to_integer(System.get_env("LV_TIMEOUT", "42000")),
+          # the maximum number of garbage collections before forcing a fullsweep for the socket process. You can set it to 0 to force more frequent clean-ups of your websocket transport processes. (You can also trigger this manually to force garbage collection in the transport process after processing large messages with `send(socket.transport_pid, :garbage_collect)`)
+          fullsweep_after: String.to_integer(System.get_env("LV_FULLSWEEP_AFTER", "20")),
+          # NOTE: see also `LV_HIBERNATE_AFTER` in the endpoint config 
           connect_info: [
             :user_agent,
             session: EndpointTemplate.session_options()
