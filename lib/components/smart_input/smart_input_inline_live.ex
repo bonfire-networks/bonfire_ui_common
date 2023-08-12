@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.SmartInputInlineLive do
   use Bonfire.UI.Common.Web, :stateful_component
-  # alias Bonfire.UI.Common.SmartInputLive
+  alias Bonfire.UI.Common.SmartInputContainerLive
 
   prop reply_to_id, :any, default: nil
   prop context_id, :string, default: nil, required: false
@@ -32,18 +32,10 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
          trigger_submit: false,
          uploaded_files: []
        )
-       |> allow_upload(:files,
-         # make configurable
-         accept: ~w(.jpg .jpeg .png .gif .svg .tiff .webp .pdf .md .rtf .mp3 .mp4),
-         # make configurable, expecially once we have resizing
-         max_file_size: 10_000_000,
-         max_entries: 10,
-         auto_upload: false
-         # progress: &handle_progress/3
-       )}
+       |> SmartInputContainerLive.setup_uploads()}
 
   defdelegate handle_event(action, attrs, socket),
-    to: Bonfire.UI.Common.SmartInputContainerLive
+    to: SmartInputContainerLive
 
   def handle_info(info, socket),
     do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)

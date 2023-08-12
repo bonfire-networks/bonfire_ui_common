@@ -40,15 +40,19 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
          trigger_submit: false,
          uploaded_files: []
        )
-       |> allow_upload(:files,
-         # make configurable
-         accept: ~w(.jpg .jpeg .png .gif .svg .tiff .webp .pdf .md .rtf .mp3 .mp4),
-         # make configurable, expecially once we have resizing
-         max_file_size: 10_000_000,
-         max_entries: 4,
-         auto_upload: false
-         # progress: &handle_progress/3
-       )}
+       |> setup_uploads()}
+
+  def setup_uploads(socket),
+    do:
+      allow_upload(socket, :files,
+        # make configurable
+        accept: ~w(.jpg .jpeg .png .gif .svg .webp .pdf .md .rtf .mp3 .mp4 .webm),
+        # make configurable, expecially once we have resizing
+        max_file_size: 10_000_000,
+        max_entries: 4,
+        auto_upload: false
+        # progress: &handle_progress/3
+      )
 
   def update(
         %{smart_input_opts: new_smart_input_opts} = assigns,

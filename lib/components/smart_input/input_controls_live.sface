@@ -114,7 +114,7 @@
           }
         />
       </div>
-      <div id="composer_wrapper" class=" h-full flex flex-col overflow-y-auto">
+      <div id="composer_wrapper" class="h-full flex flex-col overflow-y-auto">
         <div class="h-full flex flex-col flex-1 grow relative">
           <div
             class="hidden"
