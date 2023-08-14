@@ -12,13 +12,12 @@ FeedHooks.PreviewActivity = {
     }
   },
   mounted() {
-    this.el.addEventListener("click", e => {
+      this.el.addEventListener("click", e => {
       console.log("PreviewActivity clicked")
 
       let trigger = this.el.querySelector('.open_preview_link')
       let anchor = e.target.closest('a')
       let previewable_activity = e.target.closest('.previewable_activity')
-
       if (trigger && (anchor == trigger || ((!anchor && previewable_activity && (
         previewable_activity.classList.contains('previewable_expanded')
         || this.isTruncated(previewable_activity.querySelector('.previewable_truncate')) == false
@@ -79,7 +78,7 @@ FeedHooks.PreviewActivity = {
       // e.preventDefault();
         console.log("PreviewActivity: do not trigger preview in favour of another link or button's action (or opening in new tab)")
         
-        if (previewable_activity) { previewable_activity.classList.add("previewable_expanded") }
+        // if (previewable_activity) { previewable_activity.classList.add("previewable_expanded") }
       
 
       return;
