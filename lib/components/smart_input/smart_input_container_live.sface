@@ -158,13 +158,9 @@
                 </div>
 
                 <!-- ROLES DETAIL -->
-                <div 
-                  class="hidden flex-1 h-full grow" 
-                  id="roles_detail">
+                <div class="hidden flex-1 h-full grow" id="roles_detail">
                   <div class="flex flex-col h-full">
-                  <div 
-                      style="min-height: 320px; height: 360px"
-                      class="h-full flex-1 px-2 pb-12 overflow-y-auto">
+                    <div style="min-height: 320px; height: 360px" class="h-full flex-1 px-2 pb-12 overflow-y-auto">
                       <!-- FIXME: we should only load roles when clicked, rather than on every page load -->
                       <Dynamic.LiveComponent
                         :if={module_enabled?(Bonfire.Boundaries.Web.RolesLive)}
@@ -176,7 +172,7 @@
                     <Dynamic.Component
                       :if={module_enabled?(Bonfire.Boundaries.Web.BoundaryComposerActionsLive)}
                       module={Bonfire.Boundaries.Web.BoundaryComposerActionsLive}
-                      done_label={l("Back")} 
+                      done_label={l("Back")}
                       hide_preview
                     />
                   </div>
