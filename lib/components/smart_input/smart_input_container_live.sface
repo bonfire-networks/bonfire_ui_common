@@ -173,7 +173,12 @@
                         scope={:smart_input}
                       />
                     </div>
-                    <Bonfire.Boundaries.Web.BoundaryComposerActionsLive done_label={l("Back")} hide_preview />
+                    <Dynamic.Component
+                      :if={module_enabled?(Bonfire.Boundaries.Web.BoundaryComposerActionsLive)}
+                      module={Bonfire.Boundaries.Web.BoundaryComposerActionsLive}
+                      done_label={l("Back")} 
+                      hide_preview
+                    />
                   </div>
                 </div>
 
