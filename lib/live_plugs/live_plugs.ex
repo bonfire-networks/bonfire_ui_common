@@ -72,6 +72,11 @@ defmodule Bonfire.UI.Common.LivePlugs do
   defp init_socket(params, socket) do
     current_app = Application.get_application(socket.view)
     current_extension = Bonfire.Common.ExtensionModule.extension(current_app)
+    current_view = socket.view
+
+    socket_connected? =
+      Phoenix.LiveView.connected?(socket)
+      |> debug("MOUNTING SOCKET for #{current_view}")
 
     if not is_nil(current_app) and
          (not extension_enabled?(current_app, :instance) or
@@ -93,17 +98,15 @@ defmodule Bonfire.UI.Common.LivePlugs do
     else
       Bonfire.Common.TestInstanceRepo.maybe_declare_test_instance(socket.endpoint)
 
-      debug(Phoenix.LiveView.connected?(socket), "init socket")
-
       {:ok,
        if(module_enabled?(Surface), do: Surface.init(socket), else: socket)
        |> assign_global(
-         current_view: socket.view,
+         current_view: current_view,
          current_app: current_app,
          current_extension: current_extension,
          current_params: params,
          live_action: e(socket, :assigns, :live_action, nil),
-         socket_connected?: Phoenix.LiveView.connected?(socket)
+         socket_connected?: socket_connected?
        )}
     end
   end
