@@ -353,30 +353,29 @@ defmodule Bonfire.UI.Common do
 
   def maybe_send_update(pid \\ self(), component, id, assigns)
 
-  def maybe_send_update(pid, component, id, {:error, error})
-      when is_atom(component) and not is_nil(id) do
+  def maybe_send_update(pid, component, id, {:error, error}) do
     assign_error(nil, error, pid)
+  end
+
+  def maybe_send_update(pid, component, ids, assigns) when is_list(ids) do
+    assigns =
+      assigns_clean(assigns)
+      |> debug("Try sending to #{component} with ids: #{inspect(ids)}")
+
+    for id <- ids do
+      do_send_update(pid, component, id, assigns)
+    end
   end
 
   def maybe_send_update(pid, component, id, assigns)
       when is_atom(component) and not is_nil(id) do
-    # Phoenix.LiveView.Channel.ping(self())
-
-    # GenServer.call(Phoenix.LiveView.Channel, :ping)
-    # |> debug()
-    # :sys.get_state(pid)
-
-    # Process.get()
-    # |> debug()
-
-    assigns = assigns_clean(assigns)
-
     debug(assigns, "Try sending to #{component} with id: #{id}")
 
-    Phoenix.LiveView.send_update(
-      pid || self(),
+    do_send_update(
+      pid,
       component,
-      Enum.into(assigns, %{id: id})
+      id,
+      assigns_clean(assigns)
     )
   end
 
@@ -388,6 +387,24 @@ defmodule Bonfire.UI.Common do
   def maybe_send_update(_pid, component, id, _assigns)
       when is_atom(component) do
     error(id, "expected a component ID but got")
+  end
+
+  defp do_send_update(pid, component, id, assigns)
+       when is_atom(component) and not is_nil(id) do
+    # Phoenix.LiveView.Channel.ping(self())
+
+    # GenServer.call(Phoenix.LiveView.Channel, :ping)
+    # |> debug()
+    # :sys.get_state(pid)
+
+    # Process.get()
+    # |> debug()
+
+    Phoenix.LiveView.send_update(
+      pid || self(),
+      component,
+      Enum.into(assigns, %{id: id})
+    )
   end
 
   def assigns_subscribe(%Phoenix.LiveView.Socket{} = socket, assign_names)
