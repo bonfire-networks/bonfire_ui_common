@@ -197,6 +197,14 @@ defmodule Bonfire.UI.Common.PersistentLive do
     {:noreply, socket}
   end
 
+  def handle_info({:assign, {:media_player, assigns}}, socket) do
+    debug("forward assigns from PersistentLive to the media_player_modal stateful component")
+
+    maybe_send_update(Bonfire.UI.Common.ReusableModalLive, "media_player_modal", assigns)
+
+    {:noreply, socket}
+  end
+
   def handle_info({:assign, {:notification, assigns}}, socket) do
     debug("forward assigns from PersistentLive to the NotificationLive stateful component")
 

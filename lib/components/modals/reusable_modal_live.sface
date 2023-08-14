@@ -1,14 +1,17 @@
 <div
   id={@id}
   class={
-    "modal modal-bottom sm:modal-middle z-[9999]",
+    "",
     @modal_class,
+    "modal modal-bottom sm:modal-middle max-h-[100%] z-[9999]": !@no_backdrop,
+    "fixed left-0 bottom-0": @no_backdrop,
     "modal-closed": !@show,
     "modal-open": @show
   }
   {...@opts}
 >
   <div
+    :if={!@no_backdrop}
     x-transition:enter="ease-out duration-300"
     x-transition:enter-start="opacity-0"
     x-transition:enter-end="opacity-100"
@@ -26,7 +29,7 @@
   <.dynamic_tag
     name={if @form_opts != %{}, do: "form", else: "div"}
     id={@form_opts[:id] || "#{@id}_box"}
-    class={Surface.css_class("modal-box": !@image_preview)}
+    class={Surface.css_class(["resize overflow-auto", "modal-box": !@image_preview])}
     phx-target={e(@form_opts, "phx-target", nil) || @myself}
     {...Enums.naughty_to_atoms!(@form_opts)}
   >
@@ -38,9 +41,9 @@
       x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
       x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
       x-description="Modal panel, show/hide based on modal state."
-      class={@wrapper_class}
+      class={"z-[99999]", @wrapper_class}
     >
-      <h3 :if={e(!@no_header, false)} class={@title_class || "font-bold text-base"}>
+      <h3 :if={!@no_header} class={@title_class || "font-bold text-base"}>
         <#slot {@title}>{@title_text}</#slot>
       </h3>
       <div class="absolute top-0 right-0 block pt-5 pr-4 z-50">

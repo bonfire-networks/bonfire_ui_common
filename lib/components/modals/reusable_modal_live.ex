@@ -5,18 +5,17 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   The classic **modal**
   """
 
-  @modal_class "max-h-[100%]"
-
   # make sure to keep these and the Surface props in sync
   @default_assigns [
     title_text: nil,
     title_class: nil,
-    modal_class: @modal_class,
+    modal_class: "",
     cancel_btn_class: nil,
     show: false,
     form_opts: %{},
     no_actions: false,
     no_header: false,
+    no_backdrop: false,
     opts: [],
     autocomplete: [],
     default: nil,
@@ -36,7 +35,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   prop title_class, :css_class, default: nil
 
   @doc "The classes of the modal."
-  prop modal_class, :css_class, default: @modal_class
+  prop modal_class, :css_class, default: ""
 
   @doc "The classes of the modal wrapper."
   prop wrapper_class, :css_class, default: nil
@@ -61,6 +60,8 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
 
   @doc "Optional prop to hide the header at the top of the modal"
   prop no_header, :boolean, default: false
+
+  prop no_backdrop, :boolean, default: false
 
   @doc """
   Additional attributes to add onto the modal wrapper
