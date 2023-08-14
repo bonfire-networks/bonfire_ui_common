@@ -1,7 +1,7 @@
 <div
   id={@id}
   class={
-    "resize overflow-auto",
+    "",
     @modal_class,
     "modal modal-bottom sm:modal-middle max-h-[100%] z-[9999]": !@no_backdrop,
     "fixed left-0 bottom-0": @no_backdrop,
@@ -29,7 +29,7 @@
   <.dynamic_tag
     name={if @form_opts != %{}, do: "form", else: "div"}
     id={@form_opts[:id] || "#{@id}_box"}
-    class={Surface.css_class("modal-box": !@image_preview)}
+    class={Surface.css_class(["resize overflow-auto", "modal-box": !@image_preview])}
     phx-target={e(@form_opts, "phx-target", nil) || @myself}
     {...Enums.naughty_to_atoms!(@form_opts)}
   >
