@@ -17,12 +17,13 @@ FeedHooks.PreviewActivity = {
 
       let trigger = this.el.querySelector('.open_preview_link')
       let anchor = e.target.closest('a')
-      let previewable_activity = e.target.closest('.previewable_activity')
-      if (trigger && (anchor == trigger || ((!anchor && previewable_activity && (
-        previewable_activity.classList.contains('previewable_expanded')
-        || this.isTruncated(previewable_activity.querySelector('.previewable_truncate')) == false
-      ) || (!anchor || anchor.classList.contains('preview_activity_link'))) && !e.ctrlKey && !e.metaKey && !window.getSelection().toString() && !e.target.closest('button') && !e.target.closest('figure') && !e.target.closest('.dropdown')
-      ))) {
+        
+      // this was used to expand long posts by clicking on them, now replaced with a 'Read more' button
+      // let previewable_activity = e.target.closest('.previewable_activity')
+      // anchor == trigger || (!anchor && previewable_activity && ( previewable_activity.classList.contains('previewable_expanded') || this.isTruncated(previewable_activity.querySelector('.previewable_truncate')) == false)
+        
+      if (trigger && ((!anchor || anchor.classList.contains('preview_activity_link')) && !e.ctrlKey && !e.metaKey && !window.getSelection().toString() && !e.target.closest('article > article') && !e.target.closest('button') && !e.target.closest('figure') && !e.target.closest('.dropdown')
+      )) {
         let uri = this.el.dataset.href || (trigger !==undefined && trigger.getAttribute('href')) //this.el.dataset.permalink
         if (window.liveSocket) {
           // const feed = document.querySelector(".feed")

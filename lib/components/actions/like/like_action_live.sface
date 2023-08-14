@@ -23,11 +23,11 @@
         {/if}
 
         <span :if={!@my_like} class="sr-only">
-          {l("Favourite")}
+          {l("Like")}
           <span :if={e(@like_count, 0) > 0}>{e(@like_count, 0)}</span>
         </span>
         <span :if={@my_like} class="sr-only">
-          {l("Favourited")}
+          {l("Liked")}
         </span>
         <span :if={e(@like_count, 0) > 0}>{e(@like_count, 0)}</span>
       </button>
