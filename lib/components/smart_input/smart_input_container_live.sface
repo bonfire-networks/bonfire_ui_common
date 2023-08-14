@@ -158,22 +158,23 @@
                 </div>
 
                 <!-- ROLES DETAIL -->
-                <div class="hidden flex-1 h-full grow" id="roles_detail">
-                  <button
-                    phx-click={JS.toggle(to: "#roles_detail") |> JS.toggle(to: "#extra_boundaries")}
-                    type="button"
-                    class="btn mt-2 btn-outline rounded-full ml-4 btn-primary normal-case"
-                  >
-                    <#Icon iconify="ri:arrow-left-line" class="w-5 h-5" />
-                    <span>{l("Back")}</span>
-                  </button>
-                  <!-- FIXME: we should only load roles when clicked, rather than on every page load -->
-                  <Dynamic.LiveComponent
-                    :if={module_enabled?(Bonfire.Boundaries.Web.RolesLive)}
-                    module={Bonfire.Boundaries.Web.RolesLive}
-                    id="roles_in_composer"
-                    scope={:smart_input}
-                  />
+                <div 
+                  class="hidden flex-1 h-full grow" 
+                  id="roles_detail">
+                  <div class="flex flex-col h-full">
+                  <div 
+                      style="min-height: 320px; height: 360px"
+                      class="h-full flex-1 px-2 pb-12 overflow-y-auto">
+                      <!-- FIXME: we should only load roles when clicked, rather than on every page load -->
+                      <Dynamic.LiveComponent
+                        :if={module_enabled?(Bonfire.Boundaries.Web.RolesLive)}
+                        module={Bonfire.Boundaries.Web.RolesLive}
+                        id="roles_in_composer"
+                        scope={:smart_input}
+                      />
+                    </div>
+                    <Bonfire.Boundaries.Web.BoundaryComposerActionsLive done_label={l("Back")} hide_preview />
+                  </div>
                 </div>
 
                 <!-- PREVIEW BOUNDARIES -->
