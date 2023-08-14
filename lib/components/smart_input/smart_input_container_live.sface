@@ -46,6 +46,7 @@
 
     <div
       phx-hook="ScreenSize"
+      style="height: 480px"
       id="smart_input_container"
       class={
         "h-full w-full md:h-auto !min-h-[420px] bottom-0 block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0",
@@ -134,7 +135,7 @@
                 <!-- CUSTOM BOUNDARIES -->
                 <div class="hidden flex-1 h-full grow" id="extra_boundaries">
                   <div class="flex flex-col h-full">
-                    <div class="flex w-full flex-1 h-full px-3">
+                    <div class="flex w-full flex-1 h-full px-2">
                       <Dynamic.Component
                         :if={@create_object_type != :message and
                           Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false and
@@ -177,7 +178,7 @@
 
                 <!-- PREVIEW BOUNDARIES -->
                 <div class="hidden flex-1 h-full grow" id="boundaries_preview">
-                  <div class="flex flex-col w-full flex-1 h-full p-4">
+                  <div class="flex flex-col h-full">
                     <Dynamic.LiveComponent
                       :if={module_enabled?(Bonfire.Boundaries.Web.PreviewBoundariesLive)}
                       module={Bonfire.Boundaries.Web.PreviewBoundariesLive}
