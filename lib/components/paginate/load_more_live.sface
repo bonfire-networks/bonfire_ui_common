@@ -10,7 +10,7 @@
     phx-target={@target}
     phx-value-context={@context}
     phx-value-after={@cursor}
-    class=""
+    class="w-full flex items-center justify-center mb-4"
     x-data={"{show: #{socket_connected?(@__context__)}}"}
     {...@opts}
   >
