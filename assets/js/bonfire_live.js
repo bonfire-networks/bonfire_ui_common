@@ -9,8 +9,16 @@ import NProgress from "nprogress"
 // for JS features & extensions to hook into LiveView
 let Hooks = {}; 
 
-let execJS = (selector, attr) => {
-  document.querySelectorAll(selector).forEach(el => liveSocket.execJS(el, el.getAttribute(attr)))
+let JS_exec = (selector, event) => {
+  document.querySelectorAll(selector).forEach(el => liveSocket.execJS(el, event))
+}
+let JS_exec_attr_event = (selector, attr) => {
+  document.querySelectorAll(selector).forEach(el => {
+    let event = el.getAttribute(attr)
+    console.log(el)
+    console.log(event)
+    liveSocket.execJS(el, event)
+  })
 }
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
@@ -39,9 +47,26 @@ window.addEventListener("phx:page-loading-stop", () => {
   NProgress.done()
 });
 
+// To trigger JS commands from the server, using
+// push_event(socket, "js-exec", % {
+//   to: "#my_spinner",
+//   attr: "data-ok-done"
+// })
+window.addEventListener("phx:js-exec-attr-event", ({ detail }) => {
+  console.log(detail)
+  JS_exec_attr_event(detail.to, detail.attr)
+})
+// window.addEventListener("phx:js-show", ({ detail }) => { 
+//   document.querySelectorAll(detail.to).forEach(el =>
+//     JS_exec(detail.to, "show")
+//     // JS.show(el)
+//     // liveSocket.show(el)
+//   )
+// })
+
 // show socket connection status
-liveSocket.getSocket().onOpen(() => execJS("#connection-status", "js-hide"))
-liveSocket.getSocket().onError(() => execJS("#connection-status", "js-show"))
+liveSocket.getSocket().onOpen(() => JS_exec_attr_event("#connection-status", "js-hide"))
+liveSocket.getSocket().onError(() => JS_exec_attr_event("#connection-status", "js-show"))
 // connect if there are any LiveViews on the page
 liveSocket.connect()
 // themeChange()
