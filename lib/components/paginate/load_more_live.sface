@@ -1,31 +1,40 @@
-<div
-  id={"load_more_#{@context}"}
-  data-id="load_more"
-  data-entry-count={@entry_count}
-  :if={unwrap(e(@page_info, :end_cursor, nil))}
-  phx-scroll={if @infinite_load, do: "#{@live_handler}:preload_more"}
-  phx-hook={if @infinite_load, do: "InfiniteScroll"}
-  phx-click={"#{@live_handler}:load_more"}
-  phx-target={@target}
-  phx-value-context={@context}
-  phx-value-after={unwrap(e(@page_info, :end_cursor, ""))}
-  class="flex items-center pt-3 my-3 border-t place-content-center border-base-content/20"
-  x-data={"{show: #{socket_connected?(@__context__)}}"}
->
-  <a
-    data-role="load_more_button"
-    href={"#" <> unwrap(e(@page_info, :end_cursor, "unknown"))}
-    class="normal-case btn btn-outline rounded-full btn-primary"
-    style="display: none"
-    x-show="show"
+{#if is_binary(@cursor)}
+  <div
+    :if={!@hide_load_more}
+    id={"load_more_#{@context}"}
+    data-id="load_more"
+    data-entry-count={@entry_count}
+    phx-scroll={if @infinite_load, do: "#{@live_handler}:preload_more"}
+    phx-hook={if @infinite_load, do: "InfiniteScroll"}
+    phx-click={if !@entry_count, do: "#{@live_handler}:load_more"}
+    phx-target={@target}
+    phx-value-context={@context}
+    phx-value-after={@cursor}
+    class="flex items-center pt-3 my-3 border-t place-content-center border-base-content/20"
+    x-data={"{show: #{socket_connected?(@__context__)}}"}
+    {...@opts}
   >
-    {if @entry_count, do: l("Show %{num} more", num: @entry_count), else: l("Load more")}
-  </a>
-  <a
-    href={"?#{@live_handler}[after]=" <> unwrap(e(@page_info, :end_cursor, "unknown"))}
-    class="normal-case btn btn-outline rounded-full btn-primary"
-    x-show="!show"
-  >
-    {l("Next page")}
-  </a>
-</div>
+    <a
+      data-role="load_more_button"
+      href={"#" <> @cursor}
+      class="normal-case btn btn-outline rounded-full btn-primary"
+      style="display: none"
+      x-show="show"
+    >
+      {@label || if @entry_count, do: l("Show %{num} more", num: @entry_count), else: l("Load more")}
+    </a>
+    <a
+      href={"?#{@live_handler}[after]=" <> @cursor}
+      class="normal-case btn btn-outline rounded-full btn-primary"
+      x-show="!show"
+    >
+      {l("Next page")}
+    </a>
+  </div>
+{#else}
+  <div class="flex items-center pt-3 my-3 place-content-center border-base-content/20">
+    <#slot {@if_no_more}>
+      <p>{l("That's all folks...")}</p>
+    </#slot>
+  </div>
+{/if}
