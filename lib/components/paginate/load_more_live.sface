@@ -10,7 +10,7 @@
     phx-target={@target}
     phx-value-context={@context}
     phx-value-after={@cursor}
-    class="flex items-center pt-3 my-3 border-t place-content-center border-base-content/20"
+    class=""
     x-data={"{show: #{socket_connected?(@__context__)}}"}
     {...@opts}
   >
@@ -32,9 +32,9 @@
     </a>
   </div>
 {#else}
-  <div class="flex items-center pt-3 my-3 place-content-center border-base-content/20">
+  <div class="flex items-center pt-3 my-3 place-content-center flex-col border-t border-base-content/20">
     <#slot {@if_no_more}>
-      <p>{l("That's all folks...")}</p>
+      <p class="text-sm font-medium">{l("That's all folks...")}</p>
     </#slot>
   </div>
 {/if}
