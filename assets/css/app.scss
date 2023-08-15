@@ -98,6 +98,25 @@ hex-color-picker {
   @apply line-clamp-1
 }
 
+.p_line_clamp_4, .p_line_clamp_6 {
+overflow: hidden; 
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+.p_line_clamp_4  {
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+}
+.p_line_clamp_6  {
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
+}
+.p_line_clamp_4 p, .p_line_clamp_6 p  {
+  display: contents;
+}
+
 .previewable_activity .previewable_truncate {
   @apply line-clamp-6
 }
