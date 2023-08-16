@@ -32,7 +32,7 @@
     </a>
   </div>
 {#else}
-  <div class="flex items-center pt-3 my-3 place-content-center flex-col border-t border-base-content/20">
+  <div class="flex items-center pt-3 my-3 place-content-center flex-col">
     <#slot {@if_no_more}>
       <p class="text-sm font-medium">{l("That's all folks...")}</p>
     </#slot>

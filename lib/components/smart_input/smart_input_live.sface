@@ -34,7 +34,7 @@
           object_boundary={:skip_boundary_check}
         />
 
-        <div class="pl-3 ml-3">
+        <div class="px-2 ml-3">
           <span
             phx-click="Bonfire.UI.Common.SmartInput:remove_data"
             phx-target="#smart_input"
