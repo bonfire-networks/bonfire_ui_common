@@ -29,7 +29,7 @@
   <.dynamic_tag
     name={if @form_opts != %{}, do: "form", else: "div"}
     id={@form_opts[:id] || "#{@id}_box"}
-    class={Surface.css_class(["resize overflow-auto", "modal-box": !@image_preview])}
+    class={Surface.css_class(["", "modal-box": !@image_preview])}
     phx-target={e(@form_opts, "phx-target", nil) || @myself}
     {...Enums.naughty_to_atoms!(@form_opts)}
   >
@@ -46,15 +46,19 @@
       <h3 :if={!@no_header} class={@title_class || "font-bold text-base"}>
         <#slot {@title}>{@title_text}</#slot>
       </h3>
-      <div class="absolute top-0 right-0 block pt-5 pr-4 z-50">
+      <div class={
+        "absolute top-0 right-0 block pt-5 pr-4 z-50",
+        "-right-8 !pt-0 !pr-0 z-[999999999]": @no_backdrop}>
         <button
           phx-click="close"
           phx-target={"[id='#{@id}']"}
           type="button"
-          class="normal-case btn btn-circle btn-sm btn-ghost"
+          class={
+            "normal-case btn btn-circle",
+            "btn-square rounded-none btn-sm btn-secondary": @no_backdrop}
         >
           <span class="sr-only">{l("Close")}</span>
-          <#Icon outline="X" class="w-4 h-4" />
+          <#Icon outline="X" class="w-5 h-5" />
         </button>
       </div>
 

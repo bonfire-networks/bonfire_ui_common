@@ -5,6 +5,10 @@
 @tailwind base; 
 
 
+:root:has(:is(#media_player_modal.modal-open)) {
+  overflow: auto !important;
+}
+
 .multiselect_in_composer .input {
   @apply bg-base-content/5;
 }
