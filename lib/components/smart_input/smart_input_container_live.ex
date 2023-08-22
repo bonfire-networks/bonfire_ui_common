@@ -45,8 +45,12 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   def setup_uploads(socket),
     do:
       allow_upload(socket, :files,
-        # make configurable
-        accept: ~w(.jpg .jpeg .png .gif .svg .webp .pdf .md .rtf .mp3 .mp4 .webm),
+        accept:
+          Config.get_ext(
+            :bonfire_files,
+            [Bonfire.Files.DocumentUploader, :allowed_media_extensions],
+            ~w(.jpg .png)
+          ),
         # make configurable, expecially once we have resizing
         max_file_size: 10_000_000,
         max_entries: 6,
