@@ -4,7 +4,7 @@
     "",
     @modal_class,
     "modal modal-bottom sm:modal-middle max-h-[100%] z-[9999]": !@no_backdrop,
-    "fixed left-4 z-[99999999] bottom-0": @no_backdrop,
+    "fixed left-0 z-[99999999] bottom-0": @no_backdrop,
     "modal-closed": !@show,
     "modal-open": @show
   }
@@ -29,7 +29,7 @@
   <.dynamic_tag
     name={if @form_opts != %{}, do: "form", else: "div"}
     id={@form_opts[:id] || "#{@id}_box"}
-    class={Surface.css_class(["", "modal-box": !@image_preview])}
+    class={Surface.css_class(["", "modal-box ": !@image_preview, "h-full": @no_backdrop])}
     phx-target={e(@form_opts, "phx-target", nil) || @myself}
     {...Enums.naughty_to_atoms!(@form_opts)}
   >
@@ -41,21 +41,24 @@
       x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
       x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
       x-description="Modal panel, show/hide based on modal state."
-      class={"z-[99999]", @wrapper_class}
+      class={"relative z-[99999]", @wrapper_class}
     >
-      <h3 :if={!@no_header} class={@title_class || "font-bold text-base"}>
+      <h3 :if={!@no_header} class={@title_class || "font-bold text-base line-clamp-1 px-2 max-w-full"}>
         <#slot {@title}>{@title_text}</#slot>
       </h3>
       <div class={
-        "absolute top-0 right-0 block pt-5 pr-4 z-50",
-        "-right-8 !pt-0 !pr-0 z-[999999999]": @no_backdrop}>
+        "absolute top-0 right-0 block z-50",
+        "pt-5 pr-4": !@no_backdrop,
+        "z-[999999999] h-full": @no_backdrop
+      }>
         <button
           phx-click="close"
           phx-target={"[id='#{@id}']"}
           type="button"
           class={
             "normal-case btn btn-circle",
-            "btn-square rounded-none btn-sm btn-secondary": @no_backdrop}
+            "btn-square rounded-none btn-xs btn-secondary": @no_backdrop
+          }
         >
           <span class="sr-only">{l("Close")}</span>
           <#Icon outline="X" class="w-5 h-5" />
@@ -65,7 +68,8 @@
       <div
         class={
           "",
-          "max-h-[calc(100vh_-_13rem)] overflow-y-auto": !@image_preview
+          "max-h-[calc(100vh_-_13rem)] overflow-y-auto": !@image_preview,
+          "h-[95%]": @no_backdrop
         }
         data-id="modal-contents"
       >
