@@ -25,7 +25,7 @@ defmodule Bonfire.UI.Common.PlugAttackTesting do
   end
 
   def get_csrf_and_cookie(url) do
-    with {:ok, r} <- HTTPoison.get(url),
+    with {:ok, r} <- Req.get(url),
          {:ok, html} <- Floki.parse_document(r.body),
          [{_, [_, _, {_v, csrf_token} | _], []}] <- Floki.find(html, "[name=_csrf_token") do
       cookie = get_cookie(r)
@@ -58,7 +58,7 @@ defmodule Bonfire.UI.Common.PlugAttackTesting do
     body = get_post_body(cc.csrf_token, form_name, email, password)
     tep = get_tep(email, password)
 
-    case HTTPoison.post(url, body, @headers, hackney: [cookie: [cc.cookie]]) do
+    case Req.post(url, body: body, headers: @headers ++ [{"Cookie", cc.cookie}]) do
       {:ok, %{status_code: 429}} ->
         tep <> " POST to #{url} was throttled (received status 429)\n"
 
