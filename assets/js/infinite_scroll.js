@@ -14,11 +14,21 @@ InfiniteScrollHooks.InfiniteScroll = {
   },
   loadMore(entries) {
     const target = entries[0];
-    console.log(this.el.dataset.entryCount)
-    if (target.isIntersecting && this.pending == this.page() && (undefined==this.el.dataset.entryCount || this.el.dataset.entryCount <1)) {
-      this.el.getElementsByTagName("a")[0].innerHTML = "Loading more...";
-      this.pending = this.page() + 1;
-      this.pushEventTo(this.el.getAttribute("phx-target"), this.el.getAttribute("phx-scroll"), this.getPhxValues(this.el));
+    // console.log(this.el.dataset.entryCount)
+    if (target.isIntersecting && this.pending == this.page()) {
+      let entryCount = this.el.dataset.entryCount
+      if (undefined == entryCount || entryCount < 1) {
+        let event = this.el.getAttribute("phx-scroll")
+        if (event) {
+          this.el.getElementsByTagName("a")[0].innerHTML = "Loading more...";
+          this.pending = this.page() + 1;
+          this.pushEventTo(this.el.getAttribute("phx-target"), event, this.getPhxValues(this.el));
+        } else {
+          console.log("skip loading more because no phx-scroll event")
+        }
+      } else {
+        console.log("skip loading more")
+      }
     }
   },
   mounted() {
