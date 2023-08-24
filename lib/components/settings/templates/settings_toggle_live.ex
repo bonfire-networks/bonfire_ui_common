@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Common.SettingsToggleLive do
 
   prop name, :string, default: nil
   prop description, :string, default: nil
-
+  prop label, :string, default: nil
   prop default_value, :any, default: nil
   prop disabled_value, :any, default: false
   prop enabled_value, :any, default: true
@@ -25,7 +25,7 @@ defmodule Bonfire.UI.Common.SettingsToggleLive do
           {k, _} -> "[#{k}]"
         end)
 
-      # |> Enum.reverse() |> Enum.reduce(& "#{&1}[#{&2}]") 
+      # |> Enum.reverse() |> Enum.reduce(& "#{&1}[#{&2}]")
     end)
     |> update(:current_value, fn
       :load_from_settings ->

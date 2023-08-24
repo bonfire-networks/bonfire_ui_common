@@ -6,10 +6,3 @@
   scope={@scope}
 />
 
-<!-- name={l("Missing avatars")} -->
-<Bonfire.UI.Common.SettingsToggleLive
-  description={l("Show randomly-generated animal avatars for users without a profile picture?")}
-  keys={[Bonfire.UI.Common.AvatarLive, :animal_avatars]}
-  default_value
-  scope={@scope}
-/>

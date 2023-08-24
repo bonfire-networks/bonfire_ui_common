@@ -7,7 +7,7 @@
   {#for dep <- e(@data, :ui, nil) || @ui}
     <div class="flex items-center justify-between p-4">
       <div class="flex flex-col gap-1">
-        <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+        <div class="text-sm font-medium">{e(dep, :app, "Unknown")}</div>
         <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
       </div>
       <div class="dropdown dropdown-end">
@@ -38,7 +38,7 @@
   {#for dep <- e(@data, :feature_extensions, nil) || @feature_extensions}
     <div class="flex items-center justify-between p-4">
       <div class="flex flex-col gap-1">
-        <div class="text-sm font-bold">{e(dep, :app, "Unknown") |> debug("apppp")}</div>
+        <div class="text-sm font-medium">{e(dep, :app, "Unknown") |> debug("apppp")}</div>
         <div class="text-sm font-light text-base-content/70">{get_version(dep) |> debug("vvvvv")}</div>
       </div>
       <div class="dropdown dropdown-end">
@@ -69,7 +69,7 @@
   {#for dep <- e(@data, :schemas, nil) || @schemas}
     <div class="flex items-center justify-between p-4">
       <div class="flex flex-col gap-1">
-        <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+        <div class="text-sm font-medium">{e(dep, :app, "Unknown")}</div>
         <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
       </div>
       <div class="dropdown dropdown-end">
@@ -92,7 +92,7 @@
   {#for dep <- (e(@data, :ecosystem_libs, nil) || @ecosystem_libs) |> debug("eee")}
     <div class="flex items-center justify-between p-4">
       <div class="flex flex-col gap-1">
-        <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+        <div class="text-sm font-medium">{e(dep, :app, "Unknown")}</div>
         <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
       </div>
       <div class="dropdown dropdown-end">
@@ -115,7 +115,7 @@
   {#for dep <- (e(@data, :other_deps, nil) || @other_deps) |> debug("eee")}
     <div class="flex items-center justify-between p-4">
       <div class="flex flex-col gap-1">
-        <div class="text-sm font-bold">{e(dep, :app, "Unknown")}</div>
+        <div class="text-sm font-medium">{e(dep, :app, "Unknown")}</div>
         <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
       </div>
       <div class="dropdown dropdown-end">

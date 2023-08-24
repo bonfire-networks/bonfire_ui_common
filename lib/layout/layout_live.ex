@@ -140,7 +140,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <div
           :if={!@without_sidebar}
           data-id="nav_sidebar"
-          class="fixed md:sticky self-start order-first w-full mt-3 top-3 z-[9999] md:block"
+          class="fixed md:sticky self-start order-first w-full mt-4 top-4 z-[9999] md:block"
         >
           <div class="hidden md:flex items-center justify-between h-[50px] pb-4">
             <div data-id="logo" class="items-center ml-1 place-content-center">

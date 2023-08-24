@@ -1,5 +1,11 @@
-<div id={"badge_counter_#{@id}"} class={if @count > 0, do: @class}>
-  <span :if={@count > 0} class={@counter_class}>
+<div 
+  id={"badge_counter_#{@id}"} 
+  :if={@count > 0}
+  class={
+    @class,
+    "badge-primary bg-primary": Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlited], false, @__context__)
+  }>
+  <span :if={@count > 0 && Settings.get([Bonfire.UI.Common.BadgeCounterLive, :hide_counter], false, @__context__)} class={@counter_class}>
     {@count}
   </span>
 </div>
