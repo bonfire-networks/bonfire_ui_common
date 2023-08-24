@@ -33,7 +33,7 @@
         smart_input_opts={@smart_input_opts}
         prompt={e(@smart_input_opts, :prompt, l("Compose"))}
         icon={e(@smart_input_opts, :icon, "mdi:pencil")}
-        class="fixed right-3 md:static bottom-[72px] md:btn btn-circle md:h-auto md:min-h-auto md:max-h-auto md:px-4 !btn-primary text-primary-content md:!rounded-full md:w-full md:h-[52px] flex items-center gap-2 place-content-center normal-case"
+        class="fixed right-3 md:static bottom-[72px] md:btn btn-circle md:h-auto md:min-h-auto md:max-h-auto md:px-4 !btn-primary text-primary-content md:!rounded-full md:!w-auto flex items-center gap-2 place-content-center normal-case"
       />
       <!-- 
       Note: not including these props because we want the main button to open ther post composer by default, or whatever other type is already selected (until the smart input is reset)
