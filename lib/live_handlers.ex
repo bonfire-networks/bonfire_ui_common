@@ -311,13 +311,13 @@ defmodule Bonfire.UI.Common.LiveHandlers do
           if attrs["to_atoms"] == "true",
             do:
               input_to_atoms(assigns,
-                discard_unknown: true,
+                discard_unknown_keys: true,
                 values: true,
                 values_to_integers: attrs["to_integers"] == "true"
               ),
             else:
               input_to_atoms(assigns,
-                discard_unknown: true,
+                discard_unknown_keys: true,
                 values: false,
                 values_to_integers: attrs["to_integers"] == "true"
               )

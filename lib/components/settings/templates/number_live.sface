@@ -5,23 +5,10 @@
       <div :if={@description} class="text-sm font-light text-base-content/70">{@description}</div>
     </div>
     {#if @read_only}
-      <span class="flex-none badge h-[1.75rem] font-medium rounded">{Bonfire.Me.Settings.get(
-          @settings_key,
-          @default,
-          if(@scope == :instance, do: @__context__[:instance_settings] || :instance, else: @__context__)
-        )}</span>
+      <span class="flex-none badge h-[1.75rem] font-medium rounded">{@current_value}</span>
     {#else}
       <input name="scope" value={@scope} type="hidden">
-      <input
-        type="number"
-        name={@field_key}
-        value={Bonfire.Me.Settings.get(
-          @settings_key,
-          @default,
-          if(@scope == :instance, do: @__context__[:instance_settings] || :instance, else: @__context__)
-        )}
-        class={@class}
-      />
+      <input type="number" name={@input} value={@current_value} class={@class}>
     {/if}
 
     <span class="flex-none ml-1">{@unit}</span>
