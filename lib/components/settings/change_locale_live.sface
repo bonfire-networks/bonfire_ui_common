@@ -4,6 +4,7 @@
   class="w-full max-w-xs select select-bordered"
   phx-hook="ChangeLocaleHook"
   phx-change={@live_handler}
+  data-scope={@scope}
 >
   {#for l <- Localise.known_locales()}
     <option class="" value={l} selected={if "#{@locale}" == "#{l}", do: "selected"}>

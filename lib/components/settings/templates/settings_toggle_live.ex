@@ -29,10 +29,17 @@ defmodule Bonfire.UI.Common.SettingsToggleLive do
     end)
     |> update(:current_value, fn
       :load_from_settings ->
+        scoped =
+          case assigns[:scope] do
+            :account -> current_account(assigns[:__context__])
+            :instance -> :instance
+            _ -> current_user(assigns[:__context__])
+          end
+
         Bonfire.Me.Settings.get(
           assigns.keys,
           assigns.default_value,
-          assigns.scope || assigns.__context__
+          scoped
         )
 
       custom_value ->
