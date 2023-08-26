@@ -6,7 +6,7 @@
     data-entry-count={@entry_count}
     phx-scroll={if @infinite_load, do: "#{@live_handler}:preload_more"}
     phx-hook={if @infinite_load, do: "InfiniteScroll"}
-    phx-click={if !@entry_count, do: "#{@live_handler}:load_more"}
+    phx-click={if !@entry_count or @entry_count == 0, do: "#{@live_handler}:load_more"}
     phx-target={@target}
     phx-value-context={@context}
     phx-value-after={@cursor}
