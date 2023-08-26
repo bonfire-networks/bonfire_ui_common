@@ -7,7 +7,7 @@
     </li>
     <li :if={current_user_id(@__context__)}>
       <LiveRedirect
-        to={~p"/settings/profile"}
+        to={~p"/settings/user/profile"}
         class={
           "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "profile"
@@ -22,7 +22,7 @@
     </li>
     <li>
       <LiveRedirect
-        to={~p"/settings/preferences"}
+        to={~p"/settings/user/preferences"}
         class={
           "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "preferences"
@@ -55,7 +55,7 @@
     <li :if={module_enabled?(Bonfire.Data.SharedUser, @__context__) &&
       Settings.get(:experimental_features_enabled, false, @__context__)}>
       <LiveRedirect
-        to={~p"/settings/shared_user"}
+        to={~p"/settings/user/shared_user"}
         class={
           "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "shared_user"
@@ -71,7 +71,7 @@
 
     <!-- <li>
       <LiveRedirect
-        to={~p"/settings/invites"}
+        to={~p"/settings/user/invites"}
         class={
           "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "invites"
@@ -93,7 +93,7 @@
 
     <li>
       <LiveRedirect
-        to={~p"/settings/flags"}
+        to={~p"/settings/user/flags"}
         class={
           "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "flags"
@@ -171,7 +171,7 @@
     </li>
     <li>
       <LiveRedirect
-        to={~p"/settings/import"}
+        to={~p"/settings/user/import"}
         class={
           "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "import"
@@ -186,7 +186,7 @@
     </li>
     <li>
       <LiveRedirect
-        to={~p"/settings/export"}
+        to={~p"/settings/user/export"}
         class={
           "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "export"
@@ -207,7 +207,7 @@
     </li>
     <li>
       <LiveRedirect
-        to={~p"/settings/extensions"}
+        to={~p"/settings/user/extensions"}
         class={
           "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "extensions"

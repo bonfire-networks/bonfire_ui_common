@@ -5,4 +5,6 @@ defmodule Bonfire.UI.Common.ChangeThemeLive do
   prop key, :string, default: "instance_theme"
   prop theme, :string
   prop themes, :list
+
+  prop scope, :any, default: :user
 end

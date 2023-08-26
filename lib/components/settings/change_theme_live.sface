@@ -13,6 +13,7 @@
         phx-click="Bonfire.Me.Settings:put_theme"
         phx-value-keys={"ui:theme:#{@key}"}
         phx-value-values={t}
+        phx-value-scope={@scope}
         class={
           "overflow-hidden border rounded-lg border-base-content/20 hover:border-base-content/40 outline-base-content outline-2 outline-offset-2",
           "ring-2 ring-primary": to_string(t) == to_string(@theme)
@@ -66,6 +67,7 @@
           phx-click="Bonfire.Me.Settings:put_theme"
           phx-value-keys={"ui:theme:#{@key}"}
           phx-value-values={t}
+          phx-value-scope={@scope}
           class="overflow-hidden rounded-lg outline-base-content"
         >
           <div data-theme={t} class="w-full font-sans cursor-pointer bg-base-100 text-base-content">

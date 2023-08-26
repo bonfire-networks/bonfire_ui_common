@@ -5,4 +5,3 @@
   default_value={false}
   scope={@scope}
 />
-

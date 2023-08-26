@@ -12,12 +12,13 @@
       <ul x-show="open" x-collapse class="menu menu-compact"> -->
     <li>
       <div class="p-0 cursor-default hover:bg-base-300">
-        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Website")}</span>
+        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Instance")}</span>
       </div>
     </li>
+
     <li>
       <LivePatch
-        to={~p"/settings/instance/preferences"}
+        to={~p"/settings/instance/configuration"}
         class={
           "flex items-center gap-3 rounded-md py-2 px-2 w-full",
           "bg-base-content/10": @selected_tab == "preferences"
@@ -27,7 +28,23 @@
           solid="Cog"
           class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "preferences"}
         />
-        <span class="text-sm text-base-content/70">{l("Preferences")}</span>
+        <span class="text-sm text-base-content/70">{l("Instance Configuration")}</span>
+      </LivePatch>
+    </li>
+
+    <li>
+      <LivePatch
+        to={~p"/settings/instance/preferences"}
+        class={
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+          "bg-base-content/10": @selected_tab == "preferences"
+        }
+      >
+        <#Icon
+          solid="Adjustments"
+          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "preferences"}
+        />
+        <span class="text-sm text-base-content/70">{l("Default User Preferences")}</span>
       </LivePatch>
     </li>
 

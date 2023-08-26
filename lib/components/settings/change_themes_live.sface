@@ -1,9 +1,9 @@
 <div
   class="w-full mt-4 form-control"
   x-data={"{
-        light: #{debug(Settings.get([:ui, :theme, :preferred], :system, @__context__), "prefff") in [:light, :system]},
-        dark: #{Settings.get([:ui, :theme, :preferred], :system, @__context__) in [:dark, :system]},
-        custom_theme: #{Settings.get([:ui, :theme, :preferred], :system, @__context__) == :custom},
+        light: #{@preferred in [:light, :system]},
+        dark: #{@preferred in [:dark, :system]},
+        custom_theme: #{@preferred == :custom},
       }"}
 >
   <div class="mb-3 text-sm font-semibold tracking-widest text-base-content/70">{l("Colour mode")}</div>
@@ -16,6 +16,7 @@
       phx-click="Bonfire.Me.Settings:put_theme"
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:dark}
+      phx-value-scope={@scope}
       class="normal-case rounded btn btn-ghost border-base-content/30"
     >
       <div class="flex items-center">
@@ -31,6 +32,7 @@
       phx-click="Bonfire.Me.Settings:put_theme"
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:light}
+      phx-value-scope={@scope}
       class="normal-case rounded btn btn-outline border-base-content/30"
     >
       <span><#Icon outline="Sun" class="w-4 h-4" /></span>
@@ -44,6 +46,7 @@
       phx-click="Bonfire.Me.Settings:put_theme"
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:system}
+      phx-value-scope={@scope}
       class="normal-case rounded btn btn-outline border-base-content/30"
     >
       <span><#Icon outline="ComputerDesktop" class="w-4 h-4" /></span>
@@ -57,6 +60,7 @@
       phx-click="Bonfire.Me.Settings:put_theme"
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:custom}
+      phx-value-scope={@scope}
       class="normal-case rounded btn btn-outline border-base-content/30"
     >
       <span><#Icon iconify="lucide:paintbrush-2" class="w-4 h-4" /></span>
@@ -76,7 +80,7 @@
         
       </div> -->
   <div>
-    {#if Settings.get([:ui, :theme, :preferred], %{}, @__context__) not in [:custom]}
+    {#if @preferred not in [:custom]}
       {#case Settings.get([:ui, :themes], ["bonfire"], @scoped)}
         {#match themes}
           {#case Settings.get([:ui, :themes_light], ["light"], @scoped)}
@@ -89,6 +93,7 @@
                   key="instance_theme"
                   theme={@theme}
                   themes={themes}
+                  scope={@scope}
                 />
               </div>
               <div x-show="light">
@@ -99,6 +104,7 @@
                   key="instance_theme_light"
                   theme={@theme_light}
                   themes={themes_light}
+                  scope={@scope}
                 />
               </div>
           {/case}
