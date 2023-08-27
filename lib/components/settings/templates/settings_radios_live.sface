@@ -29,7 +29,7 @@
               />
               <div class="flex flex-col ml-3">
                 <!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" -->
-                <span id="admin-info-0-label" class="block text-sm font-medium">
+                <span class="block text-sm font-medium">
                   {val}
                 </span>
               </div>
