@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Common.LoadMoreLive do
   prop entry_count, :any, default: nil
   prop label, :any, default: nil
 
-  prop infinite_load, :boolean, default: false
+  prop infinite_scroll, :any, default: false
   prop hide_load_more, :boolean, default: false
 
   prop opts, :map, default: %{}

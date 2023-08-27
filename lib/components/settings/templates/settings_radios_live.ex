@@ -17,6 +17,7 @@ defmodule Bonfire.UI.Common.SettingsRadiosLive do
   def render(assigns) do
     assigns
     |> Bonfire.Me.Settings.LiveHandler.maybe_assign_input_value_from_keys()
+    # |> debug("maybe_assign_input_value_from_keys")
     |> render_sface()
   end
 end

@@ -23,7 +23,7 @@
               <input
                 type="radio"
                 name={@input}
-                value={key}
+                value={"#{key}"}
                 checked={if @current_value == key, do: "checked"}
                 class="radio radio-secondary"
               />

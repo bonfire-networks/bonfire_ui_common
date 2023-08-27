@@ -45,11 +45,11 @@ InfiniteScrollHooks.InfiniteScroll = {
 
     this.el.addEventListener("click", e => {
       if (this.el.dataset.entryCount > 0) {
-        this.el.dataset.entryCount = 0;
         for (let element of document.getElementsByClassName("infinite_scroll_hidden")) {
           element.style.display = "block";
         }
         this.el.getElementsByTagName("a")[0].innerHTML = "Load more";
+        this.el.dataset.entryCount = 0;
         e.preventDefault();
       }
       

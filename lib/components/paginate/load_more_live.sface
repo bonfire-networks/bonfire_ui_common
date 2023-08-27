@@ -3,10 +3,16 @@
     :if={!@hide_load_more}
     id={"load_more_#{@context}"}
     data-id="load_more"
-    data-entry-count={@entry_count}
-    phx-scroll={if @infinite_load, do: "#{@live_handler}:preload_more"}
-    phx-hook={if @infinite_load, do: "InfiniteScroll"}
-    phx-click={if !@entry_count or @entry_count == 0, do: "#{@live_handler}:load_more"}
+    data-entry-count={if @infinite_scroll == :preload, do: @entry_count}
+    phx-scroll={if @infinite_scroll,
+      do:
+        if(@infinite_scroll == :preload,
+          do: "#{@live_handler}:preload_more",
+          else: "#{@live_handler}:load_more"
+        )}
+    phx-hook={if @infinite_scroll, do: "InfiniteScroll"}
+    phx-click={if @infinite_scroll != :preload or !@entry_count or @entry_count == 0,
+      do: "#{@live_handler}:load_more"}
     phx-target={@target}
     phx-value-context={@context}
     phx-value-after={@cursor}
@@ -21,7 +27,10 @@
       style="display: none"
       x-show="show"
     >
-      {@label || if @entry_count, do: l("Show %{num} more", num: @entry_count), else: l("Load more")}
+      {@label ||
+        if @infinite_scroll == :preload and @entry_count,
+          do: l("Show %{num} more", num: @entry_count),
+          else: l("Load more")}
     </a>
     <a
       href={"?#{@live_handler}[after]=" <> @cursor}
