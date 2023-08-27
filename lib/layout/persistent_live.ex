@@ -72,7 +72,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
   end
 
   def notify(context, attrs) do
-    maybe_send(context, {:notification, attrs})
+    maybe_send(context, {:notification, %{notification: attrs}})
   end
 
   defp persistent_assigns_filter(assigns) do

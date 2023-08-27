@@ -661,6 +661,17 @@ defmodule Bonfire.UI.Common do
         __STACKTRACE__
       )
 
+    error in ArgumentError ->
+      error(__STACKTRACE__, inspect(error))
+
+      term_error(
+        l("Sorry, a function didn't receive the data it expected"),
+        socket,
+        return_key,
+        error,
+        __STACKTRACE__
+      )
+
     error ->
       live_exception(
         socket,

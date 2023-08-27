@@ -77,6 +77,10 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     end)
   end
 
+  defp do_handle_info(:clear_flash, socket) do
+    {:noreply, clear_flash(socket)}
+  end
+
   # global handler to set a view's assigns from a component
   defp do_handle_info({:assign, {assign, value}}, socket) do
     debug("LiveHandler: handle_info, assign data with {:assign, {#{assign}, value}}")

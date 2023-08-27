@@ -22,16 +22,16 @@ defmodule Bonfire.UI.Common.NotificationLive do
      )}
   end
 
-  # def handle_info(:clear_flash, socket) do
-  #   {:noreply, clear_flash(socket)}
-  # end
+  def handle_info(:clear_flash, socket) do
+    {:noreply, special_clear_all(socket)}
+  end
 
   def update(assigns, %{assigns: %{subscribed: true}} = socket) do
     {:ok,
-     assign(
-       socket,
-       assigns
-     )}
+     socket
+     # FIXME: clearing here is a TEMP fix to avoid overlapping alerts
+     |> special_clear_all()
+     |> assign(assigns)}
   end
 
   def update(assigns, socket) do
@@ -86,14 +86,26 @@ defmodule Bonfire.UI.Common.NotificationLive do
       key ->
         {:noreply,
          socket
-         |> clear_flash(key)
-         |> assign(
-           :root_flash,
-           e(socket.assigns, :root_flash, %{})
-           |> Map.drop([type, key])
-         )
-         |> assign(key, nil)}
+         |> special_clear_flash(key, type)}
     end
+  end
+
+  def special_clear_all(socket) do
+    socket
+    |> special_clear_flash(:info)
+    |> special_clear_flash(:error)
+    |> special_clear_flash(:notification)
+  end
+
+  def special_clear_flash(socket, key, alt_key \\ nil) do
+    socket
+    |> clear_flash(key)
+    |> assign(
+      :root_flash,
+      e(socket.assigns, :root_flash, %{})
+      |> Map.drop([key, alt_key])
+    )
+    |> assign(key, nil)
   end
 
   def do_handle_event("click_away", _, socket) do
