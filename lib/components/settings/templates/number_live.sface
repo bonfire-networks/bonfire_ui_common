@@ -8,7 +8,7 @@
       <span class="flex-none badge h-[1.75rem] font-medium rounded">{@current_value}</span>
     {#else}
       <input name="scope" value={@scope} type="hidden">
-      <input type="number" name={@input} value={@current_value} class={@class}>
+      <input type="number" name={@input} value={to_string(@current_value)} class={@class}>
     {/if}
 
     <span class="flex-none ml-1">{@unit}</span>
