@@ -197,7 +197,7 @@ defmodule Bonfire.UI.Common.ErrorView do
     <h1 class="text-base-content">
       <%= @title %>
     </h1>
-    <%= raw(@details) %>
+    <%= raw(to_string(@details)) %>
     """
   end
 
