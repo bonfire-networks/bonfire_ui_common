@@ -81,34 +81,28 @@
       </div> -->
   <div>
     {#if @preferred not in [:custom]}
-      {#case Settings.get([:ui, :themes], ["bonfire"], @scoped)}
-        {#match themes}
-          {#case Settings.get([:ui, :themes_light], ["light"], @scoped)}
-            {#match themes_light}
-              <div x-show="dark">
-                <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l("Pick your preferred dark theme")}</div>
+      <div x-show="dark">
+        <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l("Pick your preferred dark theme")}</div>
 
-                <Bonfire.UI.Common.ChangeThemeLive
-                  label={l("Dark theme")}
-                  key="instance_theme"
-                  theme={@theme}
-                  themes={themes}
-                  scope={@scope}
-                />
-              </div>
-              <div x-show="light">
-                <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l("Pick your preferred light theme")}</div>
+        <Bonfire.UI.Common.ChangeThemeLive
+          label={l("Dark theme")}
+          key="instance_theme"
+          theme={@theme}
+          themes={@themes}
+          scope={@scope}
+        />
+      </div>
+      <div x-show="light">
+        <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l("Pick your preferred light theme")}</div>
 
-                <Bonfire.UI.Common.ChangeThemeLive
-                  label={l("Light theme")}
-                  key="instance_theme_light"
-                  theme={@theme_light}
-                  themes={themes_light}
-                  scope={@scope}
-                />
-              </div>
-          {/case}
-      {/case}
+        <Bonfire.UI.Common.ChangeThemeLive
+          label={l("Light theme")}
+          key="instance_theme_light"
+          theme={@theme_light}
+          themes={@themes_light}
+          scope={@scope}
+        />
+      </div>
     {/if}
   </div>
 
