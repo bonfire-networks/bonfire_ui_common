@@ -22,62 +22,62 @@
     </li>
 
     <li>
-    <details>
-      <summary class="flex items-center gap-3 rounded-md p-2 w-full">
-        <#Icon
-          iconify="pajamas:preferences"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "preferences"}
-        />
-        <div class="flex-1 text-base-content/70">{l "Preferences"}</div></summary>
-      <ul>
-      <li>
-        <LiveRedirect
-        to={~p"/settings/user/preferences/appearance"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10 ": @selected_tab == "appearance"
-        }
-      >
-        <#Icon
-          iconify="dashicons:admin-appearance"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "appearance"}
-        />
-        <span class="text-sm text-base-content/70">{l("Appearance")}</span>
-      </LiveRedirect>
-      </li>
-      <li>
-      <LiveRedirect
-        to={~p"/settings/user/preferences/behaviours"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10 ": @selected_tab == "behaviours"
-        }
-      >
-        <#Icon
-          iconify="mingcute:layout-6-fill"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "behaviours"}
-        />
-        <span class="text-sm text-base-content/70">{l("Behaviours")}</span>
-      </LiveRedirect>
-      </li>
-      <li>
-      <LiveRedirect
-        to={~p"/settings/user/preferences/safety"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10 ": @selected_tab == "safety"
-        }
-      >
-        <#Icon
-          iconify="ic:round-privacy-tip"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "safety"}
-        />
-        <span class="text-sm text-base-content/70">{l("Privacy & Safety")}</span>
-      </LiveRedirect>
-      </li>
-      </ul>
-    </details>
-  </li>
+      <details>
+        <summary class="flex items-center gap-3 rounded-md p-2 w-full">
+          <#Icon
+            iconify="pajamas:preferences"
+            class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "preferences"}
+          />
+          <div class="flex-1 text-base-content/70">{l("Preferences")}</div></summary>
+        <ul>
+          <li>
+            <LiveRedirect
+              to={~p"/settings/user/preferences/appearance"}
+              class={
+                "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+                "bg-base-content/10 ": @selected_tab == "appearance"
+              }
+            >
+              <#Icon
+                iconify="dashicons:admin-appearance"
+                class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "appearance"}
+              />
+              <span class="text-sm text-base-content/70">{l("Appearance")}</span>
+            </LiveRedirect>
+          </li>
+          <li>
+            <LiveRedirect
+              to={~p"/settings/user/preferences/behaviours"}
+              class={
+                "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+                "bg-base-content/10 ": @selected_tab == "behaviours"
+              }
+            >
+              <#Icon
+                iconify="mingcute:layout-6-fill"
+                class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "behaviours"}
+              />
+              <span class="text-sm text-base-content/70">{l("Behaviours")}</span>
+            </LiveRedirect>
+          </li>
+          <li>
+            <LiveRedirect
+              to={~p"/settings/user/preferences/safety"}
+              class={
+                "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+                "bg-base-content/10 ": @selected_tab == "safety"
+              }
+            >
+              <#Icon
+                iconify="ic:round-privacy-tip"
+                class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "safety"}
+              />
+              <span class="text-sm text-base-content/70">{l("Privacy & Safety")}</span>
+            </LiveRedirect>
+          </li>
+        </ul>
+      </details>
+    </li>
     <!-- <li>
       <LiveRedirect
         to={~p"/settings/user/preferences"}
