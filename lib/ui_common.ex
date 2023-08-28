@@ -57,6 +57,18 @@ defmodule Bonfire.UI.Common do
     %{} |> Map.put(key, value)
   end
 
+  def assign_generic_global(%Phoenix.LiveView.Socket{} = socket, assigns) do
+    Surface.Components.Context.put(socket, assigns)
+  end
+
+  def assign_generic_global(%Plug.Conn{} = conn, assigns) do
+    Plug.Conn.assign(
+      conn,
+      :__context__,
+      Map.merge(conn.assigns[:__context__] || %{}, Map.new(assigns))
+    )
+  end
+
   def assign_global(socket, assigns) when is_map(assigns) do
     # need this so any non-atom keys are turned into atoms
     Enums.input_to_atoms(assigns, discard_unknown_keys: true, values: false)
@@ -81,7 +93,7 @@ defmodule Bonfire.UI.Common do
     socket
     # also put in non-context assigns
     |> assign_generic(assigns)
-    |> Surface.Components.Context.put(assigns)
+    |> assign_generic_global(assigns)
 
     # |> debug("put in context")
   end
@@ -466,7 +478,7 @@ defmodule Bonfire.UI.Common do
       do:
         socket
         |> assign_generic(assigns)
-        |> Surface.Components.Context.put(assigns)
+        |> assign_generic_global(assigns)
   end
 
   @doc "Warning: this will set assigns for any/all users who subscribe to them. You want to `cast_self/2` instead if dealing with user-specific actions or private data."

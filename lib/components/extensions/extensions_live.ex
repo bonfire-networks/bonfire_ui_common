@@ -18,7 +18,7 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
     assigns
     |> assign_new(:data, fn -> Bonfire.Common.Extensions.data() end)
     |> assign_new(:can_instance_wide, fn ->
-      Bonfire.Boundaries.can?(assigns, :toggle, :instance)
+      Bonfire.Boundaries.can?(assigns[:__context__], :toggle, :instance)
     end)
     |> assign_new(:required_deps, fn -> Bonfire.Application.required_deps() end)
     |> render_sface()

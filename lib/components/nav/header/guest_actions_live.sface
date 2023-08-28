@@ -1,5 +1,5 @@
 <div
-  :if={!@current_account}
+  :if={!current_account(@__context__)}
   class={
     "hidden tablet-lg:flex justify-end items-center gap-3",
     "!flex tablet-lg:!hidden": @page_header

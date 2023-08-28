@@ -297,7 +297,7 @@ defmodule Bonfire.UI.Common.Web do
         @moduledoc false
         use Surface.LiveComponent, unquote(opts)
 
-        data current_account, :any, from_context: :current_account
+        # data current_account, :any, from_context: :current_account
         data current_user, :any, from_context: :current_user
         # data socket, :any
 
@@ -310,7 +310,7 @@ defmodule Bonfire.UI.Common.Web do
         @moduledoc false
         use Surface.Component, unquote(opts)
 
-        prop current_account, :any, from_context: :current_account
+        # prop current_account, :any, from_context: :current_account
         prop current_user, :any, from_context: :current_user
         prop socket, :any
 

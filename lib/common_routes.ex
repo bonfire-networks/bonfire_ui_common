@@ -24,12 +24,17 @@ defmodule Bonfire.UI.Common.Routes do
         )
 
         plug(Cldr.Plug.SetLocale, Bonfire.Common.Localise.set_locale_config())
+
         plug(:protect_from_forgery)
         plug(:put_secure_browser_headers)
+
         # detect Accept headers to serve JSON or HTML
         plug(Bonfire.UI.Common.Plugs.ActivityPub)
-        plug(:load_current_auth)
-        plug(Bonfire.UI.Common.MaybeStaticGeneratorPlug)
+
+        # plug(:load_current_auth) # do we need this here?
+
+        # plug(Bonfire.UI.Common.MaybeStaticGeneratorPlug)
+
         plug(:fetch_live_flash)
 
         # plug Bonfire.UI.Me.Plugs.Locale # TODO: skip guessing a locale if the user has one in preferences

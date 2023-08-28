@@ -140,7 +140,7 @@
       </div>
     </li>
 
-    <li :if={Bonfire.Boundaries.can?(@current_user, :mediate, :instance)}>
+    <li :if={Bonfire.Boundaries.can?(@__context__, :mediate, :instance)}>
       <LivePatch
         to={~p"/settings/instance/flags"}
         class={

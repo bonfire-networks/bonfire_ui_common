@@ -18,7 +18,7 @@
     </div>
   </td>
   <td class="flex-1">
-    {#if Bonfire.Me.Users.is_admin?(@user)}
+    {#if maybe_apply(Bonfire.Me.Accounts, :is_admin?, @user) == true}
       <span class="badge badge-success badge-sm">{l("Admin")}</span>
     {#else}
       <span class="badge badge-outline badge-sm">{l("Member")}</span>

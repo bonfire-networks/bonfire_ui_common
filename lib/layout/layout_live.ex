@@ -104,7 +104,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       class="antialiased"
       style={maybe_custom_theme(
         current_user: @current_user,
-        current_account: @current_account,
+        current_account: current_account(@__context__),
         instance_settings: @instance_settings
       )}
       x-data="{
@@ -118,7 +118,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       >
         <Bonfire.UI.Common.GuestHeaderLive
           current_user={@current_user}
-          current_account={@current_account}
+          current_account={current_account(@__context__)}
           page_title={@page_title}
           page={@page}
         />
