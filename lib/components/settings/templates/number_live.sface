@@ -1,16 +1,17 @@
 <div class="p-4">
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between gap-4">
     <div class="flex flex-1 flex-col gap-1">
-      <div class="text-sm font-bold">{@name}</div>
+      <div class="text-sm font-medium">{@name}</div>
       <div :if={@description} class="text-sm font-light text-base-content/70">{@description}</div>
     </div>
-    {#if @read_only}
-      <span class="flex-none badge h-[1.75rem] font-medium rounded">{@current_value}</span>
-    {#else}
-      <input name="scope" value={@scope} type="hidden">
-      <input type="number" name={@input} value={to_string(@current_value)} class={@class}>
-    {/if}
-
-    <span class="flex-none ml-1">{@unit}</span>
+    <div class="flex items-center gap-2">
+      {#if @read_only}
+        <span class="flex-none badge h-[1.75rem] font-medium rounded">{@current_value}</span>
+      {#else}
+        <input name="scope" value={@scope} type="hidden">
+        <input type="number" name={@input} value={to_string(@current_value)} class={@class}>
+      {/if}
+      <span class="flex-none text-sm font-medium capitalize text-base-content/80">{@unit}</span>
+    </div>
   </div>
 </div>

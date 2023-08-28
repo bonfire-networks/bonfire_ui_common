@@ -1,7 +1,7 @@
 <nav class="" role="navigation" aria-label={l("Settings navigation")}>
-  <ul class="-ml-2 menu menu-sm">
+  <ul class="-ml-2 menu">
     <li>
-      <div class="p-0 cursor-default hover:bg-base-300">
+      <div class="p-0 cursor-default pointer-events-none">
         <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("General")}</span>
       </div>
     </li>
@@ -20,7 +20,65 @@
         <span class="text-sm text-base-content/70">{l("Profile")}</span>
       </LiveRedirect>
     </li>
+
     <li>
+    <details>
+      <summary class="flex items-center gap-3 rounded-md p-2 w-full">
+        <#Icon
+          iconify="pajamas:preferences"
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "preferences"}
+        />
+        <div class="flex-1 text-base-content/70">{l "Preferences"}</div></summary>
+      <ul>
+      <li>
+        <LiveRedirect
+        to={~p"/settings/user/preferences/appearance"}
+        class={
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+          "bg-base-content/10 ": @selected_tab == "appearance"
+        }
+      >
+        <#Icon
+          iconify="dashicons:admin-appearance"
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "appearance"}
+        />
+        <span class="text-sm text-base-content/70">{l("Appearance")}</span>
+      </LiveRedirect>
+      </li>
+      <li>
+      <LiveRedirect
+        to={~p"/settings/user/preferences/behaviours"}
+        class={
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+          "bg-base-content/10 ": @selected_tab == "behaviours"
+        }
+      >
+        <#Icon
+          iconify="mingcute:layout-6-fill"
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "behaviours"}
+        />
+        <span class="text-sm text-base-content/70">{l("Behaviours")}</span>
+      </LiveRedirect>
+      </li>
+      <li>
+      <LiveRedirect
+        to={~p"/settings/user/preferences/safety"}
+        class={
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+          "bg-base-content/10 ": @selected_tab == "safety"
+        }
+      >
+        <#Icon
+          iconify="ic:round-privacy-tip"
+          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "safety"}
+        />
+        <span class="text-sm text-base-content/70">{l("Privacy & Safety")}</span>
+      </LiveRedirect>
+      </li>
+      </ul>
+    </details>
+  </li>
+    <!-- <li>
       <LiveRedirect
         to={~p"/settings/user/preferences"}
         class={
@@ -34,7 +92,7 @@
         />
         <span class="text-sm text-base-content/70">{l("Preferences")}</span>
       </LiveRedirect>
-    </li>
+    </li> -->
 
     <li>
       <LiveRedirect
@@ -86,7 +144,7 @@
     </li> -->
 
     <li>
-      <div class="p-0 mt-2 cursor-default pointer-events-none">
+      <div class="p-0 mt-4 cursor-default pointer-events-none">
         <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Safety")}</span>
       </div>
     </li>
@@ -165,7 +223,7 @@
     />
 
     <li>
-      <div class="p-0 mt-2 cursor-default pointer-events-none">
+      <div class="p-0 mt-4 cursor-default pointer-events-none">
         <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Migration")}</span>
       </div>
     </li>
@@ -201,7 +259,7 @@
     </li>
 
     <li>
-      <div class="p-0 mt-2 cursor-default pointer-events-none">
+      <div class="p-0 mt-4 cursor-default pointer-events-none">
         <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Advanced")}</span>
       </div>
     </li>

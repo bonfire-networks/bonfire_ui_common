@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common.Settings.NumberLive do
 
   prop read_only, :boolean, default: false
 
-  prop class, :css_class, default: "input input-sm w-20"
+  prop class, :css_class, default: "input input-sm w-16"
 
   prop current_value, :any, default: :load_from_settings
   prop input, :string, default: nil
