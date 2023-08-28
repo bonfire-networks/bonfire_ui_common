@@ -33,19 +33,61 @@
     </li>
 
     <li>
-      <LivePatch
-        to={~p"/settings/instance/preferences"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10": @selected_tab == "preferences"
-        }
-      >
-        <#Icon
-          solid="Adjustments"
-          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "preferences"}
-        />
-        <span class="text-sm text-base-content/70">{l("Default User Preferences")}</span>
-      </LivePatch>
+      <details>
+        <summary class="flex items-center gap-3 rounded-md p-2 w-full">
+          <#Icon
+            iconify="pajamas:preferences"
+            class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "preferences"}
+          />
+          <div class="flex-1 text-base-content/70">{l("Default User Preferences")}</div></summary>
+        <ul>
+          <li>
+            <LiveRedirect
+              to={~p"/settings/instance/preferences/appearance"}
+              class={
+                "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+                "bg-base-content/10 ": @selected_tab == "appearance"
+              }
+            >
+              <#Icon
+                iconify="dashicons:admin-appearance"
+                class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "appearance"}
+              />
+              <span class="text-sm text-base-content/70">{l("Appearance")}</span>
+            </LiveRedirect>
+          </li>
+          <li>
+            <LiveRedirect
+              to={~p"/settings/instance/preferences/behaviours"}
+              class={
+                "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+                "bg-base-content/10 ": @selected_tab == "behaviours"
+              }
+            >
+              <#Icon
+                iconify="mingcute:layout-6-fill"
+                class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "behaviours"}
+              />
+              <span class="text-sm text-base-content/70">{l("Behaviours")}</span>
+            </LiveRedirect>
+          </li>
+          <li>
+            <LiveRedirect
+              to={~p"/settings/instance/preferences/safety"}
+              class={
+                "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+                "bg-base-content/10 ": @selected_tab == "safety"
+              }
+            >
+              <#Icon
+                iconify="ic:round-privacy-tip"
+                class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "safety"}
+              />
+              <span class="text-sm text-base-content/70">{l("Privacy & Safety")}</span>
+            </LiveRedirect>
+          </li>
+        </ul>
+      </details>
     </li>
 
     <!-- <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
