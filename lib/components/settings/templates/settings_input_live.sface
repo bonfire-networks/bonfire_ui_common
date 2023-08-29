@@ -5,20 +5,22 @@
       <div :if={@name} class="text-sm font-medium">{@name}</div>
       <div :if={@description} class="text-sm font-light text-base-content/70">{@description}</div>
     </div>
-    <button 
-      x-on:click="open = !open" 
-      type="button" 
-      x-cloak 
-      class="rounded btn btn-square btn-sm btn-ghost" 
-      x-show="open">
+    <button
+      x-on:click="open = !open"
+      type="button"
+      x-cloak
+      class="rounded btn btn-square btn-sm btn-ghost"
+      x-show="open"
+    >
       <#Icon iconify="fluent:triangle-down-12-filled" class="w-3 h-3 text-base-content/70" />
     </button>
-    <button 
-      x-on:click="open = !open" 
-      type="button" 
+    <button
+      x-on:click="open = !open"
+      type="button"
       x-cloak
-      class="rounded btn btn-square btn-sm btn-ghost" 
-      x-show="!open">
+      class="rounded btn btn-square btn-sm btn-ghost"
+      x-show="!open"
+    >
       <#Icon iconify="fluent:triangle-right-12-filled" class="w-3 h-3 text-base-content/70" />
     </button>
   </div>
