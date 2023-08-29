@@ -3,8 +3,8 @@
     <div class="flex items-center space-x-3">
       <Bonfire.UI.Common.AvatarLive
         parent_id="members"
-        class="inline-block object-cover w-8 h-8"
-        bg_class="rounded-full bg-base-200"
+        class="inline-block object-cover rounded-full w-8 h-8"
+        bg_class="rounded-full bg-base-100"
         size="32"
         user={@user}
       />
@@ -18,10 +18,10 @@
     </div>
   </td>
   <td class="flex-1">
-    {#if maybe_apply(Bonfire.Me.Accounts, :is_admin?, @user) == true}
-      <span class="badge badge-success badge-sm">{l("Admin")}</span>
+    {#if maybe_apply(Bonfire.Me.Accounts, :is_admin?, @__context__) == true}
+      <span class="badge badge-success">{l("Admin")}</span>
     {#else}
-      <span class="badge badge-outline badge-sm">{l("Member")}</span>
+      <span class="badge !border !border-base-content/30 badge-outline">{l("Member")}</span>
     {/if}
   </td>
   <td class="flex-1">
@@ -29,13 +29,13 @@
       {#match {nil, nil}}
         <span class="btn btn-xs rounded-full normal-case loading btn-disabled">{l("loading")}</span>
       {#match {true, true}}
-        <span class="badge badge-error badge-sm">{l("Blocked")}</span>
+        <span class="badge badge-error">{l("Blocked")}</span>
       {#match {true, _}}
-        <span class="badge badge-warning badge-sm">{l("Ghosted")}</span>
+        <span class="badge badge-warning">{l("Ghosted")}</span>
       {#match {_, true}}
-        <span class="badge badge-warning badge-sm">{l("Silenced")}</span>
+        <span class="badge badge-warning">{l("Silenced")}</span>
       {#match {_, _}}
-        <span class="badge badge-outline badge-sm">{l("Active")}</span>
+        <span class="badge badge-outline btn-info !border !border-info/30">{l("Active")}</span>
     {/case}
   </td>
   <td class="flex-1">
@@ -49,7 +49,7 @@
         class="dropdown dropdown-end"
       >
         <label
-          class="relative rounded btn btn-square btn-ghost btn-sm"
+          class="relative btn btn-circle btn-ghost btn-sm"
           tabindex="0"
           id="user-profile-menu"
           aria-haspopup="true"
@@ -59,7 +59,7 @@
         </label>
         <ul
           tabindex="0"
-          class="relative z-50 mt-3 rounded-lg menu-compact !block shadow w-52 menu dropdown-content bg-base-200"
+          class="relative z-50 mt-3 rounded-lg menu-compact !block shadow w-52 menu dropdown-content bg-base-100"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="user-profile-menu"
