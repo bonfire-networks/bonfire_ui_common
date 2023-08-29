@@ -1,117 +1,114 @@
-<div 
-  :if={Enum.count(@uploads.files.entries) > 0}
->
-<div 
-  class={
-  "flex gap-3 scrollable",
-  "pb-1": Enum.count(@uploads.files.entries) > 2
-}>
-
-  {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
-    <article
-      id={"upload-preview-#{i}"}
-      data-img={"phx-preview-#{i}"}
-      data-ref={entry.upload_ref}
-      class="relative upload-entry border border-base-content/10"
-    >
-      <!-- phx-hook="imageMetadata" -->
-      <div class="absolute top-0 z-10 w-full h-10 rounded-lg l-0 r-0 md:h-14 bg-gradient-to-b from-black to-transparent" />
-      <figure :if={String.starts_with?(entry.client_type, "image")}>
-        <!-- render a client-side preview -->
-        <span>
-          <.live_img_preview entry={entry} />
-        </span>
-        <figcaption class="sr-only">{entry.client_name}</figcaption>
-      </figure>
-      <div :if={String.contains?(entry.client_type, "pdf")} class="">
-        <div class="w-[160px] rounded h-[100px] flex items-center place-content-center justify-center">
-          <#Icon iconify="bxs:file-pdf" class="w-12 h-12" />
-        </div>
-      </div>
-      <div :if={String.starts_with?(entry.client_type, "video")} class="">
-        <div class="w-[160px] rounded h-[100px] flex items-center place-content-center justify-center">
-          <#Icon iconify="entypo:video" class="w-12 h-12" />
-        </div>
-      </div>
-      <!-- <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress> -->
-      <Bonfire.UI.Common.InlineModalLive
-        id={"upload_#{entry.ref}_description"}
-        title_text={l("Add an alternative description")}
-        value={nil}
-        cancel_label={l("Done")}
+<div :if={Enum.count(@uploads.files.entries) > 0}>
+  <div class={
+    "flex gap-3 scrollable",
+    "pb-1": Enum.count(@uploads.files.entries) > 2
+  }>
+    {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
+      <article
+        id={"upload-preview-#{i}"}
+        data-img={"phx-preview-#{i}"}
+        data-ref={entry.upload_ref}
+        class="relative upload-entry border border-base-content/10"
       >
-        <!-- reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
+        <!-- phx-hook="imageMetadata" -->
+        <div class="absolute top-0 z-10 w-full h-10 rounded-lg l-0 r-0 md:h-14 bg-gradient-to-b from-black to-transparent" />
+        <figure :if={String.starts_with?(entry.client_type, "image")}>
+          <!-- render a client-side preview -->
+          <span>
+            <.live_img_preview entry={entry} />
+          </span>
+          <figcaption class="sr-only">{entry.client_name}</figcaption>
+        </figure>
+        <div :if={String.contains?(entry.client_type, "pdf")} class="">
+          <div class="w-[160px] rounded h-[100px] flex items-center place-content-center justify-center">
+            <#Icon iconify="bxs:file-pdf" class="w-12 h-12" />
+          </div>
+        </div>
+        <div :if={String.starts_with?(entry.client_type, "video")} class="">
+          <div class="w-[160px] rounded h-[100px] flex items-center place-content-center justify-center">
+            <#Icon iconify="entypo:video" class="w-12 h-12" />
+          </div>
+        </div>
+        <!-- <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress> -->
+        <Bonfire.UI.Common.InlineModalLive
+          id={"upload_#{entry.ref}_description"}
+          title_text={l("Add an alternative description")}
+          value={nil}
+          cancel_label={l("Done")}
+        >
+          <!-- reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
         form_opts={%{"phx-submit"=> "set_value"}} -->
-        <div class="mt-4">
-          <div class="p-4 rounded-md bg-info/10">
-            <div class="flex">
-              <div class="flex-shrink-0">
-                <#Icon solid="InformationCircle" class="w-5 h-5 text-info" />
-              </div>
-              <div class="flex-1 ml-3 md:flex md:justify-between">
-                <p class="text-sm text-info">
-                  {l(
-                    "Adding an alternative description will improve the accessibility of your content, helping visually impaired people and others using screen reading tools."
-                  )}</p>
+          <div class="mt-4">
+            <div class="p-4 rounded-md bg-info/10">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <#Icon solid="InformationCircle" class="w-5 h-5 text-info" />
+                </div>
+                <div class="flex-1 ml-3 md:flex md:justify-between">
+                  <p class="text-sm text-info">
+                    {l(
+                      "Adding an alternative description will improve the accessibility of your content, helping visually impaired people and others using screen reading tools."
+                    )}</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="px-1 mt-3">
-          <span class="image_in_preview" :if={String.starts_with?(entry.client_type, "image")}>
-            <.live_img_preview entry={entry} />
-          </span>
-          <textarea
-            name={"upload_metadata[#{entry.ref}][label]"}
-            placeholder="Type here"
-            class="w-full mt-3 textarea bg-base-content/10"
-          />
-          <!-- TODO: edit previously entered desc -->
-        </div>
-        <:open_btn>
-          <button
-            type="button"
-            class="absolute z-20 font-medium normal-case rounded glass top-2 left-2 btn btn-xs truncate max-w-[100px]"
-            aria-label="Add description"
-          >
-            <span class="">{l("Edit")}</span>
-          </button>
-          <!-- <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}> -->
-        </:open_btn>
-      </Bonfire.UI.Common.InlineModalLive>
+          <div class="px-1 mt-3">
+            <span class="image_in_preview" :if={String.starts_with?(entry.client_type, "image")}>
+              <.live_img_preview entry={entry} />
+            </span>
+            <textarea
+              name={"upload_metadata[#{entry.ref}][label]"}
+              placeholder="Type here"
+              class="w-full mt-3 textarea bg-base-content/10"
+            />
+            <!-- TODO: edit previously entered desc -->
+          </div>
+          <:open_btn>
+            <button
+              type="button"
+              class="absolute z-20 font-medium normal-case rounded glass top-2 left-2 btn btn-xs truncate max-w-[100px]"
+              aria-label="Add description"
+            >
+              <span class="">{l("Edit")}</span>
+            </button>
+            <!-- <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}> -->
+          </:open_btn>
+        </Bonfire.UI.Common.InlineModalLive>
 
-      <button
-        type="button"
-        class="absolute z-20 btn-square btn-error rounded right-2 top-2 btn btn-xs"
-        phx-click="cancel-upload"
-        phx-target="#smart_input"
-        phx-value-ref={entry.ref}
-        aria-label="cancel"
-      >
-        <#Icon solid="Trash" class="w-4 h-4" />
-        <span class="sr-only">{l("Delete")}</span>
-      </button>
-      <!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 -->
+        <button
+          type="button"
+          class="absolute z-20 btn-square btn-error rounded right-2 top-2 btn btn-xs"
+          phx-click="cancel-upload"
+          phx-target="#smart_input"
+          phx-value-ref={entry.ref}
+          aria-label="cancel"
+        >
+          <#Icon solid="Trash" class="w-4 h-4" />
+          <span class="sr-only">{l("Delete")}</span>
+        </button>
+        <!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 -->
 
-      {#for err <- upload_errors(@uploads.files, entry)}
-        <p class="alert alert-danger">{error_to_string(err)}</p>
-      {/for}
-    </article>
-  {/for}
-</div>
+        {#for err <- upload_errors(@uploads.files, entry)}
+          <p class="alert alert-danger">{error_to_string(err)}</p>
+        {/for}
+      </article>
+    {/for}
+  </div>
   <div class="flex items-center justify-end">
-    <div class="form-control ">
+    <div class="form-control">
       <label class="label py-1 cursor-pointer">
-        <input 
-          type="checkbox" 
-          class="toggle toggle-primary toggle-xs" 
-          checked={Settings.get([Bonfire.UI.Social.UploadPreviewsLive, :mark_as_sensitive], false, @__context__)} />
-        <span class="label-text text-base-content/70 text-xs ml-2">{l "Mark as sensitive"}</span> 
+        <input
+          type="checkbox"
+          name="sensitive"
+          class="toggle toggle-primary toggle-xs"
+          checked={Settings.get([Bonfire.UI.Social.UploadPreviewsLive, :mark_as_sensitive], false, @__context__)}
+        />
+        <span class="label-text text-base-content/70 text-xs ml-2">{l("Mark as sensitive")}</span>
       </label>
     </div>
   </div>
-{#for err <- upload_errors(@uploads.files)}
-  <p class="alert alert-danger">{error_to_string(err)}</p>
-{/for}
-
+  {#for err <- upload_errors(@uploads.files)}
+    <p class="alert alert-danger">{error_to_string(err)}</p>
+  {/for}
 </div>
