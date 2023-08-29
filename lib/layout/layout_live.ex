@@ -103,7 +103,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       data-id="bonfire_live"
       class="antialiased"
       style={maybe_custom_theme(
-        current_user: @current_user,
+        current_user: @current_user || current_user(@__context__),
         current_account: current_account(@__context__),
         instance_settings: @instance_settings
       )}
@@ -117,7 +117,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         class="px-4 tablet-lg:px-0 mb-6 border-b border-base-content/20 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
       >
         <Bonfire.UI.Common.GuestHeaderLive
-          current_user={@current_user}
+          current_user={@current_user || current_user(@__context__)}
           current_account={current_account(@__context__)}
           page_title={@page_title}
           page={@page}
@@ -340,7 +340,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         </div>
       </div>
 
-      <!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player, @current_user),
+      <!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player, @current_user || current_user(@__context__)),
         do:
           live_render(@socket, RauversionExtension.UI.TrackLive.Player,
             id: "global-main-player",

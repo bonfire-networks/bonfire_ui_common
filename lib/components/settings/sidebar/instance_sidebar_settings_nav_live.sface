@@ -21,37 +21,37 @@
         to={~p"/settings/instance/configuration"}
         class={
           "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10": @selected_tab == "preferences"
+          "bg-base-content/10": @selected_tab == "configuration"
         }
       >
         <#Icon
           solid="Cog"
-          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "preferences"}
+          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "configuration"}
         />
         <span class="text-sm text-base-content/70">{l("Instance Configuration")}</span>
       </LivePatch>
     </li>
 
     <li>
-      <details>
+      <details open={@selected_tab == "preferences"}>
         <summary class="flex items-center gap-3 rounded-md p-2 w-full">
           <#Icon
             iconify="pajamas:preferences"
-            class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "preferences"}
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "preferences"}
           />
-          <div class="flex-1 text-base-content/70">{l("Default User Preferences")}</div></summary>
+          <div class="text-sm text-base-content/70">{l("Default User Preferences")}</div></summary>
         <ul>
           <li>
             <LiveRedirect
               to={~p"/settings/instance/preferences/appearance"}
               class={
                 "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-                "bg-base-content/10 ": @selected_tab == "appearance"
+                "bg-base-content/10 ": @id == "appearance"
               }
             >
               <#Icon
                 iconify="dashicons:admin-appearance"
-                class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "appearance"}
+                class={"w-4 h-4 font-normal text-base-content/70", "": @id == "appearance"}
               />
               <span class="text-sm text-base-content/70">{l("Appearance")}</span>
             </LiveRedirect>
@@ -61,12 +61,12 @@
               to={~p"/settings/instance/preferences/behaviours"}
               class={
                 "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-                "bg-base-content/10 ": @selected_tab == "behaviours"
+                "bg-base-content/10 ": @id == "behaviours"
               }
             >
               <#Icon
                 iconify="mingcute:layout-6-fill"
-                class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "behaviours"}
+                class={"w-4 h-4 font-normal text-base-content/70", "": @id == "behaviours"}
               />
               <span class="text-sm text-base-content/70">{l("Behaviours")}</span>
             </LiveRedirect>
@@ -76,12 +76,12 @@
               to={~p"/settings/instance/preferences/safety"}
               class={
                 "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-                "bg-base-content/10 ": @selected_tab == "safety"
+                "bg-base-content/10 ": @id == "safety"
               }
             >
               <#Icon
                 iconify="ic:round-privacy-tip"
-                class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "safety"}
+                class={"w-4 h-4 font-normal text-base-content/70", "": @id == "safety"}
               />
               <span class="text-sm text-base-content/70">{l("Privacy & Safety")}</span>
             </LiveRedirect>

@@ -1,4 +1,4 @@
-<!-- {#if @current_user} -->
+<!-- {#if current_user(@__context__)} -->
 
 {#if id(@flagged)}
   <div />
@@ -22,7 +22,8 @@
     </:open_btn>
     <:action_btns>
       {#if id(@flagged) ||
-          (@current_user && Flags.flagged?(@current_user, @object) |> debug("SLOOOOOT flagged??"))}
+          (current_user(@__context__) &&
+             Flags.flagged?(current_user(@__context__), @object) |> debug("SLOOOOOT flagged??"))}
         <button
           data-role="object_already_flagged"
           phx-click="close"

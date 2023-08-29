@@ -30,18 +30,18 @@
             <div class="flex-1 h-full" data-id="mobile_nav">
               <div class="relative w-full h-full">
                 <div class="flex items-start justify-between p-6 bg-base-200">
-                  <LinkLive class="flex flex-col gap-3" to={path(@current_user)}>
+                  <LinkLive class="flex flex-col gap-3" to={path(current_user(@__context__))}>
                     <Bonfire.UI.Common.AvatarLive
                       parent_id="mobile_menu"
                       class="inline-block object-cover w-16 h-16 rounded-full cursor-pointer bg-base-100"
                       bg_class="rounded bg-base-300"
                       size="42"
-                      user={@current_user}
+                      user={current_user(@__context__)}
                     />
                     <div class="flex items-center">
                       <div class="flex flex-col flex-1">
-                        <span class="font-bold text-base-content">{e(@current_user, :profile, :name, "unknown")}</span>
-                        <span class="text-sm font-light text-base-content/70">{Bonfire.Me.Characters.display_username(@current_user, true, true)}</span>
+                        <span class="font-bold text-base-content">{e(current_user(@__context__), :profile, :name, "unknown")}</span>
+                        <span class="text-sm font-light text-base-content/70">{Bonfire.Me.Characters.display_username(current_user(@__context__), true, true)}</span>
                       </div>
                     </div>
                   </LinkLive>

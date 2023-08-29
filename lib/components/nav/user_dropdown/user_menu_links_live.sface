@@ -1,7 +1,7 @@
 <!-- WIP: Find a better way to include navs in mobile with notification badges -->
 <li :if={@mobile}>
   <LiveRedirect
-    to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
+    to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
     class="flex items-center w-full gap-4 px-2 py-2 rounded-md"
   >
     <#Icon solid="UserCircle" class="w-6 h-6" />
@@ -30,7 +30,7 @@
 <li :if={!@mobile}>
   <div class="px-3 py-2 mb-1">
     <LiveRedirect
-      to={if is_map(@current_user), do: path(@current_user), else: ~p"/user"}
+      to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
       class="rounded-lg bg-base-100 flex items-center p-2 gap-3 text-sm text-base-content/70"
     >
       <Bonfire.UI.Common.AvatarLive
@@ -73,7 +73,8 @@
   </LiveRedirect>
 </li>
 <!-- if current user is also an admin -->
-<li :if={is_map(@current_user) and maybe_apply(Bonfire.Me.Accounts, :is_admin?, @__context__) == true}>
+<li :if={is_map(current_user(@__context__)) and
+  maybe_apply(Bonfire.Me.Accounts, :is_admin?, @__context__) == true}>
   <LiveRedirect
     to={~p"/settings/instance"}
     class={if @mobile,

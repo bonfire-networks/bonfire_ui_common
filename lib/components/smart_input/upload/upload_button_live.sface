@@ -4,7 +4,7 @@
       Bonfire.Me.Settings.get(
         [Bonfire.UI.Common.SmartInputLive, :max_uploads],
         :instance,
-        @current_user
+        current_user(@__context__)
       )}
     tabindex="0"
     for={@uploads.files.ref}

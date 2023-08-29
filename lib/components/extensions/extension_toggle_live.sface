@@ -1,6 +1,6 @@
 <div>
   {#if @scope != :instance}
-    {#if @current_user && Bonfire.Me.Settings.get([@id, :disabled], nil, @__context__)}
+    {#if current_user(@__context__) && Bonfire.Me.Settings.get([@id, :disabled], nil, @__context__)}
       <button
         :if={@globally_disabled != true}
         phx-click="Bonfire.Me.Settings:extension:enable"

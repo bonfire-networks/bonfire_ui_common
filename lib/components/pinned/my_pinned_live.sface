@@ -1,6 +1,6 @@
 {#case Bonfire.Social.Pins.list_my(
     object_type: @object_types,
-    current_user: @current_user
+    current_user: current_user(@__context__)
   )
   |> e(:edges, [])}
   {#match []}

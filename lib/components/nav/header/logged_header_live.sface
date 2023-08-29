@@ -27,7 +27,7 @@
     >
       <:right_action>
         <Dynamic.Component
-          :if={@current_user && @page_header_aside}
+          :if={current_user(@__context__) && @page_header_aside}
           :for={{component, component_assigns} <- e(@page_header_aside, [])}
           module={component}
           {...component_assigns}

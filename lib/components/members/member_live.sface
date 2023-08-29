@@ -45,7 +45,7 @@
   <td class="">
     <div class="flex justify-end">
       <div
-        :if={@current_user && current_user_id(@__context__) != id(@user)}
+        :if={current_user(@__context__) && current_user_id(@__context__) != id(@user)}
         class="dropdown dropdown-end"
       >
         <label

@@ -40,7 +40,7 @@
               <Dynamic.LiveComponent
                 id={badge[:id] || Text.random_string()}
                 module={Bonfire.UI.Common.BadgeCounterLive}
-                feed_id={badge[:feed_id] || e(@current_user, :character, badge[:feed_key], nil)}
+                feed_id={badge[:feed_id] || e(current_user(@__context__), :character, badge[:feed_key], nil)}
               />
             </div>
         {/case}
@@ -50,6 +50,7 @@
         module={@widget[:module]}
         showing_within={@showing_within}
         page={@page}
+        selected_tab={@selected_tab}
         {...@data}
       />
     {#match Surface.LiveComponent}
@@ -57,6 +58,7 @@
         id={Text.random_string()}
         module={@widget[:module]}
         page={@page}
+        selected_tab={@selected_tab}
         showing_within={@showing_within}
         {...@data}
       />
