@@ -1,7 +1,12 @@
-<div class={
+<div 
+  :if={Enum.count(@uploads.files.entries) > 0}
+>
+<div 
+  class={
   "flex gap-3 scrollable",
   "pb-1": Enum.count(@uploads.files.entries) > 2
 }>
+
   {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
     <article
       id={"upload-preview-#{i}"}
@@ -77,7 +82,7 @@
 
       <button
         type="button"
-        class="absolute z-20 rounded right-2 top-2 btn glass btn-xs"
+        class="absolute z-20 btn-square btn-error rounded right-2 top-2 btn btn-xs"
         phx-click="cancel-upload"
         phx-target="#smart_input"
         phx-value-ref={entry.ref}
@@ -94,6 +99,19 @@
     </article>
   {/for}
 </div>
+  <div class="flex items-center justify-end">
+    <div class="form-control ">
+      <label class="label py-1 cursor-pointer">
+        <input 
+          type="checkbox" 
+          class="toggle toggle-primary toggle-xs" 
+          checked={Settings.get([Bonfire.UI.Social.UploadPreviewsLive, :mark_as_sensitive], false, @__context__)} />
+        <span class="label-text text-base-content/70 text-xs ml-2">{l "Mark as sensitive"}</span> 
+      </label>
+    </div>
+  </div>
 {#for err <- upload_errors(@uploads.files)}
   <p class="alert alert-danger">{error_to_string(err)}</p>
 {/for}
+
+</div>
