@@ -16,7 +16,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
 
   def do_handle_event("live_select_change", %{"id" => live_select_id, "text" => search}, socket) do
     debug(live_select_id, search)
-    # current_user = current_user(socket)
+    # current_user = current_user(socket.assigns)
 
     Bonfire.Me.Users.search(search)
     |> results_for_multiselect()

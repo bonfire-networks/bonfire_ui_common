@@ -36,7 +36,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
 
   def update(assigns, socket) do
     # debug(assigns, "assigns")
-    current_user = current_user(socket) || current_user(assigns)
+    current_user = current_user(socket.assigns) || current_user(assigns)
 
     if current_user do
       feed_id = Bonfire.Social.Feeds.my_feed_id(:notifications, current_user)

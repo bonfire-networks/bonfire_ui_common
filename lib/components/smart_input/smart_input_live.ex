@@ -36,7 +36,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   # defp handle_progress(_, entry, socket) do
   #   debug(entry, "progress")
-  #   user = current_user(socket)
+  #   user = current_user(socket.assigns)
 
   #   if entry.done? and entry.valid? and user do
   #     with %{} = uploaded_media <-
