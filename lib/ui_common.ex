@@ -1242,7 +1242,7 @@ defmodule Bonfire.UI.Common do
         debug(preload_fn, "preloading using async :-)")
         pid = self()
 
-        Task.start(fn ->
+        apply_task(:start_link, fn ->
           preload_fn.(list_of_components, list_of_ids, current_user)
           |> Enum.each(fn {component_id, assigns} ->
             maybe_send_update(

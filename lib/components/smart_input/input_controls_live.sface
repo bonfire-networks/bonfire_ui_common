@@ -54,10 +54,7 @@
           </button>
         </div> -->
 
-        <div
-          title={l("Mark the activity as sensitive")}
-          class="relative z-30 flex items-center"
-        >
+        <div title={l("Mark the activity as sensitive")} class="relative z-30 flex items-center">
           <button
             :if={@create_object_type in [:message, :post, nil]}
             type="button"
