@@ -3,7 +3,7 @@
     {#match :link}
       <LinkLive
         to={if is_function(@widget[:href]),
-          do: @widget[:href].(@__context__[:current_params]),
+          do: @widget[:href].(@__context__),
           else: @widget[:href]}
         class={if @showing_within != :dashboard,
           do: "flex items-center w-full gap-4 px-2 py-2 rounded-md",
