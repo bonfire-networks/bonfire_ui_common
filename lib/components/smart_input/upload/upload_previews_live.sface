@@ -54,9 +54,9 @@
             </div>
           </div>
           <div class="px-1 mt-3">
-            <span class="image_in_preview" :if={String.starts_with?(entry.client_type, "image")}>
+            <!-- <span class="image_in_preview" :if={String.starts_with?(entry.client_type, "image")}>
               <.live_img_preview entry={entry} />
-            </span>
+            </span> -->
             <textarea
               name={"upload_metadata[#{entry.ref}][label]"}
               placeholder="Type here"
@@ -95,7 +95,7 @@
       </article>
     {/for}
   </div>
-  <div class="flex items-center justify-end">
+  <!-- <div class="flex items-center justify-end">
     <div class="form-control">
       <label class="label py-1 cursor-pointer">
         <input
@@ -107,7 +107,7 @@
         <span class="label-text text-base-content/70 text-xs ml-2">{l("Mark as sensitive")}</span>
       </label>
     </div>
-  </div>
+  </div> -->
   {#for err <- upload_errors(@uploads.files)}
     <p class="alert alert-danger">{error_to_string(err)}</p>
   {/for}

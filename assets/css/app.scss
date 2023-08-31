@@ -102,13 +102,7 @@ hex-color-picker {
   @apply line-clamp-1
 }
 
-.replies div[data-id="branch"]:last-of-type div[data-id="comment"]{
-  @apply !border-b-0;
-}
 
-.replies div[data-id="branch"]:has(div[data-id="show_replies"]) div[data-id="comment"]{
-  @apply !border-b !border-t !border-l !border-base-content/20;
-}
 
 .p_line_clamp_4, .p_line_clamp_6 {
 overflow: hidden; 
