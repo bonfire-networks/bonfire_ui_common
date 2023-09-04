@@ -1,5 +1,5 @@
 <header class="sticky top-0 z-50 flex flex-row items-center w-full p-3 md:rounded-t-lg bg-base-300 md:z-auto md:relative flex-align-items-stretch flex-nowrap h-[52px]">
-  <span class="flex-1 text-base font-semibold md:text-center text-ellipsis">
+  <span class="flex-1 text-base font-semibold md:text-center text-ellipsis text-base-content/70">
     {e(@smart_input_opts, :prompt, l("Share your thoughts"))}
   </span>
   <div class="absolute flex items-center gap-5 md:gap-3 right-3">
