@@ -41,9 +41,9 @@
     </a>
   </div>
 {#else}
-    <#slot {@if_no_more}>
-      <div class="flex items-center pt-3 my-3 place-content-center flex-col">
-        <p class="text-sm font-medium">{l("That's all folks...")}</p>
-      </div>
-    </#slot>
+  <#slot {@if_no_more}>
+    <div class="flex items-center pt-3 my-3 place-content-center flex-col">
+      <p class="text-sm font-medium">{l("That's all folks...")}</p>
+    </div>
+  </#slot>
 {/if}
