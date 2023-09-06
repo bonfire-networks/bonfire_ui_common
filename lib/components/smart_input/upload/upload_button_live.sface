@@ -1,12 +1,12 @@
-<div title={l("upload an image")} class="relative z-40">
+<div title={l("upload an image")}  class="relative z-40">
   <label
+    id="smart_input_upload"
     disabled={Enum.count(@uploads.files.entries) >=
       Bonfire.Me.Settings.get(
         [Bonfire.UI.Common.SmartInputLive, :max_uploads],
         :instance,
         current_user(@__context__)
       )}
-    tabindex="0"
     for={@uploads.files.ref}
     class="flex items-center btn btn-ghost btn-sm btn-circle"
   >

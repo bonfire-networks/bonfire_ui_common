@@ -4,7 +4,7 @@
     <Dynamic.Component module={component} {...assigns} />
 
     <!-- fallback if JS is disabled -->
-    <noscript>
+    <!-- <noscript>
       <TextArea
         name={"fallback_#{@field_name}"}
         opts={
@@ -13,7 +13,7 @@
         }
         class={@textarea_class}
       />
-    </noscript>
+    </noscript> -->
   {#match _}
     <!-- NOTE: this is only used if no other editor module (like `Bonfire.UI.Common.ComposerLive` by default) is configured -->
     <TextArea

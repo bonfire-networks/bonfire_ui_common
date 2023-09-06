@@ -9,7 +9,7 @@
           {e(@selected_tab, "My feed")}
           <#Icon solid="ChevronDown" class="w-4 h-4" />
         </label>
-        <ul tabindex="0" class="mt-1 dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+        <ul tabindex="0" class="mt-1 dropdown-content z-[60] menu p-2 shadow bg-base-100 rounded-box w-52">
           {#for {{tab, tab_name}, i} <- Enum.with_index(@tabs)}
             <li>
               <Dynamic.Component
