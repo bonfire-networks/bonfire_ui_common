@@ -164,10 +164,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   # needed for uploads
 
-  def handle_event("validate", %{"html_body" => html_body} = params, socket)
-      when is_binary(html_body) do
+  def handle_event("validate", params, socket) do
 
-      debug(socket, "socket2")
+      debug(params, "socket2")
     {
       :noreply,
       socket
