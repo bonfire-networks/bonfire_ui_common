@@ -36,22 +36,22 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     do:
       {:ok,
        socket
-       |> assign(
-         trigger_submit: false,
-         uploaded_files: []
-       )
        |> setup_uploads()}
 
   def setup_uploads(socket),
-    do:
-      allow_upload(socket, :files,
+    do: socket
+      |> assign(
+         trigger_submit: false,
+         uploaded_files: []
+       )
+      |> allow_upload(:files,
         accept:
           Config.get_ext(
             :bonfire_files,
             [Bonfire.Files.DocumentUploader, :allowed_media_extensions],
             ~w(.jpg .png)
           ),
-        # make configurable, expecially once we have resizing
+        # make configurable
         max_file_size: 10_000_000,
         max_entries: 6,
         auto_upload: false

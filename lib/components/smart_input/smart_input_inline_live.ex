@@ -28,10 +28,6 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
     do:
       {:ok,
        socket
-       |> assign(
-         trigger_submit: false,
-         uploaded_files: []
-       )
        |> SmartInputContainerLive.setup_uploads()}
 
   defdelegate handle_event(action, attrs, socket),
