@@ -20,7 +20,6 @@
           :if={module_enabled?(Bonfire.Files, @__context__)}
           uploads={@uploads}
         />
-
         <div :if={@enable_thread_title} class="relative z-30 flex items-center">
           <button
             type="button"

@@ -14,7 +14,7 @@
       size="40"
       user={current_user(@__context__)}
     />
-    <#Icon solid="ChevronDown" class="w-4 h-4" />
+    <#Icon solid="DotsHorizontal" class="w-4 h-4" />
   </label>
   <ul
     tabindex="0"

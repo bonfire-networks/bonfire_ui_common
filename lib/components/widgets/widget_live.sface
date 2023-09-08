@@ -28,7 +28,7 @@
           </span>
           <span class={
             @text_class ||
-              ["font-medium text-base-content/60 flex-1"],
+              ["font-medium text-base-content/80 flex-1 text-[15px]"],
             "!font-bold !text-base-content":
               not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
           }>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
