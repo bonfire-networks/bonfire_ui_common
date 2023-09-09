@@ -14,6 +14,7 @@ let JS_exec = (selector, event) => {
 }
 let JS_exec_attr_event = (selector, attr) => {
   document.querySelectorAll(selector).forEach(el => {
+    console.log(attr)
     let event = el.getAttribute(attr)
     console.log(el)
     console.log(event)
