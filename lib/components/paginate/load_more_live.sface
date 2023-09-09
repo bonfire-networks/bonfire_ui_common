@@ -19,7 +19,8 @@
     class="w-full flex items-center justify-center mb-4"
     x-data={"{show: #{socket_connected?(@__context__)}}"}
     {...@opts}
-  >
+  > 
+    {@label}
     <a
       data-role="load_more_button"
       href={"#" <> @cursor}
