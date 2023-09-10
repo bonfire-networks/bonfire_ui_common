@@ -165,8 +165,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   # needed for uploads
 
   def handle_event("validate", params, socket) do
+    debug(params, "socket2")
 
-      debug(params, "socket2")
     {
       :noreply,
       socket

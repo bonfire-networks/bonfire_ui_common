@@ -15,7 +15,7 @@
           />
         </div>
       {/if}
-      <div class="flex items-center gap-2 p-2 pt-0 ">
+      <div class="flex items-center gap-2 p-2 pt-0">
         <Bonfire.UI.Common.UploadButtonLive
           :if={module_enabled?(Bonfire.Files, @__context__)}
           uploads={@uploads}
@@ -159,7 +159,7 @@
           <div class={"p-2 border-b border-base-content/20 uploads_preview": @uploads.files.entries != []}>
             <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
           </div>
-          
+
           <!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE -->
           <#slot {@default} />
         </div>

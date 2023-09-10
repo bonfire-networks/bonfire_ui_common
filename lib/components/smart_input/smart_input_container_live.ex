@@ -39,11 +39,12 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
        |> setup_uploads()}
 
   def setup_uploads(socket),
-    do: socket
+    do:
+      socket
       |> assign(
-         trigger_submit: false,
-         uploaded_files: []
-       )
+        trigger_submit: false,
+        uploaded_files: []
+      )
       |> allow_upload(:files,
         accept:
           Config.get_ext(

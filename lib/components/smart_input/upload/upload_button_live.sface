@@ -1,4 +1,4 @@
-<div title={l("upload an image")}  class="relative z-40">
+<div title={l("upload an image")} class="relative z-40">
   <label
     id="smart_input_upload"
     disabled={Enum.count(@uploads.files.entries) >=

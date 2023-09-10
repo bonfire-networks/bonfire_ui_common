@@ -26,11 +26,12 @@
       href={"#" <> @cursor}
       class={
         "normal-case btn btn-outline rounded-full btn-primary",
-        "btn-disabled": !@entry_count}
+        "btn-disabled": !@entry_count
+      }
       style="display: none"
       x-show="show"
     >
-      <span :if={!@entry_count} class="loading loading-spinner"></span>
+      <span :if={!@entry_count} class="loading loading-spinner" />
       {@label ||
         if @infinite_scroll == :preload and @entry_count,
           do: l("Show %{num} more", num: @entry_count),
