@@ -10,6 +10,9 @@ defmodule Bonfire.UI.Common.PersistentLive do
       input_to_atoms(session)
       |> debug("data from session")
 
+    socket.assigns[:__context__]
+    |> debug("ctxxx")
+
     # subscribe
     # session[:context][@session_key]
     # |> debug("session_topic")
@@ -20,7 +23,8 @@ defmodule Bonfire.UI.Common.PersistentLive do
      |> assign(Map.drop(session, [:context]))
      |> assign(
        :__context__,
-       Enum.into(socket.assigns[:__context__] || session[:context] || %{}, %{
+       Map.merge(session[:context] || %{}, socket.assigns[:__context__] || %{})
+       |> Map.merge(%{
          socket_connected?: Phoenix.LiveView.connected?(socket)
        })
      )
@@ -72,7 +76,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
   end
 
   def notify(context, attrs) do
-    maybe_send(context, {:notification, %{notification: attrs}})
+    maybe_send(context, {:notification, %{notification: attrs, parent_pid: self()}})
   end
 
   defp persistent_assigns_filter(assigns) do
@@ -100,7 +104,10 @@ defmodule Bonfire.UI.Common.PersistentLive do
       # :page_title,
       # :selected_tab
     ])
-    |> Map.put(:__context__, Enum.into(assigns[:__context__] || %{}, %{sticky: true}))
+    |> Map.put(
+      :__context__,
+      Enum.into(assigns[:__context__] || %{}, %{sticky: true, parent_pid: self()})
+    )
     |> debug()
   end
 
@@ -214,20 +221,24 @@ defmodule Bonfire.UI.Common.PersistentLive do
   end
 
   def handle_info({:assign, assigns}, socket) do
-    {:noreply,
-     assigns
-     #  |> debug("received assigns for PersistentLive")
-     |> Map.new()
-     |> Map.put(:smart_input_component, nil)
-     |> assign_defaults(&Map.put_new_lazy/3)
-     |> Map.put(
-       ...,
-       :__context__,
-       Map.merge(socket.assigns[:__context__] || %{}, assigns[:__context__] || %{})
-       |> merge_keeping_only_first_keys(...)
-     )
-     #  |> debug("set prepared assigns received for PersistentLive")
-     |> assign(socket, ...)}
+    assigns =
+      assigns
+      #  |> debug("received assigns for PersistentLive")
+      |> Map.new()
+      |> Map.put(:smart_input_component, nil)
+      |> assign_defaults(&Map.put_new_lazy/3)
+      |> Map.put(
+        ...,
+        :__context__,
+        Map.merge(socket.assigns[:__context__] || %{}, assigns[:__context__] || %{})
+        |> merge_keeping_only_first_keys(...)
+      )
+      |> debug("set prepared assigns received for PersistentLive")
+
+    parent_pid = assigns[:parent_pid] || e(assigns, :__context__, :parent_pid, nil)
+    if is_pid(parent_pid), do: send(parent_pid, :persistent_live_loading)
+
+    {:noreply, assign(socket, assigns)}
   end
 
   def handle_info(info, socket) do
