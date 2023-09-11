@@ -41,27 +41,28 @@
       create_object_type={@create_object_type} -->
     </div>
 
-    <Bonfire.UI.Common.ComposerMinimizedLive />
-    <!-- :if={@smart_input_as != :focused} -->
+    {#if not is_nil(current_user_id(@__context__))}
+      <Bonfire.UI.Common.ComposerMinimizedLive />
+      <!-- :if={@smart_input_as != :focused} -->
 
-    <div
-      phx-hook="ScreenSize"
-      style="height: 480px"
-      id="smart_input_container"
-      class={
-        "h-full w-full md:h-auto !min-h-[420px] bottom-0 block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0",
-        "!left-1 !right-1 xl:!left-auto xl:!right-auto w-full top-0 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto xl:max-w-[1200px] !left-auto !right-auto":
-          @smart_input_as == :focused,
-        "md:w-[36rem] md:h-[440px] md:right-4 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto":
-          @smart_input_as != :focused,
-        hidden: e(@smart_input_opts, :open, nil) != true
-      }
-    >
-      <div class="w-full rounded-t-lg bg-gradient-to-t from-transparent to-base-content/40 p-[0.05rem] flex flex-col flex-1 h-full grow">
-        <div class="w-full rounded-t-lg bg-base-200 flex flex-col flex-1 h-full grow">
-          <!-- "md:!w-[20rem] tablet-lg:block bottom-0": e(@smart_input_opts, :minimized, nil) == true, -->
+      <div
+        phx-hook="ScreenSize"
+        style="height: 480px"
+        id="smart_input_container"
+        class={
+          "h-full w-full md:h-auto !min-h-[420px] bottom-0 block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0",
+          "!left-1 !right-1 xl:!left-auto xl:!right-auto w-full top-0 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto xl:max-w-[1200px] !left-auto !right-auto":
+            @smart_input_as == :focused,
+          "md:w-[36rem] md:h-[440px] md:right-4 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto":
+            @smart_input_as != :focused,
+          hidden: e(@smart_input_opts, :open, nil) != true
+        }
+      >
+        <div class="w-full rounded-t-lg bg-gradient-to-t from-transparent to-base-content/40 p-[0.05rem] flex flex-col flex-1 h-full grow">
+          <div class="w-full rounded-t-lg bg-base-200 flex flex-col flex-1 h-full grow">
+            <!-- "md:!w-[20rem] tablet-lg:block bottom-0": e(@smart_input_opts, :minimized, nil) == true, -->
 
-          <!-- <div
+            <!-- <div
             :if={@smart_input_as == :focused}
             phx-click={LiveHandler.close_smart_input()}
             phx-target="#smart_input"
@@ -72,133 +73,134 @@
             style="-webkit-backdrop-filter: blur(8px);"
           /> -->
 
-          <div class={
-            "overflow-hidden smart_input_modal relative z-50 md:border md:rounded-lg border-base-content/5 flex flex-col grow h-full",
-            "!rounded-b-none": @smart_input_as == :non_blocking
-          }>
-            <div class="h-[2px] relative bg-base-content/5 rounded-t-lg" id="gutter">
-              <div
-                class="absolute inset-0 top-[-2px] bottom-[-2px] hover:bg-base-content/10 left-0 right-0 cursor-row-resize"
-                id="gutter-inner"
-              />
-            </div>
-            <Bonfire.UI.Common.SmartInputHeaderModalLive
-              smart_input_opts={@smart_input_opts}
-              smart_input_as={@smart_input_as}
-            />
-            <div
-              x-ref="smart_input"
-              id="smart_input_live"
-              class="flex-1 h-full bg-base-300 grow relative z-[9999999999]"
-            >
-              <SmartInputLive
-                boundaries_modal_id={:modal_composer}
-                showing_within={@showing_within}
-                reply_to_id={@reply_to_id}
-                context_id={@context_id}
-                smart_input_component={@smart_input_component}
-                create_object_type={@create_object_type}
-                open_boundaries={@open_boundaries}
-                to_boundaries={@to_boundaries}
-                to_circles={@to_circles}
-                exclude_circles={@exclude_circles}
-                mentions={@mentions}
+            <div class={
+              "overflow-hidden smart_input_modal relative z-50 md:border md:rounded-lg border-base-content/5 flex flex-col grow h-full",
+              "!rounded-b-none": @smart_input_as == :non_blocking
+            }>
+              <div class="h-[2px] relative bg-base-content/5 rounded-t-lg" id="gutter">
+                <div
+                  class="absolute inset-0 top-[-2px] bottom-[-2px] hover:bg-base-content/10 left-0 right-0 cursor-row-resize"
+                  id="gutter-inner"
+                />
+              </div>
+              <Bonfire.UI.Common.SmartInputHeaderModalLive
                 smart_input_opts={@smart_input_opts}
-                activity={@activity}
-                object={@object}
-                uploads={@uploads}
-                uploaded_files={@uploaded_files}
-                trigger_submit={@trigger_submit}
-                reset_smart_input={@reset_smart_input}
                 smart_input_as={@smart_input_as}
-                activity_inception={@activity_inception}
               />
-
-              <form
-                class="flex-1 h-full grow"
-                :if={@create_object_type != :message}
-                phx-change="select"
-                phx-target={@myself}
+              <div
+                x-ref="smart_input"
+                id="smart_input_live"
+                class="flex-1 h-full bg-base-300 grow relative z-[9999999999]"
               >
-                <!-- PRESET BOUNDARY PICKER -->
-                <div class="hidden flex-1 h-full grow" id="boundaries_picker">
-                  <div class="flex flex-col h-full">
-                    <Dynamic.Component
-                      :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesGeneralAccessLive)}
-                      module={Bonfire.Boundaries.Web.BoundariesGeneralAccessLive}
-                      to_boundaries={@to_boundaries}
-                      boundary_preset={@boundary_preset}
-                    />
-                  </div>
-                </div>
+                <SmartInputLive
+                  boundaries_modal_id={:modal_composer}
+                  showing_within={@showing_within}
+                  reply_to_id={@reply_to_id}
+                  context_id={@context_id}
+                  smart_input_component={@smart_input_component}
+                  create_object_type={@create_object_type}
+                  open_boundaries={@open_boundaries}
+                  to_boundaries={@to_boundaries}
+                  to_circles={@to_circles}
+                  exclude_circles={@exclude_circles}
+                  mentions={@mentions}
+                  smart_input_opts={@smart_input_opts}
+                  activity={@activity}
+                  object={@object}
+                  uploads={@uploads}
+                  uploaded_files={@uploaded_files}
+                  trigger_submit={@trigger_submit}
+                  reset_smart_input={@reset_smart_input}
+                  smart_input_as={@smart_input_as}
+                  activity_inception={@activity_inception}
+                />
 
-                <!-- CUSTOM BOUNDARIES -->
-                <div class="hidden flex-1 h-full grow" id="extra_boundaries">
-                  <div class="flex flex-col h-full">
-                    <div class="flex w-full flex-1 h-full px-2">
+                <form
+                  class="flex-1 h-full grow"
+                  :if={@create_object_type != :message}
+                  phx-change="select"
+                  phx-target={@myself}
+                >
+                  <!-- PRESET BOUNDARY PICKER -->
+                  <div class="hidden flex-1 h-full grow" id="boundaries_picker">
+                    <div class="flex flex-col h-full">
                       <Dynamic.Component
-                        :if={@create_object_type != :message and
-                          Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false and
-                          module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
-                        module={Bonfire.Boundaries.Web.SetBoundariesLive}
+                        :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesGeneralAccessLive)}
+                        module={Bonfire.Boundaries.Web.BoundariesGeneralAccessLive}
                         to_boundaries={@to_boundaries}
                         boundary_preset={@boundary_preset}
-                        to_circles={@to_circles}
-                        exclude_circles={@exclude_circles}
-                        open_boundaries={@open_boundaries}
-                        showing_within={@showing_within}
-                        create_object_type={@create_object_type}
-                        boundaries_modal_id={@boundaries_modal_id}
-                        context_id={@context_id}
-                        hide_breakdown
-                        click_override
                       />
                     </div>
                   </div>
-                </div>
 
-                <!-- ROLES DETAIL -->
-                <div class="hidden flex-1 h-full grow" id="roles_detail">
-                  <div class="flex flex-col h-full">
-                    <div style="min-height: 320px; height: 360px" class="h-full flex-1 px-2 pb-12 overflow-y-auto">
-                      <!-- FIXME: we should only load roles when clicked, rather than on every page load -->
+                  <!-- CUSTOM BOUNDARIES -->
+                  <div class="hidden flex-1 h-full grow" id="extra_boundaries">
+                    <div class="flex flex-col h-full">
+                      <div class="flex w-full flex-1 h-full px-2">
+                        <Dynamic.Component
+                          :if={@create_object_type != :message and
+                            Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false and
+                            module_enabled?(Bonfire.Boundaries.Web.SetBoundariesLive)}
+                          module={Bonfire.Boundaries.Web.SetBoundariesLive}
+                          to_boundaries={@to_boundaries}
+                          boundary_preset={@boundary_preset}
+                          to_circles={@to_circles}
+                          exclude_circles={@exclude_circles}
+                          open_boundaries={@open_boundaries}
+                          showing_within={@showing_within}
+                          create_object_type={@create_object_type}
+                          boundaries_modal_id={@boundaries_modal_id}
+                          context_id={@context_id}
+                          hide_breakdown
+                          click_override
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- ROLES DETAIL -->
+                  <div class="hidden flex-1 h-full grow" id="roles_detail">
+                    <div class="flex flex-col h-full">
+                      <div style="min-height: 320px; height: 360px" class="h-full flex-1 px-2 pb-12 overflow-y-auto">
+                        <!-- FIXME: we should only load roles when clicked, rather than on every page load -->
+                        <Dynamic.LiveComponent
+                          :if={module_enabled?(Bonfire.Boundaries.Web.RolesLive)}
+                          module={Bonfire.Boundaries.Web.RolesLive}
+                          id="roles_in_composer"
+                          scope={:smart_input}
+                        />
+                      </div>
+                      <Dynamic.Component
+                        :if={module_enabled?(Bonfire.Boundaries.Web.BoundaryComposerActionsLive)}
+                        module={Bonfire.Boundaries.Web.BoundaryComposerActionsLive}
+                        done_label={l("Back")}
+                        hide_preview
+                      />
+                    </div>
+                  </div>
+
+                  <!-- PREVIEW BOUNDARIES -->
+                  <div class="hidden flex-1 h-full grow" id="boundaries_preview">
+                    <div class="flex flex-col h-full">
                       <Dynamic.LiveComponent
-                        :if={module_enabled?(Bonfire.Boundaries.Web.RolesLive)}
-                        module={Bonfire.Boundaries.Web.RolesLive}
-                        id="roles_in_composer"
-                        scope={:smart_input}
+                        :if={module_enabled?(Bonfire.Boundaries.Web.PreviewBoundariesLive)}
+                        module={Bonfire.Boundaries.Web.PreviewBoundariesLive}
+                        id="boundaries_preview"
+                        preview_boundary_for_id={@preview_boundary_for_id}
+                        preview_boundary_for_username={@preview_boundary_for_username}
+                        preview_boundary_verbs={@preview_boundary_verbs}
+                        boundary_preset={@boundary_preset}
+                        to_boundaries={@to_boundaries}
+                        to_circles={@to_circles}
                       />
                     </div>
-                    <Dynamic.Component
-                      :if={module_enabled?(Bonfire.Boundaries.Web.BoundaryComposerActionsLive)}
-                      module={Bonfire.Boundaries.Web.BoundaryComposerActionsLive}
-                      done_label={l("Back")}
-                      hide_preview
-                    />
                   </div>
-                </div>
-
-                <!-- PREVIEW BOUNDARIES -->
-                <div class="hidden flex-1 h-full grow" id="boundaries_preview">
-                  <div class="flex flex-col h-full">
-                    <Dynamic.LiveComponent
-                      :if={module_enabled?(Bonfire.Boundaries.Web.PreviewBoundariesLive)}
-                      module={Bonfire.Boundaries.Web.PreviewBoundariesLive}
-                      id="boundaries_preview"
-                      preview_boundary_for_id={@preview_boundary_for_id}
-                      preview_boundary_for_username={@preview_boundary_for_username}
-                      preview_boundary_verbs={@preview_boundary_verbs}
-                      boundary_preset={@boundary_preset}
-                      to_boundaries={@to_boundaries}
-                      to_circles={@to_circles}
-                    />
-                  </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    {/if}
   </div>
 </div>
