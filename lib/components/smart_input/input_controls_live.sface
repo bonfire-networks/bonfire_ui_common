@@ -53,19 +53,24 @@
           </button>
         </div> -->
 
-        <div title={l("Mark the activity as sensitive")} class="relative z-30 flex items-center">
-          <button
-            :if={@create_object_type in [:message, :post, nil]}
-            type="button"
+        <div
+          :if={@create_object_type in [:message, :post, nil]}
+          title={l("Mark the activity as sensitive")}
+          class="relative z-30 flex items-center"
+          phx-update="ignore"
+        >
+          <label
             phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
               "#smart_input_post_title",
               ".btn_cw_toggle",
               "btn-active"
             )}
-            class="flex items-center btn btn-ghost btn-sm btn-circle btn_cw_toggle"
+            class="swap items-center btn btn-ghost btn-sm btn-circle btn_cw_toggle"
           >
-            <#Icon iconify="ri:alert-fill" class="w-4 h-4 text-warning/70" />
-          </button>
+            <input type="checkbox" name="sensitive">
+            <#Icon iconify="ri:alert-fill" class="swap-off w-4 h-4 text-base-content/60" />
+            <#Icon iconify="ri:alert-fill" class="swap-on w-4 h-4 text-warning/70" />
+          </label>
         </div>
 
         <!-- HEADING -->
@@ -127,8 +132,6 @@
             "!top-10 right-0 bottom-[auto]": @showing_within == :page
           }
         />
-
-        <!-- <input type="checkbox" name="sensitive" /> -->
       </div>
       <div id="composer_wrapper" class="h-full flex flex-col overflow-y-auto">
         <div class="h-full flex flex-col flex-1 grow relative">
