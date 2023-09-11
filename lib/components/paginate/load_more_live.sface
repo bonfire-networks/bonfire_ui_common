@@ -20,7 +20,6 @@
     x-data={"{show: #{socket_connected?(@__context__)}}"}
     {...@opts}
   >
-    {@label}
     <a
       data-role="load_more_button"
       href={"#" <> @cursor}
@@ -38,6 +37,7 @@
           else: l("Load more")}
     </a>
     <a
+      x-cloak
       href={"?#{@live_handler}[after]=" <> @cursor}
       class="normal-case btn btn-outline rounded-full btn-primary"
       x-show="!show"
