@@ -57,6 +57,7 @@
           :if={@create_object_type in [:message, :post, nil]}
           title={l("Mark the activity as sensitive")}
           class="relative z-30 flex items-center"
+          id="sensitive_btn"
           phx-update="ignore"
         >
           <label
