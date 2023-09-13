@@ -107,7 +107,7 @@ module.exports = {
           "primary": "#1B74E4",
           "primary-content": "#fff",
           "base-300": "#fff",
-          "base-100": "#E2E8F4"
+          "base-100": "#F4F6FA"
         },
         bonfire: {
           ...require("daisyui/src/theming/themes")["[data-theme=dark]"],
