@@ -46,42 +46,6 @@
           <span class="sr-only">{l("Instance Settings")}</span>
         </LiveRedirect>
       </div>
-
-      <!-- <div class="flex items-center gap-3"> -->
-      <!-- <LiveRedirect
-          to="/messages"
-          opts={alt: "Direct messages"}
-          :if={current_user(@__context__)}
-          class="relative pr-2"
-        >
-          <#Icon iconify="mdi:inbox" class="w-5 h-5 text-base-content/70" />
-          <div class="absolute top-[-14px] left-[10px]">
-            <Bonfire.UI.Common.BadgeCounterLive
-              id={:inbox}
-              class="indicator-item badge badge-xs ring-2 ring-base-300 badge-sm border rounded-full !border-none"
-              counter_class=""
-              feed_id={e(current_user(@__context__), :character, :inbox_id, nil)}
-            />
-          </div>
-        </LiveRedirect> -->
-      <!-- <LiveRedirect
-          to={path(:notifications)}
-          :if={current_user(@__context__)}
-          opts={alt: "Notifications"}
-          class="relative pr-3"
-        >  -->
-
-      <!-- <#Icon iconify="ph:bell" class="w-6 h-6" /> -->
-      <!-- <div class="absolute top-[-14px] left-[10px]">
-            <Bonfire.UI.Common.BadgeCounterLive
-              id={:notifications}
-              class="indicator-item badge badge-xs ring-2 ring-base-300 badge-sm border rounded !border-none"
-              counter_class=""
-              feed_id={e(current_user(@__context__), :character, :notifications_id, nil)}
-            />
-          </div> -->
-      <!-- </LiveRedirect> -->
-      <!-- </div> -->
     </div>
   </div>
 

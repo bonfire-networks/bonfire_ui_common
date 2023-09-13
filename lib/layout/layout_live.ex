@@ -25,6 +25,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop context_id, :string, default: nil
   prop reply_to_id, :string, default: nil
   prop showing_within, :atom, default: nil
+  prop no_header, :boolean, default: false
 
   prop inner_content, :any, default: nil
   prop nav_items, :any, default: nil
@@ -67,6 +68,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:page, fn -> nil end)
       |> assign_new(:selected_tab, fn -> nil end)
       |> assign_new(:notification, fn -> nil end)
+      |> assign_new(:no_header, fn -> false end)
       |> assign_new(:page_header_aside, fn -> nil end)
       |> assign_new(:page_header_icon, fn -> nil end)
       |> assign_new(:inner_content, fn -> nil end)
@@ -198,11 +200,11 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 <div
                   id="inner"
                   class={
-                    "md:mt-0 border-l border-r border-base-content/20 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]":
+                    "md:mt-0 border-l border-r border-base-content/10 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]":
                       !@without_sidebar
                   }
                 >
-                  <div :if={!@without_sidebar} class="sticky top-0 z-[999]">
+                  <div :if={!@without_sidebar && !@no_header} class="sticky top-0 z-[999]">
                     <div class="flex flex-1 backdrop-blur-sm rounded-none md:rounded-t bg-base-300/70 transition-color duration-150 ease-in-out">
                       <Dynamic.Component
                         module={Bonfire.UI.Common.PageHeaderLive}

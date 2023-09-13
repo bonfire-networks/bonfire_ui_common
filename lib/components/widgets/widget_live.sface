@@ -9,7 +9,7 @@
           do: "flex items-center w-full gap-4 px-2 py-2 rounded-md",
           else: "block w-full"}
       >
-        <div class="flex-1 flex items-center gap-4">
+        <div class="flex-1 relative flex items-center gap-6">
           <span :if={!@without_icon} class="">
             {#if not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])}
               <Iconify.iconify
@@ -28,7 +28,7 @@
           </span>
           <span class={
             @text_class ||
-              ["font-medium text-base-content/80 flex-1 text-[15px]"],
+              ["font-medium text-base-content/80 flex-1 text-[16px]"],
             "!font-bold !text-base-content":
               not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
           }>{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
@@ -36,7 +36,7 @@
         {#case widget(@widget, @__context__)[:badge]}
           {#match nil}
           {#match badge}
-            <div class="flex items-center place-content-center">
+            <div class="flex absolute left-7 top-0 items-center place-content-center">
               <Dynamic.LiveComponent
                 id={badge[:id] || Text.random_string()}
                 module={Bonfire.UI.Common.BadgeCounterLive}

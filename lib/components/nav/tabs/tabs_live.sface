@@ -1,17 +1,17 @@
 <nav role="tabpanel" class={@class} aria-label="Switch between tabs">
   {#if @type == :select}
-    <div class="flex justify-between items-center w-full pb-2 px-4">
+    <div class="flex justify-between items-center w-full pb-3 px-4">
       <div class="dropdown">
         <label
           tabindex="0"
-          class="btn rounded-full btn-outline !border !border-base-content/30 btn-sm capitalize"
+          class="btn rounded-full text-lg btn-sm btn-ghost capitalize"
         >
           {e(@selected_tab, "My feed")}
-          <#Icon solid="ChevronDown" class="w-4 h-4" />
+          <#Icon solid="ChevronDown" class="w-6 h-6 text-base-content/50" />
         </label>
         <ul
           tabindex="0"
-          class="mt-1 dropdown-content z-[60] menu p-2 shadow bg-base-100 rounded-box w-52"
+          class="mt-1 dropdown-content z-[999999999999] menu p-2 shadow bg-base-100 rounded-box w-52"
         >
           {#for {{tab, tab_name}, i} <- Enum.with_index(@tabs)}
             <li>

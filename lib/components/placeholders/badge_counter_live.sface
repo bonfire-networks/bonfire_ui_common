@@ -7,11 +7,11 @@
       Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)
   }
 >
-  <span
+  <!-- <span
     :if={@count > 0 &&
       Settings.get([Bonfire.UI.Common.BadgeCounterLive, :hide_counter], false, @__context__)}
     class={@counter_class}
   >
     {@count}
-  </span>
+  </span> -->
 </div>

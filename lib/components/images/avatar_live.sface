@@ -67,8 +67,8 @@
                     e(@user, :name, nil) ||
                     e(@user, :username, nil) ||
                     l("Avatar")}
-                  class={@class, "iconify -mt-0 md:-mt-0"}
-                  iconify="material-symbols:person-2-rounded"
+                  class={@class, "iconify -mt-0 md:-mt-0 text-base-content/60"}
+                  iconify="heroicons:user-20-solid"
                   title={@title}
                   {...@opts}
                 />
