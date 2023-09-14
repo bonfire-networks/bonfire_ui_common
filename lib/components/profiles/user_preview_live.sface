@@ -22,7 +22,7 @@
           </div>
 
           <div class="flex items-center space-x-2">
-            <div class="text-sm font-normal text-base-content text-opacity-80">
+            <div data-role="username" class="text-sm font-normal text-base-content text-opacity-80">
               @{e(@user, :character, :username, "")}
             </div>
 
