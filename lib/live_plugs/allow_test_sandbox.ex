@@ -17,10 +17,13 @@ defmodule Bonfire.UI.Common.LivePlugs.AllowTestSandbox do
     if Bonfire.Common.Config.get(:sql_sandbox) do
       %{assigns: %{phoenix_ecto_sandbox: metadata}} =
         assign_new(socket, :phoenix_ecto_sandbox, fn ->
-          if connected?(socket), do: get_connect_info(socket, :user_agent)
+          if connected?(socket),
+            do:
+              get_connect_info(socket, :user_agent)
+              |> debug("uaaa")
         end)
 
-      Phoenix.Ecto.SQL.Sandbox.allow(metadata, Ecto.Adapters.SQL.Sandbox)
+      Phoenix.Ecto.SQL.Sandbox.allow(metadata |> debug("mddd"), Ecto.Adapters.SQL.Sandbox)
     end
   end
 end

@@ -2,10 +2,7 @@
   {#if @type == :select}
     <div class="flex justify-between items-center w-full pb-3 px-4">
       <div class="dropdown">
-        <label
-          tabindex="0"
-          class="btn rounded-full text-lg btn-sm btn-ghost capitalize"
-        >
+        <label tabindex="0" class="btn rounded-full text-lg btn-sm btn-ghost capitalize">
           {e(@selected_tab, "My feed")}
           <#Icon solid="ChevronDown" class="w-6 h-6 text-base-content/50" />
         </label>

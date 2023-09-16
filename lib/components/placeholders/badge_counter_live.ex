@@ -1,7 +1,8 @@
 defmodule Bonfire.UI.Common.BadgeCounterLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
-  prop class, :css_class, default: "indicator-item !w-2 !h-2 !p-0 badge rounded-full bg-base-content/20 badge-sm"
+  prop class, :css_class,
+    default: "indicator-item !w-2 !h-2 !p-0 badge rounded-full bg-base-content/20 badge-sm"
 
   prop counter_class, :css_class, default: ""
 

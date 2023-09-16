@@ -64,9 +64,6 @@
     "tailwindcss": "~3.1.4",
     "tailwindcss-debug-screens": "^2.2.1"
   },
-  "optionalDependencies": {
-    "chromedriver": "^106.0.1"
-  },
   "disabledDependencies": {
     "animal-avatar-generator": "^1.0.5",
     "@rtvision/esbuild-dynamic-import": "^0.2.0",

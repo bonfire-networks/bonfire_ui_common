@@ -5,6 +5,7 @@ defmodule Bonfire.UI.Common.WidgetLive do
   prop data, :any, default: []
   prop without_icon, :boolean, default: false
   prop without_label, :boolean, default: false
+
   prop text_class, :css_class,
     required: false,
     default: nil

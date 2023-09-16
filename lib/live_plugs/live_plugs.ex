@@ -7,16 +7,16 @@ defmodule Bonfire.UI.Common.LivePlugs do
   @default_plugs [
     UI.Common.LivePlugs.StaticChanged,
     UI.Common.LivePlugs.Csrf,
-    UI.Common.LivePlugs.Locale
+    UI.Common.LivePlugs.Locale,
+    # for tests (TODO: only include in test env?)
+    Bonfire.UI.Common.LivePlugs.AllowTestSandbox
   ]
-
-  # Bonfire.UI.Common.LivePlugs.AllowTestSandbox
 
   def on_mount(modules, params, session, socket) when is_list(modules) do
     UI.Common.undead_on_mount(socket, fn ->
       socket = init_mount(params, session, socket)
 
-      case Enum.reduce_while(modules ++ @default_plugs, socket, fn module, socket ->
+      case Enum.reduce_while(@default_plugs ++ modules, socket, fn module, socket ->
              with {:halt, socket} <-
                     maybe_apply(module, :on_mount, [:default, params, session, socket]) do
                # to halt both the reduce and the on_mount
@@ -31,13 +31,14 @@ defmodule Bonfire.UI.Common.LivePlugs do
   end
 
   def on_mount(module, params, session, socket) when is_atom(module) do
-    UI.Common.undead_on_mount(socket, fn ->
-      with {:cont, socket} <-
-             init_mount(params, session, socket)
-             |> maybe_apply(module, :on_mount, [:default, params, session, ...]) do
-        mount_done(socket)
-      end
-    end)
+    on_mount([module], params, session, socket)
+    # UI.Common.undead_on_mount(socket, fn ->
+    #   with {:cont, socket} <-
+    #          init_mount(params, session, socket)
+    #          |> maybe_apply(module, :on_mount, [:default, params, session, ...]) do
+    #     mount_done(socket)
+    #   end
+    # end)
   end
 
   defp init_mount(:not_mounted_at_router, session, socket) do
