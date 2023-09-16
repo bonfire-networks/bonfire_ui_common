@@ -70,6 +70,22 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     _ = :sys.get_state(live_view.pid)
   end
 
+  @doc """
+  Stop a specific LiveView
+  """
+  def live_view_stop(view) do
+    # see https://elixirforum.com/t/testing-liveview-and-presence-how-to-simulate-a-user-has-left-e-g-closed-tab/58296/10
+    GenServer.stop(view.pid())
+  end
+
+  @doc """
+  Disconnect all LiveViews associated with current user or account
+  """
+  def live_sockets_disconnect(context) do
+    # see https://hexdocs.pm/phoenix_live_view/security-model.html#disconnecting-all-instances-of-a-live-user
+    Bonfire.UI.Me.LogoutController.disconnect_sockets(context)
+  end
+
   def session_conn(conn \\ build_conn()),
     do: Plug.Test.init_test_session(conn, %{})
 
