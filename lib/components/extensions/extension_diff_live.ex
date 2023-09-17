@@ -1,6 +1,7 @@
 defmodule Bonfire.UI.Common.ExtensionDiffLive do
   use Bonfire.UI.Common.Web, :live_view
 
+  alias Bonfire.UI.Common.ExtensionDiffLive
   import Bonfire.Common.Extensions.Diff
   import Untangle
 

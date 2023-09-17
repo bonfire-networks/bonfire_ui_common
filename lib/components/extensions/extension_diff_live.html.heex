@@ -16,7 +16,7 @@
         <div id="diff-content">
           <div class="ghd-container" data-theme="night">
             <%= for patch <- @diffs do %>
-              <%= raw(render_diff(patch)) %>
+              <%= Phoenix.HTML.raw(ExtensionDiffLive.render_diff(patch)) %>
             <% end %>
           </div>
         </div>

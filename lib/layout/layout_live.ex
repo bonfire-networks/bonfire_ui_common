@@ -58,6 +58,15 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
   def custom_theme_attr(config), do: DaisyTheme.style_attr(config) |> debug("custom theme style")
 
+  def render(%{platform_id: :swiftui} = assigns) do
+    # This renders a layout for the iOS/Mac app
+    ~SWIFTUI"""
+    <VStack>
+      <%= @inner_content %>
+    </VStack>
+    """
+  end
+
   def render(assigns) do
     # NOTE: we need to also set default props this way until we can convert LayoutView to use Surface
     assigns =

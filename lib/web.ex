@@ -112,6 +112,8 @@ defmodule Bonfire.UI.Common.Web do
       @moduledoc false
       use Phoenix.LiveView, unquote(opts)
 
+      use LiveViewNative.LiveView
+
       unquote(live_view_helpers())
 
       alias Bonfire.UI.Common.LivePlugs
@@ -125,6 +127,8 @@ defmodule Bonfire.UI.Common.Web do
       @moduledoc false
       use Phoenix.LiveComponent, unquote(opts)
 
+      use LiveViewNative.LiveComponent
+
       unquote(live_view_helpers())
 
       # unquote(source_inspector())
@@ -135,6 +139,8 @@ defmodule Bonfire.UI.Common.Web do
     quote do
       @moduledoc false
       use Phoenix.Component, unquote(opts)
+
+      use LiveViewNative.Component
 
       unquote(live_view_helpers())
 
@@ -282,7 +288,10 @@ defmodule Bonfire.UI.Common.Web do
 
       quote do
         @moduledoc false
+
         use Surface.LiveView, unquote(opts)
+
+        use LiveViewNative.LiveView
 
         unquote(surface_helpers())
 
@@ -297,6 +306,8 @@ defmodule Bonfire.UI.Common.Web do
         @moduledoc false
         use Surface.LiveComponent, unquote(opts)
 
+        use LiveViewNative.LiveComponent
+
         # data current_account, :any, from_context: :current_account
         # data current_user, :any, from_context: :current_user
         # data socket, :any
@@ -309,6 +320,8 @@ defmodule Bonfire.UI.Common.Web do
       quote do
         @moduledoc false
         use Surface.Component, unquote(opts)
+
+        use LiveViewNative.Component
 
         # prop current_account, :any, from_context: :current_account
         # prop current_user, :any, from_context: :current_user
