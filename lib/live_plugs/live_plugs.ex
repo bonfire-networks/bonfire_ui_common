@@ -44,7 +44,7 @@ defmodule Bonfire.UI.Common.LivePlugs do
   defp init_mount(:not_mounted_at_router, session, socket) do
     # for embedding views in views/components using `live_render`
     # note that these views can't contain any handle_params
-    init_mount(stringify_keys(session["params"]), session, socket)
+    ok_unwrap(init_socket(stringify_keys(session["params"]), socket))
   end
 
   defp init_mount(params, _session, socket) do
@@ -63,11 +63,12 @@ defmodule Bonfire.UI.Common.LivePlugs do
            |> init_socket(params, ...) do
       socket
     end
-  rescue
-    e in RuntimeError ->
-      # workaround to `cannot attach hook with id :params_to_assigns on :handle_params because the view was not mounted at the router with the live/3 macro` on hybrid views
-      warn(e)
-      init_socket(params, socket)
+
+    # rescue
+    #   e in RuntimeError ->
+    #     # workaround to `cannot attach hook with id :params_to_assigns on :handle_params because the view was not mounted at the router with the live/3 macro` on hybrid views
+    #     warn(e)
+    #     ok_unwrap(init_socket(params, socket))
   end
 
   defp init_socket(params, socket) do

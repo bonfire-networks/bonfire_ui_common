@@ -3,6 +3,7 @@
     :if={!@hide_load_more}
     id={"load_more_#{@context}"}
     data-id="load_more"
+    data-role="load_more_button"
     data-entry-count={if @infinite_scroll == :preload, do: @entry_count}
     phx-scroll={if @infinite_scroll,
       do:
@@ -11,8 +12,7 @@
           else: "#{@live_handler}:load_more"
         )}
     phx-hook={if @infinite_scroll, do: "InfiniteScroll"}
-    phx-click={if @infinite_scroll != :preload or !@entry_count or @entry_count == 0,
-      do: "#{@live_handler}:load_more"}
+    phx-click={"#{@live_handler}:load_more"}
     phx-target={@target}
     phx-value-context={@context}
     phx-value-after={@cursor}
@@ -20,35 +20,35 @@
     x-data={"{show: #{socket_connected?(@__context__)}}"}
     {...@opts}
   >
-    <a
-      data-role="load_more_button"
-      href={"#" <> @cursor}
-      class={
-        "normal-case btn btn-outline rounded-full btn-primary",
-        "btn-disabled": !@entry_count
-      }
+    <!-- phx-click={if @infinite_scroll != :preload or !@entry_count or @entry_count == 0, do: "#{@live_handler}:load_more"} -->
+    <span
+      class="normal-case btn btn-outline rounded-full btn-primary"
       style="display: none"
       x-show="show"
     >
-      <span :if={!@entry_count} class="loading loading-spinner" />
+      <!-- href={"#" <> @cursor} -->
+      <!-- "btn-disabled": !@entry_count -->
+      <!-- <span :if={!@entry_count} class="loading loading-spinner" /> -->
       {@label ||
-        if @infinite_scroll == :preload and @entry_count,
+        if @infinite_scroll == :preload and @entry_count > 0,
           do: l("Show %{num} more", num: @entry_count),
           else: l("Load more")}
-    </a>
+    </span>
     <a
       x-cloak
-      href={"?#{@live_handler}[after]=" <> @cursor}
       class="normal-case btn btn-outline rounded-full btn-primary"
       x-show="!show"
+      href={"?#{@live_handler}[after]=" <> @cursor}
     >
       {l("Next page")}
     </a>
   </div>
 {#else}
-  <#slot {@if_no_more}>
-    <!-- <div class="flex items-center pt-3 my-3 place-content-center flex-col">
-      <p class="text-sm font-medium">{l("That's all folks...")}</p>
-    </div> -->
-  </#slot>
+  {#if !@hide_if_no_more}
+    <#slot {@if_no_more}>
+      <div class="flex items-center pt-3 my-3 place-content-center flex-col">
+        <p class="text-sm font-medium">{l("That's all folks...")}</p>
+      </div>
+    </#slot>
+  {/if}
 {/if}

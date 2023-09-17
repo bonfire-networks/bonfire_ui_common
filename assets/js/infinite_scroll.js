@@ -17,17 +17,17 @@ InfiniteScrollHooks.InfiniteScroll = {
     // console.log(this.el.dataset.entryCount)
     if (target.isIntersecting && this.pending == this.page()) {
       let entryCount = this.el.dataset.entryCount
-      if (undefined == entryCount || entryCount < 1) {
+      if (undefined == entryCount || entryCount == "0") {
         let event = this.el.getAttribute("phx-scroll")
         if (event) {
-          this.el.getElementsByTagName("a")[0].innerHTML = "Loading more...";
+          this.el.getElementsByTagName("span")[0].innerHTML = "Loading more...";
           this.pending = this.page() + 1;
           this.pushEventTo(this.el.getAttribute("phx-target"), event, this.getPhxValues(this.el));
         } else {
           console.log("skip loading more because no phx-scroll event")
         }
       } else {
-        console.log("skip loading more")
+        console.log("skip loading more because entryCount is: " + entryCount)
       }
     }
   },
@@ -44,13 +44,22 @@ InfiniteScrollHooks.InfiniteScroll = {
     this.observer.observe(this.el);
 
     this.el.addEventListener("click", e => {
-      if (this.el.dataset.entryCount > 0) {
-        for (let element of document.getElementsByClassName("infinite_scroll_hidden")) {
-          element.style.display = "block";
+      let entryCount = this.el.dataset.entryCount
+      if (undefined != entryCount || entryCount != "0") {
+        let items = document.getElementsByClassName("infinite_scroll_hidden")
+        if (items.length != 0) {
+          for (let element of items) {
+            element.style.display = "block";
+          }
+          e.preventDefault();
+        } else {
+          console.log("no infinite_scroll_hidden")
         }
-        this.el.getElementsByTagName("a")[0].innerHTML = "Load more";
+        this.el.getElementsByTagName("span")[0].innerHTML = "Load more";
         this.el.dataset.entryCount = 0;
-        e.preventDefault();
+        
+      } else {
+        console.log("no entryCount")
       }
       
     });
