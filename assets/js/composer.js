@@ -37,10 +37,10 @@ ComposerHooks.ScreenSize = {
         // smartInput.style.height = smartInput.getBoundingClientRect().height - 60 + "px";
         // console.log(smartInput.style.height)
         // milkdown.style.height = composer.getBoundingClientRect().height - 110 - 108 + "px";
-        composerWrapper.style.height = composer.getBoundingClientRect().height - 54 - 52 - 42 + "px";
-        boundaries_general.style.height = composer.getBoundingClientRect().height - 54 - 64 + "px";
-        boundaries_preview.style.height = composer.getBoundingClientRect().height - 54 - 64 + "px";
-        set_boundaries.style.height = composer.getBoundingClientRect().height - 54 - 64 + "px";
+        composerWrapper.style.height = composer.getBoundingClientRect().height - 32 - 52  + "px";
+        boundaries_general.style.height = composer.getBoundingClientRect().height - 32 - 64 + "px";
+        boundaries_preview.style.height = composer.getBoundingClientRect().height - 32 - 64 + "px";
+        set_boundaries.style.height = composer.getBoundingClientRect().height - 32 - 64 + "px";
       }
 
       function mouseup() {

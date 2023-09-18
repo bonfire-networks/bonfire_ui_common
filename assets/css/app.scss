@@ -74,6 +74,10 @@
   padding-right: 1rem;
 }
 
+.picmo_closeButton {
+  z-index: 99999 !important;
+}
+
 .create_new_topic > .open_modal_wrapper, 
 .edit_name > .open_modal_wrapper, 
 .delete_circle > .open_modal_wrapper {
