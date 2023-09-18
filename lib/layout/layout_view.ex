@@ -71,8 +71,8 @@ defmodule Bonfire.UI.Common.LayoutView do
 
         <Bonfire.UI.Common.SEO.juice item={assigns[:seo] || []} page_title={assigns[:page_title]} />
 
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
         <%= raw(Bonfire.Common.Config.endpoint_module().include_assets(@conn, :top)) %>
 
@@ -82,13 +82,9 @@ defmodule Bonfire.UI.Common.LayoutView do
 
         <%= csrf_meta_tag() %>
       </head>
+
       <body id="layout-root">
-        <style>
-          .shadow {
-            box-shadow: 0 1px 2px rgba(0,0,0,.2)
-          }
-        </style>
-        <%= if Code.ensure_loaded?(Thesis.View), do: Thesis.View.thesis_editor(@conn) %>
+        <%!-- <%= if Code.ensure_loaded?(Thesis.View), do: Thesis.View.thesis_editor(@conn) %> --%>
 
         <%= @inner_content %>
 

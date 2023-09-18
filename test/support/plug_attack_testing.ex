@@ -59,11 +59,11 @@ defmodule Bonfire.UI.Common.PlugAttackTesting do
     tep = get_tep(email, password)
 
     case Req.post(url, body: body, headers: @headers ++ [{"Cookie", cc.cookie}]) do
-      {:ok, %{status_code: 429}} ->
+      {:ok, %{status: 429}} ->
         tep <> " POST to #{url} was throttled (received status 429)\n"
 
       {:ok, r} ->
-        tep <> " POST to #{url} returned status #{r.status_code}\n"
+        tep <> " POST to #{url} returned status #{r.status}\n"
 
       _ ->
         tep <> " POST to #{url} failed\n"
