@@ -23,7 +23,7 @@
               />
 
               <div class={if @showing_within != :dashboard,
-                do: "flex flex-col items-start p-0 cursor-default md:bg-base-300 hover:!bg-transparent",
+                do: "flex flex-col items-start p-0 cursor-default md:bg-base-100 hover:!bg-transparent",
                 else: ""}>
                 {#if is_map(extension_nav) and !extension_nav[:exclude_from_nav] and
                     extension_nav[:scope] == @scope}}>

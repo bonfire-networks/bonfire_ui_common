@@ -26,7 +26,7 @@
       {/if}
     </div>
 
-    <div class="sticky bottom-0 flex items-center justify-between pt-4 bg-base-300 border-base-content/20">
+    <div class="sticky bottom-0 flex items-center justify-between pt-4 bg-base-100 border-base-content/20">
       <Bonfire.UI.Common.UserMenuLive :if={current_user(@__context__)} />
 
       <div class="flex items-center gap-3">

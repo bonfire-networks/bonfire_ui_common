@@ -90,7 +90,7 @@
               <div
                 x-ref="smart_input"
                 id="smart_input_live"
-                class="rounded-t-lg flex-1 h-full bg-base-300 grow relative z-[9999999999]"
+                class="rounded-t-lg flex-1 h-full bg-base-100 grow relative z-[9999999999]"
               >
                 <SmartInputLive
                   boundaries_modal_id={:modal_composer}

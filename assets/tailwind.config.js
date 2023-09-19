@@ -105,17 +105,11 @@ module.exports = {
         light: {
           ...require("daisyui/src/theming/themes")["[data-theme=light]"],
           "primary": "#1B74E4",
-          "primary-content": "#fff",
-          "base-300": "#fff",
-          "base-100": "#F4F6FA"
+          "primary-content": "#fff"
         },
         bonfire: {
-          ...require("daisyui/src/theming/themes")["[data-theme=dark]"],
-          "primary": "#fde047",
-          "base-content": "rgb(247, 249, 249)",
-          "primary-content": "#112A46",
-          "secondary": "#414558",
-          "secondary-content": "#C2CBF5"
+          ...require("daisyui/src/theming/themes")["[data-theme=dracula]"],
+          "primary": "#fde047"
         }
       },
       "cupcake", "bumblebee", "emerald", "corporate", "synthwave", "retro", "cyberpunk", "valentine", "halloween", "garden", "forest", "aqua", "lofi", "pastel", "fantasy", "wireframe", "black", "luxury", "dracula", "cmyk", "autumn", "business", "acid", "lemonade", "night", "coffee", "winter"

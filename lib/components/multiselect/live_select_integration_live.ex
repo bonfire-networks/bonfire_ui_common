@@ -22,7 +22,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       container_extra_class="flex flex-col w-full"
       option_extra_class="rounded-box px-4 py-2"
       tag_class="text-sm badge badge-outline badge-lg !border !border-base-content/30 gap-2 !h-[2rem]"
-      dropdown_class="cursor-pointer absolute top-12 p-1 z-[999999999999] dropdown-content menu shadow w-full bg-base-100 shadow-lg text-base-content rounded"
+      dropdown_class="cursor-pointer absolute top-12 p-1 z-[999999999999] dropdown-content menu shadow w-full bg-base-200 shadow-lg text-base-content rounded"
       tags_container_class="flex flex-wrap gap-1 pt-2 order-last"
     >
       <:option :let={option}>

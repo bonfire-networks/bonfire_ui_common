@@ -214,7 +214,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   }
                 >
                   <div :if={!@without_sidebar && !@no_header} class="sticky top-0 z-[999]">
-                    <div class="flex flex-1 backdrop-blur-sm rounded-none md:rounded-t bg-base-300/70 transition-color duration-150 ease-in-out">
+                    <div class="flex flex-1 backdrop-blur-sm rounded-none md:rounded-t bg-base-100/70 transition-color duration-150 ease-in-out">
                       <Dynamic.Component
                         module={Bonfire.UI.Common.PageHeaderLive}
                         page_title={@page_title}

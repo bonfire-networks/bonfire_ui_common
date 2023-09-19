@@ -25,7 +25,7 @@
         x-description="Slide-over panel, show/hide based on slide-over state."
         x-on:click.away="open_sidebar = false"
       >
-        <div class="flex flex-col h-full overflow-y-scroll shadow-xl bg-base-300">
+        <div class="flex flex-col h-full overflow-y-scroll shadow-xl bg-base-100">
           <div class="relative flex-1">
             <div class="flex-1 h-full" data-id="mobile_nav">
               <div class="relative w-full h-full">

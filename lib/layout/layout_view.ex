@@ -12,7 +12,7 @@ defmodule Bonfire.UI.Common.LayoutView do
     <html
       id="root"
       data-open="false"
-      class="bg-base-300"
+      class="bg-base-100"
       lang="en"
       data-theme={
         if Settings.get(
