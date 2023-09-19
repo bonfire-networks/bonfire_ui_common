@@ -45,7 +45,7 @@
       <Bonfire.UI.Common.ComposerMinimizedLive />
       <!-- :if={@smart_input_as != :focused} -->
 
-        <!-- style="height: 380px" -->
+      <!-- style="height: 380px" -->
       <div
         phx-hook="ScreenSize"
         id="smart_input_container"
@@ -53,8 +53,7 @@
           "h-full w-full md:h-auto  bottom-0 block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0",
           "!left-1 !right-1 xl:!left-auto xl:!right-auto w-full top-0 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto xl:max-w-[1200px] !left-auto !right-auto":
             @smart_input_as == :focused,
-          "md:w-[32rem] md:right-4 md:top-auto max-h-screen":
-            @smart_input_as != :focused,
+          "md:w-[32rem] md:right-4 md:top-auto max-h-screen": @smart_input_as != :focused,
           hidden: e(@smart_input_opts, :open, nil) != true
         }
       >
@@ -113,7 +112,6 @@
                   reset_smart_input={@reset_smart_input}
                   smart_input_as={@smart_input_as}
                   activity_inception={@activity_inception}
-
                   preview_boundary_for_id={@preview_boundary_for_id}
                   preview_boundary_for_username={@preview_boundary_for_username}
                   preview_boundary_verbs={@preview_boundary_verbs}

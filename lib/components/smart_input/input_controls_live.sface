@@ -45,7 +45,6 @@
           <div class={"p-2 border-b border-base-content/20 uploads_preview": @uploads.files.entries != []}>
             <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
           </div>
-   
 
           <!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE -->
           <#slot {@default} />
@@ -56,23 +55,22 @@
         <div class="">
           <div class="flex justify-between gap-3 p-4 md:items-center bg-base-300 md:px-3 md:py-2">
             <div class="flex items-center gap-1">
-            <Bonfire.UI.Common.UploadButtonLive
-              :if={module_enabled?(Bonfire.Files, @__context__)}
-              uploads={@uploads}
-            />
-            <Dynamic.Component
-              :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
-              module={Bonfire.UI.Common.EmojiPickerLive}
-              target_field=".composer"
-              class={
-                "bottom-10 left-3",
-                "!top-10 right-0 bottom-[auto]": @showing_within == :page
-              }
-            />
-            
+              <Bonfire.UI.Common.UploadButtonLive
+                :if={module_enabled?(Bonfire.Files, @__context__)}
+                uploads={@uploads}
+              />
+              <Dynamic.Component
+                :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
+                module={Bonfire.UI.Common.EmojiPickerLive}
+                target_field=".composer"
+                class={
+                  "bottom-10 left-3",
+                  "!top-10 right-0 bottom-[auto]": @showing_within == :page
+                }
+              />
             </div>
 
-        <!-- <div
+            <!-- <div
           :if={@show_cw_toggle}
           title={l("Add a content warning")}
           class="relative z-30 flex items-center"
@@ -91,67 +89,57 @@
           </button>
         </div> -->
 
-              <div
-                :if={@create_object_type in [:message, :post, nil]}
-                title={l("Mark the activity as sensitive")}
-                class="relative z-30 flex items-center"
-                id="sensitive_btn"
-                phx-update="ignore"
+            <div
+              :if={@create_object_type in [:message, :post, nil]}
+              title={l("Mark the activity as sensitive")}
+              class="relative z-30 flex items-center"
+              id="sensitive_btn"
+              phx-update="ignore"
+            >
+              <label
+                phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
+                  "#smart_input_post_title",
+                  ".btn_cw_toggle",
+                  "btn-active"
+                )}
+                class="swap items-center btn btn-ghost btn-sm btn-circle btn_cw_toggle"
               >
-                <label
-                  phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
-                    "#smart_input_post_title",
-                    ".btn_cw_toggle",
-                    "btn-active"
-                  )}
-                  class="swap items-center btn btn-ghost btn-sm btn-circle btn_cw_toggle"
-                >
-                  <input type="checkbox" name="sensitive">
-                  <#Icon iconify="ri:alert-line" class="swap-off w-4 h-4 text-base-content/60" />
-                  <#Icon iconify="ri:alert-fill" class="swap-on w-4 h-4 text-warning/70" />
-                </label>
-              </div>
+                <input type="checkbox" name="sensitive">
+                <#Icon iconify="ri:alert-line" class="swap-off w-4 h-4 text-base-content/60" />
+                <#Icon iconify="ri:alert-fill" class="swap-on w-4 h-4 text-warning/70" />
+              </label>
+            </div>
 
-
-              <div class="dropdown dropdown-top">
-                <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
-                  <#Icon iconify="ic:baseline-text-format" class="w-5 h-5 text-base-content/60" />
-                </label>
-                <ul tabindex="0" class="dropdown-content left-[-12px] p-1 z-[1] menu shadow bg-base-100 rounded w-14">
-                  <li> 
-                    <button
-                      id="heading_btn"
-                      type="button"
-                      class="heading_btn"
-                      >
-                      <#Icon iconify="ri:heading" class="w-4 h-4 text-base-content/70" />
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      id="bold_btn"
-                      type="button"
-                      class="bold_btn"
-                    >
-                      <#Icon iconify="ri:bold" class="w-4 h-4 text-base-content/70" />
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      id="italic_btn"
-                      type="button"
-                      class="italic_btn"
-                    >
-                      <#Icon iconify="ri:italic" class="w-4 h-4 text-base-content/70" />
-                    </button>
-                  </li>
-               <!-- STRIKE -->
-              <!-- <button id="strike_btn" type="button" class="flex items-center btn btn-ghost btn-sm btn-circle">
+            <div class="dropdown dropdown-top">
+              <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
+                <#Icon iconify="ic:baseline-text-format" class="w-5 h-5 text-base-content/60" />
+              </label>
+              <ul
+                tabindex="0"
+                class="dropdown-content left-[-12px] p-1 z-[1] menu shadow bg-base-100 rounded w-14"
+              >
+                <li>
+                  <button id="heading_btn" type="button" class="heading_btn">
+                    <#Icon iconify="ri:heading" class="w-4 h-4 text-base-content/70" />
+                  </button>
+                </li>
+                <li>
+                  <button id="bold_btn" type="button" class="bold_btn">
+                    <#Icon iconify="ri:bold" class="w-4 h-4 text-base-content/70" />
+                  </button>
+                </li>
+                <li>
+                  <button id="italic_btn" type="button" class="italic_btn">
+                    <#Icon iconify="ri:italic" class="w-4 h-4 text-base-content/70" />
+                  </button>
+                </li>
+                <!-- STRIKE -->
+                <!-- <button id="strike_btn" type="button" class="flex items-center btn btn-ghost btn-sm btn-circle">
                 <#Icon iconify="ri:strikethrough-2" class="w-4 h-4 text-base-content/70" />
               </button> -->
 
-              <!-- QUOTE -->
-              <!-- <button
+                <!-- QUOTE -->
+                <!-- <button
                       id="quote_btn"
                       type="button"
                       class="flex items-center btn btn-ghost btn-sm btn-circle"
@@ -159,17 +147,17 @@
                       <#Icon iconify="ri:double-quotes-l" class="w-4 h-4 text-base-content/70 " />
                     </button>
                   -->
-              <!-- TABLE -->
-        <!-- <button
+                <!-- TABLE -->
+                <!-- <button
                 id="table_btn"
                 type="button"
                 class="flex items-center btn btn-ghost btn-sm btn-circle"
               >
                 <#Icon iconify="ri:table-line" class="w-4 h-4 text-base-content/70 " />
               </button> -->
-                </ul>
-              </div>
-              <div class="flex flex-1 gap-2">
+              </ul>
+            </div>
+            <div class="flex flex-1 gap-2">
               {#if @create_object_type != :message && !e(@smart_input_opts, :recipients_editable, nil)}
                 <Dynamic.Component
                   :if={module_enabled?(Bonfire.Boundaries.Web.SetBoundariesButtonLive)}
@@ -180,7 +168,7 @@
                   preview_boundary_for_username={@preview_boundary_for_username}
                   preview_boundary_verbs={@preview_boundary_verbs}
                   to_circles={@to_circles}
-                  />
+                />
 
                 <!-- <button
                   type="button"
@@ -193,51 +181,51 @@
                   <span class="sr-only">{l("Preview boundaries")}</span>
                 </button> -->
               {/if}
-                <div class="dropdown dropdown-top dropdown-end">
-                  <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
-                    <#Icon solid="DotsHorizontal" class="w-5 h-5 text-base-content/60" />
-                  </label>
-                  <ul tabindex="0" class="dropdown-content p-1 z-[1] menu shadow bg-base-100 rounded w-52">
-                    <li>
-                      <button
-                        type="button"
-                        phx-click={JS.show(to: "#boundaries_preview")
-                        |> JS.hide(to: "#composer_container")}
-                        class="flex items-center"
-                        title={l("Preview boundaries")}
-                      >
-                        <#Icon iconify="mdi:eye-outline" class="w-4 h-4 gap-2 !text-base-content/70" />
-                        <span class="text-base-content/70 text-sm">{l("Preview boundaries")}</span>
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        :if={@enable_thread_title} 
-                        type="button"
-                        phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
-                          "#smart_input_thread_title",
-                          ".btn_title_toggle",
-                          "btn-active"
-                        )}
-                        class="flex items-center gap-2 btn_title_toggle"
-                      >
-                        <#Icon iconify="solar:text-bold" class="w-4 h-4 text-base-content/70" />
-                        <span class="text-sm text-base-content/70">{l "Add a title"}</span>
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        phx-click={LiveHandler.minimize()}
-                        phx-target="#smart_input"
-                        type="button"
-                        class="flex items-center gap-2"
-                      >
-                        <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
-                          <#Icon solid="Minus" class="w-4 h-4 text-base-content/70" />
-                          <span class="text-sm text-base-content/70">{l("Minimize")}</span>
-                      </button>
-                    </li>
-                    <!-- <li>
+              <div class="dropdown dropdown-top dropdown-end">
+                <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
+                  <#Icon solid="DotsHorizontal" class="w-5 h-5 text-base-content/60" />
+                </label>
+                <ul tabindex="0" class="dropdown-content p-1 z-[1] menu shadow bg-base-100 rounded w-52">
+                  <li>
+                    <button
+                      type="button"
+                      phx-click={JS.show(to: "#boundaries_preview")
+                      |> JS.hide(to: "#composer_container")}
+                      class="flex items-center"
+                      title={l("Preview boundaries")}
+                    >
+                      <#Icon iconify="mdi:eye-outline" class="w-4 h-4 gap-2 !text-base-content/70" />
+                      <span class="text-base-content/70 text-sm">{l("Preview boundaries")}</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      :if={@enable_thread_title}
+                      type="button"
+                      phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
+                        "#smart_input_thread_title",
+                        ".btn_title_toggle",
+                        "btn-active"
+                      )}
+                      class="flex items-center gap-2 btn_title_toggle"
+                    >
+                      <#Icon iconify="solar:text-bold" class="w-4 h-4 text-base-content/70" />
+                      <span class="text-sm text-base-content/70">{l("Add a title")}</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      phx-click={LiveHandler.minimize()}
+                      phx-target="#smart_input"
+                      type="button"
+                      class="flex items-center gap-2"
+                    >
+                      <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
+                      <#Icon solid="Minus" class="w-4 h-4 text-base-content/70" />
+                      <span class="text-sm text-base-content/70">{l("Minimize")}</span>
+                    </button>
+                  </li>
+                  <!-- <li>
                       <Bonfire.UI.Common.OpenModalLive
                         id="close_composer"
                         reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
@@ -266,9 +254,9 @@
                         </:action_btns>
                       </Bonfire.UI.Common.OpenModalLive>
                     </li> -->
-                  </ul>
-                </div>
+                </ul>
               </div>
+            </div>
 
             <button
               type="submit"
