@@ -278,6 +278,10 @@ article.unread-activity {
   height: 100%;
 }
 
+.menu li > *:not(ul):not(.menu-title):not(details):active, .menu li > *:not(ul):not(.menu-title):not(details).active, .menu li > details > summary:active
+{
+  @apply !bg-base-content/10;
+}
 .feed_tab.active {
   @apply bg-base-content text-base-300 hover:bg-base-content hover:text-base-300;
 }
