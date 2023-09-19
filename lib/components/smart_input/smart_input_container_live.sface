@@ -45,15 +45,15 @@
       <Bonfire.UI.Common.ComposerMinimizedLive />
       <!-- :if={@smart_input_as != :focused} -->
 
+        <!-- style="height: 380px" -->
       <div
         phx-hook="ScreenSize"
-        style="height: 380px"
         id="smart_input_container"
         class={
-          "h-full w-full md:h-auto !min-h-[380px] bottom-0 block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0",
+          "h-full w-full md:h-auto  bottom-0 block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0",
           "!left-1 !right-1 xl:!left-auto xl:!right-auto w-full top-0 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto xl:max-w-[1200px] !left-auto !right-auto":
             @smart_input_as == :focused,
-          "md:w-[32rem] md:h-[380px] md:right-4 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto":
+          "md:w-[32rem] md:right-4 md:top-auto max-h-screen":
             @smart_input_as != :focused,
           hidden: e(@smart_input_opts, :open, nil) != true
         }
@@ -74,15 +74,15 @@
           /> -->
 
             <div class={
-              "overflow-hidden smart_input_modal relative z-50 md:border md:rounded-lg border-base-content/5 flex flex-col grow h-full",
+              "smart_input_modal relative z-50 md:rounded-t-lg flex flex-col grow h-full",
               "!rounded-b-none": @smart_input_as == :non_blocking
             }>
-              <div class="h-[2px] relative bg-base-content/5 rounded-t-lg" id="gutter">
+              <!-- <div class="h-[2px] relative bg-base-content/5 rounded-t-lg" id="gutter">
                 <div
                   class="absolute inset-0 top-[-2px] bottom-[-2px] hover:bg-base-content/10 left-0 right-0 cursor-row-resize"
                   id="gutter-inner"
                 />
-              </div>
+              </div> -->
               <Bonfire.UI.Common.SmartInputHeaderModalLive
                 smart_input_opts={@smart_input_opts}
                 smart_input_as={@smart_input_as}
@@ -90,7 +90,7 @@
               <div
                 x-ref="smart_input"
                 id="smart_input_live"
-                class="flex-1 h-full bg-base-300 grow relative z-[9999999999]"
+                class="rounded-t-lg flex-1 h-full bg-base-300 grow relative z-[9999999999]"
               >
                 <SmartInputLive
                   boundaries_modal_id={:modal_composer}
@@ -113,6 +113,11 @@
                   reset_smart_input={@reset_smart_input}
                   smart_input_as={@smart_input_as}
                   activity_inception={@activity_inception}
+
+                  preview_boundary_for_id={@preview_boundary_for_id}
+                  preview_boundary_for_username={@preview_boundary_for_username}
+                  preview_boundary_verbs={@preview_boundary_verbs}
+                  boundary_preset={@boundary_preset}
                 />
 
                 <form
@@ -122,16 +127,17 @@
                   phx-target={@myself}
                 >
                   <!-- PRESET BOUNDARY PICKER -->
-                  <div class="hidden flex-1 h-full grow" id="boundaries_picker">
+                  <!-- <div class="hidden flex-1 h-full grow" id="boundaries_picker">
                     <div class="flex flex-col h-full">
                       <Dynamic.Component
                         :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesGeneralAccessLive)}
                         module={Bonfire.Boundaries.Web.BoundariesGeneralAccessLive}
                         to_boundaries={@to_boundaries}
+                        is_dropdown
                         boundary_preset={@boundary_preset}
                       />
                     </div>
-                  </div>
+                  </div> -->
 
                   <!-- CUSTOM BOUNDARIES -->
                   <div class="hidden flex-1 h-full grow" id="extra_boundaries">

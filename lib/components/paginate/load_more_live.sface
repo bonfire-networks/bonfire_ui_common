@@ -22,7 +22,7 @@
   >
     <!-- phx-click={if @infinite_scroll != :preload or !@entry_count or @entry_count == 0, do: "#{@live_handler}:load_more"} -->
     <span
-      class="normal-case btn btn-outline rounded-full btn-primary"
+      class="normal-case btn btn-outline rounded-full btn-primary !border !border-primary/30"
       style="display: none"
       x-show="show"
     >
@@ -36,7 +36,7 @@
     </span>
     <a
       x-cloak
-      class="normal-case btn btn-outline rounded-full btn-primary"
+      class="normal-case btn btn-outline rounded-full btn-primary !border !border-primary/30"
       x-show="!show"
       href={"?#{@live_handler}[after]=" <> @cursor}
     >

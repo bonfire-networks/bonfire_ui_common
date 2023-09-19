@@ -1,12 +1,11 @@
-let TooltipHooks = {};
 import {flip, shift, offset, autoUpdate, computePosition} from '@floating-ui/dom'
+let TooltipHooks = {};
 
 TooltipHooks.Tooltip = {
   mounted() {
     const tooltipWrapper = this.el
     const button = this.el.querySelector('.tooltip-button');
     const tooltip = this.el.querySelector('.tooltip');
-
     function update() {
       autoUpdate(button, tooltip, () => {
         computePosition(button, tooltip, {
@@ -21,33 +20,43 @@ TooltipHooks.Tooltip = {
       })
     }
 
-    function showTooltip() {
-      tooltip.style.display = 'block';
-      update(); 
-    }
-     
-    function hideTooltip(e) {
-      // check if the mouse is still over the button or the tooltip
-      console.log(e.relatedTarget == button)
-      console.log(e.relatedTarget == tooltip)
-      console.log(e.relatedTarget == tooltipWrapper)
-      console.log(e.relatedTarget)
-      console.log(tooltipWrapper)
-      console.log("TEST")
-      if (e.relatedTarget !== button && e.relatedTarget !== tooltip && e.relatedTarget !== tooltipWrapper) {
+    // toggle tooltip on click
+    // function showTooltip() {
+    //   tooltip.style.display = 'block';
+    //   update();
+    // }
+    // function hideTooltip() {
+    //   tooltip.style.display = '';
+    // }
+
+
+
+    function toggleTooltip() {
+      if (tooltip.style.display === 'block') {
         tooltip.style.display = '';
+      } else {
+        tooltip.style.display = 'block';
+        update();
       }
     }
 
+    // Hide tooltip if user clicks outside of it
+    document.addEventListener('click', (event) => {
+      const isClickInsideTooltip = tooltip.contains(event.target);
+      const isClickOnButton = button.contains(event.target);
+      if (!isClickInsideTooltip && !isClickOnButton && tooltip.style.display === 'block') {
+        tooltip.style.display = '';
+      }
+    });
+
     [
-      ['mouseenter', showTooltip],
-      ['mouseleave', hideTooltip],
-      ['focus', showTooltip],
-      ['blur', hideTooltip],
+      ['click', toggleTooltip],
+      // ['mouseleave', hideTooltip],
+      // ['focus', showTooltip],
+      // ['blur', hideTooltip],
     ].forEach(([event, listener]) => {
       button.addEventListener(event, listener);
     });
-
     
   },
 }

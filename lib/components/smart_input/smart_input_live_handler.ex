@@ -76,6 +76,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     )
     |> JS.show(
       to: ".smart_input_modal",
+      display: "flex",
       transition: {"transition-all duration-200", "h-[40px] w-[20rem]", "h-auto w-auto"},
       time: 200
     )

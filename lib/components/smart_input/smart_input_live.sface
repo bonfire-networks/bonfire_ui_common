@@ -1,4 +1,4 @@
-<div id="composer_container" data-id="smart_input" class="flex-1 h-full grow">
+<div id="composer_container" data-id="smart_input" class="flex-1 h-full grow rounded-t-lg">
   <div
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
@@ -7,13 +7,13 @@
       title_open: #{if @title_open == true and @create_object_type not in [:post], do: true, else: false}, 
     }"}
     class={
-      "flex bg-transparent h-full grow flex-1",
+      "flex bg-transparent rounded-t-lg h-full grow flex-1",
       "bottom-0 !max-w-full !border-none !rounded-none": @create_object_type == :message
     }
   >
     <div
       :if={not is_nil(current_user(@__context__))}
-      class="relative flex flex-col flex-1 w-full bg-base-300"
+      class="relative flex flex-col flex-1 w-full bg-base-300 rounded-t-lg"
     >
       <div
         :if={is_map(@activity) || is_map(@reply_to_id)}

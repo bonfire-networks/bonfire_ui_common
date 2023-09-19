@@ -1,6 +1,7 @@
 defmodule Bonfire.UI.Common.InputControlsLive do
   use Bonfire.UI.Common.Web, :stateless_component
   use Bonfire.Common.Utils
+  alias Bonfire.UI.Common.SmartInput.LiveHandler
 
   # prop target_component, :string
   prop preloaded_recipients, :list, default: nil
@@ -22,6 +23,10 @@ defmodule Bonfire.UI.Common.InputControlsLive do
 
   prop reset_smart_input, :boolean, default: false
   prop boundaries_modal_id, :string, default: :sidebar_composer
+
+  prop preview_boundary_for_id, :any, default: nil
+  prop preview_boundary_for_username, :any, default: nil
+  prop preview_boundary_verbs, :any, default: nil
 
   slot default
 
