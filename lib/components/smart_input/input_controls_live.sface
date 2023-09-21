@@ -96,19 +96,19 @@
               id="sensitive_btn"
               phx-update="ignore"
             >
-                <label
-                  phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
-                    "#smart_input_post_title",
-                    ".btn_cw_toggle",
-                    "btn-active"
-                  )}
-                  class="swap items-center btn btn-ghost btn-sm btn-circle btn_cw_toggle"
-                >
-                  <input type="checkbox" name="sensitive">
-                  <#Icon iconify="ri:alert-line" class="swap-off w-4 h-4 text-base-content/60" />
-                  <#Icon iconify="ri:alert-fill" class="swap-on w-4 h-4 text-base-content/60" />
-                </label>
-              </div>
+              <label
+                phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
+                  "#smart_input_post_title",
+                  ".btn_cw_toggle",
+                  "btn-active"
+                )}
+                class="swap items-center btn btn-ghost btn-sm btn-circle btn_cw_toggle"
+              >
+                <input type="checkbox" name="sensitive">
+                <#Icon iconify="ri:alert-line" class="swap-off w-4 h-4 text-base-content/60" />
+                <#Icon iconify="ri:alert-fill" class="swap-on w-4 h-4 text-base-content/60" />
+              </label>
+            </div>
 
             <div class="dropdown dropdown-top">
               <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">

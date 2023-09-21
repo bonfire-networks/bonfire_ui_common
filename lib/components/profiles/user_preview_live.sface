@@ -10,8 +10,8 @@
         <div class="flex items-center justify-between">
           <Bonfire.UI.Common.AvatarLive
             parent_id="user_preview"
-            class="inline-block object-cover w-16 h-16 rounded-full bg-base-300"
-            bg_class="rounded-full ring-2 ring-base-100 bg-base-300 h-full"
+            class="inline-block object-cover w-16 h-16"
+            bg_class="h-full"
             size="64"
             user={@user}
           />

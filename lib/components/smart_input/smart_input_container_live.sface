@@ -86,7 +86,7 @@
                 smart_input_opts={@smart_input_opts}
                 smart_input_as={@smart_input_as}
               />
-              
+
               <div
                 x-ref="smart_input"
                 id="smart_input_live"
