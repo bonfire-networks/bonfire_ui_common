@@ -1,4 +1,4 @@
-defmodule Bonfire.UI.Common.PlugAttackDanceTest do
+defmodule Bonfire.UI.Common.PlugProtectDanceTest do
   use Bonfire.UI.Common.ConnCase, async: false
   use Bonfire.UI.Common.SharedDataDanceCase
 
@@ -21,7 +21,7 @@ defmodule Bonfire.UI.Common.PlugAttackDanceTest do
         "../fixtures/credentials_100.txt"
         |> Path.expand(__DIR__)
 
-      Bonfire.UI.Common.PlugAttackTesting.run({"http://localhost:4000/signup", "account"}, file)
+      Bonfire.UI.Common.PlugProtect.run({"http://localhost:4000/signup", "account"}, file)
       |> IO.puts()
     end)
   end
@@ -33,7 +33,7 @@ defmodule Bonfire.UI.Common.PlugAttackDanceTest do
         "../fixtures/credentials_100.txt"
         |> Path.expand(__DIR__)
 
-      Bonfire.UI.Common.PlugAttackTesting.run("http://localhost:4000/login", file)
+      Bonfire.UI.Common.PlugProtect.run("http://localhost:4000/login", file)
       |> IO.puts()
     end)
   end

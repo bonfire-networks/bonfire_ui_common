@@ -42,7 +42,7 @@ defmodule Bonfire.UI.Common.Routes do
 
       pipeline :throttle_plug_attacks do
         plug(:basic)
-        plug Bonfire.UI.Common.PlugAttack
+        plug Bonfire.UI.Common.PlugProtect
       end
 
       pipeline :static do
