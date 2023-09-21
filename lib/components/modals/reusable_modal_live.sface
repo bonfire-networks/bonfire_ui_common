@@ -48,7 +48,7 @@
       </h3>
       <div class={
         "absolute top-0 right-0 block z-50",
-        "-mt-1 !fixed !top-4 !right-2": !@no_backdrop,
+        "-mt-1 !fixed !top-6 !right-4": !@no_backdrop,
         "z-[999999999] h-full": @no_backdrop
       }>
         <button
@@ -56,7 +56,7 @@
           phx-target={"[id='#{@id}']"}
           type="button"
           class={
-            "normal-case btn-sm btn btn-circle",
+            "normal-case btn-sm btn-ghost btn btn-circle",
             "!rounded-none !btn-xs btn-secondary": @no_backdrop
           }
         >
