@@ -5,7 +5,7 @@
 >
   <div class={
     classes(%{viewing_main_object: @viewing_main_object, comment: @comment, class: @class}),
-    "!rounded": Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true, @__context__)
+    "!rounded ": Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true, @__context__)
   }>
     {#case @avatar_fallback || Media.avatar_fallback()}
       {#match avatar_fallback}

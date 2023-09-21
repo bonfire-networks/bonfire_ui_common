@@ -10,7 +10,6 @@
       :if={is_map(current_user(@__context__))}
       parent_id="nav_sidebar"
       class="inline-block object-cover w-[34px] h-[34px] rounded-full  bg-base-100"
-      bg_class="rounded"
       size="40"
       user={current_user(@__context__)}
     />
