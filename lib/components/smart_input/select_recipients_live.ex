@@ -11,7 +11,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
   prop implementation, :any, default: :live_select
   prop label, :string, default: nil
   prop mode, :atom, default: :tags
-  prop class, :string, default: "w-full h-10 input rounded-full select_recipients_input"
+  prop class, :string, default: "w-full h-10 input !border-none !border-b !border-base-content/10 !rounded-none select_recipients_input"
   prop is_editable, :boolean, default: false
 
   def do_handle_event("live_select_change", %{"id" => live_select_id, "text" => search}, socket) do
