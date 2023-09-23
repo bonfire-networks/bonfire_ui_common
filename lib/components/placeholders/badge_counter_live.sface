@@ -1,3 +1,4 @@
+<div>
 <div
   id={"badge_counter_#{@id}"}
   :if={@count > 0}
@@ -14,4 +15,5 @@
   >
     {@count}
   </span> -->
+</div>
 </div>
