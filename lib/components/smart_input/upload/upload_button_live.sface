@@ -11,7 +11,7 @@
     class="flex items-center btn btn-ghost btn-sm btn-circle"
   >
     <#Icon iconify="ri:attachment-2" class="w-4 h-4 text-base-content/70 mx-auto" />
-    {live_file_input(@uploads.files, tabindex: "-1", class: "sr-only")}
+    <.live_file_input upload={@uploads.files} class="sr-only" tabindex="-1" />
   </label>
 
   <input :for={file <- e(@uploaded_files, [])} type="hidden" name="files[]" value={id(file)}>

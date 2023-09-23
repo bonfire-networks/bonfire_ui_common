@@ -84,9 +84,9 @@ window.liveSocket = liveSocket
 // DynamicImport({ transformExtensions: ['.js'], changeRelativeToAbsolute: false, filter: "../../data/current_flavour/config/deps_hooks.js" })
 
 import { ExtensionHooks } from "../../../../data/current_flavour/config/deps_hooks.js"
-import SourceInspect from "./../../../../deps/source_inspector/priv/js/source_inspector.js"
-ExtensionHooks.SourceInspect = SourceInspect
-ExtensionHooks.SourceInspect = SourceInspect(csrfToken)
+// import SourceInspect from "./../../../../deps/source_inspector/priv/js/source_inspector.js"
+// ExtensionHooks.SourceInspect = SourceInspect
+// ExtensionHooks.SourceInspect = SourceInspect(csrfToken)
 
 // Add Extensions' Hooks...   
 Object.assign(liveSocket.hooks, ExtensionHooks);

@@ -159,13 +159,13 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
-  def source_inspector() do
-    quote do
-      require SourceInspector
-      # mark the component as inspectable
-      SourceInspector.debuggable()
-    end
-  end
+  # def source_inspector() do
+  #   quote do
+  #     require SourceInspector
+  #     # mark the component as inspectable
+  #     SourceInspector.debuggable()
+  #   end
+  # end
 
   def live_plug(_opts \\ []) do
     quote do
@@ -349,9 +349,10 @@ defmodule Bonfire.UI.Common.Web do
       quote do
         unquote(surface_helpers())
 
-        require SourceInspector
+        # require SourceInspector
+        # import Bonfire.UI.Common.Testing.Inspector
+
         alias Bonfire.UI.Common.Web
-        import Bonfire.UI.Common.Testing.Inspector
 
         prop source_inspector_attrs, :map, default: %{}
       end
