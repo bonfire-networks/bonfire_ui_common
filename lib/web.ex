@@ -127,9 +127,9 @@ defmodule Bonfire.UI.Common.Web do
       @moduledoc false
       use Phoenix.LiveComponent, unquote(opts)
 
-      use LiveViewNative.LiveComponent
-
       unquote(live_view_helpers())
+
+      use LiveViewNative.LiveComponent
 
       # unquote(source_inspector())
     end
@@ -140,9 +140,9 @@ defmodule Bonfire.UI.Common.Web do
       @moduledoc false
       use Phoenix.Component, unquote(opts)
 
-      use LiveViewNative.Component
-
       unquote(live_view_helpers())
+
+      use LiveViewNative.Component
 
       # unquote(source_inspector())
     end
