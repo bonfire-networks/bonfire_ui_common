@@ -90,6 +90,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def handle_event("select_smart_input", params, socket) do
+    push_event(socket, "mentions-suggestions", %{mentions: e(params, "mentions", [])})
     opts =
       (maybe_from_json(e(params, "opts", nil)) ||
          e(socket.assigns, :smart_input_opts, []))

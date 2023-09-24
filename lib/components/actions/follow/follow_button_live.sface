@@ -1,3 +1,4 @@
+<div>
 {#if @my_follow == nil}
   <button disabled class="normal-case rounded-full btn btn-disabled btn-sm">{l("loading...")}</button>
 {#elseif !@my_follow}
@@ -54,7 +55,7 @@
       data-id="unfollow"
       :on-click={if !@disabled, do: "Bonfire.Social.Follows:unfollow"}
       phx-value-id={@object_id}
-      :class={"{ '!btn-error': text == '#{@verb_undo || l("Unfollow")}' }"}
+      :class={"text == '#{@verb_undo || l("Unfollow")}' ? '!btn-error' : ''"}
       class={
         e(@class, "btn btn-sm btn-outline rounded-full !border-base-content/40 normal-case"),
         "btn-disabled": @disabled
@@ -71,3 +72,4 @@
 
   <#slot {@if_followed} />
 {/if}
+</div>

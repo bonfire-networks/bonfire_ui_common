@@ -1,24 +1,4 @@
 <div class="flex-1">
-  <!-- x-data={"{
-              smart_input_title_text: null,
-              smart_input_open: false,
-              smart_input_fullscreen: false,
-              smart_input_minimized: false,
-              smart_input_as_non_blocking: true,
-              smart_input_as_focused: false,
-              show_smart_input(title) {
-                if(title !==undefined){ this.smart_input_title_text = title }
-                this.smart_input_open = true;
-                this.smart_input_minimized = false;
-                #{if @smart_input_as == :focused, do: "this.smart_input_fullscreen = true;"}
-                      }
-                    }"}
-        x-init={"
-          smart_input_open = #{e(@smart_input_opts, :open, nil) == true}; 
-          smart_input_minimized = #{e(@smart_input_opts, :open, nil) != true and @smart_input_as == :non_blocking}; 
-          smart_input_as_non_blocking = #{@smart_input_as == :non_blocking}; 
-          smart_input_as_focused = #{@smart_input_as == :focused}; 
-        "} -->
   <div>
     <!-- <Bonfire.UI.Common.SmartInputButtonsLive
       :if={!e(@smart_input_opts, :hide_buttons, nil)}
@@ -35,6 +15,7 @@
         icon={e(@smart_input_opts, :icon, "mdi:pencil")}
         class="fixed right-3 md:static bottom-[72px] md:btn btn-circle md:h-auto md:min-h-auto md:max-h-auto md:px-4 !btn-primary text-primary-content md:!rounded-full md:!w-auto flex items-center gap-2 place-content-center normal-case"
       />
+      
       <!-- 
       Note: not including these props because we want the main button to open ther post composer by default, or whatever other type is already selected (until the smart input is reset)
       smart_input_component={@smart_input_component}
@@ -141,7 +122,8 @@
                   <!-- CUSTOM BOUNDARIES -->
                   <div class="hidden flex-1 h-full grow" id="extra_boundaries">
                     <div class="flex flex-col h-full">
-                      <div class="flex w-full flex-1 h-full px-2">
+                      <div class="flex w-full flex-1 h-full">
+                      
                         <Dynamic.Component
                           :if={@create_object_type != :message and
                             Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false and
@@ -187,7 +169,7 @@
                   <!-- PREVIEW BOUNDARIES -->
                   <div class="hidden flex-1 h-full grow" id="boundaries_preview">
                     <div class="flex flex-col h-full">
-                      <Dynamic.LiveComponent
+                      <!-- <Dynamic.LiveComponent
                         :if={module_enabled?(Bonfire.Boundaries.Web.PreviewBoundariesLive)}
                         module={Bonfire.Boundaries.Web.PreviewBoundariesLive}
                         id="boundaries_preview"
@@ -197,7 +179,7 @@
                         boundary_preset={@boundary_preset}
                         to_boundaries={@to_boundaries}
                         to_circles={@to_circles}
-                      />
+                      /> -->
                     </div>
                   </div>
                 </form>
