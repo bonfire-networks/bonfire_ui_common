@@ -97,16 +97,16 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     do: Enum.reduce(filters, conn, &conn(&2, &1))
 
   def conn(conn, {:account, %Account{id: id}}),
-    do: put_session(conn, :account_id, id)
+    do: put_session(conn, :current_account_id, id)
 
   def conn(conn, {:account, account_id}) when is_binary(account_id),
-    do: put_session(conn, :account_id, account_id)
+    do: put_session(conn, :current_account_id, account_id)
 
   def conn(conn, {:user, %User{id: id}}),
-    do: put_session(conn, :user_id, id)
+    do: put_session(conn, :current_user_id, id)
 
   def conn(conn, {:user, user_id}) when is_binary(user_id),
-    do: put_session(conn, :user_id, user_id)
+    do: put_session(conn, :current_user_id, user_id)
 
   def find_flash(view_or_doc) do
     messages = Floki.find(view_or_doc, ".app_notifications .flash [data-id='flash']")
