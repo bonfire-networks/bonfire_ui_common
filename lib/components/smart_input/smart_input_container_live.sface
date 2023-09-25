@@ -15,7 +15,7 @@
         icon={e(@smart_input_opts, :icon, "mdi:pencil")}
         class="fixed right-3 md:static bottom-[72px] md:btn btn-circle md:h-auto md:min-h-auto md:max-h-auto md:px-4 !btn-primary text-primary-content md:!rounded-full md:!w-auto flex items-center gap-2 place-content-center normal-case"
       />
-      
+
       <!-- 
       Note: not including these props because we want the main button to open ther post composer by default, or whatever other type is already selected (until the smart input is reset)
       smart_input_component={@smart_input_component}
@@ -123,7 +123,6 @@
                   <div class="hidden flex-1 h-full grow" id="extra_boundaries">
                     <div class="flex flex-col h-full">
                       <div class="flex w-full flex-1 h-full">
-                      
                         <Dynamic.Component
                           :if={@create_object_type != :message and
                             Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false and

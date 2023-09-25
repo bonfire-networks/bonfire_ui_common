@@ -13,7 +13,7 @@
         label={@label || l("Search people")}
         form_input_name={__MODULE__}
         context_id={@context_id}
-        class={"focus:outline-0 border-0 border-b h-10 rounded-none border-base-content/20 text-sm select_recipients_input"}
+        class="focus:outline-0 border-0 border-b h-10 rounded-none border-base-content/20 text-sm select_recipients_input"
         implementation={@implementation}
         is_editable={@is_editable}
         event_target="#smart_input"
