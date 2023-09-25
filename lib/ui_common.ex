@@ -940,6 +940,8 @@ defmodule Bonfire.UI.Common do
   def redirect_to(socket_or_conn, to \\ nil, opts \\ [])
 
   def redirect_to(%Phoenix.LiveView.Socket{} = socket, to, opts) do
+    debug(to, "redirect socket to")
+
     Phoenix.LiveView.push_navigate(
       socket,
       [to: to || path_fallback(socket, opts)] ++ List.wrap(opts)
@@ -951,6 +953,8 @@ defmodule Bonfire.UI.Common do
   end
 
   def redirect_to(%Plug.Conn{} = conn, to, opts) do
+    debug(to, "redirect plug to")
+
     Phoenix.Controller.redirect(
       conn,
       [to: to || path_fallback(conn, opts)] ++ List.wrap(opts)
@@ -964,6 +968,8 @@ defmodule Bonfire.UI.Common do
   end
 
   def patch_to(%Phoenix.LiveView.Socket{} = socket, to, opts) when is_binary(to) do
+    debug(to, "patch socket to")
+
     Phoenix.LiveView.push_patch(
       socket,
       [to: to] ++ List.wrap(opts)
