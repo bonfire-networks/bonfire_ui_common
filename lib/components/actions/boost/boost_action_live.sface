@@ -17,7 +17,11 @@
         title={l("Boost this")}
       >
         <span class={"text-base-content/70 flex gap-1", "text-opacity-100 text-info": @my_boost}>
-          <Iconify.Bonfire.Boost.render class={"h-5 w-5 fill-base-content/50", "fill-opacity-100 fill-info": @my_boost} />
+          <#Icon
+            icon="bonfire:boost"
+            mode={:img}
+            class={"w-5 h-5 fill-base-content/50", "fill-opacity-100 fill-info": @my_boost}
+          />
           <span class="sr-only">
             {if @my_boost, do: l("Boosted"), else: l("Boost")}
           </span>
@@ -32,7 +36,7 @@
         title={l("You can't boost this activity")}
       >
         <span class="flex gap-1 text-opacity-20">
-          <Iconify.Bonfire.Boost.render class="w-5 h-5 stroke-1 fill-base-content/20" />
+          <#Icon icon="bonfire:boost" mode={:img} class="w-5 h-5 stroke-1 fill-base-content/20" />
 
           <span class="sr-only feed_activity_text">
             {l("Cannot Boost")}

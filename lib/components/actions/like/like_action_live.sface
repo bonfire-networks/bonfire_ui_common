@@ -17,9 +17,9 @@
         title={if @my_like, do: l("Un-like this"), else: l("Like this")}
       >
         {#if @my_like}
-          <Iconify.Bonfire.LikeFire.render class="text-amber-400 h-[20px] w-[18px]" />
+          <#Icon icon="bonfire:fire" mode={:img} class="text-amber-400 h-[20px] w-[18px]" />
         {#else}
-          <Iconify.Bonfire.LikeFire.render class="text-base-content/50 h-[20px] w-[18px]" />
+          <#Icon icon="bonfire:fire" mode={:img} class="text-base-content/50 h-[20px] w-[18px]" />
         {/if}
 
         <span :if={!@my_like} class="sr-only">
@@ -39,7 +39,7 @@
         title={l("You can't like this")}
       >
         <span class="text-base-content/20">
-          <Iconify.Bonfire.LikeFire.render class="h-[20px] w-[18px]" />
+          <#Icon icon="bonfire:fire" mode={:img} class="h-[20px] w-[18px]" />
         </span>
 
         <span class="sr-only">

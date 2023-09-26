@@ -20,11 +20,13 @@ defmodule Bonfire.UI.Common.LiveComponent do
   def render(assigns) do
     load_live_component = e(assigns, :load_live_component, nil)
 
-    ~L"""
-      <%= if load_live_component and module_enabled?(load_live_component), do: live_component(
-      load_live_component,
-      assigns
-    ) %>
+    ~H"""
+    <%= if load_live_component and module_enabled?(load_live_component),
+      do:
+        live_component(
+          load_live_component,
+          assigns
+        ) %>
     """
   end
 end
