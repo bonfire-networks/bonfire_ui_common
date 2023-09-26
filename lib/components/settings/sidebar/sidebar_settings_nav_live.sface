@@ -60,7 +60,7 @@
         </ul>
       </details>
     </li>
-    <!-- <li>
+    {!-- <li>
       <LiveRedirect
         to={~p"/settings/user/preferences"}
         class={
@@ -74,7 +74,7 @@
         />
         <span class="text-sm text-base-content/70">{l("Preferences")}</span>
       </LiveRedirect>
-    </li> -->
+    </li> --}
 
     <li :if={current_user_id(@__context__)}>
       <LiveRedirect
@@ -125,7 +125,7 @@
       </LiveRedirect>
     </li>
 
-    <!-- <li>
+    {!-- <li>
       <LiveRedirect
         to={~p"/settings/user/invites"}
         class={
@@ -139,7 +139,7 @@
         />
         <span class="text-sm text-base-content/70">{l("Invites")}</span>
       </LiveRedirect>
-    </li> -->
+    </li> --}
 
     <li>
       <div class="p-0 mt-4 cursor-default pointer-events-none">

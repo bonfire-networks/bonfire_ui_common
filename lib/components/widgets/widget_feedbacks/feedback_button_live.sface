@@ -1,7 +1,7 @@
-<!-- <Form for={%{}} as={:feedback} action="/session_redirect">
+{!-- <Form for={%{}} as={:feedback} action="/session_redirect">
   <input type="hidden" name="to" value="/write">
   <input type="hidden" name="smart_input_text" value={@text}>
-  <input type="hidden" name="create_object_type" value="task"> -->
+  <input type="hidden" name="create_object_type" value="task"> --}
 <button
   class={if @mobile, do: "flex items-center w-full gap-6 px-2 py-2 rounded-md", else: @class}
   phx-click={@event}
@@ -17,4 +17,4 @@
   />
   <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("Share feedback")}</div>
 </button>
-<!-- </Form> -->
+{!-- </Form> --}

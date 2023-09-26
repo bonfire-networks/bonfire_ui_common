@@ -1,10 +1,10 @@
 {#case rich_editor_module(e(@smart_input_opts, :wysiwyg, true), @__context__)}
   {#match component when is_atom(component) and not is_nil(component)}
-    <!-- editor component from user's preferred extension -->
+    {!-- editor component from user's preferred extension --}
     <Dynamic.Component module={component} {...assigns} />
 
-    <!-- fallback if JS is disabled -->
-    <!-- <noscript>
+    {!-- fallback if JS is disabled --}
+    {!-- <noscript>
       <TextArea
         name={"fallback_#{@field_name}"}
         opts={
@@ -13,9 +13,9 @@
         }
         class={@textarea_class}
       />
-    </noscript> -->
+    </noscript> --}
   {#match _}
-    <!-- NOTE: this is only used if no other editor module (like `Bonfire.UI.Common.ComposerLive` by default) is configured -->
+    {!-- NOTE: this is only used if no other editor module (like `Bonfire.UI.Common.ComposerLive` by default) is configured --}
     <TextArea
       opts={
         value:

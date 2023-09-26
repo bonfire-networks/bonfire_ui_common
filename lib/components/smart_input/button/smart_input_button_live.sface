@@ -13,9 +13,9 @@
   data-role="composer_button"
   class={@class}
 >
-  <!-- 
+  {!-- 
     phx-value-opts={Jason.encode!(merge_as_map(%{prompt: @prompt}, @smart_input_opts))}
-    x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{@prompt || l("Compose")}')"} -->
+    x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{@prompt || l("Compose")}')"} --}
 
   <Iconify.iconify
     :if={@icon}

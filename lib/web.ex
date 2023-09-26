@@ -112,11 +112,11 @@ defmodule Bonfire.UI.Common.Web do
       @moduledoc false
       use Phoenix.LiveView, unquote(opts)
 
-      use LiveViewNative.LiveView
-
       unquote(live_view_helpers())
 
       alias Bonfire.UI.Common.LivePlugs
+
+      use LiveViewNative.LiveView
 
       # on_mount(PhoenixProfiler)
     end

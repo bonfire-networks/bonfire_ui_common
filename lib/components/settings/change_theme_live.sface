@@ -1,8 +1,8 @@
 <div x-data={"{ theme: '#{@theme}'}"}>
-  <!-- note: the phx-hook has the advantage of changing the theme instantly without reloading, but it's an odd behaviour if changing the light theme while we're using the dark theme, or if changing the default instance theme while we have a different one in user preferences... -->
+  {!-- note: the phx-hook has the advantage of changing the theme instantly without reloading, but it's an odd behaviour if changing the light theme while we're using the dark theme, or if changing the default instance theme while we have a different one in user preferences... --}
 
   <input name={"ui[theme][#{@key}]"} x-model="theme" type="hidden">
-  <!-- note: LV phx-change seems to ignore alpine changing this hidden input, so using phx-click on the options below instead -->
+  {!-- note: LV phx-change seems to ignore alpine changing this hidden input, so using phx-click on the options below instead --}
 
   <div class="grid grid-cols-3 gap-3" tabindex="0">
     {#for t <- @themes}
@@ -48,7 +48,7 @@
     {/for}
   </div>
 </div>
-<!-- <div x-data={"{ theme: '#{@theme}'}"} title="Change Theme" class="w-full text-left dropdown">
+{!-- <div x-data={"{ theme: '#{@theme}'}"} title="Change Theme" class="w-full text-left dropdown">
  
 
   <input name={"ui[theme][#{@key}]"} x-model="theme" type="hidden">
@@ -89,4 +89,4 @@
       {/for}
     </div>
   </div>
-</div> -->
+</div> --}

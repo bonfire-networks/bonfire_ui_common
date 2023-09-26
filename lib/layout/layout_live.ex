@@ -122,7 +122,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           open_sidebar: false
         }"
     >
-      <!-- div
+      {!-- div
         :if={!@current_user_id or
           (@without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)))}
         class="px-4 tablet-lg:px-0 mb-6 border-b border-base-content/20 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
@@ -133,7 +133,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           page_title={@page_title}
           page={@page}
         />
-      </div -->
+      </div --}
 
       <div class={
         "w-full px-0 md:px-4 grid max-w-[1202px] gap-0 md:gap-4 widget xl:px-0 mx-auto",
@@ -242,7 +242,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           <Bonfire.UI.Common.NavFooterMobileUserLive page={@page} />
         </div>
         <div
-          :if={!@without_sidebar}
+          :if={!@without_widgets}
           class="hidden tablet-lg:block order-first md:order-none md:static z-[999]"
         >
           <div
@@ -264,7 +264,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               data-id="secondary_sidebar_widgets"
               class="hidden overflow-x-hidden overflow-y-auto tablet-lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
             >
-              <!-- FIXME: use the widget system instead (see below) -->
+              {!-- FIXME: use the widget system instead (see below) --}
 
               <Dynamic.Component
                 :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__) and
@@ -318,7 +318,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 </div>
                 <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:
                   <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·
-                  <!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · -->
+                  {!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · --}
                   <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·
                   <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LiveRedirect> ·
                   <LiveRedirect
@@ -351,13 +351,13 @@ defmodule Bonfire.UI.Common.LayoutLive do
         </div>
       </div>
 
-      <!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player, @current_user || current_user(@__context__)),
+      {!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player, @current_user || current_user(@__context__)),
         do:
           live_render(@socket, RauversionExtension.UI.TrackLive.Player,
             id: "global-main-player",
             session: %{},
             sticky: true
-          )} -->
+          )} --}
     </div>
     <Bonfire.UI.Common.ReusableModalLive id="modal" />
     <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} />

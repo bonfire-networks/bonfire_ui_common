@@ -78,7 +78,7 @@
               class="text-error"
             />
           </li>
-          <!-- <li><LiveRedirect class="text-error" to="#">{l("Deactivate user")}</LiveRedirect></li> -->
+          {!-- <li><LiveRedirect class="text-error" to="#">{l("Deactivate user")}</LiveRedirect></li> --}
         </ul>
       </div>
     </div>

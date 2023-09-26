@@ -50,4 +50,4 @@
   {/case}
 </div>
 
-<!-- <Bonfire.UI.Common.MobileSmartInputButtonLive smart_input_opts={@smart_input_opts} /> -->
+{!-- <Bonfire.UI.Common.MobileSmartInputButtonLive smart_input_opts={@smart_input_opts} /> --}

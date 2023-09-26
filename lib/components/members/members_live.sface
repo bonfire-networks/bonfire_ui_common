@@ -1,7 +1,7 @@
 <div class="m-3">
   <div class="w-full">
     <table class="table w-full table-zebra">
-      <!-- head -->
+      {!-- head --}
       <thead>
         <tr>
           <th>{l("Name")}</th>
@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- row 1 -->
+        {!-- row 1 --}
         {#for user <- @users}
           <Bonfire.UI.Common.MemberLive user={user} />
         {/for}

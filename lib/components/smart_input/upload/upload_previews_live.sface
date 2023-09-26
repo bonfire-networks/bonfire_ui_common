@@ -10,10 +10,10 @@
         data-ref={entry.upload_ref}
         class="relative upload-entry border border-base-content/10"
       >
-        <!-- phx-hook="imageMetadata" -->
+        {!-- phx-hook="imageMetadata" --}
         <div class="absolute top-0 z-10 w-full h-10 rounded-lg l-0 r-0 md:h-14 bg-gradient-to-b from-black to-transparent" />
         <figure :if={String.starts_with?(entry.client_type, "image")}>
-          <!-- render a client-side preview -->
+          {!-- render a client-side preview --}
           <span>
             <.live_img_preview entry={entry} />
           </span>
@@ -29,15 +29,15 @@
             <#Icon iconify="entypo:video" class="w-12 h-12" />
           </div>
         </div>
-        <!-- <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress> -->
+        {!-- <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress> --}
         <Bonfire.UI.Common.InlineModalLive
           id={"upload_#{entry.ref}_description"}
           title_text={l("Add an alternative description")}
           value={nil}
           cancel_label={l("Done")}
         >
-          <!-- reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
-        form_opts={%{"phx-submit"=> "set_value"}} -->
+          {!-- reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
+        form_opts={%{"phx-submit"=> "set_value"}} --}
           <div class="mt-4">
             <div class="p-4 rounded-md bg-info/10">
               <div class="flex">
@@ -54,15 +54,15 @@
             </div>
           </div>
           <div class="px-1 mt-3">
-            <!-- <span class="image_in_preview" :if={String.starts_with?(entry.client_type, "image")}>
+            {!-- <span class="image_in_preview" :if={String.starts_with?(entry.client_type, "image")}>
               <.live_img_preview entry={entry} />
-            </span> -->
+            </span> --}
             <textarea
               name={"upload_metadata[#{entry.ref}][label]"}
               placeholder="Type here"
               class="w-full mt-3 textarea bg-base-content/10"
             />
-            <!-- TODO: edit previously entered desc -->
+            {!-- TODO: edit previously entered desc --}
           </div>
           <:open_btn>
             <button
@@ -72,7 +72,7 @@
             >
               <span class="">{l("Edit")}</span>
             </button>
-            <!-- <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}> -->
+            {!-- <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}> --}
           </:open_btn>
         </Bonfire.UI.Common.InlineModalLive>
 
@@ -87,7 +87,7 @@
           <#Icon solid="Trash" class="w-4 h-4" />
           <span class="sr-only">{l("Delete")}</span>
         </button>
-        <!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 -->
+        {!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 --}
 
         {#for err <- upload_errors(@uploads.files, entry)}
           <p class="alert alert-danger">{error_to_string(err)}</p>
@@ -95,7 +95,7 @@
       </article>
     {/for}
   </div>
-  <!-- <div class="flex items-center justify-end">
+  {!-- <div class="flex items-center justify-end">
     <div class="form-control">
       <label class="label py-1 cursor-pointer">
         <input
@@ -107,7 +107,7 @@
         <span class="label-text text-base-content/70 text-xs ml-2">{l("Mark as sensitive")}</span>
       </label>
     </div>
-  </div> -->
+  </div> --}
   {#for err <- upload_errors(@uploads.files)}
     <p class="alert alert-danger">{error_to_string(err)}</p>
   {/for}

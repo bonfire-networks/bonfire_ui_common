@@ -1,6 +1,6 @@
 <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("Active apps")}</div>
 <div class="m-3"><Bonfire.UI.Common.WidgetAppsLive showing_within={:settings} cols="4" /></div>
-<!-- <Bonfire.UI.Common.WidgetAppsLive showing_within={:settings} show_disabled_only={true} title={l("Disabled Apps")} cols="4" /> -->
+{!-- <Bonfire.UI.Common.WidgetAppsLive showing_within={:settings} show_disabled_only={true} title={l("Disabled Apps")} cols="4" /> --}
 
 <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("User interface extensions")}</div>
 <div class="m-3 divide-y rounded-lg bg-base-content/5 divide-base-300">
@@ -18,7 +18,11 @@
           tabindex="0"
           class="gap-1 p-1 mt-4 rounded-lg shadow menu md:menu-compact dropdown-content bg-neutral w-60 md:w-48 text-neutral-content"
         >
-          <li><a href={get_link(dep) |> debug("llll")} target="_blank" class="flex-1 block w-full text-center">{l("View code")}</a></li>
+          <li><a
+              href={get_version_link(dep) |> debug("llll")}
+              target="_blank"
+              class="flex-1 block w-full text-center"
+            >{l("View code")}</a></li>
           {#if to_string(e(dep, :app, nil)) not in @required_deps}
             <li><Bonfire.UI.Common.ExtensionToggleLive
                 id={e(dep, :app, nil) |> debug("toggg")}
@@ -49,7 +53,7 @@
           tabindex="0"
           class="gap-1 mt-4 rounded shadow menu-compact menu dropdown-content bg-neutral w-60 md:w-48 text-neutral-content"
         >
-          <li><a href={get_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View code")}</a></li>
+          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View code")}</a></li>
           {#if to_string(e(dep, :app, nil)) not in @required_deps}
             <li><Bonfire.UI.Common.ExtensionToggleLive
                 scope={@scope}
@@ -80,7 +84,7 @@
           tabindex="0"
           class="gap-1 mt-4 rounded shadow menu-compact menu dropdown-content bg-neutral w-60 md:w-48 text-neutral-content"
         >
-          <li><a href={get_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View code")}</a></li>
+          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View code")}</a></li>
         </ul>
       </div>
     </div>
@@ -103,7 +107,7 @@
           tabindex="0"
           class="gap-1 mt-4 rounded shadow menu-compact menu dropdown-content bg-neutral w-60 md:w-48 text-neutral-content"
         >
-          <li><a href={get_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View code")}</a></li>
+          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View code")}</a></li>
         </ul>
       </div>
     </div>
@@ -127,7 +131,7 @@
           class="gap-1 mt-4 rounded shadow menu-compact menu dropdown-content bg-neutral w-60 md:w-48 text-neutral-content"
         >
           <li><a
-              href={get_link(dep) |> debug(e(dep, :app, "Unknown"))}
+              href={get_version_link(dep) |> debug(e(dep, :app, "Unknown"))}
               target="_blank"
               class="flex-1 block w-full text-center"
             >{l("View code")}</a></li>

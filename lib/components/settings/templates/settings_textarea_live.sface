@@ -1,7 +1,7 @@
 <div x-data="{open: false}" class="p-4">
   <div class="flex items-center justify-between">
     <div class="flex flex-col gap-1">
-      <!-- <div :if={@label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div> -->
+      {!-- <div :if={@label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div> --}
       <div :if={@name} class="text-sm font-medium">{@name}</div>
       <div :if={@description} class="text-sm font-light text-base-content/70">{@description}</div>
     </div>

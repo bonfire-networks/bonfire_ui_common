@@ -1,13 +1,13 @@
 <div class="divide-y divide-gray-200 lg:col-span-9">
   <div class="px-4 py-6 sm:p-6 lg:pb-8">
-    <!-- <div>
+    {!-- <div>
       <h2 class="text-lg font-medium leading-6 text-base-content opacity-90">
         Bonfire Extension - view code
       </h2>
       <p class="mt-1 text-sm text-base-content opacity-60">
         
       </p>
-    </div> -->
+    </div> --}
 
     <Bonfire.UI.Common.CodeStylesLive.code_styles_live />
 

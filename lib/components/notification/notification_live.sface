@@ -93,13 +93,13 @@
           </div>
         </div>
 
-        <!-- <div class="max-w-md alert alert-info fade-out" 
+        {!-- <div class="max-w-md alert alert-info fade-out" 
       role="alert alert-warning"
       phx-click="clear-flash"
       phx-target={@myself}
       phx-value-key="info">
         {rich info}
-    </div> -->
+    </div> --}
     {/case}
 
     {#case @error ||

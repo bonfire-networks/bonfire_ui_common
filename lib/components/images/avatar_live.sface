@@ -51,7 +51,7 @@
                 />
                 {raw(animal_avatar(id(@user)))}
               </svg>
-              <!-- <div
+              {!-- <div
                 id={"randomAnimalAvatar-#{id(@user) || id(@src) || Text.hash(@src)}"}
                 phx-hook="randomAnimalAvatar"
                 title={@title}
@@ -59,7 +59,7 @@
                 data-seed={id(@user) || id(@src) || @src}
                 phx-update="ignore"
                 {...@opts}
-              /> -->
+              /> --}
             {#else}
               <div class={@bg_class}>
                 <div
@@ -72,12 +72,12 @@
                   title={@title}
                   {...@opts}
                 />
-                <!-- <img
+                {!-- <img
                   src={avatar_fallback}
                   alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
                     l("Avatar")}
                   {...@opts}
-                /> -->
+                /> --}
               </div>
             {/if}
         {/case}

@@ -1,4 +1,4 @@
-<!-- <div
+{!-- <div
   x-data="{
     open: false,
     close(focusAfter) {
@@ -36,7 +36,7 @@
       class="w-5 h-5 md:w-4 md:h-4 text-base-content text-opacity-70"
     />
   </button>
-</div> -->
+</div> --}
 
 <div phx-update="ignore" phx-hook="EmojiPicker" data-target_field={@target_field} id={@id}>
   <button

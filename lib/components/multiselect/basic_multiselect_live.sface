@@ -14,7 +14,7 @@
   }"
     class={@class}
   >
-    <!-- <div class="h-9"></div> -->
+    {!-- <div class="h-9"></div> --}
     {#case MultiselectLive.selected_options(
         @selected_options,
         @form_input_name,
@@ -115,7 +115,7 @@
           {raw(name_content)}
         </li>
 
-        <!-- more options here -->
+        {!-- more options here --}
       </ul>
     </div>
   </div>

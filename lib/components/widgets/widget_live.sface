@@ -67,6 +67,6 @@
       />
     {#match nil}
     {#match other}
-      {error(other) && "<!-- invalid widget -->"}
+      {error(other) && "{!-- invalid widget --}"}
   {/case}
 </div>

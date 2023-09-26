@@ -8,7 +8,7 @@
 >
   <div class="mb-3 text-sm font-semibold tracking-widest text-base-content/70">{l("Colour mode")}</div>
   <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
-    <!-- DARK -->
+    {!-- DARK --}
     <button
       type="button"
       x-on:click="dark = true; light = false; custom_theme=false"
@@ -68,17 +68,17 @@
     </button>
   </div>
 
-  <!-- <div 
+  {!-- <div 
         x-on:click="custom_theme = ! custom_theme"
         class="gap-3 normal-case rounded btn btn-sm btn-ghost">
         <span>{l("Edit")}</span>
         <#Icon iconify="fluent:triangle-right-12-filled" class="w-3 h-3 text-base-content/70" />
-      </div> -->
+      </div> --}
 
-  <!-- <div class="flex flex-col col-span-3 gap-2 p-3 rounded bg-base-content/5">
+  {!-- <div class="flex flex-col col-span-3 gap-2 p-3 rounded bg-base-content/5">
         
         
-      </div> -->
+      </div> --}
   <div>
     {#if @preferred not in [:custom]}
       <div x-show="dark">
@@ -106,9 +106,9 @@
     {/if}
   </div>
 
-  <!-- {#if Settings.get([:ui, :theme, :preferred], :system, @__context__) in [:system]}
+  {!-- {#if Settings.get([:ui, :theme, :preferred], :system, @__context__) in [:system]}
         <div class="mt-4 mb-3 text-sm tracking-widest text-base-content/70">{l "By selecting the system colour mode, you will use your preferred dark or light theme, depending on your browser or system settings (and possibily the time of day)."}</div>
-      {/if} -->
+      {/if} --}
 
   <div class="p-3 mt-4 rounded-lg bg-base-content/5" x-show="custom_theme" x-cloak x-collapse>
     <div class="flex items-center gap-2 pb-3 mb-5 text-sm font-semibold border-b place-content-center border-base-content/20">

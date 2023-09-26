@@ -19,7 +19,7 @@
         :if={is_map(@activity) || is_map(@reply_to_id)}
         class="!rounded-none flex justify-between items-center border-b border-base-content/20"
       >
-        <!-- show what we're replying to, if any -->
+        {!-- show what we're replying to, if any --}
         <Dynamic.Component
           module={Bonfire.UI.Social.ActivityLive}
           id={"compose_reply_to-#{id(@reply_to_id) || id(@object) || id(@activity)}"}
@@ -53,11 +53,11 @@
       />
     </div>
   </div>
-  <!-- <noscript>
+  {!-- <noscript>
     <style type="text/css">
       #smart_input {display: block !important;}
       /* #smart_input_container header {display: none;} */
       .input_boundaries button {display: none;} /* FIXME: make boundary selection work without JS */
     </style>
-  </noscript> -->
+  </noscript> --}
 </div>

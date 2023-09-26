@@ -23,16 +23,16 @@
             user={current_user(@__context__)}
           />
         </button>
-        <!-- <Iconify.iconify
+        {!-- <Iconify.iconify
           :if={@page_header_icon && !@back}
           icon={@page_header_icon}
           class="hidden w-6 h-6 text-base-content md:block"
-        /> -->
+        /> --}
         <Bonfire.UI.Common.BackButtonLive :if={@back} back={@back} />
         {#if !@back && current_user(@__context__)}
-          <!-- <div class="flex md:hidden flex-col -ml-[32px] place-content-center items-center flex-1">
+          {!-- <div class="flex md:hidden flex-col -ml-[32px] place-content-center items-center flex-1">
             <Bonfire.UI.Common.LogoLinkLive />
-          </div> -->
+          </div> --}
           <div class="flex flex-col flex-1">
             {#if is_nil(@page_title)}
               <div role="status" class="animate-pulse">

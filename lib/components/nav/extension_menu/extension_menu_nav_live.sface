@@ -31,11 +31,11 @@
                 />
               </div>
             {#match _}
-              <!-- no nav -->
+              {!-- no nav --}
           {/case}
         {/for}
       </div>
     {#match _}
-      <!-- no nav_items -->
+      {!-- no nav_items --}
   {/case}
 </div>

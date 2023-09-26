@@ -40,7 +40,7 @@
     <span class="sr-only">{l("Direct Messages")}</span>
   </LiveRedirect>
 
-  <!-- <LiveRedirect :if={current_user(@__context__)} to={path(current_user(@__context__))} class="">
+  {!-- <LiveRedirect :if={current_user(@__context__)} to={path(current_user(@__context__))} class="">
     <Bonfire.UI.Common.AvatarLive
       parent_id="nav_footer_mobile"
       class="inline-block object-cover w-8 h-8 rounded-full bg-base-content/5 cursor-pointer md:hidden"
@@ -49,13 +49,13 @@
       user={current_user(@__context__)}
     />
     <span class="sr-only">{l("Your profile")}</span>
-  </LiveRedirect> -->
+  </LiveRedirect> --}
 
   <LiveRedirect :if={!current_user(@__context__)} to="/about">
     <#Icon solid="DotsHorizontal" class="w-6 h-6" />
     <span class="sr-only">{l("about")}</span>
   </LiveRedirect>
-  <!-- <Bonfire.UI.Common.OpenModalLive
+  {!-- <Bonfire.UI.Common.OpenModalLive
     :if={current_user(@__context__)}
     id={"nav_footer_mobile_modal"}
     no_actions
@@ -72,5 +72,5 @@
         <span class="sr-only">{l("More")}</span>
       </div>
     </:open_btn>
-  </Bonfire.UI.Common.OpenModalLive> -->
+  </Bonfire.UI.Common.OpenModalLive> --}
 </div>

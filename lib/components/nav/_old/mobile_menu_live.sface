@@ -72,7 +72,7 @@
               <div class="my-4 text-xs text-base-content/70">
                 <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:
                   <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·
-                  <!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · -->
+                  {!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · --}
                   <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·
                   <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LiveRedirect> ·
                   <LiveRedirect
@@ -106,8 +106,8 @@
                   to={~p"/switch-user"}
                   class="flex items-center border-base-content/70 btn btn-outline gap-2 normal-case flex-1"
                 >
-                  <!-- <#Icon iconify="material-symbols:logout" class="w-4 h-4" /> -->
-                  <!-- <#Icon iconify="fluent-mdl2:switch-user" class="w-5 h-5" /> -->
+                  {!-- <#Icon iconify="material-symbols:logout" class="w-4 h-4" /> --}
+                  {!-- <#Icon iconify="fluent-mdl2:switch-user" class="w-5 h-5" /> --}
 
                   <div class="text-sm">{l("Switch profile")}</div>
                 </LiveRedirect>
@@ -116,7 +116,7 @@
                   to={~p"/logout"}
                   class="flex items-center btn btn-outline btn-error gap-2 normal-case flex-1"
                 >
-                  <!-- <#Icon iconify="material-symbols:logout" class="w-4 h-4" /> -->
+                  {!-- <#Icon iconify="material-symbols:logout" class="w-4 h-4" /> --}
                   <#Icon iconify="uil:exit" class="w-5 h-5" />
 
                   <div class="text-sm">{l("Logout")}</div>

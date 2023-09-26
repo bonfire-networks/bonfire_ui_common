@@ -1,6 +1,6 @@
 <nav class="" role="navigation" aria-label={l("Instance settings navigation")}>
   <ul class="-ml-2 menu">
-    <!-- <div x-data="{open: true}">
+    {!-- <div x-data="{open: true}">
       <li x-on:click="open = ! open">
         <div class="flex items-center justify-between">
           <span class="font-light text-base-content/70">{l("Website")}</span>
@@ -9,7 +9,7 @@
           </div>
         </div>
       </li>
-      <ul x-show="open" x-collapse class="menu menu-compact"> -->
+      <ul x-show="open" x-collapse class="menu menu-compact"> --}
     <li>
       <div class="p-0 cursor-default pointer-events-none">
         <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Instance")}</span>
@@ -90,7 +90,7 @@
       </details>
     </li>
 
-    <!-- <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
+    {!-- <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
           <LivePatch to={~p"/settings/instance/design"} 
             class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full", 
@@ -98,8 +98,8 @@
             <#Icon solid="ColorSwatch" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "design"} />
             <span class="text-sm text-base-content/70">{l("Design")}</span>
           </LivePatch>
-        </li> -->
-    <!-- 
+        </li> --}
+    {!-- 
         <li :if={Bonfire.Boundaries.can?(@__context__, :describe, :instance)}>
           <LivePatch
             to={~p"/settings/instance/navigation"}
@@ -108,7 +108,7 @@
             <#Icon solid="PaperAirplane" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "navigation"} />
             <span class="text-sm text-base-content/70">{l("Navigation")}</span>
           </LivePatch>
-        </li> -->
+        </li> --}
 
     <li>
       <LivePatch
@@ -125,7 +125,7 @@
         <span class="text-sm text-base-content/70">{l("Terms / Policies")}</span>
       </LivePatch>
     </li>
-    <!-- </ul>
+    {!-- </ul>
     </div>
 
     <div x-data="{open: false}">
@@ -137,7 +137,7 @@
           </div>
         </div>
       </li>
-      <ul x-cloak x-show="open" x-collapse class="menu menu-compact"> -->
+      <ul x-cloak x-show="open" x-collapse class="menu menu-compact"> --}
     <li>
       <div class="p-0 mt-4 cursor-default pointer-events-none">
         <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Members")}</span>
@@ -277,10 +277,10 @@
         <span class="text-sm text-base-content/70">{l("Extensions")}</span>
       </LivePatch>
     </li>
-    <!-- </ul>
-    </div> -->
+    {!-- </ul>
+    </div> --}
 
-    <!-- <li>
+    {!-- <li>
       <LivePatch
         :if={module_enabled?(Bonfire.Pages, @__context__) and
           Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
@@ -325,6 +325,6 @@
           <#Icon solid="Tag" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "tags"} />
         {l("Tags")}
       </LivePatch>
-    </li> -->
+    </li> --}
   </ul>
 </nav>

@@ -1,6 +1,6 @@
 <div class="w-full overflow-x-auto">
   <table class="table w-full">
-    <!-- head -->
+    {!-- head --}
     <thead>
       <tr>
         <th class="flex-1">Name</th>
@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <tbody>
-      <!-- row 1 -->
+      {!-- row 1 --}
       <tr>
         <td class="flex-1">
           <div class="flex items-center space-x-3">

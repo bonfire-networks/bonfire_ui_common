@@ -2,10 +2,13 @@
   <div class="px-4 py-6 sm:p-6 lg:pb-8">
     <div>
       <h2 class="text-lg font-medium leading-6 text-base-content opacity-90">
-        Bonfire Extension - local changes
+        <%= l("Bonfire Extension - local changes") %>
       </h2>
       <p class="mt-1 text-sm text-base-content opacity-60">
-        These are the differences (if any) between the extension as currently used on this instance and the latest version on git.
+        <%= @msg ||
+          l(
+            "These are the differences (if any) between the extension as currently used on this instance and the latest version on git."
+          ) %>
       </p>
     </div>
 
@@ -16,7 +19,7 @@
         <div id="diff-content">
           <div class="ghd-container" data-theme="night">
             <%= for patch <- @diffs do %>
-              <%= Phoenix.HTML.raw(ExtensionDiffLive.render_diff(patch)) %>
+              <%= Phoenix.HTML.raw(Bonfire.UI.Common.ExtensionDiffLive.render_diff(patch)) %>
             <% end %>
           </div>
         </div>

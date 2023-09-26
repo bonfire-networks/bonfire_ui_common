@@ -1,8 +1,8 @@
 <div class="flex-1 h-full bg-base-100 rounded-t-lg">
   <div class="flex-1 h-full grow" id="compose_content_wrapper">
     <div class="relative !flex flex-col flex-1 h-full">
-      <!-- here was old/loader.svg -->
-      <!-- DM RECIPIENTS -->
+      {!-- here was old/loader.svg --}
+      {!-- DM RECIPIENTS --}
       {#if @create_object_type == :message || e(@smart_input_opts, :recipients_editable, nil)}
         <div class="relative bg-base-100">
           <Bonfire.UI.Common.SelectRecipientsLive
@@ -41,12 +41,12 @@
             </div>
           </div>
 
-          <!-- UPLOADS PREVIEWS -->
+          {!-- UPLOADS PREVIEWS --}
           <div class={"p-2 border-b border-base-content/20 uploads_preview": @uploads.files.entries != []}>
             <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
           </div>
 
-          <!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE -->
+          {!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE --}
           <#slot {@default} />
         </div>
       </div>
@@ -70,7 +70,7 @@
               />
             </div>
 
-            <!-- <div
+            {!-- <div
           :if={@show_cw_toggle}
           title={l("Add a content warning")}
           class="relative z-30 flex items-center"
@@ -87,7 +87,7 @@
           >
             <#Icon iconify="ri:alarm-warning-line" class="w-4 h-4 text-base-content/70" />
           </button>
-        </div> -->
+        </div> --}
 
             <div
               :if={@create_object_type in [:message, :post, nil]}
@@ -133,28 +133,28 @@
                     <#Icon iconify="ri:italic" class="w-4 h-4 text-base-content/70" />
                   </button>
                 </li>
-                <!-- STRIKE -->
-                <!-- <button id="strike_btn" type="button" class="flex items-center btn btn-ghost btn-sm btn-circle">
+                {!-- STRIKE --}
+                {!-- <button id="strike_btn" type="button" class="flex items-center btn btn-ghost btn-sm btn-circle">
                 <#Icon iconify="ri:strikethrough-2" class="w-4 h-4 text-base-content/70" />
-              </button> -->
+              </button> --}
 
-                <!-- QUOTE -->
-                <!-- <button
+                {!-- QUOTE --}
+                {!-- <button
                       id="quote_btn"
                       type="button"
                       class="flex items-center btn btn-ghost btn-sm btn-circle"
                     >
                       <#Icon iconify="ri:double-quotes-l" class="w-4 h-4 text-base-content/70 " />
                     </button>
-                  -->
-                <!-- TABLE -->
-                <!-- <button
+                  --}
+                {!-- TABLE --}
+                {!-- <button
                 id="table_btn"
                 type="button"
                 class="flex items-center btn btn-ghost btn-sm btn-circle"
               >
                 <#Icon iconify="ri:table-line" class="w-4 h-4 text-base-content/70 " />
-              </button> -->
+              </button> --}
               </ul>
             </div>
             <div class="flex flex-1 gap-2">
@@ -170,7 +170,7 @@
                   to_circles={@to_circles}
                 />
 
-                <!-- <button
+                {!-- <button
                   type="button"
                   phx-click={JS.show(to: "#boundaries_preview")
                   |> JS.hide(to: "#composer_container")}
@@ -179,7 +179,7 @@
                 >
                   <#Icon iconify="mdi:eye-outline" class="w-4 h-4 !text-base-content/70" />
                   <span class="sr-only">{l("Preview boundaries")}</span>
-                </button> -->
+                </button> --}
               {/if}
               <div class="dropdown dropdown-top dropdown-end">
                 <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
@@ -220,12 +220,12 @@
                       type="button"
                       class="flex items-center gap-2"
                     >
-                      <!-- x-on:click=" ... ; smart_input_fullscreen = false" -->
+                      {!-- x-on:click=" ... ; smart_input_fullscreen = false" --}
                       <#Icon solid="Minus" class="w-4 h-4 text-base-content/70" />
                       <span class="text-sm text-base-content/70">{l("Minimize")}</span>
                     </button>
                   </li>
-                  <!-- <li>
+                  {!-- <li>
                       <Bonfire.UI.Common.OpenModalLive
                         id="close_composer"
                         reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
@@ -253,7 +253,7 @@
                           </button>
                         </:action_btns>
                       </Bonfire.UI.Common.OpenModalLive>
-                    </li> -->
+                    </li> --}
                 </ul>
               </div>
             </div>
@@ -269,14 +269,14 @@
               disabled={e(@smart_input_opts, :submit_disabled, nil)}
             >
               <#Icon iconify="majesticons:send" class="w-4 h-4" />
-              <!-- x-bind:disabled={"body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length], :instance, @__context__[:instance_settings])}"} -->
-              <!-- {#if @create_object_type == :message}
+              {!-- x-bind:disabled={"body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length], :instance, @__context__[:instance_settings])}"} --}
+              {!-- {#if @create_object_type == :message}
                 {l("Send")}
               {#else}
                 {@submit_label || l("Post")}
               {/if}
 
-              {e(@smart_input_opts, :submit_label, nil)} -->
+              {e(@smart_input_opts, :submit_label, nil)} --}
             </button>
           </div>
         </div>
@@ -285,7 +285,7 @@
 
         <input type="hidden" name="reply_to[reply_to_id]" value={@reply_to_id}>
         <input type="hidden" name="reply_to[thread_id]" value={@context_id}>
-        <!-- FIXME: should not thread using context like a group or topic -->
+        {!-- FIXME: should not thread using context like a group or topic --}
         <input type="hidden" name="context_id" value={@context_id}>
         <input type="hidden" name={:create_object_type} value={@create_object_type}>
 

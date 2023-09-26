@@ -7,11 +7,11 @@
         nav_items={@nav_items}
       />
 
-      <!-- Add the groups sidebar if the module is available NOTE: should use extensions nav instead -->
-      <!-- <Dynamic.LiveComponent
+      {!-- Add the groups sidebar if the module is available NOTE: should use extensions nav instead --}
+      {!-- <Dynamic.LiveComponent
         :if={module_enabled?(Bonfire.UI.Groups.SidebarGroupsLive)}
         module={Bonfire.UI.Groups.SidebarGroupsLive}
-      /> -->
+      /> --}
       {#if is_list(@sidebar_widgets[:users][:main])}
         <nav class="w-full">
           <Dynamic.Component

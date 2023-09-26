@@ -1,5 +1,5 @@
 <div class="flex items-center w-full gap-2">
-  <!-- <span class="px-1 text-xs font-medium uppercase text-base-content/70">{l("To")}</span> -->
+  {!-- <span class="px-1 text-xs font-medium uppercase text-base-content/70">{l("To")}</span> --}
 
   <div class="flex flex-col flex-1 gap-2">
     <div class="w-full select_recipient">
@@ -20,7 +20,7 @@
       />
     </div>
 
-    <!-- no longer needed since using live_select tags mode
+    {!-- no longer needed since using live_select tags mode
     {#if is_list(@to_circles) and @to_circles != []}
       <div class="flex w-full">
         <div class="flex items-center gap-2">
@@ -46,6 +46,6 @@
           {/for}
         </div>
       </div>
-    {/if} -->
+    {/if} --}
   </div>
 </div>

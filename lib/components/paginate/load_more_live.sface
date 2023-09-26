@@ -20,15 +20,15 @@
     x-data={"{show: #{socket_connected?(@__context__)}}"}
     {...@opts}
   >
-    <!-- phx-click={if @infinite_scroll != :preload or !@entry_count or @entry_count == 0, do: "#{@live_handler}:load_more"} -->
+    {!-- phx-click={if @infinite_scroll != :preload or !@entry_count or @entry_count == 0, do: "#{@live_handler}:load_more"} --}
     <span
       class="normal-case btn btn-outline rounded-full btn-primary !border !border-primary/30"
       style="display: none"
       x-show="show"
     >
-      <!-- href={"#" <> @cursor} -->
-      <!-- "btn-disabled": !@entry_count -->
-      <!-- <span :if={!@entry_count} class="loading loading-spinner" /> -->
+      {!-- href={"#" <> @cursor} --}
+      {!-- "btn-disabled": !@entry_count --}
+      {!-- <span :if={!@entry_count} class="loading loading-spinner" /> --}
       {@label ||
         if @infinite_scroll == :preload and @entry_count > 0,
           do: l("Show %{num} more", num: @entry_count),

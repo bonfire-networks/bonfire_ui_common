@@ -1,4 +1,4 @@
-<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.5.x/dist/css/glide.core.min.css">
+{!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.5.x/dist/css/glide.core.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.5.x"></script>
 
 <section
@@ -54,7 +54,7 @@
     {/for}
   </div>
   <div role="tablist" class="dots" />
-</section> -->
+</section> --}
 
 <link
   rel="stylesheet"
@@ -100,7 +100,7 @@
           {#case pin}
             {#match %{post_content: %{id: _}}}
               <li class="flex flex-col items-center justify-center pb-8 splide__slide">
-                <!-- 
+                {!-- 
                 <div
                   data-id="pin_action"
                   phx-click="Bonfire.Social.Pins:pin"
@@ -111,7 +111,7 @@
                 >
                   <#Icon iconify="bi:pin-angle-fill" class="w-5 h-5" />
                 </div> 
-                -->
+                --}
                 <LiveRedirect to={path(pin)} class="flex flex-col w-full gap-3">
                   <div
                     style="background-image: url(https://picsum.photos/200/300)"

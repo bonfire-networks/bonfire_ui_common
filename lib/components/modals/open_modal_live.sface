@@ -32,8 +32,8 @@
     {/case}
   {#else}
     {#if @enable_fallback}
-      <!-- FIXME: make this fallback modal (which doesn't require LV) work when this component is included in a dropdown. For now we simply don't render a modal and instead show action_btn (or a link if href is provided) if enable_fallback is not set.
-     -->
+      {!-- FIXME: make this fallback modal (which doesn't require LV) work when this component is included in a dropdown. For now we simply don't render a modal and instead show action_btn (or a link if href is provided) if enable_fallback is not set.
+     --}
 
       <Bonfire.UI.Common.InlineModalLive
         id={@id}

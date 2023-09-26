@@ -1,4 +1,4 @@
-<!-- {#if current_user(@__context__)} -->
+{!-- {#if current_user(@__context__)} --}
 
 {#if id(@flagged)}
   <div />
@@ -49,7 +49,7 @@
   </Bonfire.UI.Common.OpenModalLive>
 {/if}
 
-<!-- {#else}
+{!-- {#else}
   <div
     phx-click="Bonfire.Social.Flags:flag"
     phx-value-id={e(@object, :id, "")}
@@ -58,4 +58,4 @@
     <#Icon :if={!@hide_icon} solid="Flag" class="w-4 h-4 shrink-0" />
     <span class="truncate ellipsis">{e(@label, l("Flag"))}</span>
   </div>
-{/if} -->
+{/if} --}

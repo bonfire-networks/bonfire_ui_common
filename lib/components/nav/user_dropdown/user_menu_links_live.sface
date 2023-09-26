@@ -1,4 +1,4 @@
-<!-- WIP: Find a better way to include navs in mobile with notification badges -->
+{!-- WIP: Find a better way to include navs in mobile with notification badges --}
 <li :if={@mobile}>
   <LiveRedirect
     to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
@@ -52,11 +52,11 @@
 </li>
 <li :if={!@mobile}>
   <LiveRedirect to={~p"/switch-user"} class="flex items-center gap-2 text-sm text-base-content/70">
-    <!-- <#Icon
+    {!-- <#Icon
       :if={@mobile}
       iconify="material-symbols:switch-account"
       class="w-6 h-6"
-    /> -->
+    /> --}
     <div>{l("Switch profile")}</div>
   </LiveRedirect>
 </li>
@@ -71,7 +71,7 @@
     <div class={if @mobile, do: "text-[16px] font-medium", else: ""}>{l("Settings")}</div>
   </LiveRedirect>
 </li>
-<!-- if current user is also an admin -->
+{!-- if current user is also an admin --}
 <li :if={is_map(current_user(@__context__)) and
   maybe_apply(Bonfire.Me.Accounts, :is_admin?, @__context__) == true}>
   <LiveRedirect
@@ -80,7 +80,7 @@
       do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
       else: "flex items-center gap-2 text-sm text-base-content/70"}
   >
-    <!-- <#Icon solid="Cog" class="w-4 h-4" /> -->
+    {!-- <#Icon solid="Cog" class="w-4 h-4" /> --}
     <#Icon
       :if={@mobile}
       iconify="material-symbols:admin-panel-settings-outline-rounded"
@@ -98,14 +98,14 @@
     open_btn_class=""
   />
 </li>
-<!-- <li :if={!@mobile} class="border-t border-neutral-content/10">
+{!-- <li :if={!@mobile} class="border-t border-neutral-content/10">
   <Bonfire.UI.Common.FeedbackButtonLive
     mobile={@mobile}
     class={if @mobile,
       do: "flex items-center w-full gap-6 px-2 py-2 pt-4 rounded-md",
       else: "flex items-center gap-2 text-sm text-base-content/70"}
   />
-</li> -->
+</li> --}
 <li>
   <LiveRedirect
     :if={!@mobile}

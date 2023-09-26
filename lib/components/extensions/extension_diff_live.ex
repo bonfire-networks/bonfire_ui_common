@@ -18,24 +18,25 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
          assign(
            socket,
            page_title: "Loading...",
+           without_widgets: true,
            diffs: [],
-           without_sidebar: true
+           msg: "Loading..."
          )}
     end
   end
 
   defp mounted_connected(params, _session, socket) do
-    diffs =
-      with {:ok, patches} <- generate_diff(params["local"]) do
-        patches
+    {msg, diffs} =
+      with {:ok, msg, patches} <- generate_diff(params["ref"], params["local"]) do
+        {msg, patches}
       else
         {:error, error} ->
-          error(inspect(error))
-          []
+          error(error)
+          {error, []}
 
         error ->
-          error(inspect(error))
-          []
+          error(error)
+          {l("There was an unknown error."), []}
       end
 
     # TODO: handle errors
@@ -43,13 +44,14 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
      assign(
        socket,
        page_title: "Extension",
+       without_widgets: true,
        diffs: diffs,
-       without_sidebar: true
+       msg: msg
      )}
   end
 
   def render_diff(patch) do
-    # IO.inspect(patch)
+    # debug(patch)
     Phoenix.View.render_to_iodata(
       Bonfire.UI.Common.DiffRenderView,
       "diff_render_view.html",
@@ -65,14 +67,7 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
     File.open!(path, [:write, :raw, :binary, :write_delay], fn file ->
       Enum.each(stream, fn
         {:ok, patch} ->
-          html_patch =
-            Phoenix.View.render_to_iodata(
-              Bonfire.UI.Common.DiffRenderView,
-              "diff_render_view.html",
-              patch: patch
-            )
-
-          IO.binwrite(file, html_patch)
+          IO.binwrite(file, render_diff(patch))
 
         error ->
           error(
