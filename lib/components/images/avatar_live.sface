@@ -7,7 +7,7 @@
     classes(%{viewing_main_object: @viewing_main_object, comment: @comment, class: @class}),
     "!rounded ": Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true, @__context__)
   }>
-    {#case @avatar_fallback || Media.avatar_fallback()}
+    {#case @avatar_fallback || Media.avatar_fallback(id(@user))}
       {#match avatar_fallback}
         {#case @src || Media.avatar_url(@user)}
           {#match url when is_binary(url) and url != avatar_fallback}
