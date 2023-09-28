@@ -1,5 +1,5 @@
 {#if is_binary(@cursor)}
-  <div
+  <button
     :if={!@hide_load_more}
     id={"load_more_#{@context}"}
     data-id="load_more"
@@ -42,7 +42,7 @@
     >
       {l("Next page")}
     </a>
-  </div>
+  </button>
 {#else}
   {#if !@hide_if_no_more}
     <#slot {@if_no_more}>
