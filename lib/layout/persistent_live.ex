@@ -3,20 +3,29 @@ defmodule Bonfire.UI.Common.PersistentLive do
   # alias Bonfire.UI.Common.SmartInputLive
   alias Bonfire.UI.Common.Presence
 
-  @session_key :csrf_token
+  # @session_key :csrf_token
+  @session_key :csrf_socket_token
 
   def mount(_params, session, socket) do
+    socket_connected? = Phoenix.LiveView.connected?(socket)
+
+    connect_params =
+      if(socket_connected?, do: Phoenix.LiveView.get_connect_params(socket), else: %{})
+      |> debug("connect_params")
+
     session =
       input_to_atoms(session)
       |> debug("data from session")
 
-    socket.assigns[:__context__]
-    |> debug("ctxxx")
+    # get from csrf_socket_token from Phoenix.LiveView.get_connect_params(socket)
+    presence_token =
+      (connect_params["_csrf_token"] || session[:context][@session_key])
+      |> debug("presence_token")
 
     # subscribe
-    # session[:context][@session_key]
-    # |> debug("session_topic")
+    # presence_token
     # |> PubSub.subscribe(socket)
+
     {:ok,
      socket
      #  |> debug("socket before assigns")
@@ -25,11 +34,12 @@ defmodule Bonfire.UI.Common.PersistentLive do
        :__context__,
        Map.merge(session[:context] || %{}, socket.assigns[:__context__] || %{})
        |> Map.merge(%{
-         socket_connected?: Phoenix.LiveView.connected?(socket)
+         socket_connected?: socket_connected?
        })
+       |> debug("ctxxx")
      )
      |> assign_defaults()
-     |> Presence.present!(%{@session_key => session[:context][@session_key]})
+     |> Presence.present!(%{@session_key => presence_token})
      |> debug("socket prepared via session"), layout: false}
   end
 
@@ -127,18 +137,16 @@ defmodule Bonfire.UI.Common.PersistentLive do
         true
 
       _ ->
-        debug("send to PersistentLive liveview process")
-
-        if e(context, @session_key, nil) do
-          session_id = e(context, @session_key, nil)
+        if presence_token = e(context, @session_key, nil) do
+          debug(presence_token, "send to PersistentLive liveview process with presence_token")
 
           user_id =
             (current_user_id(context) || current_user_id(assigns))
-            |> debug("user_id")
+            |> debug("send to user_id")
 
-          try_send_self(user_id, session_id, assigns)
+          try_send_self(user_id, presence_token, assigns)
 
-          # PubSub.broadcast(session_id, {:assign, assigns})
+          # PubSub.broadcast(presence_token, {:assign, assigns})
 
           true
         else

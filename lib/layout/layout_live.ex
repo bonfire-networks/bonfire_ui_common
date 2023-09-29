@@ -167,6 +167,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
               "context" => %{
                 sticky: true,
                 csrf_token: @csrf_token,
+                # csrf_socket_token: @__context__[:csrf_socket_token],
                 current_user_id: @current_user_id,
                 current_account_id: @current_account_id
               }

@@ -23,9 +23,15 @@ let JS_exec_attr_event = (selector, attr) => {
 }
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+// let random_socket_id = if (window.Gon !== undefined) {
+//   window.Gon.getAsset("random_socket_id"
+// }
 let liveSocket = new LiveSocket("/live", Socket, {
     timeout: 60000,
-    params: { _csrf_token: csrfToken }, 
+  params: {
+    _csrf_token: csrfToken,
+    // random_socket_id: random_socket_id
+  }, 
     dom: {
       onBeforeElUpdated(from, to) {
         if (from._x_dataStack) { window.Alpine.clone(from, to) }

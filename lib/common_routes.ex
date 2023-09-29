@@ -125,7 +125,13 @@ defmodule Bonfire.UI.Common.Routes do
     end
   end
 
+  @doc "Config keys to make available in JS (via Phoenix Gon lib)"
   def gon_js_config() do
-    Map.new(Config.get(:js_config, []))
+    Config.get(:js_config, %{})
+    |> Enum.into(
+      %{
+        # random_socket_id: Bonfire.Common.Text.random_string(4)
+      }
+    )
   end
 end

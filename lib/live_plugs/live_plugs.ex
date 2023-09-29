@@ -100,6 +100,9 @@ defmodule Bonfire.UI.Common.LivePlugs do
     else
       Bonfire.Common.TestInstanceRepo.maybe_declare_test_instance(socket.endpoint)
 
+      connect_params =
+        if socket_connected?, do: Phoenix.LiveView.get_connect_params(socket), else: %{}
+
       {:ok,
        if(module_enabled?(Surface), do: Surface.init(socket), else: socket)
        |> assign_global(
@@ -107,6 +110,8 @@ defmodule Bonfire.UI.Common.LivePlugs do
          current_app: current_app,
          current_extension: current_extension,
          current_params: params,
+         #  connect_params: connect_params,
+         csrf_socket_token: connect_params["_csrf_token"],
          live_action: e(socket, :assigns, :live_action, nil),
          socket_connected?: socket_connected?
        )}
