@@ -275,9 +275,12 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 title={l("Favourite milestones")}
               />
 
-              <Bonfire.UI.Common.SidebarWidgetsLive widgets={@sidebar_widgets} key={:secondary} page={@page}
-          selected_tab={@selected_tab} />
-
+              <Bonfire.UI.Common.SidebarWidgetsLive
+                widgets={@sidebar_widgets}
+                key={:secondary}
+                page={@page}
+                selected_tab={@selected_tab}
+              />
 
               <div class="mt-4 text-xs text-base-content/70">
                 <div class="flex flex-col gap-2 mb-4">

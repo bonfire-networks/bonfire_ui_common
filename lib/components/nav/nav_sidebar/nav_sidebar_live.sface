@@ -13,11 +13,14 @@
         module={Bonfire.UI.Groups.SidebarGroupsLive}
       /> --}
 
+      {!-- <nav class="w-full"> --}
 
-        {!-- <nav class="w-full"> --}
-
-      <Bonfire.UI.Common.SidebarWidgetsLive widgets={@sidebar_widgets} key={:main} page={@page}
-          selected_tab={@selected_tab} />
+      <Bonfire.UI.Common.SidebarWidgetsLive
+        widgets={@sidebar_widgets}
+        key={:main}
+        page={@page}
+        selected_tab={@selected_tab}
+      />
     </div>
 
     <div class="sticky bottom-0 flex items-center justify-between pt-4 bg-base-100 border-base-content/20">

@@ -26,28 +26,34 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
   end
 
   defp mounted_connected(params, _session, socket) do
-    {msg, diffs} =
-      with {:ok, msg, patches} <- generate_diff(params["ref"], params["local"]) do
-        {msg, patches}
-      else
-        {:error, error} ->
-          error(error)
-          {error, []}
+    with {:ok, msg, patches} <- generate_diff(params["ref"], params["local"]) do
+      {:ok,
+       assign(
+         socket,
+         page_title: "Extension",
+         without_secondary_widgets: true,
+         diffs: patches,
+         msg: msg
+       )}
+    else
+      {:error, :no_diff} ->
+        {:ok,
+         socket
+         |> assign_flash(
+           :info,
+           l("There was no changes to the code found. Showing the entire code instead.")
+         )
+         |> redirect_to("/settings/extensions/code/#{params["app"]}")}
 
-        error ->
-          error(error)
-          {l("There was an unknown error."), []}
-      end
+      {:error, error} ->
+        error(error)
+
+      error ->
+        error(error)
+        error(error, l("There was an unknown error."))
+    end
 
     # TODO: handle errors
-    {:ok,
-     assign(
-       socket,
-       page_title: "Extension",
-       without_secondary_widgets: true,
-       diffs: diffs,
-       msg: msg
-     )}
   end
 
   def render_diff(patch) do

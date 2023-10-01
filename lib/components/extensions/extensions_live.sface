@@ -23,16 +23,8 @@
               target="_blank"
               class="flex-1 block w-full text-center"
             >{l("View code repository")}</a></li>
-          <li><a
-              href={get_code_link(dep)}
-              target="_blank"
-              class="flex-1 block w-full text-center"
-            >{l("View running code")}</a></li>
-          <li><a
-              href={get_version_link(dep)}
-              target="_blank"
-              class="flex-1 block w-full text-center"
-            >{l("View code changes")}</a></li>
+          <li><a href={get_code_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View running code")}</a></li>
+          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View code changes")}</a></li>
           {#if to_string(e(dep, :app, nil)) not in @required_deps}
             <li><Bonfire.UI.Common.ExtensionToggleLive
                 id={e(dep, :app, nil) |> debug("toggg")}
@@ -68,16 +60,8 @@
               target="_blank"
               class="flex-1 block w-full text-center"
             >{l("View code repository")}</a></li>
-          <li><a
-              href={get_code_link(dep)}
-              target="_blank"
-              class="flex-1 block w-full text-center"
-            >{l("View running code")}</a></li>
-          <li><a
-              href={get_version_link(dep)}
-              target="_blank"
-              class="flex-1 block w-full text-center"
-            >{l("View code changes")}</a></li>
+          <li><a href={get_code_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View running code")}</a></li>
+          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View code changes")}</a></li>
           {#if to_string(e(dep, :app, nil)) not in @required_deps}
             <li><Bonfire.UI.Common.ExtensionToggleLive
                 scope={@scope}
@@ -113,16 +97,8 @@
               target="_blank"
               class="flex-1 block w-full text-center"
             >{l("View code repository")}</a></li>
-          <li><a
-              href={get_code_link(dep)}
-              target="_blank"
-              class="flex-1 block w-full text-center"
-            >{l("View running code")}</a></li>
-          <li><a
-              href={get_version_link(dep)}
-              target="_blank"
-              class="flex-1 block w-full text-center"
-            >{l("View code changes")}</a></li>
+          <li><a href={get_code_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View running code")}</a></li>
+          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View code changes")}</a></li>
         </ul>
       </div>
     </div>
@@ -150,16 +126,8 @@
               target="_blank"
               class="flex-1 block w-full text-center"
             >{l("View code repository")}</a></li>
-          <li><a
-              href={get_code_link(dep)}
-              target="_blank"
-              class="flex-1 block w-full text-center"
-            >{l("View running code")}</a></li>
-          <li><a
-              href={get_version_link(dep)}
-              target="_blank"
-              class="flex-1 block w-full text-center"
-            >{l("View code changes")}</a></li>
+          <li><a href={get_code_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View running code")}</a></li>
+          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View code changes")}</a></li>
         </ul>
       </div>
     </div>
@@ -187,16 +155,8 @@
               target="_blank"
               class="flex-1 block w-full text-center"
             >{l("View code repository")}</a></li>
-          <li><a
-              href={get_code_link(dep)}
-              target="_blank"
-              class="flex-1 block w-full text-center"
-            >{l("View running code")}</a></li>
-          <li><a
-              href={get_version_link(dep)}
-              target="_blank"
-              class="flex-1 block w-full text-center"
-            >{l("View code changes")}</a></li>
+          <li><a href={get_code_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View running code")}</a></li>
+          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full text-center">{l("View code changes")}</a></li>
         </ul>
       </div>
     </div>
