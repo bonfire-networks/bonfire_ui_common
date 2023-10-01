@@ -13,7 +13,7 @@
       {/for}
       {#for {component, component_assigns} <- widgets}
         <Bonfire.UI.Common.WidgetLive
-          widget={%{module: component}}
+          widget={%{module: component, type: component_assigns[:type] || Surface.Component}}
           page={@page}
           selected_tab={@selected_tab}
           showing_within={:sidebar}
