@@ -108,7 +108,7 @@ module.exports = {
           "primary-content": "#fff"
         },
         bonfire: {
-          ...require("daisyui/src/theming/themes")["[data-theme=dracula]"],
+          ...require("daisyui/src/theming/themes")["[data-theme=forest]"],
           "primary": "#fde047"
         }
       },
