@@ -34,7 +34,8 @@ function update_hash() {
 
     if (hash.startsWith("#L")) {
         let id = hash.slice(1)
-        document.getElementById(id).classList.add("highlighted");
+        let line = document.getElementById(id)
+        if (line) { line.classList.add("highlighted"); }
     }
 }
 

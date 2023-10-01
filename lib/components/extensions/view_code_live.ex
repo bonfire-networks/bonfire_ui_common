@@ -14,42 +14,85 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
        socket,
        page_title: l("View Code"),
        module: nil,
+       modules: [],
        filename: nil,
        code: nil,
        lines: 0,
        line: 0,
        selected_line: 0,
-       without_sidebar: false
+       without_sidebar: false,
+       nav_items: []
      )}
   end
 
-  def do_handle_params(%{"module" => module} = params, _url, socket) when is_binary(module) do
+  def do_handle_params(%{"module" => app_or_module} = params, _url, socket) when is_binary(app_or_module) do
     with true <- connected?(socket),
-         module when not is_nil(module) <- Types.maybe_to_module(module),
-         {:ok, filename, code} <- Extend.module_file_code(module) do
+      {:ok,
+       data} <- load_code(params["function"], app_or_module) do
       {:noreply,
        socket
        |> assign(
-         page_title: l("View Code") <> ": #{module}",
-         module: module,
-         filename: filename,
-         code: code,
-         selected_line:
-           if(params["function"],
-             do: Extend.function_line_number(code, maybe_to_atom(params["function"]))
-           ) || 0,
-         lines: String.split(code, "\n") |> length()
-       )}
+        data)}
     else
       false ->
         {:noreply, socket}
 
-      {:error, e} ->
+      e ->
         error(e)
-
-      _ ->
-        error(module, "Not a known module")
+        error(app_or_module, "Cannot load code of app or module")
     end
+  end
+
+  def load_code(function \\ nil, app_or_module) do
+    module = Types.maybe_to_module(app_or_module)
+
+        app = if module do
+           Application.get_application(module)
+        else
+          maybe_to_atom!(app_or_module)
+        end
+
+        modules = if app do
+          Application.spec(app, :modules)
+        end
+
+        if module || modules do
+          do_load_code(maybe_to_atom!(function), module, modules, app)
+        end
+  end
+
+  defp do_load_code(function \\ nil, module \\ nil, modules, app) do 
+    module = module || List.first(modules)
+
+    with {:ok, filename, code} <- Extend.module_file_code(module) do
+
+      {:ok,
+       %{
+         page_title: l("View Code") <> ": #{module}",
+         app: app,
+         module: module,
+        #  modules: Application.spec(Application.get_application(module), :modules),
+         filename: filename,
+         code: code,
+         selected_line:
+           if(function,
+             do: Extend.function_line_number(code, function)
+           ) || 0,
+         lines: String.split(code, "\n") |> length(),
+        without_secondary_widgets: true, # no right sidebar
+        sidebar_widgets: [ 
+          users: [
+            main: Enum.map(modules, fn module ->
+              %{
+      name: module,
+      href: "/settings/extensions/code/#{module}",
+      link_class: "flex items-center w-full rounded-md",
+      type: :link
+    }
+            end) |> debug("widgetss")
+          ]]
+      }}
+          end
   end
 
   def do_handle_event("highlight_line", %{"line-number" => line_number}, socket) do

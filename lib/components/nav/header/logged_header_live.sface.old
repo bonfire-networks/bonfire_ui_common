@@ -37,7 +37,7 @@
   </div> --}
 
   <Bonfire.UI.Common.LoggedActionsLive
-    :if={@without_widgets}
+    :if={@without_secondary_widgets}
     page_title={@page_title}
     page={@page}
     current_user={current_user(@__context__)}
@@ -47,7 +47,7 @@
     create_object_type={@create_object_type}
     thread_mode={@thread_mode}
     without_sidebar={@without_sidebar}
-    without_widgets={@without_widgets}
+    without_secondary_widgets={@without_secondary_widgets}
     to_boundaries={@to_boundaries}
     to_circles={@to_circles}
     smart_input_opts={@smart_input_opts}

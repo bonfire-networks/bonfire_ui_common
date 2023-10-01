@@ -1,23 +1,23 @@
-<div class={@wrapper_class} data-type="widget">
+<div class={@widget[:wrapper_class] || @wrapper_class} data-type="widget">
   {#case @widget[:type]}
     {#match :link}
       <LinkLive
         to={if is_function(@widget[:href]),
           do: @widget[:href].(@__context__),
           else: @widget[:href]}
-        class={if @showing_within != :dashboard,
+        class={@widget[:link_class] || @link_class || if @showing_within != :dashboard,
           do: "flex items-center w-full gap-4 px-2 py-2 rounded-md",
           else: "block w-full"}
       >
         <div class="flex-1 relative flex items-center gap-5">
-          <span :if={!@without_icon} class="">
+          <span :if={!@without_icon && (@widget[:icon] || @widget[:icon_active]) } class="">
             {#if not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])}
               <Iconify.iconify
-                icon={widget(@widget, @__context__)[:icon_active]}
-                class={@icon_class, "!text-base-content"}
+                icon={@widget[:icon_active]}
+                class={@widget[:icon_class] || @icon_class, "!text-base-content"}
               />
             {#else}
-              <Iconify.iconify icon={widget(@widget, @__context__)[:icon]} class={@icon_class} />
+              <Iconify.iconify icon={@widget[:icon]} class={@widget[:icon_class] || @icon_class} />
             {/if}
           </span>
           <span
@@ -34,9 +34,9 @@
               "!font-bold !text-base-content":
                 not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
             }
-          >{@widget[:text] || widget(@widget, @__context__)[:name]}</span>
+          >{@widget[:text] || @widget[:name]}</span>
         </div>
-        {#case widget(@widget, @__context__)[:badge]}
+        {#case @widget[:badge]}
           {#match nil}
           {#match badge}
             <div class="flex absolute left-7 top-0 items-center place-content-center">
@@ -67,6 +67,6 @@
       />
     {#match nil}
     {#match other}
-      {error(other) && "{!-- invalid widget --}"}
+      {error(other) && "<-- invalid widget -->"}
   {/case}
 </div>

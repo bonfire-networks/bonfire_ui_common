@@ -29,7 +29,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
   prop inner_content, :any, default: nil
   prop nav_items, :any, default: nil
-  prop without_widgets, :boolean, default: false
+  prop without_secondary_widgets, :boolean, default: false
   prop without_sidebar, :boolean, default: nil
   prop sidebar_widgets, :list, default: []
   prop back, :boolean, default: false
@@ -98,7 +98,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:to_circles, fn -> [] end)
       |> assign_new(:showing_within, fn -> nil end)
       |> assign_new(:without_sidebar, fn -> nil end)
-      |> assign_new(:without_widgets, fn -> false end)
+      |> assign_new(:without_secondary_widgets, fn -> false end)
       |> assign_new(:sidebar_widgets, fn -> [] end)
 
     # |> assign_new(:hero, fn -> nil end)
@@ -137,15 +137,15 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
       <div class={
         "w-full px-0 md:px-4 grid max-w-[1202px] gap-0 md:gap-4 widget xl:px-0 mx-auto",
-        "!grid-cols-1 content-start": @without_sidebar && @without_widgets,
+        "!grid-cols-1 content-start": @without_sidebar && @without_secondary_widgets,
         # "grid-cols-1 !max-w-full": !@current_user_id,
         "grid-cols-1 md:grid-cols-[250px_1fr] tablet-lg:grid-cols-[250px_1fr_320px]": !@current_user_id,
         "grid-cols-1 md:grid-cols-1 content-start !max-w-full":
           @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)),
         "grid-cols-1 md:grid-cols-[250px_1fr]":
-          @current_user_id && @without_widgets && !@without_sidebar,
+          @current_user_id && @without_secondary_widgets && !@without_sidebar,
         "grid-cols-1 md:grid-cols-[250px_1fr] tablet-lg:grid-cols-[250px_1fr_320px] ":
-          @current_user_id && !@without_sidebar && !@without_widgets
+          @current_user_id && !@without_sidebar && !@without_secondary_widgets
       }>
         <Bonfire.UI.Common.MobileMenuLive :if={@current_user_id} />
         <div
@@ -194,15 +194,15 @@ defmodule Bonfire.UI.Common.LayoutLive do
           data-id="main_section"
           class={
             "relative w-full max-w-[600px] gap-2 md:gap-0 z-[99] col-span-1 ",
-            "!max-w-full": @without_widgets,
+            "!max-w-full": @without_secondary_widgets,
             "!max-w-full": !@current_user_id,
             "mx-auto order-last": @without_sidebar
           }
         >
           <div class={
             "h-full mt-0",
-            "max-w-screen-lg gap-4 mx-auto": @without_widgets,
-            "justify-between": !@without_widgets
+            "max-w-screen-lg gap-4 mx-auto": @without_secondary_widgets,
+            "justify-between": !@without_secondary_widgets
           }>
             <div class="relative invisible_frame">
               <div class="md:pb-0 md:overflow-y-visible">
@@ -243,7 +243,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           <Bonfire.UI.Common.NavFooterMobileUserLive page={@page} />
         </div>
         <div
-          :if={!@without_widgets}
+          :if={!@without_secondary_widgets}
           class="hidden tablet-lg:block order-first md:order-none md:static z-[999]"
         >
           <div
@@ -275,39 +275,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 title={l("Favourite milestones")}
               />
 
-              <div
-                :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(@current_user_id)) or
-                  (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(@current_user_id))}
-                class="flex flex-col gap-4"
-              >
-                <Dynamic.Component
-                  :if={not is_nil(@current_user_id)}
-                  :for={{component, component_assigns} <-
-                    List.wrap(
-                      @sidebar_widgets[:users][:secondary] ||
-                        [
-                          {Bonfire.Tag.Web.WidgetTagsLive, []},
-                          {Bonfire.UI.Common.WidgetFeedbackLive, []}
-                        ]
-                    )}
-                  module={component}
-                  {...component_assigns}
-                />
+              <Bonfire.UI.Common.SidebarWidgetsLive widgets={@sidebar_widgets} key={:secondary} page={@page}
+          selected_tab={@selected_tab} />
 
-                <Dynamic.Component
-                  :if={is_nil(@current_user_id)}
-                  :for={{component, component_assigns} <-
-                    List.wrap(
-                      @sidebar_widgets[:guests][:secondary] ||
-                        [
-                          {Bonfire.UI.Common.WidgetInstanceLive, []},
-                          {Bonfire.Tag.Web.WidgetTagsLive, []}
-                        ]
-                    )}
-                  module={component}
-                  {...component_assigns}
-                />
-              </div>
 
               <div class="mt-4 text-xs text-base-content/70">
                 <div class="flex flex-col gap-2 mb-4">

@@ -63,7 +63,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     |> fun.(:preloaded_recipients, fn -> nil end)
 
     # |> fun.(:without_sidebar, fn -> nil end)
-    # |> fun.(:without_widgets, fn -> nil end)
+    # |> fun.(:without_secondary_widgets, fn -> nil end)
     #  |> fun.(:nav_items, fn -> nil end)
     # |> fun.(:sidebar_widgets, fn -> [] end)
 
@@ -101,7 +101,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       # :smart_input_component,
       :thread_mode,
       # :without_sidebar,
-      # :without_widgets,
+      # :without_secondary_widgets,
       # :to_boundaries,
       # :to_circles,
       :smart_input_opts

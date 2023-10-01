@@ -73,7 +73,7 @@
 
   <div
     data-id="secondary_sidebar_widgets"
-    :if={!@without_widgets}
+    :if={!@without_secondary_widgets}
     class="order-last max-w-[360px] w-full grid min-h-[calc(100vh-56px)] grid-flow-row gap-6 overflow-x-hidden overflow-y-auto md:pt-6 auto-rows-min items-start"
   >
     {!-- FIXME: use the widget system instead (see below) --}

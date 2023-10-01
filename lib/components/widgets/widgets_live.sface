@@ -5,16 +5,18 @@
         widget={widgets}
         page={@page}
         selected_tab={@selected_tab}
+          showing_within={@showing_within}
         data={e(widgets, :props, [])}
       />
     {#match _ when is_list(widgets)}
-      <div :for={widget <- widgets}>
+      {#for widget <- widgets}
         <Bonfire.UI.Common.WidgetLive
-          widget={widget}
+          widget={debug(widget, "widgett")}
           page={@page}
           selected_tab={@selected_tab}
+          showing_within={@showing_within}
           data={e(widget, :props, [])}
         />
-      </div>
+      {/for}
   {/case}
 {/for}

@@ -18,7 +18,7 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
          assign(
            socket,
            page_title: "Loading...",
-           without_widgets: true,
+           without_secondary_widgets: true,
            diffs: [],
            msg: "Loading..."
          )}
@@ -44,7 +44,7 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
      assign(
        socket,
        page_title: "Extension",
-       without_widgets: true,
+       without_secondary_widgets: true,
        diffs: diffs,
        msg: msg
      )}

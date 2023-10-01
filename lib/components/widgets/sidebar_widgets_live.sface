@@ -1,0 +1,30 @@
+              {#case (not is_nil(current_user_id(@__context__)) and e(@widgets, :users, @key, nil)) ||
+                  (is_nil(current_user_id(@__context__)) and e(@widgets, :guests, @key, nil))
+                    }
+              {#match widgets when is_list(widgets) and widgets !=[] or is_map(widgets)}
+              <div
+                class="flex flex-col gap-4"
+              >
+              {#for %{} = widget <- widgets }
+                        <Bonfire.UI.Common.WidgetLive
+          widget={debug(widget, "widgett")}
+          page={@page}
+          selected_tab={@selected_tab}
+          showing_within={:sidebar}
+          data={e(widget, :props, [])}
+        />
+              {/for}
+              {#for {component, component_assigns} <- widgets }
+                <Bonfire.UI.Common.WidgetLive
+          widget={%{module: component}}
+          page={@page}
+          selected_tab={@selected_tab}
+          showing_within={:sidebar}
+          data={component_assigns || []}
+          {...component_assigns || []}
+        />
+              {/for}
+              </div>
+              {#match _}
+              <!-- No widgets -->
+              {/case}
