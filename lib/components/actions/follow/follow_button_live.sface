@@ -1,4 +1,4 @@
-<div>
+<div title={@title}>
   {#if @my_follow == nil}
     <button disabled class="normal-case rounded-full btn btn-disabled btn-sm">{l("loading...")}</button>
   {#elseif !@my_follow}
