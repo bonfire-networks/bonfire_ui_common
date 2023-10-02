@@ -35,6 +35,13 @@
       </div>
       <#slot />
     </div>
+  {#elseif @type == :static}
+  <div class="flex justify-between items-center w-full pb-3 px-4">
+    <div class="text-lg font-bold">
+      {e(@selected_tab, "My feed")}
+    </div>
+    <#slot />
+  </div>
   {#else}
     {#for {{tab, tab_name}, i} <- Enum.with_index(@tabs)}
       <Dynamic.Component
@@ -56,8 +63,8 @@
         ])}
       >
         <div class={@item_class}>{localise_dynamic(tab_name)}</div>
-        <#slot :if={@selected_tab == tab or to_string(@selected_tab) == to_string(tab) or
-          (is_nil(@selected_tab) and i == 0)} />
+        <!-- <#slot :if={@selected_tab == tab or to_string(@selected_tab) == to_string(tab) or
+          (is_nil(@selected_tab) and i == 0)} /> -->
       </Dynamic.Component>
     {/for}
   {/if}

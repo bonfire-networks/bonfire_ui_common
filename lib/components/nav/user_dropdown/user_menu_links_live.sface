@@ -1,13 +1,5 @@
 {!-- WIP: Find a better way to include navs in mobile with notification badges --}
-<li :if={@mobile}>
-  <LiveRedirect
-    to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
-    class="flex items-center w-full gap-4 px-2 py-2 rounded-md"
-  >
-    <#Icon solid="UserCircle" class="w-6 h-6" />
-    <div class="text-[16px] font-medium">{l("Profile")}</div>
-  </LiveRedirect>
-</li>
+
 
 <li :if={@mobile}>
   <LiveRedirect
@@ -16,7 +8,27 @@
       do: "flex items-center w-full gap-4 px-2 py-2 rounded-md"}
   >
     <#Icon iconify="ri:home-line" class="w-6 h-6" />
-    <div class="text-[16px] font-medium">{l("Activities")}</div>
+    <div class="text-[16px] font-medium">{l("My Feed")}</div>
+  </LiveRedirect>
+</li>
+
+<li :if={@mobile}>
+  <LiveRedirect
+    to="/feed/explore/local"
+    class="flex items-center w-full gap-4 px-2 py-2 rounded-md"
+  >
+    <#Icon iconify="ri:safari-line" class="w-6 h-6" />
+    <div class="text-[16px] font-medium">{l("Explore")}</div>
+  </LiveRedirect>
+</li>
+
+<li :if={@mobile}>
+  <LiveRedirect
+    to="/feed/likes"
+    class="flex items-center w-full gap-4 px-2 py-2 rounded-md"
+  >
+    <#Icon iconify="bi:stars" class="w-6 h-6" />
+    <div class="text-[16px] font-medium">{l("Favourites")}</div>
   </LiveRedirect>
 </li>
 
@@ -24,6 +36,16 @@
   <LiveRedirect to="/messages" class="flex items-center w-full gap-4 px-2 py-2 rounded-md">
     <#Icon iconify="ri:mail-line" class="w-6 h-6" />
     <div class="text-[16px] font-medium">{l("Messages")}</div>
+  </LiveRedirect>
+</li>
+
+<li :if={@mobile}>
+  <LiveRedirect
+    to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
+    class="flex items-center w-full gap-4 px-2 py-2 rounded-md"
+  >
+    <#Icon iconify="solar:user-bold" class="w-6 h-6" />
+    <div class="text-[16px] font-medium">{l("Profile")}</div>
   </LiveRedirect>
 </li>
 
@@ -64,7 +86,7 @@
   <LiveRedirect
     to={~p"/settings"}
     class={if @mobile,
-      do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+      do: "flex items-center w-full gap-4 px-2 py-2 rounded-md",
       else: "flex items-center gap-2 text-sm text-base-content/70"}
   >
     <#Icon :if={@mobile} solid="Cog" class="w-6 h-6" />
@@ -77,7 +99,7 @@
   <LiveRedirect
     to={~p"/settings/instance"}
     class={if @mobile,
-      do: "flex items-center w-full gap-6 px-2 py-2 rounded-md",
+      do: "flex items-center w-full gap-4 px-2 py-2 rounded-md",
       else: "flex items-center gap-2 text-sm text-base-content/70"}
   >
     {!-- <#Icon solid="Cog" class="w-4 h-4" /> --}

@@ -25,11 +25,9 @@
         x-description="Slide-over panel, show/hide based on slide-over state."
         x-on:click.away="open_sidebar = false"
       >
-        <div class="flex flex-col h-full overflow-y-scroll shadow-xl bg-base-100">
-          <div class="relative flex-1">
-            <div class="flex-1 h-full" data-id="mobile_nav">
-              <div class="relative w-full h-full">
-                <div class="flex items-start justify-between p-6 bg-base-200">
+        <div data-id="mobile_nav" class="flex flex-col h-full shadow-xl bg-base-100">
+          <div class="relative flex-1 flex flex-col">
+                <div class="flex items-start justify-between p-6 bg-base-100 border-b border-base-content/10">
                   <LinkLive class="flex flex-col gap-3" to={path(current_user(@__context__))}>
                     <Bonfire.UI.Common.AvatarLive
                       parent_id="mobile_menu"
@@ -61,14 +59,12 @@
                     </button>
                   </div>
                 </div>
-                <nav role="navigation" class="p-4" aria-label={l("Extension navigation")}>
+                <nav role="navigation" class="h-full flex-1 overflow-y-auto" aria-label={l("Extension navigation")}>
                   <ul class="gap-1 menu">
                     <Bonfire.UI.Common.UserMenuLinksLive mobile />
                   </ul>
                 </nav>
-              </div>
-            </div>
-            <div class="sticky bottom-0 p-4">
+            <div class="p-4">
               <div class="my-4 text-xs text-base-content/70">
                 <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:
                   <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·

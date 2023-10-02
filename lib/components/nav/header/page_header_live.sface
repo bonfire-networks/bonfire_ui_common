@@ -9,7 +9,7 @@
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center justify-between w-full tablet-lg:flex-1">
       <div class="flex items-center gap-3 flex-1">
-        <button
+        <!-- <button
           :if={!@back && current_user(@__context__)}
           type="button"
           x-on:click="open_sidebar = true"
@@ -22,7 +22,7 @@
             size="32"
             user={current_user(@__context__)}
           />
-        </button>
+        </button> -->
         {!-- <Iconify.iconify
           :if={@page_header_icon && !@back}
           icon={@page_header_icon}

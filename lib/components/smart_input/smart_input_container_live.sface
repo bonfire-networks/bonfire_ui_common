@@ -13,7 +13,7 @@
         smart_input_opts={@smart_input_opts}
         prompt={e(@smart_input_opts, :prompt, l("Compose"))}
         icon={e(@smart_input_opts, :icon, "mdi:pencil")}
-        class="fixed right-3 md:static bottom-[72px] md:btn btn-circle md:h-auto md:min-h-auto md:max-h-auto md:px-4 !btn-primary text-primary-content md:!rounded-full md:!w-auto flex items-center gap-2 place-content-center normal-case"
+        class="hidden md:flex btn btn-primary !rounded-full flex items-center gap-2 place-content-center normal-case"
       />
 
       {!-- 
@@ -28,10 +28,9 @@
 
       {!-- style="height: 380px" --}
       <div
-        phx-hook="ScreenSize"
         id="smart_input_container"
         class={
-          "h-full w-full md:h-auto  bottom-0 block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0",
+          "w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0",
           "!left-1 !right-1 xl:!left-auto xl:!right-auto w-full top-0 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto xl:max-w-[1200px] !left-auto !right-auto":
             @smart_input_as == :focused,
           "md:w-[32rem] md:right-4 md:top-auto max-h-screen": @smart_input_as != :focused,

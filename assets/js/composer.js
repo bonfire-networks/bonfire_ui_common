@@ -60,18 +60,18 @@ ComposerHooks.ScreenSize = {
     // gutter.addEventListener('mousedown', resizer);
 
 
-    window.addEventListener("resize", (e) => {
-      if (window.innerWidth < 768) {
-        composer.style.height = "100%";
-        // composerWrapper.style.height = composer.getBoundingClientRect().height - 54 - 52 - 42 + "px";
-      } else {
-        // composerWrapper.style.height = composer.getBoundingClientRect().height - 54 - 52 - 42 + "px";
-      }
-    });
+    // window.addEventListener("resize", (e) => {
+    //   if (window.innerWidth < 768) {
+    //     composer.style.height = "100%";
+    //     // composerWrapper.style.height = composer.getBoundingClientRect().height - 54 - 52 - 42 + "px";
+    //   } else {
+    //     // composerWrapper.style.height = composer.getBoundingClientRect().height - 54 - 52 - 42 + "px";
+    //   }
+    // });
 
-    if (window.innerWidth < 768) {
-      // composerWrapper.style.height = composer.getBoundingClientRect().height - 54 - 52 - 42 + "px";
-    }
+    // if (window.innerWidth < 768) {
+    //   // composerWrapper.style.height = composer.getBoundingClientRect().height - 54 - 52 - 42 + "px";
+    // }
   },
   updated() {
     const composer = this.el

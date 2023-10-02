@@ -53,7 +53,7 @@
 
       <div class="z-50 sticky bottom-0 h-[48px]">
         <div class="">
-          <div class="flex justify-between gap-3 p-4 md:items-center bg-base-100 md:px-3 md:py-2">
+          <div class="flex justify-between gap-3 p-4 md:items-center bg-base-100 md:px-3 py-2">
             <div class="flex items-center gap-1">
               <Bonfire.UI.Common.UploadButtonLive
                 :if={module_enabled?(Bonfire.Files, @__context__)}

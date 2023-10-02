@@ -210,7 +210,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 <div
                   id="inner"
                   class={
-                    "md:mt-0 border-l border-r border-base-content/10 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]":
+                    "md:mt-0 md:border-l md:border-r border-base-content/10 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]":
                       !@without_sidebar
                   }
                 >
