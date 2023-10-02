@@ -9,7 +9,7 @@
   </LiveRedirect>
 
   <LiveRedirect :if={!current_user(@__context__)} to="/feed">
-    <#Icon iconify="ic:outline-explore" class="w-6 h-6" />
+    <#Icon iconify="ic:outline-explore" class="w-6 h-6 text-base-content/70" />
     <span class="sr-only">{l("Feeds")}</span>
   </LiveRedirect>
 
@@ -75,7 +75,7 @@
   </LiveRedirect> -->
 
   <LiveRedirect :if={!current_user(@__context__)} to="/about">
-    <#Icon solid="DotsHorizontal" class="w-6 h-6" />
+    <#Icon solid="DotsHorizontal" class="w-6 h-6 text-base-content/70" />
     <span class="sr-only">{l("about")}</span>
   </LiveRedirect>
   {!-- <Bonfire.UI.Common.OpenModalLive

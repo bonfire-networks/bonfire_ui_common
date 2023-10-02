@@ -44,7 +44,6 @@
       title_text={l("Delete the draft")}
       cancel_label={l("Cancel")}
       open_btn_wrapper_class="flex btn btn-xs btn-ghost btn-circle"
-      action_btns_wrapper_class="normal-case rounded btn btn-sm btn-error"
     >
       <div class="mt-3 prose-sm prose">
         <p>{l("Closing the composer will discard your post. Are you sure you want to close it?")}</p>
@@ -58,8 +57,9 @@
           phx-click={LiveHandler.confirm_close_smart_input(if @__context__[:sticky], do: "persistent_modal")}
           phx-target="#smart_input"
           type="button"
+          class="normal-case rounded btn btn-sm btn-error rounded-full"
         >
-          <span class="">{l("Delete")}</span>
+          {l("Delete")}
         </button>
       </:action_btns>
     </Bonfire.UI.Common.OpenModalLive>

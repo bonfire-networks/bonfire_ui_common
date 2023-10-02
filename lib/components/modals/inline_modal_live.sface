@@ -21,7 +21,7 @@
           formmethod="dialog"
           type="button"
           onclick={"#{@id}.close(); return;"}
-          class="absolute top-3 right-3 z-30 block normal-case btn btn-circle btn-sm"
+          class="absolute top-3 right-3 z-30 block normal-case btn btn-xs btn-ghost"
         >
           <span class="sr-only">{@cancel_label || l("Close")}</span>
           <#Icon outline="X" class="w-4 h-4" />
