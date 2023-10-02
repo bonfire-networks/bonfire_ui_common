@@ -27,43 +27,47 @@
       >
         <div data-id="mobile_nav" class="flex flex-col h-full shadow-xl bg-base-100">
           <div class="relative flex-1 flex flex-col">
-                <div class="flex items-start justify-between p-6 bg-base-100 border-b border-base-content/10">
-                  <LinkLive class="flex flex-col gap-3" to={path(current_user(@__context__))}>
-                    <Bonfire.UI.Common.AvatarLive
-                      parent_id="mobile_menu"
-                      class="inline-block object-cover w-16 h-16 rounded-full cursor-pointer bg-base-100"
-                      bg_class="rounded bg-base-300"
-                      size="42"
-                      user={current_user(@__context__)}
-                    />
-                    <div class="flex items-center">
-                      <div class="flex flex-col flex-1">
-                        <span class="font-bold text-base-content">{e(current_user(@__context__), :profile, :name, "unknown")}</span>
-                        <span class="text-sm font-light text-base-content/70">{Bonfire.Me.Characters.display_username(current_user(@__context__), true, true)}</span>
-                      </div>
-                    </div>
-                  </LinkLive>
-                  <div class="flex items-center ml-3 h-7">
-                    <button type="button" class="btn btn-circle btn-sm btn-ghost" x-on:click="open_sidebar = false">
-                      <span class="sr-only">{l("Close drawer menu")}</span>
-                      <svg
-                        class="w-6 h-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
+            <div class="flex items-start justify-between p-6 bg-base-100 border-b border-base-content/10">
+              <LinkLive class="flex flex-col gap-3" to={path(current_user(@__context__))}>
+                <Bonfire.UI.Common.AvatarLive
+                  parent_id="mobile_menu"
+                  class="inline-block object-cover w-16 h-16 rounded-full cursor-pointer bg-base-100"
+                  bg_class="rounded bg-base-300"
+                  size="42"
+                  user={current_user(@__context__)}
+                />
+                <div class="flex items-center">
+                  <div class="flex flex-col flex-1">
+                    <span class="font-bold text-base-content">{e(current_user(@__context__), :profile, :name, "unknown")}</span>
+                    <span class="text-sm font-light text-base-content/70">{Bonfire.Me.Characters.display_username(current_user(@__context__), true, true)}</span>
                   </div>
                 </div>
-                <nav role="navigation" class="h-full flex-1 overflow-y-auto" aria-label={l("Extension navigation")}>
-                  <ul class="gap-1 menu">
-                    <Bonfire.UI.Common.UserMenuLinksLive mobile />
-                  </ul>
-                </nav>
+              </LinkLive>
+              <div class="flex items-center ml-3 h-7">
+                <button type="button" class="btn btn-circle btn-sm btn-ghost" x-on:click="open_sidebar = false">
+                  <span class="sr-only">{l("Close drawer menu")}</span>
+                  <svg
+                    class="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <nav
+              role="navigation"
+              class="h-full flex-1 overflow-y-auto"
+              aria-label={l("Extension navigation")}
+            >
+              <ul class="gap-1 menu">
+                <Bonfire.UI.Common.UserMenuLinksLive mobile />
+              </ul>
+            </nav>
             <div class="p-4">
               <div class="my-4 text-xs text-base-content/70">
                 <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:

@@ -40,6 +40,15 @@ defmodule Bonfire.UI.Common.Routes do
         # plug Bonfire.UI.Me.Plugs.Locale # TODO: skip guessing a locale if the user has one in preferences
       end
 
+      pipeline :browser_unsafe do
+        plug(:basic)
+        plug(:accepts, ["html", "activity+json", "json", "ld+json"])
+
+        plug(:put_secure_browser_headers)
+
+        plug(:fetch_live_flash)
+      end
+
       pipeline :throttle_plug_attacks do
         plug(:basic)
         plug Bonfire.UI.Common.PlugProtect

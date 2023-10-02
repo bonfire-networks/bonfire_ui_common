@@ -36,12 +36,12 @@
       <#slot />
     </div>
   {#elseif @type == :static}
-  <div class="flex justify-between items-center w-full pb-3 px-4">
-    <div class="text-lg font-bold">
-      {e(@selected_tab, "My feed")}
+    <div class="flex justify-between items-center w-full pb-3 px-4">
+      <div class="text-lg font-bold">
+        {e(@selected_tab, "My feed")}
+      </div>
+      <#slot />
     </div>
-    <#slot />
-  </div>
   {#else}
     {#for {{tab, tab_name}, i} <- Enum.with_index(@tabs)}
       <Dynamic.Component

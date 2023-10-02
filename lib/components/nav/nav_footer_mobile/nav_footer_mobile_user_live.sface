@@ -22,15 +22,15 @@
     <span class="sr-only">{l("Search")}</span>
   </LiveRedirect>
 
-<div :if={current_user(@__context__)}>
-  <Bonfire.UI.Common.SmartInputButtonLive
-    class="btn btn-sm max-w-[2rem] !rounded !btn-square btn-outline !border-base-content/30"
-    showing_within={:smart_input}
-    as_icon
-    icon="mdi:pencil"
-    prompt={nil}
-  />
-</div>
+  <div :if={current_user(@__context__)}>
+    <Bonfire.UI.Common.SmartInputButtonLive
+      class="btn btn-sm max-w-[2rem] !rounded !btn-square btn-outline !border-base-content/30"
+      showing_within={:smart_input}
+      as_icon
+      icon="mdi:pencil"
+      prompt={nil}
+    />
+  </div>
 
   <LiveRedirect :if={current_user(@__context__)} to={path(:notifications)} class="">
     {#if @page == "notifications"}
@@ -50,19 +50,15 @@
     <span class="sr-only">{l("Direct Messages")}</span>
   </LiveRedirect> -->
 
-      <div
-          :if={current_user(@__context__)}
-          type="button"
-          x-on:click="open_sidebar = true"
-        >
-          <Bonfire.UI.Common.AvatarLive
-            parent_id="nav_footer_mobile"
-            class="inline-block object-cover w-8 h-8 rounded-full bg-base-content/5 cursor-pointer min-h-full"
-            bg_class="rounded-full h-full bg-base-300"
-            size="32"
-            user={current_user(@__context__)}
-          />
-        </div>
+  <div :if={current_user(@__context__)} type="button" x-on:click="open_sidebar = true">
+    <Bonfire.UI.Common.AvatarLive
+      parent_id="nav_footer_mobile"
+      class="inline-block object-cover w-8 h-8 rounded-full bg-base-content/5 cursor-pointer min-h-full"
+      bg_class="rounded-full h-full bg-base-300"
+      size="32"
+      user={current_user(@__context__)}
+    />
+  </div>
   <!-- <LiveRedirect :if={current_user(@__context__)} to={path(current_user(@__context__))} class="">
     <Bonfire.UI.Common.AvatarLive
       parent_id="nav_footer_mobile"
