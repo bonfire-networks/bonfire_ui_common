@@ -36,7 +36,7 @@
       <#slot />
     </div>
   {#elseif @type == :static}
-    <div class="flex justify-between items-center w-full pb-3 px-4">
+    <div class="flex justify-between items-center w-full pb-3">
       <div class="text-lg font-bold">
         {e(@selected_tab, "My feed")}
       </div>
