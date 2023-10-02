@@ -65,18 +65,6 @@ defmodule Bonfire.UI.Common.DataHelpers do
     }
   end
 
-  def remote_PM_json(actor, to) do
-    remote_activity_json(actor, [to.ap_id], %{
-      "tag" => [
-        %{
-          "href" => to.ap_id,
-          "name" => to.username,
-          "type" => "Mention"
-        }
-      ]
-    })
-  end
-
   def local_actor_ids(to) when is_list(to), do: Enum.map(to, &local_actor_ids/1)
   def local_actor_ids(nil), do: fake_user!(@local_actor) |> local_actor_ids()
 
