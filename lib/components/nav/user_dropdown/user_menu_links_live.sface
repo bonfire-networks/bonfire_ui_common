@@ -12,10 +12,7 @@
 </li>
 
 <li :if={@mobile}>
-  <LiveRedirect
-    to="/feed/explore"
-    class="flex items-center w-full gap-4 px-2 py-2 rounded-md"
-  >
+  <LiveRedirect to="/feed/explore" class="flex items-center w-full gap-4 px-2 py-2 rounded-md">
     <#Icon iconify="ri:safari-line" class="w-6 h-6" />
     <div class="text-[16px] font-medium">{l("Explore")}</div>
   </LiveRedirect>
