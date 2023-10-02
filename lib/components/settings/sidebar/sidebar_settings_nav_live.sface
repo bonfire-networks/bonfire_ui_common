@@ -273,7 +273,7 @@
           solid="Puzzle"
           class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "extensions"}
         />
-        <span class="text-sm text-base-content/70">{l("Manage Extensions")}</span>
+        <span class="text-sm text-base-content/70">{l("Extensions")}</span>
       </LiveRedirect>
     </li>
   </ul>
