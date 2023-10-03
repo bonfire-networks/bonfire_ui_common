@@ -199,6 +199,10 @@ defmodule Bonfire.UI.Common.LiveHandlers do
           ["multi_select", %{text: text, data: Enum.map(data, &maybe_from_json/1)}],
           socket
         )
+
+      _ ->
+        warn(params, "Unrecognised event from LiveSelect")
+        {:noreply, socket}
     end
   end
 
