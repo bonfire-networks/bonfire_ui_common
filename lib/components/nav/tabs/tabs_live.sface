@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center w-full pb-3 px-4">
       <div class="dropdown">
         <label tabindex="0" class="btn rounded-full text-lg btn-sm btn-ghost capitalize">
-          {e(@selected_tab, "My feed")}
+          {@selected_name}
           <#Icon solid="ChevronDown" class="w-6 h-6 text-base-content/50" />
         </label>
         <ul
@@ -38,7 +38,7 @@
   {#elseif @type == :static}
     <div class="flex justify-between items-center w-full pb-3 px-4">
       <div class="text-lg font-bold">
-        {e(@selected_tab, "My feed")}
+        {@selected_name}
       </div>
       <#slot />
     </div>
@@ -55,7 +55,7 @@
         class={Surface.css_class([
           e(
             @tab_class,
-            "btn hover:bg-base-content hover:!text-base-300 btn-sm !max-h-[1.75rem] !min-h-[1.75rem] !h-[1.75rem] rounded-full font-normal capitalize bg-base-content/10 text-base-content/70 feed_tab border-none"
+            "btn hover:bg-base-content hover:!text-base-300 btn-sm !max-h-[1.75rem] !min-h-[1.75rem] !h-[1.75rem] rounded-full font-normal capitalize bg-base-content/10 text-base-content/70 nav_tab border-none"
           ),
           "active text-base-content/100":
             @selected_tab == tab or to_string(@selected_tab) == to_string(tab) or
