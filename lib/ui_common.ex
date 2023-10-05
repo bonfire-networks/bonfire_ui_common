@@ -1283,6 +1283,14 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  def can?(subject, verbs, object, opts \\ []) do
+    if Bonfire.Common.Extend.module_enabled?(Bonfire.Boundaries) do
+      maybe_apply(Bonfire.Boundaries, :can?, [subject, verbs, object, opts])
+    else
+      opts[:fallback] || false
+    end
+  end
+
   @doc """
   Inserts onr or many items in an existing stream.
   See `Phoenix.LiveView.stream_insert/4` for opts.
