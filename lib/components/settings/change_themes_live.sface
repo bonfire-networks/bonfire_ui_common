@@ -152,7 +152,7 @@
           <label x-on:click="open = true" class="flex items-baseline gap-2">
             <hex-input color={colour} />
           </label>
-          <hex-color-picker x-show="open" x-on:click.outside="open = false" />
+          <hex-color-picker class="z-[999999] right-0" x-show="open" x-on:click.outside="open = false" />
         </div>
       </div>
     </div>

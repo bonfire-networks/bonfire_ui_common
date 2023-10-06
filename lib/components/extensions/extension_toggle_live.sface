@@ -1,4 +1,4 @@
-<div>
+<li>
   {#if @scope != :instance}
     {#if current_user(@__context__) && Bonfire.Common.Settings.get([@id, :disabled], nil, @__context__)}
       <button
@@ -43,4 +43,4 @@
       {/if}
     {/if}
   {/if}
-</div>
+</li>

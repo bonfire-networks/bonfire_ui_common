@@ -19,7 +19,7 @@ defmodule Bonfire.UI.Common.LayoutView do
              [:ui, :theme, :preferred],
              :system,
              assigns[:__context__] || assigns[:current_user] || @conn
-           ) == :light,
+           ) == :bonfire,
            do:
              Settings.get(
                [:ui, :theme, :instance_theme_light],
