@@ -269,7 +269,7 @@
               disabled={e(@smart_input_opts, :submit_disabled, nil)}
             >
               <#Icon iconify="majesticons:send" class="w-4 h-4" />
-              {!-- x-bind:disabled={"body_length() > #{Bonfire.Me.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length], :instance, @__context__[:instance_settings])}"} --}
+              {!-- x-bind:disabled={"body_length() > #{Bonfire.Common.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length], :instance, @__context__[:instance_settings])}"} --}
               {!-- {#if @create_object_type == :message}
                 {l("Send")}
               {#else}

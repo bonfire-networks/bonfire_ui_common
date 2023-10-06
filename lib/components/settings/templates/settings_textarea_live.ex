@@ -19,7 +19,7 @@ defmodule Bonfire.UI.Common.SettingsTextareaLive do
 
   def render(assigns) do
     assigns
-    |> Bonfire.Me.Settings.LiveHandler.maybe_assign_input_value_from_keys()
+    |> Bonfire.Common.Settings.LiveHandler.maybe_assign_input_value_from_keys()
     |> render_sface()
   end
 end

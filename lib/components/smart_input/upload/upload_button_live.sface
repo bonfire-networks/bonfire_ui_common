@@ -2,7 +2,7 @@
   <label
     id="smart_input_upload"
     disabled={Enum.count(@uploads.files.entries) >=
-      Bonfire.Me.Settings.get(
+      Bonfire.Common.Settings.get(
         [Bonfire.UI.Common.SmartInputLive, :max_uploads],
         :instance,
         current_user(@__context__)

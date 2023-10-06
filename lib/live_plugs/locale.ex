@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Locale do
   def assign_put_locale(nil, socket) do
     # TODO: from Settings
     maybe_apply(
-      Bonfire.Me.Settings,
+      Bonfire.Common.Settings,
       :get,
       [[Bonfire.Common.Localise.Cldr, :default_locale], nil, socket],
       &default/2

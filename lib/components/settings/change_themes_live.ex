@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common.ChangeThemesLive do
   # prop scoped, :any, default: nil
 
   def render(assigns) do
-    scoped = Bonfire.Me.Settings.LiveHandler.scoped(assigns[:scope], assigns[:__context__])
+    scoped = Bonfire.Common.Settings.LiveHandler.scoped(assigns[:scope], assigns[:__context__])
 
     assigns
     |> assign(

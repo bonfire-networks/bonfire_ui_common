@@ -1,5 +1,5 @@
 <Bonfire.UI.Common.WidgetBlockLive
-  :if={!Bonfire.Me.Settings.get([:ui, :show_instance_links, :disabled], nil, @__context__)}
+  :if={!Bonfire.Common.Settings.get([:ui, :show_instance_links, :disabled], nil, @__context__)}
   widget_title={e(@widget_title, l("Links"))}
 >
   <ul class="p-2 menu">

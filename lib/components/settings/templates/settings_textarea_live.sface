@@ -25,7 +25,7 @@
     </button>
   </div>
   <div x-show="open" x-collapse>
-    <form name="settings" phx-submit="Bonfire.Me.Settings:save">
+    <form name="settings" phx-submit="Bonfire.Common.Settings:save">
       <input name="scope" value={@scope} type="hidden">
       <div class="w-full flex-col flex gap-2 mt-4">
         <textarea

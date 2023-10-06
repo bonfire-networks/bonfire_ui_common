@@ -13,7 +13,7 @@
       type="button"
       x-on:click="dark = true; light = false; custom_theme=false"
       :class="{'bg-base-content text-base-100' : dark && !light }"
-      phx-click="Bonfire.Me.Settings:put_theme"
+      phx-click="Bonfire.Common.Settings:put_theme"
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:dark}
       phx-value-scope={@scope}
@@ -29,7 +29,7 @@
       type="button"
       x-on:click="dark = false; light = true; custom_theme=false"
       :class="{'bg-base-content text-base-100' : light && !dark }"
-      phx-click="Bonfire.Me.Settings:put_theme"
+      phx-click="Bonfire.Common.Settings:put_theme"
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:light}
       phx-value-scope={@scope}
@@ -43,7 +43,7 @@
       type="button"
       x-on:click="dark = true; light = true; custom_theme=false"
       :class="{'bg-base-content text-base-100' : dark && light }"
-      phx-click="Bonfire.Me.Settings:put_theme"
+      phx-click="Bonfire.Common.Settings:put_theme"
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:system}
       phx-value-scope={@scope}
@@ -57,7 +57,7 @@
       type="button"
       x-on:click="dark = false; light = false; custom_theme = !custom_theme"
       :class="{'bg-base-content text-base-100' : custom_theme }"
-      phx-click="Bonfire.Me.Settings:put_theme"
+      phx-click="Bonfire.Common.Settings:put_theme"
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:custom}
       phx-value-scope={@scope}

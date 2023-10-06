@@ -10,7 +10,7 @@
         data-set-theme={t}
         data-act-class="outline"
         x-on:click={"theme = '#{t}'"}
-        phx-click="Bonfire.Me.Settings:put_theme"
+        phx-click="Bonfire.Common.Settings:put_theme"
         phx-value-keys={"ui:theme:#{@key}"}
         phx-value-values={t}
         phx-value-scope={@scope}
@@ -64,7 +64,7 @@
           data-set-theme={t}
           data-act-class="ACTIVECLASS"
           x-on:click={"theme = '#{t}'"}
-          phx-click="Bonfire.Me.Settings:put_theme"
+          phx-click="Bonfire.Common.Settings:put_theme"
           phx-value-keys={"ui:theme:#{@key}"}
           phx-value-values={t}
           phx-value-scope={@scope}

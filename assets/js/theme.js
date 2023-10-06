@@ -52,7 +52,7 @@ ThemeHooks.ColourPicker = {
 
                 // do the thing
                 console.log("set")
-                hook.pushEvent("Bonfire.Me.Settings:put", { keys: "ui:theme:custom:" + id, values: value, scope: scope })
+                hook.pushEvent("Bonfire.Common.Settings:put", { keys: "ui:theme:custom:" + id, values: value, scope: scope })
 
             }, 1000);
             

@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common.LayoutView do
   def render("root.html", assigns) do
     ~F"""
     <!DOCTYPE html>
-    <html class="overflow-hidden bg-base-300" lang="en" data-theme={ Bonfire.Me.Settings.get([:ui, :theme, :instance_theme], "bonfire", @__context__)}>
+    <html class="overflow-hidden bg-base-300" lang="en" data-theme={ Bonfire.Common.Settings.get([:ui, :theme, :instance_theme], "bonfire", @__context__)}>
       <head>
         <meta charset="utf-8"/>
 

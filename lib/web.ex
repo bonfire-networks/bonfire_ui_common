@@ -219,7 +219,7 @@ defmodule Bonfire.UI.Common.Web do
       # use instead: Bonfire's voodoo routing, eg: `path(Bonfire.UI.Social.FeedsLive):
       import Bonfire.Common.URIs
 
-      alias Bonfire.Me.Settings
+      alias Bonfire.Common.Settings
       alias Bonfire.Common.Config
       import Config, only: [repo: 0]
 
