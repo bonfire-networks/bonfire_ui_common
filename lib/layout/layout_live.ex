@@ -113,35 +113,31 @@ defmodule Bonfire.UI.Common.LayoutLive do
     <div
       data-id="bonfire_live"
       class="antialiased"
-      data-theme={
-        if Settings.get(
-             [:ui, :theme, :preferred],
-             :system,
+      data-theme={if Settings.get(
+           [:ui, :theme, :preferred],
+           :system,
+           assigns[:__context__] || assigns[:current_user] || @conn
+         ) == :light,
+         do:
+           Settings.get(
+             [:ui, :theme, :instance_theme_light],
+             "light",
              assigns[:__context__] || assigns[:current_user] || @conn
-           ) == :light,
-           do:
-             Settings.get(
-               [:ui, :theme, :instance_theme_light],
-               "light",
-               assigns[:__context__] || assigns[:current_user] || @conn
-             ),
-           else:
-             Settings.get(
-               [:ui, :theme, :instance_theme],
-               "bonfire",
-               assigns[:__context__] || assigns[:current_user] || @conn
-             )
-      }
+           ),
+         else:
+           Settings.get(
+             [:ui, :theme, :instance_theme],
+             "bonfire",
+             assigns[:__context__] || assigns[:current_user] || @conn
+           )}
       x-data="{
         open_sidebar: false
       }"
-
       style={maybe_custom_theme(
         current_user: @current_user || current_user(@__context__),
         current_account: current_account(@__context__),
         instance_settings: @instance_settings
       )}
-
     >
       {!-- div
         :if={!@current_user_id or
@@ -340,7 +336,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
                     <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
                   </LiveRedirect>
                 </div>
-                <div :if={!ActivityPub.Config.federating?()} class="bg-base-content/10 rounded px-2 py-1 text-xs mt-4 inline-block">{l "Federation disabled"}</div>
+                <div
+                  :if={!ActivityPub.Config.federating?()}
+                  class="bg-base-content/10 rounded px-2 py-1 text-xs mt-4 inline-block"
+                >{l("Federation disabled")}</div>
               </div>
             </div>
           </div>

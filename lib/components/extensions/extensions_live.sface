@@ -21,16 +21,16 @@
           <li><a
               href={get_link(dep) |> debug(e(dep, :app, "Unknown"))}
               target="_blank"
-              class="flex-1 block w-full "
+              class="flex-1 block w-full"
             >{l("View code repository")}</a></li>
-          <li><a href={get_code_link(dep)} target="_blank" class="flex-1 block w-full ">{l("View running code")}</a></li>
-          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full ">{l("View code changes")}</a></li>
+          <li><a href={get_code_link(dep)} target="_blank" class="flex-1 block w-full">{l("View running code")}</a></li>
+          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full">{l("View code changes")}</a></li>
           {#if to_string(e(dep, :app, nil)) not in @required_deps}
             <Bonfire.UI.Common.ExtensionToggleLive
-                id={e(dep, :app, nil)}
-                scope={@scope}
-                can_instance_wide={@can_instance_wide}
-              />
+              id={e(dep, :app, nil)}
+              scope={@scope}
+              can_instance_wide={@can_instance_wide}
+            />
           {/if}
         </ul>
       </div>
@@ -52,7 +52,7 @@
         </label>
         <ul
           tabindex="0"
-          class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48 "
+          class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48"
         >
           <li><a
               href={get_link(dep) |> debug(e(dep, :app, "Unknown"))}
@@ -89,7 +89,7 @@
         </label>
         <ul
           tabindex="0"
-          class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48 "
+          class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48"
         >
           <li><a
               href={get_link(dep) |> debug(e(dep, :app, "Unknown"))}
@@ -118,7 +118,7 @@
         </label>
         <ul
           tabindex="0"
-          class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48 "
+          class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48"
         >
           <li><a
               href={get_link(dep) |> debug(e(dep, :app, "Unknown"))}
@@ -147,7 +147,7 @@
         </label>
         <ul
           tabindex="0"
-          class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48 "
+          class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48"
         >
           <li><a
               href={get_link(dep) |> debug(e(dep, :app, "Unknown"))}
