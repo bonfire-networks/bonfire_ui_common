@@ -210,6 +210,7 @@ defmodule Bonfire.UI.Common do
     socket
   end
 
+  # TODO: caching
   def rich(content, opts \\ []) do
     case content do
       _ when is_binary(content) ->
@@ -267,6 +268,7 @@ defmodule Bonfire.UI.Common do
     rich(content)
   end
 
+  # TODO: only render this once
   def templated(content, data \\ %{})
 
   def templated(content, data) when is_binary(content) do
