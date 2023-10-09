@@ -94,7 +94,7 @@
       {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
         <LiveRedirect
           to={path(:signup)}
-          class="md:flex-1 hidden md:flex normal-case rounded-full btn-outline btn-primary btn"
+          class="md:flex-1 hidden md:flex border-opacity-30 normal-case rounded-full btn-outline btn-primary btn"
         >{l("Sign up")}</LiveRedirect>
       {/if}
     </div>
