@@ -40,7 +40,7 @@
         {#case @widget[:badge]}
           {#match nil}
           {#match badge}
-            <div class="flex absolute left-7 top-0 items-center place-content-center">
+            <div class="flex absolute left-7 top-0 items-center place-content-center widget_notification">
               <Dynamic.LiveComponent
                 id={badge[:id] || Text.random_string()}
                 module={Bonfire.UI.Common.BadgeCounterLive}
