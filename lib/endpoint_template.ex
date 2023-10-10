@@ -118,11 +118,4 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       max_age: Config.get(:session_time_to_remember, 60 * 60 * 24 * 60)
     ]
   end
-
-  @doc "(re)generates the reverse router (useful so it can be re-generated when extensions are enabled/disabled)"
-  def generate_reverse_router!(app \\ :bonfire) do
-    Code.put_compiler_option(:ignore_module_conflict, true)
-    Code.eval_file(Path.join(:code.priv_dir(app), "extras/router_reverse.ex"))
-    Code.put_compiler_option(:ignore_module_conflict, false)
-  end
 end

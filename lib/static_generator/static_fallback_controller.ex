@@ -14,7 +14,7 @@ defmodule Bonfire.UI.Common.StaticFallbackController do
       )
 
       conn
-      |> redirect(to: public_url)
+      |> redirect_to(public_url)
       |> halt()
     else
       e ->

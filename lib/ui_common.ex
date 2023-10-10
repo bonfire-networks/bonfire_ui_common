@@ -941,6 +941,10 @@ defmodule Bonfire.UI.Common do
 
   def redirect_to(socket_or_conn, to \\ nil, opts \\ [])
 
+  def redirect_to(socket, to, opts) when is_nil(to) or to == "" do
+    redirect_to(socket, path_fallback(socket, opts), opts)
+  end
+
   def redirect_to(%Phoenix.LiveView.Socket{} = socket, to, opts) do
     debug(to, "redirect socket to")
 
@@ -969,6 +973,10 @@ defmodule Bonfire.UI.Common do
     patch_to(socket_or_conn, path, opts)
   end
 
+  def patch_to(socket, to, opts) when is_nil(to) or to == "" do
+    patch_to(socket, path_fallback(socket, opts), opts)
+  end
+
   def patch_to(%Phoenix.LiveView.Socket{} = socket, to, opts) when is_binary(to) do
     debug(to, "patch socket to")
 
@@ -986,12 +994,12 @@ defmodule Bonfire.UI.Common do
     patch_to(socket, path_fallback(socket, opts))
   end
 
-  def patch_to(%Plug.Conn{} = conn, to, opts) do
+  def patch_to(conn, to, opts) do
     redirect_to(conn, to, opts)
   end
 
   def path_fallback(socket_or_conn, opts) do
-    opts[:fallback] || current_url(socket_or_conn) || path(:error) || "/error"
+    opts[:fallback] || current_url(socket_or_conn) || "/error?invalid_path"
   end
 
   def maybe_push_event(%Phoenix.LiveView.Socket{} = socket, name, data) do
