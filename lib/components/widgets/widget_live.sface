@@ -10,7 +10,7 @@
             do: "flex items-center w-full gap-4 px-2 py-2 rounded-md",
             else: "block w-full"}
       >
-        <div class="flex-1 relative flex items-center gap-5">
+        <div class="flex-1 relative flex items-center gap-5 widget_content">
           <span :if={!@without_icon && (@widget[:icon] || @widget[:icon_active])} class="">
             {#if not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])}
               <Iconify.iconify
@@ -31,7 +31,7 @@
             :if={!@without_label}
             class={
               @text_class ||
-                ["font-medium text-base-content/80 flex-1 text-[15px]"],
+                ["font-medium text-base-content/80 flex-1 text-[15px] widget_text"],
               "!font-bold !text-base-content":
                 not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
             }

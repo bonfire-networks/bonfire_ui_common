@@ -1236,3 +1236,11 @@ hex-input::part(input) {
 
 .exdiff-del { color: red; text-decoration: line-through; }
 .exdiff-ins { color: green; }
+
+.sidebar_menu_item .widget_content {
+  @apply justify-end;
+}
+
+.sidebar_menu_item .widget_content .widget_text {
+  @apply hidden tablet-lg:flex;
+}

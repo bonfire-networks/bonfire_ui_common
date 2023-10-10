@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Common.LogoLinkLive do
 
   prop image_class, :css_class, default: "w-10 h-10 bg-center bg-no-repeat bg-contain"
 
-  prop name_class, :css_class, default: "text-xl font-bold text-base-content"
+  prop name_class, :css_class, default: "text-xl font-bold text-base-content tablet-lg:block hidden"
 
   slot default
 end

@@ -13,7 +13,7 @@
       size="40"
       user={current_user(@__context__)}
     />
-    <#Icon solid="DotsHorizontal" class="w-5 h-5 text-base-content/70" />
+    <#Icon solid="DotsHorizontal" class="w-5 h-5 tablet-lg:block hidden text-base-content/70" />
   </label>
   <ul
     tabindex="0"
