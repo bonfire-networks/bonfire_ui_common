@@ -8,7 +8,7 @@
     smart_input_component={@smart_input_component}
     create_object_type={@create_object_type}
     thread_mode={@thread_mode}
-    to_boundaries={Bonfire.Boundaries.boundaries_or_default(@to_boundaries)}
+    to_boundaries={Bonfire.Boundaries.boundaries_or_default(@to_boundaries, @__context__)}
     to_circles={@to_circles}
     smart_input_opts={@smart_input_opts}
     activity={@activity}

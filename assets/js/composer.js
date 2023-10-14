@@ -14,7 +14,7 @@ ComposerHooks.ScreenSize = {
     const composer_body = document.getElementById("write_post_body_field");
 
     // boundaries general
-    const boundaries_general = document.getElementById("boundaries_general_access");
+    const boundaries_general = composerWrapper.getElementsByClassName("boundaries_general_access")[0];
     // boundaries preview
     const boundaries_preview = document.getElementById("preview_boundaries_container");
     // set boundaries

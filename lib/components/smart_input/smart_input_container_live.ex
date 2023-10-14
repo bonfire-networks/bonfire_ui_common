@@ -116,7 +116,10 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
 
   def assign_boundaries(socket) do
     to_boundaries =
-      Bonfire.Boundaries.boundaries_or_default(e(socket.assigns, :to_boundaries, nil))
+      Bonfire.Boundaries.boundaries_or_default(
+        e(socket.assigns, :to_boundaries, nil),
+        socket.assigns
+      )
       |> debug()
 
     socket

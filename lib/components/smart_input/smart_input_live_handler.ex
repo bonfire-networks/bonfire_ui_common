@@ -292,7 +292,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       activity: nil,
       to_circles: [],
       reply_to_id: e(socket.assigns, :thread_id, nil),
-      to_boundaries: Bonfire.Boundaries.default_boundaries(socket),
+      to_boundaries: Bonfire.Boundaries.default_boundaries(socket.assigns),
       smart_input_opts: %{
         open: false,
         text_suggestion: nil,
@@ -334,7 +334,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       to_circles: [],
       reply_to_id: e(socket.assigns, :thread_id, nil),
       thread_id: nil,
-      to_boundaries: Bonfire.Boundaries.default_boundaries(socket),
+      to_boundaries: Bonfire.Boundaries.default_boundaries(socket.assigns),
       smart_input_opts: %{
         open: false,
         text_suggestion: nil,
