@@ -336,7 +336,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   </LiveRedirect>
                 </div>
                 <div
-                  :if={!ActivityPub.Config.federating?()}
+                  :if={maybe_apply(Bonfire.Federate.ActivityPub, :federating?, @current_user) == false}
                   class="bg-base-content/10 rounded px-2 py-1 text-xs mt-4 inline-block"
                 >{l("Federation disabled")}</div>
               </div>

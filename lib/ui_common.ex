@@ -271,7 +271,7 @@ defmodule Bonfire.UI.Common do
   # TODO: only render this once
   def templated(content, data \\ %{})
 
-  def templated(content, data) when is_binary(content) do
+  def templated(content, data) when is_binary(content) and content != "" do
     content
     |> Text.maybe_render_templated(data)
     |> debug(content)
