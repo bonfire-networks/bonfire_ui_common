@@ -18,13 +18,11 @@ defmodule Bonfire.UI.Common.LiveComponent do
   def mount(_params, _session, socket), do: {:ok, socket}
 
   def render(assigns) do
-    load_live_component = e(assigns, :load_live_component, nil)
-
     ~H"""
-    <%= if load_live_component and module_enabled?(load_live_component),
+    <%= if @load_live_component and module_enabled?(@load_live_component),
       do:
         live_component(
-          load_live_component,
+          @load_live_component,
           assigns
         ) %>
     """

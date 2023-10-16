@@ -11,6 +11,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   alias Bonfire.Data.Identity.User
   alias Surface.Components.Dynamic
   # alias Surface.Components.Context
+  alias Bonfire.Common.TestInstanceRepo
 
   @endpoint Application.compile_env!(:bonfire, :endpoint_module)
 
@@ -19,6 +20,29 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
 
   def fake_user!(account \\ %{}, attrs \\ %{}, opts \\ []),
     do: Bonfire.Me.Fake.fake_user!(account, attrs, opts)
+
+  def fancy_fake_user!(name, opts \\ []) do
+    # repo().delete_all(ActivityPub.Object)
+    id = Pointers.ULID.generate()
+    user = fake_user!("#{name} #{id}", opts, opts)
+    display_username = Bonfire.Me.Characters.display_username(user, true)
+
+    [
+      user: user,
+      username: display_username,
+      url_on_local:
+        "@" <>
+          display_username <>
+          "@" <> Bonfire.Common.URIs.instance_domain(Bonfire.Me.Characters.character_url(user)),
+      canonical_url: Bonfire.Me.Characters.character_url(user),
+      friendly_url:
+        "#{Bonfire.Common.URIs.base_url()}#{Bonfire.Common.URIs.path(user) || "/@#{display_username}"}"
+    ]
+  end
+
+  def fancy_fake_user_on_test_instance(opts \\ []) do
+    TestInstanceRepo.apply(fn -> fancy_fake_user!("Remote", opts) end)
+  end
 
   def fake_admin!(account \\ %{}, attrs \\ %{}, opts \\ []) do
     user = fake_user!(account, attrs, opts)

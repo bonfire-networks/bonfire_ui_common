@@ -168,7 +168,8 @@
                   <div class="hidden flex-1 h-full grow" id="boundaries_preview">
                     <div class="flex flex-col h-full">
                       <Dynamic.LiveComponent
-                        :if={module_enabled?(Bonfire.Boundaries.Web.PreviewBoundariesLive)}
+                        :if={module_enabled?(Bonfire.Boundaries.Web.PreviewBoundariesLive) and
+                          Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false}
                         module={Bonfire.Boundaries.Web.PreviewBoundariesLive}
                         id="boundaries_preview"
                         preview_boundary_for_id={@preview_boundary_for_id}

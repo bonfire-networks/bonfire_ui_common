@@ -4,6 +4,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   """
   use Bonfire.UI.Common.Web, :stateless_component
 
+  prop conn, :any, default: nil
   prop page, :string, default: nil
   prop page_title, :string, default: nil
   prop selected_tab, :any, default: nil
@@ -134,7 +135,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         open_sidebar: false
       }"
       style={maybe_custom_theme(
-        current_user: @current_user || current_user(@__context__),
+        current_user: current_user(@__context__),
         current_account: current_account(@__context__),
         instance_settings: @instance_settings
       )}
@@ -145,7 +146,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         class="px-4 lg:px-0 mb-6 border-b border-base-content/20 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
       >
         <Bonfire.UI.Common.GuestHeaderLive
-          current_user={@current_user || current_user(@__context__)}
+          current_user={current_user(@__context__)}
           current_account={current_account(@__context__)}
           page_title={@page_title}
           page={@page}
@@ -336,7 +337,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   </LiveRedirect>
                 </div>
                 <div
-                  :if={maybe_apply(Bonfire.Federate.ActivityPub, :federating?, @current_user) == false}
+                  :if={maybe_apply(Bonfire.Federate.ActivityPub, :federating?, current_user(@__context__)) == false}
                   class="bg-base-content/10 rounded px-2 py-1 text-xs mt-4 inline-block"
                 >{l("Federation disabled")}</div>
               </div>
@@ -345,7 +346,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
         </div>
       </div>
 
-      {!--      {if module_enabled?(RauversionExtension.UI.TrackLive.Player, @current_user || current_user(@__context__)),
+      {!--      
+      {if module_enabled?(RauversionExtension.UI.TrackLive.Player, current_user(@__context__)),
         do:
           live_render(@socket, RauversionExtension.UI.TrackLive.Player,
             id: "global-main-player",
