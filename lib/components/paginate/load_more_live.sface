@@ -17,14 +17,15 @@
     phx-value-context={@context}
     phx-value-after={@cursor}
     class="w-full flex items-center justify-center mb-4"
-    x-data={"{show: #{socket_connected?(@__context__)}}"}
+    x-data="{show: false}"
+    x-init={"{show: #{socket_connected?(@__context__)}}"}
     {...@opts}
   >
     {!-- phx-click={if @infinite_scroll != :preload or !@entry_count or @entry_count == 0, do: "#{@live_handler}:load_more"} --}
     <span
       class="normal-case btn btn-outline rounded-full btn-primary !border !border-primary/30"
-      style="display: none"
-      x-show="show"
+      x-cloak={!@hide_guest_fallback}
+      x-show={if @hide_guest_fallback, do: nil, else: "show"}
     >
       {!-- href={"#" <> @cursor} --}
       {!-- "btn-disabled": !@entry_count --}
@@ -35,6 +36,7 @@
           else: l("Load more")}
     </span>
     <a
+      :if={!@hide_guest_fallback}
       x-cloak
       class="normal-case btn btn-outline rounded-full btn-primary !border !border-primary/30"
       x-show="!show"

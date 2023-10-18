@@ -6,5 +6,5 @@ defmodule Bonfire.UI.Common.ChangeThemeLive do
   prop theme, :string
   prop themes, :list
 
-  prop scope, :any, default: :user
+  prop scope, :any, default: nil
 end

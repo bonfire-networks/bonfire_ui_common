@@ -11,9 +11,9 @@ defmodule Bonfire.UI.Common.LoadMoreLive do
   prop infinite_scroll, :any, default: false
   prop hide_load_more, :boolean, default: false
   prop hide_if_no_more, :boolean, default: false
+  prop hide_guest_fallback, :boolean, default: false
 
   prop opts, :map, default: %{}
-
   slot if_no_more
 
   def render(assigns) do

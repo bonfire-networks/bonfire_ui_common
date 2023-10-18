@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.ChangeThemesLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop scope, :any, default: :user
+  prop scope, :any, default: nil
   # prop theme, :string
   # prop theme_light, :string
   # prop scoped, :any, default: nil
