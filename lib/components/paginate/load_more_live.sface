@@ -17,8 +17,7 @@
     phx-value-context={@context}
     phx-value-after={@cursor}
     class="w-full flex items-center justify-center mb-4"
-    x-data="{show: false}"
-    x-init={"{show: #{socket_connected?(@__context__)}}"}
+    x-data={"{show: #{socket_connected?(@__context__)}}"}
     {...@opts}
   >
     {!-- phx-click={if @infinite_scroll != :preload or !@entry_count or @entry_count == 0, do: "#{@live_handler}:load_more"} --}
