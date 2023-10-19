@@ -143,6 +143,21 @@
         <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Members")}</span>
       </div>
     </li>
+    <!-- <li>
+      <LivePatch
+        to={~p"/settings/instance/team"}
+        class={
+          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+          "bg-base-content/10": @selected_tab == "team"
+        }
+      >
+        <#Icon
+          iconify="mdi:key"
+          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "team"}
+        />
+        <span class="text-sm text-base-content/70">{l("Team")}</span>
+      </LivePatch>
+    </li> -->
     <li>
       <LivePatch
         to={~p"/settings/instance/members"}
