@@ -40,7 +40,7 @@
           phx-value-id={id(@object)}
           phx-value-type={@object_type}
           type="button"
-          class="normal-case rounded btn btn-sm btn-error"
+          class="normal-case rounded-full btn btn-sm btn-warning"
         >
           {e(@label, l("Flag %{user_or_thing}", user_or_thing: @object_type))}
         </button>

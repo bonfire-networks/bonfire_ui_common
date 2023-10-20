@@ -154,7 +154,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       </div --}
 
       <div class={
-        "w-full px-0 md:px-4 grid max-w-[600px] md:max-w-[680px] lg:max-w-[1020px] tablet-lg:max-w-[1170px] gap-0 md:gap-4 widget xl:px-0 mx-auto",
+        "w-full px-0 md:px-4 grid max-w-[600px] md:max-w-[680px] lg:max-w-[1020px] tablet-lg:max-w-[1200px] gap-0 md:gap-4 widget xl:px-0 mx-auto",
         "!grid-cols-1 content-start": @without_sidebar && @without_secondary_widgets,
         # "grid-cols-1 !max-w-full": !@current_user_id,
         "grid-cols-1 md:grid-cols-1 content-start !max-w-full":
@@ -346,7 +346,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         </div>
       </div>
 
-      {!--      
+      {!--
       {if module_enabled?(RauversionExtension.UI.TrackLive.Player, current_user(@__context__)),
         do:
           live_render(@socket, RauversionExtension.UI.TrackLive.Player,

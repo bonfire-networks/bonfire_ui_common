@@ -5,7 +5,7 @@
        ) || Bonfire.Common.NavModule.nav(@__context__[:current_app]) || [])
     |> debug("nav_items")}
     {#match nav_items when is_list(nav_items) and nav_items != []}
-      <div data-id="nav_links" class="menu gap-1 p-0 justify-end">
+      <div data-id="nav_links" class="menu gap-2 p-0 justify-end">
         {#for nav <- nav_items}
           {#case List.wrap(nav)}
             {#match nav when nav != []}

@@ -57,7 +57,7 @@
           phx-click={LiveHandler.confirm_close_smart_input(if @__context__[:sticky], do: "persistent_modal")}
           phx-target="#smart_input"
           type="button"
-          class="normal-case rounded btn btn-sm btn-error rounded-full"
+          class="normal-case btn btn-sm btn-error rounded-full"
         >
           {l("Delete")}
         </button>

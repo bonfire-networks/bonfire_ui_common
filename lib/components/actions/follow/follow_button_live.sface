@@ -1,4 +1,7 @@
-<div title={@title}>
+<div 
+  class="flex items-center gap-2"
+  x-data={"{text: '#{@verb_already || l("Following")}'}"}
+  title={@title}>
   {#if @my_follow == nil}
     <button disabled class="normal-case rounded-full btn btn-disabled btn-sm">{l("loading...")}</button>
   {#elseif !@my_follow}
@@ -45,7 +48,7 @@
       </a>
     </span>
   {#else}
-    <span x-data={"{text: '#{@verb_already || l("Following")}'}"}>
+    <span >
       <a
         phx-disable-with={l("loading...")}
         x-on:mouseover={"text = '#{@verb_undo || l("Unfollow")}'"}

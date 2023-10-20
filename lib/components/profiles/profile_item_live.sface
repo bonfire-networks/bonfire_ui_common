@@ -10,7 +10,7 @@
       comment={if @lg, do: false, else: true}
       user={@profile}
       title={e(@profile, :name, "")}
-      class={@avatar_class || "w-8 h-8"}
+      class={@avatar_class || "w-10 h-10"}
     />
     <div
       :if={@only_img != true}
@@ -19,10 +19,10 @@
         "flex gap-1 items-baseline": @inline
       }
     >
-      <p class={"text-sm font-bold text-base-content", "text-base": @lg}>
+      <p class={"text-base font-bold text-base-content", "text-base": @lg}>
         {e(@profile, :name, "Anon")}
       </p>
-      <p :if={!@inline} class="-mt-1 text-[13px] text-base-content/70">
+      <p :if={!@inline} class="text-sm text-base-content/70">
         {Bonfire.Me.Characters.display_username(e(@character, :username, nil), true)}
       </p>
     </div>
