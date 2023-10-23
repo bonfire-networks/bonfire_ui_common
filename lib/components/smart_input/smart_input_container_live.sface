@@ -30,10 +30,8 @@
       <div
         id="smart_input_container"
         class={
-          "w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0",
-          "!left-1 !right-1 xl:!left-auto xl:!right-auto w-full top-0 md:top-auto max-h-screen overflow-overlay md:overflow-x-auto xl:max-w-[1200px] !left-auto !right-auto":
-            @smart_input_as == :focused,
-          "md:w-[32rem] md:right-4 md:top-auto max-h-screen": @smart_input_as != :focused,
+          "w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0 md:w-[32rem] md:right-4 md:top-auto max-h-screen",
+          "!inset-0 !top-[5%] !h-[400px]": Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__),
           hidden: e(@smart_input_opts, :open, nil) != true
         }
       >
@@ -41,8 +39,8 @@
           <div class="w-full rounded-t-lg bg-base-200 flex flex-col flex-1 h-full grow">
             {!-- "md:!w-[20rem] tablet-lg:block bottom-0": e(@smart_input_opts, :minimized, nil) == true, --}
 
-            {!-- <div
-            :if={@smart_input_as == :focused}
+            <div
+            :if={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
             phx-click={LiveHandler.close_smart_input()}
             phx-target="#smart_input"
             class={
@@ -50,7 +48,7 @@
               hidden: e(@smart_input_opts, :open, nil) == false
             }
             style="-webkit-backdrop-filter: blur(8px);"
-          /> --}
+          />
 
             <div class={
               "smart_input_modal relative z-50 md:rounded-t-lg flex flex-col grow h-full",

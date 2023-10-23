@@ -1,0 +1,15 @@
+<div id="pins_list">
+  {!-- <Bonfire.UI.Common.PageTitleLive page_title={@page_title} /> --}
+  <!-- <Bonfire.UI.Social.FeedLive
+    id={e(@feed_id, :pins)}
+    feed_id={@feed_id}
+    page_title={@page_title}
+    current_user={e(current_user(@__context__), nil)}
+    feed={@feed}
+    page_info={@page_info}
+    previous_page_info={false}
+    showing_within={:pins}
+    loading={@loading}
+    hide_tabs
+  /> -->
+</div>

@@ -12,7 +12,7 @@ defmodule Bonfire.UI.Common.SettingsInputLive do
 
   prop read_only, :boolean, default: false
 
-  prop class, :css_class, default: "input input-sm w-16"
+  prop class, :css_class, default: "input input-sm w-16 input-bordered"
 
   prop current_value, :any, default: :load_from_settings
   prop input, :string, default: nil
