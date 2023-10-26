@@ -4,11 +4,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   def switch_smart_input_type(type, js \\ %JS{}) do
     js
     |> maximize()
-    |> JS.push("set",
-      value: %{
-        smart_input_as: type
-      }
-    )
   end
 
   def show_main(js \\ %JS{}, _opts \\ nil) do
@@ -82,12 +77,12 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     )
   end
 
-  def handle_event("set", %{"smart_input_as" => smart_input_as}, socket) do
-    # note: only works with phx-target being the smart input, in other cases use `set/2` instead
-    {:noreply,
-     socket
-     |> assign(smart_input_as: maybe_to_atom(smart_input_as) |> debug("smart_input_as"))}
-  end
+  # def handle_event("set", %{"smart_input_as" => smart_input_as}, socket) do
+  #   # note: only works with phx-target being the smart input, in other cases use `set/2` instead
+  #   {:noreply,
+  #    socket
+  #    |> assign(smart_input_as: maybe_to_atom(smart_input_as) |> debug("smart_input_as"))}
+  # end
 
   def handle_event("select_smart_input", params, socket) do
     push_event(socket, "mentions-suggestions", %{mentions: e(params, "mentions", [])})
@@ -405,8 +400,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     nil
   end
 
-  def set_smart_input_as(context),
-    do: Settings.get([:ui, :smart_input_as], :non_blocking, context)
+  # def set_smart_input_as(context),
+  #   do: Settings.get([:ui, :smart_input_as], :non_blocking, context)
 
   # def as(smart_input_opts) do
   #   # FIXME: in some situations we end up with `[:non_blocking, :non_blocking, :non_blocking]`

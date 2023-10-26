@@ -1,11 +1,28 @@
-<div
-  phx-update="ignore"
-  class="h-full flex-1 grow min-h-[250px] overflow-y-auto max-h-[380px] md:max-h-[450px]"
-  phx-hook="Milkdown"
-  data-suggestion={e(@smart_input_opts, :text_suggestion, nil) || e(@smart_input_opts, :text, nil)}
-  id="editor_milkdown_container"
->
-  <input name="post[post_content][html_body]" type="hidden" id="editor_hidden_input">
-  <div id="editor" class="w-full flex flex-1 h-full">
-  </div>
-</div>
+{#case rich_editor_module(e(@smart_input_opts, :wysiwyg, true), @__context__)}
+  {#match component when is_atom(component) and not is_nil(component)}
+    {!-- editor component from user's preferred extension --}
+    <Dynamic.Component module={component} {...assigns} />
+
+    {!-- fallback if JS is disabled --}
+    {!-- <noscript>
+      <TextArea
+        name={"fallback_#{@field_name}"}
+        opts={
+          value: e(@smart_input_opts, :text, nil) || e(@smart_input_opts, :text_suggestion, nil),
+          placeholder: e(@smart_input_opts, :prompt, nil)
+        }
+        class={@textarea_class}
+      />
+    </noscript> --}
+  {#match _}
+    {!-- NOTE: this is only used if no other editor module (like `Bonfire.UI.Common.ComposerLive` by default) is configured --}
+    <TextArea
+      opts={
+        value:
+          (e(@smart_input_opts, :text, nil) || e(@smart_input_opts, :text_suggestion, ""))
+          |> debug("vvvv"),
+        placeholder: e(@smart_input_opts, :prompt, "") |> debug("ppppp")
+      }
+      class={@textarea_class}
+    />
+{/case}

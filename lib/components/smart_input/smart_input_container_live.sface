@@ -24,9 +24,6 @@
 
     {#if not is_nil(current_user_id(@__context__))}
       <Bonfire.UI.Common.ComposerMinimizedLive />
-      {!-- :if={@smart_input_as != :focused} --}
-
-      {!-- style="height: 380px" --}
       <div
         id="smart_input_container"
         class={
@@ -50,19 +47,9 @@
             style="-webkit-backdrop-filter: blur(8px);"
           />
 
-            <div class={
-              "smart_input_modal relative z-50 md:rounded-t-lg flex flex-col grow h-full",
-              "!rounded-b-none": @smart_input_as == :non_blocking
-            }>
-              {!-- <div class="h-[2px] relative bg-base-content/5 rounded-t-lg" id="gutter">
-                <div
-                  class="absolute inset-0 top-[-2px] bottom-[-2px] hover:bg-base-content/10 left-0 right-0 cursor-row-resize"
-                  id="gutter-inner"
-                />
-              </div> --}
+            <div class={"smart_input_modal relative z-50 md:rounded-t-lg flex flex-col grow h-full"}>
               <Bonfire.UI.Common.SmartInputHeaderModalLive
                 smart_input_opts={@smart_input_opts}
-                smart_input_as={@smart_input_as}
               />
 
               <div
@@ -89,7 +76,6 @@
                   uploaded_files={@uploaded_files}
                   trigger_submit={@trigger_submit}
                   reset_smart_input={@reset_smart_input}
-                  smart_input_as={@smart_input_as}
                   activity_inception={@activity_inception}
                   preview_boundary_for_id={@preview_boundary_for_id}
                   preview_boundary_for_username={@preview_boundary_for_username}
@@ -103,19 +89,6 @@
                   phx-change="select"
                   phx-target={@myself}
                 >
-                  {!-- PRESET BOUNDARY PICKER --}
-                  {!-- <div class="hidden flex-1 h-full grow" id="boundaries_picker">
-                    <div class="flex flex-col h-full">
-                      <Dynamic.Component
-                        :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesGeneralAccessLive)}
-                        module={Bonfire.Boundaries.Web.BoundariesGeneralAccessLive}
-                        to_boundaries={@to_boundaries}
-                        is_dropdown
-                        boundary_preset={@boundary_preset}
-                      />
-                    </div>
-                  </div> --}
-
                   {!-- CUSTOM BOUNDARIES --}
                   <div class="hidden flex-1 h-full grow" id="extra_boundaries">
                     <div class="flex flex-col h-full">
@@ -141,26 +114,6 @@
                     </div>
                   </div>
 
-                  {!-- ROLES DETAIL --}
-                  <div class="hidden flex-1 h-full grow" id="roles_detail">
-                    <div class="flex flex-col h-full">
-                      <div style="min-height: 320px; height: 360px" class="h-full flex-1 px-2 pb-12 overflow-y-auto">
-                        {!-- FIXME: we should only load roles when clicked, rather than on every page load --}
-                        <Dynamic.LiveComponent
-                          :if={module_enabled?(Bonfire.Boundaries.Web.RolesLive)}
-                          module={Bonfire.Boundaries.Web.RolesLive}
-                          id="roles_in_composer"
-                          scope={:smart_input}
-                        />
-                      </div>
-                      <Dynamic.Component
-                        :if={module_enabled?(Bonfire.Boundaries.Web.BoundaryComposerActionsLive)}
-                        module={Bonfire.Boundaries.Web.BoundaryComposerActionsLive}
-                        done_label={l("Back")}
-                        hide_preview
-                      />
-                    </div>
-                  </div>
 
                   {!-- PREVIEW BOUNDARIES --}
                   <div class="hidden flex-1 h-full grow" id="boundaries_preview">

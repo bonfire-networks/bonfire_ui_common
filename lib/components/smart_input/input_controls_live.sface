@@ -47,7 +47,6 @@
           </div>
 
           {!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE --}
-
           <#slot {@default} />
         </div>
       </div>
@@ -64,33 +63,11 @@
                 :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
                 module={Bonfire.UI.Common.EmojiPickerLive}
                 target_field=".composer"
-                class={
-                  "bottom-10 left-3",
-                  "!top-10 right-0 bottom-[auto]": @showing_within == :page
-                }
+                class={"bottom-10 left-3"}
               />
             </div>
 
-            {!-- <div
-          :if={@show_cw_toggle}
-          title={l("Add a content warning")}
-          class="relative z-30 flex items-center"
-        >
-          <button
-            :if={@create_object_type in [:message, :post, nil]}
-            type="button"
-            phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
-              "#smart_input_post_title",
-              ".btn_cw_toggle",
-              "btn-active"
-            )}
-            class="flex items-center btn btn-ghost btn-sm btn-circle btn_cw_toggle"
-          >
-            <#Icon iconify="ri:alarm-warning-line" class="w-4 h-4 text-base-content/70" />
-          </button>
-        </div> --}
-
-            <div
+             <div
               :if={@create_object_type in [:message, :post, nil]}
               title={l("Mark the activity as sensitive")}
               class="relative z-30 flex items-center"
@@ -134,28 +111,6 @@
                     <#Icon iconify="ri:italic" class="w-4 h-4 text-base-content/70" />
                   </button>
                 </li>
-                {!-- STRIKE --}
-                {!-- <button id="strike_btn" type="button" class="flex items-center btn btn-ghost btn-sm btn-circle">
-                <#Icon iconify="ri:strikethrough-2" class="w-4 h-4 text-base-content/70" />
-              </button> --}
-
-                {!-- QUOTE --}
-                {!-- <button
-                      id="quote_btn"
-                      type="button"
-                      class="flex items-center btn btn-ghost btn-sm btn-circle"
-                    >
-                      <#Icon iconify="ri:double-quotes-l" class="w-4 h-4 text-base-content/70 " />
-                    </button>
-                  --}
-                {!-- TABLE --}
-                {!-- <button
-                id="table_btn"
-                type="button"
-                class="flex items-center btn btn-ghost btn-sm btn-circle"
-              >
-                <#Icon iconify="ri:table-line" class="w-4 h-4 text-base-content/70 " />
-              </button> --}
               </ul>
             </div>
             <div class="flex flex-1 gap-2">
@@ -170,17 +125,6 @@
                   preview_boundary_verbs={@preview_boundary_verbs}
                   to_circles={@to_circles}
                 />
-
-                {!-- <button
-                  type="button"
-                  phx-click={JS.show(to: "#boundaries_preview")
-                  |> JS.hide(to: "#composer_container")}
-                  class="flex items-center btn btn-ghost btn-sm  btn-circle"
-                  title={l("Preview boundaries")}
-                >
-                  <#Icon iconify="mdi:eye-outline" class="w-4 h-4 !text-base-content/70" />
-                  <span class="sr-only">{l("Preview boundaries")}</span>
-                </button> --}
               {/if}
               <div class="dropdown dropdown-top dropdown-end">
                 <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
@@ -226,35 +170,6 @@
                       <span class="text-sm text-base-content/70">{l("Minimize")}</span>
                     </button>
                   </li>
-                  {!-- <li>
-                      <Bonfire.UI.Common.OpenModalLive
-                        id="close_composer"
-                        reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
-                        title_text={l("Delete the draft")}
-                        cancel_label={l("Cancel")}
-                        open_btn_wrapper_class="flex "
-                        action_btns_wrapper_class="normal-case rounded btn btn-sm btn-error"
-                      >
-                        <div class="mt-3 prose-sm prose">
-                          <p>{l("Closing the composer will discard your post. Are you sure you want to close it?")}</p>
-                        </div>
-                        <:open_btn>
-                          <button class="flex items-center gap-2">
-                            <#Icon outline="X" class="w-5 h-5 stroke-1 w-4 h-4 text-base-content/70" />
-                            <span class="text-sm text-base-content/70">{l("Close")}</span>
-                          </button>
-                        </:open_btn>
-                        <:action_btns>
-                          <button
-                            phx-click={LiveHandler.confirm_close_smart_input(if @__context__[:sticky], do: "persistent_modal")}
-                            phx-target="#smart_input"
-                            type="button"
-                          >
-                            <span class="text-sm text-base-content/70">{l("Delete")}</span>
-                          </button>
-                        </:action_btns>
-                      </Bonfire.UI.Common.OpenModalLive>
-                    </li> --}
                 </ul>
               </div>
             </div>
@@ -270,14 +185,6 @@
               disabled={e(@smart_input_opts, :submit_disabled, nil)}
             >
               <#Icon iconify="majesticons:send" class="w-4 h-4" />
-              {!-- x-bind:disabled={"body_length() > #{Bonfire.Common.Settings.get([Bonfire.UI.Common.SmartInputLive, :max_length], :instance, @__context__[:instance_settings])}"} --}
-              {!-- {#if @create_object_type == :message}
-                {l("Send")}
-              {#else}
-                {@submit_label || l("Post")}
-              {/if}
-
-              {e(@smart_input_opts, :submit_label, nil)} --}
             </button>
           </div>
         </div>

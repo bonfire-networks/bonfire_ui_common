@@ -21,13 +21,13 @@ defmodule Bonfire.UI.Common.WriteEditorLive do
 
   def use_rich_editor?(with_rich_editor, context) do
     with_rich_editor == true and
-      Bonfire.Common.Settings.get([:ui, :rich_text_editor_disabled], false, context) != true
+      Bonfire.Common.Settings.get([:ui, :rich_text_editor_disabled], false, nil) != true
   end
 
   def rich_editor_module(with_rich_editor, context) do
     if use_rich_editor?(with_rich_editor, context) do
       default = Bonfire.UI.Common.ComposerLive
-      module = Bonfire.Common.Settings.get([:ui, :rich_text_editor], default, context)
+      module = Bonfire.Common.Settings.get([:ui, :rich_text_editor], default, nil)
 
       if module_enabled?(module, context),
         do: module,
