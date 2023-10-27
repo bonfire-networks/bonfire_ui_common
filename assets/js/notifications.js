@@ -8,7 +8,6 @@ NotificationsHooks.Notification = {
         } else {
             console.debug("notification permission is already granted ")
         }
-
         this.handleEvent("notify", ({ title, message, url, icon }) => sendNotification(title, message, url, icon));
     }
 } 

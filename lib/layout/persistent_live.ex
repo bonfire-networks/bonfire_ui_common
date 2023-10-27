@@ -43,6 +43,10 @@ defmodule Bonfire.UI.Common.PersistentLive do
      |> debug("socket prepared via session"), layout: false}
   end
 
+  # def handle_info(:clear_flash, socket) do
+  #   {:noreply,  socket |> clear_flash()}
+  # end
+
   defp assign_defaults(socket, fun \\ &assign_new/3) do
     socket
     |> fun.(:showing_within, fn -> nil end)
