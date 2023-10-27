@@ -34,14 +34,12 @@ defmodule Bonfire.UI.Common.NotificationLive do
      |> assign(assigns)}
   end
 
-  def update(%{"notification" => notification }, socket) do
+  def update(%{"notification" => notification}, socket) do
     {:ok,
      socket
      # FIXME: clearing here is a TEMP fix to avoid overlapping alerts
-     |> special_clear_all()
-     }
+     |> special_clear_all()}
   end
-
 
   def update(assigns, socket) do
     # debug(assigns, "assigns")

@@ -3,7 +3,6 @@
     {e(@smart_input_opts, :prompt, l("Share your thoughts"))}
   </span>
   <div class="absolute flex items-center gap-5 md:gap-3 right-3">
-
     <Bonfire.UI.Common.OpenModalLive
       id="close_composer"
       reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}

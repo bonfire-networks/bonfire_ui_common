@@ -9,11 +9,13 @@ defmodule Bonfire.UI.Common.PinnedLive do
 
   def update(assigns, socket) do
     current_user = current_user(assigns) || current_user(socket.assigns)
-    feed = Bonfire.Social.Pins.list_by(
-      assigns.user,
-      object_type: e(assigns, :object_types, []),
-      current_user: current_user
-    )
+
+    feed =
+      Bonfire.Social.Pins.list_by(
+        assigns.user,
+        object_type: e(assigns, :object_types, []),
+        current_user: current_user
+      )
 
     edges =
       for %{edge: %{} = edge} <- e(feed, :edges, []),

@@ -22,8 +22,7 @@
                 event_target={@event_target}
                 class={Surface.css_class([
                   "",
-                  "text-base-content/100":
-                    @selected_tab == tab or to_string(@selected_tab) == to_string(tab)
+                  "text-base-content/100": @selected_tab == tab or to_string(@selected_tab) == to_string(tab)
                 ])}
               >
                 <div class="">{localise_dynamic(tab_name)}</div>

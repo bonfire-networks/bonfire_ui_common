@@ -63,11 +63,11 @@
                 :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
                 module={Bonfire.UI.Common.EmojiPickerLive}
                 target_field=".composer"
-                class={"bottom-10 left-3"}
+                class="bottom-10 left-3"
               />
             </div>
 
-             <div
+            <div
               :if={@create_object_type in [:message, :post, nil]}
               title={l("Mark the activity as sensitive")}
               class="relative z-30 flex items-center"
