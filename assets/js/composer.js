@@ -18,8 +18,9 @@ ComposerHooks.ScreenSize = {
     // boundaries preview
     const boundaries_preview = document.getElementById("preview_boundaries_container");
     // set boundaries
-    const set_boundaries = document.getElementById("set_boundaries"); 
-    
+    // const set_boundaries = document.getElementById("set_boundaries"); 
+    const set_boundaries = composerWrapper.getElementsByClassName("set_boundaries")[0];
+
     
     // function resizer(e) {
     //   disableBodyScroll(document.body);
