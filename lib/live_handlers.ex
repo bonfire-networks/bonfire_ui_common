@@ -161,6 +161,15 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   end
 
   # helper for when a searches for an option in `LiveSelect`
+  defp do_handle_event(
+         "live_select_change" = event,
+         %{"field" => "multi_select_" <> mod} = data,
+         socket
+       ) do
+    debug("LiveSelect: autocomplete: handle_event with {#{mod}, data}")
+    mod_delegate(mod, :do_handle_event, [event, data], socket)
+  end
+
   defp do_handle_event("live_select_change" = event, %{"field" => mod} = data, socket) do
     debug("LiveSelect: autocomplete: handle_event with {#{mod}, data}")
     mod_delegate(mod, :do_handle_event, [event, data], socket)
