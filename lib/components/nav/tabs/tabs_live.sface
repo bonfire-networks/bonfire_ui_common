@@ -41,6 +41,13 @@
       <#slot />
     </div>
   {#else}
+    <div :if={@type == :with_header} class="flex justify-between items-center w-full px-4">
+      <div class="text-lg font-bold">
+        {@selected_name}
+      </div>
+      <#slot />
+    </div>
+
     {#for {{tab, tab_name}, i} <- Enum.with_index(@tabs)}
       <Dynamic.Component
         module={@link_component}
