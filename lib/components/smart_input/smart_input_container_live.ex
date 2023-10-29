@@ -73,7 +73,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
      #    )
      #  end)
      |> assign(smart_input_opts: Map.merge(old_smart_input_opts, new_smart_input_opts))
-     |> assign_boundaries()}
+     |> Bonfire.Boundaries.LiveHandler.prepare_assigns()}
   end
 
   # def update(%{set_smart_input_text_if_empty: text} = assigns, %{assigns: %{smart_input_opts: smart_input_opts}} = socket) do
@@ -99,34 +99,18 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   # end
 
   def update(assigns, socket) do
-    {:ok,
-     socket
-     |> assign(assigns)
-     #  |> assign_new(:smart_input_as, fn ->
-     #    LiveHandler.set_smart_input_as(
-     #      e(assigns, :__context__, nil) || current_user(assigns) || current_user(socket.assigns)
-     #    )
-     #  end)
-     |> assign_boundaries()}
-  end
-
-  def assign_boundaries({reply, socket}) do
-    {reply, socket |> assign_boundaries()}
-  end
-
-  def assign_boundaries(socket) do
-    to_boundaries =
-      e(socket.assigns, :to_boundaries, nil)
-      |> debug("existing")
-      |> Bonfire.Boundaries.boundaries_or_default(socket.assigns)
-      |> debug()
-
-    socket
-    |> assign(
-      to_boundaries: to_boundaries,
-      boundary_preset:
-        Bonfire.Boundaries.Web.SetBoundariesLive.boundaries_to_preset(to_boundaries)
-    )
+    {
+      :ok,
+      socket
+      |> assign(assigns)
+      #  |> assign_new(:smart_input_as, fn ->
+      #    LiveHandler.set_smart_input_as(
+      #      e(assigns, :__context__, nil) || current_user(assigns) || current_user(socket.assigns)
+      #    )
+      #  end)
+      |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
+      # TODO: only trigger if module enabled ^
+    }
   end
 
   def handle_event(
@@ -143,7 +127,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       __MODULE__,
       &LiveHandler.handle_event/3
     )
-    |> assign_boundaries()
+    |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
   end
 
   def handle_info(info, socket),
