@@ -12,8 +12,8 @@
             parent_id="user_preview"
             class="inline-block object-cover w-16 h-16"
             bg_class="h-full"
-            size="64"
-            user={@user}
+            src={Media.avatar_url(@user)}
+            user_id={id(@user)}
           />
           {!-- rounded-full bg-base-300 --}
         </div>

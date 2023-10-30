@@ -55,20 +55,11 @@
       parent_id="nav_footer_mobile"
       class="inline-block object-cover w-8 h-8 rounded-full bg-base-content/5 cursor-pointer min-h-full"
       bg_class="rounded-full h-full bg-base-300"
-      size="32"
-      user={current_user(@__context__)}
+      src={Media.avatar_url(current_user(@__context__))}
+      user_id={current_user_id(@__context__)}
     />
   </div>
-  <!-- <LiveRedirect :if={current_user(@__context__)} to={path(current_user(@__context__))} class="">
-    <Bonfire.UI.Common.AvatarLive
-      parent_id="nav_footer_mobile"
-      class="inline-block object-cover w-8 h-8 rounded-full bg-base-content/5 cursor-pointer md:hidden"
-      bg_class="rounded-full bg-base-300"
-      size="32"
-      user={current_user(@__context__)}
-    />
-    <span class="sr-only">{l("Your profile")}</span>
-  </LiveRedirect> -->
+  
 
   <LiveRedirect :if={!current_user(@__context__)} to="/about">
     <#Icon solid="DotsHorizontal" class="w-6 h-6 text-base-content/70" />

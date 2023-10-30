@@ -1,29 +1,27 @@
 <div
-  title={e(@user, :profile, :name, nil)}
   class="border-0 avatar !flex"
   :if={!Settings.get([Bonfire.UI.Common.AvatarLive, :hide_avatars], false, @__context__)}
 >
   <div class={
-    classes(%{viewing_main_object: @viewing_main_object, comment: @comment, class: @class}),
+    @class,
     "!rounded ": Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true, @__context__)
   }>
-    {#case @avatar_fallback || Media.avatar_fallback(id(@user))}
+  <!-- @title 
+    || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
+    e(@user, :name, nil) ||
+    e(@user, :username, nil) ||
+    l("Avatar") -->
+    {#case @avatar_fallback || Media.avatar_fallback(@user_id)}
       {#match avatar_fallback}
-        {#case @src || Media.avatar_url(@user)}
+        {#case @src}
           {#match url when is_binary(url) and url != avatar_fallback}
-            <div title={e(@user, :profile, :name, nil)} class={@bg_class}>
+            <div title={@title} class={@bg_class}>
               <LazyImage
                 parent_id={@parent_id}
-                media={Media.avatar_media(@user)}
+                media={url}
                 src={url}
-                title={@title || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
-                  e(@user, :name, nil) ||
-                  e(@user, :username, nil) ||
-                  l("Avatar")}
-                alt={@title || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
-                  e(@user, :name, nil) ||
-                  e(@user, :username, nil) ||
-                  l("Avatar")}
+                title={@title}
+                alt={@title}
                 fallback_icon={Icon.icon_name("material-symbols:person-2-rounded")}
                 opts={@opts}
               />
@@ -31,10 +29,7 @@
           {#match _}
             {#if Settings.get([Bonfire.UI.Common.AvatarLive, :animal_avatars], true, @__context__)}
               <svg
-                title={@title || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
-                  e(@user, :name, nil) ||
-                  e(@user, :username, nil) ||
-                  l("Avatar")}
+                title={@title}
                 xmlns="http://www.w3.org/2000/svg"
                 version="1.1"
                 width="100%"
@@ -49,35 +44,17 @@
                   fill="none"
                   class={@bg_class}
                 />
-                {raw(animal_avatar(id(@user)))}
+                {raw(animal_avatar(@user_id))}
               </svg>
-              {!-- <div
-                id={"randomAnimalAvatar-#{id(@user) || id(@src) || Text.hash(@src)}"}
-                phx-hook="randomAnimalAvatar"
-                title={@title}
-                data-size={size(%{viewing_main_object: @viewing_main_object, comment: @comment, size: @size})}
-                data-seed={id(@user) || id(@src) || @src}
-                phx-update="ignore"
-                {...@opts}
-              /> --}
             {#else}
               <div class={@bg_class}>
                 <div
-                  title={@title || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
-                    e(@user, :name, nil) ||
-                    e(@user, :username, nil) ||
-                    l("Avatar")}
+                  title={@title}
                   class={@class, "iconify -mt-0 md:-mt-0 text-base-content/60"}
                   iconify="heroicons:user-20-solid"
                   title={@title}
                   {...@opts}
                 />
-                {!-- <img
-                  src={avatar_fallback}
-                  alt={e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) || e(@user, :name, nil) ||
-                    l("Avatar")}
-                  {...@opts}
-                /> --}
               </div>
             {/if}
         {/case}

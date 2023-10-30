@@ -8,7 +8,8 @@
     <Bonfire.UI.Common.AvatarLive
       parent_id={"profile_item_#{@parent_id}"}
       comment={if @lg, do: false, else: true}
-      user={@profile}
+      user_id={id(@profile)}
+      src={Media.avatar_url(@profile)}
       title={e(@profile, :name, "")}
       class={@avatar_class || "w-10 h-10"}
     />

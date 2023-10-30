@@ -10,8 +10,8 @@
       :if={is_map(current_user(@__context__))}
       parent_id="nav_sidebar"
       class="inline-block object-cover w-[34px] h-[34px] rounded-full  bg-base-100"
-      size="40"
-      user={current_user(@__context__)}
+      src={Media.avatar_url(current_user(@__context__))}
+      user_id={current_user_id(@__context__)}
     />
     <#Icon solid="DotsHorizontal" class="w-5 h-5 tablet-lg:block hidden text-base-content/70" />
   </label>

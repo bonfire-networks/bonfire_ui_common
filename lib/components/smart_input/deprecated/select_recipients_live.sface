@@ -27,7 +27,8 @@
                     parent_id="select_recipients"
                     class="w-10 h-10 rounded-full"
                     bg_class="rounded-full"
-                    user={e(user, :edge, :object, nil)}
+                    src={Media.avatar_url(e(user, :edge, :object, nil))}
+                    user_id={id(e(user, :edge, :object, nil))}
                   />
                 </div>
                 <div class="flex-1 min-w-0">

@@ -5,8 +5,8 @@
         parent_id="members"
         class="inline-block object-cover rounded-full w-8 h-8"
         bg_class="rounded-full bg-base-100"
-        size="32"
-        user={@user}
+        user_id={id(@user)}
+        src={Media.avatar_url(@user)}
       />
       <div>
         <LiveRedirect

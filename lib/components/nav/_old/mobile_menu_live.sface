@@ -33,8 +33,8 @@
                   parent_id="mobile_menu"
                   class="inline-block object-cover w-16 h-16 rounded-full cursor-pointer bg-base-100"
                   bg_class="rounded bg-base-300"
-                  size="42"
-                  user={current_user(@__context__)}
+                  src={Media.avatar_url(current_user(@__context__))}
+                  user_id={current_user_id(@__context__)}
                 />
                 <div class="flex items-center">
                   <div class="flex flex-col flex-1">
