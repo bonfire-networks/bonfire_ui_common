@@ -6,7 +6,7 @@
     @class,
     "!rounded ": Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true, @__context__)
   }>
-  <!-- @title 
+    <!-- @title 
     || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
     e(@user, :name, nil) ||
     e(@user, :username, nil) ||

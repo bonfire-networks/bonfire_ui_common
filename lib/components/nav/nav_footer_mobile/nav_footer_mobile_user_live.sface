@@ -59,7 +59,6 @@
       user_id={current_user_id(@__context__)}
     />
   </div>
-  
 
   <LiveRedirect :if={!current_user(@__context__)} to="/about">
     <#Icon solid="DotsHorizontal" class="w-6 h-6 text-base-content/70" />

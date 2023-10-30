@@ -1069,10 +1069,16 @@ defmodule Bonfire.UI.Common do
       # debug(entry, "consume_uploaded_entries entry")
 
       with {:ok, uploaded} <-
-             Bonfire.Files.upload(nil, current_user, path, %{
-               client_name: entry.client_name,
-               metadata: metadata[entry.ref]
-             })
+             Bonfire.Files.upload(
+               nil,
+               current_user,
+               path,
+               %{
+                 client_name: entry.client_name,
+                 metadata: metadata[entry.ref]
+               },
+               move_original: true
+             )
              |> debug("uploaded") do
         {:ok, uploaded}
       else
