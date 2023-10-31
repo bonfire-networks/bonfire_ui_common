@@ -12,19 +12,19 @@ FeedHooks.PreviewActivity = {
     }
   },
   mounted() {
-      this.el.addEventListener("click", e => {
+    this.el.addEventListener("click", e => {
       console.log("PreviewActivity clicked")
 
       let trigger = this.el.querySelector('.open_preview_link')
       let anchor = e.target.closest('a')
-        
+
       // this was used to expand long posts by clicking on them, now replaced with a 'Read more' button
       // let previewable_activity = e.target.closest('.previewable_activity')
       // anchor == trigger || (!anchor && previewable_activity && ( previewable_activity.classList.contains('previewable_expanded') || this.isTruncated(previewable_activity.querySelector('.previewable_truncate')) == false)
-        
+
       if (trigger && ((!anchor || anchor.classList.contains('preview_activity_link')) && !e.ctrlKey && !e.metaKey && !window.getSelection().toString() && !e.target.closest('article > article') && !e.target.closest('button') && !e.target.closest('figure') && !e.target.closest('.dropdown')
       )) {
-        let uri = this.el.dataset.href || (trigger !==undefined && trigger.getAttribute('href')) //this.el.dataset.permalink
+        let uri = this.el.dataset.href || (trigger !== undefined && trigger.getAttribute('href')) //this.el.dataset.permalink
         if (window.liveSocket) {
           // const feed = document.querySelector(".feed")
           const main = document.getElementById("inner")
@@ -32,9 +32,9 @@ FeedHooks.PreviewActivity = {
           const preview_content = document.getElementById("preview_content")
           let previous_scroll = null
 
-            console.log("push event to load up the PreviewContent")
-            this.pushEventTo(trigger, "open", {})
-          
+          console.log("push event to load up the PreviewContent")
+          this.pushEventTo(trigger, "open", {})
+
           // this.pushEvent("Bonfire.Social.Feeds:open_activity", { id: this.el.dataset.id, permalink: uri })
 
           if (layout) {
@@ -64,7 +64,7 @@ FeedHooks.PreviewActivity = {
         } else {
 
           // fallback if not connected with live socket
-            
+
           if (uri) {
             console.log(uri)
             window.location = uri;
@@ -74,35 +74,35 @@ FeedHooks.PreviewActivity = {
           }
         }
 
-    } else {
+      } else {
 
-      // e.preventDefault();
+        // e.preventDefault();
         console.log("PreviewActivity: do not trigger preview in favour of another link or button's action (or opening in new tab)")
-        
+
         // if (previewable_activity) { previewable_activity.classList.add("previewable_expanded") }
-      
 
-      return;
 
-    } 
+        return;
+
+      }
 
     })
   }
-} 
+}
 
 
 // FeedHooks.Back = {
 //   mounted() {
-    
+
 //     if (window.history.length > 1) {
 //       // show the back icon svg
 //       this.el.classList.remove("hidden")
-      
+
 //       this.el.addEventListener("click", e => {
 //         console.log(window.history)
 //         e.preventDefault();
 //         // window.history.back();
-      
+
 //        })
 //       } else {
 //       // se la cronologia del browser è vuota, non fare nulla
@@ -115,7 +115,7 @@ FeedHooks.PreviewActivity = {
 FeedHooks.ClosePreview = {
   mounted() {
 
-    const back = function () {
+    const back = function() {
       const layout = document.getElementById("root")
       const main = document.getElementById("inner")
       const preview_content = document.getElementById("preview_content")
@@ -157,4 +157,3 @@ FeedHooks.ClosePreview = {
 }
 
 export { FeedHooks }
-

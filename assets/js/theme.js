@@ -11,71 +11,71 @@ import 'vanilla-colorful/hex-input.js';
 
 //     mounted() {
 //         // run on a view/component with theme-changing controls (wrapper should have phx-hook="Themeable")
-//         themeChange(false) 
+//         themeChange(false)
 //     },
 
 // }
 
 ThemeHooks.ColourPicker = {
 
-    mounted() {
-        const id = this.el.id;
-        const picker = this.el.querySelector('hex-color-picker');
-        const input = this.el.querySelector('hex-input');
-        const preview = this.el.querySelector('.colour_preview');
-        const scope = this.el.dataset.scope;
-        var count = 0;
-        var debounceCount = 0;
-        var debounce;
+  mounted() {
+    const id = this.el.id;
+    const picker = this.el.querySelector('hex-color-picker');
+    const input = this.el.querySelector('hex-input');
+    const preview = this.el.querySelector('.colour_preview');
+    const scope = this.el.dataset.scope;
+    var count = 0;
+    var debounceCount = 0;
+    var debounce;
 
-        let value = input.color.replace("#", "")
-        picker.color = value;
-        // this.el.style.backgroundColor = "#" + value;
-
-
-        const maybe_set = function (hook) {
-            console.log("maybe_set")
-            // Alpine.debounce(() => this.set(), 500)
-            // Alpine.throttle(() => this.set(), 500)
-
-            // Update the count by 1
-            count++;
-
-            // Clear any existing debounce event
-            clearTimeout(debounce);
-
-            // Update and log the counts after 3 seconds
-            debounce = setTimeout(function () {
-
-                // Update the debounceCount
-                debounceCount++;
-
-                // do the thing
-                console.log("set")
-                hook.pushEvent("Bonfire.Common.Settings:put", { keys: "ui:theme:custom:" + id, values: value, scope: scope })
-
-            }, 1000);
-            
-        }
-
-        picker.addEventListener('color-changed', (event) => {
-            value = event.detail.value;
-            console.log(value)
-            preview.style.backgroundColor = value;
-            console.log(preview)
-            input.color = value;
-            maybe_set(this)
-        });
-
-        input.addEventListener('color-changed', (event) => {
-            value = event.detail.value;
-            picker.color = value;
-            preview.style.backgroundColor = value;
-            maybe_set(this)
-        });	
+    let value = input.color.replace("#", "")
+    picker.color = value;
+    // this.el.style.backgroundColor = "#" + value;
 
 
-    },
+    const maybe_set = function(hook) {
+      console.log("maybe_set")
+      // Alpine.debounce(() => this.set(), 500)
+      // Alpine.throttle(() => this.set(), 500)
+
+      // Update the count by 1
+      count++;
+
+      // Clear any existing debounce event
+      clearTimeout(debounce);
+
+      // Update and log the counts after 3 seconds
+      debounce = setTimeout(function() {
+
+        // Update the debounceCount
+        debounceCount++;
+
+        // do the thing
+        console.log("set")
+        hook.pushEvent("Bonfire.Common.Settings:put", { keys: "ui:theme:custom:" + id, values: value, scope: scope })
+
+      }, 1000);
+
+    }
+
+    picker.addEventListener('color-changed', (event) => {
+      value = event.detail.value;
+      console.log(value)
+      preview.style.backgroundColor = value;
+      console.log(preview)
+      input.color = value;
+      maybe_set(this)
+    });
+
+    input.addEventListener('color-changed', (event) => {
+      value = event.detail.value;
+      picker.color = value;
+      preview.style.backgroundColor = value;
+      maybe_set(this)
+    });
+
+
+  },
 
 }
 

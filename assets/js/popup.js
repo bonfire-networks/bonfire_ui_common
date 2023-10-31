@@ -7,22 +7,22 @@ import tippy from 'tippy.js';
 
 PopupHooks.Popup = {
 
-    mounted() {
+  mounted() {
 
-      // Instanciate tippy
-      const template = this.el.querySelector('.tippy_template');
-      tippy(this.el.querySelector('.tippy'), {
-        content: template.innerHTML,
-        arrow: true,
-        interactive: true,
-        animation: 'shift-away',
-        delay: [500, 200],
-        allowHTML: true,
-      }); 
+    // Instanciate tippy
+    const template = this.el.querySelector('.tippy_template');
+    tippy(this.el.querySelector('.tippy'), {
+      content: template.innerHTML,
+      arrow: true,
+      interactive: true,
+      animation: 'shift-away',
+      delay: [500, 200],
+      allowHTML: true,
+    });
 
 
 
-    },
+  },
 
 
 }

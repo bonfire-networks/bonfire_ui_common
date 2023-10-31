@@ -1,4 +1,4 @@
-import {flip, shift, offset, autoUpdate, computePosition} from '@floating-ui/dom'
+import { flip, shift, offset, autoUpdate, computePosition } from '@floating-ui/dom'
 let TooltipHooks = {};
 
 TooltipHooks.Tooltip = {
@@ -10,8 +10,8 @@ TooltipHooks.Tooltip = {
       autoUpdate(button, tooltip, () => {
         computePosition(button, tooltip, {
           placement: 'top',
-          middleware: [offset(6), flip({padding: 5}), shift({padding: 5})],
-        }).then(({x, y}) => {
+          middleware: [offset(6), flip({ padding: 5 }), shift({ padding: 5 })],
+        }).then(({ x, y }) => {
           Object.assign(tooltip.style, {
             left: `${x}px`,
             top: `${y}px`,
@@ -57,7 +57,7 @@ TooltipHooks.Tooltip = {
     ].forEach(([event, listener]) => {
       button.addEventListener(event, listener);
     });
-    
+
   },
 }
 

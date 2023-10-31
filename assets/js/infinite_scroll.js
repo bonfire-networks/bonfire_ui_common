@@ -1,16 +1,16 @@
 let InfiniteScrollHooks = {};
 
 InfiniteScrollHooks.InfiniteScroll = {
-  
+
   page() { return this.el.dataset.page; },
   getPhxValues(el) {
     return el
-    .getAttributeNames()
-    .filter(name => name.startsWith("phx-value-"))
-    .reduce((obj, name) => ({
-      ...obj,
-      [name.substring(10)]: el.getAttribute(name)
-    }), {})
+      .getAttributeNames()
+      .filter(name => name.startsWith("phx-value-"))
+      .reduce((obj, name) => ({
+        ...obj,
+        [name.substring(10)]: el.getAttribute(name)
+      }), {})
   },
   loadMore(entries) {
     const target = entries[0];
@@ -61,11 +61,11 @@ InfiniteScrollHooks.InfiniteScroll = {
         }
         this.el.getElementsByTagName("span")[0].innerHTML = "Load more";
         this.el.dataset.entryCount = 0;
-        
+
       } else {
         console.log("no entryCount")
       }
-      
+
     });
   },
   destroyed() {

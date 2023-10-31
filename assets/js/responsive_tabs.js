@@ -4,13 +4,13 @@ let ResponsiveTabsHooks = {};
 ResponsiveTabsHooks.ResponsiveTabsHook = {
   mounted() {
 
-  const container = this.el
+    const container = this.el
     const primary = container.querySelector('.tabs-list')
     const primaryItems = container.querySelectorAll('.tabs-list > li:not(.-more)')
 
-  // insert "more" button and duplicate the list
+    // insert "more" button and duplicate the list
 
-  primary.insertAdjacentHTML('beforeend', `
+    primary.insertAdjacentHTML('beforeend', `
     <li class="-more flex-grow">
       <div class="dropdown dropdown-end block leading-[3rem] !px-0.5 !h-[3rem]">
         <label tabindex="0" class="more-btn btn btn-sm btn-circle btn-ghost">
@@ -21,68 +21,68 @@ ResponsiveTabsHooks.ResponsiveTabsHook = {
         </ul>
       </div>
     </li>
-  
+
   `)
 
-  const secondary = container.querySelector('.-secondary')
-  console.log(secondary)
-  const secondaryItems = secondary.querySelectorAll('li')
-  const allItems = container.querySelectorAll('li')
-  const moreLi = primary.querySelector('.-more')
-  const moreBtn = moreLi.querySelector('.more-btn')
-  moreBtn.addEventListener('click', (e) => {
-    e.preventDefault()
-    container.classList.toggle('--show-secondary')
-    moreBtn.setAttribute('aria-expanded', container.classList.contains('--show-secondary'))
-  })
-
-  // adapt tabs
-
-  const doAdapt = () => {
-    // reveal all items for the calculation
-    allItems.forEach((item) => {
-      item.classList.remove('hidden')
+    const secondary = container.querySelector('.-secondary')
+    console.log(secondary)
+    const secondaryItems = secondary.querySelectorAll('li')
+    const allItems = container.querySelectorAll('li')
+    const moreLi = primary.querySelector('.-more')
+    const moreBtn = moreLi.querySelector('.more-btn')
+    moreBtn.addEventListener('click', (e) => {
+      e.preventDefault()
+      container.classList.toggle('--show-secondary')
+      moreBtn.setAttribute('aria-expanded', container.classList.contains('--show-secondary'))
     })
 
-    // hide items that won't fit in the Primary
-    let stopWidth = moreBtn.offsetWidth
-    console.log("resizing")
-    console.log(stopWidth)
+    // adapt tabs
 
-    let hiddenItems = []
-    const primaryWidth = primary.offsetWidth
-    console.log(primaryWidth)
-    primaryItems.forEach((item, i) => {
-      if(primaryWidth >= stopWidth + item.offsetWidth + 80) {
-        console.log("test")
-        console.log(stopWidth + item.offsetWidth)
-        stopWidth += item.offsetWidth
-      } else {
-        item.classList.add('hidden')
-        hiddenItems.push(i)
-      }
-    })
-    
-    // toggle the visibility of More button and items in Secondary
-    if(!hiddenItems.length) {
-      moreLi.classList.add('hidden')
-      container.classList.remove('--show-secondary')
-      moreBtn.setAttribute('aria-expanded', false)
-    }
-    else {  
-      secondaryItems.forEach((item, i) => {
-        if(!hiddenItems.includes(i)) {
+    const doAdapt = () => {
+      // reveal all items for the calculation
+      allItems.forEach((item) => {
+        item.classList.remove('hidden')
+      })
+
+      // hide items that won't fit in the Primary
+      let stopWidth = moreBtn.offsetWidth
+      console.log("resizing")
+      console.log(stopWidth)
+
+      let hiddenItems = []
+      const primaryWidth = primary.offsetWidth
+      console.log(primaryWidth)
+      primaryItems.forEach((item, i) => {
+        if (primaryWidth >= stopWidth + item.offsetWidth + 80) {
+          console.log("test")
+          console.log(stopWidth + item.offsetWidth)
+          stopWidth += item.offsetWidth
+        } else {
           item.classList.add('hidden')
+          hiddenItems.push(i)
         }
       })
-    }
-  }
 
-  doAdapt() // adapt immediately on load
-  window.addEventListener('resize', doAdapt) // adapt on window resize
+      // toggle the visibility of More button and items in Secondary
+      if (!hiddenItems.length) {
+        moreLi.classList.add('hidden')
+        container.classList.remove('--show-secondary')
+        moreBtn.setAttribute('aria-expanded', false)
+      }
+      else {
+        secondaryItems.forEach((item, i) => {
+          if (!hiddenItems.includes(i)) {
+            item.classList.add('hidden')
+          }
+        })
+      }
+    }
+
+    doAdapt() // adapt immediately on load
+    window.addEventListener('resize', doAdapt) // adapt on window resize
 
   }
 }
 
 
-export { ResponsiveTabsHooks } 
+export { ResponsiveTabsHooks }

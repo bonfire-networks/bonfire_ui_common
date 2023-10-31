@@ -6,7 +6,7 @@ import insertText from 'insert-text-at-cursor';
 
 
 EmojiHooks.EmojiPicker = {
-  
+
   mounted() {
     const trigger = document.querySelector('.emoji-button');
     // trigger.addEventListener('click', () => {
@@ -19,13 +19,13 @@ EmojiHooks.EmojiPicker = {
     //   emojiSize: '1.75rem',
     //   className: 'z-[9999]',
     // });
-    
+
 
     // picker.addEventListener('emoji:select', event => {
     //   return event.emoji
     // });
 
-    }
+  }
 
 }
 

@@ -1,7 +1,7 @@
 let CopyHooks = {};
 
 CopyHooks.Copy = {
-  
+
   mounted() {
     let { to } = this.el.dataset;
 
@@ -13,7 +13,7 @@ CopyHooks.Copy = {
         el = document.getElementById(to)
       } else {
         el = this.el
-      } 
+      }
       let link = el.getAttribute("href")
       console.log(link)
 
@@ -23,7 +23,7 @@ CopyHooks.Copy = {
         text = el.value;
       }
 
-      if (text !==undefined) {
+      if (text !== undefined) {
         navigator.clipboard.writeText(text).then(() => {
           console.log("Copied to clipboard!")
           if (this.flash) {
@@ -33,8 +33,7 @@ CopyHooks.Copy = {
       }
     });
 
-    }
+  }
 }
 
 export { CopyHooks }
-

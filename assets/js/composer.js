@@ -18,10 +18,10 @@ ComposerHooks.ScreenSize = {
     // boundaries preview
     const boundaries_preview = document.getElementById("preview_boundaries_container");
     // set boundaries
-    // const set_boundaries = document.getElementById("set_boundaries"); 
+    // const set_boundaries = document.getElementById("set_boundaries");
     const set_boundaries = composerWrapper.getElementsByClassName("set_boundaries")[0];
 
-    
+
     // function resizer(e) {
     //   disableBodyScroll(document.body);
     //   document.body.style.userSelect = 'none';
@@ -29,15 +29,15 @@ ComposerHooks.ScreenSize = {
     //   window.addEventListener('mouseup', mouseup);
     //   let prevy = e.y;
     //   const leftPanel = composer.getBoundingClientRect();
-      
+
     //   function mousemove(e) {
     //     document.body.style.cursor = 'row-resize';
     //     let newY = prevy - e.y;
     //     composer.style.height = leftPanel.height + newY + "px";
-        
+
     //     // programmatically remove 48px from the composer_body max height
     //     composer_body.style.maxHeight = composer_body.getBoundingClientRect().height - 48 + "px";
-        
+
     //     // console.log(smartInput.getBoundingClientRect().height)
     //     // smartInput.style.height = smartInput.getBoundingClientRect().height - 60 + "px";
     //     // console.log(smartInput.style.height)
@@ -78,7 +78,7 @@ ComposerHooks.ScreenSize = {
     const composer = this.el
     const composerWrapper = document.getElementById("composer_wrapper");
     // composerWrapper.style.height = composer.getBoundingClientRect().height - 54 - 52 - 42 + "px";
-    
+
   }
 }
 
@@ -101,7 +101,7 @@ ComposerHooks.Composer = {
     const container = document.querySelector("#smart_input");
 
 
-    setFileInput = function (data, input, name, defaultType = "image/jpeg") {
+    setFileInput = function(data, input, name, defaultType = "image/jpeg") {
       // console.log(data)
       var split = data.toString().split(";base64,");
       var type = data.type || defaultType;

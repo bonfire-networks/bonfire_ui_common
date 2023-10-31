@@ -17,7 +17,7 @@ module.exports = {
     // '../(extensions|forks|deps)/*/lib/**/*{.leex,.heex,.sface,_live.ex}',
     // '../{extensions,forks,deps}/*/assets/js/**/*.js',
     '../../../lib/**/*{.leex,.heex,.sface,_live.ex}',
-    // '../../../assets/js/**/*.js', 
+    // '../../../assets/js/**/*.js',
     '../../../(extensions|forks|deps)/*/lib/**/*{.leex,.heex,.sface,_live.ex}',
     // '../../../{extensions,forks,deps}/*/assets/js/**/*.js',
     // '../../../deps/live_select/lib/live_select/component.*ex', // what should this point to?
@@ -67,7 +67,7 @@ module.exports = {
             },
             p: {
               margin: 0,
-              lineHeight: '20px' 
+              lineHeight: '20px'
             },
             li: {
               lineHeight: '20px'
@@ -87,7 +87,7 @@ module.exports = {
             },
             p: {
               margin: 0,
-              lineHeight: '20px' 
+              lineHeight: '20px'
             },
             li: {
               lineHeight: '20px'
@@ -137,12 +137,12 @@ module.exports = {
   },
   variants: {
     extend: {
-     ringWidth:['hover'],
-     divideColor: ['dark'],
-     ringColor: ['group-hover', 'hover'],
-     fontWeight: ['group-hover'],
-     borderWidth: ['hover', 'focus'],
-     typography: ['dark']
+      ringWidth: ['hover'],
+      divideColor: ['dark'],
+      ringColor: ['group-hover', 'hover'],
+      fontWeight: ['group-hover'],
+      borderWidth: ['hover', 'focus'],
+      typography: ['dark']
     }
   },
   plugins: [
