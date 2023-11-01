@@ -16,7 +16,7 @@ defmodule Bonfire.UI.Common.WidgetLive do
 
   prop wrapper_class, :css_class, default: "m-0 p-0 rounded-md !block"
   prop link_class, :any, default: nil
-  prop icon_class, :css_class, required: false, default: "w-7 h-7 text-base-content"
+  prop icon_class, :css_class, required: false, default: "w-7 h-7 text-base-content/80"
 
   def render(assigns) do
     assigns

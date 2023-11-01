@@ -9,7 +9,7 @@ defmodule Bonfire.UI.Common.Web do
       ~w(public assets css fonts images js favicon.ico pwa pwabuilder-sw.js robots.txt cache_manifest.json source.tar.gz index.html)
 
   def verified_routes do
-    # TODO: fix this occasional compilation error during dev which gets in the way of using verified routes painlessly: `(UndefinedFunctionError) function Bonfire.Web.Router.__verify_route__/1 is undefined (module Bonfire.Web.Router is not available` 
+    # TODO: fix this occasional compilation error during dev which gets in the way of using verified routes painlessly: `(UndefinedFunctionError) function Bonfire.Web.Router.__verify_route__/1 is undefined (module Bonfire.Web.Router is not available`
     # if Code.ensure_loaded?(Bonfire.Web.Endpoint) and Code.ensure_loaded?(Bonfire.Web.Router) do
     #   # IO.warn("Enabling...")
     #   quote do
@@ -83,7 +83,7 @@ defmodule Bonfire.UI.Common.Web do
       import Surface
       use Surface.View, unquote(opts)
 
-      # to support Surface components in the app layout and in non-LiveViews ^ - FIXME: not compatible with phx 1.7? 
+      # to support Surface components in the app layout and in non-LiveViews ^ - FIXME: not compatible with phx 1.7?
 
       unquote(live_view_helpers())
     end
