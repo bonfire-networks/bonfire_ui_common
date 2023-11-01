@@ -31,7 +31,7 @@
       to={~p"/feed/likes"}
       class={"flex items-center rounded-md gap-5", "bg-base-content/10 font-semibold": @page == "likes"}
     >
-      <#Icon iconify="bi:stars" class="w-5 h-5 text-base-content/70" />
+      <#Icon iconify="nimbus:fire" class="w-5 h-5 text-base-content/70" />
       {l("Favourites")}
     </LiveRedirect>
   </li>
