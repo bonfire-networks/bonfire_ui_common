@@ -17,9 +17,9 @@
         title={if @my_like, do: l("Un-like this"), else: l("Like this")}
       >
         {#if @my_like}
-          <#Icon iconify="nimbus:fire"  class="text-amber-400 w-5 h-5" />
+          <#Icon iconify="nimbus:fire" class="text-amber-400 w-5 h-5" />
         {#else}
-          <#Icon iconify="nimbus:fire"  class="text-base-content/50 w-5 h-5" />
+          <#Icon iconify="nimbus:fire" class="text-base-content/50 w-5 h-5" />
         {/if}
 
         <span :if={!@my_like} class="sr-only">
@@ -39,7 +39,7 @@
         title={l("You can't like this")}
       >
         <span class="text-base-content/20">
-          <#Icon iconify="nimbus:fire"  class="w-5 h-5" />
+          <#Icon iconify="nimbus:fire" class="w-5 h-5" />
         </span>
 
         <span class="sr-only">
