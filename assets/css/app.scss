@@ -2,6 +2,9 @@
 
 @import "../node_modules/nprogress/nprogress.css";
 
+/* import scoped CSS from Surface */
+@import "_components.css";
+
 @tailwind base;
 
 .mfm {
@@ -1248,3 +1251,5 @@ hex-input::part(input) {
 .sidebar_menu_item .widget_notification {
   @apply !right-0 !left-auto tablet-lg:!left-7 tablet-lg:!right-auto;
 }
+
+
