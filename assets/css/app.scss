@@ -7,6 +7,63 @@
 
 @tailwind base;
 
+div[data-main-object] {
+  @apply !mb-3 !items-center;
+}
+
+div[data-main-object] [data-id="subject_avatar"] {
+  @apply mr-3 ml-0 !relative;
+} 
+
+div[data-main-object] [data-id="subject_details"] {
+  @apply flex-col !mt-0 !gap-0;
+} 
+
+div[data-main-object] [data-id="subject_details"] [data-id="subject_name"]{
+  @apply !text-base;
+} 
+
+div[data-main-object] [data-id="subject_details"] [data-id="subject_username"]{
+  @apply !ml-0;
+} 
+
+div[data-rendered="widget"]  {
+  @apply !mt-2;
+}
+
+div[data-rendered="smart_input"]  {
+  @apply !my-0 !ml-0;
+}
+
+div[data-rendered="notifications"]  {
+  @apply opacity-60;
+}
+
+div[data-rendered="thread"]  {
+  @apply cursor-default;
+}
+
+div[data-id="object_body"][data-rendered="smart_input"] {
+ @apply !my-0 !text-sm !font-normal
+}
+
+div[data-id="object_body"][data-main-object] {
+  @apply md:prose-base md:prose-p:my-0
+ }
+
+
+
+article.replied::after {
+  position: absolute;
+  content: "";
+  width: 2px;
+  top: 16px;
+  bottom: -24px;
+  left: -36px;
+  z-index: -1;
+  background-color: hsla(var(--bc) / 0.1);
+}
+
 .mfm {
   display: inline-block;
 }

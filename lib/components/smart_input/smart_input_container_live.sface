@@ -83,7 +83,7 @@
                 />
 
                 <form
-                  class="flex-1 h-full grow"
+                  class=""
                   :if={@create_object_type != :message}
                   phx-change="select"
                   phx-target={@myself}
