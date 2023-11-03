@@ -365,41 +365,44 @@ defmodule Bonfire.UI.Common do
     Phoenix.LiveView.Controller.live_render(conn, live_view, session: %{"conn" => conn})
   end
 
-  def maybe_send_update(pid \\ self(), component, id, assigns)
+  def maybe_send_update(component, id, assigns, opts \\ [])
 
-  def maybe_send_update(pid, component, id, {:error, error}) do
-    assign_error(nil, error, pid)
+  def maybe_send_update(component, id, {:error, error}, opts) do
+    assign_error(nil, error, opts[:pid])
   end
 
-  def maybe_send_update(pid, component, ids, assigns) when is_list(ids) do
+  def maybe_send_update(component, id, assigns, pid) when is_pid(pid) do
+    maybe_send_update(component, id, assigns, pid: pid)
+  end
+
+  def maybe_send_update(component, ids, assigns, opts) when is_list(ids) do
     assigns =
       assigns_clean(assigns)
       |> debug("Try sending to #{component} with ids: #{inspect(ids)}")
 
     for id <- ids do
-      do_send_update(pid, component, id, assigns)
+      do_send_update(opts[:pid], component, id, assigns)
     end
   end
 
-  def maybe_send_update(pid, component, id, assigns)
+  def maybe_send_update(component, id, assigns, opts)
       when is_atom(component) and not is_nil(id) do
     debug(assigns, "Try sending to #{component} with id: #{id}")
 
     do_send_update(
-      pid,
+      opts[:pid],
       component,
       id,
       assigns_clean(assigns)
     )
   end
 
-  def maybe_send_update(_pid, component, id, _assigns)
+  def maybe_send_update(component, id, _assigns, _opts)
       when not is_nil(id) do
     error(component, "expected a component module but got")
   end
 
-  def maybe_send_update(_pid, component, id, _assigns)
-      when is_atom(component) do
+  def maybe_send_update(component, id, _assigns, _) do
     error(id, "expected a component ID but got")
   end
 
@@ -1268,10 +1271,10 @@ defmodule Bonfire.UI.Common do
           preload_fn.(list_of_components, list_of_ids, current_user)
           |> Enum.each(fn {component_id, assigns} ->
             maybe_send_update(
-              pid,
               opts[:caller_module],
               component_id,
-              Map.put(assigns, opts[:preload_status_key] || :preloaded_async_assigns, true)
+              Map.put(assigns, opts[:preload_status_key] || :preloaded_async_assigns, true),
+              pid
             )
           end)
 

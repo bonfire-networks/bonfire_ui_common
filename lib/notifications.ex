@@ -42,10 +42,12 @@ defmodule Bonfire.UI.Common.Notifications do
     )
   end
 
-  def receive_flash(attrs, pid \\ self(), _context \\ nil) do
+  def receive_flash(attrs, pid \\ self(), context \\ nil) do
     # Bonfire.UI.Common.PersistentLive.notify(context, attrs) ||
     Process.send_after(pid, :clear_flash, 5000)
-    maybe_send_update(pid, Bonfire.UI.Common.NotificationLive, :notification, attrs)
+
+    if socket_connected?(context) != false,
+      do: maybe_send_update(Bonfire.UI.Common.NotificationLive, :notification, attrs, pid)
   end
 
   def receive_notification(attrs, socket \\ nil)

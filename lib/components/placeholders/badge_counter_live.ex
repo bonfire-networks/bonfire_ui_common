@@ -66,10 +66,14 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
             )
             |> debug("unseen_count for #{feed_name}")
 
-          maybe_send_update(pid, __MODULE__, feed_name,
-            count_loaded: true,
-            count: unseen_count
-          )
+          if socket_connected?(socket) != false,
+            do:
+              maybe_send_update(
+                __MODULE__,
+                feed_name,
+                [count_loaded: true, count: unseen_count],
+                pid
+              )
         end)
 
         {:ok, socket}
