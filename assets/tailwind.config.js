@@ -22,6 +22,7 @@ module.exports = {
     '../../../lib/**/*{.leex,.heex,.sface,_live.ex}',
     // '../../../assets/js/**/*.js',
     '../../../(extensions|forks|deps)/*/lib/**/*{.leex,.heex,.sface,_live.ex}',
+    '../../../data/current_flavour/config/flavour_assets/components.css'
     // '../../../{extensions,forks,deps}/*/assets/js/**/*.js',
     // '../../../deps/live_select/lib/live_select/component.*ex', // what should this point to?
     // './js/*.js'
