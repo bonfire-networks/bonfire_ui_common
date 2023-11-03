@@ -11,6 +11,9 @@ module.exports = {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,
   },
+  presets: [
+    require('./css/_variants.js')
+  ],
   content: [
     '../lib/**/*{.leex,.heex,.sface,_live.ex}',
     // '../assets/js/**/*.js',

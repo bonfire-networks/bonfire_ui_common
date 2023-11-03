@@ -35,7 +35,7 @@
         title={l("You can't boost this activity")}
       >
         <span class="flex gap-1 text-opacity-20">
-          <#Icon iconify="system-uicons:retweet"  class="w-5 h-5  text-base-content/20" />
+          <#Icon iconify="system-uicons:retweet" class="w-5 h-5  text-base-content/20" />
 
           <span class="sr-only feed_activity_text">
             {l("Cannot Boost")}

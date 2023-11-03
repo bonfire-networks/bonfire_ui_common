@@ -15,7 +15,7 @@
             <button
               id="close_preview"
               phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
-              phx-hook="ClosePreview"
+              :hook="ClosePreview"
               aria-label={l("Go back to the previous page")}
               class="font-normal normal-case btn btn-sm btn-circle btn-ghost"
             >

@@ -82,12 +82,7 @@
                   boundary_preset={@boundary_preset}
                 />
 
-                <form
-                  class=""
-                  :if={@create_object_type != :message}
-                  phx-change="select"
-                  phx-target={@myself}
-                >
+                <form class="" :if={@create_object_type != :message} phx-change="select" phx-target={@myself}>
                   {!-- CUSTOM BOUNDARIES --}
                   <div class="hidden flex-1 h-full grow" id="extra_boundaries">
                     <div class="flex flex-col h-full">
