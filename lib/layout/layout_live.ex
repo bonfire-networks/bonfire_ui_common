@@ -155,11 +155,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
       <div class={
         "w-full px-0 md:px-4 grid max-w-[600px] md:max-w-[680px] lg:max-w-[1020px] tablet-lg:max-w-[1200px] gap-0 md:gap-4 widget xl:px-0 mx-auto",
-        "!grid-cols-1 content-start": @without_sidebar,
+        "!grid-cols-1 content-start": @without_sidebar && @without_secondary_widgets,
         # "grid-cols-1 !max-w-full": !@current_user_id,
-        # "grid-cols-1 md:grid-cols-1 content-start !max-w-full":
-        #   @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)),
-        "grid-cols-1 md:grid-cols-[250px_1fr]": @current_user_id && !@without_sidebar
+        "grid-cols-1 md:grid-cols-1 content-start !max-w-full":
+          @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)),
+        "grid-cols-1 md:grid-cols-[250px_1fr]":
+          @current_user_id && @without_secondary_widgets && !@without_sidebar,
+        "grid-cols-1 md:grid-cols-[80px_1fr] lg:grid-cols-[100px_1fr_320px] tablet-lg:grid-cols-[250px_1fr_320px] ":
+          !@without_sidebar && !@without_secondary_widgets
       }>
         <Bonfire.UI.Common.MobileMenuLive :if={@current_user_id} />
         <div
