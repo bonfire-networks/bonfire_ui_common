@@ -12,7 +12,7 @@ module.exports = {
     purgeLayersByDefault: true,
   },
   presets: [
-    require('./css/_variants.js')
+    require('./css/variants.js')
   ],
   content: [
     '../lib/**/*{.leex,.heex,.sface,_live.ex}',

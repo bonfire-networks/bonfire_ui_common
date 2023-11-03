@@ -94,7 +94,7 @@ import { ExtensionHooks } from "../../../../data/current_flavour/config/deps_hoo
 // ExtensionHooks.SourceInspect = SourceInspect
 // ExtensionHooks.SourceInspect = SourceInspect(csrfToken)
 
-import ComponentHooks from "./_hooks/index.js"
- 
+import ComponentHooks from "../../../../data/current_flavour/config/flavour_assets/hooks/index.js"
+
 // Add Extensions' Hooks...
 Object.assign(liveSocket.hooks, ExtensionHooks, ComponentHooks);
