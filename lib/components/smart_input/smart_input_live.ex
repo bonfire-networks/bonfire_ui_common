@@ -32,7 +32,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   # Classes to customize the smart input appearance
   prop replied_activity_class, :css_class,
     default:
-      "mr-8 flex-1"
+      "flex-1"
 
   prop preview_boundary_for_id, :any, default: nil
   prop preview_boundary_for_username, :any, default: nil

@@ -1,16 +1,16 @@
 let FeedHooks = {};
 
 FeedHooks.PreviewActivity = {
-  isTruncated(element) {
-    if (element && (element.offsetHeight < element.scrollHeight ||
-      element.offsetWidth < element.scrollWidth)) {
-      console.log("element has an overflow, ie. truncated with CSS line-clamp")
-      return true
-    } else {
-      console.log("element is not truncated")
-      return false
-    }
-  },
+  // isTruncated(element) {
+  //   if (element && (element.offsetHeight < element.scrollHeight ||
+  //     element.offsetWidth < element.scrollWidth)) {
+  //     console.log("element has an overflow, ie. truncated with CSS line-clamp")
+  //     return true
+  //   } else {
+  //     console.log("element is not truncated")
+  //     return false
+  //   }
+  // },
   mounted() {
     this.el.addEventListener("click", e => {
       console.log("PreviewActivity clicked")
