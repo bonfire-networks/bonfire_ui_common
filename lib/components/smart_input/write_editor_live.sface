@@ -19,9 +19,8 @@
     <TextArea
       opts={
         value:
-          (e(@smart_input_opts, :text, nil) || e(@smart_input_opts, :text_suggestion, ""))
-          |> debug("vvvv"),
-        placeholder: e(@smart_input_opts, :prompt, "") |> debug("ppppp")
+          (e(@smart_input_opts, :text, nil) || e(@smart_input_opts, :text_suggestion, "")),
+        placeholder: e(@smart_input_opts, :prompt, "")
       }
       class={@textarea_class}
     />

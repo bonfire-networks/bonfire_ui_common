@@ -6,10 +6,7 @@
       body: '',
       title_open: #{if @title_open == true and @create_object_type not in [:post], do: true, else: false}, 
     }"}
-    class={
-      "flex bg-transparent rounded-t-lg h-full grow flex-1",
-      "bottom-0 !max-w-full !border-none !rounded-none": @create_object_type == :message
-    }
+    class="flex bg-transparent rounded-t-lg h-full grow flex-1"
   >
     <div
       :if={not is_nil(current_user(@__context__))}
