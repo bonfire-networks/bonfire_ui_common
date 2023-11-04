@@ -69,12 +69,11 @@ defmodule Bonfire.UI.Common.LayoutView do
       <head>
         <meta charset="utf-8" />
 
-        <Bonfire.UI.Common.SEO.juice
-          item={
-            assigns[:seo] || []
-            # TODO: |> Enum.into([canonical_url: assigns[:canonical_url]])
-          }
+        <SEO.juice
           page_title={assigns[:page_title]}
+          canonical_url={assigns[:canonical_url]}
+          conn={@conn}
+          config={Bonfire.UI.Common.SEO.config()}
         />
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
