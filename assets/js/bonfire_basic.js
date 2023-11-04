@@ -3,10 +3,10 @@ import "./bonfire_common"
 let Hooks = {};
 
 import { ImageHooks } from "./image"
-import { FeedHooks } from "./feed"
+// import { FeedHooks } from "./feed"
 import { CopyHooks } from "./copy"
 
-Object.assign(Hooks, ImageHooks, FeedHooks, CopyHooks);
+Object.assign(Hooks, ImageHooks, CopyHooks);
 
 // run LiveView Hooks without LiveView
 (function() {
