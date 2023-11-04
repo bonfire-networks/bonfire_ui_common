@@ -7,7 +7,30 @@
 @import "tailwindcss/base";
 /* @import "./base.css"; */
 
+/* layout */
 
+div[data-id="layout"][data-single-column] {
+  @apply !grid-cols-1 content-start;
+}
+
+div[data-id="main_section"][data-single-column] {
+  @apply mx-auto order-last;
+}
+
+div[data-id="main_section"][data-single-column] #inner {
+  @apply !border-none;
+}
+
+
+/* preview content */
+div[data-id="preview_content"][data-show] {
+  @apply visible inset-0 widget border-l border-r border-base-content/20 z-[99999999999];
+}
+
+
+div[data-id="preview_content"][data-hide] {
+  @apply invisible h-0;
+}
 /*  subject_live */
 div[data-id="subject"][data-main-object] {
   @apply !mb-3 !items-center;

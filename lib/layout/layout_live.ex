@@ -109,6 +109,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     #        (!is_nil(current_user(assigns)) &&
     #           empty?(e(assigns, :sidebar_widgets, :guests, :main, nil)))
     # end)
+    debug("Rendering layout")
 
     ~F"""
     <div
@@ -153,24 +154,18 @@ defmodule Bonfire.UI.Common.LayoutLive do
         />
       </div --}
 
-      <div class={
-        "w-full px-0 md:px-4 grid max-w-[600px] md:max-w-[680px] lg:max-w-[1020px] tablet-lg:max-w-[1200px] gap-0 md:gap-4 widget xl:px-0 mx-auto",
-        "!grid-cols-1 content-start": @without_sidebar && @without_secondary_widgets,
-        # "grid-cols-1 !max-w-full": !@current_user_id,
-        "grid-cols-1 md:grid-cols-1 content-start !max-w-full":
-          @without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)),
-        "grid-cols-1 md:grid-cols-[250px_1fr]":
-          @current_user_id && @without_secondary_widgets && !@without_sidebar,
-        "grid-cols-1 md:grid-cols-[80px_1fr] lg:grid-cols-[100px_1fr_320px] tablet-lg:grid-cols-[250px_1fr_320px] ":
-          !@without_sidebar && !@without_secondary_widgets
-      }>
+      <div
+        data-id="layout"
+        data-single-column={@without_sidebar}
+        class="w-full px-0 md:px-4 grid max-w-[600px] md:max-w-[680px] lg:max-w-[1020px] tablet-lg:max-w-[1200px] gap-0 md:gap-4 widget xl:px-0 mx-auto grid-cols-1 md:grid-cols-[80px_1fr] lg:grid-cols-[100px_1fr_320px] tablet-lg:grid-cols-[250px_1fr_320px]"
+      >
         <Bonfire.UI.Common.MobileMenuLive :if={@current_user_id} />
         <div
           :if={!@without_sidebar}
           data-id="nav_sidebar"
           class="fixed md:sticky self-start order-first w-full mt-4 top-4 z-[9999] md:block"
         >
-          <div class="hidden md:flex items-center justify-end tablet-lg:justify-between h-[50px] pb-4">
+          <div class="hidden md:flex items-center justify-end tablet-lg:justify-between h-[50px]">
             <div data-id="logo" class="items-center ml-1 place-content-center">
               <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
             </div>
@@ -191,10 +186,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             }}
           />
           <nav
-            class={
-              "hidden w-full md:flex gap-4 flex-col pb-1 max-h-[calc(var(--inner-window-height)_-_140px)] min-h-[calc(var(--inner-window-height)_-_140px)]",
-              "mt-4": @current_user_id
-            }
+            class="hidden mt-4 w-full md:flex gap-4 flex-col pb-1 max-h-[calc(var(--inner-window-height)_-_140px)] min-h-[calc(var(--inner-window-height)_-_140px)]"
             role="navigation"
             aria-label={l("Extension navigation")}
           >
@@ -209,27 +201,16 @@ defmodule Bonfire.UI.Common.LayoutLive do
         </div>
         <div
           data-id="main_section"
-          class={
-            "relative w-full max-w-[600px] gap-2 md:gap-0 z-[99] col-span-1 ",
-            "!max-w-full": @without_secondary_widgets,
-            "!max-w-full": !@current_user_id,
-            "mx-auto order-last": @without_sidebar
-          }
+          data-single-column={@without_sidebar}
+          class="relative w-full max-w-[600px] gap-2 md:gap-0 z-[99] col-span-1"
         >
-          <div class={
-            "h-full mt-0",
-            "max-w-screen-lg gap-4 mx-auto": @without_secondary_widgets,
-            "justify-between": !@without_secondary_widgets
-          }>
+          <div class="justify-between h-full mt-0">
             <div class="relative invisible_frame">
               <div class="md:pb-0 md:overflow-y-visible">
                 <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
                 <div
                   id="inner"
-                  class={
-                    "md:mt-0 md:border-l md:border-r border-base-content/10 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]":
-                      !@without_sidebar
-                  }
+                  class="md:mt-0 md:border-l md:border-r border-base-content/10 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]"
                 >
                   <div :if={!@without_sidebar && !@no_header} class="sticky top-0 z-[999]">
                     <div class="flex flex-1 backdrop-blur-sm rounded-none md:rounded-t bg-base-100/70 transition-color duration-150 ease-in-out">
