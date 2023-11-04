@@ -23,6 +23,6 @@ window.addEventListener('resize', winnerDimension)
 
 // CSS
 // import * as tagifycss from "../node_modules/@yaireo/tagify/dist/tagify.css";
-// import * as css from "../css/app.scss"
+// import * as css from "../css/app.css"
 
 import "./../../../../deps/phoenix_live_head"
