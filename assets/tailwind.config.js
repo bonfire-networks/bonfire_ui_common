@@ -30,7 +30,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['OpenDyslexic', 'Inter', 'Noto Sans', 'Roboto', 'system-ui', 'sans-serif']
+        'sans': ['OpenDyslexic', 'Luciole', 'Inter', 'Noto Sans', 'Roboto', 'system-ui', 'sans-serif']
       },
       screens: {
         'tablet': '920px',

@@ -6,6 +6,15 @@ import { ImageHooks } from "./image"
 import { CopyHooks } from "./copy"
 // import { FeedHooks } from "./feed"
 import * as c1 from "../../../../data/current_flavour/config/flavour_assets/hooks/Bonfire.UI.Common.PreviewContentLive.hooks"
+
+function ns(hooks, nameSpace) {
+  const updatedHooks = {}
+  Object.keys(hooks).map(function (key) {
+    updatedHooks[`${nameSpace}#${key}`] = hooks[key]
+  })
+  return updatedHooks
+}
+
 let FeedHooks = ns(c1, "Bonfire.UI.Common.PreviewContentLive")
 
 Object.assign(Hooks, ImageHooks, CopyHooks, FeedHooks);
