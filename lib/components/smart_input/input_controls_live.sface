@@ -42,9 +42,7 @@
           </div>
 
           {!-- UPLOADS PREVIEWS --}
-          <div class={"p-2 border-b border-base-content/20 uploads_preview": @uploads.files.entries != []}>
-            <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
-          </div>
+          <Bonfire.UI.Social.UploadPreviewsLive uploads={@uploads} />
 
           {!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE --}
           <#slot {@default} />

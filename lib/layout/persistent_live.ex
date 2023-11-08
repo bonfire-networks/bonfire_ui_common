@@ -62,7 +62,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     # |> fun.(:page_title, fn -> nil end)
     # |> fun.(:selected_tab, fn -> nil end)
     |> fun.(:activity_inception, fn -> nil end)
-    |> fun.(:title_open, fn -> nil end)
+    # |> fun.(:title_open, fn -> nil end)
     |> fun.(:title_prompt, fn -> nil end)
     |> fun.(:preloaded_recipients, fn -> nil end)
 

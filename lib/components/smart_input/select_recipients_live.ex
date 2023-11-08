@@ -14,7 +14,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
 
   prop class, :string,
     default:
-      "w-full h-10 input !border-none !border-b !border-base-content/10 !rounded-none select_recipients_input"
+      "w-full h-10 input !border-none !border-b !border-base-content/20 !rounded-none select_recipients_input"
 
   prop is_editable, :boolean, default: false
 

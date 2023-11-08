@@ -7,7 +7,7 @@
       <div class="p-2 font-medium font-sm text-base-content" :if={length(@users) == 0}>
         {l("No users found")}
       </div>
-      <ul :if={length(@users) > 0} role="list" class="relative z-0 divide-y divide-base-content/10">
+      <ul :if={length(@users) > 0} role="list" class="relative z-0 divide-y divide-base-content/20">
         {#for user <- @users}
           <li class="bg-base-100 form-control">
             <label

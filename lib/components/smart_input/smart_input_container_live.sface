@@ -26,12 +26,9 @@
       <Bonfire.UI.Common.ComposerMinimizedLive />
       <div
         id="smart_input_container"
-        class={
-          "w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0 md:w-[32rem] md:right-4 md:top-auto max-h-screen",
-          "!inset-0 !top-[5%] !h-[400px]":
-            Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__),
-          hidden: e(@smart_input_opts, :open, nil) != true
-        }
+        data-hidden={e(@smart_input_opts, :open, nil) != true}
+        data-focused={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
+        class="w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0 md:w-[32rem] md:right-4 md:top-auto max-h-screen"
       >
         <div class="w-full rounded-t-lg bg-gradient-to-t from-transparent to-base-content/40 p-[0.05rem] flex flex-col flex-1 h-full grow">
           <div class="w-full rounded-t-lg bg-base-200 flex flex-col flex-1 h-full grow">

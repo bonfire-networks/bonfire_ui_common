@@ -189,7 +189,27 @@ div[data-media-type-video] {
   min-height: 90vh
 }
 
+/* composer */
+#smart_input_container[data-hidden] {
+  @apply hidden;
+}
 
+#smart_input_backdrop[data-hidden] {
+  @apply hidden;
+}
+
+#smart_input_container[data-focused] {
+  @apply inset-0 !top-[5%] !h-[400px];
+}
+
+/* boost */
+button[data-id="boost_action"][data-boosted] {
+  @apply text-opacity-100 text-info;
+}
+
+button[data-id="boost_action"][data-boosted] .icon {
+  @apply text-opacity-100 text-info;
+}
 
 
 /* Below comes generic app-wide css. Specific classes should go in Surface components scoped CSS instead. */
@@ -295,6 +315,7 @@ body {
  -webkit-text-size-adjust: none;
  -moz-text-size-adjust: none;
  text-size-adjust: none;
+ scrollbar-gutter: stable;
  -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 

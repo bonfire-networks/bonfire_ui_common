@@ -27,7 +27,7 @@
       >
         <div data-id="mobile_nav" class="flex flex-col h-full shadow-xl bg-base-100">
           <div class="relative flex-1 flex flex-col">
-            <div class="flex items-start justify-between p-6 bg-base-100 border-b border-base-content/10">
+            <div class="flex items-start justify-between p-6 bg-base-100 border-b border-base-content/20">
               <LinkLive class="flex flex-col gap-3" to={path(current_user(@__context__))}>
                 <Bonfire.UI.Common.AvatarLive
                   parent_id="mobile_menu"

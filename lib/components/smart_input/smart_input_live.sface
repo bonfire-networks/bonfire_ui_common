@@ -2,12 +2,10 @@
   <div
     id="smart_input"
     phx-drop-target={@uploads.files.ref}
-    x-data={"{
-      body: '',
-      title_open: #{if @title_open == true and @create_object_type not in [:post], do: true, else: false}, 
-    }"}
+    x-data="{body: ''}"
     class="flex bg-transparent rounded-t-lg h-full grow flex-1"
   >
+    <!-- title_open: #{if @title_open == true and @create_object_type not in [:post], do: true, else: false}, -->
     <div
       :if={not is_nil(current_user(@__context__))}
       class="relative flex flex-col flex-1 w-full bg-base-100"
