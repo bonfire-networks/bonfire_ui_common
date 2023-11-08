@@ -1229,20 +1229,26 @@ defmodule Bonfire.UI.Common do
       when is_list(assigns_sockets) and is_function(assigns_to_params_fn, 1) and
              is_function(preload_fn, 3) do
     connected? = socket_connected?(elem(List.first(assigns_sockets), 1))
-    current_user = current_user(elem(List.first(assigns_sockets), 0))
+
+    current_user =
+      current_user(elem(List.first(assigns_sockets), 0)) ||
+        current_user(elem(List.first(assigns_sockets), 0)) ||
+        current_user(elem(List.first(assigns_sockets), 1))
+
     # |> info("current_user")
 
     list_of_components =
       assigns_sockets
       # |> debug("list of assigns")
       #  avoid re-preloading
-      |> Enum.filter(
-       fn {assigns, _socket} ->
+      |> Enum.filter(fn {assigns, _socket} ->
         is_nil(
-          Map.get(assigns, opts[:skip_if_set] || opts[:preload_status_key] || :preloaded_async_assigns)
+          Map.get(
+            assigns,
+            opts[:skip_if_set] || opts[:preload_status_key] || :preloaded_async_assigns
+          )
         )
-        end
-      )
+      end)
       # |> debug("process these assigns")
       |> Enum.map(fn {assigns, _socket} -> assigns_to_params_fn.(assigns) end)
 
@@ -1271,14 +1277,19 @@ defmodule Bonfire.UI.Common do
 
         apply_task(:start_link, fn ->
           preload_fn.(list_of_components, list_of_ids, current_user)
-          |> Enum.each(fn {component_id, assigns} ->
-            debug(assigns, "aaaaaaa")
-            maybe_send_update(
-              opts[:caller_module],
-              component_id,
-              Map.put(assigns, opts[:preload_status_key] || :preloaded_async_assigns, true),
-              pid
-            )
+          |> Enum.each(fn
+            {component_id, %{} = assigns} ->
+              debug(assigns, "ahjkjhkh")
+
+              maybe_send_update(
+                opts[:caller_module],
+                component_id,
+                Map.put(assigns, opts[:preload_status_key] || :preloaded_async_assigns, true),
+                pid
+              )
+
+            other ->
+              warn(other, "skip sending assigns")
           end)
 
           # send(pid, :preload_done)
@@ -1299,15 +1310,21 @@ defmodule Bonfire.UI.Common do
           assigns_sockets
           |> Enum.map(fn {%{id: component_id} = assigns, socket} ->
             socket
-            |> assign_generic(preloaded_assigns[component_id] || %{})
+            |> Phoenix.Component.assign(preloaded_assigns[component_id] || %{})
+            |> maybe_assign_provided(assigns, !opts[:return_assigns_socket_tuple])
           end)
         end
       end
-    end || assigns_sockets
-          |> Enum.map(fn {_assigns, socket} ->
-            socket
-          end)
+    end ||
+      assigns_sockets
+      |> Enum.map(fn {assigns, socket} ->
+        socket
+        |> maybe_assign_provided(assigns, !opts[:return_assigns_socket_tuple])
+      end)
   end
+
+  defp maybe_assign_provided(socket, assigns, false), do: {assigns, socket}
+  defp maybe_assign_provided(socket, assigns, _), do: socket |> Phoenix.Component.assign(assigns)
 
   def can?(subject, verbs, object, opts \\ []) do
     if Bonfire.Common.Extend.module_enabled?(Bonfire.Boundaries) do
