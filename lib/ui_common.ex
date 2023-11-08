@@ -1279,7 +1279,7 @@ defmodule Bonfire.UI.Common do
           preload_fn.(list_of_components, list_of_ids, current_user)
           |> Enum.each(fn
             {component_id, %{} = assigns} ->
-              debug(assigns, "ahjkjhkh")
+              # debug(assigns, "ahjkjhkh")
 
               maybe_send_update(
                 opts[:caller_module],
