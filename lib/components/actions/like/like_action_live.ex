@@ -9,8 +9,8 @@ defmodule Bonfire.UI.Common.LikeActionLive do
   # prop showing_within, :atom, default: nil
   prop my_like, :any, default: nil
 
-  def preload(list_of_assigns),
-    do: Bonfire.Social.Likes.LiveHandler.preload(list_of_assigns, caller_module: __MODULE__)
+  def update_many(assigns_sockets),
+    do: Bonfire.Social.Likes.LiveHandler.update_many(assigns_sockets, caller_module: __MODULE__)
 
   def handle_event(
         action,

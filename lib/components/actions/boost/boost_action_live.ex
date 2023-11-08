@@ -8,8 +8,8 @@ defmodule Bonfire.UI.Common.BoostActionLive do
   prop showing_within, :atom
   prop my_boost, :any, default: nil
 
-  def preload(list_of_assigns),
-    do: Bonfire.Social.Boosts.LiveHandler.preload(list_of_assigns, caller_module: __MODULE__)
+  def update_many(assigns_sockets),
+    do: Bonfire.Social.Boosts.LiveHandler.update_many(assigns_sockets, caller_module: __MODULE__)
 
   def handle_event(
         action,

@@ -17,8 +17,8 @@ defmodule Bonfire.UI.Common.FollowButtonLive do
 
   slot if_followed
 
-  def preload(list_of_assigns),
-    do: Bonfire.Social.Follows.LiveHandler.preload(list_of_assigns, caller_module: __MODULE__)
+  def update_many(assigns_sockets),
+    do: Bonfire.Social.Follows.LiveHandler.update_many(assigns_sockets, caller_module: __MODULE__)
 
   def handle_event(
         action,
