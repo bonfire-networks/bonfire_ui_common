@@ -6,6 +6,8 @@ defmodule Bonfire.UI.Common.PersistentLive do
   # @session_key :csrf_token
   @session_key :csrf_socket_token
 
+  on_mount {Bonfire.UI.Common.LivePlugs.Helpers, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
+
   def mount(_params, session, socket) do
     socket_connected? = Phoenix.LiveView.connected?(socket)
 
@@ -28,7 +30,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
     {:ok,
      socket
-     #  |> debug("socket before assigns")
+     |> debug("socket before assigns")
      |> assign(Map.drop(session, [:context]))
      |> assign(
        :__context__,
