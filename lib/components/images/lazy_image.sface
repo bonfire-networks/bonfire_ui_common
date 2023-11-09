@@ -39,7 +39,14 @@
               {...@opts}
             />
           {#match _} --}
-    <img title={@title} src={src} alt={@alt} class={@class} {...@opts}>
+    <img
+      title={@title}
+      src={src}
+      alt={@alt}
+      class={@class}
+      onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"}
+      {...@opts}
+    />
     <!-- onerror={"this.classList.add('iconify', '!w-10', '!h-10', 'text-base-content/70');  this.setAttribute('iconify','#{@fallback_icon}')"} -->
     {!-- {/case}
     {/case} --}

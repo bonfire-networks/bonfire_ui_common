@@ -1269,9 +1269,13 @@ defmodule Bonfire.UI.Common do
 
       env = Config.env()
 
-      if ((connected? == true and env != :test) or
-            Process.get(:enable_async_preloads) == true) and
-           not is_nil(opts[:caller_module]) do
+      live_update_many_preloads =
+        (opts[:live_update_many_preloads] || live_update_many_preloads?())
+        |> debug("live_update_many_preloads")
+
+      if connected? == true and env != :test and
+           not is_nil(opts[:caller_module]) and
+           live_update_many_preloads not in [:inline, :skip] do
         debug(preload_fn, "preloading using async :-)")
         pid = self()
 
@@ -1297,21 +1301,25 @@ defmodule Bonfire.UI.Common do
 
         nil
       else
-        if env != :test and not is_nil(current_user) do
+        if env != :test and not is_nil(current_user) and live_update_many_preloads != :inline do
           debug(preload_fn, "wait to preload once socket is connected")
 
           nil
         else
           debug(preload_fn, "preloading WITHOUT using async")
 
-          preloaded_assigns = preload_fn.(list_of_components, list_of_ids, current_user)
-          # |> debug("preloaded assigns for components")
+          preloaded_assigns =
+            preload_fn.(list_of_components, list_of_ids, current_user)
+            |> debug("preloaded assigns for components")
 
           assigns_sockets
           |> Enum.map(fn {%{id: component_id} = assigns, socket} ->
             socket
-            |> Phoenix.Component.assign(preloaded_assigns[component_id] || %{})
-            |> maybe_assign_provided(assigns, !opts[:return_assigns_socket_tuple])
+            |> maybe_assign_provided(
+              Map.merge(assigns, preloaded_assigns[component_id] || %{}),
+              !opts[:return_assigns_socket_tuple]
+            )
+            |> debug("merged assigns")
           end)
         end
       end
@@ -1322,6 +1330,9 @@ defmodule Bonfire.UI.Common do
         |> maybe_assign_provided(assigns, !opts[:return_assigns_socket_tuple])
       end)
   end
+
+  defp live_update_many_preloads?,
+    do: Process.get(:live_update_many_preloads) || Config.get(:live_update_many_preloads)
 
   defp maybe_assign_provided(socket, assigns, false), do: {assigns, socket}
   defp maybe_assign_provided(socket, assigns, _), do: socket |> Phoenix.Component.assign(assigns)

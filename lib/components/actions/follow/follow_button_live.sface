@@ -3,7 +3,7 @@
   x-data={"{text: '#{@verb_already || l("Following")}'}"}
   title={@title}
 >
-  {#if @my_follow == nil}
+  {#if @my_follow == nil and current_user_id(@__context__)}
     <button disabled class="normal-case rounded-full btn btn-disabled btn-sm">{l("loading...")}</button>
   {#elseif !@my_follow}
     <a
