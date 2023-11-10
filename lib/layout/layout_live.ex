@@ -317,10 +317,15 @@ defmodule Bonfire.UI.Common.LayoutLive do
                     <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
                   </LiveRedirect>
                 </div>
-                <div
-                  :if={maybe_apply(Bonfire.Federate.ActivityPub, :federating?, current_user(@__context__)) == false}
-                  class="bg-base-content/10 rounded px-2 py-1 text-xs mt-4 inline-block"
-                >{l("Federation disabled")}</div>
+                <div class="bg-base-content/10 rounded px-2 py-1 text-xs mt-4 inline-block">{#case maybe_apply(Bonfire.Federate.ActivityPub, :federating?, current_user(@__context__))}
+                    {#match false}
+                      {l("Federation disabled")}
+                    {#match nil}
+                      {l("Manual federation enabled")}
+                    {#match true}
+                      {l("Automatic federation enabled")}
+                  {/case}
+                </div>
               </div>
             </div>
           </div>

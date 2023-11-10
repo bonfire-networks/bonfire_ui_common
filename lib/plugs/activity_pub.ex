@@ -5,7 +5,11 @@ defmodule Bonfire.UI.Common.Plugs.ActivityPub do
   def init(_opts), do: nil
 
   def call(%{req_headers: req_headers} = conn, opts) do
-    with_headers(conn, Map.new(req_headers), opts)
+    if Bonfire.Federate.ActivityPub.federating?() != false do
+      with_headers(conn, Map.new(req_headers), opts)
+    else
+      conn
+    end
   end
 
   def call(conn, _opts) do

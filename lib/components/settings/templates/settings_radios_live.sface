@@ -24,7 +24,7 @@
                 type="radio"
                 name={@input}
                 value={to_string(key)}
-                checked={if @current_value == key, do: "checked"}
+                checked={if @current_value == key or to_string(@current_value) == to_string(key), do: "checked"}
                 class="radio radio-secondary"
               />
               <div class="flex flex-col ml-3">
