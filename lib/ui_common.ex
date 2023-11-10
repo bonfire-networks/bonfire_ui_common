@@ -1225,6 +1225,7 @@ defmodule Bonfire.UI.Common do
       e(assigns, :id, nil)
   end
 
+  @decorate time()
   def preload_assigns_async(assigns_sockets, assigns_to_params_fn, preload_fn, opts \\ [])
       when is_list(assigns_sockets) and is_function(assigns_to_params_fn, 1) and
              is_function(preload_fn, 3) do
@@ -1310,7 +1311,8 @@ defmodule Bonfire.UI.Common do
 
           preloaded_assigns =
             preload_fn.(list_of_components, list_of_ids, current_user)
-            |> debug("preloaded assigns for components")
+
+          # |> debug("preloaded assigns for components")
 
           assigns_sockets
           |> Enum.map(fn {%{id: component_id} = assigns, socket} ->
@@ -1319,7 +1321,8 @@ defmodule Bonfire.UI.Common do
               Map.merge(assigns, preloaded_assigns[component_id] || %{}),
               !opts[:return_assigns_socket_tuple]
             )
-            |> debug("merged assigns")
+
+            # |> debug("merged assigns")
           end)
         end
       end
