@@ -19,13 +19,6 @@
 </li>
 
 <li :if={@mobile}>
-  <LiveRedirect to="/feed/likes" class="flex items-center w-full gap-4 px-2 py-2 rounded-md">
-    <#Icon iconify="mingcute:fire-line" class="w-6 h-6" />
-    <div class="text-[16px] font-medium">{l("Favourites")}</div>
-  </LiveRedirect>
-</li>
-
-<li :if={@mobile}>
   <LiveRedirect to="/messages" class="flex items-center w-full gap-4 px-2 py-2 rounded-md">
     <#Icon iconify="ri:mail-line" class="w-6 h-6" />
     <div class="text-[16px] font-medium">{l("Messages")}</div>
@@ -73,6 +66,17 @@
       class="w-6 h-6"
     /> --}
     <div>{l("Switch profile")}</div>
+  </LiveRedirect>
+</li>
+<li>
+  <LiveRedirect
+    to="/feed/likes"
+    class={if @mobile,
+      do: "flex items-center w-full gap-4 px-2 py-2 rounded-md",
+      else: "flex items-center gap-2 text-sm text-base-content/70"}
+  >
+    <#Icon :if={@mobile} iconify="mingcute:fire-line" class="w-6 h-6" />
+    <div class={if @mobile, do: "text-[16px] font-medium", else: ""}>{l("Favourites")}</div>
   </LiveRedirect>
 </li>
 <li>

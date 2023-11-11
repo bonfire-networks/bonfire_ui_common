@@ -41,7 +41,7 @@
       <#slot />
     </div>
   {#else}
-    <div :if={@type == :with_header} class="flex justify-between items-center w-full px-4">
+    <div class="flex justify-between items-center w-full px-4">
       <!-- <div class="text-lg font-bold">
         {@selected_name}
       </div> -->
