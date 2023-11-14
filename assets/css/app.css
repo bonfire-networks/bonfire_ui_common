@@ -204,11 +204,11 @@ div[data-media-type-video] {
 
 /* boost */
 button[data-id="boost_action"][data-boosted] {
-  @apply text-opacity-100 text-info;
+  @apply text-opacity-100 text-success;
 }
 
 button[data-id="boost_action"][data-boosted] .icon {
-  @apply text-opacity-100 text-info;
+  @apply text-opacity-100 text-success;
 }
 
 

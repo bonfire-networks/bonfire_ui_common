@@ -210,7 +210,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
                 <div
                   id="inner"
-                  class="md:mt-0 md:border-l md:border-r border-base-content/20 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]"
+                  class="md:mt-0 flex flex-col md:border-l md:border-r border-base-content/20 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]"
                 >
                   <div :if={!@without_sidebar && !@no_header} class="sticky top-0 z-[999]">
                     <div class="flex flex-1 backdrop-blur-sm rounded-none md:rounded-t bg-base-100/70 transition-color duration-150 ease-in-out">
