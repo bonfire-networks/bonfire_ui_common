@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.SettingsToggleLive do
 
   prop keys, :any, default: []
   prop scope, :any, default: nil
-
+  prop compact, :boolean, default: false
   prop name, :string, default: nil
   prop description, :string, default: nil
   prop label, :string, default: nil
