@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common.ComponentID do
     #       Text.random_string(3)
     #     )
 
-    component_id = "#{component_module}-#{parent_id}-#{Text.random_string(3)}-for-#{object_id}"
+    component_id = "#{randomised_id(component_module, parent_id)}_for_#{object_id}"
 
     debug(component_id, "created stateful component with ID")
 
@@ -29,7 +29,7 @@ defmodule Bonfire.UI.Common.ComponentID do
     #  use first one just to identify component
     object_id = List.first(ids)
 
-    component_id = "#{component_module}-#{parent_id}-#{Text.random_string(3)}-for-#{object_id}"
+    component_id = "#{randomised_id(component_module, parent_id)}_for_#{object_id}"
 
     debug(component_id, "created stateful component with ID")
 
@@ -51,7 +51,7 @@ defmodule Bonfire.UI.Common.ComponentID do
           "cannot save ComponentID to process, because expected an object with id for #{component_module} (with parent_id #{parent_id}) but got"
         )
 
-        "#{component_module}-#{parent_id}-#{Text.random_string(3)}"
+        randomised_id(component_module, parent_id)
     end
   end
 
@@ -61,7 +61,11 @@ defmodule Bonfire.UI.Common.ComponentID do
       "cannot save ComponentID to process, because expected an object id for #{component_module} (with parent_id #{parent_id}) but got"
     )
 
-    "#{component_module}-#{parent_id}-#{Text.random_string(3)}"
+    randomised_id(component_module, parent_id)
+  end
+
+  defp randomised_id(component_module, parent_id) do
+    "#{component_module |> Types.module_to_str() |> String.replace(".", "-")}_#{parent_id |> Types.module_to_str() |> String.replace(".", "-")}_#{Text.random_string(4)}"
   end
 
   def send_updates(component_module, object_id, assigns, pid \\ nil) do

@@ -11,7 +11,6 @@ defmodule Bonfire.UI.Common.SettingsToggleLive do
   prop disabled_value, :any, default: false
   prop enabled_value, :any, default: true
   prop current_value, :any, default: :load_from_settings
-
   prop input, :string, default: nil
 
   def render(assigns) do
