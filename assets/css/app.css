@@ -67,7 +67,7 @@ article.replied::after {
   bottom: -32px;
   left: -36px;
   z-index: -1;
-  background-color: hsla(var(--bc) / 0.2);
+  background-color: oklch(var(--bc) / 0.2);
 }
 
 article .prose img.emoji {
@@ -484,9 +484,9 @@ body {
 }
 
 :root {
-  --scrollbarTrack: hsla(var(--b2));
-  --scrollbarThumb: hsla(var(--bc)/0.1);
-  --scrollbarThumbHover: hsla(var(--bc)/0.2);
+  --scrollbarTrack: oklch(var(--b2));
+  --scrollbarThumb: oklch(var(--bc)/0.1);
+  --scrollbarThumbHover: oklch(var(--bc)/0.2);
 }
 /* Scrollbar colors*/
 /* width */
@@ -614,7 +614,7 @@ a, .link, .link-hover {
 
 
 article .prose {
-  color: hsla(var(--bc));
+  color: oklch(var(--bc));
 }
 
 figure iframe {
@@ -689,10 +689,10 @@ article figure iframe {
 emoji-picker {
   --emoji-size: 1.2rem;
   --emoji-padding: 0.4rem;
-  --background: hsla(var(--b3) / 1);
+  --background: oklch(var(--b3) / 1);
   --num-columns: 6;
-  --border-color: hsla(var(--b3) / 1);
-  --button-hover-background: hsla(var(--bc) / 4);
+  --border-color: oklch(var(--b3) / 1);
+  --button-hover-background: oklch(var(--bc) / 4);
   width: 280px;
   height: 200px;
 }
