@@ -76,7 +76,7 @@
       else: "flex items-center gap-2 text-sm text-base-content/70"}
   >
     <#Icon :if={@mobile} iconify="mingcute:fire-line" class="w-6 h-6" />
-    <div class={if @mobile, do: "text-[16px] font-medium", else: ""}>{l("Favourites")}</div>
+    <div class={if @mobile, do: "text-[16px] font-medium", else: ""}>{l("Likes")}</div>
   </LiveRedirect>
 </li>
 <li>
