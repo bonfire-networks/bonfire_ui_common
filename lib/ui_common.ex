@@ -948,7 +948,7 @@ defmodule Bonfire.UI.Common do
     redirect_to(socket, path_fallback(socket, opts), opts)
   end
 
-  def redirect_to(%Phoenix.LiveView.Socket{} = socket, to, opts) do
+  def redirect_to(%Phoenix.LiveView.Socket{redirected: nil} = socket, to, opts) do
     debug(to, "redirect socket to")
 
     Phoenix.LiveView.push_navigate(
@@ -959,6 +959,11 @@ defmodule Bonfire.UI.Common do
     e in ArgumentError ->
       error(e)
       redirect_to(socket, path_fallback(socket, opts))
+  end
+
+  def redirect_to(%Phoenix.LiveView.Socket{redirected: already} = socket, to, _opts) do
+    warn(to, "socket already prepared to redirect to #{inspect(already)}, so cannot redirect to")
+    socket
   end
 
   def redirect_to(%Plug.Conn{} = conn, to, opts) do
