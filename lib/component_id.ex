@@ -1,8 +1,11 @@
 defmodule Bonfire.UI.Common.ComponentID do
   use Bonfire.UI.Common
 
-  def new(component_module, object_id, context)
-      when is_binary(object_id) or is_number(object_id) do
+  def new(component_module, object_id, parent_id \\ nil)
+
+  def new(component_module, object_id, parent_id)
+      when is_binary(object_id) or is_number(object_id) or
+             (is_atom(object_id) and not is_nil(object_id)) do
     # context =
     #   context ||
     #     (
@@ -10,50 +13,83 @@ defmodule Bonfire.UI.Common.ComponentID do
     #       Text.random_string(3)
     #     )
 
-    component_id = "#{Text.random_string(3)}-#{component_module}-via-#{context}-for-#{object_id}"
+    component_id = "#{component_module}-#{parent_id}-#{Text.random_string(3)}-for-#{object_id}"
 
-    debug("created stateful component with ID: #{component_id}")
+    debug(component_id, "created stateful component with ID")
 
     save(component_module, object_id, component_id)
 
     component_id
   end
 
-  def new(component_module, object, context)
-      when not is_nil(object) and (is_map(object) or is_list(object) or is_tuple(object)) do
-    new(component_module, Enums.id(object), context)
+  def new(component_module, objects, parent_id)
+      when is_list(objects) and objects != [] do
+    ids = Enums.ids(objects)
+
+    #  use first one just to identify component
+    object_id = List.first(ids)
+
+    component_id = "#{component_module}-#{parent_id}-#{Text.random_string(3)}-for-#{object_id}"
+
+    debug(component_id, "created stateful component with ID")
+
+    save(component_module, ids, component_id)
+
+    component_id
   end
 
-  def new(component_module, other, context) do
+  def new(component_module, object, parent_id)
+      when not is_nil(object) and (is_map(object) or is_tuple(object)) do
+    case Enums.id(object) do
+      id when is_binary(id) or is_number(id) ->
+        debug(id, "creating stateful component using extracted ID")
+        new(component_module, id, parent_id)
+
+      nil ->
+        error(
+          object,
+          "cannot save ComponentID to process, because expected an object with id for #{component_module} (with parent_id #{parent_id}) but got"
+        )
+
+        "#{component_module}-#{parent_id}-#{Text.random_string(3)}"
+    end
+  end
+
+  def new(component_module, other, parent_id) do
     error(
       other,
-      "cannot save ComponentID to process, because expected an object id for #{component_module} with context #{context}, but got"
+      "cannot save ComponentID to process, because expected an object id for #{component_module} (with parent_id #{parent_id}) but got"
     )
 
-    "#{Text.random_string(6)}-#{component_module}-via-#{context}"
+    "#{component_module}-#{parent_id}-#{Text.random_string(3)}"
   end
 
-  def send_updates(component_module, object_id, assigns) do
+  def send_updates(component_module, object_id, assigns, pid \\ nil) do
     component_module = Types.maybe_to_atom(component_module)
 
-    debug("try to send_updates to #{component_module} for object id #{object_id}")
+    debug(object_id, "try to send_updates to #{component_module} for object(s)")
 
     for component_id <- component_ids(component_module, object_id) do
-      debug("ComponentID: try stateful component with ID #{component_id}")
+      debug(component_id, "ComponentID: try stateful component with ID")
 
       Bonfire.UI.Common.maybe_send_update(
         component_module,
         component_id,
-        assigns
+        assigns,
+        pid
       )
     end
   end
 
-  def send_assigns(component_module, id, set, socket) do
-    send_updates(component_module, id, set)
+  def send_assigns(component_module, id, set, socket, pid \\ nil) do
+    send_updates(component_module, id, set, pid)
 
     {:noreply, assign_generic(socket, set)}
     # {:noreply, socket}
+  end
+
+  defp component_ids(component_module, object_ids) when is_list(object_ids) do
+    Enum.map(object_ids, &component_ids(component_module, &1))
   end
 
   defp component_ids(component_module, object_id),
@@ -65,10 +101,13 @@ defmodule Bonfire.UI.Common.ComponentID do
 
   # |> debug()
   defp dictionary_key_id(component_module, object_id),
-    do: "cid_" <> to_string(component_module) <> "_" <> object_id
+    do: "bcid_#{component_module}_#{object_id}"
 
-  defp save(component_module, object_id, component_id)
-       when is_binary(object_id) and is_binary(component_id) do
+  defp save(component_module, object_ids, component_id) when is_list(object_ids) do
+    Enum.map(object_ids, &save(component_module, &1, component_id))
+  end
+
+  defp save(component_module, object_id, component_id) do
     dictionary_key_id = dictionary_key_id(component_module, object_id)
 
     Process.put(

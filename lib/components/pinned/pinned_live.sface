@@ -1,7 +1,7 @@
 <div id="pins_list">
   {!-- <Bonfire.UI.Common.PageTitleLive page_title={@page_title} /> --}
   <!-- <Bonfire.UI.Social.FeedLive
-    id={e(@feed_id, :pins)}
+    id={ComponentID.new(Bonfire.UI.Social.FeedLive, e(@feed_id, :pins), __MODULE__)}
     feed_id={@feed_id}
     page_title={@page_title}
     current_user={e(current_user(@__context__), nil)}
