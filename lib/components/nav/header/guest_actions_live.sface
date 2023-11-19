@@ -22,7 +22,7 @@
       class="p-2 mt-4 rounded-lg shadow menu md:menu-compact dropdown-content bg-base-200 w-60 md:w-48 text-base-content"
     >
       <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LiveRedirect to={path(:signup)}>{l("Sign up")}</LiveRedirect></li>
-      {!-- <li><LiveRedirect class="text-neutral-content" to="/about">{l("About")}</LiveRedirect></li> --}
+      <li :if={@page != "about"}><LiveRedirect class="text-neutral-content" to="/about">{l("About")}</LiveRedirect></li>
       <li><LiveRedirect class="text-base-content" to="/conduct">{l("Code of conduct")}</LiveRedirect></li>
       <li><LiveRedirect class="text-base-content" to="/privacy">{l("Privacy")}</LiveRedirect></li>
       <li><LiveRedirect
@@ -31,7 +31,7 @@
           to="/users"
         >{l("Users")}</LiveRedirect>
       </li>
-      <li><a class="text-base-content" href="https://bonfirenetworks.org/" to="/privacy">{l("About bonfire")}</a></li>
+      <li><a class="text-base-content" href="https://bonfirenetworks.org/" target="_blank">{l("About bonfire")}</a></li>
     </ul>
   </div>
 </div>

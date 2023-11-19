@@ -1,11 +1,8 @@
-<div class="">
-  {#case (@nav_items ||
-       Bonfire.Common.ExtensionModule.default_nav(
-         @__context__[:current_extension] || @__context__[:current_app]
-       ) || Bonfire.Common.NavModule.nav(@__context__[:current_app]) || [])
+<div class="gap-1 tablet-lg:gap-0">
+  {#case @nav_items
     |> debug("nav_items")}
     {#match nav_items when is_list(nav_items) and nav_items != []}
-      <div data-id="nav_links" class="menu gap-2 p-0 justify-end">
+      <div data-id="nav_links" class="menu gap-1 tablet-lg:gap-2 p-0 justify-end">
         {#for nav <- nav_items}
           {#case List.wrap(nav)}
             {#match nav when nav != []}
@@ -19,6 +16,7 @@
                   page={@page}
                   selected_tab={@selected_tab}
                   data={e(subnav, :props, [])}
+                  skip_badges={@skip_badges}
                 />
               </li>
               <div class="menu p-0" data-id="nav_components">
@@ -28,6 +26,7 @@
                   page={@page}
                   selected_tab={@selected_tab}
                   data={e(subnav, :props, [])}
+                  skip_badges={@skip_badges}
                 />
               </div>
             {#match _}

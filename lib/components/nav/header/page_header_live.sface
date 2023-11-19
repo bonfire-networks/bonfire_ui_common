@@ -46,7 +46,7 @@
           <#slot {@right_action}>
           </#slot>
         {#else}
-          <Bonfire.UI.Common.GuestActionsLive page_header />
+          <Bonfire.UI.Common.GuestActionsLive page_header page={@page} />
         {/if}
       </div>
     </div>

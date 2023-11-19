@@ -17,7 +17,7 @@ defmodule Bonfire.UI.Common.LoggedActionsLive do
   # prop sidebar_widgets, :list, default: []
 
   # prop selected_tab, :any, default: nil
-  # prop nav_items, :any, default: []
+  # prop nav_items, :list, default: []
 
   @doc "The page title"
   slot hero

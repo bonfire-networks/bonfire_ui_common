@@ -1,0 +1,39 @@
+<div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:
+  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·
+  {!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · --}
+  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·
+  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LiveRedirect> ·
+  <LiveRedirect
+    :if={current_user_id(@__context__) ||
+      Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+    class="text-xs link-hover link text-base-content/70"
+    to="/users"
+  >{l("Users")}</LiveRedirect></div>
+<div class="mt-4">
+  <a
+    href="https://bonfirenetworks.org/"
+    class="text-xs font-semibold link link-hover text-base-content/70"
+  >
+    {Bonfire.Application.name()}
+  </a>
+  ·
+  <LiveRedirect
+    to={Bonfire.Application.repository()}
+    class="text-xs link link-hover text-base-content/70"
+  >
+    {Bonfire.Application.version()}
+    <span class="ml-1" x-data="{msg: 'JS'}">
+      <span x-text="msg">no JS</span>
+    </span>
+    <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
+  </LiveRedirect>
+</div>
+<div class="bg-base-content/10 rounded px-2 py-1 text-xs mt-4 inline-block">{#case maybe_apply(Bonfire.Federate.ActivityPub, :federating?, current_user(@__context__))}
+    {#match false}
+      {l("Federation disabled")}
+    {#match nil}
+      {l("Manual federation enabled")}
+    {#match true}
+      {l("Automatic federation enabled")}
+  {/case}
+</div>

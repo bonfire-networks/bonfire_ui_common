@@ -23,8 +23,9 @@
       />
     </div>
 
+    {!-- BOTTOM OF LEFT SIDEBAR --}
     <div class="sticky bottom-0 flex items-center justify-end tablet-lg:justify-between pt-4 bg-base-100 border-base-content/20">
-      <Bonfire.UI.Common.UserMenuLive :if={current_user(@__context__)} />
+      <Bonfire.UI.Common.UserMenuLive :if={current_user(@__context__)} page={@page} />
 
       <div class="items-center hidden tablet-lg:flex gap-3">
         <LiveRedirect

@@ -1,0 +1,140 @@
+<div
+  x-show="open_sidebar"
+  x-cloak
+  x-transition:enter="ease-in-out duration-300"
+  x-transition:enter-start="opacity-0"
+  x-transition:enter-end="opacity-100"
+  x-transition:leave="ease-in-out duration-300"
+  x-transition:leave-start="opacity-100"
+  x-transition:leave-end="opacity-0"
+  x-description="Background backdrop, show/hide based on slide-over state."
+  class="z-[99999] md:hidden fixed inset-0 backdrop-blur transition-opacity bg-black/80"
+/>
+<div x-show="open_sidebar" x-cloak class="fixed z-[99999] inset-0 overflow-hidden">
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="fixed inset-y-0 left-0 flex max-w-full pr-20 pointer-events-none">
+      <div
+        x-show="open_sidebar"
+        x-transition:enter="transform transition ease-in-out duration-300"
+        x-transition:enter-start="-translate-x-full"
+        x-transition:enter-end="-translate-x-0"
+        x-transition:leave="transform transition ease-in-out duration-300"
+        x-transition:leave-start="-translate-x-0"
+        x-transition:leave-end="-translate-x-full"
+        class="w-screen max-w-md pointer-events-auto"
+        x-description="Slide-over panel, show/hide based on slide-over state."
+        x-on:click.away="open_sidebar = false"
+      >
+        <div data-id="mobile_nav" class="flex flex-col h-full overflow-y-auto shadow-xl bg-base-100">
+          <div class="relative flex-1 flex flex-col">
+            <div class="py-2 mb-1">
+              <LiveRedirect
+                to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
+                class="rounded-lg bg-base-100 flex items-center p-2 gap-3 text-sm text-base-content/70"
+              >
+                <Bonfire.UI.Common.AvatarLive
+                  :if={is_map(current_user(@__context__))}
+                  parent_id="bottom_avatar_in_sidebar"
+                  class="inline-block object-cover w-9 h-9 rounded-full cursor-pointer bg-base-100"
+                  src={Media.avatar_url(current_user(@__context__))}
+                  user_id={current_user_id(@__context__)}
+                />
+                <div class="flex flex-col items-start">
+                  <div class="text-sm font-semibold truncate max-w-[180px] text-base-content">{e(current_user(@__context__), :profile, :name, l("Me"))}</div>
+                  <div
+                    :if={e(current_user(@__context__), :character, :username, nil)}
+                    class="-mt-0.5 text-[13px] font-normal truncate text-base-content/70"
+                  >@{e(current_user(@__context__), :character, :username, nil)}</div>
+                </div>
+              </LiveRedirect>
+            </div>
+
+            <div class="flex items-center absolute right-0 top-0">
+              <button
+                type="button"
+                class="btn btn-circle btn-sm btn-ghost m-1"
+                x-on:click="open_sidebar = false"
+              >
+                <span class="sr-only">{l("Close drawer menu")}</span>
+
+                <#Icon iconify="mdi:close-circle-outline" class="w-5 h-5" />
+              </button>
+            </div>
+
+            <nav role="navigation" class="h-full flex-1" aria-label={l("Extension navigation")}>
+              {!-- WIP: Find a better way to include navs in mobile with notification badges --}
+
+              <Bonfire.UI.Common.ExtensionMenuNavLive
+                selected_tab={@selected_tab}
+                page={@page}
+                nav_items={(@nav_items || []) ++
+                  [
+                    %{
+                      type: :link,
+                      href:
+                        if(is_map(current_user(@__context__)),
+                          do: path(current_user(@__context__)),
+                          else: ~p"/user"
+                        ),
+                      text: l("Profile"),
+                      icon: "solar:user-bold"
+                    },
+                    %{
+                      type: :link,
+                      href: "/feed/likes",
+                      text: l("Likes"),
+                      icon: "mingcute:fire-line"
+                    },
+                    %{
+                      type: :link,
+                      href: ~p"/settings",
+                      text: l("Settings"),
+                      icon: "heroicons-solid:cog"
+                    },
+                    if(
+                      is_map(current_user(@__context__)) and
+                        maybe_apply(Bonfire.Me.Accounts, :is_admin?, @__context__) == true,
+                      do: %{
+                        type: :link,
+                        href: ~p"/settings/instance",
+                        text: l("Instance Settings"),
+                        icon: "material-symbols:admin-panel-settings-outline-rounded"
+                      }
+                    )
+                  ]}
+                skip_badges={[:inbox, :notifications]}
+              />
+            </nav>
+            <div class="p-4">
+              <div class="text-xs text-base-content/70">
+                <Bonfire.UI.Common.ImpressumLive />
+              </div>
+
+              <div class="flex items-center gap-2 justify-between mt-3">
+                <LiveRedirect
+                  to={~p"/switch-user"}
+                  class="flex items-center border-base-content/70 btn btn-outline gap-2 normal-case flex-1"
+                >
+                  {!-- <#Icon iconify="material-symbols:logout" class="w-4 h-4" /> --}
+                  {!-- <#Icon iconify="fluent-mdl2:switch-user" class="w-5 h-5" /> --}
+
+                  <div class="text-sm">{l("Switch profile")}</div>
+                </LiveRedirect>
+
+                <LiveRedirect
+                  to={~p"/logout"}
+                  class="flex items-center btn btn-outline btn-error gap-2 normal-case flex-1"
+                >
+                  {!-- <#Icon iconify="material-symbols:logout" class="w-4 h-4" /> --}
+                  <#Icon iconify="uil:exit" class="w-5 h-5" />
+
+                  <div class="text-sm">{l("Logout")}</div>
+                </LiveRedirect>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

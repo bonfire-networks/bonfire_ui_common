@@ -22,6 +22,6 @@
     aria-orientation="vertical"
     aria-labelledby="user-profile-menu"
   >
-    <Bonfire.UI.Common.UserMenuLinksLive />
+    <Bonfire.UI.Common.UserMenuLinksLive page={@page} />
   </ul>
 </div>

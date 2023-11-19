@@ -1,8 +1,11 @@
-defmodule Bonfire.UI.Common.WidgetLive do
+defmodule Bonfire.UI.Common.LinkWidgetLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop widget, :any, required: true
-  prop data, :any, default: []
+  prop href, :string, default: nil
+  prop text, :string, default: nil
+  prop icon, :string, default: nil
+
+  prop widget, :any, default: %{}
   prop without_icon, :boolean, default: false
   prop without_label, :boolean, default: false
 
@@ -19,22 +22,4 @@ defmodule Bonfire.UI.Common.WidgetLive do
   prop icon_class, :css_class, required: false, default: "w-7 h-7 text-base-content/80"
 
   prop skip_badges, :list, default: []
-
-  def render(assigns) do
-    assigns
-    |> assign(:widget, widget(assigns[:widget], assigns[:__context__]))
-    |> render_sface()
-  end
-
-  def widget(%{name: :extension, app: app}, _context) do
-    Bonfire.Common.ExtensionModule.extension(app)
-  end
-
-  def widget(%{name: :current_extension}, context) do
-    context[:current_extension]
-  end
-
-  def widget(widget, _context) do
-    widget
-  end
 end

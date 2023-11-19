@@ -1,0 +1,82 @@
+<li>
+  <div class="px-3 py-2 mb-1">
+    <LiveRedirect
+      to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
+      class="rounded-lg bg-base-100 flex items-center p-2 gap-3 text-sm text-base-content/70"
+    >
+      <Bonfire.UI.Common.AvatarLive
+        :if={is_map(current_user(@__context__))}
+        parent_id="bottom_avatar_in_sidebar"
+        class="inline-block object-cover w-9 h-9 rounded-full cursor-pointer bg-base-100"
+        src={Media.avatar_url(current_user(@__context__))}
+        user_id={current_user_id(@__context__)}
+      />
+      <div class="flex flex-col items-start">
+        <div class="text-sm font-semibold truncate max-w-[180px] text-base-content">{e(current_user(@__context__), :profile, :name, l("Me"))}</div>
+        <div
+          :if={e(current_user(@__context__), :character, :username, nil)}
+          class="-mt-0.5 text-[13px] font-normal truncate text-base-content/70"
+        >@{e(current_user(@__context__), :character, :username, nil)}</div>
+      </div>
+    </LiveRedirect>
+  </div>
+</li>
+
+<li>
+  <LiveRedirect
+    to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
+    class="flex items-center gap-2 text-sm text-base-content/70"
+  >
+    <div>{l("Profile")}</div>
+  </LiveRedirect>
+</li>
+<li>
+  <LiveRedirect to={~p"/switch-user"} class="flex items-center gap-2 text-sm text-base-content/70">
+    <div>{l("Switch profile")}</div>
+  </LiveRedirect>
+</li>
+
+<li>
+  <LiveRedirect to="/feed/likes" class="flex items-center gap-2 text-sm text-base-content/70">
+    <div>{l("Likes")}</div>
+  </LiveRedirect>
+</li>
+
+<li>
+  <Dynamic.Component
+    :if={module_enabled?(Bonfire.UI.Groups.NewGroupLive)}
+    module={Bonfire.UI.Groups.NewGroupLive}
+    parent_id="user_menu_links"
+    open_btn_wrapper_class="flex items-center gap-2 text-sm text-base-content/70"
+    open_btn_class=""
+  />
+</li>
+
+<li>
+  <LiveRedirect to={~p"/settings"} class="flex items-center gap-2 text-sm text-base-content/70">
+    <div>{l("Settings")}</div>
+  </LiveRedirect>
+</li>
+
+{!-- if current user is also an admin --}
+<li :if={is_map(current_user(@__context__)) and
+  maybe_apply(Bonfire.Me.Accounts, :is_admin?, @__context__) == true}>
+  <LiveRedirect
+    to={~p"/settings/instance"}
+    class="flex items-center gap-2 text-sm text-base-content/70"
+  >
+    <div>{l("Instance Settings")}</div>
+  </LiveRedirect>
+</li>
+
+<li>
+  <LiveRedirect to={~p"/logout"} class="flex items-center gap-2 text-sm text-base-content/70">
+    <div>{l("Sign out")}</div>
+  </LiveRedirect>
+</li>
+
+{!-- <li class="border-t border-neutral-content/10">
+  <Bonfire.UI.Common.FeedbackButtonLive
+    class="flex items-center gap-2 text-sm text-base-content/70"
+  />
+</li> --}

@@ -29,7 +29,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop no_header, :boolean, default: false
 
   prop inner_content, :any, default: nil
-  prop nav_items, :any, default: nil
+  prop nav_items, :list, default: []
   prop without_secondary_widgets, :boolean, default: false
   prop without_sidebar, :boolean, default: nil
   prop sidebar_widgets, :list, default: []
@@ -89,7 +89,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:context_id, fn -> nil end)
       |> assign_new(:reply_to_id, fn -> nil end)
       |> assign_new(:create_object_type, fn -> nil end)
-      |> assign_new(:nav_items, fn -> nil end)
       |> assign_new(:current_app, fn -> nil end)
       |> assign_new(:current_account, fn -> nil end)
       |> assign_new(:current_account_id, fn -> nil end)
@@ -101,6 +100,16 @@ defmodule Bonfire.UI.Common.LayoutLive do
       |> assign_new(:without_sidebar, fn -> nil end)
       |> assign_new(:without_secondary_widgets, fn -> false end)
       |> assign_new(:sidebar_widgets, fn -> [] end)
+      |> assign(
+        :nav_items,
+        e(
+          assigns[:nav_items],
+          Bonfire.Common.ExtensionModule.default_nav(
+            e(assigns[:__context__], :current_extension, nil) ||
+              e(assigns[:__context__], :current_app, nil)
+          ) || Bonfire.Common.NavModule.nav(e(assigns[:__context__], :current_app, nil)) || []
+        )
+      )
 
     # |> assign_new(:hero, fn -> nil end)
     # |> assign_new(:custom_page_header, fn -> nil end)
@@ -159,7 +168,12 @@ defmodule Bonfire.UI.Common.LayoutLive do
         data-single-column={@without_sidebar}
         class="w-full px-0 md:px-4 grid max-w-[600px] md:max-w-[680px] lg:max-w-[1020px] tablet-lg:max-w-[1200px] gap-0 md:gap-4 widget xl:px-0 mx-auto grid-cols-1 md:grid-cols-[80px_1fr] lg:grid-cols-[100px_1fr_320px] tablet-lg:grid-cols-[250px_1fr_320px]"
       >
-        <Bonfire.UI.Common.MobileMenuLive :if={@current_user_id} />
+        <Bonfire.UI.Common.MobileMenuLive
+          :if={@current_user_id}
+          page={@page}
+          selected_tab={@selected_tab}
+          nav_items={@nav_items}
+        />
         <div
           :if={!@without_sidebar}
           data-id="nav_sidebar"
@@ -216,6 +230,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                     <div class="flex flex-1 backdrop-blur-sm rounded-none md:rounded-t bg-base-100/70 transition-color duration-150 ease-in-out">
                       <Dynamic.Component
                         module={Bonfire.UI.Common.PageHeaderLive}
+                        page={@page}
                         page_title={@page_title}
                         page_header_icon={@page_header_icon}
                         back={@back}
@@ -257,7 +272,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 />
               </div>
             {#else}
-              <Bonfire.UI.Common.GuestActionsLive />
+              <Bonfire.UI.Common.GuestActionsLive page={@page} />
             {/if}
             <div
               data-id="secondary_sidebar_widgets"
@@ -288,44 +303,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   / -->
                   <div class="prose prose-sm !text-xs">{Config.get([:ui, :theme, :instance_description])}</div>
                 </div>
-                <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:
-                  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·
-                  {!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · --}
-                  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·
-                  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LiveRedirect> ·
-                  <LiveRedirect
-                    :if={@current_user_id || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-                    class="text-xs link-hover link text-base-content/70"
-                    to="/users"
-                  >{l("Users")}</LiveRedirect></div>
-                <div class="mt-4">
-                  <a
-                    href="https://bonfirenetworks.org/"
-                    class="text-xs font-semibold link link-hover text-base-content/70"
-                  >
-                    {Bonfire.Application.name()}
-                  </a>
-                  ·
-                  <LiveRedirect
-                    to={Bonfire.Application.repository()}
-                    class="text-xs link link-hover text-base-content/70"
-                  >
-                    {Bonfire.Application.version()}
-                    <span class="ml-1" x-data="{msg: 'JS'}">
-                      <span x-text="msg">no JS</span>
-                    </span>
-                    <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
-                  </LiveRedirect>
-                </div>
-                <div class="bg-base-content/10 rounded px-2 py-1 text-xs mt-4 inline-block">{#case maybe_apply(Bonfire.Federate.ActivityPub, :federating?, current_user(@__context__))}
-                    {#match false}
-                      {l("Federation disabled")}
-                    {#match nil}
-                      {l("Manual federation enabled")}
-                    {#match true}
-                      {l("Automatic federation enabled")}
-                  {/case}
-                </div>
+
+                <Bonfire.UI.Common.ImpressumLive />
               </div>
             </div>
           </div>
