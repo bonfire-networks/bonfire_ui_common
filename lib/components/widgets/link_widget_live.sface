@@ -44,7 +44,7 @@
       {#match nil}
       {#match badge}
         <div
-          :if={badge[:id] not in @skip_badges}
+          :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
           class="flex absolute left-7 top-0 items-center place-content-center widget_notification"
         >
           <Dynamic.LiveComponent

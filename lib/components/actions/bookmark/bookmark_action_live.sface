@@ -1,7 +1,5 @@
 <div class="relative z-20">
-  <!-- or
-      Bonfire.Boundaries.can?(@__context__, :bookmark, @object_boundary -->
-  {#case !is_nil(current_user(@__context__))}
+  {#case not is_nil(current_user_id(@__context__))}
     {#match true}
       <button
         :if={@object_id}

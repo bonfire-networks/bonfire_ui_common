@@ -18,7 +18,7 @@
     >
       <div :if={@nav_header != false} class="sticky top-0 h-[64px]">
         {#case @nav_header ||
-            if is_nil(current_user(@__context__)),
+            if is_nil(current_user_id(@__context__)),
               do: Bonfire.UI.Common.GuestHeaderLive,
               else: Bonfire.UI.Common.LoggedHeaderLive}
           {#match module}
@@ -79,25 +79,25 @@
     {!-- FIXME: use the widget system instead (see below) --}
     <Dynamic.Component
       :if={module_enabled?(Bonfire.Classify.Web.CategoriesNavLive, @__context__) and
-        not is_nil(current_user(@__context__))}
+        not is_nil(current_user_id(@__context__))}
       module={Bonfire.Classify.Web.CategoriesNavLive}
       selected_tab={@selected_tab}
     />
     <Dynamic.Component
       :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__) and
-        not is_nil(current_user(@__context__))}
+        not is_nil(current_user_id(@__context__))}
       module={Bonfire.UI.ValueFlows.ProcessesListLive}
       process_url="/coordination/list"
       title={l("Favourite milestones")}
     />
 
     <div
-      :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(current_user(@__context__))) or
-        (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(current_user(@__context__)))}
+      :if={(is_list(@sidebar_widgets[:users][:secondary]) and not is_nil(current_user_id(@__context__))) or
+        (is_list(@sidebar_widgets[:guests][:secondary]) and is_nil(current_user_id(@__context__)))}
       class=""
     >
       <Dynamic.Component
-        :if={not is_nil(current_user(@__context__))}
+        :if={not is_nil(current_user_id(@__context__))}
         :for={{component, component_assigns} <-
           @sidebar_widgets[:users][:secondary] ||
             [
@@ -109,7 +109,7 @@
       />
 
       <Dynamic.Component
-        :if={is_nil(current_user(@__context__))}
+        :if={is_nil(current_user_id(@__context__))}
         :for={{component, component_assigns} <- @sidebar_widgets[:guests][:secondary] || []}
         module={component}
         {...component_assigns}

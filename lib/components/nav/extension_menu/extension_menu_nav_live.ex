@@ -4,5 +4,5 @@ defmodule Bonfire.UI.Common.ExtensionMenuNavLive do
   prop nav_items, :list, default: []
   prop page, :any, default: nil
   prop selected_tab, :any, default: nil
-  prop skip_badges, :list, default: []
+  prop skip_badges, :any, default: false
 end

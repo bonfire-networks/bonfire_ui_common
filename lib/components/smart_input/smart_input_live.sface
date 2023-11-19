@@ -7,7 +7,7 @@
   >
     <!-- title_open: #{if @title_open == true and @create_object_type not in [:post], do: true, else: false}, -->
     <div
-      :if={not is_nil(current_user(@__context__))}
+      :if={not is_nil(current_user_id(@__context__))}
       class="relative flex flex-col flex-1 w-full bg-base-100"
     >
       <div

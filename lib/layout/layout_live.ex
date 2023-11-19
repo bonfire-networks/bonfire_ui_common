@@ -113,9 +113,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
     # |> assign_new(:hero, fn -> nil end)
     # |> assign_new(:custom_page_header, fn -> nil end)
-    #     fn -> (not is_nil(current_user(assigns)) &&
+    #     fn -> (not is_nil(current_user_id(assigns)) &&
     #         empty?(e(assigns, :sidebar_widgets, :users, :main, nil))) ||
-    #        (!is_nil(current_user(assigns)) &&
+    #        (not is_nil(current_user_id(assigns)) &&
     #           empty?(e(assigns, :sidebar_widgets, :guests, :main, nil)))
     # end)
     debug("Rendering layout")

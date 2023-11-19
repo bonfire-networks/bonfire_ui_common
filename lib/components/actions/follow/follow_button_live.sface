@@ -12,7 +12,7 @@
       data-id="follow"
       id={"#{@id}-btn"}
       :on-click={if !@disabled, do: "Bonfire.Social.Follows:follow"}
-      href={if !current_user(@__context__), do: "#{@path}/follow"}
+      href={if !current_user_id(@__context__), do: "#{@path}/follow"}
       rel="noopener noreferrer"
       phx-disable-with={l("loading...")}
       phx-value-id={@object_id}

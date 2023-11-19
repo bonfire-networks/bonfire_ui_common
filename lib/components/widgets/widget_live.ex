@@ -18,7 +18,7 @@ defmodule Bonfire.UI.Common.WidgetLive do
   prop link_class, :any, default: nil
   prop icon_class, :css_class, required: false, default: "w-7 h-7 text-base-content/80"
 
-  prop skip_badges, :list, default: []
+  prop skip_badges, :any, default: false
 
   def render(assigns) do
     assigns

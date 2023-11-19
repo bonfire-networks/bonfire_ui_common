@@ -47,7 +47,7 @@
     </div>
   </div>
 
-  {#if !current_user(@__context__)}
+  {#if !current_user_id(@__context__)}
     <nav class="mt-1">
       <ul class="menu gap-2 p-0 justify-end">
         <li class="p-0 m-0 rounded-md">
