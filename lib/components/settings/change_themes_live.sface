@@ -116,17 +116,13 @@
       <span class="">{l("Customise theme colours")}</span>
     </div>
 
-    <div :if={@scope == :instance} class="p-4 mt-6 mb-0 rounded-md bg-info/10">
-      <div class="flex">
-        <div class="flex-shrink-0">
-          <#Icon solid="InformationCircle" class="w-5 h-5 text-info" />
-        </div>
-        <div class="flex-1 ml-3 md:flex md:justify-between">
-          <p class="text-sm text-info">
-            {l(
-              "Caution: Modifying the color palette can potentially affect readability and accessibility for some users. Please consider accessibility guidelines and user testing when making changes."
-            )}</p>
-        </div>
+    <div :if={@scope == :instance}>
+      <div class="alert alert-info" role="alert">
+        <#Icon solid="InformationCircle" class="w-5 h-5 shrink-0" />
+        <span class="">
+          {l(
+            "Caution: Modifying the color palette can potentially affect readability and accessibility for some users. Please consider accessibility guidelines and user testing when making changes."
+          )}</span>
       </div>
     </div>
 

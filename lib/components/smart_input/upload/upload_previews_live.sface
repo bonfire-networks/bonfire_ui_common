@@ -39,18 +39,12 @@
           {!-- reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
         form_opts={%{"phx-submit"=> "set_value"}} --}
           <div class="mt-4">
-            <div class="p-4 rounded-md bg-info/10">
-              <div class="flex">
-                <div class="flex-shrink-0">
-                  <#Icon solid="InformationCircle" class="w-5 h-5 text-info" />
-                </div>
-                <div class="flex-1 ml-3 md:flex md:justify-between">
-                  <p class="text-sm text-info">
-                    {l(
-                      "Adding an alternative description will improve the accessibility of your content, helping visually impaired people and others using screen reading tools."
-                    )}</p>
-                </div>
-              </div>
+            <div class="alert alert-info" role="alert">
+              <#Icon solid="InformationCircle" class="w-5 h-5 shrink-0" />
+              <span class="">
+                {l(
+                  "Adding an alternative description will improve the accessibility of your content, helping visually impaired people and others using screen reading tools."
+                )}</span>
             </div>
           </div>
           <div class="px-1 mt-3">
