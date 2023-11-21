@@ -31,6 +31,14 @@ CopyHooks.Copy = {
           }
         })
       }
+      // add a tooltip next the element that says "copied!" and disappear after 3 seconds
+      this.el.setAttribute("data-tip", "Copied!");
+      this.el.classList.add("tooltip", "tooltip-open");
+      
+      setTimeout(() => {
+        this.el.removeAttribute("data-tooltip");
+        this.el.classList.remove("tooltip", "tooltip-open");
+      }, 3000);
     });
 
   }
