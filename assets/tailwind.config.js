@@ -36,7 +36,9 @@ module.exports = {
         'tablet': '920px',
         'tablet-lg': '1200px',
         'desktop-lg': '1448px',
-        'wide': '1920px'
+        'wide': '1920px',
+        'can-hover': { 'raw': '(hover: hover)' },
+        'cannot-hover': { 'raw': '(hover: none)' }
       },
       maxWidth: {
         '600': '600px'
