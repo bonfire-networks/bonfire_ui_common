@@ -141,7 +141,7 @@ div[data-id="activity_actions"][data-rendered="thread"] {
 } 
 
 div[data-id="activity_actions"][data-rendered="feed"] {
-  @apply mt-3 gap-4 flex-col md:flex-row;
+  @apply gap-4 flex-col md:flex-row;
 } 
 
 div[data-id="activity_actions"][data-rendered="notifications"] {
@@ -155,6 +155,7 @@ div[data-id="activity_actions"][data-rendered="widget"] {
 div[data-id="activity_actions"][data-main-object] {
   @apply mt-1;
 } 
+
 
 /* media_live */
 div[data-id="multimedia_grid"][data-media="1"] {
