@@ -1230,18 +1230,242 @@ defmodule Bonfire.UI.Common do
       e(assigns, :id, nil)
   end
 
-  @decorate time()
-  def preload_assigns_async(assigns_sockets, assigns_to_params_fn, preload_fn, opts \\ [])
-      when is_list(assigns_sockets) and is_function(assigns_to_params_fn, 1) and
-             is_function(preload_fn, 3) do
-    connected? = socket_connected?(elem(List.first(assigns_sockets), 1))
+  def update_many_async(assigns_sockets, opts) when is_list(assigns_sockets) do
+    {mode, current_user} = opts_for_update_many_async(List.first(assigns_sockets), opts)
+
+    case prepare_update_many_async(assigns_sockets, mode, opts) do
+      nil ->
+        #  skipped, return original sockets/assigns
+        maybe_assign_provided(assigns_sockets, !opts[:return_assigns_socket_tuple])
+
+      {:async, preload_status_key, preload_fn, list_of_ids, list_of_components}
+      when is_function(preload_fn, 3) ->
+        # actually do the preload async
+        debug(preload_fn, "preloading using async :-)")
+        pid = self()
+
+        apply_task(:start_link, fn ->
+          preload_fn.(list_of_components, list_of_ids, current_user)
+          |> Enum.each(fn
+            {component_id, %{} = assigns} ->
+              # debug(assigns, "ahjkjhkh")
+
+              maybe_send_update(
+                opts[:caller_module],
+                component_id,
+                Map.put(assigns, preload_status_key, true),
+                pid
+              )
+
+            other ->
+              warn(other, "skip sending assigns")
+          end)
+
+          # send(pid, :preload_done)
+        end)
+
+        # while the async stuff is running, return the original assigns
+        maybe_assign_provided(assigns_sockets, !opts[:return_assigns_socket_tuple])
+
+      {:inline, preload_status_key, preload_fn, list_of_ids, list_of_components}
+      when is_function(preload_fn, 3) ->
+        #  return inline
+        debug(preload_fn, "preloading inline")
+
+        preloaded_assigns =
+          preload_fn.(list_of_components, list_of_ids, current_user)
+
+        # |> debug("preloaded assigns for components")
+
+        assigns_sockets
+        |> Enum.map(fn {%{id: component_id} = assigns, socket} ->
+          socket
+          |> maybe_assign_provided(
+            assigns
+            |> Map.merge(e(preloaded_assigns, component_id, %{}))
+            |> Map.put(preload_status_key, true),
+            !opts[:return_assigns_socket_tuple]
+          )
+        end)
+
+      # return updated sockets/assigns
+      assigns_sockets_or_sockets ->
+        assigns_sockets_or_sockets
+    end
+  end
+
+  def batch_update_many_async(assigns_sockets, many_opts, opts)
+      when is_list(assigns_sockets) and is_list(many_opts) and is_list(opts) do
+    {mode, current_user} = opts_for_update_many_async(List.first(assigns_sockets), opts)
+
+    # while the async stuff is running, return the original assigns
+    case Enum.map(many_opts, fn single_opts ->
+           prepare_update_many_async(assigns_sockets, mode, single_opts)
+         end) do
+      nil ->
+        nil
+
+      [] ->
+        nil
+
+      prepared_groups ->
+        prepared_groups =
+          prepared_groups
+          |> Enum.group_by(fn
+            nil ->
+              nil
+
+            tuple when is_tuple(tuple) ->
+              elem(tuple, 0)
+
+            other ->
+              error(other, "unexpected")
+              nil
+          end)
+          |> debug("prepared_groups")
+
+        case Map.get(prepared_groups, :async) do
+          nil ->
+            nil
+
+          async_groups ->
+            pid = self()
+
+            apply_task(:start_link, fn ->
+              {preload_status_keys, preloaded_assigns} =
+                do_batch_preloads(async_groups, current_user)
+
+              preloaded_assigns
+              |> Enum.each(fn
+                {component_id, %{} = assigns} ->
+                  # debug(assigns, "ahjkjhkh")
+
+                  maybe_send_update(
+                    opts[:caller_module],
+                    component_id,
+                    Map.merge(assigns, preload_status_keys),
+                    pid
+                  )
+
+                other ->
+                  warn(other, "skip sending assigns")
+              end)
+
+              # end async ops
+            end)
+
+            nil
+        end
+
+        case Map.get(prepared_groups, :inline) do
+          nil ->
+            nil
+
+          async_groups ->
+            {preload_status_keys, preloaded_assigns} =
+              do_batch_preloads(async_groups, current_user)
+
+            assigns_sockets
+            |> Enum.map(fn {%{id: component_id} = assigns, socket} ->
+              socket
+              |> maybe_assign_provided(
+                assigns
+                |> Map.merge(e(preloaded_assigns, component_id, %{}))
+                |> Map.merge(preload_status_keys),
+                !opts[:return_assigns_socket_tuple]
+              )
+            end)
+        end
+    end ||
+      maybe_assign_provided(assigns_sockets, !opts[:return_assigns_socket_tuple])
+  end
+
+  defp do_batch_preloads(async_groups, current_user) do
+    async_data =
+      async_groups
+      |> Enum.map(fn {_mode, preload_status_key, preload_fn, list_of_ids, list_of_components} ->
+        # same as `Task.async/1` but supports multi-tenancy
+        Utils.apply_task(:async, fn ->
+          {preload_status_key, preload_fn.(list_of_components, list_of_ids, current_user)}
+        end)
+      end)
+      # long timeout for now - TODO: configurable 
+      |> Task.await_many(5_000_000)
+      |> debug("parallel done")
+
+    preload_status_keys =
+      Keyword.keys(async_data)
+      |> debug("preload_status_keys")
+      |> Map.new(fn preload_status_key -> {preload_status_key, true} end)
+      |> debug()
+
+    async_data =
+      async_data
+      |> Enum.reduce(%{}, fn {_preload_status_key, group_map}, acc ->
+        acc
+        |> Enums.deep_merge(group_map, replace_lists: true)
+
+        # |> Map.merge(%{extra_assigns: %{^preload_status_key => true}})
+      end)
+      |> debug("merge done")
+
+    {preload_status_keys, async_data}
+  end
+
+  defp opts_for_update_many_async({assigns, socket}, opts) do
+    env = Config.env()
+
+    connected? = socket_connected?(socket)
 
     current_user =
-      current_user(elem(List.first(assigns_sockets), 0)) ||
-        current_user(elem(List.first(assigns_sockets), 0)) ||
-        current_user(elem(List.first(assigns_sockets), 1))
+      current_user(assigns) ||
+        current_user(socket)
 
-    # |> info("current_user")
+    live_update_many_preloads =
+      opts[:live_update_many_preloads] || live_update_many_preloads?()
+
+    mode =
+      cond do
+        live_update_many_preloads == :skip -> :wait
+        live_update_many_preloads == :inline -> :inline
+        connected? == true and env != :test and not is_nil(opts[:caller_module]) -> :async
+        live_update_many_preloads == :user_async_or_skip -> :skip
+        env != :test and not is_nil(current_user) -> :wait
+        true -> :inline
+      end
+
+    {mode, current_user}
+  end
+
+  # @decorate time()
+  defp prepare_update_many_async(assigns_sockets, mode, opts) do
+    mode =
+      cond do
+        opts[:live_update_many_preloads] == :skip -> :wait
+        opts[:live_update_many_preloads] == :inline -> :inline
+        true -> mode
+      end
+      |> debug("mode")
+
+    if mode in [:async, :inline] do
+      with {:ok, preload_status_key, list_of_ids, list_of_components} <-
+             prepare_components_for_update_many(
+               assigns_sockets,
+               opts[:assigns_to_params_fn],
+               opts
+             ) do
+        {mode, preload_status_key, opts[:preload_fn], list_of_ids, list_of_components}
+      end
+    else
+      debug("wait to preload once socket is connected")
+
+      nil
+    end
+  end
+
+  defp prepare_components_for_update_many(assigns_sockets, assigns_to_params_fn, opts)
+       when is_function(assigns_to_params_fn, 1) do
+    preload_status_key = opts[:preload_status_key] || :preloaded_async_assigns
 
     list_of_components =
       assigns_sockets
@@ -1251,7 +1475,7 @@ defmodule Bonfire.UI.Common do
         is_nil(
           Map.get(
             assigns,
-            opts[:skip_if_set] || opts[:preload_status_key] || :preloaded_async_assigns
+            opts[:skip_if_set] || preload_status_key
           )
         )
       end)
@@ -1271,79 +1495,27 @@ defmodule Bonfire.UI.Common do
         |> filter_empty([])
         |> Enum.uniq()
 
-      # |> debug("list_of_ids")
-
-      env = Config.env()
-
-      live_update_many_preloads =
-        (opts[:live_update_many_preloads] || live_update_many_preloads?())
-        |> debug("live_update_many_preloads")
-
-      if connected? == true and env != :test and
-           not is_nil(opts[:caller_module]) and
-           live_update_many_preloads not in [:inline, :skip] do
-        debug(preload_fn, "preloading using async :-)")
-        pid = self()
-
-        apply_task(:start_link, fn ->
-          preload_fn.(list_of_components, list_of_ids, current_user)
-          |> Enum.each(fn
-            {component_id, %{} = assigns} ->
-              # debug(assigns, "ahjkjhkh")
-
-              maybe_send_update(
-                opts[:caller_module],
-                component_id,
-                Map.put(assigns, opts[:preload_status_key] || :preloaded_async_assigns, true),
-                pid
-              )
-
-            other ->
-              warn(other, "skip sending assigns")
-          end)
-
-          # send(pid, :preload_done)
-        end)
-
-        nil
-      else
-        if env != :test and not is_nil(current_user) and live_update_many_preloads != :inline do
-          debug(preload_fn, "wait to preload once socket is connected")
-
-          nil
-        else
-          debug(preload_fn, "preloading WITHOUT using async")
-
-          preloaded_assigns =
-            preload_fn.(list_of_components, list_of_ids, current_user)
-
-          # |> debug("preloaded assigns for components")
-
-          assigns_sockets
-          |> Enum.map(fn {%{id: component_id} = assigns, socket} ->
-            socket
-            |> maybe_assign_provided(
-              Map.merge(assigns, preloaded_assigns[component_id] || %{}),
-              !opts[:return_assigns_socket_tuple]
-            )
-
-            # |> debug("merged assigns")
-          end)
-        end
-      end
-    end ||
-      assigns_sockets
-      |> Enum.map(fn {assigns, socket} ->
-        socket
-        |> maybe_assign_provided(assigns, !opts[:return_assigns_socket_tuple])
-      end)
+      {:ok, preload_status_key, list_of_ids, list_of_components}
+    end
   end
 
   defp live_update_many_preloads?,
     do: Process.get(:live_update_many_preloads) || Config.get(:live_update_many_preloads)
 
+  defp maybe_assign_provided(assigns_sockets, false), do: assigns_sockets
+
+  defp maybe_assign_provided(assigns_sockets, _true) when is_list(assigns_sockets) do
+    assigns_sockets
+    |> Enum.map(fn {assigns, socket} ->
+      socket
+      |> Phoenix.Component.assign(assigns)
+    end)
+  end
+
   defp maybe_assign_provided(socket, assigns, false), do: {assigns, socket}
-  defp maybe_assign_provided(socket, assigns, _), do: socket |> Phoenix.Component.assign(assigns)
+
+  defp maybe_assign_provided(socket, assigns, _true),
+    do: socket |> Phoenix.Component.assign(assigns)
 
   def can?(subject, verbs, object, opts \\ []) do
     if Bonfire.Common.Extend.module_enabled?(Bonfire.Boundaries) do
