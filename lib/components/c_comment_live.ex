@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.C do
   @moduledoc """
-  Defines a `<C>comment</C>` component that will conditionally output comments depending on the app's loglevel.
+  Defines a `<C>comment</C>` component that will conditionally output comments depending on Logger's configured level.
   """
 
   use Bonfire.UI.Common.Web, :stateless_component
