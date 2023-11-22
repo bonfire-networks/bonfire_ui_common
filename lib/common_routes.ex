@@ -23,6 +23,8 @@ defmodule Bonfire.UI.Common.Routes do
           assets: &Bonfire.UI.Common.Routes.gon_js_config/0
         )
 
+        plug(Cldr.Plug.SetLocale, Bonfire.Common.Localise.set_locale_config())
+
         plug(:protect_from_forgery)
         plug(:put_secure_browser_headers)
 
@@ -34,7 +36,6 @@ defmodule Bonfire.UI.Common.Routes do
         # plug(Bonfire.UI.Common.MaybeStaticGeneratorPlug)
 
         plug(:fetch_live_flash)
-        plug(Cldr.Plug.SetLocale, Bonfire.Common.Localise.set_locale_config())
 
         # plug Bonfire.UI.Me.Plugs.Locale # TODO: skip guessing a locale if the user has one in preferences
       end
