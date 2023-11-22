@@ -1,4 +1,4 @@
-# Deprecated in favour of Cldr's plug
+# Deprecated in favour of Cldr's plug with `Bonfire.Common.Localise.set_locale_config/0`
 # defmodule Bonfire.UI.Common.Plugs.Locale do
 #   import Plug.Conn
 
