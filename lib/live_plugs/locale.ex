@@ -11,16 +11,17 @@ defmodule Bonfire.UI.Common.LivePlugs.Locale do
 
   # `locale` in session as override
   def mount(_, %{"locale" => locale}, socket),
-    do: {:ok, assign_put_locale(locale, socket)}
+    do: {:ok, assign_put_locale(locale, current_user(socket), socket)}
 
   # local derived from browser, cookies, etc, by Cldr.Plug.SetLocale
   def mount(_, %{@local_session_key => locale}, socket),
-    do: {:ok, assign_put_locale(locale, socket)}
+    do: {:ok, assign_put_locale(locale, current_user(socket), socket)}
 
   # from settings or default
-  def mount(_, _, socket), do: {:ok, assign_put_locale(nil, socket)}
+  def mount(_, _, socket), do: {:ok, assign_put_locale(nil, current_user(socket), socket)}
 
-  def assign_put_locale(nil, socket) do
+  def assign_put_locale(locale, current_user, socket)
+      when is_nil(locale) or current_user != nil do
     # TODO: from Settings
     maybe_apply(
       Bonfire.Common.Settings,

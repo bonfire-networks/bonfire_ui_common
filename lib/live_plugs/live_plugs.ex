@@ -7,14 +7,18 @@ defmodule Bonfire.UI.Common.LivePlugs do
   @default_plugs [
     UI.Common.LivePlugs.StaticChanged,
     UI.Common.LivePlugs.Csrf,
-    UI.Common.LivePlugs.Locale,
+    # UI.Common.LivePlugs.Locale,
     # for tests (TODO: only include in test env?)
     Bonfire.UI.Common.LivePlugs.AllowTestSandbox
   ]
 
+  @default_plugs_after [
+    UI.Common.LivePlugs.Locale
+  ]
+
   def on_mount(modules, params, session, socket) when is_list(modules) do
     Bonfire.UI.Common.LivePlugs.Helpers.on_mount(
-      @default_plugs ++ modules,
+      @default_plugs ++ modules ++ @default_plugs_after,
       params,
       session,
       socket
