@@ -1,11 +1,12 @@
 <div
+  data-scope="avatar"
   class="border-0 avatar !flex"
   :if={!Settings.get([Bonfire.UI.Common.AvatarLive, :hide_avatars], false, @__context__)}
 >
-  <div class={
-    @class,
-    "!rounded ": Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true, @__context__)
-  }>
+  <div
+    data-square={Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true, @__context__)}
+    class={@class}
+  >
     <!-- @title 
     || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
     e(@user, :name, nil) ||

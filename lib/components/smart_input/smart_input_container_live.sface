@@ -37,11 +37,10 @@
             <div
               :if={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
               phx-click={LiveHandler.close_smart_input()}
+              id="smart_input_backdrop"
+              data-hidden={e(@smart_input_opts, :open, nil) != true}
               phx-target="#smart_input"
-              class={
-                "smart_input_backdrop fixed inset-0 cursor-pointer bg-base-300/20 backdrop-blur",
-                hidden: e(@smart_input_opts, :open, nil) == false
-              }
+              class="smart_input_backdrop fixed inset-0 cursor-pointer bg-base-300/20 backdrop-blur"
               style="-webkit-backdrop-filter: blur(8px);"
             />
 

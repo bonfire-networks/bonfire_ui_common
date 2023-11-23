@@ -3,6 +3,7 @@
   style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}
 />
 <div
+  data-scope="logo_name"
   :if={@with_name && !Settings.get([Bonfire.UI.Common.LogoLive, :only_logo], false, @__context__)}
   class={@name_class || "text-xl font-bold text-base-content"}
 >{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>

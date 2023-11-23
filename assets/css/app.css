@@ -21,6 +21,12 @@ div[data-id="main_section"][data-single-column] #inner {
   @apply !border-none;
 }
 
+/* AVATAR */
+
+div[data-scope="avatar"] div[data-square] {
+  @apply !rounded;
+}
+
 
 /* preview content */
 div[data-id="preview_content"][data-show] {
@@ -65,7 +71,7 @@ article.replied::after {
   width: 2px;
   top: 16px;
   bottom: -32px;
-  left: -36px;
+  left: -34px;
   z-index: -1;
   background-color: oklch(var(--bc) / 0.2);
 }

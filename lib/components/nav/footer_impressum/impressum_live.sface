@@ -25,7 +25,7 @@
     <span class="ml-1" x-data="{msg: 'JS'}">
       <span x-text="msg">no JS</span>
     </span>
-    <span class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
+    <span data-role="locale" class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
   </LiveRedirect>
 </div>
 <div class="bg-base-content/10 rounded px-2 py-1 text-xs mt-4 inline-block">{#case maybe_apply(Bonfire.Federate.ActivityPub, :federating?, current_user(@__context__))}

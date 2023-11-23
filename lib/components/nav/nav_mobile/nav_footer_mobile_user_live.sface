@@ -11,7 +11,7 @@
   </LiveRedirect>
 
   <LiveRedirect :if={!current_user_id(@__context__)} to="/feed">
-    <#Icon iconify="ri:safari-line" class="w-6 h-6 text-base-content/70" />
+    <#Icon iconify="carbon:explore" class="w-6 h-6 text-base-content/70" />
     <span class="sr-only">{l("Feeds")}</span>
   </LiveRedirect>
 
