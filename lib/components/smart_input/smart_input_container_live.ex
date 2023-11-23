@@ -53,9 +53,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
             ~w(.jpg .png)
           ),
         # make configurable
-        max_file_size:
-          Bonfire.Common.Config.get([Bonfire.UI.Common.SmartInputLive, :max_upload_file_size], 8) *
-            1_000_000,
+        max_file_size: Bonfire.Files.DocumentUploader.max_file_size(),
         max_entries: 6,
         auto_upload: false
         # progress: &handle_progress/3
