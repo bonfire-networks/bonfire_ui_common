@@ -1,5 +1,5 @@
 <Bonfire.UI.Common.SettingsToggleLive
-  name={l("Avatars")}
+  name={l("Hide avatars")}
   description={l("Hide avatars throughout the app?")}
   keys={[Bonfire.UI.Common.AvatarLive, :hide_avatars]}
   default_value={false}

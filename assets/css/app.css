@@ -59,10 +59,54 @@ div[data-id="subject"][data-main-object] [data-id="subject_details"] [data-id="s
 } 
 
 
+/* comment */
+
+div[data-id="comment"][data-avatar-hidden] [data-role="comment-pin"] {
+  @apply !block;
+ }
+ 
+div[data-id="comment"] div[data-compact] {
+ @apply left-5 !top-[46px];
+}
+
+div[data-id="comment"][data-avatar-hidden] [data-role="comment-lined"]{
+  @apply !left-[9px] !bottom-[0px] !top-[44px];
+ }
+
+
+ div[data-id="comment"][data-avatar-hidden] [data-role="comment-activity"]{
+  @apply ml-4;;
+ }
+
+
 /* activity */
 article[data-id="activity"][data-hidden="all"] {
   @apply hidden; 
 }
+
+div div article[data-avatar-hidden] {
+  @apply pl-5;
+}
+
+div div article[data-avatar-hidden] div[data-id="subject"] > div:first-child {
+  @apply ml-0;
+}
+
+div div article[data-avatar-hidden] div[data-id="subject"] [data-role="notifications_subject"] > div:first-child {
+  @apply !items-center;
+}
+
+
+
+
+div div article[data-avatar-hidden].replied {
+  @apply border-info/70 border-l-4 rounded !py-3 !pl-3 !pb-0 rounded mb-4 bg-info/10;
+}
+
+div div article[data-avatar-hidden].replied::after {
+  @apply static;  
+}
+
 
 
 article.replied::after {
@@ -83,7 +127,9 @@ article .prose img.emoji {
 }
 
 
-
+div article[data-compact] {
+  @apply pl-[3.5rem] after:!left-[-26px]
+}
 
 .active-activity::after, .activity:target::after, div.reply:target::after {
   position: absolute;
