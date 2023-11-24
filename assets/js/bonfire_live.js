@@ -54,11 +54,12 @@ window.addEventListener("phx:page-loading-stop", () => {
   NProgress.done()
 });
 
-// To trigger JS commands from the server, using
+// To trigger JS commands from the server, eg using this in LV:
 // push_event(socket, "js-exec", % {
 //   to: "#my_spinner",
 //   attr: "data-ok-done"
 // })
+// FIXME: see https://elixirforum.com/t/there-should-be-a-built-in-hook-for-running-exec-js-commands/59849/4
 window.addEventListener("phx:js-exec-attr-event", ({ detail }) => {
   console.log(detail)
   JS_exec_attr_event(detail.to, detail.attr)
