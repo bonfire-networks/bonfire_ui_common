@@ -1231,9 +1231,12 @@ defmodule Bonfire.UI.Common do
   end
 
   def update_many_async(assigns_sockets, opts) when is_list(assigns_sockets) do
-    {mode, current_user} = opts_for_update_many_async(List.first(assigns_sockets), opts)
+    {current_user, opts} = opts_for_update_many_async(List.first(assigns_sockets), opts)
+    update_many_async(current_user, assigns_sockets, opts)
+  end
 
-    case prepare_update_many_async(assigns_sockets, mode, opts) do
+  def update_many_async(current_user, assigns_sockets, opts) when is_list(assigns_sockets) do
+    case prepare_update_many_async(assigns_sockets, opts[:mode], opts) do
       nil ->
         #  skipped, return original sockets/assigns
         maybe_assign_provided(assigns_sockets, !opts[:return_assigns_socket_tuple])
@@ -1296,11 +1299,16 @@ defmodule Bonfire.UI.Common do
 
   def batch_update_many_async(assigns_sockets, many_opts, opts)
       when is_list(assigns_sockets) and is_list(many_opts) and is_list(opts) do
-    {mode, current_user} = opts_for_update_many_async(List.first(assigns_sockets), opts)
+    {current_user, opts} = opts_for_update_many_async(List.first(assigns_sockets), opts)
 
+    batch_update_many_async(current_user, assigns_sockets, many_opts, opts)
+  end
+
+  def batch_update_many_async(current_user, assigns_sockets, many_opts, opts)
+      when is_list(assigns_sockets) and is_list(many_opts) and is_list(opts) do
     # while the async stuff is running, return the original assigns
     case Enum.map(many_opts, fn single_opts ->
-           prepare_update_many_async(assigns_sockets, mode, single_opts)
+           prepare_update_many_async(assigns_sockets, opts[:mode], single_opts)
          end) do
       nil ->
         nil
@@ -1412,7 +1420,7 @@ defmodule Bonfire.UI.Common do
     {preload_status_keys, async_data}
   end
 
-  defp opts_for_update_many_async({assigns, socket}, opts) do
+  def opts_for_update_many_async({assigns, socket}, opts) do
     env = Config.env()
 
     connected? = socket_connected?(socket)
@@ -1434,7 +1442,14 @@ defmodule Bonfire.UI.Common do
         true -> :inline
       end
 
-    {mode, current_user}
+    {current_user,
+     opts ++
+       [
+         mode: mode,
+         showing_within:
+           e(assigns, :showing_within, nil) ||
+             e(socket, :assigns, :showing_within, nil)
+       ]}
   end
 
   # @decorate time()
