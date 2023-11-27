@@ -77,7 +77,7 @@ defmodule Bonfire.UI.Common.DataHelpers do
   def remote_activity_json_to(to \\ nil)
 
   def remote_activity_json_to(to) do
-    {:ok, actor} = ActivityPub.Actor.get_or_fetch_by_ap_id(@remote_actor)
+    {:ok, actor} = ActivityPub.Actor.get_cached_or_fetch(ap_id: @remote_actor)
 
     local_actor_ids(to)
     |> info("local_actor_ids")
@@ -88,7 +88,7 @@ defmodule Bonfire.UI.Common.DataHelpers do
     do: receive_remote_activity_to([to])
 
   def receive_remote_activity_to(to) do
-    {:ok, actor} = ActivityPub.Actor.get_or_fetch_by_ap_id(@remote_actor)
+    {:ok, actor} = ActivityPub.Actor.get_cached_or_fetch(ap_id: @remote_actor)
     recipient_actors = Enum.map(to, &recipient/1)
     params = remote_activity_json(actor, recipient_actors)
 
@@ -116,7 +116,7 @@ defmodule Bonfire.UI.Common.DataHelpers do
   end
 
   def remote_actor_user(actor_uri \\ @remote_actor) do
-    {:ok, actor} = ActivityPub.Actor.get_or_fetch_by_ap_id(actor_uri)
+    {:ok, actor} = ActivityPub.Actor.get_cached_or_fetch(ap_id: actor_uri)
     {:ok, user} = Bonfire.Me.Users.by_username(actor.username)
     user
   end
