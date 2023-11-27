@@ -1,4 +1,4 @@
-<div x-data="{open: false}" class="p-4">
+<!-- <div x-data="{open: false}" class="p-4">
   <div :if={@label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div>
   <div x-on:click="open = !open" class="flex items-center justify-between cursor-pointer">
     <div class="flex flex-col gap-1">
@@ -13,30 +13,30 @@
     </button>
   </div>
   <div x-show="open" x-collapse>
-    <div class="mt-4 sm:col-span-2">
-      <fieldset>
-        <input name="scope" value={@scope} type="hidden">
+    <div class="mt-4 sm:col-span-2"> -->
+<fieldset>
+  <input name="scope" value={@scope} type="hidden">
 
-        <div class="flex flex-col gap-4 -space-y-px">
-          {#for {key, val} <- @options || []}
-            <label class="relative flex items-center flex-1 border-r cursor-pointer border-base-200 focus:outline-none">
-              <input
-                type="radio"
-                name={@input}
-                value={to_string(key)}
-                checked={if @current_value == key or to_string(@current_value) == to_string(key), do: "checked"}
-                class="radio radio-secondary"
-              />
-              <div class="flex flex-col ml-3">
-                {!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" --}
-                <span class="block text-sm font-medium">
-                  {val}
-                </span>
-              </div>
-            </label>
-          {/for}
+  <div class="flex flex-col gap-4 -space-y-px">
+    {#for {key, val} <- @options || []}
+      <label class="relative flex items-center flex-1 border-r cursor-pointer border-base-200 focus:outline-none">
+        <input
+          type="radio"
+          name={@input}
+          value={to_string(key)}
+          checked={if @current_value == key or to_string(@current_value) == to_string(key), do: "checked"}
+          class="radio radio-sm"
+        />
+        <div class="flex flex-col ml-3">
+          {!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" --}
+          <span class="block text-sm font-normal text-base-content/70">
+            {val}
+          </span>
         </div>
-      </fieldset>
-    </div>
+      </label>
+    {/for}
   </div>
-</div>
+</fieldset>
+<!-- </div>
+  </div>
+</div> -->
