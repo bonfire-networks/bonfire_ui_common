@@ -93,7 +93,9 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       plug(Plug.Parsers,
         parsers: [:urlencoded, :multipart, :json],
         pass: ["*/*"],
-        json_decoder: Phoenix.json_library()
+        json_decoder: Phoenix.json_library(),
+        # TODO: only include if AP lib is available/enabled
+        body_reader: {ActivityPub.Web.Plugs.DigestPlug, :read_body, []}
       )
 
       plug(Bonfire.UI.Common.ErrorReportingPlug)
