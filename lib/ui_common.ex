@@ -1063,7 +1063,18 @@ defmodule Bonfire.UI.Common do
 
   defp string_for_cookie(message), do: message
 
-  def assign_error(socket, msg, pid \\ self()) do
+  def assign_error(socket, msg, pid \\ self())
+
+  def assign_error(socket, code, pid) when is_atom(code) do
+    if module_enabled?(Bonfire.Fail) do
+      %{message: message} = Bonfire.Fail.fail(code)
+      assign_error(socket, message, pid)
+    else
+      assign_error(socket, to_string(code), pid)
+    end
+  end
+
+  def assign_error(socket, msg, pid) do
     assigns = %{error_sentry_event_id: maybe_last_sentry_event_id()}
 
     socket
