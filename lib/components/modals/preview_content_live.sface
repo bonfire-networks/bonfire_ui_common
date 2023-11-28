@@ -31,8 +31,7 @@
         data-id="modal-contents"
       >
         <#slot>
-          {#case merge_as_map(@modal_assigns, %{showing_within: :preview})
-            |> debug("preview_component modal_assigns")}
+          {#case @modal_assigns}
             {#match modal_assigns}
               {#if not is_nil(e(modal_assigns, :preview_component, nil)) and
                   module_enabled?(modal_assigns[:preview_component])}
