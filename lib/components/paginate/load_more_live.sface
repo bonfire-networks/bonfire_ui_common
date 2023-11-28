@@ -1,5 +1,6 @@
 {#if is_binary(@cursor)}
   <button
+    data-load-more-type={@infinite_scroll}
     :if={!@hide_load_more}
     id={"load_more_#{@context}"}
     data-id="load_more"
