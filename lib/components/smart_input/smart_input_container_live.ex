@@ -54,7 +54,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
           ),
         # make configurable
         max_file_size: Bonfire.Files.DocumentUploader.max_file_size(),
-        max_entries: 6,
+        max_entries: 4,
         auto_upload: false
         # progress: &handle_progress/3
       )
