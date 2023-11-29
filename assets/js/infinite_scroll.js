@@ -20,10 +20,9 @@ InfiniteScrollHooks.InfiniteScroll = {
       if (undefined == entryCount || entryCount == "0") {
         let event = this.el.getAttribute("phx-scroll")
         if (event) {
-          console.log("UQIII")
           // add the disabled attribute to this.el
           this.el.disabled = true
-          console.log(this.el)
+          this.el.classList.add("btn-disabled")
           this.el.getElementsByTagName("span")[0].innerHTML = "Loading more...";
           this.pending = this.page() + 1;
           this.pushEventTo(this.el.getAttribute("phx-target"), event, this.getPhxValues(this.el));
