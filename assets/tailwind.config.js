@@ -15,13 +15,13 @@ module.exports = {
     require('./css/variants.js')
   ],
   content: [
-    '../lib/**/*{.leex,.heex,.sface,_live.ex}',
+    '../lib/**/*{.leex,.heex,.sface,_live.ex,_view.ex}',
     // '../assets/js/**/*.js',
     // '../(extensions|forks|deps)/*/lib/**/*{.leex,.heex,.sface,_live.ex}',
     // '../{extensions,forks,deps}/*/assets/js/**/*.js',
-    '../../../lib/**/*{.leex,.heex,.sface,_live.ex}',
+    '../../../lib/**/*{.leex,.heex,.sface,_live.ex,_view.ex}',
     // '../../../assets/js/**/*.js',
-    '../../../(extensions|forks|deps)/*/lib/**/*{.leex,.heex,.sface,_live.ex}',
+    '../../../(extensions|forks|deps)/*/lib/**/*{.leex,.heex,.sface,_live.ex,_view.ex}',
     '../../../data/current_flavour/config/flavour_assets/components.css'
     // '../../../{extensions,forks,deps}/*/assets/js/**/*.js',
     // '../../../deps/live_select/lib/live_select/component.*ex', // what should this point to?

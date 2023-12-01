@@ -10,18 +10,19 @@ defmodule Bonfire.UI.Common.ErrorController do
   end
 
   def call(%{params: %{"code" => code}} = conn, _params) do
-    conn
-    |> put_view(Bonfire.UI.Common.ErrorView)
-    |> put_layout(html: {Bonfire.UI.Common.BasicView, :error})
-    |> render("#{code}.html", Map.merge(conn.assigns, conn.params))
+    view_render(conn, "#{code}.html")
   end
 
   def call(conn, _params) do
+    view_render(conn, :app)
+  end
+
+  def view_render(conn, key) do
     # debug(conn)
 
     conn
     |> put_view(Bonfire.UI.Common.ErrorView)
     |> put_layout(html: {Bonfire.UI.Common.BasicView, :error})
-    |> render(:app, Map.merge(conn.assigns, conn.params))
+    |> render(key, Map.merge(conn.assigns, conn.params))
   end
 end
