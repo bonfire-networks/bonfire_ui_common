@@ -1,9 +1,9 @@
 defmodule Bonfire.UI.Common.SharedDataDanceCase do
   use ExUnit.CaseTemplate
-  import Tesla.Mock
-  import Untangle
+  # import Tesla.Mock
+  # import Untangle
   import Bonfire.UI.Common.Testing.Helpers
-  alias Bonfire.Common.TestInstanceRepo
+  # alias Bonfire.Common.TestInstanceRepo
 
   setup_all tags do
     Bonfire.Common.Test.Interactive.setup_test_repo(tags)
