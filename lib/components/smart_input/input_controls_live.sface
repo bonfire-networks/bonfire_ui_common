@@ -53,10 +53,10 @@
         <div class="">
           <div class="flex justify-between gap-3 p-4 md:items-center bg-base-100 md:px-3 py-2">
             <div class="flex items-center gap-1">
-              <!-- <Bonfire.UI.Common.UploadButtonLive
+              <Bonfire.UI.Common.UploadButtonLive
                 :if={module_enabled?(Bonfire.Files, @__context__)}
                 uploads={@uploads}
-              /> -->
+              />
               <Dynamic.Component
                 :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
                 module={Bonfire.UI.Common.EmojiPickerLive}
