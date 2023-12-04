@@ -1118,6 +1118,7 @@ defmodule Bonfire.UI.Common do
   rescue
     error in ArgumentError ->
       error(error, "Did not upload")
+      info(__STACKTRACE__)
       []
   end
 
@@ -1134,6 +1135,7 @@ defmodule Bonfire.UI.Common do
     Phoenix.LiveView.consume_uploaded_entry(socket, key, fun)
   rescue
     error in ArgumentError ->
+      info(__STACKTRACE__)
       error(error, "Did not upload")
   end
 
