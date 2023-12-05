@@ -71,7 +71,11 @@ defmodule Bonfire.UI.Common do
 
   def assign_global(socket, assigns) when is_map(assigns) do
     # need this so any non-atom keys are turned into atoms
-    Enums.input_to_atoms(assigns, discard_unknown_keys: true, values: false)
+    Enums.input_to_atoms(assigns,
+      discard_unknown_keys: true,
+      values: false,
+      also_discard_unknown_nested_keys: false
+    )
     |> Keyword.new()
     |> assign_global(socket, ...)
   end

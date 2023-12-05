@@ -16,7 +16,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       |> debug("connect_params")
 
     session =
-      input_to_atoms(session)
+      input_to_atoms(session, also_discard_unknown_nested_keys: false)
       |> debug("data from session")
 
     # get from csrf_socket_token from Phoenix.LiveView.get_connect_params(socket)
