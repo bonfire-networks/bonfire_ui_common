@@ -45,7 +45,7 @@
       <!-- <div class="text-lg font-bold">
         {@selected_name}
       </div> -->
-      <div class="flex justify-center gap-12 items-center w-full">
+      <div class="flex justify-center gap-6 items-center w-full">
         {#for {{tab, tab_name}, i} <- Enum.with_index(@tabs)}
           <Dynamic.Component
             module={@link_component}

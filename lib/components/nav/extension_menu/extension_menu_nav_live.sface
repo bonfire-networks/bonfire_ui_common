@@ -20,7 +20,11 @@
                 />
               </li>
               {}
-              <div class="menu p-0" data-id="nav_components">
+              <div
+                :if={Enum.any?(nav, fn %{type: type} -> type != :link end)}
+                class="menu p-0"
+                data-id="nav_components"
+              >
                 <Bonfire.UI.Common.WidgetLive
                   :for={%{type: type} = subnav when type != :link <- nav}
                   widget={subnav}
