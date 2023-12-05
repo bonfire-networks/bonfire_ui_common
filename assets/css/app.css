@@ -543,8 +543,8 @@ body {
 
 :root {
   --scrollbarTrack: oklch(var(--b2));
-  --scrollbarThumb: oklch(var(--bc)/0.1);
-  --scrollbarThumbHover: oklch(var(--bc)/0.2);
+  --scrollbarThumb: oklch(var(--b1));
+  --scrollbarThumbHover: oklch(var(--p)/0.8);
 }
 /* Scrollbar colors*/
 /* width */
