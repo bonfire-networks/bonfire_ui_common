@@ -30,7 +30,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop uploaded_files, :any, default: nil
   prop trigger_submit, :boolean, default: nil
   # Classes to customize the smart input appearance
-  prop replied_activity_class, :css_class, default: "flex-1"
+  prop replied_activity_class, :css_class, default: "flex-1 overflow-x-auto"
 
   prop preview_boundary_for_id, :any, default: nil
   prop preview_boundary_for_username, :any, default: nil

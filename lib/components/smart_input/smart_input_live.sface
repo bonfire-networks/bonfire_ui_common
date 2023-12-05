@@ -33,7 +33,7 @@
           <span
             phx-click="Bonfire.UI.Common.SmartInput:remove_data"
             phx-target="#smart_input"
-            class="btn btn-sm btn-neutral btn-circle"
+            class="btn btn-sm btn-ghost btn-circle"
             title={l("Cancel Reply")}
           >
             <span class="sr-only">{l("Cancel Reply")}</span>
