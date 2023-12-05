@@ -7,6 +7,11 @@
 @import "tailwindcss/base";
 /* @import "./base.css"; */
 
+
+.steps .step:before {
+  height: 0.25rem !important;
+}
+
 /* layout */
 
 div[data-id="layout"][data-single-column] {
@@ -128,7 +133,7 @@ article .prose img.emoji {
 
 
 div article[data-compact] {
-  @apply pl-[3.5rem] after:!left-[-26px]
+  @apply pl-[3.25rem] after:!left-[-26px]
 }
 
 .active-activity::after, .activity:target::after, div.reply:target::after {
