@@ -20,7 +20,7 @@
                 <div class="h-2.5 bg-base-content/10 rounded-full w-60" />
               </div> -->
             {#else}
-              <span class="first-letter:capitalize flex-1 text-lg font-semibold text-base-content">{@page_title}</span>
+              <span class="first-letter:capitalize flex-1 text-sm font-semibold text-base-content">{@page_title}</span>
             {/if}
             <div :if={@extra} class="text-xs text-base-content/70">{@extra}</div>
           </div>
@@ -32,7 +32,7 @@
               </div> -->
             {#else}
               <span
-                class="first-letter:capitalize flex-1 text-lg font-semibold text-base-content"
+                class="first-letter:capitalize flex-1 text-sm font-semibold text-base-content"
                 :if={not is_nil(@page_title)}
               >{@page_title}</span>
             {/if}

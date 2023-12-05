@@ -6,12 +6,13 @@
     class={e(
       e(@widget[:link_class], @link_class),
       if(@showing_within != :dashboard,
-        do: "flex items-center w-full gap-2 tablet-lg:gap-4 px-2 py-1 tablet-lg:py-2 rounded-md",
+        do:
+          "flex items-center justify-end w-full gap-2 tablet-lg:gap-4 px-2 py-1 tablet-lg:py-2 rounded-full",
         else: "block w-full"
       )
     )}
   >
-    <div class="flex-1 relative flex items-center gap-5 widget_content">
+    <div class="flex-1 justify-end relative flex items-center gap-5 widget_content">
       <span :if={!@without_icon && (@icon || @widget[:icon] || @widget[:icon_active])} class="">
         {#if not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])}
           <Iconify.iconify
@@ -33,7 +34,7 @@
         class={
           e(
             @text_class,
-            ["font-normal text-base-content/90 flex-1 text-[16px] tablet-lg:text-lg widget_text"]
+            ["font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text"]
           ),
           "!font-bold !text-base-content":
             not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])

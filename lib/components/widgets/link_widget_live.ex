@@ -17,9 +17,9 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   prop selected_tab, :any, default: nil
   prop showing_within, :atom, default: :sidebar
 
-  prop wrapper_class, :css_class, default: "m-0 p-0 rounded-md !block"
+  prop wrapper_class, :css_class, default: "m-0 p-0 justify-end rounded-full !block"
   prop link_class, :any, default: nil
-  prop icon_class, :css_class, required: false, default: "w-7 h-7 text-base-content/80"
+  prop icon_class, :css_class, required: false, default: "w-6 h-6 text-base-content/80"
 
   prop skip_badges, :any, default: false
 end

@@ -2,14 +2,14 @@
   {#case @nav_items
     |> debug("nav_items")}
     {#match nav_items when is_list(nav_items) and nav_items != []}
-      <div data-id="nav_links" class="menu gap-1 tablet-lg:gap-2 p-0 justify-end">
+      <div data-id="nav_links" class="menu gap-5 tablet-lg:gap-1  menu-lg p-0 justify-end">
         {#for nav <- nav_items}
           {#case List.wrap(nav)}
             {#match nav when nav != []}
               <li
                 :for={%{type: :link} = subnav <- nav}
                 :if={!subnav[:exclude_from_nav]}
-                class="text-base-content font-medium rounded-md justify-end sidebar_menu_item"
+                class="text-base-content w-[80px] lg:w-[100px] tablet-lg:w-full font-medium rounded-md justify-end sidebar_menu_item"
               >
                 <Bonfire.UI.Common.WidgetLive
                   widget={subnav}
@@ -19,6 +19,7 @@
                   skip_badges={@skip_badges}
                 />
               </li>
+              {}
               <div class="menu p-0" data-id="nav_components">
                 <Bonfire.UI.Common.WidgetLive
                   :for={%{type: type} = subnav when type != :link <- nav}
