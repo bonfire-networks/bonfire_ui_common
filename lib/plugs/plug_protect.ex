@@ -3,6 +3,8 @@ defmodule Bonfire.UI.Common.PlugProtect do
   use Bonfire.Common.Localise
   alias Bonfire.Common.Config
 
+  # TODO: consolidate by using Hammer.Plug instead?
+
   rule "throttle form submissions (using controllers, not LiveView)", conn do
     #  limits the number of form submission that one IP address can make to 5 per minute
     if conn.method == "POST" do

@@ -51,6 +51,7 @@ defmodule Bonfire.UI.Common.Routes do
 
       pipeline :throttle_plug_attacks do
         plug(:basic)
+        # TODO: consolidate by using Hammer.Plug instead?
         plug Bonfire.UI.Common.PlugProtect
       end
 
