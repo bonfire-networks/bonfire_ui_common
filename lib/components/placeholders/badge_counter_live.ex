@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
 
   prop class, :css_class,
     default:
-      "indicator-item !w-2 !h-2 !p-0 badge rounded-full bg-base-content/50 border-0 badge-sm"
+      "indicator-item !w-2 !h-2 !p-0 badge rounded-full bg-base-content/90 border-0 badge-sm"
 
   prop counter_class, :css_class, default: ""
 
