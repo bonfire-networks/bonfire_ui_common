@@ -68,10 +68,10 @@
                 iconify="mingcute:layout-6-fill"
                 class={"w-4 h-4 font-normal text-base-content/70", "": @id == "behaviours"}
               />
-              <span class="text-sm text-base-content/70">{l("Behaviours")}</span>
+              <span class="text-sm text-base-content/70">{l("Preferences")}</span>
             </LiveRedirect>
           </li>
-          <li>
+          {!-- <li>
             <LiveRedirect
               to={~p"/settings/instance/preferences/safety"}
               class={
@@ -85,7 +85,7 @@
               />
               <span class="text-sm text-base-content/70">{l("Privacy & Safety")}</span>
             </LiveRedirect>
-          </li>
+          </li> --}
         </ul>
       </details>
     </li>
