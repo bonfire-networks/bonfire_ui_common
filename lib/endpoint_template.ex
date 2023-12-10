@@ -114,6 +114,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
     [
       store: :cookie,
       key: "_bonfire_key",
+      secure: System.get_env("PUBLIC_PORT") == "443",
       signing_salt: Config.get!(:signing_salt),
       encryption_salt: Config.get!(:encryption_salt),
       # 60 days by default
