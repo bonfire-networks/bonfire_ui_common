@@ -127,10 +127,12 @@
                   {markdown(error)}
                 </div>
 
-                <Bonfire.UI.Common.FeedbackButtonLive
+                {!--
+                FIXME
+                 <Bonfire.UI.Common.FeedbackButtonLive
                   class="mt-2 normal-case rounded btn btn-sm btn-ghost text-error-content btn-active"
                   event="Bonfire.Social.Posts:write_error"
-                />
+                /> --}
               </div>
               <div :if={socket_connected?(@__context__)} class="">
                 <button

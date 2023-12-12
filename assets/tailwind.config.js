@@ -17,7 +17,7 @@ module.exports = {
   content: [
     '../lib/**/*{.leex,.heex,.sface,_live.ex,_view.ex}',
     // '../assets/js/**/*.js',
-    // '../(extensions|forks|deps)/*/lib/**/*{.leex,.heex,.sface,_live.ex}',
+    // '../(extensions|forks|deps)/*/lib/**/*{.leex,.heex,.sface,_live.ex,_view.ex}',
     // '../{extensions,forks,deps}/*/assets/js/**/*.js',
     '../../../lib/**/*{.leex,.heex,.sface,_live.ex,_view.ex}',
     // '../../../assets/js/**/*.js',
