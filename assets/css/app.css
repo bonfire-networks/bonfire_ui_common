@@ -291,7 +291,7 @@ div[data-media-type-video] {
 }
 
 #smart_input_container[data-focused] {
-  @apply inset-0 !top-[5%] !h-[400px];
+  @apply inset-0 !top-0 tablet-lg:!top-[5%] tablet-lg:!h-[400px];
 }
 
 /* boost */
