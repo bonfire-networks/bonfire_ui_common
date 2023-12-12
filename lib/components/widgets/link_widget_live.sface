@@ -1,16 +1,13 @@
-<div class={@widget[:wrapper_class] || @wrapper_class} data-type="widget">
+<div
+  class={@widget[:wrapper_class] || @wrapper_class}
+  data-showing-within={@showing_within}
+  data-type="widget"
+>
   <LinkLive
     to={if is_function(@href),
       do: @href.(@__context__),
       else: @href}
-    class={e(
-      e(@widget[:link_class], @link_class),
-      if(@showing_within != :dashboard,
-        do:
-          "flex items-center justify-end w-full gap-2 tablet-lg:gap-4 px-2 py-1 tablet-lg:py-2 rounded-full",
-        else: "block w-full"
-      )
-    )}
+    class={e(@widget[:link_class], @link_class)}
   >
     <div class="flex-1 justify-end relative flex items-center gap-5 widget_content">
       <span :if={!@without_icon && (@icon || @widget[:icon] || @widget[:icon_active])} class="">
@@ -30,11 +27,12 @@
       >{l("Current Page:")}
       </span>
       <span
+        data-type="widget_label"
         :if={!@without_label}
         class={
           e(
             @text_class,
-            ["font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text"]
+            ""
           ),
           "!font-bold !text-base-content":
             not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
@@ -46,7 +44,7 @@
       {#match badge}
         <div
           :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
-          class="flex absolute left-7 top-0 items-center place-content-center widget_notification"
+          class="flex absolute right-[6px] top-[-8px] tablet-lg:!right-auto tablet-lg:left-7 tablet-lg:!top-0 items-center place-content-center widget_notification"
         >
           <Dynamic.LiveComponent
             id={badge[:id] || Text.random_string()}

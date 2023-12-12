@@ -1,132 +1,95 @@
 <nav class="" role="navigation" aria-label={l("Settings navigation")}>
-  <ul class="-ml-2 menu">
-    <li>
-      <div class="p-0 cursor-default pointer-events-none">
-        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("General")}</span>
+  <ul class="-mx-2 menu menu-lg">
+    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
+      <div class="p-4 px-2 pt-0 text-xl font-bold flex items-center gap-4">
+        <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" />
+        <span>{l("General")}</span>
       </div>
-    </li>
-
-    <li :if={current_user_id(@__context__)}>
-      <LiveRedirect
-        to={~p"/settings/user/profile"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10 ": @selected_tab == "profile"
-        }
-      >
-        <#Icon
-          solid="User"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "profile"}
-        />
-        <span class="text-sm text-base-content/70">{l("Profile")}</span>
-      </LiveRedirect>
-    </li>
-
-    <li>
-      <LiveRedirect
-        to={~p"/settings/account"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10 ": @selected_tab == "account"
-        }
-      >
-        <#Icon
-          solid="Key"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "account"}
-        />
-        <span class="text-sm text-base-content/70">{l("Account")}</span>
-      </LiveRedirect>
-    </li>
-
-    <li>
-      <LiveRedirect
-        to={~p"/settings/user/preferences/appearance"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10 ": @id == "appearance"
-        }
-      >
-        <#Icon
-          iconify="dashicons:admin-appearance"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @id == "appearance"}
-        />
-        <span class="text-sm text-base-content/70">{l("Appearance")}</span>
-      </LiveRedirect>
-    </li>
-    <li>
-      <LiveRedirect
-        to={~p"/settings/user/preferences/behaviours"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10 ": @id == "behaviours"
-        }
-      >
-        <#Icon
-          iconify="mingcute:layout-6-fill"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @id == "behaviours"}
-        />
-        <span class="text-sm text-base-content/70">{l("Preferences")}</span>
-      </LiveRedirect>
-    </li>
-
-    <!-- <li>
-      <details open={@selected_tab == "preferences"}>
-        <summary class="flex items-center gap-3 rounded-md p-2 w-full">
-          <#Icon iconify="pajamas:preferences" class="w-4 h-4 font-normal text-base-content/70" />
-          <div class="flex-1 text-base-content/70">{l("Preferences")}</div></summary>
-        <ul class="">
-          
-          <li>
-            <LiveRedirect
-              to={~p"/settings/user/preferences/safety"}
-              class={
-                "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-                "bg-base-content/10 ": @id == "safety"
-              }
-            >
-              <#Icon
-                iconify="ic:round-privacy-tip"
-                class={"w-4 h-4 font-normal text-base-content/70", "": @id == "safety"}
-              />
-              <span class="text-sm text-base-content/70">{l("Privacy & Safety")}</span>
-            </LiveRedirect>
-          </li>
-        </ul>
-      </details>
+      <!-- <li>
+      <div class="p-0 cursor-default pointer-events-none">
+        <span class="p-2 text-xs text-center font-semibold uppercase text-base-content/70">{l("General")}</span>
+      </div>
     </li> -->
-    {!-- <li>
-      <LiveRedirect
-        to={~p"/settings/user/preferences"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10 ": @selected_tab == "preferences"
-        }
-      >
-        <#Icon
-          solid="Adjustments"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "preferences"}
-        />
-        <span class="text-sm text-base-content/70">{l("Preferences")}</span>
-      </LiveRedirect>
-    </li> --}
+      <li :if={current_user_id(@__context__)}>
+        <LiveRedirect
+          to={~p"/settings/user/profile"}
+          class={
+            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "bg-base-content/10 ": @selected_tab == "profile"
+          }
+        >
+          <#Icon
+            iconify="carbon:user-avatar"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "profile"}
+          />
+          <span class="text-sm text-base-content/70">{l("Profile")}</span>
+        </LiveRedirect>
+      </li>
 
-    <li :if={module_enabled?(Bonfire.Data.SharedUser, @__context__) &&
-      Settings.get(:experimental_features_enabled, false, @__context__)}>
-      <LiveRedirect
-        to={~p"/settings/user/shared_user"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10 ": @selected_tab == "shared_user"
-        }
-      >
-        <#Icon
-          solid="UserGroup"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "shared_user"}
-        />
-        <span class="text-sm text-base-content/70">{l("Team Profiles")}</span>
-      </LiveRedirect>
-    </li>
+      <li>
+        <LiveRedirect
+          to={~p"/settings/account"}
+          class={
+            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "bg-base-content/10 ": @selected_tab == "account"
+          }
+        >
+          <#Icon
+            iconify="carbon:password"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "account"}
+          />
+          <span class="text-sm text-base-content/70">{l("Account")}</span>
+        </LiveRedirect>
+      </li>
 
+      <li>
+        <LiveRedirect
+          to={~p"/settings/user/preferences/appearance"}
+          class={
+            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "bg-base-content/10 ": @id == "appearance"
+          }
+        >
+          <#Icon
+            iconify="carbon:paint-brush"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @id == "appearance"}
+          />
+          <span class="text-sm text-base-content/70">{l("Appearance")}</span>
+        </LiveRedirect>
+      </li>
+      <li>
+        <LiveRedirect
+          to={~p"/settings/user/preferences/behaviours"}
+          class={
+            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "bg-base-content/10 ": @id == "behaviours"
+          }
+        >
+          <#Icon
+            iconify="carbon:settings-adjust"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @id == "behaviours"}
+          />
+          <span class="text-sm text-base-content/70">{l("Preferences")}</span>
+        </LiveRedirect>
+      </li>
+
+      <li :if={module_enabled?(Bonfire.Data.SharedUser, @__context__) &&
+        Settings.get(:experimental_features_enabled, false, @__context__)}>
+        <LiveRedirect
+          to={~p"/settings/user/shared_user"}
+          class={
+            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "bg-base-content/10 ": @selected_tab == "shared_user"
+          }
+        >
+          <#Icon
+            iconify="carbon:user-multiple"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "shared_user"}
+          />
+          <span class="text-sm text-base-content/70">{l("Team Profiles")}</span>
+        </LiveRedirect>
+      </li>
+    </div>
     {!-- <li>
       <LiveRedirect
         to={~p"/settings/user/invites"}
@@ -137,146 +100,156 @@
       >
         <#Icon
           solid="Mail"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "invites"}
+          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "invites"}
         />
         <span class="text-sm text-base-content/70">{l("Invites")}</span>
       </LiveRedirect>
     </li> --}
-
-    <li>
-      <div class="p-0 mt-4 cursor-default pointer-events-none">
-        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Safety")}</span>
+    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
+      <div class="p-4 px-2 text-xl font-bold flex items-center gap-4">
+        <#Icon iconify="material-symbols:shield" class="w-6 h-6 text-base-content/80" />
+        <span>{l("Safety")}</span>
       </div>
-    </li>
 
-    <li>
-      <LiveRedirect
-        to={~p"/settings/user/flags"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10 ": @selected_tab == "flags"
-        }
-      >
-        <#Icon
-          solid="Flag"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "flags"}
-        />
-        <span class="text-sm text-base-content/70">{l("My Flags")}</span>
-      </LiveRedirect>
-    </li>
+      <li>
+        <LiveRedirect
+          to={~p"/settings/user/flags"}
+          class={
+            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "bg-base-content/10 ": @selected_tab == "flags"
+          }
+        >
+          <#Icon
+            iconify="carbon:flag"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "flags"}
+          />
+          <span class="text-sm text-base-content/70">{l("My Flags")}</span>
+        </LiveRedirect>
+      </li>
 
-    <li class={
-      "",
-      "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
-        @showing_within == :dashboard
-    }>
-      <LiveRedirect
-        to={~p"/boundaries/ghosted"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10": @selected_tab == "ghosted"
-        }
-      >
-        <#Icon
-          iconify="mingcute:ghost-fill"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "ghosted"}
-        />
-        <div class="flex flex-col">
-          <span class={
-            "text-sm text-base-content/70",
-            "font-semibold": @showing_within == :dashboard
-          }>{l("Ghosted")}</span>
-          <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Users or instances on this list will not be able to see or interact with you or your content")}</p>
-        </div>
-      </LiveRedirect>
-    </li>
-    <li class={
-      "",
-      "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
-        @showing_within == :dashboard
-    }>
-      <LiveRedirect
-        to={~p"/boundaries/silenced"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10": @selected_tab == "silenced"
-        }
-      >
-        <#Icon
-          solid="VolumeOff"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "silenced"}
-        />
-        <div class="flex flex-col">
-          <span class={
-            "text-sm text-base-content/70",
-            "font-semibold": @showing_within == :dashboard
-          }>{l("Silenced")}</span>
-          <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("You will not receive any updates from the users or instances on this list")}</p>
-        </div>
-      </LiveRedirect>
-    </li>
+      <li class={
+        "",
+        "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
+          @showing_within == :dashboard
+      }>
+        <LiveRedirect
+          to={~p"/boundaries/ghosted"}
+          class={
+            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "bg-base-content/10": @selected_tab == "ghosted"
+          }
+        >
+          <#Icon
+            iconify="mingcute:ghost-line"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "ghosted"}
+          />
+          <div class="flex flex-col">
+            <span class={
+              "text-sm text-base-content/70",
+              "font-semibold": @showing_within == :dashboard
+            }>{l("Ghosted")}</span>
+            <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Users or instances on this list will not be able to see or interact with you or your content")}</p>
+          </div>
+        </LiveRedirect>
+      </li>
+      <li class={
+        "",
+        "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
+          @showing_within == :dashboard
+      }>
+        <LiveRedirect
+          to={~p"/boundaries/silenced"}
+          class={
+            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "bg-base-content/10": @selected_tab == "silenced"
+          }
+        >
+          <#Icon
+            iconify="carbon:volume-mute"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "silenced"}
+          />
+          <div class="flex flex-col">
+            <span class={
+              "text-sm text-base-content/70",
+              "font-semibold": @showing_within == :dashboard
+            }>{l("Silenced")}</span>
+            <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("You will not receive any updates from the users or instances on this list")}</p>
+          </div>
+        </LiveRedirect>
+      </li>
+    </div>
 
-    <Bonfire.UI.Common.ExtensionsSidebarSettingsNavLive
-      page={@page}
-      selected_tab={@selected_tab}
-      scope={:user}
-    />
-
-    <li>
-      <div class="p-0 mt-4 cursor-default pointer-events-none">
-        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Migration")}</span>
+    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
+      <div class="p-4 px-2 text-xl font-bold flex items-center gap-4">
+        <#Icon iconify="ph:hand-fill" class="w-6 h-6 text-base-content/80" />
+        <span>{l("Boundaries")}</span>
       </div>
-    </li>
-    <li>
-      <LiveRedirect
-        to={~p"/settings/user/import"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10 ": @selected_tab == "import"
-        }
-      >
-        <#Icon
-          iconify="pajamas:import"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "import"}
-        />
-        <span class="text-sm text-base-content/70">{l("Import")}</span>
-      </LiveRedirect>
-    </li>
-    <li>
-      <LiveRedirect
-        to={~p"/settings/user/export"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10 ": @selected_tab == "export"
-        }
-      >
-        <#Icon
-          iconify="pajamas:export"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "export"}
-        />
-        <span class="text-sm text-base-content/70">{l("Export")}</span>
-      </LiveRedirect>
-    </li>
 
-    <li>
-      <div class="p-0 mt-4 cursor-default pointer-events-none">
-        <span class="px-2 text-[10px] font-semibold tracking-[0.175rem] uppercase text-base-content/70">{l("Advanced")}</span>
+      <Bonfire.UI.Common.ExtensionsSidebarSettingsNavLive
+        page={@page}
+        selected_tab={@selected_tab}
+        scope={:user}
+      />
+    </div>
+
+    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
+      <div class="p-4 px-2 text-xl font-bold flex items-center gap-4">
+        <#Icon iconify="material-symbols-light:data-table" class="w-6 h-6 text-base-content/80" />
+        <span>{l("Migration")}</span>
       </div>
-    </li>
-    <li>
-      <LiveRedirect
-        to={~p"/settings/user/extensions"}
-        class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
-          "bg-base-content/10 ": @selected_tab == "extensions"
-        }
-      >
-        <#Icon
-          solid="Puzzle"
-          class={"w-4 h-4 font-normal text-base-content/70", "": @selected_tab == "extensions"}
-        />
-        <span class="text-sm text-base-content/70">{l("Extensions")}</span>
-      </LiveRedirect>
-    </li>
+
+      <li>
+        <LiveRedirect
+          to={~p"/settings/user/import"}
+          class={
+            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "bg-base-content/10 ": @selected_tab == "import"
+          }
+        >
+          <#Icon
+            iconify="pajamas:import"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "import"}
+          />
+          <span class="text-sm text-base-content/70">{l("Import")}</span>
+        </LiveRedirect>
+      </li>
+      <li>
+        <LiveRedirect
+          to={~p"/settings/user/export"}
+          class={
+            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "bg-base-content/10 ": @selected_tab == "export"
+          }
+        >
+          <#Icon
+            iconify="pajamas:export"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "export"}
+          />
+          <span class="text-sm text-base-content/70">{l("Export")}</span>
+        </LiveRedirect>
+      </li>
+    </div>
+    <div class="pb-4 flex flex-col gap-1">
+      <div class="p-4 px-2 text-xl font-bold flex items-center gap-4">
+        <#Icon iconify="ant-design:code-filled" class="w-6 h-6 text-base-content/80" />
+        <span>{l("Advanced")}</span>
+      </div>
+
+      <li>
+        <LiveRedirect
+          to={~p"/settings/user/extensions"}
+          class={
+            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "bg-base-content/10 ": @selected_tab == "extensions"
+          }
+        >
+          <#Icon
+            outline="Puzzle"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
+          />
+          <span class="text-sm text-base-content/70">{l("Extensions")}</span>
+        </LiveRedirect>
+      </li>
+    </div>
   </ul>
 </nav>
