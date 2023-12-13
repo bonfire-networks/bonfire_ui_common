@@ -1414,7 +1414,7 @@ defmodule Bonfire.UI.Common do
           {preload_status_key, preload_fn.(list_of_components, list_of_ids, current_user)}
         end)
       end)
-      # long timeout for now - TODO: configurable 
+      # long timeout for now - TODO: configurable
       |> Task.await_many(5_000_000)
       |> debug("parallel done")
 
@@ -1563,7 +1563,6 @@ defmodule Bonfire.UI.Common do
   """
   def maybe_stream_insert(%{assigns: %{streams: _}} = socket, name, items, opts)
       when is_list(items) do
-    debug(opts)
     Phoenix.LiveView.stream(socket, name, items, opts)
   end
 
