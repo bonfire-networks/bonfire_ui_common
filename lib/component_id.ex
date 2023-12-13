@@ -73,15 +73,21 @@ defmodule Bonfire.UI.Common.ComponentID do
 
     debug(object_id, "try to send_updates to #{component_module} for object(s)")
 
-    for component_id <- component_ids(component_module, object_id) do
-      debug(component_id, "ComponentID: try stateful component with ID")
+    component_ids = component_ids(component_module, object_id)
 
-      Bonfire.UI.Common.maybe_send_update(
-        component_module,
-        component_id,
-        assigns,
-        pid
-      )
+    if component_ids == [] do
+      warn(object_id, "ComponentID: no such components found #{component_module} for object(s)")
+    else
+      for component_id <- component_ids do
+        debug(component_id, "ComponentID: try stateful component with ID")
+
+        Bonfire.UI.Common.maybe_send_update(
+          component_module,
+          component_id,
+          assigns,
+          pid
+        )
+      end
     end
   end
 
