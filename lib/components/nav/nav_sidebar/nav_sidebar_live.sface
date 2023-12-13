@@ -51,12 +51,15 @@
   </div>
 
   {#if !current_user_id(@__context__)}
-    <nav class="mt-1">
+    <nav class="">
       <ul class="menu menu-lg p-0 justify-end">
         <li class="p-0 m-0 rounded-full">
-          <LiveRedirect to="/" class="flex items-center w-full gap-4 px-2 py-2 rounded-full">
+          <LiveRedirect
+            to="/"
+            class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2 rounded-full"
+          >
             <#Icon iconify="carbon:explore" class="w-6 h-6 text-base-content/80" />
-            <div class="font-normal text-base-content/90 flex-1 text-[15px] widget_text">{l("Explore")}</div>
+            <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Explore")}</div>
           </LiveRedirect>
         </li>
         {!-- 
@@ -68,41 +71,36 @@
           </LiveRedirect>
         </li> --}
         <li class="p-0 m-0 rounded-full">
-          <LiveRedirect to="/about" class="flex items-center w-full gap-4 px-2 py-2 rounded-full">
+          <LiveRedirect
+            to="/about"
+            class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2 rounded-full"
+          >
             <#Icon solid="DotsHorizontal" class="w-6 h-6 text-base-content/80" />
-            <div class="font-normal text-base-content/90 flex-1 text-[15px] widget_text">{l("About")}</div>
+            <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("About")}</div>
           </LiveRedirect>
         </li>
         <li class="p-0 m-0 rounded-full" :if={extension_enabled?(:bonfire_ui_groups)}>
-          <LiveRedirect to="/groups" class="flex items-center w-full gap-4 px-2 py-2 rounded-full">
+          <LiveRedirect
+            to="/groups"
+            class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2 rounded-full"
+          >
             <#Icon iconify="ri:group-line" class="w-6 h-6 text-base-content/80" />
-            <div class="font-normal text-base-content/90 flex-1 text-[15px] widget_text">{l("Public Groups")}</div>
+            <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Public Groups")}</div>
           </LiveRedirect>
         </li>
         <li
           :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
           class="p-0 m-0 rounded-md"
         >
-          <LiveRedirect to="/users" class="flex items-center w-full gap-4 px-2 py-2 rounded-md">
+          <LiveRedirect
+            to="/users"
+            class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2 rounded-md"
+          >
             <#Icon iconify="heroicons:users" class="w-6 h-6 text-base-content/80" />
-            <div class="font-normal text-base-content/90 flex-1 text-[15px] widget_text">{l("Users directory")}</div>
+            <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Users directory")}</div>
           </LiveRedirect>
         </li>
       </ul>
     </nav>
-
-    <div class="flex flex-col mt-6 gap-2">
-      <LiveRedirect
-        to={path(:login, :index)}
-        class="md:flex-1  normal-case rounded-full btn-primary btn btn-sm"
-      >{l("Log in")}</LiveRedirect>
-
-      {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-        <LiveRedirect
-          to={path(:signup)}
-          class="md:flex-1 hidden md:flex !border-primary/30 normal-case rounded-full btn-outline btn-primary btn btn-sm"
-        >{l("Create account")}</LiveRedirect>
-      {/if}
-    </div>
   {/if}
 </div>

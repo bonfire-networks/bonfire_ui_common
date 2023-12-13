@@ -166,7 +166,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       <div
         data-id="layout"
         data-single-column={@without_sidebar}
-        class="w-full px-0 md:px-4 grid max-w-[600px] md:max-w-[680px] lg:max-w-[1040px] tablet-lg:max-w-[1200px] gap-0 md:gap-4 widget xl:px-0 mx-auto grid-cols-1 md:grid-cols-[60px_1fr] lg:grid-cols-[60px_1fr_320px] tablet-lg:grid-cols-[250px_1fr_320px]"
+        class="w-full px-0 md:px-4 grid max-w-[600px] md:max-w-[710px] lg:max-w-[1040px] tablet-lg:max-w-[1160px] gap-0 md:gap-4 widget xl:px-0 mx-auto grid-cols-1 md:grid-cols-[60px_1fr] lg:grid-cols-[60px_1fr_320px] tablet-lg:grid-cols-[220px_1fr_320px]"
       >
         <Bonfire.UI.Common.MobileMenuLive
           :if={@current_user_id}
@@ -263,6 +263,19 @@ defmodule Bonfire.UI.Common.LayoutLive do
             data-id="right_nav_and_widgets"
             class="order-last hidden lg:block lg:sticky  w-auto lg:top-3 mt-3 self-start z-[998] lg:w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
           >
+            <div :if={is_nil(@current_user_id)} class="flex flex-col my-4 gap-2">
+              <LiveRedirect
+                to={path(:login, :index)}
+                class="md:flex-1  normal-case rounded-full btn-primary btn btn-sm h-[2.5rem] min-h-[2.5rem]"
+              >{l("Log in")}</LiveRedirect>
+
+              {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+                <LiveRedirect
+                  to={path(:signup)}
+                  class="md:flex-1 hidden md:flex !border-primary/30 normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-outline btn-primary btn btn-sm"
+                >{l("Create account")}</LiveRedirect>
+              {/if}
+            </div>
             {#if not is_nil(@current_user_id)}
               <div class="w-full mb-4">
                 <Dynamic.Component
@@ -271,8 +284,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
                   search_limit={5}
                 />
               </div>
-            {#else}
-              <Bonfire.UI.Common.GuestActionsLive page={@page} />
             {/if}
             <div
               data-id="secondary_sidebar_widgets"

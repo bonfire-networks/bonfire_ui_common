@@ -2,19 +2,19 @@
   :if={!current_account(@__context__)}
   class={
     "hidden tablet-lg:flex justify-end items-center gap-3",
-    "!flex tablet-lg:!hidden": @page_header
+    "!flex lg:!hidden": @page_header
   }
 >
   <LiveRedirect
     to={path(:login, :index)}
     class={
-      "md:flex-1 md:hidden normal-case rounded-full btn-outline px-6 btn-primary btn-sm btn",
+      "md:flex-1  normal-case rounded-full btn-outline px-6 btn-primary btn-sm btn",
       "md:btn-wide": !@page_header
     }
   >{l("Log in")}</LiveRedirect>
 
-  <div class="dropdown dropdown-end md:hidden">
-    <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-square">
+  <div class="dropdown dropdown-end">
+    <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-circle">
       <#Icon solid="DotsVertical" class="w-[18px] h-[18px] md:w-4 md:h-4 text-base-content/70" />
     </label>
     <ul
