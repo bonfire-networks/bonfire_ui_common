@@ -166,7 +166,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
       <div
         data-id="layout"
         data-single-column={@without_sidebar}
-        class="w-full px-0 md:px-4 grid max-w-[600px] md:max-w-[680px] lg:max-w-[1020px] tablet-lg:max-w-[1200px] gap-0 md:gap-4 widget xl:px-0 mx-auto grid-cols-1 md:grid-cols-[80px_1fr] lg:grid-cols-[100px_1fr_320px] tablet-lg:grid-cols-[250px_1fr_320px]"
+        class="w-full px-0 md:px-4 grid max-w-[600px] md:max-w-[680px] lg:max-w-[1040px] tablet-lg:max-w-[1200px] gap-0 md:gap-4 widget xl:px-0 mx-auto grid-cols-1 md:grid-cols-[60px_1fr] lg:grid-cols-[60px_1fr_320px] tablet-lg:grid-cols-[250px_1fr_320px]"
       >
         <Bonfire.UI.Common.MobileMenuLive
           :if={@current_user_id}
@@ -216,7 +216,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <div
           data-id="main_section"
           data-single-column={@without_sidebar}
-          class="relative w-full max-w-[600px] gap-2 md:gap-0 z-[99] col-span-1"
+          class="relative w-full sm:min-w-[600px] gap-2 md:gap-0 z-[99] col-span-1"
         >
           <div class="justify-between h-full mt-0">
             <div class="relative invisible_frame">

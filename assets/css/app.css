@@ -23,7 +23,7 @@ div[data-id="nav_links"][data-showing-within="nav"] {
  }
  
  div[data-id="nav_links"][data-showing-within="sidebar"] > li:first-of-type {
-  @apply text-base-content w-[80px] lg:w-[100px] tablet-lg:w-full font-medium rounded-md justify-end sidebar_menu_item;
+  @apply text-base-content w-[60px] lg:w-[60px] tablet-lg:w-full font-medium rounded-md justify-end sidebar_menu_item;
  }
  
  div[data-id="nav_links"][data-showing-within="nav"] > li:first-of-type {

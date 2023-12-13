@@ -33,6 +33,7 @@ module.exports = {
         'sans': ['OpenDyslexic', 'Luciole', 'Inter', 'Noto Sans', 'Roboto', 'system-ui', 'sans-serif']
       },
       screens: {
+        'sm': '600px',
         'tablet': '920px',
         'tablet-lg': '1200px',
         'desktop-lg': '1448px',
