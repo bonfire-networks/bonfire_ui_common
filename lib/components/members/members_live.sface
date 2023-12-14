@@ -1,22 +1,18 @@
-<div class="m-3">
-  <div class="w-full">
-    <table class="table w-full table-zebra">
-      {!-- head --}
-      <thead>
-        <tr>
-          <th>{l("Name")}</th>
-          <th>{l("Role")}</th>
-          <th>{l("Status")}</th>
-          <th>{l("Signed up")}</th>
-          <th />
-        </tr>
-      </thead>
-      <tbody>
-        {!-- row 1 --}
-        {#for user <- @users}
-          <Bonfire.UI.Common.MemberLive user={user} />
-        {/for}
-      </tbody>
-    </table>
-  </div>
-</div>
+<table class="table w-full table-zebra">
+  {!-- head --}
+  <thead>
+    <tr>
+      <th>{l("Name")}</th>
+      <th>{l("Role")}</th>
+      <th>{l("Status")}</th>
+      <th>{l("Signed up")}</th>
+      <th />
+    </tr>
+  </thead>
+  <tbody>
+    {!-- row 1 --}
+    {#for user <- @users}
+      <Bonfire.UI.Common.MemberLive user={user} />
+    {/for}
+  </tbody>
+</table>
