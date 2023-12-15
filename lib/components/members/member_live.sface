@@ -18,8 +18,9 @@
     </div>
   </td>
   <td class="flex-1">
-    {#if maybe_apply(Bonfire.Me.Accounts, :is_admin?, @__context__) == true}
+    {#if maybe_apply(Bonfire.Me.Accounts, :is_admin?, @user) == true}
       <span class="badge badge-success">{l("Admin")}</span>
+    {!-- TODO: Moderator badge --}
     {#else}
       <span class="badge !border !border-base-content/30 badge-outline">{l("Member")}</span>
     {/if}
@@ -35,7 +36,7 @@
       {#match {_, true}}
         <span class="badge badge-warning">{l("Silenced")}</span>
       {#match {_, _}}
-        <span class="badge badge-outline btn-info !border !border-info/30">{l("Active")}</span>
+        <span class="badge badge-outline !border !border-info/30">{l("Active")}</span>
     {/case}
   </td>
   <td class="flex-1">
