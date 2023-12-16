@@ -20,7 +20,7 @@ defmodule Bonfire.UI.Common.MixProject do
       version: "0.1.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
-      compilers: Mix.compilers(),
+      compilers: Mix.compilers() ++ [:surface],
       deps:
         Mess.deps([
           {:phoenix_live_reload, "~> 1.2", only: :dev},

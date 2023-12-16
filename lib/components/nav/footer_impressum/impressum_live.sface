@@ -1,4 +1,4 @@
-<div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || instance_domain()}</span>:
+<div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || base_domain()}</span>:
   <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·
   {!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · --}
   <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·

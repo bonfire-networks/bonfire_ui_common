@@ -33,7 +33,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
       url_on_local:
         "@" <>
           display_username <>
-          "@" <> Bonfire.Common.URIs.instance_domain(Bonfire.Me.Characters.character_url(user)),
+          "@" <> Bonfire.Common.URIs.base_domain(Bonfire.Me.Characters.character_url(user)),
       canonical_url: Bonfire.Me.Characters.character_url(user),
       friendly_url:
         "#{Bonfire.Common.URIs.base_url()}#{Bonfire.Common.URIs.path(user) || "/@#{display_username}"}"
