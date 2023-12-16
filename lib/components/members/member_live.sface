@@ -20,7 +20,7 @@
   <td class="flex-1">
     {#if maybe_apply(Bonfire.Me.Accounts, :is_admin?, @user) == true}
       <span class="badge badge-success">{l("Admin")}</span>
-    {!-- TODO: Moderator badge --}
+      {!-- TODO: Moderator badge --}
     {#else}
       <span class="badge !border !border-base-content/30 badge-outline">{l("Member")}</span>
     {/if}
