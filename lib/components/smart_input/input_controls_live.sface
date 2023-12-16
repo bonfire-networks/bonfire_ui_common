@@ -57,12 +57,21 @@
                 :if={module_enabled?(Bonfire.Files, @__context__)}
                 uploads={@uploads}
               />
-              <Dynamic.Component
+              {!-- <Dynamic.Component
                 :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
                 module={Bonfire.UI.Common.EmojiPickerLive}
                 target_field=".composer"
                 class="bottom-10 left-3"
-              />
+              /> --}
+
+              <button
+                title={l("Insert emoji")}
+                type="button"
+                class="emoji-button btn btn-ghost btn-sm text-[22px] btn-circle"
+              >
+                {!-- NOTE: triggered using .emoji-button in milkdown JS hook --}
+                <#Icon iconify="ri:emotion-happy-line" class="w-4 h-4 text-base-content/70" />
+              </button>
             </div>
 
             <div

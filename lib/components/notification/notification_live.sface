@@ -21,7 +21,7 @@
 
     <div
       id={"notification-#{@i}"}
-      phx-hook="Notification"
+      :hook
       role="alert"
       class="w-full max-w-md overflow-hidden transition duration-300 ease-in-out transform rounded shadow-lg pointer-events-auto bg-info flash"
     >

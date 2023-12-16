@@ -16,13 +16,13 @@
         <section
           :if={@code != nil}
           id={"line-#{@selected_line}"}
-          phx-hook="loadHash"
+          :hook="loadHash"
           data-line-number={@selected_line}
           data-theme="night"
           class="code ghd-container bg-primary-content"
         >
           <ul id="left_gutter">
-            <li :for={ln <- 1..@lines} phx-hook="updateHash" id={"L#{ln}"} data-line-number={ln} />
+            <li :for={ln <- 1..@lines} :hook="updateHash" id={"L#{ln}"} data-line-number={ln} />
           </ul>
 
           {raw(Text.code_syntax(@code, @filename))}

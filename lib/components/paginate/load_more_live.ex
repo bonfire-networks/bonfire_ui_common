@@ -14,6 +14,7 @@ defmodule Bonfire.UI.Common.LoadMoreLive do
   prop hide_guest_fallback, :boolean, default: false
 
   prop opts, :map, default: %{}
+
   slot if_no_more
 
   def render(assigns) do

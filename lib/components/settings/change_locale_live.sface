@@ -2,7 +2,7 @@
   id="change_locale"
   name="Elixir.Bonfire.Common.Localise.Cldr[default_locale]"
   class="w-full max-w-xs select select-bordered"
-  phx-hook="ChangeLocaleHook"
+  :hook
   data-scope={@scope}
 >
   {#for l <- Localise.known_locales()}

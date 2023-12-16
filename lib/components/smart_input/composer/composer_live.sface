@@ -1,4 +1,4 @@
-<div phx-hook="Composer" id="editor" class="w-full input-sizer stacked md:p-2">
+<div :hook id="editor" class="w-full input-sizer stacked md:p-2">
   {!-- x-model="body" --}
   <textarea
     oninput="this.parentNode.dataset.value = this.value"

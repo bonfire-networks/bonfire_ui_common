@@ -1,4 +1,4 @@
-{!-- <div
+<div
   x-data="{
     open: false,
     close(focusAfter) {
@@ -20,7 +20,7 @@
     }
     role="tooltip"
   >
-    <div phx-update="ignore" phx-hook="EmojiPicker" data-target_field={@target_field} id={@id}>
+    <div phx-update="ignore" :hook data-target_field={@target_field} id={@id}>
       <div class="picker" />
     </div>
   </div>
@@ -35,15 +35,5 @@
       iconify="entypo:emoji-happy"
       class="w-5 h-5 md:w-4 md:h-4 text-base-content text-opacity-70"
     />
-  </button>
-</div> --}
-
-<div phx-update="ignore" phx-hook="EmojiPicker" data-target_field={@target_field} id={@id}>
-  <button
-    title={l("Insert emoji")}
-    type="button"
-    class="emoji-button btn btn-ghost btn-sm text-[22px] btn-circle"
-  >
-    <#Icon iconify="ri:emotion-happy-line" class="w-4 h-4 text-base-content/70" />
   </button>
 </div>

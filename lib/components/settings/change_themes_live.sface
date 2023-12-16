@@ -132,7 +132,7 @@
           DaisyTheme.theme(Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped)))}
         id={key}
         class="relative flex items-center justify-between"
-        phx-hook="ColourPicker"
+        :hook="ColourPicker"
         data-scope={@scope}
         x-data="{
             open: false

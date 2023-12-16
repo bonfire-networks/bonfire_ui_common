@@ -77,14 +77,14 @@ liveSocket.getSocket().onOpen(() => JS_exec_attr_event("#connection-status", "js
 liveSocket.getSocket().onError(() => JS_exec_attr_event("#connection-status", "js-show"))
 // connect if there are any LiveViews on the page
 liveSocket.connect()
-// themeChange()
+// themeChange()  
 
 // expose liveSocket on window for web console debug logs and latency simulation:
 // >> liveSocket.enableDebug()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
-
-window.liveSocket = liveSocket
+ 
+window.liveSocket = liveSocket     
 
 // import DynamicImport from '@rtvision/esbuild-dynamic-import';
 // note depending on your setup you may need to do DynamicImport.default() instead
@@ -93,7 +93,7 @@ window.liveSocket = liveSocket
 import { ExtensionHooks } from "../../../../data/current_flavour/config/deps_hooks.js"
 // import SourceInspect from "./../../../../deps/source_inspector/priv/js/source_inspector.js"
 // ExtensionHooks.SourceInspect = SourceInspect
-// ExtensionHooks.SourceInspect = SourceInspect(csrfToken)
+// ExtensionHooks.SourceInspect = SourceInspect(csrfToken) 
 
 import ComponentHooks from "../../../../data/current_flavour/config/flavour_assets/hooks/index.js"
 

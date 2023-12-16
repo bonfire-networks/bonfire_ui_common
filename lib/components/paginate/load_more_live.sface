@@ -12,7 +12,7 @@
           do: "#{@live_handler}:preload_more",
           else: "#{@live_handler}:load_more"
         )}
-    phx-hook={if @infinite_scroll, do: "InfiniteScroll"}
+    :hook={if @infinite_scroll, do: "LoadMore", else: "Ignore"}
     phx-click={"#{@live_handler}:load_more"}
     phx-target={@target}
     phx-value-context={@context}
