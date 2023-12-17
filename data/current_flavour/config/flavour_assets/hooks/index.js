@@ -10,6 +10,7 @@ function ns(hooks, nameSpace) {
   return updatedHooks
 }
 
+<<<<<<< HEAD
 import * as c1 from "./Bonfire.UI.Common.ViewCodeLive.hooks"
 import * as c2 from "./Bonfire.UI.Common.PreviewContentLive.hooks"
 import * as c3 from "./Bonfire.UI.Common.NotificationLive.hooks"
@@ -26,6 +27,12 @@ let hooks = Object.assign(
   ns(c5, "Bonfire.UI.Common.ChangeLocaleLive"),
   ns(c6, "Bonfire.UI.Common.ChangeThemesLive"),
   ns(c7, "Bonfire.UI.Common.ComposerLive")
+=======
+import * as c1 from "./Bonfire.UI.Common.PreviewContentLive.hooks"
+
+let hooks = Object.assign(
+  ns(c1, "Bonfire.UI.Common.PreviewContentLive")
+>>>>>>> 620d4a7a (css)
 )
 
 export default hooks

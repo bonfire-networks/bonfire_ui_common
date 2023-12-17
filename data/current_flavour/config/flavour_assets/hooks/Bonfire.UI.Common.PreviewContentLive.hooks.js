@@ -115,7 +115,11 @@ let PreviewActivity = {
 // }
 
 
+<<<<<<< HEAD
 let ClosePreview = { 
+=======
+let ClosePreview = {
+>>>>>>> 620d4a7a (css)
   mounted() {
 
     const back = function () {
