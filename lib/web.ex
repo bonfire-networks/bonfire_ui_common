@@ -77,7 +77,7 @@ defmodule Bonfire.UI.Common.Web do
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
-        only: [view_module: 1, view_template: 1]
+        only: [view_module: 1, view_template: 1, get_csrf_token: 0]
 
       # Include shared imports and aliases for views
       import Surface
@@ -291,9 +291,9 @@ defmodule Bonfire.UI.Common.Web do
 
         use Surface.LiveView, unquote(opts)
 
-        use LiveViewNative.LiveView
-
         unquote(surface_helpers())
+
+        use LiveViewNative.LiveView
 
         alias Bonfire.UI.Common.LivePlugs
 
@@ -306,13 +306,13 @@ defmodule Bonfire.UI.Common.Web do
         @moduledoc false
         use Surface.LiveComponent, unquote(opts)
 
-        use LiveViewNative.LiveComponent
-
         # data current_account, :any, from_context: :current_account
         # data current_user, :any, from_context: :current_user
         # data socket, :any
 
         unquote(surface_component_helpers())
+
+        use LiveViewNative.LiveComponent
       end
     end
 
@@ -321,13 +321,13 @@ defmodule Bonfire.UI.Common.Web do
         @moduledoc false
         use Surface.Component, unquote(opts)
 
-        use LiveViewNative.Component
-
         # prop current_account, :any, from_context: :current_account
         # prop current_user, :any, from_context: :current_user
         prop socket, :any
 
         unquote(surface_component_helpers())
+
+        use LiveViewNative.Component
       end
     end
 

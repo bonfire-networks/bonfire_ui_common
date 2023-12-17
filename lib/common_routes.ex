@@ -31,6 +31,9 @@ defmodule Bonfire.UI.Common.Routes do
         # detect Accept headers to serve JSON or HTML
         plug(Bonfire.UI.Common.Plugs.ActivityPub)
 
+        # LiveView Native support
+        plug LiveViewNative.SessionPlug
+
         # plug(:load_current_auth) # do we need this here?
 
         # plug(Bonfire.UI.Common.MaybeStaticGeneratorPlug)
