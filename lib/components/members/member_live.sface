@@ -1,14 +1,14 @@
 <tr>
-  <td class="max-w-[180px]">
+  <td class="max-w-[200px]">
     <div class="flex items-center space-x-3">
       <Bonfire.UI.Common.AvatarLive
         parent_id="members"
-        class="inline-block object-cover rounded-full w-8 h-8"
+        class="inline-block bg-base-300 object-cover rounded-full w-8 h-8"
         bg_class="rounded-full bg-base-100"
         user_id={id(@user)}
         src={Media.avatar_url(@user)}
       />
-      <div>
+      <div class="truncate ellipsis">
         <LiveRedirect
           to={~p"/@" <> e(@user, :character, :username, "")}
           class="text-sm font-bold link link-hover"
@@ -36,7 +36,7 @@
       {#match {_, true}}
         <span class="badge badge-warning">{l("Silenced")}</span>
       {#match {_, _}}
-        <span class="badge badge-outline !border !border-info/30">{l("Active")}</span>
+        <span class="badge badge-info">{l("Active")}</span>
     {/case}
   </td>
   <td class="flex-1">
