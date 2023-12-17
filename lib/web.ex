@@ -62,12 +62,39 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
+  def layout(opts \\ []) do
+    opts =
+      opts
+      |> Keyword.put_new(:namespace, Bonfire.UI.Common.Web)
+      |> Keyword.put_new(:root, "lib")
+      # |> maybe_put_layout(:app)
+      |> IO.inspect(label: "layoutzzz")
+
+    quote do
+      @moduledoc false
+
+      # use Phoenix.View, unquote(opts)
+      #  TODO: switch away from deprecated Phoenix.View?
+      use Phoenix.Component
+
+      # Import convenience functions from controllers
+      import Phoenix.Controller,
+        only: [view_module: 1, view_template: 1, get_csrf_token: 0]
+
+      # Include shared imports and aliases for views
+      # import Surface
+
+      unquote(live_view_helpers())
+    end
+  end
+
   def view(opts \\ []) do
     opts =
       opts
       |> Keyword.put_new(:namespace, Bonfire.UI.Common.Web)
       |> Keyword.put_new(:root, "lib")
-      |> maybe_put_layout(:app)
+
+    # |> maybe_put_layout(:app)
 
     quote do
       @moduledoc false
@@ -89,16 +116,16 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
-  defp maybe_put_layout(opts, file) do
-    Keyword.put_new(
-      opts,
-      :layout,
-      {Bonfire.Common.Config.get(
-         :default_layout_module,
-         Bonfire.UI.Common.LayoutView
-       ), file}
-    )
-  end
+  # defp maybe_put_layout(opts, file) do
+  #   Keyword.put_new(
+  #     opts,
+  #     :layout,
+  #     {Bonfire.Common.Config.get(
+  #        :default_layout_module,
+  #        Bonfire.UI.Common.LayoutView
+  #      ), file}
+  #   )
+  # end
 
   def layout_view(opts \\ []) do
     view(opts)
@@ -106,7 +133,13 @@ defmodule Bonfire.UI.Common.Web do
 
   def live_view(opts \\ []) do
     # IO.inspect(live_view: opts)
-    opts = maybe_put_layout(opts, :live)
+    # maybe_put_layout(opts, :live) 
+    opts =
+      Keyword.put_new(
+        opts,
+        :layout,
+        {Bonfire.UI.Common.LayoutLive, :live}
+      )
 
     quote do
       @moduledoc false
@@ -281,9 +314,10 @@ defmodule Bonfire.UI.Common.Web do
   if Bonfire.Common.Extend.module_exists?(Surface) do
     def surface_live_view(opts \\ []) do
       opts =
-        maybe_put_layout(
+        Keyword.put_new(
           opts,
-          :live
+          :layout,
+          {Bonfire.UI.Common.LayoutLive, :live}
         )
 
       quote do

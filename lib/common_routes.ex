@@ -5,7 +5,6 @@ defmodule Bonfire.UI.Common.Routes do
     quote do
       pipeline :basic do
         plug(:fetch_session)
-        plug(:put_root_layout, {Bonfire.UI.Common.LayoutView, :root})
         plug(RemoteIp)
       end
 
@@ -30,6 +29,8 @@ defmodule Bonfire.UI.Common.Routes do
 
         # detect Accept headers to serve JSON or HTML
         plug(Bonfire.UI.Common.Plugs.ActivityPub)
+
+        plug(:put_root_layout, {Bonfire.UI.Common.LayoutView, :root})
 
         # LiveView Native support
         plug LiveViewNative.SessionPlug
