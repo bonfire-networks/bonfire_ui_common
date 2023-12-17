@@ -188,7 +188,10 @@ article.unread-activity {
 
 
 .p_line_clamp p {
-  @apply line-clamp-1
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;  @apply line-clamp-1;
 }
 
 
@@ -394,15 +397,17 @@ hex-color-picker {
   z-index: 999;
 }
 
-
-
-
-
 .previewable_activity .previewable_truncate {
-  @apply line-clamp-6
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
 }
 .previewable_activity .previewable_truncate.previewable_expanded {
-  @apply line-clamp-none
+  overflow: visible;
+  display: block;
+  -webkit-box-orient: horizontal;
+  -webkit-line-clamp: none;
 }
 
 .-secondary li a {
