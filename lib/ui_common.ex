@@ -16,6 +16,22 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  defmacro render_sface_or_native do
+    quote do
+      def render(%{format: :html} = assigns) do
+        render_sface(assigns)
+      end
+
+      def render(%{format: _} = assigns) do
+        render_native(assigns)
+      end
+
+      def render(assigns) do
+        render_sface(assigns)
+      end
+    end
+  end
+
   def assign_generic(socket_or_conn, {:error, error}) do
     assign_error(socket_or_conn, error)
   end
