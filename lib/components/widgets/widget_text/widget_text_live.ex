@@ -3,6 +3,7 @@ defmodule Bonfire.UI.Common.WidgetTextLive do
 
   prop text, :string, default: nil
   prop widget_title, :string, default: nil
+  prop class, :css_class, default: "max-w-full p-6 prose"
   prop banner_image, :any, default: nil
   prop info, :map, default: nil
 end
