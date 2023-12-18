@@ -17,10 +17,10 @@ defmodule Bonfire.UI.Common.Routes do
         plug(:basic)
         plug(:accepts, ["html", "activity+json", "json", "ld+json"])
 
-        plug(PhoenixGon.Pipeline,
-          # FIXME: this doesn't take into account runtime config
-          assets: &Bonfire.UI.Common.Routes.gon_js_config/0
-        )
+        # plug(PhoenixGon.Pipeline, # FIXME: disabled because of compilation issues with phoenix_gon
+        #   # FIXME: this doesn't take into account runtime config
+        #   assets: &Bonfire.UI.Common.Routes.gon_js_config/0
+        # )
 
         plug(Cldr.Plug.SetLocale, Bonfire.Common.Localise.set_locale_config())
 
