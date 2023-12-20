@@ -2,6 +2,7 @@
   {!-- head --}
   <thead>
     <tr>
+      <th />
       <th>{l("Name")}</th>
       <th>{l("Role")}</th>
       <th>{l("Status")}</th>
@@ -11,8 +12,8 @@
   </thead>
   <tbody>
     {!-- row 1 --}
-    {#for user <- @users}
-      <Bonfire.UI.Common.MemberLive user={user} />
+    {#for {user, index} <- Enum.with_index(@users)}
+      <Bonfire.UI.Common.MemberLive user={user} counter={index + 1} />
     {/for}
   </tbody>
 </table>
