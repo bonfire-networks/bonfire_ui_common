@@ -1,7 +1,7 @@
-{#for {extension, modules} <- Bonfire.Common.SettingsModule.app_modules()}
-  {#case Bonfire.Common.SettingsModule.nav(extension)}
+{#for {extension, modules} <- Bonfire.UI.Common.SettingsModule.app_modules()}
+  {#case Bonfire.UI.Common.SettingsModule.nav(extension)}
     {#match extension_nav}
-      {#case Bonfire.Common.SettingsModule.extension_has_components?(extension, modules)}
+      {#case Bonfire.UI.Common.SettingsModule.extension_has_components?(extension, modules)}
         {#match extension_has_components?}
           {#if extension_has_components? or
               (is_map(extension_nav) or (is_list(extension_nav) and extension_nav != []))}

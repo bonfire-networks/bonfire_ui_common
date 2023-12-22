@@ -412,9 +412,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   # end
 
   def all_smart_input_components do
-    Bonfire.Common.Config.get([:ui, :smart_input_components],
-      post: Bonfire.UI.Social.WritePostContentLive
-    )
+    # Bonfire.Common.Config.get([:ui, :smart_input_components],
+    #   post: Bonfire.UI.Social.WritePostContentLive
+    # )
+    Bonfire.UI.Common.SmartInputModule.smart_input_modules_types()
   end
 
   def active_smart_input_components(smart_input_component, create_object_type) do

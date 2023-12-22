@@ -46,7 +46,7 @@
         {!-- <Bonfire.UI.Common.ExtensionHorizontalMenuLive
           nav_items={@nav_items ||
               Bonfire.Common.ExtensionModule.default_nav(@__context__[:current_app]) ||
-              Bonfire.Common.NavModule.nav(@__context__[:current_app]) || []}
+              Bonfire.UI.Common.NavModule.nav(@__context__[:current_app]) || []}
           page={@page}
           selected_tab={@selected_tab}
         /> --}
