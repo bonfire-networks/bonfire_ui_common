@@ -1574,7 +1574,7 @@ defmodule Bonfire.UI.Common do
   end
 
   @doc """
-  Inserts onr or many items in an existing stream.
+  Inserts one or many items in an existing stream.
   See `Phoenix.LiveView.stream_insert/4` for opts.
   """
   def maybe_stream_insert(%{assigns: %{streams: _}} = socket, name, items, opts)
