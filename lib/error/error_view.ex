@@ -68,7 +68,7 @@ defmodule Bonfire.UI.Common.ErrorView do
     )
   end
 
-  def render("503.html", assigns) do
+  def render("503.html", _assigns) do
     show_error(
       503,
       l("Please try again in a few minutes or contact the instance admins."),
@@ -130,7 +130,7 @@ defmodule Bonfire.UI.Common.ErrorView do
     render("app.html", assigns)
   end
 
-  defp show_error(error_or_error_code, details, as_html?, extra_html \\ nil) do
+  defp show_error(error_or_error_code, details, as_html?, _extra_html \\ nil) do
     http_code =
       Types.maybe_to_integer(error_or_error_code, 500)
       |> debug(error_or_error_code)

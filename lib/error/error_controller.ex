@@ -1,11 +1,11 @@
 defmodule Bonfire.UI.Common.ErrorController do
   use Bonfire.UI.Common.Web, :controller
 
-  def call(%{params: %{"code" => "crash"}} = conn, _params) do
+  def call(%{params: %{"code" => "crash"}} = _conn, _params) do
     raise "User triggered error"
   end
 
-  def call(%{params: %{"crash" => code}} = conn, _params) do
+  def call(%{params: %{"crash" => code}} = _conn, _params) do
     raise Bonfire.Fail.fail(code)
   end
 

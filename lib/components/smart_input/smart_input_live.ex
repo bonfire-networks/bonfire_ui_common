@@ -9,6 +9,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop context_id, :string, default: nil, required: false
   prop smart_input_component, :atom, default: nil
   prop to_boundaries, :any, default: nil
+  prop boundary_preset, :any, default: nil
   prop to_circles, :list, default: []
   prop exclude_circles, :list, default: []
   prop mentions, :list, default: []

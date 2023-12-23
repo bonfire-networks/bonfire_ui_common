@@ -215,18 +215,6 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     end
   end
 
-  def maybe_from_json("{" <> _ = json) do
-    with {:ok, data} <- Jason.decode(json) do
-      data
-    else
-      e ->
-        warn(e)
-        json
-    end
-  end
-
-  def maybe_from_json(other), do: other
-
   defp do_handle_event(event, attrs, socket) when is_binary(event) do
     # debug(handle_event: event)
     case String.split(event, ":", parts: 2) do
@@ -348,4 +336,16 @@ defmodule Bonfire.UI.Common.LiveHandlers do
             else: assign_generic(socket, assigns)
         end).()
   end
+
+  def maybe_from_json("{" <> _ = json) do
+    with {:ok, data} <- Jason.decode(json) do
+      data
+    else
+      e ->
+        warn(e)
+        json
+    end
+  end
+
+  def maybe_from_json(other), do: other
 end

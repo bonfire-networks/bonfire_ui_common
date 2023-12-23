@@ -8,6 +8,7 @@
       do: @href.(@__context__),
       else: @href}
     class={e(@widget[:link_class], @link_class)}
+    label={@text || @widget[:text] || @widget[:name]}
   >
     <div class="flex-1 justify-end relative flex items-center gap-5 widget_content">
       <span :if={!@without_icon && (@icon || @widget[:icon] || @widget[:icon_active])} class="">

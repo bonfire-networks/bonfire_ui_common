@@ -54,7 +54,6 @@
                   title={@title}
                   class={@class, "iconify -mt-0 md:-mt-0 text-base-content/60"}
                   iconify="heroicons:user-20-solid"
-                  title={@title}
                   {...@opts}
                 />
               </div>

@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   @moduledoc "Like a plug, but for a liveview"
   alias Bonfire.UI
   use UI.Common
-  alias Bonfire.UI.Common.LivePlugs
+  # alias Bonfire.UI.Common.LivePlugs
 
   def on_mount(modules, params, session, socket) when is_list(modules) do
     UI.Common.undead_on_mount(socket, fn ->

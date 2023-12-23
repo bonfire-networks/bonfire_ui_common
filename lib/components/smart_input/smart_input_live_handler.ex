@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
 
-  def switch_smart_input_type(type, js \\ %JS{}) do
+  def switch_smart_input_type(_type, js \\ %JS{}) do
     js
     |> maximize()
   end
@@ -162,8 +162,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   # needed for uploads
 
-  def handle_event("validate", params, socket) do
-    debug(params, "socket2")
+  def handle_event("validate", _params, socket) do
+    # debug(params, "socket2")
 
     {
       :noreply,
@@ -198,7 +198,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     {:noreply, reset_input(socket)}
   end
 
-  def handle_event(_, params, socket) do
+  def handle_event(_, _params, socket) do
     {:noreply,
      socket
      # to avoid un-reset the input
@@ -216,7 +216,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     )
   end
 
-  defp maybe_push_opts(js, event, opts) do
+  defp maybe_push_opts(js, _event, opts) do
     warn(opts, "no smart_input_opts")
     js
   end

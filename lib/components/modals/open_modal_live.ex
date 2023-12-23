@@ -137,7 +137,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
     # end
   end
 
-  def maybe_set_assigns(component, "media_player_modal", assigns) do
+  def maybe_set_assigns(_component, "media_player_modal", assigns) do
     # TODO: detect if we're already in the sticky view
     Bonfire.UI.Common.PersistentLive.maybe_send(assigns, {:media_player, assigns})
   end

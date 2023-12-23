@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.InlineModalLive do
   The classic **modal**
   """
   use Bonfire.UI.Common.Web, :stateless_component
-  alias Bonfire.UI.Common.ReusableModalLive
+  # alias Bonfire.UI.Common.ReusableModalLive
 
   prop id, :any, default: nil
 

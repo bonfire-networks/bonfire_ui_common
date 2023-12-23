@@ -19,9 +19,9 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
   prop title_prompt, :string, default: nil
   prop preloaded_recipients, :list, default: nil
 
-  prop thread_mode, :atom, default: nil
+  # prop thread_mode, :atom, default: nil
   prop page, :any, default: nil
-  prop without_sidebar, :string, default: nil
+  # prop without_sidebar, :string, default: nil
 
   def mount(socket),
     do:

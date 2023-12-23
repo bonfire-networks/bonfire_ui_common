@@ -33,6 +33,7 @@ defmodule Bonfire.UI.Common.LiveHandlers.GracefulDegradation.Controller do
            LiveHandlers.handle_event(action, attrs, conn, __MODULE__)
            |> debug() do
       msg = get_flash(conn, :error) || get_flash(conn, :info)
+      # TODO: use `Phoenix.Flash.get(@flash, key)` instead
 
       %{
         conn: conn,

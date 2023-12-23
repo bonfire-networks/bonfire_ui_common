@@ -3,7 +3,6 @@
     :if={!e(@smart_input_opts, :inline_only, nil) and
       !e(@smart_input_opts, :disable, nil)}
     id={:smart_input}
-    thread_mode={@thread_mode}
     smart_input_opts={@smart_input_opts}
   />
 

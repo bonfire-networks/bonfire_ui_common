@@ -42,7 +42,7 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
 
   def render(%{to: "http" <> _} = assigns) do
     ~F"""
-    <Link to={@to} class={@class} opts={@opts}>
+    <Link to={@to} class={@class} opts={@opts |> Enum.into(%{"aria-label": @label})}>
       <#slot>{@label}</#slot>
     </Link>
     """
@@ -71,6 +71,7 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
         phx-target={@event_target}
         class={@class}
         opts={@opts}
+        aria-label={@label}
       >
         <#slot>{@label}</#slot>
       </span>
@@ -92,6 +93,7 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
         phx-target={@event_target}
         class={@class}
         opts={@opts}
+        aria-label={@label}
       >
         <#slot>{@label}</#slot>
       </a>
@@ -104,7 +106,12 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
 
   def render(assigns) do
     ~F"""
-    <LivePatch to={@to} class={@class} replace={@replace} opts={@opts}>
+    <LivePatch
+      to={@to}
+      class={@class}
+      replace={@replace}
+      opts={@opts |> Enum.into(%{"aria-label": @label})}
+    >
       <#slot>{@label}</#slot>
     </LivePatch>
     """
