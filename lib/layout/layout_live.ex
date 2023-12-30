@@ -293,14 +293,16 @@ defmodule Bonfire.UI.Common.LayoutLive do
               data-id="secondary_sidebar_widgets"
               class="hidden overflow-x-hidden overflow-y-auto lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
             >
-              {!-- FIXME: use the widget system instead (see below) --}
-
+              {!-- 
+              FIXME: use the widget system instead (see below) 
+              
               <StatelessComponent
                 :if={not is_nil(@current_user_id)}
                 module={maybe_component(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__)}
                 process_url="/coordination/list"
                 title={l("Favourite milestones")}
               />
+              --}
 
               <Bonfire.UI.Common.SidebarWidgetsLive
                 widgets={@sidebar_widgets}
