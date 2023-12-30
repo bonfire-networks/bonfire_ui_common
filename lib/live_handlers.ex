@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   @moduledoc """
   usage examples:
 
-  `phx-submit="Bonfire.Social.Posts:post"` will be routed to `Bonfire.Social.Posts.LiveHandler.handle_event("post", ...`
+  `phx-submit="Bonfire.Posts:post"` will be routed to `Bonfire.Posts.LiveHandler.handle_event("post", ...`
 
   `PubSub.broadcast(feed_id, {{Bonfire.Social.Feeds, :new_activity}, activity})` will be routed to `Bonfire.Social.Feeds.LiveHandler.handle_info({:new_activity, activity}, ...`
 

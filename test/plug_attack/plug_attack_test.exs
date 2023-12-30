@@ -11,8 +11,8 @@ defmodule Bonfire.UI.Common.PlugProtectDanceTest do
 
   alias Bonfire.Common.TestInstanceRepo
 
-  alias Bonfire.Social.Posts
-  alias Bonfire.Social.Follows
+  alias Bonfire.Posts
+  alias Bonfire.Social.Graph.Follows
   alias Bonfire.Boundaries.{Circles, Acls, Grants}
 
   test "attack the signup endpoint", context do

@@ -251,7 +251,7 @@
 
     <li>
       <LivePatch
-        module={maybe_component(Bonfire.Social.Posts, @__context__) and
+        module={maybe_component(Bonfire.Posts, @__context__) and
           Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
         to={~p"/posts"}
         class={

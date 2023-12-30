@@ -11,7 +11,7 @@
         {#for user <- @users}
           <li class="bg-base-100 form-control">
             <label
-              phx-click="Bonfire.Social.Messages:select_recipient"
+              phx-click="Bonfire.Messages:select_recipient"
               phx-value-action={if Enum.member?(
                    @to_circles,
                    {e(user, :edge, :object, :profile, :name, "Anon"), e(user, :edge, :object, :id, nil)}
