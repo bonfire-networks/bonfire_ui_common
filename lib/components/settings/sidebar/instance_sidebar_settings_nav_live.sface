@@ -44,7 +44,7 @@
             iconify="carbon:paint-brush"
             class={"w-4 h-4 font-normal text-base-content/70", "": @id == "appearance"}
           />
-          <span class="text-sm text-base-content/70">{l("Appearance Defaults")}</span>
+          <span class="text-sm text-base-content/70">{l("Default Appearance")}</span>
         </LiveRedirect>
       </li>
 
@@ -60,7 +60,7 @@
             iconify="carbon:settings-adjust"
             class={"w-4 h-4 font-normal text-base-content/70", "": @id == "behaviours"}
           />
-          <span class="text-sm text-base-content/70">{l("Preferences default")}</span>
+          <span class="text-sm text-base-content/70">{l("Default Preferences")}</span>
         </LiveRedirect>
       </li>
 
