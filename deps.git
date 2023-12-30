@@ -1,5 +1,4 @@
 bonfire_common = "https://github.com/bonfire-networks/bonfire_common#main"
-arrows = "https://github.com/bonfire-networks/arrows#main"
 # surface_heroicons = "https://github.com/rocketinsights/surface_heroicons"
 # surface_boxicon = "https://github.com/bonfire-networks/surface_boxicon#main"
 iconify_ex = "https://github.com/bonfire-networks/iconify_ex#main"

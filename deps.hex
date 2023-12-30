@@ -1,3 +1,4 @@
+arrows = "~> 0.1"
 jason = "~> 1.4.0" # json parsing
 # phoenix framework:
 surface = "~> 0.11.0"

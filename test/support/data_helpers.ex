@@ -43,7 +43,7 @@ defmodule Bonfire.UI.Common.DataHelpers do
     object =
       Map.merge(
         %{
-          "id" => @remote_instance <> "/pub/" <> Pointers.ULID.autogenerate(),
+          "id" => @remote_instance <> "/pub/" <> Needle.ULID.autogenerate(),
           "content" => "content",
           "type" => "Note",
           "published" => "2015-02-10T15:00:00Z"
@@ -59,7 +59,7 @@ defmodule Bonfire.UI.Common.DataHelpers do
       to: to,
       local: false,
       additional: %{
-        "id" => @remote_instance <> "/pub/" <> Pointers.ULID.autogenerate(),
+        "id" => @remote_instance <> "/pub/" <> Needle.ULID.autogenerate(),
         "published" => "2015-02-10T15:10:00Z"
       }
     }

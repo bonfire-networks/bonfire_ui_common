@@ -20,7 +20,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
   end
 
   defp avatar_face(id) when is_binary(id) do
-    Pointers.ULID.encoded_randomness(id)
+    Needle.ULID.encoded_randomness(id)
     |> do_avatar_face()
   end
 

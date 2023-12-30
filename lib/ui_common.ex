@@ -608,7 +608,7 @@ defmodule Bonfire.UI.Common do
           )
       end
 
-    Pointers.NotFound ->
+    Needle.NotFound ->
       live_exception(
         socket,
         return_key,

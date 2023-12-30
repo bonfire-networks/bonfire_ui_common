@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
 
   def fancy_fake_user!(name, opts \\ []) do
     # repo().delete_all(ActivityPub.Object)
-    id = Pointers.ULID.generate()
+    id = Needle.ULID.generate()
     user = fake_user!("#{name} #{id}", opts ++ [id: id], opts)
     display_username = Bonfire.Me.Characters.display_username(user, true)
 
@@ -79,7 +79,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
       ~F"""
       <StatefulComponent
         module={component}
-        id={Utils.e(assigns, :id, nil) || Pointers.ULID.generate()}
+        id={Utils.e(assigns, :id, nil) || Needle.ULID.generate()}
         {...assigns}
       />
       """
