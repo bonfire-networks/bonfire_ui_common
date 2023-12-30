@@ -105,7 +105,7 @@
 
       <li>
         <LivePatch
-          :if={module_enabled?(Bonfire.Invite.Links, @__context__)}
+          module={maybe_component(Bonfire.Invite.Links, @__context__)}
           to={~p"/settings/instance/invites"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -236,7 +236,7 @@
 
     {!-- <li>
       <LivePatch
-        :if={module_enabled?(Bonfire.Pages, @__context__) and
+        module={maybe_component(Bonfire.Pages, @__context__) and
           Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
         to={~p"/settings/instance/pages"}
         class={
@@ -251,7 +251,7 @@
 
     <li>
       <LivePatch
-        :if={module_enabled?(Bonfire.Social.Posts, @__context__) and
+        module={maybe_component(Bonfire.Social.Posts, @__context__) and
           Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
         to={~p"/posts"}
         class={
@@ -267,7 +267,7 @@
 
     <li>
       <LivePatch
-        :if={module_enabled?(Bonfire.Tag, @__context__) and
+        module={maybe_component(Bonfire.Tag, @__context__) and
           Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
         to={~p"/settings/instance/tags"}
         class={

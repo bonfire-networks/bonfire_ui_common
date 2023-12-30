@@ -233,8 +233,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 >
                   <div :if={!@without_sidebar && !@no_header} class="sticky top-0 z-[999]">
                     <div class="flex flex-1 backdrop-blur-sm rounded-none md:rounded-t bg-base-100/70 transition-color duration-150 ease-in-out">
-                      <Dynamic.Component
-                        module={Bonfire.UI.Common.PageHeaderLive}
+                      <StatelessComponent
+                        module={maybe_component(Bonfire.UI.Common.PageHeaderLive, @__context__)}
                         page={@page}
                         page_title={@page_title}
                         page_header_icon={@page_header_icon}
@@ -242,14 +242,14 @@ defmodule Bonfire.UI.Common.LayoutLive do
                         extra={@extra}
                       >
                         <:right_action>
-                          <Dynamic.Component
+                          <StatelessComponent
                             :if={@page_header_aside}
                             :for={{component, component_assigns} <- e(@page_header_aside, [])}
-                            module={component}
+                            module={maybe_component(component, @__context__)}
                             {...component_assigns || []}
                           />
                         </:right_action>
-                      </Dynamic.Component>
+                      </StatelessComponent>
                     </div>
                   </div>
 
@@ -283,9 +283,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
             </div>
             {#if not is_nil(@current_user_id)}
               <div class="w-full mb-4">
-                <Dynamic.Component
-                  :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
-                  module={Bonfire.Search.Web.FormLive}
+                <StatelessComponent
+                  module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
                   search_limit={5}
                 />
               </div>
@@ -296,10 +295,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
             >
               {!-- FIXME: use the widget system instead (see below) --}
 
-              <Dynamic.Component
-                :if={module_enabled?(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__) and
-                  not is_nil(@current_user_id)}
-                module={Bonfire.UI.ValueFlows.ProcessesListLive}
+              <StatelessComponent
+                :if={not is_nil(@current_user_id)}
+                module={maybe_component(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__)}
                 process_url="/coordination/list"
                 title={l("Favourite milestones")}
               />

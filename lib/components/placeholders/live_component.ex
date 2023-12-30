@@ -20,7 +20,7 @@ defmodule Bonfire.UI.Common.LiveComponent do
   def render(assigns) do
     # TODO: Phoenix.LiveView.Helpers.live_component/2 is deprecated. Use .live_component (live_component/1) instead
     ~H"""
-    <%= if @load_live_component and module_enabled?(@load_live_component),
+    <%= if @load_live_component and module_enabled?(@load_live_component, @__context__),
       do:
         live_component(
           @load_live_component,

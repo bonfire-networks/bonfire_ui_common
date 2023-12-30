@@ -47,9 +47,9 @@
           :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
           class="flex absolute right-[6px] top-[-8px] tablet-lg:!right-auto tablet-lg:left-7 tablet-lg:!top-0 items-center place-content-center widget_notification"
         >
-          <Dynamic.LiveComponent
+          <StatefulComponent
             id={badge[:id] || Text.random_string()}
-            module={Bonfire.UI.Common.BadgeCounterLive}
+            module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
             feed_id={badge[:feed_id] || e(current_user(@__context__), :character, badge[:feed_key], nil)}
           />
         </div>

@@ -396,7 +396,11 @@ defmodule Bonfire.UI.Common.Web do
       quote do
         unquote(live_view_basic_helpers())
 
-        alias Surface.Components.Dynamic
+        # alias Surface.Components.Dynamic
+        # alias Bonfire.UI.Common.Modular.StatelessComponent
+        # alias Bonfire.UI.Common.Modular.StatefulComponent
+        alias Surface.Components.Dynamic.Component, as: StatelessComponent
+        alias Surface.Components.Dynamic.LiveComponent, as: StatefulComponent
 
         alias Surface.Components.Link
         alias Surface.Components.Link.Button

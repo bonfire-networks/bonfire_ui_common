@@ -53,12 +53,11 @@
           <div class="flex justify-between gap-3 p-4 md:items-center bg-base-100 md:px-3 py-2">
             <div class="flex items-center gap-1">
               <Bonfire.UI.Common.UploadButtonLive
-                :if={module_enabled?(Bonfire.Files, @__context__)}
+                module={maybe_component(Bonfire.Files.DocumentUploader, @__context__)}
                 uploads={@uploads}
               />
-              {!-- <Dynamic.Component
-                :if={module_enabled?(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
-                module={Bonfire.UI.Common.EmojiPickerLive}
+              {!-- <StatelessComponent
+                module={maybe_component(Bonfire.UI.Common.EmojiPickerLive, @__context__)}
                 target_field=".composer"
                 class="bottom-10 left-3"
               /> --}
@@ -121,9 +120,8 @@
             </div>
             <div class="flex flex-1 gap-2">
               {#if @create_object_type != :message && !e(@smart_input_opts, :recipients_editable, nil)}
-                <Dynamic.Component
-                  :if={module_enabled?(Bonfire.Boundaries.Web.SetBoundariesButtonLive)}
-                  module={Bonfire.Boundaries.Web.SetBoundariesButtonLive}
+                <StatelessComponent
+                  module={maybe_component(Bonfire.Boundaries.Web.SetBoundariesButtonLive, @__context__)}
                   to_boundaries={@to_boundaries}
                   boundary_preset={@boundary_preset}
                   preview_boundary_for_id={@preview_boundary_for_id}
@@ -203,9 +201,8 @@
         <input type="hidden" name="context_id" value={@context_id}>
         <input type="hidden" name={:create_object_type} value={@create_object_type}>
 
-        <Dynamic.Component
-          :if={module_enabled?(Bonfire.Boundaries.Web.BoundariesSelectionLive)}
-          module={Bonfire.Boundaries.Web.BoundariesSelectionLive}
+        <StatelessComponent
+          module={maybe_component(Bonfire.Boundaries.Web.BoundariesSelectionLive, @__context__)}
           to_boundaries={@to_boundaries}
           to_circles={@to_circles}
           exclude_circles={@exclude_circles}

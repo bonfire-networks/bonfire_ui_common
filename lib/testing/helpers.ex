@@ -64,7 +64,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
 
     render_surface do
       ~F"""
-      <Dynamic.Component module={component} function={:render} {...assigns} />
+      <StatelessComponent module={component} function={:render} {...assigns} />
       """
     end
   end
@@ -77,7 +77,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
 
     render_surface do
       ~F"""
-      <Dynamic.LiveComponent
+      <StatefulComponent
         module={component}
         id={Utils.e(assigns, :id, nil) || Pointers.ULID.generate()}
         {...assigns}

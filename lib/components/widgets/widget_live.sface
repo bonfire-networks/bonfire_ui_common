@@ -15,8 +15,12 @@
       skip_badges={@skip_badges}
     />
   {#match Surface.Component}
-    <div class={@widget[:wrapper_class] || @wrapper_class} data-type="widget">
-      <Dynamic.Component
+    <div
+      :if={module_enabled?(@widget[:module], @__context__)}
+      class={@widget[:wrapper_class] || @wrapper_class}
+      data-type="widget"
+    >
+      <StatelessComponent
         module={@widget[:module]}
         showing_within={@showing_within}
         page={@page}
@@ -25,8 +29,12 @@
       />
     </div>
   {#match Surface.LiveComponent}
-    <div class={@widget[:wrapper_class] || @wrapper_class} data-type="widget">
-      <Dynamic.LiveComponent
+    <div
+      :if={module_enabled?(@widget[:module], @__context__)}
+      class={@widget[:wrapper_class] || @wrapper_class}
+      data-type="widget"
+    >
+      <StatefulComponent
         id={Text.random_string()}
         module={@widget[:module]}
         page={@page}

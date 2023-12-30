@@ -68,9 +68,8 @@
         >
           <li><LiveRedirect to={"/@#{e(@user, :character, :username, nil)}"}>{l("View profile")}</LiveRedirect></li>
           <li>
-            <Dynamic.Component
-              :if={module_enabled?(Bonfire.Boundaries.Web.BlockButtonLive)}
-              module={Bonfire.Boundaries.Web.BlockButtonLive}
+            <StatelessComponent
+              module={maybe_component(Bonfire.Boundaries.Web.BlockButtonLive, @__context__)}
               object={@user}
               parent_id="members"
               hide_icon

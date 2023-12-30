@@ -268,7 +268,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
     case maybe_to_module("#{mod}.LiveHandler") || fallback do
       module when is_atom(module) and not is_nil(module) ->
-        if module_enabled?(module) do
+        if module_enabled?(module, socket) do
           debug(
             args,
             "LiveHandler: delegating to #{inspect(fun)} in #{module} with args"
@@ -277,7 +277,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
           apply(module, fun, args ++ [socket])
           # |> debug("applied")
         else
-          if module != fallback and module_enabled?(fallback) do
+          if module != fallback and module_enabled?(fallback, socket) do
             debug(
               args,
               "LiveHandler: delegating to fallback module #{inspect(fallback)} in #{module} with args"

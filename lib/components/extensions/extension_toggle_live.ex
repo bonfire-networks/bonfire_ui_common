@@ -9,8 +9,8 @@ defmodule Bonfire.UI.Common.ExtensionToggleLive do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign_new(:globally_disabled, fn ->
-       Config.get([id(assigns) || id(socket.assigns), :disabled], nil)
+     |> assign_new(:global_modularity, fn ->
+       Config.get([id(assigns) || id(socket.assigns), :modularity], nil)
      end)}
   end
 

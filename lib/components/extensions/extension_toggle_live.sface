@@ -1,8 +1,10 @@
 <li>
   {#if @scope != :instance}
-    {#if current_user(@__context__) && Bonfire.Common.Settings.get([@id, :disabled], nil, @__context__)}
+    {#if current_user(@__context__) &&
+        Bonfire.Common.Settings.get([@id, :modularity], nil, @__context__)
+        |> Bonfire.Common.Extend.disabled_value?()}
       <button
-        :if={@globally_disabled != true}
+        :if={!Bonfire.Common.Extend.disabled_value?(@global_modularity)}
         phx-click="Bonfire.Common.Settings:extension:enable"
         phx-target={@myself}
         phx-value-extension={@id}
@@ -18,7 +20,7 @@
     {/if}
   {#else}
     {#if @can_instance_wide}
-      {#if @globally_disabled}
+      {#if Bonfire.Common.Extend.disabled_value?(@global_modularity)}
         <button
           phx-click="Bonfire.Common.Settings:extension:enable"
           phx-target={@myself}
@@ -36,7 +38,7 @@
         >{l("Disable for everyone")}</button>
       {/if}
     {#else}
-      {#if @globally_disabled}
+      {#if Bonfire.Common.Extend.disabled_value?(@global_modularity)}
         {l("Disabled on this instance")}
       {#else}
         {l("Enabled on this instance")}

@@ -1,9 +1,7 @@
 <div class="">
   {!-- {#if not is_nil(current_user_id(@__context__))} --}
 
-  <Dynamic.Component
-    :if={module_enabled?(Bonfire.UI.Common.LoggedActionsLive)}
-    module={Bonfire.UI.Common.LoggedActionsLive}
+  <Bonfire.UI.Common.LoggedActionsLive
     showing_within={@showing_within}
     smart_input_opts={@smart_input_opts}
   />

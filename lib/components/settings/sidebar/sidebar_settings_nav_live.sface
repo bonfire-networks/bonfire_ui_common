@@ -73,7 +73,7 @@
         </LiveRedirect>
       </li>
 
-      <li :if={module_enabled?(Bonfire.Data.SharedUser, @__context__) &&
+      <li module={maybe_component(Bonfire.Data.SharedUser, @__context__) &&
         Settings.get(:experimental_features_enabled, false, @__context__)}>
         <LiveRedirect
           to={~p"/settings/user/shared_user"}

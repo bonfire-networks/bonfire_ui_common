@@ -16,6 +16,17 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  def maybe_component(module, context \\ []) do
+    case maybe_module(module, context) do
+      nil ->
+        warn(module, "Component module is disabled and no replacement was configured")
+        Bonfire.UI.Common.DisabledModuleLive
+
+      module ->
+        module
+    end
+  end
+
   defmacro render_sface_or_native do
     quote do
       def render(%{format: :html} = assigns) do

@@ -15,8 +15,8 @@
         class="rounded-box m-2 flex justify-between items-start border border-base-content/20"
       >
         {!-- show what we're replying to, if any --}
-        <Dynamic.Component
-          module={Bonfire.UI.Social.ActivityLive}
+        <StatelessComponent
+          module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
           id={"compose_reply_to-#{id(@reply_to_id) || id(@object) || id(@activity)}"}
           myself={nil}
           activity={@activity}
@@ -41,7 +41,7 @@
           </span>
         </div>
       </div>
-      <Dynamic.Component
+      <StatelessComponent
         module={LiveHandler.active_smart_input_component(@smart_input_component, @create_object_type)}
         textarea_class={Surface.css_class(["editor_area textarea p-0 w-full rounded-none"])}
         {...assigns}

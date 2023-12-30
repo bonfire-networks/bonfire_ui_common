@@ -36,28 +36,31 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     do:
       {:ok,
        socket
-       |> setup_uploads()}
+       |> maybe_setup_uploads()}
 
-  def setup_uploads(socket),
-    do:
-      socket
-      |> assign(
-        trigger_submit: false,
-        uploaded_files: []
-      )
-      |> allow_upload(:files,
-        accept:
-          Config.get_ext(
-            :bonfire_files,
-            [Bonfire.Files.DocumentUploader, :allowed_media_extensions],
-            ~w(.jpg .png)
-          ),
-        # make configurable
-        max_file_size: Bonfire.Files.DocumentUploader.max_file_size(),
-        max_entries: 4,
-        auto_upload: false
-        # progress: &handle_progress/3
-      )
+  def maybe_setup_uploads(socket) do
+    if module_enabled?(Bonfire.Files.DocumentUploader, socket),
+      do:
+        socket
+        |> assign(
+          trigger_submit: false,
+          uploaded_files: []
+        )
+        |> allow_upload(:files,
+          accept:
+            Config.get_ext(
+              :bonfire_files,
+              [Bonfire.Files.DocumentUploader, :allowed_media_extensions],
+              ~w(.jpg .png)
+            ),
+          # make configurable
+          max_file_size: Bonfire.Files.DocumentUploader.max_file_size(),
+          max_entries: 4,
+          auto_upload: false
+          # progress: &handle_progress/3
+        ),
+      else: socket
+  end
 
   def update(
         %{smart_input_opts: new_smart_input_opts} = assigns,

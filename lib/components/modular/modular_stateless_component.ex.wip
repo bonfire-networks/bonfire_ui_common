@@ -1,0 +1,37 @@
+defmodule Bonfire.UI.Common.Modular.StatelessComponent do
+  @moduledoc """
+  A built-in component that allows users to optionally inject dynamic functional components into a Surface template.
+
+  Based on `Surface.Components.Dynamic.Component` to which it adds the ability to check if a module is enabled and even to swap it out for another in settings.
+  """
+
+  use Surface.Component
+
+  @doc """
+  The module of the component
+  """
+  prop module, :module, required: true
+
+  @doc """
+  The function of the component
+  """
+  prop function, :atom
+
+  @doc """
+  The default slot
+  """
+  slot default
+
+  def render(%{module: mod} = assigns) do 
+        case Bonfire.Common.Extend.maybe_module(mod, assigns) do
+      nil -> ~F"<!-- skip component module `{@mod}` which is disabled -->"
+      mod -> 
+  ~F"""
+  <Surface.Components.Dynamic.Component
+      module={mod}
+      {...assigns}
+    /><#slot /></Surface.Components.Dynamic.Component>
+  """
+      end
+  end
+end

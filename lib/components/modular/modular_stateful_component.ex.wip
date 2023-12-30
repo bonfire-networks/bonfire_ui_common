@@ -1,0 +1,72 @@
+defmodule Bonfire.UI.Common.Modular.StatefulComponent do
+  @moduledoc """
+  A built-in component that allows users to optionally inject dynamic live components into a Surface template.
+
+  Based on `Surface.Components.Dynamic.LiveComponent` to which it adds the ability to check if a module is enabled and even to swap it out for another in settings.
+  """
+
+  use Surface.LiveComponent
+  alias Surface.AST
+
+  @doc """
+  The module of the component
+  """
+  prop module, :module, required: true
+
+  @doc """
+  The default slot
+  """
+  slot default
+
+  def transform(node) do
+    %AST.Component{props: props, directives: directives, slot_entries: slot_entries, meta: meta} = node
+
+    {%{module: mod}, other_props} = AST.pop_attributes_values_as_map(props, [:module])
+
+     
+    # component = %AST.Component{
+    #   module: Surface.Components.Dynamic.LiveComponent,
+    #   type: :dynamic_live,
+    #   props: props,
+    #   directives: directives,
+    #   slot_entries: slot_entries,
+    #   meta: meta
+    # }
+
+    component = %AST.Component{
+      module: mod,
+      type: :dynamic_live,
+      props: other_props,
+      directives: directives,
+      slot_entries: slot_entries,
+      meta: meta
+    }
+    
+     %AST.If{
+          condition: AST.AttributeExpr.new(
+      Surface.TypeHandler.expr_to_quoted!(value, ":if", :boolean, meta),
+      value,
+      meta
+    ),
+          children: [component],
+          else: [],
+          meta: meta
+        }
+    
+  end
+
+  def render(assigns), do: ~F[<div data-id="testttt" />]
+
+  # def render(%{module: mod} = assigns) do 
+  #   case Bonfire.Common.Extend.maybe_module(mod, assigns) do
+  #     nil -> ~F"<!-- skip component module `{@mod}` which is disabled -->"
+  #     mod -> 
+  #     ~F"""
+  #     <Surface.Components.Dynamic.LiveComponent
+  #         module={mod}
+  #         {...assigns}
+  #       /><#slot /></Surface.Components.Dynamic.LiveComponent>
+  #     """
+  #   end
+  # end
+end

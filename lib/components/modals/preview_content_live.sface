@@ -35,7 +35,7 @@
             {#match modal_assigns}
               {#if not is_nil(e(modal_assigns, :preview_component, nil)) and
                   module_enabled?(modal_assigns[:preview_component])}
-                <Dynamic.LiveComponent
+                <StatefulComponent
                   id="preview_component"
                   module={modal_assigns[:preview_component]}
                   {...modal_assigns}

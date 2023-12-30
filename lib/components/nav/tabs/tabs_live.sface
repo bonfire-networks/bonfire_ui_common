@@ -12,7 +12,7 @@
         >
           {#for {tab, tab_name} <- @tabs}
             <li>
-              <Dynamic.Component
+              <StatelessComponent
                 module={@link_component}
                 to={if String.starts_with?(to_string(tab), "/"),
                   do: tab,
@@ -26,7 +26,7 @@
                 ])}
               >
                 <div class="">{localise_dynamic(tab_name)}</div>
-              </Dynamic.Component>
+              </StatelessComponent>
             </li>
           {/for}
         </ul>
@@ -47,7 +47,7 @@
       </div> -->
       <div class="flex justify-center gap-6 items-center w-full">
         {#for {tab, tab_name} <- @tabs}
-          <Dynamic.Component
+          <StatelessComponent
             module={@link_component}
             to={if String.starts_with?(to_string(tab), "/"),
               do: tab,
@@ -67,7 +67,7 @@
             <div class={@item_class}>{localise_dynamic(tab_name)}</div>
             <!-- <#slot :if={@selected_tab == tab or to_string(@selected_tab) == to_string(tab) or
             (is_nil(@selected_tab) and i == 0)} /> -->
-          </Dynamic.Component>
+          </StatelessComponent>
         {/for}
       </div>
       <#slot />

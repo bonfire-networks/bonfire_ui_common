@@ -10,30 +10,29 @@
     </div>
 
     <div class="hidden md:block ml-4 max-w-[200px] w-full" :class="{'!block': open_sidebar}">
-      <Dynamic.Component
-        :if={module_enabled?(Bonfire.Search.Web.FormLive, @__context__)}
-        module={Bonfire.Search.Web.FormLive}
+      <StatelessComponent
+        module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
         search_limit={5}
       />
     </div>
   </div>
 
   {!-- <div class="flex flex-1" :class="{'hidden': open_sidebar}">
-    <Dynamic.Component
+    <StatelessComponent
       module={elem({Bonfire.UI.Common.PageHeaderLive, []}, 0)}
       page_title={@page_title}
       page={@page}
       selected_tab={@selected_tab}
     >
       <:right_action>
-        <Dynamic.Component
+        <StatelessComponent
           :if={current_user(@__context__) && @page_header_aside}
           :for={{component, component_assigns} <- e(@page_header_aside, [])}
           module={component}
           {...component_assigns}
         />
       </:right_action>
-    </Dynamic.Component>
+    </StatelessComponent>
   </div> --}
 
   <Bonfire.UI.Common.LoggedActionsLive
