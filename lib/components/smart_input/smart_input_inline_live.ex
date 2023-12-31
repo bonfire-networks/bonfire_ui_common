@@ -27,7 +27,7 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
     do:
       {:ok,
        socket
-       |> SmartInputContainerLive.setup_uploads()}
+       |> SmartInputContainerLive.maybe_setup_uploads()}
 
   defdelegate handle_event(action, attrs, socket),
     to: SmartInputContainerLive

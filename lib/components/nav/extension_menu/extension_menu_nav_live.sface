@@ -16,7 +16,7 @@
                   skip_badges={@skip_badges}
                 />
               </li>
-              {}
+
               <div
                 :if={Enum.any?(nav, fn %{type: type} -> type != :link end)}
                 class="menu p-0"

@@ -72,7 +72,7 @@
   >
     <Bonfire.UI.Common.MobileMenuLive
       homepage_link="/"
-      nav_items={Bonfire.Common.ExtensionModule.default_nav(:bonfire_ui_social)}
+      nav_items={Bonfire.Common.ExtensionModule.default_nav()}
     />
     <:open_btn>
       <div class="">

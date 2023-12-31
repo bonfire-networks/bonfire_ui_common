@@ -37,7 +37,7 @@
 </li>
 
 <li>
-  <LiveRedirect to="/feed/likes" class="flex items-center gap-2 text-sm text-base-content/70">
+  <LiveRedirect to="/likes" class="flex items-center gap-2 text-sm text-base-content/70">
     <div>{l("Likes")}</div>
   </LiveRedirect>
 </li>

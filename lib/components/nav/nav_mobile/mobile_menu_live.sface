@@ -78,7 +78,7 @@
                     },
                     %{
                       type: :link,
-                      href: "/feed/likes",
+                      href: "/likes",
                       text: l("Likes"),
                       icon: "mingcute:fire-line"
                     },
