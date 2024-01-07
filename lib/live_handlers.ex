@@ -277,7 +277,8 @@ defmodule Bonfire.UI.Common.LiveHandlers do
           apply(module, fun, args ++ [socket])
           # |> debug("applied")
         else
-          if module != fallback and module_enabled?(fallback, socket) do
+          if module != fallback and module_enabled?(fallback, socket) and
+               function_exported?(fallback, fun, length(args) + 1) do
             debug(
               args,
               "LiveHandler: delegating to fallback module #{inspect(fallback)} in #{module} with args"

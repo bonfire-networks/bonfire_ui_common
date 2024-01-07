@@ -6,7 +6,11 @@
         {#for nav <- nav_items}
           {#case List.wrap(nav)}
             {#match nav when nav != []}
-              <li :for={%{type: :link} = subnav <- nav} :if={!subnav[:exclude_from_nav]}>
+              <li
+                :for={%{type: :link} = subnav <- nav}
+                :if={(!subnav[:exclude_from_nav] and is_nil(e(subnav, :module, nil))) or
+                  module_enabled?(e(subnav, :module, nil), @__context__)}
+              >
                 <Bonfire.UI.Common.WidgetLive
                   showing_within={@showing_within}
                   widget={subnav}
@@ -25,6 +29,7 @@
                 <Bonfire.UI.Common.WidgetLive
                   showing_within={@showing_within}
                   :for={%{type: type} = subnav when type != :link <- nav}
+                  :if={is_nil(e(subnav, :module, nil)) or module_enabled?(e(subnav, :module, nil), @__context__)}
                   widget={subnav}
                   page={@page}
                   selected_tab={@selected_tab}

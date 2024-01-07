@@ -459,4 +459,23 @@ defmodule Bonfire.UI.Common.Web do
   defmacro __using__({which, opts}) when is_atom(which) and is_list(opts) do
     apply(__MODULE__, which, [opts])
   end
+
+  @doc """
+  Renders a HEEx template inline in a controller.
+
+  ## Example
+
+      use Bonfire.UI.Common.Web, :controller
+      use Phoenix.Component
+    
+      def index(conn, _) do
+        render_inline conn, ~H"<u><%= @current_user.name %></u>"
+      end
+  """
+  defmacro render_inline(conn, template) do
+    quote do
+      %Plug.Conn{assigns: var!(assigns)} = conn = unquote(conn)
+      html(conn, Phoenix.HTML.Safe.to_iodata(unquote(template)))
+    end
+  end
 end

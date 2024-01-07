@@ -36,7 +36,7 @@
   </LiveRedirect>
 </li>
 
-<li>
+<li :if={extension_enabled?(:bonfire_ui_reactions, @__context__)}>
   <LiveRedirect to="/likes" class="flex items-center gap-2 text-sm text-base-content/70">
     <div>{l("Likes")}</div>
   </LiveRedirect>

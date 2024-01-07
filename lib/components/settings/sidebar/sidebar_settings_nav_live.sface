@@ -111,7 +111,7 @@
         <span>{l("Safety")}</span>
       </div>
 
-      <li>
+      <li :if={extension_enabled?(:bonfire_ui_moderation, @__context__)}>
         <LiveRedirect
           to={~p"/settings/user/flags"}
           class={

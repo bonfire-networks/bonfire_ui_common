@@ -64,31 +64,21 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   end
 
   defp init_socket(params, socket) do
-    current_app = Application.get_application(socket.view)
-    current_extension = Bonfire.Common.ExtensionModule.extension(current_app)
     current_view = socket.view
+    current_app = Application.get_application(current_view)
+    current_extension = Bonfire.Common.ExtensionModule.extension(current_app)
 
     socket_connected? =
       Phoenix.LiveView.connected?(socket)
       |> debug("MOUNTING SOCKET for #{current_view}")
 
-    if not is_nil(current_app) and
-         (not extension_enabled?(current_app, :instance) or
-            not extension_enabled?(current_app, socket)) do
-      if not extension_enabled?(current_app, :instance) do
-        error(
-          l(
-            "Sorry, %{app} is not enabled on this instance. You may want to get in touch with your instance admin(s)...",
-            app: current_extension[:name] || current_app
-          )
+    if not module_enabled?(current_view, :instance) do
+      error(
+        l(
+          "Sorry, this feature (from extension %{app}) is not enabled on this instance. You may want to get in touch with your instance admin(s)...",
+          app: current_extension[:name] || current_app
         )
-      else
-        error(
-          l("You have not enabled %{app}. You can do so in Settings -> Extensions.",
-            app: current_extension[:name] || current_app
-          )
-        )
-      end
+      )
     else
       Bonfire.Common.TestInstanceRepo.maybe_declare_test_instance(socket.endpoint)
 
@@ -111,13 +101,25 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   end
 
   defp mount_done(socket) do
-    {:cont,
-     assign_global(
-       socket,
-       ui_compact: Settings.get([:ui, :compact], nil, socket.assigns)
-     )}
+    if not module_enabled?(socket.view, socket) do
+      # check here because we need current_user
+      error(
+        l(
+          "This feature (from extension %{app}) is disabled. You can enabled it in Settings -> Extensions.",
+          app:
+            e(socket.assigns, :current_extension, :name, nil) ||
+              e(socket.assigns, :current_app, nil)
+        )
+      )
+    else
+      {:cont,
+       assign_global(
+         socket,
+         ui_compact: Settings.get([:ui, :compact], nil, socket.assigns)
+       )}
 
-    # |> debug()
+      # |> debug()
+    end
   end
 
   # def send_persistent_assigns_after_render(socket) do

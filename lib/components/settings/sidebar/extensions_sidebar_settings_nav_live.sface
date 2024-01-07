@@ -12,6 +12,8 @@
                   extension_nav[:scope] == @scope}}>
                 <li>
                   <Bonfire.UI.Common.WidgetLive
+                    :if={is_nil(e(extension_nav, :module, nil)) or
+                      module_enabled?(e(extension_nav, :module, nil), @__context__)}
                     widget={extension_nav}
                     page={@page}
                     showing_within={@showing_within}
@@ -23,7 +25,8 @@
               {#elseif is_list(extension_nav)}
                 <Bonfire.UI.Common.WidgetLive
                   :for={subnav <- extension_nav}
-                  :if={!subnav[:exclude_from_nav] and subnav[:scope] == @scope}
+                  :if={(!e(subnav, :exclude_from_nav, nil) and e(subnav, :scope, nil) == @scope and
+                     is_nil(e(subnav, :module, nil))) or module_enabled?(e(subnav, :module, nil), @__context__)}
                   widget={subnav}
                   page={@page}
                   showing_within={@showing_within}

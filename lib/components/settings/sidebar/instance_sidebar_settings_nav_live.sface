@@ -127,7 +127,8 @@
         <span>{l("Safety")}</span>
       </div>
 
-      <li :if={Bonfire.Boundaries.can?(@__context__, :mediate, :instance)}>
+      <li :if={Bonfire.Boundaries.can?(@__context__, :mediate, :instance) and
+        extension_enabled?(:bonfire_ui_moderation, @__context__)}>
         <LivePatch
           to={~p"/settings/instance/flags"}
           class={
