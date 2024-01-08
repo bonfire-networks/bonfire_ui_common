@@ -1,4 +1,4 @@
-<div class="grid grid-cols-3 gap-1">
+<div class="grid gap-1">
   <div
     :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
     :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}

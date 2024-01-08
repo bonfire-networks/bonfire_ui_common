@@ -28,7 +28,7 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
 
   def load_users(current_user, type) do
     (load_favs(current_user, type) ++ load_followed(current_user, type))
-    |> Enum.uniq_by(& &1.id)
+    |> Enum.uniq_by(&id/1)
   end
 
   def load_followed(current_user, type) do
