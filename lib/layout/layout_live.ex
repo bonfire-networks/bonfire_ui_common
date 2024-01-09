@@ -281,7 +281,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
                 >{l("Create account")}</LiveRedirect>
               {/if}
             </div>
-            {#if not is_nil(@current_user_id)}
+            {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
               <div class="w-full mb-4">
                 <StatelessComponent
                   module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
