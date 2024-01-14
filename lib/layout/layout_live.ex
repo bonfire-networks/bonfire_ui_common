@@ -182,7 +182,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <div
           :if={!@without_sidebar}
           data-id="nav_sidebar"
-          class="fixed md:sticky self-start order-first w-full mt-4 top-4 z-[9999] md:block"
+          class="fixed md:sticky self-start order-first w-full mt-2 top-2 z-[9999] md:block"
         >
           <div class="hidden md:flex items-center justify-end tablet-lg:justify-between h-[50px]">
             <div data-id="logo" class="items-center ml-1 place-content-center">
@@ -205,7 +205,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
             }}
           />
           <nav
-            class="hidden mt-4 w-full md:flex gap-4 flex-col pb-1 max-h-[calc(var(--inner-window-height)_-_156px)] min-h-[calc(var(--inner-window-height)_-_156px)]"
+            class="hidden mt-4 w-full md:flex gap-4 flex-col pb-1 max-h-[calc(var(--inner-window-height)_-_140px)] min-h-[calc(var(--inner-window-height)_-_140px)]"
             role="navigation"
             aria-label={l("Extension navigation")}
           >
@@ -293,9 +293,9 @@ defmodule Bonfire.UI.Common.LayoutLive do
               data-id="secondary_sidebar_widgets"
               class="hidden overflow-x-hidden overflow-y-auto lg:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
             >
-              {!-- 
-              FIXME: use the widget system instead (see below) 
-              
+              {!--
+              FIXME: use the widget system instead (see below)
+
               <StatelessComponent
                 :if={not is_nil(@current_user_id)}
                 module={maybe_component(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__)}

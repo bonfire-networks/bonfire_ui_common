@@ -35,7 +35,7 @@
     </div>
   {#elseif @type == :static}
     <div class="flex justify-between items-center w-full px-6">
-      <div class="text-sm font-bold w-full flex-1">
+      <div class="text-lg font-bold w-full flex-1">
         {@selected_name}
       </div>
       <#slot />
