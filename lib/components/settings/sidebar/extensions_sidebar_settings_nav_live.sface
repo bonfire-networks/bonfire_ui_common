@@ -5,9 +5,7 @@
         {#match extension_has_components?}
           {#if extension_has_components? or
               (is_map(extension_nav) or (is_list(extension_nav) and extension_nav != []))}
-            <div class={if @showing_within != :dashboard,
-              do: "flex flex-col items-start p-0 cursor-default md:bg-base-100 hover:!bg-transparent",
-              else: ""}>
+            <div class="flex flex-col items-start p-0 cursor-default md:bg-base-100 hover:!bg-transparent">
               {#if is_map(extension_nav) and !extension_nav[:exclude_from_nav] and
                   extension_nav[:scope] == @scope}}>
                 <li>
@@ -26,7 +24,8 @@
                 <Bonfire.UI.Common.WidgetLive
                   :for={subnav <- extension_nav}
                   :if={(!e(subnav, :exclude_from_nav, nil) and e(subnav, :scope, nil) == @scope and
-                     is_nil(e(subnav, :module, nil))) or module_enabled?(e(subnav, :module, nil), @__context__)}
+                     is_nil(e(subnav, :module, nil))) or
+                    (module_enabled?(e(subnav, :module, nil), @__context__) and e(subnav, :scope, nil) == @scope)}
                   widget={subnav}
                   page={@page}
                   showing_within={@showing_within}
