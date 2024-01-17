@@ -182,7 +182,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <div
           :if={!@without_sidebar}
           data-id="nav_sidebar"
-          class="fixed md:sticky self-start order-first w-full mt-2 top-2 z-[9999] md:block"
+          class="fixed md:sticky self-start order-first w-full mt-2 top-2 z-[999999999999] md:block"
         >
           <div class="hidden md:flex items-center justify-end tablet-lg:justify-between h-[50px]">
             <div data-id="logo" class="items-center ml-1 place-content-center">
@@ -221,7 +221,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
         <div
           data-id="main_section"
           data-single-column={@without_sidebar}
-          class="relative w-full sm:min-w-[600px] gap-2 md:gap-0 z-[99] col-span-1"
+          class="relative w-full sm:min-w-[600px] gap-2 md:gap-0 z-[99999] col-span-1"
         >
           <div class="justify-between h-full mt-0">
             <div class="relative invisible_frame">

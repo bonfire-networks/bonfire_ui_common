@@ -3,7 +3,7 @@
   class={
     "",
     @modal_class,
-    "modal modal-bottom sm:modal-middle max-h-[100%] z-[9999]": !@no_backdrop,
+    "modal modal-bottom sm:modal-middle max-h-[100%] z-[999999999999999999]": !@no_backdrop,
     "fixed left-0 z-[99999999] bottom-0": @no_backdrop,
     "modal-closed": !@show,
     "modal-open": @show
