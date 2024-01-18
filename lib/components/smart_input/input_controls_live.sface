@@ -4,7 +4,7 @@
       {!-- here was old/loader.svg --}
       {!-- DM RECIPIENTS --}
       {#if @create_object_type == :message || e(@smart_input_opts, :recipients_editable, nil)}
-        <div class="relative bg-base-100">
+        <div class="relative bg-base-100 p-2">
           <Bonfire.UI.Common.SelectRecipientsLive
             preloaded_recipients={e(@preloaded_recipients, [])}
             to_boundaries={@to_boundaries}
@@ -162,7 +162,7 @@
                       <span class="text-sm text-base-content/70">{l("Add a title")}</span>
                     </button>
                   </li>
-                  <li>
+                  <!-- <li>
                     <button
                       phx-click={LiveHandler.minimize()}
                       phx-target="#smart_input"
@@ -173,7 +173,7 @@
                       <#Icon solid="Minus" class="w-4 h-4 text-base-content/70" />
                       <span class="text-sm text-base-content/70">{l("Minimize")}</span>
                     </button>
-                  </li>
+                  </li> -->
                 </ul>
               </div>
             </div>

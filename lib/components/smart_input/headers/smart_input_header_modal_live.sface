@@ -2,7 +2,17 @@
   <span class="flex-1 text-sm font-semibold md:text-center text-ellipsis text-base-content/70">
     {e(@smart_input_opts, :prompt, l("Share your thoughts"))}
   </span>
-  <div class="absolute flex items-center gap-5 md:gap-3 right-3">
+  <div class="absolute flex items-center gap-5 md:gap-2 right-3">
+    <button
+      phx-click={LiveHandler.minimize()}
+      phx-target="#smart_input"
+      type="button"
+      class="flex btn btn-xs btn-ghost btn-circle"
+    >
+      {!-- x-on:click=" ... ; smart_input_fullscreen = false" --}
+      <#Icon solid="Minus" class="w-5 h-5 stroke-1 md:w-4 md:h-4 text-base-content/70" />
+      <!-- <span class="text-sm text-base-content/70">{l("Minimize")}</span> -->
+    </button>
     <Bonfire.UI.Common.OpenModalLive
       id="close_composer"
       reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}

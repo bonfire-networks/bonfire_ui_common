@@ -20,7 +20,7 @@
             >
               <#Icon outline="ChevronLeft" class="w-5 h-5 md:w-4 md:h-4 text-base-content" />
             </button>
-            <span class="max-w-[250px] text-base-content md:max-w-max text-base font-semibold truncate text-ellipsis">{@title_text || l("Discussion")}</span>
+            <span class="max-w-[250px] text-base-content md:max-w-max text-lg font-bold truncate text-ellipsis">{@title_text || l("Discussion")}</span>
           </div>
         </div>
       </div>

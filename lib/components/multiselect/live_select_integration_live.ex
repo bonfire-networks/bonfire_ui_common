@@ -19,14 +19,24 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       disabled={@disabled}
       style={:daisyui}
       text_input_extra_class={@text_input_class}
-      container_extra_class="flex flex-col w-full"
-      option_extra_class="rounded-box px-4 py-2"
-      tag_class="text-sm badge badge-outline badge-lg !border !border-base-content/30 gap-2 !h-[2rem]"
-      dropdown_class="cursor-pointer absolute top-12 p-1 z-[999999999999] dropdown-content menu shadow w-full bg-base-200 shadow-lg text-base-content rounded"
-      tags_container_class="flex flex-wrap gap-1 pt-2 order-last px-2"
+      container_class={@container_class}
+      option_extra_class="{@option_extra_class}"
+      tag_class="text-sm !px-[0.25rem] badge badge-outline badge-lg !border !border-base-content/30 gap-2 !h-[2rem]"
+      dropdown_class={@dropdown_class}
+      tags_container_class="flex flex-wrap gap-1 pt-2 order-last"
     >
       <:option :let={option}>
         <div class="flex gap-2 items-center">
+          <%= if Map.has_key?(option.value, :type) && option.value.type == "circle" do %>
+            <span class="w-8 h-8 rounded-full bg-base-content/10 flex items-center place-content-center">
+              <div
+                iconify="fluent:people-list-16-filled"
+                class="inline-block w-5 h-5 text-base-content/70"
+                aria-hidden="true"
+              >
+              </div>
+            </span>
+          <% end %>
           <%= if is_binary(option.value) do %>
             <p class="font-semibold text-base-content/70">
               <%= option.label %>
@@ -66,9 +76,6 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
               <p class="font-semibold">
                 <%= e(option.value, :name, nil) || e(option.value, :profile, :name, nil) ||
                   e(option.value, :named, :name, nil) %>
-              </p>
-              <p class="font-light text-base-content/70">
-                <%= e(option.value, :username, nil) || e(option.value, :character, :username, nil) %>
               </p>
             </div>
           <% end %>
