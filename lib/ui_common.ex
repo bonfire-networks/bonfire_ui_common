@@ -27,26 +27,43 @@ defmodule Bonfire.UI.Common do
     end
   end
 
-  defmacro render_sface_or_native do
+  def maybe_apply_or_ret(assigns, mod, fun) when is_atom(fun) and not is_nil(fun),
+    do:
+      maybe_apply(mod, fun, [assigns], fn error, _details ->
+        error(error)
+        assigns
+      end)
+
+  def maybe_apply_or_ret(assigns, _, _), do: assigns
+
+  defmacro render_sface_or_native(opts \\ []) do
     if Version.match?(System.version(), ">= 1.15.0") do
       quote do
         def render(%{format: :html} = assigns) do
-          render_sface(assigns)
+          assigns
+          |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
+          |> render_sface()
         end
 
         def render(%{format: _} = assigns) do
-          render_native(assigns)
+          assigns
+          |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
+          |> render_native()
         end
 
         def render(assigns) do
-          render_sface(assigns)
+          assigns
+          |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
+          |> render_sface()
         end
       end
     else
       # fallback to only HTML for backwards compat with older Elixir versions
       quote do
         def render(assigns) do
-          render_sface(assigns)
+          assigns
+          |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
+          |> render_sface()
         end
       end
     end
@@ -1328,8 +1345,7 @@ defmodule Bonfire.UI.Common do
         #  return inline
         debug(preload_fn, "preloading inline")
 
-        preloaded_assigns =
-          preload_fn.(list_of_components, list_of_ids, current_user)
+        preloaded_assigns = preload_fn.(list_of_components, list_of_ids, current_user)
 
         # |> debug("preloaded assigns for components")
 
@@ -1482,8 +1498,7 @@ defmodule Bonfire.UI.Common do
       current_user(assigns) ||
         current_user(socket)
 
-    live_update_many_preloads =
-      opts[:live_update_many_preloads] || live_update_many_preloads?()
+    live_update_many_preloads = opts[:live_update_many_preloads] || live_update_many_preloads?()
 
     mode =
       cond do
