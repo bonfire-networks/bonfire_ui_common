@@ -28,17 +28,26 @@ defmodule Bonfire.UI.Common do
   end
 
   defmacro render_sface_or_native do
-    quote do
-      def render(%{format: :html} = assigns) do
-        render_sface(assigns)
-      end
+    if Version.match?(System.version(), ">= 1.15.0") do
+      quote do
+        def render(%{format: :html} = assigns) do
+          render_sface(assigns)
+        end
 
-      def render(%{format: _} = assigns) do
-        render_native(assigns)
-      end
+        def render(%{format: _} = assigns) do
+          render_native(assigns)
+        end
 
-      def render(assigns) do
-        render_sface(assigns)
+        def render(assigns) do
+          render_sface(assigns)
+        end
+      end
+    else
+      # fallback to only HTML for backwards compat with older Elixir versions
+      quote do
+        def render(assigns) do
+          render_sface(assigns)
+        end
       end
     end
   end

@@ -63,14 +63,16 @@ defmodule Bonfire.UI.Common.LayoutLive do
     render(assigns)
   end
 
-  def render(%{format: :swiftui} = assigns) do
-    # This renders a layout for the iOS/Mac app
-    ~SWIFTUI"""
-    <csrf-token value={Phoenix.Controller.get_csrf_token()} />
-    <VStack>
-      <%= @inner_content %>
-    </VStack>
-    """
+  if Version.match?(System.version(), ">= 1.15.0") do
+    def render(%{format: :swiftui} = assigns) do
+      # This renders a layout for the iOS/Mac app
+      ~SWIFTUI"""
+      <csrf-token value={Phoenix.Controller.get_csrf_token()} />
+      <VStack>
+        <%= @inner_content %>
+      </VStack>
+      """
+    end
   end
 
   def render(assigns) do
