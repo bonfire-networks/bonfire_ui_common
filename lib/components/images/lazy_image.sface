@@ -44,7 +44,7 @@
       src={src}
       alt={@alt}
       class={@class}
-      onerror={"this.classList.add('iconify'); this.classList.add('!w-8'); this.classList.add('!h-8'); this.setAttribute('iconify','#{@fallback_icon}')"}
+      onerror={"this.classList.add('iconify'); this.classList.add('!w-10'); this.classList.add('!h-10'); this.setAttribute('iconify','#{@fallback_icon}')"}
       {...@opts}
     />
     <!-- onerror={"this.classList.add('iconify', '!w-10', '!h-10', 'text-base-content/70');  this.setAttribute('iconify','#{@fallback_icon}')"} -->
