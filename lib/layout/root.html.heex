@@ -29,12 +29,13 @@
          :system,
          assigns[:__context__] || assigns[:current_user] || @conn
        ) == :system,
-       do: "{
+       do:
+         "{
         prefersDarkTheme: window.matchMedia('(prefers-color-scheme: dark)').matches,
         dark_theme: $el.dataset.theme,
         light_theme: '#{Settings.get([:ui, :theme, :instance_theme_light],
-       "light",
-       assigns[:__context__] || assigns[:current_user] || @conn)}'
+         "light",
+         assigns[:__context__] || assigns[:current_user] || @conn)}'
         }"
   }
   x-init={
