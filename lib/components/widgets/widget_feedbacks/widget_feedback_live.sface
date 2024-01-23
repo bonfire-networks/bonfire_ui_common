@@ -2,11 +2,5 @@
   widget_title={l("Have some feedback?")}
   class="relative w-full mx-auto rounded bg-base-100"
 >
-  <div class={"p-3 pt-0 prose-sm prose ", "text-xs": @__context__[:ui_compact]}>
-    <p>{l(
-        "The Bonfire team is all ears if you want to report a bug, suggest an improvement or a new feature, or just say hi :)"
-      )}</p>
-
-    <Bonfire.UI.Common.FeedbackButtonLive />
-  </div>
+<div></div>
 </Bonfire.UI.Common.WidgetBlockLive>

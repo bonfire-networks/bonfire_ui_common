@@ -54,6 +54,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # transition: {"transition-all duration-200", "h-auto w-auto", "h-[40px] w-[20rem]"}, time: 200
     |> JS.hide(to: ".smart_input_modal")
     |> JS.hide(to: ".smart_input_show_on_open")
+    |> JS.hide(to: "#extra_boundaries")
+    |> JS.hide(to: "#boundaries_picker")
+    |> JS.hide(to: "#roles_detail")
     |> JS.hide(
       to: ".smart_input_backdrop",
       transition: {"transition-opacity duration-200", "opacity-100", "opacity-0"}
