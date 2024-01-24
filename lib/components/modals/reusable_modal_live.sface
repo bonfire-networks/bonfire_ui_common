@@ -1,5 +1,22 @@
 <div
   id={@id}
+  data-theme={if Settings.get(
+       [:ui, :theme, :preferred],
+       :system,
+       assigns[:__context__] || assigns[:current_user] || @conn
+     ) == :light,
+     do:
+       Settings.get(
+         [:ui, :theme, :instance_theme_light],
+         "light",
+         assigns[:__context__] || assigns[:current_user] || @conn
+       ),
+     else:
+       Settings.get(
+         [:ui, :theme, :instance_theme],
+         "bonfire",
+         assigns[:__context__] || assigns[:current_user] || @conn
+       )}
   class={
     "",
     @modal_class,
@@ -29,7 +46,7 @@
   <.dynamic_tag
     name={if @form_opts != %{}, do: "form", else: "div"}
     id={@form_opts[:id] || "#{@id}_box"}
-    class={Surface.css_class(["", "modal-box ": !@image_preview, "h-full": @no_backdrop])}
+    class={Surface.css_class(["text-base-content", "modal-box ": !@image_preview, "h-full": @no_backdrop])}
     phx-target={e(@form_opts, "phx-target", nil) || @myself}
     {...Enums.naughty_to_atoms!(@form_opts)}
   >
