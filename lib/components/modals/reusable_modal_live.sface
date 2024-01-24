@@ -49,7 +49,7 @@
       <div class={
         "absolute top-0 right-0 block z-50",
         "-mt-1 !fixed !top-6 !right-4": !@no_backdrop,
-        "z-[999999999] h-full": @no_backdrop
+        "z-[999999999] !top-1 h-full": @no_backdrop
       }>
         <button
           phx-click="close"

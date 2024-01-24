@@ -2,5 +2,5 @@
   widget_title={l("Have some feedback?")}
   class="relative w-full mx-auto rounded bg-base-100"
 >
-<div></div>
+  <div />
 </Bonfire.UI.Common.WidgetBlockLive>
