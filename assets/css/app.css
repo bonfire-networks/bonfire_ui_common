@@ -195,6 +195,23 @@ article.unread-activity {
 }
 
 
+
+
+/* activity */
+article[data-id="activity"][data-rendered="media"]  {
+  @apply !pl-5;
+}
+
+article[data-id="activity"][data-rendered="media"]  [data-id="subject"]{
+  @apply !hidden;
+}
+
+article[data-id="activity"][data-rendered="media"]  [data-id="activity_note"]{
+  @apply !hidden;
+}
+article[data-id="activity"][data-rendered="media"]  [data-id="activity_actions"]{
+  @apply !hidden;
+}
 /* note_live */
 
 div[data-id="activity_note"][data-rendered="widget"]  {
@@ -254,6 +271,10 @@ div[data-id="activity_actions"][data-main-object] {
 /* media_live */
 div[data-id="multimedia_grid"][data-media="1"] {
   @apply grid-cols-1
+}
+
+div[data-id="media_list"][data-rendered="media"] {
+  @apply !ml-0
 }
 
 div[data-id="multimedia_grid"][data-media="2"] {
