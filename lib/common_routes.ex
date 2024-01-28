@@ -1,6 +1,31 @@
 defmodule Bonfire.UI.Common.Routes do
   alias Bonfire.Common.Config
 
+  # list all resources that will be needed later when rendering page, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103
+  # TODO: configurable
+  def early_hints_shared(),
+    do: [
+      "/css/app.css": [rel: "preload", as: "style"],
+      "/images/icons/icons.css": [rel: "preload", as: "style"],
+      "/images/icons/svg-inject.min.js": [rel: "preload", as: "script"]
+    ]
+
+  def early_hints_guest(),
+    do:
+      [
+        # here are resources needed by non-logged-in visitors
+        # TODO: how can we avoid also including it for authed users?
+        "/assets/bonfire_basic.js": [rel: "preload", as: "script"]
+      ] ++ early_hints_shared()
+
+  def early_hints_authed(),
+    do: [
+      # here are resources needed by logged-in visitors
+      "/assets/bonfire_live.js": [rel: "preload", as: "script"]
+    ]
+
+  # ++ early_hints_shared()
+
   defmacro __using__(_) do
     quote do
       pipeline :basic do
@@ -16,6 +41,8 @@ defmodule Bonfire.UI.Common.Routes do
       pipeline :browser do
         plug(:basic)
         plug(:accepts, ["html", "activity+json", "json", "ld+json"])
+
+        plug PlugEarlyHints, paths: Bonfire.UI.Common.Routes.early_hints_guest()
 
         # plug(PhoenixGon.Pipeline, # FIXME: disabled because of compilation issues with phoenix_gon
         #   # FIXME: this doesn't take into account runtime config
