@@ -6,7 +6,16 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       # make sure this comes before the Phoenix endpoint
       use Bonfire.UI.Common.ErrorReportingPlug
       import Bonfire.Common.Extend
+      require Logger
       alias Bonfire.UI.Common.EndpointTemplate
+
+      def log_ip(%{remote_ip: remote_ip} = conn, _) when not is_nil(remote_ip) do
+        Logger.info("Request from #{:inet_parse.ntoa(remote_ip)}")
+
+        conn
+      end
+
+      def log_ip(conn, _), do: conn
 
       plug(Bonfire.UI.Common.MultiTenancyPlug)
 
@@ -89,6 +98,10 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       plug(Plug.RequestId)
       plug(Plug.Telemetry, event_prefix: [:phoenix, :endpoint])
+
+      # parses real IP in conn if behind proxy
+      plug(RemoteIp)
+      plug :log_ip
 
       plug(Plug.Parsers,
         parsers: [:urlencoded, :multipart, :json],

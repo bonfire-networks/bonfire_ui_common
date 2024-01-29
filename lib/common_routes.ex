@@ -30,7 +30,6 @@ defmodule Bonfire.UI.Common.Routes do
     quote do
       pipeline :basic do
         plug(:fetch_session)
-        plug(RemoteIp)
       end
 
       pipeline :basic_html do
