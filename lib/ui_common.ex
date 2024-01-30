@@ -1266,12 +1266,10 @@ defmodule Bonfire.UI.Common do
   end
 
   def maybe_cute_gif do
-    # TODO: detect
-    num_gifs = 67
-    dir = "data/uploads/cute-gifs/"
+    opts = Config.get(:cute_gifs)
 
-    if File.exists?(dir) do
-      "/#{dir}#{Enum.random(1..num_gifs)}.gif"
+    if opts[:num] && opts[:num] > 0 do
+      "/#{opts[:dir]}#{Enum.random(1..opts[:num])}.gif"
     end
   end
 

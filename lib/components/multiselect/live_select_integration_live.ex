@@ -74,7 +74,8 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
             <% end %>
             <div class="text-sm">
               <p class="font-semibold">
-                <%= e(option.value, :name, nil) || e(option.value, :profile, :name, nil) ||
+                <%= e(debug(option, "tag oppppt"), :value, :name, nil) ||
+                  e(option.value, :profile, :name, nil) || e(option.value, :username, nil) ||
                   e(option.value, :named, :name, nil) %>
               </p>
             </div>

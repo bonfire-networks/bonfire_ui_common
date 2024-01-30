@@ -1,13 +1,22 @@
 <button
-  phx-click={if @create_object_type || @component,
-    do:
+  phx-click={cond do
+    # @text_suggestion -> LiveHandler.open_type(
+    #     %JS{},
+    #    @component,
+    #   @create_object_type,
+    #  @smart_input_opts
+    # ) 
+    @create_object_type || @component ->
       LiveHandler.open_type(
         %JS{},
         @component,
         @create_object_type,
         @smart_input_opts
-      ),
-    else: LiveHandler.open(%JS{}, @smart_input_opts)}
+      )
+
+    true ->
+      LiveHandler.open(%JS{}, @smart_input_opts)
+  end}
   phx-target="#smart_input"
   type="button"
   data-role="composer_button"
@@ -25,5 +34,5 @@
       "!w-5 !h-5 md:w-5 md:h-5": @as_icon
     }
   />
-  <span :if={@prompt} class="hidden normal-case tablet-lg:block">{@prompt || l("Compose")}</span>
+  <span :if={!@as_icon and @prompt} class="hidden normal-case tablet-lg:block">{@prompt || l("Compose")}</span>
 </button>
