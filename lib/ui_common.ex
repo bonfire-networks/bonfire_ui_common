@@ -37,7 +37,7 @@ defmodule Bonfire.UI.Common do
   def maybe_apply_or_ret(assigns, _, _), do: assigns
 
   defmacro render_sface_or_native(opts \\ []) do
-    if Version.match?(System.version(), ">= 1.15.0") do
+    if extension_enabled?(:live_view_native) and Version.match?(System.version(), ">= 1.15.0") do
       quote do
         def render(%{format: :html} = assigns) do
           assigns

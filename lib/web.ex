@@ -149,7 +149,7 @@ defmodule Bonfire.UI.Common.Web do
 
       alias Bonfire.UI.Common.LivePlugs
 
-      use LiveViewNative.LiveView
+      use_if_enabled(LiveViewNative.LiveView)
 
       # on_mount(PhoenixProfiler)
     end
@@ -162,7 +162,7 @@ defmodule Bonfire.UI.Common.Web do
 
       unquote(live_view_helpers())
 
-      use LiveViewNative.LiveComponent
+      use_if_enabled(LiveViewNative.LiveComponent)
 
       # unquote(source_inspector())
     end
@@ -175,7 +175,7 @@ defmodule Bonfire.UI.Common.Web do
 
       unquote(live_view_helpers())
 
-      use LiveViewNative.Component
+      use_if_enabled(LiveViewNative.Component)
 
       # unquote(source_inspector())
     end
@@ -327,7 +327,7 @@ defmodule Bonfire.UI.Common.Web do
 
         unquote(surface_helpers())
 
-        use LiveViewNative.LiveView
+        use_if_enabled(LiveViewNative.LiveView)
 
         alias Bonfire.UI.Common.LivePlugs
 
@@ -346,7 +346,7 @@ defmodule Bonfire.UI.Common.Web do
 
         unquote(surface_component_helpers())
 
-        use LiveViewNative.LiveComponent
+        use_if_enabled(LiveViewNative.LiveComponent)
       end
     end
 
@@ -361,7 +361,7 @@ defmodule Bonfire.UI.Common.Web do
 
         unquote(surface_component_helpers())
 
-        use LiveViewNative.Component
+        use_if_enabled(LiveViewNative.Component)
       end
     end
 
@@ -476,6 +476,14 @@ defmodule Bonfire.UI.Common.Web do
     quote do
       %Plug.Conn{assigns: var!(assigns)} = conn = unquote(conn)
       html(conn, Phoenix.HTML.Safe.to_iodata(unquote(template)))
+    end
+  end
+
+  defmacro maybe_native_plug do
+    if Bonfire.Common.Extend.extension_enabled?(:live_view_native) do
+      quote do
+        plug LiveViewNative.SessionPlug
+      end
     end
   end
 end

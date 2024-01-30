@@ -1,5 +1,6 @@
 defmodule Bonfire.UI.Common.Routes do
   alias Bonfire.Common.Config
+  require Bonfire.UI.Common.Web
 
   # list all resources that will be needed later when rendering page, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103
   # TODO: configurable
@@ -59,7 +60,7 @@ defmodule Bonfire.UI.Common.Routes do
         plug(:put_root_layout, {Bonfire.UI.Common.LayoutView, :root})
 
         # LiveView Native support
-        plug LiveViewNative.SessionPlug
+        Bonfire.UI.Common.Web.maybe_native_plug()
 
         # plug(:load_current_auth) # do we need this here?
 

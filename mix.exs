@@ -29,7 +29,11 @@ defmodule Bonfire.UI.Common.MixProject do
           # {:pages, "~> 0.12", only: :test} # extends Floki for testing 
           # {:bonfire_search, "https://github.com/bonfire-networks/bonfire_search#main", optional: true}
           # {:bonfire_boundaries, git: "https://github.com/bonfire-networks/bonfire_boundaries#main", optional: true}
-        ])
+        ] ++ if(System.get_env("NATIVE_ENABLED") in ["1", "true"], do: [
+          {:live_view_native, "~> 0.2.0"},
+          {:live_view_native_swiftui, "~> 0.2.0"}
+          ], else: [])
+        )
     ]
   end
 
