@@ -25,16 +25,24 @@ CopyHooks.Copy = {
 
       if (text !== undefined) {
         navigator.clipboard.writeText(text).then(() => {
-          console.log("Copied to clipboard!")
+          let msg = "Copied!";
+          console.log(msg)
           if (this.flash) {
-            this.flash("success", "It's in your clipboard!");
+            this.flash("success", msg);
+          } else {
+            let label = el.querySelector('[data-role="label"]')
+            if (label) {
+              label.innerHTML = msg;
+            } else {
+              // add a tooltip next the element that says "copied!" and disappear after 3 seconds
+              this.el.setAttribute("data-tip", msg);
+              this.el.classList.add("tooltip", "tooltip-open");
+
+            }
           }
         })
       }
-      // add a tooltip next the element that says "copied!" and disappear after 3 seconds
-      this.el.setAttribute("data-tip", "Copied!");
-      this.el.classList.add("tooltip", "tooltip-open");
-      
+
       setTimeout(() => {
         this.el.removeAttribute("data-tooltip");
         this.el.classList.remove("tooltip", "tooltip-open");
