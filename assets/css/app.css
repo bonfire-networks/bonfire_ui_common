@@ -12,6 +12,10 @@
   height: 0.25rem !important;
 }
 
+/* Milkdown */
+div#editor_milkdown_container[data-rendered="page"] {
+  @apply md:!max-h-[100vh] md:!min-h-[100vh];
+}
 
 /* widget_link */
 div[data-id="nav_links"][data-showing-within="sidebar"] {
