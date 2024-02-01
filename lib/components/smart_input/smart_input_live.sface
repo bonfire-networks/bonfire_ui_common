@@ -1,58 +1,108 @@
-<div id="composer_container" data-id="smart_input" class="flex-1 h-full grow rounded-t-lg">
-  <div
-    id="smart_input"
-    phx-drop-target={@uploads.files.ref}
-    x-data="{body: ''}"
-    class="flex bg-transparent rounded-t-lg h-full grow flex-1"
-  >
-    <!-- title_open: #{if @title_open == true and @create_object_type not in [:post], do: true, else: false}, -->
+<div
+  x-ref="smart_input"
+  id="smart_input_live"
+  class="rounded-t-lg flex-1 h-full bg-base-100 grow relative z-[9999999999]"
+>
+  <div id="composer_container" data-id="smart_input" class="flex-1 h-full grow rounded-t-lg">
     <div
-      :if={not is_nil(current_user_id(@__context__))}
-      class="relative flex flex-col flex-1 w-full bg-base-100"
+      id="smart_input"
+      phx-drop-target={@uploads.files.ref}
+      x-data="{body: ''}"
+      class="flex bg-transparent rounded-t-lg h-full grow flex-1"
     >
+      <!-- title_open: #{if @title_open == true and @create_object_type not in [:post], do: true, else: false}, -->
       <div
-        :if={is_map(@activity) || is_map(@reply_to_id)}
-        class="rounded-box m-2 flex justify-between items-start border border-base-content/20"
+        :if={not is_nil(current_user_id(@__context__))}
+        class="relative flex flex-col flex-1 w-full bg-base-100"
       >
-        {!-- show what we're replying to, if any --}
-        <StatelessComponent
-          module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
-          id={"compose_reply_to-#{id(@reply_to_id) || id(@object) || id(@activity)}"}
-          myself={nil}
-          activity={@activity}
-          object={@object || @reply_to_id}
-          thread_mode={:nested}
-          class={@replied_activity_class}
-          show_minimal_subject_and_note={Bonfire.UI.Social.ActivityLive.name_or_text(@object) || true}
-          showing_within={:smart_input}
-          activity_inception={@activity_inception}
-          object_boundary={:skip_boundary_check}
-        />
+        <div
+          :if={is_map(@activity) || is_map(@reply_to_id)}
+          class="rounded-box m-2 flex justify-between items-start border border-base-content/20"
+        >
+          {!-- show what we're replying to, if any --}
+          <StatelessComponent
+            module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
+            id={"compose_reply_to-#{id(@reply_to_id) || id(@object) || id(@activity)}"}
+            myself={nil}
+            activity={@activity}
+            object={@object || @reply_to_id}
+            thread_mode={:nested}
+            class={@replied_activity_class}
+            show_minimal_subject_and_note={Bonfire.UI.Social.ActivityLive.name_or_text(@object) || true}
+            showing_within={:smart_input}
+            activity_inception={@activity_inception}
+            object_boundary={:skip_boundary_check}
+          />
 
-        <div class="mr-1 mt-1">
-          <span
-            phx-click="Bonfire.UI.Common.SmartInput:remove_data"
-            phx-target="#smart_input"
-            class="btn btn-sm btn-ghost btn-circle"
-            title={l("Cancel Reply")}
-          >
-            <span class="sr-only">{l("Cancel Reply")}</span>
-            <#Icon solid="X" class="w-4 h-4 text-base-content/70" />
-          </span>
+          <div class="mr-1 mt-1">
+            <span
+              phx-click="Bonfire.UI.Common.SmartInput:remove_data"
+              phx-target="#smart_input"
+              class="btn btn-sm btn-ghost btn-circle"
+              title={l("Cancel Reply")}
+            >
+              <span class="sr-only">{l("Cancel Reply")}</span>
+              <#Icon solid="X" class="w-4 h-4 text-base-content/70" />
+            </span>
+          </div>
+        </div>
+        <StatelessComponent
+          module={LiveHandler.active_smart_input_component(@smart_input_component, @create_object_type)}
+          textarea_class={Surface.css_class(["editor_area textarea p-0 w-full rounded-none"])}
+          {...assigns}
+        />
+      </div>
+    </div>
+    {!-- <noscript>
+      <style type="text/css">
+        #smart_input {display: block !important;}
+        /* #smart_input_container header {display: none;} */
+        .input_boundaries button {display: none;} /* FIXME: make boundary selection work without JS */
+      </style>
+    </noscript> --}
+  </div>
+
+  <form class="" :if={@create_object_type != :message} phx-change="select">
+    {!-- CUSTOM BOUNDARIES --}
+    <div class="hidden flex-1 h-full grow" id="extra_boundaries">
+      <div class="flex flex-col h-full">
+        <div class="flex w-full flex-1 h-full">
+          <StatelessComponent
+            :if={@create_object_type != :message and
+              Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false}
+            module={maybe_component(Bonfire.Boundaries.Web.SetBoundariesLive, @__context__)}
+            to_boundaries={@to_boundaries}
+            boundary_preset={@boundary_preset}
+            to_circles={@to_circles}
+            exclude_circles={@exclude_circles}
+            open_boundaries={@open_boundaries}
+            showing_within={@showing_within}
+            create_object_type={@create_object_type}
+            boundaries_modal_id={@boundaries_modal_id}
+            context_id={@context_id}
+            hide_breakdown
+            click_override
+          />
         </div>
       </div>
-      <StatelessComponent
-        module={LiveHandler.active_smart_input_component(@smart_input_component, @create_object_type)}
-        textarea_class={Surface.css_class(["editor_area textarea p-0 w-full rounded-none"])}
-        {...assigns}
-      />
     </div>
-  </div>
-  {!-- <noscript>
-    <style type="text/css">
-      #smart_input {display: block !important;}
-      /* #smart_input_container header {display: none;} */
-      .input_boundaries button {display: none;} /* FIXME: make boundary selection work without JS */
-    </style>
-  </noscript> --}
+
+    {!-- PREVIEW BOUNDARIES --}
+    <div class="hidden flex-1 h-full grow" id="boundaries_preview">
+      <div class="flex flex-col h-full">
+        <StatefulComponent
+          :if={maybe_apply(Bonfire.Boundaries.Web.SetBoundariesButtonLive, :clone_context, @to_boundaries) ==
+            false}
+          module={maybe_component(Bonfire.Boundaries.Web.PreviewBoundariesLive, @__context__)}
+          id="boundaries_preview"
+          preview_boundary_for_id={@preview_boundary_for_id}
+          preview_boundary_for_username={@preview_boundary_for_username}
+          preview_boundary_verbs={@preview_boundary_verbs}
+          boundary_preset={@boundary_preset}
+          to_boundaries={@to_boundaries}
+          to_circles={@to_circles}
+        />
+      </div>
+    </div>
+  </form>
 </div>

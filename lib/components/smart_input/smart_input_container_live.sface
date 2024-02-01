@@ -46,82 +46,31 @@
 
             <div class="smart_input_modal relative z-50 md:rounded-t-lg flex flex-col grow h-full">
               <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
-
-              <div
-                x-ref="smart_input"
-                id="smart_input_live"
-                class="rounded-t-lg flex-1 h-full bg-base-100 grow relative z-[9999999999]"
-              >
-                <SmartInputLive
-                  boundaries_modal_id={:modal_composer}
-                  showing_within={@showing_within}
-                  reply_to_id={@reply_to_id}
-                  context_id={@context_id}
-                  smart_input_component={@smart_input_component}
-                  create_object_type={@create_object_type}
-                  open_boundaries={@open_boundaries}
-                  to_boundaries={@to_boundaries}
-                  to_circles={@to_circles}
-                  exclude_circles={@exclude_circles}
-                  mentions={@mentions}
-                  smart_input_opts={@smart_input_opts}
-                  activity={@activity}
-                  object={@object}
-                  uploads={@uploads}
-                  uploaded_files={@uploaded_files}
-                  trigger_submit={@trigger_submit}
-                  reset_smart_input={@reset_smart_input}
-                  activity_inception={@activity_inception}
-                  preview_boundary_for_id={@preview_boundary_for_id}
-                  preview_boundary_for_username={@preview_boundary_for_username}
-                  preview_boundary_verbs={@preview_boundary_verbs}
-                  boundary_preset={@boundary_preset}
-                />
-
-                <form class="" :if={@create_object_type != :message} phx-change="select" phx-target={@myself}>
-                  {!-- CUSTOM BOUNDARIES --}
-                  <div class="hidden flex-1 h-full grow" id="extra_boundaries">
-                    <div class="flex flex-col h-full">
-                      <div class="flex w-full flex-1 h-full">
-                        <StatelessComponent
-                          :if={@create_object_type != :message and
-                            Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false}
-                          module={maybe_component(Bonfire.Boundaries.Web.SetBoundariesLive, @__context__)}
-                          to_boundaries={@to_boundaries}
-                          boundary_preset={@boundary_preset}
-                          to_circles={@to_circles}
-                          exclude_circles={@exclude_circles}
-                          open_boundaries={@open_boundaries}
-                          showing_within={@showing_within}
-                          create_object_type={@create_object_type}
-                          boundaries_modal_id={@boundaries_modal_id}
-                          context_id={@context_id}
-                          hide_breakdown
-                          click_override
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {!-- PREVIEW BOUNDARIES --}
-                  <div class="hidden flex-1 h-full grow" id="boundaries_preview">
-                    <div class="flex flex-col h-full">
-                      <StatefulComponent
-                        :if={maybe_apply(Bonfire.Boundaries.Web.SetBoundariesButtonLive, :clone_context, @to_boundaries) ==
-                          false}
-                        module={maybe_component(Bonfire.Boundaries.Web.PreviewBoundariesLive, @__context__)}
-                        id="boundaries_preview"
-                        preview_boundary_for_id={@preview_boundary_for_id}
-                        preview_boundary_for_username={@preview_boundary_for_username}
-                        preview_boundary_verbs={@preview_boundary_verbs}
-                        boundary_preset={@boundary_preset}
-                        to_boundaries={@to_boundaries}
-                        to_circles={@to_circles}
-                      />
-                    </div>
-                  </div>
-                </form>
-              </div>
+              <SmartInputLive
+                boundaries_modal_id={:modal_composer}
+                showing_within={@showing_within}
+                reply_to_id={@reply_to_id}
+                context_id={@context_id}
+                smart_input_component={@smart_input_component}
+                create_object_type={@create_object_type}
+                open_boundaries={@open_boundaries}
+                to_boundaries={@to_boundaries}
+                to_circles={@to_circles}
+                exclude_circles={@exclude_circles}
+                mentions={@mentions}
+                smart_input_opts={@smart_input_opts}
+                activity={@activity}
+                object={@object}
+                uploads={@uploads}
+                uploaded_files={@uploaded_files}
+                trigger_submit={@trigger_submit}
+                reset_smart_input={@reset_smart_input}
+                activity_inception={@activity_inception}
+                preview_boundary_for_id={@preview_boundary_for_id}
+                preview_boundary_for_username={@preview_boundary_for_username}
+                preview_boundary_verbs={@preview_boundary_verbs}
+                boundary_preset={@boundary_preset}
+              />
             </div>
           </div>
         </div>
