@@ -201,6 +201,12 @@ article.unread-activity {
 }
 
 
+.guests_tab .tab {
+  @apply h-[3rem] !border-transparent !border-b-[1px];
+}
+.guests_tab .tab.tab-active {
+  @apply !border-primary !text-primary;
+}
 
 
 /* activity */

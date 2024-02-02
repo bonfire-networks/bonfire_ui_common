@@ -1,0 +1,67 @@
+<div class="navbar border-b border-base-content/20 bg-base-100">
+  <div class="navbar-start">
+    <Bonfire.UI.Common.LogoLinkLive href="/" />
+  </div>
+  <div class="navbar-center">
+    <a href="/" class="text-xl font-bold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</a>
+  </div>
+  <div class="navbar-end gap-4">
+    <LiveRedirect
+      to={path(:login, :index)}
+      class="normal-case rounded-full btn-outline px-6 btn-primary btn-sm btn"
+    >{l("Log in")}</LiveRedirect>
+
+    {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+      <LiveRedirect
+        to={path(:signup)}
+        class="hidden md:flex normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-ghost btn btn-sm"
+      >{l("Create an account")}</LiveRedirect>
+    {/if}
+  </div>
+</div>
+<div
+  role="tablist"
+  class="tabs guests_tab w-full h-[50px] border-b border-base-content/20 gap-5 justify-center tabs-bordered"
+>
+  <a
+    href="/"
+    role="tab"
+    class={
+      "tab",
+      "tab-active": @selected_tab == :home
+    }
+  >{l("Home")}</a>
+  <a
+    href="/explore"
+    role="tab"
+    class={
+      "tab",
+      "tab-active": @selected_tab == :local
+    }
+  >{l("Explore")}</a>
+  <a
+    href="/about"
+    role="tab"
+    class={
+      "tab",
+      "tab-active": @selected_tab == :about
+    }
+  >{l("About")}</a>
+  <a
+    :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+    href="/users"
+    role="tab"
+    class={
+      "tab",
+      "tab-active": @selected_tab == :users
+    }
+  >{l("Directory")}</a>
+  <a
+    href="/conduct"
+    role="tab"
+    class={
+      "tab",
+      "tab-active": @selected_tab == :conduct
+    }
+  >{l("Code of Conduct")}</a>
+</div>
