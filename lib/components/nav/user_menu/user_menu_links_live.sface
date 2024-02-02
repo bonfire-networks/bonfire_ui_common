@@ -43,6 +43,12 @@
 </li>
 
 <li>
+  <LiveRedirect to={~p"/write"} class="flex items-center gap-2 text-sm text-base-content/70">
+    <div>{l("Write")}</div>
+  </LiveRedirect>
+</li>
+
+<li>
   <StatelessComponent
     module={maybe_component(Bonfire.UI.Groups.NewGroupLive, @__context__)}
     parent_id="user_menu_links"

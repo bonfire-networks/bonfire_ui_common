@@ -16,7 +16,7 @@
 }
 /* Milkdown */
 div#editor_milkdown_container[data-rendered="page"] {
-  @apply md:!max-h-[calc(100vh_-_110px)] md:!min-h-[calc(100vh_-_110px)];
+  @apply md:!max-h-[calc(100vh_-_100px)] md:!min-h-[calc(100vh_-_100px)];
 }
 
 /* widget_link */

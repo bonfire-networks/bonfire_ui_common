@@ -207,6 +207,15 @@
         session: %{},
         sticky: true
       )} --}
+
+  <footer
+    :if={is_nil(@current_user_id)}
+    class="footer footer-center p-4 bg-base-200 text-base-content"
+  >
+    <aside>
+      <p class="text-sm">This website is part of the <a class="link" href="#">Federated web</a>. Built with 🔥 using <a class="link" target="_blank" href="https://bonfirenetworks.org">Bonfire Networks</a></p>
+    </aside>
+  </footer>
 </div>
 <Bonfire.UI.Common.ReusableModalLive id="modal" />
 <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} />

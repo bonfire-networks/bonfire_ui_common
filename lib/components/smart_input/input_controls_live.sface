@@ -48,9 +48,12 @@
         </div>
       </div>
 
-      <div class="z-50 sticky bottom-0 h-[48px]">
+      <div class={
+        "z-50 sticky bg-base-100 bottom-0 h-[48px]",
+        "order-first !bg-base-content/10": @showing_within == :page
+      }>
         <div class="">
-          <div class="flex justify-between gap-3 p-4 md:items-center bg-base-100 md:px-3 py-2">
+          <div class="flex justify-between gap-3 p-4 md:items-center  md:px-3 py-2">
             <div class="flex items-center gap-1">
               <Bonfire.UI.Common.UploadButtonLive
                 module={maybe_component(Bonfire.Files.DocumentUploader, @__context__)}
@@ -93,13 +96,13 @@
               </label>
             </div>
 
-            <div class="dropdown dropdown-top">
-              <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
+            <div phx-hook="Tooltip" id="wyswyg_actions" class="">
+              <label tabindex="0" class="tooltip-button btn btn-ghost btn-sm btn-circle">
                 <#Icon iconify="ic:baseline-text-format" class="w-5 h-5 text-base-content/60" />
               </label>
               <ul
                 tabindex="0"
-                class="dropdown-content left-[-12px] p-1 z-[1] menu shadow bg-base-200 rounded w-14"
+                class="tooltip z-[9999] menu shadow bg-base-200 p-1 rounded w-14 absolute top-0 left-0 hidden"
               >
                 <li>
                   <button id="heading_btn" type="button" class="heading_btn">
@@ -130,11 +133,14 @@
                   to_circles={@to_circles}
                 />
               {/if}
-              <div class="dropdown dropdown-top dropdown-end">
-                <label tabindex="0" class="btn btn-ghost btn-sm btn-circle">
+              <div phx-hook="Tooltip" id="additional_actions">
+                <label tabindex="0" class="tooltip-button btn btn-ghost btn-sm btn-circle">
                   <#Icon solid="DotsHorizontal" class="w-5 h-5 text-base-content/60" />
                 </label>
-                <ul tabindex="0" class="dropdown-content p-1 z-[1] menu shadow bg-base-200 rounded w-52">
+                <ul
+                  tabindex="0"
+                  class="tooltip p-1 z-50 menu shadow bg-base-200 rounded absolute top-0 left-0 hidden w-52"
+                >
                   <li>
                     <button
                       type="button"
@@ -189,6 +195,7 @@
               disabled={e(@smart_input_opts, :submit_disabled, nil)}
             >
               <#Icon iconify="majesticons:send" class="w-4 h-4" />
+              <span :if={@showing_within == :page} class="">{l("Publish")}</span>
             </button>
           </div>
         </div>
