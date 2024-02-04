@@ -38,15 +38,16 @@ CopyHooks.Copy = {
               this.el.setAttribute("data-tip", msg);
               this.el.classList.add("tooltip", "tooltip-open");
 
+              setTimeout(() => {
+                this.el.removeAttribute("data-tooltip");
+                this.el.classList.remove("tooltip", "tooltip-open");
+              }, 3000);
+
             }
           }
         })
       }
 
-      setTimeout(() => {
-        this.el.removeAttribute("data-tooltip");
-        this.el.classList.remove("tooltip", "tooltip-open");
-      }, 3000);
     });
 
   }
