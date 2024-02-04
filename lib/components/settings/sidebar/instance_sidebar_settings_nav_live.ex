@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.InstanceSidebarSettingsNavLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop selected_tab, :string
+  prop selected_tab, :any
   prop id, :string, default: nil
   prop page, :string, default: nil
 

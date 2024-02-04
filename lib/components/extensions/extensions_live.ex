@@ -12,7 +12,7 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
 
   prop get_link, :any
   prop settings_section_title, :string, default: "Bonfire extensions"
-  prop selected_tab, :string
+  prop selected_tab, :any
 
   def render(assigns) do
     assigns

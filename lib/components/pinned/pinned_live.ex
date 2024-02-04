@@ -5,7 +5,7 @@ defmodule Bonfire.UI.Common.PinnedLive do
   prop feed, :list, default: []
   prop page_info, :list, default: []
   prop user, :any, default: nil
-  prop selected_tab, :string, default: "highlights"
+  prop selected_tab, :any, default: "highlights"
 
   def update(assigns, socket) do
     current_user = current_user(assigns) || current_user(socket.assigns)

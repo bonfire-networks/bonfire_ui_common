@@ -24,7 +24,7 @@ Object.assign(Hooks, CopyHooks, FeedHooks);
 (function() {
   [...document.querySelectorAll("[phx-hook]")].map((hookEl) => {
     let hookName = hookEl.getAttribute("phx-hook");
-    let hook = Hooks[hookName];
+    let hook = Hooks[hookName]; 
 
     if (hook) {
       let mountedFn = hook.mounted.bind({ ...hook, el: hookEl });
