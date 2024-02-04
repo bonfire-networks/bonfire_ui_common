@@ -21,24 +21,24 @@
 </div>
 <div
   role="tablist"
-  class="tabs guests_tab w-full h-[50px] border-b border-base-content/20 gap-5 justify-center tabs-bordered"
+  class="tabs mb-10 guests_tab w-full h-[50px] border-b border-base-content/20 gap-5 justify-center tabs-bordered"
 >
   <a
     href="/"
     role="tab"
     class={
       "tab",
-      "tab-active": @selected_tab == :home
+      "tab-active": @selected_tab == :local
     }
   >{l("Home")}</a>
-  <a
+  <!-- <a
     href="/explore"
     role="tab"
     class={
       "tab",
-      "tab-active": @selected_tab == :local
+      "tab-active": @selected_tab == :local && @page != "home"
     }
-  >{l("Explore")}</a>
+  >{l("Explore")}</a> -->
   <a
     href="/about"
     role="tab"

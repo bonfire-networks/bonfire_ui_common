@@ -40,7 +40,11 @@
     />
   </div --}
 
-  <Bonfire.UI.Common.GuestHeaderLive selected_tab={@selected_tab} :if={is_nil(@current_user_id)} />
+  <Bonfire.UI.Common.GuestHeaderLive
+    selected_tab={@selected_tab}
+    page={@page}
+    :if={is_nil(@current_user_id)}
+  />
   <div
     data-id="layout"
     data-single-column={@without_sidebar}
