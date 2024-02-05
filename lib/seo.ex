@@ -20,8 +20,8 @@ defmodule Bonfire.UI.Common.SEO do
       title_suffix: " · #{name}",
       # TODO: based on selected theme?
       theme_color: "#1B74E4",
-      mask_icon_url: "/images/bonfire-icon.svg",
-      manifest_url: "/site.webmanifest"
+      mask_icon_url: "/images/bonfire-icon.svg"
+      # manifest_url: "/site.webmanifest"
     )
   end
 
