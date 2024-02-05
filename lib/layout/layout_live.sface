@@ -135,7 +135,7 @@
           </div>
         </div>
       </div>
-      <Bonfire.UI.Common.NavFooterMobileUserLive page={@page} />
+      <!-- <Bonfire.UI.Common.NavFooterMobileUserLive page={@page} /> -->
     </div>
     <div
       :if={!@without_secondary_widgets}
