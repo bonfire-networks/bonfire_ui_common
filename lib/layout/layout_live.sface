@@ -135,7 +135,7 @@
           </div>
         </div>
       </div>
-      <!-- <Bonfire.UI.Common.NavFooterMobileUserLive page={@page} /> -->
+      <Bonfire.UI.Common.NavFooterMobileUserLive :if={!is_nil(@current_user_id)} page={@page} />
     </div>
     <div
       :if={!@without_secondary_widgets}
@@ -213,13 +213,13 @@
         sticky: true
       )} --}
 
-  <footer
-    :if={is_nil(@current_user_id)}
-    class="footer footer-center p-4 bg-base-200 text-base-content"
-  >
-    <aside>
-      <p class="text-sm">This website is part of the <a class="link" href="#">Federated web</a>. Built with 🔥 using <a class="link" target="_blank" href="https://bonfirenetworks.org">Bonfire Networks</a></p>
-    </aside>
+  <footer :if={is_nil(@current_user_id)} class="footer mt-12 items-center p-4 text-base-content border-t border-base-content/20">
+    <aside class="items-center grid-flow-col">
+      <Bonfire.UI.Common.LogoLinkLive href="/"  with_name />
+    </aside> 
+    <nav class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
+      <span class="text-sm">{l "Powered by"} <a class="link" target="_blank" href="https://bonfirenetworks.org">Bonfire Networks</a></span>
+    </nav>
   </footer>
 </div>
 <Bonfire.UI.Common.ReusableModalLive id="modal" />

@@ -72,6 +72,10 @@ div[data-scope="avatar"] div[data-square] {
   @apply !rounded;
 }
 
+#guest_info #hero_more_actions {
+  @apply !place-content-center;
+}
+
 
 /* preview content */
 div[data-id="preview_content"][data-show] {
@@ -244,6 +248,10 @@ div[data-id="activity_note"] div[data-rendered="thread"]  {
 
 div[data-id="activity_note"] div[data-id="object_body"][data-rendered="smart_input"] {
  @apply !my-0 !text-sm !font-normal
+}
+
+div[data-id="object_body"].prose h2, h3, h4, h5 {
+  @apply !text-[1.38em];
 }
 
 div[data-id="activity_note"] div[data-id="object_body"][data-main-object] {
