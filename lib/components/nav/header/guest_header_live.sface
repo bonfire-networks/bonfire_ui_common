@@ -1,11 +1,63 @@
-<div class="navbar border-b border-base-content/20 bg-base-100">
-  <div class="navbar-start">
-    <Bonfire.UI.Common.LogoLinkLive href="/" />
-  </div>
-  <div class="navbar-center">
-    <a href="/" class="text-xl font-bold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</a>
-  </div>
-  <div class="navbar-end gap-4">
+<div class="max-w-[1160px] pt-2 mx-auto">
+<div class="relative z-30 mx-auto !p-0 !m-0 navbar ">
+  <div class="flex-1 w-full navbar-start">
+    <div class="flex bg-primary rounded-xl px-8 h-20 items-center flex-shrink-0">
+          <Bonfire.UI.Common.LogoLinkLive name_class="text-xl font-bold text-primary-content tablet-lg:block hidden" with_name href="/" />
+    </div>
+    <div class="ml-2 h-20 px-6 flex-1 rounded-xl justify-between items-center bg-base-300 flex">
+      <ul class="flex-row hidden lg:flex p-0 font-medium menu menu-compact menu-horizontal">
+        <li>
+        <a
+        href="/"
+        role="tab"
+        class={
+          "",
+          "active": @selected_tab == :local
+        }
+      >{l("Home")}</a>
+      </li>
+  <!-- <a
+    href="/explore"
+    role="tab"
+    class={
+      "tab",
+      "active": @selected_tab == :local && @page != "home"
+    }
+  >{l("Explore")}</a> -->
+  <li>
+  <a
+    href="/about"
+    role="tab"
+    class={
+      "",
+      "active": @selected_tab == :about
+    }
+  >{l("About")}</a>
+  </li>
+  <li>
+  <a
+    :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+    href="/users"
+    role="tab"
+    class={
+      "",
+      "active": @selected_tab == :users
+    }
+  >{l("Directory")}</a>
+  </li>
+  <li>
+  <a
+    href="/conduct"
+    role="tab"
+    class={
+      "",
+      "active": @selected_tab == :conduct
+    }
+  >{l("Code of Conduct")}</a>
+  </li>
+  </ul>
+
+        <div class="justify-end flex items-center gap-2 md:w-auto w-full">
     <LiveRedirect
       to={path(:login, :index)}
       class="normal-case rounded-full btn-outline px-6 btn-primary btn-sm btn"
@@ -18,50 +70,7 @@
       >{l("Create an account")}</LiveRedirect>
     {/if}
   </div>
+    </div>
+  </div>
 </div>
-<div
-  role="tablist"
-  class="tabs mb-6 guests_tab w-full h-[50px] border-b border-base-content/20 gap-2 md:gap-5 justify-center tabs-bordered"
->
-  <a
-    href="/"
-    role="tab"
-    class={
-      "tab",
-      "tab-active": @selected_tab == :local
-    }
-  >{l("Home")}</a>
-  <!-- <a
-    href="/explore"
-    role="tab"
-    class={
-      "tab",
-      "tab-active": @selected_tab == :local && @page != "home"
-    }
-  >{l("Explore")}</a> -->
-  <a
-    href="/about"
-    role="tab"
-    class={
-      "tab",
-      "tab-active": @selected_tab == :about
-    }
-  >{l("About")}</a>
-  <a
-    :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-    href="/users"
-    role="tab"
-    class={
-      "tab",
-      "tab-active": @selected_tab == :users
-    }
-  >{l("Directory")}</a>
-  <a
-    href="/conduct"
-    role="tab"
-    class={
-      "tab",
-      "tab-active": @selected_tab == :conduct
-    }
-  >{l("Code of Conduct")}</a>
 </div>

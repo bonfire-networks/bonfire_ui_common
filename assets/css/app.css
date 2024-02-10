@@ -161,12 +161,12 @@ div div article[data-avatar-hidden].replied::after {
 article.replied::after {
   position: absolute;
   content: "";
-  width: 2px;
-  top: 16px;
+  width: 1px;
+  top: 41px;
   bottom: -32px;
-  left: -34px;
-  z-index: -1;
-  background-color: oklch(var(--bc) / 0.2);
+  left: -33px;
+  z-index: 1;
+  background-color: oklch(var(--bc) / 0.3);
 }
 
 article .prose img.emoji {
@@ -250,8 +250,8 @@ div[data-id="activity_note"] div[data-id="object_body"][data-rendered="smart_inp
  @apply !my-0 !text-sm !font-normal
 }
 
-div[data-id="object_body"].prose h2, h3, h4, h5 {
-  @apply !text-[1.38em];
+div[data-id="object_body"].prose h2, div[data-id="object_body"].prose h3, div[data-id="object_body"].prose h4, div[data-id="object_body"].prose h5 {
+  @apply !text-[1.38em] !my-[0.5em];
 }
 
 div[data-id="activity_note"] div[data-id="object_body"][data-main-object] {
