@@ -213,12 +213,15 @@
         sticky: true
       )} --}
 
-  <footer :if={is_nil(@current_user_id)} class="footer mt-12 items-center p-4 text-base-content border-t border-base-content/20">
+  <footer
+    :if={is_nil(@current_user_id)}
+    class="footer mt-12 items-center p-4 text-base-content border-t border-base-content/20"
+  >
     <aside class="items-center grid-flow-col">
-      <Bonfire.UI.Common.LogoLinkLive href="/"  with_name />
-    </aside> 
+      <Bonfire.UI.Common.LogoLinkLive href="/" with_name />
+    </aside>
     <nav class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
-      <span class="text-sm">{l "Powered by"} <a class="link" target="_blank" href="https://bonfirenetworks.org">Bonfire Networks</a></span>
+      <span class="text-sm">{l("Powered by")} <a class="link" target="_blank" href="https://bonfirenetworks.org">Bonfire Networks</a></span>
     </nav>
   </footer>
 </div>
