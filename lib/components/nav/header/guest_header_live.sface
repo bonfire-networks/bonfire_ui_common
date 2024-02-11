@@ -1,22 +1,26 @@
 <div class="max-w-[1160px] pt-2 mx-auto">
-<div class="relative z-30 mx-auto !p-0 !m-0 navbar ">
-  <div class="flex-1 w-full navbar-start">
-    <div class="flex bg-primary rounded-xl px-8 h-20 items-center flex-shrink-0">
-          <Bonfire.UI.Common.LogoLinkLive name_class="text-xl font-bold text-primary-content tablet-lg:block hidden" with_name href="/" />
-    </div>
-    <div class="ml-2 h-20 px-6 flex-1 rounded-xl justify-between items-center bg-base-300 flex">
-      <ul class="flex-row hidden lg:flex p-0 font-medium menu menu-compact menu-horizontal">
-        <li>
-        <a
-        href="/"
-        role="tab"
-        class={
-          "",
-          "active": @selected_tab == :local
-        }
-      >{l("Home")}</a>
-      </li>
-  <!-- <a
+  <div class="relative z-30 mx-auto !p-0 !m-0 navbar">
+    <div class="flex-1 w-full navbar-start">
+      <div class="flex bg-primary rounded-xl px-8 h-20 items-center flex-shrink-0">
+        <Bonfire.UI.Common.LogoLinkLive
+          name_class="text-xl font-bold text-primary-content tablet-lg:block hidden"
+          with_name
+          href="/"
+        />
+      </div>
+      <div class="ml-2 h-20 px-6 flex-1 rounded-xl justify-between items-center bg-base-300 flex">
+        <ul class="flex-row hidden lg:flex p-0 font-medium menu menu-compact menu-horizontal">
+          <li>
+            <a
+              href="/"
+              role="tab"
+              class={
+                "",
+                active: @selected_tab == :local
+              }
+            >{l("Home")}</a>
+          </li>
+          <!-- <a
     href="/explore"
     role="tab"
     class={
@@ -24,53 +28,53 @@
       "active": @selected_tab == :local && @page != "home"
     }
   >{l("Explore")}</a> -->
-  <li>
-  <a
-    href="/about"
-    role="tab"
-    class={
-      "",
-      "active": @selected_tab == :about
-    }
-  >{l("About")}</a>
-  </li>
-  <li>
-  <a
-    :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-    href="/users"
-    role="tab"
-    class={
-      "",
-      "active": @selected_tab == :users
-    }
-  >{l("Directory")}</a>
-  </li>
-  <li>
-  <a
-    href="/conduct"
-    role="tab"
-    class={
-      "",
-      "active": @selected_tab == :conduct
-    }
-  >{l("Code of Conduct")}</a>
-  </li>
-  </ul>
+          <li>
+            <a
+              href="/about"
+              role="tab"
+              class={
+                "",
+                active: @selected_tab == :about
+              }
+            >{l("About")}</a>
+          </li>
+          <li>
+            <a
+              :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+              href="/users"
+              role="tab"
+              class={
+                "",
+                active: @selected_tab == :users
+              }
+            >{l("Directory")}</a>
+          </li>
+          <li>
+            <a
+              href="/conduct"
+              role="tab"
+              class={
+                "",
+                active: @selected_tab == :conduct
+              }
+            >{l("Code of Conduct")}</a>
+          </li>
+        </ul>
 
         <div class="justify-end flex items-center gap-2 md:w-auto w-full">
-    <LiveRedirect
-      to={path(:login, :index)}
-      class="normal-case rounded-full btn-outline px-6 btn-primary btn-sm btn"
-    >{l("Log in")}</LiveRedirect>
+          <LiveRedirect
+            to={path(:login, :index)}
+            class="normal-case rounded-full btn-outline px-6 btn-primary btn-sm btn"
+          >{l("Log in")}</LiveRedirect>
 
-    {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-      <LiveRedirect
-        to={path(:signup)}
-        class="hidden md:flex normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-ghost btn btn-sm"
-      >{l("Create an account")}</LiveRedirect>
-    {/if}
-  </div>
+          {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+            <LiveRedirect
+              to={path(:signup)}
+              class="hidden md:flex normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-ghost btn btn-sm"
+            >{l("Create an account")}</LiveRedirect>
+          {/if}
+        </div>
+      </div>
     </div>
   </div>
-</div>
 </div>
