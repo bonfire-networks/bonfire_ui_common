@@ -1,11 +1,10 @@
 {#case @src || Media.media_url(@media)}
   {#match src}
-    {!--  {#case socket_connected?(@__context__) and
-        (e(@media, :metadata, :blurhash, nil) || Bonfire.Files.Blurred.blurhash(@media, src: src))}
+    {#case socket_connected?(@__context__) and Bonfire.Files.Blurred.blurhash_cached(@media)}
       {#match blurhash when is_binary(blurhash)}
         <div
-          phx-hook="blurHash"
           id={"blurHash-#{@parent_id}-#{Text.hash(blurhash)}"}
+          :hook
           data-hash={blurhash}
           class="h-full"
           x-data="{src: null }"
@@ -25,6 +24,8 @@
           />
         </div>
       {#match _}
+        {!--
+        <!-- blurred JPEG (deprecated in favour of blurhash) -->
         {#case socket_connected?(@__context__) and
             (is_binary(src) and Bonfire.Files.Blurred.blurred(src, skip_creation: true))}
           {#match blurred when is_binary(blurred) and blurred != src}
@@ -39,15 +40,14 @@
               {...@opts}
             />
           {#match _} --}
-    <img
-      title={@title}
-      src={src}
-      alt={@alt}
-      class={@class}
-      onerror={"this.classList.add('iconify'); this.classList.add('!w-10'); this.classList.add('!h-10'); this.setAttribute('iconify','#{@fallback_icon}')"}
-      {...@opts}
-    />
-    <!-- onerror={"this.classList.add('iconify', '!w-10', '!h-10', 'text-base-content/70');  this.setAttribute('iconify','#{@fallback_icon}')"} -->
-    {!-- {/case}
-    {/case} --}
+        <img
+          title={@title}
+          src={src}
+          alt={@alt}
+          class={@class}
+          onerror={"this.classList.add('iconify'); this.classList.add('!w-10'); this.classList.add('!h-10'); this.setAttribute('iconify','#{@fallback_icon}')"}
+          {...@opts}
+        />
+        {!-- {/case} --}
+    {/case}
 {/case}

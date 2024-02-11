@@ -20,14 +20,7 @@
               }
             >{l("Home")}</a>
           </li>
-          <!-- <a
-    href="/explore"
-    role="tab"
-    class={
-      "tab",
-      "active": @selected_tab == :local && @page != "home"
-    }
-  >{l("Explore")}</a> -->
+          
           <li>
             <a
               href="/about"
