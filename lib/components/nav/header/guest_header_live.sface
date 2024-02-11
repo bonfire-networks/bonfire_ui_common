@@ -6,16 +6,16 @@
     <a href="/" class="text-xl font-bold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</a>
   </div>
   <div class="navbar-end gap-4">
-    <LiveRedirect
-      to={path(:login, :index)}
+    <LinkLive
+      to={path(:login, :index) || "/login"}
       class="normal-case rounded-full btn-outline px-6 btn-primary btn-sm btn"
-    >{l("Log in")}</LiveRedirect>
+    >{l("Log in")}</LinkLive>
 
     {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-      <LiveRedirect
-        to={path(:signup)}
+      <LinkLive
+        to={path(:signup) || "/signup"}
         class="hidden md:flex normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-ghost btn btn-sm"
-      >{l("Create an account")}</LiveRedirect>
+      >{l("Create an account")}</LinkLive>
     {/if}
   </div>
 </div>
