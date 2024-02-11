@@ -9,7 +9,7 @@
         />
       </div>
       <div class="ml-2 h-20 px-6 flex-1 rounded-xl justify-between items-center bg-base-300 flex">
-        <ul class="flex-row hidden lg:flex p-0 font-medium menu menu-compact menu-horizontal">
+        <ul class="flex-row hidden lg:flex p-0 font-medium menu gap-2 menu-horizontal">
           <li>
             <a
               href="/"
@@ -38,9 +38,8 @@
               }
             >{l("About")}</a>
           </li>
-          <li>
+          <li :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}>
             <a
-              :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
               href="/users"
               role="tab"
               class={
