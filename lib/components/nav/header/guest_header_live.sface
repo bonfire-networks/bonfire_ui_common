@@ -1,5 +1,5 @@
-<div class="max-w-[1160px] pt-2 mx-auto">
-  <div class="relative z-30 mx-auto !p-0 !m-0 navbar">
+<div class="w-full pt-2">
+  <div class="relative z-[999999] mx-auto !p-0 !m-0 navbar">
     <div class="flex-1 w-full navbar-start">
       <div class="flex bg-primary rounded-xl px-8 h-20 items-center flex-shrink-0">
         <Bonfire.UI.Common.LogoLinkLive
@@ -8,7 +8,7 @@
           href="/"
         />
       </div>
-      <div class="ml-2 h-20 px-6 flex-1 rounded-xl justify-between items-center bg-base-300 flex">
+      <div class="ml-2 h-20 px-6 flex-1 rounded-xl justify-end lg:justify-between items-center bg-base-300 flex">
         <ul class="flex-row hidden lg:flex p-0 font-medium menu gap-2 menu-horizontal">
           <li>
             <a
@@ -62,9 +62,30 @@
           {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
             <LiveRedirect
               to={path(:signup)}
-              class="hidden md:flex normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-ghost btn btn-sm"
+              class="normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-ghost btn btn-sm"
             >{l("Create an account")}</LiveRedirect>
           {/if}
+
+          <div class="dropdown dropdown-end lg:hidden">
+            <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-circle">
+              <#Icon solid="DotsVertical" class="w-[18px] h-[18px] md:w-4 md:h-4 text-base-content/70" />
+            </label>
+            <ul
+              tabindex="0"
+              class="p-2 mt-4 z-50 rounded-lg shadow menu md:menu-compact dropdown-content bg-base-200 w-60 md:w-48 text-base-content"
+            >
+              <li :if={@page != "about"}><LiveRedirect class="text-neutral-content" to="/about">{l("About")}</LiveRedirect></li>
+              <li><LiveRedirect class="text-base-content" to="/conduct">{l("Code of conduct")}</LiveRedirect></li>
+              <li><LiveRedirect class="text-base-content" to="/privacy">{l("Privacy")}</LiveRedirect></li>
+              <li><LiveRedirect
+                  class="text-base-content"
+                  :if={current_user(@__context__) || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+                  to="/users"
+                >{l("Users")}</LiveRedirect>
+              </li>
+              <li><a class="text-base-content" href="https://bonfirenetworks.org/" target="_blank">{l("About bonfire")}</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

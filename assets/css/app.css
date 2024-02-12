@@ -52,10 +52,32 @@ div[data-type="widget"][data-showing-within="nav"] span[data-type="widget_label"
   @apply font-normal  text-base-content/90 flex-1 text-[15px];
 }
 
+
+/* Profile */
+main[data-id="profile"][data-guest] {
+  @apply max-w-[680px] w-full mx-auto;
+}
+
+main[data-id="profile"][data-guest] section[data-id="profile_hero"]{
+  @apply pb-4 bg-base-200 rounded-xl mb-2;
+}
+
+main[data-id="profile"][data-guest] section[data-id="profile_hero"] div[data-id="hero_background"]{
+  @apply rounded-xl;
+}
+
+main[data-id="profile"][data-guest] div[data_id="profile_timeline"]{
+  @apply bg-base-200 rounded-xl;
+}
+
+main[data-id="profile"][data-guest] div[data_id="profile_posts"]{
+  @apply bg-base-200 rounded-xl;
+}
+
 /* layout */
 
 div[data-id="layout"][data-single-column] {
-  @apply !grid-cols-1 content-start;
+  @apply !grid-cols-1 content-start gap-2;
 }
 
 div[data-id="main_section"][data-single-column] {
@@ -214,6 +236,10 @@ article.unread-activity {
 
 
 /* activity */
+article[data-id="activity"][data-rendered="thread"]  {
+  @apply !pt-0;
+}
+
 article[data-id="activity"][data-rendered="media"]  {
   @apply !pl-5;
 }
