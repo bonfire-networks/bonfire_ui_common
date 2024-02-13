@@ -4,6 +4,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
   def live_select(assigns) do
     # field={@form[@form_input_name]}
 
+    # TODO: fix warning: instead of passing separate form and field attributes, pass a single field attribute of type Phoenix.HTML.FormField
     ~H"""
     <LiveSelect.live_select
       form={@form}

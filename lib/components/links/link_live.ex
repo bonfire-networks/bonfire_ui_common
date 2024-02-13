@@ -35,7 +35,11 @@ defmodule Bonfire.UI.Common.LinkLive do
 
   def render(%{to: "http" <> _} = assigns) do
     ~F"""
-    <Link to={@to} class={@class} opts={@opts |> Enum.into("aria-label": @label, target: @target)}>
+    <Link
+      to={@to}
+      class={@class}
+      opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+    >
       <#slot>{@label}</#slot>
     </Link>
     """
@@ -43,7 +47,11 @@ defmodule Bonfire.UI.Common.LinkLive do
 
   def render(%{to: "#" <> _} = assigns) do
     ~F"""
-    <Link to={@to} class={@class} opts={@opts |> Enum.into("aria-label": @label, target: @target)}>
+    <Link
+      to={@to}
+      class={@class}
+      opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+    >
       <#slot>{@label}</#slot>
     </Link>
     """
@@ -52,7 +60,11 @@ defmodule Bonfire.UI.Common.LinkLive do
   def render(%{__context__: %{current_app: :bonfire_pages}} = assigns) do
     # TODO: this should only apply to links to Page views, not internal pages
     ~F"""
-    <Link to={@to} class={@class} opts={@opts |> Enum.into("aria-label": @label, target: @target)}>
+    <Link
+      to={@to}
+      class={@class}
+      opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+    >
       <#slot>{@label}</#slot>
     </Link>
     """
@@ -64,7 +76,7 @@ defmodule Bonfire.UI.Common.LinkLive do
       to={@to}
       class={@class}
       replace={@replace}
-      opts={@opts |> Enum.into("aria-label": @label)}
+      opts={@opts |> Keyword.merge("aria-label": @label)}
     >
       <#slot>{@label}</#slot>
     </LiveRedirect>
@@ -73,7 +85,7 @@ defmodule Bonfire.UI.Common.LinkLive do
 
   def render(assigns) do
     ~F"""
-    <div data-name="no_link" class={@class} {...@opts |> Enum.into("aria-label": @label)}>
+    <div data-name="no_link" class={@class} {...@opts |> Keyword.merge("aria-label": @label)}>
       <#slot>{@label}</#slot>
     </div>
     """
