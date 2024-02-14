@@ -244,6 +244,26 @@ article[data-id="activity"][data-rendered="media"]  {
   @apply !pl-5;
 }
 
+article[data-id="activity"][data-rendered="media"] a[data-id="media_link"]{
+  @apply !rounded-none !border-none hover:!bg-base-100;
+}
+
+article[data-id="activity"][data-rendered="media"] a[data-id="media_link"] [data-id="media_img"]{
+  @apply order-last rounded-none;
+}
+
+article[data-id="activity"][data-rendered="media"] a[data-id="media_link"] [data-id="media_img"] img{
+  @apply rounded-none;
+}
+
+article[data-id="activity"][data-rendered="media"] a[data-id="media_link"] [data-id="media_author"]{
+  @apply order-first;
+}
+
+article[data-id="activity"][data-rendered="media"] a[data-id="media_link"] [data-id="media_title"]{
+  @apply !text-lg !font-semibold;
+}
+
 article[data-id="activity"][data-rendered="media"]  [data-id="subject"]{
   @apply !hidden;
 }
