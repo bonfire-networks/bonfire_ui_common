@@ -52,20 +52,27 @@
             >{l("Code of Conduct")}</a>
           </li>
         </ul>
-
         <div class="justify-end flex items-center gap-2 md:w-auto w-full">
-          <LiveRedirect
-            to={path(:login, :index)}
-            class="normal-case rounded-full btn-outline px-6 btn-primary btn-sm btn"
-          >{l("Log in")}</LiveRedirect>
-
-          {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+          {#if !current_account(@__context__)}
             <LiveRedirect
-              to={path(:signup)}
-              class="normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-ghost btn btn-sm"
-            >{l("Create an account")}</LiveRedirect>
-          {/if}
+              to={path(:login, :index)}
+              class="normal-case rounded-full btn-outline px-6 btn-primary btn-sm btn"
+            >{l("Log in")}</LiveRedirect>
 
+            {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+              <LiveRedirect
+                to={path(:signup)}
+                class="normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-ghost btn btn-sm"
+              >{l("Create an account")}</LiveRedirect>
+            {/if}
+          {#else}
+            <LiveRedirect
+              to={~p"/logout"}
+              class="normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-ghost btn btn-sm"
+            >
+              <div>{l("Sign out")}</div>
+            </LiveRedirect>
+          {/if}
           <div class="dropdown dropdown-end lg:hidden">
             <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-circle">
               <#Icon solid="DotsVertical" class="w-[18px] h-[18px] md:w-4 md:h-4 text-base-content/70" />
