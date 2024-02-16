@@ -182,7 +182,7 @@ defmodule Bonfire.UI.Common.ErrorView do
   def show_html(error_code, details, class \\ nil)
 
   def show_html(http_code, details, class) when is_integer(http_code) do
-    {_name, msg} = Bonfire.Fail.get_error_tuple(http_code) || {nil, http_code}
+    {_name, msg} = Bonfire.Fail.get_error_tuple(http_code) || {nil, "#{http_code} error"}
     show_html(msg, details, class)
   end
 
