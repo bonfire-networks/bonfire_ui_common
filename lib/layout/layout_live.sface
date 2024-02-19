@@ -48,7 +48,7 @@
     <Bonfire.UI.Common.GuestHeaderLive
       selected_tab={@selected_tab}
       page={@page}
-      :if={is_nil(@current_user_id)}
+      :if={is_nil(@current_account_id)}
     />
     <Bonfire.UI.Common.MobileMenuLive
       :if={@current_user_id}

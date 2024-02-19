@@ -5,6 +5,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   import Plug.Conn
   import Phoenix.ConnTest
   # import Untangle
+  alias Bonfire.UI.Common.Web
   alias Bonfire.Common.Utils
   alias Bonfire.Me.Users
   alias Bonfire.Data.Identity.Account
@@ -12,6 +13,8 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   alias Surface.Components.Dynamic
   # alias Surface.Components.Context
   alias Bonfire.Common.TestInstanceRepo
+  alias Surface.Components.Dynamic.Component, as: StatelessComponent
+  alias Surface.Components.Dynamic.LiveComponent, as: StatefulComponent
 
   @endpoint Application.compile_env!(:bonfire, :endpoint_module)
 

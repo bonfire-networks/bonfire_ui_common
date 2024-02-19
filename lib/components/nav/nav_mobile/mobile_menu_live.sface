@@ -8,9 +8,9 @@
   x-transition:leave-start="opacity-100"
   x-transition:leave-end="opacity-0"
   x-description="Background backdrop, show/hide based on slide-over state."
-  class="z-[99999] md:hidden fixed inset-0 backdrop-blur transition-opacity bg-black/80"
+  class="z-[9999999999999] md:hidden fixed inset-0 backdrop-blur transition-opacity bg-black/80"
 />
-<div x-show="open_sidebar" x-cloak class="fixed z-[99999] inset-0 overflow-hidden">
+<div x-show="open_sidebar" x-cloak class="fixed z-[99999999999999] inset-0 overflow-hidden">
   <div class="absolute inset-0 overflow-hidden">
     <div class="fixed inset-y-0 left-0 flex max-w-full pr-20 pointer-events-none">
       <div

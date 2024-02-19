@@ -1,14 +1,14 @@
-<div class="w-full pt-2">
+<div class="w-full px-2 pt-2">
   <div class="relative z-[999999] mx-auto !p-0 !m-0 navbar">
     <div class="flex-1 w-full navbar-start">
-      <div class="flex bg-primary rounded-xl px-8 h-20 items-center flex-shrink-0">
+      <div class="flex bg-primary rounded-xl px-8 h-16 lg:h-20 items-center flex-shrink-0">
         <Bonfire.UI.Common.LogoLinkLive
           name_class="text-xl font-bold text-primary-content tablet-lg:block hidden"
           with_name
           href="/"
         />
       </div>
-      <div class="ml-2 h-20 px-6 flex-1 rounded-xl justify-end lg:justify-between items-center bg-base-300 flex">
+      <div class="ml-2 h-16 lg:h-20 px-6 flex-1 rounded-xl justify-end lg:justify-between items-center bg-base-300 flex">
         <ul class="flex-row hidden lg:flex p-0 font-medium menu gap-2 menu-horizontal">
           <li>
             <a
@@ -62,7 +62,7 @@
             {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
               <LiveRedirect
                 to={path(:signup)}
-                class="normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-ghost btn btn-sm"
+                class="normal-case hidden lg:flex h-[2.5rem] min-h-[2.5rem] rounded-full btn-ghost btn btn-sm"
               >{l("Create an account")}</LiveRedirect>
             {/if}
           {#else}
@@ -81,6 +81,7 @@
               tabindex="0"
               class="p-2 mt-4 z-50 rounded-lg shadow menu md:menu-compact dropdown-content bg-base-200 w-60 md:w-48 text-base-content"
             >
+              <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LiveRedirect to={path(:signup)} class="text-base-content">{l("Create an account")}</LiveRedirect></li>
               <li :if={@page != "about"}><LiveRedirect class="text-neutral-content" to="/about">{l("About")}</LiveRedirect></li>
               <li><LiveRedirect class="text-base-content" to="/conduct">{l("Code of conduct")}</LiveRedirect></li>
               <li><LiveRedirect class="text-base-content" to="/privacy">{l("Privacy")}</LiveRedirect></li>

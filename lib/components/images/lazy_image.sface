@@ -1,6 +1,6 @@
 {#case @src || Media.media_url(@media)}
   {#match src}
-    {#case socket_connected?(@__context__) and Bonfire.Files.Blurred.blurhash_cached(@media)}
+    {#case socket_connected?(@__context__) == true and Bonfire.Files.Blurred.blurhash_cached(@media)}
       {#match blurhash when is_binary(blurhash)}
         <div
           id={"blurHash-#{@parent_id}-#{Text.hash(blurhash)}"}
