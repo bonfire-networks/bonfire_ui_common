@@ -29,6 +29,7 @@ defmodule Bonfire.UI.Common.WriteEditorLive do
       default = Bonfire.UI.Common.ComposerLive
       module = Bonfire.Common.Settings.get([:ui, :rich_text_editor], default, context)
       debug(module, "Rich editor module")
+
       if module_enabled?(module, context),
         do: module,
         else: error(nil, "#{module} is not available or enabled")
