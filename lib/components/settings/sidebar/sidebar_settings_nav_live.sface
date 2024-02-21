@@ -1,7 +1,7 @@
 <nav class="" role="navigation" aria-label={l("Settings navigation")}>
-  <ul class="-mx-2 menu menu-lg">
+  <ul class="-mx-4 menu menu-lg">
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
-      <div class="p-4 px-2 pt-0 text-xl font-bold flex items-center gap-4">
+      <div class="p-4 px-2 text-xl font-bold flex items-center gap-4">
         <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" />
         <span>{l("General")}</span>
       </div>

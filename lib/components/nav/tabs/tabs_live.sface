@@ -42,7 +42,7 @@
       <#slot />
     </div>
   {#else}
-    <div class="flex justify-between items-center w-full px-4">
+    <div class="flex justify-between items-center w-full">
       <!-- <div class="text-lg font-bold">
         {@selected_name}
       </div> -->

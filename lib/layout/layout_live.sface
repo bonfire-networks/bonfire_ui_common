@@ -40,16 +40,16 @@
     />
   </div --}
 
+  <Bonfire.UI.Common.GuestHeaderLive
+    selected_tab={@selected_tab}
+    page={@page}
+    :if={is_nil(@current_account_id)}
+  />
   <div
     data-id="layout"
     data-single-column={@without_sidebar}
     class="w-full px-0 md:px-4 grid lg:max-w-[1040px] tablet-lg:max-w-[1252px] gap-0 md:gap-4 widget xl:px-0 mx-auto grid-cols-1 md:grid-cols-[60px_1fr] lg:grid-cols-[60px_1fr_320px] tablet-lg:grid-cols-[220px_1fr_320px]"
   >
-    <Bonfire.UI.Common.GuestHeaderLive
-      selected_tab={@selected_tab}
-      page={@page}
-      :if={is_nil(@current_account_id)}
-    />
     <Bonfire.UI.Common.MobileMenuLive
       :if={@current_user_id}
       page={@page}

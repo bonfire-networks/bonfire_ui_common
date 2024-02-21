@@ -1,14 +1,14 @@
-<div class="w-full px-2 pt-2">
-  <div class="relative z-[999999] mx-auto !p-0 !m-0 navbar">
+<div class="w-full border-b border-base-content/20 mb-4 px-2">
+  <div class="relative z-[999999] mx-auto bg-base-100 !p-0 !m-0 navbar">
     <div class="flex-1 w-full navbar-start">
-      <div class="flex bg-primary rounded-xl px-8 h-16 lg:h-20 items-center flex-shrink-0">
+      <div class="flex px-8 h-16 items-center flex-shrink-0">
         <Bonfire.UI.Common.LogoLinkLive
-          name_class="text-xl font-bold text-primary-content tablet-lg:block hidden"
+          name_class="text-xl font-bold text-base-content tablet-lg:block hidden"
           with_name
           href="/"
         />
       </div>
-      <div class="ml-2 h-16 lg:h-20 px-6 flex-1 rounded-xl justify-end lg:justify-between items-center bg-base-300 flex">
+      <div class="h-16 px-3 flex-1 rounded-xl justify-end lg:justify-between items-center bg-base-100 flex">
         <ul class="flex-row hidden lg:flex p-0 font-medium menu gap-2 menu-horizontal">
           <li>
             <a
