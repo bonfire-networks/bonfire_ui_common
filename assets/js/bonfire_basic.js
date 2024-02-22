@@ -4,6 +4,7 @@ let Hooks = {};
 
 // import { ImageHooks } from "./image"
 import { CopyHooks } from "./copy"
+import { TooltipHooks } from "./tooltip"
 // import { FeedHooks } from "./feed"
 import * as c1 from "../../../../data/current_flavour/config/flavour_assets/hooks/Bonfire.UI.Common.PreviewContentLive.hooks"
 
@@ -17,7 +18,7 @@ function ns(hooks, nameSpace) {
 
 let FeedHooks = ns(c1, "Bonfire.UI.Common.PreviewContentLive")
 
-Object.assign(Hooks, CopyHooks, FeedHooks);
+Object.assign(Hooks, CopyHooks, TooltipHooks, FeedHooks);
 // ImageHooks
 
 // run LiveView Hooks without LiveView

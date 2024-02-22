@@ -40,16 +40,16 @@
     />
   </div --}
 
-  <Bonfire.UI.Common.GuestHeaderLive
-    selected_tab={@selected_tab}
-    page={@page}
-    :if={is_nil(@current_account_id)}
-  />
   <div
     data-id="layout"
     data-single-column={@without_sidebar}
     class="w-full px-0 md:px-4 grid lg:max-w-[1040px] tablet-lg:max-w-[1252px] gap-0 md:gap-4 widget xl:px-0 mx-auto grid-cols-1 md:grid-cols-[60px_1fr] lg:grid-cols-[60px_1fr_320px] tablet-lg:grid-cols-[220px_1fr_320px]"
   >
+    <Bonfire.UI.Common.GuestHeaderLive
+      selected_tab={@selected_tab}
+      page={@page}
+      :if={is_nil(@current_account_id)}
+    />
     <Bonfire.UI.Common.MobileMenuLive
       :if={@current_user_id}
       page={@page}
@@ -215,13 +215,13 @@
 
   <footer
     :if={is_nil(@current_user_id)}
-    class="footer mt-12 items-center p-4 text-base-content border-t border-base-content/20"
+    class="footer flex lg:mt-12 items-center p-4 text-base-content border-t border-base-content/20"
   >
-    <aside class="items-center grid-flow-col">
+    <aside class="items-center flex-1 grid-flow-col">
       <Bonfire.UI.Common.LogoLinkLive href="/" with_name />
     </aside>
-    <nav class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
-      <span class="text-sm">{l("Powered by")} <a class="link" target="_blank" href="https://bonfirenetworks.org">Bonfire Networks</a></span>
+    <nav class="grid-flow-col gap-4 place-self-center justify-self-end">
+      <span class="text-sm font-light">{l("Designed with")} <a class="link" target="_blank" href="https://bonfirenetworks.org">Bonfire Networks</a></span>
     </nav>
   </footer>
 </div>

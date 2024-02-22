@@ -35,7 +35,7 @@
                 <Bonfire.UI.Common.AvatarLive
                   :if={is_map(current_user(@__context__))}
                   parent_id="bottom_avatar_in_sidebar"
-                  class="inline-block object-cover w-9 h-9 rounded-full cursor-pointer bg-base-100"
+                  class="inline-block object-cover w-9 h-9 rounded-full cursor-pointer"
                   src={Media.avatar_url(current_user(@__context__))}
                   user_id={current_user_id(@__context__)}
                 />

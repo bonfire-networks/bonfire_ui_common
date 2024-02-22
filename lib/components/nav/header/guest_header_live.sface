@@ -1,101 +1,63 @@
-<div class="w-full border-b border-base-content/20 mb-4 px-2">
+<div class="w-full p-4 pt-0 pb-0  lg:pb-4 lg:px-0">
   <div class="relative z-[999999] mx-auto bg-base-100 !p-0 !m-0 navbar">
     <div class="flex-1 w-full navbar-start">
-      <div class="flex px-8 h-16 items-center flex-shrink-0">
-        <Bonfire.UI.Common.LogoLinkLive
-          name_class="text-xl font-bold text-base-content tablet-lg:block hidden"
-          with_name
-          href="/"
-        />
-      </div>
-      <div class="h-16 px-3 flex-1 rounded-xl justify-end lg:justify-between items-center bg-base-100 flex">
-        <ul class="flex-row hidden lg:flex p-0 font-medium menu gap-2 menu-horizontal">
-          <li>
-            <a
-              href="/"
-              role="tab"
-              class={
-                "",
-                active: @selected_tab == :local
-              }
-            >{l("Home")}</a>
-          </li>
+      <Bonfire.UI.Common.LogoLinkLive
+        name_class="text-xl font-bold text-base-content tablet-lg:block hidden"
+        with_name
+        href="/"
+      />
+    </div>
+    <div class="flex-none">
+      <ul class="menu menu-horizontal items-center gap-2 px-1">
+        <li class="hidden lg:block">
+          <a
+            href="/about"
+            role="tab"
+            class={
+              "text-lg font-semibold",
+              active: @selected_tab == :about
+            }
+          >{l("About")}</a>
+        </li>
 
-          <li>
-            <a
-              href="/about"
-              role="tab"
-              class={
-                "",
-                active: @selected_tab == :about
-              }
-            >{l("About")}</a>
-          </li>
-          <li :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}>
-            <a
-              href="/users"
-              role="tab"
-              class={
-                "",
-                active: @selected_tab == :users
-              }
-            >{l("Directory")}</a>
-          </li>
-          <li>
-            <a
-              href="/conduct"
-              role="tab"
-              class={
-                "",
-                active: @selected_tab == :conduct
-              }
-            >{l("Code of Conduct")}</a>
-          </li>
-        </ul>
-        <div class="justify-end flex items-center gap-2 md:w-auto w-full">
-          {#if !current_account(@__context__)}
-            <LiveRedirect
-              to={path(:login, :index)}
-              class="normal-case rounded-full btn-outline px-6 btn-primary btn-sm btn"
-            >{l("Log in")}</LiveRedirect>
-
-            {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-              <LiveRedirect
-                to={path(:signup)}
-                class="normal-case hidden lg:flex h-[2.5rem] min-h-[2.5rem] rounded-full btn-ghost btn btn-sm"
-              >{l("Create an account")}</LiveRedirect>
-            {/if}
-          {#else}
-            <LiveRedirect
-              to={~p"/logout"}
-              class="normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-ghost btn btn-sm"
-            >
-              <div>{l("Sign out")}</div>
-            </LiveRedirect>
-          {/if}
-          <div class="dropdown dropdown-end lg:hidden">
-            <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-circle">
-              <#Icon solid="DotsVertical" class="w-[18px] h-[18px] md:w-4 md:h-4 text-base-content/70" />
-            </label>
-            <ul
-              tabindex="0"
-              class="p-2 mt-4 z-50 rounded-lg shadow menu md:menu-compact dropdown-content bg-base-200 w-60 md:w-48 text-base-content"
-            >
-              <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LiveRedirect to={path(:signup)} class="text-base-content">{l("Create an account")}</LiveRedirect></li>
-              <li :if={@page != "about"}><LiveRedirect class="text-neutral-content" to="/about">{l("About")}</LiveRedirect></li>
-              <li><LiveRedirect class="text-base-content" to="/conduct">{l("Code of conduct")}</LiveRedirect></li>
-              <li><LiveRedirect class="text-base-content" to="/privacy">{l("Privacy")}</LiveRedirect></li>
-              <li><LiveRedirect
-                  class="text-base-content"
-                  :if={current_user(@__context__) || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-                  to="/users"
-                >{l("Users")}</LiveRedirect>
+        <div phx-hook="Tooltip" data-position="bottom-end" id="tooltip_more_menu" class="relative">
+          <label tabindex="0" role="button" class="tooltip-button btn btn-sm btn-square gap-2 btn-ghost">
+            <#Icon iconify="ci:menu-duo-lg" class="w-5 h-5 text-base-content/90" />
+          </label>
+          <ul
+            tabindex="0"
+            style=""
+            class="tooltip z-[9999] menu shadow bg-base-100 shadow border border-base-content/10 rounded-lg p-0 w-60 absolute top-0 left-0 hidden"
+          >
+            {#if !current_account(@__context__)}
+              <li>
+                <LiveRedirect to={path(:login, :index)} class="text-primary">{l("Log in")}</LiveRedirect>
               </li>
-              <li><a class="text-base-content" href="https://bonfirenetworks.org/" target="_blank">{l("About bonfire")}</a></li>
-            </ul>
-          </div>
+              {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+                <li>
+                  <LiveRedirect to={path(:signup)} class="text-base-content">{l("Create an account")}</LiveRedirect>
+                </li>
+              {/if}
+            {#else}
+              <li>
+                <LiveRedirect to={~p"/logout"} class="text-error">
+                  <div>{l("Sign out")}</div>
+                </LiveRedirect>
+              </li>
+            {/if}
+            <!-- <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LiveRedirect to={path(:signup)} class="text-base-content">{l("Create an account")}</LiveRedirect></li> -->
+            <li><LiveRedirect class="text-base-content" to="/conduct">{l("Code of conduct")}</LiveRedirect></li>
+            <li><LiveRedirect class="text-base-content" to="/privacy">{l("Privacy")}</LiveRedirect></li>
+            <li><LiveRedirect
+                class="text-base-content"
+                :if={current_user(@__context__) || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+                to="/users"
+              >{l("Users")}</LiveRedirect>
+            </li>
+            <li><a class="text-base-content" href="https://bonfirenetworks.org/" target="_blank">{l("About bonfire")}</a></li>
+          </ul>
         </div>
-      </div>
+      </ul>
     </div>
   </div>
 </div>

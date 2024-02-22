@@ -7,6 +7,11 @@
 @import "tailwindcss/base";
 /* @import "./base.css"; */
 
+.suggestion-item.selected {
+  @apply bg-base-content/10;
+}
+
+
 .tippy-tooltip.light-border-theme{
   background-color:#fff;
   background-clip:padding-box;
@@ -87,23 +92,27 @@ div[data-type="widget"][data-showing-within="nav"] span[data-type="widget_label"
 
 /* Profile */
 main[data-id="profile"][data-guest] {
-  @apply max-w-[680px] w-full mx-auto;
+  @apply  w-full mx-auto;
 }
 
 main[data-id="profile"][data-guest] section[data-id="profile_hero"]{
-  @apply pb-4 bg-base-200 rounded-xl mb-2;
+  @apply pb-4 mb-2;
 }
 
 main[data-id="profile"][data-guest] section[data-id="profile_hero"] div[data-id="hero_background"]{
-  @apply rounded-xl;
+  @apply md:rounded-xl h-[160px] md:!h-[320px];
+}
+
+main[data-id="profile"][data-guest] section[data-id="profile_hero"] div[data-id="hero_data"]{
+  @apply max-w-[680px] mx-auto px-4 md:px-0;
 }
 
 main[data-id="profile"][data-guest] div[data_id="profile_timeline"]{
-  @apply bg-base-200 rounded-xl;
+  @apply max-w-[680px] mx-auto md:border border-base-content/20 ;
 }
 
 main[data-id="profile"][data-guest] div[data_id="profile_posts"]{
-  @apply bg-base-200 rounded-xl;
+  @apply max-w-[680px] mx-auto md:border border-base-content/20 ;
 }
 
 /* layout */

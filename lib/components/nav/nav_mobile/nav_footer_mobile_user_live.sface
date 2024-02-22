@@ -1,4 +1,4 @@
-<div class="bottom-0 h-[60px] flex fixed z-[998] btm-nav md:hidden border-t border-base-content/20">
+<div class="bottom-0 h-[54px] flex fixed z-[998] btm-nav md:hidden border-t backdrop-blur-sm bg-base-content/5 border-base-content/5">
   <LiveRedirect to="/">
     <Bonfire.UI.Common.LogoLive
       image_class="w-8 h-8 bg-center bg-no-repeat bg-contain"
@@ -52,7 +52,7 @@
   <div :if={current_user_id(@__context__)} type="button" x-on:click="open_sidebar = true">
     <Bonfire.UI.Common.AvatarLive
       parent_id="nav_footer_mobile"
-      class="inline-block object-cover w-8 h-8 rounded-full bg-accent cursor-pointer min-h-full"
+      class="inline-block object-cover w-9 h-9 rounded-full cursor-pointer min-h-full"
       bg_class="rounded-full h-full bg-accent"
       src={Media.avatar_url(current_user(@__context__))}
       user_id={current_user_id(@__context__)}
