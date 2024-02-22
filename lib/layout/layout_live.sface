@@ -146,16 +146,16 @@
         class="order-last hidden lg:block lg:sticky  w-auto lg:top-3 mt-3 self-start z-[998] lg:w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
       >
         {!-- <div :if={is_nil(@current_user_id)} class="flex flex-col my-4 gap-2">
-          <LiveRedirect
+          <LinkLive
             to={path(:login, :index)}
             class="md:flex-1  normal-case rounded-full btn-primary btn btn-sm h-[2.5rem] min-h-[2.5rem]"
-          >{l("Log in")}</LiveRedirect>
+          >{l("Log in")}</LinkLive>
 
           {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-            <LiveRedirect
+            <LinkLive
               to={path(:signup)}
               class="md:flex-1 hidden md:flex !border-primary/30 normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-outline btn-primary btn btn-sm"
-            >{l("Create account")}</LiveRedirect>
+            >{l("Create account")}</LinkLive>
           {/if}
         </div> --}
         {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive}

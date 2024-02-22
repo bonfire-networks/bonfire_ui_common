@@ -22,11 +22,11 @@
         {#match %{post_content: %{id: _}}}
           <div>
             <div class="rounded-lg shadow bg-base-200">
-              <LiveRedirect
+              <LinkLive
                 to={path(pin)}
                 class="text-lg leading-[1.5rem] font-bold tracking-wider link link-hover"
               >{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
-                  rich(e(pin, :post_content, :html_body, ""))}</LiveRedirect>
+                  rich(e(pin, :post_content, :html_body, ""))}</LinkLive>
               <div
                 :if={e(pin, :post_content, :name, nil) ||
                   (e(pin, :name, nil) && e(pin, :post_content, :html_body, nil))}
@@ -37,8 +37,8 @@
         {#match _}
           <div class="">
             <div class="flex items-center gap-2">
-              <LiveRedirect to={path(pin)} class="flex-1 text-sm font-semibold link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
-              </LiveRedirect>
+              <LinkLive to={path(pin)} class="flex-1 text-sm font-semibold link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
+              </LinkLive>
             </div>
             <div class="flex items-center gap-2 mt-4">
               <div class="flex flex-1 w-full h-3 text-xs rounded-full bg-base-content/10">
@@ -112,7 +112,7 @@
                   <#Icon iconify="bi:pin-angle-fill" class="w-5 h-5" />
                 </div> 
                 --}
-                <LiveRedirect to={path(pin)} class="flex flex-col w-full gap-3">
+                <LinkLive to={path(pin)} class="flex flex-col w-full gap-3">
                   <div
                     style="background-image: url(https://picsum.photos/200/300)"
                     class="bg-center mx-auto bg-no-repeat bg-cover rounded h-[100px] bg-base-content/5 w-full"
@@ -120,13 +120,13 @@
                   </div>
                   <div class="text-base font-medium tracking-wide line-clamp-2">{e(pin, :post_content, :name, nil) || e(pin, :name, nil) ||
                       rich(e(pin, :post_content, :html_body, ""))}</div>
-                </LiveRedirect>
+                </LinkLive>
               </li>
             {#match _}
               <li class="flex flex-col items-center justify-center pb-8 splide__slide">>
                 <div class="flex items-center gap-2">
-                  <LiveRedirect to={path(pin)} class="flex-1 text-sm font-semibold link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
-                  </LiveRedirect>
+                  <LinkLive to={path(pin)} class="flex-1 text-sm font-semibold link link-hover">{e(pin, :name, nil) || e(pin, :profile, :name, nil)}
+                  </LinkLive>
                 </div>
                 <div class="flex items-center gap-2 mt-4">
                   <div class="flex flex-1 w-full h-3 text-xs rounded-full bg-base-content/10">

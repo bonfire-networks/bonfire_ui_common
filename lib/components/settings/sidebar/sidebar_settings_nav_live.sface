@@ -11,7 +11,7 @@
       </div>
     </li> -->
       <li :if={current_user_id(@__context__)}>
-        <LiveRedirect
+        <LinkLive
           to={~p"/settings/user/profile"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -23,11 +23,11 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "profile"}
           />
           <span class="text-sm text-base-content/70">{l("Profile")}</span>
-        </LiveRedirect>
+        </LinkLive>
       </li>
 
       <li>
-        <LiveRedirect
+        <LinkLive
           to={~p"/settings/account"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -39,11 +39,11 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "account"}
           />
           <span class="text-sm text-base-content/70">{l("Account")}</span>
-        </LiveRedirect>
+        </LinkLive>
       </li>
 
       <li>
-        <LiveRedirect
+        <LinkLive
           to={~p"/settings/user/preferences/appearance"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -55,10 +55,10 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @id == "appearance"}
           />
           <span class="text-sm text-base-content/70">{l("Appearance")}</span>
-        </LiveRedirect>
+        </LinkLive>
       </li>
       <li>
-        <LiveRedirect
+        <LinkLive
           to={~p"/settings/user/preferences/behaviours"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -70,12 +70,12 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @id == "behaviours"}
           />
           <span class="text-sm text-base-content/70">{l("Preferences")}</span>
-        </LiveRedirect>
+        </LinkLive>
       </li>
 
       <li module={maybe_component(Bonfire.Data.SharedUser, @__context__) &&
         Settings.get(:experimental_features_enabled, false, @__context__)}>
-        <LiveRedirect
+        <LinkLive
           to={~p"/settings/user/shared_user"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -87,11 +87,11 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "shared_user"}
           />
           <span class="text-sm text-base-content/70">{l("Team Profiles")}</span>
-        </LiveRedirect>
+        </LinkLive>
       </li>
     </div>
     {!-- <li>
-      <LiveRedirect
+      <LinkLive
         to={~p"/settings/user/invites"}
         class={
           "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -103,7 +103,7 @@
           class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "invites"}
         />
         <span class="text-sm text-base-content/70">{l("Invites")}</span>
-      </LiveRedirect>
+      </LinkLive>
     </li> --}
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
       <div class="p-4 px-2 text-xl font-bold flex items-center gap-4">
@@ -112,7 +112,7 @@
       </div>
 
       <li :if={extension_enabled?(:bonfire_ui_moderation, @__context__)}>
-        <LiveRedirect
+        <LinkLive
           to={~p"/settings/user/flags"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -124,7 +124,7 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "flags"}
           />
           <span class="text-sm text-base-content/70">{l("My Flags")}</span>
-        </LiveRedirect>
+        </LinkLive>
       </li>
 
       <li class={
@@ -132,7 +132,7 @@
         "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
           @showing_within == :dashboard
       }>
-        <LiveRedirect
+        <LinkLive
           to={~p"/boundaries/ghosted"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -150,14 +150,14 @@
             }>{l("Ghosted")}</span>
             <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Users or instances on this list will not be able to see or interact with you or your content")}</p>
           </div>
-        </LiveRedirect>
+        </LinkLive>
       </li>
       <li class={
         "",
         "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
           @showing_within == :dashboard
       }>
-        <LiveRedirect
+        <LinkLive
           to={~p"/boundaries/silenced"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -175,7 +175,7 @@
             }>{l("Silenced")}</span>
             <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("You will not receive any updates from the users or instances on this list")}</p>
           </div>
-        </LiveRedirect>
+        </LinkLive>
       </li>
     </div>
 
@@ -199,7 +199,7 @@
       </div>
 
       <li>
-        <LiveRedirect
+        <LinkLive
           to={~p"/settings/user/import"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -211,10 +211,10 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "import"}
           />
           <span class="text-sm text-base-content/70">{l("Import")}</span>
-        </LiveRedirect>
+        </LinkLive>
       </li>
       <li>
-        <LiveRedirect
+        <LinkLive
           to={~p"/settings/user/export"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -226,7 +226,7 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "export"}
           />
           <span class="text-sm text-base-content/70">{l("Export")}</span>
-        </LiveRedirect>
+        </LinkLive>
       </li>
     </div>
     <div class="pb-4 flex flex-col gap-1">
@@ -236,7 +236,7 @@
       </div>
 
       <li>
-        <LiveRedirect
+        <LinkLive
           to={~p"/settings/user/extensions"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -248,7 +248,7 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
           />
           <span class="text-sm text-base-content/70">{l("Extensions")}</span>
-        </LiveRedirect>
+        </LinkLive>
       </li>
     </div>
   </ul>

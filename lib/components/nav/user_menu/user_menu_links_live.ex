@@ -1,8 +1,6 @@
 defmodule Bonfire.UI.Common.UserMenuLinksLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  alias Surface.Components.LiveRedirect
-
   prop page, :any, default: nil
 
   # prop name, type, options

@@ -38,13 +38,13 @@
           <div class="ml-3 w-0 flex-1 pt-0.5">
             <p class="text-sm font-medium text-info-content">{e(@notification, :title, "Notification")}</p>
             <div data-id="flash" data-type="notification" class="text-sm text-info-content/80">{rich(e(@notification, :message, ""))}</div>
-            <LiveRedirect
+            <LinkLive
               :if={e(@notification, :url, nil)}
               to={e(@notification, :url, nil)}
               class="text-sm capitalize !text-info-content link"
             >
               {l("Show")}
-            </LiveRedirect>
+            </LinkLive>
           </div>
           <div :if={socket_connected?(@__context__)} class="">
             <button

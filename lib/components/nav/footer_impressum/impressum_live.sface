@@ -1,14 +1,14 @@
 <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || base_domain()}</span>:
-  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LiveRedirect> ·
-  {!-- <LiveRedirect class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LiveRedirect> · --}
-  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LiveRedirect> ·
-  <LiveRedirect class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LiveRedirect> ·
-  <LiveRedirect
+  <LinkLive class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LinkLive> ·
+  {!-- <LinkLive class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LinkLive> · --}
+  <LinkLive class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LinkLive> ·
+  <LinkLive class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LinkLive> ·
+  <LinkLive
     :if={current_user_id(@__context__) ||
       Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
     class="text-xs link-hover link text-base-content/70"
     to="/users"
-  >{l("Users")}</LiveRedirect></div>
+  >{l("Users")}</LinkLive></div>
 <div class="mt-4">
   <a
     href="https://bonfirenetworks.org/"
@@ -17,7 +17,7 @@
     {Bonfire.Application.name()}
   </a>
   ·
-  <LiveRedirect
+  <LinkLive
     to={Bonfire.Application.repository()}
     class="text-xs link link-hover text-base-content/70"
   >
@@ -26,7 +26,7 @@
       <span x-text="msg">no JS</span>
     </span>
     <span data-role="locale" class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
-  </LiveRedirect>
+  </LinkLive>
 </div>
 
 <div class="mt-4">

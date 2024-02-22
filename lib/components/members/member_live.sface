@@ -10,10 +10,10 @@
         src={Media.avatar_url(@user)}
       />
       <div class="truncate ellipsis">
-        <LiveRedirect
+        <LinkLive
           to={~p"/@" <> e(@user, :character, :username, "")}
           class="text-sm font-bold link link-hover"
-        >{e(@user, :profile, :name, "Anonymous")}</LiveRedirect>
+        >{e(@user, :profile, :name, "Anonymous")}</LinkLive>
         <div class="text-xs opacity-50">@{e(@user, :character, :username, "")}</div>
       </div>
     </div>
@@ -66,7 +66,7 @@
           aria-orientation="vertical"
           aria-labelledby="user-profile-menu"
         >
-          <li><LiveRedirect to={"/@#{e(@user, :character, :username, nil)}"}>{l("View profile")}</LiveRedirect></li>
+          <li><LinkLive to={"/@#{e(@user, :character, :username, nil)}"}>{l("View profile")}</LinkLive></li>
           <li>
             <StatelessComponent
               module={maybe_component(Bonfire.Boundaries.Web.BlockButtonLive, @__context__)}
@@ -79,7 +79,7 @@
               class="text-error"
             />
           </li>
-          {!-- <li><LiveRedirect class="text-error" to="#">{l("Deactivate user")}</LiveRedirect></li> --}
+          {!-- <li><LinkLive class="text-error" to="#">{l("Deactivate user")}</LinkLive></li> --}
         </ul>
       </div>
     </div>

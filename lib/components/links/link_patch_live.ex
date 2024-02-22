@@ -106,14 +106,14 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
 
   def render(assigns) do
     ~F"""
-    <LivePatch
-      to={@to}
+    <.link
+      patch={@to}
       class={@class}
       replace={@replace}
-      opts={@opts |> Enum.into(%{"aria-label": @label})}
+      {...@opts |> Keyword.merge("aria-label": @label)}
     >
       <#slot>{@label}</#slot>
-    </LivePatch>
+    </.link>
     """
   end
 end

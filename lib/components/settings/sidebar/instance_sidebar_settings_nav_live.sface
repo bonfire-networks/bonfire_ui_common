@@ -17,7 +17,7 @@
       </div>
 
       <li>
-        <LivePatch
+        <LinkPatchLive
           to={~p"/settings/instance/configuration"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -29,11 +29,11 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "configuration"}
           />
           <span class="text-sm text-base-content/70">{l("General")}</span>
-        </LivePatch>
+        </LinkPatchLive>
       </li>
 
       <li>
-        <LiveRedirect
+        <LinkLive
           to={~p"/settings/instance/preferences/appearance"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -45,11 +45,11 @@
             class={"w-4 h-4 font-normal text-base-content/70", "": @id == "appearance"}
           />
           <span class="text-sm text-base-content/70">{l("Default Appearance")}</span>
-        </LiveRedirect>
+        </LinkLive>
       </li>
 
       <li>
-        <LiveRedirect
+        <LinkLive
           to={~p"/settings/instance/preferences/behaviours"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -61,11 +61,11 @@
             class={"w-4 h-4 font-normal text-base-content/70", "": @id == "behaviours"}
           />
           <span class="text-sm text-base-content/70">{l("Default Preferences")}</span>
-        </LiveRedirect>
+        </LinkLive>
       </li>
 
       <li>
-        <LivePatch
+        <LinkPatchLive
           to={~p"/settings/instance/terms"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -77,7 +77,7 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "terms"}
           />
           <span class="text-sm text-base-content/70">{l("Terms / Policies")}</span>
-        </LivePatch>
+        </LinkPatchLive>
       </li>
     </div>
 
@@ -88,7 +88,7 @@
       </div>
 
       <li>
-        <LivePatch
+        <LinkPatchLive
           to={~p"/settings/instance/members"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -100,11 +100,11 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "members"}
           />
           <span class="text-sm text-base-content/70">{l("Members list")}</span>
-        </LivePatch>
+        </LinkPatchLive>
       </li>
 
       <li>
-        <LivePatch
+        <LinkPatchLive
           module={maybe_component(Bonfire.Invite.Links, @__context__)}
           to={~p"/settings/instance/invites"}
           class={
@@ -117,7 +117,7 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "invites"}
           />
           <span class="text-sm text-base-content/70">{l("Invites")}</span>
-        </LivePatch>
+        </LinkPatchLive>
       </li>
     </div>
 
@@ -129,7 +129,7 @@
 
       <li :if={Bonfire.Boundaries.can?(@__context__, :mediate, :instance) and
         extension_enabled?(:bonfire_ui_moderation, @__context__)}>
-        <LivePatch
+        <LinkPatchLive
           to={~p"/settings/instance/flags"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -141,7 +141,7 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "flags"}
           />
           <span class="text-sm text-base-content/70">{l("Flagged by users")}</span>
-        </LivePatch>
+        </LinkPatchLive>
       </li>
 
       <li class={
@@ -149,7 +149,7 @@
         "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
           @showing_within == :dashboard
       }>
-        <LiveRedirect
+        <LinkLive
           to={~p"/boundaries/instance_ghosted"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -169,14 +169,14 @@
                 "Users or instances on this list will not be able to see or interact with anyone on this instance "
               )}</p>
           </div>
-        </LiveRedirect>
+        </LinkLive>
       </li>
       <li class={
         "",
         "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
           @showing_within == :dashboard
       }>
-        <LiveRedirect
+        <LinkLive
           to={~p"/boundaries/instance_silenced"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -194,7 +194,7 @@
             }>{l("Silenced instance-wide")}</span>
             <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Nobody on this instance will receive any updates from the users or instances on this list ")}</p>
           </div>
-        </LiveRedirect>
+        </LinkLive>
       </li>
     </div>
 
@@ -217,7 +217,7 @@
       </div>
 
       <li>
-        <LivePatch
+        <LinkPatchLive
           to={~p"/settings/instance/extensions"}
           class={
             "flex items-center gap-3 rounded-md py-2 px-2 w-full",
@@ -229,14 +229,14 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
           />
           <span class="text-sm text-base-content/70">{l("Extensions")}</span>
-        </LivePatch>
+        </LinkPatchLive>
       </li>
     </div>
     {!-- </ul>
     </div> --}
 
     {!-- <li>
-      <LivePatch
+      <LinkPatchLive
         module={maybe_component(Bonfire.Pages, @__context__) and
           Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
         to={~p"/settings/instance/pages"}
@@ -247,11 +247,11 @@
       >
         <#Icon solid="DocumentDuplicate" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "pages"} />
         {l("Pages")}
-      </LivePatch>
+      </LinkPatchLive>
     </li>
 
     <li>
-      <LivePatch
+      <LinkPatchLive
         module={maybe_component(Bonfire.Posts, @__context__) and
           Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
         to={~p"/posts"}
@@ -263,11 +263,11 @@
         
           <#Icon solid="ChatAlt" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "posts"} />
         {l("Posts")}
-      </LivePatch>
+      </LinkPatchLive>
     </li>
 
     <li>
-      <LivePatch
+      <LinkPatchLive
         module={maybe_component(Bonfire.Tag, @__context__) and
           Bonfire.Boundaries.can?(@__context__, :invite, :instance)}
         to={~p"/settings/instance/tags"}
@@ -279,7 +279,7 @@
         
           <#Icon solid="Tag" class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "tags"} />
         {l("Tags")}
-      </LivePatch>
+      </LinkPatchLive>
     </li> --}
   </ul>
 </nav>

@@ -404,8 +404,8 @@ defmodule Bonfire.UI.Common.Web do
 
         alias Surface.Components.Link
         alias Surface.Components.Link.Button
-        alias Surface.Components.LivePatch
-        alias Surface.Components.LiveRedirect
+        # alias Surface.Components.LivePatch
+        # alias Surface.Components.LiveRedirect
 
         alias Surface.Components.Form
         alias Surface.Components.Form.Field

@@ -4,18 +4,18 @@
 >
   <ul class="p-2 menu">
     <li :if={Config.get([:bonfire, :terms, :conduct], nil)}>
-      <LiveRedirect to={~p"/conduct"}>
+      <LinkLive to={~p"/conduct"}>
         <div class="text-sm truncate ellipsis">
           {l("Code of Conduct")}
         </div>
-      </LiveRedirect>
+      </LinkLive>
     </li>
     <li :if={Config.get([:bonfire, :terms, :privacy], nil)}>
-      <LiveRedirect to={~p"/privacy"}>
+      <LinkLive to={~p"/privacy"}>
         <div class="text-sm truncate ellipsis">
           {l("Privacy Policy")}
         </div>
-      </LiveRedirect>
+      </LinkLive>
     </li>
     <li :for={{name, link} <- @links}>
       <a href={link} target="_blank">

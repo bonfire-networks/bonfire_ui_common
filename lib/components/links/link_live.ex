@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.LinkLive do
   @moduledoc """
   Defines a link that will **link** to a `Page` or external URL, or **redirect** to a new LiveView.
-  If you want to navigate to the same LiveView without remounting it, use `<LivePatch>` instead.
+  If you want to navigate to the same LiveView without remounting it, use `<LinkPatchLive>` instead.
   """
 
   use Bonfire.UI.Common.Web, :stateless_component
@@ -16,7 +16,7 @@ defmodule Bonfire.UI.Common.LinkLive do
   prop class, :css_class, default: ""
 
   @doc """
-  The label for the generated `<a>` element, if no content (default slot) is provided.
+  The label for the generated `<a>` element, used for aria-label, and as the link text if no other content is provided (as a default slot).
   """
   prop label, :string
 
@@ -72,14 +72,14 @@ defmodule Bonfire.UI.Common.LinkLive do
 
   def render(%{to: to} = assigns) when is_binary(to) and to != "" do
     ~F"""
-    <LiveRedirect
-      to={@to}
+    <.link
+      navigate={@to}
       class={@class}
       replace={@replace}
-      opts={@opts |> Keyword.merge("aria-label": @label)}
+      {...@opts |> Keyword.merge("aria-label": @label)}
     >
       <#slot>{@label}</#slot>
-    </LiveRedirect>
+    </.link>
     """
   end
 

@@ -5,13 +5,13 @@
     "!flex lg:!hidden": @page_header
   }
 >
-  <LiveRedirect
+  <LinkLive
     to={path(:login, :index)}
     class={
       "md:flex-1  normal-case rounded-full btn-outline px-6 btn-primary btn-sm btn",
       "md:btn-wide": !@page_header
     }
-  >{l("Log in")}</LiveRedirect>
+  >{l("Log in")}</LinkLive>
 
   <div class="dropdown dropdown-end">
     <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-circle">
@@ -21,15 +21,15 @@
       tabindex="0"
       class="p-2 mt-4 rounded-lg shadow menu md:menu-compact dropdown-content bg-base-200 w-60 md:w-48 text-base-content"
     >
-      <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LiveRedirect to={path(:signup)}>{l("Sign up")}</LiveRedirect></li>
-      <li :if={@page != "about"}><LiveRedirect class="text-neutral-content" to="/about">{l("About")}</LiveRedirect></li>
-      <li><LiveRedirect class="text-base-content" to="/conduct">{l("Code of conduct")}</LiveRedirect></li>
-      <li><LiveRedirect class="text-base-content" to="/privacy">{l("Privacy")}</LiveRedirect></li>
-      <li><LiveRedirect
+      <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LinkLive to={path(:signup)}>{l("Sign up")}</LinkLive></li>
+      <li :if={@page != "about"}><LinkLive class="text-neutral-content" to="/about">{l("About")}</LinkLive></li>
+      <li><LinkLive class="text-base-content" to="/conduct">{l("Code of conduct")}</LinkLive></li>
+      <li><LinkLive class="text-base-content" to="/privacy">{l("Privacy")}</LinkLive></li>
+      <li><LinkLive
           class="text-base-content"
           :if={current_user(@__context__) || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
           to="/users"
-        >{l("Users")}</LiveRedirect>
+        >{l("Users")}</LinkLive>
       </li>
       <li><a class="text-base-content" href="https://bonfirenetworks.org/" target="_blank">{l("About bonfire")}</a></li>
     </ul>

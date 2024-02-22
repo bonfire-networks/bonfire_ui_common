@@ -30,21 +30,21 @@
       <Bonfire.UI.Common.UserMenuLive :if={current_user(@__context__)} page={@page} />
 
       <div class="items-center hidden tablet-lg:flex gap-3">
-        <LiveRedirect
+        <LinkLive
           to="/settings"
           class={"btn btn-sm btn-ghost btn-circle", "btn-active": @selected_tab == "dashboard"}
         >
           <#Icon iconify="ri:settings-4-line" class="w-5 h-5 shrink-0 text-base-content/70" />
           <span class="sr-only">{l("Settings")}</span>
-        </LiveRedirect>
-        <LiveRedirect
+        </LinkLive>
+        <LinkLive
           :if={maybe_apply(Bonfire.Me.Accounts, :is_admin?, @__context__) == true}
           to="/settings/instance"
           class={"btn btn-sm btn-ghost btn-circle", "btn-active": @selected_tab == "instance_dashboard"}
         >
           <#Icon iconify="ri:apps-2-line" class="w-5 h-5 shrink-0 text-base-content/70" />
           <span class="sr-only">{l("Instance Settings")}</span>
-        </LiveRedirect>
+        </LinkLive>
       </div>
     </div>
   </div>
@@ -53,51 +53,51 @@
     <nav class="">
       <ul class="menu menu-lg p-0 justify-end">
         <li class="p-0 m-0 rounded-full">
-          <LiveRedirect
+          <LinkLive
             to="/"
             class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2 rounded-full"
           >
             <#Icon iconify="carbon:explore" class="w-6 h-6 text-base-content/80" />
             <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Explore")}</div>
-          </LiveRedirect>
+          </LinkLive>
         </li>
         {!-- 
         NOTE: there's no difference between feeds page and the homepage at the moment
         <li class="p-0 m-0 rounded-md">
-          <LiveRedirect to="/feed" class="flex items-center w-full gap-4 px-2 py-2 rounded-md">
+          <LinkLive to="/feed" class="flex items-center w-full gap-4 px-2 py-2 rounded-md">
             <#Icon iconify="fluent:live-24-regular" class="w-7 h-7 text-base-content/80" />
             <div class="font-normal text-base-content/90 flex-1 text-[15px] widget_text">{l("Feeds")}</div>
-          </LiveRedirect>
+          </LinkLive>
         </li> --}
         <li class="p-0 m-0 rounded-full">
-          <LiveRedirect
+          <LinkLive
             to="/about"
             class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2 rounded-full"
           >
             <#Icon solid="DotsHorizontal" class="w-6 h-6 text-base-content/80" />
             <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("About")}</div>
-          </LiveRedirect>
+          </LinkLive>
         </li>
         <li class="p-0 m-0 rounded-full" :if={extension_enabled?(:bonfire_ui_groups, @__context__)}>
-          <LiveRedirect
+          <LinkLive
             to="/groups"
             class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2 rounded-full"
           >
             <#Icon iconify="ri:group-line" class="w-6 h-6 text-base-content/80" />
             <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Public Groups")}</div>
-          </LiveRedirect>
+          </LinkLive>
         </li>
         <li
           :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
           class="p-0 m-0 rounded-md"
         >
-          <LiveRedirect
+          <LinkLive
             to="/users"
             class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2 rounded-md"
           >
             <#Icon iconify="heroicons:users" class="w-6 h-6 text-base-content/80" />
             <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Users directory")}</div>
-          </LiveRedirect>
+          </LinkLive>
         </li>
       </ul>
     </nav>
