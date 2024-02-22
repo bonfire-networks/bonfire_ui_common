@@ -2,7 +2,7 @@ arrows = "~> 0.1"
 untangle = "~> 0.3"
 jason = "~> 1.4.0" # json parsing
 # phoenix framework:
-surface = "~> 0.11.0"
+surface = "~> 0.11.2"
 # phoenix = "~> 1.7.0" # usually should let surface decide the version
 # phoenix_live_view = "~> 0.20.0" # usually should let surface decide the version
 # phoenix_html = "~> 3.3.0" # usually should let liveview decide the version
