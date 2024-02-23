@@ -8,7 +8,7 @@
     <div class="w-full mt-1">
       <LinkLive
         class="text-lg font-extrabold link link-hover text-base-content"
-        to={path(Config.get!(:home_page))}
+        to={path(Config.get(:home_page, :home))}
       >
         {Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}
       </LinkLive>
