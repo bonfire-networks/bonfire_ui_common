@@ -74,11 +74,11 @@ div[data-id="nav_links"][data-showing-within="nav"] {
  }
 
 div[data-type="widget"][data-showing-within="sidebar"] {
-  @apply flex items-center justify-end w-full gap-2 tablet-lg:gap-4 px-2 py-1 tablet-lg:py-2 rounded-full;
+  @apply flex items-center justify-end w-full gap-2 tablet-lg:gap-4 px-2 py-1 tablet-lg:py-2 rounded;
 }
 
 div[data-type="widget"][data-showing-within="nav"] {
-  @apply flex items-center w-full gap-4  px-2 py-2 rounded-full;
+  @apply flex items-center w-full gap-4  px-2 py-2 rounded;
 }
 
 div[data-type="widget"][data-showing-within="sidebar"] span[data-type="widget_label"] {

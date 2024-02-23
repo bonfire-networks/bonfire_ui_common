@@ -1,7 +1,8 @@
-<div class="dropdown dropdown-top">
+<div data-position="top-end" phx-hook="Tooltip" id="user_more_menu_links" class="relative">
   <label
-    class="relative rounded-full cursor-pointer p-1 px-2 hover:bg-base-content/10 flex items-center gap-3"
+    class="tooltip-button cursor-pointer p-1 hover:bg-base-content/10 flex items-center gap-3"
     tabindex="0"
+    role="button"
     id="user-profile-menu"
     aria-haspopup="true"
     aria-expanded="true"
@@ -17,7 +18,7 @@
   </label>
   <ul
     tabindex="0"
-    class="mb-2 rounded-lg !block shadow-xl w-60 menu-compact menu dropdown-content bg-base-200"
+    class="tooltip z-[9999] menu shadow bg-base-100 shadow border border-base-content/10 rounded-lg p-0 w-60 absolute top-0 left-0 hidden"
     role="menu"
     aria-orientation="vertical"
     aria-labelledby="user-profile-menu"

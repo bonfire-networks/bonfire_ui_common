@@ -35,7 +35,7 @@
           value={to_string(@current_value)}
           class="flex-1 h-8 text-sm input input-bordered"
         />
-        <button type="submit" class="normal-case rounded-full btn btn-sm btn-primary">
+        <button type="submit" class="normal-case  btn btn-sm btn-primary">
           {l("Save")}
         </button>
       </div>

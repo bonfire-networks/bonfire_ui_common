@@ -23,7 +23,7 @@
   >
     {!-- phx-click={if @infinite_scroll != :preload or !@entry_count or @entry_count == 0, do: "#{@live_handler}:load_more"} --}
     <span
-      class="normal-case btn btn-outline rounded-full btn-primary !border !border-primary/30"
+      class="normal-case btn btn-outline  btn-primary !border !border-primary/30"
       x-cloak={!@hide_guest_fallback}
       x-show={if @hide_guest_fallback, do: nil, else: "show"}
     >
@@ -38,7 +38,7 @@
     <a
       :if={!@hide_guest_fallback}
       x-cloak
-      class="normal-case btn btn-outline rounded-full btn-primary !border !border-primary/30"
+      class="normal-case btn btn-outline  btn-primary !border !border-primary/30"
       x-show="!show"
       href={"?#{@live_handler}[after]=" <> @cursor}
     >

@@ -1,8 +1,8 @@
 <li>
-  <div class="px-3 py-2 mb-1">
+  <div class="border-b border-base-content/5 w-full flex flex-1 mb-2 bg-base-content/5">
     <LinkLive
       to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
-      class="rounded-lg bg-base-100 flex items-center p-2 gap-3 text-sm text-base-content/70"
+      class="py-2 flex items-center  gap-3 text-sm text-base-content/70 w-full"
     >
       <Bonfire.UI.Common.AvatarLive
         :if={is_map(current_user(@__context__))}

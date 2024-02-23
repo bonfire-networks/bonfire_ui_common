@@ -1,4 +1,4 @@
-<div class="flex items-center justify-end flex-1 md:mt-6">
+<div class="flex items-center justify-end flex-1 md:mt-4">
   <div :if={!Config.get([:ui, :hide_app_switcher])} class="dropdown dropdown-end">
     <label tabindex="0" class="relative btn btn-sm">
       <#Icon iconify="ci:grid-round" class="w-5 h-5" />

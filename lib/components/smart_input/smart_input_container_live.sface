@@ -13,7 +13,7 @@
         smart_input_opts={@smart_input_opts}
         prompt={e(@smart_input_opts, :prompt, l("Compose"))}
         icon={e(@smart_input_opts, :icon, "mdi:pencil")}
-        class="hidden md:flex !h-[2.5rem] !min-h-[2.5rem] w-[2.5rem] tablet-lg:!min-h-auto tablet-lg:!px-[1rem] tablet-lg:!h-auto tablet-lg:!w-auto btn-circle btn btn-primary !rounded-full flex items-center gap-2 place-content-center normal-case"
+        class="hidden !p-0 lg:!p-inherit md:flex !h-[2.5rem] !min-h-[2.5rem] w-[2.5rem] tablet-lg:!min-h-auto tablet-lg:!px-[1rem] tablet-lg:!h-auto tablet-lg:!w-full btn btn-primary flex items-center gap-2 place-content-center normal-case"
       />
 
       {!-- 

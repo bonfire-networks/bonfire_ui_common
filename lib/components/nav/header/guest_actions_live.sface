@@ -8,7 +8,7 @@
   <LinkLive
     to={path(:login, :index)}
     class={
-      "md:flex-1  normal-case rounded-full btn-outline px-6 btn-primary btn-sm btn",
+      "md:flex-1  normal-case  btn-outline px-6 btn-primary btn-sm btn",
       "md:btn-wide": !@page_header
     }
   >{l("Log in")}</LinkLive>

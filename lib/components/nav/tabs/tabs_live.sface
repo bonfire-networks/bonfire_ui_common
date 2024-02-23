@@ -2,7 +2,7 @@
   {#if @type == :select}
     <div class="flex justify-between items-center w-full pb-3 px-4">
       <div class="dropdown">
-        <label tabindex="0" class="btn rounded-full text-lg btn-sm btn-ghost capitalize">
+        <label tabindex="0" class="btn text-lg btn-sm btn-ghost capitalize">
           {@selected_name}
           <#Icon solid="ChevronDown" class="w-6 h-6 text-base-content/70" />
         </label>
@@ -60,7 +60,7 @@
             class={Surface.css_class([
               e(
                 @tab_class,
-                "btn hover:bg-base-content hover:!text-base-300 btn-sm !max-h-[1.75rem] !min-h-[1.75rem] !h-[1.75rem] rounded-full font-normal capitalize bg-base-content/10 text-base-content/70 nav_tab border-none"
+                "btn hover:bg-base-content hover:!text-base-300 btn-sm !max-h-[1.75rem] !min-h-[1.75rem] !h-[1.75rem]  font-normal capitalize bg-base-content/10 text-base-content/70 nav_tab border-none"
               ),
               "active text-base-content/100":
                 @selected_tab == tab or to_string(@selected_tab) == to_string(tab)

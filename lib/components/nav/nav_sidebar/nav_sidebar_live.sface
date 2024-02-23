@@ -52,11 +52,8 @@
   {#if !current_user_id(@__context__)}
     <nav class="">
       <ul class="menu menu-lg p-0 justify-end">
-        <li class="p-0 m-0 rounded-full">
-          <LinkLive
-            to="/"
-            class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2 rounded-full"
-          >
+        <li class="p-0 m-0">
+          <LinkLive to="/" class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2">
             <#Icon iconify="carbon:explore" class="w-6 h-6 text-base-content/80" />
             <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Explore")}</div>
           </LinkLive>
@@ -69,32 +66,20 @@
             <div class="font-normal text-base-content/90 flex-1 text-[15px] widget_text">{l("Feeds")}</div>
           </LinkLive>
         </li> --}
-        <li class="p-0 m-0 rounded-full">
-          <LinkLive
-            to="/about"
-            class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2 rounded-full"
-          >
+        <li class="p-0 m-0">
+          <LinkLive to="/about" class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2">
             <#Icon solid="DotsHorizontal" class="w-6 h-6 text-base-content/80" />
             <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("About")}</div>
           </LinkLive>
         </li>
-        <li class="p-0 m-0 rounded-full" :if={extension_enabled?(:bonfire_ui_groups, @__context__)}>
-          <LinkLive
-            to="/groups"
-            class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2 rounded-full"
-          >
+        <li class="p-0 m-0" :if={extension_enabled?(:bonfire_ui_groups, @__context__)}>
+          <LinkLive to="/groups" class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2">
             <#Icon iconify="ri:group-line" class="w-6 h-6 text-base-content/80" />
             <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Public Groups")}</div>
           </LinkLive>
         </li>
-        <li
-          :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-          class="p-0 m-0 rounded-md"
-        >
-          <LinkLive
-            to="/users"
-            class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2 rounded-md"
-          >
+        <li :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests} class="p-0 m-0">
+          <LinkLive to="/users" class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2">
             <#Icon iconify="heroicons:users" class="w-6 h-6 text-base-content/80" />
             <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Users directory")}</div>
           </LinkLive>

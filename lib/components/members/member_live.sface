@@ -29,7 +29,7 @@
   <td class="flex-1">
     {#case {e(@user, :ghosted_instance_wide?, nil), e(@user, :silenced_instance_wide?, nil)}}
       {#match {nil, nil}}
-        <span class="btn btn-xs rounded-full normal-case loading btn-disabled">{l("loading")}</span>
+        <span class="btn btn-xs  normal-case loading btn-disabled">{l("loading")}</span>
       {#match {true, true}}
         <span class="badge badge-error">{l("Blocked")}</span>
       {#match {true, _}}
