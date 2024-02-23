@@ -66,7 +66,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def maximize(js \\ %JS{}) do
     js
-    |> JS.show(to: ".smart_input_show_on_open")
+    |> JS.show(
+      to: ".smart_input_show_on_open",
+      transition: {"transition-transform duration-300", "translate-y-0", "translate-y-100"}
+    )
     |> JS.hide(to: ".smart_input_show_on_minimize")
     |> JS.show(
       to: ".smart_input_backdrop",

@@ -1,61 +1,5 @@
 <!DOCTYPE html>
-<html
-  id="root"
-  data-open="false"
-  class="bg-base-100"
-  lang="en"
-  data-theme={
-    if Settings.get(
-         [:ui, :theme, :preferred],
-         :system,
-         assigns[:__context__] || assigns[:current_user] || @conn
-       ) == :bonfire,
-       do:
-         Settings.get(
-           [:ui, :theme, :instance_theme_light],
-           "light",
-           assigns[:__context__] || assigns[:current_user] || @conn
-         ),
-       else:
-         Settings.get(
-           [:ui, :theme, :instance_theme],
-           "bonfire",
-           assigns[:__context__] || assigns[:current_user] || @conn
-         )
-  }
-  x-data={
-    if Settings.get(
-         [:ui, :theme, :preferred],
-         :system,
-         assigns[:__context__] || assigns[:current_user] || @conn
-       ) == :system,
-       do:
-         "{
-        prefersDarkTheme: window.matchMedia('(prefers-color-scheme: dark)').matches,
-        dark_theme: $el.dataset.theme,
-        light_theme: '#{Settings.get([:ui, :theme, :instance_theme_light],
-         "light",
-         assigns[:__context__] || assigns[:current_user] || @conn)}'
-        }"
-  }
-  x-init={
-    if Settings.get(
-         [:ui, :theme, :preferred],
-         :system,
-         assigns[:__context__] || assigns[:current_user] || @conn
-       ) == :system,
-       do:
-         "window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => { prefersDarkTheme = e.matches; });"
-  }
-  x-bind:data-theme={
-    if Settings.get(
-         [:ui, :theme, :preferred],
-         :system,
-         assigns[:__context__] || assigns[:current_user] || @conn
-       ) == :system,
-       do: "prefersDarkTheme ? dark_theme : light_theme"
-  }
->
+<html id="root" data-open="false" lang="en">
   <head>
     <meta charset="utf-8" />
 
@@ -66,7 +10,10 @@
       config={Bonfire.UI.Common.SEO.config()}
     />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1 interactive-widget=resizes-content"
+    />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <%= raw(Bonfire.Common.Config.endpoint_module().include_assets(@conn, :top)) %>

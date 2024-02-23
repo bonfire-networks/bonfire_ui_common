@@ -53,7 +53,7 @@
         "order-first !bg-base-content/10": @showing_within == :page
       }>
         <div class="">
-          <div class="flex justify-between gap-3 p-4 md:items-center  md:px-3 py-2">
+          <div class="flex justify-between gap-2 md:gap-3 p-2 border-t boder-base-content/20 md:items-center  md:px-3 py-2">
             <div class="flex items-center gap-1">
               <Bonfire.UI.Common.UploadButtonLive
                 module={maybe_component(Bonfire.Files.DocumentUploader, @__context__)}
@@ -133,7 +133,7 @@
                   to_circles={@to_circles}
                 />
               {/if}
-              <div phx-hook="Tooltip" id="additional_actions">
+              <div phx-hook="Tooltip" class="hidden md:block" id="additional_actions">
                 <label tabindex="0" class="tooltip-button btn btn-ghost btn-sm btn-circle">
                   <#Icon solid="DotsHorizontal" class="w-5 h-5 text-base-content/60" />
                 </label>
@@ -191,7 +191,7 @@
               phx-disable-with={if @create_object_type == :message,
                 do: l("Sending..."),
                 else: l("Posting...")}
-              class="capitalize rounded justify-self-end btn-sm btn btn-primary"
+              class="capitalize flex-1 rounded justify-self-end btn-sm btn btn-primary"
               disabled={e(@smart_input_opts, :submit_disabled, nil)}
             >
               <#Icon iconify="majesticons:send" class="w-4 h-4" />

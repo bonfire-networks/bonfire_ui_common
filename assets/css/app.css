@@ -7,10 +7,19 @@
 @import "tailwindcss/base";
 /* @import "./base.css"; */
 
+
+body.no-scroll {
+  @apply overflow-hidden;
+}
+
+body.no-scroll::backdrop {
+  background-color: salmon;
+}
+
+
 .suggestion-item.selected {
   @apply bg-base-content/10;
 }
-
 
 .tippy-tooltip.light-border-theme{
   background-color:#fff;

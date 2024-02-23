@@ -24,11 +24,12 @@
 
     {#if not is_nil(current_user_id(@__context__))}
       <Bonfire.UI.Common.ComposerMinimizedLive />
+
       <div
         id="smart_input_container"
         data-hidden={e(@smart_input_opts, :open, nil) != true}
         data-focused={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
-        class="w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible md:rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0 md:w-[32rem] md:right-4 md:top-auto max-h-screen"
+        class="w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0 md:w-[32rem] md:right-4 md:top-auto max-h-screen"
       >
         <div class="w-full rounded-t-lg bg-gradient-to-t from-transparent to-base-content/40 p-[0.05rem] flex flex-col flex-1 h-full grow">
           <div class="w-full rounded-t-lg bg-base-200 flex flex-col flex-1 h-full grow">
@@ -44,7 +45,7 @@
               style="-webkit-backdrop-filter: blur(8px);"
             />
 
-            <div class="smart_input_modal relative z-50 md:rounded-t-lg flex flex-col grow h-full">
+            <div class="smart_input_modal relative z-50 rounded-t-lg flex flex-col grow h-full">
               <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
               <SmartInputLive
                 boundaries_modal_id={:modal_composer}
