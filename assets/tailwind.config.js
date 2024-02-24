@@ -60,6 +60,12 @@ module.exports = {
         '96': '26rem',
       },
       typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            'blockquote p:first-of-type::before': { content: 'none' },
+            'blockquote p:first-of-type::after': { content: 'none' }
+          },
+        },
         sm: {
           css: {
             fontSize: '15px',
