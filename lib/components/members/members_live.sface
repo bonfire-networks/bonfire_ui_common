@@ -13,7 +13,7 @@
   <tbody>
     {!-- row 1 --}
     {#for {user, index} <- Enum.with_index(@users)}
-      <Bonfire.UI.Common.MemberLive user={user} counter={index + 1} />
+      <Bonfire.UI.Common.MemberLive user={user} is_local_user={@is_local_users} counter={index + 1} />
     {/for}
   </tbody>
 </table>

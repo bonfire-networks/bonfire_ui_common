@@ -71,11 +71,16 @@
             <StatelessComponent
               module={maybe_component(Bonfire.Boundaries.Web.BlockButtonLive, @__context__)}
               object={@user}
+              is_local_user={@is_local_user}
               parent_id="members"
               hide_icon
               open_btn_wrapper_class="w-full"
               label={e(@user, :profile, :name, l("this user"))}
-              open_btn_label={l("Block")}
+              open_btn_label={if e(@user, :ghosted_instance_wide?, nil) && e(@user, :silenced_instance_wide?, nil) do
+                if @is_local_user, do: l("Re-enable"), else: l("Unblock")
+              else
+                if @is_local_user, do: l("Block or disable"), else: l("Block")
+              end}
               class="text-error"
             />
           </li>
