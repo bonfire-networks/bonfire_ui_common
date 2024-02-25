@@ -53,7 +53,7 @@
         "order-first !bg-base-content/10": @showing_within == :page
       }>
         <div class="">
-          <div class="flex justify-between gap-2 md:gap-3 p-2 border-t boder-base-content/20 md:items-center  md:px-3 py-2">
+          <div class="flex justify-between gap-2 md:gap-3 p-2 border-t border-base-content/20 md:items-center  md:px-3 py-2">
             <div class="flex items-center gap-1">
               <Bonfire.UI.Common.UploadButtonLive
                 module={maybe_component(Bonfire.Files.DocumentUploader, @__context__)}
