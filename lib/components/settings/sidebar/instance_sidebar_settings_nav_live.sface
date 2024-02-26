@@ -99,7 +99,22 @@
             iconify="carbon:user-multiple"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "members"}
           />
-          <span class="text-sm text-base-content/70">{l("Members list")}</span>
+          <span class="text-sm text-base-content/70">{l("Instance members")}</span>
+        </LinkPatchLive>
+      </li>
+      <li>
+        <LinkPatchLive
+          to={~p"/settings/instance/remote_users"}
+          class={
+            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "bg-base-content/10": @selected_tab == "remote_users"
+          }
+        >
+          <#Icon
+            iconify="carbon:user-multiple"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "remote_users"}
+          />
+          <span class="text-sm text-base-content/70">{l("Known remote users")}</span>
         </LinkPatchLive>
       </li>
 

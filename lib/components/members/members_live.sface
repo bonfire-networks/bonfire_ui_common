@@ -2,12 +2,11 @@
   {!-- head --}
   <thead>
     <tr>
-      <th />
       <th>{l("Name")}</th>
       <th>{l("Role")}</th>
       <th>{l("Status")}</th>
       <th>{l("Signed up")}</th>
-      <th />
+      <th> </th>
     </tr>
   </thead>
   <tbody>
