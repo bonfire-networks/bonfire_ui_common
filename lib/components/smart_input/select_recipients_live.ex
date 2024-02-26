@@ -18,7 +18,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
 
   prop is_editable, :boolean, default: false
 
-  def do_handle_event("live_select_change", %{"id" => live_select_id, "text" => search}, socket) do
+  def handle_event("live_select_change", %{"id" => live_select_id, "text" => search}, socket) do
     debug(live_select_id, search)
     # current_user = current_user(socket.assigns)
 
@@ -29,7 +29,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
     {:noreply, socket}
   end
 
-  def do_handle_event(
+  def handle_event(
         "multi_select",
         %{data: %{"field" => field, "id" => id, "username" => username}},
         socket
@@ -42,7 +42,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
      end)}
   end
 
-  def do_handle_event(
+  def handle_event(
         "multi_select",
         %{data: data},
         socket

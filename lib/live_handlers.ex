@@ -10,22 +10,42 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   """
   use Bonfire.UI.Common.Web, :live_handler
-  alias Bonfire.UI.Common.LivePlugs
   import Untangle
+
+  alias Bonfire.UI.Common.LivePlugs
+  alias Bonfire.UI.Common.ErrorHandling
 
   def handle_params(params, uri, socket, source_module \\ nil, fun \\ nil)
       when is_atom(source_module) do
-    undead(socket, fn ->
+    ErrorHandling.undead(socket, fn ->
       debug(
         params,
         "LiveHandler: handle_params for #{inspect(uri)} via #{source_module || "delegation"}"
       )
 
+      debug(fun)
+
       # LivePlugs.assign_default_params(params, uri, socket)
       with {:noreply, socket} <-
-             do_handle_params(params, uri, socket),
+             if(is_function(fun, 3), do: fun.(params, uri, socket), else: {:noreply, socket}),
            {:noreply, socket} <-
-             if(is_function(fun), do: fun.(params, uri, socket), else: {:noreply, socket}) do
+             maybe_delegate_handle_params(params, uri, socket) do
+        # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
+        # if socket_connected?(socket), do: LivePlugs.maybe_send_persistent_assigns(socket)
+
+        {:noreply, socket}
+      end
+    end)
+  end
+
+  def handle_info(blob, socket, source_module \\ nil, fun \\ nil) do
+    ErrorHandling.undead(socket, fn ->
+      debug("LiveHandler: handle_info via #{source_module || "delegation"}")
+
+      with {:noreply, socket} <-
+             if(is_function(fun, 2), do: fun.(blob, socket), else: {:noreply, socket}),
+           {:noreply, socket} <-
+             maybe_handle_info(blob, socket) do
         # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
         # if socket_connected?(socket), do: LivePlugs.maybe_send_persistent_assigns(socket)
 
@@ -37,17 +57,14 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   def handle_event(action, attrs, socket, source_module \\ nil, fun \\ nil) do
     socket
     |> assign_generic(:live_handler_via_module, source_module)
-    |> undead(fn ->
+    |> ErrorHandling.undead(fn ->
       debug("LiveHandler: handle_event #{inspect(action)} via #{source_module || "delegation"}")
 
       with {:noreply, %{assigns: %{no_live_event_handler: %{^action => true}}} = socket} <-
-             do_handle_event(action, attrs, socket),
-           {:noreply, socket} <- maybe_handle_event_fun(action, attrs, socket, fun) do
+             maybe_delegate_handle_event(action, attrs, socket),
+           {:noreply, socket} <- maybe_handle_event_module_fun(action, attrs, socket, fun) do
+        #  {:noreply, socket} <- maybe_delegate_handle_event(action, attrs, socket) do
         {:noreply, socket}
-      else
-        other ->
-          # debug(other)
-          other
       end
     end)
   end
@@ -56,7 +73,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
       when is_function(target_fn) do
     socket
     |> assign_generic(:live_handler_via_module, source_module)
-    |> undead(fn ->
+    |> ErrorHandling.undead(fn ->
       target_fn.(type, entry, socket)
     end)
   end
@@ -65,24 +82,17 @@ defmodule Bonfire.UI.Common.LiveHandlers do
       when is_atom(target_live_handler) do
     socket
     |> assign_generic(:live_handler_via_module, source_module)
-    |> undead(fn ->
+    |> ErrorHandling.undead(fn ->
       target_live_handler.handle_progress(type, entry, socket)
     end)
   end
 
-  def handle_info(blob, socket, source_module \\ nil) do
-    undead(socket, fn ->
-      debug("LiveHandler: handle_info via #{source_module || "delegation"}")
-      do_handle_info(blob, socket)
-    end)
-  end
-
-  defp do_handle_info(:clear_flash, socket) do
+  defp maybe_handle_info(:clear_flash, socket) do
     {:noreply, clear_flash(socket)}
   end
 
   # global handler to set a view's assigns from a component
-  defp do_handle_info({:assign, {assign, value}}, socket) do
+  defp maybe_handle_info({:assign, {assign, value}}, socket) do
     debug("LiveHandler: handle_info, assign data with {:assign, {#{assign}, value}}")
 
     {
@@ -91,7 +101,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     }
   end
 
-  defp do_handle_info({:assign, assigns}, socket) do
+  defp maybe_handle_info({:assign, assigns}, socket) do
     debug("LiveHandler: handle_info, assign data with {:assign, ...}")
 
     {
@@ -100,7 +110,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     }
   end
 
-  defp do_handle_info({:assign_global, assigns}, socket) do
+  defp maybe_handle_info({:assign_global, assigns}, socket) do
     debug("LiveHandler: handle_info, assign data with {:assign, ...}")
 
     {
@@ -109,7 +119,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     }
   end
 
-  defp do_handle_info({:assign_persistent, assigns}, socket) do
+  defp maybe_handle_info({:assign_persistent, assigns}, socket) do
     debug("LiveHandler: handle_info, send data to PersistentLive with {:assign_persistent, ...}")
 
     LivePlugs.maybe_send_persistent_assigns(assigns, socket)
@@ -120,13 +130,23 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     }
   end
 
-  defp do_handle_info({{mod, name}, data}, socket) when is_atom(mod) do
+  defp maybe_handle_info({:redirect, to}, socket) do
+    debug("LiveHandler: handle_info, redirect at view level")
+
+    {
+      :noreply,
+      socket
+      |> redirect_to(to)
+    }
+  end
+
+  defp maybe_handle_info({{mod, name}, data}, socket) when is_atom(mod) do
     debug("LiveHandler: handle_info with {{#{mod}, #{inspect(name)}}, data}")
 
     mod_delegate(mod, :handle_info, [{name, data}], socket)
   end
 
-  defp do_handle_info({info, data}, socket) when is_binary(info) do
+  defp maybe_handle_info({info, data}, socket) when is_binary(info) do
     debug("LiveHandler: handle_info with {#{info}, data}")
 
     case String.split(info, ":", parts: 2) do
@@ -135,48 +155,48 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     end
   end
 
-  defp do_handle_info({mod, data}, socket) when is_atom(mod) do
+  defp maybe_handle_info({mod, data}, socket) when is_atom(mod) do
     debug("LiveHandler: handle_info with {#{mod}, data}")
     mod_delegate(mod, :handle_info, [data], socket)
   end
 
-  defp do_handle_info({_ref, {:phoenix, :send_update, _}}, socket) do
+  defp maybe_handle_info({_ref, {:phoenix, :send_update, _}}, socket) do
     debug("LiveHandler: send_update completed")
     empty(socket)
   end
 
-  defp do_handle_info({status, _, :process, _, return_status}, socket) do
+  defp maybe_handle_info({status, _, :process, _, return_status}, socket) do
     info(return_status, "LiveHandler: process #{status}")
     empty(socket)
   end
 
-  defp do_handle_info(data, socket) do
+  defp maybe_handle_info(data, socket) do
     warn(data, "LiveHandler: could not find info handler for")
     empty(socket)
   end
 
   # global event handler to set assigns of a view or component
-  defp do_handle_event("assign", attrs, socket) do
+  defp maybe_delegate_handle_event("assign", attrs, socket) do
     {:noreply, assign_attrs(socket, attrs)}
   end
 
   # helper for when a searches for an option in `LiveSelect`
-  defp do_handle_event(
+  defp maybe_delegate_handle_event(
          "live_select_change" = event,
          %{"field" => "multi_select_" <> mod} = data,
          socket
        ) do
     debug("LiveSelect: autocomplete: handle_event with {#{mod}, data}")
-    mod_delegate(mod, :do_handle_event, [event, data], socket)
+    mod_delegate(mod, :handle_event, [event, data], socket)
   end
 
-  defp do_handle_event("live_select_change" = event, %{"field" => mod} = data, socket) do
+  defp maybe_delegate_handle_event("live_select_change" = event, %{"field" => mod} = data, socket) do
     debug("LiveSelect: autocomplete: handle_event with {#{mod}, data}")
-    mod_delegate(mod, :do_handle_event, [event, data], socket)
+    mod_delegate(mod, :handle_event, [event, data], socket)
   end
 
   # helper for when a user selects an option in `LiveSelect`
-  defp do_handle_event(
+  defp maybe_delegate_handle_event(
          action,
          %{"_target" => ["multi_select", module], "multi_select" => params},
          socket
@@ -196,7 +216,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
       %{^module => data, ^input_name => text} when is_binary(data) ->
         mod_delegate(
           module,
-          :do_handle_event,
+          :handle_event,
           ["multi_select", %{text: text, data: maybe_from_json(data)}],
           socket
         )
@@ -204,7 +224,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
       %{^module => data, ^input_name => text} when is_list(data) ->
         mod_delegate(
           module,
-          :do_handle_event,
+          :handle_event,
           ["multi_select", %{text: text, data: Enum.map(data, &maybe_from_json/1)}],
           socket
         )
@@ -215,11 +235,11 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     end
   end
 
-  defp do_handle_event(event, attrs, socket) when is_binary(event) do
+  defp maybe_delegate_handle_event(event, attrs, socket) when is_binary(event) do
     # debug(handle_event: event)
     case String.split(event, ":", parts: 2) do
       [module, action] ->
-        do_handle_event({module, action}, attrs, socket)
+        handle_event({module, action}, attrs, socket)
 
       _ ->
         debug(attrs, "attrs")
@@ -227,25 +247,29 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     end
   end
 
-  defp do_handle_event({module, action}, attrs, socket) do
+  defp maybe_delegate_handle_event({module, action}, attrs, socket) do
     mod_delegate(module, :handle_event, [action, attrs], socket)
   end
 
-  defp do_handle_event(event, attrs, socket) do
+  defp maybe_delegate_handle_event(event, attrs, socket) do
     debug(attrs, "attrs")
     no_live_handler({:handle_event, event}, socket)
   end
 
-  defp maybe_handle_event_fun(action, attrs, socket, fun) when is_function(fun) do
+  defp maybe_handle_event_module_fun(action, attrs, socket, fun) when is_function(fun, 3) do
     fun.(action, attrs, socket)
   end
 
-  defp maybe_handle_event_fun(action, _attrs, socket, _fun) do
-    warn(action, "LiveHandler: could not find an event handler")
+  defp maybe_handle_event_module_fun(action, _attrs, socket, _fun) do
+    debug(
+      action,
+      "LiveHandler: no such handle_event action defined in module, will try LiveHandlers instead"
+    )
+
     {:noreply, socket}
   end
 
-  defp do_handle_params(params, uri, socket)
+  defp maybe_delegate_handle_params(params, uri, socket)
        when is_map(params) and params != %{} do
     # debug(handle_params: params)
     # first key in a URL query string can be used to indicate the LiveHandler
@@ -258,7 +282,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     end
   end
 
-  defp do_handle_params(_, _, socket), do: empty(socket)
+  defp maybe_delegate_handle_params(_, _, socket), do: empty(socket)
 
   def mod_delegate(mod, fun, args, socket) do
     # debug("attempt delegating to #{inspect fun} in #{inspect mod}...")
@@ -292,7 +316,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
         end
 
       _ ->
-        warn(mod, "LiveHandler: could not find a LiveHandler for")
+        debug(mod, "LiveHandler: no handler to delegate to for")
         no_live_handler({fun, List.first(args)}, socket)
     end
   end

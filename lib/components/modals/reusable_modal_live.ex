@@ -93,28 +93,11 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
     @default_assigns
   end
 
-  def do_handle_event("close", _, socket) do
+  def handle_event("close", _, socket) do
     debug(
       "reset all assigns to defaults so they don't accidentally get re-used in a different modal"
     )
 
     {:noreply, assign(socket, [show: false] ++ default_assigns())}
   end
-
-  def handle_event(
-        action,
-        attrs,
-        socket
-      ),
-      do:
-        Bonfire.UI.Common.LiveHandlers.handle_event(
-          action,
-          attrs,
-          socket,
-          __MODULE__,
-          &do_handle_event/3
-        )
-
-  def handle_info(info, socket),
-    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
 end

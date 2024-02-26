@@ -5,6 +5,7 @@ defmodule Bonfire.UI.Common do
   use Bonfire.Common.Utils
   use Untangle
   alias Bonfire.Common.PubSub
+  alias Bonfire.UI.Common.ErrorHandling
 
   defmacro __using__(_opts) do
     # TODO: pass opts to the nested `use`
@@ -543,6 +544,10 @@ defmodule Bonfire.UI.Common do
         |> assign_generic_global(assigns)
   end
 
+  def redirect_self(to) do
+    send(self(), {:redirect, to})
+  end
+
   @doc "Warning: this will set assigns for any/all users who subscribe to them. You want to `cast_self/2` instead if dealing with user-specific actions or private data."
   def cast_public(socket, assigns_to_broadcast) do
     assign_and_broadcast(socket, assigns_to_broadcast)
@@ -598,394 +603,14 @@ defmodule Bonfire.UI.Common do
     {:assign, assign_name}
   end
 
-  defp db_error,
-    do:
-      l(
-        "Sorry, the data provided has missing fields or is invalid and could do not be inserted or updated"
-      )
-
   @doc """
   Run a function and expects tuple.
   If anything else is returned, like an error, a flash message is shown to the user.
   """
-  def undead_mount(socket, fun), do: undead(socket, fun, {:mount, :ok})
-  def undead_on_mount(socket, fun), do: undead(socket, fun, {:mount, :halt})
-  def undead_params(socket, fun), do: undead(socket, fun, {:mount, :noreply})
-
-  def undead(socket, fun, return_key \\ :noreply) do
-    # |> debug()
-    undead_maybe_handle_error(fun.(), socket, return_key)
-  rescue
-    msg in Bonfire.Fail.Auth ->
-      go_login(msg, socket, return_key)
-
-    msg in Bonfire.Fail ->
-      case msg do
-        %{code: :needs_login} ->
-          go_login(msg, socket, return_key)
-
-        _ ->
-          live_exception(
-            socket,
-            return_key,
-            msg,
-            nil,
-            __STACKTRACE__
-          )
-      end
-
-    Needle.NotFound ->
-      live_exception(
-        socket,
-        return_key,
-        l("Not found"),
-        nil,
-        __STACKTRACE__
-      )
-
-    error in Ecto.Query.CastError ->
-      live_exception(
-        socket,
-        return_key,
-        l("Sorry, the app tried to use an invalid data type"),
-        error,
-        __STACKTRACE__
-      )
-
-    error in Ecto.ConstraintError ->
-      live_exception(
-        socket,
-        return_key,
-        l("Sorry, the app tried to reference an invalid identifier or create a duplicate one"),
-        error,
-        __STACKTRACE__
-      )
-
-    error in DBConnection.ConnectionError ->
-      live_exception(
-        socket,
-        return_key,
-        "Sorry, could not connect to the database. Please try again later and/or contact the instance operators.",
-        error,
-        __STACKTRACE__
-      )
-
-    cs in Ecto.Changeset ->
-      live_exception(
-        socket,
-        return_key,
-        db_error() <> ": #{Errors.error_msg(cs)}",
-        cs,
-        nil
-      )
-
-    error in FunctionClauseError ->
-      # debug(error)
-      with %{
-             arity: arity,
-             function: function,
-             module: module
-           } <- error do
-        live_exception(
-          socket,
-          return_key,
-          l(
-            "Sorry, the function %{function_name} in module %{module_name} didn't receive the data it was expecting",
-            function_name: "`#{function}/#{arity}`",
-            module_name: "`#{module}`"
-          ),
-          error,
-          __STACKTRACE__
-        )
-      else
-        error ->
-          live_exception(
-            socket,
-            return_key,
-            l("Sorry, a function didn't receive the data it was expecting"),
-            error,
-            __STACKTRACE__
-          )
-      end
-
-    error in WithClauseError ->
-      term_error(
-        l("Sorry, a condition didn't match `with` any of the data it was expecting"),
-        socket,
-        return_key,
-        error,
-        __STACKTRACE__
-      )
-
-    error in CaseClauseError ->
-      term_error(
-        l("Sorry, a condition didn't have any `case` matching the data it was expecting"),
-        socket,
-        return_key,
-        error,
-        __STACKTRACE__
-      )
-
-    error in MatchError ->
-      term_error(
-        l("Sorry, a condition didn't receive data that matched a format it could recognise"),
-        socket,
-        return_key,
-        error,
-        __STACKTRACE__
-      )
-
-    error in ArgumentError ->
-      error(__STACKTRACE__, inspect(error))
-
-      term_error(
-        l("Sorry, a function didn't receive the data it expected"),
-        socket,
-        return_key,
-        error,
-        __STACKTRACE__
-      )
-
-    error ->
-      live_exception(
-        socket,
-        return_key,
-        l("Sorry, the app encountered an unexpected error"),
-        error,
-        __STACKTRACE__
-      )
-  catch
-    :exit, {:error, error} when is_binary(error) ->
-      live_exception(socket, return_key, error, nil, __STACKTRACE__)
-
-    :exit, error ->
-      live_exception(
-        socket,
-        return_key,
-        l("Sorry, an operation encountered an error and stopped"),
-        error,
-        __STACKTRACE__
-      )
-
-    :throw, {:error, error} when is_binary(error) ->
-      live_exception(socket, return_key, error, nil, __STACKTRACE__)
-
-    error ->
-      # error(error)
-      live_exception(
-        socket,
-        return_key,
-        l("An exceptional error occurred"),
-        error,
-        __STACKTRACE__
-      )
-  end
-
-  defp go_login(msg, socket, {_, return_key}), do: go_login(msg, socket, return_key)
-
-  defp go_login(msg, socket, return_key) do
-    {return_key,
-     socket
-     |> assign_error(e(msg, :message, l("You need to log in first.")))
-     |> redirect_to("/login")}
-  end
-
-  defp term_error(
-         _msg,
-         socket,
-         return_key,
-         %{term: {:error, :not_found}},
-         stacktrace
-       ) do
-    live_exception(socket, return_key, l("Not found"), nil, stacktrace)
-  end
-
-  defp term_error(msg, socket, return_key, error, stacktrace) do
-    live_exception(socket, return_key, msg, term_error(error), stacktrace)
-  end
-
-  defp term_error(error) do
-    with %{term: provided} <- error do
-      Errors.error_msg(provided)
-    else
-      _ ->
-        error
-    end
-  end
-
-  defp undead_maybe_handle_error(error, socket, return_key) do
-    case error do
-      {:ok, %Phoenix.LiveView.Socket{} = socket} ->
-        {:ok, socket}
-
-      {:ok, %Phoenix.LiveView.Socket{} = socket, data} ->
-        {:ok, socket, data}
-
-      {:noreply, %Phoenix.LiveView.Socket{} = socket} ->
-        {:noreply, socket}
-
-      {:cont, %Phoenix.LiveView.Socket{} = socket} ->
-        {:cont, socket}
-
-      {:halt, %Phoenix.LiveView.Socket{} = socket} ->
-        {:halt, socket}
-
-      %Phoenix.LiveView.Socket{} = socket ->
-        {return_key, socket}
-
-      {:noreply, %Plug.Conn{} = conn} ->
-        {:noreply, conn}
-
-      %Plug.Conn{} = conn ->
-        {return_key, conn}
-
-      {:reply, data, %Phoenix.LiveView.Socket{} = socket} ->
-        {:reply, data, socket}
-
-      {:ok, {:error, reason}} ->
-        undead_maybe_handle_error(reason, socket, return_key)
-
-      {:noreply, {:error, reason}} ->
-        undead_maybe_handle_error(reason, socket, return_key)
-
-      {:error, reason} ->
-        undead_maybe_handle_error(reason, socket, return_key)
-
-      {:error, reason, extra} ->
-        live_exception(
-          socket,
-          return_key,
-          l("There was an error") <> ": #{inspect(reason)}",
-          extra
-        )
-
-      # shortcut to return nothing
-      :ok ->
-        {return_key, socket}
-
-      {:ok, _other} ->
-        {return_key, socket}
-
-      %Ecto.Changeset{} = cs ->
-        live_exception(
-          socket,
-          return_key,
-          db_error() <> ": #{Errors.error_msg(cs)}",
-          cs
-        )
-
-      %Ecto.ConstraintError{} = cs ->
-        live_exception(
-          socket,
-          return_key,
-          db_error() <> ": #{Errors.error_msg(cs)}",
-          nil
-        )
-
-      %{__struct__: struct} = act when struct == Bonfire.Epics.Act ->
-        live_exception(
-          socket,
-          return_key,
-          l("Sorry, an action could not be completed"),
-          act
-        )
-
-      %{__struct__: struct} = epic when struct == Bonfire.Epics.Epic ->
-        live_exception(
-          socket,
-          return_key,
-          l("Sorry, a series of actions could not be completed") <> ": #{Errors.error_msg(epic)}",
-          epic.errors,
-          e(List.first(epic.errors), :stacktrace, nil)
-        )
-
-      not_found when not_found in [:not_found, "Not found", 404] ->
-        live_exception(socket, return_key, l("Not found"))
-
-      msg when is_binary(msg) ->
-        live_exception(socket, return_key, msg)
-
-      nil ->
-        IO.warn("Received nil instead of a socket")
-        live_exception(socket, return_key, l("Sorry, no answer was received"))
-
-      ret ->
-        live_exception(
-          socket,
-          return_key,
-          l("Sorry, this resulted in something unexpected"),
-          ret
-        )
-    end
-  end
-
-  defp live_exception(
-         socket,
-         return_key,
-         msg,
-         exception \\ nil,
-         stacktrace \\ nil,
-         kind \\ :error
-       )
-
-  defp live_exception(
-         socket,
-         {:mount, return_key},
-         msg,
-         exception,
-         stacktrace,
-         kind
-       ) do
-    with {:error, msg} <-
-           Errors.debug_exception(msg, exception, stacktrace, kind, as_markdown: true) do
-      {return_key,
-       socket
-       |> assign_error(msg)
-       |> redirect_to("/error")}
-    end
-  end
-
-  # defp live_exception(
-  #        %{assigns: %{__context__: %{current_url: current_url}}} = socket,
-  #        return_key,
-  #        msg,
-  #        exception,
-  #        stacktrace,
-  #        kind
-  #      ) when is_binary(current_url) do
-  #   with {:error, msg} <-
-  #          Errors.debug_exception(msg, exception, stacktrace, kind, as_markdown: true) do
-  #     {
-  #       return_key,
-  #       assign_error(
-  #         socket,
-  #         msg
-  #       )
-  #       |> patch_to(current_url)
-  #     }
-  #   end
-  # end
-
-  defp live_exception(socket, return_key, msg, exception, stacktrace, kind) do
-    with {:error, msg} <-
-           Errors.debug_exception(msg, exception, stacktrace, kind, as_markdown: true) do
-      {
-        return_key,
-        assign_error(
-          socket,
-          msg
-        )
-        # |> patch_to(current_url(socket) || path(e(socket, :view, :error)))
-      }
-    end
-  rescue
-    # FIXME: handle cases where the live_path requires param(s)
-    FunctionClauseError ->
-      {return_key,
-       socket
-       |> assign_error(msg)
-       |> redirect_to("/error")}
-  end
+  def undead_mount(socket, fun), do: ErrorHandling.undead(socket, fun, {:mount, :ok})
+  def undead_on_mount(socket, fun), do: ErrorHandling.undead(socket, fun, {:mount, :halt})
+  def undead_update(socket, fun), do: ErrorHandling.undead(socket, fun, {:update, :ok})
+  def undead_render(assigns, fun), do: ErrorHandling.undead(assigns, fun, {nil, :render})
 
   def maybe_last_sentry_event_id() do
     if module_enabled?(Sentry) do
@@ -1007,6 +632,7 @@ defmodule Bonfire.UI.Common do
 
   def redirect_to(%Phoenix.LiveView.Socket{redirected: nil} = socket, to, opts) do
     debug(to, "redirect socket to")
+    debug(socket)
 
     Phoenix.LiveView.push_navigate(
       socket,
@@ -1014,8 +640,13 @@ defmodule Bonfire.UI.Common do
     )
   rescue
     e in ArgumentError ->
-      error(e)
-      redirect_to(socket, path_fallback(socket, opts))
+      path_fallback = path_fallback(socket, opts)
+      error(e, "could not redirect")
+      if path_fallback != to, do: redirect_to(socket, path_fallback), else: socket
+
+    e in RuntimeError ->
+      error(e, "could not redirect")
+      socket
   end
 
   def redirect_to(%Phoenix.LiveView.Socket{redirected: already} = socket, to, _opts) do
@@ -1589,14 +1220,14 @@ defmodule Bonfire.UI.Common do
     assigns_sockets
     |> Enum.map(fn {assigns, socket} ->
       socket
-      |> Phoenix.Component.assign(assigns)
+      |> assign_generic(assigns)
     end)
   end
 
   defp maybe_assign_provided(socket, assigns, false), do: {assigns, socket}
 
   defp maybe_assign_provided(socket, assigns, _true),
-    do: socket |> Phoenix.Component.assign(assigns)
+    do: socket |> assign_generic(assigns)
 
   def can?(subject, verbs, object, opts \\ []) do
     if Bonfire.Common.Extend.module_enabled?(Bonfire.Boundaries) do

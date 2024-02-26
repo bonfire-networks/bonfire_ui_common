@@ -17,6 +17,10 @@ defmodule Bonfire.UI.Common.ErrorController do
     view_render(conn, :app)
   end
 
+  def crash_test(_conn, _params) do
+    raise("User-triggered crash")
+  end
+
   def view_render(conn, key) do
     # debug(conn)
 

@@ -117,25 +117,11 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   end
 
   def handle_event(
-        action,
-        attrs,
+        _action,
+        _attrs,
         socket
       ) do
-    # debug(attrs)
-
-    Bonfire.UI.Common.LiveHandlers.handle_event(
-      action,
-      attrs,
-      socket,
-      __MODULE__,
-      &LiveHandler.handle_event/3
-    )
+    socket
     |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
   end
-
-  def handle_info(info, socket),
-    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
-
-  defdelegate handle_params(params, attrs, socket),
-    to: Bonfire.UI.Common.LiveHandlers
 end

@@ -106,8 +106,12 @@ defmodule Bonfire.UI.Common.Routes do
       scope "/" do
         pipe_through(:browser)
 
+        get("/guest/crash_test", Bonfire.UI.Common.ErrorController, :crash_test)
         get("/guest/error", Bonfire.UI.Common.ErrorController, as: :error_guest)
         get("/guest/error/:code", Bonfire.UI.Common.ErrorController, as: :error_guest)
+
+        live("/crash_test", Bonfire.UI.Common.ErrorLive)
+        live("/crash_test/:component", Bonfire.UI.Common.ErrorLive)
 
         post(
           "/LiveHandler/:live_handler",

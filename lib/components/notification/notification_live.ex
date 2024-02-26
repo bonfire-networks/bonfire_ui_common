@@ -81,7 +81,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
     )
   end
 
-  def do_handle_event("clear-flash", %{"key" => type}, socket) do
+  def handle_event("clear-flash", %{"key" => type}, socket) do
     case maybe_to_atom!(type) do
       nil ->
         error(type, "invalid flash key")
@@ -93,30 +93,13 @@ defmodule Bonfire.UI.Common.NotificationLive do
     end
   end
 
-  def do_handle_event("click_away", _, socket) do
+  def handle_event("click_away", _, socket) do
     {:noreply, socket}
   end
-
-  def handle_event(
-        action,
-        attrs,
-        socket
-      ),
-      do:
-        Bonfire.UI.Common.LiveHandlers.handle_event(
-          action,
-          attrs,
-          socket,
-          __MODULE__,
-          &do_handle_event/3
-        )
 
   def handle_info(:clear_flash, socket) do
     {:noreply, special_clear_all(socket)}
   end
-
-  def handle_info(info, socket),
-    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
 
   def special_clear_all(socket) do
     socket

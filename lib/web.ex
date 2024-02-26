@@ -143,7 +143,14 @@ defmodule Bonfire.UI.Common.Web do
 
     quote do
       @moduledoc false
+
       use Phoenix.LiveView, unquote(opts)
+
+      @before_compile {Bonfire.UI.Common.Web, :__live_mount_before_compile__}
+      @before_compile {Bonfire.UI.Common.Web, :__handle_params_before_compile__}
+      @before_compile {Bonfire.UI.Common.Web, :__handle_info_before_compile__}
+      @before_compile {Bonfire.UI.Common.Web, :__handle_event_before_compile__}
+      @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
 
       unquote(live_view_helpers())
 
@@ -159,6 +166,10 @@ defmodule Bonfire.UI.Common.Web do
     quote do
       @moduledoc false
       use Phoenix.LiveComponent, unquote(opts)
+
+      @before_compile {Bonfire.UI.Common.Web, :__live_update_before_compile__}
+      @before_compile {Bonfire.UI.Common.Web, :__handle_event_before_compile__}
+      @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
 
       unquote(live_view_helpers())
 
@@ -311,7 +322,190 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
+  # TODO: similar as the below for update_many and handle_progress
+
+  defmacro __live_mount_before_compile__(env) do
+    live_mount_before_compile(env)
+  end
+
+  defp live_mount_before_compile(env) do
+    IO.puts("woooo ?")
+
+    if Module.defines?(env.module, {:mount, 3}) do
+      quote do
+        defoverridable mount: 3
+
+        def mount(params, session, socket) do
+          undead_mount(socket, fn ->
+            IO.puts("woooo :)")
+            super(params, session, socket)
+          end)
+        end
+      end
+    end
+  end
+
+  defmacro __handle_params_before_compile__(env) do
+    handle_params_before_compile(env)
+  end
+
+  defp handle_params_before_compile(env) do
+    IO.puts("woooo ?")
+
+    if Module.defines?(env.module, {:handle_params, 3}) do
+      quote do
+        defoverridable handle_params: 3
+
+        def handle_params(params, uri, socket) do
+          Bonfire.UI.Common.LiveHandlers.handle_params(params, uri, socket, __MODULE__, fn params,
+                                                                                           uri,
+                                                                                           socket ->
+            IO.puts("pooo :)")
+            super(params, uri, socket)
+          end)
+        end
+      end
+    else
+      quote do
+        def handle_params(params, uri, socket) do
+          Bonfire.UI.Common.LiveHandlers.handle_params(params, uri, socket, __MODULE__)
+        end
+      end
+    end
+  end
+
+  defmacro __handle_info_before_compile__(env) do
+    handle_info_before_compile(env)
+  end
+
+  defp handle_info_before_compile(env) do
+    IO.puts("woooo ?")
+
+    if Module.defines?(env.module, {:handle_info, 2}) do
+      quote do
+        defoverridable handle_info: 2
+
+        def handle_info(msg, socket) do
+          Bonfire.UI.Common.LiveHandlers.handle_info(msg, socket, __MODULE__, fn msg, socket ->
+            IO.puts("pooo :)")
+            super(msg, socket)
+          end)
+        end
+      end
+    else
+      quote do
+        def handle_info(msg, socket) do
+          Bonfire.UI.Common.LiveHandlers.handle_info(msg, socket, __MODULE__)
+        end
+      end
+    end
+  end
+
+  defmacro __handle_event_before_compile__(env) do
+    handle_event_before_compile(env)
+  end
+
+  defp handle_event_before_compile(env) do
+    IO.puts("woooo ?")
+
+    if Module.defines?(env.module, {:handle_event, 3}) do
+      quote do
+        defoverridable handle_event: 3
+
+        def handle_event(event, params, socket) do
+          Bonfire.UI.Common.LiveHandlers.handle_event(event, params, socket, __MODULE__, fn event,
+                                                                                            params,
+                                                                                            socket ->
+            IO.puts("pooo :)")
+            super(event, params, socket)
+          end)
+        end
+      end
+    else
+      quote do
+        def handle_event(event, params, socket) do
+          Bonfire.UI.Common.LiveHandlers.handle_event(event, params, socket, __MODULE__)
+        end
+      end
+    end
+  end
+
+  defmacro __live_update_before_compile__(env) do
+    live_update_before_compile(env)
+  end
+
+  defp live_update_before_compile(env) do
+    IO.puts("woooo ?")
+
+    if Module.defines?(env.module, {:update, 2}) do
+      quote do
+        defoverridable update: 2
+
+        def update(assigns, socket) do
+          undead_update(socket, fn ->
+            IO.puts("woooo :)")
+            super(assigns, socket)
+          end)
+        end
+      end
+    end
+  end
+
+  defmacro __render_before_compile__(env) do
+    render_before_compile(env)
+  end
+
+  defp render_before_compile(env) do
+    if Module.defines?(env.module, {:render, 1}) do
+      quote do
+        defoverridable render: 1
+
+        def render(assigns) do
+          undead_render(assigns, fn ->
+            IO.inspect(assigns, label: "rendd :)")
+
+            case assigns do
+              %{__replace_render__with__: _} ->
+                Bonfire.UI.Common.ErrorComponentLive.replace(assigns)
+
+              _ ->
+                super(assigns)
+            end
+          end)
+        end
+      end
+    end
+  end
+
   if Bonfire.Common.Extend.module_exists?(Surface) do
+    def surface_live_view_child(opts \\ []) do
+      opts =
+        Keyword.put_new(
+          opts,
+          :layout,
+          {Bonfire.UI.Common.LayoutLive, :live}
+        )
+
+      quote do
+        @moduledoc false
+
+        use Surface.LiveView, unquote(opts)
+
+        @before_compile {Bonfire.UI.Common.Web, :__live_mount_before_compile__}
+        @before_compile {Bonfire.UI.Common.Web, :__handle_info_before_compile__}
+        @before_compile {Bonfire.UI.Common.Web, :__handle_event_before_compile__}
+        @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
+
+        unquote(surface_helpers())
+
+        use_if_enabled(LiveViewNative.LiveView)
+
+        alias Bonfire.UI.Common.LivePlugs
+
+        # on_mount(PhoenixProfiler)
+      end
+    end
+
     def surface_live_view(opts \\ []) do
       opts =
         Keyword.put_new(
@@ -324,6 +518,12 @@ defmodule Bonfire.UI.Common.Web do
         @moduledoc false
 
         use Surface.LiveView, unquote(opts)
+
+        @before_compile {Bonfire.UI.Common.Web, :__live_mount_before_compile__}
+        @before_compile {Bonfire.UI.Common.Web, :__handle_params_before_compile__}
+        @before_compile {Bonfire.UI.Common.Web, :__handle_info_before_compile__}
+        @before_compile {Bonfire.UI.Common.Web, :__handle_event_before_compile__}
+        @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
 
         unquote(surface_helpers())
 
@@ -338,7 +538,12 @@ defmodule Bonfire.UI.Common.Web do
     def stateful_component(opts \\ []) do
       quote do
         @moduledoc false
+
         use Surface.LiveComponent, unquote(opts)
+
+        @before_compile {Bonfire.UI.Common.Web, :__live_update_before_compile__}
+        @before_compile {Bonfire.UI.Common.Web, :__handle_event_before_compile__}
+        @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
 
         # data current_account, :any, from_context: :current_account
         # data current_user, :any, from_context: :current_user
@@ -353,6 +558,9 @@ defmodule Bonfire.UI.Common.Web do
     def stateless_component(opts \\ []) do
       quote do
         @moduledoc false
+
+        @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
+
         use Surface.Component, unquote(opts)
 
         # prop current_account, :any, from_context: :current_account

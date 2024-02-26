@@ -152,7 +152,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   # Default event handlers
 
-  def do_handle_event("open", _, socket) do
+  def handle_event("open", _, socket) do
     debug("open!")
 
     socket =
@@ -166,30 +166,13 @@ defmodule Bonfire.UI.Common.OpenModalLive do
     {:noreply, socket}
   end
 
-  def do_handle_event("close", _, socket) do
+  def handle_event("close", _, socket) do
     close(e(socket.assigns, :reusable_modal_id, @default_modal_id))
     {:noreply, socket}
   end
 
-  def do_handle_event("set_value", %{"value" => value}, socket) do
+  def handle_event("set_value", %{"value" => value}, socket) do
     close(e(socket.assigns, :reusable_modal_id, @default_modal_id))
     {:noreply, socket |> assign(:value, value)}
   end
-
-  def handle_event(
-        action,
-        attrs,
-        socket
-      ),
-      do:
-        Bonfire.UI.Common.LiveHandlers.handle_event(
-          action,
-          attrs,
-          socket,
-          __MODULE__,
-          &do_handle_event/3
-        )
-
-  def handle_info(info, socket),
-    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
 end

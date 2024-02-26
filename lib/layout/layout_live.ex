@@ -68,6 +68,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
   def prepare_assigns(assigns) do
     # NOTE: we need to also set default props this way until we can convert LayoutView to use Surface
     assigns
+    |> assign_new(:conn, fn -> nil end)
+    |> assign_new(:__context__, fn -> %{} end)
     |> assign_new(:smart_input_opts, fn -> %{} end)
     |> assign_new(:to_boundaries, fn -> nil end)
     |> assign_new(:page_title, fn -> nil end)

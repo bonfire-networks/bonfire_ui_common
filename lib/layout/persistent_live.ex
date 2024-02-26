@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.PersistentLive do
-  use Bonfire.UI.Common.Web, :surface_live_view
+  use Bonfire.UI.Common.Web, :surface_live_view_child
   # alias Bonfire.UI.Common.SmartInputLive
   alias Bonfire.UI.Common.Presence
 
@@ -254,23 +254,4 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
     {:noreply, assign(socket, assigns)}
   end
-
-  def handle_info(info, socket) do
-    debug(info)
-    Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
-  end
-
-  def handle_event(
-        action,
-        attrs,
-        socket
-      ),
-      do:
-        Bonfire.UI.Common.LiveHandlers.handle_event(
-          action,
-          attrs,
-          socket,
-          __MODULE__
-          # &do_handle_event/3
-        )
 end

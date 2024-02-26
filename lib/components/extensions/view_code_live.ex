@@ -25,7 +25,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
      )}
   end
 
-  def do_handle_params(%{"module" => app_or_module} = params, _url, socket)
+  def handle_params(%{"module" => app_or_module} = params, _url, socket)
       when is_binary(app_or_module) do
     with true <- connected?(socket),
          {:ok, data} <- load_code(params["function"], app_or_module) do
@@ -105,36 +105,9 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
     end
   end
 
-  def do_handle_event("highlight_line", %{"line-number" => line_number}, socket) do
+  def handle_event("highlight_line", %{"line-number" => line_number}, socket) do
     {line_number, _} = Integer.parse(line_number)
 
     {:noreply, assign(socket, :selected_line, line_number)}
   end
-
-  def handle_params(params, uri, socket),
-    do:
-      Bonfire.UI.Common.LiveHandlers.handle_params(
-        params,
-        uri,
-        socket,
-        __MODULE__,
-        &do_handle_params/3
-      )
-
-  def handle_info(info, socket),
-    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
-
-  def handle_event(
-        action,
-        attrs,
-        socket
-      ),
-      do:
-        Bonfire.UI.Common.LiveHandlers.handle_event(
-          action,
-          attrs,
-          socket,
-          __MODULE__
-          # &do_handle_event/3
-        )
 end

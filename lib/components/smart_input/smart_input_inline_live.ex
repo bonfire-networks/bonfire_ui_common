@@ -31,10 +31,4 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
 
   defdelegate handle_event(action, attrs, socket),
     to: SmartInputContainerLive
-
-  def handle_info(info, socket),
-    do: Bonfire.UI.Common.LiveHandlers.handle_info(info, socket, __MODULE__)
-
-  defdelegate handle_params(params, attrs, socket),
-    to: Bonfire.UI.Common.LiveHandlers
 end
