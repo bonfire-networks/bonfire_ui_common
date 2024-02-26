@@ -67,8 +67,9 @@ defmodule Bonfire.UI.Common.Web do
       opts
       |> Keyword.put_new(:namespace, Bonfire.UI.Common.Web)
       |> Keyword.put_new(:root, "lib")
-      # |> maybe_put_layout(:app)
-      |> IO.inspect(label: "layoutzzz")
+
+    # |> maybe_put_layout(:app)
+    # |> IO.inspect(label: "layoutzzz")
 
     quote do
       @moduledoc false
@@ -329,15 +330,12 @@ defmodule Bonfire.UI.Common.Web do
   end
 
   defp live_mount_before_compile(env) do
-    IO.puts("woooo ?")
-
     if Module.defines?(env.module, {:mount, 3}) do
       quote do
         defoverridable mount: 3
 
         def mount(params, session, socket) do
           undead_mount(socket, fn ->
-            IO.puts("woooo :)")
             super(params, session, socket)
           end)
         end
@@ -350,8 +348,6 @@ defmodule Bonfire.UI.Common.Web do
   end
 
   defp handle_params_before_compile(env) do
-    IO.puts("woooo ?")
-
     if Module.defines?(env.module, {:handle_params, 3}) do
       quote do
         defoverridable handle_params: 3
@@ -360,7 +356,6 @@ defmodule Bonfire.UI.Common.Web do
           Bonfire.UI.Common.LiveHandlers.handle_params(params, uri, socket, __MODULE__, fn params,
                                                                                            uri,
                                                                                            socket ->
-            IO.puts("pooo :)")
             super(params, uri, socket)
           end)
         end
@@ -379,15 +374,12 @@ defmodule Bonfire.UI.Common.Web do
   end
 
   defp handle_info_before_compile(env) do
-    IO.puts("woooo ?")
-
     if Module.defines?(env.module, {:handle_info, 2}) do
       quote do
         defoverridable handle_info: 2
 
         def handle_info(msg, socket) do
           Bonfire.UI.Common.LiveHandlers.handle_info(msg, socket, __MODULE__, fn msg, socket ->
-            IO.puts("pooo :)")
             super(msg, socket)
           end)
         end
@@ -406,8 +398,6 @@ defmodule Bonfire.UI.Common.Web do
   end
 
   defp handle_event_before_compile(env) do
-    IO.puts("woooo ?")
-
     if Module.defines?(env.module, {:handle_event, 3}) do
       quote do
         defoverridable handle_event: 3
@@ -416,7 +406,6 @@ defmodule Bonfire.UI.Common.Web do
           Bonfire.UI.Common.LiveHandlers.handle_event(event, params, socket, __MODULE__, fn event,
                                                                                             params,
                                                                                             socket ->
-            IO.puts("pooo :)")
             super(event, params, socket)
           end)
         end
@@ -435,15 +424,12 @@ defmodule Bonfire.UI.Common.Web do
   end
 
   defp live_update_before_compile(env) do
-    IO.puts("woooo ?")
-
     if Module.defines?(env.module, {:update, 2}) do
       quote do
         defoverridable update: 2
 
         def update(assigns, socket) do
           undead_update(socket, fn ->
-            IO.puts("woooo :)")
             super(assigns, socket)
           end)
         end
@@ -462,8 +448,6 @@ defmodule Bonfire.UI.Common.Web do
 
         def render(assigns) do
           undead_render(assigns, fn ->
-            IO.inspect(assigns, label: "rendd :)")
-
             case assigns do
               %{__replace_render__with__: _} ->
                 Bonfire.UI.Common.ErrorComponentLive.replace(assigns)
