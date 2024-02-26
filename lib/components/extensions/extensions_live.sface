@@ -1,5 +1,5 @@
-<div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("Active apps")}</div>
-<div class="m-3"><Bonfire.UI.Common.WidgetAppsLive showing_within={:settings} cols="4" /></div>
+<!-- <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("Active apps")}</div> -->
+<!-- <div class="m-3"><Bonfire.UI.Common.WidgetAppsLive showing_within={:settings} cols="4" /></div> -->
 {!-- <Bonfire.UI.Common.WidgetAppsLive showing_within={:settings} show_disabled_only={true} title={l("Disabled Apps")} cols="4" /> --}
 
 <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("User interface extensions")}</div>
@@ -8,7 +8,7 @@
     <div class="flex items-center justify-between p-4">
       <div class="flex flex-col gap-1">
         <div class="text-sm font-medium">{e(dep, :app, "Unknown")}</div>
-        <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
+        <!-- <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div> -->
       </div>
       <div class="dropdown dropdown-end">
         <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-square">
@@ -44,7 +44,7 @@
     <div class="flex items-center justify-between p-4">
       <div class="flex flex-col gap-1">
         <div class="text-sm font-medium">{e(dep, :app, "Unknown") |> debug("apppp")}</div>
-        <div class="text-sm font-light text-base-content/70">{get_version(dep) |> debug("vvvvv")}</div>
+        <!-- <div class="text-sm font-light text-base-content/70">{get_version(dep) |> debug("vvvvv")}</div> -->
       </div>
       <div class="dropdown dropdown-end">
         <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-square">

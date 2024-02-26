@@ -1,8 +1,8 @@
 <nav class="" role="navigation" aria-label={l("Settings navigation")}>
-  <ul class="-mx-4 menu menu-lg">
+  <ul class="-mx-4 menu menu-sm">
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
-      <div class="p-4 px-2 text-xl font-bold flex items-center gap-4">
-        <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" />
+      <div class="p-2 text-lg font-bold flex items-center gap-4">
+        <!-- <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("General")}</span>
       </div>
       <!-- <li>
@@ -14,14 +14,14 @@
         <LinkLive
           to={~p"/settings/user/profile"}
           class={
-            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "flex items-center gap-3 rounded-md px-2 w-full",
             "bg-base-content/10 ": @selected_tab == "profile"
           }
         >
-          <#Icon
+          <!-- <#Icon
             iconify="carbon:user-avatar"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "profile"}
-          />
+          /> -->
           <span class="text-sm text-base-content/70">{l("Profile")}</span>
         </LinkLive>
       </li>
@@ -30,14 +30,14 @@
         <LinkLive
           to={~p"/settings/account"}
           class={
-            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "flex items-center gap-3 rounded-md px-2 w-full",
             "bg-base-content/10 ": @selected_tab == "account"
           }
         >
-          <#Icon
+          <!-- <#Icon
             iconify="carbon:password"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "account"}
-          />
+          /> -->
           <span class="text-sm text-base-content/70">{l("Account")}</span>
         </LinkLive>
       </li>
@@ -46,14 +46,14 @@
         <LinkLive
           to={~p"/settings/user/preferences/appearance"}
           class={
-            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "flex items-center gap-3 rounded-md px-2 w-full",
             "bg-base-content/10 ": @id == "appearance"
           }
         >
-          <#Icon
+          <!-- <#Icon
             iconify="carbon:paint-brush"
             class={"w-5 h-5 font-normal text-base-content/70", "": @id == "appearance"}
-          />
+          /> -->
           <span class="text-sm text-base-content/70">{l("Appearance")}</span>
         </LinkLive>
       </li>
@@ -61,14 +61,14 @@
         <LinkLive
           to={~p"/settings/user/preferences/behaviours"}
           class={
-            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "flex items-center gap-3 rounded-md px-2 w-full",
             "bg-base-content/10 ": @id == "behaviours"
           }
         >
-          <#Icon
+          <!-- <#Icon
             iconify="carbon:settings-adjust"
             class={"w-5 h-5 font-normal text-base-content/70", "": @id == "behaviours"}
-          />
+          /> -->
           <span class="text-sm text-base-content/70">{l("Preferences")}</span>
         </LinkLive>
       </li>
@@ -78,14 +78,14 @@
         <LinkLive
           to={~p"/settings/user/shared_user"}
           class={
-            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "flex items-center gap-3 rounded-md px-2 w-full",
             "bg-base-content/10 ": @selected_tab == "shared_user"
           }
         >
-          <#Icon
+          <!-- <#Icon
             iconify="carbon:user-multiple"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "shared_user"}
-          />
+          /> -->
           <span class="text-sm text-base-content/70">{l("Team Profiles")}</span>
         </LinkLive>
       </li>
@@ -94,7 +94,7 @@
       <LinkLive
         to={~p"/settings/user/invites"}
         class={
-          "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+          "flex items-center gap-3 rounded-md px-2 w-full",
           "bg-base-content/10 ": @selected_tab == "invites"
         }
       >
@@ -106,8 +106,8 @@
       </LinkLive>
     </li> --}
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
-      <div class="p-4 px-2 text-xl font-bold flex items-center gap-4">
-        <#Icon iconify="material-symbols:shield" class="w-6 h-6 text-base-content/80" />
+      <div class="p-2 text-lg font-bold flex items-center gap-4">
+        <!-- <#Icon iconify="material-symbols:shield" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Safety")}</span>
       </div>
 
@@ -115,14 +115,14 @@
         <LinkLive
           to={~p"/settings/user/flags"}
           class={
-            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "flex items-center gap-3 rounded-md px-2 w-full",
             "bg-base-content/10 ": @selected_tab == "flags"
           }
         >
-          <#Icon
+          <!-- <#Icon
             iconify="carbon:flag"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "flags"}
-          />
+          /> -->
           <span class="text-sm text-base-content/70">{l("My Flags")}</span>
         </LinkLive>
       </li>
@@ -135,14 +135,14 @@
         <LinkLive
           to={~p"/boundaries/ghosted"}
           class={
-            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "flex items-center gap-3 rounded-md px-2 w-full",
             "bg-base-content/10": @selected_tab == "ghosted"
           }
         >
-          <#Icon
+          <!-- <#Icon
             iconify="mingcute:ghost-line"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "ghosted"}
-          />
+          /> -->
           <div class="flex flex-col">
             <span class={
               "text-sm text-base-content/70",
@@ -160,14 +160,14 @@
         <LinkLive
           to={~p"/boundaries/silenced"}
           class={
-            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "flex items-center gap-3 rounded-md px-2 w-full",
             "bg-base-content/10": @selected_tab == "silenced"
           }
         >
-          <#Icon
+          <!-- <#Icon
             iconify="carbon:volume-mute"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "silenced"}
-          />
+          /> -->
           <div class="flex flex-col">
             <span class={
               "text-sm text-base-content/70",
@@ -180,8 +180,8 @@
     </div>
 
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
-      <div class="p-4 px-2 text-xl font-bold flex items-center gap-4">
-        <#Icon iconify="ph:hand-fill" class="w-6 h-6 text-base-content/80" />
+      <div class="p-2 text-lg font-bold flex items-center gap-4">
+        <!-- <#Icon iconify="ph:hand-fill" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Boundaries")}</span>
       </div>
 
@@ -193,8 +193,8 @@
     </div>
 
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
-      <div class="p-4 px-2 text-xl font-bold flex items-center gap-4">
-        <#Icon iconify="material-symbols-light:data-table" class="w-6 h-6 text-base-content/80" />
+      <div class="p-2 text-lg font-bold flex items-center gap-4">
+        <!-- <#Icon iconify="material-symbols-light:data-table" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Migration")}</span>
       </div>
 
@@ -202,14 +202,14 @@
         <LinkLive
           to={~p"/settings/user/import"}
           class={
-            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "flex items-center gap-3 rounded-md px-2 w-full",
             "bg-base-content/10 ": @selected_tab == "import"
           }
         >
-          <#Icon
+          <!-- <#Icon
             iconify="pajamas:import"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "import"}
-          />
+          /> -->
           <span class="text-sm text-base-content/70">{l("Import")}</span>
         </LinkLive>
       </li>
@@ -217,21 +217,21 @@
         <LinkLive
           to={~p"/settings/user/export"}
           class={
-            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "flex items-center gap-3 rounded-md px-2 w-full",
             "bg-base-content/10 ": @selected_tab == "export"
           }
         >
-          <#Icon
+          <!-- <#Icon
             iconify="pajamas:export"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "export"}
-          />
+          /> -->
           <span class="text-sm text-base-content/70">{l("Export")}</span>
         </LinkLive>
       </li>
     </div>
     <div class="pb-4 flex flex-col gap-1">
-      <div class="p-4 px-2 text-xl font-bold flex items-center gap-4">
-        <#Icon iconify="ant-design:code-filled" class="w-6 h-6 text-base-content/80" />
+      <div class="p-2 text-lg font-bold flex items-center gap-4">
+        <!-- <#Icon iconify="ant-design:code-filled" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Advanced")}</span>
       </div>
 
@@ -239,14 +239,14 @@
         <LinkLive
           to={~p"/settings/user/extensions"}
           class={
-            "flex items-center gap-3 rounded-md py-2 px-2 w-full",
+            "flex items-center gap-3 rounded-md px-2 w-full",
             "bg-base-content/10 ": @selected_tab == "extensions"
           }
         >
-          <#Icon
+          <!-- <#Icon
             outline="Puzzle"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
-          />
+          /> -->
           <span class="text-sm text-base-content/70">{l("Extensions")}</span>
         </LinkLive>
       </li>
