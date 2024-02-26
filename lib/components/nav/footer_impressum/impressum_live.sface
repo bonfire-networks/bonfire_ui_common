@@ -3,12 +3,13 @@
   {!-- <LinkLive class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LinkLive> · --}
   <LinkLive class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LinkLive> ·
   <LinkLive class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LinkLive> ·
-  <LinkLive
-    :if={current_user_id(@__context__) ||
+  {#if current_user_id(@__context__) ||
       Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-    class="text-xs link-hover link text-base-content/70"
-    to="/users"
-  >{l("Users")}</LinkLive></div>
+    <LinkLive class="text-xs link-hover link text-base-content/70" to="/users">{l("Users")}</LinkLive>
+    <LinkLive class="text-xs link-hover link text-base-content/70" to="/known_instances">{l("Instances")}</LinkLive>
+  {/if}
+</div>
+
 <div class="mt-4">
   <a
     href="https://bonfirenetworks.org/"

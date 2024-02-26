@@ -25,12 +25,13 @@
       <li :if={@page != "about"}><LinkLive class="text-neutral-content" to="/about">{l("About")}</LinkLive></li>
       <li><LinkLive class="text-base-content" to="/conduct">{l("Code of conduct")}</LinkLive></li>
       <li><LinkLive class="text-base-content" to="/privacy">{l("Privacy")}</LinkLive></li>
-      <li><LinkLive
-          class="text-base-content"
-          :if={current_user(@__context__) || Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-          to="/users"
-        >{l("Users")}</LinkLive>
-      </li>
+      {#if current_user_id(@__context__) ||
+          Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+        <li>
+          <LinkLive class="text-base-content" to="/users">{l("Users")}</LinkLive></li>
+        <li>
+          <LinkLive class="text-base-content" to="/known_instances">{l("Instances")}</LinkLive></li>
+      {/if}
       <li><a class="text-base-content" href="https://bonfirenetworks.org/" target="_blank">{l("About bonfire")}</a></li>
     </ul>
   </div>
