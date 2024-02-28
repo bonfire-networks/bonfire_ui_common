@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.SettingsInputLive do
 
   prop keys, :any, required: true
   prop default_value, :number, default: 0
-
+  prop hidden, :boolean, default: false
   prop name, :string, required: true
   prop description, :string, default: nil
   prop placeholder, :string, default: ""

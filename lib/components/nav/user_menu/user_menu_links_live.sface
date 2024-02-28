@@ -1,5 +1,5 @@
 <li>
-  <div class="border-b border-base-content/5 w-full flex flex-1 mb-2 bg-base-content/5">
+  <div class="border-b border-base-content/5 w-full flex rounded-b-none flex-1 mb-2 bg-base-content/5">
     <LinkLive
       to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
       class="py-2 flex items-center  gap-3 text-sm text-base-content/70 w-full"

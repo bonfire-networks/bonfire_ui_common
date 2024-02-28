@@ -2,7 +2,7 @@
   <div :if={@show_label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div>
   <div class={"flex items-center", "justify-between": !@compact}>
     <div class={"flex flex-col gap-1 mr-2", "order-last ml-2 !mr-0": @compact}>
-      <div class={"text-sm font-normal", "text-base-content/70": @compact} :if={@name}>{@name}</div>
+      <div class={"text-sm font-medium"} :if={@name}>{@name}</div>
       <div class="text-sm font-light text-base-content/70" :if={@description}>{@description}</div>
     </div>
     <input name="scope" value={@scope} type="hidden">
@@ -13,7 +13,7 @@
       type="checkbox"
       checked={if @current_value == @enabled_value,
         do: "checked"}
-      class="toggle toggle-sm"
+      class="toggle toggle-md"
     />
   </div>
 </div>

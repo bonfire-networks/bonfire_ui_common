@@ -10,7 +10,7 @@
     class={e(@widget[:link_class], @link_class)}
     label={@text || @widget[:text] || @widget[:name]}
   >
-    <div class="flex-1 justify-end relative flex items-center gap-5 widget_content">
+    <div class="flex-1 justify-end relative flex items-center gap-5 widget_content p-2">
       <span :if={!@without_icon && (@icon || @widget[:icon] || @widget[:icon_active])} class="">
         {#if not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])}
           <Iconify.iconify
