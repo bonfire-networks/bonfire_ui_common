@@ -79,7 +79,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
   end
 
   def maybe_send_assigns(assigns) do
-    # send(self(), {:assign_persistent, persistent_assigns_filter(assigns)})
+    # send(self(), {:assign_persistent_self, persistent_assigns_filter(assigns)})
     maybe_send(assigns[:__context__], persistent_assigns_filter(assigns))
   end
 
@@ -139,7 +139,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     case e(context, :sticky, nil) do
       true ->
         debug("already in PersistentLive process")
-        send(self(), {:assign, assigns})
+        send(self(), {:assign_persistent_self, assigns})
         true
 
       _ ->
@@ -152,7 +152,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
           try_send_self(user_id, presence_token, assigns)
 
-          # PubSub.broadcast(presence_token, {:assign, assigns})
+          # PubSub.broadcast(presence_token, {:assign_persistent_self, assigns})
 
           true
         else
@@ -185,7 +185,8 @@ defmodule Bonfire.UI.Common.PersistentLive do
       # FIXME: this sends to every open Bonfire tab in the current browser
       Enum.map(
         presences,
-        &(send(&1.pid, {:assign, assigns}) |> debug("send to PersistentLive view"))
+        &(send(&1.pid, {:assign_persistent_self, assigns})
+          |> debug("send to PersistentLive view"))
       )
     else
       if attempt < 10 do
@@ -207,7 +208,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     {:noreply, socket}
   end
 
-  def handle_info({:assign, {:smart_input, assigns}}, socket) do
+  def handle_info({:assign_persistent_self, {:smart_input, assigns}}, socket) do
     debug("forward assigns from PersistentLive to the SmartInputContainerLive stateful component")
 
     assigns
@@ -218,7 +219,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     {:noreply, socket}
   end
 
-  def handle_info({:assign, {:media_player, assigns}}, socket) do
+  def handle_info({:assign_persistent_self, {:media_player, assigns}}, socket) do
     debug("forward assigns from PersistentLive to the media_player_modal stateful component")
 
     maybe_send_update(Bonfire.UI.Common.ReusableModalLive, "media_player_modal", assigns)
@@ -226,7 +227,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     {:noreply, socket}
   end
 
-  def handle_info({:assign, {:notification, assigns}}, socket) do
+  def handle_info({:assign_persistent_self, {:notification, assigns}}, socket) do
     debug("forward assigns from PersistentLive to the NotificationLive stateful component")
 
     maybe_send_update(Bonfire.UI.Common.NotificationLive, :notification, assigns)
@@ -234,7 +235,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     {:noreply, socket}
   end
 
-  def handle_info({:assign, assigns}, socket) do
+  def handle_info({:assign_persistent_self, assigns}, socket) do
     assigns =
       assigns
       #  |> debug("received assigns for PersistentLive")
