@@ -145,21 +145,24 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   defp maybe_handle_info({{mod, name}, data}, socket) when is_atom(mod) do
     debug("LiveHandler: handle_info with {{#{mod}, #{inspect(name)}}, data}")
 
-    mod_delegate(mod, :handle_info, [{name, data}], socket)
+    mod_delegate(mod, :handle_info, [{name, data}], socket, &no_handle_info/2)
   end
 
   defp maybe_handle_info({info, data}, socket) when is_binary(info) do
-    debug("LiveHandler: handle_info with {#{info}, data}")
-
     case String.split(info, ":", parts: 2) do
-      [mod, name] -> mod_delegate(mod, :handle_info, [{name, data}], socket)
-      _ -> no_handle_info(socket)
+      [mod, name] ->
+        debug("LiveHandler: handle_info with {#{info}, data}")
+        mod_delegate(mod, :handle_info, [{name, data}], socket, &no_handle_info/2)
+
+      _ ->
+        debug("LiveHandler: handle_info with no module/fun to delegate to")
+        no_handle_info(socket)
     end
   end
 
   defp maybe_handle_info({mod, data}, socket) when is_atom(mod) do
     debug("LiveHandler: handle_info with {#{mod}, data}")
-    mod_delegate(mod, :handle_info, [data], socket)
+    mod_delegate(mod, :handle_info, [data], socket, &no_handle_info/2)
   end
 
   defp maybe_handle_info({_ref, {:phoenix, :send_update, _}}, socket) do
@@ -177,7 +180,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     no_handle_info(socket)
   end
 
-  defp no_handle_info(socket) do
+  defp no_handle_info(_other \\ nil, socket) do
     {:noreply,
      socket
      |> assign_generic(
@@ -300,7 +303,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   defp maybe_delegate_handle_params(_, _, socket), do: empty(socket)
 
-  def mod_delegate(mod, fun, args, socket) do
+  def mod_delegate(mod, fun, args, socket, no_delegation_fn \\ &no_live_handler/2) do
     # debug("attempt delegating to #{inspect fun} in #{inspect mod}...")
     fallback =
       if(is_atom(mod), do: mod, else: maybe_to_module(mod))
@@ -327,13 +330,13 @@ defmodule Bonfire.UI.Common.LiveHandlers do
             apply(fallback, fun, args ++ [socket])
           else
             warn(module, "LiveHandler: handler module not enabled")
-            no_live_handler({fun, List.first(args)}, socket)
+            no_delegation_fn.({fun, List.first(args)}, socket)
           end
         end
 
       _ ->
         debug(mod, "LiveHandler: no handler to delegate to for")
-        no_live_handler({fun, List.first(args)}, socket)
+        no_delegation_fn.({fun, List.first(args)}, socket)
     end
   end
 
