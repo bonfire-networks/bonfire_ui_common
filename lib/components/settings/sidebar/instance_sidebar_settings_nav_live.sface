@@ -24,10 +24,10 @@
             "bg-base-content/10": @selected_tab == "configuration"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="ri:settings-4-line"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "configuration"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("General")}</span>
         </LinkPatchLive>
       </li>
@@ -40,10 +40,10 @@
             "bg-base-content/10 ": @id == "appearance"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="carbon:paint-brush"
             class={"w-4 h-4 font-normal text-base-content/70", "": @id == "appearance"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Default Appearance")}</span>
         </LinkLive>
       </li>
@@ -56,10 +56,10 @@
             "bg-base-content/10 ": @id == "behaviours"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="carbon:settings-adjust"
             class={"w-4 h-4 font-normal text-base-content/70", "": @id == "behaviours"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Default Preferences")}</span>
         </LinkLive>
       </li>
@@ -72,10 +72,10 @@
             "bg-base-content/10": @selected_tab == "terms"
           }
         >
-          <!-- <#Icon
+          <#Icon
             solid="Scale"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "terms"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Terms / Policies")}</span>
         </LinkPatchLive>
       </li>
@@ -83,7 +83,7 @@
 
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <!-- <#Icon iconify="fluent:people-community-48-filled" class="w-6 h-6 text-base-content/80" /> -->
+        <#Icon iconify="fluent:people-community-48-filled" class="w-6 h-6 text-base-content/80" />
         <span>{l("Members")}</span>
       </div>
 
@@ -95,10 +95,10 @@
             "bg-base-content/10": @selected_tab == "members"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="carbon:user-multiple"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "members"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Instance members")}</span>
         </LinkPatchLive>
       </li>
@@ -110,10 +110,10 @@
             "bg-base-content/10": @selected_tab == "remote_users"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="carbon:user-multiple"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "remote_users"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Known remote users")}</span>
         </LinkPatchLive>
       </li>
@@ -127,10 +127,10 @@
             "bg-base-content/10": @selected_tab == "invites"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="mingcute:invite-line"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "invites"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Invites")}</span>
         </LinkPatchLive>
       </li>
@@ -138,7 +138,7 @@
 
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <!-- <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" /> -->
+        <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" />
         <span>{l("Safety")}</span>
       </div>
 
@@ -151,10 +151,10 @@
             "bg-base-content/10": @selected_tab == "flags"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="carbon:flag"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "flags"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Flagged by users")}</span>
         </LinkPatchLive>
       </li>
@@ -171,10 +171,10 @@
             "bg-base-content/10": @selected_tab == "instance_ghosted"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="mingcute:ghost-line"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "instance_ghosted"}
-          /> -->
+          />
           <div class="flex flex-col">
             <span class={
               "text-sm text-base-content/70",
@@ -198,10 +198,10 @@
             "bg-base-content/10": @selected_tab == "instance_silenced"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="carbon:volume-mute"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "instance_silenced"}
-          /> -->
+          />
           <div class="flex flex-col">
             <span class={
               "text-sm text-base-content/70",
@@ -215,7 +215,7 @@
 
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <!-- <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" /> -->
+        <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" />
         <span>{l("Boundaries")}</span>
       </div>
       <Bonfire.UI.Common.ExtensionsSidebarSettingsNavLive
@@ -227,7 +227,7 @@
 
     <div class="pb-4 flex flex-col gap-1">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <!-- <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" /> -->
+        <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" />
         <span>{l("Advanced")}</span>
       </div>
 
@@ -239,11 +239,27 @@
             "bg-base-content/10": @selected_tab == "extensions"
           }
         >
-          <!-- <#Icon
+          <#Icon
             solid="Puzzle"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Extensions")}</span>
+        </LinkPatchLive>
+      </li>
+
+      <li>
+        <LinkPatchLive
+          to={~p"/settings/instance/icons"}
+          class={
+            "flex items-center gap-3 rounded-md px-2 w-full",
+            "bg-base-content/10": @selected_tab == "icons"
+          }
+        >
+          <#Icon
+            iconify="ic:round-drag-indicator"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "icons"}
+          />
+          <span class="text-sm text-base-content/70">{l("Icons")}</span>
         </LinkPatchLive>
       </li>
     </div>

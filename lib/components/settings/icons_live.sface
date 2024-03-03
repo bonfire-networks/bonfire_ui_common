@@ -1,10 +1,10 @@
-<ul>
-  {#for {family, icons} <- Iconify.list_components()}
-    <li>{family}:
+<ul class="ml-4">
+  {#for {family, icons} <- if socket_connected?(@__context__), do: Iconify.list_all_existing(), else: []}
+    <li><h2 class="mt-2 text-lg text-base-content/90">{family}</h2>
       <ul>
-        {#for icon <- icons}
-          <li><Iconify.iconify icon={icon} /> {String.split("#{icon}", ".", parts: 2)
-            |> Enum.at(1)}</li>
+        {#for icon <- Enum.sort(icons)}
+          <li class="flex gap-4 text-base-content/60"><Iconify.iconify icon={icon} class="w-10 h-10 text-base-content/80" /> <pre>{String.split("#{icon}", ".", parts: 2)
+|> List.last()}</pre></li>
         {/for}
       </ul>
     </li>

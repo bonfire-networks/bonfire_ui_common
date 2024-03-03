@@ -42,7 +42,7 @@
           to="/settings/instance"
           class={"btn btn-sm btn-ghost btn-circle", "btn-active": @selected_tab == "instance_dashboard"}
         >
-          <#Icon iconify="ri:apps-2-line" class="w-5 h-5 shrink-0 text-base-content/70" />
+          <#Icon iconify="bi:house-gear" class="w-5 h-5 shrink-0 text-base-content/70" />
           <span class="sr-only">{l("Instance Settings")}</span>
         </LinkLive>
       </div>
