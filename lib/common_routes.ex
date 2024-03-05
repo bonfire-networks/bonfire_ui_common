@@ -64,7 +64,7 @@ defmodule Bonfire.UI.Common.Routes do
 
         # plug(:load_current_auth) # do we need this here?
 
-        # plug(Bonfire.UI.Common.MaybeStaticGeneratorPlug)
+        plug(Bonfire.UI.Common.MaybeStaticGeneratorPlug)
 
         plug(:fetch_live_flash)
 

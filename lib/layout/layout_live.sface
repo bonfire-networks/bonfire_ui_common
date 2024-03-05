@@ -135,7 +135,7 @@
           </div>
         </div>
       </div>
-      <Bonfire.UI.Common.NavFooterMobileUserLive :if={!is_nil(@current_user_id)} page={@page} />
+      <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(@current_user_id)} page={@page} />
     </div>
     <div
       :if={!@without_secondary_widgets}

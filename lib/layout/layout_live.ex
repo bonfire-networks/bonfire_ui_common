@@ -63,8 +63,10 @@ defmodule Bonfire.UI.Common.LayoutLive do
     render(assigns)
   end
 
+  @decorate time()
   render_sface_or_native(prepare_assigns_fn: :prepare_assigns)
 
+  @decorate time()
   def prepare_assigns(assigns) do
     # NOTE: we need to also set default props this way until we can convert LayoutView to use Surface
     assigns

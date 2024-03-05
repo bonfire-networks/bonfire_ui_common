@@ -5,23 +5,23 @@ defmodule Bonfire.UI.Common.StaticFallbackController do
     url = Path.join(["/"] ++ List.wrap(path))
     info(url, "static page does not yet exist")
 
-    with :ok <- Bonfire.UI.Common.StaticGenerator.generate(url) do
-      public_url = Path.join(["/", Bonfire.UI.Common.StaticGenerator.base_path(), url])
-
-      info(
-        public_url,
-        "static page was generated, now serving the static assets at this URL"
-      )
+    with %{error: _} <- Bonfire.UI.Common.StaticGenerator.generate(url) do
+      error(url, "Could not generate static file")
 
       conn
-      |> redirect_to(public_url)
+      |> send_resp(404, "Page not found")
       |> halt()
     else
-      e ->
-        error(e)
+      _ ->
+        public_url = Path.join(["/", Bonfire.UI.Common.StaticGenerator.base_path(), url])
+
+        info(
+          public_url,
+          "static page was generated, now serving the static assets at this URL"
+        )
 
         conn
-        |> send_resp(404, "Page not found")
+        |> redirect_to(public_url)
         |> halt()
     end
   end

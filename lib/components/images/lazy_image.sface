@@ -26,7 +26,7 @@
       {#match _}
         {!--
         <!-- blurred JPEG (deprecated in favour of blurhash) -->
-        {#case socket_connected?(@__context__) and
+        {#case socket_connected?(@__context__) &&
             (is_binary(src) and Bonfire.Files.Blurred.blurred(src, skip_creation: true))}
           {#match blurred when is_binary(blurred) and blurred != src}
             <img

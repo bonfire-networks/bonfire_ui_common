@@ -32,7 +32,7 @@
         <li>
           <LinkLive class="text-base-content" to="/known_instances">{l("Instances")}</LinkLive></li>
       {/if}
-      <li><a class="text-base-content" href="https://bonfirenetworks.org/" target="_blank">{l("About bonfire")}</a></li>
+      <li><a class="text-base-content" href="https://bonfirenetworks.org/" target="_blank">{l("About Bonfire")}</a></li>
     </ul>
   </div>
 </div>

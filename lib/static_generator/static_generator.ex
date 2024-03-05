@@ -9,11 +9,45 @@ defmodule Bonfire.UI.Common.StaticGenerator do
 
   @endpoint Config.get(:endpoint_module, Bonfire.Web.Endpoint)
 
+  use Oban.Worker,
+    queue: :static_generator,
+    max_attempts: 1
+
+  @impl Oban.Worker
+  def perform(_job) do
+    batch()
+    :ok
+  end
+
+  def batch do
+    # TODO: paths to cache in config
+    generate(["/", "/about", "/conduct", "/privacy"])
+  end
+
   def base_path, do: "public"
 
   defp static_dir() do
-    src = Path.join(["priv", "static", base_path()])
-    src <> "/"
+    Path.join(["priv", "static", base_path()]) <> "/"
+  end
+
+  def maybe_generate(urls, opts \\ [])
+
+  def maybe_generate(urls, opts) when is_list(urls) do
+    # TODO: ttl
+    dest = dest_dir(opts)
+    opts = opts ++ [dest: dest]
+
+    urls
+    |> Enum.reject(fn url ->
+      full_path = Path.join([dest, url, "index.html"])
+      file_exists_not_expired(full_path)
+    end)
+    |> debug("expired or doesn't exist")
+    |> generate(opts)
+  end
+
+  def maybe_generate(url, opts) do
+    maybe_generate([url], opts)
   end
 
   def generate(urls, opts \\ [])
@@ -21,35 +55,37 @@ defmodule Bonfire.UI.Common.StaticGenerator do
   def generate(urls, opts) when is_list(urls) do
     conn = Phoenix.ConnTest.build_conn()
 
-    dest =
-      Application.app_dir(
-        Config.get(:umbrella_otp_app) || Config.get!(:otp_app),
-        opts[:output_dir] || Config.get([__MODULE__, :output_dir]) ||
-          static_dir()
-      )
-      |> debug("output_dir")
+    dest = opts[:dest] || dest_dir(opts)
 
     maybe_clean_and_copy_assets(dest, opts)
 
     urls
-    |> Enum.map(fn url -> generate_html(conn, url) end)
-    |> debug()
-    |> Enum.map(fn
-      {:error, e} -> {:error, e}
-      {url, content} -> write_file(url, content, dest)
+    |> Enum.map(fn url ->
+      with {:ok, html} <- generate_html(conn, url) do
+        write_file(url, html, dest)
+      end
     end)
-    |> debug()
+    |> IO.inspect(label: "generated and written")
+    |> Enum.frequencies_by(fn
+      {:ok, _path} ->
+        :ok
+
+      other ->
+        error(other, "Could not generate")
+        :error
+    end)
+    |> debug("ret")
   end
 
   def generate(url, opts) do
-    with [ok: _] <- generate([url], opts) do
-      :ok
-    end
+    generate([url], opts)
   end
 
   defp generate_html(conn, url) do
-    with html when is_binary(html) <- html_response(get(conn, url), 200) do
-      {url, html}
+    with html when is_binary(html) <-
+           Phoenix.ConnTest.get(conn, url, %{"cache" => "skip"})
+           |> Phoenix.ConnTest.html_response(200) do
+      {:ok, html}
     else
       e ->
         {:error, e}
@@ -88,6 +124,37 @@ defmodule Bonfire.UI.Common.StaticGenerator do
       :ok
     else
       error -> error(error)
+    end
+  end
+
+  defp dest_dir(opts) do
+    Application.app_dir(
+      Config.get(:umbrella_otp_app) || Config.get!(:otp_app),
+      opts[:output_dir] || Config.get([__MODULE__, :output_dir]) ||
+        static_dir()
+    )
+    |> debug()
+  end
+
+  def file_exists_not_expired(file) do
+    case file_exists_age(file) |> debug("age") do
+      false -> false
+      # seconds
+      age -> age < 60
+    end
+  end
+
+  def file_exists_age(file) when is_binary(file) do
+    with {:ok, %{ctime: ts}} <- File.stat(file, time: :posix) do
+      System.os_time(:second) - ts
+      # date
+      # |> DateTime.from_unix!()
+      # |> debug
+      # |> DateTime.diff(..., DateTime.utc_now(), :second)
+      # |> debug
+    else
+      _ ->
+        false
     end
   end
 end

@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       # make sure this comes before the Phoenix endpoint
       use Bonfire.UI.Common.ErrorReportingPlug
       import Bonfire.Common.Extend
-      require Logger
+      use Untangle
       alias Bonfire.UI.Common.EndpointTemplate
 
       def log_ip(%{remote_ip: remote_ip} = conn, _) when not is_nil(remote_ip) do
@@ -103,13 +103,18 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       plug(RemoteIp)
       plug :log_ip
 
-      plug(Plug.Parsers,
+      @parser_opts [
         parsers: [:urlencoded, :multipart, :json],
         pass: ["*/*"],
         json_decoder: Phoenix.json_library(),
         # TODO: only include if AP lib is available/enabled
         body_reader: {ActivityPub.Web.Plugs.DigestPlug, :read_body, []}
-      )
+      ]
+      # @opts Plug.Parsers.init(@parser_opts)
+      # @decorate time()
+      # defp parsers(conn, _), do: Plug.Parsers.call(conn, @opts)
+      # plug :parsers
+      plug(Plug.Parsers, @parser_opts)
 
       plug(Bonfire.UI.Common.ErrorReportingPlug)
 
