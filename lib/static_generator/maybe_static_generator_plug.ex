@@ -17,7 +17,8 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
 
   def maybe_make_request_path_static(%{private: %{cache: cache}, assigns: %{}} = conn, _)
       when cache not in [nil, false] do
-    if !get_session(conn, :current_user_id) do # because current_user is probably not yet in assigns
+    # because current_user is probably not yet in assigns
+    if !get_session(conn, :current_user_id) do
       debug(cache, "use cache")
       Bonfire.UI.Common.StaticGeneratorPlug.make_request_path_static(conn)
     else
