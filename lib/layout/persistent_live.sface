@@ -1,15 +1,40 @@
-<div class="">
-  {!-- {#if not is_nil(current_user_id(@__context__))} --}
-
-  <Bonfire.UI.Common.LoggedActionsLive
+<div data-role="persistent_live_view" class="relative">
+  {!-- <Bonfire.UI.Common.LoggedActionsLive
     showing_within={@showing_within}
     smart_input_opts={@smart_input_opts}
-  />
-  {!-- {#else}
-    <div />
-  {/if} --}
+  /> --}
 
-  <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
-  <Bonfire.UI.Common.ReusableModalLive id="persistent_modal" />
-  <Bonfire.UI.Common.ReusableModalLive id="media_player_modal" />
+  <div class="absolute bg-base-100 md:t-4 pt-1 w-[60px] left-[-60px] tablet-lg:w-[220px] tablet-lg:left-[-220px] z-[99999999999999]">
+    <Bonfire.UI.Common.LogoLinkLive
+      with_name
+      href="/dashboard"
+      link_opts={phx_hook: "Bonfire.UI.Common.PreviewContentLive#ClosePreviewExtra"}
+    />
+
+    <div class="flex items-center justify-end flex-1 mt-1">
+      <div :if={!Config.get([:ui, :hide_app_switcher])} class="dropdown dropdown-end">
+        <label tabindex="0" class="relative btn btn-sm">
+          <#Icon iconify="ci:grid-round" class="w-5 h-5" />
+        </label>
+        <div tabindex="0" class="z-50 p-2 shadow dropdown-content bg-neutral rounded-box">
+          <Bonfire.UI.Common.AppsLive />
+        </div>
+      </div>
+
+      <Bonfire.UI.Common.SmartInputContainerLive
+        :if={!e(@smart_input_opts, :inline_only, nil) and
+          !e(@smart_input_opts, :disable, nil)}
+        id={:smart_input}
+        smart_input_opts={@smart_input_opts}
+      />
+    </div>
+
+    <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
+    <Bonfire.UI.Common.ReusableModalLive id="persistent_modal" />
+    <Bonfire.UI.Common.ReusableModalLive id="media_player_modal" />
+  </div>
+
+  <div class="relative">
+    <!-- feed goes here -->
+  </div>
 </div>

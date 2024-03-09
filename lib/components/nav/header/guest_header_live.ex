@@ -3,6 +3,6 @@ defmodule Bonfire.UI.Common.GuestHeaderLive do
   prop selected_tab, :any, default: nil
   prop page, :string, default: "home"
 
-  @decorate time()
+  # @decorate time()
   render_sface_or_native()
 end

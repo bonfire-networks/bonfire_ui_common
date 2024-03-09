@@ -48,7 +48,7 @@
     <Bonfire.UI.Common.GuestHeaderLive
       selected_tab={@selected_tab}
       page={@page}
-      :if={is_nil(@current_account_id)}
+      :if={is_nil(@current_account_id) and @without_sidebar}
     />
     <Bonfire.UI.Common.MobileMenuLive
       :if={@current_user_id}
@@ -59,34 +59,19 @@
     <div
       :if={!@without_sidebar}
       data-id="nav_sidebar"
-      class="fixed md:sticky self-start order-first w-full mt-2 top-2 z-[999999999999] md:block"
+      class="fixed md:sticky self-start order-first w-full mt-2 top-2 md:block"
     >
-      <div class="hidden md:flex items-center justify-end tablet-lg:justify-between h-[50px]">
-        <div data-id="logo" class="items-center ml-1 place-content-center">
-          <Bonfire.UI.Common.LogoLinkLive
-            with_name
-            href="/"
-            link_opts={phx_hook: "Bonfire.UI.Common.PreviewContentLive#ClosePreviewExtra"}
-          />
-        </div>
+      <div class="hidden md:flex items-center justify-end tablet-lg:justify-between ml-1">
+        {#if is_nil(@current_user_id)}
+          <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
+        {#else}
+          <div class="h-[100px]" />
+        {/if}
       </div>
 
-      <Bonfire.UI.Common.PersistentLive
-        id={:persistent}
-        sticky
-        :if={@current_user_id}
-        session={%{
-          "context" => %{
-            sticky: true,
-            csrf_token: @csrf_token,
-            # csrf_socket_token: @__context__[:csrf_socket_token],
-            current_user_id: @current_user_id,
-            current_account_id: @current_account_id
-          }
-        }}
-      />
+      {!-- <Bonfire.UI.Common.PersistentLive ... --}
       <nav
-        class="hidden mt-4 w-full md:flex gap-4 flex-col pb-1 max-h-[calc(var(--inner-window-height)_-_140px)] min-h-[calc(var(--inner-window-height)_-_140px)]"
+        class="hidden mt-4 w-full md:flex gap-4 flex-col pb-1 max-h-[calc(var(--inner-window-height)_-_140px)] min-h-[calc(var(--inner-window-height)_-_140px)] z-[999999999999]"
         role="navigation"
         aria-label={l("Extension navigation")}
       >
@@ -108,6 +93,23 @@
         <div class="relative invisible_frame">
           <div class="md:pb-0 md:overflow-y-visible">
             <!-- <Bonfire.UI.Common.PreviewContentLive id="preview_content" /> -->
+
+            <Bonfire.UI.Common.PersistentLive
+              :if={@current_user_id}
+              id={:persistent}
+              sticky
+              container={{:div, class: "fixed md:sticky top-0"}}
+              session={%{
+                "context" => %{
+                  sticky: true,
+                  csrf_token: @csrf_token,
+                  # csrf_socket_token: @__context__[:csrf_socket_token],
+                  current_user_id: @current_user_id,
+                  current_account_id: @current_account_id
+                }
+              }}
+            />
+
             <div
               id="inner"
               class="md:mt-0 flex flex-col md:border-l md:border-r border-base-content/20 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]"

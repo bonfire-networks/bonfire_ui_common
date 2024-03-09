@@ -68,6 +68,7 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
     if socket_connected?(assigns) do
       ~F"""
       <span
+        data-to={@to}
         phx-value-to={@to}
         phx-click={@event_handler}
         phx-hook={@phx_hook}
