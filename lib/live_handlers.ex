@@ -194,6 +194,17 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     {:noreply, assign_attrs(socket, attrs)}
   end
 
+  defp maybe_delegate_event_live_handler(redir_action, %{"to" => to}, socket)
+       when redir_action in ["redirect", "navigate"] and is_binary(to) do
+    debug(to, "LiveHandler: handle_event, redirect")
+
+    {
+      :noreply,
+      socket
+      |> redirect_to(to)
+    }
+  end
+
   # helper for when a searches for an option in `LiveSelect`
   defp maybe_delegate_event_live_handler(
          "live_select_change" = event,
@@ -279,10 +290,10 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     fun.(action, attrs, socket)
   end
 
-  defp maybe_module_provided_handle_event_fun(action, _attrs, socket, _fun) do
+  defp maybe_module_provided_handle_event_fun(action, attrs, socket, _fun) do
     debug(
-      action,
-      "LiveHandler: no such handle_event action defined in module, will try LiveHandlers instead"
+      attrs,
+      "LiveHandler: no handle_event action `#{action}` defined in module, will try LiveHandlers instead"
     )
 
     {:noreply, socket}

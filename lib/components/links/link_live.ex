@@ -20,6 +20,17 @@ defmodule Bonfire.UI.Common.LinkLive do
   """
   prop label, :string
 
+  @doc "What JS hook to attach to the link, if any (possibly overriding the default action of the link)"
+  prop phx_hook, :string, default: nil
+  prop id, :string, default: nil
+
+  @doc "What LiveHandler and/or event name to send the patch event to, if any (possibly overriding the default action of the link)"
+  prop event_handler, :string, default: nil
+
+  @doc "What element (and it's parent view or stateful component) to send the event to"
+  prop event_target, :string, default: nil
+
+  @doc "What browser window/frame to target, eg. `_blank`"
   prop target, :string, default: nil
 
   @doc """
@@ -32,6 +43,31 @@ defmodule Bonfire.UI.Common.LinkLive do
   the value of property `label` is used instead.
   """
   slot default
+
+  def render(%{event_handler: event_handler, phx_hook: phx_hook} = assigns)
+      when is_binary(event_handler) or is_binary(phx_hook) do
+    # TODO: How can I have a phx-click on an anchor without the browser also triggering the default navigation?
+    # <a href={@to}
+    if socket_connected?(assigns) do
+      ~F"""
+      <span
+        phx-value-to={@to}
+        phx-click={@event_handler}
+        phx-hook={@phx_hook}
+        id={if @phx_hook, do: @id || Text.random_string()}
+        phx-target={@event_target}
+        class={@class}
+        opts={@opts}
+        aria-label={@label}
+      >
+        <#slot>{@label}</#slot>
+      </span>
+      """
+    else
+      # fallback to only using a link when LiveView is not available
+      render(Map.drop(assigns, [:event_handler]))
+    end
+  end
 
   def render(%{to: "http" <> _} = assigns) do
     ~F"""

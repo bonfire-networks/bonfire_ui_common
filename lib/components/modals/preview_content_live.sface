@@ -6,50 +6,58 @@
   class={"#{@modal_class}"}
   {...@opts}
 >
+  <div id="extra_contents" class={if @show, do: "hidden"}>
+    <#slot {@extra_contents}>
+      <!-- no extra_contents -->
+    </#slot>
+  </div>
+
   {#if @show}
-    <div class="sticky block backdrop-blur-sm top-0 bg-base-100/70 z-[999]">
-      <div role="banner" class="flex items-center h-[60px] md:h-[56px] flex-1 w-full px-4">
-        <div class="flex items-center w-full">
-          <div class="flex items-center flex-1 w-full gap-2">
-            <button
-              id="close_preview"
-              phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
-              :hook="ClosePreview"
-              aria-label={l("Go back to the previous page")}
-              class="font-normal normal-case btn btn-sm btn-circle btn-ghost"
-            >
-              <#Icon outline="ChevronLeft" class="w-5 h-5 md:w-4 md:h-4 text-base-content" />
-            </button>
-            <span class="max-w-[250px] text-base-content md:max-w-max text-lg font-bold truncate text-ellipsis">{@title_text || l("Discussion")}</span>
+    <div id="the_preview_contents">
+      <div class="sticky block backdrop-blur-sm top-0 bg-base-100/70 z-[999]">
+        <div role="banner" class="flex items-center h-[60px] md:h-[56px] flex-1 w-full px-4">
+          <div class="flex items-center w-full">
+            <div class="flex items-center flex-1 w-full gap-2">
+              <button
+                id="close_preview"
+                :hook="ClosePreview"
+                aria-label={l("Go back to the previous page")}
+                class="font-normal normal-case btn btn-sm btn-circle btn-ghost"
+              >
+                <!--
+              removed for now to avoid hiding the feed (extra_contents)
+               phx-click="Bonfire.UI.Common.OpenPreviewLive:close" -->
+                <#Icon outline="ChevronLeft" class="w-5 h-5 md:w-4 md:h-4 text-base-content" />
+              </button>
+              <span class="max-w-[250px] text-base-content md:max-w-max text-lg font-bold truncate text-ellipsis">{@title_text || l("Discussion")}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="relative z-30">
-      <div
-        class="p-0 z-[910] modal_invisible relative pb-40 md:pb-2 bg-base-100"
-        data-id="modal-contents"
-      >
-        <#slot>
-          {#case @modal_assigns}
-            {#match modal_assigns}
-              {#if not is_nil(e(modal_assigns, :preview_component, nil)) and
-                  module_enabled?(modal_assigns[:preview_component])}
-                <StatefulComponent
-                  id="preview_component"
-                  module={modal_assigns[:preview_component]}
-                  {...modal_assigns}
-                />
-              {#elseif not is_nil(e(modal_assigns, :preview_view, nil)) and module_enabled?(modal_assigns[:preview_view])}
-                {live_render(@socket, modal_assigns[:preview_view],
-                  id: "preview_view",
-                  session: %{"params" => modal_assigns}
-                )}
-              {#else}
-                {l("No preview component or view is available.")}
-              {/if}
-          {/case}
-        </#slot>
+      <div class="relative z-30">
+        <div
+          class="p-0 z-[910] modal_invisible relative pb-40 md:pb-2 bg-base-100"
+          data-id="modal-contents"
+        >
+          <#slot>
+            {#if not is_nil(e(@modal_assigns, :preview_component, nil)) and
+                module_enabled?(@modal_assigns[:preview_component])}
+              <StatefulComponent
+                id="preview_component"
+                module={@modal_assigns[:preview_component]}
+                {...@modal_assigns}
+              />
+            {#elseif not is_nil(e(@modal_assigns, :preview_view, nil)) and
+                module_enabled?(@modal_assigns[:preview_view])}
+              {live_render(@socket, @modal_assigns[:preview_view],
+                id: "preview_view",
+                session: %{"params" => @modal_assigns}
+              )}
+            {#else}
+              {l("No preview component or view is available.")}
+            {/if}
+          </#slot>
+        </div>
       </div>
     </div>
   {/if}

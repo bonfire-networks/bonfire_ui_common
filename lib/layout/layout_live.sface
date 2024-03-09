@@ -63,7 +63,11 @@
     >
       <div class="hidden md:flex items-center justify-end tablet-lg:justify-between h-[50px]">
         <div data-id="logo" class="items-center ml-1 place-content-center">
-          <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
+          <Bonfire.UI.Common.LogoLinkLive
+            with_name
+            href="/"
+            link_opts={phx_hook: "Bonfire.UI.Common.PreviewContentLive#ClosePreviewExtra"}
+          />
         </div>
       </div>
 
@@ -103,7 +107,7 @@
       <div class="justify-between h-full mt-0">
         <div class="relative invisible_frame">
           <div class="md:pb-0 md:overflow-y-visible">
-            <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
+            <!-- <Bonfire.UI.Common.PreviewContentLive id="preview_content" /> -->
             <div
               id="inner"
               class="md:mt-0 flex flex-col md:border-l md:border-r border-base-content/20 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]"

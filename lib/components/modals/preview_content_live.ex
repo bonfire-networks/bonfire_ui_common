@@ -38,6 +38,7 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
   slot action_btns
   slot cancel_btn
   slot title
+  slot extra_contents
 
   def mount(socket) do
     # debug("mounting")
