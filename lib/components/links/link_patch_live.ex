@@ -79,6 +79,7 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
         opts={@opts}
         aria-label={@label}
       >
+        {!-- FIXME: do not generate random ID to avoid re-rendering --}
         <#slot>{@label}</#slot>
       </span>
       """
@@ -94,6 +95,8 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
       patch={@to}
       class={@class}
       replace={@replace}
+      phx-hook="Bonfire.UI.Common.PreviewContentLive#CloseAll"
+      id={@id || Text.random_string()}
       {...@opts |> Keyword.merge("aria-label": @label)}
     >
       <#slot>{@label}</#slot>
