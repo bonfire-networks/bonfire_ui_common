@@ -22,10 +22,12 @@ defmodule Bonfire.UI.Common.TabsLive do
 
   slot default, required: false
 
+  defp l_suffix(%{suffix: suffix}), do: "/#{suffix}"
   defp l_suffix({suffix, _}), do: "/#{suffix}"
   defp l_suffix([t]), do: l_suffix(t)
   defp l_suffix(_), do: nil
 
+  defp l_suffix(%{name: tab_name}), do: localise_dynamic(tab_name)
   defp l_name({_, tab_name}), do: localise_dynamic(tab_name)
   defp l_name([t]), do: l_name(t)
   defp l_name(tab_name), do: localise_dynamic(tab_name)

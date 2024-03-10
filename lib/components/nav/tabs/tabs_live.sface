@@ -34,7 +34,7 @@
       </div>
       <#slot />
     </div>
-  {#elseif @type == :static}
+  {#elseif @type == :header_only}
     <div class="flex justify-between items-center w-full px-6">
       <div class="text-lg font-bold w-full flex-1">
         {@selected_name}
