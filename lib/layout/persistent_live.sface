@@ -36,6 +36,7 @@
     <Bonfire.UI.Common.PreviewContentLive id="preview_content">
       <:extra_contents>
         <div id="the_extra_contents" data-role="persistent_feed">
+          {!-- TODO: get the module (and params) from config --}
           <StatefulComponent
             module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
             id={:persistent_feed}
