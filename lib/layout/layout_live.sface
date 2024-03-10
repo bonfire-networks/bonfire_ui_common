@@ -61,17 +61,13 @@
       data-id="nav_sidebar"
       class="fixed md:sticky self-start order-first w-full mt-2 top-2 md:block"
     >
-      <div class="hidden md:flex items-center justify-end tablet-lg:justify-between ml-1">
-        {#if is_nil(@current_user_id)}
+      <!-- <div class="hidden md:flex items-center justify-end tablet-lg:justify-between ml-1">
           <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
-        {#else}
-          <div class="h-[100px]" />
-        {/if}
-      </div>
+      </div> -->
 
       {!-- <Bonfire.UI.Common.PersistentLive ... --}
       <nav
-        class="hidden mt-4 w-full md:flex gap-4 flex-col pb-1 max-h-[calc(var(--inner-window-height)_-_140px)] min-h-[calc(var(--inner-window-height)_-_140px)] z-[999999999999]"
+        class="hidden mt-[116px] w-full md:flex gap-4 flex-col pb-1 max-h-[calc(var(--inner-window-height)_-130px)] min-h-[calc(var(--inner-window-height)_-130px)] z-[999999999999]"
         role="navigation"
         aria-label={l("Extension navigation")}
       >
