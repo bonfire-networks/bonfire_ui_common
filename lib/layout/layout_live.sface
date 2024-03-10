@@ -61,9 +61,11 @@
       data-id="nav_sidebar"
       class="fixed md:sticky self-start order-first w-full mt-2 top-2 md:block"
     >
-      <!-- <div class="hidden md:flex items-center justify-end tablet-lg:justify-between ml-1">
+      {#if is_nil(@current_user_id)}
+        <div class="hidden md:flex items-center justify-end tablet-lg:justify-between ml-1">
           <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
-      </div> -->
+        </div>
+      {/if}
 
       {!-- <Bonfire.UI.Common.PersistentLive ... --}
       <nav
