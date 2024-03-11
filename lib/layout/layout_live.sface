@@ -62,7 +62,7 @@
       class="fixed md:sticky self-start order-first w-full mt-2 top-2 md:block"
     >
       {#if is_nil(@current_user_id)}
-        <div class="hidden md:flex items-center justify-end tablet-lg:justify-between ml-1">
+        <div class="hidden md:flex items-center justify-end tablet-lg:justify-between mr-1">
           <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
         </div>
       {/if}
