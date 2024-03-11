@@ -45,6 +45,7 @@
             module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
             id={:persistent_feed}
             feed_name={:default}
+            show_back_button
             tab_path_prefix="/feed/"
           />
         </div>

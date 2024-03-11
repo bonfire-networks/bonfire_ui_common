@@ -7,6 +7,7 @@ defmodule Bonfire.UI.Common.TabsLive do
   prop selected_name, :string, default: nil
   prop path_prefix, :string, default: "?tab="
   prop path_suffix, :string, default: nil
+  prop show_back_button, :boolean, default: false
 
   prop link_component, :atom, default: LinkPatchLive
 

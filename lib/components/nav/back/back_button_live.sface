@@ -1,4 +1,5 @@
-{!-- {#if @showing_within == :preview}
+{!-- {#if @showing_within == :preview} --}
+{#if @close_preview}
   <button
     id="close_preview"
     phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
@@ -6,9 +7,9 @@
     label={l("Go back to the previous page")}
     class="btn font-normal normal-case btn-ghost btn-sm btn-circle !inline-flex"
   >
-    <#Icon iconfiy="ion:chevron-back" class="w-5 h-5 text-base-content/70" />
-  </button> --}
-{#if is_binary(@back) and @back != current_url(@__context__)}
+    <#Icon iconify="ion:chevron-back" class="w-5 h-5 text-base-content/70" />
+  </button>
+{#elseif is_binary(@back) and @back != current_url(@__context__)}
   <LinkLive
     to={@back}
     label={l("Go back to the previous page")}

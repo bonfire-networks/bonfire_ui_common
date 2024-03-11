@@ -37,6 +37,10 @@
   {#elseif @type == :header_only}
     <div class="flex justify-between items-center w-full px-6">
       <div class="text-lg font-bold w-full flex-1">
+        {#if @show_back_button}
+          <Bonfire.UI.Common.BackButtonLive close_preview />
+        {/if}
+
         {@selected_name}
       </div>
       <#slot />
