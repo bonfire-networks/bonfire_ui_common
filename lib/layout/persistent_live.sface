@@ -31,7 +31,7 @@
     <Bonfire.UI.Common.ReusableModalLive id="media_player_modal" />
   </div>
 
-  <div class="relative">
+  <div class="relative z-[-1]">
     <!-- feed goes here -->
 
     <Bonfire.UI.Common.PreviewContentLive id="preview_content">

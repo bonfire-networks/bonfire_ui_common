@@ -69,7 +69,11 @@
 
       {!-- <Bonfire.UI.Common.PersistentLive ... --}
       <nav
-        class="hidden mt-[116px] w-full md:flex gap-4 flex-col pb-1 max-h-[calc(var(--inner-window-height)_-130px)] min-h-[calc(var(--inner-window-height)_-130px)] z-[999999999999]"
+        class={
+          "hidden mt-[116px] w-full md:flex gap-4 flex-col pb-1 max-h-[calc(var(--inner-window-height)_-130px)] min-h-[calc(var(--inner-window-height)_-130px)] z-[999999999999]",
+          "!mt-0 pt-4 !max-h-[calc(var(--inner-window-height)_-50)] !min-h-[calc(var(--inner-window-height)_-50)]":
+            is_nil(@current_user_id)
+        }
         role="navigation"
         aria-label={l("Extension navigation")}
       >
@@ -96,7 +100,7 @@
               :if={@current_user_id}
               id={:persistent}
               sticky
-              container={{:div, class: "fixed md:sticky top-0"}}
+              container={{:div, class: "fixed md:sticky top-0 z-[999999999]"}}
               session={%{
                 "context" => %{
                   sticky: true,
@@ -149,7 +153,7 @@
         data-id="right_nav_and_widgets"
         class="order-last hidden lg:block lg:sticky  w-auto lg:top-3 mt-3 self-start z-[998] lg:w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
       >
-        {!-- <div :if={is_nil(@current_user_id)} class="flex flex-col my-4 gap-2">
+        <div :if={is_nil(@current_user_id)} class="flex flex-col my-4 gap-2">
           <LinkLive
             to={path(:login, :index)}
             class="md:flex-1  normal-case rounded-full btn-primary btn btn-sm h-[2.5rem] min-h-[2.5rem]"
@@ -161,7 +165,7 @@
               class="md:flex-1 hidden md:flex !border-primary/30 normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-outline btn-primary btn btn-sm"
             >{l("Create account")}</LinkLive>
           {/if}
-        </div> --}
+        </div>
         {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
           <div class="w-full mb-4">
             <StatelessComponent
@@ -217,7 +221,7 @@
         sticky: true
       )} --}
 
-  <footer
+  <!-- <footer
     :if={is_nil(@current_user_id)}
     class="footer flex lg:mt-12 items-center p-4 text-base-content border-t border-base-content/20"
   >
@@ -227,7 +231,7 @@
     <nav class="grid-flow-col gap-4 place-self-center justify-self-end">
       <span class="text-sm font-light">{l("Designed with")} <a class="link" target="_blank" href="https://bonfirenetworks.org">Bonfire Networks</a></span>
     </nav>
-  </footer>
+  </footer> -->
 </div>
 <Bonfire.UI.Common.ReusableModalLive id="modal" />
 <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} />
