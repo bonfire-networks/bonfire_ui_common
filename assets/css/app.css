@@ -156,7 +156,7 @@ div[data-id="preview_content"][data-show], div[data-id="preview_content"] [data-
 
 
 div[data-id="preview_content"][data-hide], div[data-id="preview_content"] [data-hide] {
-  @apply invisible h-0;
+  @apply invisible h-0 overflow-hidden;
 }
 /*  subject_live */
 div[data-id="subject"][data-main-object] {
