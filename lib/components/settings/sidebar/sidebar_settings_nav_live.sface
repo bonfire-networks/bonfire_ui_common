@@ -18,10 +18,10 @@
             "bg-base-content/10 ": @selected_tab == "profile"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="carbon:user-avatar"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "profile"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Profile")}</span>
         </LinkLive>
       </li>
@@ -34,10 +34,10 @@
             "bg-base-content/10 ": @selected_tab == "account"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="carbon:password"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "account"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Account")}</span>
         </LinkLive>
       </li>
@@ -50,10 +50,10 @@
             "bg-base-content/10 ": @id == "appearance"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="carbon:paint-brush"
             class={"w-5 h-5 font-normal text-base-content/70", "": @id == "appearance"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Appearance")}</span>
         </LinkLive>
       </li>
@@ -65,10 +65,10 @@
             "bg-base-content/10 ": @id == "behaviours"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="carbon:settings-adjust"
             class={"w-5 h-5 font-normal text-base-content/70", "": @id == "behaviours"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Preferences")}</span>
         </LinkLive>
       </li>
@@ -82,10 +82,10 @@
             "bg-base-content/10 ": @selected_tab == "shared_user"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="carbon:user-multiple"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "shared_user"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Team Profiles")}</span>
         </LinkLive>
       </li>
@@ -119,10 +119,10 @@
             "bg-base-content/10 ": @selected_tab == "flags"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="carbon:flag"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "flags"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("My Flags")}</span>
         </LinkLive>
       </li>
@@ -139,10 +139,10 @@
             "bg-base-content/10": @selected_tab == "ghosted"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="mingcute:ghost-line"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "ghosted"}
-          /> -->
+          />
           <div class="flex flex-col">
             <span class={
               "text-sm text-base-content/70",
@@ -164,10 +164,10 @@
             "bg-base-content/10": @selected_tab == "silenced"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="carbon:volume-mute"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "silenced"}
-          /> -->
+          />
           <div class="flex flex-col">
             <span class={
               "text-sm text-base-content/70",
@@ -206,10 +206,10 @@
             "bg-base-content/10 ": @selected_tab == "import"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="pajamas:import"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "import"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Import")}</span>
         </LinkLive>
       </li>
@@ -221,10 +221,10 @@
             "bg-base-content/10 ": @selected_tab == "export"
           }
         >
-          <!-- <#Icon
+          <#Icon
             iconify="pajamas:export"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "export"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Export")}</span>
         </LinkLive>
       </li>
@@ -243,10 +243,10 @@
             "bg-base-content/10 ": @selected_tab == "extensions"
           }
         >
-          <!-- <#Icon
+          <#Icon
             outline="Puzzle"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
-          /> -->
+          />
           <span class="text-sm text-base-content/70">{l("Extensions")}</span>
         </LinkLive>
       </li>

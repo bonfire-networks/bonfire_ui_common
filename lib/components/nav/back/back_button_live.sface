@@ -1,5 +1,4 @@
-{!-- {#if @showing_within == :preview} --}
-{#if @close_preview}
+{#if @type == :preview}
   <button
     id="close_preview"
     phx-click="Bonfire.UI.Common.OpenPreviewLive:close"

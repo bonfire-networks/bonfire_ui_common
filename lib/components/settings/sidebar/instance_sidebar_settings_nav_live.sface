@@ -83,7 +83,7 @@
 
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <#Icon iconify="fluent:people-community-48-filled" class="w-6 h-6 text-base-content/80" />
+        <!-- <#Icon iconify="fluent:people-community-48-filled" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Members")}</span>
       </div>
 
@@ -111,8 +111,8 @@
           }
         >
           <#Icon
-            iconify="carbon:user-multiple"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "remote_users"}
+            iconify="arcticons:fediverse"
+            class={"w-5 h-5 font-extrabold text-base-content/100", "": @selected_tab == "remote_users"}
           />
           <span class="text-sm text-base-content/70">{l("Known remote users")}</span>
         </LinkPatchLive>
@@ -138,7 +138,7 @@
 
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" />
+        <!-- <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Safety")}</span>
       </div>
 
@@ -215,7 +215,7 @@
 
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" />
+        <!-- <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Boundaries")}</span>
       </div>
       <Bonfire.UI.Common.ExtensionsSidebarSettingsNavLive
@@ -227,7 +227,7 @@
 
     <div class="pb-4 flex flex-col gap-1">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" />
+        <!-- <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Advanced")}</span>
       </div>
 
