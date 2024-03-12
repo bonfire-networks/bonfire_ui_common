@@ -247,11 +247,6 @@ article.replied::after {
   background-color: oklch(var(--bc) / 0.3);
 }
 
-article .prose img.emoji {
-  height: 38px;
-  margin: 0 !important;
-  display: inline-block;
-}
 
 
 div article[data-compact] {
@@ -1212,6 +1207,14 @@ hex-input::part(input) {
   mask-position: center;
   min-width: 0.5rem;
   min-height: 0.5rem;
+}
+
+
+.prose img.emoji {
+  height: 1.2em;
+  width: auto;
+  margin: 0 !important;
+  display: inline-block;
 }
 
 .exdiff-del { color: red; text-decoration: line-through; }

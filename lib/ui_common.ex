@@ -278,9 +278,13 @@ defmodule Bonfire.UI.Common do
           # debug("use MD")
 
           content
-          |> Text.maybe_markdown_to_html(Keyword.drop(opts, [:skip_markdown]))
+          |> debug("to convert to markdown")
+          |> Text.maybe_markdown_to_html(
+            opts
+            |> Keyword.drop([:skip_markdown])
+          )
         end
-        # |> debug(content)
+        |> debug("rich content")
         # transform internal links to use LiveView navigation
         |> Text.make_local_links_live()
         # for use in views
@@ -746,6 +750,25 @@ defmodule Bonfire.UI.Common do
     other
   end
 
+  def maybe_assign_context(socket, %{__context__: assigns}) do
+    debug(assigns, "assign updated data with settings")
+
+    socket
+    |> assign_global(assigns)
+  end
+
+  def maybe_assign_context(socket, %{id: "3SERSFR0MY0VR10CA11NSTANCE", data: settings}) do
+    debug(settings, "assign updated instance settings")
+
+    socket
+    |> assign_global(instance_settings: settings)
+  end
+
+  def maybe_assign_context(socket, ret) do
+    debug(ret, "cannot assign updated data with settings")
+    socket
+  end
+
   defp string_for_cookie(message) when byte_size(message) > 2000,
     do: binary_part(message, 0, 2000)
 
@@ -770,19 +793,19 @@ defmodule Bonfire.UI.Common do
     |> assign_flash(:error, Errors.error_msg(msg), assigns, pid)
   end
 
-  def live_upload_files(current_user, metadata, socket) do
-    maybe_consume_uploaded_entries(socket, :files, fn %{path: path} = _meta, entry ->
+  def live_upload_files(module \\ nil, upload_field \\ :files, current_user, metadata, socket) do
+    maybe_consume_uploaded_entries(socket, upload_field, fn %{path: path} = _meta, entry ->
       # debug(meta, "consume_uploaded_entries meta")
       # debug(entry, "consume_uploaded_entries entry")
 
       with {:ok, uploaded} <-
              Bonfire.Files.upload(
-               nil,
+               module,
                current_user,
                path,
                %{
                  client_name: entry.client_name,
-                 metadata: metadata[entry.ref]
+                 metadata: metadata[entry.ref] || metadata
                },
                move_original: true
              )

@@ -236,6 +236,22 @@
       </div>
 
       <li>
+        <LinkPatchLive
+          to={~p"/settings/user/emojis"}
+          class={
+            "flex items-center gap-3 rounded-md px-2 w-full",
+            "bg-base-content/10": @selected_tab == "emojis"
+          }
+        >
+          <#Icon
+            iconify="ri:emotion-happy-line"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "emojis"}
+          />
+          <span class="text-sm text-base-content/70">{l("Custom emoji")}</span>
+        </LinkPatchLive>
+      </li>
+
+      <li>
         <LinkLive
           to={~p"/settings/user/extensions"}
           class={
