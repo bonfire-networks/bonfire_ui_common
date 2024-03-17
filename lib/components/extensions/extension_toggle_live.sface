@@ -1,48 +1,41 @@
 <li>
-  {#if @scope != :instance}
-    {#if current_user(@__context__) &&
-        Bonfire.Common.Settings.get([@id, :modularity], nil, @__context__)
-        |> Bonfire.Common.Extend.disabled_value?()}
+  {#if Bonfire.Common.Extend.disabled_value?(@my_modularity)}
+    {#if !@globally_disabled}
       <button
-        :if={!Bonfire.Common.Extend.disabled_value?(@global_modularity)}
         phx-click="Bonfire.Common.Settings:extension:enable"
         phx-target={@myself}
         phx-value-extension={@id}
         class="w-full normal-case !rounded text-success-content py-1.5 btn btn-success btn-sm"
       >{l("Enable for me")}</button>
+    {#elseif !@can_instance_wide}
+      {l("Disabled on this instance, contact the admins")}
+    {/if}
+  {#else}
+    <button
+      phx-click="Bonfire.Common.Settings:extension:disable"
+      phx-target={@myself}
+      phx-value-extension={@id}
+      class="w-full normal-case !rounded text-warning-content py-1.5 btn btn-warning btn-sm"
+    >{l("Disable for me")}</button>
+  {/if}
+
+  {#if @can_instance_wide}
+    {#if @globally_disabled}
+      <button
+        phx-click="Bonfire.Common.Settings:extension:enable"
+        phx-target={@myself}
+        phx-value-scope={:instance}
+        phx-value-extension={@id}
+        class="w-full normal-case !rounded text-success-content mt-1 py-1.5 btn btn-success btn-sm"
+      >{l("Enable for everyone by default")}</button>
     {#else}
       <button
         phx-click="Bonfire.Common.Settings:extension:disable"
         phx-target={@myself}
+        phx-value-scope={:instance}
         phx-value-extension={@id}
-        class="w-full normal-case !rounded text-error-content py-1.5 btn btn-error btn-sm"
-      >{l("Disable for me")}</button>
-    {/if}
-  {#else}
-    {#if @can_instance_wide}
-      {#if Bonfire.Common.Extend.disabled_value?(@global_modularity)}
-        <button
-          phx-click="Bonfire.Common.Settings:extension:enable"
-          phx-target={@myself}
-          phx-value-scope={:instance}
-          phx-value-extension={@id}
-          class="w-full normal-case !rounded text-success-content py-1.5 btn btn-success btn-sm"
-        >{l("Enable by default")}</button>
-      {#else}
-        <button
-          phx-click="Bonfire.Common.Settings:extension:disable"
-          phx-target={@myself}
-          phx-value-scope={:instance}
-          phx-value-extension={@id}
-          class="w-full normal-case !rounded text-error-content py-1.5 btn btn-error btn-sm"
-        >{l("Disable for everyone")}</button>
-      {/if}
-    {#else}
-      {#if Bonfire.Common.Extend.disabled_value?(@global_modularity)}
-        {l("Disabled on this instance")}
-      {#else}
-        {l("Enabled on this instance")}
-      {/if}
+        class="w-full normal-case !rounded text-error-content mt-1 py-1.5 btn btn-error btn-sm"
+      >{l("Disable for everyone")}</button>
     {/if}
   {/if}
 </li>
