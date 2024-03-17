@@ -76,7 +76,17 @@ defmodule Bonfire.UI.Common.ComponentID do
     component_ids = component_ids(component_module, object_id)
 
     if component_ids == [] do
-      warn(object_id, "ComponentID: no such components found #{component_module} for object(s)")
+      warn(
+        object_id,
+        "ComponentID: no such components found #{component_module} for object(s), try as regular ID"
+      )
+
+      Bonfire.UI.Common.maybe_send_update(
+        component_module,
+        object_id,
+        assigns,
+        pid
+      )
     else
       for component_id <- component_ids do
         debug(component_id, "ComponentID: try stateful component with ID")
