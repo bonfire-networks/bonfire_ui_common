@@ -55,7 +55,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
     modules =
       if app do
         Application.spec(app, :modules)
-      end
+      end || []
 
     module =
       module ||
@@ -72,9 +72,11 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
 
   defp do_load_code(function \\ nil, module, modules, app) do
     with {:ok, filename, code} <- Extend.module_file_code(module) do
+      name = Types.module_to_str(module)
+
       {:ok,
        %{
-         page_title: l("View Code") <> ": #{module}",
+         page_title: l("View Code") <> ": #{name}",
          app: app,
          module: module,
          #  modules: Application.spec(Application.get_application(module), :modules),
@@ -92,9 +94,9 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
              main:
                Enum.map(modules, fn module ->
                  %{
-                   name: module,
+                   name: String.trim_leading(Types.module_to_str(module), "Bonfire."),
                    href: "/settings/extensions/code/#{module}",
-                   link_class: "flex items-center w-full rounded-md",
+                   link_class: "flex items-center w-full rounded-md text-sm",
                    type: :link
                  }
                end)

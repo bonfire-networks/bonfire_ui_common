@@ -5,171 +5,61 @@
 <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("User interface extensions")}</div>
 <div class="m-3 divide-y rounded-lg bg-base-content/5 divide-base-300">
   {#for dep <- e(@data, :ui, nil) || @ui}
-    <div class="flex gap-2 items-center justify-start p-4">
-      <div>
-        <Iconify.iconify
-          icon={e(dep, :extra, :icon_active, nil) || e(dep, :extra, :icon, nil) || "heroicons-outline:puzzle"}
-          class={e(dep, :extra, :icon_class, nil) || "w-8 h-8", "text-base-content"}
-        />
-      </div>
-      <div class="flex flex-col gap-1">
-        <div class="text-sm font-medium">{e(dep, :extra, :name, nil) || e(dep, :app, "Unknown")}</div>
-        <div class="text-sm font-light text-base-content/70">{e(dep, :extra, :description, nil)}</div>
-      </div>
-
-      <div class="ml-auto dropdown dropdown-end">
-        <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-square">
-          <#Icon solid="DotsVertical" class="w-[18px] h-[18px] md:w-4 md:h-4 text-base-content/70" />
-        </label>
-        <ul
-          tabindex="0"
-          class="gap-1 p-1 mt-4 z-50 menu-sm rounded-lg shadow menu dropdown-content bg-base-200 w-60 md:w-48 text-neutral-content"
-        >
-          <li><LinkLive to={"/settings/#{@scope || "user"}/#{e(dep, :app, nil)}"} class="flex-1 block w-full">{l("Extension settings")}</LinkLive></li>
-          <li>{l("Version")} {get_version(dep)}</li>
-          {#case get_link(dep)}
-            {#match "#"}
-            {#match link}
-              <li><a href={link} target="_blank" class="flex-1 block w-full">{l("View code repository")}</a></li>
-          {/case}
-          <li><a href={get_code_link(dep)} target="_blank" class="flex-1 block w-full">{l("View running code")}</a></li>
-          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full">{l("View code changes")}</a></li>
-          {#if to_string(e(dep, :app, nil)) not in @required_deps}
-            <Bonfire.UI.Common.ExtensionToggleLive
-              id={e(dep, :app, nil)}
-              scope={@scope}
-              can_instance_wide={@can_instance_wide}
-            />
-          {/if}
-        </ul>
-      </div>
-    </div>
+    <Bonfire.UI.Common.ExtensionsDetailsLive
+      dep={dep}
+      scope={@scope}
+      can_instance_wide={@can_instance_wide}
+      required_deps={@required_deps}
+    />
   {/for}
 </div>
 
 <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("Bonfire extensions")}</div>
 <div class="m-3 divide-y rounded-lg bg-base-content/5 divide-base-300">
   {#for dep <- e(@data, :feature_extensions, nil) || @feature_extensions}
-    <div class="flex items-center justify-between p-4">
-      <div class="flex flex-col gap-1">
-        <div class="text-sm font-medium">{e(dep, :app, "Unknown") |> debug("apppp")}</div>
-        <!-- <div class="text-sm font-light text-base-content/70">{get_version(dep) |> debug("vvvvv")}</div> -->
-      </div>
-      <div class="dropdown dropdown-end">
-        <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-square">
-          <#Icon solid="DotsVertical" class="w-[18px] h-[18px] md:w-4 md:h-4 text-base-content/70" />
-        </label>
-        <ul
-          tabindex="0"
-          class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48"
-        >
-          <li><LinkLive to={"/settings/#{@scope || "user"}/#{e(dep, :app, nil)}"} class="flex-1 block w-full">{l("Extension settings")}</LinkLive></li>
-          <li><a
-              href={get_link(dep) |> debug(e(dep, :app, "Unknown"))}
-              target="_blank"
-              class="flex-1 block w-full"
-            >{l("View code repository")}</a></li>
-          <li><a href={get_code_link(dep)} target="_blank" class="flex-1 block w-full">{l("View running code")}</a></li>
-          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full">{l("View code changes")}</a></li>
-          {#if to_string(e(dep, :app, nil)) not in @required_deps}
-            <li><Bonfire.UI.Common.ExtensionToggleLive
-                scope={@scope}
-                can_instance_wide={@can_instance_wide}
-                id={e(dep, :app, nil)}
-              />
-            </li>
-          {/if}
-        </ul>
-      </div>
-    </div>
+    <Bonfire.UI.Common.ExtensionsDetailsLive
+      dep={dep}
+      scope={@scope}
+      can_instance_wide={@can_instance_wide}
+      required_deps={@required_deps}
+    />
   {/for}
 </div>
 
 <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("Bonfire schemas")}</div>
 <div class="m-3 divide-y rounded-lg bg-base-content/5 divide-base-300">
   {#for dep <- e(@data, :schemas, nil) || @schemas}
-    <div class="flex items-center justify-between p-4">
-      <div class="flex flex-col gap-1">
-        <div class="text-sm font-medium">{e(dep, :app, "Unknown")}</div>
-        <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
-      </div>
-      <div class="dropdown dropdown-end">
-        <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-square">
-          <#Icon solid="DotsVertical" class="w-[18px] h-[18px] md:w-4 md:h-4 text-base-content/70" />
-        </label>
-        <ul
-          tabindex="0"
-          class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48"
-        >
-          <li>
-            <li><LinkLive to={"/settings/#{@scope || "user"}/#{e(dep, :app, nil)}"} class="flex-1 block w-full">{l("Extension settings")}</LinkLive></li>
-            <a
-              href={get_link(dep) |> debug(e(dep, :app, "Unknown"))}
-              target="_blank"
-              class="flex-1 block w-full"
-            >{l("View code repository")}</a></li>
-          <li><a href={get_code_link(dep)} target="_blank" class="flex-1 block w-full">{l("View running code")}</a></li>
-          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full">{l("View code changes")}</a></li>
-        </ul>
-      </div>
-    </div>
+    <Bonfire.UI.Common.ExtensionsDetailsLive
+      dep={dep}
+      scope={@scope}
+      can_instance_wide={@can_instance_wide}
+      required_deps={@required_deps}
+    />
   {/for}
 </div>
 
 <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("Ecosystem libraries")}</div>
 <div class="m-3 divide-y rounded-lg bg-base-content/5 divide-base-300">
   {#for dep <- e(@data, :ecosystem_libs, nil) || @ecosystem_libs}
-    <div class="flex items-center justify-between p-4">
-      <div class="flex flex-col gap-1">
-        <div class="text-sm font-medium">{e(dep, :app, "Unknown")}</div>
-        <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
-      </div>
-      <div class="dropdown dropdown-end">
-        <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-square">
-          <#Icon solid="DotsVertical" class="w-[18px] h-[18px] md:w-4 md:h-4 text-base-content/70" />
-        </label>
-        <ul
-          tabindex="0"
-          class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48"
-        >
-          <li><a
-              href={get_link(dep) |> debug(e(dep, :app, "Unknown"))}
-              target="_blank"
-              class="flex-1 block w-full"
-            >{l("View code repository")}</a></li>
-          <li><a href={get_code_link(dep)} target="_blank" class="flex-1 block w-full">{l("View running code")}</a></li>
-          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full">{l("View code changes")}</a></li>
-        </ul>
-      </div>
-    </div>
+    <Bonfire.UI.Common.ExtensionsDetailsLive
+      dep={dep}
+      scope={@scope}
+      can_instance_wide={@can_instance_wide}
+      required_deps={@required_deps}
+      hide_icon
+    />
   {/for}
 </div>
 
 <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("External libraries")}</div>
 <div class="m-3 divide-y rounded-lg bg-base-content/5 divide-base-300">
-  {#for dep <- (e(@data, :other_deps, nil) || @other_deps) |> debug("eee")}
-    <div class="flex items-center justify-between p-4">
-      <div class="flex flex-col gap-1">
-        <div class="text-sm font-medium">{e(dep, :app, "Unknown")}</div>
-        <div class="text-sm font-light text-base-content/70">{get_version(dep)}</div>
-      </div>
-      <div class="dropdown dropdown-end">
-        <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-square">
-          <#Icon solid="DotsVertical" class="w-[18px] h-[18px] md:w-4 md:h-4 text-base-content/70" />
-        </label>
-        <ul
-          tabindex="0"
-          class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48"
-        >
-          <li><a
-              href={get_link(dep) |> debug(e(dep, :app, "Unknown"))}
-              target="_blank"
-              class="flex-1 block w-full"
-            >{l("View code repository")}</a></li>
-          <li><a href={get_code_link(dep)} target="_blank" class="flex-1 block w-full">{l("View running code")}</a></li>
-          <li><a href={get_version_link(dep)} target="_blank" class="flex-1 block w-full">{l("View code changes")}</a></li>
-        </ul>
-      </div>
-    </div>
+  {#for dep <- e(@data, :other_deps, nil) || @other_deps}
+    <Bonfire.UI.Common.ExtensionsDetailsLive
+      dep={dep}
+      scope={@scope}
+      can_instance_wide={@can_instance_wide}
+      required_deps={@required_deps}
+      hide_icon
+    />
   {/for}
 </div>

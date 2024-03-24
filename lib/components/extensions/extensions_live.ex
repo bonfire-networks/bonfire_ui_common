@@ -10,7 +10,6 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
   prop ecosystem_libs, :list, default: []
   prop other_deps, :list, default: []
 
-  prop get_link, :any
   prop settings_section_title, :string, default: "Bonfire extensions"
 
   def render(assigns) do
@@ -26,7 +25,7 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
       assigns
       |> assign_new(:data, fn ->
         []
-        # cached_data() 
+        cached_data()
       end)
       |> assign_new(:can_instance_wide, fn -> nil end)
       |> assign_new(:required_deps, fn -> [] end)
