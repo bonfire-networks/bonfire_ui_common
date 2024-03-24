@@ -16,7 +16,7 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
   def render(assigns) do
     if socket_connected?(assigns) do
       assigns
-      |> assign_new(:data, fn -> Bonfire.Common.Extensions.data() end)
+      |> assign_new(:data, fn -> cached_data() end)
       |> assign_new(:can_instance_wide, fn ->
         Bonfire.Boundaries.can?(assigns[:__context__], :toggle, :instance)
       end)
@@ -24,10 +24,15 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
       |> render_sface()
     else
       assigns
-      |> assign_new(:data, fn -> [] end)
+      |> assign_new(:data, fn ->
+        []
+        # cached_data() 
+      end)
       |> assign_new(:can_instance_wide, fn -> nil end)
       |> assign_new(:required_deps, fn -> [] end)
       |> render_sface()
     end
   end
+
+  def cached_data, do: Cache.maybe_apply_cached({Bonfire.Common.Extensions, :data}, [])
 end
