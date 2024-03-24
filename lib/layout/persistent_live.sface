@@ -32,8 +32,6 @@
   </div>
 
   <div class="relative z-[-1]">
-    <!-- feed goes here -->
-
     <Bonfire.UI.Common.PreviewContentLive id="preview_content">
       <:extra_contents>
         <div
@@ -41,6 +39,7 @@
           class="border-l border-r border-base-content/20"
           data-role="persistent_feed"
         >
+          <!-- persistent feed -->
           <StatefulComponent
             module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
             id={:persistent_feed}
