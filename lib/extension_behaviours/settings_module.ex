@@ -29,16 +29,18 @@ defmodule Bonfire.UI.Common.SettingsModule do
         |> Enum.into(%{props: props})
 
       module ->
-        Utils.maybe_apply(module, :declared_settings_nav, [], &nav_function_error/2)
+        Utils.maybe_apply(module, :declared_settings_nav, [], &nav_function_error/2) ||
+          function_exported?(module, :declared_component, 0)
     end)
+    |> debug()
+    |> filter_empty([])
+    |> Enum.uniq()
   end
 
   @doc "Load all navs"
   def nav() do
     modules()
     |> modules_nav()
-    # |> debug()
-    |> filter_empty([])
   end
 
   # def nav() do
@@ -60,11 +62,15 @@ defmodule Bonfire.UI.Common.SettingsModule do
     modules
     |> Enum.map(fn
       {module, props} ->
-        Utils.maybe_apply(module, :declared_component, [], &component_function_error/2)
-        |> Enum.into(%{props: props})
+        (function_exported?(module, :declared_component, 0) &&
+           apply(module, :declared_component, []) |> Enum.into(%{data: props})) || nil
+
+      # Utils.maybe_apply(module, :declared_component, [], &component_function_error/2)
+      # |> Enum.into(%{data: props})
 
       module ->
-        Utils.maybe_apply(module, :declared_component, [], &component_function_error/2)
+        (function_exported?(module, :declared_component, 0) &&
+           apply(module, :declared_component, [])) || nil
     end)
   end
 
@@ -98,10 +104,12 @@ defmodule Bonfire.UI.Common.SettingsModule do
     # |> debug
     |> Enum.filter(fn
       {module, _props} ->
-        module_enabled?(module) and function_exported?(module, :declared_component, 0)
+        # module_enabled?(module) and 
+        function_exported?(module, :declared_component, 0)
 
       module ->
-        module_enabled?(module) and function_exported?(module, :declared_component, 0)
+        # module_enabled?(module) and 
+        function_exported?(module, :declared_component, 0)
     end)
   end
 

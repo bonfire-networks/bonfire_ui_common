@@ -2,9 +2,11 @@ defmodule Bonfire.UI.Common.WidgetLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
   prop widget, :any, required: true
-  prop data, :any, default: []
+  prop data, :any, default: nil
+  prop extra_data, :any, default: %{}
   prop without_icon, :boolean, default: false
   prop without_label, :boolean, default: false
+  prop with_title, :boolean, default: false
 
   prop text_class, :css_class,
     required: false,
@@ -21,8 +23,18 @@ defmodule Bonfire.UI.Common.WidgetLive do
   prop skip_badges, :any, default: false
 
   def render(assigns) do
+    widget = widget(assigns[:widget], assigns[:__context__])
+
+    # || Map.drop(widget, [:module, :type]))
+    data =
+      Enum.into(assigns[:data] || e(widget, :data, nil) || [], assigns[:extra_data] || %{})
+      |> debug("daaata")
+
     assigns
-    |> assign(:widget, widget(assigns[:widget], assigns[:__context__]))
+    |> assign(
+      widget: widget,
+      data: data
+    )
     |> render_sface()
   end
 

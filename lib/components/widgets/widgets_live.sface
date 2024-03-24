@@ -1,4 +1,4 @@
-{#for widgets <- @widgets}
+{#for widgets <- debug(@widgets, "widgetts")}
   {#case widgets}
     {#match %{}}
       <Bonfire.UI.Common.WidgetLive
@@ -6,16 +6,18 @@
         page={@page}
         selected_tab={@selected_tab}
         showing_within={@showing_within}
-        data={e(widgets, :props, [])}
+        with_title={@with_title}
+        extra_data={@extra_data}
       />
     {#match _ when is_list(widgets)}
       {#for widget <- widgets}
         <Bonfire.UI.Common.WidgetLive
-          widget={debug(widget, "widgett")}
+          widget={widget}
           page={@page}
           selected_tab={@selected_tab}
           showing_within={@showing_within}
-          data={e(widget, :props, [])}
+          with_title={@with_title}
+          extra_data={@extra_data}
         />
       {/for}
   {/case}

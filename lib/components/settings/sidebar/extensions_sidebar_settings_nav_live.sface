@@ -1,41 +1,48 @@
 {#for {extension, modules} <- Bonfire.UI.Common.SettingsModule.app_modules()}
-  {#case Bonfire.UI.Common.SettingsModule.nav(extension)}
+  {#case extension_enabled?(extension, @__context__) &&
+      List.wrap(Bonfire.UI.Common.SettingsModule.nav(extension))}
+    {#match false}
     {#match extension_nav}
       {#case Bonfire.UI.Common.SettingsModule.extension_has_components?(extension, modules)}
         {#match extension_has_components?}
-          {#if extension_has_components? or
-              (is_map(extension_nav) or (is_list(extension_nav) and extension_nav != []))}
-            <div class="flex flex-col items-start p-0 cursor-default md:bg-base-100 hover:!bg-transparent">
-              {#if is_map(extension_nav) and !extension_nav[:exclude_from_nav] and
-                  extension_nav[:scope] == @scope}}>
-                <li>
+          {#if extension_has_components? or extension_nav != []}
+            {#case Bonfire.Common.ExtensionModule.extension(extension)}
+              {#match extension_meta}
+                <div class="p-2 text-lg font-bold flex items-center gap-4">
+                  <!-- <#Icon iconify="ph:hand-fill" class="w-6 h-6 text-base-content/80" /> -->
+                  <span>{e(extension_meta, :name, nil) || extension}</span>
+                </div>
+
+                <div class="flex flex-col items-start p-0 cursor-default md:bg-base-100 hover:!bg-transparent">
                   <Bonfire.UI.Common.WidgetLive
-                    :if={is_nil(e(extension_nav, :module, nil)) or
-                      module_enabled?(e(extension_nav, :module, nil), @__context__)}
-                    widget={extension_nav}
+                    :for={%{} = subnav <- extension_nav}
+                    :if={!e(subnav, :exclude_from_nav, nil) and e(subnav, :scope, nil) == @scope and
+                      (is_nil(e(subnav, :module, nil)) or
+                         module_enabled?(e(subnav, :module, nil), @__context__))}
+                    widget={subnav}
                     page={@page}
                     showing_within={@showing_within}
                     wrapper_class="w-full"
                     selected_tab={@selected_tab}
-                    data={e(extension_nav, :props, [])}
                   />
-                </li>
-              {#elseif is_list(extension_nav)}
-                <Bonfire.UI.Common.WidgetLive
-                  :for={subnav <- extension_nav}
-                  :if={(!e(subnav, :exclude_from_nav, nil) and e(subnav, :scope, nil) == @scope and
-                     is_nil(e(subnav, :module, nil))) or
-                    (module_enabled?(e(subnav, :module, nil), @__context__) and e(subnav, :scope, nil) == @scope)}
-                  widget={subnav}
-                  page={@page}
-                  showing_within={@showing_within}
-                  wrapper_class="w-full"
-                  selected_tab={@selected_tab}
-                  data={e(subnav, :props, [])}
-                />
-              {/if}
-            </div>
-            <!-- </li> -->
+
+                  <Bonfire.UI.Common.LinkWidgetLive
+                    :if={Enum.member?(extension_nav, true)}
+                    to={"/settings/#{@scope || "user"}/#{extension}"}
+                    text={if length(extension_nav) == 1,
+                      do: l("Extension settings"),
+                      else: l("Additional extension settings")}
+                    icon={e(extension_meta, :icon, nil) || "heroicons-outline:puzzle"}
+                    page={@page}
+                    showing_within={@showing_within}
+                    wrapper_class="w-full"
+                    link_class=""
+                    content_class="flex items-center gap-3 rounded-md px-2 w-full text-base-content/70"
+                    selected_tab={@selected_tab}
+                  />
+                </div>
+                <!-- </li> -->
+            {/case}
           {/if}
       {/case}
   {/case}

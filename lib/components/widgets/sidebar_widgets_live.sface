@@ -8,7 +8,6 @@
           page={@page}
           selected_tab={@selected_tab}
           showing_within={:sidebar}
-          data={e(widget, :props, [])}
         />
       {/for}
       {#for {component, component_assigns} <- widgets}
@@ -17,7 +16,7 @@
           page={@page}
           selected_tab={@selected_tab}
           showing_within={:sidebar}
-          data={component_assigns || []}
+          data={component_assigns}
           {...component_assigns || []}
         />
       {/for}

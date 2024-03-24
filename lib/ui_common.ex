@@ -13,6 +13,7 @@ defmodule Bonfire.UI.Common do
       use Bonfire.Common.Utils
       use Untangle
       import Bonfire.UI.Common
+      import Bonfire.UI.Common.Modularity.DeclareHelpers
       alias Bonfire.Common.PubSub
     end
   end

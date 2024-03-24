@@ -16,7 +16,6 @@
                   widget={subnav}
                   page={@page}
                   selected_tab={@selected_tab}
-                  data={e(subnav, :props, [])}
                   skip_badges={@skip_badges}
                 />
               </li>
@@ -33,7 +32,6 @@
                   widget={subnav}
                   page={@page}
                   selected_tab={@selected_tab}
-                  data={e(subnav, :props, [])}
                   skip_badges={@skip_badges}
                 />
               </div>

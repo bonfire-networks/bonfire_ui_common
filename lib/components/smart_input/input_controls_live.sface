@@ -141,7 +141,7 @@
                   tabindex="0"
                   class="tooltip p-1 z-50 menu shadow bg-base-200 rounded absolute top-0 left-0 hidden w-52"
                 >
-                  <li>
+                  <li :if={module_enabled?(Bonfire.Boundaries.Web.PreviewBoundariesLive, @__context__)}>
                     <button
                       type="button"
                       phx-click={JS.show(to: "#boundaries_preview")

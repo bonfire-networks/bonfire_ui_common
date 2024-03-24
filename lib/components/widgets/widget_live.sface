@@ -2,7 +2,7 @@
   {#match :link}
     <Bonfire.UI.Common.LinkWidgetLive
       widget={@widget}
-      href={@widget[:href]}
+      to={@widget[:href]}
       showing_within={@showing_within}
       page={@page}
       selected_tab={@selected_tab}
@@ -20,6 +20,7 @@
       class={@widget[:wrapper_class] || @wrapper_class}
       data-type="widget"
     >
+      <div :if={@with_title} class="mt-4 mb-2 text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
       <StatelessComponent
         module={@widget[:module]}
         showing_within={@showing_within}
@@ -34,6 +35,7 @@
       class={@widget[:wrapper_class] || @wrapper_class}
       data-type="widget"
     >
+      <div :if={@with_title} class="mt-4 mb-2 text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
       <StatefulComponent
         id={Text.random_string()}
         module={@widget[:module]}

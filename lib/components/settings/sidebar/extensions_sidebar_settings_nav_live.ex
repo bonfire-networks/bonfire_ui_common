@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.ExtensionsSidebarSettingsNavLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
   prop page, :string, default: nil
-  prop showing_within, :atom, default: :sidebar
+  prop showing_within, :atom, default: nil
   prop selected_tab, :any
   prop scope, :any, default: nil
 

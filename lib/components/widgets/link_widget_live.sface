@@ -4,14 +4,14 @@
   data-type="widget"
 >
   <LinkLive
-    to={if is_function(@href),
-      do: @href.(@__context__),
-      else: @href}
+    to={if is_function(@to),
+      do: @to.(@__context__),
+      else: @to}
     class={e(@widget[:link_class], @link_class)}
     label={@text || @widget[:text] || @widget[:name]}
     phx_hook={@widget[:phx_hook]}
   >
-    <div class="flex-1 justify-end relative flex items-center gap-5 widget_content p-2">
+    <div class={@content_class}>
       <span :if={!@without_icon && (@icon || @widget[:icon] || @widget[:icon_active])} class="">
         {#if not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])}
           <Iconify.iconify
@@ -32,10 +32,7 @@
         data-type="widget_label"
         :if={!@without_label}
         class={
-          e(
-            @text_class,
-            ""
-          ),
+          @text_class,
           "!font-bold !text-base-content":
             not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
         }
@@ -46,7 +43,7 @@
       {#match badge}
         <div
           :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
-          class="flex absolute right-[6px] top-[-8px] tablet-lg:!right-auto tablet-lg:left-7 tablet-lg:!top-0 items-center place-content-center widget_notification"
+          class={@badge_class}
         >
           <StatefulComponent
             id={badge[:id] || Text.random_string()}

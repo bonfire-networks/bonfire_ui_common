@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.LinkWidgetLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop href, :string, default: nil
+  prop to, :string, default: nil
   prop text, :string, default: nil
   prop icon, :string, default: nil
 
@@ -9,9 +9,14 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   prop without_icon, :boolean, default: false
   prop without_label, :boolean, default: false
 
-  prop text_class, :css_class,
-    required: false,
-    default: nil
+  prop content_class, :css_class,
+    default: "flex-1 justify-end relative flex items-center gap-5 widget_content p-2"
+
+  prop text_class, :css_class, default: nil
+
+  prop badge_class, :css_class,
+    default:
+      "flex absolute right-[6px] top-[-8px] tablet-lg:!right-auto tablet-lg:left-7 tablet-lg:!top-0 items-center place-content-center widget_notification"
 
   prop page, :string, default: nil
   prop selected_tab, :any, default: nil

@@ -69,7 +69,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   prop reusable_modal_component, :atom, default: ReusableModalLive
 
   @doc "The ID of this instance of the modal"
-  prop reusable_modal_id, :string, default: @default_modal_id
+  prop reusable_modal_id, :string, default: nil
 
   @doc """
   Additional assigns to pass on to the modal component
@@ -125,7 +125,11 @@ defmodule Bonfire.UI.Common.OpenModalLive do
         :reusable_modal_component,
         ReusableModalLive
       ),
-      reusable_modal_id || e(assigns, :reusable_modal_id, nil) || @default_modal_id,
+      reusable_modal_id || e(assigns, :reusable_modal_id, nil) ||
+        if(e(assigns, :__context__, :sticky, nil),
+          do: "persistent_modal",
+          else: @default_modal_id
+        ),
       assigns
     )
 
@@ -161,18 +165,32 @@ defmodule Bonfire.UI.Common.OpenModalLive do
       )
 
     # copy all of this component's assigns to the reusable modal (including slots!)
-    set(socket.assigns, e(socket.assigns, :reusable_modal_id, @default_modal_id))
+    set(socket.assigns)
 
     {:noreply, socket}
   end
 
   def handle_event("close", _, socket) do
-    close(e(socket.assigns, :reusable_modal_id, @default_modal_id))
+    close(
+      e(socket.assigns, :reusable_modal_id, nil) ||
+        if(e(socket.assigns, :__context__, :sticky, nil),
+          do: "persistent_modal",
+          else: @default_modal_id
+        )
+    )
+
     {:noreply, socket}
   end
 
   def handle_event("set_value", %{"value" => value}, socket) do
-    close(e(socket.assigns, :reusable_modal_id, @default_modal_id))
+    close(
+      e(socket.assigns, :reusable_modal_id, nil) ||
+        if(e(socket.assigns, :__context__, :sticky, nil),
+          do: "persistent_modal",
+          else: @default_modal_id
+        )
+    )
+
     {:noreply, socket |> assign(:value, value)}
   end
 end

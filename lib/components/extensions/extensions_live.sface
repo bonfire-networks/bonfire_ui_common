@@ -18,6 +18,7 @@
           tabindex="0"
           class="gap-1 p-1 mt-4 z-50 menu-sm rounded-lg shadow menu dropdown-content bg-base-200 w-60 md:w-48 text-neutral-content"
         >
+          <li><LinkLive to={"/settings/#{@scope || "user"}/#{e(dep, :app, nil)}"} class="flex-1 block w-full">{l("Extension settings")}</LinkLive></li>
           {#case get_link(dep)}
             {#match "#"}
             {#match link}
@@ -54,6 +55,7 @@
           tabindex="0"
           class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48"
         >
+          <li><LinkLive to={"/settings/#{@scope || "user"}/#{e(dep, :app, nil)}"} class="flex-1 block w-full">{l("Extension settings")}</LinkLive></li>
           <li><a
               href={get_link(dep) |> debug(e(dep, :app, "Unknown"))}
               target="_blank"
@@ -91,7 +93,9 @@
           tabindex="0"
           class="gap-1 mt-4 rounded shadow menu-sm menu dropdown-content z-50 bg-base-200 w-60 md:w-48"
         >
-          <li><a
+          <li>
+            <li><LinkLive to={"/settings/#{@scope || "user"}/#{e(dep, :app, nil)}"} class="flex-1 block w-full">{l("Extension settings")}</LinkLive></li>
+            <a
               href={get_link(dep) |> debug(e(dep, :app, "Unknown"))}
               target="_blank"
               class="flex-1 block w-full"
@@ -106,7 +110,7 @@
 
 <div class="!mt-8 m-3 text-xs font-medium tracking-wide uppercase text-base-content/70">{l("Ecosystem libraries")}</div>
 <div class="m-3 divide-y rounded-lg bg-base-content/5 divide-base-300">
-  {#for dep <- (e(@data, :ecosystem_libs, nil) || @ecosystem_libs) |> debug("eee")}
+  {#for dep <- e(@data, :ecosystem_libs, nil) || @ecosystem_libs}
     <div class="flex items-center justify-between p-4">
       <div class="flex flex-col gap-1">
         <div class="text-sm font-medium">{e(dep, :app, "Unknown")}</div>

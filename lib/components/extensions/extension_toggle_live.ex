@@ -6,16 +6,20 @@ defmodule Bonfire.UI.Common.ExtensionToggleLive do
   prop can_instance_wide, :boolean, default: false
 
   def update(assigns, socket) do
-    extension = id(assigns) || id(socket.assigns)
+    socket =
+      socket
+      |> assign(assigns)
+
+    extension = id(socket.assigns)
 
     global_modularity = Config.get(:modularity, nil, extension)
     # |> debug(extension)
 
     {:ok,
      socket
-     |> assign(assigns)
      |> assign(
-       my_modularity: Settings.get(:modularity, nil, otp_app: extension, context: assigns),
+       my_modularity:
+         Settings.get(:modularity, nil, otp_app: extension, context: socket.assigns[:__context__]),
        global_modularity: global_modularity,
        globally_disabled: Bonfire.Common.Extend.disabled_value?(global_modularity)
      )}
