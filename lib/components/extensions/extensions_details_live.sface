@@ -20,6 +20,24 @@
     >
       <li><LinkLive to={"/settings/#{@scope || "user"}/#{e(@dep, :app, nil)}"} class="flex-1 block w-full">{l("Extension settings")}</LinkLive></li>
 
+      {#case e(@dep, :extra, :readme_contents, nil)}
+        {#match nil}
+        {#match readme_contents}
+          <li><Bonfire.UI.Common.OpenModalLive
+              id={"#{e(@dep, :app, nil)}_readme"}
+              title_text={l("About %{extension}", extension: e(@dep, :extra, :name, nil) || e(@dep, :app, "Unknown"))}
+              no_actions
+            >
+              <div class="prose text-base-content/70">{rich(readme_contents)}</div>
+
+              <:open_btn>
+                <div class="">
+                  {l("About this extension")}
+                </div>
+              </:open_btn>
+            </Bonfire.UI.Common.OpenModalLive></li>
+      {/case}
+
       <li>{l("Version")} {get_version(@dep)}</li>
 
       {#case get_link(@dep)}
