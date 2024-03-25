@@ -79,6 +79,22 @@
           <span class="text-sm text-base-content/70">{l("Terms / Policies")}</span>
         </LinkPatchLive>
       </li>
+
+      <li>
+        <LinkPatchLive
+          to={~p"/settings/instance/extensions"}
+          class={
+            "flex items-center gap-3 rounded-md px-2 w-full",
+            "bg-base-content/10": @selected_tab == "extensions"
+          }
+        >
+          <#Icon
+            solid="Puzzle"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
+          />
+          <span class="text-sm text-base-content/70">{l("Extensions")}</span>
+        </LinkPatchLive>
+      </li>
     </div>
 
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
@@ -226,22 +242,6 @@
         <!-- <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Advanced")}</span>
       </div>
-
-      <li>
-        <LinkPatchLive
-          to={~p"/settings/instance/extensions"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10": @selected_tab == "extensions"
-          }
-        >
-          <#Icon
-            solid="Puzzle"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
-          />
-          <span class="text-sm text-base-content/70">{l("Extensions")}</span>
-        </LinkPatchLive>
-      </li>
 
       <li>
         <LinkPatchLive

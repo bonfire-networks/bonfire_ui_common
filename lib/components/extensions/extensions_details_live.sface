@@ -1,5 +1,5 @@
 <div class="flex gap-2 items-center justify-start p-4">
-  <div :if={!@hide_icon}>
+  <div :if={@is_extension?}>
     <Iconify.iconify
       icon={e(@dep, :extra, :icon_active, nil) || e(@dep, :extra, :icon, nil) || "heroicons-outline:puzzle"}
       class={e(@dep, :extra, :icon_class, nil) || "w-8 h-8", "text-base-content"}
@@ -18,25 +18,27 @@
       tabindex="0"
       class="gap-1 p-1 mt-4 z-50 menu-sm rounded-lg shadow menu dropdown-content bg-base-200 w-60 md:w-48 text-neutral-content"
     >
-      <li><LinkLive to={"/settings/#{@scope || "user"}/#{e(@dep, :app, nil)}"} class="flex-1 block w-full">{l("Extension settings")}</LinkLive></li>
+      {#if @is_extension?}
+        <li><LinkLive to={"/settings/#{@scope || "user"}/#{e(@dep, :app, nil)}"} class="flex-1 block w-full">{l("Extension settings")}</LinkLive></li>
 
-      {#case e(@dep, :extra, :readme_contents, nil)}
-        {#match nil}
-        {#match readme_contents}
-          <li><Bonfire.UI.Common.OpenModalLive
-              id={"#{e(@dep, :app, nil)}_readme"}
-              title_text={l("About %{extension}", extension: e(@dep, :extra, :name, nil) || e(@dep, :app, "Unknown"))}
-              no_actions
-            >
-              <div class="prose text-base-content/70">{rich(readme_contents)}</div>
+        {#case e(@dep, :extra, :readme_contents, nil)}
+          {#match nil}
+          {#match readme_contents}
+            <li><Bonfire.UI.Common.OpenModalLive
+                id={"#{e(@dep, :app, nil)}_readme"}
+                title_text={l("About %{extension}", extension: e(@dep, :extra, :name, nil) || e(@dep, :app, "Unknown"))}
+                no_actions
+              >
+                <div class="prose text-base-content/70">{rich(readme_contents)}</div>
 
-              <:open_btn>
-                <div class="">
-                  {l("About this extension")}
-                </div>
-              </:open_btn>
-            </Bonfire.UI.Common.OpenModalLive></li>
-      {/case}
+                <:open_btn>
+                  <div class="">
+                    {l("About this extension")}
+                  </div>
+                </:open_btn>
+              </Bonfire.UI.Common.OpenModalLive></li>
+        {/case}
+      {/if}
 
       <li>{l("Version")} {get_version(@dep)}</li>
 
@@ -50,7 +52,7 @@
           {/case}
       {/case}
 
-      {#if to_string(e(@dep, :app, nil)) not in @required_deps}
+      {#if @is_extension? && to_string(e(@dep, :app, nil)) not in @required_deps}
         <Bonfire.UI.Common.ExtensionToggleLive
           id={e(@dep, :app, nil)}
           scope={@scope}
