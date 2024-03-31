@@ -18,6 +18,8 @@
       tabindex="0"
       class="gap-1 p-1 mt-4 z-50 menu-sm rounded-lg shadow menu dropdown-content bg-base-200 w-60 md:w-48 text-neutral-content"
     >
+      <li>{l("Version")} {get_version(@dep)}</li>
+
       {#if @is_extension?}
         <li><LinkLive to={"/settings/#{@scope || "user"}/#{e(@dep, :app, nil)}"} class="flex-1 block w-full">{l("Extension settings")}</LinkLive></li>
 
@@ -40,12 +42,11 @@
         {/case}
       {/if}
 
-      <li>{l("Version")} {get_version(@dep)}</li>
-
       {#case get_link(@dep)}
         {#match code_link}
           <li :if={code_link}><a href={code_link} target="_blank" class="flex-1 block w-full">{l("View code repository")}</a></li>
-          <li><a href={get_code_link(@dep)} target="_blank" class="flex-1 block w-full">{l("View running code")}</a></li>
+          <li><a href={get_code_link(@dep)} target="_blank" class="flex-1 block w-full">{l("View code")}</a></li>
+          <li><a href={get_code_link(@dep)<>"?from=compiled"} target="_blank" class="flex-1 block w-full">{l("View running code")}</a></li>
           {#case get_link(@dep)}
             {#match version_link}
               <li :if={code_link != version_link}><a href={version_link} target="_blank" class="flex-1 block w-full">{l("View code changes")}</a></li>

@@ -28,7 +28,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
   def handle_params(%{"module" => app_or_module} = params, _url, socket)
       when is_binary(app_or_module) do
     with true <- connected?(socket),
-         {:ok, data} <- load_code(params["function"], app_or_module) do
+         {:ok, data} <- load_code(params["from"]=="compiled", params["function"], app_or_module) do
       {:noreply,
        socket
        |> assign(data)}
@@ -42,7 +42,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
     end
   end
 
-  def load_code(function \\ nil, app_or_module) do
+  def load_code(from_beam? \\ false, function \\ nil, app_or_module) do
     module = Types.maybe_to_module(app_or_module)
 
     app =
@@ -66,12 +66,12 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
         |> Types.maybe_to_module() || List.first(modules)
 
     if module || modules do
-      do_load_code(maybe_to_atom!(function), module, modules, app)
+      do_load_code(from_beam?, maybe_to_atom!(function), module, modules, app)
     end
   end
 
-  defp do_load_code(function \\ nil, module, modules, app) do
-    with {:ok, filename, code} <- Extend.module_file_code(module) do
+  defp do_load_code(from_beam?, function, module, modules, app) do
+    with {:ok, filename, code} <- Extend.module_file_code(module, from_beam: from_beam?) do
       name = Types.module_to_str(module)
 
       {:ok,
@@ -82,9 +82,11 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
          #  modules: Application.spec(Application.get_application(module), :modules),
          filename: filename,
          code: code,
+        #  enable_formatter: !from_beam?,
+        enable_formatter: true,
          selected_line:
            if(function,
-             do: Extend.function_line_number(code, function)
+             do: Extend.function_line_number(code, function, from_beam: from_beam?)
            ) || 0,
          lines: String.split(code, "\n") |> length(),
          # no right sidebar
@@ -95,7 +97,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
                Enum.map(modules, fn module ->
                  %{
                    name: String.trim_leading(Types.module_to_str(module), "Bonfire."),
-                   href: "/settings/extensions/code/#{module}",
+                   href: "/settings/extensions/code/#{module}#{if from_beam?, do: "?from=compiled"}",
                    link_class: "flex items-center w-full rounded-md text-sm",
                    type: :link
                  }

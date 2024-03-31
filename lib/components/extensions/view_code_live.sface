@@ -25,7 +25,7 @@
             <li :for={ln <- 1..@lines} :hook="updateHash" id={"L#{ln}"} data-line-number={ln} />
           </ul>
 
-          {raw(Text.code_syntax(@code, @filename))}
+          {if @enable_formatter, do: raw(Text.code_syntax(@code, @filename)), else: @code}
         </section>
       </div>
     </div>
