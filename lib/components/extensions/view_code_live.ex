@@ -28,7 +28,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
   def handle_params(%{"module" => app_or_module} = params, _url, socket)
       when is_binary(app_or_module) do
     with true <- connected?(socket),
-         {:ok, data} <- load_code(params["from"]=="compiled", params["function"], app_or_module) do
+         {:ok, data} <- load_code(params["from"] == "compiled", params["function"], app_or_module) do
       {:noreply,
        socket
        |> assign(data)}
@@ -82,8 +82,8 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
          #  modules: Application.spec(Application.get_application(module), :modules),
          filename: filename,
          code: code,
-        #  enable_formatter: !from_beam?,
-        enable_formatter: true,
+         #  enable_formatter: !from_beam?,
+         enable_formatter: true,
          selected_line:
            if(function,
              do: Extend.function_line_number(code, function, from_beam: from_beam?)
@@ -97,7 +97,8 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
                Enum.map(modules, fn module ->
                  %{
                    name: String.trim_leading(Types.module_to_str(module), "Bonfire."),
-                   href: "/settings/extensions/code/#{module}#{if from_beam?, do: "?from=compiled"}",
+                   href:
+                     "/settings/extensions/code/#{module}#{if from_beam?, do: "?from=compiled"}",
                    link_class: "flex items-center w-full rounded-md text-sm",
                    type: :link
                  }
