@@ -7,6 +7,12 @@ defmodule Bonfire.UI.Common do
   alias Bonfire.Common.PubSub
   alias Bonfire.UI.Common.ErrorHandling
 
+  declare_extension("Common UI components",
+    icon: "fluent-mdl2:web-components",
+    emoji: "🧩",
+    description: l("Reusable user interface components and utilities.")
+  )
+
   defmacro __using__(_opts) do
     # TODO: pass opts to the nested `use`
     quote do

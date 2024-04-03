@@ -13,7 +13,7 @@
       to={~p"/feed/local"}
       class={"flex items-center rounded-md gap-5", "bg-base-content/10 font-semibold": @page == "local"}
     >
-      <#Icon iconify="material-symbols:camping-rounded" class="w-5 h-5 text-base-content/70" />
+      <!-- <#Icon iconify="material-symbols:camping-rounded" class="w-5 h-5 text-base-content/70" /> -->
       {l("Local")}
     </LinkLive>
   </li>
