@@ -46,11 +46,23 @@
             </span>
           </div>
         </div>
-        <StatelessComponent
-          module={LiveHandler.active_smart_input_component(@smart_input_component, @create_object_type)}
-          textarea_class={Surface.css_class(["editor_area textarea p-0 w-full rounded-none"])}
-          {...assigns}
-        />
+        {#case LiveHandler.active_smart_input_component(@smart_input_component, @create_object_type)}
+          {#match module}
+            {#if function_exported?(module, :mount, 1)}
+              <StatefulComponent
+                id="smart_input_component"
+                module={module}
+                textarea_class={Surface.css_class(["editor_area textarea p-0 w-full rounded-none"])}
+                {...assigns}
+              />
+            {#else}
+              <StatelessComponent
+                module={module}
+                textarea_class={Surface.css_class(["editor_area textarea p-0 w-full rounded-none"])}
+                {...assigns}
+              />
+            {/if}
+        {/case}
       </div>
     </div>
     {!-- <noscript>

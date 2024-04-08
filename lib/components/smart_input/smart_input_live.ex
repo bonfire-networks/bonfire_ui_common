@@ -3,7 +3,6 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   alias Bonfire.UI.Common.SmartInput.LiveHandler
 
   # prop user_image, :string, required: true
-  # prop target_component, :string
   prop create_object_type, :any, default: nil
   prop reply_to_id, :any, default: nil
   prop context_id, :string, default: nil, required: false

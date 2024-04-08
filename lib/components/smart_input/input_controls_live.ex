@@ -3,7 +3,6 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   use Bonfire.Common.Utils
   alias Bonfire.UI.Common.SmartInput.LiveHandler
 
-  # prop target_component, :string
   prop preloaded_recipients, :list, default: nil
   prop smart_input_opts, :map, default: %{}
   prop reply_to_id, :any, default: nil

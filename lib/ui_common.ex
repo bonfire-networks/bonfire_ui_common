@@ -207,6 +207,7 @@ defmodule Bonfire.UI.Common do
              # :__context__,
              :id,
              :flash,
+             #  :uploads,
              :__changed__,
              :__surface__,
              :socket,
@@ -217,8 +218,7 @@ defmodule Bonfire.UI.Common do
       _ ->
         false
     end)
-
-    # |> IO.inspect
+    |> debug()
   end
 
   def assigns_minimal(%{} = assigns) when is_map(assigns),
