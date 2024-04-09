@@ -12,7 +12,9 @@
     "build.postcss": "TAILWIND_MODE=build NODE_ENV=production npx postcss ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css",
     "build.tailwindcss": "TAILWIND_MODE=build NODE_ENV=production npx tailwindcss -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --jit --minify",
     "watch.parcel": "parcel watch 'js/bonfire_*.js' --dist-dir ../priv/static/assets",
-    "build.parcel": "parcel build 'js/bonfire_*.js' --dist-dir ../priv/static/assets"
+    "build.parcel": "parcel build 'js/bonfire_*.js' --dist-dir ../priv/static/assets",
+    "css.doiuse.custom": "doiuse --browsers '> 1%, last 2 versions' ./css/app.css",
+    "css.doiuse.generated": "doiuse --browsers '> 1%, last 2 versions' ../../../priv/static/assets/bonfire_basic.css"
   },
   "disabledScripts": {
     "preinstall": "npx only-allow yarn"
