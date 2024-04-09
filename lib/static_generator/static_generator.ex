@@ -4,7 +4,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
   """
   # import Plug.Conn
   import Phoenix.ConnTest
-  import Untangle
+  use Untangle
   alias Bonfire.Common.Config
 
   @endpoint Config.get(:endpoint_module, Bonfire.Web.Endpoint)
@@ -50,6 +50,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
     maybe_generate([url], opts)
   end
 
+  @decorate time()
   def generate(urls, opts \\ [])
 
   def generate(urls, opts) when is_list(urls) do

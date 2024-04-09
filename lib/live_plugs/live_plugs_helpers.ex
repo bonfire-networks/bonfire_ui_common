@@ -72,6 +72,9 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
       Phoenix.LiveView.connected?(socket)
       |> debug("MOUNTING SOCKET for #{current_view}")
 
+    # TEMP: monitor memory used by the LV and children
+    Bonfire.Common.MemoryMonitor.start_link("#{current_view} (connected? #{socket_connected?})")
+
     if not module_enabled?(current_view, :instance) do
       error(
         l(
