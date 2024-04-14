@@ -1,8 +1,8 @@
-bonfire_common = "https://github.com/bonfire-networks/bonfire_common#main"
+bonfire_common = "https://github.com/bonfire-networks/bonfire_common"
 # surface_heroicons = "https://github.com/rocketinsights/surface_heroicons"
-# surface_boxicon = "https://github.com/bonfire-networks/surface_boxicon#main"
-# phoenix_gon = "https://github.com/bonfire-networks/phoenix_gon#main" # used to pass config to JS
-bonfire_fail = "https://github.com/bonfire-networks/bonfire_fail#main"
+# surface_boxicon = "https://github.com/bonfire-networks/surface_boxicon"
+# phoenix_gon = "https://github.com/bonfire-networks/phoenix_gon" # used to pass config to JS
+bonfire_fail = "https://github.com/bonfire-networks/bonfire_fail"
 # seo = "https://github.com/bonfire-networks/seo"
 # live_select = "https://github.com/maxmarcon/live_select"
 
