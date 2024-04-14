@@ -107,8 +107,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
         Bonfire.Common.ExtensionModule.default_nav(
           e(assigns[:__context__], :current_extension, nil) ||
             e(assigns[:__context__], :current_app, nil)
-        ) || Bonfire.UI.Common.NavModule.nav(e(assigns[:__context__], :current_app, nil)) || []
-      )
+        ) || Bonfire.UI.Common.NavModule.nav(e(assigns[:__context__], :current_app, nil))
+      ) || []
     )
 
     # |> assign_new(:hero, fn -> nil end)
