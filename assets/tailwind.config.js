@@ -12,7 +12,7 @@ module.exports = {
     purgeLayersByDefault: true,
   },
   presets: [
-    require('./css/variants.js')
+    // require('../../../data/current_flavour/config/flavour_assets/variants.js') // TODO?
   ],
   content: [
     '../lib/**/*{.leex,.heex,.sface,_live.ex,_view.ex}',
