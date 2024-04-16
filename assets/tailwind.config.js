@@ -11,9 +11,9 @@ module.exports = {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,
   },
-  presets: [
-    // require('../../../data/current_flavour/config/flavour_assets/variants.js') // TODO?
-  ],
+  // presets: [
+  //   require('../../../data/current_flavour/config/flavour_assets/variants.js') // TODO?
+  // ],
   content: [
     '../lib/**/*{.leex,.heex,.sface,_live.ex,_view.ex}',
     // '../assets/js/**/*.js',
