@@ -371,33 +371,39 @@ defmodule Bonfire.UI.Common do
     end
   end
 
-  def current_url(socket_or_assigns, default \\ nil) do
+  def current_url(socket_or_assigns, default \\ nil, recursing \\ false) do
     case socket_or_assigns do
       %{current_url: url} when is_binary(url) ->
         url
 
       %{context: context} = _api_opts ->
-        current_url(context, default)
+        current_url(context, default, true)
 
       %{__context__: context} = _assigns ->
-        current_url(context, default)
+        current_url(context, default, true)
 
       %{assigns: assigns} = _socket ->
-        current_url(assigns, default)
+        current_url(assigns, default, true)
 
       %{socket: socket} = _socket ->
-        current_url(socket, default)
+        current_url(socket, default, true)
 
       url when is_binary(url) ->
         url
 
       options when is_list(options) ->
-        current_url(Map.new(options), default)
+        current_url(Map.new(options), default, true)
 
-      other ->
-        debug("No current_url found in #{inspect(other)}")
-        default
-    end
+      _ ->
+        nil
+    end ||
+      if(recursing == false,
+        do:
+          (
+            debug(socket_or_assigns, "No current_url found in")
+            default
+          )
+      )
   end
 
   def current_user_or_remote_interaction(socket, verb, object) do
