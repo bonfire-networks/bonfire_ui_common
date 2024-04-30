@@ -111,6 +111,9 @@ defmodule Bonfire.UI.Common.Routes do
       scope "/" do
         pipe_through(:browser)
 
+        get("/gen_avatar", Bonfire.UI.Common.GenAvatar, :generate)
+        get("/gen_avatar/:id", Bonfire.UI.Common.GenAvatar, :generate)
+
         get("/guest/crash_test", Bonfire.UI.Common.ErrorController, :crash_test)
         get("/guest/error", Bonfire.UI.Common.ErrorController, as: :error_guest)
         get("/guest/error/:code", Bonfire.UI.Common.ErrorController, as: :error_guest)

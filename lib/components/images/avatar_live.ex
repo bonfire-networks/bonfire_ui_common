@@ -14,29 +14,6 @@ defmodule Bonfire.UI.Common.AvatarLive do
   prop title, :string, default: ""
   prop opts, :any, default: %{}
 
-  def animal_avatar(id) do
-    # keeps avatars per-user cached
-    Cache.maybe_apply_cached(&avatar_face/1, [id])
-  end
-
-  defp avatar_face(id) when is_binary(id) do
-    Needle.ULID.encoded_randomness(id)
-    |> do_avatar_face()
-  end
-
-  defp avatar_face(id) do
-    warn(id, "expected an ID for generating an avatar")
-    do_avatar_face("random")
-  end
-
-  defp do_avatar_face(id) do
-    id
-    |> AnimalAvatarGenerator.avatar_face(
-      # TODO: colors in config
-      avatar_colors: ["#801100", "#B62203", "#D73502", "#FC6400", "#FF7500", "#FAC000"]
-    )
-  end
-
   # def classes(%{class: class}) when not is_nil(class) do
   #   class
   # end

@@ -504,6 +504,9 @@ defmodule AnimalAvatarGenerator do
 
   defp seed_randomiser(seed) do
     # let's seed the random algorithm
-    :rand.seed(:exsplus, seed |> to_charlist() |> Enum.take(3) |> List.to_tuple())
+    :rand.seed(
+      :exsplus,
+      seed |> String.pad_trailing(3, "123") |> to_charlist() |> Enum.take(3) |> List.to_tuple()
+    )
   end
 end

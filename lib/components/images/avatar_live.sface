@@ -29,31 +29,25 @@
             </div>
           {#match _}
             {#if Settings.get([Bonfire.UI.Common.AvatarLive, :animal_avatars], true, @__context__)}
-              <svg
-                data-scope="animal_avatar"
+              {!-- <Bonfire.UI.Common.AnimalAvatar
+                  id={@user_id}
+                  bg_class={@bg_class}
+                  title={@title}
+                /> --}
+              <LazyImage
+                parent_id={@parent_id}
+                src={"/gen_avatar/#{@user_id}"}
                 title={@title}
-                xmlns="http://www.w3.org/2000/svg"
-                version="1.1"
-                width="100%"
-                height="100%"
-                viewBox="0 0 500 500"
-              >
-                <rect
-                  :if={@bg_class != ["rounded"]}
-                  width="500"
-                  height="500"
-                  rx="250"
-                  fill="none"
-                  class={@bg_class}
-                />
-                {raw(animal_avatar(@user_id))}
-              </svg>
+                alt={@title}
+                fallback_icon={Icon.icon_name("material-symbols:person-2-rounded")}
+                opts={@opts}
+              />
             {#else}
               <div class={@bg_class}>
                 <div
                   title={@title}
                   class={@class, "iconify -mt-0 md:-mt-0 text-base-content/60"}
-                  iconify="heroicons:user-20-solid"
+                  iconify="material-symbols:person-2-rounded"
                   {...@opts}
                 />
               </div>
