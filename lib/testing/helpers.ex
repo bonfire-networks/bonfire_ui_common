@@ -110,7 +110,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   """
   def live_sockets_disconnect(context) do
     # see https://hexdocs.pm/phoenix_live_view/security-model.html#disconnecting-all-instances-of-a-live-user
-    Bonfire.UI.Me.LogoutController.disconnect_sockets(context)
+    Bonfire.Me.Users.LiveHandler.disconnect_sockets(context)
   end
 
   def session_conn(conn \\ build_conn()),

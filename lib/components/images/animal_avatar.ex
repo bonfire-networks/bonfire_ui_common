@@ -14,7 +14,7 @@ defmodule Bonfire.UI.Common.AnimalAvatar do
       viewBox="0 0 500 500"
     >
       <rect
-        :if={@bg_class != ["rounded"]}
+        :if={not String.contains?(to_string(@bg_class), "rounded")}
         width="500"
         height="500"
         rx="250"
@@ -31,7 +31,7 @@ defmodule Bonfire.UI.Common.AnimalAvatar do
   def svg(%{} = assigns) do
     assigns
     |> Map.put_new(:title, nil)
-    |> Map.put_new(:bg_class, nil)
+    |> Map.put_new(:bg_class, "rounded")
     |> render()
     |> Phoenix.HTML.Safe.to_iodata()
     |> IO.iodata_to_binary()

@@ -53,10 +53,11 @@ defmodule Bonfire.UI.Common.Web do
       @moduledoc false
       use Phoenix.Controller, unquote(opts)
       import Plug.Conn
+      import Phoenix.LiveView.Controller
+      import Bonfire.UI.Common.Web, only: [render_inline: 2]
+
       alias Bonfire.UI.Common.Plugs.MustBeGuest
       alias Bonfire.UI.Common.Plugs.MustLogIn
-
-      import Phoenix.LiveView.Controller
 
       unquote(live_view_basic_helpers())
     end
