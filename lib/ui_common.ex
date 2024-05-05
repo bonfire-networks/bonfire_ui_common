@@ -770,7 +770,7 @@ defmodule Bonfire.UI.Common do
     |> assign_global(assigns)
   end
 
-  def maybe_assign_context(socket, %{id: "3SERSFR0MY0VR10CA11NSTANCE", data: settings}) do
+  def maybe_assign_context(socket, %{id: "3SERSFR0MY0VR10CA11NSTANCE", json: settings}) do
     debug(settings, "assign updated instance settings")
 
     socket

@@ -26,7 +26,7 @@ defmodule Bonfire.UI.Common.MixProject do
           {:phoenix_live_reload, "~> 1.2", only: :dev},
           {:floki, "~> 0.36", only: :test},
           {:zest, "~> 0.1", optional: true},
-          {:phoenix_test, "~> 0.2.13", only: :test, runtime: false},
+          {:phoenix_test, "~> 0.3", only: :test, runtime: false},
           # {:pages, "~> 0.12", only: :test} # extends Floki for testing 
           # {:bonfire_search, "https://github.com/bonfire-networks/bonfire_search", optional: true, runtime: false}
           # {:bonfire_boundaries, git: "https://github.com/bonfire-networks/bonfire_boundaries", optional: true, runtime: false}
