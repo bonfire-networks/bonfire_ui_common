@@ -1,8 +1,8 @@
 # Bonfire.UI.Common
 
-`Bonfire.UI.Common` is an extension for [Bonfire](https://bonfire.cafe/) that contains:
+A library of common utils and helpers used across Bonfire extensions
 
-- Many common functions for web UIs in Bonfire extensions
+- Many common functions for web UIs 
 - Common and generic re-usable components
 - Etc
 

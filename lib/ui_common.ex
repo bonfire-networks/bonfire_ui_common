@@ -1,7 +1,6 @@
 defmodule Bonfire.UI.Common do
-  @moduledoc """
-  A library of common utils and helpers used across Bonfire extensions
-  """
+  @moduledoc "./README.md" |> File.stream!() |> Enum.drop(1) |> Enum.join()
+
   use Bonfire.Common.Utils
   use Untangle
   alias Bonfire.Common.PubSub
