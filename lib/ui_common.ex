@@ -821,12 +821,11 @@ defmodule Bonfire.UI.Common do
                },
                move_original: true
              )
-             |> debug("uploaded") do
+             |> debug("uploaded?") do
         {:ok, uploaded}
       else
         e ->
-          error(e, "Did not upload #{entry.client_name}")
-          {:postpone, nil}
+          {:postpone, error(e, "Did not upload #{entry.client_name}")}
       end
     end)
     |> filter_empty([])
