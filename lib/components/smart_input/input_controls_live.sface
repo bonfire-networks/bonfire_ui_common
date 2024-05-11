@@ -57,8 +57,12 @@
             <div class="flex items-center gap-1">
               <Bonfire.UI.Common.UploadButtonLive
                 :if={@uploads != false}
-                module={maybe_component(Bonfire.Files.DocumentUploader, @__context__)}
                 uploads={@uploads}
+                max_uploads={Bonfire.Common.Settings.get(
+                  [Bonfire.UI.Common.SmartInputLive, :max_uploads],
+                  :instance,
+                  current_user(@__context__)
+                )}
               />
               {!-- <StatelessComponent
                 module={maybe_component(Bonfire.UI.Common.EmojiPickerLive, @__context__)}

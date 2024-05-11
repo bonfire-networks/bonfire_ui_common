@@ -13,8 +13,10 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop exclude_circles, :list, default: []
   prop mentions, :list, default: []
   prop showing_within, :atom, default: nil
+
   prop uploads, :any, default: nil
   prop uploaded_files, :list, default: []
+
   prop page, :any, default: nil
   prop show_cw_toggle, :boolean, default: false
   prop submit_label, :string, default: nil
