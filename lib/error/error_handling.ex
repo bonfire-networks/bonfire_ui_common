@@ -319,10 +319,12 @@ defmodule Bonfire.UI.Common.ErrorHandling do
         )
 
       %{__struct__: struct} = epic when struct == Bonfire.Epics.Epic ->
+        # IO.inspect(epic, label: "eppic")
         live_exception(
           socket,
           return_key,
-          l("Sorry, a series of actions could not be completed") <> ": #{Errors.error_msg(epic)}",
+          l("Sorry, a series of actions could not be completed") <>
+            ": \n#{Errors.error_msg(epic)}",
           epic.errors,
           e(List.first(epic.errors), :stacktrace, nil)
         )
