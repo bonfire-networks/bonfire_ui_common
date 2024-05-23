@@ -648,11 +648,11 @@ defmodule Bonfire.UI.Common do
 
   def redirect_to(%Phoenix.LiveView.Socket{redirected: nil} = socket, to, opts) do
     debug(to, "redirect socket to")
-    debug(socket)
+    # debug(socket)
 
     Phoenix.LiveView.push_navigate(
       socket,
-      [to: to || path_fallback(socket, opts)] ++ List.wrap(opts)
+      redirect_opts(socket, to, opts)
     )
   rescue
     e in ArgumentError ->
@@ -675,8 +675,38 @@ defmodule Bonfire.UI.Common do
 
     Phoenix.Controller.redirect(
       conn,
-      [to: to || path_fallback(conn, opts)] ++ List.wrap(opts)
+      redirect_opts(conn, to, opts)
     )
+  end
+
+  defp redirect_opts(conn, to, type) when type in [:to, :external, :maybe_external],
+    do: redirect_opts(conn, to, type: type)
+
+  defp redirect_opts(conn, to, opts) do
+    opts = List.wrap(opts)
+
+    type =
+      case opts[:type] do
+        nil ->
+          :to
+
+        :to ->
+          :to
+
+        :external ->
+          :external
+
+        :maybe_external ->
+          case to do
+            "http" <> _ -> :external
+            "/" <> _ -> :to
+            _ -> :external
+          end
+      end
+      |> debug("type")
+
+    opts
+    |> Keyword.put(type, to || path_fallback(conn, opts))
   end
 
   def patch_to(socket_or_conn, to \\ nil, opts \\ [])
@@ -920,14 +950,17 @@ defmodule Bonfire.UI.Common do
   end
 
   def redirect_to_previous_go(conn, params, default, current_path) do
-    # debug(conn.request_path)
-    where =
-      Plug.Conn.get_session(conn, :go)
-      |> go_where?(params, default, current_path)
+    # debug(conn.request_path)      
+    case Plug.Conn.get_session(conn, :go)
+         |> go_where?(params, default, current_path) do
+      [to: "/oauth/authorize?" <> query] ->
+        Bonfire.OpenID.Web.Oauth.AuthorizeController.from_query_string(conn, query)
 
-    conn
-    |> Plug.Conn.delete_session(:go)
-    |> Phoenix.Controller.redirect(where)
+      where ->
+        conn
+        |> Plug.Conn.delete_session(:go)
+        |> Phoenix.Controller.redirect(where)
+    end
   end
 
   def maybe_cute_gif do

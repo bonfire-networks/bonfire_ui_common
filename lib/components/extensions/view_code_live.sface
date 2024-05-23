@@ -11,22 +11,25 @@
 
     <Bonfire.UI.Common.CodeStylesLive.code_styles_live />
 
-    <div class="flex flex-col lg:flex-row max-w-[600px]">
-      <div class="flex-grow lg:mt-0 lg:mr-6 lg:flex-grow-0 lg:flex-shrink-0">
-        <section
-          :if={@code != nil}
-          id={"line-#{@selected_line}"}
-          :hook="loadHash"
-          data-line-number={@selected_line}
-          data-theme="night"
-          class="code ghd-container bg-primary-content"
-        >
-          <ul id="left_gutter">
-            <li :for={ln <- 1..@lines} :hook="updateHash" id={"L#{ln}"} data-line-number={ln} />
-          </ul>
+    <div class="max-w-[600px]">
+      <div class="mb-2">{markdown(@docs)}</div>
+      <div class="flex flex-col lg:flex-row">
+        <div class="flex-grow lg:mt-0 lg:mr-6 lg:flex-grow-0 lg:flex-shrink-0">
+          <section
+            :if={@code != nil}
+            id={"line-#{@selected_line}"}
+            :hook="loadHash"
+            data-line-number={@selected_line}
+            data-theme="night"
+            class="code ghd-container bg-primary-content"
+          >
+            <ul id="left_gutter">
+              <li :for={ln <- 1..@lines} :hook="updateHash" id={"L#{ln}"} data-line-number={ln} />
+            </ul>
 
-          {if @enable_formatter, do: raw(Text.code_syntax(@code, @filename)), else: @code}
-        </section>
+            {if @enable_formatter, do: raw(Text.code_syntax(@code, @filename)), else: @code}
+          </section>
+        </div>
       </div>
     </div>
   </div>

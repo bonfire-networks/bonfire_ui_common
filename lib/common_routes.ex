@@ -40,7 +40,7 @@ defmodule Bonfire.UI.Common.Routes do
 
       pipeline :basic_json do
         plug(:basic)
-        plug(:accepts, ["json"])
+        plug(:accepts, ["activity+json", "json", "ld+json"])
       end
 
       pipeline :browser do
