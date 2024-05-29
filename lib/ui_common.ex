@@ -1190,9 +1190,7 @@ defmodule Bonfire.UI.Common do
 
     connected? = socket_connected?(socket)
 
-    current_user =
-      current_user(assigns) ||
-        current_user(socket)
+    current_user = current_user(socket) || current_user(assigns)
 
     live_update_many_preloads = opts[:live_update_many_preloads] || live_update_many_preloads?()
 
