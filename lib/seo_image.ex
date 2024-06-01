@@ -7,6 +7,9 @@ defmodule Bonfire.UI.Common.SEOImage do
     if not File.exists?(filename) do
       with {:ok, filename} <- generate_og_image(filename, title, body, author, image) do
         filename
+      else e ->
+        error(e)
+        nil
       end
     else
       filename
@@ -53,6 +56,7 @@ defmodule Bonfire.UI.Common.SEOImage do
     #     />
 
     write_og_image(filename, svg, image)
+    |> info("write_og_image")
   end
 
   defp og_image_paths(id, author_id) do
@@ -85,17 +89,16 @@ defmodule Bonfire.UI.Common.SEOImage do
   defp write_og_image(filename, svg, image \\ nil)
 
   defp write_og_image(filename, svg, nil) do
-    {image, _} = Vix.Vips.Operation.svgload_buffer!(svg)
-
-    # save to PNG because for some reason OG does not support SVG
-    Image.write!(image, filename)
-    {:ok, filename}
+    with {:ok, {svg_image, _}} <- Vix.Vips.Operation.svgload_buffer(svg),
+         {:ok, _} <- Image.write(svg_image, filename) do
+      # ^ save to PNG because for some reason OpenGraph does not support SVG
+      {:ok, filename}
+    end
   end
 
   defp write_og_image(filename, svg, overlay_path) do
-    {svg_image, _} = Vix.Vips.Operation.svgload_buffer!(svg)
-
-    with {:ok, overlay_image} <- Image.open(overlay_path),
+    with {:ok, {svg_image, _}} <- Vix.Vips.Operation.svgload_buffer(svg),
+        {:ok, overlay_image} <- Image.open(overlay_path),
          IO.inspect(overlay_path, label: "ok imagesss"),
          {:ok, overlay_image} <- Image.thumbnail(overlay_image, "200x200"),
          {:ok, composed_img} <- Image.compose(svg_image, overlay_image, x: 980, y: 380),
