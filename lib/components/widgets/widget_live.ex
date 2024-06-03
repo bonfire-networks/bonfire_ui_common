@@ -18,7 +18,7 @@ defmodule Bonfire.UI.Common.WidgetLive do
 
   prop wrapper_class, :css_class, default: "!p-0 !block"
   prop link_class, :any, default: nil
-  prop icon_class, :css_class, required: false, default: "w-6 h-6 text-base-content/80"
+  prop icon_class, :css_class, required: false, default: "w-5 h-5 text-base-content/80"
 
   prop skip_badges, :any, default: false
 

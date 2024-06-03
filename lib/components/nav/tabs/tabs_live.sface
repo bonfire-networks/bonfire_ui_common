@@ -36,7 +36,7 @@
     </div>
   {#elseif @type == :header_only}
     <div class="flex justify-between items-center w-full px-6">
-      <div class="text-lg font-bold w-full flex-1">
+      <div class="text-lg items-center gap-2 flex font-bold w-full flex-1">
         {#if @show_back_button}
           <Bonfire.UI.Common.BackButtonLive type={:preview} />
         {/if}
@@ -50,7 +50,7 @@
       <!-- <div class="text-lg font-bold">
         {@selected_name}
       </div> -->
-      <div class="flex justify-center gap-6 items-center w-full">
+      <div class="flex justify-evenly gap-6 items-center w-full">
         {#for {tab, tab_name} <- @tabs}
           <StatelessComponent
             module={@link_component}
