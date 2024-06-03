@@ -7,9 +7,10 @@ defmodule Bonfire.UI.Common.SEOImage do
     if not File.exists?(filename) do
       with {:ok, filename} <- generate_og_image(filename, title, body, author, image) do
         filename
-      else e ->
-        error(e)
-        nil
+      else
+        e ->
+          error(e)
+          nil
       end
     else
       filename
@@ -98,7 +99,7 @@ defmodule Bonfire.UI.Common.SEOImage do
 
   defp write_og_image(filename, svg, overlay_path) do
     with {:ok, {svg_image, _}} <- Vix.Vips.Operation.svgload_buffer(svg),
-        {:ok, overlay_image} <- Image.open(overlay_path),
+         {:ok, overlay_image} <- Image.open(overlay_path),
          IO.inspect(overlay_path, label: "ok imagesss"),
          {:ok, overlay_image} <- Image.thumbnail(overlay_image, "200x200"),
          {:ok, composed_img} <- Image.compose(svg_image, overlay_image, x: 980, y: 380),
