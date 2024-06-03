@@ -1,6 +1,6 @@
 <nav class="" role="navigation" aria-label={l("Settings navigation")}>
-  <ul class="-mx-4 menu menu-sm">
-    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
+  <ul class="-mx-4 menu">
+    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
         <!-- <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("General")}</span>
@@ -121,7 +121,7 @@
         <span class="text-sm text-base-content/70">{l("Invites")}</span>
       </LinkLive>
     </li> --}
-    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
+    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
         <!-- <#Icon iconify="material-symbols:shield" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Safety")}</span>
@@ -195,7 +195,7 @@
       </li>
     </div>
 
-    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
+    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
       <Bonfire.UI.Common.ExtensionsSidebarSettingsNavLive
         page={@page}
         selected_tab={@selected_tab}
@@ -203,7 +203,7 @@
       />
     </div>
 
-    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
+    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
         <!-- <#Icon iconify="material-symbols-light:data-table" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Migration")}</span>

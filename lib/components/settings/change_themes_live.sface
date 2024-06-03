@@ -111,7 +111,7 @@
       {/if} --}
 
   <div class="p-3 mt-4 rounded-lg bg-base-content/5" x-show="custom_theme" x-cloak x-collapse>
-    <div class="flex items-center gap-2 pb-3 mb-5 text-sm font-semibold border-b place-content-center border-base-content/20">
+    <div class="flex items-center gap-2 pb-3 mb-5 text-sm font-semibold border-b place-content-center border-base-content/10">
       <#Icon iconify="lucide:paintbrush-2" class="w-4 h-4" />
       <span class="">{l("Customise theme colours")}</span>
     </div>

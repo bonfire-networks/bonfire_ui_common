@@ -10,7 +10,7 @@
         options={@preloaded_options || []}
         value={if @field not in (@__context__[:_already_live_selected_] || []), do: @selected_options}
         placeholder={@label}
-        dropdown_class="dropdown-content z-[1] top-10 !p-[0.5rem] menu menu-sm rounded bg-base-200 border border-base-content/20 w-full"
+        dropdown_class="dropdown-content z-[1] top-10 !p-[0.5rem] menu menu-sm rounded bg-base-200 border border-base-content/10 w-full"
         option_extra_class="font-normal"
         container_class="dropdown dropdown-open w-full flex flex-col"
         text_input_class={@text_input_class}

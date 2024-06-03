@@ -82,7 +82,7 @@
         },
     }">
   <section x-ref="splide" class="splide" aria-label="pinned items">
-    <div class="flex justify-between w-full pb-1 mb-6 text-sm font-medium tracking-wide border-b border-base-content/20 text-base-content/70">
+    <div class="flex justify-between w-full pb-1 mb-6 text-sm font-medium tracking-wide border-b border-base-content/10 text-base-content/70">
       <div :if={@title} class="">{@title}</div>
       <div class="flex gap-3 splide__arrows">
         <button class="splide__arrow splide__arrow--prev !static !bg-base-content/5">

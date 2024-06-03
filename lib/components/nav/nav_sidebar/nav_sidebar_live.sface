@@ -25,7 +25,7 @@
     {!-- BOTTOM OF LEFT SIDEBAR --}
     <div
       data-scope="sticky_menu"
-      class="sticky bottom-0 flex items-center justify-end tablet-lg:justify-between pt-4 bg-base-100 border-base-content/20"
+      class="sticky bottom-0 flex items-center justify-end tablet-lg:justify-between pt-4 bg-base-100 border-base-content/10"
     >
       <Bonfire.UI.Common.UserMenuLive :if={current_user(@__context__)} page={@page} />
 

@@ -1,6 +1,6 @@
 <div
   data-id="logged_header"
-  class="sticky top-0 z-30 flex justify-center w-full h-16 transition-all duration-100 border-b shadow-sm border-base-content/20 bg-opacity-90 backdrop-blur bg-base-100 text-base-content"
+  class="sticky top-0 z-30 flex justify-center w-full h-16 transition-all duration-100 border-b shadow-sm border-base-content/10 bg-opacity-90 backdrop-blur bg-base-100 text-base-content"
 >
   <div class="flex w-[260px] bg-base-300 items-center px-4" :class="{'w-full': open_sidebar}">
     <Bonfire.UI.Common.OpenSidebarBtnLive />

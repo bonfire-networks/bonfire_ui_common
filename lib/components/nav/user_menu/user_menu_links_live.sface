@@ -1,4 +1,4 @@
-<li>
+<!-- <li>
   <div class="border-b border-base-content/5 w-full flex rounded-b-none flex-1 mb-2 bg-base-content/5">
     <LinkLive
       to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
@@ -20,7 +20,7 @@
       </div>
     </LinkLive>
   </div>
-</li>
+</li> -->
 
 <li>
   <LinkLive
@@ -42,20 +42,20 @@
   </LinkLive>
 </li>
 
-<li>
+<!-- <li>
   <LinkLive to={~p"/write"} class="flex items-center gap-2 text-sm text-base-content/70">
     <div>{l("Write")}</div>
   </LinkLive>
-</li>
+</li> -->
 
-<li>
+<!-- <li>
   <StatelessComponent
     module={maybe_component(Bonfire.UI.Groups.NewGroupLive, @__context__)}
     parent_id="user_menu_links"
     open_btn_wrapper_class="flex items-center gap-2 text-sm text-base-content/70"
     open_btn_class=""
   />
-</li>
+</li> -->
 
 <li>
   <LinkLive to={~p"/settings"} class="flex items-center gap-2 text-sm text-base-content/70">

@@ -7,7 +7,7 @@
   <div class="grid grid-cols-3 gap-3" tabindex="0">
     {#for t <- @themes}
       <div class={
-        "overflow-hidden border rounded-lg border-base-content/20 hover:border-base-content/40 outline-base-content outline-2 outline-offset-2",
+        "overflow-hidden border rounded-lg border-base-content/10 hover:border-base-content/40 outline-base-content outline-2 outline-offset-2",
         "ring-2 ring-primary": to_string(t) == to_string(@theme)
       }>
         <div data-theme={t} class="w-full font-sans cursor-pointer bg-base-100 text-base-content">

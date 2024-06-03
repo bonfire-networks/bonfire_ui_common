@@ -4,7 +4,7 @@
   x-ref="dialog"
   aria-modal="true"
   role="banner"
-  class="flex items-center h-[56px] flex-1 w-full border-b border-base-content/20 px-4"
+  class="flex items-center h-[56px] flex-1 w-full border-base-content/10 px-4"
 >
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center justify-between w-full tablet-lg:flex-1">

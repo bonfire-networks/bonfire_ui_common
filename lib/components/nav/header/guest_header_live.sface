@@ -21,7 +21,7 @@
         </li>
 
         <div phx-hook="Tooltip" data-position="bottom-end" id="tooltip_more_menu" class="relative">
-          <label tabindex="0" role="button" class="tooltip-button btn btn-sm btn-square gap-2 btn-ghost">
+          <label tabindex="0" role="button" class="tooltip-button btn btn-square gap-2 btn-ghost">
             <#Icon iconify="ci:menu-duo-lg" class="w-5 h-5 text-base-content/90" />
           </label>
           <ul

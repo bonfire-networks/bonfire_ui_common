@@ -117,11 +117,11 @@ main[data-id="profile"][data-guest] section[data-id="profile_hero"] div[data-id=
 }
 
 main[data-id="profile"][data-guest] div[data_id="profile_timeline"]{
-  @apply max-w-[680px] mx-auto md:border border-base-content/20 ;
+  @apply max-w-[680px] mx-auto md:border border-base-content/10 ;
 }
 
 main[data-id="profile"][data-guest] div[data_id="profile_posts"]{
-  @apply max-w-[680px] mx-auto md:border border-base-content/20 ;
+  @apply max-w-[680px] mx-auto md:border border-base-content/10 ;
 }
 
 /* layout */
@@ -151,7 +151,7 @@ div[data-scope="avatar"] div[data-square] {
 
 /* preview content */
 div[data-id="preview_content"][data-show], div[data-id="preview_content"] [data-show] {
-  @apply visible inset-0 widget border-l border-r border-base-content/20 z-[99999999999];
+  @apply visible inset-0 widget border-l border-r border-base-content/10 z-[99999999999];
 }
 
 

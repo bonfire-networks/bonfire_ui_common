@@ -23,7 +23,7 @@
             id="smart_input_thread_title"
             phx-update={if @reset_smart_input, do: "replace", else: "ignore"}
           >
-            <div class="relative p-2 border-b bg-base-100 border-base-content/20">
+            <div class="relative p-2 border-b bg-base-100 border-base-content/10">
               <#Icon
                 iconify="solar:text-bold"
                 class="absolute w-5 h-5 stroke-1 top-[14px] left-3 text-base-content/70"
@@ -53,7 +53,7 @@
         "order-first !bg-base-content/10": @showing_within == :page
       }>
         <div class="">
-          <div class="flex justify-between gap-2 md:gap-3 p-2 border-t border-base-content/20 md:items-center  md:px-3 py-2">
+          <div class="flex justify-between gap-2 md:gap-3 p-2 border-t border-base-content/10 md:items-center  md:px-3 py-2">
             <div class="flex items-center gap-1">
               <Bonfire.UI.Common.UploadButtonLive
                 :if={@uploads != false}

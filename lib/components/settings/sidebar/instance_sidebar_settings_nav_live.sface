@@ -1,5 +1,5 @@
 <nav class="" role="navigation" aria-label={l("Instance settings navigation")}>
-  <ul class="-mx-4 menu menu-sm">
+  <ul class="-mx-4 menu">
     {!-- <div x-data="{open: true}">
       <li x-on:click="open = ! open">
         <div class="flex items-center justify-between">
@@ -10,7 +10,7 @@
         </div>
       </li>
       <ul x-show="open" x-collapse class="menu menu-compact"> --}
-    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
+    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
         <!-- <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Instance Configuration")}</span>
@@ -97,7 +97,7 @@
       </li>
     </div>
 
-    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
+    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
         <!-- <#Icon iconify="fluent:people-community-48-filled" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Members")}</span>
@@ -152,7 +152,7 @@
       </li>
     </div>
 
-    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
+    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
         <!-- <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("Safety")}</span>
@@ -229,7 +229,7 @@
       </li>
     </div>
 
-    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/20">
+    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
       <Bonfire.UI.Common.ExtensionsSidebarSettingsNavLive
         page={@page}
         selected_tab={@selected_tab}
