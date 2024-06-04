@@ -97,7 +97,7 @@
             <!-- <Bonfire.UI.Common.PreviewContentLive id="preview_content" /> -->
 
             <Bonfire.UI.Common.PersistentLive
-              :if={@current_user_id}
+              :if={@current_user_id && !@without_sidebar}
               id={:persistent}
               sticky
               container={{:div, class: "fixed md:sticky top-0 z-[999999999]"}}
