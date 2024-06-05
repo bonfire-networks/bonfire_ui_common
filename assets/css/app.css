@@ -30,6 +30,14 @@
   --ease-in-out-circ: cubic-bezier(.785, .135, .15, .86);
 }
 
+.btn {
+  font-weight: 500;
+}
+
+.btn.btn-sm {
+  height: 34px;
+  min-height: 34px;
+}
 body.no-scroll {
   @apply overflow-hidden;
 }
@@ -157,7 +165,7 @@ div[data-id="main_section"][data-single-column] {
 }
 
 div[data-id="main_section"][data-single-column] #inner {
-  @apply !border-none;
+  @apply !border-none bg-base-200 shadow-none;
 }
 
 /* AVATAR */
@@ -613,7 +621,7 @@ body {
  -webkit-text-size-adjust: none;
  -moz-text-size-adjust: none;
  text-size-adjust: none;
- scrollbar-gutter: stable;
+ scrollbar-gutter: stable both-edges;
  -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 

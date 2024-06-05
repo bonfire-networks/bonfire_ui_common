@@ -1,6 +1,6 @@
 <div
   data-id="bonfire_live"
-  class="antialiased"
+  class="antialiased bg-base-200"
   data-theme={if Settings.get(
        [:ui, :theme, :preferred],
        :system,
@@ -111,13 +111,12 @@
                 }
               }}
             />
-
             <div
               id="inner"
-              class="md:mt-0 flex flex-col md:border-l md:border-r border-base-content/10 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]"
+              class="mt-2 flex flex-col bg-base-100 shadow-lg border border-base-content/10 rounded-xl min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]"
             >
               <div :if={!@without_sidebar && !@no_header} class="sticky top-0 z-[999]">
-                <div class="flex flex-1 backdrop-blur-sm rounded-none md:rounded-t bg-base-100/70 transition-color duration-150 ease-in-out">
+                <div class="flex flex-1 px-4 rounded-t-xl w-full rounded-none bg-base-100/70 transition-color duration-150 ease-in-out">
                   <StatelessComponent
                     module={maybe_component(Bonfire.UI.Common.PageHeaderLive, @__context__)}
                     page={@page}
@@ -137,7 +136,6 @@
                   </StatelessComponent>
                 </div>
               </div>
-
               {@inner_content}
             </div>
           </div>
@@ -154,15 +152,12 @@
         class="order-last hidden lg:block lg:sticky  w-auto lg:top-3 mt-3 self-start z-[998] lg:w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
       >
         <div :if={is_nil(@current_user_id)} class="flex flex-col my-4 gap-2">
-          <LinkLive
-            to={path(:login, :index)}
-            class="md:flex-1  normal-case rounded-full btn-primary btn btn-sm h-[2.5rem] min-h-[2.5rem]"
-          >{l("Log in")}</LinkLive>
+          <LinkLive to={path(:login, :index)} class="md:flex-1  normal-case btn-primary btn btn-sm">{l("Log in")}</LinkLive>
 
           {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
             <LinkLive
               to={path(:signup)}
-              class="md:flex-1 hidden md:flex !border-primary/30 normal-case h-[2.5rem] min-h-[2.5rem] rounded-full btn-outline btn-primary btn btn-sm"
+              class="md:flex-1 hidden md:flex  normal-case btn-outline border-base-content/30 btn btn-sm"
             >{l("Create account")}</LinkLive>
           {/if}
         </div>

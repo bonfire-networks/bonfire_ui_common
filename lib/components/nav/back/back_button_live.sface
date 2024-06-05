@@ -6,23 +6,23 @@
     label={l("Go back to the previous page")}
     class="btn font-normal normal-case btn-ghost btn-sm btn-circle !inline-flex"
   >
-    <#Icon iconify="ion:chevron-back" class="w-5 h-5 text-base-content/70" />
+    <#Icon iconify="ion:chevron-back" class="w-4 h-4 opacity/70" />
   </button>
 {#elseif is_binary(@back) and @back != current_url(@__context__)}
   <LinkLive
     to={@back}
     label={l("Go back to the previous page")}
-    class="btn normal-case relative z-50 font-normal btn-ghost btn-sm btn-circle !inline-flex"
+    class="btn normal-case relative z-50 font-normal btn-outline border-base-content/30 btn-xs btn-circle !inline-flex"
   >
-    <#Icon iconify="ion:chevron-back" class="w-5 h-5 text-base-content/70" />
+    <#Icon iconify="ion:chevron-back" class="w-4 h-4 opacity/70" />
   </LinkLive>
 {#elseif @back}
   <a
     x-show="history.length > 1 && document.referrer.indexOf(window.location.host) !== -1"
     href="javascript:window.history.back()"
     aria-label={l("Go back to the previous page")}
-    class="btn normal-case relative z-50 font-normal btn-ghost btn-sm btn-circle !inline-flex"
+    class="btn normal-case relative z-50 font-normal btn-outline border-base-content/30 btn-xs btn-circle !inline-flex"
   >
-    <#Icon iconify="ion:chevron-back" class="w-5 h-5 text-base-content/70" />
+    <#Icon iconify="ion:chevron-back" class="w-4 h-4 opacity/70" />
   </a>
 {/if}

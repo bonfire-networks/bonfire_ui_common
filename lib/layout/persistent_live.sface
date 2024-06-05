@@ -7,6 +7,7 @@
   <div class="absolute h-0 w-[210px] ml-[-230px] sticky top-0">
     <div class="pt-2 hidden md:flex items-center justify-end tablet-lg:justify-between">
       <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
+      <Bonfire.UI.Common.UserMenuLive />
     </div>
     <div class="flex items-center justify-end mt-4 flex-1">
       <div :if={!Config.get([:ui, :hide_app_switcher])} class="dropdown dropdown-end">

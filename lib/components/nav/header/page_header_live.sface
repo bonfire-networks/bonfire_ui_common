@@ -4,7 +4,7 @@
   x-ref="dialog"
   aria-modal="true"
   role="banner"
-  class="flex items-center h-[56px] flex-1 w-full border-base-content/10 px-4"
+  class="flex items-center h-[56px] flex-1 w-full"
 >
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center justify-between w-full tablet-lg:flex-1">
@@ -20,7 +20,7 @@
                 <div class="h-2.5 bg-base-content/10 rounded-full w-60" />
               </div> -->
             {#else}
-              <span class="first-letter:capitalize flex-1 text-lg font-bold text-base-content">{@page_title}</span>
+              <span class="first-letter:capitalize flex-1 font-bold text-base-content">{@page_title}</span>
             {/if}
             <div :if={@extra} class="text-xs text-base-content/70">{@extra}</div>
           </div>
@@ -32,7 +32,7 @@
               </div> -->
             {#else}
               <span
-                class="first-letter:capitalize flex-1 text-lg font-bold text-base-content"
+                class="first-letter:capitalize flex-1 font-bold text-base-content/90"
                 :if={not is_nil(@page_title)}
               >{@page_title}</span>
             {/if}

@@ -25,7 +25,7 @@
     <%= csrf_meta_tag() %>
   </head>
 
-  <body id="layout-root">
+  <body class="" id="layout-root">
     <%= @inner_content %>
 
     <%= raw(Bonfire.Common.Config.endpoint_module().include_assets(@conn, :bottom)) %>

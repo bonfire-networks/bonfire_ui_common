@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   prop without_label, :boolean, default: false
 
   prop content_class, :css_class,
-    default: "flex-1 justify-end relative flex items-center gap-3 widget_content p-2"
+    default: "flex-1 justify-end relative flex items-center gap-3 widget_content p-2 py-1"
 
   prop text_class, :css_class, default: nil
 
@@ -24,7 +24,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
 
   prop wrapper_class, :css_class, default: "m-0 p-0 justify-end  !block"
   prop link_class, :any, default: nil
-  prop icon_class, :css_class, required: false, default: "w-5 h-5 text-base-content/80"
+  prop icon_class, :css_class, required: false, default: "w-4 h-4 text-base-content"
 
   prop skip_badges, :any, default: false
 end
