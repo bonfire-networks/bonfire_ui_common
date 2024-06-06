@@ -4,7 +4,8 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
   prop widget_title, :string, default: nil
 
   prop class, :css_class,
-    default: "flex-auto mx-auto rounded-xl border border-base-content/10 bg-base-100 shadow-sm"
+    default:
+      "w-full flex-auto mx-auto rounded-xl border border-base-content/10 bg-base-100 shadow-sm"
 
   prop title_class, :css_class, default: "mx-3 py-3  text-base font-bold tracking-wide"
 
