@@ -29,6 +29,9 @@
   --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
   --ease-in-out-circ: cubic-bezier(.785, .135, .15, .86);
 }
+:root, [data-theme] {
+  @apply bg-base-200;
+}
 
 .btn {
   font-weight: 500;
@@ -38,6 +41,15 @@
   height: 34px;
   min-height: 34px;
 }
+
+.btn.btn-outline {
+  @apply border-base-content/30;
+}
+
+.badge.badge-outline {
+  @apply border-base-content/30;
+}
+
 body.no-scroll {
   @apply overflow-hidden;
 }
@@ -767,8 +779,8 @@ body {
 }
 
 :root {
-  --scrollbarTrack: oklch(var(--b2));
-  --scrollbarThumb: oklch(var(--b1));
+  --scrollbarTrack: oklch(var(--bc)/0.05);
+  --scrollbarThumb: oklch(var(--b1)/0.8);
   --scrollbarThumbHover: oklch(var(--p)/0.8);
 }
 /* Scrollbar colors*/

@@ -1,6 +1,6 @@
 <div data-position="top-end" phx-hook="Tooltip" id="user_more_menu_links" class="relative">
   <label
-    class="tooltip-button btn btn-xs btn-circle btn-outline border-base-content/30"
+    class="tooltip-button btn btn-xs btn-circle btn-outline"
     tabindex="0"
     role="button"
     id="user-profile-menu"

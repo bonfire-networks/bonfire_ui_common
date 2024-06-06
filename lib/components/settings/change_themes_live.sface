@@ -17,7 +17,7 @@
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:dark}
       phx-value-scope={@scope}
-      class="normal-case rounded btn btn-ghost border-base-content/30"
+      class="normal-case rounded btn btn-outline"
     >
       <div class="flex items-center">
         <span><#Icon outline="Moon" class="w-4 h-4" /></span>
@@ -33,7 +33,7 @@
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:light}
       phx-value-scope={@scope}
-      class="normal-case rounded btn btn-outline border-base-content/30"
+      class="normal-case rounded btn btn-outline"
     >
       <span><#Icon outline="Sun" class="w-4 h-4" /></span>
       <span class="ml-2">{l("Light")}</span>
@@ -47,7 +47,7 @@
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:system}
       phx-value-scope={@scope}
-      class="normal-case rounded btn btn-outline border-base-content/30"
+      class="normal-case rounded btn btn-outline"
     >
       <span><#Icon outline="ComputerDesktop" class="w-4 h-4" /></span>
       <span class="ml-2">{l("System")}</span>
@@ -61,7 +61,7 @@
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:custom}
       phx-value-scope={@scope}
-      class="normal-case rounded btn btn-outline border-base-content/30"
+      class="normal-case rounded btn btn-outline"
     >
       <span><#Icon iconify="lucide:paintbrush-2" class="w-4 h-4" /></span>
       <span class="ml-2">{l("Custom")}</span>

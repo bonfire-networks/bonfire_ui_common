@@ -13,7 +13,7 @@
       type="checkbox"
       checked={if @current_value == @enabled_value,
         do: "checked"}
-      class="toggle toggle-md"
+      class="toggle toggle-sm"
     />
   </div>
 </div>

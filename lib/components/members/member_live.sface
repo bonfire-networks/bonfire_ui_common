@@ -23,7 +23,7 @@
       <span class="badge badge-success">{l("Admin")}</span>
       {!-- TODO: Moderator badge --}
     {#else}
-      <span class="badge !border !border-base-content/30 badge-outline">{if @is_local_user, do: l("Member"), else: l("Remote user")}</span>
+      <span class="badge badge-outline">{if @is_local_user, do: l("Member"), else: l("Remote user")}</span>
     {/if}
   </td>
   <td class="flex-1">
