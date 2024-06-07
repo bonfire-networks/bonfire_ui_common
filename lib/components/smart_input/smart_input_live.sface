@@ -1,19 +1,19 @@
 <div
   x-ref="smart_input"
   id="smart_input_live"
-  class="rounded-t-lg flex-1 h-full bg-base-100 grow relative z-[9999999999]"
+  class="rounded-xl flex-1 h-full bg-base-100 grow relative z-[9999999999]"
 >
-  <div id="composer_container" data-id="smart_input" class="flex-1 h-full grow rounded-t-lg">
+  <div id="composer_container" data-id="smart_input" class="flex-1 h-full grow rounded-xl">
     <div
       id="smart_input"
       phx-drop-target={@uploads.files.ref}
       x-data="{body: ''}"
-      class="flex bg-transparent rounded-t-lg h-full grow flex-1"
+      class="flex bg-transparent rounded-xl h-full grow flex-1"
     >
       <!-- title_open: #{if @title_open == true and @create_object_type not in [:post], do: true, else: false}, -->
       <div
         :if={not is_nil(current_user_id(@__context__))}
-        class="relative flex flex-col flex-1 w-full bg-base-100"
+        class="relative flex flex-col flex-1 w-full bg-base-100 rounded-xl"
       >
         <div
           :if={is_map(@activity) || is_map(@reply_to_id)}

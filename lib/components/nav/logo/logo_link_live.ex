@@ -4,7 +4,9 @@ defmodule Bonfire.UI.Common.LogoLinkLive do
   prop href, :any, default: nil
   prop with_name, :boolean, default: false
 
-  prop container_class, :css_class, default: "flex items-center gap-4 cursor-pointer"
+  prop container_class, :css_class,
+    default:
+      "flex w-[60px] tablet-lg:w-auto place-content-center items-center gap-4 cursor-pointer"
 
   prop image_class, :css_class, default: "w-10 h-10 bg-center bg-no-repeat bg-contain"
 

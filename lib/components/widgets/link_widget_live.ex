@@ -10,7 +10,8 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   prop without_label, :boolean, default: false
 
   prop content_class, :css_class,
-    default: "flex-1 justify-end relative flex items-center gap-3 widget_content p-2 py-1"
+    default:
+      "flex-1 justify-center h-[60px] tablet-lg:h-auto tablet-lg:justify-start relative flex items-center gap-3 widget_content p-2 py-1"
 
   prop text_class, :css_class, default: nil
 

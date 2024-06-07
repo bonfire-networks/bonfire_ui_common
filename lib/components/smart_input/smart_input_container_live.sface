@@ -8,13 +8,16 @@
       create_object_type={@create_object_type}
       class="fixed right-3 md:static bottom-[72px] flex-1 btn text-sm md:w-auto btn-square h-[64px] w-[64px] md:h-[38px] md:min-h-[38px] md:max-h-[38px] bg-base-content/90 text-base-100/90 md:bg-primary md:text-primary-content md:btn-primary rounded-xl md:rounded shadow flex items-center gap-2 normal-case"
     /> --}
-
       <Bonfire.UI.Common.SmartInputButtonLive
         showing_within={:smart_input}
+        as_icon={e(@as_icon, false)}
         smart_input_opts={@smart_input_opts}
         prompt={e(@smart_input_opts, :prompt, l("Compose"))}
-        icon={e(@smart_input_opts, :icon, "mdi:pencil")}
-        class="hidden !p-0 lg:!p-inherit md:flex !h-[2.75rem] !min-h-[2.75rem] w-[2.5rem] tablet-lg:!min-h-auto tablet-lg:!px-[1rem] tablet-lg:!h-auto tablet-lg:!w-full btn btn-primary flex items-center gap-2 place-content-center normal-case"
+        icon={e(@smart_input_opts, :icon, "carbon:add")}
+        class={e(
+          @composer_class,
+          "hidden !p-0 lg:!p-inherit md:flex h-[60px] w-[60px] tablet-lg:!min-h-auto tablet-lg:!px-[1rem] tablet-lg:!h-auto tablet-lg:!w-full btn btn-primary flex items-center gap-2 place-content-center normal-case"
+        )}
       />
 
       {!-- 
@@ -24,29 +27,28 @@
     </div>
 
     {#if not is_nil(current_user_id(@__context__))}
-      <Bonfire.UI.Common.ComposerMinimizedLive />
+      <!-- <Bonfire.UI.Common.ComposerMinimizedLive /> -->
 
       <div
         id="smart_input_container"
         data-hidden={e(@smart_input_opts, :open, nil) != true}
         data-focused={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
-        class="w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-t-lg max-w-full bg-base-200 mx-auto z-[9999] shadow-composer md:right-4 bottom-0 md:w-[32rem] md:right-4 md:top-auto max-h-screen"
+        class="w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-xl max-w-full bg-base-200 mx-auto z-[9999] shadow-xl md:right-4 top-0 md:top-auto md:bottom-4 md:w-[32rem] md:right-4 md:top-auto max-h-screen"
       >
-        <div class="w-full rounded-t-lg bg-gradient-to-t from-transparent to-base-content/40 p-[0.05rem] flex flex-col flex-1 h-full grow">
-          <div class="w-full rounded-t-lg bg-base-200 flex flex-col flex-1 h-full grow">
+        <div class="w-full rounded-xl bg-gradient-to-t from-base-content/10 to-base-content/40 p-[0.05rem] flex flex-col flex-1 h-full grow">
+          <div class="w-full rounded-xl bg-base-200 flex flex-col flex-1 h-full grow">
             {!-- "md:!w-[20rem] tablet-lg:block bottom-0": e(@smart_input_opts, :minimized, nil) == true, --}
 
             <div
-              :if={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
               phx-click={LiveHandler.close_smart_input()}
               id="smart_input_backdrop"
               data-hidden={e(@smart_input_opts, :open, nil) != true}
               phx-target="#smart_input"
-              class="smart_input_backdrop fixed inset-0 cursor-pointer bg-base-300/20 backdrop-blur"
+              class="md:!hidden smart_input_backdrop fixed inset-0 cursor-pointer bg-base-300/20 backdrop-blur"
               style="-webkit-backdrop-filter: blur(8px);"
             />
 
-            <div class="smart_input_modal relative z-50 rounded-t-lg flex flex-col grow h-full">
+            <div class="smart_input_modal relative z-50 rounded-xl flex flex-col grow h-full">
               <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
               <SmartInputLive
                 boundaries_modal_id={:modal_composer}

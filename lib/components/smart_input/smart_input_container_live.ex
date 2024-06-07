@@ -25,6 +25,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
 
   # prop thread_mode, :atom, default: nil
   prop page, :any, default: nil
+  prop composer_class, :css_class, default: nil
   # prop without_sidebar, :string, default: nil
   prop reset_smart_input, :boolean, default: false
   prop boundaries_modal_id, :string, default: :sidebar_composer

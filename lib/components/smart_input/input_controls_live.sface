@@ -1,4 +1,4 @@
-<div class="flex-1 h-full bg-base-100 rounded-t-lg">
+<div class="flex-1 h-full bg-base-100 rounded-xl">
   <div class="flex-1 h-full grow" id="compose_content_wrapper">
     <div class="relative !flex flex-col flex-1 h-full">
       {!-- here was old/loader.svg --}
@@ -49,11 +49,11 @@
       </div>
 
       <div class={
-        "z-50 sticky bg-base-100 bottom-0 h-[48px]",
+        "z-50 sticky bg-base-100 rounded-xl bottom-0 h-[48px]",
         "order-first !bg-base-content/10": @showing_within == :page
       }>
         <div class="">
-          <div class="flex justify-between gap-2 md:gap-3 p-2 border-t border-base-content/10 md:items-center  md:px-3 py-2">
+          <div class="flex justify-between gap-2 md:gap-3 p-2 rounded-xl border-t border-base-content/10 md:items-center  md:px-3 py-2">
             <div class="flex items-center gap-1">
               <Bonfire.UI.Common.UploadButtonLive
                 :if={@uploads != false}

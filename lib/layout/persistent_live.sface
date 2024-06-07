@@ -3,12 +3,29 @@
     showing_within={@showing_within}
     smart_input_opts={@smart_input_opts}
   /> --}
-
-  <div class="absolute h-0 w-[210px] ml-[-230px] sticky top-0">
-    <div class="pt-2 hidden md:flex items-center justify-end tablet-lg:justify-between">
-      <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
-      <Bonfire.UI.Common.UserMenuLive />
+  <!-- <div>
+    <Bonfire.UI.Common.AvatarLive src="https://avatars.githubusercontent.com/u/10137?v=4" />
+    <div class="flex flex-col">
+      <div>Bonfire</div>
+      <div>UI</div>
     </div>
+  </div> -->
+  <!-- <button class="btn fixed right-6 bottom-6 btn-lg btn-square shadow-lg btn-primary"><#Icon class="w-7 h-7" iconify="mdi:plus" /></button> -->
+  <Bonfire.UI.Common.SmartInputContainerLive
+    :if={!e(@smart_input_opts, :inline_only, nil) and
+      !e(@smart_input_opts, :disable, nil)}
+    id={:smart_input}
+    as_icon
+    composer_class="btn fixed right-6 bottom-6 btn-lg btn-circle shadow-xl btn-primary"
+    smart_input_opts={@smart_input_opts}
+  />
+  <div class="absolute h-0 w-[210px] ml-[-226px] sticky top-0">
+    <!-- <div class="pt-2 hidden md:flex items-center justify-end tablet-lg:justify-between">
+      <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
+      <div class="hidden tablet-lg:block">
+        <Bonfire.UI.Common.UserMenuLive />
+      </div>
+    </div> -->
     <div class="flex items-center justify-end mt-4 flex-1">
       <div :if={!Config.get([:ui, :hide_app_switcher])} class="dropdown dropdown-end">
         <label tabindex="0" class="relative btn btn-sm">
@@ -19,12 +36,7 @@
         </div>
       </div>
 
-      <Bonfire.UI.Common.SmartInputContainerLive
-        :if={!e(@smart_input_opts, :inline_only, nil) and
-          !e(@smart_input_opts, :disable, nil)}
-        id={:smart_input}
-        smart_input_opts={@smart_input_opts}
-      />
+      <!--  -->
     </div>
 
     <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />

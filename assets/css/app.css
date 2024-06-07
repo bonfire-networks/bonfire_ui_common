@@ -109,7 +109,7 @@ div#editor_milkdown_container[data-rendered="page"] {
 
 /* widget_link */
 div[data-id="nav_links"][data-showing-within="sidebar"] {
- @apply menu gap-5 tablet-lg:gap-1  menu-lg p-0 justify-end;
+ @apply menu gap-1 menu-lg p-0 justify-end;
 }
 
 div[data-id="nav_links"][data-showing-within="nav"] {

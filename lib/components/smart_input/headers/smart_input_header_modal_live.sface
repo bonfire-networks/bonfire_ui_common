@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-50 flex flex-row items-center w-full p-3 py-1 pt-2 rounded-t-lg bg-base-100 md:z-auto md:relative flex-align-items-stretch flex-nowrap">
+<header class="sticky top-0 z-50 flex flex-row items-center w-full p-3 py-1 pt-2 rounded-t-xl bg-base-100 md:z-auto md:relative flex-align-items-stretch flex-nowrap">
   <span class="flex-1 text-sm font-semibold md:text-center text-ellipsis text-base-content/70">
     {e(@smart_input_opts, :prompt, l("Share your thoughts"))}
   </span>

@@ -59,7 +59,7 @@
     <div
       :if={!@without_sidebar}
       data-id="nav_sidebar"
-      class="fixed md:sticky self-start order-first w-full mt-2 top-2 md:block"
+      class="fixed md:sticky self-start order-first w-full tablet-lg:mt-2 tablet-lg:top-2 md:block"
     >
       {#if is_nil(@current_user_id)}
         <div class="hidden md:flex items-center justify-end tablet-lg:justify-between mr-1">
@@ -70,7 +70,7 @@
       {!-- <Bonfire.UI.Common.PersistentLive ... --}
       <nav
         class={
-          "hidden mt-[116px] w-full md:flex gap-4 flex-col pb-1 max-h-[calc(var(--inner-window-height)_-130px)] min-h-[calc(var(--inner-window-height)_-130px)] z-[999999999999]",
+          "hidden  overview-y-auto  w-full md:flex gap-4 flex-col pb-1 max-h-[calc(var(--inner-window-height)_-130px)] min-h-[calc(var(--inner-window-height)_-130px)] z-[999999999999]",
           "!mt-0 pt-4 !max-h-[calc(var(--inner-window-height)_-50)] !min-h-[calc(var(--inner-window-height)_-50)]":
             is_nil(@current_user_id)
         }
@@ -113,7 +113,7 @@
             />
             <div
               id="inner"
-              class="mt-3 flex flex-col bg-base-100 shadow-lg border border-base-content/10 rounded-xl min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]"
+              class="flex flex-col bg-base-100 shadow-lg border border-base-content/10 rounded-xl min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]"
             >
               <div :if={!@without_sidebar && !@no_header} class="sticky top-0 z-[999]">
                 <div class="flex flex-1 px-4 rounded-t-xl w-full rounded-none bg-base-100/70 transition-color duration-150 ease-in-out">
