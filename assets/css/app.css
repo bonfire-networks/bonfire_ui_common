@@ -491,8 +491,11 @@ div[data-media-type-video] {
   @apply hidden;
 }
 
-#smart_input_container[data-focused] {
+#smart_input_container[data-focused]  {
   @apply inset-0 !top-0 tablet-lg:!top-[5%] tablet-lg:!h-[400px];
+}
+#smart_input_container[data-focused] #smart_input_backdrop {
+  @apply !block;
 }
 
 /* boost */

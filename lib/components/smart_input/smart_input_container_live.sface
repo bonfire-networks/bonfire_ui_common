@@ -44,7 +44,7 @@
               id="smart_input_backdrop"
               data-hidden={e(@smart_input_opts, :open, nil) != true}
               phx-target="#smart_input"
-              class="md:!hidden smart_input_backdrop fixed inset-0 cursor-pointer bg-base-300/20 backdrop-blur"
+              class="md:!hidden smart_input_backdrop fixed inset-0 cursor-pointer bg-black/40"
               style="-webkit-backdrop-filter: blur(8px);"
             />
 
