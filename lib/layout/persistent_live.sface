@@ -49,7 +49,7 @@
       <:extra_contents>
         <div
           id="the_extra_contents"
-          class="border-l border-r border-base-content/10"
+          class="border rounded-xl bg-base-100 border-base-content/10"
           data-role="persistent_feed"
         >
           <!-- persistent feed -->
