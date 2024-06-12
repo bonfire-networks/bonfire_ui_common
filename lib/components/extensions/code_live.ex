@@ -1,16 +1,16 @@
-defmodule Bonfire.UI.Common.ExtensionsLive do
+defmodule Bonfire.UI.Common.CodeLive do
   use Bonfire.UI.Common.Web, :stateless_component
   import Bonfire.Common.Extensions
 
   prop scope, :any, default: nil
 
-  prop feature_extensions, :list, default: []
+  # prop feature_extensions, :list, default: []
   prop ui, :list, default: []
-  # prop schemas, :list, default: []
-  # prop ecosystem_libs, :list, default: []
-  # prop other_deps, :list, default: []
+  prop schemas, :list, default: []
+  prop ecosystem_libs, :list, default: []
+  prop other_deps, :list, default: []
 
-  prop settings_section_title, :string, default: "Bonfire extensions"
+  prop settings_section_title, :string, default: "Data Schema & Libraries"
 
   def render(assigns) do
     if socket_connected?(assigns) do

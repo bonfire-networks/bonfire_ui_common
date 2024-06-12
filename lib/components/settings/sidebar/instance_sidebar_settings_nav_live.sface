@@ -32,7 +32,7 @@
         </LinkPatchLive>
       </li>
 
-      <li>
+      <!-- <li>
         <LinkLive
           to={~p"/settings/instance/preferences/appearance"}
           class={
@@ -46,7 +46,7 @@
           />
           <span class="text-sm text-base-content/70">{l("Default Appearance")}</span>
         </LinkLive>
-      </li>
+      </li> -->
 
       <li>
         <LinkLive

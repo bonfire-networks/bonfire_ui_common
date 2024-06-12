@@ -1,0 +1,117 @@
+<div class="">
+  <div class="">
+    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
+      <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
+      <span>{l("Data Schema")}</span>
+    </div>
+    <div class="flex flex-col divide-y divide-base-content/10">
+      {#for dep <- e(@data, :schemas, nil) || @schemas}
+        <Bonfire.UI.Common.ExtensionsDetailsLive
+          dep={dep}
+          scope={@scope}
+          can_instance_wide={@can_instance_wide}
+          required_deps={@required_deps}
+        />
+      {/for}
+    </div>
+  </div>
+
+  <div class="">
+    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
+      <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
+      <span>{l("Libraries")}</span>
+    </div>
+    <div class="flex flex-col divide-y divide-base-content/10">
+      {#for dep <- e(@data, :ecosystem_libs, nil) || @ecosystem_libs}
+        <Bonfire.UI.Common.ExtensionsDetailsLive
+          dep={dep}
+          scope={@scope}
+          can_instance_wide={@can_instance_wide}
+          required_deps={@required_deps}
+        />
+      {/for}
+    </div>
+  </div>
+
+  <div class="">
+    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
+      <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
+      <span>{l("Third-party Libraries")}</span>
+    </div>
+    <div class="flex flex-col divide-y divide-base-content/10">
+      {#for dep <- e(@data, :other_deps, nil) || @other_deps}
+        <Bonfire.UI.Common.ExtensionsDetailsLive
+          dep={dep}
+          scope={@scope}
+          can_instance_wide={@can_instance_wide}
+          required_deps={@required_deps}
+        />
+      {/for}
+    </div>
+  </div>
+  <!-- <div class="collapse collapse-arrow bg-base-content/5 mb-2">
+    <input type="radio" name="app-accordion" checked="checked">
+    <div class="collapse-title min-h-4 text-xs font-medium tracking-wide uppercase text-base-content/70">
+      {l("User interface extensions")}</div>
+    <div class="collapse-content m-3 divide-y rounded-lg divide-base-300">
+      {#for dep <- e(@data, :ui, nil) || @ui}
+        <Bonfire.UI.Common.ExtensionsDetailsLive
+          dep={dep}
+          scope={@scope}
+          can_instance_wide={@can_instance_wide}
+          required_deps={@required_deps}
+          is_extension?
+        />
+      {/for}
+    </div>
+  </div> -->
+
+  <!-- <div class="collapse collapse-arrow bg-base-content/5 mb-2">
+    <input type="radio" name="app-accordion" checked="checked">
+    <div class="collapse-title min-h-4 text-xs font-medium tracking-wide uppercase text-base-content/70">
+      {l("Bonfire extensions")}</div>
+    <div class="collapse-content m-3 divide-y rounded-lg divide-base-300">
+      {#for dep <- e(@data, :feature_extensions, nil) || @feature_extensions}
+        <Bonfire.UI.Common.ExtensionsDetailsLive
+          dep={dep}
+          scope={@scope}
+          can_instance_wide={@can_instance_wide}
+          required_deps={@required_deps}
+          is_extension?
+        />
+      {/for}
+    </div>
+  </div> -->
+
+  <!-- <div class="collapse collapse-arrow bg-base-content/5 mb-2">
+    <input type="radio" name="app-accordion">
+    <div class="collapse-title min-h-4 text-xs font-medium tracking-wide uppercase text-base-content/70">
+      {l("Data schemas")}</div>
+    <div class="collapse-content m-3 divide-y rounded-lg divide-base-300">
+      {#for dep <- e(@data, :schemas, nil) || @schemas}
+        <Bonfire.UI.Common.ExtensionsDetailsLive
+          dep={dep}
+          scope={@scope}
+          can_instance_wide={@can_instance_wide}
+          required_deps={@required_deps}
+        />
+      {/for}
+    </div>
+  </div> -->
+
+  <!-- <div class="collapse collapse-arrow bg-base-content/5 mb-2">
+    <input type="radio" name="app-accordion">
+    <div class="collapse-title min-h-4 text-xs font-medium tracking-wide uppercase text-base-content/70">
+      {l("External libraries")}</div>
+    <div class="collapse-content m-3 divide-y rounded-lg  divide-base-300">
+      {#for dep <- e(@data, :other_deps, nil) || @other_deps}
+        <Bonfire.UI.Common.ExtensionsDetailsLive
+          dep={dep}
+          scope={@scope}
+          can_instance_wide={@can_instance_wide}
+          required_deps={@required_deps}
+        />
+      {/for}
+    </div>
+  </div> -->
+</div>

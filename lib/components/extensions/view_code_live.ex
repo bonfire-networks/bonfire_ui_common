@@ -16,6 +16,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
        module: nil,
        modules: [],
        filename: nil,
+       back: true,
        docs: nil,
        code: nil,
        lines: 0,

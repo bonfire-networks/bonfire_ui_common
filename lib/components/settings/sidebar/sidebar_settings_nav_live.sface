@@ -2,14 +2,9 @@
   <ul class="-mx-4 menu">
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <!-- <#Icon iconify="majesticons:list-box" class="w-6 h-6 text-base-content/80" /> -->
         <span>{l("General")}</span>
       </div>
-      <!-- <li>
-      <div class="p-0 cursor-default pointer-events-none">
-        <span class="p-2 text-xs text-center font-semibold uppercase text-base-content/70">{l("General")}</span>
-      </div>
-    </li> -->
+
       <li :if={current_user_id(@__context__)}>
         <LinkLive
           to={~p"/settings/user/profile"}
@@ -42,7 +37,7 @@
         </LinkLive>
       </li>
 
-      <li>
+      <!-- <li>
         <LinkLive
           to={~p"/settings/user/preferences/appearance"}
           class={
@@ -56,7 +51,7 @@
           />
           <span class="text-sm text-base-content/70">{l("Appearance")}</span>
         </LinkLive>
-      </li>
+      </li> -->
       <li>
         <LinkLive
           to={~p"/settings/user/preferences/behaviours"}
@@ -70,22 +65,6 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @id == "behaviours"}
           />
           <span class="text-sm text-base-content/70">{l("Preferences")}</span>
-        </LinkLive>
-      </li>
-
-      <li>
-        <LinkLive
-          to={~p"/settings/user/extensions"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10 ": @selected_tab == "extensions"
-          }
-        >
-          <#Icon
-            outline="Puzzle"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
-          />
-          <span class="text-sm text-base-content/70">{l("Extensions")}</span>
         </LinkLive>
       </li>
 
@@ -121,6 +100,29 @@
         <span class="text-sm text-base-content/70">{l("Invites")}</span>
       </LinkLive>
     </li> --}
+    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
+      <div class="p-2 text-lg font-bold flex items-center gap-4">
+        <!-- <#Icon iconify="material-symbols:shield" class="w-6 h-6 text-base-content/80" /> -->
+        <span>{l("Extensions")}</span>
+      </div>
+
+      <li>
+        <LinkLive
+          to={~p"/settings/user/extensions"}
+          class={
+            "flex items-center gap-3 rounded-md px-2 w-full",
+            "bg-base-content/10 ": @selected_tab == "extensions"
+          }
+        >
+          <#Icon
+            outline="Puzzle"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
+          />
+          <span class="text-sm text-base-content/70">{l("Extensions")}</span>
+        </LinkLive>
+      </li>
+    </div>
+
     <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
       <div class="p-2 text-lg font-bold flex items-center gap-4">
         <!-- <#Icon iconify="material-symbols:shield" class="w-6 h-6 text-base-content/80" /> -->
@@ -259,6 +261,22 @@
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "emojis"}
           />
           <span class="text-sm text-base-content/70">{l("Custom emoji")}</span>
+        </LinkPatchLive>
+      </li>
+
+      <li>
+        <LinkPatchLive
+          to={~p"/settings/user/code"}
+          class={
+            "flex items-center gap-3 rounded-md px-2 w-full",
+            "bg-base-content/10": @selected_tab == "code"
+          }
+        >
+          <#Icon
+            iconify="ri:emotion-happy-line"
+            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "emojis"}
+          />
+          <span class="text-sm text-base-content/70">{l("Data Schema & Libraries")}</span>
         </LinkPatchLive>
       </li>
     </div>
