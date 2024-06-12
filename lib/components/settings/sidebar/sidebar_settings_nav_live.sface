@@ -115,7 +115,7 @@
           }
         >
           <#Icon
-            outline="Puzzle"
+            iconify="gg:extension"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
           />
           <span class="text-sm text-base-content/70">{l("Extensions")}</span>
@@ -273,7 +273,7 @@
           }
         >
           <#Icon
-            iconify="ri:emotion-happy-line"
+            iconify="ph:code-bold"
             class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "emojis"}
           />
           <span class="text-sm text-base-content/70">{l("Data Schema & Libraries")}</span>

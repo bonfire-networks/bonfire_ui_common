@@ -26,7 +26,7 @@
                     selected_tab={@selected_tab}
                   />
 
-                  <Bonfire.UI.Common.LinkWidgetLive
+                  <!-- <Bonfire.UI.Common.LinkWidgetLive
                     :if={Enum.member?(extension_nav, true)}
                     to={"/settings/#{@scope || "user"}/#{extension}"}
                     text={if length(extension_nav) == 1,
@@ -40,7 +40,7 @@
                     content_class="flex items-center gap-3 rounded-md px-2 w-full text-base-content/70"
                     icon_class="w-5 h-5 font-normal text-base-content/70"
                     selected_tab={@selected_tab}
-                  />
+                  /> -->
                 </div>
                 <!-- </li> -->
             {/case}

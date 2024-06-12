@@ -1,4 +1,33 @@
-<li>
+<span class="h-[20px]">
+  {#if @scope == :user}
+    {#if Bonfire.Common.Extend.disabled_value?(@my_modularity)}
+      {#if !@can_instance_wide}
+        <input type="checkbox" class="toggle toggle-sm" disabled>
+      {#else}
+        <form
+          name="toggle_extension"
+          phx-target={@myself}
+          phx-change="Bonfire.Common.Settings:extension:enable"
+        >
+          <input name="extension" value={@id} type="hidden">
+          <input type="checkbox" class="toggle toggle-sm" checked={!@globally_disabled}>
+        </form>
+      {/if}
+    {/if}
+  {#else}
+    {#if @can_instance_wide}
+      <form
+        name="toggle_extension"
+        phx-target={@myself}
+        phx-change="Bonfire.Common.Settings:extension:enable"
+      >
+        <input name="scope" value={:instance} type="hidden">
+        <input name="extension" value={@id} type="hidden">
+        <input type="checkbox" class="toggle toggle-sm" checked={!@globally_disabled}>
+      </form>
+    {/if}
+  {/if}
+  <!-- 
   {#if Bonfire.Common.Extend.disabled_value?(@my_modularity)}
     {#if !@globally_disabled}
       <button
@@ -37,5 +66,5 @@
         class="w-full normal-case !rounded text-error-content mt-1 py-1.5 btn btn-error btn-sm"
       >{l("Disable for everyone")}</button>
     {/if}
-  {/if}
-</li>
+  {/if} -->
+</span>

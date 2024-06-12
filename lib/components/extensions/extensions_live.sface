@@ -6,13 +6,15 @@
     </div>
     <div class="flex flex-col divide-y divide-base-content/10">
       {#for dep <- e(@data, :ui, nil) || @ui}
-        <Bonfire.UI.Common.ExtensionsDetailsLive
-          dep={dep}
-          scope={@scope}
-          can_instance_wide={@can_instance_wide}
-          required_deps={@required_deps}
-          is_extension?
-        />
+        {#if to_string(e(dep, :app, nil)) not in @required_deps}
+          <Bonfire.UI.Common.ExtensionsDetailsLive
+            dep={dep}
+            scope={@scope}
+            can_instance_wide={@can_instance_wide}
+            required_deps={@required_deps}
+            is_extension?
+          />
+        {/if}
       {/for}
     </div>
   </div>
@@ -23,13 +25,15 @@
     </div>
     <div class="flex flex-col divide-y divide-base-content/10">
       {#for dep <- e(@data, :feature_extensions, nil) || @feature_extensions}
-        <Bonfire.UI.Common.ExtensionsDetailsLive
-          dep={dep}
-          scope={@scope}
-          can_instance_wide={@can_instance_wide}
-          required_deps={@required_deps}
-          is_extension?
-        />
+        {#if to_string(e(dep, :app, nil)) not in @required_deps}
+          <Bonfire.UI.Common.ExtensionsDetailsLive
+            dep={dep}
+            scope={@scope}
+            can_instance_wide={@can_instance_wide}
+            required_deps={@required_deps}
+            is_extension?
+          />
+        {/if}
       {/for}
     </div>
   </div>

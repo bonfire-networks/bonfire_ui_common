@@ -83,7 +83,18 @@ module.exports = {
         DEFAULT: {
           css: {
             'blockquote p:first-of-type::before': { content: 'none' },
-            'blockquote p:first-of-type::after': { content: 'none' }
+            'blockquote p:first-of-type::after': { content: 'none' },
+            css: {
+              h1: {
+                margin: 0
+              },
+              h2: {
+                margin: 0
+              },
+              h3: {
+                margin: 0
+              }
+            }
           },
         },
         sm: {
