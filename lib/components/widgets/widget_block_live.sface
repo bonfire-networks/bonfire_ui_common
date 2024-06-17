@@ -1,7 +1,4 @@
-<aside class={
-  @class,
-  "pt-3": !@widget_title
-}>
+<aside class={@class}>
   <div :if={@widget_title} class={@title_class} role="banner">
     <div>{@widget_title}</div>
     <#slot {@action} />
