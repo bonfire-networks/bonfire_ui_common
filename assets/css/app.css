@@ -1146,10 +1146,6 @@ em-emoji-picker {
   @apply !w-full !h-[240px] !object-cover !rounded;
 }
 
-#smart_input_container {
-  --tw-shadow: 0 10px 35px -5px rgb(0 0 0 / 0.8), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-}
-
 .upload-entry img {
   @apply min-w-[160px] w-[160px] h-[90px] md:h-[100px] object-cover rounded-lg;
 }
