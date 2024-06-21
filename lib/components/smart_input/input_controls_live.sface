@@ -1,4 +1,4 @@
-<div class="flex-1 h-full bg-base-100 rounded-xl">
+<div class="flex-1 h-full bg-base-100 rounded-b-xl">
   <div class="flex-1 h-full grow" id="compose_content_wrapper">
     <div class="relative !flex flex-col flex-1 h-full">
       {!-- here was old/loader.svg --}

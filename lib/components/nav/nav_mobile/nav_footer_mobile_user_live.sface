@@ -21,7 +21,7 @@
     <span class="sr-only">{l("Search")}</span>
   </LinkLive>
 
-  <div :if={current_user_id(@__context__)}>
+  <!-- <div :if={current_user_id(@__context__)}>
     <Bonfire.UI.Common.SmartInputButtonLive
       class="btn btn-circle btn-outline border-base-content/10 btn-sm"
       showing_within={:smart_input}
@@ -29,7 +29,7 @@
       icon="carbon:add-large"
       prompt={nil}
     />
-  </div>
+  </div> -->
 
   <LinkLive :if={current_user_id(@__context__)} to={path(:notifications)} class="">
     {#if @page == "notifications"}

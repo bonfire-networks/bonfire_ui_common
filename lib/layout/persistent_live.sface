@@ -26,7 +26,7 @@
         <Bonfire.UI.Common.UserMenuLive />
       </div>
     </div> -->
-    <div class="flex items-center justify-end mt-4 flex-1">
+    <!-- <div class="flex items-center justify-end flex-1">
       <div :if={!Config.get([:ui, :hide_app_switcher])} class="dropdown dropdown-end">
         <label tabindex="0" class="relative btn btn-sm">
           <#Icon iconify="ci:grid-round" class="w-5 h-5" />
@@ -36,8 +36,7 @@
         </div>
       </div>
 
-      <!--  -->
-    </div>
+    </div> -->
 
     <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
     <Bonfire.UI.Common.ReusableModalLive id="persistent_modal" />

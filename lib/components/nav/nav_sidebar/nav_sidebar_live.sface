@@ -1,7 +1,7 @@
 <div class="flex flex-col flex-1 h-full">
   <div
     :if={current_user(@__context__)}
-    class="pt-2 hidden md:flex items-center justify-end tablet-lg:justify-between"
+    class="pt-0.5 hidden md:flex items-center justify-end tablet-lg:justify-between"
   >
     <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
     <div class="hidden tablet-lg:block">
