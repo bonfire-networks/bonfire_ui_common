@@ -54,6 +54,7 @@ window.addEventListener("phx:page-loading-stop", () => {
   NProgress.done()
 });
 
+
 // To trigger JS commands from the server, eg using this in LV:
 // push_event(socket, "js-exec", % {
 //   to: "#my_spinner",

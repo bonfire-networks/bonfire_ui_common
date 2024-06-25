@@ -81,6 +81,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       transition: {"transition-all duration-200", "h-[40px] w-[20rem]", "h-auto w-auto"},
       time: 200
     )
+    |> JS.dispatch("bonfire:focus-composer", to: "#composer_container")
   end
 
   # def handle_event("set", %{"smart_input_as" => smart_input_as}, socket) do
