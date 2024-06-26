@@ -113,7 +113,7 @@
             />
             <div
               id="inner"
-              class="flex flex-col bg-base-100 shadow-sm border border-base-content/10 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]"
+              class="flex flex-col bg-base-100 shadow-sm border-x border-base-content/10 min-h-[calc(var(--inner-window-height))] pb-40 md:pb-[1px]"
             >
               <div :if={!@without_sidebar && !@no_header} class="sticky top-0 z-[999]">
                 <div class="flex flex-1 px-4 rounded-t-xl w-full rounded-none bg-base-100/70 transition-color duration-150 ease-in-out">

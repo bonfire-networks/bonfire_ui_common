@@ -96,12 +96,12 @@
       <div :if={!@no_actions} class="modal-action">
         <div phx-click="close" phx-target={"[id='#{@id}']"}>
           <#slot {@cancel_btn}>
-            <button class={@cancel_btn_class || "btn btn-ghost rounded btn-sm normal-case"} type="button">{@cancel_label || l("Close")}</button>
+            <button class={@cancel_btn_class || "btn btn-ghost btn-sm normal-case"} type="button">{@cancel_label || l("Close")}</button>
           </#slot>
         </div>
         <div class={@action_btns_wrapper_class}>
           <#slot {@action_btns}>
-            <button :if={@form_opts != %{}} class="normal-case rounded btn btn-primary btn-sm" type="submit">{l("OK")}</button>
+            <button :if={@form_opts != %{}} class="normal-case btn btn-primary btn-sm" type="submit">{l("OK")}</button>
           </#slot>
         </div>
       </div>

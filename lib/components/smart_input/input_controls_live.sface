@@ -170,7 +170,7 @@
                       class="flex items-center gap-2 btn_title_toggle"
                     >
                       <#Icon iconify="solar:text-bold" class="w-4 h-4 text-base-content/70" />
-                      <span class="text-sm text-base-content/70">{l("Add a title")}</span>
+                      <span class="text-sm text-base-content">{l("Add a title")}</span>
                     </button>
                   </li>
                   <!-- <li>

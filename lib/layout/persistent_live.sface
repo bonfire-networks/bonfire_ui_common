@@ -19,7 +19,11 @@
     composer_class="btn fixed right-6 bottom-6 btn-lg btn-circle shadow-xl btn-primary"
     smart_input_opts={@smart_input_opts}
   />
-  <div class="absolute h-0 w-[210px] ml-[-226px] sticky top-0">
+  <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
+  <Bonfire.UI.Common.ReusableModalLive id="persistent_modal" />
+  <Bonfire.UI.Common.ReusableModalLive id="media_player_modal" />
+
+  <div class="absolute">
     <!-- <div class="pt-2 hidden md:flex items-center justify-end tablet-lg:justify-between">
       <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
       <div class="hidden tablet-lg:block">
@@ -38,9 +42,9 @@
 
     </div> -->
 
-    <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
+    <!-- <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
     <Bonfire.UI.Common.ReusableModalLive id="persistent_modal" />
-    <Bonfire.UI.Common.ReusableModalLive id="media_player_modal" />
+    <Bonfire.UI.Common.ReusableModalLive id="media_player_modal" /> -->
   </div>
 
   <div class="relative z-[-1]">

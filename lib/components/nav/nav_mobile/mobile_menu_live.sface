@@ -30,7 +30,7 @@
             <div class="p-2">
               <LinkLive
                 to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
-                class="flex items-center p-2 gap-3 text-sm text-base-content/70"
+                class="flex items-center p-2 gap-3 text-sm text-base-content"
               >
                 <Bonfire.UI.Common.AvatarLive
                   :if={is_map(current_user(@__context__))}
