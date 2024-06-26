@@ -70,11 +70,7 @@
 
       {!-- <Bonfire.UI.Common.PersistentLive ... --}
       <nav
-        class={
-          "hidden  overview-y-auto  w-full md:flex gap-4 flex-col pb-1 max-h-[calc(var(--inner-window-height)_-130px)] min-h-[calc(var(--inner-window-height)_-130px)] z-[999999999999]",
-          "!mt-0 pt-4 !max-h-[calc(var(--inner-window-height)_-50)] !min-h-[calc(var(--inner-window-height)_-50)]":
-            is_nil(@current_user_id)
-        }
+        class="hidden  overview-y-auto  w-full md:flex gap-4 flex-col pb-1 min-h-screen z-[999999999999]"
         role="navigation"
         aria-label={l("Extension navigation")}
       >
