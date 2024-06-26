@@ -107,6 +107,10 @@ div#editor_milkdown_container[data-rendered="page"] {
   @apply md:!max-h-[calc(100vh_-_100px)] md:!min-h-[calc(100vh_-_100px)];
 }
 
+.milkdown-menu[data-show='false'] {
+  display: none;
+}
+
 /* widget_link */
 div[data-id="nav_links"][data-showing-within="sidebar"] {
  @apply menu gap-1 menu-lg p-0 justify-end;
