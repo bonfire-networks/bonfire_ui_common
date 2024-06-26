@@ -1,284 +1,196 @@
-<nav class="" role="navigation" aria-label={l("Settings navigation")}>
-  <ul class="-mx-4 menu">
-    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
-      <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <span>{l("General")}</span>
-      </div>
+<nav class="!-mx-2" role="navigation" aria-label={l("Settings navigation")}>
+  <ul class="menu menu-sm px-0 py-0">
+    <li>
+      <details open id="disclosure-docs">
+        <summary class="group !px-4 !py-2">
+          <span class="text-sm font-semibold">{l("General")}</span>
+        </summary>
+        <ul class="!m-0 !p-0 !mt-1">
+          <li>
+            <LinkLive
+              to={~p"/settings/user/profile"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10 ": @selected_tab == "profile"
+              }
+            >
+              <span class="text-sm">{l("Profile")}</span>
+            </LinkLive>
+          </li>
+          <li>
+            <LinkLive
+              to={~p"/settings/account"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10 ": @selected_tab == "account"
+              }
+            >
+              <span class="text-sm">{l("Account")}</span>
+            </LinkLive>
+          </li>
+          <li>
+            <LinkLive
+              to={~p"/settings/user/preferences/behaviours"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10 ": @id == "behaviours"
+              }
+            >
+              <span class="text-sm">{l("Preferences")}</span>
+            </LinkLive>
+          </li>
 
-      <li :if={current_user_id(@__context__)}>
-        <LinkLive
-          to={~p"/settings/user/profile"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10 ": @selected_tab == "profile"
-          }
-        >
-          <#Icon
-            iconify="carbon:user-avatar"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "profile"}
-          />
-          <span class="text-sm text-base-content/70">{l("Profile")}</span>
-        </LinkLive>
-      </li>
+          <li module={maybe_component(Bonfire.Data.SharedUser, @__context__) &&
+            Settings.get(:experimental_features_enabled, false, @__context__)}>
+            <LinkLive
+              to={~p"/settings/user/shared_user"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10 ": @selected_tab == "shared_user"
+              }
+            >
+              <span class="text-sm">{l("Team Profiles")}</span>
+            </LinkLive>
+          </li>
+        </ul>
+      </details>
+    </li>
 
-      <li>
-        <LinkLive
-          to={~p"/settings/account"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10 ": @selected_tab == "account"
-          }
-        >
-          <#Icon
-            iconify="carbon:password"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "account"}
+    <li class="border-t border-base-content/10 mt-4 pt-2">
+      <details open id="disclosure-docs">
+        <summary class="group !px-4 !py-2">
+          <span class="text-sm font-semibold">{l("Extensions")}</span>
+        </summary>
+        <ul class="!m-0 !p-0 !mt-1">
+          <li>
+            <LinkLive
+              to={~p"/settings/user/extensions"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10 ": @selected_tab == "extensions"
+              }
+            >
+              <span class="text-sm">{l("Configure Extensions")}</span>
+            </LinkLive>
+          </li>
+          <Bonfire.UI.Common.ExtensionsSidebarSettingsNavLive
+            page={@page}
+            selected_tab={@selected_tab}
+            scope={:user}
           />
-          <span class="text-sm text-base-content/70">{l("Account")}</span>
-        </LinkLive>
-      </li>
+        </ul>
+      </details>
+    </li>
 
-      <!-- <li>
-        <LinkLive
-          to={~p"/settings/user/preferences/appearance"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10 ": @id == "appearance"
-          }
-        >
-          <#Icon
-            iconify="carbon:paint-brush"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @id == "appearance"}
-          />
-          <span class="text-sm text-base-content/70">{l("Appearance")}</span>
-        </LinkLive>
-      </li> -->
-      <li>
-        <LinkLive
-          to={~p"/settings/user/preferences/behaviours"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10 ": @id == "behaviours"
-          }
-        >
-          <#Icon
-            iconify="carbon:settings-adjust"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @id == "behaviours"}
-          />
-          <span class="text-sm text-base-content/70">{l("Preferences")}</span>
-        </LinkLive>
-      </li>
+    <li class="border-t border-base-content/10 mt-4 pt-2">
+      <details open id="disclosure-docs">
+        <summary class="group !px-4 !py-2">
+          <span class="text-sm font-semibold">{l("Safety")}</span>
+        </summary>
+        <ul class="!m-0 !p-0 !mt-1">
+          <li :if={extension_enabled?(:bonfire_ui_moderation, @__context__)}>
+            <LinkLive
+              to={~p"/settings/user/flags"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10 ": @selected_tab == "flags"
+              }
+            >
+              <span class="text-sm">{l("My Flags")}</span>
+            </LinkLive>
+          </li>
 
-      <li module={maybe_component(Bonfire.Data.SharedUser, @__context__) &&
-        Settings.get(:experimental_features_enabled, false, @__context__)}>
-        <LinkLive
-          to={~p"/settings/user/shared_user"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10 ": @selected_tab == "shared_user"
-          }
-        >
-          <#Icon
-            iconify="carbon:user-multiple"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "shared_user"}
-          />
-          <span class="text-sm text-base-content/70">{l("Team Profiles")}</span>
-        </LinkLive>
-      </li>
-    </div>
-    {!-- <li>
-      <LinkLive
-        to={~p"/settings/user/invites"}
-        class={
-          "flex items-center gap-3 rounded-md px-2 w-full",
-          "bg-base-content/10 ": @selected_tab == "invites"
-        }
-      >
-        <#Icon
-          solid="Mail"
-          class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "invites"}
-        />
-        <span class="text-sm text-base-content/70">{l("Invites")}</span>
-      </LinkLive>
-    </li> --}
-    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
-      <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <!-- <#Icon iconify="material-symbols:shield" class="w-6 h-6 text-base-content/80" /> -->
-        <span>{l("Extensions")}</span>
-      </div>
+          <li>
+            <LinkLive
+              to={~p"/boundaries/ghosted"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10": @selected_tab == "ghosted"
+              }
+            >
+              <div class="flex flex-col">
+                <span class="text-sm">{l("Ghosted")}</span>
+              </div>
+            </LinkLive>
+          </li>
+          <li>
+            <LinkLive
+              to={~p"/boundaries/silenced"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10": @selected_tab == "silenced"
+              }
+            >
+              <span class="text-sm">{l("Silenced")}</span>
+            </LinkLive>
+          </li>
+        </ul>
+      </details>
+    </li>
 
-      <li>
-        <LinkLive
-          to={~p"/settings/user/extensions"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10 ": @selected_tab == "extensions"
-          }
-        >
-          <#Icon
-            iconify="gg:extension"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "extensions"}
-          />
-          <span class="text-sm text-base-content/70">{l("Extensions")}</span>
-        </LinkLive>
-      </li>
-    </div>
+    <li class="border-t border-base-content/10 mt-4 pt-2">
+      <details open id="disclosure-docs">
+        <summary class="group !px-4 !py-2">
+          <span class="text-sm font-semibold">{l("Migration")}</span>
+        </summary>
+        <ul class="!m-0 !p-0 !mt-1">
+          <li>
+            <LinkLive
+              to={~p"/settings/user/import"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10 ": @selected_tab == "import"
+              }
+            >
+              <span class="text-sm">{l("Import")}</span>
+            </LinkLive>
+          </li>
+          <li>
+            <LinkLive
+              to={~p"/settings/user/export"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10 ": @selected_tab == "export"
+              }
+            >
+              <span class="text-sm">{l("Export")}</span>
+            </LinkLive>
+          </li>
+        </ul>
+      </details>
+    </li>
 
-    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
-      <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <!-- <#Icon iconify="material-symbols:shield" class="w-6 h-6 text-base-content/80" /> -->
-        <span>{l("Safety")}</span>
-      </div>
+    <li class="border-t border-base-content/10 mt-4 pt-2">
+      <details open id="disclosure-docs">
+        <summary class="group !px-4 !py-2">
+          <span class="text-sm font-semibold">{l("Advanced")}</span>
+        </summary>
+        <ul class="!m-0 !p-0 !mt-1">
+          <li>
+            <LinkPatchLive
+              to={~p"/settings/user/emojis"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10": @selected_tab == "emojis"
+              }
+            >
+              <span class="text-sm">{l("Custom emoji")}</span>
+            </LinkPatchLive>
+          </li>
 
-      <li :if={extension_enabled?(:bonfire_ui_moderation, @__context__)}>
-        <LinkLive
-          to={~p"/settings/user/flags"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10 ": @selected_tab == "flags"
-          }
-        >
-          <#Icon
-            iconify="carbon:flag"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "flags"}
-          />
-          <span class="text-sm text-base-content/70">{l("My Flags")}</span>
-        </LinkLive>
-      </li>
-
-      <li class={
-        "",
-        "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
-          @showing_within == :dashboard
-      }>
-        <LinkLive
-          to={~p"/boundaries/ghosted"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10": @selected_tab == "ghosted"
-          }
-        >
-          <#Icon
-            iconify="mingcute:ghost-line"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "ghosted"}
-          />
-          <div class="flex flex-col">
-            <span class={
-              "text-sm text-base-content/70",
-              "font-semibold": @showing_within == :dashboard
-            }>{l("Ghosted")}</span>
-            <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("Users or instances on this list will not be able to see or interact with you or your content")}</p>
-          </div>
-        </LinkLive>
-      </li>
-      <li class={
-        "",
-        "hover:bg-base-content/10 flex items-center gap-4 p-3 rounded-md shadow bg-base-content/5 group":
-          @showing_within == :dashboard
-      }>
-        <LinkLive
-          to={~p"/boundaries/silenced"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10": @selected_tab == "silenced"
-          }
-        >
-          <#Icon
-            iconify="carbon:volume-mute"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "silenced"}
-          />
-          <div class="flex flex-col">
-            <span class={
-              "text-sm text-base-content/70",
-              "font-semibold": @showing_within == :dashboard
-            }>{l("Silenced")}</span>
-            <p class="text-sm text-base-content/70" :if={@showing_within == :dashboard}>{l("You will not receive any updates from the users or instances on this list")}</p>
-          </div>
-        </LinkLive>
-      </li>
-    </div>
-
-    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
-      <Bonfire.UI.Common.ExtensionsSidebarSettingsNavLive
-        page={@page}
-        selected_tab={@selected_tab}
-        scope={:user}
-      />
-    </div>
-
-    <div class="pb-4 flex flex-col gap-1 border-b border-base-content/10">
-      <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <!-- <#Icon iconify="material-symbols-light:data-table" class="w-6 h-6 text-base-content/80" /> -->
-        <span>{l("Migration")}</span>
-      </div>
-
-      <li>
-        <LinkLive
-          to={~p"/settings/user/import"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10 ": @selected_tab == "import"
-          }
-        >
-          <#Icon
-            iconify="pajamas:import"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "import"}
-          />
-          <span class="text-sm text-base-content/70">{l("Import")}</span>
-        </LinkLive>
-      </li>
-      <li>
-        <LinkLive
-          to={~p"/settings/user/export"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10 ": @selected_tab == "export"
-          }
-        >
-          <#Icon
-            iconify="pajamas:export"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "export"}
-          />
-          <span class="text-sm text-base-content/70">{l("Export")}</span>
-        </LinkLive>
-      </li>
-    </div>
-    <div class="pb-4 flex flex-col gap-1">
-      <div class="p-2 text-lg font-bold flex items-center gap-4">
-        <!-- <#Icon iconify="ant-design:code-filled" class="w-6 h-6 text-base-content/80" /> -->
-        <span>{l("Advanced")}</span>
-      </div>
-
-      <li>
-        <LinkPatchLive
-          to={~p"/settings/user/emojis"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10": @selected_tab == "emojis"
-          }
-        >
-          <#Icon
-            iconify="ri:emotion-happy-line"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "emojis"}
-          />
-          <span class="text-sm text-base-content/70">{l("Custom emoji")}</span>
-        </LinkPatchLive>
-      </li>
-
-      <li>
-        <LinkPatchLive
-          to={~p"/settings/user/code"}
-          class={
-            "flex items-center gap-3 rounded-md px-2 w-full",
-            "bg-base-content/10": @selected_tab == "code"
-          }
-        >
-          <#Icon
-            iconify="ph:code-bold"
-            class={"w-5 h-5 font-normal text-base-content/70", "": @selected_tab == "emojis"}
-          />
-          <span class="text-sm text-base-content/70">{l("Data Schema & Libraries")}</span>
-        </LinkPatchLive>
-      </li>
-    </div>
+          <li>
+            <LinkPatchLive
+              to={~p"/settings/user/code"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10": @selected_tab == "code"
+              }
+            >
+              <span class="text-sm">{l("Data Schema & Libraries")}</span>
+            </LinkPatchLive>
+          </li>
+        </ul>
+      </details>
+    </li>
   </ul>
 </nav>

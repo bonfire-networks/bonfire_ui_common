@@ -8,41 +8,25 @@
           {#if extension_has_components? or extension_nav != []}
             {#case Bonfire.Common.ExtensionModule.extension(extension)}
               {#match extension_meta}
-                <div class="p-2 text-lg font-bold flex items-center gap-4">
-                  <!-- <#Icon iconify="ph:hand-fill" class="w-6 h-6 text-base-content/80" /> -->
-                  <span>{e(extension_meta, :name, nil) || extension}</span>
-                </div>
-
-                <div class="flex flex-col items-start p-0 cursor-default md:bg-base-100 hover:!bg-transparent">
-                  <Bonfire.UI.Common.WidgetLive
-                    :for={%{} = subnav <- extension_nav}
-                    :if={!e(subnav, :exclude_from_nav, nil) and e(subnav, :scope, nil) == @scope and
-                      (is_nil(e(subnav, :module, nil)) or
-                         module_enabled?(e(subnav, :module, nil), @__context__))}
-                    widget={subnav}
-                    page={@page}
-                    showing_within={@showing_within}
-                    wrapper_class="w-full"
-                    selected_tab={@selected_tab}
-                  />
-
-                  <!-- <Bonfire.UI.Common.LinkWidgetLive
-                    :if={Enum.member?(extension_nav, true)}
-                    to={"/settings/#{@scope || "user"}/#{extension}"}
-                    text={if length(extension_nav) == 1,
-                      do: l("Extension settings"),
-                      else: l("Additional extension settings")}
-                    icon={e(extension_meta, :icon, nil) || "heroicons-outline:puzzle"}
-                    page={@page}
-                    showing_within={@showing_within}
-                    wrapper_class="w-full"
-                    link_class=""
-                    content_class="flex items-center gap-3 rounded-md px-2 w-full text-base-content/70"
-                    icon_class="w-5 h-5 font-normal text-base-content/70"
-                    selected_tab={@selected_tab}
-                  /> -->
-                </div>
-                <!-- </li> -->
+                <details id={extension}>
+                  <summary class="group !px-4 !py-2">
+                    <span class="text-sm font-medium ml-1">{e(extension_meta, :name, nil) || extension}</span>
+                  </summary>
+                  <ul class="!m-0 !p-0 !mt-1">
+                    <li :for={%{} = subnav <- extension_nav}>
+                      <Bonfire.UI.Common.WidgetLive
+                        :if={!e(subnav, :exclude_from_nav, nil) and e(subnav, :scope, nil) == @scope and
+                          (is_nil(e(subnav, :module, nil)) or
+                             module_enabled?(e(subnav, :module, nil), @__context__))}
+                        widget={subnav}
+                        page={@page}
+                        showing_within={@showing_within}
+                        wrapper_class="w-full !block !p-0 !m-0 bg-base-200 hover:bg-base-200"
+                        selected_tab={@selected_tab}
+                      />
+                    </li>
+                  </ul>
+                </details>
             {/case}
           {/if}
       {/case}
