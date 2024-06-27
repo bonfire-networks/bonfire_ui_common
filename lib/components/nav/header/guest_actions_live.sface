@@ -22,7 +22,7 @@
       class="p-2 mt-4 rounded-lg shadow menu md:menu-compact dropdown-content bg-base-200 w-60 md:w-48 text-base-content"
     >
       <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LinkLive to={path(:signup)}>{l("Sign up")}</LinkLive></li>
-      <li :if={@page != "about"}><LinkLive class="text-neutral-content" to="/about">{l("About")}</LinkLive></li>
+      <li :if={@page != "about"}><LinkLive class="text-base-content" to="/about">{l("About")}</LinkLive></li>
       <li><LinkLive class="text-base-content" to="/conduct">{l("Code of conduct")}</LinkLive></li>
       <li><LinkLive class="text-base-content" to="/privacy">{l("Privacy")}</LinkLive></li>
       {#if current_user_id(@__context__) ||
