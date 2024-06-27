@@ -25,7 +25,7 @@
     icon={@icon}
     class={
       "inline-block w-5 h-5",
-      "tablet-lg:w-8 tablet-lg:h-8": @as_icon
+      "!w-8 !h-8": @as_icon
     }
   />
   <span :if={!@as_icon and @prompt} class="hidden normal-case tablet-lg:block">{@prompt || l("Compose")}</span>
