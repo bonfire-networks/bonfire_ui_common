@@ -57,7 +57,8 @@ defmodule Bonfire.UI.Common.NotificationLive do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(subscribed: true)}
+     |> assign(subscribed: true)
+     |> assign(notification_id: "notification-#{:rand.uniform(1_000_000)}")}
   end
 
   def show(js \\ %JS{}, selector) do

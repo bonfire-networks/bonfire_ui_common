@@ -271,7 +271,7 @@
             skip_badges={[:inbox, :notifications]}
           />
         </div>
-        <div data-scope="sticky_menu" class="sticky bottom-0 pt-4">
+        <div data-scope="sticky_menu" class="sticky bg-base-100 bottom-0 pt-4">
           <div
             data-position="top-left"
             phx-hook="Tooltip"

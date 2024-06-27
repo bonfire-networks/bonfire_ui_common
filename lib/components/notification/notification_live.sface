@@ -1,8 +1,8 @@
 <div
   aria-live="assertive"
-  class="app_notifications fixed inset-0 flex  px-4 py-6 sm:px-6 sm:pt-10 z-[99999999999999999] pointer-events-none items-start"
+  class="app_notifications pointer-events-none fixed inset-0 flex  px-4 py-6 sm:px-6 sm:pt-10 z-[99999999999999999] items-start"
 >
-  <div class="flex flex-col items-center w-full space-y-4 sm:items-end">
+  <div class="flex flex-col items-center w-full gap-2 sm:items-end">
     <div
       :if={@i == 2}
       id="connection-status"
@@ -12,20 +12,21 @@
     >
       <p class="text-sm font-medium text-red-800" role="alert">
         {l("Offline - waiting to reconnect...")}
-        <a
+        <!-- <a
           class="btn btn-error btn-outline ml-2 btn-xs rounded normal-case"
           href="javascript:liveSocket.connect()"
-        >Try again</a>
+        >{l "Try again"}</a> -->
       </p>
     </div>
 
     <div
       id={"notification-#{@i}"}
+      :if={@notification}
       :hook
       role="alert"
-      class="w-full max-w-md overflow-hidden transition duration-300 ease-in-out transform rounded shadow-lg pointer-events-auto bg-info flash"
+      class="w-full max-w-md pointer-events-auto overflow-hidden transition duration-300 ease-in-out transform rounded border border-base-content/10 shadow-xl pointer-events-auto alert flash"
     >
-      <div :if={@notification} class="p-4">
+      <div class="p-4">
         <div class="flex items-start">
           <div class="flex-shrink-0">
             {#case e(@notification, :icon, nil)}
@@ -67,39 +68,22 @@
       {#match info}
         <div
           role="alert"
-          class="w-full max-w-md overflow-hidden transition duration-300 ease-in-out transform rounded shadow-lg pointer-events-auto bg-info flash"
+          class="w-full max-w-md overflow-hidden transition flex duration-300 ease-in-out transform alert shadow-xl pointer-events-auto bg-base-300 border border-base-content/10 flash"
         >
-          <div class="p-4">
-            <div class="flex items-center">
-              <div class="flex-shrink-0 p-2">
-                <#Icon outline="Speakerphone" class="w-5 h-5 text-info-content" />
-              </div>
-              <div class="ml-3 w-0 flex-1 pt-0.5">
-                <div data-id="flash" data-type="info" class="text-sm text-info-content">{rich(info)}</div>
-              </div>
-              <div :if={socket_connected?(@__context__)} class="">
-                <button
-                  phx-click="clear-flash"
-                  phx-target={@myself}
-                  phx-value-key="info"
-                  type="button"
-                  class="btn btn-sm text-info-content btn-circle btn-ghost"
-                >
-                  <span class="sr-only">{l("Close")}</span>
-                  <#Icon solid="X" class="w-4 h-4" />
-                </button>
-              </div>
-            </div>
+          <div data-id="flash" data-type="info" class="flex-1 w-full text-sm">{rich(info)}</div>
+          <div :if={socket_connected?(@__context__)} class="">
+            <button
+              phx-click="clear-flash"
+              phx-target={@myself}
+              phx-value-key="info"
+              type="button"
+              class="btn btn-sm btn-circle btn-outline"
+            >
+              <span class="sr-only">{l("Close")}</span>
+              <#Icon solid="X" class="w-4 h-4" />
+            </button>
           </div>
         </div>
-
-        {!-- <div class="max-w-md alert alert-info fade-out" 
-      role="alert alert-warning"
-      phx-click="clear-flash"
-      phx-target={@myself}
-      phx-value-key="info">
-        {rich info}
-    </div> --}
     {/case}
 
     {#case @error ||
@@ -151,4 +135,28 @@
         </div>
     {/case}
   </div>
+  <script>
+  (() => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === Node.ELEMENT_NODE && node.getAttribute('role') === 'alert') {
+              setTimeout(() => {
+                node.style.transition = 'opacity 0.5s ease-out';
+                node.style.opacity = '0';
+                setTimeout(() => {
+                  node.remove();
+                }, 500);
+              }, 4000);
+            }
+          });
+        }
+      });
+    });
+
+    const notifications = document.querySelector('.app_notifications > div');
+    observer.observe(notifications, { childList: true, subtree: true });
+  })();
+</script>
 </div>
