@@ -1,24 +1,26 @@
-{#for widgets <- debug(@widgets, "widgetts")}
-  {#case widgets}
-    {#match %{}}
-      <Bonfire.UI.Common.WidgetLive
-        widget={widgets}
-        page={@page}
-        selected_tab={@selected_tab}
-        showing_within={@showing_within}
-        with_title={@with_title}
-        extra_data={@extra_data}
-      />
-    {#match _ when is_list(widgets)}
-      {#for widget <- widgets}
+<div class="flex flex-col gap-3 divide-y divide-base-content/10">
+  {#for widgets <- debug(@widgets, "widgetts")}
+    {#case widgets}
+      {#match %{}}
         <Bonfire.UI.Common.WidgetLive
-          widget={widget}
+          widget={widgets}
           page={@page}
           selected_tab={@selected_tab}
           showing_within={@showing_within}
           with_title={@with_title}
           extra_data={@extra_data}
         />
-      {/for}
-  {/case}
-{/for}
+      {#match _ when is_list(widgets)}
+        {#for widget <- widgets}
+          <Bonfire.UI.Common.WidgetLive
+            widget={widget}
+            page={@page}
+            selected_tab={@selected_tab}
+            showing_within={@showing_within}
+            with_title={@with_title}
+            extra_data={@extra_data}
+          />
+        {/for}
+    {/case}
+  {/for}
+</div>

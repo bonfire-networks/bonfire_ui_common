@@ -1,70 +1,49 @@
 <span class="flex flex-col gap-1">
-  <!-- {#if @scope == :user}
-    {#if Bonfire.Common.Extend.disabled_value?(@my_modularity)}
-      {#if !@can_instance_wide}
-        <input type="checkbox" class="toggle toggle-sm" disabled>
-      {#else}
-        <form
-          name="toggle_extension"
-          phx-target={@myself}
-          phx-change="Bonfire.Common.Settings:extension:enable"
-        >
-          <input name="extension" value={@id} type="hidden">
-          <input type="checkbox" class="toggle toggle-sm" checked={!@globally_disabled}>
-        </form>
-      {/if}
-    {/if}
-  {#else}
-    {#if @can_instance_wide}
-      <form
-        name="toggle_extension"
-        phx-target={@myself}
-        phx-change="Bonfire.Common.Settings:extension:enable"
-      >
-        <input name="scope" value={:instance} type="hidden">
-        <input name="extension" value={@id} type="hidden">
-        <input type="checkbox" class="toggle toggle-sm" checked={!@globally_disabled}>
-      </form>
-    {/if}
-  {/if} -->
-
-  {#if Bonfire.Common.Extend.disabled_value?(@my_modularity)}
-    {#if !@globally_disabled}
-      <button
-        phx-click="Bonfire.Common.Settings:extension:enable"
-        phx-target={@myself}
-        phx-value-extension={@id}
-        class="btn btn-success btn-sm"
-      >{l("Enable for me")}</button>
-    {#elseif !@can_instance_wide}
-      {l("Disabled on this instance, contact the admins")}
-    {/if}
-  {#else}
-    <button
-      phx-click="Bonfire.Common.Settings:extension:disable"
-      phx-target={@myself}
-      phx-value-extension={@id}
-      class="btn btn-warning btn-sm"
-    >{l("Disable for me")}</button>
-  {/if}
-
-  {#if @can_instance_wide}
-    {#if @globally_disabled}
-      <button
-        phx-click="Bonfire.Common.Settings:extension:enable"
+  {#if @scope == :admin}
+    <label class="cursor-pointer label gap-3 p-0">
+      <!-- <span class="label-text">{l("Enable for everyone by default")}</span> -->
+      <input
+        type="checkbox"
+        class="toggle toggle-success"
+        checked={!@globally_disabled}
+        phx-click={if @globally_disabled,
+          do: "Bonfire.Common.Settings:extension:enable",
+          else: "Bonfire.Common.Settings:extension:disable"}
         phx-target={@myself}
         phx-value-scope={:instance}
         phx-value-extension={@id}
-        class="btn btn-success btn-sm"
-      >{l("Enable for everyone by default")}</button>
-    {#else}
-      <button
-        phx-click="Bonfire.Common.Settings:extension:disable"
+      />
+    </label>
+  {#else}
+    <label class="cursor-pointer label gap-3 p-0">
+      <!-- <span class="label-text">
+        {#if Bonfire.Common.Extend.disabled_value?(@my_modularity)}
+          {#if !@globally_disabled}
+            {l("Enable for me")}
+          {#else}
+            {l("Disabled on this instance")}
+          {/if}
+        {#else}
+          {l("Enabled for me")}
+        {/if}
+      </span> -->
+      <input
+        type="checkbox"
+        class="toggle toggle-success"
+        checked={!Bonfire.Common.Extend.disabled_value?(@my_modularity)}
+        disabled={!@can_instance_wide && @globally_disabled}
+        phx-click={if Bonfire.Common.Extend.disabled_value?(@my_modularity),
+          do: "Bonfire.Common.Settings:extension:enable",
+          else: "Bonfire.Common.Settings:extension:disable"}
         phx-target={@myself}
-        phx-value-scope={:instance}
         phx-value-extension={@id}
-        class="btn btn-error btn-sm"
-      >{l("Disable for everyone")}</button>
-    {/if}
+      />
+    </label>
+
+    <!-- {#if !@can_instance_wide && @globally_disabled}
+      <div class="text-sm text-gray-500 mt-2">
+        {l("Contact the admins to enable this extension")}
+      </div>
+    {/if} -->
   {/if}
 </span>
