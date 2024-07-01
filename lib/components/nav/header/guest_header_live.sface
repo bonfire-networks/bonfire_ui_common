@@ -14,15 +14,38 @@
             href="/about"
             role="tab"
             class={
-              "text-lg font-semibold",
+              "font-medium",
               "btn-active": @selected_tab == :about
             }
           >{l("About")}</a>
         </li>
+        {#if current_user_id(@__context__) ||
+            Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+          <li class="hidden lg:block">
+            <LinkLive
+              to="/users"
+              role="tab"
+              class={
+                "font-medium",
+                "btn-active": @selected_tab == :users
+              }
+            >{l("Users")}</LinkLive>
+          </li>
+        {/if}
+        <li class="hidden lg:block">
+          <LinkLive
+            to={path(:login, :index)}
+            role="tab"
+            class={
+              "font-medium",
+              "btn-active": @selected_tab == :login
+            }
+          >{l("Login")}</LinkLive>
+        </li>
 
         <div phx-hook="Tooltip" data-position="bottom-end" id="tooltip_more_menu" class="relative">
-          <label tabindex="0" role="button" class="tooltip-button btn btn-square gap-2 btn-ghost">
-            <#Icon iconify="ci:menu-duo-lg" class="w-5 h-5 text-base-content/90" />
+          <label tabindex="0" role="button" class="tooltip-button btn btn-circle btn-sm btn-ghost">
+            <#Icon iconify="ri:menu-3-line" class="w-4 h-4" />
           </label>
           <ul
             tabindex="0"

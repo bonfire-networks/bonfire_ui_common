@@ -73,7 +73,7 @@
 
           {!-- <Bonfire.UI.Common.PersistentLive ... --}
           <nav
-            class="hidden  overview-y-auto  w-full md:flex gap-4 flex-col pb-1 min-h-screen z-[999999999999]"
+            class="hidden  overview-y-auto  w-full md:flex gap-4 flex-col pb-1 min-h-[100vh_-_16px] z-[999999999999]"
             role="navigation"
             aria-label={l("Extension navigation")}
           >
@@ -188,7 +188,7 @@
         >
           <div
             data-id="right_nav_and_widgets"
-            class="order-last sticky  w-auto lg:top-4 mt-4 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
+            class="order-last sticky  w-auto lg:top-2 mt-2 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
           >
             <div :if={is_nil(@current_user_id)} class="flex flex-col my-4 gap-2">
               <LinkLive to={path(:login, :index)} class="md:flex-1  normal-case btn-primary btn btn-sm">{l("Log in")}</LinkLive>
