@@ -261,8 +261,45 @@
     </div>
     <div class="drawer-side z-[99999999999]">
       <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay" />
-      <div class="bg-base-100 flex flex-col text-base-content min-h-full w-80 p-4">
+      <div class="bg-base-100 flex flex-col text-base-content min-h-full w-80 p-2">
         <div class="flex-1">
+          <div class="mb-2 bg-base-100 top-0">
+            <div
+              data-position="top-left"
+              phx-hook="Tooltip"
+              id="navbar_settings_menu"
+              class="relative tablet-lg:hidden"
+            >
+              <label
+                class="tooltip-button btn w-full text-left justify-start btn-outline"
+                tabindex="0"
+                role="button"
+                id="user-profile-menu"
+                aria-haspopup="true"
+                aria-expanded="true"
+              >
+                <div class="flex-1 flex items-center gap-3">
+                  <Bonfire.UI.Common.AvatarLive
+                    parent_id="nav_sidebar"
+                    class="inline-block object-cover w-[32px] h-[32px] rounded-full"
+                    src={Media.avatar_url(current_user(@__context__))}
+                    user_id={current_user_id(@__context__)}
+                  />
+                  <span class="text-sm font-semibold">{e(current_user(@__context__), :profile, :name, nil)}</span>
+                </div>
+                <#Icon solid="DotsHorizontal" class="w-4 h-4" />
+              </label>
+              <ul
+                tabindex="0"
+                class="tooltip z-[999999999999999999999999] p-0.5 menu shadow-xl bg-base-100 border border-base-content/10 w-full absolute top-0 right-0 w-[340px] hidden"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="user-profile-menu"
+              >
+                <Bonfire.UI.Common.UserMenuLinksLive page={@page} />
+              </ul>
+            </div>
+          </div>
           <Bonfire.UI.Common.ExtensionMenuNavLive
             selected_tab={@selected_tab}
             page={@page}
@@ -270,40 +307,6 @@
             nav_items={@nav_items || []}
             skip_badges={[:inbox, :notifications]}
           />
-        </div>
-        <div data-scope="sticky_menu" class="sticky bg-base-100 bottom-0 pt-4">
-          <div
-            data-position="top-left"
-            phx-hook="Tooltip"
-            id="navbar_settings_menu"
-            class="relative tablet-lg:hidden"
-          >
-            <label
-              class="tooltip-button btn w-full text-left justify-start btn-ghost"
-              tabindex="0"
-              role="button"
-              id="user-profile-menu"
-              aria-haspopup="true"
-              aria-expanded="true"
-            >
-              <Bonfire.UI.Common.AvatarLive
-                parent_id="nav_sidebar"
-                class="inline-block object-cover w-[32px] h-[32px] rounded-full"
-                src={Media.avatar_url(current_user(@__context__))}
-                user_id={current_user_id(@__context__)}
-              />
-              <span class="text-sm font-medium">{e(current_user(@__context__), :profile, :name, nil)}</span>
-            </label>
-            <ul
-              tabindex="0"
-              class="tooltip z-[99999999] p-0.5 menu shadow-xl bg-base-100 border border-base-content/10 w-full absolute top-0 right-0 w-[340px] hidden"
-              role="menu"
-              aria-orientation="vertical"
-              aria-labelledby="user-profile-menu"
-            >
-              <Bonfire.UI.Common.UserMenuLinksLive page={@page} />
-            </ul>
-          </div>
         </div>
       </div>
     </div>

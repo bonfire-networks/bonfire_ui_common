@@ -41,7 +41,7 @@
               formmethod="dialog"
               type="button"
               onclick={"#{@id}.close(); return;"}
-              class={@cancel_btn_class || "btn btn-ghost btn-sm normal-case"}
+              class={@cancel_btn_class || "btn btn-outline btn-sm"}
             >
               {@cancel_label || l("Close")}
             </button>
