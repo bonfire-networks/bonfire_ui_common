@@ -210,7 +210,7 @@ div[data-id="preview_content"][data-hide], div[data-id="preview_content"] [data-
 }
 /*  subject_live */
 div[data-id="subject"][data-main-object] {
-  @apply !mb-1 !items-center;
+  @apply !mb-3 !items-center;
 }
 
 div[data-id="subject"][data-main-object] [data-id="subject_avatar"] {
@@ -221,18 +221,8 @@ div[data-id="subject"][data-main-object] [data-id="subject_details"] {
   @apply flex-col !mt-0 !gap-0;
 } 
 
-div[data-id="subject"][data-main-object] [data-id="subject_secondary"] {
-  @apply -mt-1;
-} 
-div[data-id="subject"][data-main-object] [data-id="subject_secondary"] a[data-id="subject_username"] {
-  @apply !text-xs;
-} 
-div[data-id="subject"][data-main-object] [data-id="subject_secondary"] a[data-role="subject_timestamp"] {
-  @apply !text-xs;
-} 
-
 div[data-id="subject"][data-main-object] [data-id="subject_details"] [data-id="subject_username"]{
-  @apply !ml-0;
+  @apply !ml-0 !block;;
 } 
 
 

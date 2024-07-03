@@ -274,7 +274,7 @@
                 class="tooltip-button btn w-full text-left justify-start btn-outline"
                 tabindex="0"
                 role="button"
-                id="user-profile-menu"
+                id="user-mobile-menu"
                 aria-haspopup="true"
                 aria-expanded="true"
               >
@@ -294,7 +294,7 @@
                 class="tooltip z-[999999999999999999999999] p-0.5 menu shadow-xl bg-base-100 border border-base-content/10 w-full absolute top-0 right-0 w-[340px] hidden"
                 role="menu"
                 aria-orientation="vertical"
-                aria-labelledby="user-profile-menu"
+                aria-labelledby="user-mobile-menu"
               >
                 <Bonfire.UI.Common.UserMenuLinksLive page={@page} />
               </ul>

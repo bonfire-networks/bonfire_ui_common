@@ -1,4 +1,4 @@
-<div class="p-4">
+<div class={"p-4", "px-0 pt-0 pb-2": @compact}>
   <div :if={@show_label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div>
   <div class={"flex items-center", "justify-between": !@compact}>
     <div class={"flex flex-col gap-1 mr-2", "order-last ml-2 !mr-0": @compact}>

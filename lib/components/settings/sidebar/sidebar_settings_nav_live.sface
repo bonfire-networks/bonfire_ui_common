@@ -1,7 +1,7 @@
 <nav class="!-mx-2" role="navigation" aria-label={l("Settings navigation")}>
   <ul class="menu menu-sm px-0 py-0">
     <li>
-      <details open id="disclosure-docs">
+      <details open id="general-docs">
         <summary class="group !px-4 !py-2">
           <span class="text-sm font-semibold">{l("General")}</span>
         </summary>
@@ -57,7 +57,7 @@
     </li>
 
     <li class="border-t border-base-content/10 mt-4 pt-2">
-      <details open id="disclosure-docs">
+      <details open id="extensions-docs">
         <summary class="group !px-4 !py-2">
           <span class="text-sm font-semibold">{l("Extensions")}</span>
         </summary>
@@ -83,7 +83,7 @@
     </li>
 
     <li class="border-t border-base-content/10 mt-4 pt-2">
-      <details open id="disclosure-docs">
+      <details open id="safety-docs">
         <summary class="group !px-4 !py-2">
           <span class="text-sm font-semibold">{l("Safety")}</span>
         </summary>
@@ -129,7 +129,7 @@
     </li>
 
     <li class="border-t border-base-content/10 mt-4 pt-2">
-      <details open id="disclosure-docs">
+      <details open id="migration-docs">
         <summary class="group !px-4 !py-2">
           <span class="text-sm font-semibold">{l("Migration")}</span>
         </summary>
@@ -161,7 +161,7 @@
     </li>
 
     <li class="border-t border-base-content/10 mt-4 pt-2">
-      <details open id="disclosure-docs">
+      <details open id="advanced-docs">
         <summary class="group !px-4 !py-2">
           <span class="text-sm font-semibold">{l("Advanced")}</span>
         </summary>
