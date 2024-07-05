@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
   def mount(_params, session, socket) do
     # TEMP: monitor memory used by the LV and children
-    Bonfire.Common.MemoryMonitor.start_link(__MODULE__)
+    # Bonfire.Common.MemoryMonitor.start_link(__MODULE__)
 
     socket_connected? = Phoenix.LiveView.connected?(socket)
 
