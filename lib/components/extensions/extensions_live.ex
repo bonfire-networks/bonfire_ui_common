@@ -23,7 +23,6 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
     else
       assigns
       |> assign_new(:data, fn ->
-        []
         cached_data()
       end)
       |> assign_new(:can_instance_wide, fn -> nil end)
@@ -31,5 +30,16 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
     end
   end
 
-  def cached_data, do: Cache.maybe_apply_cached({Bonfire.Common.Extensions, :data}, [])
+  def cached_data,
+    do:
+      (Cache.maybe_apply_cached({Bonfire.Common.Extensions, :data}, []) || [])
+      |> Enum.map(fn
+        %{app: app} = dep -> Map.put(dep, :extra, Bonfire.Common.ExtensionModule.extension(app))
+        dep -> dep
+      end)
+
+  def with_extension_info(%{app: app} = dep),
+    do: Map.put(dep, :extra, Bonfire.Common.ExtensionModule.extension(app))
+
+  def with_extension_info(dep), do: dep
 end
