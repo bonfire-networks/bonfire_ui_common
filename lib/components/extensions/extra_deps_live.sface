@@ -2,7 +2,7 @@
   <div class="">
     <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
-      <span>{l("Data Schema")}</span>
+      <span>{l("Data Schemas")}</span>
     </div>
     <div class="flex flex-col divide-y divide-base-content/10">
       {#for dep <- e(@data, :schemas, nil) || @schemas}
@@ -10,7 +10,6 @@
           dep={dep}
           scope={@scope}
           can_instance_wide={@can_instance_wide}
-          required_deps={@required_deps}
         />
       {/for}
     </div>
@@ -27,7 +26,6 @@
           dep={dep}
           scope={@scope}
           can_instance_wide={@can_instance_wide}
-          required_deps={@required_deps}
         />
       {/for}
     </div>
@@ -44,7 +42,6 @@
           dep={dep}
           scope={@scope}
           can_instance_wide={@can_instance_wide}
-          required_deps={@required_deps}
         />
       {/for}
     </div>
@@ -59,7 +56,7 @@
           dep={dep}
           scope={@scope}
           can_instance_wide={@can_instance_wide}
-          required_deps={@required_deps}
+          
           is_extension?
         />
       {/for}
@@ -76,7 +73,7 @@
           dep={dep}
           scope={@scope}
           can_instance_wide={@can_instance_wide}
-          required_deps={@required_deps}
+          
           is_extension?
         />
       {/for}
@@ -93,7 +90,7 @@
           dep={dep}
           scope={@scope}
           can_instance_wide={@can_instance_wide}
-          required_deps={@required_deps}
+          
         />
       {/for}
     </div>
@@ -109,7 +106,7 @@
           dep={dep}
           scope={@scope}
           can_instance_wide={@can_instance_wide}
-          required_deps={@required_deps}
+          
         />
       {/for}
     </div>

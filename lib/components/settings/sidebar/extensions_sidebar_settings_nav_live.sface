@@ -1,32 +1,47 @@
 {#for {extension, modules} <- Bonfire.UI.Common.SettingsModule.app_modules()}
   {#case extension_enabled?(extension, @__context__) &&
-      List.wrap(Bonfire.UI.Common.SettingsModule.nav(extension))}
+      Bonfire.UI.Common.SettingsModule.nav(extension)}
     {#match false}
     {#match extension_nav}
-      {#case Bonfire.UI.Common.SettingsModule.extension_has_components?(extension, modules)}
-        {#match extension_has_components?}
-          {#if extension_has_components? or extension_nav != []}
+      {#case {Bonfire.UI.Common.SettingsModule.extension_has_components?(extension, modules),
+         is_list(extension_nav) and extension_nav != [] and extension_nav != [true] and
+           extension_nav != [false]}}
+        {#match {has_settings_components?, has_settings_nav?}}
+          {#if has_settings_components? or has_settings_nav?}
             {#case Bonfire.Common.ExtensionModule.extension(extension)}
               {#match extension_meta}
-                <details id={extension}>
-                  <summary class="group !px-4 !py-2">
-                    <span class="text-sm font-medium ml-1">{e(extension_meta, :name, nil) || extension}</span>
-                  </summary>
-                  <ul class="!m-0 !p-0 !mt-1">
-                    <li :for={%{} = subnav <- extension_nav}>
-                      <Bonfire.UI.Common.WidgetLive
-                        :if={!e(subnav, :exclude_from_nav, nil) and e(subnav, :scope, nil) == @scope and
-                          (is_nil(e(subnav, :module, nil)) or
-                             module_enabled?(e(subnav, :module, nil), @__context__))}
-                        widget={subnav}
-                        page={@page}
-                        showing_within={@showing_within}
-                        wrapper_class="w-full !block !p-0 !m-0 bg-base-200 hover:bg-base-200"
-                        selected_tab={@selected_tab}
-                      />
-                    </li>
-                  </ul>
-                </details>
+                <li>
+                  {#if not has_settings_nav?}
+                    <LinkLive to={"/settings/#{@scope}/#{extension}"} class="!text-sm font-medium !ml-0 !pl-4">{e(extension_meta, :name, nil) || extension}</LinkLive>
+                  {#else}
+                    <details
+                      id={extension}
+                      open={@selected_tab == to_string(extension) or @id == to_string(extension)}
+                    >
+                      <summary class="group !ml-0 !pl-4 !pr-4 !py-2">
+                        {#if has_settings_components?}
+                          <LinkLive to={"/settings/#{@scope}/#{extension}"} class="text-sm font-medium ml-0">{e(extension_meta, :name, nil) || extension}</LinkLive>
+                        {#else}
+                          <span class="text-sm font-medium ml-0">{e(extension_meta, :name, nil) || extension}</span>
+                        {/if}
+                      </summary>
+                      <ul class="ml-4 !p-0 !mt-1">
+                        <li :for={%{} = subnav <- List.wrap(extension_nav)}>
+                          <Bonfire.UI.Common.WidgetLive
+                            :if={!e(subnav, :exclude_from_nav, nil) and e(subnav, :scope, nil) == @scope and
+                              (is_nil(e(subnav, :module, nil)) or
+                                 module_enabled?(e(subnav, :module, nil), @__context__))}
+                            widget={subnav}
+                            page={@page}
+                            showing_within={@showing_within}
+                            wrapper_class="w-full !block !p-0 !m-0 bg-base-200 hover:bg-base-200"
+                            selected_tab={@selected_tab}
+                          />
+                        </li>
+                      </ul>
+                    </details>
+                  {/if}
+                </li>
             {/case}
           {/if}
       {/case}

@@ -13,9 +13,10 @@
     <div class="text-sm font-light text-base-content/70">{e(@dep, :extra, :description, nil)}</div>
   </div>
 
-  {#if @is_extension? && to_string(e(@dep, :app, nil)) not in @required_deps}
+  {#if @is_extension?}
     <div class="gap flex items-center gap-3">
       <Bonfire.UI.Common.ExtensionToggleLive
+        :if={!@required_dep?}
         id={e(@dep, :app, nil)}
         scope={@scope}
         can_instance_wide={@can_instance_wide}
@@ -29,9 +30,6 @@
       </LinkLive>
     </div>
   {#else}
-    {#case get_link(@dep)}
-      {#match code_link}
-        <a href={code_link} target="_blank" class="btn btn-sm btn-outline">{l("View code")}</a>
-    {/case}
+    <Bonfire.UI.Common.ExtensionCodeMenuLive dep={@dep} />
   {/if}
 </div>

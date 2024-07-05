@@ -5,5 +5,5 @@ defmodule Bonfire.UI.Common.ExtensionsDetailsLive do
   prop scope, :any, default: nil
   prop is_extension?, :boolean, default: false
   prop can_instance_wide, :boolean, default: nil
-  prop required_deps, :list, default: []
+  prop required_dep?, :boolean, default: false
 end

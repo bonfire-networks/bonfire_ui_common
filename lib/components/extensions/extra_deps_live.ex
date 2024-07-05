@@ -1,4 +1,4 @@
-defmodule Bonfire.UI.Common.CodeLive do
+defmodule Bonfire.UI.Common.ExtraDepsLive do
   use Bonfire.UI.Common.Web, :stateless_component
   import Bonfire.Common.Extensions
 
@@ -19,7 +19,6 @@ defmodule Bonfire.UI.Common.CodeLive do
       |> assign_new(:can_instance_wide, fn ->
         Bonfire.Boundaries.can?(assigns[:__context__], :toggle, :instance)
       end)
-      |> assign_new(:required_deps, fn -> Bonfire.Application.required_deps() end)
       |> render_sface()
     else
       assigns
@@ -28,7 +27,6 @@ defmodule Bonfire.UI.Common.CodeLive do
         cached_data()
       end)
       |> assign_new(:can_instance_wide, fn -> nil end)
-      |> assign_new(:required_deps, fn -> [] end)
       |> render_sface()
     end
   end

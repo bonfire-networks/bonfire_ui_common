@@ -76,6 +76,7 @@
           <Bonfire.UI.Common.ExtensionsSidebarSettingsNavLive
             page={@page}
             selected_tab={@selected_tab}
+            id={@id}
             scope={:user}
           />
         </ul>
@@ -186,7 +187,7 @@
                 "bg-base-content/10": @selected_tab == "code"
               }
             >
-              <span class="text-sm">{l("Data Schema & Libraries")}</span>
+              <span class="text-sm">{l("Libraries & Licences")}</span>
             </LinkPatchLive>
           </li>
         </ul>
