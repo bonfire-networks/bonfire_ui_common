@@ -10,7 +10,6 @@
           {#if has_settings_components? or has_settings_nav?}
             {#case Bonfire.Common.ExtensionModule.extension(extension)}
               {#match extension_meta}
-<<<<<<< HEAD
                 <li>
                   {#if not has_settings_nav?}
                     <LinkLive to={"/settings/#{@scope}/#{extension}"} class="!text-sm font-medium !ml-0 !pl-4">{e(extension_meta, :name, nil) || extension}</LinkLive>
@@ -43,27 +42,6 @@
                     </details>
                   {/if}
                 </li>
-=======
-                <details>
-                  <summary class="group !px-4 !py-2">
-                    <span class="text-sm font-medium ml-1">{e(extension_meta, :name, nil) || extension}</span>
-                  </summary>
-                  <ul class="!m-0 !p-0 !mt-1">
-                    <li :for={%{} = subnav <- extension_nav}>
-                      <Bonfire.UI.Common.WidgetLive
-                        :if={!e(subnav, :exclude_from_nav, nil) and e(subnav, :scope, nil) == @scope and
-                          (is_nil(e(subnav, :module, nil)) or
-                             module_enabled?(e(subnav, :module, nil), @__context__))}
-                        widget={subnav}
-                        page={@page}
-                        showing_within={@showing_within}
-                        wrapper_class="w-full !block !p-0 !m-0 bg-base-200 hover:bg-base-200"
-                        selected_tab={@selected_tab}
-                      />
-                    </li>
-                  </ul>
-                </details>
->>>>>>> 9ceba201 (ui)
             {/case}
           {/if}
       {/case}
