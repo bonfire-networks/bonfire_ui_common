@@ -4,7 +4,7 @@
       <!-- <span class="label-text">{l("Enable for everyone by default")}</span> -->
       <input
         type="checkbox"
-        class="toggle toggle-success"
+        class="toggle toggle-sm"
         checked={!@globally_disabled}
         phx-click={if @globally_disabled,
           do: "Bonfire.Common.Settings:extension:enable",
@@ -29,7 +29,7 @@
       </span> -->
       <input
         type="checkbox"
-        class="toggle toggle-success"
+        class="toggle toggle-sm"
         checked={!Bonfire.Common.Extend.disabled_value?(@my_modularity)}
         disabled={!@can_instance_wide && @globally_disabled}
         phx-click={if Bonfire.Common.Extend.disabled_value?(@my_modularity),
