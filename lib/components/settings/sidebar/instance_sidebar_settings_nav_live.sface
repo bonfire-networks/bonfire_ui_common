@@ -19,6 +19,18 @@
           </li>
 
           <li>
+            <LinkPatchLive
+              to={~p"/settings/instance/about"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10 ": @selected_tab == "about"
+              }
+            >
+              <span class="text-sm">{l("About")}</span>
+            </LinkPatchLive>
+          </li>
+
+          <li>
             <LinkLive
               to={~p"/settings/instance/preferences/behaviours"}
               class={
