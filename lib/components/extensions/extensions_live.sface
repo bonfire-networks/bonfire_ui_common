@@ -33,10 +33,10 @@
   </div>
 
   <div class="">
-    <div class="p-4   gap-4 border-b border-base-content/10">
+    <div class="p-4 gap-4 border-b border-base-content/10">
       <!-- "flex items-center" <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
       <span class="text-xl font-bold">{l("Core Extensions")}</span>
-      <p class="text-sm">{l(
+      <p class="text-sm mt-2 text-base-content/80">{l(
           "These are essential extensions which can't be disabled at the moment, but a lot of the functionality they provide can be overriden or extended by other extensions."
         )}</p>
     </div>

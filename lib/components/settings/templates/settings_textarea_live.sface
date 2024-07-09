@@ -4,7 +4,7 @@
       <div class="flex flex-col gap-1">
         {!-- <div :if={@label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div> --}
         <div :if={@name} class="text-sm font-medium">{@name}</div>
-        <div :if={@description} class="text-sm font-light text-base-content/70">{@description}</div>
+        <div :if={@description} class="text-sm  text-base-content/70">{@description}</div>
       </div>
       <button
         x-on:click="open = !open"

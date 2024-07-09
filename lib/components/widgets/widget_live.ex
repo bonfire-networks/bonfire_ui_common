@@ -7,6 +7,7 @@ defmodule Bonfire.UI.Common.WidgetLive do
   prop without_icon, :boolean, default: false
   prop without_label, :boolean, default: false
   prop with_title, :boolean, default: false
+  prop compact, :boolean, default: false
 
   prop text_class, :css_class,
     required: false,

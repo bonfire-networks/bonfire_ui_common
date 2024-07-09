@@ -9,6 +9,7 @@
           showing_within={@showing_within}
           with_title={@with_title}
           extra_data={@extra_data}
+          compact
         />
       {#match _ when is_list(widgets)}
         {#for widget <- widgets}
@@ -19,6 +20,7 @@
             showing_within={@showing_within}
             with_title={@with_title}
             extra_data={@extra_data}
+            compact
           />
         {/for}
     {/case}

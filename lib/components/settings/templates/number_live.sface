@@ -2,7 +2,7 @@
   <div class="flex items-center justify-between gap-4">
     <div class="flex flex-1 flex-col gap-1">
       <div class="text-sm font-medium">{@name}</div>
-      <div :if={@description} class="text-sm font-light text-base-content/70">{@description}</div>
+      <div :if={@description} class="text-sm text-base-content/70">{@description}</div>
     </div>
     <div class="flex items-center gap-2">
       {#if @read_only}
