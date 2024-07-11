@@ -75,32 +75,23 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
     # TEMP: monitor memory used by the LV and children
     # Bonfire.Common.MemoryMonitor.start_link("#{current_view} (connected? #{socket_connected?})")
 
-    if not module_enabled?(current_view, :instance) do
-      error(
-        l(
-          "Sorry, this feature (from extension %{app}) is not enabled on this instance. You may want to get in touch with your instance admin(s)...",
-          app: current_extension[:name] || current_app
-        )
-      )
-    else
-      Bonfire.Common.TestInstanceRepo.maybe_declare_test_instance(socket.endpoint)
+    Bonfire.Common.TestInstanceRepo.maybe_declare_test_instance(socket.endpoint)
 
-      connect_params =
-        if socket_connected?, do: Phoenix.LiveView.get_connect_params(socket), else: %{}
+    connect_params =
+      if socket_connected?, do: Phoenix.LiveView.get_connect_params(socket), else: %{}
 
-      {:ok,
-       if(module_enabled?(Surface), do: Surface.init(socket), else: socket)
-       |> assign_global(
-         current_view: current_view,
-         current_app: current_app,
-         current_extension: current_extension,
-         current_params: params,
-         #  connect_params: connect_params,
-         csrf_socket_token: connect_params["_csrf_token"],
-         live_action: e(socket, :assigns, :live_action, nil),
-         socket_connected?: socket_connected?
-       )}
-    end
+    {:ok,
+     if(module_enabled?(Surface), do: Surface.init(socket), else: socket)
+     |> assign_global(
+       current_view: current_view,
+       current_app: current_app,
+       current_extension: current_extension,
+       current_params: params,
+       #  connect_params: connect_params,
+       csrf_socket_token: connect_params["_csrf_token"],
+       live_action: e(socket, :assigns, :live_action, nil),
+       socket_connected?: socket_connected?
+     )}
   end
 
   defp mount_done(socket) do
@@ -108,7 +99,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
       # check here because we need current_user
       error(
         l(
-          "This feature (from extension %{app}) is disabled. You can enabled it in Settings -> Extensions.",
+          "This feature (from extension %{app}) is disabled. You can enabled it in Settings -> Extensions ",
           app:
             e(socket.assigns, :current_extension, :name, nil) ||
               e(socket.assigns, :current_app, nil)
