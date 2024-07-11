@@ -9,7 +9,7 @@
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center justify-between w-full tablet-lg:flex-1">
       <div class="flex items-center gap-3 flex-1">
-        <Bonfire.UI.Common.BackButtonLive :if={@back} back={@back} showing_within={@showing_within} />
+        <Bonfire.UI.Common.BackButtonLive :if={@back} back={@back}  />
         {#if !@back && current_user(@__context__)}
           {!-- <div class="flex md:hidden flex-col -ml-[32px] place-content-center items-center flex-1">
             <Bonfire.UI.Common.LogoLinkLive />

@@ -74,7 +74,6 @@
             </LinkLive>
           </li>
           <Bonfire.UI.Common.ExtensionsSidebarSettingsNavLive
-            }
             selected_tab={@selected_tab}
             id={@id}
             scope={:user}

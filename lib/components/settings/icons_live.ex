@@ -1,3 +1,5 @@
 defmodule Bonfire.UI.Common.SettingsViewsLive.IconsLive do
   use Bonfire.UI.Common.Web, :stateless_component
+
+  prop selected_tab, :atom, default: nil
 end

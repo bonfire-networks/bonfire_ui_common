@@ -4,6 +4,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   alias Bonfire.UI.Common.SmartInput.LiveHandler
 
   prop reply_to_id, :any, default: nil
+  prop as_icon, :boolean, default: false
   prop context_id, :string, default: nil, required: false
   prop create_object_type, :any, default: nil
   prop smart_input_component, :atom, default: nil

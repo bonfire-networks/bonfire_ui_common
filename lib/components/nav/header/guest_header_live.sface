@@ -24,7 +24,6 @@
           <li class="hidden lg:block">
             <LinkLive
               to="/users"
-              role="tab"
               class={
                 "font-medium",
                 "btn-active": @selected_tab == :users
@@ -35,7 +34,6 @@
         <li class="hidden lg:block">
           <LinkLive
             to={path(:login, :index)}
-            role="tab"
             class={
               "font-medium",
               "btn-active": @selected_tab == :login
