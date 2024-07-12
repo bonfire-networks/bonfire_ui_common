@@ -854,6 +854,9 @@ defmodule Bonfire.UI.Common do
              |> debug("uploaded?") do
         {:ok, uploaded}
       else
+        {:error, %{message: message} = e} ->
+          {:postpone, error(e, "#{message}: #{entry.client_name}")}
+
         e ->
           {:postpone, error(e, "Did not upload #{entry.client_name}")}
       end
