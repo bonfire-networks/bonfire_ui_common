@@ -5,12 +5,12 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   import Plug.Conn
   import Phoenix.ConnTest
   # import Untangle
-  alias Bonfire.UI.Common.Web
+  # alias Bonfire.UI.Common.Web
   alias Bonfire.Common.Utils
   alias Bonfire.Me.Users
   alias Bonfire.Data.Identity.Account
   alias Bonfire.Data.Identity.User
-  alias Surface.Components.Dynamic
+  # alias Surface.Components.Dynamic
   # alias Surface.Components.Context
   alias Bonfire.Common.TestInstanceRepo
   alias Surface.Components.Dynamic.Component, as: StatelessComponent
@@ -149,7 +149,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     assert_flash(render(view), kind, message)
   end
 
-  def assert_flash(html, kind, message) do
+  def assert_flash(html, _kind, message) do
     assert_flash_message(html, message)
     # FIXME:
     # assert_flash_kind(html, kind)

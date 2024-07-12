@@ -441,7 +441,7 @@ defmodule Bonfire.UI.Common do
 
   def maybe_send_update(component, id, assigns, opts \\ [])
 
-  def maybe_send_update(component, id, {:error, error}, opts) do
+  def maybe_send_update(_component, _id, {:error, error}, opts) do
     assign_error(nil, error, opts[:pid])
   end
 
@@ -476,7 +476,7 @@ defmodule Bonfire.UI.Common do
     error(component, "expected a component module but got")
   end
 
-  def maybe_send_update(component, id, _assigns, _) do
+  def maybe_send_update(_component, id, _assigns, _) do
     error(id, "expected a component ID but got")
   end
 
@@ -953,7 +953,7 @@ defmodule Bonfire.UI.Common do
   end
 
   def redirect_to_previous_go(conn, params, default, current_path) do
-    # debug(conn.request_path)      
+    # debug(conn.request_path)
     case Plug.Conn.get_session(conn, :go)
          |> go_where?(params, default, current_path) do
       [to: "/oauth/authorize?" <> query] ->

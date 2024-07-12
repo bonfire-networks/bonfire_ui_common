@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Common.SEO do
     twitter: &__MODULE__.twitter_config/1
 
   alias Bonfire.Common.Config
-  alias Bonfire.Web.Router.Helpers, as: Routes
+  # alias Bonfire.Web.Router.Helpers, as: Routes
 
   def site_config(_conn \\ nil) do
     name = Config.get([:ui, :theme, :instance_name]) || Bonfire.Application.name()

@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.ExtensionsLive do
   use Bonfire.UI.Common.Web, :stateless_component
-  import Bonfire.Common.Extensions
+  # import Bonfire.Common.Extensions
 
   prop scope, :any, default: nil
 
