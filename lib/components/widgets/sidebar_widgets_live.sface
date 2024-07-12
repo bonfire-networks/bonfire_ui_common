@@ -1,7 +1,7 @@
 {#case (not is_nil(current_user_id(@__context__)) and e(@widgets, :users, @key, nil)) ||
     (is_nil(current_user_id(@__context__)) and e(@widgets, :guests, @key, nil))}
   {#match widgets when (is_list(widgets) and widgets != []) or is_map(widgets)}
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-2">
       {#for %{} = widget <- widgets}
         <Bonfire.UI.Common.WidgetLive
           widget={debug(widget, "widgett")}

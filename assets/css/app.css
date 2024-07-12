@@ -138,10 +138,18 @@ div[data-type="widget"][data-showing-within="nav"] {
 
 div[data-type="widget"][data-showing-within="sidebar"] span[data-type="widget_label"] {
   @apply font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px];
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 div[data-type="widget"][data-showing-within="nav"] span[data-type="widget_label"] {
   @apply font-normal  text-base-content/90 flex-1 text-[15px];
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 

@@ -102,8 +102,10 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
                    name: String.trim_leading(Types.module_to_str(module), "Bonfire."),
                    href:
                      "/settings/extensions/code/#{module}#{if from_beam?, do: "?from=compiled"}",
-                   link_class: "flex items-center w-full rounded-md text-sm",
-                   type: :link
+                   link_class:
+                     "flex items-center w-full rounded-md text-sm hover:bg-base-content/10",
+                   type: :link,
+                   icon: "fluent:code-text-20-filled"
                  }
                end)
                |> debug("widgetss")
