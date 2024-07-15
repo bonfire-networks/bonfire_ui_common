@@ -42,7 +42,12 @@ defmodule Bonfire.UI.Common.NotificationLive do
     current_user = current_user(socket.assigns) || current_user(assigns)
 
     if current_user do
-      feed_id = Bonfire.Social.Feeds.my_feed_id(:notifications, current_user)
+      feed_id =
+        Common.Utils.maybe_apply(
+          Bonfire.Social.Feeds,
+          :my_feed_id,
+          [:notifications, current_user]
+        )
 
       if feed_id do
         debug(feed_id, "subscribed to push notifications")

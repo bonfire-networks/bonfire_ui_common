@@ -21,7 +21,11 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
     debug(live_select_id, search)
     # current_user = current_user(socket.assigns)
 
-    Bonfire.Me.Users.search(search)
+    Common.Utils.maybe_apply(
+      Bonfire.Me.Users,
+      :search,
+      [search]
+    )
     |> results_for_multiselect()
     |> maybe_send_update(LiveSelect.Component, live_select_id, options: ...)
 

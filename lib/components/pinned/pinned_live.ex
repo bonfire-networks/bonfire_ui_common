@@ -11,10 +11,14 @@ defmodule Bonfire.UI.Common.PinnedLive do
     current_user = current_user(assigns) || current_user(socket.assigns)
 
     feed =
-      Bonfire.Social.Pins.list_by(
-        assigns.user,
-        object_type: e(assigns, :object_types, []),
-        current_user: current_user
+      Common.Utils.maybe_apply(
+        Bonfire.Social.Pins,
+        :list_by,
+        [
+          assigns.user,
+          object_type: e(assigns, :object_types, []),
+          current_user: current_user
+        ]
       )
 
     edges =

@@ -35,7 +35,11 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
     # TODO: paginate?
     if current_user,
       do:
-        Bonfire.Social.Graph.Follows.list_my_followed(current_user, paginate: false, type: type)
+        Common.Utils.maybe_apply(
+          Bonfire.Social.Graph.Follows,
+          :list_my_followed,
+          [current_user, paginate: false, type: type]
+        )
         # |> debug()
         # |> e(:edges, [])
         |> Enum.map(&e(&1, :edge, :object, nil)),
@@ -46,11 +50,14 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
     # TODO: paginate?
     if current_user,
       do:
-        Bonfire.Social.Likes.list_my(
+        Common.Utils.maybe_apply(
+          Bonfire.Social.Likes,
+          :list_my,
           current_user: current_user,
           paginate: false,
           object_type: type
         )
+        # |> debug()
         # |> debug()
         # |> e(:edges, [])
         |> Enum.map(&e(&1, :edge, :object, nil)),

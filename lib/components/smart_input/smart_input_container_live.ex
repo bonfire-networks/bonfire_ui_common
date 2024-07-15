@@ -42,7 +42,15 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
 
   def maybe_setup_uploads(socket) do
     if module_enabled?(Bonfire.Files.VideoUploader, socket),
-      do: maybe_setup_uploads(socket, Bonfire.Files.VideoUploader.max_file_size()),
+      do:
+        maybe_setup_uploads(
+          socket,
+          Common.Utils.maybe_apply(
+            Bonfire.Files.VideoUploader,
+            :max_file_size,
+            []
+          )
+        ),
       else: maybe_setup_uploads(socket, 20)
   end
 
@@ -86,7 +94,11 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
      #    )
      #  end)
      |> assign(smart_input_opts: Map.merge(old_smart_input_opts, new_smart_input_opts))
-     |> Bonfire.Boundaries.LiveHandler.prepare_assigns()}
+     |> Common.Utils.maybe_apply(
+       Bonfire.Boundaries.LiveHandler,
+       :prepare_assigns,
+       []
+     )}
   end
 
   # def update(%{set_smart_input_text_if_empty: text} = assigns, %{assigns: %{smart_input_opts: smart_input_opts}} = socket) do
@@ -116,11 +128,6 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       :ok,
       socket
       |> assign(assigns)
-      #  |> assign_new(:smart_input_as, fn ->
-      #    LiveHandler.set_smart_input_as(
-      #      e(assigns, :__context__, nil) || current_user(assigns) || current_user(socket.assigns)
-      #    )
-      #  end)
       |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
       # TODO: only trigger if module enabled ^
     }

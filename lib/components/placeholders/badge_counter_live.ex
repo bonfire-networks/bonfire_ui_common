@@ -50,7 +50,12 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
     case e(assigns, :id, nil) do
       feed_name when not is_nil(feed_name) and not is_nil(current_user) ->
         feed_id =
-          e(assigns, :feed_id, nil) || Bonfire.Social.Feeds.my_feed_id(feed_name, current_user)
+          e(assigns, :feed_id, nil) ||
+            Common.Utils.maybe_apply(
+              Bonfire.Social.Feeds,
+              :my_feed_id,
+              [feed_name, current_user]
+            )
 
         # subscribe to count updates
         PubSub.subscribe("unseen_count:#{feed_name}:#{feed_id}", socket)
@@ -61,8 +66,10 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
           debug(feed_name, "show badge for")
 
           unseen_count =
-            Bonfire.Social.FeedActivities.unseen_count(feed_id,
-              current_user: current_user
+            Common.Utils.maybe_apply(
+              Bonfire.Social.FeedActivities,
+              :unseen_count,
+              [feed_id, current_user: current_user]
             )
             |> debug("unseen_count for #{feed_name}")
 
