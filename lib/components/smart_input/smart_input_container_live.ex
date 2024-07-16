@@ -132,7 +132,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
         Bonfire.Boundaries.LiveHandler,
         :prepare_assigns,
         [...]
-        )
+      )
       # TODO: only trigger if module enabled ^
     }
   end

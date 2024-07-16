@@ -91,19 +91,37 @@ defmodule Bonfire.UI.Common.Routes do
         plug Bonfire.UI.Common.PlugProtect
       end
 
-      pipeline :static do
+      pipeline :static_generator do
         plug(:basic_html)
         plug(Bonfire.UI.Common.StaticGeneratorPlug)
       end
 
       scope "/#{Bonfire.UI.Common.StaticGenerator.base_path()}" do
-        pipe_through(:static)
+        pipe_through(:static_generator)
 
         match(
           :*,
           "/*path",
           Bonfire.UI.Common.StaticFallbackController,
           :fallback
+        )
+      end
+
+      scope "/extensions/code/raw" do
+        match(
+          :*,
+          "/*path",
+          Bonfire.UI.Common.RawCodeController,
+          :code
+        )
+      end
+
+      scope "/extensions/docs" do
+        match(
+          :*,
+          "/*path",
+          Bonfire.UI.Common.RawCodeController,
+          :docs
         )
       end
 
