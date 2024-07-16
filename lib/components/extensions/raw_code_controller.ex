@@ -15,11 +15,25 @@ defmodule Bonfire.UI.Common.RawCodeController do
     # url = Path.join(["/"] ++ List.wrap(path))
     debug(path)
 
-    with {:ok, code} <- Bonfire.Common.Extend.file_code(Path.join(path)) do
+    path_str = Path.join(path)
+
+    with {:ok, raw} <- Bonfire.Common.Extend.file_code(path_str) do
       # public_url = Path.join(["/", Bonfire.UI.Common.StaticGenerator.base_path(), url])
 
+      raw = Bonfire.Common.Extend.return_file(raw)
+
       conn
-      |> Plug.Conn.send_resp(200, code)
+      |> put_resp_content_type(
+        cond do
+          String.ends_with?(path_str, ".js") -> "text/javascript"
+          String.ends_with?(path_str, ".css") -> "text/css"
+          String.ends_with?(path_str, ".html") -> "text/html"
+          String.ends_with?(path_str, [".woff", ".woff2"]) -> "application/x-font-woff"
+          is_binary(raw) -> "text/plain"
+          true -> "application/octet-stream"
+        end
+      )
+      |> Plug.Conn.send_resp(200, raw)
       |> halt()
     else
       _ ->
