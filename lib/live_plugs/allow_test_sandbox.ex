@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Common.LivePlugs.AllowTestSandbox do
               |> debug("uaaa")
         end)
 
-      Phoenix.Ecto.SQL.Sandbox.allow(metadata |> debug("mddd"), Ecto.Adapters.SQL.Sandbox)
+      Phoenix.Ecto.SQL.Sandbox.allow(metadata, Ecto.Adapters.SQL.Sandbox)
     end
   end
 end

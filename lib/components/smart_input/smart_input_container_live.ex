@@ -128,7 +128,11 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       :ok,
       socket
       |> assign(assigns)
-      |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
+      |> Common.Utils.maybe_apply(
+        Bonfire.Boundaries.LiveHandler,
+        :prepare_assigns,
+        [...]
+        )
       # TODO: only trigger if module enabled ^
     }
   end

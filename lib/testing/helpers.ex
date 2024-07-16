@@ -74,11 +74,11 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   Render stateless Surface or LiveView components
   """
   def render_stateless(component, assigns \\ [], context \\ []) do
-    assigns = assigns |> Enum.into(%{__context__: context})
+    assigns = assigns |> Enum.into(%{__context__: context, component: component})
 
     render_surface do
       ~F"""
-      <StatelessComponent module={component} function={:render} {...assigns} />
+      <StatelessComponent module={@component} function={:render} {...@assigns} />
       """
     end
   end
