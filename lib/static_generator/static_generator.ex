@@ -84,12 +84,26 @@ defmodule Bonfire.UI.Common.StaticGenerator do
 
   defp generate_html(conn, url) do
     with html when is_binary(html) <-
-           Phoenix.ConnTest.get(conn, url, %{"cache" => "skip"})
+           get(conn, url, %{"cache" => "skip"})
            |> Phoenix.ConnTest.html_response(200) do
       {:ok, html}
     else
       e ->
         {:error, e}
+    end
+  end
+
+  def get(conn, url, params_or_body) do
+    if function_exported?(Phoenix.ConnTest, :get, 3) do
+      Phoenix.ConnTest.get(conn, url, params_or_body)
+    else
+      Phoenix.ConnTest.dispatch(
+        conn,
+        Bonfire.Common.Config.endpoint_module(),
+        :get,
+        url,
+        params_or_body
+      )
     end
   end
 
