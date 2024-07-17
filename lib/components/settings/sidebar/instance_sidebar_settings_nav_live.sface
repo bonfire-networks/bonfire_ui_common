@@ -17,6 +17,18 @@
               <span class="text-sm">{l("General")}</span>
             </LinkPatchLive>
           </li>
+          
+          <li>
+            <LinkPatchLive
+              to={~p"/settings/instance/dashboard"}
+              class={
+                "!px-4 !py-2",
+                "bg-base-content/10 ": @selected_tab == "dashboard"
+              }
+            >
+              <span class="text-sm">{l("Dashboard")}</span>
+            </LinkPatchLive>
+          </li>
 
           <li>
             <LinkPatchLive
