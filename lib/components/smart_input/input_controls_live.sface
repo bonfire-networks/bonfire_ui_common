@@ -205,7 +205,7 @@
           </div>
         </div>
 
-        <input type="hidden" name="id" value={e(@smart_input_opts, :id, nil)}>
+        <input type="hidden" name="thread_id" value={e(@smart_input_opts, :id, nil)}>
 
         <input type="hidden" name="reply_to[reply_to_id]" value={@reply_to_id}>
         <input type="hidden" name="reply_to[thread_id]" value={@context_id}>

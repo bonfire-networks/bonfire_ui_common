@@ -37,7 +37,7 @@
           >
             {to_string(@current_value)}
           </textarea>
-          <button type="submit" class="normal-case  btn btn-sm btn-primary">
+          <button type="submit" class="btn-outline btn btn-sm">
             {l("Save")}
           </button>
         </div>
@@ -62,7 +62,7 @@
         >
           {to_string(@current_value)}
         </textarea>
-        <button type="submit" class="normal-case  btn btn-sm btn-primary">
+        <button type="submit" class="btn-outline btn btn-sm">
           {l("Save")}
         </button>
       </div>

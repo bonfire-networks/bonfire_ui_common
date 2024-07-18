@@ -255,6 +255,11 @@ div[data-id="comment"][data-avatar-hidden] [data-role="comment-lined"]{
 
 
 /* activity */
+
+.discussion-preview {
+  @apply !p-4 !rounded-lg !bg-base-content/5 !shadow-sm !mt-2 hover:!shadow-lg;
+}
+
 article[data-id="activity"][data-hidden="all"] {
   @apply hidden; 
 }

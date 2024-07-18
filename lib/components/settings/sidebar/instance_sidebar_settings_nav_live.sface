@@ -17,7 +17,7 @@
               <span class="text-sm">{l("General")}</span>
             </LinkPatchLive>
           </li>
-          
+
           <li>
             <LinkPatchLive
               to={~p"/settings/instance/dashboard"}

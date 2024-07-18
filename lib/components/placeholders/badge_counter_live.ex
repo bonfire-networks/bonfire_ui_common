@@ -51,7 +51,7 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
       feed_name when not is_nil(feed_name) and not is_nil(current_user) ->
         feed_id =
           e(assigns, :feed_id, nil) ||
-            Common.Utils.maybe_apply(
+            Bonfire.Common.Utils.maybe_apply(
               Bonfire.Social.Feeds,
               :my_feed_id,
               [feed_name, current_user]
@@ -66,7 +66,7 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
           debug(feed_name, "show badge for")
 
           unseen_count =
-            Common.Utils.maybe_apply(
+            Bonfire.Common.Utils.maybe_apply(
               Bonfire.Social.FeedActivities,
               :unseen_count,
               [feed_id, current_user: current_user]

@@ -11,7 +11,7 @@ defmodule Bonfire.UI.Common.PinnedLive do
     current_user = current_user(assigns) || current_user(socket.assigns)
 
     feed =
-      Common.Utils.maybe_apply(
+      Bonfire.Common.Utils.maybe_apply(
         Bonfire.Social.Pins,
         :list_by,
         [

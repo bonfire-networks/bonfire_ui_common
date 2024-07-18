@@ -841,7 +841,7 @@ defmodule Bonfire.UI.Common do
       # debug(entry, "consume_uploaded_entries entry")
 
       with {:ok, uploaded} <-
-             Common.Utils.maybe_apply(
+             Bonfire.Common.Utils.maybe_apply(
                Bonfire.Files,
                :upload,
                [
@@ -958,7 +958,7 @@ defmodule Bonfire.UI.Common do
     case Plug.Conn.get_session(conn, :go)
          |> go_where?(params, default, current_path) do
       [to: "/oauth/authorize?" <> query] ->
-        Common.Utils.maybe_apply(
+        Bonfire.Common.Utils.maybe_apply(
           Bonfire.OpenID.Web.Oauth.AuthorizeController,
           :from_query_string,
           [conn, query]

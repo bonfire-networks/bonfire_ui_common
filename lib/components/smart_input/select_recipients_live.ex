@@ -21,7 +21,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
     debug(live_select_id, search)
     # current_user = current_user(socket.assigns)
 
-    Common.Utils.maybe_apply(
+    Bonfire.Common.Utils.maybe_apply(
       Bonfire.Me.Users,
       :search,
       [search]

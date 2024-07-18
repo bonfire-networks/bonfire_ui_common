@@ -19,10 +19,10 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   @endpoint Application.compile_env!(:bonfire, :endpoint_module)
 
   def fake_account!(attrs \\ %{}, opts \\ []),
-    do: Common.Utils.maybe_apply(Bonfire.Me.Fake, :fake_account!, [attrs, opts])
+    do: Bonfire.Common.Utils.maybe_apply(Bonfire.Me.Fake, :fake_account!, [attrs, opts])
 
   def fake_user!(account \\ %{}, attrs \\ %{}, opts \\ []),
-    do: Common.Utils.maybe_apply(Bonfire.Me.Fake, :fake_user!, [account, attrs, opts])
+    do: Bonfire.Common.Utils.maybe_apply(Bonfire.Me.Fake, :fake_user!, [account, attrs, opts])
 
   def fancy_fake_user!(name, opts \\ []) do
     # repo().delete_all(ActivityPub.Object)
@@ -30,7 +30,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     user = fake_user!("#{name} #{id}", opts ++ [id: id], opts)
 
     display_username =
-      Common.Utils.maybe_apply(
+      Bonfire.Common.Utils.maybe_apply(
         Bonfire.Me.Characters,
         :display_username,
         [user, true]
@@ -44,7 +44,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
           display_username <>
           "@" <> Bonfire.Common.URIs.base_domain(Bonfire.Me.Characters.character_url(user)),
       canonical_url:
-        Common.Utils.maybe_apply(
+        Bonfire.Common.Utils.maybe_apply(
           Bonfire.Me.Characters,
           :character_url,
           [user]
@@ -60,7 +60,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
 
   def fake_admin!(account \\ %{}, attrs \\ %{}, opts \\ []) do
     user = fake_user!(account, attrs, opts)
-    {:ok, user} = Common.Utils.maybe_apply(Bonfire.Me.Users, :make_admin, [user])
+    {:ok, user} = Bonfire.Common.Utils.maybe_apply(Bonfire.Me.Users, :make_admin, [user])
     user
   end
 
@@ -121,7 +121,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   """
   def live_sockets_disconnect(context) do
     # see https://hexdocs.pm/phoenix_live_view/security-model.html#disconnecting-all-instances-of-a-live-user
-    Common.Utils.maybe_apply(
+    Bonfire.Common.Utils.maybe_apply(
       Bonfire.Me.Users.LiveHandler,
       :disconnect_sockets,
       [context]

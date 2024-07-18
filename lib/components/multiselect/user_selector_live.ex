@@ -35,7 +35,7 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
     # TODO: paginate?
     if current_user,
       do:
-        Common.Utils.maybe_apply(
+        Bonfire.Common.Utils.maybe_apply(
           Bonfire.Social.Graph.Follows,
           :list_my_followed,
           [current_user, paginate: false, type: type]
@@ -50,7 +50,7 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
     # TODO: paginate?
     if current_user,
       do:
-        Common.Utils.maybe_apply(
+        Bonfire.Common.Utils.maybe_apply(
           Bonfire.Social.Likes,
           :list_my,
           current_user: current_user,

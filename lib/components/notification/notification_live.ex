@@ -43,7 +43,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
 
     if current_user do
       feed_id =
-        Common.Utils.maybe_apply(
+        Bonfire.Common.Utils.maybe_apply(
           Bonfire.Social.Feeds,
           :my_feed_id,
           [:notifications, current_user]
