@@ -28,7 +28,7 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop preview_boundary_for_id, :any, default: nil
   prop preview_boundary_for_username, :any, default: nil
   prop preview_boundary_verbs, :any, default: nil
-
+  prop boundary_preset, :any, default: nil
   slot default
 
   def render(assigns) do
