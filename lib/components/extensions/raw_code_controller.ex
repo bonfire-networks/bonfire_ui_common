@@ -24,14 +24,15 @@ defmodule Bonfire.UI.Common.RawCodeController do
 
       conn
       |> put_resp_content_type(
-        MIME.from_path(path_str) || cond do
-          String.ends_with?(path_str, ".js") -> "text/javascript"
-          String.ends_with?(path_str, ".css") -> "text/css"
-          String.ends_with?(path_str, ".html") -> "text/html"
-          String.ends_with?(path_str, [".woff", ".woff2"]) -> "application/x-font-woff"
-          is_binary(raw) -> "text/plain"
-          true -> "application/octet-stream"
-        end
+        MIME.from_path(path_str) ||
+          cond do
+            String.ends_with?(path_str, ".js") -> "text/javascript"
+            String.ends_with?(path_str, ".css") -> "text/css"
+            String.ends_with?(path_str, ".html") -> "text/html"
+            String.ends_with?(path_str, [".woff", ".woff2"]) -> "application/x-font-woff"
+            is_binary(raw) -> "text/plain"
+            true -> "application/octet-stream"
+          end
       )
       |> Plug.Conn.send_resp(200, raw)
       |> halt()
