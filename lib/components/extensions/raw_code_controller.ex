@@ -24,7 +24,7 @@ defmodule Bonfire.UI.Common.RawCodeController do
 
       conn
       |> put_resp_content_type(
-        cond do
+        MIME.from_path(path_str) || cond do
           String.ends_with?(path_str, ".js") -> "text/javascript"
           String.ends_with?(path_str, ".css") -> "text/css"
           String.ends_with?(path_str, ".html") -> "text/html"
