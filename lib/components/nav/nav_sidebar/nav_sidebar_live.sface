@@ -22,7 +22,6 @@
       /> --}
 
       {!-- <nav class="w-full"> --}
-
       <Bonfire.UI.Common.SidebarWidgetsLive
         widgets={@sidebar_widgets}
         key={:main}

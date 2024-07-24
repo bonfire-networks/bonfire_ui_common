@@ -10,7 +10,7 @@
         "overflow-hidden border rounded-lg border-base-content/10 hover:border-base-content/40 outline-base-content outline-2 outline-offset-2",
         "ring-2 ring-primary": to_string(t) == to_string(@theme)
       }>
-        <div data-theme={t} class="w-full font-sans cursor-pointer bg-base-100 text-base-content">
+        <div data-theme={t} class="w-full font-sans bg-base-100 text-base-content">
           <div class="grid grid-cols-5 grid-rows-3">
             <div class="flex flex-col col-span-4 col-start-1 row-span-3 row-start-1 gap-1 p-2 bg-base-100">
               <div class="font-bold">{t}</div>
@@ -29,7 +29,9 @@
                 </div>
               </div>
             </div>
-            <div class="col-start-4 row-span-2 row-start-1 col-span-4">
+          </div>
+          <div class="flex p-2 gap-2 items-center">
+            <div class="w-full flex-1">
               <Bonfire.UI.Common.OpenModalLive
                 id={"preview_theme_#{@key}_#{t}"}
                 title_text={l("Previewing theme:") <> " #{t}"}
@@ -40,22 +42,20 @@
                 </div>
 
                 <:open_btn>
-                  <div class="w-full btn btn-sm btn-info rounded">Preview</div>
+                  <div class="flex-1 w-full btn btn-sm btn-outline">Preview</div>
                 </:open_btn>
               </Bonfire.UI.Common.OpenModalLive>
             </div>
-            <div class="col-start-4 row-start-3 col-span-4">
-              <div
-                class="w-full btn btn-sm btn-success rounded"
-                data-set-theme={t}
-                data-act-class="outline"
-                x-on:click={"theme = '#{t}'"}
-                phx-click="Bonfire.Common.Settings:put_theme"
-                phx-value-keys={"ui:theme:#{@key}"}
-                phx-value-values={t}
-                phx-value-scope={@scope}
-              >Select</div>
-            </div>
+            <div
+              class="flex-1 w-full btn btn-sm btn-neutral"
+              data-set-theme={t}
+              data-act-class="outline"
+              x-on:click={"theme = '#{t}'"}
+              phx-click="Bonfire.Common.Settings:put_theme"
+              phx-value-keys={"ui:theme:#{@key}"}
+              phx-value-values={t}
+              phx-value-scope={@scope}
+            >{l("Enable")}</div>
           </div>
         </div>
       </div>
