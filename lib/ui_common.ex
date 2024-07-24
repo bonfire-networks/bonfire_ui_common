@@ -1346,4 +1346,45 @@ defmodule Bonfire.UI.Common do
       end
     end
   end
+
+  @doc """
+  Checks if the socket is connected.
+
+  ## Examples
+
+      iex> Bonfire.Common.Utils.socket_connected?(%{socket_connected?: true})
+      true
+
+      iex> Bonfire.Common.Utils.socket_connected?(%{socket_connected?: false})
+      false
+
+      iex> Bonfire.Common.Utils.socket_connected?(%{__context__: %{socket_connected?: true}})
+      true
+      
+      iex> Bonfire.Common.Utils.socket_connected?(%Phoenix.LiveView.Socket{transport_pid: 1})
+      true
+
+      iex> Bonfire.Common.Utils.socket_connected?(%Phoenix.LiveView.Socket{transport_pid: nil})
+      false
+  """
+  def socket_connected?(%{socket_connected?: bool}) do
+    bool
+  end
+
+  def socket_connected?(%{__context__: %{socket_connected?: bool}}) do
+    bool
+  end
+
+  def socket_connected?(%{assigns: %{__context__: %{socket_connected?: bool}}}) do
+    bool
+  end
+
+  def socket_connected?(%struct{} = socket) when struct == Phoenix.LiveView.Socket do
+    maybe_apply(Phoenix.LiveView, :connected?, socket, fallback_return: false)
+  end
+
+  def socket_connected?(assigns) do
+    warn(Types.typeof(assigns), "Unable to find Socket or :socket_connected? info in")
+    false
+  end
 end
