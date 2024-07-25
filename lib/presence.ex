@@ -5,13 +5,14 @@ defmodule Bonfire.UI.Common.Presence do
     pubsub_server: Bonfire.Common.PubSub
 
   import Untangle
+  alias Bonfire.UI
   alias Bonfire.Common.Utils
 
   @presence "bonfire:presence"
 
   @doc "Join a user to the list of those who are present"
   def present!(socket, meta \\ %{}) do
-    if Utils.socket_connected?(socket) do
+    if UI.Common.socket_connected?(socket) do
       user_id = Utils.current_user_id(socket)
 
       if user_id do
@@ -63,7 +64,7 @@ defmodule Bonfire.UI.Common.Presence do
   end
 
   def list_and_maybe_subscribe_to_presence(socket) do
-    if Utils.socket_connected?(socket) do
+    if UI.Common.socket_connected?(socket) do
       Phoenix.PubSub.subscribe(PubSub, @presence)
     end
 

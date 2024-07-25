@@ -1352,19 +1352,19 @@ defmodule Bonfire.UI.Common do
 
   ## Examples
 
-      iex> Bonfire.Common.Utils.socket_connected?(%{socket_connected?: true})
+      iex> socket_connected?(%{socket_connected?: true})
       true
 
-      iex> Bonfire.Common.Utils.socket_connected?(%{socket_connected?: false})
+      iex> socket_connected?(%{socket_connected?: false})
       false
 
-      iex> Bonfire.Common.Utils.socket_connected?(%{__context__: %{socket_connected?: true}})
+      iex> socket_connected?(%{__context__: %{socket_connected?: true}})
       true
       
-      iex> Bonfire.Common.Utils.socket_connected?(%Phoenix.LiveView.Socket{transport_pid: 1})
+      iex> socket_connected?(%Phoenix.LiveView.Socket{transport_pid: 1})
       true
 
-      iex> Bonfire.Common.Utils.socket_connected?(%Phoenix.LiveView.Socket{transport_pid: nil})
+      iex> socket_connected?(%Phoenix.LiveView.Socket{transport_pid: nil})
       false
   """
   def socket_connected?(%{socket_connected?: bool}) do
