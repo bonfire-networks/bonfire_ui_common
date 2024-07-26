@@ -1,6 +1,6 @@
 <div
   data-id="bonfire_live"
-  class="antialiased bg-base-200"
+  class="antialiased bg-base-100"
   data-theme={if Settings.get(
        [:ui, :theme, :preferred],
        :system,

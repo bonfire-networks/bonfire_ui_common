@@ -199,7 +199,7 @@ div[data-id="main_section"][data-single-column] {
 }
 
 div[data-id="main_section"][data-single-column] #inner {
-  @apply !border-none bg-base-200 shadow-none;
+  @apply !border-none bg-base-100 shadow-none;
 }
 
 /* AVATAR */
