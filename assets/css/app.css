@@ -407,7 +407,7 @@ div[data-id="activity_note"] div[data-rendered="thread"]  {
   @apply cursor-default;
 }
 
-div[data-id="activity_note"] div[data-rendered="thread"][data-main-object]  {
+div[data-id="activity_note"][data-rendered="thread"][data-main-object]  {
   @apply !ml-[-40px] !mt-1;
 }
 
