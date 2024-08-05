@@ -203,12 +203,12 @@ defmodule Bonfire.UI.Common do
     Enum.reject(assigns, fn
       {key, _}
       when key in [
-             # :__context__,
              :id,
              :flash,
-             #  :uploads,
              :__changed__,
              :__surface__,
+             # :__context__,
+             #  :uploads,
              :socket,
              :myself
            ] ->
