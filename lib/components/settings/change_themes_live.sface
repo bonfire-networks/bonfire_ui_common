@@ -9,11 +9,12 @@
   <div class="mb-3 text-sm font-semibold tracking-widest text-base-content/70">{l("Colour mode")}</div>
   <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
     {!-- DARK --}
-    <!-- phx-click="Bonfire.Common.Settings:put_theme"
+
+    <button
+      phx-click="Bonfire.Common.Settings:put_theme"
       phx-value-keys="ui:theme:preferred"
       phx-value-values={:dark}
-      phx-value-scope={@scope} -->
-    <button
+      phx-value-scope={@scope}
       x-on:click="dark = true; light = false; custom_theme=false"
       type="button"
       :class="{'bg-base-content text-base-100' : dark && !light }"
@@ -26,13 +27,14 @@
     </button>
 
     <!-- 
-      phx-click="Bonfire.Common.Settings:put_theme"
-      phx-value-keys="ui:theme:preferred"
-      phx-value-values={:light}
-      phx-value-scope={@scope} -->
+       -->
     <button
       x-on:click="dark = false; light = true; custom_theme=false"
       type="button"
+      phx-click="Bonfire.Common.Settings:put_theme"
+      phx-value-keys="ui:theme:preferred"
+      phx-value-values={:light}
+      phx-value-scope={@scope}
       :class="{'bg-base-content text-base-100' : light && !dark }"
       class="normal-case rounded btn btn-outline"
     >
@@ -112,7 +114,7 @@
       {/if} --}
 
   <div class="p-3 mt-4 rounded-lg bg-base-content/5" x-show="custom_theme" x-cloak x-collapse>
-    <div class="flex items-center gap-2 pb-3 mb-5 text-sm font-semibold border-b place-content-center border-base-content/10">
+    <div class="flex items-center gap-2 pb-3 mb-5 text-sm font-semibold border-b place-content-center border-base-content/20">
       <#Icon iconify="lucide:paintbrush-2" class="w-4 h-4" />
       <span class="">{l("Customise theme colours")}</span>
     </div>

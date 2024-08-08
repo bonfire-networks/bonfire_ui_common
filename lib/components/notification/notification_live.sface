@@ -24,7 +24,7 @@
       :if={@notification}
       :hook
       role="alert"
-      class="w-full max-w-md pointer-events-auto overflow-hidden transition duration-300 ease-in-out transform rounded border border-base-content/10 shadow-xl pointer-events-auto alert flash"
+      class="w-full max-w-md pointer-events-auto overflow-hidden transition duration-300 ease-in-out transform rounded border border-base-content/20 shadow-xl pointer-events-auto alert flash"
     >
       <div class="p-4">
         <div class="flex items-start">
@@ -68,7 +68,7 @@
       {#match info}
         <div
           role="alert"
-          class="w-full max-w-md overflow-hidden transition flex duration-300 ease-in-out transform alert shadow-xl pointer-events-auto bg-base-300 border border-base-content/10 flash"
+          class="w-full max-w-md overflow-hidden transition flex duration-300 ease-in-out transform alert shadow-xl pointer-events-auto bg-base-300 border border-base-content/20 flash"
         >
           <div data-id="flash" data-type="info" class="flex-1 w-full text-sm">{rich(info)}</div>
           <div :if={socket_connected?(@__context__)} class="">

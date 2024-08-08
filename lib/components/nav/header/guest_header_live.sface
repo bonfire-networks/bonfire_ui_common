@@ -48,7 +48,7 @@
           <ul
             tabindex="0"
             style=""
-            class="tooltip z-[9999] menu bg-base-100 shadow-sm border border-base-content/10 rounded-lg p-0.5 w-60 absolute top-0 left-0 hidden"
+            class="tooltip z-[9999] menu bg-base-100 shadow-sm border border-base-content/20 rounded-lg p-0.5 w-60 absolute top-0 left-0 hidden"
           >
             {#if !current_account(@__context__)}
               <li>

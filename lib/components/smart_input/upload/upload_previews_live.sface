@@ -1,6 +1,6 @@
 <div
   :if={Enum.count(@uploads.files.entries) > 0}
-  class="p-2 border-b border-base-content/10 uploads_preview"
+  class="p-2 border-b border-base-content/20 uploads_preview"
 >
   <div class="flex gap-3 scrollable">
     {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
@@ -8,7 +8,7 @@
         id={"upload-preview-#{i}"}
         data-img={"phx-preview-#{i}"}
         data-ref={entry.upload_ref}
-        class="relative upload-entry border border-base-content/10"
+        class="relative upload-entry border border-base-content/20"
       >
         {!-- phx-hook="imageMetadata" --}
         <div class="absolute top-0 z-10 w-full h-10 rounded-lg l-0 r-0 md:h-14 bg-gradient-to-b from-black to-transparent" />

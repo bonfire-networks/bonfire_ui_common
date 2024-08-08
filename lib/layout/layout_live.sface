@@ -30,7 +30,7 @@
   {!-- div
     :if={!@current_user_id or
       (@without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)))}
-    class="px-4 lg:px-0 mb-6 border-b border-base-content/10 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
+    class="px-4 lg:px-0 mb-6 border-b border-base-content/20 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
   >
     <Bonfire.UI.Common.GuestHeaderLive
       current_user={current_user(@__context__)}
@@ -113,11 +113,11 @@
                 />
                 <div
                   id="inner"
-                  class="flex flex-col bg-base-100 shadow-sm border-x border-base-content/10 min-h-[calc(var(--inner-window-height))] pb-4 md:pb-[1px]"
+                  class="flex flex-col bg-base-100 shadow-sm border-x border-base-content/20 min-h-[calc(var(--inner-window-height))] pb-4 md:pb-[1px]"
                 >
                   <header
                     :if={current_user_id(@__context__)}
-                    class="tablet-lg:hidden px-4 h-[60px] justify-between flex items-center sticky top-0 z-[9099] bg-base-100 border-b border-base-content/10"
+                    class="tablet-lg:hidden px-4 h-[60px] justify-between flex items-center sticky top-0 z-[9099] bg-base-100 border-b border-base-content/20"
                   >
                     <div class="flex items-center gap-3">
                       <label for="my-drawer" class="btn btn-sm btn-circle btn-ghost">
@@ -249,7 +249,7 @@
 
       <!-- <footer
     :if={is_nil(@current_user_id)}
-    class="footer flex lg:mt-12 items-center p-4 text-base-content border-t border-base-content/10"
+    class="footer flex lg:mt-12 items-center p-4 text-base-content border-t border-base-content/20"
   >
     <aside class="items-center flex-1 grid-flow-col">
       <Bonfire.UI.Common.LogoLinkLive href="/" with_name />
@@ -291,7 +291,7 @@
               </label>
               <ul
                 tabindex="0"
-                class="tooltip z-[999999999999999999999999] p-0.5 menu shadow-xl bg-base-100 border border-base-content/10 w-full absolute top-0 right-0 w-[340px] hidden"
+                class="tooltip z-[999999999999999999999999] p-0.5 menu shadow-xl bg-base-100 border border-base-content/20 w-full absolute top-0 right-0 w-[340px] hidden"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="user-mobile-menu"
