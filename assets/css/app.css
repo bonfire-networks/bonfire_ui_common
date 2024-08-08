@@ -411,6 +411,10 @@ div[data-id="activity_note"][data-rendered="thread"][data-main-object]  {
   @apply !ml-[-40px] !mt-1;
 }
 
+div[data-id="media_list"][data-rendered="thread"][data-main-object]  {
+  @apply !ml-[-40px];
+}
+
 div[data-id="activity_note"] div[data-id="object_body"][data-rendered="smart_input"] {
  @apply !my-0 !text-sm !font-normal
 }
