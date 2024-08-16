@@ -186,20 +186,47 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   def assert_flash_message(flash, bin) when is_binary(bin),
     do: assert(Floki.text(flash) =~ bin)
 
+  @deprecated
   def find_form_error(doc, name),
     do: Floki.find(doc, "span.invalid-feedback[phx-feedback-for='#{name}']")
 
+  @deprecated
   def assert_field_good(doc, name) do
     assert [field] = Floki.find(doc, "#" <> name)
     assert [] == find_form_error(doc, name)
     field
   end
 
+  @deprecated
   def assert_field_error(doc, name, error) do
     assert [field] = Floki.find(doc, "#" <> name)
     assert [err] = find_form_error(doc, name)
     assert Floki.text(err) =~ error
     field
+  end
+
+  @doc """
+  Helper function to test errors in form fields. Compatible with most recent versions of phoenix, unlike deprecated
+  assert_field_error.
+  """
+  def assert_form_field_error(doc, field_qualifiers, error) do
+    input_name = qualifiers_to_input_name(field_qualifiers)
+    assert [err] = find_form_field_error(doc, input_name)
+    assert Floki.text(err) =~ error
+  end
+
+  def find_form_field_error(doc, field_qualifier),
+    do: Floki.find(doc, "span[phx-feedback-for='#{field_qualifier}']")
+
+  def assert_form_field_good(doc, field_name, field_qualifiers) do
+    assert [field] = Floki.find(doc, field_name)
+    input_name = qualifiers_to_input_name(field_qualifiers)
+    assert [] = find_form_field_error(field, input_name)
+  end
+
+  def qualifiers_to_input_name([first | rest]) do
+    fields = Enum.map(rest, &"[#{&1}]") |> Enum.join()
+    first <> fields
   end
 
   ### floki_attr
