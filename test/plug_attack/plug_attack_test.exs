@@ -16,6 +16,12 @@ defmodule Bonfire.UI.Common.PlugProtectDanceTest do
   alias Bonfire.Boundaries.{Circles, Acls, Grants}
 
   test "attack the signup endpoint", context do
+    Process.put([:bonfire, :env], :dev)
+
+    on_exit(fn ->
+      Process.delete([:bonfire, :env])
+    end)
+
     # on remote instance, try to login to local instance
     TestInstanceRepo.apply(fn ->
       file =
@@ -28,6 +34,12 @@ defmodule Bonfire.UI.Common.PlugProtectDanceTest do
   end
 
   test "attack the login endpoint", context do
+    Process.put([:bonfire, :env], :dev)
+
+    on_exit(fn ->
+      Process.delete([:bonfire, :env])
+    end)
+
     # on remote instance, try to login to local instance
     TestInstanceRepo.apply(fn ->
       file =
