@@ -849,7 +849,7 @@ defmodule Bonfire.UI.Common do
                  current_user,
                  path,
                  %{client_name: entry.client_name, metadata: metadata[entry.ref] || metadata},
-                 move_original: true
+                 [move_original: true]
                ]
              )
              |> debug("uploaded?") do

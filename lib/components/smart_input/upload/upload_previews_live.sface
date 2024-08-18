@@ -8,28 +8,42 @@
         id={"upload-preview-#{i}"}
         data-img={"phx-preview-#{i}"}
         data-ref={entry.upload_ref}
-        class="relative upload-entry border border-base-content/20"
+        class="relative upload-entry border border-base-content/20 min-w-40"
       >
         {!-- phx-hook="imageMetadata" --}
         <div class="absolute top-0 z-10 w-full h-10 rounded-lg l-0 r-0 md:h-14 bg-gradient-to-b from-black to-transparent" />
-        <figure :if={String.starts_with?(entry.client_type, "image")}>
-          {!-- render a client-side preview --}
-          <span>
-            <.live_img_preview entry={entry} />
-          </span>
-          <figcaption class="sr-only">{entry.client_name}</figcaption>
+        <figure class="w-[160px] h-[100px]">
+          {#if String.starts_with?(entry.client_type, "image")}
+            {!-- render a client-side preview --}
+            <div>
+              <.live_img_preview entry={entry} />
+            </div>
+            <figcaption class="sr-only">{entry.client_name}</figcaption>
+          {#elseif String.contains?(entry.client_type, "pdf")}
+            <div class="w-full rounded h-[84px] flex items-center place-content-center justify-center">
+              <#Icon iconify="bxs:file-pdf" class="w-12 h-12" />
+            </div>
+            <figcaption class="mx-1 text-xs truncate">{entry.client_name}</figcaption>
+          {#elseif String.starts_with?(entry.client_type, "video")}
+            <div class="w-full rounded h-[84px] flex items-center place-content-center justify-center">
+              <#Icon iconify="majesticons:video" class="w-12 h-12" />
+            </div>
+            <figcaption class="mx-1 text-xs truncate">{entry.client_name}</figcaption>
+          {#elseif String.starts_with?(entry.client_type, "audio")}
+            <div class="w-full rounded h-[84px] flex items-center place-content-center justify-center">
+              <#Icon iconify="majesticons:music" class="w-12 h-12" />
+            </div>
+            <figcaption class="mx-1 text-xs truncate">{entry.client_name}</figcaption>
+          {#else}
+            <div class="w-full rounded h-[84px] flex items-center place-content-center justify-center">
+              <#Icon iconify="carbon:document" class="w-12 h-12" />
+            </div>
+            <figcaption class="mx-1 text-xs truncate">{entry.client_name}</figcaption>
+          {/if}
         </figure>
-        <div :if={String.contains?(entry.client_type, "pdf")} class="">
-          <div class="w-[160px] rounded h-[100px] flex items-center place-content-center justify-center">
-            <#Icon iconify="bxs:file-pdf" class="w-12 h-12" />
-          </div>
-        </div>
-        <div :if={String.starts_with?(entry.client_type, "video")} class="">
-          <div class="w-[160px] rounded h-[100px] flex items-center place-content-center justify-center">
-            <#Icon iconify="entypo:video" class="w-12 h-12" />
-          </div>
-        </div>
+
         {!-- <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress> --}
+
         <Bonfire.UI.Common.InlineModalLive
           id={"upload_#{entry.ref}_description"}
           title_text={l("Add an alternative description")}
@@ -61,10 +75,10 @@
           <:open_btn>
             <button
               type="button"
-              class="absolute z-20 font-medium normal-case rounded glass top-2 left-2 btn btn-xs truncate max-w-[100px]"
+              class="absolute z-20 font-medium normal-case rounded glass top-2 left-2 btn btn-xs max-w-[100px]"
               aria-label="Add description"
             >
-              <span class="">{l("Edit")}</span>
+              <span class="">{l("Edit caption")}</span>
             </button>
             {!-- <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}> --}
           </:open_btn>
@@ -84,7 +98,7 @@
         {!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 --}
 
         {#for err <- upload_errors(@uploads.files, entry)}
-          <p class="alert alert-warning">{error_to_string(err)}</p>
+          <p class="alert alert-warning p-1">{error_to_string(err)}</p>
         {/for}
       </article>
     {/for}
@@ -95,10 +109,10 @@
         <input
           type="checkbox"
           name="sensitive"
-          class="toggle toggle-primary toggle-xs"
+          class="toggle toggle-primary toggle-text-xs"
           checked={Settings.get([Bonfire.UI.Social.UploadPreviewsLive, :mark_as_sensitive], false, @__context__)}
         />
-        <span class="label-text text-base-content/70 text-xs ml-2">{l("Mark as sensitive")}</span>
+        <span class="label-text text-base-content/70 text-text-xs ml-2">{l("Mark as sensitive")}</span>
       </label>
     </div>
   </div> --}
