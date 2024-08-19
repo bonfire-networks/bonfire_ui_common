@@ -1,6 +1,8 @@
 bonfire_common = "https://github.com/bonfire-networks/bonfire_common"
-# surface_heroicons = "https://github.com/rocketinsights/surface_heroicons"
-# surface_boxicon = "https://github.com/bonfire-networks/surface_boxicon"
+
+surface_form = "https://github.com/surface-ui/surface_form#489e0cad5b5b910d82bb7705968e74b4671ab911" 
+# ^ with PR https://github.com/surface-ui/surface_form/pull/2 for compat with phoenix_html 4.0
+
 # phoenix_gon = "https://github.com/bonfire-networks/phoenix_gon" # used to pass config to JS
 bonfire_fail = "https://github.com/bonfire-networks/bonfire_fail"
 # seo = "https://github.com/bonfire-networks/seo"
