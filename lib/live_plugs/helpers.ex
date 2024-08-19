@@ -80,6 +80,10 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
     connect_params =
       if socket_connected?, do: Phoenix.LiveView.get_connect_params(socket), else: %{}
 
+    user_ip =
+      if peer_data = maybe_get_connect_info(socket, :peer_data),
+        do: peer_data.address |> :inet_parse.ntoa() |> to_string()
+
     {:ok,
      if(module_enabled?(Surface), do: Surface.init(socket), else: socket)
      |> assign_global(
@@ -87,11 +91,18 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        current_app: current_app,
        current_extension: current_extension,
        current_params: params,
+       user_agent: maybe_get_connect_info(socket, :user_agent),
+       user_ip: user_ip |> warn("peer_data"),
        #  connect_params: connect_params,
        csrf_socket_token: connect_params["_csrf_token"],
        live_action: e(socket, :assigns, :live_action, nil),
        socket_connected?: socket_connected?
      )}
+  end
+
+  defp maybe_get_connect_info(socket, key) do
+    #  if current_view !=Bonfire.UI.Common.PersistentLive and 
+    if socket.private[:connect_info], do: Phoenix.LiveView.get_connect_info(socket, key)
   end
 
   defp mount_done(socket) do

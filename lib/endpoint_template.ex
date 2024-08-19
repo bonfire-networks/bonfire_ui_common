@@ -38,6 +38,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
           # NOTE: see also `LV_HIBERNATE_AFTER` in the endpoint config 
           connect_info: [
             :user_agent,
+            # TODO: check if this gives us the "real IP" as set by `RemoteIp`
+            :peer_data,
             session: EndpointTemplate.session_options()
           ]
         ]
