@@ -40,6 +40,8 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   end
 
   defp init_mount(params, _session, socket) do
+    debug("MOUNTING SOCKET")
+
     with {:ok, socket} <-
            socket
            |> Phoenix.LiveView.attach_hook(
@@ -64,9 +66,17 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   end
 
   defp init_socket(params, socket) do
-    current_view = socket.view
-    current_app = Application.get_application(current_view)
-    current_extension = Bonfire.Common.ExtensionModule.extension(current_app)
+    current_view =
+      socket.view
+      |> debug()
+
+    current_app =
+      Extend.application_for_module(current_view)
+      |> debug()
+
+    current_extension =
+      Bonfire.Common.ExtensionModule.extension(current_app)
+      |> debug()
 
     socket_connected? =
       Phoenix.LiveView.connected?(socket)

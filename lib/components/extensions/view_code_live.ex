@@ -49,7 +49,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
 
     app =
       if module do
-        Application.get_application(module)
+        Extend.application_for_module(module)
       else
         maybe_to_atom!(app_or_module)
       end
@@ -81,7 +81,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
          page_title: l("View Code") <> ": #{name}",
          app: app,
          module: module,
-         #  modules: Application.spec(Application.get_application(module), :modules),
+         #  modules: Application.spec(Extend.application_for_module(module), :modules),
          filename: filename,
          docs: Bonfire.Common.Extend.fetch_docs_as_markdown(module),
          code: code,
