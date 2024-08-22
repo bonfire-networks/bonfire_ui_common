@@ -441,7 +441,11 @@ div[data-id="activity_actions"][data-rendered="thread"] {
 } 
 
 div[data-id="activity_actions"][data-rendered="feed"] {
-  @apply gap-4 flex-col md:flex-row;
+  @apply gap-4 flex-col md:flex-row justify-between lg:justify-end;
+} 
+
+div[data-id="activity_actions"][data-rendered="feed"] .feed-clickable {
+  @apply justify-between lg:justify-end;
 } 
 
 div[data-id="activity_actions"][data-rendered="notifications"] {
@@ -454,6 +458,10 @@ div[data-id="activity_actions"][data-rendered="widget"] {
 
 div[data-id="activity_actions"][data-main-object] {
   @apply mt-1;
+} 
+
+div[data-id="activity_actions"][data-main-object] .feed-clickable {
+  @apply -ml-[40px] lg:ml-0 justify-between lg:justify-end;
 } 
 
 

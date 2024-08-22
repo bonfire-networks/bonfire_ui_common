@@ -117,11 +117,11 @@
                 >
                   <header
                     :if={current_user_id(@__context__)}
-                    class="tablet-lg:hidden px-4 h-[60px] justify-between flex items-center sticky top-0 z-[9099] bg-base-100 border-b border-base-content/20"
+                    class="tablet-lg:hidden px-3 h-[60px] justify-between flex items-center sticky top-0 z-[9099] bg-base-100 border-b border-base-content/20"
                   >
-                    <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-1">
                       <label for="my-drawer" class="btn btn-sm btn-circle btn-ghost">
-                        <#Icon iconify="hugeicons:sidebarLeft" class="w-5 h-5" />
+                        <#Icon iconify="hugeicons:sidebarLeft" class="w-5 h-5 opacity-70" />
                       </label>
                       <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
                     </div>
@@ -261,9 +261,27 @@
     </div>
     <div class="drawer-side z-[99999999999]">
       <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay" />
-      <div class="bg-base-100 flex flex-col text-base-content min-h-full w-80 p-2">
+      <div class="bg-base-300 flex flex-col text-base-content min-h-full w-80 p-4">
         <div class="flex-1">
-          <div class="mb-2 bg-base-100 top-0">
+          <div class="flex items-start justify-between top-0">
+          <div class="flex-1 flex gap-1 flex-col">
+            <Bonfire.UI.Common.AvatarLive
+              parent_id="nav_sidebar"
+              class="inline-block object-cover w-[54px] h-[54px] rounded-full"
+              src={Media.avatar_url(current_user(@__context__))}
+              user_id={current_user_id(@__context__)}
+            />
+            <div class="flex flex-col">
+              <span class="text-xl font-bold">{e(current_user(@__context__), :profile, :name, nil)}</span>
+              <span class="text-sm text-base-content/70">
+                {Bonfire.Common.Utils.maybe_apply(
+                  Bonfire.Me.Characters, 
+                  :display_username, 
+                  [current_user(@__context__), true]
+                )}
+              </span>
+            </div>
+          </div>
             <div
               data-position="top-left"
               phx-hook="Tooltip"
@@ -271,27 +289,19 @@
               class="relative tablet-lg:hidden"
             >
               <label
-                class="tooltip-button btn w-full text-left justify-start btn-outline"
+                class="tooltip-button btn btn-sm btn-circle btn-outline border-opacity-30"
                 tabindex="0"
                 role="button"
                 id="user-mobile-menu"
                 aria-haspopup="true"
                 aria-expanded="true"
               >
-                <div class="flex-1 flex items-center gap-3">
-                  <Bonfire.UI.Common.AvatarLive
-                    parent_id="nav_sidebar"
-                    class="inline-block object-cover w-[32px] h-[32px] rounded-full"
-                    src={Media.avatar_url(current_user(@__context__))}
-                    user_id={current_user_id(@__context__)}
-                  />
-                  <span class="text-sm font-semibold">{e(current_user(@__context__), :profile, :name, nil)}</span>
-                </div>
+                
                 <#Icon solid="DotsHorizontal" class="w-4 h-4" />
               </label>
               <ul
                 tabindex="0"
-                class="tooltip z-[999999999999999999999999] p-0.5 menu shadow-xl bg-base-100 border border-base-content/20 w-full absolute top-0 right-0 w-[340px] hidden"
+                class="tooltip z-[999999999999999999999999] p-0.5 menu shadow-xl bg-base-100 border rounded border-base-content/5 absolute top-0 right-0 w-[240px] hidden"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="user-mobile-menu"
@@ -300,13 +310,15 @@
               </ul>
             </div>
           </div>
-          <Bonfire.UI.Common.ExtensionMenuNavLive
-            selected_tab={@selected_tab}
-            page={@page}
-            showing_within={:nav}
-            nav_items={@nav_items || []}
-            skip_badges={[:inbox, :notifications]}
-          />
+          <div class="mt-4 -mx-2">
+            <Bonfire.UI.Common.ExtensionMenuNavLive
+              selected_tab={@selected_tab}
+              page={@page}
+              showing_within={:nav}
+              nav_items={@nav_items || []}
+              skip_badges={[:inbox, :notifications]}
+            />
+          </div>
         </div>
       </div>
     </div>
