@@ -315,11 +315,13 @@ div article[data-compact] {
 .active-activity::after, .activity:target::after, div.reply:target::after {
   position: absolute;
   z-index: -1;
+  width: 100%;
+  left: 0;
   content: "";
   right: 0px;
-  top: 0px;
-  bottom: 0px;
-  @apply border-r-2 border-primary;
+  top: -16px;
+  bottom: 8px;
+  @apply border-r-2 border-primary bg-primary bg-opacity-10;
 }
 
 

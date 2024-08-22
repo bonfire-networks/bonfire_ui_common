@@ -36,7 +36,7 @@
       </div>
       <div class="relative z-30">
         <div
-          class="p-0 z-[910] modal_invisible relative pb-40 md:pb-2 bg-base-100"
+          class="p-0 z-[910] modal_invisible relative pb-1px md:pb-2 bg-base-100"
           data-id="modal-contents"
         >
           <#slot>
