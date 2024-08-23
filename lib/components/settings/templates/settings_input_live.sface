@@ -36,7 +36,7 @@
             value={to_string(@current_value)}
             class="flex-1 h-8 text-sm input input-bordered"
           />
-          <button type="submit" class="btn-outline btn btn-sm">
+          <button type="submit" class="btn-neutral btn btn-sm">
             {l("Save")}
           </button>
         </div>
@@ -61,7 +61,7 @@
           value={to_string(@current_value)}
           class="flex-1 h-8 text-sm input input-bordered"
         />
-        <button type="submit" class="btn-outline btn btn-sm">
+        <button type="submit" class="btn-neutral btn btn-sm">
           {l("Save")}
         </button>
       </div>

@@ -20,10 +20,10 @@
   </td>
   <td class="flex-1">
     {#if maybe_apply(Bonfire.Me.Accounts, :is_admin?, @user) == true}
-      <span class="badge badge-success">{l("Admin")}</span>
+      <span class="badge badge-sm badge-success">{l("Admin")}</span>
       {!-- TODO: Moderator badge --}
     {#else}
-      <span class="badge badge-outline">{if @is_local_user, do: l("Member"), else: l("Remote user")}</span>
+      <span class="badge badge-sm badge-outline">{if @is_local_user, do: l("Member"), else: l("Remote user")}</span>
     {/if}
   </td>
   <td class="flex-1">
@@ -31,13 +31,13 @@
       {#match {nil, nil}}
         <span class="btn btn-xs  normal-case loading btn-disabled">{l("loading")}</span>
       {#match {true, true}}
-        <span class="badge badge-error">{l("Blocked")}</span>
+        <span class="badge badge-sm badge-error">{l("Blocked")}</span>
       {#match {true, _}}
-        <span class="badge badge-warning">{l("Ghosted")}</span>
+        <span class="badge badge-sm badge-warning">{l("Ghosted")}</span>
       {#match {_, true}}
-        <span class="badge badge-warning">{l("Silenced")}</span>
+        <span class="badge badge-sm badge-warning">{l("Silenced")}</span>
       {#match {_, _}}
-        <span class="badge badge-info">{l("Active")}</span>
+        <span class="badge badge-sm badge-info">{l("Active")}</span>
     {/case}
   </td>
   <td class="flex-1">
@@ -51,7 +51,7 @@
         class="dropdown dropdown-end"
       >
         <label
-          class="relative btn btn-circle btn-ghost btn-sm"
+          class="relative btn btn-circle btn-outline border-base-content/30 btn-sm"
           tabindex="0"
           id="user-profile-menu"
           aria-haspopup="true"
@@ -61,7 +61,7 @@
         </label>
         <ul
           tabindex="0"
-          class="relative z-50 mt-3 rounded-lg menu-compact !block shadow w-52 menu dropdown-content bg-base-200"
+          class="relative z-50 mt-3  p-0.5 menu shadow-xl bg-base-100 border rounded border-base-content/5 !block w-52 menu dropdown-content"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="user-profile-menu"
@@ -73,6 +73,7 @@
               object={@user}
               is_local_user={@is_local_user}
               parent_id="members"
+              type="block"
               hide_icon
               open_btn_wrapper_class="w-full"
               label={e(@user, :profile, :name, l("this user"))}

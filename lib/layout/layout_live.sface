@@ -264,24 +264,24 @@
       <div class="bg-base-300 flex flex-col text-base-content min-h-full w-80 p-4">
         <div class="flex-1">
           <div class="flex items-start justify-between top-0">
-          <div class="flex-1 flex gap-1 flex-col">
-            <Bonfire.UI.Common.AvatarLive
-              parent_id="nav_sidebar"
-              class="inline-block object-cover w-[54px] h-[54px] rounded-full"
-              src={Media.avatar_url(current_user(@__context__))}
-              user_id={current_user_id(@__context__)}
-            />
-            <div class="flex flex-col">
-              <span class="text-xl font-bold">{e(current_user(@__context__), :profile, :name, nil)}</span>
-              <span class="text-sm text-base-content/70">
-                {Bonfire.Common.Utils.maybe_apply(
-                  Bonfire.Me.Characters, 
-                  :display_username, 
-                  [current_user(@__context__), true]
-                )}
-              </span>
+            <div class="flex-1 flex gap-1 flex-col">
+              <Bonfire.UI.Common.AvatarLive
+                parent_id="nav_sidebar"
+                class="inline-block object-cover w-[54px] h-[54px] rounded-full"
+                src={Media.avatar_url(current_user(@__context__))}
+                user_id={current_user_id(@__context__)}
+              />
+              <div class="flex flex-col">
+                <span class="text-xl font-bold">{e(current_user(@__context__), :profile, :name, nil)}</span>
+                <span class="text-sm text-base-content/70">
+                  {Bonfire.Common.Utils.maybe_apply(
+                    Bonfire.Me.Characters,
+                    :display_username,
+                    [current_user(@__context__), true]
+                  )}
+                </span>
+              </div>
             </div>
-          </div>
             <div
               data-position="top-left"
               phx-hook="Tooltip"
@@ -296,12 +296,11 @@
                 aria-haspopup="true"
                 aria-expanded="true"
               >
-                
                 <#Icon solid="DotsHorizontal" class="w-4 h-4" />
               </label>
               <ul
                 tabindex="0"
-                class="tooltip z-[999999999999999999999999] p-0.5 menu shadow-xl bg-base-100 border rounded border-base-content/5 absolute top-0 right-0 w-[240px] hidden"
+                class="tooltip z-[999999999999999999999999] p-0.5 menu shadow-xl bg-base-100 border rounded border-base-content/20 absolute top-0 right-0 w-[240px] hidden"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="user-mobile-menu"
