@@ -944,7 +944,7 @@ defmodule Bonfire.UI.Common do
 
       _ ->
         # |> debug
-        go = (Utils.e(params, :go, nil) || default) |> URI.decode()
+        go = (e(params, :go, nil) || default) |> URI.decode()
 
         if current_path != go and internal_go_path?(go),
           do: [to: go],

@@ -1,6 +1,7 @@
 defmodule Bonfire.UI.Common.Testing.Helpers do
   use Surface.LiveViewTest
   import Phoenix.LiveViewTest
+  use Bonfire.Common.E
   import ExUnit.Assertions
   import Plug.Conn
   import Phoenix.ConnTest
@@ -93,7 +94,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
       ~F"""
       <StatefulComponent
         module={component}
-        id={Utils.e(assigns, :id, nil) || Needle.ULID.generate()}
+        id={e(assigns, :id, nil) || Needle.ULID.generate()}
         {...assigns}
       />
       """

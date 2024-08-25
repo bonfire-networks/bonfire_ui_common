@@ -181,7 +181,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       end)
 
     # |> List.first()
-    # |> Utils.e(:pid, nil)
+    # |> e(:pid, nil)
     # |> debug("PID present for session")
 
     if presences != [] do

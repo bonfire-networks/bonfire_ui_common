@@ -5,6 +5,7 @@ defmodule Bonfire.UI.Common.Presence do
     pubsub_server: Bonfire.Common.PubSub
 
   import Untangle
+  use Bonfire.Common.E
   alias Bonfire.UI
   alias Bonfire.Common.Utils
 
@@ -54,7 +55,7 @@ defmodule Bonfire.UI.Common.Presence do
         @presence,
         user_id
       )
-      |> Utils.e(:metas, [])
+      |> e(:metas, [])
       |> debug()
     end
   end
