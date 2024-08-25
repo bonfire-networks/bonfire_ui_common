@@ -649,20 +649,7 @@ defmodule Bonfire.UI.Common do
   def redirect_to(%Phoenix.LiveView.Socket{redirected: nil} = socket, to, opts) do
     debug(to, "redirect socket to")
     # debug(socket)
-
-    Phoenix.LiveView.push_navigate(
-      socket,
-      redirect_opts(socket, to, opts)
-    )
-  rescue
-    e in ArgumentError ->
-      path_fallback = path_fallback(socket, opts)
-      error(e, "could not redirect")
-      if path_fallback != to, do: redirect_to(socket, path_fallback), else: socket
-
-    e in RuntimeError ->
-      error(e, "could not redirect")
-      socket
+    do_redirect_to(socket, redirect_opts(socket, to, opts))
   end
 
   def redirect_to(%Phoenix.LiveView.Socket{redirected: already} = socket, to, _opts) do
@@ -679,8 +666,35 @@ defmodule Bonfire.UI.Common do
     )
   end
 
-  defp redirect_opts(conn, to, type) when type in [:to, :external, :maybe_external],
-    do: redirect_opts(conn, to, type: type)
+  defp do_redirect_to(%Phoenix.LiveView.Socket{redirected: nil} = socket, opts) do
+    if opts[:to] do
+      Phoenix.LiveView.push_navigate(
+        socket,
+        opts
+      )
+    else
+      Phoenix.LiveView.redirect(
+        socket,
+        opts
+      )
+    end
+  rescue
+    e in ArgumentError ->
+      path_fallback = path_fallback(socket, opts)
+      error(e, "could not redirect")
+      debug(opts, "bad opts")
+
+      if path_fallback != opts[:to] and path_fallback != opts[:external],
+        do: redirect_to(socket, path_fallback),
+        else: socket
+
+    e in RuntimeError ->
+      error(e, "could not redirect")
+      socket
+  end
+
+  # defp redirect_opts(conn, to, type) when type in [:to, :external, :maybe_external],
+  #   do: redirect_opts(conn, to, type: type)
 
   defp redirect_opts(conn, to, opts) do
     opts = List.wrap(opts)
@@ -703,10 +717,11 @@ defmodule Bonfire.UI.Common do
             _ -> :external
           end
       end
-      |> debug("type")
 
     opts
     |> Keyword.put(type, to || path_fallback(conn, opts))
+    |> Keyword.drop([:type])
+    |> debug("opts")
   end
 
   def patch_to(socket_or_conn, to \\ nil, opts \\ [])

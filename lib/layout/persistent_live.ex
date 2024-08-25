@@ -35,13 +35,16 @@ defmodule Bonfire.UI.Common.PersistentLive do
      socket
      |> debug("socket before assigns")
      |> assign(Map.drop(session, [:context]))
-     |> assign(
+     # NOTE: use `assign_new/3` to copy the assign from parent LV, see https://hexdocs.pm/phoenix_live_view/Phoenix.Component.html#assign_new/3-when-connected
+     |> assign_new(
        :__context__,
-       Map.merge(session[:context] || %{}, socket.assigns[:__context__] || %{})
-       |> Map.merge(%{
-         socket_connected?: socket_connected?
-       })
-       |> debug("ctxxx")
+       fn previous_context ->
+         Map.merge(session[:context] || %{}, previous_context || %{})
+         |> Map.merge(%{
+           socket_connected?: socket_connected?
+         })
+         |> debug("ctxxx")
+       end
      )
      |> assign_defaults()
      |> Presence.present!(%{@session_key => presence_token})
