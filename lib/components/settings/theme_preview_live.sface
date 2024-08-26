@@ -79,33 +79,11 @@
       </div>
     </div>
     <div class="flex flex-col gap-3">
-      <div class="alert"><svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          class="stroke-info h-6 w-6 shrink-0"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
+      <div class="alert">
+        <#Icon iconify="typcn:info-large" class="w-4 h-4 shrink-0" />
         <span>12 unread messages. Tap to see.</span></div>
-      <div class="alert alert-info"><svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          class="h-6 w-6 shrink-0 stroke-current"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
+      <div class="alert alert-info">
+        <#Icon iconify="typcn:info-large" class="w-4 h-4 shrink-0" />
         <span>New update available.</span></div>
       <div class="alert alert-success"><svg
           xmlns="http://www.w3.org/2000/svg"
