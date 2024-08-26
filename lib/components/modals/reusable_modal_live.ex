@@ -93,14 +93,11 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
     @default_assigns
   end
 
-  def handle_event("close-key", %{"key" => key} = attrs, socket) do
-    case key do
-      "Escape" -> handle_event("close", %{}, socket)
-      _ -> socket
-    end
+  def handle_event("close-key", %{"key" => "Escape"} = _attrs, socket) do
+    handle_event("close", %{}, socket)
   end
 
-  def handle_event("close", %{"key" => _}, socket) do
+  def handle_event("close-key", %{"key" => _}, socket) do
     # ignore any other key
     {:noreply, socket}
   end
