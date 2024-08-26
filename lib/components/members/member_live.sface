@@ -73,7 +73,7 @@
               object={@user}
               is_local_user={@is_local_user}
               parent_id="members"
-              type="block"
+              type={:block}
               hide_icon
               open_btn_wrapper_class="w-full"
               label={e(@user, :profile, :name, l("this user"))}
