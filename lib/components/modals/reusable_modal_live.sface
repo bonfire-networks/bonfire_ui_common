@@ -37,6 +37,7 @@
     x-transition:leave-end="opacity-0"
     x-description="Background backdrop, show/hide based on modal state."
     phx-click="close"
+    phx-window-keydown="close-key"
     phx-target={"[id='#{@id}']"}
     class="fixed inset-0 transition-opacity bg-slate-600/60 backdrop-blur-md -z-1"
     aria-hidden="true"
