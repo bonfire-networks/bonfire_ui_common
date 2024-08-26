@@ -100,6 +100,11 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
     end
   end
 
+  def handle_event("close", %{"key" => _}, socket) do
+    # ignore any other key
+    {:noreply, socket}
+  end
+
   def handle_event("close", _, socket) do
     debug(
       "reset all assigns to defaults so they don't accidentally get re-used in a different modal"
