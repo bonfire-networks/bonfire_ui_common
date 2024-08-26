@@ -93,6 +93,13 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
     @default_assigns
   end
 
+  def handle_event("close-key", %{"key" => key} = attrs, socket) do
+    case key do
+      "Escape" -> handle_event("close", %{}, socket)
+      _ -> socket
+    end
+  end
+
   def handle_event("close", _, socket) do
     debug(
       "reset all assigns to defaults so they don't accidentally get re-used in a different modal"
