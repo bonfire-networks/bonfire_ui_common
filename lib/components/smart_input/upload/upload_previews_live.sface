@@ -1,18 +1,18 @@
 <div
   :if={Enum.count(@uploads.files.entries) > 0}
-  class="p-2 border-b border-base-content/20 uploads_preview"
+  class="p-2 uploads_preview"
 >
-  <div class="flex gap-3 scrollable">
+  <div class="flex flex-col p-2 bg-base-content/5 gap-2">
     {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
       <article
         id={"upload-preview-#{i}"}
         data-img={"phx-preview-#{i}"}
         data-ref={entry.upload_ref}
-        class="relative upload-entry border border-base-content/20 min-w-40"
+        class="relative flex  gap-2 upload-entry rounded w-full"
       >
         {!-- phx-hook="imageMetadata" --}
-        <div class="absolute top-0 z-10 w-full h-10 rounded-lg l-0 r-0 md:h-14 bg-gradient-to-b from-black to-transparent" />
-        <figure class="w-[160px] h-[100px]">
+        
+        <figure class="w-[80px] h-[84px] overflow-hidden rounded border border-base-content/10">
           {#if String.starts_with?(entry.client_type, "image")}
             {!-- render a client-side preview --}
             <div>
@@ -20,7 +20,7 @@
             </div>
             <figcaption class="sr-only">{entry.client_name}</figcaption>
           {#elseif String.contains?(entry.client_type, "pdf")}
-            <div class="w-full rounded h-[84px] flex items-center place-content-center justify-center">
+            <div class="w-full rounded h-[80px] flex items-center place-content-center justify-center">
               <#Icon iconify="bxs:file-pdf" class="w-12 h-12" />
             </div>
             <figcaption class="mx-1 text-xs truncate">{entry.client_name}</figcaption>
@@ -42,16 +42,17 @@
           {/if}
         </figure>
 
-        {!-- <progress :if={ entry.progress < 100} value={entry.progress} max="100"> { entry.progress }% </progress> --}
-
-        <Bonfire.UI.Common.InlineModalLive
+        <textarea
+          name={"upload_metadata[#{entry.ref}][label]"}
+          placeholder="Type here"
+          class="textarea resize-none flex-1"
+        />
+        <!-- <Bonfire.UI.Common.InlineModalLive
           id={"upload_#{entry.ref}_description"}
           title_text={l("Add an alternative description")}
           value={nil}
           cancel_label={l("Done")}
         >
-          {!-- reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
-        form_opts={%{"phx-submit"=> "set_value"}} --}
           <div class="mt-4">
             <div class="alert alert-info" role="alert">
               <#Icon solid="InformationCircle" class="w-5 h-5 shrink-0" />
@@ -62,9 +63,6 @@
             </div>
           </div>
           <div class="px-1 mt-3">
-            {!-- <span class="image_in_preview" :if={String.starts_with?(entry.client_type, "image")}>
-              <.live_img_preview entry={entry} />
-            </span> --}
             <textarea
               name={"upload_metadata[#{entry.ref}][label]"}
               placeholder="Type here"
@@ -80,19 +78,18 @@
             >
               <span class="">{l("Edit caption")}</span>
             </button>
-            {!-- <input type="hidden" name={"upload_metadata[#{entry.ref}][label]"} value={value}> --}
           </:open_btn>
-        </Bonfire.UI.Common.InlineModalLive>
+        </Bonfire.UI.Common.InlineModalLive> -->
 
         <button
           type="button"
-          class="absolute z-20 btn-square btn-error rounded right-2 top-2 btn btn-xs"
+          class="btn-ghost btn-sm btn btn-square btn-sm"
           phx-click="cancel-upload"
           phx-target="#smart_input"
           phx-value-ref={entry.ref}
           aria-label="cancel"
         >
-          <#Icon solid="Trash" class="w-4 h-4" />
+          <#Icon iconify="carbon:close" class="w-5 h-5" />
           <span class="sr-only">{l("Delete")}</span>
         </button>
         {!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 --}

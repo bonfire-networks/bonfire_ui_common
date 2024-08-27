@@ -263,7 +263,7 @@ div[data-id="comment"][data-avatar-hidden] [data-role="comment-lined"]{
 /* activity */
 
 .discussion-preview {
-  @apply !p-4 !rounded-lg !bg-base-content/5 !shadow-sm !mt-2 hover:!shadow-lg;
+  @apply !p-4;
 }
 
 article[data-id="activity"][data-hidden="all"] {
@@ -1195,7 +1195,7 @@ em-emoji-picker {
 }
 
 .upload-entry img {
-  @apply min-w-[160px] w-[160px] h-[90px] md:h-[100px] object-cover rounded-lg;
+  @apply min-w-[80px] w-[80px] h-[84px] md:h-[84px] object-cover rounded-lg;
 }
 
 .media_container img.media-image {

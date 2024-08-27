@@ -11,6 +11,7 @@
       <Bonfire.UI.Common.SmartInputButtonLive
         showing_within={:smart_input}
         as_icon={e(@as_icon, false)}
+        icon_class="!w-8 !h-8"
         smart_input_opts={@smart_input_opts}
         prompt={e(@smart_input_opts, :prompt, l("Compose"))}
         icon={e(@smart_input_opts, :icon, "carbon:add")}

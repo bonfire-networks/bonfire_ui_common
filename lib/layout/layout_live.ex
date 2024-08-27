@@ -27,6 +27,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop reply_to_id, :string, default: nil
   prop showing_within, :atom, default: nil
   prop no_header, :boolean, default: false
+  prop no_mobile_header, :boolean, default: false
 
   prop inner_content, :any, default: nil
   prop nav_items, :list, default: []
@@ -79,6 +80,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:selected_tab, fn -> nil end)
     |> assign_new(:notification, fn -> nil end)
     |> assign_new(:no_header, fn -> false end)
+    |> assign_new(:no_mobile_header, fn -> false end)
     |> assign_new(:page_header_aside, fn -> nil end)
     |> assign_new(:page_header_icon, fn -> nil end)
     |> assign_new(:inner_content, fn -> nil end)

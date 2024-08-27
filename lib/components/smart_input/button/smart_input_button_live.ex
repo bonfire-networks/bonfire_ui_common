@@ -8,6 +8,7 @@ defmodule Bonfire.UI.Common.SmartInputButtonLive do
   prop create_object_type, :any, default: nil
   prop as_icon, :boolean, default: false
   prop icon, :any, default: nil
+  prop icon_class, :css_class, default: ""
   prop prompt, :any, default: nil
   # prop text_suggestion, :any, default: nil
 

@@ -116,14 +116,14 @@
                   class="flex flex-col bg-base-100 shadow-sm border-x border-base-content/20 min-h-[calc(var(--inner-window-height))] pb-4 md:pb-[1px]"
                 >
                   <header
-                    :if={current_user_id(@__context__)}
+                    :if={current_user_id(@__context__) && !@no_mobile_header}
                     class="tablet-lg:hidden px-3 h-[60px] justify-between flex items-center sticky top-0 z-[9099] bg-base-100 border-b border-base-content/20"
                   >
                     <div class="flex items-center gap-1">
                       <label for="my-drawer" class="btn btn-sm btn-circle btn-ghost">
                         <#Icon iconify="hugeicons:sidebarLeft" class="w-5 h-5 opacity-70" />
                       </label>
-                      <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
+                      <Bonfire.UI.Common.LogoLinkLive container_class="gap-2 flex items-center" with_name href="/dashboard" />
                     </div>
                     <div class="flex items-center gap-4">
                       <LinkLive class="btn btn-sm btn-circle btn-outline" to={~p"/search"}>
