@@ -198,7 +198,7 @@ div[data-id="main_section"][data-single-column] {
   @apply mx-auto order-last;
 }
 
-div[data-id="main_section"][data-single-column] #inner {
+div[data-id="main_section"][data-single-column] {
   @apply !border-none bg-base-100 shadow-none;
 }
 

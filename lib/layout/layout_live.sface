@@ -89,7 +89,7 @@
         <div
           data-id="main_section"
           data-single-column={@without_sidebar}
-          class="relative w-full sm:min-w-[600px] gap-2 md:gap-0 z-[99999] col-span-1"
+          class="relative border-x border-base-content/20 w-full sm:min-w-[600px] gap-2 md:gap-0 z-[99999] col-span-1"
         >
           <div class="justify-between h-full mt-0">
             <div class="relative invisible_frame">
@@ -113,7 +113,7 @@
                 />
                 <div
                   id="inner"
-                  class="flex flex-col bg-base-100 shadow-sm border-x border-base-content/20 min-h-[calc(var(--inner-window-height))] pb-4 md:pb-[1px]"
+                  class="flex flex-col bg-base-100  min-h-[calc(var(--inner-window-height))] pb-4 md:pb-[1px]"
                 >
                   <header
                     :if={current_user_id(@__context__) && !@no_mobile_header}

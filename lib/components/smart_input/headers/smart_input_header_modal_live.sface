@@ -13,7 +13,7 @@
       <#Icon solid="Minus" class="w-5 h-5 stroke-1 md:w-4 md:h-4 text-base-content/70" />
       <!-- <span class="text-sm text-base-content/70">{l("Minimize")}</span> -->
     </button>
-    <Bonfire.UI.Common.OpenModalLive
+    <!-- <Bonfire.UI.Common.OpenModalLive
       id="close_composer"
       reusable_modal_id={if @__context__[:sticky], do: "persistent_modal"}
       title_text={l("Delete the draft")}
@@ -37,6 +37,6 @@
           {l("Delete")}
         </button>
       </:action_btns>
-    </Bonfire.UI.Common.OpenModalLive>
+    </Bonfire.UI.Common.OpenModalLive> -->
   </div>
 </header>

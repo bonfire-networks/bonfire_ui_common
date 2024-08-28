@@ -22,7 +22,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       text_input_extra_class={@text_input_class}
       container_class={@container_class}
       option_extra_class="{@option_extra_class}"
-      tag_class="text-sm !px-[0.25rem] badge badge-outline badge-lg !border !border-base-content/30 gap-2 !h-[2rem]"
+      tag_class="badge badge-neutral badge-lg gap-2"
       dropdown_class={@dropdown_class}
       tags_container_class="flex flex-wrap gap-1 pt-2 order-last"
     >
