@@ -43,10 +43,8 @@
             <div
               phx-click={LiveHandler.close_smart_input()}
               id="smart_input_backdrop"
-              data-hidden={e(@smart_input_opts, :open, nil) != true}
               phx-target="#smart_input"
-              class="md:!hidden smart_input_backdrop fixed inset-0 cursor-pointer bg-black/40"
-              style="-webkit-backdrop-filter: blur(8px);"
+              class="lg:!hidden smart_input_backdrop fixed inset-0 pointer-events-none cursor-pointer bg-base-100"
             />
 
             <div class="smart_input_modal relative z-50 rounded-xl flex flex-col grow h-full">
