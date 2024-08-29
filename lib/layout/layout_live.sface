@@ -123,7 +123,11 @@
                       <label for="my-drawer" class="btn btn-sm btn-circle btn-ghost">
                         <#Icon iconify="hugeicons:sidebarLeft" class="w-5 h-5 opacity-70" />
                       </label>
-                      <Bonfire.UI.Common.LogoLinkLive container_class="gap-2 flex items-center" with_name href="/dashboard" />
+                      <Bonfire.UI.Common.LogoLinkLive
+                        container_class="gap-2 flex items-center"
+                        with_name
+                        href="/dashboard"
+                      />
                     </div>
                     <div class="flex items-center gap-4">
                       <LinkLive class="btn btn-sm btn-circle btn-outline" to={~p"/search"}>

@@ -1,7 +1,4 @@
-<div
-  :if={Enum.count(@uploads.files.entries) > 0}
-  class="p-2 uploads_preview"
->
+<div :if={Enum.count(@uploads.files.entries) > 0} class="p-2 uploads_preview">
   <div class="flex flex-col p-2 bg-base-content/5 gap-2">
     {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
       <article
@@ -11,7 +8,7 @@
         class="relative flex  gap-2 upload-entry rounded w-full"
       >
         {!-- phx-hook="imageMetadata" --}
-        
+
         <figure class="w-[80px] h-[84px] overflow-hidden rounded border border-base-content/10">
           {#if String.starts_with?(entry.client_type, "image")}
             {!-- render a client-side preview --}

@@ -63,29 +63,27 @@ let ImageHooks = {};
 //   }
 // }
 
-import { decodeBlurHash } from 'fast-blurhash';
+import { decodeBlurHash } from "fast-blurhash";
 
 class blurHash extends Hook {
-  mounted() {
-    // const canvas = this.el.getElementsByTagName('canvas')[0];
-    // const w = canvas.width || 40
-    // const h = canvas.height || 40
-    // // decode blurHash image
-    // const pixels = decodeBlurHash(this.el.dataset.hash || 'LEHV6nWB2yk8pyo0adR*.7kCMdnj', w, h);
-
-    // // draw it on canvas
-    // // const canvas = document.createElement('canvas');
-    // const ctx = canvas.getContext('2d');
-    // const imageData = ctx.createImageData(w, h);
-
-    // imageData.data.set(pixels);
-    // ctx.putImageData(imageData, 0, 0);
-    // document.body.append(canvas);
-  }
+	mounted() {
+		// const canvas = this.el.getElementsByTagName('canvas')[0];
+		// const w = canvas.width || 40
+		// const h = canvas.height || 40
+		// // decode blurHash image
+		// const pixels = decodeBlurHash(this.el.dataset.hash || 'LEHV6nWB2yk8pyo0adR*.7kCMdnj', w, h);
+		// // draw it on canvas
+		// // const canvas = document.createElement('canvas');
+		// const ctx = canvas.getContext('2d');
+		// const imageData = ctx.createImageData(w, h);
+		// imageData.data.set(pixels);
+		// ctx.putImageData(imageData, 0, 0);
+		// document.body.append(canvas);
+	}
 }
 
 // ImageHooks.imageMetadata = makeHook(imageMetadata);
 // ImageHooks.randomAnimalAvatar = makeHook(randomAnimalAvatar);
 ImageHooks.blurHash = makeHook(blurHash);
 
-export { ImageHooks }
+export { ImageHooks };
