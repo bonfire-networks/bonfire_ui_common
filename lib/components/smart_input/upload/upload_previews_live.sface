@@ -9,41 +9,46 @@
       >
         {!-- phx-hook="imageMetadata" --}
 
-        <figure class="w-[80px] h-[84px] overflow-hidden rounded border border-base-content/10">
+        <figure class="w-[80px] overflow-hidden">
           {#if String.starts_with?(entry.client_type, "image")}
             {!-- render a client-side preview --}
-            <div>
+            <div class="h-[84px] rounded border border-base-content/10">
               <.live_img_preview entry={entry} />
             </div>
             <figcaption class="sr-only">{entry.client_name}</figcaption>
           {#elseif String.contains?(entry.client_type, "pdf")}
-            <div class="w-full rounded h-[80px] flex items-center place-content-center justify-center">
-              <#Icon iconify="bxs:file-pdf" class="w-12 h-12" />
+            <div class="w-full rounded h-[48px] flex items-center place-content-center justify-center">
+              <#Icon iconify="bxs:file-pdf" class="w-10 h-10" />
             </div>
-            <figcaption class="mx-1 text-xs truncate">{entry.client_name}</figcaption>
+            <figcaption class="m-1 text-xs truncate">{entry.client_name}</figcaption>
           {#elseif String.starts_with?(entry.client_type, "video")}
-            <div class="w-full rounded h-[84px] flex items-center place-content-center justify-center">
-              <#Icon iconify="majesticons:video" class="w-12 h-12" />
+            <div class="w-full rounded h-[48px] flex items-center place-content-center justify-center">
+              <#Icon iconify="majesticons:video" class="w-10 h-10" />
             </div>
-            <figcaption class="mx-1 text-xs truncate">{entry.client_name}</figcaption>
+            <figcaption class="m-1 text-xs truncate">{entry.client_name}</figcaption>
           {#elseif String.starts_with?(entry.client_type, "audio")}
-            <div class="w-full rounded h-[84px] flex items-center place-content-center justify-center">
-              <#Icon iconify="majesticons:music" class="w-12 h-12" />
+            <div class="w-full rounded h-[48px] flex items-center place-content-center justify-center">
+              <#Icon iconify="majesticons:music" class="w-10 h-10" />
             </div>
-            <figcaption class="mx-1 text-xs truncate">{entry.client_name}</figcaption>
+            <figcaption class="x-1 text-xs truncate">{entry.client_name}</figcaption>
           {#else}
-            <div class="w-full rounded h-[84px] flex items-center place-content-center justify-center">
-              <#Icon iconify="carbon:document" class="w-12 h-12" />
+            <div class="w-full rounded h-[48px] flex items-center place-content-center justify-center">
+              <#Icon iconify="carbon:document" class="w-10 h-10" />
             </div>
-            <figcaption class="mx-1 text-xs truncate">{entry.client_name}</figcaption>
+            <figcaption class="m-1 text-xs truncate">{entry.client_name}</figcaption>
           {/if}
         </figure>
 
-        <textarea
-          name={"upload_metadata[#{entry.ref}][label]"}
-          placeholder="Type here"
-          class="textarea resize-none flex-1"
-        />
+        {#for err <- upload_errors(@uploads.files, entry)}
+          <p class="alert alert-warning p-1 text-xs">{error_to_string(err)} {l("Please remove it before continuing.")}</p>
+        {#else}
+          <textarea
+            name={"upload_metadata[#{entry.ref}][label]"}
+            placeholder="Type here"
+            class="textarea resize-none flex-1"
+          />
+        {/for}
+
         <!-- <Bonfire.UI.Common.InlineModalLive
           id={"upload_#{entry.ref}_description"}
           title_text={l("Add an alternative description")}
@@ -90,10 +95,6 @@
           <span class="sr-only">{l("Delete")}</span>
         </button>
         {!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 --}
-
-        {#for err <- upload_errors(@uploads.files, entry)}
-          <p class="alert alert-warning p-1">{error_to_string(err)}</p>
-        {/for}
       </article>
     {/for}
   </div>
