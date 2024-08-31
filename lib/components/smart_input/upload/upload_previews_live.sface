@@ -81,7 +81,7 @@
         <button
           type="button"
           class="btn-ghost btn-sm btn btn-square btn-sm"
-          phx-click="cancel-upload"
+          phx-click="Bonfire.UI.Common.SmartInput:cancel-upload"
           phx-target="#smart_input"
           phx-value-ref={entry.ref}
           aria-label="cancel"
