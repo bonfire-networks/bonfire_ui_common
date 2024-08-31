@@ -1,7 +1,9 @@
 <div id="pins_list">
   {!-- <Bonfire.UI.Common.PageTitleLive page_title={@page_title} /> --}
-  <!-- <StatelessComponent
-  module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
+
+  {!-- TODO: fix preloads --}
+  <StatefulComponent
+    module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
     id={ComponentID.new(Bonfire.UI.Social.FeedLive, e(@feed_id, :pins), __MODULE__)}
     feed_id={@feed_id}
     page_title={@page_title}
@@ -12,5 +14,5 @@
     showing_within={:pins}
     loading={@loading}
     hide_tabs
-  /> -->
+  />
 </div>
