@@ -68,7 +68,7 @@ function phxClick(event) {
 })();
 
 function getPhxValues(el) {
-	console.log(el);
+	// console.log(el);
 	return el
 		.getAttributeNames()
 		.filter((name) => name.startsWith("phx-value-"))
