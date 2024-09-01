@@ -432,6 +432,7 @@ defmodule Bonfire.UI.Common.Web do
         defoverridable update: 2
 
         def update(assigns, socket) do
+          # FIXME?
           undead_update(socket, fn ->
             super(assigns, socket)
           end)
