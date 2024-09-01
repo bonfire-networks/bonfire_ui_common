@@ -22,7 +22,7 @@
 
               <div
                 :if={Enum.any?(nav, fn %{type: type} -> type != :link end)}
-                class="menu p-0"
+                class="menu p-0 order-last"
                 data-id="nav_components"
               >
                 <Bonfire.UI.Common.WidgetLive
