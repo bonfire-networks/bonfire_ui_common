@@ -14,7 +14,7 @@
       method="dialog"
       class={Surface.css_class("modal-box": !@image_preview and @form_opts != %{})}
       phx-target={@event_target}
-      {...@form_opts}
+      {...Enums.naughty_to_atoms!(@form_opts)}
     >
       <div class={@wrapper_class, "modal-box relative"}>
         <button

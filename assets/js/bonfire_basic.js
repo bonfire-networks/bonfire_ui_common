@@ -34,6 +34,7 @@ Object.assign(Hooks, CopyHooks, TooltipHooks, FeedHooks);
 	});
 })();
 
+// attempt graceful degradation for LiveView click events without LiveView
 function phxClick(event) {
 	// event.preventDefault(); // Override the native event?
 	let name = this.getAttribute("phx-click");
@@ -46,11 +47,23 @@ function phxClick(event) {
 		"?" +
 		new URLSearchParams(getPhxValues(this)).toString();
 }
-
-// attempt graceful degradation for LiveView events without LiveView
 (function () {
 	[...document.querySelectorAll("[phx-click]")].map((el) => {
 		el.addEventListener("click", phxClick);
+	});
+})();
+
+// attempt graceful degradation for LiveView submit events without LiveView
+
+(function () {
+	[...document.querySelectorAll("form[phx-submit]")].map((el) => {
+		if (!el.getAttribute("action")) {
+			let name = el.getAttribute("phx-submit");
+			el.action = "/LiveHandler/" + name.replace(":", "/");
+			if (!el.getAttribute("method")) {
+				el.method = "get";
+			}
+		}
 	});
 })();
 
