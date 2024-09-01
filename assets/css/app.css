@@ -585,16 +585,20 @@ div[data-id="multimedia_grid"][data-media="1"] {
   @apply grid-cols-1;
 }
 
-div[data-id="labelled_media"] [data-id="media_list"] div[data-id="media_img"] {
+/* div[data-id="labelled_media"] div[data-id="media_link"] {
+  @apply !flex-col;
+}
+
+div[data-id="labelled_media"] div[data-id="media_img"] {
   @apply w-[80px] h-[80px];
 }
 
 div[data-id="labelled_media"]
-  [data-id="media_list"]
   div[data-id="media_img"]
   img {
   @apply !w-6 !h-6;
-}
+  aspect-ratio: auto;
+} */
 
 div[data-id="media_list"][data-rendered="media"] {
   @apply !ml-0;
