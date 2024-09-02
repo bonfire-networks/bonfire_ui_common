@@ -304,7 +304,7 @@
               </label>
               <ul
                 tabindex="0"
-                class="tooltip z-[999999999999999999999999] p-0.5 menu shadow-xl bg-base-100 border rounded border-base-content/20 absolute top-0 right-0 w-[240px] hidden"
+                class="tooltip z-[999999999999999999999999] bonfire-dropdown-menu absolute top-0 right-0 w-[240px] hidden"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="user-mobile-menu"

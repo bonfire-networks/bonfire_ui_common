@@ -211,6 +211,12 @@ div#editor_milkdown_container[data-rendered="page"] {
   display: none;
 }
 
+
+
+.bonfire-dropdown-menu {
+  @apply p-0.5 menu shadow-xl bg-base-100 border rounded border-base-content/20;
+}
+
 /* widget_link */
 div[data-id="nav_links"][data-showing-within="sidebar"] {
   @apply menu gap-1 menu-lg p-0 justify-end;
@@ -347,6 +353,12 @@ div[data-id="subject"][data-main-object]
   [data-id="subject_username"] {
   @apply !ml-0 !block;
 }
+
+
+div[data-id="labelled_widget"][data-main-object] {
+  @apply -ml-[40px];
+}
+
 
 /* comment */
 
