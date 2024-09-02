@@ -336,6 +336,7 @@ div[data-id="preview_content"] [data-hide] {
   @apply invisible h-0 overflow-hidden;
 }
 /*  subject_live */
+
 div[data-id="subject"][data-main-object] {
   @apply !mb-3 !items-center;
 }

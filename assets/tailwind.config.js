@@ -157,6 +157,10 @@ module.exports = {
 				bonfire: {
 					...require("daisyui/src/theming/themes")["dracula"],
 					primary: "#fde047",
+					success: "#00a96e",
+					info: "#00b6ff",
+					warning: "#ffbe00",
+					error: "#ff5861",
 					"--rounded-btn": "0.25rem",
 				},
 			},
