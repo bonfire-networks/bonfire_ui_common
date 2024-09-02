@@ -464,12 +464,11 @@ article[data-id="activity"][data-rendered="media"] {
   @apply !pl-5;
 }
 
-
-article[data-id="activity"] [data-id="multimedia_list"][data-main-object]  {
+article[data-id="activity"] [data-id="multimedia_list"][data-main-object] {
   @apply -ml-[40px];
 }
 
-article[data-id="activity"][data-rendered="media"] a[data-id="media_link"]{
+article[data-id="activity"][data-rendered="media"] a[data-id="media_link"] {
   @apply !rounded-none !border-none hover:!bg-base-100;
 }
 
