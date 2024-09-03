@@ -38,7 +38,7 @@ defmodule Bonfire.UI.Common.AnimalAvatar do
   end
 
   defp avatar_face(id) when is_binary(id) do
-    if Types.is_ulid?(id) do
+    if Types.is_uid?(id) do
       Needle.ULID.encoded_randomness(id)
     else
       id
