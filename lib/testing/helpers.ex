@@ -27,7 +27,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
 
   def fancy_fake_user!(name, opts \\ []) do
     # repo().delete_all(ActivityPub.Object)
-    id = Needle.ULID.generate()
+    id = Needle.UID.generate(User)
     user = fake_user!("#{name} #{id}", opts ++ [id: id], opts)
 
     display_username =
@@ -94,7 +94,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
       ~F"""
       <StatefulComponent
         module={component}
-        id={e(assigns, :id, nil) || Needle.ULID.generate()}
+        id={e(assigns, :id, nil) || Needle.UID.generate()}
         {...assigns}
       />
       """
