@@ -20,7 +20,7 @@
       class={@widget[:wrapper_class] || @wrapper_class}
       data-type="widget"
     >
-      <div :if={@with_title} class=" text-base pb-3 font-medium">{@widget[:text] || @widget[:name]}</div>
+      <div :if={@with_title} class="text-base pb-3 font-medium">{@widget[:text] || @widget[:name]}</div>
       <StatelessComponent
         module={@widget[:module]}
         showing_within={@showing_within}
