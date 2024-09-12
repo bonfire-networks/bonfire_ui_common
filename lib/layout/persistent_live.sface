@@ -1,16 +1,4 @@
 <div data-role="persistent_live_view" class="relative z-[999999999999999999999999]">
-  {!-- <Bonfire.UI.Common.LoggedActionsLive
-    showing_within={@showing_within}
-    smart_input_opts={@smart_input_opts}
-  /> --}
-  <!-- <div>
-    <Bonfire.UI.Common.AvatarLive src="https://avatars.githubusercontent.com/u/10137?v=4" />
-    <div class="flex flex-col">
-      <div>Bonfire</div>
-      <div>UI</div>
-    </div>
-  </div> -->
-  <!-- <button class="btn fixed right-6 bottom-6 btn-lg btn-square shadow-lg btn-primary"><#Icon class="w-7 h-7" iconify="mdi:plus" /></button> -->
   <Bonfire.UI.Common.SmartInputContainerLive
     :if={!e(@smart_input_opts, :inline_only, nil) and
       !e(@smart_input_opts, :disable, nil)}

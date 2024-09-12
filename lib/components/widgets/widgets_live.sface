@@ -1,9 +1,10 @@
-<div class="flex flex-col gap-3 divide-y divide-base-content/20">
+<div class="flex flex-col gap-3 divide-y divide-base-content/10">
   {#for widgets <- debug(@widgets, "widgetts")}
     {#case widgets}
       {#match %{}}
         <Bonfire.UI.Common.WidgetLive
           widget={widgets}
+          wrapper_class="!block !p-0 !pt-3"
           page={@page}
           selected_tab={@selected_tab}
           showing_within={@showing_within}
@@ -14,6 +15,7 @@
       {#match _ when is_list(widgets)}
         {#for widget <- widgets}
           <Bonfire.UI.Common.WidgetLive
+            wrapper_class="!block !p-0 !pt-3"
             widget={widget}
             page={@page}
             selected_tab={@selected_tab}
