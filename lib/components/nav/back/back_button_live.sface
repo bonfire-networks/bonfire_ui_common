@@ -17,8 +17,10 @@
     <#Icon iconify="ion:chevron-back" class="w-4 h-4 opacity/70" />
   </LinkLive>
 {#elseif @back}
-  <a
+ <a
     x-show="history.length > 1 && document.referrer.indexOf(window.location.host) !== -1"
+    @click.prevent="handleBackClick()"
+    x-data="{ handleBackClick() { if (history.length > 1) { history.back(); } else { window.location.href = '/'; } } }"
     @click.prevent="handleBackClick()"
     x-data="{ handleBackClick() { if (history.length > 1) { history.back(); } else { window.location.href = '/'; } } }"
     aria-label={l("Go back to the previous page")}
@@ -27,3 +29,4 @@
     <#Icon iconify="ion:chevron-back" class="w-4 h-4 opacity/70" />
   </a>
 {/if}
+
