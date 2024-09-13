@@ -19,20 +19,11 @@
 {#elseif @back}
   <a
     x-show="history.length > 1 && document.referrer.indexOf(window.location.host) !== -1"
-    @click.prevent="handleBackClick"
+    @click.prevent="handleBackClick()"
+    x-data="{ handleBackClick() { if (history.length > 1) { history.back(); } else { window.location.href = '/'; } } }"
     aria-label={l("Go back to the previous page")}
     class="btn normal-case relative z-50 font-normal btn-outline btn-xs btn-circle !inline-flex"
   >
     <#Icon iconify="ion:chevron-back" class="w-4 h-4 opacity/70" />
   </a>
 {/if}
-
-<script>
-  function handleBackClick() {
-    if (history.length > 1) {
-      history.back();
-    } else {
-      window.location.href = '/'; // Redirect to homepage
-    }
-  }
-</script>
