@@ -16,7 +16,7 @@
 		"css.doiuse.custom": "doiuse --browsers '> 1%, last 2 versions' ./css/app.css",
 		"css.doiuse.generated": "doiuse --browsers '> 1%, last 2 versions' ../../../priv/static/assets/bonfire_basic.css",
 		"format.js": "npx @biomejs/biome format js/ ../../../extensions/*/lib ../../../extensions/*/assets --write",
-		"format.css": "npx prettier css/ ../../../extensions/*/lib/**/*.css ../../../extensions/*/assets/**/*.css --write"
+		"format.css": "npx prettier css/ ../../../extensions/*/lib/**/*.css ../../../extensions/*/assets/css/*.css --write"
 	},
 	"disabledScripts": {
 		"preinstall": "npx only-allow yarn"
