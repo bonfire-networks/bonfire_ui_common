@@ -23,16 +23,20 @@ defmodule Bonfire.UI.Common.Notifications do
     assign_notification(attrs, socket)
   end
 
-  def notify_feeds(feed_ids, title, message, url \\ nil, icon \\ nil) do
-    %{
+  def notify_broadcast(to_ids, %{} = data) do
+    data
+    |> debug("to: #{inspect(to_ids)}")
+    # send to feed users' handle_info in this same module
+    |> PubSub.broadcast(to_ids, {Bonfire.UI.Common.Notifications, ...})
+  end
+
+  def notify_broadcast(to_ids, title, message, url \\ nil, icon \\ nil) do
+    notify_broadcast(to_ids, %{
       title: title,
       message: Text.text_only(message),
       url: url,
       icon: icon || Config.get([:ui, :theme, :instance_icon], nil)
-    }
-    |> debug("to: #{inspect(feed_ids)}")
-    # send to feed users' handle_info in this same module
-    |> PubSub.broadcast(feed_ids, {Bonfire.UI.Common.Notifications, ...})
+    })
   end
 
   def notify_me(title, message, icon, socket \\ nil) do
