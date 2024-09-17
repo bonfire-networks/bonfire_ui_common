@@ -546,7 +546,6 @@ defmodule Bonfire.UI.Common.Web do
 
         template_name =
           Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
-          |> IO.inspect(label: "extra_template")
 
         embed_templates("#{template_name}.mjml", suffix: "_mjml")
         embed_templates("#{template_name}.text", suffix: "_text")
