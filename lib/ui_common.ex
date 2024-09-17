@@ -1402,4 +1402,11 @@ defmodule Bonfire.UI.Common do
     warn(Types.typeof(assigns), "Unable to find Socket or :socket_connected? info in")
     false
   end
+
+  def filename_for_module_template(module) do
+    module
+    |> Module.split()
+    |> List.last()
+    |> Macro.underscore()
+  end
 end

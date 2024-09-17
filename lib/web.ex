@@ -160,6 +160,13 @@ defmodule Bonfire.UI.Common.Web do
 
       use_if_enabled(LiveViewNative.LiveView)
 
+      # import Phoenix.Template, only: [embed_templates: 2]
+
+      template_name = Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
+
+      embed_templates("#{template_name}.mjml", suffix: "_mjml")
+      embed_templates("#{template_name}.text", suffix: "_text")
+
       # on_mount(PhoenixProfiler)
     end
   end
@@ -177,6 +184,12 @@ defmodule Bonfire.UI.Common.Web do
 
       use_if_enabled(LiveViewNative.LiveComponent)
 
+      # import Phoenix.Template, only: [embed_templates: 2]
+
+      template_name = Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
+
+      embed_templates("#{template_name}.mjml", suffix: "_mjml")
+      embed_templates("#{template_name}.text", suffix: "_text")
       # unquote(source_inspector())
     end
   end
@@ -189,6 +202,13 @@ defmodule Bonfire.UI.Common.Web do
       unquote(live_view_helpers())
 
       use_if_enabled(LiveViewNative.Component)
+
+      # import Phoenix.Template, only: [embed_templates: 2]
+
+      template_name = Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
+
+      embed_templates("#{template_name}.mjml", suffix: "_mjml")
+      embed_templates("#{template_name}.text", suffix: "_text")
 
       # unquote(source_inspector())
     end
@@ -325,6 +345,15 @@ defmodule Bonfire.UI.Common.Web do
       Bonfire.Common.Extend.quoted_import_if_enabled(Surface)
     end
   end
+
+  # defp __more_templates_before_compile__(env) do
+  #   # import Phoenix.Template, only: [embed_templates: 2]
+
+  #   template_name = Bonfire.UI.Common.template_name_for_module_template(env)
+
+  #   embed_templates("#{template_name}.mjml", suffix: "_mjml")
+  #   embed_templates("#{template_name}.text", suffix: "_text")
+  # end
 
   # TODO: similar as the below for update_many and handle_progress
 
@@ -515,6 +544,13 @@ defmodule Bonfire.UI.Common.Web do
 
         unquote(surface_helpers())
 
+        template_name =
+          Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
+          |> IO.inspect(label: "extra_template")
+
+        embed_templates("#{template_name}.mjml", suffix: "_mjml")
+        embed_templates("#{template_name}.text", suffix: "_text")
+
         use_if_enabled(LiveViewNative.LiveView)
 
         alias Bonfire.UI.Common.LivePlugs
@@ -540,6 +576,11 @@ defmodule Bonfire.UI.Common.Web do
         unquote(surface_component_helpers())
 
         use_if_enabled(LiveViewNative.LiveComponent)
+
+        template_name = Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
+
+        embed_templates("#{template_name}.mjml", suffix: "_mjml")
+        embed_templates("#{template_name}.text", suffix: "_text")
       end
     end
 
@@ -558,6 +599,11 @@ defmodule Bonfire.UI.Common.Web do
         unquote(surface_component_helpers())
 
         use_if_enabled(LiveViewNative.Component)
+
+        template_name = Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
+
+        embed_templates("#{template_name}.mjml", suffix: "_mjml")
+        embed_templates("#{template_name}.text", suffix: "_text")
       end
     end
 

@@ -1,0 +1,4 @@
+<%= Bonfire.Mailer.app_name() %>
+----------------
+
+<%= @inner_content %>

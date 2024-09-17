@@ -45,7 +45,7 @@ defmodule Bonfire.UI.Common.Routes do
 
       pipeline :browser do
         plug(:basic)
-        plug(:accepts, ["html", "activity+json", "json", "ld+json"])
+        plug(:accepts, ["html", "activity+json", "json", "ld+json", "text"])
 
         plug PlugEarlyHints, paths: Bonfire.UI.Common.Routes.early_hints_guest()
 
