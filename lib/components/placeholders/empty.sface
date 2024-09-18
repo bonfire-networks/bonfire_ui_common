@@ -1,2 +1,5 @@
-<!-- {@comment} -->
-<#slot />
+<div>
+  <!-- {@comment} -->
+  {raw(@html_content)}
+  <#slot />
+</div>

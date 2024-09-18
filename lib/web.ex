@@ -476,6 +476,8 @@ defmodule Bonfire.UI.Common.Web do
 
   defp render_before_compile(env) do
     if Module.defines?(env.module, {:render, 1}) do
+      assigns = %{}
+
       quote do
         defoverridable render: 1
 
@@ -484,6 +486,31 @@ defmodule Bonfire.UI.Common.Web do
             case assigns do
               %{__replace_render__with__: _} ->
                 Bonfire.UI.Common.ErrorComponentLive.replace(assigns)
+
+              %{__context__: %{current_params: %{"_email_format" => format}}} ->
+                mod = unquote(env.module)
+
+                case Bonfire.Common.Utils.maybe_apply(
+                       Bonfire.Mailer.Render,
+                       :render_templated,
+                       [format, mod, assigns],
+                       fallback_return: nil
+                     )
+                     |> IO.inspect(label: "render #{mod}") do
+                  binary when is_binary(binary) and binary != "" ->
+                    binary = if format == "text", do: "<pre>#{binary}</pre>", else: binary
+
+                    Bonfire.UI.Common.Empty.render(
+                      Phoenix.Component.assign(assigns,
+                        html_content: binary,
+                        comment: "email mode"
+                      )
+                    )
+
+                  # ~H"<%= raw binary %>"
+                  _ ->
+                    super(assigns)
+                end
 
               _ ->
                 super(assigns)
