@@ -495,8 +495,7 @@ defmodule Bonfire.UI.Common.Web do
                        :render_templated,
                        [format, mod, assigns],
                        fallback_return: nil
-                     )
-                     |> IO.inspect(label: "render #{mod}") do
+                     ) do
                   binary when is_binary(binary) and binary != "" ->
                     binary = if format == "text", do: "<pre>#{binary}</pre>", else: binary
 
