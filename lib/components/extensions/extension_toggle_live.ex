@@ -11,13 +11,13 @@ defmodule Bonfire.UI.Common.ExtensionToggleLive do
       socket
       |> assign(assigns)
 
-    extension = id(socket.assigns)
+    extension = id(assigns(socket))
 
     global_modularity = Config.get(:modularity, nil, extension)
     # |> debug(extension)
 
     my_modularity =
-      Settings.get(:modularity, nil, otp_app: extension, context: socket.assigns[:__context__])
+      Settings.get(:modularity, nil, otp_app: extension, context: assigns(socket)[:__context__])
 
     {:ok,
      socket

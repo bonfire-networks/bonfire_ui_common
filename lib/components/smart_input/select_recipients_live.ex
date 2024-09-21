@@ -19,7 +19,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
 
   def handle_event("live_select_change", %{"id" => live_select_id, "text" => search}, socket) do
     debug(live_select_id, search)
-    # current_user = current_user(socket.assigns)
+    # current_user = current_user(assigns(socket))
 
     Bonfire.Common.Utils.maybe_apply(
       Bonfire.Me.Users,
@@ -65,7 +65,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
       |> filter_empty([])
       |> debug("new value")
 
-    if updated != e(socket.assigns, field, nil) |> debug("existing") do
+    if updated != e(assigns(socket), field, nil) |> debug("existing") do
       {:noreply,
        socket
        |> assign(
@@ -75,7 +75,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
        )
        |> assign_global(
          _already_live_selected_:
-           Enum.uniq(e(socket.assigns, :__context, :_already_live_selected_, []) ++ [field])
+           Enum.uniq(e(assigns(socket), :__context, :_already_live_selected_, []) ++ [field])
        )}
     else
       {:noreply, socket}

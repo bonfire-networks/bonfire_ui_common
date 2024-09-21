@@ -15,6 +15,10 @@ defmodule Bonfire.UI.Common.Endpoint.LiveReload do
         plug(Phoenix.LiveReloader)
         plug(Phoenix.CodeReloader)
 
+        if unquote(System.get_env("NATIVE_ENABLED") in ["1", "true"]) do
+          plug LiveViewNative.LiveReloader
+        end
+
         plug(Phoenix.Ecto.CheckRepoStatus, otp_app: :bonfire_umbrella)
 
         # FIXME

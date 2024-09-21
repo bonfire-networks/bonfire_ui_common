@@ -19,7 +19,7 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
       when cache not in [nil, false] do
     # because current_user is probably not yet in assigns
     if !get_session(conn, :current_user_id) do
-      info(cache, "use cache")
+      info(cache, "use cache for this route?")
       Bonfire.UI.Common.StaticGeneratorPlug.make_request_path_static(conn)
     else
       debug("do not use cache when signed in")

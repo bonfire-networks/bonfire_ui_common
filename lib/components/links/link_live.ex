@@ -110,7 +110,7 @@ defmodule Bonfire.UI.Common.LinkLive do
 
   def render(%{to: to} = assigns) when is_binary(to) and to != "" do
     ~F"""
-    <.link
+    <Phoenix.Component.link
       navigate={@to}
       class={@class}
       replace={@replace}
@@ -120,7 +120,7 @@ defmodule Bonfire.UI.Common.LinkLive do
     >
       {!-- FIXME: do not generate random ID to avoid re-rendering --}
       <#slot>{@label}</#slot>
-    </.link>
+    </Phoenix.Component.link>
     """
   end
 

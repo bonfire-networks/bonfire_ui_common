@@ -251,7 +251,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       |> Map.put(
         ...,
         :__context__,
-        Map.merge(socket.assigns[:__context__] || %{}, assigns[:__context__] || %{})
+        Map.merge(assigns(socket)[:__context__] || %{}, assigns[:__context__] || %{})
         |> merge_keeping_only_first_keys(...)
       )
       |> debug("set prepared assigns received for PersistentLive")

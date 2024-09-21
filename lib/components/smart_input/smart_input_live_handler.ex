@@ -98,7 +98,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     opts =
       (maybe_from_json(e(params, "opts", nil)) ||
-         e(socket.assigns, :smart_input_opts, []))
+         e(assigns(socket), :smart_input_opts, []))
       |> input_to_atoms()
       |> Enum.into(%{open: true})
       |> debug("opts")
@@ -127,13 +127,13 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
           ),
         context_id: e(opts, "context_id", nil) || e(params, "context_id", nil),
         reply_to_id:
-          reply_to_param(params) || reply_to_param(opts) || e(socket.assigns, :reply_to_id, nil),
+          reply_to_param(params) || reply_to_param(opts) || e(assigns(socket), :reply_to_id, nil),
         # FIXME: do not pass everything blindly to smart_input_opts
         smart_input_opts: opts,
         activity: nil,
         object: nil,
         activity_inception: "reply_to",
-        to_boundaries: e(to_boundaries, nil) || e(socket.assigns, :to_boundaries, nil),
+        to_boundaries: e(to_boundaries, nil) || e(assigns(socket), :to_boundaries, nil),
         to_circles: to_circles,
         mentions: e(opts, "mentions", nil) || e(params, "mentions", [])
       ]
@@ -151,7 +151,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
        activity: nil,
        object: nil,
        # default to replying to current thread
-       reply_to_id: e(socket, :assigns, :thread_id, nil),
+       reply_to_id: e(assigns(socket), :thread_id, nil),
        thread_id: nil
      )}
   end
@@ -288,15 +288,15 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def reset_input(%{assigns: %{showing_within: :thread}} = socket) do
     # debug("THREad")
-    replace_input_next_time(socket.assigns)
+    replace_input_next_time(assigns(socket))
 
     set(socket,
       # avoid double-reset
       reset_smart_input: false,
       activity: nil,
       to_circles: [],
-      reply_to_id: e(socket.assigns, :thread_id, nil),
-      to_boundaries: Bonfire.Boundaries.default_boundaries(socket.assigns),
+      reply_to_id: e(assigns(socket), :thread_id, nil),
+      to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
       smart_input_opts: %{
         open: false,
         text_suggestion: nil,
@@ -336,9 +336,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       create_object_type: nil,
       smart_input_component: nil,
       to_circles: [],
-      reply_to_id: e(socket.assigns, :thread_id, nil),
+      reply_to_id: e(assigns(socket), :thread_id, nil),
       thread_id: nil,
-      to_boundaries: Bonfire.Boundaries.default_boundaries(socket.assigns),
+      to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
       smart_input_opts: %{
         open: false,
         text_suggestion: nil,

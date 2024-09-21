@@ -61,7 +61,7 @@ defmodule Bonfire.UI.Common.Notifications do
   end
 
   def receive_notification(attrs, socket) do
-    receive_flash(attrs, nil, socket.assigns[:__context__])
+    receive_flash(attrs, nil, assigns(socket)[:__context__])
     # NOTE: should this call assign_notification instead?
   end
 

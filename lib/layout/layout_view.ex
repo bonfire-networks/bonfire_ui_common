@@ -1,8 +1,5 @@
 defmodule Bonfire.UI.Common.LayoutView do
   use Bonfire.UI.Common.Web, :layout
-  # support LVN layout
-  # use_if_enabled(LiveViewNative.Layouts, env: Application.compile_env!(:bonfire, :env))
-  use_if_enabled(LiveViewNative.Layouts)
 
   embed_templates "*.html"
 

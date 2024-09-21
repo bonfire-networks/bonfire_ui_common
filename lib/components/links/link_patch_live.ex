@@ -91,7 +91,7 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
 
   def render(assigns) do
     ~F"""
-    <.link
+    <Phoenix.Component.link
       patch={@to}
       class={@class}
       replace={@replace}
@@ -100,7 +100,7 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
       {...@opts |> Keyword.merge("aria-label": @label)}
     >
       <#slot>{@label}</#slot>
-    </.link>
+    </Phoenix.Component.link>
     """
   end
 end

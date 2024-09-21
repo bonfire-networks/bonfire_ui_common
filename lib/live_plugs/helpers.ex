@@ -105,7 +105,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        user_ip: user_ip |> warn("peer_data"),
        #  connect_params: connect_params,
        csrf_socket_token: connect_params["_csrf_token"],
-       live_action: e(socket, :assigns, :live_action, nil),
+       live_action: e(assigns(socket), :live_action, nil),
        socket_connected?: socket_connected?
      )}
   end
@@ -122,15 +122,15 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
         l(
           "This feature (from extension %{app}) is disabled. You can enabled it in Settings -> Extensions ",
           app:
-            e(socket.assigns, :current_extension, :name, nil) ||
-              e(socket.assigns, :current_app, nil)
+            e(assigns(socket), :current_extension, :name, nil) ||
+              e(assigns(socket), :current_app, nil)
         )
       )
     else
       {:cont,
        assign_global(
          socket,
-         ui_compact: Settings.get([:ui, :compact], nil, socket.assigns)
+         ui_compact: Settings.get([:ui, :compact], nil, assigns(socket))
        )}
 
       # |> debug()
@@ -160,8 +160,8 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
       current_url: "#{uri.path}##{uri.fragment}"
     )
     |> Iconify.maybe_set_favicon(
-      e(socket.assigns, :current_extension, :icon, nil) ||
-        e(socket.assigns, :current_extension, :emoji, nil)
+      e(assigns(socket), :current_extension, :icon, nil) ||
+        e(assigns(socket), :current_extension, :emoji, nil)
     )
   end
 end

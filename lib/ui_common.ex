@@ -52,11 +52,11 @@ defmodule Bonfire.UI.Common do
           |> render_sface()
         end
 
-        def render(%{format: _} = assigns) do
-          assigns
-          |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
-          |> render_native()
-        end
+        # def render(%{format: _} = assigns) do
+        #   assigns
+        #   |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
+        #   |> render_native() # FIXME
+        # end
 
         def render(assigns) do
           assigns
@@ -188,7 +188,7 @@ defmodule Bonfire.UI.Common do
   # def assign_global(socket, assign, value) do
   #   socket
   #   |> assign_generic(assign, value)
-  #   |> assign_generic(:global_assigns, [assign] ++ Map.get(socket.assigns, :global_assigns, []))
+  #   |> assign_generic(:global_assigns, [assign] ++ Map.get(assigns(socket), :global_assigns, []))
   # end
 
   # TODO: get rid of assigning everything to a component, and then we'll no longer need this
@@ -406,7 +406,7 @@ defmodule Bonfire.UI.Common do
   end
 
   def current_user_or_remote_interaction(socket, verb, object) do
-    case current_user(socket.assigns) do
+    case current_user(assigns(socket)) do
       %{id: _} = current_user ->
         {:ok, current_user}
 
@@ -666,6 +666,11 @@ defmodule Bonfire.UI.Common do
     )
   end
 
+  def redirect_to(other, to, _opts) do
+    # expected a Socket or Conn
+    error(other, "An error occurred when trying to redirect to: #{inspect(to)}")
+  end
+
   defp do_redirect_to(%Phoenix.LiveView.Socket{redirected: nil} = socket, opts) do
     if opts[:to] do
       Phoenix.LiveView.push_navigate(
@@ -779,7 +784,7 @@ defmodule Bonfire.UI.Common do
       Bonfire.UI.Common.Notifications.receive_flash(
         Map.put(assigns, type, message),
         pid,
-        socket.assigns[:__context__]
+        assigns(socket)[:__context__]
       )
 
       Phoenix.LiveView.put_flash(socket, type, message)
@@ -1233,7 +1238,7 @@ defmodule Bonfire.UI.Common do
          mode: mode,
          showing_within:
            e(assigns, :showing_within, nil) ||
-             e(socket, :assigns, :showing_within, nil)
+             e(assigns(socket), :showing_within, nil)
        ]}
   end
 
@@ -1346,7 +1351,7 @@ defmodule Bonfire.UI.Common do
 
   def maybe_stream_insert(socket, name, items, _opts) do
     error(
-      socket.assigns,
+      assigns(socket),
       "Could not find stream '#{name}' to render data in. Will set as regular assign instead"
     )
 
@@ -1409,4 +1414,14 @@ defmodule Bonfire.UI.Common do
     |> List.last()
     |> Macro.underscore()
   end
+
+  def assigns(%Phoenix.LiveView.Socket{assigns: assigns} = socket), do: assigns
+  def assigns(%{assigns: %{} = assigns}) when assigns != %{}, do: assigns
+  def assigns(%{} = assigns), do: assigns
+
+  def assigns(opts) when is_list(opts) do
+    if Keyword.keyword?(opts), do: opts |> Map.new() |> assigns(), else: %{}
+  end
+
+  def assigns(_), do: %{}
 end

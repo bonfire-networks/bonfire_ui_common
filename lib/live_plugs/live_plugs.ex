@@ -34,7 +34,7 @@ defmodule Bonfire.UI.Common.LivePlugs do
     if socket_connected?(socket),
       do:
         Bonfire.UI.Common.PersistentLive.maybe_send_assigns(
-          assigns || socket.assigns
+          assigns || assigns(socket)
           # |> Map.new()
           # |> Map.put_new(:nav_items, nil)
         )

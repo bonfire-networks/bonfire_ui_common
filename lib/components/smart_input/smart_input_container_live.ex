@@ -73,7 +73,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
         Bonfire.Common.Settings.get(
           [Bonfire.UI.Common.SmartInputLive, :max_uploads],
           :instance,
-          current_user(@__context__)
+          current_user(socket)
         ),
       auto_upload: false
       # progress: &handle_progress/3
@@ -90,7 +90,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
      |> assign(assigns)
      #  |> assign_new(:smart_input_as, fn ->
      #    LiveHandler.set_smart_input_as(
-     #      e(assigns, :__context__, nil) || current_user(assigns) || current_user(socket.assigns)
+     #      e(assigns, :__context__, nil) || current_user(assigns) || current_user(assigns(socket))
      #    )
      #  end)
      |> assign(smart_input_opts: Map.merge(old_smart_input_opts, new_smart_input_opts))

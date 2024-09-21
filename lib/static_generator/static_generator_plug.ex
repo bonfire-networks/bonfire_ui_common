@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common.StaticGeneratorPlug do
   def make_request_path_static(conn, _ \\ nil)
 
   def make_request_path_static(%{query_params: %{"cache" => "skip"}} = conn, _) do
-    debug("do not cache")
+    debug("skip cache")
     conn
   end
 

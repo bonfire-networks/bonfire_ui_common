@@ -13,7 +13,7 @@
           {#if String.starts_with?(entry.client_type, "image")}
             {!-- render a client-side preview --}
             <div class="h-[84px] rounded border border-base-content/10">
-              <.live_img_preview entry={entry} />
+              <Phoenix.Component.live_img_preview entry={entry} />
             </div>
             <figcaption class="sr-only">{entry.client_name}</figcaption>
           {#elseif String.contains?(entry.client_type, "pdf")}

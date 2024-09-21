@@ -37,7 +37,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop preview_boundary_verbs, :any, default: nil
   # defp handle_progress(_, entry, socket) do
   #   debug(entry, "progress")
-  #   user = current_user(socket.assigns)
+  #   user = current_user(assigns(socket))
 
   #   if entry.done? and entry.valid? and user do
   #     with %{} = uploaded_media <-

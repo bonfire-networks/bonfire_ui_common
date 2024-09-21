@@ -48,14 +48,14 @@
       {#case @href}
         {#match nil}
           <div class={@open_btn_wrapper_class} {...@open_btn_opts}>
-            <.dynamic_tag
+            <Phoenix.Component.dynamic_tag
               name={if @form_opts != %{}, do: "form", else: "div"}
               id={@form_opts[:id] || "#{@id}_fallback"}
               {...Enums.naughty_to_atoms!(@form_opts)}
             >
               <#slot {@action_btns}>
               </#slot>
-            </.dynamic_tag>
+            </Phoenix.Component.dynamic_tag>
           </div>
         {#match _href}
           <a class={@open_btn_wrapper_class} href={@href} {...@open_btn_opts}>

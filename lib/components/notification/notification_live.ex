@@ -39,7 +39,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
 
   def update(assigns, socket) do
     # debug(assigns, "assigns")
-    current_user = current_user(socket.assigns) || current_user(assigns)
+    current_user = current_user(assigns(socket)) || current_user(assigns)
 
     if current_user do
       feed_id =
@@ -119,7 +119,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
     |> clear_flash(key)
     |> assign(
       :root_flash,
-      e(socket.assigns, :root_flash, %{})
+      e(assigns(socket), :root_flash, %{})
       |> Map.drop([key, alt_key])
     )
     |> assign(key, nil)

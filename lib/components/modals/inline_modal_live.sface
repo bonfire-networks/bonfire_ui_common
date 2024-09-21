@@ -8,7 +8,7 @@
   </label>
 
   <dialog id={@id} class={@modal_class, "modal modal-bottom sm:modal-middle"}>
-    <.dynamic_tag
+    <Phoenix.Component.dynamic_tag
       name={if @form_opts != %{}, do: "form", else: "div"}
       id={@form_opts[:id] || "#{@id}_box"}
       method="dialog"
@@ -51,14 +51,14 @@
           </div>
         </div>
       </div>
-    </.dynamic_tag>
+    </Phoenix.Component.dynamic_tag>
 
-    <.dynamic_tag
+    <Phoenix.Component.dynamic_tag
       name={if @form_opts != %{}, do: "form", else: "div"}
       method="dialog"
       class="modal-backdrop"
     >
       <button formmethod="dialog" type="button" onclick={"#{@id}.close(); return;"}>close</button>
-    </.dynamic_tag>
+    </Phoenix.Component.dynamic_tag>
   </dialog>
 </div>

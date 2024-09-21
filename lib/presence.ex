@@ -86,13 +86,21 @@ defmodule Bonfire.UI.Common.Presence do
 
   defp handle_joins(socket, joins) do
     Enum.reduce(joins, socket, fn {user, %{metas: [meta | _]}}, socket ->
-      Phoenix.Component.assign(socket, :users, Map.put(socket.assigns.users, user, meta))
+      Phoenix.Component.assign(
+        socket,
+        :users,
+        Map.put(e(UI.Common.assigns(socket), :users, %{}), user, meta)
+      )
     end)
   end
 
   defp handle_leaves(socket, leaves) do
     Enum.reduce(leaves, socket, fn {user, _}, socket ->
-      Phoenix.Component.assign(socket, :users, Map.delete(socket.assigns.users, user))
+      Phoenix.Component.assign(
+        socket,
+        :users,
+        Map.delete(e(UI.Common.assigns(socket), :users, %{}), user)
+      )
     end)
   end
 end

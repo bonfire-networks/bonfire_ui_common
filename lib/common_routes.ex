@@ -45,7 +45,17 @@ defmodule Bonfire.UI.Common.Routes do
 
       pipeline :browser do
         plug(:basic)
-        plug(:accepts, ["html", "activity+json", "json", "ld+json", "text"])
+
+        plug(:accepts, [
+          "html",
+          "activity+json",
+          "json",
+          "ld+json",
+          "text",
+          "mjml",
+          "swiftui",
+          "jetpack"
+        ])
 
         plug PlugEarlyHints, paths: Bonfire.UI.Common.Routes.early_hints_guest()
 
@@ -62,10 +72,15 @@ defmodule Bonfire.UI.Common.Routes do
         # detect Accept headers to serve JSON or HTML
         plug(Bonfire.UI.Common.Plugs.ActivityPub)
 
-        plug(:put_root_layout, {Bonfire.UI.Common.LayoutView, :root})
+        plug(:put_root_layout,
+          # {Bonfire.UI.Common.LayoutView, :root}
+          html: {Bonfire.UI.Common.LayoutView, :root},
+          swiftui: {Bonfire.UI.Common.LayoutView.SwiftUI, :root},
+          jetpack: {Bonfire.UI.Common.LayoutView.Jetpack, :root}
+        )
 
-        # LiveView Native support
-        Bonfire.UI.Common.Web.maybe_native_plug()
+        # LiveView Native support (deprecated)
+        # Bonfire.UI.Common.Web.maybe_native_plug()
 
         # plug(:load_current_auth) # do we need this here?
 

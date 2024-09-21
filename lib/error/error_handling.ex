@@ -171,6 +171,10 @@ defmodule Bonfire.UI.Common.ErrorHandling do
       )
   end
 
+  defp with_return_key({:error, e}, _) do
+    {:error, e}
+  end
+
   defp with_return_key(socket_or_assigns, {_, nil}) do
     socket_or_assigns
   end

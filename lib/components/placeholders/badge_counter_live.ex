@@ -15,7 +15,7 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
 
     {:ok,
      assign(socket,
-       count: e(socket.assigns, :count, 0) + inc
+       count: e(assigns(socket), :count, 0) + inc
      )}
   end
 
@@ -45,7 +45,7 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
     # debug(assigns, "assigns")
 
     socket = assign(socket, assigns)
-    current_user = current_user(socket.assigns)
+    current_user = current_user(assigns(socket))
 
     case e(assigns, :id, nil) do
       feed_name when not is_nil(feed_name) and not is_nil(current_user) ->

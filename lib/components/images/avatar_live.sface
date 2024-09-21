@@ -28,7 +28,7 @@
               />
             </div>
           {#match _}
-            {#if Settings.get([Bonfire.UI.Common.AvatarLive, :animal_avatars], true, @__context__)}
+            {#if @user_id && Settings.get([Bonfire.UI.Common.AvatarLive, :animal_avatars], true, @__context__)}
               {!-- <Bonfire.UI.Common.AnimalAvatar
                   id={@user_id}
                   bg_class={@bg_class}

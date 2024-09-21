@@ -31,8 +31,10 @@ defmodule Bonfire.UI.Common.MixProject do
           # {:bonfire_search, "https://github.com/bonfire-networks/bonfire_search", optional: true, runtime: false}
           # {:bonfire_boundaries, git: "https://github.com/bonfire-networks/bonfire_boundaries", optional: true, runtime: false}
         ] ++ if(System.get_env("NATIVE_ENABLED") in ["1", "true"], do: [
-          {:live_view_native, "~> 0.2.0"},
-          {:live_view_native_swiftui, "~> 0.2.0"}
+            {:live_view_native, "~> 0.3.0"},
+            {:live_view_native_stylesheet, "~> 0.3.0"},
+            {:live_view_native_swiftui, "~> 0.3.0"},
+            {:live_view_native_live_form, "~> 0.3.0"}
           ], else: [])
         )
     ]

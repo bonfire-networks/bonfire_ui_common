@@ -43,7 +43,7 @@
   >
   </div>
   {!-- if the modal should be wrapped in a form use the form tag, otherwise use a div --}
-  <.dynamic_tag
+  <Phoenix.Component.dynamic_tag
     name={if @form_opts != %{}, do: "form", else: "div"}
     id={@form_opts[:id] || "#{@id}_box"}
     class={Surface.css_class(["text-base-content", "modal-box ": !@image_preview, "h-full": @no_backdrop])}
@@ -108,5 +108,5 @@
         </div>
       </div>
     </div>
-  </.dynamic_tag>
+  </Phoenix.Component.dynamic_tag>
 </div>
