@@ -166,8 +166,8 @@ defmodule Bonfire.UI.Common.Web do
 
       template_name = Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
 
-      Phoenix.Template.embed_templates("#{template_name}.mjml", suffix: "_mjml")
-      Phoenix.Template.embed_templates("#{template_name}.text", suffix: "_text")
+      embed_templates("#{template_name}.mjml", suffix: "_mjml")
+      embed_templates("#{template_name}.text", suffix: "_text")
 
       # use_if_enabled(LiveViewNative.LiveView, unquote(native_opts()))
       # Bonfire.UI.Common.Web.Native.live_view(template_name: template_name)
@@ -189,8 +189,8 @@ defmodule Bonfire.UI.Common.Web do
 
       template_name = Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
 
-      Phoenix.Template.embed_templates("#{template_name}.mjml", suffix: "_mjml")
-      Phoenix.Template.embed_templates("#{template_name}.text", suffix: "_text")
+      embed_templates("#{template_name}.mjml", suffix: "_mjml")
+      embed_templates("#{template_name}.text", suffix: "_text")
 
       # use_if_enabled(LiveViewNative.Component) # TEMP workaround for `Not yet implemented. Please convert to a LiveViewNative.Component for now`
       # #use_if_enabled(LiveViewNative.LiveComponent)
@@ -209,8 +209,8 @@ defmodule Bonfire.UI.Common.Web do
 
       template_name = Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
 
-      Phoenix.Template.embed_templates("#{template_name}.mjml", suffix: "_mjml")
-      Phoenix.Template.embed_templates("#{template_name}.text", suffix: "_text")
+      embed_templates("#{template_name}.mjml", suffix: "_mjml")
+      embed_templates("#{template_name}.text", suffix: "_text")
 
       # use_if_enabled(LiveViewNative.Component)
 
@@ -357,8 +357,8 @@ defmodule Bonfire.UI.Common.Web do
   # defp __more_templates_before_compile__(env) do
   #   template_name = Bonfire.UI.Common.template_name_for_module_template(env)
 
-  #   Phoenix.Template.embed_templates("#{template_name}.mjml", suffix: "_mjml")
-  #   Phoenix.Template.embed_templates("#{template_name}.text", suffix: "_text")
+  #   embed_templates("#{template_name}.mjml", suffix: "_mjml")
+  #   embed_templates("#{template_name}.text", suffix: "_text")
   # end
 
   # TODO: similar as the below for update_many and handle_progress
@@ -577,8 +577,8 @@ defmodule Bonfire.UI.Common.Web do
         template_name =
           Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
 
-        Phoenix.Template.embed_templates("#{template_name}.mjml", suffix: "_mjml")
-        Phoenix.Template.embed_templates("#{template_name}.text", suffix: "_text")
+        embed_templates("#{template_name}.mjml", suffix: "_mjml")
+        embed_templates("#{template_name}.text", suffix: "_text")
 
         # use_if_enabled(LiveViewNative.LiveView, unquote(native_opts()))
         # Bonfire.UI.Common.Web.Native.live_view(template_name: template_name)
@@ -599,12 +599,12 @@ defmodule Bonfire.UI.Common.Web do
     end
 
     def stateful_component(opts \\ []) do
-      opts =
-        Keyword.put_new(
-          opts,
-          :template_name,
-          Bonfire.UI.Common.filename_for_module_template(opts[:env_module])
-        )
+      # opts =
+      #   Keyword.put_new(
+      #     opts,
+      #     :template_name,
+      #     Bonfire.UI.Common.filename_for_module_template(opts[:env_module])
+      #   )
 
       quote do
         @moduledoc false
@@ -622,11 +622,12 @@ defmodule Bonfire.UI.Common.Web do
         unquote(surface_component_helpers())
 
         template_name =
-          unquote(opts)[:template_name] ||
-            Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
+          (unquote(opts)[:template_name] ||
+             Bonfire.UI.Common.filename_for_module_template(__ENV__.module))
+          |> IO.inspect(label: "template_name")
 
-        Phoenix.Template.embed_templates("#{template_name}.mjml", suffix: "_mjml")
-        Phoenix.Template.embed_templates("#{template_name}.text", suffix: "_text")
+        embed_templates("#{template_name}.mjml", suffix: "_mjml")
+        embed_templates("#{template_name}.text", suffix: "_text")
 
         # use_if_enabled(LiveViewNative.Component) # TEMP workaround for `Not yet implemented. Please convert to a LiveViewNative.Component for now`
         # #use_if_enabled(LiveViewNative.LiveComponent) 
@@ -656,8 +657,8 @@ defmodule Bonfire.UI.Common.Web do
 
         template_name = Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
 
-        Phoenix.Template.embed_templates("#{template_name}.mjml", suffix: "_mjml")
-        Phoenix.Template.embed_templates("#{template_name}.text", suffix: "_text")
+        embed_templates("#{template_name}.mjml", suffix: "_mjml")
+        embed_templates("#{template_name}.text", suffix: "_text")
 
         # use_if_enabled LiveViewNative.Component,
         #   format: :swiftui,
@@ -753,11 +754,13 @@ defmodule Bonfire.UI.Common.Web do
   When used, dispatch to the appropriate controller/view/etc.
   """
   defmacro __using__(which) when is_atom(which) do
-    apply(__MODULE__, which, [[env_module: __ENV__.module]])
+    # [[env_module: __ENV__.module]])
+    apply(__MODULE__, which, [])
   end
 
   defmacro __using__({which, opts}) when is_atom(which) and is_list(opts) do
-    apply(__MODULE__, which, [[opts] ++ [env_module: __ENV__.module]])
+    # ++ [env_module: __ENV__.module]])
+    apply(__MODULE__, which, [opts])
   end
 
   @doc """
