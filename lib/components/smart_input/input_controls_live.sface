@@ -41,7 +41,7 @@
           </div>
 
           {!-- UPLOADS PREVIEWS --}
-          <Bonfire.UI.Social.UploadPreviewsLive :if={@uploads != false} uploads={@uploads} />
+          <Bonfire.UI.Common.UploadPreviewsLive :if={@uploads != false} uploads={@uploads} />
 
           {!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE --}
           <#slot {@default} />

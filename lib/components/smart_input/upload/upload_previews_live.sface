@@ -105,7 +105,7 @@
           type="checkbox"
           name="sensitive"
           class="toggle toggle-primary toggle-text-xs"
-          checked={Settings.get([Bonfire.UI.Social.UploadPreviewsLive, :mark_as_sensitive], false, @__context__)}
+          checked={Settings.get([Bonfire.UI.Common.UploadPreviewsLive, :mark_as_sensitive], false, @__context__)}
         />
         <span class="label-text text-base-content/70 text-text-xs ml-2">{l("Mark as sensitive")}</span>
       </label>
