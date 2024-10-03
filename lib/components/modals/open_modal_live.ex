@@ -106,51 +106,15 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   def open(reusable_modal_id \\ nil) do
     debug("open!")
-    set([show: true], reusable_modal_id || @default_modal_id)
+    ReusableModalLive.set([show: true], reusable_modal_id)
   end
 
   def close(reusable_modal_id \\ nil) do
     debug("close!")
 
-    set(
+    ReusableModalLive.set(
       [show: false] ++ ReusableModalLive.default_assigns(),
-      reusable_modal_id || @default_modal_id
-    )
-  end
-
-  def set(assigns, reusable_modal_id \\ nil) do
-    maybe_set_assigns(
-      e(
-        assigns,
-        :reusable_modal_component,
-        ReusableModalLive
-      ),
-      reusable_modal_id || e(assigns, :reusable_modal_id, nil) ||
-        if(e(assigns, :__context__, :sticky, nil),
-          do: "persistent_modal",
-          else: @default_modal_id
-        ),
-      assigns
-    )
-
-    # case assigns[:root_assigns] do
-    #   root_assigns when is_list(root_assigns) and root_assigns !=[] ->
-    #     send_self(assigns[:root_assigns])
-
-    #   _ -> nil
-    # end
-  end
-
-  def maybe_set_assigns(_component, "media_player_modal", assigns) do
-    # TODO: detect if we're already in the sticky view
-    Bonfire.UI.Common.PersistentLive.maybe_send(assigns, {:media_player, assigns})
-  end
-
-  def maybe_set_assigns(component, reusable_modal_id, assigns) do
-    maybe_send_update(
-      component,
-      reusable_modal_id,
-      assigns
+      reusable_modal_id
     )
   end
 
@@ -165,31 +129,19 @@ defmodule Bonfire.UI.Common.OpenModalLive do
       )
 
     # copy all of this component's assigns to the reusable modal (including slots!)
-    set(assigns(socket))
+    ReusableModalLive.set(assigns(socket))
 
     {:noreply, socket}
   end
 
   def handle_event("close", _, socket) do
-    close(
-      e(assigns(socket), :reusable_modal_id, nil) ||
-        if(e(assigns(socket), :__context__, :sticky, nil),
-          do: "persistent_modal",
-          else: @default_modal_id
-        )
-    )
+    close(ReusableModalLive.modal_id(assigns(socket)))
 
     {:noreply, socket}
   end
 
   def handle_event("set_value", %{"value" => value}, socket) do
-    close(
-      e(assigns(socket), :reusable_modal_id, nil) ||
-        if(e(assigns(socket), :__context__, :sticky, nil),
-          do: "persistent_modal",
-          else: @default_modal_id
-        )
-    )
+    close(ReusableModalLive.modal_id(assigns(socket)))
 
     {:noreply, socket |> assign(:value, value)}
   end

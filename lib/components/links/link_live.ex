@@ -33,6 +33,8 @@ defmodule Bonfire.UI.Common.LinkLive do
   @doc "What browser window/frame to target, eg. `_blank`"
   prop target, :string, default: nil
 
+  prop external_link_warnings, :boolean, default: false
+
   @doc """
   Additional attributes to add onto the generated element
   """
@@ -69,6 +71,78 @@ defmodule Bonfire.UI.Common.LinkLive do
       # fallback to only using a link when LiveView is not available
       render(Map.drop(assigns, [:event_handler]))
     end
+  end
+
+  def render(%{to: "http" <> _, external_link_warnings: true} = assigns) do
+    ~F"""
+    <p class="mb-4">This is an external link, please check where it leads before following it. If you have concerns it may be malicious you can check one of the URL reputation services below, or copy and paste the URL into a tool of your choice.</p>
+
+    <a
+      phx-hook="Copy"
+      id={"link_copy_url_#{@id || Text.random_string()}"}
+      href={@to}
+      class="float-right ml-4 flex items-center gap-2 btn btn-xs"
+    >
+      <#Icon iconify="ri:file-copy-line" class="w-4 h-4 shrink-0" />
+      <span data-role="label">{l("Copy")}</span>
+    </a>
+
+    <Link
+      to={@to}
+      class={@class}
+      opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+    >
+      <#slot>{@label}</#slot>
+    </Link>
+
+    <p class="mt-4">
+      {#case URI.encode_www_form(@to)}
+        {#match url_encoded}
+          {!-- TODO: make these configurable --}
+          <Link
+            to={"https://transparencyreport.google.com/safe-browsing/search?url=#{url_encoded}"}
+            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+            class="btn btn-xs"
+          >{l("Google Safe Browsing")}</Link>
+
+          <Link
+            to={"https://www.urlvoid.com/scan/#{url_encoded}"}
+            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+            class="btn btn-xs"
+          >{l("URLvoid")}</Link>
+
+          <Link
+            to={"https://urlscan.io/search/#page.url.keyword:#{url_encoded}*"}
+            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+            class="btn btn-xs"
+          >{l("URLscan")}</Link>
+
+          <Link
+            to={"https://www.virustotal.com/gui/search/#{url_encoded}"}
+            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+            class="btn btn-xs"
+          >{l("VirusTotal")}</Link>
+
+          <Link
+            to={"https://sitecheck.sucuri.net/results/#{url_encoded}"}
+            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+            class="btn btn-xs"
+          >{l("Sucuri")}</Link>
+
+          <Link
+            to={"https://safeweb.norton.com/report?url=#{url_encoded}"}
+            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+            class="btn btn-xs"
+          >{l("Norton")}</Link>
+
+          <Link
+            to="https://www.abuseipdb.com"
+            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+            class="btn btn-xs"
+          >{l("AbuseIPDB")}</Link>
+      {/case}
+    </p>
+    """
   end
 
   def render(%{to: "http" <> _} = assigns) do

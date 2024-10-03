@@ -40,24 +40,25 @@
           data-id="modal-contents"
         >
           <#slot>
-            {#if e(@modal_assigns, :preview_component_stateful?, nil) == true and
-                module_enabled?(@modal_assigns[:preview_component], @__context__)}
+            {!-- TODO: consolidate with ReusableModal and make modal_component & modal_view seperate props --}
+            {#if e(@modal_assigns, :modal_component_stateful?, nil) == true and
+                module_enabled?(@modal_assigns[:modal_component], @__context__)}
               <StatefulComponent
-                id="preview_component"
-                module={@modal_assigns[:preview_component]}
+                id="modal_component"
+                module={@modal_assigns[:modal_component]}
                 {...@modal_assigns}
               />
-            {#elseif not is_nil(e(@modal_assigns, :preview_component, nil)) and
-                module_enabled?(@modal_assigns[:preview_component], @__context__)}
+            {#elseif not is_nil(e(@modal_assigns, :modal_component, nil)) and
+                module_enabled?(@modal_assigns[:modal_component], @__context__)}
               <StatelessComponent
-                module={@modal_assigns[:preview_component]}
+                module={@modal_assigns[:modal_component]}
                 myself={@myself}
                 {...@modal_assigns}
               />
-            {#elseif not is_nil(e(@modal_assigns, :preview_view, nil)) and
-                module_enabled?(@modal_assigns[:preview_view], @__context__)}
-              {live_render(@socket, @modal_assigns[:preview_view],
-                id: "preview_view",
+            {#elseif not is_nil(e(@modal_assigns, :modal_view, nil)) and
+                module_enabled?(@modal_assigns[:modal_view], @__context__)}
+              {live_render(@socket, @modal_assigns[:modal_view],
+                id: "modal_view",
                 session: %{"params" => @modal_assigns}
               )}
             {#else}

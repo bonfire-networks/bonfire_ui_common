@@ -1,9 +1,12 @@
 defmodule Bonfire.UI.Common.ReusableModalLive do
   use Bonfire.UI.Common.Web, :stateful_component
+  alias Bonfire.UI.Common.ReusableModalLive
 
   @moduledoc """
   The classic **modal**
   """
+
+  @default_modal_id "modal"
 
   # make sure to keep these and the Surface props in sync
   @default_assigns [
@@ -64,6 +67,11 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   prop no_backdrop, :boolean, default: false
 
   @doc """
+  Additional assigns to pass on to the optional modal sub-component
+  """
+  prop modal_assigns, :any, default: []
+
+  @doc """
   Additional attributes to add onto the modal wrapper
   """
   prop opts, :keyword, default: []
@@ -91,6 +99,64 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
 
   def default_assigns do
     @default_assigns
+  end
+
+  def modal_id(assigns) do
+    e(assigns, :reusable_modal_id, nil) ||
+      if(e(assigns, :__context__, :sticky, nil) || e(assigns, :sticky, nil),
+        do: "persistent_modal",
+        else: @default_modal_id
+      )
+  end
+
+  def set(assigns, reusable_modal_id \\ nil) do
+    maybe_set_assigns(
+      e(
+        assigns,
+        :reusable_modal_component,
+        ReusableModalLive
+      ),
+      reusable_modal_id || modal_id(assigns),
+      assigns
+    )
+
+    # case assigns[:root_assigns] do
+    #   root_assigns when is_list(root_assigns) and root_assigns !=[] ->
+    #     send_self(assigns[:root_assigns])
+
+    #   _ -> nil
+    # end
+  end
+
+  defp maybe_set_assigns(_component, "media_player_modal", assigns) do
+    # TODO: detect if we're already in the sticky view
+    # debug(assigns, "try sending to media player")
+    Bonfire.UI.Common.PersistentLive.maybe_send(assigns, {:media_player, assigns})
+  end
+
+  defp maybe_set_assigns(component, reusable_modal_id, assigns) do
+    # debug(assigns, "try sending to reusable modal")
+    maybe_send_update(
+      component,
+      reusable_modal_id,
+      assigns
+    )
+  end
+
+  def handle_event("prompt_external_link", %{"url" => url}, socket) do
+    set(
+      show: true,
+      modal_assigns: [
+        modal_component: LinkLive,
+        to: url,
+        label: url,
+        external_link_warnings: true,
+        class: "link font-mono"
+      ],
+      sticky: e(assigns(socket), :__context__, :sticky, nil)
+    )
+
+    {:noreply, socket}
   end
 
   def handle_event("close-key", %{"key" => "Escape"} = _attrs, socket) do

@@ -622,9 +622,10 @@ defmodule Bonfire.UI.Common.Web do
         unquote(surface_component_helpers())
 
         template_name =
-          (unquote(opts)[:template_name] ||
-             Bonfire.UI.Common.filename_for_module_template(__ENV__.module))
-          |> IO.inspect(label: "template_name")
+          unquote(opts)[:template_name] ||
+            Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
+
+        # |> IO.inspect(label: "template_name")
 
         embed_templates("#{template_name}.mjml", suffix: "_mjml")
         embed_templates("#{template_name}.text", suffix: "_text")

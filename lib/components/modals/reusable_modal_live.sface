@@ -92,7 +92,32 @@
         }
         data-id="modal-contents"
       >
-        <#slot {@default, autocomplete: @autocomplete, value: @value} />
+        <#slot {@default, autocomplete: @autocomplete, value: @value}>
+          {!-- TODO: consolidate with PreviewContent and make modal_component & modal_view seperate props --}
+          {#if e(@modal_assigns, :modal_component_stateful?, nil) == true and
+              module_enabled?(@modal_assigns[:modal_component], @__context__)}
+            <StatefulComponent
+              id="modal_component"
+              module={@modal_assigns[:modal_component]}
+              {...@modal_assigns}
+            />
+          {#elseif not is_nil(e(@modal_assigns, :modal_component, nil)) and
+              module_enabled?(@modal_assigns[:modal_component], @__context__)}
+            <StatelessComponent
+              module={@modal_assigns[:modal_component]}
+              myself={@myself}
+              {...@modal_assigns}
+            />
+          {#elseif not is_nil(e(@modal_assigns, :modal_view, nil)) and
+              module_enabled?(@modal_assigns[:modal_view], @__context__)}
+            {live_render(@socket, @modal_assigns[:modal_view],
+              id: "modal_view",
+              session: %{"params" => @modal_assigns}
+            )}
+          {#else}
+            {!-- empty --}
+          {/if}
+        </#slot>
       </div>
 
       <div :if={!@no_actions} class="modal-action">

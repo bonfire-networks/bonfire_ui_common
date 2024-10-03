@@ -4,10 +4,24 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
 
   plug(:maybe_make_request_path_static)
 
-  plug(Plug.Static,
-    at: "/",
-    from: {:bonfire, "priv/static/#{Bonfire.UI.Common.StaticGenerator.base_path()}"}
-  )
+  plug(:maybe_serve_static)
+  # plug(Plug.Static,
+  #   at: "/",
+  #   from: {:bonfire, "priv/static/#{Bonfire.UI.Common.StaticGenerator.base_path()}"}
+  # )
+
+  def maybe_serve_static(conn, opts) do
+    request_path = conn.request_path || "/"
+    #  workaround for URLs like /@user@localhost:4000
+    if not String.contains?(request_path, ":") do
+      Plug.Static.call(conn,
+        at: "/",
+        from: {:bonfire, "priv/static/#{Bonfire.UI.Common.StaticGenerator.base_path()}"}
+      )
+    else
+      conn
+    end
+  end
 
   # do not serve cache when logged in
   def maybe_make_request_path_static(%{assigns: %{current_account: %{}}} = conn, _),
