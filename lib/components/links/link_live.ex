@@ -5,6 +5,7 @@ defmodule Bonfire.UI.Common.LinkLive do
   """
 
   use Bonfire.UI.Common.Web, :stateless_component
+  # import Phoenix.Component
 
   @doc "The required path or URL to link to"
   prop to, :string, required: true
@@ -75,7 +76,9 @@ defmodule Bonfire.UI.Common.LinkLive do
 
   def render(%{to: "http" <> _, external_link_warnings: true} = assigns) do
     ~F"""
-    <p class="mb-4">This is an external link, please check where it leads before following it. If you have concerns it may be malicious you can check one of the URL reputation services below, or copy and paste the URL into a tool of your choice.</p>
+    <p class="mb-4">{l(
+        "This is an external link, please check where it leads before following it. If you have concerns it may be malicious you can check one of the URL or IP address reputation services below, or copy and paste the URL into the reputation tool of your choice."
+      )}</p>
 
     <a
       phx-hook="Copy"
@@ -95,53 +98,104 @@ defmodule Bonfire.UI.Common.LinkLive do
       <#slot>{@label}</#slot>
     </Link>
 
-    <p class="mt-4">
-      {#case URI.encode_www_form(@to)}
-        {#match url_encoded}
-          {!-- TODO: make these configurable --}
-          <Link
-            to={"https://transparencyreport.google.com/safe-browsing/search?url=#{url_encoded}"}
-            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
-            class="btn btn-xs"
-          >{l("Google Safe Browsing")}</Link>
+    {!-- TODO: make these configurable --}
+    {#case Unfurl.uri_host(@to)}
+      {#match domain}
+        <p class="mt-4 text-xs">
+          {#case URI.encode_www_form(domain)}
+            {#match url_encoded}
+              Check URL:
+              <Link
+                to={"https://transparencyreport.google.com/safe-browsing/search?url=#{url_encoded}"}
+                opts={@opts |> Keyword.merge(target: "_blank")}
+                class="btn btn-xs"
+              >{l("Google Safe Browsing")}</Link>
 
-          <Link
+              <Link
+                to={"https://urlscan.io/search/#page.url.keyword:#{url_encoded}*"}
+                opts={@opts |> Keyword.merge(target: "_blank")}
+                class="btn btn-xs"
+              >{l("URLscan")}</Link>
+
+              {!--
+                    <Link
             to={"https://www.urlvoid.com/scan/#{url_encoded}"}
-            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
-            class="btn btn-xs"
+            opts={@opts |> Keyword.merge(target: "_blank")}
+            class="btn btn-xs" 
           >{l("URLvoid")}</Link>
 
-          <Link
-            to={"https://urlscan.io/search/#page.url.keyword:#{url_encoded}*"}
-            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
-            class="btn btn-xs"
-          >{l("URLscan")}</Link>
+          --}
 
-          <Link
-            to={"https://www.virustotal.com/gui/search/#{url_encoded}"}
-            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
-            class="btn btn-xs"
-          >{l("VirusTotal")}</Link>
+              <Link
+                to={"https://otx.alienvault.com/indicator/domain/#{url_encoded}"}
+                opts={@opts |> Keyword.merge(target: "_blank")}
+                class="btn btn-xs"
+              >{l("AlienVault OTX")}</Link>
 
-          <Link
-            to={"https://sitecheck.sucuri.net/results/#{url_encoded}"}
-            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
-            class="btn btn-xs"
-          >{l("Sucuri")}</Link>
+              <Link
+                to={"https://www.virustotal.com/gui/search/#{url_encoded}"}
+                opts={@opts |> Keyword.merge(target: "_blank")}
+                class="btn btn-xs"
+              >{l("VirusTotal")}</Link>
 
-          <Link
-            to={"https://safeweb.norton.com/report?url=#{url_encoded}"}
-            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
-            class="btn btn-xs"
-          >{l("Norton")}</Link>
+              <Link
+                to={"https://sitecheck.sucuri.net/results/#{url_encoded}"}
+                opts={@opts |> Keyword.merge(target: "_blank")}
+                class="btn btn-xs"
+              >{l("Sucuri")}</Link>
 
+              <Link
+                to={"https://safeweb.norton.com/report?url=#{url_encoded}"}
+                opts={@opts |> Keyword.merge(target: "_blank")}
+                class="btn btn-xs"
+              >{l("Norton")}</Link>
+
+              <Link
+                to={"https://check.spamhaus.org/results/?query=#{url_encoded}"}
+                opts={@opts |> Keyword.merge(target: "_blank")}
+                class="btn btn-xs"
+              >{l("SpamHaus")}</Link>
+
+              <Link
+                to={"https://mxtoolbox.com/SuperTool.aspx?action=blacklist:#{url_encoded}"}
+                opts={@opts |> Keyword.merge(target: "_blank")}
+                class="btn btn-xs"
+              >{l("MX Toolbox")}</Link>
+          {/case}
+        </p>
+
+        <p class="mt-4 text-xs">
+          {#case Cache.maybe_apply_cached({Unfurl, :domain_ip_address}, domain, fallback_return: nil)
+            ~> debug("IPadr")}
+            {#match ip}
+              Check IP:
+              <Link
+                to={"https://www.abuseipdb.com/check/#{ip}"}
+                opts={@opts |> Keyword.merge(target: "_blank")}
+                class="btn btn-xs"
+              >{l("AbuseIPDB")}</Link>
+
+              <Link
+                to={"https://otx.alienvault.com/indicator/ip/#{ip}"}
+                opts={@opts |> Keyword.merge(target: "_blank")}
+                class="btn btn-xs"
+              >{l("AlienVault OTX")}</Link>
+
+              <Link
+                to={"https://www.projecthoneypot.org/ip_#{ip}"}
+                opts={@opts |> Keyword.merge(target: "_blank")}
+                class="btn btn-xs"
+              >{l("Project Honeypot")}</Link>
+              {!--
           <Link
-            to="https://www.abuseipdb.com"
-            opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
-            class="btn btn-xs"
-          >{l("AbuseIPDB")}</Link>
-      {/case}
-    </p>
+            to={"https://www.fortiguard.com/search?q=#{ip}"}
+            opts={@opts |> Keyword.merge(target: "_blank")}
+            class="btn btn-xs" 
+          >{l("FortiGuard")}</Link>
+    --}
+          {/case}
+        </p>
+    {/case}
     """
   end
 
@@ -184,7 +238,7 @@ defmodule Bonfire.UI.Common.LinkLive do
 
   def render(%{to: to} = assigns) when is_binary(to) and to != "" do
     ~F"""
-    <Phoenix.Component.link
+    <.link
       navigate={@to}
       class={@class}
       replace={@replace}
@@ -194,7 +248,7 @@ defmodule Bonfire.UI.Common.LinkLive do
     >
       {!-- FIXME: do not generate random ID to avoid re-rendering --}
       <#slot>{@label}</#slot>
-    </Phoenix.Component.link>
+    </.link>
     """
   end
 

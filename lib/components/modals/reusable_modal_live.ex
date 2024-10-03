@@ -109,7 +109,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
       )
   end
 
-  def set(assigns, reusable_modal_id \\ nil) do
+  def set(assigns, reusable_modal_id \\ nil, opts \\ []) do
     maybe_set_assigns(
       e(
         assigns,
@@ -117,7 +117,8 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
         ReusableModalLive
       ),
       reusable_modal_id || modal_id(assigns),
-      assigns
+      assigns,
+      opts
     )
 
     # case assigns[:root_assigns] do
@@ -128,18 +129,22 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
     # end
   end
 
-  defp maybe_set_assigns(_component, "media_player_modal", assigns) do
+  defp maybe_set_assigns(component, reusable_modal_id, assigns, opts \\ [])
+
+  defp maybe_set_assigns(_component, "media_player_modal", assigns, opts) do
+    # TODO: forward opts (eg for PID)
     # TODO: detect if we're already in the sticky view
     # debug(assigns, "try sending to media player")
     Bonfire.UI.Common.PersistentLive.maybe_send(assigns, {:media_player, assigns})
   end
 
-  defp maybe_set_assigns(component, reusable_modal_id, assigns) do
+  defp maybe_set_assigns(component, reusable_modal_id, assigns, opts) do
     # debug(assigns, "try sending to reusable modal")
     maybe_send_update(
       component,
       reusable_modal_id,
-      assigns
+      assigns,
+      opts
     )
   end
 
@@ -155,6 +160,36 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
       ],
       sticky: e(assigns(socket), :__context__, :sticky, nil)
     )
+
+    pid = self()
+
+    apply_task(:start_link, fn ->
+      debug("attempt to unshorten")
+
+      final_url =
+        Cache.maybe_apply_cached({Unfurl.Unshortener, :unshorten!}, url, fallback_return: nil)
+        |> debug("final_url")
+
+      if final_url != url do
+        debug(final_url, "urls are different")
+
+        set(
+          [
+            show: true,
+            modal_assigns: [
+              modal_component: LinkLive,
+              to: final_url,
+              label: "#{url} (redirects to #{final_url})",
+              external_link_warnings: true,
+              class: "link font-mono"
+            ],
+            sticky: e(assigns(socket), :__context__, :sticky, nil)
+          ],
+          nil,
+          pid: pid
+        )
+      end
+    end)
 
     {:noreply, socket}
   end
