@@ -167,7 +167,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
       debug("attempt to unshorten")
 
       final_url =
-        Cache.maybe_apply_cached({Unfurl.Unshortener, :unshorten!}, url, fallback_return: nil)
+        Cache.maybe_apply_cached({Unfurl, :unshorten!}, url, fallback_return: nil)
         |> debug("final_url")
 
       if final_url != url do
