@@ -15,17 +15,18 @@ defmodule Bonfire.UI.Common.Web.Native do
   below. Instead, define additional modules and import
   those modules here.
   """
+  import Untangle
 
   def native_formats,
     do: [
-      :swiftui
+      # :swiftui
     ]
 
   def native_opts,
     do: [
       formats: native_formats(),
       layouts: [
-        swiftui: {Bonfire.UI.Common.LayoutLive.SwiftUI, :app}
+        swiftui: {Bonfire.UI.Common.LayoutView.SwiftUI, :app}
       ]
     ]
 
@@ -44,14 +45,14 @@ defmodule Bonfire.UI.Common.Web.Native do
   '''
   def live_view(opts \\ []) do
     quote do
-      use LiveViewNative.LiveView, unquote(native_opts())
+      use LiveViewNative.LiveView, unquote(debug(opts ++ native_opts()))
       # formats: unquote(Bonfire.UI.Common.Web.native_formats())
       # # layouts: [
       # #   swiftui: {BonfireUmbrellaWeb.Layouts.SwiftUI, :app}
       # # ]
 
       # require LiveViewNative.Renderer
-      # LiveViewNative.Renderer.embed_templates(IO.inspect("#{unquote(opts)[:template_name] || "*"}.*.neex", label: "embed_templates_*"))
+      # LiveViewNative.Renderer.embed_templates(IO.inspect("#{unquote(opts)[:template_name] || "*"}.*", label: "embed_templates_*"))
       # |> IO.inspect(label: "embed_templates")
 
       # unquote(Bonfire.UI.Common.Web.verified_routes())
@@ -101,7 +102,7 @@ defmodule Bonfire.UI.Common.Web.Native do
   LiveView Native Components are identical to Phoenix Components. Please
   refer to the `Phoenix.Component` documentation for more information.
   '''
-  def component(opts) do
+  def component(opts \\ []) do
     opts = Keyword.take(opts, [:format, :root, :as])
 
     quote do
@@ -120,7 +121,7 @@ defmodule Bonfire.UI.Common.Web.Native do
         embed_templates "layouts_swiftui/*"
       end
   '''
-  def layout(opts) do
+  def layout(opts \\ []) do
     opts = Keyword.take(opts, [:format, :root])
 
     quote do
@@ -132,7 +133,7 @@ defmodule Bonfire.UI.Common.Web.Native do
     end
   end
 
-  defp helpers(format) do
+  def helpers(format) do
     gettext_quoted =
       quote do
         import Bonfire.Common.Localise.Gettext

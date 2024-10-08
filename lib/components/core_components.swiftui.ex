@@ -1,4 +1,5 @@
 if Code.ensure_loaded?(LiveViewNative.Component) do
+
   defmodule Bonfire.UI.Common.CoreComponents.SwiftUI do
     @moduledoc """
     Provides core UI components built for SwiftUI.
@@ -18,8 +19,61 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
     """
 
     use LiveViewNative.Component
+    use Bonfire.UI.Common
 
     import LiveViewNative.LiveForm.Component
+
+
+     @doc """
+     A special component that allows users to inject dynamic live components
+     """
+     attr :module, :atom, required: true
+     attr :id, :string, required: true
+     attr :function, :atom, default: :render
+     slot :default
+     def stateful_component(assigns) do
+       # TEMP: until LVN supports live components
+       stateless_component(with true <- module_enabled?(assigns[:module]),
+         {:ok, assigns} <- assigns
+         |> assign(module_default_assigns(assigns[:module])) 
+         |> assign(assigns) # again so we override defaults
+         |> assign_new(:myself, fn -> nil end)
+         |> assign_new(:streams, fn -> nil end)
+         |> apply(assigns[:module], :mount, [...]),
+         {:ok, assigns} <- apply(assigns[:module], :update, [assigns, assigns]) do
+            assign_new(assigns, :function, fn -> :render end)
+            |> debug("assi")
+            else e ->
+            error(e)
+            assigns
+            |> debug("erssi")
+            |> assign(:module, __MODULE__)
+            |> assign(:function, :error_msg)
+            |> assign(:text, "Could not render component")
+         end
+       )
+       # TODO: when LVN supports live components
+       # ~LVN"""
+       #  <Phoenix.Component.live_component module={@module} id={@id}><%= render_slot(@default) %></Phoenix.Component.live_component>
+       # """
+     end
+
+     @doc """
+     A special component that allows users to inject dynamic function components
+     """
+     attr :module, :atom, default: nil
+     attr :function, :atom, default: :render
+     attr :id, :string, default: nil
+     slot :default
+     def stateless_component(assigns) do
+       ~LVN"""
+       <%= Phoenix.LiveView.TagEngine.component(
+             &apply(@module || __MODULE__, @function || :render, [&1]),
+             assigns,
+             {__ENV__.module, __ENV__.function, __ENV__.file, __ENV__.line}
+           ) %>
+       """
+     end
 
     @doc """
     Renders an input with label and error messages.
@@ -124,7 +178,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
             <%= @label %>
           </TextFieldLink>
         </LabeledContent>
-        <.error :for={msg <- @errors}><%= msg %></.error>
+        <.error_msg :for={msg <- @errors}><%= msg %></.error_msg>
       </VStack>
       """
     end
@@ -135,7 +189,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
         <DatePicker id={@id} name={@name} selection={@value} {@rest}>
           <%= @label %>
         </DatePicker>
-        <.error :for={msg <- @errors}><%= msg %></.error>
+        <.error_msg :for={msg <- @errors}><%= msg %></.error_msg>
       </VStack>
       """
     end
@@ -147,7 +201,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
           <Text template="label"><%= @label %></Text>
           <MultiDatePicker id={@id} name={@name} selection={@value} {@rest}><%= @label %></MultiDatePicker>
         </LabeledContent>
-        <.error :for={msg <- @errors}><%= msg %></.error>
+        <.error_msg :for={msg <- @errors}><%= msg %></.error_msg>
       </VStack>
       """
     end
@@ -164,7 +218,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
             <%= name %>
           </Text>
         </Picker>
-        <.error :for={msg <- @errors}><%= msg %></.error>
+        <.error_msg :for={msg <- @errors}><%= msg %></.error_msg>
       </VStack>
       """
     end
@@ -176,7 +230,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
           <Text template="label"><%= @label %></Text>
           <Slider id={@id} name={@name} value={@value} lowerBound={@min} upperBound={@max} {@rest}><%= @label %></Slider>
         </LabeledContent>
-        <.error :for={msg <- @errors}><%= msg %></.error>
+        <.error_msg :for={msg <- @errors}><%= msg %></.error_msg>
       </VStack>
       """
     end
@@ -188,7 +242,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
           <Text template="label"><%= @label %></Text>
           <Stepper id={@id} name={@name} value={@value} {@rest}></Stepper>
         </LabeledContent>
-        <.error :for={msg <- @errors}><%= msg %></.error>
+        <.error_msg :for={msg <- @errors}><%= msg %></.error_msg>
       </VStack>
       """
     end
@@ -200,7 +254,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
           <Text template="label"><%= @label %></Text>
           <TextEditor id={@id} name={@name} text={@value} {@rest} />
         </LabeledContent>
-        <.error :for={msg <- @errors}><%= msg %></.error>
+        <.error_msg :for={msg <- @errors}><%= msg %></.error_msg>
       </VStack>
       """
     end
@@ -209,7 +263,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
       ~LVN"""
       <VStack alignment="leading">
         <TextField id={@id} name={@name} text={@value} prompt={@prompt} {@rest}><%= @placeholder || @label %></TextField>
-        <.error :for={msg <- @errors}><%= msg %></.error>
+        <.error_msg :for={msg <- @errors}><%= msg %></.error_msg>
       </VStack>
       """
     end
@@ -218,7 +272,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
       ~LVN"""
       <VStack alignment="leading">
         <SecureField id={@id} name={@name} text={@value} prompt={@prompt} {@rest}><%= @placeholder || @label %></SecureField>
-        <.error :for={msg <- @errors}><%= msg %></.error>
+        <.error_msg :for={msg <- @errors}><%= msg %></.error_msg>
       </VStack>
       """
     end
@@ -230,7 +284,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
           <Text template="label"><%= @label %></Text>
           <Toggle id={@id} name={@name} isOn={Map.get(assigns, :checked, Map.get(assigns, :value))} {@rest}></Toggle>
         </LabeledContent>
-        <.error :for={msg <- @errors}><%= msg %></.error>
+        <.error_msg :for={msg <- @errors}><%= msg %></.error_msg>
       </VStack>
       """
     end
@@ -239,12 +293,13 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
     Generates a generic error message.
     """
     @doc type: :component
-    slot :inner_block, required: true
+    attr :text, :string, required: false, default: nil
+    slot :inner_block, required: false
 
-    def error(assigns) do
+    def error_msg(assigns) do
       ~LVN"""
       <Group style="font(.caption); foregroundStyle(.red)">
-        <%= render_slot(@inner_block) %>
+        <%= @text %> <%= render_slot(@inner_block) %>
       </Group>
       """
     end

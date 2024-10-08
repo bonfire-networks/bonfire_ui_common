@@ -15,7 +15,7 @@ defmodule Bonfire.UI.Common.Endpoint.LiveReload do
         plug(Phoenix.LiveReloader)
         plug(Phoenix.CodeReloader)
 
-        if unquote(System.get_env("NATIVE_ENABLED") in ["1", "true"]) do
+        if unquote(System.get_env("WITH_LV_NATIVE") in ["1", "true"]) do
           plug LiveViewNative.LiveReloader
         end
 

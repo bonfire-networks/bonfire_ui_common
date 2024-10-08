@@ -41,7 +41,7 @@ defmodule Bonfire.UI.Common.Web do
     # end
   end
 
-  def controller(opts \\ []) do
+  def controller(caller, opts \\ []) do
     opts =
       Keyword.put_new(
         opts,
@@ -63,7 +63,7 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
-  def layout(opts \\ []) do
+  def layout(caller, opts \\ []) do
     opts =
       opts
       |> Keyword.put_new(:namespace, Bonfire.UI.Common.Web)
@@ -85,12 +85,27 @@ defmodule Bonfire.UI.Common.Web do
 
       # Include shared imports and aliases for views
       # import Surface
-
       unquote(live_view_helpers())
+
+      ## support LVN layout
+      # use_if_enabled(LiveViewNative.Layouts, env: Application.compile_env!(:bonfire, :env))
+      # use_if_enabled(Bonfire.UI.Common.Web.Native.layout(opts))
+      defmodule SwiftUI do
+        use LiveViewNative.Component, format: :swiftui
+        unquote(live_view_helpers())
+        unquote(Bonfire.UI.Common.Web.Native.helpers(:swiftui))
+        import LiveViewNative.Component, only: [csrf_token: 1]
+        import LiveViewNative.Renderer
+        "*.swiftui"
+        |> LiveViewNative.Renderer.embed_templates()
+        |> IO.inspect(label: "embed_templates layout")
+      end
+
+
     end
   end
 
-  def view(opts \\ []) do
+  def view(caller, opts \\ []) do
     opts =
       opts
       |> Keyword.put_new(:namespace, Bonfire.UI.Common.Web)
@@ -129,19 +144,10 @@ defmodule Bonfire.UI.Common.Web do
   #   )
   # end
 
-  def layout_view(opts \\ []) do
-    quote do
-      unquote(view(opts))
 
-      # support LVN layout
-      # use_if_enabled(LiveViewNative.Layouts, env: Application.compile_env!(:bonfire, :env))
-      # use_if_enabled(Bonfire.UI.Common.Web.Native.layout(opts))
-    end
-  end
-
-  def live_view(opts \\ []) do
+  def live_view(caller, opts \\ []) do
     # IO.inspect(live_view: opts)
-    # maybe_put_layout(opts, :live) 
+    # maybe_put_layout(opts, :live)
     opts =
       Keyword.put_new(
         opts,
@@ -176,7 +182,7 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
-  def live_component(opts \\ []) do
+  def live_component(caller, opts \\ []) do
     quote do
       @moduledoc false
       use Phoenix.LiveComponent, unquote(opts)
@@ -199,7 +205,7 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
-  def function_component(opts \\ []) do
+  def function_component(caller, opts \\ []) do
     quote do
       @moduledoc false
       # , unquote(Bonfire.UI.Common.Web.take_components_opts(opts))
@@ -222,7 +228,7 @@ defmodule Bonfire.UI.Common.Web do
     if Keyword.keyword?(opts), do: Keyword.take(opts, [:global_prefixes]), else: Keyword.new()
   end
 
-  def live_handler(_opts \\ []) do
+  def live_handler(caller, _opts \\ []) do
     quote do
       import Phoenix.LiveView
       import Phoenix.Component
@@ -241,7 +247,7 @@ defmodule Bonfire.UI.Common.Web do
   #   end
   # end
 
-  def live_plug(_opts \\ []) do
+  def live_plug(caller, _opts \\ []) do
     quote do
       unquote(common_helpers())
 
@@ -250,7 +256,7 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
-  def plug(_opts \\ []) do
+  def plug(caller, _opts \\ []) do
     quote do
       unquote(common_helpers())
 
@@ -259,7 +265,7 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
-  def router(opts \\ []) do
+  def router(caller, opts \\ []) do
     quote do
       use Phoenix.Router, unquote(opts)
       unquote(common_helpers())
@@ -272,7 +278,7 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
-  def channel(opts \\ []) do
+  def channel(caller, opts \\ []) do
     quote do
       use Phoenix.Channel, unquote(opts)
       import Untangle
@@ -527,7 +533,7 @@ defmodule Bonfire.UI.Common.Web do
   end
 
   if Bonfire.Common.Extend.module_exists?(Surface) do
-    def surface_live_view_child(opts \\ []) do
+    def surface_live_view_child(caller, opts \\ []) do
       opts =
         Keyword.put_new(
           opts,
@@ -555,7 +561,7 @@ defmodule Bonfire.UI.Common.Web do
       end
     end
 
-    def surface_live_view(opts \\ []) do
+    def surface_live_view(caller, opts \\ []) do
       opts =
         Keyword.put_new(
           opts,
@@ -581,14 +587,24 @@ defmodule Bonfire.UI.Common.Web do
         embed_templates("#{template_name}.text", suffix: "_text")
 
         # use_if_enabled(LiveViewNative.LiveView, unquote(native_opts()))
-        # Bonfire.UI.Common.Web.Native.live_view(template_name: template_name)
-        # unquote(Bonfire.UI.Common.Web.Native.live_view())
-
-        # require LiveViewNative.Renderer
-        # # "#{template_name || "*"}.*.neex"
-        # "*.*.neex"
-        # |> LiveViewNative.Renderer.embed_templates()
-        # |> IO.inspect(label: "embed_templates #{template_name}")
+        # unquote(Bonfire.UI.Common.Web.Native.live_view(format: :swiftui))
+        # Bonfire.UI.Common.Web.Native.live_view(format: :swiftui, template_name: template_name)
+        # if module_enabled?(LiveViewNative) do
+        use LiveViewNative.LiveView, format: :swiftui, formats: [:swiftui], layouts: [
+          swiftui: {Bonfire.UI.Common.LayoutView.SwiftUI, :app}
+        ]
+        defmodule SwiftUI do
+          # use Phoenix.LiveView, unquote(opts)
+          use LiveViewNative.Component, format: :swiftui
+          unquote(live_view_helpers())
+          unquote(Bonfire.UI.Common.Web.Native.helpers(:swiftui))
+          import LiveViewNative.Renderer
+          unquote("#{Bonfire.UI.Common.filename_for_module_template(caller.module)}.swiftui")
+          # "*.swiftui"
+          |> LiveViewNative.Renderer.embed_templates(name: :render, root: unquote(Path.dirname(caller.file)))
+          |> IO.inspect(label: "embed_templates #{template_name}")
+        end
+        # end
 
         unquote(surface_helpers())
 
@@ -598,7 +614,7 @@ defmodule Bonfire.UI.Common.Web do
       end
     end
 
-    def stateful_component(opts \\ []) do
+    def stateful_component(caller, opts \\ []) do
       # opts =
       #   Keyword.put_new(
       #     opts,
@@ -631,17 +647,25 @@ defmodule Bonfire.UI.Common.Web do
         embed_templates("#{template_name}.text", suffix: "_text")
 
         # use_if_enabled(LiveViewNative.Component) # TEMP workaround for `Not yet implemented. Please convert to a LiveViewNative.Component for now`
-        # #use_if_enabled(LiveViewNative.LiveComponent) 
+        # #use_if_enabled(LiveViewNative.LiveComponent)
 
         # use_if_enabled LiveViewNative.Component,
         #   format: :swiftui,
         #   as: :render_native
 
-        # LiveViewNative.Renderer.embed_templates("*.swiftui.neex", format: :swiftui, name: :render_native)
+        # LiveViewNative.Renderer.embed_templates("*.swiftui", format: :swiftui, name: :render_native)
+
+        use LiveViewNative.Component, format: :swiftui
+        unquote(Bonfire.UI.Common.Web.Native.helpers(:swiftui))
+        import LiveViewNative.Component, only: [csrf_token: 1]
+        import LiveViewNative.Renderer
+        unquote("#{Bonfire.UI.Common.filename_for_module_template(caller.module)}.swiftui")
+        |> LiveViewNative.Renderer.embed_templates(name: :render)
+        |> IO.inspect(label: "embed_templates layout")
       end
     end
 
-    def stateless_component(opts \\ []) do
+    def stateless_component(caller, opts \\ []) do
       quote do
         @moduledoc false
 
@@ -661,13 +685,21 @@ defmodule Bonfire.UI.Common.Web do
         embed_templates("#{template_name}.mjml", suffix: "_mjml")
         embed_templates("#{template_name}.text", suffix: "_text")
 
+        use LiveViewNative.Component, format: :swiftui
+        unquote(Bonfire.UI.Common.Web.Native.helpers(:swiftui))
+        import LiveViewNative.Component, only: [csrf_token: 1]
+        import LiveViewNative.Renderer
+        unquote("#{Bonfire.UI.Common.filename_for_module_template(caller.module)}.swiftui")
+        |> LiveViewNative.Renderer.embed_templates(name: :render)
+        |> IO.inspect(label: "embed_templates layout")
+
         # use_if_enabled LiveViewNative.Component,
         #   format: :swiftui,
         #   as: :render_native
       end
     end
 
-    def macro_component(opts \\ []) do
+    def macro_component(caller, opts \\ []) do
       quote do
         @moduledoc false
         alias Surface.MacroComponent
@@ -747,6 +779,10 @@ defmodule Bonfire.UI.Common.Web do
 
         alias Iconify.Icon
         require Iconify.Icon
+
+        Module.register_attribute(__MODULE__, :prop, persist: true)
+        Module.register_attribute(__MODULE__, :data, persist: true)
+        Module.register_attribute(__MODULE__, :slot, persist: true)
       end
     end
   end
@@ -755,13 +791,11 @@ defmodule Bonfire.UI.Common.Web do
   When used, dispatch to the appropriate controller/view/etc.
   """
   defmacro __using__(which) when is_atom(which) do
-    # [[env_module: __ENV__.module]])
-    apply(__MODULE__, which, [])
+    apply(__MODULE__, which, [__CALLER__])
   end
 
   defmacro __using__({which, opts}) when is_atom(which) and is_list(opts) do
-    # ++ [env_module: __ENV__.module]])
-    apply(__MODULE__, which, [opts])
+    apply(__MODULE__, which, [__CALLER__, opts])
   end
 
   @doc """
@@ -771,7 +805,7 @@ defmodule Bonfire.UI.Common.Web do
 
       use Bonfire.UI.Common.Web, :controller
       use Phoenix.Component
-    
+
       def index(conn, _) do
         render_inline conn, ~H"<u><%= @current_user.name %></u>"
       end

@@ -4,5 +4,5 @@ defmodule Bonfire.UI.Common.GuestHeaderLive do
   prop page, :string, default: "home"
 
   # @decorate time()
-  render_sface_or_native()
+  # render_sface_or_native()
 end

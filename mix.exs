@@ -27,14 +27,14 @@ defmodule Bonfire.UI.Common.MixProject do
           {:floki, "~> 0.36", only: :test},
           {:zest, "~> 0.1", optional: true},
           {:phoenix_test, "~> 0.3", only: :test, runtime: false},
-          # {:pages, "~> 0.12", only: :test} # extends Floki for testing 
+          # {:pages, "~> 0.12", only: :test} # extends Floki for testing
           # {:bonfire_search, "https://github.com/bonfire-networks/bonfire_search", optional: true, runtime: false}
           # {:bonfire_boundaries, git: "https://github.com/bonfire-networks/bonfire_boundaries", optional: true, runtime: false}
-        ] ++ if(System.get_env("NATIVE_ENABLED") in ["1", "true"], do: [
-            {:live_view_native, "~> 0.3.0"},
-            {:live_view_native_stylesheet, "~> 0.3.0"},
-            {:live_view_native_swiftui, "~> 0.3.0"},
-            {:live_view_native_live_form, "~> 0.3.0"}
+        ] ++ if(System.get_env("WITH_LV_NATIVE") in ["1", "true"], do: [
+            {:live_view_native, "~> 0.3.1"},
+            {:live_view_native_stylesheet, "~> 0.3.1"},
+            {:live_view_native_swiftui, "~> 0.3.1"},
+            {:live_view_native_live_form, "~> 0.3.1"}
           ], else: [])
         )
     ]
