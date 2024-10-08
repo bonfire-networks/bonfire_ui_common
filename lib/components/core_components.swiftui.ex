@@ -1,5 +1,4 @@
 if Code.ensure_loaded?(LiveViewNative.Component) do
-
   defmodule Bonfire.UI.Common.CoreComponents.SwiftUI do
     @moduledoc """
     Provides core UI components built for SwiftUI.
@@ -23,57 +22,64 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
 
     import LiveViewNative.LiveForm.Component
 
+    @doc """
+    A special component that allows users to inject dynamic live components
+    """
+    attr :module, :atom, required: true
+    attr :id, :string, required: true
+    attr :function, :atom, default: :render
+    slot :default
 
-     @doc """
-     A special component that allows users to inject dynamic live components
-     """
-     attr :module, :atom, required: true
-     attr :id, :string, required: true
-     attr :function, :atom, default: :render
-     slot :default
-     def stateful_component(assigns) do
-       # TEMP: until LVN supports live components
-       stateless_component(with true <- module_enabled?(assigns[:module]),
-         {:ok, assigns} <- assigns
-         |> assign(module_default_assigns(assigns[:module])) 
-         |> assign(assigns) # again so we override defaults
-         |> assign_new(:myself, fn -> nil end)
-         |> assign_new(:streams, fn -> nil end)
-         |> apply(assigns[:module], :mount, [...]),
-         {:ok, assigns} <- apply(assigns[:module], :update, [assigns, assigns]) do
-            assign_new(assigns, :function, fn -> :render end)
-            |> debug("assi")
-            else e ->
+    def stateful_component(assigns) do
+      # TEMP: until LVN supports live components
+      stateless_component(
+        with true <- module_enabled?(assigns[:module]),
+             {:ok, assigns} <-
+               assigns
+               |> assign(module_default_assigns(assigns[:module]))
+               # again so we override defaults
+               |> assign(assigns)
+               |> assign_new(:myself, fn -> nil end)
+               |> assign_new(:streams, fn -> nil end)
+               |> apply(assigns[:module], :mount, [...]),
+             {:ok, assigns} <- apply(assigns[:module], :update, [assigns, assigns]) do
+          assign_new(assigns, :function, fn -> :render end)
+          |> debug("assi")
+        else
+          e ->
             error(e)
+
             assigns
             |> debug("erssi")
             |> assign(:module, __MODULE__)
             |> assign(:function, :error_msg)
             |> assign(:text, "Could not render component")
-         end
-       )
-       # TODO: when LVN supports live components
-       # ~LVN"""
-       #  <Phoenix.Component.live_component module={@module} id={@id}><%= render_slot(@default) %></Phoenix.Component.live_component>
-       # """
-     end
+        end
+      )
 
-     @doc """
-     A special component that allows users to inject dynamic function components
-     """
-     attr :module, :atom, default: nil
-     attr :function, :atom, default: :render
-     attr :id, :string, default: nil
-     slot :default
-     def stateless_component(assigns) do
-       ~LVN"""
-       <%= Phoenix.LiveView.TagEngine.component(
-             &apply(@module || __MODULE__, @function || :render, [&1]),
-             assigns,
-             {__ENV__.module, __ENV__.function, __ENV__.file, __ENV__.line}
-           ) %>
-       """
-     end
+      # TODO: when LVN supports live components
+      # ~LVN"""
+      #  <Phoenix.Component.live_component module={@module} id={@id}><%= render_slot(@default) %></Phoenix.Component.live_component>
+      # """
+    end
+
+    @doc """
+    A special component that allows users to inject dynamic function components
+    """
+    attr :module, :atom, default: nil
+    attr :function, :atom, default: :render
+    attr :id, :string, default: nil
+    slot :default
+
+    def stateless_component(assigns) do
+      ~LVN"""
+      <%= Phoenix.LiveView.TagEngine.component(
+            &apply(@module || __MODULE__, @function || :render, [&1]),
+            assigns,
+            {__ENV__.module, __ENV__.function, __ENV__.file, __ENV__.line}
+          ) %>
+      """
+    end
 
     @doc """
     Renders an input with label and error messages.

@@ -1334,7 +1334,8 @@ defmodule Bonfire.UI.Common do
   Inserts one or many items in an existing stream.
   See `Phoenix.LiveView.stream_insert/4` for opts.
   """
-  def maybe_stream_insert(%{assigns: %{streams: streams}} = socket, name, items, _opts) when is_nil(streams) or streams==%{} do
+  def maybe_stream_insert(%{assigns: %{streams: streams}} = socket, name, items, _opts)
+      when is_nil(streams) or streams == %{} do
     error(
       assigns(socket),
       "Invalid stream '#{name}' to render data in. Will set as regular assign instead"
@@ -1438,17 +1439,20 @@ defmodule Bonfire.UI.Common do
   def component_props(module) do
     component_attr(module, :prop)
   end
+
   def component_data(module) do
     component_attr(module, :data)
   end
+
   defp component_attr(module, key) do
     apply(Bonfire.UI.Social.FeedLive, :__info__, [:attributes])
     |> Keyword.get_values(key)
-    |> Enum.flat_map(&(&1))
+    |> Enum.flat_map(& &1)
   end
 
   def module_default_assigns(module) do
-    for %{name: name, opts: opts} <- component_props(module) ++ component_data(module), Keyword.has_key?(opts, :default) do
+    for %{name: name, opts: opts} <- component_props(module) ++ component_data(module),
+        Keyword.has_key?(opts, :default) do
       {name, opts[:default]}
     end
   end

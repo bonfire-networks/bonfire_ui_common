@@ -86,22 +86,6 @@ defmodule Bonfire.UI.Common.Web do
       # Include shared imports and aliases for views
       # import Surface
       unquote(live_view_helpers())
-
-      ## support LVN layout
-      # use_if_enabled(LiveViewNative.Layouts, env: Application.compile_env!(:bonfire, :env))
-      # use_if_enabled(Bonfire.UI.Common.Web.Native.layout(opts))
-      defmodule SwiftUI do
-        use LiveViewNative.Component, format: :swiftui
-        unquote(live_view_helpers())
-        unquote(Bonfire.UI.Common.Web.Native.helpers(:swiftui))
-        import LiveViewNative.Component, only: [csrf_token: 1]
-        import LiveViewNative.Renderer
-        "*.swiftui"
-        |> LiveViewNative.Renderer.embed_templates()
-        |> IO.inspect(label: "embed_templates layout")
-      end
-
-
     end
   end
 
@@ -144,7 +128,6 @@ defmodule Bonfire.UI.Common.Web do
   #   )
   # end
 
-
   def live_view(caller, opts \\ []) do
     # IO.inspect(live_view: opts)
     # maybe_put_layout(opts, :live)
@@ -175,9 +158,6 @@ defmodule Bonfire.UI.Common.Web do
       embed_templates("#{template_name}.mjml", suffix: "_mjml")
       embed_templates("#{template_name}.text", suffix: "_text")
 
-      # use_if_enabled(LiveViewNative.LiveView, unquote(native_opts()))
-      # Bonfire.UI.Common.Web.Native.live_view(template_name: template_name)
-
       # on_mount(PhoenixProfiler)
     end
   end
@@ -198,9 +178,6 @@ defmodule Bonfire.UI.Common.Web do
       embed_templates("#{template_name}.mjml", suffix: "_mjml")
       embed_templates("#{template_name}.text", suffix: "_text")
 
-      # use_if_enabled(LiveViewNative.Component) # TEMP workaround for `Not yet implemented. Please convert to a LiveViewNative.Component for now`
-      # #use_if_enabled(LiveViewNative.LiveComponent)
-
       # unquote(source_inspector())
     end
   end
@@ -217,8 +194,6 @@ defmodule Bonfire.UI.Common.Web do
 
       embed_templates("#{template_name}.mjml", suffix: "_mjml")
       embed_templates("#{template_name}.text", suffix: "_text")
-
-      # use_if_enabled(LiveViewNative.Component)
 
       # unquote(source_inspector())
     end
@@ -338,7 +313,7 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
-  defp live_view_helpers do
+  def live_view_helpers do
     quote do
       unquote(live_view_basic_helpers())
 
@@ -553,8 +528,6 @@ defmodule Bonfire.UI.Common.Web do
 
         unquote(surface_helpers())
 
-        # unquote(Bonfire.UI.Common.Web.Native.live_view(template_name: template_name))
-
         alias Bonfire.UI.Common.LivePlugs
 
         # on_mount(PhoenixProfiler)
@@ -585,26 +558,6 @@ defmodule Bonfire.UI.Common.Web do
 
         embed_templates("#{template_name}.mjml", suffix: "_mjml")
         embed_templates("#{template_name}.text", suffix: "_text")
-
-        # use_if_enabled(LiveViewNative.LiveView, unquote(native_opts()))
-        # unquote(Bonfire.UI.Common.Web.Native.live_view(format: :swiftui))
-        # Bonfire.UI.Common.Web.Native.live_view(format: :swiftui, template_name: template_name)
-        # if module_enabled?(LiveViewNative) do
-        use LiveViewNative.LiveView, format: :swiftui, formats: [:swiftui], layouts: [
-          swiftui: {Bonfire.UI.Common.LayoutView.SwiftUI, :app}
-        ]
-        defmodule SwiftUI do
-          # use Phoenix.LiveView, unquote(opts)
-          use LiveViewNative.Component, format: :swiftui
-          unquote(live_view_helpers())
-          unquote(Bonfire.UI.Common.Web.Native.helpers(:swiftui))
-          import LiveViewNative.Renderer
-          unquote("#{Bonfire.UI.Common.filename_for_module_template(caller.module)}.swiftui")
-          # "*.swiftui"
-          |> LiveViewNative.Renderer.embed_templates(name: :render, root: unquote(Path.dirname(caller.file)))
-          |> IO.inspect(label: "embed_templates #{template_name}")
-        end
-        # end
 
         unquote(surface_helpers())
 
@@ -645,23 +598,6 @@ defmodule Bonfire.UI.Common.Web do
 
         embed_templates("#{template_name}.mjml", suffix: "_mjml")
         embed_templates("#{template_name}.text", suffix: "_text")
-
-        # use_if_enabled(LiveViewNative.Component) # TEMP workaround for `Not yet implemented. Please convert to a LiveViewNative.Component for now`
-        # #use_if_enabled(LiveViewNative.LiveComponent)
-
-        # use_if_enabled LiveViewNative.Component,
-        #   format: :swiftui,
-        #   as: :render_native
-
-        # LiveViewNative.Renderer.embed_templates("*.swiftui", format: :swiftui, name: :render_native)
-
-        use LiveViewNative.Component, format: :swiftui
-        unquote(Bonfire.UI.Common.Web.Native.helpers(:swiftui))
-        import LiveViewNative.Component, only: [csrf_token: 1]
-        import LiveViewNative.Renderer
-        unquote("#{Bonfire.UI.Common.filename_for_module_template(caller.module)}.swiftui")
-        |> LiveViewNative.Renderer.embed_templates(name: :render)
-        |> IO.inspect(label: "embed_templates layout")
       end
     end
 
@@ -684,18 +620,6 @@ defmodule Bonfire.UI.Common.Web do
 
         embed_templates("#{template_name}.mjml", suffix: "_mjml")
         embed_templates("#{template_name}.text", suffix: "_text")
-
-        use LiveViewNative.Component, format: :swiftui
-        unquote(Bonfire.UI.Common.Web.Native.helpers(:swiftui))
-        import LiveViewNative.Component, only: [csrf_token: 1]
-        import LiveViewNative.Renderer
-        unquote("#{Bonfire.UI.Common.filename_for_module_template(caller.module)}.swiftui")
-        |> LiveViewNative.Renderer.embed_templates(name: :render)
-        |> IO.inspect(label: "embed_templates layout")
-
-        # use_if_enabled LiveViewNative.Component,
-        #   format: :swiftui,
-        #   as: :render_native
       end
     end
 

@@ -39,7 +39,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
 
     urls
     |> Enum.reject(fn url ->
-      full_path = Path.join([dest, url, "index.html"])
+      full_path = Path.join([dest, url, "index.#{opts[:ext] || "html"}"])
       file_exists_not_expired(full_path)
     end)
     |> debug("expired or doesn't exist")
