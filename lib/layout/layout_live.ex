@@ -60,12 +60,12 @@ defmodule Bonfire.UI.Common.LayoutLive do
 
   def custom_theme_attr(config), do: DaisyTheme.style_attr(config) |> debug("custom theme style")
 
-  def render(_, assigns) do
-    render(assigns)
-  end
+  # def render(_, assigns) do
+  #   render(assigns)
+  # end
 
-  @decorate time()
-  render_sface_or_native(prepare_assigns_fn: :prepare_assigns)
+  # @decorate time()
+  # render_sface_or_native(prepare_assigns_fn: :prepare_assigns)
 
   @decorate time()
   def prepare_assigns(assigns) do

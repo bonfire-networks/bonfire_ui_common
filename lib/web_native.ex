@@ -51,7 +51,9 @@ if Bonfire.Common.Extend.module_enabled?(LiveViewNative) do
         defmodule SwiftUI do
           unquote(Web.live_view_helpers())
 
-          unquote(stateless_component(caller, format: :swiftui))
+          unquote(stateless_component(caller, format: :swiftui, as: :render))
+
+          @before_compile {Bonfire.UI.Common.Web.Native, :__live_mount_before_compile__}
         end
       end
     end
@@ -73,19 +75,20 @@ if Bonfire.Common.Extend.module_enabled?(LiveViewNative) do
       opts =
         opts
         |> Keyword.put_new(:format, :swiftui)
-        |> Keyword.take([:format])
-        |> Keyword.put(:as, :render)
+        |> Keyword.put_new(:as, :render_native)
+        |> Keyword.take([:format, :as])
 
       quote do
         use LiveViewNative.Component, unquote(opts)
 
         unquote(helpers(opts[:format]))
+        unquote(extra_helpers(opts[:format]))
         import LiveViewNative.Renderer
 
         unquote(
           "#{Bonfire.UI.Common.filename_for_module_template(caller.module)}.#{opts[:format]}"
         )
-        |> LiveViewNative.Renderer.embed_templates(name: :render)
+        |> LiveViewNative.Renderer.embed_templates(name: unquote(opts[:as]))
         |> IO.inspect(label: "embed_templates layout")
       end
     end
@@ -114,6 +117,7 @@ if Bonfire.Common.Extend.module_enabled?(LiveViewNative) do
 
           unquote(Web.live_view_helpers())
           unquote(helpers(opts[:format]))
+          unquote(extra_helpers(opts[:format]))
           import LiveViewNative.Component, only: [csrf_token: 1]
           import LiveViewNative.Renderer
 
@@ -122,6 +126,42 @@ if Bonfire.Common.Extend.module_enabled?(LiveViewNative) do
           |> IO.inspect(label: "embed_templates layout")
         end
       end
+    end
+
+    def core(caller, opts \\ []) do
+      opts =
+        opts
+        |> Keyword.put_new(:format, :swiftui)
+        |> Keyword.take([:format, :root])
+
+      quote do
+        use LiveViewNative.Component, unquote(opts)
+
+        unquote(Web.live_view_helpers())
+        unquote(helpers(opts[:format]))
+      end
+    end
+
+    def extra_helpers(format) do
+      plugin = LiveViewNative.fetch_plugin!(format)
+
+      shared_component_module =
+        Module.concat([Bonfire.UI.Common, SharedComponents, plugin.module_suffix])
+
+      shared_component_quoted =
+        try do
+          Code.ensure_compiled!(shared_component_module)
+
+          quote do
+            import unquote(shared_component_module)
+          end
+        rescue
+          _ -> nil
+        end
+
+      [
+        shared_component_quoted
+      ]
     end
 
     def helpers(format) do
@@ -151,12 +191,13 @@ if Bonfire.Common.Extend.module_enabled?(LiveViewNative) do
       core_component_module =
         Module.concat([Bonfire.UI.Common, CoreComponents, plugin.module_suffix])
 
-      core_component_quoted =
+      common_component_quoted =
         try do
           Code.ensure_compiled!(core_component_module)
 
           quote do
             import unquote(core_component_module)
+            import Phoenix.Component, except: [link: 1]
           end
         rescue
           _ -> nil
@@ -166,9 +207,53 @@ if Bonfire.Common.Extend.module_enabled?(LiveViewNative) do
         gettext_quoted,
         plugin_component_quoted,
         live_form_quoted,
-        core_component_quoted,
+        common_component_quoted,
         Bonfire.UI.Common.Web.verified_routes()
       ]
+    end
+
+    defmacro __live_update_before_compile__(env) do
+      live_update_before_compile(env)
+    end
+
+    defp live_update_before_compile(env) do
+      if Module.defines?(env.module, {:update, 2}) do
+        quote do
+          defoverridable update: 2
+
+          def update(assigns, socket) do
+            # FIXME?
+            undead_update(socket, fn ->
+              super(assigns, socket)
+            end)
+          end
+        end
+      end
+    end
+
+    defmacro __live_mount_before_compile__(env) do
+      live_mount_before_compile(env)
+    end
+
+    defp live_mount_before_compile(env) do
+      if Module.defines?(env.module, {:mount, 3}) do
+        quote do
+          defoverridable mount: 3
+
+          def mount(params, session, socket) do
+            # undead_mount(socket, fn ->
+            super(
+              params,
+              session,
+              socket
+              |> assign(module_default_assigns(Bonfire.UI.Common.LayoutLive))
+              # ^ because we need some default assigns app-wide
+            )
+
+            # end)
+          end
+        end
+      end
     end
 
     @doc """

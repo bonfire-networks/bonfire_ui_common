@@ -27,7 +27,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
     """
     attr :module, :atom, required: true
     attr :id, :string, required: true
-    attr :function, :atom, default: :render
+    attr :function, :atom, default: :render_native
     slot :default
 
     def stateful_component(assigns) do
@@ -43,7 +43,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
                |> assign_new(:streams, fn -> nil end)
                |> apply(assigns[:module], :mount, [...]),
              {:ok, assigns} <- apply(assigns[:module], :update, [assigns, assigns]) do
-          assign_new(assigns, :function, fn -> :render end)
+          assign_new(assigns, :function, fn -> :render_native end)
           |> debug("assi")
         else
           e ->
@@ -67,14 +67,14 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
     A special component that allows users to inject dynamic function components
     """
     attr :module, :atom, default: nil
-    attr :function, :atom, default: :render
+    attr :function, :atom, default: :render_native
     attr :id, :string, default: nil
     slot :default
 
     def stateless_component(assigns) do
       ~LVN"""
       <%= Phoenix.LiveView.TagEngine.component(
-            &apply(@module || __MODULE__, @function || :render, [&1]),
+            &apply(@module || __MODULE__, @function || :render_native, [&1]),
             assigns,
             {__ENV__.module, __ENV__.function, __ENV__.file, __ENV__.line}
           ) %>
