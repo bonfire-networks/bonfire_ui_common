@@ -1,1 +1,767 @@
-%{}
+%{
+  "aspectRatio(1, contentMode: .fill)" => [
+    {:aspectRatio,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "aspectRatio(1, contentMode: .fill)"
+     ],
+     [
+       1,
+       [
+         contentMode: {:.,
+          [
+            file: "bonfire_components.swiftui.ex",
+            line: 1,
+            module: "",
+            source: "aspectRatio(1, contentMode: .fill)"
+          ], [nil, :fill]}
+       ]
+     ]}
+  ],
+  "contextMenu(menuItems: :menu_items)" => [
+    {:contextMenu,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "contextMenu(menuItems: :menu_items)"
+     ], [[menuItems: :menu_items]]}
+  ],
+  "frame(width: 24, height: 24)" => [
+    {:frame,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "frame(width: 24, height: 24)"
+     ], [[width: 24, height: 24]]}
+  ],
+  "fontWeight(.semibold)" => [
+    {:fontWeight,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "fontWeight(.semibold)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "fontWeight(.semibold)"
+        ], [nil, :semibold]}
+     ]}
+  ],
+  "foregroundStyle(.white)" => [
+    {:foregroundStyle,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "foregroundStyle(.white)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "foregroundStyle(.white)"
+        ], [nil, :white]}
+     ]}
+  ],
+  "listRowBackground(:empty)" => [
+    {:listRowBackground,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "listRowBackground(:empty)"
+     ], [:empty]}
+  ],
+  "font(.subheadline)" => [
+    {:font,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "font(.subheadline)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "font(.subheadline)"
+        ], [nil, :subheadline]}
+     ]}
+  ],
+  "alert(attr(\"title\"), isPresented: attr(\"presented\"), actions: :actions, message: :message)" => [
+    {:alert,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "alert(attr(\"title\"), isPresented: attr(\"presented\"), actions: :actions, message: :message)"
+     ],
+     [
+       {:__attr__,
+        [
+          file: "core_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "alert(attr(\"title\"), isPresented: attr(\"presented\"), actions: :actions, message: :message)"
+        ], "title"},
+       [
+         isPresented: {:__attr__,
+          [
+            file: "core_components.swiftui.ex",
+            line: 1,
+            module: "",
+            source: "alert(attr(\"title\"), isPresented: attr(\"presented\"), actions: :actions, message: :message)"
+          ], "presented"},
+         actions: :actions,
+         message: :message
+       ]
+     ]}
+  ],
+  "offset(y: -4, x: 8)" => [
+    {:offset,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "offset(y: -4, x: 8)"
+     ], [[y: -4, x: 8]]}
+  ],
+  "tint(.red)" => [
+    {:tint,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "tint(.red)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "tint(.red)"
+        ], [nil, :red]}
+     ]}
+  ],
+  "font(.footnote)" => [
+    {:font,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "font(.footnote)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "font(.footnote)"
+        ], [nil, :footnote]}
+     ]}
+  ],
+  "buttonStyle(.borderedProminent)" => [
+    {:buttonStyle,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "buttonStyle(.borderedProminent)"
+     ],
+     [
+       {:.,
+        [
+          file: "core_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "buttonStyle(.borderedProminent)"
+        ], [nil, :borderedProminent]}
+     ]}
+  ],
+  "navigationSubtitle(:subtitle)" => [
+    {:navigationSubtitle,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "navigationSubtitle(:subtitle)"
+     ], [:subtitle]}
+  ],
+  "controlSize(.large)" => [
+    {:controlSize,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "controlSize(.large)"
+     ],
+     [
+       {:.,
+        [
+          file: "core_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "controlSize(.large)"
+        ], [nil, :large]}
+     ]}
+  ],
+  "padding(.leading, 0)" => [
+    {:padding,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "padding(.leading, 0)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "padding(.leading, 0)"
+        ], [nil, :leading]},
+       0
+     ]}
+  ],
+  "padding(.leading, 4)" => [
+    {:padding,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "padding(.leading, 4)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "padding(.leading, 4)"
+        ], [nil, :leading]},
+       4
+     ]}
+  ],
+  "bold(true)" => [
+    {:bold,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "bold(true)"
+     ], [true]}
+  ],
+  "clipShape(.circle)" => [
+    {:clipShape,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "clipShape(.circle)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "clipShape(.circle)"
+        ], [nil, :circle]}
+     ]}
+  ],
+  "navigationTitle(:title)" => [
+    {:navigationTitle,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "navigationTitle(:title)"
+     ], [:title]}
+  ],
+  "fill(Color.green)" => [
+    {:fill,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "fill(Color.green)"
+     ], [{:., [], [:Color, :green]}]}
+  ],
+  "listRowInsets(EdgeInsets())" => [
+    {:listRowInsets,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "listRowInsets(EdgeInsets())"
+     ],
+     [
+       {:EdgeInsets,
+        [
+          file: "core_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "listRowInsets(EdgeInsets())"
+        ], []}
+     ]}
+  ],
+  "foregroundStyle(.gray)" => [
+    {:foregroundStyle,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "foregroundStyle(.gray)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "foregroundStyle(.gray)"
+        ], [nil, :gray]}
+     ]}
+  ],
+  "fill(Color.indigo)" => [
+    {:fill,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "fill(Color.indigo)"
+     ], [{:., [], [:Color, :indigo]}]}
+  ],
+  "padding(.leading, 52)" => [
+    {:padding,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "padding(.leading, 52)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "padding(.leading, 52)"
+        ], [nil, :leading]},
+       52
+     ]}
+  ],
+  "sheet(isPresented: attr(\"presented\"), content: :content)" => [
+    {:sheet,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "sheet(isPresented: attr(\"presented\"), content: :content)"
+     ],
+     [
+       [
+         isPresented: {:__attr__,
+          [
+            file: "core_components.swiftui.ex",
+            line: 1,
+            module: "",
+            source: "sheet(isPresented: attr(\"presented\"), content: :content)"
+          ], "presented"},
+         content: :content
+       ]
+     ]}
+  ],
+  "buttonStyle(.bordered)" => [
+    {:buttonStyle,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "buttonStyle(.bordered)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "buttonStyle(.bordered)"
+        ], [nil, :bordered]}
+     ]}
+  ],
+  "foregroundStyle(.red)" => [
+    {:foregroundStyle,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "foregroundStyle(.red)"
+     ],
+     [
+       {:.,
+        [
+          file: "core_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "foregroundStyle(.red)"
+        ], [nil, :red]}
+     ]}
+  ],
+  "fill(Color.blue)" => [
+    {:fill,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "fill(Color.blue)"
+     ], [{:., [], [:Color, :blue]}]}
+  ],
+  "hidden()" => [
+    {:hidden,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "hidden()"
+     ], []}
+  ],
+  "fontWeight(.bold)" => [
+    {:fontWeight,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "fontWeight(.bold)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "fontWeight(.bold)"
+        ], [nil, :bold]}
+     ]}
+  ],
+  "padding(.bottom, 0)" => [
+    {:padding,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "padding(.bottom, 0)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "padding(.bottom, 0)"
+        ], [nil, :bottom]},
+       0
+     ]}
+  ],
+  "toolbar(content: :toolbar)" => [
+    {:toolbar,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "toolbar(content: :toolbar)"
+     ], [[content: :toolbar]]}
+  ],
+  "padding(.bottom, -28)" => [
+    {:padding,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "padding(.bottom, -28)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "padding(.bottom, -28)"
+        ], [nil, :bottom]},
+       -28
+     ]}
+  ],
+  "buttonStyle(.plain)" => [
+    {:buttonStyle,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "buttonStyle(.plain)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "buttonStyle(.plain)"
+        ], [nil, :plain]}
+     ]}
+  ],
+  "resizable()" => [
+    {:resizable,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "resizable()"
+     ], []}
+  ],
+  "font(.caption)" => [
+    {:font,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "font(.caption)"
+     ],
+     [
+       {:.,
+        [
+          file: "core_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "font(.caption)"
+        ], [nil, :caption]}
+     ]}
+  ],
+  "controlSize(.small)" => [
+    {:controlSize,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "controlSize(.small)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "controlSize(.small)"
+        ], [nil, :small]}
+     ]}
+  ],
+  "fill(Color.yellow)" => [
+    {:fill,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "fill(Color.yellow)"
+     ], [{:., [], [:Color, :yellow]}]}
+  ],
+  "badge(attr(\"count\"))" => [
+    {:badge,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "badge(attr(\"count\"))"
+     ],
+     [
+       {:__attr__,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "badge(attr(\"count\"))"
+        ], "count"}
+     ]}
+  ],
+  "offset(y: -28)" => [
+    {:offset,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "offset(y: -28)"
+     ], [[y: -28]]}
+  ],
+  "padding(12)" => [
+    {:padding,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "padding(12)"
+     ], [12]}
+  ],
+  "frame(width: 40, height: 40)" => [
+    {:frame,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "frame(width: 40, height: 40)"
+     ], [[width: 40, height: 40]]}
+  ],
+  "frame(maxWidth: .infinity)" => [
+    {:frame,
+     [
+       file: "core_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "frame(maxWidth: .infinity)"
+     ],
+     [
+       [
+         maxWidth: {:.,
+          [
+            file: "core_components.swiftui.ex",
+            line: 1,
+            module: "",
+            source: "frame(maxWidth: .infinity)"
+          ], [nil, :infinity]}
+       ]
+     ]}
+  ],
+  "padding(.top, 4)" => [
+    {:padding,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "padding(.top, 4)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "padding(.top, 4)"
+        ], [nil, :top]},
+       4
+     ]}
+  ],
+  "font(.caption2)" => [
+    {:font,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "font(.caption2)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "font(.caption2)"
+        ], [nil, :caption2]}
+     ]}
+  ],
+  "frame(width: 32, height: 32)" => [
+    {:frame,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "frame(width: 32, height: 32)"
+     ], [[width: 32, height: 32]]}
+  ],
+  "frame(width: 20, height: 20)" => [
+    {:frame,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "frame(width: 20, height: 20)"
+     ], [[width: 20, height: 20]]}
+  ],
+  "tabItem(:tab)" => [
+    {:tabItem,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "tabItem(:tab)"
+     ], [:tab]}
+  ],
+  "font(.callout)" => [
+    {:font,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "font(.callout)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "font(.callout)"
+        ], [nil, :callout]}
+     ]}
+  ],
+  "padding(.top, 8)" => [
+    {:padding,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "padding(.top, 8)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "padding(.top, 8)"
+        ], [nil, :top]},
+       8
+     ]}
+  ],
+  "padding(.top, 2)" => [
+    {:padding,
+     [
+       file: "bonfire_components.swiftui.ex",
+       line: 1,
+       module: "",
+       source: "padding(.top, 2)"
+     ],
+     [
+       {:.,
+        [
+          file: "bonfire_components.swiftui.ex",
+          line: 1,
+          module: "",
+          source: "padding(.top, 2)"
+        ], [nil, :top]},
+       2
+     ]}
+  ]
+}
