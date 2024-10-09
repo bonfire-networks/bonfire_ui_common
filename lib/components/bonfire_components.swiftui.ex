@@ -17,30 +17,10 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
 
     def main_header(assigns) do
       ~LVN"""
-      <VStack
-        style={@style}>
-        <%= if @show_search do %>
-          <ToolbarItem template="toolbar" placement="principal">
-            <Button
-              phx-click="go_to_search"
-              style={[
-              "frame(maxWidth: .infinity)",
-              "controlSize(.small)",
-              "foregroundStyle(.gray)",
-              "buttonStyle(.bordered)"]}>
-              <HStack style="frame(maxWidth: .infinity)">
-              <.icon name="magnifyingglass" />
-              <Text>Search</Text>
-              </HStack>
-            </Button>
-          </ToolbarItem>
-        <% else %>
-          <Text template="title"> <%= @page_title %></Text>
-        <% end %>
+      <VStack style={@style}>
+        <Text template="title"> <%= @page_title %></Text>
         <ToolbarItemGroup template="toolbar" placement="navigationBarTrailing">
-          <HStack>
           <%= render_slot(@toolbar_trailing) %>
-          </HStack>
         </ToolbarItemGroup>
         <ToolbarItemGroup template="toolbar" placement="navigation">
             <%= render_slot(@navigation_menu) %>
@@ -48,6 +28,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
         <VStack template="content">
           <%= render_slot(@header_menu) %>
         </VStack>
+          <!-- Group :if={@show_search} style='searchable(text: attr("query"))' query={""} phx-change="query-changed" / -->
       </VStack>
       """
     end
@@ -55,19 +36,19 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
     def user_preview(assigns) do
       ~LVN"""
         <HStack alignment="top">
-          <!--.image url={"https://images.squarespace-cdn.com/content/v1/5cad42ef90f904e520359371/1560899285008-UBUGYDVWRQT6CX1K9IAY/ursula.jpg"}>
+          <!-- .image url={"https://images.squarespace-cdn.com/content/v1/5cad42ef90f904e520359371/1560899285008-UBUGYDVWRQT6CX1K9IAY/ursula.jpg"}>
             <:success style={[
               "resizable();
               frame(width: 32, height: 32);
               clipShape(.circle);
               aspectRatio(1.777, contentMode: .fill);"]}  />
-          </.image -->
-            <Image name="Uklg" style={[
-              "resizable()",
-              "frame(width: 32, height: 32)",
-              "clipShape(.circle)",
-              "aspectRatio(1, contentMode: .fill)"
-            ]} />
+          </.image-->
+          <Image name="Uklg" style={[
+            "resizable()",
+            "frame(width: 32, height: 32)",
+            "clipShape(.circle)",
+            "aspectRatio(1, contentMode: .fill)"
+          ]} />
 
           <VStack alignment="leading" style="padding(.leading, 0); padding(.top, 4);">
             <Text style="font(.footnote); fontWeight(.bold)">Ursula K. Le Guin</Text>
@@ -143,7 +124,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
           </ZStack>
       </ZStack>
         <HStack style="padding(.leading, 4);">
-          <.link style="foregroundStyle(.black)" navigate={~p"/profile"}>
+          <.link style="" navigate={~p"/profile"}>
             <Text style="font(.callout); fontWeight(.semibold)">Ursula K. Le Guin</Text>
           </.link>
           <Spacer/>
@@ -182,8 +163,8 @@ if Code.ensure_loaded?(LiveViewNative.Component) do
         ]} />
         </.link>
         <HStack style="padding(.leading, 4);">
-          <.link style="foregroundStyle(.black)" navigate={~p"/profile"}>
-            <Text style="font(.callout); fontWeight(.semibold)">Ursula K. Le Guin</Text>
+          <.link style="foregroundStyle(.white);" navigate={~p"/profile"}>
+            <Text style=" font(.callout); fontWeight(.semibold)">Ursula K. Le Guin</Text>
           </.link>
           <Spacer/>
           <HStack>

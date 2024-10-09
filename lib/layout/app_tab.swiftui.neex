@@ -1,0 +1,19 @@
+<VStack>
+    <.tab_bar phx-change="select_tab" selection={@selected_tab}>
+    <.tab tag={:home} name="" icon_system_name="square.stack">
+        <%= if @selected_tab == :home, do: @inner_content %>
+    </.tab>
+    <.tab tag={:notifications} name="" icon_system_name="bell">
+        <%= if @selected_tab == :notifications, do: @inner_content %>
+    </.tab>
+    <.tab tag={:search} name="" icon_system_name="magnifyingglass">
+        <%= if @selected_tab == :search, do: @inner_content %>
+    </.tab>
+    <.tab tag={:direct_messages} name="" icon_system_name="tray">
+        <%= if @selected_tab == :direct_messages, do: @inner_content %>
+    </.tab>
+    <.tab tag={:profile} name="" icon_system_name="person.crop.circle">
+        <%= if @selected_tab == :profile, do: @inner_content %>
+    </.tab>
+    </.tab_bar>
+</VStack>

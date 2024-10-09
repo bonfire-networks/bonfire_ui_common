@@ -122,5 +122,4 @@ defmodule Bonfire.UI.Common.LayoutLive do
     #           empty?(e(assigns, :sidebar_widgets, :guests, :main, nil)))
     # end)
   end
-
 end
