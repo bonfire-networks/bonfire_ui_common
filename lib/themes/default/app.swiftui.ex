@@ -5,9 +5,9 @@ if Bonfire.Common.Extend.module_enabled?(LiveViewNative) do
     # Add your styles here
     # Refer to your client's documentation on what the proper syntax
     # is for defining rules within classes
-    ~SHEET"""
+    # ~SHEET"""
 
-    """
+    # """
 
     def class("main_header") do
       ~RULES"""
