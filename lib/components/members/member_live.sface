@@ -85,6 +85,23 @@
               class="text-error"
             />
           </li>
+          <li>
+            <StatelessComponent
+              module={maybe_component(Bonfire.UI.Social.Activity.DeleteObjectLive, @__context__)}
+              form_opts={%{"phx-submit" => "Bonfire.Me.Users:delete_user"}}
+              skip_permission_check
+              object={@user}
+              object_type_readable={l("user & data")}
+              creator_id={id(@user)}
+              parent_id={"delete-user-#{id(@user)}"}
+              open_btn_class="text-error"
+              hide_icon
+              explanation={l(
+                "WARNING: Deleting a user profile means that this user (%{username}) and all related data and activities will be deleted.",
+                username: Bonfire.Me.Characters.display_username(@user, true, true)
+              )}
+            />
+          </li>
           {!-- <li><LinkLive class="text-error" to="#">{l("Deactivate user")}</LinkLive></li> --}
         </ul>
       </div>
