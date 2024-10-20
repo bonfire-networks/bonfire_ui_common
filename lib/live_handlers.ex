@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
         "LiveHandler: handle_params for #{inspect(uri)} via #{source_module || "delegation"}"
       )
 
-      debug(fun)
+      # debug(fun)
 
       # LivePlugs.assign_default_params(params, uri, socket)
       with {:noreply, socket} <-
