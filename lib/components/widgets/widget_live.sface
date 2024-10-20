@@ -15,11 +15,7 @@
       skip_badges={@skip_badges}
     />
   {#match Surface.Component}
-    <div
-      :if={module_enabled?(@widget[:module], @__context__)}
-      class={@widget[:wrapper_class] || @wrapper_class}
-      data-type="widget"
-    >
+    <div class={@widget[:wrapper_class] || @wrapper_class} data-type="widget">
       <div :if={@with_title} class="text-base pb-3 font-medium">{@widget[:text] || @widget[:name]}</div>
       <StatelessComponent
         module={@widget[:module]}
@@ -31,11 +27,7 @@
       />
     </div>
   {#match Surface.LiveComponent}
-    <div
-      :if={module_enabled?(@widget[:module], @__context__)}
-      class={@widget[:wrapper_class] || @wrapper_class}
-      data-type="widget"
-    >
+    <div class={@widget[:wrapper_class] || @wrapper_class} data-type="widget">
       <div :if={@with_title} class="mt-4 mb-2 text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
       <StatefulComponent
         id={Text.random_string()}
@@ -48,6 +40,8 @@
       />
     </div>
   {#match nil}
+  {#match :disabled}
+    {"<!-- skipped disabled widget: #{@widget[:name]} -->"}
   {#match other}
-    {error(other) && "<-- invalid widget -->"}
+    {error(other) && "<!-- invalid widget -->"}
 {/case}

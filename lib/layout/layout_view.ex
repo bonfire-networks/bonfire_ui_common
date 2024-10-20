@@ -1,5 +1,6 @@
 defmodule Bonfire.UI.Common.LayoutView do
   use Bonfire.UI.Common.Web, :layout
+
   embed_templates "*.html"
 
   use_if_enabled(Bonfire.UI.Common.Web.Native, :layout)

@@ -1,4 +1,5 @@
-if Code.ensure_loaded?(LiveViewNative.Component) and Code.ensure_loaded?(LiveViewNative.LiveForm.Component) do
+if Code.ensure_loaded?(LiveViewNative.Component) and
+     Code.ensure_loaded?(LiveViewNative.LiveForm.Component) do
   defmodule Bonfire.UI.Common.CoreComponents.SwiftUI do
     @moduledoc """
     Provides core UI components built for SwiftUI.

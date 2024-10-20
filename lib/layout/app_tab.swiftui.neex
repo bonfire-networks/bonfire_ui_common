@@ -1,6 +1,6 @@
 <VStack>
     <.tab_bar phx-change="select_tab" selection={@selected_tab}>
-    <.tab tag={:home} name="" icon_system_name="square.stack">
+    <.tab tag={:home} name="" icon_system_name="square.stack"> 
         <%= if @selected_tab == :home, do: @inner_content %>
     </.tab>
     <.tab tag={:notifications} name="" icon_system_name="bell">

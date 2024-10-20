@@ -4,13 +4,17 @@
     {#match nav_items when is_list(nav_items) and nav_items != []}
       <div data-id="nav_links" data-showing-within={@showing_within}>
         {#for nav <- nav_items}
-          {#case List.wrap(nav)}
-            {#match nav when nav != []}
-              <li
-                :for={%{type: :link} = subnav <- nav}
-                :if={(!subnav[:exclude_from_nav] and is_nil(e(subnav, :module, nil))) or
-                  module_enabled?(e(subnav, :module, nil), @__context__)}
-              >
+          {!-- TODO: override widget[:module] with the result of maybe_module so it doesn't need to be run again in the widget --}
+          {#case nav
+            |> List.wrap()
+            |> Enum.filter(fn subnav ->
+              (!subnav[:exclude_from_nav] and is_nil(subnav[:module])) or
+                maybe_module(subnav[:module], @__context__)
+            end)}
+            {#match []}
+              {!-- no nav --}
+            {#match nav}
+              <li :for={%{type: :link} = subnav <- nav}>
                 <Bonfire.UI.Common.WidgetLive
                   showing_within={@showing_within}
                   widget={subnav}
@@ -20,23 +24,21 @@
                 />
               </li>
 
-              <div
-                :if={Enum.any?(nav, fn %{type: type} -> type != :link end)}
-                class="menu p-0 order-last"
-                data-id="nav_components"
-              >
-                <Bonfire.UI.Common.WidgetLive
-                  showing_within={@showing_within}
-                  :for={%{type: type} = subnav when type != :link <- nav}
-                  :if={is_nil(e(subnav, :module, nil)) or module_enabled?(e(subnav, :module, nil), @__context__)}
-                  widget={subnav}
-                  page={@page}
-                  selected_tab={@selected_tab}
-                  skip_badges={@skip_badges}
-                />
-              </div>
-            {#match _}
-              {!-- no nav --}
+              {#case Enum.filter(nav, fn %{type: type} -> type != :link end)}
+                {#match []}
+                  {!-- no nav widgets --}
+                {#match nav_widgets}
+                  <div class="menu p-0 order-last" data-id="nav_components">
+                    <Bonfire.UI.Common.WidgetLive
+                      :for={widget <- nav_widgets}
+                      showing_within={@showing_within}
+                      widget={widget}
+                      page={@page}
+                      selected_tab={@selected_tab}
+                      skip_badges={@skip_badges}
+                    />
+                  </div>
+              {/case}
           {/case}
         {/for}
       </div>

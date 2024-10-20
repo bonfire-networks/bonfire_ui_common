@@ -24,18 +24,28 @@ defmodule Bonfire.UI.Common.WidgetLive do
   prop skip_badges, :any, default: false
 
   def render(assigns) do
-    widget = widget(assigns[:widget], assigns[:__context__])
+    widget =
+      widget(assigns[:widget], assigns[:__context__])
+      |> debug("widgg")
 
-    # || Map.drop(widget, [:module, :type]))
-    data =
-      Enum.into(assigns[:data] || e(widget, :data, nil) || [], assigns[:extra_data] || %{})
-      |> debug("daaata")
+    if module =
+         Extend.maybe_module(widget[:module], assigns[:__context__])
+         |> debug("!maybe_module #{inspect(widget[:module])}") do
+      data =
+        Enum.into(assigns[:data] || e(widget, :data, nil) || [], assigns[:extra_data] || %{})
+        |> debug("widdata")
 
-    assigns
-    |> assign(
-      widget: widget,
-      data: data
-    )
+      assigns
+      |> assign(
+        widget: Map.merge(widget, %{module: module}),
+        data: data
+      )
+    else
+      debug(widget[:module], "disabled")
+
+      assigns
+      |> assign(widget: %{type: :disabled, name: widget[:module]})
+    end
     |> render_sface()
   end
 
