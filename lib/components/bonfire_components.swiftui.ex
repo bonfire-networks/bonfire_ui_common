@@ -1,4 +1,4 @@
-if Code.ensure_loaded?(LiveViewNative.Component) do
+if Code.ensure_loaded?(Bonfire.UI.Common.Web.Native) and Code.ensure_loaded?(Bonfire.UI.Common.CoreComponents.SwiftUI) do
   defmodule Bonfire.UI.Common.SharedComponents.SwiftUI do
     use Bonfire.UI.Common.Web.Native, :core
     use Bonfire.UI.Common
