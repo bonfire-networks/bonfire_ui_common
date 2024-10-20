@@ -26,8 +26,8 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
         cached_data()
       end)
       |> assign_new(:can_instance_wide, fn -> nil end)
-      |> render_sface()
     end
+    |> render_sface()
   end
 
   def cached_data,
