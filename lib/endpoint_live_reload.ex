@@ -10,7 +10,8 @@ defmodule Bonfire.UI.Common.Endpoint.LiveReload do
 
       # Code reloading can be explicitly enabled under the
       # :code_reloader configuration of your endpoint.
-      if Application.compile_env(:bonfire, :hot_code_reload) && unquote(code_reloading?) && Code.ensure_loaded?(Phoenix.LiveReloader.Socket) do
+      if Application.compile_env(:bonfire, :hot_code_reload) && unquote(code_reloading?) &&
+           Code.ensure_loaded?(Phoenix.LiveReloader.Socket) do
         socket("/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket)
         plug(Phoenix.LiveReloader)
         plug(Phoenix.CodeReloader)
