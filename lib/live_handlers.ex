@@ -212,6 +212,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
          socket
        ) do
     debug("LiveSelect: autocomplete: handle_event with {#{mod}, data}")
+    debug(data, "data")
     mod_delegate(mod, :handle_event, [event, data], socket)
   end
 
@@ -329,7 +330,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
           )
 
           apply(module, fun, args ++ [socket])
-          # |> debug("applied")
+          |> debug("applied")
         else
           if module != fallback and module_enabled?(fallback, socket) and
                function_exported?(fallback, fun, length(args) + 1) do

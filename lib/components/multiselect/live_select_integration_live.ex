@@ -7,8 +7,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
     # TODO: fix warning: instead of passing separate form and field attributes, pass a single field attribute of type Phoenix.HTML.FormField
     ~H"""
     <LiveSelect.live_select
-      form={@form}
-      field={@field}
+      field={@form[@field]}
       mode={@mode}
       phx-target={@event_target}
       options={@options}
@@ -53,7 +52,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
                 <%= e(option.value, :name, nil) || e(option.value, :profile, :name, nil) ||
                   e(option.value, :named, :name, nil) %>
               </p>
-              <p class="font-light text-base-content/70">
+              <p class="font-light -mt-0.5 text-base-content/70">
                 <%= e(option.value, :username, nil) || e(option.value, :character, :username, nil) %>
               </p>
             </div>

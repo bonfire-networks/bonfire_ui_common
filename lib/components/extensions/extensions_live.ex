@@ -13,21 +13,20 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
   prop settings_section_title, :string, default: "Bonfire extensions"
 
   def render(assigns) do
-    if socket_connected?(assigns) do
-      assigns
-      |> assign_new(:data, fn -> cached_data() end)
-      |> assign_new(:can_instance_wide, fn ->
-        Bonfire.Boundaries.can?(assigns[:__context__], :toggle, :instance)
-      end)
-      |> render_sface()
-    else
-      assigns
-      |> assign_new(:data, fn ->
-        cached_data()
-      end)
-      |> assign_new(:can_instance_wide, fn -> nil end)
-    end
-    |> render_sface()
+    assigns =
+      if socket_connected?(assigns) do
+        assigns
+        |> assign_new(:data, fn -> cached_data() end)
+        |> assign_new(:can_instance_wide, fn ->
+          Bonfire.Boundaries.can?(assigns[:__context__], :toggle, :instance)
+        end)
+      else
+        assigns
+        |> assign_new(:data, fn -> cached_data() end)
+        |> assign_new(:can_instance_wide, fn -> nil end)
+      end
+
+    render_sface(assigns)
   end
 
   def cached_data,
