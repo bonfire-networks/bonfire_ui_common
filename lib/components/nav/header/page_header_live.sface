@@ -12,21 +12,20 @@
         {#if @back}
           <Bonfire.UI.Common.BackButtonLive back={@back} />
         {#else}
-        <LinkLive
-          to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
-          class="group"
-        >
-
-          <Bonfire.UI.Common.AvatarLive
-            :if={is_map(current_user(@__context__))}
-            class="inline-block object-cover w-8 h-8 cursor-pointer"
-            src={Media.avatar_url(current_user(@__context__))}
-            user_id={current_user_id(@__context__)}
-          />
+          <LinkLive
+            to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
+            class="group"
+          >
+            <Bonfire.UI.Common.AvatarLive
+              :if={is_map(current_user(@__context__))}
+              class="inline-block object-cover w-8 h-8 cursor-pointer"
+              src={Media.avatar_url(current_user(@__context__))}
+              user_id={current_user_id(@__context__)}
+            />
           </LinkLive>
         {/if}
       </div>
-      
+
       <div class="flex flex-col text-center flex-1">
         <span class="first-letter:capitalize flex-1 font-semibold text-base-content">
           {@page_title}

@@ -49,7 +49,7 @@
   {#if !@hide_if_no_more}
     <#slot {@if_no_more}>
       <div class="flex items-center pt-3 my-3 place-content-center flex-col">
-        <img src="/images/bonfire-exausted.png" class="h-32 mx-auto" />
+        <img src="/images/bonfire-exausted.png" class="h-32 mx-auto">
         <p class="text-sm font-medium">{l("That's all folks...")}</p>
       </div>
     </#slot>

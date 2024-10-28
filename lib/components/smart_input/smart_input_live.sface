@@ -80,8 +80,8 @@
       <div class="flex flex-col h-full">
         <div class="flex w-full flex-1 h-full">
           <StatelessComponent
-            :if={Bonfire.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false}
-            module={maybe_component(Bonfire.Boundaries.Web.SetBoundariesLive, @__context__)}
+            :if={Bonfire.UI.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false}
+            module={maybe_component(Bonfire.UI.Boundaries.Web.SetBoundariesLive, @__context__)}
             to_boundaries={@to_boundaries}
             boundary_preset={@boundary_preset}
             to_circles={@to_circles}
@@ -104,7 +104,7 @@
         <StatefulComponent
           :if={maybe_apply(Bonfire.Boundaries.Web.SetBoundariesButtonLive, :clone_context, @to_boundaries) ==
             false}
-          module={maybe_component(Bonfire.Boundaries.Web.PreviewBoundariesLive, @__context__)}
+          module={maybe_component(Bonfire.UI.Boundaries.Web.PreviewBoundariesLive, @__context__)}
           id="boundaries_preview"
           preview_boundary_for_id={@preview_boundary_for_id}
           preview_boundary_for_username={@preview_boundary_for_username}

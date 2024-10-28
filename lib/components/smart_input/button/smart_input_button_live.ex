@@ -15,6 +15,5 @@ defmodule Bonfire.UI.Common.SmartInputButtonLive do
   prop showing_within, :atom, default: nil
 
   prop class, :css_class,
-    default:
-      "flex-row grow md:h-[40px] items-center normal-case gap-2 md:btn-sm btn btn-primary"
+    default: "flex-row grow md:h-[40px] items-center normal-case gap-2 md:btn-sm btn btn-primary"
 end

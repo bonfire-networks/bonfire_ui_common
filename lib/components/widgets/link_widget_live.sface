@@ -1,7 +1,7 @@
 <div
   class={
     @widget[:wrapper_class] || @wrapper_class,
-    "group":
+    group:
       not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
   }
   data-showing-within={@showing_within}

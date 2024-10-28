@@ -129,7 +129,7 @@
             <div class="flex flex-1 gap-2">
               {#if @create_object_type != :message && !e(@smart_input_opts, :recipients_editable, nil)}
                 <StatelessComponent
-                  module={maybe_component(Bonfire.Boundaries.Web.SetBoundariesButtonLive, @__context__)}
+                  module={maybe_component(Bonfire.UI.Boundaries.Web.SetBoundariesButtonLive, @__context__)}
                   to_boundaries={@to_boundaries}
                   boundary_preset={@boundary_preset}
                   preview_boundary_for_id={@preview_boundary_for_id}
@@ -214,7 +214,7 @@
         <input type="hidden" name={:create_object_type} value={@create_object_type}>
 
         <StatelessComponent
-          module={maybe_component(Bonfire.Boundaries.Web.BoundariesSelectionLive, @__context__)}
+          module={maybe_component(Bonfire.UI.Boundaries.Web.BoundariesSelectionLive, @__context__)}
           to_boundaries={@to_boundaries}
           to_circles={@to_circles}
           exclude_circles={@exclude_circles}

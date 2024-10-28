@@ -27,7 +27,7 @@
                 <!--
               removed for now to avoid hiding the feed (extra_contents)
                phx-click="Bonfire.UI.Common.OpenPreviewLive:close" -->
-                <#Icon outline="ChevronLeft" class="w-4 h-4 " />
+                <#Icon outline="ChevronLeft" class="w-4 h-4" />
               </button>
               <span class="max-w-[250px] md:max-w-max font-semibold text-base-content truncate text-ellipsis">{@title_text || l("Discussion")}</span>
             </div>

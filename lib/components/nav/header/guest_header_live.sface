@@ -1,10 +1,7 @@
 <div class="w-full  max-w-[640px] mx-auto">
   <div class="relative z-[999999] mx-auto !p-0 !m-0 navbar">
     <div class="flex-1 w-full navbar-start">
-      <Bonfire.UI.Common.LogoLinkLive
-        name_class="text-xl font-bold text-base-content block"
-        href="/"
-      />
+      <Bonfire.UI.Common.LogoLinkLive name_class="text-xl font-bold text-base-content block" href="/" />
     </div>
     <div class="flex-none">
       <ul class="menu menu-horizontal items-center gap-4 px-1">
