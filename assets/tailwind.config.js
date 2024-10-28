@@ -163,6 +163,12 @@ module.exports = {
 					error: "#ff5861",
 					"--rounded-btn": "0.25rem",
 				},
+				light: {
+					...require("daisyui/src/theming/themes")["light"],
+					"base-100": "#FAFAFA",
+					"--rounded-btn": "0.75rem",
+					"primary": "#3B51BB",
+				},
 			},
 			"cupcake",
 			"dark",

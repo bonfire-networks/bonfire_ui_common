@@ -1,10 +1,10 @@
 <div>
   <div class="">
-    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/20">
+    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
       <span>{l("User Interface Extensions / Themes")}</span>
     </div>
-    <div class="flex flex-col divide-y divide-base-content/20">
+    <div class="flex flex-col divide-y divide-base-content/10">
       {#for dep <- e(@data, :ui, nil) || @ui}
         <Bonfire.UI.Common.ExtensionsDetailsLive
           dep={with_extension_info(dep)}
@@ -16,11 +16,11 @@
     </div>
   </div>
   <div class="">
-    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/20">
+    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
       <span>{l("Feature Extensions")}</span>
     </div>
-    <div class="flex flex-col divide-y divide-base-content/20">
+    <div class="flex flex-col divide-y divide-base-content/10">
       {#for dep <- e(@data, :feature_extensions, nil) || @feature_extensions}
         <Bonfire.UI.Common.ExtensionsDetailsLive
           dep={with_extension_info(dep)}
@@ -33,14 +33,14 @@
   </div>
 
   <div class="">
-    <div class="p-4 gap-4 border-b border-base-content/20">
+    <div class="p-4 gap-4 border-b border-base-content/10">
       <!-- "flex items-center" <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
       <span class="text-xl font-bold">{l("Essential Extensions")}</span>
       <p class="text-sm mt-2 text-base-content/80">{l(
           "These extensions can't be disabled at the moment, but a lot of the functionality they provide can be overriden or extended by other extensions."
         )}</p>
     </div>
-    <div class="flex flex-col divide-y divide-base-content/20">
+    <div class="flex flex-col divide-y divide-base-content/10">
       {#for dep <- e(@data, :required, nil) || []}
         <Bonfire.UI.Common.ExtensionsDetailsLive
           dep={with_extension_info(dep)}

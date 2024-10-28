@@ -4,75 +4,115 @@ import {
 	offset,
 	autoUpdate,
 	computePosition,
-} from "@floating-ui/dom";
-let TooltipHooks = {};
-
-TooltipHooks.Tooltip = {
+  } from "@floating-ui/dom";
+  
+  let TooltipHooks = {};
+  
+  TooltipHooks.Tooltip = {
 	mounted() {
-		const tooltipWrapper = this.el;
-		// save as a variable the data-position attribute of the tooltipWrapper
-		const position = tooltipWrapper.getAttribute("data-position");
-		const button = this.el.querySelector(".tooltip-button");
-		const tooltip = this.el.querySelector(".tooltip");
-
-		function update() {
-			autoUpdate(button, tooltip, () => {
-				computePosition(button, tooltip, {
-					// Set the position of the tooltip based on the data-position attribute or "top" if not provided
-					placement: position || "top",
-					middleware: [offset(6), flip({ padding: 5 }), shift({ padding: 5 })],
-				}).then(({ x, y }) => {
-					Object.assign(tooltip.style, {
-						left: `${x}px`,
-						top: `${y}px`,
-					});
-				});
+	  const tooltipWrapper = this.el;
+	  const position = tooltipWrapper.getAttribute("data-position");
+	  const trigger = tooltipWrapper.getAttribute("data-trigger");
+	  const button = this.el.querySelector(".tooltip-button");
+	  const tooltip = this.el.querySelector(".tooltip");
+	  let showTimeout;
+	  let hideTimeout;
+	  let isHoveringButton = false;
+	  let isHoveringTooltip = false;
+  
+	  function update() {
+		autoUpdate(button, tooltip, () => {
+		  computePosition(button, tooltip, {
+			placement: position || "top",
+			middleware: [offset(6), flip({ padding: 5 }), shift({ padding: 5 })],
+		  }).then(({ x, y }) => {
+			Object.assign(tooltip.style, {
+			  left: `${x}px`,
+			  top: `${y}px`,
 			});
+		  });
+		});
+	  }
+  
+	  function showTooltip() {
+		clearTimeout(hideTimeout);
+		if (trigger === "hover") {
+		  clearTimeout(showTimeout);
+		  showTimeout = setTimeout(() => {
+			tooltip.style.display = 'block';
+			tooltip.style.pointerEvents = 'auto';
+			update();
+		  }, 800);
+		} else {
+		  tooltip.style.display = 'block';
+		  tooltip.style.pointerEvents = 'auto';
+		  update();
 		}
-
-		// toggle tooltip on click
-		// function showTooltip() {
-		//   tooltip.style.display = 'block';
-		//   update();
-		// }
-		// function hideTooltip() {
-		//   tooltip.style.display = '';
-		// }
-
-		function toggleTooltip() {
-			console.log("eeeeeeeee");
-			if (tooltip.style.display === "block") {
-				console.log("NO ERRORE");
-				tooltip.style.display = "";
-			} else {
-				console.log("QUI");
-				tooltip.style.display = "block";
-				update();
-			}
+	  }
+  
+	  function hideTooltip() {
+		// Only hide if both button and tooltip are not being hovered
+		if (!isHoveringButton && !isHoveringTooltip && trigger === "hover") {
+		  hideTimeout = setTimeout(() => {
+			clearTimeout(showTimeout);
+			tooltip.style.display = '';
+			tooltip.style.pointerEvents = '';
+		  }, 50); // Small delay to allow movement between elements
+		} else if (trigger !== "hover") {
+		  clearTimeout(showTimeout);
+		  tooltip.style.display = '';
+		  tooltip.style.pointerEvents = '';
 		}
-
-		// Hide tooltip if user clicks outside of it
+	  }
+  
+	  if (trigger === "hover") {
+		// Button hover handlers
+		button.addEventListener('mouseenter', () => {
+		  isHoveringButton = true;
+		  showTooltip();
+		});
+  
+		button.addEventListener('mouseleave', () => {
+		  isHoveringButton = false;
+		  hideTooltip();
+		});
+  
+		// Tooltip hover handlers
+		tooltip.addEventListener('mouseenter', () => {
+		  isHoveringTooltip = true;
+		  clearTimeout(hideTimeout);
+		  tooltip.style.display = 'block';
+		  tooltip.style.pointerEvents = 'auto';
+		});
+  
+		tooltip.addEventListener('mouseleave', () => {
+		  isHoveringTooltip = false;
+		  hideTooltip();
+		});
+  
+		// Focus handlers for accessibility
+		button.addEventListener('focus', showTooltip);
+		button.addEventListener('blur', hideTooltip);
+	  } else {
+		// Click behavior
+		button.addEventListener('click', () => {
+		  if (tooltip.style.display === 'block') {
+			hideTooltip();
+		  } else {
+			showTooltip();
+		  }
+		});
+  
+		// Handle clicks outside
 		document.addEventListener("click", (event) => {
-			const isClickInsideTooltip = tooltip.contains(event.target);
-			const isClickOnButton = button.contains(event.target);
-			if (
-				!isClickInsideTooltip &&
-				!isClickOnButton &&
-				tooltip.style.display === "block"
-			) {
-				tooltip.style.display = "";
-			}
+		  const isClickInsideTooltip = tooltip.contains(event.target);
+		  const isClickOnButton = button.contains(event.target);
+		  if (!isClickInsideTooltip && !isClickOnButton) {
+			hideTooltip();
+		  }
 		});
-
-		[
-			["click", toggleTooltip],
-			// ['mouseleave', hideTooltip],
-			// ['focus', showTooltip],
-			// ['blur', hideTooltip],
-		].forEach(([event, listener]) => {
-			button.addEventListener(event, listener);
-		});
+	  }
 	},
-};
-
-export { TooltipHooks };
+  };
+  
+  export { TooltipHooks };

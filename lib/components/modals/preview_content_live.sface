@@ -14,29 +14,29 @@
 
   {#if @show}
     <div id="the_preview_contents">
-      <div class="sticky block backdrop-blur-sm top-0 bg-base-100/70 z-[999]">
-        <div role="banner" class="flex items-center h-[60px] md:h-[56px] flex-1 w-full px-4">
+      <div class="sticky block backdrop-blur-sm top-2 mt-2 rounded-box shadow bg-base-100/70 z-[999]">
+        <div role="banner" class="flex items-center h-[48px] md:h-[48px] flex-1 w-full px-4">
           <div class="flex items-center w-full">
             <div class="flex items-center flex-1 w-full gap-2">
               <button
                 id="close_preview"
                 :hook="ClosePreview"
                 aria-label={l("Go back to the previous page")}
-                class="font-normal normal-case btn btn-sm btn-circle btn-ghost"
+                class="btn normal-case relative z-50 font-normal btn-outline btn-xs btn-circle !inline-flex"
               >
                 <!--
               removed for now to avoid hiding the feed (extra_contents)
                phx-click="Bonfire.UI.Common.OpenPreviewLive:close" -->
-                <#Icon outline="ChevronLeft" class="w-5 h-5 md:w-4 md:h-4 text-base-content" />
+                <#Icon outline="ChevronLeft" class="w-4 h-4 " />
               </button>
-              <span class="max-w-[250px] text-base-content md:max-w-max text-lg font-bold truncate text-ellipsis">{@title_text || l("Discussion")}</span>
+              <span class="max-w-[250px] md:max-w-max font-semibold text-base-content truncate text-ellipsis">{@title_text || l("Discussion")}</span>
             </div>
           </div>
         </div>
       </div>
       <div class="relative z-30">
         <div
-          class="p-0 z-[910] modal_invisible relative pb-1px md:pb-2 bg-base-100"
+          class="p-0 z-[910] modal_invisible relative pb-1px md:pb-2 rounded-xl shadow bg-base-100 mt-3"
           data-id="modal-contents"
         >
           <#slot>

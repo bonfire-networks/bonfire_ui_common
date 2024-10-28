@@ -8,7 +8,7 @@
         tabindex="0"
         role="menu"
         aria-orientation="vertical"
-        class="!block mt-1 relative z-50 rounded-xl shadow-xl dropdown_actions w-60 menu dropdown-content border border-base-content/20 bg-base-100"
+        class="!block mt-1 relative z-50 rounded-xl shadow-xl dropdown_actions w-60 menu dropdown-content border border-base-content/10 bg-base-100"
       >
         <li :if={code_link}><a href={code_link} target="_blank" class="">{l("View code repository")}</a></li>
         <li><LinkLive to={get_code_link(@dep)} class="">{l("View source code")}</LinkLive></li>

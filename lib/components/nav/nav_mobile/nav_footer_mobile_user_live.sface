@@ -23,7 +23,7 @@
 
   <!-- <div :if={current_user_id(@__context__)}>
     <Bonfire.UI.Common.SmartInputButtonLive
-      class="btn btn-circle btn-outline border-base-content/20 btn-sm"
+      class="btn btn-circle btn-outline border-base-content/10 btn-sm"
       showing_within={:smart_input}
       as_icon
       icon="carbon:add-large"

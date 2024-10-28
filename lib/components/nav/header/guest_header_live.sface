@@ -1,62 +1,43 @@
-<div class="w-full p-4 pt-0 pb-0  lg:pb-4 lg:px-0">
-  <div class="relative z-[999999] mx-auto bg-base-100 !p-0 !m-0 navbar">
+<div class="w-full  max-w-[640px] mx-auto">
+  <div class="relative z-[999999] mx-auto !p-0 !m-0 navbar">
     <div class="flex-1 w-full navbar-start">
       <Bonfire.UI.Common.LogoLinkLive
-        name_class="text-xl font-bold text-base-content tablet-lg:block hidden"
-        with_name
+        name_class="text-xl font-bold text-base-content block"
         href="/"
       />
     </div>
     <div class="flex-none">
-      <ul class="menu menu-horizontal items-center gap-2 px-1">
-        <li class="hidden lg:block">
-          <a
-            href="/about"
-            role="tab"
-            class={
-              "font-medium",
-              "btn-active": @selected_tab == :about
-            }
-          >{l("About")}</a>
-        </li>
-        {#if current_user_id(@__context__) ||
-            Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-          <li class="hidden lg:block">
-            <LinkLive
-              to="/users"
-              class={
-                "font-medium",
-                "btn-active": @selected_tab == :users
-              }
-            >{l("Users")}</LinkLive>
-          </li>
-        {/if}
+      <ul class="menu menu-horizontal items-center gap-4 px-1">
         <li class="hidden lg:block">
           <LinkLive
             to={path(:login, :index)}
             class={
-              "font-medium",
+              "btn btn-sm btn-primary",
               "btn-active": @selected_tab == :login
             }
           >{l("Login")}</LinkLive>
         </li>
 
         <div phx-hook="Tooltip" data-position="bottom-end" id="tooltip_more_menu" class="relative">
-          <label tabindex="0" role="button" class="tooltip-button btn btn-circle btn-sm btn-ghost">
-            <#Icon iconify="ri:menu-3-line" class="w-4 h-4" />
+          <label
+            class="tooltip-button btn btn-sm btn-circle btn-outline"
+            tabindex="0"
+            role="button"
+            id="guest-header-menu"
+            aria-haspopup="true"
+            aria-expanded="true"
+          >
+            <#Icon solid="DotsHorizontal" class="w-4 h-4 opacity/70" />
           </label>
           <ul
             tabindex="0"
             style=""
-            class="tooltip z-[9999] menu bg-base-100 shadow-sm border border-base-content/20 rounded-lg p-0.5 w-60 absolute top-0 left-0 hidden"
+            class="tooltip z-[99999999] menu shadow-lg bg-base-100 shadow-xl border border-base-content/10 rounded-xl w-60 absolute top-0 left-0 hidden"
           >
             {#if !current_account(@__context__)}
-              <li>
-                <LinkLive to={path(:login, :index)} class="text-primary">{l("Log in")}</LinkLive>
-              </li>
               {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
                 <li>
-                  <LinkLive to={path(:signup)} class="text-base-content">{l("Create an account")}</LinkLive>
+                  <LinkLive to={path(:signup)} class="btn max-w-full btn-primary">{l("Create an account")}</LinkLive>
                 </li>
               {/if}
             {#else}
@@ -67,7 +48,8 @@
               </li>
             {/if}
             <!-- <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LinkLive to={path(:signup)} class="text-base-content">{l("Create an account")}</LinkLive></li> -->
-            <li><LinkLive class="text-base-content" to="/conduct">{l("Code of conduct")}</LinkLive></li>
+            <li><LinkLive class="text-base-content" to="/about">{l("About")}</LinkLive></li>
+            <li><LinkLive class="text-base-content" to="/conduct">{l("Conduct")}</LinkLive></li>
             <li><LinkLive class="text-base-content" to="/privacy">{l("Privacy")}</LinkLive></li>
             {#if current_user_id(@__context__) ||
                 Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}

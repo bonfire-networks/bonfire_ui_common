@@ -34,8 +34,15 @@
   @apply bg-base-200;
 }
 
+
+.border-thread-active {
+  @apply !border-opacity-100;
+}
+
 .btn {
   font-weight: 500;
+  height: 36px;
+  min-height: 36px;
 }
 
 .btn.btn-sm {
@@ -44,11 +51,11 @@
 }
 
 .btn.btn-outline {
-  @apply border-base-content/30;
+  @apply border-base-content/10;
 }
 
 .badge.badge-outline {
-  @apply border-base-content/30;
+  @apply border-base-content/10;
 }
 
 body.no-scroll {
@@ -212,7 +219,7 @@ div#editor_milkdown_container[data-rendered="page"] {
 }
 
 .bonfire-dropdown-menu {
-  @apply p-0.5 menu shadow-xl bg-base-100 border rounded border-base-content/20;
+  @apply p-0.5 menu shadow-xl bg-base-100 border rounded border-base-content/10;
 }
 
 /* widget_link */
@@ -280,11 +287,11 @@ main[data-id="profile"][data-guest]
 }
 
 main[data-id="profile"][data-guest] div[data_id="profile_timeline"] {
-  @apply max-w-[680px] mx-auto md:border border-base-content/20;
+  @apply max-w-[680px] mx-auto md:border border-base-content/10;
 }
 
 main[data-id="profile"][data-guest] div[data_id="profile_posts"] {
-  @apply max-w-[680px] mx-auto md:border border-base-content/20;
+  @apply max-w-[680px] mx-auto md:border border-base-content/10;
 }
 
 div[data-id="nav_links"][data-showing-within="sidebar"]
@@ -310,7 +317,7 @@ div[data-id="main_section"][data-single-column] {
 }
 
 div[data-id="main_section"][data-single-column] {
-  @apply !border-none bg-base-100 shadow-none;
+  @apply !border-none shadow-none;
 }
 
 /* AVATAR */
@@ -459,15 +466,6 @@ article.unread-activity {
 }
 
 /* activity */
-article[data-id="activity"][data-rendered="thread"] {
-  @apply !pt-0 !pl-[3.25rem];
-}
-
-article[data-id="activity"][data-rendered="thread"]
-  [data-id="subject"]
-  a[data-id="subject_avatar"] {
-  @apply !-ml-[2.5rem];
-}
 
 article[data-id="activity"][data-rendered="media"] {
   @apply !pl-5;
@@ -535,13 +533,7 @@ div[data-id="activity_note"] div[data-rendered="thread"] {
   @apply cursor-default;
 }
 
-div[data-id="activity_note"][data-rendered="thread"][data-main-object] {
-  @apply !ml-[-40px] !mt-1;
-}
 
-div[data-id="media_list"][data-rendered="thread"][data-main-object] {
-  @apply !ml-[-40px];
-}
 
 div[data-id="activity_note"]
   div[data-id="object_body"][data-rendered="smart_input"] {
@@ -555,9 +547,6 @@ div[data-id="object_body"].prose h5 {
   @apply !text-[1.38em] !my-[0.5em];
 }
 
-div[data-id="activity_note"] div[data-id="object_body"][data-main-object] {
-  @apply md:prose-base md:prose-p:my-0;
-}
 
 div[data-id="activity_note"] div[data-inception] {
   @apply !text-base-content/80;

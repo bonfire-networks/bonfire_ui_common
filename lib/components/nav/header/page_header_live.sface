@@ -4,44 +4,37 @@
   x-ref="dialog"
   aria-modal="true"
   role="banner"
-  class="flex items-center h-[56px] flex-1 w-full"
+  class="flex flex-1 px-4 w-full transition-color duration-150 ease-in-out"
 >
   <div class="relative z-20 flex items-center w-full">
-    <div class="flex items-center justify-between w-full tablet-lg:flex-1">
-      <div class="flex items-center gap-3 flex-1">
-        <Bonfire.UI.Common.BackButtonLive :if={@back} back={@back} />
-        {#if !@back && current_user(@__context__)}
-          {!-- <div class="flex md:hidden flex-col -ml-[32px] place-content-center items-center flex-1">
-            <Bonfire.UI.Common.LogoLinkLive />
-          </div> --}
-          <div class="flex flex-col flex-1">
-            {#if is_nil(@page_title)}
-              <!-- <div role="status" class="animate-pulse">
-                <div class="h-2.5 bg-base-content/10 rounded-full w-60" />
-              </div> -->
-            {#else}
-              <span class="first-letter:capitalize flex-1 font-bold text-base-content">{@page_title}</span>
-            {/if}
-            <div :if={@extra} class="text-xs text-base-content/70">{@extra}</div>
-          </div>
+    <div class="flex items-center gap-3 justify-between w-full tablet-lg:flex-1">
+      <div class="flex-1 max-w-[120px]">
+        {#if @back}
+          <Bonfire.UI.Common.BackButtonLive back={@back} />
         {#else}
-          <div class="flex flex-col flex-1">
-            {#if is_nil(@page_title)}
-              <!-- <div role="status" class="animate-pulse">
-                <div class="h-2.5 bg-base-content/10 rounded-full w-60" />
-              </div> -->
-            {#else}
-              <span
-                class="first-letter:capitalize flex-1 font-bold text-base-content/90"
-                :if={not is_nil(@page_title)}
-              >{@page_title}</span>
-            {/if}
-            <div :if={@extra} class="text-xs text-base-content/70">{@extra}</div>
-          </div>
+        <LinkLive
+          to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
+          class="group"
+        >
+
+          <Bonfire.UI.Common.AvatarLive
+            :if={is_map(current_user(@__context__))}
+            class="inline-block object-cover w-8 h-8 cursor-pointer"
+            src={Media.avatar_url(current_user(@__context__))}
+            user_id={current_user_id(@__context__)}
+          />
+          </LinkLive>
         {/if}
       </div>
+      
+      <div class="flex flex-col text-center flex-1">
+        <span class="first-letter:capitalize flex-1 font-semibold text-base-content">
+          {@page_title}
+        </span>
+        <div :if={@extra} class="text-xs text-base-content/70">{@extra}</div>
+      </div>
 
-      <div class="flex items-center w-auto">
+      <div class="flex max-w-[120px] flex-1 justify-end items-center w-auto">
         {#if current_user(@__context__)}
           <#slot {@right_action}>
           </#slot>

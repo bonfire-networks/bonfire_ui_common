@@ -36,7 +36,7 @@
         data-focused={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
         class="w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-xl max-w-full bg-base-200 mx-auto z-[9999] shadow-xl md:right-4 top-0 md:top-auto md:bottom-4 md:w-[32rem] md:right-4 md:top-auto max-h-screen"
       >
-        <div class="w-full rounded-xl bg-gradient-to-t from-base-content/10 to-base-content/20 p-[0.05rem] flex flex-col flex-1 h-full grow">
+        <div class="w-full rounded-xl bg-gradient-to-t from-base-content/10 to-base-content/10 p-[0.05rem] flex flex-col flex-1 h-full grow">
           <div class="w-full rounded-xl bg-base-200 flex flex-col flex-1 h-full grow">
             {!-- "md:!w-[20rem] tablet-lg:block bottom-0": e(@smart_input_opts, :minimized, nil) == true, --}
 

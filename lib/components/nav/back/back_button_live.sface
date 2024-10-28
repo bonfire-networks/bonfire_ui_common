@@ -4,9 +4,9 @@
     phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
     :hook={"ClosePreview", from: Bonfire.UI.Common.PreviewContentLive}
     label={l("Go back to the previous page")}
-    class="btn font-normal normal-case btn-ghost btn-sm btn-circle !inline-flex"
+    class="btn normal-case relative z-50 font-normal btn-outline btn-xs btn-circle !inline-flex"
   >
-    <#Icon iconify="ion:chevron-back" class="w-4 h-4 opacity/70" />
+    <#Icon iconify="ion:chevron-back" class="w-4 h-4" />
   </button>
 {#elseif is_binary(@back) and @back != current_url(@__context__)}
   <LinkLive
@@ -14,7 +14,7 @@
     label={l("Go back to the previous page")}
     class="btn normal-case relative z-50 font-normal btn-outline btn-xs btn-circle !inline-flex"
   >
-    <#Icon iconify="ion:chevron-back" class="w-4 h-4 opacity/70" />
+    <#Icon iconify="ion:chevron-back" class="w-4 h-4" />
   </LinkLive>
 {#elseif @back}
   <a
@@ -26,6 +26,6 @@
     aria-label={l("Go back to the previous page")}
     class="btn normal-case relative z-50 font-normal btn-outline btn-xs btn-circle !inline-flex"
   >
-    <#Icon iconify="ion:chevron-back" class="w-4 h-4 opacity/70" />
+    <#Icon iconify="ion:chevron-back" class="w-4 h-4" />
   </a>
 {/if}
