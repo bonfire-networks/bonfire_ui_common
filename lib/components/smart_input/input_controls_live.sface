@@ -70,7 +70,7 @@
               class="emoji-button btn btn-ghost btn-sm text-[22px] btn-circle"
             >
               {!-- NOTE: triggered using .emoji-button in milkdown JS hook --}
-              <#Icon iconify="ri:emotion-happy-line" class="w-4 h-4 text-base-content/70" />
+              <#Icon iconify="ri:emotion-happy-line" class="w-4 h-4" />
             </button>
 
             <div
@@ -89,18 +89,30 @@
                 class="swap items-center btn btn-ghost btn-sm btn-circle btn_cw_toggle"
               >
                 <input type="checkbox" name="sensitive">
-                <#Icon iconify="ri:alert-line" class="swap-off w-4 h-4 text-base-content/60" />
-                <#Icon iconify="ri:alert-fill" class="swap-on w-4 h-4 text-base-content/60" />
+                <#Icon iconify="ri:alert-line" class="swap-off w-4 h-4" />
+                <#Icon iconify="ri:alert-fill" class="swap-on w-4 h-4" />
               </label>
             </div>
 
-            <button id="bold_btn" type="button" class="bold_btn btn btn-ghost btn-sm btn-circle">
+            <button
+              :if={@enable_thread_title}
+              type="button"
+              phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
+                "#smart_input_thread_title",
+                ".btn_title_toggle",
+                "btn-active"
+              )}
+              class="title-button btn btn-ghost btn-sm text-[22px] btn-circle"
+            >
+              <#Icon iconify="solar:text-bold" class="w-4 h-4" />
+            </button>
+            <!-- <button id="bold_btn" type="button" class="bold_btn btn btn-ghost btn-sm btn-circle">
               <#Icon iconify="ri:bold" class="w-4 h-4 text-base-content/60" />
             </button>
 
             <button id="italic_btn" type="button" class="italic_btn btn btn-ghost btn-sm btn-circle">
               <#Icon iconify="ri:italic" class="w-4 h-4 text-base-content/60" />
-            </button>
+            </button> -->
             <!-- <div phx-hook="Tooltip" id="wyswyg_actions" class="">
               <label tabindex="0" class="tooltip-button btn btn-ghost btn-sm btn-circle">
                 <#Icon iconify="ic:baseline-text-format" class="w-5 h-5 text-base-content/60" />
@@ -126,7 +138,7 @@
                 </li>
               </ul>
             </div> -->
-            <div class="flex flex-1 gap-2">
+            <div class="flex gap-2">
               {#if @create_object_type != :message && !e(@smart_input_opts, :recipients_editable, nil)}
                 <StatelessComponent
                   module={maybe_component(Bonfire.UI.Boundaries.Web.SetBoundariesButtonLive, @__context__)}
@@ -138,55 +150,15 @@
                   to_circles={@to_circles}
                 />
               {/if}
-              <div phx-hook="Tooltip" class="hidden md:block" id="additional_actions">
-                <label tabindex="0" class="tooltip-button btn btn-ghost btn-sm btn-circle">
-                  <#Icon solid="DotsHorizontal" class="w-5 h-5 text-base-content/60" />
-                </label>
-                <ul
-                  tabindex="0"
-                  class="tooltip p-1 z-50 menu shadow bg-base-200 rounded absolute top-0 left-0 hidden w-52"
-                >
-                  <li :if={module_enabled?(Bonfire.Boundaries.Web.PreviewBoundariesLive, @__context__)}>
-                    <button
-                      type="button"
-                      phx-click={JS.show(to: "#boundaries_preview")
-                      |> JS.hide(to: "#composer_container")}
-                      class="flex items-center"
-                      title={l("Preview boundaries")}
-                    >
-                      <#Icon iconify="mdi:eye-outline" class="w-4 h-4 gap-2 !text-base-content/70" />
-                      <span class="text-base-content/70 text-sm">{l("Preview boundaries")}</span>
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      :if={@enable_thread_title}
-                      type="button"
-                      phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
-                        "#smart_input_thread_title",
-                        ".btn_title_toggle",
-                        "btn-active"
-                      )}
-                      class="flex items-center gap-2 btn_title_toggle"
-                    >
-                      <#Icon iconify="solar:text-bold" class="w-4 h-4 text-base-content/70" />
-                      <span class="text-sm text-base-content">{l("Add a title")}</span>
-                    </button>
-                  </li>
-                  <!-- <li>
-                    <button
-                      phx-click={LiveHandler.minimize()}
-                      phx-target="#smart_input"
-                      type="button"
-                      class="flex items-center gap-2"
-                    >
-                      {!-- x-on:click=" ... ; smart_input_fullscreen = false" --}
-                      <#Icon solid="Minus" class="w-4 h-4 text-base-content/70" />
-                      <span class="text-sm text-base-content/70">{l("Minimize")}</span>
-                    </button>
-                  </li> -->
-                </ul>
-              </div>
+              <button
+                type="button"
+                phx-click={JS.show(to: "#boundaries_preview")
+                |> JS.hide(to: "#composer_container")}
+                class="preview-button btn btn-ghost btn-sm text-[22px] btn-circle"
+                title={l("Preview boundaries")}
+              >
+                <#Icon iconify="mdi:eye-outline" class="w-4 h-4" />
+              </button>
             </div>
 
             <button

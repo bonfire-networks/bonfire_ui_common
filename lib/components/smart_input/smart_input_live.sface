@@ -102,7 +102,7 @@
     <div class="hidden flex-1 h-full grow" id="boundaries_preview">
       <div class="flex flex-col h-full">
         <StatefulComponent
-          :if={maybe_apply(Bonfire.Boundaries.Web.SetBoundariesButtonLive, :clone_context, @to_boundaries) ==
+          :if={maybe_apply(Bonfire.UI.Boundaries.Web.SetBoundariesButtonLive, :clone_context, @to_boundaries) ==
             false}
           module={maybe_component(Bonfire.UI.Boundaries.Web.PreviewBoundariesLive, @__context__)}
           id="boundaries_preview"

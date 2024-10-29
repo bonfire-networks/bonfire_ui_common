@@ -87,66 +87,66 @@ module.exports = {
 				90: "22rem",
 				96: "26rem",
 			},
-			typography: (theme) => ({
-				DEFAULT: {
-					css: {
-						"blockquote p:first-of-type::before": { content: "none" },
-						"blockquote p:first-of-type::after": { content: "none" },
-						css: {
-							h1: {
-								margin: 0,
-							},
-							h2: {
-								margin: 0,
-							},
-							h3: {
-								margin: 0,
-							},
-						},
-					},
-				},
-				sm: {
-					css: {
-						fontSize: "15px",
-						h1: {
-							margin: 0,
-						},
-						h2: {
-							margin: 0,
-						},
-						h3: {
-							margin: 0,
-						},
-						p: {
-							margin: 0,
-							lineHeight: "20px",
-						},
-						li: {
-							lineHeight: "20px",
-						},
-					},
-				},
-				lg: {
-					css: {
-						h1: {
-							margin: 0,
-						},
-						h2: {
-							margin: 0,
-						},
-						h3: {
-							margin: 0,
-						},
-						p: {
-							margin: 0,
-							lineHeight: "20px",
-						},
-						li: {
-							lineHeight: "20px",
-						},
-					},
-				},
-			}),
+			// typography: (theme) => ({
+			// 	DEFAULT: {
+			// 		css: {
+			// 			"blockquote p:first-of-type::before": { content: "none" },
+			// 			"blockquote p:first-of-type::after": { content: "none" },
+			// 			css: {
+			// 				h1: {
+			// 					margin: 0,
+			// 				},
+			// 				h2: {
+			// 					margin: 0,
+			// 				},
+			// 				h3: {
+			// 					margin: 0,
+			// 				},
+			// 			},
+			// 		},
+			// 	},
+			// 	sm: {
+			// 		css: {
+			// 			fontSize: "15px",
+			// 			h1: {
+			// 				margin: 0,
+			// 			},
+			// 			h2: {
+			// 				margin: 0,
+			// 			},
+			// 			h3: {
+			// 				margin: 0,
+			// 			},
+			// 			p: {
+			// 				margin: 0,
+			// 				lineHeight: "20px",
+			// 			},
+			// 			li: {
+			// 				lineHeight: "20px",
+			// 			},
+			// 		},
+			// 	},
+			// 	lg: {
+			// 		css: {
+			// 			h1: {
+			// 				margin: 0,
+			// 			},
+			// 			h2: {
+			// 				margin: 0,
+			// 			},
+			// 			h3: {
+			// 				margin: 0,
+			// 			},
+			// 			p: {
+			// 				margin: 0,
+			// 				lineHeight: "20px",
+			// 			},
+			// 			li: {
+			// 				lineHeight: "20px",
+			// 			},
+			// 		},
+			// 	},
+			// }),
 		},
 	},
 	daisyui: {

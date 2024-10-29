@@ -40,7 +40,7 @@ defmodule Bonfire.UI.Common.InputControlsLive do
     |> assign(
       :boundary_preset,
       Bonfire.Common.Utils.maybe_apply(
-        Bonfire.Boundaries.Web.SetBoundariesLive,
+        Bonfire.UI.Boundaries.Web.SetBoundariesLive,
         :boundaries_to_preset,
         [assigns[:to_boundaries]]
       )
