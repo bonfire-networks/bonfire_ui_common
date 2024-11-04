@@ -26,12 +26,12 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       tags_container_class="flex flex-wrap gap-1 pt-2 order-last"
     >
       <:option :let={option}>
-        <div class="flex gap-2 items-center">
+        <div class="flex py-1 gap-2 items-center">
           <%= if Map.has_key?(option.value, :type) && option.value.type == "circle" do %>
-            <span class="w-8 h-8 rounded-full bg-base-content/10 flex items-center place-content-center">
+            <span class="w-8 h-8 rounded-full bg-info/10 flex items-center place-content-center">
               <div
-                iconify="fluent:people-list-16-filled"
-                class="inline-block w-5 h-5 text-base-content/70"
+                iconify="pajamas:group"
+                class="inline-block w-4 h-4 text-base-content"
                 aria-hidden="true"
               >
               </div>

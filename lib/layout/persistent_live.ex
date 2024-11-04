@@ -51,6 +51,17 @@ defmodule Bonfire.UI.Common.PersistentLive do
      |> debug("socket prepared via session"), layout: false}
   end
 
+  def update(%{to_circles: new_to_circles} = assigns, socket) do
+    {:ok,
+     socket
+     |> assign(assigns)
+     |> assign(:to_circles, new_to_circles)
+     |> assign_global(
+       _already_live_selected_:
+         Enum.uniq(e(assigns(socket), :__context, :_already_live_selected_, []) ++ [:to_circles])
+     )}
+  end
+
   # def handle_info(:clear_flash, socket) do
   #   {:noreply,  socket |> clear_flash()}
   # end
