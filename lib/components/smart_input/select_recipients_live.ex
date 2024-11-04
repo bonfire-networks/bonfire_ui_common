@@ -91,17 +91,21 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
         name = e(user, :profile, :name, nil)
         username = e(user, :character, :username, nil)
 
-        {"#{name} - #{username}",
-         %{
-           id: id(user),
-           field: :to_circles,
-           name: name,
-           icon: Media.avatar_url(user),
-           username: username
-         }}
+        if is_nil(name) and is_nil(username) do
+          nil
+        else
+          {"#{name} - #{username}",
+           %{
+             id: id(user),
+             field: :to_circles,
+             name: name,
+             icon: Media.avatar_url(user),
+             username: username
+           }}
+        end
     end)
     # Filter to remove any nils
-    |> Enum.filter(fn {name, _} -> name != nil end)
+    |> Enum.reject(&is_nil/1)
     # show only the first 4 results
     |> Enum.take(4)
     |> debug()
