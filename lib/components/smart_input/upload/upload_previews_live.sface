@@ -1,5 +1,5 @@
 <div :if={Enum.count(@uploads.files.entries) > 0} class="p-2 uploads_preview">
-  <div class="flex flex-col p-2 bg-base-content/5 gap-2">
+  <div class="flex flex-col p-2 bg-base-content/5 gap-2 rounded-xl">
     {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
       <article
         id={"upload-preview-#{i}"}
@@ -85,13 +85,13 @@
 
         <button
           type="button"
-          class="btn-ghost btn-sm btn btn-square btn-sm"
+          class="btn-outline btn-xs btn btn-circle"
           phx-click="Bonfire.UI.Common.SmartInput:cancel-upload"
           phx-target="#smart_input"
           phx-value-ref={entry.ref}
           aria-label="cancel"
         >
-          <#Icon iconify="carbon:close" class="w-5 h-5" />
+          <#Icon iconify="carbon:close" class="w-4 h-4" />
           <span class="sr-only">{l("Delete")}</span>
         </button>
         {!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 --}

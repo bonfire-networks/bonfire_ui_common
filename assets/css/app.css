@@ -818,6 +818,10 @@ body {
   border: none;
 }
 
+.modal-box {
+  @apply !overflow-y-visible;
+}
+
 .add_to_circle .modal-box {
   @apply !px-0;
 }
