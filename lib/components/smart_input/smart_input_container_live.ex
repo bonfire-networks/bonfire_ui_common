@@ -94,7 +94,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
      #    )
      #  end)
      |> assign(smart_input_opts: Map.merge(old_smart_input_opts, new_smart_input_opts))
-     |> Bonfire.UI.Boundaries.LiveHandler.prepare_assigns()}
+     |> Bonfire.Boundaries.LiveHandler.prepare_assigns()}
   end
 
   # def update(%{set_smart_input_text_if_empty: text} = assigns, %{assigns: %{smart_input_opts: smart_input_opts}} = socket) do
@@ -124,7 +124,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       :ok,
       socket
       |> assign(assigns)
-      |> Bonfire.UI.Boundaries.LiveHandler.prepare_assigns()
+      |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
       # TODO: only trigger if module enabled ^
     }
   end
@@ -135,6 +135,6 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
         socket
       ) do
     socket
-    |> Bonfire.UI.Boundaries.LiveHandler.prepare_assigns()
+    |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
   end
 end

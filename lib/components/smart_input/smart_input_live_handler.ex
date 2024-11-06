@@ -166,7 +166,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
              "tagify_remove",
              "remove_circle"
            ] do
-    maybe_apply(Bonfire.UI.Boundaries.LiveHandler, :handle_event, [action, params, socket])
+    maybe_apply(Bonfire.Boundaries.LiveHandler, :handle_event, [action, params, socket])
   end
 
   # needed for uploads
@@ -196,7 +196,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def handle_event("select", params, socket) do
-    Bonfire.UI.Boundaries.LiveHandler.handle_event("select", params, socket)
+    Bonfire.Boundaries.LiveHandler.handle_event("select", params, socket)
   end
 
   def handle_event("cancel-upload", %{"ref" => ref}, socket) do
