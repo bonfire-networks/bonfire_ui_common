@@ -1,13 +1,18 @@
 defmodule Bonfire.UI.Common.SEOImage do
   use Untangle
+  alias Bonfire.Common.Extend
 
   def generate_path(id, author_id, title, body, author, image \\ nil) do
     filename = og_image_paths(id, author_id)
 
     if not File.exists?(filename) do
-      with {:ok, filename} <- generate_og_image(filename, title, body, author, image) do
+      with true <- Extend.module_enabled?(Image) and Extend.module_enabled?(Vix.Vips.Operation), 
+      {:ok, filename} <- generate_og_image(filename, title, body, author, image) do
         filename
       else
+        false -> 
+          # necessary libs not available
+          nil
         e ->
           error(e)
           nil
