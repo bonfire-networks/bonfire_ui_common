@@ -316,50 +316,70 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   defp maybe_delegate_handle_params(_, _, socket), do: empty(socket)
 
   def mod_delegate(mod, fun, args, socket, no_delegation_fn \\ &no_live_handler/2) do
-    # debug("attempt delegating to #{inspect fun} in #{inspect mod}...")
-    fallback =
-      if(is_atom(mod), do: mod, else: maybe_to_module(mod))
-      |> debug("fallback")
+    handler_chain = Map.get(socket.assigns, :__handler_chain, [])
 
-    case maybe_to_module("#{mod}.LiveHandler") || fallback do
-      module when is_atom(module) and not is_nil(module) ->
-        if module_enabled?(module, socket) do
-          debug(
-            args,
-            "LiveHandler: delegating to #{inspect(fun)} in #{module} with args"
-          )
+    if mod in handler_chain do
+      warn("Circular handler delegation detected: #{inspect(handler_chain ++ [mod])}")
+      no_delegation_fn.({fun, List.first(args)}, socket)
+    else
+      socket = assign(socket, :__handler_chain, handler_chain ++ [mod])
+      # debug("attempt delegating to #{inspect fun} in #{inspect mod}...")
+      fallback =
+        if(is_atom(mod), do: mod, else: maybe_to_module(mod))
+        |> debug("fallback")
 
-          apply(module, fun, args ++ [socket])
-          |> debug("applied")
-        else
-          if module != fallback and module_enabled?(fallback, socket) and
-               function_exported?(fallback, fun, length(args) + 1) do
+      case maybe_to_module("#{mod}.LiveHandler") || fallback do
+        module when is_atom(module) and not is_nil(module) ->
+          if module_enabled?(module, socket) do
             debug(
               args,
-              "LiveHandler: delegating to fallback module #{inspect(fallback)} in #{module} with args"
+              "LiveHandler: delegating to #{inspect(fun)} in #{module} with args"
             )
 
-            apply(fallback, fun, args ++ [socket])
+            apply(module, fun, args ++ [socket])
+            |> debug("applied")
           else
-            warn(module, "LiveHandler: handler module not enabled")
-            no_delegation_fn.({fun, List.first(args)}, socket)
-          end
-        end
+            if module != fallback and module_enabled?(fallback, socket) and
+                 function_exported?(fallback, fun, length(args) + 1) do
+              debug(
+                args,
+                "LiveHandler: delegating to fallback module #{inspect(fallback)} in #{module} with args"
+              )
 
-      _ ->
-        debug(mod, "LiveHandler: no handler to delegate to for")
-        no_delegation_fn.({fun, List.first(args)}, socket)
+              apply(fallback, fun, args ++ [socket])
+            else
+              warn(module, "LiveHandler: handler module not enabled")
+              no_delegation_fn.({fun, List.first(args)}, socket)
+            end
+          end
+
+        _ ->
+          debug(mod, "LiveHandler: no handler to delegate to for")
+          no_delegation_fn.({fun, List.first(args)}, socket)
+      end
     end
   end
 
-  defp no_live_handler({:handle_event, event}, socket),
-    do:
-      {:noreply,
-       socket
-       |> assign_generic(
-         :__no_live_event_handler__,
-         (assigns(socket)[:__no_live_event_handler__] || %{}) |> Map.put(event, true)
-       )}
+  defp clean_no_handler_map(socket) do
+    current = assigns(socket)[:__no_live_event_handler__] || %{}
+    # arbitrary limit
+    if map_size(current) > 100 do
+      debug("LiveHandler: cleaning up __no_live_event_handler__ map")
+      assign_generic(socket, :__no_live_event_handler__, %{})
+    else
+      socket
+    end
+  end
+
+  defp no_live_handler({:handle_event, event}, socket) do
+    socket
+    |> assign_generic(
+      :__no_live_event_handler__,
+      (assigns(socket)[:__no_live_event_handler__] || %{}) |> Map.put(event, true)
+    )
+    |> clean_no_handler_map()
+    |> empty()
+  end
 
   defp no_live_handler(_, socket), do: empty(socket)
   defp empty(socket), do: {:noreply, socket}
