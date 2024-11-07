@@ -1,6 +1,6 @@
 arrows = "~> 0.2"
 untangle = "~> 0.3"
-iconify_ex = "~> 0.4"
+iconify_ex = "~> 0.6"
 jason = "~> 1.4.0" # json parsing
 # phoenix framework:
 surface = "~> 0.12.0"
