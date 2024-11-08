@@ -323,40 +323,41 @@ defmodule Bonfire.UI.Common.LiveHandlers do
       no_delegation_fn.({fun, List.first(args)}, socket)
     else
       socket = assign(socket, :__handler_chain, handler_chain ++ [mod])
-      # debug("attempt delegating to #{inspect fun} in #{inspect mod}...")
-      fallback =
-        if(is_atom(mod), do: mod, else: maybe_to_module(mod))
-        |> debug("fallback")
 
-      case maybe_to_module("#{mod}.LiveHandler") || fallback do
-        module when is_atom(module) and not is_nil(module) ->
-          if module_enabled?(module, socket) do
-            debug(
-              args,
-              "LiveHandler: delegating to #{inspect(fun)} in #{module} with args"
-            )
+      # Delegation logic
+      result =
+        case maybe_to_module("#{mod}.LiveHandler") || mod do
+          module when is_atom(module) and not is_nil(module) ->
+            if module_enabled?(module, socket) and
+                 function_exported?(module, fun, length(args) + 1) do
+              debug(args, "LiveHandler: delegating to #{inspect(fun)} in #{module} with args")
 
-            apply(module, fun, args ++ [socket])
-            |> debug("applied")
-          else
-            if module != fallback and module_enabled?(fallback, socket) and
-                 function_exported?(fallback, fun, length(args) + 1) do
-              debug(
-                args,
-                "LiveHandler: delegating to fallback module #{inspect(fallback)} in #{module} with args"
-              )
-
-              apply(fallback, fun, args ++ [socket])
+              apply(module, fun, args ++ [socket])
+              |> debug("applied")
             else
-              warn(module, "LiveHandler: handler module not enabled")
+              warn(module, "LiveHandler: handler module not enabled or function not exported")
               no_delegation_fn.({fun, List.first(args)}, socket)
             end
-          end
 
-        _ ->
-          debug(mod, "LiveHandler: no handler to delegate to for")
-          no_delegation_fn.({fun, List.first(args)}, socket)
-      end
+          _ ->
+            debug(mod, "LiveHandler: no handler to delegate to")
+            no_delegation_fn.({fun, List.first(args)}, socket)
+        end
+
+      # Reset the handler chain in the returned socket
+      result =
+        case result do
+          {:noreply, socket} ->
+            {:noreply, assign(socket, :__handler_chain, [])}
+
+          {reply, socket} ->
+            {reply, assign(socket, :__handler_chain, [])}
+
+          other ->
+            other
+        end
+
+      result
     end
   end
 
@@ -373,11 +374,11 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   defp no_live_handler({:handle_event, event}, socket) do
     socket
+    |> clean_no_handler_map()
     |> assign_generic(
       :__no_live_event_handler__,
       (assigns(socket)[:__no_live_event_handler__] || %{}) |> Map.put(event, true)
     )
-    |> clean_no_handler_map()
     |> empty()
   end
 
