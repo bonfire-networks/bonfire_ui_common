@@ -4,6 +4,7 @@
       !e(@smart_input_opts, :disable, nil)}
     id={:smart_input}
     as_icon
+    to_circles={@to_circles}
     composer_class="btn fixed right-6 bottom-6 btn-lg btn-circle shadow-xl btn-primary"
     smart_input_opts={@smart_input_opts}
   />

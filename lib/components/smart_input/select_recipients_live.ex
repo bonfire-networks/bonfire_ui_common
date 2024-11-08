@@ -107,7 +107,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
     # Filter to remove any nils
     |> Enum.reject(&is_nil/1)
     # show only the first 4 results
-    |> Enum.take(4)
+    # |> Enum.take(4)
     |> debug()
   end
 end

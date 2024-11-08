@@ -318,19 +318,20 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   def mod_delegate(mod, fun, args, socket, no_delegation_fn \\ &no_live_handler/2) do
     handler_chain = Map.get(socket.assigns, :__handler_chain, [])
 
+    mod = maybe_to_module("#{mod}.LiveHandler") || maybe_to_module(mod)
+
     if mod in handler_chain do
       warn("Circular handler delegation detected: #{inspect(handler_chain ++ [mod])}")
       no_delegation_fn.({fun, List.first(args)}, socket)
     else
-      socket = assign(socket, :__handler_chain, handler_chain ++ [mod])
-
       # Delegation logic
       result =
-        case maybe_to_module("#{mod}.LiveHandler") || mod do
+        case mod do
           module when is_atom(module) and not is_nil(module) ->
             if module_enabled?(module, socket) and
                  function_exported?(module, fun, length(args) + 1) do
               debug(args, "LiveHandler: delegating to #{inspect(fun)} in #{module} with args")
+              socket = assign(socket, :__handler_chain, handler_chain ++ [mod])
 
               apply(module, fun, args ++ [socket])
               |> debug("applied")
@@ -345,19 +346,17 @@ defmodule Bonfire.UI.Common.LiveHandlers do
         end
 
       # Reset the handler chain in the returned socket
-      result =
-        case result do
-          {:noreply, socket} ->
-            {:noreply, assign(socket, :__handler_chain, [])}
 
-          {reply, socket} ->
-            {reply, assign(socket, :__handler_chain, [])}
+      case result do
+        {:noreply, socket} ->
+          {:noreply, assign(socket, :__handler_chain, [])}
 
-          other ->
-            other
-        end
+        {reply, socket} ->
+          {reply, assign(socket, :__handler_chain, [])}
 
-      result
+        other ->
+          other
+      end
     end
   end
 

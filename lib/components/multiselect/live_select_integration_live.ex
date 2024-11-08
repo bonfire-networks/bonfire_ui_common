@@ -19,14 +19,14 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       disabled={@disabled}
       style={:daisyui}
       text_input_extra_class={@text_input_class}
-      container_class={@container_class}
+      container_extra_class="w-full"
       option_extra_class="{@option_extra_class}"
       tag_class="badge badge-neutral badge-lg gap-2"
-      dropdown_class={@dropdown_class}
+      dropdown_extra_class="z-[99999999999999999999999999999999] overflow-y-auto"
       tags_container_class="flex flex-wrap gap-1 pt-2 order-last"
     >
       <:option :let={option}>
-        <div class="flex py-1 gap-2 items-center">
+        <div class="flex p-1 gap-2 items-center">
           <%= if Map.has_key?(option.value, :type) && option.value.type == "circle" do %>
             <span class="w-8 h-8 rounded-full bg-info/10 flex items-center place-content-center">
               <div
