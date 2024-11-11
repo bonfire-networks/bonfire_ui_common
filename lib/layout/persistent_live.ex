@@ -72,7 +72,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     # |> fun.(:context_id, fn -> nil end)
     # |> fun.(:reply_to_id, fn -> nil end)
     # |> fun.(:create_object_type, fn -> nil end)
-    # |> fun.(:to_boundaries, fn -> [] end)
+    |> fun.(:to_boundaries, fn -> [] end)
     |> fun.(:to_circles, fn -> [] end)
     |> fun.(:smart_input_opts, fn -> %{} end)
     # |> fun.(:showing_within, fn -> nil end)

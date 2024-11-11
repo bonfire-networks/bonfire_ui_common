@@ -196,14 +196,14 @@
         <input :for={mention <- e(@mentions, [])} type="hidden" name="mentions[]" value={mention}>
 
         <input
-          :for={{circle, role} <- e(@to_circles, []) |> debug("to_circless")}
+          :for={{circle, role} <- e(@to_circles, []) |> debug("to_circless_on_publish")}
           type="hidden"
           data-role="circle-enum"
           name={"to_circles[#{id(circle)}][]"}
           value={role}
         />
         <input
-          :for={{circle, role} <- e(@exclude_circles, []) |> debug("exclude_circless")}
+          :for={{circle, role} <- e(@exclude_circles, []) |> debug("exclude_circless_on_publish")}
           type="hidden"
           data-role="circle-enum"
           name={"to_circles[#{id(circle)}][]"}

@@ -75,29 +75,6 @@
   </div>
 
   <form class="" :if={@create_object_type != :message} phx-change="select">
-    {!-- CUSTOM BOUNDARIES --}
-    <!-- <div class="hidden flex-1 h-full grow" id="extra_boundaries">
-      <div class="flex flex-col h-full">
-        <div class="flex w-full flex-1 h-full">
-          <StatelessComponent
-            :if={Bonfire.UI.Boundaries.Web.SetBoundariesButtonLive.clone_context(@to_boundaries) == false}
-            module={maybe_component(Bonfire.UI.Boundaries.Web.SetBoundariesLive, @__context__)}
-            to_boundaries={@to_boundaries}
-            boundary_preset={@boundary_preset}
-            to_circles={@to_circles}
-            exclude_circles={@exclude_circles}
-            open_boundaries={@open_boundaries}
-            showing_within={@showing_within}
-            create_object_type={@create_object_type}
-            boundaries_modal_id={@boundaries_modal_id}
-            context_id={@context_id}
-            hide_breakdown
-            click_override
-          />
-        </div>
-      </div>
-    </div> -->
-
     {!-- PREVIEW BOUNDARIES --}
     <div class="hidden flex-1 h-full grow" id="boundaries_preview">
       <div class="flex flex-col h-full">
