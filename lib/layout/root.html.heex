@@ -1,28 +1,5 @@
 <!DOCTYPE html>
-<html
-  id="root"
-  data-open="false"
-  data-theme={
-    if Settings.get(
-         [:ui, :theme, :preferred],
-         :system,
-         assigns[:__context__] || assigns[:current_user] || @conn
-       ) == :light,
-       do:
-         Settings.get(
-           [:ui, :theme, :instance_theme_light],
-           "light",
-           assigns[:__context__] || assigns[:current_user] || @conn
-         ),
-       else:
-         Settings.get(
-           [:ui, :theme, :instance_theme],
-           "bonfire",
-           assigns[:__context__] || assigns[:current_user] || @conn
-         )
-  }
-  lang="en"
->
+<html id="root" data-open="false" lang="en">
   <head>
     <meta charset="utf-8" />
 
