@@ -150,15 +150,32 @@
                   to_circles={@to_circles}
                 />
               {/if}
-              <button
-                type="button"
-                phx-click={JS.show(to: "#boundaries_preview")
-                |> JS.hide(to: "#composer_container")}
-                class="preview-button btn btn-ghost btn-sm text-[22px] btn-circle"
-                title={l("Preview boundaries")}
+
+              <Bonfire.UI.Common.OpenModalLive
+                id="preview_boundaries"
+                reusable_modal_id="persistent_modal"
+                title_text={l("Preview boundaries for any user")}
+                no_actions
               >
-                <#Icon iconify="mdi:eye-outline" class="w-4 h-4" />
-              </button>
+                <StatefulComponent
+                  :if={maybe_apply(Bonfire.UI.Boundaries.Web.SetBoundariesButtonLive, :clone_context, @to_boundaries) ==
+                    false}
+                  module={maybe_component(Bonfire.UI.Boundaries.Web.PreviewBoundariesLive, @__context__)}
+                  id="boundaries_preview"
+                  boundary_preset={@boundary_preset}
+                  to_boundaries={@to_boundaries}
+                  to_circles={@to_circles}
+                />
+                <:open_btn>
+                  <button
+                    type="button"
+                    class="preview-button btn btn-ghost btn-sm text-[22px] btn-circle"
+                    title={l("Preview boundaries")}
+                  >
+                    <#Icon iconify="ph:eyes-fill" class="w-5 h-5 text-base-content/90" />
+                  </button>
+                </:open_btn>
+              </Bonfire.UI.Common.OpenModalLive>
             </div>
 
             <button

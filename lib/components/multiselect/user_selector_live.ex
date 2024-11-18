@@ -16,6 +16,17 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   prop implementation, :atom, default: nil
   prop mode, :atom, default: :single
 
+  def render(%{form: form_name} = assigns) when is_atom(form_name) do
+    assigns
+    |> assign(:form, to_form(%{}, as: form_name))
+    |> render_sface()
+  end
+
+  def render(assigns) do
+    assigns
+    |> render_sface()
+  end
+
   def users(preloaded_options, context, type) do
     preloaded_options || context[:preloaded_options][type] ||
       load_users(current_user(context), type)

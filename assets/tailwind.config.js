@@ -161,7 +161,7 @@ module.exports = {
 					info: "#00b6ff",
 					warning: "#ffbe00",
 					error: "#ff5861",
-					"--rounded-btn": "0.25rem",
+					"--rounded-btn": "0.75rem",
 				},
 				light: {
 					...require("daisyui/src/theming/themes")["light"],
