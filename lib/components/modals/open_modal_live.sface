@@ -1,11 +1,12 @@
-<div class="w-full open_modal_wrapper" id={@id}>
+<div class="w-full open_modal_wrapper flex" id={@id}>
   {#if current_user(@__context__)}
     {#case @href}
       {#match nil}
-        <div
+        <button
+          type="button"
           data-role="open_modal"
           :on-click={@click_open_event}
-          class={"open_modal_btn_wrapper", @open_btn_wrapper_class}
+          class={"open_modal_btn_wrapper w-full", @open_btn_wrapper_class}
           phx-hook={@open_btn_hook}
           {...@open_btn_opts}
         >
@@ -14,7 +15,7 @@
               {@open_btn_text || "Open modal"}
             </span>
           </#slot>
-        </div>
+        </button>
       {#match _href}
         <a
           :on-click={@click_open_event}

@@ -35,6 +35,17 @@
 }
 
 
+.menu :where(li:not(.menu-title) > div:has(> button:first-child)) {
+  padding: 0 !important;
+}
+
+.menu :where(li:not(.menu-title) > div:has(> button:first-child)) > button {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
 .border-thread-active {
   @apply !border-opacity-100;
 }

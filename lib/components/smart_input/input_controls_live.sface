@@ -167,13 +167,12 @@
                   to_circles={@to_circles}
                 />
                 <:open_btn>
-                  <button
-                    type="button"
+                  <div
                     class="preview-button btn btn-ghost btn-sm text-[22px] btn-circle"
                     title={l("Preview boundaries")}
                   >
                     <#Icon iconify="ph:eyes-fill" class="w-5 h-5 text-base-content/90" />
-                  </button>
+                  </div>
                 </:open_btn>
               </Bonfire.UI.Common.OpenModalLive>
             </div>
