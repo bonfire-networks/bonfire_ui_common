@@ -8,7 +8,10 @@
       <Bonfire.UI.Common.UserMenuLive />
     </div>
   </div>
-  <div class="flex flex-col flex-1 mt-4 h-full" :if={current_user(@__context__)}>
+  <div
+    class="flex flex-col flex-1 mt-4 h-full max-h-[calc(var(--inner-window-height_)-_80px)] overflow-y-auto"
+    :if={current_user(@__context__)}
+  >
     <div class="flex-1 h-full">
       <Bonfire.UI.Common.ExtensionMenuNavLive
         selected_tab={@selected_tab}
