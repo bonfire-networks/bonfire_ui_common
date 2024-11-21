@@ -18,6 +18,7 @@
           >
             <Bonfire.UI.Common.AvatarLive
               :if={is_map(current_user(@__context__))}
+              bg_class="rounded-full"
               class="inline-block object-cover w-8 h-8 cursor-pointer"
               src={Media.avatar_url(current_user(@__context__))}
               user_id={current_user_id(@__context__)}

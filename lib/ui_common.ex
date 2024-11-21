@@ -856,9 +856,9 @@ defmodule Bonfire.UI.Common do
   end
 
   def live_upload_files(module \\ nil, upload_field \\ :files, current_user, metadata, socket) do
-    maybe_consume_uploaded_entries(socket, upload_field, fn %{path: path} = _meta, entry ->
-      # debug(meta, "consume_uploaded_entries meta")
-      # debug(entry, "consume_uploaded_entries entry")
+    maybe_consume_uploaded_entries(socket, upload_field, fn %{path: path} = meta, entry ->
+      debug(meta, "consume_uploaded_entries meta")
+      debug(entry, "consume_uploaded_entries entry")
 
       with {:ok, uploaded} <-
              Bonfire.Common.Utils.maybe_apply(
@@ -1391,7 +1391,7 @@ defmodule Bonfire.UI.Common do
 
       iex> socket_connected?(%{__context__: %{socket_connected?: true}})
       true
-      
+
       iex> socket_connected?(%Phoenix.LiveView.Socket{transport_pid: 1})
       true
 
