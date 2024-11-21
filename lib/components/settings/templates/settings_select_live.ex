@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Common.SettingsSelectLive do
   prop default_value, :any, default: nil
 
   prop scope, :any, default: nil
-
+  prop id, :string, default: nil
   prop name, :string, default: nil
   prop description, :string, default: nil
   prop label, :string, default: nil

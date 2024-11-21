@@ -8,7 +8,7 @@
 
     <input name="scope" value={@scope} type="hidden">
 
-    <select class="max-w-xs select select-sm select-bordered" name={@input}>
+    <select id={@id} class="max-w-xs select select-sm select-bordered" name={@input}>
       {#for {key, val} <- @options || []}
         <option value={to_string(key)} selected={if @current_value == key, do: "selected"}>
           {val}

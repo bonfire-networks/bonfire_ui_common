@@ -64,7 +64,7 @@
       </h3>
       <div class={
         "absolute top-0 right-0 block z-50",
-        "-mt-3 !fixed !top-6 !right-4": !@no_backdrop,
+        "-mt-3 !fixed !top-8 !right-4": !@no_backdrop,
         "z-[999999999] !top-1 h-full": @no_backdrop
       }>
         <button
@@ -84,7 +84,7 @@
       <div
         class={
           "",
-          "max-h-[calc(100vh_-_13rem)]": !@image_preview,
+          "max-h-[calc(100vh_-_13rem)] overflow-y-auto": !@image_preview,
           "h-[95%]": @no_backdrop
         }
         data-id="modal-contents"

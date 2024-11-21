@@ -46,6 +46,7 @@
       {#match nil}
       {#match badge}
         <div
+          data-highlighted={Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)}
           :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
           class={@badge_class}
         >
