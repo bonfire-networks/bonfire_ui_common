@@ -1456,4 +1456,6 @@ defmodule Bonfire.UI.Common do
       {name, opts[:default]}
     end
   end
+
+  def random_dom_id, do: "random-#{Text.unique_integer()}"
 end

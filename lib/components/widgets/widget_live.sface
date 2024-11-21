@@ -30,7 +30,7 @@
     <div class={@widget[:wrapper_class] || @wrapper_class} data-type="widget">
       <div :if={@with_title} class="mt-4 mb-2 text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
       <StatefulComponent
-        id={Text.random_string()}
+        id={random_dom_id()}
         module={@widget[:module]}
         page={@page}
         selected_tab={@selected_tab}

@@ -6,7 +6,7 @@
 #       if Application.get_env(:source_inspector, :enabled, false) do
 #         # The config option is set, so we return a number of attributes
 #         if Keyword.get(unquote(opts), :random_id, true) == true do
-#           %{id: Bonfire.Common.Text.random_string()}
+#           %{id: Bonfire.Common.random_dom_id()}
 #         else
 #           %{}
 #         end

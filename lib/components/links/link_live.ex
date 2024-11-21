@@ -58,7 +58,7 @@ defmodule Bonfire.UI.Common.LinkLive do
         phx-value-to={@to}
         phx-click={@event_handler}
         phx-hook={@phx_hook}
-        id={if @phx_hook, do: @id || Text.random_string()}
+        id={if @phx_hook, do: @id || random_dom_id()}
         phx-target={@event_target}
         class={@class}
         opts={@opts}
@@ -82,7 +82,7 @@ defmodule Bonfire.UI.Common.LinkLive do
 
     <a
       phx-hook="Copy"
-      id={"link_copy_url_#{@id || Text.random_string()}"}
+      id={"link_copy_url_#{@id || random_dom_id()}"}
       href={@to}
       class="float-right ml-4 flex items-center gap-2 btn btn-xs"
     >
@@ -243,7 +243,7 @@ defmodule Bonfire.UI.Common.LinkLive do
       class={@class}
       replace={@replace}
       phx-hook="Bonfire.UI.Common.PreviewContentLive#CloseAll"
-      id={@id || Text.random_string()}
+      id={@id || random_dom_id()}
       {...@opts |> Keyword.merge("aria-label": @label)}
     >
       {!-- FIXME: do not generate random ID to avoid re-rendering --}

@@ -24,7 +24,7 @@
       </div>
     {#else}
       <Bonfire.UI.Common.BasicMultiselectLive
-        id={Text.random_string()}
+        id={random_dom_id()}
         preloaded_options={@preloaded_options}
         selected_options={@selected_options}
         label={@label}

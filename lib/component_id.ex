@@ -6,13 +6,6 @@ defmodule Bonfire.UI.Common.ComponentID do
   def new(component_module, object_id, parent_id)
       when is_binary(object_id) or is_number(object_id) or
              (is_atom(object_id) and not is_nil(object_id)) do
-    # context =
-    #   context ||
-    #     (
-    #       warn(context, "expected a string or atom context for #{component_module}, but got")
-    #       Text.random_string(3)
-    #     )
-
     component_id = "#{randomised_id(component_module, parent_id)}_for_#{object_id}"
 
     debug(component_id, "created stateful component with ID")
@@ -65,7 +58,7 @@ defmodule Bonfire.UI.Common.ComponentID do
   end
 
   defp randomised_id(component_module, parent_id) do
-    "#{component_module |> Types.module_to_str() |> String.replace(".", "-")}_#{parent_id |> Types.module_to_str() |> String.replace(".", "-")}_#{Text.random_string(4)}"
+    "#{component_module |> Types.module_to_str() |> String.replace(".", "-")}_#{parent_id |> Types.module_to_str() |> String.replace(".", "-")}_#{random_dom_id()}"
   end
 
   def send_updates(component_module, object_id, assigns, pid \\ nil) do

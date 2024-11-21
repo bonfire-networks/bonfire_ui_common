@@ -51,7 +51,7 @@
           class={@badge_class}
         >
           <StatefulComponent
-            id={badge[:id] || Text.random_string()}
+            id={badge[:id] || random_dom_id()}
             page={@page}
             module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
             feed_id={badge[:feed_id] || e(current_user(@__context__), :character, badge[:feed_key], nil)}

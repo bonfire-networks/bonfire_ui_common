@@ -216,7 +216,7 @@ defmodule Bonfire.UI.Common.Routes do
     Config.get(:js_config, %{})
     |> Enum.into(
       %{
-        # random_socket_id: Bonfire.Common.Text.random_string(4)
+        # random_socket_id: Bonfire.Common.random_dom_id()
       }
     )
   end
