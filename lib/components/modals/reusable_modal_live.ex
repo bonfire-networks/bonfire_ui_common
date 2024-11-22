@@ -65,6 +65,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   prop no_header, :boolean, default: false
 
   prop no_backdrop, :boolean, default: false
+  prop overflow, :boolean, default: false
 
   @doc """
   Additional assigns to pass on to the optional modal sub-component

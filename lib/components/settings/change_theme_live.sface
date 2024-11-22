@@ -36,6 +36,7 @@
                 id={"preview_theme_#{@key}_#{t}"}
                 title_text={l("Previewing theme:") <> " #{t}"}
                 no_actions
+                overflow
               >
                 <div class="mt-3 rounded-xl">
                   <Bonfire.UI.Common.ThemePreviewLive theme={t} />
