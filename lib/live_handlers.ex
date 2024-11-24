@@ -351,7 +351,10 @@ defmodule Bonfire.UI.Common.LiveHandlers do
         {:noreply, socket} ->
           {:noreply, assign(socket, :__handler_chain, [])}
 
-        {reply, socket} ->
+        {:error, e} ->
+          {:error, e}
+
+        {reply, %{} = socket} ->
           {reply, assign(socket, :__handler_chain, [])}
 
         other ->

@@ -187,8 +187,13 @@
               class="capitalize flex-1 rounded justify-self-end btn-sm btn btn-primary"
               disabled={e(@smart_input_opts, :submit_disabled, nil)}
             >
-              <#Icon iconify="majesticons:send" class="w-4 h-4" />
-              <span :if={@showing_within == :page} class="">{l("Publish")}</span>
+              {#if @create_object_type == :message}
+                <#Icon iconify="mdi:email-fast-outline" class="w-5 h-5" />
+                <span class="">{l("Send")}</span>
+              {#else}
+                <#Icon iconify="formkit:submit" class="w-5 h-5" />
+                <span :if={@showing_within == :page} class="">{l("Publish")}</span>
+              {/if}
             </button>
           </div>
         </div>
