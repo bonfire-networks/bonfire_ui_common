@@ -55,7 +55,7 @@
         <div class="">
           <div class="flex justify-between gap-2 p-2 rounded-b-xl md:items-center  md:px-3 py-2">
             <Bonfire.UI.Common.UploadButtonLive
-              :if={@uploads != false}
+              :if={@uploads != false && @create_object_type not in [:message]}
               uploads={@uploads}
               max_uploads={Bonfire.Common.Settings.get(
                 [Bonfire.UI.Common.SmartInputLive, :max_uploads],

@@ -142,7 +142,7 @@
                       </LinkLive>
                     </div>
                   </header>
-                  <div :if={!@without_sidebar && !@no_header} class="sticky top-2 mt-2 z-[999]">
+                  <div :if={!@no_header} class="sticky top-2 mt-2 z-[999]">
                     <div class="flex flex-1 w-full transition-color duration-150 ease-in-out h-[48px] rounded-box bg-base-100/70 shadow backdrop-blur-sm">
                       <StatelessComponent
                         module={maybe_component(Bonfire.UI.Common.PageHeaderLive, @__context__)}
