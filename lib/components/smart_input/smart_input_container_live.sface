@@ -39,7 +39,6 @@
         <div class="w-full rounded-xl bg-gradient-to-t from-base-content/10 to-base-content/10 p-[0.05rem] flex flex-col flex-1 h-full grow">
           <div class="w-full rounded-xl bg-base-200 flex flex-col flex-1 h-full grow">
             {!-- "md:!w-[20rem] tablet-lg:block bottom-0": e(@smart_input_opts, :minimized, nil) == true, --}
-
             <div
               phx-click={LiveHandler.close_smart_input()}
               id="smart_input_backdrop"

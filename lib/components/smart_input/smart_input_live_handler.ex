@@ -39,16 +39,17 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     set(socket,
       # avoid double-reset
-      reset_smart_input: true,
+      reset_smart_input: false,
       activity: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
+      create_object_type: :post,
       smart_input_opts: %{
         open: true,
         text_suggestion: nil,
         recipients_editable: false,
-        create_object_type: :post
+        text: nil
       }
     )
 
