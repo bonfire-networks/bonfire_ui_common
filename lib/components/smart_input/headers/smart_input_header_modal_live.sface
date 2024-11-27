@@ -1,6 +1,11 @@
 <header class="sticky top-0 z-50 flex flex-row items-center w-full p-3 py-1 pt-2 rounded-t-xl bg-base-100 md:z-auto md:relative flex-align-items-stretch flex-nowrap">
   <span class="flex-1 text-sm font-semibold md:text-center text-ellipsis text-base-content/70">
-    {e(@smart_input_opts, :prompt, l("Share your thoughts"))}
+    {#if @create_object_type != :message}
+      {e(@smart_input_opts, :prompt, l("Share your thoughts"))}
+    {#else}
+      {l("Send a direct message")}
+      <!-- <span phx-click="Bonfire.UI.Common.SmartInput:reset_to_default"><#Icon iconify="carbon:close" class="w-5 h-5 stroke-1 md:w-4 md:h-4 text-base-content/70" /></span> -->
+    {/if}
   </span>
   <div class="absolute flex items-center gap-5 md:gap-2 right-3">
     <button

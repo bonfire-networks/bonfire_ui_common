@@ -48,7 +48,10 @@
             />
 
             <div class="smart_input_modal relative z-50 rounded-xl flex flex-col grow h-full">
-              <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
+              <Bonfire.UI.Common.SmartInputHeaderModalLive
+                create_object_type={@create_object_type}
+                smart_input_opts={@smart_input_opts}
+              />
               <SmartInputLive
                 boundaries_modal_id={:modal_composer}
                 showing_within={@showing_within}

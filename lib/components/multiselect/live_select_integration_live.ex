@@ -19,7 +19,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       disabled={@disabled}
       style={:daisyui}
       text_input_extra_class={@text_input_class}
-      container_extra_class="w-full"
+      container_extra_class="w-full flex flex-col"
       option_extra_class="{@option_extra_class}"
       tag_class="badge badge-neutral badge-lg gap-2"
       dropdown_extra_class="z-[99999999999999999999999999999999] max-h-60 flex-nowrap border border-base-content/10 !bg-base-100 overflow-y-auto "

@@ -34,6 +34,27 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     )
   end
 
+  def handle_event("reset_to_default", params, socket) do
+    replace_input_next_time(assigns(socket))
+
+    set(socket,
+      # avoid double-reset
+      reset_smart_input: true,
+      activity: nil,
+      to_circles: [],
+      reply_to_id: e(assigns(socket), :thread_id, nil),
+      to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
+      smart_input_opts: %{
+        open: true,
+        text_suggestion: nil,
+        recipients_editable: false,
+        create_object_type: :post
+      }
+    )
+
+    {:noreply, socket}
+  end
+
   def close_smart_input(js \\ %JS{}) do
     js
     |> JS.hide(to: ".smart_input_show_on_open")
