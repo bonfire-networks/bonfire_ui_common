@@ -16,18 +16,18 @@
     />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <%= raw(Bonfire.Common.Config.endpoint_module().include_assets(@conn, :top)) %>
+    {raw(Bonfire.Common.Config.endpoint_module().include_assets(@conn, :top))}
 
     <%= if assigns[:no_index] do %>
       <meta name="robots" content="noindex" />
     <% end %>
 
-    <%= csrf_meta_tag() %>
+    {csrf_meta_tag()}
   </head>
 
   <body class="" id="layout-root">
-    <%= @inner_content %>
+    {@inner_content}
 
-    <%= raw(Bonfire.Common.Config.endpoint_module().include_assets(@conn, :bottom)) %>
+    {raw(Bonfire.Common.Config.endpoint_module().include_assets(@conn, :bottom))}
   </body>
 </html>

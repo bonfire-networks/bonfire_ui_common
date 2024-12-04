@@ -80,7 +80,7 @@ defmodule Bonfire.UI.Common.BasicView do
         <meta name="description" content="Bonfire instance" />
         <meta name="keywords" content="bonfire, fediverse" />
         <meta name="author" content="Bonfire" />
-        <title data-suffix=" · Bonfire"><%= assigns[:title] %> · Bonfire</title>
+        <title data-suffix=" · Bonfire">{assigns[:title]} · Bonfire</title>
         <link phx-track-static rel="stylesheet" href="/assets/bonfire_basic.css" />
       </head>
 
@@ -108,7 +108,7 @@ defmodule Bonfire.UI.Common.BasicView do
               <div class="w-full max-w-screen-md mx-auto mt-4">
                 <div class="prose text-center max-w-none">
                   <div class="flex flex-col place-content-center">
-                    <%= assigns[:inner_content] %>
+                    {assigns[:inner_content]}
                   </div>
                 </div>
               </div>

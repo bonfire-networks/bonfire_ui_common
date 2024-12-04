@@ -21,7 +21,7 @@ defmodule Bonfire.UI.Common.AnimalAvatar do
         fill="none"
         class={@bg_class}
       />
-      <%= raw(Cache.maybe_apply_cached(&avatar_face/1, [@id])) %>
+      {raw(Cache.maybe_apply_cached(&avatar_face/1, [@id]))}
     </svg>
     """
   end

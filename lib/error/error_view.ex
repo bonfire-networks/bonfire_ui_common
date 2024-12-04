@@ -51,7 +51,7 @@ defmodule Bonfire.UI.Common.ErrorView do
     # Bonfire.UI.Me.LoginViewLive.render(assigns)
     ~H"""
     <h1 class="text-base-content">
-      <%= @title %>
+      {@title}
     </h1>
     <Bonfire.UI.Me.LoginViewLive.render form={@form} error={nil} __context__={%{}} />
     """
@@ -195,9 +195,9 @@ defmodule Bonfire.UI.Common.ErrorView do
 
     ~H"""
     <h1 class="text-base-content">
-      <%= @title %>
+      {@title}
     </h1>
-    <%= raw(to_string(@details)) %>
+    {raw(to_string(@details))}
     """
   end
 

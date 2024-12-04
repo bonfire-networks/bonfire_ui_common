@@ -39,7 +39,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
           <% end %>
           <%= if is_binary(option.value) do %>
             <p class="font-semibold text-base-content/70">
-              <%= option.label %>
+              {option.label}
             </p>
           <% else %>
             <%= if Map.has_key?(debug(option).value, :icon) or Map.has_key?(option.value, "icon") do %>
@@ -49,11 +49,11 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
             <% end %>
             <div class="">
               <p class="font-semibold">
-                <%= e(option.value, :name, nil) || e(option.value, :profile, :name, nil) ||
-                  e(option.value, :named, :name, nil) %>
+                {e(option.value, :name, nil) || e(option.value, :profile, :name, nil) ||
+                  e(option.value, :named, :name, nil)}
               </p>
               <p class="font-light -mt-0.5 text-base-content/70">
-                <%= e(option.value, :username, nil) || e(option.value, :character, :username, nil) %>
+                {e(option.value, :username, nil) || e(option.value, :character, :username, nil)}
               </p>
             </div>
           <% end %>
@@ -64,7 +64,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
         <div class="flex items-center gap-2">
           <%= if is_binary(option.value) do %>
             <p class="font-semibold text-sm">
-              <%= option.label %>
+              {option.label}
             </p>
           <% else %>
             <%= if Map.has_key?(debug(option.value), :icon) or Map.has_key?(option.value, "icon") do %>
@@ -74,9 +74,9 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
             <% end %>
             <div class="text-sm">
               <p class="font-semibold">
-                <%= e(debug(option, "tag oppppt"), :value, :name, nil) ||
+                {e(debug(option, "tag oppppt"), :value, :name, nil) ||
                   e(option.value, :profile, :name, nil) || e(option.value, :username, nil) ||
-                  e(option.value, :named, :name, nil) %>
+                  e(option.value, :named, :name, nil)}
               </p>
             </div>
           <% end %>

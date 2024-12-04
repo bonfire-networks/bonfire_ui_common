@@ -14,7 +14,7 @@ defmodule Bonfire.UI.Common.ErrorComponentLive do
   def replace(assigns) do
     ~H"""
     <div data-role="render_error" class="prose p-2 text-xs">
-      <%= markdown(@__replace_render__with__) %>
+      {markdown(@__replace_render__with__)}
     </div>
     """
   end
