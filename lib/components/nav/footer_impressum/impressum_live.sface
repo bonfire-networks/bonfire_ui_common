@@ -26,7 +26,7 @@
     <span class="ml-1" x-data="{msg: 'JS'}">
       <span x-text="msg">no JS</span>
     </span>
-    <span data-role="locale" class="ml-1">{Bonfire.Common.Localise.get_locale_id()}</span>
+    <span data-role="locale" class="ml-1">{Bonfire.Common.Localise.get_locale_id() |> to_string()}</span>
   </LinkLive>
 </div>
 
