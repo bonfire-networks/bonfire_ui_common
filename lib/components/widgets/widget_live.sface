@@ -41,7 +41,7 @@
     </div>
   {#match nil}
   {#match :disabled}
-    {"<!-- skipped disabled widget: #{@widget[:name]} -->"}
+    {raw "<!-- skipped disabled widget: #{@widget[:name]} -->"}
   {#match other}
     {error(other) && "<!-- invalid widget -->"}
 {/case}

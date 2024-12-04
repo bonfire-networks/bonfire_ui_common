@@ -28,9 +28,13 @@ defmodule Bonfire.UI.Common.WidgetLive do
       widget(assigns[:widget], assigns[:__context__])
       |> debug("widgg")
 
-    if module =
+    cond do
+      widget[:type] == :link ->
+        assigns
+
+      module =
          Extend.maybe_module(widget[:module], assigns[:__context__])
-         |> debug("!maybe_module #{inspect(widget[:module])}") do
+         |> debug("!maybe_module #{inspect(widget[:module])}") ->
       data =
         Enum.into(assigns[:data] || e(widget, :data, nil) || [], assigns[:extra_data] || %{})
         |> debug("widdata")
@@ -40,7 +44,7 @@ defmodule Bonfire.UI.Common.WidgetLive do
         widget: Map.merge(widget, %{module: module}),
         data: data
       )
-    else
+    true ->
       debug(widget[:module], "disabled")
 
       assigns
