@@ -15,10 +15,10 @@ defmodule Bonfire.UI.Common.CoreComponents do
   Icons are provided by [heroicons](https://heroicons.com). See `icon/1` for usage.
   """
   use Phoenix.Component
-  use Gettext, backend: Bonfire.UI.Common.Gettext
-
+  use Bonfire.Common.Localise
+  import Bonfire.UI.Common.ErrorHelpers
+  import Iconify
   alias Phoenix.LiveView.JS
-
 
   @doc """
   Renders a modal.
@@ -74,9 +74,9 @@ defmodule Bonfire.UI.Common.CoreComponents do
                   phx-click={JS.exec("data-cancel", to: "##{@id}")}
                   type="button"
                   class="-m-3 flex-none p-3 opacity-20 hover:opacity-40"
-                  aria-label={gettext("close")}
+                  aria-label={l("close")}
                 >
-                  <.icon name="hero-x-mark-solid" class="h-5 w-5" />
+                  <.iconify icon="heroicons-solid-x-mark" class="h-5 w-5" />
                 </button>
               </div>
               <div id={"#{@id}-content"}>
@@ -89,12 +89,6 @@ defmodule Bonfire.UI.Common.CoreComponents do
     </div>
     """
   end
-
-
-
-
-
-
 
   @doc """
   Renders flash notices.
@@ -129,13 +123,13 @@ defmodule Bonfire.UI.Common.CoreComponents do
       {@rest}
     >
       <p :if={@title} class="flex items-center gap-1.5 text-sm font-semibold leading-6">
-        <.icon :if={@kind == :info} name="hero-information-circle-mini" class="h-4 w-4" />
-        <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="h-4 w-4" />
+        <.iconify :if={@kind == :info} icon="heroicons-information-circle-mini" class="h-4 w-4" />
+        <.iconify :if={@kind == :error} icon="heroicons-exclamation-circle-mini" class="h-4 w-4" />
         {@title}
       </p>
       <p class="mt-2 text-sm leading-5">{msg}</p>
-      <button type="button" class="group absolute top-1 right-1 p-2" aria-label={gettext("close")}>
-        <.icon name="hero-x-mark-solid" class="h-5 w-5 opacity-40 group-hover:opacity-70" />
+      <button type="button" class="group absolute top-1 right-1 p-2" aria-label={l("close")}>
+        <.iconify icon="heroicons-solid-x-mark" class="h-5 w-5 opacity-40 group-hover:opacity-70" />
       </button>
     </div>
     """
@@ -154,50 +148,32 @@ defmodule Bonfire.UI.Common.CoreComponents do
   def flash_group(assigns) do
     ~H"""
     <div id={@id}>
-      <.flash kind={:info} title={gettext("Success!")} flash={@flash} />
-      <.flash kind={:error} title={gettext("Error!")} flash={@flash} />
+      <.flash kind={:info} title={l("Success!")} flash={@flash} />
+      <.flash kind={:error} title={l("Error!")} flash={@flash} />
       <.flash
         id="client-error"
         kind={:error}
-        title={gettext("We can't find the internet")}
+        title={l("We can't find the internet")}
         phx-disconnected={show(".phx-client-error #client-error")}
         phx-connected={hide("#client-error")}
         hidden
       >
-        {gettext("Attempting to reconnect")}
-        <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
+        {l("Attempting to reconnect")}
+        <.iconify icon="heroicons-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
       </.flash>
 
       <.flash
         id="server-error"
         kind={:error}
-        title={gettext("Something went wrong!")}
+        title={l("Something went wrong!")}
         phx-disconnected={show(".phx-server-error #server-error")}
         phx-connected={hide("#server-error")}
         hidden
       >
-        {gettext("Hang in there while we get back on track")}
-        <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
+        {l("Hang in there while we get back on track")}
+        <.iconify icon="heroicons-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
       </.flash>
     </div>
-    """
-  end
-
-
-  @doc """
-    Helper for inputs_for
-  """
-
-  attr :for, :any, required: true
-  attr :as, :any, default: nil
-  attr :rest, :global
-  slot :inner_block, required: true
-
-  def core_inputs_for(assigns) do
-    ~H"""
-    <.inputs_for field={@field} id={@id} as={@as} {assigns}>
-      {render_slot(@inner_block)}
-    </.inputs_for>
     """
   end
 
@@ -217,6 +193,9 @@ defmodule Bonfire.UI.Common.CoreComponents do
   attr :for, :any, required: true, doc: "the data structure for the form"
   attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
 
+  attr :action_class, :string, default: nil
+  attr :opts, :list, doc: "Extra attributes"
+
   attr :rest, :global,
     include: ~w(autocomplete name rel action enctype method novalidate target multipart),
     doc: "the arbitrary HTML attributes to apply to the form tag"
@@ -226,46 +205,34 @@ defmodule Bonfire.UI.Common.CoreComponents do
 
   def simple_form(assigns) do
     ~H"""
-    <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 bg-white">
-        {render_slot(@inner_block, f)}
-        <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
-          {render_slot(action, f)}
-        </div>
+    <.form :let={f} for={@for} as={@as} {@rest} {@opts}>
+      {render_slot(@inner_block, f)}
+      <div
+        :for={action <- @actions}
+        class={@action_class || "mt-2 flex items-center justify-between gap-6"}
+      >
+        {render_slot(action, f)}
       </div>
     </.form>
     """
   end
 
-  @doc """
-  Renders a button.
+  # @doc """
+  #   Helper for inputs_for
+  # """
 
-  ## Examples
+  # attr :for, :any, required: true
+  # attr :as, :any, default: nil
+  # attr :rest, :global
+  # slot :inner_block, required: true
 
-      <.button>Send!</.button>
-      <.button phx-click="go" class="ml-2">Send!</.button>
-  """
-  attr :type, :string, default: nil
-  attr :class, :string, default: nil
-  attr :rest, :global, include: ~w(disabled form name value)
-
-  slot :inner_block, required: true
-
-  def button(assigns) do
-    ~H"""
-    <button
-      type={@type}
-      class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
-        @class
-      ]}
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </button>
-    """
-  end
+  # def form_inputs_for(assigns) do
+  #   ~H"""
+  #   <.inputs_for field={@field} id={@id} as={@as} {assigns}>
+  #     {render_slot(@inner_block)}
+  #   </.inputs_for>
+  #   """
+  # end
 
   @doc """
   Renders an input with label and error messages.
@@ -298,30 +265,36 @@ defmodule Bonfire.UI.Common.CoreComponents do
   attr :label, :string, default: nil
   attr :value, :any
 
+  attr :class, :string, default: nil
+  attr :label_class, :string, default: nil
+
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file month number password
                range search select tel text textarea time url week)
 
   attr :field, Phoenix.HTML.FormField,
-    doc: "a form field struct retrieved from the form, for example: @form[:email]"
+    doc: "a form field struct retrieved from the form, for example: `@form[:email]`"
 
-  attr :errors, :list, default: []
+  attr :errors, :list, default: nil
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
-  attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
+  attr :options, :list, doc: "the options to pass to `Phoenix.HTML.Form.options_for_select/2`"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
 
   attr :rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly required rows size step)
 
-  def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
-    errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
+  # slot :label, doc: "an optional slot to customise the label" # TODO?
 
+  def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
-    |> assign(:errors, Enum.map(errors, &translate_error(&1)))
+    |> assign(
+      :errors,
+      if(Phoenix.Component.used_input?(field), do: field.errors |> Enum.map(&translate_error(&1)))
+    )
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
     |> input()
@@ -334,8 +307,8 @@ defmodule Bonfire.UI.Common.CoreComponents do
       end)
 
     ~H"""
-    <div>
-      <label class="flex items-center gap-4 text-sm leading-6 text-zinc-600">
+    <div class="form-control">
+      <label class="label cursor-pointer">
         <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} />
         <input
           type="checkbox"
@@ -343,12 +316,14 @@ defmodule Bonfire.UI.Common.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
+          class={["checkbox", @class]}
           {@rest}
         />
-        {@label}
+        <span class={@label_class || "label-text"}>
+          {@label}
+        </span>
       </label>
-      <.error :for={msg <- @errors}>{msg}</.error>
+      <.error_msg :for={msg <- @errors || []}>{msg}</.error_msg>
     </div>
     """
   end
@@ -356,18 +331,27 @@ defmodule Bonfire.UI.Common.CoreComponents do
   def input(%{type: "select"} = assigns) do
     ~H"""
     <div>
-      <.label for={@id}>{@label}</.label>
-      <select
-        id={@id}
-        name={@name}
-        class="mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
-        multiple={@multiple}
-        {@rest}
-      >
-        <option :if={@prompt} value="">{@prompt}</option>
-        {Phoenix.HTML.Form.options_for_select(@options, @value)}
-      </select>
-      <.error :for={msg <- @errors}>{msg}</.error>
+      <.label for={@id} class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class={["label-text", @label_class]}>{@label}</span>
+        </div>
+        <select
+          id={@id}
+          name={@name}
+          class={[
+            "select",
+            @class || "select-bordered",
+            @errors == [] && "select-success ",
+            is_list(@errors) and @errors != [] && "select-error"
+          ]}
+          multiple={@multiple}
+          {@rest}
+        >
+          <option :if={@prompt} value="">{@prompt}</option>
+          {Phoenix.HTML.Form.options_for_select(@options, @value)}
+        </select>
+      </.label>
+      <.error_msg :for={msg <- @errors || []}>{msg}</.error_msg>
     </div>
     """
   end
@@ -375,18 +359,22 @@ defmodule Bonfire.UI.Common.CoreComponents do
   def input(%{type: "textarea"} = assigns) do
     ~H"""
     <div>
-      <.label for={@id}>{@label}</.label>
-      <textarea
-        id={@id}
-        name={@name}
-        class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 min-h-[6rem]",
-          @errors == [] && "border-zinc-300 focus:border-zinc-400",
-          @errors != [] && "border-rose-400 focus:border-rose-400"
-        ]}
-        {@rest}
-      >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
-      <.error :for={msg <- @errors}>{msg}</.error>
+      <.label for={@id} class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class={["label-text", @label_class]}>{@label}</span>
+        </div>
+        <textarea
+          id={@id}
+          name={@name}
+          class={[
+            @class || "textarea",
+            @errors == [] && "textarea-success",
+            is_list(@errors) and @errors != [] && "textarea-error"
+          ]}
+          {@rest}
+        >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
+      </.label>
+      <.error_msg :for={msg <- @errors || []}>{msg}</.error_msg>
     </div>
     """
   end
@@ -395,20 +383,24 @@ defmodule Bonfire.UI.Common.CoreComponents do
   def input(assigns) do
     ~H"""
     <div>
-      <.label for={@id}>{@label}</.label>
-      <input
-        type={@type}
-        name={@name}
-        id={@id}
-        value={Phoenix.HTML.Form.normalize_value(@type, @value)}
-        class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
-          @errors == [] && "border-zinc-300 focus:border-zinc-400",
-          @errors != [] && "border-rose-400 focus:border-rose-400"
-        ]}
-        {@rest}
-      />
-      <.error :for={msg <- @errors}>{msg}</.error>
+      <.label for={@id} class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class={["label-text", @label_class]}>{@label}</span>
+        </div>
+        <input
+          type={@type}
+          name={@name}
+          id={@id}
+          value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+          class={[
+            @class || "input input-bordered w-full max-w-xs",
+            @errors == [] && "input-bordered input-success",
+            is_list(@errors) and @errors != [] && "input-bordered input-error"
+          ]}
+          {@rest}
+        />
+      </.label>
+      <.error_msg :for={msg <- @errors || []}>{msg}</.error_msg>
     </div>
     """
   end
@@ -417,11 +409,12 @@ defmodule Bonfire.UI.Common.CoreComponents do
   Renders a label.
   """
   attr :for, :string, default: nil
+  attr :class, :string, default: nil
   slot :inner_block, required: true
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label for={@for} class={@class || "label label-text"}>
       {render_slot(@inner_block)}
     </label>
     """
@@ -432,12 +425,42 @@ defmodule Bonfire.UI.Common.CoreComponents do
   """
   slot :inner_block, required: true
 
-  def error(assigns) do
+  def error_msg(assigns) do
     ~H"""
     <p class="mt-3 flex gap-3 text-sm leading-6 text-rose-600">
-      <.icon name="hero-exclamation-circle-mini" class="mt-0.5 h-5 w-5 flex-none" />
+      <.iconify icon="heroicons-exclamation-circle-mini" class="mt-0.5 h-5 w-5 flex-none" />
       {render_slot(@inner_block)}
     </p>
+    """
+  end
+
+  @doc """
+  Renders a button.
+
+  ## Examples
+
+      <.button>Send!</.button>
+      <.button phx-click="go" class="ml-2">Send!</.button>
+  """
+  attr :type, :string, default: nil
+  attr :class, :string, default: nil
+  attr :rest, :global, include: ~w(disabled form name value)
+
+  slot :inner_block, required: true
+
+  def button(assigns) do
+    ~H"""
+    <button
+      type={@type}
+      class={[
+        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
+        "text-sm font-semibold leading-6 text-white active:text-white/80",
+        @class
+      ]}
+      {@rest}
+    >
+      {render_slot(@inner_block)}
+    </button>
     """
   end
 
@@ -504,7 +527,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
           <tr>
             <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal">{col[:label]}</th>
             <th :if={@action != []} class="relative p-0 pb-4">
-              <span class="sr-only">{gettext("Actions")}</span>
+              <span class="sr-only">{l("Actions")}</span>
             </th>
           </tr>
         </thead>
@@ -588,37 +611,10 @@ defmodule Bonfire.UI.Common.CoreComponents do
         navigate={@navigate}
         class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
       >
-        <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
+        <.iconify icon="heroicons-solid-arrow-left" class="h-3 w-3" />
         {render_slot(@inner_block)}
       </.link>
     </div>
-    """
-  end
-
-  @doc """
-  Renders a [Heroicon](https://heroicons.com).
-
-  Heroicons come in three styles – outline, solid, and mini.
-  By default, the outline style is used, but solid and mini may
-  be applied by using the `-solid` and `-mini` suffix.
-
-  You can customize the size and colors of the icons by setting
-  width, height, and background color classes.
-
-  Icons are extracted from the `deps/heroicons` directory and bundled within
-  your compiled app.css by the plugin in your `assets/tailwind.config.js`.
-
-  ## Examples
-
-      <.icon name="hero-x-mark-solid" />
-      <.icon name="hero-arrow-path" class="ml-1 w-3 h-3 animate-spin" />
-  """
-  attr :name, :string, required: true
-  attr :class, :string, default: nil
-
-  def icon(%{name: "hero-" <> _} = assigns) do
-    ~H"""
-    <span class={[@name, @class]} />
     """
   end
 
@@ -635,6 +631,17 @@ defmodule Bonfire.UI.Common.CoreComponents do
     )
   end
 
+  # def show(js \\ %JS{}, selector) do
+  #   JS.show(js,
+  #     to: selector,
+  #     time: 300,
+  #     display: "inline-block",
+  #     transition:
+  #       {"ease-out duration-300", "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95",
+  #        "opacity-100 translate-y-0 sm:scale-100"}
+  #   )
+  # end
+
   def hide(js \\ %JS{}, selector) do
     JS.hide(js,
       to: selector,
@@ -645,6 +652,16 @@ defmodule Bonfire.UI.Common.CoreComponents do
          "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"}
     )
   end
+
+  # def hide(js \\ %JS{}, selector) do
+  #   JS.hide(js,
+  #     to: selector,
+  #     time: 300,
+  #     transition:
+  #       {"transition ease-in duration-300", "transform opacity-100 scale-100",
+  #        "transform opacity-0 scale-95"}
+  #   )
+  # end
 
   def show_modal(js \\ %JS{}, id) when is_binary(id) do
     js
@@ -669,33 +686,5 @@ defmodule Bonfire.UI.Common.CoreComponents do
     |> JS.hide(to: "##{id}", transition: {"block", "block", "hidden"})
     |> JS.remove_class("overflow-hidden", to: "body")
     |> JS.pop_focus()
-  end
-
-  @doc """
-  Translates an error message using gettext.
-  """
-  def translate_error({msg, opts}) do
-    # When using gettext, we typically pass the strings we want
-    # to translate as a static argument:
-    #
-    #     # Translate the number of files with plural rules
-    #     dngettext("errors", "1 file", "%{count} files", count)
-    #
-    # However the error messages in our forms and APIs are generated
-    # dynamically, so we need to translate them by calling Gettext
-    # with our gettext backend as first argument. Translations are
-    # available in the errors.po file (as we use the "errors" domain).
-    if count = opts[:count] do
-      Gettext.dngettext(DemoWeb.Gettext, "errors", msg, msg, count, opts)
-    else
-      Gettext.dgettext(DemoWeb.Gettext, "errors", msg, opts)
-    end
-  end
-
-  @doc """
-  Translates the errors for a field from a keyword list of errors.
-  """
-  def translate_errors(errors, field) when is_list(errors) do
-    for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
 end

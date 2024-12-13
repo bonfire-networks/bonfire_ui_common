@@ -1,12 +1,7 @@
 defmodule Bonfire.UI.Common.WriteEditorLive do
   use Bonfire.UI.Common.Web, :stateless_component
   use Bonfire.Common.Utils
-  alias Surface.Components.Form.TextArea
-  # alias Surface.Components.Form
-  # alias Surface.Components.Form.HiddenInput
-  # alias Surface.Components.Form.TextInput
-  # alias Surface.Components.Form.Field
-  # alias Surface.Components.Form.Inputs
+
   prop reset_smart_input, :boolean, default: false
   prop field_name, :string, default: "post[post_content][html_body]", required: false
   prop create_object_type, :any, default: nil

@@ -9,7 +9,7 @@ defmodule Bonfire.UI.Common.ErrorHelpers do
 
   @doc """
   Generates tag for inlined form input errors.
-  # TODO: use `Surface.Components.Form.ErrorTag` instead
+  # TODO: use `Surface.Components.Form.ErrorTag` instead?
   """
   def error_tag(form, field) do
     # debug(errors: form.errors)
@@ -63,5 +63,12 @@ defmodule Bonfire.UI.Common.ErrorHelpers do
     else
       Gettext.dgettext(Bonfire.Common.Localise.Gettext, "errors", msg, opts)
     end
+  end
+
+  @doc """
+  Translates the errors for a field from a keyword list of errors.
+  """
+  def translate_errors(errors, field) when is_list(errors) do
+    for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
 end

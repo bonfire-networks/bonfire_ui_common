@@ -467,14 +467,12 @@ if Code.ensure_loaded?(LiveViewNative.Component) and
     def simple_form(assigns) do
       ~LVN"""
       <.form :let={f} for={@for} as={@as} {@rest}>
-        <Form>
           <%= render_slot(@inner_block, f) %>
           <Section>
             <%= for action <- @actions do %>
               <%= render_slot(action, f) %>
             <% end %>
           </Section>
-        </Form>
       </.form>
       """
     end

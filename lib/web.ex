@@ -54,6 +54,7 @@ defmodule Bonfire.UI.Common.Web do
       use Phoenix.Controller, unquote(opts)
       import Plug.Conn
       import Phoenix.LiveView.Controller
+      import Phoenix.Component, only: [to_form: 1, to_form: 2]
       import Bonfire.UI.Common.Web, only: [render_inline: 2]
 
       alias Bonfire.UI.Common.Plugs.MustBeGuest
@@ -292,7 +293,9 @@ defmodule Bonfire.UI.Common.Web do
       # Use all HTML functionality (forms, tags, etc)
       import Phoenix.HTML
       import Phoenix.HTML.Form
-      use PhoenixHTMLHelpers
+      #  for csrf
+      import PhoenixHTMLHelpers.Tag
+      # use PhoenixHTMLHelpers
 
       # unquote(Bonfire.Common.Extend.quoted_use_if_enabled(Thesis.View, [], Bonfire.PublisherThesis.ContentAreas))
 
@@ -325,6 +328,9 @@ defmodule Bonfire.UI.Common.Web do
   defp live_view_basic_helpers do
     quote do
       unquote(view_helpers())
+
+      # import Phoenix.Component
+      import Bonfire.UI.Common.CoreComponents
 
       alias Bonfire.UI.Common.ComponentID
 
@@ -653,6 +659,8 @@ defmodule Bonfire.UI.Common.Web do
     defp surface_helpers do
       quote do
         unquote(live_view_basic_helpers())
+
+        import Phoenix.Component, except: [slot: 2, slot: 3, attr: 3]
 
         # alias Surface.Components.Dynamic
         # alias Bonfire.UI.Common.Modular.StatelessComponent
