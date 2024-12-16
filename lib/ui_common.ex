@@ -945,14 +945,31 @@ defmodule Bonfire.UI.Common do
   def copy_go(%{"go" => go}), do: "?" <> Plug.Conn.Query.encode(go: go)
   def copy_go(_), do: ""
 
-  # TODO: we should validate this a bit harder. Phoenix will prevent
-  # us from sending the user to an external URL, but it'll do so by
-  # means of a 500 error.
-  defp internal_go_path?("/" <> _), do: true
-  defp internal_go_path?(_), do: false
+  def redirect_to_previous_go(conn, params, default, current_path) do
+    # debug(conn.request_path)
+    case Plug.Conn.get_session(conn, :go)
+         |> debug("session_go")
+         |> go_where?(params, default, current_path) do
+      # TODO: add a configurable hook so these can be defined in the relevant extension 
+      [to: "/oauth/authorize?" <> query] ->
+        Bonfire.Common.Utils.maybe_apply(
+          Bonfire.OpenID.Web.Oauth.AuthorizeController,
+          :from_query_string,
+          [conn, query]
+        )
 
-  defp go_where?(session_go, %Ecto.Changeset{} = cs, default, current_path) do
-    go_where?(session_go, cs.changes, default, current_path)
+      [to: "/openid/authorize?" <> query] ->
+        Bonfire.Common.Utils.maybe_apply(
+          Bonfire.OpenID.Web.Openid.AuthorizeController,
+          :from_query_string,
+          [conn, query]
+        )
+
+      where ->
+        conn
+        |> Plug.Conn.delete_session(:go)
+        |> Phoenix.Controller.redirect(where)
+    end
   end
 
   defp go_where?(session_go, params, default, current_path) do
@@ -964,7 +981,10 @@ defmodule Bonfire.UI.Common do
 
       _ ->
         # |> debug
-        go = (e(params, :go, nil) || default) |> URI.decode()
+        go =
+          (ed(params, :go, nil) || e(params, :data, :go, nil) || e(params, :changes, :go, nil) ||
+             e(params, :source, :changes, :go, nil) || default)
+          |> URI.decode()
 
         if current_path != go and internal_go_path?(go),
           do: [to: go],
@@ -973,22 +993,14 @@ defmodule Bonfire.UI.Common do
     |> debug()
   end
 
-  def redirect_to_previous_go(conn, params, default, current_path) do
-    # debug(conn.request_path)
-    case Plug.Conn.get_session(conn, :go)
-         |> go_where?(params, default, current_path) do
-      [to: "/oauth/authorize?" <> query] ->
-        Bonfire.Common.Utils.maybe_apply(
-          Bonfire.OpenID.Web.Oauth.AuthorizeController,
-          :from_query_string,
-          [conn, query]
-        )
+  # TODO: we should validate this a bit harder. Phoenix will prevent
+  # us from sending the user to an external URL, but it'll do so by
+  # means of a 500 error.
+  defp internal_go_path?("/" <> _), do: true
+  defp internal_go_path?(_), do: false
 
-      where ->
-        conn
-        |> Plug.Conn.delete_session(:go)
-        |> Phoenix.Controller.redirect(where)
-    end
+  defp go_where?(session_go, %Ecto.Changeset{} = cs, default, current_path) do
+    go_where?(session_go, cs.changes, default, current_path)
   end
 
   def maybe_cute_gif do
