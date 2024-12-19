@@ -342,7 +342,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
             "select",
             @class || "select-bordered",
             @errors == [] && "select-success ",
-            is_list(@errors) and @errors != [] && "select-error"
+            (is_list(@errors) and @errors != []) && "select-error"
           ]}
           multiple={@multiple}
           {@rest}
@@ -369,7 +369,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
           class={[
             @class || "textarea",
             @errors == [] && "textarea-success",
-            is_list(@errors) and @errors != [] && "textarea-error"
+            (is_list(@errors) and @errors != []) && "textarea-error"
           ]}
           {@rest}
         >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
@@ -395,7 +395,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
           class={[
             @class || "input input-bordered w-full max-w-xs",
             @errors == [] && "input-bordered input-success",
-            is_list(@errors) and @errors != [] && "input-bordered input-error"
+            (is_list(@errors) and @errors != []) && "input-bordered input-error"
           ]}
           {@rest}
         />

@@ -167,7 +167,7 @@ if Bonfire.Common.Extend.module_enabled?(LiveViewNative) do
     def helpers(format) do
       gettext_quoted =
         quote do
-          import Bonfire.Common.Localise.Gettext
+          use Gettext, backend: Bonfire.Common.Localise.Gettext
         end
 
       plugin = LiveViewNative.fetch_plugin!(format)

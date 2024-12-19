@@ -266,7 +266,7 @@ defmodule Bonfire.UI.Common.Web do
       use Bonfire.UI.Common
 
       # localisation
-      require Bonfire.Common.Localise.Gettext
+      use Gettext, backend: Bonfire.Common.Localise.Gettext
       import Bonfire.Common.Localise.Gettext.Helpers
 
       # deprecated: Phoenix's Helpers
