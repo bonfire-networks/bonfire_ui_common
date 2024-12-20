@@ -320,6 +320,8 @@ defmodule Bonfire.UI.Common.Web do
     quote do
       unquote(live_view_basic_helpers())
 
+      use PhoenixHTMLHelpers
+      
       # Import component helpers
       import Phoenix.Component
     end
