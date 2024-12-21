@@ -217,17 +217,17 @@ defmodule Bonfire.UI.Common do
       _ ->
         false
     end)
-    |> debug()
+
+    # |> debug()
   end
 
   def assigns_minimal(%{} = assigns) when is_map(assigns),
     do: assigns_minimal(Map.to_list(assigns))
 
   def assigns_minimal(assigns) do
-    # |> IO.inspect
     preserve_global_assigns = Keyword.get(assigns, :global_assigns, []) || []
 
-    # |> IO.inspect
+    # |> debug()
     Enum.reject(assigns, fn
       {:current_user, _} -> false
       {:current_account, _} -> false
@@ -236,7 +236,7 @@ defmodule Bonfire.UI.Common do
       _ -> true
     end)
 
-    # |> IO.inspect
+    # |> debug()
   end
 
   @decorate time()
@@ -257,7 +257,7 @@ defmodule Bonfire.UI.Common do
     |> assigns_clean()
     |> deep_merge(new)
 
-    # |> IO.inspect
+    # |> debug()
   end
 
   def maybe_assign(socket, key, value)
@@ -1102,6 +1102,7 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  @doc "Like `update_many_async/3`, but to run several update/preload functions in parallel"
   def batch_update_many_async(assigns_sockets, many_opts, opts)
       when is_list(assigns_sockets) and is_list(many_opts) and is_list(opts) do
     {current_user, opts} = opts_for_update_many_async(List.first(assigns_sockets), opts)
@@ -1111,8 +1112,11 @@ defmodule Bonfire.UI.Common do
 
   def batch_update_many_async(current_user, assigns_sockets, many_opts, opts)
       when is_list(assigns_sockets) and is_list(many_opts) and is_list(opts) do
+    # IO.inspect(many_opts, label: "many_opts")
     # while the async stuff is running, return the original assigns
-    case Enum.map(many_opts, fn single_opts ->
+    case many_opts
+         |> Enums.filter_empty([])
+         |> Enum.map(fn single_opts ->
            prepare_update_many_async(assigns_sockets, opts[:mode], single_opts)
          end) do
       nil ->
@@ -1228,18 +1232,19 @@ defmodule Bonfire.UI.Common do
   def opts_for_update_many_async({assigns, socket}, opts) do
     env = Config.env()
 
-    connected? = socket_connected?(socket)
+    connected? = socket_connected?(socket) || socket_connected?(assigns)
 
-    current_user = current_user(socket) || current_user(assigns)
+    current_user = current_user(assigns) || current_user(socket)
 
-    live_update_many_preloads = opts[:live_update_many_preloads] || live_update_many_preloads?()
+    live_update_many_preload_mode =
+      opts[:live_update_many_preload_mode] || live_update_many_preload_mode()
 
     mode =
       cond do
-        live_update_many_preloads == :skip -> :wait
-        live_update_many_preloads == :inline -> :inline
+        live_update_many_preload_mode == :skip -> :wait
+        live_update_many_preload_mode == :inline -> :inline
         connected? == true and env != :test and not is_nil(opts[:caller_module]) -> :async
-        live_update_many_preloads == :user_async_or_skip -> :skip
+        live_update_many_preload_mode == :user_async_or_skip -> :skip
         env != :test and not is_nil(current_user) -> :wait
         true -> :inline
       end
@@ -1248,19 +1253,17 @@ defmodule Bonfire.UI.Common do
      opts ++
        [
          mode: mode,
-         showing_within:
-           e(assigns, :showing_within, nil) ||
-             e(assigns(socket), :showing_within, nil)
+         showing_within: e(assigns, :showing_within, nil)
        ]}
   end
 
   # @decorate time()
   defp prepare_update_many_async(assigns_sockets, mode, opts) do
     mode =
-      cond do
-        opts[:live_update_many_preloads] == :skip -> :wait
-        opts[:live_update_many_preloads] == :inline -> :inline
-        true -> mode
+      case opts[:live_update_many_preload_mode] do
+        :skip -> :wait
+        :inline -> :inline
+        _ -> mode
       end
       |> debug("mode")
 
@@ -1296,8 +1299,10 @@ defmodule Bonfire.UI.Common do
           )
         )
       end)
-      # |> debug("process these assigns")
-      |> Enum.map(fn {assigns, _socket} -> assigns_to_params_fn.(assigns) end)
+      # |> IO.inspect(label: "process these assigns")
+      |> Enum.map(fn
+        {assigns, _socket} -> assigns_to_params_fn.(assigns)
+      end)
 
     # |> debug("list_of_components")
 
@@ -1316,8 +1321,27 @@ defmodule Bonfire.UI.Common do
     end
   end
 
-  defp live_update_many_preloads?,
-    do: Process.get(:live_update_many_preloads) || Config.get(:live_update_many_preloads)
+  defp live_update_many_preload_mode,
+    do: Process.get(:live_update_many_preload_mode) || Config.get(:live_update_many_preload_mode)
+
+  def uniq_assign(list_of_components, field) do
+    case list_of_components
+         |> Enum.map(& &1[field])
+         |> Enum.uniq() do
+      [] ->
+        nil
+
+      [nil] ->
+        nil
+
+      [val] ->
+        val
+
+      [val | _] = list ->
+        warn(list, "more than one kind of #{field}, using the first for now")
+        val
+    end
+  end
 
   defp maybe_assign_provided(assigns_sockets, false), do: assigns_sockets
 
