@@ -16,7 +16,7 @@ defmodule Bonfire.UI.Common.PinnedLive do
         :list_by,
         [
           assigns.user,
-          [object_type: e(assigns, :object_types, []), current_user: current_user]
+          [object_types: e(assigns, :object_types, []), current_user: current_user]
         ]
       )
       |> debug("pinns")

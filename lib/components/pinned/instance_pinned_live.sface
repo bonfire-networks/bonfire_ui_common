@@ -1,5 +1,5 @@
 {#case Bonfire.Social.Pins.list_instance_pins(
-    object_type: @object_types,
+    object_types: @object_types,
     current_user: current_user(@__context__)
   )
   |> e(:edges, [])}
