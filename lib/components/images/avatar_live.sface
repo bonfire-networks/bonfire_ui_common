@@ -1,17 +1,17 @@
 <div
   data-scope="avatar"
-  class="border-0 avatar !flex"
+  class={@wrapper_class}
   :if={!Settings.get([Bonfire.UI.Common.AvatarLive, :hide_avatars], false, @__context__)}
 >
   <div
     data-square={Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true, @__context__)}
     class={@class}
   >
-    <!-- @title 
+    {!-- @title 
     || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
     e(@user, :name, nil) ||
     e(@user, :username, nil) ||
-    l("Avatar") -->
+    l("Avatar") --}
     {#case @avatar_fallback || Media.avatar_fallback(@user_id)}
       {#match avatar_fallback}
         {#case @src}

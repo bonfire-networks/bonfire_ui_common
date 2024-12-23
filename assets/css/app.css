@@ -335,7 +335,7 @@ div[data-id="main_section"][data-single-column] {
 /* AVATAR */
 
 div[data-scope="avatar"] div[data-square] {
-  @apply !rounded;
+  @apply !rounded-lg;
 }
 
 #guest_info #hero_more_actions {
