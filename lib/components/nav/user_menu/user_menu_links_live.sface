@@ -65,7 +65,7 @@
 
 {!-- if current user is also an admin --}
 <li :if={is_map(current_user(@__context__)) and
-  maybe_apply(Bonfire.Me.Accounts, :is_admin?, @__context__) == true}>
+  maybe_apply(Bonfire.Me.Accounts, :is_admin?, [@__context__], fallback_return: nil) == true}>
   <LinkLive to={~p"/settings/instance"} class="flex items-center gap-2 text-sm text-base-content">
     <div>{l("Instance Settings")}</div>
   </LinkLive>

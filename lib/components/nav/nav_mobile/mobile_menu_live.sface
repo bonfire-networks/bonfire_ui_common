@@ -91,7 +91,7 @@
                     },
                     if(
                       is_map(current_user(@__context__)) and
-                        maybe_apply(Bonfire.Me.Accounts, :is_admin?, @__context__) == true,
+                        maybe_apply(Bonfire.Me.Accounts, :is_admin?, [@__context__], fallback_return: nil) == true,
                       do: %{
                         type: :link,
                         href: ~p"/settings/instance",
