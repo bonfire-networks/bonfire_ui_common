@@ -59,4 +59,23 @@
         </div>
     {/case}
   </LinkLive>
+
+  <div :if={@widget[:sub_widgets] && @widget[:sub_widgets] != []} class="ml-2">
+    <StatelessComponent
+      module={Bonfire.UI.Common.WidgetLive}
+      :for={sub_widget <- @widget[:sub_widgets] || []}
+      widget={sub_widget}
+      to={sub_widget[:href]}
+      showing_within={@showing_within}
+      page={@page}
+      selected_tab={@selected_tab}
+      without_icon={@without_icon}
+      without_label={@without_label}
+      wrapper_class={@wrapper_class}
+      link_class={@link_class}
+      text_class={@text_class}
+      icon_class={@icon_class}
+      skip_badges={@skip_badges}
+    />
+  </div>
 </div>
