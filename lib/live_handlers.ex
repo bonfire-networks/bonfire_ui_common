@@ -237,32 +237,12 @@ defmodule Bonfire.UI.Common.LiveHandlers do
       "LiveSelect: select an option: try to delegate to `#{module}` (should be the module/component that is handling this multi_select)"
     )
 
-    input_name = module <> "_text_input"
-
-    case params do
-      %{^module => "", ^input_name => _} ->
-        {:noreply, socket}
-
-      %{^module => data, ^input_name => text} when is_binary(data) ->
-        mod_delegate(
-          module,
-          :handle_event,
-          ["multi_select", %{text: text, data: maybe_from_json(data)}],
-          socket
-        )
-
-      %{^module => data, ^input_name => text} when is_list(data) ->
-        mod_delegate(
-          module,
-          :handle_event,
-          ["multi_select", %{text: text, data: Enum.map(data, &maybe_from_json/1)}],
-          socket
-        )
-
-      _ ->
+    maybe_delegate_live_select(module <> "_text_input", module, params, socket) ||
+      maybe_delegate_live_select(module <> "_empty_selection", module, params, socket) ||
+      (
         warn(params, "Unrecognised event from LiveSelect")
         {:noreply, socket}
-    end
+      )
   end
 
   defp maybe_delegate_event_live_handler(event, attrs, socket) when is_binary(event) do
@@ -284,6 +264,41 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   defp maybe_delegate_event_live_handler(event, attrs, socket) do
     debug(attrs, "attrs")
     no_live_handler({:handle_event, event}, socket)
+  end
+
+  defp maybe_delegate_live_select(input_name, module, params, socket) do
+    case params do
+      %{^module => "", ^input_name => _} ->
+        {:noreply, socket}
+
+      %{^module => data, ^input_name => text} when is_binary(data) ->
+        mod_delegate(
+          module,
+          :handle_event,
+          ["multi_select", %{text: text, data: maybe_from_json(data)}],
+          socket
+        )
+
+      %{^module => data, ^input_name => text} when is_list(data) ->
+        mod_delegate(
+          module,
+          :handle_event,
+          ["multi_select", %{text: text, data: Enum.map(data, &maybe_from_json/1)}],
+          socket
+        )
+
+      #  TODO: how do we known the input name
+      %{^input_name => ""} ->
+        mod_delegate(
+          module,
+          :handle_event,
+          ["multi_select", %{data: nil}],
+          socket
+        )
+
+      _ ->
+        nil
+    end
   end
 
   defp maybe_module_provided_handle_event_fun(action, attrs, socket, fun)

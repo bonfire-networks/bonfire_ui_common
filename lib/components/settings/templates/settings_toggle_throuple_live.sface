@@ -1,0 +1,70 @@
+<div class={"p-4", "px-0 pt-0 pb-2": @compact}>
+  <input name="scope" value={@scope} type="hidden">
+
+  <label class={"flex items-center justify-between", "justify-between": !@compact}>
+    <div class={"flex flex-col mr-2", " !mr-0": @compact}>
+      <div class="flex flex-row gap-2" :if={@name}>
+        <div class="text-sm">{@name}</div>
+        <div :if={@show_label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div>
+      </div>
+      <div class="text-sm text-base-content/70" :if={@description}>{@description}</div>
+    </div>
+
+    <!-- <input
+      name={@input}
+      value={to_string(@enabled_value)}
+      type="checkbox"
+      checked={if @current_value == @enabled_value,
+        do: "checked"}
+      class="toggle toggle-sm"
+    /> -->
+
+    <div class="flex items-center">
+      <div class="border p-1 flex items-center gap-1 border-base-content/10 rounded-xl">
+        <button
+          data-id="enabled"
+          data-value={"#{@input}_#{@current_value}"}
+          class={
+            "text-base-content/70 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
+            "active bg-success hover:bg-success text-success-content": @current_value == @enabled_value
+          }
+          phx-click={@event_name}
+          phx-value-scope={@scope}
+          phx-target={@event_target}
+          {...@phx_values_enabled}
+        >
+          <#Icon :if={@with_icon} solid="Check" class="w-4 h-4" />
+          <span class={"sr-only": @with_icon}>{@label_yes || l("Yes")}</span>
+        </button>
+        <button
+          data-id="default"
+          class={
+            "text-base-content/70 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
+            "active bg-neutral hover:bg-neutral text-neutral-content": is_nil(@current_value)
+          }
+          phx-click={@event_name}
+          phx-value-scope={@scope}
+          phx-target={@event_target}
+          {...@phx_values_default}
+        >
+          <#Icon :if={@with_icon} iconify="bi:dot" class="w-4 h-4" />
+          <span class={"sr-only": @with_icon}>{@label_default || l("Default")}</span>
+        </button>
+        <button
+          data-id="disabled"
+          class={
+            "text-base-content/70 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
+            "active bg-error hover:bg-error text-error-content": @current_value == @disabled_value
+          }
+          phx-click={@event_name}
+          phx-value-scope={@scope}
+          phx-target={@event_target}
+          {...@phx_values_disabled}
+        >
+          <#Icon :if={@with_icon} solid="X" class="w-4 h-4" />
+          <span class={"sr-only": @with_icon}>{@label_no || l("No")}</span>
+        </button>
+      </div>
+    </div>
+  </label>
+</div>
