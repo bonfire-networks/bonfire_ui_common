@@ -1,5 +1,8 @@
 <div class={"p-4", "px-0 pt-0 pb-2": @compact}>
-  <div class={"flex items-center justify-between", "justify-between": !@compact}>
+  <input name="scope" value={@scope} type="hidden">
+  <input name={@input} value={to_string(@disabled_value)} type="hidden">
+
+  <label class={"flex items-center justify-between", "justify-between": !@compact}>
     <div class={"flex flex-col mr-2", " !mr-0": @compact}>
       <div class="flex flex-row gap-2" :if={@name}>
         <div class="text-sm">{@name}</div>
@@ -7,8 +10,7 @@
       </div>
       <div class="text-sm text-base-content/70" :if={@description}>{@description}</div>
     </div>
-    <input name="scope" value={@scope} type="hidden">
-    <input name={@input} value={to_string(@disabled_value)} type="hidden">
+
     <input
       name={@input}
       value={to_string(@enabled_value)}
@@ -17,5 +19,5 @@
         do: "checked"}
       class="toggle toggle-sm"
     />
-  </div>
+  </label>
 </div>
