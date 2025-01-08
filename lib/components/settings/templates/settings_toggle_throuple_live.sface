@@ -1,7 +1,7 @@
 <div class={"p-4", "px-0 pt-0 pb-2": @compact}>
   <input name="scope" value={@scope} type="hidden">
 
-  <label class={"flex items-center justify-between", "justify-between": !@compact}>
+  <div class={"flex items-center justify-between", "justify-between": !@compact}>
     <div class={"flex flex-col mr-2", " !mr-0": @compact}>
       <div class="flex flex-row gap-2" :if={@name}>
         <div class="text-sm">{@name}</div>
@@ -66,5 +66,5 @@
         </button>
       </div>
     </div>
-  </label>
+  </div>
 </div>

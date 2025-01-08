@@ -104,9 +104,26 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   @doc """
   Wait for the LiveView to receive any queued PubSub broadcasts
   """
-  def live_pubsub_wait(live_view) do
+  def live_pubsub_wait(%{view: %{pid: pid}}) do
+    live_pubsub_wait(pid)
+  end
+
+  def live_pubsub_wait(%{pid: pid} = liveview) do
+    live_pubsub_wait(pid)
+  end
+
+  def live_pubsub_wait(pid) when is_pid(pid) do
     # see https://elixirforum.com/t/testing-liveviews-that-rely-on-pubsub-for-updates/40938/5
-    _ = :sys.get_state(live_view.pid)
+    _ = :sys.get_state(pid)
+  end
+
+  def live_async_wait(%{pid: pid} = liveview) do
+    live_pubsub_wait(pid)
+    render_async(liveview)
+  end
+
+  def live_async_wait(%{view: %{pid: pid} = liveview}) do
+    live_async_wait(liveview)
   end
 
   @doc """
