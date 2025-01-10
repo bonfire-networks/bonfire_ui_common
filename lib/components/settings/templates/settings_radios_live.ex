@@ -6,6 +6,7 @@ defmodule Bonfire.UI.Common.SettingsRadiosLive do
   prop default_value, :any, default: nil
 
   prop scope, :any, default: nil
+  prop range, :boolean, default: false
 
   prop name, :string, default: nil
   prop description, :string, default: nil

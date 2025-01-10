@@ -11,8 +11,8 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       mode={@mode}
       phx-target={@event_target}
       options={@options}
-      value={Enums.filter_empty(@value, nil)}
-      allow_clear={@mode == :tags}
+      value={@value}
+      allow_clear={true}
       update_min_len={@update_min_len || 1}
       debounce={0}
       placeholder={@placeholder}
@@ -26,7 +26,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       tags_container_class="flex flex-wrap gap-1 pt-2 order-last"
     >
       <:option :let={option}>
-        <div class="flex p-1 gap-2 items-center">
+        <div class="flex p-0 gap-2 items-center">
           <%= if Map.has_key?(option.value, :type) && option.value.type == "circle" do %>
             <span class="w-8 h-8 rounded-full bg-info/10 flex items-center place-content-center">
               <div

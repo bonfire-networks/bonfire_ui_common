@@ -2,7 +2,7 @@
   {#case @nav_items
     |> debug("nav_items")}
     {#match nav_items when is_list(nav_items) and nav_items != []}
-      <div data-id="nav_links" data-showing-within={@showing_within}>
+      <ul class="menu p-0 menu-sm w-[220px]" data-id="nav_links" data-showing-within={@showing_within}>
         {#for nav <- nav_items}
           {!-- TODO: override widget[:module] with the result of maybe_module so it doesn't need to be run again in the widget --}
           {#case nav
@@ -14,34 +14,30 @@
             {#match []}
               {!-- no nav --}
             {#match nav}
-              <li :for={%{type: :link} = subnav <- nav}>
-                <Bonfire.UI.Common.WidgetLive
-                  showing_within={@showing_within}
-                  widget={subnav}
-                  page={@page}
-                  selected_tab={@selected_tab}
-                  skip_badges={@skip_badges}
-                />
-              </li>
-
+              <Bonfire.UI.Common.WidgetLive
+                :for={%{type: :link} = subnav <- nav}
+                showing_within={@showing_within}
+                widget={subnav}
+                page={@page}
+                selected_tab={@selected_tab}
+                skip_badges={@skip_badges}
+              />
               {#case Enum.filter(nav, fn %{type: type} -> type != :link end)}
                 {#match []}
                   {!-- no nav widgets --}
                 {#match nav_widgets}
-                  <div class="menu p-0 order-last" data-id="nav_components">
-                    <Bonfire.UI.Common.WidgetLive
-                      :for={widget <- nav_widgets}
-                      showing_within={@showing_within}
-                      widget={widget}
-                      page={@page}
-                      selected_tab={@selected_tab}
-                      skip_badges={@skip_badges}
-                    />
-                  </div>
+                  <Bonfire.UI.Common.WidgetLive
+                    :for={widget <- nav_widgets}
+                    showing_within={@showing_within}
+                    widget={widget}
+                    page={@page}
+                    selected_tab={@selected_tab}
+                    skip_badges={@skip_badges}
+                  />
               {/case}
           {/case}
         {/for}
-      </div>
+      </ul>
     {#match _}
       {!-- no nav_items --}
   {/case}

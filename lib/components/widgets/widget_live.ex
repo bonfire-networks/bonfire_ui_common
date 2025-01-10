@@ -17,8 +17,8 @@ defmodule Bonfire.UI.Common.WidgetLive do
   prop selected_tab, :any, default: nil
   prop showing_within, :atom, default: :sidebar
 
-  prop wrapper_class, :css_class, default: "!p-0 !block"
-  prop link_class, :any, default: nil
+  prop wrapper_class, :css_class, default: ""
+  prop link_class, :any, default: "!px-0"
   prop icon_class, :css_class, required: false, default: "w-4 h-4 text-base-content"
 
   prop skip_badges, :any, default: false

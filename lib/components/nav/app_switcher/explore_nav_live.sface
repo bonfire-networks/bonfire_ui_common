@@ -1,4 +1,4 @@
-<ul class="space-y-1 menu menu-compact">
+<ul class="space-y-1 menu menu-sm">
   <li
     :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
     :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
@@ -18,7 +18,7 @@
             <label class="btn btn-xs btn-ghost btn-square" tabindex="0">
               <#Icon class="w-4 h-4 text-base-content/70" solid="ChevronRight" />
             </label>
-            <ul tabindex="0" class="rounded shadow dropdown-content menu menu-compact w-52">
+            <ul tabindex="0" class="rounded shadow dropdown-content menu menu-sm w-52">
               {#for nav <- app_nav_items}
                 {#case nav}
                   {#match %{}}

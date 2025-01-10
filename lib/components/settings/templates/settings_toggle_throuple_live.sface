@@ -20,12 +20,12 @@
     /> -->
 
     <div class="flex items-center">
-      <div class="border p-1 flex items-center gap-1 border-base-content/10 rounded-xl">
+      <div class="border text-xs p-1 flex items-center gap-1 border-base-content/10 rounded-xl">
         <button
           data-id="enabled"
           data-value={"#{@input}_#{@current_value}"}
           class={
-            "text-base-content/70 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
+            "px-2 text-base-content/70 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
             "active bg-success hover:bg-success text-success-content": @current_value == @enabled_value
           }
           phx-click={@event_name}
@@ -39,7 +39,7 @@
         <button
           data-id="default"
           class={
-            "text-base-content/70 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
+            "px-2 text-base-content/70 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
             "active bg-neutral hover:bg-neutral text-neutral-content": is_nil(@current_value)
           }
           phx-click={@event_name}
@@ -53,7 +53,7 @@
         <button
           data-id="disabled"
           class={
-            "text-base-content/70 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
+            "px-2 text-base-content/70 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
             "active bg-error hover:bg-error text-error-content": @current_value == @disabled_value
           }
           phx-click={@event_name}

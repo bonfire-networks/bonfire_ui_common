@@ -52,7 +52,7 @@
 		"buffer": "^6.0.3",
 		"cpx2": "^6.0.1",
 		"cssnano": "^6.0.2",
-		"daisyui": "^4.12.8",
+		"daisyui": "^4.12.23",
 		"esbuild": "^0.19.9",
 		"fast-blurhash": "^1.1.2",
 		"postcss": "^8.4.38",

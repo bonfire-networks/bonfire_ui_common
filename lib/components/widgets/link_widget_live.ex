@@ -24,7 +24,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   prop showing_within, :atom, default: :sidebar
 
   prop wrapper_class, :css_class, default: "m-0 p-0 justify-end  !block"
-  prop link_class, :any, default: nil
+  prop link_class, :any, default: "!px-0"
   prop icon_class, :css_class, required: false, default: "w-4 h-4 text-base-content"
 
   prop skip_badges, :any, default: false

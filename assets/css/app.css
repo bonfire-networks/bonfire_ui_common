@@ -7,6 +7,7 @@
 @import "tailwindcss/base";
 /* @import "./base.css"; */
 
+
 :root {
   --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
   --ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
@@ -974,45 +975,6 @@ body {
 
 .dropdown .dropdown-content {
   overflow: auto;
-}
-
-.menu .menu-title > a,
-.menu .menu-title > span {
-  font-weight: normal;
-}
-
-.md\:menu-compact :where(li > *) {
-  padding: 0 !important;
-  display: block !important;
-}
-
-.menu :where(li ul)::before {
-  display: none !important;
-}
-.menu:empty,
-.menu:-moz-only-whitespace,
-.dropdown-with-list:not(.dropdown-with-list:has(li)) {
-  display: none !important;
-}
-.menu-compact :where(li > *) {
-  padding: 0 !important;
-  display: block !important;
-}
-
-.menu-compact li .open_modal_btn_wrapper {
-  @apply !px-4 !py-2 !w-full;
-}
-
-.menu-compact :where(li > a) {
-  @apply !px-4 !py-2 !w-full;
-}
-
-.md\:menu-compact li .open_modal_btn_wrapper {
-  @apply !px-4 !py-2 !w-full;
-}
-
-.md\:menu-compact :where(li > a) {
-  @apply !px-4 !py-2 !w-full;
 }
 
 .feed_activity_action {
