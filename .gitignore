@@ -5,6 +5,8 @@
 .mix
 assets/node_modules
 assets/*.log
+priv/cldr
+.bonfire-extension-boilerplate
 
 # If you run "mix test --cover", coverage assets end up here.
 /cover/
@@ -25,7 +27,7 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-bonfire_web_phoenix-*.tar
+bonfire_*-*.tar
 
 # ignore local mess deps
 deps.path
