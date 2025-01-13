@@ -515,7 +515,7 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
-  if Bonfire.Common.Extend.module_exists?(Surface) do
+  if Bonfire.Common.Extend.module_enabled?(Surface) do
     def surface_live_view_child(caller, opts \\ []) do
       opts =
         Keyword.put_new(
