@@ -8,7 +8,8 @@ defmodule Bonfire.UI.Common.WidgetLive do
   prop without_label, :boolean, default: false
   prop with_title, :boolean, default: false
   prop compact, :boolean, default: false
-
+  prop order, :integer, default: 0
+  prop is_subwidget, :boolean, default: false
   prop text_class, :css_class,
     required: false,
     default: nil

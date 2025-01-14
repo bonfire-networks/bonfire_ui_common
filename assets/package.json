@@ -43,6 +43,7 @@
 		"phoenix_html": "link:../deps/phoenix_html",
 		"phoenix_live_view": "link:../deps/phoenix_live_view",
 		"picmo": "^5.8.1",
+		"sortablejs": "^1.15.6",
 		"textarea-caret": "^3.1.0",
 		"tippy.js": "^6.3.7",
 		"vanilla-colorful": "^0.7.2"

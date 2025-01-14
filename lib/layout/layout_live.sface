@@ -297,7 +297,7 @@
               </ul>
             </div>
           </div>
-          <div class="mt-4 -mx-2">
+          <!-- <div class="mt-4 -mx-2">
             <Bonfire.UI.Common.ExtensionMenuNavLive
               selected_tab={@selected_tab}
               page={@page}
@@ -305,7 +305,7 @@
               nav_items={@nav_items || []}
               skip_badges={[:inbox, :notifications]}
             />
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

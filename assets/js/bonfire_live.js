@@ -98,7 +98,7 @@ window.liveSocket = liveSocket;
 
 import { CopyHooks } from "./copy";
 import { TooltipHooks } from "./tooltip";
-
+import  {DraggableHooks}  from "./draggable_widget";
 // import DynamicImport from '@rtvision/esbuild-dynamic-import';
 // note depending on your setup you may need to do DynamicImport.default() instead
 // DynamicImport({ transformExtensions: ['.js'], changeRelativeToAbsolute: false, filter: "../../data/current_flavour/config/deps_hooks.js" })
@@ -111,4 +111,4 @@ import { ExtensionHooks } from "../../../../data/current_flavour/config/deps_hoo
 import ComponentHooks from "../../../../data/current_flavour/config/flavour_assets/hooks/index.js";
 
 // Add Extensions' Hooks...
-Object.assign(liveSocket.hooks, ExtensionHooks, ComponentHooks, CopyHooks, TooltipHooks);
+Object.assign(liveSocket.hooks, ExtensionHooks, DraggableHooks, ComponentHooks, CopyHooks, TooltipHooks);

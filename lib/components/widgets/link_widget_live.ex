@@ -28,4 +28,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   prop icon_class, :css_class, required: false, default: "w-4 h-4 text-base-content"
 
   prop skip_badges, :any, default: false
+
+  @impl true
+
 end

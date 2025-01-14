@@ -11,6 +11,7 @@
     to={if is_function(@to),
       do: @to.(@__context__),
       else: @to}
+    id={@text}
     class={e(@widget[:link_class], @link_class)}
     label={@text || @widget[:text] || @widget[:name]}
     phx_hook={@widget[:phx_hook]}
@@ -60,22 +61,55 @@
     {/case}
   </LinkLive>
 
-  <ul :if={@widget[:sub_widgets] && @widget[:sub_widgets] != []} class="menu">
-    <StatelessComponent
-      module={Bonfire.UI.Common.WidgetLive}
-      :for={sub_widget <- @widget[:sub_widgets] || []}
-      widget={sub_widget}
-      to={sub_widget[:href]}
-      showing_within={@showing_within}
-      page={@page}
-      selected_tab={@selected_tab}
-      without_icon
-      without_label={@without_label}
-      wrapper_class={@wrapper_class}
-      link_class={@link_class}
-      text_class={@text_class}
-      icon_class={@icon_class}
-      skip_badges={@skip_badges}
-    />
+  <ul
+    data-widget-draggable
+    id="draggable_menu"
+    phx-hook="Draggable" 
+    :if={@widget[:sub_widgets] && @widget[:sub_widgets] != []} 
+    class="menu">
+  
+  {#for {sub_widget, index} <- Enum.with_index(
+    Enum.sort_by(
+      @widget[:sub_widgets] || [], 
+      fn widget -> 
+        widget.page && 
+        Bonfire.Common.Settings.get(
+          [:ui, :feed_order, String.to_existing_atom(widget.page)], 
+          999, 
+          current_user(@__context__)
+        ) 
+      end
+    )
+  )}     
+    <div 
+      data-sortable-item
+      data-sortable-handler
+      data-order={
+        Bonfire.Common.Settings.get(
+          [:ui, :feed_order, String.to_existing_atom(sub_widget.page)], 
+          index, 
+          current_user(@__context__)
+        )
+      }
+      data-item={sub_widget.page}
+      class="relative">
+      <StatelessComponent
+        module={Bonfire.UI.Common.WidgetLive}
+        widget={sub_widget}
+        is_subwidget
+        to={sub_widget[:href]}
+        showing_within={@showing_within}
+        page={@page}
+        selected_tab={@selected_tab}
+        without_icon
+        without_label={@without_label}
+        wrapper_class={@wrapper_class}
+        link_class={@link_class}
+        text_class={@text_class}
+        icon_class={@icon_class}
+        skip_badges={@skip_badges}
+      />
+    </div>
+  {/for}
   </ul>
 </li>
