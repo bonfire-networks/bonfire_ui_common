@@ -61,6 +61,7 @@
               {!-- WIP: Find a better way to include navs in mobile with notification badges --}
 
               <Bonfire.UI.Common.ExtensionMenuNavLive
+                parent_id={"mobile_menu"}
                 selected_tab={@selected_tab}
                 page={@page}
                 showing_within={:nav}

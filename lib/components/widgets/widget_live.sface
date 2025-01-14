@@ -1,21 +1,35 @@
-{#case @widget[:type]}
-  {#match :link}
-    <Bonfire.UI.Common.LinkWidgetLive
-      widget={@widget}
-      to={@widget[:href]}
-      showing_within={@showing_within}
-      page={@page}
-      selected_tab={@selected_tab}
-      without_icon={@without_icon}
-      without_label={@without_label}
-      wrapper_class={@wrapper_class}
-      link_class={@link_class}
-      text_class={@text_class}
-      icon_class={@icon_class}
-      skip_badges={@skip_badges}
-    />
-  {#match Surface.Component}
-    <div class={@widget[:wrapper_class] || @wrapper_class} data-type="widget">
+<li
+  class={
+    @widget[:wrapper_class] || @wrapper_class,
+    group:
+      not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
+  }
+  data-showing-within={@showing_within}
+  data-type={"widgets_#{@parent_id}_#{@parent_item}"}
+  data-sortable-item={if @parent_id && (@widget[:page] || @widget[:module]), do: true}
+  data-sortable-handler
+  data-order={@order}
+  data-item={@widget[:page] || @widget[:module]}
+>
+  {#case @widget[:type]}
+    {#match :link}
+      <Bonfire.UI.Common.LinkWidgetLive
+        widget={@widget}
+        to={@widget[:href]}
+        showing_within={@showing_within}
+        page={@page}
+        parent_id={"#{@parent_id}_#{@order}"}
+        selected_tab={@selected_tab}
+        without_icon={@without_icon}
+        without_label={@without_label}
+        wrapper_class={@wrapper_class}
+        link_class={@link_class}
+        text_class={@text_class}
+        icon_class={@icon_class}
+        skip_badges={@skip_badges}
+        order={@order}
+      />
+    {#match Surface.Component}
       <div :if={@with_title} class="text-base pb-3 font-medium">{@widget[:text] || @widget[:name]}</div>
       <StatelessComponent
         module={@widget[:module]}
@@ -25,22 +39,67 @@
         {...@data}
         compact={@compact}
       />
-    </div>
-  {#match Surface.LiveComponent}
-    <div class={@widget[:wrapper_class] || @wrapper_class} data-type="widget">
+    {#match Surface.LiveComponent}
       <div :if={@with_title} class="mt-4 mb-2 text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
       <StatefulComponent
         module={@widget[:module]}
+        id={"#{@parent_id || "widget"}_#{@order || random_dom_id()}"}
         page={@page}
         selected_tab={@selected_tab}
         showing_within={@showing_within}
         compact={@compact}
         {...@data}
       />
-    </div>
-  {#match nil}
-  {#match :disabled}
-    {raw("<!-- skipped disabled widget: #{@widget[:name]} -->")}
-  {#match other}
-    {error(other) && "<!-- invalid widget -->"}
-{/case}
+    {#match nil}
+    {#match :disabled}
+      {raw("<!-- skipped disabled widget: #{@widget[:name]} -->")}
+    {#match other}
+      {error(other) && "<!-- invalid widget -->"}
+  {/case}
+
+  <ul
+    :if={@widget[:sub_widgets] && @widget[:sub_widgets] != []}
+    id={"#{@parent_id}_#{@order}_sub_widgets"}
+    phx-hook={if @parent_id, do: "Draggable"}
+    data-widget-draggable
+    data-parent={@widget[:page] || @widget[:module]}
+    data-event="Bonfire.Common.Settings:reorder_sub_widget"
+    class="menu relative"
+  >
+    {#case Bonfire.Common.Settings.get(
+        [:ui, :sub_widget_order, Types.maybe_to_atom(@widget[:page] || @widget[:module])],
+        [],
+        current_user(@__context__)
+      )}
+      {#match order_settings}
+        {#for {sub_widget, index} <-
+            Enum.sort_by(
+              Enum.with_index(List.wrap(@widget[:sub_widgets])),
+              fn {sub_widget, index} ->
+                ((sub_widget[:page] || sub_widget[:module]) &&
+                   order_settings[Types.maybe_to_atom(sub_widget[:page] || sub_widget[:module])]) || index
+              end
+            )}
+          <StatelessComponent
+            module={Bonfire.UI.Common.WidgetLive}
+            widget={sub_widget}
+            is_subwidget
+            to={sub_widget[:href]}
+            showing_within={@showing_within}
+            page={@page}
+            parent_item={@widget[:page] || @widget[:module]}
+            parent_id={"#{@parent_id}_#{@order}_#{index}"}
+            selected_tab={@selected_tab}
+            without_icon
+            without_label={@without_label}
+            wrapper_class={@wrapper_class}
+            link_class={@link_class}
+            text_class={@text_class}
+            icon_class={@icon_class}
+            skip_badges={@skip_badges}
+            order={index}
+          />
+        {/for}
+    {/case}
+  </ul>
+</li>

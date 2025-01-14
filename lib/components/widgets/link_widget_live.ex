@@ -19,9 +19,11 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
     default:
       "flex absolute right-[6px] top-[-8px] tablet-lg:!right-auto tablet-lg:left-5 tablet-lg:!top-[-6px] items-center place-content-center widget_notification"
 
+  prop parent_id, :string, default: nil
   prop page, :string, default: nil
   prop selected_tab, :any, default: nil
   prop showing_within, :atom, default: :sidebar
+  prop order, :integer, default: nil
 
   prop wrapper_class, :css_class, default: "m-0 p-0 justify-end  !block"
   prop link_class, :any, default: "!px-0"
@@ -30,5 +32,4 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   prop skip_badges, :any, default: false
 
   @impl true
-
 end

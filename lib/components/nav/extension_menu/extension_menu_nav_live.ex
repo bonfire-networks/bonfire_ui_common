@@ -3,6 +3,7 @@ defmodule Bonfire.UI.Common.ExtensionMenuNavLive do
 
   prop nav_items, :list, default: []
   prop page, :any, default: nil
+  prop parent_id, :string, default: nil
   prop selected_tab, :any, default: nil
   prop skip_badges, :any, default: false
   prop showing_within, :atom, default: :sidebar

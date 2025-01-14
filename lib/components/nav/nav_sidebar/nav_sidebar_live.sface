@@ -14,6 +14,7 @@
   >
     <div class="flex-1 h-full">
       <Bonfire.UI.Common.ExtensionMenuNavLive
+        parent_id="nav_sidebar"
         selected_tab={@selected_tab}
         page={@page}
         nav_items={@nav_items}

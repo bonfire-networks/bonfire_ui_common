@@ -1,42 +1,38 @@
 <div class="gap-1 tablet-lg:gap-0">
   {#case @nav_items
+    |> Enum.filter(fn nav ->
+      (!nav[:exclude_from_nav] and is_nil(nav[:module])) or
+        maybe_module(nav[:module], @__context__)
+    end)
     |> debug("nav_items")}
     {#match nav_items when is_list(nav_items) and nav_items != []}
-      <ul class="menu p-0 menu-sm w-[220px]" data-id="nav_links" data-showing-within={@showing_within}>
-        {#for nav <- nav_items}
-          {!-- TODO: override widget[:module] with the result of maybe_module so it doesn't need to be run again in the widget --}
-          {#case nav
-            |> List.wrap()
-            |> Enum.filter(fn subnav ->
-              (!subnav[:exclude_from_nav] and is_nil(subnav[:module])) or
-                maybe_module(subnav[:module], @__context__)
-            end)}
-            {#match []}
-              {!-- no nav --}
-            {#match nav}
-              <Bonfire.UI.Common.WidgetLive
-                :for={%{type: :link} = subnav <- nav}
-                showing_within={@showing_within}
-                widget={subnav}
-                page={@page}
-                selected_tab={@selected_tab}
-                skip_badges={@skip_badges}
-              />
-              {#case Enum.filter(nav, fn %{type: type} -> type != :link end)}
-                {#match []}
-                  {!-- no nav widgets --}
-                {#match nav_widgets}
-                  <Bonfire.UI.Common.WidgetLive
-                    :for={widget <- nav_widgets}
-                    showing_within={@showing_within}
-                    widget={widget}
-                    page={@page}
-                    selected_tab={@selected_tab}
-                    skip_badges={@skip_badges}
-                  />
-              {/case}
-          {/case}
-        {/for}
+      <ul
+        class="p-0 w-[220px]"
+        data-id={"#{@parent_id}_nav_links"}
+        data-showing-within={@showing_within}
+      >
+        {!-- TODO: override widget[:module] with the result of maybe_module so it doesn't need to be run again in the widget --}
+        {#case Enum.split_with(nav_items, fn %{type: type} -> type == :link end)}
+          {#match {nav_links, nav_widgets}}
+            <Bonfire.UI.Common.WidgetsLive
+              id={"#{@parent_id}_extension_nav_links"}
+              showing_within={@showing_within}
+              widgets={nav_links}
+              page={@page}
+              selected_tab={@selected_tab}
+              skip_badges={@skip_badges}
+              container_class="menu menu-sm"
+            />
+
+            <Bonfire.UI.Common.WidgetLive
+              id={"#{@parent_id}_extension_nav_widgets"}
+              showing_within={@showing_within}
+              widgets={nav_widgets}
+              page={@page}
+              selected_tab={@selected_tab}
+              skip_badges={@skip_badges}
+            />
+        {/case}
       </ul>
     {#match _}
       {!-- no nav_items --}

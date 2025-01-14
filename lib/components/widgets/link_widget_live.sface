@@ -1,115 +1,53 @@
-<li
-  class={
-    @widget[:wrapper_class] || @wrapper_class,
-    group:
-      not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
-  }
-  data-showing-within={@showing_within}
-  data-type="widget"
+<LinkLive
+  to={if is_function(@to),
+    do: @to.(@__context__),
+    else: @to}
+  id={"#{@parent_id}_#{@order || random_dom_id()}"}
+  class={e(@widget[:link_class], @link_class)}
+  label={@text || @widget[:text] || @widget[:name]}
+  phx_hook={@widget[:phx_hook]}
 >
-  <LinkLive
-    to={if is_function(@to),
-      do: @to.(@__context__),
-      else: @to}
-    id={@text}
-    class={e(@widget[:link_class], @link_class)}
-    label={@text || @widget[:text] || @widget[:name]}
-    phx_hook={@widget[:phx_hook]}
-  >
-    <div class={@content_class}>
-      <span :if={!@without_icon && (@icon || @widget[:icon] || @widget[:icon_active])} class="">
-        {#if not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])}
-          <Iconify.iconify
-            icon={@widget[:icon_active] || @icon || @widget[:icon]}
-            class={@widget[:icon_class] || @icon_class, "!text-base-content"}
-          />
-        {#else}
-          <Iconify.iconify icon={@icon || @widget[:icon]} class={@widget[:icon_class] || @icon_class} />
-        {/if}
-      </span>
-      <span
-        :if={(not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])) or
-          (not is_nil(@widget[:module]) and e(@__context__, :current_view, nil) == @widget[:module])}
-        class="sr-only"
-      >{l("Current Page:")}
-      </span>
-      <span
-        data-type="widget_label"
-        :if={!@without_label}
-        class={
-          @text_class,
-          "!font-bold !text-base-content":
-            not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
-        }
-      >{@text || @widget[:text] || @widget[:name]}</span>
-    </div>
-    {#case @widget[:badge]}
-      {#match nil}
-      {#match badge}
-        <div
-          data-highlighted={Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)}
-          :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
-          class={@badge_class}
-        >
-          <StatefulComponent
-            id={badge[:id] || random_dom_id()}
-            page={@page}
-            module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
-            feed_id={badge[:feed_id] || e(current_user(@__context__), :character, badge[:feed_key], nil)}
-          />
-        </div>
-    {/case}
-  </LinkLive>
-
-  <ul
-    data-widget-draggable
-    id="draggable_menu"
-    phx-hook="Draggable" 
-    :if={@widget[:sub_widgets] && @widget[:sub_widgets] != []} 
-    class="menu">
-  
-  {#for {sub_widget, index} <- Enum.with_index(
-    Enum.sort_by(
-      @widget[:sub_widgets] || [], 
-      fn widget -> 
-        widget.page && 
-        Bonfire.Common.Settings.get(
-          [:ui, :feed_order, String.to_existing_atom(widget.page)], 
-          999, 
-          current_user(@__context__)
-        ) 
-      end
-    )
-  )}     
-    <div 
-      data-sortable-item
-      data-sortable-handler
-      data-order={
-        Bonfire.Common.Settings.get(
-          [:ui, :feed_order, String.to_existing_atom(sub_widget.page)], 
-          index, 
-          current_user(@__context__)
-        )
+  <div class={@content_class}>
+    <span :if={!@without_icon && (@icon || @widget[:icon] || @widget[:icon_active])} class="">
+      {#if not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])}
+        <Iconify.iconify
+          icon={@widget[:icon_active] || @icon || @widget[:icon]}
+          class={@widget[:icon_class] || @icon_class, "!text-base-content"}
+        />
+      {#else}
+        <Iconify.iconify icon={@icon || @widget[:icon]} class={@widget[:icon_class] || @icon_class} />
+      {/if}
+    </span>
+    <span
+      :if={(not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])) or
+        (not is_nil(@widget[:module]) and e(@__context__, :current_view, nil) == @widget[:module])}
+      class="sr-only"
+    >{l("Current Page:")}
+    </span>
+    <span
+      data-type="widget_label"
+      :if={!@without_label}
+      class={
+        @text_class,
+        "!font-bold !text-base-content":
+          not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
       }
-      data-item={sub_widget.page}
-      class="relative">
-      <StatelessComponent
-        module={Bonfire.UI.Common.WidgetLive}
-        widget={sub_widget}
-        is_subwidget
-        to={sub_widget[:href]}
-        showing_within={@showing_within}
-        page={@page}
-        selected_tab={@selected_tab}
-        without_icon
-        without_label={@without_label}
-        wrapper_class={@wrapper_class}
-        link_class={@link_class}
-        text_class={@text_class}
-        icon_class={@icon_class}
-        skip_badges={@skip_badges}
-      />
-    </div>
-  {/for}
-  </ul>
-</li>
+    >{@text || @widget[:text] || @widget[:name]}</span>
+  </div>
+  {#case @widget[:badge]}
+    {#match nil}
+    {#match badge}
+      <div
+        data-highlighted={Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)}
+        :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
+        class={@badge_class}
+      >
+        <StatefulComponent
+          id={badge[:id] || random_dom_id()}
+          page={@page}
+          module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
+          feed_id={badge[:feed_id] || e(current_user(@__context__), :character, badge[:feed_key], nil)}
+        />
+      </div>
+  {/case}
+</LinkLive>

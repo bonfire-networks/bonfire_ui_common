@@ -1,30 +1,40 @@
-<div class="flex flex-col gap-3 divide-y divide-base-content/10">
-  {#for widgets <- debug(@widgets, "widgetts")}
-    {#case widgets}
-      {#match %{}}
+<ul
+  id={@id}
+  phx-hook={if @id, do: "Draggable"}
+  data-widget-draggable
+  data-grouped="id"
+  data-parent={@id}
+  data-event="Bonfire.Common.Settings:reorder_widget"
+  class={@container_class || "flex flex-col gap-3 divide-y divide-base-content/10"}
+  data-showing-within={@showing_within}
+>
+  {#case Bonfire.Common.Settings.get(
+      [:ui, :widget_order, @id],
+      [],
+      current_user(@__context__)
+    )}
+    {#match order_settings}
+      {#for {widget, index} <-
+          Enum.sort_by(
+            Enum.with_index(List.wrap(@widgets)),
+            fn {widget, index} ->
+              ((widget[:page] || widget[:module]) &&
+                 order_settings[Types.maybe_to_atom(widget[:page] || widget[:module])]) ||
+                index
+            end
+          )}
         <Bonfire.UI.Common.WidgetLive
-          widget={widgets}
-          wrapper_class="!block !p-0 !pt-3"
+          widget={widget}
+          wrapper_class={@wrapper_class || "!block !p-0 !pt-3"}
           page={@page}
           selected_tab={@selected_tab}
           showing_within={@showing_within}
           with_title={@with_title}
           extra_data={@extra_data}
-          compact
+          compact={@compact}
+          parent_id={@id}
+          order={index}
         />
-      {#match _ when is_list(widgets)}
-        {#for widget <- widgets}
-          <Bonfire.UI.Common.WidgetLive
-            wrapper_class="!block !p-0 !pt-3"
-            widget={widget}
-            page={@page}
-            selected_tab={@selected_tab}
-            showing_within={@showing_within}
-            with_title={@with_title}
-            extra_data={@extra_data}
-            compact
-          />
-        {/for}
-    {/case}
-  {/for}
-</div>
+      {/for}
+  {/case}
+</ul>

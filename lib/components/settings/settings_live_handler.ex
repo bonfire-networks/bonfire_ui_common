@@ -75,6 +75,60 @@ defmodule Bonfire.Common.Settings.LiveHandler do
     |> handle_event("set", ..., socket)
   end
 
+  def handle_event(
+        "reorder_widget",
+        %{
+          "source_order" => source_order,
+          "target_order" => target_order,
+          "parent_item" => parent_item,
+          "source_item" => source_item,
+          "position" => position
+        },
+        socket
+      ) do
+    warn("Implement reorder_widget functionality")
+
+    with {:ok, settings} <-
+           Bonfire.Common.Settings.put(
+             [:ui, :widget_order, parent_item, source_item],
+             target_order,
+             current_user: current_user(socket)
+           ) do
+      {
+        :noreply,
+        socket
+        |> maybe_assign_context(settings)
+      }
+    end
+  end
+
+  def handle_event(
+        "reorder_sub_widget",
+        %{
+          "source_order" => source_order,
+          "target_order" => target_order,
+          "parent_item" => parent_item,
+          "source_item" => source_item,
+          "position" => position
+        },
+        socket
+      ) do
+    warn("Implement reorder_sub_widget functionality")
+
+    with {:ok, settings} <-
+           Bonfire.Common.Settings.put(
+             [:ui, :sub_widget_order, parent_item, source_item],
+             target_order,
+             current_user: current_user(socket)
+           ) do
+      {
+        :noreply,
+        socket
+        |> maybe_assign_context(settings)
+      }
+    end
+  end
+
   defp extension_toggle(extension, disabled?, attrs, socket) do
     scope =
       maybe_to_atom(e(attrs, "scope", nil))

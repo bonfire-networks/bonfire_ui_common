@@ -213,6 +213,8 @@
                 key={:secondary}
                 page={@page}
                 selected_tab={@selected_tab}
+                container_class="flex flex-col gap-3"
+                parent_id="layout_right"
               />
 
               <div class="mt-4 text-xs text-base-content/70">
@@ -299,6 +301,7 @@
           </div>
           <!-- <div class="mt-4 -mx-2">
             <Bonfire.UI.Common.ExtensionMenuNavLive
+              parent_id={"layout"}
               selected_tab={@selected_tab}
               page={@page}
               showing_within={:nav}

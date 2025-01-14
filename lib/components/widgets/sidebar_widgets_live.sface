@@ -1,26 +1,22 @@
-{#case (not is_nil(current_user_id(@__context__)) and e(@widgets, :users, @key, nil)) ||
-    (is_nil(current_user_id(@__context__)) and e(@widgets, :guests, @key, nil))}
-  {#match widgets when (is_list(widgets) and widgets != []) or is_map(widgets)}
-    <div class="flex flex-col gap-3">
-      {#for %{} = widget <- widgets}
-        <Bonfire.UI.Common.WidgetLive
-          widget={debug(widget, "widgett")}
-          page={@page}
-          selected_tab={@selected_tab}
-          showing_within={:sidebar}
-        />
-      {/for}
-      {#for {component, component_assigns} <- widgets}
-        <Bonfire.UI.Common.WidgetLive
-          widget={%{module: component, type: component_assigns[:type] || Surface.Component}}
-          page={@page}
-          selected_tab={@selected_tab}
-          showing_within={:sidebar}
-          data={component_assigns}
-          {...component_assigns || []}
-        />
-      {/for}
-    </div>
+{#case ((not is_nil(current_user_id(@__context__)) and e(@widgets, :users, @key, nil)) ||
+     (is_nil(current_user_id(@__context__)) and e(@widgets, :guests, @key, nil)) || [])
+  |> Enum.map(fn
+    {component, component_assigns} ->
+      %{module: component, type: component_assigns[:type] || Surface.Component}
+
+    %{} = widget ->
+      widget
+  end)}
+  {#match widgets when is_list(widgets) and widgets != []}
+    <Bonfire.UI.Common.WidgetsLive
+      widgets={widgets}
+      key={:secondary}
+      page={@page}
+      selected_tab={@selected_tab}
+      showing_within={:sidebar}
+      container_class="flex flex-col gap-3"
+      id={"#{@parent_id}_sidebar_widgets"}
+    />
   {#match _}
     <!-- No widgets -->
 {/case}

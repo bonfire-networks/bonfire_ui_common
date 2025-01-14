@@ -8,17 +8,20 @@ defmodule Bonfire.UI.Common.WidgetLive do
   prop without_label, :boolean, default: false
   prop with_title, :boolean, default: false
   prop compact, :boolean, default: false
-  prop order, :integer, default: 0
+  prop order, :integer, default: nil
   prop is_subwidget, :boolean, default: false
+
   prop text_class, :css_class,
     required: false,
     default: nil
 
   prop page, :string, default: nil
+  prop parent_id, :string, default: nil
+  prop parent_item, :any, default: nil
   prop selected_tab, :any, default: nil
   prop showing_within, :atom, default: :sidebar
 
-  prop wrapper_class, :css_class, default: ""
+  prop wrapper_class, :css_class, default: nil
   prop link_class, :any, default: "!px-0"
   prop icon_class, :css_class, required: false, default: "w-4 h-4 text-base-content"
 
@@ -66,4 +69,12 @@ defmodule Bonfire.UI.Common.WidgetLive do
   def widget(widget, _context) do
     widget
   end
+
+  # def get_settings_order() do
+  #   Bonfire.Common.Settings.get(
+  #     [:ui, :widget_order] ++ (if(@parent_item, do: [Types.maybe_to_atom(@parent_item)], else: [])) ++ [Types.maybe_to_atom(@widget[:page])], 
+  #     @order, 
+  #     current_user(@__context__)
+  #   )
+  # end
 end

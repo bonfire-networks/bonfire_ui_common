@@ -8,9 +8,10 @@ DraggableHooks.Draggable = {
     console.log("Mounting sortable on", this.el);
     
     if (!this.el.sortable) {
+
       console.log("Initializing Sortable");
       this.el.sortable = new Sortable(this.el, {
-        group: 'shared',
+        group: this.el.dataset.grouped ? { name: this.el.id } : 'shared',
         animation: 150,
         draggable: "[data-sortable-item]",
         handle: "[data-sortable-handler]",
@@ -51,15 +52,19 @@ DraggableHooks.Draggable = {
               targetOrder = parseInt(prevItem.dataset.order);
               position = "after";
             }
+
+            const event_name = this.el.dataset.event;
+            const parentItem = this.el.dataset.parent;
             
             console.log("HERE")
             console.log(targetOrder)
             console.log(sourceOrder)     
             if (targetOrder !== undefined && sourceOrder !== targetOrder) {
-              hook.pushEvent("Bonfire.Social.Feeds.LiveHandler:reorder_widget", {
+              hook.pushEvent(event_name, {
                 source_order: sourceOrder,
                 target_order: targetOrder,
                 source_item: sourceItem,
+                parent_item: parentItem,
                 position: position
               });
             }
