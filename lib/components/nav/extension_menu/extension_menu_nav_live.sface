@@ -24,7 +24,7 @@
               container_class="menu menu-sm p-0"
             />
 
-            <Bonfire.UI.Common.WidgetLive
+            <Bonfire.UI.Common.WidgetsLive
               id={"#{@parent_id}_extension_nav_widgets"}
               showing_within={@showing_within}
               widgets={nav_widgets}

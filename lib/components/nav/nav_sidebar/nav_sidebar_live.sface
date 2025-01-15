@@ -35,7 +35,7 @@
     </div>
 
     {!-- BOTTOM OF LEFT SIDEBAR --}
-    <!-- <div
+    {!-- <div
       data-scope="sticky_menu"
       class="sticky bottom-0 flex items-center justify-end tablet-lg:justify-between pt-4 bg-base-200 "
       >
@@ -58,7 +58,7 @@
           <span class="sr-only">{l("Instance Settings")}</span>
         </LinkLive>
       </div>
-    </div> -->
+    </div> --}
   </div>
 
   {#if !current_user_id(@__context__)}
