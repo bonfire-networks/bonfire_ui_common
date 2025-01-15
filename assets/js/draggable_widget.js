@@ -8,7 +8,6 @@ DraggableHooks.Draggable = {
     console.log("Mounting sortable on", this.el);
     
     if (!this.el.sortable) {
-
       console.log("Initializing Sortable");
       this.el.sortable = new Sortable(this.el, {
         group: this.el.dataset.grouped ? { name: this.el.id } : 'shared',
@@ -16,7 +15,7 @@ DraggableHooks.Draggable = {
         draggable: "[data-sortable-item]",
         handle: "[data-sortable-handler]",
         ghostClass: "opacity-50",
-        chosenClass: "bg-base-content/5",
+        chosenClass: "!bg-base-content/5",
         dragClass: "opacity-0",
         forceFallback: true,
         fallbackClass: "sortable-fallback",
@@ -25,14 +24,22 @@ DraggableHooks.Draggable = {
         emptyInsertThreshold: 5,
         removeCloneOnHide: true,
         
+        setData: function (dataTransfer, dragEl) {
+          // Store the original background class
+          dragEl.setAttribute('data-original-bg', dragEl.className);
+        },
+        
+        onChoose: function (evt) {
+          evt.item.classList.add('!bg-base-content/5');
+        },
+        
         onStart: function(evt) {
-          // Hide original element during drag
           evt.item.style.visibility = 'hidden';
         },
 
         onEnd: function(evt) {
-          // Restore visibility
           evt.item.style.visibility = '';
+          evt.item.classList.remove('!bg-base-content/5');
           
           if (evt.oldIndex !== evt.newIndex) {
             const item = evt.item;
@@ -56,9 +63,6 @@ DraggableHooks.Draggable = {
             const event_name = this.el.dataset.event;
             const parentItem = this.el.dataset.parent;
             
-            console.log("HERE")
-            console.log(targetOrder)
-            console.log(sourceOrder)     
             if (targetOrder !== undefined && sourceOrder !== targetOrder) {
               hook.pushEvent(event_name, {
                 source_order: sourceOrder,
@@ -81,6 +85,5 @@ DraggableHooks.Draggable = {
     }
   }
 };
-
 
 export { DraggableHooks };

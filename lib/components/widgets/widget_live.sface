@@ -57,6 +57,7 @@
       {error(other) && "<!-- invalid widget -->"}
   {/case}
 
+  
   <ul
     :if={@widget[:sub_widgets] && @widget[:sub_widgets] != []}
     id={"#{@parent_id}_#{@order}_sub_widgets"}
