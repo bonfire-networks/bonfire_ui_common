@@ -6,7 +6,12 @@
 
     %{} = widget ->
       widget
-  end)}
+
+    other ->
+      debug(other, "unsupported")
+      nil
+  end)
+  |> Enums.filter_empty([])}
   {#match widgets when is_list(widgets) and widgets != []}
     <Bonfire.UI.Common.WidgetsLive
       widgets={widgets}
