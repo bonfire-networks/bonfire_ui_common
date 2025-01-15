@@ -25,7 +25,7 @@
           )}
         <Bonfire.UI.Common.WidgetLive
           widget={widget}
-          wrapper_class={@wrapper_class || "!block !p-0 !pt-3"}
+          wrapper_class={@wrapper_class || "!block !p-0"}
           page={@page}
           selected_tab={@selected_tab}
           showing_within={@showing_within}
