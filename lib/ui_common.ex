@@ -1326,7 +1326,8 @@ defmodule Bonfire.UI.Common do
 
   def uniq_assign(list_of_components, field) do
     case list_of_components
-         |> Enum.map(& &1[field])
+         |> Enum.map(&ed(&1, field, nil))
+         #  |> debug("all assigns for #{field}")
          |> Enum.uniq() do
       [] ->
         nil
