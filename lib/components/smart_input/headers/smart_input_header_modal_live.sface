@@ -5,10 +5,7 @@
     {#else}
       <div class="flex items-center gap-2">
         {l("Send a direct message")}
-        <span
-          class="btn btn-sm btn-circle btn-outline"
-          phx-click="Bonfire.UI.Common.SmartInput:reset_to_default"
-        ><#Icon iconify="carbon:close" class="w-4 h-4" /></span>
+        <span class="btn btn-xs btn-circle" phx-click="Bonfire.UI.Common.SmartInput:reset_to_default"><#Icon iconify="carbon:close" class="w-4 h-4" /></span>
       </div>
     {/if}
   </span>

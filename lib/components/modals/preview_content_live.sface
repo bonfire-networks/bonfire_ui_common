@@ -22,7 +22,7 @@
                 id="close_preview"
                 :hook="ClosePreview"
                 aria-label={l("Go back to the previous page")}
-                class="btn normal-case relative z-50 font-normal btn-outline btn-xs btn-circle !inline-flex"
+                class="btn z-50 btn-ghost btn-sm btn-circle"
               >
                 <!--
               removed for now to avoid hiding the feed (extra_contents)

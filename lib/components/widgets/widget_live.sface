@@ -64,7 +64,7 @@
     data-widget-draggable
     data-parent={@widget[:page] || @widget[:module]}
     data-event="Bonfire.Common.Settings:reorder_sub_widget"
-    class="menu relative"
+    class="menu relative py-0 w-full"
   >
     {#case Bonfire.Common.Settings.get(
         [:ui, :sub_widget_order, Types.maybe_to_atom(@widget[:page] || @widget[:module])],

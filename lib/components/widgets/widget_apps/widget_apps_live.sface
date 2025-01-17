@@ -2,7 +2,7 @@
   widget_title={@title}
   class="relative w-full mx-auto rounded-lg"
 >
-  <ul class={"grid grid-cols-#{@cols} gap-3 menu menu-sm"}>
+  <ul class={"grid grid-cols-#{@cols} gap-3 menu"}>
     {#for {app, extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
       {#case extension_enabled?(app, @context || @__context__)}
         {#match extension_enabled?}

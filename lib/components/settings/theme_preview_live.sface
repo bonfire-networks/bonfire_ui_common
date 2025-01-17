@@ -82,7 +82,7 @@
       <div class="alert">
         <#Icon iconify="typcn:info-large" class="w-4 h-4 shrink-0" />
         <span>12 unread messages. Tap to see.</span></div>
-      <div class="alert alert-info">
+      <div class="alert alert-info alert-soft">
         <#Icon iconify="typcn:info-large" class="w-4 h-4 shrink-0" />
         <span>New update available.</span></div>
       <div class="alert alert-success"><svg

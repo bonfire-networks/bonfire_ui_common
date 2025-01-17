@@ -94,7 +94,7 @@ defmodule Bonfire.UI.Common.BasicView do
                     <a data-phx-link="redirect" data-phx-link-state="push" href="/">
                       <div class="flex items-center px-4 py-2 rounded">
                         <div
-                          class="w-16 h-20 mb-4 bg-center bg-no-repeat bg-contain"
+                          class="w-16 aspect-square h-16 mb-4 bg-center bg-no-repeat bg-contain"
                           style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}
                         >
                         </div>
@@ -122,5 +122,5 @@ defmodule Bonfire.UI.Common.BasicView do
 
   #  <h1 class="text-base-content">
   #               <%= assigns[:title] %>
-  #             </h1> 
+  #             </h1>
 end

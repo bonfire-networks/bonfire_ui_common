@@ -21,7 +21,7 @@
               page={@page}
               selected_tab={@selected_tab}
               skip_badges={@skip_badges}
-              container_class="menu menu-sm p-0"
+              container_class="menu p-0 w-full"
             />
 
             <Bonfire.UI.Common.WidgetsLive

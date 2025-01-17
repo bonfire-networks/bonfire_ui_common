@@ -7,10 +7,14 @@ import collapse from "@alpinejs/collapse";
 
 Alpine.plugin(intersect);
 Alpine.plugin(collapse);
-Alpine.plugin(focus);
-
 window.Alpine = Alpine;
-Alpine.start();
+console.log('Alpine version:', Alpine.version);
+document.addEventListener('alpine:init', () => {
+    console.log('Alpine initialized');
+});
+document.addEventListener('DOMContentLoaded', () => {
+	Alpine.start();
+  });
 
 const winnerDimension = () => {
 	// set the viewport inner height in a custom property on the root of the document

@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       option_extra_class="{@option_extra_class}"
       tag_class="badge badge-neutral badge-lg gap-2"
       dropdown_extra_class="z-[99999999999999999999999999999999] max-h-60 flex-nowrap border border-base-content/10 !bg-base-100 overflow-y-auto "
-      tags_container_class="flex flex-wrap gap-1 pt-2 order-last"
+      tags_container_class="flex flex-wrap gap-1 order-last"
     >
       <:option :let={option}>
         <div class="flex p-0 gap-2 items-center">

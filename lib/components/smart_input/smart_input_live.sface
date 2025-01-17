@@ -17,7 +17,7 @@
       >
         <div
           :if={is_map(@activity) || is_map(@reply_to_id)}
-          class="m-2 bg-base-content/5 flex justify-between items-start border border-base-content/10 border-dashed rounded-xl"
+          class="flex justify-between items-start border-b border-base-content/10"
         >
           {!-- show what we're replying to, if any --}
           <StatelessComponent
@@ -38,7 +38,7 @@
             <span
               phx-click="Bonfire.UI.Common.SmartInput:remove_data"
               phx-target="#smart_input"
-              class="btn btn-sm btn-ghost btn-circle"
+              class="btn btn-xs btn-ghost btn-circle"
               title={l("Cancel Reply")}
             >
               <span class="sr-only">{l("Cancel Reply")}</span>

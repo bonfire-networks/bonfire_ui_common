@@ -5,7 +5,7 @@
   data-grouped="id"
   data-parent={@id}
   data-event="Bonfire.Common.Settings:reorder_widget"
-  class={@container_class || "flex flex-col gap-3 divide-y divide-base-content/10"}
+  class={@container_class || "menu w-full p-0"}
   data-showing-within={@showing_within}
 >
   {#case Bonfire.Common.Settings.get(

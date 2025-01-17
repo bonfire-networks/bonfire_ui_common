@@ -68,7 +68,7 @@
       {#match info}
         <div
           role="alert"
-          class="w-full max-w-md overflow-hidden transition flex duration-300 ease-in-out transform alert shadow-xl pointer-events-auto bg-base-300 border border-base-content/10 flash"
+          class="w-full max-w-md transition flex duration-300 ease-in-out transform alert pointer-events-auto alert-info alert-soft flash"
         >
           <div data-id="flash" data-type="info" class="flex-1 w-full text-sm">{rich(info)}</div>
           <div :if={socket_connected?(@__context__)} class="">

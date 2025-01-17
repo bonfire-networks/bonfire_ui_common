@@ -28,7 +28,7 @@
       </div>
 
       <div class="flex flex-col text-center flex-1">
-        <span class="first-letter:capitalize flex-1 font-semibold text-base-content">
+        <span class="first-letter:capitalize flex-1 font-medium text-sm text-base-content">
           {@page_title}
         </span>
         <div :if={@extra} class="text-xs text-base-content/70">{@extra}</div>

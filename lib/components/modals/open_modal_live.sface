@@ -1,4 +1,4 @@
-<div class="w-full open_modal_wrapper flex" id={@id}>
+<div class="w-full open_modal_wrapper flex h-full" id={@id}>
   {#if current_user(@__context__)}
     {#case @href}
       {#match nil}

@@ -56,7 +56,7 @@
           cancel_label={l("Done")}
         >
           <div class="mt-4">
-            <div class="alert alert-info" role="alert">
+            <div class="alert alert-info alert-soft" role="alert">
               <#Icon solid="InformationCircle" class="w-5 h-5 shrink-0" />
               <span class="">
                 {l(

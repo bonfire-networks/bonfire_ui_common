@@ -31,7 +31,7 @@
         data-id="layout"
         data-two-columns={@without_secondary_widgets && !@without_sidebar}
         data-single-column={@without_sidebar}
-        class="w-full px-0 md:px-4 grid tablet-lg:max-w-[1190px] gap-0 md:gap-4 widget xl:px-0 mx-auto lg:grid-cols-[1fr_320px] tablet-lg:grid-cols-[220px_1fr_320px]"
+        class="tablet-lg:max-w-[var(--spacing-1190)] lg:grid-main tablet-lg:grid-full w-full px-0 md:px-4 grid gap-0 md:gap-4 widget xl:px-0 mx-auto"
       >
         <Bonfire.UI.Common.GuestHeaderLive
           selected_tab={@selected_tab}
@@ -73,7 +73,7 @@
         <div
           data-id="main_section"
           data-single-column={@without_sidebar}
-          class="relative w-full sm:min-w-[600px] gap-2 md:gap-0 z-[99999] col-span-1"
+          class="relative w-full min-w-[600px] gap-2 md:gap-0 z-[99999] col-span-1"
         >
           <div class="justify-between h-full mt-0">
             <div class="relative invisible_frame">
@@ -114,7 +114,7 @@
                       />
                     </div>
                     <div class="flex items-center gap-4">
-                      <LinkLive class="btn btn-sm btn-circle btn-outline" to={~p"/search"}>
+                      <LinkLive class="btn btn-sm btn-circle btn-soft" to={~p"/search"}>
                         {#if @page == "search"}
                           <#Icon iconify="fluent:search-24-filled" class="w-5 h-5" />
                         {#else}
@@ -123,7 +123,7 @@
                         <span class="sr-only">{l("Search")}</span>
                       </LinkLive>
 
-                      <LinkLive to={path(:notifications)} class="btn btn-sm btn-circle btn-outline">
+                      <LinkLive to={path(:notifications)} class="btn btn-sm btn-circle btn-soft">
                         {#if @page == "notifications"}
                           <#Icon iconify="ph:bell-fill" class="w-5 h-5" />
                         {#else}
@@ -132,7 +132,7 @@
                         <span class="sr-only">{l("Notifications")}</span>
                       </LinkLive>
 
-                      <LinkLive to={~p"/user"} class="btn btn-sm btn-circle btn-outline">
+                      <LinkLive to={~p"/user"} class="btn btn-sm btn-circle btn-soft">
                         <Bonfire.UI.Common.AvatarLive
                           parent_id="nav_sidebar"
                           class="inline-block object-cover w-5 h-5 rounded-full"
@@ -178,11 +178,11 @@
             data-id="right_nav_and_widgets"
             class="order-last sticky  w-auto lg:top-2 mt-2 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
           >
-            <div :if={is_nil(@current_user_id)} class="flex flex-col my-4 gap-2">
-              <LinkLive to={path(:login, :index)} class="md:flex-1  normal-case btn-primary btn btn-sm">{l("Log in")}</LinkLive>
+            <div :if={is_nil(@current_user_id)} class="flex flex-col mb-4 gap-2">
+              <LinkLive to={path(:login, :index)} class="btn-primary btn">{l("Log in")}</LinkLive>
 
               {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-                <LinkLive to={path(:signup)} class="md:flex-1 hidden md:flex  btn-outline btn btn-sm">{l("Create account")}</LinkLive>
+                <LinkLive to={path(:signup)} class="btn">{l("Create account")}</LinkLive>
               {/if}
             </div>
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
@@ -279,7 +279,7 @@
               class="relative tablet-lg:hidden"
             >
               <label
-                class="tooltip-button btn btn-sm btn-circle btn-outline border-opacity-30"
+                class="tooltip-button btn btn-sm btn-circle btn-soft"
                 tabindex="0"
                 role="button"
                 id="user-mobile-menu"
@@ -307,7 +307,7 @@
               showing_within={:nav}
               nav_items={@nav_items || []}
               skip_badges={[:inbox, :notifications]}
-            />
+            /> 
           </div> -->
         </div>
       </div>

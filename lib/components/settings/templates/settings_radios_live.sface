@@ -10,7 +10,7 @@
         min={Map.keys(@options) |> Enum.sort() |> List.first()}
         max={Map.keys(@options) |> Enum.sort() |> List.last()}
         value={@current_value || Map.keys(@options) |> Enum.sort() |> List.first()}
-        class="range range-sm"
+        class="range range-sm w-full"
         step={Map.keys(@options)
         |> Enum.sort()
         |> Enum.chunk_every(2, 1, :discard)

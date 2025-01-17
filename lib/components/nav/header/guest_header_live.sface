@@ -9,7 +9,7 @@
           <LinkLive
             to={path(:login, :index)}
             class={
-              "btn btn-sm btn-primary",
+              "btn btn-soft btn-primary",
               "btn-active": @selected_tab == :login
             }
           >{l("Login")}</LinkLive>
@@ -17,7 +17,7 @@
 
         <div phx-hook="Tooltip" data-position="bottom-end" id="tooltip_more_menu" class="relative">
           <label
-            class="tooltip-button btn btn-sm btn-circle btn-outline"
+            class="tooltip-button btn btn-circle"
             tabindex="0"
             role="button"
             id="guest-header-menu"
@@ -55,7 +55,6 @@
               <li>
                 <LinkLive class="text-base-content" to="/known_instances">{l("Instances")}</LinkLive></li>
             {/if}
-            <li><LinkLive class="text-base-content" to="/about" target="_blank">{l("About this instance")}</LinkLive></li>
             <li><a class="text-base-content" href="https://bonfirenetworks.org/" target="_blank">{l("About Bonfire")}</a></li>
           </ul>
         </div>
