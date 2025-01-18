@@ -5,8 +5,8 @@
 	"scripts": {
 		"watch.assets": "npx cpx 'static/**/*' ../priv/static --watch",
 		"watch.js": "NODE_PATH=./node_modules:../../../deps/bonfire_editor_milkdown/assets/node_modules npx esbuild ./js/bonfire_live.js ./js/bonfire_basic.js --target=es2017 --bundle --sourcemap --loader:.svg=text --outdir=../priv/static/assets --watch",
-		"watch.tailwindcss": "NODE_ENV=development npx @tailwindcss/cli -i ./css/app.css -o ../priv/static/assets/bonfire_basic.css --watch --poll",
-		"build.tailwindcss": "NODE_ENV=production npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --minify",
+		"watch.css": "NODE_ENV=development npx @tailwindcss/cli -i ./css/app.css -o ../priv/static/assets/bonfire_basic.css --watch --poll",
+		"build.css": "NODE_ENV=production npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --minify",
 		"build.postcss": "NODE_ENV=production npx postcss ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css",
 		"build": "yarn prepare.static && yarn build.postcss && yarn build.esbuild",
 		"prepare.static": "mkdir -p ../../../priv/static/ && cp -r static/*.ico ../../../priv/static/ && cp -r static/images ../../../priv/static/ && cp -r static/fonts ../../../priv/static/  && cp -r static/pwa* ../../../priv/static/",
