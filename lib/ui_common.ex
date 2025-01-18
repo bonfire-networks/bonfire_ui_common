@@ -97,13 +97,15 @@ defmodule Bonfire.UI.Common do
 
   @doc """
   Special LiveView helper function which allows loading LiveComponents in regular Phoenix views: `live_render_component(@conn, MyLiveComponent)`
+
+  TODO: deduplicate if same as `render_inline` 
   """
   def live_render_component(conn, load_live_component) do
     if module_enabled?(load_live_component),
       do:
         Phoenix.LiveView.Controller.live_render(
           conn,
-          Bonfire.UI.Common.LiveComponent,
+          Bonfire.UI.Common.StatefulComponentView,
           session: %{
             "load_live_component" => load_live_component
           }

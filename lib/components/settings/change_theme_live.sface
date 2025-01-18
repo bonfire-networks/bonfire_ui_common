@@ -43,7 +43,7 @@
                 </div>
 
                 <:open_btn>
-                  <div class="flex-1 w-full btn btn-sm btn-secondary btn-soft">{l "Preview"}</div>
+                  <div class="flex-1 w-full btn btn-sm btn-secondary btn-soft">{l("Preview")}</div>
                 </:open_btn>
               </Bonfire.UI.Common.OpenModalLive>
             </div>
