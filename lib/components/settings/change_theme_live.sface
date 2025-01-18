@@ -7,12 +7,12 @@
   <div class="grid grid-cols-3 gap-3" tabindex="0">
     {#for t <- @themes}
       <div class={
-        "overflow-hidden border rounded-lg border-base-content/10 hover:border-base-content/40 outline-base-content outline-2 outline-offset-2",
+        "overflow-hidden rounded-box bg-base-content/5 shadow-xl",
         "ring-2 ring-primary": to_string(t) == to_string(@theme)
       }>
-        <div data-theme={t} class="w-full font-sans bg-base-100 text-base-content">
+        <div data-theme={t} class="w-full font-sans text-base-content">
           <div class="grid grid-cols-5 grid-rows-3">
-            <div class="flex flex-col col-span-4 col-start-1 row-span-3 row-start-1 gap-1 p-2 bg-base-100">
+            <div class="flex flex-col col-span-4 col-start-1 row-span-3 row-start-1 gap-1 p-2">
               <div class="font-bold">{t}</div>
               <div class="flex flex-wrap gap-1">
                 <div class="flex items-center justify-center w-5 rounded bg-primary aspect-square lg:w-6">
@@ -43,12 +43,12 @@
                 </div>
 
                 <:open_btn>
-                  <div class="flex-1 w-full btn btn-sm btn-outline">Preview</div>
+                  <div class="flex-1 w-full btn btn-sm btn-secondary btn-soft">{l "Preview"}</div>
                 </:open_btn>
               </Bonfire.UI.Common.OpenModalLive>
             </div>
             <button
-              class="flex-1 w-full btn btn-sm btn-neutral"
+              class="flex-1 w-full btn btn-sm btn-primary btn-soft"
               data-set-theme={t}
               data-act-class="outline"
               x-on:click={"theme = '#{t}'"}

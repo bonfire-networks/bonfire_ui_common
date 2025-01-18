@@ -34,7 +34,7 @@
             {#if !current_account(@__context__)}
               {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
                 <li>
-                  <LinkLive to={path(:signup)} class="btn max-w-full btn-primary">{l("Create an account")}</LinkLive>
+                  <LinkLive to={path(:signup)} class="btn max-w-full btn-primary btn-soft">{l("Create an account")}</LinkLive>
                 </li>
               {/if}
             {#else}
