@@ -23,6 +23,8 @@ DraggableHooks.Draggable = {
         invertSwap: true,
         emptyInsertThreshold: 5,
         removeCloneOnHide: true,
+        delay: 150, // Add a delay before drag starts
+        delayOnTouchOnly: true, // Only apply delay for touch devices
         
         setData: function (dataTransfer, dragEl) {
           // Store the original background class
