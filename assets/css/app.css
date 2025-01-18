@@ -16,17 +16,16 @@
   --spacing: 0.25rem;  /* This enables all spacing utilities dynamically */
 
  /* Breakpoints */
- --breakpoint-tablet-lg: 1024px;
+ --breakpoint-lg: 1024px;
  --breakpoint-md: 768px; 
  --breakpoint-lg: 1024px;
- --breakpoint-xl: 1280px;
+ --breakpoint-xl: 1220px;
  --breakpoint-sm: 640px;
  /* Grid/Sizing */
  --spacing-1190: 1190px;
  
  /* Custom grid templates */
  --grid-template-main: 1fr 320px;
- --grid-template-full: 220px 1fr 320px;
  --width-360: 360px;
  
  /* z-index scale */
@@ -165,7 +164,7 @@
   }
 
   #smart_input_container[data-focused] {
-    @apply inset-0 !top-0 tablet-lg:!top-[5%] tablet-lg:!h-[400px] transition-all duration-300;
+    @apply inset-0 !top-0 lg:!top-[5%] lg:!h-[400px] transition-all duration-300;
   }
 
   #smart_input_container[data-focused] #smart_input_backdrop {
@@ -220,21 +219,6 @@
     margin: auto;
   }
 
-  @media (min-width: 768px) {
-    [data-id='layout'][data-two-columns] {
-      padding: 0;
-      gap: 1rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    [data-id='layout'][data-two-columns] {
-      grid-template-columns: 220px 1fr;
-      max-width: 1190px;
-      gap: 1rem !important;
-    }
-  }
-
   [data-id='main_section'][data-single-column] {
     margin: auto;
     order: 9999;
@@ -250,16 +234,13 @@
  grid-template-columns: var(--grid-template-main);
 }
 
-@utility grid-full {
- grid-template-columns: var(--grid-template-full); 
-}
 
 @utility layout-single-column {
   @apply grid-cols-1 content-start gap-2;
  }
  
  @utility layout-two-columns { 
-  @apply w-full px-0 md:px-4 grid lg:max-w-[1040px] tablet-lg:max-w-[1190px] gap-0 md:gap-4 xl:px-0 mx-auto grid-cols-1 tablet-lg:!gap-4 tablet-lg:!grid-cols-[220px_1fr];
+  @apply w-full px-0 md:px-4 grid lg:max-w-[1040px] lg:max-w-[1190px] gap-0 md:gap-4 xl:px-0 mx-auto grid-cols-1 lg:!gap-4 lg:!grid-cols-[220px_1fr];
  }
  
  @utility main-single-column {

@@ -1,6 +1,6 @@
 <div class="flex-1">
   <div>
-    <div class="sticky top-0 flex items-center flex-1 w-full justify-end tablet-lg:justify-start">
+    <div class="sticky top-0 flex items-center flex-1 w-full justify-end lg:justify-start">
       {!-- <Bonfire.UI.Common.SmartInputButtonsLive
       :if={!e(@smart_input_opts, :hide_buttons, nil)}
       smart_input_opts={@smart_input_opts}
@@ -17,7 +17,7 @@
         icon={e(@smart_input_opts, :icon, "carbon:add")}
         class={e(
           @composer_class,
-          "hidden !p-0 lg:!p-inherit md:flex h-[60px] w-[60px] tablet-lg:!min-h-auto tablet-lg:!px-[1rem] tablet-lg:!h-auto tablet-lg:!w-full btn btn-primary flex items-center gap-2 place-content-center normal-case"
+          "hidden !p-0 lg:!p-inherit md:flex h-[60px] w-[60px] lg:!min-h-auto lg:!px-[1rem] lg:!h-auto lg:!w-full btn btn-primary flex items-center gap-2 place-content-center normal-case"
         )}
       />
 
@@ -38,7 +38,7 @@
       >
         <div class="w-full rounded-xl bg-gradient-to-t from-base-content/10 to-base-content/10 p-[0.05rem] flex flex-col flex-1 h-full grow">
           <div class="w-full rounded-xl bg-base-200 flex flex-col flex-1 h-full grow">
-            {!-- "md:!w-[20rem] tablet-lg:block bottom-0": e(@smart_input_opts, :minimized, nil) == true, --}
+            {!-- "md:!w-[20rem] lg:block bottom-0": e(@smart_input_opts, :minimized, nil) == true, --}
             <div
               phx-click={LiveHandler.close_smart_input()}
               id="smart_input_backdrop"

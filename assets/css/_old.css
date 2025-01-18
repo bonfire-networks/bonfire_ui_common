@@ -248,7 +248,7 @@
   }
 
   div[data-id='nav_links'][data-showing-within='sidebar'] > li:first-of-type {
-    @apply text-base-content w-[60px] lg:w-[60px] tablet-lg:w-full font-medium rounded-md justify-end sidebar_menu_item;
+    @apply text-base-content w-[60px] lg:w-[60px] lg:w-full font-medium rounded-md justify-end sidebar_menu_item;
   }
 
   div[data-id='nav_links'][data-showing-within='nav'] > li:first-of-type {
@@ -256,7 +256,7 @@
   }
 
   div[data-type='widget'][data-showing-within='sidebar'] {
-    @apply flex items-center justify-end w-full gap-2 tablet-lg:gap-4 px-2 py-1 tablet-lg:py-2 rounded;
+    @apply flex items-center justify-end w-full gap-2 lg:gap-4 px-2 py-1 lg:py-2 rounded;
   }
 
   div[data-type='widget'][data-showing-within='nav'] {
@@ -265,7 +265,7 @@
 
   div[data-type='widget'][data-showing-within='sidebar']
     span[data-type='widget_label'] {
-    @apply font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px];
+    @apply font-normal hidden lg:block text-base-content/90 flex-1 text-[15px];
     width: 180px;
     white-space: nowrap;
     overflow: hidden;
@@ -325,7 +325,7 @@
   }
 
   div[data-id='layout'][data-two-columns] {
-    @apply w-full px-0 md:px-4 grid lg:max-w-[1040px] tablet-lg:max-w-[1190px] gap-0 md:gap-4 widget xl:px-0 mx-auto grid-cols-1 tablet-lg:!gap-4 tablet-lg:!grid-cols-[220px_1fr];
+    @apply w-full px-0 md:px-4 grid lg:max-w-[1040px] lg:max-w-[1190px] gap-0 md:gap-4 widget xl:px-0 mx-auto grid-cols-1 lg:!gap-4 lg:!grid-cols-[220px_1fr];
   }
 
   div[data-id='main_section'][data-single-column] {
@@ -658,7 +658,7 @@ div[data-id="labelled_media"]
   }
 
   #smart_input_container[data-focused] {
-    @apply inset-0 !top-0 tablet-lg:!top-[5%] tablet-lg:!h-[400px];
+    @apply inset-0 !top-0 lg:!top-[5%] lg:!h-[400px];
     transition: all 0.3s ease;
   }
 
@@ -1410,11 +1410,11 @@ div[data-id="labelled_media"]
   @apply justify-end;
 } 
 .sidebar_menu_item .widget_content .widget_text {
-  @apply hidden tablet-lg:flex;
+  @apply hidden lg:flex;
 } */
 
   .sidebar_menu_item .widget_notification {
-    @apply !right-0 !left-auto tablet-lg:!left-7 tablet-lg:!right-auto;
+    @apply !right-0 !left-auto lg:!left-7 lg:!right-auto;
   }
 
   /* Extra Tailwind stuff at the end */

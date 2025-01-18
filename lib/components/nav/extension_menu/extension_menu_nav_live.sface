@@ -1,4 +1,4 @@
-<div class="gap-1 tablet-lg:gap-0">
+<div class="gap-1 lg:gap-0">
   {#case @nav_items
     |> Enum.filter(fn nav ->
       (!nav[:exclude_from_nav] and is_nil(nav[:module])) or
@@ -6,11 +6,7 @@
     end)
     |> debug("nav_items")}
     {#match nav_items when is_list(nav_items) and nav_items != []}
-      <ul
-        class="p-0 w-[220px]"
-        data-id={"#{@parent_id}_nav_links"}
-        data-showing-within={@showing_within}
-      >
+      <div data-id={"#{@parent_id}_nav_links"} data-showing-within={@showing_within}>
         {!-- TODO: override widget[:module] with the result of maybe_module so it doesn't need to be run again in the widget --}
         {#case Enum.split_with(nav_items, fn %{type: type} -> type == :link end)}
           {#match {nav_links, nav_widgets}}
@@ -33,7 +29,7 @@
               skip_badges={@skip_badges}
             />
         {/case}
-      </ul>
+      </div>
     {#match _}
       {!-- no nav_items --}
   {/case}

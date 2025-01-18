@@ -17,7 +17,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
 
   prop badge_class, :css_class,
     default:
-      "flex absolute right-[6px] top-[-8px] tablet-lg:!right-auto tablet-lg:left-5 tablet-lg:!top-[-6px] items-center place-content-center widget_notification"
+      "flex absolute right-[6px] top-[-8px] lg:!right-auto lg:left-5 lg:!top-[-6px] items-center place-content-center widget_notification"
 
   prop parent_id, :string, default: nil
   prop page, :string, default: nil

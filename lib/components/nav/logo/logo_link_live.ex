@@ -11,8 +11,7 @@ defmodule Bonfire.UI.Common.LogoLinkLive do
     default:
       "w-8 h-8 aspect-square rounded-full border border-base-content/10 bg-center bg-no-repeat bg-contain"
 
-  prop name_class, :css_class,
-    default: "text-xl font-bold text-base-content tablet-lg:block hidden"
+  prop name_class, :css_class, default: "text-xl font-bold text-base-content lg:block hidden"
 
   prop link_opts, :list, default: []
   slot default

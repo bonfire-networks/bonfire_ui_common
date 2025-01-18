@@ -18,9 +18,9 @@
   <Bonfire.UI.Common.ReusableModalLive id="media_player_modal" />
 
   <div class="absolute">
-    <!-- <div class="pt-2 hidden md:flex items-center justify-end tablet-lg:justify-between">
+    <!-- <div class="pt-2 hidden md:flex items-center justify-end lg:justify-between">
       <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
-      <div class="hidden tablet-lg:block">
+      <div class="hidden lg:block">
         <Bonfire.UI.Common.UserMenuLive />
       </div>
     </div> -->

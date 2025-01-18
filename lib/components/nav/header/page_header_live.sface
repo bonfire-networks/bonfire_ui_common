@@ -7,8 +7,11 @@
   class="flex flex-1 px-4 w-full transition-color duration-150 ease-in-out"
 >
   <div class="relative z-20 flex items-center w-full">
-    <div class="flex items-center gap-3 justify-between w-full tablet-lg:flex-1">
-      <div class="flex-1 max-w-[120px]">
+    <div class="flex items-center gap-3 justify-between w-full lg:flex-1">
+      <div class="flex-1 max-w-[120px] gap-3 flex items-center">
+        <label for="sidebar-drawer" class="xl:hidden btn btn-sm btn-circle btn-secondary btn-soft">
+          <#Icon iconify="hugeicons:sidebarLeft" class="w-5 h-5" />
+        </label>
         {#if @back}
           <Bonfire.UI.Common.BackButtonLive back={@back} />
         {#else}

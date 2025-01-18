@@ -1,81 +1,45 @@
 <div
   data-id="bonfire_live"
-  class="antialiased bg-base-100 lg:bg-base-200"
+  class="antialiased bg-base-200 min-h-screen"
   data-theme={Bonfire.UI.Common.ThemeHelper.current_theme(assigns)}
-  x-data="{
-    open_sidebar: false
-  }"
   style={maybe_custom_theme(
     current_user: current_user(@__context__),
     current_account: current_account(@__context__),
     instance_settings: @instance_settings
   )}
 >
-  {!-- div
-    :if={!@current_user_id or
-      (@without_sidebar && empty?(e(assigns, :sidebar_widgets, :guests, :secondary, nil)))}
-    class="px-4 lg:px-0 mb-6 border-b border-base-content/10 sticky top-0 bg-base-300 z-[99999999999999999999999999999]"
-  >
-    <Bonfire.UI.Common.GuestHeaderLive
-      current_user={current_user(@__context__)}
-      current_account={current_account(@__context__)}
-      page_title={@page_title}
-      page={@page}
-    />
-  </div --}
-
-  <div class="drawer">
-    <input id="my-drawer" type="checkbox" class="drawer-toggle">
-    <div class="drawer-content">
-      <div
+  <!-- <div
         data-id="layout"
         data-two-columns={@without_secondary_widgets && !@without_sidebar}
         data-single-column={@without_sidebar}
-        class="tablet-lg:max-w-[var(--spacing-1190)] lg:grid-main tablet-lg:grid-full w-full px-0 md:px-4 grid gap-0 md:gap-4 widget xl:px-0 mx-auto"
+        class="lg:max-w-[var(--spacing-1190)] lg:grid-main lg:grid-full w-full px-0 md:px-4 grid gap-0 md:gap-4 widget xl:px-0 mx-auto"
       >
         <Bonfire.UI.Common.GuestHeaderLive
           selected_tab={@selected_tab}
           page={@page}
           :if={is_nil(@current_account_id) and @without_sidebar}
-        />
-        <!-- <Bonfire.UI.Common.MobileMenuLive
-      :if={@current_user_id}
-      page={@page}
-      selected_tab={@selected_tab}
-      nav_items={@nav_items}
-    /> -->
-        <div
-          :if={!@without_sidebar}
-          data-id="nav_sidebar"
-          class="fixed tablet-lg:sticky self-start order-first w-full mt-2 top-2 hidden tablet-lg:block"
-        >
-          {#if is_nil(@current_user_id)}
-            <div class="hidden md:flex items-center justify-end tablet-lg:justify-between mr-1">
-              <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
-            </div>
-          {/if}
+        /> -->
 
-          {!-- <Bonfire.UI.Common.PersistentLive ... --}
-          <nav
-            class="hidden  overview-y-auto  w-full md:flex gap-4 flex-col pb-1 min-h-[100vh_-_16px] z-[999999999999]"
-            role="navigation"
-            aria-label={l("Extension navigation")}
-          >
-            <Bonfire.UI.Common.NavSidebarLive
-              :if={!@without_sidebar}
-              page={@page}
-              selected_tab={@selected_tab}
-              nav_items={@nav_items}
-              sidebar_widgets={@sidebar_widgets}
-            />
-          </nav>
-        </div>
+  <div class="drawer xl:drawer-open lg:max-w-[var(--spacing-1190)] mx-auto w-full">
+    <input id="sidebar-drawer" type="checkbox" class="drawer-toggle">
+    <div class="drawer-content">
+      <div
+        data-id="layout"
+        data-two-columns={@without_secondary_widgets && !@without_sidebar}
+        data-single-column={@without_sidebar}
+        class="grid gap-3 lg:grid-main"
+      >
         <div
           data-id="main_section"
           data-single-column={@without_sidebar}
-          class="relative w-full min-w-[600px] gap-2 md:gap-0 z-[99999] col-span-1"
+          class="relative lg:min-w-auto w-full min-w-[600px] gap-2 md:gap-0 z-[99999] col-span-1"
         >
-          <div class="justify-between h-full mt-0">
+          <Bonfire.UI.Common.GuestHeaderLive
+            selected_tab={@selected_tab}
+            page={@page}
+            :if={is_nil(@current_account_id) and @without_sidebar}
+          />
+          <div class="h-full mt-0">
             <div class="relative invisible_frame">
               <div class="md:pb-0 md:overflow-y-visible">
                 <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
@@ -99,49 +63,6 @@
                   id="inner"
                   class="flex flex-col min-h-[calc(var(--inner-window-height))] pb-4 md:pb-[1px] lg:gap-3"
                 >
-                  <header
-                    :if={current_user_id(@__context__) && !@no_mobile_header}
-                    class="tablet-lg:hidden px-3 h-[60px] justify-between flex items-center sticky top-0 z-[9099] bg-base-100 border-b border-base-content/10"
-                  >
-                    <div class="flex items-center gap-1">
-                      <label for="my-drawer" class="btn btn-sm btn-circle btn-ghost">
-                        <#Icon iconify="hugeicons:sidebarLeft" class="w-5 h-5 opacity-70" />
-                      </label>
-                      <Bonfire.UI.Common.LogoLinkLive
-                        container_class="gap-2 flex items-center"
-                        with_name
-                        href="/dashboard"
-                      />
-                    </div>
-                    <div class="flex items-center gap-4">
-                      <LinkLive class="btn btn-sm btn-circle btn-soft" to={~p"/search"}>
-                        {#if @page == "search"}
-                          <#Icon iconify="fluent:search-24-filled" class="w-5 h-5" />
-                        {#else}
-                          <#Icon iconify="fluent:search-24-regular" class="w-5 h-5 opacity-70" />
-                        {/if}
-                        <span class="sr-only">{l("Search")}</span>
-                      </LinkLive>
-
-                      <LinkLive to={path(:notifications)} class="btn btn-sm btn-circle btn-soft">
-                        {#if @page == "notifications"}
-                          <#Icon iconify="ph:bell-fill" class="w-5 h-5" />
-                        {#else}
-                          <#Icon iconify="ph:bell" class="w-5 h-5 opacity-70" />
-                        {/if}
-                        <span class="sr-only">{l("Notifications")}</span>
-                      </LinkLive>
-
-                      <LinkLive to={~p"/user"} class="btn btn-sm btn-circle btn-soft">
-                        <Bonfire.UI.Common.AvatarLive
-                          parent_id="nav_sidebar"
-                          class="inline-block object-cover w-5 h-5 rounded-full"
-                          src={Media.avatar_url(current_user(@__context__))}
-                          user_id={current_user_id(@__context__)}
-                        />
-                      </LinkLive>
-                    </div>
-                  </header>
                   <div :if={!@no_header} class="sticky top-2 mt-2 z-[999]">
                     <div class="flex flex-1 w-full transition-color duration-150 ease-in-out h-[48px] rounded-box bg-base-100/70 shadow backdrop-blur-sm">
                       <StatelessComponent
@@ -168,7 +89,6 @@
               </div>
             </div>
           </div>
-          <!-- <Bonfire.UI.Common.NavFooterMobileUserLive :if={not is_nil(@current_user_id)} page={@page} /> -->
         </div>
         <div
           :if={!@without_secondary_widgets}
@@ -197,17 +117,6 @@
               data-id="secondary_sidebar_widgets"
               class="hidden overflow-x-hidden overflow-y-auto md:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
             >
-              {!--
-          FIXME: use the widget system instead (see below)
-
-          <StatelessComponent
-            :if={not is_nil(@current_user_id)}
-            module={maybe_component(Bonfire.UI.ValueFlows.ProcessesListLive, @__context__)}
-            process_url="/coordination/list"
-            title={l("Favourite milestones")}
-          />
-          --}
-
               <Bonfire.UI.Common.SidebarWidgetsLive
                 widgets={@sidebar_widgets}
                 key={:secondary}
@@ -227,90 +136,34 @@
           </div>
         </div>
       </div>
-
-      {!--
-  {if module_enabled?(RauversionExtension.UI.TrackLive.Player, current_user(@__context__)),
-    do:
-      live_render(@socket, RauversionExtension.UI.TrackLive.Player,
-        id: "global-main-player",
-        session: %{},
-        sticky: true
-      )} --}
-
-      <!-- <footer
-    :if={is_nil(@current_user_id)}
-    class="footer flex lg:mt-12 items-center p-4 text-base-content border-t border-base-content/10"
-  >
-    <aside class="items-center flex-1 grid-flow-col">
-      <Bonfire.UI.Common.LogoLinkLive href="/" with_name />
-    </aside>
-    <nav class="grid-flow-col gap-4 place-self-center justify-self-end">
-      <span class="text-sm font-light">{l("Designed with")} <a class="link" target="_blank" href="https://bonfirenetworks.org">Bonfire Networks</a></span>
-    </nav>
-  </footer> -->
     </div>
+
     <div class="drawer-side z-[99999999999]">
-      <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay" />
-      <div class="bg-base-100 flex flex-col text-base-content min-h-full w-80 p-4">
-        <div class="flex-1">
-          <div class="flex items-start justify-between top-0">
-            <div class="flex-1 flex gap-1 flex-col">
-              <Bonfire.UI.Common.AvatarLive
-                parent_id="nav_sidebar"
-                class="inline-block object-cover w-[54px] h-[54px] rounded-full"
-                src={Media.avatar_url(current_user(@__context__))}
-                user_id={current_user_id(@__context__)}
-              />
-              <div class="flex flex-col">
-                <span class="text-xl font-bold">{e(current_user(@__context__), :profile, :name, nil)}</span>
-                <span class="text-sm text-base-content/70">
-                  {Bonfire.Common.Utils.maybe_apply(
-                    Bonfire.Me.Characters,
-                    :display_username,
-                    [current_user(@__context__), true]
-                  )}
-                </span>
-              </div>
-            </div>
-            <div
-              data-position="top-left"
-              phx-hook="Tooltip"
-              id="navbar_settings_menu"
-              class="relative tablet-lg:hidden"
-            >
-              <label
-                class="tooltip-button btn btn-sm btn-circle btn-soft"
-                tabindex="0"
-                role="button"
-                id="user-mobile-menu"
-                aria-haspopup="true"
-                aria-expanded="true"
-              >
-                <#Icon solid="DotsHorizontal" class="w-4 h-4" />
-              </label>
-              <ul
-                tabindex="0"
-                class="tooltip z-[999999999999999999999999] menu shadow-lg bg-base-100 shadow-xl border border-base-content/10 rounded-xl w-60 absolute top-0 left-0 hidden"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="user-mobile-menu"
-              >
-                <Bonfire.UI.Common.UserMenuLinksLive page={@page} />
-              </ul>
-            </div>
+      <label for="sidebar-drawer" aria-label="close sidebar" class="drawer-overlay" />
+      <aside
+        :if={!@without_sidebar}
+        data-id="nav_sidebar"
+        class="w-80 px-4 lg:px-0 lg:mr-3 lg:w-[250px] bg-base-100 lg:bg-base-200"
+      >
+        {#if is_nil(@current_user_id)}
+          <div class="flex items-center justify-end lg:justify-between top-0 bg-base-200 pt-2">
+            <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
           </div>
-          <!-- <div class="mt-4 -mx-2">
-            <Bonfire.UI.Common.ExtensionMenuNavLive
-              parent_id={"layout"}
-              selected_tab={@selected_tab}
-              page={@page}
-              showing_within={:nav}
-              nav_items={@nav_items || []}
-              skip_badges={[:inbox, :notifications]}
-            /> 
-          </div> -->
-        </div>
-      </div>
+        {/if}
+        <nav
+          class="overview-y-auto  w-full flex gap-4 flex-col pb-1 min-h-screen z-[999999999999]"
+          role="navigation"
+          aria-label={l("Extension navigation")}
+        >
+          <Bonfire.UI.Common.NavSidebarLive
+            :if={!@without_sidebar}
+            page={@page}
+            selected_tab={@selected_tab}
+            nav_items={@nav_items}
+            sidebar_widgets={@sidebar_widgets}
+          />
+        </nav>
+      </aside>
     </div>
   </div>
 </div>

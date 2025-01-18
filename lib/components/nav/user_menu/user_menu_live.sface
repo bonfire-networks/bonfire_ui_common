@@ -7,11 +7,11 @@
     aria-haspopup="true"
     aria-expanded="true"
   >
-    <#Icon solid="DotsHorizontal" class="w-4 h-4 tablet-lg:block hidden opacity/70" />
+    <#Icon solid="DotsHorizontal" class="w-4 h-4 opacity/70" />
   </label>
   <ul
     tabindex="0"
-    class="tooltip z-[99999999] menu shadow-lg bg-base-100 shadow-xl border border-base-content/10 rounded-xl w-60 absolute top-0 left-0 hidden"
+    class="tooltip z-[99999999] menu shadow-sm bg-base-100 border border-base-content/10 w-60 absolute rounded-xl top-0 left-0 hidden"
     role="menu"
     aria-orientation="vertical"
     aria-labelledby="user-profile-menu"

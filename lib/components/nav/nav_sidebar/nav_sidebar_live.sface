@@ -1,73 +1,36 @@
 <div class="flex flex-col flex-1 h-full">
   <div
     :if={current_user(@__context__)}
-    class="pt-0.5 hidden md:flex items-center h-[48px] justify-end tablet-lg:justify-between"
+    class="pt-0.5 bg-base-100 lg:bg-base-200 z-[999999999] sticky top-0 pt-2 flex items-center h-[48px] justify-between"
   >
     <Bonfire.UI.Common.LogoLinkLive with_name href="/dashboard" />
-    <div class="hidden tablet-lg:block">
-      <Bonfire.UI.Common.UserMenuLive />
-    </div>
+    <Bonfire.UI.Common.UserMenuLive />
   </div>
   <div
-    class="flex flex-col flex-1 mt-4 h-full max-h-[calc(var(--inner-window-height_)-_80px)] overflow-y-auto overflow-x-hidden"
+    class="flex flex-col flex-1 mt-4 h-full max-h-[calc(var(--inner-window-height)-_80px)] overflow-y-auto overflow-x-hidden"
     :if={current_user(@__context__)}
   >
-    <div class="flex-1 h-full">
-      <Bonfire.UI.Common.ExtensionMenuNavLive
-        parent_id="nav_sidebar"
-        selected_tab={@selected_tab}
-        page={@page}
-        nav_items={@nav_items}
-      />
-
-      {!-- Add the groups sidebar if the module is available NOTE: should use extensions nav instead --}
-      {!-- <StatefulComponent
-        module={maybe_component(Bonfire.UI.Groups.SidebarGroupsLive, @__context__)}
-      /> --}
-
-      {!-- <nav class="w-full"> --}
-      <Bonfire.UI.Common.SidebarWidgetsLive
-        widgets={@sidebar_widgets}
-        key={:main}
-        page={@page}
-        selected_tab={@selected_tab}
-      />
-    </div>
-
-    {!-- BOTTOM OF LEFT SIDEBAR --}
-    {!-- <div
-      data-scope="sticky_menu"
-      class="sticky bottom-0 flex items-center justify-end tablet-lg:justify-between pt-4 bg-base-200 "
-      >
-      <Bonfire.UI.Common.UserMenuLive :if={current_user(@__context__)} page={@page} />
-
-      <div class="items-center hidden tablet-lg:flex gap-3">
-        <LinkLive
-          to="/settings"
-          class={"btn btn-sm btn-ghost btn-circle", "btn-active": @selected_tab == "dashboard"}
-        >
-          <#Icon iconify="ri:settings-4-line" class="w-5 h-5 shrink-0 text-base-content/70" />
-          <span class="sr-only">{l("Settings")}</span>
-        </LinkLive>
-        <LinkLive
-          :if={maybe_apply(Bonfire.Me.Accounts, :is_admin?, [@__context__], fallback_return: nil) == true}
-          to="/settings/instance"
-          class={"btn btn-sm btn-ghost btn-circle", "btn-active": @selected_tab == "instance_dashboard"}
-        >
-          <#Icon iconify="bi:house-gear" class="w-5 h-5 shrink-0 text-base-content/70" />
-          <span class="sr-only">{l("Instance Settings")}</span>
-        </LinkLive>
-      </div>
-    </div> --}
+    <Bonfire.UI.Common.ExtensionMenuNavLive
+      parent_id="nav_sidebar"
+      selected_tab={@selected_tab}
+      page={@page}
+      nav_items={@nav_items}
+    />
+    <Bonfire.UI.Common.SidebarWidgetsLive
+      widgets={@sidebar_widgets}
+      key={:main}
+      page={@page}
+      selected_tab={@selected_tab}
+    />
   </div>
 
   {#if !current_user_id(@__context__)}
     <nav class="mt-4">
       <ul class="menu menu-lg p-0 justify-end">
         <li class="p-0 m-0">
-          <LinkLive to="/" class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2">
+          <LinkLive to="/" class="flex items-center w-full gap-4 lg:px-2 lg:py-2">
             <#Icon iconify="carbon:explore" class="w-6 h-6 text-base-content/80" />
-            <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Explore")}</div>
+            <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Explore")}</div>
           </LinkLive>
         </li>
         {!-- 
@@ -79,24 +42,26 @@
           </LinkLive>
         </li> --}
         <li class="p-0 m-0">
-          <LinkLive to="/about" class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2">
+          <LinkLive to="/about" class="flex items-center w-full gap-4 lg:px-2 lg:py-2">
             <#Icon solid="DotsHorizontal" class="w-6 h-6 text-base-content/80" />
-            <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("About")}</div>
+            <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("About")}</div>
           </LinkLive>
         </li>
         <li class="p-0 m-0" :if={extension_enabled?(:bonfire_ui_groups, @__context__)}>
-          <LinkLive to="/groups" class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2">
+          <LinkLive to="/groups" class="flex items-center w-full gap-4 lg:px-2 lg:py-2">
             <#Icon iconify="ri:group-line" class="w-6 h-6 text-base-content/80" />
-            <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Public Groups")}</div>
+            <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Public Groups")}</div>
           </LinkLive>
         </li>
         <li :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests} class="p-0 m-0">
-          <LinkLive to="/users" class="flex items-center w-full gap-4 tablet-lg:px-2 tablet-lg:py-2">
+          <LinkLive to="/users" class="flex items-center w-full gap-4 lg:px-2 lg:py-2">
             <#Icon iconify="heroicons:users" class="w-6 h-6 text-base-content/80" />
-            <div class="font-normal hidden tablet-lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Users directory")}</div>
+            <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Users directory")}</div>
           </LinkLive>
         </li>
       </ul>
     </nav>
   {/if}
+
+  <div class="bg-base-100 pointer-events-none sticky bottom-0 flex h-40 [mask-image:linear-gradient(transparent,#000000)]" />
 </div>

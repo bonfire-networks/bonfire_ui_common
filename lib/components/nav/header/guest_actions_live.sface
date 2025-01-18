@@ -1,14 +1,14 @@
 <div
   :if={!current_account(@__context__)}
   class={
-    "hidden tablet-lg:flex justify-end items-center gap-3",
+    "hidden lg:flex justify-end items-center gap-3",
     "!flex lg:!hidden": @page_header
   }
 >
   <LinkLive
     to={path(:login, :index)}
     class={
-      "md:flex-1  normal-case  btn-outline px-6 btn-primary btn-sm btn",
+      "md:flex-1 btn-soft btn-primary btn-sm btn",
       "md:btn-wide": !@page_header
     }
   >{l("Log in")}</LinkLive>
