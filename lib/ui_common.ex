@@ -76,6 +76,82 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  @doc """
+  Renders a HEEx template inline in a controller.
+
+  ## Example
+
+      use Bonfire.UI.Common.Web, :controller
+      use Phoenix.Component
+
+      def index(conn, _) do
+        render_inline conn, ~H"<u><%= @current_user.name %></u>"
+      end
+  """
+  defmacro render_inline(conn, template) do
+    quote do
+      %Plug.Conn{assigns: var!(assigns)} = conn = unquote(conn)
+      html(conn, Phoenix.HTML.Safe.to_iodata(unquote(template)))
+    end
+  end
+
+  @doc """
+  Special LiveView helper function which allows loading LiveComponents in regular Phoenix views: `live_render_component(@conn, MyLiveComponent)`
+  """
+  def live_render_component(conn, load_live_component) do
+    if module_enabled?(load_live_component),
+      do:
+        Phoenix.LiveView.Controller.live_render(
+          conn,
+          Bonfire.UI.Common.LiveComponent,
+          session: %{
+            "load_live_component" => load_live_component
+          }
+        )
+  end
+
+  def live_render_with_conn(conn, live_view) do
+    Phoenix.LiveView.Controller.live_render(conn, live_view, session: %{"conn" => conn})
+  end
+
+  # # WIP
+  # defmacro live_view_for_component(component_module, plugs \\ [Bonfire.UI.Me.LivePlugs.LoadCurrentUser], attrs \\ []) do
+  #   view_module = Module.concat(Macro.expand(component_module, __CALLER__), PageLive)
+
+  #   quote do
+  #     defmodule unquote(view_module) do
+  #       use Bonfire.UI.Common.Web, :surface_live_view
+
+  #       # Load the list of plugs with on_mount
+  #       on_mount {Bonfire.UI.Common.LivePlugs, unquote(plugs)}
+
+  #       def render(assigns) do
+  #         component_module = unquote(component_module) 
+  #         live_component(unquote(attrs) |> Enum.into(%{module: component_module, id: component_module}))
+
+  #         # assigns = assigns
+  #         # |> assign(
+  #         #   component_module: unquote(component_module),
+  #         #   attrs: 
+  #         # )
+
+  #         # quote_surface do 
+  #         #   ~F"""
+  #         #   <StatefulComponent
+  #         #     id={@component_module}
+  #         #     module={maybe_component(@component_module, @__context__)}
+  #         #     {...@attrs}
+  #         #   />
+  #         #   """
+  #         # end
+  #       end
+  #     end
+
+  #     # Return the view module name
+  #     unquote(view_module)
+  #   end
+  # end
+
   def assign_generic(socket_or_conn, {:error, error}) do
     assign_error(socket_or_conn, error)
   end
@@ -420,25 +496,6 @@ defmodule Bonfire.UI.Common do
 
   # defdelegate content(conn, name, type, opts \\ [do: ""]), to: Bonfire.PublisherThesis.ContentAreas
 
-  @doc """
-  Special LiveView helper function which allows loading LiveComponents in regular Phoenix views: `live_render_component(@conn, MyLiveComponent)`
-  """
-  def live_render_component(conn, load_live_component) do
-    if module_enabled?(load_live_component),
-      do:
-        Phoenix.LiveView.Controller.live_render(
-          conn,
-          Bonfire.UI.Common.LiveComponent,
-          session: %{
-            "load_live_component" => load_live_component
-          }
-        )
-  end
-
-  def live_render_with_conn(conn, live_view) do
-    Phoenix.LiveView.Controller.live_render(conn, live_view, session: %{"conn" => conn})
-  end
-
   def maybe_send_update(component, id, assigns, opts \\ [])
 
   def maybe_send_update(_component, _id, {:error, error}, opts) do
@@ -780,17 +837,22 @@ defmodule Bonfire.UI.Common do
   def assign_flash(%Phoenix.LiveView.Socket{} = socket, type, message, assigns, pid) do
     # info(message, type)
 
-    if socket_connected?(socket) do
-      Bonfire.UI.Common.Notifications.receive_flash(
-        Map.put(assigns, type, message),
-        pid,
-        assigns(socket)[:__context__]
-      )
+    if assigns(socket) do
+      if socket_connected?(socket) and assigns(socket) do
+        Bonfire.UI.Common.Notifications.receive_flash(
+          Map.put(assigns, type, message),
+          pid,
+          assigns(socket)[:__context__]
+        )
 
-      Phoenix.LiveView.put_flash(socket, type, message)
+        Phoenix.LiveView.put_flash(socket, type, message)
+      else
+        # for non-live
+        Phoenix.LiveView.put_flash(socket, type, string_for_cookie(message))
+      end
     else
-      # for non-live
-      Phoenix.LiveView.put_flash(socket, type, string_for_cookie(message))
+      error(message, "Could not assign flash message, because assigns are not in socket")
+      socket
     end
   end
 
@@ -805,11 +867,17 @@ defmodule Bonfire.UI.Common do
   end
 
   def assign_flash(other, type, message, assigns, pid) do
-    warn(other, "Expected a conn or socket")
+    case other[:socket] do
+      %Phoenix.LiveView.Socket{} = socket ->
+        assign_flash(socket, type, message, assigns, pid)
 
-    Bonfire.UI.Common.Notifications.receive_flash(Map.put(assigns, type, message), pid)
+      _ ->
+        warn(other, "Expected a conn or socket")
 
-    other
+        Bonfire.UI.Common.Notifications.receive_flash(Map.put(assigns, type, message), pid)
+
+        other
+    end
   end
 
   def maybe_assign_context(socket, %{__context__: assigns}) do
@@ -1463,7 +1531,12 @@ defmodule Bonfire.UI.Common do
     |> Macro.underscore()
   end
 
-  def assigns(%Phoenix.LiveView.Socket{assigns: assigns} = socket), do: assigns
+  def assigns(
+        %Phoenix.LiveView.Socket{assigns: %Phoenix.LiveView.Socket.AssignsNotInSocket{}} = _socket
+      ),
+      do: nil
+
+  def assigns(%Phoenix.LiveView.Socket{assigns: assigns} = _socket), do: assigns
   def assigns(%{assigns: %{} = assigns}) when assigns != %{}, do: assigns
   def assigns(%{} = assigns), do: assigns
 

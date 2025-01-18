@@ -134,7 +134,7 @@
             <div class="flex gap-2">
               {#if @create_object_type != :message && !e(@smart_input_opts, :recipients_editable, nil)}
                 <StatelessComponent
-                  module={maybe_component(Bonfire.UI.Boundaries.Web.SetBoundariesButtonLive, @__context__)}
+                  module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
                   to_boundaries={@to_boundaries}
                   boundary_preset={@boundary_preset}
                   preview_boundary_for_id={@preview_boundary_for_id}
@@ -151,9 +151,9 @@
                 no_actions
               >
                 <StatefulComponent
-                  :if={maybe_apply(Bonfire.UI.Boundaries.Web.SetBoundariesButtonLive, :clone_context, @to_boundaries) ==
+                  :if={maybe_apply(Bonfire.UI.Boundaries.SetBoundariesButtonLive, :clone_context, @to_boundaries) ==
                     false}
-                  module={maybe_component(Bonfire.UI.Boundaries.Web.PreviewBoundariesLive, @__context__)}
+                  module={maybe_component(Bonfire.UI.Boundaries.PreviewBoundariesLive, @__context__)}
                   id="boundaries_preview"
                   boundary_preset={@boundary_preset}
                   to_boundaries={@to_boundaries}
@@ -200,7 +200,7 @@
         <input type="hidden" name={:create_object_type} value={@create_object_type}>
 
         <StatelessComponent
-          module={maybe_component(Bonfire.UI.Boundaries.Web.BoundariesSelectionLive, @__context__)}
+          module={maybe_component(Bonfire.UI.Boundaries.BoundariesSelectionLive, @__context__)}
           to_boundaries={@to_boundaries}
           to_circles={@to_circles}
           exclude_circles={@exclude_circles}

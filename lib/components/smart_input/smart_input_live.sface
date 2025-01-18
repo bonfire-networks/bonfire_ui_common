@@ -86,9 +86,9 @@
         <code>{inspect(@to_circles, pretty: true)}</code>
 
         <StatefulComponent
-          :if={maybe_apply(Bonfire.UI.Boundaries.Web.SetBoundariesButtonLive, :clone_context, @to_boundaries) ==
+          :if={maybe_apply(Bonfire.UI.Boundaries.SetBoundariesButtonLive, :clone_context, @to_boundaries) ==
             false}
-          module={maybe_component(Bonfire.UI.Boundaries.Web.PreviewBoundariesLive, @__context__)}
+          module={maybe_component(Bonfire.UI.Boundaries.PreviewBoundariesLive, @__context__)}
           id="boundaries_preview"
           boundary_preset={@boundary_preset}
           to_boundaries={@to_boundaries}

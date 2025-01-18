@@ -265,6 +265,9 @@ defmodule Bonfire.UI.Common.ErrorHandling do
       %Phoenix.LiveView.Rendered{} = rendered ->
         rendered
 
+      %Phoenix.LiveView.Component{id: id, component: component, assigns: assigns} ->
+        Phoenix.Component.live_component(assigns |> Enum.into(%{id: id, module: component}))
+
       {:noreply, %Plug.Conn{} = conn} ->
         {:noreply, conn}
 
