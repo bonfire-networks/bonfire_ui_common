@@ -1,5 +1,27 @@
 <div>
   <div class="">
+    <div
+      x-data="{ debug: $debug }"
+      x-init="() => { 
+        console.log('Extensions component mounted');
+        debug.refs();
+        debug.data();
+      }"
+      class="hero"
+      style="background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);"
+    >
+      <div class="hero-overlay bg-opacity-60" />
+      <div class="hero-content py-12 text-neutral-content text-center">
+        <div class="max-w-md">
+          <h1 class="mb-5 text-5xl font-bold">Bonfire extensions</h1>
+          <p class="mb-5">
+            {l("Extensions are plugins that add new features to Bonfire or modify existing ones.")}
+          </p>
+          <button class="btn btn-primary">Enable extensions</button>
+        </div>
+      </div>
+    </div>
+
     <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
       <span>{l("User Interface Extensions / Themes")}</span>

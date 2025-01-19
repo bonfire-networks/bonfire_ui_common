@@ -1,7 +1,5 @@
 <div
-  @keydown.window.escape="open_sidebar = false"
   aria-labelledby="slide-over-title"
-  x-ref="dialog"
   aria-modal="true"
   role="banner"
   class="flex flex-1 px-4 w-full transition-color duration-150 ease-in-out"

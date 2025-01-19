@@ -1,5 +1,13 @@
 <div
   data-id="bonfire_live"
+  x-data="{ 
+    init() {
+      this.$nextTick(() => {
+        this.$dispatch('alpine-ready');
+        console.log('Alpine.js initialized in layout');
+      })
+    }
+  }"
   class="antialiased bg-base-200 min-h-screen"
   data-theme={Bonfire.UI.Common.ThemeHelper.current_theme(assigns)}
   style={maybe_custom_theme(
@@ -143,26 +151,26 @@
       <aside
         :if={!@without_sidebar}
         data-id="nav_sidebar"
-        class="w-80 px-4 lg:px-0 lg:mr-3 lg:w-[250px] bg-base-100 lg:bg-base-200"
+        class="w-80 px-4 lg:px-0 lg:mr-3 lg:w-[250px] bg-base-100 lg:bg-base-200 h-full"
       >
         {#if is_nil(@current_user_id)}
           <div class="flex items-center justify-end lg:justify-between top-0 bg-base-200 pt-2">
             <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
           </div>
         {/if}
-        <nav
+        <!-- <nav
           class="overview-y-auto  w-full flex gap-4 flex-col pb-1 min-h-screen z-[999999999999]"
           role="navigation"
           aria-label={l("Extension navigation")}
-        >
-          <Bonfire.UI.Common.NavSidebarLive
-            :if={!@without_sidebar}
-            page={@page}
-            selected_tab={@selected_tab}
-            nav_items={@nav_items}
-            sidebar_widgets={@sidebar_widgets}
-          />
-        </nav>
+        > -->
+        <Bonfire.UI.Common.NavSidebarLive
+          :if={!@without_sidebar}
+          page={@page}
+          selected_tab={@selected_tab}
+          nav_items={@nav_items}
+          sidebar_widgets={@sidebar_widgets}
+        />
+        <!-- </nav> -->
       </aside>
     </div>
   </div>

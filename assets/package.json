@@ -1,16 +1,15 @@
 {
 	"version": "0.0.0",
 	"license": "AGPL-3.0",
-	"type": "module",
 	"scripts": {
 		"watch.assets": "npx cpx 'static/**/*' ../priv/static --watch",
-		"watch.js": "NODE_PATH=./node_modules:../../../deps/bonfire_editor_milkdown/assets/node_modules npx esbuild ./js/bonfire_live.js ./js/bonfire_basic.js --target=es2017 --bundle --sourcemap --loader:.svg=text --outdir=../priv/static/assets --watch",
+		"watch.js": "NODE_PATH=./node_modules:../../../deps/bonfire_editor_milkdown/assets/node_modules npx esbuild ./js/bonfire_live.js ./js/bonfire_basic.js --target=es2017 --bundle --sourcemap --loader:.svg=text --format=iife --outdir=../priv/static/assets --watch",
 		"watch.css": "NODE_ENV=development npx @tailwindcss/cli -i ./css/app.css -o ../priv/static/assets/bonfire_basic.css --watch --poll",
 		"build.css": "NODE_ENV=production npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --minify",
 		"build.postcss": "NODE_ENV=production npx postcss ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css",
 		"build": "yarn prepare.static && yarn build.postcss && yarn build.esbuild",
 		"prepare.static": "mkdir -p ../../../priv/static/ && cp -r static/*.ico ../../../priv/static/ && cp -r static/images ../../../priv/static/ && cp -r static/fonts ../../../priv/static/  && cp -r static/pwa* ../../../priv/static/",
-		"build.esbuild": "NODE_PATH=./node_modules:../../../deps/bonfire_editor_milkdown/assets/node_modules npx esbuild ./js/bonfire_live.js ./js/bonfire_basic.js --target=es2017 --bundle --sourcemap --loader:.svg=text --outdir=../../../priv/static/assets",
+		"build.esbuild": "NODE_PATH=./node_modules:../../../deps/bonfire_editor_milkdown/assets/node_modules npx esbuild ./js/bonfire_live.js ./js/bonfire_basic.js --target=es2017 --bundle --sourcemap --loader:.svg=text --format=iife --outdir=../../../priv/static/assets",
 		"watch.parcel": "parcel watch 'js/bonfire_*.js' --dist-dir ../priv/static/assets",
 		"build.parcel": "parcel build 'js/bonfire_*.js' --dist-dir ../priv/static/assets",
 		"css.doiuse.custom": "doiuse --browsers '> 1%, last 2 versions' ./css/app.css",
@@ -56,6 +55,7 @@
 		"esbuild": "^0.19.9",
 		"fast-blurhash": "^1.1.2",
 		"postcss": "^8.4.38",
+		"postcss-cli": "^11.0.0",
 		"prop-types": "^15.8.1",
 		"tailwindcss": "next",
 		"tailwindcss-debug-screens": "^2.2.1"
