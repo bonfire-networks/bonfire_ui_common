@@ -4,7 +4,7 @@ import "../../../../deps/phoenix_html";
 import Alpine from "alpinejs";
 import intersect from "@alpinejs/intersect";
 import collapse from "@alpinejs/collapse";
-import './alpine_debug.js'
+
 
 console.log('Setting up Alpine.js plugins and initialization')
 
@@ -13,13 +13,7 @@ Alpine.plugin(collapse);
 
 // Make sure Alpine is available globally
 window.Alpine = Alpine
-
-// Wait for DOM to be ready
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM ready, starting Alpine')
-  Alpine.start()
-  console.log('Alpine started')
-})
+Alpine.start();
 
 const winnerDimension = () => {
 	// set the viewport inner height in a custom property on the root of the document

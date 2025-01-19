@@ -4,24 +4,16 @@ let DraggableHooks = {};
 
 DraggableHooks.Draggable = {
   mounted() {
-    const hook = this;
     console.log("Mounting sortable on", this.el);
-    
-    // Listen for Alpine.js ready event
-    window.addEventListener('alpine-ready', () => {
-      this.initializeSortable(hook);
-    }, { once: true }); // Use once: true to ensure it only runs once
-    
-    // Fallback initialization if Alpine.js is already loaded
-    if (window.Alpine && document.readyState === 'complete') {
-      this.initializeSortable(hook);
-    }
+    this.initializeSortable();
   },
 
-  initializeSortable(hook) {
+  initializeSortable() {
     if (this.el.sortable) return; // Prevent double initialization
     
+    const hook = this;
     console.log("Initializing Sortable");
+    
     this.el.sortable = new Sortable(this.el, {
       group: this.el.dataset.grouped ? { name: this.el.id } : 'shared',
       animation: 150,
@@ -36,26 +28,10 @@ DraggableHooks.Draggable = {
       invertSwap: true,
       emptyInsertThreshold: 5,
       removeCloneOnHide: true,
-      delay: 150, // Add a delay before drag starts
-      delayOnTouchOnly: true, // Only apply delay for touch devices
+      delay: 150,
+      delayOnTouchOnly: true,
       
-      setData: function (dataTransfer, dragEl) {
-        // Store the original background class
-        dragEl.setAttribute('data-original-bg', dragEl.className);
-      },
-      
-      onChoose: function (evt) {
-        evt.item.classList.add('!bg-base-content/5');
-      },
-      
-      onStart: function(evt) {
-        evt.item.style.visibility = 'hidden';
-      },
-
       onEnd: function(evt) {
-        evt.item.style.visibility = '';
-        evt.item.classList.remove('!bg-base-content/5');
-        
         if (evt.oldIndex !== evt.newIndex) {
           const item = evt.item;
           const sourceOrder = parseInt(item.dataset.order);
@@ -75,10 +51,10 @@ DraggableHooks.Draggable = {
             position = "after";
           }
 
-          const event_name = this.el.dataset.event;
-          const parentItem = this.el.dataset.parent;
-          
-          if (targetOrder !== undefined && sourceOrder !== targetOrder) {
+          const event_name = hook.el.dataset.event;
+          const parentItem = hook.el.dataset.parent;
+
+          if (event_name) {
             hook.pushEvent(event_name, {
               source_order: sourceOrder,
               target_order: targetOrder,
@@ -95,7 +71,7 @@ DraggableHooks.Draggable = {
   destroyed() {
     if (this.el.sortable) {
       this.el.sortable.destroy();
-      delete this.el.sortable;
+      this.el.sortable = null;
     }
   }
 };

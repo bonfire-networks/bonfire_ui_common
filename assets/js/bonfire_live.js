@@ -9,11 +9,11 @@ import NProgress from "nprogress";
 // for JS features & extensions to hook into LiveView
 let Hooks = {};
 
-let JS_exec = (selector, event) => {
-	document
-		.querySelectorAll(selector)
-		.forEach((el) => liveSocket.execJS(el, event));
-};
+// let JS_exec = (selector, event) => {
+// 	document
+// 		.querySelectorAll(selector)
+// 		.forEach((el) => liveSocket.execJS(el, event));
+// };
 let JS_exec_attr_event = (selector, attr) => {
 	document.querySelectorAll(selector).forEach((el) => {
 		console.log(attr);
