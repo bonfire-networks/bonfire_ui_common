@@ -1,6 +1,8 @@
 defmodule Bonfire.UI.Common.LivePlugs.AllowTestSandbox do
   use Bonfire.UI.Common.Web, :live_plug
 
+  @behaviour Bonfire.UI.Common.LivePlugModule
+
   def on_mount(:default, _params, _session, socket) do
     # to use with LV :on_mount
     allow_ecto_sandbox(socket)

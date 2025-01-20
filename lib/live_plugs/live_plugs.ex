@@ -3,6 +3,8 @@ defmodule Bonfire.UI.Common.LivePlugs do
   alias Bonfire.UI
   use UI.Common
 
+  @behaviour Bonfire.UI.Common.LivePlugModule
+
   # TODO: put in config
   @default_plugs [
     UI.Common.LivePlugs.StaticChanged,

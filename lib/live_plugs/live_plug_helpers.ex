@@ -6,7 +6,9 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
 
   def on_mount(modules, params, session, socket) when is_list(modules) do
     UI.Common.undead_on_mount(socket, fn ->
-      socket = init_mount(params, session, socket)
+      socket =
+        init_mount(params, session, socket)
+        |> Phoenix.Component.assign(:on_mount_plugs, modules)
 
       case Enum.reduce_while(modules, socket, fn module, socket ->
              with {:halt, socket} <-
@@ -143,22 +145,42 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   # end
 
   defp params_to_assigns(params, uri, socket) do
-    socket = assign_default_params(params, uri, socket)
+    host_uri =
+      socket.host_uri
+      |> debug("socket INFO")
+
+    url = uri |> String.trim(to_string(host_uri)) |> String.trim("#") |> debug()
+
+    route_info =
+      Phoenix.Router.route_info(socket.router || Bonfire.Web.Router, "GET", url, host_uri.host)
+      |> debug("ROUTE INFO")
+
+    socket =
+      assign_default_params(params, socket,
+        current_params: params,
+        current_url: url,
+        current_route: e(route_info, :route, nil)
+      )
 
     # in case we're browsing between LVs, send assigns (eg current_user to PersistentLive's process)
     # if socket_connected?(socket), do: LivePlugs.maybe_send_persistent_assigns(socket)
 
+    # case e(route_info, :pipe_through, []) do
+    #   [] -> 
     {:cont, socket}
+    #   pipe_through ->
+    # # WIP: run LivePlugs here (instead of, or mayebe better as a fallback) in on_mount so they can be defined by the router just like regular routes instead of in each module
+    #     debug(pipe_through, "PIPE THROUGH")
+    #     mounted_plugs = e(assigns(socket), :on_mount_plugs, [])
+    #     |> debug("MOUNTED PLUGS")
+    #     pipeline_names = Bonfire.UI.Common.LivePlugModule.pipeline_names()
+    #     {:cont, socket}
+    # end
   end
 
-  def assign_default_params(params, uri, socket) do
-    uri = URI.parse(uri)
-
+  defp assign_default_params(params, socket, assigns) do
     socket
-    |> assign_global(
-      current_params: params,
-      current_url: "#{uri.path}##{uri.fragment}"
-    )
+    |> assign_global(assigns)
     |> Iconify.maybe_set_favicon(
       e(assigns(socket), :current_extension, :icon, nil) ||
         e(assigns(socket), :current_extension, :emoji, nil)
