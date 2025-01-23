@@ -1,11 +1,11 @@
-<header class="sticky top-0 z-50 flex flex-row items-center w-full p-3 py-1 pt-2 rounded-t-xl bg-base-100 md:z-auto md:relative flex-align-items-stretch flex-nowrap">
-  <span class="flex-1 text-sm font-semibold md:text-center text-ellipsis text-base-content/70">
+<header class="sticky top-0 z-50 flex flex-row items-center w-full p-3 rounded-t-xl bg-base-100 md:z-auto md:relative flex-align-items-stretch flex-nowrap">
+  <span class="flex-1 font-semibold text-ellipsis">
     {#if @create_object_type != :message}
       {e(@smart_input_opts, :prompt, l("Share your thoughts"))}
     {#else}
       <div class="flex items-center gap-2">
         {l("Send a direct message")}
-        <span class="btn btn-xs btn-circle" phx-click="Bonfire.UI.Common.SmartInput:reset_to_default"><#Icon iconify="carbon:close" class="w-4 h-4" /></span>
+        <span class="btn btn-sm btn-circle" phx-click="Bonfire.UI.Common.SmartInput:reset_to_default"><#Icon iconify="carbon:close" class="w-4 h-4" /></span>
       </div>
     {/if}
   </span>
@@ -14,10 +14,10 @@
       phx-click={LiveHandler.minimize()}
       phx-target="#smart_input"
       type="button"
-      class="flex btn btn-xs btn-ghost btn-circle"
+      class="flex btn btn-sm btn-ghost btn-circle"
     >
       {!-- x-on:click=" ... ; smart_input_fullscreen = false" --}
-      <#Icon solid="Minus" class="w-5 h-5 stroke-1 md:w-4 md:h-4 text-base-content/70" />
+      <#Icon iconify="line-md:chevron-double-down" class="w-5 h-5" />
       <!-- <span class="text-sm text-base-content/70">{l("Minimize")}</span> -->
     </button>
     <!-- <Bonfire.UI.Common.OpenModalLive

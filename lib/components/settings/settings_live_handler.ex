@@ -65,6 +65,30 @@ defmodule Bonfire.Common.Settings.LiveHandler do
     extension_toggle(extension, nil, attrs, socket)
   end
 
+  def handle_event("toggle_extensions_configuration", params, socket) do
+    scope = e(params, "scope", nil) || e(assigns(socket), :scope, nil)
+    current_user = current_user(socket)
+
+    current_value = Bonfire.Common.Settings.get(
+      [:ui, :enable_extensions_configuration],
+      false,
+      scope: scope,
+      current_user: current_user
+    )
+
+    with {:ok, settings} <- Bonfire.Common.Settings.put(
+      [:ui, :enable_extensions_configuration],
+      !current_value,
+      scope: scope,
+      current_user: current_user
+    ) do
+      {:noreply,
+       socket
+       |> maybe_assign_context(settings)
+       |> assign_flash(:info, l("Settings saved :-)"))}
+    end
+  end
+
   # LiveHandler
   def handle_event("set_locale", %{"locale" => locale}, socket) do
     Bonfire.Common.Localise.put_locale(locale)

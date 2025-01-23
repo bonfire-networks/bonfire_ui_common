@@ -42,7 +42,7 @@
       </div>
 
       <div class={
-        "z-50 sticky bg-base-100 bottom-0 h-[48px] rounded-b-xl",
+        "z-50 sticky bg-base-100 bottom-0 h-[48px] rounded-b-xl order-first lg:order-last",
         "order-first !bg-base-content/10": @showing_within == :page
       }>
         <div class="">

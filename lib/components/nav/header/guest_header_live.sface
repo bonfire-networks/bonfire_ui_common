@@ -5,7 +5,7 @@
     </div>
     <div class="flex-none">
       <ul class="menu menu-horizontal items-center gap-4 px-1">
-        <li class="hidden lg:block">
+        <li class="">
           <LinkLive
             to={path(:login, :index)}
             class={

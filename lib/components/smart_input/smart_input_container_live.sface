@@ -34,19 +34,18 @@
         id="smart_input_container"
         data-hidden={e(@smart_input_opts, :open, nil) != true}
         data-focused={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
-        class="w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-xl max-w-full bg-base-200 mx-auto z-[9999] shadow-xl md:right-4 top-0 md:top-auto md:bottom-4 md:w-[32rem] md:right-4 md:top-auto max-h-screen"
+        class={"w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-xl max-w-full bg-base-200 mx-auto z-[9999] shadow-xl left-0 md:left-auto md:right-4 top-0 md:top-auto md:bottom-4 md:w-[32rem] md:right-4 md:top-auto h-full max-h-screen", "translate-y-100": e(@smart_input_opts, :open, nil) != true}
       >
         <div class="w-full rounded-xl bg-gradient-to-t from-base-content/10 to-base-content/10 p-[0.05rem] flex flex-col flex-1 h-full grow">
           <div class="w-full rounded-xl bg-base-200 flex flex-col flex-1 h-full grow">
             {!-- "md:!w-[20rem] lg:block bottom-0": e(@smart_input_opts, :minimized, nil) == true, --}
-            <div
+            <!-- <div
               phx-click={LiveHandler.close_smart_input()}
               id="smart_input_backdrop"
               phx-target="#smart_input"
               class="lg:!hidden smart_input_backdrop fixed inset-0 pointer-events-none cursor-pointer bg-base-100"
-            />
-
-            <div class="smart_input_modal relative z-50 rounded-xl flex flex-col grow h-full">
+            /> -->
+            <div class="relative z-50 rounded-xl flex flex-col grow h-full">
               <Bonfire.UI.Common.SmartInputHeaderModalLive
                 create_object_type={@create_object_type}
                 smart_input_opts={@smart_input_opts}

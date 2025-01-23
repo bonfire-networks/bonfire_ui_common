@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
   # import Bonfire.Common.Extensions
 
   prop scope, :any, default: nil
-
+  prop extensions_config, :boolean, default: false
   prop feature_extensions, :list, default: []
   prop ui, :list, default: []
   # prop schemas, :list, default: []

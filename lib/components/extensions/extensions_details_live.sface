@@ -13,7 +13,9 @@
     <div class="text-sm font-light text-base-content/70">{e(@dep, :extra, :description, nil)}</div>
   </div>
 
-  {#if @is_extension?}
+  {#if @is_extension? && Bonfire.Common.Settings.get([:ui, :enable_extensions_configuration],
+               false,
+               current_user: current_user(@__context__))}
     <div class="gap flex items-center gap-3">
       <Bonfire.UI.Common.ExtensionToggleLive
         :if={!@required_dep?}

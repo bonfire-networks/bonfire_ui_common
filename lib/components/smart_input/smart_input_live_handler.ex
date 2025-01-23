@@ -8,9 +8,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def show_main(js \\ %JS{}, _opts \\ nil) do
     js
-    |> JS.hide(to: "#extra_boundaries")
-    |> JS.hide(to: "#boundaries_picker")
-    |> JS.hide(to: "#roles_detail")
     |> JS.show(to: "#composer_container")
     |> maximize()
   end
@@ -73,36 +70,20 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def minimize(js \\ %JS{}) do
     js
-    # transition: {"transition-all duration-200", "h-auto w-auto", "h-[40px] w-[20rem]"}, time: 200
-    |> JS.hide(to: ".smart_input_modal")
-    |> JS.hide(to: ".smart_input_show_on_open")
-    |> JS.hide(to: "#extra_boundaries")
-    |> JS.hide(to: "#boundaries_picker")
-    |> JS.hide(to: "#roles_detail")
-    |> JS.hide(
-      to: ".smart_input_backdrop",
-      transition: {"transition-opacity duration-200", "opacity-100", "opacity-0"}
+    |> JS.add_class("translate-y-100",
+      to: "#smart_input_container",
+      transition: {"transition-transform duration-300", "translate-y-0", "translate-y-100"}
     )
     |> JS.show(to: ".smart_input_show_on_minimize")
   end
 
   def maximize(js \\ %JS{}) do
     js
-    |> JS.show(
-      to: ".smart_input_show_on_open",
-      transition: {"transition-transform duration-300", "translate-y-0", "translate-y-100"}
+    |> JS.remove_class("translate-y-100",
+      to: "#smart_input_container",
+      transition: {"transition-transform duration-300", "translate-y-100", "translate-y-0"}
     )
     |> JS.hide(to: ".smart_input_show_on_minimize")
-    |> JS.show(
-      to: ".smart_input_backdrop",
-      transition: {"transition-opacity duration-200", "opacity-0", "opacity-100"}
-    )
-    |> JS.show(
-      to: ".smart_input_modal",
-      display: "flex",
-      transition: {"transition-all duration-200", "h-[40px] w-[20rem]", "h-auto w-auto"},
-      time: 200
-    )
     |> JS.dispatch("bonfire:focus-composer", to: "#composer_container")
   end
 

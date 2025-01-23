@@ -112,3 +112,4 @@ import ComponentHooks from "../../../../data/current_flavour/config/flavour_asse
 
 // Add Extensions' Hooks...
 Object.assign(liveSocket.hooks, ExtensionHooks, DraggableHooks, ComponentHooks, CopyHooks, TooltipHooks);
+// test change

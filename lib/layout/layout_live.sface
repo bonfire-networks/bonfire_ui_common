@@ -35,12 +35,12 @@
         data-id="layout"
         data-two-columns={@without_secondary_widgets && !@without_sidebar}
         data-single-column={@without_sidebar}
-        class="grid gap-3 lg:grid-main"
+        class="grid gap-3 px-3 lg:px-0 lg:grid-main"
       >
         <div
           data-id="main_section"
           data-single-column={@without_sidebar}
-          class="relative lg:min-w-auto w-full min-w-[600px] gap-2 md:gap-0 z-[99999] col-span-1"
+          class="relative w-full gap-2 xl:gap-0 z-[99999] col-span-1"
         >
           <Bonfire.UI.Common.GuestHeaderLive
             selected_tab={@selected_tab}

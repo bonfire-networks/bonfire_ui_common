@@ -1,30 +1,36 @@
 <div>
   <div class="">
     <div
-      x-data="{ debug: $debug }"
-      x-init="() => { 
-        console.log('Extensions component mounted');
-        debug.refs();
-        debug.data();
-      }"
       class="hero"
-      style="background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);"
+      style="background-image: url(https://media.discordapp.net/attachments/1228692128952225928/1330637061056893058/ivanminutillo_a_wolf_a_deer_a_squirrel_and_a_bear_next_to_a_bon_8611f02c-1213-4dd9-9f3d-a51ff9015c8c.png?ex=678eb3d5&is=678d6255&hm=b3ca53a30c33a446a2c74b4822f56e5df308123230ccc83ff1ea1a766fcae28a&=&format=webp&quality=lossless&width=2330&height=1166);"
     >
       <div class="hero-overlay bg-opacity-60" />
       <div class="hero-content py-12 text-neutral-content text-center">
         <div class="max-w-md">
-          <h1 class="mb-5 text-5xl font-bold">Bonfire extensions</h1>
+          <h1 class="mb-5 text-5xl font-bold">{l "Bonfire extensions"}</h1>
           <p class="mb-5">
             {l("Extensions are plugins that add new features to Bonfire or modify existing ones.")}
           </p>
-          <button class="btn btn-primary">Enable extensions</button>
+          <div id="extensions_config_toggle" phx-update="replace">
+            {#if Bonfire.Common.Settings.get([:ui, :enable_extensions_configuration],
+               false,
+               scope: @scope,
+               current_user: current_user(@__context__))}
+              <button phx-click="Bonfire.Common.Settings.LiveHandler:toggle_extensions_configuration" phx-value-scope={@scope} class="btn btn-warning btn-soft">{l("Turn off extensions configuration")}</button>
+            {#else}
+              <button phx-click="Bonfire.Common.Settings.LiveHandler:toggle_extensions_configuration" phx-value-scope={@scope} class="btn btn-primary">{l("Turn on extensions configuration")}</button>
+            {/if}
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
+    <div class="p-4 text-xl font-bold items-start flex flex-col gap-4 border-t border-base-content/10">
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
-      <span>{l("User Interface Extensions / Themes")}</span>
+      <span class="text-left">{l("User Interface Extensions")}</span>
+      <div class="flex-1 text-sm font-normal text-info bg-info/10 p-6 flex items-center place-content-center rounded-lg">
+        {l("Customize your experience by managing your UI extensions. Each extension adds specific features to the interface. Note that disabling a UI extension will hide its associated features from view, but the underlying functionality remains available through the API.")}
+      </div>
     </div>
     <div class="flex flex-col divide-y divide-base-content/10">
       {#for dep <- e(@data, :ui, nil) || @ui}
@@ -38,9 +44,12 @@
     </div>
   </div>
   <div class="">
-    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
+    <div class="p-4 text-xl font-bold items-start flex flex-col gap-4 border-t border-base-content/10">
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
-      <span>{l("Feature Extensions")}</span>
+      <span class="text-left">{l("Feature Extensions")}</span>
+      <div class="flex-1 text-sm font-normal text-info bg-info/10 p-6 flex items-center place-content-center rounded-lg">
+        {l("Customize your experience by managing your feature extensions. Each extension adds whole features. Note that disabling a feature extension will disable its associated features.")}
+      </div>
     </div>
     <div class="flex flex-col divide-y divide-base-content/10">
       {#for dep <- e(@data, :feature_extensions, nil) || @feature_extensions}
@@ -54,9 +63,8 @@
     </div>
   </div>
 
-  <div class="">
-    <div class="p-4 gap-4 border-b border-base-content/10">
-      <!-- "flex items-center" <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
+  <!-- <div class="">
+    <div class="p-4 gap-4 border-t border-base-content/10">
       <span class="text-xl font-bold">{l("Essential Extensions")}</span>
       <p class="text-sm mt-2 text-base-content/80">{l(
           "These extensions can't be disabled at the moment, but a lot of the functionality they provide can be overriden or extended by other extensions."
@@ -73,5 +81,5 @@
         />
       {/for}
     </div>
-  </div>
+  </div> -->
 </div>

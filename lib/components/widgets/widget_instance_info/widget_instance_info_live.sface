@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center w-full">
     <div
       style={"background-image: url(#{Config.get([:ui, :theme, :instance_image], nil)})"}
-      class="bg-center aspect-video h-[200px] bg-no-repeat bg-cover bg-white rounded w-full"
+      class="bg-center h-[200px] bg-no-repeat bg-cover bg-white rounded w-full"
     >
     </div>
     <div class="w-full mt-1">
