@@ -28,4 +28,8 @@ defmodule Bonfire.UI.Common.ExtensionToggleLive do
        globally_disabled?: Bonfire.Common.Extend.disabled_value?(global_modularity)
      )}
   end
+
+  def toggle_status(my_disabled?) do
+    if my_disabled?, do: l("Disabled for me"), else: l("Enabled for me")
+  end
 end

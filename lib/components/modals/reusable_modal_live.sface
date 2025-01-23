@@ -46,7 +46,12 @@
   <Phoenix.Component.dynamic_tag
     tag_name={if @form_opts != %{}, do: "form", else: "div"}
     id={@form_opts[:id] || "#{@id}_box"}
-    class={Surface.css_class(["text-base-content", "modal-box p-4": !@image_preview, "h-full": @no_backdrop])}
+    class={Surface.css_class([
+      "text-base-content",
+      "modal-box p-4": !@image_preview,
+      "h-full": @no_backdrop,
+      "!max-w-[52rem]": @xl
+    ])}
     {...Enums.naughty_to_atoms!(@form_opts)}
   >
     <div

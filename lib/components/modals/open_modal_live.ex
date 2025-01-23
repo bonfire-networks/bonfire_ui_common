@@ -65,6 +65,11 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   prop enable_fallback, :boolean, default: false
 
+  @doc """
+  Optional prop to make the modal wider
+  """
+  prop xl, :boolean, default: false
+
   @doc "The classes of the title of the modal"
   prop reusable_modal_component, :atom, default: ReusableModalLive
 

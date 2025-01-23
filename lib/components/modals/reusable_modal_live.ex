@@ -82,6 +82,11 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   data value, :any, default: nil
 
   @doc """
+  Optional prop to make the modal wider
+  """
+  prop xl, :boolean, default: false
+
+  @doc """
   Slots for the contents of the modal, title, buttons...
   """
   slot open_btn, arg: [autocomplete: :list, value: :any]

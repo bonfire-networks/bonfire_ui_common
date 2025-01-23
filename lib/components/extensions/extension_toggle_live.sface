@@ -9,11 +9,15 @@
       </span>
     {/if}
 
-    <label class="cursor-pointer label gap-3 p-0">
-      <!-- <span class="label-text">{l("Enable for everyone by default")}</span> -->
+    <label
+      class="tooltip"
+      data-tip={l("Enable for everyone by default")}
+      class="cursor-pointer label gap-3 p-0"
+    >
+      <span class="sr-only label-text">{l("Enable for everyone by default")}</span>
       <input
         type="checkbox"
-        class="toggle toggle-sm"
+        class="toggle toggle-primary toggle-sm"
         checked={!@globally_disabled?}
         phx-click={if @globally_disabled?,
           do: "Bonfire.Common.Settings:extension:enable",
@@ -39,8 +43,8 @@
       </span>
     {/if}
 
-    <label class="cursor-pointer label gap-3 p-0">
-      <!-- <span class="label-text">
+    <label class="tooltip cursor-pointer label gap-3 p-0" data-tip={toggle_status(@my_disabled?)}>
+      <span class="sr-only label-text">
         {#if @my_disabled?}
           {#if !@globally_disabled?}
             {l("Enable for me")}
@@ -50,10 +54,10 @@
         {#else}
           {l("Enabled for me")}
         {/if}
-      </span> -->
+      </span>
       <input
         type="checkbox"
-        class="toggle toggle-sm"
+        class="toggle toggle-sm toggle-primary"
         checked={!@my_disabled?}
         disabled={!@can_instance_wide && @globally_disabled?}
         phx-click={if @my_disabled?,
@@ -64,10 +68,10 @@
       />
     </label>
 
-    <!-- {#if !@can_instance_wide && @globally_disabled?}
+    {#if !@can_instance_wide && @globally_disabled?}
       <div class="text-sm text-gray-500 mt-2">
         {l("Contact the admins to enable this extension")}
       </div>
-    {/if} -->
+    {/if}
   {/if}
 </div>
