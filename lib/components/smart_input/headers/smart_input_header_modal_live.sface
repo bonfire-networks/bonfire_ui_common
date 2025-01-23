@@ -17,7 +17,7 @@
       class="flex btn btn-sm btn-ghost btn-circle"
     >
       {!-- x-on:click=" ... ; smart_input_fullscreen = false" --}
-      <#Icon iconify="line-md:chevron-double-down" class="w-5 h-5" />
+      <#Icon iconify="fluent:chevron-double-down-16-filled" class="w-5 h-5" />
       <!-- <span class="text-sm text-base-content/70">{l("Minimize")}</span> -->
     </button>
     <!-- <Bonfire.UI.Common.OpenModalLive

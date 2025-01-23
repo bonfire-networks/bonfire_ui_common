@@ -69,19 +69,21 @@ defmodule Bonfire.Common.Settings.LiveHandler do
     scope = e(params, "scope", nil) || e(assigns(socket), :scope, nil)
     current_user = current_user(socket)
 
-    current_value = Bonfire.Common.Settings.get(
-      [:ui, :enable_extensions_configuration],
-      false,
-      scope: scope,
-      current_user: current_user
-    )
+    current_value =
+      Bonfire.Common.Settings.get(
+        [:ui, :enable_extensions_configuration],
+        false,
+        scope: scope,
+        current_user: current_user
+      )
 
-    with {:ok, settings} <- Bonfire.Common.Settings.put(
-      [:ui, :enable_extensions_configuration],
-      !current_value,
-      scope: scope,
-      current_user: current_user
-    ) do
+    with {:ok, settings} <-
+           Bonfire.Common.Settings.put(
+             [:ui, :enable_extensions_configuration],
+             !current_value,
+             scope: scope,
+             current_user: current_user
+           ) do
       {:noreply,
        socket
        |> maybe_assign_context(settings)

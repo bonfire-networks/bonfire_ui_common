@@ -7,18 +7,28 @@
       <div class="hero-overlay bg-opacity-60" />
       <div class="hero-content py-12 text-neutral-content text-center">
         <div class="max-w-md">
-          <h1 class="mb-5 text-5xl font-bold">{l "Bonfire extensions"}</h1>
+          <h1 class="mb-5 text-5xl font-bold">{l("Bonfire extensions")}</h1>
           <p class="mb-5">
             {l("Extensions are plugins that add new features to Bonfire or modify existing ones.")}
           </p>
           <div id="extensions_config_toggle" phx-update="replace">
-            {#if Bonfire.Common.Settings.get([:ui, :enable_extensions_configuration],
-               false,
-               scope: @scope,
-               current_user: current_user(@__context__))}
-              <button phx-click="Bonfire.Common.Settings.LiveHandler:toggle_extensions_configuration" phx-value-scope={@scope} class="btn btn-warning btn-soft">{l("Turn off extensions configuration")}</button>
+            {#if Bonfire.Common.Settings.get(
+                [:ui, :enable_extensions_configuration],
+                false,
+                scope: @scope,
+                current_user: current_user(@__context__)
+              )}
+              <button
+                phx-click="Bonfire.Common.Settings.LiveHandler:toggle_extensions_configuration"
+                phx-value-scope={@scope}
+                class="btn btn-warning btn-soft"
+              >{l("Turn off extensions configuration")}</button>
             {#else}
-              <button phx-click="Bonfire.Common.Settings.LiveHandler:toggle_extensions_configuration" phx-value-scope={@scope} class="btn btn-primary">{l("Turn on extensions configuration")}</button>
+              <button
+                phx-click="Bonfire.Common.Settings.LiveHandler:toggle_extensions_configuration"
+                phx-value-scope={@scope}
+                class="btn btn-primary"
+              >{l("Turn on extensions configuration")}</button>
             {/if}
           </div>
         </div>
@@ -29,7 +39,9 @@
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
       <span class="text-left">{l("User Interface Extensions")}</span>
       <div class="flex-1 text-sm font-normal text-info bg-info/10 p-6 flex items-center place-content-center rounded-lg">
-        {l("Customize your experience by managing your UI extensions. Each extension adds specific features to the interface. Note that disabling a UI extension will hide its associated features from view, but the underlying functionality remains available through the API.")}
+        {l(
+          "Customize your experience by managing your UI extensions. Each extension adds specific features to the interface. Note that disabling a UI extension will hide its associated features from view, but the underlying functionality remains available through the API."
+        )}
       </div>
     </div>
     <div class="flex flex-col divide-y divide-base-content/10">
@@ -48,7 +60,9 @@
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
       <span class="text-left">{l("Feature Extensions")}</span>
       <div class="flex-1 text-sm font-normal text-info bg-info/10 p-6 flex items-center place-content-center rounded-lg">
-        {l("Customize your experience by managing your feature extensions. Each extension adds whole features. Note that disabling a feature extension will disable its associated features.")}
+        {l(
+          "Customize your experience by managing your feature extensions. Each extension adds whole features. Note that disabling a feature extension will disable its associated features."
+        )}
       </div>
     </div>
     <div class="flex flex-col divide-y divide-base-content/10">
