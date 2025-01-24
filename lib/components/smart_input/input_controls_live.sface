@@ -4,7 +4,7 @@
       {!-- here was old/loader.svg --}
       {!-- DM RECIPIENTS --}
       {#if @create_object_type == :message || e(@smart_input_opts, :recipients_editable, nil)}
-        <div class="relative bg-base-100 p-2">
+        <div class="relative bg-base-100 p-2 pt-0">
           <Bonfire.UI.Common.SelectRecipientsLive
             preloaded_recipients={e(@preloaded_recipients, [])}
             to_boundaries={@to_boundaries}

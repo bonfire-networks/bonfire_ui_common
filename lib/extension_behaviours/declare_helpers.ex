@@ -120,7 +120,9 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
           module: __MODULE__,
           app: app(__MODULE__),
           type: component_type(__MODULE__),
-          scope: unquote(opts)[:scope] || :user
+          scope: unquote(opts)[:scope] || :user,
+          # Added description field
+          description: unquote(opts)[:description]
           # data: @props_specs
         })
       end

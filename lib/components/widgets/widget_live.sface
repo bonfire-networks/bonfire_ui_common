@@ -30,7 +30,16 @@
         order={@order}
       />
     {#match Surface.Component}
-      <div :if={@with_title} class="text-base pb-3 font-medium">{@widget[:text] || @widget[:name]}</div>
+      <div
+        :if={@with_title}
+        class="w-10 h-10 rounded bg-accent/10 flex items-center place-content-center"
+      >
+        <#Icon iconify="carbon:chemistry" class="w-5 h-5 text-accent" />
+      </div>
+      <div :if={@with_title or @with_description}>
+        <div :if={@with_title} class="ext-sm font-medium">{@widget[:text] || @widget[:name]}</div>
+        <div :if={@with_description} class="text-sm text-base-content/70">{@widget[:description] || @widget[:name]}</div>
+      </div>
       <StatelessComponent
         module={@widget[:module]}
         showing_within={@showing_within}
