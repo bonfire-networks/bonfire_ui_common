@@ -104,26 +104,25 @@ defmodule Bonfire.Common.Settings.LiveHandler do
   def handle_event(
         "reorder_widget",
         %{
-          "source_order" => source_order,
-          "target_order" => target_order,
+          "old_index" => old_index,
+          "new_index" => new_index,
           "parent_item" => parent_item,
           "source_item" => source_item,
-          "position" => position
+          "target_order" => target_order
         },
         socket
       ) do
-    warn("Implement reorder_widget functionality")
-
     with {:ok, settings} <-
            Bonfire.Common.Settings.put(
-             [:ui, :widget_order, parent_item, source_item],
-             target_order,
+             [:ui, :widget_order, parent_item],
+             target_order
+             |> Enum.with_index()
+             |> Map.new(fn {item, index} -> {String.to_atom(item), index} end),
              current_user: current_user(socket)
            ) do
       {
         :noreply,
-        socket
-        |> maybe_assign_context(settings)
+        socket |> maybe_assign_context(settings)
       }
     end
   end
@@ -131,26 +130,25 @@ defmodule Bonfire.Common.Settings.LiveHandler do
   def handle_event(
         "reorder_sub_widget",
         %{
-          "source_order" => source_order,
-          "target_order" => target_order,
+          "old_index" => old_index,
+          "new_index" => new_index,
           "parent_item" => parent_item,
           "source_item" => source_item,
-          "position" => position
+          "target_order" => target_order
         },
         socket
       ) do
-    warn("Implement reorder_sub_widget functionality")
-
     with {:ok, settings} <-
            Bonfire.Common.Settings.put(
-             [:ui, :sub_widget_order, parent_item, source_item],
-             target_order,
+             [:ui, :sub_widget_order, parent_item],
+             target_order
+             |> Enum.with_index()
+             |> Map.new(fn {item, index} -> {String.to_atom(item), index} end),
              current_user: current_user(socket)
            ) do
       {
         :noreply,
-        socket
-        |> maybe_assign_context(settings)
+        socket |> maybe_assign_context(settings)
       }
     end
   end

@@ -227,6 +227,15 @@
     @apply z-[999999999999999999999999999999];
   }
 
+.drag-item {
+  @apply focus-within:ring-0 drag-item:focus-within:ring-offset-0;
+}
+
+.drag-ghost {
+  @apply bg-zinc-300 drag-ghost:border-0 drag-ghost:ring-0;
+}
+
+
 @layer utilities {
   
   [x-cloak] {

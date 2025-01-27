@@ -4,7 +4,6 @@ let DraggableHooks = {};
 
 DraggableHooks.Draggable = {
   mounted() {
-    console.log("Mounting sortable on", this.el);
     this.initializeSortable();
   },
 
@@ -12,57 +11,28 @@ DraggableHooks.Draggable = {
     if (this.el.sortable) return; // Prevent double initialization
     
     const hook = this;
-    console.log("Initializing Sortable");
     
     this.el.sortable = new Sortable(this.el, {
-      group: this.el.dataset.grouped ? { name: this.el.id } : 'shared',
       animation: 150,
+      delay: 100,
+      dragClass: "drag-item",
+      ghostClass: "drag-ghost",
+      forceFallback: true,
       draggable: "[data-sortable-item]",
       handle: "[data-sortable-handler]",
-      ghostClass: "opacity-50",
-      chosenClass: "!bg-base-content/5",
-      dragClass: "opacity-0",
-      forceFallback: true,
-      fallbackClass: "sortable-fallback",
-      swapThreshold: 0.65,
-      invertSwap: true,
-      emptyInsertThreshold: 5,
-      removeCloneOnHide: true,
-      delay: 150,
-      delayOnTouchOnly: true,
-      
-      onEnd: function(evt) {
-        if (evt.oldIndex !== evt.newIndex) {
-          const item = evt.item;
-          const sourceOrder = parseInt(item.dataset.order);
-          const sourceItem = item.dataset.item;
-          
-          const prevItem = item.previousElementSibling;
-          const nextItem = item.nextElementSibling;
-          
-          let targetOrder;
-          let position;
-          
-          if (!prevItem && nextItem) {
-            targetOrder = parseInt(nextItem.dataset.order);
-            position = "before";
-          } else if (prevItem) {
-            targetOrder = parseInt(prevItem.dataset.order);
-            position = "after";
-          }
-
-          const event_name = hook.el.dataset.event;
-          const parentItem = hook.el.dataset.parent;
-
-          if (event_name) {
-            hook.pushEvent(event_name, {
-              source_order: sourceOrder,
-              target_order: targetOrder,
-              source_item: sourceItem,
-              parent_item: parentItem,
-              position: position
-            });
-          }
+      onEnd: e => {
+        const params = {
+          old_index: e.oldIndex,
+          new_index: e.newIndex,
+          parent_item: hook.el.dataset.parent,
+          source_item: e.item.dataset.item,
+          target_order: [...e.target.children].map(el => el.dataset.item)
+        };
+        
+        // Event should be "reorder_widget" or "reorder_sub_widget"
+        const event_name = hook.el.dataset.event;
+        if (event_name) {
+          hook.pushEventTo(hook.el, event_name, params);
         }
       }
     });
