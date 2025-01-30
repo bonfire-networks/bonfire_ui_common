@@ -11,22 +11,23 @@
         {#case Enum.split_with(nav_items, fn %{type: type} -> type == :link end)}
           {#match {nav_links, nav_widgets}}
             <Bonfire.UI.Common.WidgetsLive
-              x-cloak
               id={"#{@parent_id}_extension_nav_links"}
               showing_within={@showing_within}
               widgets={nav_links}
               page={@page}
+              type={:link}
               selected_tab={@selected_tab}
               skip_badges={@skip_badges}
               container_class="menu p-0 w-full"
             />
 
             <Bonfire.UI.Common.WidgetsLive
-              x-cloak
               id={"#{@parent_id}_extension_nav_widgets"}
               showing_within={@showing_within}
               widgets={nav_widgets}
               page={@page}
+              container_class="p-0 w-full"
+              type={:widget}
               selected_tab={@selected_tab}
               skip_badges={@skip_badges}
             />

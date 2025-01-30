@@ -228,13 +228,38 @@
   }
 
 .drag-item {
-  @apply focus-within:ring-0 drag-item:focus-within:ring-offset-0;
+  @apply focus-within:ring-0;
 }
 
 .drag-ghost {
-  @apply bg-zinc-300 drag-ghost:border-0 drag-ghost:ring-0;
+  @apply bg-zinc-300 border-0;
 }
 
+
+.split-col {
+  position: relative;
+}
+
+.gutter {
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  width: 4px !important;
+  cursor: col-resize;
+}
+
+.gutter:hover {
+  background-color: #3b82f6;
+}
+
+.gutter.gutter-horizontal {
+  cursor: col-resize;
+}
+
+/* Prevent text selection while resizing */
+.dragging {
+  user-select: none;
+}
 
 @layer utilities {
   

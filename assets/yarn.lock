@@ -2492,6 +2492,11 @@ source-map-js@^1.2.1:
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.2.1.tgz#1ce5650fddd87abc099eda37dcff024c2667ae46"
   integrity sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==
 
+split.js@^1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/split.js/-/split.js-1.6.5.tgz#f7f61da1044c9984cb42947df4de4fadb5a3f300"
+  integrity sha512-mPTnGCiS/RiuTNsVhCm9De9cCAUsrNFFviRbADdKiiV+Kk8HKp/0fWu7Kr8pi3/yBmsqLFHuXGT9UUZ+CNLwFw==
+
 srcset@4:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/srcset/-/srcset-4.0.0.tgz#336816b665b14cd013ba545b6fe62357f86e65f4"
