@@ -1,114 +1,127 @@
-<li
-  class={
-    @widget[:wrapper_class] || @wrapper_class,
-    group:
-      not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
-  }
-  data-showing-within={@showing_within}
-  data-type={"widgets_#{@parent_id}_#{@parent_item}"}
-  data-sortable-item={if @parent_id && (@widget[:page] || @widget[:module]), do: true}
-  data-sortable-handler
-  data-order={@order}
-  data-item={@widget[:page] || @widget[:module]}
->
-  {#case @widget[:type]}
-    {#match :link}
-      <Bonfire.UI.Common.LinkWidgetLive
-        widget={@widget}
-        to={@widget[:href]}
-        showing_within={@showing_within}
-        page={@page}
-        parent_id={"#{@parent_id}_#{@order}"}
-        selected_tab={@selected_tab}
-        without_icon={@without_icon}
-        without_label={@without_label}
-        wrapper_class={@wrapper_class}
-        link_class={@link_class}
-        text_class={@text_class}
-        icon_class={@icon_class}
-        skip_badges={@skip_badges}
-        order={@order}
-      />
-    {#match Surface.Component}
-      <div
-        :if={@with_title}
-        class="w-10 h-10 rounded bg-accent/10 flex items-center place-content-center"
-      >
-        <#Icon iconify="carbon:chemistry" class="w-5 h-5 text-accent" />
-      </div>
-      <div :if={@with_title or @with_description}>
-        <div :if={@with_title} class="ext-sm font-medium">{@widget[:text] || @widget[:name]}</div>
-        <div :if={@with_description} class="text-sm text-base-content/70">{@widget[:description] || @widget[:name]}</div>
-      </div>
-      <StatelessComponent
-        module={@widget[:module]}
-        showing_within={@showing_within}
-        page={@page}
-        selected_tab={@selected_tab}
-        {...@data}
-        compact={@compact}
-      />
-    {#match Surface.LiveComponent}
-      <div :if={@with_title} class="mt-4 mb-2 text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
-      <StatefulComponent
-        module={@widget[:module]}
-        id={"#{@parent_id || "widget"}_#{@order || random_dom_id()}"}
-        page={@page}
-        selected_tab={@selected_tab}
-        showing_within={@showing_within}
-        compact={@compact}
-        {...@data}
-      />
-    {#match nil}
-    {#match :disabled}
-      {raw("<!-- skipped disabled widget: #{@widget[:name]} -->")}
-    {#match other}
-      {error(other) && "<!-- invalid widget -->"}
-  {/case}
-
+{#if @widget[:sub_widgets] && @widget[:sub_widgets] != []}
   <ul
-    :if={@widget[:sub_widgets] && @widget[:sub_widgets] != []}
     id={"#{@parent_id}_#{@order}_sub_widgets"}
     phx-hook={if @parent_id, do: "Draggable"}
     data-widget-draggable
     data-parent={@widget[:page] || @widget[:module]}
     data-event="Bonfire.Common.Settings:reorder_sub_widget"
-    class="menu relative py-0 w-full"
+    class="menu relative p-0 w-full mt-2"
   >
-    {#case Bonfire.Common.Settings.get(
-        [:ui, :sub_widget_order, Types.maybe_to_atom(@widget[:page] || @widget[:module])],
-        [],
-        current_user(@__context__)
-      )}
-      {#match order_settings}
-        {#for {sub_widget, index} <-
-            Enum.sort_by(
-              Enum.with_index(List.wrap(@widget[:sub_widgets])),
-              fn {sub_widget, index} ->
-                ((sub_widget[:page] || sub_widget[:module]) &&
-                   order_settings[Types.maybe_to_atom(sub_widget[:page] || sub_widget[:module])]) || index
-              end
-            )}
-          <StatelessComponent
-            module={Bonfire.UI.Common.WidgetLive}
-            widget={sub_widget}
-            is_subwidget
-            to={sub_widget[:href]}
+    <li>
+      <details open>
+        <summary>
+          <div class="font-bold uppercase text-xs text-base-content/50">{@widget[:text] || @widget[:name]}</div>
+        </summary>
+        {#case Bonfire.Common.Settings.get(
+            [:ui, :sub_widget_order, Types.maybe_to_atom(@widget[:page] || @widget[:module])],
+            [],
+            current_user(@__context__)
+          )}
+          {#match order_settings}
+            {#for {sub_widget, index} <-
+                Enum.sort_by(
+                  Enum.with_index(List.wrap(@widget[:sub_widgets])),
+                  fn {sub_widget, index} ->
+                    ((sub_widget[:page] || sub_widget[:module]) &&
+                       order_settings[
+                         Types.maybe_to_atom(sub_widget[:page] || sub_widget[:module] || "default")
+                       ]) || index
+                  end
+                )}
+              <StatelessComponent
+                module={Bonfire.UI.Common.WidgetLive}
+                widget={sub_widget}
+                is_subwidget
+                to={sub_widget[:href]}
+                showing_within={@showing_within}
+                page={@page}
+                parent_item={@widget[:page] || @widget[:module]}
+                parent_id={"#{@parent_id}_#{@order}_#{index}"}
+                selected_tab={@selected_tab}
+                without_label={@without_label}
+                wrapper_class={@wrapper_class}
+                link_class={@link_class}
+                text_class={@text_class}
+                icon_class={@icon_class}
+                skip_badges={@skip_badges}
+                order={index}
+              />
+            {/for}
+        {/case}
+      </details>
+    </li>
+  </ul>
+{#else}
+  <li
+    class={
+      @widget[:wrapper_class] || @wrapper_class,
+      group:
+        not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
+    }
+    data-showing-within={@showing_within}
+    data-type={"widgets_#{@parent_id}_#{@parent_item || "default"}"}
+    data-sortable-item={if @parent_id && (@widget[:page] || @widget[:module]), do: true}
+    data-sortable-handler
+    data-order={@order}
+    data-item={@widget[:page] || @widget[:module] || "default"}
+  >
+    {#if is_list(@widget[:sub_widgets]) and @widget[:sub_widgets] != []}
+      {@widget[:text] || @widget[:name]}
+    {#else}
+      {#case @widget[:type]}
+        {#match :link}
+          <Bonfire.UI.Common.LinkWidgetLive
+            widget={@widget}
+            to={@widget[:href]}
             showing_within={@showing_within}
             page={@page}
-            parent_item={@widget[:page] || @widget[:module]}
-            parent_id={"#{@parent_id}_#{@order}_#{index}"}
+            parent_id={"#{@parent_id}_#{@order}"}
             selected_tab={@selected_tab}
-            without_icon
+            without_icon={@without_icon}
             without_label={@without_label}
             wrapper_class={@wrapper_class}
             link_class={@link_class}
             text_class={@text_class}
             icon_class={@icon_class}
             skip_badges={@skip_badges}
-            order={index}
+            order={@order}
           />
-        {/for}
-    {/case}
-  </ul>
-</li>
+        {#match Surface.Component}
+          <div
+            :if={@with_title}
+            class="w-10 h-10 rounded bg-accent/10 flex items-center place-content-center"
+          >
+            <#Icon iconify="carbon:chemistry" class="w-5 h-5 text-accent" />
+          </div>
+          <div :if={@with_title or @with_description}>
+            <div :if={@with_title} class="text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
+            <div class="text-sm text-base-content/70">{@widget[:description] || @widget[:name]}</div>
+          </div>
+          <StatelessComponent
+            module={@widget[:module]}
+            showing_within={@showing_within}
+            page={@page}
+            selected_tab={@selected_tab}
+            {...@data}
+            compact={@compact}
+          />
+        {#match Surface.LiveComponent}
+          <div :if={@with_title} class="mt-4 mb-2 text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
+          <StatefulComponent
+            module={@widget[:module]}
+            id={"#{@parent_id || "widget"}_#{@order || random_dom_id()}"}
+            page={@page}
+            selected_tab={@selected_tab}
+            showing_within={@showing_within}
+            compact={@compact}
+            {...@data}
+          />
+        {#match nil}
+        {#match :disabled}
+          {raw("<!-- skipped disabled widget: #{@widget[:name]} -->")}
+        {#match other}
+          {error(other) && "<!-- invalid widget -->"}
+      {/case}
+    {/if}
+  </li>
+{/if}
