@@ -1,17 +1,24 @@
 {#if @widget[:sub_widgets] && @widget[:sub_widgets] != []}
-  <ul
-    id={"#{@parent_id}_#{@order}_sub_widgets"}
-    phx-hook={if @parent_id, do: "Draggable"}
-    data-widget-draggable
-    data-parent={@widget[:page] || @widget[:module]}
-    data-event="Bonfire.Common.Settings:reorder_sub_widget"
-    class="menu relative p-0 w-full mt-2"
+  <div
+    class="my-2"
+    data-sortable-item={if @parent_id && (@widget[:page] || @widget[:module]), do: true}
+    data-sortable-handler
+    data-order={@order}
+    data-item={@widget[:page] || @widget[:module] || "default"}
   >
-    <li>
-      <details open>
-        <summary>
-          <div class="font-bold uppercase text-xs text-base-content/50">{@widget[:text] || @widget[:name]}</div>
-        </summary>
+    <!-- <li> -->
+    <details class="widget_accordion" open>
+      <summary class="">
+        <div class="font-bold uppercase text-xs text-base-content/50">{@widget[:text] || @widget[:name]}</div>
+      </summary>
+      <ul
+        id={"#{@parent_id}_#{@order}_sub_widgets"}
+        phx-hook={if @parent_id, do: "Draggable"}
+        data-widget-draggable
+        data-parent={@widget[:page] || @widget[:module]}
+        data-event="Bonfire.Common.Settings:reorder_sub_widget"
+        class="menu relative p-0 w-full"
+      >
         {#case Bonfire.Common.Settings.get(
             [:ui, :sub_widget_order, Types.maybe_to_atom(@widget[:page] || @widget[:module])],
             [],
@@ -48,9 +55,10 @@
               />
             {/for}
         {/case}
-      </details>
-    </li>
-  </ul>
+      </ul>
+    </details>
+    <!-- </li> -->
+  </div>
 {#else}
   <li
     class={

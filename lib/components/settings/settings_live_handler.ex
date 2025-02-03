@@ -116,6 +116,7 @@ defmodule Bonfire.Common.Settings.LiveHandler do
            Bonfire.Common.Settings.put(
              [:ui, :widget_order, parent_item],
              target_order
+             |> Enum.reject(&is_nil/1)
              |> Enum.with_index()
              |> Map.new(fn {item, index} -> {String.to_atom(item), index} end),
              current_user: current_user(socket)
