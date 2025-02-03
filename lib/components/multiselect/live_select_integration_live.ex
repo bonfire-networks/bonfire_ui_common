@@ -1,10 +1,20 @@
 defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
   use Bonfire.UI.Common.Web, :function_component
 
-  def live_select(assigns) do
-    # field={@form[@form_input_name]}
+  @doc """
+  A LiveSelect integration component for Bonfire that handles form integration and events.
 
-    # TODO: fix warning: instead of passing separate form and field attributes, pass a single field attribute of type Phoenix.HTML.FormField
+  ## Examples
+      <LiveSelectIntegrationLive.live_select
+        form={@form}
+        field={:my_field}
+        mode={:tags}
+        event_target={@myself}
+        options={@options}
+        value={@selected_values}
+      />
+  """
+  def live_select(assigns) do
     ~H"""
     <LiveSelect.live_select
       field={@form[@field]}
@@ -12,18 +22,17 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       phx-target={@event_target}
       options={@options}
       value={@value}
-      allow_clear={true}
+      allow_clear={Map.get(assigns, :allow_clear, true)}
       update_min_len={@update_min_len || 1}
-      debounce={0}
+      debounce={Map.get(assigns, :debounce, 0)}
       placeholder={@placeholder}
       disabled={@disabled}
       style={:daisyui}
-      text_input_extra_class={@text_input_class}
       container_extra_class="w-full flex flex-col"
-      option_extra_class="{@option_extra_class}"
       tag_class="badge badge-neutral badge-lg gap-2"
-      dropdown_extra_class="z-[99999999999999999999999999999999] max-h-60 flex-nowrap border border-base-content/10 !bg-base-100 overflow-y-auto "
-      tags_container_class="flex flex-wrap gap-1 order-last"
+      dropdown_extra_class="z-50 max-h-60 flex-nowrap border border-base-content/10 !bg-base-100 overflow-y-auto top-12"
+      tags_container_class="flex flex-wrap gap-1 order-last mt-1"
+      value_mapper={&value_mapper/1}
     >
       <:option :let={option}>
         <div class="flex p-0 gap-2 items-center">
@@ -42,7 +51,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
               {option.label}
             </p>
           <% else %>
-            <%= if Map.has_key?(debug(option).value, :icon) or Map.has_key?(option.value, "icon") do %>
+            <%= if Map.has_key?(option.value, :icon) or Map.has_key?(option.value, "icon") do %>
               <div class="w-8 h-8">
                 <img src={e(option.value, :icon, nil)} alt="" class="w-full h-full rounded-full" />
               </div>
@@ -67,14 +76,14 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
               {option.label}
             </p>
           <% else %>
-            <%= if Map.has_key?(debug(option.value), :icon) or Map.has_key?(option.value, "icon") do %>
+            <%= if Map.has_key?(option.value, :icon) or Map.has_key?(option.value, "icon") do %>
               <div class="w-6 h-6">
                 <img src={e(option.value, :icon, nil)} alt="" class="w-full h-full rounded-full" />
               </div>
             <% end %>
             <div class="text-sm">
               <p class="font-semibold">
-                {e(debug(option, "tag oppppt"), :value, :name, nil) ||
+                {e(option.value, :name, nil) ||
                   e(option.value, :profile, :name, nil) || e(option.value, :username, nil) ||
                   e(option.value, :named, :name, nil)}
               </p>
@@ -85,4 +94,19 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
     </LiveSelect.live_select>
     """
   end
+
+  defp value_mapper(%{id: id, name: name} = value) do
+    %{label: name, value: value}
+  end
+
+  defp value_mapper(%{id: id} = value) do
+    name =
+      e(value, :name, nil) || e(value, :profile, :name, nil) ||
+        e(value, :username, nil) || e(value, :named, :name, nil)
+
+    %{label: name, value: value}
+  end
+
+  defp value_mapper(value) when is_binary(value), do: %{label: value, value: value}
+  defp value_mapper(value), do: value
 end

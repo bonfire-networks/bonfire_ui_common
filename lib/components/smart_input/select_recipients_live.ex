@@ -24,6 +24,10 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
       :search,
       [search]
     )
+    |> Enum.map(fn
+      %Needle.Pointer{activity: %{object: user}} -> user
+      other -> other
+    end)
     |> results_for_multiselect()
     |> maybe_send_update(LiveSelect.Component, live_select_id, options: ...)
 

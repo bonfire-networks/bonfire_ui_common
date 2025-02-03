@@ -3,7 +3,6 @@
     {#if @implementation == :live_select}
       <Bonfire.UI.Common.LiveSelectIntegrationLive.live_select
         form={@form}
-        class={@class}
         field={@form_input_name}
         mode={@mode}
         event_target={@event_target}
@@ -14,14 +13,18 @@
         text_input_class={@text_input_class}
         disabled={!@is_editable}
         type={@type}
-        update_min_len={1}
+        update_min_len={@update_min_len}
+        max_selectable={@max_selectable}
+        allow_clear
       />
-      <div
-        class="absolute top-[8px] right-[8px] z-30 flex items-center w-[26px] h-[26px] min-h-[26px]"
-        phx-click={JS.dispatch("change", to: "#smart_input_form")}
-      >
-        <#Icon solid="Search" class="w-4 h-4 text-base-content/70" />
-      </div>
+      {#if @show_search}
+        <div
+          class="absolute top-[8px] right-[8px] z-30 flex items-center w-[26px] h-[26px] min-h-[26px]"
+          phx-click={JS.dispatch("change", to: "#smart_input_form")}
+        >
+          <#Icon solid="Search" class="w-4 h-4 text-base-content/70" />
+        </div>
+      {/if}
     {#else}
       <Bonfire.UI.Common.BasicMultiselectLive
         id={random_dom_id()}
