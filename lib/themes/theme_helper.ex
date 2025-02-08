@@ -23,5 +23,5 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   end
 
   defp default_theme(:light), do: "light"
-  defp default_theme(_), do: "bonfire"
+  defp default_theme(_), do: "dark"
 end

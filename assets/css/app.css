@@ -42,7 +42,13 @@
  /* Borders */
  --border-opacity: 0.1;
 }
-
+emoji-picker {
+  --background: var(--color-base-100);
+  --border-radius: 10px;
+  --input-font-color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+  --border-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+  @apply shadow-lg;
+}
 
 .widget_accordion summary {
   display: grid;
