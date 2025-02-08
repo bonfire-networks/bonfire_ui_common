@@ -3,8 +3,7 @@
     |> Enum.filter(fn nav ->
       (!nav[:exclude_from_nav] and is_nil(nav[:module])) or
         maybe_module(nav[:module], @__context__)
-    end)
-    |> debug("nav_items")}
+    end)}
     {#match nav_items when is_list(nav_items) and nav_items != []}
       <div data-id={"#{@parent_id}_nav_links"} data-showing-within={@showing_within}>
         {!-- TODO: override widget[:module] with the result of maybe_module so it doesn't need to be run again in the widget --}

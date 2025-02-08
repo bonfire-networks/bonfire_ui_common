@@ -5,7 +5,9 @@
   id={"#{@parent_id}_#{@order || random_dom_id()}"}
   class={
     e(@widget[:link_class], @link_class),
-    "menu-active": @page == @widget[:page] or @selected_tab == @widget[:page]
+    "menu-active":
+      @page == @widget[:page] or
+        String.downcase(to_string(@selected_tab)) == String.downcase(to_string(@widget[:page]))
   }
   label={@text || @widget[:text] || @widget[:name]}
   phx_hook={@widget[:phx_hook]}
