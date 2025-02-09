@@ -47,6 +47,7 @@ emoji-picker {
   --border-radius: 10px;
   --input-font-color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
   --border-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+  --button-hover-background: color-mix(in oklab, var(--color-base-content) 10%, transparent);
   @apply shadow-lg;
 }
 

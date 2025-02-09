@@ -57,14 +57,17 @@
               )}
             />
 
-            <button
-              title={l("Insert emoji")}
-              type="button"
-              class="emoji-button btn btn-ghost btn-sm text-[22px] btn-circle"
-            >
-              {!-- NOTE: triggered using .emoji-button in milkdown JS hook --}
-              <#Icon iconify="ri:emotion-happy-line" class="w-4 h-4" />
-            </button>
+            <div class="relative" phx-hook="Tooltip" id="emoji_picker_in_composer">
+              <button
+                title={l("Insert emoji")}
+                type="button"
+                class="tooltip-button emoji-button btn btn-ghost btn-sm btn-circle"
+              >
+                {!-- NOTE: triggered using .emoji-button in milkdown JS hook --}
+                <#Icon iconify="fluent:emoji-sparkle-16-regular" class="w-4 h-4" />
+              </button>
+              <emoji-picker class="hidden tooltip absolute bottom-full right-0 z-50 mb-2" />
+            </div>
 
             <div
               :if={@create_object_type in [:message, :post, nil]}
