@@ -13,119 +13,143 @@ TooltipHooks.Tooltip = {
 		const tooltipWrapper = this.el;
 		const position = tooltipWrapper.getAttribute("data-position");
 		const trigger = tooltipWrapper.getAttribute("data-trigger");
-		const buttons = this.el.querySelectorAll(".tooltip-button");
-		// console.log(buttons);
-		const button = buttons[0];
+		const button = this.el.querySelector(".tooltip-button");
 		const tooltip = this.el.querySelector(".tooltip");
 		let showTimeout;
 		let hideTimeout;
 		let isHoveringButton = false;
 		let isHoveringTooltip = false;
+		let cleanup = null;
 
-		function update() {
-			autoUpdate(button, tooltip, () => {
-				computePosition(button, tooltip, {
-					placement: position || "top",
-					middleware: [offset(6), flip({ padding: 5 }), shift({ padding: 5 })],
-				}).then(({ x, y }) => {
-					Object.assign(tooltip.style, {
-						left: `${x}px`,
-						top: `${y}px`,
-					});
+		const updatePosition = () => {
+			computePosition(button, tooltip, {
+				placement: position || "top",
+				middleware: [offset(6), flip({ padding: 5 }), shift({ padding: 5 })],
+			}).then(({ x, y }) => {
+				Object.assign(tooltip.style, {
+					left: `${x}px`,
+					top: `${y}px`,
 				});
 			});
-		}
+		};
 
-		function showTooltip() {
+		const startPositionUpdate = () => {
+			const hasEmojiPicker = tooltip.querySelector('emoji-picker');
+			if (hasEmojiPicker) {
+				// For emoji picker, just do a one-time position update
+				updatePosition();
+			} else if (!cleanup) {
+				// For regular tooltips, use autoUpdate without elementResize
+				cleanup = autoUpdate(button, tooltip, updatePosition, {
+					elementResize: false,
+					ancestorScroll: true,
+					ancestorResize: true
+				});
+			}
+		};
+
+		const showTooltip = () => {
 			clearTimeout(hideTimeout);
 			if (trigger === "hover") {
 				clearTimeout(showTimeout);
 				showTimeout = setTimeout(() => {
 					tooltip.style.display = 'block';
 					tooltip.style.pointerEvents = 'auto';
-					update();
+					startPositionUpdate();
 				}, 200);
 			} else {
 				tooltip.style.display = 'block';
 				tooltip.style.pointerEvents = 'auto';
-				update();
+				startPositionUpdate();
 			}
-		}
+		};
 
-		function hideTooltip() {
-			// Only hide if both button and tooltip are not being hovered
-			if (!isHoveringButton && !isHoveringTooltip && trigger === "hover") {
+		const hideTooltip = () => {
+			const shouldHide = trigger === "hover" ? 
+				!isHoveringButton && !isHoveringTooltip : 
+				true;
+
+			if (shouldHide) {
+				const delay = trigger === "hover" ? 50 : 0;
 				hideTimeout = setTimeout(() => {
 					clearTimeout(showTimeout);
 					tooltip.style.display = '';
 					tooltip.style.pointerEvents = '';
-				}, 50); // Small delay to allow movement between elements
-			} else if (trigger !== "hover") {
-				clearTimeout(showTimeout);
-				tooltip.style.display = '';
-				tooltip.style.pointerEvents = '';
+					if (cleanup) {
+						cleanup();
+						cleanup = null;
+					}
+				}, delay);
 			}
-		}
+		};
 
-		if (trigger === "hover") {
-			// Button hover handlers
-			buttons.forEach((button) => {
-				button.addEventListener('mouseenter', () => {
-					isHoveringButton = true;
-					showTooltip();
-				})
-			});
-
-			buttons.forEach((button) => {
-				button.addEventListener('mouseleave', () => {
-					isHoveringButton = false;
-					hideTooltip();
-				})
-			});
-
-			// Tooltip hover handlers
-			tooltip.addEventListener('mouseenter', () => {
+		// Event Handlers
+		const handlers = {
+			buttonMouseEnter: () => {
+				isHoveringButton = true;
+				showTooltip();
+			},
+			buttonMouseLeave: () => {
+				isHoveringButton = false;
+				hideTooltip();
+			},
+			tooltipMouseEnter: () => {
 				isHoveringTooltip = true;
 				clearTimeout(hideTimeout);
 				tooltip.style.display = 'block';
 				tooltip.style.pointerEvents = 'auto';
-			});
-
-			tooltip.addEventListener('mouseleave', () => {
+				startPositionUpdate();
+			},
+			tooltipMouseLeave: () => {
 				isHoveringTooltip = false;
 				hideTooltip();
-			});
-
-			// Focus handlers for accessibility
-			buttons.forEach((button) => {
-				button.addEventListener('focus', showTooltip)
-			});
-			buttons.forEach((button) => {
-				button.addEventListener('blur', hideTooltip)
-			});
-
-		} else {
-			// Click behavior
-			buttons.forEach((button) => {
-				button.addEventListener('click', () => {
-					if (tooltip.style.display === 'block') {
-						hideTooltip();
-					} else {
-						showTooltip();
-					}
-				})
-			});
-
-			// Handle clicks outside
-			document.addEventListener("click", (event) => {
-				const isClickInsideTooltip = tooltip.contains(event.target);
-				const isClickOnButton = button.contains(event.target);
-				if (!isClickInsideTooltip && !isClickOnButton) {
+			},
+			buttonClick: () => {
+				tooltip.style.display === 'block' ? hideTooltip() : showTooltip();
+			},
+			clickOutside: (event) => {
+				if (!tooltip.contains(event.target) && !button.contains(event.target)) {
 					hideTooltip();
 				}
-			});
+			}
+		};
+
+		// Attach event listeners
+		if (trigger === "hover") {
+			button.addEventListener('mouseenter', handlers.buttonMouseEnter);
+			button.addEventListener('mouseleave', handlers.buttonMouseLeave);
+			button.addEventListener('focus', showTooltip);
+			button.addEventListener('blur', hideTooltip);
+			tooltip.addEventListener('mouseenter', handlers.tooltipMouseEnter);
+			tooltip.addEventListener('mouseleave', handlers.tooltipMouseLeave);
+		} else {
+			button.addEventListener('click', handlers.buttonClick);
+			document.addEventListener('click', handlers.clickOutside);
 		}
+
+		// Cleanup function
+		this.cleanup = () => {
+			cleanup?.();
+			clearTimeout(showTimeout);
+			clearTimeout(hideTimeout);
+			
+			if (trigger === "hover") {
+				button.removeEventListener('mouseenter', handlers.buttonMouseEnter);
+				button.removeEventListener('mouseleave', handlers.buttonMouseLeave);
+				button.removeEventListener('focus', showTooltip);
+				button.removeEventListener('blur', hideTooltip);
+				tooltip.removeEventListener('mouseenter', handlers.tooltipMouseEnter);
+				tooltip.removeEventListener('mouseleave', handlers.tooltipMouseLeave);
+			} else {
+				button.removeEventListener('click', handlers.buttonClick);
+				document.removeEventListener('click', handlers.clickOutside);
+			}
+		};
 	},
+
+	destroyed() {
+		this.cleanup?.();
+	}
 };
 
 export { TooltipHooks };

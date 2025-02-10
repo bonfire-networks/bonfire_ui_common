@@ -85,45 +85,45 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
         %{assigns: %{smart_input_opts: old_smart_input_opts}} = socket
       )
       when is_map(new_smart_input_opts) and is_map(old_smart_input_opts) do
+    # Load custom emojis
+    custom_emojis =
+      Bonfire.Files.EmojiUploader.list(assigns(socket))
+      |> Enum.map(fn {shortcode, emoji} ->
+        %{
+          name: emoji.label,
+          shortcodes: [shortcode],
+          url: emoji.url
+        }
+      end)
+      |> Jason.encode!()
+      |> debug("CAZZ")
+
     {:ok,
      socket
      |> assign(assigns)
-     #  |> assign_new(:smart_input_as, fn ->
-     #    LiveHandler.set_smart_input_as(
-     #      e(assigns, :__context__, nil) || current_user(assigns) || current_user(assigns(socket))
-     #    )
-     #  end)
+     |> assign(:custom_emojis, custom_emojis)
      |> assign(smart_input_opts: Map.merge(old_smart_input_opts, new_smart_input_opts))
      |> Bonfire.Boundaries.LiveHandler.prepare_assigns()}
   end
 
-  # def update(%{set_smart_input_text_if_empty: text} = assigns, %{assigns: %{smart_input_opts: smart_input_opts}} = socket) do
-  #   if empty?(e(smart_input_opts, :text, nil) |> debug("texxxt") ) do
-
-  #     LiveHandler.replace_input_next_time(socket)
-  #     LiveHandler.set(socket,
-  #       reset_smart_input: false, # don't do it twice
-  #       smart_input_opts: smart_input_opts
-  #         |> Keyword.put(:text_suggestion, text)
-  #         |> Keyword.put(:open, true)
-  #     )
-
-  #     {:ok,
-  #     socket
-  #     }
-  #   else
-  #     {:ok,
-  #     socket
-  #     |> assign(assigns)
-  #     }
-  #   end
-  # end
-
   def update(assigns, socket) do
+    # Load custom emojis
+    custom_emojis =
+      Bonfire.Files.EmojiUploader.list(assigns(socket))
+      |> Enum.map(fn {shortcode, emoji} ->
+        %{
+          name: emoji.label,
+          shortcodes: [shortcode],
+          url: emoji.url
+        }
+      end)
+      |> Jason.encode!()
+
     {
       :ok,
       socket
       |> assign(assigns)
+      |> assign(:custom_emojis, custom_emojis)
       |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
       # TODO: only trigger if module enabled ^
     }

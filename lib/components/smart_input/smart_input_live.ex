@@ -35,6 +35,8 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop preview_boundary_for_id, :any, default: nil
   prop preview_boundary_for_username, :any, default: nil
   prop preview_boundary_verbs, :any, default: nil
+
+  prop custom_emojis, :any, default: []
   # defp handle_progress(_, entry, socket) do
   #   debug(entry, "progress")
   #   user = current_user(assigns(socket))

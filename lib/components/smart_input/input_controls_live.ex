@@ -29,9 +29,12 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop preview_boundary_for_username, :any, default: nil
   prop preview_boundary_verbs, :any, default: nil
   prop boundary_preset, :any, default: nil
+
+  prop custom_emojis, :any, default: []
   slot default
 
   def render(assigns) do
+    # Load custom emojis
     assigns
     |> assign(
       :enable_thread_title,
