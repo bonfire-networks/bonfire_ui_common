@@ -96,7 +96,6 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
         }
       end)
       |> Jason.encode!()
-      |> debug("CAZZ")
 
     {:ok,
      socket
