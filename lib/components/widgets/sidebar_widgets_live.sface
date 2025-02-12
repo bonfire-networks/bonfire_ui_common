@@ -2,7 +2,11 @@
      (is_nil(current_user_id(@__context__)) and e(@widgets, :guests, @key, nil)) || [])
   |> Enum.map(fn
     {component, component_assigns} ->
-      %{module: component, data: component_assigns, type: component_assigns[:type] || Surface.Component}
+      %{
+        module: component,
+        data: component_assigns,
+        type: component_assigns[:type] || Surface.Component
+      }
 
     %{} = widget ->
       widget
