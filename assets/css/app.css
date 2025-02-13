@@ -42,6 +42,7 @@
  /* Borders */
  --border-opacity: 0.1;
 }
+
 emoji-picker {
   --background: var(--color-base-100);
   --border-radius: 10px;
@@ -49,6 +50,10 @@ emoji-picker {
   --border-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
   --button-hover-background: color-mix(in oklab, var(--color-base-content) 10%, transparent);
   @apply shadow-lg;
+}
+
+h-filter {
+  max-height: 240px;
 }
 
 .milkdown-link-tooltip {
