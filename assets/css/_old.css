@@ -1,5 +1,5 @@
 /* import scoped CSS from Surface */
-@import '../../../../data/current_flavour/config/flavour_assets/components.css'
+@import '../../../../data/current_flavour/assets/components.css'
   layer(base);
 
 /* import progress bar from npm */

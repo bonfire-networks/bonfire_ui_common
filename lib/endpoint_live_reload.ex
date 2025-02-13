@@ -20,7 +20,7 @@ defmodule Bonfire.UI.Common.Endpoint.LiveReload do
           plug LiveViewNative.LiveReloader
         end
 
-        plug(Phoenix.Ecto.CheckRepoStatus, otp_app: :bonfire_umbrella)
+        plug(Phoenix.Ecto.CheckRepoStatus, otp_app: :bonfire)
 
         # FIXME
         # socket "/admin/system/wobserver", Wobserver.Web.PhoenixSocket
