@@ -1,4 +1,4 @@
-if Bonfire.Common.Extend.module_enabled?(LiveViewNative) do
+if extension_enabled?(:live_view_native) do
   defmodule Bonfire.UI.Common.Web.Native do
     @moduledoc """
     The entrypoint for defining your native interfaces, such as components, render components, layouts, and live views.
