@@ -7,7 +7,7 @@ import { CopyHooks } from "./copy";
 import { TooltipHooks } from "./tooltip";
 
 // import { FeedHooks } from "./feed"
-import * as c1 from "../../../../data/config/current_flavour/assets/hooks/Bonfire.UI.Common.PreviewContentLive.hooks";
+import * as c1 from "../../../../config/current_flavour/assets/hooks/Bonfire.UI.Common.PreviewContentLive.hooks";
 
 function ns(hooks, nameSpace) {
 	const updatedHooks = {};

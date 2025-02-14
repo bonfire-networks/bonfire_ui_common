@@ -101,14 +101,14 @@ import { TooltipHooks } from "./tooltip";
 import  {DraggableHooks}  from "./draggable_widget";
 // import DynamicImport from '@rtvision/esbuild-dynamic-import';
 // note depending on your setup you may need to do DynamicImport.default() instead
-// DynamicImport({ transformExtensions: ['.js'], changeRelativeToAbsolute: false, filter: "../../data/config/current_flavour/deps.hooks.js" }) 
+// DynamicImport({ transformExtensions: ['.js'], changeRelativeToAbsolute: false, filter: "../../config/current_flavour/deps.hooks.js" }) 
 
-import { ExtensionHooks } from "../../../../data/config/current_flavour/deps.hooks.js";
+import { ExtensionHooks } from "../../../../config/current_flavour/deps.hooks.js";
 // import SourceInspect from "./../../../../deps/source_inspector/priv/js/source_inspector.js"
 // ExtensionHooks.SourceInspect = SourceInspect
 // ExtensionHooks.SourceInspect = SourceInspect(csrfToken)
  
-import ComponentHooks from "../../../../data/config/current_flavour/assets/hooks/index.js";
+import ComponentHooks from "../../../../config/current_flavour/assets/hooks/index.js";
 
 // Add Extensions' Hooks... 
 Object.assign(liveSocket.hooks, ExtensionHooks, DraggableHooks, ComponentHooks, CopyHooks, TooltipHooks);

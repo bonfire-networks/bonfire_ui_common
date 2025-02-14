@@ -3,7 +3,7 @@
 @source "../../lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
 @source "../../../../extensions/*/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
 @source "../../../../deps/*/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
-@source "../../../data/config/current_flavour/assets/components.css";
+@source "../../../config/current_flavour/assets/components.css";
 @import "../static/images/icons/icons.css" layer(utilities);
 
 @plugin "daisyui" {
