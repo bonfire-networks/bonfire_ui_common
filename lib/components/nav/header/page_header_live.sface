@@ -6,7 +6,7 @@
 >
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center gap-3 justify-between w-full lg:flex-1">
-      <div class="flex-1 gap-3 flex items-center">
+      <div class="gap-3 flex items-center">
         <label for="sidebar-drawer" class="xl:hidden btn btn-sm btn-circle btn-secondary btn-soft">
           <#Icon iconify="hugeicons:sidebarLeft" class="w-5 h-5" />
         </label>
@@ -28,14 +28,14 @@
         {/if}
       </div>
 
-      <div class="w-full lg:text-center">
+      <div class="flex-1 lg:text-center">
         <span class="first-letter:capitalize flex-1 font-medium text-sm text-base-content">
           {@page_title}
         </span>
         <div :if={@extra} class="text-xs text-base-content/70">{@extra}</div>
       </div>
 
-      <div class="flex max-w-[120px] flex-1 justify-end items-center w-auto">
+      <div class="flex justify-end items-center">
         {#if current_user(@__context__)}
           <#slot {@right_action}>
           </#slot>
