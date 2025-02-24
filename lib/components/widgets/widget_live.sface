@@ -1,6 +1,6 @@
 {#if @widget[:sub_widgets] && @widget[:sub_widgets] != []}
   <div
-    class="my-2"
+    class="py-2"
     data-sortable-item={if @parent_id && (@widget[:page] || @widget[:module]), do: true}
     data-sortable-handler
     data-order={@order}

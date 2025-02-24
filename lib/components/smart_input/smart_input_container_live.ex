@@ -87,15 +87,22 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       when is_map(new_smart_input_opts) and is_map(old_smart_input_opts) do
     # Load custom emojis
     custom_emojis =
-      Bonfire.Files.EmojiUploader.list(assigns(socket))
-      |> Enum.map(fn {shortcode, emoji} ->
-        %{
-          name: emoji.label,
-          shortcodes: [shortcode],
-          url: emoji.url
-        }
-      end)
-      |> Jason.encode!()
+      case Bonfire.Files.EmojiUploader.list(assigns(socket)) do
+        # Return empty JSON array if no emojis
+        nil ->
+          "[]"
+
+        emojis ->
+          emojis
+          |> Enum.map(fn {shortcode, emoji} ->
+            %{
+              name: emoji.label,
+              shortcodes: [shortcode],
+              url: emoji.url
+            }
+          end)
+          |> Jason.encode!()
+      end
 
     {:ok,
      socket
@@ -108,15 +115,22 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   def update(assigns, socket) do
     # Load custom emojis
     custom_emojis =
-      Bonfire.Files.EmojiUploader.list(assigns(socket))
-      |> Enum.map(fn {shortcode, emoji} ->
-        %{
-          name: emoji.label,
-          shortcodes: [shortcode],
-          url: emoji.url
-        }
-      end)
-      |> Jason.encode!()
+      case Bonfire.Files.EmojiUploader.list(assigns(socket)) do
+        # Return empty JSON array if no emojis
+        nil ->
+          "[]"
+
+        emojis ->
+          emojis
+          |> Enum.map(fn {shortcode, emoji} ->
+            %{
+              name: emoji.label,
+              shortcodes: [shortcode],
+              url: emoji.url
+            }
+          end)
+          |> Jason.encode!()
+      end
 
     {
       :ok,
