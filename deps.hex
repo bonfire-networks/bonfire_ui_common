@@ -15,7 +15,7 @@ other:
 plug_attack = "~> 0.4.2"
 remote_ip = "~> 1.1"
 plug_cowboy = "~> 2.6"
-faker = "~> 0.17.0" # fake data generation, mostly for tests
+faker = "~> 0.18" # fake data generation, mostly for tests
 # phoenix_gon = "~> 0.4.0" # for JS config keys 
 #makedown = "~> 0.1.0"
 makeup_elixir = "0.16.2"

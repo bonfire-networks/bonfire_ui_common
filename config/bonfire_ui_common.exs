@@ -142,15 +142,6 @@ More details at https://bonfirenetworks.org",
   # ],
   smart_input_as: :non_blocking
 
-config :bonfire,
-  # used by ActivityLive - TODO: autogenerate?
-  verb_families: [
-    reply: ["Reply", "Respond"],
-    create: ["Create", "Write"],
-    react: ["Like", "Boost", "Flag", "Tag", "Pin"],
-    simple_action: ["Assign", "Label", "Schedule"]
-  ]
-
 config :bonfire_ui_common, Bonfire.UI.Common.SmartInputLive,
   max_length: 2000,
   max_uploads: 4
