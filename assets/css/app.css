@@ -43,6 +43,218 @@
  --border-opacity: 0.1;
 }
 
+/* Player and controls styling */
+media-player {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: #000;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+}
+
+media-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  pointer-events: auto !important;
+}
+
+.controls-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  gap: 10px;
+  pointer-events: auto !important;
+}
+
+/* Button styling */
+.control-button, .custom-button {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  pointer-events: auto !important;
+}
+
+.custom-button {
+  background: rgba(0, 122, 255, 0.6);
+  font-weight: bold;
+}
+
+.control-button:hover, .custom-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.custom-button:hover {
+  background: rgba(0, 122, 255, 0.8);
+}
+
+/* Time controls */
+.time-controls {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  pointer-events: auto !important;
+}
+
+.time-slider {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  pointer-events: auto !important;
+}
+
+.current-time, .duration {
+  font-size: 14px;
+  min-width: 40px;
+}
+
+/* Critical CSS to fix pointer-events */
+.controls-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+/* Add this to your CSS */
+media-controls, 
+media-play-button, 
+media-mute-button, 
+media-fullscreen-button, 
+.controls-container, 
+.custom-button, 
+.time-display {
+  pointer-events: auto !important;
+}
+
+/* Style controls */
+.controls-container {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  gap: 8px;
+}
+
+media-play-button, media-mute-button, media-fullscreen-button, .custom-button {
+  min-width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.custom-button {
+  background: rgba(0, 122, 255, 0.5);
+  font-weight: bold;
+}
+
+media-time-slider {
+  flex-grow: 1;
+}
+
+.time-display {
+  color: white;
+  margin: 0 8px;
+}
+
+/* Override Vidstack's pointer-events: none */
+.controls-wrapper media-controls {
+  pointer-events: auto !important;
+}
+
+media-controls .controls-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  gap: 10px;
+}
+
+/* Time controls layout */
+.time-controls {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 8px;
+}
+
+media-time-slider {
+  flex-grow: 1;
+}
+
+/* Button styling */
+media-play-button,
+media-mute-button,
+media-fullscreen-button,
+.custom-button {
+  min-width: 36px;
+  height: 36px;
+  padding: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.custom-button {
+  background: rgba(0, 122, 255, 0.6);
+  font-weight: bold;
+}
+
+media-play-button:hover,
+media-mute-button:hover,
+media-fullscreen-button:hover,
+.custom-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.custom-button:hover {
+  background: rgba(0, 122, 255, 0.8);
+}
+
+/* Player sizing */
+media-player {
+  aspect-ratio: 16/9;
+  width: 100%;
+  background: #000;
+  position: relative;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+}
+
 emoji-picker {
   --background: var(--color-base-100);
   --border-radius: 10px;
@@ -55,6 +267,7 @@ emoji-picker {
 h-filter {
   max-height: 240px;
 }
+
 
 .milkdown-link-tooltip {
   position: absolute;
