@@ -17,8 +17,6 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   alias Surface.Components.Dynamic.Component, as: StatelessComponent
   alias Surface.Components.Dynamic.LiveComponent, as: StatefulComponent
 
-  @endpoint Application.compile_env!(:bonfire, :endpoint_module)
-
   def fake_account!(attrs \\ %{}, opts \\ []),
     do: Bonfire.Common.Utils.maybe_apply(Bonfire.Me.Fake, :fake_account!, [attrs, opts])
 
