@@ -47,7 +47,8 @@
 		"sortablejs": "^1.15.6",
 		"textarea-caret": "^3.1.0",
 		"tippy.js": "^6.3.7",
-		"vanilla-colorful": "^0.7.2"
+		"vanilla-colorful": "^0.7.2",
+		"vidstack": "^1.12.13"
 	},
 	"devDependencies": {
 		"@tailwindcss/cli": "next",
