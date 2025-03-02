@@ -1,8 +1,7 @@
 defmodule Bonfire.UI.Common.LiveHandlers do
-
   @moduledoc """
   LiveHandlers provides a standardized way to handle various LiveView events (params, events, info) and route them to appropriate handler modules, enabling you to easily handle the same event in multiple live views or components using the same code.
-  
+
   ## Types of handlers
 
   - Events (eg. clicks or form submissions)
@@ -18,27 +17,27 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
 
   ## Usage Examples
-  
+
   ### Event Delegation
-  
+
   ```elixir
   # In your template:
   phx-submit="Bonfire.Posts:post"
   # Will be routed to:
   Bonfire.Posts.LiveHandler.handle_event("post", params, socket)
   ```
-  
+
   ### PubSub Handling
-  
+
   ```elixir
   # When broadcasting:
   PubSub.broadcast(feed_id, {{Bonfire.Social.Feeds, :new_activity}, activity})
   # Will be routed to:
   Bonfire.Social.Feeds.LiveHandler.handle_info({:new_activity, activity}, socket)
   ```
-  
+
   ### URL Parameter Handling
-  
+
   ```elixir
   # For a URL like:
   "?Bonfire.Social.Feeds[after]=cursor123"
@@ -53,32 +52,31 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   alias Bonfire.UI.Common.LivePlugs
   alias Bonfire.UI.Common.ErrorHandling
 
-
   @doc """
   Handles URL parameters and delegates to appropriate LiveHandler modules.
-  
+
   This function first checks if a specific handler function was provided, then attempts to
   delegate to a LiveHandler module based on URL query parameters.
-  
+
   ## Parameters
-  
+
   - `params`: Map of URL query parameters
   - `uri`: Current URI string
   - `socket`: The Phoenix LiveView socket
   - `source_module`: (optional) The source module making the call
   - `fun`: (optional) Custom function to handle the params before attempting delegation
-  
+
   ## Examples
-  
+
   ```elixir
   # When handling a URL like "?Bonfire.Users[filter]=active"
   handle_params(%{"Bonfire.Users" => %{"filter" => "active"}}, "/users", socket)
   # Delegates to:
   Bonfire.Users.LiveHandler.handle_params(%{"filter" => "active"}, "/users", socket)
   ```
-  
+
   ## Returns
-  
+
   `{:noreply, socket}`
   """
   def handle_params(params, uri, socket, source_module \\ nil, fun \\ nil)
@@ -106,19 +104,19 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   @doc """
   Handles messages sent to the LiveView process and delegates to appropriate handlers.
-  
+
   This function processes messages based on their structure and delegates to the appropriate
   LiveHandler module.
-  
+
   ## Parameters
-  
+
   - `blob`: The message being handled
   - `socket`: The Phoenix LiveView socket
   - `source_module`: (optional) The source module making the call
   - `fun`: (optional) Custom function to handle the message before delegation
-  
+
   ## Built-in Message Handlers (handled directly with no delegation necessary)
-  
+
   - `:clear_flash` - Clears all flash messages
   - `{:assign, {key, value}}` - Assigns a single key-value pair to the socket
   - `{:assign, assigns}` - Assigns multiple values to the socket
@@ -126,21 +124,21 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   - `{:assign_persistent, assigns}` - Sends assigns to PersistentLive
   - `{:redirect, to}` - Redirects to the specified path
   - `{{module, name}, data}` - Delegates to a LiveHandler
-  
+
   ## Examples
-  
+
   ```elixir
   # Assign a value on the current LiveView
   send(self(), {:assign, {key: :value}})
-  
+
   # Send a message to be handled by a specific LiveHandler
   send(self(), {{Bonfire.Posts, :new_post}, post})
   # Delegates to:
   Bonfire.Posts.LiveHandler.handle_info({:new_post, post}, socket)
   ```
-  
+
   ## Returns
-  
+
   `{:noreply, socket}`
   """
   def handle_info(blob, socket, source_module \\ nil, fun \\ nil) do
@@ -162,35 +160,35 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   @doc """
   Handles LiveView events and delegates to appropriate LiveHandler modules.
-  
+
   This function processes events based on their name and delegates to the appropriate
   LiveHandler module.
-  
+
   ## Parameters
-  
+
   - `action`: The event name or `{module, action}` tuple
   - `attrs`: The event parameters
   - `socket`: The Phoenix LiveView socket
   - `source_module`: (optional) The source module making the call
   - `fun`: (optional) Custom function to handle the event before delegation
-  
+
   ## Built-in Event Handlers
-  
+
   - `"assign"` - Assigns values from the event parameters to the socket
   - `"redirect"` or `"navigate"` - Redirects to the specified path
   - `"live_select_change"` - Handles `LiveSelect` component events
-  
+
   ## Examples
-  
+
   ```elixir
   # From a template:
   phx-click="Bonfire.Posts:like"
   # Delegates to:
   Bonfire.Posts.LiveHandler.handle_event("like", params, socket)
   ```
-  
+
   ## Returns
-  
+
   `{:noreply, socket}`
   """
   def handle_event(action, attrs, socket, source_module \\ nil, fun \\ nil) do
@@ -211,35 +209,35 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   @doc """
   Handles upload progress events, delegating to a function or LiveHandler module.
-  
+
   This function handles upload progress events and delegates to either a function or a
   LiveHandler module.
-  
+
   ## Parameters
-  
+
   - `type`: The type of upload (e.g., `:avatar`, `:image`)
   - `entry`: The upload entry containing progress information
   - `socket`: The Phoenix LiveView socket
   - `source_module`: The source module making the call
   - `target_fn`: Function to handle the progress event
-  
+
   ## Examples
-  
+
   ```elixir
   # Delegating to a function:
   handle_progress(:avatar, entry, socket, __MODULE__, &handle_avatar_upload/3)
-  
+
   # Define the handler function:
   def handle_avatar_upload(type, entry, socket) do
     # Process avatar upload
     {:noreply, socket}
   end
   ```
-  
+
   ```elixir
   # Delegate to a module:
   handle_progress(:avatar, entry, socket, __MODULE__, MyLiveHandler)
-  
+
   # Define the handler function in `MyLiveHandler`:
   def handle_progress(type, entry, socket) do
     # Process avatar upload
@@ -248,7 +246,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   ```
 
   ## Returns
-  
+
   Result of the target function, typically `{:noreply, socket}`
   """
   def handle_progress(type, entry, socket, source_module, target_fn)
@@ -512,29 +510,29 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   @doc """
   Delegates a function call to a module's LiveHandler.
-  
+
   This function attempts to find and call a function in a module's LiveHandler, with
   proper error handling and circular reference detection.
-  
+
   ## Parameters
-  
+
   - `mod`: Module name (string or atom)
   - `fun`: Function name (atom)
   - `args`: Function arguments
   - `socket`: The Phoenix LiveView socket
   - `no_delegation_fn`: (optional) Function to call if delegation fails
-  
+
   ## Examples
-  
+
   ```elixir
   # Delegate to a LiveHandler:
   mod_delegate("Bonfire.Posts", :handle_event, ["like", %{id: 123}], socket)
   # Calls:
   Bonfire.Posts.LiveHandler.handle_event("like", %{id: 123}, socket)
   ```
-  
+
   ## Returns
-  
+
   Result of the delegated function call, for example `{:noreply, socket}`
   """
   def mod_delegate(mod, fun, args, socket, no_delegation_fn \\ &no_live_handler/2) do
@@ -611,34 +609,34 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   @doc """
   Assigns socket values based on event attributes.
-  
+
   This function processes a map of attributes and assigns them to the socket, with
   options for converting to atoms and global assignment.
-  
+
   ## Parameters
-  
+
   - `socket`: The Phoenix LiveView socket
   - `attrs`: Map of attributes to assign
-  
+
   ## Options (in attrs)
-  
+
   - `"to_atoms"`: Convert keys to atoms (true/false)
   - `"to_integers"`: Convert values to integers (true/false)
   - `"assign_global"`: Make global assigns (true/false)
   - `"send_self"`: Send assigns to self (true/false)
-  
+
   ## Examples
-  
+
   ```elixir
   # Simple assignment:
   assign_attrs(socket, %{"name" => "User", "age" => "42"})
-  
+
   # With conversion options:
   assign_attrs(socket, %{"name" => "User", "age" => "42", "to_atoms" => "true", "to_integers" => "true"})
   ```
-  
+
   ## Returns
-  
+
   Socket with assigned values
   """
   def assign_attrs(socket, attrs) do
@@ -672,23 +670,23 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   @doc """
   Converts a JSON string to a map if it appears to be valid JSON.
-  
+
   ## Parameters
-  
+
   - `json`: String that might be JSON
-  
+
   ## Examples
-  
+
   ```elixir
   iex> Bonfire.UI.Common.LiveHandlers.maybe_from_json("{\"name\":\"test\"}")
   %{"name" => "test"}
-  
+
   iex> Bonfire.UI.Common.LiveHandlers.maybe_from_json("not json")
   "not json"
   ```
-  
+
   ## Returns
-  
+
   Decoded JSON map or the original value
   """
   def maybe_from_json("{" <> _ = json) do
