@@ -80,7 +80,7 @@
                     %{
                       type: :link,
                       module: Bonfire.UI.Reactions.LikesLive,
-                      href: "/likes",
+                      href: "/feed/likes",
                       text: l("Likes"),
                       icon: "mingcute:fire-line"
                     },

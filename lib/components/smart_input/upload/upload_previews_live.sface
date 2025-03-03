@@ -44,7 +44,7 @@
         {#else}
           <textarea
             name={"upload_metadata[#{entry.ref}][label]"}
-            placeholder="Type here"
+            placeholder="Please describe/transcribe the uploaded file"
             class="textarea resize-none flex-1"
           />
         {/for}
