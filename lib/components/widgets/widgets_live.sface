@@ -1,4 +1,6 @@
 <ul
+  data-sortable-item
+  data-sortable-handler
   id={@id}
   phx-hook={if @id, do: "Draggable"}
   data-widget-draggable

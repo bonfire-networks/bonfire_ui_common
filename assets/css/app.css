@@ -387,6 +387,18 @@ h-filter {
     -webkit-line-clamp: none;
   }
 
+  article.replied::after {
+    position: absolute;
+    content: '';
+    width: 1px;
+    top: 41px;
+    bottom: -32px;
+    left: -33px;
+    z-index: 1;
+    background-color: var(--color-base-content);
+    opacity: 0.3;
+  }
+
   .scrollable {
     overflow-x: auto;
     scrollbar-width: thin;
