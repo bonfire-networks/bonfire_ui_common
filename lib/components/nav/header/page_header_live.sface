@@ -29,7 +29,10 @@
       </div>
 
       <div class="flex-1 lg:text-center">
-        <span class="first-letter:capitalize flex-1 font-medium text-sm text-base-content">
+        <span
+          data-page={@page}
+          class="first-letter:capitalize flex-1 font-medium text-sm text-base-content"
+        >
           {@page_title}
         </span>
         <div :if={@extra} class="text-xs text-base-content/70">{@extra}</div>
