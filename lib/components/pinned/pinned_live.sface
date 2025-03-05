@@ -13,6 +13,6 @@
     previous_page_info={false}
     showing_within={:pins}
     loading={@loading}
-    hide_tabs
+    hide_filters
   />
 </div>
