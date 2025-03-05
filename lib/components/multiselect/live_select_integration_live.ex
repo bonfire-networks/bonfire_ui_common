@@ -39,7 +39,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
           <%= if Map.has_key?(option.value, :type) && option.value.type == "circle" do %>
             <span class="w-8 h-8 rounded-full bg-info/10 flex items-center place-content-center">
               <div
-                iconify="pajamas:group"
+                iconify="rivet-icons:circle"
                 class="inline-block w-4 h-4 text-base-content"
                 aria-hidden="true"
               >

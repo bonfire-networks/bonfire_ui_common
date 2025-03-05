@@ -1,7 +1,13 @@
 @import "tailwindcss";
 
+/* Debug - specify example class that should be generated */
+/* Make sure these classes exist in some of your templates */
+.debug-text-purple-800 { color: purple; }
+.debug-bg-yellow-200 { background-color: yellow; }
+
 @source "../../lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
-@source "../../../../extensions/*/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+/* Fix path to correctly match extensions in the project */
+@source "../../../*/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
 @source "../../../../deps/*/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
 @source "../../../config/current_flavour/assets/components.css";
 @import "../static/images/icons/icons.css" layer(utilities);
@@ -41,6 +47,15 @@
  
  /* Borders */
  --border-opacity: 0.1;
+}
+
+
+.menu {
+  & :where(li ul) {
+      &:before {
+        content: none;
+      }
+  }
 }
 
 /* Player and controls styling */
@@ -187,6 +202,10 @@ h-filter {
   max-height: 240px;
 }
 
+h-banner {
+  height: 220px;
+}
+
 
 .milkdown-link-tooltip {
   position: absolute;
@@ -277,6 +296,50 @@ h-filter {
   position: static;
   display: none;
 }
+
+.menu {
+  & :where(li > details > summary), & :where(li > .menu-dropdown-toggle) {
+      &:after {
+          content: none;
+      }
+  }
+}
+
+
+
+.menu {
+  & :where(li > details > summary), & :where(li > .menu-dropdown-toggle) {
+      &:before {
+          justify-self: flex-start;
+          display: block;
+          height: 0.375rem;
+          width: 0.375rem;
+          rotate: -135deg;
+          translate: 0 -1px;
+          transition-property: rotate, translate;
+          transition-duration: 0.2s;
+          content: "";
+          transform-origin: 50% 50%;
+          box-shadow: 2px 2px inset;
+          pointer-events: none;
+          margin-left: 4px;
+      }
+  }
+}
+
+.menu {
+  :where(li > details[open] > summary):before, :where(li > .menu-dropdown-toggle.menu-dropdown-show):before {
+      rotate: 45deg;
+      translate: 0 1px;
+  }
+}
+
+/* AVATAR */
+
+div[data-scope='avatar'] div[data-square] {
+  @apply !rounded;
+}
+
 
   /* Direct element + data combos */
   div[data-id='preview_content'][data-show],
