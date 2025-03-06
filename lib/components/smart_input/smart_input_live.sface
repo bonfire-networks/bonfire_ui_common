@@ -1,8 +1,8 @@
 <div
-  x-ref="smart_input"
   id="smart_input_live"
   class="rounded-xl flex-1 h-full bg-base-100 grow relative z-[9999999999]"
 >
+  <!-- x-ref="smart_input" -->
   <div id="composer_container" data-id="smart_input" class="flex-1 h-full grow rounded-xl">
     <div
       id="smart_input"
