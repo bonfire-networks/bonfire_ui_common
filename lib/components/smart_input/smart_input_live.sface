@@ -17,13 +17,14 @@
       >
         <div
           :if={is_map(@activity) || is_map(@reply_to_id)}
-          class="flex justify-between items-start border-b border-base-content/10"
+          class="relative bg-base-content/5 rounded-box m-2 shadow"
         >
           {!-- show what we're replying to, if any --}
           <StatelessComponent
             module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
             id={"compose_reply_to-#{id(@reply_to_id) || id(@object) || id(@activity)}"}
             myself={nil}
+            cw
             activity={@activity}
             object={@object || @reply_to_id}
             thread_mode={:nested}
@@ -34,17 +35,15 @@
             object_boundary={:skip_boundary_check}
           />
 
-          <div class="mr-1 mt-1">
-            <span
-              phx-click="Bonfire.UI.Common.SmartInput:remove_data"
-              phx-target="#smart_input"
-              class="btn btn-xs btn-ghost btn-circle"
-              title={l("Cancel Reply")}
-            >
-              <span class="sr-only">{l("Cancel Reply")}</span>
-              <#Icon solid="X" class="w-4 h-4 text-base-content/70" />
-            </span>
-          </div>
+          <span
+            phx-click="Bonfire.UI.Common.SmartInput:remove_data"
+            phx-target="#smart_input"
+            class="absolute top-2 right-2 btn btn-xs btn-ghost btn-circle"
+            title={l("Cancel Reply")}
+          >
+            <span class="sr-only">{l("Cancel Reply")}</span>
+            <#Icon solid="X" class="w-4 h-4 text-base-content/70" />
+          </span>
         </div>
         {#case LiveHandler.active_smart_input_component(@smart_input_component, @create_object_type)}
           {#match module}
