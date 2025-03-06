@@ -23,6 +23,18 @@ const winnerDimension = () => {
 		"--inner-window-height",
 		`${window.innerHeight}px`,
 	);
+  // fidn the element with data-id="layout"
+  const inner = document.querySelector("[data-id='layout']");
+  if (!inner) {
+    console.log("Layout element not found");
+    return;
+  }
+  console.log(inner)
+  // set the main section inner width in a custom property on the root of the document
+  document.documentElement.style.setProperty(
+    "--inner-main-width",
+    `${inner.offsetWidth}px`,
+  );
 };
 
 winnerDimension();

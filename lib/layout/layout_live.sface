@@ -1,13 +1,5 @@
 <div
   data-id="bonfire_live"
-  x-data="{ 
-    init() {
-      this.$nextTick(() => {
-        this.$dispatch('alpine-ready');
-        console.log('Alpine.js initialized in layout');
-      })
-    }
-  }"
   class="antialiased bg-base-200 min-h-screen"
   data-theme={Bonfire.UI.Common.ThemeHelper.current_theme(assigns)}
   style={maybe_custom_theme(
