@@ -18,8 +18,8 @@
 }
 @plugin "@tailwindcss/typography";
 
-@source "../../../../extensions/bonfire_editor_milkdown/assets/node_modules/@milkdown/crepe/src/theme/common/style.css";
-@source "../../../../extensions/bonfire_editor_milkdown/assets/node_modules/@milkdown/crepe/src/theme/frame/style.css";
+@source "../../../../deps/bonfire_editor_milkdown/assets/node_modules/@milkdown/crepe/src/theme/common/style.css";
+@source "../../../../deps/bonfire_editor_milkdown/assets/node_modules/@milkdown/crepe/src/theme/frame/style.css";
 
 @theme {
   --spacing: 0.25rem;  /* This enables all spacing utilities dynamically */
