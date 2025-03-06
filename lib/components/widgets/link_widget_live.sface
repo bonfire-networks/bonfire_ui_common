@@ -43,7 +43,7 @@
           not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
       } 
     >-->
-  <span class="text-base-content/80 font-medium">{@text || @widget[:text] || @widget[:name]}</span>
+  <span class="opacity-80 font-medium">{@text || @widget[:text] || @widget[:name]}</span>
   <!-- </span> -->
   <!-- </div> -->
   {#case @widget[:badge]}
