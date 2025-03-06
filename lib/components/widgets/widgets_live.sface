@@ -21,7 +21,7 @@
             Enum.with_index(List.wrap(@widgets)),
             fn {widget, index} ->
               ((widget[:page] || widget[:module]) &&
-                 order_settings[Types.maybe_to_atom(widget[:page] || widget[:module])]) ||
+                 e(order_settings, Types.maybe_to_atom(widget[:page] || widget[:module]), nil)) ||
                 index
             end
           )}
