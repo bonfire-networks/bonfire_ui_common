@@ -495,10 +495,10 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   defp maybe_delegate_handle_params(params, uri, socket)
        when is_map(params) and params != %{} do
-    # debug(handle_params: params)
     # first key in a URL query string can be used to indicate the LiveHandler
     case Map.keys(params) |> List.first() do
       mod when is_binary(mod) and mod not in ["id"] ->
+        # debug(mod, "mod")
         mod_delegate(mod, :handle_params, [Map.get(params, mod), uri], socket)
 
       _ ->

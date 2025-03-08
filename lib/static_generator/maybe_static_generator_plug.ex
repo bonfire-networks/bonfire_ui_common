@@ -29,8 +29,17 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
 
   def maybe_make_request_path_static(%{assigns: %{current_user: %{}}} = conn, _), do: conn
 
+  # don't serve the cached HTML if URI contains params in query_string
+  def maybe_make_request_path_static(
+        %{query_string: query_string, assigns: %{current_user: %{}}} = conn,
+        _
+      )
+      when query_string != "",
+      do: conn
+
   def maybe_make_request_path_static(%{private: %{cache: cache}, assigns: %{}} = conn, _)
       when cache not in [nil, false] do
+    debug(conn)
     # because current_user is probably not yet in assigns
     if !get_session(conn, :current_user_id) do
       info(cache, "use cache for this route?")

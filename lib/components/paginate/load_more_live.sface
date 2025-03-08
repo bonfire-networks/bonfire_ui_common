@@ -37,10 +37,11 @@
     </span>
     <a
       :if={!@hide_guest_fallback}
-      x-cloak
+      data-id="next-page"
       class="normal-case btn btn-outline"
+      x-cloak
       x-show="!show"
-      href={"?#{@live_handler}[after]=" <> @cursor}
+      href={"#{@__context__[:current_url]}?#{@live_handler}[after]=" <> @cursor}
     >
       {l("Next page")}
     </a>
