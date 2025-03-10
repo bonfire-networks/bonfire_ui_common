@@ -18,14 +18,38 @@
   </LinkLive>
 {#elseif @back}
   <a
-    x-show="history.length > 1 && document.referrer.indexOf(window.location.host) !== -1"
-    @click.prevent="handleBackClick()"
-    x-data="{ handleBackClick() { if (history.length > 1) { history.back(); } else { window.location.href = '/'; } } }"
-    @click.prevent="handleBackClick()"
-    x-data="{ handleBackClick() { if (history.length > 1) { history.back(); } else { window.location.href = '/'; } } }"
+    id="back-button"
+    style="display: none;"
+    phx-mounted={JS.dispatch("check-history-state")}
+    phx-click={JS.dispatch("handle-back-click")}
     aria-label={l("Go back to the previous page")}
     class="btn z-50 btn-ghost btn-sm btn-circle"
   >
     <#Icon iconify="ion:chevron-back" class="w-4 h-4" />
   </a>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const backButton = document.getElementById("back-button");
+      if (backButton && history.length > 1 && document.referrer.indexOf(window.location.host) !== -1) {
+        backButton.style.display = "inline-flex";
+      }
+    });
+
+    document.addEventListener("check-history-state", (e) => {
+      const backButton = document.getElementById("back-button");
+      if (backButton && history.length > 1 && document.referrer.indexOf(window.location.host) !== -1) {
+        backButton.style.display = "inline-flex";
+      }
+    });
+
+    document.addEventListener("handle-back-click", (e) => {
+      e.preventDefault();
+      if (history.length > 1) {
+        history.back();
+      } else {
+        window.location.href = '/';
+      }
+    });
+  </script>
 {/if}
