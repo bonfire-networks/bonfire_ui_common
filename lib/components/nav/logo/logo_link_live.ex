@@ -9,7 +9,7 @@ defmodule Bonfire.UI.Common.LogoLinkLive do
 
   prop image_class, :css_class,
     default:
-      "w-8 h-8 aspect-square rounded-full border border-base-content/10 bg-center bg-no-repeat bg-contain"
+      "w-10 h-10 aspect-square rounded-full border border-base-content/10 bg-center bg-no-repeat bg-contain"
 
   prop name_class, :css_class, default: "text-xl font-bold text-base-content lg:block hidden"
 

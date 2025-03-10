@@ -28,7 +28,7 @@
         {/if}
       </div>
 
-      <div class="flex-1 lg:text-center">
+      <div class="flex-1 truncate max-w-[400px] lg:text-center">
         <span
           data-page={@page}
           class="first-letter:capitalize flex-1 font-medium text-sm text-base-content"

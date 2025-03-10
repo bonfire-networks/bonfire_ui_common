@@ -9,11 +9,16 @@
           <LinkLive
             to={path(:login, :index)}
             class={
-              "btn btn-soft btn-primary",
+              "btn btn-primary",
               "btn-active": @selected_tab == :login
             }
           >{l("Login")}</LinkLive>
         </li>
+          {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+            <li>
+              <LinkLive to={path(:signup)} class="btn btn-soft btn-secondary">{l("Signup")}</LinkLive>
+            </li>
+          {/if}
 
         <div phx-hook="Tooltip" data-position="bottom-end" id="tooltip_more_menu" class="relative">
           <label
@@ -31,7 +36,7 @@
             style=""
             class="tooltip z-[99999999] menu shadow-lg bg-base-100 shadow-xl border border-base-content/10 rounded-xl w-60 absolute top-0 left-0 hidden"
           >
-            {#if !current_account(@__context__)}
+            <!-- {#if !current_account(@__context__)}
               {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
                 <li>
                   <LinkLive to={path(:signup)} class="btn max-w-full btn-primary btn-soft">{l("Create an account")}</LinkLive>
@@ -43,7 +48,7 @@
                   <div>{l("Sign out")}</div>
                 </LinkLive>
               </li>
-            {/if}
+            {/if} -->
             <!-- <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LinkLive to={path(:signup)} class="text-base-content">{l("Create an account")}</LinkLive></li> -->
             <li><LinkLive class="text-base-content" to="/about">{l("About")}</LinkLive></li>
             <li><LinkLive class="text-base-content" to="/conduct">{l("Conduct")}</LinkLive></li>
