@@ -28,6 +28,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop showing_within, :atom, default: nil
   prop no_header, :boolean, default: false
   prop no_mobile_header, :boolean, default: false
+  # prop force_live, :boolean, default: false
 
   prop inner_content, :any, default: nil
   prop nav_items, :list, default: []

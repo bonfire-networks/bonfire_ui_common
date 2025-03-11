@@ -177,7 +177,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         endpoint_module = Bonfire.Common.Config.endpoint_module()
 
         js =
-          if Utils.current_user(assigns) do
+          if assigns[:force_live] || Utils.current_user(assigns) do
             # || Utils.current_account(assigns)
             endpoint_module.static_path("/assets/bonfire_live.js")
           else
