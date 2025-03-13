@@ -35,4 +35,3 @@ phoenix_live_favicon= "~> 0.2.0"
 phoenix_seo = "~> 0.1.8"
 plug_early_hints = "~> 0.1.0"
 oban = "~> 2.17"
-live_debugger = "~> 0.1.1", only: :dev
