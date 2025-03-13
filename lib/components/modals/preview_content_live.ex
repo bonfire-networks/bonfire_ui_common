@@ -43,28 +43,28 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
   slot title
   slot extra_contents
 
-def handle_event("open", params, socket) do
-  # When opening the preview, we hide the main content and store navigation info
-  socket =
-    socket
-    |> assign(
-      previous_url: params["previous_url"],
-      previous_scroll: params["previous_scroll"]
-    )
-    |> send_self(hide_main: true)
+  def handle_event("open", params, socket) do
+    # When opening the preview, we hide the main content and store navigation info
+    socket =
+      socket
+      |> assign(
+        previous_url: params["previous_url"],
+        previous_scroll: params["previous_scroll"]
+      )
+      |> send_self(hide_main: true)
 
-  {:noreply, socket}
-end
+    {:noreply, socket}
+  end
 
-def handle_event("show_extra", _params, socket) do
-  # Show extra content instead of preview content
-  socket = socket |> send_self(hide_main: true)
-  {:noreply, socket}
-end
+  def handle_event("show_extra", _params, socket) do
+    # Show extra content instead of preview content
+    socket = socket |> send_self(hide_main: true)
+    {:noreply, socket}
+  end
 
-def handle_event("close", _params, socket) do
-  # When closing, show main content again
-  socket = socket |> send_self(hide_main: false)
-  {:noreply, socket}
-end
+  def handle_event("close", _params, socket) do
+    # When closing, show main content again
+    socket = socket |> send_self(hide_main: false)
+    {:noreply, socket}
+  end
 end

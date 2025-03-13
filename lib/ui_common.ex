@@ -1570,5 +1570,4 @@ defmodule Bonfire.UI.Common do
   end
 
   def random_dom_id, do: "random-#{Text.unique_integer()}"
-
 end

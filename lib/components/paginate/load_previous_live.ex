@@ -1,10 +1,10 @@
 defmodule Bonfire.UI.Common.LoadPreviousLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop live_handler, :string
-  prop page_info, :map
-  prop target, :any
-  prop context, :any
+  prop live_handler, :any, default: nil
+  prop page_info, :any, default: nil
+  prop target, :any, default: nil
+  prop context, :any, default: nil
 
   def render(assigns) do
     assigns
