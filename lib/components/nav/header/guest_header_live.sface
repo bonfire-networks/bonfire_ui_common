@@ -14,11 +14,11 @@
             }
           >{l("Login")}</LinkLive>
         </li>
-          {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-            <li>
-              <LinkLive to={path(:signup)} class="btn btn-soft btn-secondary">{l("Signup")}</LinkLive>
-            </li>
-          {/if}
+        {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+          <li>
+            <LinkLive to={path(:signup)} class="btn btn-soft btn-secondary">{l("Signup")}</LinkLive>
+          </li>
+        {/if}
 
         <div phx-hook="Tooltip" data-position="bottom-end" id="tooltip_more_menu" class="relative">
           <label
