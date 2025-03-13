@@ -125,6 +125,29 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   # Default event handlers
 
+  def handle_event("open", %{
+    "previous_scroll" => previous_scroll,
+    "previous_url" => previous_url
+  } = attrs, socket) do
+    debug("open!")
+
+    socket =
+      socket
+      |> assign(
+        show: true,
+        hide_main: true,
+        show_extra: false,
+        previous_url: previous_url,
+        previous_scroll: previous_scroll
+      )
+      send_self(hide_main: true)
+
+    # copy all of this component's assigns to the reusable modal (including slots!)
+    ReusableModalLive.set(assigns(socket))
+
+    {:noreply, socket}
+  end
+
   def handle_event("open", _, socket) do
     debug("open!")
 
@@ -141,7 +164,6 @@ defmodule Bonfire.UI.Common.OpenModalLive do
 
   def handle_event("close", _, socket) do
     close(ReusableModalLive.modal_id(assigns(socket)))
-
     {:noreply, socket}
   end
 

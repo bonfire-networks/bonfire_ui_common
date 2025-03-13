@@ -79,6 +79,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:to_boundaries, fn -> nil end)
     |> assign_new(:page_title, fn -> nil end)
     |> assign_new(:page, fn -> nil end)
+    |> assign_new(:hide_main, fn -> false end)
     |> assign_new(:selected_tab, fn -> nil end)
     |> assign_new(:notification, fn -> nil end)
     |> assign_new(:no_header, fn -> false end)

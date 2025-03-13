@@ -42,7 +42,7 @@
           <div class="h-full mt-0">
             <div class="relative invisible_frame">
               <div class="md:pb-0 md:overflow-y-visible">
-                <Bonfire.UI.Common.PreviewContentLive id="preview_content" />
+                <Bonfire.UI.Common.PreviewContentLive show={@hide_main} id="preview_content" />
 
                 <Bonfire.UI.Common.PersistentLive
                   :if={@current_user_id && !@without_sidebar}
@@ -61,7 +61,7 @@
                 />
                 <div
                   id="inner"
-                  class="flex flex-col min-h-[calc(var(--inner-window-height))] pb-4 md:pb-[1px] lg:gap-3"
+                  class={"flex flex-col min-h-[calc(var(--inner-window-height))] pb-4 md:pb-[1px] lg:gap-3 #{if @hide_main, do: 'hidden'}"}
                 >
                   <div :if={!@no_header} class="sticky top-2 mt-2 z-[999]">
                     <div class="flex flex-1 w-full transition-color duration-150 ease-in-out h-[48px] rounded-box bg-base-100/70 shadow backdrop-blur-sm">

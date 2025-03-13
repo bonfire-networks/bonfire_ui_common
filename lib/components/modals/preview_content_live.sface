@@ -1,72 +1,66 @@
 <div
   id={@id}
   data-id="preview_content"
-  data-show={@show}
-  data-hide={!@show}
-  class={"#{@modal_class}"}
+  data-show={e(@show, false)}
+  data-hide={!e(@show, false)}
+  class={"#{@modal_class} #{if !e(@show, false), do: 'hidden'}"}
   {...@opts}
 >
-  <div id="extra_contents" class={if @show, do: "hidden"}>
-    <#slot {@extra_contents}>
-      <!-- no extra_contents -->
-    </#slot>
-  </div>
-
-  {#if @show}
-    <div id="the_preview_contents">
-      <div class="sticky block backdrop-blur-sm top-2 mt-2 rounded-box shadow bg-base-100/70 z-[999]">
-        <div role="banner" class="flex items-center h-[48px] md:h-[48px] flex-1 w-full px-4">
-          <div class="flex items-center w-full">
-            <div class="flex items-center flex-1 w-full gap-2">
-              <button
-                id="close_preview"
-                :hook="ClosePreview"
-                aria-label={l("Go back to the previous page")}
-                class="btn z-50 btn-ghost btn-sm btn-circle"
-              >
-                <!--
-              removed for now to avoid hiding the feed (extra_contents)
-               phx-click="Bonfire.UI.Common.OpenPreviewLive:close" -->
-                <#Icon outline="ChevronLeft" class="w-4 h-4" />
-              </button>
-              <span class="max-w-[250px] md:max-w-max font-semibold text-base-content truncate text-ellipsis">{@title_text || l("Discussion")}</span>
-            </div>
+  <div id="the_preview_contents" class={if !e(@show, false), do: "hidden"}>
+    {!-- Header with back button --}
+    <div class="sticky block backdrop-blur-sm top-2 mt-2 rounded-box shadow bg-base-100/70 z-[999]">
+      <div role="banner" class="flex items-center h-[48px] flex-1 w-full px-4">
+        <div class="flex items-center w-full">
+          <div class="flex items-center flex-1 w-full gap-2">
+            <button
+              id="close_preview"
+              :hook="ClosePreview"
+              aria-label={l("Go back to the previous page")}
+              class="btn z-50 btn-ghost btn-sm btn-circle"
+            >
+              <#Icon outline="ChevronLeft" class="w-4 h-4" />
+            </button>
+            <span class="max-w-[250px] md:max-w-max font-semibold text-base-content truncate text-ellipsis">
+              {rich(@title_text) || l("Discussion")}
+            </span>
           </div>
         </div>
       </div>
-      <div class="relative z-30">
-        <div
-          class="p-0 z-[910] modal_invisible relative pb-1px md:pb-2 rounded-xl shadow bg-base-100 mt-3"
-          data-id="modal-contents"
-        >
-          <#slot>
-            {!-- TODO: consolidate with ReusableModal and make modal_component & modal_view seperate props --}
-            {#if e(@modal_assigns, :modal_component_stateful?, nil) == true and
-                module_enabled?(@modal_assigns[:modal_component], @__context__)}
-              <StatefulComponent
-                id="modal_component"
-                module={@modal_assigns[:modal_component]}
-                {...@modal_assigns}
-              />
-            {#elseif not is_nil(e(@modal_assigns, :modal_component, nil)) and
-                module_enabled?(@modal_assigns[:modal_component], @__context__)}
-              <StatelessComponent
-                module={@modal_assigns[:modal_component]}
-                myself={@myself}
-                {...@modal_assigns}
-              />
-            {#elseif not is_nil(e(@modal_assigns, :modal_view, nil)) and
-                module_enabled?(@modal_assigns[:modal_view], @__context__)}
-              {live_render(@socket, @modal_assigns[:modal_view],
-                id: "modal_view",
-                session: %{"params" => @modal_assigns}
-              )}
-            {#else}
-              {l("No preview component or view is available.")}
-            {/if}
-          </#slot>
-        </div>
+    </div>
+    
+    {!-- Content container --}
+    <div class="relative z-30">
+      <div
+        class="p-0 z-[910] modal_invisible relative pb-1px md:pb-2 rounded-xl shadow bg-base-100 mt-3"
+        data-id="modal-contents"
+      >
+        <#slot>
+          {!-- Render appropriate component based on modal_assigns --}
+          {#if e(@modal_assigns, :modal_component_stateful?, nil) == true and
+              module_enabled?(@modal_assigns[:modal_component], @__context__)}
+            <StatefulComponent
+              id="modal_component"
+              module={@modal_assigns[:modal_component]}
+              {...@modal_assigns}
+            />
+          {#elseif not is_nil(e(@modal_assigns, :modal_component, nil)) and
+              module_enabled?(@modal_assigns[:modal_component], @__context__)}
+            <StatelessComponent
+              module={@modal_assigns[:modal_component]}
+              myself={@myself}
+              {...@modal_assigns}
+            />
+          {#elseif not is_nil(e(@modal_assigns, :modal_view, nil)) and
+              module_enabled?(@modal_assigns[:modal_view], @__context__)}
+            {live_render(@socket, @modal_assigns[:modal_view],
+              id: "modal_view",
+              session: %{"params" => @modal_assigns}
+            )}
+          {#else}
+            {l("No preview component or view is available.")}
+          {/if}
+        </#slot>
       </div>
     </div>
-  {/if}
+  </div>
 </div>

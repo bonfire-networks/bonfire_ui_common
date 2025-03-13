@@ -33,7 +33,7 @@
           data-page={@page}
           class="first-letter:capitalize flex-1 font-medium text-sm text-base-content"
         >
-          {@page_title}
+          {rich(@page_title)}
         </span>
         <div :if={@extra} class="text-xs text-base-content/70">{@extra}</div>
       </div>

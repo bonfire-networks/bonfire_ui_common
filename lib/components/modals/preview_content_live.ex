@@ -11,7 +11,10 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
   @doc "The classes of the title of the modal"
   prop title_class, :css_class, default: nil
 
-  @doc "Force modal to be open"
+  @doc """
+  Force modal to be open. This works with hide_main in layout_live,
+  which is the single source of truth for visibility state.
+  """
   prop show, :boolean, default: false
 
   @doc "Optional prop to hide the header at the top of the modal"
@@ -40,23 +43,28 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
   slot title
   slot extra_contents
 
-  def mount(socket) do
-    # debug("mounting")
-    # need this because when used in the HEEX it doesn't set Surface defaults
-    {:ok,
-     assign(
-       socket,
-       title_text: nil,
-       title_class: nil,
-       modal_class: nil,
-       show: false,
-       no_header: false,
-       opts: []
-     )}
-  end
+def handle_event("open", params, socket) do
+  # When opening the preview, we hide the main content and store navigation info
+  socket =
+    socket
+    |> assign(
+      previous_url: params["previous_url"],
+      previous_scroll: params["previous_scroll"]
+    )
+    |> send_self(hide_main: true)
 
-  def handle_event("close", _, socket) do
-    debug("close")
-    {:noreply, assign(socket, show: false)}
-  end
+  {:noreply, socket}
+end
+
+def handle_event("show_extra", _params, socket) do
+  # Show extra content instead of preview content
+  socket = socket |> send_self(hide_main: true)
+  {:noreply, socket}
+end
+
+def handle_event("close", _params, socket) do
+  # When closing, show main content again
+  socket = socket |> send_self(hide_main: false)
+  {:noreply, socket}
+end
 end

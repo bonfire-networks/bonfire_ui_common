@@ -98,7 +98,7 @@ defmodule Bonfire.UI.Common do
   @doc """
   Special LiveView helper function which allows loading LiveComponents in regular Phoenix views: `live_render_component(@conn, MyLiveComponent)`
 
-  TODO: deduplicate if same as `render_inline` 
+  TODO: deduplicate if same as `render_inline`
   """
   def live_render_component(conn, load_live_component) do
     if module_enabled?(load_live_component),
@@ -128,16 +128,16 @@ defmodule Bonfire.UI.Common do
   #       on_mount {Bonfire.UI.Common.LivePlugs, unquote(plugs)}
 
   #       def render(assigns) do
-  #         component_module = unquote(component_module) 
+  #         component_module = unquote(component_module)
   #         live_component(unquote(attrs) |> Enum.into(%{module: component_module, id: component_module}))
 
   #         # assigns = assigns
   #         # |> assign(
   #         #   component_module: unquote(component_module),
-  #         #   attrs: 
+  #         #   attrs:
   #         # )
 
-  #         # quote_surface do 
+  #         # quote_surface do
   #         #   ~F"""
   #         #   <StatefulComponent
   #         #     id={@component_module}
@@ -1020,7 +1020,7 @@ defmodule Bonfire.UI.Common do
     case Plug.Conn.get_session(conn, :go)
          |> debug("session_go")
          |> go_where?(params, default, current_path) do
-      # TODO: add a configurable hook so these can be defined in the relevant extension 
+      # TODO: add a configurable hook so these can be defined in the relevant extension
       [to: "/oauth/authorize?" <> query] ->
         Bonfire.Common.Utils.maybe_apply(
           Bonfire.OpenID.Web.Oauth.AuthorizeController,
@@ -1570,4 +1570,5 @@ defmodule Bonfire.UI.Common do
   end
 
   def random_dom_id, do: "random-#{Text.unique_integer()}"
+
 end
