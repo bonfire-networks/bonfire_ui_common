@@ -15,7 +15,7 @@ defmodule Bonfire.UI.Common.ChangeThemesLive do
       preferred: Settings.get([:ui, :theme, :preferred], :system, scoped),
       theme: Settings.get([:ui, :theme, :instance_theme], "bonfire", scoped),
       theme_light: Settings.get([:ui, :theme, :instance_theme_light], "light", scoped),
-      themes: Settings.get([:ui, :themes], ["bonfire"], scoped),
+      themes: Settings.get([:ui, :themes_dark], ["bonfire"], scoped),
       themes_light: Settings.get([:ui, :themes_light], ["bonfire"], scoped)
     )
     |> render_sface()

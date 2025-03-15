@@ -12,11 +12,24 @@
 @source "../../../../deps/*/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
 @source "../../../config/current_flavour/assets/components.css";
 @import "../static/images/icons/icons.css" layer(utilities);
+@plugin "@tailwindcss/typography";
 
 @plugin "daisyui" {
-  themes: light --default, dark --prefersdark, cupcake, bumblebee, emerald, corporate, synthwave, retro, cyberpunk, valentine, halloween, garden, forest, aqua, lofi, pastel, fantasy, wireframe, black, luxury, dracula, cmyk, autumn, business, acid, lemonade, night, coffee, winter, dim, nord, sunset, caramellatte, abyss, silk;
+  themes: light --default, cupcake, bumblebee, dark --prefersdark, synthwave, bonfire_custom, retro, cyberpunk, valentine, halloween;
 }
-@plugin "@tailwindcss/typography";
+
+
+
+/* Import custom themes */
+@import "./custom_themes.css";
+
+
+
+
+
+
+
+
 
 @source "../../../../deps/bonfire_editor_milkdown/assets/node_modules/@milkdown/crepe/src/theme/common/style.css";
 @source "../../../../deps/bonfire_editor_milkdown/assets/node_modules/@milkdown/crepe/src/theme/frame/style.css";
@@ -622,11 +635,3 @@ div[data-scope='avatar'] div[data-square] {
  @utility main-single-column {
   @apply mx-auto order-last border-none shadow-none;
  }
-
-
-
-
-
-
-
- 
