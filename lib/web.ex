@@ -60,6 +60,17 @@ defmodule Bonfire.UI.Common.Web do
       alias Bonfire.UI.Common.Plugs.MustBeGuest
       alias Bonfire.UI.Common.Plugs.MustLogIn
 
+      plug :check_controller_enabled
+
+      # Define the plug function that logs the module name
+      def check_controller_enabled(conn, _opts) do
+        if Bonfire.Common.Extend.module_enabled?(__MODULE__, conn) do
+          conn
+        else
+          raise "Sorry, this feature is currently disabled."
+        end
+      end
+
       unquote(live_view_basic_helpers())
     end
   end

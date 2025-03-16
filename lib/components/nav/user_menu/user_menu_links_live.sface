@@ -30,7 +30,11 @@
     <div>{l("Profile")}</div>
   </LinkLive>
 </li>
-<li>
+<li :if={Config.get(
+  [Bonfire.Me.Users, :max_per_account],
+  4,
+  :bonfire_me
+) > 1}>
   <LinkLive to={~p"/switch-user"} class="flex items-center gap-2 text-sm text-base-content">
     <div>{l("Switch profile")}</div>
   </LinkLive>

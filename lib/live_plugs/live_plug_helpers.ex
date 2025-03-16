@@ -120,14 +120,17 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   defp mount_done(socket) do
     if not module_enabled?(socket.view, socket) do
       # check here because we need current_user
-      error(
-        l(
-          "This feature (from extension %{app}) is disabled. You can enabled it in Settings -> Extensions ",
-          app:
-            e(assigns(socket), :current_extension, :name, nil) ||
-              e(assigns(socket), :current_app, nil)
-        )
-      )
+      {:halt,
+       socket
+       |> assign_error(
+         l(
+           "This feature (from extension %{app}) is disabled. You can enabled it in Settings -> Extensions ",
+           app:
+             e(assigns(socket), :current_extension, :name, nil) ||
+               e(assigns(socket), :current_app, nil)
+         )
+       )
+       |> redirect_to("/error/disabled")}
     else
       {:cont,
        assign_global(
