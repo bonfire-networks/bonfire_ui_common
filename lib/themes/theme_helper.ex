@@ -29,18 +29,21 @@ defmodule Bonfire.UI.Common.ThemeHelper do
         # For custom themes, we use "bonfire_custom" as base, and the custom colors
         # are applied via inline CSS variables in layout_live.ex
         "dark"
+
       :light ->
         Settings.get(
           [:ui, :theme, :instance_theme_light],
           "light",
           context
         )
+
       :dark ->
         Settings.get(
           [:ui, :theme, :instance_theme],
           "dark",
           context
         )
+
       :system ->
         # System preference - will be overridden by CSS/JS based on user's device preferences
         # We return a base theme that will be used when system preference can't be determined
@@ -49,6 +52,7 @@ defmodule Bonfire.UI.Common.ThemeHelper do
           "dark",
           context
         )
+
       _ ->
         # Fallback to default dark theme
         Settings.get(

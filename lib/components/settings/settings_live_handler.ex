@@ -53,8 +53,7 @@ defmodule Bonfire.Common.Settings.LiveHandler do
        socket
        #  |> maybe_assign_context(settings)
        |> assign_flash(:info, l("Theme changed and loaded :-)"))
-       |> push_navigate(to: current_url(socket) || "/")
-      }
+       |> push_navigate(to: current_url(socket) || "/")}
     end
   end
 

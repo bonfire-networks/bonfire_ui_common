@@ -2,69 +2,72 @@
   <div class="mb-3 text-sm font-semibold text-base-content/70">{l("Colour mode")}</div>
   <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
     {!-- DARK --}
-    
-      <button 
-        id="dark-button"
-        class={"btn flex-1 #{if @preferred in [:dark], do: "btn-primary"}"} 
-        phx-click={
-          JS.push("Bonfire.Common.Settings:put_theme", value: %{keys: "ui:theme:preferred", values: :dark, scope: @scope})
-          |> JS.add_class("btn-primary", to: "#dark-button")
-          |> JS.remove_class("bg-base-content text-base-100", to: "#light-button")
-          |> JS.remove_class("bg-base-content text-base-100", to: "#system-button")
-          |> JS.remove_class("bg-base-content text-base-100", to: "#custom-button")
-          |> JS.show(to: "#dark-themes")
-          |> JS.hide(to: "#light-themes")
-          |> JS.hide(to: "#custom-themes")
-        }>
-        <span><#Icon outline="Moon" class="w-4 h-4" /></span>
-        <span class="">{l("Dark")}</span>
-      </button>
-
-      <button 
-        id="light-button"
-        class={"btn flex-1 #{if @preferred in [:light], do: "btn-primary"}"} 
-        phx-click={
-          JS.push("Bonfire.Common.Settings:put_theme", value: %{keys: "ui:theme:preferred", values: :light, scope: @scope})
-          |> JS.remove_class("btn-primary", to: "#dark-button")
-          |> JS.add_class("btn-primary", to: "#light-button")
-          |> JS.remove_class("btn-primary", to: "#system-button")
-          |> JS.remove_class("btn-primary", to: "#custom-button")
-          |> JS.hide(to: "#dark-themes")
-          |> JS.show(to: "#light-themes")
-          |> JS.hide(to: "#custom-themes")
-        }>
-        <span><#Icon outline="Sun" class="w-4 h-4" /></span>
-        <span class="">{l("Light")}</span>
-      </button>
-      
-
-      <button 
-        id="system-button"
-        class={"btn flex-1 #{if @preferred in [:system], do: "btn-primary"}"} 
-        phx-click={
-          JS.push("Bonfire.Common.Settings:put_theme", value: %{keys: "ui:theme:preferred", values: :system, scope: @scope})
-          |> JS.add_class("btn-primary", to: "#system-button")
-          |> JS.remove_class("btn-primary", to: "#dark-button")
-          |> JS.remove_class("btn-primary", to: "#light-button")
-          |> JS.remove_class("btn-primary", to: "#custom-button")
-          |> JS.show(to: "#dark-themes", display: @preferred in [:dark, :system])
-          |> JS.show(to: "#light-themes", display: @preferred in [:light, :system])
-          |> JS.hide(to: "#custom-themes")
-        }>
-        <span><#Icon outline="ComputerDesktop" class="w-4 h-4" /></span>
-        <span class="">{l("System")}</span>
-      </button>
-     
 
     <button
-      phx-click={JS.push("Bonfire.Common.Settings:put_theme", value: %{keys: "ui:theme:preferred", values: :custom, scope: @scope})
-        |> JS.remove_class("btn-primary", to: "#dark-button")
-        |> JS.remove_class("btn-primary", to: "#light-button")
-        |> JS.remove_class("btn-primary", to: "#system-button")
-        |> JS.add_class("btn-primary", to: "#custom-button")
-        |> JS.hide(to: "#dark-themes")
-        |> JS.hide(to: "#light-themes")
-        |> JS.toggle(to: "#custom-themes")}
+      id="dark-button"
+      class={"btn flex-1 #{if @preferred in [:dark], do: "btn-primary"}"}
+      phx-click={JS.push("Bonfire.Common.Settings:put_theme",
+        value: %{keys: "ui:theme:preferred", values: :dark, scope: @scope}
+      )
+      |> JS.add_class("btn-primary", to: "#dark-button")
+      |> JS.remove_class("bg-base-content text-base-100", to: "#light-button")
+      |> JS.remove_class("bg-base-content text-base-100", to: "#system-button")
+      |> JS.remove_class("bg-base-content text-base-100", to: "#custom-button")
+      |> JS.show(to: "#dark-themes")
+      |> JS.hide(to: "#light-themes")
+      |> JS.hide(to: "#custom-themes")}
+    >
+      <span><#Icon outline="Moon" class="w-4 h-4" /></span>
+      <span class="">{l("Dark")}</span>
+    </button>
+
+    <button
+      id="light-button"
+      class={"btn flex-1 #{if @preferred in [:light], do: "btn-primary"}"}
+      phx-click={JS.push("Bonfire.Common.Settings:put_theme",
+        value: %{keys: "ui:theme:preferred", values: :light, scope: @scope}
+      )
+      |> JS.remove_class("btn-primary", to: "#dark-button")
+      |> JS.add_class("btn-primary", to: "#light-button")
+      |> JS.remove_class("btn-primary", to: "#system-button")
+      |> JS.remove_class("btn-primary", to: "#custom-button")
+      |> JS.hide(to: "#dark-themes")
+      |> JS.show(to: "#light-themes")
+      |> JS.hide(to: "#custom-themes")}
+    >
+      <span><#Icon outline="Sun" class="w-4 h-4" /></span>
+      <span class="">{l("Light")}</span>
+    </button>
+
+    <button
+      id="system-button"
+      class={"btn flex-1 #{if @preferred in [:system], do: "btn-primary"}"}
+      phx-click={JS.push("Bonfire.Common.Settings:put_theme",
+        value: %{keys: "ui:theme:preferred", values: :system, scope: @scope}
+      )
+      |> JS.add_class("btn-primary", to: "#system-button")
+      |> JS.remove_class("btn-primary", to: "#dark-button")
+      |> JS.remove_class("btn-primary", to: "#light-button")
+      |> JS.remove_class("btn-primary", to: "#custom-button")
+      |> JS.show(to: "#dark-themes", display: @preferred in [:dark, :system])
+      |> JS.show(to: "#light-themes", display: @preferred in [:light, :system])
+      |> JS.hide(to: "#custom-themes")}
+    >
+      <span><#Icon outline="ComputerDesktop" class="w-4 h-4" /></span>
+      <span class="">{l("System")}</span>
+    </button>
+
+    <button
+      phx-click={JS.push("Bonfire.Common.Settings:put_theme",
+        value: %{keys: "ui:theme:preferred", values: :custom, scope: @scope}
+      )
+      |> JS.remove_class("btn-primary", to: "#dark-button")
+      |> JS.remove_class("btn-primary", to: "#light-button")
+      |> JS.remove_class("btn-primary", to: "#system-button")
+      |> JS.add_class("btn-primary", to: "#custom-button")
+      |> JS.hide(to: "#dark-themes")
+      |> JS.hide(to: "#light-themes")
+      |> JS.toggle(to: "#custom-themes")}
       id="custom-button"
       type="button"
       class={"btn flex-1 #{if @preferred == :custom, do: "btn-primary"}"}
@@ -76,8 +79,6 @@
 
   <div>
     <div id="dark-themes" class={if @preferred not in [:dark, :system], do: "hidden"}>
-      
-      
       <div class="shadow-xl rounded-box border bg-base-200 border-base-content/5 p-4 mt-4">
         <div class="mb-4 text-sm font-semibold text-base-content/70">{l("Select the active  dark theme")}</div>
         <Bonfire.UI.Common.ChangeThemeLive
@@ -90,7 +91,6 @@
       </div>
     </div>
     <div id="light-themes" class={if @preferred not in [:light, :system], do: "hidden"}>
-
       <div class="shadow-xl rounded-box border bg-base-200 border-base-content/5 p-4 mt-4">
         <div class="mb-4 text-sm font-semibold text-base-content/70">{l("Select the active light theme")}</div>
         <Bonfire.UI.Common.ChangeThemeLive
@@ -100,11 +100,14 @@
           themes={@themes_light}
           scope={@scope}
         />
+      </div>
     </div>
   </div>
-  </div>
 
-  <div id="custom-themes" class={"shadow-xl rounded-box border bg-base-200 border-base-content/5 p-4 mt-4 #{if @preferred != :custom, do: "hidden"}"}>
+  <div
+    id="custom-themes"
+    class={"shadow-xl rounded-box border bg-base-200 border-base-content/5 p-4 mt-4 #{if @preferred != :custom, do: "hidden"}"}
+  >
     <div class="flex items-center gap-2 pb-3 mb-5 text-sm font-semibold border-b place-content-center border-base-content/10">
       <#Icon iconify="fluent:paint-brush-20-filled" class="w-4 h-4" />
       <span class="">{l("Customise your theme")}</span>
@@ -120,162 +123,393 @@
       </div>
     </div>
 
+    <div class="bg-base-100 flex w-full shrink-0 flex-col items-center gap-4 p-6 pb-20 md:sticky md:top-16 md:h-[calc(100vh-4rem)] md:items-start md:overflow-y-scroll lg:items-stretch max-md:hidden">
+      <!-- Change Colors Section -->
+      <h3 class="divider divider-start text-xs">
+        <span class="flex gap-1.5">
+          <svg
+            class="opacity-40"
+            width="16"
+            height="16"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M37 37C39.2091 37 41 35.2091 41 33C41 31.5272 39.6667 29.5272 37 27C34.3333 29.5272 33 31.5272 33 33C33 35.2091 34.7909 37 37 37Z"
+              fill="currentColor"
+            />
+            <path
+              d="M20.8535 5.50439L24.389 9.03993"
+              stroke="currentColor"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+            <path
+              d="M23.6818 8.33281L8.12549 23.8892L19.4392 35.2029L34.9955 19.6465L23.6818 8.33281Z"
+              stroke="currentColor"
+              stroke-width="4"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M12 20.0732L28.961 25.6496"
+              stroke="currentColor"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+          </svg>
+          Change Colors
+        </span>
+      </h3>
 
-
-<div class="bg-base-100 flex w-full shrink-0 flex-col items-center gap-4 p-6 pb-20 md:sticky md:top-16 md:h-[calc(100vh-4rem)] md:items-start md:overflow-y-scroll lg:items-stretch max-md:hidden">   
-
-    <!-- Change Colors Section -->
-    <h3 class="divider divider-start text-xs">
-      <span class="flex gap-1.5">
-        <svg class="opacity-40" width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M37 37C39.2091 37 41 35.2091 41 33C41 31.5272 39.6667 29.5272 37 27C34.3333 29.5272 33 31.5272 33 33C33 35.2091 34.7909 37 37 37Z" fill="currentColor"></path>
-          <path d="M20.8535 5.50439L24.389 9.03993" stroke="currentColor" stroke-width="4" stroke-linecap="round"></path>
-          <path d="M23.6818 8.33281L8.12549 23.8892L19.4392 35.2029L34.9955 19.6465L23.6818 8.33281Z" stroke="currentColor" stroke-width="4" stroke-linejoin="round"></path>
-          <path d="M12 20.0732L28.961 25.6496" stroke="currentColor" stroke-width="4" stroke-linecap="round"></path>
-        </svg>
-        Change Colors
-      </span>
-    </h3>
-
-    <!-- Color Grid -->
-    <div class="grid w-fit grid-cols-4 gap-4">
-      <!-- Base Colors -->
-      <div class="flex flex-col gap-1 col-span-4">
-        <div class="flex gap-4">
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2" aria-label="Choose --color-base-100: oklch(98% 0 0)" title="--color-base-100: oklch(98% 0 0)" style="color: oklch(0.9 0.182 98.111); background-color: oklch(0.98 0 0);">100</button>
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2" aria-label="Choose --color-base-200: oklch(97% 0 0)" title="--color-base-200: oklch(97% 0 0)" style="color: oklch(0.9 0.182 98.111); background-color: oklch(0.97 0 0);">200</button>
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2" aria-label="Choose --color-base-300: oklch(92% 0 0)" title="--color-base-300: oklch(92% 0 0)" style="color: oklch(0.9 0.182 98.111); background-color: oklch(0.92 0 0);">300</button>
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl" aria-label="Choose --color-base-content: oklch(90% 0.182 98.111)" title="--color-base-content: oklch(90% 0.182 98.111)" style="color: oklch(0.9 0.182 98.111); background-color: oklch(0.98 0 0);">A</button>
+      <!-- Color Grid -->
+      <div class="grid w-fit grid-cols-4 gap-4">
+        <!-- Base Colors -->
+        <div class="flex flex-col gap-1 col-span-4">
+          <div class="flex gap-4">
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
+              aria-label="Choose --color-base-100: oklch(98% 0 0)"
+              title="--color-base-100: oklch(98% 0 0)"
+              style="color: oklch(0.9 0.182 98.111); background-color: oklch(0.98 0 0);"
+            >100</button>
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
+              aria-label="Choose --color-base-200: oklch(97% 0 0)"
+              title="--color-base-200: oklch(97% 0 0)"
+              style="color: oklch(0.9 0.182 98.111); background-color: oklch(0.97 0 0);"
+            >200</button>
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
+              aria-label="Choose --color-base-300: oklch(92% 0 0)"
+              title="--color-base-300: oklch(92% 0 0)"
+              style="color: oklch(0.9 0.182 98.111); background-color: oklch(0.92 0 0);"
+            >300</button>
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
+              aria-label="Choose --color-base-content: oklch(90% 0.182 98.111)"
+              title="--color-base-content: oklch(90% 0.182 98.111)"
+              style="color: oklch(0.9 0.182 98.111); background-color: oklch(0.98 0 0);"
+            >A</button>
+          </div>
+          <div class="text-base-content/60 text-xs">base</div>
         </div>
-        <div class="text-base-content/60 text-xs">base</div>
+
+        <!-- Primary Colors -->
+        <div class="flex flex-col gap-1 col-span-2">
+          <div class="flex gap-4">
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
+              aria-label="Choose --color-primary: oklch(62% 0.194 149.214)"
+              title="--color-primary: oklch(62% 0.194 149.214)"
+              style="color: oklch(0.98 0.018 155.826); background-color: oklch(0.62 0.194 149.214);"
+            />
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
+              aria-label="Choose --color-primary-content: oklch(98% 0.018 155.826)"
+              title="--color-primary-content: oklch(98% 0.018 155.826)"
+              style="color: oklch(0.98 0.018 155.826); background-color: oklch(0.62 0.194 149.214);"
+            >A</button>
+          </div>
+          <div class="text-base-content/60 text-xs">primary</div>
+        </div>
+
+        <!-- Secondary Colors -->
+        <div class="flex flex-col gap-1 col-span-2">
+          <div class="flex gap-4">
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
+              aria-label="Choose --color-secondary: oklch(55% 0.288 302.321)"
+              title="--color-secondary: oklch(55% 0.288 302.321)"
+              style="color: oklch(0.97 0.014 308.299); background-color: oklch(0.55 0.288 302.321);"
+            />
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
+              aria-label="Choose --color-secondary-content: oklch(97% 0.014 308.299)"
+              title="--color-secondary-content: oklch(97% 0.014 308.299)"
+              style="color: oklch(0.97 0.014 308.299); background-color: oklch(0.55 0.288 302.321);"
+            >A</button>
+          </div>
+          <div class="text-base-content/60 text-xs">secondary</div>
+        </div>
+
+        <!-- Accent Colors -->
+        <div class="flex flex-col gap-1 col-span-2">
+          <div class="flex gap-4">
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
+              aria-label="Choose --color-accent: oklch(51% 0.262 276.966)"
+              title="--color-accent: oklch(51% 0.262 276.966)"
+              style="color: oklch(0.96 0.018 272.314); background-color: oklch(0.51 0.262 276.966);"
+            />
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
+              aria-label="Choose --color-accent-content: oklch(96% 0.018 272.314)"
+              title="--color-accent-content: oklch(96% 0.018 272.314)"
+              style="color: oklch(0.96 0.018 272.314); background-color: oklch(0.51 0.262 276.966);"
+            >A</button>
+          </div>
+          <div class="text-base-content/60 text-xs">accent</div>
+        </div>
+
+        <!-- Neutral Colors -->
+        <div class="flex flex-col gap-1 col-span-2">
+          <div class="flex gap-4">
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
+              aria-label="Choose --color-neutral: oklch(37% 0 0)"
+              title="--color-neutral: oklch(37% 0 0)"
+              style="color: oklch(0.98 0 0); background-color: oklch(0.37 0 0);"
+            />
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
+              aria-label="Choose --color-neutral-content: oklch(98% 0 0)"
+              title="--color-neutral-content: oklch(98% 0 0)"
+              style="color: oklch(0.98 0 0); background-color: oklch(0.37 0 0);"
+            >A</button>
+          </div>
+          <div class="text-base-content/60 text-xs">neutral</div>
+        </div>
+
+        <!-- Info Colors -->
+        <div class="flex flex-col gap-1 col-span-2">
+          <div class="flex gap-4">
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
+              aria-label="Choose --color-info: oklch(78% 0.154 211.53)"
+              title="--color-info: oklch(78% 0.154 211.53)"
+              style="color: oklch(0.3 0.056 229.695); background-color: oklch(0.78 0.154 211.53);"
+            />
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
+              aria-label="Choose --color-info-content: oklch(30% 0.056 229.695)"
+              title="--color-info-content: oklch(30% 0.056 229.695)"
+              style="color: oklch(0.3 0.056 229.695); background-color: oklch(0.78 0.154 211.53);"
+            >A</button>
+          </div>
+          <div class="text-base-content/60 text-xs">info</div>
+        </div>
+
+        <!-- Success Colors -->
+        <div class="flex flex-col gap-1 col-span-2">
+          <div class="flex gap-4">
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
+              aria-label="Choose --color-success: oklch(79% 0.209 151.711)"
+              title="--color-success: oklch(79% 0.209 151.711)"
+              style="color: oklch(0.26 0.065 152.934); background-color: oklch(0.79 0.209 151.711);"
+            />
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
+              aria-label="Choose --color-success-content: oklch(26% 0.065 152.934)"
+              title="--color-success-content: oklch(26% 0.065 152.934)"
+              style="color: oklch(0.26 0.065 152.934); background-color: oklch(0.79 0.209 151.711);"
+            >A</button>
+          </div>
+          <div class="text-base-content/60 text-xs">success</div>
+        </div>
+
+        <!-- Warning Colors -->
+        <div class="flex flex-col gap-1 col-span-2">
+          <div class="flex gap-4">
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
+              aria-label="Choose --color-warning: oklch(85% 0.199 91.936)"
+              title="--color-warning: oklch(85% 0.199 91.936)"
+              style="color: oklch(0.28 0.066 53.813); background-color: oklch(0.85 0.199 91.936);"
+            />
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
+              aria-label="Choose --color-warning-content: oklch(28% 0.066 53.813)"
+              title="--color-warning-content: oklch(28% 0.066 53.813)"
+              style="color: oklch(0.28 0.066 53.813); background-color: oklch(0.85 0.199 91.936);"
+            >A</button>
+          </div>
+          <div class="text-base-content/60 text-xs">warning</div>
+        </div>
+
+        <!-- Error Colors -->
+        <div class="flex flex-col gap-1 col-span-2">
+          <div class="flex gap-4">
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
+              aria-label="Choose --color-error: oklch(71% 0.194 13.428)"
+              title="--color-error: oklch(71% 0.194 13.428)"
+              style="color: oklch(0.27 0.105 12.094); background-color: oklch(0.71 0.194 13.428);"
+            />
+            <button
+              type="button"
+              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
+              aria-label="Choose --color-error-content: oklch(27% 0.105 12.094)"
+              title="--color-error-content: oklch(27% 0.105 12.094)"
+              style="color: oklch(0.27 0.105 12.094); background-color: oklch(0.71 0.194 13.428);"
+            >A</button>
+          </div>
+          <div class="text-base-content/60 text-xs">error</div>
+        </div>
       </div>
 
-      <!-- Primary Colors -->
-      <div class="flex flex-col gap-1 col-span-2">
-        <div class="flex gap-4">
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2" aria-label="Choose --color-primary: oklch(62% 0.194 149.214)" title="--color-primary: oklch(62% 0.194 149.214)" style="color: oklch(0.98 0.018 155.826); background-color: oklch(0.62 0.194 149.214);"></button>
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl" aria-label="Choose --color-primary-content: oklch(98% 0.018 155.826)" title="--color-primary-content: oklch(98% 0.018 155.826)" style="color: oklch(0.98 0.018 155.826); background-color: oklch(0.62 0.194 149.214);">A</button>
-        </div>
-        <div class="text-base-content/60 text-xs">primary</div>
-      </div>
+      <!-- Radius Section -->
+      <h3 class="divider divider-start text-xs">
+        <span class="flex gap-1.5">
+          <svg
+            class="opacity-40"
+            width="16"
+            height="16"
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M24 42V27M42 24H27"
+              stroke="currentColor"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <circle
+              cx="24"
+              cy="24"
+              r="3"
+              stroke="currentColor"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M42 6H24C14.0589 6 6 14.0589 6 24V42"
+              stroke="currentColor"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Radius
+        </span>
+      </h3>
 
-      <!-- Secondary Colors -->
-      <div class="flex flex-col gap-1 col-span-2">
-        <div class="flex gap-4">
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2" aria-label="Choose --color-secondary: oklch(55% 0.288 302.321)" title="--color-secondary: oklch(55% 0.288 302.321)" style="color: oklch(0.97 0.014 308.299); background-color: oklch(0.55 0.288 302.321);"></button>
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl" aria-label="Choose --color-secondary-content: oklch(97% 0.014 308.299)" title="--color-secondary-content: oklch(97% 0.014 308.299)" style="color: oklch(0.97 0.014 308.299); background-color: oklch(0.55 0.288 302.321);">A</button>
+      <!-- Box Radius -->
+      <div class="w-full max-w-fit">
+        <div class="mb-2 flex flex-col" id="--radius-box-group">
+          <span class="text-base-content/70 text-[0.6875rem]">Boxes</span>
+          <span class="text-base-content/40 text-[0.625rem] italic">card, modal, alert</span>
         </div>
-        <div class="text-base-content/60 text-xs">secondary</div>
-      </div>
-
-      <!-- Accent Colors -->
-      <div class="flex flex-col gap-1 col-span-2">
-        <div class="flex gap-4">
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2" aria-label="Choose --color-accent: oklch(51% 0.262 276.966)" title="--color-accent: oklch(51% 0.262 276.966)" style="color: oklch(0.96 0.018 272.314); background-color: oklch(0.51 0.262 276.966);"></button>
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl" aria-label="Choose --color-accent-content: oklch(96% 0.018 272.314)" title="--color-accent-content: oklch(96% 0.018 272.314)" style="color: oklch(0.96 0.018 272.314); background-color: oklch(0.51 0.262 276.966);">A</button>
+        <div class="flex gap-2" role="radiogroup" aria-labelledby="--radius-box-group">
+          <label
+            class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2"
+            title="0rem"
+          >
+            <input
+              type="radio"
+              class="sr-only"
+              name="--radius-box"
+              value="0rem"
+              aria-label="0rem border radius"
+            />
+            <div class="pe-3 pt-2" aria-hidden="true">
+              <div
+                class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 bg-base-300"
+                style="border-start-end-radius:0rem"
+              />
+            </div>
+          </label>
+          <label
+            class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2"
+            title="0.25rem"
+          >
+            <input
+              type="radio"
+              class="sr-only"
+              name="--radius-box"
+              value="0.25rem"
+              aria-label="0.25rem border radius"
+            />
+            <div class="pe-3 pt-2" aria-hidden="true">
+              <div
+                class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 bg-base-300"
+                style="border-start-end-radius:0.25rem"
+              />
+            </div>
+          </label>
+          <label
+            class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2"
+            title="0.5rem"
+          >
+            <input
+              type="radio"
+              class="sr-only"
+              name="--radius-box"
+              value="0.5rem"
+              aria-label="0.5rem border radius"
+            />
+            <div class="pe-3 pt-2" aria-hidden="true">
+              <div
+                class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 bg-base-300"
+                style="border-start-end-radius:0.5rem"
+              />
+            </div>
+          </label>
+          <label
+            class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2"
+            title="1rem"
+          >
+            <input
+              type="radio"
+              class="sr-only"
+              name="--radius-box"
+              value="1rem"
+              aria-label="1rem border radius"
+              checked
+            />
+            <div class="pe-3 pt-2" aria-hidden="true">
+              <div
+                class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 border-primary"
+                style="border-start-end-radius:1rem"
+              />
+            </div>
+          </label>
+          <label
+            class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2"
+            title="2rem"
+          >
+            <input
+              type="radio"
+              class="sr-only"
+              name="--radius-box"
+              value="2rem"
+              aria-label="2rem border radius"
+            />
+            <div class="pe-3 pt-2" aria-hidden="true">
+              <div
+                class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 bg-base-300"
+                style="border-start-end-radius:2rem"
+              />
+            </div>
+          </label>
         </div>
-        <div class="text-base-content/60 text-xs">accent</div>
-      </div>
-
-      <!-- Neutral Colors -->
-      <div class="flex flex-col gap-1 col-span-2">
-        <div class="flex gap-4">
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2" aria-label="Choose --color-neutral: oklch(37% 0 0)" title="--color-neutral: oklch(37% 0 0)" style="color: oklch(0.98 0 0); background-color: oklch(0.37 0 0);"></button>
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl" aria-label="Choose --color-neutral-content: oklch(98% 0 0)" title="--color-neutral-content: oklch(98% 0 0)" style="color: oklch(0.98 0 0); background-color: oklch(0.37 0 0);">A</button>
-        </div>
-        <div class="text-base-content/60 text-xs">neutral</div>
-      </div>
-
-      <!-- Info Colors -->
-      <div class="flex flex-col gap-1 col-span-2">
-        <div class="flex gap-4">
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2" aria-label="Choose --color-info: oklch(78% 0.154 211.53)" title="--color-info: oklch(78% 0.154 211.53)" style="color: oklch(0.3 0.056 229.695); background-color: oklch(0.78 0.154 211.53);"></button>
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl" aria-label="Choose --color-info-content: oklch(30% 0.056 229.695)" title="--color-info-content: oklch(30% 0.056 229.695)" style="color: oklch(0.3 0.056 229.695); background-color: oklch(0.78 0.154 211.53);">A</button>
-        </div>
-        <div class="text-base-content/60 text-xs">info</div>
-      </div>
-
-      <!-- Success Colors -->
-      <div class="flex flex-col gap-1 col-span-2">
-        <div class="flex gap-4">
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2" aria-label="Choose --color-success: oklch(79% 0.209 151.711)" title="--color-success: oklch(79% 0.209 151.711)" style="color: oklch(0.26 0.065 152.934); background-color: oklch(0.79 0.209 151.711);"></button>
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl" aria-label="Choose --color-success-content: oklch(26% 0.065 152.934)" title="--color-success-content: oklch(26% 0.065 152.934)" style="color: oklch(0.26 0.065 152.934); background-color: oklch(0.79 0.209 151.711);">A</button>
-        </div>
-        <div class="text-base-content/60 text-xs">success</div>
-      </div>
-
-      <!-- Warning Colors -->
-      <div class="flex flex-col gap-1 col-span-2">
-        <div class="flex gap-4">
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2" aria-label="Choose --color-warning: oklch(85% 0.199 91.936)" title="--color-warning: oklch(85% 0.199 91.936)" style="color: oklch(0.28 0.066 53.813); background-color: oklch(0.85 0.199 91.936);"></button>
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl" aria-label="Choose --color-warning-content: oklch(28% 0.066 53.813)" title="--color-warning-content: oklch(28% 0.066 53.813)" style="color: oklch(0.28 0.066 53.813); background-color: oklch(0.85 0.199 91.936);">A</button>
-        </div>
-        <div class="text-base-content/60 text-xs">warning</div>
-      </div>
-
-      <!-- Error Colors -->
-      <div class="flex flex-col gap-1 col-span-2">
-        <div class="flex gap-4">
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2" aria-label="Choose --color-error: oklch(71% 0.194 13.428)" title="--color-error: oklch(71% 0.194 13.428)" style="color: oklch(0.27 0.105 12.094); background-color: oklch(0.71 0.194 13.428);"></button>
-          <button type="button" class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl" aria-label="Choose --color-error-content: oklch(27% 0.105 12.094)" title="--color-error-content: oklch(27% 0.105 12.094)" style="color: oklch(0.27 0.105 12.094); background-color: oklch(0.71 0.194 13.428);">A</button>
-        </div>
-        <div class="text-base-content/60 text-xs">error</div>
       </div>
     </div>
-
-    <!-- Radius Section -->
-    <h3 class="divider divider-start text-xs">
-      <span class="flex gap-1.5">
-        <svg class="opacity-40" width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M24 42V27M42 24H27" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
-          <circle cx="24" cy="24" r="3" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></circle>
-          <path d="M42 6H24C14.0589 6 6 14.0589 6 24V42" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-        Radius
-      </span>
-    </h3>
-
-    <!-- Box Radius -->
-    <div class="w-full max-w-fit">
-      <div class="mb-2 flex flex-col" id="--radius-box-group">
-        <span class="text-base-content/70 text-[0.6875rem]">Boxes</span>
-        <span class="text-base-content/40 text-[0.625rem] italic">card, modal, alert</span>
-      </div>
-      <div class="flex gap-2" role="radiogroup" aria-labelledby="--radius-box-group">
-        <label class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2" title="0rem">
-          <input type="radio" class="sr-only" name="--radius-box" value="0rem" aria-label="0rem border radius">
-          <div class="pe-3 pt-2" aria-hidden="true">
-            <div class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 bg-base-300" style="border-start-end-radius:0rem"></div>
-          </div>
-        </label>
-        <label class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2" title="0.25rem">
-          <input type="radio" class="sr-only" name="--radius-box" value="0.25rem" aria-label="0.25rem border radius">
-          <div class="pe-3 pt-2" aria-hidden="true">
-            <div class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 bg-base-300" style="border-start-end-radius:0.25rem"></div>
-          </div>
-        </label>
-        <label class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2" title="0.5rem">
-          <input type="radio" class="sr-only" name="--radius-box" value="0.5rem" aria-label="0.5rem border radius">
-          <div class="pe-3 pt-2" aria-hidden="true">
-            <div class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 bg-base-300" style="border-start-end-radius:0.5rem"></div>
-          </div>
-        </label>
-        <label class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2" title="1rem">
-          <input type="radio" class="sr-only" name="--radius-box" value="1rem" aria-label="1rem border radius" checked>
-          <div class="pe-3 pt-2" aria-hidden="true">
-            <div class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 border-primary" style="border-start-end-radius:1rem"></div>
-          </div>
-        </label>
-        <label class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2" title="2rem">
-          <input type="radio" class="sr-only" name="--radius-box" value="2rem" aria-label="2rem border radius">
-          <div class="pe-3 pt-2" aria-hidden="true">
-            <div class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 bg-base-300" style="border-start-end-radius:2rem"></div>
-          </div>
-        </label>
-      </div>
-    </div>
-
-</div>
 
     <div class="grid grid-cols-1 gap-3 py-3">
       <div
@@ -296,8 +530,11 @@
           <label phx-click={JS.toggle(to: "#color-picker-#{key}")} class="flex items-baseline gap-2">
             <hex-input color={colour} />
           </label>
-          <hex-color-picker id={"color-picker-#{key}"} class="z-[999999] right-0 hidden" 
-                           phx-click-away={JS.hide(to: "#color-picker-#{key}")} />
+          <hex-color-picker
+            id={"color-picker-#{key}"}
+            class="z-[999999] right-0 hidden"
+            phx-click-away={JS.hide(to: "#color-picker-#{key}")}
+          />
         </div>
       </div>
     </div>

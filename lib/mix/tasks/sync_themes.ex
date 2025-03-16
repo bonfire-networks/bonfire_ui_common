@@ -7,9 +7,11 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
   @custom_themes_path "extensions/bonfire_ui_common/assets/css/custom_themes.css"
   @daisyui_config_pattern ~r/@plugin "daisyui" \{[^}]*\}/s
   @config_paths [
-    "config/bonfire_ui_common.exs"  # Project root config
+    # Project root config
+    "config/bonfire_ui_common.exs"
   ]
-  @debug false  # Set to true for more verbose debugging
+  # Set to true for more verbose debugging
+  @debug false
 
   def run(args) do
     # Check for --debug flag
@@ -25,10 +27,15 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     dark_themes = get_themes_from_config(config, :themes_dark)
     custom_themes = get_custom_themes_from_config(config)
 
-    Mix.shell().info("Found #{length(light_themes)} light themes, #{length(dark_themes)} dark themes, and #{length(custom_themes)} custom themes")
+    Mix.shell().info(
+      "Found #{length(light_themes)} light themes, #{length(dark_themes)} dark themes, and #{length(custom_themes)} custom themes"
+    )
 
     if Enum.empty?(light_themes) and Enum.empty?(dark_themes) and Enum.empty?(custom_themes) do
-      Mix.shell().error("No themes found in configuration! Check your bonfire_ui_common.exs file.")
+      Mix.shell().error(
+        "No themes found in configuration! Check your bonfire_ui_common.exs file."
+      )
+
       exit({:shutdown, 1})
     end
 
@@ -44,8 +51,9 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     """
 
     # Generate custom theme configurations
-    custom_theme_configs = Enum.map(custom_themes, &generate_custom_theme_config/1)
-                         |> Enum.join("\n\n")
+    custom_theme_configs =
+      Enum.map(custom_themes, &generate_custom_theme_config/1)
+      |> Enum.join("\n\n")
 
     # Update CSS file
     update_css_file(new_daisyui_config, custom_theme_configs)
@@ -68,7 +76,9 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
         Regex.scan(~r/"([^"]+)"/, list)
         |> Enum.map(fn [_, value] -> value end)
         |> Enum.reject(&is_nil/1)
-      nil -> []
+
+      nil ->
+        []
     end
   end
 
@@ -79,7 +89,9 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
         # Parse the theme block directly since it's a single nested list
         [parse_theme_block(list)]
         |> Enum.reject(&is_nil/1)
-      nil -> []
+
+      nil ->
+        []
     end
   end
 
@@ -89,15 +101,18 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     case Regex.run(~r/name:\s*"([^"]+)"/, block) do
       [_, name] ->
         # Then parse other attributes
-        attrs = Regex.scan(~r/(?:\"?([^"]+)\"?:|(\w+(?:-\w+)?):)\s*"?([^"\],]+)"?/, block)
-        |> Enum.map(fn
-          [_, quoted_key, "", value] -> {String.to_atom(quoted_key), String.trim(value, ", ")}
-          [_, "", key, value] -> {String.to_atom(key), String.trim(value, ", ")}
-        end)
-        |> Enum.into(%{})
+        attrs =
+          Regex.scan(~r/(?:\"?([^"]+)\"?:|(\w+(?:-\w+)?):)\s*"?([^"\],]+)"?/, block)
+          |> Enum.map(fn
+            [_, quoted_key, "", value] -> {String.to_atom(quoted_key), String.trim(value, ", ")}
+            [_, "", key, value] -> {String.to_atom(key), String.trim(value, ", ")}
+          end)
+          |> Enum.into(%{})
 
         Map.put(attrs, :name, name)
-      nil -> nil
+
+      nil ->
+        nil
     end
   end
 
@@ -211,6 +226,7 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     case File.write(@app_css_path, updated_css) do
       :ok ->
         Mix.shell().info("DaisyUI theme configuration updated in main CSS!")
+
       {:error, reason} ->
         Mix.shell().error("Failed to write updated main CSS file: #{inspect(reason)}")
         exit({:shutdown, 1})
@@ -220,6 +236,7 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     case File.write(@custom_themes_path, custom_themes_content) do
       :ok ->
         Mix.shell().info("Custom themes successfully synchronized to #{@custom_themes_path}!")
+
       {:error, reason} ->
         Mix.shell().error("Failed to write custom themes file: #{inspect(reason)}")
         exit({:shutdown, 1})

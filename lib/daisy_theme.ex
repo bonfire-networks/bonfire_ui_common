@@ -32,26 +32,46 @@ defmodule DaisyTheme do
 
   # Using hex color defaults
   @default_theme %{
-    "color-primary" => "#1D4ED8",        # Blue
-    "color-primary-content" => "#FFFFFF", # White
-    "color-secondary" => "#9333EA",      # Purple
-    "color-secondary-content" => "#FFFFFF", # White
-    "color-accent" => "#10B981",         # Green
-    "color-accent-content" => "#FFFFFF", # White
-    "color-neutral" => "#1F2937",        # Dark gray
-    "color-neutral-content" => "#FFFFFF", # White
-    "color-base-100" => "#FFFFFF",       # White
-    "color-base-200" => "#F3F4F6",       # Light gray
-    "color-base-300" => "#E5E7EB",       # Lighter gray
-    "color-base-content" => "#1F2937",   # Dark gray
-    "color-info" => "#0EA5E9",           # Info blue
-    "color-info-content" => "#FFFFFF",   # White
-    "color-success" => "#10B981",        # Success green
-    "color-success-content" => "#FFFFFF", # White
-    "color-warning" => "#F59E0B",        # Warning yellow
-    "color-warning-content" => "#1F2937", # Dark gray
-    "color-error" => "#EF4444",          # Error red
-    "color-error-content" => "#FFFFFF",  # White
+    # Blue
+    "color-primary" => "#1D4ED8",
+    # White
+    "color-primary-content" => "#FFFFFF",
+    # Purple
+    "color-secondary" => "#9333EA",
+    # White
+    "color-secondary-content" => "#FFFFFF",
+    # Green
+    "color-accent" => "#10B981",
+    # White
+    "color-accent-content" => "#FFFFFF",
+    # Dark gray
+    "color-neutral" => "#1F2937",
+    # White
+    "color-neutral-content" => "#FFFFFF",
+    # White
+    "color-base-100" => "#FFFFFF",
+    # Light gray
+    "color-base-200" => "#F3F4F6",
+    # Lighter gray
+    "color-base-300" => "#E5E7EB",
+    # Dark gray
+    "color-base-content" => "#1F2937",
+    # Info blue
+    "color-info" => "#0EA5E9",
+    # White
+    "color-info-content" => "#FFFFFF",
+    # Success green
+    "color-success" => "#10B981",
+    # White
+    "color-success-content" => "#FFFFFF",
+    # Warning yellow
+    "color-warning" => "#F59E0B",
+    # Dark gray
+    "color-warning-content" => "#1F2937",
+    # Error red
+    "color-error" => "#EF4444",
+    # White
+    "color-error-content" => "#FFFFFF",
     "radius-selector" => "1rem",
     "radius-field" => "0.25rem",
     "radius-box" => "0.5rem",
@@ -76,7 +96,8 @@ defmodule DaisyTheme do
       theme,
       fn {key, colour} ->
         case Enum.find(keys, &(&1.name == key)) do
-          nil -> []  # Skip keys that don't match our defined keys
+          # Skip keys that don't match our defined keys
+          nil -> []
           found -> [Map.put(found, :value, colour)]
         end
       end
@@ -85,30 +106,32 @@ defmodule DaisyTheme do
 
   def style_attr(config \\ %{}) do
     generate(config)
-    |> Enum.map(
-      fn %{
-           variable: variable,
-           value: value
-         } ->
-        # Format the value based on its type
-        formatted_value = format_value(value)
-        "#{variable}: #{formatted_value};"
-      end
-    )
+    |> Enum.map(fn %{
+                     variable: variable,
+                     value: value
+                   } ->
+      # Format the value based on its type
+      formatted_value = format_value(value)
+      "#{variable}: #{formatted_value};"
+    end)
     |> Enum.join(" ")
   end
 
   # Format values for CSS
   defp format_value(value) when is_binary(value), do: value
+
   defp format_value(value) when is_integer(value) do
     # Convert integer to hex string if it looks like a color
-    if value <= 16777215 do  # Maximum value for a 24-bit color (0xFFFFFF)
+    # Maximum value for a 24-bit color (0xFFFFFF)
+    if value <= 16_777_215 do
       "#" <> String.pad_leading(Integer.to_string(value, 16), 6, "0")
     else
       Integer.to_string(value)
     end
   end
+
   defp format_value(value) when is_float(value), do: Float.to_string(value)
   defp format_value(value) when is_atom(value), do: Atom.to_string(value)
-  defp format_value(_), do: "#000000" # Default for unsupported types
+  # Default for unsupported types
+  defp format_value(_), do: "#000000"
 end
