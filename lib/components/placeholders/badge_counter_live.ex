@@ -1,7 +1,6 @@
 defmodule Bonfire.UI.Common.BadgeCounterLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
-
   prop counter_class, :css_class, default: ""
 
   prop count, :integer, default: 0
