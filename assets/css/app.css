@@ -8,6 +8,7 @@
 /* Fix path to correctly match extensions in the project */
 @source "../../../*/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
 @source "../../../*/lib/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../lib/*.{leex,heex,sface,_live.ex,_view.ex}";
 @source "../../lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
 @source "../../../../deps/*/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
 @source "../../../config/current_flavour/assets/components.css";
