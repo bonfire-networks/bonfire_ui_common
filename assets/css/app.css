@@ -64,6 +64,10 @@
 }
 
 
+hex-input::part(input) {
+  @apply input;
+}
+
 .menu {
   & :where(li ul) {
       &:before {

@@ -2,7 +2,6 @@
   <div class="mb-3 text-sm font-semibold text-base-content/70">{l("Colour mode")}</div>
   <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
     {!-- DARK --}
-
     <button
       id="dark-button"
       class={"btn flex-1 #{if @preferred in [:dark], do: "btn-primary"}"}
@@ -10,9 +9,9 @@
         value: %{keys: "ui:theme:preferred", values: :dark, scope: @scope}
       )
       |> JS.add_class("btn-primary", to: "#dark-button")
-      |> JS.remove_class("bg-base-content text-base-100", to: "#light-button")
-      |> JS.remove_class("bg-base-content text-base-100", to: "#system-button")
-      |> JS.remove_class("bg-base-content text-base-100", to: "#custom-button")
+      |> JS.remove_class("btn-primary", to: "#light-button")
+      |> JS.remove_class("btn-primary", to: "#system-button")
+      |> JS.remove_class("btn-primary", to: "#custom-button")
       |> JS.show(to: "#dark-themes")
       |> JS.hide(to: "#light-themes")
       |> JS.hide(to: "#custom-themes")}
@@ -79,8 +78,8 @@
 
   <div>
     <div id="dark-themes" class={if @preferred not in [:dark, :system], do: "hidden"}>
-      <div class="shadow-xl rounded-box border bg-base-200 border-base-content/5 p-4 mt-4">
-        <div class="mb-4 text-sm font-semibold text-base-content/70">{l("Select the active  dark theme")}</div>
+      <div class="shadow rounded-md border bg-base-200 border-base-content/5 p-4 mt-4">
+        <div class="mb-4 text-sm font-semibold text-base-content/70">{l("Select the active dark theme")}</div>
         <Bonfire.UI.Common.ChangeThemeLive
           label={l("Dark theme")}
           key="instance_theme"
@@ -91,7 +90,7 @@
       </div>
     </div>
     <div id="light-themes" class={if @preferred not in [:light, :system], do: "hidden"}>
-      <div class="shadow-xl rounded-box border bg-base-200 border-base-content/5 p-4 mt-4">
+      <div class="shadow rounded-md border bg-base-200 border-base-content/5 p-4 mt-4">
         <div class="mb-4 text-sm font-semibold text-base-content/70">{l("Select the active light theme")}</div>
         <Bonfire.UI.Common.ChangeThemeLive
           label={l("Light theme")}
@@ -106,437 +105,1059 @@
 
   <div
     id="custom-themes"
-    class={"shadow-xl rounded-box border bg-base-200 border-base-content/5 p-4 mt-4 #{if @preferred != :custom, do: "hidden"}"}
+    class={"shadow rounded-md border bg-base-200 border-base-content/5 p-4 mt-4 #{if @preferred != :custom, do: "hidden"}"}
+    data-scope={@scope}
   >
-    <div class="flex items-center gap-2 pb-3 mb-5 text-sm font-semibold border-b place-content-center border-base-content/10">
-      <#Icon iconify="fluent:paint-brush-20-filled" class="w-4 h-4" />
-      <span class="">{l("Customise your theme")}</span>
+    <div class="mb-4 flex items-center gap-2">
+      <#Icon iconify="fluent:paint-brush-20-filled" class="w-5 h-5 text-primary" />
+      <span class="text-base font-bold">{l("Customize your theme")}</span>
     </div>
 
     <div :if={@scope == :instance}>
-      <div class="alert alert-info alert-soft" role="alert">
+      <div class="alert alert-info shadow-sm mb-6" role="alert">
         <#Icon solid="InformationCircle" class="w-5 h-5 shrink-0" />
-        <span class="">
+        <span>
           {l(
-            "Caution: Modifying the color palette can potentially affect readability and accessibility for some users. Please consider accessibility guidelines and user testing when making changes."
-          )}</span>
+            "Caution: Modifying the color palette can affect readability and accessibility. Consider accessibility guidelines when making changes."
+          )}
+        </span>
       </div>
     </div>
 
-    <div class="bg-base-100 flex w-full shrink-0 flex-col items-center gap-4 p-6 pb-20 md:sticky md:top-16 md:h-[calc(100vh-4rem)] md:items-start md:overflow-y-scroll lg:items-stretch max-md:hidden">
-      <!-- Change Colors Section -->
-      <h3 class="divider divider-start text-xs">
-        <span class="flex gap-1.5">
-          <svg
-            class="opacity-40"
-            width="16"
-            height="16"
-            viewBox="0 0 48 48"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M37 37C39.2091 37 41 35.2091 41 33C41 31.5272 39.6667 29.5272 37 27C34.3333 29.5272 33 31.5272 33 33C33 35.2091 34.7909 37 37 37Z"
-              fill="currentColor"
-            />
-            <path
-              d="M20.8535 5.50439L24.389 9.03993"
-              stroke="currentColor"
-              stroke-width="4"
-              stroke-linecap="round"
-            />
-            <path
-              d="M23.6818 8.33281L8.12549 23.8892L19.4392 35.2029L34.9955 19.6465L23.6818 8.33281Z"
-              stroke="currentColor"
-              stroke-width="4"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M12 20.0732L28.961 25.6496"
-              stroke="currentColor"
-              stroke-width="4"
-              stroke-linecap="round"
-            />
-          </svg>
-          Change Colors
-        </span>
-      </h3>
+    <div class="space-y-6">
+      <!-- Colors Section -->
+      <section>
+        <h3 class="divider divider-start text-sm mt-6">
+          <span class="flex items-center gap-1.5">
+            <svg
+              class="opacity-60 w-5 h-5"
+              viewBox="0 0 48 48"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M37 37C39.2091 37 41 35.2091 41 33C41 31.5272 39.6667 29.5272 37 27C34.3333 29.5272 33 31.5272 33 33C33 35.2091 34.7909 37 37 37Z"
+                fill="currentColor"
+              />
+              <path
+                d="M20.8535 5.50439L24.389 9.03993"
+                stroke="currentColor"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+              <path
+                d="M23.6818 8.33281L8.12549 23.8892L19.4392 35.2029L34.9955 19.6465L23.6818 8.33281Z"
+                stroke="currentColor"
+                stroke-width="4"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M12 20.0732L28.961 25.6496"
+                stroke="currentColor"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+            </svg>
+            <span class="font-medium">{l("Colors")}</span>
+          </span>
+        </h3>
 
-      <!-- Color Grid -->
-      <div class="grid w-fit grid-cols-4 gap-4">
-        <!-- Base Colors -->
-        <div class="flex flex-col gap-1 col-span-4">
-          <div class="flex gap-4">
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
-              aria-label="Choose --color-base-100: oklch(98% 0 0)"
-              title="--color-base-100: oklch(98% 0 0)"
-              style="color: oklch(0.9 0.182 98.111); background-color: oklch(0.98 0 0);"
-            >100</button>
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
-              aria-label="Choose --color-base-200: oklch(97% 0 0)"
-              title="--color-base-200: oklch(97% 0 0)"
-              style="color: oklch(0.9 0.182 98.111); background-color: oklch(0.97 0 0);"
-            >200</button>
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
-              aria-label="Choose --color-base-300: oklch(92% 0 0)"
-              title="--color-base-300: oklch(92% 0 0)"
-              style="color: oklch(0.9 0.182 98.111); background-color: oklch(0.92 0 0);"
-            >300</button>
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
-              aria-label="Choose --color-base-content: oklch(90% 0.182 98.111)"
-              title="--color-base-content: oklch(90% 0.182 98.111)"
-              style="color: oklch(0.9 0.182 98.111); background-color: oklch(0.98 0 0);"
-            >A</button>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
+          <!-- Base Colors Group -->
+          <div class="col-span-full mb-2">
+            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Base")}</h4>
+            <div class="grid grid-cols-4 gap-2">
+              {#for color <- ["base-100", "base-200", "base-300", "base-content"]}
+                <Bonfire.UI.Common.OpenModalLive
+                  id={"key-#{color}"}
+                  title_text={l("Select color for %{color}", color: String.replace(color, "base-", "Base "))}
+                  no_actions
+                >
+                  <div :hook="ColourPicker" id={"color-#{color}"} class="flex flex-col gap-4 p-2">
+                    <hex-color-picker
+                      class="w-full mt-4"
+                      color={Map.get(
+                        Map.merge(
+                          DaisyTheme.default_theme(),
+                          Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                        ),
+                        "color-#{color}",
+                        "#000000"
+                      )}
+                    />
+                    <div class="flex flex-col gap-2 w-full">
+                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
+                      <div class="flex items-center gap-2">
+                        <div class="colour_preview h-10 w-10 rounded" />
+                        <hex-input
+                          prefixed
+                          class="w-full"
+                          id={"input-#{color}"}
+                          color={Map.get(
+                            Map.merge(
+                              DaisyTheme.default_theme(),
+                              Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                            ),
+                            "color-#{color}",
+                            "#000000"
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                      {l("Apply")}
+                    </button>
+                  </div>
+                  <!-- <div role="alert" class={if @show_explanation, do: "alert text-sm mt-4"}> -->
+                  <:open_btn>
+                    <div
+                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                      style={if String.ends_with?(color, "content"),
+                        do: "background-color: var(--color-base-100); color: var(--color-base-content);",
+                        else: "background-color: var(--color-#{color}); color: var(--color-base-content);"}
+                      data-color={"color-#{color}"}
+                    >
+                      {#if String.ends_with?(color, "content")}
+                        <span class="font-bold text-lg">A</span>
+                      {#else}
+                        <span class="text-xs opacity-70">{String.replace(color, "base-", "")}</span>
+                      {/if}
+                    </div>
+                  </:open_btn>
+                </Bonfire.UI.Common.OpenModalLive>
+              {/for}
+            </div>
           </div>
-          <div class="text-base-content/60 text-xs">base</div>
-        </div>
 
-        <!-- Primary Colors -->
-        <div class="flex flex-col gap-1 col-span-2">
-          <div class="flex gap-4">
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
-              aria-label="Choose --color-primary: oklch(62% 0.194 149.214)"
-              title="--color-primary: oklch(62% 0.194 149.214)"
-              style="color: oklch(0.98 0.018 155.826); background-color: oklch(0.62 0.194 149.214);"
-            />
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
-              aria-label="Choose --color-primary-content: oklch(98% 0.018 155.826)"
-              title="--color-primary-content: oklch(98% 0.018 155.826)"
-              style="color: oklch(0.98 0.018 155.826); background-color: oklch(0.62 0.194 149.214);"
-            >A</button>
+          <!-- Primary & Secondary Colors -->
+          <div class="col-span-2 mb-2">
+            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Primary")}</h4>
+            <div class="grid grid-cols-2 gap-2">
+              {#for color <- ["primary", "primary-content"]}
+                <Bonfire.UI.Common.OpenModalLive
+                  id={"key-#{color}"}
+                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
+                  no_actions
+                >
+                  <div :hook="ColourPicker" id={"color-#{color}"} class="flex flex-col gap-4 p-2">
+                    <hex-color-picker
+                      class="w-full mt-4"
+                      color={Map.get(
+                        Map.merge(
+                          DaisyTheme.default_theme(),
+                          Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                        ),
+                        "color-#{color}",
+                        "#000000"
+                      )}
+                    />
+                    <div class="flex flex-col gap-2 w-full">
+                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
+                      <div class="flex items-center gap-2">
+                        <div class="colour_preview h-10 w-10 rounded" />
+                        <hex-input
+                          prefixed
+                          class="w-full"
+                          id={"input-#{color}"}
+                          color={Map.get(
+                            Map.merge(
+                              DaisyTheme.default_theme(),
+                              Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                            ),
+                            "color-#{color}",
+                            "#000000"
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                      {l("Apply")}
+                    </button>
+                  </div>
+                  <:open_btn>
+                    <div
+                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                      style={if String.ends_with?(color, "content"),
+                        do: "background-color: var(--color-primary); color: var(--color-primary-content);",
+                        else: "background-color: var(--color-#{color});"}
+                      data-color={"color-#{color}"}
+                    >
+                      {#if String.ends_with?(color, "content")}
+                        <span class="font-bold text-lg">A</span>
+                      {/if}
+                    </div>
+                  </:open_btn>
+                </Bonfire.UI.Common.OpenModalLive>
+              {/for}
+            </div>
           </div>
-          <div class="text-base-content/60 text-xs">primary</div>
-        </div>
 
-        <!-- Secondary Colors -->
-        <div class="flex flex-col gap-1 col-span-2">
-          <div class="flex gap-4">
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
-              aria-label="Choose --color-secondary: oklch(55% 0.288 302.321)"
-              title="--color-secondary: oklch(55% 0.288 302.321)"
-              style="color: oklch(0.97 0.014 308.299); background-color: oklch(0.55 0.288 302.321);"
-            />
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
-              aria-label="Choose --color-secondary-content: oklch(97% 0.014 308.299)"
-              title="--color-secondary-content: oklch(97% 0.014 308.299)"
-              style="color: oklch(0.97 0.014 308.299); background-color: oklch(0.55 0.288 302.321);"
-            >A</button>
+          <div class="col-span-2 mb-2">
+            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Secondary")}</h4>
+            <div class="grid grid-cols-2 gap-2">
+              {#for color <- ["secondary", "secondary-content"]}
+                <Bonfire.UI.Common.OpenModalLive
+                  id={"key-#{color}"}
+                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
+                  no_actions
+                >
+                  <div :hook="ColourPicker" id={"color-#{color}"} class="flex flex-col gap-4 p-2">
+                    <hex-color-picker
+                      class="w-full mt-4"
+                      color={Map.get(
+                        Map.merge(
+                          DaisyTheme.default_theme(),
+                          Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                        ),
+                        "color-#{color}",
+                        "#000000"
+                      )}
+                    />
+                    <div class="flex flex-col gap-2 w-full">
+                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
+                      <div class="flex items-center gap-2">
+                        <div class="colour_preview h-10 w-10 rounded" />
+                        <hex-input
+                          prefixed
+                          class="w-full"
+                          id={"input-#{color}"}
+                          color={Map.get(
+                            Map.merge(
+                              DaisyTheme.default_theme(),
+                              Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                            ),
+                            "color-#{color}",
+                            "#000000"
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                      {l("Apply")}
+                    </button>
+                  </div>
+                  <:open_btn>
+                    <div
+                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                      style={if String.ends_with?(color, "content"),
+                        do: "background-color: var(--color-secondary); color: var(--color-secondary-content);",
+                        else: "background-color: var(--color-#{color});"}
+                      data-color={"color-#{color}"}
+                    >
+                      {#if String.ends_with?(color, "content")}
+                        <span class="font-bold text-lg">A</span>
+                      {/if}
+                    </div>
+                  </:open_btn>
+                </Bonfire.UI.Common.OpenModalLive>
+              {/for}
+            </div>
           </div>
-          <div class="text-base-content/60 text-xs">secondary</div>
-        </div>
 
-        <!-- Accent Colors -->
-        <div class="flex flex-col gap-1 col-span-2">
-          <div class="flex gap-4">
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
-              aria-label="Choose --color-accent: oklch(51% 0.262 276.966)"
-              title="--color-accent: oklch(51% 0.262 276.966)"
-              style="color: oklch(0.96 0.018 272.314); background-color: oklch(0.51 0.262 276.966);"
-            />
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
-              aria-label="Choose --color-accent-content: oklch(96% 0.018 272.314)"
-              title="--color-accent-content: oklch(96% 0.018 272.314)"
-              style="color: oklch(0.96 0.018 272.314); background-color: oklch(0.51 0.262 276.966);"
-            >A</button>
+          <!-- Accent & Neutral Colors -->
+          <div class="col-span-2 mb-2">
+            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Accent")}</h4>
+            <div class="grid grid-cols-2 gap-2">
+              {#for color <- ["accent", "accent-content"]}
+                <Bonfire.UI.Common.OpenModalLive
+                  id={"key-#{color}"}
+                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
+                  no_actions
+                >
+                  <div :hook="ColourPicker" id={"color-#{color}"} class="flex flex-col gap-4 p-2">
+                    <hex-color-picker
+                      class="w-full mt-4"
+                      color={Map.get(
+                        Map.merge(
+                          DaisyTheme.default_theme(),
+                          Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                        ),
+                        "color-#{color}",
+                        "#000000"
+                      )}
+                    />
+                    <div class="flex flex-col gap-2 w-full">
+                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
+                      <div class="flex items-center gap-2">
+                        <div class="colour_preview h-10 w-10 rounded" />
+                        <hex-input
+                          prefixed
+                          class="w-full"
+                          id={"input-#{color}"}
+                          color={Map.get(
+                            Map.merge(
+                              DaisyTheme.default_theme(),
+                              Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                            ),
+                            "color-#{color}",
+                            "#000000"
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                      {l("Apply")}
+                    </button>
+                  </div>
+                  <:open_btn>
+                    <div
+                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                      style={if String.ends_with?(color, "content"),
+                        do: "background-color: var(--color-accent); color: var(--color-accent-content);",
+                        else: "background-color: var(--color-#{color});"}
+                      data-color={"color-#{color}"}
+                    >
+                      {#if String.ends_with?(color, "content")}
+                        <span class="font-bold text-lg">A</span>
+                      {/if}
+                    </div>
+                  </:open_btn>
+                </Bonfire.UI.Common.OpenModalLive>
+              {/for}
+            </div>
           </div>
-          <div class="text-base-content/60 text-xs">accent</div>
-        </div>
 
-        <!-- Neutral Colors -->
-        <div class="flex flex-col gap-1 col-span-2">
-          <div class="flex gap-4">
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
-              aria-label="Choose --color-neutral: oklch(37% 0 0)"
-              title="--color-neutral: oklch(37% 0 0)"
-              style="color: oklch(0.98 0 0); background-color: oklch(0.37 0 0);"
-            />
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
-              aria-label="Choose --color-neutral-content: oklch(98% 0 0)"
-              title="--color-neutral-content: oklch(98% 0 0)"
-              style="color: oklch(0.98 0 0); background-color: oklch(0.37 0 0);"
-            >A</button>
+          <div class="col-span-2 mb-2">
+            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Neutral")}</h4>
+            <div class="grid grid-cols-2 gap-2">
+              {#for color <- ["neutral", "neutral-content"]}
+                <Bonfire.UI.Common.OpenModalLive
+                  id={"key-#{color}"}
+                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
+                  no_actions
+                >
+                  <div :hook="ColourPicker" id={"color-#{color}"} class="flex flex-col gap-4 p-2">
+                    <hex-color-picker
+                      class="w-full mt-4"
+                      color={Map.get(
+                        Map.merge(
+                          DaisyTheme.default_theme(),
+                          Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                        ),
+                        "color-#{color}",
+                        "#000000"
+                      )}
+                    />
+                    <div class="flex flex-col gap-2 w-full">
+                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
+                      <div class="flex items-center gap-2">
+                        <div class="colour_preview h-10 w-10 rounded" />
+                        <hex-input
+                          prefixed
+                          class="w-full"
+                          id={"input-#{color}"}
+                          color={Map.get(
+                            Map.merge(
+                              DaisyTheme.default_theme(),
+                              Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                            ),
+                            "color-#{color}",
+                            "#000000"
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                      {l("Apply")}
+                    </button>
+                  </div>
+                  <:open_btn>
+                    <div
+                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                      style={if String.ends_with?(color, "content"),
+                        do: "background-color: var(--color-neutral); color: var(--color-neutral-content);",
+                        else: "background-color: var(--color-#{color});"}
+                      data-color={"color-#{color}"}
+                    >
+                      {#if String.ends_with?(color, "content")}
+                        <span class="font-bold text-lg">A</span>
+                      {/if}
+                    </div>
+                  </:open_btn>
+                </Bonfire.UI.Common.OpenModalLive>
+              {/for}
+            </div>
           </div>
-          <div class="text-base-content/60 text-xs">neutral</div>
-        </div>
 
-        <!-- Info Colors -->
-        <div class="flex flex-col gap-1 col-span-2">
-          <div class="flex gap-4">
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
-              aria-label="Choose --color-info: oklch(78% 0.154 211.53)"
-              title="--color-info: oklch(78% 0.154 211.53)"
-              style="color: oklch(0.3 0.056 229.695); background-color: oklch(0.78 0.154 211.53);"
-            />
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
-              aria-label="Choose --color-info-content: oklch(30% 0.056 229.695)"
-              title="--color-info-content: oklch(30% 0.056 229.695)"
-              style="color: oklch(0.3 0.056 229.695); background-color: oklch(0.78 0.154 211.53);"
-            >A</button>
+          <!-- Status Colors: Info, Success, Warning, Error -->
+          <div class="col-span-2">
+            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Info")}</h4>
+            <div class="grid grid-cols-2 gap-2">
+              {#for color <- ["info", "info-content"]}
+                <Bonfire.UI.Common.OpenModalLive
+                  id={"key-#{color}"}
+                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
+                  no_actions
+                >
+                  <div :hook="ColourPicker" id={"color-#{color}"} class="flex flex-col gap-4 p-2">
+                    <hex-color-picker
+                      class="w-full mt-4"
+                      color={Map.get(
+                        Map.merge(
+                          DaisyTheme.default_theme(),
+                          Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                        ),
+                        "color-#{color}",
+                        "#000000"
+                      )}
+                    />
+                    <div class="flex flex-col gap-2 w-full">
+                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
+                      <div class="flex items-center gap-2">
+                        <div class="colour_preview h-10 w-10 rounded" />
+                        <hex-input
+                          prefixed
+                          class="w-full"
+                          id={"input-#{color}"}
+                          color={Map.get(
+                            Map.merge(
+                              DaisyTheme.default_theme(),
+                              Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                            ),
+                            "color-#{color}",
+                            "#000000"
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                      {l("Apply")}
+                    </button>
+                  </div>
+                  <:open_btn>
+                    <div
+                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                      style={if String.ends_with?(color, "content"),
+                        do: "background-color: var(--color-info); color: var(--color-info-content);",
+                        else: "background-color: var(--color-#{color});"}
+                      data-color={"color-#{color}"}
+                    >
+                      {#if String.ends_with?(color, "content")}
+                        <span class="font-bold text-lg">A</span>
+                      {/if}
+                    </div>
+                  </:open_btn>
+                </Bonfire.UI.Common.OpenModalLive>
+              {/for}
+            </div>
           </div>
-          <div class="text-base-content/60 text-xs">info</div>
-        </div>
 
-        <!-- Success Colors -->
-        <div class="flex flex-col gap-1 col-span-2">
-          <div class="flex gap-4">
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
-              aria-label="Choose --color-success: oklch(79% 0.209 151.711)"
-              title="--color-success: oklch(79% 0.209 151.711)"
-              style="color: oklch(0.26 0.065 152.934); background-color: oklch(0.79 0.209 151.711);"
-            />
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
-              aria-label="Choose --color-success-content: oklch(26% 0.065 152.934)"
-              title="--color-success-content: oklch(26% 0.065 152.934)"
-              style="color: oklch(0.26 0.065 152.934); background-color: oklch(0.79 0.209 151.711);"
-            >A</button>
+          <div class="col-span-2">
+            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Success")}</h4>
+            <div class="grid grid-cols-2 gap-2">
+              {#for color <- ["success", "success-content"]}
+                <Bonfire.UI.Common.OpenModalLive
+                  id={"key-#{color}"}
+                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
+                  no_actions
+                >
+                  <div :hook="ColourPicker" id={"color-#{color}"} class="flex flex-col gap-4 p-2">
+                    <hex-color-picker
+                      class="w-full mt-4"
+                      color={Map.get(
+                        Map.merge(
+                          DaisyTheme.default_theme(),
+                          Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                        ),
+                        "color-#{color}",
+                        "#000000"
+                      )}
+                    />
+                    <div class="flex flex-col gap-2 w-full">
+                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
+                      <div class="flex items-center gap-2">
+                        <div class="colour_preview h-10 w-10 rounded" />
+                        <hex-input
+                          prefixed
+                          class="w-full"
+                          id={"input-#{color}"}
+                          color={Map.get(
+                            Map.merge(
+                              DaisyTheme.default_theme(),
+                              Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                            ),
+                            "color-#{color}",
+                            "#000000"
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                      {l("Apply")}
+                    </button>
+                  </div>
+                  <:open_btn>
+                    <div
+                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                      style={if String.ends_with?(color, "content"),
+                        do: "background-color: var(--color-success); color: var(--color-success-content);",
+                        else: "background-color: var(--color-#{color});"}
+                      data-color={"color-#{color}"}
+                    >
+                      {#if String.ends_with?(color, "content")}
+                        <span class="font-bold text-lg">A</span>
+                      {/if}
+                    </div>
+                  </:open_btn>
+                </Bonfire.UI.Common.OpenModalLive>
+              {/for}
+            </div>
           </div>
-          <div class="text-base-content/60 text-xs">success</div>
-        </div>
 
-        <!-- Warning Colors -->
-        <div class="flex flex-col gap-1 col-span-2">
-          <div class="flex gap-4">
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
-              aria-label="Choose --color-warning: oklch(85% 0.199 91.936)"
-              title="--color-warning: oklch(85% 0.199 91.936)"
-              style="color: oklch(0.28 0.066 53.813); background-color: oklch(0.85 0.199 91.936);"
-            />
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
-              aria-label="Choose --color-warning-content: oklch(28% 0.066 53.813)"
-              title="--color-warning-content: oklch(28% 0.066 53.813)"
-              style="color: oklch(0.28 0.066 53.813); background-color: oklch(0.85 0.199 91.936);"
-            >A</button>
+          <div class="col-span-2">
+            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Warning")}</h4>
+            <div class="grid grid-cols-2 gap-2">
+              {#for color <- ["warning", "warning-content"]}
+                <Bonfire.UI.Common.OpenModalLive
+                  id={"key-#{color}"}
+                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
+                  no_actions
+                >
+                  <div :hook="ColourPicker" id={"color-#{color}"} class="flex flex-col gap-4 p-2">
+                    <hex-color-picker
+                      class="w-full mt-4"
+                      color={Map.get(
+                        Map.merge(
+                          DaisyTheme.default_theme(),
+                          Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                        ),
+                        "color-#{color}",
+                        "#000000"
+                      )}
+                    />
+                    <div class="flex flex-col gap-2 w-full">
+                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
+                      <div class="flex items-center gap-2">
+                        <div class="colour_preview h-10 w-10 rounded" />
+                        <hex-input
+                          prefixed
+                          class="w-full"
+                          id={"input-#{color}"}
+                          color={Map.get(
+                            Map.merge(
+                              DaisyTheme.default_theme(),
+                              Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                            ),
+                            "color-#{color}",
+                            "#000000"
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                      {l("Apply")}
+                    </button>
+                  </div>
+                  <:open_btn>
+                    <div
+                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                      style={if String.ends_with?(color, "content"),
+                        do: "background-color: var(--color-warning); color: var(--color-warning-content);",
+                        else: "background-color: var(--color-#{color});"}
+                      data-color={"color-#{color}"}
+                    >
+                      {#if String.ends_with?(color, "content")}
+                        <span class="font-bold text-lg">A</span>
+                      {/if}
+                    </div>
+                  </:open_btn>
+                </Bonfire.UI.Common.OpenModalLive>
+              {/for}
+            </div>
           </div>
-          <div class="text-base-content/60 text-xs">warning</div>
-        </div>
 
-        <!-- Error Colors -->
-        <div class="flex flex-col gap-1 col-span-2">
-          <div class="flex gap-4">
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2"
-              aria-label="Choose --color-error: oklch(71% 0.194 13.428)"
-              title="--color-error: oklch(71% 0.194 13.428)"
-              style="color: oklch(0.27 0.105 12.094); background-color: oklch(0.71 0.194 13.428);"
-            />
-            <button
-              type="button"
-              class="border-base-content/10 outline-base-content grid h-10 w-14 cursor-pointer place-items-center rounded-lg border-1 outline-offset-2 focus:outline-2 font-black text-2xl"
-              aria-label="Choose --color-error-content: oklch(27% 0.105 12.094)"
-              title="--color-error-content: oklch(27% 0.105 12.094)"
-              style="color: oklch(0.27 0.105 12.094); background-color: oklch(0.71 0.194 13.428);"
-            >A</button>
+          <div class="col-span-2">
+            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Error")}</h4>
+            <div class="grid grid-cols-2 gap-2">
+              {#for color <- ["error", "error-content"]}
+                <Bonfire.UI.Common.OpenModalLive
+                  id={"key-#{color}"}
+                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
+                  no_actions
+                >
+                  <div :hook="ColourPicker" id={"color-#{color}"} class="flex flex-col gap-4 p-2">
+                    <hex-color-picker
+                      class="w-full mt-4"
+                      color={Map.get(
+                        Map.merge(
+                          DaisyTheme.default_theme(),
+                          Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                        ),
+                        "color-#{color}",
+                        "#000000"
+                      )}
+                    />
+                    <div class="flex flex-col gap-2 w-full">
+                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
+                      <div class="flex items-center gap-2">
+                        <div class="colour_preview h-10 w-10 rounded" />
+                        <hex-input
+                          prefixed
+                          class="w-full"
+                          id={"input-#{color}"}
+                          color={Map.get(
+                            Map.merge(
+                              DaisyTheme.default_theme(),
+                              Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                            ),
+                            "color-#{color}",
+                            "#000000"
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                      {l("Apply")}
+                    </button>
+                  </div>
+                  <:open_btn>
+                    <div
+                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                      style={if String.ends_with?(color, "content"),
+                        do: "background-color: var(--color-error); color: var(--color-error-content);",
+                        else: "background-color: var(--color-#{color});"}
+                      data-color={"color-#{color}"}
+                    >
+                      {#if String.ends_with?(color, "content")}
+                        <span class="font-bold text-lg">A</span>
+                      {/if}
+                    </div>
+                  </:open_btn>
+                </Bonfire.UI.Common.OpenModalLive>
+              {/for}
+            </div>
           </div>
-          <div class="text-base-content/60 text-xs">error</div>
         </div>
-      </div>
+      </section>
 
       <!-- Radius Section -->
-      <h3 class="divider divider-start text-xs">
-        <span class="flex gap-1.5">
-          <svg
-            class="opacity-40"
-            width="16"
-            height="16"
-            viewBox="0 0 48 48"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M24 42V27M42 24H27"
-              stroke="currentColor"
-              stroke-width="4"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <circle
-              cx="24"
-              cy="24"
-              r="3"
-              stroke="currentColor"
-              stroke-width="4"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M42 6H24C14.0589 6 6 14.0589 6 24V42"
-              stroke="currentColor"
-              stroke-width="4"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-          Radius
-        </span>
-      </h3>
+      <section>
+        <h3 class="divider divider-start text-sm mt-6">
+          <span class="flex items-center gap-1.5">
+            <svg
+              class="opacity-60 w-5 h-5"
+              viewBox="0 0 48 48"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M24 42V27M42 24H27"
+                stroke="currentColor"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <circle
+                cx="24"
+                cy="24"
+                r="3"
+                stroke="currentColor"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M42 6H24C14.0589 6 6 14.0589 6 24V42"
+                stroke="currentColor"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span class="font-medium">{l("Radius")}</span>
+          </span>
+        </h3>
 
-      <!-- Box Radius -->
-      <div class="w-full max-w-fit">
-        <div class="mb-2 flex flex-col" id="--radius-box-group">
-          <span class="text-base-content/70 text-[0.6875rem]">Boxes</span>
-          <span class="text-base-content/40 text-[0.625rem] italic">card, modal, alert</span>
-        </div>
-        <div class="flex gap-2" role="radiogroup" aria-labelledby="--radius-box-group">
-          <label
-            class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2"
-            title="0rem"
-          >
-            <input
-              type="radio"
-              class="sr-only"
-              name="--radius-box"
-              value="0rem"
-              aria-label="0rem border radius"
-            />
-            <div class="pe-3 pt-2" aria-hidden="true">
-              <div
-                class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 bg-base-300"
-                style="border-start-end-radius:0rem"
-              />
+        <!-- Box Radius -->
+        <div class="space-y-6 pt-2">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <!-- Box Radius -->
+            <div class="border border-base-content/10 p-3 bg-base-100 rounded">
+              <div class="mb-2 flex flex-col" id="--radius-box-group">
+                <span class="text-base-content/70 text-sm font-medium">{l("Boxes")}</span>
+                <span class="text-base-content/50 text-xs italic">{l("card, modal, alert")}</span>
+              </div>
+              <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="--radius-box-group">
+                {#for radius <- ["0rem", "0.5rem", "1rem", "2rem"]}
+                  <label
+                    class={
+                      "flex-1 rounded-lg bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2 p-1",
+                      "bg-primary/10":
+                        Map.get(
+                          Map.merge(
+                            DaisyTheme.default_theme(),
+                            Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                          ),
+                          "radius-box"
+                        ) == radius
+                    }
+                    title={radius}
+                  >
+                    <input
+                      type="radio"
+                      class="sr-only"
+                      name="--radius-box"
+                      value={radius}
+                      aria-label={"#{radius} border radius"}
+                      checked={Map.get(
+                        Map.merge(
+                          DaisyTheme.default_theme(),
+                          Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                        ),
+                        "radius-box"
+                      ) == radius}
+                      phx-click={JS.push("Bonfire.Common.Settings:put",
+                        value: %{keys: "ui:theme:custom:radius-box", values: radius, scope: @scope}
+                      )}
+                    />
+                    <div class="pe-3 pt-2" aria-hidden="true">
+                      <div
+                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(Map.merge(DaisyTheme.default_theme(), Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))), "radius-box") == radius, do: 'border-primary', else: 'border-base-content/20'} bg-base-300"}
+                        style={"border-start-end-radius:#{radius}"}
+                      />
+                    </div>
+                  </label>
+                {/for}
+              </div>
             </div>
-          </label>
-          <label
-            class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2"
-            title="0.25rem"
-          >
-            <input
-              type="radio"
-              class="sr-only"
-              name="--radius-box"
-              value="0.25rem"
-              aria-label="0.25rem border radius"
-            />
-            <div class="pe-3 pt-2" aria-hidden="true">
-              <div
-                class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 bg-base-300"
-                style="border-start-end-radius:0.25rem"
-              />
-            </div>
-          </label>
-          <label
-            class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2"
-            title="0.5rem"
-          >
-            <input
-              type="radio"
-              class="sr-only"
-              name="--radius-box"
-              value="0.5rem"
-              aria-label="0.5rem border radius"
-            />
-            <div class="pe-3 pt-2" aria-hidden="true">
-              <div
-                class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 bg-base-300"
-                style="border-start-end-radius:0.5rem"
-              />
-            </div>
-          </label>
-          <label
-            class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2"
-            title="1rem"
-          >
-            <input
-              type="radio"
-              class="sr-only"
-              name="--radius-box"
-              value="1rem"
-              aria-label="1rem border radius"
-              checked
-            />
-            <div class="pe-3 pt-2" aria-hidden="true">
-              <div
-                class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 border-primary"
-                style="border-start-end-radius:1rem"
-              />
-            </div>
-          </label>
-          <label
-            class="rounded-field bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2"
-            title="2rem"
-          >
-            <input
-              type="radio"
-              class="sr-only"
-              name="--radius-box"
-              value="2rem"
-              aria-label="2rem border radius"
-            />
-            <div class="pe-3 pt-2" aria-hidden="true">
-              <div
-                class="border-base-content/20 bg-base-200 h-6 w-8 border-e-2 border-t-2 bg-base-300"
-                style="border-start-end-radius:2rem"
-              />
-            </div>
-          </label>
-        </div>
-      </div>
-    </div>
 
-    <div class="grid grid-cols-1 gap-3 py-3">
-      <div
-        :for={{key, colour} <-
-          DaisyTheme.theme(Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped)))}
-        id={key}
-        class="relative flex items-center justify-between"
-        :hook="ColourPicker"
-        data-scope={@scope}
-      >
-        <div class="mb-2 text-sm font-medium capitalize text-base-content">{key}</div>
-        <div class="relative inline-flex items-center gap-2">
-          <div
-            phx-click={JS.toggle(to: "#color-picker-#{key}")}
-            class="w-10 rounded-lg shadow-xl cursor-pointer colour_preview h-7 border-neutral-content/10"
-            style={"background-color: #{colour}"}
-          />
-          <label phx-click={JS.toggle(to: "#color-picker-#{key}")} class="flex items-baseline gap-2">
-            <hex-input color={colour} />
-          </label>
-          <hex-color-picker
-            id={"color-picker-#{key}"}
-            class="z-[999999] right-0 hidden"
-            phx-click-away={JS.hide(to: "#color-picker-#{key}")}
-          />
+            <!-- Field Radius -->
+            <div class="border border-base-content/10 p-3 bg-base-100 rounded">
+              <div class="mb-2 flex flex-col" id="--radius-field-group">
+                <span class="text-base-content/70 text-sm font-medium">{l("Fields")}</span>
+                <span class="text-base-content/50 text-xs italic">{l("button, input, select, tab")}</span>
+              </div>
+              <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="--radius-field-group">
+                {#for radius <- ["0rem", "0.5rem", "1rem", "2rem"]}
+                  <label
+                    class={
+                      "flex-1 rounded-lg bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2 p-1",
+                      "bg-primary/10":
+                        Map.get(
+                          Map.merge(
+                            DaisyTheme.default_theme(),
+                            Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                          ),
+                          "radius-field"
+                        ) == radius
+                    }
+                    title={radius}
+                  >
+                    <input
+                      type="radio"
+                      class="sr-only"
+                      name="--radius-field"
+                      value={radius}
+                      aria-label={"#{radius} border radius"}
+                      checked={Map.get(
+                        Map.merge(
+                          DaisyTheme.default_theme(),
+                          Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                        ),
+                        "radius-field"
+                      ) == radius}
+                      phx-click={JS.push("Bonfire.Common.Settings:put",
+                        value: %{keys: "ui:theme:custom:radius-field", values: radius, scope: @scope}
+                      )}
+                    />
+                    <div class="pe-3 pt-2" aria-hidden="true">
+                      <div
+                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(Map.merge(DaisyTheme.default_theme(), Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))), "radius-field") == radius, do: 'border-primary', else: 'border-base-content/20'} bg-base-300"}
+                        style={"border-start-end-radius:#{radius}"}
+                      />
+                    </div>
+                  </label>
+                {/for}
+              </div>
+            </div>
+
+            <!-- Selector Radius -->
+            <div class="border border-base-content/10 p-3 bg-base-100 rounded">
+              <div class="mb-2 flex flex-col" id="--radius-selector-group">
+                <span class="text-base-content/70 text-sm font-medium">{l("Selectors")}</span>
+                <span class="text-base-content/50 text-xs italic">{l("checkbox, toggle, badge")}</span>
+              </div>
+              <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="--radius-selector-group">
+                {#for radius <- ["0rem", "0.5rem", "1rem", "2rem"]}
+                  <label
+                    class={
+                      "flex-1 rounded-lg bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2 p-1",
+                      "bg-primary/10":
+                        Map.get(
+                          Map.merge(
+                            DaisyTheme.default_theme(),
+                            Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                          ),
+                          "radius-selector"
+                        ) == radius
+                    }
+                    title={radius}
+                  >
+                    <input
+                      type="radio"
+                      class="sr-only"
+                      name="--radius-selector"
+                      value={radius}
+                      aria-label={"#{radius} border radius"}
+                      checked={Map.get(
+                        Map.merge(
+                          DaisyTheme.default_theme(),
+                          Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))
+                        ),
+                        "radius-selector"
+                      ) == radius}
+                      phx-click={JS.push("Bonfire.Common.Settings:put",
+                        value: %{keys: "ui:theme:custom:radius-selector", values: radius, scope: @scope}
+                      )}
+                    />
+                    <div class="pe-3 pt-2" aria-hidden="true">
+                      <div
+                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(Map.merge(DaisyTheme.default_theme(), Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))), "radius-selector") == radius, do: 'border-primary', else: 'border-base-content/20'} bg-base-300"}
+                        style={"border-start-end-radius:#{radius}"}
+                      />
+                    </div>
+                  </label>
+                {/for}
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <!-- Effects Section -->
+      <!-- <section>
+        <h3 class="divider divider-start text-sm">
+          <span class="flex items-center gap-1.5">
+            <svg class="opacity-60 w-4 h-4" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24.9507 42.3603L30.4164 30.3695L43.1046 26.6501L33.3383 17.7699L33.7059 4.60732L22.2044 11.1099L9.74329 6.69439L12.4013 19.5934L4.33228 30.027L17.4766 31.4965L24.9507 42.3603Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M36.1777 36.0537L44.1777 44.0179" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="font-medium">{l("Effects")}</span>
+          </span>
+        </h3>
+
+        <div class="space-y-4 pt-2">
+          <div class="w-full">
+            <label class="flex cursor-pointer items-center justify-between gap-2 p-2 rounded-lg hover:bg-base-200 transition-all">
+              <span class="flex flex-col">
+                <span class="text-base-content/70 text-sm font-medium">{l("Depth Effect")}</span>
+                <span class="text-base-content/50 text-xs italic">{l("3D depth on fields & selectors")}</span>
+              </span>
+              <input 
+                type="checkbox" 
+                class="toggle toggle-primary toggle-sm"
+                checked={Map.get(Map.merge(DaisyTheme.default_theme(), Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))), "depth") == "1"}
+                phx-click={
+                  JS.push("Bonfire.Common.Settings:put", value: %{
+                    keys: "ui:theme:custom:depth", 
+                    scope: @scope,
+                    values: (if Map.get(Map.merge(DaisyTheme.default_theme(), Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))), "depth") == "1", do: "0", else: "1")
+                  })
+                }
+              >
+            </label>
+          </div>
+          
+          <div class="w-full">
+            <label class="flex cursor-pointer items-center justify-between gap-2 p-2 rounded-lg hover:bg-base-200 transition-all">
+              <span class="flex flex-col">
+                <span class="text-base-content/70 text-xs font-medium">{l("Noise Effect")}</span>
+                <span class="text-base-content/40 text-[0.625rem] italic">{l("Noise pattern on fields & selectors")}</span>
+              </span>
+              <input 
+                type="checkbox" 
+                class="toggle toggle-primary toggle-sm"
+                checked={Map.get(Map.merge(DaisyTheme.default_theme(), Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))), "noise", "0") == "1"}
+                phx-click={
+                  JS.push("Bonfire.Common.Settings:put", value: %{
+                    keys: "ui:theme:custom:noise", 
+                    scope: @scope,
+                    values: (if Map.get(Map.merge(DaisyTheme.default_theme(), Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))), "noise", "0") == "1", do: "0", else: "1")
+                  })
+                }
+              >
+            </label>
+          </div>
+
+          <div class="w-full mt-4">
+            <div class="mb-2 flex flex-col" id="--border-group">
+              <span class="text-base-content/70 text-xs font-medium">{l("Border Width")}</span>
+              <span class="text-base-content/40 text-[0.625rem] italic">{l("All components")}</span>
+            </div>
+            <div class="bg-base-200 rounded-lg relative p-4">
+              <div class="flex flex-col gap-2">
+                <div class="flex justify-between">
+                  {#for border <- ["0.5px", "1px", "2px", "4px"]}
+                    <span class="text-xs opacity-60">{border}</span>
+                  {/for}
+                </div>
+                <input 
+                  type="range" 
+                  id="border-width-slider"
+                  min="0" 
+                  max="3" 
+                  step="1" 
+                  class="range range-xs range-primary" 
+                  value={
+                    case Map.get(Map.merge(DaisyTheme.default_theme(), Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))), "border", "1px") do
+                      "0.5px" -> 0
+                      "1px" -> 1
+                      "2px" -> 2
+                      "4px" -> 3
+                      _ -> 1
+                    end
+                  }
+                  phx-change={
+                    JS.push("change_border", value: %{target: %{value: "_value_"}})
+                  }
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> -->
+
+      <!-- Size Controls Section -->
+      <!-- <section>
+        <h3 class="divider divider-start text-sm">
+          <span class="flex items-center gap-1.5">
+            <svg class="opacity-60 w-4 h-4" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 42L42 8M42 8H20M42 8V30" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            <span class="font-medium">{l("Sizes")}</span>
+          </span>
+        </h3>
+
+        <div class="space-y-6 pt-2">
+          <div class="w-full">
+            <div class="mb-2 flex flex-col" id="--size-field-group">
+              <span class="text-base-content/70 text-xs font-medium">{l("Fields")}</span>
+              <span class="text-base-content/40 text-[0.625rem] italic">{l("button, input, select, tab")}</span>
+            </div>
+            <div class="bg-base-200 rounded-lg flex items-center justify-between gap-4 p-4">
+              <div class="flex gap-2 flex-1 justify-center">
+                {#for {size, label, value} <- [{"xs", "XS", "30"}, {"sm", "SM", "40"}, {"md", "MD", "50"}, {"lg", "LG", "60"}, {"xl", "XL", "70"}]}
+                  <div class="flex flex-col items-center gap-1">
+                    <div class="flex items-end" style={"height:calc(0.3125rem * 14)"}>
+                      <div class="bg-base-content w-1 rounded-full" style={"height:calc(0.3125rem * #{String.to_integer(value) / 5})"}></div>
+                    </div>
+                    <div class="text-xs flex flex-col items-center text-base-content/60">
+                      <span class="font-semibold">{label}</span>
+                      <span class="text-[10px]">{value}</span>
+                    </div>
+                  </div>
+                {/for}
+              </div>
+              
+              <div class="flex flex-col gap-2 text-center w-32">
+                <div class="flex flex-col items-center">
+                  <div class="text-xs text-base-content/60">{l("Base size")}</div>
+                  <div id="field-size-display" class="text-2xl font-bold tabular-nums">
+                    {
+                      case Map.get(Map.merge(DaisyTheme.default_theme(), Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))), "size-field", "0.25rem") do
+                        "0.1875rem" -> "3.0"
+                        "0.25rem" -> "4.0"
+                        "0.3125rem" -> "5.0"
+                        "0.375rem" -> "6.0"
+                        "0.4375rem" -> "7.0"
+                        _ -> "5.0"
+                      end
+                    }
+                  </div>
+                  <div class="text-[10px] text-base-content/60">{l("Pixels")}</div>
+                </div>
+                
+                <input 
+                  type="range" 
+                  id="field-size-slider"
+                  min="0" 
+                  max="4" 
+                  step="1" 
+                  class="range range-xs range-primary"
+                  value={
+                    case Map.get(Map.merge(DaisyTheme.default_theme(), Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))), "size-field", "0.25rem") do
+                      "0.1875rem" -> 0
+                      "0.25rem" -> 1
+                      "0.3125rem" -> 2
+                      "0.375rem" -> 3
+                      "0.4375rem" -> 4
+                      _ -> 2
+                    end
+                  }
+                  phx-change={
+                    JS.push("change_size_field", value: %{target: %{value: "_value_"}})
+                  }
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="w-full">
+            <div class="mb-2 flex flex-col" id="--size-selector-group">
+              <span class="text-base-content/70 text-xs font-medium">{l("Selectors")}</span>
+              <span class="text-base-content/40 text-[0.625rem] italic">{l("checkbox, toggle, badge")}</span>
+            </div>
+            <div class="bg-base-200 rounded-lg flex items-center justify-between gap-4 p-4">
+              <div class="flex gap-2 flex-1 justify-center">
+                {#for {size, label, value} <- [{"xs", "XS", "12"}, {"sm", "SM", "15"}, {"md", "MD", "18"}, {"lg", "LG", "21"}, {"xl", "XL", "24"}]}
+                  <div class="flex flex-col items-center gap-1">
+                    <div class="flex items-end" style={"height:calc(0.1875rem * 8)"}>
+                      <div class="bg-base-content w-1 rounded-full" style={"height:calc(0.1875rem * #{String.to_integer(value) / 3})"}></div>
+                    </div>
+                    <div class="text-xs flex flex-col items-center text-base-content/60">
+                      <span class="font-semibold">{label}</span>
+                      <span class="text-[10px]">{value}</span>
+                    </div>
+                  </div>
+                {/for}
+              </div>
+              
+              <div class="flex flex-col gap-2 text-center w-32">
+                <div class="flex flex-col items-center">
+                  <div class="text-xs text-base-content/60">{l("Base size")}</div>
+                  <div id="selector-size-display" class="text-2xl font-bold tabular-nums">
+                    {
+                      case Map.get(Map.merge(DaisyTheme.default_theme(), Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))), "size-selector", "0.25rem") do
+                        "0.1875rem" -> "3.0"
+                        "0.25rem" -> "4.0"
+                        "0.3125rem" -> "5.0"
+                        "0.375rem" -> "6.0"
+                        "0.4375rem" -> "7.0"
+                        _ -> "3.0"
+                      end
+                    }
+                  </div>
+                  <div class="text-[10px] text-base-content/60">{l("Pixels")}</div>
+                </div>
+                
+                <input 
+                  type="range" 
+                  id="selector-size-slider"
+                  min="0" 
+                  max="4" 
+                  step="1" 
+                  class="range range-xs range-primary"
+                  value={
+                    case Map.get(Map.merge(DaisyTheme.default_theme(), Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, @scoped))), "size-selector", "0.1875rem") do
+                      "0.1875rem" -> 0
+                      "0.25rem" -> 1
+                      "0.3125rem" -> 2
+                      "0.375rem" -> 3
+                      "0.4375rem" -> 4
+                      _ -> 0
+                    end
+                  }
+                  phx-change={
+                    JS.push("change_size_selector", value: %{target: %{value: "_value_"}})
+                  }
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> -->
     </div>
   </div>
 </div>
