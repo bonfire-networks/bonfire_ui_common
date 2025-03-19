@@ -1569,5 +1569,40 @@ defmodule Bonfire.UI.Common do
     end
   end
 
-  def random_dom_id, do: "random-#{Text.unique_integer()}"
+  @doc """
+  Generates a deterministic DOM ID based on component type, object ID, context, and parent ID.
+
+  ## Parameters
+  - component_type: The type or name of the component
+  - object_id: The ID of the object being displayed
+  - context: The context where the component is displayed (optional)
+  - parent_id: The ID of the parent component (optional)
+
+  ## Returns
+  A string with format: component_type_context_object_id_parent_id
+
+  ## Examples
+      iex> deterministic_dom_id("modal", "post123", "feed", "container456")
+      "modal_feed_post123_container456"
+
+      iex> deterministic_dom_id("dropdown", "user789")
+      "dropdown_user789"
+  """
+  def deterministic_dom_id(component_type, object_id, context \\ nil, parent_id \\ nil) do
+    parts = [component_type, context, object_id, parent_id]
+    parts
+    |> Enum.filter(&(&1 != nil and &1 != ""))
+    |> Enum.map(&to_string/1)
+    |> Enum.join("_")
+  end
+
+  @doc """
+  Generates a random DOM ID.
+
+  DEPRECATED: Use deterministic_dom_id/4 instead for consistent IDs across renders.
+  """
+  def random_dom_id do
+    warn("random_dom_id() is deprecated, use deterministic_dom_id() instead")
+    "random-#{Text.unique_integer()}"
+  end
 end

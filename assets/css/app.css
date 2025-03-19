@@ -16,8 +16,10 @@
 @plugin "@tailwindcss/typography";
 
 @plugin "daisyui" {
-  themes: light --default, cupcake, bumblebee, dark --prefersdark, synthwave, bonfire_custom, retro, cyberpunk, valentine, halloween;
+  themes: light --default, cupcake, bumblebee, emerald, corporate, federated_archives_dark, dark --prefersdark, synthwave, retro, cyberpunk, valentine, halloween, garden;
 }
+
+
 
 
 

@@ -2,7 +2,7 @@
   to={if is_function(@to),
     do: @to.(@__context__),
     else: @to}
-  id={"#{@parent_id}_#{@order || random_dom_id()}"}
+  id={deterministic_dom_id("link_widget", @parent_id, @order, @page)}
   class={
     e(@widget[:link_class], @link_class),
     "menu-active":
@@ -55,7 +55,7 @@
         class="flex absolute left-[36px] top-[-4px] items-center place-content-center widget_notification"
       >
         <StatefulComponent
-          id={badge[:id] || random_dom_id()}
+          id={deterministic_dom_id("badge", badge[:id], @parent_id, @widget[:page] || @widget[:name])}
           page={@page}
           module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
           feed_id={badge[:feed_id] || e(current_user(@__context__), :character, badge[:feed_key], nil)}

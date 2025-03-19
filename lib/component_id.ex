@@ -57,8 +57,13 @@ defmodule Bonfire.UI.Common.ComponentID do
     randomised_id(component_module, parent_id)
   end
 
+  defp deterministic_id(component_module, parent_id) do
+    "#{component_module |> Types.module_to_str() |> String.replace(".", "-")}_#{parent_id |> Types.module_to_str() |> String.replace(".", "-")}"
+  end
+
+  # Keep for backward compatibility during transition
   defp randomised_id(component_module, parent_id) do
-    "#{component_module |> Types.module_to_str() |> String.replace(".", "-")}_#{parent_id |> Types.module_to_str() |> String.replace(".", "-")}_#{random_dom_id()}"
+    deterministic_id(component_module, parent_id)
   end
 
   def send_updates(component_module, object_id, assigns, pid \\ nil) do

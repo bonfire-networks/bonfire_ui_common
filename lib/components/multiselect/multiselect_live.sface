@@ -27,7 +27,7 @@
       {/if}
     {#else}
       <Bonfire.UI.Common.BasicMultiselectLive
-        id={random_dom_id()}
+        id={deterministic_dom_id("multiselect", id(@object), @form_input_name, @context_id)}
         preloaded_options={@preloaded_options}
         selected_options={@selected_options}
         label={@label}

@@ -117,7 +117,7 @@
           <div :if={@with_title} class="mt-4 mb-2 text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
           <StatefulComponent
             module={@widget[:module]}
-            id={"#{@parent_id || "widget"}_#{@order || random_dom_id()}"}
+            id={deterministic_dom_id("widget", @parent_id || "widget", @order, @widget[:page] || @widget[:module])}
             page={@page}
             selected_tab={@selected_tab}
             showing_within={@showing_within}

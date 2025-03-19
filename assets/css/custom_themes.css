@@ -1,20 +1,20 @@
 /* Custom themes for Bonfire UI */
 
 @plugin "daisyui/theme" {
-  name: "federated_archive";
+  name: "federated_archives_dark";
   default: false; /* set as default */
   prefersdark: false; /* set as default dark mode */
   color-scheme: "light"; /* color of browser-provided UI */
 
   /* base colors */
-  --color-base-100: #3c3b3b;
+  --color-base-100: #303030;
   --color-base-200: #333333;
-  --color-base-300: #272727;
-  --color-base-content: oklch(98% 0.05 240);
+  --color-base-300: #262626;
+  --color-base-content: #f2f1f1;
 
   /* primary colors */
   --color-primary: #B5FF00;
-  --color-primary-content: #262821;
+  --color-primary-content: #272e16;
 
   /* secondary colors */
   --color-secondary: oklch(70% 0.25 200);
@@ -40,8 +40,8 @@
 
   /* border radius */
   --radius-selector: 1rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.75rem;
+  --radius-field: 2rem;
+  --radius-box: 2rem;
 
   /* base sizes */
   --size-selector: 0.25rem;
