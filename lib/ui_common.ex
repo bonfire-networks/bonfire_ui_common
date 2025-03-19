@@ -1590,6 +1590,7 @@ defmodule Bonfire.UI.Common do
   """
   def deterministic_dom_id(component_type, object_id, context \\ nil, parent_id \\ nil) do
     parts = [component_type, context, object_id, parent_id]
+
     parts
     |> Enum.filter(&(&1 != nil and &1 != ""))
     |> Enum.map(&to_string/1)
