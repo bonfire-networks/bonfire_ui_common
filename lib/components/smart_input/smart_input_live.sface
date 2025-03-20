@@ -17,15 +17,15 @@
       >
         <div
           :if={is_map(@activity) || is_map(@reply_to_id)}
-          class="relative bg-base-content/5 rounded-box m-2 shadow"
+          class="relative bg-base-200 rounded-box m-2 mb-0"
         >
           {!-- show what we're replying to, if any --}
           <StatelessComponent
             module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
             id={"compose_reply_to-#{id(@reply_to_id) || id(@object) || id(@activity)}"}
             myself={nil}
-            cw
             activity={@activity}
+            cw={e(post_content(@object), :summary, nil)}
             object={@object || @reply_to_id}
             thread_mode={:nested}
             class={@replied_activity_class}

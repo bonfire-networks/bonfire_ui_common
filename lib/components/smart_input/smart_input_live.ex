@@ -37,26 +37,8 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop preview_boundary_verbs, :any, default: nil
 
   prop custom_emojis, :any, default: []
-  # defp handle_progress(_, entry, socket) do
-  #   debug(entry, "progress")
-  #   user = current_user(assigns(socket))
 
-  #   if entry.done? and entry.valid? and user do
-  #     with %{} = uploaded_media <-
-  #       maybe_consume_uploaded_entry(socket, entry, fn %{path: path} = meta ->
-  #         # debug(meta, "icon consume_uploaded_entry meta")
-  #         Bonfire.Files.upload(nil, user, path)
-  #         |> debug("uploaded")
-  #       end) do
-  #         # debug(uploaded_media)
-  #         {:noreply,
-  #           socket
-  #           |> update(:uploaded_files, &(&1 ++ [uploaded_media]))
-  #           |> assign_flash(:info, l "File uploaded!")
-  #         }
-  #     end
-  #   else
-  #     {:noreply, socket}
-  #   end
-  # end
+  def post_content(object) do
+    e(object, :post_content, nil) || object
+  end
 end
