@@ -488,6 +488,21 @@ defmodule Bonfire.UI.Common.Web do
         defoverridable render: 1
 
         def render(assigns) do
+          # current_component_id = assigns[:__context__][:current_component_id]
+
+          assigns =
+            assign_generic_global(assigns, %{
+              # current_component: __MODULE__, 
+              # current_component_id: assigns[:id] || current_component_id, 
+
+              component_tree:
+                (assigns[:__context__][:component_tree] || []) ++
+                  [__MODULE__],
+              component_id_tree:
+                (assigns[:__context__][:component_id_tree] || []) ++
+                  List.wrap(assigns[:id])
+            })
+
           undead_render(assigns, fn ->
             case assigns do
               %{__replace_render__with__: _} ->

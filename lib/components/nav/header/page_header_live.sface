@@ -16,6 +16,7 @@
           <LinkLive
             to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
             class="group hidden lg:flex"
+            parent_id="page_header"
           >
             <Bonfire.UI.Common.AvatarLive
               :if={is_map(current_user(@__context__))}

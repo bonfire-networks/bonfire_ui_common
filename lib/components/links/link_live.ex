@@ -25,6 +25,8 @@ defmodule Bonfire.UI.Common.LinkLive do
   prop phx_hook, :string, default: nil
   prop id, :string, default: nil
 
+  prop parent_id, :string, default: nil
+
   @doc "What LiveHandler and/or event name to send the patch event to, if any (possibly overriding the default action of the link)"
   prop event_handler, :string, default: nil
 
@@ -58,7 +60,15 @@ defmodule Bonfire.UI.Common.LinkLive do
         phx-value-to={@to}
         phx-click={@event_handler}
         phx-hook={@phx_hook}
-        id={if @phx_hook, do: @id || random_dom_id()}
+        id={if @phx_hook,
+          do:
+            @id ||
+              deterministic_dom_id(
+                "LinkLive_event",
+                @to,
+                @__context__[:component_tree] || @label,
+                @parent_id || @__context__[:component_id_tree]
+              )}
         phx-target={@event_target}
         class={@class}
         opts={@opts}
@@ -82,7 +92,13 @@ defmodule Bonfire.UI.Common.LinkLive do
 
     <a
       phx-hook="Copy"
-      id={"link_copy_url_#{@id || random_dom_id()}"}
+      id={@id ||
+        deterministic_dom_id(
+          "LinkLive_copy",
+          @to,
+          @__context__[:component_tree] || @label,
+          @parent_id || @__context__[:component_id_tree]
+        )}
       href={@to}
       class="float-right ml-4 flex items-center gap-2 btn btn-xs"
     >
@@ -242,8 +258,16 @@ defmodule Bonfire.UI.Common.LinkLive do
       navigate={@to}
       class={@class}
       replace={@replace}
-      phx-hook="Bonfire.UI.Common.PreviewContentLive#CloseAll"
-      id={@id || random_dom_id()}
+      phx-hook={if socket_connected?(@__context__), do: "Bonfire.UI.Common.PreviewContentLive#CloseAll"}
+      id={if socket_connected?(@__context__),
+        do:
+          @id ||
+            deterministic_dom_id(
+              "LinkLive",
+              @to,
+              @__context__[:component_tree] || @label,
+              @parent_id || @__context__[:component_id_tree]
+            )}
       {...@opts |> Keyword.merge("aria-label": @label)}
     >
       {!-- FIXME: do not generate random ID to avoid re-rendering --}

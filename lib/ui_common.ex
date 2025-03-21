@@ -195,16 +195,16 @@ defmodule Bonfire.UI.Common do
     %{} |> Map.put(key, value)
   end
 
-  def assign_generic_global(%Phoenix.LiveView.Socket{} = socket, assigns) do
-    Surface.Components.Context.put(socket, assigns)
-  end
-
   def assign_generic_global(%Plug.Conn{} = conn, assigns) do
     Plug.Conn.assign(
       conn,
       :__context__,
       Map.merge(conn.assigns[:__context__] || %{}, Map.new(assigns))
     )
+  end
+
+  def assign_generic_global(%{} = socket_or_assigns, assigns) do
+    Surface.Components.Context.put(socket_or_assigns, assigns)
   end
 
   def assign_global(socket, assigns) when is_map(assigns) do
@@ -1588,13 +1588,19 @@ defmodule Bonfire.UI.Common do
       iex> deterministic_dom_id("dropdown", "user789")
       "dropdown_user789"
   """
-  def deterministic_dom_id(component_type, object_id, context \\ nil, parent_id \\ nil) do
-    parts = [component_type, context, object_id, parent_id]
+  def deterministic_dom_id(component_type, object, context \\ nil, parent_id \\ nil) do
+    object_id =
+      case id(object) do
+        nil when is_binary(object) -> object
+        nil -> :erlang.phash2(object, 1_000_000)
+        id -> id
+      end
 
-    parts
-    |> Enum.filter(&(&1 != nil and &1 != ""))
-    |> Enum.map(&to_string/1)
-    |> Enum.join("_")
+    [component_type, object_id, context, parent_id]
+    # |> Enum.filter(&(&1 != nil and &1 != ""))
+    # |> Enum.map(&to_string/1)
+    # |> Enum.join("_")
+    |> Text.slug(joiner: "_", lowercase?: false, truncate: false)
   end
 
   @doc """

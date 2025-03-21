@@ -15,10 +15,7 @@
         :if={not is_nil(current_user_id(@__context__))}
         class="relative flex flex-col flex-1 w-full bg-base-100 rounded-xl"
       >
-        <div
-          :if={is_map(@activity) || is_map(@reply_to_id)}
-          class="relative bg-base-200 rounded-box m-2"
-        >
+        <div :if={is_map(@activity) || is_map(@reply_to_id)} class="relative bg-base-200 rounded-box m-2">
           {!-- show what we're replying to, if any --}
           <StatelessComponent
             module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}

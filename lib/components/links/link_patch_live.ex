@@ -24,6 +24,8 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
   prop phx_hook, :string, default: nil
   prop id, :string, default: nil
 
+  prop parent_id, :string, default: nil
+
   @doc "What LiveHandler and/or event name to send the patch event to, if any (possibly overriding the default action of the link)"
   prop event_handler, :string, default: nil
 
@@ -72,7 +74,15 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
         phx-value-to={@to}
         phx-click={@event_handler}
         phx-hook={@phx_hook}
-        id={if @phx_hook, do: @id || random_dom_id()}
+        id={if @phx_hook,
+          do:
+            @id ||
+              deterministic_dom_id(
+                "LinkLive_event",
+                @to,
+                @__context__[:component_tree] || @label,
+                @parent_id || @__context__[:component_id_tree]
+              )}
         phx-target={@event_target}
         phx-value-name={@name}
         class={@class}
@@ -96,7 +106,13 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
       class={@class}
       replace={@replace}
       phx-hook="Bonfire.UI.Common.PreviewContentLive#CloseAll"
-      id={@id || random_dom_id()}
+      id={@id ||
+        deterministic_dom_id(
+          "LinkLive_event",
+          @to,
+          @__context__[:component_tree] || @label,
+          @parent_id || @__context__[:component_id_tree]
+        )}
       {...@opts |> Keyword.merge("aria-label": @label)}
     >
       <#slot>{@label}</#slot>

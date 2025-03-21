@@ -6,7 +6,7 @@
   class={
     e(@widget[:link_class], @link_class),
     "menu-active":
-        String.downcase(to_string(@selected_tab)) == String.downcase(to_string(@widget[:name])) or
+      String.downcase(to_string(@selected_tab)) == String.downcase(to_string(@widget[:name])) or
         String.downcase(to_string(@selected_tab)) == String.downcase(to_string(@widget[:page]))
   }
   label={@text || @widget[:text] || @widget[:name]}

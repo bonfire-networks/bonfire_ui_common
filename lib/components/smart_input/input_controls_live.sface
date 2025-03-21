@@ -57,7 +57,12 @@
               )}
             />
 
-            <div phx-hook="Tooltip" id="emoji_picker_in_composer" data-trigger="click" data-close-on-inside-click="true">
+            <div
+              phx-hook="Tooltip"
+              id="emoji_picker_in_composer"
+              data-trigger="click"
+              data-close-on-inside-click="true"
+            >
               <button
                 title={l("Insert emoji")}
                 type="button"
