@@ -17,7 +17,7 @@
       >
         <div
           :if={is_map(@activity) || is_map(@reply_to_id)}
-          class="relative bg-base-200 rounded-box m-2 mb-0"
+          class="relative bg-base-200 rounded-box m-2"
         >
           {!-- show what we're replying to, if any --}
           <StatelessComponent

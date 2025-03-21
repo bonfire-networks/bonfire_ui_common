@@ -20,8 +20,143 @@
 }
 
 
+/* 
+ * Milkdown Editor Styles
+ * Custom styles for the Milkdown editor integration with Bonfire
+ */
+
+ .markdown-editor {
+  min-height: 250px;
+}
 
 
+.markdown-editor:focus-within {
+  border-color: var(--color-primary, #6366f1);
+  outline: 1px solid rgba(99, 102, 241, 0.25);
+  outline-offset: 2px;
+}
+
+/* Placeholder styling */
+.milkdown-placeholder {
+  color: var(--color-text-muted, #9ca3af);
+  pointer-events: none;
+  font-style: italic;
+}
+
+/* Markdown content styling */
+.milkdown-editor h1, 
+.milkdown-editor h2, 
+.milkdown-editor h3 {
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.2;
+}
+
+.milkdown-editor h1 {
+  font-size: 1.5rem;
+}
+
+.milkdown-editor h2 {
+  font-size: 1.25rem;
+}
+
+.milkdown-editor h3 {
+  font-size: 1.125rem;
+}
+
+.milkdown-editor p {
+  margin-bottom: 1em;
+  line-height: 1.5;
+}
+
+.milkdown-editor a {
+  color: var(--color-primary, #6366f1);
+  text-decoration: none;
+}
+
+.milkdown-editor a:hover {
+  text-decoration: underline;
+}
+
+.milkdown-editor blockquote {
+  border-left: 4px solid var(--color-border, #e5e7eb);
+  padding-left: 1rem;
+  margin-left: 0;
+  color: var(--color-text-muted, #6b7280);
+  font-style: italic;
+}
+
+.milkdown-editor ul, 
+.milkdown-editor ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1em;
+}
+
+.milkdown-editor ul {
+  list-style-type: disc;
+}
+
+.milkdown-editor ol {
+  list-style-type: decimal;
+}
+
+.milkdown-editor li {
+  margin-bottom: 0.25em;
+}
+
+.milkdown-editor code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  background-color: var(--color-code-bg, rgba(0, 0, 0, 0.05));
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+
+.dark .milkdown-editor code {
+  background-color: var(--color-code-bg-dark, rgba(255, 255, 255, 0.1));
+}
+
+.milkdown-editor pre {
+  background-color: var(--color-code-block-bg, rgba(0, 0, 0, 0.05));
+  padding: 1rem;
+  border-radius: 0.375rem;
+  overflow-x: auto;
+  margin-bottom: 1em;
+}
+
+.dark .milkdown-editor pre {
+  background-color: var(--color-code-block-bg-dark, rgba(0, 0, 0, 0.25));
+}
+
+.milkdown-editor pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.875em;
+  color: inherit;
+}
+
+/* Mention menu styling */
+.milkdown-menu {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.milkdown-menu[data-show] {
+  display: block;
+}
+.milkdown-menu[data-show="false"] {
+  display: none;
+}
+
+.milkdown-menu li:hover {
+  background-color: var(--color-hover, rgba(0, 0, 0, 0.05));
+}
+
+.dark .milkdown-menu li:hover {
+  background-color: var(--color-hover-dark, rgba(255, 255, 255, 0.1));
+}
 
 
 /* Import custom themes */

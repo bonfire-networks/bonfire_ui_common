@@ -13,6 +13,7 @@ TooltipHooks.Tooltip = {
 		const tooltipWrapper = this.el;
 		const position = tooltipWrapper.getAttribute("data-position");
 		const trigger = tooltipWrapper.getAttribute("data-trigger");
+		const closeOnInsideClick = tooltipWrapper.getAttribute("data-close-on-inside-click") === "true";
 		const button = this.el.querySelector(".tooltip-button");
 		const tooltip = this.el.querySelector(".tooltip");
 		let showTimeout;
@@ -108,10 +109,17 @@ TooltipHooks.Tooltip = {
 				tooltip.style.display === 'block' ? hideTooltip() : showTooltip();
 			},
 			clickOutside: (event) => {
+				// Only check for clicks outside both tooltip and button
 				if (!tooltip.contains(event.target) && !button.contains(event.target)) {
 					hideTooltip();
 				}
-			}
+			},
+			// tooltipClick: (event) => {
+			// 	// This handler is specifically for clicks inside the tooltip
+			// 	if (closeOnInsideClick) {
+			// 		hideTooltip();
+			// 	}
+			// }
 		};
 
 		// Attach event listeners
@@ -125,6 +133,11 @@ TooltipHooks.Tooltip = {
 		} else {
 			button.addEventListener('click', handlers.buttonClick);
 			document.addEventListener('click', handlers.clickOutside);
+			
+			// If closeOnInsideClick is enabled, add a click handler to the tooltip
+			// if (closeOnInsideClick) {
+			// 	tooltip.addEventListener('click', handlers.tooltipClick);
+			// }
 		}
 
 		// Cleanup function
@@ -143,6 +156,10 @@ TooltipHooks.Tooltip = {
 			} else {
 				button.removeEventListener('click', handlers.buttonClick);
 				document.removeEventListener('click', handlers.clickOutside);
+				
+				// if (closeOnInsideClick) {
+				// 	tooltip.removeEventListener('click', handlers.tooltipClick);
+				// }
 			}
 		};
 	},
