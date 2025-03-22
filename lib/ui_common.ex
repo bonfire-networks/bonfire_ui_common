@@ -1121,27 +1121,33 @@ defmodule Bonfire.UI.Common do
       when is_function(preload_fn, 3) ->
         # actually do the preload async
         debug(preload_fn, "preloading using async :-)")
+        {_, socket} = List.first(assigns_sockets)
         pid = self()
 
-        apply_task(:start_link, fn ->
-          preload_fn.(list_of_components, list_of_ids, current_user)
-          |> Enum.each(fn
-            {component_id, %{} = assigns} ->
-              # debug(assigns, "ahjkjhkh")
+        apply_task(
+          :start_async,
+          fn ->
+            preload_fn.(list_of_components, list_of_ids, current_user)
+            |> Enum.each(fn
+              {component_id, %{} = assigns} ->
+                # debug(assigns, "ahjkjhkh")
 
-              maybe_send_update(
-                opts[:caller_module],
-                component_id,
-                Map.put(assigns, preload_status_key, true),
-                pid
-              )
+                maybe_send_update(
+                  opts[:caller_module],
+                  component_id,
+                  Map.put(assigns, preload_status_key, true),
+                  pid
+                )
 
-            other ->
-              warn(other, "skip sending assigns")
-          end)
+              other ->
+                warn(other, "skip sending assigns")
+            end)
 
-          # send(pid, :preload_done)
-        end)
+            # send(pid, :preload_done)
+          end,
+          socket: socket,
+          id: opts[:id]
+        )
 
         # while the async stuff is running, return the original assigns
         maybe_assign_provided(assigns_sockets, !opts[:return_assigns_socket_tuple])
@@ -1216,30 +1222,36 @@ defmodule Bonfire.UI.Common do
             nil
 
           async_groups ->
+            {_, socket} = List.first(assigns_sockets)
             pid = self()
 
-            apply_task(:start_link, fn ->
-              {preload_status_keys, preloaded_assigns} =
-                do_batch_preloads(async_groups, current_user)
+            apply_task(
+              :start_async,
+              fn ->
+                {preload_status_keys, preloaded_assigns} =
+                  do_batch_preloads(async_groups, current_user)
 
-              preloaded_assigns
-              |> Enum.each(fn
-                {component_id, %{} = assigns} ->
-                  # debug(assigns, "ahjkjhkh")
+                preloaded_assigns
+                |> Enum.each(fn
+                  {component_id, %{} = assigns} ->
+                    # debug(assigns, "ahjkjhkh")
 
-                  maybe_send_update(
-                    opts[:caller_module],
-                    component_id,
-                    Map.merge(assigns, preload_status_keys),
-                    pid
-                  )
+                    maybe_send_update(
+                      opts[:caller_module],
+                      component_id,
+                      Map.merge(assigns, preload_status_keys),
+                      pid
+                    )
 
-                other ->
-                  warn(other, "skip sending assigns")
-              end)
+                  other ->
+                    warn(other, "skip sending assigns")
+                end)
 
-              # end async ops
-            end)
+                # end async ops
+              end,
+              socket: socket,
+              id: opts[:id]
+            )
 
             nil
         end
@@ -1271,8 +1283,9 @@ defmodule Bonfire.UI.Common do
     async_data =
       async_groups
       |> Enum.map(fn {_mode, preload_status_key, preload_fn, list_of_ids, list_of_components} ->
-        # same as `Task.async/1` but supports multi-tenancy
+        # Note: no need to use :start_async here as this function is already called within an async task
         Utils.apply_task(:async, fn ->
+          # same as `Task.async/1` but supports multi-tenancy
           {preload_status_key, preload_fn.(list_of_components, list_of_ids, current_user)}
         end)
       end)

@@ -35,7 +35,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop without_secondary_widgets, :boolean, default: false
   prop without_sidebar, :boolean, default: nil
   prop sidebar_widgets, :list, default: []
-  prop back, :boolean, default: false
+  prop back, :any, default: nil
   prop extra, :string, default: false
   prop page_header_aside, :any, default: nil
   prop page_header_icon, :string, default: nil

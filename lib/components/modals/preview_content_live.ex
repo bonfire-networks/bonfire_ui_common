@@ -64,7 +64,13 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
 
   def handle_event("close", _params, socket) do
     # When closing, show main content again
-    socket = socket |> send_self(hide_main: false)
+    socket =
+      socket
+      |> send_self(
+        hide_main: false,
+        modal_assigns: Enums.fun(e(assigns(socket), :modal_assigns, %{}), :put, [:loaded, false])
+      )
+
     {:noreply, socket}
   end
 end

@@ -57,6 +57,7 @@ defmodule Bonfire.UI.Common.OpenPreviewLive do
 
     Bonfire.UI.Common.ReusableModalLive.set(
       show: false,
+      loading: true,
       reusable_modal_component: Bonfire.UI.Common.PreviewContentLive,
       reusable_modal_id: "preview_content"
     )

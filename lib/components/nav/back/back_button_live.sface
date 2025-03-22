@@ -10,6 +10,7 @@
   </button>
 {#else}
   <LinkLive
+    :if={is_binary(@back) and @back != ""}
     to={@back}
     label={l("Go back to the previous page")}
     class="btn z-50 btn-ghost btn-sm btn-circle"

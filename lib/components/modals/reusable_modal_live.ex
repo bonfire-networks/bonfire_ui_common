@@ -169,33 +169,38 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
 
     pid = self()
 
-    apply_task(:start_link, fn ->
-      debug("attempt to unshorten")
+    apply_task(
+      :start_async,
+      fn ->
+        debug("attempt to unshorten")
 
-      final_url =
-        Cache.maybe_apply_cached({Unfurl, :unshorten!}, url, fallback_return: nil)
-        |> debug("final_url")
+        final_url =
+          Cache.maybe_apply_cached({Unfurl, :unshorten!}, url, fallback_return: nil)
+          |> debug("final_url")
 
-      if final_url != url do
-        debug(final_url, "urls are different")
+        if final_url != url do
+          debug(final_url, "urls are different")
 
-        set(
-          [
-            show: true,
-            modal_assigns: [
-              modal_component: LinkLive,
-              to: final_url,
-              label: "#{url} (redirects to #{final_url})",
-              external_link_warnings: true,
-              class: "link font-mono"
+          set(
+            [
+              show: true,
+              modal_assigns: [
+                modal_component: LinkLive,
+                to: final_url,
+                label: "#{url} (redirects to #{final_url})",
+                external_link_warnings: true,
+                class: "link font-mono"
+              ],
+              sticky: e(assigns(socket), :__context__, :sticky, nil)
             ],
-            sticky: e(assigns(socket), :__context__, :sticky, nil)
-          ],
-          nil,
-          pid: pid
-        )
-      end
-    end)
+            nil,
+            pid: pid
+          )
+        end
+      end,
+      socket: socket,
+      id: "unshorten"
+    )
 
     {:noreply, socket}
   end

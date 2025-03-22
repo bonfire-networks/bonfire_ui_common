@@ -5,7 +5,7 @@ defmodule Bonfire.UI.Common.PageHeaderLive do
   prop page_title, :string, default: nil
   # prop selected_tab, :any, default: nil
   prop page, :any, default: nil
-  prop back, :any, default: false, required: false
+  prop back, :any, default: nil
   prop page_header_icon, :string, default: nil
   prop extra, :string, default: nil
   prop showing_within, :atom, default: nil
