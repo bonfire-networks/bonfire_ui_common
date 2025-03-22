@@ -124,6 +124,13 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     live_async_wait(liveview)
   end
 
+  def wait_async(liveview) do
+    liveview
+    |> PhoenixTest.unwrap(fn view ->
+      live_async_wait(view)
+    end)
+  end
+
   @doc """
   Stop a specific LiveView
   """
