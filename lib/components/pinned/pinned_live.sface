@@ -10,7 +10,6 @@
     current_user={e(current_user(@__context__), nil)}
     feed={@feed}
     page_info={@page_info}
-    previous_page_info={false}
     showing_within={:pins}
     loading={@loading}
     hide_filters

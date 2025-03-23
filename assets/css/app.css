@@ -778,3 +778,9 @@ div[data-scope='avatar'] div[data-square] {
  @utility main-single-column {
   @apply mx-auto order-last border-none shadow-none;
  }
+
+@keyframes wave {
+  to {
+    stroke-dashoffset: -20;
+  }
+}

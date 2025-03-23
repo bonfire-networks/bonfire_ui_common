@@ -312,4 +312,20 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     assert {:ok, doc} = Floki.parse_fragment(render_submit(view, event, value))
     doc
   end
+
+  def assert_has_or_open_browser(session, selector, opts \\ []) do
+    PhoenixTest.assert_has(session, selector, opts)
+  rescue
+    e ->
+      PhoenixTest.open_browser(session)
+      reraise e, __STACKTRACE__
+  end
+
+  def refute_has_or_open_browser(session, selector, opts \\ []) do
+    PhoenixTest.refute_has(session, selector, opts)
+  rescue
+    e ->
+      PhoenixTest.open_browser(session)
+      reraise e, __STACKTRACE__
+  end
 end

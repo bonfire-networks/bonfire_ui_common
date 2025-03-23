@@ -7,7 +7,7 @@
           :hook
           data-hash={blurhash}
           class="h-full"
-          x-data="{src: null }"
+          x-data="{src: null}"
           x-intersect.once={"src = '#{src}'"}
         >
           <canvas class={@class} x-show="!src" x-transition {...@opts} />
