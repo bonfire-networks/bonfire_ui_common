@@ -28,5 +28,5 @@
       "inline-block w-5 h-5"
     }
   />
-  <span :if={!@as_icon and @prompt} class="hidden normal-case lg:block">{@prompt || l("Compose")}</span>
+  <span :if={!@as_icon and @prompt} class="">{@prompt || l("Compose")}</span>
 </button>
