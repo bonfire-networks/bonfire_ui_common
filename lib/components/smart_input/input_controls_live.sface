@@ -181,6 +181,7 @@
                 </:open_btn>
               </Bonfire.UI.Common.OpenModalLive>
             </div>
+              <!-- x-on:click="$dispatch('submit')" -->
 
             <button
               type="submit"
@@ -190,7 +191,7 @@
                 do: l("Sending..."),
                 else: l("Posting...")}
               class="capitalize flex-1 rounded justify-self-end btn-sm btn btn-primary"
-              disabled={e(@smart_input_opts, :submit_disabled, nil)}
+              disabled={@smart_input_opts[:submit_disabled]} 
             >
               {#if @create_object_type == :message}
                 <#Icon iconify="mdi:email-fast-outline" class="w-5 h-5" />

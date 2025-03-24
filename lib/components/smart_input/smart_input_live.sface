@@ -3,11 +3,11 @@
   class="rounded-xl flex-1 h-full bg-base-100 grow relative z-[9999999999]"
 >
   <!-- x-ref="smart_input" -->
+      <!-- x-data="{body: ''}" -->
   <div id="composer_container" data-id="smart_input" class="flex-1 h-full grow rounded-xl">
     <div
       id="smart_input"
       phx-drop-target={@uploads.files.ref}
-      x-data="{body: ''}"
       class="flex bg-transparent rounded-xl h-full grow flex-1"
     >
       <!-- title_open: #{if @title_open == true and @create_object_type not in [:post], do: true, else: false}, -->
@@ -15,7 +15,7 @@
         :if={not is_nil(current_user_id(@__context__))}
         class="relative flex flex-col flex-1 w-full bg-base-100 rounded-xl"
       >
-        <div :if={is_map(@activity) || is_map(@reply_to_id)} class="relative bg-base-200 rounded-box m-2">
+        <div :if={is_map(@activity) || is_map(@reply_to_id)} class="relative bg-base-content/5 rounded-box m-2">
           {!-- show what we're replying to, if any --}
           <StatelessComponent
             module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}

@@ -1,7 +1,14 @@
 {#case rich_editor_module(e(@smart_input_opts, :wysiwyg, true), @__context__)}
   {#match component when is_atom(component) and not is_nil(component)}
     {!-- editor component from user's preferred extension --}
-    <StatelessComponent module={component} {...assigns} />
+    <StatelessComponent 
+      module={Bonfire.Editor.Milkdown} 
+      smart_input_opts={@smart_input_opts} 
+      field_name={@field_name}
+      reset_smart_input={@reset_smart_input}
+      showing_within={@showing_within}
+    />
+      <!-- {...assigns}  -->
 
     {!-- fallback if JS is disabled --}
     {!-- <noscript>

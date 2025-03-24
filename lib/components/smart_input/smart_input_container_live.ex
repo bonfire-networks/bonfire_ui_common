@@ -85,31 +85,41 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
         %{assigns: %{smart_input_opts: old_smart_input_opts}} = socket
       )
       when is_map(new_smart_input_opts) and is_map(old_smart_input_opts) do
-    # Load custom emojis
-    # custom_emojis =
-    #   case Bonfire.Files.EmojiUploader.list(assigns(socket)) do
-    #     # Return empty JSON array if no emojis
-    #     nil ->
-    #       "[]"
+    # Merge smart_input_opts
+    merged_smart_input_opts = Map.merge(old_smart_input_opts, new_smart_input_opts)
 
-    #     emojis ->
-    #       emojis
-    #       |> Enum.map(fn {shortcode, emoji} ->
-    #         %{
-    #           id: id(emoji)
-    #           name: emoji.label,
-    #           shortcodes: [shortcode],
-    #           url: emoji.url
-    #         }
-    #       end)
-    #       |> Jason.encode!()
-    #   end
+    # Preserve existing important attributes in the socket assigns
+    # We'll look for essential attrs that we don't want to lose during partial updates
+    existing_assigns = socket.assigns
 
+    # Get a list of keys from the new assigns that we're updating
+    new_assign_keys = Map.keys(assigns)
+
+    # Core attributes to always preserve (unless explicitly being updated)
+    core_attrs = [:activity, :object, :reply_to_id, :context_id,
+                  :activity_inception, :to_boundaries, :to_circles]
+
+    # Preserve core attributes if they're not being explicitly updated
+    preserved_attrs =
+      Enum.reduce(core_attrs, %{}, fn attr, acc ->
+        if attr not in new_assign_keys and Map.has_key?(existing_assigns, attr) do
+          # This is a core attribute that exists in current state but isn't being updated
+          # So we should preserve it
+          Map.put(acc, attr, Map.get(existing_assigns, attr))
+        else
+          # Either this attribute is being updated or doesn't exist in current state
+          acc
+        end
+      end)
+
+    # Create final assigns by merging: preserved attributes + incoming assigns + merged smart_input_opts
+    final_assigns =
+      preserved_attrs
+      |> Map.merge(assigns)
+      |> Map.put(:smart_input_opts, merged_smart_input_opts)
     {:ok,
      socket
-     |> assign(assigns)
-     #  |> assign(:custom_emojis, custom_emojis)
-     |> assign(smart_input_opts: Map.merge(old_smart_input_opts, new_smart_input_opts))
+     |> assign(final_assigns)
      |> Bonfire.Boundaries.LiveHandler.prepare_assigns()}
   end
 
@@ -134,14 +144,23 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
           |> Jason.encode!()
       end
 
-    {
-      :ok,
-      socket
+    socket = socket
       |> assign(assigns)
       |> assign(:custom_emojis, custom_emojis)
       |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
       # TODO: only trigger if module enabled ^
-    }
+
+    # Initialize submit button state right away - use the should_disable_submit function
+    socket = socket
+      |> assign(reset_smart_input: false)
+      |> update(
+        :smart_input_opts,
+        &Map.merge(&1, %{
+          submit_disabled: Bonfire.UI.Common.SmartInput.LiveHandler.should_disable_submit?(socket)
+        })
+      )
+
+    {:ok, socket}
   end
 
   def handle_event(
@@ -152,4 +171,6 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     socket
     |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
   end
+
+  # Removed the handle_info handler to avoid conflicts with PersistentLive
 end

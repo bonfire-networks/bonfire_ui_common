@@ -143,7 +143,7 @@
       <aside
         :if={!@without_sidebar}
         data-id="nav_sidebar"
-        class="w-80 px-4 lg:px-0 lg:mr-3 lg:w-[250px] bg-base-100 lg:bg-base-200"
+        class="w-80 px-4 lg:px-0 lg:mr-3 lg:w-[250px] bg-base-100 lg:bg-base-200 min-h-full"
       >
         {#if is_nil(@current_user_id)}
           <div class="flex items-center justify-end lg:justify-between top-0 bg-base-200 pt-2">

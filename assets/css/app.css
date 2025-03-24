@@ -29,13 +29,6 @@
   min-height: 250px;
 }
 
-
-.markdown-editor:focus-within {
-  border-color: var(--color-primary, #6366f1);
-  outline: 1px solid rgba(99, 102, 241, 0.25);
-  outline-offset: 2px;
-}
-
 /* Placeholder styling */
 .milkdown-placeholder {
   color: var(--color-text-muted, #9ca3af);
@@ -633,13 +626,10 @@ div[data-scope='avatar'] div[data-square] {
     height: 8px;
   }
   /* composer */
-  /* #smart_input_container[data-hidden] {
+  #smart_input_container[data-hidden] {
     @apply hidden;
   }
 
-  #smart_input_backdrop[data-hidden] {
-    @apply hidden;
-  } */
   /* Smart input container */
   #smart_input_container {
     box-shadow: rgba(136, 153, 166, 0.2) 0px 0px 15px, rgba(136, 153, 166, 0.15) 0px 0px 3px 1px;
