@@ -1606,7 +1606,7 @@ defmodule Bonfire.UI.Common do
       case id(object) do
         nil when is_binary(object) -> object
         nil when is_atom(object) -> object
-        nil ->  :erlang.phash2(object, 1_000_000)
+        nil -> :erlang.phash2(object, 1_000_000)
         id -> id
       end
 
