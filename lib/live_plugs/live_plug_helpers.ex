@@ -104,7 +104,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        current_extension: current_extension,
        current_params: params,
        user_agent: maybe_get_connect_info(socket, :user_agent),
-       user_ip: user_ip |> warn("peer_data"),
+       user_ip: user_ip |> debug("user_ip"),
        #  connect_params: connect_params,
        csrf_socket_token: connect_params["_csrf_token"],
        live_action: e(assigns(socket), :live_action, nil),

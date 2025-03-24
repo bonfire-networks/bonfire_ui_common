@@ -19,7 +19,7 @@ defmodule Bonfire.UI.Common.LoadMoreLive do
 
   def render(assigns) do
     assigns
-    |> assign(:cursor, unwrap(e(assigns.page_info, :end_cursor, nil)))
+    |> assign(:cursor, unwrap(e(assigns, :page_info, :end_cursor, nil)))
     |> render_sface()
   end
 

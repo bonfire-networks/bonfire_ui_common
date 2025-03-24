@@ -370,6 +370,25 @@ defmodule Bonfire.UI.Common.ErrorHandling do
   defp live_exception(
          socket,
          {:mount, return_key},
+         %Bonfire.Fail{code: code} = msg,
+         exception,
+         stacktrace,
+         kind
+       ) do
+    with {:error, msg} <-
+           Errors.debug_exception(msg, exception, stacktrace, kind, as_markdown: true) do
+      with_return_key(
+        socket
+        |> UI.Common.assign_error(msg)
+        |> UI.Common.redirect_to("/error/#{code}"),
+        return_key
+      )
+    end
+  end
+
+  defp live_exception(
+         socket,
+         {:mount, return_key},
          msg,
          exception,
          stacktrace,
