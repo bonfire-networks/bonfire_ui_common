@@ -551,7 +551,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
             if module_enabled?(module, socket) and
                  function_exported?(module, fun, length(args) + 1) do
               debug(args, "LiveHandler: delegating to #{inspect(fun)} in #{module} with args")
-              socket = assign(socket, :__handler_chain, handler_chain ++ [mod])
+              socket = assign_generic(socket, :__handler_chain, handler_chain ++ [mod])
 
               apply(module, fun, args ++ [socket])
               |> debug("applied")
@@ -569,13 +569,13 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
       case result do
         {:noreply, socket} ->
-          {:noreply, assign(socket, :__handler_chain, [])}
+          {:noreply, assign_generic(socket, :__handler_chain, [])}
 
         {:error, e} ->
           {:error, e}
 
         {reply, %{} = socket} ->
-          {reply, assign(socket, :__handler_chain, [])}
+          {reply, assign_generic(socket, :__handler_chain, [])}
 
         other ->
           other
