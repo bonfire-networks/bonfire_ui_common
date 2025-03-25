@@ -6,7 +6,6 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop reply_to_id, :any, default: nil
   prop as_icon, :boolean, default: false
   prop context_id, :string, default: nil, required: false
-  prop create_object_type, :any, default: nil
   prop smart_input_component, :atom, default: nil
   prop open_boundaries, :boolean, default: false
   prop to_boundaries, :any, default: nil
@@ -78,6 +77,18 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       auto_upload: false
       # progress: &handle_progress/3
     )
+  end
+
+  # Handle targeted updates from SelectRecipientsLive
+  # This new update handler will only modify the specific field being updated
+  # while preserving all other state
+  def update(%{update_field: field, field_value: value, preserve_state: true}, socket) do
+    # Only update the specific field without touching any other state
+    socket = socket
+      |> assign(field, value)
+      |> assign(reset_smart_input: false)
+
+    {:ok, socket}
   end
 
   def update(

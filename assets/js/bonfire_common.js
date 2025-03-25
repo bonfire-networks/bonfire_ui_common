@@ -15,6 +15,24 @@ Alpine.plugin(collapse);
 window.Alpine = Alpine
 window.SVGInject = SVGInject
 
+// Function to detect mobile devices and add appropriate class
+const detectMobileDevice = () => {
+  // Check if device is mobile using media query
+  const isMobile = window.matchMedia("(max-width: 768px), (pointer: coarse) and (max-width: 1024px)").matches;
+  
+  if (isMobile) {
+    document.body.classList.add("is-container-mobile");
+    console.log("Mobile device detected, added is-mobile class to body");
+  } else {
+    document.body.classList.remove("is-container-mobile");
+    console.log("Desktop device detected, removed is-mobile class from body");
+  }
+};
+
+// Run detection on load and resize
+detectMobileDevice();
+window.addEventListener("resize", detectMobileDevice);
+
 Alpine.start();
 
 const winnerDimension = () => {

@@ -2,15 +2,12 @@
   id="smart_input_live"
   class="rounded-xl flex-1 h-full bg-base-100 grow relative z-[9999999999]"
 >
-  <!-- x-ref="smart_input" -->
-      <!-- x-data="{body: ''}" -->
   <div id="composer_container" data-id="smart_input" class="flex-1 h-full grow rounded-xl">
     <div
       id="smart_input"
       phx-drop-target={@uploads.files.ref}
       class="flex bg-transparent rounded-xl h-full grow flex-1"
     >
-      <!-- title_open: #{if @title_open == true and @create_object_type not in [:post], do: true, else: false}, -->
       <div
         :if={not is_nil(current_user_id(@__context__))}
         class="relative flex flex-col flex-1 w-full bg-base-100 rounded-xl"
@@ -42,7 +39,7 @@
             <#Icon solid="X" class="w-4 h-4 text-base-content/70" />
           </span>
         </div>
-        {#case LiveHandler.active_smart_input_component(@smart_input_component, @create_object_type)}
+        {#case LiveHandler.active_smart_input_component(@smart_input_component, e(@smart_input_opts, :create_object_type, nil))}
           {#match module}
             {#if function_exported?(module, :mount, 1)}
               <StatefulComponent
@@ -61,36 +58,5 @@
         {/case}
       </div>
     </div>
-    {!-- <noscript>
-      <style type="text/css">
-        #smart_input {display: block !important;}
-        /* #smart_input_container header {display: none;} */
-        .input_boundaries button {display: none;} /* FIXME: make boundary selection work without JS */
-      </style>
-    </noscript> --}
   </div>
-
-  <!-- <form class="" :if={@create_object_type != :message} phx-change="select">
-    {!-- PREVIEW BOUNDARIES --}
-    <div class="hidden flex-1 h-full grow" id="boundaries_preview">
-      <div class="flex flex-col h-full">
-        <code>{inspect(@preview_boundary_for_id, pretty: true)}</code>
-        <code>{inspect(@preview_boundary_for_username, pretty: true)}</code>
-        <code>{inspect(@preview_boundary_verbs, pretty: true)}</code>
-        <code>{inspect(@boundary_preset, pretty: true)}</code>
-        <code>{inspect(@to_boundaries, pretty: true)}</code>
-        <code>{inspect(@to_circles, pretty: true)}</code>
-
-        <StatefulComponent
-          :if={maybe_apply(Bonfire.UI.Boundaries.SetBoundariesButtonLive, :clone_context, @to_boundaries) ==
-            false}
-          module={maybe_component(Bonfire.UI.Boundaries.PreviewBoundariesLive, @__context__)}
-          id="boundaries_preview"
-          boundary_preset={@boundary_preset}
-          to_boundaries={@to_boundaries}
-          to_circles={@to_circles}
-        />
-      </div>
-    </div>
-  </form> -->
 </div>

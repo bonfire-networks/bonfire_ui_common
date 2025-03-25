@@ -11,7 +11,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     )
   end
 
-  def show_main(js \\ %JS{}, _opts \\ nil) do
+  def show_main(js \\ %JS{}) do
     js
     |> JS.show(to: "#composer_container")
     |> maximize()
@@ -33,14 +33,13 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     |> maybe_push_opts("Bonfire.UI.Common.SmartInput:select_smart_input", opts)
   end
 
-  def open_type(js \\ %JS{}, component, create_object_type, opts \\ nil) do
+  def open_type(js \\ %JS{}, component, opts \\ nil) do
     js
-    |> show_main(opts)
+    |> show_main()
     |> JS.show(to: ".smart_input_show_on_open")
     |> JS.push("Bonfire.UI.Common.SmartInput:select_smart_input",
       value: %{
         component: component,
-        create_object_type: create_object_type,
         opts: encode_opts(opts)
       }
     )
@@ -56,8 +55,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
-      create_object_type: :post,
       smart_input_opts: %{
+        create_object_type: "post",
         open: false,
         text_suggestion: nil,
         recipients_editable: false,
@@ -95,6 +94,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       to: "#smart_input_container",
       transition: {"transition-transform duration-300", "translate-y-0", "translate-y-100"}
     )
+    # Always remove overflow-hidden class from mobile devices to restore scrolling
+    |> JS.remove_class("overflow-hidden", to: ".is-container-mobile")
     # |> JS.show(to: ".smart_input_show_on_minimize")
     |> maybe_push_opts("Bonfire.UI.Common.SmartInput:select_smart_input", %{open: false})
   end
@@ -105,6 +106,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       to: "#smart_input_container",
       transition: {"transition-transform duration-300", "translate-y-100", "translate-y-0"}
     )
+    # Always add overflow-hidden class to mobile devices to hide scrollbar
+    |> JS.add_class("overflow-hidden", to: ".is-container-mobile")
     # |> JS.hide(to: ".smart_input_show_on_minimize")
     # |> JS.push("Bonfire.UI.Common.SmartInput:select_smart_input",
     #   value: %{
@@ -169,10 +172,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       [
         smart_input_component:
           maybe_to_module(e(params, "component", nil) || e(params, "smart_input_component", nil)),
-        create_object_type:
-          maybe_to_atom(
-            e(opts, "create_object_type", nil) || e(params, "create_object_type", nil)
-          ),
+        create_object_type: e(opts, "create_object_type", nil) || e(params, "create_object_type", nil),
         context_id: e(opts, "context_id", nil) || e(params, "context_id", nil),
         reply_to_id:
           reply_to_param(params) || reply_to_param(opts) || e(assigns(socket), :reply_to_id, nil),
@@ -490,7 +490,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       open: false,
       text_suggestion: nil,
       text: nil,
-      minimize: false
+
     }
 
     set(socket,
@@ -515,7 +515,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       open: false,
       text_suggestion: nil,
       text: nil,
-      minimize: false
+
     }
 
     set(socket,
@@ -537,14 +537,14 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       open: false,
       text_suggestion: nil,
       text: nil,
-      minimize: false
+      create_object_type: nil,
+
     }
 
     set(socket,
       # avoid double-reset
       reset_smart_input: false,
       activity: nil,
-      create_object_type: nil,
       smart_input_component: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),

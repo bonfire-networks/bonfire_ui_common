@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.SelectRecipientsLive do
-  use Bonfire.UI.Common.Web, :stateless_component
+  use Bonfire.UI.Common.Web, :stateful_component
 
   prop preloaded_recipients, :list, default: nil
   prop to_boundaries, :any, default: nil
@@ -9,6 +9,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
   prop showing_within, :atom, default: nil
   prop implementation, :any, default: :live_select
   prop label, :string, default: nil
+  prop event_target, :any, default: nil
   prop mode, :atom, default: :tags
 
   prop class, :string,
@@ -16,6 +17,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
       "w-full h-10 input !border-none !border-b !border-base-content/10 !rounded-none select_recipients_input"
 
   prop is_editable, :boolean, default: false
+
 
   def handle_event("live_select_change", %{"id" => live_select_id, "text" => search}, socket) do
     # current_user = current_user(assigns(socket))
@@ -68,17 +70,26 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
       |> debug("new value")
 
     if updated != e(assigns(socket), field, nil) |> debug("existing") do
-      {:noreply,
-       socket
-       |> assign(
-         field,
-         Enum.uniq(updated)
-         |> debug("update value")
-       )
-       |> assign_global(
-         _already_live_selected_:
-           Enum.uniq(e(assigns(socket), :__context, :_already_live_selected_, []) ++ [field])
-       )}
+      # Update local state first
+      socket = assign(socket, field, Enum.uniq(updated))
+
+      # Track selected fields globally
+      socket = assign_global(socket,
+        _already_live_selected_:
+          Enum.uniq(e(assigns(socket), :__context, :_already_live_selected_, []) ++ [field])
+      )
+
+      # Send targeted update to the parent container
+      # This uses the special update handler in SmartInputContainerLive that only
+      # updates the specific field without touching other fields
+      maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input,
+      %{
+        update_field: field,
+        field_value: Enum.uniq(updated),
+        preserve_state: true
+      })
+
+      {:noreply, socket}
     else
       {:noreply, socket}
     end

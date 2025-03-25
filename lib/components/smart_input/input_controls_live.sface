@@ -2,19 +2,6 @@
   <div class="flex-1 h-full grow" id="compose_content_wrapper">
     <div class="relative !flex flex-col flex-1 h-full">
       {!-- here was old/loader.svg --}
-      {!-- DM RECIPIENTS --}
-      {#if @create_object_type == :message || e(@smart_input_opts, :recipients_editable, nil)}
-        <div class="relative bg-base-100 p-2">
-          <Bonfire.UI.Common.SelectRecipientsLive
-            preloaded_recipients={e(@preloaded_recipients, [])}
-            to_boundaries={@to_boundaries}
-            to_circles={@to_circles}
-            context_id={@context_id}
-            is_editable={e(@smart_input_opts, :recipients_editable, true)}
-          />
-        </div>
-      {/if}
-
       <div id="composer_wrapper" class="h-full flex flex-col">
         <div class="h-full flex flex-col flex-1 grow relative">
           <div
@@ -48,7 +35,7 @@
         <div class="">
           <div class="flex justify-between gap-2 p-2 rounded-b-xl md:items-center  md:px-3 py-2">
             <Bonfire.UI.Common.UploadButtonLive
-              :if={@uploads != false && @create_object_type not in [:message]}
+              :if={@uploads != false && e(@smart_input_opts, :create_object_type, nil) not in ["message"]}
               uploads={@uploads}
               max_uploads={Bonfire.Common.Settings.get(
                 [Bonfire.UI.Common.SmartInputLive, :max_uploads],
@@ -79,7 +66,7 @@
             </div>
 
             <div
-              :if={@create_object_type in [:message, :post, nil]}
+              :if={e(@smart_input_opts, :create_object_type, nil) in ["message", "post", nil]}
               title={l("Mark the activity as sensitive")}
               class="relative z-30 flex items-center"
               id="sensitive_btn"
@@ -144,7 +131,7 @@
               </ul>
             </div> -->
             <div class="flex gap-2">
-              {#if @create_object_type != :message && !e(@smart_input_opts, :recipients_editable, nil)}
+              {#if e(@smart_input_opts, :create_object_type, nil) != "message" && !e(@smart_input_opts, :recipients_editable, nil)}
                 <StatelessComponent
                   module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
                   to_boundaries={@to_boundaries}
@@ -187,13 +174,13 @@
               type="submit"
               id="submit_btn"
               x-on:click="$dispatch('submit')"
-              phx-disable-with={if @create_object_type == :message,
+              phx-disable-with={if e(@smart_input_opts, :create_object_type, nil) == "message",
                 do: l("Sending..."),
                 else: l("Posting...")}
               class="capitalize flex-1 rounded justify-self-end btn-sm btn btn-primary"
               disabled={@smart_input_opts[:submit_disabled]} 
             >
-              {#if @create_object_type == :message}
+              {#if e(@smart_input_opts, :create_object_type, nil) == "message"}
                 <#Icon iconify="mdi:email-fast-outline" class="w-5 h-5" />
                 <span class="">{l("Send")}</span>
               {#else}
@@ -210,7 +197,7 @@
         <input type="hidden" name="reply_to[thread_id]" value={@context_id}>
         {!-- FIXME: should not thread using context like a group or topic --}
         <input type="hidden" name="context_id" value={@context_id}>
-        <input type="hidden" name={:create_object_type} value={@create_object_type}>
+        <input type="hidden" name={:create_object_type} value={e(@smart_input_opts, :create_object_type, nil)}>
 
         <StatelessComponent
           module={maybe_component(Bonfire.UI.Boundaries.BoundariesSelectionLive, @__context__)}

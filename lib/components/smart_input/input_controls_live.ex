@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop smart_input_opts, :map, default: %{}
   prop reply_to_id, :any, default: nil
   prop context_id, :string, default: nil
-  prop create_object_type, :any, default: nil
+  # prop create_object_type, :any, default: nil
   prop to_boundaries, :any, default: nil
   prop to_circles, :list, default: []
   prop exclude_circles, :list, default: []

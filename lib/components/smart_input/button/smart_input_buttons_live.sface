@@ -1,7 +1,7 @@
 <div class="sticky top-0 flex items-center flex-1 w-full">
   {#case LiveHandler.active_smart_input_components(
       @smart_input_component,
-      @create_object_type
+      e(@smart_input_opts, :create_object_type, nil)
     )}
     {#match components}
       {#case Bonfire.Common.Config.get([:ui, :default_smart_input]) || Bonfire.UI.Social.WritePostContentLive}
