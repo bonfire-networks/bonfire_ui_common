@@ -7,6 +7,7 @@ assets/node_modules
 assets/*.log
 priv/cldr
 .bonfire-extension-boilerplate
+.DS_Store
 
 # If you run "mix test --cover", coverage assets end up here.
 /cover/
