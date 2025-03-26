@@ -131,7 +131,8 @@
               </ul>
             </div> -->
             <div class="flex gap-2">
-              {#if e(@smart_input_opts, :create_object_type, nil) != "message" && !e(@smart_input_opts, :recipients_editable, nil)}
+              {#if e(@smart_input_opts, :create_object_type, nil) != "message" &&
+                  !e(@smart_input_opts, :recipients_editable, nil)}
                 <StatelessComponent
                   module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
                   to_boundaries={@to_boundaries}
@@ -168,7 +169,7 @@
                 </:open_btn>
               </Bonfire.UI.Common.OpenModalLive>
             </div>
-              <!-- x-on:click="$dispatch('submit')" -->
+            <!-- x-on:click="$dispatch('submit')" -->
 
             <button
               type="submit"
@@ -178,7 +179,7 @@
                 do: l("Sending..."),
                 else: l("Posting...")}
               class="capitalize flex-1 rounded justify-self-end btn-sm btn btn-primary"
-              disabled={@smart_input_opts[:submit_disabled]} 
+              disabled={@smart_input_opts[:submit_disabled]}
             >
               {#if e(@smart_input_opts, :create_object_type, nil) == "message"}
                 <#Icon iconify="mdi:email-fast-outline" class="w-5 h-5" />
@@ -197,7 +198,11 @@
         <input type="hidden" name="reply_to[thread_id]" value={@context_id}>
         {!-- FIXME: should not thread using context like a group or topic --}
         <input type="hidden" name="context_id" value={@context_id}>
-        <input type="hidden" name={:create_object_type} value={e(@smart_input_opts, :create_object_type, nil)}>
+        <input
+          type="hidden"
+          name={:create_object_type}
+          value={e(@smart_input_opts, :create_object_type, nil)}
+        />
 
         <StatelessComponent
           module={maybe_component(Bonfire.UI.Boundaries.BoundariesSelectionLive, @__context__)}

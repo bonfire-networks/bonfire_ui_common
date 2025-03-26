@@ -5,6 +5,7 @@ defmodule Bonfire.UI.Common do
   use Untangle
   alias Bonfire.Common.PubSub
   alias Bonfire.UI.Common.ErrorHandling
+  alias Phoenix.LiveView.JS
 
   declare_extension("Common UI components",
     icon: "fluent-mdl2:web-components",
@@ -20,6 +21,7 @@ defmodule Bonfire.UI.Common do
       import Bonfire.UI.Common
       import Bonfire.UI.Common.Modularity.DeclareHelpers
       alias Bonfire.Common.PubSub
+      alias Phoenix.LiveView.JS
     end
   end
 
@@ -1625,5 +1627,38 @@ defmodule Bonfire.UI.Common do
   def random_dom_id do
     warn("random_dom_id() is deprecated, use deterministic_dom_id() instead")
     "random-#{Text.unique_integer()}"
+  end
+
+  @doc """
+  Creates a JS command to click all elements matching the specified data-id within a container.
+
+  ## Parameters
+
+  * `container_selector` - CSS selector for the container element
+  * `selector` - The type of element or CSS selector to match (defaults to "a")
+
+  ## Example
+
+      click_elements_with_data_id("#user_list", "a.follow_button")
+  """
+  def click_elements(container_selector, selector \\ "a") do
+    JS.dispatch("click", to: "#{container_selector} #{selector}")
+  end
+
+  @doc """
+  Creates a JS command to click all elements matching the specified data-id within a container.
+
+  ## Parameters
+
+  * `container_selector` - CSS selector for the container element
+  * `data_id` - The value of the data-id attribute to match (eg. "follow")
+  * `element_type` - The type of element to match (defaults to "a")
+
+  ## Example
+
+      click_elements_with_data_id("#user_list", "follow", "button")
+  """
+  def click_with_data_id(container_selector, element_type \\ "a", data_id) do
+    JS.dispatch("click", to: "#{container_selector} #{element_type}[data-id=\"#{data_id}\"]")
   end
 end

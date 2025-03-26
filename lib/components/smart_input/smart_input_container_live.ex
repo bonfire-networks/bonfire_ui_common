@@ -84,7 +84,8 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   # while preserving all other state
   def update(%{update_field: field, field_value: value, preserve_state: true}, socket) do
     # Only update the specific field without touching any other state
-    socket = socket
+    socket =
+      socket
       |> assign(field, value)
       |> assign(reset_smart_input: false)
 
@@ -107,8 +108,15 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     new_assign_keys = Map.keys(assigns)
 
     # Core attributes to always preserve (unless explicitly being updated)
-    core_attrs = [:activity, :object, :reply_to_id, :context_id,
-                  :activity_inception, :to_boundaries, :to_circles]
+    core_attrs = [
+      :activity,
+      :object,
+      :reply_to_id,
+      :context_id,
+      :activity_inception,
+      :to_boundaries,
+      :to_circles
+    ]
 
     # Preserve core attributes if they're not being explicitly updated
     preserved_attrs =
@@ -128,6 +136,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       preserved_attrs
       |> Map.merge(assigns)
       |> Map.put(:smart_input_opts, merged_smart_input_opts)
+
     {:ok,
      socket
      |> assign(final_assigns)
@@ -155,14 +164,17 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
           |> Jason.encode!()
       end
 
-    socket = socket
+    socket =
+      socket
       |> assign(assigns)
       |> assign(:custom_emojis, custom_emojis)
       |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
-      # TODO: only trigger if module enabled ^
+
+    # TODO: only trigger if module enabled ^
 
     # Initialize submit button state right away - use the should_disable_submit function
-    socket = socket
+    socket =
+      socket
       |> assign(reset_smart_input: false)
       |> update(
         :smart_input_opts,

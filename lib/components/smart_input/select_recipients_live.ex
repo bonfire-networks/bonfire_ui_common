@@ -18,7 +18,6 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
 
   prop is_editable, :boolean, default: false
 
-
   def handle_event("live_select_change", %{"id" => live_select_id, "text" => search}, socket) do
     # current_user = current_user(assigns(socket))
     Bonfire.Common.Utils.maybe_apply(
@@ -74,16 +73,16 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
       socket = assign(socket, field, Enum.uniq(updated))
 
       # Track selected fields globally
-      socket = assign_global(socket,
-        _already_live_selected_:
-          Enum.uniq(e(assigns(socket), :__context, :_already_live_selected_, []) ++ [field])
-      )
+      socket =
+        assign_global(socket,
+          _already_live_selected_:
+            Enum.uniq(e(assigns(socket), :__context, :_already_live_selected_, []) ++ [field])
+        )
 
       # Send targeted update to the parent container
       # This uses the special update handler in SmartInputContainerLive that only
       # updates the specific field without touching other fields
-      maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input,
-      %{
+      maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, %{
         update_field: field,
         field_value: Enum.uniq(updated),
         preserve_state: true

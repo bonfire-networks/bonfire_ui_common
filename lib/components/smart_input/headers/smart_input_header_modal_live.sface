@@ -22,7 +22,7 @@
     </button>
     <Bonfire.UI.Common.OpenModalLive
       id="close_composer"
-      reusable_modal_id={"persistent_modal"}
+      reusable_modal_id="persistent_modal"
       title_text={l("Delete the draft")}
       cancel_label={l("Cancel")}
       open_btn_wrapper_class="flex btn btn-xs btn-ghost btn-circle"
@@ -32,13 +32,13 @@
       </div>
       <:open_btn>
         <div class="flex btn btn-sm btn-ghost btn-circle">
-        <#Icon outline="X" class="w-5 h-5" />
-        <span class="sr-only">{l("Close")}</span>
+          <#Icon outline="X" class="w-5 h-5" />
+          <span class="sr-only">{l("Close")}</span>
         </div>
       </:open_btn>
       <:action_btns>
         <button
-          phx-click={"Bonfire.UI.Common.SmartInput:reset_to_default"}
+          phx-click="Bonfire.UI.Common.SmartInput:reset_to_default"
           phx-target="#smart_input"
           type="button"
           class="normal-case btn btn-sm btn-error"

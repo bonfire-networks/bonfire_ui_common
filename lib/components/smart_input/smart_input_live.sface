@@ -12,7 +12,10 @@
         :if={not is_nil(current_user_id(@__context__))}
         class="relative flex flex-col flex-1 w-full bg-base-100 rounded-xl"
       >
-        <div :if={is_map(@activity) || is_map(@reply_to_id)} class="relative bg-base-content/5 rounded-box m-2">
+        <div
+          :if={is_map(@activity) || is_map(@reply_to_id)}
+          class="relative bg-base-content/5 rounded-box m-2"
+        >
           {!-- show what we're replying to, if any --}
           <StatelessComponent
             module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
@@ -39,7 +42,10 @@
             <#Icon solid="X" class="w-4 h-4 text-base-content/70" />
           </span>
         </div>
-        {#case LiveHandler.active_smart_input_component(@smart_input_component, e(@smart_input_opts, :create_object_type, nil))}
+        {#case LiveHandler.active_smart_input_component(
+            @smart_input_component,
+            e(@smart_input_opts, :create_object_type, nil)
+          )}
           {#match module}
             {#if function_exported?(module, :mount, 1)}
               <StatefulComponent
