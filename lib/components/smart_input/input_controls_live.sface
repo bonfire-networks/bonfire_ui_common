@@ -149,6 +149,7 @@
                 reusable_modal_id="persistent_modal"
                 title_text={l("Preview boundaries for any user")}
                 no_actions
+                without_form
               >
                 <StatefulComponent
                   :if={maybe_apply(Bonfire.UI.Boundaries.SetBoundariesButtonLive, :clone_context, @to_boundaries) ==
@@ -159,6 +160,7 @@
                   to_boundaries={@to_boundaries}
                   to_circles={@to_circles}
                 />
+
                 <:open_btn>
                   <div
                     class="preview-button btn btn-ghost btn-sm text-[22px] btn-circle"
@@ -169,6 +171,7 @@
                 </:open_btn>
               </Bonfire.UI.Common.OpenModalLive>
             </div>
+
             <!-- x-on:click="$dispatch('submit')" -->
 
             <button
