@@ -106,7 +106,7 @@ defmodule Bonfire.UI.Common.SEOImage do
   defp write_og_image(filename, svg, overlay_path) do
     with {:ok, {svg_image, _}} <- Vix.Vips.Operation.svgload_buffer(svg),
          {:ok, overlay_image} <- Image.open(overlay_path),
-         IO.inspect(overlay_path, label: "ok imagesss"),
+         #  debug(overlay_path, "ok imagesss"),
          {:ok, overlay_image} <- Image.thumbnail(overlay_image, "200x200"),
          {:ok, composed_img} <- Image.compose(svg_image, overlay_image, x: 980, y: 380),
          {:ok, _} <- Image.write(composed_img, filename) do
