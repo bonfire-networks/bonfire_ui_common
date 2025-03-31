@@ -30,8 +30,8 @@ defmodule Bonfire.UI.Common.MixProject do
           # {:pages, "~> 0.12", only: :test} # extends Floki for testing
         ] ++ if(System.get_env("WITH_LV_NATIVE") in ["1", "true"], do: [
             {:live_view_native, "~> 0.3.1"},
-            {:live_view_native_stylesheet,  
-              # "~> 0.3.1" 
+            {:live_view_native_stylesheet,
+              # "~> 0.3.1"
               git: "https://github.com/bonfire-networks/live_view_native_stylesheet"
             },
             {:live_view_native_swiftui, "~> 0.3.1"},
