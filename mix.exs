@@ -26,7 +26,7 @@ defmodule Bonfire.UI.Common.MixProject do
           {:phoenix_live_reload, "~> 1.2", only: :dev},
           {:floki, "~> 0.36", only: :test},
           {:zest, "~> 0.1", optional: true},
-          {:phoenix_test, "~> 0.3", only: :test, runtime: false},
+          {:phoenix_test, "~> 0.6", only: :test, runtime: false},
           # {:pages, "~> 0.12", only: :test} # extends Floki for testing
         ] ++ if(System.get_env("WITH_LV_NATIVE") in ["1", "true"], do: [
             {:live_view_native, "~> 0.3.1"},
