@@ -6,8 +6,8 @@
       <div class="text-sm text-base-content/70" :if={@description}>{@description}</div>
     </div>
 
+    <label for={@id} class="sr-only">{@label_name}</label>
     <input name="scope" value={@scope} type="hidden">
-
     <div class="max-w-xs">
       <select id={@id} class="max-w-xs select" name={@input}>
         {#for {key, val} <- @options || []}

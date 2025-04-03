@@ -2,8 +2,8 @@
   <input name="scope" value={@scope} type="hidden">
   <input name={@input} value={to_string(@disabled_value)} type="hidden">
 
-  <label class={"flex items-center justify-between", "justify-between": !@compact}>
-    <div class={"flex flex-col mr-2", " !mr-0": @compact}>
+  <label class={"flex items-center", "justify-between": !@compact}>
+    <div class={"flex flex-col mr-2", "order-last ml-4 !mr-0": @compact}>
       <div class="flex flex-row gap-2" :if={@name}>
         <div class="text-sm">{@name}</div>
         <div :if={@show_label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div>
@@ -17,7 +17,7 @@
       type="checkbox"
       checked={if @current_value == @enabled_value,
         do: "checked"}
-      class="toggle toggle-sm"
+      class="toggle toggle-sm toggle-primary"
     />
   </label>
 </div>
