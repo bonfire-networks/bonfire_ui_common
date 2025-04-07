@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Common.LoadPreviousLive do
 
   def render(assigns) do
     assigns
-    |> assign(:cursor, unwrap(e(assigns.page_info, :start_cursor, nil)))
+    |> assign(:cursor, unwrap(e(debug(assigns.page_info, "page_infoz"), :start_cursor, nil)))
     |> render_sface()
   end
 

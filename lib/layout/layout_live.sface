@@ -99,10 +99,10 @@
             class="order-last sticky  w-auto lg:top-2 mt-2 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
           >
             <div :if={is_nil(@current_user_id)} class="flex flex-col mb-4 gap-2">
-              <LinkLive to={path(:login, :index)} class="btn-primary btn">{l("Log in")}</LinkLive>
+              <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="layout">{l("Log in")}</LinkLive>
 
               {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-                <LinkLive to={path(:signup)} class="btn">{l("Create account")}</LinkLive>
+                <LinkLive to={path(:signup)} class="btn" parent_id="layout">{l("Create account")}</LinkLive>
               {/if}
             </div>
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
@@ -147,7 +147,7 @@
       >
         {#if is_nil(@current_user_id)}
           <div class="flex items-center justify-end lg:justify-between top-0 bg-base-200 pt-2">
-            <Bonfire.UI.Common.LogoLinkLive with_name href="/" />
+            <Bonfire.UI.Common.LogoLinkLive with_name href="/" parent_id="layout" />
           </div>
         {/if}
         <!-- <nav

@@ -36,7 +36,7 @@
     </span>
     <a
       :if={!@hide_guest_fallback}
-      data-id="next-page"
+      data-id="next_page"
       class="normal-case btn btn-outline"
       x-cloak
       x-show="!show"

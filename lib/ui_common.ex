@@ -1521,19 +1521,22 @@ defmodule Bonfire.UI.Common do
       false
   """
   def socket_connected?(%{socket_connected?: bool}) do
-    bool
+    bool || false
   end
 
   def socket_connected?(%{__context__: %{socket_connected?: bool}}) do
-    bool
+    bool || false
   end
 
   def socket_connected?(%{assigns: %{__context__: %{socket_connected?: bool}}}) do
-    bool
+    bool || false
   end
 
   def socket_connected?(%struct{} = socket) when struct == Phoenix.LiveView.Socket do
-    maybe_apply(Phoenix.LiveView, :connected?, socket, fallback_return: false)
+    maybe_apply(Phoenix.LiveView, :connected?, [socket], fallback_return: false) &&
+      (Config.env() != :test or not is_nil(current_user_id(assigns(socket))))
+
+    # ^ since LV tests can connect to the socket, we want to reproduce what we do in the browser and not connect when logged out
   end
 
   def socket_connected?(assigns) do

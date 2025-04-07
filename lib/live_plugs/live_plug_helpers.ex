@@ -81,7 +81,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
       |> debug()
 
     socket_connected? =
-      Phoenix.LiveView.connected?(socket)
+      socket_connected?(socket)
       |> debug("MOUNTING SOCKET for #{current_view}")
 
     # TEMP: monitor memory used by the LV and children
@@ -147,22 +147,23 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   #   socket
   # end
 
-  defp params_to_assigns(params, uri, socket) do
-    host_uri =
-      socket.host_uri
-      |> debug("socket INFO")
+  defp params_to_assigns(params, url, socket) do
+    # host_uri =
+    #   socket.host_uri
+    #   |> debug("socket INFO")
 
-    url = uri |> String.trim(to_string(host_uri)) |> String.trim("#") |> debug()
+    uri = URI.parse(url)
+    # url = uri |> String.trim(to_string(host_uri)) |> String.trim("#") |> debug()
 
-    route_info =
-      Phoenix.Router.route_info(socket.router || Bonfire.Web.Router, "GET", url, host_uri.host)
-      |> debug("ROUTE INFO")
+    # route_info =
+    #   Phoenix.Router.route_info(socket.router || Bonfire.Web.Router, "GET", url, host_uri.host)
+    #   |> debug("ROUTE INFO")
 
     socket =
       assign_default_params(params, socket,
         current_params: params,
-        current_url: url,
-        current_route: e(route_info, :route, nil)
+        current_url: uri.path || url
+        # current_route: e(route_info, :route, nil)
       )
 
     # in case we're browsing between LVs, send assigns (eg current_user to PersistentLive's process)

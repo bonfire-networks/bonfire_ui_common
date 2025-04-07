@@ -16,7 +16,12 @@
   >
     {l("Load more")}
   </a>
-  <a href={"?#{@live_handler}[before]=" <> @cursor} class="text-underline" x-show="!show">
+  <a
+    data-id="previous_page"
+    href={"#{@__context__[:current_url]}?#{@live_handler}[before]=" <> @cursor}
+    class="text-underline"
+    x-show="!show"
+  >
     {l("Previous page")}
   </a>
 </div>
