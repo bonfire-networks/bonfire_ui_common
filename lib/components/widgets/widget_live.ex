@@ -31,7 +31,8 @@ defmodule Bonfire.UI.Common.WidgetLive do
   def render(assigns) do
     widget =
       widget(assigns[:widget], assigns[:__context__])
-      |> debug("widgg")
+
+    # |> debug("widgg")
 
     cond do
       widget[:type] == :link ->

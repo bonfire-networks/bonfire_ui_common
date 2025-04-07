@@ -25,7 +25,7 @@
     <nav class="mt-4">
       <ul class="menu menu-lg p-0 justify-end">
         <li class="p-0 m-0">
-          <LinkLive to="/" class="flex items-center w-full gap-4 lg:px-2 lg:py-2">
+          <LinkLive to="/" class="flex items-center w-full gap-4 lg:px-2 lg:py-2" parent_id="nav_sidebar">
             <#Icon iconify="carbon:explore" class="w-6 h-6 text-base-content/80" />
             <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Explore")}</div>
           </LinkLive>
@@ -39,19 +39,31 @@
           </LinkLive>
         </li> --}
         <li class="p-0 m-0">
-          <LinkLive to="/about" class="flex items-center w-full gap-4 lg:px-2 lg:py-2">
+          <LinkLive
+            to="/about"
+            class="flex items-center w-full gap-4 lg:px-2 lg:py-2"
+            parent_id="nav_sidebar"
+          >
             <#Icon solid="DotsHorizontal" class="w-6 h-6 text-base-content/80" />
             <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("About")}</div>
           </LinkLive>
         </li>
         <li class="p-0 m-0" :if={extension_enabled?(:bonfire_ui_groups, @__context__)}>
-          <LinkLive to="/groups" class="flex items-center w-full gap-4 lg:px-2 lg:py-2">
+          <LinkLive
+            to="/groups"
+            class="flex items-center w-full gap-4 lg:px-2 lg:py-2"
+            parent_id="nav_sidebar"
+          >
             <#Icon iconify="ri:group-line" class="w-6 h-6 text-base-content/80" />
             <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Public Groups")}</div>
           </LinkLive>
         </li>
         <li :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests} class="p-0 m-0">
-          <LinkLive to="/users" class="flex items-center w-full gap-4 lg:px-2 lg:py-2">
+          <LinkLive
+            to="/users"
+            class="flex items-center w-full gap-4 lg:px-2 lg:py-2"
+            parent_id="nav_sidebar"
+          >
             <#Icon iconify="heroicons:users" class="w-6 h-6 text-base-content/80" />
             <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Users directory")}</div>
           </LinkLive>

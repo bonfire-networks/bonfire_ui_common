@@ -1,12 +1,24 @@
 <div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || base_domain()}</span>:
-  <LinkLive class="text-xs link-hover link text-base-content/70" to="/about">{l("About")}</LinkLive> ·
+  <LinkLive class="text-xs link-hover link text-base-content/70" to="/about" parent_id="impressum">{l("About")}</LinkLive> ·
   {!-- <LinkLive class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LinkLive> · --}
-  <LinkLive class="text-xs link-hover link text-base-content/70" to="/conduct">{l("Code of conduct")}</LinkLive> ·
-  <LinkLive class="text-xs link-hover link text-base-content/70" to="/privacy">{l("Privacy")}</LinkLive> ·
+  <LinkLive
+    class="text-xs link-hover link text-base-content/70"
+    to="/conduct"
+    parent_id="impressum"
+  >{l("Code of conduct")}</LinkLive> ·
+  <LinkLive
+    class="text-xs link-hover link text-base-content/70"
+    to="/privacy"
+    parent_id="impressum"
+  >{l("Privacy")}</LinkLive> ·
   {#if current_user_id(@__context__) ||
       Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-    <LinkLive class="text-xs link-hover link text-base-content/70" to="/users">{l("Users")}</LinkLive>
-    <LinkLive class="text-xs link-hover link text-base-content/70" to="/known_instances">{l("Instances")}</LinkLive>
+    <LinkLive class="text-xs link-hover link text-base-content/70" to="/users" parent_id="impressum">{l("Users")}</LinkLive>
+    <LinkLive
+      class="text-xs link-hover link text-base-content/70"
+      to="/known_instances"
+      parent_id="impressum"
+    >{l("Instances")}</LinkLive>
   {/if}
 </div>
 
@@ -20,6 +32,7 @@
   ·
   <LinkLive
     to={Bonfire.Application.repository()}
+    parent_id="impressum"
     class="text-xs link link-hover text-base-content/70"
   >
     {Bonfire.Application.version()}
