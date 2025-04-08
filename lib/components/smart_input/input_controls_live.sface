@@ -191,7 +191,7 @@
                 <span class="">{l("Send")}</span>
               {#else}
                 <#Icon iconify="formkit:submit" class="w-5 h-5" />
-                <span :if={@showing_within == :page} class="">{l("Publish")}</span>
+                <span class="sr-only">{l("Publish")}</span>
               {/if}
             </button>
           </div>
