@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.PlugProtectDanceTest do
   use Bonfire.UI.Common.SharedDataDanceCase
 
   @moduletag :fixme
-  # @moduletag :test_instance
+  @moduletag :test_instance
 
   import Untangle
   import Bonfire.Common.Config, only: [repo: 0]

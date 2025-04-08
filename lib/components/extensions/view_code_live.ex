@@ -29,7 +29,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
 
   def handle_params(%{"module" => app_or_module} = params, _url, socket)
       when is_binary(app_or_module) do
-    with true <- connected?(socket),
+    with true <- socket_connected?(socket),
          {:ok, data} <- load_code(params["from"] == "compiled", params["function"], app_or_module) do
       {:noreply,
        socket

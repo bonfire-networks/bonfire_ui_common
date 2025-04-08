@@ -9,7 +9,7 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
 
   def mount(params, session, socket) do
     # necessary to avoid running it twice (and interupting an already-running diffing)
-    case connected?(socket) do
+    case socket_connected?(socket) do
       true ->
         mounted_connected(params, session, socket)
 

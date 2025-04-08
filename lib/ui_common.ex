@@ -842,7 +842,7 @@ defmodule Bonfire.UI.Common do
     # info(message, type)
 
     if assigns(socket) do
-      if socket_connected?(socket) and assigns(socket) do
+      if Phoenix.LiveView.connected?(socket) and assigns(socket) do
         Bonfire.UI.Common.Notifications.receive_flash(
           Map.put(assigns, type, message),
           pid,
@@ -1317,7 +1317,7 @@ defmodule Bonfire.UI.Common do
   def opts_for_update_many_async({assigns, socket}, opts) do
     env = Config.env()
 
-    connected? = socket_connected?(socket) || socket_connected?(assigns)
+    connected? = user_socket_connected?(socket) || user_socket_connected?(assigns)
 
     current_user = current_user(assigns) || current_user(socket)
 
@@ -1533,15 +1533,18 @@ defmodule Bonfire.UI.Common do
   end
 
   def socket_connected?(%struct{} = socket) when struct == Phoenix.LiveView.Socket do
-    maybe_apply(Phoenix.LiveView, :connected?, [socket], fallback_return: false) &&
-      (Config.env() != :test or not is_nil(current_user_id(assigns(socket))))
-
-    # ^ since LV tests can connect to the socket, we want to reproduce what we do in the browser and not connect when logged out
+    maybe_apply(Phoenix.LiveView, :connected?, [socket], fallback_return: false)
   end
 
   def socket_connected?(assigns) do
     warn(Types.typeof(assigns), "Unable to find Socket or :socket_connected? info in")
     false
+  end
+
+  def user_socket_connected?(socket_or_assigns) do
+    socket_connected?(socket_or_assigns) && not is_nil(current_user_id(socket_or_assigns))
+
+    # ^ since LV tests can connect to the socket, we sometimes want to reproduce what we do in the browser and not connect when logged out
   end
 
   def filename_for_module_template(module) do
