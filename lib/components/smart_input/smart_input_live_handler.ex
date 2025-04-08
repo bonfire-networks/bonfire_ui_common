@@ -166,13 +166,16 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       |> debug("to_circles")
 
     to_boundaries =
-      (params["to_boundaries"] || e(opts, :to_boundaries, []))
+      List.wrap(params["to_boundaries"] || e(opts, :to_boundaries, []))
+      |> debug("input to_boundaries")
+      # NOTE: what's going on here??
       |> Enum.flat_map(
-        &Enum.map(&1, fn
+        &Enum.map(List.wrap(&1), fn
           {key, val} -> {key, val}
+          val -> val
         end)
       )
-      |> debug("to_boundaries")
+      |> debug("processed to_boundaries")
 
     set_assigns =
       [
@@ -233,11 +236,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # text_suggestion = e(socket.assigns.smart_input_opts, :text_suggestion, "")
 
     # Check if uploads exist using simplified check
+    uploads = e(assigns(socket), :uploads, nil)
+
     has_uploads =
-      socket.assigns.uploads &&
-        socket.assigns.uploads.files &&
-        socket.assigns.uploads.files.entries &&
-        length(socket.assigns.uploads.files.entries) > 0
+      uploads && e(uploads, :files, :entries, []) != []
 
     # Text is empty if both text and text_suggestion are empty or nil
     text_empty = text == nil || String.trim(to_string(text || "")) == ""
@@ -251,10 +253,12 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # Update the socket's own smart_input_opts
     updated_socket =
       socket
-      |> assign(reset_smart_input: false)
-      |> update(
-        :smart_input_opts,
-        &Map.merge(&1, %{submit_disabled: submit_disabled})
+      |> assign(
+        reset_smart_input: false,
+        smart_input_opts:
+          Enum.into(e(assigns(socket), :smart_input_opts, %{}), %{
+            submit_disabled: submit_disabled
+          })
       )
 
     # CRITICAL FIX: Instead of sending a complete new set of assigns that might override
