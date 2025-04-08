@@ -141,6 +141,7 @@
                   preview_boundary_for_username={@preview_boundary_for_username}
                   preview_boundary_verbs={@preview_boundary_verbs}
                   to_circles={@to_circles}
+                  exclude_circles={@exclude_circles}
                 />
               {/if}
 
@@ -159,6 +160,7 @@
                   boundary_preset={@boundary_preset}
                   to_boundaries={@to_boundaries}
                   to_circles={@to_circles}
+                  exclude_circles={@exclude_circles}
                 />
 
                 <:open_btn>
