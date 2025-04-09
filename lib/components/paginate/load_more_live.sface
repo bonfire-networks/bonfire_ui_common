@@ -1,51 +1,51 @@
-  {#if !@hide_if_no_more}
-{#if is_binary(@cursor)}
-  <button
-    data-load-more-type={@infinite_scroll}
-    id={"load_more_#{@context}"}
-    data-id="load_more"
-    data-entry-count={if @infinite_scroll == :preload, do: @entry_count}
-    phx-scroll={if @infinite_scroll,
-      do:
-        if(@infinite_scroll == :preload,
-          do: "#{@live_handler}:preload_more",
-          else: "#{@live_handler}:load_more"
-        )}
-    :hook={if @infinite_scroll, do: "LoadMore", else: "Ignore"}
-    phx-click={"#{@live_handler}:load_more"}
-    phx-target={@target}
-    phx-value-context={@context}
-    phx-value-after={@cursor}
-    class="w-full flex items-center justify-center my-4"
-    x-data={"{show: #{socket_connected?(@__context__)}}"}
-    {...@opts}
-  >
-    {!-- phx-click={if @infinite_scroll != :preload or !@entry_count or @entry_count == 0, do: "#{@live_handler}:load_more"} --}
-    <span
-      class="btn-wide btn-secondary btn btn-soft"
-      x-cloak={!@hide_guest_fallback}
-      x-show={if @hide_guest_fallback, do: nil, else: "show"}
+{#if !@hide_if_no_more}
+  {#if is_binary(@cursor)}
+    <button
+      data-load-more-type={@infinite_scroll}
+      id={"load_more_#{@context}"}
+      data-id="load_more"
+      data-entry-count={if @infinite_scroll == :preload, do: @entry_count}
+      phx-scroll={if @infinite_scroll,
+        do:
+          if(@infinite_scroll == :preload,
+            do: "#{@live_handler}:preload_more",
+            else: "#{@live_handler}:load_more"
+          )}
+      :hook={if @infinite_scroll, do: "LoadMore", else: "Ignore"}
+      phx-click={"#{@live_handler}:load_more"}
+      phx-target={@target}
+      phx-value-context={@context}
+      phx-value-after={@cursor}
+      class="w-full flex items-center justify-center my-4"
+      x-data={"{show: #{socket_connected?(@__context__)}}"}
+      {...@opts}
     >
-      {!-- href={"#" <> @cursor} --}
-      {!-- "btn-disabled": !@entry_count --}
-      {!-- <span :if={!@entry_count} class="loading loading-spinner" /> --}
-      {@label ||
-        if @infinite_scroll == :preload and @entry_count > 0,
-          do: l("Show %{num} more", num: @entry_count),
-          else: l("Load more")}
-    </span>
-    <a
-      :if={!@hide_guest_fallback}
-      data-id="next_page"
-      class="normal-case btn btn-outline"
-      x-cloak
-      x-show="!show"
-      href={"#{@__context__[:current_url]}?#{@live_handler}[after]=" <> @cursor}
-    >
-      {l("Next page")}
-    </a>
-  </button>
-{#else}
+      {!-- phx-click={if @infinite_scroll != :preload or !@entry_count or @entry_count == 0, do: "#{@live_handler}:load_more"} --}
+      <span
+        class="btn-wide btn-secondary btn btn-soft"
+        x-cloak={!@hide_guest_fallback}
+        x-show={if @hide_guest_fallback, do: nil, else: "show"}
+      >
+        {!-- href={"#" <> @cursor} --}
+        {!-- "btn-disabled": !@entry_count --}
+        {!-- <span :if={!@entry_count} class="loading loading-spinner" /> --}
+        {@label ||
+          if @infinite_scroll == :preload and @entry_count > 0,
+            do: l("Show %{num} more", num: @entry_count),
+            else: l("Load more")}
+      </span>
+      <a
+        :if={!@hide_guest_fallback}
+        data-id="next_page"
+        class="normal-case btn btn-outline"
+        x-cloak
+        x-show="!show"
+        href={"#{@__context__[:current_url]}?#{@live_handler}[after]=" <> @cursor}
+      >
+        {l("Next page")}
+      </a>
+    </button>
+  {#else}
     <#slot {@if_no_more}>
       <div class="flex items-center pt-3 my-3 place-content-center flex-col">
         <img src="/images/bonfire-exausted.png" class="h-32 mx-auto">

@@ -38,10 +38,10 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     [
       user: user,
       username: display_username,
-      url_on_local:
-        "@" <>
-          display_username <>
-          "@" <> Bonfire.Common.URIs.base_domain(Bonfire.Me.Characters.character_url(user)),
+      # url_on_local:
+      #   "@" <>
+      #     display_username <>
+      #     "@" <> Bonfire.Common.URIs.base_domain(Bonfire.Me.Characters.character_url(user)),
       canonical_url:
         Bonfire.Common.Utils.maybe_apply(
           Bonfire.Me.Characters,

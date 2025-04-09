@@ -28,6 +28,8 @@ defmodule Bonfire.UI.Common.DataCase do
       import Bonfire.UI.Common.DataHelpers
       alias Bonfire.UI.Common.Simulate
       import Bonfire.UI.Common
+
+      @moduletag :backend
     end
   end
 
