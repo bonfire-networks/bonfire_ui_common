@@ -52,18 +52,18 @@
 		"vidstack": "^1.12.13"
 	},
 	"devDependencies": {
-		"@tailwindcss/cli": "next",
-		"@tailwindcss/postcss": "next",
+		"@tailwindcss/cli": "4.1",
+		"@tailwindcss/postcss": "4.1",
 		"buffer": "^6.0.3",
 		"cpx2": "^6.0.1",
-		"daisyui": "^5.0.0-beta",
+		"daisyui": "^5.0.17",
 		"esbuild": "^0.19.9",
 		"fast-blurhash": "^1.1.2",
 		"parcel": "^2.5.0",
 		"postcss": "^8.4.38",
 		"postcss-cli": "^11.0.0",
 		"prop-types": "^15.8.1",
-		"tailwindcss": "next",
+		"tailwindcss": "4.1",
 		"tailwindcss-debug-screens": "^2.2.1"
 	},
 	"disabledDependencies": {

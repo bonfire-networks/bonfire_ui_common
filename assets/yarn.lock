@@ -926,7 +926,7 @@
   resolved "https://registry.yarnpkg.com/@parcel/watcher-win32-x64/-/watcher-win32-x64-2.5.1.tgz#ae52693259664ba6f2228fa61d7ee44b64ea0947"
   integrity sha512-9lHBdJITeNR++EvSQVUcaZoWupyHfXe1jZvGZ06O/5MflPcuPLtEphScIBL+AiCWBO46tDSHzWyD0uDmmZqsgA==
 
-"@parcel/watcher@^2.0.7", "@parcel/watcher@^2.5.0":
+"@parcel/watcher@^2.0.7", "@parcel/watcher@^2.5.1":
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/@parcel/watcher/-/watcher-2.5.1.tgz#342507a9cfaaf172479a882309def1e991fb1200"
   integrity sha512-dfUnCxiN9H4ap84DvD2ubjw+3vUNpstxa0TneY/Paat8a3R4uQZDLSvWjmznAY/DoahqTHl9V46HF/Zs3F29pg==
@@ -1079,21 +1079,20 @@
   dependencies:
     "@swc/counter" "^0.1.3"
 
-"@tailwindcss/cli@next":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@tailwindcss/cli/-/cli-4.0.0.tgz#4dcb0ae98bd367b67b0e5680d5c863b4deb29ebe"
-  integrity sha512-nh6kzSTalHf9yk6WNsS4MMZakSINsncNQXsSJthvcPI4x+yajEaNQvS2uUti3PGLbsmlGoUvjhnGTBpzh7H0bA==
+"@tailwindcss/cli@4.1":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@tailwindcss/cli/-/cli-4.1.3.tgz#89a7a4c5131643cd11db5f32c7f4ff58ea0f0e06"
+  integrity sha512-irQW1LhBCi8O7OPrDVTyo6IZFqUDukGkcqOIxoU9d7zSOxU5LZQ1EB1KA981xmZpPIIfaowgdia8FSxaQrBonQ==
   dependencies:
-    "@parcel/watcher" "^2.5.0"
-    "@tailwindcss/node" "^4.0.0"
-    "@tailwindcss/oxide" "^4.0.0"
-    enhanced-resolve "^5.18.0"
-    lightningcss "^1.29.1"
+    "@parcel/watcher" "^2.5.1"
+    "@tailwindcss/node" "4.1.3"
+    "@tailwindcss/oxide" "4.1.3"
+    enhanced-resolve "^5.18.1"
     mri "^1.2.0"
     picocolors "^1.1.1"
-    tailwindcss "4.0.0"
+    tailwindcss "4.1.3"
 
-"@tailwindcss/node@^4.0.0":
+"@tailwindcss/node@4.1.3":
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/@tailwindcss/node/-/node-4.1.3.tgz#f290886582ce8eb1978853d07ca4da45f2d43fdb"
   integrity sha512-H/6r6IPFJkCfBJZ2dKZiPJ7Ueb2wbL592+9bQEl2r73qbX6yGnmQVIfiUvDRB2YI0a3PWDrzUwkvQx1XW1bNkA==
@@ -1158,7 +1157,7 @@
   resolved "https://registry.yarnpkg.com/@tailwindcss/oxide-win32-x64-msvc/-/oxide-win32-x64-msvc-4.1.3.tgz#9bd5108b95b03dace8a2e5e738b1b2389f8a6d09"
   integrity sha512-T8gfxECWDBENotpw3HR9SmNiHC9AOJdxs+woasRZ8Q/J4VHN0OMs7F+4yVNZ9EVN26Wv6mZbK0jv7eHYuLJLwA==
 
-"@tailwindcss/oxide@^4.0.0":
+"@tailwindcss/oxide@4.1.3":
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/@tailwindcss/oxide/-/oxide-4.1.3.tgz#d01162137fcefe7d4c2a34500b9ed5c142388352"
   integrity sha512-t16lpHCU7LBxDe/8dCj9ntyNpXaSTAgxWm1u2XQP5NiIu4KGSyrDJJRlK9hJ4U9yJxx0UKCVI67MJWFNll5mOQ==
@@ -1175,17 +1174,16 @@
     "@tailwindcss/oxide-win32-arm64-msvc" "4.1.3"
     "@tailwindcss/oxide-win32-x64-msvc" "4.1.3"
 
-"@tailwindcss/postcss@next":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@tailwindcss/postcss/-/postcss-4.0.0.tgz#a3b5c5e731f3112088755e91f0ac8d26846a8309"
-  integrity sha512-lI2bPk4TvwavHdehjr5WiC6HnZ59hacM6ySEo4RM/H7tsjWd8JpqiNW9ThH7rO/yKtrn4mGBoXshpvn8clXjPg==
+"@tailwindcss/postcss@4.1":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@tailwindcss/postcss/-/postcss-4.1.3.tgz#82bf8b90c134f89f70d8d0293b5b14f234918faf"
+  integrity sha512-6s5nJODm98F++QT49qn8xJKHQRamhYHfMi3X7/ltxiSQ9dyRsaFSfFkfaMsanWzf+TMYQtbk8mt5f6cCVXJwfg==
   dependencies:
     "@alloc/quick-lru" "^5.2.0"
-    "@tailwindcss/node" "^4.0.0"
-    "@tailwindcss/oxide" "^4.0.0"
-    lightningcss "^1.29.1"
+    "@tailwindcss/node" "4.1.3"
+    "@tailwindcss/oxide" "4.1.3"
     postcss "^8.4.41"
-    tailwindcss "4.0.0"
+    tailwindcss "4.1.3"
 
 "@tailwindcss/typography@^0.5.15":
   version "0.5.16"
@@ -1432,10 +1430,10 @@ cssesc@^3.0.0:
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
 
-daisyui@^5.0.0-beta:
-  version "5.0.16"
-  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-5.0.16.tgz#d112474af56a9e56922d4c7ed584482d07581040"
-  integrity sha512-MQiZQ21+r91zrKv3fxDOF56dzkfrr2FyXOaR/1T4f9AIeI/ilkc0i+UqOIE/VqjIfkWyq+wBPmBcyIf6iPJpYQ==
+daisyui@^5.0.17:
+  version "5.0.17"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-5.0.17.tgz#bc5df8c1566eec9e083642484442622fe56f208f"
+  integrity sha512-YV5PjYfIxvc6V35WEDn06y9KMpPXGSNgw5mckuV+RwKi0VCZlmGT3fY6gQFTcQDFCcPkJ8TOpEJHDBABI2C/dw==
 
 debounce@^1.2.0:
   version "1.2.1"
@@ -1566,7 +1564,7 @@ emojibase@^6.1.0:
   resolved "https://registry.yarnpkg.com/emojibase/-/emojibase-6.1.0.tgz#c3bc281e998a0e06398416090c23bac8c5ed3ee8"
   integrity sha512-1GkKJPXP6tVkYJHOBSJHoGOr/6uaDxZ9xJ6H7m6PfdGXTmQgbALHLWaVRY4Gi/qf5x/gT/NUXLPuSHYLqtLtrQ==
 
-enhanced-resolve@^5.18.0, enhanced-resolve@^5.18.1:
+enhanced-resolve@^5.18.1:
   version "5.18.1"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.18.1.tgz#728ab082f8b7b6836de51f1637aab5d3b9568faf"
   integrity sha512-ZSW3ma5GkcQBIpwZTSRAI8N71Uuwgs93IezB7mf7R60tC8ZbJideoDNKjHn2O9KIlx6rkGTTEk1xUCK2E1Y2Yg==
@@ -2010,7 +2008,7 @@ lightningcss@1.29.2:
     lightningcss-win32-arm64-msvc "1.29.2"
     lightningcss-win32-x64-msvc "1.29.2"
 
-lightningcss@^1.22.1, lightningcss@^1.29.1:
+lightningcss@^1.22.1:
   version "1.29.3"
   resolved "https://registry.yarnpkg.com/lightningcss/-/lightningcss-1.29.3.tgz#ddb8c6367f6d63432a4e81278421f2a9b3ac6efb"
   integrity sha512-GlOJwTIP6TMIlrTFsxTerwC0W6OpQpCGuX1ECRLBUVRh6fpJH3xTqjCjRgQHTb4ZXexH9rtHou1Lf03GKzmhhQ==
@@ -2131,6 +2129,11 @@ minimist@^1.1.0:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/minipass/-/minipass-7.1.2.tgz#93a9626ce5e5e66bd4db86849e7515e92340a707"
   integrity sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==
+
+morphdom@2.7.4:
+  version "2.7.4"
+  resolved "https://registry.yarnpkg.com/morphdom/-/morphdom-2.7.4.tgz#c61d511e935cc25ca588dfaa752461f27865865e"
+  integrity sha512-ATTbWMgGa+FaMU3FhnFYB6WgulCqwf6opOll4CBzmVDTLvPMmUPrEv8CudmLPK0MESa64+6B89fWOxP3+YIlxQ==
 
 mri@^1.2.0:
   version "1.2.0"
@@ -2525,16 +2528,7 @@ srcset@4:
   resolved "https://registry.yarnpkg.com/srcset/-/srcset-4.0.0.tgz#336816b665b14cd013ba545b6fe62357f86e65f4"
   integrity sha512-wvLeHgcVHKO8Sc/H/5lkGreJQVeYMm9rlmt8PuR1xE31rIuXhuzznUUqAt8MqLhB3MqJdFzlNAfpcWnxiFUcPw==
 
-"string-width-cjs@npm:string-width@^4.2.0":
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
-  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
-  dependencies:
-    emoji-regex "^8.0.0"
-    is-fullwidth-code-point "^3.0.0"
-    strip-ansi "^6.0.1"
-
-string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+"string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -2552,14 +2546,7 @@ string-width@^5.0.1, string-width@^5.1.2:
     emoji-regex "^9.2.2"
     strip-ansi "^7.0.1"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
-  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
-  dependencies:
-    ansi-regex "^5.0.1"
-
-strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -2597,12 +2584,7 @@ tailwindcss-debug-screens@^2.2.1:
   resolved "https://registry.yarnpkg.com/tailwindcss-debug-screens/-/tailwindcss-debug-screens-2.2.1.tgz#8dd0854a273daa4f30f4c383370872c6bca337cd"
   integrity sha512-EMyA0CYBzqcZJHtVDvBfmYzfx3NxuK4qDyVO5wnzcGOrmJsv25D9xPpWefVTORTvhE6pCh90Z1WYnLUKsg3yMw==
 
-tailwindcss@4.0.0, tailwindcss@next:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.0.0.tgz#1f275ed16eb4127cb70bf5e9f53fb8eb7b72be3c"
-  integrity sha512-ULRPI3A+e39T7pSaf1xoi58AqqJxVCLg8F/uM5A3FadUbnyDTgltVnXJvdkTjwCOGA6NazqHVcwPJC5h2vRYVQ==
-
-tailwindcss@4.1.3:
+tailwindcss@4.1, tailwindcss@4.1.3:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-4.1.3.tgz#f5a6b4451295c06e213013697f7193be1630fa46"
   integrity sha512-2Q+rw9vy1WFXu5cIxlvsabCwhU2qUwodGq03ODhLJ0jW4ek5BUtoCsnLB0qG+m8AHgEsSJcJGDSDe06FXlP74g==
@@ -2727,16 +2709,7 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
-"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
-  integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
-  dependencies:
-    ansi-styles "^4.0.0"
-    string-width "^4.1.0"
-    strip-ansi "^6.0.0"
-
-wrap-ansi@^7.0.0:
+"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
