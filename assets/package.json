@@ -59,7 +59,6 @@
 		"daisyui": "^5.0.17",
 		"esbuild": "^0.19.9",
 		"fast-blurhash": "^1.1.2",
-		"parcel": "^2.5.0",
 		"postcss": "^8.4.38",
 		"postcss-cli": "^11.0.0",
 		"prop-types": "^15.8.1",
