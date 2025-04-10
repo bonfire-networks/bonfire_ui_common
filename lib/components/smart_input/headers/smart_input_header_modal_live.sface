@@ -1,12 +1,12 @@
 <header class="sticky top-0 z-50 flex flex-row items-center w-full p-3 rounded-t-xl bg-base-100 md:z-auto md:relative flex-align-items-stretch flex-nowrap">
-  <span class="flex-1 font-semibold text-ellipsis">
+  <span class="flex-1 font-medium text-base-content/80 text-ellipsis">
     {#if e(@smart_input_opts, :create_object_type, nil) != "message"}
       {e(@smart_input_opts, :prompt, l("Share your thoughts"))}
     {#else}
-      <div class="flex items-center gap-2">
+      <!-- <div class="flex items-center gap-2"> -->
         {l("Send a direct message")}
-        <span class="btn btn-sm btn-circle" phx-click="Bonfire.UI.Common.SmartInput:reset_to_default"><#Icon iconify="carbon:close" class="w-4 h-4" /></span>
-      </div>
+        <!-- <span class="btn btn-sm btn-circle" phx-click="Bonfire.UI.Common.SmartInput:reset_to_default"><#Icon iconify="carbon:close" class="w-4 h-4" /></span> -->
+      <!-- </div> -->
     {/if}
   </span>
   <div class="absolute flex items-center gap-5 md:gap-2 right-3">
@@ -17,7 +17,7 @@
       class="flex btn btn-sm btn-ghost btn-circle"
     >
       {!-- x-on:click=" ... ; smart_input_fullscreen = false" --}
-      <#Icon iconify="fluent:chevron-double-down-16-filled" class="w-5 h-5" />
+      <#Icon iconify="fluent:chevron-double-down-16-filled" class="w-4 h-4 text-base-content/70" />
       <!-- <span class="text-sm text-base-content/70">{l("Minimize")}</span> -->
     </button>
     <Bonfire.UI.Common.OpenModalLive
@@ -32,7 +32,7 @@
       </div>
       <:open_btn>
         <div class="flex btn btn-sm btn-ghost btn-circle">
-          <#Icon outline="X" class="w-5 h-5" />
+          <#Icon outline="X" class="w-4 h-4 text-base-content/70" />
           <span class="sr-only">{l("Close")}</span>
         </div>
       </:open_btn>

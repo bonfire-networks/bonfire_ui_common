@@ -2,9 +2,9 @@
   <label
     disabled={Enum.count(@uploads.files.entries) >= @max_uploads}
     for={@uploads.files.ref}
-    class="flex items-center btn btn-ghost btn-sm btn-circle"
+    class="btn btn-outline btn-square btn-sm border-base-content/20"
   >
-    <#Icon iconify="ri:attachment-2" class="w-4 h-4 mx-auto" />
+    <#Icon iconify="ri:attachment-2" class="w-4 h-4 text-base-content/70" />
     <Phoenix.Component.live_file_input upload={@uploads.files} class="sr-only" />
   </label>
 

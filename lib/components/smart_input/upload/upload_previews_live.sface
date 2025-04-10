@@ -1,4 +1,4 @@
-<div :if={Enum.count(@uploads.files.entries) > 0} phx-update="ignore" class="p-2 uploads_preview">
+<div :if={Enum.count(@uploads.files.entries) > 0} phx-update="ignore" class="p-2 pt-0 uploads_preview">
   <div class="flex flex-col p-2 bg-base-content/5 gap-2 rounded-xl">
     {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
       <article
