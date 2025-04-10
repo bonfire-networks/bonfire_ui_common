@@ -45,13 +45,8 @@
                 )}
               />
 
-                <!-- data-close-on-inside-click="true" -->
-              <div
-                phx-hook="Tooltip"
-                phx-update="ignore"
-                id="emoji_picker_in_composer"
-                data-trigger="click"
-              >
+              <!-- data-close-on-inside-click="true" -->
+              <div phx-hook="Tooltip" phx-update="ignore" id="emoji_picker_in_composer" data-trigger="click">
                 <button
                   title={l("Insert emoji")}
                   type="button"
@@ -103,7 +98,7 @@
                 <#Icon iconify="solar:text-bold" class="w-4 h-4 text-base-content/70" />
               </button>
             </div>
-            
+
             <div class="flex items-center gap-2">
               {#if e(@smart_input_opts, :create_object_type, nil) != "message" ||
                   !e(@smart_input_opts, :recipients_editable, nil)}
@@ -120,24 +115,24 @@
               {/if}
 
               <button
-              type="submit"
-              id="submit_btn"
-              x-on:click="$dispatch('submit')"
-              phx-disable-with={if e(@smart_input_opts, :create_object_type, nil) == "message",
-                do: l("Sending..."),
-                else: l("Posting...")}
-              class="btn-square btn-sm btn btn-primary"
-              disabled={@smart_input_opts[:submit_disabled]}
-            >
+                type="submit"
+                id="submit_btn"
+                x-on:click="$dispatch('submit')"
+                phx-disable-with={if e(@smart_input_opts, :create_object_type, nil) == "message",
+                  do: l("Sending..."),
+                  else: l("Posting...")}
+                class="btn-square btn-sm btn btn-primary"
+                disabled={@smart_input_opts[:submit_disabled]}
+              >
                 <!-- <#Icon iconify="mdi:email-fast-outline" class="w-4 h-4" /> -->
                 <#Icon iconify="lucide:arrow-up" class="w-4 h-4" />
-              {#if e(@smart_input_opts, :create_object_type, nil) == "message"}
-                <span class="">{l("Send")}</span>
-              {#else}
-                <span class="sr-only">{l("Publish")}</span>
-              {/if}
-            </button>
-          </div>  
+                {#if e(@smart_input_opts, :create_object_type, nil) == "message"}
+                  <span class="">{l("Send")}</span>
+                {#else}
+                  <span class="sr-only">{l("Publish")}</span>
+                {/if}
+              </button>
+            </div>
           </div>
         </div>
 
