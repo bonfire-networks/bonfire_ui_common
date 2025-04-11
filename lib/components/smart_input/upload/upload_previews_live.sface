@@ -32,7 +32,7 @@
             <figcaption class="m-1 text-xs truncate">{entry.client_name}</figcaption>
           {#elseif String.starts_with?(entry.client_type, "audio")}
             <div class="w-full rounded h-[48px] flex items-center place-content-center justify-center">
-              <#Icon iconify="majesticons:music" class="w-10 h-10" />
+              <#Icon iconify="lucide:audio-lines" class="w-10 h-10" />
             </div>
             <figcaption class="x-1 text-xs truncate">{entry.client_name}</figcaption>
           {#else}
