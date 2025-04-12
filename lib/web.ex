@@ -155,6 +155,7 @@ defmodule Bonfire.UI.Common.Web do
 
       use Phoenix.LiveView, unquote(opts)
 
+      # TODO: can we use https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#attach_hook/4 instead?
       @before_compile {Bonfire.UI.Common.Web, :__live_mount_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__handle_params_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__handle_info_before_compile__}
