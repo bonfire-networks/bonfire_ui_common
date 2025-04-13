@@ -153,6 +153,7 @@ defmodule Bonfire.UI.Common.Web do
     quote do
       @moduledoc false
 
+      # use Bonfire.UI.Common.ComponentRenderHandler
       use Phoenix.LiveView, unquote(opts)
 
       # TODO: can we use https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#attach_hook/4 instead?
@@ -178,6 +179,7 @@ defmodule Bonfire.UI.Common.Web do
   def live_component(caller, opts \\ []) do
     quote do
       @moduledoc false
+      # use Bonfire.UI.Common.ComponentRenderHandler
       use Phoenix.LiveComponent, unquote(opts)
 
       @before_compile {Bonfire.UI.Common.Web, :__live_update_before_compile__}
@@ -554,6 +556,7 @@ defmodule Bonfire.UI.Common.Web do
       quote do
         @moduledoc false
 
+        # use Bonfire.UI.Common.ComponentRenderHandler
         use Surface.LiveView, unquote(opts)
 
         @before_compile {Bonfire.UI.Common.Web, :__live_mount_before_compile__}
@@ -580,6 +583,7 @@ defmodule Bonfire.UI.Common.Web do
       quote do
         @moduledoc false
 
+        # use Bonfire.UI.Common.ComponentRenderHandler
         use Surface.LiveView, unquote(opts)
 
         @before_compile {Bonfire.UI.Common.Web, :__live_mount_before_compile__}
@@ -613,6 +617,7 @@ defmodule Bonfire.UI.Common.Web do
       quote do
         @moduledoc false
 
+        # use Bonfire.UI.Common.ComponentRenderHandler
         use Surface.LiveComponent, unquote(opts)
 
         @before_compile {Bonfire.UI.Common.Web, :__live_update_before_compile__}
@@ -643,6 +648,7 @@ defmodule Bonfire.UI.Common.Web do
         @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
 
         # , unquote(opts) #, unquote(Bonfire.UI.Common.Web.take_components_opts(opts))
+        # use Bonfire.UI.Common.ComponentRenderHandler
         use Surface.Component
 
         # prop current_account, :any, from_context: :current_account

@@ -10,18 +10,16 @@
   </button>
 {#else}
   {#if is_binary(@back)}
-  <LinkLive
-    to={@back}
-    label={l("Go back to the previous page")}
-    class="btn z-50 btn-ghost btn-sm btn-circle"
-  >
-    <#Icon iconify="ion:chevron-back" class="w-4 h-4" />
-  </LinkLive>
-{#else}
-  <button 
-    class="btn z-50 btn-ghost btn-sm btn-circle" 
-    onclick="history.back()"><#Icon iconify="ion:chevron-back" class="w-4 h-4" /></button>
-{/if}
+    <LinkLive
+      to={@back}
+      label={l("Go back to the previous page")}
+      class="btn z-50 btn-ghost btn-sm btn-circle"
+    >
+      <#Icon iconify="ion:chevron-back" class="w-4 h-4" />
+    </LinkLive>
+  {#else}
+    <button class="btn z-50 btn-ghost btn-sm btn-circle" onclick="history.back()"><#Icon iconify="ion:chevron-back" class="w-4 h-4" /></button>
+  {/if}
   {!-- {#elseif is_binary(@back) and @back != current_url(@__context__)}
   <LinkLive
     to={@back}

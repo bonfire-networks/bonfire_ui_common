@@ -3,7 +3,8 @@ defmodule Bonfire.UI.Common.ErrorHandling do
   alias Bonfire.UI
 
   def undead(socket, fun, return_key \\ :noreply) do
-    # |> debug()
+    # debug(return_key)
+
     undead_maybe_handle_error(fun.(), socket, return_key)
   rescue
     msg in Bonfire.Fail.Auth ->
@@ -420,7 +421,7 @@ defmodule Bonfire.UI.Common.ErrorHandling do
         socket
         |> UI.Common.assign_generic(:__replace_render__with__, msg)
         |> UI.Common.assign_error(msg)
-        |> debug("ssss #{inspect(return_keys)}")
+        |> IO.inspect(label: "ssss #{inspect(return_keys)}")
 
       #   UI.Common.redirect_self("/error")
       #   |> debug("rrrrr")
