@@ -27,6 +27,27 @@
 
  .markdown-editor {
   min-height: 250px;
+  outline: none;
+}
+
+.markdown-editor:focus {
+  outline: none;
+}
+
+.markdown-editor:focus-within {
+  outline: none;
+}
+
+.milkdown-editor:focus {
+  outline: none;
+}
+
+.milkdown-editor:focus-within {
+  outline: none;
+}
+
+.milkdown-editor {
+  outline: none;
 }
 
 /* Placeholder styling */
@@ -149,13 +170,6 @@
 
 /* Import custom themes */
 @import "./custom_themes.css";
-
-
-
-
-
-
-
 
 
 @source "../../../../deps/bonfire_editor_milkdown/assets/node_modules/@milkdown/crepe/src/theme/common/style.css";

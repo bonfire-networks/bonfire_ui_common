@@ -127,7 +127,7 @@
                 <!-- <#Icon iconify="mdi:email-fast-outline" class="w-4 h-4" /> -->
                 <#Icon iconify="lucide:arrow-up" class="w-4 h-4" />
                 {#if e(@smart_input_opts, :create_object_type, nil) == "message"}
-                  <span class="">{l("Send")}</span>
+                  <span class="sr-only">{l("Send")}</span>
                 {#else}
                   <span class="sr-only">{l("Publish")}</span>
                 {/if}
