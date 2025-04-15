@@ -512,7 +512,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       open: false,
       text_suggestion: nil,
       text: nil,
-      cw: nil,
+      cw: nil
     }
 
     set(socket,
@@ -537,7 +537,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       open: false,
       text_suggestion: nil,
       text: nil,
-      cw: nil,
+      cw: nil
     }
 
     set(socket,
