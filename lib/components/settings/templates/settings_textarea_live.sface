@@ -34,10 +34,8 @@
             name={@input}
             value={to_string(@current_value)}
             class="w-full h-24 textarea textarea-bordered"
-          >
-            {to_string(@current_value)}
-          </textarea>
-          <button type="submit" class="btn-neutral btn btn-sm">
+          >{to_string(@current_value)}</textarea>
+          <button type="submit" class="btn-primary btn-soft btn">
             {l("Save")}
           </button>
         </div>
@@ -59,10 +57,8 @@
           name={@input}
           value={to_string(@current_value)}
           class="w-full h-24 textarea textarea-bordered"
-        >
-          {to_string(@current_value)}
-        </textarea>
-        <button type="submit" class="btn-neutral btn btn-sm">
+        >{to_string(@current_value)}</textarea>
+        <button type="submit" class="btn-primary btn-soft btn">
           {l("Save")}
         </button>
       </div>

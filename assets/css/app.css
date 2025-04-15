@@ -631,6 +631,31 @@ div[data-scope='avatar'] div[data-square] {
     scrollbar-color: var(--scrollbarThumb) var(--scrollbarTrack);
   }
 
+  div[data-id='object_body'] {
+    word-break: break-word !important;
+  }
+
+  /* Select 'a' elements with exactly 3 direct span children */
+  div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-type(4))) > span:first-of-type,
+  div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-type(4))) > span:last-of-type {
+    display: none; /* Use display: none to hide elements */
+  }
+
+  div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-type(4))) > span:nth-of-type(2)::after {
+    content: "...";
+  }
+
+
+  div[data-id='object_body'] a {
+    @apply truncate;
+    word-break: break-all;
+    max-width: 300px;
+  }
+  
+  div[data-id='object_body'] a span {
+    word-break: break-all;
+  }
+
   .uploads_preview .scrollable::-webkit-scrollbar {
     height: 8px;
   }
