@@ -15,7 +15,7 @@ defmodule Bonfire.UI.Common.PlugProtectDanceTest do
   alias Bonfire.Social.Graph.Follows
   alias Bonfire.Boundaries.{Circles, Acls, Grants}
 
-  test "attack the signup endpoint", context do
+  test "attack the sign up endpoint", context do
     Process.put([:bonfire, :env], :dev)
 
     on_exit(fn ->
@@ -28,7 +28,7 @@ defmodule Bonfire.UI.Common.PlugProtectDanceTest do
         "../fixtures/credentials_100.txt"
         |> Path.expand(__DIR__)
 
-      Bonfire.UI.Common.PlugProtect.run({"http://localhost:4000/signup", "account"}, file)
+      Bonfire.UI.Common.PlugProtect.Testing.run({"http://localhost:4000/signup", "account"}, file)
       |> IO.puts()
     end)
   end
@@ -46,7 +46,7 @@ defmodule Bonfire.UI.Common.PlugProtectDanceTest do
         "../fixtures/credentials_100.txt"
         |> Path.expand(__DIR__)
 
-      Bonfire.UI.Common.PlugProtect.run("http://localhost:4000/login", file)
+      Bonfire.UI.Common.PlugProtect.Testing.run("http://localhost:4000/login", file)
       |> IO.puts()
     end)
   end

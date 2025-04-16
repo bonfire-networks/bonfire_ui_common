@@ -1,12 +1,21 @@
 defmodule Bonfire.UI.Common.SharedDataDanceCase do
   use ExUnit.CaseTemplate
   # import Tesla.Mock
-  # import Untangle
+  import Untangle
   import Bonfire.UI.Common.Testing.Helpers
-  # alias Bonfire.Common.TestInstanceRepo
+  alias Bonfire.Common.TestInstanceRepo
 
   setup_all tags do
     Bonfire.Common.Test.Interactive.setup_test_repo(tags)
+
+    TestInstanceRepo.apply(fn ->
+      ActivityPub.Utils.cache_clear()
+
+      if !Bonfire.Boundaries.Circles.exists?(Bonfire.Boundaries.Circles.get_id!(:local)) do
+        info("Seems boundary fixtures are missing on test instance, running now")
+        Bonfire.Boundaries.Scaffold.insert()
+      end
+    end)
 
     on_exit(fn ->
       # this callback needs to checkout its own connection since it
@@ -14,8 +23,6 @@ defmodule Bonfire.UI.Common.SharedDataDanceCase do
       # :ok = Ecto.Adapters.SQL.Sandbox.checkout(repo())
       # Ecto.Adapters.SQL.Sandbox.mode(repo(), :auto)
 
-      # Object.delete(actor1)
-      # Object.delete(actor2)
       :ok
     end)
 
