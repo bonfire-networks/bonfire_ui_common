@@ -37,7 +37,7 @@
       <a
         :if={!@hide_guest_fallback}
         data-id="next_page"
-        class="normal-case btn btn-outline"
+        class="normal-case btn btn-secondary btn-soft btn-wide"
         x-cloak
         x-show="!show"
         href={"#{@__context__[:current_url]}?#{@live_handler}[after]=" <> @cursor}

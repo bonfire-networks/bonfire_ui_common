@@ -22,7 +22,7 @@
       page={@page}
       selected_tab={@selected_tab}
       showing_within={:sidebar}
-      container_class="flex flex-col gap-3"
+      container_class="flex flex-col gap-3 mb-3"
       id={"#{@parent_id}_sidebar_widgets"}
     />
   {#match _}

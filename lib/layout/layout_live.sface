@@ -98,11 +98,11 @@
             data-id="right_nav_and_widgets"
             class="order-last sticky  w-auto lg:top-2 mt-2 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
           >
-            <div :if={is_nil(@current_user_id)} class="flex flex-col mb-4 gap-2">
+            <div :if={is_nil(@current_user_id)} class="flex flex-col gap-2 mb-3">
               <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="layout">{l("Log in")}</LinkLive>
 
               {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-                <LinkLive to={path(:signup)} class="btn" parent_id="layout">{l("Create account")}</LinkLive>
+                <LinkLive to={path(:signup)} class="btn btn-soft" parent_id="layout">{l("Create account")}</LinkLive>
               {/if}
             </div>
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
@@ -122,13 +122,20 @@
                 key={:secondary}
                 page={@page}
                 selected_tab={@selected_tab}
-                container_class="flex flex-col gap-3"
+                container_class="flex flex-col gap-3 mb-3"
                 parent_id="layout_right"
               />
 
-              <div class="mt-4 text-xs text-base-content/70">
-                <div class="flex flex-col gap-2 mb-4">
-                  <div class="prose prose-sm !text-xs">{rich(Config.get([:ui, :theme, :instance_description]))}</div>
+              <div class="text-xs text-base-content/70">
+                <div class="flex flex-col gap-2 mb-3">
+                  <div
+                    :if={is_nil(@current_user_id)}
+                    style={"background-image: url(#{Config.get([:ui, :theme, :instance_image], nil)})"}
+                    class="bg-center bg-no-repeat h-[185px] bg-cover bg-white w-full rounded"
+                  ></div>
+                  <h2 :if={is_nil(@current_user_id)} class="text-lg text-base-content font-semibold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</h2>
+                  <div class={"prose prose-sm text-base-content", 
+                    "!text-base-content/70 text-xs": not is_nil(@current_user_id) }>{rich(Config.get([:ui, :theme, :instance_description]))}</div>
                 </div>
                 <Bonfire.UI.Common.ImpressumLive />
               </div>
