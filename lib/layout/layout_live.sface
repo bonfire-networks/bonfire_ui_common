@@ -154,7 +154,7 @@
       >
         {#if is_nil(@current_user_id)}
           <div class="flex items-center justify-end lg:justify-between top-0 bg-base-200 pt-2">
-            <Bonfire.UI.Common.LogoLinkLive with_name href="/" parent_id="layout" />
+            <Bonfire.UI.Common.LogoLinkLive href="/" parent_id="layout" />
           </div>
         {/if}
         <!-- <nav
