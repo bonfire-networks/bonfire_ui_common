@@ -78,7 +78,7 @@
             <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Code of Conduct")}</div>
           </LinkLive>
         </li>
-        <li class="p-0 m-0">
+        <!-- <li class="p-0 m-0">
           <LinkLive
             to="/admins"
             class="flex items-center w-full gap-4 lg:px-2 lg:py-2"
@@ -87,7 +87,7 @@
             <#Icon iconify="ri:admin-fill" class="w-6 h-6 text-base-content/80" />
             <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Admins")}</div>
           </LinkLive>
-        </li>
+        </li> -->
       </ul>
     </nav>
   {/if}
