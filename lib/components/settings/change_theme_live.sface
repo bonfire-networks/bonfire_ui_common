@@ -5,7 +5,7 @@
   {!-- note: LV phx-change seems to ignore alpine changing this hidden input, so using phx-click on the options below instead --}
 
   <div class="grid grid-cols-3 gap-3" tabindex="0">
-    {#for t <- @themes}
+    {#for t <- @themes || []}
       <div class={
         "rounded-box bg-base-content/5 shadow-xl",
         "ring-2 ring-primary": to_string(t) == to_string(@theme)
