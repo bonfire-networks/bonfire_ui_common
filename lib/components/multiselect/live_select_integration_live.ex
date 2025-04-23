@@ -29,7 +29,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       disabled={@disabled}
       style={:daisyui}
       container_extra_class="w-full flex flex-col"
-      tag_class="badge badge-neutral badge-soft badge-lg gap-2"
+      tag_class="badge badge-soft badge-lg gap-2"
       dropdown_extra_class="z-50 max-h-liveselect flex-nowrap border border-base-content/10 !bg-base-100 overflow-y-auto top-12"
       tags_container_class="flex flex-wrap gap-1 order-last mt-1"
       value_mapper={&value_mapper/1}
