@@ -13,7 +13,7 @@
             <div class="relative p-2 pb-0 bg-base-100">
               <label class="input w-full">
                 <#Icon iconify="solar:text-bold" class="w-4 h-4 opacity-50" />
-                <input value="" name={:name} class="w-full" placeholder={l("Type a title")}>
+                <input value="" name={:name} class="w-full" placeholder={l("Enter an optional title")}>
                 <!-- <kbd class="kbd kbd-sm">⌘</kbd>
               <kbd class="kbd kbd-sm">K</kbd> -->
               </label>
