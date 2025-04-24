@@ -565,6 +565,14 @@ div[data-scope='avatar'] div[data-square] {
   }
 
 
+  div[data-id='name_username'] {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+  }
+
 
   div[data-id='activity_note'][data-rendered='widget'] {
     @apply !mt-2;
@@ -572,10 +580,6 @@ div[data-scope='avatar'] div[data-square] {
 
   div[data-id='activity_note'] div[data-rendered='smart_input'] {
     @apply !my-0 !ml-0;
-  }
-
-  div[data-id='activity_note'] div[data-rendered='notifications'] {
-    @apply opacity-60;
   }
 
   div[data-id='activity_note'] div[data-rendered='thread'] {
