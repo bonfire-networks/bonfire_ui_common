@@ -554,7 +554,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
               socket = assign_generic(socket, :__handler_chain, handler_chain ++ [mod])
 
               apply(module, fun, args ++ [socket])
-              |> debug("applied")
+              # |> debug("applied")
             else
               warn(module, "LiveHandler: handler module not enabled or function not exported")
               no_delegation_fn.({fun, List.first(args)}, socket)
