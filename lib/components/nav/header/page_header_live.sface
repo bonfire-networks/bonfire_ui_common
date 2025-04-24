@@ -7,8 +7,8 @@
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center gap-3 justify-between w-full lg:flex-1">
       <div class="gap-3 flex items-center">
-        <label for="sidebar-drawer" class="xl:hidden btn btn-sm btn-circle btn-secondary btn-soft">
-          <#Icon iconify="hugeicons:sidebarLeft" class="w-5 h-5" />
+        <label for="sidebar-drawer" class="xl:hidden btn btn-sm btn-circle btn-ghost">
+          <#Icon iconify="ph:sidebar" class="w-5 h-5 opacity-70" />
         </label>
         {#if @back}
           <Bonfire.UI.Common.BackButtonLive back={@back} />

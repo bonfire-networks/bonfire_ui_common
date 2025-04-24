@@ -154,16 +154,6 @@
         data-id="nav_sidebar"
         class="w-80 px-4 lg:px-0 lg:mr-3 lg:w-[250px] bg-base-100 lg:bg-base-200 min-h-full"
       >
-        {#if is_nil(@current_user_id)}
-          <div class="flex items-center justify-end lg:justify-between top-0 bg-base-200 pt-2">
-            <Bonfire.UI.Common.LogoLinkLive href="/" parent_id="layout" />
-          </div>
-        {/if}
-        <!-- <nav
-          class="overview-y-auto  w-full flex gap-4 flex-col pb-1 min-h-screen z-[999999999999]"
-          role="navigation"
-          aria-label={l("Extension navigation")}
-        > -->
         <Bonfire.UI.Common.NavSidebarLive
           :if={!@without_sidebar}
           page={@page}
@@ -171,7 +161,6 @@
           nav_items={@nav_items}
           sidebar_widgets={@sidebar_widgets}
         />
-        <!-- </nav> -->
       </aside>
     </div>
   </div>

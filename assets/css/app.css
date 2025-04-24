@@ -563,7 +563,9 @@ div[data-scope='avatar'] div[data-square] {
     object-fit: contain;
     vertical-align: middle;
   }
-  
+
+
+
   div[data-id='activity_note'][data-rendered='widget'] {
     @apply !mt-2;
   }
@@ -663,6 +665,9 @@ div[data-scope='avatar'] div[data-square] {
     @apply truncate;
     word-break: break-all;
     max-width: 300px;
+    display: inline-block;
+    vertical-align: middle;
+    margin: -.2ex .15em .2ex;
   }
   
   div[data-id='object_body'] a span {

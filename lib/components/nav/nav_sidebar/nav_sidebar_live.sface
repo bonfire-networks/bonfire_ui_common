@@ -1,10 +1,7 @@
 <div class="flex flex-col flex-1 h-full">
-  <div
-    :if={current_user(@__context__)}
-    class="pt-0.5 pl-2 bg-base-100 lg:bg-base-200 z-[999999999] sticky top-0 pt-4 flex items-center h-[48px] justify-between"
-  >
-    <Bonfire.UI.Common.LogoLinkLive href="/dashboard" />
-    <Bonfire.UI.Common.UserMenuLive />
+  <div class="pt-0.5 pl-2 bg-base-100 lg:bg-base-200 z-[999999999] sticky top-0 pt-4 flex items-center h-[48px] justify-between">
+    <Bonfire.UI.Common.LogoLinkLive href="/" />
+    <Bonfire.UI.Common.UserMenuLive  :if={current_user(@__context__)} />
   </div>
   <div class="flex flex-col flex-1 mt-4 h-full" :if={current_user(@__context__)}>
     <Bonfire.UI.Common.ExtensionMenuNavLive
@@ -23,11 +20,13 @@
 
   {#if !current_user_id(@__context__)}
     <nav class="mt-4">
-      <ul class="menu menu-lg p-0 justify-end w-full">
+      <ul class="menu p-0 w-full">
         <li class="p-0 m-0">
           <LinkLive to="/" class="flex items-center w-full gap-4 lg:px-2 lg:py-2" parent_id="nav_sidebar">
-            <#Icon iconify="carbon:explore" class="w-6 h-6 text-base-content/80" />
-            <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Explore")}</div>
+            <div class="w-7 h-7 rounded-lg bg-base-content/10 flex items-center place-content-center shadow-lg">
+              <#Icon iconify="carbon:explore" class="w-4 h-4 opacity-80" />
+            </div>
+            <div class="opacity-80 font-medium">{l("Explore")}</div>
           </LinkLive>
         </li>
         {!-- 
@@ -35,7 +34,7 @@
         <li class="p-0 m-0 rounded-md">
           <LinkLive to="/feed" class="flex items-center w-full gap-4 px-2 py-2 rounded-md">
             <#Icon iconify="fluent:live-24-regular" class="w-7 h-7 text-base-content/80" />
-            <div class="font-normal text-base-content/90 flex-1 text-[15px] widget_text">{l("Feeds")}</div>
+            <div class="opacity-80 font-medium">{l("Feeds")}</div>
           </LinkLive>
         </li> --}
         <li class="p-0 m-0">
@@ -44,8 +43,10 @@
             class="flex items-center w-full gap-4 lg:px-2 lg:py-2"
             parent_id="nav_sidebar"
           >
-            <#Icon iconify="stash:info-circle-solid" class="w-6 h-6 text-base-content/80" />
-            <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("About")}</div>
+            <div class="w-7 h-7 rounded-lg bg-base-content/10 flex items-center place-content-center shadow-lg">
+              <#Icon iconify="ph:info" class="w-4 h-4 opacity-80" />
+            </div>
+            <div class="opacity-80 font-medium">{l("About")}</div>
           </LinkLive>
         </li>
         <li class="p-0 m-0" :if={extension_enabled?(:bonfire_ui_groups, @__context__)}>
@@ -54,8 +55,10 @@
             class="flex items-center w-full gap-4 lg:px-2 lg:py-2"
             parent_id="nav_sidebar"
           >
-            <#Icon iconify="ri:group-line" class="w-6 h-6 text-base-content/80" />
-            <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Public Groups")}</div>
+            <div class="w-7 h-7 rounded-lg bg-base-content/10 flex items-center place-content-center shadow-lg">
+              <#Icon iconify="ri:group-line" class="w-4 h-4 opacity-80" />
+            </div>
+            <div class="opacity-80 font-medium">{l("Public Groups")}</div>
           </LinkLive>
         </li>
         <li :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests} class="p-0 m-0">
@@ -64,8 +67,10 @@
             class="flex items-center w-full gap-4 lg:px-2 lg:py-2"
             parent_id="nav_sidebar"
           >
-            <#Icon iconify="mage:users-fill" class="w-6 h-6 text-base-content/80" />
-            <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Members")}</div>
+            <div class="w-7 h-7 rounded-lg bg-base-content/10 flex items-center place-content-center shadow-lg">
+              <#Icon iconify="mage:users-fill" class="w-4 h-4 opacity-80" />
+            </div>
+            <div class="opacity-80 font-medium">{l("Members")}</div>
           </LinkLive>
         </li>
         <li class="p-0 m-0">
@@ -74,8 +79,10 @@
             class="flex items-center w-full gap-4 lg:px-2 lg:py-2"
             parent_id="nav_sidebar"
           >
-            <#Icon iconify="stash:article" class="w-6 h-6 text-base-content/80" />
-            <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Code of Conduct")}</div>
+            <div class="w-7 h-7 rounded-lg bg-base-content/10 flex items-center place-content-center shadow-lg">
+              <#Icon iconify="stash:article" class="w-4 h-4 opacity-80" />
+            </div>
+            <div class="opacity-80 font-medium">{l("Code of Conduct")}</div>
           </LinkLive>
         </li>
         <!-- <li class="p-0 m-0">
@@ -84,7 +91,7 @@
             class="flex items-center w-full gap-4 lg:px-2 lg:py-2"
             parent_id="nav_sidebar"
           >
-            <#Icon iconify="ri:admin-fill" class="w-6 h-6 text-base-content/80" />
+            <#Icon iconify="ri:admin-fill" class="w-4 h-4 opacity-80" />
             <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Admins")}</div>
           </LinkLive>
         </li> -->
