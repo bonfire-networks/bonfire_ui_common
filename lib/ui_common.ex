@@ -1536,8 +1536,8 @@ defmodule Bonfire.UI.Common do
     maybe_apply(Phoenix.LiveView, :connected?, [socket], fallback_return: false)
   end
 
-  def socket_connected?(assigns) do
-    warn(Types.typeof(assigns), "Unable to find Socket or :socket_connected? info in")
+  def socket_connected?(other) do
+    warn(Types.typeof(other), "Unable to find Socket or :socket_connected? info in")
     false
   end
 

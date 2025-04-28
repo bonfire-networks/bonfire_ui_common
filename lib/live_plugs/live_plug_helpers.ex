@@ -42,7 +42,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   end
 
   defp init_mount(params, _session, socket) do
-    debug("MOUNTING SOCKET")
+    # debug("MOUNTING SOCKET")
 
     with {:ok, socket} <-
            socket
@@ -82,7 +82,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
 
     socket_connected? =
       socket_connected?(socket)
-      |> debug("MOUNTING SOCKET for #{current_view}")
+      |> debug("MOUNTING #{current_view} with socket_connected?")
 
     # TEMP: monitor memory used by the LV and children
     # Bonfire.Common.MemoryMonitor.start_link("#{current_view} (connected? #{socket_connected?})")
