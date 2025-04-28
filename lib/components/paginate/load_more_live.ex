@@ -1,8 +1,12 @@
 defmodule Bonfire.UI.Common.LoadMoreLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop live_handler, :string
   prop page_info, :any, default: nil
+  prop cursor, :any, default: nil
+  prop limit, :any, default: nil
+  prop multiply_limit, :any, default: nil
+
+  prop live_handler, :string
   prop target, :any, default: nil
   prop context, :any, default: nil
   prop entry_count, :any, default: nil
@@ -19,8 +23,12 @@ defmodule Bonfire.UI.Common.LoadMoreLive do
 
   def render(assigns) do
     assigns
-    |> assign(:cursor, unwrap(e(assigns, :page_info, :end_cursor, nil)))
+    |> assign(:cursor, assigns[:cursor] || end_cursor(assigns[:page_info]))
     |> render_sface()
+  end
+
+  def end_cursor(page_info) do
+    unwrap(e(page_info, :end_cursor, nil))
   end
 
   def unwrap(list) when is_list(list), do: List.first(list)

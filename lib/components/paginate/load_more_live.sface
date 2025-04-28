@@ -16,6 +16,8 @@
       phx-target={@target}
       phx-value-context={@context}
       phx-value-after={@cursor}
+      phx-value-limit={@limit}
+      phx-value-multiply_limit={@multiply_limit}
       class="w-full flex items-center justify-center my-4"
       x-data={"{show: #{socket_connected?(@__context__)}}"}
       {...@opts}

@@ -313,6 +313,60 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     doc
   end
 
+  def assert_has_text(session, selector \\ "div", text, opts \\ []) do
+    PhoenixTest.assert_has(session, selector, opts ++ [text: text])
+  end
+
+  def refute_has_text(session, selector \\ "div", text, opts \\ []) do
+    PhoenixTest.refute_has(session, selector, opts ++ [text: text])
+  end
+
+  def assert_has_count(session, selector, opts \\ []) do
+    PhoenixTest.assert_has(session, selector, Keyword.put_new(opts, :count, 99999))
+  rescue
+    e ->
+      warn(e, "Assert failed")
+
+      case Regex.run(~r/But found (\d+):/, e.message) do
+        [_, number] ->
+          if String.to_integer(number)
+             |> IO.inspect(label: "found")
+             |> assert_count_conditions(Enum.into(opts, %{})),
+             do: session
+
+        _ ->
+          false
+      end || reraise e, __STACKTRACE__
+  end
+
+  defp assert_count_conditions(found, opts) do
+    Enum.all?(opts, fn
+      {:count, expected} ->
+        assert(found == expected, "Expected count: #{expected}, but found: #{found}")
+
+      {:greater_than, expected} ->
+        assert(found > expected, "Expected count greater than #{expected}, but found: #{found}")
+
+      {:greater_or_equal, expected} ->
+        assert(
+          found >= expected,
+          "Expected count greater than or equal to #{expected}, but found: #{found}"
+        )
+
+      {:less_than, expected} ->
+        assert(found < expected, "Expected count less than #{expected}, but found: #{found}")
+
+      {:less_or_equal, expected} ->
+        assert(
+          found <= expected,
+          "Expected count less than or equal to #{expected}, but found: #{found}"
+        )
+
+      _ ->
+        true
+    end)
+  end
+
   def assert_has_or(session, selector, opts \\ [], fun) do
     PhoenixTest.assert_has(session, selector, opts)
   rescue
