@@ -5,7 +5,7 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   import ExUnit.Assertions
   import Plug.Conn
   import Phoenix.ConnTest
-  # import Untangle
+  import Untangle
   # alias Bonfire.UI.Common.Web
   alias Bonfire.Common.Utils
   alias Bonfire.Me.Users
@@ -311,6 +311,22 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   def floki_submit(view, event, value, _) do
     assert {:ok, doc} = Floki.parse_fragment(render_submit(view, event, value))
     doc
+  end
+
+  def assert_has_or(session, selector, opts \\ [], fun) do
+    PhoenixTest.assert_has(session, selector, opts)
+  rescue
+    e ->
+      error(e, "Assert failed")
+      fun.(session)
+  end
+
+  def refute_has_or(session, selector, opts \\ [], fun) do
+    PhoenixTest.refute_has(session, selector, opts)
+  rescue
+    e ->
+      error(e, "Assert failed")
+      fun.(session)
   end
 
   def assert_has_or_open_browser(session, selector, opts \\ []) do
