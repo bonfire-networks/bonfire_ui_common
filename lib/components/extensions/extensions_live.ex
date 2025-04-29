@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.ExtensionsLive do
-  use Bonfire.UI.Common.Web, :stateless_component
+  use Bonfire.UI.Common.Web, :stateful_component
   # import Bonfire.Common.Extensions
 
   prop scope, :any, default: nil
@@ -12,21 +12,22 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
 
   prop settings_section_title, :string, default: "Bonfire extensions"
 
-  def render(assigns) do
-    assigns =
-      if socket_connected?(assigns) do
-        assigns
-        |> assign_new(:data, fn -> cached_data() end)
-        |> assign_new(:can_instance_wide, fn ->
-          Bonfire.Boundaries.can?(assigns[:__context__], :toggle, :instance)
-        end)
-      else
-        assigns
-        |> assign_new(:data, fn -> cached_data() end)
-        |> assign_new(:can_instance_wide, fn -> nil end)
-      end
-
-    render_sface(assigns)
+  def update(assigns, socket) do
+    if socket_connected?(assigns) do
+      {:ok,
+       socket
+       |> assign(assigns)
+       |> assign_new(:data, fn -> cached_data() end)
+       |> assign_new(:can_instance_wide, fn ->
+         Bonfire.Boundaries.can?(assigns[:__context__], :toggle, :instance)
+       end)}
+    else
+      {:ok,
+       socket
+       |> assign(assigns)
+       |> assign_new(:data, fn -> cached_data() end)
+       |> assign_new(:can_instance_wide, fn -> nil end)}
+    end
   end
 
   def cached_data,

@@ -1,4 +1,8 @@
 <div class="">
+  <p class="p-4 text-sm mt-2 text-base-content/80">{l(
+      "Bonfire includes many open source libraries, some are maintained by Bonfire contributors and others are provided by third party developers."
+    )}</p>
+
   <div class="">
     <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
@@ -18,7 +22,7 @@
   <div class="">
     <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
-      <span>{l("Libraries")}</span>
+      <span>{l("Bonfire Ecosystem Libraries")}</span>
     </div>
     <div class="flex flex-col divide-y divide-base-content/10">
       {#for dep <- e(@data, :ecosystem_libs, nil) || @ecosystem_libs}

@@ -28,7 +28,7 @@
                 phx-click="Bonfire.Common.Settings.LiveHandler:toggle_extensions_configuration"
                 phx-value-scope={@scope}
                 class="btn btn-primary"
-              >{l("Turn on extensions configuration")}</button>
+              >{l("Power user mode: turn on extensions configuration")}</button>
             {/if}
           </div>
         </div>
@@ -77,11 +77,11 @@
     </div>
   </div>
 
-  <!-- <div class="">
+  <div class="">
     <div class="p-4 gap-4 border-t border-base-content/10">
       <span class="text-xl font-bold">{l("Essential Extensions")}</span>
       <p class="text-sm mt-2 text-base-content/80">{l(
-          "These extensions can't be disabled at the moment, but a lot of the functionality they provide can be overriden or extended by other extensions."
+          "These extensions can't be disabled at the moment without affecting this flavour's user experience, but a lot of the functionality they provide can be changed, extended, or replaced by other extensions."
         )}</p>
     </div>
     <div class="flex flex-col divide-y divide-base-content/10">
@@ -95,5 +95,17 @@
         />
       {/for}
     </div>
-  </div> -->
+  </div>
+
+  <div class="">
+    <div class="p-4 gap-4 border-t border-base-content/10">
+      <span class="text-xl font-bold">{l("Libraries")}</span>
+      <p class="text-sm mt-2 text-base-content/80">{l(
+          "Bonfire includes many open source libraries, some are maintained by Bonfire contributors and others are provided by third party developers."
+        )}</p>
+      <LinkLive class="btn t-4 b-4" to={"/settings/#{@scope || "user"}/code"}>
+        {l("View list of libraries and licenses")}
+      </LinkLive>
+    </div>
+  </div>
 </div>
