@@ -11,7 +11,7 @@
           x-intersect.once={"src = '#{src}'"}
         >
           <canvas class={@class} x-show="!src" x-transition {...@opts} />
-          <img
+          <!-- <img
             x-cloak
             src="data:,"
             alt={@alt}
@@ -20,10 +20,22 @@
             x-transition
             x-bind:src="src"
             {...@opts}
-          />
+          /> -->
+          <div x-data="{error: false}">
+            <img
+              title={@title}
+              src={src}
+              alt={@alt}
+              class={@class}
+              x-on:error="error = true"
+              x-show="!error"
+              {...@opts}
+            />
+            <div x-show="error" class="iconify {@class}" iconify={@fallback_icon} />
+          </div>
         </div>
-            <!-- Commented onerror because it applies also to correctly rendered images, maybe because of async loading? -->
-            <!-- onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"} -->
+        <!-- Commented onerror because it applies also to correctly rendered images, maybe because of async loading? -->
+        <!-- onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"} -->
       {#match _}
         {!--
         <!-- blurred JPEG (deprecated in favour of blurhash) -->
@@ -41,7 +53,19 @@
               {...@opts}
             />
           {#match _} --}
-        <img title={@title} src={src} alt={@alt} class={@class} {...@opts}>
+        <div x-data="{error: false}">
+          <img
+            title={@title}
+            src={src}
+            alt={@alt}
+            class={@class}
+            x-on:error="error = true"
+            x-show="!error"
+            {...@opts}
+          />
+          <div x-show="error" class="iconify {@class}" iconify={@fallback_icon} />
+        </div>
+        <!-- <img title={@title} src={src} alt={@alt} class={@class} {...@opts}> -->
         {!-- {/case} --}
     {/case}
 {/case}
