@@ -7,7 +7,7 @@
           :hook
           data-hash={blurhash}
           class="h-full"
-          x-data="{src: null, error: false}"
+          x-data="{src: null}"
           x-intersect.once={"src = '#{src}'"}
         >
           <canvas class={@class} x-show="!src" x-transition {...@opts} />
@@ -17,13 +17,12 @@
             alt={@alt}
             title={@title}
             class={@class}
-            x-show="src && !error"
+            x-show="src"
             x-transition
             x-bind:src="src"
             {...@opts}
-            x-on:error="error = true"
           />
-          <div x-show="error" class="iconify {@class}" iconify={@fallback_icon} />
+          <!-- <div x-show="error" class={"iconify", e(@fallback_class, nil)}  iconify={@fallback_icon} /> -->
         </div>
         <!-- Commented onerror because it applies also to correctly rendered images, maybe because of async loading? -->
         <!-- onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"} -->
