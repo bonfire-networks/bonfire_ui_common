@@ -7,6 +7,7 @@ defmodule Bonfire.UI.Common.LoadMoreLive do
   prop multiply_limit, :any, default: nil
 
   prop live_handler, :string
+  prop current_url, :any, default: nil
   prop target, :any, default: nil
   prop context, :any, default: nil
   prop entry_count, :any, default: nil

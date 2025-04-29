@@ -42,7 +42,7 @@
         class="normal-case btn btn-secondary btn-soft btn-wide"
         x-cloak
         x-show="!show"
-        href={"#{@__context__[:current_url]}?#{@live_handler}[after]=" <> @cursor}
+        href={"#{@current_url || @__context__[:current_url]}?#{@live_handler}[after]=" <> @cursor}
       >
         {l("Next page")}
       </a>
