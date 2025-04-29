@@ -11,12 +11,12 @@
     <div class="max-w-xs">
       <select id={@id} class="max-w-xs select" name={@input}>
         {#for {key, val} <- @options || []}
-          <option value={to_string(key)} selected={if @current_value == key, do: "selected"}>
+          <option value={to_string(key)} selected={if @current_value == key or to_string(@current_value) == to_string(key), do: "selected"}>
             {val}
           </option>
         {/for}
         {#for val when is_binary(val) or is_atom(val) <- @options || []}
-          <option value={to_string(val)} selected={if @current_value == val, do: "selected"}>
+          <option value={to_string(val)} selected={if @current_value == val or to_string(@current_value) == to_string(val), do: "selected"}>
             {val}
           </option>
         {#else}

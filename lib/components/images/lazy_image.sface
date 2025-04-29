@@ -19,10 +19,10 @@
             x-show="src"
             x-transition
             x-bind:src="src"
+            onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"}
             {...@opts}
           />
         </div>
-        <!-- onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"} -->
       {#match _}
         {!--
         <!-- blurred JPEG (deprecated in favour of blurhash) -->
