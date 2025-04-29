@@ -34,7 +34,7 @@
             (is_binary(src) and Bonfire.Files.Blurred.blurred(src, skip_creation: true))}
           {#match blurred when is_binary(blurred) and blurred != src}
             <img
-              x-data={"{src: '#{blurred}' }"}
+              x-data={"{src: '#{blurred}', error: false}"}
               x-intersect.once={"src = '#{src}'"}
               src={blurred}
               alt={@alt}
@@ -54,7 +54,7 @@
             x-show="!error"
             {...@opts}
           />
-          <div x-show="error" class="iconify {@class}" iconify={@fallback_icon} />
+          <div x-show="error" class="iconify w-8 h-8" iconify={@fallback_icon} />
         </div>
         <!-- <img title={@title} src={src} alt={@alt} class={@class} {...@opts}> -->
         {!-- {/case} --}
