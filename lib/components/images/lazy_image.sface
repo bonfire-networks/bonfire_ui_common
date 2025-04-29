@@ -19,10 +19,11 @@
             x-show="src"
             x-transition
             x-bind:src="src"
-            onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"}
             {...@opts}
           />
         </div>
+            <!-- Commented onerror because it applies also to correctly rendered images, maybe because of async loading? -->
+            <!-- onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"} -->
       {#match _}
         {!--
         <!-- blurred JPEG (deprecated in favour of blurhash) -->
