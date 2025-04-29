@@ -54,7 +54,7 @@
             x-show="!error"
             {...@opts}
           />
-          <div x-show="error" class="iconify w-8 h-8" iconify={@fallback_icon} />
+          <div x-show="error" class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
         </div>
         <!-- <img title={@title} src={src} alt={@alt} class={@class} {...@opts}> -->
         {!-- {/case} --}
