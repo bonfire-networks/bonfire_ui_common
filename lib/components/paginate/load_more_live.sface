@@ -22,7 +22,6 @@
       x-data={"{show: #{socket_connected?(@__context__)}}"}
       {...@opts}
     >
-      {!-- phx-click={if @infinite_scroll != :preload or !@entry_count or @entry_count == 0, do: "#{@live_handler}:load_more"} --}
       <span
         class="btn-wide btn-secondary btn btn-soft"
         x-cloak={!@hide_guest_fallback}

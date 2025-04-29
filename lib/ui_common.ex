@@ -432,7 +432,9 @@ defmodule Bonfire.UI.Common do
     rich(content)
   end
 
-  def templated_or_remote_markdown(content, data \\ nil) do
+  def templated_or_remote_markdown(content, data \\ nil)
+
+  def templated_or_remote_markdown("http" <> _ = content, data) do
     content = to_string(content)
     # debug(content)
 
@@ -448,6 +450,10 @@ defmodule Bonfire.UI.Common do
     else
       templated(content, data)
     end
+  end
+
+  def templated_or_remote_markdown(content, data) do
+    templated(content, data)
   end
 
   def current_url(socket_or_assigns, default \\ nil, recursing \\ false) do
