@@ -8,11 +8,16 @@ defmodule Bonfire.UI.Common.Endpoint.LiveReload do
 
       def halt_live_reload(conn, _), do: conn
 
+      if unquote(code_reloading?) do
+
+        plug Tidewave, allow_remote_access: true # FIXME: remote access should be disabled but it's not working locally without for now
+
       # Code reloading can be explicitly enabled under the
       # :code_reloader configuration of your endpoint.
-      if Application.compile_env(:bonfire, :hot_code_reload) && unquote(code_reloading?) &&
-           Code.ensure_loaded?(Phoenix.LiveReloader.Socket) do
+      if Application.compile_env(:bonfire, :hot_code_reload) && Code.ensure_loaded?(Phoenix.LiveReloader.Socket) do
+
         socket("/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket)
+
         plug(Phoenix.LiveReloader)
         plug(Phoenix.CodeReloader)
 
@@ -29,6 +34,9 @@ defmodule Bonfire.UI.Common.Endpoint.LiveReload do
       else
         plug(:halt_live_reload)
       end
+    else
+        plug(:halt_live_reload)
+    end
     end
   end
 end
