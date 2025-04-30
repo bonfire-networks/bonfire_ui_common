@@ -3,40 +3,36 @@ defmodule Bonfire.UI.Common.Endpoint.LiveReload do
 
   defmacro __using__(code_reloading?) do
     quote do
+      if Code.ensure_loaded?(Tidewave) do
+        # FIXME: remote access should be disabled but it's not working locally without for now
+        plug Tidewave, allow_remote_access: true
+      end
+
       def halt_live_reload(%{request_path: "/phoenix/live_reload/socket/websocket"} = conn, _),
         do: conn |> resp(404, "Not enabled") |> halt()
 
       def halt_live_reload(conn, _), do: conn
 
-      if unquote(code_reloading?) do
+      if unquote(code_reloading?) && Application.compile_env(:bonfire, :hot_code_reload) &&
+             Code.ensure_loaded?(Phoenix.LiveReloader.Socket) do
+          socket("/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket)
 
-        plug Tidewave, allow_remote_access: true # FIXME: remote access should be disabled but it's not working locally without for now
+          plug(Phoenix.LiveReloader)
+          plug(Phoenix.CodeReloader)
 
-      # Code reloading can be explicitly enabled under the
-      # :code_reloader configuration of your endpoint.
-      if Application.compile_env(:bonfire, :hot_code_reload) && Code.ensure_loaded?(Phoenix.LiveReloader.Socket) do
+          if unquote(System.get_env("WITH_LV_NATIVE") in ["1", "true"]) do
+            plug LiveViewNative.LiveReloader
+          end
 
-        socket("/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket)
+          plug(Phoenix.Ecto.CheckRepoStatus, otp_app: :bonfire)
 
-        plug(Phoenix.LiveReloader)
-        plug(Phoenix.CodeReloader)
+          # FIXME
+          # socket "/admin/system/wobserver", Wobserver.Web.PhoenixSocket
 
-        if unquote(System.get_env("WITH_LV_NATIVE") in ["1", "true"]) do
-          plug LiveViewNative.LiveReloader
+          # plug(PhoenixProfiler)
+        else
+          plug(:halt_live_reload)
         end
-
-        plug(Phoenix.Ecto.CheckRepoStatus, otp_app: :bonfire)
-
-        # FIXME
-        # socket "/admin/system/wobserver", Wobserver.Web.PhoenixSocket
-
-        # plug(PhoenixProfiler)
-      else
-        plug(:halt_live_reload)
-      end
-    else
-        plug(:halt_live_reload)
-    end
     end
   end
 end
