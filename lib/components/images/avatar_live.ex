@@ -10,7 +10,10 @@ defmodule Bonfire.UI.Common.AvatarLive do
   # prop size, :any, default: nil
   prop wrapper_class, :css_class, default: "border-0 avatar !flex"
   prop class, :css_class, default: "w-12 h-12 rounded-lg bg-base-100 h-full"
-  prop bg_class, :css_class, default: ["h-full flex items-centeer place-conten-center w-full flex-1"]
+
+  prop bg_class, :css_class,
+    default: ["h-full flex items-centeer place-conten-center w-full flex-1"]
+
   prop avatar_fallback, :string, default: nil
   prop title, :string, default: ""
   prop opts, :any, default: %{}
