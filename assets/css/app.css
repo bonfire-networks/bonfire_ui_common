@@ -606,6 +606,10 @@ div[data-scope='avatar'] div[data-square] {
   }
 
   /* Article elements */
+article.activity {
+  word-break: break-word;
+}
+
   article[data-id='activity'][data-hidden='all'] {
     @apply hidden;
   }

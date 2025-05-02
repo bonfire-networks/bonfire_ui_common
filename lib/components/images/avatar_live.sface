@@ -23,7 +23,7 @@
                 src={url}
                 title={@title}
                 alt={@title}
-                fallback_icon={Icon.icon_name("material-symbols:person-2-rounded")}
+                fallback_icon={Icon.icon_name("mingcute:user-4-fill")}
                 opts={@opts}
               />
             </div>
