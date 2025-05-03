@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.StaticGeneratorPlug do
   use Plug.Builder
   import Untangle
-  alias Bonfire.Common.Config
+  use Bonfire.Common.Config
 
   plug(:make_request_path_static)
 

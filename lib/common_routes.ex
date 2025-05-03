@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.Routes do
-  alias Bonfire.Common.Config
+  use Bonfire.Common.Config
   require Bonfire.UI.Common.Web
 
   # list all resources that will be needed later when rendering page, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103

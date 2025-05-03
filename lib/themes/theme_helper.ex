@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   Helper functions to handle theme selection and application.
   Uses the new OKLCH color format and updated CSS variable naming scheme.
   """
-  alias Bonfire.Common.Settings
+  use Bonfire.Common.Settings
 
   @doc """
   Determines the current theme based on user preferences and context.

@@ -1,6 +1,7 @@
 defmodule Bonfire.UI.Common.Web do
   @moduledoc false
 
+  use Bonfire.Common.Config
   # alias Bonfire.Common.Utils
 
   # TODO: configurable
@@ -289,8 +290,8 @@ defmodule Bonfire.UI.Common.Web do
       # use instead: Bonfire's voodoo routing, eg: `path(Bonfire.UI.Social.FeedsLive):
       import Bonfire.Common.URIs
 
-      alias Bonfire.Common.Settings
-      alias Bonfire.Common.Config
+      use Bonfire.Common.Settings
+      use Bonfire.Common.Config
       import Config, only: [repo: 0]
 
       import Bonfire.Common.Extend

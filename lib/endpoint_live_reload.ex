@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.Endpoint.LiveReload do
-  # alias Bonfire.Common.Config
+  # use Bonfire.Common.Config
 
   defmacro __using__(code_reloading?) do
     quote do

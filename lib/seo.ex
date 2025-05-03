@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common.SEO do
     # facebook: &__MODULE__.facebook_config/1,
     twitter: &__MODULE__.twitter_config/1
 
-  alias Bonfire.Common.Config
+  use Bonfire.Common.Config
   # alias Bonfire.Web.Router.Helpers, as: Routes
 
   def site_config(_conn \\ nil) do

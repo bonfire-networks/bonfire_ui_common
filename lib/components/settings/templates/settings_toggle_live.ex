@@ -1,6 +1,7 @@
 defmodule Bonfire.UI.Common.SettingsToggleLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
+  prop id, :any, default: nil
   prop keys, :any, default: []
   prop scope, :any, default: nil
   prop compact, :boolean, default: false

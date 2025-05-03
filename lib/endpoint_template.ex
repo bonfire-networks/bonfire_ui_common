@@ -1,12 +1,13 @@
 defmodule Bonfire.UI.Common.EndpointTemplate do
-  alias Bonfire.Common.Config
+  use Bonfire.Common.Config
 
   defmacro __using__(_) do
     quote do
       # make sure this comes before the Phoenix endpoint
       use Bonfire.UI.Common.ErrorReportingPlug
-      import Bonfire.Common.Extend
+      use Bonfire.Common.Settings
       use Untangle
+      import Bonfire.Common.Extend
       alias Bonfire.UI.Common.EndpointTemplate
       alias Bonfire.Common.Utils
       alias Bonfire.Common.Types

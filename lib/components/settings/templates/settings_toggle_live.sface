@@ -2,7 +2,7 @@
   <input name="scope" value={@scope} type="hidden">
   <input name={@input} value={to_string(@disabled_value)} type="hidden">
 
-  <label class={"flex items-center", "justify-between": !@compact}>
+  <label for={@id} class={"flex items-center", "justify-between": !@compact}>
     <div class={"flex flex-col mr-2", "order-last ml-4 !mr-0": @compact}>
       <div class="flex flex-row gap-2" :if={@name}>
         <div class="text-sm">{@name}</div>
@@ -12,6 +12,7 @@
     </div>
 
     <input
+      id={@id}
       name={@input}
       value={to_string(@enabled_value)}
       type="checkbox"

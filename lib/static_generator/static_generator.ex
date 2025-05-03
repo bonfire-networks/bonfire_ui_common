@@ -5,7 +5,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
   # import Plug.Conn
   # import Phoenix.ConnTest
   use Untangle
-  alias Bonfire.Common.Config
+  use Bonfire.Common.Config
 
   @endpoint Config.get(:endpoint_module, Bonfire.Web.Endpoint)
 

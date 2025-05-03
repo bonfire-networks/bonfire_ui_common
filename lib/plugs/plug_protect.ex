@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.PlugProtect do
   use PlugAttack
   use Bonfire.Common.Localise
-  alias Bonfire.Common.Config
+  use Bonfire.Common.Config
 
   # TODO: consolidate by using Hammer.Plug instead?
 

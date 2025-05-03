@@ -92,13 +92,23 @@ defmodule Bonfire.Common.Settings.LiveHandler do
   end
 
   # LiveHandler
-  def handle_event("set_locale", %{"locale" => locale}, socket) do
+  def handle_event(
+        "set_locale",
+        %{"Elixir.Bonfire.Common.Localise.Cldr" => %{"default_locale" => locale}} = params,
+        socket
+      ) do
     Bonfire.Common.Localise.put_locale(locale)
     |> debug("set current UI locale")
 
-    # then save to settings
-    %{"Bonfire.Common.Localise.Cldr" => %{"default_locale" => locale}}
-    |> handle_event("set", ..., socket)
+    handle_event("set", params, socket)
+  end
+
+  def handle_event("set_locale", %{"locale" => locale} = params, socket) do
+    handle_event(
+      "set_locale",
+      Map.merge(params, %{"Elixir.Bonfire.Common.Localise.Cldr" => %{"default_locale" => locale}}),
+      socket
+    )
   end
 
   def handle_event(

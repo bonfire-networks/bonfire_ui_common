@@ -1,0 +1,43 @@
+<table class="table w-full table-zebra">
+  <thead>
+    <tr>
+      <th>Keys</th>
+      <th>Default Value</th>
+      <th>Locations</th>
+    </tr>
+  </thead>
+  <tbody>
+    {#for item <- @settings}
+      <tr class="hover">
+        <td class="font-mono text-sm">
+          {#case e(item.opts, :type, nil)}
+            {#match :select}
+              <form name="settings" phx-change="Bonfire.Common.Settings:set">
+                <Bonfire.UI.Common.SettingsSelectLive
+                  name={e(item.opts, :name, nil) || format_key_for_display(item.keys)}
+                  description={e(item.opts, :description, nil)}
+                  keys={item.keys}
+                  options={e(item.opts, :options, nil)}
+                />
+                <!-- scope={@scope} -->
+              </form>
+            {#match _}
+              {format_key_for_display(item.keys)}
+          {/case}
+        </td>
+        <td class="font-mono text-sm whitespace-pre-wrap break-all">{#if is_nil(item.default) and item.defaults != []}<span class="badge badge-error">Warning: multiple defaults</span>{#else}{format_value(item.default)}{/if}</td>
+        <td class="text-xs">
+          {#for loc <- item.locations}
+            <div class="mb-1">
+              <span class="">{String.replace(loc.module, ~r/^"Elixir\./, "") |> String.replace(~r/"$/, "")}</span>
+              @ <span class="code">{Path.basename(loc.file)}:{loc.line}</span>
+              {#if not is_nil(loc.default) and loc.default != item.default}
+                <span class="strong">Default: {format_value(loc.default)}</span>
+              {/if}
+            </div>
+          {/for}
+        </td>
+      </tr>
+    {/for}
+  </tbody>
+</table>
