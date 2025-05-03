@@ -20,10 +20,10 @@
         class="menu relative p-0 w-full"
       >
         {#case Bonfire.Common.Settings.get(
-            [:ui, :sub_widget_order, Types.maybe_to_atom(@widget[:page] || @widget[:module])],
+            [:ui, :sub_widget_order],
             [],
             current_user(@__context__)
-          )}
+          )[Types.maybe_to_atom(@widget[:page] || @widget[:module])]}
           {#match order_settings}
             {#for {sub_widget, index} <-
                 Enum.sort_by(

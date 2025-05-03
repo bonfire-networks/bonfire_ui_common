@@ -196,7 +196,7 @@ defmodule Bonfire.Common.Settings.LiveHandler do
     end)
     |> update(:current_value, fn
       :load_from_settings ->
-        Bonfire.Common.Settings.get(
+        Bonfire.Common.Settings.__get__(
           assigns.keys,
           assigns[:default_value],
           scoped(assigns[:scope], assigns[:__context__])

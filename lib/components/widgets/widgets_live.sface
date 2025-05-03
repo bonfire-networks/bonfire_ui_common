@@ -11,10 +11,10 @@
   data-showing-within={@showing_within}
 >
   {#case Bonfire.Common.Settings.get(
-      [:ui, :widget_order, @id],
+      [:ui, :widget_order],
       [],
       current_user(@__context__)
-    )}
+    )[@id]}
     {#match order_settings}
       {#for {widget, index} <-
           Enum.sort_by(
