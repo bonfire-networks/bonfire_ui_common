@@ -10,6 +10,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       import Bonfire.Common.Extend
       alias Bonfire.UI.Common.EndpointTemplate
       alias Bonfire.Common.Utils
+      import Utils
       alias Bonfire.Common.Types
       alias Bonfire.Common.Extend
 
@@ -137,7 +138,11 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         endpoint_module = Bonfire.Common.Config.endpoint_module()
 
         font_family =
-          Bonfire.Common.Settings.get([:ui, :font_family], "Inter (Latin Languages)", conn)
+          Bonfire.Common.Settings.get(
+            [:ui, :font_family],
+            "Inter (Latin Languages)",
+            current_user(conn)
+          )
           |> Types.maybe_to_string()
           |> String.trim_trailing(" Languages)")
           |> String.replace([" ", "-", "(", ")"], "-")
