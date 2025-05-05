@@ -43,7 +43,7 @@
               {...@opts}
             />
           {#match _} --}
-        <div x-data="{error: false}">
+        <div x-data="{error: false}" class="h-full">
           <img
             title={@title}
             src={src}
