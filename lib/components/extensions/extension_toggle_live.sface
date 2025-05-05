@@ -19,9 +19,7 @@
         type="checkbox"
         class="toggle toggle-primary toggle-sm"
         checked={!@globally_disabled?}
-        phx-click={if @globally_disabled?,
-          do: "Bonfire.Common.Settings:extension:enable",
-          else: "Bonfire.Common.Settings:extension:disable"}
+        phx-click="Bonfire.Common.Settings:extension:toggle"
         phx-target={@myself}
         phx-value-scope={:instance}
         phx-value-extension={@id}
@@ -60,9 +58,7 @@
         class="toggle toggle-sm toggle-primary"
         checked={!@my_disabled?}
         disabled={!@can_instance_wide && @globally_disabled?}
-        phx-click={if @my_disabled?,
-          do: "Bonfire.Common.Settings:extension:enable",
-          else: "Bonfire.Common.Settings:extension:disable"}
+        phx-click="Bonfire.Common.Settings:extension:toggle"
         phx-target={@myself}
         phx-value-extension={@id}
       />

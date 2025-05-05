@@ -57,12 +57,16 @@ defmodule Bonfire.Common.Settings.LiveHandler do
     end
   end
 
-  def handle_event("extension:disable", %{"extension" => extension} = attrs, socket) do
-    extension_toggle(extension, true, attrs, socket)
+  def handle_event(
+        "extension:toggle",
+        %{"extension" => extension, "value" => "on"} = attrs,
+        socket
+      ) do
+    extension_toggle(extension, nil, attrs, socket)
   end
 
-  def handle_event("extension:enable", %{"extension" => extension} = attrs, socket) do
-    extension_toggle(extension, nil, attrs, socket)
+  def handle_event("extension:toggle", %{"extension" => extension} = attrs, socket) do
+    extension_toggle(extension, true, attrs, socket)
   end
 
   def handle_event("toggle_extensions_configuration", params, socket) do
