@@ -1,13 +1,19 @@
 defmodule AnimalAvatarGenerator do
   @moduledoc """
-  Generate SVG avatars from a string seed. It should always return the same avatar for the corresponding seed.
+  Generates avatars that look like cute animal faces. 
 
-  Based on https://www.npmjs.com/package/animal-avatar-generator (translated to Elixir, mostly by ChatGPT)
+  Based on https://www.npmjs.com/package/animal-avatar-generator 
+
+  ## Examples
+
+      iex> svg = avatar("test123")
+
+      iex> svg = avatar("custom", size: 200, blackout: false, round: false)
+      iex> String.contains?(svg, "width='200'") and String.contains?(svg, "height='200'")
+      true
   """
 
-  # TODO: optimise and extract into library
-
-  @background_colors [
+  @default_background_colors [
     "#fcf7d1",
     "#ece2e1",
     "#e4e3cd",
@@ -15,7 +21,7 @@ defmodule AnimalAvatarGenerator do
     "#b5f4bc"
   ]
 
-  @avatar_colors [
+  @default_avatar_colors [
     "#d7b89c",
     "#b18272",
     "#ec8a90",
@@ -24,6 +30,44 @@ defmodule AnimalAvatarGenerator do
     "#50c8c6"
   ]
 
+  @doc """
+  Generates an SVG avatar based on the given seed string.
+
+  The seed is used to generate a different random colour/shape for each seed, and keeps the generated avatar consistent if called again with the same seed.
+
+  ## Options
+
+  * `:size` - Size of the avatar in pixels (default: 150)
+  * `:avatar_colors` - List of color hex codes for the avatar (default: #{inspect(@default_avatar_colors)})
+  * `:background_colors` - List of color hex codes for the background (default: @default_background_colors)
+  * `:blackout` - Whether to add a slight darkening to the right side (default: true)
+  * `:round` - Whether to use round or rectangular background (default: true)
+  * `:skip_randomizer` - Whether to skip re-seeding the random generator (default: true)
+  * `:background_class` - CSS class to apply to the background (default: none)
+
+  ## Examples
+
+      iex> svg = avatar("test123", size: 100)
+      iex> String.contains?(svg, "width='100'")
+      true
+      
+      iex> svg = avatar("test123", background_colors: ["#ff0000"])
+      iex> String.contains?(svg, "#ff0000")
+      true
+      
+      iex> svg = avatar("test123", round: false)
+      iex> String.contains?(svg, "rx='0'")
+      true
+      
+      iex> svg = avatar("test123", round: true)
+      iex> String.contains?(svg, "rx='250'")
+      true
+
+      iex> svg = avatar("test123")
+      iex> String.starts_with?(svg, "<svg") and String.contains?(svg, "viewBox='0 0 500 500'")
+      true
+
+  """
   def avatar(
         seed,
         opts \\ []
@@ -31,39 +75,67 @@ defmodule AnimalAvatarGenerator do
     seed_randomiser(seed)
 
     opts =
-      [
+      Enum.into(opts, %{
         size: 150,
         # Palette for avatar colors
-        avatar_colors: @avatar_colors,
+        avatar_colors: @default_avatar_colors,
         # Palette for background colors
-        background_colors: @background_colors,
+        background_colors: @default_background_colors,
         # Blackout the right side of avatar
         blackout: true,
         # Use round or rectangle background
         round: true,
         skip_randomizer: true
-      ]
-      |> Keyword.merge(opts)
-
-    background_color = Enum.random(opts[:background_colors])
+      })
 
     create_svg(opts[:size], [
-      create_background(opts[:round], background_color, opts[:background_class]),
+      create_background(
+        opts[:round],
+        Enum.random(opts[:background_colors]),
+        opts[:background_class]
+      ),
       avatar_face(
         seed,
-        opts
+        opts[:avatar_colors],
+        true
       ),
       if(opts[:blackout], do: create_blackout(opts[:round]), else: "")
     ])
   end
 
+  @doc """
+  Generates an animal avatar face SVG based on the given seed string.
+
+  This function is used internally by `avatar/2` but can be used separately to generate just the face without the background.
+
+  ## Params
+
+  * `:avatar_colors` - List of color hex codes for the avatar (default: #{inspect(@default_avatar_colors)})
+  * `:skip_randomizer` - Whether to skip re-seeding the random generator (default: false)
+
+  ## Examples
+
+      iex> face = avatar_face("test123")
+      iex> String.contains?(face, "path")
+      true
+      
+      iex> face1 = avatar_face("consistent")
+      iex> face2 = avatar_face("consistent")
+      iex> face1 == face2
+      true
+      
+      iex> face = avatar_face("test123", ["#ff0000"])
+      iex> String.contains?(face, "#ff0000")
+      true
+  """
   def avatar_face(
         seed,
-        opts \\ []
+        avatar_colors \\ @default_avatar_colors,
+        skip_randomizer? \\ false
       ) do
-    opts[:skip_randomizer] || seed_randomiser(seed)
+    skip_randomizer? || seed_randomiser(seed)
 
-    avatar_color = Enum.random(opts[:avatar_colors])
+    avatar_color = Enum.random(avatar_colors)
 
     shapes = [
       faces(),
@@ -81,13 +153,13 @@ defmodule AnimalAvatarGenerator do
     |> Enum.join("")
   end
 
-  def empty_shape do
+  defp empty_shape do
     [
       fn _color -> "" end
     ]
   end
 
-  def brows do
+  defp brows do
     [
       fn _color ->
         """
@@ -108,7 +180,7 @@ defmodule AnimalAvatarGenerator do
     ]
   end
 
-  def ears do
+  defp ears do
     [
       fn color ->
         """
@@ -198,7 +270,7 @@ defmodule AnimalAvatarGenerator do
     ]
   end
 
-  def eyes do
+  defp eyes do
     [
       fn _color ->
         """
@@ -271,7 +343,7 @@ defmodule AnimalAvatarGenerator do
     ]
   end
 
-  def faces do
+  defp faces do
     [
       fn color ->
         """
@@ -281,7 +353,7 @@ defmodule AnimalAvatarGenerator do
     ]
   end
 
-  def hairs do
+  defp hairs do
     [
       fn _color ->
         """
@@ -306,7 +378,7 @@ defmodule AnimalAvatarGenerator do
     ]
   end
 
-  def muzzles do
+  defp muzzles do
     [
       fn _color ->
         """
@@ -415,7 +487,7 @@ defmodule AnimalAvatarGenerator do
     ]
   end
 
-  def patterns do
+  defp patterns do
     [
       fn color ->
         """
@@ -441,7 +513,20 @@ defmodule AnimalAvatarGenerator do
     end)
   end
 
-  def create_svg(size, children) do
+  @doc """
+  Creates an SVG with the given size and child elements.
+
+  ## Examples
+
+      iex> svg = create_svg(100, ["<rect width='100' height='100' fill='red'/>"])
+      iex> String.contains?(svg, "width='100'")
+      true
+      iex> String.contains?(svg, "height='100'")
+      true
+      iex> String.contains?(svg, "<rect width='100' height='100' fill='red'/>")
+      true
+  """
+  def create_svg(size, children) when is_list(children) do
     """
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -455,7 +540,7 @@ defmodule AnimalAvatarGenerator do
     """
   end
 
-  def create_background(round, color, class) do
+  defp create_background(round, color, class) do
     """
     <rect
       width='500'
@@ -467,7 +552,7 @@ defmodule AnimalAvatarGenerator do
     """
   end
 
-  def create_blackout(round) do
+  defp create_blackout(round) do
     """
     <path
       d='#{if round, do: "M250,0a250,250 0 1,1 0,500", else: "M250,0L500,0L500,500L250,500"}'
@@ -477,6 +562,25 @@ defmodule AnimalAvatarGenerator do
     """
   end
 
+  @doc """
+  Helper function to darken a hexadecimal color value.
+
+  ## Parameters
+
+  * `hex` - The hexadecimal color string (e.g., "#ff0000")
+  * `amount` - The amount to darken (positive values) or lighten (negative values)
+
+  ## Examples
+
+      iex> darken("#ff0000", 30)
+      "#00E100"
+      
+      iex> darken("#00ff00", -30)
+      "#1E1EFF"
+      
+      iex> darken("#ffffff", 100)
+      "#9B9B9B"
+  """
   def darken(hex, amount) do
     "#" <>
       (hex
@@ -491,7 +595,7 @@ defmodule AnimalAvatarGenerator do
        |> Map.get(:hex))
   end
 
-  def clamp(value, min, max) do
+  defp clamp(value, min, max) do
     min = if min < max, do: min, else: max
     max = if min < max, do: max, else: min
 
@@ -502,11 +606,35 @@ defmodule AnimalAvatarGenerator do
     end
   end
 
-  defp seed_randomiser(seed) do
-    # let's seed the random algorithm
-    :rand.seed(
-      :exsplus,
-      seed |> String.pad_trailing(3, "123") |> to_charlist() |> Enum.take(3) |> List.to_tuple()
-    )
+  @doc """
+  Seeds the random number generator based on the provided seed string.
+
+  This function ensures consistent random choices for the same seed.
+
+  ## Examples
+
+      iex> :rand.uniform_real()
+      iex> seed_randomiser("abc")
+      iex> first = :rand.uniform_real()
+      iex> seed_randomiser("abc")
+      iex> second = :rand.uniform_real()
+      iex> first == second
+      true
+      
+      iex> first = seed_randomiser("xyz")
+      iex> different = :rand.uniform_real()
+      iex> first == different
+      false
+  """
+  def seed_randomiser(seed) do
+    # Convert the seed string to a reproducible integer seed
+    int_seed =
+      seed
+      |> String.to_charlist()
+      |> Enum.reduce(0, fn char, acc -> acc + char end)
+
+    # Seed erlang's randomizer
+    :rand.seed(:exsplus, {int_seed, int_seed * 2, int_seed * 3})
+    :ok
   end
 end

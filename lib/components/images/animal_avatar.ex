@@ -55,7 +55,7 @@ defmodule Bonfire.UI.Common.AnimalAvatar do
     id
     |> AnimalAvatarGenerator.avatar_face(
       # TODO: colours in config
-      avatar_colors: ["#801100", "#B62203", "#D73502", "#FC6400", "#FF7500", "#FAC000"]
+      ["#801100", "#B62203", "#D73502", "#FC6400", "#FF7500", "#FAC000"]
     )
   end
 end
