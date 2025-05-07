@@ -499,7 +499,23 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     case Map.keys(params) |> List.first() do
       mod when is_binary(mod) and mod not in ["id"] ->
         # debug(mod, "mod")
-        mod_delegate(mod, :handle_params, [Map.get(params, mod), uri], socket)
+        mod_delegate(
+          mod,
+          :handle_params,
+          [
+            case Map.get(params, mod) do
+              %{} = delegate_params ->
+                params
+                |> Map.delete(mod)
+                |> Map.merge(delegate_params)
+
+              delegate_params ->
+                delegate_params
+            end,
+            uri
+          ],
+          socket
+        )
 
       _ ->
         empty(socket)

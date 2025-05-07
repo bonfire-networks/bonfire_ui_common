@@ -42,7 +42,11 @@
       x-show="!show"
       href={append_params_uri(
         @current_url || @__context__[:current_url],
-        "#{@live_handler}[after]=#{@cursor}"
+        %{
+          "#{@live_handler}[after]" => @cursor,
+          "#{@live_handler}[multiply_limit]" =>
+            if(is_integer(@multiply_limit) and @multiply_limit > 1, do: @multiply_limit)
+        }
       )}
     >
       {l("Next page")}
