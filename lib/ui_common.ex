@@ -1465,7 +1465,7 @@ defmodule Bonfire.UI.Common do
   def maybe_stream_insert(%{assigns: %{streams: streams}} = socket, name, items, _opts)
       when is_nil(streams) or streams == %{} do
     error(
-      assigns(socket),
+      items,
       "Invalid stream '#{name}' to render data in. Will set as regular assign instead"
     )
 
@@ -1490,7 +1490,7 @@ defmodule Bonfire.UI.Common do
 
   def maybe_stream_insert(socket, name, items, _opts) do
     error(
-      assigns(socket),
+      items,
       "Could not find stream '#{name}' to render data in. Will set as regular assign instead"
     )
 

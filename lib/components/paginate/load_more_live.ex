@@ -32,6 +32,10 @@ defmodule Bonfire.UI.Common.LoadMoreLive do
     unwrap(e(page_info, :end_cursor, nil))
   end
 
+  def final_cursor(page_info) do
+    unwrap(e(page_info, :final_cursor, nil))
+  end
+
   def unwrap(list) when is_list(list), do: List.first(list)
   def unwrap(other), do: other
 end
