@@ -15,6 +15,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
     default: ["h-full flex items-centeer place-conten-center w-full flex-1"]
 
   prop avatar_fallback, :string, default: nil
+  prop fallback_class, :css_class, default: "w-6 h-6"
   prop title, :string, default: ""
   prop opts, :any, default: %{}
 

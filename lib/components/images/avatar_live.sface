@@ -24,6 +24,7 @@
                 title={@title}
                 alt={@title}
                 fallback_icon={Icon.icon_name("mingcute:user-4-fill")}
+                fallback_class={e(@fallback_class, nil)}
                 opts={@opts}
               />
             </div>
