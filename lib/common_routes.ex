@@ -1,29 +1,46 @@
 defmodule Bonfire.UI.Common.Routes do
   use Bonfire.Common.Config
+  use Bonfire.Common.Localise
   require Bonfire.UI.Common.Web
 
   # list all resources that will be needed later when rendering page, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103
-  # TODO: configurable
   def early_hints_shared(),
-    do: [
-      "/css/app.css": [rel: "preload", as: "style"],
-      "/images/icons/icons.css": [rel: "preload", as: "style"],
-      "/images/icons/svg-inject.min.js": [rel: "preload", as: "script"]
-    ]
+    do:
+      Bonfire.Common.Config.get(
+        [Bonfire.UI.Common.Routes, :early_hints, :common],
+        [
+          "/css/app.css": [rel: "preload", as: "style"],
+          "/images/icons/icons.css": [rel: "preload", as: "style"],
+          "/images/icons/svg-inject.min.js": [rel: "preload", as: "script"]
+        ],
+        name: l("Early hints"),
+        description: l("Common assets to send as early hints")
+      )
 
   def early_hints_guest(),
     do:
-      [
-        # here are resources needed by non-logged-in visitors
-        # TODO: how can we avoid also including it for authed users?
-        "/assets/bonfire_basic.js": [rel: "preload", as: "script"]
-      ] ++ early_hints_shared()
+      Bonfire.Common.Config.get(
+        [Bonfire.UI.Common.Routes, :early_hints, :guest],
+        [
+          # here are resources needed by non-logged-in visitors
+          # TODO: how can we avoid also including it for authed users?
+          "/assets/bonfire_basic.js": [rel: "preload", as: "script"]
+        ],
+        name: l("Early hints"),
+        description: l("Assets to send as early hints for guests (non logged in visitors)")
+      ) ++ early_hints_shared()
 
   def early_hints_authed(),
-    do: [
-      # here are resources needed by logged-in visitors
-      "/assets/bonfire_live.js": [rel: "preload", as: "script"]
-    ]
+    do:
+      Bonfire.Common.Config.get(
+        [Bonfire.UI.Common.Routes, :early_hints, :users],
+        [
+          # here are resources needed by logged-in visitors
+          "/assets/bonfire_live.js": [rel: "preload", as: "script"]
+        ],
+        name: l("Early hints"),
+        description: l("Assets to send as early hints for users (when logged in)")
+      )
 
   # ++ early_hints_shared()
 

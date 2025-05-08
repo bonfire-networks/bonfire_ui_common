@@ -5,22 +5,35 @@ defmodule Bonfire.UI.Common.LivePlugs do
 
   @behaviour Bonfire.UI.Common.LivePlugModule
 
-  # TODO: put in config
-  @default_plugs [
-    UI.Common.LivePlugs.StaticChanged,
-    UI.Common.LivePlugs.Csrf,
-    # UI.Common.LivePlugs.Locale,
-    # for tests (TODO: only include in test env?)
-    Bonfire.UI.Common.LivePlugs.AllowTestSandbox
-  ]
+  def default_plugs_before,
+    do:
+      Bonfire.Common.Config.get(
+        [__MODULE__, :default_plugs, :before],
+        [
+          UI.Common.LivePlugs.StaticChanged,
+          UI.Common.LivePlugs.Csrf,
+          # UI.Common.LivePlugs.Locale,
+          # for tests (TODO: only include in test env?)
+          Bonfire.UI.Common.LivePlugs.AllowTestSandbox
+        ],
+        name: l("Live plugs"),
+        description: l("Default plugs to run on LiveViews (*before* any custom ones)")
+      )
 
-  @default_plugs_after [
-    UI.Common.LivePlugs.Locale
-  ]
+  def default_plugs_after,
+    do:
+      Bonfire.Common.Config.get(
+        [__MODULE__, :default_plugs, :after],
+        [
+          UI.Common.LivePlugs.Locale
+        ],
+        name: l("Live plugs"),
+        description: l("Default plugs to run on LiveViews (*after* any custom ones)")
+      )
 
   def on_mount(modules, params, session, socket) when is_list(modules) do
     Bonfire.UI.Common.LivePlugs.Helpers.on_mount(
-      @default_plugs ++ modules ++ @default_plugs_after,
+      default_plugs_before() ++ modules ++ default_plugs_after(),
       params,
       session,
       socket

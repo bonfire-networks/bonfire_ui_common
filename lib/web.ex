@@ -2,12 +2,17 @@ defmodule Bonfire.UI.Common.Web do
   @moduledoc false
 
   use Bonfire.Common.Config
+  use Bonfire.Common.Localise
   # alias Bonfire.Common.Utils
 
-  # TODO: configurable
   def static_paths,
     do:
-      ~w(public assets css fonts images js favicon.ico pwa pwabuilder-sw.js robots.txt cache_manifest.json source.tar.gz index.html)
+      Bonfire.Common.Config.get(
+        [Bonfire.UI.Common.Web, :static_paths],
+        ~w(public assets css fonts images js favicon.ico pwa pwabuilder-sw.js robots.txt cache_manifest.json source.tar.gz index.html),
+        name: l("Static paths"),
+        description: l("Where the server can find static assets")
+      )
 
   def verified_routes do
     # TODO: fix this occasional compilation error during dev which gets in the way of using verified routes painlessly: `(UndefinedFunctionError) function Bonfire.Web.Router.__verify_route__/1 is undefined (module Bonfire.Web.Router is not available`
