@@ -41,7 +41,7 @@
                 max_uploads={Bonfire.Common.Settings.get(
                   [Bonfire.UI.Common.SmartInputLive, :max_uploads],
                   :instance,
-                  context: current_user(@__context__),
+                  current_user: current_user(@__context__),
                   name: l("Maximum Uploads"),
                   description: l("Maximum number of files that can be uploaded at once.")
                 )}

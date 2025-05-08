@@ -142,7 +142,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
           Bonfire.Common.Settings.get(
             [:ui, :font_family],
             "Inter (Latin Languages)",
-            context: current_user(conn),
+            current_user: current_user(conn),
             name: l("Font"),
             description: l("Default font to use throughout the interface.")
           )
