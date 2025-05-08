@@ -1,7 +1,8 @@
-<table class="table w-full table-zebra">
+<table class="table table-auto w-full table-zebra">
   <thead>
     <tr>
-      <th>Keys</th>
+      <th width="w-[200px]">Name</th>
+      <th width="w-[200px]">Current Value</th>
       <th>Default Value</th>
       <th>Locations</th>
     </tr>
@@ -9,22 +10,79 @@
   <tbody>
     {#for item <- @settings}
       <tr class="hover">
-        <td class="font-mono text-sm">
-          {#case e(item.opts, :type, nil)}
-            {#match :select}
-              <form name="settings" phx-change="Bonfire.Common.Settings:set">
-                <Bonfire.UI.Common.SettingsSelectLive
-                  name={e(item.opts, :name, nil) || format_key_for_display(item.keys)}
-                  description={e(item.opts, :description, nil)}
-                  keys={item.keys}
-                  options={e(item.opts, :options, nil)}
-                />
-                <!-- scope={@scope} -->
-              </form>
-            {#match _}
-              {format_key_for_display(item.keys)}
-          {/case}
-        </td>
+        {#case Bonfire.Common.Settings.__get__(
+            item.keys,
+            item[:default_value],
+            LiveHandler.scoped(@scope, @__context__)
+          )}
+          {#match current_value}
+            {#case @editable? && find_type(e(item.opts, :type, nil), current_value, item.default)}
+              {#match :boolean}
+                <td colspan="2" class="text-sm">
+                  <form name="settings" phx-change="Bonfire.Common.Settings:set">
+                    <Bonfire.UI.Common.SettingsToggleLive
+                      name={e(item.opts, :name, nil) || format_key_for_display(item.keys)}
+                      description={e(item.opts, :description, nil)}
+                      keys={item.keys}
+                      default_value={item.default}
+                      scope={@scope}
+                    />
+                  </form>
+                </td>
+              {#match String}
+                <td colspan="2" class="text-sm">
+                  <form name="settings" phx-submit="Bonfire.Common.Settings:set">
+                    <Bonfire.UI.Common.SettingsInputLive
+                      name={e(item.opts, :name, nil) || format_key_for_display(item.keys)}
+                      description={e(item.opts, :description, nil)}
+                      keys={item.keys}
+                      default_value={item.default}
+                      scope={@scope}
+                    />
+                  </form>
+                </td>
+              {#match number when number in [:number, Integer, Integer]}
+                <td colspan="2" class="text-sm">
+                  <form name="settings" phx-change="Bonfire.Common.Settings:set">
+                    <Bonfire.UI.Common.Settings.NumberLive
+                      name={e(item.opts, :name, nil) || format_key_for_display(item.keys)}
+                      description={e(item.opts, :description, nil)}
+                      keys={item.keys}
+                      default_value={item.default}
+                      scope={@scope}
+                    />
+                  </form>
+                </td>
+              {#match select when select in [:select, Map, List, Keyword]}
+                {#case e(item.opts, :options, nil)}
+                  {#match options when is_map(options) or is_list(options)}
+                    <td colspan="2" class="text-sm">
+                      <form name="settings" phx-change="Bonfire.Common.Settings:set">
+                        <Bonfire.UI.Common.SettingsSelectLive
+                          name={e(item.opts, :name, nil) || format_key_for_display(item.keys)}
+                          description={e(item.opts, :description, nil)}
+                          keys={item.keys}
+                          options={options}
+                          default_value={item.default}
+                          scope={@scope}
+                        />
+                      </form>
+                    </td>
+                  {#match _}
+                    <td class="font-mono text-sm">
+                      {format_key_for_display(item.keys)}
+                    </td>
+                    <td class="font-mono text-sm">{format_value(current_value)}
+                    </td>
+                {/case}
+              {#match _}
+                <td class="font-mono text-sm">{format_key_for_display(item.keys)}
+                </td>
+                <td class="font-mono text-sm">{format_value(current_value)}
+                </td>
+            {/case}
+        {/case}
+
         <td class="font-mono text-sm whitespace-pre-wrap break-all">{#if is_nil(item.default) and item.defaults != []}<span class="badge badge-error">Warning: multiple defaults</span>{#else}{format_value(item.default)}{/if}</td>
         <td class="text-xs">
           {#for loc <- item.locations}

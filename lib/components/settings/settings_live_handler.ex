@@ -221,14 +221,26 @@ defmodule Bonfire.Common.Settings.LiveHandler do
     end
   end
 
-  def input_name(keys) do
+  def input_name(keys) when is_list(keys) or is_map(keys) do
     keys
+    |> debug("input")
+    # |> List.wrap()
     |> Enum.with_index()
     |> Enum.map(fn
-      {k, 0} -> "#{k}"
-      {k, _} -> "[#{k}]"
+      {key, 0} ->
+        "#{key}"
+
+      {key, _} when is_atom(key) or is_binary(key) ->
+        "[#{key}]"
+
+      {other, _} ->
+        error(other, "dunno how to handle this key part")
+        ""
     end)
+    |> debug("output")
 
     # |> Enum.reverse() |> Enum.reduce(& "#{&1}[#{&2}]")
   end
+
+  def input_name(keys), do: List.wrap(keys) |> input_name()
 end

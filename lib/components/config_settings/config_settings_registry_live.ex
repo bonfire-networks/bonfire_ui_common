@@ -5,6 +5,8 @@ defmodule Bonfire.UI.Common.ConfigSettingsRegistryLive do
   use Bonfire.UI.Common.Web, :stateful_component
   alias Bonfire.Common.ConfigSettingsRegistry
 
+  prop scope, :any, default: nil
+
   @impl true
   def update(assigns, %{assigns: %{registry: _}} = socket) do
     {:ok,
@@ -21,7 +23,7 @@ defmodule Bonfire.UI.Common.ConfigSettingsRegistryLive do
      |> assign(
        page_title: "Configuration & Settings Registry",
        registry: registry,
-       current_tab: :config,
+       current_tab: :settings,
        search_term: "",
        filtered_config: registry.config,
        filtered_settings: registry.settings
@@ -57,8 +59,8 @@ defmodule Bonfire.UI.Common.ConfigSettingsRegistryLive do
 
   defp filter_items(items, term) do
     Enum.filter(items, fn item ->
-      keys_str = format_key_for_display(item.keys)
-      default_str = to_string(item.default)
+      keys_str = ConfigSettingsListLive.format_key_for_display(item.keys)
+      default_str = ConfigSettingsListLive.format_value(item.default)
 
       # Check if the term appears in the keys or default value
       keys_match = String.contains?(String.downcase(keys_str), String.downcase(term))
@@ -78,19 +80,5 @@ defmodule Bonfire.UI.Common.ConfigSettingsRegistryLive do
       # || locations_match
       keys_match || default_match
     end)
-  end
-
-  defp format_key_for_display(key) when is_list(key) do
-    key
-    |> Enum.map(&format_key_for_display/1)
-    |> Enum.join(".")
-  end
-
-  defp format_key_for_display(key) when is_atom(key) do
-    to_string(key)
-  end
-
-  defp format_key_for_display(key) do
-    inspect(key)
   end
 end

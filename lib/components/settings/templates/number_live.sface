@@ -11,7 +11,7 @@
         <input name="scope" value={@scope} type="hidden">
         <input type="number" name={@input} value={to_string(@current_value)} class={@class}>
       {/if}
-      <span class="flex-none text-sm font-medium capitalize text-base-content/80">{@unit}</span>
+      <span :if={@unit} class="flex-none text-sm font-medium capitalize text-base-content/80">{@unit}</span>
     </div>
   </div>
 </div>

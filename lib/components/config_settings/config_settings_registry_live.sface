@@ -36,20 +36,21 @@
 
   <div class="tabs tabs-boxed mb-4">
     <a
-      class={"tab #{if @current_tab == :config, do: 'tab-active'}"}
-      phx-click="tab_change"
-      phx-target={@myself}
-      phx-value-tab="config"
-    >
-      Instance Config ({length(@filtered_config)})
-    </a>
-    <a
       class={"tab #{if @current_tab == :settings, do: 'tab-active'}"}
       phx-click="tab_change"
       phx-target={@myself}
       phx-value-tab="settings"
     >
       Settings ({length(@filtered_settings)})
+    </a>
+
+    <a
+      class={"tab #{if @current_tab == :config, do: 'tab-active'}"}
+      phx-click="tab_change"
+      phx-target={@myself}
+      phx-value-tab="config"
+    >
+      Instance Config ({length(@filtered_config)})
     </a>
   </div>
 
@@ -73,7 +74,12 @@
           </div>
         </div>
       {#else}
-        <Bonfire.UI.Common.ConfigSettingsListLive settings={@filtered_config} />
+        <Bonfire.UI.Common.ConfigSettingsListLive
+          scope={@scope}
+          settings={@filtered_config}
+          editable?={@scope == :instance && current_user_id(@__context__) != nil &&
+            Bonfire.Boundaries.can?(@__context__, :configure, :instance_wide) |> debug("scooo")}
+        />
       {/if}
     {#else}
       {#if Enum.empty?(@filtered_settings)}
@@ -94,7 +100,11 @@
           </div>
         </div>
       {#else}
-        <Bonfire.UI.Common.ConfigSettingsListLive settings={@filtered_settings} />
+        <Bonfire.UI.Common.ConfigSettingsListLive
+          scope={@scope}
+          settings={@filtered_settings}
+          editable?={current_user_id(@__context__) != nil}
+        />
       {/if}
     {/if}
   </div>
