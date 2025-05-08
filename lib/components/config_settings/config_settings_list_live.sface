@@ -1,10 +1,11 @@
-<table class="table table-auto w-full table-zebra">
+<table class="table table-fixed table-zebra">
   <thead>
     <tr>
-      <th width="w-[200px]">Name</th>
-      <th width="w-[200px]">Current Value</th>
-      <th>Default Value</th>
-      <th>Locations</th>
+      <th class="max-w-[200px]">Name</th>
+      <th class="max-w-[200px]">Current value</th>
+      <th :if={@scope != :instance and @type != :instance_config} class="max-w-[200px]">Default for instance</th>
+      <th class="max-w-[200px]">Default in code</th>
+      <th class="max-w-[200px]">Locations</th>
     </tr>
   </thead>
   <tbody>
@@ -18,7 +19,7 @@
           {#match current_value}
             {#case @editable? && find_type(e(item.opts, :type, nil), current_value, item.default)}
               {#match :boolean}
-                <td colspan="2" class="text-sm">
+                <td colspan="2" class="p-0 text-sm">
                   <form name="settings" phx-change="Bonfire.Common.Settings:set">
                     <Bonfire.UI.Common.SettingsToggleLive
                       name={e(item.opts, :name, nil) || format_key_for_display(item.keys)}
@@ -30,7 +31,7 @@
                   </form>
                 </td>
               {#match String}
-                <td colspan="2" class="text-sm">
+                <td colspan="2" class="p-0 text-sm">
                   <form name="settings" phx-submit="Bonfire.Common.Settings:set">
                     <Bonfire.UI.Common.SettingsInputLive
                       name={e(item.opts, :name, nil) || format_key_for_display(item.keys)}
@@ -42,7 +43,7 @@
                   </form>
                 </td>
               {#match number when number in [:number, Integer, Integer]}
-                <td colspan="2" class="text-sm">
+                <td colspan="2" class="p-0 text-sm">
                   <form name="settings" phx-change="Bonfire.Common.Settings:set">
                     <Bonfire.UI.Common.Settings.NumberLive
                       name={e(item.opts, :name, nil) || format_key_for_display(item.keys)}
@@ -56,7 +57,7 @@
               {#match select when select in [:select, Map, List, Keyword]}
                 {#case e(item.opts, :options, nil)}
                   {#match options when is_map(options) or is_list(options)}
-                    <td colspan="2" class="text-sm">
+                    <td colspan="2" class="p-0 text-sm">
                       <form name="settings" phx-change="Bonfire.Common.Settings:set">
                         <Bonfire.UI.Common.SettingsSelectLive
                           name={e(item.opts, :name, nil) || format_key_for_display(item.keys)}
@@ -69,22 +70,29 @@
                       </form>
                     </td>
                   {#match _}
-                    <td class="font-mono text-sm">
+                    <td class="p-4  text-sm">
                       {format_key_for_display(item.keys)}
                     </td>
-                    <td class="font-mono text-sm">{format_value(current_value)}
+                    <td class="p-2  text-sm">{format_value(current_value)}
                     </td>
                 {/case}
               {#match _}
-                <td class="font-mono text-sm">{format_key_for_display(item.keys)}
+                <td class="p-4  text-sm">{format_key_for_display(item.keys)}
                 </td>
-                <td class="font-mono text-sm">{format_value(current_value)}
+                <td class="p-2  text-sm">{format_value(current_value)}
                 </td>
             {/case}
         {/case}
 
-        <td class="font-mono text-sm whitespace-pre-wrap break-all">{#if is_nil(item.default) and item.defaults != []}<span class="badge badge-error">Warning: multiple defaults</span>{#else}{format_value(item.default)}{/if}</td>
-        <td class="text-xs">
+        <th :if={@scope != :instance and @type != :instance_config}>{Bonfire.Common.Config.__get__(
+            item.keys,
+            item[:default_value],
+            LiveHandler.scoped(@scope, @__context__)
+          )
+          |> format_value()}</th>
+
+        <td class="p-2  text-sm whitespace-pre-wrap break-all">{#if is_nil(item.default) and item.defaults != []}<span class="badge badge-error">Warning: multiple defaults</span>{#else}{format_value(item.default)}{/if}</td>
+        <td class="p-2 text-xs">
           {#for loc <- item.locations}
             <div class="mb-1">
               <span class="">{String.replace(loc.module, ~r/^"Elixir\./, "") |> String.replace(~r/"$/, "")}</span>

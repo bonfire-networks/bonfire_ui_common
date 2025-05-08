@@ -7,6 +7,7 @@ defmodule Bonfire.UI.Common.ConfigSettingsListLive do
   alias Bonfire.Common.Settings.LiveHandler
 
   prop settings, :list
+  prop type, :any, default: nil
   prop scope, :any, default: nil
   prop editable?, :boolean, default: false
 

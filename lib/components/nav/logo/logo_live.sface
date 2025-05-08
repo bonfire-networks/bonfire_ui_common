@@ -1,10 +1,20 @@
 <div
   class={@image_class ||
     "w-10 h-10 aspect-square rounded-full border border-base-content/10 bg-center bg-no-repeat bg-contain"}
-  style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}
+  style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil,
+  name: l("Instance Icon"),
+  description: l("The icon to display for this instance."))})"}
 />
 <div
   data-scope="logo_name"
-  :if={@with_name && !Settings.get([Bonfire.UI.Common.LogoLive, :only_logo], false, @__context__)}
+  :if={@with_name &&
+    !Settings.get([Bonfire.UI.Common.LogoLive, :only_logo], false,
+      context: @__context__,
+      name: l("Icon only"),
+      description: l("Hide the instance name text and show only the icon.")
+    )}
   class={@name_class || "text-base font-bold text-base-content"}
->{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</div>
+>{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name(),
+    name: l("Instance Name"),
+    description: l("The name to display for this instance.")
+  )}</div>

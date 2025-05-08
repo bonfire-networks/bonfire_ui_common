@@ -1082,7 +1082,11 @@ defmodule Bonfire.UI.Common do
   end
 
   def maybe_cute_gif do
-    opts = Config.get(:cute_gifs)
+    opts =
+      Config.get(:cute_gifs, nil,
+        name: l("Cute GIFs"),
+        description: l("Settings for cute GIFs shown in the interface.")
+      )
 
     if opts[:num] && opts[:num] > 0 do
       "/#{opts[:dir]}#{Enum.random(1..opts[:num])}.gif"
@@ -1413,7 +1417,12 @@ defmodule Bonfire.UI.Common do
   end
 
   defp live_update_many_preload_mode,
-    do: Process.get(:live_update_many_preload_mode) || Config.get(:live_update_many_preload_mode)
+    do:
+      Process.get(:live_update_many_preload_mode) ||
+        Config.get(:live_update_many_preload_mode, nil,
+          name: l("Live Update Preload Mode"),
+          description: l("How to preload data during live updates (technical setting).")
+        )
 
   def uniq_assign(list_of_components, field) do
     case list_of_components

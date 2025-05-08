@@ -129,7 +129,12 @@ defmodule Bonfire.UI.Common.NotificationLive do
     link =
       case maybe_last_sentry_event_id() do
         id when is_binary(id) ->
-          org = Settings.get(:sentry_org, "bonfire-networks")
+          org =
+            Settings.get(:sentry_org, "bonfire-networks",
+              name: l("Sentry Organization"),
+              description: l("Sentry error reporting organization.")
+            )
+
           "https://sentry.io/organizations/#{org}/issues/?query=#{id}"
 
         _ ->
@@ -150,7 +155,9 @@ defmodule Bonfire.UI.Common.NotificationLive do
     Settings.get(
       [:ui, :error_post_template],
       "I encountered this issue while using Bonfire: \n\n%{error_message}\n\n@BonfireBuilders #bonfire_feedback \n\n%{error_link}",
-      e(assigns, :context, nil)
+      context: e(assigns, :context, nil),
+      name: l("Error Report Template"),
+      description: l("Template for reporting errors to the Bonfire team.")
     )
     |> String.replace("%{error_message}", error || "")
     |> String.replace("%{error_link}", link || "")

@@ -76,6 +76,7 @@
       {#else}
         <Bonfire.UI.Common.ConfigSettingsListLive
           scope={@scope}
+          type={:instance_config}
           settings={@filtered_config}
           editable?={@scope == :instance && current_user_id(@__context__) != nil &&
             Bonfire.Boundaries.can?(@__context__, :configure, :instance_wide) |> debug("scooo")}

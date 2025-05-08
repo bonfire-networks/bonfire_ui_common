@@ -1,10 +1,18 @@
 <div
   data-scope="avatar"
   class={@wrapper_class}
-  :if={!Settings.get([Bonfire.UI.Common.AvatarLive, :hide_avatars], false, @__context__)}
+  :if={!Settings.get([Bonfire.UI.Common.AvatarLive, :hide_avatars], false,
+    context: @__context__,
+    name: l("Hide Avatars"),
+    description: l("Hide user avatars throughout the interface.")
+  )}
 >
   <div
-    data-square={Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true, @__context__)}
+    data-square={Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true,
+      context: @__context__,
+      name: l("Square Avatars"),
+      description: l("Display avatars as squares instead of circles.")
+    )}
     class={@class}
   >
     {!-- @title 
@@ -29,7 +37,12 @@
               />
             </div>
           {#match _}
-            {#if @user_id && Settings.get([Bonfire.UI.Common.AvatarLive, :animal_avatars], true, @__context__)}
+            {#if @user_id &&
+                Settings.get([Bonfire.UI.Common.AvatarLive, :animal_avatars], true,
+                  context: @__context__,
+                  name: l("Generate Animal Avatars"),
+                  description: l("Generate animal-based avatars for users without a profile picture.")
+                )}
               {!-- <Bonfire.UI.Common.AnimalAvatar
                   id={@user_id}
                   bg_class={@bg_class}

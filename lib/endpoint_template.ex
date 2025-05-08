@@ -6,6 +6,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       # make sure this comes before the Phoenix endpoint
       use Bonfire.UI.Common.ErrorReportingPlug
       use Bonfire.Common.Settings
+      use Bonfire.Common.Localise
       use Untangle
       import Bonfire.Common.Extend
       alias Bonfire.UI.Common.EndpointTemplate
@@ -141,7 +142,9 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
           Bonfire.Common.Settings.get(
             [:ui, :font_family],
             "Inter (Latin Languages)",
-            current_user(conn)
+            context: current_user(conn),
+            name: l("Font"),
+            description: l("Default font to use throughout the interface.")
           )
           |> Types.maybe_to_string()
           |> String.trim_trailing(" Languages)")

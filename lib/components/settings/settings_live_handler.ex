@@ -77,8 +77,10 @@ defmodule Bonfire.Common.Settings.LiveHandler do
       Bonfire.Common.Settings.get(
         [:ui, :enable_extensions_configuration],
         false,
+        context: current_user,
         scope: scope,
-        current_user: current_user
+        name: l("Power user mode"),
+        description: l("Enable turning extensions on and off.")
       )
 
     with {:ok, settings} <-
