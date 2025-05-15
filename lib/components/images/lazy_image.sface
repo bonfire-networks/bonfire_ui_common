@@ -17,6 +17,8 @@
             alt={@alt}
             title={@title}
             class={@class}
+            data-width={maybe_get(@media, [:metadata, :width]) || ""}
+            data-height={maybe_get(@media, [:metadata, :height]) || ""}
             x-show="src"
             x-transition
             x-bind:src="src"
@@ -43,7 +45,7 @@
               {...@opts}
             />
           {#match _} --}
-        <div x-data="{error: false}" class="h-full">
+        <div x-data="{error: false}" class="h-full place-content-center">
           <img
             title={@title}
             src={src}
