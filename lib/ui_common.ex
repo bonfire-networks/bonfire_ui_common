@@ -772,7 +772,7 @@ defmodule Bonfire.UI.Common do
     opts = List.wrap(opts)
 
     type =
-      case opts[:type] do
+      case opts[:type] || opts[:external] do
         nil ->
           :to
 
@@ -780,6 +780,9 @@ defmodule Bonfire.UI.Common do
           :to
 
         :external ->
+          :external
+
+        true ->
           :external
 
         :maybe_external ->
