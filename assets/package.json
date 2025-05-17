@@ -8,7 +8,7 @@
 		"build.css": "npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --minify",
 		"build.debug.css": "NODE_ENV=development npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --verbose",
 		"build.postcss": "npx postcss ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css",
-		"build": "NODE_ENV=production node -e \"(process.arch === 'arm' || process.env.PLATFORM === 'arm' || process.env.PLATFORM === 'arm32' || process.env.PLATFORM === 'arm32v7') ? require('child_process').execSync('echo Build with tailwindcss cli && yarn prepare.static && yarn build.css && yarn build.esbuild', {stdio: 'inherit'}) : require('child_process').execSync('echo Build with postcss && yarn prepare.static && yarn build.postcss && yarn build.esbuild', {stdio: 'inherit'})\"",
+		"build": "yarn prepare.static && yarn build.postcss && yarn build.esbuild",
 		"prepare.static": "mkdir -p ../../../priv/static/ && cp -r static/*.ico ../../../priv/static/ && cp -r static/images ../../../priv/static/ && cp -r static/fonts ../../../priv/static/  && cp -r static/pwa* ../../../priv/static/",
 		"build.esbuild": "NODE_PATH=./node_modules:../../../extensions/bonfire_editor_milkdown/assets/node_modules:../../../deps/bonfire_editor_milkdown/assets/node_modules npx esbuild ./js/bonfire_live.js ./js/bonfire_basic.js --target=es2017 --bundle --sourcemap --loader:.svg=text --loader:.woff=file --loader:.woff2=file --loader:.ttf=file --outdir=../../../priv/static/assets --minify=false",
 		"watch.parcel": "parcel watch 'js/bonfire_*.js' --dist-dir ../../../priv/static/assets",
