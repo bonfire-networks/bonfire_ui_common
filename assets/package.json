@@ -3,12 +3,12 @@
 	"license": "AGPL-3.0",
 	"scripts": {
 		"watch.assets": "npx cpx 'static/**/*' ../../../priv/static --watch",
-		"watch.js": "NODE_PATH=./node_modules:../../../extensions/bonfire_editor_milkdown/assets/node_modules::../../../deps/bonfire_editor_milkdown/assets/node_modules npx esbuild ./js/bonfire_live.js ./js/bonfire_basic.js --target=es2017 --bundle --sourcemap --loader:.svg=text --loader:.woff=file --loader:.woff2=file --loader:.ttf=file --outdir=../../../priv/static/assets --watch",
+		"watch.js": "NODE_ENV=development NODE_PATH=./node_modules:../../../extensions/bonfire_editor_milkdown/assets/node_modules::../../../deps/bonfire_editor_milkdown/assets/node_modules npx esbuild ./js/bonfire_live.js ./js/bonfire_basic.js --target=es2017 --bundle --sourcemap --loader:.svg=text --loader:.woff=file --loader:.woff2=file --loader:.ttf=file --outdir=../../../priv/static/assets --watch",
 		"watch.css": "NODE_ENV=development npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --watch --poll",
-		"build.css": "NODE_ENV=production npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --minify",
+		"build.css": "npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --minify",
 		"build.debug.css": "NODE_ENV=development npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --verbose",
-		"build.postcss": "NODE_ENV=production npx postcss ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css",
-		"build": "yarn prepare.static && yarn build.postcss && yarn build.esbuild",
+		"build.postcss": "npx postcss ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css",
+		"build": "NODE_ENV=production node -e \"(process.arch === 'arm' || process.env.PLATFORM === 'arm' || process.env.PLATFORM === 'arm32' || process.env.PLATFORM === 'arm32v7') ? require('child_process').execSync('echo Build with tailwindcss cli && yarn prepare.static && yarn build.css && yarn build.esbuild', {stdio: 'inherit'}) : require('child_process').execSync('echo Build with postcss && yarn prepare.static && yarn build.postcss && yarn build.esbuild', {stdio: 'inherit'})\"",
 		"prepare.static": "mkdir -p ../../../priv/static/ && cp -r static/*.ico ../../../priv/static/ && cp -r static/images ../../../priv/static/ && cp -r static/fonts ../../../priv/static/  && cp -r static/pwa* ../../../priv/static/",
 		"build.esbuild": "NODE_PATH=./node_modules:../../../extensions/bonfire_editor_milkdown/assets/node_modules:../../../deps/bonfire_editor_milkdown/assets/node_modules npx esbuild ./js/bonfire_live.js ./js/bonfire_basic.js --target=es2017 --bundle --sourcemap --loader:.svg=text --loader:.woff=file --loader:.woff2=file --loader:.ttf=file --outdir=../../../priv/static/assets --minify=false",
 		"watch.parcel": "parcel watch 'js/bonfire_*.js' --dist-dir ../../../priv/static/assets",
@@ -17,7 +17,7 @@
 		"css.doiuse.generated": "doiuse --browsers '> 1%, last 2 versions' ../../../priv/static/assets/bonfire_basic.css",
 		"format.js": "npx @biomejs/biome format js/ ../../../extensions/*/lib ../../../extensions/*/assets --write",
 		"format.css": "npx prettier css/ ../../../extensions/*/lib/**/*.css ../../../extensions/*/assets/css/*.css --write",
-		"dev": "yarn watch.assets & yarn watch.js & yarn watch.css"
+		"dev": "NODE_ENV=development yarn watch.assets & yarn watch.js & yarn watch.css"
 	},
 	"disabledScripts": {
 		"preinstall": "npx only-allow yarn"
