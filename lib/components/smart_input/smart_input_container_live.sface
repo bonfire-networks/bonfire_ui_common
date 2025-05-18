@@ -50,6 +50,7 @@
             <div class="relative z-50 rounded-xl flex flex-col grow h-full">
               <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
               <SmartInputLive
+                event_target={@myself}
                 custom_emojis={@custom_emojis}
                 boundaries_modal_id={:modal_composer}
                 showing_within={@showing_within}

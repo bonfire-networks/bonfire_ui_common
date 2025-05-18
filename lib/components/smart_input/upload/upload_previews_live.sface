@@ -1,12 +1,13 @@
 <div
   :if={Enum.count(@uploads.files.entries) > 0}
+  id={"#{@parent_id}_upload-preview"}
   phx-update="ignore"
   class="p-2 pt-0 uploads_preview"
 >
   <div class="flex flex-col p-2 bg-base-content/5 gap-2 rounded-xl">
     {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
       <article
-        id={"upload-preview-#{i}"}
+        id={"#{@parent_id}_upload-preview-#{i}"}
         data-img={"phx-preview-#{i}"}
         data-ref={entry.upload_ref}
         class="relative flex  gap-2 upload-entry rounded w-full"

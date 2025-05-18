@@ -1,4 +1,4 @@
-<div title={l("upload an image")} class="relative z-40">
+<div title={l("Upload an attachment")} class="relative z-40">
   <label
     disabled={Enum.count(@uploads.files.entries) >= @max_uploads}
     for={@uploads.files.ref}
@@ -6,6 +6,9 @@
   >
     <#Icon iconify="ri:attachment-2" class="w-4 h-4 text-base-content/70" />
     <Phoenix.Component.live_file_input upload={@uploads.files} class="sr-only" />
+    <span class="sr-only">
+      {l("Upload an attachment")}
+    </span>
   </label>
 
   <input :for={file <- e(@uploaded_files, [])} type="hidden" name="files[]" value={id(file)}>

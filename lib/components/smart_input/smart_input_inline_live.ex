@@ -17,6 +17,7 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
   # prop title_open, :boolean, default: nil
   prop title_prompt, :string, default: nil
   prop preloaded_recipients, :list, default: nil
+  prop event_target, :any, default: nil
 
   # prop thread_mode, :atom, default: nil
   prop page, :any, default: nil

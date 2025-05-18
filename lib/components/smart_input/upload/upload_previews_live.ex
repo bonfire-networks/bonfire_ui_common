@@ -2,6 +2,7 @@ defmodule Bonfire.UI.Common.UploadPreviewsLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
   prop uploads, :any
+  prop parent_id, :any, default: nil
 
   def error_to_string(:too_large), do: l("The file is too large.")
 

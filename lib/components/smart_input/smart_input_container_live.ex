@@ -40,17 +40,28 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
        |> maybe_setup_uploads()}
 
   def maybe_setup_uploads(socket) do
-    if module_enabled?(Bonfire.Files.VideoUploader, socket),
-      do:
-        maybe_setup_uploads(
-          socket,
-          Bonfire.Common.Utils.maybe_apply(
-            Bonfire.Files.VideoUploader,
-            :max_file_size,
-            []
-          )
-        ),
-      else: maybe_setup_uploads(socket, 20)
+    max_file_size =
+      Bonfire.Common.Utils.maybe_apply(
+        Bonfire.Files.VideoUploader,
+        :max_file_size,
+        nil,
+        fallback_return: nil
+      ) ||
+        Bonfire.Common.Utils.maybe_apply(
+          Bonfire.Files.DocumentUploader,
+          :max_file_size,
+          nil,
+          fallback_return: nil
+        ) ||
+        Bonfire.Common.Utils.maybe_apply(
+          Bonfire.Files.ImageUploader,
+          :max_file_size,
+          nil,
+          fallback_return: nil
+        ) || 20_000_000
+
+    maybe_setup_uploads(socket, max_file_size)
+    # |> IO.inspect(label: "maybe_setup_uploadss")
   end
 
   def maybe_setup_uploads(socket, max_file_size) do

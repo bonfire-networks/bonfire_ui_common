@@ -1,5 +1,6 @@
 <div data-id="smart_input_inline">
   <Bonfire.UI.Common.SmartInputLive
+    event_target={@myself}
     boundaries_modal_id={:modal_composer}
     showing_within={@showing_within}
     reply_to_id={@reply_to_id}
