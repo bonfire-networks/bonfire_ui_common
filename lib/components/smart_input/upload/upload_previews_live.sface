@@ -1,9 +1,9 @@
 <div
   :if={Enum.count(@uploads.files.entries) > 0}
   id={"#{@parent_id}_upload-preview"}
-  phx-update="ignore"
   class="p-2 pt-0 uploads_preview"
 >
+  {!-- phx-update="ignore" --}
   <div class="flex flex-col p-2 bg-base-content/5 gap-2 rounded-xl">
     {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
       <article
@@ -97,7 +97,7 @@
           aria-label="cancel"
         >
           <#Icon iconify="carbon:close" class="w-4 h-4" />
-          <span class="sr-only">{l("Delete")}</span>
+          <span class="sr-only">{l("Remove")}</span>
         </button>
         {!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 --}
       </article>

@@ -13,9 +13,34 @@
             <div class="relative p-2 pb-0 bg-base-100">
               <label class="input w-full">
                 <#Icon iconify="solar:text-bold" class="w-4 h-4 opacity-50" />
-                <input value="" name={:name} class="w-full" placeholder={l("Enter an optional title")}>
-                <!-- <kbd class="kbd kbd-sm">⌘</kbd>
-              <kbd class="kbd kbd-sm">K</kbd> -->
+                <input
+                  value={@smart_input_opts[:title]}
+                  name={:name}
+                  class="w-full"
+                  placeholder={l("Enter an optional title")}
+                />
+                {!-- <kbd class="kbd kbd-sm">⌘</kbd>
+              <kbd class="kbd kbd-sm">K</kbd> --}
+              </label>
+            </div>
+          </div>
+
+          {!-- phx-update={if @reset_smart_input, do: "replace", else: "ignore"} --}
+          <div
+            phx-update="ignore"
+            data-id={if @reset_smart_input, do: "replace", else: "ignore"}
+            class={if !e(@smart_input_opts, :cw, nil), do: "hidden"}
+            id="smart_input_post_title"
+          >
+            <div class="p-2">
+              <label class="input w-full">
+                <#Icon iconify="ri:alert-fill" class="w-4 h-4" />
+                <input
+                  name="post[post_content][summary]"
+                  type="text"
+                  placeholder={l("Enter an optional content warning")}
+                  value={e(@smart_input_opts, :cw, nil)}
+                />
               </label>
             </div>
           </div>

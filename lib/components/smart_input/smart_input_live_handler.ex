@@ -61,11 +61,16 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         open: false,
         text_suggestion: nil,
         recipients_editable: false,
-        text: nil
+        text: nil,
+        title: nil,
+        cw: nil
       }
     )
 
-    {:noreply, socket |> push_event("smart_input:reset", %{})}
+    {:noreply,
+     socket
+     |> cancel_all_uploads()
+     |> push_event("smart_input:reset", %{})}
   end
 
   # close_smart_input should reset the state to ensure it's clean for next use
@@ -390,6 +395,32 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     end
   end
 
+  @doc """
+  Cancel all pending uploads for the smart input
+  This is useful when closing the composer or resetting it
+  """
+  def cancel_all_uploads(socket) do
+    # Safely cancel all uploads
+    try do
+      # Get all upload entries
+      entries = e(socket.assigns, :uploads, :files, :entries, [])
+
+      # Cancel each upload by ref
+      _updated_socket =
+        Enum.reduce(entries, socket, fn entry, acc_socket ->
+          Phoenix.LiveView.cancel_upload(acc_socket, :files, entry.ref)
+        end)
+    rescue
+      e ->
+        warn(e, "Error in cancel-all-uploads handler")
+        {:noreply, socket}
+    catch
+      e ->
+        warn(e, "Error in cancel-all-uploads handler")
+        {:noreply, socket}
+    end
+  end
+
   def handle_event("reset", _params, socket) do
     {:noreply, reset_input(socket)}
   end
@@ -512,6 +543,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       open: false,
       text_suggestion: nil,
       text: nil,
+      title: nil,
       cw: nil
     }
 
@@ -525,7 +557,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       smart_input_opts: default_opts
     )
 
-    socket
+    cancel_all_uploads(socket)
   end
 
   def reset_input(%{assigns: %{showing_within: :messages}} = socket) do
