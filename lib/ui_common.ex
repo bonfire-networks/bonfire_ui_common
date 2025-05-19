@@ -354,7 +354,7 @@ defmodule Bonfire.UI.Common do
     socket
   end
 
-  @decorate time_tree(10)
+  # @decorate time_tree(10)
   def rich(content, opts \\ []) do
     case content do
       _ when is_binary(content) ->
