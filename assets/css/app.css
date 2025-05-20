@@ -517,6 +517,11 @@ div[data-scope='avatar'] div[data-square] {
   div[data-id='preview_content'] [data-hide] {
     @apply invisible h-0 overflow-hidden;
   }
+  
+  /* Simple loading indicator styles */
+  div[data-id='preview_content'] [data-id='modal-contents'] div.m-3.text-center {
+    @apply animate-pulse;
+  }
 
   div[data-scope="avatar"] {
     @apply border-0 avatar !flex;
