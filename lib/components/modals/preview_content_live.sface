@@ -38,9 +38,9 @@
           {!-- Render appropriate component based on modal_assigns --}
           {#if !e(@modal_assigns, :loaded, nil)}
             <div class="m-3 text-center p-8 rounded-lg flex items-center place-content-center">
-            <span class="loading loading-ring loading-xl"></span>
-            <span class="sr-only">{l("Loading...")}</span>
-          </div>
+              <span class="loading loading-ring loading-xl" />
+              <span class="sr-only">{l("Loading...")}</span>
+            </div>
           {#elseif e(@modal_assigns, :modal_component_stateful?, nil) == true and
               module_enabled?(@modal_assigns[:modal_component], @__context__)}
             <StatefulComponent

@@ -25,10 +25,9 @@
             </div>
           </div>
 
-          {!-- phx-update={if @reset_smart_input, do: "replace", else: "ignore"} --}
+          {!-- fixed phx-update behavior to properly reset CW field --}
           <div
-            phx-update="ignore"
-            data-id={if @reset_smart_input, do: "replace", else: "ignore"}
+            phx-update={if @reset_smart_input, do: "replace", else: "ignore"}
             class={if !e(@smart_input_opts, :cw, nil), do: "hidden"}
             id="smart_input_post_title"
           >
