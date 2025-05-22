@@ -696,7 +696,7 @@ defmodule Bonfire.UI.Common do
   def undead_render(assigns, fun), do: ErrorHandling.undead(assigns, fun, {nil, :render})
 
   def maybe_last_sentry_event_id() do
-    if module_enabled?(Sentry) do
+    if Bonfire.Common.Errors.maybe_sentry_dsn() do
       with {id, _source} when is_binary(id) <-
              Sentry.get_last_event_id_and_source() do
         id

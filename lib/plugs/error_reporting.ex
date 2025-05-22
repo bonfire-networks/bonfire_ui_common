@@ -16,7 +16,7 @@ defmodule Bonfire.UI.Common.ErrorReportingPlug do
 
   @impl true
   def call(conn, opts) do
-    if Bonfire.Common.Extend.module_enabled?(Sentry),
+    if Bonfire.Common.Errors.maybe_sentry_dsn(),
       do: Sentry.PlugContext.call(conn, opts),
       else: conn
   end
