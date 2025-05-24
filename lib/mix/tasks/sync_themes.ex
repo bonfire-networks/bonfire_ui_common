@@ -5,7 +5,9 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
 
   @app_css_path "extensions/bonfire_ui_common/assets/css/app.css"
   @custom_themes_path "extensions/bonfire_ui_common/assets/css/custom_themes.css"
-  @daisyui_config_pattern ~r/@plugin "daisyui" \{[^}]*\}/s
+  # Regex pattern defined as a function to comply with Erlang/OTP 28
+  defp daisyui_config_pattern, do: ~r/@plugin "daisyui" \{[^}]*\}/s
+
   @config_paths [
     # Project root config
     "config/bonfire_ui_common.exs"
@@ -207,13 +209,13 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     css_content = File.read!(@app_css_path)
 
     # Ensure daisyui plugin pattern exists in main CSS
-    unless Regex.match?(@daisyui_config_pattern, css_content) do
+    unless Regex.match?(daisyui_config_pattern(), css_content) do
       Mix.shell().error("Could not find DaisyUI configuration in CSS file!")
       exit({:shutdown, 1})
     end
 
     # Update the daisyui config (theme list) in main CSS
-    updated_css = Regex.replace(@daisyui_config_pattern, css_content, new_daisyui_config)
+    updated_css = Regex.replace(daisyui_config_pattern(), css_content, new_daisyui_config)
 
     # Create custom themes content with proper header
     custom_themes_content = """
