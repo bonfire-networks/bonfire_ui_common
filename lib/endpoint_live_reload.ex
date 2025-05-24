@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.Endpoint.LiveReload do
 
   defmacro __using__(code_reloading?) do
     quote do
-      if Code.ensure_loaded?(Tidewave) do
+      if System.get_env("TIDEWAVE_ENABLED") not in ["false", "0", "no"] and Code.ensure_loaded?(Tidewave) do
         # FIXME: remote access should be disabled but it's not working locally without for now
         plug Tidewave, allow_remote_access: true
       end
@@ -20,7 +20,7 @@ defmodule Bonfire.UI.Common.Endpoint.LiveReload do
         plug(Phoenix.LiveReloader)
         plug(Phoenix.CodeReloader)
 
-        if unquote(System.get_env("WITH_LV_NATIVE") in ["1", "true"]) do
+        if unquote(System.get_env("WITH_LV_NATIVE") in ["1", "true", "yes"]) do
           plug LiveViewNative.LiveReloader
         end
 
