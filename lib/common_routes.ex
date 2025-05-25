@@ -2,6 +2,7 @@ defmodule Bonfire.UI.Common.Routes do
   use Bonfire.Common.Config
   use Bonfire.Common.Localise
   require Bonfire.UI.Common.Web
+  import Untangle
 
   # list all resources that will be needed later when rendering page, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/103
   def early_hints_shared(),
@@ -46,6 +47,17 @@ defmodule Bonfire.UI.Common.Routes do
 
   defmacro __using__(_) do
     quote do
+      def set_locale(conn, _opts) do
+        try do
+          Cldr.Plug.SetLocale.call(conn, Bonfire.Common.Localise.set_locale_config())
+        rescue
+          e ->
+            error(e, "Locale setting failed")
+
+            %{conn | private: Map.put(conn.private, :cldr_locale, "en")}
+        end
+      end
+
       pipeline :basic do
         plug(:fetch_session)
       end
@@ -76,16 +88,10 @@ defmodule Bonfire.UI.Common.Routes do
 
         plug PlugEarlyHints, paths: Bonfire.UI.Common.Routes.early_hints_guest()
 
-        # FIXME: disabled because of compilation issues with phoenix_gon
-        plug(PhoenixGon.Pipeline,
-          # FIXME: this doesn't take into account runtime config
-          assets: &Bonfire.UI.Common.Routes.gon_js_config/0
-        )
-
-        plug(Cldr.Plug.SetLocale, Bonfire.Common.Localise.set_locale_config())
-
         plug(:protect_from_forgery)
         plug(:put_secure_browser_headers)
+
+        plug(:set_locale)
 
         # detect Accept headers to serve JSON or HTML
         plug(Bonfire.UI.Common.Plugs.ActivityPub)
@@ -95,6 +101,12 @@ defmodule Bonfire.UI.Common.Routes do
           html: {Bonfire.UI.Common.LayoutView, :root},
           swiftui: {Bonfire.UI.Common.LayoutView.SwiftUI, :root},
           jetpack: {Bonfire.UI.Common.LayoutView.Jetpack, :root}
+        )
+
+        # FIXME: disabled because of compilation issues with phoenix_gon
+        plug(PhoenixGon.Pipeline,
+          # FIXME: this doesn't take into account runtime config
+          assets: &Bonfire.UI.Common.Routes.gon_js_config/0
         )
 
         # LiveView Native support (deprecated)

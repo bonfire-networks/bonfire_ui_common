@@ -19,7 +19,7 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
   prop is_editable, :boolean, default: false
 
   def handle_event("live_select_change", %{"id" => live_select_id, "text" => search}, socket) do
-    # current_user = current_user(assigns(socket))
+    # current_user = current_user(socket)
     Bonfire.Common.Utils.maybe_apply(
       Bonfire.Me.Users,
       :search,

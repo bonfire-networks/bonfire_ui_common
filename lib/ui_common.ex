@@ -492,7 +492,7 @@ defmodule Bonfire.UI.Common do
   end
 
   def current_user_or_remote_interaction(socket, verb, object) do
-    case current_user(assigns(socket)) do
+    case current_user(socket) do
       %{id: _} = current_user ->
         {:ok, current_user}
 
