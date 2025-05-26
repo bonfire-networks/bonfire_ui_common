@@ -13,50 +13,52 @@ defmodule Bonfire.UI.Common.LivePlugs.Locale do
 
   def mount(_params, session, socket) do
     current_user = current_user(socket)
-    
+
     # Get locale from session/cookie (set by Cldr.Plug.SetLocale or our JS hook)
     session_locale = session["locale"] || session[@local_session_key]
-    
-    locale = if current_user do
-      # For logged-in users, use Settings.get which handles the full hierarchy:
-      # 1. User settings (if set)
-      # 2. Instance settings (if admin configured)  
-      # 3. Config/default
-      # We pass session_locale as default so cookie/session acts as final fallback
-      Bonfire.Common.Settings.get(
-        [Bonfire.Common.Localise.Cldr, :default_locale], 
-        session_locale,
-        current_user: current_user
-      )
-    else
-      # For guests, use session/cookie locale or system default
-      session_locale || Bonfire.Common.Localise.default_locale()
-    end
-    
-    {:ok, assign_put_locale(locale, current_user, socket)}
+
+    locale =
+      if current_user do
+        # For logged-in users, use Settings.get which handles the full hierarchy:
+        # 1a. User settings (if set)
+        # 1b. Account settings (if set)
+        # 2. Instance settings (if admin configured)  
+        # 3. Config/default
+        # We pass session_locale as default so cookie/session acts as final fallback
+        Bonfire.Common.Settings.get(
+          [Bonfire.Common.Localise.Cldr, :default_locale],
+          session_locale,
+          current_user: current_user
+        )
+      else
+        # For guests, use session/cookie if provided
+        session_locale
+      end
+
+    {:ok, assign_put_locale(locale, socket)}
   end
 
-  def assign_put_locale(nil, _current_user, socket) do
-    # When no locale is found, use the default
+  def assign_put_locale(locale, socket)
+      when not is_nil(locale) and (is_binary(locale) or is_atom(locale)) do
+    do_assign_put_locale(locale, socket)
+  end
+
+  def assign_put_locale(_other, socket) do
+    # If given no locale, or any other unexpected value, use default
     Bonfire.Common.Localise.default_locale()
-    |> assign_put_locale(socket)
+    |> do_assign_put_locale(socket)
   end
 
-  def assign_put_locale(locale, _current_user, socket) when is_binary(locale) or is_atom(locale) do
-    assign_put_locale(locale, socket)
-  end
-  
-  def assign_put_locale(locale, socket) when is_binary(locale) or is_atom(locale) do
+  defp do_assign_put_locale(locale, socket)
+       when not is_nil(locale) and (is_binary(locale) or is_atom(locale)) do
     # set current UI locale
     Bonfire.Common.Localise.put_locale(locale)
 
     assign_global(socket, locale: locale)
   end
-  
-  def assign_put_locale(_other, _current_user, socket) do
-    # For any other unexpected value, use default
-    Bonfire.Common.Localise.default_locale()
-    |> assign_put_locale(socket)
-  end
 
+  defp do_assign_put_locale(locale, socket) do
+    warn(locale, "No valid locale given, and invalid default locale, setting none")
+    socket
+  end
 end

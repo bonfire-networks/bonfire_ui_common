@@ -6,7 +6,11 @@
   data-scope={@scope}
 >
   {#for l <- Localise.known_locales()}
-    <option class="" value={to_string(l)} selected={if to_string(@locale) == to_string(l), do: "selected"}>
+    <option
+      class=""
+      value={to_string(l)}
+      selected={if to_string(@locale) == to_string(l), do: "selected"}
+    >
       {Localise.locale_name(l)}
     </option>
   {#else}
