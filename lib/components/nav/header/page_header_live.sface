@@ -13,7 +13,7 @@
         {#if @back}
           <Bonfire.UI.Common.BackButtonLive back={@back} />
         {#else}
-          <LinkLive
+          <!-- <LinkLive
             to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
             class="group hidden lg:flex"
             parent_id="page_header"
@@ -25,14 +25,14 @@
               src={Media.avatar_url(current_user(@__context__))}
               user_id={current_user_id(@__context__)}
             />
-          </LinkLive>
+          </LinkLive> -->
         {/if}
       </div>
 
-      <div class="flex-1 truncate max-w-[400px] md:text-center">
+      <div class="flex-1 truncate">
         <span
           data-page={@page}
-          class="first-letter:capitalize flex-1 font-medium text-sm text-base-content"
+          class="first-letter:capitalize flex-1 font-bold text-xl text-base-content"
         >
           {rich(@page_title)}
         </span>
