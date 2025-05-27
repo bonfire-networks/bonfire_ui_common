@@ -455,7 +455,7 @@ emoji-picker {
 
 
 .activity-padding {
-  padding-left: 4rem; 
+  padding-left: 5rem; 
 }
 
 .tooltip::after {
@@ -650,7 +650,7 @@ article.activity {
     width: 1px;
     top: 41px;
     bottom: -32px;
-    left: -33px;
+    left: -41px;
     z-index: 1;
     background-color: var(--color-base-content);
     opacity: 0.3;
