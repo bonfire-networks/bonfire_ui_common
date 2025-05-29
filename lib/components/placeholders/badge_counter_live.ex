@@ -7,8 +7,6 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
   prop feed_id, :any, default: nil
 
   def update(%{count_increment: inc}, socket) do
-    debug(inc, "receive count_increment")
-
     {:ok,
      assign(socket,
        count: e(assigns(socket), :count, 0) + inc
@@ -16,8 +14,6 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
   end
 
   def update(%{count_loaded: true} = assigns, socket) do
-    debug(assigns, "assign loaded count")
-
     {:ok,
      assign(
        socket,
@@ -25,21 +21,19 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
      )}
   end
 
-  def update(assigns, %{assigns: %{count_loaded: true}} = socket) do
-    # debug(assigns, "count already loaded")
-
-    {:ok,
-     assign(
-       socket,
-       assigns
-     )}
+  def update(assigns, %{assigns: %{count_loaded: true} = current_assigns} = socket) do
+    current_count = e(current_assigns, :count, 0)
+    
+    # Preserve the loaded count when count_loaded: true to prevent parent updates from resetting it
+    preserved_assigns = 
+      assigns
+      |> Map.put(:count, current_count)
+      |> Map.put(:count_loaded, true)
+    
+    {:ok, assign(socket, preserved_assigns)}
   end
 
   def update(assigns, socket) do
-    debug("load Badge count")
-
-    # debug(assigns, "assigns")
-
     socket = assign(socket, assigns)
     current_user = current_user(socket)
 
@@ -59,15 +53,12 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
         pid = self()
 
         Task.start(fn ->
-          debug(feed_name, "show badge for")
-
           unseen_count =
             Bonfire.Common.Utils.maybe_apply(
               Bonfire.Social.FeedActivities,
               :unseen_count,
               [feed_id, current_user: current_user]
             )
-            |> debug("unseen_count for #{feed_name}")
 
           if socket_connected?(socket) != false,
             do:
@@ -82,8 +73,6 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
         {:ok, socket}
 
       _ ->
-        error("No id or no user, so could not fetch count or pub-subscribe to counter")
-
         {:ok, socket}
     end
   end
