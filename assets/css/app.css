@@ -13,7 +13,7 @@
 @source "../../../../deps/*/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
 @source "../../../config/current_flavour/assets/components.css";
 @import "../static/images/icons/icons.css" layer(utilities);
-@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/typography"; 
 
 @plugin "daisyui" {
   themes: light --default, cupcake, bumblebee, emerald, corporate, federated_archives_dark, dark --prefersdark, synthwave, retro, cyberpunk, valentine, halloween, garden;
