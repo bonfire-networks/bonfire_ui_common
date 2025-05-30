@@ -23,13 +23,13 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
 
   def update(assigns, %{assigns: %{count_loaded: true} = current_assigns} = socket) do
     current_count = e(current_assigns, :count, 0)
-    
+
     # Preserve the loaded count when count_loaded: true to prevent parent updates from resetting it
-    preserved_assigns = 
+    preserved_assigns =
       assigns
       |> Map.put(:count, current_count)
       |> Map.put(:count_loaded, true)
-    
+
     {:ok, assign(socket, preserved_assigns)}
   end
 
