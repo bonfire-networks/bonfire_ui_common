@@ -3,6 +3,7 @@
     data-load-more-type={@infinite_scroll}
     id={"load_more_#{@context}"}
     data-id="load_more"
+    type="button"
     data-entry-count={if @infinite_scroll == :preload, do: @entry_count}
     phx-scroll={if @infinite_scroll,
       do:
@@ -17,23 +18,25 @@
     phx-value-after={@cursor}
     phx-value-limit={@limit}
     phx-value-multiply_limit={@multiply_limit}
-    phx-disable-with={l("Loading...")}
     class="w-full flex items-center justify-center my-4"
     x-data={"{show: #{socket_connected?(@__context__)}}"}
     {...@opts}
   >
     <span
-      class="btn-wide btn-secondary btn btn-soft"
+      class="btn-wide btn-secondary btn btn-soft phx-click-loading:bg-base-content/10 phx-click-loading:pointer-events-none phx-click-loading:cursor-not-allowed phx-scroll-loading:opacity-15 phx-scroll-loading:cursor-not-allowed relative"
       x-cloak={!@hide_guest_fallback}
       x-show={if @hide_guest_fallback, do: nil, else: "show"}
     >
-      {!-- href={"#" <> @cursor} --}
-      {!-- "btn-disabled": !@entry_count --}
-      {!-- <span :if={!@entry_count} class="loading loading-spinner" /> --}
-      {@label ||
-        if @infinite_scroll == :preload and @entry_count > 0,
-          do: l("Show %{num} more", num: @entry_count),
-          else: l("Load more")}
+      {!-- Loading spinner that shows during scroll loading --}
+      <span class="loading loading-spinner loading-sm items-center place-content-center hidden phx-scroll-loading:flex phx-click-loading:flex" />
+      
+      {!-- Button text --}
+      <span class="phx-scroll-loading:hidden phx-click-loading:hidden">
+        {@label ||
+          if @infinite_scroll == :preload and @entry_count > 0,
+            do: l("Show %{num} more", num: @entry_count),
+            else: l("Load more")}
+      </span>
     </span>
     <a
       :if={!@hide_guest_fallback}

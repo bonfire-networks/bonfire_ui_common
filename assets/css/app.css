@@ -19,6 +19,16 @@
   themes: light --default, cupcake, bumblebee, emerald, corporate, federated_archives_dark, dark --prefersdark, synthwave, retro, cyberpunk, valentine, halloween, garden;
 }
 
+.phx-click-loading.opaque-on-click {
+  opacity: 50%;
+  cursor: not-allowed;
+}
+
+/* Phoenix LiveView loading state variants */
+@variant phx-click-loading (&.phx-click-loading, .phx-click-loading &);
+@variant phx-scroll-loading (&.phx-scroll-loading, .phx-scroll-loading &);
+@variant phx-submit-loading (&.phx-submit-loading, .phx-submit-loading &);
+@variant phx-change-loading (&.phx-change-loading, .phx-change-loading &);
 
 /* 
  * Milkdown Editor Styles
@@ -26,7 +36,6 @@
  */
 
  .markdown-editor {
-  
   min-height: 250px;
   outline: none;
 }
@@ -788,6 +797,7 @@ article.activity {
   [x-cloak] {
     display: none !important;
   }
+  
 
   [iconify] {
     mask-image: var(--icon);

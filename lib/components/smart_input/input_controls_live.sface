@@ -144,9 +144,7 @@
                 type="submit"
                 id="submit_btn"
                 x-on:click="$dispatch('submit')"
-                phx-disable-with={if e(@smart_input_opts, :create_object_type, nil) == "message",
-                  do: l("Sending..."),
-                  else: l("Posting...")}
+                phx-disable-with
                 class="btn-square btn-sm btn btn-primary"
                 disabled={@smart_input_opts[:submit_disabled]}
               >
