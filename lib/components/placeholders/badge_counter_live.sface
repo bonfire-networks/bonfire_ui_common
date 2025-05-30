@@ -3,7 +3,7 @@
     id={"badge_counter_#{@id}"}
     :if={@count > 0}
     class={
-      "indicator-item w-[8px] h-[8px] !p-0 badge rounded-full bg-base-content/90 border-0 badge-sm",
+      "outline-base-content/10 indicator-item w-[8px] h-[8px] !p-0 badge rounded-full bg-base-content/90 border-0 badge-sm",
       "badge-primary bg-primary":
         Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)
     }
