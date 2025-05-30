@@ -29,7 +29,7 @@
     >
       {!-- Loading spinner that shows during scroll loading --}
       <span class="loading loading-spinner loading-sm items-center place-content-center hidden phx-scroll-loading:flex phx-click-loading:flex" />
-      
+
       {!-- Button text --}
       <span class="phx-scroll-loading:hidden phx-click-loading:hidden">
         {@label ||
