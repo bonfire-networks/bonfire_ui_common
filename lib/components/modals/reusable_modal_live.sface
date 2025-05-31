@@ -54,24 +54,7 @@
       <h3 :if={!@no_header} class={@title_class || "font-bold text-base line-clamp-1 px-2 max-w-full"}>
         <#slot {@title}>{@title_text}</#slot>
       </h3>
-      <div class={
-        "absolute top-0 right-0 block z-50",
-        "!-top-1 !right-0": !@no_backdrop,
-        "z-[999999999] !top-1 h-full": @no_backdrop
-      }>
-        <button
-          phx-click="close"
-          phx-target={"[id='#{@id}']"}
-          type="button"
-          class={
-            "normal-case btn-sm btn-ghost btn btn-circle opacity-70",
-            "!rounded-none !btn-xs btn-secondary": @no_backdrop
-          }
-        >
-          <span class="sr-only">{l("Close")}</span>
-          <#Icon outline="X" class="w-5 h-5" />
-        </button>
-      </div>
+      
 
       <div
         class={
@@ -121,6 +104,25 @@
             <button :if={@form_opts != %{}} class="normal-case btn btn-primary btn-sm" type="submit">{l("OK")}</button>
           </#slot>
         </div>
+      </div>
+
+      <div class={
+        "absolute top-0 right-0 block z-600",
+        "!-top-1 !right-0": !@no_backdrop,
+        "z-[999999999] !top-1 h-full": @no_backdrop
+      }>
+        <button
+          phx-click="close"
+          phx-target={"[id='#{@id}']"}
+          type="button"
+          class={
+            "normal-case btn-sm btn-ghost btn btn-circle opacity-70",
+            "!rounded-none !btn-xs btn-secondary": @no_backdrop
+          }
+        >
+          <span class="sr-only">{l("Close")}</span>
+          <#Icon outline="X" class="w-5 h-5" />
+        </button>
       </div>
     </div>
   </Phoenix.Component.dynamic_tag>
