@@ -54,7 +54,6 @@
       <h3 :if={!@no_header} class={@title_class || "font-bold text-base line-clamp-1 px-2 max-w-full"}>
         <#slot {@title}>{@title_text}</#slot>
       </h3>
-      
 
       <div
         class={
