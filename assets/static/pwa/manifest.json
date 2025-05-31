@@ -1,9 +1,14 @@
 {
-	"id": "cafe.bonfire",
+	"id": "org.bonfirenetworks",
 	"name": "Bonfire",
 	"description": "Bonfire is a federated social networking toolkit to customise and host your own online space and control your experience at the most granular level.",
 	"dir": "ltr",
 	"display": "standalone",
+	"display_override": [
+		"standalone",
+		"minimal-ui",
+		"browser"
+	],
 	"orientation": "portrait",
 	"scope": "/",
 	"short_name": "Bonfire",
@@ -15,7 +20,7 @@
 			"src": "/images/bonfires.png",
 			"sizes": "580x200",
 			"type": "image/png",
-			"label": "Bonfire social network interface"
+			"label": "Bonfire banner"
 		}
 	],
 	"shortcuts": [
