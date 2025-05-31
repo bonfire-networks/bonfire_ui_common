@@ -41,7 +41,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
           timeout: String.to_integer(System.get_env("LV_TIMEOUT", "42000")),
           # the maximum number of garbage collections before forcing a fullsweep for the socket process. You can set it to 0 to force more frequent clean-ups of your websocket transport processes. (You can also trigger this manually to force garbage collection in the transport process after processing large messages with `send(socket.transport_pid, :garbage_collect)`)
           fullsweep_after: String.to_integer(System.get_env("LV_FULLSWEEP_AFTER", "20")),
-          # NOTE: see also `LV_HIBERNATE_AFTER` in the endpoint config 
+          # NOTE: see also `LV_HIBERNATE_AFTER` in the endpoint config
           connect_info: [
             :user_agent,
             # TODO: check if this gives us the "real IP" as set by `RemoteIp`
@@ -171,7 +171,13 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
         #{if Extend.module_enabled?(PhoenixGon.View), do: PhoenixGon.View.render_gon_script(conn) |> Phoenix.HTML.safe_to_string()}
 
-        <link rel="manifest" href="/pwa/manifest.json" /> 
+        <link rel="manifest" href="/pwa/manifest.json" />
+
+        <!-- PWA iOS support -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-title" content="Bonfire">
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
         <!-- TODO: move to JS hook?
         <script type="module">
           import '@pwabuilder/pwaupdate';

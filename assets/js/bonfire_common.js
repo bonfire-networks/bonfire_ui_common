@@ -127,3 +127,11 @@ window.addEventListener("bonfire:check-expandable", (event) => {
 // import * as css from "../css/app.css"
 
 import "./../../../../deps/phoenix_live_head";
+
+// Initialize PWA features 
+import { registerServiceWorker } from './pwa/register.js';
+
+// Only register service worker, nothing else
+if (typeof window !== 'undefined') {
+  registerServiceWorker();
+}

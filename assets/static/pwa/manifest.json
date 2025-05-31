@@ -3,39 +3,36 @@
 	"name": "Bonfire",
 	"description": "Bonfire is a federated social networking toolkit to customise and host your own online space and control your experience at the most granular level.",
 	"dir": "ltr",
-	"display": "minimal-ui",
-	"display_override": [
-		"minimal-ui",
-		"browser"
-	],
+	"display": "standalone",
 	"orientation": "portrait",
 	"scope": "/",
 	"short_name": "Bonfire",
 	"start_url": "/dashboard",
-	"background_color": "#190908",
-	"theme_color": "#552217",
+	"background_color": "#191e25",
+	"theme_color": "#fde047",
 	"screenshots": [
 		{
 			"src": "/images/bonfires.png",
-			"sizes": "580×200",
-			"type": "image/png"
+			"sizes": "580x200",
+			"type": "image/png",
+			"label": "Bonfire social network interface"
 		}
 	],
 	"shortcuts": [
 		{
 			"name": "Feed",
 			"url": "/feed",
-			"description": ""
+			"description": "View your social feed"
 		},
 		{
 			"name": "Profile",
 			"url": "/user",
-			"description": ""
+			"description": "View your profile"
 		},
 		{
 			"name": "Settings",
 			"url": "/settings",
-			"description": ""
+			"description": "Manage your settings"
 		}
 	],
 	"protocol_handlers": [{
