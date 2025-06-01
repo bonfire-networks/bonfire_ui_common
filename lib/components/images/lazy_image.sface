@@ -7,10 +7,10 @@
           :hook
           data-hash={blurhash}
           class="h-full"
-          x-data="{src: null}"
+          x-data="{src: null, loaded: false}"
           x-intersect.once={"src = '#{src}'"}
         >
-          <canvas class={@class} x-show="!src" x-transition {...@opts} />
+          <canvas class={@class} x-show="!loaded" x-transition.opacity.duration.500ms {...@opts} />
           <img
             x-cloak
             src="data:,"
@@ -19,9 +19,10 @@
             class={@class}
             data-width={maybe_get(@media, [:metadata, :width]) || ""}
             data-height={maybe_get(@media, [:metadata, :height]) || ""}
-            x-show="src"
-            x-transition
+            x-show="loaded"
+            x-transition.opacity.duration.500ms
             x-bind:src="src"
+            x-on:load="loaded = true"
             {...@opts}
           />
           <!-- <div x-show="error" class={"iconify", e(@fallback_class, nil)}  iconify={@fallback_icon} /> -->
