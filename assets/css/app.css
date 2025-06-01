@@ -510,6 +510,27 @@ emoji-picker {
   }
 }
 
+
+.main_object_in_thread {
+  @apply !pl-5;
+}
+
+.main_object_in_thread [data-role='subject'] {
+  @apply gap-3;
+}
+
+
+  div[data-role='subject'][data-main-object] {
+    @apply mb-3;
+  }
+  div[data-role='subject'][data-main-object] div[data-id='name_username']{
+    @apply !items-start flex-col !gap-0;
+  }
+  div[data-role='subject'][data-main-object] div[data-id='subject_details']{
+    @apply !items-start;
+  }
+
+
 /* AVATAR */
 
 div[data-scope='avatar'] div[data-square] {
@@ -537,21 +558,6 @@ div[data-scope='avatar'] div[data-square] {
     @apply border-0 avatar !flex;
   }
 
-  div[data-role='subject'][data-main-object] {
-    @apply !mb-3 !items-center;
-  }
-
-  div[data-role='subject'][data-main-object] [data-id='subject_avatar'] {
-    @apply mr-3 ml-0 !relative;
-  }
-
-  div[data-role='subject'][data-main-object] [data-id='subject_details'] {
-    @apply flex-col !mt-0 !gap-0;
-  }
-
-  div[data-role='subject'][data-main-object] [data-id='subject_details'] [data-id='subject_username'] {
-    @apply !ml-0 !block;
-  }
 
   div[data-id='comment'][data-avatar-hidden] [data-role='comment-pin'] {
     @apply !block;
