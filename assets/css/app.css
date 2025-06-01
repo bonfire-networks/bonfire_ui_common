@@ -19,7 +19,7 @@
   themes: light --default, cupcake, bumblebee, emerald, corporate, federated_archives_dark, dark --prefersdark, synthwave, retro, cyberpunk, valentine, halloween, garden;
 }
 
-.phx-click-loading.opaque-on-click {
+.phx-click-loading.opaque-on-click { 
   opacity: 50%;
   cursor: not-allowed;
 }
