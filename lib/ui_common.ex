@@ -439,8 +439,8 @@ defmodule Bonfire.UI.Common do
     # debug(content)
 
     if Bonfire.Common.URIs.valid_url?(content) do
-      with {:ok, %{body: body}} when is_binary(body) <-
-             Bonfire.Common.HTTP.get_cached(content) do
+      with body when is_binary(body) <-
+             Bonfire.Common.HTTP.get_cached_body(content) do
         templated(body, data)
       else
         e ->

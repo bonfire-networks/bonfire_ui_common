@@ -30,17 +30,33 @@
     {Bonfire.Application.name()}
   </a>
   ·
-  <LinkLive
-    to={Bonfire.Application.repository()}
-    parent_id="impressum"
-    class="text-xs link link-hover text-base-content/70"
-  >
-    {Bonfire.Application.version()}
-    <span class="ml-1" x-data="{msg: 'JS'}">
-      <span x-text="msg">no JS</span>
-    </span>
-    <span data-role="locale" class="ml-1">{Bonfire.Common.Localise.get_locale_id() |> to_string()}</span>
-  </LinkLive>
+
+  {#case Bonfire.Application.version()}
+    {#match version}
+      <LinkLive
+        to={Bonfire.Application.repository()}
+        parent_id="impressum_version"
+        class="text-xs link link-hover text-base-content/70"
+      >
+        {version}
+      </LinkLive>
+      <span class="ml-1" x-data="{msg: 'JS'}">
+        <span x-text="msg">no JS</span>
+      </span>
+      <LinkLive
+        to="https://app.transifex.com/bonfire/bonfire/"
+        parent_id="impressum_locale"
+        class="text-xs link link-hover text-base-content/70"
+      >
+        <span data-role="locale" class="ml-1">{Bonfire.Common.Localise.get_locale_id() |> to_string()}</span>
+      </LinkLive>
+
+      {#case Bonfire.Common.HTTP.get_cached_body("https://docs.bonfirenetworks.org/VERSION")}
+        {#match latest when is_binary(latest) and latest != version}
+          <span class="badge badge-sm badge-warning" class="ml-1">{l("New version available:")} {latest}</span>
+        {#match _}
+      {/case}
+  {/case}
 </div>
 
 <div class="mt-4">
