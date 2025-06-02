@@ -33,6 +33,7 @@
 
   {#case Bonfire.Application.version()}
     {#match version}
+      <div>
       <LinkLive
         to={Bonfire.Application.repository()}
         parent_id="impressum_version"
@@ -53,17 +54,19 @@
 
       {#case String.trim(Bonfire.Common.HTTP.get_cached_body("https://docs.bonfirenetworks.org/VERSION") || "")}
         {#match latest when latest != version and latest != ""}
-          <span class="badge badge-sm badge-warning" class="ml-1">{l("New version available:")} {latest}</span>
+          <span class="badge badge-sm badge-warning badge-soft mt-4">{l("New version available:")} {latest}</span>
         {#match _}
       {/case}
   {/case}
 </div>
 
+
+
 <div class="mt-4">
   <!-- <button class="btn btn-sm btn-ghost">{l "Enable wellness mode"}</button>
 <button class="btn btn-sm btn-ghost">{l "Enable safety mode"}</button> -->
 
-  <div class="bg-base-content/10 rounded px-2 py-1 text-xs mt-2 inline-block">{#case maybe_apply(Bonfire.Federate.ActivityPub, :federating?, current_user(@__context__),
+  <div class="bg-base-content/10 rounded px-2 py-1 text-xs inline-block">{#case maybe_apply(Bonfire.Federate.ActivityPub, :federating?, current_user(@__context__),
         context: @__context__,
         fallback_return: false
       )}
