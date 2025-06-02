@@ -1,4 +1,6 @@
 <div
+  id={"notifications-#{@i}"}
+  :hook
   aria-live="assertive"
   class="app_notifications pointer-events-none fixed inset-0 flex  px-4 py-6 sm:px-6 sm:pt-10 z-[99999999999999999] items-start"
 >
@@ -20,9 +22,8 @@
     </div>
 
     <div
-      id={"notification-#{@i}"}
+      data-id="notification"
       :if={@notification}
-      :hook
       role="alert"
       class="w-full max-w-md pointer-events-auto overflow-hidden transition duration-300 ease-in-out transform rounded border border-base-content/10 shadow-xl pointer-events-auto alert flash"
     >
@@ -67,6 +68,7 @@
       {#match nil}
       {#match info}
         <div
+        data-id="flash_info"
           role="alert"
           class="w-full max-w-md transition flex duration-300 ease-in-out transform alert pointer-events-auto alert-info alert-soft flash"
         >
@@ -91,6 +93,7 @@
       {#match nil}
       {#match error}
         <div
+        data-id="flash_error"
           role="alert"
           class="w-full max-w-md overflow-hidden transition duration-300 ease-in-out transform rounded shadow-lg pointer-events-auto bg-error flash"
         >
