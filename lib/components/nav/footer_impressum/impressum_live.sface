@@ -56,7 +56,6 @@
           <span class="badge badge-sm badge-warning badge-soft mt-4">{l("New version available:")} {latest}</span>
         {#match _}
       {/case}
-      </div>
   {/case}
 </div>
 
