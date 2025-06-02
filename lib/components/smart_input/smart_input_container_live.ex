@@ -167,9 +167,9 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
           |> Enum.map(fn {shortcode, emoji} ->
             %{
               id: id(emoji),
-              name: emoji.label,
+              name: e(emoji, :label, nil),
               shortcodes: [shortcode],
-              url: emoji.url
+              url: e(emoji, :url, nil)
             }
           end)
           |> Jason.encode!()
