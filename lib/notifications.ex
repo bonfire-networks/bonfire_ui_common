@@ -67,11 +67,13 @@ defmodule Bonfire.UI.Common.Notifications do
 
   def assign_notification(attrs, socket) do
     debug(attrs)
+    flood(socket, "assigning_notification")
 
     {:noreply,
      socket
      |> assign(notification: attrs)
-     |> maybe_push_event("notify", attrs)}
+     # send to the NotifyLive hook from the component in PersistentLive
+     |> maybe_push_event("notify:notifications-2", attrs)}
   end
 
   # def process_state(pid) when is_pid(pid), do: :sys.get_state(pid)

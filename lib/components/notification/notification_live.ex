@@ -22,7 +22,15 @@ defmodule Bonfire.UI.Common.NotificationLive do
      )}
   end
 
-  def update(assigns, %{assigns: %{subscribed: true}} = socket) do
+  # def update(%{"notification" => _notification}, %{assigns: %{subscribed: true}} = socket) do
+  #   {:ok,
+  #    socket
+  #    # FIXME: clearing here is a TEMP fix to avoid overlapping alerts
+  #    |> special_clear_all()
+  #   }
+  # end
+
+  def update(assigns, %{assigns: %{subscribed: _}} = socket) do
     {:ok,
      socket
      # FIXME: clearing here is a TEMP fix to avoid overlapping alerts
@@ -30,40 +38,36 @@ defmodule Bonfire.UI.Common.NotificationLive do
      |> assign(assigns)}
   end
 
-  def update(%{"notification" => _notification}, socket) do
-    {:ok,
-     socket
-     # FIXME: clearing here is a TEMP fix to avoid overlapping alerts
-     |> special_clear_all()}
-  end
-
   def update(assigns, socket) do
     # debug(assigns, "assigns")
     current_user = current_user(socket) || current_user(assigns)
 
-    if current_user do
-      feed_id =
-        Bonfire.Common.Utils.maybe_apply(
-          Bonfire.Social.Feeds,
-          :my_feed_id,
-          [:notifications, current_user]
-        )
+    subscribed? =
+      if assigns[:i] == 2 and current_user do
+        feed_id =
+          Bonfire.Common.Utils.maybe_apply(
+            Bonfire.Social.Feeds,
+            :my_feed_id,
+            [:notifications, current_user]
+          )
 
-      if feed_id do
-        debug(feed_id, "subscribed to push notifications")
-        PubSub.subscribe(feed_id, socket)
+        if feed_id do
+          debug(feed_id, "subscribed to push notifications")
+          PubSub.subscribe(feed_id, socket)
+          true
+        else
+          debug("no feed_id, not subscribing to push notifications")
+          false
+        end
       else
-        debug("no feed_id, not subscribing to push notifications")
+        debug("no current_user, not subscribing to push notifications")
+        false
       end
-    else
-      debug("no current_user, not subscribing to push notifications")
-    end
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(subscribed: true)
-     |> assign(notification_id: "notification-#{:rand.uniform(1_000_000)}")}
+     |> assign(subscribed: subscribed?)}
   end
 
   # def show(js \\ %JS{}, selector) do

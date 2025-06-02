@@ -33,7 +33,6 @@
 
   {#case Bonfire.Application.version()}
     {#match version}
-      <div>
       <LinkLive
         to={Bonfire.Application.repository()}
         parent_id="impressum_version"
@@ -59,8 +58,6 @@
       {/case}
   {/case}
 </div>
-
-
 
 <div class="mt-4">
   <!-- <button class="btn btn-sm btn-ghost">{l "Enable wellness mode"}</button>
