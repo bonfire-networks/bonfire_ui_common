@@ -46,17 +46,16 @@
               {...@opts}
             />
           {#match _} --}
-        <div x-data="{error: false}" class="h-full place-content-center">
+        <div class="h-full place-content-center image-with-fallback">
           <img
             title={@title}
             src={src}
             alt={@alt}
-            class={@class}
-            x-on:error="error = true"
-            x-show="!error"
+            class={[@class, "fallback-img"]}
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
             {...@opts}
           />
-          <div x-show="error" class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
+          <div style="display:none;" class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
         </div>
         <!-- <img title={@title} src={src} alt={@alt} class={@class} {...@opts}> -->
         {!-- {/case} --}
