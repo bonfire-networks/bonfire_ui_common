@@ -13,7 +13,8 @@
   >{l("Privacy")}</LinkLive> ·
   {#if current_user_id(@__context__) ||
       Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-    <LinkLive class="text-xs link-hover link text-base-content/70" to="/users" parent_id="impressum">{l("Users")} · </LinkLive>
+    <LinkLive class="text-xs link-hover link text-base-content/70" to="/users" parent_id="impressum">{l("Users")} ·
+    </LinkLive>
     <LinkLive
       class="text-xs link-hover link text-base-content/70"
       to="/known_instances"
