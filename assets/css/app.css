@@ -631,6 +631,10 @@ article.activity {
   word-break: break-word;
 }
 
+article.activity pre {
+  max-width: 500px; overflow-y:scroll;
+}
+
   article[data-id='activity'][data-hidden='all'] {
     @apply hidden;
   }
