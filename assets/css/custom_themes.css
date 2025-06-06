@@ -1,7 +1,7 @@
 /* Custom themes for Bonfire UI */
 
 @plugin "daisyui/theme" {
-  name: "federated_archives_dark";
+  name: "federated_archives";
   default: false; /* set as default */
   prefersdark: false; /* set as default dark mode */
   color-scheme: "light"; /* color of browser-provided UI */
