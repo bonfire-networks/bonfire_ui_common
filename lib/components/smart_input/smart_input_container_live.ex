@@ -169,7 +169,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
               id: id(emoji),
               name: e(emoji, :label, nil),
               shortcodes: [shortcode],
-              url: e(emoji, :url, nil)
+              url: e(emoji, :url, nil) || Media.emoji_url(emoji)
             }
           end)
           |> Jason.encode!()
