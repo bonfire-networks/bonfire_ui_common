@@ -34,6 +34,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop nav_items, :list, default: []
   prop without_secondary_widgets, :boolean, default: false
   prop without_sidebar, :boolean, default: nil
+  prop without_smart_input, :boolean, default: false
   prop sidebar_widgets, :list, default: []
   prop back, :any, default: nil
   prop extra, :string, default: false
@@ -102,6 +103,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:instance_settings, fn -> nil end)
     |> assign_new(:to_circles, fn -> [] end)
     |> assign_new(:showing_within, fn -> nil end)
+    |> assign_new(:without_smart_input, fn -> nil end)
     |> assign_new(:without_sidebar, fn -> nil end)
     |> assign_new(:without_secondary_widgets, fn -> false end)
     |> assign_new(:sidebar_widgets, fn -> [] end)
