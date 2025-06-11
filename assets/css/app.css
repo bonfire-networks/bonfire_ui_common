@@ -656,7 +656,7 @@ article.activity pre {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 6;
+    -webkit-line-clamp: 4;
   }
   .previewable_activity .previewable_truncate.previewable_expanded {
     overflow: visible;
@@ -687,6 +687,10 @@ article.activity pre {
     word-break: break-word !important;
   }
 
+  div[data-id='object_body'] h1 a {
+
+  }
+
   /* Select 'a' elements with exactly 3 direct span children */
   div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-type(4))) > span:first-of-type,
   div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-type(4))) > span:last-of-type {
@@ -698,7 +702,7 @@ article.activity pre {
   }
 
 
-  div[data-id='object_body'] a {
+  div[data-id='object_body'] a:not(h1 a) {
     @apply truncate;
     word-break: break-all;
     max-width: 300px;
