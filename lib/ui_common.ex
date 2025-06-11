@@ -356,19 +356,18 @@ defmodule Bonfire.UI.Common do
 
   # @decorate time_tree(10)
   def rich(content, opts \\ []) do
+    {skip_markdown?, opts} = Keyword.pop(opts, :skip_markdown, false)
+
     case content do
       _ when is_binary(content) ->
-        if opts[:skip_markdown] do
+        if skip_markdown? do
           content
         else
           # debug("use MD")
 
           content
           |> debug("to convert to markdown")
-          |> Text.maybe_markdown_to_html(
-            opts
-            |> Keyword.drop([:skip_markdown])
-          )
+          |> Text.maybe_markdown_to_html(opts)
         end
         |> debug("rich content")
         # transform internal links to use LiveView navigation
