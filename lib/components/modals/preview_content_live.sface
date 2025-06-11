@@ -22,7 +22,7 @@
             </button>
             <!-- WIP: Here we should dinamically show the activity type: Article, Note, Event, Review, etc -->
             <span class="max-w-[250px] lg:max-w-[600px] font-semibold text-base-content truncate text-ellipsis">
-              {l("Discussion")} 
+              {l("Discussion")}
             </span>
           </div>
         </div>
