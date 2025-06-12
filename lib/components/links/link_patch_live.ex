@@ -105,14 +105,17 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
       patch={@to}
       class={@class}
       replace={@replace}
-      phx-hook="Bonfire.UI.Common.PreviewContentLive#CloseAll"
-      id={@id ||
-        deterministic_dom_id(
-          "LinkLive_event",
-          @to,
-          @__context__[:component_tree] || @label,
-          @parent_id || @__context__[:component_id_tree]
-        )}
+      phx-hook={if socket_connected?(@__context__) and e(@__context__, :hide_main, false),
+        do: "Bonfire.UI.Common.PreviewContentLive#CloseAll"}
+      id={if socket_connected?(@__context__) and e(@__context__, :hide_main, false),
+        do:
+          @id ||
+            deterministic_dom_id(
+              "LinkPatchLive",
+              @to,
+              @__context__[:component_tree] || @label,
+              @parent_id || @__context__[:component_id_tree]
+            )}
       {...@opts |> Keyword.merge("aria-label": @label)}
     >
       <#slot>{@label}</#slot>

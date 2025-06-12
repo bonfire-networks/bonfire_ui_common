@@ -258,8 +258,9 @@ defmodule Bonfire.UI.Common.LinkLive do
       navigate={@to}
       class={@class}
       replace={@replace}
-      phx-hook={if socket_connected?(@__context__), do: "Bonfire.UI.Common.PreviewContentLive#CloseAll"}
-      id={if socket_connected?(@__context__),
+      phx-hook={if socket_connected?(@__context__) and e(@__context__, :hide_main, false),
+        do: "Bonfire.UI.Common.PreviewContentLive#CloseAll"}
+      id={if socket_connected?(@__context__) and e(@__context__, :hide_main, false),
         do:
           @id ||
             deterministic_dom_id(
