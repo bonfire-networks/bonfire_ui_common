@@ -197,7 +197,9 @@ defmodule Bonfire.UI.Common.ErrorView do
     <h1 class="text-base-content">
       {@title}
     </h1>
-    {raw(to_string(@details))}
+    {if Bonfire.Common.Config.env() != :prod do
+      raw(to_string(@details))
+    end}
     """
   end
 
