@@ -42,6 +42,21 @@
             <#Icon solid="X" class="w-4 h-4 text-base-content/70" />
           </span>
         </div>
+
+        <div
+          :if={!Bonfire.Social.is_local?(
+            e(@activity, :subject, nil),
+            false
+          ) and
+            !maybe_apply(Bonfire.Federate.ActivityPub, :federating?, current_user(@__context__),
+              context: @__context__,
+              fallback_return: false
+            )}
+          class="badge badge-error h-auto"
+        >{l(
+            "Warning: You are replying to a remote activity but federation is disabled. This means only users on your local instance will see your reply unless federation is later turned on."
+          )}</div>
+
         {#case LiveHandler.active_smart_input_component(
             @smart_input_component,
             e(@smart_input_opts, :create_object_type, nil)
