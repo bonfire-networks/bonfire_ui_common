@@ -67,7 +67,7 @@ defmodule Bonfire.UI.Common.Notifications do
 
   def assign_notification(attrs, socket) do
     debug(attrs)
-    flood(socket, "assigning_notification")
+    # debug(socket, "assigning_notification")
 
     {:noreply,
      socket
