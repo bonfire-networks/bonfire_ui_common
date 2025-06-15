@@ -701,19 +701,26 @@ article.activity pre {
     content: "...";
   }
 
-
+/*
   div[data-id='object_body'] a:not(h1 a) {
     @apply truncate;
     word-break: break-all;
     max-width: 300px;
     display: inline-block;
     vertical-align: middle;
-    margin: -.2ex .15em .2ex;
+    margin: -.3ex 0px .1ex;
+  }
+
+  @media (max-width: 640px) {
+    div[data-id='object_body'] a:not(h1 a) {
+      max-width: 240px;
+    }
   }
   
   div[data-id='object_body'] a span {
     word-break: break-all;
   }
+    */
 
   .uploads_preview .scrollable::-webkit-scrollbar {
     height: 8px;
