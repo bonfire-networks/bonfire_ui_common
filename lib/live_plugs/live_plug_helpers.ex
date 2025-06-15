@@ -162,8 +162,10 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
     socket =
       assign_default_params(params, socket,
         current_params: params,
-        current_url: uri.path || url
+        current_url: uri.path || url,
         # current_route: e(route_info, :route, nil)
+        force_static: params["force_render"] == "static",
+        force_live: params["force_render"] == "live"
       )
 
     # in case we're browsing between LVs, send assigns (eg current_user to PersistentLive's process)
