@@ -28,7 +28,7 @@
     href="https://bonfirenetworks.org/"
     class="text-xs font-semibold link link-hover text-base-content/70"
   >
-    {Bonfire.Application.name()}
+    {Bonfire.Application.name_and_flavour()}
   </a>
   ·
 

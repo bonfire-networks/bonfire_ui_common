@@ -133,7 +133,7 @@
                     style={"background-image: url(#{Config.get([:ui, :theme, :instance_image], nil)})"}
                     class="bg-center bg-no-repeat h-[185px] bg-cover bg-white w-full rounded"
                   />
-                  <h2 :if={is_nil(@current_user_id)} class="text-lg text-base-content font-semibold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</h2>
+                  <h2 :if={is_nil(@current_user_id)} class="text-lg text-base-content font-semibold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}</h2>
                   <div class={
                     "prose prose-sm text-base-content",
                     "!text-base-content/70 text-xs": not is_nil(@current_user_id)

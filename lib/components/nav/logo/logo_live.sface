@@ -14,7 +14,7 @@
       description: l("Hide the instance name text and show only the icon.")
     )}
   class={@name_class || "text-base font-bold text-base-content"}
->{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name(),
+>{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour(),
     name: l("Instance Name"),
     description: l("The name to display for this instance.")
   )}</div>

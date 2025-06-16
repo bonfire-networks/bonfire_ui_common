@@ -10,7 +10,7 @@
         class="text-lg font-extrabold link link-hover text-base-content"
         to={path(Config.get(:home_page, :home))}
       >
-        {Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}
+        {Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}
       </LinkLive>
       <div :if={Config.get([:ui, :theme, :instance_description], nil)} class="mt-0.5 prose">
         {Config.get([:ui, :theme, :instance_description], "")}

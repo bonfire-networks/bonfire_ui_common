@@ -11,7 +11,7 @@ defmodule Bonfire.UI.Common.SEO do
   # alias Bonfire.Web.Router.Helpers, as: Routes
 
   def site_config(_conn \\ nil) do
-    name = Config.get([:ui, :theme, :instance_name]) || Bonfire.Application.name()
+    name = Config.get([:ui, :theme, :instance_name]) || Bonfire.Application.name_and_flavour()
     description = Config.get([:ui, :theme, :instance_description])
 
     SEO.Site.build(
@@ -26,7 +26,7 @@ defmodule Bonfire.UI.Common.SEO do
   end
 
   def open_graph_config(_conn \\ nil) do
-    name = Config.get([:ui, :theme, :instance_name]) || Bonfire.Application.name()
+    name = Config.get([:ui, :theme, :instance_name]) || Bonfire.Application.name_and_flavour()
     description = Config.get([:ui, :theme, :instance_description])
 
     SEO.OpenGraph.build(
