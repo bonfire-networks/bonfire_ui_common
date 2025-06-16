@@ -13,7 +13,6 @@
   phx-target="#smart_input"
   type="button"
   data-role="composer_button"
-  disabled={!@smart_input_opts[:submit_disabled]}
   class={@class}
 >
   {!-- 
