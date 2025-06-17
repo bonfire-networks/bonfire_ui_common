@@ -43,12 +43,14 @@
               <#Icon solid="X" class="w-4 h-4 text-base-content/70" />
             </span>
 
+            {!-- 
+            # WIP, also without an at mention you are not necessarily replying to the user (i.e. they may not be notified) but only to a post/comment, so this may be misleading
             <div
               class="border-t border-base-content/10 text-xs backdrop-blur-xl sticky bottom-0 p-2 font-semibold text-center text-base-content z-10"
               style="pointer-events: none;"
             >
               {l("Replying to @brembs@mastodon.social’s post")}
-            </div>
+            </div> --}
           </div>
         </div>
         <div
