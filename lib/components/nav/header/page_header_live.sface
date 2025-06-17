@@ -7,24 +7,24 @@
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center gap-3 justify-between w-full lg:flex-1">
       <div class="gap-3 flex items-center">
-        <label for="sidebar-drawer" class="xl:hidden btn btn-sm btn-circle btn-ghost">
-          <#Icon iconify="ph:sidebar" class="w-6 h-6 opacity-70" />
-        </label>
         {#if @back}
           <Bonfire.UI.Common.BackButtonLive back={@back} />
         {#else}
+          <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost">
+            <Bonfire.UI.Common.AvatarLive
+              :if={is_map(current_user(@__context__))}
+              bg_class="rounded-full"
+              class="inline-block object-cover w-6 h-6 cursor-pointer rounded-full"
+              src={Media.avatar_url(current_user(@__context__))}
+              user_id={current_user_id(@__context__)}
+            />
+          </label>
           <!-- <LinkLive
             to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
             class="group hidden lg:flex"
             parent_id="page_header"
           >
-            <Bonfire.UI.Common.AvatarLive
-              :if={is_map(current_user(@__context__))}
-              bg_class="rounded-full"
-              class="inline-block object-cover w-8 h-8 cursor-pointer rounded-full"
-              src={Media.avatar_url(current_user(@__context__))}
-              user_id={current_user_id(@__context__)}
-            />
+            
           </LinkLive> -->
         {/if}
       </div>

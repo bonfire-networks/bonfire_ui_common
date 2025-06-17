@@ -36,6 +36,10 @@
  * Custom styles for the Milkdown editor integration with Bonfire
  */
 
+ .floating_smart_input {
+    box-shadow: 0 3px 8px -1px var(--color-base-200), 0 10px 36px -4px var(--color-primary);
+ }
+
  .markdown-editor {
   min-height: 250px;
   outline: none;

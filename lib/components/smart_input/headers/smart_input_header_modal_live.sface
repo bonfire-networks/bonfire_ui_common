@@ -9,7 +9,7 @@
       <!-- </div> -->
     {/if}
   </span>
-  <div class="absolute flex items-center gap-5 md:gap-2 right-3">
+  <div class="absolute flex items-center gap-2 right-3">
     <button
       phx-click={LiveHandler.minimize()}
       phx-target="#smart_input"
@@ -31,7 +31,7 @@
         <p>{l("Closing the composer will discard your post. Are you sure you want to close it?")}</p>
       </div>
       <:open_btn>
-        <div class="flex btn btn-sm btn-ghost btn-circle">
+        <div class="flex btn btn-sm btn-outline border-base-content/10 btn-circle">
           <#Icon outline="X" class="w-4 h-4 text-base-content/70" />
           <span class="sr-only">{l("Close")}</span>
         </div>

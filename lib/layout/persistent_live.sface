@@ -10,7 +10,7 @@
     as_icon
     to_circles={@to_circles}
     to_boundaries={@to_boundaries}
-    composer_class="btn fixed right-6 bottom-6 btn-xl btn-circle shadow-xl btn-primary"
+    composer_class="btn fixed right-6 bottom-6 btn-xl btn-circle shadow-xl btn-primary floating_smart_input"
     smart_input_opts={@smart_input_opts}
   />
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
