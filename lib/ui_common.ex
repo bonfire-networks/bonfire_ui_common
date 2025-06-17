@@ -1684,4 +1684,108 @@ defmodule Bonfire.UI.Common do
   def click_with_data_id(container_selector, element_type \\ "a", data_id) do
     JS.dispatch("click", to: "#{container_selector} #{element_type}[data-id=\"#{data_id}\"]")
   end
+
+  @doc """
+  Toggles element visibility using LiveView JS when connected, vanilla JS when not.
+
+  ## Options
+  Same as `Phoenix.LiveView.JS.toggle/1`:
+  - `:to` - DOM selector to toggle. Defaults to the clicked element.
+
+  ## Examples
+      <button onclick={js_toggle()}>Toggle self</button>
+      <button onclick={js_toggle(to: "#content")}>Toggle content</button>
+  """
+  def js_toggle(opts \\ []), do: js_hybrid_action(JS.toggle(opts), "toggle('hidden')", opts)
+
+  @doc """
+  Shows element using LiveView JS when connected, vanilla JS when not.
+
+  ## Options
+  Same as `Phoenix.LiveView.JS.show/1`:
+  - `:to` - DOM selector to show. Defaults to the clicked element.
+
+  ## Examples
+      <button onclick={js_show()}>Show self</button>
+      <button onclick={js_show(to: "#modal")}>Show modal</button>
+  """
+  def js_show(opts \\ []), do: js_hybrid_action(JS.show(opts), "remove('hidden')", opts)
+
+  @doc """
+  Hides element using LiveView JS when connected, vanilla JS when not.
+
+  ## Options
+  Same as `Phoenix.LiveView.JS.hide/1`:
+  - `:to` - DOM selector to hide. Defaults to the clicked element.
+
+  ## Examples
+      <button onclick={js_hide()}>Hide self</button>
+      <button onclick={js_hide(to: "#error")}>Hide error</button>
+  """
+  def js_hide(opts \\ []), do: js_hybrid_action(JS.hide(opts), "add('hidden')", opts)
+
+  @doc """
+  Combines LiveView JS and vanilla JS into a hybrid command that works whether the socket is connected or not.
+
+  Takes a LiveView JS command and vanilla JS action with options, then creates a hybrid function call.
+
+  ## Parameters
+  - `lv_js` - A Phoenix.LiveView.JS command
+  - `vanilla_js` - A string representing the vanilla JS action (e.g., "toggle('hidden')")
+  - `opts` - Options including `:to` selector
+
+  """
+  def js_hybrid_action(lv_js, vanilla_js, opts) do
+    js_hybrid(lv_js, js_vanilla_action(vanilla_js, opts))
+  end
+
+  @doc """
+  Creates a JavaScript function call that executes LiveView JS when connected, vanilla JS when not.
+
+  Escapes quotes in both JS strings and wraps them in a JS_exec.call() function.
+
+  ## Parameters
+  - `lv_js` - A Phoenix.LiveView.JS command or encoded string
+  - `vanilla_js` - A vanilla JavaScript string
+
+  """
+  def js_hybrid(lv_js, vanilla_js) do
+    lv_encoded =
+      lv_js
+      |> Phoenix.HTML.Safe.to_iodata()
+      |> IO.iodata_to_binary()
+      |> String.replace("\"", "\\\"")
+
+    vanilla_js = String.replace(vanilla_js, "\"", "\\\"")
+
+    "JS_exec.call(this, \"#{lv_encoded}\", \"#{vanilla_js}\")"
+  end
+
+  @doc """
+  Generates vanilla JavaScript for DOM manipulation with optional selector targeting.
+
+  Creates JavaScript that either operates on the current element (`this`) or targets elements via querySelector.
+
+  ## Parameters
+  - `action` - The classList action to perform (e.g., "toggle('hidden')", "add('active')")
+  - `opts` - Options including `:to` for element selector
+
+  ## Examples
+
+      iex> js_vanilla_action("toggle('hidden')", [])
+      "this.classList.toggle('hidden')"
+
+      iex> js_vanilla_action("add('active')", to: "#button")
+      "document.querySelectorAll('#button').forEach(el => el.classList.add('active'))"
+
+      iex> js_vanilla_action("remove('disabled')", to: ".form-input")
+      "document.querySelectorAll('.form-input').forEach(el => el.classList.remove('disabled'))"
+
+  """
+  def js_vanilla_action(action, opts) do
+    case opts[:to] do
+      nil -> "this.classList.#{action}"
+      selector -> "document.querySelectorAll('#{selector}').forEach(el => el.classList.#{action})"
+    end
+  end
 end

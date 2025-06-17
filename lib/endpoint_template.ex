@@ -190,17 +190,20 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       def include_assets(%{assigns: assigns} = _conn, :bottom) do
         endpoint_module = Bonfire.Common.Config.endpoint_module()
+        current_user_id = Utils.current_user_id(assigns)
+
+        live_socket? = assigns[:force_live] || (current_user_id && !assigns[:force_static])
+        # || Utils.current_account(assigns)
 
         js =
-          if assigns[:force_live] || (Utils.current_user_id(assigns) && !assigns[:force_static]) do
-            # || Utils.current_account(assigns)
+          if live_socket? || current_user_id do
             endpoint_module.static_path("/assets/bonfire_live.js")
           else
             endpoint_module.static_path("/assets/bonfire_basic.js")
           end
 
         """
-        <script defer phx-track-static crossorigin='anonymous' src='#{js}'></script>
+        <script data-live-socket="#{live_socket? || "false"}" defer phx-track-static crossorigin='anonymous' src='#{js}'></script>
         <link phx-track-static rel='stylesheet' href='#{endpoint_module.static_path("/images/icons/icons.css")}'/>
         """
       end

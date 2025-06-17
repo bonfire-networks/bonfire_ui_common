@@ -9,6 +9,12 @@ import { TooltipHooks } from "./tooltip";
 // import { FeedHooks } from "./feed"
 import * as c1 from "../../../../config/current_flavour/assets/hooks/Bonfire.UI.Common.PreviewContentLive.hooks";
 
+// Universal JS executor - uses vanilla JS when there's no LiveView 
+window.JS_exec = function (_lv_js, vanilla_js) {
+	// Execute vanilla JS using Function constructor (rather than eval)
+	new Function(vanilla_js).call(this);
+};
+
 function ns(hooks, nameSpace) {
 	const updatedHooks = {};
 	Object.keys(hooks).map(function (key) {
@@ -39,15 +45,20 @@ Object.assign(Hooks, CopyHooks, TooltipHooks, FeedHooks);
 function phxClick(event) {
 	// event.preventDefault(); // Override the native event?
 	let name = this.getAttribute("phx-click");
-	if (name.charAt(0) == "[") {
-		name = JSON.parse(name)[0][1]["event"];
+	if (name && typeof name === "string") {
+		if (name.charAt(0) == "[") {
+			name = JSON.parse(name)[0][1]["event"];
+		}
+		if (name && typeof name === "string") {
+			window.location =
+				"/LiveHandler/" +
+				name.replace(":", "/") +
+				"?" +
+				new URLSearchParams(getPhxValues(this)).toString();
+		}
 	}
-	window.location =
-		"/LiveHandler/" +
-		name.replace(":", "/") +
-		"?" +
-		new URLSearchParams(getPhxValues(this)).toString();
 }
+
 (function () {
 	[...document.querySelectorAll("[phx-click]")].map((el) => {
 		el.addEventListener("click", phxClick);
