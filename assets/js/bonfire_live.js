@@ -12,12 +12,14 @@ let Hooks = {};
 
 
 // Universal JS executor - uses LiveView JS if connected, vanilla JS if not
-window.JS_exec = function (lv_js, vanilla_js) {
+window.JS_exec = function (lv_js_b64, vanilla_js_b64) {
 	if (window.liveSocket && window.liveSocket.isConnected()) {
 		// Execute LiveView JS command on the triggering element
+		const lv_js = atob(lv_js_b64);
 		liveSocket.execJS(this, lv_js);
 	} else {
 		// Execute vanilla JS using Function constructor (rather than eval)
+		const vanilla_js = atob(vanilla_js_b64);
 		new Function(vanilla_js).call(this);
 	}
 };

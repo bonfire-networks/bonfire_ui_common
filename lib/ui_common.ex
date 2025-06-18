@@ -1750,15 +1750,22 @@ defmodule Bonfire.UI.Common do
 
   """
   def js_hybrid(lv_js, vanilla_js) do
-    lv_encoded =
-      lv_js
-      |> Phoenix.HTML.Safe.to_iodata()
-      |> IO.iodata_to_binary()
-      |> String.replace("\"", "\\\"")
+    # Get the raw JSON without HTML escaping
+    lv_js =
+      case lv_js do
+        %Phoenix.LiveView.JS{ops: ops} ->
+          # Directly encode the ops without HTML escaping
+          Phoenix.json_library().encode!(ops)
 
-    vanilla_js = String.replace(vanilla_js, "\"", "\\\"")
+        _ ->
+          # Already a string? use as-is
+          to_string(lv_js)
+      end
+      |> Base.encode64()
 
-    "JS_exec.call(this, \"#{lv_encoded}\", \"#{vanilla_js}\")"
+    vanilla_js = Base.encode64(vanilla_js)
+
+    "JS_exec.call(this, \"#{lv_js}\", \"#{vanilla_js}\")"
   end
 
   @doc """

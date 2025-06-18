@@ -10,8 +10,9 @@ import { TooltipHooks } from "./tooltip";
 import * as c1 from "../../../../config/current_flavour/assets/hooks/Bonfire.UI.Common.PreviewContentLive.hooks";
 
 // Universal JS executor - uses vanilla JS when there's no LiveView 
-window.JS_exec = function (_lv_js, vanilla_js) {
+window.JS_exec = function (_lv_js, vanilla_js_b64) {
 	// Execute vanilla JS using Function constructor (rather than eval)
+	const vanilla_js = atob(vanilla_js_b64);
 	new Function(vanilla_js).call(this);
 };
 
