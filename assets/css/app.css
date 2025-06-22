@@ -31,6 +31,27 @@
 @variant phx-submit-loading (&.phx-submit-loading, .phx-submit-loading &);
 @variant phx-change-loading (&.phx-change-loading, .phx-change-loading &);
 
+
+.filters_tabbed {
+  visibility: hidden;
+  position: absolute;
+  width: 100%;
+  display: block;
+  height: 2px;
+  bottom: -10px;
+  left: 0;
+  background-color: var(--color-primary);
+  transform: scaleX(0);
+  transition: transform 0.3s ease-in-out; 
+}
+.btn-tabbed-primary .filters_tabbed {
+  visibility: visible;
+  transform: scaleX(1);
+}
+  
+  article.unread-activity {
+    @apply border-l-2 border-primary !bg-primary/5;
+  }
 /* 
  * Milkdown Editor Styles
  * Custom styles for the Milkdown editor integration with Bonfire
@@ -39,6 +60,8 @@
  .floating_smart_input {
     box-shadow: 0 3px 8px -1px var(--color-base-200), 0 10px 36px -4px var(--color-primary);
  }
+
+
 
  .markdown-editor {
   min-height: 250px;

@@ -1,14 +1,45 @@
 <header class="sticky top-0 z-50 flex flex-row items-center w-full p-3 rounded-t-xl bg-base-100 md:z-auto md:relative flex-align-items-stretch flex-nowrap">
-  <span class="flex-1 font-medium text-base-content/80 text-ellipsis">
-    {#if e(@smart_input_opts, :create_object_type, nil) != "message"}
-      {e(@smart_input_opts, :prompt, l("Share your thoughts"))}
-    {#else}
+  {#if e(@smart_input_opts, :create_object_type, nil) != "message"}
+    <div class="text-base font-semibold">
+      {e(@smart_input_opts, :prompt, l("Create post"))}
+    </div>
+    <!-- <div
+    data-position="bottom"
+    phx-hook="Tooltip"
+    id={"smart_input_more_options"}
+    class="relative"
+  >
+    <label
+      class="tooltip-button emoji-button btn text-base btn-outline border-base-content/10"
+      tabindex="0"
+      role="button"
+      aria-haspopup="true"
+      aria-expanded="true"
+    >
+      <#Icon iconify="heroicons:squares-plus" class="w-5 h-5" />
+        {e(@smart_input_opts, :prompt, l("Create post"))}
+    </label>
+    <ul
+      tabindex="0"
+      class="tooltip z-[99999999] menu shadow-sm bg-base-100 border border-base-content/10 w-52 absolute rounded-xl top-0 left-0 hidden"
+      role="menu"
+      aria-orientation="vertical"
+    >
+      <li><button type="button" class="flex items-center gap-2">
+      <#Icon iconify="dashicons:text-page" class="w-4 h-4 text-base-content/70" />
+      {l "Create a post"}</button></li>
+      <li><button type="button">
+      <#Icon iconify="icomoon-free:blog" class="w-4 h-4 text-base-content/70" />
+      {l "Create an article"}</button></li>
+      </ul>
+    </div> -->
+  {#else}
+    <div class="text-base font-semibold">
       <!-- <div class="flex items-center gap-2"> -->
       {l("Send a direct message")}
-      <!-- <span class="btn btn-sm btn-circle" phx-click="Bonfire.UI.Common.SmartInput:reset_to_default"><#Icon iconify="carbon:close" class="w-4 h-4" /></span> -->
-      <!-- </div> -->
-    {/if}
-  </span>
+    </div>
+  {/if}
+
   <div class="absolute flex items-center gap-2 right-3">
     <button
       phx-click={LiveHandler.minimize()}

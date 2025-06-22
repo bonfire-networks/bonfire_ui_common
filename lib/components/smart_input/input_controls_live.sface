@@ -76,7 +76,7 @@
                 <button
                   title={l("Insert emoji")}
                   type="button"
-                  class="tooltip-button emoji-button btn btn-outline btn-square btn-sm border-base-content/20"
+                  class="tooltip-button emoji-button btn btn-ghost btn-square btn-sm"
                 >
                   <#Icon iconify="lucide-lab:bear-face" class="w-4 h-4 text-base-content/70" />
                 </button>
@@ -103,7 +103,7 @@
                     ".btn_cw_toggle",
                     "btn-active"
                   )}
-                  class="swap items-center btn btn-outline btn-square btn-sm border-base-content/20 btn_cw_toggle"
+                  class="swap items-center btn btn-ghost btn-square btn-sm btn_cw_toggle"
                 >
                   <input type="checkbox" name="sensitive">
                   <#Icon iconify="ri:alert-line" class="swap-off w-4 h-4 text-base-content/70" />
@@ -111,7 +111,37 @@
                 </label>
               </div>
 
-              <button
+              <!-- <div
+                data-position="top"
+                phx-hook="Tooltip"
+                id={"smart_input_more_options"}
+                class="relative"
+              >
+                <label
+                  class="tooltip-button emoji-button btn btn-ghost btn-square btn-sm"
+                  tabindex="0"
+                  role="button"
+                  aria-haspopup="true"
+                  aria-expanded="true"
+                >
+                  <#Icon iconify="heroicons:squares-plus" class="w-5 h-5 text-base-content/70" />
+                </label>
+                <ul
+                  tabindex="0"
+                  class="tooltip z-[99999999] menu shadow-sm bg-base-100 border border-base-content/10 w-52 absolute rounded-xl top-0 left-0 hidden"
+                  role="menu"
+                  aria-orientation="vertical"
+                >
+                  <li><button type="button" class="flex items-center gap-2">
+                  <#Icon iconify="dashicons:text-page" class="w-4 h-4 text-base-content/70" />
+                  {l "Create a post"}</button></li>
+                  <li><button type="button">
+                  <#Icon iconify="icomoon-free:blog" class="w-4 h-4 text-base-content/70" />
+                  {l "Create an article"}</button></li>
+                  </ul>
+                </div> -->
+
+              <!-- <button
                 :if={@enable_thread_title}
                 type="button"
                 phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
@@ -119,10 +149,10 @@
                   ".btn_title_toggle",
                   "btn-active"
                 )}
-                class="title-button btn btn-outline btn-square btn-sm border-base-content/20"
+                class="title-button btn btn-ghost btn-square btn-sm"
               >
                 <#Icon iconify="solar:text-bold" class="w-4 h-4 text-base-content/70" />
-              </button>
+              </button> -->
             </div>
 
             <div class="flex items-center gap-2">
@@ -145,16 +175,16 @@
                 id="submit_btn"
                 x-on:click="$dispatch('submit')"
                 phx-disable-with
-                class="btn-square btn-sm btn btn-primary"
+                class="btn-sm btn btn-primary"
                 disabled={@smart_input_opts[:submit_disabled]}
               >
                 <!-- <#Icon iconify="mdi:email-fast-outline" class="w-4 h-4" /> -->
                 <#Icon iconify="lucide:arrow-up" class="w-4 h-4" />
-                {#if e(@smart_input_opts, :create_object_type, nil) == "message"}
+                <!-- {#if e(@smart_input_opts, :create_object_type, nil) == "message"}
                   <span class="sr-only">{l("Send")}</span>
-                {#else}
-                  <span class="sr-only">{l("Publish")}</span>
-                {/if}
+                {#else} -->
+                <span class="">{l("Post")}</span>
+                <!-- {/if} -->
               </button>
             </div>
           </div>
