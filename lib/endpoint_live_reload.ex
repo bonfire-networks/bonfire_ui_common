@@ -14,7 +14,7 @@ defmodule Bonfire.UI.Common.Endpoint.LiveReload do
 
       def halt_live_reload(conn, _), do: conn
 
-      if unquote(code_reloading?) && Application.compile_env(:bonfire, :hot_code_reload) &&
+      if unquote(code_reloading?) && Application.get_env(:bonfire, :hot_code_reload) &&
            Code.ensure_loaded?(Phoenix.LiveReloader.Socket) do
         socket("/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket)
 

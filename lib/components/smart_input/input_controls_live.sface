@@ -141,7 +141,7 @@
                   </ul>
                 </div> -->
 
-              <!-- <button
+              <button
                 :if={@enable_thread_title}
                 type="button"
                 phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
@@ -152,7 +152,7 @@
                 class="title-button btn btn-ghost btn-square btn-sm"
               >
                 <#Icon iconify="solar:text-bold" class="w-4 h-4 text-base-content/70" />
-              </button> -->
+              </button>
             </div>
 
             <div class="flex items-center gap-2">
