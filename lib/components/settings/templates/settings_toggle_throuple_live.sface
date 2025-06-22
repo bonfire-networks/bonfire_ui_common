@@ -3,9 +3,9 @@
 
   <div class="flex items-center justify-between">
     <div class={"flex flex-col mr-2", " !mr-0": @compact}>
-      <div class="flex flex-row gap-2" :if={@name}>
+      <div class="flex flex-row gap-2" :if={@name || @icon}>
+        <Iconify.iconify :if={@icon} icon={@icon} class="w-4 h-4" />
         <div class="text-sm">{@name}</div>
-        <div :if={@show_label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div>
       </div>
       <div class="text-sm text-base-content/70" :if={@description}>{@description}</div>
     </div>
@@ -33,8 +33,8 @@
           phx-target={@event_target}
           {...@phx_values_enabled}
         >
-          <#Icon :if={@with_icon} solid="Check" class="w-4 h-4" />
-          <span class={"sr-only": @with_icon}>{@label_yes || l("Yes")}</span>
+          <#Icon :if={@with_icons} solid="Check" class="w-4 h-4" />
+          <span class={"sr-only": @with_icons}>{@label_yes || l("Yes")}</span>
         </button>
         <button
           data-id="default"
@@ -47,8 +47,8 @@
           phx-target={@event_target}
           {...@phx_values_default}
         >
-          <#Icon :if={@with_icon} iconify="bi:dot" class="w-4 h-4" />
-          <span class={"sr-only": @with_icon}>{@label_default || l("Default")}</span>
+          <#Icon :if={@with_icons} iconify="bi:dot" class="w-4 h-4" />
+          <span class={"sr-only": @with_icons}>{@label_default || l("Default")}</span>
         </button>
         <button
           data-id="disabled"
@@ -61,8 +61,8 @@
           phx-target={@event_target}
           {...@phx_values_disabled}
         >
-          <#Icon :if={@with_icon} solid="X" class="w-4 h-4" />
-          <span class={"sr-only": @with_icon}>{@label_no || l("No")}</span>
+          <#Icon :if={@with_icons} solid="X" class="w-4 h-4" />
+          <span class={"sr-only": @with_icons}>{@label_no || l("No")}</span>
         </button>
       </div>
     </div>

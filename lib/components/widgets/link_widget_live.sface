@@ -12,21 +12,21 @@
   label={@text || @widget[:text] || @widget[:name]}
   phx_hook={@widget[:phx_hook]}
 >
-  <!-- <div class={@content_class}>
+  {!-- <div class={@content_class}>
     <span :if={!@without_icon && (@icon || @widget[:icon] || @widget[:icon_active])} class=""> -->
   <!-- {#if not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])}
         <Iconify.iconify
           icon={@icon || @widget[:icon]}
           class={@widget[:icon_class] || @icon_class, "!text-base-content"}
         />
-      {#else} -->
+      {#else} --}
   <div
     :if={!@without_icon && (@icon || @widget[:icon])}
     class="w-7 h-7 rounded-lg bg-base-content/10 flex items-center place-content-center shadow-lg"
   >
     <Iconify.iconify icon={@icon || @widget[:icon]} class={@widget[:icon_class] || @icon_class} />
   </div>
-  <!-- {/if} -->
+  {!-- {/if} -->
   <!-- </span>
     <span
       :if={(not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])) or
@@ -42,10 +42,13 @@
         "!font-bold !text-base-content":
           not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
       } 
-    >-->
-  <span class="opacity-80 font-medium">{@text || @widget[:text] || @widget[:name]}</span>
-  <!-- </span> -->
-  <!-- </div> -->
+    >--}
+  <span class="opacity-80 font-medium">{localise_dynamic(
+      @text || @widget[:text] || @widget[:name],
+      @widget[:extension] || @widget[:module]
+    )}</span>
+  {!-- </span> -->
+  <!-- </div> --}
   {#case @widget[:badge]}
     {#match nil}
     {#match badge}

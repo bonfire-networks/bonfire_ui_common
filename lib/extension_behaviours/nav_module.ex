@@ -22,11 +22,12 @@ defmodule Bonfire.UI.Common.NavModule do
   def nav(modules) when is_list(modules) do
     Enum.map(modules, fn
       {module, props} ->
-        Utils.maybe_apply(module, :declared_nav, [], &nav_function_error/2)
-        |> Enum.into(%{props: props})
+        ret = Utils.maybe_apply(module, :declared_nav, [], &nav_function_error/2)
+        if ret, do: Enum.into(ret, %{props: props, module: module})
 
       module ->
-        Utils.maybe_apply(module, :declared_nav, [], &nav_function_error/2)
+        ret = Utils.maybe_apply(module, :declared_nav, [], &nav_function_error/2)
+        if ret, do: Enum.into(ret, %{module: module})
     end)
   end
 
