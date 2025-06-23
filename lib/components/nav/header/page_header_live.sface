@@ -10,7 +10,7 @@
         {#if @back}
           <Bonfire.UI.Common.BackButtonLive back={@back} />
         {#else}
-          <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost">
+          <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost btn-sm">
             <Bonfire.UI.Common.AvatarLive
               :if={is_map(current_user(@__context__))}
               bg_class="rounded-full"
