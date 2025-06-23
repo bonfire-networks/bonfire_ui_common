@@ -64,7 +64,7 @@
                   class={"flex flex-col min-h-[calc(var(--inner-window-height))] pb-4 md:pb-[1px] lg:gap-3 #{if @hide_main, do: 'hidden'}"}
                 >
                   <div :if={!@no_header} class="sticky top-0 lg:top-2 mt-0 lg:mt-2 z-[999]">
-                    <div class="flex flex-1 w-full transition-color duration-150 ease-in-out h-[48px] lg:rounded-box bg-base-100/70 shadow backdrop-blur-sm">
+                    <div class="flex flex-1 w-full transition-color duration-150 ease-in-out h-[48px] lg:rounded-lg bg-base-100/70 shadow backdrop-blur-sm">
                       <StatelessComponent
                         module={maybe_component(Bonfire.UI.Common.PageHeaderLive, @__context__)}
                         page={@page}
