@@ -422,7 +422,7 @@ defmodule Bonfire.UI.Common.ErrorHandling do
         |> UI.Common.assign_generic(:__replace_render__with__, msg)
         |> UI.Common.assign_error(msg)
 
-      # |> flood("socket error #{inspect(return_keys)}")
+      # |> debug("socket error #{inspect(return_keys)}")
 
       #   UI.Common.redirect_self("/error")
       #   |> debug("rrrrr")
