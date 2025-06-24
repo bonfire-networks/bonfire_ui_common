@@ -23,6 +23,16 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       def log_ip(conn, _), do: conn
 
+      def save_url_in_process(%{request_path: request_path} = conn, _)
+          when is_binary(request_path) do
+        # Save the path in Process dictionary (used by Gettext.POAnnotator)
+        Process.put(:bonfire_current_url, request_path)
+
+        conn
+      end
+
+      def save_url_in_process(conn, _), do: conn
+
       plug(Bonfire.UI.Common.MultiTenancyPlug)
 
       use_if_enabled(Absinthe.Phoenix.Endpoint)
@@ -106,6 +116,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       plug(Plug.RequestId)
       plug(Plug.Telemetry, event_prefix: [:phoenix, :endpoint])
+
+      plug :save_url_in_process
 
       # parses real IP in conn if behind proxy
       plug(RemoteIp)

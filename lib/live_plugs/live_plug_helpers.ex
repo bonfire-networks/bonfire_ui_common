@@ -154,6 +154,10 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
 
     uri = URI.parse(url)
     # url = uri |> String.trim(to_string(host_uri)) |> String.trim("#") |> debug()
+    current_url = uri.path || url
+
+    # save the path in Process dictionary (use for e.g. by Gettext.POAnnotator)
+    Process.put(:bonfire_current_url, current_url)
 
     # route_info =
     #   Phoenix.Router.route_info(socket.router || Bonfire.Web.Router, "GET", url, host_uri.host)
@@ -162,7 +166,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
     socket =
       assign_default_params(params, socket,
         current_params: params,
-        current_url: uri.path || url,
+        current_url: current_url,
         # current_route: e(route_info, :route, nil)
         force_static: params["force_render"] == "static",
         force_live: params["force_render"] == "live"
