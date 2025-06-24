@@ -63,7 +63,8 @@
 		"postcss-cli": "^11.0.0",
 		"prop-types": "^15.8.1",
 		"tailwindcss": "4.1",
-		"tailwindcss-debug-screens": "^2.2.1"
+		"tailwindcss-debug-screens": "^2.2.1",
+		"tailwindcss-safe-area": "^0.6.0"
 	},
 	"disabledDependencies": {
 		"i": "^0.3.7",

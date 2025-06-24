@@ -8,8 +8,8 @@
 >
   <div id="the_preview_contents" class={if !e(@show, false), do: "hidden"}>
     {!-- Header with back button --}
-    <div class="sticky block backdrop-blur-sm top-2 mt-2 rounded-box shadow bg-base-100/70 z-[999]">
-      <div role="banner" class="flex items-center h-[48px] flex-1 w-full px-4">
+    <div class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 shadow  min-h-[58px] pb-3 lg:pb-0 flex place-content-center backdrop-blur-sm lg:rounded-b-lg">
+      <div role="banner" class="flex items-center place-content-center flex-1 w-full px-4">
         <div class="flex items-center gap-2 w-full">
           <button
             id="close_preview"

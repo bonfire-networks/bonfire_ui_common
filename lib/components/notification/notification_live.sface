@@ -8,7 +8,7 @@
     data-id="notifications-container"
     class="flex flex-col items-center w-full gap-2 sm:items-end"
   >
-    <div
+    <!-- <div
       :if={@i == 2}
       id="connection-status"
       class="hidden rounded-md bg-red-50 p-4 fixed top-1 right-1 width-[280px] fade-in-scale z-50"
@@ -17,12 +17,8 @@
     >
       <p class="text-sm font-medium text-red-800">
         {l("Offline - waiting to reconnect...")}
-        <!-- <a
-          class="btn btn-error btn-outline ml-2 btn-xs rounded normal-case"
-          href="javascript:liveSocket.connect()"
-        >{l "Try again"}</a> -->
       </p>
-    </div>
+    </div> -->
 
     <div
       data-id="notification"

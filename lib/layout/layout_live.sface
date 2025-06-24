@@ -1,6 +1,6 @@
 <div
   data-id="bonfire_live"
-  class="antialiased bg-base-200 min-h-screen"
+  class="antialiased bg-base-200 min-h-screen min-h-screen-safe pb-safe"
   data-theme={Bonfire.UI.Common.ThemeHelper.current_theme(assigns)}
   style={maybe_custom_theme(
     current_user: current_user(@__context__),
@@ -22,7 +22,7 @@
 
   <div class="drawer xl:drawer-open lg:max-w-[var(--spacing-1190)] mx-auto w-full">
     <input id="sidebar-drawer" type="checkbox" class="drawer-toggle">
-    <div class="drawer-content">
+    <div class="drawer-content px-safe">
       <div
         data-id="layout"
         data-two-columns={@without_secondary_widgets && !@without_sidebar}
@@ -63,8 +63,11 @@
                   id="inner"
                   class={"flex flex-col min-h-[calc(var(--inner-window-height))] pb-4 md:pb-[1px] lg:gap-3 #{if @hide_main, do: 'hidden'}"}
                 >
-                  <div :if={!@no_header} class="sticky top-0 lg:top-2 mt-0 lg:mt-2 z-[999]">
-                    <div class="flex flex-1 w-full transition-color duration-150 ease-in-out h-[48px] lg:rounded-lg bg-base-100/70 shadow backdrop-blur-sm">
+                  <div
+                    :if={!@no_header}
+                    class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 shadow  min-h-[58px] pb-3 lg:pb-0 flex place-content-center backdrop-blur-sm lg:rounded-b-lg"
+                  >
+                    <div class="flex flex-1 w-full transition-color duration-150 ease-in-out">
                       <StatelessComponent
                         module={maybe_component(Bonfire.UI.Common.PageHeaderLive, @__context__)}
                         page={@page}
@@ -152,7 +155,7 @@
       <aside
         :if={!@without_sidebar}
         data-id="nav_sidebar"
-        class="w-80 px-4 lg:px-0 lg:mr-3 lg:w-[250px] bg-base-100 lg:bg-base-200 min-h-full"
+        class="w-80 px-4 px-safe lg:px-0 lg:mr-3 lg:w-[250px] bg-base-100 lg:bg-base-200 min-h-full"
       >
         <Bonfire.UI.Common.NavSidebarLive
           :if={!@without_sidebar}
