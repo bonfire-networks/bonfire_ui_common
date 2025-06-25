@@ -1,4 +1,4 @@
-<div class="relative w-full dropdown">
+<div class="relative text-base w-full dropdown">
   {#if @is_editable}
     {#if @implementation == :live_select}
       <Bonfire.UI.Common.LiveSelectIntegrationLive.live_select

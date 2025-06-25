@@ -20,7 +20,16 @@
   themes: light --default, cupcake, bumblebee, lofi, lemonade, winter, nord, silk, corporate, dark --prefersdark, black, dracula, dim, coffee, sunset, cyberpunk, abyss;
 }
 
-
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+textarea,
+select {
+    font-size: 16px;
+}
 
 .phx-click-loading.opaque-on-click { 
   opacity: 50%;
