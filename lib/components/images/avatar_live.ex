@@ -5,6 +5,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
   prop parent_id, :string, default: nil
   # prop user, :any, default: nil
   prop src, :any, default: nil
+  prop showing_within, :any, default: nil
   prop viewing_main_object, :boolean, default: false
   prop comment, :boolean, default: false
   # prop size, :any, default: nil
