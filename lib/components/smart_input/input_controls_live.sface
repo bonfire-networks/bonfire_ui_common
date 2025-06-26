@@ -140,7 +140,7 @@
                   {l "Create an article"}</button></li>
                   </ul>
                 </div> -->
-              <div data-tip={l("Write an article")} class="tooltip tooltip-top">
+              <div data-tip={l("Add a title")} class="tooltip tooltip-top">
                 <button
                   :if={@enable_thread_title}
                   type="button"
