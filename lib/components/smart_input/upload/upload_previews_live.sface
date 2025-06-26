@@ -50,14 +50,14 @@
             <textarea
               name={"upload_metadata[#{entry.ref}][label]"}
               placeholder="Please describe/transcribe the uploaded file"
-              class="textarea resize-none"
+              class="textarea resize-none w-full lg:text-sm"
             />
             <div phx-update="ignore" id={"cover_selector_#{entry.ref}"}>
               <input type="hidden" name={"upload_metadata[#{entry.ref}][primary_image]"} value="" id={"primary_image_#{entry.ref}"} />
               <button
                 type="button"
                 class="btn btn-xs cover-btn"
-                onclick={"document.querySelectorAll('[id^=primary_image_]').forEach(input => input.value = ''); document.getElementById('primary_image_#{entry.ref}').value = 'true'; document.querySelectorAll('.cover-btn').forEach(btn => btn.classList.remove('btn-primary')); this.classList.add('btn-primary');"}
+                onclick={"if(this.classList.contains('btn-primary')) { document.querySelectorAll('[id^=primary_image_]').forEach(input => input.value = ''); document.querySelectorAll('.cover-btn').forEach(btn => btn.classList.remove('btn-primary')); } else { document.querySelectorAll('[id^=primary_image_]').forEach(input => input.value = ''); document.getElementById('primary_image_#{entry.ref}').value = 'true'; document.querySelectorAll('.cover-btn').forEach(btn => btn.classList.remove('btn-primary')); this.classList.add('btn-primary'); }"}
               >
                 {l("Select as cover")}
               </button>
