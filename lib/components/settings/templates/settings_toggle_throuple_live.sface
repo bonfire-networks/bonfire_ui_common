@@ -4,7 +4,7 @@
   <div class="flex items-center justify-between">
     <div class={"flex flex-col mr-2", " !mr-0": @compact}>
       <div class="flex flex-row items-center gap-2" :if={@name || @icon}>
-        <!-- <Iconify.iconify :if={@icon} icon={@icon} class="w-4 h-4" /> -->
+        <Iconify.iconify :if={@icon} icon={@icon} class="w-4 h-4" />
         <div class="text-sm">{@name}</div>
       </div>
       <div class="text-sm text-base-content/70" :if={@description}>{@description}</div>
