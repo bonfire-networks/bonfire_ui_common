@@ -53,7 +53,12 @@
               class="textarea resize-none w-full lg:text-sm"
             />
             <div phx-update="ignore" id={"cover_selector_#{entry.ref}"}>
-              <input type="hidden" name={"upload_metadata[#{entry.ref}][primary_image]"} value="" id={"primary_image_#{entry.ref}"} />
+              <input
+                type="hidden"
+                name={"upload_metadata[#{entry.ref}][primary_image]"}
+                value=""
+                id={"primary_image_#{entry.ref}"}
+              />
               <button
                 type="button"
                 class="btn btn-xs cover-btn"
@@ -112,7 +117,6 @@
         </button>
         {!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 --}
       </article>
-  
     {/for}
   </div>
   {!-- <div class="flex items-center justify-end">

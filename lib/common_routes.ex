@@ -83,6 +83,9 @@ defmodule Bonfire.UI.Common.Routes do
           "text",
           "markdown",
           "mjml",
+          "xml",
+          "atom+xml",
+          "rss+xml",
           "swiftui",
           "jetpack"
         ])
