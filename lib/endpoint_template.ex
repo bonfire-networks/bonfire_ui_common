@@ -33,6 +33,18 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       def save_url_in_process(conn, _), do: conn
 
+      def save_accept_header(conn, _opts) do
+        case Plug.Conn.get_req_header(conn, "accept") do
+          [accept_header | _] ->
+            conn
+            |> Plug.Conn.fetch_session()
+            |> Plug.Conn.put_session(:accept_header, accept_header)
+
+          [] ->
+            conn
+        end
+      end
+
       plug(Bonfire.UI.Common.MultiTenancyPlug)
 
       use_if_enabled(Absinthe.Phoenix.Endpoint)
@@ -56,6 +68,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
             :user_agent,
             # TODO: check if this gives us the "real IP" as set by `RemoteIp`
             :peer_data,
+            :x_headers,
             session: EndpointTemplate.session_options()
           ]
         ]
@@ -141,6 +154,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       plug(Plug.MethodOverride)
       plug(Plug.Head)
       plug(Plug.Session, EndpointTemplate.session_options())
+
+      plug :save_accept_header
 
       def include_assets(conn) do
         include_assets(conn, :top)
