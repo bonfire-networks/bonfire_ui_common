@@ -12,12 +12,12 @@
           >
             <div class="relative p-2 pb-0 bg-base-100">
               <label class="input w-full">
-                <#Icon iconify="solar:text-bold" class="w-4 h-4 opacity-50" />
+                <#Icon iconify="icomoon-free:blog" class="w-4 h-4 opacity-50" />
                 <input
                   value={@smart_input_opts[:title]}
                   name={:name}
                   class="w-full"
-                  placeholder={l("Enter an optional title")}
+                  placeholder={l("Enter the article title")}
                 />
                 {!-- <kbd class="kbd kbd-sm">⌘</kbd>
               <kbd class="kbd kbd-sm">K</kbd> --}
@@ -151,7 +151,7 @@
                 )}
                 class="title-button btn btn-ghost btn-square btn-sm"
               >
-                <#Icon iconify="solar:text-bold" class="w-4 h-4 text-base-content/70" />
+                <#Icon iconify="icomoon-free:blog" class="w-4 h-4 text-base-content/70" />
               </button>
             </div>
 

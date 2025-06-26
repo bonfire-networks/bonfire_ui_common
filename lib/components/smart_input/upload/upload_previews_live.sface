@@ -3,8 +3,7 @@
   id={"#{@parent_id}_upload-preview"}
   class="p-2 pt-0 uploads_preview"
 >
-  {!-- phx-update="ignore" --}
-  <div class="flex flex-col p-2 bg-base-content/5 gap-2 rounded-xl">
+  <div class="flex flex-col p-2 bg-base-content/5 gap-2 dividy-y divide-base-content/10 rounded-xl">
     {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
       <article
         id={"#{@parent_id}_upload-preview-#{i}"}
@@ -47,11 +46,23 @@
         {#for err <- upload_errors(@uploads.files, entry)}
           <p class="alert alert-warning p-1 text-xs">{error_to_string(err)} {l("Please remove it before continuing.")}</p>
         {#else}
-          <textarea
-            name={"upload_metadata[#{entry.ref}][label]"}
-            placeholder="Please describe/transcribe the uploaded file"
-            class="textarea resize-none flex-1"
-          />
+          <div class="flex flex-col gap-1 flex-1">
+            <textarea
+              name={"upload_metadata[#{entry.ref}][label]"}
+              placeholder="Please describe/transcribe the uploaded file"
+              class="textarea resize-none"
+            />
+            <div phx-update="ignore" id={"cover_selector_#{entry.ref}"}>
+              <input type="hidden" name={"upload_metadata[#{entry.ref}][primary_image]"} value="" id={"primary_image_#{entry.ref}"} />
+              <button
+                type="button"
+                class="btn btn-xs cover-btn"
+                onclick={"document.querySelectorAll('[id^=primary_image_]').forEach(input => input.value = ''); document.getElementById('primary_image_#{entry.ref}').value = 'true'; document.querySelectorAll('.cover-btn').forEach(btn => btn.classList.remove('btn-primary')); this.classList.add('btn-primary');"}
+              >
+                {l("Select as cover")}
+              </button>
+            </div>
+          </div>
         {/for}
 
         <!-- <Bonfire.UI.Common.InlineModalLive
@@ -101,6 +112,7 @@
         </button>
         {!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 --}
       </article>
+  
     {/for}
   </div>
   {!-- <div class="flex items-center justify-end">
