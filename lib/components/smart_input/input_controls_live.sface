@@ -72,10 +72,12 @@
               />
 
               <!-- data-close-on-inside-click="true" -->
-              <div phx-hook="Tooltip" phx-update="ignore" id="emoji_picker_in_composer" data-trigger="click">
+              <div data-tip={l("Insert emoji")} class="tooltip tooltip-top">
+              <div  phx-hook="Tooltip" phx-update="ignore" id="emoji_picker_in_composer" data-trigger="click">
                 <button
                   title={l("Insert emoji")}
                   type="button"
+                  
                   class="tooltip-button emoji-button btn btn-ghost btn-square btn-sm"
                 >
                   <#Icon iconify="lucide-lab:bear-face" class="w-4 h-4 text-base-content/70" />
@@ -85,15 +87,14 @@
                   class="emoji-picker-in-composer w-60 tooltip absolute bottom-full right-0 z-50 mb-2 hidden"
                   data-emojis={@custom_emojis}
                 />
-                <!-- </div> -->
-                <!-- <emoji-picker /> -->
-                <!-- <emoji-picker class="hidden tooltip absolute bottom-full right-0 z-50 mb-2" /> -->
+              </div>
               </div>
 
               <div
                 :if={e(@smart_input_opts, :create_object_type, nil) in ["message", "post", nil]}
                 title={l("Mark the activity as sensitive")}
-                class="relative z-30 flex items-center"
+                class="relative z-30 flex items-center tooltip tooltip-top"
+                data-tip={l("Mark the activity as sensitive")}
                 id="sensitive_btn"
                 phx-update="ignore"
               >
@@ -140,10 +141,11 @@
                   {l "Create an article"}</button></li>
                   </ul>
                 </div> -->
-
+              <div data-tip={l("Write an article")} class="tooltip tooltip-top">
               <button
                 :if={@enable_thread_title}
                 type="button"
+                
                 phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.toggle_expanded(
                   "#smart_input_thread_title",
                   ".btn_title_toggle",
@@ -153,6 +155,7 @@
               >
                 <#Icon iconify="icomoon-free:blog" class="w-4 h-4 text-base-content/70" />
               </button>
+              </div>
             </div>
 
             <div class="flex items-center gap-2">
