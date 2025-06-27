@@ -878,8 +878,16 @@ defmodule Bonfire.UI.Common do
     |> assign_generic(assigns)
   end
 
+  def assign_flash({:noreply, socket}, type, message, assigns, pid) do
+    {:noreply, assign_flash(socket, type, message, assigns, pid)}
+  end
+
+  def assign_flash({:ok, socket}, type, message, assigns, pid) do
+    {:ok, assign_flash(socket, type, message, assigns, pid)}
+  end
+
   def assign_flash(other, type, message, assigns, pid) do
-    case other[:socket] do
+    case e(other, :socket, nil) do
       %Phoenix.LiveView.Socket{} = socket ->
         assign_flash(socket, type, message, assigns, pid)
 
