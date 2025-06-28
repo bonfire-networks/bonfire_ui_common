@@ -60,9 +60,14 @@ select {
   transform: scaleX(1);
 }
   
-  article.unread-activity {
-    @apply border-l-2 border-primary !bg-primary/5;
-  }
+article.active-activity {
+  @apply border-l-2 border-primary !bg-primary/5;
+}
+
+article.unread-activity {
+  @apply border-l-2 border-secondary !bg-secondary/5;
+}
+
 /* 
  * Milkdown Editor Styles
  * Custom styles for the Milkdown editor integration with Bonfire
