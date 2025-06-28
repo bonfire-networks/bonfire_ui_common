@@ -9,8 +9,6 @@ import NProgress from "nprogress";
 // for JS features & extensions to hook into LiveView
 let Hooks = {};
 
-
-
 // Universal JS executor - uses LiveView JS if connected, vanilla JS if not
 window.JS_exec = function (lv_js_b64, vanilla_js_b64) {
 	if (window.liveSocket && window.liveSocket.isConnected()) {
@@ -136,7 +134,9 @@ window.liveSocket = liveSocket;
 
 import { CopyHooks } from "./copy";
 import { TooltipHooks } from "./tooltip";
-import  {DraggableHooks}  from "./draggable_widget";
+import { DraggableHooks } from "./draggable_widget";
+import { ScrollHooks } from "./scroll.js";
+
 // import DynamicImport from '@rtvision/esbuild-dynamic-import';
 // note depending on your setup you may need to do DynamicImport.default() instead
 // DynamicImport({ transformExtensions: ['.js'], changeRelativeToAbsolute: false, filter: "../../config/current_flavour/deps.hooks.js" }) 
@@ -145,9 +145,9 @@ import { ExtensionHooks } from "../../../../config/current_flavour/deps.hooks.js
 // import SourceInspect from "./../../../../deps/source_inspector/priv/js/source_inspector.js"
 // ExtensionHooks.SourceInspect = SourceInspect
 // ExtensionHooks.SourceInspect = SourceInspect(csrfToken)
- 
+
 import ComponentHooks from "../../../../config/current_flavour/assets/hooks/index.js";
 
 // Add Extensions' Hooks... 
-Object.assign(liveSocket.hooks, ExtensionHooks, DraggableHooks, ComponentHooks, CopyHooks, TooltipHooks);
+Object.assign(liveSocket.hooks, ExtensionHooks, DraggableHooks, ComponentHooks, CopyHooks, TooltipHooks, ScrollHooks);
 // test change
