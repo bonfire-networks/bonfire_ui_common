@@ -724,6 +724,10 @@ article.activity pre {
   div[data-id='object_body'] {
     word-break: break-word !important;
   }
+  
+  div[data-id='object_body'] br {
+    display: none !important;
+  }
 
   div[data-id='object_body'] h1 a {
 
