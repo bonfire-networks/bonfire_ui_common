@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Common.ComponentID do
   def new(component_module, object_id, parent_id)
       when is_binary(object_id) or is_number(object_id) or
              (is_atom(object_id) and not is_nil(object_id)) do
-    component_id = "#{randomised_id(component_module, parent_id)}_for_#{object_id}"
+    component_id = "#{deterministic_id(component_module, parent_id)}_for_#{object_id}"
 
     debug(component_id, "created stateful component with ID")
 
@@ -22,7 +22,7 @@ defmodule Bonfire.UI.Common.ComponentID do
     #  use first one just to identify component
     object_id = List.first(ids)
 
-    component_id = "#{randomised_id(component_module, parent_id)}_for_#{object_id}"
+    component_id = "#{deterministic_id(component_module, parent_id)}_for_#{object_id}"
 
     debug(component_id, "created stateful component with ID")
 
@@ -44,7 +44,7 @@ defmodule Bonfire.UI.Common.ComponentID do
           "cannot save ComponentID to process, because expected an object with id for #{component_module} (with parent_id #{parent_id}) but got"
         )
 
-        randomised_id(component_module, parent_id)
+        deterministic_id(component_module, parent_id)
     end
   end
 
@@ -54,16 +54,11 @@ defmodule Bonfire.UI.Common.ComponentID do
       "cannot save ComponentID to process, because expected an object id for #{component_module} (with parent_id #{parent_id}) but got"
     )
 
-    randomised_id(component_module, parent_id)
-  end
-
-  defp deterministic_id(component_module, parent_id) do
-    "#{component_module |> Types.module_to_str() |> String.replace(".", "-")}_#{parent_id |> Types.module_to_str() |> String.replace(".", "-")}"
-  end
-
-  # Keep for backward compatibility during transition
-  defp randomised_id(component_module, parent_id) do
     deterministic_id(component_module, parent_id)
+  end
+
+  def deterministic_id(component_module, parent_id) do
+    "#{component_module |> Types.module_to_str() |> String.replace(".", "-")}_#{parent_id |> Types.module_to_str() |> String.replace(".", "-")}"
   end
 
   def send_updates(component_module, object_id, assigns, pid \\ nil) do
