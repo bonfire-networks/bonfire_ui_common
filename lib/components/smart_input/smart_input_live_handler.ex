@@ -195,6 +195,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         smart_input_opts: opts,
         activity: nil,
         object: nil,
+        showing_within: e(assigns(socket), :showing_within, nil),
         activity_inception: "reply_to",
         to_boundaries: e(to_boundaries, nil) || e(assigns(socket), :to_boundaries, nil),
         to_circles: to_circles,
