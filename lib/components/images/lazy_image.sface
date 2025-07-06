@@ -8,7 +8,7 @@
           data-hash={blurhash}
           class="h-full"
           x-data="{src: null, loaded: false}"
-          x-intersect.once={"src = '#{src}'"}
+          x-intersect.once.margin.500px={"src = '#{src}'"}
         >
           <canvas class={@class} x-show="!loaded" x-transition.opacity.duration.500ms {...@opts} />
           <img
@@ -37,7 +37,7 @@
           {#match blurred when is_binary(blurred) and blurred != src}
             <img
               x-data={"{src: '#{blurred}', error: false}"}
-              x-intersect.once={"src = '#{src}'"}
+              x-intersect.once.margin.500px={"src = '#{src}'"}
               src={blurred}
               alt={@alt}
               class={@class}
