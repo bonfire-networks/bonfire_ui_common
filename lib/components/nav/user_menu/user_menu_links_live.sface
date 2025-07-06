@@ -30,15 +30,6 @@
     <div>{l("Profile")}</div>
   </LinkLive>
 </li>
-<li :if={Config.get(
-  [Bonfire.Me.Users, :max_per_account],
-  4,
-  :bonfire_me
-) > 1}>
-  <LinkLive to={~p"/switch-user"} class="flex items-center gap-2 text-sm text-base-content">
-    <div>{l("Switch profile")}</div>
-  </LinkLive>
-</li>
 
 {!-- <li>
   <LinkLive to={~p"/write"} class="flex items-center gap-2 text-sm text-base-content">
@@ -61,13 +52,15 @@
   </LinkLive>
 </li>
 
-{!-- if current user is also an admin --}
+{!-- if current user is also an admin - TODO: use boundaries/roles here instead --}
 <li :if={is_map(current_user(@__context__)) and
   maybe_apply(Bonfire.Me.Accounts, :is_admin?, [@__context__], fallback_return: nil) == true}>
   <LinkLive to={~p"/settings/instance"} class="flex items-center gap-2 text-sm text-base-content">
     <div>{l("Instance Settings")}</div>
   </LinkLive>
 </li>
+
+<StatelessComponent module={maybe_component(Bonfire.UI.Me.SwitchUserMenuItemsLive, @__context__)} />
 
 <li>
   <LinkLive to={~p"/logout"} class="flex items-center gap-2 text-sm text-base-content">

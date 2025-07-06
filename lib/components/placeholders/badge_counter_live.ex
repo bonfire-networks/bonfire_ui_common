@@ -1,10 +1,17 @@
 defmodule Bonfire.UI.Common.BadgeCounterLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
+  # NOTE: you should put the "indicator" class on the parent element
+
   prop counter_class, :css_class, default: ""
 
   prop count, :integer, default: 0
   prop feed_id, :any, default: nil
+
+  # defaults to current user
+  prop for_user, :any, default: nil
+
+  prop non_async, :boolean, default: false
 
   def update(%{count_increment: inc}, socket) do
     {:ok,
@@ -35,42 +42,55 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
 
   def update(assigns, socket) do
     socket = assign(socket, assigns)
-    current_user = current_user(socket)
+    for_user = e(assigns, :for_user, nil) || current_user(socket)
 
     case e(assigns, :id, nil) do
-      feed_name when not is_nil(feed_name) and not is_nil(current_user) ->
+      component_name when not is_nil(component_name) and not is_nil(for_user) ->
         feed_id =
           e(assigns, :feed_id, nil) ||
             Bonfire.Common.Utils.maybe_apply(
               Bonfire.Social.Feeds,
               :my_feed_id,
-              [feed_name, current_user]
+              [component_name, for_user]
             )
 
-        # subscribe to count updates
-        PubSub.subscribe("unseen_count:#{feed_name}:#{feed_id}", socket)
-
-        pid = self()
-
-        Task.start(fn ->
+        if e(assigns, :non_async, false) do
           unseen_count =
             Bonfire.Common.Utils.maybe_apply(
               Bonfire.Social.FeedActivities,
               :unseen_count,
-              [feed_id, current_user: current_user]
+              [feed_id, current_user: for_user]
             )
 
-          if socket_connected?(socket) != false,
-            do:
-              maybe_send_update(
-                __MODULE__,
-                feed_name,
-                [count_loaded: true, count: unseen_count],
-                pid
-              )
-        end)
+          {:ok,
+           socket
+           |> assign(count: unseen_count, count_loaded: true)}
+        else
+          # subscribe to count updates
+          PubSub.subscribe("unseen_count:#{component_name}:#{feed_id}", socket)
 
-        {:ok, socket}
+          pid = self()
+
+          Task.start(fn ->
+            unseen_count =
+              Bonfire.Common.Utils.maybe_apply(
+                Bonfire.Social.FeedActivities,
+                :unseen_count,
+                [feed_id, current_user: for_user]
+              )
+
+            if socket_connected?(socket) != false,
+              do:
+                maybe_send_update(
+                  __MODULE__,
+                  component_name,
+                  [count_loaded: true, count: unseen_count],
+                  pid
+                )
+          end)
+
+          {:ok, socket}
+        end
 
       _ ->
         {:ok, socket}
