@@ -9,7 +9,13 @@
         user_id={current_user_id(@__context__)}
       />
     </div>
-    {#if e(@smart_input_opts, :create_object_type, nil) != "message"}
+
+    {#if e(@smart_input_opts, :create_object_type, nil) in [:message, "message"]}
+      <div class="text-base font-semibold">
+        <!-- <div class="flex items-center gap-2"> -->
+        {l("Send a direct message")}
+      </div>
+    {#else}
       <div class="text-base font-semibold">
         {e(@smart_input_opts, :prompt, l("Create post"))}
       </div>
@@ -43,11 +49,6 @@
       {l "Create an article"}</button></li>
       </ul>
     </div> -->
-    {#else}
-      <div class="text-base font-semibold">
-        <!-- <div class="flex items-center gap-2"> -->
-        {l("Send a direct message")}
-      </div>
     {/if}
 
     <div class="absolute flex items-center gap-2 right-3">

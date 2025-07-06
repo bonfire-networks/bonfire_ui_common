@@ -90,7 +90,7 @@
               </div>
 
               <div
-                :if={e(@smart_input_opts, :create_object_type, nil) in ["message", "post", nil]}
+                :if={e(@smart_input_opts, :create_object_type, nil) in [:message, "message", "post", nil]}
                 title={l("Mark the activity as sensitive")}
                 class="relative z-30 flex items-center tooltip tooltip-top"
                 data-tip={l("Mark the activity as sensitive")}
@@ -157,8 +157,7 @@
             </div>
 
             <div class="flex items-center gap-2">
-              {#if e(@smart_input_opts, :create_object_type, nil) != "message" ||
-                  !e(@smart_input_opts, :recipients_editable, nil)}
+              {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
                 <StatelessComponent
                   module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
                   to_boundaries={@to_boundaries}
@@ -181,11 +180,11 @@
               >
                 <!-- <#Icon iconify="mdi:email-fast-outline" class="w-4 h-4" /> -->
                 <#Icon iconify="lucide:arrow-up" class="w-4 h-4" />
-                <!-- {#if e(@smart_input_opts, :create_object_type, nil) == "message"}
-                  <span class="sr-only">{l("Send")}</span>
-                {#else} -->
-                <span class="">{l("Post")}</span>
-                <!-- {/if} -->
+                {#if e(@smart_input_opts, :create_object_type, nil) in [:message, "message"]}
+                  {l("Send")}
+                {#else}
+                  {l("Post")}
+                {/if}
               </button>
             </div>
           </div>

@@ -57,7 +57,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
       smart_input_opts: %{
-        create_object_type: "post",
+        create_object_type: nil,
         open: false,
         text_suggestion: nil,
         recipients_editable: false,
