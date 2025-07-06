@@ -9,6 +9,7 @@
         id={"#{@parent_id}_upload-preview-#{i}"}
         data-img={"phx-preview-#{i}"}
         data-ref={entry.upload_ref}
+        phx-update="ignore"
         class="relative flex  gap-2 upload-entry rounded w-full"
       >
         {!-- phx-hook="imageMetadata" --}
