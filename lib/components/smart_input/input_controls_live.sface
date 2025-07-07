@@ -4,6 +4,16 @@
       {!-- here was old/loader.svg --}
       <div id="composer_wrapper" class="h-full flex flex-col">
         <div class="h-full flex flex-col flex-1 grow relative">
+          <div class="sensitive_alert alert hidden alert-warning mx-2 mt-2 p-2 cursor-pointer">
+            <span>{l("This activity is marked as sensitive.")}
+              <span
+                phx-click={JS.show(to: "#smart_input_summary")
+                |> JS.focus(to: "#smart_input_summary textarea")
+                |> JS.add_class("btn-active", to: "#summary_btn")}
+                class="font-semibold underline"
+                type="button"
+              >{l("Add a summary to explain the reason.")}</span></span>
+          </div>
           <div
             class="hidden"
             :if={@enable_thread_title}
@@ -32,8 +42,8 @@
             id="smart_input_summary"
           >
             <div class="p-2">
-              <label class="input w-full">
-                <#Icon iconify="heroicons-outline:menu-alt-2" class="w-4 h-4" />
+              <label class="relative w-full">
+                <!-- <#Icon iconify="heroicons-outline:menu-alt-2" class="w-4 h-4 absolute left-2 top-2" /> -->
                 {!-- <input
                   name="post[post_content][summary]"
                   type="text"
@@ -43,7 +53,7 @@
                 <textarea
                   name="post[post_content][summary]"
                   placeholder={l("Enter an optional summary")}
-                  class="textarea textarea-ghost textarea-sm min-h-4 w-full max-h-12"
+                  class="textarea textarea-xs resize w-full max-h-12"
                   style="field-sizing: normal;"
                 >{e(@smart_input_opts, :cw, nil)}</textarea>
               </label>
@@ -97,28 +107,19 @@
 
               <div
                 :if={e(@smart_input_opts, :create_object_type, nil) in [:message, "message", "post", nil]}
-                title={l("Mark the activity as sensitive")}
                 class="relative z-30 flex items-center tooltip tooltip-top"
                 data-tip={l("Mark the activity as sensitive")}
                 id="sensitive_btn"
+                phx-click={JS.toggle_class("btn-active", to: "#sensitive_btn label")
+                |> JS.toggle(to: ".sensitive_alert")}
                 phx-update="ignore"
               >
                 {!-- 
               WIP: why does this not work?
               JS.toggle_attribute({"placeholder", l("Enter an optional summary"), l("Enter an optional content warning")}, to: "#smart_input_summary textarea") --}
-                <label
-                  phx-click={LiveHandler.show_expanded(
-                    "#smart_input_summary",
-                    nil,
-                    "btn-active btn-error"
-                  )
-                  |> JS.toggle_class("border-error", to: "#smart_input_summary label")
-                  |> JS.focus(to: "#smart_input_summary textarea")}
-                  class="swap items-center btn btn-ghost btn-square btn-sm"
-                >
-                  <input type="checkbox" name="sensitive">
+                <label class="relative btn-primary btn btn-ghost btn-square btn-sm">
+                  <input type="checkbox" name="sensitive" class="opacity-0 absolute left-[999999999999999999px]">
                   <#Icon iconify="ri:alert-line" class="swap-off w-4 h-4 text-base-content/70" />
-                  <#Icon iconify="ri:alert-fill" class="swap-on w-4 h-4 text-base-content/70" />
                 </label>
               </div>
 
@@ -151,19 +152,29 @@
                   {l "Create an article"}</button></li>
                   </ul>
                 </div> -->
+              <div data-tip={l("Add a summary")} class="tooltip tooltip-top">
+                <button
+                  type="button"
+                  id="summary_btn"
+                  phx-click={JS.toggle(to: "#smart_input_summary")
+                  |> JS.focus(to: "#smart_input_summary textarea")
+                  |> JS.toggle_class("btn-active", to: "#summary_btn")}
+                  class="title-button  btn-primary btn btn-ghost btn-square btn-sm"
+                >
+                  <#Icon iconify="heroicons-outline:menu-alt-2" class="w-4 h-4 text-base-content/70" />
+                </button>
+              </div>
+
+              <!-- |> JS.show(to: "#smart_input_summary") -->
               <div data-tip={l("Add a title")} class="tooltip tooltip-top">
                 <button
                   :if={@enable_thread_title}
                   type="button"
-                  phx-click={LiveHandler.show_expanded(
-                    "#smart_input_post_title",
-                    nil,
-                    "btn-active"
-                  )
+                  id="title_btn"
+                  phx-click={JS.toggle(to: "#smart_input_post_title")
                   |> JS.focus(to: "#smart_input_post_title input")
-                  |> JS.show(to: "#smart_input_summary")
-                  |> JS.hide()}
-                  class="title-button btn btn-ghost btn-square btn-sm"
+                  |> JS.toggle_class("btn-active", to: "#title_btn")}
+                  class="title-button btn btn-primary btn-ghost btn-square btn-sm"
                 >
                   <#Icon iconify="icomoon-free:blog" class="w-4 h-4 text-base-content/70" />
                 </button>

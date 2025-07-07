@@ -21,6 +21,7 @@
     </LinkLive>
   </div>
 </li> --}
+<StatelessComponent module={maybe_component(Bonfire.UI.Me.SwitchUserMenuItemsLive, @__context__)} />
 
 <li>
   <LinkLive
@@ -59,8 +60,6 @@
     <div>{l("Instance Settings")}</div>
   </LinkLive>
 </li>
-
-<StatelessComponent module={maybe_component(Bonfire.UI.Me.SwitchUserMenuItemsLive, @__context__)} />
 
 <li>
   <LinkLive to={~p"/logout"} class="flex items-center gap-2 text-sm text-base-content">
