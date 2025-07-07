@@ -6,7 +6,7 @@
     <#slot {@empty_feed}>
       <div class="text-lg font-semibold capitalise">{e(
           @feedback_title,
-          if(@feed_name,
+          if(is_binary(@feed_name),
             do: l("%{feed_name} feed is empty", feed_name: @feed_name),
             else: l("This feed is empty")
           )

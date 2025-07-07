@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.InputControlsLive do
   use Bonfire.UI.Common.Web, :stateless_component
   use Bonfire.Common.Utils
-  # alias Bonfire.UI.Common.SmartInput.LiveHandler
+  alias Bonfire.UI.Common.SmartInput.LiveHandler
 
   prop preloaded_recipients, :list, default: nil
   prop smart_input_opts, :map, default: %{}

@@ -611,19 +611,36 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     socket
   end
 
-  def toggle_expanded(js \\ %JS{}, target, btn, class) when is_binary(btn) and is_binary(class) do
+  def toggle_expanded(js \\ %JS{}, target, btn, class) when is_binary(class) do
     # TODO: document
     js
     |> JS.toggle(to: target)
     #  seems toggle as in and out classes we could use: https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.JS.html#toggle/1
-    |> JS.remove_class(
-      class,
-      to: btn <> "." <> class
-    )
-    |> JS.add_class(
-      class,
-      to: btn <> ":not(." <> class <> ")"
-    )
+    |> toggle_class(btn, class)
+  end
+
+  def show_expanded(js \\ %JS{}, target, btn, class) when is_binary(class) do
+    # TODO: document
+    js
+    |> JS.show(to: target)
+    #  seems toggle as in and out classes we could use: https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.JS.html#toggle/1
+    |> toggle_class(btn, class)
+  end
+
+  def toggle_class(js \\ %JS{}, btn, class) when is_binary(class) do
+    # TODO: document
+    js
+    |> JS.toggle_class(class, to: btn)
+
+    #  seems toggle as in and out classes we could use: https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.JS.html#toggle/1
+    # |> JS.remove_class(
+    #   class,
+    #   to: btn <> "." <> class
+    # )
+    # |> JS.add_class(
+    #   class,
+    #   to: btn <> ":not(." <> class <> ")"
+    # )
   end
 
   def max_length do
