@@ -19,7 +19,10 @@
       <#Icon iconify="iconoir:arrow-left" class="w-4 h-4" />
     </LinkLive>
   {#else}
-    <button class="btn z-50 btn-ghost btn-sm btn-circle" onclick="history.length > 1 ? history.back() : window.location.href = '/'"><#Icon iconify="iconoir:arrow-left" class="w-4 h-4" /></button>
+    <button
+      class="btn z-50 btn-ghost btn-sm btn-circle"
+      onclick="history.length > 1 ? history.back() : window.location.href = '/'"
+    ><#Icon iconify="iconoir:arrow-left" class="w-4 h-4" /></button>
   {/if}
   {!-- {#elseif is_binary(@back) and @back != current_url(@__context__)}
   <LinkLive
