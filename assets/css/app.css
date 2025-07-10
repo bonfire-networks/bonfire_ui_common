@@ -699,7 +699,7 @@ article.activity pre {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 6;
   }
   .previewable_activity .previewable_truncate.previewable_expanded {
     overflow: visible;
