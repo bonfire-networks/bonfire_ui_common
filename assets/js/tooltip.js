@@ -21,16 +21,34 @@ TooltipHooks.Tooltip = {
 		let isHoveringButton = false;
 		let isHoveringTooltip = false;
 		let cleanup = null;
+		
+		// Store state on hook instance for access from lifecycle methods
+		this.isUpdating = false;
+		this.pendingUpdate = false;
+		
+		// Store cleanup function for lifecycle methods
+		this.cleanup = null;
 
 		const updatePosition = () => {
+			if (this.isUpdating) {
+				this.pendingUpdate = true;
+				return;
+			}
+			
+			if (!button || !tooltip) {
+				return;
+			}
+			
 			computePosition(button, tooltip, {
 				placement: position || "top",
 				middleware: [offset(6), flip({ padding: 5 }), shift({ padding: 5 })],
 			}).then(({ x, y }) => {
-				Object.assign(tooltip.style, {
-					left: `${x}px`,
-					top: `${y}px`,
-				});
+				if (!this.isUpdating && tooltip) {
+					Object.assign(tooltip.style, {
+						left: `${x}px`,
+						top: `${y}px`,
+					});
+				}
 			});
 		};
 
@@ -39,15 +57,18 @@ TooltipHooks.Tooltip = {
 			if (hasEmojiPicker) {
 				// For emoji picker, just do a one-time position update
 				updatePosition();
-			} else if (!cleanup) {
+			} else if (!this.cleanup) {
 				// For regular tooltips, use autoUpdate without elementResize
-				cleanup = autoUpdate(button, tooltip, updatePosition, {
+				this.cleanup = autoUpdate(button, tooltip, updatePosition, {
 					elementResize: false,
 					ancestorScroll: true,
 					ancestorResize: true
 				});
 			}
 		};
+		
+		// Store function on instance for lifecycle methods
+		this.startPositionUpdate = startPositionUpdate;
 
 		const showTooltip = () => {
 			clearTimeout(hideTimeout);
@@ -76,9 +97,9 @@ TooltipHooks.Tooltip = {
 					clearTimeout(showTimeout);
 					tooltip.style.display = '';
 					tooltip.style.pointerEvents = '';
-					if (cleanup) {
-						cleanup();
-						cleanup = null;
+					if (this.cleanup) {
+						this.cleanup();
+						this.cleanup = null;
 					}
 				}, delay);
 			}
@@ -141,8 +162,8 @@ TooltipHooks.Tooltip = {
 		}
 
 		// Cleanup function
-		this.cleanup = () => {
-			cleanup?.();
+		this.eventCleanup = () => {
+			this.cleanup?.();
 			clearTimeout(showTimeout);
 			clearTimeout(hideTimeout);
 			
@@ -165,7 +186,47 @@ TooltipHooks.Tooltip = {
 	},
 
 	destroyed() {
-		this.cleanup?.();
+		this.eventCleanup?.();
+	},
+
+	beforeUpdate() {
+		// Pause positioning during DOM updates
+		if (this.cleanup) {
+			this.cleanup();
+			this.cleanup = null;
+		}
+		this.isUpdating = true;
+	},
+
+	updated() {
+		// Resume positioning after DOM updates
+		this.isUpdating = false;
+		if (this.pendingUpdate) {
+			setTimeout(() => {
+				if (this.startPositionUpdate) {
+					this.startPositionUpdate();
+				}
+				this.pendingUpdate = false;
+			}, 50);
+		}
+	},
+
+	disconnected() {
+		// Handle connection loss
+		if (this.cleanup) {
+			this.cleanup();
+			this.cleanup = null;
+		}
+	},
+
+	reconnected() {
+		// Handle reconnection - re-initialize if tooltip is visible
+		const tooltip = this.el?.querySelector(".tooltip");
+		if (tooltip && tooltip.style.display === 'block') {
+			if (this.startPositionUpdate) {
+				this.startPositionUpdate();
+			}
+		}
 	}
 };
 
