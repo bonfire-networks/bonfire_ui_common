@@ -8,7 +8,7 @@
   <LinkLive
     to={path(:login, :index)}
     class={
-      "md:flex-1 btn-soft btn-primary btn-sm btn",
+      "md:flex-1 btn-primary btn-sm btn",
       "md:btn-wide": !@page_header
     }
     parent_id="guest_actions"
@@ -20,10 +20,10 @@
     </label>
     <ul
       tabindex="0"
-      class="p-2 mt-4 rounded-lg shadow menu md:menu-sm dropdown-content bg-base-200 w-60 md:w-48 text-base-content"
+      class="mt-4 rounded-lg shadow menu dropdown-content bg-base-100 shadow-lg border border-base-content/10 w-60 text-base-content"
     >
       <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LinkLive to={path(:signup)}>{l("Sign up")}</LinkLive></li>
-      <li :if={@page != "about"}><LinkLive class="text-base-content" parent_id="guest_actions">{l("About")}</LinkLive></li>
+      <li><LinkLive to="/about" class="text-base-content" parent_id="guest_actions">{l("About")}</LinkLive></li>
       <li><LinkLive class="text-base-content" to="/conduct" parent_id="guest_actions">{l("Code of conduct")}</LinkLive></li>
       <li><LinkLive class="text-base-content" to="/privacy" parent_id="guest_actions">{l("Privacy")}</LinkLive></li>
       {#if current_user_id(@__context__) ||

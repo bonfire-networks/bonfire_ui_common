@@ -1,4 +1,4 @@
-<div class="w-full  max-w-[640px] mx-auto">
+<div class="w-full px-4 max-w-[640px] mx-auto pt-safe">
   <div class="relative z-[999999] mx-auto !p-0 !m-0 navbar">
     <div class="flex-1 w-full navbar-start">
       <Bonfire.UI.Common.LogoLinkLive name_class="text-xl font-bold text-base-content block" href="/" />
@@ -9,7 +9,7 @@
           <LinkLive
             to={path(:login, :index)}
             class={
-              "btn btn-primary",
+              "btn btn-sm btn-primary",
               "btn-active": @selected_tab == :login
             }
           >{l("Login")}</LinkLive>
@@ -22,7 +22,7 @@
 
         <div phx-hook="Tooltip" data-position="bottom-end" id="tooltip_more_menu" class="relative">
           <label
-            class="tooltip-button btn btn-circle"
+            class="tooltip-button btn-ghost btn btn-circle"
             tabindex="0"
             role="button"
             id="guest-header-menu"
