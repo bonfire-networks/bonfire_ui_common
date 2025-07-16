@@ -41,7 +41,7 @@
     id={@form_opts[:id] || "#{@id}_box"}
     class={Surface.css_class([
       "text-base-content",
-      "h-full": @image_preview,
+      "w-full h-full": @image_preview,
       "modal-box p-4": !@image_preview,
       "h-full": @no_backdrop,
       "!max-w-[52rem]": @xl
