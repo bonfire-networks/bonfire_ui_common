@@ -57,7 +57,7 @@
             style=""
             class="tooltip z-[99999999] menu shadow-lg bg-base-100 shadow-xl border border-base-content/10 rounded-xl w-60 absolute top-0 left-0 hidden"
           >
-            <!-- {#if !current_account(@__context__)}
+            {!-- {#if !current_account(@__context__)}
                 {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
                   <li>
                     <LinkLive to={path(:signup)} class="btn max-w-full btn-primary btn-soft">{l("Create an account")}</LinkLive>
@@ -69,8 +69,8 @@
                     <div>{l("Sign out")}</div>
                   </LinkLive>
                 </li>
-              {/if} -->
-            <!-- <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LinkLive to={path(:signup)} class="text-base-content">{l("Create an account")}</LinkLive></li> -->
+              {/if} --}
+            {!-- <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LinkLive to={path(:signup)} class="text-base-content">{l("Create an account")}</LinkLive></li> --}
             <li><LinkLive class="text-base-content" to="/about">{l("About")}</LinkLive></li>
             <li><LinkLive class="text-base-content" to="/conduct">{l("Conduct")}</LinkLive></li>
             <li><LinkLive class="text-base-content" to="/privacy">{l("Privacy")}</LinkLive></li>

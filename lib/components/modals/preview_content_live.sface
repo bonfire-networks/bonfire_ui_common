@@ -29,7 +29,7 @@
             </span>
           </div>
 
-          <!-- <div data-position="bottom" phx-hook="Tooltip" id="layout-dropdown">
+          {!-- <div data-position="bottom" phx-hook="Tooltip" id="layout-dropdown">
             <label tabindex="0" class="tooltip-button btn btn-sm btn-circle btn-ghost">
               <#Icon iconify="codicon:settings" class="w-5 h-5 text-base-content/70"  />
             </label>
@@ -82,7 +82,7 @@
               </div>
               </button></li>            
               </ul>
-          </div> -->
+          </div> --}
         </div>
       </div>
     </div>
