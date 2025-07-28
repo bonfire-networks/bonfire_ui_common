@@ -29,34 +29,72 @@ const detectMobileDevice = () => {
   }
 };
 
-// Run detection on load and resize
+// Run detection on load and resize (debounced)
 detectMobileDevice();
-window.addEventListener("resize", detectMobileDevice);
+window.addEventListener("resize", () => {
+  // Debounce mobile detection to prevent excessive class changes
+  if (window.requestIdleCallback) {
+    requestIdleCallback(detectMobileDevice, { timeout: 200 });
+  } else {
+    setTimeout(detectMobileDevice, 100);
+  }
+});
 
 Alpine.start();
 
+// Cache for dimensions to prevent forced reflows
+let lastWidth = 0;
+let lastHeight = 0;
+let dimensionUpdateTimeout = null;
+
 const winnerDimension = () => {
-	// set the viewport inner height in a custom property on the root of the document
-	document.documentElement.style.setProperty(
-		"--inner-window-height",
-		`${window.innerHeight}px`,
-	);
-  // fidn the element with data-id="layout"
+  // Cache height check - only update if changed
+  const currentHeight = window.innerHeight;
+  if (currentHeight !== lastHeight) {
+    lastHeight = currentHeight;
+    document.documentElement.style.setProperty(
+      "--inner-window-height",
+      `${currentHeight}px`
+    );
+  }
+
+  // Cache width check - only update if changed
   const inner = document.querySelector("[data-id='layout']");
   if (!inner) {
     console.log("Layout element not found");
     return;
   }
-  console.log(inner)
-  // set the main section inner width in a custom property on the root of the document
-  document.documentElement.style.setProperty(
-    "--inner-main-width",
-    `${inner.offsetWidth}px`,
-  );
+  
+  const currentWidth = inner.offsetWidth;
+  if (currentWidth !== lastWidth) {
+    lastWidth = currentWidth;
+    document.documentElement.style.setProperty(
+      "--inner-main-width",
+      `${currentWidth}px`
+    );
+  }
+};
+
+// Debounced version for resize events to prevent excessive style recalculation
+const debouncedWinnerDimension = () => {
+  // Cancel any pending update
+  if (dimensionUpdateTimeout) {
+    clearTimeout(dimensionUpdateTimeout);
+  }
+  
+  // Use idle callback to avoid blocking navigation
+  if (window.requestIdleCallback) {
+    requestIdleCallback(() => {
+      winnerDimension();
+    }, { timeout: 200 });
+  } else {
+    // Fallback with debounced timeout
+    dimensionUpdateTimeout = setTimeout(winnerDimension, 100);
+  }
 };
 
 winnerDimension();
-window.addEventListener("resize", winnerDimension);
+window.addEventListener("resize", debouncedWinnerDimension);
 
 
 // CSS

@@ -1,4 +1,40 @@
 @import "tailwindcss";
+@import "nprogress/nprogress.css";
+
+/* View Transitions API - Modern smooth page transitions */
+
+
+/* NProgress customization for better visibility */
+#nprogress .bar {
+  background: var(--color-primary, #3b82f6) !important;
+  height: 4px !important;
+  z-index: 99999 !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px var(--color-primary, #3b82f6), 0 0 5px var(--color-primary, #3b82f6) !important;
+}
+
+#nprogress .spinner {
+  top: 18px !important;
+  right: 18px !important;
+  z-index: 99999 !important;
+}
+
+#nprogress .spinner-icon {
+  border-top-color: var(--color-primary, #3b82f6) !important;
+  border-left-color: var(--color-primary, #3b82f6) !important;
+}
+
+/* Eliminate 300ms touch delay on interactive elements */
+button, 
+a, 
+[phx-click], 
+[phx-value-id],
+.btn,
+[role="button"] {
+  touch-action: manipulation;
+}
 
 /* Debug - specify example class that should be generated */
 /* Make sure these classes exist in some of your templates */
