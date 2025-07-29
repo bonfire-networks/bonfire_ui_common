@@ -6,7 +6,7 @@
           id={"blurHash-#{@parent_id}-#{Text.hash(blurhash)}"}
           :hook
           data-hash={blurhash}
-          class="h-full"
+          class=""
           x-data="{src: null, loaded: false}"
           x-intersect.once.margin.500px={"src = '#{src}'"}
         >
