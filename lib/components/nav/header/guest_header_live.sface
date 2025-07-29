@@ -6,7 +6,7 @@
     <div class="navbar-center hidden lg:flex">
       <ul class="menu menu-horizontal items-center gap-4 px-1">
         <li><LinkLive class="text-base-content" to="/about">{l("About")}</LinkLive></li>
-        <li><LinkLive class="text-base-content" to="/public">{l("Public timeline")}</LinkLive></li>
+        <li><LinkLive class="text-base-content" to="/feed">{l("Public timeline")}</LinkLive></li>
         <li><LinkLive class="text-base-content" to="/conduct">{l("Conduct")}</LinkLive></li>
         <li><LinkLive class="text-base-content" to="/privacy">{l("Privacy")}</LinkLive></li>
         {#if current_user_id(@__context__) ||
