@@ -155,6 +155,10 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   end
 
   def update(assigns, socket) do
+    socket =
+      socket
+      |> assign(assigns)
+
     # Load custom emojis
     custom_emojis =
       case Bonfire.Files.EmojiUploader.list(assigns(socket)) do
@@ -165,19 +169,24 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
         emojis ->
           emojis
           |> Enum.map(fn {shortcode, emoji} ->
-            %{
-              id: id(emoji),
-              name: e(emoji, :label, nil),
-              shortcodes: [shortcode],
-              url: e(emoji, :url, nil) || Media.emoji_url(emoji)
-            }
+            url = e(emoji, :url, nil) || Media.emoji_url(emoji)
+
+            if shortcode && url && !e(emoji, :archived, nil) do
+              %{
+                id: id(emoji),
+                name: e(emoji, :label, nil),
+                shortcodes: [shortcode],
+                url: url
+              }
+            end
           end)
+          |> flood("emoooji")
+          |> Enums.filter_empty([])
           |> Jason.encode!()
       end
 
     socket =
       socket
-      |> assign(assigns)
       |> assign(:custom_emojis, custom_emojis)
       |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
 
