@@ -23,7 +23,7 @@
     {...@opts}
   >
     <span
-      class="btn-wide btn-secondary btn btn-soft phx-click-loading:bg-base-content/10 phx-click-loading:pointer-events-none phx-click-loading:cursor-not-allowed phx-scroll-loading:opacity-15 phx-scroll-loading:cursor-not-allowed relative"
+      class="btn-wide btn-primary btn btn-soft phx-click-loading:bg-base-content/10 phx-click-loading:pointer-events-none phx-click-loading:cursor-not-allowed phx-scroll-loading:opacity-15 phx-scroll-loading:cursor-not-allowed relative"
       x-cloak={!@hide_guest_fallback}
       x-show={if @hide_guest_fallback, do: nil, else: "show"}
     >
@@ -41,7 +41,7 @@
     <a
       :if={!@hide_guest_fallback}
       data-id="next_page"
-      class="normal-case btn btn-secondary btn-soft btn-wide"
+      class="normal-case btn btn-primary btn-soft btn-wide"
       x-cloak
       x-show="!show"
       href={append_params_uri(

@@ -22,7 +22,7 @@
       {#else} --}
   <div
     :if={!@without_icon && (@icon || @widget[:icon])}
-    class="w-7 h-7 rounded-lg bg-base-content/10 flex items-center place-content-center shadow-lg"
+    class="w-7 h-7 rounded-lg bg-primary/10 flex items-center place-content-center"
   >
     <Iconify.iconify icon={@icon || @widget[:icon]} class={@widget[:icon_class] || @icon_class} />
   </div>
@@ -43,7 +43,7 @@
           not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
       } 
     >--}
-  <span class="opacity-80 font-medium">{localise_dynamic(
+  <span class="opacity-80 text-sm font-bold">{localise_dynamic(
       @text || @widget[:text] || @widget[:name],
       @widget[:extension] || @widget[:module]
     )}</span>
