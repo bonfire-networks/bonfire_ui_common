@@ -26,7 +26,7 @@
       class="btn btn-circle btn-outline border-base-content/10 btn-sm"
       showing_within={:smart_input}
       as_icon
-      icon="carbon:add-large"
+      icon="ph:paper-plane-tilt-duotone-large"
       prompt={nil}
     />
   </div> -->
@@ -60,7 +60,7 @@
   </div>
 
   <LinkLive :if={!current_user_id(@__context__)} to="/about">
-    <#Icon solid="DotsHorizontal" class="w-6 h-6 text-base-content/70" />
+    <#Icon iconify="ph:dots-three-outline-duotone" class="w-6 h-6 text-base-content/70" />
     <span class="sr-only">{l("about")}</span>
   </LinkLive>
   {!-- <Bonfire.UI.Common.OpenModalLive

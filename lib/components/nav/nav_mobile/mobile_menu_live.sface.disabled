@@ -82,7 +82,7 @@
                       module: Bonfire.UI.Reactions.LikesLive,
                       href: "/feed/likes",
                       text: l("Likes"),
-                      icon: "mingcute:fire-line"
+                      icon: "ph:fire-duotone"
                     },
                     %{
                       type: :link,

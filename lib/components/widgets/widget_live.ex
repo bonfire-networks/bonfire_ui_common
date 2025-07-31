@@ -24,7 +24,7 @@ defmodule Bonfire.UI.Common.WidgetLive do
 
   prop wrapper_class, :css_class, default: nil
   prop link_class, :any, default: "gap-3"
-  prop icon_class, :css_class, required: false, default: "w-4 h-4 text-primary/80"
+  prop icon_class, :css_class, required: false, default: "w-6 h-6 text-primary"
 
   prop skip_badges, :any, default: false
 

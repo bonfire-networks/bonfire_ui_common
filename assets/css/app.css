@@ -101,7 +101,7 @@ article.active-activity {
 }
 
 article.unread-activity {
-  @apply border-l-2 border-secondary !bg-secondary/5;
+  @apply border-l-2 border-primary !bg-primary/5;
 }
 
 /* 
@@ -545,7 +545,7 @@ emoji-picker {
 
 
 .activity-padding {
-  padding-left: 5rem; 
+  padding-left: 4.6rem; 
 }
 
 .tooltip::after {

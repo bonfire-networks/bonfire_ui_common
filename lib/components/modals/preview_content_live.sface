@@ -20,7 +20,7 @@
             aria-label={l("Go back to the previous page")}
             class="btn z-50 btn-sm btn-ghost btn-circle"
           >
-            <#Icon iconify="iconoir:arrow-left" class="w-4 h-4" />
+            <#Icon iconify="ph:arrow-left-duotone" class="w-5 h-5 text-primary" />
           </button>
           <div class="flex items-center flex-1 w-full flex-1">
             <!-- WIP: Here we should dinamically show the activity type: Article, Note, Event, Review, etc -->
@@ -31,7 +31,7 @@
 
           {!-- <div data-position="bottom" phx-hook="Tooltip" id="layout-dropdown">
             <label tabindex="0" class="tooltip-button btn btn-sm btn-circle btn-ghost">
-              <#Icon iconify="codicon:settings" class="w-5 h-5 text-base-content/70"  />
+              <#Icon iconify="ph:sliders-horizontal-duotone" class="w-5 h-5 text-base-content/70"  />
             </label>
             <ul
               tabindex="0"

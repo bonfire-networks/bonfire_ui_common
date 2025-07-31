@@ -2,7 +2,7 @@
   {#match code_link}
     <div aria-haspopup="true" class="dropdown dropdown-end">
       <label tabindex="0" class="btn btn-sm btn-circle btn-ghost">
-        <#Icon solid="DotsVertical" class="w-4 h-4" />
+        <#Icon iconify="ph:dots-three-outline-vertical-duotone" class="w-4 h-4" />
       </label>
       <ul
         tabindex="0"

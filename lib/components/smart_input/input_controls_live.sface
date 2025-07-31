@@ -22,7 +22,7 @@
           >
             <div class="relative p-2 pb-0 bg-base-100">
               <label class="input w-full">
-                <#Icon iconify="icomoon-free:blog" class="w-4 h-4 opacity-50" />
+                <#Icon iconify="ph:article-ny-times-duotone" class="w-4 h-4 opacity-50" />
                 <input
                   value={@smart_input_opts[:title]}
                   name="post[post_content][name]"
@@ -73,7 +73,7 @@
         "order-first !bg-base-content/10": @showing_within == :page
       }>
         <div class="">
-          <div class="flex justify-between gap-2 p-2 rounded-b-xl md:items-center  md:px-3 py-2">
+          <div class="flex justify-between gap-2 p-2 rounded-b-xl md:items-center  md:px-3 py-2 bg-base-content/10">
             <div class="flex items-center gap-2">
               <Bonfire.UI.Common.UploadButtonLive
                 :if={@uploads != false && e(@smart_input_opts, :create_object_type, nil) not in ["message"]}
@@ -95,7 +95,7 @@
                     type="button"
                     class="tooltip-button emoji-button btn btn-ghost btn-square btn-sm"
                   >
-                    <#Icon iconify="lucide-lab:bear-face" class="w-4 h-4 text-base-content/70" />
+                    <#Icon iconify="ph:paw-print-duotone" class="w-4 h-4 text-base-content/70" />
                   </button>
                   <div
                     id="emoji-picker-in-composer"
@@ -148,7 +148,7 @@
                   <#Icon iconify="dashicons:text-page" class="w-4 h-4 text-base-content/70" />
                   {l "Create a post"}</button></li>
                   <li><button type="button">
-                  <#Icon iconify="icomoon-free:blog" class="w-4 h-4 text-base-content/70" />
+                  <#Icon iconify="ph:article-ny-times-duotone" class="w-4 h-4 text-base-content/70" />
                   {l "Create an article"}</button></li>
                   </ul>
                 </div> -->
@@ -176,7 +176,7 @@
                   |> JS.toggle_class("btn-active", to: "#title_btn")}
                   class="title-button btn btn-primary btn-ghost btn-square btn-sm"
                 >
-                  <#Icon iconify="icomoon-free:blog" class="w-4 h-4 text-base-content/70" />
+                  <#Icon iconify="ph:article-ny-times-duotone" class="w-4 h-4 text-base-content/70" />
                 </button>
               </div>
             </div>

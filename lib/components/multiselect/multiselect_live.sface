@@ -22,7 +22,7 @@
           class="absolute top-[8px] right-[8px] z-30 flex items-center w-[26px] h-[26px] min-h-[26px]"
           phx-click={JS.dispatch("change", to: "#smart_input_form")}
         >
-          <#Icon solid="Search" class="w-4 h-4 text-base-content/70" />
+          <#Icon iconify="ph:magnifying-glass-duotone" class="w-4 h-4 text-primary" />
         </div>
       {/if}
     {#else}

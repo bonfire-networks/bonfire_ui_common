@@ -50,7 +50,7 @@
             aria-haspopup="true"
             aria-expanded="true"
           >
-            <#Icon solid="DotsHorizontal" class="w-4 h-4 opacity/70" />
+            <#Icon iconify="ph:dots-three-outline-duotone" class="w-4 h-4 opacity/70" />
           </label>
           <ul
             tabindex="0"
