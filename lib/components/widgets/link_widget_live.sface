@@ -52,7 +52,7 @@
       <div
         data-highlighted={Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)}
         :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
-        class="flex absolute left-[36px] top-[-4px] items-center place-content-center widget_notification"
+        class="flex absolute left-[28px] top-[-2px] items-center place-content-center widget_notification"
       >
         <StatefulComponent
           id={deterministic_dom_id("badge", badge[:id], nil, @widget[:page] || @widget[:name])}

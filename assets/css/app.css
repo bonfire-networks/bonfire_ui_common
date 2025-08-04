@@ -97,7 +97,7 @@ select {
 }
   
 article.active-activity {
-  @apply border-l-2 border-primary !bg-primary/5;
+  @apply !bg-primary/5;
 }
 
 article.unread-activity {
@@ -377,6 +377,11 @@ media-controls {
   left: 0;
   right: 0;
   z-index: 10;
+}
+
+
+.m-entry iframe {
+  max-width: 100% !important;
 }
 
 /* Add this to your CSS */
@@ -748,9 +753,9 @@ article.activity pre {
     position: absolute;
     content: '';
     width: 1px;
-    top: 41px;
+    top: 54px;
     bottom: -32px;
-    left: -41px;
+    left: -35px;
     z-index: 1;
     background-color: var(--color-base-content);
     opacity: 0.3;
