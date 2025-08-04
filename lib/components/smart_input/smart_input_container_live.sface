@@ -13,7 +13,7 @@
         icon_class="!w-6 !h-6"
         smart_input_opts={@smart_input_opts}
         prompt={e(@smart_input_opts, :prompt, l("Compose"))}
-        icon={e(@smart_input_opts, :icon, "ph:paper-plane-tilt-duotone")}
+        icon={e(@smart_input_opts, :icon, nil)}
         class={e(
           @composer_class,
           "hidden !p-0 lg:!p-inherit md:flex h-[60px] w-[60px] lg:!min-h-auto lg:!px-[1rem] lg:!h-auto lg:!w-full btn btn-primary flex items-center gap-2 place-content-center normal-case"

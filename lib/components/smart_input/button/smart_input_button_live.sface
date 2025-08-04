@@ -18,17 +18,33 @@
   {!-- 
     phx-value-opts={Jason.encode!(merge_as_map(%{prompt: @prompt}, @smart_input_opts))}
     x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{@prompt || l("Compose")}')"} --}
-  {#if !@smart_input_opts[:submit_disabled] && @icon}
-    <#Icon iconify="mingcute:pencil-3-fill" class="inline-block w-5 h-5" />
-  {#else}
-    <Iconify.iconify
-      :if={@icon}
-      icon={@icon}
+  {#if !@smart_input_opts[:submit_disabled]}
+    {!-- draft in progress --}
+    <#Icon
+      iconify="ph:pencil-line-duotone"
       class={
         @icon_class,
         "inline-block w-5 h-5"
       }
     />
+  {#else}
+    {#if @icon}
+      <Iconify.iconify
+        icon={@icon}
+        class={
+          @icon_class,
+          "inline-block w-5 h-5"
+        }
+      />
+    {#else}
+      <#Icon
+        iconify="ph:note-pencil-duotone"
+        class={
+          @icon_class,
+          "inline-block w-5 h-5"
+        }
+      />
+    {/if}
   {/if}
   <span :if={!@as_icon and @prompt} class="">{@prompt || l("Compose")}</span>
 </button>
