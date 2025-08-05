@@ -72,19 +72,55 @@ config :bonfire, :ui,
     "Luciole",
     "OpenDyslexic"
   ],
-  themes: [
-    "bonfire",
+  themes_dark: [
     "dark",
     "synthwave",
-    "retro"
+    "forest",
+    "dracula",
+    "aqua",
+    "luxury",
+    "night",
+    "coffee",
+    "dim",
+    "sunset",
+    "abyss",
+    "retro",
+    "cyberpunk",
+    "valentine",
+    "halloween",
+    "garden"
   ],
   themes_light: [
     "light",
+    "silk",
+    "caramellatte",
+    "nord",
+    "cmyk",
+    "acid",
+    "autumn",
+    "lofi",
+    "pastel",
+    "fantasy",
     "cupcake",
     "bumblebee",
     "emerald",
-    "corporate",
-    "retro"
+    "corporate"
+  ],
+  themes_custom: [
+    [
+      name: "federated_archives",
+      default: false,
+      prefersdark: true,
+      color_scheme: "dark",
+      "color-base-100": "#303030",
+      "color-base-200": "#333333",
+      "color-base-300": "#262626",
+      "color-base-content": "#f2f1f1",
+      "color-primary": "#B5FF00",
+      "color-primary-content": "#272e16",
+      "radius-box": "2rem",
+      "radius-field": "2rem"
+    ]
   ],
   show_trending_tags: [
     disabled: false,
@@ -111,6 +147,15 @@ config :bonfire, :ui,
   #   section: Bonfire.Pages.Web.EditSectionLive
   # ],
   smart_input_as: :non_blocking
+
+config :bonfire,
+  # used by ActivityLive - TODO: autogenerate?
+  verb_families: [
+    reply: ["Reply", "Respond", "Annotate"],
+    create: ["Create", "Write"],
+    react: ["Like", "Boost", "Flag", "Tag", "Pin"],
+    simple_action: ["Assign", "Label", "Schedule"]
+  ]
 
 config :bonfire_ui_common, Bonfire.UI.Common.SmartInputLive,
   max_length: 2000,
@@ -139,11 +184,5 @@ config :surface, :components, [
   {Bonfire.UI.Social.Activity.LinkToActivityLive, propagate_context_to_slots: true},
   {Bonfire.UI.Common.TabsLive, propagate_context_to_slots: true}
 ]
-
-config :surface, :compiler,
-  hooks_output_dir: "config/current_flavour/assets/hooks/",
-  css_output_file: "config/current_flavour/assets/components.css",
-  variants_output_file: "config/current_flavour/assets/variants.js",
-  enable_variants: true
 
 # variants_prefix: "s-"
