@@ -370,6 +370,17 @@ media-controls {
   min-width: 40px;
 }
 
+.btn-zenodo {
+  background-color: #2f6fa7;
+  color: white;
+  border-color: #2f6fa7
+}
+.btn-orcid {
+  background-color: #447405;
+  color: white;
+  border-color: #447405;
+
+}
 .zenodo-modal #modal_box {
   padding-bottom: 0 !important;
 }
