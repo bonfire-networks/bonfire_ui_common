@@ -5,9 +5,8 @@
   id={deterministic_dom_id("link_widget", @parent_id, @order, @page)}
   class={
     e(@widget[:link_class], @link_class),
-    "menu-active":
-      String.downcase(to_string(@selected_tab)) == String.downcase(to_string(@widget[:name])) or
-        String.downcase(to_string(@selected_tab)) == String.downcase(to_string(@widget[:page]))
+    "bg-primary/10":
+      String.downcase(to_string(@selected_tab)) == String.downcase(to_string(@widget[:page]))
   }
   label={@text || @widget[:text] || @widget[:name]}
   phx_hook={@widget[:phx_hook]}
