@@ -370,6 +370,10 @@ media-controls {
   min-width: 40px;
 }
 
+.zenodo-modal #modal_box {
+  padding-bottom: 0 !important;
+}
+
 /* Critical CSS to fix pointer-events */
 .controls-wrapper {
   position: absolute;
