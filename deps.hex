@@ -5,8 +5,8 @@ jason = "~> 1.4.0" # json parsing
 # phoenix framework:
 surface = "~> 0.12.0"
 surface_form_helpers = "~> 0.2.0"
-# phoenix = "~> 1.7.0" # usually should let surface decide the version
-phoenix_live_view = "~> 1.0.9" # usually should let surface or bonfire_ui_common decide the version
+# phoenix = "~> 1.8" # usually should let surface decide the version
+phoenix_live_view = "~> 1.1" # usually should let surface or bonfire_ui_common decide the version
 # phoenix_html = "~> 3.3.0" # usually should let liveview decide the version
 phoenix_live_dashboard = "~> 0.8"
 phoenix_view = "~> 2.0"
