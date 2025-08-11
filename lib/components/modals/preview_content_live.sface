@@ -1,12 +1,14 @@
 <div
   id={@id}
+  class=""
   data-id="preview_content"
   data-show={e(@show, false)}
   data-hide={!e(@show, false)}
   class={"#{@modal_class} #{if !e(@show, false), do: 'hidden'}"}
   {...@opts}
 >
-  <div id="the_preview_contents" class={if !e(@show, false), do: "hidden"}>
+  <div id="the_preview_contents" class={if !e(@show, false), do: "hidden", else: "min-h-screen-safe min-h-screen border-x border-base-content/10"}>
+    {!-- Modal background --}
     {!-- Header with back button --}
     <div class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 backdrop-blur-sm">
       <div
