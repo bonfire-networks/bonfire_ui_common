@@ -8,7 +8,7 @@
 >
   <div id="the_preview_contents" class={if !e(@show, false), do: "hidden"}>
     {!-- Header with back button --}
-    <div class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 shadow backdrop-blur-sm lg:rounded-b-lg">
+    <div class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 backdrop-blur-sm">
       <div
         role="banner"
         class="flex items-center place-content-center flex-1 w-full px-4  min-h-[58px]"
@@ -90,7 +90,7 @@
     {!-- Content container --}
     <div class="relative z-30">
       <div
-        class="p-0 z-[910] modal_invisible relative pb-1px lg:rounded-xl shadow bg-base-100 border-t border-base-content/10 lg:border-t-none lg:mt-3"
+        class="p-0 z-[910] modal_invisible relative pb-1px bg-base-100"
         data-id="modal-contents"
       >
         <#slot>

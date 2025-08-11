@@ -1,4 +1,4 @@
-<div class="w-full px-4  mx-auto pt-safe">
+<div class="w-full px-4 bg-base-100 mx-auto pt-safe border-b border-base-content/10 border-x">
   <div class="relative z-[999999] mx-auto !p-0 !m-0 navbar">
     <div class="navbar-start">
       <Bonfire.UI.Common.LogoLinkLive name_class="text-xl font-bold text-base-content block" href="/" />

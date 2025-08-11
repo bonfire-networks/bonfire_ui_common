@@ -61,13 +61,13 @@
                 />
                 <div
                   id="inner"
-                  class={"flex flex-col min-h-[calc(var(--inner-window-height))] pb-4 md:pb-[1px] lg:gap-3 #{if @hide_main, do: 'hidden'}"}
+                  class={"flex flex-col min-h-[calc(var(--inner-window-height))] bg-base-100 pb-4 md:pb-[1px] border-x border-base-content/10 #{if @hide_main, do: 'hidden'}"}
                 >
                   <div
                     :if={!@no_header}
-                    class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 shadow backdrop-blur-sm lg:rounded-b-lg"
+                    class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 backdrop-blur-sm"
                   >
-                    <div class="flex min-h-[58px] flex place-content-center flex-1 w-full transition-color duration-150 ease-in-out">
+                    <div class="flex py-3 flex place-content-center flex-1 w-full transition-color duration-150 ease-in-out">
                       <StatelessComponent
                         module={maybe_component(Bonfire.UI.Common.PageHeaderLive, @__context__)}
                         page={@page}
@@ -102,10 +102,10 @@
             class="order-last sticky  w-auto lg:top-2 mt-2 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
           >
             <div :if={is_nil(@current_user_id)} class="flex gap-2 mb-3">
-              <LinkLive to={path(:login, :index)} class="btn-primary btn flex-1" parent_id="layout">{l("Log in")}</LinkLive>
+              <LinkLive to={path(:login, :index)} class="btn-primary btn flex-1 btn-sm" parent_id="layout">{l("Log in")}</LinkLive>
 
               {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-                <LinkLive to={path(:signup)} class="btn flex-1" parent_id="layout">{l("Create account")}</LinkLive>
+                <LinkLive to={path(:signup)} class="btn flex-1 btn-sm" parent_id="layout">{l("Create account")}</LinkLive>
               {/if}
             </div>
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
