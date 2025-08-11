@@ -1,6 +1,6 @@
 <div
   data-id="bonfire_live"
-  class="antialiased bg-base-200 min-h-screen min-h-screen-safe pb-safe"
+  class="antialiased bg-base-100 min-h-screen min-h-screen-safe pb-safe"
   data-theme={Bonfire.UI.Common.ThemeHelper.current_theme(assigns)}
   style={maybe_custom_theme(
     current_user: current_user(@__context__),
@@ -155,7 +155,7 @@
       <aside
         :if={!@without_sidebar}
         data-id="nav_sidebar"
-        class="w-80 px-4 px-safe lg:px-0 lg:mr-3 lg:w-[250px] bg-base-100 lg:bg-base-200 min-h-full"
+        class="w-80 px-4 px-safe lg:px-0 lg:mr-3 lg:w-[250px] bg-base-100 lg:bg-base-100 min-h-full"
       >
         <Bonfire.UI.Common.NavSidebarLive
           :if={!@without_sidebar}
