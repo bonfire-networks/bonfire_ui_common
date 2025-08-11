@@ -37,10 +37,10 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       <:option :let={option}>
         <div class="flex p-0 gap-2 items-center">
           <%= if Map.has_key?(option.value, :type) && option.value.type == "circle" do %>
-            <span class="w-8 h-8 rounded-full bg-info/10 flex items-center place-content-center">
+            <span class="w-8 h-8 flex items-center place-content-center">
               <div
                 iconify="ph:circle-duotone"
-                class="inline-block w-4 h-4 text-base-content"
+                class="inline-block w-4 h-4 text-primary"
                 aria-hidden="true"
               >
               </div>

@@ -4,8 +4,8 @@
       class="hero"
       style="background-image: url(https://media.discordapp.net/attachments/1228692128952225928/1330637061056893058/ivanminutillo_a_wolf_a_deer_a_squirrel_and_a_bear_next_to_a_bon_8611f02c-1213-4dd9-9f3d-a51ff9015c8c.png?ex=678eb3d5&is=678d6255&hm=b3ca53a30c33a446a2c74b4822f56e5df308123230ccc83ff1ea1a766fcae28a&=&format=webp&quality=lossless&width=2330&height=1166);"
     >
-      <div class="hero-overlay bg-opacity-60" />
-      <div class="hero-content py-12 text-neutral-content text-center">
+      <div class="hero-overlay bg-base-100" />
+      <div class="hero-content py-12 text-base-content text-center">
         <div class="max-w-md">
           <h1 class="mb-5 text-5xl font-bold">{l("Bonfire extensions")}</h1>
           <p class="mb-5">
@@ -21,7 +21,7 @@
               <button
                 phx-click="Bonfire.Common.Settings.LiveHandler:toggle_extensions_configuration"
                 phx-value-scope={@scope}
-                class="btn btn-warning btn-soft"
+                class="btn btn-warning"
               >{l("Turn off extensions configuration")}</button>
             {#else}
               <button
