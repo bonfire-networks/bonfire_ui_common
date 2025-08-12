@@ -1,0 +1,19 @@
+<div class="flex justify-between items-center">
+  <div class="flex items-center gap-2">
+    <div class="text-sm opacity-70">
+      ⚡ Settings save automatically
+    </div>
+  </div>
+
+  <div class="flex gap-3">
+    <!-- <button 
+      :on-click={@on_test}
+      class="btn btn-outline btn-sm"
+    >
+      🧪 Test
+    </button> -->
+    <button :on-click={@on_reset} class="btn btn-outline btn-error btn-sm">
+      🔄 Reset to Defaults
+    </button>
+  </div>
+</div>
