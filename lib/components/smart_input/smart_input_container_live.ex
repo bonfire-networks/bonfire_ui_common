@@ -180,7 +180,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
               }
             end
           end)
-          |> flood("emoooji")
+          |> debug("emoooji")
           |> Enums.filter_empty([])
           |> Jason.encode!()
       end
