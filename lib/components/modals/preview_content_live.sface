@@ -7,7 +7,12 @@
   class={"#{@modal_class} #{if !e(@show, false), do: 'hidden'}"}
   {...@opts}
 >
-  <div id="the_preview_contents" class={if !e(@show, false), do: "hidden", else: "min-h-screen-safe min-h-screen border-x border-base-content/10"}>
+  <div
+    id="the_preview_contents"
+    class={if !e(@show, false),
+      do: "hidden",
+      else: "min-h-screen-safe min-h-screen border-x border-base-content/10"}
+  >
     {!-- Modal background --}
     {!-- Header with back button --}
     <div class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 backdrop-blur-sm">
@@ -91,10 +96,7 @@
 
     {!-- Content container --}
     <div class="relative z-30">
-      <div
-        class="p-0 z-[910] modal_invisible relative pb-1px bg-base-100"
-        data-id="modal-contents"
-      >
+      <div class="p-0 z-[910] modal_invisible relative pb-1px bg-base-100" data-id="modal-contents">
         <#slot>
           {!-- Render appropriate component based on modal_assigns --}
           {#if !e(@modal_assigns, :loaded, nil)}

@@ -44,7 +44,6 @@
     </div>
   </div>
 {#else}
-
   <div>
     <div class="flex flex-col mb-2">
       {!-- <div :if={@label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div> --}
@@ -55,14 +54,14 @@
     <form name="settings" phx-submit="Bonfire.Common.Settings:save">
       <input name="scope" value={@scope} type="hidden">
       <div class="w-full join">
-      <label class="input validator join-item">
-        <input
-          type="text"
-          placeholder={@placeholder}
-          name={@input}
-          value={to_string(@current_value)}
-          class=""
-        />
+        <label class="input validator join-item">
+          <input
+            type="text"
+            placeholder={@placeholder}
+            name={@input}
+            value={to_string(@current_value)}
+            class=""
+          />
         </label>
         <button type="submit" class="btn">
           {l("Save")}

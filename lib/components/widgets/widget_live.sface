@@ -99,10 +99,7 @@
             order={@order}
           />
         {#match Surface.Component}
-          <div
-            :if={@with_title}
-            class="w-10 h-10 flex items-center place-content-center"
-          >
+          <div :if={@with_title} class="w-10 h-10 flex items-center place-content-center">
             <#Icon iconify="ph:lego-duotone" class="w-7 h-7 text-primary" />
           </div>
           <div :if={@with_title or @with_description}>
