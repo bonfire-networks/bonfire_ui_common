@@ -52,7 +52,10 @@
         <span data-role="locale" class="ml-1">{Bonfire.Common.Localise.get_locale_id() |> to_string()}</span>
       </LinkLive>
 
-      {#case String.trim(Bonfire.Common.HTTP.get_cached_body("https://docs.bonfirenetworks.org/VERSION") || "")}
+      {#case Config.env() != :test and
+          String.trim(
+            Bonfire.Common.HTTP.get_cached_body("https://docs.bonfirenetworks.org/VERSION") || ""
+          )}
         {#match latest when latest != version and latest != ""}
           <span class="badge badge-sm badge-warning badge-soft mt-4">{l("New version available:")} {latest}</span>
         {#match _}
