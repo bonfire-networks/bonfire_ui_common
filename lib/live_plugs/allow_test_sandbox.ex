@@ -5,14 +5,13 @@ defmodule Bonfire.UI.Common.LivePlugs.AllowTestSandbox do
 
   def on_mount(:default, _params, _session, socket) do
     # to use with LV :on_mount
-    allow_ecto_sandbox(socket)
-    {:cont, socket}
+
+    {:cont, allow_ecto_sandbox(socket) || socket}
   end
 
   def mount(_params, _session, socket) do
     # to use as LivePlug
-    allow_ecto_sandbox(socket)
-    {:ok, socket}
+    {:ok, allow_ecto_sandbox(socket) || socket}
   end
 
   defp allow_ecto_sandbox(socket) do
@@ -26,6 +25,8 @@ defmodule Bonfire.UI.Common.LivePlugs.AllowTestSandbox do
         end)
 
       Phoenix.Ecto.SQL.Sandbox.allow(metadata, Ecto.Adapters.SQL.Sandbox)
+
+      socket
     end
   end
 end

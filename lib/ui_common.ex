@@ -830,7 +830,8 @@ defmodule Bonfire.UI.Common do
   end
 
   def path_fallback(socket_or_conn, opts) do
-    opts[:fallback] || current_url(socket_or_conn) || "/error?invalid_path"
+    opts[:fallback] || current_url(socket_or_conn) ||
+      (err(opts, "Tried redirecting to invalid path") && "/error?invalid_path")
   end
 
   def maybe_push_event(%Phoenix.LiveView.Socket{} = socket, name, data) do
