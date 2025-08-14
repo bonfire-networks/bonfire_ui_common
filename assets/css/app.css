@@ -36,6 +36,15 @@ a,
   touch-action: manipulation;
 }
 
+  /* Disable like and boost buttons during loading */
+  .phx-click-loading[data-id="like_action"],
+  .phx-click-loading[data-id="boost_action"] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+
 /* Debug - specify example class that should be generated */
 /* Make sure these classes exist in some of your templates */
 .debug-text-purple-800 { color: purple; }
@@ -77,6 +86,7 @@ select {
 @variant phx-scroll-loading (&.phx-scroll-loading, .phx-scroll-loading &);
 @variant phx-submit-loading (&.phx-submit-loading, .phx-submit-loading &);
 @variant phx-change-loading (&.phx-change-loading, .phx-change-loading &);
+
 
 
 .filters_tabbed {
