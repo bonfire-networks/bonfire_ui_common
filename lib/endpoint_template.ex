@@ -194,8 +194,6 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         <link phx-track-static rel='stylesheet' href='#{endpoint_module.static_path("/assets/bonfire_basic.css")}'/>
         <link phx-track-static rel='stylesheet' href='#{endpoint_module.static_path("/fonts/#{font_family}.css")}'/>
 
-        <script defer phx-track-static crossorigin='anonymous' src='#{endpoint_module.static_path("/images/icons/svg-inject.min.js")}'></script>
-
         #{if Extend.module_enabled?(PhoenixGon.View), do: PhoenixGon.View.render_gon_script(conn) |> Phoenix.HTML.safe_to_string()}
 
         <link rel="manifest" href="/pwa/manifest.json" />

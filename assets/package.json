@@ -57,7 +57,7 @@
 		"@tailwindcss/postcss": "4.1",
 		"buffer": "^6.0.3",
 		"cpx2": "^6.0.1",
-		"daisyui": "^5.0.17",
+		"daisyui": "^5.0.50",
 		"esbuild": "^0.19.9",
 		"postcss": "^8.4.38",
 		"postcss-cli": "^11.0.0",
