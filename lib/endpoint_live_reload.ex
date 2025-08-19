@@ -3,12 +3,6 @@ defmodule Bonfire.UI.Common.Endpoint.LiveReload do
 
   defmacro __using__(code_reloading?) do
     quote do
-      if System.get_env("TIDEWAVE_ENABLED") not in ["false", "0", "no"] and
-           Code.ensure_loaded?(Tidewave) do
-        # FIXME: remote access should be disabled but it's not working locally without for now
-        plug Tidewave, allow_remote_access: true
-      end
-
       def halt_live_reload(%{request_path: "/phoenix/live_reload/socket/websocket"} = conn, _),
         do: conn |> resp(404, "Not enabled") |> halt()
 
