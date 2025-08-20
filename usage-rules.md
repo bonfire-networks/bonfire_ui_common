@@ -61,9 +61,6 @@ Always use `maybe_component/2` to ensure components are available:
 <StatefulComponent id="unique-id" 
   module={maybe_component(Bonfire.UI.Extension.MyLiveComponent, @__context__)} />
 
-# With dynamic components
-<DynamicComponent module={maybe_component(@selected_component, @__context__)} />
-```
 
 ## Event Handling with LiveHandlers
 
