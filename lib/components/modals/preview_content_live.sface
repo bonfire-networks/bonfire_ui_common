@@ -15,7 +15,7 @@
   >
     {!-- Modal background --}
     {!-- Header with back button --}
-    <div class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 backdrop-blur-sm">
+    <div class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 backdrop-blur-sm border-b border-base-content/10">
       <div
         role="banner"
         class="flex items-center place-content-center flex-1 w-full px-4  min-h-[58px]"
