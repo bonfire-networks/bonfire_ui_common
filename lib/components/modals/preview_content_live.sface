@@ -27,7 +27,7 @@
             aria-label={l("Go back to the previous page")}
             class="btn z-50 btn-sm btn-ghost btn-circle"
           >
-            <#Icon iconify="ph:arrow-left-duotone" class="w-5 h-5 text-primary" />
+            <#Icon iconify="ph:arrow-left" class="w-5 h-5 text-primary" />
           </button>
           <div class="flex items-center flex-1 w-full flex-1">
             <!-- WIP: Here we should dinamically show the activity type: Article, Note, Event, Review, etc -->
