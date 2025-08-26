@@ -17,7 +17,6 @@ DraggableHooks.Draggable = {
       delay: 100,
       dragClass: "drag-item",
       ghostClass: "drag-ghost",
-      forceFallback: true,
       draggable: "[data-sortable-item]",
       handle: "[data-sortable-handler]",
       onEnd: e => {
