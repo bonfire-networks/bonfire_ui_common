@@ -165,7 +165,7 @@
                 </button>
               </div>
 
-              <!-- |> JS.show(to: "#smart_input_summary") -->
+              {!-- |> JS.show(to: "#smart_input_summary") --}
               <div data-tip={l("Add a title")} class="tooltip tooltip-top">
                 <button
                   :if={@enable_thread_title}
@@ -201,14 +201,14 @@
                 x-on:click="$dispatch('submit')"
                 phx-disable-with
                 class="btn-sm btn btn-primary"
-                disabled={@smart_input_opts[:submit_disabled]}
+                disabled={@smart_input_opts[:input_status] != :draft}
               >
-                <!-- <#Icon iconify="mdi:email-fast-outline" class="w-4 h-4" /> -->
+                {!-- <#Icon iconify="mdi:email-fast-outline" class="w-4 h-4" /> --}
                 <#Icon iconify="lucide:arrow-up" class="w-4 h-4" />
                 {#if e(@smart_input_opts, :create_object_type, nil) in [:message, "message"]}
-                  {l("Send")}
+                  {if @smart_input_opts[:input_status] == :submit, do: l("Sending..."), else: l("Send")}
                 {#else}
-                  {l("Post")}
+                  {if @smart_input_opts[:input_status] == :submit, do: l("Posting..."), else: l("Post")}
                 {/if}
               </button>
             </div>

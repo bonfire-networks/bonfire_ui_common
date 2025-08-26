@@ -23,15 +23,15 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def open(js \\ %JS{}, opts \\ nil) do
-    opts = opts || %{}
+    # opts = opts || %{}
     # add open: true to opts
-    opts = Map.merge(opts, %{open: true})
+    # opts = Map.merge(opts, %{open: true})
 
     js
     |> JS.show(to: "#composer_container")
     |> maximize()
     # |> show_main(opts)
-    |> maybe_push_opts("Bonfire.UI.Common.SmartInput:select_smart_input", opts)
+    |> maybe_push_opts("Bonfire.UI.Common.SmartInput:select_smart_input", %{open: true})
   end
 
   def open_type(js \\ %JS{}, component, opts \\ nil) do
@@ -57,6 +57,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
       smart_input_opts: %{
+        input_status: nil,
         create_object_type: nil,
         open: false,
         text_suggestion: nil,
@@ -67,10 +68,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       }
     )
 
-    {:noreply,
-     socket
-     |> cancel_all_uploads()
-     |> push_event("smart_input:reset", %{})}
+    {:noreply, do_extra_reset_input(socket)}
   end
 
   # close_smart_input should reset the state to ensure it's clean for next use
@@ -95,7 +93,20 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     |> close_smart_input()
   end
 
-  def minimize(js \\ %JS{}) do
+  def submitting(js \\ %JS{}) do
+    js
+    |> JS.add_class("hidden", to: "#main_smart_input_button .toggle_button")
+    |> JS.remove_class("hidden", to: "#main_smart_input_button .submitting_icon")
+    |> minimize(%{input_status: :submit})
+  end
+
+  def reset_submitting(js \\ %JS{}, to \\ "#main_smart_input_button") do
+    js
+    |> JS.remove_class("hidden", to: "#{to} .toggle_button")
+    |> JS.add_class("hidden", to: "#{to} .submitting_icon")
+  end
+
+  def minimize(js \\ %JS{}, opts \\ %{}) do
     js
     |> JS.add_class("translate-y-100",
       to: "#smart_input_container",
@@ -104,7 +115,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # Always remove overflow-hidden class from mobile devices to restore scrolling
     |> JS.remove_class("overflow-hidden", to: ".is-container-mobile")
     # |> JS.show(to: ".smart_input_show_on_minimize")
-    |> maybe_push_opts("Bonfire.UI.Common.SmartInput:select_smart_input", %{open: false})
+    |> maybe_push_opts(
+      "Bonfire.UI.Common.SmartInput:select_smart_input",
+      Map.put(opts, :open, false)
+    )
   end
 
   def maximize(js \\ %JS{}) do
@@ -157,13 +171,12 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         # Merge with existing opts, but new values take precedence
         Map.merge(existing_opts, parsed_opts)
         |> Map.put(:open, open_value)
-        |> debug("merged_opts")
       else
         # Use new opts directly
         parsed_opts
         |> Enum.into(%{open: open_value})
-        |> debug("new_opts")
       end
+      |> flood("select_smart_input_opts")
 
     to_circles =
       (params["to_circles"] || e(opts, :to_circles, []))
@@ -243,94 +256,88 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     # Check if uploads exist using simplified check
     uploads = e(assigns(socket), :uploads, nil)
-
-    has_uploads =
-      uploads && e(uploads, :files, :entries, []) != []
-
-    # Text is empty if both text and text_suggestion are empty or nil
-    text_empty = text == nil || String.trim(to_string(text || "")) == ""
-    # && (text_suggestion == nil || String.trim(to_string(text_suggestion || "")) == "")
+    smart_input_opts = e(assigns(socket), :smart_input_opts, nil)
+    input_status = smart_input_opts[:input_status]
 
     # Determine if submit should be disabled
-    submit_disabled = text_empty && !has_uploads
-
-    debug(submit_disabled, "submit_disabled in validation")
+    input_status =
+      if input_status != :submit and
+           (not is_nil(text) || String.trim(to_string(text || "")) != "" ||
+              (uploads && e(uploads, :files, :entries, []) != [])) do
+        :draft
+      else
+        input_status
+      end
+      |> debug("drafting in validation")
 
     # Update the socket's own smart_input_opts
-    updated_socket =
+    socket =
       socket
       |> assign(
         reset_smart_input: false,
         smart_input_opts:
-          Enum.into(e(assigns(socket), :smart_input_opts, %{}), %{
-            submit_disabled: submit_disabled
-          })
+          Enum.into(
+            %{
+              input_status: input_status
+            },
+            e(assigns(socket), :smart_input_opts, %{})
+          )
       )
 
-    # CRITICAL FIX: Instead of sending a complete new set of assigns that might override
+    # ATTEMPTED FIX: Instead of sending a complete new set of assigns that might override
     # context data like activity, we only update the component's smart_input_opts property
     # directly using update_component
-    maybe_update_component(
-      updated_socket,
-      Bonfire.UI.Common.SmartInputContainerLive,
-      :smart_input,
-      :smart_input_opts,
-      fn existing_opts ->
-        Map.merge(existing_opts, %{submit_disabled: submit_disabled})
-      end
-    )
+    # maybe_update_smart_input_component(
+    #   Bonfire.UI.Common.SmartInputContainerLive,
+    #   :smart_input,
+    #   :smart_input_opts,
+    #   fn existing_opts ->
+    #     Map.merge(existing_opts, %{input_status: drafting? && :draft})
+    #   end
+    # )
 
     # Return the updated socket directly
-    {:noreply, updated_socket}
+    {:noreply, socket}
   end
 
-  # Helper function to update a component's property without replacing the entire component state
-  defp maybe_update_component(socket, component, id, property, update_fn) do
-    try do
-      Phoenix.LiveView.send_update(
-        component,
-        Map.merge(
-          %{id: id},
-          # Fallback to empty map if component doesn't exist yet
-          %{property => update_fn.(%{})}
-        )
-      )
-    rescue
-      _ -> nil
-    catch
-      _ -> nil
-    end
-  end
+  # # Helper function to update a component's property without replacing the entire component state
+  # defp maybe_update_smart_input_component(component, id, property, update_fn) do
+  #   try do
+  #     maybe_send_update(component, id, %{property => update_fn.(%{})})
+  #   rescue
+  #     _ -> nil
+  #   catch
+  #     _ -> nil
+  #   end
+  # end
 
-  def should_disable_submit?(context_or_args) do
-    # Extract smart_input_opts based on the input type
-    smart_input_opts =
-      cond do
-        # From direct assigns map
-        is_map(context_or_args) && Map.has_key?(context_or_args, :smart_input_opts) ->
-          context_or_args.smart_input_opts
+  # def smart_input_opts(context_or_args) do
+  #     cond do
+  #       # From direct assigns map
+  #       is_map(context_or_args) && Map.has_key?(context_or_args, :smart_input_opts) ->
+  #         context_or_args.smart_input_opts
 
-        # From socket
-        is_map(context_or_args) && Map.has_key?(context_or_args, :assigns) ->
-          e(context_or_args.assigns, :smart_input_opts, %{})
+  #       # From socket
+  #       is_map(context_or_args) && Map.has_key?(context_or_args, :assigns) ->
+  #         e(context_or_args.assigns, :smart_input_opts, %{})
 
-        # From context map
-        is_map(context_or_args) ->
-          e(context_or_args, :smart_input_opts, %{})
+  #       # From context map
+  #       _ ->
+  #         e(context_or_args, :smart_input_opts, %{})
+  #     end
+  #   end
 
-        # Default case
-        true ->
-          %{}
-      end
+  # def should_disable_submit?(context_or_args) do
+  #   # Extract smart_input_opts based on the input type
+  #   smart_input_opts = smart_input_opts(context_or_args)
 
-    # Check if there's an explicit :submit_disabled flag
-    if is_map(smart_input_opts) && Map.has_key?(smart_input_opts, :submit_disabled) do
-      smart_input_opts.submit_disabled
-    else
-      # Default to disabled if we can't determine state
-      true
-    end
-  end
+  #   if is_map(smart_input_opts) && Map.has_key?(smart_input_opts, :input_status) do
+  #     smart_input_opts.input_status != :draft
+  #   else
+  #     # Default to disabled if we can't determine state
+  #     true
+  #   end
+  # end
 
   def handle_event("select", params, socket) do
     Bonfire.Boundaries.LiveHandler.handle_event("select", params, socket)
@@ -341,50 +348,39 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     try do
       # Cancel the upload
       socket = Phoenix.LiveView.cancel_upload(socket, :files, ref)
+      smart_input_opts = e(assigns(socket), :smart_input_opts, nil)
 
       # Check if we should disable the submit button
       text = e(socket.assigns.smart_input_opts, :text, nil)
       # text_suggestion = e(socket.assigns.smart_input_opts, :text_suggestion, "")
 
       # Check if there are any remaining uploads
-      has_uploads =
-        socket.assigns.uploads &&
-          socket.assigns.uploads.files &&
-          socket.assigns.uploads.files.entries &&
-          length(socket.assigns.uploads.files.entries) > 0
+      uploads = e(assigns(socket), :uploads, nil)
 
-      # Text is empty if both text and text_suggestion are empty or nil
-      text_empty = text == nil || String.trim(to_string(text || "")) == ""
-      # && (text_suggestion == nil || String.trim(to_string(text_suggestion || "")) == "")
+      input_status = smart_input_opts[:input_status]
 
       # Determine if submit should be disabled
-      submit_disabled = text_empty && !has_uploads
-
-      debug(submit_disabled, "submit_disabled after cancel upload")
+      input_status =
+        if input_status != :submit and
+             (not is_nil(text) || String.trim(to_string(text || "")) != "" ||
+                (uploads && e(uploads, :files, :entries, []) != [])) do
+          :draft
+        else
+          input_status
+        end
+        |> debug("drafting in validation")
 
       # Update the socket first
-      updated_socket =
+      socket =
         socket
         |> assign(reset_smart_input: false)
         |> update(
           :smart_input_opts,
-          &Map.merge(&1, %{submit_disabled: submit_disabled})
+          &Map.merge(&1, %{input_status: input_status})
         )
 
-      # CRITICAL FIX: Only update the submit_disabled flag in the component
-      # without touching any other state
-      maybe_update_component(
-        updated_socket,
-        Bonfire.UI.Common.SmartInputContainerLive,
-        :smart_input,
-        :smart_input_opts,
-        fn existing_opts ->
-          Map.merge(existing_opts, %{submit_disabled: submit_disabled})
-        end
-      )
-
       # Return the updated socket directly
-      {:noreply, updated_socket}
+      {:noreply, socket}
     rescue
       e ->
         warn(e, "Error in cancel-upload handler")
@@ -404,21 +400,23 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # Safely cancel all uploads
     try do
       # Get all upload entries
-      entries = e(socket.assigns, :uploads, :files, :entries, [])
-
-      # Cancel each upload by ref
-      _updated_socket =
-        Enum.reduce(entries, socket, fn entry, acc_socket ->
-          Phoenix.LiveView.cancel_upload(acc_socket, :files, entry.ref)
-        end)
+      if entries = e(socket.assigns, :uploads, :files, :entries, nil) do
+        # Cancel each upload by ref
+        _updated_socket =
+          Enum.reduce(entries, socket, fn entry, acc_socket ->
+            Phoenix.LiveView.cancel_upload(acc_socket, :files, entry.ref)
+          end)
+      else
+        socket
+      end
     rescue
       e ->
         warn(e, "Error in cancel-all-uploads handler")
-        {:noreply, socket}
+        socket
     catch
       e ->
         warn(e, "Error in cancel-all-uploads handler")
-        {:noreply, socket}
+        socket
     end
   end
 
@@ -439,7 +437,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     js
     |> JS.push(event,
       value: %{
-        opts: do_encode_opts(opts |> debug("smart_input_opts_update")),
+        opts: do_encode_opts(opts |> debug("push smart_input_opts")),
         # Flag to indicate we want to merge with existing opts
         merge_opts: true
       }
@@ -455,6 +453,27 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   defp encode_opts(_), do: nil
   defp do_encode_opts(opts), do: Jason.encode!(Map.drop(opts || %{}, [:text]))
 
+  def set_smart_input_opts(socket, %{} = opts_to_set) do
+    # Make sure smart_input_opts is a map
+    current_opts =
+      set_smart_input_opts(
+        assigns(socket),
+        assigns(socket)[:smart_input_opts] || %{},
+        %{} = opts_to_set
+      )
+  end
+
+  def set_smart_input_opts(context, current_opts, %{} = opts_to_set) do
+    # Make sure smart_input_opts is a map
+    current_opts = if is_list(current_opts), do: Enum.into(current_opts, %{}), else: current_opts
+
+    # Use our consistent merger function
+    set(
+      context,
+      %{smart_input_opts: merge_smart_input_opts(current_opts, opts_to_set)}
+    )
+  end
+
   @doc """
   Merges new opts with existing ones, maintaining important state
   Use this helper for consistent merging across functions
@@ -468,16 +487,17 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   @doc """
   Open the composer by setting assigns
   """
-  def assign_open(context, assigns) do
+  def assign_open(context, assigns_to_set \\ %{}) do
     # Make sure smart_input_opts is a map
-    current_opts = assigns[:smart_input_opts] || %{}
+    current_opts = assigns_to_set[:smart_input_opts] || %{}
     current_opts = if is_list(current_opts), do: Enum.into(current_opts, %{}), else: current_opts
 
     # Use our consistent merger function
     set(
       context,
-      Keyword.merge(assigns,
-        smart_input_opts: merge_smart_input_opts(current_opts, %{open: true})
+      Enums.merge_as_map(
+        assigns_to_set,
+        %{smart_input_opts: merge_smart_input_opts(current_opts, %{open: true})}
       )
     )
   end
@@ -541,6 +561,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     # Set default reset state
     default_opts = %{
+      input_status: nil,
       open: false,
       text_suggestion: nil,
       text: nil,
@@ -558,7 +579,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       smart_input_opts: default_opts
     )
 
-    cancel_all_uploads(socket)
+    do_extra_reset_input(socket)
   end
 
   def reset_input(%{assigns: %{showing_within: :messages}} = socket) do
@@ -567,6 +588,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     # Set default reset state
     default_opts = %{
+      input_status: nil,
       open: false,
       text_suggestion: nil,
       text: nil,
@@ -581,7 +603,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       smart_input_opts: default_opts
     )
 
-    socket
+    do_extra_reset_input(socket)
   end
 
   def reset_input(socket) do
@@ -589,6 +611,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     # Set default reset state
     default_opts = %{
+      input_status: nil,
       open: false,
       text_suggestion: nil,
       text: nil,
@@ -608,7 +631,15 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       smart_input_opts: default_opts
     )
 
+    do_extra_reset_input(socket)
+  end
+
+  defp do_extra_reset_input(socket) do
     socket
+    |> push_event("js-exec-attr-event", %{to: "#main_smart_input_button", attr: "phx-reset"})
+    |> push_event("smart_input:reset", %{})
+    # |> reset_submitting()
+    |> cancel_all_uploads()
   end
 
   def toggle_expanded(js \\ %JS{}, target, btn, class) when is_binary(class) do

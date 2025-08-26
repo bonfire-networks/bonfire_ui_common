@@ -41,27 +41,27 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
 
   def maybe_setup_uploads(socket) do
     max_file_size =
-      Bonfire.Common.Utils.maybe_apply(
-        Bonfire.Files.VideoUploader,
-        :max_file_size,
-        nil,
-        fallback_return: nil
-      ) ||
-        Bonfire.Common.Utils.maybe_apply(
-          Bonfire.Files.DocumentUploader,
-          :max_file_size,
-          nil,
-          fallback_return: nil
-        ) ||
-        Bonfire.Common.Utils.maybe_apply(
-          Bonfire.Files.ImageUploader,
-          :max_file_size,
-          nil,
-          fallback_return: nil
-        ) || 20_000_000
+      (Bonfire.Common.Utils.maybe_apply(
+         Bonfire.Files.VideoUploader,
+         :max_file_size,
+         [],
+         fallback_return: nil
+       ) ||
+         Bonfire.Common.Utils.maybe_apply(
+           Bonfire.Files.DocumentUploader,
+           :max_file_size,
+           [],
+           fallback_return: nil
+         ) ||
+         Bonfire.Common.Utils.maybe_apply(
+           Bonfire.Files.ImageUploader,
+           :max_file_size,
+           [],
+           fallback_return: nil
+         ) || 20_000_000)
+      |> flood("max_file_size")
 
     maybe_setup_uploads(socket, max_file_size)
-    # |> IO.inspect(label: "maybe_setup_uploadss")
   end
 
   def maybe_setup_uploads(socket, max_file_size) do
@@ -80,10 +80,9 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       # make configurable
       max_file_size: max_file_size,
       max_entries:
-        Bonfire.Common.Settings.get(
+        Config.get(
           [Bonfire.UI.Common.SmartInputLive, :max_uploads],
-          :instance,
-          current_user(socket)
+          4
         ),
       auto_upload: false
       # progress: &handle_progress/3
@@ -109,7 +108,9 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       )
       when is_map(new_smart_input_opts) and is_map(old_smart_input_opts) do
     # Merge smart_input_opts
-    merged_smart_input_opts = Map.merge(old_smart_input_opts, new_smart_input_opts)
+    merged_smart_input_opts =
+      Map.merge(old_smart_input_opts, new_smart_input_opts)
+      |> flood("merged_smart_input_opts")
 
     # Preserve existing important attributes in the socket assigns
     # We'll look for essential attrs that we don't want to lose during partial updates
@@ -185,25 +186,19 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
           |> Jason.encode!()
       end
 
-    socket =
+    {
+      :ok,
       socket
-      |> assign(:custom_emojis, custom_emojis)
       |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
-
-    # TODO: only trigger if module enabled ^
-
-    # Initialize submit button state right away - use the should_disable_submit function
-    socket =
-      socket
-      |> assign(reset_smart_input: false)
-      |> update(
-        :smart_input_opts,
-        &Map.merge(&1, %{
-          submit_disabled: Bonfire.UI.Common.SmartInput.LiveHandler.should_disable_submit?(socket)
-        })
-      )
-
-    {:ok, socket}
+      # TODO: only trigger if module enabled ^
+      |> assign(reset_smart_input: false, custom_emojis: custom_emojis)
+      # |> update(
+      #   :smart_input_opts,
+      #   &Map.merge(&1, %{
+      #     submit_disabled: Bonfire.UI.Common.SmartInput.LiveHandler.should_disable_submit?(socket)
+      #   })
+      # )
+    }
   end
 
   def handle_event(

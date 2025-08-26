@@ -4,6 +4,7 @@ defmodule Bonfire.UI.Common.SmartInputButtonLive do
 
   prop smart_input_opts, :map, default: %{}
 
+  prop id, :any, default: nil
   prop component, :any, default: nil
   prop as_icon, :boolean, default: false
   prop icon, :any, default: nil
