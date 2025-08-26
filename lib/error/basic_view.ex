@@ -100,13 +100,13 @@ defmodule Bonfire.UI.Common.BasicView do
                         </div>
                       </div>
                     </a>
-                    <div class="flex flex-1"></div>
                   </div>
                 </div>
               </div>
 
               <div class="w-full max-w-screen-md mx-auto mt-4">
                 <div class="prose text-center max-w-none">
+                  <div class="flex"><%= assigns[:title] %></div>
                   <div class="flex flex-col place-content-center">
                     {assigns[:inner_content]}
                   </div>
