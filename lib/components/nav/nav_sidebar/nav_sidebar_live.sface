@@ -55,6 +55,9 @@
           </LinkLive>
       </li>
     </ul> -->
+    <!-- <div class="ml-3 mb-3">
+    <Bonfire.UI.Common.SmartInputButtonLive prompt="Compose" class="btn btn-primary" />
+    </div> -->
     <Bonfire.UI.Common.ExtensionMenuNavLive
       parent_id="nav_sidebar"
       selected_tab={@selected_tab}

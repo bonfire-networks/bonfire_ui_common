@@ -32,7 +32,7 @@
         <div
           data-id="main_section"
           data-single-column={@without_sidebar}
-          class="relative w-full gap-2 xl:gap-0 z-[99999] col-span-1"
+          class="relative w-full gap-2 xl:gap-0 z-[99999] col-span-1 max-w-[600px]"
         >
           <Bonfire.UI.Common.GuestHeaderLive
             selected_tab={@selected_tab}
