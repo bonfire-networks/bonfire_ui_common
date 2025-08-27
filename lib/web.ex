@@ -401,6 +401,22 @@ defmodule Bonfire.UI.Common.Web do
     if not Module.defines?(env.module, {:terminate, 2}) do
       quote do
         # define a default terminate/2 to log errors if none is defined in the module
+        def terminate(:normal, _socket) do
+          :ok
+        end
+
+        def terminate(:shutdown, _socket) do
+          :ok
+        end
+
+        def terminate({:shutdown, :closed}, _socket) do
+          :ok
+        end
+
+        def terminate({:shutdown, :left}, _socket) do
+          :ok
+        end
+
         def terminate(reason, _socket) do
           error(reason, "LiveView exiting: terminating #{__MODULE__} #{inspect(self())}")
           :ok
