@@ -24,7 +24,7 @@ defmodule Bonfire.UI.Common.MixProject do
       deps:
         Mess.deps([
           {:phoenix_live_reload, "~> 1.2", only: :dev},
-          {:floki, "~> 0.36", only: :test},
+          {:floki, ">= 0.0.0", only: :test},
           {:zest, "~> 0.1", optional: true},
           {:phoenix_test, "~> 0.6", only: :test, runtime: false},
           # {:pages, "~> 0.12", only: :test} # extends Floki for testing
