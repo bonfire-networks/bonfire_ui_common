@@ -226,7 +226,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
   end
 
   def handle_info({:assign_persistent_self, {:smart_input, assigns}}, socket) do
-    flood("forward assigns from PersistentLive to the SmartInputContainerLive stateful component")
+    debug("forward assigns from PersistentLive to the SmartInputContainerLive stateful component")
 
     assigns
     |> Map.new()

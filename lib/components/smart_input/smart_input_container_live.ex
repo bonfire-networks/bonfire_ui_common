@@ -59,7 +59,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
            [],
            fallback_return: nil
          ) || 20_000_000)
-      |> flood("max_file_size")
+      |> debug("max_file_size")
 
     maybe_setup_uploads(socket, max_file_size)
   end
@@ -110,7 +110,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     # Merge smart_input_opts
     merged_smart_input_opts =
       Map.merge(old_smart_input_opts, new_smart_input_opts)
-      |> flood("merged_smart_input_opts")
+      |> debug("merged_smart_input_opts")
 
     # Preserve existing important attributes in the socket assigns
     # We'll look for essential attrs that we don't want to lose during partial updates

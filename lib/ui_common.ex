@@ -689,7 +689,13 @@ defmodule Bonfire.UI.Common do
   Run a function and expects tuple.
   If anything else is returned, like an error, a flash message is shown to the user.
   """
-  def undead_mount(socket, fun), do: ErrorHandling.undead(socket, fun, {:mount, :ok})
+  def undead_mount(socket, fun) do
+    # Set up process monitoring
+    Process.flag(:trap_exit, true)
+
+    ErrorHandling.undead(socket, fun, {:mount, :ok})
+  end
+
   def undead_on_mount(socket, fun), do: ErrorHandling.undead(socket, fun, {:mount, :halt})
   def undead_update(socket, fun), do: ErrorHandling.undead(socket, fun, {:update, :ok})
   def undead_render(assigns, fun), do: ErrorHandling.undead(assigns, fun, {nil, :render})

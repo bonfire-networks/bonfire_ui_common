@@ -168,6 +168,8 @@ defmodule Bonfire.UI.Common.Web do
       @before_compile {Bonfire.UI.Common.Web, :__handle_info_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__handle_event_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
+      @after_compile {Bonfire.UI.Common.Web, :__render_after_compile__}
+      @before_compile {Bonfire.UI.Common.Web, :__live_terminate_before_compile__}
 
       unquote(live_view_helpers())
 
@@ -191,6 +193,7 @@ defmodule Bonfire.UI.Common.Web do
       @before_compile {Bonfire.UI.Common.Web, :__live_update_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__handle_event_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
+      @after_compile {Bonfire.UI.Common.Web, :__render_after_compile__}
 
       unquote(live_view_helpers())
 
@@ -390,6 +393,22 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
+  defmacro __live_terminate_before_compile__(env) do
+    live_terminate_before_compile(env)
+  end
+
+  defp live_terminate_before_compile(env) do
+    if not Module.defines?(env.module, {:terminate, 2}) do
+      quote do
+        # define a default terminate/2 to log errors if none is defined in the module
+        def terminate(reason, _socket) do
+          error(reason, "LiveView exiting: terminating #{__MODULE__} #{inspect(self())}")
+          :ok
+        end
+      end
+    end
+  end
+
   defmacro __handle_params_before_compile__(env) do
     handle_params_before_compile(env)
   end
@@ -486,66 +505,73 @@ defmodule Bonfire.UI.Common.Web do
   end
 
   defmacro __render_before_compile__(env) do
-    render_before_compile(env)
-  end
-
-  defp render_before_compile(env) do
     if Module.defines?(env.module, {:render, 1}) do
       assigns = %{}
+      # This one runs before Phoenix has generated the render/1 function
+      render_override(env)
+    end
+  end
 
-      quote do
-        defoverridable render: 1
+  defmacro __render_after_compile__(env, _bytecode) do
+    # This one runs after Phoenix has generated the render/1 function
+    quote do
+      # nothing 
+    end
+  end
 
-        def render(assigns) do
-          # current_component_id = assigns[:__context__][:current_component_id]
+  defp render_override(env) do
+    quote do
+      defoverridable render: 1
 
-          assigns =
-            assign_generic_global(assigns, %{
-              # current_component: __MODULE__, 
-              # current_component_id: assigns[:id] || current_component_id, 
+      def render(assigns) do
+        # current_component_id = assigns[:__context__][:current_component_id]
 
-              component_tree:
-                (assigns[:__context__][:component_tree] || []) ++
-                  [__MODULE__],
-              component_id_tree:
-                (assigns[:__context__][:component_id_tree] || []) ++
-                  List.wrap(assigns[:id])
-            })
+        assigns =
+          assign_generic_global(assigns, %{
+            # current_component: __MODULE__, 
+            # current_component_id: assigns[:id] || current_component_id, 
 
-          undead_render(assigns, fn ->
-            case assigns do
-              %{__replace_render__with__: _} ->
-                Bonfire.UI.Common.ErrorComponentLive.replace(assigns)
+            component_tree:
+              (assigns[:__context__][:component_tree] || []) ++
+                [__MODULE__],
+            component_id_tree:
+              (assigns[:__context__][:component_id_tree] || []) ++
+                List.wrap(assigns[:id])
+          })
 
-              %{__context__: %{current_params: %{"_email_format" => format}}} ->
-                mod = unquote(env.module)
+        undead_render(assigns, fn ->
+          case assigns do
+            %{__replace_render__with__: _} ->
+              Bonfire.UI.Common.ErrorComponentLive.replace(assigns)
 
-                case Bonfire.Common.Utils.maybe_apply(
-                       Bonfire.Mailer.Render,
-                       :render_templated,
-                       [format, mod, assigns],
-                       fallback_return: nil
-                     ) do
-                  binary when is_binary(binary) and binary != "" ->
-                    binary = if format == "text", do: "<pre>#{binary}</pre>", else: binary
+            %{__context__: %{current_params: %{"_email_format" => format}}} ->
+              mod = unquote(env.module)
 
-                    Bonfire.UI.Common.Empty.render(
-                      Phoenix.Component.assign(assigns,
-                        html_content: binary,
-                        comment: "email mode"
-                      )
+              case Bonfire.Common.Utils.maybe_apply(
+                     Bonfire.Mailer.Render,
+                     :render_templated,
+                     [format, mod, assigns],
+                     fallback_return: nil
+                   ) do
+                binary when is_binary(binary) and binary != "" ->
+                  binary = if format == "text", do: "<pre>#{binary}</pre>", else: binary
+
+                  Bonfire.UI.Common.Empty.render(
+                    Phoenix.Component.assign(assigns,
+                      html_content: binary,
+                      comment: "email mode"
                     )
+                  )
 
-                  # ~H"<%= raw binary %>"
-                  _ ->
-                    super(assigns)
-                end
+                # ~H"<%= raw binary %>"
+                _ ->
+                  super(assigns)
+              end
 
-              _ ->
-                super(assigns)
-            end
-          end)
-        end
+            _ ->
+              super(assigns)
+          end
+        end)
       end
     end
   end
@@ -569,6 +595,8 @@ defmodule Bonfire.UI.Common.Web do
         @before_compile {Bonfire.UI.Common.Web, :__handle_info_before_compile__}
         @before_compile {Bonfire.UI.Common.Web, :__handle_event_before_compile__}
         @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
+        @after_compile {Bonfire.UI.Common.Web, :__render_after_compile__}
+        @before_compile {Bonfire.UI.Common.Web, :__live_terminate_before_compile__}
 
         unquote(surface_helpers())
 
@@ -597,6 +625,8 @@ defmodule Bonfire.UI.Common.Web do
         @before_compile {Bonfire.UI.Common.Web, :__handle_info_before_compile__}
         @before_compile {Bonfire.UI.Common.Web, :__handle_event_before_compile__}
         @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
+        @after_compile {Bonfire.UI.Common.Web, :__render_after_compile__}
+        @before_compile {Bonfire.UI.Common.Web, :__live_terminate_before_compile__}
 
         template_name =
           Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
@@ -629,6 +659,7 @@ defmodule Bonfire.UI.Common.Web do
         @before_compile {Bonfire.UI.Common.Web, :__live_update_before_compile__}
         @before_compile {Bonfire.UI.Common.Web, :__handle_event_before_compile__}
         @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
+        @after_compile {Bonfire.UI.Common.Web, :__render_after_compile__}
 
         # data current_account, :any, from_context: :current_account
         # data current_user, :any, from_context: :current_user
@@ -652,6 +683,7 @@ defmodule Bonfire.UI.Common.Web do
         @moduledoc false
 
         @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
+        @after_compile {Bonfire.UI.Common.Web, :__render_after_compile__}
 
         # , unquote(opts) #, unquote(Bonfire.UI.Common.Web.take_components_opts(opts))
         # use Bonfire.UI.Common.ComponentRenderHandler

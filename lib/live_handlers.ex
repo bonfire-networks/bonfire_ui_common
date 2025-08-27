@@ -141,7 +141,27 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   `{:noreply, socket}`
   """
-  def handle_info(blob, socket, source_module \\ nil, fun \\ nil) do
+  def handle_info(blob, socket, source_module \\ nil, fun \\ nil)
+
+  def handle_info({:EXIT, pid, :normal}, socket, source_module, _fun) do
+    {:noreply, socket}
+  end
+
+  def handle_info({:EXIT, pid, reason}, socket, source_module, _fun) do
+    error(reason, "LiveView exiting: Linked process #{source_module} #{inspect(pid)} exited")
+    {:noreply, socket}
+  end
+
+  def handle_info({:DOWN, _ref, :process, pid, reason}, socket, source_module, _fun) do
+    error(
+      reason,
+      "LiveView exiting: Monitored process #{source_module} #{inspect(pid)} went down"
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_info(blob, socket, source_module, fun) do
     ErrorHandling.undead(socket, fn ->
       debug("LiveHandler: handle_info via #{source_module || "delegation"}")
 

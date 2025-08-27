@@ -176,7 +176,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         parsed_opts
         |> Enum.into(%{open: open_value})
       end
-      |> flood("select_smart_input_opts")
+      |> debug("select_smart_input_opts")
 
     to_circles =
       (params["to_circles"] || e(opts, :to_circles, []))
