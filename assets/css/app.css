@@ -87,7 +87,10 @@ select {
 @variant phx-submit-loading (&.phx-submit-loading, .phx-submit-loading &);
 @variant phx-change-loading (&.phx-change-loading, .phx-change-loading &);
 
-
+.prose-bonfire {
+  font-size: 15px;
+  line-height: 140%;
+}
 
 .filters_tabbed {
   visibility: hidden;

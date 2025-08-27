@@ -93,7 +93,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
            ) || 0,
          lines: String.split(code, "\n") |> length(),
          # no right sidebar
-         without_secondary_widgets: true,
+        #  without_secondary_widgets: true,
          sidebar_widgets: [
            users: [
              main:
