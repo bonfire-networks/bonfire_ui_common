@@ -130,6 +130,10 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       plug(Plug.RequestId)
       plug(Plug.Telemetry, event_prefix: [:phoenix, :endpoint])
 
+      if extension_enabled?(:bonfire_analytics) do
+        plug PhoenixAnalytics.Plugs.RequestTracker
+      end
+
       plug :save_url_in_process
 
       # parses real IP in conn if behind proxy
