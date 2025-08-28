@@ -128,6 +128,10 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       )
 
       plug(Plug.RequestId)
+
+      # parses real IP in conn if behind proxy
+      plug(RemoteIp)
+
       plug(Plug.Telemetry, event_prefix: [:phoenix, :endpoint])
 
       if extension_enabled?(:bonfire_analytics) do
@@ -135,9 +139,6 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       end
 
       plug :save_url_in_process
-
-      # parses real IP in conn if behind proxy
-      plug(RemoteIp)
       plug :log_ip
 
       if System.get_env("TIDEWAVE_ENABLED") not in ["false", "0", "no"] and
