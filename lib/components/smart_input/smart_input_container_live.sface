@@ -28,8 +28,7 @@
     </div>
 
     {#if not is_nil(current_user_id(@__context__))}
-      <!-- <Bonfire.UI.Common.ComposerMinimizedLive /> -->
-
+    <.portal id="composer_portal" class="relative z-[9999999999999999999999999]" target="body">
       <div
         id="smart_input_container"
         data-hidden={e(@smart_input_opts, :open, nil) != true}
@@ -41,13 +40,6 @@
       >
         <div class="w-full rounded-xl bg-gradient-to-t from-base-content/10 to-base-content/10 p-[0.05rem] flex flex-col flex-1 h-full grow">
           <div class="w-full rounded-xl bg-base-200 flex flex-col flex-1 h-full grow">
-            {!-- "md:!w-[20rem] lg:block bottom-0": e(@smart_input_opts, :minimized, nil) == true, --}
-            <!-- <div
-              phx-click={LiveHandler.close_smart_input()}
-              id="smart_input_backdrop"
-              phx-target="#smart_input"
-              class="lg:!hidden smart_input_backdrop fixed inset-0 pointer-events-none cursor-pointer bg-base-100"
-            /> -->
             <div class="relative z-50 rounded-xl flex flex-col grow h-full">
               <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
               <SmartInputLive
@@ -80,6 +72,7 @@
           </div>
         </div>
       </div>
+      </.portal>
     {/if}
   </div>
 </div>
