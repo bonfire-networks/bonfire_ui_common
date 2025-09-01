@@ -9,14 +9,14 @@ defmodule Bonfire.UI.Common.AvatarLive do
   prop viewing_main_object, :boolean, default: false
   prop comment, :boolean, default: false
   # prop size, :any, default: nil
-  prop wrapper_class, :css_class, default: "border-0 avatar !flex"
+  prop wrapper_class, :css_class, default: "border-0 avatar !flex w-full"
   prop class, :css_class, default: "w-12 h-12 rounded-lg bg-base-100 h-full"
 
   prop bg_class, :css_class,
     default: ["h-full flex items-centeer place-conten-center w-full flex-1"]
 
   prop avatar_fallback, :string, default: nil
-  prop fallback_class, :css_class, default: "w-6 h-6"
+  prop fallback_class, :css_class, default: "w-5 h-5 opacity-50"
   prop title, :string, default: ""
   prop opts, :any, default: %{}
 

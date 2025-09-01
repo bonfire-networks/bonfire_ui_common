@@ -1,63 +1,63 @@
 {#case @src || Media.media_url(@media)}
-  {#match src}
+  {#match src when is_binary(src)}
     {#case socket_connected?(@__context__) == true and Bonfire.Files.Blurred.blurhash_cached(@media)}
       {#match blurhash when is_binary(blurhash)}
+        <!-- Path A: Full blurhash experience -->
         <div
           id={"blurHash-#{@parent_id}-#{Text.hash(blurhash)}"}
           :hook
           data-hash={blurhash}
-          class=""
-          x-data="{src: null, loaded: false}"
-          x-intersect.once.margin.500px={"src = '#{src}'"}
+          class="w-full h-full"
+          x-data="{ loaded: false }"
+          x-intersect.once.margin.50px={"let img = $el.querySelector('img'); img.src = '#{src}'; setTimeout(() => { if (img.complete) loaded = true; }, 10);"}
         >
-          <canvas class={@class} x-show="!loaded" x-transition.opacity.duration.500ms {...@opts} />
+          <canvas class={@class} x-show="!loaded" x-transition.opacity.duration.300ms {...@opts} />
           <img
             x-cloak
-            src="data:,"
+            src=""
             alt={@alt}
             title={@title}
             class={@class}
             data-width={maybe_get(@media, [:metadata, :width]) || ""}
             data-height={maybe_get(@media, [:metadata, :height]) || ""}
             x-show="loaded"
-            x-transition.opacity.duration.500ms
-            x-bind:src="src"
+            x-transition.opacity.duration.300ms
             x-on:load="loaded = true"
+            decoding="async"
             {...@opts}
           />
-          <!-- <div x-show="error" class={"iconify", e(@fallback_class, nil)}  iconify={@fallback_icon} /> -->
         </div>
-        <!-- Commented onerror because it applies also to correctly rendered images, maybe because of async loading? -->
-        <!-- onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"} -->
       {#match _}
-        {!--
-        <!-- blurred JPEG (deprecated in favour of blurhash) -->
-        {#case socket_connected?(@__context__) &&
-            (is_binary(src) and Bonfire.Files.Blurred.blurred(src, skip_creation: true))}
-          {#match blurred when is_binary(blurred) and blurred != src}
-            <img
-              x-data={"{src: '#{blurred}', error: false}"}
-              x-intersect.once.margin.500px={"src = '#{src}'"}
-              src={blurred}
-              alt={@alt}
-              class={@class}
-              x-bind:src="src"
-              onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@fallback_icon}')"}
-              {...@opts}
-            />
-          {#match _} --}
-        <div class="h-full place-content-center image-with-fallback">
-          <img
-            title={@title}
-            src={src}
-            alt={@alt}
-            class={[@class, "fallback-img"]}
-            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+        <!-- Path B: Simple lazy loading without blurhash -->
+        <div
+          class="w-full h-full"
+          x-data="{ loaded: false }"
+          x-intersect.once.margin.50px={"let img = $el.querySelector('img'); img.src = '#{src}'; setTimeout(() => { if (img.complete) loaded = true; }, 10);"}
+        >
+          <!-- Simple skeleton placeholder -->
+          <div
+            class={[@class, "bg-base-200 animate-pulse"]}
+            x-show="!loaded"
+            x-transition.opacity.duration.300ms
             {...@opts}
           />
-          <div style="display:none;" class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
+          <img
+            x-cloak
+            src=""
+            alt={@alt}
+            title={@title}
+            class={@class}
+            x-show="loaded"
+            x-transition.opacity.duration.300ms
+            x-on:load="loaded = true"
+            decoding="async"
+            {...@opts}
+          />
         </div>
-        <!-- <img title={@title} src={src} alt={@alt} class={@class} {...@opts}> -->
-        {!-- {/case} --}
     {/case}
+  {#match _}
+    <!-- Path C: No src available, show fallback -->
+    <div class="h-full place-content-center">
+      <div class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
+    </div>
 {/case}

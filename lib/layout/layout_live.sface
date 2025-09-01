@@ -32,7 +32,7 @@
         <div
           data-id="main_section"
           data-single-column={@without_sidebar}
-          class="relative w-full gap-2 xl:gap-0 z-[99999] col-span-1 overflow-auto"
+          class="relative w-full gap-2 xl:gap-0 z-[99999] col-span-1"
         >
           <Bonfire.UI.Common.GuestHeaderLive
             selected_tab={@selected_tab}
@@ -61,7 +61,7 @@
                 />
                 <div
                   id="inner"
-                  class={"flex flex-col min-h-[calc(var(--inner-window-height))] bg-base-100 pb-4 md:pb-[1px] border-x border-base-content/10 #{if @hide_main, do: 'hidden'}"}
+                  class={"overflow-auto flex flex-col min-h-[calc(var(--inner-window-height))] bg-base-100 pb-4 md:pb-[1px] border-x border-base-content/10 #{if @hide_main, do: 'hidden'}"}
                 >
                   <div
                     :if={!@no_header}
