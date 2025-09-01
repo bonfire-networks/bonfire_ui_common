@@ -92,6 +92,10 @@ select {
   line-height: 140%;
 }
 
+.prose-bonfire p {
+  margin: 0;
+}
+
 .filters_tabbed {
   visibility: hidden;
   position: absolute;
@@ -160,94 +164,6 @@ article.unread-activity {
   font-style: italic;
 }
 
-/* Markdown content styling */
-.milkdown-editor h1, 
-.milkdown-editor h2, 
-.milkdown-editor h3 {
-  font-weight: 600;
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
-  line-height: 1.2;
-}
-
-.milkdown-editor h1 {
-  font-size: 1.5rem;
-}
-
-.milkdown-editor h2 {
-  font-size: 1.25rem;
-}
-
-.milkdown-editor h3 {
-  font-size: 1.125rem;
-}
-
-.milkdown-editor a {
-  color: var(--color-primary, #6366f1);
-  text-decoration: none;
-}
-
-.milkdown-editor a:hover {
-  text-decoration: underline;
-}
-
-.milkdown-editor blockquote {
-  border-left: 4px solid var(--color-border, #e5e7eb);
-  padding-left: 1rem;
-  margin-left: 0;
-  color: var(--color-text-muted, #6b7280);
-  font-style: italic;
-}
-
-.milkdown-editor ul, 
-.milkdown-editor ol {
-  margin-left: 1.5rem;
-  margin-bottom: 1em;
-}
-
-.milkdown-editor ul {
-  list-style-type: disc;
-}
-
-.milkdown-editor ol {
-  list-style-type: decimal;
-}
-
-.milkdown-editor li {
-  margin-bottom: 0.25em;
-}
-
-.milkdown-editor code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  background-color: var(--color-code-bg, rgba(0, 0, 0, 0.05));
-  padding: 0.2em 0.4em;
-  border-radius: 0.25rem;
-  font-size: 0.875em;
-}
-
-.dark .milkdown-editor code {
-  background-color: var(--color-code-bg-dark, rgba(255, 255, 255, 0.1));
-}
-
-.milkdown-editor pre {
-  background-color: var(--color-code-block-bg, rgba(0, 0, 0, 0.05));
-  padding: 1rem;
-  border-radius: 0.375rem;
-  overflow-x: auto;
-  margin-bottom: 1em;
-}
-
-.dark .milkdown-editor pre {
-  background-color: var(--color-code-block-bg-dark, rgba(0, 0, 0, 0.25));
-}
-
-.milkdown-editor pre code {
-  background-color: transparent;
-  padding: 0;
-  border-radius: 0;
-  font-size: 0.875em;
-  color: inherit;
-}
 
 .no-margin-top {
   margin-top: 0 !important;
@@ -278,8 +194,8 @@ article.unread-activity {
 @import "./custom_themes.css";
 
 
-@source "../../../../deps/bonfire_editor_milkdown/assets/node_modules/@milkdown/crepe/src/theme/common/style.css";
-@source "../../../../deps/bonfire_editor_milkdown/assets/node_modules/@milkdown/crepe/src/theme/frame/style.css";
+/* @source "../../../../deps/bonfire_editor_milkdown/assets/node_modules/@milkdown/crepe/src/theme/common/style.css";
+@source "../../../../deps/bonfire_editor_milkdown/assets/node_modules/@milkdown/crepe/src/theme/frame/style.css"; */
 
 @theme {
   --spacing: 0.25rem;  /* This enables all spacing utilities dynamically */

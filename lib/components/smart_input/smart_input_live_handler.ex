@@ -23,15 +23,16 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def open(js \\ %JS{}, opts \\ nil) do
-    # opts = opts || %{}
+    opts = opts || %{}
     # add open: true to opts
-    # opts = Map.merge(opts, %{open: true})
+    opts = Map.merge(opts, %{open: true})
 
     js
     |> JS.show(to: "#composer_container")
     |> maximize()
     # |> show_main(opts)
-    |> maybe_push_opts("Bonfire.UI.Common.SmartInput:select_smart_input", %{open: true})
+    |> maybe_push_opts("Bonfire.UI.Common.SmartInput:select_smart_input", opts)
+    # |> maybe_push_opts("Bonfire.UI.Common.SmartInput:select_smart_input", %{open: true})
   end
 
   def open_type(js \\ %JS{}, component, opts \\ nil) do
