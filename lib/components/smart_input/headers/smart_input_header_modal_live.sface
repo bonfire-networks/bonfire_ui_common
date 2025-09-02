@@ -1,7 +1,11 @@
 <header class="pt-safe z-50 w-full rounded-t-xl bg-base-100 md:z-auto md:relative">
   <div class="p-3 flex flex-row items-center flex-align-items-stretch flex-nowrap">
     <div class="mr-3">
-      <img class="inline-block object-cover w-8 h-8 cursor-pointer rounded-full" src={Media.avatar_url(current_user(@__context__))} alt={"current user avatar"} />
+      <img
+        class="inline-block object-cover w-8 h-8 cursor-pointer rounded-full"
+        src={Media.avatar_url(current_user(@__context__))}
+        alt="current user avatar"
+      />
     </div>
 
     {#if e(@smart_input_opts, :create_object_type, nil) in [:message, "message"]}

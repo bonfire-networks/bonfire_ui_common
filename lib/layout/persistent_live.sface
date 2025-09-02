@@ -13,7 +13,7 @@
     composer_class="btn fixed right-6 bottom-6 btn-xl btn-circle shadow-xl btn-primary floating_smart_input transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
     smart_input_opts={@smart_input_opts}
   />
-    <!-- Notifications -->
+  <!-- Notifications -->
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
   <.portal id="reusable_portal" class="relative z-[9999999999999999999999999]" target="body">
     <Bonfire.UI.Common.ReusableModalLive id="persistent_modal" />

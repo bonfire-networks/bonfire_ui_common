@@ -32,6 +32,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     |> maximize()
     # |> show_main(opts)
     |> maybe_push_opts("Bonfire.UI.Common.SmartInput:select_smart_input", opts)
+
     # |> maybe_push_opts("Bonfire.UI.Common.SmartInput:select_smart_input", %{open: true})
   end
 
