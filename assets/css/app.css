@@ -87,6 +87,11 @@ select {
 @variant phx-submit-loading (&.phx-submit-loading, .phx-submit-loading &);
 @variant phx-change-loading (&.phx-change-loading, .phx-change-loading &);
 
+.reply_to_in_composer {
+  padding-top: 10px !important;
+  padding-left: 50px !important;
+}
+
 .prose-bonfire {
   font-size: 15px;
   line-height: 140%;

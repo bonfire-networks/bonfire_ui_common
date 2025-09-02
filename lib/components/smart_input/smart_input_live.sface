@@ -10,7 +10,7 @@
         class="relative flex flex-col flex-1 w-full bg-base-100 rounded-xl"
       >
         <div :if={is_map(@activity) || is_map(@reply_to_id)} class="border-b border-base-content/10">
-          <div class="relative reply_in_composer rounded-t-box max-h-[160px] bg-primary/5 mx-3 border border-base-content/10 border-b-0 overflow-auto">
+          <div class="relative reply_in_composer rounded-t-box max-h-[160px] bg-base-200/50 mx-3 border border-base-content/10 border-b-0 overflow-auto">
             {!-- show what we're replying to, if any --}
             <StatelessComponent
               module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}

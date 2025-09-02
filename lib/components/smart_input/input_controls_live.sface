@@ -73,7 +73,7 @@
         "order-first !bg-base-content/10": @showing_within == :page
       }>
         <div class="">
-          <div class="flex justify-between gap-2 p-2 rounded-b-xl md:items-center  md:px-3 py-2 bg-base-content/10">
+          <div class="flex justify-between gap-2 p-2 lg:rounded-b-xl md:items-center md:px-3 py-2">
             <div class="flex items-center gap-2">
               <Bonfire.UI.Common.UploadButtonLive
                 :if={@uploads != false && e(@smart_input_opts, :create_object_type, nil) not in ["message"]}
@@ -117,7 +117,7 @@
                 {!-- 
               WIP: why does this not work?
               JS.toggle_attribute({"placeholder", l("Enter an optional summary"), l("Enter an optional content warning")}, to: "#smart_input_summary textarea") --}
-                <label class="relative btn-primary btn btn-ghost btn-square btn-sm">
+                <label class="relative btn btn-ghost btn-square btn-sm">
                   <input type="checkbox" name="sensitive" class="opacity-0 absolute left-[999999999999999999px]">
                   <#Icon iconify="ri:alert-line" class="swap-off w-4 h-4 text-base-content/70" />
                 </label>
@@ -159,7 +159,7 @@
                   phx-click={JS.toggle(to: "#smart_input_summary")
                   |> JS.focus(to: "#smart_input_summary textarea")
                   |> JS.toggle_class("btn-active", to: "#summary_btn")}
-                  class="title-button  btn-primary btn btn-ghost btn-square btn-sm"
+                  class="title-button btn btn-ghost btn-square btn-sm"
                 >
                   <#Icon iconify="heroicons-outline:menu-alt-2" class="w-4 h-4 text-base-content/70" />
                 </button>
@@ -174,9 +174,9 @@
                   phx-click={JS.toggle(to: "#smart_input_post_title")
                   |> JS.focus(to: "#smart_input_post_title input")
                   |> JS.toggle_class("btn-active", to: "#title_btn")}
-                  class="title-button btn btn-primary btn-ghost btn-square btn-sm"
+                  class="title-button btn btn-ghost btn-square btn-sm"
                 >
-                  <#Icon iconify="ph:article-ny-times-duotone" class="w-4 h-4 text-base-content/70" />
+                  <#Icon iconify="ph:article-ny-times-duotone" class="w-5 h-5 text-base-content/70" />
                 </button>
               </div>
             </div>
