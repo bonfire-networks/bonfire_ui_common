@@ -211,6 +211,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
         <!-- PWA iOS support -->
         <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="Bonfire">
         <link rel="apple-touch-icon" href="/pwa/ios/180.png">
