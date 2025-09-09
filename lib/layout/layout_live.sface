@@ -61,7 +61,7 @@
                 />
                 <div
                   id="inner"
-                  class={"overflow-auto flex flex-col min-h-[calc(var(--inner-window-height))] bg-base-100 pb-4 md:pb-[1px] border-x border-base-content/10 #{if @hide_main, do: 'hidden'}"}
+                  class={"flex flex-col min-h-[calc(var(--inner-window-height))] bg-base-100 pb-4 md:pb-[1px] border-x border-base-content/10 #{if @hide_main, do: 'hidden'}"}
                 >
                   <div
                     :if={!@no_header}

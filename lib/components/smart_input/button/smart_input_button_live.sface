@@ -40,7 +40,7 @@
         }
       />
     {#match _}
-      {#if @icon}
+      {#if @icon && !e(@without_icon, false)}
         <Iconify.iconify
           icon={@icon}
           class={
