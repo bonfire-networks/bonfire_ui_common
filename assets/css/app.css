@@ -169,6 +169,47 @@ article.unread-activity {
   font-style: italic;
 }
 
+.avatar-compact {
+  @apply !w-8 !h-8;
+}
+
+.margin-compact {
+  margin-left: -2.7rem !important;
+}
+
+.nested-preview {
+  position: relative;
+  padding-left: 3.4rem !important;
+  margin-left: -60px !important;
+  @apply border border-primary/40 bg-primary/5 rounded-lg !py-3 mb-3;
+}
+
+.quote-preview {
+  position: relative;
+  padding-left: 3.4rem !important;
+  margin-left: 0px !important;
+  @apply border-l-4 border-primary/60 bg-primary/5 !py-2 !pb-3 mt-2 mb-3;
+}
+
+.quote-preview .prose-bonfire {
+  font-size: 14px;
+}
+
+.quote-preview::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--color-primary);
+  --icon: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath fill='currentColor' d='M116 72v88a48.05 48.05 0 0 1-48 48a8 8 0 0 1 0-16a32 32 0 0 0 32-32v-8H40a16 16 0 0 1-16-16V72a16 16 0 0 1 16-16h60a16 16 0 0 1 16 16m100-16h-60a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h60v8a32 32 0 0 1-32 32a8 8 0 0 0 0 16a48.05 48.05 0 0 0 48-48V72a16 16 0 0 0-16-16'/%3E%3C/svg%3E");
+  mask-image: var(--icon);
+  -webkit-mask-image: var(--icon);
+  background-color: currentColor;
+  mask-repeat: no-repeat;
+  pointer-events: none;
+}
 
 .no-margin-top {
   margin-top: 0 !important;
