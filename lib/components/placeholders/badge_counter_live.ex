@@ -71,7 +71,7 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
 
           pid = self()
 
-          Task.start(fn ->
+          apply_task(:start, fn ->
             unseen_count =
               Bonfire.Common.Utils.maybe_apply(
                 Bonfire.Social.FeedActivities,

@@ -3,6 +3,7 @@ defmodule Bonfire.UI.Common.PlugProtect.Testing do
   For testing rate limits
   via https://www.paraxial.io/blog/throttle-requests
   """
+  alias Bonfire.Common.Utils
 
   @form_name "login_fields"
 
@@ -101,6 +102,10 @@ defmodule Bonfire.UI.Common.PlugProtect.Testing do
 
   def do_attack(url, [[email, pass] | t], sleep_n) do
     Process.sleep(sleep_n)
-    [Task.async(fn -> send_login(url, email, pass) end) | do_attack(url, t, sleep_n)]
+
+    [
+      Utils.apply_task(:async, fn -> send_login(url, email, pass) end)
+      | do_attack(url, t, sleep_n)
+    ]
   end
 end
