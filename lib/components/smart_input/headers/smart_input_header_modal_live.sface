@@ -31,7 +31,7 @@
         </:action_btns>
       </Bonfire.UI.Common.OpenModalLive>
     </span>
-    <!-- <div class="mr-3">
+    {!-- <div class="mr-3">
       <img
         class="inline-block object-cover w-8 h-8 cursor-pointer rounded-full"
         src={Media.avatar_url(current_user(@__context__))}
@@ -47,7 +47,7 @@
       <div class="text-base font-semibold">
         {e(@smart_input_opts, :prompt, l("Create post"))}
       </div>
-    {/if} -->
+    {/if} --}
 
     <div class="absolute flex items-center gap-2 right-3">
       <button
@@ -60,7 +60,7 @@
         <#Icon iconify="fluent:chevron-double-down-16-filled" class="w-4 h-4 text-base-content/70" />
         <!-- <span class="text-sm text-base-content/70">{l("Minimize")}</span> -->
       </button>
-      <!-- <button
+      {!-- <button
         type="submit"
         id="submit_btn"
         x-on:click="$dispatch('submit')"
@@ -68,14 +68,14 @@
         class="btn-sm btn btn-primary"
         disabled={@smart_input_opts[:input_status] != :draft}
       >
-        {!-- <#Icon iconify="mdi:email-fast-outline" class="w-4 h-4" /> --}
+        <!-- <#Icon iconify="mdi:email-fast-outline" class="w-4 h-4" /> -->
         <#Icon iconify="lucide:arrow-up" class="w-4 h-4" />
         {#if e(@smart_input_opts, :create_object_type, nil) in [:message, "message"]}
           {if @smart_input_opts[:input_status] == :submit, do: l("Sending..."), else: l("Send")}
         {#else}
           {if @smart_input_opts[:input_status] == :submit, do: l("Posting..."), else: l("Post")}
         {/if}
-      </button> -->
+      </button> --}
     </div>
   </div>
 </header>

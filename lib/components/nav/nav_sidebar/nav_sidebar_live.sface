@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="flex flex-col flex-1 mt-4 h-full px-3 lg:px-0" :if={current_user(@__context__)}>
-    <!-- <ul class="menu menu-horizontal w-full gap-4 p-0 px-4 pb-4">
+    {!-- <ul class="menu menu-horizontal w-full gap-4 p-0 px-4 pb-4">
       <li :for={%{id: user_id} = user <- @current_account_users || []} class="">
          <LinkLive
             to={"/switch-user/#{user.character.username}"}
@@ -54,10 +54,10 @@
             </div>
           </LinkLive>
       </li>
-    </ul> -->
-    <!-- <div class="ml-3 mb-3">
+    </ul> --}
+    {!-- <div class="ml-3 mb-3">
     <Bonfire.UI.Common.SmartInputButtonLive prompt="Compose" class="btn btn-primary" />
-    </div> -->
+    </div> --}
     <Bonfire.UI.Common.ExtensionMenuNavLive
       parent_id="nav_sidebar"
       selected_tab={@selected_tab}
@@ -133,7 +133,7 @@
             <div class="opacity-80 font-bold text-base">{l("Code of Conduct")}</div>
           </LinkLive>
         </li>
-        <!-- <li class="p-0 m-0">
+        {!-- <li class="p-0 m-0">
           <LinkLive
             to="/admins"
             class="flex items-center w-full gap-3 lg:px-2 lg:py-2"
@@ -142,10 +142,10 @@
             <#Icon iconify="ri:admin-fill" class="w-4 h-4" />
             <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Admins")}</div>
           </LinkLive>
-        </li> -->
+        </li> --}
       </ul>
     </nav>
   {/if}
 
-  <!-- <div class="bg-base-100 lg:bg-base-200 pointer-events-none sticky bottom-0 flex h-40 [mask-image:linear-gradient(transparent,#000000)]" /> -->
+  {!-- <div class="bg-base-100 lg:bg-base-200 pointer-events-none sticky bottom-0 flex h-40 [mask-image:linear-gradient(transparent,#000000)]" /> --}
 </div>

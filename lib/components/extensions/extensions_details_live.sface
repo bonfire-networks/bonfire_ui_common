@@ -1,10 +1,10 @@
 <div class="flex gap-8 items-center justify-between p-4">
-  <!-- <div :if={@is_extension?}>
+  {!-- <div :if={@is_extension?}>
     <Iconify.iconify
       icon={e(@dep, :extra, :icon_active, nil) || e(@dep, :extra, :icon, nil) || "heroicons-outline:puzzle"}
       class={e(@dep, :extra, :icon_class, nil) || "w-8 h-8", "text-base-content/70"}
     />
-  </div> -->
+  </div> --}
   <div class="flex flex-col flex-1 gap-1">
     <div class="text-sm font-medium flex items-center gap-2">
       <span>{e(@dep, :extra, :name, nil) || e(@dep, :app, "Unknown")}</span>
