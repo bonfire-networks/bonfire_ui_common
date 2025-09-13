@@ -7,9 +7,10 @@
           id={"blurHash-#{@parent_id}-#{Text.hash(blurhash)}"}
           :hook
           data-hash={blurhash}
+          phx-update="ignore"
           class="w-full h-full"
           x-data="{ loaded: false }"
-          x-intersect.once.margin.50px={"let img = $el.querySelector('img'); img.src = '#{src}'; setTimeout(() => { if (img.complete) loaded = true; }, 10);"}
+          x-intersect.once.margin.50px={"$el.querySelector('img').src = '#{src}'"}
         >
           <canvas class={@class} x-show="!loaded" x-transition.opacity.duration.300ms {...@opts} />
           <img
@@ -30,9 +31,10 @@
       {#match _}
         <!-- Path B: Simple lazy loading without blurhash -->
         <div
+          phx-update="ignore"
           class="w-full h-full"
           x-data="{ loaded: false }"
-          x-intersect.once.margin.50px={"let img = $el.querySelector('img'); img.src = '#{src}'; setTimeout(() => { if (img.complete) loaded = true; }, 10);"}
+          x-intersect.once.margin.50px={"$el.querySelector('img').src = '#{src}'"}
         >
           <!-- Simple skeleton placeholder -->
           <div
