@@ -1,6 +1,6 @@
 <div class="flex-1">
   <div>
-    <div class="sticky top-0 flex items-center flex-1 w-full justify-end lg:justify-start">
+    <div class="sticky top-0 hidden lg:flex items-center flex-1 w-full justify-end lg:justify-start">
       {!-- <Bonfire.UI.Common.SmartInputButtonsLive
       :if={!e(@smart_input_opts, :hide_buttons, nil)}
       smart_input_opts={@smart_input_opts}
@@ -11,7 +11,7 @@
         id="main_smart_input_button"
         showing_within={:smart_input}
         as_icon={e(@as_icon, false)}
-        icon_class="!w-6 !h-6"
+        icon_class="!w-7 !h-7"
         smart_input_opts={@smart_input_opts}
         prompt={e(@smart_input_opts, :prompt, l("Compose"))}
         icon={e(@smart_input_opts, :icon, nil)}
@@ -34,14 +34,14 @@
           data-hidden={e(@smart_input_opts, :open, nil) != true}
           data-focused={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
           class={
-            "w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-xl max-w-full bg-base-200 mx-auto z-[9999] shadow-xl left-0 md:left-auto md:right-4 top-0 md:top-auto md:bottom-4 md:w-[32rem] md:right-4 md:top-auto h-full max-h-screen",
+            "w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-xl max-w-full  mx-auto z-[9999] shadow-xl left-0 md:left-auto md:right-4 top-0 md:top-auto md:bottom-4 md:w-[32rem] md:right-4 md:top-auto h-full max-h-screen",
             "translate-y-100": e(@smart_input_opts, :open, nil) != true
           }
         >
           <div class="w-full rounded-xl bg-gradient-to-t from-base-content/10 to-base-content/10 p-[0.05rem] flex flex-col flex-1 h-full grow">
             <div class="w-full rounded-xl bg-base-200 flex flex-col flex-1 h-full grow">
               <div class="relative z-50 rounded-xl flex flex-col grow h-full">
-                <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
+                <!-- <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} /> -->
                 <SmartInputLive
                   event_target={@myself}
                   custom_emojis={@custom_emojis}

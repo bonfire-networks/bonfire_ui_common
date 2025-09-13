@@ -40,7 +40,7 @@
           data-id="default"
           class={
             "px-2 text-base-content/70 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
-            "active bg-neutral hover:bg-neutral text-neutral-content": is_nil(@current_value)
+            "active bg-base-300 hover:bg-base-300 text-base-content": is_nil(@current_value)
           }
           phx-click={@event_name}
           phx-value-scope={@scope}

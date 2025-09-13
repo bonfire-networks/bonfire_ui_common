@@ -13,15 +13,15 @@
             Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
           <li>
             <LinkLive class="text-base-content" to="/users">{l("Users")}</LinkLive></li>
-          <li>
-            <LinkLive class="text-base-content" to="/known_instances">{l("Instances")}</LinkLive></li>
+          <!-- <li>
+            <LinkLive class="text-base-content" to="/known_instances">{l("Instances")}</LinkLive></li> -->
         {/if}
-        <li><a class="text-base-content" href="https://bonfirenetworks.org/" target="_blank">{l("About Bonfire")}</a></li>
+        <!-- <li><a class="text-base-content" href="https://bonfirenetworks.org/" target="_blank">{l("About Bonfire")}</a></li> -->
       </ul>
     </div>
     <div class="navbar-end">
       <ul class="menu menu-horizontal items-center gap-4 px-1">
-        <li class="">
+        <li class="hidden lg:block">
           <LinkLive
             to={path(:login, :index)}
             class={
@@ -32,7 +32,7 @@
         </li>
         {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
           <li class="hidden lg:block">
-            <LinkLive to={path(:signup)} class="btn btn-soft btn-secondary">{l("Signup")}</LinkLive>
+            <LinkLive to={path(:signup)} class="btn btn-soft btn-sm">{l("Signup")}</LinkLive>
           </li>
         {/if}
 

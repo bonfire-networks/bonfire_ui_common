@@ -1,6 +1,37 @@
-<header class="pt-safe z-50 w-full rounded-t-xl bg-base-100 md:z-auto md:relative">
+<header class="pt-safe  z-50 w-full sticky top-0 lg:rounded-t-xl bg-base-100 md:z-auto md:relative">
   <div class="p-3 flex flex-row items-center flex-align-items-stretch flex-nowrap">
-    <div class="mr-3">
+    <span>
+      <Bonfire.UI.Common.OpenModalLive
+        id="close_composer"
+        reusable_modal_id="persistent_modal"
+        title_text={l("Delete the draft")}
+        cancel_label={l("Cancel")}
+        open_btn_wrapper_class=""
+      >
+        <div class="mt-3 prose-sm prose">
+          <p>{l("Closing the composer will discard your post. Are you sure you want to close it?")}</p>
+        </div>
+        <:open_btn>
+          <div class="link link-primary link-hover text-sm">
+            <!-- <#Icon outline="X" class="w-4 h-4 text-primary/70" /> -->
+            <span class="">{l("Close")}</span>
+          </div>
+        </:open_btn>
+        <:action_btns>
+          <button
+            phx-click={JS.push("Bonfire.UI.Common.SmartInput:reset_to_default")
+            |> JS.hide(to: "#smart_input_summary")
+            |> JS.hide(to: "#smart_input_post_title")}
+            phx-target="#smart_input"
+            type="button"
+            class="normal-case btn btn-sm btn-error"
+          >
+            {l("Cancel")}
+          </button>
+        </:action_btns>
+      </Bonfire.UI.Common.OpenModalLive>
+    </span>
+    <!-- <div class="mr-3">
       <img
         class="inline-block object-cover w-8 h-8 cursor-pointer rounded-full"
         src={Media.avatar_url(current_user(@__context__))}
@@ -10,44 +41,13 @@
 
     {#if e(@smart_input_opts, :create_object_type, nil) in [:message, "message"]}
       <div class="text-base font-semibold">
-        <!-- <div class="flex items-center gap-2"> -->
         {l("Send a direct message")}
       </div>
     {#else}
       <div class="text-base font-semibold">
         {e(@smart_input_opts, :prompt, l("Create post"))}
       </div>
-      <!-- <div
-    data-position="bottom"
-    phx-hook="Tooltip"
-    id={"smart_input_more_options"}
-    class="relative"
-  >
-    <label
-      class="tooltip-button emoji-button btn text-base btn-outline border-base-content/10"
-      tabindex="0"
-      role="button"
-      aria-haspopup="true"
-      aria-expanded="true"
-    >
-      <#Icon iconify="heroicons:squares-plus" class="w-5 h-5" />
-        {e(@smart_input_opts, :prompt, l("Create post"))}
-    </label>
-    <ul
-      tabindex="0"
-      class="tooltip z-[99999999] menu shadow-sm bg-base-100 border border-base-content/10 w-52 absolute rounded-xl top-0 left-0 hidden"
-      role="menu"
-      aria-orientation="vertical"
-    >
-      <li><button type="button" class="flex items-center gap-2">
-      <#Icon iconify="dashicons:text-page" class="w-4 h-4 text-base-content/70" />
-      {l "Create a post"}</button></li>
-      <li><button type="button">
-      <#Icon iconify="icomoon-free:blog" class="w-4 h-4 text-base-content/70" />
-      {l "Create an article"}</button></li>
-      </ul>
-    </div> -->
-    {/if}
+    {/if} -->
 
     <div class="absolute flex items-center gap-2 right-3">
       <button
@@ -60,35 +60,22 @@
         <#Icon iconify="fluent:chevron-double-down-16-filled" class="w-4 h-4 text-base-content/70" />
         <!-- <span class="text-sm text-base-content/70">{l("Minimize")}</span> -->
       </button>
-      <Bonfire.UI.Common.OpenModalLive
-        id="close_composer"
-        reusable_modal_id="persistent_modal"
-        title_text={l("Delete the draft")}
-        cancel_label={l("Cancel")}
-        open_btn_wrapper_class="flex btn btn-xs btn-ghost btn-circle"
+      <!-- <button
+        type="submit"
+        id="submit_btn"
+        x-on:click="$dispatch('submit')"
+        phx-disable-with
+        class="btn-sm btn btn-primary"
+        disabled={@smart_input_opts[:input_status] != :draft}
       >
-        <div class="mt-3 prose-sm prose">
-          <p>{l("Closing the composer will discard your post. Are you sure you want to close it?")}</p>
-        </div>
-        <:open_btn>
-          <div class="flex btn btn-sm btn-outline border-base-content/10 btn-circle">
-            <#Icon outline="X" class="w-4 h-4 text-base-content/70" />
-            <span class="sr-only">{l("Close")}</span>
-          </div>
-        </:open_btn>
-        <:action_btns>
-          <button
-            phx-click={JS.push("Bonfire.UI.Common.SmartInput:reset_to_default")
-            |> JS.hide(to: "#smart_input_summary")
-            |> JS.hide(to: "#smart_input_post_title")}
-            phx-target="#smart_input"
-            type="button"
-            class="normal-case btn btn-sm btn-error"
-          >
-            {l("Delete")}
-          </button>
-        </:action_btns>
-      </Bonfire.UI.Common.OpenModalLive>
+        {!-- <#Icon iconify="mdi:email-fast-outline" class="w-4 h-4" /> --}
+        <#Icon iconify="lucide:arrow-up" class="w-4 h-4" />
+        {#if e(@smart_input_opts, :create_object_type, nil) in [:message, "message"]}
+          {if @smart_input_opts[:input_status] == :submit, do: l("Sending..."), else: l("Send")}
+        {#else}
+          {if @smart_input_opts[:input_status] == :submit, do: l("Posting..."), else: l("Post")}
+        {/if}
+      </button> -->
     </div>
   </div>
 </header>

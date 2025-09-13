@@ -4,7 +4,7 @@
       {!-- here was old/loader.svg --}
       <div id="composer_wrapper" class="h-full flex flex-col">
         <div class="h-full flex flex-col flex-1 grow relative">
-          <div class="sensitive_alert alert hidden alert-warning mx-2 mt-2 p-2 cursor-pointer">
+          <div class="sensitive_alert alert hidden alert-warning m-2 p-2 cursor-pointer">
             <span>{l("This activity is marked as sensitive.")}
               <span
                 phx-click={JS.show(to: "#smart_input_summary")
@@ -95,7 +95,7 @@
                     type="button"
                     class="tooltip-button emoji-button btn btn-ghost btn-square btn-sm"
                   >
-                    <#Icon iconify="ph:paw-print-duotone" class="w-4 h-4 text-base-content/70" />
+                    <#Icon iconify="ph:paw-print-duotone" class="w-[18px] h-[18px]" />
                   </button>
                   <div
                     id="emoji-picker-in-composer"
@@ -110,7 +110,7 @@
                 class="relative z-30 flex items-center tooltip tooltip-top"
                 data-tip={l("Mark the activity as sensitive")}
                 id="sensitive_btn"
-                phx-click={JS.toggle_class("btn-active", to: "#sensitive_btn label")
+                phx-click={JS.toggle_class("bg-warning text-warning-content", to: "#sensitive_btn label")
                 |> JS.toggle(to: ".sensitive_alert")}
                 phx-update="ignore"
               >
@@ -119,7 +119,7 @@
               JS.toggle_attribute({"placeholder", l("Enter an optional summary"), l("Enter an optional content warning")}, to: "#smart_input_summary textarea") --}
                 <label class="relative btn btn-ghost btn-square btn-sm">
                   <input type="checkbox" name="sensitive" class="opacity-0 absolute left-[999999999999999999px]">
-                  <#Icon iconify="ri:alert-line" class="swap-off w-4 h-4 text-base-content/70" />
+                  <#Icon iconify="ri:alert-line" class="swap-off w-[18px] h-[18px]" />
                 </label>
               </div>
 
@@ -161,7 +161,7 @@
                   |> JS.toggle_class("btn-active", to: "#summary_btn")}
                   class="title-button btn btn-ghost btn-square btn-sm"
                 >
-                  <#Icon iconify="heroicons-outline:menu-alt-2" class="w-4 h-4 text-base-content/70" />
+                  <#Icon iconify="heroicons-outline:menu-alt-2" class="w-[18px] h-[18px]" />
                 </button>
               </div>
 
@@ -182,19 +182,6 @@
             </div>
 
             <div class="flex items-center gap-2">
-              {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
-                <StatelessComponent
-                  module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
-                  to_boundaries={@to_boundaries}
-                  boundary_preset={@boundary_preset}
-                  preview_boundary_for_id={@preview_boundary_for_id}
-                  preview_boundary_for_username={@preview_boundary_for_username}
-                  preview_boundary_verbs={@preview_boundary_verbs}
-                  to_circles={@to_circles}
-                  exclude_circles={@exclude_circles}
-                />
-              {/if}
-
               <button
                 type="submit"
                 id="submit_btn"

@@ -93,8 +93,14 @@ select {
 }
 
 .prose-bonfire {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 140%;
+}
+
+@media (min-width: 640px) {
+  .prose-bonfire {
+    font-size: 15px;
+  }
 }
 
 .prose-bonfire p {
@@ -131,9 +137,7 @@ article.unread-activity {
  * Custom styles for the Milkdown editor integration with Bonfire
  */
 
- .floating_smart_input {
-    box-shadow: 0 3px 8px -1px var(--color-base-200), 0 10px 36px -4px var(--color-primary);
- }
+
 
 
 
@@ -188,7 +192,7 @@ article.unread-activity {
   position: relative;
   padding-left: 3.4rem !important;
   margin-left: 0px !important;
-  @apply border-l-4 border-primary/60 bg-primary/5 !py-2 !pb-3 mt-2 mb-3;
+  @apply border-l-4 border-primary/60 bg-base-content/5 !py-2 !pb-3 mt-2 mb-3;
 }
 
 .quote-preview .prose-bonfire {

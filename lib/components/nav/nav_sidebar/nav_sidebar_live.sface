@@ -1,4 +1,4 @@
-<div class="flex flex-col flex-1 h-full">
+<div class="flex flex-col flex-1 h-full pb-[80px] lg:pb-0">
   <div class="px-5 lg:pl-1 lg:pr-0 bg-base-100 lg:bg-base-100 z-[999999999] sticky top-0 flex items-center lg:min-h-[48px] justify-between">
     <div class="pt-safe w-full">
       <div class="pt-4 flex items-center justify-between w-full">
@@ -73,7 +73,7 @@
   </div>
 
   {#if !current_user_id(@__context__)}
-    <nav class="mt-4">
+    <nav class="mt-4 mx-3 lg:mx-0">
       <ul class="menu p-0 w-full gap-0.5">
         <li class="p-0 m-0">
           <LinkLive
