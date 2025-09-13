@@ -64,7 +64,7 @@
                   class={
                     "flex flex-col min-h-[calc(var(--inner-window-height))] bg-base-100 pb-4 md:pb-[1px] border-x border-base-content/10",
                     hidden: @hide_main,
-                    "border-none": @no_header == true
+                    "border-none": @no_header == true && is_nil(current_user(@__context__))
                   }
                 >
                   <div
