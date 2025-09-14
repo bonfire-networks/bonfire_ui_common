@@ -31,6 +31,7 @@
       {#match _}
         <!-- Path B: Simple lazy loading without blurhash -->
         <div
+          id={"lzimg-#{@parent_id}-#{id(@media) || Text.hash(src)}"}
           phx-update="ignore"
           class="w-full h-full"
           x-data="{ loaded: false }"
