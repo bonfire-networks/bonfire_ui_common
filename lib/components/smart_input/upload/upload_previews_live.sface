@@ -1,12 +1,12 @@
 <div
   :if={Enum.count(@uploads.files.entries) > 0}
-  id={"#{@parent_id}_upload-preview"}
+  id={deterministic_dom_id(__MODULE__, nil, "upload-preview", @parent_id)}
   class="p-2 pt-0 uploads_preview"
 >
   <div class="flex flex-col p-2 bg-base-content/5 gap-2 dividy-y divide-base-content/10 rounded-xl">
     {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
       <article
-        id={"#{@parent_id}_upload-preview-#{i}"}
+        id={deterministic_dom_id(__MODULE__, i, "upload-preview-entry", @parent_id)}
         data-img={"phx-preview-#{i}"}
         data-ref={entry.upload_ref}
         phx-update="ignore"
@@ -54,12 +54,15 @@
               class="textarea resize-none w-full lg:text-sm"
             />
             {#if String.starts_with?(entry.client_type, "image")}
-              <div phx-update="ignore" id={"cover_selector_#{entry.ref}"}>
+              <div
+                phx-update="ignore"
+                id={deterministic_dom_id(__MODULE__, entry.ref, "cover_selector", @parent_id)}
+              >
                 <input
                   type="hidden"
                   name={"upload_metadata[#{entry.ref}][primary_image]"}
                   value=""
-                  id={"primary_image_#{entry.ref}"}
+                  id={deterministic_dom_id(__MODULE__, entry.ref, "primary_image", @parent_id)}
                 />
                 <button
                   type="button"

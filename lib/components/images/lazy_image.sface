@@ -4,7 +4,7 @@
       {#match blurhash when is_binary(blurhash)}
         <!-- Path A: Full blurhash experience -->
         <div
-          id={"blurHash-#{@parent_id}-#{Text.hash(blurhash)}"}
+          id={deterministic_dom_id(__MODULE__, Text.hash(blurhash), "blurHash", @parent_id)}
           :hook
           data-hash={blurhash}
           phx-update="ignore"
@@ -31,7 +31,7 @@
       {#match _}
         <!-- Path B: Simple lazy loading without blurhash -->
         <div
-          id={"lzimg-#{@parent_id}-#{id(@media) || Text.hash(src)}"}
+          id={deterministic_dom_id(__MODULE__, id(@media) || Text.hash(src), "lzimg", @parent_id)}
           phx-update="ignore"
           class="w-full h-full"
           x-data="{ loaded: false }"

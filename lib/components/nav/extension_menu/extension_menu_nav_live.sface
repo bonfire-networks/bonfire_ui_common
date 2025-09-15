@@ -6,20 +6,20 @@
     end)}
     {#match nav_items when is_list(nav_items) and nav_items != []}
       <div
-        id={"#{@parent_id}_nav_links"}
+        id={deterministic_dom_id(__MODULE__, nil, "nav_links", @parent_id)}
         phx-hook={if @parent_id, do: "Draggable"}
         data-widget-draggable
         data-grouped="id"
         data-parent={@parent_id}
         data-event="Bonfire.Common.Settings:reorder_widget"
-        data-id={"#{@parent_id}_nav_links"}
+        data-id={deterministic_dom_id(__MODULE__, nil, "nav_links", @parent_id)}
         data-showing-within={@showing_within}
       >
         {!-- TODO: override widget[:module] with the result of maybe_module so it doesn't need to be run again in the widget --}
         {#case Enum.split_with(nav_items, fn %{type: type} -> type == :link end)}
           {#match {nav_links, nav_widgets}}
             <Bonfire.UI.Common.WidgetsLive
-              id={"#{@parent_id}_extension_nav_links"}
+              id={deterministic_dom_id(__MODULE__, nil, "extension_nav_links", @parent_id)}
               showing_within={@showing_within}
               widgets={nav_links}
               page={@page}
@@ -30,7 +30,7 @@
             />
 
             <Bonfire.UI.Common.WidgetsLive
-              id={"#{@parent_id}_extension_nav_widgets"}
+              id={deterministic_dom_id(__MODULE__, nil, "extension_nav_widgets", @parent_id)}
               showing_within={@showing_within}
               widgets={nav_widgets}
               page={@page}

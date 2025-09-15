@@ -23,7 +23,7 @@
       selected_tab={@selected_tab}
       showing_within={:sidebar}
       container_class="flex flex-col gap-3 mb-3"
-      id={"#{@parent_id}_sidebar_widgets"}
+      id={deterministic_dom_id(__MODULE__, nil, "extension_nav_links", @parent_id)}
     />
   {#match _}
     <!-- No widgets -->

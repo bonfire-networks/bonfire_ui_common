@@ -1635,11 +1635,12 @@ defmodule Bonfire.UI.Common do
   A string with format: component_type_context_object_id_parent_id
 
   ## Examples
-      iex> deterministic_dom_id("modal", "post123", "feed", "container456")
-      "modal_feed_post123_container456"
 
       iex> deterministic_dom_id("dropdown", "user789")
       "dropdown_user789"
+
+      iex> deterministic_dom_id("modal", "post123", "feed", "container456")
+      "modal_feed_post123_container456"
   """
   def deterministic_dom_id(component_type, object, context \\ nil, parent_id \\ nil) do
     object_id =

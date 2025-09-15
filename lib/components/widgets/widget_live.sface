@@ -12,7 +12,7 @@
         <div class="font-bold uppercase text-xs text-base-content/50">{@widget[:text] || @widget[:name]}</div>
       </summary>
       <ul
-        id={"#{@parent_id}_#{@order}_sub_widgets"}
+        id={deterministic_dom_id(__MODULE__, @order, "sub_widgets", @parent_id)}
         phx-hook={if @parent_id, do: "Draggable"}
         data-widget-draggable
         data-parent={@widget[:page] || @widget[:module]}
@@ -47,7 +47,7 @@
                 showing_within={@showing_within}
                 page={@page}
                 parent_item={@widget[:page] || @widget[:module]}
-                parent_id={"#{@parent_id}_#{@order}_#{index}"}
+                parent_id={deterministic_dom_id(__MODULE__, "#{@order}_#{index}", "sub_widget", @parent_id)}
                 selected_tab={@selected_tab}
                 without_label={@without_label}
                 wrapper_class={@wrapper_class}
@@ -87,7 +87,7 @@
             to={@widget[:href]}
             showing_within={@showing_within}
             page={@page}
-            parent_id={"#{@parent_id}_#{@order}"}
+            parent_id={deterministic_dom_id(__MODULE__, @order, "link_widget", @parent_id)}
             selected_tab={@selected_tab}
             without_icon={@without_icon}
             without_label={@without_label}
@@ -118,7 +118,7 @@
           <div :if={@with_title} class="mt-4 mb-2 text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
           <StatefulComponent
             module={@widget[:module]}
-            id={deterministic_dom_id("widget", @parent_id || "widget", @order, @widget[:page] || @widget[:module])}
+            id={deterministic_dom_id(__MODULE__, @order, @widget[:page] || @widget[:module], @parent_id)}
             page={@page}
             selected_tab={@selected_tab}
             showing_within={@showing_within}
