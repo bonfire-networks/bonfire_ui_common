@@ -22,7 +22,7 @@
           {#match url when is_binary(url) and url != avatar_fallback}
             <div title={@title} class={@bg_class}>
               <LazyImage
-                parent_id={["avatar", @parent_id]}
+                parent_id={deterministic_dom_id(__MODULE__, nil, "avatar", @parent_id)}
                 media={url}
                 src={url}
                 title={@title}
@@ -45,7 +45,7 @@
                   title={@title}
                 /> --}
               <LazyImage
-                parent_id={["avatar", @parent_id]}
+                parent_id={deterministic_dom_id(__MODULE__, @user_id, "avatar", @parent_id)}
                 src={"/gen_avatar/#{@user_id}"}
                 title={@title}
                 alt={@title}
