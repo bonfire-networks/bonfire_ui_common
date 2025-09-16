@@ -35,7 +35,7 @@
           phx-update="ignore"
           class="w-full h-full"
           x-data="{ loaded: false }"
-          x-intersect.once.margin.50px={"$el.querySelector('img').src = '#{src}'"}
+          x-intersect.once.margin.200px={"$el.querySelector('img').src = '#{src}'"}
         >
           <!-- Simple skeleton placeholder -->
           <div
