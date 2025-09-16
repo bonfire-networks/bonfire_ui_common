@@ -6,7 +6,7 @@
   <div class="flex flex-col p-2 bg-base-content/5 gap-2 dividy-y divide-base-content/10 rounded-xl">
     {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
       <article
-        id={deterministic_dom_id(__MODULE__, i, "upload-preview-entry", @parent_id)}
+        id={deterministic_dom_id(__MODULE__, to_string(i), "upload-preview-entry", @parent_id)}
         data-img={"phx-preview-#{i}"}
         data-ref={entry.upload_ref}
         phx-update="ignore"
