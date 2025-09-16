@@ -1,5 +1,6 @@
 <button
   id={@id}
+  disabled={e(@smart_input_opts, :input_status, nil) == :submit}
   phx-click={cond do
     @component ->
       LiveHandler.open_type(
@@ -15,12 +16,13 @@
   phx-target="#smart_input"
   type="button"
   data-role="composer_button"
-  class={@class}
+  class={@class,
+  "btn-disabled": e(@smart_input_opts, :input_status, nil) == :submit}
 >
-  {!-- 
+  {!--
     phx-value-opts={Jason.encode!(merge_as_map(%{prompt: @prompt}, @smart_input_opts))}
     x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{@prompt || l("Compose")}')"} --}
-  {#case @smart_input_opts[:input_status]}
+  {#case e(@smart_input_opts, :input_status, nil)}
     {#match :submit}
       {!-- submitting --}
       <#Icon

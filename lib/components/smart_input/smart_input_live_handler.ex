@@ -99,6 +99,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     js
     |> JS.add_class("hidden", to: "#main_smart_input_button .toggle_button")
     |> JS.remove_class("hidden", to: "#main_smart_input_button .submitting_icon")
+    |> JS.add_class("btn-disabled", to: "#main_smart_input_button")
+    |> JS.set_attribute({"disabled", "true"}, to: "#main_smart_input_button")
     |> minimize(%{input_status: :submit})
   end
 
@@ -106,6 +108,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     js
     |> JS.remove_class("hidden", to: "#{to} .toggle_button")
     |> JS.add_class("hidden", to: "#{to} .submitting_icon")
+    |> JS.remove_class("btn-disabled", to: to)
+    |> JS.remove_attribute("disabled", to: to)
   end
 
   def minimize(js \\ %JS{}, opts \\ %{}) do
