@@ -48,7 +48,8 @@
           </div>
         </div>
         <div
-          :if={!Bonfire.Social.is_local?(
+          :if={e(@activity, :subject, nil) != nil and
+            !Bonfire.Social.is_local?(
             e(@activity, :subject, nil),
             false
           ) and
