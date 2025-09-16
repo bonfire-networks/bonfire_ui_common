@@ -1645,8 +1645,7 @@ defmodule Bonfire.UI.Common do
   def deterministic_dom_id(component_type, object, context \\ nil, parent_id \\ nil) do
     object_id =
       case id(object) do
-        nil when is_binary(object) -> object
-        nil when is_atom(object) -> object
+        nil when is_binary(object) or is_atom(object) or is_number(object) -> object
         nil -> :erlang.phash2(object, 1_000_000)
         id -> id
       end
