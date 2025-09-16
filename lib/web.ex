@@ -418,7 +418,7 @@ defmodule Bonfire.UI.Common.Web do
         end
 
         def terminate(reason, _socket) do
-          err(reason, "LiveView exiting: terminating #{__MODULE__} #{inspect(self())}")
+          error(reason, "LiveView exiting: terminating #{__MODULE__} #{inspect(self())}")
           :ok
         end
       end

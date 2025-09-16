@@ -148,12 +148,12 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   end
 
   def handle_info({:EXIT, pid, reason}, socket, source_module, _fun) do
-    err(reason, "LiveView exiting: Linked process #{source_module} #{inspect(pid)} exited")
+    error(reason, "LiveView exiting: Linked process #{source_module} #{inspect(pid)} exited")
     {:noreply, socket}
   end
 
   def handle_info({:DOWN, _ref, :process, pid, reason}, socket, source_module, _fun) do
-    err(
+    error(
       reason,
       "LiveView exiting: Monitored process #{source_module} #{inspect(pid)} went down"
     )
