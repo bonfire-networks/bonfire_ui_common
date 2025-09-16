@@ -50,9 +50,9 @@
         <div
           :if={e(@activity, :subject, nil) != nil and
             !Bonfire.Social.is_local?(
-            e(@activity, :subject, nil),
-            false
-          ) and
+              e(@activity, :subject, nil),
+              false
+            ) and
             !maybe_apply(Bonfire.Federate.ActivityPub, :federating?, current_user(@__context__),
               context: @__context__,
               fallback_return: false
