@@ -215,7 +215,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="Bonfire">
         <link rel="apple-touch-icon" href="/pwa/ios/180.png">
-        
+
         <!-- iOS Splash Screens -->
         <link rel="apple-touch-startup-image" href="/pwa/ios/splash/iphone-15-splash.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
         <link rel="apple-touch-startup-image" href="/pwa/ios/splash/iphone-15-plus-splash.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
@@ -228,7 +228,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         <link rel="apple-touch-startup-image" href="/pwa/ios/splash/ipad-splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
         <link rel="apple-touch-startup-image" href="/pwa/ios/splash/ipad-pro-11-splash.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
         <link rel="apple-touch-startup-image" href="/pwa/ios/splash/ipad-pro-12.9-splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-        
+
         <!-- Android PWA theme and background -->
         <meta name="msapplication-navbutton-color" content="#191e25">
         <meta name="msapplication-TileColor" content="#191e25">
