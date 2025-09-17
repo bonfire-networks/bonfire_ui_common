@@ -421,7 +421,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
               _ -> acc_socket
             end
           end)
-        
+
         updated_socket
       else
         socket
