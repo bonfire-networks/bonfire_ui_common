@@ -38,7 +38,7 @@
           class="w-full h-full"
           x-data="{ loaded: false }"
         >
-          <!-- Simple skeleton placeholder -->
+          {!-- Simple skeleton placeholder --}
           <div
             class={[@class, "bg-base-200 animate-pulse"]}
             x-show="!loaded"
