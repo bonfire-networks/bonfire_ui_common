@@ -7,12 +7,12 @@
           id={deterministic_dom_id(__MODULE__, Text.hash(blurhash), "blurHash", @parent_id)}
           :hook
           data-hash={blurhash}
+          data-src={src}
           phx-update="ignore"
           class="w-full h-full"
           x-data="{ loaded: false }"
-          x-intersect.once.margin.50px={"$el.querySelector('img').src = '#{src}'"}
         >
-          <canvas class={@class} x-show="!loaded" x-transition.opacity.duration.300ms {...@opts} />
+          <canvas class={@class} x-show="!loaded" x-transition.opacity.duration.200ms {...@opts} />
           <img
             x-cloak
             src=""
@@ -22,7 +22,7 @@
             data-width={maybe_get(@media, [:metadata, :width]) || ""}
             data-height={maybe_get(@media, [:metadata, :height]) || ""}
             x-show="loaded"
-            x-transition.opacity.duration.300ms
+            x-transition.opacity.duration.200ms
             x-on:load="loaded = true"
             decoding="async"
             {...@opts}
@@ -32,16 +32,17 @@
         <!-- Path B: Simple lazy loading without blurhash -->
         <div
           id={deterministic_dom_id(__MODULE__, id(@media) || Text.hash(src), "lzimg", @parent_id)}
+          :hook
+          data-src={src}
           phx-update="ignore"
           class="w-full h-full"
           x-data="{ loaded: false }"
-          x-intersect.once.margin.200px={"$el.querySelector('img').src = '#{src}'"}
         >
           <!-- Simple skeleton placeholder -->
           <div
             class={[@class, "bg-base-200 animate-pulse"]}
             x-show="!loaded"
-            x-transition.opacity.duration.300ms
+            x-transition.opacity.duration.200ms
             {...@opts}
           />
           <img
@@ -51,7 +52,7 @@
             title={@title}
             class={@class}
             x-show="loaded"
-            x-transition.opacity.duration.300ms
+            x-transition.opacity.duration.200ms
             x-on:load="loaded = true"
             decoding="async"
             {...@opts}

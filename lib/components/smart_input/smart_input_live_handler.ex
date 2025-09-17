@@ -407,11 +407,22 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     try do
       # Get all upload entries
       if entries = e(socket.assigns, :uploads, :files, :entries, nil) do
-        # Cancel each upload by ref
-        _updated_socket =
+        # Cancel each upload by ref, handling dead processes gracefully
+        updated_socket =
           Enum.reduce(entries, socket, fn entry, acc_socket ->
-            Phoenix.LiveView.cancel_upload(acc_socket, :files, entry.ref)
+            try do
+              Phoenix.LiveView.cancel_upload(acc_socket, :files, entry.ref)
+            rescue
+              # Handle the case where the upload process is already dead
+              ArgumentError -> acc_socket
+            catch
+              # Handle :noproc and other errors from GenServer calls
+              {:noproc, _} -> acc_socket
+              _ -> acc_socket
+            end
           end)
+        
+        updated_socket
       else
         socket
       end
