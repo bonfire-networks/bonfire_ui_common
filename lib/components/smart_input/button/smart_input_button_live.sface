@@ -16,8 +16,7 @@
   phx-target="#smart_input"
   type="button"
   data-role="composer_button"
-  class={@class,
-  "btn-disabled": e(@smart_input_opts, :input_status, nil) == :submit}
+  class={@class, "btn-disabled": e(@smart_input_opts, :input_status, nil) == :submit}
 >
   {!--
     phx-value-opts={Jason.encode!(merge_as_map(%{prompt: @prompt}, @smart_input_opts))}
