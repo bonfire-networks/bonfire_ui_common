@@ -404,44 +404,44 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   end
 
   # helper for when a searches for an option in `LiveSelect`
-  defp maybe_delegate_event_live_handler(
-         "live_select_change" = event,
-         %{"field" => "multi_select_" <> mod} = data,
-         socket
-       ) do
-    debug("LiveSelect: autocomplete: handle_event with {#{mod}, data}")
-    debug(data, "data")
-    mod_delegate(mod, :handle_event, [event, data], socket)
-  end
+  # defp maybe_delegate_event_live_handler(
+  #        "live_select_change" = event,
+  #        %{"field" => "multi_select_" <> mod} = data,
+  #        socket
+  #      ) do
+  #   debug("LiveSelect: autocomplete: handle_event with {#{mod}, data}")
+  #   debug(data, "data")
+  #   mod_delegate(mod, :handle_event, [event, data], socket)
+  # end
 
-  defp maybe_delegate_event_live_handler(
-         "live_select_change" = event,
-         %{"field" => mod} = data,
-         socket
-       ) do
-    debug("LiveSelect: autocomplete: handle_event with {#{mod}, data}")
-    mod_delegate(mod, :handle_event, [event, data], socket)
-  end
+  # defp maybe_delegate_event_live_handler(
+  #        "live_select_change" = event,
+  #        %{"field" => mod} = data,
+  #        socket
+  #      ) do
+  #   debug("LiveSelect: autocomplete: handle_event with {#{mod}, data}")
+  #   mod_delegate(mod, :handle_event, [event, data], socket)
+  # end
 
-  # helper for when a user selects an option in `LiveSelect`
-  defp maybe_delegate_event_live_handler(
-         action,
-         %{"_target" => ["multi_select", module], "multi_select" => params},
-         socket
-       )
-       when action in ["select", "change", "validate", "multi_select"] do
-    debug(
-      params,
-      "LiveSelect: select an option: try to delegate to `#{module}` (should be the module/component that is handling this multi_select)"
-    )
+  # # helper for when a user selects an option in `LiveSelect`
+  # defp maybe_delegate_event_live_handler(
+  #        action,
+  #        %{"_target" => ["multi_select", module], "multi_select" => params},
+  #        socket
+  #      )
+  #      when action in ["select", "change", "validate", "multi_select"] do
+  #   debug(
+  #     params,
+  #     "LiveSelect: select an option: try to delegate to `#{module}` (should be the module/component that is handling this multi_select)"
+  #   )
 
-    maybe_delegate_live_select(module <> "_text_input", module, params, socket) ||
-      maybe_delegate_live_select(module <> "_empty_selection", module, params, socket) ||
-      (
-        warn(params, "Unrecognised event from LiveSelect")
-        {:noreply, socket}
-      )
-  end
+  #   maybe_delegate_live_select(module <> "_text_input", module, params, socket) ||
+  #     maybe_delegate_live_select(module <> "_empty_selection", module, params, socket) ||
+  #     (
+  #       warn(params, "Unrecognised event from LiveSelect")
+  #       {:noreply, socket}
+  #     )
+  # end
 
   defp maybe_delegate_event_live_handler(event, attrs, socket) when is_binary(event) do
     # debug(handle_event: event)
