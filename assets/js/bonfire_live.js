@@ -92,12 +92,12 @@ window.addEventListener("phx:js-exec-attr-event", ({ detail }) => {
 // })
 
 // show socket connection status
-liveSocket
-	.getSocket()
-	.onOpen(() => JS_exec_attr_event("#connection-status", "js-hide"));
-liveSocket
-	.getSocket()
-	.onError(() => JS_exec_attr_event("#connection-status", "js-show"));
+// liveSocket
+// 	.getSocket()
+// 	.onOpen(() => JS_exec_attr_event("#connection-status", "js-hide"));
+// liveSocket
+// 	.getSocket()
+// 	.onError(() => JS_exec_attr_event("#connection-status", "js-show"));
 
 const shouldAutoConnect = !document.querySelector('script[data-live-socket="false"]');
 if (shouldAutoConnect) {

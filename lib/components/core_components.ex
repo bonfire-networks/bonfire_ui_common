@@ -150,30 +150,24 @@ defmodule Bonfire.UI.Common.CoreComponents do
     <div id={@id}>
       <.flash kind={:info} title={l("Success!")} flash={@flash} />
       <.flash kind={:error} title={l("Error!")} flash={@flash} />
-      <.flash
-        id="client-error"
-        kind={:error}
-        title={l("We can't find the internet")}
-        phx-disconnected={show(".phx-client-error #client-error")}
-        phx-connected={hide("#client-error")}
-        hidden
-      >
-        {l("Attempting to reconnect")}
-        <.iconify icon="heroicons-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
-      </.flash>
-
-      <.flash
-        id="server-error"
-        kind={:error}
-        title={l("Something went wrong!")}
-        phx-disconnected={show(".phx-server-error #server-error")}
-        phx-connected={hide("#server-error")}
-        hidden
-      >
-        {l("Hang in there while we get back on track")}
-        <.iconify icon="heroicons-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
-      </.flash>
+      <.flash_connection_group />
     </div>
+    """
+  end
+
+  def flash_connection_group(assigns) do
+    ~H"""
+    <.flash
+      id="client-error"
+      kind={:error}
+      title={l("We can't find the server")}
+      phx-disconnected={show(".phx-client-error #client-error")}
+      phx-connected={hide("#client-error")}
+      hidden
+    >
+      {l("Attempting to reconnect")}
+      <.iconify icon="heroicons-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
+    </.flash>
     """
   end
 
