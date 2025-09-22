@@ -19,6 +19,9 @@
   }
 }
 
+.h-20 {
+  height: 5rem; /* 80px */
+}
 /* View Transitions API - Modern smooth page transitions */
 
 
@@ -89,8 +92,7 @@ input[type="password"],
 input[type="number"],
 input[type="tel"],
 input[type="url"],
-textarea,
-select {
+textarea {
     font-size: 16px;
 }
 
@@ -729,7 +731,7 @@ article.activity {
 }
 
 article.activity pre {
-  max-width: 500px; overflow-y:scroll;
+  max-width: 320px; overflow-y:scroll;
 }
 
   article[data-id='activity'][data-hidden='all'] {
@@ -781,6 +783,10 @@ article.activity pre {
 
   div[data-id='object_body'] {
     word-break: break-word !important;
+  }
+
+  div[data-id='object_body'] iframe {
+    width: 100% !important;
   }
   
 

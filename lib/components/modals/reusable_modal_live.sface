@@ -44,7 +44,7 @@
       "w-full h-full": @image_preview,
       "modal-box p-4": !@image_preview,
       "h-full": @no_backdrop,
-      "!max-w-[52rem]": @xl
+      "overflow-y-visible": @overflow
     ])}
     {...Enums.naughty_to_atoms!(@form_opts)}
   >
@@ -60,8 +60,7 @@
         class={
           "transition ease-in-out duration-50 transition-all h-full",
           "max-h-[calc(100vh_-_13rem)]": !@image_preview,
-          "h-[95%]": @no_backdrop,
-          "overflow-y-auto": @overflow
+          "h-[95%]": @no_backdrop
         }
         data-id="modal-contents"
       >

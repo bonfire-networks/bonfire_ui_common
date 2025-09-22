@@ -12,6 +12,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop boundary_preset, :any, default: nil
   prop to_circles, :list, default: []
   prop exclude_circles, :list, default: []
+  prop verb_permissions, :map, default: %{}
   prop mentions, :list, default: []
   prop smart_input_opts, :map, default: %{}
   prop showing_within, :atom, default: nil
@@ -31,7 +32,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop boundaries_modal_id, :string, default: :sidebar_composer
   prop preview_boundary_for_id, :any, default: nil
   prop preview_boundary_for_username, :any, default: nil
-  prop preview_boundary_verbs, :any, default: nil
+  prop preview_boundary_verbs, :list, default: []
 
   def mount(socket),
     do:
@@ -127,7 +128,9 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       :context_id,
       :activity_inception,
       :to_boundaries,
-      :to_circles
+      :to_circles,
+      :exclude_circles,
+      :verb_permissions
     ]
 
     # Preserve core attributes if they're not being explicitly updated

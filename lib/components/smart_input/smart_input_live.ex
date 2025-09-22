@@ -11,6 +11,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop boundary_preset, :any, default: nil
   prop to_circles, :list, default: []
   prop exclude_circles, :list, default: []
+  prop verb_permissions, :map, default: %{}
   prop mentions, :list, default: []
   prop open_boundaries, :boolean, default: false
   prop smart_input_opts, :map, default: %{}
@@ -34,7 +35,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   prop preview_boundary_for_id, :any, default: nil
   prop preview_boundary_for_username, :any, default: nil
-  prop preview_boundary_verbs, :any, default: nil
+  prop preview_boundary_verbs, :list, default: []
 
   prop custom_emojis, :any, default: []
 

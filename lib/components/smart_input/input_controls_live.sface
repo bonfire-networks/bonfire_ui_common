@@ -222,10 +222,10 @@
           context_id={@context_id}
         />
 
-        <label>
+        <label data-role="mentions">
           <input :for={mention <- e(@mentions, [])} type="hidden" name="mentions[]" value={mention}>
         </label>
-        <label>
+        <label data-role="include_circles">
           <input
             :for={{circle, role} <- e(@to_circles, []) |> debug("to_circless_on_publish")}
             type="hidden"
@@ -234,16 +234,10 @@
             value={role}
           />
         </label>
-        <label>
-          <input
-            :for={{circle, role} <- e(@exclude_circles, []) |> debug("exclude_circless_on_publish")}
-            type="hidden"
-            data-role="circle-enum"
-            name={"to_circles[#{id(circle)}]"}
-            value={role}
-          />
+        <label data-role="verb_permissions">
+          <input type="hidden" name="verb_permissions_json" value={Jason.encode!(@verb_permissions)}>
         </label>
-        <label>
+        <label data-role="circles-binary">
           <input
             :for={value when is_binary(value) <- e(@to_circles, [])}
             type="hidden"

@@ -197,6 +197,20 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         # imported into main CSS already
         # <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 
+        # Override x-cloak CSS for tests to ensure hidden elements are visible
+        x_cloak_override =
+          if Mix.env() == :test do
+            """
+            <style>
+              @layer utilities {
+                [x-cloak] { display: block !important; }
+              }
+            </style>
+            """
+          else
+            ""
+          end
+
         """
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
         <link rel="icon" type="image/svg+xml" href='#{endpoint_module.static_path("/images/bonfire-icon.svg")}'>
@@ -204,6 +218,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
         <link phx-track-static rel='stylesheet' href='#{endpoint_module.static_path("/assets/bonfire_basic.css")}'/>
         <link phx-track-static rel='stylesheet' href='#{endpoint_module.static_path("/fonts/#{font_family}.css")}'/>
+
+        #{x_cloak_override}
 
         #{if Extend.module_enabled?(PhoenixGon.View), do: PhoenixGon.View.render_gon_script(conn) |> Phoenix.HTML.safe_to_string()}
 

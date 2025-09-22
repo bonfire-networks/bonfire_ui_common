@@ -189,6 +189,12 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       |> Enum.flat_map(&Enum.map(&1, fn {key, val} -> {key, val} end))
       |> debug("to_circles")
 
+    # NEW: Process exclude_circles (same structure as to_circles)
+    exclude_circles =
+      (params["exclude_circles"] || e(opts, :exclude_circles, []))
+      |> Enum.flat_map(&Enum.map(&1, fn {key, val} -> {key, val} end))
+      |> debug("exclude_circles")
+
     to_boundaries =
       List.wrap(params["to_boundaries"] || e(opts, :to_boundaries, []))
       |> debug("input to_boundaries")
@@ -218,6 +224,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         activity_inception: "reply_to",
         to_boundaries: e(to_boundaries, nil) || e(assigns(socket), :to_boundaries, nil),
         to_circles: to_circles,
+        # NEW: Add exclude_circles to assigns
+        exclude_circles: exclude_circles,
         mentions: e(opts, "mentions", nil) || e(params, "mentions", [])
       ]
       |> debug("set_assigns")

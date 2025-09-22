@@ -201,7 +201,7 @@
     </LinkLive>
     <span :if={current_user(@__context__)}>
       <Bonfire.UI.Common.SmartInputButtonLive
-        class="btn btn-lg btn-square< btn-ghost"
+        class="btn btn-lg btn-square btn-soft btn-ghost"
         icon_class="!w-6 !h-6 text-primary"
         as_icon
         icon="ph:note-pencil-fill"

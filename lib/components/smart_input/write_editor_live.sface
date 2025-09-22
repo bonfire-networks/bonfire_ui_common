@@ -18,6 +18,7 @@
           preview_boundary_verbs={@preview_boundary_verbs}
           to_circles={@to_circles}
           exclude_circles={@exclude_circles}
+          verb_permissions={@verb_permissions}
         />
       </div>
     {/if}

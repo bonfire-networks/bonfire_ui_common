@@ -13,6 +13,14 @@ defmodule Bonfire.UI.Common.WriteEditorLive do
   prop textarea_class, :css_class, default: nil
   prop boundaries_modal_id, :string, default: :sidebar_composer
   prop advanced_mode, :boolean, default: false
+  prop verb_permissions, :map, default: %{}
+  prop to_boundaries, :list, default: []
+  prop boundary_preset, :any, default: nil
+  prop preview_boundary_for_id, :string, default: nil
+  prop preview_boundary_for_username, :string, default: nil
+  prop preview_boundary_verbs, :list, default: []
+  prop to_circles, :list, default: []
+  prop exclude_circles, :list, default: []
 
   def use_rich_editor?(with_rich_editor, context) do
     with_rich_editor == true and

@@ -10,20 +10,19 @@
           data-src={src}
           phx-update="ignore"
           class="w-full h-full"
-          x-data="{ loaded: false }"
         >
-          <canvas class={@class} x-show="!loaded" x-transition.opacity.duration.200ms {...@opts} />
+          <canvas class={@class} data-role="placeholder" {...@opts} />
           <img
-            x-cloak
-            src=""
+            src={if @parent_id && String.contains?(@parent_id, "preview"), do: src, else: ""}
             alt={@alt}
             title={@title}
             class={@class}
             data-width={maybe_get(@media, [:metadata, :width]) || ""}
             data-height={maybe_get(@media, [:metadata, :height]) || ""}
-            x-show="loaded"
-            x-transition.opacity.duration.200ms
-            x-on:load="loaded = true"
+            data-role="image"
+            style={if @parent_id && String.contains?(@parent_id, "preview"),
+              do: "display: block; transition: opacity 200ms;",
+              else: "display: none; transition: opacity 200ms;"}
             decoding="async"
             {...@opts}
           />
@@ -36,24 +35,23 @@
           data-src={src}
           phx-update="ignore"
           class="w-full h-full"
-          x-data="{ loaded: false }"
         >
           {!-- Simple skeleton placeholder --}
           <div
             class={[@class, "bg-base-200 animate-pulse"]}
-            x-show="!loaded"
-            x-transition.opacity.duration.200ms
+            data-role="placeholder"
+            style={if @parent_id && String.contains?(@parent_id, "preview"), do: "display: none;", else: ""}
             {...@opts}
           />
           <img
-            x-cloak
-            src=""
+            src={if @parent_id && String.contains?(@parent_id, "preview"), do: src, else: ""}
             alt={@alt}
             title={@title}
             class={@class}
-            x-show="loaded"
-            x-transition.opacity.duration.200ms
-            x-on:load="loaded = true"
+            data-role="image"
+            style={if @parent_id && String.contains?(@parent_id, "preview"),
+              do: "display: block; transition: opacity 200ms;",
+              else: "display: none; transition: opacity 200ms;"}
             decoding="async"
             {...@opts}
           />

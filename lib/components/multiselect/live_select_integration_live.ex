@@ -77,11 +77,6 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
               {option.label}
             </p>
           <% else %>
-            <%= if Map.has_key?(option.value, :icon) or Map.has_key?(option.value, "icon") do %>
-              <div class="w-6 h-6">
-                <img src={e(option.value, :icon, nil)} alt="" class="w-full h-full rounded-full" />
-              </div>
-            <% end %>
             <div class="text-sm">
               <p class="font-semibold">
                 {e(option.value, :name, nil) ||
