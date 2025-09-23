@@ -9,6 +9,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       use Bonfire.Common.Localise
       use Untangle
       import Bonfire.Common.Extend
+      alias Bonfire.Common.Config
       alias Bonfire.UI.Common.EndpointTemplate
       alias Bonfire.Common.Utils
       import Utils
@@ -199,7 +200,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
         # Override x-cloak CSS for tests to ensure hidden elements are visible
         x_cloak_override =
-          if Mix.env() == :test do
+          if Config.env() == :test do
             """
             <style>
               @layer utilities {
