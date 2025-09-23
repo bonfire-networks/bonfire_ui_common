@@ -19,6 +19,7 @@
           to_circles={@to_circles}
           exclude_circles={@exclude_circles}
           verb_permissions={@verb_permissions}
+          setting_boundaries={:create_object}
         />
       </div>
     {/if}
