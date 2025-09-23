@@ -45,6 +45,7 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   # 0 means unlimited
   prop max_selectable, :integer, default: 0
   prop update_min_len, :integer, default: 2
+  prop debounce, :integer, default: 0
 
   prop text_input_class, :string,
     default: "bg-transparent text-sm rounded h-10 w-full input liveselect"

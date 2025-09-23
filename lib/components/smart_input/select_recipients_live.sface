@@ -1,6 +1,10 @@
-<form id="select_recipient_multiselect" phx-change="multi_select">
+<form 
+  phx-change="change"
+  phx-target={"#select_recipient_multiselect"}
+  id="select_recipient_multiselect"
+>
   <label
-    for="multi_select_Elixir.Bonfire.UI.Common.SelectRecipientsLive_live_select_component"
+    for="multi_select_select_recipient_multiselect_text_input"
     class="sr-only"
   >
     {@label || l("Search people")}
@@ -13,11 +17,13 @@
       other -> other
     end)}
     label={@label || l("Search people")}
-    form_input_name={__MODULE__}
+    form_input_name={"select_recipient_multiselect"}
     context_id={@context_id}
     class="focus:outline-0 border-0 border-b h-10 rounded-none border-base-content/10 text-sm select_recipients_input"
-    implementation={@implementation}
+    implementation={:live_select}
     is_editable={@is_editable}
-    event_target="#smart_input"
+    show_search
+    debounce={300}
+    event_target="#select_recipient_multiselect"
   />
 </form>

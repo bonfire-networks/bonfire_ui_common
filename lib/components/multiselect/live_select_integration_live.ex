@@ -23,6 +23,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       options={@options}
       value={@value}
       allow_clear={Map.get(assigns, :allow_clear, true)}
+      keep_options_on_select={true}
       update_min_len={@update_min_len || 2}
       debounce={Map.get(assigns, :debounce, 0)}
       placeholder={@placeholder}

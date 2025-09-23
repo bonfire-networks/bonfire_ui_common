@@ -15,6 +15,7 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
   prop type, :any, default: Bonfire.Data.Identity.User
   prop implementation, :atom, default: nil
   prop mode, :atom, default: :single
+  prop debounce, :integer, default: 300
 
   def render(%{form: form_name} = assigns) when is_atom(form_name) do
     assigns

@@ -12,5 +12,6 @@
   event_target={@event_target}
   class={@class}
   type={:user}
+  debounce={@debounce}
   is_editable={@is_editable}
 />
