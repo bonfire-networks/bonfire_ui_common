@@ -17,8 +17,8 @@
             alt={@alt}
             title={@title}
             class={@class}
-            data-width={maybe_get(@media, [:metadata, :width]) || ""}
-            data-height={maybe_get(@media, [:metadata, :height]) || ""}
+            data-width={e(@media, :metadata, :width, nil)}
+            data-height={e(@media, :metadata, :height, nil)}
             data-role="image"
             style={if @parent_id && String.contains?(@parent_id, "preview"),
               do: "display: block; transition: opacity 200ms;",
