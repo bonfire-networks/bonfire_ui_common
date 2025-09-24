@@ -1,29 +1,39 @@
-<form 
-  phx-change="change"
-  phx-target={"#select_recipient_multiselect"}
-  id="select_recipient_multiselect"
->
-  <label
-    for="multi_select_select_recipient_multiselect_text_input"
-    class="sr-only"
+<div class="">
+  <div
+    role="alert"
+    class="alert mb-2 alert-info alert-soft items-start alert-vertical sm:alert-horizontal"
   >
-    {@label || l("Search people")}
-  </label>
-  <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
-    mode={@mode}
-    selected_options={@to_circles
-    |> Enum.map(fn
-      {id, name} -> %{label: name, value: %{id: id, username: name}}
-      other -> other
-    end)}
-    label={@label || l("Search people")}
-    form_input_name={"select_recipient_multiselect"}
-    context_id={@context_id}
-    class="focus:outline-0 border-0 border-b h-10 rounded-none border-base-content/10 text-sm select_recipients_input"
-    implementation={:live_select}
-    is_editable={@is_editable}
-    show_search
-    debounce={300}
-    event_target="#select_recipient_multiselect"
-  />
-</form>
+    <div>
+      <h3 class="font-bold">{l("Direct Message")}</h3>
+      <div class="text-xs">{l(
+          "Posts on Bonfire are not end-to-end encrypted. Do not share any sensitive information over Bonfire."
+        )} <button class="link">{l("Switch to default boundary")}</button></div>
+    </div>
+  </div>
+  <form
+    phx-change="change"
+    phx-target="#select_recipient_multiselect"
+    id="select_recipient_multiselect"
+  >
+    <label for="multi_select_select_recipient_multiselect_text_input" class="sr-only">
+      {@label || l("Search people")}
+    </label>
+    <Bonfire.UI.Common.MultiselectLive.UserSelectorLive
+      mode={@mode}
+      selected_options={@to_circles
+      |> Enum.map(fn
+        {id, name} -> %{label: name, value: %{id: id, username: name}}
+        other -> other
+      end)}
+      label={@label || l("Search people")}
+      form_input_name="select_recipient_multiselect"
+      context_id={@context_id}
+      class="focus:outline-0 border-0 border-b h-10 rounded-none border-base-content/10 text-sm select_recipients_input"
+      implementation={:live_select}
+      is_editable={@is_editable}
+      show_search
+      debounce={300}
+      event_target="#select_recipient_multiselect"
+    />
+  </form>
+</div>

@@ -411,37 +411,28 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   This is useful when closing the composer or resetting it
   """
   def cancel_all_uploads(socket) do
-    # Safely cancel all uploads
-    try do
-      # Get all upload entries
-      if entries = e(socket.assigns, :uploads, :files, :entries, nil) do
-        # Cancel each upload by ref, handling dead processes gracefully
-        updated_socket =
-          Enum.reduce(entries, socket, fn entry, acc_socket ->
-            try do
-              Phoenix.LiveView.cancel_upload(acc_socket, :files, entry.ref)
-            rescue
-              # Handle the case where the upload process is already dead
-              ArgumentError -> acc_socket
-            catch
-              # Handle :noproc and other errors from GenServer calls
-              {:noproc, _} -> acc_socket
-              _ -> acc_socket
-            end
-          end)
+    # Only cancel uploads that are not yet completed
+    with uploads when not is_nil(uploads) <- e(socket.assigns, :uploads, nil),
+         entries <- e(uploads, :files, :entries, []),
+         pending_entries <- Enum.reject(entries, &(&1.done? or &1.cancelled?)) do
+      if pending_entries != [] do
+        debug("Cancelling #{length(pending_entries)} pending uploads")
 
-        updated_socket
+        Enum.reduce(pending_entries, socket, fn entry, acc_socket ->
+          try do
+            Phoenix.LiveView.cancel_upload(acc_socket, :files, entry.ref)
+          rescue
+            _error -> acc_socket
+          catch
+            _error -> acc_socket
+          end
+        end)
       else
+        debug("No pending uploads to cancel")
         socket
       end
-    rescue
-      e ->
-        warn(e, "Error in cancel-all-uploads handler")
-        socket
-    catch
-      e ->
-        warn(e, "Error in cancel-all-uploads handler")
-        socket
+    else
+      _ -> socket
     end
   end
 
@@ -660,11 +651,25 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   defp do_extra_reset_input(socket) do
-    socket
-    |> push_event("js-exec-attr-event", %{to: "#main_smart_input_button", attr: "phx-reset"})
-    |> push_event("smart_input:reset", %{})
-    # |> reset_submitting()
-    |> cancel_all_uploads()
+    debug(
+      "=== DO_EXTRA_RESET_INPUT CALLED ===#{inspect(Process.info(self(), :current_stacktrace))}"
+    )
+
+    try do
+      socket
+      |> push_event("js-exec-attr-event", %{to: "#main_smart_input_button", attr: "phx-reset"})
+      |> push_event("smart_input:reset", %{})
+      # |> reset_submitting()
+      |> cancel_all_uploads()
+    rescue
+      error ->
+        debug(error, "Error during extra reset input")
+        socket
+    catch
+      error ->
+        debug(error, "Caught error during extra reset input")
+        socket
+    end
   end
 
   def toggle_expanded(js \\ %JS{}, target, btn, class) when is_binary(class) do

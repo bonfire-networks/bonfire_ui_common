@@ -18,25 +18,24 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
 
   prop is_editable, :boolean, default: false
 
-#   _target" => ["multi_select",
-#    "Elixir.Bonfire.UI.Common.SelectRecipientsLive_empty_selection"],
-#   "multi_select" => %{
-#     "Elixir.Bonfire.UI.Common.SelectRecipientsLive_empty_selection" => "",
-#     "Elixir.Bonfire.UI.Common.SelectRecipientsLive_text_input" => "",
-#     "_unused_Elixir.Bonfire.UI.Common.SelectRecipientsLive_text_input" => ""
-#   }
-# } @ bonfire_ui_common/lib/live_handlers.ex:453 @ Bonfire.UI
+  #   _target" => ["multi_select",
+  #    "Elixir.Bonfire.UI.Common.SelectRecipientsLive_empty_selection"],
+  #   "multi_select" => %{
+  #     "Elixir.Bonfire.UI.Common.SelectRecipientsLive_empty_selection" => "",
+  #     "Elixir.Bonfire.UI.Common.SelectRecipientsLive_text_input" => "",
+  #     "_unused_Elixir.Bonfire.UI.Common.SelectRecipientsLive_text_input" => ""
+  #   }
+  # } @ bonfire_ui_common/lib/live_handlers.ex:453 @ Bonfire.UI
 
-def handle_event(
+  def handle_event(
         "change",
         %{
-           "_target" => ["multi_select", "select_recipient_multiselect_empty_selection"],
-            "multi_select" => %{
-              "_unused_select_recipient_multiselect_text_input" => _,
-              "select_recipient_multiselect_empty_selection" => "",
-              "select_recipient_multiselect_text_input" => text_input
-            }
-
+          "_target" => ["multi_select", "select_recipient_multiselect_empty_selection"],
+          "multi_select" => %{
+            "_unused_select_recipient_multiselect_text_input" => _,
+            "select_recipient_multiselect_empty_selection" => "",
+            "select_recipient_multiselect_text_input" => text_input
+          }
         } = _params,
         socket
       ) do
@@ -113,14 +112,11 @@ def handle_event(
     {:noreply, socket}
   end
 
-
-
-
-# [debug] attrs: %{
-#   "field" => "multi_select_select_recipient_multiselect",
-#   "id" => "multi_select_select_recipient_multiselect_live_select_component",
-#   "text" => "ni"
-# }
+  # [debug] attrs: %{
+  #   "field" => "multi_select_select_recipient_multiselect",
+  #   "id" => "multi_select_select_recipient_multiselect_live_select_component",
+  #   "text" => "ni"
+  # }
   def handle_event("live_select_change", %{"id" => live_select_id, "text" => search}, socket)
       when is_binary(search) do
     debug(search, "LiveSelect autocomplete search")
@@ -152,10 +148,10 @@ def handle_event(
     |> results_for_multiselect()
   end
 
-# def handle_event("live_select_change", params, socket) do
-#     IO.inspect(params, label: "live_select_change params")
-#     {:noreply, socket}
-# end
+  # def handle_event("live_select_change", params, socket) do
+  #     IO.inspect(params, label: "live_select_change params")
+  #     {:noreply, socket}
+  # end
 
   # def handle_event(
   #       "multi_select",
@@ -263,8 +259,6 @@ def handle_event(
       icon: data["icon"] || data[:icon]
     }
   end
-
-
 
   def results_for_multiselect(results) do
     results

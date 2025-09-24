@@ -96,6 +96,18 @@ textarea {
     font-size: 16px;
 }
 
+@media (min-width: 640px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="url"],
+  textarea {
+      font-size: 14px;
+  }
+}
+
 .phx-click-loading.opaque-on-click { 
   opacity: 50%;
   cursor: not-allowed;
