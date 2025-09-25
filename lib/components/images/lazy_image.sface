@@ -1,64 +1,77 @@
 {#case @src || Media.media_url(@media)}
   {#match src when is_binary(src)}
-    {#case socket_connected?(@__context__) == true and Bonfire.Files.Blurred.blurhash_cached(@media)}
-      {#match blurhash when is_binary(blurhash)}
-        <!-- Path A: Full blurhash experience -->
-        <div
-          id={deterministic_dom_id(__MODULE__, Text.hash(blurhash), "blurHash", @parent_id)}
-          :hook
-          data-hash={blurhash}
-          data-src={src}
-          phx-update="ignore"
-          class="w-full h-full"
-        >
-          <canvas class={@class} data-role="placeholder" {...@opts} />
-          <img
-            src={if @parent_id && String.contains?(@parent_id, "preview"), do: src, else: ""}
-            alt={@alt}
-            title={@title}
-            class={@class}
-            data-width={e(@media, :metadata, :width, nil)}
-            data-height={e(@media, :metadata, :height, nil)}
-            data-role="image"
-            style={if @parent_id && String.contains?(@parent_id, "preview"),
-              do: "display: block; transition: opacity 200ms;",
-              else: "display: none; transition: opacity 200ms;"}
-            decoding="async"
-            {...@opts}
-          />
-        </div>
+    {#case socket_connected?(@__context__)}
+      {#match true}
+        {#case Bonfire.Files.Blurred.blurhash_cached(@media)}
+          {#match blurhash when is_binary(blurhash)}
+            <!-- Path A: Full blurhash experience for logged-in users -->
+            <div
+              id={deterministic_dom_id(__MODULE__, Text.hash(blurhash), "blurHash", @parent_id)}
+              :hook
+              data-hash={blurhash}
+              data-src={src}
+              phx-update="ignore"
+              class="w-full h-full"
+            >
+              <canvas class={@class} data-role="placeholder" {...@opts} />
+              <img
+                src={if @parent_id && String.contains?(@parent_id, "preview"), do: src, else: ""}
+                alt={@alt}
+                title={@title}
+                class={@class}
+                data-width={e(@media, :metadata, :width, nil)}
+                data-height={e(@media, :metadata, :height, nil)}
+                data-role="image"
+                style={if @parent_id && String.contains?(@parent_id, "preview"),
+                  do: "display: block; transition: opacity 200ms;",
+                  else: "display: none; transition: opacity 200ms;"}
+                decoding="async"
+                {...@opts}
+              />
+            </div>
+          {#match _}
+            <!-- Path B: Simple lazy loading without blurhash for logged-in users -->
+            <div
+              id={deterministic_dom_id(__MODULE__, id(@media) || Text.hash(src), "lzimg", @parent_id)}
+              :hook
+              data-src={src}
+              phx-update="ignore"
+              class="w-full h-full"
+            >
+              {!-- Simple skeleton placeholder --}
+              <div
+                class={[@class, "bg-base-200 animate-pulse"]}
+                data-role="placeholder"
+                style={if @parent_id && String.contains?(@parent_id, "preview"), do: "display: none;", else: ""}
+                {...@opts}
+              />
+              <img
+                src={if @parent_id && String.contains?(@parent_id, "preview"), do: src, else: ""}
+                alt={@alt}
+                title={@title}
+                class={@class}
+                data-role="image"
+                style={if @parent_id && String.contains?(@parent_id, "preview"),
+                  do: "display: block; transition: opacity 200ms;",
+                  else: "display: none; transition: opacity 200ms;"}
+                decoding="async"
+                {...@opts}
+              />
+            </div>
+        {/case}
       {#match _}
-        <!-- Path B: Simple lazy loading without blurhash -->
-        <div
-          id={deterministic_dom_id(__MODULE__, id(@media) || Text.hash(src), "lzimg", @parent_id)}
-          :hook
-          data-src={src}
-          phx-update="ignore"
-          class="w-full h-full"
-        >
-          {!-- Simple skeleton placeholder --}
-          <div
-            class={[@class, "bg-base-200 animate-pulse"]}
-            data-role="placeholder"
-            style={if @parent_id && String.contains?(@parent_id, "preview"), do: "display: none;", else: ""}
-            {...@opts}
-          />
-          <img
-            src={if @parent_id && String.contains?(@parent_id, "preview"), do: src, else: ""}
-            alt={@alt}
-            title={@title}
-            class={@class}
-            data-role="image"
-            style={if @parent_id && String.contains?(@parent_id, "preview"),
-              do: "display: block; transition: opacity 200ms;",
-              else: "display: none; transition: opacity 200ms;"}
-            decoding="async"
-            {...@opts}
-          />
-        </div>
+        <!-- Path C: Simple image for logged-out users -->
+        <img
+          src={src}
+          alt={@alt}
+          title={@title}
+          class={@class}
+          decoding="async"
+          {...@opts}
+        />
     {/case}
   {#match _}
-    <!-- Path C: No src available, show fallback -->
+    <!-- Path D: No src available, show fallback -->
     <div class="h-full place-content-center">
       <div class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
     </div>
