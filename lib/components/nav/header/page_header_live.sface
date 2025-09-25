@@ -19,7 +19,7 @@
                 user_id={current_user_id(@__context__)}
               />
             {#else} -->
-            <#Icon iconify="ph:list-duotone" class="w-5 h-5" />
+            <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5" />
             <!-- {/if} -->
           </label>
           <!-- <LinkLive
