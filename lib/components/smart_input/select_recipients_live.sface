@@ -7,7 +7,9 @@
       <h3 class="font-bold">{l("Direct Message")}</h3>
       <div class="text-xs">{l(
           "Messages on the fediverse are not currently end-to-end encrypted. Do not share any sensitive information."
-        )} <button class="link">{l("Switch to default boundary")}</button></div>
+        )}
+        {!-- <button class="link">{l("Switch to default boundary")}</button> --}
+      </div>
     </div>
   </div>
   <form
