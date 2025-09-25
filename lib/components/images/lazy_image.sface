@@ -61,14 +61,7 @@
         {/case}
       {#match _}
         <!-- Path C: Simple image for logged-out users -->
-        <img
-          src={src}
-          alt={@alt}
-          title={@title}
-          class={@class}
-          decoding="async"
-          {...@opts}
-        />
+        <img src={src} alt={@alt} title={@title} class={@class} decoding="async" {...@opts}>
     {/case}
   {#match _}
     <!-- Path D: No src available, show fallback -->
