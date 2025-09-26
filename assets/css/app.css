@@ -25,6 +25,12 @@
 /* View Transitions API - Modern smooth page transitions */
 
 
+.avoid-scroll {
+  touch-action: none;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch
+}
+
 /* NProgress customization for better visibility */
 #nprogress .bar {
   background: var(--color-primary, #3b82f6) !important;

@@ -118,8 +118,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       to: "#smart_input_container",
       transition: {"transition-transform duration-300", "translate-y-0", "translate-y-100"}
     )
-    # Always remove overflow-hidden class from mobile devices to restore scrolling
-    |> JS.remove_class("overflow-hidden", to: ".is-container-mobile")
+    # Always remove avoid-scroll class from mobile devices to restore scrolling
+    |> JS.remove_class("avoid-scroll", to: ".is-container-mobile")
     # |> JS.show(to: ".smart_input_show_on_minimize")
     |> maybe_push_opts(
       "Bonfire.UI.Common.SmartInput:select_smart_input",
@@ -133,8 +133,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       to: "#smart_input_container",
       transition: {"transition-transform duration-300", "translate-y-100", "translate-y-0"}
     )
-    # Always add overflow-hidden class to mobile devices to hide scrollbar
-    |> JS.add_class("overflow-hidden", to: ".is-container-mobile")
+    # Always add avoid-scroll class to mobile devices to hide scrollbar
+    |> JS.add_class("avoid-scroll", to: ".is-container-mobile")
 
     # |> JS.hide(to: ".smart_input_show_on_minimize")
     # |> JS.push("Bonfire.UI.Common.SmartInput:select_smart_input",

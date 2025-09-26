@@ -60,11 +60,12 @@
             </div>
           </div>
 
-          {!-- UPLOADS PREVIEWS --}
-          <Bonfire.UI.Common.UploadPreviewsLive :if={@uploads != false} uploads={@uploads} />
-
+          
           {!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE --}
           <#slot {@default} />
+
+          {!-- UPLOADS PREVIEWS --}
+          <Bonfire.UI.Common.UploadPreviewsLive :if={@uploads != false} uploads={@uploads} />
         </div>
       </div>
 
