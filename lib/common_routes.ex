@@ -98,7 +98,7 @@ defmodule Bonfire.UI.Common.Routes do
         plug(:set_locale)
 
         # detect Accept headers to serve JSON or HTML
-        plug(Bonfire.UI.Common.Plugs.ActivityPub)
+        plug(Bonfire.UI.Common.Plugs.MaybeActivityRedirectPlug)
 
         plug(:put_root_layout,
           # {Bonfire.UI.Common.LayoutView, :root}

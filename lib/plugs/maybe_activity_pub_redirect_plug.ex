@@ -1,4 +1,4 @@
-defmodule Bonfire.UI.Common.Plugs.ActivityPub do
+defmodule Bonfire.UI.Common.Plugs.MaybeActivityRedirectPlug do
   import Plug.Conn
   # import Untangle
 
