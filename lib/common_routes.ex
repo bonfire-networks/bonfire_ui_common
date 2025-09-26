@@ -116,7 +116,7 @@ defmodule Bonfire.UI.Common.Routes do
         # LiveView Native support (deprecated)
         # Bonfire.UI.Common.Web.maybe_native_plug()
 
-        # plug Bonfire.UI.Common.Plugs.AllowTestSandbox # is this a duplicate of Phoenix.Ecto.SQL.Sandbox ?
+        # plug Bonfire.UI.Common.Plugs.AllowTestSandbox # needed for Wallaby tests?
 
         # plug(:load_current_auth) # do we need this here?
 
