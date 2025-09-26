@@ -225,26 +225,37 @@
         <label data-role="mentions">
           <input :for={mention <- e(@mentions, [])} type="hidden" name="mentions[]" value={mention}>
         </label>
+
         <label data-role="include_circles">
           <input
-            :for={{circle, role} <- e(@to_circles, []) |> debug("to_circless_on_publish")}
+            :for={{circle, role} <- e(@to_circles, []) |> debug("to_circles_with_roles")}
             type="hidden"
             data-role="circle-enum"
             name={"to_circles[#{id(circle)}]"}
             value={role}
           />
         </label>
-        <label data-role="verb_permissions">
-          <input type="hidden" name="verb_permissions_json" value={Jason.encode!(@verb_permissions)}>
-        </label>
         <label data-role="circles-binary">
           <input
-            :for={value when is_binary(value) <- e(@to_circles, [])}
+            :for={value when is_binary(value) <- @to_circles || []}
             type="hidden"
             data-role="circle-binary"
             name="to_circles[]"
             value={value}
           />
+        </label>
+
+        <label data-role="verb_permissions">
+          {!-- <input type="hidden" name="verb_permissions_json" value={Jason.encode!(@verb_permissions) |> flood("json")}> --}
+          {#for {verb, permissions} <- e(@verb_permissions, [])}
+            <input
+              :for={{to, value} <- permissions || []}
+              type="hidden"
+              data-role="circle-binary"
+              name={"verb_permissions[#{verb}][#{to}]"}
+              value={value}
+            />
+          {/for}
         </label>
       </div>
     </div>
