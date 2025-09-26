@@ -28,8 +28,8 @@ defmodule Bonfire.UI.Common.TabsLive do
   defp l_suffix([t]), do: l_suffix(t)
   defp l_suffix(_), do: nil
 
-  defp l_suffix(%{name: tab_name}), do: localise_dynamic(tab_name)
-  defp l_name({_, tab_name}), do: localise_dynamic(tab_name)
+  defp l_suffix(%{name: tab_name}), do: localise_dynamic(tab_name, __MODULE__)
+  defp l_name({_, tab_name}), do: localise_dynamic(tab_name, __MODULE__)
   defp l_name([t]), do: l_name(t)
-  defp l_name(tab_name), do: localise_dynamic(tab_name)
+  defp l_name(tab_name), do: localise_dynamic(tab_name, __MODULE__)
 end

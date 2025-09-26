@@ -41,7 +41,7 @@
     >--}
   <span class="opacity-80 font-bold text-base">{localise_dynamic(
       @text || @widget[:text] || @widget[:name],
-      @widget[:extension] || @widget[:module]
+      @widget[:extension] || @widget[:module] || __MODULE__
     )}</span>
   {!-- </span> -->
   <!-- </div> --}
