@@ -60,7 +60,6 @@
             </div>
           </div>
 
-          
           {!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE --}
           <#slot {@default} />
 
