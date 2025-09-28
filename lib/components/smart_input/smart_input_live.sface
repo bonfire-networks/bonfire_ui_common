@@ -1,4 +1,9 @@
-<div id="smart_input_live" class="rounded-xl flex-1 h-full bg-base-100 grow relative z-[]">
+<div id="smart_input_live" 
+style="display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;"
+ class="pt-safe rounded-xl flex-1 h-full bg-base-100 grow relative z-[]">
   <div id="composer_container" data-id="smart_input" class="flex-1 h-full grow rounded-xl">
     <div
       id="smart_input"
@@ -7,14 +12,14 @@
     >
       <div
         :if={not is_nil(current_user_id(@__context__))}
-        class="relative flex flex-col flex-1 w-full bg-base-200 rounded-xl"
+        class="relative overflow-y-auto overflow-x-hidden lg:max-h-[95vh] min-h-0 flex flex-col flex-1 w-full bg-base-200 rounded-xl"
       >
         <div :if={is_map(@activity) || is_map(@reply_to_id)} class="border-b border-base-content/10">
           <div class="relative reply_in_composer rounded-t-box max-h-[160px] bg-base-200/50 overflow-auto p-2">
             {!-- show what we're replying to, if any --}
             <StatelessComponent
               module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
-              id={"compose_reply_to-#{id(@reply_to_id) || id(@object) || id(@activity)}"}
+              activity_component_id={deterministic_dom_id(__MODULE__, id(@reply_to_id) || id(@object) || id(@activity), e(@reply_to_id, nil))}
               myself={nil}
               activity={@activity}
               cw={e(post_content(@object), :summary, nil)}
@@ -61,7 +66,6 @@
         >{l(
             "Warning: You are replying to a remote activity but federation is disabled. This means only users on your local instance will see your reply unless federation is later turned on."
           )}</div>
-
         {#case LiveHandler.active_smart_input_component(
             @smart_input_component,
             e(@smart_input_opts, :create_object_type, nil)

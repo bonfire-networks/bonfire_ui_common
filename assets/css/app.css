@@ -18,6 +18,26 @@
     bottom: 0;
   }
 }
+body {
+  --img-bg-color: rgba(128, 128, 128, .2);
+}
+
+.figure-upload {
+  background-image: linear-gradient(45deg,var(--img-bg-color) 25%,transparent 25%),linear-gradient(-45deg,var(--img-bg-color) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,var(--img-bg-color) 75%),linear-gradient(-45deg,transparent 75%,var(--img-bg-color) 75%);
+    background-size: 10px 10px;
+    background-position: 0 0,0 5px,5px -5px,-5px 0px;
+    flex-shrink: 0;
+    border: 1px solid var(--outline-color);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.figure-upload * {
+  object-fit: scale-down;
+  vertical-align: middle;
+  pointer-events: none;
+}
+
 
 .h-20 {
   height: 5rem; /* 80px */

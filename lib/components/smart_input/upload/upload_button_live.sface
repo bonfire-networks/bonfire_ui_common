@@ -1,4 +1,4 @@
-<div data-tip={l("Upload an attachment")} class="relative z-40 tooltip tooltip-top">
+<div data-tip={l("Upload an attachment")} class="relative z-40 tooltip tooltip-right">
   <label
     disabled={Enum.count(@uploads.files.entries) >= @max_uploads}
     for={@uploads.files.ref}

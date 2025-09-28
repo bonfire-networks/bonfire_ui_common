@@ -10,6 +10,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop open_boundaries, :boolean, default: false
   prop to_boundaries, :any, default: nil
   prop boundary_preset, :any, default: nil
+  prop selected_cover, :any, default: nil
   prop to_circles, :list, default: []
   prop exclude_circles, :list, default: []
   prop verb_permissions, :map, default: %{}
@@ -108,53 +109,12 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
         %{assigns: %{smart_input_opts: old_smart_input_opts}} = socket
       )
       when is_map(new_smart_input_opts) and is_map(old_smart_input_opts) do
-    # Merge smart_input_opts
-    merged_smart_input_opts =
-      Map.merge(old_smart_input_opts, new_smart_input_opts)
-      |> debug("merged_smart_input_opts")
-
-    # Preserve existing important attributes in the socket assigns
-    # We'll look for essential attrs that we don't want to lose during partial updates
-    existing_assigns = socket.assigns
-
-    # Get a list of keys from the new assigns that we're updating
-    new_assign_keys = Map.keys(assigns)
-
-    # Core attributes to always preserve (unless explicitly being updated)
-    core_attrs = [
-      :activity,
-      :object,
-      :reply_to_id,
-      :context_id,
-      :activity_inception,
-      :to_boundaries,
-      :to_circles,
-      :exclude_circles,
-      :verb_permissions
-    ]
-
-    # Preserve core attributes if they're not being explicitly updated
-    preserved_attrs =
-      Enum.reduce(core_attrs, %{}, fn attr, acc ->
-        if attr not in new_assign_keys and Map.has_key?(existing_assigns, attr) do
-          # This is a core attribute that exists in current state but isn't being updated
-          # So we should preserve it
-          Map.put(acc, attr, Map.get(existing_assigns, attr))
-        else
-          # Either this attribute is being updated or doesn't exist in current state
-          acc
-        end
-      end)
-
-    # Create final assigns by merging: preserved attributes + incoming assigns + merged smart_input_opts
-    final_assigns =
-      preserved_attrs
-      |> Map.merge(assigns)
-      |> Map.put(:smart_input_opts, merged_smart_input_opts)
+    merged_opts = Map.merge(old_smart_input_opts, new_smart_input_opts)
 
     {:ok,
      socket
-     |> assign(final_assigns)
+     |> assign(assigns)
+     |> assign(:smart_input_opts, merged_opts)
      |> Bonfire.Boundaries.LiveHandler.prepare_assigns()}
   end
 

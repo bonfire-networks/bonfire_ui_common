@@ -18,6 +18,8 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop uploads, :any, default: nil
   prop uploaded_files, :list, default: []
 
+  prop selected_cover, :any, default: nil
+  prop event_target, :string, default: nil
   prop page, :any, default: nil
   prop show_cw_toggle, :boolean, default: false
   prop submit_label, :string, default: nil

@@ -4,7 +4,7 @@
       {!-- here was old/loader.svg --}
       <div id="composer_wrapper" class="h-full flex flex-col">
         <div class="h-full flex flex-col flex-1 grow relative">
-          <div class="sensitive_alert alert hidden alert-warning m-2 p-2 cursor-pointer">
+          <div class="sensitive_alert alert-soft alert hidden alert-warning m-2 p-2 cursor-pointer">
             <span>{l("This activity is marked as sensitive.")}
               <span
                 phx-click={JS.show(to: "#smart_input_summary")
@@ -41,7 +41,7 @@
             class={if !e(@smart_input_opts, :cw, nil), do: "hidden"}
             id="smart_input_summary"
           >
-            <div class="p-2">
+            <div class="px-2 pb-2">
               <label class="relative w-full">
                 <!-- <#Icon iconify="heroicons-outline:menu-alt-2" class="w-4 h-4 absolute left-2 top-2" /> -->
                 {!-- <input
@@ -53,7 +53,7 @@
                 <textarea
                   name="post[post_content][summary]"
                   placeholder={l("Enter an optional summary")}
-                  class="textarea textarea-xs resize w-full max-h-12"
+                  class="textarea textarea-xs resize w-full max-h-6 resize-none"
                   style="field-sizing: normal;"
                 >{e(@smart_input_opts, :cw, nil)}</textarea>
               </label>
@@ -62,9 +62,13 @@
 
           {!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE --}
           <#slot {@default} />
-
-          {!-- UPLOADS PREVIEWS --}
-          <Bonfire.UI.Common.UploadPreviewsLive :if={@uploads != false} uploads={@uploads} />
+           {!-- UPLOADS PREVIEWS --}
+          <Bonfire.UI.Common.UploadPreviewsLive 
+            selected_cover={@selected_cover}
+            event_target={@event_target || "#smart_input"} 
+            :if={@uploads != false} 
+            uploads={@uploads} />
+          
         </div>
       </div>
 

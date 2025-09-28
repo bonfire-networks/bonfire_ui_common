@@ -277,7 +277,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     input_status =
       if input_status != :submit and
            (not is_nil(text) || String.trim(to_string(text || "")) != "" ||
-              (uploads && e(uploads, :files, :entries, []) != [])) do
+              (uploads && uploads[:files] && uploads.files.entries != [])) do
         :draft
       else
         input_status
@@ -359,9 +359,12 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def handle_event("cancel-upload", %{"ref" => ref}, socket) do
     # Safely cancel upload
+    debug(e(socket, :uploads, :files, "CAZZ"), "CAZZZZ")
+    debug(e(socket, :files, "CAZZ"), "CAZZZZ2")
     try do
-      # Cancel the upload
+      # Cancel the upload - check if uploads exist first
       socket = Phoenix.LiveView.cancel_upload(socket, :files, ref)
+
       smart_input_opts = e(assigns(socket), :smart_input_opts, nil)
 
       # Check if we should disable the submit button
@@ -406,6 +409,16 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     end
   end
 
+  def handle_event("toggle-cover-image", %{"ref" => ref}, socket) do
+    current_cover = e(assigns(socket), :selected_cover, nil)
+    debug(current_cover, "CACCA")
+    # Toggle the cover image - if it's already selected, deselect it, otherwise select it
+    new_cover = if current_cover == ref, do: nil, else: ref
+    debug(new_cover, "CACCA")
+
+    {:noreply, assign(socket, selected_cover: new_cover)}
+  end
+
   @doc """
   Cancel all pending uploads for the smart input
   This is useful when closing the composer or resetting it
@@ -413,7 +426,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   def cancel_all_uploads(socket) do
     # Only cancel uploads that are not yet completed
     with uploads when not is_nil(uploads) <- e(socket.assigns, :uploads, nil),
-         entries <- e(uploads, :files, :entries, []),
+         true <- uploads[:files] != nil,
+         entries <- uploads.files.entries,
          pending_entries <- Enum.reject(entries, &(&1.done? or &1.cancelled?)) do
       if pending_entries != [] do
         debug("Cancelling #{length(pending_entries)} pending uploads")

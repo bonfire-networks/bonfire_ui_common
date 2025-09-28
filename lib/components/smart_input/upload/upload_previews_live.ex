@@ -3,6 +3,8 @@ defmodule Bonfire.UI.Common.UploadPreviewsLive do
 
   prop uploads, :any
   prop parent_id, :any, default: nil
+  prop event_target, :any, default: nil
+  prop selected_cover, :any, default: nil
 
   def error_to_string(:too_large), do: l("The file is too large.")
 
