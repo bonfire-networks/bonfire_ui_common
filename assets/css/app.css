@@ -222,18 +222,11 @@ article.unread-activity {
   margin-left: -2.7rem !important;
 }
 
-.nested-preview {
-  position: relative;
-  padding-left: 3.4rem !important;
-  margin-left: -60px !important;
-  @apply border border-primary/40 bg-primary/5 rounded-lg !py-3 mb-3;
-}
-
 .quote-preview {
   position: relative;
   padding-left: 3.4rem !important;
   margin-left: 0px !important;
-  @apply border-l-4 border-primary/60 bg-base-content/5 !py-2 !pb-3 mt-2 mb-3;
+  @apply border border-base-content/10 rounded-lg !py-2 !pb-3 mt-2 mb-3;
 }
 
 .quote-preview .prose-bonfire {
