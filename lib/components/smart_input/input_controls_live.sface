@@ -72,11 +72,12 @@
         </div>
       </div>
 
+      
       <div class={
-        "z-50 sticky bg-base-100 bottom-0 h-[48px] rounded-b-xl mobile-keyboard-safe",
+        "z-50 sticky bg-base-100 bottom-0 h-[48px] rounded-b-xl ",
         "order-first !bg-base-content/10": @showing_within == :page
       }>
-        <div class="">
+        <div class="pb-safe">
           <div class="flex justify-between gap-2 p-2 lg:rounded-b-xl md:items-center md:px-3 py-2">
             <div class="flex items-center gap-2">
               <Bonfire.UI.Common.UploadButtonLive

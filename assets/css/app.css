@@ -1,23 +1,6 @@
 @import "tailwindcss";
 @import "nprogress/nprogress.css";
 
-/* Mobile keyboard-safe sticky positioning */
-.mobile-keyboard-safe {
-  position: sticky;
-  /* Use dynamic viewport height that adapts to keyboard */
-  bottom: max(0px, env(keyboard-inset-height, 0px));
-  /* Fallback for older browsers */
-  bottom: 0;
-}
-
-/* For mobile devices, ensure sticky works with virtual keyboard */
-@supports (height: 100dvh) {
-  .mobile-keyboard-safe {
-    /* Modern browsers with dynamic viewport units */
-    position: sticky;
-    bottom: 0;
-  }
-}
 body {
   --img-bg-color: rgba(128, 128, 128, .2);
 }
