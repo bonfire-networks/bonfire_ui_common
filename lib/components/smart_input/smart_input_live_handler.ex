@@ -361,6 +361,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # Safely cancel upload
     debug(e(socket, :uploads, :files, "CAZZ"), "CAZZZZ")
     debug(e(socket, :files, "CAZZ"), "CAZZZZ2")
+
     try do
       # Cancel the upload - check if uploads exist first
       socket = Phoenix.LiveView.cancel_upload(socket, :files, ref)

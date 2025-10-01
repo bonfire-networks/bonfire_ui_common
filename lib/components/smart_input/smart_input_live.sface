@@ -1,9 +1,11 @@
-<div id="smart_input_live" 
-style="display: flex;
+<div
+  id="smart_input_live"
+  style="display: flex;
   flex-direction: column;
   height: 100vh;
   position: relative;"
- class="pt-safe rounded-xl flex-1 h-full bg-base-100 grow relative z-[]">
+  class="pt-safe rounded-xl flex-1 h-full bg-base-100 grow relative z-[]"
+>
   <div id="composer_container" data-id="smart_input" class="flex-1 h-full grow rounded-xl">
     <div
       id="smart_input"
@@ -19,7 +21,11 @@ style="display: flex;
             {!-- show what we're replying to, if any --}
             <StatelessComponent
               module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
-              activity_component_id={deterministic_dom_id(__MODULE__, id(@reply_to_id) || id(@object) || id(@activity), e(@reply_to_id, nil))}
+              activity_component_id={deterministic_dom_id(
+                __MODULE__,
+                id(@reply_to_id) || id(@object) || id(@activity),
+                e(@reply_to_id, nil)
+              )}
               myself={nil}
               activity={@activity}
               cw={e(post_content(@object), :summary, nil)}

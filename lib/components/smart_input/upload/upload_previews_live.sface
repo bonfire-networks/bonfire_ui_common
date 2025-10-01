@@ -1,10 +1,9 @@
-
 <div
   :if={Enum.count(@uploads.files.entries) > 0}
   id={deterministic_dom_id(__MODULE__, nil, "upload-preview", @parent_id)}
   class="p-2 pt-0 uploads_preview"
 >
-        <!-- phx-update="ignore" -->
+  <!-- phx-update="ignore" -->
   <div class="flex flex-col p-2 bg-base-content/5 gap-2 dividy-y divide-base-content/10 rounded-xl">
     {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
       <article
@@ -18,27 +17,27 @@
         <figure class="w-[80px] figure-upload overflow-hidden">
           {#if String.starts_with?(entry.client_type, "image")}
             {!-- render a client-side preview --}
-              <Phoenix.Component.live_img_preview class="w-[80px] h-[80px] object-contain" entry={entry} />
+            <Phoenix.Component.live_img_preview class="w-[80px] h-[80px] object-contain" entry={entry} />
             <figcaption class="sr-only">{entry.client_name}</figcaption>
           {#elseif String.contains?(entry.client_type, "pdf")}
             <div class="w-full rounded h-[48px] flex items-center place-content-center justify-center">
               <#Icon iconify="bxs:file-pdf" class="w-10 h-10" />
-            <figcaption class="m-1 text-xs truncate">{entry.client_name}</figcaption>
+              <figcaption class="m-1 text-xs truncate">{entry.client_name}</figcaption>
             </div>
           {#elseif String.starts_with?(entry.client_type, "video")}
             <div class="w-full rounded h-[48px] flex items-center place-content-center justify-center">
               <#Icon iconify="majesticons:video" class="w-10 h-10" />
-            <figcaption class="m-1 text-xs truncate">{entry.client_name}</figcaption>
+              <figcaption class="m-1 text-xs truncate">{entry.client_name}</figcaption>
             </div>
           {#elseif String.starts_with?(entry.client_type, "audio")}
             <div class="w-full rounded h-[48px] flex items-center place-content-center justify-center">
               <#Icon iconify="lucide:audio-lines" class="w-10 h-10" />
-            <figcaption class="x-1 text-xs truncate">{entry.client_name}</figcaption>
+              <figcaption class="x-1 text-xs truncate">{entry.client_name}</figcaption>
             </div>
           {#else}
             <div class="w-full rounded h-[48px] flex items-center place-content-center justify-center">
               <#Icon iconify="carbon:document" class="w-10 h-10" />
-            <figcaption class="m-1 text-xs truncate">{entry.client_name}</figcaption>
+              <figcaption class="m-1 text-xs truncate">{entry.client_name}</figcaption>
             </div>
           {/if}
         </figure>
@@ -90,44 +89,43 @@
             </button>
           </:open_btn>
         </Bonfire.UI.Common.InlineModalLive> -->
-      <div class="flex flex-col gap-2">
-        <button
-          type="button"
-          class="btn-danger btn-sm lg:btn-xs btn btn-circle"
-          phx-click="Bonfire.UI.Common.SmartInput:cancel-upload"
-          phx-target={@event_target}
-          phx-value-ref={entry.ref}
-          aria-label="cancel"
-        >
-          <#Icon iconify="ph:x-duotone" class="w-4 h-4" />
-          <span class="sr-only">{l("Remove")}</span>
-        </button>
-           {#if String.starts_with?(entry.client_type, "image")}
-              <div
-                data-tip={l("Select as cover")}
-                class="tooltip tooltip-left"
-                id={deterministic_dom_id(__MODULE__, entry.ref, "cover_selector", @parent_id)}
+        <div class="flex flex-col gap-2">
+          <button
+            type="button"
+            class="btn-danger btn-sm lg:btn-xs btn btn-circle"
+            phx-click="Bonfire.UI.Common.SmartInput:cancel-upload"
+            phx-target={@event_target}
+            phx-value-ref={entry.ref}
+            aria-label="cancel"
+          >
+            <#Icon iconify="ph:x-duotone" class="w-4 h-4" />
+            <span class="sr-only">{l("Remove")}</span>
+          </button>
+          {#if String.starts_with?(entry.client_type, "image")}
+            <div
+              data-tip={l("Select as cover")}
+              class="tooltip tooltip-left"
+              id={deterministic_dom_id(__MODULE__, entry.ref, "cover_selector", @parent_id)}
+            >
+              <input
+                type="hidden"
+                name={"upload_metadata[#{entry.ref}][primary_image]"}
+                value={if @selected_cover == entry.ref, do: "true", else: ""}
+                id={deterministic_dom_id(__MODULE__, entry.ref, "primary_image", @parent_id)}
+              />
+              <button
+                type="button"
+                class={"btn-sm lg:btn-xs btn btn-circle", "btn-primary": @selected_cover == entry.ref}
+                phx-click="Bonfire.UI.Common.SmartInput:toggle-cover-image"
+                phx-target={@event_target}
+                phx-value-ref={entry.ref}
               >
-                <input
-                  type="hidden"
-                  name={"upload_metadata[#{entry.ref}][primary_image]"}
-                  value={if @selected_cover == entry.ref, do: "true", else: ""}
-                  id={deterministic_dom_id(__MODULE__, entry.ref, "primary_image", @parent_id)}
-                />
-                <button
-                  type="button"
-                  class={"btn-sm lg:btn-xs btn btn-circle", "btn-primary": @selected_cover == entry.ref}
-                  phx-click="Bonfire.UI.Common.SmartInput:toggle-cover-image"
-                  phx-target={@event_target}
-                  phx-value-ref={entry.ref}
-                >
-                  <#Icon iconify="ph:asterisk-duotone" class="w-4 h-4" />
-                  <span class="sr-only">{l("Select as cover")}</span>
-                </button>
-              </div>
-            {/if}
-
-      </div>
+                <#Icon iconify="ph:asterisk-duotone" class="w-4 h-4" />
+                <span class="sr-only">{l("Select as cover")}</span>
+              </button>
+            </div>
+          {/if}
+        </div>
         {!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 --}
       </article>
     {/for}

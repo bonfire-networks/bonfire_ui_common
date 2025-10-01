@@ -42,7 +42,7 @@
             <div class="w-full rounded-xl bg-base-200 flex flex-col flex-1 h-full grow">
               <div class="relative z-50 rounded-xl flex flex-col grow h-full">
                 <!-- <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} /> -->
-                
+
                 <SmartInputLive
                   event_target={@myself}
                   custom_emojis={@custom_emojis}

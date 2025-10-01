@@ -110,21 +110,21 @@
         "!top-2 !right-2": @image_preview,
         "z-[999999999] !top-1 h-full": @no_backdrop
       }>
-      <div class="pt-safe">
-        <button
-          phx-click="close"
-          phx-target={"[id='#{@id}']"}
-          type="button"
-          class={
-            "btn btn-circle btn-sm",
-            "!btn-lg btn-soft": @image_preview,
-            "!rounded-none btn-ghost !btn-xs opacity-70 btn-secondary": @no_backdrop
-          }
-        >
-          <span class="sr-only">{l("Close")}</span>
-          <#Icon outline="X" class="w-5 h-5" />
-        </button>
-      </div>
+        <div class="pt-safe">
+          <button
+            phx-click="close"
+            phx-target={"[id='#{@id}']"}
+            type="button"
+            class={
+              "btn btn-circle btn-sm",
+              "!btn-lg btn-soft": @image_preview,
+              "!rounded-none btn-ghost !btn-xs opacity-70 btn-secondary": @no_backdrop
+            }
+          >
+            <span class="sr-only">{l("Close")}</span>
+            <#Icon outline="X" class="w-5 h-5" />
+          </button>
+        </div>
       </div>
     </div>
   </Phoenix.Component.dynamic_tag>

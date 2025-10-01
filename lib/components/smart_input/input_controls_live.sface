@@ -62,17 +62,16 @@
 
           {!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE --}
           <#slot {@default} />
-           {!-- UPLOADS PREVIEWS --}
-          <Bonfire.UI.Common.UploadPreviewsLive 
+          {!-- UPLOADS PREVIEWS --}
+          <Bonfire.UI.Common.UploadPreviewsLive
             selected_cover={@selected_cover}
-            event_target={@event_target || "#smart_input"} 
-            :if={@uploads != false} 
-            uploads={@uploads} />
-          
+            event_target={@event_target || "#smart_input"}
+            :if={@uploads != false}
+            uploads={@uploads}
+          />
         </div>
       </div>
 
-      
       <div class={
         "z-50 sticky bg-base-100 bottom-0 h-[48px] rounded-b-xl ",
         "order-first !bg-base-content/10": @showing_within == :page
