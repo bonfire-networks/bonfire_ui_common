@@ -56,7 +56,7 @@
           String.trim(
             Bonfire.Common.HTTP.get_cached_body("https://docs.bonfirenetworks.org/VERSION") || ""
           )}
-        {#match latest when latest != version and latest != ""}
+        {#match latest when is_binary(latest) and latest != "" and latest != version}
           <span class="badge badge-sm badge-warning badge-soft mt-4">{l("New version available:")} {latest}</span>
         {#match _}
       {/case}
