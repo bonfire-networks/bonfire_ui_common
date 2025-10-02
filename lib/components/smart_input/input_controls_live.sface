@@ -250,7 +250,7 @@
         </label>
 
         <label data-role="verb_permissions">
-          {!-- <input type="hidden" name="verb_permissions_json" value={Jason.encode!(@verb_permissions) |> flood("json")}> --}
+          {!-- <input type="hidden" name="verb_permissions_json" value={Jason.encode!(@verb_permissions) |> debug("json")}> --}
           {#for {verb, permissions} <- e(@verb_permissions, [])}
             <input
               :for={{to, value} <- permissions || []}
