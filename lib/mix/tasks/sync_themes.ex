@@ -102,13 +102,36 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     # Extract name first
     case Regex.run(~r/name:\s*"([^"]+)"/, block) do
       [_, name] ->
-        # Then parse other attributes
+        # Parse attributes - handle both quoted strings and unquoted values (booleans, numbers)
         attrs =
-          Regex.scan(~r/(?:\"?([^"]+)\"?:|(\w+(?:-\w+)?):)\s*"?([^"\],]+)"?/, block)
+          Regex.scan(~r/(?:\"?([^":\s]+)\"?:|(\w+(?:[_-]\w+)*):)\s*(?:"([^"]+)"|(\w+))/, block)
           |> Enum.map(fn
-            [_, quoted_key, "", value] -> {String.to_atom(quoted_key), String.trim(value, ", ")}
-            [_, "", key, value] -> {String.to_atom(key), String.trim(value, ", ")}
+            # Quoted key with quoted value
+            [_, quoted_key, "", quoted_value] when quoted_key != "name" and quoted_value != "" ->
+              key = String.replace(quoted_key, "-", "_") |> String.to_atom()
+              {key, String.trim(quoted_value)}
+
+            # Quoted key with unquoted value (boolean/number)
+            [_, quoted_key, "", "", unquoted_value] when quoted_key != "name" ->
+              key = String.replace(quoted_key, "-", "_") |> String.to_atom()
+              value = parse_value(unquoted_value)
+              {key, value}
+
+            # Unquoted key with quoted value
+            [_, "", key, quoted_value] when key != "name" and quoted_value != "" ->
+              key = String.replace(key, "-", "_") |> String.to_atom()
+              {key, String.trim(quoted_value)}
+
+            # Unquoted key with unquoted value (boolean/number)
+            [_, "", key, "", unquoted_value] when key != "name" ->
+              key = String.replace(key, "-", "_") |> String.to_atom()
+              value = parse_value(unquoted_value)
+              {key, value}
+
+            _ ->
+              nil
           end)
+          |> Enum.reject(&is_nil/1)
           |> Enum.into(%{})
 
         Map.put(attrs, :name, name)
@@ -117,6 +140,11 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
         nil
     end
   end
+
+  # Parse boolean and other literal values
+  defp parse_value("true"), do: true
+  defp parse_value("false"), do: false
+  defp parse_value(value), do: value
 
   # Format themes with appropriate flags
   defp format_themes(light_themes, dark_themes) do
@@ -139,6 +167,15 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
 
   # Generate custom theme configuration
   defp generate_custom_theme_config(theme) do
+    # Helper to quote color values if they contain # or start with oklch
+    quote_value = fn value ->
+      if String.starts_with?(value, "#") or String.starts_with?(value, "oklch") do
+        "\"#{value}\""
+      else
+        value
+      end
+    end
+
     """
     @plugin "daisyui/theme" {
       name: "#{theme[:name]}";
@@ -147,48 +184,48 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
       color-scheme: "#{theme[:color_scheme] || "light"}"; /* color of browser-provided UI */
 
       /* base colors */
-      --color-base-100: #{theme[:"color-base-100"] || "oklch(98% 0.02 240)"};
-      --color-base-200: #{theme[:"color-base-200"] || "oklch(95% 0.03 240)"};
-      --color-base-300: #{theme[:"color-base-300"] || "oklch(92% 0.04 240)"};
-      --color-base-content: #{theme[:"color-base-content"] || "oklch(20% 0.05 240)"};
+      --color-base-100: #{quote_value.(theme[:color_base_100] || "oklch(98% 0.02 240)")};
+      --color-base-200: #{quote_value.(theme[:color_base_200] || "oklch(95% 0.03 240)")};
+      --color-base-300: #{quote_value.(theme[:color_base_300] || "oklch(92% 0.04 240)")};
+      --color-base-content: #{quote_value.(theme[:color_base_content] || "oklch(20% 0.05 240)")};
 
       /* primary colors */
-      --color-primary: #{theme[:"color-primary"] || "oklch(55% 0.3 240)"};
-      --color-primary-content: #{theme[:"color-primary-content"] || "oklch(98% 0.01 240)"};
+      --color-primary: #{quote_value.(theme[:color_primary] || "oklch(55% 0.3 240)")};
+      --color-primary-content: #{quote_value.(theme[:color_primary_content] || "oklch(98% 0.01 240)")};
 
       /* secondary colors */
-      --color-secondary: #{theme[:"color-secondary"] || "oklch(70% 0.25 200)"};
-      --color-secondary-content: #{theme[:"color-secondary-content"] || "oklch(98% 0.01 200)"};
+      --color-secondary: #{quote_value.(theme[:color_secondary] || "oklch(70% 0.25 200)")};
+      --color-secondary-content: #{quote_value.(theme[:color_secondary_content] || "oklch(98% 0.01 200)")};
 
       /* accent colors */
-      --color-accent: #{theme[:"color-accent"] || "oklch(65% 0.25 160)"};
-      --color-accent-content: #{theme[:"color-accent-content"] || "oklch(98% 0.01 160)"};
+      --color-accent: #{quote_value.(theme[:color_accent] || "oklch(65% 0.25 160)")};
+      --color-accent-content: #{quote_value.(theme[:color_accent_content] || "oklch(98% 0.01 160)")};
 
       /* neutral colors */
-      --color-neutral: #{theme[:"color-neutral"] || "oklch(50% 0.05 240)"};
-      --color-neutral-content: #{theme[:"color-neutral-content"] || "oklch(98% 0.01 240)"};
+      --color-neutral: #{quote_value.(theme[:color_neutral] || "oklch(50% 0.05 240)")};
+      --color-neutral-content: #{quote_value.(theme[:color_neutral_content] || "oklch(98% 0.01 240)")};
 
       /* state colors */
-      --color-info: #{theme[:"color-info"] || "oklch(70% 0.2 220)"};
-      --color-info-content: #{theme[:"color-info-content"] || "oklch(98% 0.01 220)"};
-      --color-success: #{theme[:"color-success"] || "oklch(65% 0.25 140)"};
-      --color-success-content: #{theme[:"color-success-content"] || "oklch(98% 0.01 140)"};
-      --color-warning: #{theme[:"color-warning"] || "oklch(80% 0.25 80)"};
-      --color-warning-content: #{theme[:"color-warning-content"] || "oklch(20% 0.05 80)"};
-      --color-error: #{theme[:"color-error"] || "oklch(65% 0.3 30)"};
-      --color-error-content: #{theme[:"color-error-content"] || "oklch(98% 0.01 30)"};
+      --color-info: #{quote_value.(theme[:color_info] || "oklch(70% 0.2 220)")};
+      --color-info-content: #{quote_value.(theme[:color_info_content] || "oklch(98% 0.01 220)")};
+      --color-success: #{quote_value.(theme[:color_success] || "oklch(65% 0.25 140)")};
+      --color-success-content: #{quote_value.(theme[:color_success_content] || "oklch(98% 0.01 140)")};
+      --color-warning: #{quote_value.(theme[:color_warning] || "oklch(80% 0.25 80)")};
+      --color-warning-content: #{quote_value.(theme[:color_warning_content] || "oklch(20% 0.05 80)")};
+      --color-error: #{quote_value.(theme[:color_error] || "oklch(65% 0.3 30)")};
+      --color-error-content: #{quote_value.(theme[:color_error_content] || "oklch(98% 0.01 30)")};
 
       /* border radius */
-      --radius-selector: #{theme[:"radius-selector"] || "1rem"};
-      --radius-field: #{theme[:"radius-field"] || "0.25rem"};
-      --radius-box: #{theme[:"radius-box"] || "0.5rem"};
+      --radius-selector: #{quote_value.(theme[:radius_selector] || "1rem")};
+      --radius-field: #{quote_value.(theme[:radius_field] || "0.25rem")};
+      --radius-box: #{quote_value.(theme[:radius_box] || "0.5rem")};
 
       /* base sizes */
-      --size-selector: #{theme[:"size-selector"] || "0.25rem"};
-      --size-field: #{theme[:"size-field"] || "0.25rem"};
+      --size-selector: #{quote_value.(theme[:size_selector] || "0.25rem")};
+      --size-field: #{quote_value.(theme[:size_field] || "0.25rem")};
 
       /* border size */
-      --border: #{theme[:border] || "1px"};
+      --border: #{quote_value.(theme[:border] || "1px")};
 
       /* effects */
       --depth: #{theme[:depth] || "1"};

@@ -110,6 +110,7 @@
         "!top-2 !right-2": @image_preview,
         "z-[999999999] !top-1 h-full": @no_backdrop
       }>
+
         <div class="pt-safe">
           <button
             phx-click="close"
@@ -125,6 +126,7 @@
             <#Icon outline="X" class="w-5 h-5" />
           </button>
         </div>
+
       </div>
     </div>
   </Phoenix.Component.dynamic_tag>

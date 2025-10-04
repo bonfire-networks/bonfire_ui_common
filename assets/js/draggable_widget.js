@@ -9,9 +9,13 @@ DraggableHooks.Draggable = {
 
   initializeSortable() {
     if (this.el.sortable) return; // Prevent double initialization
-    
+
+    // Disable dragging on mobile/touch devices
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) return;
+
     const hook = this;
-    
+
     this.el.sortable = new Sortable(this.el, {
       animation: 150,
       delay: 100,
@@ -27,7 +31,7 @@ DraggableHooks.Draggable = {
           source_item: e.item.dataset.item,
           target_order: [...e.target.children].map(el => el.dataset.item)
         };
-        
+
         // Event should be "reorder_widget" or "reorder_sub_widget"
         const event_name = hook.el.dataset.event;
         if (event_name) {
