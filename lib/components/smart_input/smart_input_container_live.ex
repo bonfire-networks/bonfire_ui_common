@@ -113,9 +113,9 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
 
     {:ok,
      socket
+     |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
      |> assign(assigns)
-     |> assign(:smart_input_opts, merged_opts)
-     |> Bonfire.Boundaries.LiveHandler.prepare_assigns()}
+     |> assign(:smart_input_opts, merged_opts)}
   end
 
   def update(assigns, socket) do

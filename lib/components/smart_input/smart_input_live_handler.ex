@@ -195,17 +195,46 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       |> Enum.flat_map(&Enum.map(&1, fn {key, val} -> {key, val} end))
       |> debug("exclude_circles")
 
+    # Process to_boundaries with proper nil handling to allow fallback to existing assigns
+    to_boundaries_param = params["to_boundaries"] |> debug("params to_boundaries")
+    to_boundaries_opt = e(opts, :to_boundaries, nil) |> debug("opts to_boundaries")
+    existing_to_boundaries = e(assigns(socket), :to_boundaries, nil) |> debug("existing socket to_boundaries")
+
     to_boundaries =
-      List.wrap(params["to_boundaries"] || e(opts, :to_boundaries, []))
-      |> debug("input to_boundaries")
-      # NOTE: what's going on here??
-      |> Enum.flat_map(
-        &Enum.map(List.wrap(&1), fn
-          {key, val} -> {key, val}
-          val -> val
-        end)
-      )
-      |> debug("processed to_boundaries")
+      case to_boundaries_param || to_boundaries_opt do
+        nil ->
+          # No value in params/opts, will fallback to socket assigns
+          debug("to_boundaries is nil, will use socket assigns fallback")
+          nil
+
+        [] ->
+          # Empty list, check if this was explicitly set or just a default
+          debug("to_boundaries is empty list - checking if should preserve existing")
+          # If it came from opts (not params), treat as nil to preserve existing
+          if to_boundaries_param == [], do: [], else: nil
+
+        value ->
+          List.wrap(value)
+          |> debug("input to_boundaries")
+          # NOTE: what's going on here??
+          |> Enum.flat_map(
+            &Enum.map(List.wrap(&1), fn
+              {key, val} -> {key, val}
+              val -> val
+            end)
+          )
+          |> debug("processed to_boundaries")
+      end
+
+    # Use filter_empty to treat [] as nil for proper fallback
+    # If both are nil/empty, keep nil to avoid overwriting what prepare_assigns will set
+    final_to_boundaries =
+      cond do
+        filter_empty(to_boundaries, nil) -> to_boundaries
+        filter_empty(existing_to_boundaries, nil) -> existing_to_boundaries
+        true -> nil
+      end
+      |> debug("final to_boundaries after filter_empty")
 
     set_assigns =
       [
@@ -222,12 +251,13 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         object: nil,
         showing_within: e(assigns(socket), :showing_within, nil),
         activity_inception: "reply_to",
-        to_boundaries: e(to_boundaries, nil) || e(assigns(socket), :to_boundaries, nil),
         to_circles: to_circles,
         # NEW: Add exclude_circles to assigns
         exclude_circles: exclude_circles,
         mentions: e(opts, "mentions", nil) || e(params, "mentions", [])
       ]
+      # Only add to_boundaries to assigns if we have a non-nil value to set
+      |> maybe_put(:to_boundaries, final_to_boundaries)
       |> debug("set_assigns")
 
     {:noreply,
