@@ -34,11 +34,11 @@ TooltipHooks.Tooltip = {
 				this.pendingUpdate = true;
 				return;
 			}
-			
+
 			if (!button || !tooltip) {
 				return;
 			}
-			
+
 			computePosition(button, tooltip, {
 				placement: position || "top",
 				middleware: [offset(6), flip({ padding: 5 }), shift({ padding: 5 })],
@@ -51,6 +51,12 @@ TooltipHooks.Tooltip = {
 				}
 			});
 		};
+
+		// Store updatePosition on the tooltip element so external code can trigger recalculation
+		// This is needed for lazy-loaded content like emoji pickers
+		if (tooltip) {
+			tooltip._updatePosition = updatePosition;
+		}
 
 		const startPositionUpdate = () => {
 			const hasEmojiPicker = tooltip.querySelector('emoji-picker');

@@ -4,7 +4,7 @@
     for={@uploads.files.ref}
     class="btn btn-ghost btn-square btn-sm"
   >
-    <#Icon iconify="ri:attachment-2" class="w-[18px] h-[18px] text-base-content/80" />
+    <#Icon iconify="ph:paperclip-duotone" class="w-[18px] h-[18px] text-base-content/80" />
     <Phoenix.Component.live_file_input upload={@uploads.files} class="sr-only" />
     <span class="sr-only">
       {l("Upload an attachment")}

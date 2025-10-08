@@ -20,9 +20,9 @@
             id="smart_input_post_title"
             phx-update={if @reset_smart_input, do: "replace", else: "ignore"}
           >
-            <div class="relative p-2 pb-0 bg-base-100">
+            <div class="relative p-2 bg-base-100">
               <label class="input w-full">
-                <#Icon iconify="ph:article-ny-times-duotone" class="w-4 h-4 opacity-50" />
+                <#Icon iconify="ph:text-h-one-duotone" class="w-4 h-4 opacity-50" />
                 <input
                   value={@smart_input_opts[:title]}
                   name="post[post_content][name]"
@@ -93,13 +93,13 @@
 
               <!-- data-close-on-inside-click="true" -->
               <div data-tip={l("Insert emoji")} class="tooltip tooltip-top">
-                <div phx-hook="Tooltip" phx-update="ignore" id="emoji_picker_in_composer" data-trigger="click">
+                <div phx-hook="Tooltip" data-position="top" phx-update="ignore" id="emoji_picker_in_composer" data-trigger="click">
                   <button
                     title={l("Insert emoji")}
                     type="button"
                     class="tooltip-button emoji-button btn btn-ghost btn-square btn-sm"
                   >
-                    <#Icon iconify="ph:paw-print-duotone" class="w-[18px] h-[18px]" />
+                    <#Icon iconify="ph:smiley-wink-duotone" class="w-[18px] h-[18px]" />
                   </button>
                   <div
                     id="emoji-picker-in-composer"
@@ -123,7 +123,7 @@
               JS.toggle_attribute({"placeholder", l("Enter an optional summary"), l("Enter an optional content warning")}, to: "#smart_input_summary textarea") --}
                 <label class="relative btn btn-ghost btn-square btn-sm">
                   <input type="checkbox" name="sensitive" class="opacity-0 absolute left-[999999999999999999px]">
-                  <#Icon iconify="ri:alert-line" class="swap-off w-[18px] h-[18px]" />
+                  <#Icon iconify="ph:siren-duotone" class="swap-off w-[18px] h-[18px]" />
                 </label>
               </div>
 
@@ -165,7 +165,7 @@
                   |> JS.toggle_class("btn-active", to: "#summary_btn")}
                   class="title-button btn btn-ghost btn-square btn-sm"
                 >
-                  <#Icon iconify="heroicons-outline:menu-alt-2" class="w-[18px] h-[18px]" />
+                  <#Icon iconify="ph:text-align-left-duotone" class="w-[18px] h-[18px]" />
                 </button>
               </div>
 
@@ -180,7 +180,7 @@
                   |> JS.toggle_class("btn-active", to: "#title_btn")}
                   class="title-button btn btn-ghost btn-square btn-sm"
                 >
-                  <#Icon iconify="ph:article-ny-times-duotone" class="w-5 h-5 text-base-content/70" />
+                  <#Icon iconify="ph:text-h-one-duotone" class="w-[18px] h-[18px]" />
                 </button>
               </div>
             </div>

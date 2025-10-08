@@ -123,31 +123,10 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       socket
       |> assign(assigns)
 
-    # Load custom emojis
-    custom_emojis =
-      case Bonfire.Files.EmojiUploader.list(assigns(socket)) do
-        # Return empty JSON array if no emojis
-        nil ->
-          "[]"
-
-        emojis ->
-          emojis
-          |> Enum.map(fn {shortcode, emoji} ->
-            url = e(emoji, :url, nil) || Media.emoji_url(emoji)
-
-            if shortcode && url && !e(emoji, :archived, nil) do
-              %{
-                id: id(emoji),
-                name: e(emoji, :label, nil),
-                shortcodes: [shortcode],
-                url: url
-              }
-            end
-          end)
-          |> debug("emoooji")
-          |> Enums.filter_empty([])
-          |> Jason.encode!()
-      end
+    # Don't load custom emojis here - they will be loaded lazily when the user
+    # clicks the emoji picker button. This prevents blocking the composer from opening.
+    # The emoji picker library handles standard emojis via its own IndexedDB cache.
+    custom_emojis = "[]"
 
     {
       :ok,
