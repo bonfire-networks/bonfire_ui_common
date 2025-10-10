@@ -391,8 +391,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def handle_event("cancel-upload", %{"ref" => ref}, socket) do
     # Safely cancel upload
-    debug(e(socket, :uploads, :files, "CAZZ"), "CAZZZZ")
-    debug(e(socket, :files, "CAZZ"), "CAZZZZ2")
 
     try do
       # Cancel the upload - check if uploads exist first
@@ -444,10 +442,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def handle_event("toggle-cover-image", %{"ref" => ref}, socket) do
     current_cover = e(assigns(socket), :selected_cover, nil)
-    debug(current_cover, "CACCA")
     # Toggle the cover image - if it's already selected, deselect it, otherwise select it
     new_cover = if current_cover == ref, do: nil, else: ref
-    debug(new_cover, "CACCA")
 
     {:noreply, assign(socket, selected_cover: new_cover)}
   end
