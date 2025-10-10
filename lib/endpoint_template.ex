@@ -16,6 +16,9 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       alias Bonfire.Common.Types
       alias Bonfire.Common.Extend
 
+        @yes? ~w(true yes 1)
+        @no? ~w(false no 0)
+
       def log_ip(%{remote_ip: remote_ip} = conn, _) when not is_nil(remote_ip) do
         Logger.info("Request from #{:inet_parse.ntoa(remote_ip)}")
 
@@ -59,7 +62,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
           check_origin: false,
           # check_origin: :conn,
           # whether to enable per message compression on all data frames
-          compress: false,
+          compress: System.get_env("PHX_COMPRESS_LV") not in @no?,
           # the timeout for keeping websocket connections open after it last received data, usually defaults to 60_000ms (1 minute)
           timeout: String.to_integer(System.get_env("LV_TIMEOUT", "42000")),
           # the maximum number of garbage collections before forcing a fullsweep for the socket process. You can set it to 0 to force more frequent clean-ups of your websocket transport processes. (You can also trigger this manually to force garbage collection in the transport process after processing large messages with `send(socket.transport_pid, :garbage_collect)`)
