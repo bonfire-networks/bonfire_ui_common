@@ -26,7 +26,7 @@
             type="button"
             class="normal-case btn btn-sm btn-error"
           >
-            {l("Cancel")}
+            {l("Delete draft")}
           </button>
         </:action_btns>
       </Bonfire.UI.Common.OpenModalLive>
