@@ -27,13 +27,14 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     # Extract themes from config
     light_themes = get_themes_from_config(config, :themes_light)
     dark_themes = get_themes_from_config(config, :themes_dark)
-    custom_themes = get_custom_themes_from_config(config)
+    # TODO: Custom themes parsing needs more work to handle complex nested structures
+    # custom_themes = get_custom_themes_from_config(config)
 
     Mix.shell().info(
-      "Found #{length(light_themes)} light themes, #{length(dark_themes)} dark themes, and #{length(custom_themes)} custom themes"
+      "Found #{length(light_themes)} light themes and #{length(dark_themes)} dark themes"
     )
 
-    if Enum.empty?(light_themes) and Enum.empty?(dark_themes) and Enum.empty?(custom_themes) do
+    if Enum.empty?(light_themes) and Enum.empty?(dark_themes) do
       Mix.shell().error(
         "No themes found in configuration! Check your bonfire_ui_common.exs file."
       )
@@ -53,9 +54,11 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     """
 
     # Generate custom theme configurations
-    custom_theme_configs =
-      Enum.map(custom_themes, &generate_custom_theme_config/1)
-      |> Enum.join("\n\n")
+    # TODO: Re-enable when custom theme parsing is fixed
+    custom_theme_configs = ""
+    # custom_theme_configs =
+    #   Enum.map(custom_themes, &generate_custom_theme_config/1)
+    #   |> Enum.join("\n\n")
 
     # Update CSS file
     update_css_file(new_daisyui_config, custom_theme_configs)
@@ -84,67 +87,87 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     end
   end
 
-  # Extract custom themes from config
-  defp get_custom_themes_from_config(content) do
-    case Regex.run(~r/themes_custom:\s*\[\s*\[(.*?)\]\s*\]/s, content) do
-      [_, list] ->
-        # Parse the theme block directly since it's a single nested list
-        [parse_theme_block(list)]
-        |> Enum.reject(&is_nil/1)
-
-      nil ->
-        []
-    end
-  end
-
-  # Parse individual theme block
-  defp parse_theme_block(block) do
-    # Extract name first
-    case Regex.run(~r/name:\s*"([^"]+)"/, block) do
-      [_, name] ->
-        # Parse attributes - handle both quoted strings and unquoted values (booleans, numbers)
-        attrs =
-          Regex.scan(~r/(?:\"?([^":\s]+)\"?:|(\w+(?:[_-]\w+)*):)\s*(?:"([^"]+)"|(\w+))/, block)
-          |> Enum.map(fn
-            # Quoted key with quoted value
-            [_, quoted_key, "", quoted_value] when quoted_key != "name" and quoted_value != "" ->
-              key = String.replace(quoted_key, "-", "_") |> String.to_atom()
-              {key, String.trim(quoted_value)}
-
-            # Quoted key with unquoted value (boolean/number)
-            [_, quoted_key, "", "", unquoted_value] when quoted_key != "name" ->
-              key = String.replace(quoted_key, "-", "_") |> String.to_atom()
-              value = parse_value(unquoted_value)
-              {key, value}
-
-            # Unquoted key with quoted value
-            [_, "", key, quoted_value] when key != "name" and quoted_value != "" ->
-              key = String.replace(key, "-", "_") |> String.to_atom()
-              {key, String.trim(quoted_value)}
-
-            # Unquoted key with unquoted value (boolean/number)
-            [_, "", key, "", unquoted_value] when key != "name" ->
-              key = String.replace(key, "-", "_") |> String.to_atom()
-              value = parse_value(unquoted_value)
-              {key, value}
-
-            _ ->
-              nil
-          end)
-          |> Enum.reject(&is_nil/1)
-          |> Enum.into(%{})
-
-        Map.put(attrs, :name, name)
-
-      nil ->
-        nil
-    end
-  end
-
-  # Parse boolean and other literal values
-  defp parse_value("true"), do: true
-  defp parse_value("false"), do: false
-  defp parse_value(value), do: value
+  # TODO: Custom themes parsing - needs refactoring to handle complex nested structures
+  # Consider using Application.get_env/3 to load config at runtime instead of regex parsing
+  #
+  # # Extract custom themes from config
+  # defp get_custom_themes_from_config(content) do
+  #   # Match themes_custom: [ [...], [...], ... ] allowing for multiline and nested content
+  #   case Regex.run(~r/themes_custom:\s*\[(.*?)\n\s*\]/s, content) do
+  #     [_, themes_content] ->
+  #       # Split by "], [" to get individual theme blocks, then clean up brackets
+  #       String.split(themes_content, ~r/\],\s*\[/)
+  #       |> Enum.map(fn block ->
+  #         block
+  #         |> String.trim()
+  #         |> String.trim_leading("[")
+  #         |> String.trim_trailing("]")
+  #         |> parse_theme_block()
+  #       end)
+  #       |> Enum.reject(&is_nil/1)
+  #
+  #     nil ->
+  #       []
+  #   end
+  # end
+  #
+  # # Parse individual theme block into a map
+  # defp parse_theme_block(block) do
+  #   with {:ok, name} <- extract_theme_name(block),
+  #        attrs <- parse_theme_attributes(block) do
+  #     Map.put(attrs, :name, name)
+  #   else
+  #     _ -> nil
+  #   end
+  # end
+  #
+  # # Extract the theme name from a theme block
+  # defp extract_theme_name(block) do
+  #   case Regex.run(~r/name:\s*"([^"]+)"/, block) do
+  #     [_, name] -> {:ok, name}
+  #     nil -> :error
+  #   end
+  # end
+  #
+  # # Parse all key-value attributes from a theme block
+  # defp parse_theme_attributes(block) do
+  #   # Match key-value pairs: "key": "value", "key": value, key: "value", or key: value
+  #   # Handles both quoted and unquoted keys, and quoted and unquoted values
+  #   Regex.scan(~r/(?:"([\w-]+)"|(\w+)):\s*(?:"([^"]*)"|(\w+))/, block)
+  #   |> Enum.map(&parse_attribute/1)
+  #   |> Enum.reject(&is_nil/1)
+  #   |> Enum.into(%{})
+  # end
+  #
+  # # Parse a single attribute match into {key, value} tuple
+  # # Handles: ["full", "quoted_key", "", "quoted_val", ""] or ["full", "", "unquoted_key", "quoted_val", ""]
+  # defp parse_attribute([_full_match, quoted_key, unquoted_key, quoted_value, unquoted_value]) do
+  #   key = if quoted_key != "", do: quoted_key, else: unquoted_key
+  #   # Skip the name attribute as it's handled separately
+  #   if key == "name", do: nil, else: build_attribute(key, quoted_value, unquoted_value)
+  # end
+  #
+  # # Handle unexpected match format
+  # defp parse_attribute(_other), do: nil
+  #
+  # # Build attribute tuple from parsed values
+  # defp build_attribute(key, quoted_value, unquoted_value) do
+  #   normalized_key = normalize_key(key)
+  #   value = if quoted_value != "", do: quoted_value, else: parse_literal_value(unquoted_value)
+  #   {normalized_key, value}
+  # end
+  #
+  # # Normalize key from config format (with dashes) to atom with underscores
+  # defp normalize_key(key) do
+  #   key
+  #   |> String.replace("-", "_")
+  #   |> String.to_atom()
+  # end
+  #
+  # # Parse literal values (booleans, numbers) from strings
+  # defp parse_literal_value("true"), do: true
+  # defp parse_literal_value("false"), do: false
+  # defp parse_literal_value(value), do: value
 
   # Format themes with appropriate flags
   defp format_themes(light_themes, dark_themes) do
@@ -165,74 +188,79 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     light_themes_formatted ++ dark_themes_formatted
   end
 
-  # Generate custom theme configuration
-  defp generate_custom_theme_config(theme) do
-    # Helper to quote color values if they contain # or start with oklch
-    quote_value = fn value ->
-      if String.starts_with?(value, "#") or String.starts_with?(value, "oklch") do
-        "\"#{value}\""
-      else
-        value
-      end
-    end
-
-    """
-    @plugin "daisyui/theme" {
-      name: "#{theme[:name]}";
-      default: #{theme[:default] || false}; /* set as default */
-      prefersdark: #{theme[:prefersdark] || false}; /* set as default dark mode */
-      color-scheme: "#{theme[:color_scheme] || "light"}"; /* color of browser-provided UI */
-
-      /* base colors */
-      --color-base-100: #{quote_value.(theme[:color_base_100] || "oklch(98% 0.02 240)")};
-      --color-base-200: #{quote_value.(theme[:color_base_200] || "oklch(95% 0.03 240)")};
-      --color-base-300: #{quote_value.(theme[:color_base_300] || "oklch(92% 0.04 240)")};
-      --color-base-content: #{quote_value.(theme[:color_base_content] || "oklch(20% 0.05 240)")};
-
-      /* primary colors */
-      --color-primary: #{quote_value.(theme[:color_primary] || "oklch(55% 0.3 240)")};
-      --color-primary-content: #{quote_value.(theme[:color_primary_content] || "oklch(98% 0.01 240)")};
-
-      /* secondary colors */
-      --color-secondary: #{quote_value.(theme[:color_secondary] || "oklch(70% 0.25 200)")};
-      --color-secondary-content: #{quote_value.(theme[:color_secondary_content] || "oklch(98% 0.01 200)")};
-
-      /* accent colors */
-      --color-accent: #{quote_value.(theme[:color_accent] || "oklch(65% 0.25 160)")};
-      --color-accent-content: #{quote_value.(theme[:color_accent_content] || "oklch(98% 0.01 160)")};
-
-      /* neutral colors */
-      --color-neutral: #{quote_value.(theme[:color_neutral] || "oklch(50% 0.05 240)")};
-      --color-neutral-content: #{quote_value.(theme[:color_neutral_content] || "oklch(98% 0.01 240)")};
-
-      /* state colors */
-      --color-info: #{quote_value.(theme[:color_info] || "oklch(70% 0.2 220)")};
-      --color-info-content: #{quote_value.(theme[:color_info_content] || "oklch(98% 0.01 220)")};
-      --color-success: #{quote_value.(theme[:color_success] || "oklch(65% 0.25 140)")};
-      --color-success-content: #{quote_value.(theme[:color_success_content] || "oklch(98% 0.01 140)")};
-      --color-warning: #{quote_value.(theme[:color_warning] || "oklch(80% 0.25 80)")};
-      --color-warning-content: #{quote_value.(theme[:color_warning_content] || "oklch(20% 0.05 80)")};
-      --color-error: #{quote_value.(theme[:color_error] || "oklch(65% 0.3 30)")};
-      --color-error-content: #{quote_value.(theme[:color_error_content] || "oklch(98% 0.01 30)")};
-
-      /* border radius */
-      --radius-selector: #{quote_value.(theme[:radius_selector] || "1rem")};
-      --radius-field: #{quote_value.(theme[:radius_field] || "0.25rem")};
-      --radius-box: #{quote_value.(theme[:radius_box] || "0.5rem")};
-
-      /* base sizes */
-      --size-selector: #{quote_value.(theme[:size_selector] || "0.25rem")};
-      --size-field: #{quote_value.(theme[:size_field] || "0.25rem")};
-
-      /* border size */
-      --border: #{quote_value.(theme[:border] || "1px")};
-
-      /* effects */
-      --depth: #{theme[:depth] || "1"};
-      --noise: #{theme[:noise] || "0"};
-    }
-    """
-  end
+  # TODO: Custom theme generation - disabled until parsing is fixed
+  #
+  # # Generate custom theme configuration
+  # defp generate_custom_theme_config(theme) do
+  #   # Helper to safely quote color values if they contain # or start with oklch
+  #   quote_value = fn
+  #     nil -> "transparent"
+  #     value when is_binary(value) ->
+  #       if String.starts_with?(value, "#") or String.starts_with?(value, "oklch") do
+  #         "\"#{value}\""
+  #       else
+  #         value
+  #       end
+  #     value -> value
+  #   end
+  #
+  #   """
+  #   @plugin "daisyui/theme" {
+  #     name: "#{theme[:name]}";
+  #     default: #{theme[:default] || false}; /* set as default */
+  #     prefersdark: #{theme[:prefersdark] || false}; /* set as default dark mode */
+  #     color-scheme: "#{theme[:color_scheme] || "light"}"; /* color of browser-provided UI */
+  #
+  #     /* base colors */
+  #     --color-base-100: #{quote_value.(theme[:color_base_100] || "oklch(98% 0.02 240)")};
+  #     --color-base-200: #{quote_value.(theme[:color_base_200] || "oklch(95% 0.03 240)")};
+  #     --color-base-300: #{quote_value.(theme[:color_base_300] || "oklch(92% 0.04 240)")};
+  #     --color-base-content: #{quote_value.(theme[:color_base_content] || "oklch(20% 0.05 240)")};
+  #
+  #     /* primary colors */
+  #     --color-primary: #{quote_value.(theme[:color_primary] || "oklch(55% 0.3 240)")};
+  #     --color-primary-content: #{quote_value.(theme[:color_primary_content] || "oklch(98% 0.01 240)")};
+  #
+  #     /* secondary colors */
+  #     --color-secondary: #{quote_value.(theme[:color_secondary] || "oklch(70% 0.25 200)")};
+  #     --color-secondary-content: #{quote_value.(theme[:color_secondary_content] || "oklch(98% 0.01 200)")};
+  #
+  #     /* accent colors */
+  #     --color-accent: #{quote_value.(theme[:color_accent] || "oklch(65% 0.25 160)")};
+  #     --color-accent-content: #{quote_value.(theme[:color_accent_content] || "oklch(98% 0.01 160)")};
+  #
+  #     /* neutral colors */
+  #     --color-neutral: #{quote_value.(theme[:color_neutral] || "oklch(50% 0.05 240)")};
+  #     --color-neutral-content: #{quote_value.(theme[:color_neutral_content] || "oklch(98% 0.01 240)")};
+  #
+  #     /* state colors */
+  #     --color-info: #{quote_value.(theme[:color_info] || "oklch(70% 0.2 220)")};
+  #     --color-info-content: #{quote_value.(theme[:color_info_content] || "oklch(98% 0.01 220)")};
+  #     --color-success: #{quote_value.(theme[:color_success] || "oklch(65% 0.25 140)")};
+  #     --color-success-content: #{quote_value.(theme[:color_success_content] || "oklch(98% 0.01 140)")};
+  #     --color-warning: #{quote_value.(theme[:color_warning] || "oklch(80% 0.25 80)")};
+  #     --color-warning-content: #{quote_value.(theme[:color_warning_content] || "oklch(20% 0.05 80)")};
+  #     --color-error: #{quote_value.(theme[:color_error] || "oklch(65% 0.3 30)")};
+  #     --color-error-content: #{quote_value.(theme[:color_error_content] || "oklch(98% 0.01 30)")};
+  #
+  #     /* border radius */
+  #     --radius-selector: #{quote_value.(theme[:radius_selector] || "1rem")};
+  #     --radius-field: #{quote_value.(theme[:radius_field] || "0.25rem")};
+  #     --radius-box: #{quote_value.(theme[:radius_box] || "0.5rem")};
+  #
+  #     /* base sizes */
+  #     --size-selector: #{quote_value.(theme[:size_selector] || "0.25rem")};
+  #     --size-field: #{quote_value.(theme[:size_field] || "0.25rem")};
+  #
+  #     /* border size */
+  #     --border: #{quote_value.(theme[:border] || "1px")};
+  #
+  #     /* effects */
+  #     --depth: #{theme[:depth] || "1"};
+  #     --noise: #{theme[:noise] || "0"};
+  #   }
+  #   """
+  # end
 
   # Update the CSS files with new configurations
   defp update_css_file(new_daisyui_config, custom_theme_configs) do
@@ -271,14 +299,16 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
         exit({:shutdown, 1})
     end
 
-    # Write custom themes to separate file
-    case File.write(@custom_themes_path, custom_themes_content) do
-      :ok ->
-        Mix.shell().info("Custom themes successfully synchronized to #{@custom_themes_path}!")
+    # Write custom themes to separate file (only if we have custom themes)
+    unless custom_theme_configs == "" do
+      case File.write(@custom_themes_path, custom_themes_content) do
+        :ok ->
+          Mix.shell().info("Custom themes successfully synchronized to #{@custom_themes_path}!")
 
-      {:error, reason} ->
-        Mix.shell().error("Failed to write custom themes file: #{inspect(reason)}")
-        exit({:shutdown, 1})
+        {:error, reason} ->
+          Mix.shell().error("Failed to write custom themes file: #{inspect(reason)}")
+          exit({:shutdown, 1})
+      end
     end
 
     Mix.shell().info("Theme synchronization completed successfully!")
