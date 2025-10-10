@@ -198,7 +198,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # Process to_boundaries with proper nil handling to allow fallback to existing assigns
     to_boundaries_param = params["to_boundaries"] |> debug("params to_boundaries")
     to_boundaries_opt = e(opts, :to_boundaries, nil) |> debug("opts to_boundaries")
-    existing_to_boundaries = e(assigns(socket), :to_boundaries, nil) |> debug("existing socket to_boundaries")
+
+    existing_to_boundaries =
+      e(assigns(socket), :to_boundaries, nil) |> debug("existing socket to_boundaries")
 
     to_boundaries =
       case to_boundaries_param || to_boundaries_opt do
