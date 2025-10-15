@@ -16,8 +16,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       alias Bonfire.Common.Types
       alias Bonfire.Common.Extend
 
-        @yes? ~w(true yes 1)
-        @no? ~w(false no 0)
+      @yes? ~w(true yes 1)
+      @no? ~w(false no 0)
 
       def log_ip(%{remote_ip: remote_ip} = conn, _) when not is_nil(remote_ip) do
         Logger.info("Request from #{:inet_parse.ntoa(remote_ip)}")
