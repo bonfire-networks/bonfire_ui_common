@@ -13,7 +13,12 @@
               phx-update="ignore"
               class="w-full h-full"
             >
-              <canvas class={@class} data-role="placeholder" style="transition: opacity 200ms; opacity: 1;" {...@opts} />
+              <canvas
+                class={@class}
+                data-role="placeholder"
+                style="transition: opacity 200ms; opacity: 1;"
+                {...@opts}
+              />
               <img
                 src={if @parent_id && String.contains?(@parent_id, "preview"), do: src, else: ""}
                 alt={@alt}
@@ -42,7 +47,9 @@
               <div
                 class={[@class, "bg-base-200 animate-pulse"]}
                 data-role="placeholder"
-                style={if @parent_id && String.contains?(@parent_id, "preview"), do: "display: none; transition: opacity 200ms;", else: "transition: opacity 200ms; opacity: 1;"}
+                style={if @parent_id && String.contains?(@parent_id, "preview"),
+                  do: "display: none; transition: opacity 200ms;",
+                  else: "transition: opacity 200ms; opacity: 1;"}
                 {...@opts}
               />
               <img

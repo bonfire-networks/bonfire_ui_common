@@ -93,7 +93,13 @@
 
               <!-- data-close-on-inside-click="true" -->
               <div data-tip={l("Insert emoji")} class="tooltip tooltip-top">
-                <div phx-hook="Tooltip" data-position="top" phx-update="ignore" id="emoji_picker_in_composer" data-trigger="click">
+                <div
+                  phx-hook="Tooltip"
+                  data-position="top"
+                  phx-update="ignore"
+                  id="emoji_picker_in_composer"
+                  data-trigger="click"
+                >
                   <button
                     title={l("Insert emoji")}
                     type="button"
