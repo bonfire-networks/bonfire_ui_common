@@ -31,10 +31,10 @@ defmodule Bonfire.UI.Common.NotificationLive do
   # end
 
   def update(assigns, %{assigns: %{subscribed: _}} = socket) do
+    # NOTE: Removed aggressive special_clear_all() that was clearing notifications on every update
+    # Client-side auto-fade now handles clearing, and manual dismiss still works via handle_event
     {:ok,
      socket
-     # FIXME: clearing here is a TEMP fix to avoid overlapping alerts
-     |> special_clear_all()
      |> assign(assigns)}
   end
 
@@ -92,6 +92,10 @@ defmodule Bonfire.UI.Common.NotificationLive do
   # end
 
   def handle_event("clear-flash", %{"key" => type}, socket) do
+    # This event is called from JavaScript when:
+    # 1. User manually clicks close button
+    # 2. Auto-fade timer completes
+    # The JS hook will cancel its own timer before sending this event
     case maybe_to_atom!(type) do
       nil ->
         error(type, "invalid flash key")

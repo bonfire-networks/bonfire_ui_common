@@ -48,7 +48,9 @@ defmodule Bonfire.UI.Common.Notifications do
 
   def receive_flash(attrs, pid \\ self(), context \\ nil) do
     # Bonfire.UI.Common.PersistentLive.notify(context, attrs) ||
-    Process.send_after(pid, :clear_flash, 5000)
+    # NOTE: Server-side timer disabled in favor of client-side auto-fade for reliability
+    # The client-side JavaScript hook now handles auto-clearing with smooth animations
+    # Process.send_after(pid, :clear_flash, 5000)
 
     if socket_connected?(context) != false,
       do: maybe_send_update(Bonfire.UI.Common.NotificationLive, :notification, attrs, pid)
