@@ -65,11 +65,11 @@
   </div>
 {#else}
   <li
-    class={
+    class={[
       @widget[:wrapper_class] || @wrapper_class,
       group:
         not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
-    }
+    ]}
     data-showing-within={@showing_within}
     data-type={"widgets_#{@parent_id}_#{@parent_item || "default"}"}
     data-sortable-item={if @parent_id && (@widget[:page] || @widget[:module]), do: true}
