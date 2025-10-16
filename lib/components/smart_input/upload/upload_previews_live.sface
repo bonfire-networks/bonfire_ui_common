@@ -115,7 +115,7 @@
               />
               <button
                 type="button"
-                class={"btn-sm lg:btn-xs btn btn-circle", "btn-primary": @selected_cover == entry.ref}
+                class={["btn-sm lg:btn-xs btn btn-circle", "btn-primary": @selected_cover == entry.ref]}
                 phx-click="Bonfire.UI.Common.SmartInput:toggle-cover-image"
                 phx-target={@event_target}
                 phx-value-ref={entry.ref}
