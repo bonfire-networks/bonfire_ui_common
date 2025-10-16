@@ -15,18 +15,27 @@ defmodule Bonfire.UI.Common.LivePlugs.AllowTestSandbox do
   end
 
   defp allow_ecto_sandbox(socket) do
-    if Bonfire.Common.Config.get(:sql_sandbox) do
-      %{assigns: %{phoenix_ecto_sandbox: metadata}} =
+    if Bonfire.Common.Config.get(:sql_sandbox, false) do
+      socket =
+        %{assigns: %{phoenix_ecto_sandbox: metadata}} =
         assign_new(socket, :phoenix_ecto_sandbox, fn ->
           if connected?(socket),
-            do:
-              get_connect_info(socket, :user_agent)
-              |> debug("uaaa")
+            do: get_connect_info(socket, :user_agent)
+
+          # |> debug("uaaa")
         end)
+
+      #   flood(%{
+      #   metadata: metadata,
+      #   self_pid: self()
+      # }, "LV allow_ecto_sandbox called")
 
       Phoenix.Ecto.SQL.Sandbox.allow(metadata, Ecto.Adapters.SQL.Sandbox)
 
       socket
+    else
+      # flood("SQL sandbox not enabled, skipping")
+      false
     end
   end
 end

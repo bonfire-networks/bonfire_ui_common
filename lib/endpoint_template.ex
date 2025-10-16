@@ -53,7 +53,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       use_if_enabled(Absinthe.Phoenix.Endpoint)
 
-      if Application.compile_env(:bonfire, :sql_sandbox) do
+      if Application.compile_env(:bonfire, :sql_sandbox, false) do
         plug(Phoenix.Ecto.SQL.Sandbox)
       end
 

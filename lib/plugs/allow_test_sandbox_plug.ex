@@ -14,7 +14,7 @@ defmodule Bonfire.UI.Common.Plugs.AllowTestSandbox do
 
   @impl true
   def call(conn, _opts) do
-    if Bonfire.Common.Config.get(:sql_sandbox) do
+    if Bonfire.Common.Config.get(:sql_sandbox, false) do
       allow_ecto_sandbox(conn)
     end || conn
   end
@@ -26,11 +26,11 @@ defmodule Bonfire.UI.Common.Plugs.AllowTestSandbox do
         # Check if this is a test request with sandbox metadata
         if user_agent do
           try do
-            debug(user_agent, "sandbox metadata from user agent")
+            flood(user_agent, "PHX allow_ecto_sandbox with metadata from user agent")
             Phoenix.Ecto.SQL.Sandbox.allow(user_agent, Ecto.Adapters.SQL.Sandbox)
           rescue
             error ->
-              error(error, "failed to allow sandbox access")
+              err(error, "failed to allow sandbox access")
               nil
           end
         end

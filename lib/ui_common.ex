@@ -1314,7 +1314,7 @@ defmodule Bonfire.UI.Common do
       |> Enum.map(fn {_mode, preload_status_key, preload_fn, list_of_ids, list_of_components} ->
         # Note: no need to use :start_async here as this function is already called within an async task
         Utils.apply_task(:async, fn ->
-          # same as `Task.async/1` but supports multi-tenancy
+          # ^ same as `Task.async/1` but supports multi-tenancy
           {preload_status_key, preload_fn.(list_of_components, list_of_ids, current_user)}
         end)
       end)
