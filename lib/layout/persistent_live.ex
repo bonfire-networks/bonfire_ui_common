@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
   # @session_key :csrf_token
   @session_key :csrf_socket_token
 
-  on_mount {Bonfire.UI.Common.LivePlugs.Helpers, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
+  # on_mount {Bonfire.UI.Common.LivePlugs.Helpers, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
 
   def mount(_params, session, socket) do
     # TEMP: monitor memory used by the LV and children
@@ -15,8 +15,10 @@ defmodule Bonfire.UI.Common.PersistentLive do
     socket_connected? = socket_connected?(socket)
 
     connect_params =
-      if(socket_connected?, do: Phoenix.LiveView.get_connect_params(socket), else: %{})
-      |> debug("connect_params")
+      if(socket_connected?,
+        do: Phoenix.LiveView.get_connect_params(socket) |> debug("connect_params"),
+        else: %{}
+      )
 
     session =
       input_to_atoms(session, also_discard_unknown_nested_keys: false)
@@ -31,24 +33,41 @@ defmodule Bonfire.UI.Common.PersistentLive do
     # presence_token
     # |> PubSub.subscribe(socket)
 
-    {:ok,
-     socket
-     |> debug("socket before assigns")
-     |> assign(Map.drop(session, [:context]))
-     # NOTE: use `assign_new/3` to copy the assign from parent LV, see https://hexdocs.pm/phoenix_live_view/Phoenix.Component.html#assign_new/3-when-connected
-     |> assign_new(
-       :__context__,
-       fn previous_context ->
-         Map.merge(session[:context] || %{}, previous_context || %{})
-         |> Map.merge(%{
-           socket_connected?: socket_connected?
-         })
-         |> debug("ctxxx")
-       end
-     )
-     |> assign_defaults()
-     |> Presence.present!(%{@session_key => presence_token})
-     |> debug("socket prepared via session"), layout: false}
+    socket =
+      socket
+      #  |> debug("socket before assigns")
+      |> assign(Map.drop(session, [:context]))
+      |> assign_global((session[:context] || %{}) |> debug("persistent_context from session"))
+      #  |> assign_new(
+      #    :__context__,
+      #    fn 
+      #     previous_context ->
+      #       # NOTE: cannot `assign_new/3` to copy the assign from parent LV for sticky child views, see https://hexdocs.pm/phoenix_live_view/Phoenix.Component.html#assign_new/3-when-connected
+      #       Map.merge(session[:context] || %{}, previous_context || %{})
+      #       |> Map.merge(%{
+      #         socket_connected?: socket_connected?
+      #       })
+      #       |> debug("merged persistent_context")
+      #    end
+      #  )
+      |> assign_defaults()
+      |> Presence.present!(%{@session_key => presence_token})
+      |> debug("socket prepared via session")
+
+    if initial_parent_pid = session[:context][:initial_parent_pid] do
+      debug(
+        initial_parent_pid,
+        "ask the parent LV to send its context to us, so we don't need to load from DB again"
+      )
+
+      send(initial_parent_pid, {:persistent_live_context_request, self()})
+    else
+      debug(
+        "no initial_parent_pid or not connected, so skip asking parent LV to send its context to us"
+      )
+    end
+
+    {:ok, socket, layout: false}
   end
 
   def update(%{to_circles: new_to_circles} = assigns, socket) do
@@ -141,7 +160,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       :__context__,
       Enum.into(assigns[:__context__] || %{}, %{sticky: true, parent_pid: self()})
     )
-    |> debug()
+    |> debug("persistent assigns filtered")
   end
 
   def maybe_send(%{assigns: %{__context__: context}} = _socket, assigns),
@@ -160,25 +179,34 @@ defmodule Bonfire.UI.Common.PersistentLive do
         true
 
       _ ->
-        if presence_token = e(context, @session_key, nil) do
-          debug(presence_token, "send to PersistentLive liveview process with presence_token")
+        cond do
+          child_pid = e(context, :child_pid, nil) ->
+            debug(child_pid, "send to PersistentLive liveview process with child_pid")
 
-          user_id =
-            (current_user_id(context) || current_user_id(assigns))
-            |> debug("send to user_id")
+            send(child_pid, {:assign_persistent_self, assigns})
 
-          try_send_self(user_id, presence_token, assigns)
+            true
 
-          # PubSub.broadcast(presence_token, {:assign_persistent_self, assigns})
+          presence_token = e(context, @session_key, nil) ->
+            debug(presence_token, "send to PersistentLive liveview process with presence_token")
 
-          true
-        else
-          debug(
-            context,
-            "no `#{@session_key}` value available in context so can't send to sticky LV (if used)"
-          )
+            user_id =
+              (current_user_id(context) || current_user_id(assigns))
+              |> debug("send to user_id")
 
-          :skip
+            try_send_self(user_id, presence_token, assigns)
+
+            # PubSub.broadcast(presence_token, {:assign_persistent_self, assigns})
+
+            true
+
+          true ->
+            debug(
+              context,
+              "no `#{@session_key}` value available in context so can't send to sticky LV (if used)"
+            )
+
+            :skip
         end
     end
   end
@@ -253,23 +281,31 @@ defmodule Bonfire.UI.Common.PersistentLive do
   end
 
   def handle_info({:assign_persistent_self, assigns}, socket) do
-    assigns =
-      assigns
-      #  |> debug("received assigns for PersistentLive")
-      |> Map.new()
-      |> Map.put(:smart_input_component, nil)
-      |> assign_defaults(&Map.put_new_lazy/3)
-      |> Map.put(
-        ...,
-        :__context__,
-        Map.merge(assigns(socket)[:__context__] || %{}, assigns[:__context__] || %{})
-        |> merge_keeping_only_first_keys(...)
-      )
-      |> debug("set prepared assigns received for PersistentLive")
+    # assigns =
+    #   assigns
+    #   #  |> debug("received assigns for PersistentLive")
+    #   |> Map.new()
+    #   # |> Map.put_new(:smart_input_component, nil)
+    #   # |> assign_defaults(&Map.put_new_lazy/3)
+    #   # |> Map.put(
+    #   #   ...,
+    #   #   :__context__,
+    #   #   Map.merge(assigns(socket)[:__context__] || %{}, assigns[:__context__] || %{})
+    #   #   |> Enums.merge_keeping_only_first_keys(...)
+    #   # )
+    #   |> debug("set prepared assigns received for PersistentLive")
 
-    parent_pid = assigns[:parent_pid] || e(assigns, :__context__, :parent_pid, nil)
-    if is_pid(parent_pid), do: send(parent_pid, :persistent_live_loading)
+    # parent_pid = assigns[:parent_pid] || e(assigns, :__context__, :parent_pid, nil)
+    # if is_pid(parent_pid), do: send(parent_pid, :persistent_live_loading)
 
-    {:noreply, assign(socket, assigns)}
+    context = Map.merge(assigns(socket)[:__context__] || %{}, assigns[:__context__] || %{})
+
+    handle_info({:assign_persistent_self, {:smart_input, __context__: context}}, socket)
+
+    {:noreply,
+     socket
+     |> assign(assigns)
+     |> assign_global(context)
+     |> debug("set assigns received for PersistentLive")}
   end
 end

@@ -52,6 +52,7 @@ defmodule Bonfire.UI.Common.LivePlugs do
           assigns || assigns(socket)
           # |> Map.new()
           # |> Map.put_new(:nav_items, nil)
-        )
+        ),
+      else: debug("not connected, skip sending persistent assigns")
   end
 end

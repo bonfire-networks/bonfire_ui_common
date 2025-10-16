@@ -3,10 +3,10 @@
     :for={{app, %{} = extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
     :if={!extension[:exclude_from_nav] and extension_enabled?(app, @__context__)}
   >
-    <div class={
+    <div class={[
       "flex items-center justify-between rounded-md",
       "bg-base-content/5": @__context__[:current_extension][:name] == extension[:name]
-    }>
+    ]}>
       <LinkLive to={extension[:href]} class="flex items-center w-full gap-5 text-left">
         <Iconify.iconify icon={extension[:icon]} class="w-5 h-5" />
         <span class="flex-1">{extension[:name]}</span>

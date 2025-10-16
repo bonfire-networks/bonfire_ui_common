@@ -58,6 +58,7 @@
             </div> --}
           </div>
         </div>
+
         <div
           :if={e(@activity, :subject, nil) != nil and
             !Bonfire.Social.is_local?(
@@ -72,6 +73,44 @@
         >{l(
             "Warning: You are replying to a remote activity but federation is disabled. This means only users on your local instance will see your reply unless federation is later turned on."
           )}</div>
+
+        <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
+
+        <div
+          class="p-2"
+          title={e(current_user(@__context__), :profile, :name, nil) ||
+            e(current_user(@__context__), :character, :username, nil)}
+        >
+          <!-- <img
+      class="inline-block object-cover w-10 h-10 rounded-full"
+      src={debug(@__context__, "smcontext") && Media.avatar_url(current_user(@__context__))}
+      alt="current user avatar"
+    /> -->
+          <Bonfire.UI.Common.AvatarLive
+            bg_class="rounded-full"
+            wrapper_class="border-0 avatar !flex w-10 h-10"
+            class="inline-block object-cover w-full rounded-full"
+            src={Media.avatar_url(current_user(@__context__))}
+            user_id={current_user_id(@__context__)}
+          />
+        </div>
+        {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
+          <div class="mx-2">
+            <StatelessComponent
+              module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
+              to_boundaries={@to_boundaries}
+              boundary_preset={@boundary_preset}
+              preview_boundary_for_id={@preview_boundary_for_id}
+              preview_boundary_for_username={@preview_boundary_for_username}
+              preview_boundary_verbs={@preview_boundary_verbs}
+              to_circles={@to_circles}
+              exclude_circles={@exclude_circles}
+              verb_permissions={@verb_permissions}
+              setting_boundaries={:create_object}
+            />
+          </div>
+        {/if}
+
         {#case LiveHandler.active_smart_input_component(
             @smart_input_component,
             e(@smart_input_opts, :create_object_type, nil)

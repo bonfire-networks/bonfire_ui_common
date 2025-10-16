@@ -1,33 +1,10 @@
-<div class="flex gap-1 px-3">
-  <div class="">
-    <img
-      class="inline-block object-cover w-10 h-10 rounded-full"
-      src={Media.avatar_url(current_user(@__context__))}
-      alt="current user avatar"
-    />
-  </div>
+<div class="flex gap-1">
   <div class="w-full flex flex-1 flex-col">
-    {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
-      <div class="mx-2">
-        <StatelessComponent
-          module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
-          to_boundaries={@to_boundaries}
-          boundary_preset={@boundary_preset}
-          preview_boundary_for_id={@preview_boundary_for_id}
-          preview_boundary_for_username={@preview_boundary_for_username}
-          preview_boundary_verbs={@preview_boundary_verbs}
-          to_circles={@to_circles}
-          exclude_circles={@exclude_circles}
-          verb_permissions={@verb_permissions}
-          setting_boundaries={:create_object}
-        />
-      </div>
-    {/if}
     {#case rich_editor_module(e(@smart_input_opts, :wysiwyg, true), @__context__)}
       {#match component when is_atom(component) and not is_nil(component)}
         {!-- editor component from user's preferred extension --}
         <StatelessComponent
-          module={Bonfire.Editor.Milkdown}
+          module={component}
           smart_input_opts={@smart_input_opts}
           field_name={@field_name}
           reset_smart_input={@reset_smart_input}

@@ -161,6 +161,17 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     {:noreply, socket}
   end
 
+  def handle_info({:persistent_live_context_request, child_pid}, socket, _, _) do
+    debug("child LV asked to send our context to it")
+
+    LivePlugs.maybe_send_persistent_assigns(
+      [__context__: Enum.into(assigns(socket)[:__context__] || %{}, %{child_pid: child_pid})],
+      socket
+    )
+
+    {:noreply, socket}
+  end
+
   def handle_info(blob, socket, source_module, fun) do
     ErrorHandling.undead(socket, fn ->
       debug("LiveHandler: handle_info via #{source_module || "delegation"}")
