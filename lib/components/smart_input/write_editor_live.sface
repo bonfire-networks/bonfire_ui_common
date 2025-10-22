@@ -1,6 +1,9 @@
 <div class="flex gap-1">
   <div class="w-full flex flex-1 flex-col">
-    {#case rich_editor_module(e(@smart_input_opts, :wysiwyg, true), @__context__)}
+    {#case rich_editor_module(e(@smart_input_opts, :wysiwyg, true),
+        context: @__context__,
+        default: Bonfire.Editor.Milkdown
+      )}
       {#match component when is_atom(component) and not is_nil(component)}
         {!-- editor component from user's preferred extension --}
         <StatelessComponent
@@ -26,10 +29,10 @@
       {#match _}
         {!-- NOTE: this is only used if no other editor module (like `Bonfire.UI.Common.ComposerLive` by default) is configured --}
         <TextArea
-          opts={
+          opts={[
             value: e(@smart_input_opts, :text, nil) || e(@smart_input_opts, :text_suggestion, ""),
             placeholder: e(@smart_input_opts, :prompt, "")
-          }
+          ]}
           class={@textarea_class}
         />
     {/case}

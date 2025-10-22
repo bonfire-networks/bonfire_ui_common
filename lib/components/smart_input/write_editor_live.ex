@@ -22,18 +22,20 @@ defmodule Bonfire.UI.Common.WriteEditorLive do
   prop to_circles, :list, default: []
   prop exclude_circles, :list, default: []
 
-  def use_rich_editor?(with_rich_editor, context) do
+  def use_rich_editor?(with_rich_editor, opts) do
     with_rich_editor == true and
-      Bonfire.Common.Settings.get([:ui, :rich_text_editor_disabled], false, context) != true
+      Bonfire.Common.Settings.get([:ui, :rich_text_editor_disabled], false, opts) != true
   end
 
-  def rich_editor_module(with_rich_editor, context) do
-    if use_rich_editor?(with_rich_editor, context) do
-      default = Bonfire.UI.Common.ComposerLive
-      module = Bonfire.Common.Settings.get([:ui, :rich_text_editor], default, context)
-      debug(module, "Rich editor module")
+  def rich_editor_module(with_rich_editor, opts) do
+    if use_rich_editor?(with_rich_editor, opts) do
+      default = opts[:default] || Bonfire.UI.Common.ComposerLive
 
-      if module_enabled?(module, context),
+      module =
+        Bonfire.Common.Settings.get([:ui, :rich_text_editor], default, opts)
+        |> debug("Rich editor module")
+
+      if module_enabled?(module, opts),
         do: module,
         else: error(nil, "#{module} is not available or enabled")
     end
