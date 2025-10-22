@@ -30,6 +30,7 @@
                 fallback_icon={Icon.icon_name("ph:user-circle-duotone")}
                 fallback_class={e(@fallback_class, nil)}
                 opts={@opts}
+                disable_lazy={@disable_lazy}
               />
             </div>
           {#match _}
@@ -51,6 +52,7 @@
                 alt={@title}
                 fallback_icon={Icon.icon_name("material-symbols:person-2-rounded")}
                 opts={@opts}
+                disable_lazy={@disable_lazy}
               />
             {#else}
               <div class={@bg_class}>

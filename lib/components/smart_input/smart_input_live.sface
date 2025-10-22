@@ -74,42 +74,87 @@
             "Warning: You are replying to a remote activity but federation is disabled. This means only users on your local instance will see your reply unless federation is later turned on."
           )}</div>
 
-        <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} />
-
-        <div
-          class="p-2"
-          title={e(current_user(@__context__), :profile, :name, nil) ||
-            e(current_user(@__context__), :character, :username, nil)}
-        >
-          <!-- <img
-      class="inline-block object-cover w-10 h-10 rounded-full"
-      src={debug(@__context__, "smcontext") && Media.avatar_url(current_user(@__context__))}
-      alt="current user avatar"
-    /> -->
-          <Bonfire.UI.Common.AvatarLive
-            bg_class="rounded-full"
-            wrapper_class="border-0 avatar !flex w-10 h-10"
-            class="inline-block object-cover w-full rounded-full"
-            src={Media.avatar_url(current_user(@__context__))}
-            user_id={current_user_id(@__context__)}
-          />
-        </div>
-        {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
-          <div class="mx-2">
-            <StatelessComponent
-              module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
-              to_boundaries={@to_boundaries}
-              boundary_preset={@boundary_preset}
-              preview_boundary_for_id={@preview_boundary_for_id}
-              preview_boundary_for_username={@preview_boundary_for_username}
-              preview_boundary_verbs={@preview_boundary_verbs}
-              to_circles={@to_circles}
-              exclude_circles={@exclude_circles}
-              verb_permissions={@verb_permissions}
-              setting_boundaries={:create_object}
+        <!-- <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} /> -->
+        <header class="z-50 flex items-center gap-3 justify-between w-full sticky top-0 px-3 py-2 lg:rounded-t-xl bg-base-100 md:z-auto md:relative">
+          <div class="flex items-center gap-3">
+          <div
+          class=""
+            title={e(current_user(@__context__), :profile, :name, nil) ||
+              e(current_user(@__context__), :character, :username, nil)}
+          >
+            <Bonfire.UI.Common.AvatarLive
+              bg_class="rounded-full"
+              wrapper_class="border-0 avatar !flex w-10 h-10"
+              class="inline-block object-cover w-full rounded-full"
+              src={Media.avatar_url(current_user(@__context__))}
+              user_id={current_user_id(@__context__)}
             />
           </div>
-        {/if}
+          {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
+            <div class="">
+              <StatelessComponent
+                module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
+                to_boundaries={@to_boundaries}
+                boundary_preset={@boundary_preset}
+                preview_boundary_for_id={@preview_boundary_for_id}
+                preview_boundary_for_username={@preview_boundary_for_username}
+                preview_boundary_verbs={@preview_boundary_verbs}
+                to_circles={@to_circles}
+                exclude_circles={@exclude_circles}
+                verb_permissions={@verb_permissions}
+                setting_boundaries={:create_object}
+              />
+            </div>
+          {/if}
+          </div>
+          <div class="flex flex-row gap-3 items-center flex-align-items-stretch flex-nowrap">
+            <span>
+              <Bonfire.UI.Common.OpenModalLive
+                id="close_composer"
+                reusable_modal_id="persistent_modal"
+                title_text={l("Delete the draft")}
+                cancel_label={l("Cancel")}
+                open_btn_wrapper_class=""
+              >
+                <div class="mt-3 prose-sm prose">
+                  <p>{l("Closing the composer will discard your post. Are you sure you want to close it?")}</p>
+                </div>
+                <:open_btn>
+                  <div class="link link-primary link-hover text-sm">
+                    <!-- <#Icon outline="X" class="w-4 h-4 text-primary/70" /> -->
+                    <span class="">{l("Close")}</span>
+                  </div>
+                </:open_btn>
+                <:action_btns>
+                  <button
+                    phx-click={JS.push("Bonfire.UI.Common.SmartInput:reset_to_default")
+                    |> JS.hide(to: "#smart_input_summary")
+                    |> JS.hide(to: "#smart_input_post_title")}
+                    phx-target="#smart_input"
+                    type="button"
+                    class="normal-case btn btn-sm btn-error"
+                  >
+                    {l("Delete draft")}
+                  </button>
+                </:action_btns>
+              </Bonfire.UI.Common.OpenModalLive>
+            </span>
+          
+
+            <div class="flex items-center gap-2">
+              <button
+                phx-click={LiveHandler.minimize()}
+                phx-target="#smart_input"
+                type="button"
+                class="flex btn btn-sm btn-ghost btn-circle"
+              >
+                <#Icon iconify="fluent:chevron-double-down-16-filled" class="w-4 h-4 text-base-content/70" />
+              </button>
+            </div>
+          </div>
+        </header>
+
+        
 
         {#case LiveHandler.active_smart_input_component(
             @smart_input_component,

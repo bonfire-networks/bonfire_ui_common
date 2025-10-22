@@ -19,6 +19,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
   prop fallback_class, :css_class, default: "w-5 h-5 opacity-50"
   prop title, :string, default: ""
   prop opts, :any, default: %{}
+  prop disable_lazy, :boolean, default: false
 
   # def classes(%{class: class}) when not is_nil(class) do
   #   class

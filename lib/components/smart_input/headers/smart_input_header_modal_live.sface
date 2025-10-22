@@ -31,23 +31,7 @@
         </:action_btns>
       </Bonfire.UI.Common.OpenModalLive>
     </span>
-    {!-- <div class="mr-3">
-      <img
-        class="inline-block object-cover w-8 h-8 cursor-pointer rounded-full"
-        src={Media.avatar_url(current_user(@__context__))}
-        alt="current user avatar"
-      />
-    </div>
-
-    {#if e(@smart_input_opts, :create_object_type, nil) in [:message, "message"]}
-      <div class="text-base font-semibold">
-        {l("Send a direct message")}
-      </div>
-    {#else}
-      <div class="text-base font-semibold">
-        {e(@smart_input_opts, :prompt, l("Create post"))}
-      </div>
-    {/if} --}
+   
 
     <div class="flex items-center gap-2">
       <button
@@ -56,26 +40,8 @@
         type="button"
         class="flex btn btn-sm btn-ghost btn-circle"
       >
-        {!-- x-on:click=" ... ; smart_input_fullscreen = false" --}
         <#Icon iconify="fluent:chevron-double-down-16-filled" class="w-4 h-4 text-base-content/70" />
-        <!-- <span class="text-sm text-base-content/70">{l("Minimize")}</span> -->
       </button>
-      {!-- <button
-        type="submit"
-        id="submit_btn"
-        x-on:click="$dispatch('submit')"
-        phx-disable-with
-        class="btn-sm btn btn-primary"
-        disabled={@smart_input_opts[:input_status] != :draft}
-      >
-        <!-- <#Icon iconify="mdi:email-fast-outline" class="w-4 h-4" /> -->
-        <#Icon iconify="lucide:arrow-up" class="w-4 h-4" />
-        {#if e(@smart_input_opts, :create_object_type, nil) in [:message, "message"]}
-          {if @smart_input_opts[:input_status] == :submit, do: l("Sending..."), else: l("Send")}
-        {#else}
-          {if @smart_input_opts[:input_status] == :submit, do: l("Posting..."), else: l("Post")}
-        {/if}
-      </button> --}
     </div>
   </div>
 </header>
