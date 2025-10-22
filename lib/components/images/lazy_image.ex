@@ -10,5 +10,5 @@ defmodule Bonfire.UI.Common.LazyImage do
   prop fallback_icon, :string, default: Icon.icon_name("ph:image-broken-duotone")
   prop opts, :any, default: %{}
   prop title, :string, default: ""
-  prop disable_lazy, :boolean, default: false
+  prop disable_lazy, :boolean, default: true
 end
