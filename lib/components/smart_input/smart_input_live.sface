@@ -77,35 +77,35 @@
         <!-- <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} /> -->
         <header class="z-50 flex items-center gap-3 justify-between w-full sticky top-0 px-3 py-2 lg:rounded-t-xl bg-base-100 md:z-auto md:relative">
           <div class="flex items-center gap-3">
-          <div
-          class=""
-            title={e(current_user(@__context__), :profile, :name, nil) ||
-              e(current_user(@__context__), :character, :username, nil)}
-          >
-            <Bonfire.UI.Common.AvatarLive
-              bg_class="rounded-full"
-              wrapper_class="border-0 avatar !flex w-10 h-10"
-              class="inline-block object-cover w-full rounded-full"
-              src={Media.avatar_url(current_user(@__context__))}
-              user_id={current_user_id(@__context__)}
-            />
-          </div>
-          {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
-            <div class="">
-              <StatelessComponent
-                module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
-                to_boundaries={@to_boundaries}
-                boundary_preset={@boundary_preset}
-                preview_boundary_for_id={@preview_boundary_for_id}
-                preview_boundary_for_username={@preview_boundary_for_username}
-                preview_boundary_verbs={@preview_boundary_verbs}
-                to_circles={@to_circles}
-                exclude_circles={@exclude_circles}
-                verb_permissions={@verb_permissions}
-                setting_boundaries={:create_object}
+            <div
+              class=""
+              title={e(current_user(@__context__), :profile, :name, nil) ||
+                e(current_user(@__context__), :character, :username, nil)}
+            >
+              <Bonfire.UI.Common.AvatarLive
+                bg_class="rounded-full"
+                wrapper_class="border-0 avatar !flex w-10 h-10"
+                class="inline-block object-cover w-full rounded-full"
+                src={Media.avatar_url(current_user(@__context__))}
+                user_id={current_user_id(@__context__)}
               />
             </div>
-          {/if}
+            {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
+              <div class="">
+                <StatelessComponent
+                  module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
+                  to_boundaries={@to_boundaries}
+                  boundary_preset={@boundary_preset}
+                  preview_boundary_for_id={@preview_boundary_for_id}
+                  preview_boundary_for_username={@preview_boundary_for_username}
+                  preview_boundary_verbs={@preview_boundary_verbs}
+                  to_circles={@to_circles}
+                  exclude_circles={@exclude_circles}
+                  verb_permissions={@verb_permissions}
+                  setting_boundaries={:create_object}
+                />
+              </div>
+            {/if}
           </div>
           <div class="flex flex-row gap-3 items-center flex-align-items-stretch flex-nowrap">
             <span>
@@ -139,7 +139,6 @@
                 </:action_btns>
               </Bonfire.UI.Common.OpenModalLive>
             </span>
-          
 
             <div class="flex items-center gap-2">
               <button
@@ -153,8 +152,6 @@
             </div>
           </div>
         </header>
-
-        
 
         {#case LiveHandler.active_smart_input_component(
             @smart_input_component,

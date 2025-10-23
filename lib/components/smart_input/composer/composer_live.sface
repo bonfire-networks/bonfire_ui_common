@@ -3,7 +3,7 @@
   <textarea
     oninput="this.parentNode.dataset.value = this.value"
     phx-debounce="blur"
-    class={@textarea_class, "p-2 resize-none md:p-1 composer textarea focus:outline-none focus:ring-0"}
+    class={[@textarea_class, "p-2 resize-none md:p-1 composer textarea focus:outline-none focus:ring-0"]}
     name="html_body"
     resize="none"
     placeholder={l("Start typing...")}
