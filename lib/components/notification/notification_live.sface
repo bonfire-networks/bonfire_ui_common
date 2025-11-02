@@ -110,10 +110,10 @@
                 <div
                   data-id="flash"
                   data-type="error"
-                  class={
+                  class={[
                     "prose text-sm text-error-content",
                     "!text-xs": Config.env() == :dev
-                  }
+                  ]}
                 >
                   {markdown(error)}
                 </div>
