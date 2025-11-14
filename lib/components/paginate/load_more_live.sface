@@ -18,12 +18,12 @@
     phx-value-after={@cursor}
     phx-value-limit={@limit}
     phx-value-multiply_limit={@multiply_limit}
-    class="w-full flex items-center justify-center my-4"
+    class="w-full flex items-center justify-center"
     x-data={"{show: #{socket_connected?(@__context__)}}"}
     {...@opts}
   >
     <span
-      class="btn-wide btn-primary btn btn-soft phx-click-loading:bg-base-content/10 phx-click-loading:pointer-events-none phx-click-loading:cursor-not-allowed phx-scroll-loading:opacity-15 phx-scroll-loading:cursor-not-allowed relative"
+      class="w-full rounded-none btn btn-soft phx-click-loading:bg-base-content/10 phx-click-loading:pointer-events-none phx-click-loading:cursor-not-allowed phx-scroll-loading:opacity-15 phx-scroll-loading:cursor-not-allowed relative"
       x-cloak={!@hide_guest_fallback}
       x-show={if @hide_guest_fallback, do: nil, else: "show"}
     >

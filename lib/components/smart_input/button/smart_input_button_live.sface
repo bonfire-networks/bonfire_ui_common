@@ -18,6 +18,7 @@
   data-role="composer_button"
   class={@class, "btn-disabled": e(@smart_input_opts, :input_status, nil) == :submit}
 >
+  <span :if={!@as_icon and @prompt} class="text-sm font-medium">{@prompt || l("Compose")}</span>
   {!--
     phx-value-opts={Jason.encode!(merge_as_map(%{prompt: @prompt}, @smart_input_opts))}
     x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{@prompt || l("Compose")}')"} --}
@@ -66,5 +67,4 @@
       "submitting_icon hidden w-5 h-5 animate-bounce"
     }
   />
-  <span :if={!@as_icon and @prompt} class="">{@prompt || l("Compose")}</span>
 </button>

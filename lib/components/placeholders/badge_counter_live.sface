@@ -4,8 +4,8 @@
       :if={@count > 0}
       class={
         @counter_class,
-        "outline-base-content/10 indicator-item w-[8px] h-[8px] !p-0 badge badge-sm rounded-full bg-base-content/90 border-0 ",
-        "badge-primary bg-primary":
+        "indicator-item w-[8px] h-[8px] !p-0 badge badge-primary badge-sm rounded-full bg-primary/50 border-0 ",
+        "!bg-primary":
           Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)
       }
       title={l("%{amount} new notifications", amount: @count)}
