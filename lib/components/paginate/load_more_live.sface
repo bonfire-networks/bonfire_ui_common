@@ -4,6 +4,7 @@
     id={"load_more_#{@context}"}
     data-id="load_more"
     type="button"
+    data-page={@cursor}
     data-entry-count={if @infinite_scroll == :preload, do: @entry_count}
     phx-scroll={if @infinite_scroll,
       do:

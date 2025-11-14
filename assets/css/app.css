@@ -320,13 +320,6 @@ hex-input::part(input) {
   @apply input;
 }
 
-.menu {
-  & :where(li ul) {
-      &:before {
-        content: none;
-      }
-  }
-}
 
 
 .max-h-liveselect {
@@ -612,42 +605,6 @@ emoji-picker .favorites {
   display: none;
 }
 
-.menu {
-  & :where(li > details > summary), & :where(li > .menu-dropdown-toggle) {
-      &:after {
-          content: none;
-      }
-  }
-}
-
-
-
-.menu {
-  & :where(li > details > summary), & :where(li > .menu-dropdown-toggle) {
-      &:before {
-          justify-self: flex-start;
-          display: block;
-          height: 0.375rem;
-          width: 0.375rem;
-          rotate: -135deg;
-          translate: 0 -1px;
-          transition-property: rotate, translate;
-          transition-duration: 0.2s;
-          content: "";
-          transform-origin: 50% 50%;
-          box-shadow: 2px 2px inset;
-          pointer-events: none;
-          margin-left: 4px;
-      }
-  }
-}
-
-.menu {
-  :where(li > details[open] > summary):before, :where(li > .menu-dropdown-toggle.menu-dropdown-show):before {
-      rotate: 45deg;
-      translate: 0 1px;
-  }
-}
 
 
 .main_object_in_thread {

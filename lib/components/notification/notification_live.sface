@@ -2,7 +2,7 @@
   id={"notifications-#{@i}"}
   :hook
   aria-live="assertive"
-  class="app_notifications pointer-events-none fixed inset-0 flex toast toast-center px-4 py-6 sm:px-6 sm:pt-10 z-[99999999999999999] items-start"
+  class="app_notifications z-[999999999999999999999999999] toast toast-center"
 >
   <div
     data-id="notifications-container"
@@ -16,7 +16,7 @@
     <div
       :if={@i == 2}
       id="connection-status"
-      class="hidden rounded-md bg-red-50 p-4 fixed top-1 right-1 width-[280px] fade-in-scale z-50"
+      class="hidden rounded-md bg-red-50 p-4 fade-in-scale z-50"
       phx-disconnected={show("#connection-status")}
       phx-connected={hide("#connection-status")}
       >
@@ -58,7 +58,7 @@
               phx-target={@myself}
               phx-value-key="notification"
               type="button"
-              class="btn btn-sm btn-circle btn-ghost"
+              class="btn btn-xs btn-circle btn-ghost"
             >
               <span class="sr-only">{l("Close")}</span>
               <#Icon iconify="ph:x-duotone" class="w-4 h-4" />
@@ -83,7 +83,7 @@
               phx-target={@myself}
               phx-value-key="info"
               type="button"
-              class="btn btn-sm btn-circle btn-ghost"
+              class="btn btn-xs btn-circle btn-ghost"
             >
               <span class="sr-only">{l("Close")}</span>
               <#Icon iconify="ph:x-duotone" class="w-4 h-4" />
@@ -131,7 +131,7 @@
                   phx-target={@myself}
                   phx-value-key="error"
                   type="button"
-                  class="btn btn-sm btn-circle btn-error"
+                  class="btn btn-xs btn-circle btn-error"
                 >
                   <span class="sr-only">{l("Close")}</span>
                   <#Icon iconify="ph:x-duotone" class="w-4 h-4" />
