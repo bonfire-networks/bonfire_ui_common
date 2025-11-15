@@ -7,7 +7,7 @@
   <div
     data-id="notifications-container"
     class="flex flex-col items-center w-full gap-2 sm:items-end"
-    >
+  >
     {!-- 
         <.flash_connection_group :if={@i == 2} />
               js-show={show("#connection-status")}
@@ -19,7 +19,7 @@
       class="hidden rounded-md bg-red-50 p-4 fade-in-scale z-50"
       phx-disconnected={show("#connection-status")}
       phx-connected={hide("#connection-status")}
-      >
+    >
       <p class="text-sm font-medium text-red-800">
         {l("Offline - waiting to reconnect...")}
       </p>
@@ -30,7 +30,7 @@
       :if={@notification}
       role="alert"
       class="w-full max-w-md pointer-events-auto overflow-hidden transition duration-300 ease-in-out transform rounded border border-base-content/10 shadow-xl pointer-events-auto alert flash"
-      >
+    >
       <div class="p-4">
         <div class="flex items-start">
           <div class="flex-shrink-0">
@@ -71,11 +71,7 @@
     {#case @info || e(@root_flash || @flash, :info, nil)}
       {#match nil}
       {#match info}
-        <div
-          data-id="flash_info"
-          role="alert"
-          class="alert alert-info pointer-events-auto"
-        >
+        <div data-id="flash_info" role="alert" class="alert alert-info pointer-events-auto">
           <div data-id="flash" data-type="info" class="flex-1 w-full text-sm">{rich(info)}</div>
           <div :if={socket_connected?(@__context__)} class="">
             <button
