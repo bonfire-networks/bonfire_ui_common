@@ -11,8 +11,7 @@ phoenix_live_view = "~> 1.1" # usually should let surface or bonfire_ui_common d
 phoenix_live_dashboard = "~> 0.8"
 phoenix_view = "~> 2.0"
 phoenix_ecto = "~> 4.6"
-other:
-plug_attack = "~> 0.4.2"
+# other:
 remote_ip = "~> 1.1"
 plug_cowboy = "~> 2.6"
 faker = "~> 0.18" # fake data generation, mostly for tests
@@ -35,4 +34,4 @@ phoenix_live_favicon= "~> 0.2.0"
 phoenix_seo = "~> 0.1.8"
 plug_early_hints = "~> 0.1.0"
 oban = "~> 2.17"
-
+hammer = "~> 7.0"

@@ -1,7 +1,8 @@
-defmodule Bonfire.UI.Common.PlugProtect.Testing do
+defmodule Bonfire.UI.Common.RateLimit.Testing do
   @moduledoc """
-  For testing rate limits
-  via https://www.paraxial.io/blog/throttle-requests
+  For testing rate limits via Hammer 7.
+
+  Based on https://www.paraxial.io/blog/throttle-requests
   """
   alias Bonfire.Common.Utils
 
@@ -26,9 +27,12 @@ defmodule Bonfire.UI.Common.PlugProtect.Testing do
   end
 
   def get_csrf_and_cookie(url) do
-    with {:ok, r} <- Req.get(url),
+    # This is crucial - we fetch fresh CSRF for each POST
+    # Process.sleep(1000)
+
+    with {:ok, r} <- Req.get(url, retry: false),
          {:ok, html} <- Floki.parse_document(r.body),
-         [{_, [_, _, {_v, csrf_token} | _], []}] <- Floki.find(html, "[name=_csrf_token") do
+         [{_, [_, _, {_v, csrf_token} | _], []}] <- Floki.find(html, "[name=_csrf_token]") do
       cookie = get_cookie(r)
       %{cookie: cookie, csrf_token: csrf_token}
     else
@@ -55,11 +59,13 @@ defmodule Bonfire.UI.Common.PlugProtect.Testing do
   end
 
   def send_login(url, email, password, form_name) do
+    # Fetch fresh CSRF for each request (Phoenix rotates tokens)
     cc = get_csrf_and_cookie(url)
     body = get_post_body(cc.csrf_token, form_name, email, password)
     tep = get_tep(email, password)
 
-    case Req.post(url, body: body, headers: @headers ++ [{"Cookie", cc.cookie}]) do
+    # Disable retry to prevent automatic backoff on 429 responses
+    case Req.post(url, body: body, headers: @headers ++ [{"Cookie", cc.cookie}], retry: false) do
       {:ok, %{status: 429}} ->
         tep <> " POST to #{url} was throttled (received status 429)\n"
 
@@ -93,9 +99,14 @@ defmodule Bonfire.UI.Common.PlugProtect.Testing do
   #
   # rpm is the limit on how many http requests will be sent
   # in a 60 second period. Defaults to 500
-  def attack(url, login_pairs, rpm \\ 500) do
+  @doc """
+  Run attack with adjustable RPM. For testing throttling, use slower RPM to avoid hitting GET rate limits.
+  """
+  def attack(url, login_pairs, rpm \\ 30) do
+    # Use very slow default (30 RPM = 2 seconds per request) to avoid GET rate limits
+    # Each request does GET (for CSRF) + POST, so we need to be conservative
     do_attack(url, login_pairs, convert_rpm(rpm))
-    |> Enum.map(&Task.await/1)
+    |> Enum.map(&Task.await(&1, 120_000))
   end
 
   def do_attack(_, [], _sleep), do: []

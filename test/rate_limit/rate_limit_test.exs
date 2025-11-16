@@ -1,8 +1,8 @@
-defmodule Bonfire.UI.Common.PlugProtectDanceTest do
+defmodule Bonfire.UI.Common.RateLimitDanceTest do
   use Bonfire.UI.Common.ConnCase, async: false
   use Bonfire.UI.Common.SharedDataDanceCase
 
-  @moduletag :fixme
+  #   @moduletag :fixme
   @moduletag :test_instance
 
   import Untangle
@@ -11,10 +11,6 @@ defmodule Bonfire.UI.Common.PlugProtectDanceTest do
 
   alias Bonfire.Common.TestInstanceRepo
 
-  alias Bonfire.Posts
-  alias Bonfire.Social.Graph.Follows
-  alias Bonfire.Boundaries.{Circles, Acls, Grants}
-
   test "attack the sign up endpoint", context do
     Process.put([:bonfire, :env], :dev)
 
@@ -22,13 +18,19 @@ defmodule Bonfire.UI.Common.PlugProtectDanceTest do
       Process.delete([:bonfire, :env])
     end)
 
-    # on remote instance, try to login to local instance
+    # on remote instance, try to sign up to local instance
     TestInstanceRepo.apply(fn ->
       file =
         "../fixtures/credentials_100.txt"
         |> Path.expand(__DIR__)
 
-      Bonfire.UI.Common.PlugProtect.Testing.run({"http://localhost:4000/signup", "account"}, file)
+      # Use very slow RPM (30 req/min = 2 seconds per request)
+      # Each "request" is actually GET + POST, so this is 60 HTTP requests/min total
+      Bonfire.UI.Common.RateLimit.Testing.run(
+        {"http://localhost:4000/signup", "account"},
+        file,
+        "30"
+      )
       |> IO.puts()
     end)
   end
@@ -46,7 +48,12 @@ defmodule Bonfire.UI.Common.PlugProtectDanceTest do
         "../fixtures/credentials_100.txt"
         |> Path.expand(__DIR__)
 
-      Bonfire.UI.Common.PlugProtect.Testing.run("http://localhost:4000/login", file)
+      # Use very slow RPM (30 req/min) to avoid hitting GET rate limits while testing POST throttling
+      Bonfire.UI.Common.RateLimit.Testing.run(
+        "http://localhost:4000/login",
+        file,
+        "30"
+      )
       |> IO.puts()
     end)
   end

@@ -81,6 +81,25 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
+  def rate_limit_reached(conn, retry_after, opts) do
+    use Bonfire.Common.Localise
+
+    # Check for special response handling (e.g., for login to prevent credential stuffing hints)
+    cond do
+      conn.path_info == ["login"] ->
+        conn
+        |> Plug.Conn.send_resp(403, "Forbidden")
+        |> Plug.Conn.halt()
+
+      true ->
+        conn
+        |> Plug.Conn.put_status(:too_many_requests)
+        |> Plug.Conn.put_resp_header("retry-after", Integer.to_string(div(retry_after, 1000)))
+        |> Plug.Conn.send_resp(429, l("Too many requests, please try again later."))
+        |> Plug.Conn.halt()
+    end
+  end
+
   def layout(caller, opts \\ []) do
     opts =
       opts

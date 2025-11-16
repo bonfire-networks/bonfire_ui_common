@@ -58,6 +58,73 @@ defmodule Bonfire.UI.Common.Routes do
         end
       end
 
+      @doc """
+      Rate limit plug for controllers.
+
+      Reads configuration from `Application.get_env(:bonfire, :rate_limit)[key_prefix]` 
+      with fallback to default options provided in the plug call.
+
+      ## Options
+
+        * `:key_prefix` - Atom prefix for the rate limit bucket key (required)
+        * `:scale_ms` - Default time window in milliseconds (can be overridden by config)
+        * `:limit` - Default number of requests (can be overridden by config)
+        * `:method` - Optional HTTP method to rate limit (e.g., "POST"). If provided, only requests
+                      with this method will be rate limited. All other methods pass through.
+
+      ## Examples
+
+          # Rate limit all requests
+          plug :rate_limit, 
+            key_prefix: :api,
+            scale_ms: 60_000,
+            limit: 100
+          
+          # Rate limit only POST requests (form submissions)
+          plug :rate_limit, 
+            key_prefix: :forms,
+            scale_ms: 60_000,
+            limit: 5,
+            method: "POST"
+      """
+      def rate_limit(conn, opts) do
+        # Check if we should filter by HTTP method
+        case Keyword.get(opts, :method) do
+          nil ->
+            # No method filter, rate limit all requests
+            do_rate_limit(conn, opts)
+
+          method when is_binary(method) ->
+            # Only rate limit if method matches
+            if conn.method == method do
+              do_rate_limit(conn, opts)
+            else
+              conn
+            end
+        end
+      end
+
+      defp do_rate_limit(conn, opts) do
+        key_prefix = Keyword.fetch!(opts, :key_prefix)
+
+        # Read from config, falling back to defaults
+        rate_config = Config.get([:bonfire, :rate_limit, key_prefix], [])
+        scale_ms = Keyword.get(rate_config, :scale_ms) || Keyword.fetch!(opts, :scale_ms)
+        limit = Keyword.get(rate_config, :limit) || Keyword.fetch!(opts, :limit)
+
+        # Build rate limit key from IP
+        ip = conn.remote_ip |> :inet.ntoa() |> to_string()
+        key = "#{key_prefix}:#{ip}"
+
+        case Bonfire.UI.Common.RateLimit.hit(key, scale_ms, limit) do
+          {:allow, _count} ->
+            conn
+
+          {:deny, retry_after} ->
+            Bonfire.UI.Common.Web.rate_limit_reached(conn, retry_after, opts)
+        end
+      end
+
       pipeline :basic do
         plug(:fetch_session)
       end
@@ -136,10 +203,14 @@ defmodule Bonfire.UI.Common.Routes do
         plug(:fetch_live_flash)
       end
 
-      pipeline :throttle_plug_attacks do
+      pipeline :throttle_forms do
         plug(:basic)
-        # TODO: consolidate by using Hammer.Plug instead?
-        plug Bonfire.UI.Common.PlugProtect
+
+        plug :rate_limit,
+          method: "POST",
+          key_prefix: :forms,
+          scale_ms: 60_000,
+          limit: if(Bonfire.Common.Config.env() == :dev, do: 90, else: 5)
       end
 
       pipeline :static_generator do
@@ -180,15 +251,17 @@ defmodule Bonfire.UI.Common.Routes do
       scope "/" do
         pipe_through(:browser)
 
-        get("/gen_avatar", Bonfire.UI.Common.GenAvatar, :generate)
-        get("/gen_avatar/:id", Bonfire.UI.Common.GenAvatar, :generate)
-
         get("/guest/crash_test", Bonfire.UI.Common.ErrorController, :crash_test)
         get("/guest/error", Bonfire.UI.Common.ErrorController, as: :error_guest)
         get("/guest/error/:code", Bonfire.UI.Common.ErrorController, as: :error_guest)
 
         live("/crash_test", Bonfire.UI.Common.ErrorLive)
         live("/crash_test/:component", Bonfire.UI.Common.ErrorLive)
+
+        pipe_through(:throttle_forms)
+
+        get("/gen_avatar", Bonfire.UI.Common.GenAvatar, :generate)
+        get("/gen_avatar/:id", Bonfire.UI.Common.GenAvatar, :generate)
 
         post(
           "/LiveHandler/:live_handler",
