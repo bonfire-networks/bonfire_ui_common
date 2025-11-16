@@ -25,7 +25,7 @@ defmodule Bonfire.UI.Common.LivePlugs.AllowTestSandbox do
           # |> debug("uaaa")
         end)
 
-      #   flood(%{
+      #   debug(%{
       #   metadata: metadata,
       #   self_pid: self()
       # }, "LV allow_ecto_sandbox called")
@@ -34,7 +34,7 @@ defmodule Bonfire.UI.Common.LivePlugs.AllowTestSandbox do
 
       socket
     else
-      # flood("SQL sandbox not enabled, skipping")
+      # debug("SQL sandbox not enabled, skipping")
       false
     end
   end

@@ -26,7 +26,7 @@ defmodule Bonfire.UI.Common.Plugs.AllowTestSandbox do
         # Check if this is a test request with sandbox metadata
         if user_agent do
           try do
-            flood(user_agent, "PHX allow_ecto_sandbox with metadata from user agent")
+            debug(user_agent, "PHX allow_ecto_sandbox with metadata from user agent")
             Phoenix.Ecto.SQL.Sandbox.allow(user_agent, Ecto.Adapters.SQL.Sandbox)
           rescue
             error ->
