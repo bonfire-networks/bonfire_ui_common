@@ -3,11 +3,11 @@
     do: @to.(@__context__),
     else: @to}
   id={deterministic_dom_id("link_widget", @parent_id, @order, @page)}
-  class={
+  class={[
     e(@widget[:link_class], @link_class),
     "bg-primary/10":
       String.downcase(to_string(@selected_tab)) == String.downcase(to_string(@widget[:page]))
-  }
+  ]}
   label={@text || @widget[:text] || @widget[:name]}
   phx_hook={@widget[:phx_hook]}
 >
@@ -53,12 +53,15 @@
         :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
         class="flex absolute left-[28px] top-[-2px] items-center place-content-center widget_notification"
       >
-        <StatefulComponent
-          id={deterministic_dom_id("badge", badge[:id], nil, @widget[:page] || @widget[:name])}
-          page={@page}
-          module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
-          feed_id={badge[:feed_id] || e(current_user(@__context__), :character, badge[:feed_key], nil)}
-        />
+        {#case badge[:feed_id] || e(current_user(@__context__), :character, badge[:feed_key], nil)}
+          {#match feed_id}
+            <StatefulComponent
+              id={feed_id || deterministic_dom_id("badge", badge[:id], nil, @widget[:page] || @widget[:name])}
+              page={@page}
+              module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
+              feed_id={feed_id}
+            />
+        {/case}
       </div>
   {/case}
 </LinkLive>

@@ -242,7 +242,7 @@
           }
         />
         <span class="sr-only">{l("Direct Messages")}</span>
-        <div class="absolute -top-[12px right-0">
+        <div class="absolute -top-[12px] right-0">
           <StatefulComponent
             id="inbox"
             module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
