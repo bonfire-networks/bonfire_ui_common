@@ -9,14 +9,14 @@ export function registerServiceWorker() {
     return;
   }
 
-  // Simple registration, no fancy features yet
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/pwabuilder-sw.js')
-      .then(registration => {
-        console.log('SW registered:', registration.scope);
-      })
-      .catch(error => {
-        console.error('SW registration failed:', error);
-      });
-  });
+  // // Simple registration, no fancy features yet -> NOTE: doing this in bonfire_notify now 
+  // window.addEventListener('load', () => {
+  //   navigator.serviceWorker.register('/pwabuilder-sw.js')
+  //     .then(registration => {
+  //       console.log('SW registered:', registration.scope);
+  //     })
+  //     .catch(error => {
+  //       console.error('SW registration failed:', error);
+  //     });
+  // });
 }

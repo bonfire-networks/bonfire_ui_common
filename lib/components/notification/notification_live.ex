@@ -6,14 +6,21 @@ defmodule Bonfire.UI.Common.NotificationLive do
   prop error, :any, default: nil
   prop info, :any, default: nil
   prop error_sentry_event_id, :any, default: nil
+  #  index of this component instance (2 is usually in PersistentLive)
   prop i, :integer, default: 1
+
+  # for PushNotifyLive
+  data vapid_public_key, :string, default: nil
+  data is_pwa, :boolean, default: false
+  data subscriptions, :list, default: []
+  data subscription_size, :integer, default: 0
 
   def mount(socket) do
     # debug("mounting")
     # need this if included in a non-Surface view/component which doesn't set Surface prop defaults
     {:ok,
-     assign(
-       socket,
+     (maybe_apply(Bonfire.Notify.LiveHandler, :mount, [socket], fallback_return: nil) || socket)
+     |> assign(
        root_flash: nil,
        notification: nil,
        error: nil,
