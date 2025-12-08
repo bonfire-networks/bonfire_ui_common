@@ -104,7 +104,7 @@
           </div>
           <div :if={@with_title or @with_description}>
             <div :if={@with_title} class="text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
-            <div class="text-sm text-base-content/70">{@widget[:description] || @widget[:name]}</div>
+            <div class="text-sm text-base-content/70">{@widget[:description]}</div>
           </div>
           <StatelessComponent
             module={@widget[:module]}

@@ -1,5 +1,6 @@
 defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
   # alias Bonfire.Common.Extend
+  import Bonfire.Common.Modularity.DeclareHelpers
 
   defmacro declare_widget(name, opts \\ []) do
     quote do

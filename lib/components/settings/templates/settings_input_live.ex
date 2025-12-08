@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.SettingsInputLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
   prop keys, :any, required: true
-  prop default_value, :number, default: 0
+  prop default_value, :string, default: nil
   prop hidden, :boolean, default: false
   prop name, :string, required: true
   prop description, :string, default: nil
