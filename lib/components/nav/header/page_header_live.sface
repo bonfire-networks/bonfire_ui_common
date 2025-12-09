@@ -5,20 +5,20 @@
         {#if @back}
           <Bonfire.UI.Common.BackButtonLive back={@back} />
         {#else}
-        {#if is_map(current_user(@__context__))}
-         <LinkLive
-            to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
-            class="group hidden lg:flex"
-            parent_id="page_header"
-          >
+          {#if is_map(current_user(@__context__))}
+            <LinkLive
+              to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
+              class="group hidden lg:flex"
+              parent_id="page_header"
+            >
               <Bonfire.UI.Common.AvatarLive
                 bg_class="rounded-full"
                 class="inline-block object-cover w-full cursor-pointer rounded-full"
                 src={Media.avatar_url(current_user(@__context__))}
                 user_id={current_user_id(@__context__)}
-              /></LinkLive> 
-            {/if}
-            <!-- 
+              /></LinkLive>
+          {/if}
+          <!-- 
             {#else} -->
           <!-- <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost btn-sm">
             <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5" />
