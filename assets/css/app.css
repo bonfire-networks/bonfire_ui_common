@@ -780,7 +780,7 @@ article.activity pre {
     bottom: -32px;
     left: -35px;
     z-index: 1;
-    background-color: var(--color-base-content);
+    background-color: var(--color-primary);
     opacity: 0.3;
   }
 

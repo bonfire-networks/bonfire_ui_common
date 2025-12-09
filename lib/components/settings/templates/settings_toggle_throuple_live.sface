@@ -1,13 +1,13 @@
 <div class={"p-4 w-full", "px-0 pt-0 pb-2": @compact}>
   <input name="scope" value={@scope} type="hidden">
 
-  <div class="flex items-center justify-between">
-    <div class={"flex flex-col mr-2", " !mr-0": @compact}>
+  <div class="flex flex-col gap-1">
+    <div class={"flex flex-col"}>
       <div class="flex flex-row items-center gap-2" :if={@name || @icon}>
         <Iconify.iconify :if={@icon} icon={@icon} class="w-4 h-4" />
-        <div class="text-sm">{@name}</div>
+        <div class="text-sm font-semibold">{@name}</div>
       </div>
-      <div class="text-sm text-base-content/70" :if={@description}>{@description}</div>
+      <div class="text-sm text-base-content/90" :if={@description}>{@description}</div>
     </div>
 
     <!-- <input
@@ -20,12 +20,12 @@
     /> -->
 
     <div class="flex items-center">
-      <div class="border text-xs p-1 flex items-center gap-1 border-base-content/10 rounded-xl">
+      <div class="border text-sm font-medium p-1 flex items-center gap-1 border-base-content/10 rounded-xl">
         <button
           data-id="enabled"
           data-value={"#{@input}_#{@current_value}"}
           class={
-            "px-2 text-base-content/70 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
+            "px-2 text-base-content/90 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
             "active bg-success hover:bg-success text-success-content": @current_value == @enabled_value
           }
           phx-click={@event_name}
@@ -39,7 +39,7 @@
         <button
           data-id="default"
           class={
-            "px-2 text-base-content/70 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
+            "px-2 text-base-content/90 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
             "active bg-base-300 hover:bg-base-300 text-base-content": is_nil(@current_value)
           }
           phx-click={@event_name}
@@ -53,7 +53,7 @@
         <button
           data-id="disabled"
           class={
-            "px-2 text-base-content/70 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
+            "px-2 text-base-content/90 p-1 rounded-lg hover:bg-base-content/10 transition-colors duration-100",
             "active bg-error hover:bg-error text-error-content": @current_value == @disabled_value
           }
           phx-click={@event_name}
