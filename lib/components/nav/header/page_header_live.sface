@@ -6,9 +6,9 @@
           <Bonfire.UI.Common.BackButtonLive back={@back} />
         {#else}
           {#if is_map(current_user(@__context__))}
-          <label for="sidebar-drawer" class="hidden lg:flex xl:hidden btn btn-circle btn-ghost btn-sm">
-            <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5" />
-          </label> 
+            <label for="sidebar-drawer" class="hidden lg:flex xl:hidden btn btn-circle btn-ghost btn-sm">
+              <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5" />
+            </label>
             <LinkLive
               to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
               class="group flex lg:hidden"

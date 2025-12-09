@@ -60,6 +60,26 @@
             </div>
           </div>
 
+          <div
+            :if={e(@smart_input_opts, :create_object_type, nil) in [:post, "post", nil]}
+            class="relative p-2 bg-base-100"
+            id="smart_input_scheduled_at"
+          >
+            <label class="input w-full flex items-center gap-2">
+              <span class="ml-2 text-xs text-base-content/60">{l("Schedule post")}</span>
+
+              <input
+                type="date"
+                name="scheduled_at"
+                phx-update="ignore"
+                class="input input-bordered w-full"
+                value={e(@smart_input_opts, :scheduled_at, nil)}
+                placeholder={l("Schedule for date")}
+              />
+              
+            </label>
+          </div>
+
           {!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE --}
           <#slot {@default} />
           {!-- UPLOADS PREVIEWS --}
@@ -189,6 +209,20 @@
                   <#Icon iconify="ph:text-h-one-duotone" class="w-[18px] h-[18px]" />
                 </button>
               </div>
+
+              <div data-tip={l("Schedule post")} class="tooltip tooltip-top">
+                <button
+                  type="button"
+                  id="scheduled_at_btn"
+                  phx-click={JS.toggle(to: "#smart_input_scheduled_at")
+                  |> JS.focus(to: "#smart_input_scheduled_at input[type='date']")
+                  |> JS.toggle_class("btn-active", to: "#scheduled_at_btn")}
+                  class="title-button btn btn-ghost btn-square btn-sm"
+                >
+                  <#Icon iconify="ph:calendar-duotone" class="w-[18px] h-[18px]" />
+                </button>
+              </div>
+
             </div>
 
             <div class="flex items-center gap-2">
