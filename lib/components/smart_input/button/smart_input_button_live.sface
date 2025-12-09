@@ -16,6 +16,7 @@
   phx-target="#smart_input"
   type="button"
   data-role="composer_button"
+  aria-label={@prompt || l("Compose")}
   class={@class, "btn-disabled": e(@smart_input_opts, :input_status, nil) == :submit}
 >
   <span :if={!@as_icon and @prompt} class="text-sm font-medium">{@prompt || l("Compose")}</span>

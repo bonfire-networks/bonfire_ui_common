@@ -95,7 +95,19 @@ a,
   themes: light --default, silk, caramellatte, nord, cmyk, acid, autumn, lofi, pastel, fantasy, cupcake, bumblebee, emerald, corporate, dark --prefersdark, synthwave, forest, dracula, aqua, luxury, night, coffee, dim, sunset, abyss, retro, cyberpunk, valentine, halloween, garden;
 }
 
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: oklch(52.85% 0.2 251.26);
+  --color-primary-content: #ffffff;
+}
 
+@plugin "daisyui/theme" {
+  name: "dark";
+  prefersdark: true;
+  --color-primary: oklch(52.85% 0.2 251.26);
+  --color-primary-content: #ffffff;
+}
 
 
 

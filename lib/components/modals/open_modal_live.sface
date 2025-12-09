@@ -8,6 +8,7 @@
           :on-click={@click_open_event}
           class={"open_modal_btn_wrapper w-full", @open_btn_wrapper_class}
           phx-hook={@open_btn_hook}
+          aria-label={@open_btn_aria_label || @title_text}
           {...@open_btn_opts}
         >
           <#slot {@open_btn, value: @value}>

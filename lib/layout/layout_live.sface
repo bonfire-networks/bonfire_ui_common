@@ -106,13 +106,7 @@
             data-id="right_nav_and_widgets"
             class="order-last sticky  w-auto lg:top-2 mt-2 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
           >
-            <div :if={is_nil(@current_user_id)} class="flex gap-2 mb-3">
-              <LinkLive to={path(:login, :index)} class="btn-primary btn flex-1 btn-sm" parent_id="layout">{l("Log in")}</LinkLive>
-
-              {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-                <LinkLive to={path(:signup)} class="btn flex-1 btn-sm" parent_id="layout">{l("Create account")}</LinkLive>
-              {/if}
-            </div>
+            
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
               <div class="w-full mb-3">
                 <StatelessComponent
@@ -149,6 +143,13 @@
                 </div>
                 <Bonfire.UI.Common.ImpressumLive />
               </div>
+              <div :if={is_nil(@current_user_id)} class="flex flex-col gap-2 mt-3">
+              <LinkLive to={path(:login, :index)} class="btn-primary btn " parent_id="layout">{l("Log in")}</LinkLive>
+
+              {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+                <LinkLive to={path(:signup)} class="btn btn-primary btn-outline" parent_id="layout">{l("Create account")}</LinkLive>
+              {/if}
+            </div>
             </div>
           </div>
         </div>
@@ -202,8 +203,8 @@
     </LinkLive>
     <span :if={current_user(@__context__)}>
       <Bonfire.UI.Common.SmartInputButtonLive
-        class="btn btn-lg btn-square btn-soft btn-ghost"
-        icon_class="!w-6 !h-6 text-primary"
+        class="btn btn-ghost btn-square"
+        icon_class="!w-6 !h-6 text-base-content"
         as_icon
         icon="ph:note-pencil-fill"
       />
@@ -232,7 +233,7 @@
       </LinkLive>
     </div>
     <div :if={current_user(@__context__)}>
-      <LinkLive to={~p"/messages"} class="relative">
+      <!-- <LinkLive to={~p"/messages"} class="relative">
         {!-- <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="currentColor" stroke-linejoin="miter" stroke-linecap="butt"><polyline points="3 14 9 14 9 17 15 17 15 14 21 14" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="2"></polyline><rect x="3" y="3" width="18" height="18" rx="2" ry="2" fill="none" stroke="currentColor" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2"></rect></g></svg> --}
         <#Icon
           iconify="ph:tray-duotone"
@@ -249,7 +250,19 @@
             feed_id={e(current_user(@__context__), :character, :inbox_id, nil)}
           />
         </div>
-      </LinkLive>
+      </LinkLive> -->
+      <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost btn-sm">
+            <!-- {#if is_map(current_user(@__context__))}
+              <Bonfire.UI.Common.AvatarLive
+                bg_class="rounded-full"
+                class="inline-block object-cover w-full cursor-pointer rounded-full"
+                src={Media.avatar_url(current_user(@__context__))}
+                user_id={current_user_id(@__context__)}
+              />
+            {#else} -->
+            <#Icon iconify="ph:sidebar-simple-duotone" class="w-6 h-6" />
+            <!-- {/if} -->
+          </label>
     </div>
 
     <LinkLive

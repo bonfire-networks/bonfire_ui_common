@@ -10,6 +10,9 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   @doc "The title of the button used to open the modal. Only used if no `open_btn` slot is passed."
   prop open_btn_text, :string, default: nil
 
+  @doc "The accessible label for the button. Falls back to title_text if not provided."
+  prop open_btn_aria_label, :string, default: nil
+
   @doc "If the modal is a preview of an image, set this to true."
   prop image_preview, :boolean, default: false
 

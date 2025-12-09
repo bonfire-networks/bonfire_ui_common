@@ -1,34 +1,31 @@
-<div
-  aria-labelledby="slide-over-title"
-  aria-modal="true"
-  role="banner"
-  class="flex flex-1 px-4 w-full transition-color duration-150 ease-in-out"
->
+<div class="flex flex-1 px-4 w-full transition-color duration-150 ease-in-out">
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center gap-3 justify-between w-full lg:flex-1">
       <div class="gap-3 flex items-center">
         {#if @back}
           <Bonfire.UI.Common.BackButtonLive back={@back} />
         {#else}
-          <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost btn-sm">
-            <!-- {#if is_map(current_user(@__context__))}
+        {#if is_map(current_user(@__context__))}
+         <LinkLive
+            to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
+            class="group hidden lg:flex"
+            parent_id="page_header"
+          >
               <Bonfire.UI.Common.AvatarLive
                 bg_class="rounded-full"
                 class="inline-block object-cover w-full cursor-pointer rounded-full"
                 src={Media.avatar_url(current_user(@__context__))}
                 user_id={current_user_id(@__context__)}
-              />
+              /></LinkLive> 
+            {/if}
+            <!-- 
             {#else} -->
+          <!-- <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost btn-sm">
             <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5" />
-            <!-- {/if} -->
-          </label>
-          <!-- <LinkLive
-            to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
-            class="group hidden lg:flex"
-            parent_id="page_header"
-          >
+          </label> -->
+          <!--
             
-          </LinkLive> -->
+          -->
         {/if}
       </div>
 

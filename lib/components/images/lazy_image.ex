@@ -4,7 +4,7 @@ defmodule Bonfire.UI.Common.LazyImage do
   prop parent_id, :string, default: nil
   prop media, :any, default: nil
   prop src, :string, default: nil
-  prop alt, :string, default: nil
+  prop alt, :string, default: ""
   prop class, :css_class, default: nil
   prop fallback_class, :css_class, default: "w-5 h-5 opacity-50"
   prop fallback_icon, :string, default: Icon.icon_name("ph:image-broken-duotone")

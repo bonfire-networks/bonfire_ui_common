@@ -1,5 +1,5 @@
-<aside class={@class}>
-  <div :if={@widget_title} class={@title_class} role="banner">
+<aside class={@class} aria-label={@widget_title}>
+  <div :if={@widget_title} class={@title_class}>
     <div>{@widget_title}</div>
     <#slot {@action} />
   </div>
