@@ -818,16 +818,15 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         components_by_type(create_object_type) ||
         active_smart_input_component(smart_input_component, create_object_type)
     )
-    |> debug("components")
+    |> flood("components")
   end
 
   def active_smart_input_component(smart_input_component, create_object_type) do
-    smart_input_component ||
-      component_by_type(create_object_type) ||
-      Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
-      Bonfire.UI.Social.WritePostContentLive
-
-    # |> debug()
+    (smart_input_component ||
+       component_by_type(create_object_type) ||
+       Bonfire.Common.Config.get([:ui, :default_smart_input]) ||
+       Bonfire.UI.Social.WritePostContentLive)
+    |> flood("active component")
   end
 
   defp component_by_type(create_object_type) when is_atom(create_object_type) do
