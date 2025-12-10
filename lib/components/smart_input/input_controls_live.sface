@@ -60,6 +60,37 @@
             </div>
           </div>
 
+   <div
+  class="relative p-2 pr-0 bg-base-100 hidden"
+  id="smart_input_language"
+  phx-update={if @reset_smart_input, do: "replace", else: "ignore"}
+>
+  <label class="input w-full">
+    {l("Language")}
+    <select
+      name="language"
+      class="w-full select select-bordered pr-0"
+    >
+    {#case to_string(e(@__context__, :locale, nil) || Config.get(
+          [Bonfire.Common.Localise.Cldr, :default_locale],
+          "en"
+        ))}
+    {#match locale}
+      {#for l <- Bonfire.Common.Localise.known_locales()}
+        <option
+          value={to_string(l)}
+          selected={if locale == to_string(l), do: "selected"}
+        >
+          {Bonfire.Common.Localise.locale_name(l)}
+        </option>
+      {#else}
+        <option value="">{l("Other")}</option>
+      {/for}
+      {/case}
+    </select>
+  </label>
+</div>
+
           <div
             :if={e(@smart_input_opts, :create_object_type, nil) in [:post, "post", nil]}
             class="relative p-2 bg-base-100 hidden"
@@ -79,6 +110,8 @@
           </label>
            
           </div>
+
+       
 
           {!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE --}
           <#slot {@default} />
@@ -210,7 +243,23 @@
                 </button>
               </div>
 
-              <div data-tip={l("Schedule post")} class="tooltip tooltip-top">
+             
+
+              <!-- Language selection toggle button -->
+              <div data-tip={l("Set post language")} class="tooltip tooltip-top">
+                <button
+                  type="button"
+                  id="language_btn"
+                  phx-click={JS.toggle(to: "#smart_input_language")
+                  |> JS.focus(to: "#smart_input_language select")
+                  |> JS.toggle_class("btn-active", to: "#language_btn")}
+                  class="title-button btn btn-ghost btn-square btn-sm"
+                >
+                  <#Icon iconify="ph:translate-duotone" class="w-[18px] h-[18px]" />
+                </button>
+              </div>
+
+               <div data-tip={l("Schedule post")} class="tooltip tooltip-top">
                 <button
                   type="button"
                   id="scheduled_at_btn"
