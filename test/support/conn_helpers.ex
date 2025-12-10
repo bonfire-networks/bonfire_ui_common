@@ -1,14 +1,14 @@
 defmodule Bonfire.UI.Common.Test.ConnHelpers do
   require Phoenix.ConnTest
+  import Bonfire.UI.Common.Testing.Helpers
   alias Phoenix.ConnTest
   alias Phoenix.Controller
-
   alias Plug.Conn
   alias Plug.Session
 
   @endpoint Application.compile_env!(:bonfire, :endpoint_module)
 
-  def conn(), do: ConnTest.build_conn()
+  # def conn(), do: ConnTest.build_conn()
 
   def with_method(conn, :get), do: %{conn | method: "GET"}
 
