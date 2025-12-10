@@ -1,4 +1,4 @@
-<div class={"p-4", "px-0 pt-0 pb-2": @compact}>
+<div class={"p-4", "p-0": @compact}>
   <input name="scope" value={@scope} type="hidden">
   <input name={@input} value={to_string(@disabled_value)} type="hidden">
 

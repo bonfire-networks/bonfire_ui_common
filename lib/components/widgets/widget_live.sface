@@ -99,11 +99,11 @@
             order={@order}
           />
         {#match Surface.Component}
-          <div>
+
             <div :if={@with_title or @with_description} class="flex items-center gap-3">
-              <div :if={@with_title} class="w-10 h-10 flex items-center place-content-center shrink-0">
+              <!-- <div :if={@with_title} class="w-10 h-10 flex items-center place-content-center shrink-0">
                 <#Icon iconify="ph:lego-duotone" class="w-7 h-7 text-primary" />
-              </div>
+              </div> -->
               <div class="flex-1">
                 <div :if={@with_title} class="text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
                 <div :if={@with_description} class="text-sm text-base-content/70">{@widget[:description]}</div>
@@ -115,9 +115,8 @@
               page={@page}
               selected_tab={@selected_tab}
               {...@data}
-              compact={@compact}
             />
-          </div>
+
         {#match Surface.LiveComponent}
           <div :if={@with_title} class="mt-4 mb-2 text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
           <StatefulComponent

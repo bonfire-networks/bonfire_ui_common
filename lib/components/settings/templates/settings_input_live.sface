@@ -48,7 +48,7 @@
     <div class="flex flex-col mb-2">
       {!-- <div :if={@label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div> --}
       <div :if={@name} class="text-sm font-medium">{@name}</div>
-      <div :if={@description} class="text-sm font-light text-base-content/80">{@description}</div>
+      <!-- <div :if={@description} class="text-sm font-light text-base-content/80">{@description}</div> -->
     </div>
 
     <form name="settings" phx-submit="Bonfire.Common.Settings:save">

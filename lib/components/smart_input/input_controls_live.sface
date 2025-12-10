@@ -62,22 +62,22 @@
 
           <div
             :if={e(@smart_input_opts, :create_object_type, nil) in [:post, "post", nil]}
-            class="relative p-2 bg-base-100"
+            class="relative p-2 bg-base-100 hidden"
             id="smart_input_scheduled_at"
+            phx-update={if @reset_smart_input, do: "replace", else: "ignore"}
           >
-            <label class="input w-full flex items-center gap-2">
-              <span class="ml-2 text-xs text-base-content/60">{l("Schedule post")}</span>
-
-              <input
-                type="date"
+          <label class="input w-full">
+            {l("Schedule")}
+            <input
+                type="datetime-local"
                 name="scheduled_at"
-                phx-update="ignore"
-                class="input input-bordered w-full"
+                class="grow"
                 value={e(@smart_input_opts, :scheduled_at, nil)}
                 placeholder={l("Schedule for date")}
               />
-              
-            </label>
+            <!-- <span class="badge badge-neutral badge-xs">Optional</span> -->
+          </label>
+           
           </div>
 
           {!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE --}
