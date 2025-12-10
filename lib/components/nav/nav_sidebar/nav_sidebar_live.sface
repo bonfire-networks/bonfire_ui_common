@@ -74,7 +74,7 @@
 
   {#if !current_user_id(@__context__)}
     <nav class="mt-4 mx-3 lg:mx-0">
-      <ul class="menu p-0 w-full gap-0.5">
+      <ul class="menu p-0 w-full gap-0">
         <li class="p-0 m-0">
           <LinkLive
             to="/feed"

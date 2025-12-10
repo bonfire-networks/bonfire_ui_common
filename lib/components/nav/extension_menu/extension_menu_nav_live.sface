@@ -26,7 +26,7 @@
               type={:link}
               selected_tab={@selected_tab}
               skip_badges={@skip_badges}
-              container_class="menu p-0 w-full gap-0.5"
+              container_class="menu p-0 w-full gap-0"
             />
 
             <Bonfire.UI.Common.WidgetsLive
