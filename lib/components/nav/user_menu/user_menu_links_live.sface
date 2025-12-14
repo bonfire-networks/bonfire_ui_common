@@ -21,19 +21,83 @@
     </LinkLive>
   </div>
 </li> --}
+<li>
+  <LinkLive to={~p"/"} class="flex items-center gap-2 text-sm text-base-content justify-between">
+    <div>{l("Home")}</div>
+    <#Icon iconify="ph:house-duotone" class="w-5 h-5 shrink-0" />
+  </LinkLive>
+</li>
+<li>
+  <LinkLive
+    to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
+    class="flex items-center gap-2 text-sm text-base-content justify-between"
+  >
+    <div>{l("Profile")}</div>
+    <#Icon iconify="ph:user-duotone" class="w-5 h-5 shrink-0" />
+  </LinkLive>
+</li>
 <StatelessComponent module={maybe_component(Bonfire.UI.Me.SwitchUserMenuItemsLive, @__context__)} />
 
 <li>
   <LinkLive
-    to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
-    class="flex items-center gap-2 text-sm text-base-content"
+    to={~p"/feed/likes"}
+    class="flex items-center gap-2 text-sm text-base-content justify-between"
   >
-    <div>{l("Profile")}</div>
+    <div>{l("Favourites")}</div>
+    <#Icon iconify="ph:fire-duotone" class="w-5 h-5 shrink-0" />
   </LinkLive>
 </li>
+<li>
+  <LinkLive
+    to={~p"/hashtags/followed"}
+    class="flex items-center gap-2 text-sm text-base-content justify-between"
+  >
+    <div>{l("Followed Hashtags")}</div>
+    <#Icon iconify="ph:hash-duotone" class="w-5 h-5 shrink-0" />
+  </LinkLive>
+</li>
+<!-- <li>
+<LinkLive
+    to={~p"/scheduled_posts"}
+    class="flex items-center gap-2 text-sm text-base-content justify-between"
+  >
+    <div>{l("Scheduled posts")}</div>
+                <#Icon iconify="ph:calendar-duotone" class="w-5 h-5 shrink-0" />
+
+  </LinkLive>
+</li> -->
+<li class="m-1 border-t border-base-content/10" />
+<li>
+  <LinkLive
+    to={~p"/silenced"}
+    class="flex items-center gap-2 text-sm text-base-content justify-between"
+  >
+    <div>{l("Silenced users")}</div>
+    <#Icon iconify="ph:speaker-simple-x-duotone" class="w-5 h-5 shrink-0" />
+  </LinkLive>
+</li>
+<li>
+  <LinkLive
+    to={~p"/ghosted"}
+    class="flex items-center gap-2 text-sm text-base-content justify-between"
+  >
+    <div>{l("Ghosted users")}</div>
+    <#Icon iconify="ph:ghost-duotone" class="w-5 h-5 shrink-0" />
+  </LinkLive>
+</li>
+<li>
+  <LinkLive
+    to={~p"/blocked"}
+    class="flex items-center gap-2 text-sm text-base-content justify-between"
+  >
+    <div>{l("Blocked users")}</div>
+    <#Icon iconify="ph:prohibit-duotone" class="w-5 h-5 shrink-0" />
+  </LinkLive>
+</li>
+<li class="m-1 border-t border-base-content/10" />
 
 {!-- <li>
-  <LinkLive to={~p"/write"} class="flex items-center gap-2 text-sm text-base-content">
+  <LinkLive to={~p"/write"} class="flex items-center gap-2 text-sm text-base-content justify-between">
     <div>{l("Write")}</div>
   </LinkLive>
 </li> --}
@@ -42,33 +106,45 @@
   <StatelessComponent
     module={maybe_component(Bonfire.UI.Groups.NewGroupLive, @__context__)}
     parent_id="user_menu_links"
-    open_btn_wrapper_class="flex items-center gap-2 text-sm text-base-content"
+    open_btn_wrapper_class="flex items-center gap-2 text-sm text-base-content justify-between"
     open_btn_class=""
   />
 </li> --}
 
 <li>
-  <LinkLive to={~p"/settings"} class="flex items-center gap-2 text-sm text-base-content">
+  <LinkLive
+    to={~p"/settings"}
+    class="flex items-center gap-2 text-sm text-base-content justify-between"
+  >
     <div>{l("Settings")}</div>
+    <#Icon iconify="ph:gear-duotone" class="w-5 h-5 shrink-0" />
   </LinkLive>
 </li>
 
 {!-- if current user is also an admin - TODO: use boundaries/roles here instead --}
 <li :if={is_map(current_user(@__context__)) and
   maybe_apply(Bonfire.Me.Accounts, :is_admin?, [@__context__], fallback_return: nil) == true}>
-  <LinkLive to={~p"/settings/instance"} class="flex items-center gap-2 text-sm text-base-content">
+  <LinkLive
+    to={~p"/settings/instance"}
+    class="flex items-center gap-2 text-sm text-base-content justify-between"
+  >
     <div>{l("Instance Settings")}</div>
+    <#Icon iconify="ph:shield-duotone" class="w-5 h-5 shrink-0" />
   </LinkLive>
 </li>
 
 <li>
-  <LinkLive to={~p"/logout"} class="flex items-center gap-2 text-sm text-base-content">
+  <LinkLive
+    to={~p"/logout"}
+    class="flex text-error items-center gap-2 text-sm text-base-content justify-between"
+  >
     <div>{l("Sign out")}</div>
+    <#Icon iconify="ph:sign-out-duotone" class="w-5 h-5 shrink-0" />
   </LinkLive>
 </li>
 
 {!-- <li class="border-t border-neutral-content/10">
   <Bonfire.UI.Common.FeedbackButtonLive
-    class="flex items-center gap-2 text-sm text-base-content"
+    class="flex items-center gap-2 text-sm text-base-content justify-between"
   />
 </li> --}

@@ -1,63 +1,15 @@
 <div class="flex flex-col flex-1 h-full pb-[80px] lg:pb-0">
   <div class="px-5 lg:pl-1 lg:pr-0 bg-base-100 lg:bg-base-100 z-[999999999] sticky top-0 flex items-center lg:min-h-[48px] justify-between">
     <div class="pt-safe w-full">
-      <div class="pt-4 flex items-center justify-between w-full">
+      <div :if={!current_user_id(@__context__)} class="pt-4 flex items-center justify-between w-full">
         <Bonfire.UI.Common.LogoLinkLive href="/" />
+      </div>
+      <div :if={current_user_id(@__context__)} class="pt-4 flex items-center justify-between w-full">
         <Bonfire.UI.Common.UserMenuLive :if={current_user(@__context__)} />
       </div>
     </div>
   </div>
   <div class="flex flex-col flex-1 mt-4 h-full px-3 lg:px-0" :if={current_user(@__context__)}>
-    {!-- <ul class="menu menu-horizontal w-full gap-4 p-0 px-4 pb-4">
-      <li :for={%{id: user_id} = user <- @current_account_users || []} class="">
-         <LinkLive
-            to={"/switch-user/#{user.character.username}"}
-            class={
-              "relative rounded-full p-0",
-              "ring-primary ring-offset-base-100  ring-2 ring-offset-2": current_user_id(@__context__) == user_id
-              }
-            title={l("Switch to this profile")}
-          >
-            <Bonfire.UI.Common.AvatarLive
-              src={Media.avatar_url(user)}
-              user_id={user_id}
-              class="w-7 h-7 rounded-full flex-shrink-0"
-            />
-             <div
-              class="indicator absolute top-0 left-0"
-              title={l("View notifications")}
-            >
-              <Bonfire.UI.Common.BadgeCounterLive
-                :if={current_user_id(@__context__) != user_id}
-                }
-                parent_id="switch_user_notifications"
-                id={"notifications_#{user_id}"}
-                feed_id={e(user, :character, :notifications_id, nil)}
-                for_user={user}
-                counter_class="indicator-middle indicator-center"
-              />
-            </div>
-
-            <div
-              class="indicator absolute right-0 top-0"
-              title={l("View messages")}
-            >
-              <Bonfire.UI.Common.BadgeCounterLive
-                :if={current_user_id(@__context__) != user_id}
-                }
-                parent_id="switch_user_notifications"
-                id={"messages_#{user_id}"}
-                feed_id={e(user, :character, :inbox_id, nil)}
-                for_user={user}
-                counter_class="indicator-middle indicator-center"
-              />
-            </div>
-          </LinkLive>
-      </li>
-    </ul> --}
-    {!-- <div class="ml-3 mb-3">
-    <Bonfire.UI.Common.SmartInputButtonLive prompt="Compose" class="btn btn-primary" />
-    </div> --}
     <Bonfire.UI.Common.ExtensionMenuNavLive
       parent_id="nav_sidebar"
       selected_tab={@selected_tab}

@@ -16,7 +16,7 @@
             >
               <Bonfire.UI.Common.AvatarLive
                 bg_class="rounded-full"
-                class="inline-block object-cover w-full cursor-pointer rounded-full"
+                class="inline-block object-cover w-full cursor-pointer w-8 h-8 rounded-full"
                 src={Media.avatar_url(current_user(@__context__))}
                 user_id={current_user_id(@__context__)}
               /></LinkLive>
