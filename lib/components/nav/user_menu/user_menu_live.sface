@@ -10,7 +10,7 @@
   >
     <div
       style="border-width: 2px"
-      class="border rounded-full p-1 border-primary/50 border-2 hover:border-primary transition-colors relative"
+      class="border rounded-full p-0 border-primary/50 border-2 hover:border-primary transition-colors relative"
     >
       <Bonfire.UI.Common.AvatarLive
         bg_class="rounded-full"
