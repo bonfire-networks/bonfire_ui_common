@@ -60,28 +60,24 @@
             </div>
           </div>
 
-
           <div
             :if={e(@smart_input_opts, :create_object_type, nil) in [:post, "post", nil]}
             class="relative p-2 bg-base-100 hidden"
             id="smart_input_scheduled_at"
             phx-update={if @reset_smart_input, do: "replace", else: "ignore"}
           >
-          <label class="input w-full">
-            <span class="text-xs uppercase text-base-content/70">{l("Schedule")}</span>
-            <input
+            <label class="input w-full">
+              <span class="text-xs uppercase text-base-content/70">{l("Schedule")}</span>
+              <input
                 type="datetime-local"
                 name="scheduled_at"
                 class="grow block w-full"
                 value={e(@smart_input_opts, :scheduled_at, nil)}
                 placeholder={l("Schedule for date")}
               />
-            <!-- <span class="badge badge-neutral badge-xs">Optional</span> -->
-          </label>
-           
+              <!-- <span class="badge badge-neutral badge-xs">Optional</span> -->
+            </label>
           </div>
-
-       
 
           {!-- SLOT WITH EXTRA FORM INPUTS DEPENDING ON THE TYPE OF OBJECT TO CREATE --}
           <#slot {@default} />
@@ -95,10 +91,10 @@
         </div>
       </div>
 
-      <div class={
+      <div class={[
         "z-50 sticky bg-base-100 bottom-0 h-[48px] rounded-b-xl ",
         "order-first !bg-base-content/10": @showing_within == :page
-      }>
+      ]}>
         <div class="pb-safe">
           <div class="flex justify-between gap-2 p-2 lg:rounded-b-xl md:items-center md:px-3 py-2">
             <div class="flex items-center gap-2">
@@ -213,51 +209,53 @@
                 </button>
               </div>
 
-             
-
               <!-- Language selection dropdown -->
-              {#case to_string(e(@__context__, :locale, nil) || Config.get(
-                    [Bonfire.Common.Localise.Cldr, :default_locale],
-                    "en"
-                  ))}
-              {#match locale}
-              <div class="dropdown dropdown-top dropdown-end" data-tip={l("Set post language")}>
-                <label
-                  tabindex="0"
-                  id="language_btn"
-                  class="title-button btn btn-ghost btn-sm gap-1"
-                >
-                  <#Icon iconify="ph:translate-duotone" class="w-[18px] h-[18px]" />
-                  <span id="selected_language_label" phx-update="ignore" class="text-xs uppercase">{locale}</span>
-                </label>
-                <ul
-                  id="language_dropdown_list"
-                  tabindex="0"
-                  phx-update="ignore"
-                  class="dropdown-content z-[999] menu flex-col flex-nowrap p-2 shadow-lg bg-base-100 rounded-box border border-base-content/10 w-52 max-h-60 overflow-y-auto"
-                >
-                  {#for lang <- Bonfire.Common.Localise.known_locales()}
-                    <li>
-                      <label
-                        class="flex items-center gap-2 cursor-pointer"
-                        onclick={"document.getElementById('selected_language_label').innerText='#{to_string(lang)}'"}
-                      >
-                        <input
-                          type="radio"
-                          name="language"
-                          value={to_string(lang)}
-                          checked={locale == to_string(lang)}
-                          class="radio radio-sm"
-                        />
-                        {Bonfire.Common.Localise.locale_name(lang)}
-                      </label>
-                    </li>
-                  {/for}
-                </ul>
-              </div>
+              {#case to_string(
+                  e(@__context__, :locale, nil) ||
+                    Config.get(
+                      [Bonfire.Common.Localise.Cldr, :default_locale],
+                      "en"
+                    )
+                )}
+                {#match locale}
+                  <div class="dropdown dropdown-top dropdown-end" data-tip={l("Set post language")}>
+                    <label tabindex="0" id="language_btn" class="title-button btn btn-ghost btn-sm gap-1">
+                      <#Icon iconify="ph:translate-duotone" class="w-[18px] h-[18px]" />
+                      <span id="selected_language_label" phx-update="ignore" class="text-xs uppercase">{locale}</span>
+                    </label>
+                    <ul
+                      id="language_dropdown_list"
+                      tabindex="0"
+                      phx-update="ignore"
+                      class="dropdown-content z-[999] menu flex-col flex-nowrap p-2 shadow-lg bg-base-100 rounded-box border border-base-content/10 w-52 max-h-60 overflow-y-auto"
+                    >
+                      {#for lang <-
+                          @__context__[:locales] ||
+                            Bonfire.UI.Common.LivePlugs.Locale.preferred_locales(
+                              current_user(@__context__ |> flood("uuu"))
+                            )
+                            |> flood("preffl") || Bonfire.Common.Localise.known_locales()}
+                        <li>
+                          <label
+                            class="flex items-center gap-2 cursor-pointer"
+                            onclick={"document.getElementById('selected_language_label').innerText='#{to_string(lang)}'"}
+                          >
+                            <input
+                              type="radio"
+                              name="language"
+                              value={to_string(lang)}
+                              checked={locale == to_string(lang)}
+                              class="radio radio-sm"
+                            />
+                            {Bonfire.Common.Localise.locale_name(lang)}
+                          </label>
+                        </li>
+                      {/for}
+                    </ul>
+                  </div>
               {/case}
 
-               <div data-tip={l("Schedule post")} class="tooltip tooltip-top">
+              <div data-tip={l("Schedule post")} class="tooltip tooltip-top">
                 <button
                   type="button"
                   id="scheduled_at_btn"
@@ -269,7 +267,6 @@
                   <#Icon iconify="ph:calendar-duotone" class="w-[18px] h-[18px]" />
                 </button>
               </div>
-
             </div>
 
             <div class="flex items-center gap-2">

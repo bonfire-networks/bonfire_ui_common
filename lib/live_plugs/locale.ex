@@ -15,34 +15,46 @@ defmodule Bonfire.UI.Common.LivePlugs.Locale do
     current_user = current_user(socket)
 
     # Get locale from session/cookie (set by Cldr.Plug.SetLocale or our JS hook)
-    session_locale = session["locale"] || session[@local_session_key]
 
-    locale =
-      if current_user do
-        # For logged-in users, use Settings.get which handles the full hierarchy:
-        # 1a. User settings (if set)
-        # 1b. Account settings (if set)
-        # 2. Instance settings (if admin configured)  
-        # 3. Config/default
-        # We pass session_locale as default so cookie/session acts as final fallback
-        [
-          Bonfire.Common.Settings.get(
-            [Bonfire.Common.Localise.Cldr, :default_locale],
-            session_locale,
-            current_user: current_user
-          )
-        ] ++
-          Bonfire.Common.Settings.get(
-            [Bonfire.Common.Localise, :extra_locales],
-            [],
-            current_user: current_user
-          )
-      else
+    locales = preferred_locales(current_user)
+
+    locales =
+      if session_locale = session["locale"] || session[@local_session_key] do
         # For guests, use session/cookie if provided
-        session_locale
+        [session_locale] ++ locales
+      else
+        locales
       end
 
-    {:ok, assign_put_locale(locale, socket)}
+    {:ok, assign_put_locale(locales, socket)}
+  end
+
+  def preferred_locales(
+        current_user_or_instance \\ nil,
+        default_locale \\ Bonfire.Common.Localise.default_locale()
+      )
+
+  def preferred_locales(%{} = current_user, default_locale) do
+    [
+      Bonfire.Common.Settings.get(
+        [Bonfire.Common.Localise.Cldr, :default_locale],
+        default_locale || Bonfire.Common.Localise.default_locale(),
+        current_user: current_user
+      )
+    ] ++
+      Bonfire.Common.Settings.get(
+        [Bonfire.Common.Localise, :extra_locales],
+        [],
+        current_user: current_user
+      )
+  end
+
+  def preferred_locales(_, default_locale) do
+    [default_locale || Bonfire.Common.Localise.default_locale()] ++
+      Bonfire.Common.Config.get(
+        [Bonfire.Common.Localise, :extra_locales],
+        []
+      )
   end
 
   def assign_put_locale(locale, socket)
@@ -53,22 +65,18 @@ defmodule Bonfire.UI.Common.LivePlugs.Locale do
 
   def assign_put_locale(_other, socket) do
     # If given no locale, or any other unexpected value, use default
-    ([Bonfire.Common.Localise.default_locale()] ++
-       Bonfire.Common.Config.get(
-         [Bonfire.Common.Localise, :extra_locales],
-         []
-       ))
+    preferred_locales()
     |> do_assign_put_locale(socket)
   end
 
-  defp do_assign_put_locale(locale, socket)
-       when is_list(locale) and locale != [] do
+  defp do_assign_put_locale(locales, socket)
+       when is_list(locales) and locales != [] do
     # set available UI locale that best matches user's preferences
-    with {:ok, best} <- Bonfire.Common.Localise.put_best_locale_match(locale) do
-      assign_global(socket, locale: best)
+    with {:ok, best} <- Bonfire.Common.Localise.put_best_locale_match(locales) do
+      assign_global(socket, locales: locales, locale: best)
     else
       _ ->
-        warn(locale, "No valid locale match, setting none")
+        warn(locales, "No valid locale match, setting none")
         socket
     end
   end

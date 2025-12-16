@@ -34,7 +34,7 @@ defmodule Bonfire.UI.Common.ExtraLocalesLive do
     save_and_update(socket, extra_locales)
   end
 
-  def handle_event("add_extra_locale", %{"new_locale" => locale}, socket) do
+  def handle_event("add_extra_locale", %{"new_locale" => locale} = _params, socket) do
     if locale == "" do
       {:noreply, socket}
     else
@@ -49,7 +49,11 @@ defmodule Bonfire.UI.Common.ExtraLocalesLive do
   end
 
   defp save_and_update(socket, new_locales) do
-    Settings.put([Bonfire.Common.Localise, :extra_locales], new_locales, context: assigns(socket))
+    Settings.put([Bonfire.Common.Localise, :extra_locales], new_locales,
+      scope: e(assigns(socket), :scope, nil),
+      current_user: current_user(socket)
+    )
+
     {:noreply, assign(socket, extra_locales: new_locales)}
   end
 

@@ -16,6 +16,7 @@
             type="button"
             phx-click="move_extra_locale_up"
             phx-value-index={idx}
+            phx-value-scope={@scope}
             phx-target={@myself}
             class="btn btn-xs btn-ghost"
             :if={idx > 0}
@@ -26,6 +27,7 @@
             type="button"
             phx-click="move_extra_locale_down"
             phx-value-index={idx}
+            phx-value-scope={@scope}
             phx-target={@myself}
             class="btn btn-xs btn-ghost"
             :if={idx < length(@extra_locales) - 1}
@@ -36,6 +38,7 @@
             type="button"
             phx-click="remove_extra_locale"
             phx-value-index={idx}
+            phx-value-scope={@scope}
             phx-target={@myself}
             class="btn btn-xs btn-ghost text-error"
           >
@@ -48,6 +51,7 @@
 
   <div class="mt-2 flex gap-2">
     <form phx-change="add_extra_locale" phx-target={@myself}>
+      <input type="hidden" name="scope" value={@scope}>
       <select name="new_locale" class="select select-bordered select-sm w-full max-w-xs">
         <option value="">{l("Add language...")}</option>
         {#for l <- Localise.known_locales()}

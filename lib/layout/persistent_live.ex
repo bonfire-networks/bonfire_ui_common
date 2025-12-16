@@ -103,6 +103,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     # |> fun.(:title_open, fn -> nil end)
     |> fun.(:title_prompt, fn -> nil end)
     |> fun.(:preloaded_recipients, fn -> nil end)
+    |> fun.(:locales, fn -> nil end)
 
     # |> fun.(:without_sidebar, fn -> nil end)
     # |> fun.(:without_secondary_widgets, fn -> nil end)
@@ -146,7 +147,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       # :without_secondary_widgets,
       # :to_boundaries,
       # :to_circles,
-      :smart_input_opts
+      :smart_input_opts,
       # :nav_items,
       # :custom_page_header,
       # :page_header_aside,
@@ -154,7 +155,8 @@ defmodule Bonfire.UI.Common.PersistentLive do
       # :sidebar_widgets,
       # :page,
       # :page_title,
-      # :selected_tab
+      # :selected_tab,
+      :locales
     ])
     |> Map.put(
       :__context__,
@@ -306,6 +308,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
      socket
      |> assign(assigns)
      |> assign_global(context)
-     |> debug("set assigns received for PersistentLive")}
+     #  |> assign_global(locales: e(assigns, :locales, nil) || e(context, :locales, nil))
+     |> flood("set assigns received for PersistentLive")}
   end
 end
