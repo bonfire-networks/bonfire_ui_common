@@ -12,11 +12,11 @@ defmodule Bonfire.UI.Common.RateLimitDanceTest do
   alias Bonfire.Common.TestInstanceRepo
 
   test "attack the sign up endpoint", context do
-    Process.put([:bonfire, :env], :dev)
+    # Process.put([:bonfire, :env], :dev)
 
-    on_exit(fn ->
-      Process.delete([:bonfire, :env])
-    end)
+    # on_exit(fn ->
+    #   Process.delete([:bonfire, :env])
+    # end)
 
     # on remote instance, try to sign up to local instance
     TestInstanceRepo.apply(fn ->

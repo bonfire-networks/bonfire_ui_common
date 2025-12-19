@@ -210,7 +210,7 @@ defmodule Bonfire.UI.Common.Routes do
           method: "POST",
           key_prefix: :forms,
           scale_ms: 60_000,
-          limit: if(Bonfire.Common.Config.env() == :dev, do: 90, else: 5)
+          limit: if(Bonfire.Common.Config.env() in [:dev, :test], do: 90, else: 5)
       end
 
       pipeline :static_generator do

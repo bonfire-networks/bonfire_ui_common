@@ -3,6 +3,7 @@ defmodule Bonfire.UI.Common.Web do
 
   use Bonfire.Common.Config
   use Bonfire.Common.Localise
+  import Untangle
   # alias Bonfire.Common.Utils
 
   def static_paths,
@@ -87,6 +88,10 @@ defmodule Bonfire.UI.Common.Web do
     # Check for special response handling (e.g., for login to prevent credential stuffing hints)
     cond do
       conn.path_info == ["login"] ->
+        Untangle.warn(
+          "Rate limit reached on login, sending generic forbidden response to avoid credential stuffing hints"
+        )
+
         conn
         |> Plug.Conn.send_resp(403, "Forbidden")
         |> Plug.Conn.halt()
