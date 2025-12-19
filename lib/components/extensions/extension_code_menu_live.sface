@@ -8,11 +8,11 @@
         tabindex="0"
         role="menu"
         aria-orientation="vertical"
-        class="!block mt-1 relative z-50 rounded-xl shadow-xl dropdown_actions w-60 menu dropdown-content border border-base-content/10 bg-base-100"
+        class="mt-1 z-50 rounded-box dropdown_actions w-60 menu-lg menu dropdown-content bg-base-300 border border-base-content/10"
       >
-        <li :if={code_link}><a href={code_link} target="_blank" class="">{l("View code repository")}</a></li>
-        <li><LinkLive to={get_code_link(@dep)} class="">{l("View source code")}</LinkLive></li>
-        <li><LinkLive to={"#{get_code_link(@dep)}?from=compiled"} class="">{l("View compiled code")}</LinkLive></li>
+        <li class="text-sm" :if={code_link}><a href={code_link} target="_blank" class="">{l("View code repository")}</a></li>
+        <li class="text-sm"><LinkLive to={get_code_link(@dep)} class="">{l("View source code")}</LinkLive></li>
+        <li class="text-sm"><LinkLive to={"#{get_code_link(@dep)}?from=compiled"} class="">{l("View compiled code")}</LinkLive></li>
         {#case get_link(@dep)}
           {#match version_link}
             <li :if={code_link != version_link}><a href={version_link} target="_blank" class="btn btn-outline btn-sm">{l("View code changes")}</a></li>

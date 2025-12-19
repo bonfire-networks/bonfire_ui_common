@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "nprogress/nprogress.css";
 
+/* Smooth animation easing functions */
+:root {
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 body {
   --img-bg-color: rgba(128, 128, 128, .2);
 }
@@ -163,8 +169,20 @@ textarea {
   }
 }
 
-.prose-bonfire p {
-  margin: 0;
+.translated-content {
+  font-style: italic;
+  opacity: 0.8;
+  border-left: 2px solid currentColor;
+  padding-left: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.prose-bonfire a {
+  color: var(--color-primary);
+  text-decoration-color: color-mix(in oklch, var(--color-primary) 50%, transparent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+  word-wrap: anywhere;
 }
 
 .filters_tabbed {
@@ -619,6 +637,35 @@ emoji-picker .favorites {
   display: none;
 }
 
+/* Smooth tooltip/dropdown entrance animations */
+.tooltip.tooltip-animated {
+  opacity: 0;
+  transform: scale(0.95) translateY(-4px);
+  transform-origin: bottom center;
+  transition: opacity 150ms var(--ease-out-expo),
+              transform 150ms var(--ease-out-expo);
+}
+
+.tooltip.tooltip-animated.tooltip-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Direction-specific origins (set via JS based on placement) */
+.tooltip.tooltip-animated[data-placement^="bottom"] {
+  transform-origin: top center;
+  transform: scale(0.95) translateY(-8px);
+}
+
+.tooltip.tooltip-animated[data-placement^="top"] {
+  transform-origin: bottom center;
+  transform: scale(0.95) translateY(8px);
+}
+
+.tooltip.tooltip-animated[data-placement^="bottom"].tooltip-visible,
+.tooltip.tooltip-animated[data-placement^="top"].tooltip-visible {
+  transform: scale(1) translateY(0);
+}
 
 
 .main_object_in_thread {
