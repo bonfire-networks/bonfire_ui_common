@@ -16,7 +16,6 @@
   </LinkLive>
 </li>
 
-
 <li>
   <LinkLive
     to={~p"/feed/likes"}

@@ -25,7 +25,7 @@
       tabindex="0"
       class="mt-4 rounded-lg shadow menu dropdown-content bg-base-100 shadow-lg border border-base-content/10 w-60 text-base-content"
     >
-      <!-- <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LinkLive to={path(:signup)}>{l("Sign up")}</LinkLive></li> -->
+      <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LinkLive to={path(:signup)}>{l("Sign up")}</LinkLive></li>
       <li><LinkLive to="/about" class="text-base-content" parent_id="guest_actions">{l("About")}</LinkLive></li>
       <li><LinkLive class="text-base-content" to="/conduct" parent_id="guest_actions">{l("Code of conduct")}</LinkLive></li>
       <li><LinkLive class="text-base-content" to="/privacy" parent_id="guest_actions">{l("Privacy")}</LinkLive></li>

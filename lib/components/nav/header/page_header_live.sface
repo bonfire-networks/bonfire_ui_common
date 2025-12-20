@@ -1,31 +1,31 @@
 <div class="flex flex-1 px-4 w-full transition-color duration-150 ease-in-out">
   <div class="relative z-20 flex items-center w-full">
-    <div class="flex items-center gap-3 justify-between w-full lg:flex-1">
+    <div class="flex items-center gap-5 justify-between w-full lg:flex-1">
       <div class="gap-3 flex items-center">
         <div class="xl:flex hidden">
           <Bonfire.UI.Common.BackButtonLive :if={@back} back={@back} />
         </div>
-          {#if is_map(current_user(@__context__))}
-            <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost btn-sm">
-              <div
-                style="border-width: 2px"
-                class="border rounded-full p-0 border-primary/50 border-2 hover:border-primary transition-colors relative"
+        {#if is_map(current_user(@__context__))}
+          <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost btn-sm">
+            <div
+              style="border-width: 2px"
+              class="border rounded-full p-0 border-primary/50 border-2 hover:border-primary transition-colors relative"
+            >
+              <Bonfire.UI.Common.AvatarLive
+                bg_class="rounded-full"
+                class="inline-block object-cover cursor-pointer rounded-full w-10 h-10"
+                src={Media.avatar_url(current_user(@__context__))}
+                user_id={current_user_id(@__context__)}
+              />
+              <span
+                style="bottom: -4px; right: -4px"
+                class="rounded-full bg-base-100 absolute -right-1 -bottom-1"
               >
-                <Bonfire.UI.Common.AvatarLive
-                  bg_class="rounded-full"
-                  class="inline-block object-cover cursor-pointer rounded-full w-10 h-10"
-                  src={Media.avatar_url(current_user(@__context__))}
-                  user_id={current_user_id(@__context__)}
-                />
-                <span
-                  style="bottom: -4px; right: -4px"
-                  class="rounded-full bg-base-100 absolute -right-1 -bottom-1"
-                >
-                  <#Icon iconify="ph:list-duotone" class="w-5 h-5 text-primary" />
-                </span>
-              </div>
-            </label>
-          {/if}
+                <#Icon iconify="ph:list-duotone" class="w-5 h-5 text-primary" />
+              </span>
+            </div>
+          </label>
+        {/if}
       </div>
 
       <div class="flex-1 truncate">
@@ -38,11 +38,12 @@
         <div :if={@extra} class="text-xs text-base-content/70">{@extra}</div>
       </div>
 
-      <div class="flex justify-end items-center">
+      <div class="flex justify-end gap-3 items-center">
         {#if current_user(@__context__)}
           <#slot {@right_action}>
           </#slot>
         {#else}
+          <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="guest_actions">{l("Log in")}</LinkLive>
           <Bonfire.UI.Common.GuestActionsLive page_header page={@page} />
         {/if}
       </div>
