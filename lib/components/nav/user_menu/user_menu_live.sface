@@ -1,36 +1,38 @@
 <div data-position="top-end" phx-hook="Tooltip" id="user_more_menu_links" class="relative w-full">
-  <label
-    class="tooltip-button btn btn-lg btn-circle"
-    tabindex="0"
-    role="button"
-    id="user-profile-menu"
-    aria-haspopup="true"
-    aria-expanded="true"
-    aria-label={l("User menu")}
-  >
-    <div
-      style="border-width: 2px"
-      class="border rounded-full p-0 border-primary/50 border-2 hover:border-primary transition-colors relative"
+  <div class="flex justify-end w-full">
+    <label
+      class="tooltip-button btn btn-lg btn-circle"
+      tabindex="0"
+      role="button"
+      id="user-profile-menu"
+      aria-haspopup="true"
+      aria-expanded="true"
+      aria-label={l("User menu")}
     >
-      <Bonfire.UI.Common.AvatarLive
-        bg_class="rounded-full"
-        class="inline-block object-cover cursor-pointer rounded-full w-10 h-10"
-        src={Media.avatar_url(current_user(@__context__))}
-        user_id={current_user_id(@__context__)}
-      />
-      <span
-        style="bottom: -4px; right: -4px"
-        class="rounded-full bg-base-100 absolute -right-1 -bottom-1"
+      <div
+        style="border-width: 2px"
+        class="border rounded-full p-0 border-primary/50 border-2 hover:border-primary transition-colors relative"
       >
-        <#Icon iconify="ph:list-duotone" class="w-5 h-5 text-primary" />
-      </span>
-    </div>
+        <Bonfire.UI.Common.AvatarLive
+          bg_class="rounded-full"
+          class="inline-block object-cover cursor-pointer rounded-full w-10 h-10"
+          src={Media.avatar_url(current_user(@__context__))}
+          user_id={current_user_id(@__context__)}
+        />
+        <span
+          style="bottom: -4px; right: -4px"
+          class="rounded-full bg-base-100 absolute -right-1 -bottom-1"
+        >
+          <#Icon iconify="ph:list-duotone" class="w-5 h-5 text-primary" />
+        </span>
+      </div>
 
-    <!-- <#Icon iconify="ph:dots-three-outline-duotone" class="w-4 h-4 opacity/70" /> -->
-  </label>
+      {!-- <#Icon iconify="ph:dots-three-outline-duotone" class="w-4 h-4 opacity/70" /> --}
+    </label>
+  </div>
   <ul
     tabindex="0"
-    class="tooltip z-[99999999] menu shadow bg-base-300 w-full absolute rounded-box top-0 left-0 hidden"
+    class="tooltip z-[99999999] menu shadow bg-base-300 w-full absolute rounded-box top-0 right-0 hidden"
     role="menu"
     aria-orientation="vertical"
     aria-labelledby="user-profile-menu"

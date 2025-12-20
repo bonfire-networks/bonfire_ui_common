@@ -16,6 +16,8 @@
   </LinkLive>
 </li>
 
+<li class="m-1 border-t border-base-content/10" />
+
 <li>
   <LinkLive
     to={~p"/feed/likes"}
@@ -34,7 +36,7 @@
     <#Icon iconify="ph:hash-duotone" class="w-5 h-5 shrink-0" />
   </LinkLive>
 </li>
-<!-- <li>
+{!-- <li>
 <LinkLive
     to={~p"/scheduled_posts"}
     class="flex items-center gap-2 text-sm text-base-content justify-between"
@@ -43,14 +45,23 @@
                 <#Icon iconify="ph:calendar-duotone" class="w-5 h-5 shrink-0" />
 
   </LinkLive>
-</li> -->
+</li> --}
 <li class="m-1 border-t border-base-content/10" />
+<li>
+  <LinkLive
+    to={~p"/blocked"}
+    class="flex items-center gap-2 text-sm text-base-content justify-between"
+  >
+    <div>{l("Blocked")}</div>
+    <#Icon iconify="ph:prohibit-duotone" class="w-5 h-5 shrink-0" />
+  </LinkLive>
+</li>
 <li>
   <LinkLive
     to={~p"/silenced"}
     class="flex items-center gap-2 text-sm text-base-content justify-between"
   >
-    <div>{l("Silenced users")}</div>
+    <div>{l("Silenced")}</div>
     <#Icon iconify="ph:speaker-simple-x-duotone" class="w-5 h-5 shrink-0" />
   </LinkLive>
 </li>
@@ -59,17 +70,8 @@
     to={~p"/ghosted"}
     class="flex items-center gap-2 text-sm text-base-content justify-between"
   >
-    <div>{l("Ghosted users")}</div>
+    <div>{l("Ghosted")}</div>
     <#Icon iconify="ph:ghost-duotone" class="w-5 h-5 shrink-0" />
-  </LinkLive>
-</li>
-<li>
-  <LinkLive
-    to={~p"/blocked"}
-    class="flex items-center gap-2 text-sm text-base-content justify-between"
-  >
-    <div>{l("Blocked users")}</div>
-    <#Icon iconify="ph:prohibit-duotone" class="w-5 h-5 shrink-0" />
   </LinkLive>
 </li>
 <li class="m-1 border-t border-base-content/10" />
