@@ -195,48 +195,42 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       |> Enum.flat_map(&Enum.map(&1, fn {key, val} -> {key, val} end))
       |> debug("exclude_circles")
 
-    # Process to_boundaries with proper nil handling to allow fallback to existing assigns
-    to_boundaries_param = params["to_boundaries"] |> debug("params to_boundaries")
-    to_boundaries_opt = e(opts, :to_boundaries, nil) |> debug("opts to_boundaries")
+    # Process to_boundaries - only set if explicitly provided in params or opts
+    # Don't use socket fallback here as the component has its own to_boundaries
+    # that should be preserved when just minimizing/reopening
+    to_boundaries_param = params["to_boundaries"]
+    to_boundaries_opt = e(opts, :to_boundaries, nil)
 
-    existing_to_boundaries =
-      e(assigns(socket), :to_boundaries, nil) |> debug("existing socket to_boundaries")
-
-    to_boundaries =
+    final_to_boundaries =
       case to_boundaries_param || to_boundaries_opt do
         nil ->
-          # No value in params/opts, will fallback to socket assigns
-          debug("to_boundaries is nil, will use socket assigns fallback")
+          # No value provided, let the component preserve its existing value
           nil
 
         [] ->
-          # Empty list, check if this was explicitly set or just a default
-          debug("to_boundaries is empty list - checking if should preserve existing")
-          # If it came from opts (not params), treat as nil to preserve existing
+          # Empty list from params means explicit clear, from opts means preserve
           if to_boundaries_param == [], do: [], else: nil
 
         value ->
+          # Process and normalize the boundaries list
           List.wrap(value)
-          |> debug("input to_boundaries")
-          # NOTE: what's going on here??
           |> Enum.flat_map(
             &Enum.map(List.wrap(&1), fn
               {key, val} -> {key, val}
               val -> val
             end)
           )
-          |> debug("processed to_boundaries")
       end
 
-    # Use filter_empty to treat [] as nil for proper fallback
-    # If both are nil/empty, keep nil to avoid overwriting what prepare_assigns will set
-    final_to_boundaries =
-      cond do
-        filter_empty(to_boundaries, nil) -> to_boundaries
-        filter_empty(existing_to_boundaries, nil) -> existing_to_boundaries
-        true -> nil
-      end
-      |> debug("final to_boundaries after filter_empty")
+    # NOTE: Do NOT set activity/object/reply_to_id here unless explicitly provided - they are managed by:
+    # - reply mechanism (sets them via open_with_text_suggestion -> set)
+    # - reset_to_default/remove_data (clears them)
+    # This handler runs on the PersistentLive socket which doesn't have those assigns,
+    # they're stored in the SmartInputContainerLive component. Setting them to nil here
+    # would incorrectly clear them when minimizing/maximizing the composer.
+
+    # Only set reply_to_id if explicitly provided in params or opts
+    final_reply_to_id = reply_to_param(params) || reply_to_param(opts)
 
     set_assigns =
       [
@@ -245,22 +239,15 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         create_object_type:
           e(opts, "create_object_type", nil) || e(params, "create_object_type", nil),
         context_id: e(opts, "context_id", nil) || e(params, "context_id", nil),
-        reply_to_id:
-          reply_to_param(params) || reply_to_param(opts) || e(assigns(socket), :reply_to_id, nil),
-        # FIXME: do not pass everything blindly to smart_input_opts
         smart_input_opts: opts,
-        activity: nil,
-        object: nil,
         showing_within: e(assigns(socket), :showing_within, nil),
         activity_inception: "reply_to",
         to_circles: to_circles,
-        # NEW: Add exclude_circles to assigns
         exclude_circles: exclude_circles,
         mentions: e(opts, "mentions", nil) || e(params, "mentions", [])
       ]
-      # Only add to_boundaries to assigns if we have a non-nil value to set
+      |> maybe_put(:reply_to_id, final_reply_to_id)
       |> maybe_put(:to_boundaries, final_to_boundaries)
-      |> debug("set_assigns")
 
     {:noreply,
      socket

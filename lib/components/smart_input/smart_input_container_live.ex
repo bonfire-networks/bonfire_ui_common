@@ -1,7 +1,6 @@
 defmodule Bonfire.UI.Common.SmartInputContainerLive do
   use Bonfire.UI.Common.Web, :stateful_component
   alias Bonfire.UI.Common.SmartInputLive
-  alias Bonfire.UI.Common.SmartInput.LiveHandler
 
   prop reply_to_id, :any, default: nil
   prop as_icon, :boolean, default: false
@@ -91,19 +90,12 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     )
   end
 
-  # Handle targeted updates from SelectRecipientsLive
-  # This new update handler will only modify the specific field being updated
-  # while preserving all other state
+  # Handle targeted updates from SelectRecipientsLive - only modify specific field
   def update(%{update_field: field, field_value: value, preserve_state: true}, socket) do
-    # Only update the specific field without touching any other state
-    socket =
-      socket
-      |> assign(field, value)
-      |> assign(reset_smart_input: false)
-
-    {:ok, socket}
+    {:ok, socket |> assign(field, value) |> assign(reset_smart_input: false)}
   end
 
+  # Merge smart_input_opts when both old and new are maps
   def update(
         %{smart_input_opts: new_smart_input_opts} = assigns,
         %{assigns: %{smart_input_opts: old_smart_input_opts}} = socket
@@ -114,42 +106,42 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     {:ok,
      socket
      |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
-     |> assign(assigns)
+     |> assign(preserve_reply_state(assigns, socket))
      |> assign(:smart_input_opts, merged_opts)}
   end
 
+  # Default update handler
   def update(assigns, socket) do
-    socket =
-      socket
-      |> assign(assigns)
-
-    # Don't load custom emojis here - they will be loaded lazily when the user
-    # clicks the emoji picker button. This prevents blocking the composer from opening.
-    # The emoji picker library handles standard emojis via its own IndexedDB cache.
-    custom_emojis = "[]"
-
-    {
-      :ok,
-      socket
-      |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
-      # TODO: only trigger if module enabled ^
-      |> assign(reset_smart_input: false, custom_emojis: custom_emojis)
-      # |> update(
-      #   :smart_input_opts,
-      #   &Map.merge(&1, %{
-      #     submit_disabled: Bonfire.UI.Common.SmartInput.LiveHandler.should_disable_submit?(socket)
-      #   })
-      # )
-    }
+    # Custom emojis are loaded lazily when the emoji picker is opened
+    {:ok,
+     socket
+     |> assign(preserve_reply_state(assigns, socket))
+     |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
+     |> assign(reset_smart_input: false, custom_emojis: "[]")}
   end
 
-  def handle_event(
-        _action,
-        _attrs,
-        socket
-      ) do
-    socket
-    |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
+  # Preserve reply state fields if they exist and incoming values are nil
+  # This ensures minimize/maximize doesn't clear the reply_to state
+  defp preserve_reply_state(assigns, socket) do
+    assigns
+    |> maybe_preserve_assign(:activity, e(assigns(socket), :activity, nil))
+    |> maybe_preserve_assign(:object, e(assigns(socket), :object, nil))
+    |> maybe_preserve_assign(:reply_to_id, e(assigns(socket), :reply_to_id, nil))
+    |> maybe_preserve_assign(:to_boundaries, e(assigns(socket), :to_boundaries, nil))
+  end
+
+  defp maybe_preserve_assign(assigns, key, nil), do: assigns
+
+  defp maybe_preserve_assign(assigns, key, existing_value) do
+    if Map.get(assigns, key) == nil do
+      Map.put(assigns, key, existing_value)
+    else
+      assigns
+    end
+  end
+
+  def handle_event(_action, _attrs, socket) do
+    socket |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
   end
 
   # Removed the handle_info handler to avoid conflicts with PersistentLive
