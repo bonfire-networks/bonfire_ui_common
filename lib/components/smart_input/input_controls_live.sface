@@ -219,7 +219,7 @@
                 )}
                 {#match locale}
                   <div class="dropdown dropdown-top dropdown-end" data-tip={l("Set post language")}>
-                    <label tabindex="0" id="language_btn" class="title-button btn btn-ghost btn-sm gap-1">
+                    <label tabindex="0" id="language_btn" class="lang-button btn btn-ghost btn-sm px-0 gap-1">
                       <#Icon iconify="ph:translate-duotone" class="w-[18px] h-[18px]" />
                       <span id="selected_language_label" phx-update="ignore" class="text-xs uppercase">{locale}</span>
                     </label>
