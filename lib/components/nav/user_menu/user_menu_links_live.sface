@@ -1,26 +1,5 @@
-{!-- <li>
-  <div class="border-b border-base-content/5 w-full flex rounded-b-none flex-1 mb-2 bg-base-content/5">
-    <LinkLive
-      to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
-      class="py-2 flex items-center  gap-3 text-sm text-base-content/70 w-full"
-    >
-      <Bonfire.UI.Common.AvatarLive
-        :if={is_map(current_user(@__context__))}
-        parent_id="bottom_avatar_in_sidebar"
-        class="inline-block object-cover w-9 h-9 rounded-full cursor-pointer"
-        src={Media.avatar_url(current_user(@__context__))}
-        user_id={current_user_id(@__context__)}
-      />
-      <div class="flex flex-col items-start">
-        <div class="text-sm font-semibold truncate max-w-[180px] text-base-content">{e(current_user(@__context__), :profile, :name, l("Me"))}</div>
-        <div
-          :if={e(current_user(@__context__), :character, :username, nil)}
-          class="-mt-0.5 text-[13px] font-normal truncate text-base-content/70"
-        >@{e(current_user(@__context__), :character, :username, nil)}</div>
-      </div>
-    </LinkLive>
-  </div>
-</li> --}
+<StatelessComponent module={maybe_component(Bonfire.UI.Me.SwitchUserMenuItemsLive, @__context__)} />
+
 <li>
   <LinkLive to={~p"/"} class="flex items-center gap-2 text-sm text-base-content justify-between">
     <div>{l("Home")}</div>
@@ -36,7 +15,7 @@
     <#Icon iconify="ph:user-duotone" class="w-5 h-5 shrink-0" />
   </LinkLive>
 </li>
-<StatelessComponent module={maybe_component(Bonfire.UI.Me.SwitchUserMenuItemsLive, @__context__)} />
+
 
 <li>
   <LinkLive

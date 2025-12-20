@@ -49,9 +49,10 @@
     {#match nil}
     {#match badge}
       <div
+        style="left: 20px"
         data-highlighted={Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)}
         :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
-        class="flex absolute left-[28px] top-[-2px] items-center place-content-center widget_notification"
+        class="flex absolute left-[20px] top-[-2px] items-center place-content-center widget_notification"
       >
         {#case badge[:feed_id] || e(current_user(@__context__), :character, badge[:feed_key], nil)}
           {#match feed_id}

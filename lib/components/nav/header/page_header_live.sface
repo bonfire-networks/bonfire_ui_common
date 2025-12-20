@@ -2,40 +2,36 @@
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center gap-3 justify-between w-full lg:flex-1">
       <div class="gap-3 flex items-center">
-        {#if @back}
-          <Bonfire.UI.Common.BackButtonLive back={@back} />
-        {#else}
+        <div class="xl:flex hidden">
+          <Bonfire.UI.Common.BackButtonLive :if={@back} back={@back} />
+        </div>
           {#if is_map(current_user(@__context__))}
-            <label for="sidebar-drawer" class="hidden lg:flex xl:hidden btn btn-circle btn-ghost btn-sm">
-              <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5" />
+            <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost btn-sm">
+              <div
+                style="border-width: 2px"
+                class="border rounded-full p-0 border-primary/50 border-2 hover:border-primary transition-colors relative"
+              >
+                <Bonfire.UI.Common.AvatarLive
+                  bg_class="rounded-full"
+                  class="inline-block object-cover cursor-pointer rounded-full w-10 h-10"
+                  src={Media.avatar_url(current_user(@__context__))}
+                  user_id={current_user_id(@__context__)}
+                />
+                <span
+                  style="bottom: -4px; right: -4px"
+                  class="rounded-full bg-base-100 absolute -right-1 -bottom-1"
+                >
+                  <#Icon iconify="ph:list-duotone" class="w-5 h-5 text-primary" />
+                </span>
+              </div>
             </label>
-            <LinkLive
-              to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
-              class="group flex lg:hidden"
-              parent_id="page_header"
-            >
-              <Bonfire.UI.Common.AvatarLive
-                bg_class="rounded-full"
-                class="inline-block object-cover w-full cursor-pointer w-8 h-8 rounded-full"
-                src={Media.avatar_url(current_user(@__context__))}
-                user_id={current_user_id(@__context__)}
-              /></LinkLive>
           {/if}
-          <!-- 
-            {#else} -->
-          <!-- <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost btn-sm">
-            <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5" />
-          </label> -->
-          <!--
-            
-          -->
-        {/if}
       </div>
 
       <div class="flex-1 truncate">
         <span
           data-page={@page}
-          class="first-letter:capitalize flex-1 font-bold text-base lg:text-lg text-base-content"
+          class="first-letter:capitalize flex-1 font-bold text-xl text-left lg:text-lg text-base-content"
         >
           {rich(@page_title)}
         </span>

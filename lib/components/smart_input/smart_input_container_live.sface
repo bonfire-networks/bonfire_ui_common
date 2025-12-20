@@ -1,6 +1,6 @@
 <div class="flex-1">
   <div>
-    <div class="sticky top-0 hidden lg:flex items-center flex-1 w-full justify-end lg:justify-start">
+    <div class="sticky top-0 flex items-center flex-1 w-full justify-end lg:justify-start">
       {!-- <Bonfire.UI.Common.SmartInputButtonsLive
       :if={!e(@smart_input_opts, :hide_buttons, nil)}
       smart_input_opts={@smart_input_opts}
@@ -17,7 +17,7 @@
         icon={e(@smart_input_opts, :icon, nil)}
         class={e(
           @composer_class,
-          "hidden !p-0 lg:!p-inherit md:flex h-[60px] w-[60px] lg:!min-h-auto lg:!px-[1rem] lg:!h-auto lg:!w-full btn btn-primary flex items-center gap-2 place-content-center normal-case"
+          "!p-0 lg:!p-inherit flex h-[60px] w-[60px] lg:!min-h-auto lg:!px-[1rem] lg:!h-auto lg:!w-full btn btn-primary flex items-center gap-2 place-content-center normal-case"
         )}
       />
 

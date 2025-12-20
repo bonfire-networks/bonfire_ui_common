@@ -159,14 +159,7 @@ textarea {
 }
 
 .prose-bonfire {
-  font-size: 16px;
   line-height: 140%;
-}
-
-@media (min-width: 640px) {
-  .prose-bonfire {
-    font-size: 15px;
-  }
 }
 
 .translated-content {

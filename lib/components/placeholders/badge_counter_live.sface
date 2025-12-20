@@ -2,14 +2,12 @@
   {#if @count > 0}
     <div
       :if={@count > 0}
-      class={
-        @counter_class,
-        "indicator-item w-[8px] h-[8px] !p-0 badge badge-primary badge-sm rounded-full bg-primary/50 border-0 ",
-        "!bg-primary":
-          Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)
-      }
-      title={l("%{amount} new notifications", amount: @count)}
-    ><span class="sr-only">{l("%{amount} new notifications", amount: @count)}</span>
+      class={@counter_class, 
+      "indicator-item badge badge-primary badge-xs rounded-full p-1",
+      "w-4 h-4": Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__) == true, 
+      "w-3 h-3": Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__) == false}
+      title={l("%{amount} new notifications", amount: @count)}>
+      <span class={"sr-only": Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__) == false }>{@count}</span>
     </div>
   {#else}
     <span class="sr-only">{l("No new notifications")}</span>
