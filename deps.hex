@@ -14,6 +14,7 @@ phoenix_ecto = "~> 4.6"
 # other:
 remote_ip = "~> 1.1"
 plug_cowboy = "~> 2.6"
+cors_plug = "~> 3.0"
 faker = "~> 0.18" # fake data generation, mostly for tests
 # phoenix_gon = "~> 0.4.0" # for JS config keys 
 #makedown = "~> 0.1.0"

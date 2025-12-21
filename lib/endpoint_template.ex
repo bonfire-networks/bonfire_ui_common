@@ -145,6 +145,9 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       plug :save_url_in_process
       plug :log_ip
 
+      # NOTE: configured in Bonfire.UI.Common.RuntimeConfig
+      plug CORSPlug, origin: &Bonfire.UI.Common.EndpointTemplate.cors_origin/1
+
       if System.get_env("TIDEWAVE_ENABLED") not in ["false", "0", "no"] and
            Code.ensure_loaded?(Tidewave) do
         # FIXME: remote access should be disabled but it's not working locally without for now
@@ -305,5 +308,24 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       # 60 days by default
       max_age: Config.get(:session_time_to_remember, 60 * 60 * 24 * 60)
     ]
+  end
+
+  def cors_origin(conn) do
+    # NOTE: configured in Bonfire.UI.Common.RuntimeConfig
+    cors_routes =
+      Application.get_env(:bonfire_ui_common, :cors_routes) || []
+
+    path = conn.request_path
+
+    Enum.find_value(cors_routes, [], fn
+      %{paths: prefixes, origins: origins} when is_list(prefixes) ->
+        if Enum.any?(prefixes, &String.starts_with?(path, &1)), do: origins
+
+      %{paths: prefix, origins: origins} when is_binary(prefix) ->
+        if String.starts_with?(path, prefix), do: origins
+
+      _ ->
+        []
+    end) || []
   end
 end
