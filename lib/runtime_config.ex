@@ -44,7 +44,7 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
           |> Enum.reject(&(is_nil(&1) or &1 == ""))
       },
       %{
-        paths: ["/api/v1", "/api/v2", "/api/v3"],
+        paths: "/api/",
         origins:
           ([url, System.get_env("API_REST_CORS_ORIGIN")] ++ extra_api_origins)
           |> Enum.reject(&(is_nil(&1) or &1 == ""))
