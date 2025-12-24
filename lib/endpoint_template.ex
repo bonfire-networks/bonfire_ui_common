@@ -20,7 +20,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       @no? ~w(false no 0)
 
       def log_ip(%{remote_ip: remote_ip} = conn, _) when not is_nil(remote_ip) do
-        with {:error, e} <- :inet.parse_ntoa(remote_ip) do
+        with {:error, e} <- :inet_parse.ntoa(remote_ip) do
           Logger.error(
             "Request from IP #{inspect(remote_ip)} (failed to parse IP: #{inspect(e)})"
           )
