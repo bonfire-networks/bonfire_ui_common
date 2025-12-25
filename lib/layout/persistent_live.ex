@@ -309,6 +309,6 @@ defmodule Bonfire.UI.Common.PersistentLive do
      |> assign(assigns)
      |> assign_global(context)
      #  |> assign_global(locales: e(assigns, :locales, nil) || e(context, :locales, nil))
-     |> flood("set assigns received for PersistentLive")}
+     |> debug("set assigns received for PersistentLive")}
   end
 end
