@@ -9,22 +9,32 @@
       </div>
     </div>
   </div>
-  <div class="flex flex-col flex-1 mt-4 h-full px-3 lg:px-0" :if={current_user(@__context__)}>
-    <Bonfire.UI.Common.ExtensionMenuNavLive
-      parent_id="nav_sidebar"
-      selected_tab={@selected_tab}
-      page={@page}
-      nav_items={@nav_items}
-    />
-    <Bonfire.UI.Common.SidebarWidgetsLive
-      widgets={@sidebar_widgets}
-      key={:main}
-      page={@page}
-      selected_tab={@selected_tab}
-    />
-  </div>
 
-  {#if !current_user_id(@__context__)}
+  {#if current_user_id(@__context__)}
+    <div class="flex flex-col flex-1 mt-4 h-full px-3 lg:px-0">
+      {#if @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
+        <div class="w-full mb-3 block lg:hidden">
+          <StatelessComponent
+            module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
+            search_limit={5}
+          />
+        </div>
+      {/if}
+
+      <Bonfire.UI.Common.ExtensionMenuNavLive
+        parent_id="nav_sidebar"
+        selected_tab={@selected_tab}
+        page={@page}
+        nav_items={@nav_items}
+      />
+      <Bonfire.UI.Common.SidebarWidgetsLive
+        widgets={@sidebar_widgets}
+        key={:main}
+        page={@page}
+        selected_tab={@selected_tab}
+      />
+    </div>
+  {#else}
     <nav class="mt-4 mx-3 lg:mx-0">
       <ul class="menu p-0 w-full gap-0">
         <li class="p-0 m-0">

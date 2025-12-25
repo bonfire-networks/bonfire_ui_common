@@ -10,7 +10,7 @@
 >
   {!-- <div
         data-id="layout"
-        data-two-columns={@without_secondary_widgets && !@without_sidebar}
+        data-two-columns={@without_secondary_widgets==true && !@without_sidebar}
         data-single-column={@without_sidebar}
         class="lg:max-w-[var(--spacing-1190)] lg:grid-main lg:grid-full w-full px-0 md:px-4 grid gap-0 md:gap-4 widget xl:px-0 mx-auto"
       >
@@ -25,7 +25,7 @@
     <div class="drawer-content px-safe">
       <div
         data-id="layout"
-        data-two-columns={@without_secondary_widgets && !@without_sidebar}
+        data-two-columns={@without_secondary_widgets==true && !@without_sidebar}
         data-single-column={@without_sidebar}
         class="grid gap-3 px-0 lg:grid-main"
       >
@@ -63,9 +63,10 @@
                 <div
                   id="inner"
                   class={
-                    "flex flex-col min-h-[calc(var(--inner-window-height))] bg-base-100 pb-4 md:pb-[1px] border-x border-base-content/10",
+                    "flex flex-col bg-base-100 pb-4 md:pb-[1px] border-x border-base-content/10",
                     hidden: @hide_main,
-                    "border-none": @no_header == true && is_nil(current_user(@__context__))
+                    "border-none": @no_header == true && is_nil(current_user(@__context__)), 
+                    "min-h-[calc(var(--inner-window-height))]": @without_secondary_widgets != :never
                   }
                 >
                   <div
@@ -99,8 +100,12 @@
           </div>
         </div>
         <div
-          :if={!@without_secondary_widgets}
-          class="hidden lg:block order-first md:order-none md:static z-[999]"
+          :if={@without_secondary_widgets !=true}
+          class={[
+            "z-[999]", 
+            "hidden order-first md:order-none md:static lg:block": @without_secondary_widgets != :never,
+          "block order-none static px-2 lg:px-0": @without_secondary_widgets == :never
+          ]}
         >
           <div
             data-id="right_nav_and_widgets"
@@ -108,7 +113,9 @@
           >
             
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
-              <div class="w-full mb-3">
+              <div class={["w-full mb-3 hidden lg:block",
+                "md:hidden lg:block": @without_secondary_widgets != :never
+              ]}>
                 <StatelessComponent
                   module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
                   search_limit={5}
@@ -117,7 +124,7 @@
             {/if}
             <div
               data-id="secondary_sidebar_widgets"
-              class="hidden overflow-x-hidden overflow-y-auto md:block max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
+              class="overflow-x-hidden overflow-y-auto max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
             >
               <Bonfire.UI.Common.SidebarWidgetsLive
                 widgets={@sidebar_widgets}
@@ -173,7 +180,9 @@
       </aside>
     </div>
   </div>
-  <!-- <div
+  {!-- 
+  Old mobile bottom nav:
+  <div
     :if={@no_header != true || current_user(@__context__)}
     class="dock bg-base-100/80 backdrop-blur-sm z-[9999999999999999] lg:hidden"
     >
@@ -248,7 +257,7 @@
     >
       {l("Signup")}
     </LinkLive>
-  </div> -->
+  </div> --}
 </div>
 <Bonfire.UI.Common.ReusableModalLive id="modal" />
 <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} />
