@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bonfire</title>
+    <style>
+        body {
+            font-family: system-ui;
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Enter the domain name of your Bonfire instance</h1>
+    <input type="url" id="urlInput" placeholder="yourinstance.org" />
+    <button onclick="loadUrl()">Load</button>
+
+<script>
+        // Load saved URL on startup
+        const savedUrl = localStorage.getItem('appUrl') || '';
+        document.getElementById('urlInput').value = savedUrl;
+
+        function loadUrl() {
+            let domain = document.getElementById('urlInput').value;
+            if (!domain) return;
+
+            localStorage.setItem('appUrl', domain);
+
+            domain = domain.indexOf('http://') === 0 ? domain.replace('http://', 'https://') : (domain.indexOf('https://') !== 0 ? 'https://' + domain : domain);
+
+            const url = URL.parse("/dashboard", domain);
+
+            window.location.href = url;
+        }
+</script>
+</body>
+
+</html>
