@@ -161,8 +161,8 @@ defmodule Bonfire.UI.Common.ErrorView do
   defp reason(reason) when is_atom(reason), do: Bonfire.Fail.get_error_msg(reason) || reason
   defp reason(reason) when not is_map(reason), do: inspect(reason)
 
-  defp reason(_other) do
-    # debug(other)
+  defp reason(other) do
+    error(other, "unknown error")
     nil
   end
 
