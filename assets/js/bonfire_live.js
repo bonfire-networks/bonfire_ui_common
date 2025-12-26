@@ -152,3 +152,4 @@ import ComponentHooks from "../../../../config/current_flavour/assets/hooks/inde
 // Add Extensions' Hooks... 
 Object.assign(liveSocket.hooks, ExtensionHooks, DraggableHooks, ComponentHooks, CopyHooks, TooltipHooks, ScrollHooks, TranslateHooks);
 // test change
+

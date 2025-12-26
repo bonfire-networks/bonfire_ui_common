@@ -46,6 +46,36 @@
 
             window.location.href = url;
         }
+
+        // (async () => {
+        //     const openmls = await import(
+        //         "local://tauri-local-scripts.js"
+        //     );
+
+        //     await openmls.default();
+        // })();
+
+        // how to use on JS served by server:
+        // (async () => {
+        //         const openmls = await import(
+        //             "local://tauri-local-scripts.js"
+        //         );
+
+        //         await openmls.default();
+        //     })();
+
+        // (async () => {
+        //         await OpenMLSModule({ wasmBinary: window.__openmls_wasm });
+        //     console.log("OpenMLSModule loaded");
+        //     })();
+                // console.log("OpenMLSModule", OpenMLSModule);
+
+                if (window.__openmls_wasm) {
+                        console.log("WASM module is injected and ready");
+                    } else {
+                        console.log("WASM module not available");
+                    }
+
 </script>
 </body>
 
