@@ -93,8 +93,14 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
       if socket_connected?, do: Phoenix.LiveView.get_connect_params(socket), else: %{}
 
     user_ip =
-      if peer_data = maybe_get_connect_info(socket, :peer_data),
-        do: peer_data.address |> :inet_parse.ntoa() |> to_string()
+      if peer_data = maybe_get_connect_info(socket, :peer_data) do
+        with {:error, e} <- :inet_parse.ntoa(peer_data.address) do
+          nil
+        else
+          ip ->
+            to_string(ip)
+        end
+      end
 
     {:ok,
      if(module_enabled?(Surface), do: Surface.init(socket), else: socket)
@@ -104,7 +110,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        current_extension: current_extension,
        current_params: params,
        user_agent: maybe_get_connect_info(socket, :user_agent),
-       user_ip: user_ip |> debug("user_ip"),
+       user_ip: user_ip,
        #  connect_params: connect_params,
        csrf_socket_token: connect_params["_csrf_token"],
        live_action: e(assigns(socket), :live_action, nil),
