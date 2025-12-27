@@ -16,6 +16,7 @@
         <div class="w-full mb-3 block lg:hidden">
           <StatelessComponent
             module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
+            id="nav-search"
             search_limit={5}
           />
         </div>

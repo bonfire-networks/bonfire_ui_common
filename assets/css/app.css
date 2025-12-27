@@ -109,6 +109,9 @@ a,
   default: true;
   --color-primary: oklch(52.85% 0.2 251.26);
   --color-primary-content: #ffffff;
+  --radius-selector: 1rem;
+  --radius-field: 2rem;
+  --radius-box: 1rem;
 }
 
 @plugin "daisyui/theme" {
@@ -116,6 +119,9 @@ a,
   prefersdark: true;
   --color-primary: oklch(52.85% 0.2 251.26);
   --color-primary-content: #ffffff;
+  --radius-selector: 1rem;
+  --radius-field: 2rem;
+  --radius-box: 1rem;
 }
 
 
