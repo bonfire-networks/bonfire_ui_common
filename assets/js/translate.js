@@ -16,7 +16,7 @@
         <option value="fr">French</option>
     </select>
 
-    <button class="translate-btn btn btn-sm btn-ghost" phx-update="ignore">
+    <button class="translate-btn btn btn-sm btn-ghost" style="display: none;" phx-update="ignore">
         <span class="loading-spinner"></span>
         Translate
     </button>
@@ -128,6 +128,9 @@ TranslateHooks.Translate = {
     if (hideReason) {
       this.hideButton(hideReason);
       return;
+    } else {
+      this.logger.log('Translation available, button will be shown');
+      this.btn.style.display = '';
     }
 
     this.logger.log('Found', this.translatables.length, 'translatable elements');
