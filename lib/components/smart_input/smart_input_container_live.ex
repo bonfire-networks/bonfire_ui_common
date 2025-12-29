@@ -102,37 +102,60 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       )
       when is_map(new_smart_input_opts) and is_map(old_smart_input_opts) do
     merged_opts = Map.merge(old_smart_input_opts, new_smart_input_opts)
+    reset_value = Map.get(assigns, :reset_smart_input, false)
+
+    # When reset is requested via fallback path, ask parent LiveView to push events
+    if reset_value, do: send(self(), {:push_smart_input_reset_events})
 
     {:ok,
      socket
      |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
      |> assign(preserve_reply_state(assigns, socket))
-     |> assign(:smart_input_opts, merged_opts)}
+     |> assign(:smart_input_opts, merged_opts)
+     |> assign(:reset_smart_input, reset_value)}
   end
 
   # Default update handler
   def update(assigns, socket) do
+    reset_value = Map.get(assigns, :reset_smart_input, false)
+
+    # When reset is requested via fallback path (not through PersistentLive's handle_info),
+    # ask parent LiveView to push events since LiveComponents cannot push_event directly
+    if reset_value, do: send(self(), {:push_smart_input_reset_events})
+
     # Custom emojis are loaded lazily when the emoji picker is opened
     {:ok,
      socket
      |> assign(preserve_reply_state(assigns, socket))
      |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
-     |> assign(reset_smart_input: false, custom_emojis: "[]")}
+     |> assign(reset_smart_input: reset_value, custom_emojis: "[]")}
   end
 
   # Preserve reply state fields if they exist and incoming values are nil
   # This ensures minimize/maximize doesn't clear the reply_to state
+  # Unless clear_reply_data: true is set (from remove_data handler or smart_input_opts)
   defp preserve_reply_state(assigns, socket) do
-    assigns
-    |> maybe_preserve_assign(:activity, e(assigns(socket), :activity, nil))
-    |> maybe_preserve_assign(:object, e(assigns(socket), :object, nil))
-    |> maybe_preserve_assign(:reply_to_id, e(assigns(socket), :reply_to_id, nil))
-    |> maybe_preserve_assign(:to_boundaries, e(assigns(socket), :to_boundaries, nil))
+    # Check for clear_reply_data flag at top level or inside smart_input_opts
+    clear_reply_data =
+      Map.get(assigns, :clear_reply_data, false) ||
+        e(assigns, :smart_input_opts, :clear_reply_data, false)
+
+    # If clear_reply_data flag is set, don't preserve (allow clearing)
+    if clear_reply_data do
+      assigns
+    else
+      assigns
+      |> maybe_preserve_assign(:activity, e(assigns(socket), :activity, nil))
+      |> maybe_preserve_assign(:object, e(assigns(socket), :object, nil))
+      |> maybe_preserve_assign(:reply_to_id, e(assigns(socket), :reply_to_id, nil))
+      |> maybe_preserve_assign(:to_boundaries, e(assigns(socket), :to_boundaries, nil))
+    end
   end
 
   defp maybe_preserve_assign(assigns, key, nil), do: assigns
 
   defp maybe_preserve_assign(assigns, key, existing_value) do
+    # Preserve existing value if incoming is nil (e.g., during minimize/maximize)
     if Map.get(assigns, key) == nil do
       Map.put(assigns, key, existing_value)
     else
@@ -141,7 +164,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   end
 
   def handle_event(_action, _attrs, socket) do
-    socket |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
+    {:noreply, socket} |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
   end
 
   # Removed the handle_info handler to avoid conflicts with PersistentLive

@@ -244,11 +244,14 @@ article.unread-activity {
   outline: none;
 }
 
-/* Placeholder styling */
-.milkdown-placeholder {
+/* Placeholder styling via ::before on empty paragraph */
+.milkdown-editor p.is-empty:first-child::before {
+  content: attr(data-placeholder);
   color: var(--color-text-muted, #9ca3af);
   pointer-events: none;
   font-style: italic;
+  float: left;
+  height: 0;
 }
 
 .avatar-compact {

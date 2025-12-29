@@ -4,7 +4,11 @@
       {!-- here was old/loader.svg --}
       <div id="composer_wrapper" class="h-full flex flex-col">
         <div class="h-full flex flex-col flex-1 grow relative">
-          <div class="sensitive_alert alert-soft alert hidden alert-warning m-2 p-2 cursor-pointer">
+          <div
+            id="sensitive_alert"
+            phx-update="ignore"
+            class="sensitive_alert alert-soft alert hidden alert-warning m-2 p-2 cursor-pointer"
+          >
             <span>{l("This activity is marked as sensitive.")}
               <span
                 phx-click={JS.show(to: "#smart_input_summary")
@@ -18,7 +22,7 @@
             class="hidden"
             :if={@enable_thread_title}
             id="smart_input_post_title"
-            phx-update={if @reset_smart_input, do: "replace", else: "ignore"}
+            phx-update="ignore"
           >
             <div class="relative p-2 bg-base-100">
               <label class="input w-full">
@@ -35,10 +39,10 @@
             </div>
           </div>
 
-          {!-- fixed phx-update behavior to properly reset CW field --}
+          {!-- Summary/CW field - use phx-update="ignore" and JS reset --}
           <div
-            phx-update={if @reset_smart_input, do: "replace", else: "ignore"}
-            class={if !e(@smart_input_opts, :cw, nil), do: "hidden"}
+            phx-update="ignore"
+            class="hidden"
             id="smart_input_summary"
           >
             <div class="px-2 pb-2">
@@ -64,7 +68,7 @@
             :if={e(@smart_input_opts, :create_object_type, nil) in [:post, "post", nil]}
             class="relative p-2 bg-base-100 hidden"
             id="smart_input_scheduled_at"
-            phx-update={if @reset_smart_input, do: "replace", else: "ignore"}
+            phx-update="ignore"
           >
             <label class="input w-full">
               <span class="text-xs uppercase text-base-content/70">{l("Schedule")}</span>
@@ -181,7 +185,12 @@
                   {l "Create an article"}</button></li>
                   </ul>
                 </div> -->
-              <div data-tip={l("Add a summary")} class="tooltip tooltip-top">
+              <div
+                id="summary_btn_wrapper"
+                phx-update="ignore"
+                data-tip={l("Add a summary")}
+                class="tooltip tooltip-top"
+              >
                 <button
                   type="button"
                   id="summary_btn"
@@ -195,7 +204,12 @@
               </div>
 
               {!-- |> JS.show(to: "#smart_input_summary") --}
-              <div data-tip={l("Add a title")} class="tooltip tooltip-top">
+              <div
+                id="title_btn_wrapper"
+                phx-update="ignore"
+                data-tip={l("Add a title")}
+                class="tooltip tooltip-top"
+              >
                 <button
                   :if={@enable_thread_title}
                   type="button"

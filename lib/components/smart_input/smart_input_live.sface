@@ -128,6 +128,7 @@
                 <:action_btns>
                   <button
                     phx-click={JS.push("Bonfire.UI.Common.SmartInput:reset_to_default")
+                    |> LiveHandler.minimize()
                     |> JS.hide(to: "#smart_input_summary")
                     |> JS.hide(to: "#smart_input_post_title")}
                     phx-target="#smart_input"

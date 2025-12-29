@@ -208,7 +208,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
               "no `#{@session_key}` value available in context so can't send to sticky LV (if used)"
             )
 
-            :skip
+            nil
         end
     end
   end
@@ -256,12 +256,21 @@ defmodule Bonfire.UI.Common.PersistentLive do
   end
 
   def handle_info({:assign_persistent_self, {:smart_input, assigns}}, socket) do
-    debug("forward assigns from PersistentLive to the SmartInputContainerLive stateful component")
+    assigns_map = assigns |> Map.new()
 
-    assigns
-    |> Map.new()
+    assigns_map
     |> Map.put_new(:smart_input_component, nil)
     |> maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, ...)
+
+    # Push reset event to Milkdown hook when reset is requested
+    socket =
+      if assigns_map[:reset_smart_input] do
+        socket
+        |> Phoenix.LiveView.push_event("smart_input:reset", %{})
+        |> Phoenix.LiveView.push_event("smart_input:reset_sensitive", %{})
+      else
+        socket
+      end
 
     {:noreply, socket}
   end
@@ -310,5 +319,14 @@ defmodule Bonfire.UI.Common.PersistentLive do
      |> assign_global(context)
      #  |> assign_global(locales: e(assigns, :locales, nil) || e(context, :locales, nil))
      |> debug("set assigns received for PersistentLive")}
+  end
+
+  # Handle request from SmartInputContainerLive to push reset events
+  # (needed when maybe_send fails and falls back to direct component update)
+  def handle_info({:push_smart_input_reset_events}, socket) do
+    {:noreply,
+     socket
+     |> Phoenix.LiveView.push_event("smart_input:reset", %{})
+     |> Phoenix.LiveView.push_event("smart_input:reset_sensitive", %{})}
   end
 end

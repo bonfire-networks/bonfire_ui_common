@@ -83,6 +83,48 @@ window.addEventListener("phx:js-exec-attr-event", ({ detail }) => {
 	console.log(detail);
 	JS_exec_attr_event(detail.to, detail.attr);
 });
+
+// Execute JS commands directly from the server
+// Usage: push_event(socket, "js-exec", %{to: "#selector", js: JS.hide() |> JS.encode()})
+window.addEventListener("phx:js-exec", ({ detail }) => {
+	console.log("js-exec", detail);
+	const target = document.querySelector(detail.to);
+	if (target && detail.js) {
+		liveSocket.execJS(target, detail.js);
+	}
+});
+
+// Reset composer UI after posting (must use execJS to clear LiveView's sticky state)
+window.addEventListener("phx:smart_input:reset_sensitive", () => {
+	const container = document.getElementById("smart_input") || document.body;
+
+	const commands = [
+		["hide", { to: "#smart_input_summary", time: 0 }],
+		["hide", { to: "#smart_input_post_title", time: 0 }],
+		["hide", { to: "#smart_input_scheduled_at", time: 0 }],
+		["hide", { to: ".sensitive_alert", time: 0 }],
+		["remove_class", { to: "#sensitive_btn label", names: ["bg-warning", "text-warning-content"] }],
+		["remove_class", { to: "#summary_btn", names: ["btn-active"] }],
+		["remove_class", { to: "#title_btn", names: ["btn-active"] }],
+		["remove_class", { to: "#scheduled_at_btn", names: ["btn-active"] }]
+	];
+
+	commands.forEach(([cmd, opts]) => {
+		try {
+			liveSocket.execJS(container, JSON.stringify([[cmd, opts]]));
+		} catch (e) {}
+	});
+
+	// Clear form values
+	const checkbox = document.querySelector("#sensitive_btn input[type='checkbox']");
+	if (checkbox) checkbox.checked = false;
+
+	["#smart_input_summary textarea", "#smart_input_post_title input", "#smart_input_scheduled_at input"].forEach(sel => {
+		const el = document.querySelector(sel);
+		if (el) el.value = "";
+	});
+});
+
 // window.addEventListener("phx:js-show", ({ detail }) => {
 //   document.querySelectorAll(detail.to).forEach(el =>
 //     JS_exec(detail.to, "show")

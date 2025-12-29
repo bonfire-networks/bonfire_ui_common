@@ -52,8 +52,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     replace_input_next_time(assigns(socket))
 
     set(socket,
-      # avoid double-reset
-      reset_smart_input: false,
+      # triggers reset events via PersistentLive or SmartInputContainerLive fallback
+      reset_smart_input: true,
       activity: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
@@ -232,6 +232,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # Only set reply_to_id if explicitly provided in params or opts
     final_reply_to_id = reply_to_param(params) || reply_to_param(opts)
 
+    # Extract clear_reply_data flag from opts to pass at top level for preserve_reply_state
+    clear_reply_data = e(opts, :clear_reply_data, false) || e(params, "clear_reply_data", false)
+
     set_assigns =
       [
         smart_input_component:
@@ -248,6 +251,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       ]
       |> maybe_put(:reply_to_id, final_reply_to_id)
       |> maybe_put(:to_boundaries, final_to_boundaries)
+      |> maybe_put(:clear_reply_data, clear_reply_data)
 
     {:noreply,
      socket
@@ -257,14 +261,18 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def handle_event("remove_data", _params, socket) do
-    {:noreply,
-     assign(socket,
-       activity: nil,
-       object: nil,
-       # default to replying to current thread
-       reply_to_id: e(assigns(socket), :thread_id, nil),
-       thread_id: nil
-     )}
+    # Use set() to route through PersistentLive and update SmartInputContainerLive
+    # The clear_reply_data flag tells preserve_reply_state to allow clearing these values
+    set(socket,
+      activity: nil,
+      object: nil,
+      # default to replying to current thread
+      reply_to_id: e(assigns(socket), :thread_id, nil),
+      thread_id: nil,
+      clear_reply_data: true
+    )
+
+    {:noreply, socket}
   end
 
   def handle_event(action, params, socket)
@@ -304,10 +312,11 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       |> debug("drafting in validation")
 
     # Update the socket's own smart_input_opts
+    # Preserve reset_smart_input if it's already true (don't overwrite after successful post)
     socket =
       socket
       |> assign(
-        reset_smart_input: false,
+        reset_smart_input: e(assigns(socket), :reset_smart_input, false),
         smart_input_opts:
           Enum.into(
             %{
@@ -558,8 +567,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   Set assigns in the smart input from anywhere in the app (whether using a live component or sticky live view)
   """
   def set(context, assigns) do
-    debug(assigns, "set assigns")
-
     Bonfire.UI.Common.PersistentLive.maybe_send(context, {:smart_input, assigns}) ||
       maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, assigns)
   end
@@ -603,7 +610,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def reset_input(%{assigns: %{showing_within: :thread}} = socket) do
     # debug("THREad")
-    replace_input_next_time(assigns(socket))
 
     # Set default reset state
     default_opts = %{
@@ -615,9 +621,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       cw: nil
     }
 
+    # Send message to update smart input component assigns (side effect)
     set(socket,
-      # avoid double-reset
-      reset_smart_input: false,
+      # trigger phx-update="replace" for elements that need resetting
+      reset_smart_input: true,
       activity: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
@@ -629,21 +636,20 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def reset_input(%{assigns: %{showing_within: :messages}} = socket) do
-    # debug("messages")
-    replace_input_next_time(socket)
-
     # Set default reset state
     default_opts = %{
       input_status: nil,
       open: false,
       text_suggestion: nil,
       text: nil,
+      title: nil,
       cw: nil
     }
 
+    # Send message to update smart input component assigns (side effect)
     set(socket,
-      # avoid double-reset
-      reset_smart_input: false,
+      # trigger phx-update="replace" for elements that need resetting
+      reset_smart_input: true,
       activity: nil,
       to_circles: [],
       smart_input_opts: default_opts
@@ -653,21 +659,21 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def reset_input(socket) do
-    replace_input_next_time(socket)
-
     # Set default reset state
     default_opts = %{
       input_status: nil,
       open: false,
       text_suggestion: nil,
       text: nil,
+      title: nil,
       create_object_type: nil,
       cw: nil
     }
 
+    # Send message to update smart input component assigns (side effect)
     set(socket,
-      # avoid double-reset
-      reset_smart_input: false,
+      # trigger phx-update="replace" for elements that need resetting
+      reset_smart_input: true,
       activity: nil,
       smart_input_component: nil,
       to_circles: [],
@@ -681,25 +687,11 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   defp do_extra_reset_input(socket) do
-    debug(
-      "=== DO_EXTRA_RESET_INPUT CALLED ===#{inspect(Process.info(self(), :current_stacktrace))}"
-    )
-
-    try do
-      socket
-      |> push_event("js-exec-attr-event", %{to: "#main_smart_input_button", attr: "phx-reset"})
-      |> push_event("smart_input:reset", %{})
-      # |> reset_submitting()
-      |> cancel_all_uploads()
-    rescue
-      error ->
-        debug(error, "Error during extra reset input")
-        socket
-    catch
-      error ->
-        debug(error, "Caught error during extra reset input")
-        socket
-    end
+    # Note: smart_input:reset events are pushed from PersistentLive (via maybe_send routing)
+    # because push_event is scoped to the LiveView that calls it
+    socket
+    |> push_event("js-exec-attr-event", %{to: "#main_smart_input_button", attr: "phx-reset"})
+    |> cancel_all_uploads()
   end
 
   def toggle_expanded(js \\ %JS{}, target, btn, class) when is_binary(class) do
