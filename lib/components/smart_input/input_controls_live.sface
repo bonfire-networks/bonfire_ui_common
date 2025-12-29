@@ -18,12 +18,7 @@
                 type="button"
               >{l("Add a summary to explain the reason.")}</span></span>
           </div>
-          <div
-            class="hidden"
-            :if={@enable_thread_title}
-            id="smart_input_post_title"
-            phx-update="ignore"
-          >
+          <div class="hidden" :if={@enable_thread_title} id="smart_input_post_title" phx-update="ignore">
             <div class="relative p-2 bg-base-100">
               <label class="input w-full">
                 <#Icon iconify="ph:text-h-one-duotone" class="w-4 h-4 opacity-50" />
@@ -40,11 +35,7 @@
           </div>
 
           {!-- Summary/CW field - use phx-update="ignore" and JS reset --}
-          <div
-            phx-update="ignore"
-            class="hidden"
-            id="smart_input_summary"
-          >
+          <div phx-update="ignore" class="hidden" id="smart_input_summary">
             <div class="px-2 pb-2">
               <label class="relative w-full">
                 <!-- <#Icon iconify="heroicons-outline:menu-alt-2" class="w-4 h-4 absolute left-2 top-2" /> -->
