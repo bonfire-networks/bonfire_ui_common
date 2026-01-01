@@ -137,6 +137,10 @@ textarea {
     font-size: 16px;
 }
 
+textarea {
+  border-radius: 4px !important;
+}
+
 @media (min-width: 640px) {
   input[type="text"],
   input[type="email"],
