@@ -55,6 +55,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       # triggers reset events via PersistentLive or SmartInputContainerLive fallback
       reset_smart_input: true,
       activity: nil,
+      object: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
@@ -67,7 +68,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         text: nil,
         title: nil,
         cw: nil
-      }
+      },
+      # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
+      clear_reply_data: true
     )
 
     {:noreply, do_extra_reset_input(socket)}
@@ -628,10 +631,13 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       # trigger phx-update="replace" for elements that need resetting
       reset_smart_input: true,
       activity: nil,
+      object: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
-      smart_input_opts: default_opts
+      smart_input_opts: default_opts,
+      # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
+      clear_reply_data: true
     )
 
     do_extra_reset_input(socket)
@@ -653,8 +659,11 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       # trigger phx-update="replace" for elements that need resetting
       reset_smart_input: true,
       activity: nil,
+      object: nil,
       to_circles: [],
-      smart_input_opts: default_opts
+      smart_input_opts: default_opts,
+      # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
+      clear_reply_data: true
     )
 
     do_extra_reset_input(socket)
@@ -677,12 +686,15 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       # trigger phx-update="replace" for elements that need resetting
       reset_smart_input: true,
       activity: nil,
+      object: nil,
       smart_input_component: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
       thread_id: nil,
       to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
-      smart_input_opts: default_opts
+      smart_input_opts: default_opts,
+      # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
+      clear_reply_data: true
     )
 
     do_extra_reset_input(socket)
