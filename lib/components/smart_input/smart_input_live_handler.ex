@@ -572,7 +572,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def open_with_text_suggestion(text, set_assigns, socket_or_context) do
-    replace_input_next_time(socket_or_context)
+    # NOTE: Do NOT call replace_input_next_time here - it triggers a reset event that
+    # can race with the mention_suggestions event, causing mentions to flash and disappear.
+    # The reset_smart_input: false below is sufficient to prevent resetting.
 
     # Get current smart_input_opts if available
     current_opts = e(socket_or_context, :assigns, :smart_input_opts, %{})
