@@ -7,18 +7,30 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
   @custom_themes_path "assets/css/custom_themes.css"
   # Regex pattern defined as a function to comply with Erlang/OTP 28
   defp daisyui_config_pattern, do: ~r/@plugin "daisyui" \{[^}]*\}/s
-  defp app_css_path do 
+
+  defp app_css_path do
     cond do
-      File.exists?(@app_css_path) -> @app_css_path
-      File.exists?("extensions/bonfire_ui_common/#{@app_css_path}") -> @app_css_path
-      File.exists?("deps/bonfire_ui_common/#{@app_css_path}") -> "deps/bonfire_ui_common/#{@app_css_path}"
+      File.exists?(@app_css_path) ->
+        @app_css_path
+
+      File.exists?("extensions/bonfire_ui_common/#{@app_css_path}") ->
+        @app_css_path
+
+      File.exists?("deps/bonfire_ui_common/#{@app_css_path}") ->
+        "deps/bonfire_ui_common/#{@app_css_path}"
     end
   end
-  defp custom_themes_path do 
+
+  defp custom_themes_path do
     cond do
-      File.exists?(@custom_themes_path) -> @custom_themes_path
-      File.exists?("extensions/bonfire_ui_common/#{@custom_themes_path}") -> @custom_themes_path
-      File.exists?("deps/bonfire_ui_common/#{@custom_themes_path}") -> "deps/bonfire_ui_common/#{@custom_themes_path}"
+      File.exists?(@custom_themes_path) ->
+        @custom_themes_path
+
+      File.exists?("extensions/bonfire_ui_common/#{@custom_themes_path}") ->
+        @custom_themes_path
+
+      File.exists?("deps/bonfire_ui_common/#{@custom_themes_path}") ->
+        "deps/bonfire_ui_common/#{@custom_themes_path}"
     end
   end
 
