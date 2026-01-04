@@ -28,6 +28,11 @@ body {
 }
 
 
+
+.max-h-liveselect {
+  max-height: 150px !important; 
+}
+
 .h-20 {
   height: 5rem; /* 80px */
 }
@@ -365,10 +370,6 @@ hex-input::part(input) {
 }
 
 
-
-.max-h-liveselect {
-  max-height: 200px;
-}
 
 /* Player and controls styling */
 media-player {
