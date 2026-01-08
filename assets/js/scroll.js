@@ -13,4 +13,15 @@ ScrollHooks.ScrollTo = {
 	}
 }
 
+ScrollHooks.CarouselScroll = {
+	mounted() {
+		this.el.addEventListener("scroll-left", () => {
+			this.el.scrollBy({ left: -300, behavior: "smooth" });
+		});
+		this.el.addEventListener("scroll-right", () => {
+			this.el.scrollBy({ left: 300, behavior: "smooth" });
+		});
+	}
+}
+
 export { ScrollHooks };
