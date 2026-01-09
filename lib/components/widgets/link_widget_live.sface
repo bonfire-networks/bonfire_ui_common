@@ -39,7 +39,7 @@
           not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
       } 
     >--}
-  <span class="opacity-80 font-bold text-base">{localise_dynamic(
+  <span class="opacity-80 font-semibold text-base">{localise_dynamic(
       @text || @widget[:text] || @widget[:name],
       @widget[:extension] || @widget[:module] || __MODULE__
     )}</span>
