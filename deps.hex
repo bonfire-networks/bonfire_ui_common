@@ -1,6 +1,6 @@
 ~> 0.2"
 "~> 0.3"
-iconify_ex = "~> 0.6"
+iconify_ex = "~> 0.7.1"
 jason = "~> 1.4.0" # json parsing
 # phoenix framework:
 surface = "~> 0.12.0"
