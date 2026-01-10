@@ -105,7 +105,7 @@
             }
           >
             <span class="sr-only">{l("Close")}</span>
-            <#Icon outline="X" class="w-5 h-5" />
+            <#Icon iconify="ph:x-duotone" class="w-5 h-5" />
           </button>
         </div>
       </div>
