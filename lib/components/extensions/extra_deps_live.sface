@@ -8,7 +8,7 @@
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
       <span>{l("Data Schemas")}</span>
     </div>
-    <div class="flex flex-col divide-y divide-base-content/10">
+    <div class="flex flex-col divide-y divide-base-content/20">
       {#for dep <- e(@data, :schemas, nil) || @schemas}
         <Bonfire.UI.Common.ExtensionsDetailsLive
           dep={dep}
@@ -24,7 +24,7 @@
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
       <span>{l("Bonfire Ecosystem Libraries")}</span>
     </div>
-    <div class="flex flex-col divide-y divide-base-content/10">
+    <div class="flex flex-col divide-y divide-base-content/20">
       {#for dep <- e(@data, :ecosystem_libs, nil) || @ecosystem_libs}
         <Bonfire.UI.Common.ExtensionsDetailsLive
           dep={dep}
@@ -40,7 +40,7 @@
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
       <span>{l("Third-party Libraries")}</span>
     </div>
-    <div class="flex flex-col divide-y divide-base-content/10">
+    <div class="flex flex-col divide-y divide-base-content/20">
       {#for dep <- e(@data, :other_deps, nil) || @other_deps}
         <Bonfire.UI.Common.ExtensionsDetailsLive
           dep={dep}

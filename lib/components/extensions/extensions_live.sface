@@ -44,7 +44,7 @@
         )}
       </div>
     </div>
-    <div class="flex flex-col divide-y divide-base-content/10">
+    <div class="flex flex-col divide-y divide-base-content/20">
       {#for dep <- e(@data, :ui, nil) || @ui}
         <Bonfire.UI.Common.ExtensionsDetailsLive
           dep={with_extension_info(dep)}
@@ -65,7 +65,7 @@
         )}
       </div>
     </div>
-    <div class="flex flex-col divide-y divide-base-content/10">
+    <div class="flex flex-col divide-y divide-base-content/20">
       {#for dep <- e(@data, :feature_extensions, nil) || @feature_extensions}
         <Bonfire.UI.Common.ExtensionsDetailsLive
           dep={with_extension_info(dep)}
@@ -84,7 +84,7 @@
           "These extensions can't be disabled at the moment without affecting this flavour's user experience, but a lot of the functionality they provide can be changed, extended, or replaced by other extensions."
         )}</p>
     </div>
-    <div class="flex flex-col divide-y divide-base-content/10">
+    <div class="flex flex-col divide-y divide-base-content/20">
       {#for dep <- e(@data, :required, nil) || []}
         <Bonfire.UI.Common.ExtensionsDetailsLive
           dep={with_extension_info(dep)}

@@ -4,7 +4,7 @@
   class="p-2 pt-0 uploads_preview"
 >
   <!-- phx-update="ignore" -->
-  <div class="flex flex-col p-2 bg-base-content/5 gap-2 dividy-y divide-base-content/10 rounded-xl">
+  <div class="flex flex-col p-2 bg-base-content/5 gap-2 dividy-y divide-base-content/20 rounded-xl">
     {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
       <article
         id={to_string(i) <> deterministic_dom_id(__MODULE__, i, "upload-preview-entry", @parent_id)}
