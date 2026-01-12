@@ -32,7 +32,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       text_input_extra_class="input input-ghost bg-base-content/5 rounded-full w-full"
       container_extra_class="w-full flex flex-col"
       tag_class="badge badge-primary rounded-full badge-lg gap-2"
-      dropdown_extra_class="z-50 max-h-liveselect flex-nowrap border border-base-content/10 !bg-base-100 overflow-y-auto top-12"
+      dropdown_extra_class="z-50 max-h-liveselect flex-nowrap border border-base-content/20 !bg-base-100 overflow-y-auto top-12"
       tags_container_class="flex flex-wrap gap-1 order-last mt-2"
       value_mapper={&value_mapper/1}
     >

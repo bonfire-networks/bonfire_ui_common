@@ -1,4 +1,4 @@
-<div class="w-full px-4 bg-base-100 mx-auto pt-safe border-b border-base-content/10 border-x">
+<div class="w-full px-4 bg-base-100 mx-auto pt-safe border-b border-base-content/20 border-x">
   <div class="relative z-[999999] mx-auto !p-0 !m-0 navbar">
     <div class="navbar-start">
       <Bonfire.UI.Common.LogoLinkLive name_class="text-xl font-bold text-base-content block" href="/" />
@@ -55,7 +55,7 @@
           <ul
             tabindex="0"
             style=""
-            class="tooltip z-[99999999] menu shadow-lg bg-base-100 shadow-xl border border-base-content/10 rounded-xl w-60 absolute top-0 left-0 hidden"
+            class="tooltip z-[99999999] menu shadow-lg bg-base-100 shadow-xl border border-base-content/20 rounded-xl w-60 absolute top-0 left-0 hidden"
           >
             {#if !current_account(@__context__)}
               {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}

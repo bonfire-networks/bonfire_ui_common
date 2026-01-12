@@ -63,7 +63,7 @@
                 <div
                   id="inner"
                   class={
-                    "flex flex-col bg-base-100 pb-4 md:pb-[1px] border-x border-base-content/10",
+                    "flex flex-col bg-base-100 pb-4 md:pb-[1px] border-x border-base-content/20",
                     hidden: @hide_main,
                     "border-none": @no_header == true && is_nil(current_user(@__context__)), 
                     "min-h-[calc(var(--inner-window-height))]": @without_secondary_widgets != :never
@@ -71,7 +71,7 @@
                 >
                   <div
                     :if={!@no_header}
-                    class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 backdrop-blur-sm border-b border-base-content/10"
+                    class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 backdrop-blur-sm border-b border-base-content/20"
                   >
                     <div class="flex py-3 flex place-content-center flex-1 w-full transition-color duration-150 ease-in-out">
                       <StatelessComponent

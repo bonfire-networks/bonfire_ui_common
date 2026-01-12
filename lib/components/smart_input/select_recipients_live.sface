@@ -30,7 +30,7 @@
       label={@label || l("Search people")}
       form_input_name="select_recipient_multiselect"
       context_id={@context_id}
-      class="focus:outline-0 border-0 border-b h-10 rounded-none border-base-content/10 text-sm select_recipients_input"
+      class="focus:outline-0 border-0 border-b h-10 rounded-none border-base-content/20 text-sm select_recipients_input"
       implementation={:live_select}
       is_editable={@is_editable}
       show_search

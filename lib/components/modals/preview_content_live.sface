@@ -11,11 +11,11 @@
     id="the_preview_contents"
     class={if !e(@show, false),
       do: "hidden",
-      else: "min-h-screen-safe min-h-screen border-x border-base-content/10"}
+      else: "min-h-screen-safe min-h-screen border-x border-base-content/20"}
   >
     {!-- Modal background --}
     {!-- Header with back button --}
-    <div class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 backdrop-blur-sm border-b border-base-content/10">
+    <div class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 backdrop-blur-sm border-b border-base-content/20">
       <div
         role="banner"
         class="flex items-center place-content-center flex-1 w-full px-4  min-h-[58px]"
@@ -42,7 +42,7 @@
             </label>
             <ul
               tabindex="0"
-              class="tooltip z-[999] menu  bg-base-100 shadow-lg border rounded-xl border-base-content/10 w-60 absolute top-0 left-0 hidden"
+              class="tooltip z-[999] menu  bg-base-100 shadow-lg border rounded-xl border-base-content/20 w-60 absolute top-0 left-0 hidden"
             >
               <li class="menu-title">{l "Show replies as"}</li>
               <li><button class="flex justify-between items-center">

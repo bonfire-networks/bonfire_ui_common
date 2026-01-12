@@ -4,7 +4,7 @@
     )}</p>
 
   <div class="">
-    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
+    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/20">
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
       <span>{l("Data Schemas")}</span>
     </div>
@@ -20,7 +20,7 @@
   </div>
 
   <div class="">
-    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
+    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/20">
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
       <span>{l("Bonfire Ecosystem Libraries")}</span>
     </div>
@@ -36,7 +36,7 @@
   </div>
 
   <div class="">
-    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
+    <div class="p-4 text-xl font-bold flex items-center gap-4 border-b border-base-content/20">
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-base-content/80" /> -->
       <span>{l("Third-party Libraries")}</span>
     </div>

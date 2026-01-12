@@ -1,6 +1,6 @@
 <div data-theme="light" class="bg-transparent">
   <div
-    class="rounded-box bg-base-100 border-base-content/10 text-base-content not-prose overflow-hidden border shadow-lg"
+    class="rounded-box bg-base-100 border-base-content/20 text-base-content not-prose overflow-hidden border shadow-lg"
     data-theme={@theme}
     style={@custom_styles}
   >
