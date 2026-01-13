@@ -31,6 +31,7 @@
       <div class="flex-1 truncate">
         <span
           data-page={@page}
+          data-role="page_title"
           class="first-letter:capitalize flex-1 font-bold text-xl text-left lg:text-lg text-base-content"
         >
           {rich(@page_title)}
