@@ -138,6 +138,12 @@ TooltipHooks.Tooltip = {
 			clickOutside: (event) => {
 				// Only check for clicks outside both tooltip and button
 				if (!tooltip.contains(event.target) && !button.contains(event.target)) {
+					// Only stop propagation if tooltip is actually visible
+					// This prevents the outside click from triggering other elements
+					if (tooltip.style.display === 'block') {
+						event.stopImmediatePropagation();
+						event.preventDefault();
+					}
 					hideTooltip();
 				}
 			},
@@ -159,7 +165,7 @@ TooltipHooks.Tooltip = {
 			tooltip.addEventListener('mouseleave', handlers.tooltipMouseLeave);
 		} else {
 			button.addEventListener('click', handlers.buttonClick);
-			document.addEventListener('click', handlers.clickOutside);
+			document.addEventListener('click', handlers.clickOutside, true);
 			
 			// If closeOnInsideClick is enabled, add a click handler to the tooltip
 			// if (closeOnInsideClick) {
@@ -182,7 +188,7 @@ TooltipHooks.Tooltip = {
 				tooltip.removeEventListener('mouseleave', handlers.tooltipMouseLeave);
 			} else {
 				button.removeEventListener('click', handlers.buttonClick);
-				document.removeEventListener('click', handlers.clickOutside);
+				document.removeEventListener('click', handlers.clickOutside, true);
 				
 				// if (closeOnInsideClick) {
 				// 	tooltip.removeEventListener('click', handlers.tooltipClick);
