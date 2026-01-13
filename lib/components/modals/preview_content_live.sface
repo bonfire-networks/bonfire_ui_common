@@ -43,6 +43,8 @@
             <ul
               tabindex="0"
               class="tooltip z-[999] menu  bg-base-100 shadow-lg border rounded-xl border-base-content/20 w-60 absolute top-0 left-0 hidden"
+              id="preview_content_tooltip_content"
+              phx-update="ignore"
             >
               <li class="menu-title">{l "Show replies as"}</li>
               <li><button class="flex justify-between items-center">
