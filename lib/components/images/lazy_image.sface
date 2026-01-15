@@ -7,8 +7,8 @@
       {#match _}
         {#case socket_connected?(@__context__)}
           {#match true}
-            {!-- Use blurhash/2 to generate and cache on-demand (blurhash_cached only returns existing) --}
-            {#case Bonfire.Files.Blurred.blurhash(@media)}
+            {!-- Only use cached blurhash (generated during upload in build_metadata) --}
+            {#case Bonfire.Files.Blurred.blurhash_cached(@media)}
               {#match blurhash when is_binary(blurhash)}
                 <!-- Path A: Full blurhash experience for logged-in users -->
                 <div
