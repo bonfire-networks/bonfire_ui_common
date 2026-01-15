@@ -19,11 +19,13 @@ window.SVGInject = SVGInject
 const detectMobileDevice = () => {
   // Check if device is mobile using media query
   const isMobile = window.matchMedia("(max-width: 768px), (pointer: coarse) and (max-width: 1024px)").matches;
-  
-  if (isMobile) {
+  const hasMobileClass = document.body.classList.contains("is-container-mobile");
+
+  // Only modify if state needs to change to prevent unnecessary DOM mutations
+  if (isMobile && !hasMobileClass) {
     document.body.classList.add("is-container-mobile");
     console.log("Mobile device detected, added is-mobile class to body");
-  } else {
+  } else if (!isMobile && hasMobileClass) {
     document.body.classList.remove("is-container-mobile");
     console.log("Desktop device detected, removed is-mobile class from body");
   }
