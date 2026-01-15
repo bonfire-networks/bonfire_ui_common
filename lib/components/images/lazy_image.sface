@@ -2,12 +2,13 @@
   {#match src when is_binary(src)}
     {#case @disable_lazy}
       {#match true}
-        <!-- Plain image mode (no hooks, no lazy loading) - useful for testing -->
-        <img src={src} alt={@alt} title={@title} class={@class} decoding="async" {...@opts}>
+        <!-- Plain image mode (no hooks, uses native browser lazy loading) -->
+        <img src={src} alt={@alt} title={@title} class={@class} loading="lazy" decoding="async" {...@opts}>
       {#match _}
         {#case socket_connected?(@__context__)}
           {#match true}
-            {#case Bonfire.Files.Blurred.blurhash_cached(@media)}
+            {!-- Use blurhash/2 to generate and cache on-demand (blurhash_cached only returns existing) --}
+            {#case Bonfire.Files.Blurred.blurhash(@media)}
               {#match blurhash when is_binary(blurhash)}
                 <!-- Path A: Full blurhash experience for logged-in users -->
                 <div
@@ -72,8 +73,8 @@
                 </div>
             {/case}
           {#match _}
-            <!-- Path C: Simple image for logged-out users -->
-            <img src={src} alt={@alt} title={@title} class={@class} decoding="async" {...@opts}>
+            <!-- Path C: Simple image for logged-out users (native lazy loading) -->
+            <img src={src} alt={@alt} title={@title} class={@class} loading="lazy" decoding="async" {...@opts}>
         {/case}
     {/case}
   {#match _}
