@@ -26,7 +26,12 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   def fancy_fake_user!(name, opts \\ []) do
     # repo().delete_all(ActivityPub.Object)
     id = Needle.UID.generate(User)
-    user = fake_user!("#{name} #{id}", opts ++ [id: id], opts)
+
+    opts =
+      opts
+      |> Keyword.put_new(:name, "#{name} #{id}")
+
+    user = fake_user!(Map.new(opts), Map.new(opts |> Keyword.put_new(:id, id)), opts)
 
     display_username =
       Bonfire.Common.Utils.maybe_apply(
