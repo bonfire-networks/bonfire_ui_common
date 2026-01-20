@@ -1043,7 +1043,7 @@ defmodule Bonfire.UI.Common do
   def redirect_to_previous_go(conn, params, default, current_path) do
     # debug(conn.request_path)
     case Plug.Conn.get_session(conn, :go)
-         |> debug("session_go")
+         |> flood("session_go")
          |> go_where?(params, default, current_path) do
       # TODO: add a configurable hook so these can be defined in the relevant extension
       [to: "/oauth/authorize?" <> query] ->
@@ -1808,6 +1808,76 @@ defmodule Bonfire.UI.Common do
     case opts[:to] do
       nil -> "this.classList.#{action}"
       selector -> "document.querySelectorAll('#{selector}').forEach(el => el.classList.#{action})"
+    end
+  end
+
+  @doc """
+  Updates the Phoenix endpoint's `:url` config at runtime and restarts the endpoint.
+  Accepts a keyword list, domain, or full URL.
+
+  ## Examples
+
+      iex> update_endpoint_url([host: "newdomain.com", port: 443, scheme: "https"])
+      :ok
+
+      iex> update_endpoint_url("localhost")
+      :ok
+
+      iex> update_endpoint_url("https://example.com:443")
+      :ok
+
+      iex> update_endpoint_url("example.com")
+      :ok
+
+  Optionally, you can pass a different endpoint or supervisor:
+
+      iex> update_endpoint_url([host: "foo"], Bonfire.Web.Endpoint, Bonfire.Supervisor)
+      :ok
+  """
+  def update_endpoint_url(
+        url_or_opts,
+        endpoint \\ Bonfire.Web.Endpoint
+      ) do
+    otp_app = :bonfire
+
+    url_opts =
+      cond do
+        is_list(url_or_opts) ->
+          url_or_opts
+
+        is_binary(url_or_opts) ->
+          parse_url_opts(url_or_opts)
+
+        true ->
+          raise ArgumentError,
+                "Invalid argument for update_endpoint_url/3: #{inspect(url_or_opts)}"
+      end
+
+    current = Bonfire.Common.Config.get([otp_app, endpoint, :url], [])
+    new_config = Keyword.merge(current, url_opts)
+    :ok = Bonfire.Common.Config.put([otp_app, endpoint, :url], new_config)
+    :ok = Bonfire.Common.Config.put([otp_app, :host], new_config[:host])
+
+    # Use Phoenix's config_change for hot reload with correct keyword list format
+    Bonfire.Application.config_change(
+      [{endpoint, [url: new_config]}],
+      [{endpoint, [url: current]}],
+      []
+    )
+  end
+
+  defp parse_url_opts(url) when is_binary(url) do
+    cond do
+      String.starts_with?(url, ["http://", "https://"]) ->
+        uri = URI.parse(url)
+        opts = [host: uri.host]
+        opts = if uri.port, do: Keyword.put(opts, :port, uri.port), else: opts
+        opts = if uri.scheme, do: Keyword.put(opts, :scheme, uri.scheme), else: opts
+        opts
+
+      true ->
+        # treat as domain only
+        [host: url]
     end
   end
 end
