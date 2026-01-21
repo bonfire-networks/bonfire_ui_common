@@ -4,7 +4,7 @@
   aria-live="assertive"
   class="app_notifications z-[999999999999999999999999999] toast toast-center"
 >
-  <StatelessComponent
+  <!-- <StatelessComponent
     :if={@i == 2}
     module={maybe_component(Bonfire.Notify.PushNotifyLive, @__context__)}
     vapid_public_key={@vapid_public_key}
@@ -12,7 +12,7 @@
     subscriptions={@subscriptions}
     subscription_size={@subscription_size}
     event_target={@myself}
-  />
+  /> -->
 
   <div
     data-id="notifications-container"
