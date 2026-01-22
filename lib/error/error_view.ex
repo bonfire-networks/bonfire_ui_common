@@ -97,20 +97,34 @@ defmodule Bonfire.UI.Common.ErrorView do
     )
   end
 
+  def render("401.json", assigns) do
+    json_error(401, reason(assigns))
+  end
+
   def render("403.json", assigns) do
-    show_error(403, reason(assigns), false)
+    json_error(403, reason(assigns))
   end
 
   def render("404.json", _assigns) do
-    show_error(404, nil, false)
+    json_error(404, nil)
+  end
+
+  def render("422.json", assigns) do
+    json_error(422, reason(assigns))
   end
 
   def render("500.json", assigns) do
-    show_error(
-      500,
-      reason(assigns) || l("Please try again or contact the instance admins."),
-      false
-    )
+    json_error(500, reason(assigns) || l("Please try again or contact the instance admins."))
+  end
+
+  # Return a map for JSON responses - Phoenix will encode it
+  defp json_error(http_code, details) do
+    {codename, msg} = Bonfire.Fail.get_error_tuple(http_code) || {nil, "Error #{http_code}"}
+
+    %{
+      "error" => msg || "Error",
+      "error_description" => details
+    }
   end
 
   def render(:app, assigns) do
@@ -126,8 +140,18 @@ defmodule Bonfire.UI.Common.ErrorView do
   end
 
   def render(other, assigns) do
-    warn(other)
-    render("app.html", assigns)
+    warn(other, "Unknown error template")
+
+    cond do
+      String.ends_with?(to_string(other), ".json") ->
+        json_error(500, reason(assigns))
+
+      String.ends_with?(to_string(other), ".activity+json") ->
+        show_error(500, reason(assigns), false)
+
+      true ->
+        render("app.html", assigns)
+    end
   end
 
   defp show_error(error_or_error_code, details, as_html?, _extra_html \\ nil) do
