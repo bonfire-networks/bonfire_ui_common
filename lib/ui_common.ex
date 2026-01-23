@@ -1043,7 +1043,7 @@ defmodule Bonfire.UI.Common do
   def redirect_to_previous_go(conn, params, default, current_path) do
     # debug(conn.request_path)
     case Plug.Conn.get_session(conn, :go)
-         |> flood("session_go")
+         |> debug("session_go")
          |> go_where?(params, default, current_path) do
       # TODO: add a configurable hook so these can be defined in the relevant extension
       [to: "/oauth/authorize?" <> query] ->
