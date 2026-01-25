@@ -54,6 +54,10 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
         origins: "*"
       },
       %{
+        paths: ["/openid/register", "/oauth/token"],
+        origins: "*"
+      },
+      %{
         paths: "/",
         origins: []
       }
