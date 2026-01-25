@@ -28,7 +28,13 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
     config :bonfire_ui_common, :cors_routes, [
       # NOTE: the order matters, as the origins of the first matching route will be used
       %{
-        paths: "/pub/actors/",
+        paths: [
+          "/pub/actors/",
+          "/.well-known/oauth-authorization-server",
+          "/.well-known/openid-configuration",
+          "/openid/register",
+          "/oauth/token"
+        ],
         origins: "*"
       },
       %{
@@ -48,14 +54,6 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
         origins:
           ([url, System.get_env("API_REST_CORS_ORIGIN")] ++ extra_api_origins)
           |> Enum.reject(&(is_nil(&1) or &1 == ""))
-      },
-      %{
-        paths: ["/.well-known/oauth-authorization-server", "/.well-known/openid-configuration"],
-        origins: "*"
-      },
-      %{
-        paths: ["/openid/register", "/oauth/token"],
-        origins: "*"
       },
       %{
         paths: "/",
