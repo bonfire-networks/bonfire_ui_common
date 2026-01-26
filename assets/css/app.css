@@ -424,7 +424,7 @@ article.unread-activity {
   --width-360: 360px;
 
   /* ============================================
-     Z-INDEX SCALE (Emil's Design Principles)
+     Z-INDEX SCALE
      Use semantic names instead of arbitrary values
      ============================================ */
   --z-base: 0;
@@ -1157,7 +1157,7 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
 }
 
 /* ============================================
-   TOUCH TARGETS (Emil's Design Principles)
+   TOUCH TARGETS 
    Minimum 44x44px per WCAG for adequate tap targets
    ============================================ */
 @utility touch-target {
@@ -1179,7 +1179,7 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
 }
 
 /* ============================================
-   TRANSITION UTILITIES (Emil's Design Principles)
+   TRANSITION UTILITIES 
    Never use transition-all - always specify properties
    ============================================ */
 @utility transition-interactive {
@@ -1207,7 +1207,7 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
 }
 
 /* ============================================
-   Z-INDEX UTILITIES (Emil's Design Principles)
+   Z-INDEX UTILITIES
    Semantic z-index scale instead of arbitrary values
    Using @layer utilities to ensure they're always compiled
    ============================================ */
