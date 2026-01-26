@@ -1,5 +1,5 @@
 <div class="flex flex-col flex-1 h-full pb-[80px] lg:pb-0">
-  <div class="px-5 lg:pl-1 lg:pr-0 bg-base-100 lg:bg-base-100 z-[999999999] sticky top-0 flex items-center lg:min-h-[48px] justify-between">
+  <div class="px-5 lg:pl-1 lg:pr-0 bg-base-100 lg:bg-base-100 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
     <div class="flex pt-safe w-full">
       <div class="pt-4 flex items-center justify-between">
         <Bonfire.UI.Common.LogoLinkLive href="/" />

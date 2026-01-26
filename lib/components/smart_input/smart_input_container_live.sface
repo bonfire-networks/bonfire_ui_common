@@ -28,13 +28,13 @@
     </div>
 
     {#if not is_nil(current_user_id(@__context__))}
-      <.portal id="composer_portal" class="relative z-[9999999999999999999999999]" target="body">
+      <.portal id="composer_portal" class="relative z-max" target="body">
         <div
           id="smart_input_container"
           data-hidden={e(@smart_input_opts, :open, nil) != true}
           data-focused={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
           class={
-            "w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-xl max-w-full  mx-auto z-[9999] shadow-xl left-0 md:left-auto md:right-4 top-0 md:top-auto md:bottom-4 md:w-[32rem] md:right-4 md:top-auto  h-full",
+            "w-full md:h-auto block flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-xl max-w-full  mx-auto z-popover shadow-xl left-0 md:left-auto md:right-4 top-0 md:top-auto md:bottom-4 md:w-[32rem] md:right-4 md:top-auto  h-full",
             "translate-y-100": e(@smart_input_opts, :open, nil) != true
           }
         >

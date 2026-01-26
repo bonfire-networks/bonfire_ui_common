@@ -73,10 +73,10 @@ defmodule Bonfire.UI.Common.CoreComponents do
                 <button
                   phx-click={JS.exec("data-cancel", to: "##{@id}")}
                   type="button"
-                  class="-m-3 flex-none p-3 opacity-20 hover:opacity-40"
+                  class="-m-3 flex-none p-3 opacity-20 hover:opacity-40 focus-ring rounded-full transition-interactive touch-target"
                   aria-label={l("close")}
                 >
-                  <.iconify icon="heroicons-solid-x-mark" class="h-5 w-5" />
+                  <.iconify icon="heroicons-solid-x-mark" class="h-5 w-5" aria-hidden="true" />
                 </button>
               </div>
               <div id={"#{@id}-content"}>
@@ -323,6 +323,14 @@ defmodule Bonfire.UI.Common.CoreComponents do
   end
 
   def input(%{type: "select"} = assigns) do
+    # Generate error ID for aria-describedby
+    error_id =
+      if is_list(assigns[:errors]) and assigns[:errors] != [],
+        do: "#{assigns[:id]}-error",
+        else: nil
+
+    assigns = assign(assigns, :error_id, error_id)
+
     ~H"""
     <div>
       <.label for={@id} class="form-control w-full max-w-xs">
@@ -332,8 +340,10 @@ defmodule Bonfire.UI.Common.CoreComponents do
         <select
           id={@id}
           name={@name}
+          aria-invalid={is_list(@errors) and @errors != []}
+          aria-describedby={@error_id}
           class={[
-            "select",
+            "select focus-ring",
             @class || "select-bordered",
             @errors == [] && "select-success ",
             (is_list(@errors) and @errors != []) && "select-error"
@@ -345,12 +355,20 @@ defmodule Bonfire.UI.Common.CoreComponents do
           {Phoenix.HTML.Form.options_for_select(@options, @value)}
         </select>
       </.label>
-      <.error_msg :for={msg <- @errors || []}>{msg}</.error_msg>
+      <.error_msg :for={msg <- @errors || []} id={@error_id}>{msg}</.error_msg>
     </div>
     """
   end
 
   def input(%{type: "textarea"} = assigns) do
+    # Generate error ID for aria-describedby
+    error_id =
+      if is_list(assigns[:errors]) and assigns[:errors] != [],
+        do: "#{assigns[:id]}-error",
+        else: nil
+
+    assigns = assign(assigns, :error_id, error_id)
+
     ~H"""
     <div>
       <.label for={@id} class="form-control w-full max-w-xs">
@@ -360,21 +378,31 @@ defmodule Bonfire.UI.Common.CoreComponents do
         <textarea
           id={@id}
           name={@name}
+          aria-invalid={is_list(@errors) and @errors != []}
+          aria-describedby={@error_id}
           class={[
-            @class || "textarea",
+            @class || "textarea focus-ring",
             @errors == [] && "textarea-success",
             (is_list(@errors) and @errors != []) && "textarea-error"
           ]}
           {@rest}
         >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
       </.label>
-      <.error_msg :for={msg <- @errors || []}>{msg}</.error_msg>
+      <.error_msg :for={msg <- @errors || []} id={@error_id}>{msg}</.error_msg>
     </div>
     """
   end
 
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
+    # Generate error ID for aria-describedby
+    error_id =
+      if is_list(assigns[:errors]) and assigns[:errors] != [],
+        do: "#{assigns[:id]}-error",
+        else: nil
+
+    assigns = assign(assigns, :error_id, error_id)
+
     ~H"""
     <div>
       <.label for={@id} class="form-control w-full max-w-xs">
@@ -386,15 +414,17 @@ defmodule Bonfire.UI.Common.CoreComponents do
           name={@name}
           id={@id}
           value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+          aria-invalid={is_list(@errors) and @errors != []}
+          aria-describedby={@error_id}
           class={[
-            @class || "input input-bordered w-full max-w-xs",
+            @class || "input input-bordered w-full max-w-xs focus-ring",
             @errors == [] && "input-bordered input-success",
             (is_list(@errors) and @errors != []) && "input-bordered input-error"
           ]}
           {@rest}
         />
       </.label>
-      <.error_msg :for={msg <- @errors || []}>{msg}</.error_msg>
+      <.error_msg :for={msg <- @errors || []} id={@error_id}>{msg}</.error_msg>
     </div>
     """
   end
@@ -416,17 +446,23 @@ defmodule Bonfire.UI.Common.CoreComponents do
 
   @doc """
   Generates a generic error message.
+
+  ## Accessibility
+  - Uses `role="alert"` for screen reader announcements
+  - Accepts optional `id` for linking with `aria-describedby`
   """
+  attr :id, :string, default: nil
   slot :inner_block, required: true
 
   def error_msg(assigns) do
     ~H"""
-    <div role="alert" class="alert alert-warning">
+    <div id={@id} role="alert" class="alert alert-warning">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="h-6 w-6 shrink-0 stroke-current"
         fill="none"
         viewBox="0 0 24 24"
+        aria-hidden="true"
       >
         <path
           stroke-linecap="round"
@@ -459,8 +495,9 @@ defmodule Bonfire.UI.Common.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
+        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 py-2 px-3",
         "text-sm font-semibold leading-6 text-white active:text-white/80",
+        "focus-ring transition-interactive hover-scale",
         @class
       ]}
       {@rest}
@@ -669,13 +706,14 @@ defmodule Bonfire.UI.Common.CoreComponents do
   #   )
   # end
 
+  # 200ms is fast enough to feel responsive, slow enough to be perceivable
   def show_modal(js \\ %JS{}, id) when is_binary(id) do
     js
     |> JS.show(to: "##{id}")
     |> JS.show(
       to: "##{id}-bg",
-      time: 300,
-      transition: {"transition-all transform ease-out duration-300", "opacity-0", "opacity-100"}
+      time: 200,
+      transition: {"transition-opacity ease-out duration-200", "opacity-0", "opacity-100"}
     )
     |> show("##{id}-container")
     |> JS.add_class("overflow-hidden", to: "body")
@@ -686,7 +724,8 @@ defmodule Bonfire.UI.Common.CoreComponents do
     js
     |> JS.hide(
       to: "##{id}-bg",
-      transition: {"transition-all transform ease-in duration-200", "opacity-100", "opacity-0"}
+      time: 150,
+      transition: {"transition-opacity ease-out duration-150", "opacity-100", "opacity-0"}
     )
     |> hide("##{id}-container")
     |> JS.hide(to: "##{id}", transition: {"block", "block", "hidden"})

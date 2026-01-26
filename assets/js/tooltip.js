@@ -6,6 +6,10 @@ import {
 	computePosition,
 } from "@floating-ui/dom";
 
+// Check for user's reduced motion preference for accessibility
+const prefersReducedMotion = () =>
+	window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 let TooltipHooks = {};
 
 TooltipHooks.Tooltip = {
@@ -13,20 +17,16 @@ TooltipHooks.Tooltip = {
 		const tooltipWrapper = this.el;
 		const position = tooltipWrapper.getAttribute("data-position");
 		const trigger = tooltipWrapper.getAttribute("data-trigger");
-		const closeOnInsideClick = tooltipWrapper.getAttribute("data-close-on-inside-click") === "true";
 		const button = this.el.querySelector(".tooltip-button");
 		const tooltip = this.el.querySelector(".tooltip");
 		let showTimeout;
 		let hideTimeout;
 		let isHoveringButton = false;
 		let isHoveringTooltip = false;
-		let cleanup = null;
-		
-		// Store state on hook instance for access from lifecycle methods
+
+		// Instance state for lifecycle methods
 		this.isUpdating = false;
 		this.pendingUpdate = false;
-		
-		// Store cleanup function for lifecycle methods
 		this.cleanup = null;
 
 		const updatePosition = () => {
@@ -42,12 +42,14 @@ TooltipHooks.Tooltip = {
 			computePosition(button, tooltip, {
 				placement: position || "top",
 				middleware: [offset(6), flip({ padding: 5 }), shift({ padding: 5 })],
-			}).then(({ x, y }) => {
+			}).then(({ x, y, placement }) => {
 				if (!this.isUpdating && tooltip) {
 					Object.assign(tooltip.style, {
 						left: `${x}px`,
 						top: `${y}px`,
 					});
+					// Set placement for CSS directional animations
+					tooltip.setAttribute('data-placement', placement);
 				}
 			});
 		};
@@ -76,33 +78,44 @@ TooltipHooks.Tooltip = {
 		// Store function on instance for lifecycle methods
 		this.startPositionUpdate = startPositionUpdate;
 
+		// Display tooltip and start entrance animation
+		const displayTooltip = () => {
+			tooltip.style.display = 'block';
+			tooltip.style.pointerEvents = 'auto';
+			startPositionUpdate();
+			if (!prefersReducedMotion()) {
+				tooltip.classList.add('tooltip-animated');
+				tooltip.offsetHeight; // Force reflow for animation
+				tooltip.classList.add('tooltip-visible');
+			}
+		};
+
 		const showTooltip = () => {
 			clearTimeout(hideTimeout);
 			if (trigger === "hover") {
 				clearTimeout(showTimeout);
-				showTimeout = setTimeout(() => {
-					tooltip.style.display = 'block';
-					tooltip.style.pointerEvents = 'auto';
-					startPositionUpdate();
-				}, 200);
+				const delay = prefersReducedMotion() ? 0 : 200;
+				showTimeout = setTimeout(displayTooltip, delay);
 			} else {
-				tooltip.style.display = 'block';
-				tooltip.style.pointerEvents = 'auto';
-				startPositionUpdate();
+				displayTooltip();
 			}
 		};
 
 		const hideTooltip = () => {
-			const shouldHide = trigger === "hover" ? 
-				!isHoveringButton && !isHoveringTooltip : 
+			const shouldHide = trigger === "hover" ?
+				!isHoveringButton && !isHoveringTooltip :
 				true;
 
 			if (shouldHide) {
-				const delay = trigger === "hover" ? 50 : 0;
+				// Remove visible class first for exit animation
+				tooltip.classList.remove('tooltip-visible');
+
+				const delay = prefersReducedMotion() ? 0 : (trigger === "hover" ? 150 : 100);
 				hideTimeout = setTimeout(() => {
 					clearTimeout(showTimeout);
 					tooltip.style.display = '';
 					tooltip.style.pointerEvents = '';
+					tooltip.classList.remove('tooltip-animated');
 					if (this.cleanup) {
 						this.cleanup();
 						this.cleanup = null;
@@ -136,23 +149,14 @@ TooltipHooks.Tooltip = {
 				tooltip.style.display === 'block' ? hideTooltip() : showTooltip();
 			},
 			clickOutside: (event) => {
-				// Only check for clicks outside both tooltip and button
 				if (!tooltip.contains(event.target) && !button.contains(event.target)) {
-					// Only stop propagation if tooltip is actually visible
-					// This prevents the outside click from triggering other elements
 					if (tooltip.style.display === 'block') {
 						event.stopImmediatePropagation();
 						event.preventDefault();
 					}
 					hideTooltip();
 				}
-			},
-			// tooltipClick: (event) => {
-			// 	// This handler is specifically for clicks inside the tooltip
-			// 	if (closeOnInsideClick) {
-			// 		hideTooltip();
-			// 	}
-			// }
+			}
 		};
 
 		// Attach event listeners
@@ -166,11 +170,6 @@ TooltipHooks.Tooltip = {
 		} else {
 			button.addEventListener('click', handlers.buttonClick);
 			document.addEventListener('click', handlers.clickOutside, true);
-			
-			// If closeOnInsideClick is enabled, add a click handler to the tooltip
-			// if (closeOnInsideClick) {
-			// 	tooltip.addEventListener('click', handlers.tooltipClick);
-			// }
 		}
 
 		// Cleanup function
@@ -189,10 +188,6 @@ TooltipHooks.Tooltip = {
 			} else {
 				button.removeEventListener('click', handlers.buttonClick);
 				document.removeEventListener('click', handlers.clickOutside, true);
-				
-				// if (closeOnInsideClick) {
-				// 	tooltip.removeEventListener('click', handlers.tooltipClick);
-				// }
 			}
 		};
 	},

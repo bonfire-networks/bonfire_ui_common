@@ -32,7 +32,7 @@
   </div>
   <ul
     tabindex="0"
-    class="tooltip z-[99999999] menu shadow bg-base-300 w-full absolute rounded-box top-0 right-0 hidden"
+    class="tooltip z-tooltip menu shadow bg-base-300 w-full absolute rounded-box top-0 right-0 hidden"
     role="menu"
     id="user_more_menu_links_list"
     phx-update="ignore"

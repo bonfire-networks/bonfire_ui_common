@@ -17,7 +17,7 @@
   type="button"
   data-role="composer_button"
   aria-label={@prompt || l("Compose")}
-  class={@class, "btn-disabled": e(@smart_input_opts, :input_status, nil) == :submit}
+  class={@class, "touch-target focus-ring transition-interactive", "btn-disabled": e(@smart_input_opts, :input_status, nil) == :submit}
 >
   <span :if={!@as_icon and @prompt} class="text-sm font-medium">{@prompt || l("Compose")}</span>
   {!--
@@ -28,6 +28,7 @@
       {!-- submitting --}
       <#Icon
         iconify="eos-icons:three-dots-loading"
+        aria-hidden="true"
         class={
           @icon_class,
           "toggle_button  w-5 h-5 animate-bounce"
@@ -37,6 +38,7 @@
       {!-- draft in progress --}
       <#Icon
         iconify="ph:pencil-line-duotone"
+        aria-hidden="true"
         class={
           @icon_class,
           "toggle_button  w-5 h-5"
@@ -46,6 +48,7 @@
       {#if @icon && !e(@without_icon, false)}
         <Iconify.iconify
           icon={@icon}
+          aria-hidden="true"
           class={
             @icon_class,
             "toggle_button  w-5 h-5"
@@ -54,6 +57,7 @@
       {#else}
         <#Icon
           iconify="ph:note-pencil-duotone"
+          aria-hidden="true"
           class={
             @icon_class,
             "toggle_button  w-5 h-5"
@@ -63,6 +67,7 @@
   {/case}
   <#Icon
     iconify="eos-icons:three-dots-loading"
+    aria-hidden="true"
     class={
       @icon_class,
       "submitting_icon hidden w-5 h-5 animate-bounce"

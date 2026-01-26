@@ -1,6 +1,5 @@
 <div
   id={@id}
-  class=""
   data-id="preview_content"
   data-show={e(@show, false)}
   data-hide={!e(@show, false)}
@@ -15,7 +14,7 @@
   >
     {!-- Modal background --}
     {!-- Header with back button --}
-    <div class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 backdrop-blur-sm border-b border-base-content/20">
+    <div class="sticky top-0 pt-safe z-sticky bg-base-100 lg:bg-base-100/70 backdrop-blur-sm border-b border-base-content/20">
       <div
         role="banner"
         class="flex items-center place-content-center flex-1 w-full px-4  min-h-[58px]"
@@ -30,68 +29,10 @@
             <#Icon iconify="ph:arrow-left" class="w-5 h-5 text-primary" />
           </button>
           <div class="flex items-center flex-1 w-full flex-1">
-            <!-- WIP: Here we should dinamically show the activity type: Article, Note, Event, Review, etc -->
             <span class="max-w-[250px] lg:max-w-[600px] font-semibold text-base-content truncate text-ellipsis">
-              {l("Discussion")}
+              {e(@modal_assigns, :activity_type, nil) || l("Discussion")}
             </span>
           </div>
-
-          {!-- <div data-position="bottom" phx-hook="Tooltip" id="layout-dropdown">
-            <label tabindex="0" class="tooltip-button btn btn-sm btn-circle btn-ghost">
-              <#Icon iconify="ph:sliders-horizontal-duotone" class="w-5 h-5 text-base-content/70"  />
-            </label>
-            <ul
-              tabindex="0"
-              class="tooltip z-[999] menu  bg-base-100 shadow-lg border rounded-xl border-base-content/20 w-60 absolute top-0 left-0 hidden"
-              id="preview_content_tooltip_content"
-              phx-update="ignore"
-            >
-              <li class="menu-title">{l "Show replies as"}</li>
-              <li><button class="flex justify-between items-center">
-              {l "Linear"}
-              <div class="w-5 h-5 flex items-center justify-center border border-base-content/20 rounded-full">
-                <span class="w-[14px] h-[14px] bg-primary rounded-full"></span>
-              </div>
-              </button></li>
-              <li><button class="flex justify-between items-center">
-              {l "Threaded"}
-              <div class="w-5 h-5 flex items-center justify-center border border-base-content/20 rounded-full">
-              </div>
-              </button></li>
-              <span class="divider h-0"></span>
-              <li class="menu-title" style="padding-block-start: 0px">{l "Reply sorting"}</li>
-              <li><button class="flex justify-between items-center">
-              {l "Most replied"}
-              <div class="w-5 h-5 flex items-center justify-center border border-base-content/20 rounded-full">
-                <span class="w-[14px] h-[14px] bg-primary rounded-full"></span>
-              </div>
-              </button></li>
-             <li><button class="flex justify-between items-center">
-              {l "Least replied"}
-              <div class="w-5 h-5 flex items-center justify-center border border-base-content/20 rounded-full">
-              </div>
-              </button></li>
-              <li><button class="flex justify-between items-center">
-              {l "Most recent"}
-              <div class="w-5 h-5 flex items-center justify-center border border-base-content/20 rounded-full">
-              </div>
-              </button></li>
-                <li><button class="flex justify-between items-center">
-              {l "Least recent"}
-              <div class="w-5 h-5 flex items-center justify-center border border-base-content/20 rounded-full">
-              </div>
-              </button></li>
-               <li><button class="flex justify-between items-center">
-              {l "Most liked"}
-              <div class="w-5 h-5 flex items-center justify-center border border-base-content/20 rounded-full">
-              </div>
-              </button></li><li><button class="flex justify-between items-center">
-              {l "Least liked"}
-              <div class="w-5 h-5 flex items-center justify-center border border-base-content/20 rounded-full">
-              </div>
-              </button></li>            
-              </ul>
-          </div> --}
         </div>
       </div>
     </div>

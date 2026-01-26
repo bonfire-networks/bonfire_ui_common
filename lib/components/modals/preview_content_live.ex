@@ -68,7 +68,7 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
       socket
       |> send_self(
         hide_main: false,
-        modal_assigns: Enums.fun(e(assigns(socket), :modal_assigns, %{}), :put, [:loaded, false])
+        modal_assigns: Keyword.put(e(assigns(socket), :modal_assigns, []), :loaded, false)
       )
 
     {:noreply, socket}

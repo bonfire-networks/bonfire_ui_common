@@ -56,7 +56,8 @@
                       csrf_token: @csrf_token,
                       # csrf_socket_token: @__context__[:csrf_socket_token],
                       current_user_id: @current_user_id,
-                      current_account_id: @current_account_id
+                      current_account_id: @current_account_id,
+                      current_user_avatar_url: Media.avatar_url(current_user(@__context__))
                     }
                   }}
                 />

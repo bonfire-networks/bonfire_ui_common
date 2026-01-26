@@ -1,10 +1,10 @@
 <div
   id={@id}
   class={
-    "transition-opacity transform duration-300 ease-in-out",
+    "transition-opacity duration-200 ease-out",
     @modal_class,
-    "modal modal-bottom sm:modal-middle max-h-[100%] z-[999999999999999999]": !@no_backdrop,
-    "fixed left-0 z-[99999999] bottom-0": @no_backdrop,
+    "modal modal-bottom sm:modal-middle max-h-[100%] z-modal": !@no_backdrop,
+    "fixed left-0 z-modal bottom-0": @no_backdrop,
     "opacity-0 scale-100 modal-closed": !@show,
     "opacity-100 scale-100 translate-y-0 modal-open": @show
   }
@@ -32,7 +32,7 @@
     {...Enums.naughty_to_atoms!(@form_opts)}
   >
     <div class={
-      "relative z-[99999]",
+      "relative z-popover",
       @wrapper_class
     }>
       <h3 :if={!@no_header} class={@title_class || "font-bold text-base line-clamp-1 px-2 max-w-full"}>
@@ -41,7 +41,7 @@
 
       <div
         class={
-          "transition ease-in-out duration-50 transition-all h-full",
+          "transition-opacity duration-150 ease-out h-full",
           "max-h-[calc(100vh_-_13rem)]": !@image_preview,
           "h-[95%]": @no_backdrop
         }
@@ -89,23 +89,24 @@
       </div>
 
       <div class={
-        "absolute top-0 right-0 block z-600",
+        "absolute top-0 right-0 block z-popover",
         "!top-2 !right-2": @image_preview,
-        "z-[999999999] !top-1 h-full": @no_backdrop
+        "z-tooltip !top-1 h-full": @no_backdrop
       }>
         <div class="pt-safe">
           <button
             phx-click="close"
             phx-target={"[id='#{@id}']"}
             type="button"
+            aria-label={l("Close modal")}
             class={
-              "btn btn-circle btn-sm",
+              "btn btn-circle btn-sm focus-ring transition-interactive touch-target",
               "!btn-lg btn-soft": @image_preview,
               "!rounded-none btn-ghost !btn-xs opacity-70 btn-secondary": @no_backdrop
             }
           >
             <span class="sr-only">{l("Close")}</span>
-            <#Icon iconify="ph:x-duotone" class="w-5 h-5" />
+            <#Icon iconify="ph:x-duotone" class="w-5 h-5" aria-hidden="true" />
           </button>
         </div>
       </div>

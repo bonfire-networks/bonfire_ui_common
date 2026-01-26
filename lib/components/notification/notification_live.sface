@@ -2,7 +2,7 @@
   id={"notifications-#{@i}"}
   :hook
   aria-live="assertive"
-  class="app_notifications z-[999999999999999999999999999] toast toast-center"
+  class="app_notifications z-toast toast toast-center"
 >
   <!-- <StatelessComponent
     :if={@i == 2}
@@ -39,7 +39,7 @@
       data-id="notification"
       :if={@notification}
       role="alert"
-      class="w-full max-w-md pointer-events-auto overflow-hidden transition duration-300 ease-in-out transform rounded border border-base-content/20 shadow-xl pointer-events-auto alert flash"
+      class="w-full max-w-md pointer-events-auto overflow-hidden transition-interactive rounded border border-base-content/20 shadow-xl alert flash"
     >
       <div class="p-4">
         <div class="flex items-start">
@@ -68,10 +68,11 @@
               phx-target={@myself}
               phx-value-key="notification"
               type="button"
-              class="btn btn-xs btn-circle btn-ghost"
+              aria-label={l("Dismiss notification")}
+              class="btn btn-xs btn-circle btn-ghost focus-ring touch-target-expanded transition-interactive"
             >
               <span class="sr-only">{l("Close")}</span>
-              <#Icon iconify="ph:x-duotone" class="w-4 h-4" />
+              <#Icon iconify="ph:x-duotone" class="w-4 h-4" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -89,10 +90,11 @@
               phx-target={@myself}
               phx-value-key="info"
               type="button"
-              class="btn btn-xs btn-circle btn-ghost"
+              aria-label={l("Dismiss message")}
+              class="btn btn-xs btn-circle btn-ghost focus-ring touch-target-expanded transition-interactive"
             >
               <span class="sr-only">{l("Close")}</span>
-              <#Icon iconify="ph:x-duotone" class="w-4 h-4" />
+              <#Icon iconify="ph:x-duotone" class="w-4 h-4" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -137,10 +139,11 @@
                   phx-target={@myself}
                   phx-value-key="error"
                   type="button"
-                  class="btn btn-xs btn-circle btn-error"
+                  aria-label={l("Dismiss error")}
+                  class="btn btn-xs btn-circle btn-error focus-ring touch-target-expanded transition-interactive"
                 >
                   <span class="sr-only">{l("Close")}</span>
-                  <#Icon iconify="ph:x-duotone" class="w-4 h-4" />
+                  <#Icon iconify="ph:x-duotone" class="w-4 h-4" aria-hidden="true" />
                 </button>
               </div>
             </div>

@@ -7,6 +7,21 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* ============================================
+   ACCESSIBILITY: Reduced Motion Support
+   Respects user's motion preferences - critical for vestibular disorders
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 body {
   --img-bg-color: rgba(128, 128, 128, .2);
 }
@@ -79,24 +94,59 @@ a,
   touch-action: manipulation;
 }
 
-/* Disable like and boost buttons during loading */
-.phx-click-loading[data-id="like_action"],
-.phx-click-loading[data-id="boost_action"] {
-  opacity: 0.6;
-  cursor: not-allowed;
-  pointer-events: none;
+/* ============================================
+   TOUCH-FIRST, HOVER-ENHANCED DESIGN
+   Only apply hover styles on devices with precise pointing
+   Touch devices get active states instead
+   ============================================ */
+@media (hover: hover) and (pointer: fine) {
+  .hover-lift:hover {
+    transform: translateY(-2px);
+  }
+
+  .hover-scale:hover {
+    transform: scale(1.02);
+  }
+
+  .hover-glow:hover {
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-primary) 30%, transparent);
+  }
 }
 
-
-/* Debug - specify example class that should be generated */
-/* Make sure these classes exist in some of your templates */
-.debug-text-purple-800 {
-  color: purple;
+/* Touch devices get active states instead of hover */
+@media (hover: none) {
+  .hover-lift:active,
+  .hover-scale:active {
+    transform: scale(0.98);
+  }
 }
 
-.debug-bg-yellow-200 {
-  background-color: yellow;
+/* ============================================
+   FOCUS-VISIBLE UTILITIES
+   Show focus indicators only for keyboard navigation
+   ============================================ */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
+
+.focus-ring:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Default focus states for interactive elements */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Safelist: Ensure these utility classes are always generated */
+@source inline("tabular-nums phx-click-loading:opacity-60 phx-click-loading:opacity-70 phx-click-loading:pointer-events-none phx-click-loading:cursor-wait phx-click-loading:inline phx-click-loading:hidden phx-submit-loading:opacity-70 phx-submit-loading:cursor-wait phx-submit-loading:inline phx-submit-loading:hidden transition-interactive focus-ring touch-target-expanded hover-scale active:scale-95 active:scale-[0.95] active:scale-[0.98]");
 
 /* Fix path to correctly match extensions in the project */
 @source "../../../*/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
@@ -373,10 +423,25 @@ article.unread-activity {
   --grid-template-main: 1fr 320px;
   --width-360: 360px;
 
-  /* z-index scale */
-  --z-layout: 999;
-  --z-header: 9099;
-  --z-overlay: 99999999999;
+  /* ============================================
+     Z-INDEX SCALE (Emil's Design Principles)
+     Use semantic names instead of arbitrary values
+     ============================================ */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 99999999999;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-toast: 800;
+  --z-max: 9999999999999;
+
+  /* Legacy aliases for gradual migration */
+  --z-layout: 200;
+  --z-header: 300;
+  --z-overlay: 500;
 
   /* Component spacing */
   --spacing-header: 60px;
@@ -743,7 +808,8 @@ div[data-scope='avatar'] div[data-square] {
 /* Direct element + data combos */
 div[data-id='preview_content'][data-show],
 div[data-id='preview_content'] [data-show] {
-  @apply visible inset-0 z-[99999999999];
+  @apply visible inset-0;
+  z-index: var(--z-modal);
 }
 
 div[data-id='preview_content'][data-hide],
@@ -938,15 +1004,20 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
   @apply hidden;
 }
 
-/* Smart input container */
+/* Smart input container - Elegant "Soft Arrival" entrance animation */
 #smart_input_container {
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  opacity: 1;
   box-shadow: rgba(136, 153, 166, 0) 0px 0px 0px, rgba(136, 153, 166, 0) 0px 0px 0px 0px;
-  @apply transition-all duration-300;
+  transition:
+    transform 400ms var(--ease-out-expo),
+    opacity 300ms ease-out;
 }
 
+/* Closed state: slide down + subtle scale + fade out */
 #smart_input_container.translate-y-100 {
-  transform: translateY(105%);
+  transform: translateY(105%) scale(0.98);
+  opacity: 0;
 }
 
 #smart_input_container:focus-within {
@@ -985,7 +1056,7 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
 }
 
 .picmo__popupContainer {
-  @apply z-[999999999999999999999999999999];
+  z-index: var(--z-max);
 }
 
 .drag-item {
@@ -1085,8 +1156,110 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
   @apply mx-auto order-last border-none shadow-none;
 }
 
+/* ============================================
+   TOUCH TARGETS (Emil's Design Principles)
+   Minimum 44x44px per WCAG for adequate tap targets
+   ============================================ */
+@utility touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* For icon buttons that appear smaller but have adequate hit area */
+@utility touch-target-expanded {
+  position: relative;
+}
+
+/* Don't apply expanded touch area when element has tooltip (both use ::before) */
+.touch-target-expanded:not(.tooltip)::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  /* Expands clickable area without changing visual size */
+}
+
+/* ============================================
+   TRANSITION UTILITIES (Emil's Design Principles)
+   Never use transition-all - always specify properties
+   ============================================ */
+@utility transition-interactive {
+  transition-property: transform, opacity, background-color, border-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease-out-expo);
+}
+
+@utility transition-color {
+  transition-property: color, background-color, border-color;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+@utility transition-transform {
+  transition-property: transform;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease-out-expo);
+}
+
+@utility transition-opacity {
+  transition-property: opacity;
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
+}
+
+/* ============================================
+   Z-INDEX UTILITIES (Emil's Design Principles)
+   Semantic z-index scale instead of arbitrary values
+   Using @layer utilities to ensure they're always compiled
+   ============================================ */
+@layer utilities {
+  .z-base {
+    z-index: var(--z-base);
+  }
+
+  .z-dropdown {
+    z-index: var(--z-dropdown);
+  }
+
+  .z-sticky {
+    z-index: var(--z-sticky);
+  }
+
+  .z-fixed {
+    z-index: var(--z-fixed);
+  }
+
+  .z-modal-backdrop {
+    z-index: var(--z-modal-backdrop);
+  }
+
+  .z-modal {
+    z-index: var(--z-modal);
+  }
+
+  .z-popover {
+    z-index: var(--z-popover);
+  }
+
+  .z-tooltip {
+    z-index: var(--z-tooltip);
+  }
+
+  .z-toast {
+    z-index: var(--z-toast);
+  }
+
+  .z-max {
+    z-index: var(--z-max);
+  }
+}
+
 @keyframes wave {
   to {
     stroke-dashoffset: -20;
   }
 }
+
+/* Button loading states are handled via Phoenix LiveView CSS variants:
+   - phx-click-loading:* for click handlers
+   - phx-submit-loading:* for form submissions
+   No JS hooks needed - pure CSS solution */

@@ -1,7 +1,7 @@
 <div
   id="persistent_live_view"
   data-role="persistent_live_view"
-  class="relative z-[999999999999999999999999]"
+  class="relative z-max"
 >
   <Bonfire.UI.Common.SmartInputContainerLive
     :if={!e(@smart_input_opts, :inline_only, nil) and
@@ -15,7 +15,7 @@
   />
   <!-- Notifications -->
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
-  <.portal id="reusable_portal" class="relative z-[9999999999999999999999999]" target="body">
+  <.portal id="reusable_portal" class="relative z-max" target="body">
     <Bonfire.UI.Common.ReusableModalLive id="persistent_modal" />
   </.portal>
   <Bonfire.UI.Common.ReusableModalLive id="media_player_modal" />

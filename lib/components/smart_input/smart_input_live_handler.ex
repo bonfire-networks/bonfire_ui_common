@@ -117,10 +117,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def minimize(js \\ %JS{}, opts \\ %{}) do
     js
-    |> JS.add_class("translate-y-100",
-      to: "#smart_input_container",
-      transition: {"transition-transform duration-300", "translate-y-0", "translate-y-100"}
-    )
+    # CSS handles the elegant transition animation
+    |> JS.add_class("translate-y-100", to: "#smart_input_container")
     # Always remove avoid-scroll class from mobile devices to restore scrolling
     |> JS.remove_class("avoid-scroll", to: ".is-container-mobile")
     # |> JS.show(to: ".smart_input_show_on_minimize")
@@ -132,10 +130,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def maximize(js \\ %JS{}) do
     js
-    |> JS.remove_class("translate-y-100",
-      to: "#smart_input_container",
-      transition: {"transition-transform duration-300", "translate-y-100", "translate-y-0"}
-    )
+    # CSS handles the elegant transition animation
+    |> JS.remove_class("translate-y-100", to: "#smart_input_container")
     # Always add avoid-scroll class to mobile devices to hide scrollbar
     |> JS.add_class("avoid-scroll", to: ".is-container-mobile")
 
