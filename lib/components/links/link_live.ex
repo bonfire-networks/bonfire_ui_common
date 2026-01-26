@@ -183,7 +183,7 @@ defmodule Bonfire.UI.Common.LinkLive do
         <p class="mt-4 text-xs">
           {#case Cache.maybe_apply_cached({Unfurl, :domain_ip_address}, domain, fallback_return: nil)
             ~> debug("IPadr")}
-            {#match ip}
+            {#match ip when is_binary(ip)}
               Check IP:
               <Link
                 to={"https://www.abuseipdb.com/check/#{ip}"}
@@ -202,13 +202,7 @@ defmodule Bonfire.UI.Common.LinkLive do
                 opts={@opts |> Keyword.merge(target: "_blank")}
                 class="btn btn-xs"
               >{l("Project Honeypot")}</Link>
-              {!--
-          <Link
-            to={"https://www.fortiguard.com/search?q=#{ip}"}
-            opts={@opts |> Keyword.merge(target: "_blank")}
-            class="btn btn-xs" 
-          >{l("FortiGuard")}</Link>
-    --}
+            {#match _}
           {/case}
         </p>
     {/case}
