@@ -195,9 +195,17 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
       <% else %>
         <%= if has_auto_loading?(@phx_click, @type, @loading_text) do %>
           <%!-- Hidden by default, shown via phx-click-loading/phx-submit-loading CSS variants --%>
-          <span class="loading loading-spinner loading-sm hidden phx-click-loading:inline phx-submit-loading:inline" aria-hidden="true"></span>
+          <span
+            class="loading loading-spinner loading-sm hidden phx-click-loading:inline phx-submit-loading:inline"
+            aria-hidden="true"
+          >
+          </span>
           <%= if @icon_left do %>
-            <Iconify.iconify icon={@icon_left} class="w-5 h-5 shrink-0 phx-click-loading:hidden phx-submit-loading:hidden" aria-hidden="true" />
+            <Iconify.iconify
+              icon={@icon_left}
+              class="w-5 h-5 shrink-0 phx-click-loading:hidden phx-submit-loading:hidden"
+              aria-hidden="true"
+            />
           <% end %>
         <% else %>
           <%= if @icon_left do %>
@@ -208,7 +216,10 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
 
       <%!-- Button content with loading text swap --%>
       <%= if has_auto_loading?(@phx_click, @type, @loading_text) do %>
-        <span class={["truncate phx-click-loading:hidden phx-submit-loading:hidden", @circle && @aria_label && "sr-only"]}>
+        <span class={[
+          "truncate phx-click-loading:hidden phx-submit-loading:hidden",
+          @circle && @aria_label && "sr-only"
+        ]}>
           <%= render_slot(@inner_block) %>
         </span>
         <span class="truncate hidden phx-click-loading:inline phx-submit-loading:inline">
@@ -222,7 +233,10 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
 
       <%!-- Right icon (hidden during loading) --%>
       <%= if @icon_right && !@loading do %>
-        <span class={has_auto_loading?(@phx_click, @type, @loading_text) && "phx-click-loading:hidden phx-submit-loading:hidden"}>
+        <span class={
+          has_auto_loading?(@phx_click, @type, @loading_text) &&
+            "phx-click-loading:hidden phx-submit-loading:hidden"
+        }>
           <Iconify.iconify icon={@icon_right} class="w-5 h-5 shrink-0" aria-hidden="true" />
         </span>
       <% end %>

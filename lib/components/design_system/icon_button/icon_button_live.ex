@@ -153,7 +153,11 @@ defmodule Bonfire.UI.Common.DesignSystem.IconButtonLive do
         <% has_slot_content?(@inner_block) -> %>
           <%!-- Custom slot content provided --%>
           <%= if @phx_click do %>
-            <span class={"loading loading-spinner #{@icon_size} hidden phx-click-loading:inline"} aria-hidden="true"></span>
+            <span
+              class={"loading loading-spinner #{@icon_size} hidden phx-click-loading:inline"}
+              aria-hidden="true"
+            >
+            </span>
             <span class="contents phx-click-loading:hidden" aria-hidden="true">
               <%= render_slot(@inner_block) %>
             </span>
@@ -163,8 +167,16 @@ defmodule Bonfire.UI.Common.DesignSystem.IconButtonLive do
         <% @icon -> %>
           <%!-- Icon prop provided --%>
           <%= if @phx_click do %>
-            <span class={"loading loading-spinner #{@icon_size} hidden phx-click-loading:inline"} aria-hidden="true"></span>
-            <Iconify.iconify icon={@icon} class={"#{@icon_size} phx-click-loading:hidden"} aria-hidden="true" />
+            <span
+              class={"loading loading-spinner #{@icon_size} hidden phx-click-loading:inline"}
+              aria-hidden="true"
+            >
+            </span>
+            <Iconify.iconify
+              icon={@icon}
+              class={"#{@icon_size} phx-click-loading:hidden"}
+              aria-hidden="true"
+            />
           <% else %>
             <Iconify.iconify icon={@icon} class={@icon_size} aria-hidden="true" />
           <% end %>
