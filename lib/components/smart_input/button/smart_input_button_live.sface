@@ -70,7 +70,7 @@
     aria-hidden="true"
     class={
       @icon_class,
-      "submitting_icon hidden w-5 h-5 animate-bounce"
+      "submitting_icon !hidden w-5 h-5 animate-bounce"
     }
   />
 </button>
