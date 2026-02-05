@@ -182,6 +182,9 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       plug :save_accept_header
 
+      # Server-Timing headers for browser DevTools + Page Profiler dashboard (only when PAGE_PROFILER_ENABLED=true)
+      plug(Bonfire.UI.Common.ServerTimingPlug)
+
       def include_assets(conn) do
         include_assets(conn, :top)
         include_assets(conn, :bottom)
