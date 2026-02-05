@@ -56,6 +56,14 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         end
       end
 
+      def plug_timing_checkpoint(conn, key) do
+        if Process.get(:server_timing_start) do
+          Process.put({:server_timing_marker, key}, System.monotonic_time(:microsecond))
+        end
+
+        conn
+      end
+
       plug(Bonfire.UI.Common.MultiTenancyPlug)
 
       use_if_enabled(Absinthe.Phoenix.Endpoint)
@@ -145,6 +153,10 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       plug(Plug.Telemetry, event_prefix: [:phoenix, :endpoint])
 
+      # Server-Timing headers for browser DevTools + Page Profiler dashboard (only when PAGE_PROFILER_ENABLED=true)
+      # Placed early to capture prod-relevant plugs (Parsers, Session, CORS, etc.) in the "plugs" metric
+      plug(Bonfire.UI.Common.ServerTimingPlug)
+
       if extension_enabled?(:bonfire_analytics) do
         plug PhoenixAnalytics.Plugs.RequestTracker
       end
@@ -172,18 +184,19 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       # @decorate time()
       # defp parsers(conn, _), do: Plug.Parsers.call(conn, @opts)
       # plug :parsers
+      plug :plug_timing_checkpoint, :before_parsers
       plug(Plug.Parsers, @parser_opts)
+      plug :plug_timing_checkpoint, :after_parsers
 
       plug(Bonfire.UI.Common.ErrorReportingPlug)
 
       plug(Plug.MethodOverride)
       plug(Plug.Head)
+      plug :plug_timing_checkpoint, :before_session
       plug(Plug.Session, EndpointTemplate.session_options())
+      plug :plug_timing_checkpoint, :after_session
 
       plug :save_accept_header
-
-      # Server-Timing headers for browser DevTools + Page Profiler dashboard (only when PAGE_PROFILER_ENABLED=true)
-      plug(Bonfire.UI.Common.ServerTimingPlug)
 
       def include_assets(conn) do
         include_assets(conn, :top)

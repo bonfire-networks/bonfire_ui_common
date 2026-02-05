@@ -1,50 +1,18 @@
 defmodule Bonfire.UI.Common.PageTimingStorage do
   @moduledoc """
-  GenServer with ETS storage for page load timing data.
-
-  Stores recent request timing information for display in the LiveDashboard profiler page.
-  Uses a circular buffer to limit memory usage.
-
-  ## Configuration
-
-  Set in `.env`:
-  - `PAGE_PROFILER_ENABLED=true` - Enable profiling (disabled by default)
-  - `PAGE_PROFILER_MAX_ENTRIES=500` - Max requests to store (default 500)
-
-  ## Usage
-
-      # Check if profiling is enabled
-      PageTimingStorage.enabled?()
-
-      # Record a request (called by ServerTimingPlug)
-      PageTimingStorage.record_request(%{
-        request_id: "abc123",
-        path: "/feed",
-        method: "GET",
-        status: 200,
-        timestamp: DateTime.utc_now(),
-        timings: %{total: 150_000, db: 50_000, ...}
-      })
-
-      # Query stored requests
-      PageTimingStorage.list_requests()
-      PageTimingStorage.get_statistics()
+  ETS-backed circular buffer for page timing data, displayed in the profiler dashboard.
+  Configure via `PAGE_PROFILER_ENABLED=true` and `PAGE_PROFILER_MAX_ENTRIES=500` in `.env`.
   """
 
   use GenServer
-  require Logger
 
   @table_name :page_timing_profiler
   @default_max_entries 500
 
-  # Client API
-
-  @doc "Start the storage GenServer"
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
-  @doc "Check if profiling is enabled"
   def enabled? do
     case Process.whereis(__MODULE__) do
       nil -> false
@@ -54,29 +22,22 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
     :exit, _ -> false
   end
 
-  @doc "Enable profiling at runtime"
   def enable do
     GenServer.call(__MODULE__, :enable)
   catch
     :exit, _ -> {:error, :not_running}
   end
 
-  @doc "Disable profiling at runtime"
   def disable do
     GenServer.call(__MODULE__, :disable)
   catch
     :exit, _ -> {:error, :not_running}
   end
 
-  @doc "Record a request timing profile"
   def record_request(request_data) do
-    # Early return if not enabled - zero overhead path
-    if enabled?() do
-      GenServer.cast(__MODULE__, {:record, request_data})
-    end
+    GenServer.cast(__MODULE__, {:record, request_data})
   end
 
-  @doc "List recent requests with optional filters"
   def list_requests(opts \\ []) do
     limit = Keyword.get(opts, :limit, 100)
     path_filter = Keyword.get(opts, :path)
@@ -91,16 +52,6 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
     rescue
       ArgumentError -> []
     end
-  end
-
-  @doc "Get a single request by ID"
-  def get_request(request_id) do
-    case :ets.lookup(@table_name, request_id) do
-      [{^request_id, data}] -> {:ok, data}
-      [] -> {:error, :not_found}
-    end
-  rescue
-    ArgumentError -> {:error, :not_found}
   end
 
   @doc "Get aggregated statistics"
@@ -135,46 +86,29 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
     end
   end
 
-  @doc "Clear all stored data"
   def clear do
     GenServer.call(__MODULE__, :clear)
   catch
     :exit, _ -> {:error, :not_running}
   end
 
-  @doc "Get current entry count"
-  def count do
-    try do
-      :ets.info(@table_name, :size)
-    rescue
-      ArgumentError -> 0
-    end
-  end
-
   # Server Callbacks
 
   @impl true
   def init(opts) do
-    # Read config from application env (set via runtime.exs from .env)
     app_config = Application.get_env(:bonfire_ui_common, __MODULE__, [])
-    Logger.debug("[PageTimingStorage] init with opts=#{inspect(opts)}, app_config=#{inspect(app_config)}")
 
     enabled = Keyword.get(opts, :enabled, Keyword.get(app_config, :enabled, false))
     max_entries = Keyword.get(opts, :max_entries, Keyword.get(app_config, :max_entries, @default_max_entries))
 
-    # Create ETS table for fast concurrent reads
     table = :ets.new(@table_name, [:named_table, :set, :public, read_concurrency: true])
 
-    state = %{
+    {:ok, %{
       table: table,
       enabled: enabled,
       max_entries: max_entries,
       insertion_order: :queue.new()
-    }
-
-    Logger.info("[PageTimingStorage] Started with enabled=#{enabled}, max_entries=#{max_entries}")
-
-    {:ok, state}
+    }}
   end
 
   @impl true
@@ -184,13 +118,11 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
 
   @impl true
   def handle_call(:enable, _from, state) do
-    Logger.info("[PageTimingStorage] Profiling enabled")
     {:reply, :ok, %{state | enabled: true}}
   end
 
   @impl true
   def handle_call(:disable, _from, state) do
-    Logger.info("[PageTimingStorage] Profiling disabled")
     {:reply, :ok, %{state | enabled: false}}
   end
 
@@ -209,59 +141,52 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
     end
   end
 
-  # Private Functions
-
   defp do_record(request_data, state) do
     request_id = request_data.request_id || generate_id()
 
-    # Normalize the data structure
     normalized = %{
       request_id: request_id,
       path: request_data.path,
       method: request_data.method,
       status: request_data.status,
       timestamp: request_data.timestamp || DateTime.utc_now(),
-      timings: normalize_timings(request_data.timings),
-      view: Map.get(request_data, :view)
+      timings: normalize_timings(request_data.timings)
     }
 
-    # Insert into ETS
     :ets.insert(@table_name, {request_id, normalized})
 
-    # Track insertion order for circular buffer
     new_order = :queue.in(request_id, state.insertion_order)
-
-    # Enforce max entries (circular buffer)
     {new_order, state} = enforce_max_entries(new_order, state)
 
     %{state | insertion_order: new_order}
   end
 
   defp normalize_timings(timings) do
-    %{
-      total: Map.get(timings, :total, 0),
-      db: Map.get(timings, :db, 0),
-      db_count: Map.get(timings, :db_count, 0),
-      queue: Map.get(timings, :queue, 0),
-      plugs: Map.get(timings, :plugs),
-      app: Map.get(timings, :app, 0),
-      remaining: calculate_remaining(timings),
-      lv_mount_disconnected: Map.get(timings, :lv_mount_disconnected),
-      lv_mount_connected: Map.get(timings, :lv_mount_connected),
-      lv_handle_params: Map.get(timings, :lv_handle_params)
-    }
+    timings
+    |> Map.put_new(:total, 0)
+    |> Map.put_new(:db, 0)
+    |> Map.put_new(:db_count, 0)
+    |> Map.put_new(:queue, 0)
+    |> Map.put_new(:app, 0)
+    |> Map.put(:remaining, calculate_remaining(timings))
   end
 
   defp calculate_remaining(timings) do
     total = Map.get(timings, :total, 0)
     plugs = Map.get(timings, :plugs, 0) || 0
-    db = Map.get(timings, :db, 0)
-    queue = Map.get(timings, :queue, 0)
     lv_mount = Map.get(timings, :lv_mount_disconnected, 0) || 0
     lv_handle_params = Map.get(timings, :lv_handle_params, 0) || 0
 
-    # remaining = total time minus all tracked components
-    max(0, total - plugs - db - queue - lv_mount - lv_handle_params)
+    if lv_mount > 0 || lv_handle_params > 0 do
+      # For LV pages, the unaccounted time is the dead render (lv_render).
+      # That's already stored as a separate metric, so remaining = 0 to avoid duplication.
+      0
+    else
+      # For non-LV pages, remaining = total minus all tracked components
+      db = Map.get(timings, :db, 0)
+      queue = Map.get(timings, :queue, 0)
+      max(0, total - plugs - db - queue)
+    end
   end
 
   defp enforce_max_entries(order, state) do

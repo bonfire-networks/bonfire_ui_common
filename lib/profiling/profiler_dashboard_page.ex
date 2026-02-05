@@ -1,23 +1,7 @@
 defmodule Bonfire.UI.Common.ProfilerDashboardPage do
   @moduledoc """
-  LiveDashboard page for profiling page load timing.
-
-  Shows detailed timing breakdowns for HTTP requests including:
-  - Plug pipeline time (before routing)
-  - Database query time and count
-  - Connection queue wait time
-  - LiveView mount time (disconnected/connected)
-  - LiveView handle_params time
-  - Remaining time (total minus all tracked components)
-  - Total request time
-
-  ## Configuration
-
-  Enable via `.env`:
-
-      PAGE_PROFILER_ENABLED=true
-
-  Then visit `/admin/system/page_profiler` to see the dashboard.
+  LiveDashboard page showing timing breakdowns for HTTP requests.
+  Enable via `PAGE_PROFILER_ENABLED=true`, then visit `/admin/system/page_profiler`.
   """
 
   use Phoenix.LiveDashboard.PageBuilder
@@ -108,20 +92,29 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
             <:col :let={req} field={:db_count} header="Qry">
               <%= req.timings.db_count %>
             </:col>
-            <:col :let={req} field={:queue} header="Queue">
-              <%= format_ms(req.timings.queue) %>
+            <:col :let={req} field={:parsers} header="Parsers">
+              <%= format_ms(Map.get(req.timings, :plug_parsers)) %>
+            </:col>
+            <:col :let={req} field={:session} header="Session">
+              <%= format_ms(Map.get(req.timings, :plug_session)) %>
             </:col>
             <:col :let={req} field={:plugs} header="Plugs">
               <%= format_ms(req.timings.plugs) %>
             </:col>
-            <:col :let={req} field={:remaining} header="Other">
-              <%= format_ms(req.timings.remaining) %>
+            <:col :let={req} field={:router} header="Router">
+              <%= format_ms(Map.get(req.timings, :router)) %>
             </:col>
             <:col :let={req} field={:lv_mount} header="Mount">
               <%= format_ms(req.timings.lv_mount_disconnected) %>
             </:col>
             <:col :let={req} field={:lv_params} header="Params">
               <%= format_ms(req.timings.lv_handle_params) %>
+            </:col>
+            <:col :let={req} field={:lv_render} header="Render">
+              <%= format_ms(Map.get(req.timings, :lv_render)) %>
+            </:col>
+            <:col :let={req} field={:remaining} header="Other">
+              <%= format_ms(req.timings.remaining) %>
             </:col>
             <:col :let={req} field={:breakdown} header="Breakdown">
               <%= render_timing_bar(req.timings) %>
@@ -132,11 +125,18 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
         <!-- Legend -->
         <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.75rem; color: #6b7280;">
           <span><span style="display: inline-block; width: 12px; height: 12px; background: #6366f1; border-radius: 2px; margin-right: 4px;"></span>Plugs</span>
-          <span><span style="display: inline-block; width: 12px; height: 12px; background: #3b82f6; border-radius: 2px; margin-right: 4px;"></span>DB</span>
-          <span><span style="display: inline-block; width: 12px; height: 12px; background: #f97316; border-radius: 2px; margin-right: 4px;"></span>Queue</span>
+          <span><span style="display: inline-block; width: 12px; height: 12px; background: #f59e0b; border-radius: 2px; margin-right: 4px;"></span>Router</span>
           <span><span style="display: inline-block; width: 12px; height: 12px; background: #8b5cf6; border-radius: 2px; margin-right: 4px;"></span>Mount</span>
           <span><span style="display: inline-block; width: 12px; height: 12px; background: #ec4899; border-radius: 2px; margin-right: 4px;"></span>Params</span>
+          <span><span style="display: inline-block; width: 12px; height: 12px; background: #14b8a6; border-radius: 2px; margin-right: 4px;"></span>Render</span>
+          <span><span style="display: inline-block; width: 12px; height: 12px; background: #3b82f6; border-radius: 2px; margin-right: 4px;"></span>DB</span>
           <span><span style="display: inline-block; width: 12px; height: 12px; background: #22c55e; border-radius: 2px; margin-right: 4px;"></span>Other</span>
+        </div>
+        <div style="margin-top: 0.5rem; font-size: 0.7rem; color: #9ca3af;">
+          <strong>Plugs</strong> = endpoint plugs before router (parsers, session, etc).
+          <strong>Router</strong> = pipeline plugs before LV mount.
+          <strong>Render</strong> = dead render (computed).<br/>
+          Mount/Params are wall-clock and include DB time within them.
         </div>
       <% else %>
         <!-- Disabled State -->
@@ -174,18 +174,9 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
 
   @impl true
   def handle_event("toggle_profiling", _params, socket) do
-    require Logger
-    Logger.debug("[ProfilerDashboard] toggle_profiling called, current enabled: #{inspect(socket.assigns.enabled)}")
-
-    result = if socket.assigns.enabled do
-      PageTimingStorage.disable()
-    else
-      PageTimingStorage.enable()
-    end
-    Logger.debug("[ProfilerDashboard] enable/disable result: #{inspect(result)}")
+    if socket.assigns.enabled, do: PageTimingStorage.disable(), else: PageTimingStorage.enable()
 
     enabled = PageTimingStorage.enabled?()
-    Logger.debug("[ProfilerDashboard] new enabled state: #{inspect(enabled)}")
     stats = if enabled, do: PageTimingStorage.get_statistics(), else: default_stats()
 
     {:noreply, assign(socket, enabled: enabled, stats: stats)}
@@ -244,24 +235,45 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
 
   defp render_timing_bar(timings) do
     total = max(timings.total, 1)
+    lv_mount = Map.get(timings, :lv_mount_disconnected) || 0
+    lv_params = Map.get(timings, :lv_handle_params) || 0
+    router = Map.get(timings, :router) || 0
+    lv_render = Map.get(timings, :lv_render) || 0
+    has_lv? = lv_mount > 0 || lv_params > 0
 
     plugs_pct = safe_pct(timings.plugs, total)
-    db_pct = safe_pct(timings.db, total)
-    queue_pct = safe_pct(timings.queue, total)
-    mount_pct = safe_pct(timings.lv_mount_disconnected, total)
-    params_pct = safe_pct(timings.lv_handle_params, total)
-    remaining_pct = safe_pct(timings.remaining, total)
 
-    Phoenix.HTML.raw("""
-    <div style="display: flex; height: 16px; width: 140px; border-radius: 4px; overflow: hidden; background: #e5e7eb;">
-      <div style="width: #{plugs_pct}%; background: #6366f1;" title="Plugs: #{plugs_pct}%"></div>
-      <div style="width: #{db_pct}%; background: #3b82f6;" title="DB: #{db_pct}%"></div>
-      <div style="width: #{queue_pct}%; background: #f97316;" title="Queue: #{queue_pct}%"></div>
-      <div style="width: #{mount_pct}%; background: #8b5cf6;" title="Mount: #{mount_pct}%"></div>
-      <div style="width: #{params_pct}%; background: #ec4899;" title="Params: #{params_pct}%"></div>
-      <div style="width: #{remaining_pct}%; background: #22c55e;" title="Other: #{remaining_pct}%"></div>
-    </div>
-    """)
+    if has_lv? do
+      # LiveView page: plugs → router → mount → params → render
+      router_pct = safe_pct(router, total)
+      mount_pct = safe_pct(lv_mount, total)
+      params_pct = safe_pct(lv_params, total)
+      render_pct = safe_pct(lv_render, total)
+
+      Phoenix.HTML.raw("""
+      <div style="display: flex; height: 16px; width: 160px; border-radius: 4px; overflow: hidden; background: #e5e7eb;">
+        <div style="width: #{plugs_pct}%; background: #6366f1;" title="Plugs: #{plugs_pct}%"></div>
+        <div style="width: #{router_pct}%; background: #f59e0b;" title="Router: #{router_pct}%"></div>
+        <div style="width: #{mount_pct}%; background: #8b5cf6;" title="Mount: #{mount_pct}%"></div>
+        <div style="width: #{params_pct}%; background: #ec4899;" title="Params: #{params_pct}%"></div>
+        <div style="width: #{render_pct}%; background: #14b8a6;" title="Render: #{render_pct}%"></div>
+      </div>
+      """)
+    else
+      # Non-LiveView page: plugs → db → queue → other
+      db_pct = safe_pct(timings.db, total)
+      queue_pct = safe_pct(timings.queue, total)
+      remaining_pct = safe_pct(timings.remaining, total)
+
+      Phoenix.HTML.raw("""
+      <div style="display: flex; height: 16px; width: 160px; border-radius: 4px; overflow: hidden; background: #e5e7eb;">
+        <div style="width: #{plugs_pct}%; background: #6366f1;" title="Plugs: #{plugs_pct}%"></div>
+        <div style="width: #{db_pct}%; background: #3b82f6;" title="DB: #{db_pct}%"></div>
+        <div style="width: #{queue_pct}%; background: #f97316;" title="Queue: #{queue_pct}%"></div>
+        <div style="width: #{remaining_pct}%; background: #22c55e;" title="Other: #{remaining_pct}%"></div>
+      </div>
+      """)
+    end
   end
 
   defp safe_pct(nil, _total), do: 0
