@@ -145,9 +145,6 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       plug(Plug.Telemetry, event_prefix: [:phoenix, :endpoint])
 
-      # Server-Timing header for DevTools performance debugging
-      plug(Bonfire.UI.Common.ServerTimingPlug)
-
       if extension_enabled?(:bonfire_analytics) do
         plug PhoenixAnalytics.Plugs.RequestTracker
       end
