@@ -58,7 +58,7 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
   @impl true
   def init(opts) do
     %{
-      enabled: Keyword.get(opts, :enabled, fn _conn -> true end),
+      enabled: Keyword.get(opts, :enabled, :default),
       include_descriptions: Keyword.get(opts, :include_descriptions, true)
     }
   end
