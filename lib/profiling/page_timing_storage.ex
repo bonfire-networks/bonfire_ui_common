@@ -157,6 +157,7 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
   def init(opts) do
     # Read config from application env (set via runtime.exs from .env)
     app_config = Application.get_env(:bonfire_ui_common, __MODULE__, [])
+    Logger.debug("[PageTimingStorage] init with opts=#{inspect(opts)}, app_config=#{inspect(app_config)}")
 
     enabled = Keyword.get(opts, :enabled, Keyword.get(app_config, :enabled, false))
     max_entries = Keyword.get(opts, :max_entries, Keyword.get(app_config, :max_entries, @default_max_entries))
@@ -171,9 +172,7 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
       insertion_order: :queue.new()
     }
 
-    if enabled do
-      Logger.info("[PageTimingStorage] Started with max_entries=#{max_entries}")
-    end
+    Logger.info("[PageTimingStorage] Started with enabled=#{enabled}, max_entries=#{max_entries}")
 
     {:ok, state}
   end

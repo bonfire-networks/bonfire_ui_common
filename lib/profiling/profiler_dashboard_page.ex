@@ -174,13 +174,18 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
 
   @impl true
   def handle_event("toggle_profiling", _params, socket) do
-    if socket.assigns.enabled do
+    require Logger
+    Logger.debug("[ProfilerDashboard] toggle_profiling called, current enabled: #{inspect(socket.assigns.enabled)}")
+
+    result = if socket.assigns.enabled do
       PageTimingStorage.disable()
     else
       PageTimingStorage.enable()
     end
+    Logger.debug("[ProfilerDashboard] enable/disable result: #{inspect(result)}")
 
     enabled = PageTimingStorage.enabled?()
+    Logger.debug("[ProfilerDashboard] new enabled state: #{inspect(enabled)}")
     stats = if enabled, do: PageTimingStorage.get_statistics(), else: default_stats()
 
     {:noreply, assign(socket, enabled: enabled, stats: stats)}
