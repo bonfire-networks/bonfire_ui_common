@@ -8,9 +8,13 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
   ## Metrics Tracked
 
   - `total` - Total request processing time
+  - `plugs` - Time spent in plug pipeline before routing
   - `db` - Cumulative database query time
   - `db_count` - Number of database queries executed
   - `queue` - Time spent waiting in the connection queue
+  - `lv_mount_disconnected` - LiveView initial mount time (if applicable)
+  - `lv_handle_params` - LiveView handle_params time (if applicable)
+  - `app` - Remaining time (total minus all tracked components)
 
   ## Usage
 
@@ -29,7 +33,7 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
 
   ## Options
 
-  - `:enabled` - Function that receives conn and returns boolean (default: always enabled)
+  - `:enabled` - Function that receives conn and returns boolean, or boolean (default: follows PAGE_PROFILER_ENABLED)
   - `:include_descriptions` - Whether to include human-readable descriptions (default: true)
 
   ## Example Output
@@ -42,6 +46,8 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
   @behaviour Plug
   import Plug.Conn
   require Logger
+
+  alias Bonfire.UI.Common.PageTimingStorage
 
   # Process dictionary keys for accumulating metrics
   @timing_start_key :server_timing_start
@@ -71,7 +77,9 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
   end
 
   defp should_enable?(_conn, %{enabled: enabled}) when is_boolean(enabled), do: enabled
-  defp should_enable?(_conn, _opts), do: true
+
+  # Default: only enabled when page profiler is enabled
+  defp should_enable?(_conn, _opts), do: PageTimingStorage.enabled?()
 
   defp start_timing(conn, opts) do
     start_time = System.monotonic_time(:microsecond)
@@ -96,19 +104,35 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
       db_count = Process.get(@db_count_key, 0)
       queue_time = Process.get(@queue_time_key, 0)
 
-      # Calculate app time (total - db - queue)
-      app_time = max(0, total_time - db_time - queue_time)
+      # Collect custom metrics (LiveView timing and plugs)
+      lv_mount_disconnected = Process.get({:server_timing_custom, :lv_mount_disconnected})
+      lv_mount_connected = Process.get({:server_timing_custom, :lv_mount_connected})
+      lv_handle_params = Process.get({:server_timing_custom, :lv_handle_params})
+      plugs_time = Process.get({:server_timing_custom, :plugs})
 
-      timing_header = build_timing_header(
-        %{
-          total: total_time,
-          db: db_time,
-          db_count: db_count,
-          queue: queue_time,
-          app: app_time
-        },
-        opts
-      )
+      # Calculate app time (total - all tracked components)
+      tracked_time =
+        (plugs_time || 0) + db_time + queue_time +
+          (lv_mount_disconnected || 0) + (lv_handle_params || 0)
+
+      app_time = max(0, total_time - tracked_time)
+
+      metrics = %{
+        total: total_time,
+        db: db_time,
+        db_count: db_count,
+        queue: queue_time,
+        plugs: plugs_time,
+        app: app_time,
+        lv_mount_disconnected: lv_mount_disconnected,
+        lv_mount_connected: lv_mount_connected,
+        lv_handle_params: lv_handle_params
+      }
+
+      timing_header = build_timing_header(metrics, opts)
+
+      # Record to profiler storage if enabled
+      maybe_record_to_storage(conn, metrics)
 
       # Clean up process dictionary
       cleanup_process_dict()
@@ -123,9 +147,12 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
     include_desc = Map.get(opts, :include_descriptions, true)
 
     [
+      format_metric("plugs", metrics.plugs, "Plugs", include_desc),
       format_metric("db", metrics.db, "Database", include_desc),
       format_metric("db_count", metrics.db_count, "Queries", include_desc, :count),
       format_metric("queue", metrics.queue, "Queue", include_desc),
+      format_metric("lv_mount", metrics.lv_mount_disconnected, "LV Mount", include_desc),
+      format_metric("lv_params", metrics.lv_handle_params, "LV Params", include_desc),
       format_metric("app", metrics.app, "App", include_desc),
       format_metric("total", metrics.total, "Total", include_desc)
     ]
@@ -162,6 +189,42 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
     Process.delete(@db_time_key)
     Process.delete(@db_count_key)
     Process.delete(@queue_time_key)
+    # Clean up custom metrics
+    Process.delete({:server_timing_custom, :lv_mount_disconnected})
+    Process.delete({:server_timing_custom, :lv_mount_connected})
+    Process.delete({:server_timing_custom, :lv_handle_params})
+    Process.delete({:server_timing_custom, :plugs})
+  end
+
+  defp maybe_record_to_storage(conn, metrics) do
+    if PageTimingStorage.enabled?() and not excluded_path?(conn.request_path) do
+      request_id =
+        conn.assigns[:request_id] ||
+          get_req_header(conn, "x-request-id") |> List.first() ||
+          generate_request_id()
+
+      PageTimingStorage.record_request(%{
+        request_id: request_id,
+        path: conn.request_path,
+        method: conn.method,
+        status: conn.status,
+        timestamp: DateTime.utc_now(),
+        timings: metrics
+      })
+    end
+  rescue
+    _ -> :ok
+  end
+
+  # Skip profiling for admin dashboard and static assets
+  @excluded_prefixes ["/admin/system", "/assets/", "/images/", "/fonts/", "/live/"]
+
+  defp excluded_path?(path) do
+    Enum.any?(@excluded_prefixes, &String.starts_with?(path, &1))
+  end
+
+  defp generate_request_id do
+    :crypto.strong_rand_bytes(8) |> Base.encode16(case: :lower)
   end
 
   # Public API for recording metrics from telemetry handlers

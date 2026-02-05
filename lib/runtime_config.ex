@@ -25,6 +25,11 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
       |> String.split(",")
       |> Enum.filter(&(&1 != ""))
 
+    # Page load profiler (disabled by default)
+    config :bonfire_ui_common, Bonfire.UI.Common.PageTimingStorage,
+      enabled: System.get_env("PAGE_PROFILER_ENABLED") in ~w(true yes 1),
+      max_entries: String.to_integer(System.get_env("PAGE_PROFILER_MAX_ENTRIES", "500"))
+
     config :bonfire_ui_common, :cors_routes, [
       # NOTE: the order matters, as the origins of the first matching route will be used
       %{
