@@ -162,7 +162,7 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
 
   defp format_metric(name, value, desc, include_desc, type \\ :duration)
 
-  # Skip metrics with zero or negative values (except counts)
+  defp format_metric(_name, nil, _desc, _include_desc, _type), do: nil
   defp format_metric(_name, value, _desc, _include_desc, :duration) when value <= 0, do: nil
 
   defp format_metric(name, value, desc, include_desc, :duration) do
