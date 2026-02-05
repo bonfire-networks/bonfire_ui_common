@@ -24,6 +24,10 @@ TooltipHooks.Tooltip = {
 		let isHoveringButton = false;
 		let isHoveringTooltip = false;
 
+		// Lazy loading support (backward compatible - only activates when data-lazy="true")
+		const isLazy = tooltipWrapper.getAttribute("data-lazy") === "true";
+		let hasDispatchedLazy = false;
+
 		// Instance state for lifecycle methods
 		this.isUpdating = false;
 		this.pendingUpdate = false;
@@ -32,14 +36,14 @@ TooltipHooks.Tooltip = {
 		const updatePosition = () => {
 			if (this.isUpdating) {
 				this.pendingUpdate = true;
-				return;
+				return Promise.resolve();
 			}
 
 			if (!button || !tooltip) {
-				return;
+				return Promise.resolve();
 			}
 
-			computePosition(button, tooltip, {
+			return computePosition(button, tooltip, {
 				placement: position || "top",
 				middleware: [offset(6), flip({ padding: 5 }), shift({ padding: 5 })],
 			}).then(({ x, y, placement }) => {
@@ -53,6 +57,9 @@ TooltipHooks.Tooltip = {
 				}
 			});
 		};
+
+		// Store updatePosition on instance for lifecycle methods
+		this.updatePosition = updatePosition;
 
 		// Store updatePosition on the tooltip element so external code can trigger recalculation
 		// This is needed for lazy-loaded content like emoji pickers
@@ -80,6 +87,14 @@ TooltipHooks.Tooltip = {
 
 		// Display tooltip and start entrance animation
 		const displayTooltip = () => {
+			// Dispatch lazy load event on first open (backward compatible - no effect on existing tooltips)
+			if (isLazy && !hasDispatchedLazy) {
+				hasDispatchedLazy = true;
+				// Use attribute selector since IDs may start with numbers (invalid CSS selector)
+				console.debug("[Tooltip] Dispatching load_menu_content to", tooltipWrapper.id);
+				this.pushEventTo(`[id="${tooltipWrapper.id}"]`, "load_menu_content", {});
+			}
+
 			tooltip.style.display = 'block';
 			tooltip.style.pointerEvents = 'auto';
 			startPositionUpdate();
@@ -203,18 +218,54 @@ TooltipHooks.Tooltip = {
 			this.cleanup = null;
 		}
 		this.isUpdating = true;
+		// Save tooltip open state before DOM update
+		const tooltip = this.el?.querySelector(".tooltip");
+		this.wasOpen = tooltip && tooltip.style.display === 'block';
 	},
 
 	updated() {
 		// Resume positioning after DOM updates
 		this.isUpdating = false;
-		if (this.pendingUpdate) {
-			setTimeout(() => {
-				if (this.startPositionUpdate) {
-					this.startPositionUpdate();
-				}
-				this.pendingUpdate = false;
-			}, 50);
+		const tooltip = this.el?.querySelector(".tooltip");
+
+		// Restore tooltip visibility if it was open before update
+		if (this.wasOpen && tooltip) {
+			// Remove any animation classes to ensure clean layout calculation
+			tooltip.classList.remove('tooltip-animated', 'tooltip-visible');
+
+			// Keep tooltip hidden while recalculating
+			tooltip.style.display = 'block';
+			tooltip.style.opacity = '0';
+			tooltip.style.pointerEvents = 'auto';
+
+			// Force reflow to ensure new content is fully laid out
+			tooltip.offsetHeight;
+
+			// Calculate position, then show tooltip after next paint
+			if (this.updatePosition) {
+				this.updatePosition().then(() => {
+					// Use rAF to ensure position is applied before showing
+					requestAnimationFrame(() => {
+						tooltip.style.opacity = '';
+						tooltip.classList.add('tooltip-animated');
+						// Force reflow before adding visible class for animation
+						tooltip.offsetHeight;
+						tooltip.classList.add('tooltip-visible');
+						// Start continuous position updates
+						if (this.startPositionUpdate) {
+							this.startPositionUpdate();
+						}
+					});
+				});
+			}
+		}
+
+		if (this.pendingUpdate && !this.wasOpen) {
+			if (this.updatePosition) {
+				this.updatePosition().then(() => {
+					this.pendingUpdate = false;
+				});
+			}
 		}
 	},
 
