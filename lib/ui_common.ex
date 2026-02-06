@@ -26,13 +26,17 @@ defmodule Bonfire.UI.Common do
   end
 
   def maybe_component(module, context \\ []) do
-    case maybe_module(module, context) do
-      nil ->
-        warn(module, "Component module is disabled and no replacement was configured")
-        Bonfire.UI.Common.DisabledModuleLive
+    import Bonfire.UI.Common.Timing
 
-      module ->
-        module
+    time_section_accumulate :maybe_component do
+      case maybe_module(module, context) do
+        nil ->
+          warn(module, "Component module is disabled and no replacement was configured")
+          Bonfire.UI.Common.DisabledModuleLive
+
+        module ->
+          module
+      end
     end
   end
 

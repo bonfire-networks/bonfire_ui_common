@@ -98,10 +98,16 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
       # Dead render has no telemetry event; for LV pages it's the untracked remainder
       lv_render = if lv_mount_disconnected || lv_handle_params, do: app_time
 
+      resp_size_kb =
+        if conn.resp_body,
+          do: Float.round(IO.iodata_length(conn.resp_body) / 1024, 1),
+          else: 0.0
+
       all_custom_metrics = collect_all_custom_metrics()
 
       metrics =
         Map.merge(all_custom_metrics, %{
+          resp_size_kb: resp_size_kb,
           total: total_time,
           db: db_time,
           db_count: db_count,
@@ -246,6 +252,14 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
   def record_custom(key, duration) when is_atom(key) and is_number(duration) do
     if Process.get(@timing_start_key) do
       Process.put({:server_timing_custom, key}, duration)
+    end
+  end
+
+  @doc "Accumulates a custom timing metric (atom key, microseconds). Adds to any existing value."
+  def accumulate_custom(key, duration) when is_atom(key) and is_number(duration) do
+    if Process.get(@timing_start_key) do
+      current = Process.get({:server_timing_custom, key}, 0)
+      Process.put({:server_timing_custom, key}, current + duration)
     end
   end
 end

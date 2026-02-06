@@ -63,16 +63,46 @@ defmodule Bonfire.UI.Common.LayoutLive do
   def custom_theme_attr(config), do: DaisyTheme.style_attr(config) |> debug("custom theme style")
 
   def render(_, assigns) do
-    prepare_assigns(assigns)
-    |> render()
+    import Bonfire.UI.Common.Timing
+
+    assigns =
+      time_section :lv_layout_prepare do
+        prepare_assigns(assigns)
+      end
+
+    time_section :lv_layout_template do
+      render(assigns)
+    end
   end
 
   # @decorate time()
   # render_sface_or_native(prepare_assigns_fn: :prepare_assigns)
 
-  @decorate time()
   def prepare_assigns(assigns) do
+    import Bonfire.UI.Common.Timing
+
     # NOTE: we need to also set default props this way until we can convert LayoutView to use Surface
+    nav_items =
+      time_section :lv_default_nav do
+        assigns[:nav_items] ||
+          case assigns[:nav_items_extension] do
+            nil ->
+              # nav for all extensions configured in `:ui, :default_nav_extensions`
+              Bonfire.UI.Common.NavModule.default_nav()
+
+            true ->
+              # show nav for current extension (if any)
+              Bonfire.UI.Common.NavModule.default_nav(
+                e(assigns[:__context__], :current_extension, nil) ||
+                  e(assigns[:__context__], :current_app, nil)
+              )
+
+            extension ->
+              # show nav for specified extension
+              Bonfire.UI.Common.NavModule.default_nav(extension)
+          end || []
+      end
+
     assigns
     |> assign_new(:conn, fn -> nil end)
     |> assign_new(:__context__, fn -> %{} end)
@@ -107,26 +137,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:without_sidebar, fn -> nil end)
     |> assign_new(:without_secondary_widgets, fn -> false end)
     |> assign_new(:sidebar_widgets, fn -> [] end)
-    |> assign(
-      :nav_items,
-      assigns[:nav_items] ||
-        case assigns[:nav_items_extension] do
-          nil ->
-            # nav for all extensions configured in `:ui, :default_nav_extensions`
-            Bonfire.UI.Common.NavModule.default_nav()
-
-          true ->
-            # show nav for current extension (if any)
-            Bonfire.UI.Common.NavModule.default_nav(
-              e(assigns[:__context__], :current_extension, nil) ||
-                e(assigns[:__context__], :current_app, nil)
-            )
-
-          extension ->
-            # show nav for specified extension
-            Bonfire.UI.Common.NavModule.default_nav(extension)
-        end || []
-    )
+    |> assign(:nav_items, nav_items)
 
     # |> assign_new(:hero, fn -> nil end)
     # |> assign_new(:custom_page_header, fn -> nil end)

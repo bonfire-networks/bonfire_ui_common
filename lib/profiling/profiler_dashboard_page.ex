@@ -8,6 +8,8 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
 
   alias Bonfire.UI.Common.PageTimingStorage
 
+  @standard_keys ~w(total db db_count queue plugs router lv_mount_disconnected lv_handle_params lv_render remaining app plug_parsers plug_session resp_size_kb)a
+
   @impl true
   def menu_link(_, _) do
     {:ok, "Page Profiler"}
@@ -113,8 +115,19 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
             <:col :let={req} field={:lv_render} header="Render">
               <%= format_ms(Map.get(req.timings, :lv_render)) %>
             </:col>
+            <:col :let={req} field={:resp_size} header="Size">
+              <%= format_kb(Map.get(req.timings, :resp_size_kb)) %>
+            </:col>
             <:col :let={req} field={:remaining} header="Other">
               <%= format_ms(req.timings.remaining) %>
+            </:col>
+            <:col :let={req} field={:custom} header="Custom">
+              <% custom_count = custom_metric_count(req.timings) %>
+              <%= if custom_count > 0 do %>
+                <span title={inspect(extract_custom_metrics(req.timings))}><%= custom_count %> metrics</span>
+              <% else %>
+                -
+              <% end %>
             </:col>
             <:col :let={req} field={:breakdown} header="Breakdown">
               <%= render_timing_bar(req.timings) %>
@@ -137,6 +150,30 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
           <strong>Router</strong> = pipeline plugs before LV mount.
           <strong>Render</strong> = dead render (computed).<br/>
           Mount/Params are wall-clock and include DB time within them.
+        </div>
+
+        <!-- Sub-Timings Detail (latest request with custom metrics) -->
+        <div style="margin-top: 1.5rem; background: #f8f9fa; border-radius: 8px; padding: 1rem; border: 1px solid #dee2e6;">
+          <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: #495057;">
+            Sub-Timings
+            <%= if @latest_path do %>
+              <span style="font-weight: normal; color: #9ca3af;">(<%= @latest_path %>)</span>
+            <% end %>
+          </h3>
+          <%= if @latest_custom_metrics != [] do %>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem;">
+              <%= for {key, value} <- @latest_custom_metrics do %>
+                <div style="display: flex; justify-content: space-between; padding: 0.375rem 0.75rem; background: white; border-radius: 4px; border: 1px solid #e5e7eb; font-size: 0.8125rem;">
+                  <span style="color: #6b7280;"><%= humanize_key(key) %></span>
+                  <span style="font-weight: 600; font-variant-numeric: tabular-nums;"><%= format_ms(value) %></span>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <p style="color: #9ca3af; font-size: 0.8125rem;">
+              No custom sub-timings found. Visit a page with <code>time_section</code> instrumentation (e.g. <code>/feed/explore</code>), then click Refresh.
+            </p>
+          <% end %>
         </div>
       <% else %>
         <!-- Disabled State -->
@@ -169,7 +206,9 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
     enabled = PageTimingStorage.enabled?()
     stats = if enabled, do: PageTimingStorage.get_statistics(), else: default_stats()
 
-    {:ok, assign(socket, enabled: enabled, stats: stats)}
+    {custom_metrics, latest_path} = latest_custom_metrics()
+
+    {:ok, assign(socket, enabled: enabled, stats: stats, latest_custom_metrics: custom_metrics, latest_path: latest_path)}
   end
 
   @impl true
@@ -186,13 +225,14 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
   def handle_event("clear_data", _params, socket) do
     PageTimingStorage.clear()
     stats = PageTimingStorage.get_statistics()
-    {:noreply, assign(socket, stats: stats)}
+    {:noreply, assign(socket, stats: stats, latest_custom_metrics: [], latest_path: nil)}
   end
 
   @impl true
   def handle_event("refresh", _params, socket) do
     stats = PageTimingStorage.get_statistics()
-    {:noreply, assign(socket, stats: stats)}
+    {custom_metrics, latest_path} = latest_custom_metrics()
+    {:noreply, assign(socket, stats: stats, latest_custom_metrics: custom_metrics, latest_path: latest_path)}
   end
 
   # Data fetchers
@@ -216,6 +256,18 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
     end
   end
   defp format_ms(_), do: "-"
+
+  defp format_kb(nil), do: "-"
+  defp format_kb(0), do: "-"
+  defp format_kb(0.0), do: "-"
+  defp format_kb(kb) when is_number(kb) do
+    cond do
+      kb >= 1024 -> "#{Float.round(kb / 1024, 1)} MB"
+      kb >= 10 -> "#{round(kb)} KB"
+      true -> "#{Float.round(kb * 1.0, 1)} KB"
+    end
+  end
+  defp format_kb(_), do: "-"
 
   defp format_timestamp(nil), do: "-"
   defp format_timestamp(%DateTime{} = dt) do
@@ -281,6 +333,37 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
     round(value / total * 100)
   end
   defp safe_pct(_, _), do: 0
+
+  defp latest_custom_metrics do
+    PageTimingStorage.list_requests(limit: 50)
+    |> Enum.find_value({[], nil}, fn req ->
+      metrics =
+        req.timings
+        |> Map.drop(@standard_keys)
+        |> Enum.filter(fn {_k, v} -> is_number(v) and v > 0 end)
+        |> Enum.sort_by(fn {_k, v} -> v end, :desc)
+
+      if metrics != [], do: {metrics, req.path}
+    end)
+  end
+
+  defp extract_custom_metrics(timings) do
+    timings
+    |> Map.drop(@standard_keys)
+    |> Enum.filter(fn {_k, v} -> is_number(v) and v > 0 end)
+  end
+
+  defp custom_metric_count(timings) do
+    extract_custom_metrics(timings) |> length()
+  end
+
+  defp humanize_key(key) when is_atom(key) do
+    key
+    |> Atom.to_string()
+    |> String.replace(~r/^lv_/, "")
+    |> String.split("_")
+    |> Enum.map_join(" ", &String.capitalize/1)
+  end
 
   defp default_stats do
     %{
