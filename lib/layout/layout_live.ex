@@ -31,7 +31,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   # prop force_live, :boolean, default: false
 
   prop inner_content, :any, default: nil
-  prop nav_items, :list, default: []
+  prop nav_items, :any, default: nil
   prop without_secondary_widgets, :boolean, default: false
   prop without_sidebar, :boolean, default: nil
   prop without_smart_input, :boolean, default: false
@@ -109,13 +109,23 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:sidebar_widgets, fn -> [] end)
     |> assign(
       :nav_items,
-      e(
-        assigns[:nav_items],
-        Bonfire.Common.ExtensionModule.default_nav(
-          e(assigns[:__context__], :current_extension, nil) ||
-            e(assigns[:__context__], :current_app, nil)
-        ) || Bonfire.UI.Common.NavModule.nav(e(assigns[:__context__], :current_app, nil))
-      ) || []
+      assigns[:nav_items] ||
+        case assigns[:nav_items_extension] do
+          nil ->
+            # nav for all extensions configured in `:ui, :default_nav_extensions`
+            Bonfire.UI.Common.NavModule.default_nav()
+
+          true ->
+            # show nav for current extension (if any)
+            Bonfire.UI.Common.NavModule.default_nav(
+              e(assigns[:__context__], :current_extension, nil) ||
+                e(assigns[:__context__], :current_app, nil)
+            )
+
+          extension ->
+            # show nav for specified extension
+            Bonfire.UI.Common.NavModule.default_nav(extension)
+        end || []
     )
 
     # |> assign_new(:hero, fn -> nil end)

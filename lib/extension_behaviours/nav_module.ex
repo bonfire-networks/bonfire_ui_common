@@ -29,6 +29,7 @@ defmodule Bonfire.UI.Common.NavModule do
         ret = Utils.maybe_apply(module, :declared_nav, [], &nav_function_error/2)
         if ret, do: Enum.into(ret, %{module: module})
     end)
+    |> filter_empty([])
   end
 
   def nav(_), do: nil
@@ -36,7 +37,6 @@ defmodule Bonfire.UI.Common.NavModule do
   @doc "Load all navs"
   def nav() do
     Enum.map(modules(), &nav/1)
-    |> filter_empty([])
   end
 
   def nav_function_error(error, _args) do
@@ -55,5 +55,38 @@ defmodule Bonfire.UI.Common.NavModule do
   @spec modules() :: [atom]
   def modules() do
     Bonfire.Common.ExtensionBehaviour.behaviour_modules(__MODULE__)
+  end
+
+  def default_nav(%{default_nav: default_nav}) do
+    nav(default_nav) || []
+  end
+
+  def default_nav(app) when is_atom(app) do
+    nav(Bonfire.Common.ExtensionModule.extension(app)[:default_nav]) || []
+  end
+
+  def default_nav(apps) when is_list(apps) do
+    Enum.flat_map(apps, &default_nav/1)
+  end
+
+  def default_nav(_) do
+    []
+  end
+
+  def default_nav() do
+    Bonfire.Common.Cache.maybe_apply_cached(
+      &do_default_nav/0,
+      [],
+      expire: 120_000
+    )
+  end
+
+  def do_default_nav() do
+    default_nav_apps()
+    |> default_nav()
+  end
+
+  defp default_nav_apps() do
+    Config.get([:ui, :default_nav_extensions], [:bonfire_ui_common, :bonfire_ui_social])
   end
 end

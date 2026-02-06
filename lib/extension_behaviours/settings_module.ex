@@ -51,7 +51,7 @@ defmodule Bonfire.UI.Common.SettingsModule do
   def nav_function_error(error, _args) do
     warn(
       error,
-      "NavModule - there's no nav module declared for this schema: 1) No function declared_nav/0 that returns this schema atom. 2)"
+      "SettingsModule - there's no settings module declared for this"
     )
 
     nil

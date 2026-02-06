@@ -12,7 +12,7 @@
         <span class="flex-1">{extension[:name]}</span>
       </LinkLive>
 
-      {!-- {#case @show_extensions_nav and Bonfire.Common.ExtensionModule.default_nav(app)}
+      {!-- {#case @show_extensions_nav and Bonfire.UI.Common.NavModule.default_nav(app)}
         {#match app_nav_items when is_list(app_nav_items)}
           <div class="dropdown dropdown-hover dropdown-right">
             <label class="btn btn-xs btn-ghost btn-square" tabindex="0">
