@@ -39,11 +39,9 @@ defmodule Bonfire.UI.Common.WidgetLive do
         assigns
 
       module =
-          Extend.maybe_module(widget[:module], assigns[:__context__])
-          |> debug("!maybe_module #{inspect(widget[:module])}") ->
+          Extend.maybe_module(widget[:module], assigns[:__context__]) ->
         data =
           Enum.into(assigns[:data] || e(widget, :data, nil) || [], assigns[:extra_data] || %{})
-          |> debug("widdata")
 
         assigns
         |> assign(
@@ -52,8 +50,6 @@ defmodule Bonfire.UI.Common.WidgetLive do
         )
 
       true ->
-        debug(widget[:module], "disabled")
-
         assigns
         |> assign(widget: %{type: :disabled, name: widget[:module]})
     end

@@ -10,37 +10,39 @@
   class={@container_class || "menu w-full p-0"}
   data-showing-within={@showing_within}
 >
-  {#case ed(
-      Bonfire.Common.Settings.get(
-        [:ui, :widget_order],
-        [],
-        current_user: current_user(@__context__)
-      ),
-      @id,
-      []
-    )}
-    {#match order_settings}
-      {#for {widget, index} <-
-          Enum.sort_by(
-            Enum.with_index(List.wrap(@widgets)),
-            fn {widget, index} ->
-              ((widget[:page] || widget[:module]) &&
-                 e(order_settings, Types.maybe_to_atom(widget[:page] || widget[:module]), nil)) ||
-                index
-            end
-          )}
-        <Bonfire.UI.Common.WidgetLive
-          widget={widget}
-          wrapper_class={@wrapper_class || ""}
-          page={@page}
-          selected_tab={@selected_tab}
-          showing_within={@showing_within}
-          with_title={@with_title}
-          extra_data={@extra_data}
-          compact={@compact}
-          parent_id={@id}
-          order={index}
-        />
-      {/for}
-  {/case}
+  {#if is_list(@widgets) and @widgets != []}
+    {#case ed(
+        Bonfire.Common.Settings.get(
+          [:ui, :widget_order],
+          [],
+          current_user: current_user(@__context__)
+        ),
+        @id,
+        []
+      )}
+      {#match order_settings}
+        {#for {widget, index} <-
+            Enum.sort_by(
+              Enum.with_index(List.wrap(@widgets)),
+              fn {widget, index} ->
+                ((widget[:page] || widget[:module]) &&
+                   e(order_settings, Types.maybe_to_atom(widget[:page] || widget[:module]), nil)) ||
+                  index
+              end
+            )}
+          <Bonfire.UI.Common.WidgetLive
+            widget={widget}
+            wrapper_class={@wrapper_class || ""}
+            page={@page}
+            selected_tab={@selected_tab}
+            showing_within={@showing_within}
+            with_title={@with_title}
+            extra_data={@extra_data}
+            compact={@compact}
+            parent_id={@id}
+            order={index}
+          />
+        {/for}
+    {/case}
+  {/if}
 </ul>

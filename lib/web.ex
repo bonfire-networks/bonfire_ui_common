@@ -409,9 +409,13 @@ defmodule Bonfire.UI.Common.Web do
         defoverridable mount: 3
 
         def mount(params, session, socket) do
-          undead_mount(socket, fn ->
-            super(params, session, socket)
-          end)
+          import Bonfire.UI.Common.Timing
+
+          time_section_accumulate :"mount_#{unquote(env.module)}" do
+            undead_mount(socket, fn ->
+              super(params, session, socket)
+            end)
+          end
         end
       end
     end
@@ -535,10 +539,13 @@ defmodule Bonfire.UI.Common.Web do
         defoverridable update: 2
 
         def update(assigns, socket) do
-          # FIXME?
-          undead_update(socket, fn ->
-            super(assigns, socket)
-          end)
+          import Bonfire.UI.Common.Timing
+
+          time_section_accumulate :"update_#{unquote(env.module)}" do
+            undead_update(socket, fn ->
+              super(assigns, socket)
+            end)
+          end
         end
       end
     end
@@ -564,12 +571,14 @@ defmodule Bonfire.UI.Common.Web do
       defoverridable render: 1
 
       def render(assigns) do
+        import Bonfire.UI.Common.Timing
+
         # current_component_id = assigns[:__context__][:current_component_id]
 
         assigns =
           assign_generic_global(assigns, %{
-            # current_component: __MODULE__, 
-            # current_component_id: assigns[:id] || current_component_id, 
+            # current_component: __MODULE__,
+            # current_component_id: assigns[:id] || current_component_id,
 
             component_tree:
               (assigns[:__context__][:component_tree] || []) ++
@@ -579,39 +588,41 @@ defmodule Bonfire.UI.Common.Web do
                 List.wrap(assigns[:id])
           })
 
-        undead_render(assigns, fn ->
-          case assigns do
-            %{__replace_render__with__: _} ->
-              Bonfire.UI.Common.ErrorComponentLive.replace(assigns)
+        time_section_accumulate :"render_#{unquote(env.module)}" do
+          undead_render(assigns, fn ->
+            case assigns do
+              %{__replace_render__with__: _} ->
+                Bonfire.UI.Common.ErrorComponentLive.replace(assigns)
 
-            %{__context__: %{current_params: %{"_email_format" => format}}} ->
-              mod = unquote(env.module)
+              %{__context__: %{current_params: %{"_email_format" => format}}} ->
+                mod = unquote(env.module)
 
-              case Bonfire.Common.Utils.maybe_apply(
-                     Bonfire.Mailer.Render,
-                     :render_templated,
-                     [format, mod, assigns],
-                     fallback_return: nil
-                   ) do
-                binary when is_binary(binary) and binary != "" ->
-                  binary = if format == "text", do: "<pre>#{binary}</pre>", else: binary
+                case Bonfire.Common.Utils.maybe_apply(
+                       Bonfire.Mailer.Render,
+                       :render_templated,
+                       [format, mod, assigns],
+                       fallback_return: nil
+                     ) do
+                  binary when is_binary(binary) and binary != "" ->
+                    binary = if format == "text", do: "<pre>#{binary}</pre>", else: binary
 
-                  Bonfire.UI.Common.Empty.render(
-                    Phoenix.Component.assign(assigns,
-                      html_content: binary,
-                      comment: "email mode"
+                    Bonfire.UI.Common.Empty.render(
+                      Phoenix.Component.assign(assigns,
+                        html_content: binary,
+                        comment: "email mode"
+                      )
                     )
-                  )
 
-                # ~H"<%= raw binary %>"
-                _ ->
-                  super(assigns)
-              end
+                  # ~H"<%= raw binary %>"
+                  _ ->
+                    super(assigns)
+                end
 
-            _ ->
-              super(assigns)
-          end
-        end)
+              _ ->
+                super(assigns)
+            end
+          end)
+        end
       end
     end
   end
