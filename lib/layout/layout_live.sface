@@ -25,7 +25,7 @@
     <div class="drawer-content px-safe">
       <div
         data-id="layout"
-        data-two-columns={@without_secondary_widgets==true && !@without_sidebar}
+        data-two-columns={@without_secondary_widgets == true && !@without_sidebar}
         data-single-column={@without_sidebar}
         class="grid gap-3 px-0 lg:grid-main"
       >
@@ -66,7 +66,7 @@
                   class={
                     "flex flex-col bg-base-100 pb-4 md:pb-[1px] border-x border-base-content/20",
                     hidden: @hide_main,
-                    "border-none": @no_header == true && is_nil(current_user(@__context__)), 
+                    "border-none": @no_header == true && is_nil(current_user(@__context__)),
                     "min-h-[calc(var(--inner-window-height))]": @without_secondary_widgets != :never
                   }
                 >
@@ -101,22 +101,19 @@
           </div>
         </div>
         <div
-          :if={@without_secondary_widgets !=true}
+          :if={@without_secondary_widgets != true}
           class={[
-            "z-[999]", 
+            "z-[999]",
             "hidden order-first md:order-none md:static lg:block": @without_secondary_widgets != :never,
-          "block order-none static px-2 lg:px-0": @without_secondary_widgets == :never
+            "block order-none static px-2 lg:px-0": @without_secondary_widgets == :never
           ]}
         >
           <div
             data-id="right_nav_and_widgets"
             class="order-last sticky  w-auto lg:top-2 mt-2 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
           >
-            
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
-              <div class={["w-full mb-3 hidden lg:block",
-                "md:hidden lg:block": @without_secondary_widgets != :never
-              ]}>
+              <div class={["w-full mb-3 hidden lg:block", "md:hidden lg:block": @without_secondary_widgets != :never]}>
                 <StatelessComponent
                   module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
                   id="sidebar-search"
@@ -153,12 +150,12 @@
                 <Bonfire.UI.Common.ImpressumLive />
               </div>
               <div :if={is_nil(@current_user_id)} class="flex flex-col gap-2 mt-3">
-              <LinkLive to={path(:login, :index)} class="btn-primary btn " parent_id="layout">{l("Log in")}</LinkLive>
+                <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="layout">{l("Log in")}</LinkLive>
 
-              {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-                <LinkLive to={path(:signup)} class="btn btn-primary btn-outline" parent_id="layout">{l("Create account")}</LinkLive>
-              {/if}
-            </div>
+                {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+                  <LinkLive to={path(:signup)} class="btn btn-primary btn-outline" parent_id="layout">{l("Create account")}</LinkLive>
+                {/if}
+              </div>
             </div>
           </div>
         </div>

@@ -25,48 +25,58 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
         <!-- Statistics Row -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
           <div style="background: #f0fdf4; border-radius: 8px; padding: 1rem; border: 1px solid #86efac; text-align: center;">
-            <div style="font-size: 1.5rem; font-weight: bold; color: #166534;"><%= @stats.count %></div>
+            <div style="font-size: 1.5rem; font-weight: bold; color: #166534;">
+              <%= @stats.count %>
+            </div>
             <div style="font-size: 0.875rem; color: #15803d;">Requests</div>
           </div>
           <div style="background: #eff6ff; border-radius: 8px; padding: 1rem; border: 1px solid #93c5fd; text-align: center;">
-            <div style="font-size: 1.5rem; font-weight: bold; color: #1e40af;"><%= format_ms(@stats.avg_total) %></div>
+            <div style="font-size: 1.5rem; font-weight: bold; color: #1e40af;">
+              <%= format_ms(@stats.avg_total) %>
+            </div>
             <div style="font-size: 0.875rem; color: #1d4ed8;">Avg Total</div>
           </div>
           <div style="background: #fefce8; border-radius: 8px; padding: 1rem; border: 1px solid #fde047; text-align: center;">
-            <div style="font-size: 1.5rem; font-weight: bold; color: #854d0e;"><%= format_ms(@stats.p95_total) %></div>
+            <div style="font-size: 1.5rem; font-weight: bold; color: #854d0e;">
+              <%= format_ms(@stats.p95_total) %>
+            </div>
             <div style="font-size: 0.875rem; color: #a16207;">P95 Total</div>
           </div>
           <div style="background: #fdf2f8; border-radius: 8px; padding: 1rem; border: 1px solid #f9a8d4; text-align: center;">
-            <div style="font-size: 1.5rem; font-weight: bold; color: #9d174d;"><%= @stats.avg_db_count %></div>
+            <div style="font-size: 1.5rem; font-weight: bold; color: #9d174d;">
+              <%= @stats.avg_db_count %>
+            </div>
             <div style="font-size: 0.875rem; color: #be185d;">Avg Queries</div>
           </div>
         </div>
-
-        <!-- Controls -->
+        
+    <!-- Controls -->
         <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center;">
           <button
             phx-click="toggle_profiling"
-                        style={"padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #d1d5db; cursor: pointer; font-size: 0.875rem; background: #{if @enabled, do: "#fef2f2", else: "#f0fdf4"}; color: #{if @enabled, do: "#991b1b", else: "#166534"};"}
+            style={"padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #d1d5db; cursor: pointer; font-size: 0.875rem; background: #{if @enabled, do: "#fef2f2", else: "#f0fdf4"}; color: #{if @enabled, do: "#991b1b", else: "#166534"};"}
           >
             <%= if @enabled, do: "Disable Profiling", else: "Enable Profiling" %>
           </button>
           <button
             phx-click="clear_data"
-                        style="padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #d1d5db; cursor: pointer; font-size: 0.875rem; background: #f9fafb;"
+            style="padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #d1d5db; cursor: pointer; font-size: 0.875rem; background: #f9fafb;"
           >
             Clear Data
           </button>
           <button
             phx-click="refresh"
-                        style="padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #d1d5db; cursor: pointer; font-size: 0.875rem; background: #f9fafb;"
+            style="padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #d1d5db; cursor: pointer; font-size: 0.875rem; background: #f9fafb;"
           >
             Refresh
           </button>
         </div>
-
-        <!-- Request Table -->
+        
+    <!-- Request Table -->
         <div style="background: #f8f9fa; border-radius: 8px; padding: 1rem; border: 1px solid #dee2e6;">
-          <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: #495057;">Recent Requests</h3>
+          <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: #495057;">
+            Recent Requests
+          </h3>
           <.live_table
             id="profiler-requests"
             dom_id="profiler-requests-table"
@@ -124,7 +134,9 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
             <:col :let={req} field={:custom} header="Custom">
               <% custom_count = custom_metric_count(req.timings) %>
               <%= if custom_count > 0 do %>
-                <span title={inspect(extract_custom_metrics(req.timings))}><%= custom_count %> metrics</span>
+                <span title={inspect(extract_custom_metrics(req.timings))}>
+                  <%= custom_count %> metrics
+                </span>
               <% else %>
                 -
               <% end %>
@@ -134,25 +146,39 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
             </:col>
           </.live_table>
         </div>
-
-        <!-- Legend -->
+        
+    <!-- Legend -->
         <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.75rem; color: #6b7280;">
-          <span><span style="display: inline-block; width: 12px; height: 12px; background: #6366f1; border-radius: 2px; margin-right: 4px;"></span>Plugs</span>
-          <span><span style="display: inline-block; width: 12px; height: 12px; background: #f59e0b; border-radius: 2px; margin-right: 4px;"></span>Router</span>
-          <span><span style="display: inline-block; width: 12px; height: 12px; background: #8b5cf6; border-radius: 2px; margin-right: 4px;"></span>Mount</span>
-          <span><span style="display: inline-block; width: 12px; height: 12px; background: #ec4899; border-radius: 2px; margin-right: 4px;"></span>Params</span>
-          <span><span style="display: inline-block; width: 12px; height: 12px; background: #14b8a6; border-radius: 2px; margin-right: 4px;"></span>Render</span>
-          <span><span style="display: inline-block; width: 12px; height: 12px; background: #3b82f6; border-radius: 2px; margin-right: 4px;"></span>DB</span>
-          <span><span style="display: inline-block; width: 12px; height: 12px; background: #22c55e; border-radius: 2px; margin-right: 4px;"></span>Other</span>
+          <span>
+            <span style="display: inline-block; width: 12px; height: 12px; background: #6366f1; border-radius: 2px; margin-right: 4px;"></span>Plugs
+          </span>
+          <span>
+            <span style="display: inline-block; width: 12px; height: 12px; background: #f59e0b; border-radius: 2px; margin-right: 4px;"></span>Router
+          </span>
+          <span>
+            <span style="display: inline-block; width: 12px; height: 12px; background: #8b5cf6; border-radius: 2px; margin-right: 4px;"></span>Mount
+          </span>
+          <span>
+            <span style="display: inline-block; width: 12px; height: 12px; background: #ec4899; border-radius: 2px; margin-right: 4px;"></span>Params
+          </span>
+          <span>
+            <span style="display: inline-block; width: 12px; height: 12px; background: #14b8a6; border-radius: 2px; margin-right: 4px;"></span>Render
+          </span>
+          <span>
+            <span style="display: inline-block; width: 12px; height: 12px; background: #3b82f6; border-radius: 2px; margin-right: 4px;"></span>DB
+          </span>
+          <span>
+            <span style="display: inline-block; width: 12px; height: 12px; background: #22c55e; border-radius: 2px; margin-right: 4px;"></span>Other
+          </span>
         </div>
         <div style="margin-top: 0.5rem; font-size: 0.7rem; color: #9ca3af;">
-          <strong>Plugs</strong> = endpoint plugs before router (parsers, session, etc).
-          <strong>Router</strong> = pipeline plugs before LV mount.
-          <strong>Render</strong> = dead render (computed).<br/>
-          Mount/Params are wall-clock and include DB time within them.
+          <strong>Plugs</strong>
+          = endpoint plugs before router (parsers, session, etc). <strong>Router</strong>
+          = pipeline plugs before LV mount. <strong>Render</strong>
+          = dead render (computed).<br /> Mount/Params are wall-clock and include DB time within them.
         </div>
-
-        <!-- Sub-Timings Detail (latest request with custom metrics) -->
+        
+    <!-- Sub-Timings Detail (latest request with custom metrics) -->
         <div style="margin-top: 1.5rem; background: #f8f9fa; border-radius: 8px; padding: 1rem; border: 1px solid #dee2e6;">
           <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: #495057;">
             Sub-Timings
@@ -165,20 +191,25 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
               <%= for {key, value} <- @latest_custom_metrics do %>
                 <div style="display: flex; justify-content: space-between; padding: 0.375rem 0.75rem; background: white; border-radius: 4px; border: 1px solid #e5e7eb; font-size: 0.8125rem;">
                   <span style="color: #6b7280;"><%= humanize_key(key) %></span>
-                  <span style="font-weight: 600; font-variant-numeric: tabular-nums;"><%= format_ms(value) %></span>
+                  <span style="font-weight: 600; font-variant-numeric: tabular-nums;">
+                    <%= format_ms(value) %>
+                  </span>
                 </div>
               <% end %>
             </div>
           <% else %>
             <p style="color: #9ca3af; font-size: 0.8125rem;">
-              No custom sub-timings found. Visit a page with <code>time_section</code> instrumentation (e.g. <code>/feed/explore</code>), then click Refresh.
+              No custom sub-timings found. Visit a page with <code>time_section</code>
+              instrumentation (e.g. <code>/feed/explore</code>), then click Refresh.
             </p>
           <% end %>
         </div>
       <% else %>
         <!-- Disabled State -->
         <div style="background: #fefce8; border-radius: 8px; padding: 2rem; border: 1px solid #fde047; text-align: center;">
-          <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #854d0e;">Profiler Disabled</h3>
+          <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 0.5rem; color: #854d0e;">
+            Profiler Disabled
+          </h3>
           <p style="color: #a16207; margin-bottom: 1rem;">
             Page load profiling is currently disabled. Enable it to see timing breakdowns.
           </p>
@@ -187,11 +218,13 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
             <code style="display: block; background: #f3f4f6; padding: 0.5rem; border-radius: 4px;">
               PAGE_PROFILER_ENABLED=true
             </code>
-            <p style="margin-top: 1rem; margin-bottom: 0.5rem;"><strong>Or enable at runtime:</strong></p>
+            <p style="margin-top: 1rem; margin-bottom: 0.5rem;">
+              <strong>Or enable at runtime:</strong>
+            </p>
           </div>
           <button
             phx-click="toggle_profiling"
-                        style="padding: 0.75rem 1.5rem; border-radius: 6px; border: none; cursor: pointer; font-size: 0.875rem; background: #166534; color: white; font-weight: 500;"
+            style="padding: 0.75rem 1.5rem; border-radius: 6px; border: none; cursor: pointer; font-size: 0.875rem; background: #166534; color: white; font-weight: 500;"
           >
             Enable Profiling
           </button>
@@ -208,7 +241,13 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
 
     {custom_metrics, latest_path} = latest_custom_metrics()
 
-    {:ok, assign(socket, enabled: enabled, stats: stats, latest_custom_metrics: custom_metrics, latest_path: latest_path)}
+    {:ok,
+     assign(socket,
+       enabled: enabled,
+       stats: stats,
+       latest_custom_metrics: custom_metrics,
+       latest_path: latest_path
+     )}
   end
 
   @impl true
@@ -232,7 +271,9 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
   def handle_event("refresh", _params, socket) do
     stats = PageTimingStorage.get_statistics()
     {custom_metrics, latest_path} = latest_custom_metrics()
-    {:noreply, assign(socket, stats: stats, latest_custom_metrics: custom_metrics, latest_path: latest_path)}
+
+    {:noreply,
+     assign(socket, stats: stats, latest_custom_metrics: custom_metrics, latest_path: latest_path)}
   end
 
   # Data fetchers
@@ -246,8 +287,10 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
 
   defp format_ms(nil), do: "-"
   defp format_ms(0), do: "-"
+
   defp format_ms(microseconds) when is_number(microseconds) do
     ms = microseconds / 1000
+
     cond do
       ms >= 1000 -> "#{Float.round(ms / 1000, 2)}s"
       ms >= 100 -> "#{round(ms)}ms"
@@ -255,11 +298,13 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
       true -> "<1ms"
     end
   end
+
   defp format_ms(_), do: "-"
 
   defp format_kb(nil), do: "-"
   defp format_kb(0), do: "-"
   defp format_kb(0.0), do: "-"
+
   defp format_kb(kb) when is_number(kb) do
     cond do
       kb >= 1024 -> "#{Float.round(kb / 1024, 1)} MB"
@@ -267,17 +312,21 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
       true -> "#{Float.round(kb * 1.0, 1)} KB"
     end
   end
+
   defp format_kb(_), do: "-"
 
   defp format_timestamp(nil), do: "-"
+
   defp format_timestamp(%DateTime{} = dt) do
     Calendar.strftime(dt, "%H:%M:%S")
   end
+
   defp format_timestamp(_), do: "-"
 
   defp truncate_path(path) when byte_size(path) > 40 do
     String.slice(path, 0, 37) <> "..."
   end
+
   defp truncate_path(path), do: path
 
   defp status_color(status) when status >= 500, do: "#dc2626"
@@ -329,9 +378,11 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
   end
 
   defp safe_pct(nil, _total), do: 0
+
   defp safe_pct(value, total) when is_number(value) and total > 0 do
     round(value / total * 100)
   end
+
   defp safe_pct(_, _), do: 0
 
   defp latest_custom_metrics do

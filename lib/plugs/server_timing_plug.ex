@@ -192,6 +192,7 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
     Process.delete(@db_time_key)
     Process.delete(@db_count_key)
     Process.delete(@queue_time_key)
+
     Process.get()
     |> Enum.each(fn
       {{:server_timing_custom, _key}, _value} = item ->

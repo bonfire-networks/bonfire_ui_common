@@ -43,7 +43,10 @@ defmodule Bonfire.UI.Common.PageTimingTelemetry do
 
   defp do_handle([:phoenix, :live_view, :mount, :start], _, _), do: handle_mount_start()
   defp do_handle([:phoenix, :live_view, :mount, :stop], m, meta), do: handle_mount(m, meta)
-  defp do_handle([:phoenix, :live_view, :handle_params, :stop], m, meta), do: handle_params(m, meta)
+
+  defp do_handle([:phoenix, :live_view, :handle_params, :stop], m, meta),
+    do: handle_params(m, meta)
+
   defp do_handle([:phoenix, :router_dispatch, :start], _, _), do: handle_router_dispatch_start()
   defp do_handle(_, _, _), do: :ok
 
@@ -71,9 +74,14 @@ defmodule Bonfire.UI.Common.PageTimingTelemetry do
 
   defp handle_mount_start do
     case Process.get({:server_timing_marker, :router_dispatch_start}) do
-      nil -> :ok
+      nil ->
+        :ok
+
       dispatch_time ->
-        ServerTimingPlug.record_custom(:router, System.monotonic_time(:microsecond) - dispatch_time)
+        ServerTimingPlug.record_custom(
+          :router,
+          System.monotonic_time(:microsecond) - dispatch_time
+        )
     end
   rescue
     _ -> :ok

@@ -99,16 +99,19 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
     app_config = Application.get_env(:bonfire_ui_common, __MODULE__, [])
 
     enabled = Keyword.get(opts, :enabled, Keyword.get(app_config, :enabled, false))
-    max_entries = Keyword.get(opts, :max_entries, Keyword.get(app_config, :max_entries, @default_max_entries))
+
+    max_entries =
+      Keyword.get(opts, :max_entries, Keyword.get(app_config, :max_entries, @default_max_entries))
 
     table = :ets.new(@table_name, [:named_table, :set, :public, read_concurrency: true])
 
-    {:ok, %{
-      table: table,
-      enabled: enabled,
-      max_entries: max_entries,
-      insertion_order: :queue.new()
-    }}
+    {:ok,
+     %{
+       table: table,
+       enabled: enabled,
+       max_entries: max_entries,
+       insertion_order: :queue.new()
+     }}
   end
 
   @impl true
@@ -202,6 +205,7 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
   end
 
   defp maybe_filter_path(requests, nil), do: requests
+
   defp maybe_filter_path(requests, pattern) do
     Enum.filter(requests, fn req -> String.contains?(req.path, pattern) end)
   end
@@ -214,6 +218,7 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
   defp avg(list), do: round(Enum.sum(list) / length(list))
 
   defp percentile([], _p), do: 0
+
   defp percentile(list, p) do
     sorted = Enum.sort(list)
     k = (length(sorted) - 1) * p / 100

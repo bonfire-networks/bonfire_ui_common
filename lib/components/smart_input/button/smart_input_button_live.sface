@@ -17,7 +17,11 @@
   type="button"
   data-role="composer_button"
   aria-label={@prompt || l("Compose")}
-  class={@class, "touch-target focus-ring transition-interactive", "btn-disabled": e(@smart_input_opts, :input_status, nil) == :submit}
+  class={
+    @class,
+    "touch-target focus-ring transition-interactive",
+    "btn-disabled": e(@smart_input_opts, :input_status, nil) == :submit
+  }
 >
   <span :if={!@as_icon and @prompt} class="text-sm font-medium">{@prompt || l("Compose")}</span>
   {!--
