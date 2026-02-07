@@ -1,3 +1,4 @@
+<div>
 {#case ((not is_nil(current_user_id(@__context__)) and e(@widgets, :users, @key, nil)) ||
      (is_nil(current_user_id(@__context__)) and e(@widgets, :guests, @key, nil)) || [])
   |> Enum.map(fn
@@ -26,5 +27,6 @@
       id={deterministic_dom_id(__MODULE__, nil, "extension_nav_links", @parent_id)}
     />
   {#match _}
-    <!-- No widgets -->
+    {!-- No widgets --}
 {/case}
+</div>

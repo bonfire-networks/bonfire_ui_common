@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.NavSidebarLive do
-  use Bonfire.UI.Common.Web, :stateless_component
+  use Bonfire.UI.Common.Web, :stateful_component
   alias Bonfire.Me.Users
 
   prop sidebar_widgets, :list, default: []

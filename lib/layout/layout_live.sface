@@ -126,6 +126,7 @@
               class="overflow-x-hidden overflow-y-auto max-h-[calc(var(--inner-window-height)_-_90px)] min-h-[calc(var(--inner-window-height)_-_90px)]"
             >
               <Bonfire.UI.Common.SidebarWidgetsLive
+                id="sidebar_widgets_secondary"
                 widgets={@sidebar_widgets}
                 key={:secondary}
                 page={@page}
@@ -171,6 +172,7 @@
       >
         <Bonfire.UI.Common.NavSidebarLive
           :if={!@without_sidebar}
+          id="nav_sidebar"
           page={@page}
           selected_tab={@selected_tab}
           nav_items={@nav_items}

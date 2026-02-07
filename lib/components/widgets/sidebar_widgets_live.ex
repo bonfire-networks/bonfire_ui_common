@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.SidebarWidgetsLive do
-  use Bonfire.UI.Common.Web, :stateless_component
+  use Bonfire.UI.Common.Web, :stateful_component
 
   prop widgets, :any, required: true
   prop key, :atom, required: true
