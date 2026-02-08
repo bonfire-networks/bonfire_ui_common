@@ -329,4 +329,19 @@ defmodule Bonfire.UI.Common.PersistentLive do
      |> Phoenix.LiveView.push_event("smart_input:reset", %{})
      |> Phoenix.LiveView.push_event("smart_input:reset_sensitive", %{})}
   end
+
+  def handle_info({:process_put, key, value}, socket) do
+    Process.put(key, value)
+    {:noreply, socket}
+  end
+
+  def handle_call({:process_get, key, default}, _from, socket) do
+    value =
+      case Process.get(key, :__not_found__) do
+        :__not_found__ -> Map.get(socket.assigns, key, default)
+        found -> found
+      end
+
+    {:reply, value, socket}
+  end
 end

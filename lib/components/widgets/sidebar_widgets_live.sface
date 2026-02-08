@@ -8,8 +8,8 @@
         type: component_assigns[:type] || Surface.Component
       }
 
-      %{} = widget ->
-        widget
+    %{} = widget ->
+      widget
 
     other ->
       debug(other, "unsupported")
