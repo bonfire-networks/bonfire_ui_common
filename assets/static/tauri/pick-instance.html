@@ -1,55 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <title>Bonfire</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4/dist/full.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: system-ui;
-            /* padding: 40px;
-            max-width: 600px; */
-            margin: 0 auto;
-        }
-
-        input {
+        #main, #main-iframe {
             width: 100%;
-            padding: 8px;
-            margin: 10px 0;
+            height: 100vh;
+            border: 0;
+            overflow: visible;
         }
-
-        button {
-            padding: 10px 20px;
-        }
-
-            #main, #main-iframe {
-      width: 100%;
-      height: 100vh;
-      border: 0;
-      overflow: visible;
-    }
-
     </style>
 </head>
 
 <body>
 
 <div id="main">
-    <!-- <h1>Enter the domain name of your Bonfire instance</h1>
-    <input type="url" id="urlInput" placeholder="yourinstance.org" /> -->
+    <div id="loading" class="flex items-center justify-center h-screen">
+        <span class="loading loading-spinner loading-lg"></span>
+    </div>
 
-    <div id="loading">Loading...</div>
-
-    <div id="picker" style="display:none;">
-    <h1>Enter your Bonfire username </h1>
-    <p>Input format: @username@yourinstance.domain</p>
-    <input type="url" id="usernameInput" placeholder="@username@yourinstance.domain" />
-
-    <button onclick="loadUrl()">Load</button>
+    <div id="picker" style="display:none;" class="flex items-center justify-center h-screen">
+        <div class="card bg-base-200 shadow-xl w-full max-w-md">
+            <div class="card-body items-center text-center gap-4">
+                <h2 class="card-title text-2xl">Welcome to Bonfire</h2>
+                <p class="text-base-content/70">Enter your username in the format <code class="kbd kbd-sm">@user@instance.domain</code></p>
+                <input type="text" id="usernameInput" placeholder="@username@yourinstance.domain"
+                    class="input input-bordered w-full" />
+                <div class="card-actions w-full">
+                    <button onclick="loadUrl()" class="btn btn-primary w-full">Log in</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<script src="assets/iframe-modal.js"></script>
+<!-- <script src="assets/iframe-modal.js"></script> -->
 <script type="module">
     import {
         startLogin,
@@ -79,12 +68,31 @@
         // localStorage.setItem('wasmBasePath', '/assets/openmls/');
     }
 
+    function cleanup() {
+        const keys = [
+            'actor_id', 'appUsername', 'appUrl',
+            'token_endpoint', 'authorization_endpoint', 'proxy_url',
+            'access_token', 'appClientId', 'clientId', 'wasmBasePath'
+        ];
+        keys.forEach(k => localStorage.removeItem(k));
+        sessionStorage.removeItem('code_verifier');
+        sessionStorage.removeItem('state');
+        console.log('[cleanup] Cleared auth/session keys');
+    }
+    window.cleanup = cleanup;
+
     function loggedIn() {
         const appUrl = localStorage.getItem('appUrl');
 
         console.log("Logged in, go to appUrl:", appUrl);
 
         if (!appUrl) return;
+
+        // Update window title with username so multiple instances are distinguishable
+        const username = localStorage.getItem('appUsername') || appUrl;
+        if (window.__TAURI__) {
+            window.__TAURI__.window.getCurrentWindow().setTitle(`Bonfire - ${username}`);
+        }
 
         // Open the secure chat in a separate local Tauri window
         window.__TAURI__.core.invoke('open_secure_chat');
@@ -94,16 +102,16 @@
         window.location.href = dashboardUrl;
     }
 
-    // Handle logout action from tray menu
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('action') === 'logout') {
+    // Handle logout action from tray menu or app-logout event
+    if (window.location.hash === '#logout') {
+        window.location.hash = '';
         cleanup();
         document.getElementById('loading').style.display = 'none';
         document.getElementById('picker').style.display = 'block';
         document.getElementById('usernameInput').value = '';
     }
     // Handle OAuth callback (redirected back with ?code=...&state=...)
-    else if (params.get('code')) {
+    else if (new URLSearchParams(window.location.search).get('code')) {
         try {
             await handleLogin({
                 clientId: getClientId(),
@@ -136,18 +144,6 @@
             alert(err.message || 'Login failed');
         }
     }
-
-    window.cleanup = function() { // temporary function to clear auth data for testing
-            const keys = [
-                'actor_id', 'appUsername', 'appUrl',
-                'token_endpoint', 'authorization_endpoint', 'proxy_url',
-                'access_token', 'appClientId', 'clientId', 'wasmBasePath'
-            ];
-            keys.forEach(k => localStorage.removeItem(k));
-            sessionStorage.removeItem('code_verifier');
-            sessionStorage.removeItem('state');
-            console.log('[cleanup] Cleared auth/session keys');
-        } 
 
 </script>
 </body>
