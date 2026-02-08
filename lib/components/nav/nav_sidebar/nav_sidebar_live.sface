@@ -29,7 +29,6 @@
         nav_items={@nav_items}
       />
       <Bonfire.UI.Common.SidebarWidgetsLive
-        id="sidebar_widgets_main"
         widgets={@sidebar_widgets}
         key={:main}
         page={@page}
