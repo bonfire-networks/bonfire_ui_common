@@ -573,23 +573,19 @@ defmodule Bonfire.UI.Common.Web do
       def render(assigns) do
         import Bonfire.UI.Common.Timing
 
-        # current_component_id = assigns[:__context__][:current_component_id]
+        # Track component ancestry as a lightweight hash in the process dict.
+        # This gives link components a unique parent context for deterministic DOM IDs
+        # without the overhead of Context.put + Map.merge on every component render.
+        prev_tree_hash = Process.get(:component_tree_hash, 0)
 
-        assigns =
-          assign_generic_global(assigns, %{
-            # current_component: __MODULE__,
-            # current_component_id: assigns[:id] || current_component_id,
+        Process.put(
+          :component_tree_hash,
+          :erlang.phash2({prev_tree_hash, unquote(env.module), assigns[:id]})
+        )
 
-            component_tree:
-              (assigns[:__context__][:component_tree] || []) ++
-                [__MODULE__],
-            component_id_tree:
-              (assigns[:__context__][:component_id_tree] || []) ++
-                List.wrap(assigns[:id])
-          })
-
-        time_section_accumulate :"render_#{unquote(env.module)}" do
-          undead_render(assigns, fn ->
+        try do
+          time_section_accumulate :"render_#{unquote(env.module)}" do
+            undead_render(assigns, fn ->
             case assigns do
               %{__replace_render__with__: _} ->
                 Bonfire.UI.Common.ErrorComponentLive.replace(assigns)
@@ -622,6 +618,9 @@ defmodule Bonfire.UI.Common.Web do
                 super(assigns)
             end
           end)
+        end
+        after
+          Process.put(:component_tree_hash, prev_tree_hash)
         end
       end
     end

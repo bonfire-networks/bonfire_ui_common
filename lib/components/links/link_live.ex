@@ -66,8 +66,8 @@ defmodule Bonfire.UI.Common.LinkLive do
               deterministic_dom_id(
                 "LinkLive_event",
                 @to,
-                @__context__[:component_tree] || @label,
-                @parent_id || @__context__[:component_id_tree]
+                @label,
+                @parent_id || Process.get(:component_tree_hash, 0)
               )}
         phx-target={@event_target}
         class={@class}
@@ -96,8 +96,8 @@ defmodule Bonfire.UI.Common.LinkLive do
         deterministic_dom_id(
           "LinkLive_copy",
           @to,
-          @__context__[:component_tree] || @label,
-          @parent_id || @__context__[:component_id_tree]
+          @label,
+          @parent_id || Process.get(:component_tree_hash, 0)
         )}
       href={@to}
       class="float-right ml-4 flex items-center gap-2 btn btn-xs"
@@ -260,8 +260,8 @@ defmodule Bonfire.UI.Common.LinkLive do
             deterministic_dom_id(
               "LinkLive",
               @to,
-              @__context__[:component_tree] || @label,
-              @parent_id || @__context__[:component_id_tree]
+              @label,
+              @parent_id || Process.get(:component_tree_hash, 0)
             )}
       {...@opts |> Keyword.merge("aria-label": @label)}
     >

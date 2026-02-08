@@ -80,8 +80,8 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
               deterministic_dom_id(
                 "LinkLive_event",
                 @to,
-                @__context__[:component_tree] || @label,
-                @parent_id || @__context__[:component_id_tree]
+                @label,
+                @parent_id || Process.get(:component_tree_hash, 0)
               )}
         phx-target={@event_target}
         phx-value-name={@name}
@@ -113,8 +113,8 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
             deterministic_dom_id(
               "LinkPatchLive",
               @to,
-              @__context__[:component_tree] || @label,
-              @parent_id || @__context__[:component_id_tree]
+              @label,
+              @parent_id || Process.get(:component_tree_hash, 0)
             )}
       {...@opts |> Keyword.merge("aria-label": @label)}
     >
