@@ -37,6 +37,7 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
           "/pub/actors/",
           "/.well-known/oauth-authorization-server",
           "/.well-known/openid-configuration",
+          "/.well-known/webfinger",
           "/openid/register",
           "/oauth/token"
         ],

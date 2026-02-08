@@ -1,0 +1,20 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/activitystreams",
+    "https://purl.archive.org/socialweb/oauth"
+  ],
+  "id": "http://127.0.0.1:1431/client.jsonld",
+  "name": "Bonfire Desktop",
+  "summary": "Bonfire desktop client with end-to-end encrypted messaging",
+  "redirectURI": "http://127.0.0.1:1431/pick-instance.html",
+  "attributedTo": [
+    {
+    "id": "https://socialwebfoundation.org/author/evanprodromou/",
+    "name": "Evan Prodromou"
+  },
+  {
+    "id": "https://bonfire.cafe/pub/actors/bonfire",
+    "name": "Bonfire Networks"
+  }
+]
+}

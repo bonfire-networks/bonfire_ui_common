@@ -7,8 +7,8 @@
     <style>
         body {
             font-family: system-ui;
-            padding: 40px;
-            max-width: 600px;
+            /* padding: 40px;
+            max-width: 600px; */
             margin: 0 auto;
         }
 
@@ -21,60 +21,133 @@
         button {
             padding: 10px 20px;
         }
+
+            #main, #main-iframe {
+      width: 100%;
+      height: 100vh;
+      border: 0;
+      overflow: visible;
+    }
+
     </style>
 </head>
 
 <body>
-    <h1>Enter the domain name of your Bonfire instance</h1>
-    <input type="url" id="urlInput" placeholder="yourinstance.org" />
+
+<div id="main">
+    <!-- <h1>Enter the domain name of your Bonfire instance</h1>
+    <input type="url" id="urlInput" placeholder="yourinstance.org" /> -->
+
+    <div id="loading">Loading...</div>
+
+    <div id="picker" style="display:none;">
+    <h1>Enter your Bonfire username </h1>
+    <p>Input format: @username@yourinstance.domain</p>
+    <input type="url" id="usernameInput" placeholder="@username@yourinstance.domain" />
+
     <button onclick="loadUrl()">Load</button>
+    </div>
+</div>
 
-<script>
-        // Load saved URL on startup
-        const savedUrl = localStorage.getItem('appUrl') || '';
-        document.getElementById('urlInput').value = savedUrl;
+<script src="assets/iframe-modal.js"></script>
+<script type="module">
+    import {
+        startLogin,
+        handleLogin
+    } from './assets/ap_c2s_client/js/activitypub/auth.js'
 
-        function loadUrl() {
-            let domain = document.getElementById('urlInput').value;
-            if (!domain) return;
+    // Load saved username on startup
+    const saved = localStorage.getItem('appUsername') || localStorage.getItem('appUrl') || '';
+    document.getElementById('usernameInput').value = saved;
 
-            localStorage.setItem('appUrl', domain);
-
-            domain = domain.indexOf('http://') === 0 ? domain.replace('http://', 'https://') : (domain.indexOf('https://') !== 0 ? 'https://' + domain : domain);
-
-            const url = URL.parse("/dashboard", domain);
-
-            window.location.href = url;
+    function getClientId() {
+        let clientId = localStorage.getItem('appClientId');
+        if (!clientId) {
+            clientId = window.location.origin + '/client.jsonld';
+            localStorage.setItem('appClientId', clientId);
         }
+        return clientId;
+    }
 
-        // (async () => {
-        //     const openmls = await import(
-        //         "local://tauri-local-scripts.js"
-        //     );
+    function getRedirectUri() {
+        return window.location.origin + '/pick-instance.html';
+    }
 
-        //     await openmls.default();
-        // })();
+    // Set WASM base path for Tauri (bundled resources served via asset protocol)
+    if (window.__TAURI__) {
+        localStorage.setItem('wasmBasePath', 'false');
+        // localStorage.setItem('wasmBasePath', '/assets/openmls/');
+    }
 
-        // how to use on JS served by server:
-        // (async () => {
-        //         const openmls = await import(
-        //             "local://tauri-local-scripts.js"
-        //         );
+    function loggedIn() {
+        const appUrl = localStorage.getItem('appUrl');
 
-        //         await openmls.default();
-        //     })();
+        console.log("Logged in, go to appUrl:", appUrl);
 
-        // (async () => {
-        //         await OpenMLSModule({ wasmBinary: window.__openmls_wasm });
-        //     console.log("OpenMLSModule loaded");
-        //     })();
-                // console.log("OpenMLSModule", OpenMLSModule);
+        if (!appUrl) return;
 
-                if (window.__openmls_wasm) {
-                        console.log("WASM module is injected and ready");
-                    } else {
-                        console.log("WASM module not available");
-                    }
+        // Open the secure chat in a separate local Tauri window
+        window.__TAURI__.core.invoke('open_secure_chat');
+
+        // Navigate main window to the dashboard (top-level = cookies work)
+        const dashboardUrl = URL.parse("/dashboard", 'https://' + appUrl);
+        window.location.href = dashboardUrl;
+    }
+
+    // Handle logout action from tray menu
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('action') === 'logout') {
+        cleanup();
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('picker').style.display = 'block';
+        document.getElementById('usernameInput').value = '';
+    }
+    // Handle OAuth callback (redirected back with ?code=...&state=...)
+    else if (params.get('code')) {
+        try {
+            await handleLogin({
+                clientId: getClientId(),
+                redirectUri: getRedirectUri()
+            });
+            console.log("OAuth login done");
+            loggedIn();
+        } catch (err) {
+            console.error('[pick-instance] Token exchange failed:', err);
+        }
+    } else if (localStorage.getItem('access_token') && localStorage.getItem('appUrl')) {
+        console.log("Already logged in from a previous session");
+        loggedIn();
+    } else {
+        // Show the login form if not already logged in or in the middle of OAuth flow
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('picker').style.display = 'block';
+    }
+
+    // Login flow: resolve actor via webfinger, then redirect to OAuth authorize
+    window.loadUrl = async function () {
+        const input = document.getElementById('usernameInput').value.trim();
+        if (!input) return;
+
+        try {
+            const url = await startLogin(input, getClientId(), getRedirectUri());
+            window.location.href = url;
+        } catch (err) {
+            console.error('[pick-instance] Login error:', err);
+            alert(err.message || 'Login failed');
+        }
+    }
+
+    window.cleanup = function() { // temporary function to clear auth data for testing
+            const keys = [
+                'actor_id', 'appUsername', 'appUrl',
+                'token_endpoint', 'authorization_endpoint', 'proxy_url',
+                'access_token', 'appClientId', 'clientId', 'wasmBasePath'
+            ];
+            keys.forEach(k => localStorage.removeItem(k));
+            sessionStorage.removeItem('code_verifier');
+            sessionStorage.removeItem('state');
+            console.log('[cleanup] Cleared auth/session keys');
+        } 
 
 </script>
 </body>

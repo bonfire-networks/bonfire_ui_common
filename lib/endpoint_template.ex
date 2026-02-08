@@ -165,7 +165,9 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       plug :log_ip
 
       # NOTE: configured in Bonfire.UI.Common.RuntimeConfig
-      plug CORSPlug, origin: &Bonfire.UI.Common.EndpointTemplate.cors_origin/1
+      plug CORSPlug,
+        origin: &Bonfire.UI.Common.EndpointTemplate.cors_origin/1,
+        headers: ["*"]
 
       if System.get_env("TIDEWAVE_ENABLED") not in ["false", "0", "no"] and
            Code.ensure_loaded?(Tidewave) do
