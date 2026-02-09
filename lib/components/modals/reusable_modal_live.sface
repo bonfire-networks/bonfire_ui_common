@@ -88,11 +88,14 @@
         </div>
       </div>
 
-      <div class={
-        "absolute top-0 right-0 block z-popover",
-        "!top-2 !right-2": @image_preview,
-        "z-tooltip !top-1 h-full": @no_backdrop
-      }>
+      <div
+        style="top: -12px; right: -12px;"
+        class={
+          "absolute top-0 right-0 block z-popover",
+          "!top-2 !right-2": @image_preview,
+          "z-tooltip !top-1 h-full": @no_backdrop
+        }
+      >
         <div class="pt-safe">
           <button
             phx-click="close"

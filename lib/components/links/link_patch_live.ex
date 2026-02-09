@@ -81,7 +81,7 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
                 "LinkLive_event",
                 @to,
                 @label,
-                @parent_id || Process.get(:component_tree_hash, 0)
+                @parent_id || @__context__[:tree_hash]
               )}
         phx-target={@event_target}
         phx-value-name={@name}
@@ -114,7 +114,7 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
               "LinkPatchLive",
               @to,
               @label,
-              @parent_id || Process.get(:component_tree_hash, 0)
+              @parent_id || @__context__[:tree_hash]
             )}
       {...@opts |> Keyword.merge("aria-label": @label)}
     >

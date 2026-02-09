@@ -178,11 +178,6 @@ textarea:focus-visible {
 
 
 
-
-
-
-
-
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
@@ -196,8 +191,9 @@ textarea:focus-visible {
 @plugin "daisyui/theme" {
   name: "dark";
   prefersdark: true;
-  --color-primary: oklch(52.85% 0.2 251.26);
+  --color-primary: #6495ed;
   --color-primary-content: #ffffff;
+  --color-base-100: #18191a;
   --radius-selector: 1rem;
   --radius-field: 2rem;
   --radius-box: 1rem;
@@ -1265,3 +1261,35 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
    - phx-click-loading:* for click handlers
    - phx-submit-loading:* for form submissions
    No JS hooks needed - pure CSS solution */
+
+/* Carousel modal: constrain media within slides */
+.carousel-media-container {
+  max-height: calc(100vh - 120px);
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.carousel-media-container div {
+  height: auto !important;
+  max-height: inherit;
+}
+
+.carousel-media-container img {
+  max-height: calc(100vh - 140px) !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+  height: auto !important;
+}
+
+.carousel-media-container video {
+  max-height: calc(100vh - 140px) !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+  height: auto !important;
+}
+
+.carousel-media-container iframe {
+  max-height: calc(100vh - 140px) !important;
+  max-width: 100% !important;
+  width: 100%;
+}

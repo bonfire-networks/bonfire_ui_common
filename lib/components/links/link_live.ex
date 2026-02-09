@@ -67,7 +67,7 @@ defmodule Bonfire.UI.Common.LinkLive do
                 "LinkLive_event",
                 @to,
                 @label,
-                @parent_id || Process.get(:component_tree_hash, 0)
+                @parent_id || @__context__[:tree_hash]
               )}
         phx-target={@event_target}
         class={@class}
@@ -97,7 +97,7 @@ defmodule Bonfire.UI.Common.LinkLive do
           "LinkLive_copy",
           @to,
           @label,
-          @parent_id || Process.get(:component_tree_hash, 0)
+          @parent_id || @__context__[:tree_hash]
         )}
       href={@to}
       class="float-right ml-4 flex items-center gap-2 btn btn-xs"
@@ -261,7 +261,7 @@ defmodule Bonfire.UI.Common.LinkLive do
               "LinkLive",
               @to,
               @label,
-              @parent_id || Process.get(:component_tree_hash, 0)
+              @parent_id || @__context__[:tree_hash]
             )}
       {...@opts |> Keyword.merge("aria-label": @label)}
     >
