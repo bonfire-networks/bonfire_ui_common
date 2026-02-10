@@ -24,17 +24,17 @@
     </div>
 
     <div id="picker" style="display:none;" class="flex items-center justify-center h-screen">
-        <div class="card bg-base-200 shadow-xl w-full max-w-md">
+        <form onsubmit="loadUrl()" class="card bg-base-200 shadow-xl w-full max-w-md">
             <div class="card-body items-center text-center gap-4">
                 <h2 class="card-title text-2xl">Welcome to Bonfire</h2>
                 <p class="text-base-content/70">Enter your username in the format <code class="kbd kbd-sm">@user@instance.domain</code></p>
                 <input type="text" id="usernameInput" placeholder="@username@yourinstance.domain"
                     class="input input-bordered w-full" />
                 <div class="card-actions w-full">
-                    <button onclick="loadUrl()" class="btn btn-primary w-full">Log in</button>
+                    <button type="submit" class="btn btn-primary w-full">Log in</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -96,6 +96,12 @@
 
         // Open the secure chat in a separate local Tauri window
         window.__TAURI__.core.invoke('open_secure_chat');
+
+        // Start SSE notification listener
+        window.__TAURI__.core.invoke('start_notifications', {
+            instanceUrl: 'https://' + appUrl,
+            token: localStorage.getItem('access_token')
+        });
 
         // Navigate main window to the dashboard (top-level = cookies work)
         const dashboardUrl = URL.parse("/dashboard", 'https://' + appUrl);

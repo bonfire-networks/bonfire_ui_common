@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4/dist/full.min.css" rel="stylesheet" />
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            background: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #handle {
+            width: 100%;
+            height: 100%;
+            cursor: col-resize;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #handle:hover, #handle.dragging {
+            background: oklch(var(--bc) / 0.08);
+        }
+        #line {
+            width: 1px;
+            height: 100%;
+            background: oklch(var(--bc) / 0.15);
+        }
+        /* During drag: full-width transparent overlay with ghost line */
+        body.overlay { background: transparent !important; }
+        body.overlay #handle { background: transparent !important; cursor: col-resize; }
+        body.overlay #line { display: none; }
+        #ghost-line {
+            display: none;
+            position: absolute;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: oklch(var(--p) / 0.6);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="handle">
+        <div id="line"></div>
+    </div>
+    <div id="ghost-line"></div>
+
+    <script type="module">
+        const { invoke } = window.__TAURI__.core;
+        const handle = document.getElementById('handle');
+        const ghostLine = document.getElementById('ghost-line');
+        let dragging = false;
+        let windowWidth = 0;
+
+        handle.addEventListener('mousedown', async (e) => {
+            if (e.button !== 0) return;
+            dragging = true;
+            handle.classList.add('dragging');
+
+            // Ask Rust to expand divider to full window width and return dimensions
+            try {
+                const dims = await invoke('split_resize_start');
+                windowWidth = dims.window_width;
+            } catch (err) {
+                console.error('split_resize_start error:', err);
+                dragging = false;
+                handle.classList.remove('dragging');
+                return;
+            }
+
+            document.body.classList.add('overlay');
+            ghostLine.style.display = 'block';
+            ghostLine.style.left = e.clientX + 'px';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!dragging) return;
+            // Clamp ghost line to 20%–80% of window
+            const x = Math.max(windowWidth * 0.2, Math.min(windowWidth * 0.8, e.clientX));
+            ghostLine.style.left = x + 'px';
+        });
+
+        document.addEventListener('mouseup', async (e) => {
+            if (!dragging) return;
+            dragging = false;
+            handle.classList.remove('dragging');
+            document.body.classList.remove('overlay');
+            ghostLine.style.display = 'none';
+
+            const ratio = Math.max(0.2, Math.min(0.8, e.clientX / windowWidth));
+            try {
+                await invoke('split_resize_end', { ratio });
+            } catch (err) {
+                console.error('split_resize_end error:', err);
+            }
+        });
+
+        // Apply saved theme
+        const savedTheme = localStorage.getItem('selectedTheme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+    </script>
+</body>
+</html>

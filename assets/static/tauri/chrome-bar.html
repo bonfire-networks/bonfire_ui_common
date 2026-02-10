@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Chrome Bar</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4/dist/full.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 44px;
+            background: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .chrome-bar {
+            height: 44px;
+            display: flex;
+            /* 72px left padding on macOS for traffic lights (safe no-op on other platforms) */
+            padding-left: 72px;
+            padding-right: 8px;
+            padding-bottom: 0;
+            gap: 0;
+            border-bottom: 1px solid oklch(var(--bc) / 0.15);
+            /* Native drag region — works in child webviews via WebKit */
+            -webkit-app-region: drag;
+            app-region: drag;
+        }
+        .tab-btn {
+            /* Exclude buttons from drag region so they remain clickable */
+            -webkit-app-region: no-drag;
+            app-region: no-drag;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+            font-size: 13px;
+            line-height: 1;
+            border-radius: 16px 16px 0 0;
+            padding: 6px 14px 5px;
+            border: 1px solid transparent;
+            border-bottom: none;
+            margin-bottom: -1px;
+            margin-left: 8px;
+            background: transparent;
+            color: oklch(var(--bc) / 0.5);
+        }
+        .tab-btn:hover {
+            background: oklch(var(--b3) / 0.3);
+            color: oklch(var(--bc) / 0.8);
+            border-color: oklch(var(--bc) / 0.1);
+        }
+        .tab-btn.active {
+            background: oklch(var(--b1) / 1);
+            color: oklch(var(--bc) / 1);
+            font-weight: 600;
+            border-color: oklch(var(--bc) / 0.15);
+        }
+        /* Non-tab mode: centered title only */
+        .chrome-title {
+            flex: 1;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: oklch(var(--bc) / 0.7);
+        }
+    </style>
+</head>
+<body>
+    <!-- Tab mode layout (default) -->
+    <div id="tab-bar" class="chrome-bar bg-base-200" data-tauri-drag-region>
+        <button id="tab-main" class="tab-btn active" data-tab="main">Bonfire</button>
+        <button id="tab-chat" class="tab-btn" data-tab="chat">Chat</button>
+    </div>
+
+    <!-- Non-tab mode layout (hidden by default) -->
+    <div id="title-bar" class="chrome-bar bg-base-200" data-tauri-drag-region style="display: none;">
+        <span class="chrome-title">Bonfire</span>
+    </div>
+
+    <script type="module">
+        const { invoke } = window.__TAURI__.core;
+        const { listen } = window.__TAURI__.event;
+        const { getCurrentWindow } = window.__TAURI__.window;
+
+        // JS-based window dragging (data-tauri-drag-region doesn't work in child webviews)
+        const appWindow = getCurrentWindow();
+        document.querySelectorAll('.chrome-bar').forEach(bar => {
+            bar.addEventListener('mousedown', (e) => {
+                // Only drag from empty areas, not from buttons
+                if (e.target.closest('button')) return;
+                appWindow.startDragging();
+            });
+        });
+
+        // Tab button click handler
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const tab = btn.dataset.tab;
+                try {
+                    await invoke('switch_tab', { tab });
+                } catch (err) {
+                    console.error('switch_tab error:', err);
+                }
+            });
+        });
+
+        // Listen for tab-changed events from Rust to sync the active indicator
+        await listen('tab-changed', (event) => {
+            const activeTab = event.payload;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === activeTab);
+            });
+        });
+
+        // Configure UI based on layout mode
+        try {
+            const mode = await invoke('get_layout_mode');
+            if (mode !== 'tab-based') {
+                // In non-tab modes (split-pane with chrome bar enabled):
+                // hide tabs, show centered title
+                document.getElementById('tab-bar').style.display = 'none';
+                document.getElementById('title-bar').style.display = 'flex';
+            }
+        } catch (err) {
+            console.error('get_layout_mode error:', err);
+        }
+
+        // Apply saved theme from localStorage (shared across all webviews)
+        const savedTheme = localStorage.getItem('selectedTheme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+    </script>
+</body>
+</html>
