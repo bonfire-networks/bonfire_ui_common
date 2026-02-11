@@ -144,6 +144,7 @@
 
             <div class="flex items-center gap-2">
               <button
+                id="minimize_composer_button"
                 phx-click={LiveHandler.minimize()}
                 phx-target="#smart_input"
                 type="button"

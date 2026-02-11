@@ -15,10 +15,11 @@ import { TooltipHooks } from "./tooltip";
 import { DraggableHooks } from "./draggable_widget";
 import { ScrollHooks } from "./scroll.js";
 import { TranslateHooks } from "./translate.js";
+import { KeyboardShortcutHooks } from "./keyboard_shortcuts.js";
 import { ExtensionHooks } from "../../../../config/current_flavour/deps.hooks.js";
 import ComponentHooks from "../../../../config/current_flavour/assets/hooks/index.js";
 
-Object.assign(Hooks, ExtensionHooks, DraggableHooks, ComponentHooks, CopyHooks, TooltipHooks, ScrollHooks, TranslateHooks);
+Object.assign(Hooks, ExtensionHooks, DraggableHooks, ComponentHooks, CopyHooks, TooltipHooks, ScrollHooks, TranslateHooks, KeyboardShortcutHooks);
 
 console.log("Registered LiveView hooks:", Object.keys(Hooks));
 

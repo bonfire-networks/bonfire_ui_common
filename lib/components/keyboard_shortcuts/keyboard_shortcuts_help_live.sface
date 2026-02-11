@@ -1,0 +1,35 @@
+<dialog id="keyboard-shortcuts-help" class="modal">
+  <div class="modal-box max-w-sm">
+    <h3 class="text-lg font-bold mb-4">{l("Keyboard shortcuts")}</h3>
+    <div class="divide-y divide-base-content/10">
+      <div class="flex justify-between items-center py-2">
+        <span class="text-sm text-base-content/70">{l("Open composer")}</span>
+        <kbd class="kbd kbd-sm">n</kbd>
+      </div>
+      <div class="flex justify-between items-center py-2">
+        <span class="text-sm text-base-content/70">{l("Minimize composer")}</span>
+        <kbd class="kbd kbd-sm">-</kbd>
+      </div>
+      <div class="flex justify-between items-center py-2">
+        <span class="text-sm text-base-content/70">{l("Unfocus / close")}</span>
+        <kbd class="kbd kbd-sm">Esc</kbd>
+      </div>
+      <div class="flex justify-between items-center py-2">
+        <span class="text-sm text-base-content/70">{l("Submit post")}</span>
+        <span><kbd class="kbd kbd-sm">Cmd</kbd> + <kbd class="kbd kbd-sm">Enter</kbd></span>
+      </div>
+      <div class="flex justify-between items-center py-2">
+        <span class="text-sm text-base-content/70">{l("Show this help")}</span>
+        <kbd class="kbd kbd-sm">?</kbd>
+      </div>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-sm btn-ghost">{l("Close")}</button>
+      </form>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>{l("Close")}</button>
+  </form>
+</dialog>
