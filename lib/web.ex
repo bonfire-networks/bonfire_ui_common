@@ -578,6 +578,13 @@ defmodule Bonfire.UI.Common.Web do
         context = assigns[:__context__] || %{}
         tree_hash = :erlang.phash2({context[:tree_hash] || 0, unquote(env.module), assigns[:id]})
 
+        # component_tree:
+        #       (assigns[:__context__][:component_tree] || []) ++
+        #         [__MODULE__],
+        # component_id_tree:
+        #       (assigns[:__context__][:component_id_tree] || []) ++
+        #         List.wrap(assigns[:id])
+
         assigns =
           Phoenix.Component.assign(assigns, :__context__, Map.put(context, :tree_hash, tree_hash))
 

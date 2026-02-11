@@ -1593,9 +1593,9 @@ defmodule Bonfire.UI.Common do
   def assigns(
         %Phoenix.LiveView.Socket{assigns: %Phoenix.LiveView.Socket.AssignsNotInSocket{}} = _socket
       ),
-      do: nil
+      do: %{}
 
-  def assigns(%Phoenix.LiveView.Socket{assigns: assigns} = _socket), do: assigns
+  def assigns(%Phoenix.LiveView.Socket{assigns: %{} = assigns} = _socket), do: assigns
   def assigns(%{assigns: %{} = assigns}) when assigns != %{}, do: assigns
   def assigns(%{} = assigns), do: assigns
 
