@@ -4,16 +4,13 @@ import "../../../../deps/phoenix_html";
 import Alpine from "alpinejs";
 import intersect from "@alpinejs/intersect";
 import collapse from "@alpinejs/collapse";
-import SVGInject from "@iconfu/svg-inject";
 
 console.log('Setting up Alpine.js plugins and initialization')
 
 Alpine.plugin(intersect);
 Alpine.plugin(collapse);
 
-// Make sure Alpine and SVGInject are available globally
 window.Alpine = Alpine
-window.SVGInject = SVGInject
 
 // Function to detect mobile devices and add appropriate class
 const detectMobileDevice = () => {

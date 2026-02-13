@@ -5,6 +5,7 @@ defmodule Bonfire.UI.Common.WidgetsLive do
 
   prop widgets, :any, required: true
   prop with_title, :boolean, default: false
+  prop with_description, :boolean, default: false
   prop compact, :boolean, default: false
   prop type, :any, default: nil
   prop page, :string, default: nil

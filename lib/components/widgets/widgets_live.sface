@@ -37,6 +37,7 @@
             selected_tab={@selected_tab}
             showing_within={@showing_within}
             with_title={@with_title}
+            with_description={@with_description}
             extra_data={@extra_data}
             compact={@compact}
             parent_id={@id}

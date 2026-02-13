@@ -1,34 +1,32 @@
-<div class="">
-  <div :if={@label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div>
-  <div class="flex flex-col lg:flex-row lg:items-center  gap-4 justify-between">
-    <div class="flex flex-col flex-1 gap-1">
-      <div class="text-sm font-medium" :if={@name}>{@name}</div>
-      <div class="text-sm text-base-content/70" :if={@description}>{@description}</div>
+<div>
+  <div :if={@label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning badge-sm">{@label}</div>
+  <div class="flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
+    <div class="flex flex-col flex-1 gap-0.5">
+      <div class="text-sm font-medium text-base-content/90" :if={@name}>{@name}</div>
+      <div class="text-sm text-base-content/50" :if={@description}>{@description}</div>
     </div>
 
     <label for={@id} class="sr-only">{@label_name}</label>
     <input name="scope" value={@scope} type="hidden">
-    <div class="max-w-xs">
-      <select id={@id} class="max-w-xs select" name={@input}>
-        {#for {key, val} <- @options || []}
-          <option
-            value={to_string(key)}
-            selected={if @current_value == key or to_string(@current_value) == to_string(key), do: "selected"}
-          >
-            {val}
-          </option>
-        {/for}
-        {#for val when is_binary(val) or is_atom(val) <- @options || []}
-          <option
-            value={to_string(val)}
-            selected={if @current_value == val or to_string(@current_value) == to_string(val), do: "selected"}
-          >
-            {val}
-          </option>
-        {#else}
-          <option value={nil}>{l("No options available")}</option>
-        {/for}
-      </select>
-    </div>
+    <select id={@id} class="select select-sm select-bordered max-w-xs" name={@input}>
+      {#for {key, val} <- @options || []}
+        <option
+          value={to_string(key)}
+          selected={if @current_value == key or to_string(@current_value) == to_string(key), do: "selected"}
+        >
+          {val}
+        </option>
+      {/for}
+      {#for val when is_binary(val) or is_atom(val) <- @options || []}
+        <option
+          value={to_string(val)}
+          selected={if @current_value == val or to_string(@current_value) == to_string(val), do: "selected"}
+        >
+          {val}
+        </option>
+      {#else}
+        <option value={nil}>{l("No options available")}</option>
+      {/for}
+    </select>
   </div>
 </div>

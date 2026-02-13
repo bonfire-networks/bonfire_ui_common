@@ -99,28 +99,26 @@
             order={@order}
           />
         {#match Surface.Component}
-          <div
-            :if={@with_title or @with_description}
-            data-widget-type="stateless"
-            class="flex items-center gap-3"
-          >
-            <!-- <div :if={@with_title} class="w-10 h-10 flex items-center place-content-center shrink-0">
-                <#Icon iconify="ph:lego-duotone" class="w-7 h-7 text-primary" />
-              </div> -->
-            <div class="flex-1">
-              <div :if={@with_title} class="text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
-              <div :if={@with_description} class="text-sm text-base-content/70">{@widget[:description]}</div>
-            </div>
+          {!-- Only show wrapper title/description for custom components (declare_settings_component)
+               that don't render their own labels. Built-in types (declare_settings) have @widget[:data]
+               populated and render their own name/description internally. --}
+          <div :if={!@widget[:data] && (@with_title or @with_description)} class="flex flex-col gap-0.5 mb-3">
+            <div :if={@with_title} class="text-sm font-medium text-base-content/90">{@widget[:text] || @widget[:name]}</div>
+            <div :if={@with_description && @widget[:description]} class="text-sm text-base-content/50">{@widget[:description]}</div>
           </div>
           <StatelessComponent
             module={@widget[:module]}
             showing_within={@showing_within}
             page={@page}
             selected_tab={@selected_tab}
+            name={@widget[:text] || @widget[:name]}
             {...@data}
           />
         {#match Surface.LiveComponent}
-          <div :if={@with_title} data-widget-type="stateful" class="mt-4 mb-2 text-sm font-medium">{@widget[:text] || @widget[:name]}</div>
+          <div :if={!@widget[:data] && (@with_title or @with_description)} class="flex flex-col gap-0.5 mb-3">
+            <div :if={@with_title} class="text-sm font-medium text-base-content/90">{@widget[:text] || @widget[:name]}</div>
+            <div :if={@with_description && @widget[:description]} class="text-sm text-base-content/50">{@widget[:description]}</div>
+          </div>
           <StatefulComponent
             module={@widget[:module]}
             id={deterministic_dom_id(__MODULE__, @order, @widget[:page] || @widget[:module], @parent_id)}

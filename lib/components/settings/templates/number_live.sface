@@ -1,8 +1,8 @@
-<div class="p-4">
+<div>
   <div class="flex items-center justify-between gap-4">
-    <div class="flex flex-1 flex-col gap-1">
-      <div class="text-sm font-medium">{@name}</div>
-      <div :if={@description} class="text-sm text-base-content/70">{@description}</div>
+    <div class="flex flex-1 flex-col gap-0.5">
+      <div class="text-sm font-medium text-base-content/90">{@name}</div>
+      <div :if={@description} class="text-sm text-base-content/50">{@description}</div>
     </div>
     <div class="flex items-center gap-2">
       {#if @read_only}
@@ -11,7 +11,7 @@
         <input name="scope" value={@scope} type="hidden">
         <input type="number" name={@input} value={to_string(@current_value)} class={@class}>
       {/if}
-      <span :if={@unit} class="flex-none text-sm font-medium capitalize text-base-content/80">{@unit}</span>
+      <span :if={@unit} class="flex-none text-sm font-medium capitalize text-base-content/70">{@unit}</span>
     </div>
   </div>
 </div>

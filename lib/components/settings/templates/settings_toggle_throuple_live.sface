@@ -1,11 +1,11 @@
-<div class={"p-4 w-full", "px-0 pt-0 pb-2": @compact}>
+<div class="w-full">
   <input name="scope" value={@scope} type="hidden">
 
   <div class="flex flex-col gap-1">
     <div class="flex flex-row items-center gap-4 w-full">
       <div class="flex flex-row items-center gap-2 min-w-0 shrink-0" :if={@name || @icon}>
         <Iconify.iconify :if={@icon} icon={@icon} class="w-4 h-4" />
-        <div class="text-sm font-semibold truncate">{@name}</div>
+        <div class="text-sm font-medium text-base-content/90 truncate">{@name}</div>
       </div>
       <div class="flex-1 flex items-center justify-end">
         <div class="border text-xs font-medium p-0.5 flex items-center gap-0.5 border-base-content/5 rounded-xl">
@@ -55,6 +55,6 @@
         </div>
       </div>
     </div>
-    <div class="text-sm text-base-content/90 mt-1 w-full" :if={@description}>{@description}</div>
+    <div class="text-sm text-base-content/50 mt-1 w-full" :if={@description}>{@description}</div>
   </div>
 </div>

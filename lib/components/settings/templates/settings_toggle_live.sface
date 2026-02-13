@@ -1,14 +1,14 @@
-<div class={"p-4", "p-0": @compact}>
+<div>
   <input name="scope" value={@scope} type="hidden">
   <input name={@input} value={to_string(@disabled_value)} type="hidden">
 
   <label for={@id} class={"flex items-center", "justify-between": !@compact}>
-    <div class={"flex flex-col mr-2", "order-last ml-4 !mr-0": @compact}>
+    <div class={"flex flex-col gap-0.5 mr-2", "order-last ml-4 !mr-0": @compact}>
       <div class="flex flex-row gap-2" :if={@name}>
-        <div class="text-sm">{@name}</div>
-        <div :if={@show_label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div>
+        <div class="text-sm font-medium text-base-content/90">{@name}</div>
+        <div :if={@show_label} class="badge !border !border-warning/30 badge-outline badge-warning badge-sm">{@label}</div>
       </div>
-      <div class="text-sm text-base-content/70" :if={@description}>{@description}</div>
+      <div class="text-sm text-base-content/50" :if={@description}>{@description}</div>
     </div>
 
     <input

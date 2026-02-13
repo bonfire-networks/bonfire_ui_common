@@ -1,10 +1,9 @@
 {#if @hidden}
-  <div x-data="{open: false}" class="p-4">
+  <div x-data="{open: false}">
     <div class="flex items-center justify-between">
-      <div class="flex flex-col gap-1">
-        {!-- <div :if={@label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div> --}
-        <div :if={@name} class="text-sm font-medium">{@name}</div>
-        <div :if={@description} class="text-sm  text-base-content/70">{@description}</div>
+      <div :if={@name || @description} class="flex flex-col gap-0.5">
+        <div :if={@name} class="text-sm font-medium text-base-content/90">{@name}</div>
+        <div :if={@description} class="text-sm text-base-content/50">{@description}</div>
       </div>
       <button
         x-on:click="open = !open"
@@ -13,7 +12,7 @@
         class="rounded btn btn-square btn-sm btn-ghost"
         x-show="open"
       >
-        <#Icon iconify="ph:caret-down-duotone" class="w-4 h-4 text-base-content/70" />
+        <#Icon iconify="ph:caret-up-duotone" class="w-4 h-4 text-base-content/50" />
       </button>
       <button
         x-on:click="open = !open"
@@ -22,21 +21,21 @@
         class="rounded btn btn-square btn-sm btn-ghost"
         x-show="!open"
       >
-        <#Icon iconify="ph:caret-up-duotone" class="w-4 h-4 text-base-content/70" />
+        <#Icon iconify="ph:caret-down-duotone" class="w-4 h-4 text-base-content/50" />
       </button>
     </div>
     <div x-show="open" x-collapse>
       <form name="settings" phx-submit="Bonfire.Common.Settings:save">
         <input name="scope" value={@scope} type="hidden">
-        <div class="w-full flex items-center gap-2 mt-4">
+        <div class="flex items-center gap-2 mt-3">
           <input
             type="text"
             placeholder={@placeholder}
             name={@input}
             value={to_string(@current_value)}
-            class="flex-1 h-8 text-sm input input-bordered"
+            class="flex-1 input input-bordered input-sm"
           />
-          <button type="submit" class="btn-neutral btn btn-sm">
+          <button type="submit" class="btn btn-sm btn-soft btn-primary">
             {l("Save")}
           </button>
         </div>
@@ -45,25 +44,22 @@
   </div>
 {#else}
   <div>
-    <div class="flex flex-col mb-2">
-      {!-- <div :if={@label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning">{@label}</div> --}
-      <div :if={@name} class="text-sm font-medium">{@name}</div>
-      <!-- <div :if={@description} class="text-sm font-light text-base-content/80">{@description}</div> -->
+    <div :if={@name || @description} class="flex flex-col gap-0.5 mb-3">
+      <div :if={@name} class="text-sm font-medium text-base-content/90">{@name}</div>
+      <div :if={@description} class="text-sm text-base-content/50">{@description}</div>
     </div>
 
     <form name="settings" phx-submit="Bonfire.Common.Settings:save">
       <input name="scope" value={@scope} type="hidden">
-      <div class="w-full join">
-        <label class="input validator join-item">
-          <input
-            type="text"
-            placeholder={@placeholder}
-            name={@input}
-            value={to_string(@current_value)}
-            class=""
-          />
-        </label>
-        <button type="submit" class="btn">
+      <div class="flex items-center gap-2">
+        <input
+          type="text"
+          placeholder={@placeholder}
+          name={@input}
+          value={to_string(@current_value)}
+          class="flex-1 input input-bordered input-sm"
+        />
+        <button type="submit" class="btn btn-sm btn-soft btn-primary">
           {l("Save")}
         </button>
       </div>

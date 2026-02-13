@@ -1,9 +1,9 @@
 <fieldset>
   <input name="scope" value={@scope} type="hidden">
 
-  <div class="flex flex-col gap-4 -space-y-px">
+  <div class="flex flex-col gap-2">
     {#for {key, val} <- @options || []}
-      <label class="relative flex items-center flex-1 border-r cursor-pointer border-base-200 focus:outline-none">
+      <label class="relative flex items-center cursor-pointer gap-3">
         <input
           type="radio"
           name={@input}
@@ -11,17 +11,10 @@
           checked={if @current_value == key or to_string(@current_value) == to_string(key), do: "checked"}
           class="radio radio-sm"
         />
-        <div class="flex flex-col ml-3">
-          {!-- Checked: "text-indigo-900", Not Checked: "text-primary-content-900" --}
-          <span class="block text-sm">
-            {val}
-          </span>
-        </div>
+        <span class="text-sm text-base-content/90">
+          {val}
+        </span>
       </label>
     {/for}
   </div>
 </fieldset>
-
-<!-- </div>
-  </div>
-</div> -->
