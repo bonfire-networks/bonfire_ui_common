@@ -7,12 +7,7 @@
 />
 <div
   data-scope="logo_name"
-  :if={@with_name &&
-    !Settings.get([Bonfire.UI.Common.LogoLive, :only_logo], false,
-      context: @__context__,
-      name: l("Icon only"),
-      description: l("Hide the instance name text and show only the icon.")
-    )}
+  :if={@with_name}
   class={@name_class || "text-base font-bold text-base-content"}
 >{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour(),
     name: l("Instance Name"),

@@ -84,6 +84,7 @@
             >
               <Bonfire.UI.Common.AvatarLive
                 bg_class="rounded-full"
+                title={e(current_user(@__context__), :profile, :name, "Anon")}
                 wrapper_class="border-0 avatar !flex w-10 h-10"
                 class="inline-block object-cover w-full rounded-full"
                 src={Media.avatar_url(current_user(@__context__)) || @__context__[:current_user_avatar_url]}

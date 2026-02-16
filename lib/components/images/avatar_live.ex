@@ -21,6 +21,17 @@ defmodule Bonfire.UI.Common.AvatarLive do
   prop opts, :any, default: %{}
   prop disable_lazy, :boolean, default: true
 
+  def initials(name) when is_binary(name) and name != "" do
+    name
+    |> String.split(~r/\s+/, trim: true)
+    |> Enum.map(&String.first/1)
+    |> Enum.take(2)
+    |> Enum.join()
+    |> String.upcase()
+  end
+
+  def initials(_), do: ""
+
   # def classes(%{class: class}) when not is_nil(class) do
   #   class
   # end

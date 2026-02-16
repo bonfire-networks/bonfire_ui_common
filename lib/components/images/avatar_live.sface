@@ -1,70 +1,69 @@
 <div
   data-scope="avatar"
   class={@wrapper_class}
-  :if={!Media.hide_avatars?(@__context__, @showing_within)}
 >
-  <div
-    data-square={Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true,
-      context: @__context__,
-      name: l("Square Avatars"),
-      description: l("Display avatars as squares instead of circles.")
-    )}
-    class={@class}
-  >
-    {!-- @title 
-    || e(@user, :profile, :name, nil) || e(@user, :character, :username, nil) ||
-    e(@user, :name, nil) ||
-    e(@user, :username, nil) ||
-    l("Avatar") --}
-    {#case @avatar_fallback || Media.avatar_fallback(@user_id)}
-      {#match avatar_fallback}
-        {#case @src}
-          {#match url when is_binary(url) and url != avatar_fallback}
-            <div title={@title} class={@bg_class}>
-              <LazyImage
-                parent_id={deterministic_dom_id(__MODULE__, nil, "avatar", @parent_id)}
-                media={url}
-                src={url}
-                title={@title}
-                alt={@title}
-                fallback_icon={Icon.icon_name("ph:user-circle-duotone")}
-                fallback_class={e(@fallback_class, nil)}
-                opts={@opts}
-                disable_lazy={@disable_lazy}
-              />
-            </div>
-          {#match _}
-            {#if @user_id &&
-                Settings.get([Bonfire.UI.Common.AvatarLive, :animal_avatars], true,
-                  context: @__context__,
-                  name: l("Generate Animal Avatars"),
-                  description: l("Generate animal-based avatars for users without a profile picture.")
-                )}
-              {!-- <Bonfire.UI.Common.AnimalAvatar
-                  id={@user_id}
-                  bg_class={@bg_class}
+  {#if Media.hide_avatars?(@__context__, @showing_within)}
+    <div
+      data-square={Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true,
+        context: @__context__,
+        name: l("Square Avatars"),
+        description: l("Display avatars as squares instead of circles.")
+      )}
+      class={@class}
+    >
+      <div title={@title} class="bg-primary h-full w-full flex items-center justify-center">
+        <span class="text-primary-content font-bold text-base select-none">{initials(@title)}</span>
+      </div>
+    </div>
+  {#else}
+    <div
+      data-square={Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true,
+        context: @__context__,
+        name: l("Square Avatars"),
+        description: l("Display avatars as squares instead of circles.")
+      )}
+      class={@class}
+    >
+      {#case @avatar_fallback || Media.avatar_fallback(@user_id)}
+        {#match avatar_fallback}
+          {#case @src}
+            {#match url when is_binary(url) and url != avatar_fallback}
+              <div title={@title} class={@bg_class}>
+                <LazyImage
+                  parent_id={deterministic_dom_id(__MODULE__, nil, "avatar", @parent_id)}
+                  media={url}
+                  src={url}
                   title={@title}
-                /> --}
-              <LazyImage
-                parent_id={deterministic_dom_id(__MODULE__, @user_id, "avatar", @parent_id)}
-                src={"/gen_avatar/#{@user_id}"}
-                title={@title}
-                alt={@title}
-                fallback_icon={Icon.icon_name("material-symbols:person-2-rounded")}
-                opts={@opts}
-                disable_lazy={@disable_lazy}
-              />
-            {#else}
-              <div class={@bg_class}>
-                <div
-                  title={@title}
-                  class={@class, "iconify -mt-0 md:-mt-0 text-base-content/60"}
-                  iconify="material-symbols:person-2-rounded"
-                  {...@opts}
+                  alt={@title}
+                  fallback_icon={Icon.icon_name("ph:user-circle-duotone")}
+                  fallback_class={e(@fallback_class, nil)}
+                  opts={@opts}
+                  disable_lazy={@disable_lazy}
                 />
               </div>
-            {/if}
-        {/case}
-    {/case}
-  </div>
+            {#match _}
+              {#if @user_id &&
+                  Settings.get([Bonfire.UI.Common.AvatarLive, :animal_avatars], true,
+                    context: @__context__,
+                    name: l("Generate Animal Avatars"),
+                    description: l("Generate animal-based avatars for users without a profile picture.")
+                  )}
+                <LazyImage
+                  parent_id={deterministic_dom_id(__MODULE__, @user_id, "avatar", @parent_id)}
+                  src={"/gen_avatar/#{@user_id}"}
+                  title={@title}
+                  alt={@title}
+                  fallback_icon={Icon.icon_name("material-symbols:person-2-rounded")}
+                  opts={@opts}
+                  disable_lazy={@disable_lazy}
+                />
+              {#else}
+                <div title={@title} class="bg-primary h-full w-full flex items-center justify-center">
+                  <span class="text-primary-content font-bold text-sm select-none">{initials(@title)}</span>
+                </div>
+              {/if}
+          {/case}
+      {/case}
+    </div>
+  {/if}
 </div>

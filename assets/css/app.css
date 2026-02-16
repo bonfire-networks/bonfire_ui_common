@@ -148,12 +148,31 @@ textarea:focus-visible {
 /* Safelist: Ensure these utility classes are always generated */
 @source inline("tabular-nums phx-click-loading:opacity-60 phx-click-loading:opacity-70 phx-click-loading:pointer-events-none phx-click-loading:cursor-wait phx-click-loading:inline phx-click-loading:hidden phx-submit-loading:opacity-70 phx-submit-loading:cursor-wait phx-submit-loading:inline phx-submit-loading:hidden transition-interactive focus-ring touch-target-expanded hover-scale active:scale-95 active:scale-[0.95] active:scale-[0.98]");
 
-/* Fix path to correctly match extensions in the project */
-@source "../../../*/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
-@source "../../../*/lib/*.{leex,heex,sface,_live.ex,_view.ex}";
-@source "../../lib/*.{leex,heex,sface,_live.ex,_view.ex}";
+/* Source paths for template scanning.
+   NOTE: Tailwind v4 respects .gitignore when expanding wildcards.
+   Since /extensions/* and /deps/* are gitignored, we must list
+   extension directories explicitly (wildcards like * silently match nothing). */
 @source "../../lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
-@source "../../../../deps/*/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_ui_social/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_ui_me/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_ui_boundaries/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_ui_reactions/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_ui_social_graph/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_ui_messages/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_ui_moderation/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_ui_posts/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_poll/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_tag/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_search/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_geolocate/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_files/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_notify/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_ghost/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_open_id/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_invite_links/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_me/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../bonfire_editor_milkdown/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
+@source "../../../activity_pub/lib/**/*.{leex,heex,sface,_live.ex,_view.ex}";
 @source "../../../config/current_flavour/assets/components.css";
 @import "../static/images/icons/icons.css" layer(utilities);
 @plugin "@tailwindcss/typography";
@@ -736,6 +755,10 @@ emoji-picker .favorites {
 
 .activity-padding {
   padding-left: 4.6rem;
+}
+
+.activity-padding-compact {
+  padding-left: 3.4rem !important;
 }
 
 .tooltip::after {
