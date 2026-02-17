@@ -1,7 +1,4 @@
-<div
-  data-scope="avatar"
-  class={@wrapper_class}
->
+<div data-scope="avatar" class={@wrapper_class}>
   {#if Media.hide_avatars?(@__context__, @showing_within)}
     <div
       data-square={Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true,

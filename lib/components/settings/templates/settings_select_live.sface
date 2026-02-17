@@ -1,5 +1,8 @@
 <div>
-  <div :if={@label} class="badge mb-2 !border !border-warning/30 badge-outline badge-warning badge-sm">{@label}</div>
+  <div
+    :if={@label}
+    class="badge mb-2 !border !border-warning/30 badge-outline badge-warning badge-sm"
+  >{@label}</div>
   <div class="flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
     <div class="flex flex-col flex-1 gap-0.5">
       <div class="text-sm font-medium text-base-content/90" :if={@name}>{@name}</div>

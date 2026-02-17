@@ -102,7 +102,10 @@
           {!-- Only show wrapper title/description for custom components (declare_settings_component)
                that don't render their own labels. Built-in types (declare_settings) have @widget[:data]
                populated and render their own name/description internally. --}
-          <div :if={!@widget[:data] && (@with_title or @with_description)} class="flex flex-col gap-0.5 mb-3">
+          <div
+            :if={!@widget[:data] && (@with_title or @with_description)}
+            class="flex flex-col gap-0.5 mb-3"
+          >
             <div :if={@with_title} class="text-sm font-medium text-base-content/90">{@widget[:text] || @widget[:name]}</div>
             <div :if={@with_description && @widget[:description]} class="text-sm text-base-content/50">{@widget[:description]}</div>
           </div>
@@ -115,7 +118,10 @@
             {...@data}
           />
         {#match Surface.LiveComponent}
-          <div :if={!@widget[:data] && (@with_title or @with_description)} class="flex flex-col gap-0.5 mb-3">
+          <div
+            :if={!@widget[:data] && (@with_title or @with_description)}
+            class="flex flex-col gap-0.5 mb-3"
+          >
             <div :if={@with_title} class="text-sm font-medium text-base-content/90">{@widget[:text] || @widget[:name]}</div>
             <div :if={@with_description && @widget[:description]} class="text-sm text-base-content/50">{@widget[:description]}</div>
           </div>
