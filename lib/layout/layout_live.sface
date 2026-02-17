@@ -64,7 +64,7 @@
                 <div
                   id="inner"
                   class={
-                    "flex flex-col bg-base-100 pb-4 md:pb-[1px] border-x border-base-content/20",
+                    "flex flex-col bg-base-100 pb-4 md:pb-[1px] lg:border-x border-base-content/20",
                     hidden: @hide_main,
                     "border-none": @without_sidebar == true && is_nil(current_user(@__context__)),
                     "min-h-[calc(var(--inner-window-height))]": @without_secondary_widgets != :never
