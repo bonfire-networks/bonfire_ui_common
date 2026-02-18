@@ -34,7 +34,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
 
   def maybe_generate(urls, opts) when is_list(urls) do
     # TODO: ttl
-    dest = dest_dir(opts)
+    dest = dest_path(opts)
     opts = opts ++ [dest: dest]
 
     urls
@@ -42,7 +42,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
       full_path = Path.join([dest, url, "index.#{opts[:ext] || "html"}"])
       file_exists_not_expired(full_path)
     end)
-    |> debug("expired or doesn't exist")
+    |> info("expired or doesn't exist")
     |> generate(opts)
   end
 
@@ -56,7 +56,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
   def generate(urls, opts) when is_list(urls) do
     conn = Phoenix.ConnTest.build_conn()
 
-    dest = opts[:dest] || dest_dir(opts)
+    dest = opts[:dest] || dest_path(opts)
 
     maybe_clean_and_copy_assets(dest, opts)
 
@@ -75,7 +75,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
         error(other, "Could not generate")
         :error
     end)
-    |> debug("ret")
+    |> info("ret")
   end
 
   def generate(url, opts) do
@@ -109,13 +109,17 @@ defmodule Bonfire.UI.Common.StaticGenerator do
 
   defp write_file(path, content, dest) do
     full_path = Path.join([dest, path, "index.html"])
+    info(full_path, "write_file full_path (dest=#{dest}, path=#{path})")
     dirname = Path.dirname(full_path)
 
     with :ok <- File.mkdir_p(dirname),
          :ok <- File.write(full_path, content) do
+      info(full_path, "write_file success")
       {:ok, path}
     else
-      _ -> {:error, path}
+      e ->
+        info(e, "write_file failed for #{full_path}")
+        {:error, path}
     end
   end
 
@@ -142,17 +146,36 @@ defmodule Bonfire.UI.Common.StaticGenerator do
     end
   end
 
-  defp dest_dir(opts) do
-    Application.app_dir(
-      Config.get(:umbrella_otp_app) || Config.get!(:otp_app),
-      opts[:output_dir] || Config.get([__MODULE__, :output_dir]) ||
-        static_dir()
-    )
-    |> debug()
+  @doc """
+  Base directory where static files are written.
+
+  Reads `output_dir` from opts, then config, then falls back to
+  `priv/static/public/` under the OTP app's priv dir. If the resolved value
+  is an absolute path it is used as-is; relative paths are resolved via
+  `Application.app_dir`.
+
+  In tests, set a process-local temp dir:
+
+      Process.put([:bonfire_ui_common, Bonfire.UI.Common.StaticGenerator, :output_dir], "/tmp/my_dir")
+  """
+  def dest_path(opts \\ []) do
+    dir = opts[:output_dir] || Config.get([__MODULE__, :output_dir]) || static_dir()
+
+    if Path.type(dir) == :absolute do
+      dir
+    else
+      Application.app_dir(Config.get(:umbrella_otp_app) || Config.get!(:otp_app), dir)
+    end
+    |> info("path")
+  end
+
+  @doc "Write a response body directly to the static cache at the given URL path."
+  def cache_response(url, body, opts \\ []) do
+    write_file(url, body, dest_path(opts))
   end
 
   def file_exists_not_expired(file) do
-    case file_exists_age(file) |> debug("age") do
+    case file_exists_age(file) |> info("age") do
       false -> false
       # seconds
       age -> age < 60

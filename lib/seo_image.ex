@@ -113,7 +113,7 @@ defmodule Bonfire.UI.Common.SEOImage do
       {:ok, filename}
     else
       e ->
-        error(e)
+        warn(e, "Error generating OG image with overlay, falling back to no overlay")
         write_og_image(filename, svg, nil)
     end
   end

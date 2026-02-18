@@ -13,13 +13,13 @@ defmodule Bonfire.UI.Common.StaticGeneratorPlug do
   def make_request_path_static(conn, _ \\ nil)
 
   def make_request_path_static(%{query_params: %{"cache" => "skip"}} = conn, _) do
-    debug("skip cache")
+    info("skip cache")
     conn
   end
 
   def make_request_path_static(%{query_params: %{"_format" => format}} = conn, _) do
     # for LVN
-    debug("skip cache")
+    info("skip cache")
     conn
     # do_make_request_path_static(conn, format)
   end
@@ -47,7 +47,7 @@ defmodule Bonfire.UI.Common.StaticGeneratorPlug do
       _ ->
         static_html_path =
           "#{String.trim_trailing(request_path, "/")}/#{filename}"
-          |> debug()
+          |> info()
 
         %{
           conn

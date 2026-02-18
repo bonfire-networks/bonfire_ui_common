@@ -105,10 +105,27 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       # You should set gzip to true if you are running phx.digest
       # when deploying your static files in production.
 
+      # Fingerprinted assets (Phoenix appends ?vsn=d) — default: 1 year, override (at compile time) with CACHE_STATIC_VSN_MAX_AGE (seconds)
+      vsn_max_age =
+        String.to_integer(
+          System.get_env("CACHE_STATIC_VSN_MAX_AGE", "#{div(to_timeout(week: 52), 1_000)}")
+        )
+
+      # Non-versioned files like favicon — default: 1 day, override (at compile time) with CACHE_STATIC_ETAG_MAX_AGE (seconds)
+      etag_max_age =
+        String.to_integer(
+          System.get_env("CACHE_STATIC_ETAG_MAX_AGE", "#{div(to_timeout(day: 1), 1_000)}")
+        )
+
+      cache_control_for_vsn_requests = "public, max-age=#{vsn_max_age}, immutable"
+      cache_control_for_etags = "public, max-age=#{etag_max_age}"
+
       plug(Plug.Static,
         at: "/",
         from: :bonfire_ui_common,
         gzip: true,
+        cache_control_for_vsn_requests: cache_control_for_vsn_requests,
+        cache_control_for_etags: cache_control_for_etags,
         only: Bonfire.UI.Common.Web.static_paths()
       )
 
@@ -116,6 +133,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         at: "/",
         from: :bonfire,
         gzip: true,
+        cache_control_for_vsn_requests: cache_control_for_vsn_requests,
+        cache_control_for_etags: cache_control_for_etags,
         only: Bonfire.UI.Common.Web.static_paths()
       )
 

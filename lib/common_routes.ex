@@ -125,23 +125,27 @@ defmodule Bonfire.UI.Common.Routes do
         end
       end
 
+      # Reads the session cookie (but does not write one unless the session is
+      # modified). Used as the base for all browser and cacheable pipelines.
       pipeline :basic do
         plug(:fetch_session)
       end
 
+      # Minimal pipeline for non-browser HTML routes that need a session.
       pipeline :basic_html do
         plug(:basic)
         plug(:accepts, ["html"])
       end
 
+      # Minimal pipeline for JSON/ActivityPub routes that need a session.
       pipeline :basic_json do
         plug(:basic)
         plug(:accepts, ["activity+json", "json", "ld+json"])
       end
 
-      pipeline :browser do
-        plug(:basic)
-
+      # Content-type negotiation + HTTP/2 early hints for preloading assets.
+      # Shared by :browser, :cacheable, and other pipelines that serve HTML.
+      pipeline :browser_accepts do
         plug(:accepts, [
           "html",
           "activity+json",
@@ -158,17 +162,28 @@ defmodule Bonfire.UI.Common.Routes do
         ])
 
         plug PlugEarlyHints, paths: Bonfire.UI.Common.Routes.early_hints_guest()
+      end
 
+      # CSRF protection + secure response headers (X-Frame-Options, CSP, etc.).
+      # Must NOT be included in :cacheable pipelines — protect_from_forgery
+      # writes a CSRF cookie that would be served to other users from CDN cache.
+      pipeline :browser_security do
         plug(:protect_from_forgery)
         plug(:put_secure_browser_headers)
+      end
 
+      # Locale detection, root layout, Gon JS config, and content-type
+      # redirect detection. Safe to include in cacheable pipelines — does not
+      # write session cookies or per-user state.
+      # Note: if responses vary by locale, set a `Vary: Accept-Language` header
+      # or use a locale-specific cache key in your proxy config.
+      pipeline :browser_render do
         plug(:set_locale)
 
         # detect Accept headers to serve JSON or HTML
         plug(Bonfire.UI.Common.Plugs.MaybeActivityRedirectPlug)
 
         plug(:put_root_layout,
-          # {Bonfire.UI.Common.LayoutView, :root}
           html: {Bonfire.UI.Common.LayoutView, :root},
           swiftui: {Bonfire.UI.Common.LayoutView.SwiftUI, :root},
           jetpack: {Bonfire.UI.Common.LayoutView.Jetpack, :root}
@@ -183,26 +198,40 @@ defmodule Bonfire.UI.Common.Routes do
         # LiveView Native support (deprecated)
         # Bonfire.UI.Common.Web.maybe_native_plug()
 
-        # plug Bonfire.UI.Common.Plugs.AllowTestSandbox # needed for Wallaby tests? NOTE: probably not needed since we also have `plug(Phoenix.Ecto.SQL.Sandbox)` in EndpointTemplate
-
         # plug(:load_current_auth) # do we need this here?
-
-        plug(Bonfire.UI.Common.MaybeStaticGeneratorPlug)
-
-        plug(:fetch_live_flash)
 
         # plug Bonfire.UI.Me.Plugs.Locale # TODO: skip guessing a locale if the user has one in preferences
       end
 
-      pipeline :browser_unsafe do
-        plug(:basic)
-        plug(:accepts, ["html", "activity+json", "json", "ld+json"])
+      # Interactive-only additions on top of :browser_render. NOT safe for
+      # caching: fetch_live_flash carries per-user flash messages.
+      pipeline :browser_ui do
+        plug(:browser_render)
 
-        plug(:put_secure_browser_headers)
+        # plug Bonfire.UI.Common.Plugs.AllowTestSandbox
 
         plug(:fetch_live_flash)
       end
 
+      # Standard interactive browser pipeline.
+      pipeline :browser do
+        plug(:basic)
+        plug(:browser_accepts)
+        plug(:browser_security)
+        plug(:browser_ui)
+      end
+
+      # Like :browser but without CSRF — for routes that receive cross-origin
+      # requests (e.g. ActivityPub inboxes, webhooks).
+      pipeline :browser_unsafe do
+        plug(:basic)
+        plug(:browser_accepts)
+        plug(:put_secure_browser_headers)
+        plug(:fetch_live_flash)
+      end
+
+      # Rate-limits POST form submissions. Compose with :browser in a scope via
+      # pipe_through([:browser, :throttle_forms]).
       pipeline :throttle_forms do
         plug(:basic)
 
@@ -211,6 +240,67 @@ defmodule Bonfire.UI.Common.Routes do
           key_prefix: :forms,
           scale_ms: 60_000,
           limit: if(Bonfire.Common.Config.env() in [:dev, :test], do: 90, else: 5)
+      end
+
+      # Base pipeline for public responses that CDNs and proxies may cache.
+      # Use for non-HTML responses (SVG, JSON, images, etc.).
+      # For full HTML pages with layout, use :cacheable_html instead.
+      #
+      # Includes :basic so the session can be read (allowing CacheControlPlug
+      # to skip caching for authenticated users), and :browser_render for full HTML page rendering (locale, root layout, Gon JS config), but excludes :browser_security
+      # so no CSRF cookie is written. As long as the session is not modified,
+      # no Set-Cookie header is emitted.
+      #
+      # Use for controller actions or LiveView dead renders that return cacheable HTML. Cache-Control headers are NOT set here — add CacheControlPlug in each controller to choose TTL and purgeable options per route:
+      #
+      #   plug Bonfire.UI.Common.CacheControlPlug                    # defaults
+      #   plug Bonfire.UI.Common.CacheControlPlug, purgeable: true   # longer TTLs
+      #   plug Bonfire.UI.Common.CacheControlPlug, ttl: 3600         # explicit
+      pipeline :cacheable do
+        plug(:basic)
+        plug(:browser_accepts)
+        plug(:browser_render)
+        plug(Bonfire.UI.Common.MaybeStaticGeneratorPlug)
+      end
+
+      # Convenience pipeline for public HTML pages that should be cached with
+      # default TTLs and/or served from the static disk cache for guests.
+      # Equivalent to :cacheable + CacheControlPlug with purgeable: false defaults.
+      # Use :cacheable to define TTLs per-controller with an explicit CacheControlPlug plug.
+      pipeline :cacheable_page do
+        plug(:cacheable)
+        plug(Bonfire.UI.Common.CacheControlPlug, purgeable: false)
+      end
+
+      # Hybrid pipeline for LiveView routes that should serve from the static
+      # disk/memory cache for unauthenticated guests, while still providing the
+      # full interactive browser experience for logged-in users.
+      #
+      # On a cache HIT (unauthenticated, no query string):
+      #   MaybeStaticGeneratorPlug halts — no CSRF token or flash in the response,
+      #   ensuring the cached HTML is safe to serve to any visitor.
+      #
+      # On a cache MISS or authenticated request:
+      #   MaybeCSRFPlug applies protect_from_forgery only for authenticated users
+      #   (so their LiveView socket can connect), skipping CSRF for unauthenticated
+      #   users (so their fresh HTML can be written to the static cache cleanly).
+      #   fetch_live_flash then runs; if flash is present, cacheable_response? will
+      #   block writing that response to the static cache.
+      #
+      # Compose with a :cacheable_* pipeline (e.g. :cacheable_post) to set
+      # cache-control and surrogate-key headers for the specific route.
+      pipeline :browser_or_cacheable do
+        plug(:basic)
+        plug(:browser_accepts)
+        # Security headers are response headers — safe to set even on cache hits
+        # because they are NOT embedded in the cached HTML body.
+        plug(:put_secure_browser_headers)
+        plug(:browser_render)
+        plug(Bonfire.UI.Common.MaybeStaticGeneratorPlug)
+        # CSRF only for authenticated users — unauthenticated responses must be
+        # CSRF-token-free to be safely written to the shared static cache.
+        plug(Bonfire.UI.Common.Plugs.MaybeCSRFPlug)
+        plug(:fetch_live_flash)
       end
 
       pipeline :static_generator do
@@ -247,6 +337,14 @@ defmodule Bonfire.UI.Common.Routes do
         )
       end
 
+      # Public endpoints with no session — safe to cache at CDN level
+      scope "/" do
+        pipe_through(:cacheable)
+
+        get("/gen_avatar", Bonfire.UI.Common.GenAvatar, :generate)
+        get("/gen_avatar/:id", Bonfire.UI.Common.GenAvatar, :generate)
+      end
+
       # pages anyone can view
       scope "/" do
         pipe_through(:browser)
@@ -259,9 +357,6 @@ defmodule Bonfire.UI.Common.Routes do
         live("/crash_test/:component", Bonfire.UI.Common.ErrorLive)
 
         pipe_through(:throttle_forms)
-
-        get("/gen_avatar", Bonfire.UI.Common.GenAvatar, :generate)
-        get("/gen_avatar/:id", Bonfire.UI.Common.GenAvatar, :generate)
 
         post(
           "/LiveHandler/:live_handler",

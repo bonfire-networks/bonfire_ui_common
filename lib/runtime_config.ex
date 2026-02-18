@@ -66,5 +66,71 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
         origins: []
       }
     ]
+
+    ## HTTP Caching - Environment variables
+    # - `CACHE_PURGE_ADAPTERS` — comma-separated adapter names or fully-qualified module names.
+    #   Recognised short names: `varnish`, `nginx`, `cloudflare`, `null`.
+    #   Auto-detected from credentials if not set.
+    # - `VARNISH_URL` — enables Varnish adapter (default: `http://localhost:80`)
+    # - `NGINX_URL` — enables Nginx adapter (default: `http://localhost:80`); requires the `ngx_cache_purge` module or Nginx Plus — see `Bonfire.UI.Common.Cache.HTTPPurge.Nginx` for details.
+    # - `CLOUDFLARE_ZONE_ID` + `CLOUDFLARE_API_TOKEN` — enables Cloudflare adapter
+
+    varnish_url = System.get_env("VARNISH_URL")
+    nginx_url = System.get_env("NGINX_URL")
+    cf_zone = System.get_env("CLOUDFLARE_ZONE_ID")
+    cf_token = System.get_env("CLOUDFLARE_API_TOKEN")
+
+    config :bonfire_common, Bonfire.Common.Cache.HTTPPurge,
+      adapters: resolve_http_purge_adapters(varnish_url, nginx_url, cf_zone, cf_token),
+      varnish_url: varnish_url || "http://localhost:80",
+      nginx_url: nginx_url || "http://localhost:80",
+      cloudflare_zone_id: cf_zone,
+      cloudflare_api_token: cf_token
+
+    config :bonfire_ui_common, Bonfire.UI.Common.MaybeStaticGeneratorPlug,
+      # store cached files in memory when they get hit often (0 meams disabled)
+      memory_cache_threshold:
+        System.get_env("STATIC_GENERATE_MEMORY_CACHE_THRESHOLD", "0") |> String.to_integer()
+  end
+
+  defp resolve_http_purge_adapters(varnish_url, nginx_url, cf_zone, cf_token) do
+    case System.get_env("CACHE_PURGE_ADAPTERS") do
+      env when env not in [nil, ""] ->
+        env
+        |> String.split(",", trim: true)
+        |> Enum.flat_map(fn str ->
+          adapter =
+            case String.trim(str) do
+              "varnish" -> Bonfire.UI.Common.Cache.HTTPPurge.Varnish
+              "nginx" -> Bonfire.UI.Common.Cache.HTTPPurge.Nginx
+              "cloudflare" -> Bonfire.UI.Common.Cache.HTTPPurge.Cloudflare
+              "static_generator" -> Bonfire.UI.Common.Cache.HTTPPurge.StaticGenerator
+              "null" -> Bonfire.Common.Cache.HTTPPurge.Null
+              other -> Bonfire.Common.Types.maybe_to_module(other, false)
+            end
+
+          if is_atom(adapter) and not is_nil(adapter), do: [adapter], else: []
+        end)
+        |> case do
+          [] -> [Bonfire.Common.Cache.HTTPPurge.Null]
+          adapters -> adapters
+        end
+
+      _ ->
+        # Auto-detect from presence of credentials
+        detected =
+          [
+            {varnish_url, Bonfire.UI.Common.Cache.HTTPPurge.Varnish},
+            {nginx_url, Bonfire.UI.Common.Cache.HTTPPurge.Nginx},
+            {cf_zone && cf_token, Bonfire.UI.Common.Cache.HTTPPurge.Cloudflare}
+          ]
+          |> Enum.flat_map(fn
+            {nil, _} -> []
+            {false, _} -> []
+            {_, adapter} -> [adapter]
+          end)
+
+        if detected == [], do: [Bonfire.Common.Cache.HTTPPurge.Null], else: detected
+    end
   end
 end
