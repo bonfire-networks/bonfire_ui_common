@@ -1,4 +1,4 @@
-const CACHE_NAME = 'bonfire-v1';
+const CACHE_NAME = 'v1-bonfire';
 const OFFLINE_URL = '/pwa/offline.html';
 
 // Install: Cache the offline page

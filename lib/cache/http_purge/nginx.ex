@@ -35,7 +35,7 @@ defmodule Bonfire.UI.Common.Cache.HTTPPurge.Nginx do
     base = Bonfire.Common.Cache.HTTPPurge.config(:nginx_url) || "http://localhost:80"
     url = "#{base}#{path}"
 
-    case Req.request(method: :purge, url: url) do
+    case Req.request(method: "purge", url: url) do
       {:ok, _} -> :ok
       {:error, reason} -> error(reason, "Nginx purge failed for #{path}")
     end

@@ -69,7 +69,7 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
 
     ## HTTP Caching - Environment variables
     # - `CACHE_PURGE_ADAPTERS` — comma-separated adapter names or fully-qualified module names.
-    #   Recognised short names: `varnish`, `nginx`, `cloudflare`, `null`.
+    #   Recognised short names: `varnish`, `nginx`, `cloudflare`, `static_generator`, `null`.
     #   Auto-detected from credentials if not set.
     # - `VARNISH_URL` — enables Varnish adapter (default: `http://localhost:80`)
     # - `NGINX_URL` — enables Nginx adapter (default: `http://localhost:80`); requires the `ngx_cache_purge` module or Nginx Plus — see `Bonfire.UI.Common.Cache.HTTPPurge.Nginx` for details.

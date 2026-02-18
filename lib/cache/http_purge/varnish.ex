@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Common.Cache.HTTPPurge.Varnish do
     base = Bonfire.Common.Cache.HTTPPurge.config(:varnish_url) || "http://localhost:80"
     url = "#{base}#{path}"
 
-    case Req.request(method: :purge, url: url) do
+    case Req.request(method: "purge", url: url) do
       {:ok, _} -> :ok
       {:error, reason} -> error(reason, "Varnish purge failed for #{path}")
     end

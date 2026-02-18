@@ -24,7 +24,7 @@
     </div>
 
     <div id="picker" style="display:none;" class="flex items-center justify-center h-screen">
-        <form onsubmit="loadUrl()" class="card bg-base-200 shadow-xl w-full max-w-md">
+        <form id="login-form" class="card bg-base-200 shadow-xl w-full max-w-md">
             <div class="card-body items-center text-center gap-4">
                 <h2 class="card-title text-2xl">Welcome to Bonfire</h2>
                 <p class="text-base-content/70">Enter your username in the format <code class="kbd kbd-sm">@user@instance.domain</code></p>
@@ -38,7 +38,7 @@
     </div>
 </div>
 
-<!-- <script src="assets/iframe-modal.js"></script> -->
+<script src="assets/tauri-init.js"></script>
 <script type="module">
     import {
         startLogin,
@@ -138,7 +138,8 @@
     }
 
     // Login flow: resolve actor via webfinger, then redirect to OAuth authorize
-    window.loadUrl = async function () {
+    document.getElementById('login-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
         const input = document.getElementById('usernameInput').value.trim();
         if (!input) return;
 
@@ -149,7 +150,7 @@
             console.error('[pick-instance] Login error:', err);
             alert(err.message || 'Login failed');
         }
-    }
+    });
 
 </script>
 </body>
