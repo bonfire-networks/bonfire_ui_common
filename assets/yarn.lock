@@ -1025,10 +1025,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"daisyui@npm:^5.1.12":
-  version: 5.5.14
-  resolution: "daisyui@npm:5.5.14"
-  checksum: 10c0/07fd07e9246efcadc5d6c425ea646580a31856569ee3db8d38519d92713ddf4c3b173379dca67723bc21d529c4b00b3425121a3ea3764381ade3e8b34725db60
+"daisyui@npm:^5.1.18":
+  version: 5.5.18
+  resolution: "daisyui@npm:5.5.18"
+  checksum: 10c0/2cff0aefc84e5e7c233bb53ee703b06a4c1dd5decc0eddb06a7a3b1f39b4f82ce287676b54de1a6b1cc1f7f9a4f7a0851fcdda8c6c684ff1b1bf1b078ba9c28e
   languageName: node
   linkType: hard
 
@@ -2297,7 +2297,7 @@ __metadata:
     body-scroll-lock: "npm:^4.0.0-beta.0"
     buffer: "npm:^6.0.3"
     cpx2: "npm:^6.0.1"
-    daisyui: "npm:^5.1.12"
+    daisyui: "npm:^5.1.18"
     emoji-picker-element: "npm:^1.26.1"
     esbuild: "npm:^0.19.9"
     fast-blurhash: "npm:^1.1.2"
