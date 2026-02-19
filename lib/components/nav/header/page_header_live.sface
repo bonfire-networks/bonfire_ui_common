@@ -2,8 +2,8 @@
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center gap-5 justify-between w-full lg:flex-1">
       <div class="gap-3 flex items-center">
-        <div class="xl:flex hidden">
-          <Bonfire.UI.Common.BackButtonLive :if={@back} back={@back} />
+        <div  :if={@back} class="xl:flex hidden">
+          <Bonfire.UI.Common.BackButtonLive back={@back} />
         </div>
         {#if is_map(current_user(@__context__))}
           <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost btn-sm">
