@@ -28,7 +28,7 @@ defmodule Bonfire.UI.Common.Timing do
   defmacro time_section(key, do: block) do
     if @page_profiler_enabled do
       quote do
-        if Process.get(:server_timing_start) do
+        if ProcessTree.get(:server_timing_start) do
           unquote(__MODULE__).__measure__(unquote(key), fn -> unquote(block) end)
         else
           unquote(block)
@@ -43,7 +43,7 @@ defmodule Bonfire.UI.Common.Timing do
   defmacro time_section_accumulate(key, do: block) do
     if @page_profiler_enabled do
       quote do
-        if Process.get(:server_timing_start) do
+        if ProcessTree.get(:server_timing_start) do
           unquote(__MODULE__).__measure_accumulate__(unquote(key), fn -> unquote(block) end)
         else
           unquote(block)

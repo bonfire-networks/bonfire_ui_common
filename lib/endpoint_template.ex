@@ -57,7 +57,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       end
 
       def plug_timing_checkpoint(conn, key) do
-        if Process.get(:server_timing_start) do
+        if ProcessTree.get(:server_timing_start) do
           Process.put({:server_timing_marker, key}, System.monotonic_time(:microsecond))
         end
 

@@ -378,7 +378,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
   def handle_call({:process_get, key, default}, _from, socket) do
     value =
-      case Process.get(key, :__not_found__) do
+      case ProcessTree.get(key, :__not_found__) do
         :__not_found__ -> Map.get(socket.assigns, key, default)
         found -> found
       end

@@ -558,9 +558,6 @@ defmodule Bonfire.UI.Common do
     # |> debug()
     # :sys.get_state(pid)
 
-    # Process.get()
-    # |> debug()
-
     Phoenix.LiveView.send_update(
       pid || self(),
       component,
@@ -1439,7 +1436,7 @@ defmodule Bonfire.UI.Common do
 
   defp live_update_many_preload_mode,
     do:
-      Process.get(:live_update_many_preload_mode) ||
+      ProcessTree.get(:live_update_many_preload_mode) ||
         Config.get(:live_update_many_preload_mode, nil,
           name: l("Live Update Preload Mode"),
           description: l("How to preload data during live updates (technical setting).")

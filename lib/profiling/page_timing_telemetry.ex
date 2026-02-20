@@ -38,7 +38,7 @@ defmodule Bonfire.UI.Common.PageTimingTelemetry do
   @doc false
   def handle_event(event, measurements, metadata, _config) do
     # Only record in the HTTP request process (where ServerTimingPlug set :server_timing_start)
-    if Process.get(:server_timing_start), do: do_handle(event, measurements, metadata)
+    if ProcessTree.get(:server_timing_start), do: do_handle(event, measurements, metadata)
   end
 
   defp do_handle([:phoenix, :live_view, :mount, :start], _, _), do: handle_mount_start()
@@ -73,7 +73,7 @@ defmodule Bonfire.UI.Common.PageTimingTelemetry do
   end
 
   defp handle_mount_start do
-    case Process.get({:server_timing_marker, :router_dispatch_start}) do
+    case ProcessTree.get({:server_timing_marker, :router_dispatch_start}) do
       nil ->
         :ok
 
@@ -88,7 +88,7 @@ defmodule Bonfire.UI.Common.PageTimingTelemetry do
   end
 
   defp handle_router_dispatch_start do
-    start_time = Process.get(:server_timing_start)
+    start_time = ProcessTree.get(:server_timing_start)
 
     if start_time do
       now = System.monotonic_time(:microsecond)

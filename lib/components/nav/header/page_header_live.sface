@@ -1,7 +1,6 @@
 <div class="flex flex-1 px-4 w-full transition-color duration-150 ease-in-out">
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center gap-3 justify-between w-full lg:flex-1">
-
         <div :if={@back} class="xl:flex hidden">
           <Bonfire.UI.Common.BackButtonLive back={@back} />
         </div>

@@ -3,7 +3,8 @@
     "w-10 h-10 aspect-square rounded-full border border-base-content/20 object-contain"}
   src={Config.get([:ui, :theme, :instance_icon], nil,
     name: l("Instance Icon"),
-    description: l("The icon to display for this instance."))}
+    description: l("The icon to display for this instance.")
+  )}
   alt={l("Instance logo")}
   loading="eager"
   fetchpriority="high"

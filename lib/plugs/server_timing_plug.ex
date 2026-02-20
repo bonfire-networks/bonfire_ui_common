@@ -59,23 +59,23 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
   end
 
   defp add_server_timing_header(conn, opts) do
-    start_time = Process.get(@timing_start_key)
+    start_time = ProcessTree.get(@timing_start_key)
 
     if start_time do
       total_time = System.monotonic_time(:microsecond) - start_time
-      db_time = Process.get(@db_time_key, 0)
-      db_count = Process.get(@db_count_key, 0)
-      queue_time = Process.get(@queue_time_key, 0)
+      db_time = ProcessTree.get(@db_time_key, 0)
+      db_count = ProcessTree.get(@db_count_key, 0)
+      queue_time = ProcessTree.get(@queue_time_key, 0)
 
-      lv_mount_disconnected = Process.get({:server_timing_custom, :lv_mount_disconnected})
-      lv_handle_params = Process.get({:server_timing_custom, :lv_handle_params})
-      plugs_time = Process.get({:server_timing_custom, :plugs})
-      router_time = Process.get({:server_timing_custom, :router})
+      lv_mount_disconnected = ProcessTree.get({:server_timing_custom, :lv_mount_disconnected})
+      lv_handle_params = ProcessTree.get({:server_timing_custom, :lv_handle_params})
+      plugs_time = ProcessTree.get({:server_timing_custom, :plugs})
+      router_time = ProcessTree.get({:server_timing_custom, :router})
 
-      marker_before_parsers = Process.get({:server_timing_marker, :before_parsers})
-      marker_after_parsers = Process.get({:server_timing_marker, :after_parsers})
-      marker_before_session = Process.get({:server_timing_marker, :before_session})
-      marker_after_session = Process.get({:server_timing_marker, :after_session})
+      marker_before_parsers = ProcessTree.get({:server_timing_marker, :before_parsers})
+      marker_after_parsers = ProcessTree.get({:server_timing_marker, :after_parsers})
+      marker_before_session = ProcessTree.get({:server_timing_marker, :before_session})
+      marker_after_session = ProcessTree.get({:server_timing_marker, :after_session})
 
       plug_parsers =
         if marker_before_parsers && marker_after_parsers,
@@ -238,10 +238,10 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
 
   @doc "Accumulates DB query time and count. Called by the Ecto telemetry handler."
   def record_db_query(query_time, queue_time \\ 0) do
-    if Process.get(@timing_start_key) do
-      current_db = Process.get(@db_time_key, 0)
-      current_count = Process.get(@db_count_key, 0)
-      current_queue = Process.get(@queue_time_key, 0)
+    if ProcessTree.get(@timing_start_key) do
+      current_db = ProcessTree.get(@db_time_key, 0)
+      current_count = ProcessTree.get(@db_count_key, 0)
+      current_queue = ProcessTree.get(@queue_time_key, 0)
 
       Process.put(@db_time_key, current_db + query_time)
       Process.put(@db_count_key, current_count + 1)
@@ -251,15 +251,15 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
 
   @doc "Records a custom timing metric (atom key, microseconds). Overwrites if key exists."
   def record_custom(key, duration) when is_atom(key) and is_number(duration) do
-    if Process.get(@timing_start_key) do
+    if ProcessTree.get(@timing_start_key) do
       Process.put({:server_timing_custom, key}, duration)
     end
   end
 
   @doc "Accumulates a custom timing metric (atom key, microseconds). Adds to any existing value."
   def accumulate_custom(key, duration) when is_atom(key) and is_number(duration) do
-    if Process.get(@timing_start_key) do
-      current = Process.get({:server_timing_custom, key}, 0)
+    if ProcessTree.get(@timing_start_key) do
+      current = ProcessTree.get({:server_timing_custom, key}, 0)
       Process.put({:server_timing_custom, key}, current + duration)
     end
   end
