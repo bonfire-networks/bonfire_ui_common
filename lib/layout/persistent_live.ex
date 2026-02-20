@@ -258,18 +258,59 @@ defmodule Bonfire.UI.Common.PersistentLive do
   def handle_info({:assign_persistent_self, {:smart_input, assigns}}, socket) do
     assigns_map = assigns |> Map.new()
 
+    # Extract and normalize smart_input_opts
+    smart_input_opts = Map.get(assigns_map, :smart_input_opts, %{})
+
+    smart_input_opts =
+      if is_list(smart_input_opts), do: Map.new(smart_input_opts), else: smart_input_opts
+
+    # Derive show_cw/show_sensitive for server-controlled visibility
+    # and determine which JS push event to send for textarea value
+    hidden_cw_sensitive = %{show_cw: false, show_sensitive: false}
+
+    {smart_input_opts, push_action} =
+      cond do
+        assigns_map[:reset_smart_input] ->
+          {Map.merge(smart_input_opts, hidden_cw_sensitive), :reset}
+
+        is_binary(smart_input_opts[:cw]) and smart_input_opts[:cw] != "" ->
+          {Map.merge(smart_input_opts, %{
+             show_cw: true,
+             show_sensitive: smart_input_opts[:inherit_sensitive] || false
+           }), :set_cw}
+
+        Map.has_key?(smart_input_opts, :cw) ->
+          {Map.merge(smart_input_opts, hidden_cw_sensitive), :clear_cw}
+
+        true ->
+          {smart_input_opts, :none}
+      end
+
+    # Send updated assigns (with enriched smart_input_opts) to the container component
     assigns_map
+    |> Map.put(:smart_input_opts, smart_input_opts)
     |> Map.put_new(:smart_input_component, nil)
     |> maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, ...)
 
-    # Push reset event to Milkdown hook when reset is requested
+    # Push JS events for textarea value manipulation only
+    # (visibility and button state are now server-controlled via show_cw/show_sensitive)
     socket =
-      if assigns_map[:reset_smart_input] do
-        socket
-        |> Phoenix.LiveView.push_event("smart_input:reset", %{})
-        |> Phoenix.LiveView.push_event("smart_input:reset_sensitive", %{})
-      else
-        socket
+      case push_action do
+        :reset ->
+          socket
+          |> Phoenix.LiveView.push_event("smart_input:reset", %{})
+          |> Phoenix.LiveView.push_event("smart_input:reset_sensitive", %{})
+
+        :set_cw ->
+          socket
+          |> Phoenix.LiveView.push_event("smart_input:set_cw", %{cw: smart_input_opts[:cw]})
+
+        :clear_cw ->
+          socket
+          |> Phoenix.LiveView.push_event("smart_input:clear_cw", %{})
+
+        :none ->
+          socket
       end
 
     {:noreply, socket}

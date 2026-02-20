@@ -822,10 +822,6 @@ div[data-role='subject'][data-main-object] div[data-id='subject_details'] {
 
 /* AVATAR */
 
-div[data-scope='avatar'] div[data-square] {
-  @apply !rounded;
-}
-
 
 /* Direct element + data combos */
 div[data-id='preview_content'][data-show],

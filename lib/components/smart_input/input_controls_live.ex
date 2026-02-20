@@ -37,12 +37,15 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   slot default
 
   def render(assigns) do
-    # Load custom emojis
+    smart_input_opts = assigns[:smart_input_opts] || %{}
+
     assigns
     |> assign(
       :enable_thread_title,
       !assigns[:reply_to_id] and Config.get([:ui, :smart_input, :title]) == true
     )
+    |> assign(:show_cw, e(smart_input_opts, :show_cw, false))
+    |> assign(:show_sensitive, e(smart_input_opts, :show_sensitive, false))
     |> assign(
       :boundary_preset,
       Bonfire.Common.Utils.maybe_apply(

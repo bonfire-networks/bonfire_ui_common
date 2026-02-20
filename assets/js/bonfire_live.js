@@ -108,35 +108,32 @@ window.addEventListener("phx:js-exec", ({ detail }) => {
 	}
 });
 
-// Reset composer UI after posting (must use execJS to clear LiveView's sticky state)
+// Shared helper for CW textarea manipulation
+// (visibility and button state are now server-controlled via show_cw/show_sensitive assigns)
+function setCwTextarea(value) {
+	const cwTextarea = document.querySelector("#smart_input_summary textarea");
+	if (cwTextarea) cwTextarea.value = value;
+}
+
+// Reset composer UI after posting
 window.addEventListener("phx:smart_input:reset_sensitive", () => {
-	const container = document.getElementById("smart_input") || document.body;
+	setCwTextarea("");
 
-	const commands = [
-		["hide", { to: "#smart_input_summary", time: 0 }],
-		["hide", { to: "#smart_input_post_title", time: 0 }],
-		["hide", { to: "#smart_input_scheduled_at", time: 0 }],
-		["hide", { to: ".sensitive_alert", time: 0 }],
-		["remove_class", { to: "#sensitive_btn label", names: ["bg-warning", "text-warning-content"] }],
-		["remove_class", { to: "#summary_btn", names: ["btn-active"] }],
-		["remove_class", { to: "#title_btn", names: ["btn-active"] }],
-		["remove_class", { to: "#scheduled_at_btn", names: ["btn-active"] }]
-	];
-
-	commands.forEach(([cmd, opts]) => {
-		try {
-			liveSocket.execJS(container, JSON.stringify([[cmd, opts]]));
-		} catch (e) {}
-	});
-
-	// Clear form values
-	const checkbox = document.querySelector("#sensitive_btn input[type='checkbox']");
-	if (checkbox) checkbox.checked = false;
-
-	["#smart_input_summary textarea", "#smart_input_post_title input", "#smart_input_scheduled_at input"].forEach(sel => {
+	// Also clear title and scheduled_at input values
+	["#smart_input_post_title input", "#smart_input_scheduled_at input"].forEach(sel => {
 		const el = document.querySelector(sel);
 		if (el) el.value = "";
 	});
+});
+
+// Fill CW textarea when replying to a CW post
+window.addEventListener("phx:smart_input:set_cw", ({ detail }) => {
+	setCwTextarea(detail.cw || "");
+});
+
+// Clear CW textarea when replying to a non-CW post
+window.addEventListener("phx:smart_input:clear_cw", () => {
+	setCwTextarea("");
 });
 
 // window.addEventListener("phx:js-show", ({ detail }) => {

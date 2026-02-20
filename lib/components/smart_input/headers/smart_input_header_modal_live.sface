@@ -20,9 +20,7 @@
         <:action_btns>
           <button
             phx-click={JS.push("Bonfire.UI.Common.SmartInput:reset_to_default")
-            |> JS.hide(to: "#smart_input_summary")
-            |> JS.hide(to: "#smart_input_post_title")
-            |> JS.hide(to: ".sensitive_alert")}
+            |> JS.hide(to: "#smart_input_post_title")}
             phx-target="#smart_input"
             type="button"
             class="normal-case btn btn-sm btn-error"

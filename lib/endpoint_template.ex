@@ -102,8 +102,10 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       # Serve at "/" the static files from "priv/static" directory.
       #
-      # You should set gzip to true if you are running phx.digest
-      # when deploying your static files in production.
+      # In production: serve gzip, cache non-versioned files for 1 day
+      # In dev: no gzip (stale .gz files cause hard-to-debug issues), no caching (max-age=0)
+      is_prod = Config.env() == :prod
+      serve_gzip = is_prod
 
       # Fingerprinted assets (Phoenix appends ?vsn=d) — default: 1 year, override (at compile time) with CACHE_STATIC_VSN_MAX_AGE (seconds)
       vsn_max_age =
@@ -111,10 +113,13 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
           System.get_env("CACHE_STATIC_VSN_MAX_AGE", "#{div(to_timeout(week: 52), 1_000)}")
         )
 
-      # Non-versioned files like favicon — default: 1 day, override (at compile time) with CACHE_STATIC_ETAG_MAX_AGE (seconds)
+      # Non-versioned files — in dev: no caching (0s), in prod: 1 day
+      # Override (at compile time) with CACHE_STATIC_ETAG_MAX_AGE (seconds)
+      default_etag_max_age = if is_prod, do: "#{div(to_timeout(day: 1), 1_000)}", else: "0"
+
       etag_max_age =
         String.to_integer(
-          System.get_env("CACHE_STATIC_ETAG_MAX_AGE", "#{div(to_timeout(day: 1), 1_000)}")
+          System.get_env("CACHE_STATIC_ETAG_MAX_AGE", default_etag_max_age)
         )
 
       cache_control_for_vsn_requests = "public, max-age=#{vsn_max_age}, immutable"
@@ -123,7 +128,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       plug(Plug.Static,
         at: "/",
         from: :bonfire_ui_common,
-        gzip: true,
+        gzip: serve_gzip,
         cache_control_for_vsn_requests: cache_control_for_vsn_requests,
         cache_control_for_etags: cache_control_for_etags,
         only: Bonfire.UI.Common.Web.static_paths()
@@ -132,7 +137,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       plug(Plug.Static,
         at: "/",
         from: :bonfire,
-        gzip: true,
+        gzip: serve_gzip,
         cache_control_for_vsn_requests: cache_control_for_vsn_requests,
         cache_control_for_etags: cache_control_for_etags,
         only: Bonfire.UI.Common.Web.static_paths()
@@ -141,7 +146,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       plug(Plug.Static,
         at: "/data/uploads/",
         from: "data/uploads",
-        gzip: true
+        gzip: serve_gzip
       )
 
       # plug(Plug.Static,
@@ -316,11 +321,27 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         live_socket? = assigns[:force_live] || (current_user_id && !assigns[:force_static])
         # || Utils.current_account(assigns)
 
-        js =
+        js_path =
           if live_socket? || current_user_id do
             endpoint_module.static_path("/assets/bonfire_live.js")
           else
             endpoint_module.static_path("/assets/bonfire_basic.js")
+          end
+
+        # In dev, append file mtime as cache buster to avoid stale memory-cached scripts
+        js =
+          if Config.env() != :prod do
+            mtime =
+              Path.join(:code.priv_dir(:bonfire) |> to_string(), "static" <> js_path)
+              |> File.stat()
+              |> case do
+                {:ok, %{mtime: mtime}} -> :erlang.phash2(mtime)
+                _ -> System.system_time(:second)
+              end
+
+            "#{js_path}?v=#{mtime}"
+          else
+            js_path
           end
 
         """

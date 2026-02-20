@@ -1,26 +1,12 @@
 <div data-scope="avatar" class={@wrapper_class}>
   {#if Media.hide_avatars?(@__context__, @showing_within)}
-    <div
-      data-square={Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true,
-        context: @__context__,
-        name: l("Square Avatars"),
-        description: l("Display avatars as squares instead of circles.")
-      )}
-      class={@class}
-    >
+    <div class={@class}>
       <div title={@title} class="bg-primary h-full w-full flex items-center justify-center">
         <span class="text-primary-content font-bold text-base select-none">{initials(@title)}</span>
       </div>
     </div>
   {#else}
-    <div
-      data-square={Settings.get([Bonfire.UI.Common.AvatarLive, :shape], true,
-        context: @__context__,
-        name: l("Square Avatars"),
-        description: l("Display avatars as squares instead of circles.")
-      )}
-      class={@class}
-    >
+    <div class={@class}>
       {#case @avatar_fallback || Media.avatar_fallback(@user_id)}
         {#match avatar_fallback}
           {#case @src}

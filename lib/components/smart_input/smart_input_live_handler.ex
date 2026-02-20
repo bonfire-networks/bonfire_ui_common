@@ -48,7 +48,25 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     )
   end
 
-  def handle_event("reset_to_default", params, socket) do
+  def handle_event("toggle_cw", _params, socket) do
+    current_opts = e(assigns(socket), :smart_input_opts, %{})
+    show_cw = !e(current_opts, :show_cw, false)
+
+    {:noreply,
+     socket
+     |> assign(smart_input_opts: Map.put(current_opts, :show_cw, show_cw))}
+  end
+
+  def handle_event("toggle_sensitive", _params, socket) do
+    current_opts = e(assigns(socket), :smart_input_opts, %{})
+    show_sensitive = !e(current_opts, :show_sensitive, false)
+
+    {:noreply,
+     socket
+     |> assign(smart_input_opts: Map.put(current_opts, :show_sensitive, show_sensitive))}
+  end
+
+  def handle_event("reset_to_default", _params, socket) do
     replace_input_next_time(assigns(socket))
 
     set(socket,
@@ -59,16 +77,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
-      smart_input_opts: %{
-        input_status: nil,
-        create_object_type: nil,
-        open: false,
-        text_suggestion: nil,
-        recipients_editable: false,
-        text: nil,
-        title: nil,
-        cw: nil
-      },
+      smart_input_opts: default_smart_input_opts(%{create_object_type: nil, recipients_editable: false}),
       # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
       clear_reply_data: true
     )
@@ -612,16 +621,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   def reset_input(%{assigns: %{showing_within: :thread}} = socket) do
     # debug("THREad")
 
-    # Set default reset state
-    default_opts = %{
-      input_status: nil,
-      open: false,
-      text_suggestion: nil,
-      text: nil,
-      title: nil,
-      cw: nil
-    }
-
     # Send message to update smart input component assigns (side effect)
     set(socket,
       # trigger phx-update="replace" for elements that need resetting
@@ -631,7 +630,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
-      smart_input_opts: default_opts,
+      smart_input_opts: default_smart_input_opts(),
       # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
       clear_reply_data: true
     )
@@ -640,16 +639,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def reset_input(%{assigns: %{showing_within: :messages}} = socket) do
-    # Set default reset state
-    default_opts = %{
-      input_status: nil,
-      open: false,
-      text_suggestion: nil,
-      text: nil,
-      title: nil,
-      cw: nil
-    }
-
     # Send message to update smart input component assigns (side effect)
     set(socket,
       # trigger phx-update="replace" for elements that need resetting
@@ -657,7 +646,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       activity: nil,
       object: nil,
       to_circles: [],
-      smart_input_opts: default_opts,
+      smart_input_opts: default_smart_input_opts(),
       # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
       clear_reply_data: true
     )
@@ -666,17 +655,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def reset_input(socket) do
-    # Set default reset state
-    default_opts = %{
-      input_status: nil,
-      open: false,
-      text_suggestion: nil,
-      text: nil,
-      title: nil,
-      create_object_type: nil,
-      cw: nil
-    }
-
     # Send message to update smart input component assigns (side effect)
     set(socket,
       # trigger phx-update="replace" for elements that need resetting
@@ -688,12 +666,28 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       reply_to_id: e(assigns(socket), :thread_id, nil),
       thread_id: nil,
       to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
-      smart_input_opts: default_opts,
+      smart_input_opts: default_smart_input_opts(%{create_object_type: nil}),
       # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
       clear_reply_data: true
     )
 
     do_extra_reset_input(socket)
+  end
+
+  defp default_smart_input_opts(extra \\ %{}) do
+    Map.merge(
+      %{
+        input_status: nil,
+        open: false,
+        text_suggestion: nil,
+        text: nil,
+        title: nil,
+        cw: nil,
+        show_cw: false,
+        show_sensitive: false
+      },
+      extra
+    )
   end
 
   defp do_extra_reset_input(socket) do
