@@ -6,8 +6,10 @@
         <div class="h-full flex flex-col flex-1 grow relative">
           <div
             id="sensitive_alert"
-            class={["sensitive_alert alert-soft items-start alert m-2 p-2 gap-2 cursor-pointer",
-              "hidden": !@show_sensitive]}
+            class={[
+              "sensitive_alert alert-soft items-start alert m-2 p-2 gap-2 cursor-pointer",
+              hidden: !@show_sensitive
+            ]}
           >
             <span>{l("This activity is marked as sensitive.")}
               {#if @show_cw}
@@ -38,7 +40,7 @@
           </div>
 
           {!-- Summary/CW field - server controls visibility, phx-update="ignore" only on textarea wrapper --}
-          <div class={["hidden": !@show_cw]} id="smart_input_summary">
+          <div class={[hidden: !@show_cw]} id="smart_input_summary">
             <div class="px-2 pb-2">
               <label class="relative w-full">
                 <div phx-update="ignore" id="smart_input_summary_value">
@@ -136,10 +138,13 @@
                 phx-click="Bonfire.UI.Common.SmartInput:toggle_sensitive"
                 phx-target={@event_target || "#smart_input"}
               >
-                <label class={["relative btn btn-ghost btn-square btn-sm",
-                  "bg-warning text-warning-content": @show_sensitive]}>
-                  <input type="checkbox" name="sensitive" checked={@show_sensitive}
-                    class="opacity-0 absolute left-[999999999999999999px]">
+                <label class={["relative btn btn-ghost btn-square btn-sm", "bg-warning text-warning-content": @show_sensitive]}>
+                  <input
+                    type="checkbox"
+                    name="sensitive"
+                    checked={@show_sensitive}
+                    class="opacity-0 absolute left-[999999999999999999px]"
+                  />
                   <#Icon iconify="ph:siren-duotone" class="swap-off w-[18px] h-[18px]" />
                 </label>
               </div>
@@ -173,11 +178,7 @@
                   {l "Create an article"}</button></li>
                   </ul>
                 </div> -->
-              <div
-                id="summary_btn_wrapper"
-                data-tip={l("Add a summary")}
-                class="tooltip tooltip-top"
-              >
+              <div id="summary_btn_wrapper" data-tip={l("Add a summary")} class="tooltip tooltip-top">
                 <button
                   type="button"
                   id="summary_btn"

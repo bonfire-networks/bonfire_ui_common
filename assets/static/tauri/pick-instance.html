@@ -81,7 +81,7 @@
     }
     window.cleanup = cleanup;
 
-    function loggedIn() {
+    async function loggedIn() {
         const appUrl = localStorage.getItem('appUrl');
 
         console.log("Logged in, go to appUrl:", appUrl);
@@ -94,8 +94,13 @@
             window.__TAURI__.window.getCurrentWindow().setTitle(`Bonfire - ${username}`);
         }
 
-        // Open the secure chat in a separate local Tauri window
-        window.__TAURI__.core.invoke('open_secure_chat');
+        // Register instance domain for https:// deep links
+        try {
+            const instanceHost = new URL('https://' + appUrl).hostname;
+            window.__TAURI__.core.invoke('register_deep_link_domain', { domain: instanceHost });
+        } catch (e) {
+            console.warn('Failed to register deep-link domain:', e);
+        }
 
         // Start SSE notification listener
         window.__TAURI__.core.invoke('start_notifications', {
@@ -103,9 +108,27 @@
             token: localStorage.getItem('access_token')
         });
 
-        // Navigate main window to the dashboard (top-level = cookies work)
-        const dashboardUrl = URL.parse("/dashboard", 'https://' + appUrl);
-        window.location.href = dashboardUrl;
+        // Check for a startup deep link, otherwise go to dashboard
+        const baseUrl = 'https://' + appUrl;
+        let startupPayload = null;
+        try {
+            startupPayload = await window.__TAURI__.core.invoke('get_startup_deep_link');
+        } catch (e) { /* no pending deep link */ }
+
+        if (startupPayload && startupPayload.target_tab === 'chat') {
+            // MLS deep link — open chat tab, then navigate to group once loaded
+            window.__TAURI__.core.invoke('open_secure_chat');
+            // navigateToGroup will be available once the chat webview loads;
+            // pass the deep link info via the Rust handler for when it's ready
+            window.location.href = new URL("/dashboard", baseUrl).href;
+        } else if (startupPayload && startupPayload.path) {
+            // Bonfire deep link — navigate to the path on the instance
+            window.location.href = new URL('/' + startupPayload.path, baseUrl).href;
+        } else {
+            // No deep link — ensure chat is ready, then go to dashboard
+            window.__TAURI__.core.invoke('open_secure_chat');
+            window.location.href = new URL("/dashboard", baseUrl).href;
+        }
     }
 
     // Handle logout action from tray menu or app-logout event

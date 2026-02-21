@@ -118,9 +118,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       default_etag_max_age = if is_prod, do: "#{div(to_timeout(day: 1), 1_000)}", else: "0"
 
       etag_max_age =
-        String.to_integer(
-          System.get_env("CACHE_STATIC_ETAG_MAX_AGE", default_etag_max_age)
-        )
+        String.to_integer(System.get_env("CACHE_STATIC_ETAG_MAX_AGE", default_etag_max_age))
 
       cache_control_for_vsn_requests = "public, max-age=#{vsn_max_age}, immutable"
       cache_control_for_etags = "public, max-age=#{etag_max_age}"

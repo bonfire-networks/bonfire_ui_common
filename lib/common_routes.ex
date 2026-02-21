@@ -319,6 +319,12 @@ defmodule Bonfire.UI.Common.Routes do
         )
       end
 
+      # Apple Universal Links — serves the app-site-association file
+      # so macOS/iOS opens https:// links in the desktop app
+      scope "/.well-known" do
+        get("/apple-app-site-association", Bonfire.UI.Common.AppleAppSiteAssociation, :show)
+      end
+
       scope "/extensions/code/raw" do
         match(
           :*,

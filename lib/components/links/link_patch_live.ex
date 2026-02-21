@@ -54,6 +54,16 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
     """
   end
 
+  def render(%{to: to} = assigns)
+      when is_binary(to) and byte_size(to) > 0 and binary_part(to, 0, 1) != "/" do
+    # Custom scheme URLs (ap-mls://, bonfire://, etc.) — render as regular link, not a LiveView patch which would crash on non-path URLs
+    ~F"""
+    <a href={@to} class={@class} {...@opts |> Enum.into(%{"aria-label": @label})}>
+      <#slot>{@label}</#slot>
+    </a>
+    """
+  end
+
   # def render(%{__context__: %{current_app: :bonfire_pages}} = assigns) do
   #   # TODO: this should only apply to links to Page views, not internal pages
   #   ~F"""
@@ -70,7 +80,6 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
     if socket_connected?(assigns) do
       ~F"""
       <span
-        data-to={@to}
         phx-value-to={@to}
         phx-click={@event_handler}
         phx-hook={@phx_hook}
