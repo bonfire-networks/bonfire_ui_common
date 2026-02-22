@@ -34,4 +34,5 @@ bonfire_*-*.tar
 deps.path
 
 /data
-assets/.yarn/install-state.gz
+
+install-state.gz

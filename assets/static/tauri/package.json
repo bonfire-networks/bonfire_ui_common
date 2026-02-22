@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "yarn build:css && yarn build:js",
+    "build:css": "tailwindcss -i ./css/tauri.css -o ./assets/dist/styles.css --minify",
+    "build:js": "yarn --cwd assets/ap_c2s_client/js install --immutable-cache && yarn --cwd assets/ap_c2s_client/js build",
+    "watch": "yarn watch:css & yarn watch:js",
+    "watch:css": "tailwindcss -i ./css/tauri.css -o ./assets/dist/styles.css --watch",
+    "watch:js": "yarn --cwd assets/ap_c2s_client/js watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "daisyui": "^5.1.0",
+    "tailwindcss": "^4.1.0"
+  }
+}

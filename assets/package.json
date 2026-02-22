@@ -19,7 +19,7 @@
 		"format.css": "npx prettier css/ ../../../extensions/*/lib/**/*.css ../../../extensions/*/assets/css/*.css --write",
 		"dev": "NODE_ENV=development yarn watch.assets & yarn watch.js & yarn watch.css",
 		"e2ee.watch.old": "cd ../../../extensions/bonfire_encrypt/assets && esbuild --watch js/tauri_offline_scripts.js --bundle --format=iife --global-name=OpenMLSModule --outfile=../../../priv/static/assets/e2ee_tauri_bundle.js && cd -",
-		"e2ee.watch": "esbuild --watch static/assets/ap_c2s_client/js/tauri/tauri_offline_scripts.js --bundle --format=iife --global-name=OpenMLSModule --outfile=../../../priv/static/assets/e2ee_tauri_bundle.js"
+		"e2ee.watch.old2": "esbuild --watch static/assets/ap_c2s_client/js/tauri/tauri_offline_scripts.js --bundle --format=iife --global-name=OpenMLSModule --outfile=../../../priv/static/assets/e2ee_tauri_bundle.js"
 	},
 	"disabledScripts": {
 		"preinstall": "npx only-allow yarn"
