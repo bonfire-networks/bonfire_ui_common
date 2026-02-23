@@ -1,58 +1,74 @@
 {!-- List of languages user understands, with up/down/remove/add controls --}
 <div class="form-control">
-  <div class="flex flex-col gap-1">
-    <div class="text-sm font-medium">{@label || l("Other languages I understand")}</div>
-    <p :if={@extra_locales != []} class="label-text-alt text-base-content/70 text-sm">{@description ||
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend text-balance">{@label || l("Other languages I understand")}</legend>
+    <p :if={@extra_locales != []} class="text-base-content/70 text-sm text-pretty">{@description ||
         l(
           "Order the languages you understand by preference. Content will be shown in the first available language from your list."
         )}</p>
-  </div>
-  <form>
-    <ul class="space-y-2 mt-1">
-      {#for {locale, idx} <- Enum.with_index(@extra_locales)}
-        <li id={"extra-locale-#{locale}"} class="flex items-center gap-2">
-          <span class="flex-1">{Localise.locale_name(locale)}</span>
-          <button
-            type="button"
-            phx-click="move_extra_locale_up"
-            phx-value-index={idx}
-            phx-value-scope={@scope}
-            phx-target={@myself}
-            class="btn btn-xs btn-ghost"
-            :if={idx > 0}
-          >
-            <#Icon iconify="ph:arrow-up-duotone" class="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            phx-click="move_extra_locale_down"
-            phx-value-index={idx}
-            phx-value-scope={@scope}
-            phx-target={@myself}
-            class="btn btn-xs btn-ghost"
-            :if={idx < length(@extra_locales) - 1}
-          >
-            <#Icon iconify="ph:arrow-down-duotone" class="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            phx-click="remove_extra_locale"
-            phx-value-index={idx}
-            phx-value-scope={@scope}
-            phx-target={@myself}
-            class="btn btn-xs btn-ghost text-error"
-          >
-            <#Icon iconify="ph:x-duotone" class="w-4 h-4" />
-          </button>
-        </li>
-      {/for}
-    </ul>
-  </form>
+  </fieldset>
 
-  <div class="mt-2 flex gap-2">
+  {#if @extra_locales == []}
+    <div class="flex flex-col items-center gap-3 py-6 text-base-content/50">
+      <#Icon iconify="ph:translate-duotone" class="size-8" />
+      <p class="text-sm text-pretty text-center">{l("No additional languages added yet.")}</p>
+    </div>
+  {#else}
+    <form>
+      <ul class="space-y-1 mt-2">
+        {#for {locale, idx} <- Enum.with_index(@extra_locales)}
+          <li id={"extra-locale-#{locale}"} class="flex items-center gap-3 rounded-lg bg-base-200/50 px-3 py-2">
+            <span class="badge badge-sm badge-ghost tabular-nums">{idx + 1}</span>
+            <span class="flex-1 text-sm font-medium">{Localise.locale_name(locale)}</span>
+
+            <div class="join">
+              <button
+                type="button"
+                phx-click="move_extra_locale_up"
+                phx-value-index={idx}
+                phx-value-scope={@scope}
+                phx-target={@myself}
+                class="btn btn-xs btn-ghost join-item"
+                disabled={idx == 0}
+                aria-label={l("Move %{locale} up", locale: Localise.locale_name(locale))}
+              >
+                <#Icon iconify="ph:arrow-up-duotone" class="size-4" />
+              </button>
+              <button
+                type="button"
+                phx-click="move_extra_locale_down"
+                phx-value-index={idx}
+                phx-value-scope={@scope}
+                phx-target={@myself}
+                class="btn btn-xs btn-ghost join-item"
+                disabled={idx == length(@extra_locales) - 1}
+                aria-label={l("Move %{locale} down", locale: Localise.locale_name(locale))}
+              >
+                <#Icon iconify="ph:arrow-down-duotone" class="size-4" />
+              </button>
+            </div>
+
+            <button
+              type="button"
+              phx-click="remove_extra_locale"
+              phx-value-index={idx}
+              phx-value-scope={@scope}
+              phx-target={@myself}
+              class="btn btn-xs btn-ghost text-error/70 hover:text-error"
+              aria-label={l("Remove %{locale}", locale: Localise.locale_name(locale))}
+            >
+              <#Icon iconify="ph:x-duotone" class="size-4" />
+            </button>
+          </li>
+        {/for}
+      </ul>
+    </form>
+  {/if}
+
+  <div class="mt-3">
     <form phx-change="add_extra_locale" phx-target={@myself}>
       <input type="hidden" name="scope" value={@scope}>
-      <select name="new_locale" class="select select-bordered select-sm w-full max-w-xs">
+      <select name="new_locale" class="select select-bordered select-sm w-full max-w-xs" aria-label={l("Add a language")}>
         <option value="">{l("Add language...")}</option>
         {#for l <- Localise.known_locales()}
           {#if not Enum.any?([@primary_locale | @extra_locales], fn o -> o == l or to_string(o) == l end)}

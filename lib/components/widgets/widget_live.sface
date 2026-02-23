@@ -109,14 +109,27 @@
             <div :if={@with_title} class="text-sm font-medium text-base-content/90">{@widget[:text] || @widget[:name]}</div>
             <div :if={@with_description && @widget[:description]} class="text-sm text-base-content/50">{@widget[:description]}</div>
           </div>
-          <StatelessComponent
-            module={@widget[:module]}
-            showing_within={@showing_within}
-            page={@page}
-            selected_tab={@selected_tab}
-            name={@widget[:text] || @widget[:name]}
-            {...@data}
-          />
+          {#if @widget[:form_change] || @widget[:form_submit]}
+            <form phx-change={@widget[:form_change]} phx-submit={@widget[:form_submit]}>
+              <StatelessComponent
+                module={@widget[:module]}
+                showing_within={@showing_within}
+                page={@page}
+                selected_tab={@selected_tab}
+                name={@widget[:text] || @widget[:name]}
+                {...@data}
+              />
+            </form>
+          {#else}
+            <StatelessComponent
+              module={@widget[:module]}
+              showing_within={@showing_within}
+              page={@page}
+              selected_tab={@selected_tab}
+              name={@widget[:text] || @widget[:name]}
+              {...@data}
+            />
+          {/if}
         {#match Surface.LiveComponent}
           <div
             :if={!@widget[:data] && (@with_title or @with_description)}

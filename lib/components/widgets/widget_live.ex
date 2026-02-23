@@ -41,7 +41,7 @@ defmodule Bonfire.UI.Common.WidgetLive do
       module =
           Extend.maybe_module(widget[:module], assigns[:__context__]) ->
         data =
-          Enum.into(assigns[:data] || e(widget, :data, nil) || [], assigns[:extra_data] || %{})
+          Map.merge(Map.new(assigns[:data] || e(widget, :data, nil) || []), Map.new(assigns[:extra_data] || %{}))
 
         assigns
         |> assign(

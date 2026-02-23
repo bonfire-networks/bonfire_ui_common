@@ -25,15 +25,13 @@
       </button>
     </div>
     <div x-show="open" x-collapse>
-      <form name="settings" phx-submit="Bonfire.Common.Settings:save">
-        <input name="scope" value={@scope} type="hidden">
-        <div class="flex flex-col gap-2 mt-3">
-          <textarea placeholder={@placeholder} name={@input} class="w-full h-24 textarea textarea-bordered">{to_string(@current_value)}</textarea>
-          <button type="submit" class="btn btn-sm btn-soft btn-primary">
-            {l("Save")}
-          </button>
-        </div>
-      </form>
+      <input name="scope" value={@scope} type="hidden">
+      <div class="flex flex-col gap-2 mt-3">
+        <textarea placeholder={@placeholder} name={@input} class="w-full h-24 textarea textarea-bordered">{to_string(@current_value)}</textarea>
+        <button type="submit" class="btn btn-sm btn-soft btn-primary">
+          {l("Save")}
+        </button>
+      </div>
     </div>
   </div>
 {#else}
@@ -42,14 +40,12 @@
       <div :if={@name} class="text-sm font-medium text-base-content/90">{@name}</div>
       <div :if={@description} class="text-sm text-base-content/50">{@description}</div>
     </div>
-    <form name="settings" phx-submit="Bonfire.Common.Settings:save">
-      <input name="scope" value={@scope} type="hidden">
-      <div class="flex flex-col gap-2">
-        <textarea placeholder={@placeholder} name={@input} class="w-full h-24 textarea textarea-bordered">{to_string(@current_value)}</textarea>
-        <button type="submit" class="btn btn-sm btn-soft btn-primary">
-          {l("Save")}
-        </button>
-      </div>
-    </form>
+    <input name="scope" value={@scope} type="hidden">
+    <div class="flex flex-col gap-2">
+      <textarea placeholder={@placeholder} name={@input} class="w-full h-24 textarea textarea-bordered">{to_string(@current_value)}</textarea>
+      <button type="submit" class="btn btn-sm btn-soft btn-primary">
+        {l("Save")}
+      </button>
+    </div>
   </div>
 {/if}

@@ -227,15 +227,13 @@
                     <ul
                       id="language_dropdown_list"
                       tabindex="0"
-                      phx-update="ignore"
                       class="dropdown-content z-dropdown menu flex-col flex-nowrap p-2 shadow-lg bg-base-100 rounded-box border border-base-content/20 w-52 max-h-60 overflow-y-auto"
                     >
                       {#for lang <-
                           @__context__[:locales] ||
                             Bonfire.UI.Common.LivePlugs.Locale.preferred_locales(
-                              current_user(@__context__ |> debug("uuu"))
-                            )
-                            |> debug("preffl") || Bonfire.Common.Localise.known_locales()}
+                              current_user(@__context__)
+                            ) || Bonfire.Common.Localise.known_locales()}
                         <li>
                           <label
                             class="flex items-center gap-2 cursor-pointer"
@@ -245,7 +243,7 @@
                               type="radio"
                               name="language"
                               value={to_string(lang)}
-                              checked={locale == to_string(lang)}
+                              checked={(e(@smart_input_opts, :selected_language, nil) || locale) == to_string(lang)}
                               class="radio radio-sm"
                             />
                             {Bonfire.Common.Localise.locale_name(lang)}

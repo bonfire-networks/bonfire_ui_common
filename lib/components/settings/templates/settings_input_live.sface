@@ -25,33 +25,8 @@
       </button>
     </div>
     <div x-show="open" x-collapse>
-      <form name="settings" phx-submit="Bonfire.Common.Settings:save">
-        <input name="scope" value={@scope} type="hidden">
-        <div class="flex items-center gap-2 mt-3">
-          <input
-            type="text"
-            placeholder={@placeholder}
-            name={@input}
-            value={to_string(@current_value)}
-            class="flex-1 input input-bordered input-sm"
-          />
-          <button type="submit" class="btn btn-sm btn-soft btn-primary">
-            {l("Save")}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-{#else}
-  <div>
-    <div :if={@name || @description} class="flex flex-col gap-0.5 mb-3">
-      <div :if={@name} class="text-sm font-medium text-base-content/90">{@name}</div>
-      <div :if={@description} class="text-sm text-base-content/50">{@description}</div>
-    </div>
-
-    <form name="settings" phx-submit="Bonfire.Common.Settings:save">
       <input name="scope" value={@scope} type="hidden">
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 mt-3">
         <input
           type="text"
           placeholder={@placeholder}
@@ -63,6 +38,27 @@
           {l("Save")}
         </button>
       </div>
-    </form>
+    </div>
+  </div>
+{#else}
+  <div>
+    <div :if={@name || @description} class="flex flex-col gap-0.5 mb-3">
+      <div :if={@name} class="text-sm font-medium text-base-content/90">{@name}</div>
+      <div :if={@description} class="text-sm text-base-content/50">{@description}</div>
+    </div>
+
+    <input name="scope" value={@scope} type="hidden">
+    <div class="flex items-center gap-2">
+      <input
+        type="text"
+        placeholder={@placeholder}
+        name={@input}
+        value={to_string(@current_value)}
+        class="flex-1 input input-bordered input-sm"
+      />
+      <button type="submit" class="btn btn-sm btn-soft btn-primary">
+        {l("Save")}
+      </button>
+    </div>
   </div>
 {/if}

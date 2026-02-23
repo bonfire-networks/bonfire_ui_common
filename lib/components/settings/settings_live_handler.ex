@@ -200,26 +200,62 @@ defmodule Bonfire.Common.Settings.LiveHandler do
     |> update(:input, fn custom_input ->
       custom_input || input_name(assigns.keys)
     end)
-    |> update(:current_value, fn
-      :load_from_settings ->
+    |> maybe_load_setting_value()
+  end
+
+  defp maybe_load_setting_value(%{current_value: :load_from_settings} = assigns) do
+    scope = assigns[:scope]
+    scoped_opts = scoped(scope, assigns[:__context__])
+
+    # For instance scope, return the merged value as-is (no higher scope to leak)
+    if scope in [:instance, "instance"] do
+      value =
         Bonfire.Common.Settings.__get__(
           assigns.keys,
           assigns[:default_value],
-          scoped(assigns[:scope], assigns[:__context__])
+          scoped_opts
         )
 
-      custom_value ->
-        custom_value
-    end)
+      Map.put(assigns, :current_value, value)
+    else
+      # For user/account scope: fetch only this scope's own value
+      own_opts =
+        Utils.to_options(scoped_opts)
+        |> Keyword.put(:one_scope_only, true)
+
+      own_value =
+        Bonfire.Common.Settings.__get__(assigns.keys, nil, own_opts)
+
+      if not is_nil(own_value) do
+        Map.put(assigns, :current_value, own_value)
+      else
+        # Check if a parent scope has a value
+        inherited =
+          Bonfire.Common.Settings.__get__(assigns.keys, nil, scoped_opts)
+
+        if not is_nil(inherited) do
+          assigns
+          |> Map.put(:current_value, nil)
+          |> Map.put(:placeholder, l("A default value is already provided. Enter your own to override it."))
+        else
+          Map.put(assigns, :current_value, assigns[:default_value])
+        end
+      end
+    end
   end
+
+  defp maybe_load_setting_value(assigns), do: assigns
 
   def scoped(scope, context) do
     case scope do
-      :account -> current_account(context)
-      "account" -> current_account(context)
-      :instance -> context[:instance_settings] || :instance
-      "instance" -> context[:instance_settings] || :instance
-      _ -> current_user(context)
+      s when s in [:account, "account"] ->
+        current_account(context)
+
+      s when s in [:instance, "instance"] ->
+        context[:instance_settings] || [scope: :instance]
+
+      _ ->
+        current_user(context)
     end
   end
 

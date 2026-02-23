@@ -322,6 +322,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     # Update the socket's own smart_input_opts
     # Preserve reset_smart_input if it's already true (don't overwrite after successful post)
+    selected_language = e(params, "language", nil)
+
     socket =
       socket
       |> assign(
@@ -330,7 +332,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
           Enum.into(
             %{
               input_status: input_status
-            },
+            }
+            |> maybe_put(:selected_language, selected_language),
             e(assigns(socket), :smart_input_opts, %{})
           )
       )

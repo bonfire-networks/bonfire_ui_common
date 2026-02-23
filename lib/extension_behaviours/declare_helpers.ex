@@ -92,6 +92,24 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
         custom_module -> custom_module
       end
 
+    form_change =
+      case type do
+        t when t in [:toggle, :toggles, :radios, :select, :number] ->
+          "Bonfire.Common.Settings:set"
+
+        _ ->
+          nil
+      end
+
+    form_submit =
+      case type do
+        t when t in [:input, :textarea] ->
+          "Bonfire.Common.Settings:save"
+
+        _ ->
+          nil
+      end
+
     quote do
       @behaviour Bonfire.UI.Common.SettingsModule
 
@@ -104,6 +122,8 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
           app: app(__MODULE__),
           type: component_type(module),
           scope: unquote(opts)[:scope] || :user,
+          form_change: unquote(form_change),
+          form_submit: unquote(form_submit),
           data: unquote(opts)
         }
       end
