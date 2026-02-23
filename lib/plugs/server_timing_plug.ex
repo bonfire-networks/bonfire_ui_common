@@ -63,9 +63,9 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
 
     if start_time do
       total_time = System.monotonic_time(:microsecond) - start_time
-      db_time = ProcessTree.get(@db_time_key, 0)
-      db_count = ProcessTree.get(@db_count_key, 0)
-      queue_time = ProcessTree.get(@queue_time_key, 0)
+      db_time = ProcessTree.get(@db_time_key, default: 0)
+      db_count = ProcessTree.get(@db_count_key, default: 0)
+      queue_time = ProcessTree.get(@queue_time_key, default: 0)
 
       lv_mount_disconnected = ProcessTree.get({:server_timing_custom, :lv_mount_disconnected})
       lv_handle_params = ProcessTree.get({:server_timing_custom, :lv_handle_params})
@@ -239,9 +239,9 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
   @doc "Accumulates DB query time and count. Called by the Ecto telemetry handler."
   def record_db_query(query_time, queue_time \\ 0) do
     if ProcessTree.get(@timing_start_key) do
-      current_db = ProcessTree.get(@db_time_key, 0)
-      current_count = ProcessTree.get(@db_count_key, 0)
-      current_queue = ProcessTree.get(@queue_time_key, 0)
+      current_db = ProcessTree.get(@db_time_key, default: 0)
+      current_count = ProcessTree.get(@db_count_key, default: 0)
+      current_queue = ProcessTree.get(@queue_time_key, default: 0)
 
       Process.put(@db_time_key, current_db + query_time)
       Process.put(@db_count_key, current_count + 1)
@@ -259,7 +259,7 @@ defmodule Bonfire.UI.Common.ServerTimingPlug do
   @doc "Accumulates a custom timing metric (atom key, microseconds). Adds to any existing value."
   def accumulate_custom(key, duration) when is_atom(key) and is_number(duration) do
     if ProcessTree.get(@timing_start_key) do
-      current = ProcessTree.get({:server_timing_custom, key}, 0)
+      current = ProcessTree.get({:server_timing_custom, key}, default: 0)
       Process.put({:server_timing_custom, key}, current + duration)
     end
   end
