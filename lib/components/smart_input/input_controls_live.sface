@@ -231,9 +231,8 @@
                     >
                       {#for lang <-
                           @__context__[:locales] ||
-                            Bonfire.UI.Common.LivePlugs.Locale.preferred_locales(
-                              current_user(@__context__)
-                            ) || Bonfire.Common.Localise.known_locales()}
+                            Bonfire.UI.Common.LivePlugs.Locale.preferred_locales(current_user(@__context__)) ||
+                            Bonfire.Common.Localise.known_locales()}
                         <li>
                           <label
                             class="flex items-center gap-2 cursor-pointer"

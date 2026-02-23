@@ -236,7 +236,10 @@ defmodule Bonfire.Common.Settings.LiveHandler do
         if not is_nil(inherited) do
           assigns
           |> Map.put(:current_value, nil)
-          |> Map.put(:placeholder, l("A default value is already provided. Enter your own to override it."))
+          |> Map.put(
+            :placeholder,
+            l("A default value is already provided. Enter your own to override it.")
+          )
         else
           Map.put(assigns, :current_value, assigns[:default_value])
         end

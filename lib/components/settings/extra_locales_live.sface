@@ -17,7 +17,10 @@
     <form>
       <ul class="space-y-1 mt-2">
         {#for {locale, idx} <- Enum.with_index(@extra_locales)}
-          <li id={"extra-locale-#{locale}"} class="flex items-center gap-3 rounded-lg bg-base-200/50 px-3 py-2">
+          <li
+            id={"extra-locale-#{locale}"}
+            class="flex items-center gap-3 rounded-lg bg-base-200/50 px-3 py-2"
+          >
             <span class="badge badge-sm badge-ghost tabular-nums">{idx + 1}</span>
             <span class="flex-1 text-sm font-medium">{Localise.locale_name(locale)}</span>
 
@@ -68,7 +71,11 @@
   <div class="mt-3">
     <form phx-change="add_extra_locale" phx-target={@myself}>
       <input type="hidden" name="scope" value={@scope}>
-      <select name="new_locale" class="select select-bordered select-sm w-full max-w-xs" aria-label={l("Add a language")}>
+      <select
+        name="new_locale"
+        class="select select-bordered select-sm w-full max-w-xs"
+        aria-label={l("Add a language")}
+      >
         <option value="">{l("Add language...")}</option>
         {#for l <- Localise.known_locales()}
           {#if not Enum.any?([@primary_locale | @extra_locales], fn o -> o == l or to_string(o) == l end)}
