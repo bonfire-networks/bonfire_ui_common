@@ -1044,10 +1044,12 @@ defmodule Bonfire.UI.Common do
   def redirect_to_previous_go(conn, params, default, current_path) do
     # debug(conn.request_path)
     case Plug.Conn.get_session(conn, :go)
-         |> debug("session_go")
+         #  |> debug("session_go")
          |> go_where?(params, default, current_path) do
       # TODO: add a configurable hook so these can be defined in the relevant extension
       [to: "/oauth/authorize?" <> query] ->
+        conn = Plug.Conn.delete_session(conn, :go)
+
         Bonfire.Common.Utils.maybe_apply(
           Bonfire.OpenID.Web.Oauth.AuthorizeController,
           :from_query_string,
@@ -1055,6 +1057,8 @@ defmodule Bonfire.UI.Common do
         )
 
       [to: "/openid/authorize?" <> query] ->
+        conn = Plug.Conn.delete_session(conn, :go)
+
         Bonfire.Common.Utils.maybe_apply(
           Bonfire.OpenID.Web.Openid.AuthorizeController,
           :from_query_string,

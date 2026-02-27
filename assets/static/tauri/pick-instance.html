@@ -114,19 +114,26 @@
             startupPayload = await window.__TAURI__.core.invoke('get_startup_deep_link');
         } catch (e) { /* no pending deep link */ }
 
+        // On mobile there's only one webview — navigating to dashboard after
+        // opening chat would overwrite it. On desktop, chat is a separate
+        // webview so we can load dashboard in the main webview.
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
         if (startupPayload && startupPayload.target_tab === 'chat') {
             // MLS deep link — open chat tab, then navigate to group once loaded
-            window.__TAURI__.core.invoke('open_secure_chat');
-            // navigateToGroup will be available once the chat webview loads;
-            // pass the deep link info via the Rust handler for when it's ready
-            window.location.href = new URL("/dashboard", baseUrl).href;
+            await window.__TAURI__.core.invoke('open_secure_chat');
+            if (!isMobile) {
+                window.location.href = new URL("/dashboard", baseUrl).href;
+            }
         } else if (startupPayload && startupPayload.path) {
             // Bonfire deep link — navigate to the path on the instance
             window.location.href = new URL('/' + startupPayload.path, baseUrl).href;
         } else {
-            // No deep link — ensure chat is ready, then go to dashboard
-            window.__TAURI__.core.invoke('open_secure_chat');
-            window.location.href = new URL("/dashboard", baseUrl).href;
+            // Default: open chat tab/window on login
+            await window.__TAURI__.core.invoke('open_secure_chat');
+            if (!isMobile) {
+                window.location.href = new URL("/dashboard", baseUrl).href;
+            }
         }
     }
 
