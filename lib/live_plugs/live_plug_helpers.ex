@@ -115,7 +115,12 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        csrf_socket_token: connect_params["_csrf_token"],
        live_action: e(assigns(socket), :live_action, nil),
        socket_connected?: socket_connected?
-     )}
+     )
+     |> tap(fn _ ->
+       # Store reading positions in process dict rather than assign_global
+       # to avoid broadcasting to all components via __context__
+       Process.put(:reading_positions, connect_params["reading_positions"] || %{})
+     end)}
   end
 
   defp maybe_get_connect_info(socket, key) do

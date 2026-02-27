@@ -100,6 +100,17 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         )
       end
 
+      if module_enabled?(Bonfire.Notify.Web.MastoStreamingWebSocket) do
+        socket("/api/v1", Bonfire.Notify.Web.MastoStreamingWebSocket,
+          websocket: [
+            path: "streaming",
+            check_origin: false,
+            timeout: 120_000,
+            connect_info: [:peer_data, :x_headers, :sec_websocket_headers]
+          ]
+        )
+      end
+
       # Serve at "/" the static files from "priv/static" directory.
       #
       # In production: serve gzip, cache non-versioned files for 1 day

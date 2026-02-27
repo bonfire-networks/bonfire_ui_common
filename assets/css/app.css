@@ -1,6 +1,21 @@
 @import "tailwindcss";
 @import "nprogress/nprogress.css";
 
+/* Fix mobile double-tap issue: DaisyUI menu hover styles trigger hover state
+   on first tap, requiring a second tap to actually click. Replace hover
+   background with :active feedback on touch-only devices. */
+@media (hover: none) {
+  .menu :where(li:not(.menu-title, .disabled) > :not(ul, details, .menu-title, .btn):hover) {
+    background-color: transparent;
+  }
+
+  .menu :where(li:not(.menu-title, .disabled) > :not(ul, details, .menu-title, .btn):active) {
+    background-color: color-mix(in oklch, var(--color-base-content) 10%, transparent);
+    transform: scale(0.97);
+    transition: transform 0.1s ease, background-color 0.1s ease;
+  }
+}
+
 /* Smooth animation easing functions */
 :root {
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -181,6 +196,7 @@ textarea:focus-visible {
 @plugin "daisyui" {
   themes: light --default, silk, caramellatte, nord, cmyk, acid, autumn, lofi, pastel, fantasy, cupcake, bumblebee, emerald, corporate, dark --prefersdark, synthwave, forest, dracula, aqua, luxury, night, coffee, dim, sunset, abyss, retro, cyberpunk, valentine, halloween, garden;
 }
+
 
 
 
