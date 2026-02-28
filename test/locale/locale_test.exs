@@ -135,4 +135,43 @@ defmodule Bonfire.UI.Common.LocaleTest do
       assert socket.assigns.locale == :en
     end
   end
+
+  describe "put_locale/1 sets correct Gettext locale (POSIX format)" do
+    test "regional locale with hyphen gets converted to underscore for Gettext" do
+      Localise.put_locale("fr-CA")
+      gettext_locale = Gettext.get_locale()
+      # Gettext locale must use underscores, not hyphens
+      assert gettext_locale =~ "fr"
+
+      refute String.contains?(gettext_locale, "-"),
+             "Gettext locale #{inspect(gettext_locale)} should not contain hyphens"
+    end
+
+    test "regional locale with underscore is passed through correctly" do
+      Localise.put_locale("fr_CA")
+      gettext_locale = Gettext.get_locale()
+      # Gettext locale must use underscores, not hyphens
+      assert gettext_locale =~ "fr"
+
+      refute String.contains?(gettext_locale, "-"),
+             "Gettext locale #{inspect(gettext_locale)} should not contain hyphens"
+    end
+
+    test "simple locale without region is unaffected" do
+      Localise.put_locale("en")
+      assert Gettext.get_locale() == "en"
+    end
+  end
+
+  describe "put_best_locale_match/1 sets correct Gettext locale" do
+    test "BCP47 regional locale resolves to POSIX Gettext locale" do
+      {:ok, _best} = Localise.put_best_locale_match(["fr-CA"])
+      gettext_locale = Gettext.get_locale()
+      # Gettext locale must use underscores, not hyphens
+      assert gettext_locale =~ "fr"
+
+      refute String.contains?(gettext_locale, "-"),
+             "Gettext locale #{inspect(gettext_locale)} should not contain hyphens"
+    end
+  end
 end
