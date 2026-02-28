@@ -82,19 +82,26 @@
     {#case @info || e(@root_flash || @flash, :info, nil)}
       {#match nil}
       {#match info}
-        <div data-id="flash_info" role="alert" class="alert alert-info pointer-events-auto">
-          <div data-id="flash" data-type="info" class="flex-1 w-full text-sm">{rich(info)}</div>
-          <div :if={socket_connected?(@__context__)} class="">
+        <div
+          data-id="flash_info"
+          role="alert"
+          class="pointer-events-auto flex items-center gap-3 pl-4 pr-2 py-2.5 rounded-xl bg-base-200 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.5)] ring-1 ring-base-content/10 max-w-sm"
+        >
+          <div class="flex-shrink-0">
+            <#Icon iconify="ph:check-duotone" class="w-5 h-5 text-success" aria-hidden="true" />
+          </div>
+          <div data-id="flash" data-type="info" class="flex-1 text-sm font-medium text-base-content">{rich(info)}</div>
+          <div :if={socket_connected?(@__context__)}>
             <button
               phx-click="clear-flash"
               phx-target={@myself}
               phx-value-key="info"
               type="button"
               aria-label={l("Dismiss message")}
-              class="btn btn-xs btn-circle btn-ghost focus-ring touch-target-expanded transition-interactive"
+              class="btn btn-xs btn-circle btn-ghost opacity-50 hover:opacity-100 focus-ring transition-all"
             >
               <span class="sr-only">{l("Close")}</span>
-              <#Icon iconify="ph:x-duotone" class="w-4 h-4" aria-hidden="true" />
+              <#Icon iconify="ph:x" class="w-3.5 h-3.5" aria-hidden="true" />
             </button>
           </div>
         </div>

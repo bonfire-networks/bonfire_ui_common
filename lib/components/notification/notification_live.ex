@@ -2,12 +2,15 @@ defmodule Bonfire.UI.Common.NotificationLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
   prop root_flash, :any, default: nil
-  prop notification, :any, default: nil
-  prop error, :any, default: nil
-  prop info, :any, default: nil
-  prop error_sentry_event_id, :any, default: nil
-  #  index of this component instance (2 is usually in PersistentLive)
+  #  index of this component instance (2 is usually in PersistentLive)
   prop i, :integer, default: 1
+
+  # These are `data` (not `prop`) so parent re-renders don't overwrite them
+  # with default nil values. They are set via send_update from assign_flash.
+  data notification, :any, default: nil
+  data error, :any, default: nil
+  data info, :any, default: nil
+  data error_sentry_event_id, :any, default: nil
 
   # for PushNotifyLive
   data vapid_public_key, :string, default: nil
@@ -38,11 +41,10 @@ defmodule Bonfire.UI.Common.NotificationLive do
   # end
 
   def update(assigns, %{assigns: %{subscribed: _}} = socket) do
-    # NOTE: Removed aggressive special_clear_all() that was clearing notifications on every update
-    # Client-side auto-fade now handles clearing, and manual dismiss still works via handle_event
     {:ok,
      socket
-     |> assign(assigns)}
+     |> assign(assigns)
+     |> maybe_apply_root_flash()}
   end
 
   def update(assigns, socket) do
@@ -74,7 +76,8 @@ defmodule Bonfire.UI.Common.NotificationLive do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(subscribed: subscribed?)}
+     |> assign(subscribed: subscribed?)
+     |> maybe_apply_root_flash()}
   end
 
   # def show(js \\ %JS{}, selector) do
@@ -130,14 +133,41 @@ defmodule Bonfire.UI.Common.NotificationLive do
   end
 
   def special_clear_flash(socket, key, alt_key \\ nil) do
+    string_key = to_string(key)
+
+    drop_keys =
+      Enum.reject([key, alt_key, string_key, if(alt_key, do: to_string(alt_key))], &is_nil/1)
+
     socket
     |> clear_flash(key)
     |> assign(
       :root_flash,
       e(assigns(socket), :root_flash, %{})
-      |> Map.drop([key, alt_key])
+      |> Map.drop(drop_keys)
     )
     |> assign(key, nil)
+  end
+
+  # Extract flash values from root_flash (which uses string keys from Phoenix put_flash)
+  # into the data assigns, so they're accessible via @info / @error in the template
+  defp maybe_apply_root_flash(socket) do
+    case socket.assigns[:root_flash] do
+      flash when is_map(flash) and flash != %{} ->
+        socket
+        |> maybe_set_from_flash(flash, "info", :info)
+        |> maybe_set_from_flash(flash, "error", :error)
+
+      _ ->
+        socket
+    end
+  end
+
+  defp maybe_set_from_flash(socket, flash, string_key, atom_key) do
+    # Only set if the data assign is currently nil (don't overwrite send_update values)
+    case {socket.assigns[atom_key], Map.get(flash, string_key)} do
+      {nil, value} when not is_nil(value) -> assign(socket, atom_key, value)
+      _ -> socket
+    end
   end
 
   def error_template(assigns) do

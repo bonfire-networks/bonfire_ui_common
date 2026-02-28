@@ -259,4 +259,6 @@
   </div> --}
 </div>
 <Bonfire.UI.Common.ReusableModalLive id="modal" />
-<Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} />
+<div class="relative z-max">
+  <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} />
+</div>
