@@ -195,13 +195,23 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     to_circles =
       (params["to_circles"] || e(opts, :to_circles, []))
-      |> Enum.flat_map(&Enum.map(&1, fn {key, val} -> {key, val} end))
+      |> List.wrap()
+      |> Enum.flat_map(fn
+        {key, val} -> [{key, val}]
+        map when is_map(map) -> Enum.map(map, fn {key, val} -> {key, val} end)
+        _ -> []
+      end)
       |> debug("to_circles")
 
-    # NEW: Process exclude_circles (same structure as to_circles)
+    # Process exclude_circles (same structure as to_circles)
     exclude_circles =
       (params["exclude_circles"] || e(opts, :exclude_circles, []))
-      |> Enum.flat_map(&Enum.map(&1, fn {key, val} -> {key, val} end))
+      |> List.wrap()
+      |> Enum.flat_map(fn
+        {key, val} -> [{key, val}]
+        map when is_map(map) -> Enum.map(map, fn {key, val} -> {key, val} end)
+        _ -> []
+      end)
       |> debug("exclude_circles")
 
     # Process to_boundaries - only set if explicitly provided in params or opts
@@ -254,10 +264,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         smart_input_opts: opts,
         showing_within: e(assigns(socket), :showing_within, nil),
         activity_inception: "reply_to",
-        to_circles: to_circles,
-        exclude_circles: exclude_circles,
         mentions: e(opts, "mentions", nil) || e(params, "mentions", [])
       ]
+      |> maybe_put(:to_circles, to_circles)
+      |> maybe_put(:exclude_circles, exclude_circles)
       |> maybe_put(:reply_to_id, final_reply_to_id)
       |> maybe_put(:to_boundaries, final_to_boundaries)
       |> maybe_put(:clear_reply_data, clear_reply_data)
@@ -598,7 +608,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
           merge_smart_input_opts(current_opts, %{text_suggestion: text, open: true}),
         reset_smart_input: false
       )
-      |> debug("params")
     )
   end
 

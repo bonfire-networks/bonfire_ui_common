@@ -16,9 +16,10 @@
         :if={not is_nil(current_user_id(@__context__))}
         class="relative overflow-y-auto overflow-x-hidden lg:max-h-[95vh] min-h-0 flex flex-col flex-1 w-full bg-base-200 rounded-xl"
       >
-        <div :if={is_map(@activity) || is_map(@reply_to_id)} class="border-b border-base-content/20">
-          <div class="relative reply_in_composer rounded-t-box max-h-[160px] bg-base-200/50 overflow-y-auto overflow-x-hidden p-2 flex flex-col">
+        <div :if={is_map(@activity) || is_map(@reply_to_id)} class="">
+          <div class="relative reply_in_composer rounded-t-box max-h-[160px] bg-base-100 overflow-y-auto overflow-x-hidden p-2 flex flex-col">
             {!-- show what we're replying to, if any --}
+            <div class="absolute top-[58px] left-[30px] h-full w-[2px] z-10 bg-base-content/20" />
             <StatelessComponent
               module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
               activity_component_id={deterministic_dom_id(
@@ -41,11 +42,11 @@
             <span
               phx-click="Bonfire.UI.Common.SmartInput:remove_data"
               phx-target="#smart_input"
-              class="absolute top-2 right-2 btn btn-xs btn-ghost btn-circle"
+              class="absolute top-2 right-2 btn btn-xs btn-outline border-base-content/30 text-base-content/70"
               title={l("Cancel Reply")}
             >
-              <span class="sr-only">{l("Cancel Reply")}</span>
-              <#Icon iconify="ph:x-duotone" class="w-4 h-4 text-base-content/70" />
+              <#Icon iconify="ph:x-duotone" class="w-4 h-4 " />
+              <span class="">{l("Cancel Reply")}</span>
             </span>
 
             {!-- 
@@ -105,6 +106,11 @@
                   verb_permissions={@verb_permissions}
                   setting_boundaries={:create_object}
                 />
+              </div>
+              {#else}
+              <div class="border-warning/50 flex items-center gap-2 btn-xs h-[30px] btn text-sm btn-outline font-normal" title={l("Messages on the fediverse are not currently end-to-end encrypted. Do not share any sensitive information.")}>
+                <#Icon iconify="ph:lock-simple-open-duotone" class="w-4 h-4" />
+                <span class="text-sm">{l("Not encrypted")}</span>
               </div>
             {/if}
           </div>

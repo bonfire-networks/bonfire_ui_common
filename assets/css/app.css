@@ -161,7 +161,7 @@ textarea:focus-visible {
 }
 
 /* Safelist: Ensure these utility classes are always generated */
-@source inline("tabular-nums phx-click-loading:opacity-60 phx-click-loading:opacity-70 phx-click-loading:pointer-events-none phx-click-loading:cursor-wait phx-click-loading:inline phx-click-loading:hidden phx-submit-loading:opacity-70 phx-submit-loading:cursor-wait phx-submit-loading:inline phx-submit-loading:hidden transition-interactive focus-ring touch-target-expanded hover-scale active:scale-95 active:scale-[0.95] active:scale-[0.98]");
+@source inline("tabular-nums phx-click-loading:opacity-60 phx-click-loading:opacity-70 phx-click-loading:pointer-events-none phx-click-loading:cursor-wait phx-click-loading:inline phx-click-loading:hidden phx-submit-loading:opacity-70 phx-submit-loading:cursor-wait phx-submit-loading:inline phx-submit-loading:hidden transition-interactive focus-ring touch-target-expanded hover-scale active:scale-95 active:scale-[0.95] active:scale-[0.98] bg-red-400 bg-orange-400 bg-amber-400 bg-yellow-400 bg-lime-400 bg-green-400 bg-emerald-400 bg-teal-400 bg-cyan-400 bg-sky-400 bg-blue-400 bg-indigo-400 bg-violet-400 bg-purple-400 bg-fuchsia-400 bg-pink-400");
 
 /* Source paths for template scanning.
    NOTE: Tailwind v4 respects .gitignore when expanding wildcards.
@@ -196,6 +196,7 @@ textarea:focus-visible {
 @plugin "daisyui" {
   themes: light --default, silk, caramellatte, nord, cmyk, acid, autumn, lofi, pastel, fantasy, cupcake, bumblebee, emerald, corporate, dark --prefersdark, synthwave, forest, dracula, aqua, luxury, night, coffee, dim, sunset, abyss, retro, cyberpunk, valentine, halloween, garden;
 }
+
 
 
 
@@ -1166,6 +1167,10 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
 }
 
 
+
+.message-active {
+  @apply bg-primary/5;
+}
 
 .message-active::before {
   @apply absolute inset-0 top-3 bottom-3 bg-primary rounded-lg w-1 rounded-full;

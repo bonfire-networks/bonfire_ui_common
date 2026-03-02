@@ -52,7 +52,7 @@
         <span
           :for={{id, name_content} <- selected_options}
           :if={name_content || id}
-          class="badge badge-ghost badge-lg bg-base-content/10 !h-[1.75rem]"
+          class="badge badge-ghost bg-base-content/10 !h-[1.75rem]"
         >
           {raw(name_content)}
         </span>

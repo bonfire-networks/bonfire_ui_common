@@ -18,8 +18,8 @@ defmodule Bonfire.UI.Common.SelectRecipientsLive do
 
   prop is_editable, :boolean, default: false
 
-  # Clear LiveSelect when to_circles is reset to empty
-  def update(%{to_circles: []} = assigns, socket) do
+  # Clear LiveSelect when to_circles is reset to empty (only relevant in editable mode)
+  def update(%{to_circles: []} = assigns, %{assigns: %{is_editable: true}} = socket) do
     send_update(LiveSelect.Component,
       id: "multi_select_select_recipient_multiselect_live_select_component",
       value: []

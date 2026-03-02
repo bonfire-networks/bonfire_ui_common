@@ -13,7 +13,7 @@
           >
             <span>{l("This activity is marked as sensitive.")}
               {#if @show_cw}
-                <span class="font-semibold">{l("You can add a summary above.")}</span>
+                <span class="font-semibold">{l("You can add an optional summary.")}</span>
               {#else}
                 <span
                   phx-click="Bonfire.UI.Common.SmartInput:toggle_cw"

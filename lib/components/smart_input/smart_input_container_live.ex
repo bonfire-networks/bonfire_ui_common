@@ -149,6 +149,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       |> maybe_preserve_assign(:object, e(assigns(socket), :object, nil))
       |> maybe_preserve_assign(:reply_to_id, e(assigns(socket), :reply_to_id, nil))
       |> maybe_preserve_assign(:to_boundaries, e(assigns(socket), :to_boundaries, nil))
+      |> maybe_preserve_assign(:to_circles, e(assigns(socket), :to_circles, nil))
     end
   end
 

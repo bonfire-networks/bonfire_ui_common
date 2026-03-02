@@ -286,14 +286,30 @@ defmodule Bonfire.UI.Common.PersistentLive do
           {smart_input_opts, :none}
       end
 
-    # Send updated assigns (with enriched smart_input_opts) to the container component
-    assigns_map
-    |> Map.put(:smart_input_opts, smart_input_opts)
-    |> Map.put_new(:smart_input_component, nil)
-    |> maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, ...)
+    # Promote to_circles from smart_input_opts to top-level so SmartInputContainerLive
+    # receives it as the @to_circles prop (not just nested inside @smart_input_opts)
+    enriched =
+      assigns_map
+      |> Map.put(:smart_input_opts, smart_input_opts)
+      |> Map.put_new(:smart_input_component, nil)
+      |> then(fn m ->
+        case Map.get(smart_input_opts, :to_circles) do
+          nil -> m
+          circles -> Map.put_new(m, :to_circles, circles)
+        end
+      end)
 
-    # Push JS events for textarea value manipulation only
-    # (visibility and button state are now server-controlled via show_cw/show_sensitive)
+    maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, enriched)
+
+    # Also assign to PersistentLive's own socket so re-renders pass correct values
+    # to SmartInputContainerLive via the template (persistent_live.sface)
+    socket =
+      socket
+      |> assign(
+        Map.take(enriched, [:to_circles, :to_boundaries, :smart_input_opts, :smart_input_component])
+      )
+
+    # Push JS events for textarea value manipulation and composer visibility
     socket =
       case push_action do
         :reset ->
@@ -311,6 +327,24 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
         :none ->
           socket
+      end
+
+    # Open/close the composer via JS (needed because translate-y-100 may have been
+    # added client-side by JS.add_class which server re-renders can't remove)
+    socket =
+      if smart_input_opts[:open] == true do
+        open_js =
+          %JS{}
+          |> JS.remove_class("translate-y-100", to: "#smart_input_container")
+          |> JS.show(to: "#composer_container")
+
+        socket
+        |> Phoenix.LiveView.push_event("js-exec", %{
+          to: "#smart_input_container",
+          js: Jason.encode!(open_js.ops)
+        })
+      else
+        socket
       end
 
     {:noreply, socket}
@@ -333,33 +367,12 @@ defmodule Bonfire.UI.Common.PersistentLive do
   end
 
   def handle_info({:assign_persistent_self, assigns}, socket) do
-    # assigns =
-    #   assigns
-    #   #  |> debug("received assigns for PersistentLive")
-    #   |> Map.new()
-    #   # |> Map.put_new(:smart_input_component, nil)
-    #   # |> assign_defaults(&Map.put_new_lazy/3)
-    #   # |> Map.put(
-    #   #   ...,
-    #   #   :__context__,
-    #   #   Map.merge(assigns(socket)[:__context__] || %{}, assigns[:__context__] || %{})
-    #   #   |> Enums.merge_keeping_only_first_keys(...)
-    #   # )
-    #   |> debug("set prepared assigns received for PersistentLive")
-
-    # parent_pid = assigns[:parent_pid] || e(assigns, :__context__, :parent_pid, nil)
-    # if is_pid(parent_pid), do: send(parent_pid, :persistent_live_loading)
-
     context = Map.merge(assigns(socket)[:__context__] || %{}, assigns[:__context__] || %{})
-
-    handle_info({:assign_persistent_self, {:smart_input, __context__: context}}, socket)
 
     {:noreply,
      socket
      |> assign(assigns)
-     |> assign_global(context)
-     #  |> assign_global(locales: e(assigns, :locales, nil) || e(context, :locales, nil))
-     |> debug("set assigns received for PersistentLive")}
+     |> assign_global(context)}
   end
 
   # Handle request from SmartInputContainerLive to push reset events
