@@ -62,6 +62,10 @@ defmodule Bonfire.UI.Common.Presence do
     list(@presence)
   end
 
+  def count() do
+    list() |> map_size()
+  end
+
   def list_and_maybe_subscribe_to_presence(socket) do
     if UI.Common.socket_connected?(socket) do
       Phoenix.PubSub.subscribe(PubSub, @presence)

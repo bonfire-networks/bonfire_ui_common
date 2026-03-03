@@ -306,7 +306,12 @@ defmodule Bonfire.UI.Common.PersistentLive do
     socket =
       socket
       |> assign(
-        Map.take(enriched, [:to_circles, :to_boundaries, :smart_input_opts, :smart_input_component])
+        Map.take(enriched, [
+          :to_circles,
+          :to_boundaries,
+          :smart_input_opts,
+          :smart_input_component
+        ])
       )
 
     # Push JS events for textarea value manipulation and composer visibility

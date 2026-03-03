@@ -45,7 +45,7 @@
               class="absolute top-2 right-2 btn btn-xs btn-outline border-base-content/30 text-base-content/70"
               title={l("Cancel Reply")}
             >
-              <#Icon iconify="ph:x-duotone" class="w-4 h-4 " />
+              <#Icon iconify="ph:x-duotone" class="w-4 h-4" />
               <span class="">{l("Cancel Reply")}</span>
             </span>
 
@@ -107,8 +107,13 @@
                   setting_boundaries={:create_object}
                 />
               </div>
-              {#else}
-              <div class="border-warning/50 flex items-center gap-2 btn-xs h-[30px] btn text-sm btn-outline font-normal" title={l("Messages on the fediverse are not currently end-to-end encrypted. Do not share any sensitive information.")}>
+            {#else}
+              <div
+                class="border-warning/50 flex items-center gap-2 btn-xs h-[30px] btn text-sm btn-outline font-normal"
+                title={l(
+                  "Messages on the fediverse are not currently end-to-end encrypted. Do not share any sensitive information."
+                )}
+              >
                 <#Icon iconify="ph:lock-simple-open-duotone" class="w-4 h-4" />
                 <span class="text-sm">{l("Not encrypted")}</span>
               </div>
