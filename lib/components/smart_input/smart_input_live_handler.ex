@@ -141,6 +141,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     js
     # CSS handles the elegant transition animation
     |> JS.remove_class("translate-y-100", to: "#smart_input_container")
+
     # Scroll lock is now handled by the smart_input_container hook via MutationObserver
 
     # |> JS.hide(to: ".smart_input_show_on_minimize")

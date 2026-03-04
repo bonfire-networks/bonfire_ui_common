@@ -2,7 +2,11 @@
   id="smart_input_live"
   class="flex flex-col h-full md:h-full pt-safe rounded-xl flex-1 bg-base-100 grow relative z-[] min-h-0"
 >
-  <div id="composer_container" data-id="smart_input" class="flex flex-col flex-1 h-full grow rounded-xl min-h-0">
+  <div
+    id="composer_container"
+    data-id="smart_input"
+    class="flex flex-col flex-1 h-full grow rounded-xl min-h-0"
+  >
     <div
       id="smart_input"
       phx-drop-target={@uploads.files.ref}

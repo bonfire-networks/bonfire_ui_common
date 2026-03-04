@@ -152,8 +152,7 @@
                 </label>
               </div>
 
-
-                <!-- Language selection dropdown -->
+              <!-- Language selection dropdown -->
               {#case to_string(
                   e(@__context__, :locale, nil) ||
                     Config.get(
@@ -165,7 +164,11 @@
                   <div class="dropdown dropdown-top dropdown-end" data-tip={l("Set post language")}>
                     <label tabindex="0" id="language_btn" class="lang-button btn btn-ghost btn-sm gap-1">
                       <#Icon iconify="ph:translate-duotone" class="w-[20px] h-[20px] text-base-content/70" />
-                      <span id="selected_language_label" phx-update="ignore" class="text-xs text-base-content/70 uppercase">{locale}</span>
+                      <span
+                        id="selected_language_label"
+                        phx-update="ignore"
+                        class="text-xs text-base-content/70 uppercase"
+                      >{locale}</span>
                     </label>
                     <ul
                       id="language_dropdown_list"
@@ -196,13 +199,7 @@
                   </div>
               {/case}
 
-
-              <div
-                data-position="top"
-                phx-hook="Tooltip"
-                id={"smart_input_more_options"}
-                class="relative"
-              >
+              <div data-position="top" phx-hook="Tooltip" id="smart_input_more_options" class="relative">
                 <label
                   class="tooltip-button emoji-button btn btn-ghost btn-circle"
                   tabindex="0"
@@ -219,61 +216,49 @@
                   aria-orientation="vertical"
                 >
                   <li>
-                  <!-- <div id="summary_btn_wrapper" data-tip={l("Add a summary")} class="tooltip tooltip-top"> -->
-                  <button
-                    type="button"
-                    id="summary_btn"
-                    phx-click="Bonfire.UI.Common.SmartInput:toggle_cw"
-                    phx-target={@event_target || "#smart_input"}
-                    class={"title-button"}
-                  >
-                    <#Icon iconify="ph:text-align-left-duotone" class="w-[20px] h-[20px] text-base-content/70" />
-                    <span class="text-sm">{if @show_cw, do: l("Hide summary"), else: l("Add summary")}</span>
-                  </button>
-              <!-- </div> -->
+                    <!-- <div id="summary_btn_wrapper" data-tip={l("Add a summary")} class="tooltip tooltip-top"> -->
+                    <button
+                      type="button"
+                      id="summary_btn"
+                      phx-click="Bonfire.UI.Common.SmartInput:toggle_cw"
+                      phx-target={@event_target || "#smart_input"}
+                      class="title-button"
+                    >
+                      <#Icon iconify="ph:text-align-left-duotone" class="w-[20px] h-[20px] text-base-content/70" />
+                      <span class="text-sm">{if @show_cw, do: l("Hide summary"), else: l("Add summary")}</span>
+                    </button>
+                    <!-- </div> -->
                   </li>
                   <li>
-                
-                <button
-                  :if={@enable_thread_title}
-                  type="button"
-                  id="title_btn"
-                  phx-click={JS.toggle(to: "#smart_input_post_title")
-                  |> JS.focus(to: "#smart_input_post_title input")}
-                  class="title-button"
-                >
-                  <#Icon iconify="ph:text-h-one-duotone" class="w-[20px] h-[20px] text-base-content/70" />
-                  <span class="text-sm">{l("Add a Title")}</span>
-                </button>
-
-                  
+                    <button
+                      :if={@enable_thread_title}
+                      type="button"
+                      id="title_btn"
+                      phx-click={JS.toggle(to: "#smart_input_post_title")
+                      |> JS.focus(to: "#smart_input_post_title input")}
+                      class="title-button"
+                    >
+                      <#Icon iconify="ph:text-h-one-duotone" class="w-[20px] h-[20px] text-base-content/70" />
+                      <span class="text-sm">{l("Add a Title")}</span>
+                    </button>
                   </li>
 
                   <li>
-
-                <button
-                  type="button"
-                  id="scheduled_at_btn"
-                  phx-click={JS.toggle(to: "#smart_input_scheduled_at")
-                  |> JS.focus(to: "#smart_input_scheduled_at input[type='date']")
-                  }
-                  class="title-button"
-                >
-                  <#Icon iconify="ph:calendar-duotone" class="w-[20px] h-[20px] text-base-content/70" />
-                  <span class="text-sm">{l("Schedule post")}</span>
-                </button>
-
+                    <button
+                      type="button"
+                      id="scheduled_at_btn"
+                      phx-click={JS.toggle(to: "#smart_input_scheduled_at")
+                      |> JS.focus(to: "#smart_input_scheduled_at input[type='date']")}
+                      class="title-button"
+                    >
+                      <#Icon iconify="ph:calendar-duotone" class="w-[20px] h-[20px] text-base-content/70" />
+                      <span class="text-sm">{l("Schedule post")}</span>
+                    </button>
                   </li>
-                  </ul>
-                </div>
-              
+                </ul>
+              </div>
 
               {!-- |> JS.show(to: "#smart_input_summary") --}
-              
-
-            
-
-              
             </div>
 
             <div class="flex items-center gap-2">

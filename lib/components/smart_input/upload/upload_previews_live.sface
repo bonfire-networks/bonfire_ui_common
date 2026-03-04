@@ -143,7 +143,9 @@
   <button
     type="button"
     class="btn btn-ghost btn-soft btn-sm absolute top-3 right-3 z-10"
-    phx-click={JS.toggle_class("expanded", to: "#" <> deterministic_dom_id(__MODULE__, nil, "upload-preview", @parent_id))}
+    phx-click={JS.toggle_class("expanded",
+      to: "#" <> deterministic_dom_id(__MODULE__, nil, "upload-preview", @parent_id)
+    )}
   >
     <span class="flex items-center gap-1 group-[.expanded]/uploads:hidden">
       <#Icon iconify="ph:pencil-simple-line-duotone" class="w-4 h-4" />
