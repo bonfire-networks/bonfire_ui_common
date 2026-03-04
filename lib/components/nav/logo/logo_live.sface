@@ -1,6 +1,6 @@
 <img
   class={@image_class ||
-    "w-10 h-10 aspect-square rounded-full border border-base-content/20 object-contain"}
+    "w-10 h-10 aspect-square rounded-full border border-base-content/10 object-contain"}
   src={Config.get([:ui, :theme, :instance_icon], nil,
     name: l("Instance Icon"),
     description: l("The icon to display for this instance.")

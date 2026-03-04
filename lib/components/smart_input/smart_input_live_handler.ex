@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def show_main(js \\ %JS{}) do
     js
-    |> JS.show(to: "#composer_container")
+    |> JS.show(to: "#composer_container", display: "flex")
     |> maximize()
     |> JS.push("Bonfire.UI.Common.SmartInput:select_smart_input",
       value: %{
@@ -28,7 +28,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     opts = Map.merge(opts, %{open: true})
 
     js
-    |> JS.show(to: "#composer_container")
+    |> JS.show(to: "#composer_container", display: "flex")
     |> maximize()
     # |> show_main(opts)
     |> maybe_push_opts("Bonfire.UI.Common.SmartInput:select_smart_input", opts)
@@ -129,8 +129,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     js
     # CSS handles the elegant transition animation
     |> JS.add_class("translate-y-100", to: "#smart_input_container")
-    # Always remove avoid-scroll class from mobile devices to restore scrolling
-    |> JS.remove_class("avoid-scroll", to: ".is-container-mobile")
+    # Scroll lock is now handled by the smart_input_container hook via MutationObserver
     # |> JS.show(to: ".smart_input_show_on_minimize")
     |> maybe_push_opts(
       "Bonfire.UI.Common.SmartInput:select_smart_input",
@@ -142,8 +141,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     js
     # CSS handles the elegant transition animation
     |> JS.remove_class("translate-y-100", to: "#smart_input_container")
-    # Always add avoid-scroll class to mobile devices to hide scrollbar
-    |> JS.add_class("avoid-scroll", to: ".is-container-mobile")
+    # Scroll lock is now handled by the smart_input_container hook via MutationObserver
 
     # |> JS.hide(to: ".smart_input_show_on_minimize")
     # |> JS.push("Bonfire.UI.Common.SmartInput:select_smart_input",

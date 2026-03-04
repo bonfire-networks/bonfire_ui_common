@@ -341,7 +341,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
         open_js =
           %JS{}
           |> JS.remove_class("translate-y-100", to: "#smart_input_container")
-          |> JS.show(to: "#composer_container")
+          |> JS.show(to: "#composer_container", display: "flex")
 
         socket
         |> Phoenix.LiveView.push_event("js-exec", %{

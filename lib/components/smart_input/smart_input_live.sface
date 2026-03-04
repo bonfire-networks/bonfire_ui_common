@@ -1,20 +1,16 @@
 <div
   id="smart_input_live"
-  style="display: flex;
-  flex-direction: column;
-  height: 100vh;
-  position: relative;"
-  class="pt-safe rounded-xl flex-1 h-full bg-base-100 grow relative z-[]"
+  class="flex flex-col h-full md:h-full pt-safe rounded-xl flex-1 bg-base-100 grow relative z-[] min-h-0"
 >
-  <div id="composer_container" data-id="smart_input" class="flex-1 h-full grow rounded-xl">
+  <div id="composer_container" data-id="smart_input" class="flex flex-col flex-1 h-full grow rounded-xl min-h-0">
     <div
       id="smart_input"
       phx-drop-target={@uploads.files.ref}
-      class="flex bg-transparent rounded-xl h-full grow flex-1"
+      class="flex bg-transparent rounded-xl h-full grow flex-1 min-h-0"
     >
       <div
         :if={not is_nil(current_user_id(@__context__))}
-        class="relative overflow-y-auto overflow-x-hidden lg:max-h-[95vh] min-h-0 flex flex-col flex-1 w-full bg-base-200 rounded-xl"
+        class="relative overflow-hidden lg:max-h-[95vh] min-h-0 flex flex-col flex-1 w-full bg-base-200 rounded-xl"
       >
         <div :if={is_map(@activity) || is_map(@reply_to_id)} class="">
           <div class="relative reply_in_composer rounded-t-box max-h-[160px] bg-base-100 overflow-y-auto overflow-x-hidden p-2 flex flex-col">
@@ -49,13 +45,13 @@
               <span class="">{l("Cancel Reply")}</span>
             </span>
 
-            {!-- 
-            # WIP, also without an at mention you are not necessarily replying to the user (i.e. they may not be notified) but only to a post/comment, so this may be misleading
+            {!--
+            # WIP, also without an at mention you are not necessarily replying to the user (i.e. they may not be notified) but only to a post/comment, so this may be misleading
             <div
-              class="border-t border-base-content/20 text-xs backdrop-blur-xl sticky bottom-0 p-2 font-semibold text-center text-base-content z-10"
+              class="border-t border-base-content/10 text-xs backdrop-blur-xl sticky bottom-0 p-2 font-semibold text-center text-base-content z-10"
               style="pointer-events: none;"
             >
-              {l("Replying to @brembs@mastodon.social’s post")}
+              {l("Replying to @brembs@mastodon.social's post")}
             </div> --}
           </div>
         </div>

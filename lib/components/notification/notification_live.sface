@@ -39,7 +39,7 @@
       data-id="notification"
       :if={@notification}
       role="alert"
-      class="w-full max-w-md pointer-events-auto overflow-hidden transition-interactive rounded border border-base-content/20 shadow-xl alert flash"
+      class="w-full max-w-md pointer-events-auto overflow-hidden transition-interactive rounded border border-base-content/10 shadow-xl alert flash"
     >
       <div class="p-4">
         <div class="flex items-start">

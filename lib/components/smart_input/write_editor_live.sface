@@ -1,4 +1,4 @@
-<div class="flex gap-1">
+<div class="flex gap-1 flex-1 min-h-0">
   <div class="w-full flex flex-1 flex-col">
     {#case rich_editor_module(e(@smart_input_opts, :wysiwyg, true),
         context: @__context__,

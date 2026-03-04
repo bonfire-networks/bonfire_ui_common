@@ -339,7 +339,8 @@ article.unread-activity {
 
 
 .markdown-editor {
-  min-height: 250px;
+  flex: 1;
+  min-height: 0;
   outline: none;
 }
 
@@ -361,6 +362,7 @@ article.unread-activity {
 
 .milkdown-editor {
   outline: none;
+  width: 100%;
 }
 
 /* Placeholder styling via ::before on empty paragraph */
@@ -385,7 +387,7 @@ article.unread-activity {
   position: relative;
   padding-left: 3.4rem !important;
   margin-left: 0px !important;
-  @apply border border-base-content/20 rounded-lg !py-2 !pb-3 mt-2 mb-3;
+  @apply border border-base-content/10 rounded-lg !py-2 !pb-3 mt-2 mb-3;
 }
 
 .quote-preview .prose-bonfire {
@@ -1050,15 +1052,45 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
     opacity 300ms ease-out;
 }
 
+/* Mobile viewport-sync: the SmartInputContainer JS hook sets these CSS custom
+   properties on :root when the virtual keyboard opens. Using :root variables
+   instead of inline styles avoids blink from LiveView DOM patches.
+   Fallbacks match the default (no-keyboard) state so this is always safe. */
+@media (max-width: 767px) {
+  #smart_input_container {
+    height: var(--composer-height, 100%);
+    top: var(--composer-top, 0px);
+    padding-bottom: var(--composer-pb, 0px);
+  }
+}
+
+/* Desktop: constrain composer to a comfortable height */
+@media (min-width: 768px) {
+  #smart_input_container {
+    height: min(500px, 70dvh);
+    overflow: hidden;
+  }
+}
+
 /* Closed state: slide down + subtle scale + fade out */
 #smart_input_container.translate-y-100 {
   transform: translateY(105%) scale(0.98);
   opacity: 0;
 }
 
+/* On mobile, only transition box-shadow (never height/top — those are set
+   instantly by the viewport-sync JS hook when the keyboard opens).
+   On desktop (lg+), also transition transform for the subtle lift effect. */
 #smart_input_container:focus-within {
   box-shadow: rgba(136, 153, 166, 0.2) 0px 0px 15px, rgba(136, 153, 166, 0.15) 0px 0px 3px 1px;
-  @apply lg:translate-y-[-2px] lg:scale-[1.01] transition-all duration-300;
+  transition: box-shadow 300ms ease-out;
+}
+
+@media (min-width: 1024px) {
+  #smart_input_container:focus-within {
+    transform: translateY(-2px) scale(1.01);
+    transition: box-shadow 300ms ease-out, transform 300ms var(--ease-out-expo);
+  }
 }
 
 #smart_input_container[data-focused] {
@@ -1067,6 +1099,51 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
 
 #smart_input_container[data-focused] #smart_input_backdrop {
   @apply !block;
+}
+
+/* Force the composer's content chain to be flex columns so the toolbar
+   is pushed to the bottom and the editor fills available space.
+   The outer scrollable div must NOT scroll — only the editor area scrolls. */
+#smart_input > div,
+#smart_input > div.overflow-y-auto {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.write_post_content,
+#smart_input_form,
+#smart_input_form > div:has(#compose_content_wrapper),
+#compose_content_wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Make the editor wrapper chain grow; scroll happens at #editor_milkdown_container */
+#composer_wrapper,
+#composer_wrapper > div > .flex.gap-1 {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Make the editor chain flex columns so the contenteditable fills space */
+#editor_milkdown_container,
+#editor_milkdown_container > #editor,
+#editor_milkdown_container .milkdown {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+#editor_milkdown_container .ProseMirror {
+  flex: 1;
+  overflow-y: auto;
 }
 
 /* Class-based selectors */
@@ -1176,6 +1253,20 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
   @apply absolute inset-0 top-3 bottom-3 bg-primary rounded-lg w-1 rounded-full;
   position: absolute;
   content: "";
+}
+
+/* Prevent horizontal overflow on mobile — the drawer content area
+   should never be wider than the viewport. */
+.drawer-content {
+  overflow-x: hidden;
+}
+
+/* On mobile (below lg), use minmax(0, 1fr) so the grid column
+   shrinks to the container width instead of sizing to content. */
+@media (width < 64rem) {
+  [data-id="layout"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* Custom utility for main grid */
@@ -1306,7 +1397,7 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
 
 /* Carousel modal: constrain media within slides */
 .carousel-media-container {
-  max-height: calc(100vh - 120px);
+  max-height: calc(100dvh - 120px);
   max-width: 100%;
   overflow: hidden;
 }
@@ -1317,21 +1408,21 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
 }
 
 .carousel-media-container img {
-  max-height: calc(100vh - 140px) !important;
+  max-height: calc(100dvh - 140px) !important;
   max-width: 100% !important;
   object-fit: contain !important;
   height: auto !important;
 }
 
 .carousel-media-container video {
-  max-height: calc(100vh - 140px) !important;
+  max-height: calc(100dvh - 140px) !important;
   max-width: 100% !important;
   object-fit: contain !important;
   height: auto !important;
 }
 
 .carousel-media-container iframe {
-  max-height: calc(100vh - 140px) !important;
+  max-height: calc(100dvh - 140px) !important;
   max-width: 100% !important;
   width: 100%;
 }

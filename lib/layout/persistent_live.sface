@@ -11,7 +11,7 @@
     as_icon
     to_circles={@to_circles}
     to_boundaries={@to_boundaries}
-    composer_class="btn fixed right-[50px] bottom-[50px] w-[70px] h-[70px] btn-circle btn-primary floating_smart_input transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
+    composer_class="btn fixed right-[30px] bottom-[30px] w-[70px] h-[70px] btn-circle btn-primary floating_smart_input transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
     smart_input_opts={@smart_input_opts}
   />
   <!-- Notifications -->
