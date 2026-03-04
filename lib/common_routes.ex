@@ -87,41 +87,45 @@ defmodule Bonfire.UI.Common.Routes do
             limit: 5,
             method: "POST"
       """
-      def rate_limit(conn, opts) do
-        # Check if we should filter by HTTP method
-        case Keyword.get(opts, :method) do
-          nil ->
-            # No method filter, rate limit all requests
-            do_rate_limit(conn, opts)
-
-          method when is_binary(method) ->
-            # Only rate limit if method matches
-            if conn.method == method do
+      if unquote(Mix.env()) == :test and System.get_env("ENABLE_RATE_LIMIT") != "yes" do
+        def rate_limit(conn, _opts), do: conn
+      else
+        def rate_limit(conn, opts) do
+          # Check if we should filter by HTTP method
+          case Keyword.get(opts, :method) do
+            nil ->
+              # No method filter, rate limit all requests
               do_rate_limit(conn, opts)
-            else
-              conn
-            end
+
+            method when is_binary(method) ->
+              # Only rate limit if method matches
+              if conn.method == method do
+                do_rate_limit(conn, opts)
+              else
+                conn
+              end
+          end
         end
-      end
 
-      defp do_rate_limit(conn, opts) do
-        key_prefix = Keyword.fetch!(opts, :key_prefix)
+        defp do_rate_limit(conn, opts) do
+          key_prefix = Keyword.fetch!(opts, :key_prefix)
 
-        # Read from config, falling back to defaults
-        rate_config = Config.get([:bonfire, :rate_limit, key_prefix], [])
-        scale_ms = Keyword.get(rate_config, :scale_ms) || Keyword.fetch!(opts, :scale_ms)
-        limit = Keyword.get(rate_config, :limit) || Keyword.fetch!(opts, :limit)
+          # Read from config, falling back to defaults
+          rate_config = Config.get([:bonfire, :rate_limit, key_prefix], [])
+          scale_ms = Keyword.get(rate_config, :scale_ms) || Keyword.fetch!(opts, :scale_ms)
+          limit = Keyword.get(rate_config, :limit) || Keyword.fetch!(opts, :limit)
 
-        # Build rate limit key from IP
-        ip = conn.remote_ip |> :inet.ntoa() |> to_string()
-        key = "#{key_prefix}:#{ip}"
+          # Build rate limit key from IP
+          ip = conn.remote_ip |> :inet.ntoa() |> to_string()
+          key = "#{key_prefix}:#{ip}"
 
-        case Bonfire.UI.Common.RateLimit.hit(key, scale_ms, limit) do
-          {:allow, _count} ->
-            conn
+          case Bonfire.UI.Common.RateLimit.hit(key, scale_ms, limit) do
+            {:allow, _count} ->
+              conn
 
-          {:deny, retry_after} ->
-            Bonfire.UI.Common.Web.rate_limit_reached(conn, retry_after, opts)
+            {:deny, retry_after} ->
+              Bonfire.UI.Common.Web.rate_limit_reached(conn, retry_after, opts)
+          end
         end
       end
 
@@ -361,8 +365,11 @@ defmodule Bonfire.UI.Common.Routes do
 
         live("/crash_test", Bonfire.UI.Common.ErrorLive)
         live("/crash_test/:component", Bonfire.UI.Common.ErrorLive)
+      end
 
-        pipe_through(:throttle_forms)
+      # pages anyone can view, with throttling
+      scope "/" do
+        pipe_through([:throttle_forms, :browser])
 
         post(
           "/LiveHandler/:live_handler",
