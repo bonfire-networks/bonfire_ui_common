@@ -20,7 +20,7 @@
           :if={is_nil(@current_account_id) and @without_sidebar}
         /> --}
 
-  <div class="drawer xl:drawer-open lg:max-w-[var(--spacing-1190)] mx-auto w-full pb-[64px] lg:pb-0">
+  <div class="drawer xl:drawer-open lg:max-w-[var(--spacing-1190)] mx-auto w-full">
     <input id="sidebar-drawer" type="checkbox" class="drawer-toggle">
     <div class="drawer-content px-safe">
       <div
@@ -64,7 +64,7 @@
                 <div
                   id="inner"
                   class={
-                    "flex flex-col bg-base-100 pb-4 md:pb-[1px] lg:border-x border-base-content/10",
+                    "flex flex-col bg-base-100 pb-[1px] lg:border-x border-base-content/10",
                     hidden: @hide_main,
                     "border-none": @without_sidebar == true,
                     "min-h-[calc(var(--inner-window-height))]": @without_secondary_widgets != :never

@@ -31,6 +31,12 @@ defmodule Bonfire.UI.Common.CacheControlPlugTest do
       [PurgeAdapter]
     )
 
+    # Write static files synchronously so assertions can check them immediately
+    Process.put(
+      [:bonfire_ui_common, MaybeStaticGeneratorPlug, :sync_static_write],
+      true
+    )
+
     dest = StaticGenerator.dest_path()
     on_exit(fn -> File.rm_rf!(Path.join([dest, "gen_avatar", user_id])) end)
 

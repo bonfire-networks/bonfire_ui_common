@@ -12,8 +12,10 @@ defmodule Bonfire.UI.Common.StaticCacheHeadersTest do
   use Bonfire.UI.Common.ConnCase, async: true
 
   # Default max-age values (seconds) matching EndpointTemplate defaults.
+  # In non-prod (test/dev), etag max-age compiles to 0; in prod it's 1 day.
   @vsn_max_age div(to_timeout(week: 52), 1_000)
-  @etag_max_age div(to_timeout(day: 1), 1_000)
+  @is_prod Mix.env() == :prod
+  @etag_max_age if(@is_prod, do: div(to_timeout(day: 1), 1_000), else: 0)
 
   describe "versioned JS asset (?vsn=)" do
     test "returns public, immutable Cache-Control with 1-year max-age" do

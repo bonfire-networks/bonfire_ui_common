@@ -120,9 +120,15 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
       tags = conn |> get_resp_header("surrogate-key") |> Enum.flat_map(&String.split/1)
       body = conn.resp_body
       # Write to disk asynchronously so the response is not delayed by the file write.
-      Task.start(fn ->
+      # In tests, use Process.put([:bonfire_ui_common, :sync_static_write], true)
+      # to write synchronously so assertions can check the file immediately.
+      if Config.get([__MODULE__, :sync_static_write], false) do
         Bonfire.UI.Common.StaticGenerator.cache_response(url, body, tags: tags)
-      end)
+      else
+        Task.start(fn ->
+          Bonfire.UI.Common.StaticGenerator.cache_response(url, body, tags: tags)
+        end)
+      end
     end
 
     conn
