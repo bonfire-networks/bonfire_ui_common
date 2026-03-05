@@ -1256,9 +1256,12 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
 }
 
 /* Prevent horizontal overflow on mobile — the drawer content area
-   should never be wider than the viewport. */
+   should never be wider than the viewport.
+   IMPORTANT: use `clip` not `hidden` — hidden implicitly sets overflow-y: auto
+   per CSS spec, which creates a scroll context and breaks position: sticky
+   for the page header and right sidebar inside .drawer-content. */
 .drawer-content {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* On mobile (below lg), use minmax(0, 1fr) so the grid column
