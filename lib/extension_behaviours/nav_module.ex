@@ -74,14 +74,17 @@ defmodule Bonfire.UI.Common.NavModule do
   end
 
   def default_nav() do
+    # pass the locale as an argument so it is included in the cache key, to avoid a user seeing a nav in a different language
+    locale = Bonfire.Common.Localise.get_locale_id()
+
     Bonfire.Common.Cache.maybe_apply_cached(
-      &do_default_nav/0,
-      [],
+      &do_default_nav/1,
+      [locale],
       expire: 120_000
     )
   end
 
-  def do_default_nav() do
+  def do_default_nav(_locale \\ nil) do
     default_nav_apps()
     |> default_nav()
   end
