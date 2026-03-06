@@ -31,7 +31,7 @@
         <span
           data-page={@page}
           data-role="page_title"
-          class="first-letter:capitalize flex-1 font-bold text-left text-base text-base-content"
+          class="first-letter:capitalize flex-1 font-bold text-left text-lg text-base-content"
         >
           {rich(@page_title)}
         </span>

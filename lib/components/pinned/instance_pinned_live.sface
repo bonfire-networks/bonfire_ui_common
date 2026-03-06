@@ -1,9 +1,58 @@
-{#case Bonfire.Social.Pins.list_instance_pins(
-    object_types: @object_types,
-    current_user: current_user(@__context__)
-  )
-  |> e(:edges, [])}
+<div>
+{#case @entries}
   {#match []}
-  {#match pins}
-    <Bonfire.UI.Common.PinnedCarouselLive title={@title} pins={pins} />
+  {#match entries}
+    <div data-id="instance_pinned_widget">
+      <Bonfire.UI.Common.WidgetBlockLive
+        class="w-full p-3 rounded-xl relative bg-base-content/5 border border-base-content/10 overflow-hidden"
+        widget_title={@title || l("Spotlight")}
+      >
+      {!-- Arrow buttons overlaid on the carousel --}
+          <div :if={length(entries) > 1} class="absolute inset-y-0 left-2 right-2 top-8 flex items-center justify-between pointer-events-none z-[99]">
+            <button
+              type="button"
+              class="btn btn-circle btn-sm bg-black/50 hover:bg-black/70 border-none text-white transition-opacity -ml-1"
+              phx-click={JS.dispatch("scroll-left", to: "#pinned-carousel")}
+            >
+              <#Icon iconify="ph:caret-left" class="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              class="btn btn-circle btn-sm bg-black/50 hover:bg-black/70 border-none text-white transition-opacity -mr-1"
+              phx-click={JS.dispatch("scroll-right", to: "#pinned-carousel")}
+            >
+              <#Icon iconify="ph:caret-right" class="w-4 h-4" />
+            </button>
+          </div>
+        <div class="grid grid-cols-1 overflow-hidden relative">
+
+          {!-- Carousel --}
+          <div
+            id="pinned-carousel"
+            class="flex items-start gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2"
+            phx-hook="CarouselScroll"
+          >
+            {#for entry <- entries}
+              {#case e(entry, :activity, nil)}
+                {#match nil}
+                {#match activity}
+                  <div
+                    class="flex-shrink-0 snap-start rounded-xl bg-base-100 overflow-hidden border border-base-content/10"
+                    style="width: calc(88% - 8px);"
+                  >
+                    <StatefulComponent
+                      module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
+                      id={Bonfire.UI.Social.ActivityLive.component_id(id(activity), "pinned_#{id(entry)}")}
+                      activity={activity}
+                      showing_within={:pin}
+                      hide_actions
+                    />
+                  </div>
+              {/case}
+            {/for}
+          </div>
+        </div>
+      </Bonfire.UI.Common.WidgetBlockLive>
+    </div>
 {/case}
+</div>

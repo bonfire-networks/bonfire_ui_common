@@ -110,6 +110,37 @@ a,
 }
 
 /* ============================================
+   MOBILE TOUCH TARGETS & ACTIVE FEEDBACK
+   Enforce 44px minimum button size and instant
+   press feedback on touch devices (iOS HIG / WCAG)
+   ============================================ */
+@media (pointer: coarse) {
+  /* Enforce 44px minimum size for small buttons on touch devices.
+     Every mainstream app (iOS, Twitter/X, Instagram, Bluesky) uses
+     visually 44px+ buttons — users aim for what they can see.
+     min-height/min-width override DaisyUI's height/width: var(--size) */
+  .btn-sm,
+  .btn-xs {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+
+  /* Instant press feedback: kill the 200ms transition delay
+     and add a clear scale-down effect so taps feel immediate */
+  .btn:active:not(.btn-active) {
+    transition-duration: 0s;
+    scale: 0.95;
+  }
+
+  /* Prevent icon children from intercepting touch events */
+  .btn > [iconify],
+  .btn > svg,
+  .btn > .icon {
+    pointer-events: none;
+  }
+}
+
+/* ============================================
    TOUCH-FIRST, HOVER-ENHANCED DESIGN
    Only apply hover styles on devices with precise pointing
    Touch devices get active states instead
@@ -198,32 +229,19 @@ textarea:focus-visible {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
   --color-primary: oklch(52.85% 0.2 251.26);
   --color-primary-content: #ffffff;
-  --radius-selector: 1rem;
-  --radius-field: 2rem;
+  --radius-selector: 2rem;
+  --radius-field: 1rem;
   --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 0.5px;
+  --depth: 1;
+  --noise: 1;
 }
 
 @plugin "daisyui/theme" {
@@ -232,9 +250,14 @@ textarea:focus-visible {
   --color-primary: #6495ed;
   --color-primary-content: #ffffff;
   --color-base-100: #18191a;
-  --radius-selector: 1rem;
-  --radius-field: 2rem;
+  --radius-selector: 2rem;
+  --radius-field: 1rem;
   --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 0.5px;
+  --depth: 1;
+  --noise: 1;
 }
 
 
@@ -799,6 +822,7 @@ emoji-picker .favorites {
 .tooltip.tooltip-animated.tooltip-visible {
   opacity: 1;
   transform: scale(1) translateY(0);
+  box-shadow: color-mix(in srgb, currentColor 12%, transparent) 0px 0px 12px, color-mix(in srgb, currentColor 8%, transparent) 0px 0px 2px 1px;
 }
 
 /* Direction-specific origins (set via JS based on placement) */
