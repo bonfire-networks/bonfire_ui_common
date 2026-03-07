@@ -114,46 +114,33 @@
         <div
           data-id="flash_error"
           role="alert"
-          class="alert alert-error pointer-events-auto max-w-md flash"
+          class="pointer-events-auto flex items-center gap-3 pl-4 pr-2 py-2.5 rounded-xl bg-error text-error-content shadow-[0_4px_24px_-2px_rgba(0,0,0,0.5)] ring-1 ring-error-content/10 max-w-sm flash"
         >
-          <div class="p-4">
-            <div class="flex items-top">
-              <div class="flex-shrink-0">
-                <#Icon outline="Exclamation" class="w-6 h-6 text-error-content" />
-              </div>
-              <div class="ml-3 flex-1">
-                <div
-                  data-id="flash"
-                  data-type="error"
-                  class={[
-                    "prose text-sm text-error-content",
-                    "!text-xs": Config.env() == :dev
-                  ]}
-                >
-                  {markdown(error)}
-                </div>
-
-                {!--
-                FIXME
-                 <Bonfire.UI.Common.FeedbackButtonLive
-                  class="mt-2 normal-case rounded btn btn-sm btn-ghost text-error-content btn-active"
-                  event="Bonfire.Posts:write_error"
-                /> --}
-              </div>
-              <div :if={socket_connected?(@__context__)} class="">
-                <button
-                  phx-click="clear-flash"
-                  phx-target={@myself}
-                  phx-value-key="error"
-                  type="button"
-                  aria-label={l("Dismiss error")}
-                  class="btn btn-xs btn-circle btn-error focus-ring touch-target-expanded transition-interactive"
-                >
-                  <span class="sr-only">{l("Close")}</span>
-                  <#Icon iconify="ph:x-duotone" class="w-4 h-4" aria-hidden="true" />
-                </button>
-              </div>
-            </div>
+          <div class="flex-shrink-0">
+            <#Icon iconify="ph:warning-circle-duotone" class="w-5 h-5 text-error-content" aria-hidden="true" />
+          </div>
+          <div
+            data-id="flash"
+            data-type="error"
+            class={[
+              "flex-1 text-sm font-medium text-error-content",
+              "!text-xs": Config.env() == :dev
+            ]}
+          >
+            {markdown(error)}
+          </div>
+          <div :if={socket_connected?(@__context__)}>
+            <button
+              phx-click="clear-flash"
+              phx-target={@myself}
+              phx-value-key="error"
+              type="button"
+              aria-label={l("Dismiss error")}
+              class="btn btn-xs btn-circle btn-ghost opacity-50 hover:opacity-100 focus-ring transition-all"
+            >
+              <span class="sr-only">{l("Close")}</span>
+              <#Icon iconify="ph:x" class="w-3.5 h-3.5" aria-hidden="true" />
+            </button>
           </div>
         </div>
     {/case}
