@@ -42,18 +42,23 @@ defmodule Bonfire.UI.Common.Presence do
 
   @doc "Check if a given user (or the current user) is in the list of those who are present"
   def present?(user_id_or_context) do
-    present_meta(user_id_or_context)
+    user_presence(user_id_or_context) != nil
   end
 
   def present_meta(user_id_or_context) do
+    if user_presence = user_present(user_id_or_context) do
+      e(user_presence, :metas, nil)
+      # |> debug()
+    end
+  end
+
+  def user_presence(user_id_or_context) do
     if user_id =
          Utils.current_user_id(user_id_or_context) do
       get_by_key(
         @presence,
         user_id
-      )
-      |> e(:metas, [])
-
+      ) || nil
       # |> debug()
     end
   end
