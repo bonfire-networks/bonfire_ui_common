@@ -30,7 +30,7 @@
     {#if not is_nil(current_user_id(@__context__))}
       {!-- In test env, skip the portal wrapper so PhoenixTest can interact with the composer
            (portals render inside <template> which is inert in tests without JS) --}
-      {#if Mix.env() == :test}
+      {#if Bonfire.Common.Config.env() == :test}
         <div
           id="smart_input_container"
           data-hidden={e(@smart_input_opts, :open, nil) != true}
