@@ -112,7 +112,10 @@
             class="order-last sticky w-auto lg:top-0 mt-0 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
           >
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
-              <div class={["w-full h-[60px] hidden lg:flex items-center", "md:hidden lg:flex": @without_secondary_widgets != :never]}>
+              <div class={[
+                "w-full h-[60px] hidden lg:flex items-center",
+                "md:hidden lg:flex": @without_secondary_widgets != :never
+              ]}>
                 <StatelessComponent
                   module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
                   id="sidebar-search"
