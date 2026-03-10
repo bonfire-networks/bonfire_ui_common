@@ -132,12 +132,20 @@ defmodule Bonfire.UI.Common.Presence do
   def process_get(pid, key, default \\ nil)
 
   def process_get(pid, key, default) when is_pid(pid) do
-    GenServer.call(pid, {:process_get, key, default})
+    # call PersistentLive LV's genserver:
+    # GenServer.call(pid, {:process_get, key, default})
+    # read PersistentLive process dict directly:
+    case Process.info(pid, {:dictionary, key}) do
+      {_, :undefined} -> default
+      {_, value} -> value
+      # process dead
+      _ -> default
+    end
   end
 
   def process_get(user_id, key, default) do
     case present_meta(user_id) do
-      [%{pid: pid} | _] -> GenServer.call(pid, {:process_get, key, default})
+      [%{pid: pid} | _] when is_pid(pid) -> process_get(pid, key, default)
       _ -> default
     end
   end
