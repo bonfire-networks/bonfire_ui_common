@@ -46,7 +46,7 @@ defmodule Bonfire.UI.Common.Presence do
   end
 
   def present_meta(user_id_or_context) do
-    if user_presence = user_present(user_id_or_context) do
+    if user_presence = user_presence(user_id_or_context) do
       e(user_presence, :metas, nil)
       # |> debug()
     end
