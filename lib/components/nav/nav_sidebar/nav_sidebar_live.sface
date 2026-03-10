@@ -44,7 +44,7 @@
             class="flex items-center w-full gap-3 lg:px-2 lg:py-2"
             parent_id="nav_sidebar"
           >
-            <#Icon iconify="ph:compass-duotone" class="w-7 h-7 text-primary" />
+            <#Icon iconify="ph:compass-duotone" class="w-6 h-6 text-primary" />
             <div class="opacity-80 font-semibold text-base">{l("Explore")}</div>
           </LinkLive>
         </li>
@@ -62,7 +62,7 @@
             class="flex items-center w-full gap-3 lg:px-2 lg:py-2"
             parent_id="nav_sidebar"
           >
-            <#Icon iconify="ph:info-duotone" class="w-7 h-7 text-primary" />
+            <#Icon iconify="ph:info-duotone" class="w-6 h-6 text-primary" />
             <div class="opacity-80 font-semibold text-base">{l("About")}</div>
           </LinkLive>
         </li>
@@ -72,7 +72,7 @@
             class="flex items-center w-full gap-3 lg:px-2 lg:py-2"
             parent_id="nav_sidebar"
           >
-            <#Icon iconify="ri:group-line" class="w-7 h-7 text-primary" />
+            <#Icon iconify="ri:group-line" class="w-6 h-6 text-primary" />
             <div class="opacity-80 font-semibold text-base">{l("Public Groups")}</div>
           </LinkLive>
         </li>
@@ -82,7 +82,7 @@
             class="flex items-center w-full gap-3 lg:px-2 lg:py-2"
             parent_id="nav_sidebar"
           >
-            <#Icon iconify="ph:users-four-duotone" class="w-7 h-7 text-primary" />
+            <#Icon iconify="ph:users-four-duotone" class="w-6 h-6 text-primary" />
             <div class="opacity-80 font-semibold text-base">{l("Members")}</div>
           </LinkLive>
         </li>
@@ -92,7 +92,7 @@
             class="flex items-center w-full gap-3 lg:px-2 lg:py-2"
             parent_id="nav_sidebar"
           >
-            <#Icon iconify="ph:newspaper-duotone" class="w-7 h-7 text-primary" />
+            <#Icon iconify="ph:newspaper-duotone" class="w-6 h-6 text-primary" />
             <div class="opacity-80 font-semibold text-base">{l("Code of Conduct")}</div>
           </LinkLive>
         </li>
