@@ -1,6 +1,7 @@
-<div class="flex flex-1 px-4 w-full transition-color duration-150 ease-in-out">
+<div class="flex flex-1 w-full transition-color duration-150 ease-in-out">
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center gap-3 justify-between w-full lg:flex-1">
+      <div class="w-[120px] max-w-[120px]">
       <div :if={@back} class="xl:flex hidden">
         <Bonfire.UI.Common.BackButtonLive back={@back} />
       </div>
@@ -26,19 +27,19 @@
           </div>
         </label>
       {/if}
-
+      </div>
       <div class="flex-1 truncate">
         <span
           data-page={@page}
           data-role="page_title"
-          class="first-letter:capitalize flex-1 font-bold text-left text-lg text-base-content"
+          class="first-letter:capitalize flex-1 font-semibold text-center text-sm text-base-content"
         >
           {rich(@page_title)}
         </span>
         <div :if={@extra} class="text-xs text-base-content/70">{@extra}</div>
       </div>
 
-      <div class="flex justify-end gap-3 items-center">
+      <div class="flex justify-end gap-3 items-center w-[120px] max-w-[120px]">
         {#if current_user(@__context__)}
           <#slot {@right_action}>
           </#slot>

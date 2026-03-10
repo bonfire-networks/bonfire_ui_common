@@ -1,5 +1,5 @@
 <div data-position="top-end" phx-hook="Tooltip" id="user_more_menu_links" class="relative w-full">
-  <div class="flex justify-end w-full">
+  <div class="flex w-full">
     <label
       class="tooltip-button btn btn-lg btn-circle"
       tabindex="0"

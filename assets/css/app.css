@@ -251,8 +251,9 @@ textarea:focus-visible {
   prefersdark: true;
   --color-primary: #6495ed;
   --color-primary-content: #f0f2f5;
-  --color-base-100: #242526;
-  --color-base-200: #18191a;
+  --color-base-100: #181818;
+  --color-base-200: #0A0A0A;
+  --color-base-300: #1e1e1e;
   --radius-selector: 2rem;
   --radius-field: 1rem;
   --radius-box: 1rem;
