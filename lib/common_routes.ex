@@ -168,11 +168,29 @@ defmodule Bonfire.UI.Common.Routes do
         plug PlugEarlyHints, paths: Bonfire.UI.Common.Routes.early_hints_guest()
       end
 
+      @csrf_opts Plug.CSRFProtection.init([])
+
+      @doc "Wraps `protect_from_forgery` to gracefully handle stale CSRF tokens by renewing the session and redirecting back."
+      def safe_protect_from_forgery(conn, _opts) do
+        Plug.CSRFProtection.call(conn, @csrf_opts)
+      rescue
+        e in Plug.CSRFProtection.InvalidCSRFTokenError ->
+          msg = l("Your session expired, please try again.")
+          error(e, msg)
+
+          conn
+          |> Bonfire.UI.Common.Web.renew_session()
+          |> fetch_flash()
+          |> Phoenix.Controller.put_flash(:error, msg)
+          |> Phoenix.Controller.redirect(to: "/login?try_again")
+          |> halt()
+      end
+
       # CSRF protection + secure response headers (X-Frame-Options, CSP, etc.).
       # Must NOT be included in :cacheable pipelines — protect_from_forgery
       # writes a CSRF cookie that would be served to other users from CDN cache.
       pipeline :browser_security do
-        plug(:protect_from_forgery)
+        plug(:safe_protect_from_forgery)
         plug(:put_secure_browser_headers)
       end
 
