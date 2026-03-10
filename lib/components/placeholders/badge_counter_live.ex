@@ -114,13 +114,21 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
 
   # Store a badge count in PersistentLive's process dict (survives navigation)
   defp persistent_put(socket, feed_id, count) do
-    Bonfire.UI.Common.Presence.process_put(current_user_id(socket), {:badge_count, feed_id}, count)
+    Bonfire.UI.Common.Presence.process_put(
+      current_user_id(socket),
+      {:badge_count, feed_id},
+      count
+    )
   end
 
   # Read a badge count from PersistentLive's process dict
   defp persistent_get(socket, feed_id) do
     try do
-      Bonfire.UI.Common.Presence.process_get(current_user_id(socket), {:badge_count, feed_id}, nil)
+      Bonfire.UI.Common.Presence.process_get(
+        current_user_id(socket),
+        {:badge_count, feed_id},
+        nil
+      )
     catch
       :exit, _ -> nil
     end

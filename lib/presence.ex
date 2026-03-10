@@ -59,6 +59,7 @@ defmodule Bonfire.UI.Common.Presence do
         @presence,
         user_id
       ) || nil
+
       # |> debug()
     end
   end

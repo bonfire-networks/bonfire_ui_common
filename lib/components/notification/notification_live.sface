@@ -117,7 +117,11 @@
           class="pointer-events-auto flex items-center gap-3 pl-4 pr-2 py-2.5 rounded-xl bg-error text-error-content shadow-[0_4px_24px_-2px_rgba(0,0,0,0.5)] ring-1 ring-error-content/10 max-w-sm flash"
         >
           <div class="flex-shrink-0">
-            <#Icon iconify="ph:warning-circle-duotone" class="w-5 h-5 text-error-content" aria-hidden="true" />
+            <#Icon
+              iconify="ph:warning-circle-duotone"
+              class="w-5 h-5 text-error-content"
+              aria-hidden="true"
+            />
           </div>
           <div
             data-id="flash"
