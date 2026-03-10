@@ -5,7 +5,7 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
 
   prop class, :css_class,
     default:
-      "w-full p-4 flex-auto mx-auto rounded-2xl outline outline-base-content/10 bg-base-100 shadow"
+      "w-full p-4 flex-auto mx-auto lg:rounded-2xl outline outline-base-content/10 bg-base-100 shadow"
 
   prop title_class, :css_class, default: "pb-3 text-lg font-bold tracking-wide"
 

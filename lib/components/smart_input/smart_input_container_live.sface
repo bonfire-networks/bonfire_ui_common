@@ -28,10 +28,11 @@
     </div>
 
     {#if not is_nil(current_user_id(@__context__))}
-      <.portal id="composer_portal" class="relative z-max" target="body">
+      {!-- In test env, skip the portal wrapper so PhoenixTest can interact with the composer
+           (portals render inside <template> which is inert in tests without JS) --}
+      {#if Mix.env() == :test}
         <div
           id="smart_input_container"
-          :hook
           data-hidden={e(@smart_input_opts, :open, nil) != true}
           data-focused={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
           class={
@@ -42,8 +43,6 @@
           <div class="w-full rounded-xl bg-gradient-to-t from-base-content/10 to-base-content/10 p-[0.05rem] flex flex-col flex-1 h-full grow min-h-0">
             <div class="w-full rounded-xl bg-base-200 flex flex-col flex-1 h-full grow min-h-0">
               <div class="relative z-50 rounded-xl flex flex-col grow h-full min-h-0">
-                <!-- <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} /> -->
-
                 <SmartInputLive
                   event_target={@myself}
                   custom_emojis={@custom_emojis}
@@ -76,7 +75,57 @@
             </div>
           </div>
         </div>
-      </.portal>
+      {#else}
+        <.portal id="composer_portal" class="relative z-max" target="body">
+          <div
+            id="smart_input_container"
+            :hook
+            data-hidden={e(@smart_input_opts, :open, nil) != true}
+            data-focused={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
+            class={
+              "w-full md:h-auto flex flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-xl max-w-full mx-auto z-popover shadow-xl left-0 md:left-auto md:right-4 top-0 md:top-auto md:bottom-4 md:w-[32rem] md:right-4 md:top-auto h-full bg-base-100 overflow-clip md:overflow-visible overscroll-y-contain",
+              "translate-y-100": e(@smart_input_opts, :open, nil) != true
+            }
+          >
+            <div class="w-full rounded-xl bg-gradient-to-t from-base-content/10 to-base-content/10 p-[0.05rem] flex flex-col flex-1 h-full grow min-h-0">
+              <div class="w-full rounded-xl bg-base-200 flex flex-col flex-1 h-full grow min-h-0">
+                <div class="relative z-50 rounded-xl flex flex-col grow h-full min-h-0">
+                  <!-- <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} /> -->
+
+                  <SmartInputLive
+                    event_target={@myself}
+                    custom_emojis={@custom_emojis}
+                    boundaries_modal_id={:modal_composer}
+                    showing_within={@showing_within}
+                    reply_to_id={@reply_to_id}
+                    context_id={@context_id}
+                    smart_input_component={@smart_input_component}
+                    open_boundaries={@open_boundaries}
+                    to_boundaries={@to_boundaries}
+                    to_circles={@to_circles}
+                    exclude_circles={@exclude_circles}
+                    verb_permissions={@verb_permissions}
+                    mentions={@mentions}
+                    smart_input_opts={@smart_input_opts}
+                    activity={@activity}
+                    object={@object}
+                    uploads={@uploads}
+                    uploaded_files={@uploaded_files}
+                    selected_cover={@selected_cover}
+                    trigger_submit={@trigger_submit}
+                    reset_smart_input={@reset_smart_input}
+                    activity_inception={@activity_inception}
+                    preview_boundary_for_id={@preview_boundary_for_id}
+                    preview_boundary_for_username={@preview_boundary_for_username}
+                    preview_boundary_verbs={@preview_boundary_verbs}
+                    boundary_preset={@boundary_preset}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </.portal>
+      {/if}
     {/if}
   </div>
 </div>
