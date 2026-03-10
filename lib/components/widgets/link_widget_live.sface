@@ -19,7 +19,7 @@
           class={@widget[:icon_class] || @icon_class, "!text-base-content"}
         />
       {#else} --}
-  <div :if={!@without_icon && (@icon || @widget[:icon])}>
+  <div class="w-8 h-8 flex items-center place-content-center" :if={!@without_icon && (@icon || @widget[:icon])}>
     <Iconify.iconify icon={@icon || @widget[:icon]} class={@widget[:icon_class] || @icon_class} />
   </div>
   {!-- {/if} -->

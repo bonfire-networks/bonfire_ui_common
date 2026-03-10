@@ -88,7 +88,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
   defp assign_defaults(socket, fun \\ &assign_new/3) do
     socket
     |> fun.(:showing_within, fn -> nil end)
-    # |> fun.(:context_id, fn -> nil end)
+    |> fun.(:context_id, fn -> nil end)
     # |> fun.(:reply_to_id, fn -> nil end)
     # |> fun.(:create_object_type, fn -> nil end)
     |> fun.(:to_boundaries, fn -> [] end)
@@ -293,10 +293,22 @@ defmodule Bonfire.UI.Common.PersistentLive do
       |> Map.put(:smart_input_opts, smart_input_opts)
       |> Map.put_new(:smart_input_component, nil)
       |> then(fn m ->
-        case Map.get(smart_input_opts, :to_circles) do
-          nil -> m
-          circles -> Map.put_new(m, :to_circles, circles)
-        end
+        m
+        |> then(fn m ->
+          case Map.get(smart_input_opts, :to_circles) do
+            nil -> m
+            circles -> Map.put_new(m, :to_circles, circles)
+          end
+        end)
+        |> then(fn m ->
+          case Map.get(smart_input_opts, :to_boundaries) do
+            nil -> m
+            boundaries -> Map.put_new(m, :to_boundaries, boundaries)
+          end
+        end)
+        # Always set context_id from smart_input_opts (defaults to nil)
+        # so it gets cleared when navigating away from a group page
+        |> Map.put(:context_id, Map.get(smart_input_opts, :context_id))
       end)
 
     maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, enriched)
@@ -309,6 +321,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
         Map.take(enriched, [
           :to_circles,
           :to_boundaries,
+          :context_id,
           :smart_input_opts,
           :smart_input_component
         ])
@@ -374,10 +387,23 @@ defmodule Bonfire.UI.Common.PersistentLive do
   def handle_info({:assign_persistent_self, assigns}, socket) do
     context = Map.merge(assigns(socket)[:__context__] || %{}, assigns[:__context__] || %{})
 
-    {:noreply,
-     socket
-     |> assign(assigns)
-     |> assign_global(context)}
+    socket =
+      socket
+      |> assign(assigns)
+      |> assign_global(context)
+
+    # When smart_input_opts changes via page navigation, sync context_id from it
+    # so stale group context gets cleared when navigating away
+    socket =
+      if Map.has_key?(assigns, :smart_input_opts) do
+        opts = assigns[:smart_input_opts] || %{}
+        opts = if is_list(opts), do: Map.new(opts), else: opts
+        assign(socket, :context_id, Map.get(opts, :context_id))
+      else
+        socket
+      end
+
+    {:noreply, socket}
   end
 
   # Handle request from SmartInputContainerLive to push reset events

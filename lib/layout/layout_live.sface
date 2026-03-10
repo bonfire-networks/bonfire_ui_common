@@ -1,6 +1,6 @@
 <div
   data-id="bonfire_live"
-  class="antialiased bg-base-100 min-h-screen min-h-screen-safe pb-safe"
+  class="antialiased bg-base-200 min-h-screen min-h-screen-safe pb-safe"
   data-theme={Bonfire.UI.Common.ThemeHelper.current_theme(assigns)}
   style={maybe_custom_theme(
     current_user: current_user(@__context__),
@@ -64,14 +64,14 @@
                 <div
                   id="inner"
                   class={
-                    "flex flex-col bg-base-100 pb-[1px] lg:border-x border-base-content/10",
+                    "flex flex-col pb-[1px] pl-[1px]",
                     hidden: @hide_main,
                     "border-none": @without_sidebar == true
                   }
                 >
                   <div
                     :if={!@no_header}
-                    class="sticky top-0 pt-safe z-[999] bg-base-100 lg:bg-base-100/70 backdrop-blur-sm"
+                    class="sticky top-0 pt-safe z-[999] bg-base-200 lg:bg-base-200/70 backdrop-blur-sm"
                   >
                     <div class="flex py-3 flex place-content-center flex-1 w-full transition-color duration-150 ease-in-out">
                       <StatelessComponent
@@ -122,7 +122,7 @@
             {/if}
             <div
               data-id="secondary_sidebar_widgets"
-              class="overflow-x-hidden overflow-y-auto max-h-[calc(var(--inner-window-height))]"
+              class="overflow-x-hidden p-[1px] overflow-y-auto max-h-[calc(var(--inner-window-height))]"
             >
               <Bonfire.UI.Common.SidebarWidgetsLive
                 widgets={@sidebar_widgets}
@@ -166,7 +166,7 @@
       <aside
         :if={!@without_sidebar}
         data-id="nav_sidebar"
-        class="w-80 px-4 px-safe lg:px-0 lg:mr-3 lg:w-[250px] bg-base-100 lg:bg-base-100 self-stretch min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-full lg:pb-0"
+        class="w-80 px-4 px-safe lg:px-0 lg:mr-3 lg:w-[250px] bg-base-200 self-stretch min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-full lg:pb-0"
       >
         <Bonfire.UI.Common.NavSidebarLive
           :if={!@without_sidebar}

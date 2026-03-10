@@ -271,6 +271,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       |> maybe_put(:to_boundaries, final_to_boundaries)
       |> maybe_put(:clear_reply_data, clear_reply_data)
 
+    # Forward assigns to PersistentLive's SmartInputContainerLive
+    set(socket, set_assigns)
+
     {:noreply,
      socket
      |> assign(opts)
@@ -526,6 +529,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   defp encode_opts(%{} = opts) when opts != %{}, do: do_encode_opts(opts)
+
   defp encode_opts(_), do: nil
   defp do_encode_opts(opts), do: Jason.encode!(Map.drop(opts || %{}, [:text]))
 
