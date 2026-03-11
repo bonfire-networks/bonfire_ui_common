@@ -10,11 +10,11 @@
     id="the_preview_contents"
     class={if !e(@show, false),
       do: "hidden",
-      else: ""}
+      else: "ml-[1px]"}
   >
     {!-- Modal background --}
     {!-- Header with back button --}
-    <div class="sticky top-0 pt-safe z-sticky bg-base-200 lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center h-[60px]">
+    <div class="sticky mb-[1px] top-0 pt-safe z-sticky bg-base-200 lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center h-[60px]">
       <div
         role="banner"
         class="flex items-center place-content-center flex-1 w-full  min-h-[60px] px-4 lg:px-0"

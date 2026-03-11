@@ -1003,13 +1003,13 @@ article[data-id='article_media'][data-media='4'] {
 article.replied::after {
   position: absolute;
   content: '';
-  width: 1px;
+  width: 2px;
   top: 54px;
   bottom: -32px;
-  left: -35px;
+  left: -36px;
   z-index: 1;
-  background-color: var(--color-primary);
-  opacity: 0.3;
+  background-color: var(--color-base-content);
+  opacity: 0.1;
 }
 
 .scrollable {
