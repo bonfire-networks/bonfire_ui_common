@@ -71,7 +71,7 @@
                 >
                   <div
                     :if={!@no_header}
-                    class="sticky top-0 pt-safe z-[999] bg-base-200 lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center h-[60px]"
+                    class="sticky top-0 pt-safe z-[999] bg-base-200 mb-[1px] lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center h-[60px]"
                   >
                     <div class="flex px-4 lg:px-0 place-content-center flex-1 w-full transition-color duration-150 ease-in-out">
                       <StatelessComponent
