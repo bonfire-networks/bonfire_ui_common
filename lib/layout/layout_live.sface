@@ -136,6 +136,13 @@
                 parent_id="layout_right"
               />
 
+              <div class="pb-4 flex items-center justify-between">
+                <Bonfire.UI.Common.LogoLinkLive
+                  name_class="text-base font-semibold text-base-content text-relaxed"
+                  with_name
+                  href="/"
+                />
+              </div>
               <div class="text-xs text-base-content/70">
                 <div class="flex flex-col gap-2 mb-3">
                   <div
