@@ -116,10 +116,12 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        live_action: e(assigns(socket), :live_action, nil),
        socket_connected?: socket_connected?
      )
-     |> tap(fn _ ->
-       # Store reading positions in process dict rather than assign_global
-       # to avoid broadcasting to all components via __context__
-       Process.put(:reading_positions, connect_params["reading_positions"] || %{})
+     |> tap(fn _socket ->
+       # Store reading positions in page LV's process dict as fallback
+       # for when PersistentLive hasn't mounted yet (Presence not available)
+       Enum.each(connect_params["reading_pos"] || %{}, fn {feed_name, cursor} ->
+         Process.put({:reading_pos, feed_name}, cursor)
+       end)
      end)}
   end
 

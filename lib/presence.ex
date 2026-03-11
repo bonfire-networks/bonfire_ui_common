@@ -126,6 +126,30 @@ defmodule Bonfire.UI.Common.Presence do
   end
 
   @doc """
+  Put multiple key-value pairs in a single message to a user's PersistentLive process(es).
+  Accepts a list of `{key, value}` tuples.
+  """
+  def process_put_many(pid, entries) when is_pid(pid) and (is_list(entries) or is_map(entries)) do
+    send(pid, {:process_put_many, entries})
+  end
+
+  def process_put_many(user_id, entries) when is_list(entries) or is_map(entries) do
+    case present_meta(user_id) || [] do
+      [%{pid: pid} | _] when is_pid(pid) -> process_put_many(pid, entries)
+      _ -> false
+    end
+  end
+
+  @doc """
+  Update a map value in the process dictionary of a user's PersistentLive process(es).
+  Merges the given map into the existing value (or sets it if not present).
+  """
+  def process_update(user_or_pid, key, %{} = updates) do
+    existing = process_get(user_or_pid, key) || %{}
+    process_put(user_or_pid, key, Map.merge(existing, updates))
+  end
+
+  @doc """
   Get a value from the process dictionary of a user's PersistentLive process.
   Accepts a user_id or a pid directly.
   """

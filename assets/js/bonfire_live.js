@@ -16,6 +16,7 @@ import { DraggableHooks } from "./draggable_widget";
 import { ScrollHooks } from "./scroll.js";
 import { TranslateHooks } from "./translate.js";
 import { KeyboardShortcutHooks } from "./keyboard_shortcuts.js";
+import { collectBonfireParams, setBonfireParam, removeBonfireParam } from "./local_storage_params";
 import { ExtensionHooks } from "../../../../config/current_flavour/deps.hooks.js";
 import ComponentHooks from "../../../../config/current_flavour/assets/hooks/index.js";
 
@@ -51,6 +52,9 @@ let JS_exec_attr_event = (selector, attr) => {
 	});
 };
 
+// Expose localStorage param helpers globally for hooks in other extensions
+window.Bonfire = Object.assign(window.Bonfire || {}, { setBonfireParam, removeBonfireParam });
+
 let csrfToken = document
 	.querySelector("meta[name='csrf-token']")
 	.getAttribute("content");
@@ -59,42 +63,10 @@ let csrfToken = document
 // }
 let liveSocket = new LiveSocket("/live", Socket, {
 	timeout: 60000,
-	params: () => {
-		const readingPositions = {};
-		const maxAge = 60 * 60 * 1000; // 1 hour
-		const now = Date.now();
-		for (let i = localStorage.length - 1; i >= 0; i--) {
-			const key = localStorage.key(i);
-			if (key.startsWith("reading_pos:")) {
-				try {
-					const val = JSON.parse(localStorage.getItem(key));
-					if (val && val.consumed) {
-						// Already used once — clear it and don't send
-						localStorage.removeItem(key);
-					} else if (val && val.ts && now - val.ts < maxAge) {
-						readingPositions[key.slice("reading_pos:".length)] = val.id;
-					} else {
-						localStorage.removeItem(key); // evict expired
-					}
-				} catch {
-					// Old format (plain string) — migrate or evict
-					const raw = localStorage.getItem(key);
-					if (raw) {
-						readingPositions[key.slice("reading_pos:".length)] = raw;
-						localStorage.setItem(
-							key,
-							JSON.stringify({ id: raw, ts: now }),
-						);
-					}
-				}
-			}
-		}
-		return {
-			_csrf_token: csrfToken,
-			// random_socket_id: random_socket_id
-			reading_positions: readingPositions,
-		};
-	},
+	params: () => ({
+		_csrf_token: csrfToken,
+		...collectBonfireParams(),
+	}),
 	dom: {
 		onBeforeElUpdated(from, to) {
 			if (from._x_dataStack) {
