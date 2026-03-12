@@ -49,7 +49,8 @@
         }
       />
     {#match _}
-      {#if @icon && !e(@without_icon, false)}
+    {#if !e(@without_icon, false)}
+      {#if @icon}
         <Iconify.iconify
           icon={@icon}
           aria-hidden="true"
@@ -67,6 +68,7 @@
             "toggle_button  w-5 h-5"
           }
         />
+      {/if}
       {/if}
   {/case}
   <#Icon

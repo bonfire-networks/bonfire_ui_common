@@ -13,6 +13,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop to_circles, :list, default: []
   prop exclude_circles, :list, default: []
   prop verb_permissions, :map, default: %{}
+  prop without_icon, :boolean, default: false
   prop mentions, :list, default: []
   prop smart_input_opts, :map, default: %{}
   prop showing_within, :atom, default: nil
