@@ -1413,7 +1413,7 @@ div[data-id="labelled_media"]
   @apply hidden lg:flex;
 } */
 
-  .sidebar_menu_item .widget_notification {
+  .sidebar_menu_item .widget_badge {
     @apply !right-0 !left-auto lg:!left-7 lg:!right-auto;
   }
 

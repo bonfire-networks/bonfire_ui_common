@@ -1,5 +1,6 @@
 defmodule Bonfire.UI.Common.PersistentLive do
   use Bonfire.UI.Common.Web, :surface_live_view_child
+  use Arrows
   # alias Bonfire.UI.Common.SmartInputLive
   alias Bonfire.UI.Common.Presence
 
@@ -7,6 +8,15 @@ defmodule Bonfire.UI.Common.PersistentLive do
   @session_key :csrf_socket_token
 
   # on_mount {Bonfire.UI.Common.LivePlugs.Helpers, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
+
+  def sticky_badges do
+    # TODO: get from config or behaviour registry?
+    [:notifications, :inbox]
+  end
+
+  def feed_key(badge_id) do
+    :"#{badge_id}_id"
+  end
 
   def mount(_params, session, socket) do
     # TEMP: monitor memory used by the LV and children
@@ -38,6 +48,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       #  |> debug("socket before assigns")
       |> assign(Map.drop(session, [:context]))
       |> assign_global((session[:context] || %{}) |> debug("persistent_context from session"))
+
       #  |> assign_new(
       #    :__context__,
       #    fn 
@@ -77,23 +88,34 @@ defmodule Bonfire.UI.Common.PersistentLive do
     {:ok, socket, layout: false}
   end
 
-  def update(%{to_circles: new_to_circles} = assigns, socket) do
-    {:ok,
-     socket
-     |> assign(assigns)
-     |> assign(:to_circles, new_to_circles)
-     |> assign_global(
-       _already_live_selected_:
-         Enum.uniq(e(assigns(socket), :__context, :_already_live_selected_, []) ++ [:to_circles])
-     )}
-  end
+  # defp do_update(%{to_circles: new_to_circles} = assigns, socket) do
+  #   {:ok,
+  #    socket
+  #    |> assign(assigns)
+  #    |> assign(:to_circles, new_to_circles)
+  #    |> assign_global(
+  #      _already_live_selected_:
+  #        Enum.uniq(e(assigns(socket), :__context, :_already_live_selected_, []) ++ [:to_circles])
+  #    )
+  #   }
+  # end
 
   # def handle_info(:clear_flash, socket) do
   #   {:noreply,  socket |> clear_flash()}
   # end
 
   defp assign_defaults(socket, fun \\ &assign_new/3) do
+    current_user =
+      current_user(socket) ||
+        if Config.env() == :test,
+          do:
+            Bonfire.UI.Me.LivePlugs.LoadCurrentUser.get_current(
+              current_user_id(socket),
+              assigns(socket)[:current_account_id]
+            )
+
     socket
+    |> assign_global(:current_user, current_user)
     |> fun.(:showing_within, fn -> nil end)
     |> fun.(:context_id, fn -> nil end)
     # |> fun.(:reply_to_id, fn -> nil end)
@@ -124,7 +146,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
   def maybe_send_assigns(assigns) do
     # send(self(), {:assign_persistent_self, persistent_assigns_filter(assigns)})
-    maybe_send(assigns[:__context__], persistent_assigns_filter(assigns))
+    maybe_send(assigns[:__context__] || assigns, persistent_assigns_filter(assigns))
   end
 
   @doc """
@@ -398,6 +420,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       socket
       |> assign(assigns)
       |> assign_global(context)
+      |> assign_account_users()
 
     # When smart_input_opts changes via page navigation, sync context_id from it
     # so stale group context gets cleared when navigating away
@@ -441,5 +464,26 @@ defmodule Bonfire.UI.Common.PersistentLive do
       end
 
     {:reply, value, socket}
+  end
+
+  defp assign_account_users(socket) do
+    # || if Config.env() == :test, do: Bonfire.UI.Me.LivePlugs.LoadCurrentUser.get_current( current_user_id(socket),   assigns(socket)[:current_account_id])
+    current_user = current_user(socket)
+
+    current_account_users =
+      assigns(socket)[:current_account_users] ||
+        if is_struct(current_user) do
+          if Settings.get([Bonfire.Me.Users, :show_switch_users_inline], false,
+               current_user: current_user
+             ) do
+            if account = assigns(socket)[:current_account] || assigns(socket)[:current_account_id] do
+              Bonfire.Me.Users.by_account(account)
+            end
+          end || :skip
+        end
+
+    socket
+    # |> assign_global(:current_user, current_user)
+    |> assign_global(:current_account_users, current_account_users)
   end
 end

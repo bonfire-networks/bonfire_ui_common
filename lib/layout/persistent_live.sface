@@ -4,17 +4,66 @@
   phx-hook="KeyboardShortcuts"
   class="relative z-max"
 >
-  <Bonfire.UI.Common.SmartInputContainerLive
-    :if={!e(@smart_input_opts, :inline_only, nil) and
-      !e(@smart_input_opts, :disable, nil)}
-    id={:smart_input}
-    as_icon
-    to_circles={@to_circles}
-    to_boundaries={@to_boundaries}
-    context_id={@context_id}
-    composer_class="btn fixed right-[30px] bottom-[30px] w-[70px] h-[70px] btn-circle btn-primary floating_smart_input transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
-    smart_input_opts={@smart_input_opts}
-  />
+  <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky  top-0 flex items-center lg:min-h-[48px] justify-between">
+    <div class="flex pt-safe w-full">
+      <div class="pt-2 flex items-center justify-between">
+        <Bonfire.UI.Common.LogoLinkLive href="/" />
+      </div>
+      {!-- <div id="nav_user_menu_portal">
+      </div> --}
+
+      {#if current_user_id(@__context__)}
+        {!-- <.portal id="user_menu_portal" target="#nav_user_menu_portal"> --}
+        <div class="pt-2 flex items-center justify-between w-full">
+          <Bonfire.UI.Common.SmartInputContainerLive
+            :if={!e(@smart_input_opts, :inline_only, nil) and
+              !e(@smart_input_opts, :disable, nil)}
+            id={:smart_input}
+            as_icon
+            to_circles={@to_circles}
+            to_boundaries={@to_boundaries}
+            context_id={@context_id}
+            composer_class="btn btn-circle btn-primary floating_smart_input transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
+            smart_input_opts={@smart_input_opts}
+          />
+
+          {#if @__context__[:current_account_users]}
+            <Bonfire.UI.Common.UserMenuLive />
+          {/if}
+        </div>
+        {!-- </.portal> --}
+      {/if}
+    </div>
+  </div>
+
+  {#if current_user_id(@__context__)}
+    {!-- {#for badge_id <- Bonfire.UI.Common.PersistentLive.sticky_badges()}
+      {#case e(current_user(@__context__), :character, Bonfire.UI.Common.PersistentLive.feed_key(badge_id), nil)}
+        {#match feed_id when is_binary(feed_id)}
+            <.portal id={"sticky_badge_portal_#{feed_id}"} target={"#sticky_badge_#{feed_id}"}>
+              <StatefulComponent
+                id={"unseen_count_#{feed_id}"}
+                feed_id={feed_id}
+                module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
+              />
+            </.portal>
+            {#match _}
+      <!-- no feed_id -->
+      {/case}
+    {/for} --}
+
+    {!-- <.portal id="nav_sticky_portal" target="#nav_sidebar_portal"> --}
+
+    <div data-id="nav_sidebar_sticky_items" class="flex flex-col flex-1 mt-4 h-full px-3 lg:px-0">
+      <Bonfire.UI.Common.ExtensionMenuNavLive
+        parent_id="nav_sticky"
+        nav_items={Bonfire.UI.Common.NavModule.default_nav()}
+      />
+    </div>
+
+    {!-- </.portal> --}
+  {/if}
+
   <!-- Notifications -->
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
   <.portal id="reusable_portal" class="relative z-max" target="body">

@@ -1,0 +1,22 @@
+{#case @badge}
+  {#match nil}
+    <div data-id="no_badge" />
+  {#match badge}
+    {#case @feed_id || debug(badge, "baaadge")[:feed_id] ||
+        e(current_user(@__context__), :character, badge[:feed_key], nil)}
+      {#match feed_id when is_binary(feed_id)}
+        {!-- {#if badge[:id] in Bonfire.UI.Common.PersistentLive.sticky_badges()}
+          <div id={"sticky_badge_#{feed_id}"}></div>
+        {#else}  --}
+        <StatefulComponent
+          id={"unseen_count_#{feed_id}"}
+          feed_id={@feed_id}
+          page={@page}
+          module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
+          feed_id={feed_id}
+        />
+        {!-- {/if} --}
+      {#match _}
+        <div data-id="no_feed_id" />
+    {/case}
+{/case}

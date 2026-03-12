@@ -10,14 +10,14 @@
 >
   {!-- <div
         data-id="layout"
-        data-two-columns={@without_secondary_widgets==true && !@without_sidebar}
-        data-single-column={@without_sidebar}
+        data-two-columns={@without_secondary_widgets==true && @without_sidebar !=true}
+        data-single-column={@without_sidebar==true}
         class="lg:max-w-[var(--spacing-1190)] lg:grid-main lg:grid-full w-full px-0 md:px-4 grid gap-0 md:gap-4 widget xl:px-0 mx-auto"
       >
         <Bonfire.UI.Common.GuestHeaderLive
           selected_tab={@selected_tab}
           page={@page}
-          :if={is_nil(@current_account_id) and @without_sidebar}
+          :if={is_nil(@current_account_id) and @without_sidebar==true}
         /> --}
 
   <div class="drawer xl:drawer-open lg:max-w-[var(--spacing-1190)] mx-auto w-full">
@@ -25,42 +25,25 @@
     <div class="drawer-content px-safe">
       <div
         data-id="layout"
-        data-two-columns={@without_secondary_widgets == true && !@without_sidebar}
-        data-single-column={@without_sidebar}
+        data-two-columns={@without_secondary_widgets == true && @without_sidebar != true}
+        data-single-column={@without_sidebar == true}
         class="grid gap-3 px-0 lg:grid-main"
       >
         <div
           data-id="main_section"
-          data-single-column={@without_sidebar}
+          data-single-column={@without_sidebar == true}
           class="relative w-full gap-2 xl:gap-0 z-[99999] col-span-1"
         >
           <Bonfire.UI.Common.GuestHeaderLive
             selected_tab={@selected_tab}
             page={@page}
-            :if={is_nil(@current_account_id) and @no_header != true and @without_sidebar}
+            :if={is_nil(@current_account_id) and @no_header != true and @without_sidebar == true}
           />
           <div class="h-full mt-0">
             <div class="relative invisible_frame">
               <div class="md:pb-0 md:overflow-y-visible">
                 <Bonfire.UI.Common.PreviewContentLive show={@hide_main} id="preview_content" />
 
-                <Bonfire.UI.Common.PersistentLive
-                  :if={@current_user_id && !@without_sidebar && socket_connected?(@__context__)}
-                  id={:persistent}
-                  sticky
-                  container={{:div, class: "fixed md:sticky top-0 z-[999999999]"}}
-                  session={%{
-                    "context" => %{
-                      sticky: true,
-                      initial_parent_pid: self(),
-                      csrf_token: @csrf_token,
-                      # csrf_socket_token: @__context__[:csrf_socket_token],
-                      current_user_id: @current_user_id,
-                      current_account_id: @current_account_id,
-                      current_user_avatar_url: Media.avatar_url(current_user(@__context__))
-                    }
-                  }}
-                />
                 <div
                   id="inner"
                   class={
@@ -171,20 +154,48 @@
       </div>
     </div>
 
-    <div class="drawer-side z-[999999999999] xl:z-0">
+    <div class={"drawer-side z-[999999999999] xl:z-0 xl:static!", hidden: @without_sidebar == true}>
       <label for="sidebar-drawer" aria-label="close sidebar" class="drawer-overlay" />
       <aside
-        :if={!@without_sidebar}
         data-id="nav_sidebar"
+        data-sidebar-minimal={@without_sidebar == :minimal}
         class="w-80 px-4 px-safe lg:px-0 lg:mr-3 lg:w-[250px] bg-base-200 self-stretch overflow-y-auto min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-full lg:pb-0"
       >
-        <Bonfire.UI.Common.NavSidebarLive
-          :if={!@without_sidebar}
-          page={@page}
-          selected_tab={@selected_tab}
-          nav_items={@nav_items}
-          sidebar_widgets={@sidebar_widgets}
-        />
+        <div class="flex flex-col flex-1 h-full pb-[80px] lg:pb-0">
+          {#if @current_user_id && @without_sidebar != true && socket_connected?(@__context__)}
+            <Bonfire.UI.Common.PersistentLive
+              id={:persistent}
+              sticky
+              container={{:div, class: "z-[999999999]"}}
+              session={%{
+                "context" => %{
+                  sticky: true,
+                  initial_parent_pid: self(),
+                  csrf_token: @csrf_token,
+                  # csrf_socket_token: @__context__[:csrf_socket_token],
+                  current_user_id: @current_user_id,
+                  current_account_id: @current_account_id,
+                  current_user_avatar_url: Media.avatar_url(current_user(@__context__))
+                }
+              }}
+            />
+          {#else}
+            <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
+              <div class="flex pt-safe w-full">
+                <div class="pt-2 flex items-center justify-between">
+                  <Bonfire.UI.Common.LogoLinkLive href="/" />
+                </div>
+              </div>
+            </div>
+          {/if}
+
+          <Bonfire.UI.Common.NavSidebarLive
+            page={@page}
+            selected_tab={@selected_tab}
+            nav_items={@nav_items}
+            sidebar_widgets={@sidebar_widgets}
+          />
+        </div>
       </aside>
     </div>
   </div>

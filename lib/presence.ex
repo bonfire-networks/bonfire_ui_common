@@ -117,12 +117,16 @@ defmodule Bonfire.UI.Common.Presence do
   Accepts a user_id or a pid directly.
   """
   def process_put(pid, key, value) when is_pid(pid) do
-    send(pid, {:process_put, key, value})
+    if pid == self() do
+      Process.put(key, value)
+    else
+      send(pid, {:process_put, key, value})
+    end
   end
 
   def process_put(user_id, key, value) do
     (present_meta(user_id) || [])
-    |> Enum.each(&send(&1.pid, {:process_put, key, value}))
+    |> Enum.each(&process_put(&1, key, value))
   end
 
   @doc """
@@ -130,7 +134,11 @@ defmodule Bonfire.UI.Common.Presence do
   Accepts a list of `{key, value}` tuples.
   """
   def process_put_many(pid, entries) when is_pid(pid) and (is_list(entries) or is_map(entries)) do
-    send(pid, {:process_put_many, entries})
+    if pid == self() do
+      Enum.map(entries, fn key, value -> Process.put(key, value) end)
+    else
+      send(pid, {:process_put_many, entries})
+    end
   end
 
   def process_put_many(user_id, entries) when is_list(entries) or is_map(entries) do
@@ -156,14 +164,18 @@ defmodule Bonfire.UI.Common.Presence do
   def process_get(pid, key, default \\ nil)
 
   def process_get(pid, key, default) when is_pid(pid) do
-    # call PersistentLive LV's genserver:
-    # GenServer.call(pid, {:process_get, key, default})
-    # read PersistentLive process dict directly:
-    case Process.info(pid, {:dictionary, key}) do
-      {_, :undefined} -> default
-      {_, value} -> value
-      # process dead
-      _ -> default
+    if pid == self() do
+      Process.get(key, default)
+    else
+      # call PersistentLive LV's genserver:
+      # GenServer.call(pid, {:process_get, key, default})
+      # read PersistentLive process dict directly:
+      case Process.info(pid, {:dictionary, key}) do
+        {_, :undefined} -> default
+        {_, value} -> value
+        # process dead
+        _ -> default
+      end
     end
   end
 

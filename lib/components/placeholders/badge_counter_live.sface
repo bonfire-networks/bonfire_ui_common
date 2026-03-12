@@ -1,4 +1,4 @@
-<div id={"badge_counter_#{@id}"}>
+<div id={@id || "unseen_count_#{@feed_id}"} data-id="unseen_count">
   {#if @count > 0}
     <div
       :if={@count > 0}

@@ -6,18 +6,25 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
   prop counter_class, :css_class, default: ""
 
   prop count, :integer, default: 0
-  prop feed_id, :any, default: nil
+  prop feed_id, :any, required: true
 
   # defaults to current user
   prop for_user, :any, default: nil
 
   prop non_async, :boolean, default: false
 
-  def update(%{count_increment: inc}, socket) do
-    new_count = e(assigns(socket), :count, 0) + inc
-    feed_id = e(assigns(socket), :feed_id, nil)
+  # When true, the component lives in PersistentLive and never re-mounts,
+  # so we skip process dict caching and defensive re-mount logic
 
-    if feed_id, do: persistent_put(socket, feed_id, new_count)
+  def update(%{count_increment: inc} = assigns, socket) do
+    new_count = e(assigns(socket), :count, 0) + inc
+    feed_id = e(assigns, :feed_id, nil) || e(assigns(socket), :feed_id, nil)
+
+    persistent? =
+      e(assigns, :__context__, :sticky, nil) || e(assigns(socket), :__context__, :sticky, nil)
+
+    if feed_id and !persistent?,
+      do: persistent_put(socket, feed_id, new_count)
 
     {:ok, assign(socket, count: new_count)}
   end
@@ -26,7 +33,11 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
     feed_id = e(assigns, :feed_id, nil) || e(assigns(socket), :feed_id, nil)
     count = e(assigns, :count, 0)
 
-    if feed_id, do: persistent_put(socket, feed_id, count)
+    persistent? =
+      e(assigns, :__context__, :sticky, nil) || e(assigns(socket), :__context__, :sticky, nil)
+
+    if feed_id && !persistent?,
+      do: persistent_put(socket, feed_id, count)
 
     {:ok, assign(socket, assigns)}
   end
@@ -47,68 +58,71 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
     socket = assign(socket, assigns)
     for_user = e(assigns, :for_user, nil) || current_user(socket)
 
-    case e(assigns, :id, nil) do
-      component_name when not is_nil(component_name) and not is_nil(for_user) ->
-        feed_id =
-          e(assigns, :feed_id, nil) ||
-            Bonfire.Common.Utils.maybe_apply(
-              Bonfire.Social.Feeds,
-              :my_feed_id,
-              [component_name, for_user]
-            )
+    persistent? =
+      e(assigns, :__context__, :sticky, nil) || e(assigns(socket), :__context__, :sticky, nil)
 
-        if e(assigns, :non_async, false) do
-          unseen_count =
-            Bonfire.Common.Utils.maybe_apply(
-              Bonfire.Social.FeedActivities,
-              :unseen_count,
-              [feed_id, current_user: for_user]
-            )
+    component_name = e(assigns, :id, nil)
 
-          persistent_put(socket, feed_id, unseen_count)
+    if feed_id = e(assigns, :feed_id, nil) || e(assigns(socket), :feed_id, nil) do
+      if e(assigns, :non_async, false) do
+        #  just load the count but don't subscribe to pubsub
 
-          {:ok,
-           socket
-           |> assign(count: unseen_count, count_loaded: true)}
+        load_count(socket, feed_id, for_user)
+      else
+        # subscribe to count updates
+        PubSub.subscribe("unseen_count:#{feed_id}", socket)
+
+        # For persistent badges (in PersistentLive), skip process dict cache
+        # since we ARE the persistent process and never re-mount
+        cached_count = if !persistent?, do: persistent_get(socket, feed_id)
+
+        if is_integer(cached_count) do
+          {:ok, assign(socket, count: cached_count, count_loaded: true)}
         else
-          # subscribe to count updates
-          PubSub.subscribe("unseen_count:#{component_name}:#{feed_id}", socket)
-
-          # Check PersistentLive's process dictionary — it survives navigation,
-          # so this avoids re-querying on every component re-mount
-          case persistent_get(socket, feed_id) do
-            count when is_integer(count) ->
-              {:ok, assign(socket, count: count, count_loaded: true)}
-
-            _ ->
-              pid = self()
-
-              apply_task(:start, fn ->
-                unseen_count =
-                  Bonfire.Common.Utils.maybe_apply(
-                    Bonfire.Social.FeedActivities,
-                    :unseen_count,
-                    [feed_id, current_user: for_user]
-                  )
-
-                # send_update triggers update(%{count_loaded: true}, ...) in the LV process,
-                # which also stores the count in PersistentLive's process dict
-                if socket_connected?(socket) != false,
-                  do:
-                    maybe_send_update(
-                      __MODULE__,
-                      component_name,
-                      [count_loaded: true, count: unseen_count, feed_id: feed_id],
-                      pid
-                    )
-              end)
-
-              {:ok, socket}
-          end
+          maybe_async_load_count(socket, component_name, feed_id, for_user, persistent?)
         end
+      end
+    else
+      {:ok, socket}
+    end
+  end
 
-      _ ->
-        {:ok, socket}
+  defp load_count(socket, feed_id, for_user) do
+    unseen_count =
+      Bonfire.Common.Utils.maybe_apply(
+        Bonfire.Social.FeedActivities,
+        :unseen_count,
+        [feed_id, current_user: for_user]
+      )
+
+    {:ok,
+     socket
+     |> assign(count: unseen_count, count_loaded: true)}
+  end
+
+  defp maybe_async_load_count(socket, component_name, feed_id, for_user, persistent?) do
+    if socket_connected?(socket) do
+      pid = self()
+
+      apply_task(:start, fn ->
+        unseen_count =
+          Bonfire.Common.Utils.maybe_apply(
+            Bonfire.Social.FeedActivities,
+            :unseen_count,
+            [feed_id, current_user: for_user]
+          )
+
+        maybe_send_update(
+          __MODULE__,
+          component_name,
+          [count_loaded: true, count: unseen_count, feed_id: feed_id, persistent: persistent?],
+          pid
+        )
+      end)
+
+      {:ok, socket}
+    else
+      load_count(socket, feed_id, for_user)
     end
   end
 

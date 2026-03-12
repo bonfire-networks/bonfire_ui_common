@@ -88,7 +88,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
           case assigns[:nav_items_extension] do
             nil ->
               # nav for all extensions configured in `:ui, :default_nav_extensions`
-              Bonfire.UI.Common.NavModule.default_nav()
+              if !socket_connected?(assigns), do: Bonfire.UI.Common.NavModule.default_nav()
 
             true ->
               # show nav for current extension (if any)

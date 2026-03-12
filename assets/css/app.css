@@ -59,6 +59,10 @@ body {
 
 
 
+[data-id="nav_sidebar"][data-sidebar-minimal] #extension_nav_widgets_nav_sticky {
+  display: none;
+}
+
 .max-h-liveselect {
   max-height: 150px !important;
 }

@@ -52,20 +52,18 @@
     {#match nil}
     {#match badge}
       <div
-        style="left: 20px"
-        data-highlighted={Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)}
         :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
-        class="flex absolute left-[20px] top-[-2px] items-center place-content-center widget_notification"
+        data-id="widget_badge"
+        data-highlighted={Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)}
+        class="flex absolute left-[20px] top-[-2px] items-center place-content-center"
+        style="left: 20px"
       >
-        {#case badge[:feed_id] || e(current_user(@__context__), :character, badge[:feed_key], nil)}
-          {#match feed_id}
-            <StatefulComponent
-              id={feed_id || deterministic_dom_id("badge", badge[:id], nil, @widget[:page] || @widget[:name])}
-              page={@page}
-              module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
-              feed_id={feed_id}
-            />
-        {/case}
+        <StatelessComponent
+          module={maybe_component(Bonfire.UI.Common.BadgeCounter, @__context__)}
+          badge={badge}
+          page={@page}
+          widget={@widget}
+        />
       </div>
   {/case}
 </LinkLive>
