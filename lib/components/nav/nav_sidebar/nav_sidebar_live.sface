@@ -29,13 +29,13 @@
     </div>
   </div>
 {#else}
-  <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
+  {!-- <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
     <div class="flex pt-safe w-full">
       <div class="pt-2 flex items-center justify-between">
         <Bonfire.UI.Common.LogoLinkLive href="/" />
       </div>
     </div>
-  </div>
+  </div> --}
 
   <nav class="mt-4 mx-3 lg:mx-0">
     <ul class="menu p-0 w-full gap-0">
