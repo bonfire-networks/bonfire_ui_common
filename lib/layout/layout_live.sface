@@ -136,7 +136,7 @@
                 parent_id="layout_right"
               />
 
-              <div class="pb-4 flex items-center justify-between">
+              <div :if={@current_user_id} class="pb-4 flex items-center justify-between">
                 <Bonfire.UI.Common.LogoLinkLive
                   name_class="text-base font-semibold text-base-content text-relaxed"
                   with_name

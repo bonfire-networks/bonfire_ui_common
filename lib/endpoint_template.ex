@@ -174,10 +174,12 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       # TODO: serve priv/static from any extensions that have one as well?
 
-      plug(Phoenix.LiveDashboard.RequestLogger,
-        param_key: "request_logger",
-        cookie_key: "request_logger"
-      )
+      if System.get_env("LIVE_DASHBOARD_LOGGER") == "true" do
+        plug(Phoenix.LiveDashboard.RequestLogger,
+          param_key: "request_logger",
+          cookie_key: "request_logger"
+        )
+      end
 
       plug(Plug.RequestId)
 

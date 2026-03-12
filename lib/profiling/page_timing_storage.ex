@@ -13,13 +13,10 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
+  @persistent_term_key {__MODULE__, :enabled?}
+
   def enabled? do
-    case Process.whereis(__MODULE__) do
-      nil -> false
-      _pid -> GenServer.call(__MODULE__, :enabled?)
-    end
-  catch
-    :exit, _ -> false
+    :persistent_term.get(@persistent_term_key, false)
   end
 
   def enable do
@@ -32,6 +29,10 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
     GenServer.call(__MODULE__, :disable)
   catch
     :exit, _ -> {:error, :not_running}
+  end
+
+  defp sync_persistent_term(enabled) do
+    :persistent_term.put(@persistent_term_key, enabled)
   end
 
   def record_request(request_data) do
@@ -105,6 +106,8 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
 
     table = :ets.new(@table_name, [:named_table, :set, :public, read_concurrency: true])
 
+    sync_persistent_term(enabled)
+
     {:ok,
      %{
        table: table,
@@ -121,11 +124,13 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
 
   @impl true
   def handle_call(:enable, _from, state) do
+    sync_persistent_term(true)
     {:reply, :ok, %{state | enabled: true}}
   end
 
   @impl true
   def handle_call(:disable, _from, state) do
+    sync_persistent_term(false)
     {:reply, :ok, %{state | enabled: false}}
   end
 

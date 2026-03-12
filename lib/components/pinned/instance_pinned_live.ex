@@ -3,6 +3,7 @@ defmodule Bonfire.UI.Common.InstancePinnedLive do
 
   prop title, :string, default: nil
   prop object_types, :any, default: []
+  prop entries, :any, default: []
 
   def update(assigns, socket) do
     socket = assign(socket, assigns)

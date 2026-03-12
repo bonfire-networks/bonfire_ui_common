@@ -1,11 +1,18 @@
 <div class="flex flex-col flex-1 h-full pb-[80px] lg:pb-0">
   <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
     <div class="flex pt-safe w-full">
+      <div :if={is_nil(current_user_id(@__context__))} class="pt-2">
+        <Bonfire.UI.Common.LogoLinkLive
+          name_class="text-base font-semibold text-base-content text-relaxed"
+          with_name
+          href="/"
+        />
+      </div>
       <!-- <div class="pt-2 flex items-center justify-between">
         <Bonfire.UI.Common.LogoLinkLive href="/" />
       </div> -->
       <div :if={current_user_id(@__context__)} class="pt-2 flex items-center justify-between w-full">
-        <Bonfire.UI.Common.UserMenuLive :if={current_user(@__context__)} />
+        <Bonfire.UI.Common.UserMenuLive />
       </div>
     </div>
   </div>
