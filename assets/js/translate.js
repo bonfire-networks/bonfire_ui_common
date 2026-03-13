@@ -58,6 +58,11 @@ function setCache(key, value) {
   }
 }
 
+function sameBaseLanguage(a, b) {
+  if (a === b) return true;
+  return a.split(/[-_]/)[0].toLowerCase() === b.split(/[-_]/)[0].toLowerCase();
+}
+
 // Cache Translator instances by language pair to avoid redundant creation
 const translatorCache = new Map();
 
@@ -142,7 +147,7 @@ TranslateHooks.Translate = {
 
     this.logger.log('Capabilities:', { chromeAvailable, serverAvailable });
 
-    if (this.languagesMatch()) {
+    if (this.sourceLanguage && sameBaseLanguage(this.sourceLanguage, this.targetLanguage)) {
       this.logger.log('Source and target languages match, hiding all buttons');
     } else if (chromeAvailable && this.clientBtn) {
       this.activeBtn = this.clientBtn;
@@ -168,10 +173,6 @@ TranslateHooks.Translate = {
 
     this.logger.log('Hook setup complete, active button:',
       this.activeBtn === this.clientBtn ? 'client' : 'server');
-  },
-
-  languagesMatch() {
-    return this.sourceLanguage && this.sourceLanguage === this.targetLanguage;
   },
 
   updateActiveButtonText() {
@@ -316,7 +317,7 @@ TranslateHooks.Translate = {
       if (!sourceLanguage) {
         return { index, translation: null, error: 'Could not detect language' };
       }
-      if (sourceLanguage === this.targetLanguage) {
+      if (sameBaseLanguage(sourceLanguage, this.targetLanguage)) {
         this.logger.log(`Element ${index}: already in target language, skipping`);
         return { index, translation: originalText, error: null };
       }

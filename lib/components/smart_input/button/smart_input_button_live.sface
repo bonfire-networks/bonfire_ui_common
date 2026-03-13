@@ -49,26 +49,26 @@
         }
       />
     {#match _}
-    {#if !e(@without_icon, false)}
-      {#if @icon}
-        <Iconify.iconify
-          icon={@icon}
-          aria-hidden="true"
-          class={
-            @icon_class,
-            "toggle_button  w-5 h-5"
-          }
-        />
-      {#else}
-        <#Icon
-          iconify="ph:note-pencil-duotone"
-          aria-hidden="true"
-          class={
-            @icon_class,
-            "toggle_button  w-5 h-5"
-          }
-        />
-      {/if}
+      {#if !e(@without_icon, false)}
+        {#if @icon}
+          <Iconify.iconify
+            icon={@icon}
+            aria-hidden="true"
+            class={
+              @icon_class,
+              "toggle_button  w-5 h-5"
+            }
+          />
+        {#else}
+          <#Icon
+            iconify="ph:note-pencil-duotone"
+            aria-hidden="true"
+            class={
+              @icon_class,
+              "toggle_button  w-5 h-5"
+            }
+          />
+        {/if}
       {/if}
   {/case}
   <#Icon

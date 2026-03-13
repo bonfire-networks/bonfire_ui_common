@@ -60,7 +60,8 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
 
     persistent? =
       e(assigns, :__context__, :sticky, nil) || e(assigns(socket), :__context__, :sticky, nil)
-    non_async? =   e(assigns, :non_async, false) || e(assigns(socket), :non_async, false)
+
+    non_async? = e(assigns, :non_async, false) || e(assigns(socket), :non_async, false)
 
     component_name = e(assigns, :id, nil)
 
@@ -88,9 +89,7 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
         # else
         #   maybe_async_load_count(socket, component_name, feed_id, for_user, persistent?)
         # end
-      
       end
-
     else
       {:ok, socket}
     end
