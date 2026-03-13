@@ -1115,6 +1115,33 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  def maybe_loading_msg do
+    msgs =
+      Config.get(
+        :loading_messages,
+        [
+          "Loading...",
+          "Communing with the fediverse...",
+          "Another world is loading...",
+          "Seizing the means of communication...",
+          "Manifesting digital commons...",
+          "Decentralising all the things...",
+          "Tuning into the mycelial network...",
+          "Queering the database...",
+          "Liberating your data...",
+          "Building solidarity networks...",
+          "Organising the bits..."
+        ],
+        name: l("Loading messages"),
+        description:
+          l(
+            "Some short messages to show (picked randomly each time) when the page or something is loading."
+          )
+      )
+
+    Enum.random(msgs)
+  end
+
   def hero_icons_list do
     with {:ok, list} <- :application.get_key(:surface_heroicons, :modules) do
       list

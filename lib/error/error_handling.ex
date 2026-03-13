@@ -257,8 +257,17 @@ defmodule Bonfire.UI.Common.ErrorHandling do
       {:cont, %Phoenix.LiveView.Socket{} = socket} ->
         {:cont, socket}
 
+      {:cont, %Phoenix.LiveView.Socket{} = socket, opts} ->
+        {:cont, socket, opts}
+
       {:halt, %Phoenix.LiveView.Socket{} = socket} ->
         {:halt, socket}
+
+      {:halt, %Phoenix.LiveView.Socket{} = socket, opts} ->
+        {:halt, socket}
+
+      {:halt, reply, %Phoenix.LiveView.Socket{} = socket} ->
+        {:halt, reply, socket}
 
       %Phoenix.LiveView.Socket{} = socket ->
         with_return_key(socket, return_key)

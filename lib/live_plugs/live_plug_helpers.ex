@@ -10,16 +10,28 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
         init_mount(params, session, socket)
         |> Phoenix.Component.assign(:on_mount_plugs, modules)
 
-      case Enum.reduce_while(modules, socket, fn module, socket ->
-             with {:halt, socket} <-
-                    maybe_apply(module, :on_mount, [:default, params, session, socket]) do
-               # to halt both the reduce and the on_mount
-               {:halt, {:halt, socket}}
+      case Enum.reduce_while(modules, {:cont, socket, []}, fn module, {_, socket, acc_opts} ->
+             case maybe_apply(module, :on_mount, [:default, params, session, socket]) do
+               {:halt, socket} ->
+                 {:halt, {:halt, socket, acc_opts}}
+
+               {:halt, socket, opts} ->
+                 {:halt, {:halt, socket, Keyword.merge(acc_opts, opts)}}
+
+               {:cont, socket, opts} ->
+                 {:cont, {:cont, socket, Keyword.merge(acc_opts, opts)}}
+
+               {:cont, socket} ->
+                 {:cont, {:cont, socket, acc_opts}}
+
+               %Phoenix.LiveView.Socket{} = socket ->
+                 {:cont, {:cont, socket, acc_opts}}
              end
            end) do
-        {:halt, socket} -> {:halt, socket}
-        {:cont, socket} -> mount_done(socket)
-        socket -> mount_done(socket)
+        {:halt, socket, []} -> {:halt, socket}
+        {:halt, socket, opts} -> {:halt, socket, opts}
+        {:cont, socket, []} -> mount_done(socket)
+        {:cont, socket, opts} -> mount_done(socket, opts)
       end
     end)
   end
@@ -130,7 +142,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
     if socket.private[:connect_info], do: Phoenix.LiveView.get_connect_info(socket, key)
   end
 
-  defp mount_done(socket) do
+  defp mount_done(socket, opts \\ []) do
     if not module_enabled?(socket.view, socket) do
       # check here because we need current_user
       {:halt,
@@ -145,13 +157,16 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        )
        |> redirect_to("/error/disabled")}
     else
-      {:cont,
-       assign_global(
-         socket,
-         ui_compact: Settings.get([:ui, :compact], nil, assigns(socket))
-       )}
+      socket =
+        assign_global(
+          socket,
+          ui_compact: Settings.get([:ui, :compact], nil, assigns(socket))
+        )
 
-      # |> debug()
+      case opts do
+        [] -> {:cont, socket}
+        opts -> {:cont, socket, opts}
+      end
     end
   end
 

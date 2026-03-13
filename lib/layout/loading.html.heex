@@ -1,0 +1,17 @@
+<div class="flex items-center justify-center min-h-screen bg-base-100">
+  <div class="flex flex-col items-center gap-4">
+    <div class="m-6">{maybe_loading_msg() || l("Loading...")}</div>
+
+    <%= case maybe_cute_gif() do %>
+      <% gif when is_binary(gif) -> %>
+        <div class="flex flex-row items-center justify-center">
+          <img src={gif} />
+        </div>
+      <% _ -> %>
+    <% end %>
+
+    <div>
+      {@inner_content}
+    </div>
+  </div>
+</div>
