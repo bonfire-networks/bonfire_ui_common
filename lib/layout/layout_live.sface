@@ -157,7 +157,10 @@
       </div>
     </div>
 
-    <div class={"drawer-side z-[999999999999] xl:z-0 sticky", hidden: @without_sidebar == true}>
+    <div class={
+      "drawer-side z-[999999999999] xl:z-0 xl:!sticky xl:!top-0 xl:!h-screen ",
+      hidden: @without_sidebar == true
+    }>
       <label for="sidebar-drawer" aria-label="close sidebar" class="drawer-overlay" />
       <aside
         data-id="nav_sidebar"
