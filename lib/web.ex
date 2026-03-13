@@ -411,10 +411,15 @@ defmodule Bonfire.UI.Common.Web do
         def mount(params, session, socket) do
           import Bonfire.UI.Common.Timing
 
-          time_section_accumulate :"mount_#{unquote(env.module)}" do
-            undead_mount(socket, fn ->
-              super(params, session, socket)
-            end)
+          if socket.assigns[:__loading_screen__] ||
+               socket.assigns[:__context__][:__loading_screen__] do
+            {:ok, socket}
+          else
+            time_section_accumulate :"mount_#{unquote(env.module)}" do
+              undead_mount(socket, fn ->
+                super(params, session, socket)
+              end)
+            end
           end
         end
       end
@@ -463,17 +468,29 @@ defmodule Bonfire.UI.Common.Web do
         defoverridable handle_params: 3
 
         def handle_params(params, uri, socket) do
-          Bonfire.UI.Common.LiveHandlers.handle_params(params, uri, socket, __MODULE__, fn params,
-                                                                                           uri,
-                                                                                           socket ->
-            super(params, uri, socket)
-          end)
+          if socket.assigns[:__loading_screen__] do
+            {:noreply, socket}
+          else
+            Bonfire.UI.Common.LiveHandlers.handle_params(
+              params,
+              uri,
+              socket,
+              __MODULE__,
+              fn params, uri, socket ->
+                super(params, uri, socket)
+              end
+            )
+          end
         end
       end
     else
       quote do
         def handle_params(params, uri, socket) do
-          Bonfire.UI.Common.LiveHandlers.handle_params(params, uri, socket, __MODULE__)
+          if socket.assigns[:__loading_screen__] do
+            {:noreply, socket}
+          else
+            Bonfire.UI.Common.LiveHandlers.handle_params(params, uri, socket, __MODULE__)
+          end
         end
       end
     end
@@ -591,6 +608,12 @@ defmodule Bonfire.UI.Common.Web do
         time_section_accumulate :"render_#{unquote(env.module)}" do
           undead_render(assigns, fn ->
             case assigns do
+              %{__loading_screen__: true} ->
+                Bonfire.UI.Common.LoadingScreenLive.render(assigns)
+
+              %{__context__: %{__loading_screen__: true}} ->
+                Bonfire.UI.Common.LoadingScreenLive.render(assigns)
+
               %{__replace_render__with__: _} ->
                 Bonfire.UI.Common.ErrorComponentLive.replace(assigns)
 

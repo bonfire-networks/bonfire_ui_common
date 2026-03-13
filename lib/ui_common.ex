@@ -745,7 +745,7 @@ defmodule Bonfire.UI.Common do
   end
 
   defp do_redirect_to(%Phoenix.LiveView.Socket{redirected: nil} = socket, opts) do
-    if opts[:to] do
+    if opts[:to] && socket_connected?(socket) do
       Phoenix.LiveView.push_navigate(
         socket,
         opts

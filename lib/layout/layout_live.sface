@@ -94,7 +94,8 @@
             data-id="right_nav_and_widgets"
             class="order-last sticky w-auto lg:top-0 mt-0 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
           >
-            {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
+            {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive and
+                socket_connected?(@__context__)}
               <div class={[
                 "w-full h-[60px] hidden lg:flex items-center",
                 "md:hidden lg:flex": @without_secondary_widgets != :never
@@ -119,35 +120,37 @@
                 parent_id="layout_right"
               />
 
-              <div :if={@current_user_id} class="pb-4 flex items-center justify-between">
-                <Bonfire.UI.Common.LogoLinkLive
-                  name_class="text-base font-semibold text-base-content text-relaxed"
-                  with_name
-                  href="/"
-                />
-              </div>
-              <div class="text-xs text-base-content/70">
-                <div class="flex flex-col gap-2 mb-3">
-                  <div
-                    :if={is_nil(@current_user_id)}
-                    style={"background-image: url(#{Config.get([:ui, :theme, :instance_image], nil)})"}
-                    class="bg-center bg-no-repeat h-[185px] bg-cover bg-white w-full rounded"
+              {#if !@current_user_id or socket_connected?(@__context__)}
+                <div :if={@current_user_id} class="pb-4 flex items-center justify-between">
+                  <Bonfire.UI.Common.LogoLinkLive
+                    name_class="text-base font-semibold text-base-content text-relaxed"
+                    with_name
+                    href="/"
                   />
-                  <h2 :if={is_nil(@current_user_id)} class="text-lg text-base-content font-semibold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}</h2>
-                  <div class={
-                    "prose prose-sm text-base-content",
-                    "!text-base-content/70 text-xs": not is_nil(@current_user_id)
-                  }>{rich(Config.get([:ui, :theme, :instance_description]))}</div>
                 </div>
-                <Bonfire.UI.Common.ImpressumLive />
-              </div>
-              <div :if={is_nil(@current_user_id)} class="flex flex-col gap-2 mt-3">
-                <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="layout">{l("Log in")}</LinkLive>
+                <div class="text-xs text-base-content/70">
+                  <div class="flex flex-col gap-2 mb-3">
+                    <div
+                      :if={is_nil(@current_user_id)}
+                      style={"background-image: url(#{Config.get([:ui, :theme, :instance_image], nil)})"}
+                      class="bg-center bg-no-repeat h-[185px] bg-cover bg-white w-full rounded"
+                    />
+                    <h2 :if={is_nil(@current_user_id)} class="text-lg text-base-content font-semibold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}</h2>
+                    <div class={
+                      "prose prose-sm text-base-content",
+                      "!text-base-content/70 text-xs": not is_nil(@current_user_id)
+                    }>{rich(Config.get([:ui, :theme, :instance_description]))}</div>
+                  </div>
+                  <Bonfire.UI.Common.ImpressumLive />
+                </div>
+                <div :if={is_nil(@current_user_id)} class="flex flex-col gap-2 mt-3">
+                  <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="layout">{l("Log in")}</LinkLive>
 
-                {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-                  <LinkLive to={path(:signup)} class="btn btn-primary btn-outline" parent_id="layout">{l("Create account")}</LinkLive>
-                {/if}
-              </div>
+                  {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+                    <LinkLive to={path(:signup)} class="btn btn-primary btn-outline" parent_id="layout">{l("Create account")}</LinkLive>
+                  {/if}
+                </div>
+              {/if}
             </div>
           </div>
         </div>
@@ -180,7 +183,10 @@
               }}
             />
           {#else}
-            <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
+            <div
+              :if={!@current_user_id}
+              class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between"
+            >
               <div class="flex pt-safe w-full">
                 <div class="pt-2 flex items-center justify-between">
                   <Bonfire.UI.Common.LogoLinkLive href="/" />
