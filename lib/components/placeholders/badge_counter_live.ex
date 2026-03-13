@@ -23,8 +23,8 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
     persistent? =
       e(assigns, :__context__, :sticky, nil) || e(assigns(socket), :__context__, :sticky, nil)
 
-    if feed_id and !persistent?,
-      do: persistent_put(socket, feed_id, new_count)
+    # if feed_id and !persistent?,
+    #   do: persistent_put(socket, feed_id, new_count)
 
     {:ok, assign(socket, count: new_count)}
   end
@@ -36,8 +36,8 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
     persistent? =
       e(assigns, :__context__, :sticky, nil) || e(assigns(socket), :__context__, :sticky, nil)
 
-    if feed_id && !persistent?,
-      do: persistent_put(socket, feed_id, count)
+    # if feed_id && !persistent?,
+    #   do: persistent_put(socket, feed_id, count)
 
     {:ok, assign(socket, assigns)}
   end
@@ -60,11 +60,12 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
 
     persistent? =
       e(assigns, :__context__, :sticky, nil) || e(assigns(socket), :__context__, :sticky, nil)
+    non_async? =   e(assigns, :non_async, false) || e(assigns(socket), :non_async, false)
 
     component_name = e(assigns, :id, nil)
 
     if feed_id = e(assigns, :feed_id, nil) || e(assigns(socket), :feed_id, nil) do
-      if e(assigns, :non_async, false) do
+      if non_async? do
         #  just load the count but don't subscribe to pubsub
 
         load_count(socket, feed_id, for_user)
@@ -72,16 +73,24 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
         # subscribe to count updates
         PubSub.subscribe("unseen_count:#{feed_id}", socket)
 
-        # For persistent badges (in PersistentLive), skip process dict cache
-        # since we ARE the persistent process and never re-mount
-        cached_count = if !persistent?, do: persistent_get(socket, feed_id)
-
-        if is_integer(cached_count) do
-          {:ok, assign(socket, count: cached_count, count_loaded: true)}
+        if persistent? do
+          load_count(socket, feed_id, for_user)
         else
           maybe_async_load_count(socket, component_name, feed_id, for_user, persistent?)
         end
+
+        # For persistent badges (in PersistentLive), skip process dict cache
+        # since we ARE the persistent process and never re-mount
+        # cached_count = if !persistent?, do: persistent_get(socket, feed_id)
+
+        # if is_integer(cached_count) do
+        #   {:ok, assign(socket, count: cached_count, count_loaded: true)}
+        # else
+        #   maybe_async_load_count(socket, component_name, feed_id, for_user, persistent?)
+        # end
+      
       end
+
     else
       {:ok, socket}
     end
@@ -126,25 +135,25 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
     end
   end
 
-  # Store a badge count in PersistentLive's process dict (survives navigation)
-  defp persistent_put(socket, feed_id, count) do
-    Bonfire.UI.Common.Presence.process_put(
-      current_user_id(socket),
-      {:badge_count, feed_id},
-      count
-    )
-  end
+  # # Store a badge count in PersistentLive's process dict (survives navigation)
+  # defp persistent_put(socket, feed_id, count) do
+  #   Bonfire.UI.Common.Presence.process_put(
+  #     current_user_id(socket),
+  #     {:badge_count, feed_id},
+  #     count
+  #   )
+  # end
 
-  # Read a badge count from PersistentLive's process dict
-  defp persistent_get(socket, feed_id) do
-    try do
-      Bonfire.UI.Common.Presence.process_get(
-        current_user_id(socket),
-        {:badge_count, feed_id},
-        nil
-      )
-    catch
-      :exit, _ -> nil
-    end
-  end
+  # # Read a badge count from PersistentLive's process dict
+  # defp persistent_get(socket, feed_id) do
+  #   try do
+  #     Bonfire.UI.Common.Presence.process_get(
+  #       current_user_id(socket),
+  #       {:badge_count, feed_id},
+  #       nil
+  #     )
+  #   catch
+  #     :exit, _ -> nil
+  #   end
+  # end
 end
