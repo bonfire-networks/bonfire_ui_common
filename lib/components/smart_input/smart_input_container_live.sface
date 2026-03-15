@@ -1,6 +1,6 @@
 <div class="flex-1">
   <div>
-    <div class="sticky top-0 flex items-center flex-1 w-full justify-end lg:justify-start pl-4 pb-2">
+    <div class="sticky top-0 flex items-center flex-1 w-full justify-end lg:justify-start">
       {!-- <Bonfire.UI.Common.SmartInputButtonsLive
       :if={!e(@smart_input_opts, :hide_buttons, nil)}
       smart_input_opts={@smart_input_opts}

@@ -18,10 +18,23 @@
 
       {#if current_user_id(@__context__)}
         {!-- <.portal id="user_menu_portal" target="#nav_user_menu_portal"> --}
-        <div class="pt-2 flex items-center justify-between w-full">
-          {#if @__context__[:current_account_users]}
+        <div class="pt-4 gap-3 flex flex-col w-full">
+          <!-- {#if @__context__[:current_account_users]} -->
             <Bonfire.UI.Common.UserMenuLive />
-          {/if}
+          <!-- {/if} -->
+          <div class="flex items-center flex-1 w-full justify-end lg:justify-start px-3 pt-2">
+        <Bonfire.UI.Common.SmartInputContainerLive
+        :if={!e(@smart_input_opts, :inline_only, nil) and
+          !e(@smart_input_opts, :disable, nil)}
+        id={:smart_input}
+        to_circles={@to_circles}
+        to_boundaries={@to_boundaries}
+        context_id={@context_id}
+        without_icon
+        composer_class="btn btn-primary rounded-full btn-wide"
+        smart_input_opts={@smart_input_opts}
+      />
+      </div>
         </div>
         {!-- </.portal> --}
       {/if}
@@ -47,17 +60,7 @@
     {!-- <.portal id="nav_sticky_portal" target="#nav_sidebar_portal"> --}
 
     <div data-id="nav_sidebar_sticky_items" class="flex flex-col flex-1 mt-4 h-full px-3 lg:px-0">
-      <Bonfire.UI.Common.SmartInputContainerLive
-        :if={!e(@smart_input_opts, :inline_only, nil) and
-          !e(@smart_input_opts, :disable, nil)}
-        id={:smart_input}
-        to_circles={@to_circles}
-        to_boundaries={@to_boundaries}
-        context_id={@context_id}
-        without_icon
-        composer_class="btn btn-primary btn-wide"
-        smart_input_opts={@smart_input_opts}
-      />
+      
       <Bonfire.UI.Common.ExtensionMenuNavLive
         parent_id="nav_sticky"
         nav_items={Bonfire.UI.Common.NavModule.default_nav()}
