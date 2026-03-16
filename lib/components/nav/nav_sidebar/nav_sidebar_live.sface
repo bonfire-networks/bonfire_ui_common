@@ -1,18 +1,18 @@
 {#if current_user_id(@__context__)}
-    <div class="flex flex-col flex-1 mt-4 h-full px-3 lg:px-0">
-      <Bonfire.UI.Common.ExtensionMenuNavLive
-        parent_id="nav_sidebar"
-        selected_tab={@selected_tab}
-        page={@page}
-        nav_items={@nav_items}
-      />
-      <Bonfire.UI.Common.SidebarWidgetsLive
-        widgets={@sidebar_widgets}
-        key={:main}
-        page={@page}
-        selected_tab={@selected_tab}
-      />
-    </div>
+  <div class="flex flex-col flex-1 mt-4 h-full px-3 lg:px-0">
+    <Bonfire.UI.Common.ExtensionMenuNavLive
+      parent_id="nav_sidebar"
+      selected_tab={@selected_tab}
+      page={@page}
+      nav_items={@nav_items}
+    />
+    <Bonfire.UI.Common.SidebarWidgetsLive
+      widgets={@sidebar_widgets}
+      key={:main}
+      page={@page}
+      selected_tab={@selected_tab}
+    />
+  </div>
 {#else}
   {!-- <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
     <div class="flex pt-safe w-full">

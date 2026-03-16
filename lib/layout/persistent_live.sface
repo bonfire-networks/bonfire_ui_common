@@ -6,15 +6,15 @@
 >
   {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
     <div class="px-5 lg:pl-1 lg:pr-0 pt-4 pt-safe">
-<Bonfire.UI.Common.DesignSystem.button
-  variant="primary"
-  full_width
-  icon_left="ion:chevron-back"
-  class="z-50 mt-4 w-full"
-  onclick="history.back()"
->
-  {l("Back")}
-</Bonfire.UI.Common.DesignSystem.button>
+      <Bonfire.UI.Common.DesignSystem.button
+        variant="primary"
+        full_width
+        icon_left="ion:chevron-back"
+        class="z-50 mt-4 w-full"
+        onclick="history.back()"
+      >
+        {l("Back")}
+      </Bonfire.UI.Common.DesignSystem.button>
     </div>
   {#else}
     <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
@@ -33,21 +33,21 @@
           {!-- <.portal id="user_menu_portal" target="#nav_user_menu_portal"> --}
           <div class="py-4 gap-4 flex flex-col w-full">
             <!-- {#if @__context__[:current_account_users]} -->
-              <Bonfire.UI.Common.UserMenuLive />
+            <Bonfire.UI.Common.UserMenuLive />
             <!-- {/if} -->
             <!-- <div class="flex items-center flex-1 w-full justify-end lg:justify-start px-3 pt-2"> -->
-          <Bonfire.UI.Common.SmartInputContainerLive
-          :if={!e(@smart_input_opts, :inline_only, nil) and
-            !e(@smart_input_opts, :disable, nil)}
-          id={:smart_input}
-          to_circles={@to_circles}
-          to_boundaries={@to_boundaries}
-          context_id={@context_id}
-          without_icon
-          composer_class="btn btn-primary rounded-full w-full lg:btn-wide"
-          smart_input_opts={@smart_input_opts}
-        />
-        <!-- </div> -->
+            <Bonfire.UI.Common.SmartInputContainerLive
+              :if={!e(@smart_input_opts, :inline_only, nil) and
+                !e(@smart_input_opts, :disable, nil)}
+              id={:smart_input}
+              to_circles={@to_circles}
+              to_boundaries={@to_boundaries}
+              context_id={@context_id}
+              without_icon
+              composer_class="btn btn-primary rounded-full w-full lg:btn-wide"
+              smart_input_opts={@smart_input_opts}
+            />
+            <!-- </div> -->
           </div>
           {!-- </.portal> --}
         {/if}
@@ -83,7 +83,6 @@
       {!-- <.portal id="nav_sticky_portal" target="#nav_sidebar_portal"> --}
 
       <div data-id="nav_sidebar_sticky_items" class="flex flex-col px-3 lg:px-0">
-
         <Bonfire.UI.Common.ExtensionMenuNavLive
           parent_id="nav_sticky"
           selected_tab={@selected_tab}

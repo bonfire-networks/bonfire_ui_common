@@ -527,6 +527,9 @@ hex-input::part(input) {
 }
 
 
+.bonfire-wrapper {
+  @apply lg:rounded-2xl bg-base-200 lg:bg-base-100 shadow outline outline-base-content/10;
+}
 
 /* Player and controls styling */
 media-player {

@@ -3,14 +3,7 @@
     {#case @disable_lazy}
       {#match true}
         <!-- Plain image mode (no hooks, uses native browser lazy loading) -->
-        <img
-          src={src}
-          alt={@alt}
-          title={@title}
-          class={@class}
-          decoding="auto"
-          {...@opts}
-        />
+        <img src={src} alt={@alt} title={@title} class={@class} decoding="auto" {...@opts}>
       {#match _}
         {#case socket_connected?(@__context__)}
           {#match true}
@@ -81,14 +74,7 @@
             {/case}
           {#match _}
             <!-- Path C: Simple image for logged-out users (native lazy loading) -->
-            <img
-              src={src}
-              alt={@alt}
-              title={@title}
-              class={@class}
-              decoding="auto"
-              {...@opts}
-            />
+            <img src={src} alt={@alt} title={@title} class={@class} decoding="auto" {...@opts}>
         {/case}
     {/case}
   {#match _}
