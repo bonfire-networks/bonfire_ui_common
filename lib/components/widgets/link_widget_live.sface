@@ -55,8 +55,7 @@
         :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
         data-id="widget_badge"
         data-highlighted={Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)}
-        class="flex absolute left-[20px] top-[-2px] items-center place-content-center"
-        style="left: 20px"
+        class="flex absolute left-[28px] top-[-2px] items-center place-content-center"
       >
         <StatelessComponent
           module={maybe_component(Bonfire.UI.Common.BadgeCounter, @__context__)}

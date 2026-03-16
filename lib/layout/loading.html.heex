@@ -1,5 +1,14 @@
 <div class="flex items-center justify-center min-h-screen bg-base-100">
   <div class="flex flex-col items-center gap-4">
+    <%= case maybe_cute_gif() do %>
+      <% gif when is_binary(gif) -> %>
+        <div class="flex flex-row items-center justify-center my-12">
+          <img src={gif} />
+        </div>
+      <% _ -> %>
+        <img src={Bonfire.Common.URIs.static_path("/images/loading.svg")} />
+    <% end %>
+
     <% msg = maybe_loading_msg() || l("Loading...") %>
     <div class="m-6">
       <span
@@ -7,14 +16,6 @@
         style={"--chars: #{String.length(msg)}"}
       >{msg}</span>
     </div>
-
-    <%= case maybe_cute_gif() do %>
-      <% gif when is_binary(gif) -> %>
-        <div class="flex flex-row items-center justify-center">
-          <img src={gif} />
-        </div>
-      <% _ -> %>
-    <% end %>
 
     <div>
       {@inner_content}
@@ -29,9 +30,9 @@
       border-right: 2px solid currentColor;
       width: 0;
       font-family: monospace;
-      font-size: 1.1rem;
+      font-size: 1rem;
       animation:
-        typing 2s steps(var(--chars)) 0.5s forwards,
+        typing 1.5s steps(var(--chars)) 0.5s forwards,
         blink-caret 0.6s step-end infinite;
     }
 

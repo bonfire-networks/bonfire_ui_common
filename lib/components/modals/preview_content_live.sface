@@ -24,9 +24,9 @@
             id="close_preview"
             :hook="ClosePreview"
             aria-label={l("Go back to the previous page")}
-            class="btn z-50 btn-sm btn-ghost btn-circle"
+            class="btn z-50 btn-sm btn-circle"
           >
-            <#Icon iconify="ph:arrow-left" class="w-5 h-5 text-primary" />
+            <#Icon iconify="ph:arrow-left" class="w-5 h-5" />
           </button>
           <div class="flex items-center flex-1 w-full flex-1">
             <span class="max-w-[250px] lg:max-w-[600px] font-semibold text-sm mx-auto text-base-content truncate text-ellipsis">

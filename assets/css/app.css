@@ -487,7 +487,7 @@ article.unread-activity {
   --breakpoint-xl: 1220px;
   --breakpoint-sm: 640px;
   /* Grid/Sizing */
-  --spacing-1190: 1190px;
+  --spacing-1220: 1220px;
 
   /* Custom grid templates */
   --grid-template-main: 1fr 320px;

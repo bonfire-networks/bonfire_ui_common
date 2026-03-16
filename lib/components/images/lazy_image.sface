@@ -8,8 +8,7 @@
           alt={@alt}
           title={@title}
           class={@class}
-          loading="lazy"
-          decoding="async"
+          decoding="auto"
           {...@opts}
         />
       {#match _}
@@ -87,8 +86,7 @@
               alt={@alt}
               title={@title}
               class={@class}
-              loading="lazy"
-              decoding="async"
+              decoding="auto"
               {...@opts}
             />
         {/case}

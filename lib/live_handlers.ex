@@ -95,7 +95,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
            {:noreply, socket} <-
              maybe_delegate_handle_params(params, uri, socket) do
         # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
-        # if socket_connected?(socket), do: LivePlugs.maybe_send_persistent_assigns(socket)
+        if socket_connected?(socket), do: LivePlugs.maybe_send_persistent_assigns(socket)
 
         {:noreply, socket}
       end

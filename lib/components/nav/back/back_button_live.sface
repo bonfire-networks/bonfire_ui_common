@@ -4,33 +4,33 @@
     phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
     :hook={"ClosePreview", from: Bonfire.UI.Common.PreviewContentLive}
     label={l("Go back to the previous page")}
-    class="btn z-50 btn-ghost btn-sm btn-circle"
+    class="btn btn-sm btn-circle z-50"
   >
-    <#Icon iconify="ph:arrow-left" class="w-5 h-5 text-primary" />
+    <#Icon iconify="ph:arrow-left" class="w-5 h-5" />
   </button>
 {#else}
   {#if is_binary(@back)}
     <LinkLive
       to={@back}
       label={l("Go back to the previous page")}
-      class="btn z-50 btn-ghost btn-sm btn-circle"
+      class="btn btn-sm btn-circle z-50"
       parent_id="back_button"
     >
-      <#Icon iconify="ph:arrow-left" class="w-5 h-5 text-primary" />
+      <#Icon iconify="ph:arrow-left" class="w-5 h-5" />
     </LinkLive>
   {#else}
     <button
-      class="btn z-50 btn-ghost btn-sm btn-circle"
+      class="btn btn-sm btn-circle z-50"
       onclick="history.length > 1 ? history.back() : window.location.href = '/'"
-    ><#Icon iconify="ph:arrow-left" class="w-5 h-5 text-primary" /></button>
+    ><#Icon iconify="ph:arrow-left" class="w-5 h-5" /></button>
   {/if}
   {!-- {#elseif is_binary(@back) and @back != current_url(@__context__)}
   <LinkLive
     to={@back}
     label={l("Go back to the previous page")}
-    class="btn z-50 btn-ghost btn-sm btn-circle"
+    class="btn btn-sm btn-circle z-50"
   >
-    <#Icon iconify="ion:chevron-back" class="w-5 h-5 text-primary" />
+    <#Icon iconify="ion:chevron-back" class="w-5 h-5" />
   </LinkLive>
 {#elseif @back}
   <a
@@ -39,7 +39,7 @@
     phx-mounted={JS.dispatch("check-history-state")}
     phx-click={JS.dispatch("handle-back-click")}
     aria-label={l("Go back to the previous page")}
-    class="btn z-50 btn-ghost btn-sm btn-circle"
+    class="btn btn-sm btn-circle z-50"
   >
     <#Icon iconify="ion:chevron-back" class="w-4 h-4" />
   </a>--}

@@ -107,7 +107,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
   defp assign_defaults(socket, fun \\ &assign_new/3) do
     current_user =
       current_user(socket) ||
-        if Config.env() == :test,
+        if current_user_id(socket),
           do:
             Bonfire.UI.Me.LivePlugs.LoadCurrentUser.get_current(
               current_user_id(socket),
@@ -127,7 +127,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     |> fun.(:thread_mode, fn -> nil end)
     # |> fun.(:page, fn -> nil end)
     # |> fun.(:page_title, fn -> nil end)
-    # |> fun.(:selected_tab, fn -> nil end)
+    |> fun.(:selected_tab, fn -> nil end)
     |> fun.(:activity_inception, fn -> nil end)
     # |> fun.(:title_open, fn -> nil end)
     |> fun.(:title_prompt, fn -> nil end)
@@ -184,7 +184,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       # :sidebar_widgets,
       # :page,
       # :page_title,
-      # :selected_tab,
+      :selected_tab,
       :locales
     ])
     |> Map.put(

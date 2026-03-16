@@ -2,72 +2,98 @@
   id="persistent_live_view"
   data-role="persistent_live_view"
   phx-hook="KeyboardShortcuts"
-  class="z-max"
+  class="contents"
 >
-  <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
-    <div class="flex pt-safe w-full">
-      <!-- <div class="pt-2 flex items-center justify-between">
-        <Bonfire.UI.Common.LogoLinkLive
-          href="/"
-          name_class="text-base font-semibold text-base-content text-relaxed"
-          with_name={!current_user_id(@__context__)}
+  {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
+    <div class="px-5 lg:pl-1 lg:pr-0 pt-4 pt-safe">
+<Bonfire.UI.Common.DesignSystem.button
+  variant="primary"
+  full_width
+  icon_left="ion:chevron-back"
+  class="z-50 mt-4 w-full"
+  onclick="history.back()"
+>
+  <#Icon iconify="ph:arrow-left" class="w-5 h-5" />
+  {l("Back")}
+</Bonfire.UI.Common.DesignSystem.button>
+    </div>
+  {#else}
+    <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
+      <div class="flex pt-safe w-full">
+        <!-- <div class="pt-2 flex items-center justify-between">
+          <Bonfire.UI.Common.LogoLinkLive
+            href="/"
+            name_class="text-base font-semibold text-base-content text-relaxed"
+            with_name={!current_user_id(@__context__)}
+          />
+        </div> -->
+        {!-- <div id="nav_user_menu_portal">
+        </div> --}
+
+        {#if current_user_id(@__context__)}
+          {!-- <.portal id="user_menu_portal" target="#nav_user_menu_portal"> --}
+          <div class="py-4 gap-6 flex flex-col w-full">
+            <!-- {#if @__context__[:current_account_users]} -->
+              <Bonfire.UI.Common.UserMenuLive />
+            <!-- {/if} -->
+            <!-- <div class="flex items-center flex-1 w-full justify-end lg:justify-start px-3 pt-2"> -->
+          <Bonfire.UI.Common.SmartInputContainerLive
+          :if={!e(@smart_input_opts, :inline_only, nil) and
+            !e(@smart_input_opts, :disable, nil)}
+          id={:smart_input}
+          to_circles={@to_circles}
+          to_boundaries={@to_boundaries}
+          context_id={@context_id}
+          without_icon
+          composer_class="btn btn-primary rounded-full w-full lg:btn-wide"
+          smart_input_opts={@smart_input_opts}
         />
-      </div> -->
-      {!-- <div id="nav_user_menu_portal">
-      </div> --}
-
-      {#if current_user_id(@__context__)}
-        {!-- <.portal id="user_menu_portal" target="#nav_user_menu_portal"> --}
-        <div class="pt-4 gap-3 flex flex-col w-full">
-          <!-- {#if @__context__[:current_account_users]} -->
-            <Bonfire.UI.Common.UserMenuLive />
-          <!-- {/if} -->
-          <div class="flex items-center flex-1 w-full justify-end lg:justify-start px-3 pt-2">
-        <Bonfire.UI.Common.SmartInputContainerLive
-        :if={!e(@smart_input_opts, :inline_only, nil) and
-          !e(@smart_input_opts, :disable, nil)}
-        id={:smart_input}
-        to_circles={@to_circles}
-        to_boundaries={@to_boundaries}
-        context_id={@context_id}
-        without_icon
-        composer_class="btn btn-primary rounded-full btn-wide"
-        smart_input_opts={@smart_input_opts}
-      />
+        <!-- </div> -->
+          </div>
+          {!-- </.portal> --}
+        {/if}
       </div>
-        </div>
-        {!-- </.portal> --}
-      {/if}
-    </div>
-  </div>
-
-  {#if current_user_id(@__context__)}
-    {!-- {#for badge_id <- Bonfire.UI.Common.PersistentLive.sticky_badges()}
-      {#case e(current_user(@__context__), :character, Bonfire.UI.Common.PersistentLive.feed_key(badge_id), nil)}
-        {#match feed_id when is_binary(feed_id)}
-            <.portal id={"sticky_badge_portal_#{feed_id}"} target={"#sticky_badge_#{feed_id}"}>
-              <StatefulComponent
-                id={"unseen_count_#{feed_id}"}
-                feed_id={feed_id}
-                module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
-              />
-            </.portal>
-            {#match _}
-      <!-- no feed_id -->
-      {/case}
-    {/for} --}
-
-    {!-- <.portal id="nav_sticky_portal" target="#nav_sidebar_portal"> --}
-
-    <div data-id="nav_sidebar_sticky_items" class="flex flex-col flex-1 mt-4 h-full px-3 lg:px-0">
-      
-      <Bonfire.UI.Common.ExtensionMenuNavLive
-        parent_id="nav_sticky"
-        nav_items={Bonfire.UI.Common.NavModule.default_nav()}
-      />
     </div>
 
-    {!-- </.portal> --}
+    {#if current_user_id(@__context__) && @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
+      <div class="w-full px-6 mb-3 block lg:hidden">
+        <StatelessComponent
+          module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
+          id="nav-search-persistent"
+          search_limit={5}
+        />
+      </div>
+    {/if}
+
+    {#if current_user_id(@__context__)}
+      {!-- {#for badge_id <- Bonfire.UI.Common.PersistentLive.sticky_badges()}
+        {#case e(current_user(@__context__), :character, Bonfire.UI.Common.PersistentLive.feed_key(badge_id), nil)}
+          {#match feed_id when is_binary(feed_id)}
+              <.portal id={"sticky_badge_portal_#{feed_id}"} target={"#sticky_badge_#{feed_id}"}>
+                <StatefulComponent
+                  id={"unseen_count_#{feed_id}"}
+                  feed_id={feed_id}
+                  module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
+                />
+              </.portal>
+              {#match _}
+        <!-- no feed_id -->
+        {/case}
+      {/for} --}
+
+      {!-- <.portal id="nav_sticky_portal" target="#nav_sidebar_portal"> --}
+
+      <div data-id="nav_sidebar_sticky_items" class="flex flex-col px-3 lg:px-0">
+
+        <Bonfire.UI.Common.ExtensionMenuNavLive
+          parent_id="nav_sticky"
+          selected_tab={@selected_tab}
+          nav_items={Bonfire.UI.Common.NavModule.default_nav()}
+        />
+      </div>
+
+      {!-- </.portal> --}
+    {/if}
   {/if}
 
   <!-- Notifications -->

@@ -1,19 +1,5 @@
 {#if current_user_id(@__context__)}
-  <div class="flex flex-col flex-1 mt-4 h-full px-3 lg:px-0">
-    {!-- <div id="nav_sidebar_portal">
-      </div> --}
-
     <div class="flex flex-col flex-1 mt-4 h-full px-3 lg:px-0">
-      {#if @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
-        <div class="w-full mb-3 block lg:hidden">
-          <StatelessComponent
-            module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
-            id="nav-search"
-            search_limit={5}
-          />
-        </div>
-      {/if}
-
       <Bonfire.UI.Common.ExtensionMenuNavLive
         parent_id="nav_sidebar"
         selected_tab={@selected_tab}
@@ -27,7 +13,6 @@
         selected_tab={@selected_tab}
       />
     </div>
-  </div>
 {#else}
   {!-- <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
     <div class="flex pt-safe w-full">

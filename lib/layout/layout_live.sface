@@ -20,14 +20,14 @@
           :if={is_nil(@current_account_id) and @without_sidebar==true}
         /> --}
 
-  <div class="drawer xl:drawer-open lg:max-w-[var(--spacing-1190)] mx-auto w-full">
+  <div class="drawer xl:drawer-open lg:max-w-[var(--spacing-1220)] mx-auto w-full">
     <input id="sidebar-drawer" type="checkbox" class="drawer-toggle">
     <div class="drawer-content px-safe">
       <div
         data-id="layout"
         data-two-columns={@without_secondary_widgets == true && @without_sidebar != true}
         data-single-column={@without_sidebar == true}
-        class="grid gap-3 px-0 lg:grid-main"
+        class="grid gap-6 px-0 lg:grid-main"
       >
         <div
           data-id="main_section"
@@ -54,7 +54,7 @@
                 >
                   <div
                     :if={!@no_header}
-                    class="sticky top-0 pt-safe z-[999] bg-base-200 mb-[1px] lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center h-[60px]"
+                    class="sticky top-0 pt-safe z-[999] bg-base-200 mb-[1px] lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center min-h-[60px]"
                   >
                     <div class="flex px-4 lg:px-0 place-content-center flex-1 w-full transition-color duration-150 ease-in-out">
                       <StatelessComponent
@@ -165,14 +165,14 @@
       <aside
         data-id="nav_sidebar"
         data-sidebar-minimal={@without_sidebar == :minimal}
-        class="w-80 px-4 px-safe lg:px-0 lg:mr-3 lg:w-[250px] bg-base-200 self-stretch overflow-y-auto min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-full lg:pb-0"
+        class="w-80 px-4 px-safe lg:px-0 lg:mr-6 lg:w-[250px] bg-base-200 self-stretch overflow-y-auto xl:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-full lg:pb-0"
       >
         <div class="flex flex-col flex-1 h-full pb-[80px] lg:pb-0">
           {#if @current_user_id && @without_sidebar != true && socket_connected?(@__context__)}
             <Bonfire.UI.Common.PersistentLive
               id={:persistent}
               sticky
-              container={{:div, class: "z-[999999999]"}}
+              container={{:div, class: "contents"}}
               session={%{
                 "context" => %{
                   sticky: true,
