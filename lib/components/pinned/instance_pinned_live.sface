@@ -4,7 +4,7 @@
     {#match entries}
       <div data-id="instance_pinned_widget">
         <Bonfire.UI.Common.WidgetBlockLive
-          class="w-full p-3 rounded-xl relative bg-base-content/5 border border-base-content/10 overflow-hidden"
+          class="w-full px-3 lg:px-0 relative overflow-hidden"
           widget_title={@title || l("Spotlight")}
         >
           {!-- Arrow buttons overlaid on the carousel --}
