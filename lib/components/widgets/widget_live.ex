@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Common.WidgetLive do
   prop showing_within, :atom, default: :sidebar
 
   prop wrapper_class, :css_class, default: nil
-  prop link_class, :any, default: "gap-2 py-1"
+  prop link_class, :any, default: "gap-3 py-1"
   prop icon_class, :css_class, required: false, default: "w-5 h-5 text-primary"
 
   prop skip_badges, :any, default: false

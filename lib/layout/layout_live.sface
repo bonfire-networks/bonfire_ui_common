@@ -27,7 +27,7 @@
         data-id="layout"
         data-two-columns={@without_secondary_widgets == true && @without_sidebar != true}
         data-single-column={@without_sidebar == true}
-        class="grid gap-6 px-0 lg:grid-main"
+        class="grid gap-6 px-0 lg:grid-main mx-2"
       >
         <div
           data-id="main_section"
@@ -54,7 +54,7 @@
                 >
                   <div
                     :if={!@no_header}
-                    class="sticky top-0 pt-safe z-[999] bg-base-200 mb-[1px] lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center min-h-[60px]"
+                    class="sticky top-0 pt-safe z-[999] bg-base-200 mb-[1px] lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center min-h-[70px]"
                   >
                     <div class="flex px-4 lg:px-0 place-content-center flex-1 w-full transition-color duration-150 ease-in-out">
                       <StatelessComponent
@@ -97,7 +97,7 @@
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive and
                 socket_connected?(@__context__)}
               <div class={[
-                "w-full h-[60px] hidden lg:flex items-center",
+                "w-full h-[70px] hidden lg:flex items-center",
                 "md:hidden lg:flex": @without_secondary_widgets != :never
               ]}>
                 <StatelessComponent
@@ -116,7 +116,7 @@
                 key={:secondary}
                 page={@page}
                 selected_tab={@selected_tab}
-                container_class="flex flex-col gap-3 mb-3"
+                container_class="flex flex-col gap-5 mb-3"
                 parent_id="layout_right"
               />
 
