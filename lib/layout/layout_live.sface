@@ -20,19 +20,25 @@
           :if={is_nil(@current_account_id) and @without_sidebar==true}
         /> --}
 
-  <div class="drawer xl:drawer-open lg:max-w-[var(--spacing-1220)] mx-auto w-full">
+  <div class="drawer lg:drawer-open lg:max-w-[var(--spacing-1220)] mx-auto w-full">
     <input id="sidebar-drawer" type="checkbox" class="drawer-toggle">
     <div class="drawer-content px-safe">
       <div
         data-id="layout"
         data-two-columns={@without_secondary_widgets == true && @without_sidebar != true}
         data-single-column={@without_sidebar == true}
-        class="grid gap-6 px-0 lg:grid-main lg:mx-2"
+        class={[
+          "lg:ml-2",
+          "drawer drawer-end": @without_secondary_widgets != true,
+          "xl:drawer-open": @without_secondary_widgets != true
+        ]}
       >
+        <input :if={@without_secondary_widgets != true} id="widgets-drawer" type="checkbox" class="drawer-toggle">
+        <div class="drawer-content">
         <div
           data-id="main_section"
           data-single-column={@without_sidebar == true}
-          class="relative w-full gap-2 xl:gap-0 z-[99999] col-span-1"
+          class="relative w-full gap-2 xl:gap-0 z-[99999]"
         >
           <Bonfire.UI.Common.GuestHeaderLive
             selected_tab={@selected_tab}
@@ -47,7 +53,7 @@
                 <div
                   id="inner"
                   class={
-                    "flex flex-col pb-[1px] pl-[1px]",
+                    "flex flex-col pb-[1px] px-[1px]",
                     hidden: @hide_main,
                     "border-none": @without_sidebar == true
                   }
@@ -82,24 +88,19 @@
             </div>
           </div>
         </div>
+        </div>
         <div
           :if={@without_secondary_widgets != true}
-          class={[
-            "z-[999]",
-            "hidden order-first md:order-none md:static lg:block": @without_secondary_widgets != :never,
-            "block order-none static px-2 lg:px-0": @without_secondary_widgets == :never
-          ]}
+          class="drawer-side z-[999999999999] xl:z-0 xl:!sticky xl:!top-0 xl:!h-screen"
         >
+          <label for="widgets-drawer" aria-label="close widgets sidebar" class="drawer-overlay" />
           <div
             data-id="right_nav_and_widgets"
-            class="order-last sticky w-auto lg:top-0 mt-0 self-start z-[998] w-full  overflow-y-visible grid-flow-row gap-3 auto-rows-min items-start"
+            class="w-[320px] bg-base-200 lg:bg-transparent min-h-screen lg:min-h-0 overflow-y-auto pt-4 lg:pt-0 px-4 lg:px-2 lg:ml-6"
           >
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive and
                 socket_connected?(@__context__)}
-              <div class={[
-                "w-full h-[70px] hidden lg:flex items-center",
-                "md:hidden lg:flex": @without_secondary_widgets != :never
-              ]}>
+              <div class="w-full h-[70px] flex items-center">
                 <StatelessComponent
                   module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
                   id="sidebar-search"
@@ -158,14 +159,14 @@
     </div>
 
     <div class={
-      "drawer-side z-[999999999999] xl:z-0 xl:!sticky xl:!top-0 xl:!h-screen ",
+      "drawer-side z-[999999999999] lg:z-0 lg:!sticky lg:!top-0 lg:!h-screen ",
       hidden: @without_sidebar == true
     }>
       <label for="sidebar-drawer" aria-label="close sidebar" class="drawer-overlay" />
       <aside
         data-id="nav_sidebar"
         data-sidebar-minimal={@without_sidebar == :minimal}
-        class="w-80 px-4 px-safe lg:px-0 lg:mr-6 lg:w-[250px] bg-base-200 self-stretch overflow-y-auto xl:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-full lg:pb-0"
+        class="w-80 px-4 px-safe lg:px-0 lg:mr-6 lg:w-[250px] bg-base-200 self-stretch overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-full lg:pb-0"
       >
         <div class="flex flex-col flex-1 h-full pb-[80px] lg:pb-0">
           {#if @current_user_id && @without_sidebar != true && socket_connected?(@__context__)}

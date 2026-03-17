@@ -2,11 +2,11 @@
   <div class="relative z-20 flex items-center w-full">
     <div class="flex items-center gap-3 justify-between w-full lg:flex-1">
       <div class="w-[120px] max-w-[120px]">
-        <div :if={@back} class="xl:flex hidden">
+        <div :if={@back} class="lg:flex hidden">
           <Bonfire.UI.Common.BackButtonLive back={@back} />
         </div>
         {#if is_map(current_user(@__context__))}
-          <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost btn-sm">
+          <label for="sidebar-drawer" class="lg:hidden btn btn-circle btn-ghost btn-sm">
             <div
               style="border-width: 2px"
               class="border rounded-full p-0 border-primary/50 border-2 hover:border-primary transition-colors relative"
@@ -43,6 +43,9 @@
         {#if current_user(@__context__)}
           <#slot {@right_action}>
           </#slot>
+          <label for="widgets-drawer" class="xl:hidden btn btn-circle btn-ghost btn-sm" aria-label={l("Open widgets sidebar")}>
+            <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5 text-base-content/70" />
+          </label>
         {#else}
           <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="guest_actions">{l("Log in")}</LinkLive>
           <Bonfire.UI.Common.GuestActionsLive page_header page={@page} />
