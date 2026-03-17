@@ -45,7 +45,7 @@
           </#slot>
           <label
             for="widgets-drawer"
-            class="xl:hidden btn btn-circle btn-ghost btn-sm"
+            class="xl:hidden btn btn-circle btn-sm"
             aria-label={l("Open widgets sidebar")}
           >
             <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5 text-base-content/70" />
