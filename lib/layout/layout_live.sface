@@ -33,61 +33,66 @@
           "xl:drawer-open": @without_secondary_widgets != true
         ]}
       >
-        <input :if={@without_secondary_widgets != true} id="widgets-drawer" type="checkbox" class="drawer-toggle">
+        <input
+          :if={@without_secondary_widgets != true}
+          id="widgets-drawer"
+          type="checkbox"
+          class="drawer-toggle"
+        />
         <div class="drawer-content">
-        <div
-          data-id="main_section"
-          data-single-column={@without_sidebar == true}
-          class="relative w-full gap-2 xl:gap-0 z-[99999]"
-        >
-          <Bonfire.UI.Common.GuestHeaderLive
-            selected_tab={@selected_tab}
-            page={@page}
-            :if={is_nil(@current_account_id) and @no_header != true and @without_sidebar == true}
-          />
-          <div class="h-full mt-0">
-            <div class="relative invisible_frame">
-              <div class="md:pb-0 md:overflow-y-visible">
-                <Bonfire.UI.Common.PreviewContentLive show={@hide_main} id="preview_content" />
+          <div
+            data-id="main_section"
+            data-single-column={@without_sidebar == true}
+            class="relative w-full gap-2 xl:gap-0 z-[99999]"
+          >
+            <Bonfire.UI.Common.GuestHeaderLive
+              selected_tab={@selected_tab}
+              page={@page}
+              :if={is_nil(@current_account_id) and @no_header != true and @without_sidebar == true}
+            />
+            <div class="h-full mt-0">
+              <div class="relative invisible_frame">
+                <div class="md:pb-0 md:overflow-y-visible">
+                  <Bonfire.UI.Common.PreviewContentLive show={@hide_main} id="preview_content" />
 
-                <div
-                  id="inner"
-                  class={
-                    "flex flex-col pb-[1px] px-[1px]",
-                    hidden: @hide_main,
-                    "border-none": @without_sidebar == true
-                  }
-                >
                   <div
-                    :if={!@no_header}
-                    class="sticky top-0 pt-safe z-[999] bg-base-200 mb-[1px] lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center min-h-[70px]"
+                    id="inner"
+                    class={
+                      "flex flex-col pb-[1px] px-[1px]",
+                      hidden: @hide_main,
+                      "border-none": @without_sidebar == true
+                    }
                   >
-                    <div class="flex px-4 xl:px-0 pb-4 lg:pb-0 place-content-center flex-1 w-full transition-color duration-150 ease-in-out">
-                      <StatelessComponent
-                        module={maybe_component(Bonfire.UI.Common.PageHeaderLive, @__context__)}
-                        page={@page}
-                        page_title={@page_title}
-                        page_header_icon={@page_header_icon}
-                        back={@back}
-                        extra={@extra}
-                      >
-                        <:right_action>
-                          <StatelessComponent
-                            :if={@page_header_aside}
-                            :for={{component, component_assigns} <- e(@page_header_aside, [])}
-                            module={maybe_component(component, @__context__)}
-                            {...component_assigns || []}
-                          />
-                        </:right_action>
-                      </StatelessComponent>
+                    <div
+                      :if={!@no_header}
+                      class="sticky top-0 pt-safe z-[999] bg-base-200 mb-[1px] lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center min-h-[70px]"
+                    >
+                      <div class="flex px-4 xl:px-0 pb-4 lg:pb-0 place-content-center flex-1 w-full transition-color duration-150 ease-in-out">
+                        <StatelessComponent
+                          module={maybe_component(Bonfire.UI.Common.PageHeaderLive, @__context__)}
+                          page={@page}
+                          page_title={@page_title}
+                          page_header_icon={@page_header_icon}
+                          back={@back}
+                          extra={@extra}
+                        >
+                          <:right_action>
+                            <StatelessComponent
+                              :if={@page_header_aside}
+                              :for={{component, component_assigns} <- e(@page_header_aside, [])}
+                              module={maybe_component(component, @__context__)}
+                              {...component_assigns || []}
+                            />
+                          </:right_action>
+                        </StatelessComponent>
+                      </div>
                     </div>
+                    {@inner_content}
                   </div>
-                  {@inner_content}
                 </div>
               </div>
             </div>
           </div>
-        </div>
         </div>
         <div
           :if={@without_secondary_widgets != true}
