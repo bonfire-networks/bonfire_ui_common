@@ -119,6 +119,12 @@ function setCwTextarea(value) {
 	if (cwTextarea) cwTextarea.value = value;
 }
 
+// Reset composer button state after posting
+window.addEventListener("phx:smart_input:reset", () => {
+	// Reset the main smart input button to its default state
+	JS_exec_attr_event("#main_smart_input_button", "phx-reset");
+});
+
 // Reset composer UI after posting
 window.addEventListener("phx:smart_input:reset_sensitive", () => {
 	setCwTextarea("");

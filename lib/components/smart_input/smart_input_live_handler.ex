@@ -114,7 +114,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     |> JS.remove_class("!hidden", to: "#main_smart_input_button .submitting_icon")
     |> JS.add_class("btn-disabled", to: "#main_smart_input_button")
     |> JS.set_attribute({"disabled", "true"}, to: "#main_smart_input_button")
-    |> minimize(%{input_status: :submit})
+    # Only do client-side minimize via CSS - don't call minimize() which pushes a
+    # select_smart_input event that would be processed AFTER the form submit handler's
+    # reset_input(), overwriting the reset state (input_status, open, etc.)
+    |> JS.add_class("translate-y-100", to: "#smart_input_container")
   end
 
   def reset_submitting(js \\ %JS{}, to \\ "#main_smart_input_button") do
