@@ -6,7 +6,7 @@
 >
   {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
     <div class="px-5 lg:pl-1 lg:pr-0 pt-4 pt-safe">
-      <Bonfire.UI.Common.DesignSystem.button
+      <.button
         variant="primary"
         full_width
         icon_left="ion:chevron-back"
@@ -14,7 +14,7 @@
         onclick="history.back()"
       >
         {l("Back")}
-      </Bonfire.UI.Common.DesignSystem.button>
+      </.button>
     </div>
   {#else}
     <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">

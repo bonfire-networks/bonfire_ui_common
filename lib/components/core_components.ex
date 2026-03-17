@@ -17,6 +17,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
   use Phoenix.Component
   use Bonfire.Common.Localise
   import Bonfire.UI.Common.ErrorHelpers
+  import Bonfire.UI.Common.DesignSystem
   import Iconify
   alias Phoenix.LiveView.JS
 
@@ -476,36 +477,36 @@ defmodule Bonfire.UI.Common.CoreComponents do
     """
   end
 
-  @doc """
-  Renders a button.
+  # @doc """
+  # Renders a button.
 
-  ## Examples
+  # ## Examples
 
-      <.button>Send!</.button>
-      <.button phx-click="go" class="ml-2">Send!</.button>
-  """
-  attr :type, :string, default: nil
-  attr :class, :string, default: nil
-  attr :rest, :global, include: ~w(disabled form name value)
+  #     <.button>Send!</.button>
+  #     <.button phx-click="go" class="ml-2">Send!</.button>
+  # """
+  # attr :type, :string, default: nil
+  # attr :class, :string, default: nil
+  # attr :rest, :global, include: ~w(disabled form name value)
 
-  slot :inner_block, required: true
+  # slot :inner_block, required: true
 
-  def button(assigns) do
-    ~H"""
-    <button
-      type={@type}
-      class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
-        "focus-ring transition-interactive hover-scale",
-        @class
-      ]}
-      {@rest}
-    >
-      {render_slot(@inner_block)}
-    </button>
-    """
-  end
+  # def button(assigns) do
+  #   ~H"""
+  #   <button
+  #     type={@type}
+  #     class={[
+  #       "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 py-2 px-3",
+  #       "text-sm font-semibold leading-6 text-white active:text-white/80",
+  #       "focus-ring transition-interactive hover-scale",
+  #       @class
+  #     ]}
+  #     {@rest}
+  #   >
+  #     {render_slot(@inner_block)}
+  #   </button>
+  #   """
+  # end
 
   @doc """
   Renders a header with title.

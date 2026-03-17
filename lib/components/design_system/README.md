@@ -15,11 +15,11 @@ import Bonfire.UI.Common.DesignSystem.IconButtonLive
 </.render>
 
 <%!-- Or use via the DesignSystem module --%>
-<Bonfire.UI.Common.DesignSystem.button variant="primary" phx_click="save">
+<.button variant="primary" phx_click="save">
   Save Changes
-</Bonfire.UI.Common.DesignSystem.button>
+</.button>
 
-<Bonfire.UI.Common.DesignSystem.icon_button icon="ph:heart-duotone" aria_label="Like" phx_click="like" />
+<.icon_button icon="ph:heart-duotone" aria_label="Like" phx_click="like" />
 ```
 
 ## Core Principles

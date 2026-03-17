@@ -380,6 +380,7 @@ defmodule Bonfire.UI.Common.Web do
 
       # import Phoenix.Component
       import Bonfire.UI.Common.CoreComponents
+      import Bonfire.UI.Common.DesignSystem
 
       alias Bonfire.UI.Common.ComponentID
 
