@@ -102,7 +102,18 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
         %{assigns: %{smart_input_opts: old_smart_input_opts}} = socket
       )
       when is_map(new_smart_input_opts) and is_map(old_smart_input_opts) do
-    merged_opts = Map.merge(old_smart_input_opts, new_smart_input_opts)
+    clear_reply_data =
+      Map.get(assigns, :clear_reply_data, false) ||
+        Map.get(new_smart_input_opts, :clear_reply_data, false)
+
+    base_opts =
+      if clear_reply_data do
+        Map.drop(old_smart_input_opts, [:context_id, :to_circles, :to_boundaries, :mentions])
+      else
+        old_smart_input_opts
+      end
+
+    merged_opts = Map.merge(base_opts, new_smart_input_opts)
     reset_value = Map.get(assigns, :reset_smart_input, false)
 
     # When reset is requested via fallback path, ask parent LiveView to push events

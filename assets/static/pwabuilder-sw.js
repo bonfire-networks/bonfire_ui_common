@@ -38,12 +38,7 @@ self.addEventListener('fetch', event => {
 });
 
 self.addEventListener('push', event => {
-  console.log('Push event received:', event);
-
-  if (!event.data) {
-    console.log('Push event but no data');
-    return;
-  }
+  if (!event.data) return;
 
   try {
     const data = event.data.json();
@@ -52,21 +47,18 @@ self.addEventListener('push', event => {
       body: data.body,
       icon: data.icon || '/images/bonfire-icon.png',
       badge: data.badge || '/images/bonfire-icon.png',
-      image: data.image || '/images/bonfire-icon.png',
       data: { ...data.data, defaultUrl: '/' },
-      tag: data.tag || 'default',
-      requireInteraction: true,
+      tag: data.tag || ('notif-' + Date.now()),
+      requireInteraction: data.requireInteraction || false,
       actions: data.actions || [],
       silent: false,
-      renotify: true,
+      renotify: data.renotify !== undefined ? data.renotify : true,
       timestamp: Date.now()
     };
 
     event.waitUntil(
       self.registration.showNotification(data.title, options)
-        .then(() => {
-          return self.clients.matchAll();
-        })
+        .then(() => self.clients.matchAll())
         .then(clients => {
           clients.forEach(client => {
             client.postMessage({
@@ -76,29 +68,9 @@ self.addEventListener('push', event => {
               timestamp: Date.now()
             });
           });
-
-          return self.registration.getNotifications();
-        })
-        .then(activeNotifications => {
-          return self.clients.matchAll().then(clients => {
-            clients.forEach(client => {
-              client.postMessage({
-                type: 'NOTIFICATION_STATUS',
-                count: activeNotifications.length,
-                message: 'Notification created!'
-              });
-            });
-          });
         })
         .catch(error => {
-          return self.clients.matchAll().then(clients => {
-            clients.forEach(client => {
-              client.postMessage({
-                type: 'NOTIFICATION_ERROR',
-                error: error.message
-              });
-            });
-          });
+          console.error('showNotification failed:', error);
         })
     );
 
@@ -110,7 +82,26 @@ self.addEventListener('push', event => {
 self.addEventListener('notificationclick', event => {
   event.notification.close();
 
+  const notifUrl = (event.notification.data && event.notification.data.url) ||
+                   (event.notification.data && event.notification.data.defaultUrl) ||
+                   '/';
+  const url = new URL(notifUrl, self.location.origin).href;
+
   event.waitUntil(
-    clients.openWindow(`/`)
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
+      // Prefer a tab already on the target URL
+      for (const client of windowClients) {
+        if (client.url === url && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      // Otherwise navigate the first available tab
+      for (const client of windowClients) {
+        if ('focus' in client) {
+          return client.focus().then(c => c.navigate(url));
+        }
+      }
+      return clients.openWindow(url);
+    })
   );
 });

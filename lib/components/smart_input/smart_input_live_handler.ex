@@ -69,11 +69,12 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   def handle_event("reset_to_default", _params, socket) do
     replace_input_next_time(assigns(socket))
 
-    set(socket,
+    clear_assigns = [
       # triggers reset events via PersistentLive or SmartInputContainerLive fallback
       reset_smart_input: true,
       activity: nil,
       object: nil,
+      context_id: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
@@ -81,12 +82,14 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         default_smart_input_opts(%{create_object_type: nil, recipients_editable: false}),
       # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
       clear_reply_data: true
-    )
+    ]
 
-    {:noreply, do_extra_reset_input(socket)}
+    set(socket, clear_assigns)
+
+    # Also assign directly to avoid race with async handler
+    {:noreply, socket |> assign(clear_assigns) |> do_extra_reset_input()}
   end
 
-  # close_smart_input should reset the state to ensure it's clean for next use
   def close_smart_input(js \\ %JS{}) do
     js
     |> JS.hide(to: ".smart_input_show_on_open")
@@ -163,8 +166,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   # end
 
   def handle_event("select_smart_input", params, socket) do
-    debug(params, "params")
-
     push_event(socket, "mentions-suggestions", %{mentions: e(params, "mentions", [])})
 
     # Check if we should merge with existing opts
@@ -193,7 +194,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         parsed_opts
         |> Enum.into(%{open: open_value})
       end
-      |> debug("select_smart_input_opts")
 
     to_circles =
       (params["to_circles"] || e(opts, :to_circles, []))
@@ -203,7 +203,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         map when is_map(map) -> Enum.map(map, fn {key, val} -> {key, val} end)
         _ -> []
       end)
-      |> debug("to_circles")
 
     # Process exclude_circles (same structure as to_circles)
     exclude_circles =
@@ -214,7 +213,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         map when is_map(map) -> Enum.map(map, fn {key, val} -> {key, val} end)
         _ -> []
       end)
-      |> debug("exclude_circles")
 
     # Process to_boundaries - only set if explicitly provided in params or opts
     # Don't use socket fallback here as the component has its own to_boundaries
@@ -269,10 +267,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         mentions: e(opts, "mentions", nil) || e(params, "mentions", [])
       ]
       |> maybe_put(:to_circles, to_circles)
-      |> maybe_put(:exclude_circles, exclude_circles)
-      |> maybe_put(:reply_to_id, final_reply_to_id)
       |> maybe_put(:to_boundaries, final_to_boundaries)
       |> maybe_put(:clear_reply_data, clear_reply_data)
+      |> maybe_put(:exclude_circles, exclude_circles)
+      |> maybe_put(:reply_to_id, final_reply_to_id)
 
     # Forward assigns to PersistentLive's SmartInputContainerLive
     set(socket, set_assigns)
@@ -285,18 +283,21 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def handle_event("remove_data", _params, socket) do
-    # Use set() to route through PersistentLive and update SmartInputContainerLive
-    # The clear_reply_data flag tells preserve_reply_state to allow clearing these values
     set(socket,
       activity: nil,
       object: nil,
-      # default to replying to current thread
       reply_to_id: e(assigns(socket), :thread_id, nil),
-      thread_id: nil,
-      clear_reply_data: true
+      smart_input_opts: default_smart_input_opts()
     )
 
-    {:noreply, socket}
+    {:noreply,
+     socket
+     |> assign(
+       activity: nil,
+       object: nil,
+       reply_to_id: e(assigns(socket), :thread_id, nil),
+       smart_input_opts: default_smart_input_opts()
+     )}
   end
 
   def handle_event(action, params, socket)
@@ -681,6 +682,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       activity: nil,
       object: nil,
       smart_input_component: nil,
+      context_id: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
       thread_id: nil,

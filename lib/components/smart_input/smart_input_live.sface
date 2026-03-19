@@ -140,7 +140,7 @@
                 <:action_btns>
                   <button
                     phx-click={JS.push("Bonfire.UI.Common.SmartInput:reset_to_default")
-                    |> LiveHandler.minimize()
+                    |> JS.add_class("translate-y-100", to: "#smart_input_container")
                     |> JS.hide(to: "#smart_input_post_title")}
                     phx-target="#smart_input"
                     type="button"
