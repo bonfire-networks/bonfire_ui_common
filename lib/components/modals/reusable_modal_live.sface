@@ -103,13 +103,13 @@
             type="button"
             aria-label={l("Close modal")}
             class={
-              "btn btn-circle btn-sm focus-ring transition-interactive touch-target",
+              "btn btn-circle btn-sm focus-ring transition-interactive sm-only:touch-target",
               "!btn-lg btn-soft": @image_preview,
               "!rounded-none btn-ghost !btn-xs opacity-70 btn-secondary": @no_backdrop
             }
           >
             <span class="sr-only">{l("Close")}</span>
-            <#Icon iconify="ph:x-duotone" class="w-5 h-5" aria-hidden="true" />
+            <#Icon iconify="ph:x-duotone" class="w-4 h-4" aria-hidden="true" />
           </button>
         </div>
       </div>
