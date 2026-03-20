@@ -18,7 +18,7 @@ TooltipHooks.Tooltip = {
 		const position = tooltipWrapper.getAttribute("data-position");
 		const trigger = tooltipWrapper.getAttribute("data-trigger");
 		const button = this.el.querySelector(".tooltip-button");
-		const tooltip = this.el.querySelector(".tooltip");
+		const tooltip = this.el.querySelector(".tooltip:not(.tooltip-button)");
 		let showTimeout;
 		let hideTimeout;
 		let isHoveringButton = false;
@@ -150,10 +150,6 @@ TooltipHooks.Tooltip = {
 			},
 			clickOutside: (event) => {
 				if (!tooltip.contains(event.target) && !button.contains(event.target)) {
-					if (tooltip.style.display === 'block') {
-						event.stopImmediatePropagation();
-						event.preventDefault();
-					}
 					hideTooltip();
 				}
 			}
