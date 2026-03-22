@@ -93,10 +93,10 @@
             window.__TAURI__.window.getCurrentWindow().setTitle(`Bonfire - ${username}`).catch(() => {});
         }
 
-        // Register instance domain for https:// deep links
+        // Register instance domain for https:// deep links (best-effort, unsupported on macOS)
         try {
             const instanceHost = new URL('https://' + appUrl).hostname;
-            window.__TAURI__.core.invoke('register_deep_link_domain', { domain: instanceHost });
+            await window.__TAURI__.core.invoke('register_deep_link_domain', { domain: instanceHost });
         } catch (e) {
             console.warn('Failed to register deep-link domain:', e);
         }

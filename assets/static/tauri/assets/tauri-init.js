@@ -1,3 +1,59 @@
+// Global error handler — catches unhandled JS errors and shows a recovery UI.
+// Runs before any module scripts so crashes during module load are caught too.
+(function () {
+    var errors = [];
+    var overlayShown = false;
+
+    function showErrorOverlay(msg, isDbCorruption) {
+        if (overlayShown) return;
+        overlayShown = true;
+        // Use native Rust dialog (works even when the page is broken)
+        var invoke = window.__TAURI__ && window.__TAURI__.core && window.__TAURI__.core.invoke;
+        if (invoke) {
+            invoke('show_crash_dialog', { message: msg, isDbCorruption: !!isDbCorruption }).catch(function () {
+                alert('Something went wrong:\n\n' + msg);
+            });
+        } else {
+            alert('Something went wrong:\n\n' + msg);
+        }
+    }
+
+    window.addEventListener('error', function (e) {
+        var msg = e.error && e.error.stack ? e.error.stack : ((e.message || 'Unknown error') + '\n' + (e.filename || '') + ':' + e.lineno);
+        var isDb = e.error && e.error.isDbCorruption;
+        errors.push(msg);
+        showErrorOverlay(errors.join('\n\n---\n\n'), isDb);
+    });
+
+    window.addEventListener('unhandledrejection', function (e) {
+        var msg = e.reason && e.reason.stack ? e.reason.stack : String(e.reason);
+        var isDb = e.reason && e.reason.isDbCorruption;
+        errors.push('Unhandled promise rejection: ' + msg);
+        showErrorOverlay(errors.join('\n\n---\n\n'), isDb);
+    });
+})();
+
+// Forward console.log/warn/error to Rust logs when JS debug mode is active
+// (set automatically after an unclean shutdown via window.__BONFIRE_JS_DEBUG__).
+(function () {
+    if (!window.__TAURI__ || !window.__BONFIRE_JS_DEBUG__) return;
+    var _invoke = null; // lazily resolved after Tauri is ready
+    function fwd(level, args) {
+        try {
+            var msg = Array.from(args).map(function (a) {
+                return (typeof a === 'object') ? JSON.stringify(a) : String(a);
+            }).join(' ');
+            if (!_invoke) _invoke = window.__TAURI__.core && window.__TAURI__.core.invoke;
+            if (_invoke) _invoke('js_log', { level: level, msg: msg }).catch(function () {});
+        } catch (e) {}
+    }
+    var _log = console.log, _warn = console.warn, _error = console.error;
+    console.log   = function () { _log.apply(console, arguments);   fwd('info',  arguments); };
+    console.warn  = function () { _warn.apply(console, arguments);  fwd('warn',  arguments); };
+    console.error = function () { _error.apply(console, arguments); fwd('error', arguments); };
+    console.warn('[tauri-init] JS debug mode active — console forwarded to Rust logs');
+})();
+
 // Shared Tauri initialization: override window.fetch to bypass WKWebView
 // network restrictions on cross-origin requests.
 // Two strategies available — switch USE_INVOKE below to toggle.
