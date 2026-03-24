@@ -4,7 +4,7 @@
   phx-hook="KeyboardShortcuts"
   class="contents"
 >
-  {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
+  <!-- {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
     <div class="px-5 lg:pl-1 lg:pr-0 pt-4 pt-safe">
       <.button
         variant="primary"
@@ -16,7 +16,7 @@
         {l("Back")}
       </.button>
     </div>
-  {#else}
+  {#else} -->
     <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
       <div class="flex pt-safe w-full">
         <!-- <div class="pt-2 flex items-center justify-between">
@@ -92,7 +92,7 @@
 
       {!-- </.portal> --}
     {/if}
-  {/if}
+  <!-- {/if} -->
 
   <!-- Notifications -->
   <.portal id="notification_portal" class="relative z-max" target="body">

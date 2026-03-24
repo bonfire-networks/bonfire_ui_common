@@ -6,7 +6,6 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.add(OFFLINE_URL))
-      // Force activation of new SW
       .then(() => self.skipWaiting())
   );
 });
@@ -26,7 +25,6 @@ self.addEventListener('activate', event => {
 
 // Fetch: Only handle navigation failures with offline page
 self.addEventListener('fetch', event => {
-  // Only intercept navigation requests (page loads)
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request).catch(() => {
@@ -34,8 +32,14 @@ self.addEventListener('fetch', event => {
       })
     );
   }
-  // Let all other requests (API, assets, etc) pass through normally
 });
+
+function updateAppBadge() {
+  return self.registration.getNotifications().then(notifications => {
+    if (!navigator.setAppBadge) return;
+    notifications.length === 0 ? navigator.clearAppBadge() : navigator.setAppBadge(notifications.length);
+  });
+}
 
 self.addEventListener('push', event => {
   if (!event.data) return;
@@ -58,6 +62,7 @@ self.addEventListener('push', event => {
 
     event.waitUntil(
       self.registration.showNotification(data.title, options)
+        .then(() => updateAppBadge())
         .then(() => self.clients.matchAll())
         .then(clients => {
           clients.forEach(client => {
@@ -79,6 +84,10 @@ self.addEventListener('push', event => {
   }
 });
 
+self.addEventListener('notificationclose', event => {
+  event.waitUntil(updateAppBadge());
+});
+
 self.addEventListener('notificationclick', event => {
   event.notification.close();
 
@@ -88,14 +97,14 @@ self.addEventListener('notificationclick', event => {
   const url = new URL(notifUrl, self.location.origin).href;
 
   event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
-      // Prefer a tab already on the target URL
+    updateAppBadge().then(() => {
+      return clients.matchAll({ type: 'window', includeUncontrolled: true });
+    }).then(windowClients => {
       for (const client of windowClients) {
         if (client.url === url && 'focus' in client) {
           return client.focus();
         }
       }
-      // Otherwise navigate the first available tab
       for (const client of windowClients) {
         if ('focus' in client) {
           return client.focus().then(c => c.navigate(url));

@@ -122,7 +122,7 @@
                 key={:secondary}
                 page={@page}
                 selected_tab={@selected_tab}
-                container_class="flex flex-col gap-5 mb-3"
+                container_class="flex flex-col gap-5 mb-4"
                 parent_id="layout_right"
               />
 
@@ -296,4 +296,5 @@
 <Bonfire.UI.Common.ReusableModalLive id="modal" />
 <div class="relative z-max">
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} />
+  <StatelessComponent module={maybe_component(Bonfire.Notify.PWAInstallBannerLive, @__context__)} />
 </div>
