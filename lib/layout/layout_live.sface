@@ -101,7 +101,7 @@
           <label for="widgets-drawer" aria-label="close widgets sidebar" class="drawer-overlay" />
           <div
             data-id="right_nav_and_widgets"
-            class="w-[320px] bg-base-200 lg:bg-transparent min-h-screen lg:min-h-0 overflow-y-auto pt-4 lg:pt-0 px-4 lg:px-2 lg:ml-6"
+            class="w-[320px] bg-base-200 lg:bg-transparent min-h-screen lg:min-h-0 overflow-y-auto pt-safe lg:pt-0 px-4 lg:px-2 lg:ml-6"
           >
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive and
                 socket_connected?(@__context__)}
