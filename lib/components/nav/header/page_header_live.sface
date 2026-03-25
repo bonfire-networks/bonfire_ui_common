@@ -11,18 +11,18 @@
               style="border-width: 2px"
               class="border rounded-full p-0 border-primary/50 border-2 hover:border-primary transition-colors relative"
             >
-            {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
-              <div class="p-2">
-                <#Icon iconify="ph:gear-duotone" class="w-5 h-5 text-primary" />
-              </div>
-            {#else}
-              <Bonfire.UI.Common.AvatarLive
-                bg_class="rounded-full"
-                title={e(current_user(@__context__), :profile, :name, "Anon")}
-                class="inline-block object-cover cursor-pointer rounded-full w-9 h-9"
-                src={Media.avatar_url(current_user(@__context__))}
-                user_id={current_user_id(@__context__)}
-              />
+              {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
+                <div class="p-2">
+                  <#Icon iconify="ph:gear-duotone" class="w-5 h-5 text-primary" />
+                </div>
+              {#else}
+                <Bonfire.UI.Common.AvatarLive
+                  bg_class="rounded-full"
+                  title={e(current_user(@__context__), :profile, :name, "Anon")}
+                  class="inline-block object-cover cursor-pointer rounded-full w-9 h-9"
+                  src={Media.avatar_url(current_user(@__context__))}
+                  user_id={current_user_id(@__context__)}
+                />
               {/if}
               <span
                 style="bottom: -4px; right: -4px"
