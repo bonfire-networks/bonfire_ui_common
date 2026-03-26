@@ -1,5 +1,5 @@
-<aside class={@class} aria-label={@widget_title}>
-  <div :if={@widget_title} class={@title_class}>
+<aside class={@class} aria-label={@widget_title || nil}>
+  <div :if={@widget_title} class={"flex items-center justify-between", @title_class}>
     <div>{@widget_title}</div>
     <#slot {@action} />
   </div>

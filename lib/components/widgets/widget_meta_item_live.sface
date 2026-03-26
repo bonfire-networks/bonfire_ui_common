@@ -1,0 +1,4 @@
+<div class={@class}>
+  <#slot {@icon} />
+  <span class={@text_class}><#slot /></span>
+</div>

@@ -55,7 +55,7 @@
   </div>
 
   {#if current_user_id(@__context__) && @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
-    <div class="w-full px-6 mb-3 block lg:hidden">
+    <div role="search" class="w-full px-6 mb-3 block lg:hidden">
       <StatelessComponent
         module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
         id="nav-search-persistent"

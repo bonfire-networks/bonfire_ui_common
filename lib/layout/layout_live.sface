@@ -8,6 +8,13 @@
     instance_settings: @instance_settings
   )}
 >
+  <a
+    href="#main-content"
+    class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-toast focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-content focus:rounded-lg focus:font-semibold"
+  >
+    {l("Skip to main content")}
+  </a>
+
   {!-- <div
         data-id="layout"
         data-two-columns={@without_secondary_widgets==true && @without_sidebar !=true}
@@ -43,7 +50,7 @@
           <div
             data-id="main_section"
             data-single-column={@without_sidebar == true}
-            class="relative w-full gap-2 xl:gap-0 z-[99999]"
+            class="relative w-full gap-2 xl:gap-0"
           >
             <Bonfire.UI.Common.GuestHeaderLive
               selected_tab={@selected_tab}
@@ -55,8 +62,8 @@
                 <div class="md:pb-0 md:overflow-y-visible">
                   <Bonfire.UI.Common.PreviewContentLive show={@hide_main} id="preview_content" />
 
-                  <div
-                    id="inner"
+                  <main
+                    id="main-content"
                     class={
                       "flex flex-col pb-[1px] px-[1px]",
                       hidden: @hide_main,
@@ -65,9 +72,9 @@
                   >
                     <div
                       :if={!@no_header}
-                      class="sticky top-0 pt-safe z-[999] bg-base-200 mb-[1px] lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center min-h-[70px]"
+                      class="sticky top-0 pt-safe z-sticky bg-base-200 mb-[1px] lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center min-h-[70px]"
                     >
-                      <div class="flex px-4 xl:px-0 pb-4 lg:pb-0 place-content-center flex-1 w-full transition-color duration-150 ease-in-out">
+                      <div class="flex px-4 xl:px-0 pb-4 lg:pb-0 place-content-center flex-1 w-full transition-colors duration-150 ease-in-out">
                         <StatelessComponent
                           module={maybe_component(Bonfire.UI.Common.PageHeaderLive, @__context__)}
                           page={@page}
@@ -88,7 +95,7 @@
                       </div>
                     </div>
                     {@inner_content}
-                  </div>
+                  </main>
                 </div>
               </div>
             </div>
@@ -96,16 +103,18 @@
         </div>
         <div
           :if={@without_secondary_widgets != true}
-          class="drawer-side z-[999999999999] xl:z-0 xl:!sticky xl:!top-0 xl:!h-screen"
+          class="drawer-side z-modal xl:z-0 xl:!sticky xl:!top-0 xl:!h-screen"
         >
-          <label for="widgets-drawer" aria-label="close widgets sidebar" class="drawer-overlay" />
+          <label for="widgets-drawer" aria-label={l("Close widgets sidebar")} class="drawer-overlay" />
           <div
             data-id="right_nav_and_widgets"
+            role="complementary"
+            aria-label={l("Widgets sidebar")}
             class="w-[320px] bg-base-200 lg:bg-transparent min-h-screen lg:min-h-0 overflow-y-auto pt-safe lg:pt-0 px-4 lg:px-2 lg:ml-6"
           >
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive and
                 socket_connected?(@__context__)}
-              <div class="w-full h-[70px] flex items-center">
+              <div role="search" class="w-full h-[70px] flex items-center">
                 <StatelessComponent
                   module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
                   id="sidebar-search"
@@ -139,7 +148,7 @@
                     <div
                       :if={is_nil(@current_user_id)}
                       style={"background-image: url(#{Config.get([:ui, :theme, :instance_image], nil)})"}
-                      class="bg-center bg-no-repeat h-[185px] bg-cover bg-white w-full rounded"
+                      class="bg-center bg-no-repeat h-[185px] bg-cover bg-base-100 w-full rounded"
                     />
                     <h2 :if={is_nil(@current_user_id)} class="text-lg text-base-content font-semibold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}</h2>
                     <div class={
@@ -164,10 +173,10 @@
     </div>
 
     <div class={
-      "drawer-side z-[999999999999] lg:z-0 lg:!sticky lg:!top-0 lg:!h-screen ",
+      "drawer-side z-modal lg:z-0 lg:!sticky lg:!top-0 lg:!h-screen ",
       hidden: @without_sidebar == true
     }>
-      <label for="sidebar-drawer" aria-label="close sidebar" class="drawer-overlay" />
+      <label for="sidebar-drawer" aria-label={l("Close sidebar")} class="drawer-overlay" />
       <aside
         data-id="nav_sidebar"
         data-sidebar-minimal={@without_sidebar == :minimal}

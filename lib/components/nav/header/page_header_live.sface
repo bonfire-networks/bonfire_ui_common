@@ -6,11 +6,12 @@
           <Bonfire.UI.Common.BackButtonLive back={@back} />
         </div>
         {#if is_map(current_user(@__context__))}
-          <label for="sidebar-drawer" class="lg:hidden btn btn-circle btn-ghost btn-sm">
-            <div
-              style="border-width: 2px"
-              class="border rounded-full p-0 border-primary/50 border-2 hover:border-primary transition-colors relative"
-            >
+          <label
+            for="sidebar-drawer"
+            aria-label={l("Open navigation sidebar")}
+            class="lg:hidden btn btn-circle btn-ghost btn-sm"
+          >
+            <div class="border rounded-full p-0 border-primary/50 border-2 hover:border-primary transition-colors relative">
               {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
                 <div class="p-2">
                   <#Icon iconify="ph:gear-duotone" class="w-5 h-5 text-primary" />
@@ -24,10 +25,7 @@
                   user_id={current_user_id(@__context__)}
                 />
               {/if}
-              <span
-                style="bottom: -4px; right: -4px"
-                class="rounded-full bg-base-100 absolute -right-1 -bottom-1"
-              >
+              <span class="rounded-full bg-base-100 absolute -right-1 -bottom-1">
                 <#Icon iconify="ph:list-duotone" class="w-5 h-5 text-primary" />
               </span>
             </div>
@@ -35,13 +33,13 @@
         {/if}
       </div>
       <div class="flex-1 truncate">
-        <span
+        <h1
           data-page={@page}
           data-role="page_title"
           class="first-letter:capitalize flex-1 font-semibold lg:text-center text-sm text-base-content"
         >
           {rich(@page_title)}
-        </span>
+        </h1>
         <div :if={@extra} class="text-xs text-base-content/70">{@extra}</div>
       </div>
 
