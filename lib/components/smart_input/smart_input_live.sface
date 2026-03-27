@@ -134,7 +134,7 @@
                 <:open_btn>
                   <div class="link link-primary link-hover text-sm">
                     <!-- <#Icon outline="X" class="w-4 h-4 text-primary/70" /> -->
-                    <span class="">{l("Close")}</span>
+                    <span class="">{if @showing_within == :thread_embed, do: l("Clear"), else: l("Close")}</span>
                   </div>
                 </:open_btn>
                 <:action_btns>
@@ -152,7 +152,7 @@
               </Bonfire.UI.Common.OpenModalLive>
             </span>
 
-            <div class="flex items-center gap-2">
+            <div :if={@showing_within != :thread_embed} class="flex items-center gap-2">
               <button
                 id="minimize_composer_button"
                 phx-click={LiveHandler.minimize()}

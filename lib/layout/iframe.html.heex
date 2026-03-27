@@ -1,7 +1,10 @@
-{@inner_content}
+<div id="iframe-resize-hook" phx-hook="IframeResize">
+  {@inner_content}
+</div>
 <script>
   // Auto-resize the parent iframe when this page's content changes.
   // Uses ResizeObserver (no library needed) and postMessage to the embedder.
+  // The IframeResize LiveView hook (bonfire_live.js) also fires on every LV patch.
   (function () {
     function sendHeight() {
       window.parent.postMessage(
