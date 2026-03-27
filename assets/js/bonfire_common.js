@@ -60,7 +60,7 @@ const winnerDimension = () => {
   // Cache width check - only update if changed
   const inner = document.querySelector("[data-id='layout']");
   if (!inner) {
-    console.log("Layout element not found");
+    console.debug("Layout element not found");
     return;
   }
   

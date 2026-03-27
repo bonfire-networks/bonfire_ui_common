@@ -210,15 +210,25 @@ defmodule Bonfire.UI.Common.LinkLive do
   end
 
   def render(%{to: "http" <> _} = assigns) do
-    ~F"""
-    <Link
-      to={@to}
-      class={@class}
-      opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
-    >
-      <#slot>{@label}</#slot>
-    </Link>
-    """
+    base = Bonfire.Common.URIs.base_url()
+
+    if base != "" and String.starts_with?(assigns.to, base) do
+      path = String.replace_prefix(assigns.to, base, "")
+      path = if path == "", do: "/", else: path
+
+      assign(assigns, :to, path)
+      |> do_render_link()
+    else
+      ~F"""
+      <Link
+        to={@to}
+        class={@class}
+        opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+      >
+        <#slot>{@label}</#slot>
+      </Link>
+      """
+    end
   end
 
   def render(%{to: "#" <> _} = assigns) do
@@ -247,6 +257,18 @@ defmodule Bonfire.UI.Common.LinkLive do
   end
 
   def render(%{to: to} = assigns) when is_binary(to) and to != "" do
+    do_render_link(assigns)
+  end
+
+  def render(assigns) do
+    ~F"""
+    <div data-name="no_link" class={@class} {...@opts |> Keyword.merge("aria-label": @label)}>
+      <#slot>{@label}</#slot>
+    </div>
+    """
+  end
+
+  def do_render_link(%{to: to} = assigns) when is_binary(to) and to != "" do
     ~F"""
     <.link
       navigate={@to}
@@ -268,14 +290,6 @@ defmodule Bonfire.UI.Common.LinkLive do
       {!-- FIXME: do not generate random ID to avoid re-rendering --}
       <#slot>{@label}</#slot>
     </.link>
-    """
-  end
-
-  def render(assigns) do
-    ~F"""
-    <div data-name="no_link" class={@class} {...@opts |> Keyword.merge("aria-label": @label)}>
-      <#slot>{@label}</#slot>
-    </div>
     """
   end
 end

@@ -1,0 +1,17 @@
+{@inner_content}
+<script>
+  // Auto-resize the parent iframe when this page's content changes.
+  // Uses ResizeObserver (no library needed) and postMessage to the embedder.
+  (function () {
+    function sendHeight() {
+      window.parent.postMessage(
+        { type: "bonfire:iframe-resize", height: document.body.scrollHeight },
+        "*"
+      );
+    }
+    if (typeof ResizeObserver !== "undefined") {
+      new ResizeObserver(sendHeight).observe(document.body);
+    }
+    sendHeight();
+  })();
+</script>

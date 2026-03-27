@@ -325,6 +325,13 @@ defmodule Bonfire.UI.Common.Routes do
         plug(:fetch_live_flash)
       end
 
+      # Pipeline for routes that should be embeddable in cross-origin iframes.
+      # Removes the default x-frame-options: SAMEORIGIN header and replaces it
+      # with CSP frame-ancestors. Configure allowed origins via IFRAME_ALLOWED_ORIGINS.
+      pipeline :iframe_embeddable do
+        plug(Bonfire.UI.Common.Plugs.IframeEmbeddablePlug)
+      end
+
       pipeline :static_generator do
         plug(:basic_html)
         plug(Bonfire.UI.Common.StaticGeneratorPlug)

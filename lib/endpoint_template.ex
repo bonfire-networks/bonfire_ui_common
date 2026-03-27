@@ -74,7 +74,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       socket("/live", Phoenix.LiveView.Socket,
         websocket: [
-          check_origin: false,
+          # NOTE: check_origin is set in runtime config instead
+          # check_origin: false,
           # check_origin: :conn,
           # whether to enable per message compression on all data frames
           compress: System.get_env("PHX_COMPRESS_LV") not in @no?,
