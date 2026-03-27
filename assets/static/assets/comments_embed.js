@@ -17,15 +17,18 @@
 
   var instanceUrl = new URL(script.src).origin;
   var postId = script.getAttribute("data-post-id");
-  if (!postId) return;
 
   var theme = script.getAttribute("data-theme");
-  var src = instanceUrl + "/comments/" + postId;
-  if (theme) src += "?theme=" + encodeURIComponent(theme);
+  var src = instanceUrl + "/comments/embed/" + (postId || "");
+  
+  const params = new URLSearchParams({
+    media_uri: window.location.href,
+    theme: theme,
+  });
 
   var iframe = document.createElement("iframe");
   iframe.id = "bonfire-comments-" + postId;
-  iframe.src = src;
+  iframe.src = src + "?" + params.toString();
   iframe.style.cssText = "width:100%;border:none;overflow:hidden;display:block";
   iframe.setAttribute("scrolling", "no");
   iframe.setAttribute("loading", "lazy");
