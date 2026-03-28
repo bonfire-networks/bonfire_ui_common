@@ -6,10 +6,10 @@
  *   <script src="https://your-instance.social/assets/embed/comments.js" data-post-id="POST_ID" data-theme="dark" async></script>
  *
  * Optional attributes:
- *   data-post-id  — the Bonfire post/thread ID (required)
+ *   data-post-id  — the Bonfire post/thread ID (optional, otherwise will find or create a thread for the URL of the page embedding this script)
  *   data-theme    — DaisyUI theme name to apply inside the iframe (e.g. "dark", "light")
  *
- * The iframe resizes automatically to fit its content with no library required.
+ * The iframe resizes automatically to fit its content.
  */
 (function () {
   var script = document.currentScript;
@@ -20,7 +20,7 @@
 
   var theme = script.getAttribute("data-theme");
   var src = instanceUrl + "/comments/embed/" + (postId || "");
-  
+
   const params = new URLSearchParams({
     media_uri: window.location.href,
     theme: theme,
