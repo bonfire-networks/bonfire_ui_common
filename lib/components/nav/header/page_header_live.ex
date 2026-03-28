@@ -11,7 +11,6 @@ defmodule Bonfire.UI.Common.PageHeaderLive do
   prop showing_within, :atom, default: nil
 
   slot default
-  slot left_action
   slot breadcrumbs
   slot right_action
 end

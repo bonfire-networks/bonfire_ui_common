@@ -1,55 +1,60 @@
-<div class="flex flex-1 w-full transition-color duration-150 ease-in-out">
+<header role="banner" class="flex flex-1 w-full transition-colors duration-150 ease-in-out">
   <div class="relative z-20 flex items-center w-full">
-    <div class="flex items-center gap-3 justify-between w-full lg:flex-1">
-      <div class="lg:w-[120px] max-w-[120px]">
-        <div :if={@back} class="lg:flex hidden">
+    <div class="flex items-center gap-2 lg:gap-3 w-full">
+      {!-- Left column: fixed width at all breakpoints for true centering --}
+      <div class="w-12 lg:w-[120px] shrink-0 flex items-center">
+        {#if @back}
           <Bonfire.UI.Common.BackButtonLive back={@back} />
-        </div>
-        {#if is_map(current_user(@__context__))}
-          <label
-            for="sidebar-drawer"
-            aria-label={l("Open navigation sidebar")}
-            class="lg:hidden btn btn-circle btn-ghost btn-sm"
-          >
-            <div class="border rounded-full p-0 border-primary/50 border-2 hover:border-primary transition-colors relative">
-              {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
-                <div class="p-2">
-                  <#Icon iconify="ph:gear-duotone" class="w-5 h-5 text-primary" />
-                </div>
-              {#else}
-                <Bonfire.UI.Common.AvatarLive
-                  bg_class="rounded-full"
-                  title={e(current_user(@__context__), :profile, :name, "Anon")}
-                  class="inline-block object-cover cursor-pointer rounded-full w-9 h-9"
-                  src={Media.avatar_url(current_user(@__context__))}
-                  user_id={current_user_id(@__context__)}
-                />
-              {/if}
-              <span class="rounded-full bg-base-100 absolute -right-1 -bottom-1">
-                <#Icon iconify="ph:list-duotone" class="w-5 h-5 text-primary" />
-              </span>
-            </div>
-          </label>
+        {#else}
+          {#if is_map(current_user(@__context__))}
+            <label
+              for="sidebar-drawer"
+              aria-label={l("Open navigation sidebar")}
+              class="lg:hidden btn btn-circle btn-ghost min-w-[44px] min-h-[44px]"
+            >
+              <div class="border rounded-full p-0 border-primary/50 border-2 hover:border-primary transition-colors relative">
+                {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
+                  <div class="p-2">
+                    <#Icon iconify="ph:gear-duotone" class="w-5 h-5 text-primary" />
+                  </div>
+                {#else}
+                  <Bonfire.UI.Common.AvatarLive
+                    bg_class="rounded-full"
+                    title={e(current_user(@__context__), :profile, :name, "Anon")}
+                    class="inline-block object-cover cursor-pointer rounded-full w-9 h-9"
+                    src={Media.avatar_url(current_user(@__context__))}
+                    user_id={current_user_id(@__context__)}
+                  />
+                {/if}
+                <span aria-hidden="true" class="rounded-full bg-base-100 absolute -right-1 -bottom-1">
+                  <#Icon iconify="ph:list-duotone" class="w-5 h-5 text-primary" />
+                </span>
+              </div>
+            </label>
+          {/if}
         {/if}
       </div>
-      <div class="flex-1 truncate">
+
+      {!-- Center column: title always centered --}
+      <div class="flex-1 min-w-0">
         <h1
           data-page={@page}
           data-role="page_title"
-          class="first-letter:capitalize flex-1 font-semibold lg:text-center text-sm text-base-content"
+          class="first-letter:capitalize truncate font-semibold text-center text-sm lg:text-base text-base-content"
         >
           {rich(@page_title)}
         </h1>
-        <div :if={@extra} class="text-xs text-base-content/70">{@extra}</div>
+        <div :if={@extra} class="text-xs text-center font-medium text-base-content/60">{@extra}</div>
       </div>
 
-      <div class="flex justify-end gap-3 items-center lg:w-[120px] max-w-[120px]">
+      {!-- Right column: fixed width matching left for balance --}
+      <div class="w-12 lg:min-w-[120px] shrink-0 flex justify-end gap-2 items-center">
         {#if current_user(@__context__)}
           <#slot {@right_action}>
           </#slot>
           <label
             for="widgets-drawer"
-            class="xl:hidden btn btn-circle btn-sm"
+            class="xl:hidden btn btn-circle min-w-[44px] min-h-[44px]"
             aria-label={l("Open widgets sidebar")}
           >
             <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5 text-base-content/70" />
@@ -61,4 +66,4 @@
       </div>
     </div>
   </div>
-</div>
+</header>

@@ -74,7 +74,7 @@
                       :if={!@no_header}
                       class="sticky top-0 pt-safe z-sticky bg-base-200 mb-[1px] lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center min-h-[70px]"
                     >
-                      <div class="flex px-4 xl:px-0 pb-4 lg:pb-0 place-content-center flex-1 w-full transition-colors duration-150 ease-in-out">
+                      <div class="flex px-4 xl:px-0 pb-2 lg:pb-0 place-content-center flex-1 w-full transition-colors duration-150 ease-in-out">
                         <StatelessComponent
                           module={maybe_component(Bonfire.UI.Common.PageHeaderLive, @__context__)}
                           page={@page}
