@@ -13,7 +13,7 @@
             data-id="enabled"
             data-value={"#{@input}_#{@current_value}"}
             class={
-              "px-1.5 text-base-content/90 p-0.5 rounded-lg hover:bg-base-content/10 transition-colors duration-100 text-xs",
+              "px-2 py-1.5 sm:px-1.5 sm:py-0.5 text-base-content/90 rounded-lg hover:bg-base-content/10 transition-colors duration-100 text-xs",
               "active bg-success hover:bg-success text-success-content": @current_value == @enabled_value
             }
             phx-click={@event_name}
@@ -27,7 +27,7 @@
           <button
             data-id="default"
             class={
-              "px-1.5 text-base-content/90 p-0.5 rounded-lg hover:bg-base-content/10 transition-colors duration-100 text-xs",
+              "px-2 py-1.5 sm:px-1.5 sm:py-0.5 text-base-content/90 rounded-lg hover:bg-base-content/10 transition-colors duration-100 text-xs",
               "active bg-base-300 hover:bg-base-300 text-base-content": is_nil(@current_value)
             }
             phx-click={@event_name}
@@ -41,7 +41,7 @@
           <button
             data-id="disabled"
             class={
-              "px-1.5 text-base-content/90 p-0.5 rounded-lg hover:bg-base-content/10 transition-colors duration-100 text-xs",
+              "px-2 py-1.5 sm:px-1.5 sm:py-0.5 text-base-content/90 rounded-lg hover:bg-base-content/10 transition-colors duration-100 text-xs",
               "active bg-error hover:bg-error text-error-content": @current_value == @disabled_value
             }
             phx-click={@event_name}
