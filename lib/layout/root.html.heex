@@ -36,5 +36,11 @@
     {@inner_content}
 
     {raw(Bonfire.Common.Config.endpoint_module().include_assets(@conn, :bottom))}
+
+    <script>
+      window.addEventListener("phx:set_theme", function(e) {
+        document.documentElement.setAttribute("data-theme", e.detail.theme);
+      });
+    </script>
   </body>
 </html>

@@ -60,7 +60,7 @@
             <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5 text-base-content/70" />
           </label>
         {#else}
-          <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="guest_actions">{l("Log in")}</LinkLive>
+          <!-- <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="guest_actions">{l("Log in")}</LinkLive> -->
           <Bonfire.UI.Common.GuestActionsLive page_header page={@page} />
         {/if}
       </div>

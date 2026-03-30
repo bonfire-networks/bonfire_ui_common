@@ -65,7 +65,9 @@
   </div>
 {#else}
   <li
+    :if={@widget[:type] not in [nil, :disabled]}
     class={[
+      "[&:not(:has(>*))]:hidden",
       @widget[:wrapper_class] || @wrapper_class,
       group:
         not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])

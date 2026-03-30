@@ -55,3 +55,116 @@
   --noise: 0;
 }
 
+/* BovenJan flavour custom themes */
+
+/* BovenJan Light - based on brand guide */
+@plugin "daisyui/theme" {
+  name: "bovenjan";
+  default: false;
+  prefersdark: false;
+  color-scheme: light;
+
+  /* base colors - warm whites from brand tan #d1b295 */
+  --color-base-100: oklch(98% 0.008 65);
+  --color-base-200: oklch(95% 0.012 65);
+  --color-base-300: oklch(91% 0.018 65);
+  --color-base-content: oklch(23% 0.04 220);
+
+  /* primary - brand blue #649abe */
+  --color-primary: oklch(66% 0.08 230);
+  --color-primary-content: oklch(98% 0.005 230);
+
+  /* secondary - brand coral #d76952 */
+  --color-secondary: oklch(62% 0.14 25);
+  --color-secondary-content: oklch(98% 0.005 25);
+
+  /* accent - brand orange #ee9f54 */
+  --color-accent: oklch(76% 0.13 60);
+  --color-accent-content: oklch(22% 0.04 60);
+
+  /* neutral - brand dark teal #002e3e */
+  --color-neutral: oklch(23% 0.04 220);
+  --color-neutral-content: oklch(96% 0.005 220);
+
+  /* state colors */
+  --color-info: oklch(72% 0.08 220);
+  --color-info-content: oklch(98% 0.005 220);
+  --color-success: oklch(64% 0.16 155);
+  --color-success-content: oklch(98% 0.005 155);
+  --color-warning: oklch(76% 0.13 60);
+  --color-warning-content: oklch(22% 0.04 60);
+  --color-error: oklch(60% 0.20 28);
+  --color-error-content: oklch(98% 0.005 28);
+
+  /* border radius - friendly/rounded feel */
+  --radius-selector: 2rem;
+  --radius-field: 0.75rem;
+  --radius-box: 0.75rem;
+
+  /* base sizes */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  /* border size */
+  --border: 1px;
+
+  /* effects */
+  --depth: 1;
+  --noise: 0;
+}
+
+/* BovenJan Dark - dark teal base from #002e3e */
+@plugin "daisyui/theme" {
+  name: "bovenjan-dark";
+  default: false;
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* base colors - dark teal tones from #002e3e */
+  --color-base-100: oklch(23% 0.02 220);
+  --color-base-200: oklch(18% 0.015 220);
+  --color-base-300: oklch(28% 0.025 220);
+  --color-base-content: oklch(92% 0.01 65);
+
+  /* primary - lighter brand blue */
+  --color-primary: oklch(72% 0.08 230);
+  --color-primary-content: oklch(15% 0.02 230);
+
+  /* secondary - lighter coral */
+  --color-secondary: oklch(70% 0.12 25);
+  --color-secondary-content: oklch(15% 0.02 25);
+
+  /* accent - lighter orange */
+  --color-accent: oklch(78% 0.12 60);
+  --color-accent-content: oklch(18% 0.04 60);
+
+  /* neutral - muted teal */
+  --color-neutral: oklch(35% 0.03 220);
+  --color-neutral-content: oklch(92% 0.005 220);
+
+  /* state colors */
+  --color-info: oklch(74% 0.07 220);
+  --color-info-content: oklch(15% 0.01 220);
+  --color-success: oklch(70% 0.14 155);
+  --color-success-content: oklch(15% 0.01 155);
+  --color-warning: oklch(78% 0.12 60);
+  --color-warning-content: oklch(18% 0.04 60);
+  --color-error: oklch(68% 0.17 28);
+  --color-error-content: oklch(15% 0.01 28);
+
+  /* border radius - same as light */
+  --radius-selector: 2rem;
+  --radius-field: 0.75rem;
+  --radius-box: 0.75rem;
+
+  /* base sizes */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  /* border size */
+  --border: 1px;
+
+  /* effects */
+  --depth: 1;
+  --noise: 0;
+}

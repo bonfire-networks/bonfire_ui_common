@@ -1,10 +1,14 @@
 <Bonfire.UI.Common.WidgetBlockLive class="relative w-full mx-auto !pt-0">
   <div class="flex flex-col items-center w-full">
-    <div
-      style={"background-image: url(#{Config.get([:ui, :theme, :instance_image], nil)})"}
-      class="bg-center h-[200px] bg-no-repeat bg-cover bg-white rounded w-full"
-    >
-    </div>
+    <img
+      :if={Config.get([:ui, :theme, :instance_image], nil)}
+      src={Config.get([:ui, :theme, :instance_image], nil)}
+      alt={l("Banner for %{instance}",
+        instance: Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())
+      )}
+      loading="lazy"
+      class="h-[200px] object-cover rounded w-full bg-base-300"
+    />
     <div class="w-full mt-1">
       <LinkLive
         class="text-lg font-extrabold link link-hover text-base-content"

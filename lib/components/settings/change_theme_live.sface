@@ -47,14 +47,13 @@
               </Bonfire.UI.Common.OpenModalLive>
             </div>
             <button
+              type="button"
               class="flex-1 w-full btn btn-sm btn-primary btn-soft"
-              data-set-theme={t}
-              data-act-class="outline"
               x-on:click={"theme = '#{t}'"}
-              phx-click="Bonfire.Common.Settings:put_theme"
-              phx-value-keys={"ui:theme:#{@key}"}
-              phx-value-values={t}
-              phx-value-scope={@scope}
+              phx-click={JS.push("Bonfire.Common.Settings:put_theme",
+                value: %{keys: "ui:theme:#{@key}", values: t, scope: @scope}
+              )
+              |> JS.set_attribute({"data-theme", t}, to: "#root")}
             >{l("Enable")}</button>
           </div>
         </div>

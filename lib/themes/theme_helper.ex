@@ -4,6 +4,7 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   Uses the new OKLCH color format and updated CSS variable naming scheme.
   """
   use Bonfire.Common.Settings
+  import Bonfire.Common.Utils, only: [current_user: 1]
 
   @doc """
   Determines the current theme based on user preferences and context.
@@ -15,7 +16,7 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   Returns a theme name string that is set on data-theme attribute in the DOM.
   """
   def current_theme(assigns) do
-    context = assigns[:__context__] || assigns[:current_user] || assigns[:conn]
+    context = current_user(assigns) || assigns[:conn]
 
     preferred_theme =
       Settings.get(

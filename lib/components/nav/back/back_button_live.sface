@@ -6,7 +6,7 @@
     label={l("Go back to the previous page")}
     class="btn btn-sm btn-circle z-50"
   >
-    <#Icon iconify="ph:arrow-left" class="w-5 h-5" />
+    <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
   </button>
 {#else}
   {#if is_binary(@back)}
@@ -16,13 +16,13 @@
       class="btn btn-sm btn-circle z-50"
       parent_id="back_button"
     >
-      <#Icon iconify="ph:arrow-left" class="w-5 h-5" />
+      <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
     </LinkLive>
   {#else}
     <button
       class="btn btn-sm btn-circle z-50"
       onclick="history.length > 1 ? history.back() : window.location.href = '/'"
-    ><#Icon iconify="ph:arrow-left" class="w-5 h-5" /></button>
+    ><#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" /></button>
   {/if}
   {!-- {#elseif is_binary(@back) and @back != current_url(@__context__)}
   <LinkLive

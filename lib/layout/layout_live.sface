@@ -1,19 +1,18 @@
 <div
   data-id="bonfire_live"
   class="antialiased bg-base-200 min-h-screen min-h-screen-safe pb-safe"
-  data-theme={Bonfire.UI.Common.ThemeHelper.current_theme(assigns)}
   style={maybe_custom_theme(
     current_user: current_user(@__context__),
     current_account: current_account(@__context__),
     instance_settings: @instance_settings
   )}
 >
-  <a
+  <!-- <a
     href="#main-content"
     class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-toast focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-content focus:rounded-lg focus:font-semibold"
   >
     {l("Skip to main content")}
-  </a>
+  </a> -->
 
   {!-- <div
         data-id="layout"
@@ -136,19 +135,32 @@
               />
 
               {#if !@current_user_id or socket_connected?(@__context__)}
-                <div :if={@current_user_id} class="pb-4 flex items-center justify-between">
+                <div class="py-4 flex items-center justify-between">
                   <Bonfire.UI.Common.LogoLinkLive
                     name_class="text-base font-semibold text-base-content text-relaxed"
                     with_name
                     href="/"
                   />
                 </div>
+
+                <div :if={!@current_user_id} class="flex flex-col gap-2 my-3">
+                  <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="layout">{l("Log in")}</LinkLive>
+
+                  {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+                    <LinkLive to={path(:signup)} class="btn btn-primary btn-outline" parent_id="layout">{l("Create account")}</LinkLive>
+                  {/if}
+                </div>
+
                 <div class="text-xs text-base-content/70">
                   <div class="flex flex-col gap-2 mb-3">
-                    <div
-                      :if={is_nil(@current_user_id)}
-                      style={"background-image: url(#{Config.get([:ui, :theme, :instance_image], nil)})"}
-                      class="bg-center bg-no-repeat h-[185px] bg-cover bg-base-100 w-full rounded"
+                    <img
+                      :if={is_nil(@current_user_id) and Config.get([:ui, :theme, :instance_image], nil)}
+                      src={Config.get([:ui, :theme, :instance_image], nil)}
+                      alt={l("Banner for %{instance}",
+                        instance: Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())
+                      )}
+                      loading="lazy"
+                      class="h-[185px] object-cover w-full rounded bg-base-300"
                     />
                     <h2 :if={is_nil(@current_user_id)} class="text-lg text-base-content font-semibold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}</h2>
                     <div class={
@@ -157,13 +169,6 @@
                     }>{rich(Config.get([:ui, :theme, :instance_description]))}</div>
                   </div>
                   <Bonfire.UI.Common.ImpressumLive />
-                </div>
-                <div :if={is_nil(@current_user_id)} class="flex flex-col gap-2 mt-3">
-                  <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="layout">{l("Log in")}</LinkLive>
-
-                  {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-                    <LinkLive to={path(:signup)} class="btn btn-primary btn-outline" parent_id="layout">{l("Create account")}</LinkLive>
-                  {/if}
                 </div>
               {/if}
             </div>
