@@ -257,6 +257,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@iconify/json@npm:^2.2.458":
+  version: 2.2.458
+  resolution: "@iconify/json@npm:2.2.458"
+  dependencies:
+    "@iconify/types": "npm:*"
+    pathe: "npm:^2.0.3"
+  checksum: 10c0/9ce7b65592c7a1a4abf1b3fe89d11e4ad039efaae1489b9f866326da9e43651caeadb38c3249481e24fd3f67af48e4588df28a93a5eb43de3882a46ccc57765d
+  languageName: node
+  linkType: hard
+
+"@iconify/types@npm:*":
+  version: 2.0.0
+  resolution: "@iconify/types@npm:2.0.0"
+  checksum: 10c0/65a3be43500c7ccacf360e136d00e1717f050b7b91da644e94370256ac66f582d59212bdb30d00788aab4fc078262e91c95b805d1808d654b72f6d2072a7e4b2
+  languageName: node
+  linkType: hard
+
 "@isaacs/balanced-match@npm:^4.0.1":
   version: 4.0.1
   resolution: "@isaacs/balanced-match@npm:4.0.1"
@@ -2046,6 +2063,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pathe@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "pathe@npm:2.0.3"
+  checksum: 10c0/c118dc5a8b5c4166011b2b70608762e260085180bb9e33e80a50dcdb1e78c010b1624f4280c492c92b05fc276715a4c357d1f9edc570f8f1b3d90b6839ebaca1
+  languageName: node
+  linkType: hard
+
 "phoenix@link:../deps/phoenix::locator=root-workspace-0b6124%40workspace%3A.":
   version: 0.0.0-use.local
   resolution: "phoenix@link:../deps/phoenix::locator=root-workspace-0b6124%40workspace%3A."
@@ -2287,6 +2311,7 @@ __metadata:
     "@cyclonedx/yarn-plugin-cyclonedx": "npm:^3.2.1"
     "@floating-ui/dom": "npm:^1.5.1"
     "@iconfu/svg-inject": "npm:^1.2.3"
+    "@iconify/json": "npm:^2.2.458"
     "@picmo/popup-picker": "npm:^5.8.1"
     "@pwabuilder/pwaupdate": "npm:^0.2.1"
     "@splidejs/splide": "npm:^4.1.3"

@@ -138,18 +138,16 @@
                 class="relative z-30 flex items-center tooltip tooltip-top"
                 data-tip={l("Mark the activity as sensitive")}
                 id="sensitive_btn"
-                phx-click="Bonfire.UI.Common.SmartInput:toggle_sensitive"
-                phx-target={@event_target || "#smart_input"}
               >
-                <label class={["relative btn btn-ghost btn-circle", "bg-warning text-warning-content": @show_sensitive]}>
-                  <input
-                    type="checkbox"
-                    name="sensitive"
-                    checked={@show_sensitive}
-                    class="opacity-0 absolute left-[999999999999999999px]"
-                  />
+                <button
+                  type="button"
+                  phx-click="Bonfire.UI.Common.SmartInput:toggle_sensitive"
+                  phx-target={@event_target || "#smart_input"}
+                  class={["relative btn btn-ghost btn-circle", "bg-warning text-warning-content": @show_sensitive]}
+                >
                   <#Icon iconify="ph:siren-duotone" class="swap-off w-[20px] h-[20px] text-base-content/70" />
-                </label>
+                </button>
+                <input type="hidden" name="sensitive" value={to_string(@show_sensitive)} />
               </div>
 
               <!-- Language selection dropdown -->
