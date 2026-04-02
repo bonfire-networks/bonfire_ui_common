@@ -19,21 +19,23 @@
   {#else} -->
   <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
     <div class="flex pt-safe w-full">
-      <!-- <div class="pt-2 flex items-center justify-between">
-          <Bonfire.UI.Common.LogoLinkLive
-            href="/"
-            name_class="text-base font-semibold text-base-content text-relaxed"
-            with_name={!current_user_id(@__context__)}
-          />
-        </div> -->
       {!-- <div id="nav_user_menu_portal">
         </div> --}
 
       {#if current_user_id(@__context__)}
         {!-- <.portal id="user_menu_portal" target="#nav_user_menu_portal"> --}
-        <div class="py-4 gap-4 flex flex-col w-full">
+        <div class="py-4 gap-6 flex flex-col w-full">
+          <div class="flex items-center justify-between">
+            <Bonfire.UI.Common.LogoLinkLive
+              href="/"
+              image_class="w-16 h-16"
+              name_class="text-base font-semibold text-base-content text-relaxed"
+            />
+            <div>
+              <Bonfire.UI.Common.UserMenuLive />
+            </div>
+          </div>
           <!-- {#if @__context__[:current_account_users]} -->
-          <Bonfire.UI.Common.UserMenuLive />
           <!-- {/if} -->
           <!-- <div class="flex items-center flex-1 w-full justify-end lg:justify-start px-3 pt-2"> -->
           <Bonfire.UI.Common.SmartInputContainerLive
@@ -44,7 +46,7 @@
             to_boundaries={@to_boundaries}
             context_id={@context_id}
             without_icon
-            composer_class="btn btn-primary rounded-full w-full lg:btn-wide"
+            composer_class="btn btn-primary rounded-full w-full"
             smart_input_opts={@smart_input_opts}
           />
           <!-- </div> -->

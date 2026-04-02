@@ -58,7 +58,7 @@
           class="flex items-center w-full gap-3 lg:px-2 lg:py-2"
           parent_id="nav_sidebar"
         >
-          <#Icon iconify="ri:group-line" class="w-6 h-6 text-primary" />
+          <#Icon iconify="ph:users-three-duotone" class="w-6 h-6 text-primary" />
           <div class="opacity-80 font-medium text-base">{l("Public Groups")}</div>
         </LinkLive>
       </li>

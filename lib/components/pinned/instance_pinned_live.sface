@@ -3,14 +3,12 @@
     {#match []}
     {#match entries}
       <div data-id="instance_pinned_widget">
-        <Bonfire.UI.Common.WidgetBlockLive
-          class="w-full px-3 lg:px-0 relative overflow-hidden"
-          widget_title={@title || l("Spotlight")}
-        >
+        <Bonfire.UI.Common.WidgetBlockLive class="w-full px-3 lg:px-0 relative overflow-hidden">
           {!-- Arrow buttons overlaid on the carousel --}
-          <div
+          <!-- <div
             :if={length(entries) > 1}
-            class="absolute inset-y-0 left-2 right-2 top-8 flex items-center justify-between z-max"
+            class="flex absolute w-full gap-1"
+            style="top: 100px;"
           >
             <button
               type="button"
@@ -26,28 +24,32 @@
             >
               <#Icon iconify="ph:caret-right" class="w-4 h-4" />
             </button>
-          </div>
+          </div> -->
           <div class="grid grid-cols-1 overflow-hidden relative">
             {!-- Carousel --}
             <div
               id="pinned-carousel"
               class="flex items-start gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2"
               phx-hook="CarouselScroll"
+              style="scrollbar-width: thin; scrollbar-color: oklch(var(--p)) oklch(var(--p) / 0.15);"
             >
               {#for entry <- entries}
                 {#case e(entry, :activity, nil)}
                   {#match nil}
                   {#match activity}
                     <div
-                      class="flex-shrink-0 snap-start rounded-xl bg-base-100 overflow-hidden border border-base-content/10"
-                      style="width: calc(88% - 8px);"
+                      class="flex-shrink-0 snap-start rounded-xl bg-base-100 overflow-hidden border border-primary/30"
+                      style="width: 70%;"
                     >
+                      <div class="uppercase text-xs tracking-widest mb-0 m-4">{l("spotlight")}</div>
                       <StatefulComponent
                         module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
                         id={Bonfire.UI.Social.ActivityLive.component_id(id(activity), "pinned_#{id(entry)}")}
                         activity={activity}
-                        showing_within={:pin}
+                        showing_within={:smart_input}
                         hide_actions
+                        class="flex-1 reply_to_in_composer overflow-x-auto"
+                        show_minimal_subject_and_note
                       />
                     </div>
                 {/case}

@@ -7,14 +7,7 @@ defmodule Bonfire.UI.Common.InstancePinnedLive do
 
   def update(assigns, socket) do
     socket = assign(socket, assigns)
-
-    entries =
-      if socket_connected?(socket) do
-        pinned_activities()
-      else
-        []
-      end
-
+    entries = pinned_activities()
     {:ok, assign(socket, entries: entries)}
   end
 

@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
   prop class, :css_class, default: "w-full p-4 flex-auto mx-auto bonfire-wrapper"
 
   prop title_class, :css_class,
-    default: "pb-1 text-sm font-semibold uppercase tracking-wider text-base-content/50"
+    default: "pb-2 text-xs font-medium uppercase tracking-wide text-base-content/90"
 
   @doc "A call to action, usually redirect to the specific page"
   slot action

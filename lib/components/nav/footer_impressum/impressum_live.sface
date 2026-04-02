@@ -63,7 +63,7 @@
   {/case}
 </div>
 
-<div class="mt-4">
+<div class="">
   <!-- <button class="btn btn-sm btn-ghost">{l "Enable wellness mode"}</button>
 <button class="btn btn-sm btn-ghost">{l "Enable safety mode"}</button> -->
 

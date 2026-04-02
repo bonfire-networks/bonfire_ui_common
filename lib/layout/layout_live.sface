@@ -25,8 +25,10 @@
           page={@page}
           :if={is_nil(@current_account_id) and @without_sidebar==true}
         /> --}
-
-  <div class="drawer lg:drawer-open lg:max-w-[var(--spacing-1220)] mx-auto w-full">
+  <!-- <div class="fixed left-0 top-0 h-screen w-[180px] bg-primary">
+    <img src="assets/jacobinlogo.png" alt="Bonfire logo" class="w-full h-12 absolute left-4 top-4" />
+  </div> -->
+  <div class="drawer lg:drawer-open lg:max-w-[var(--spacing-1290)] mx-auto w-full">
     <input id="sidebar-drawer" type="checkbox" class="drawer-toggle">
     <div class="drawer-content px-safe">
       <div
@@ -109,7 +111,7 @@
             data-id="right_nav_and_widgets"
             role="complementary"
             aria-label={l("Widgets sidebar")}
-            class="w-[320px] bg-base-200 lg:bg-transparent min-h-screen lg:min-h-0 overflow-y-auto pt-safe lg:pt-0 px-4 lg:px-2 lg:ml-6"
+            class="w-[320px] bg-base-200 lg:bg-transparent min-h-screen lg:min-h-0 flex flex-col h-full overflow-y-auto pt-safe lg:pt-0 px-4 lg:px-2 lg:ml-6"
           >
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive and
                 socket_connected?(@__context__)}
@@ -123,7 +125,7 @@
             {/if}
             <div
               data-id="secondary_sidebar_widgets"
-              class="overflow-x-hidden p-[1px] overflow-y-auto max-h-[calc(var(--inner-window-height))]"
+              class="overflow-x-hidden p-[1px] overflow-y-auto flex-1 flex flex-col"
             >
               <Bonfire.UI.Common.SidebarWidgetsLive
                 widgets={@sidebar_widgets}
@@ -134,14 +136,14 @@
                 parent_id="layout_right"
               />
 
-              {#if !@current_user_id or socket_connected?(@__context__)}
-                <div class="py-4 flex items-center justify-between">
-                  <Bonfire.UI.Common.LogoLinkLive
-                    name_class="text-base font-semibold text-base-content text-relaxed"
-                    with_name
-                    href="/"
-                  />
-                </div>
+              <div class="mt-auto">
+                <div class="text-sm pt-4 border-primary/30 border-t text-left font-bold">{rich(
+                    Config.get(
+                      [:ui, :theme, :instance_tagline],
+                      "Welcome to #{Bonfire.Application.name_and_flavour()}"
+                    )
+                  )}</div>
+                <div class="prose prose-sm text-sm/6">{rich(Config.get([:ui, :theme, :instance_description]))}</div>
 
                 <div :if={!@current_user_id} class="flex flex-col gap-2 my-3">
                   <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="layout">{l("Log in")}</LinkLive>
@@ -151,26 +153,22 @@
                   {/if}
                 </div>
 
+                <img
+                  :if={Config.get([:ui, :theme, :instance_image], nil)}
+                  src={Config.get([:ui, :theme, :instance_image], nil)}
+                  alt={l("Banner for %{instance}",
+                    instance: Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())
+                  )}
+                  loading="lazy"
+                  class="h-[95px] mt-4 mb-2 object-cover w-full rounded bg-base-300"
+                />
+
                 <div class="text-xs text-base-content/70">
-                  <div class="flex flex-col gap-2 mb-3">
-                    <img
-                      :if={is_nil(@current_user_id) and Config.get([:ui, :theme, :instance_image], nil)}
-                      src={Config.get([:ui, :theme, :instance_image], nil)}
-                      alt={l("Banner for %{instance}",
-                        instance: Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())
-                      )}
-                      loading="lazy"
-                      class="h-[185px] object-cover w-full rounded bg-base-300"
-                    />
-                    <h2 :if={is_nil(@current_user_id)} class="text-lg text-base-content font-semibold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}</h2>
-                    <div class={
-                      "prose prose-sm text-base-content",
-                      "!text-base-content/70 text-xs": not is_nil(@current_user_id)
-                    }>{rich(Config.get([:ui, :theme, :instance_description]))}</div>
+                  <div class="flex flex-col gap-2 pb-2">
+                    <Bonfire.UI.Common.ImpressumLive />
                   </div>
-                  <Bonfire.UI.Common.ImpressumLive />
                 </div>
-              {/if}
+              </div>
             </div>
           </div>
         </div>
@@ -185,7 +183,7 @@
       <aside
         data-id="nav_sidebar"
         data-sidebar-minimal={@without_sidebar == :minimal}
-        class="w-80 px-4 px-safe lg:px-0 lg:mr-6 lg:w-[250px] bg-base-200 self-stretch overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-full lg:pb-0"
+        class="w-80 px-4 px-safe lg:px-0 lg:mr-6 lg:w-[290px] bg-base-200 self-stretch overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-full lg:pb-0"
       >
         <div class="flex flex-col flex-1 h-full pb-[80px] lg:pb-0">
           {#if @current_user_id && @without_sidebar != true && socket_connected?(@__context__)}
@@ -212,7 +210,10 @@
             >
               <div class="flex pt-safe w-full">
                 <div class="pt-2 flex items-center justify-between">
-                  <Bonfire.UI.Common.LogoLinkLive href="/" />
+                  <Bonfire.UI.Common.LogoLinkLive
+                    image_class="w-16 h-16bg-center bg-no-repeat bg-contain"
+                    href="/"
+                  />
                 </div>
               </div>
             </div>
