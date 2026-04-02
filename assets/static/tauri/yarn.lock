@@ -263,6 +263,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@playwright/test@npm:^1.59.0":
+  version: 1.59.0
+  resolution: "@playwright/test@npm:1.59.0"
+  dependencies:
+    playwright: "npm:1.59.0"
+  bin:
+    playwright: cli.js
+  checksum: 10c0/161e8f4e61dc3679d055ca13ddb08211834bc1d54e08b2b269e94fb38408fb29a6fa36a67103bfbf6d9c02a3cf2c4073f0c1f0e6bfc3d3106e4d276d2dceb6b2
+  languageName: node
+  linkType: hard
+
+"@srsholmes/tauri-playwright@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@srsholmes/tauri-playwright@npm:0.2.2"
+  peerDependencies:
+    "@playwright/test": ^1.40.0
+  checksum: 10c0/ec1979699342f574a23178b5d96b1fccb9d436382309adc0d7ab871f899b0950898ac1bc8d70e5d87b3937b42fd564cfe75d743857610f71d0a9a22ecd7cf4f3
+  languageName: node
+  linkType: hard
+
 "@tailwindcss/cli@npm:^4.1.0":
   version: 4.2.0
   resolution: "@tailwindcss/cli@npm:4.2.0"
@@ -580,6 +600,25 @@ __metadata:
   dependencies:
     minipass: "npm:^7.0.3"
   checksum: 10c0/63e80da2ff9b621e2cb1596abcb9207f1cf82b968b116ccd7b959e3323144cce7fb141462200971c38bbf2ecca51695069db45265705bed09a7cd93ae5b89f94
+  languageName: node
+  linkType: hard
+
+"fsevents@npm:2.3.2":
+  version: 2.3.2
+  resolution: "fsevents@npm:2.3.2"
+  dependencies:
+    node-gyp: "npm:latest"
+  checksum: 10c0/be78a3efa3e181cda3cf7a4637cb527bcebb0bd0ea0440105a3bb45b86f9245b307dc10a2507e8f4498a7d4ec349d1910f4d73e4d4495b16103106e07eee735b
+  conditions: os=darwin
+  languageName: node
+  linkType: hard
+
+"fsevents@patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>":
+  version: 2.3.2
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
+  dependencies:
+    node-gyp: "npm:latest"
+  conditions: os=darwin
   languageName: node
   linkType: hard
 
@@ -1015,6 +1054,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"playwright-core@npm:1.59.0":
+  version: 1.59.0
+  resolution: "playwright-core@npm:1.59.0"
+  bin:
+    playwright-core: cli.js
+  checksum: 10c0/73d93d78e8cd72b9440e41f29542189b4ce3b77f6ecc60ddb6edc5c65245fe5e235275dd62d62a9fd07d546710f0ee78827b9c98037f9dd8de2cd8e98cd33f31
+  languageName: node
+  linkType: hard
+
+"playwright@npm:1.59.0":
+  version: 1.59.0
+  resolution: "playwright@npm:1.59.0"
+  dependencies:
+    fsevents: "npm:2.3.2"
+    playwright-core: "npm:1.59.0"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    playwright: cli.js
+  checksum: 10c0/03b400ae1f822e8f943b5b44cd33c89f6e1afdf7467e89ed8bab945df8c23646b50361afedd2791774fa2d2bde33016b5a770c30856e0220edf4cf69537bdd28
+  languageName: node
+  linkType: hard
+
 "proc-log@npm:^6.0.0":
   version: 6.1.0
   resolution: "proc-log@npm:6.1.0"
@@ -1043,6 +1106,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
+    "@playwright/test": "npm:^1.59.0"
+    "@srsholmes/tauri-playwright": "npm:^0.2.2"
     "@tailwindcss/cli": "npm:^4.1.0"
     daisyui: "npm:^5.1.0"
     tailwindcss: "npm:^4.1.0"

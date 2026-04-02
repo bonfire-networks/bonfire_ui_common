@@ -147,7 +147,7 @@
                 >
                   <#Icon iconify="ph:siren-duotone" class="swap-off w-[20px] h-[20px] text-base-content/70" />
                 </button>
-                <input type="hidden" name="sensitive" value={to_string(@show_sensitive)} />
+                <input type="hidden" name="sensitive" value={to_string(@show_sensitive)}>
               </div>
 
               <!-- Language selection dropdown -->
