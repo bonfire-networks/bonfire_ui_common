@@ -3,7 +3,7 @@
  *
  * Drop this script tag anywhere in your page to embed a Bonfire comment thread:
  *
- *   <script src="https://your-instance.social/assets/embed/comments.js" data-post-id="POST_ID" data-theme="dark" async></script>
+ *   <script src="https://your-instance.social/js/comments.js" data-post-id="POST_ID" data-theme="dark" async></script>
  *
  * Optional attributes:
  *   data-post-id  — the Bonfire post/thread ID (optional, otherwise will find or create a thread for the URL of the page embedding this script)
@@ -18,12 +18,11 @@
   var instanceUrl = new URL(script.src).origin;
   var postId = script.getAttribute("data-post-id");
 
-  var theme = script.getAttribute("data-theme");
   var src = instanceUrl + "/comments/embed/" + (postId || "");
 
   const params = new URLSearchParams({
-    media_uri: window.location.href,
-    theme: theme,
+    media_uri: script.getAttribute("data-media-uri") || window.location.href,
+    theme: script.getAttribute("data-theme"),
   });
 
   var iframe = document.createElement("iframe");

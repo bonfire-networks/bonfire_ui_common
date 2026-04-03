@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.Web do
     do:
       Bonfire.Common.Config.get(
         [Bonfire.UI.Common.Web, :static_paths],
-        ~w(public assets css fonts images js favicon.ico pwa pwabuilder-sw.js robots.txt cache_manifest.json source.tar.gz index.html),
+        ~w(public assets css fonts images js pwa pwabuilder-sw.js robots.txt cache_manifest.json source.tar.gz index.html favicon.ico),
         name: l("Static paths"),
         description: l("Where the server can find static assets")
       )
