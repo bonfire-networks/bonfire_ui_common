@@ -18,12 +18,14 @@
   var instanceUrl = new URL(script.src).origin;
   var postId = script.getAttribute("data-post-id");
 
-  var src = instanceUrl + "/comments/embed/" + (postId || "");
+  var src = instanceUrl + "/comments/embed" + (postId ? "/" + postId : "");
 
-  const params = new URLSearchParams({
+  var params = new URLSearchParams({
     media_uri: script.getAttribute("data-media-uri") || window.location.href,
-    theme: script.getAttribute("data-theme"),
   });
+
+  var theme = script.getAttribute("data-theme");
+  if (theme) params.set("theme", theme);
 
   var iframe = document.createElement("iframe");
   iframe.id = "bonfire-comments-" + postId;
