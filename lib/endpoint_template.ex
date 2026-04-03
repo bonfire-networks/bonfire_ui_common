@@ -159,21 +159,30 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         gzip: serve_gzip
       )
 
-      # plug(Plug.Static,
-      #   at: "/",
-      #   from: :livebook,
-      #   gzip: true,
-      #   only: ~w(images js)
-      # )
+      # Serve static files from the current flavour's OTP app (e.g. jacobin fonts)
+      flavour_otp_app = Bonfire.Common.Config.top_level_otp_app()
 
-      # plug(Plug.Static,
-      #   at: "/livebook/",
-      #   from: :livebook,
-      #   gzip: true,
-      #   only: ~w(css images js favicon.ico robots.txt cache_manifest.json)
-      # )
+      flavour_static =
+        if flavour_otp_app not in [:bonfire, :bonfire_ui_common, :bonfire_common] do
+          try do
+            Application.app_dir(flavour_otp_app, "priv/static")
+          rescue
+            _ ->
+              path = "extensions/#{flavour_otp_app}/priv/static"
+              if File.dir?(path), do: path
+          end
+        end
 
-      # TODO: serve priv/static from any extensions that have one as well?
+      if flavour_static do
+        plug(Plug.Static,
+          at: "/",
+          from: flavour_static,
+          gzip: serve_gzip,
+          cache_control_for_vsn_requests: cache_control_for_vsn_requests,
+          cache_control_for_etags: cache_control_for_etags,
+          only: Bonfire.UI.Common.Web.static_paths()
+        )
+      end
 
       if System.get_env("LIVE_DASHBOARD_LOGGER") == "true" do
         plug(Phoenix.LiveDashboard.RequestLogger,
@@ -244,7 +253,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       def include_assets(conn, :top) do
         endpoint_module = Bonfire.Common.Config.endpoint_module()
 
-        font_family =
+        font_family_raw =
           Bonfire.Common.Settings.get(
             [:ui, :font_family],
             "Inter (Latin Languages)",
@@ -253,17 +262,19 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
             description: l("Default font to use throughout the interface.")
           )
           |> Types.maybe_to_string()
+
+        font_name =
+          font_family_raw
+          |> String.replace(~r/\s*\(.*\)$/, "")
+          |> String.trim()
+          |> String.replace(~r/[^a-zA-Z0-9 \-]/, "")
+
+        font_family =
+          font_family_raw
           |> String.trim_trailing(" Languages)")
           |> String.replace([" ", "-", "(", ")"], "-")
           |> String.replace("--", "-")
           |> String.downcase()
-
-        # unused?
-        # <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-        # <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-
-        # imported into main CSS already
-        # <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 
         # Override x-cloak CSS for tests to ensure hidden elements are visible
         x_cloak_override =
@@ -286,6 +297,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
         <link phx-track-static rel='stylesheet' href='#{endpoint_module.static_path("/assets/bonfire_basic.css")}'/>
         <link phx-track-static rel='stylesheet' href='#{endpoint_module.static_path("/fonts/#{font_family}.css")}'/>
+        <style>:root { --font-sans: "#{font_name}", ui-sans-serif, system-ui, sans-serif; }</style>
 
         #{x_cloak_override}
 

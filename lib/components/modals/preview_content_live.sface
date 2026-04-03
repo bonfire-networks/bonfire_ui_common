@@ -39,7 +39,7 @@
 
     {!-- Content container --}
     <div class="relative z-30">
-      <div class="p-0 z-[910] modal_invisible relative pb-1px bonfire-wrapper" data-id="modal-contents">
+      <div class="p-0 z-[910] modal_invisible relative pb-1px" data-id="modal-contents">
         <#slot>
           {!-- Render appropriate component based on modal_assigns --}
           {#if !e(@modal_assigns, :loaded, nil)}

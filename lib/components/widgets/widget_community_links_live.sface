@@ -1,0 +1,12 @@
+{#if @links && @links != []}
+  <Bonfire.UI.Common.WidgetBlockLive class="">
+    <div class="flex flex-wrap gap-2">
+      {#for {name, url} <- @links}
+        <a href={url} target="_blank" rel="noopener noreferrer" class="badge badge-primary gap-1.5">
+          <#Icon iconify="ph:link-simple" class="size-4" />
+          {name}
+        </a>
+      {/for}
+    </div>
+  </Bonfire.UI.Common.WidgetBlockLive>
+{/if}

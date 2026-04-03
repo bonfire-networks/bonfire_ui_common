@@ -1,0 +1,56 @@
+<div class="flex flex-col gap-3">
+  <div :if={@name || @description} class="flex flex-col gap-0.5">
+    <div :if={@name} class="text-sm font-medium text-base-content/90">{@name}</div>
+    <div :if={@description} class="text-sm text-base-content/50">{@description}</div>
+  </div>
+
+  <form phx-submit="save_links" phx-target={@myself}>
+    <input name="scope" value={@scope} type="hidden">
+
+    <div class="flex flex-col gap-2">
+      {#for {link, index} <- Enum.with_index(@links)}
+        <div class="flex items-center gap-2" id={"link-row-#{index}"}>
+          <input
+            type="text"
+            name={"links[#{index}][name]"}
+            value={link.name}
+            placeholder={l("Label")}
+            class="input input-bordered input-sm flex-1"
+          />
+          <input
+            type="url"
+            name={"links[#{index}][url]"}
+            value={link.url}
+            placeholder={l("https://...")}
+            class="input input-bordered input-sm flex-1"
+          />
+          <button
+            type="button"
+            phx-click="remove_link"
+            phx-value-index={index}
+            phx-target={@myself}
+            class="btn btn-sm btn-ghost btn-square text-error/70 hover:text-error"
+          >
+            <#Icon iconify="heroicons-outline:trash" class="w-4 h-4" />
+          </button>
+        </div>
+      {/for}
+    </div>
+
+    <div class="flex items-center gap-2 mt-3">
+      <button
+        type="button"
+        phx-click="add_link"
+        phx-target={@myself}
+        class="btn btn-sm btn-ghost btn-soft gap-1"
+      >
+        <#Icon iconify="heroicons-outline:plus" class="w-4 h-4" />
+        {l("Add link")}
+      </button>
+
+      <button type="submit" class="btn btn-sm btn-soft btn-primary">
+        {l("Save")}
+      </button>
+    </div>
+  </form>
+</div>

@@ -38,7 +38,7 @@
                   {#match nil}
                   {#match activity}
                     <div
-                      class="flex-shrink-0 snap-start rounded-xl bg-base-100 overflow-hidden border border-primary/30"
+                      class="flex-shrink-0 snap-start rounded-xl bg-base-100 overflow-hidden border border-primary/30 shadow"
                       style="width: 70%;"
                     >
                       <div class="uppercase text-xs tracking-widest mb-0 m-4">{l("spotlight")}</div>

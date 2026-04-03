@@ -21,7 +21,23 @@
       </div>
     </div>
   </div> --}
-
+  {#case to_string(Bonfire.Common.Settings.get([:ui, :sidebar, :section_divider], "none", :instance))}
+    {#match "line"}
+      <div
+        class="my-1 mx-4"
+        style="border-top: 1px solid color-mix(in oklch, var(--color-base-content) 10%, transparent)"
+        aria-hidden="true"
+      />
+    {#match "custom"}
+      {#case to_string(Bonfire.Common.Settings.get([:ui, :sidebar, :section_divider_image], "", :instance))}
+        {#match src when src != ""}
+          <div class="my-1 flex justify-center" aria-hidden="true">
+            <img src={src} class="h-6 w-full object-contain mt-4" alt="">
+          </div>
+        {#match _}
+      {/case}
+    {#match _}
+  {/case}
   <nav class="mt-4 mx-3 lg:mx-0">
     <ul class="menu p-0 w-full gap-0">
       <li class="p-0 m-0">

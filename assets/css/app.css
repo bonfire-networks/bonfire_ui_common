@@ -269,6 +269,7 @@ textarea:focus-visible {
 
 
 
+
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
@@ -886,7 +887,8 @@ emoji-picker .favorites {
 }
 
 .activity-padding-compact {
-  padding-left: 3.4rem !important;
+  padding: 8px !important;
+  padding-left: 2.4rem !important;
 }
 
 .tooltip::after {
@@ -1540,4 +1542,65 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
   max-height: calc(100dvh - 140px) !important;
   max-width: 100% !important;
   width: 100%;
+}
+
+/* Pinned carousel: fade edges based on scroll position */
+@property --fade-left {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: false;
+}
+
+@property --fade-right {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: false;
+}
+
+#pinned-carousel {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black var(--fade-left),
+    black calc(100% - var(--fade-right)),
+    transparent
+  );
+  animation: pinned-fade linear;
+  animation-timeline: scroll(self inline);
+}
+
+@keyframes pinned-fade {
+  0% {
+    --fade-left: 0%;
+    --fade-right: 5%;
+  }
+  5% {
+    --fade-left: 5%;
+    --fade-right: 5%;
+  }
+  95% {
+    --fade-left: 5%;
+    --fade-right: 5%;
+  }
+  100% {
+    --fade-left: 5%;
+    --fade-right: 0%;
+  }
+}
+
+/* Persistent header: bottom fade using pseudo-element (doesn't clip dropdowns) */
+#persistent-header {
+  position: relative;
+}
+
+#persistent-header::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: linear-gradient(to bottom, oklch(var(--b2)), transparent);
+  pointer-events: none;
+  z-index: 1;
 }
