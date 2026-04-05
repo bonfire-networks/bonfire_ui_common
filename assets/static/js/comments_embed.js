@@ -31,7 +31,7 @@
   var iframe = document.createElement("iframe");
   iframe.id = "bonfire-comments-" + postId;
   iframe.src = src + "?" + params.toString();
-  iframe.style.cssText = "width:100%;border:none;overflow:hidden;display:block";
+  iframe.style.cssText = "width:100%;min-height:160px;border:none;overflow:hidden;display:block";
   iframe.setAttribute("scrolling", "no");
   iframe.setAttribute("loading", "lazy");
   iframe.setAttribute("title", "Comments");
