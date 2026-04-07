@@ -139,6 +139,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:full_width, fn -> false end)
     |> assign_new(:without_secondary_widgets, fn -> false end)
     |> assign_new(:sidebar_widgets, fn -> [] end)
+    |> assign_new(:preview_sidebar_widgets, fn -> [] end)
     |> assign(:nav_items, nav_items)
 
     # |> assign_new(:hero, fn -> nil end)

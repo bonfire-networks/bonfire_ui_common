@@ -63,11 +63,12 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
   end
 
   def handle_event("close", _params, socket) do
-    # When closing, show main content again
+    # When closing, show main content again and clear preview sidebar widgets
     socket =
       socket
       |> send_self(
         hide_main: false,
+        preview_sidebar_widgets: [],
         modal_assigns: Keyword.put(e(assigns(socket), :modal_assigns, []), :loaded, false)
       )
 

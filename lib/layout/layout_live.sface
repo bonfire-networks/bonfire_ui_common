@@ -134,7 +134,7 @@
               }
             >
               <Bonfire.UI.Common.SidebarWidgetsLive
-                widgets={@sidebar_widgets}
+                widgets={if @preview_sidebar_widgets != [], do: @preview_sidebar_widgets, else: @sidebar_widgets}
                 key={:secondary}
                 page={@page}
                 selected_tab={@selected_tab}
