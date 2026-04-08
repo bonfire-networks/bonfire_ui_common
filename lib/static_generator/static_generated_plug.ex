@@ -1,4 +1,4 @@
-defmodule Bonfire.UI.Common.StaticGeneratorPlug do
+defmodule Bonfire.UI.Common.StaticGeneratedPlug do
   use Plug.Builder
   import Untangle
   use Bonfire.Common.Config

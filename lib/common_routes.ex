@@ -334,7 +334,7 @@ defmodule Bonfire.UI.Common.Routes do
 
       pipeline :static_generator do
         plug(:basic_html)
-        plug(Bonfire.UI.Common.StaticGeneratorPlug)
+        plug(Bonfire.UI.Common.StaticGeneratedPlug)
       end
 
       scope "/#{Bonfire.UI.Common.StaticGenerator.base_path()}" do

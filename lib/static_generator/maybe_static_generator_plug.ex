@@ -1,4 +1,26 @@
 defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
+  @moduledoc """
+  Plug that serves cacheable public pages from a oneor two tier cache for unauthenticated guests, before the request reaches Phoenix routing:
+
+  1. **Memory cache** (Cachex) — fastest path. Only active when `memory_cache_threshold` is configured (default: disabled). Pages are promoted from disk to memory after reaching the threshold hit count.
+  2. **Disk cache** (`Plug.Static`) — serves pre-generated HTML files from `priv/static/public/<path>/index.html`. Always active for unauthenticated requests.
+
+  If both tiers miss (or are bypassed for authenticated users / non-empty query strings), the plug passes through to the normal Phoenix/LiveView pipeline unchanged.
+
+  Static files must be pre-generated via `Bonfire.UI.Common.StaticGenerator.generate/2` (or the Oban batch job) for the disk tier to serve anything. Optionally, when `purgeable: true` is set on the pipeline/route definition, a `before_send` hook also writes fresh unauthenticated responses to disk automatically, keeping the cache warm on cache misses.
+
+  ## Configuration
+
+      config :bonfire_ui_common, Bonfire.UI.Common.MaybeStaticGeneratorPlug,
+        # Number of disk-cache hits before a page is promoted to the in-memory cache.
+        # Set to nil or 0 (default) to disable the memory cache tier entirely.
+        memory_cache_threshold: 10,
+        # How long a page stays in the memory cache after promotion (default: 5 minutes).
+        memory_cache_ttl: :timer.minutes(5),
+        # How long the per-URL hit counter lives (default: 1 hour).
+        memory_hits_ttl: :timer.hours(1)
+  """
+
   use Plug.Builder
   import Plug.Conn
   import Untangle
@@ -100,10 +122,7 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
     )
   end
 
-  # Register a before_send hook to write the response body to the static cache
-  # when the StaticGenerator purge adapter is active (configured via HTTPPurge
-  # adapters, or Process.put in tests). Only fires for unauthenticated responses
-  # that carry a surrogate-key header (set by CacheControlPlug, purgeable: true).
+  @doc "Registers a before_send hook to write the response body to the static cache when the StaticGenerator purge adapter is active (configured via HTTPPurge adapters, or Process.put in tests), but only for unauthenticated responses that carry a surrogate-key header (set by CacheControlPlug, purgeable: true)."
   def maybe_register_cache_writer(conn, _opts) do
     if static_generator_adapter?() do
       register_before_send(conn, &maybe_write_static_cache/1)
@@ -181,14 +200,14 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
   # :cacheable pipeline. Falls through to the controller if no file exists.
   def maybe_make_request_path_static(conn, _) do
     if !get_session(conn, :current_user_id) do
-      # Save original path before StaticGeneratorPlug rewrites request_path to
+      # Save original path before StaticGeneratedPlug rewrites request_path to
       # include /index.html — the cache writer needs the unmodified URL.
       # Also mark this connection as eligible for static caching — used by
       # cacheable_response? to decide whether to write the response to disk.
       conn
       |> put_private(:original_request_path, conn.request_path)
       |> put_private(:static_cacheable, true)
-      |> Bonfire.UI.Common.StaticGeneratorPlug.make_request_path_static()
+      |> Bonfire.UI.Common.StaticGeneratedPlug.make_request_path_static()
     else
       info("do not use cache when signed in")
       conn
