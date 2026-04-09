@@ -34,7 +34,7 @@ defmodule Bonfire.UI.Common.LinkLive do
   prop event_target, :string, default: nil
 
   @doc "What browser window/frame to target, eg. `_blank`"
-  prop target, :string, default: nil
+  prop target, :string, default: "_top"
 
   prop external_link_warnings, :boolean, default: false
 
@@ -100,6 +100,7 @@ defmodule Bonfire.UI.Common.LinkLive do
           @parent_id || @__context__[:tree_hash]
         )}
       href={@to}
+      target={@target}
       class="float-right ml-4 flex items-center gap-2 btn btn-xs"
     >
       <#Icon iconify="ri:file-copy-line" class="w-4 h-4 shrink-0" />
@@ -274,6 +275,7 @@ defmodule Bonfire.UI.Common.LinkLive do
       navigate={@to}
       class={@class}
       replace={@replace}
+      target={@target}
       phx-hook={if socket_connected?(@__context__) and e(@__context__, :hide_main, false),
         do: "Bonfire.UI.Common.PreviewContentLive#CloseAll"}
       id={if socket_connected?(@__context__) and e(@__context__, :hide_main, false),

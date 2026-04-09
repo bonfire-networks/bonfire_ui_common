@@ -48,7 +48,7 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
 
   def render(%{to: "http" <> _} = assigns) do
     ~F"""
-    <Link to={@to} class={@class} opts={@opts |> Enum.into(%{"aria-label": @label})}>
+    <Link to={@to} class={@class}  opts={@opts |> Enum.into(%{"aria-label"=> @label, target=>"_top"})}>
       <#slot>{@label}</#slot>
     </Link>
     """
@@ -58,7 +58,7 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
       when is_binary(to) and byte_size(to) > 0 and binary_part(to, 0, 1) != "/" do
     # Custom scheme URLs (ap-mls://, bonfire://, etc.) — render as regular link, not a LiveView patch which would crash on non-path URLs
     ~F"""
-    <a href={@to} class={@class} {...@opts |> Enum.into(%{"aria-label": @label})}>
+    <a href={@to} target="_top" class={@class} {...@opts |> Enum.into(%{"aria-label": @label})}>
       <#slot>{@label}</#slot>
     </a>
     """

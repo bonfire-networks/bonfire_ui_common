@@ -53,7 +53,7 @@ function phxClick(event) {
 			name = JSON.parse(name)[0][1]["event"];
 		}
 		if (name && typeof name === "string") {
-			window.location =
+			window.top.location.href =
 				"/LiveHandler/" +
 				name.replace(":", "/") +
 				"?" +
