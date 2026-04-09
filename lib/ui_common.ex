@@ -509,7 +509,9 @@ defmodule Bonfire.UI.Common do
               e(object, :post_content, :name, nil) || e(object, :name, nil),
               canonical_url(object),
               socket
-            ], fallback_return: "/login")
+            ],
+            fallback_return: "/login"
+          )
 
         redirect_to(
           socket,
