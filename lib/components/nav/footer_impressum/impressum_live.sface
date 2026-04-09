@@ -26,6 +26,7 @@
 <div class="mt-4">
   <a
     href="https://bonfirenetworks.org/"
+    target="_top"
     class="text-xs font-semibold link link-hover text-base-content/70"
   >
     {Bonfire.Application.name_and_flavour()}

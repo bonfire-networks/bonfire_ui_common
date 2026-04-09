@@ -500,9 +500,20 @@ defmodule Bonfire.UI.Common do
         {:ok, current_user}
 
       _ ->
+        url =
+          maybe_apply(
+            Bonfire.UI.Me.RemoteInteractionLive,
+            :generate_url,
+            [
+              verb,
+              e(object, :post_content, :name, nil) || e(object, :name, nil),
+              canonical_url(object),
+              socket
+            ], fallback_return: "/login")
+
         redirect_to(
           socket,
-          "/remote_interaction?type=#{verb}&name=#{e(object, :post_content, :name, nil) || e(object, :name, nil)}&url=#{canonical_url(object)}"
+          url
         )
     end
   end
@@ -1076,8 +1087,8 @@ defmodule Bonfire.UI.Common do
     case session_go do
       go when is_binary(go) and current_path != go ->
         go = URI.decode(go)
-        # needs to support external for oauth/openid
-        if internal_go_path?(go), do: [to: go], else: [external: go]
+        # needs to support external for oauth/openid and local full URLs
+        if internal_go_path?(go), do: go_redirect_opt(go), else: [external: go]
 
       _ ->
         # |> debug
@@ -1087,7 +1098,7 @@ defmodule Bonfire.UI.Common do
           |> URI.decode()
 
         if current_path != go and internal_go_path?(go),
-          do: [to: go],
+          do: go_redirect_opt(go),
           else: [to: default]
     end
     |> debug()
@@ -1096,7 +1107,16 @@ defmodule Bonfire.UI.Common do
   # TODO: we should validate this a bit harder. Phoenix will prevent
   # us from sending the user to an external URL, but it'll do so by
   # means of a 500 error.
+  defp go_redirect_opt("http" <> _ = url), do: [external: url]
+  defp go_redirect_opt(path), do: [to: path]
+
   defp internal_go_path?("/" <> _), do: true
+
+  defp internal_go_path?("http" <> _ = url) do
+    local = Bonfire.Common.URIs.base_url()
+    String.starts_with?(url, local)
+  end
+
   defp internal_go_path?(_), do: false
 
   defp go_where?(session_go, %Ecto.Changeset{} = cs, default, current_path) do
