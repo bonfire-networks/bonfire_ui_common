@@ -48,7 +48,7 @@ defmodule Bonfire.UI.Common.LinkPatchLive do
 
   def render(%{to: "http" <> _} = assigns) do
     ~F"""
-    <Link to={@to} class={@class}  opts={@opts |> Enum.into(%{"aria-label"=> @label, target=>"_top"})}>
+    <Link to={@to} class={@class}  opts={@opts |> Enum.into(%{"aria-label"=> @label, "target"=>"_top"})}>
       <#slot>{@label}</#slot>
     </Link>
     """
