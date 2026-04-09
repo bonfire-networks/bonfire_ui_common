@@ -34,6 +34,7 @@ defmodule Bonfire.UI.Common.StaticGeneratedPlug do
   end
 
   defp do_make_request_path_static(conn, ext \\ "html") do
+    # FIXME: only add extension if original url didn't already have or path ended with / 
     filename = "index.#{ext}"
 
     request_path = conn.request_path || "/"

@@ -7,44 +7,42 @@ defmodule Bonfire.UI.Common.Cache.HTTPPurge.StaticGenerator do
   which writes the static file when this adapter is active and the response
   carries a `surrogate-key` header (i.e. `purgeable: true`).
 
+  Deletion is routed through `Cache.Backend.delete/3` using whichever disk backend
+  is configured in `MaybeStaticGeneratorPlug`, defaulting to `SimpleDiskCache` (plain
+  filesystem). This works uniformly across `SimpleDiskCache`, `DiskLFUCache`, etc.
+
   ## How it maps purge calls to files
 
-  - `bust_urls/1` — deletes `<dest>/<url>/index.html` for each URL path.
+  - `bust_urls/1` — deletes the cached entry for each URL path.
   - `bust_tags/1` — treats each tag as a path prefix and deletes all
     `index.html` files under `<dest>/<tag>/**`.
-
-  The destination path is read from `Bonfire.UI.Common.StaticGenerator.dest_path/0`
-  so both modules always agree on where files are stored.
   """
 
   @behaviour Bonfire.Common.Cache.HTTPPurge
 
   use Untangle
+  use Bonfire.Common.Config
 
   alias Bonfire.Common.Cache
+  alias Bonfire.Common.Cache.Backend, as: CacheBackend
+  alias Bonfire.Common.Cache.SimpleDiskCache
+  alias Bonfire.Common.Cache.DiskLFUCache
   alias Bonfire.UI.Common.StaticGenerator
 
   @memory_cache_prefix "static_gen:"
   @hits_cache_prefix "static_gen_hits:"
+  @disk_backends [SimpleDiskCache, DiskLFUCache]
 
   @doc "Deletes the cached static file and any memory cache entry for each URL path."
   def bust_urls(urls) when is_list(urls) do
-    dest = StaticGenerator.dest_path()
+    config = plug_config()
+    dest = config[:root_path] || StaticGenerator.dest_path()
     info(dest, "bust_urls dest")
 
     Enum.each(urls, fn url ->
-      path = Path.join([dest, String.trim_leading(url, "/"), "index.html"])
-      info(path, "bust_urls deleting path")
-
-      case File.rm(path) do
-        :ok -> info("Purged static cache: #{path}")
-        # Already gone — nothing to do
-        {:error, :enoent} -> info("bust_urls: file not found (already gone): #{path}")
-        {:error, reason} -> warn(reason, "Could not purge #{path}")
-      end
-
+      info(url, "bust_urls deleting")
+      CacheBackend.delete(disk_cache_backend(config), url, root_path: dest)
       Cache.remove(@memory_cache_prefix <> url)
-      # Cache.remove(@hits_cache_prefix <> url)
     end)
 
     :ok
@@ -58,31 +56,26 @@ defmodule Bonfire.UI.Common.Cache.HTTPPurge.StaticGenerator do
   avatar files, and `"gen_avatar/alice"` purges just Alice's cached avatar.
   """
   def bust_tags(tags) when is_list(tags) do
-    dest = StaticGenerator.dest_path()
+    config = plug_config()
+    dest = config[:root_path] || StaticGenerator.dest_path()
     info(dest, "bust_tags dest")
 
     Enum.each(tags, fn tag ->
       clean = String.trim_leading(tag, "/")
 
-      # Delete exact path (tag == URL, no deeper nesting) + evict from memory
-      exact = Path.join([dest, clean, "index.html"])
-      info(exact, "bust_tags deleting exact path")
-      File.rm(exact)
+      CacheBackend.delete(disk_cache_backend(config), "/#{clean}", root_path: dest)
       bust_memory_for_url("/#{clean}")
 
-      # Delete all index.html files under the tag as a directory prefix
+      # Also delete all index.html files nested under the tag as a directory prefix
       glob = Path.join([dest, clean, "**", "index.html"])
-      matches = Path.wildcard(glob)
-      info(matches, "bust_tags wildcard matches")
 
-      Enum.each(matches, fn file ->
-        File.rm(file)
-        # Derive the URL from the file path: strip dest prefix and "/index.html" suffix
+      Enum.each(Path.wildcard(glob), fn file ->
         url =
           file
           |> String.replace_prefix(dest, "")
           |> String.replace_suffix("/index.html", "")
 
+        CacheBackend.delete(disk_cache_backend(config), url, root_path: dest)
         bust_memory_for_url(url)
       end)
     end)
@@ -93,5 +86,17 @@ defmodule Bonfire.UI.Common.Cache.HTTPPurge.StaticGenerator do
   defp bust_memory_for_url(url) do
     Cache.remove(@memory_cache_prefix <> url)
     Cache.remove(@hits_cache_prefix <> url)
+  end
+
+  # Returns the active disk backend, defaulting to SimpleDiskCache so
+  # Cache.Backend always handles file deletion uniformly.
+  defp disk_cache_backend(config) do
+    config[:disk_cache_backend] ||
+      (if config[:cache_backend] in @disk_backends, do: config[:cache_backend]) ||
+      SimpleDiskCache
+  end
+
+  defp plug_config do
+    Bonfire.Common.Config.get(Bonfire.UI.Common.MaybeStaticGeneratorPlug) || []
   end
 end

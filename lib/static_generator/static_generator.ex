@@ -7,6 +7,8 @@ defmodule Bonfire.UI.Common.StaticGenerator do
   use Untangle
   use Bonfire.Common.Config
 
+  alias Bonfire.Common.Cache
+
   @endpoint Config.get(:endpoint_module, Bonfire.Web.Endpoint)
 
   use Oban.Worker,
@@ -63,10 +65,11 @@ defmodule Bonfire.UI.Common.StaticGenerator do
     urls
     |> Enum.map(fn url ->
       with {:ok, html} <- generate_html(conn, url) do
-        write_file(url, html, dest)
+        # write_file(url, html, dest)
+        cache_response(url, "text/html", html, opts ++ [root_path: dest])
       end
     end)
-    |> IO.inspect(label: "generated and written")
+    |> debug("generated and written")
     |> Enum.frequencies_by(fn
       {:ok, _path} ->
         :ok
@@ -107,21 +110,40 @@ defmodule Bonfire.UI.Common.StaticGenerator do
     end
   end
 
-  defp write_file(path, content, dest) do
-    full_path = Path.join([dest, path, "index.html"])
-    info(full_path, "write_file full_path (dest=#{dest}, path=#{path})")
-    dirname = Path.dirname(full_path)
+  @session_opts Plug.Session.init(store: :cookie, key: "_bench", signing_salt: "bench_salt")
 
-    with :ok <- File.mkdir_p(dirname),
-         :ok <- File.write(full_path, content) do
-      info(full_path, "write_file success")
-      {:ok, path}
-    else
-      e ->
-        info(e, "write_file failed for #{full_path}")
-        {:error, path}
-    end
+  def build_bench_conn(url, params \\ %{}) do
+    query_string = URI.encode_query(params)
+    path = if query_string != "", do: url <> "?" <> query_string, else: url
+
+    secret = Application.get_env(:bonfire, @endpoint)[:secret_key_base] ||
+             String.duplicate("benchsalt", 9)
+
+    Plug.Test.conn(:get, path)
+    |> Map.put(:secret_key_base, secret)
+    |> Plug.Session.call(@session_opts)
+    |> Plug.Conn.fetch_session()
   end
+
+  def call_plug(conn) do
+    Bonfire.UI.Common.MaybeStaticGeneratorPlug.call(conn, [])
+  end
+
+  @doc "Call the Phoenix endpoint directly as a plug, bypassing ConnTest overhead."
+  def call_endpoint(conn) do
+    @endpoint.call(conn, @endpoint.init([]))
+  end
+
+  def get_cached(url) do
+    Bonfire.UI.Common.MaybeStaticGeneratorPlug.memory_cache_get(url)
+  end
+
+  def get_cached!(url) do
+    result = get_cached(url)
+    if is_nil(result), do: raise("get_cached!: nothing in memory cache for #{url}")
+    result
+  end
+
 
   defp maybe_clean_and_copy_assets(dest, opts) do
     if opts[:first_delete_output_dir], do: clean_files(dest)
@@ -129,6 +151,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
   end
 
   defp clean_files(dest) do
+    # TODO: use cache backend function
     with {:ok, _} <- File.rm_rf(dest) do
       :ok
     else
@@ -169,9 +192,57 @@ defmodule Bonfire.UI.Common.StaticGenerator do
     |> info("path")
   end
 
-  @doc "Write a response body directly to the static cache at the given URL path."
-  def cache_response(url, body, opts \\ []) do
-    write_file(url, body, dest_path(opts))
+
+  @doc """
+  Write a response body to the static cache at the given URL path.
+
+  Writes via `Cache.Backend.put/4` with `root_path: dest_path(opts)` 
+  """
+  def cache_response(url, content_type, body, opts \\ []) do
+        disk_backend = opts[:disk_cache_backend] || Bonfire.Common.Cache.SimpleDiskCache 
+
+     
+        root_path = opts[:root_path] || dest_path(opts)
+
+        # store content_type file
+      Bonfire.Common.Cache.Backend.put(disk_backend, "content_type:"<>url, content_type,
+        root_path: root_path,
+        async: opts[:async]
+      )
+  
+
+    disk_backend = opts[:disk_cache_backend] || Bonfire.Common.Cache.SimpleDiskCache 
+
+    Bonfire.Common.Cache.Backend.put(disk_backend, url, body,
+        root_path: root_path,
+        async: opts[:async]
+      )
+  end
+
+  def get_content_type(url, opts \\ []) do
+    disk_backend = opts[:disk_cache_backend] || Bonfire.Common.Cache.SimpleDiskCache 
+        root_path = dest_path(opts)
+
+    # get content_type from file cache
+      case Bonfire.Common.Cache.Backend.get(disk_backend, "content_type:"<>url,
+        root_path: root_path
+      ) do
+        {:ok, nil} -> nil
+ {:ok, content_type} -> 
+      # cache content_type 
+      if content_type, do: Cache.put("static_gen_content_type:"<>url, content_type,
+        cache_backend: Cache.default_cache_backend(),
+        expire: to_timeout(day: 30),
+        async: true
+      )
+
+      content_type
+
+      other -> 
+        error(other)
+        nil
+      end
+
   end
 
   def file_exists_not_expired(file) do
