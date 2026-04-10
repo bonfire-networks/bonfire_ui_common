@@ -423,7 +423,7 @@ textarea {
 }
 
 article.active-activity {
-  @apply !bg-primary/5;
+  @apply border-r-2 border-primary;
 }
 
 article.unread-activity {
@@ -888,7 +888,7 @@ emoji-picker .favorites {
 
 .activity-padding-compact {
   padding: 8px !important;
-  padding-left: 2.4rem !important;
+  padding-left: 2.5rem !important;
 }
 
 .tooltip::after {
