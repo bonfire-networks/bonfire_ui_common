@@ -212,10 +212,16 @@ defmodule Bonfire.UI.Common.ErrorHandling do
   end
 
   defp go_login(msg, socket, {_, return_key}) do
+    go =
+      e(socket.assigns, :go, nil) ||
+        e(socket.assigns, :__context__, :go, nil)
+
+    login_path = if go, do: "/login?" <> Plug.Conn.Query.encode(go: go), else: "/login"
+
     with_return_key(
       socket
       |> UI.Common.assign_error(e(msg, :message, l("You need to log in first.")))
-      |> UI.Common.redirect_to("/login"),
+      |> UI.Common.redirect_to(login_path),
       return_key
     )
   end

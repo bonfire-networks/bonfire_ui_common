@@ -28,7 +28,18 @@ defmodule Bonfire.UI.Common.LiveHandlers.GracefulDegradation.Controller do
   end
 
   def handle_fallback(action, attrs, conn) do
-    # debug(conn)
+    # Promote session-like params (originating from <meta name="session-param-*"> tags)
+    # into conn assigns so LiveHandlers can access them via current_params in __context__.
+    conn =
+      Plug.Conn.assign(
+        conn,
+        :__context__,
+        Map.merge(
+          conn.assigns[:__context__] || %{},
+          %{current_params: attrs}
+        )
+      )
+
     with {:noreply, conn} <-
            LiveHandlers.handle_event(action, attrs, conn, __MODULE__)
            |> debug() do

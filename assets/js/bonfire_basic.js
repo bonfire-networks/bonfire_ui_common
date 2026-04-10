@@ -45,6 +45,15 @@ Object.assign(Hooks, CopyHooks, TooltipHooks, FeedHooks, TruncatableHooks);
 })();
 
 // attempt graceful degradation for LiveView click events without LiveView
+// Collect all <meta name="session-param-*"> tags as extra params to pass with LiveHandler fallback requests.
+// This lets server-rendered pages inject session-like context (e.g. go) for guests.
+function getMetaParams() {
+	return [...document.querySelectorAll("meta[name^='session-param-']")].reduce((obj, el) => {
+		obj[el.getAttribute("name").substring(14)] = el.getAttribute("content");
+		return obj;
+	}, {});
+}
+
 function phxClick(event) {
 	// event.preventDefault(); // Override the native event?
 	let name = this.getAttribute("phx-click");
@@ -53,11 +62,12 @@ function phxClick(event) {
 			name = JSON.parse(name)[0][1]["event"];
 		}
 		if (name && typeof name === "string") {
+			let params = Object.assign(getMetaParams(), getPhxValues(this));
 			window.top.location.href =
 				"/LiveHandler/" +
 				name.replace(":", "/") +
 				"?" +
-				new URLSearchParams(getPhxValues(this)).toString();
+				new URLSearchParams(params).toString();
 		}
 	}
 }

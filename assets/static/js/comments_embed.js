@@ -8,6 +8,8 @@
  * Optional attributes:
  *   data-post-id        - the Bonfire post/thread ID (optional, otherwise will use media URI)
  *   data-media-uri      - find or create a thread for this URL (optional, defaults to current page URL)
+ *   data-boundary       - visibility boundary for the created thread (e.g. "public", "local")
+ *   data-creator        - user ID to attribute thread creation to
  *   data-theme          - DaisyUI theme name to apply inside the iframe (e.g. "dark", "light")
  *   data-token-max-age  - hours before the stored auth token is considered stale and the user
  *                         is prompted to re-authenticate (default: 720 = 30 days).
@@ -78,6 +80,10 @@
   var theme = script.getAttribute("data-theme");
 
   var params = new URLSearchParams({ media_uri: mediaUri });
+  var boundary = script.getAttribute("data-boundary");
+  var creator = script.getAttribute("data-creator");
+  if (boundary) params.set("boundary", boundary);
+  if (creator) params.set("creator", creator);
   if (token) params.set("bonfire_embed_token", token);
   if (theme) params.set("theme", theme);
 

@@ -1,3 +1,6 @@
+<%= if go = assigns[:go] || e(assigns, :__context__, :go, nil) do %>
+  <meta name="session-param-go" content={go} />
+<% end %>
 <div id="iframe-resize-hook" phx-hook="IframeResize">
   {@inner_content}
 </div>
