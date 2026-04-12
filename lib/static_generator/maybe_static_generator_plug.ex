@@ -37,7 +37,9 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
   # Passing a raw keyword list falls through to the no-op clause and never serves files.
   @static_opts Plug.Static.init(
                  at: "/",
-                 from: {:bonfire, "priv/static/#{Bonfire.UI.Common.StaticGenerator.base_path()}"}
+                 from: {:bonfire, "priv/static/#{Bonfire.UI.Common.StaticGenerator.base_path()}"},
+                 gzip: true,
+                 brotli: true
                )
 
   @memory_cache_prefix "static_gen:"

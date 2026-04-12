@@ -7,7 +7,9 @@ defmodule Bonfire.UI.Common.StaticGeneratedPlug do
 
   plug(Plug.Static,
     at: "/",
-    from: :bonfire
+    from: :bonfire,
+    gzip: true,
+    brotli: true
   )
 
   def make_request_path_static(conn, _ \\ nil)

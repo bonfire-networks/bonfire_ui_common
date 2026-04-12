@@ -9,9 +9,9 @@ defmodule Bonfire.UI.Common.Cache.HTTPPurge.StaticGenerator do
 
   ## How it maps purge calls to files
 
-  - `bust_urls/1` — deletes `<dest>/<url>/index.html` for each URL path.
+  - `bust_urls/1` — deletes `<dest>/<url>/index.html` (and `.gz`/`.br` companions) for each URL path.
   - `bust_tags/1` — treats each tag as a path prefix and deletes all
-    `index.html` files under `<dest>/<tag>/**`.
+    `index.html` files (and `.gz`/`.br` companions) under `<dest>/<tag>/**`.
 
   The destination path is read from `Bonfire.UI.Common.StaticGenerator.dest_path/0`
   so both modules always agree on where files are stored.
@@ -43,6 +43,10 @@ defmodule Bonfire.UI.Common.Cache.HTTPPurge.StaticGenerator do
         {:error, reason} -> warn(reason, "Could not purge #{path}")
       end
 
+      # Also remove compressed companions
+      File.rm(path <> ".gz")
+      File.rm(path <> ".br")
+
       Cache.remove(@memory_cache_prefix <> url)
       # Cache.remove(@hits_cache_prefix <> url)
     end)
@@ -68,6 +72,8 @@ defmodule Bonfire.UI.Common.Cache.HTTPPurge.StaticGenerator do
       exact = Path.join([dest, clean, "index.html"])
       info(exact, "bust_tags deleting exact path")
       File.rm(exact)
+      File.rm(exact <> ".gz")
+      File.rm(exact <> ".br")
       bust_memory_for_url("/#{clean}")
 
       # Delete all index.html files under the tag as a directory prefix
@@ -77,6 +83,8 @@ defmodule Bonfire.UI.Common.Cache.HTTPPurge.StaticGenerator do
 
       Enum.each(matches, fn file ->
         File.rm(file)
+        File.rm(file <> ".gz")
+        File.rm(file <> ".br")
         # Derive the URL from the file path: strip dest prefix and "/index.html" suffix
         url =
           file

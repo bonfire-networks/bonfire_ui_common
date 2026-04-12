@@ -114,12 +114,28 @@ defmodule Bonfire.UI.Common.StaticGenerator do
 
     with :ok <- File.mkdir_p(dirname),
          :ok <- File.write(full_path, content) do
+      write_compressed(full_path, content)
       info(full_path, "write_file success")
       {:ok, path}
     else
       e ->
         info(e, "write_file failed for #{full_path}")
         {:error, path}
+    end
+  end
+
+  defp write_compressed(full_path, content) do
+    # Write gzip companion so Plug.Static can serve it (avoids strong-ETag
+    # blocking Bandit's built-in compression for static-cached pages).
+    gz = :zlib.gzip(content)
+    File.write(full_path <> ".gz", gz)
+
+    # Write brotli companion if available (better ratio than gzip).
+    if Code.ensure_loaded?(:brotli) do
+      case :brotli.encode(content) do
+        {:ok, br} -> File.write(full_path <> ".br", br)
+        _ -> :ok
+      end
     end
   end
 
