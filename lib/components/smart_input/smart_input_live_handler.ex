@@ -77,7 +77,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       context_id: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
-      to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
+      to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
       smart_input_opts:
         default_smart_input_opts(%{create_object_type: nil, recipients_editable: false}),
       # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
@@ -649,7 +649,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       object: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
-      to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
+      to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
       smart_input_opts: default_smart_input_opts(),
       # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
       clear_reply_data: true
@@ -686,7 +686,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
       thread_id: nil,
-      to_boundaries: Bonfire.Boundaries.default_boundaries(assigns(socket)),
+      to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
       smart_input_opts: default_smart_input_opts(%{create_object_type: nil}),
       # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
       clear_reply_data: true

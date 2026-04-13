@@ -85,6 +85,7 @@
 {!-- <li>
   <StatelessComponent
     module={maybe_component(Bonfire.UI.Groups.NewGroupLive, @__context__)}
+id="user_menu_new_group"
     parent_id="user_menu_links"
     open_btn_wrapper_class="flex items-center gap-2 text-sm text-base-content justify-between"
     open_btn_class=""

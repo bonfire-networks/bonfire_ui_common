@@ -6,7 +6,7 @@
     reply_to_id={@reply_to_id}
     context_id={@context_id}
     smart_input_component={@smart_input_component}
-    to_boundaries={Bonfire.Boundaries.boundaries_or_default(@to_boundaries, @__context__)}
+    to_boundaries={Bonfire.Boundaries.Presets.boundaries_or_default(@to_boundaries, @__context__)}
     to_circles={@to_circles}
     exclude_circles={@exclude_circles}
     verb_permissions={@verb_permissions}

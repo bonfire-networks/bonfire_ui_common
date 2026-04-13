@@ -867,26 +867,27 @@ defmodule Bonfire.UI.Common do
 
   def assign_flash(socket_or_conn, type, message, assigns \\ %{}, pid \\ self())
 
-  def assign_flash(%Phoenix.LiveView.Socket{} = socket, type, message, assigns, pid) do
+  def assign_flash(%Phoenix.LiveView.Socket{assigns: %{}} = socket, type, message, assigns, pid) do
     # info(message, type)
 
-    if assigns(socket) do
-      if Phoenix.LiveView.connected?(socket) and assigns(socket) do
-        Bonfire.UI.Common.Notifications.receive_flash(
-          Map.put(assigns, type, message),
-          pid,
-          assigns(socket)[:__context__]
-        )
+    if Phoenix.LiveView.connected?(socket) do
+      Bonfire.UI.Common.Notifications.receive_flash(
+        Map.put(assigns, type, message),
+        pid,
+        assigns(socket)[:__context__]
+      )
 
-        Phoenix.LiveView.put_flash(socket, type, message)
-      else
-        # for non-live
-        Phoenix.LiveView.put_flash(socket, type, string_for_cookie(message))
-      end
+      Phoenix.LiveView.put_flash(socket, type, message)
     else
-      error(message, "Could not assign flash message, because assigns are not in socket")
-      socket
+      # for non-live
+      Phoenix.LiveView.put_flash(socket, type, string_for_cookie(message))
     end
+  end
+
+  def assign_flash(%Phoenix.LiveView.Socket{} = socket, type, message, assigns, pid) do
+    # warn(message, "Could not assign flash message, because assigns are not in socket")
+    Bonfire.UI.Common.Notifications.receive_flash(Map.put(assigns, type, message), pid)
+    socket
   end
 
   def assign_flash(%Plug.Conn{} = conn, type, message, assigns, _pid) do
