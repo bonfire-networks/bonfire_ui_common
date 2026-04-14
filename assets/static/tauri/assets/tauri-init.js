@@ -54,6 +54,32 @@
     console.warn('[tauri-init] JS debug mode active — console forwarded to Rust logs');
 })();
 
+// Shadow DOM query helper for tests: shadowQ('selector >>> inner >>> deepest')
+// Splits on >>> and traverses shadow roots at each step.
+// Falls back to a recursive shadow-tree search when the selector isn't found at the current level.
+window.shadowQ = function(selector) {
+    var parts = selector.split('>>>').map(function(s) { return s.trim(); });
+    function find(root, parts) {
+        var el = root.querySelector(parts[0]);
+        if (!el) {
+            // search inside all shadow roots at this level
+            var hosts = root.querySelectorAll('*');
+            for (var i = 0; i < hosts.length; i++) {
+                if (hosts[i].shadowRoot) {
+                    el = find(hosts[i].shadowRoot, parts);
+                    if (el) return el;
+                }
+            }
+            return null;
+        }
+        if (parts.length === 1) return el;
+        var sr = el.shadowRoot;
+        if (!sr) return null;
+        return find(sr, parts.slice(1));
+    }
+    return find(document, parts);
+};
+
 // Shared Tauri initialization: override window.fetch to bypass WKWebView
 // network restrictions on cross-origin requests.
 // Two strategies available — switch USE_INVOKE below to toggle.
