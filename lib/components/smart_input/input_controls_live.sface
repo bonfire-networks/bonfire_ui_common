@@ -90,10 +90,7 @@
         </div>
       </div>
 
-      <div class={[
-        "z-50 shrink-0 bg-base-content/5 h-[56px] rounded-b-xl ",
-        "order-first !bg-base-content/10": @showing_within == :page
-      ]}>
+      <div class="z-50 shrink-0 border-t border-base-content/10 h-[56px] rounded-b-xl">
         <div class="pb-safe">
           <div class="flex justify-between gap-2 p-2 lg:rounded-b-xl md:items-center md:px-3 py-2">
             <div class="flex items-center gap-2">
