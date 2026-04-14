@@ -94,6 +94,22 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         ]
       )
 
+      # Session-less LV socket for cross-origin iframe embeds where the
+      # browser blocks the SameSite=Lax session cookie on the WS upgrade.
+      # Authentication happens exclusively at LV mount via the
+      # `bonfire_embed_token` URL param (see LoadCurrentUserFromEmbedToken).
+      # Connect_info deliberately omits `:session` — Phoenix LV only fails with
+      # a "stale" reason when `connect_info.session == nil`, not when the key
+      # is missing entirely. See deps/phoenix_live_view/lib/phoenix_live_view/channel.ex ~1074.
+      socket("/embed_live", Phoenix.LiveView.Socket,
+        websocket: [
+          compress: System.get_env("PHX_COMPRESS_LV") not in @no?,
+          timeout: String.to_integer(System.get_env("LV_TIMEOUT", "42000")),
+          fullsweep_after: String.to_integer(System.get_env("LV_FULLSWEEP_AFTER", "20")),
+          connect_info: [:user_agent, :peer_data, :x_headers]
+        ]
+      )
+
       if module_enabled?(Bonfire.API.GraphQL.UserSocket) do
         socket("/api/socket", Bonfire.API.GraphQL.UserSocket,
           websocket: true,
@@ -338,11 +354,14 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         """
       end
 
-      def include_assets(%{assigns: assigns} = _conn, :bottom) do
+      def include_assets(%{assigns: assigns} = conn, :bottom) do
         endpoint_module = Bonfire.Common.Config.endpoint_module()
         current_user_id = Utils.current_user_id(assigns)
+        embed_authed = conn.private[:bonfire_embed_token_authed] == true
 
-        live_socket? = assigns[:force_live] || (current_user_id && !assigns[:force_static])
+        live_socket? =
+          assigns[:force_live] || (current_user_id && !assigns[:force_static]) || embed_authed
+
         # || Utils.current_account(assigns)
 
         js_path =

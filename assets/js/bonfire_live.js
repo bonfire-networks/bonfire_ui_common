@@ -59,13 +59,23 @@ window.Bonfire = Object.assign(window.Bonfire || {}, { setBonfireParam, removeBo
 let csrfToken = document
 	.querySelector("meta[name='csrf-token']")
 	.getAttribute("content");
+
+// For cross-origin iframe embeds: if the page was loaded with a
+// `?bonfire_embed_token=...` param, connect to the session-less `/embed_live`
+// socket and forward the token so the LV mount can authenticate the user
+// (the browser blocks the SameSite=Lax session cookie on the WS upgrade
+// from a third-party iframe, making `/live` unreachable for these pages).
+let embedToken = new URLSearchParams(window.location.search).get("bonfire_embed_token");
+let socketPath = embedToken ? "/embed_live" : "/live";
+
 // let random_socket_id = if (window.Gon !== undefined) {
 //   window.Gon.getAsset("random_socket_id"
 // }
-let liveSocket = new LiveSocket("/live", Socket, {
+let liveSocket = new LiveSocket(socketPath, Socket, {
 	timeout: 60000,
 	params: () => ({
 		_csrf_token: csrfToken,
+		...(embedToken ? { bonfire_embed_token: embedToken } : {}),
 		...collectBonfireParams(),
 	}),
 	dom: {

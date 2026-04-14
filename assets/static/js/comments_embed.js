@@ -86,6 +86,9 @@
   if (creator) params.set("creator", creator);
   if (token) params.set("bonfire_embed_token", token);
   if (theme) params.set("theme", theme);
+  // Tell the LV the parent article URL so in-iframe actions (sign in, reply)
+  // can redirect back here afterwards with the embed token.
+  params.set("embed_parent", window.location.href);
 
   // --- Create iframe ---
 

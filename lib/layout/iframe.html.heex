@@ -3,6 +3,11 @@
 <% end %>
 <div id="iframe-resize-hook" phx-hook="IframeResize">
   {@inner_content}
+  <%!-- Many callers hard-code `reusable_modal_id="persistent_modal"` (originally
+       targeting the sticky PersistentLive in the main app layout, which doesn't
+       exist inside the iframe). Mount both IDs so either routing target works. --%>
+  <.live_component module={Bonfire.UI.Common.ReusableModalLive} id="modal" />
+  <.live_component module={Bonfire.UI.Common.ReusableModalLive} id="persistent_modal" />
 </div>
 <script>
   // Auto-resize the parent iframe when this page's content changes.
