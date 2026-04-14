@@ -36,3 +36,4 @@ deps.path
 /data
 
 install-state.gz
+/assets/static/tauri/test-results

@@ -7,14 +7,14 @@
     "watch": "yarn watch:css & yarn watch:js",
     "watch:css": "tailwindcss -i ./css/tauri.css -o ./assets/dist/styles.css --watch",
     "watch:js": "yarn --cwd assets/ap_c2s_client/js watch",
-    "test": "npx playwright test --project=tauri --config tests/",
-    "test:browser": "npx playwright test --project=browser-only --config tests/"
+    "test": "npx playwright test --config tests/"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.0",
     "@srsholmes/tauri-playwright": "^0.2.2",
     "@tailwindcss/cli": "^4.1.0",
     "daisyui": "^5.1.0",
-    "tailwindcss": "^4.1.0"
+    "tailwindcss": "^4.1.0",
+    "vite": "^5.0.0"
   }
 }
