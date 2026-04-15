@@ -98,7 +98,7 @@
            relative URLs against the *top* window's base when target="_top" is set on a
            cross-origin iframe link, which would point at the embedding page's origin. --}
       <a
-        href={(if @showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
+        href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
           "/login?" <>
           URI.encode_query(go: e(@__context__, :go, nil) || e(@__context__, :current_url, "/"))}
         target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
@@ -106,7 +106,7 @@
         class="btn btn-sm btn-primary rounded-full normal-case"
       >{l("Login")}</a>
       <a
-        href={(if @showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
+        href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
           "/signup?" <>
           URI.encode_query(go: e(@__context__, :go, nil) || e(@__context__, :current_url, "/"))}
         target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
@@ -118,7 +118,8 @@
           {l("Join %{instance_name} to leave comments",
             instance_name:
               Config.get([:ui, :theme, :instance_name]) ||
-                Bonfire.Application.name_and_flavour())}
+                Bonfire.Application.name_and_flavour()
+          )}
         </span>
         <div class="flex items-center gap-2 text-sm text-base-content/70">
           <LinkLive
