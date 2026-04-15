@@ -17,11 +17,12 @@ import { ScrollHooks } from "./scroll.js";
 import { TranslateHooks } from "./translate.js";
 import { KeyboardShortcutHooks } from "./keyboard_shortcuts.js";
 import { IframeResizeHooks } from "./iframe_resize.js";
+import { InlineComposerHooks } from "./inline_composer.js";
 import { collectBonfireParams, setBonfireParam, removeBonfireParam } from "./local_storage_params";
 import { ExtensionHooks } from "../../../../config/current_flavour/deps.hooks.js";
 import ComponentHooks from "../../../../config/current_flavour/assets/hooks/index.js";
 
-Object.assign(Hooks, ExtensionHooks, DraggableHooks, ComponentHooks, CopyHooks, TooltipHooks, ScrollHooks, TranslateHooks, KeyboardShortcutHooks, IframeResizeHooks);
+Object.assign(Hooks, ExtensionHooks, DraggableHooks, ComponentHooks, CopyHooks, TooltipHooks, ScrollHooks, TranslateHooks, KeyboardShortcutHooks, IframeResizeHooks, InlineComposerHooks);
 
 console.log("Registered LiveView hooks:", Object.keys(Hooks));
 

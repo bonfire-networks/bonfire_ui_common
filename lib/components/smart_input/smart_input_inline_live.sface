@@ -1,21 +1,139 @@
-<div data-id="smart_input_inline">
-  <Bonfire.UI.Common.SmartInputLive
-    event_target={@myself}
-    boundaries_modal_id={:modal_composer}
-    showing_within={@showing_within}
-    reply_to_id={@reply_to_id}
-    context_id={@context_id}
-    smart_input_component={@smart_input_component}
-    to_boundaries={Bonfire.Boundaries.Presets.boundaries_or_default(@to_boundaries, @__context__)}
-    to_circles={@to_circles}
-    exclude_circles={@exclude_circles}
-    verb_permissions={@verb_permissions}
-    smart_input_opts={@smart_input_opts}
-    activity={@activity}
-    object={@object}
-    uploads={@uploads}
-    uploaded_files={@uploaded_files}
-    trigger_submit={@trigger_submit}
-    boundary_preset={[]}
-  />
+<div
+  id={"inline_composer_#{@composer_dom_id}"}
+  data-id="smart_input_inline"
+  class="inline_composer_wrapper mb-4"
+  phx-hook="InlineComposerCollapse"
+  data-dom-id={@composer_dom_id}
+  data-collapse-js={LiveHandler.inline_collapse(@composer_dom_id)}
+  data-expand-js={LiveHandler.inline_expand(@composer_dom_id)}
+  data-reply-to-id={@reply_to_id}
+  data-context-id={@context_id}
+>
+  {#if current_user_id(@__context__)}
+    <div
+      id={"inline_pill_slot_#{@composer_dom_id}"}
+      class="grid grid-rows-[1fr] transition-[grid-template-rows] ease-[cubic-bezier(0.22,1,0.36,1)] duration-300"
+    >
+      <div class="overflow-hidden min-h-0">
+        <div
+          id={"inline_pill_#{@composer_dom_id}"}
+          class="inline_composer_pill flex items-center gap-3 p-1 pl-1 rounded-full border border-base-content/20 bg-base-100 cursor-text transition-opacity ease-out duration-150 hover:border-base-content/40"
+          phx-click={LiveHandler.inline_expand(@composer_dom_id)}
+        >
+          <div class="shrink-0">
+            <Bonfire.UI.Common.AvatarLive
+              bg_class="rounded-full"
+              title={e(current_user(@__context__), :profile, :name, "Anon")}
+              wrapper_class="border-0 avatar !flex w-10 h-10"
+              class="inline-block object-cover w-full rounded-full"
+              src={Bonfire.Common.Media.avatar_url(current_user(@__context__)) ||
+                @__context__[:current_user_avatar_url]}
+              user_id={current_user_id(@__context__)}
+            />
+          </div>
+          <span class="flex-1 text-base-content/60 truncate text-sm">
+            {@title_prompt || l("Your message or question…")}
+          </span>
+          <button type="button" class="btn btn-primary btn-sm rounded-full normal-case mr-1">
+            {l("Post")}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id={"inline_full_slot_#{@composer_dom_id}"}
+      class="grid grid-rows-[0fr] transition-[grid-template-rows] ease-[cubic-bezier(0.22,1,0.36,1)] duration-300"
+    >
+      <div class="overflow-hidden min-h-0">
+        <div
+          id={"inline_full_#{@composer_dom_id}"}
+          class="inline_composer_full border border-base-content/20 rounded-xl bg-base-100 shadow-lg opacity-0 transition-opacity ease-out duration-200"
+        >
+          {#if @reply_to_id && @context_id && to_string(@reply_to_id) != to_string(@context_id)}
+            <div class="flex items-center justify-between px-3 pt-2 pb-1 text-xs text-base-content/70">
+              <span class="truncate">{l("Replying to comment")}</span>
+              <button
+                type="button"
+                id={"inline_cancel_reply_#{@composer_dom_id}"}
+                class="btn btn-ghost btn-xs"
+                phx-click="reset_reply_to"
+                title={l("Cancel reply")}
+              >
+                <#Icon iconify="px:x-duotone" class="w-4 h-4" />
+                <span class="ml-1">{l("Cancel reply")}</span>
+              </button>
+            </div>
+          {/if}
+          <Bonfire.UI.Common.SmartInputLive
+            event_target={@myself}
+            boundaries_modal_id={:modal_composer}
+            showing_within={@showing_within}
+            reply_to_id={@reply_to_id}
+            context_id={@context_id}
+            smart_input_component={@smart_input_component}
+            to_boundaries={Bonfire.Boundaries.Presets.boundaries_or_default(@to_boundaries, @__context__)}
+            to_circles={@to_circles}
+            exclude_circles={@exclude_circles}
+            verb_permissions={@verb_permissions}
+            smart_input_opts={@smart_input_opts}
+            activity={@activity}
+            object={@object}
+            uploads={@uploads}
+            uploaded_files={@uploaded_files}
+            trigger_submit={@trigger_submit}
+            boundary_preset={[]}
+          />
+        </div>
+      </div>
+    </div>
+  {#else}
+    <div class="inline_composer_guest flex flex-wrap items-center gap-2 gap-y-1 px-3 py-2 rounded-full border border-base-content/20 bg-base-100">
+      {!-- Use :go (parent page URL, set by embed_parent param) when inside an iframe embed,
+           so the post-login redirect lands back on the embedding page with a
+           bonfire_embed_token appended by LoginController.redirect_after_auth.
+           target="_top" escapes the iframe so the login form renders full-window
+           (iframe cookies are blocked by modern browsers — see phoenixframework/phoenix_live_view#2470).
+           Hrefs are made absolute to the bonfire instance because some browsers resolve
+           relative URLs against the *top* window's base when target="_top" is set on a
+           cross-origin iframe link, which would point at the embedding page's origin. --}
+      <a
+        href={(if @showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
+          "/login?" <>
+          URI.encode_query(go: e(@__context__, :go, nil) || e(@__context__, :current_url, "/"))}
+        target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
+        id={"inline_composer_login_#{@composer_dom_id}"}
+        class="btn btn-sm btn-primary rounded-full normal-case"
+      >{l("Login")}</a>
+      <a
+        href={(if @showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
+          "/signup?" <>
+          URI.encode_query(go: e(@__context__, :go, nil) || e(@__context__, :current_url, "/"))}
+        target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
+        id={"inline_composer_signup_#{@composer_dom_id}"}
+        class="btn btn-sm btn-outline btn-primary rounded-full normal-case"
+      >{l("Register")}</a>
+      <div class="flex-1 flex items-center gap-3">
+        <span class="flex-1 text-right text-sm text-primary truncate">
+          {l("Join %{instance_name} to leave comments",
+            instance_name:
+              Config.get([:ui, :theme, :instance_name]) ||
+                Bonfire.Application.name_and_flavour())}
+        </span>
+        <div class="flex items-center gap-2 text-sm text-base-content/70">
+          <LinkLive
+            to="/conduct"
+            parent_id={"inline_composer_terms_#{@composer_dom_id}"}
+            class="link-hover link"
+          >{l("Terms")}</LinkLive>
+          <span aria-hidden="true">·</span>
+          <LinkLive
+            to="/privacy"
+            parent_id={"inline_composer_privacy_#{@composer_dom_id}"}
+            class="link-hover link"
+          >{l("Privacy")}</LinkLive>
+        </div>
+      </div>
+    </div>
+  {/if}
 </div>

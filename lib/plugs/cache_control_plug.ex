@@ -51,6 +51,11 @@ defmodule Bonfire.UI.Common.CacheControlPlug do
 
   def init(opts), do: opts
 
+  # Skip caching outside of prod so template/code changes are seen immediately.
+  if Mix.env() != :prod do
+    def call(conn, _opts), do: put_resp_header(conn, "cache-control", "no-store, max-age=0")
+  end
+
   # Skip caching for authenticated users
   def call(%{assigns: %{current_user: %{}}} = conn, _opts), do: conn
   def call(%{assigns: %{current_account: %{}}} = conn, _opts), do: conn

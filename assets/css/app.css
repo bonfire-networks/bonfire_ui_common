@@ -597,7 +597,7 @@ hex-input::part(input) {
 
 
 .bonfire-wrapper {
-  @apply lg:rounded-xl bg-base-200 lg:bg-base-100 lg:border lg:border-base-content/8;
+  @apply md:rounded-xl bg-base-200 md:bg-base-100 md:border md:border-base-content/8;
   @media (min-width: 1024px) {
     box-shadow: 0 1px 3px 0 color-mix(in oklab, currentColor calc(var(--depth) * 8%), #0000),
                 0 1px 2px -1px color-mix(in oklab, currentColor calc(var(--depth) * 6%), #0000);

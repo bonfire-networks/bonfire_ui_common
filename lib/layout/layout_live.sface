@@ -88,12 +88,19 @@
                           extra={@extra}
                         >
                           <:right_action>
-                            <StatelessComponent
-                              :if={@page_header_aside}
-                              :for={{component, component_assigns} <- e(@page_header_aside, [])}
-                              module={maybe_component(component, @__context__)}
-                              {...component_assigns || []}
-                            />
+                            {#for {component, component_assigns} <- e(@page_header_aside, [])}
+                              {#if Keyword.has_key?(component_assigns || [], :id)}
+                                <StatefulComponent
+                                  module={maybe_component(component, @__context__)}
+                                  {...component_assigns || []}
+                                />
+                              {#else}
+                                <StatelessComponent
+                                  module={maybe_component(component, @__context__)}
+                                  {...component_assigns || []}
+                                />
+                              {/if}
+                            {/for}
                           </:right_action>
                         </StatelessComponent>
                       </div>

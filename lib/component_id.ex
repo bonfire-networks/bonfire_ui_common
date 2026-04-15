@@ -64,8 +64,6 @@ defmodule Bonfire.UI.Common.ComponentID do
   def send_updates(component_module, object_id, assigns, pid \\ nil) do
     component_module = Types.maybe_to_atom(component_module)
 
-    debug(object_id, "try to send_updates to #{component_module} for object(s)")
-
     component_ids = component_ids(component_module, object_id)
 
     if component_ids == [] do
@@ -116,17 +114,27 @@ defmodule Bonfire.UI.Common.ComponentID do
   defp dictionary_key_id(component_module, object_id),
     do: "bcid_#{component_module}_#{object_id}"
 
+  @doc """
+  Alias an existing component_id under additional object_id(s) so that
+  `send_updates/3` can find it by any of those keys. Use when a component
+  is discoverable by multiple identities (e.g. a feed named preset *and*
+  its underlying feed_id).
+  """
+  def register_alias(component_module, object_id_or_ids, component_id),
+    do: save(component_module, object_id_or_ids, component_id)
+
   defp save(component_module, object_ids, component_id) when is_list(object_ids) do
     Enum.map(object_ids, &save(component_module, &1, component_id))
   end
 
   defp save(component_module, object_id, component_id) do
     dictionary_key_id = dictionary_key_id(component_module, object_id)
+    existing = component_ids(dictionary_key_id)
 
-    Process.put(
-      dictionary_key_id,
-      component_ids(dictionary_key_id) ++ [component_id]
-      # |> debug()
-    )
+    if component_id in existing do
+      existing
+    else
+      Process.put(dictionary_key_id, existing ++ [component_id])
+    end
   end
 end

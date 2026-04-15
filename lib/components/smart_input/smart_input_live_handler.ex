@@ -147,15 +147,27 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     js
     # CSS handles the elegant transition animation
     |> JS.remove_class("translate-y-100", to: "#smart_input_container")
+  end
 
-    # Scroll lock is now handled by the smart_input_container hook via MutationObserver
+  def inline_expand(js \\ %JS{}, dom_id) do
+    js
+    |> JS.remove_class("grid-rows-[1fr]", to: "#inline_pill_slot_#{dom_id}")
+    |> JS.add_class("grid-rows-[0fr]", to: "#inline_pill_slot_#{dom_id}")
+    |> JS.add_class("opacity-0", to: "#inline_pill_#{dom_id}")
+    |> JS.remove_class("grid-rows-[0fr]", to: "#inline_full_slot_#{dom_id}")
+    |> JS.add_class("grid-rows-[1fr]", to: "#inline_full_slot_#{dom_id}")
+    |> JS.remove_class("opacity-0", to: "#inline_full_#{dom_id}")
+    |> JS.focus_first(to: "#inline_full_#{dom_id} textarea")
+  end
 
-    # |> JS.hide(to: ".smart_input_show_on_minimize")
-    # |> JS.push("Bonfire.UI.Common.SmartInput:select_smart_input",
-    #   value: %{
-    #     opts: encode_opts(%{open: true})
-    #   }
-    # )
+  def inline_collapse(js \\ %JS{}, dom_id) do
+    js
+    |> JS.remove_class("grid-rows-[1fr]", to: "#inline_full_slot_#{dom_id}")
+    |> JS.add_class("grid-rows-[0fr]", to: "#inline_full_slot_#{dom_id}")
+    |> JS.add_class("opacity-0", to: "#inline_full_#{dom_id}")
+    |> JS.remove_class("grid-rows-[0fr]", to: "#inline_pill_slot_#{dom_id}")
+    |> JS.add_class("grid-rows-[1fr]", to: "#inline_pill_slot_#{dom_id}")
+    |> JS.remove_class("opacity-0", to: "#inline_pill_#{dom_id}")
   end
 
   # def handle_event("set", %{"smart_input_as" => smart_input_as}, socket) do
@@ -260,7 +272,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
           maybe_to_module(e(params, "component", nil) || e(params, "smart_input_component", nil)),
         create_object_type:
           e(opts, "create_object_type", nil) || e(params, "create_object_type", nil),
-        context_id: e(opts, "context_id", nil) || e(params, "context_id", nil),
+        context_id:
+          e(opts, :context_id, nil) || e(opts, "context_id", nil) ||
+            e(params, "context_id", nil),
         smart_input_opts: opts,
         showing_within: e(assigns(socket), :showing_within, nil),
         activity_inception: "reply_to",
