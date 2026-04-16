@@ -49,8 +49,10 @@
 
   {#if current_user_id(@__context__)}
     {#if @__context__[:current_view] not in [
+        # TODO: put in config
         Bonfire.UI.Me.SettingsLive,
-        Bonfire.UI.Me.InstanceSettingsLive
+        Bonfire.UI.Me.InstanceSettingsLive,
+        Bonfire.UI.Boundaries.BoundariesLive
       ]}
       <div data-id="nav_sidebar_sticky_items" class="flex flex-col px-3 lg:px-0">
         <Bonfire.UI.Common.ExtensionMenuNavLive
@@ -62,7 +64,7 @@
     {/if}
   {/if}
 
-  <!-- Notifications -->
+  {!-- Notifications --}
   <.portal id="notification_portal" class="relative z-max" target="body">
     <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
   </.portal>
