@@ -3,7 +3,7 @@ defmodule Bonfire.UI.Common.WidgetMetaItemLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
   prop class, :css_class, default: "flex items-center gap-2.5"
-  prop text_class, :css_class, default: "text-xs text-base-content/50"
+  prop text_class, :css_class, default: "text-sm text-base-content/50"
 
   @doc "The icon to display (use #Icon or any element)"
   slot icon
