@@ -547,7 +547,14 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   # Load the parent group + its topics when the composer's context is a
   # group or topic. We remember the original group opts so selecting
   # "Whole group" from the dropdown can restore them.
-  defp maybe_load_context_group(context_id, existing_group, to_boundaries, to_circles, mentions, user)
+  defp maybe_load_context_group(
+         context_id,
+         existing_group,
+         to_boundaries,
+         to_circles,
+         mentions,
+         user
+       )
        when is_binary(context_id) do
     cached_topics = e(existing_group, :topics, [])
 

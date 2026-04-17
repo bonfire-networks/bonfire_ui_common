@@ -89,16 +89,11 @@
                         >
                           <:right_action>
                             {#for {component, component_assigns} <- e(@page_header_aside, [])}
-                              {#if (resolved = maybe_component(component, @__context__)) && Code.ensure_loaded?(resolved) && function_exported?(resolved, :__live__, 0)}
-                                <StatefulComponent
-                                  module={resolved}
-                                  {...component_assigns || []}
-                                />
+                              {#if (resolved = maybe_component(component, @__context__)) && Code.ensure_loaded?(resolved) &&
+                                  function_exported?(resolved, :__live__, 0)}
+                                <StatefulComponent module={resolved} {...component_assigns || []} />
                               {#else}
-                                <StatelessComponent
-                                  module={resolved}
-                                  {...component_assigns || []}
-                                />
+                                <StatelessComponent module={resolved} {...component_assigns || []} />
                               {/if}
                             {/for}
                           </:right_action>
