@@ -15,6 +15,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop verb_permissions, :map, default: %{}
   prop without_icon, :boolean, default: false
   prop mentions, :list, default: []
+  prop context_group, :any, default: nil
   prop smart_input_opts, :map, default: %{}
   prop showing_within, :atom, default: nil
   prop activity, :any, default: nil

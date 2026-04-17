@@ -89,14 +89,14 @@
                         >
                           <:right_action>
                             {#for {component, component_assigns} <- e(@page_header_aside, [])}
-                              {#if Keyword.has_key?(component_assigns || [], :id)}
+                              {#if (resolved = maybe_component(component, @__context__)) && Code.ensure_loaded?(resolved) && function_exported?(resolved, :__live__, 0)}
                                 <StatefulComponent
-                                  module={maybe_component(component, @__context__)}
+                                  module={resolved}
                                   {...component_assigns || []}
                                 />
                               {#else}
                                 <StatelessComponent
-                                  module={maybe_component(component, @__context__)}
+                                  module={resolved}
                                   {...component_assigns || []}
                                 />
                               {/if}

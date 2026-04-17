@@ -243,11 +243,14 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
           if to_boundaries_param == [], do: [], else: nil
 
         value ->
-          # Process and normalize the boundaries list
+          # JSON round-trip turns tuples like {:clone_context, "name"} into
+          # single-key maps %{clone_context: "name"} — convert back to tuples
+          # so BoundariesSelectionLive's {id, data} pattern matches.
           List.wrap(value)
           |> Enum.flat_map(
             &Enum.map(List.wrap(&1), fn
               {key, val} -> {key, val}
+              %{} = map when map_size(map) == 1 -> Enum.at(map, 0)
               val -> val
             end)
           )
@@ -266,19 +269,32 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # Extract clear_reply_data flag from opts to pass at top level for preserve_reply_state
     clear_reply_data = e(opts, :clear_reply_data, false) || e(params, "clear_reply_data", false)
 
+    resolved_context_id =
+      e(opts, :context_id, nil) || e(opts, "context_id", nil) ||
+        e(params, "context_id", nil)
+
+    context_group =
+      maybe_load_context_group(
+        resolved_context_id,
+        e(assigns(socket), :context_group, nil),
+        final_to_boundaries,
+        to_circles,
+        e(opts, :mentions, nil) || e(params, "mentions", []),
+        current_user(socket)
+      )
+
     set_assigns =
       [
         smart_input_component:
           maybe_to_module(e(params, "component", nil) || e(params, "smart_input_component", nil)),
         create_object_type:
-          e(opts, "create_object_type", nil) || e(params, "create_object_type", nil),
-        context_id:
-          e(opts, :context_id, nil) || e(opts, "context_id", nil) ||
-            e(params, "context_id", nil),
+          e(opts, :create_object_type, nil) || e(params, "create_object_type", nil),
+        context_id: resolved_context_id,
         smart_input_opts: opts,
         showing_within: e(assigns(socket), :showing_within, nil),
         activity_inception: "reply_to",
-        mentions: e(opts, "mentions", nil) || e(params, "mentions", [])
+        mentions: e(opts, :mentions, nil) || e(params, "mentions", []),
+        context_group: context_group
       ]
       |> maybe_put(:to_circles, to_circles)
       |> maybe_put(:to_boundaries, final_to_boundaries)
@@ -526,6 +542,46 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
      socket
      # to avoid un-reset the input
      |> assign(reset_smart_input: false)}
+  end
+
+  # Load the parent group + its topics when the composer's context is a
+  # group or topic. We remember the original group opts so selecting
+  # "Whole group" from the dropdown can restore them.
+  defp maybe_load_context_group(context_id, existing_group, to_boundaries, to_circles, mentions, user)
+       when is_binary(context_id) do
+    cached_topics = e(existing_group, :topics, [])
+
+    if e(existing_group, :id, nil) == context_id or
+         Enum.any?(cached_topics, fn t -> id(t) == context_id end) do
+      existing_group
+    else
+      load_context_group(context_id, to_boundaries, to_circles, mentions, user)
+    end
+  end
+
+  defp maybe_load_context_group(_, _, _, _, _, _), do: nil
+
+  defp load_context_group(context_id, to_boundaries, to_circles, mentions, user) do
+    with {:ok, %{type: :group} = group} <-
+           Bonfire.Classify.Categories.get(context_id, [[:default], current_user: user]) do
+      topics =
+        Bonfire.Classify.Categories.list_tree(
+          [:default, parent_category: context_id, type: :topic, tree_max_depth: 1],
+          current_user: user
+        )
+        |> e(:edges, [])
+
+      %{
+        id: context_id,
+        name: Bonfire.Classify.Web.Preview.CategoryLive.name(group, l("Group")),
+        to_boundaries: to_boundaries,
+        to_circles: to_circles,
+        mentions: mentions,
+        topics: topics
+      }
+    else
+      _ -> nil
+    end
   end
 
   defp maybe_push_opts(js \\ %JS{}, event, opts)

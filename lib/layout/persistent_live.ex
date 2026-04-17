@@ -122,6 +122,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     # |> fun.(:create_object_type, fn -> nil end)
     |> fun.(:to_boundaries, fn -> [] end)
     |> fun.(:to_circles, fn -> [] end)
+    |> fun.(:context_group, fn -> nil end)
     |> fun.(:smart_input_opts, fn -> %{} end)
     # |> fun.(:showing_within, fn -> nil end)
     |> fun.(:thread_mode, fn -> nil end)
@@ -351,6 +352,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
           :to_circles,
           :to_boundaries,
           :context_id,
+          :context_group,
           :smart_input_opts,
           :smart_input_component
         ])

@@ -105,6 +105,9 @@
                   exclude_circles={@exclude_circles}
                   verb_permissions={@verb_permissions}
                   setting_boundaries={:create_object}
+                  context_id={@context_id}
+                  context_group={@context_group}
+                  event_target={@event_target}
                 />
               </div>
             {#else}
