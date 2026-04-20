@@ -6,7 +6,12 @@
   class={[
     e(@widget[:link_class], @link_class),
     "bg-primary/10":
-      String.downcase(to_string(@selected_tab)) == String.downcase(to_string(@widget[:page]))
+      String.downcase(to_string(@selected_tab)) == String.downcase(to_string(@widget[:page])) or
+        (is_binary(@widget[:href_prefix]) and
+           String.starts_with?(
+             to_string(e(@__context__, :current_url, "")),
+             @widget[:href_prefix]
+           ))
   ]}
   label={@text || @widget[:text] || @widget[:name]}
   phx_hook={@widget[:phx_hook]}

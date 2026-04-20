@@ -78,10 +78,18 @@ TooltipHooks.Tooltip = {
 		// Store function on instance for lifecycle methods
 		this.startPositionUpdate = startPositionUpdate;
 
+		// Sync aria-expanded on the trigger when it opts in (has the attribute)
+		const syncExpanded = (value) => {
+			if (button && button.hasAttribute('aria-expanded')) {
+				button.setAttribute('aria-expanded', value ? 'true' : 'false');
+			}
+		};
+
 		// Display tooltip and start entrance animation
 		const displayTooltip = () => {
 			tooltip.style.display = 'block';
 			tooltip.style.pointerEvents = 'auto';
+			syncExpanded(true);
 			startPositionUpdate();
 			if (!prefersReducedMotion()) {
 				tooltip.classList.add('tooltip-animated');
@@ -109,6 +117,7 @@ TooltipHooks.Tooltip = {
 			if (shouldHide) {
 				// Remove visible class first for exit animation
 				tooltip.classList.remove('tooltip-visible');
+				syncExpanded(false);
 
 				const delay = prefersReducedMotion() ? 0 : (trigger === "hover" ? 150 : 100);
 				hideTimeout = setTimeout(() => {

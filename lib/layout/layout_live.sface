@@ -116,7 +116,7 @@
             data-id="right_nav_and_widgets"
             role="complementary"
             aria-label={l("Widgets sidebar")}
-            class="w-[320px] bg-base-200 lg:bg-transparent min-h-screen lg:min-h-0 flex flex-col h-full overflow-y-auto pt-safe lg:pt-0 px-4 lg:px-2 lg:ml-6"
+            class="w-[340px] bg-base-200 lg:bg-transparent min-h-screen lg:min-h-0 flex flex-col h-full overflow-y-auto pt-safe lg:pt-0 px-4 lg:px-2 lg:ml-5"
           >
             {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive and
                 socket_connected?(@__context__)}
@@ -191,7 +191,7 @@
       <aside
         data-id="nav_sidebar"
         data-sidebar-minimal={@without_sidebar == :minimal}
-        class="w-80 px-4 px-safe lg:px-0 lg:mr-6 lg:w-[290px] bg-base-200 self-stretch overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-full lg:pb-0"
+        class="w-80 px-4 px-safe lg:px-0 lg:mr-5 lg:w-[260px] bg-base-200 self-stretch overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-full lg:pb-0"
       >
         <div class="flex flex-col flex-1 h-full pb-[80px] lg:pb-0">
           {#if @current_user_id && @without_sidebar != true && socket_connected?(@__context__)}

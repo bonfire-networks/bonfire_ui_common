@@ -135,11 +135,14 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       is_prod = Config.env() == :prod
       serve_gzip = is_prod
 
-      # Fingerprinted assets (Phoenix appends ?vsn=d) — default: 1 year, override (at compile time) with CACHE_STATIC_VSN_MAX_AGE (seconds)
+      # Fingerprinted assets (Phoenix appends ?vsn=d) — default: 1 year in prod, 0 in dev
+      # (in dev the vsn marker is static "d" and doesn't change on file edits, so immutable caching
+      # would prevent updated CSS/images from reaching the browser until a hard reload).
+      # Override (at compile time) with CACHE_STATIC_VSN_MAX_AGE (seconds).
+      default_vsn_max_age = if is_prod, do: "#{div(to_timeout(week: 52), 1_000)}", else: "0"
+
       vsn_max_age =
-        String.to_integer(
-          System.get_env("CACHE_STATIC_VSN_MAX_AGE", "#{div(to_timeout(week: 52), 1_000)}")
-        )
+        String.to_integer(System.get_env("CACHE_STATIC_VSN_MAX_AGE", default_vsn_max_age))
 
       # Non-versioned files — in dev: no caching (0s), in prod: 1 day
       # Override (at compile time) with CACHE_STATIC_ETAG_MAX_AGE (seconds)
