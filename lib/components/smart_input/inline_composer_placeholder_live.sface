@@ -1,0 +1,25 @@
+{#if current_user_id(@__context__) && show?(@selected_tab)}
+  <div class="pb-2 flex items-center gap-3">
+    <Bonfire.UI.Common.AvatarLive
+      bg_class="rounded-full"
+      title={e(current_user(@__context__), :profile, :name, "Anon")}
+      wrapper_class="border-0 avatar !flex w-10 h-10 shrink-0"
+      class="inline-block object-cover w-full rounded-full"
+      src={Bonfire.Common.Media.avatar_url(current_user(@__context__)) ||
+        @__context__[:current_user_avatar_url]}
+      user_id={current_user_id(@__context__)}
+    />
+    <Bonfire.UI.Common.SmartInputButtonLive
+      id="inline_composer_placeholder"
+      smart_input_opts={%{
+        context_id: id(@category),
+        mentions: [id(@category)],
+        to_circles: Bonfire.Classify.Boundaries.post_circles_for_group(@category),
+        to_boundaries: [{:clone_context, Bonfire.Classify.Web.Preview.CategoryLive.name(@category, l("Group"))}]
+      }}
+      prompt={@prompt || l("Share something in %{name}", name: scope_label(@category))}
+      class="flex-1 flex items-center gap-3 text-left rounded-box border border-base-content/10 bg-base-200/60 hover:bg-base-300/40 px-4 py-3 normal-case text-base-content/80 transition-interactive focus-ring [&>span]:text-base [&>span]:font-semibold [&>span]:flex-1"
+      icon_class="w-5 h-5 ml-auto text-base-content/60"
+    />
+  </div>
+{/if}
