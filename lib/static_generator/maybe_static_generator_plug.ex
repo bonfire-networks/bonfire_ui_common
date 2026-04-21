@@ -81,8 +81,11 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
   defp maybe_track_and_promote(url, conn) do
     with threshold when not is_nil(threshold) and threshold != 0 <- memory_cache_threshold() do
       hits_key = @hits_cache_prefix <> url
+      # Sync writes: otherwise concurrent requests past the threshold can all fire
+      # promotion tasks in parallel and still miss cache on the next request until
+      # the async ETS write lands. Cachex put is essentially free.
       new_hits = (Cache.get!(hits_key) || 0) + 1
-      Cache.put(hits_key, new_hits, expire: memory_hits_ttl())
+      Cache.put(hits_key, new_hits, expire: memory_hits_ttl(), async: false)
 
       if new_hits >= threshold do
         path =
@@ -97,7 +100,11 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
 
         with {:ok, body} <- File.read(path) do
           info(url, "promoting to memory cache after #{new_hits} disk hits")
-          Cache.put(@memory_cache_prefix <> url, {content_type, body}, expire: memory_cache_ttl())
+
+          Cache.put(@memory_cache_prefix <> url, {content_type, body},
+            expire: memory_cache_ttl(),
+            async: false
+          )
         end
       end
     end
