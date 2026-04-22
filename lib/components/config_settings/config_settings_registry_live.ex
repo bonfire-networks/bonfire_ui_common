@@ -32,7 +32,7 @@ defmodule Bonfire.UI.Common.ConfigSettingsRegistryLive do
 
   @impl true
   def handle_event("tab_change", %{"tab" => tab}, socket) do
-    {:noreply, assign(socket, current_tab: String.to_atom(tab))}
+    {:noreply, assign(socket, current_tab: maybe_to_atom(tab))}
   end
 
   @impl true

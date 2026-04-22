@@ -187,7 +187,7 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
   # defp normalize_key(key) do
   #   key
   #   |> String.replace("-", "_")
-  #   |> String.to_atom()
+  #   |> maybe_to_atom()
   # end
   #
   # # Parse literal values (booleans, numbers) from strings

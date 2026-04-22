@@ -10,6 +10,7 @@
  *   data-media-uri      - find or create a thread for this URL (optional, defaults to current page URL)
  *   data-boundary       - visibility boundary for the created thread (e.g. "public", "local")
  *   data-creator        - user ID to attribute thread creation to
+ *   data-sort-by        - initial sort order: "latest_reply", "reply_count", "boost_count", "like_count", "popularity_score", or "newest" (default: thread order)
  *   data-theme          - DaisyUI theme name to apply inside the iframe (e.g. "dark", "light")
  *   data-token-max-age  - hours before the stored auth token is considered stale and the user
  *                         is prompted to re-authenticate (default: 720 = 30 days).
@@ -82,8 +83,10 @@
   var params = new URLSearchParams({ media_uri: mediaUri });
   var boundary = script.getAttribute("data-boundary");
   var creator = script.getAttribute("data-creator");
+  var sortBy = script.getAttribute("data-sort-by");
   if (boundary) params.set("boundary", boundary);
   if (creator) params.set("creator", creator);
+  if (sortBy) params.set("sort_by", sortBy);
   if (token) params.set("bonfire_embed_token", token);
   if (theme) params.set("theme", theme);
   // Tell the LV the parent article URL so in-iframe actions (sign in, reply)
