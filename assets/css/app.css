@@ -272,6 +272,7 @@ textarea:focus-visible {
 
 
 
+
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
@@ -1606,3 +1607,4 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
   pointer-events: none;
   z-index: 1;
 }
+

@@ -23,27 +23,123 @@
     tag_name={if @form_opts != %{}, do: "form", else: "div"}
     id={@form_opts[:id] || "#{@id}_box"}
     class={Surface.css_class([
-      "text-base-content",
+      "text-base-content relative",
       "w-full h-full": @image_preview,
-      "modal-box p-4": !@image_preview,
-      "h-full": @no_backdrop,
-      "overflow-y-visible": @overflow
+      "modal-box !p-0 flex flex-col overflow-hidden max-h-[85vh]":
+        !@image_preview and !@overflow and !@no_backdrop,
+      "modal-box p-4": @overflow or (@no_backdrop and !@image_preview),
+      "overflow-y-visible": @overflow,
+      "h-full": @no_backdrop
     ])}
     {...Enums.naughty_to_atoms!(@form_opts)}
   >
-    <div class={
-      "relative z-popover",
-      @wrapper_class
-    }>
-      <h3 :if={!@no_header} class={@title_class || "font-bold text-base line-clamp-1 px-2 max-w-full"}>
-        <#slot {@title}>{@title_text}</#slot>
-      </h3>
+    {!-- Close button (always anchored to modal-box top-right, never scrolls) --}
+    <div
+      style={
+        cond do
+          @image_preview -> nil
+          @overflow or @no_backdrop -> "top: -12px; right: -12px;"
+          true -> "top: 8px; right: 8px;"
+        end
+      }
+      class={
+        "absolute block z-popover",
+        "top-0 right-0": !@image_preview,
+        "!top-2 !right-2": @image_preview,
+        "z-tooltip !top-1 h-full": @no_backdrop
+      }
+    >
+      <div class="pt-safe">
+        <button
+          phx-click="close"
+          phx-target={"[id='#{@id}']"}
+          type="button"
+          aria-label={l("Close modal")}
+          class={
+            "btn btn-circle btn-sm focus-ring transition-interactive sm-only:touch-target",
+            "!btn-lg btn-soft": @image_preview,
+            "!rounded-none btn-ghost !btn-xs opacity-70 btn-secondary": @no_backdrop
+          }
+        >
+          <span class="sr-only">{l("Close")}</span>
+          <#Icon iconify="ph:x-duotone" class="w-4 h-4" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+
+    {#if @image_preview or @overflow or @no_backdrop}
+      {!-- Legacy single-scroll layout — needed for:
+           • image_preview: full-bleed image viewer
+           • @overflow: dropdowns/popovers that must escape the modal box
+           • @no_backdrop: sidebar / sticky-mode layout --}
+      <div class={"relative z-popover", @wrapper_class}>
+        <h3 :if={!@no_header} class={@title_class || "font-bold text-base line-clamp-1 px-2 max-w-full"}>
+          <#slot {@title}>{@title_text}</#slot>
+        </h3>
+
+        <div
+          class={
+            "transition-opacity duration-150 ease-out h-full",
+            "max-h-[calc(100vh_-_13rem)]": !@image_preview,
+            "h-[95%]": @no_backdrop
+          }
+          data-id="modal-contents"
+        >
+          <#slot {@default, autocomplete: @autocomplete, value: @value}>
+            {!-- TODO: consolidate with PreviewContent and make modal_component & modal_view seperate props --}
+            {#if e(@modal_assigns, :modal_component_stateful?, nil) == true and
+                module_enabled?(@modal_assigns[:modal_component], @__context__)}
+              <StatefulComponent
+                id="modal_component"
+                module={@modal_assigns[:modal_component]}
+                {...@modal_assigns}
+              />
+            {#elseif not is_nil(e(@modal_assigns, :modal_component, nil)) and
+                module_enabled?(@modal_assigns[:modal_component], @__context__)}
+              <StatelessComponent
+                module={@modal_assigns[:modal_component]}
+                myself={@myself}
+                {...@modal_assigns}
+              />
+            {#elseif not is_nil(e(@modal_assigns, :modal_view, nil)) and
+                module_enabled?(@modal_assigns[:modal_view], @__context__)}
+              {live_render(@socket, @modal_assigns[:modal_view],
+                id: "modal_view",
+                session: %{"params" => @modal_assigns}
+              )}
+            {#else}
+              {!-- empty --}
+            {/if}
+          </#slot>
+        </div>
+
+        <div :if={!@no_actions} class="modal-action">
+          <div phx-click="close" phx-target={"[id='#{@id}']"}>
+            <#slot {@cancel_btn}>
+            </#slot>
+          </div>
+          <div class={@action_btns_wrapper_class}>
+            <#slot {@action_btns}>
+              <button :if={@form_opts != %{}} class="normal-case btn btn-primary btn-sm" type="submit">{l("OK")}</button>
+            </#slot>
+          </div>
+        </div>
+      </div>
+    {#else}
+      {!-- Default layout: sticky header, scrollable middle, sticky footer --}
+      <header
+        :if={!@no_header}
+        class="shrink-0 pl-4 pt-4 pb-3 pr-14 border-b border-base-content/10"
+      >
+        <h3 class={@title_class || "font-bold text-base line-clamp-1 max-w-full"}>
+          <#slot {@title}>{@title_text}</#slot>
+        </h3>
+      </header>
 
       <div
         class={
-          "transition-opacity duration-150 ease-out h-full",
-          "max-h-[calc(100vh_-_13rem)]": !@image_preview,
-          "h-[95%]": @no_backdrop
+          "transition-opacity duration-150 ease-out relative z-popover flex-1 min-h-0 overflow-y-auto px-4 py-4",
+          @wrapper_class
         }
         data-id="modal-contents"
       >
@@ -75,44 +171,20 @@
         </#slot>
       </div>
 
-      <div :if={!@no_actions} class="modal-action">
+      <div
+        :if={!@no_actions}
+        class={"shrink-0 modal-action px-4 pb-4 pt-3 border-t border-base-content/10", @action_btns_wrapper_class}
+      >
         <div phx-click="close" phx-target={"[id='#{@id}']"}>
           <#slot {@cancel_btn}>
-            <!-- <button class={@cancel_btn_class || "btn btn-outline btn-sm"} type="button">{@cancel_label || l("Close")}</button> -->
           </#slot>
         </div>
-        <div class={@action_btns_wrapper_class}>
+        <div>
           <#slot {@action_btns}>
             <button :if={@form_opts != %{}} class="normal-case btn btn-primary btn-sm" type="submit">{l("OK")}</button>
           </#slot>
         </div>
       </div>
-
-      <div
-        style="top: -12px; right: -12px;"
-        class={
-          "absolute top-0 right-0 block z-popover",
-          "!top-2 !right-2": @image_preview,
-          "z-tooltip !top-1 h-full": @no_backdrop
-        }
-      >
-        <div class="pt-safe">
-          <button
-            phx-click="close"
-            phx-target={"[id='#{@id}']"}
-            type="button"
-            aria-label={l("Close modal")}
-            class={
-              "btn btn-circle btn-sm focus-ring transition-interactive sm-only:touch-target",
-              "!btn-lg btn-soft": @image_preview,
-              "!rounded-none btn-ghost !btn-xs opacity-70 btn-secondary": @no_backdrop
-            }
-          >
-            <span class="sr-only">{l("Close")}</span>
-            <#Icon iconify="ph:x-duotone" class="w-4 h-4" aria-hidden="true" />
-          </button>
-        </div>
-      </div>
-    </div>
+    {/if}
   </Phoenix.Component.dynamic_tag>
 </div>
