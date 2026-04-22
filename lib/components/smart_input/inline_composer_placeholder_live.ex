@@ -1,9 +1,10 @@
 defmodule Bonfire.UI.Common.InlineComposerPlaceholderLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
-  prop category, :any, required: true
   prop prompt, :any, default: nil
   prop selected_tab, :any, default: nil
+
+  prop smart_input_opts, :any, default: nil
 
   @hidden_tabs ~w(settings members followers mentions submitted)
 
