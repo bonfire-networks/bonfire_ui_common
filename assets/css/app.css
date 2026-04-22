@@ -302,7 +302,7 @@ textarea:focus-visible {
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
-  --depth: 1;
+  --depth: 0.3;
   --noise: 0.5;
 }
 
@@ -336,8 +336,8 @@ textarea:focus-visible {
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
-  --depth: 1;
-  --noise: 0.5;
+  --depth: 0.3;
+  --noise: 0.2;
 }
 
 
