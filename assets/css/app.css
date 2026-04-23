@@ -1159,6 +1159,18 @@ div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-t
   @apply hidden;
 }
 
+/* When the composer has an unsaved draft (data-draft set), swap the
+   inline composer placeholder's "Post" button for a "Continue" + pencil
+   icon affordance so the user knows clicking will pick up a draft, not
+   start fresh. */
+body:has(#smart_input_container[data-draft]) [data-role="composer-pill-post"] {
+  display: none;
+}
+
+body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"] {
+  display: inline-flex;
+}
+
 /* Smart input container - Elegant "Soft Arrival" entrance animation */
 #smart_input_container {
   transform: translateY(0) scale(1);

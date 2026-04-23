@@ -23,7 +23,11 @@
     "btn-disabled": e(@smart_input_opts, :input_status, nil) == :submit
   }
 >
-  <span :if={!@as_icon and @prompt} class="text-sm font-medium">{@prompt || l("Compose")}</span>
+  <span :if={!@as_icon and @prompt} class="text-sm font-medium">
+    {if e(@smart_input_opts, :input_status, nil) == :draft,
+      do: l("Continue"),
+      else: @prompt || l("Compose")}
+  </span>
   {!--
     phx-value-opts={Jason.encode!(merge_as_map(%{prompt: @prompt}, @smart_input_opts))}
     x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{@prompt || l("Compose")}')"} --}

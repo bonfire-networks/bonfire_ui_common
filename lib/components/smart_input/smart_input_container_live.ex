@@ -109,7 +109,10 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
 
     base_opts =
       if clear_reply_data do
-        Map.drop(old_smart_input_opts, [:context_id, :to_circles, :to_boundaries, :mentions])
+        Map.drop(
+          old_smart_input_opts,
+          Bonfire.UI.Common.SmartInput.LiveHandler.reply_context_keys()
+        )
       else
         old_smart_input_opts
       end
@@ -120,12 +123,19 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     # When reset is requested via fallback path, ask parent LiveView to push events
     if reset_value, do: send(self(), {:push_smart_input_reset_events})
 
-    {:ok,
-     socket
-     |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
-     |> assign(preserve_reply_state(assigns, socket))
-     |> assign(:smart_input_opts, merged_opts)
-     |> assign(:reset_smart_input, reset_value)}
+    # Skip re-render + boundary prep when the merge is a no-op (e.g. most
+    # page navigations, which forward an empty layout-default opts map).
+    if merged_opts == old_smart_input_opts and not reset_value and
+         map_size(new_smart_input_opts) == 0 do
+      {:ok, socket}
+    else
+      {:ok,
+       socket
+       |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
+       |> assign(preserve_reply_state(assigns, socket))
+       |> assign(:smart_input_opts, merged_opts)
+       |> assign(:reset_smart_input, reset_value)}
+    end
   end
 
   # Default update handler

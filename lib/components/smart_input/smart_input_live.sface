@@ -93,23 +93,53 @@
               />
             </div>
             {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
-              <div class="">
-                <StatelessComponent
-                  module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
-                  to_boundaries={@to_boundaries}
-                  boundary_preset={@boundary_preset}
-                  preview_boundary_for_id={@preview_boundary_for_id}
-                  preview_boundary_for_username={@preview_boundary_for_username}
-                  preview_boundary_verbs={@preview_boundary_verbs}
-                  to_circles={@to_circles}
-                  exclude_circles={@exclude_circles}
-                  verb_permissions={@verb_permissions}
-                  setting_boundaries={:create_object}
-                  context_id={@context_id}
-                  context_group={@context_group}
-                  event_target={@event_target}
-                />
-              </div>
+              {#case e(@context_group, :name, nil)}
+                {#match context_name when is_binary(context_name) and context_name != ""}
+                  {!-- In a group/topic context the boundary is dictated by
+                       the group — show a "Writing in …" indicator instead
+                       of the picker so the user sees exactly where the
+                       post will land. --}
+                  <div
+                    class="flex items-center gap-1 btn btn-sm btn-soft text-sm normal-case pr-2"
+                    title={l("This post will be shared in %{name}", name: context_name)}
+                  >
+                    <Iconify.iconify
+                      icon={Bonfire.Classify.Web.Preview.CategoryLive.icon(@context_group)}
+                      class="w-4 h-4"
+                    />
+                    <span class="truncate max-w-[14rem]">
+                      {l("Writing in %{name}", name: context_name)}
+                    </span>
+                    <button
+                      type="button"
+                      phx-click="Bonfire.UI.Common.SmartInput:clear_context"
+                      phx-target={@event_target || "#smart_input"}
+                      class="flex items-center justify-center ml-1 shrink-0"
+                      aria-label={l("Remove context")}
+                      title={l("Post without group/topic context")}
+                    >
+                      <#Icon iconify="ph:x-duotone" class="size-4" />
+                    </button>
+                  </div>
+                {#match _}
+                <div class="">
+                  <StatelessComponent
+                    module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
+                    to_boundaries={@to_boundaries}
+                    boundary_preset={@boundary_preset}
+                    preview_boundary_for_id={@preview_boundary_for_id}
+                    preview_boundary_for_username={@preview_boundary_for_username}
+                    preview_boundary_verbs={@preview_boundary_verbs}
+                    to_circles={@to_circles}
+                    exclude_circles={@exclude_circles}
+                    verb_permissions={@verb_permissions}
+                    setting_boundaries={:create_object}
+                    context_id={@context_id}
+                    context_group={@context_group}
+                    event_target={@event_target}
+                  />
+                </div>
+              {/case}
             {#else}
               <div
                 class="border-warning/50 flex items-center gap-2 btn-xs h-[30px] btn text-sm btn-outline font-normal"

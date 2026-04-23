@@ -109,7 +109,7 @@
         </div>
         <div
           :if={@without_secondary_widgets != true}
-          class="drawer-side z-modal xl:z-0 xl:!sticky xl:!top-0 xl:!h-screen"
+          class="drawer-side z-sticky xl:z-0 xl:!sticky xl:!top-0 xl:!h-screen"
         >
           <label for="widgets-drawer" aria-label={l("Close widgets sidebar")} class="drawer-overlay" />
           <div

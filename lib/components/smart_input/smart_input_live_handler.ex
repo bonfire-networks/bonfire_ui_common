@@ -1,6 +1,11 @@
 defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
 
+  @reply_context_keys [:context_id, :to_circles, :to_boundaries, :mentions]
+
+  @doc "Keys that scope the composer to a reply target (a group/topic, specific circles, or mentions). Used to clear reply-specific state while preserving the draft."
+  def reply_context_keys, do: @reply_context_keys
+
   def switch_smart_input_type(_type, js \\ %JS{}) do
     js
     |> maximize()
@@ -312,6 +317,28 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
      |> push_event("focus-editor", %{})}
   end
 
+  # Drop the group/topic context so the user can publish with default
+  # boundaries. Draft content is preserved.
+  def handle_event("clear_context", _params, socket) do
+    current_opts = e(assigns(socket), :smart_input_opts, %{})
+
+    new_opts = Map.drop(current_opts, reply_context_keys())
+
+    assigns_to_set = [
+      smart_input_opts: new_opts,
+      context_id: nil,
+      context_group: nil,
+      to_circles: [],
+      to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
+      mentions: [],
+      clear_reply_data: true
+    ]
+
+    set(socket, assigns_to_set)
+
+    {:noreply, socket |> assign(assigns_to_set)}
+  end
+
   def handle_event("remove_data", _params, socket) do
     set(socket,
       activity: nil,
@@ -558,36 +585,63 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
        when is_binary(context_id) do
     cached_topics = e(existing_group, :topics, [])
 
-    if e(existing_group, :id, nil) == context_id or
-         Enum.any?(cached_topics, fn t -> id(t) == context_id end) do
-      existing_group
-    else
-      load_context_group(context_id, to_boundaries, to_circles, mentions, user)
+    cond do
+      e(existing_group, :id, nil) == context_id ->
+        existing_group
+
+      # Context is a topic inside the already-loaded group: keep the group's
+      # boundary/circles info but surface the topic's own id, name, and type
+      # so the "Writing in …" chip reads correctly on topic pages.
+      matching_topic = Enum.find(cached_topics, fn t -> id(t) == context_id end) ->
+        Map.merge(existing_group, %{
+          id: context_id,
+          name: Bonfire.Classify.Web.Preview.CategoryLive.name(matching_topic, l("topic")),
+          type: :topic
+        })
+
+      true ->
+        load_context_group(context_id, to_boundaries, to_circles, mentions, user)
     end
   end
 
   defp maybe_load_context_group(_, _, _, _, _, _), do: nil
 
   defp load_context_group(context_id, to_boundaries, to_circles, mentions, user) do
-    with {:ok, %{type: :group} = group} <-
-           Bonfire.Classify.Categories.get(context_id, [[:default], current_user: user]) do
-      topics =
-        Bonfire.Classify.Categories.list_tree(
-          [:default, parent_category: context_id, type: :topic, tree_max_depth: 1],
-          current_user: user
-        )
-        |> e(:edges, [])
+    case Bonfire.Classify.Categories.get(context_id, [[:default], current_user: user]) do
+      {:ok, %{type: :group} = group} ->
+        topics =
+          Bonfire.Classify.Categories.list_tree(
+            [:default, parent_category: context_id, type: :topic, tree_max_depth: 1],
+            current_user: user
+          )
+          |> e(:edges, [])
 
-      %{
-        id: context_id,
-        name: Bonfire.Classify.Web.Preview.CategoryLive.name(group, l("Group")),
-        to_boundaries: to_boundaries,
-        to_circles: to_circles,
-        mentions: mentions,
-        topics: topics
-      }
-    else
-      _ -> nil
+        %{
+          id: context_id,
+          name: Bonfire.Classify.Web.Preview.CategoryLive.name(group, l("Group")),
+          type: :group,
+          to_boundaries: to_boundaries,
+          to_circles: to_circles,
+          mentions: mentions,
+          topics: topics
+        }
+
+      # First visit lands directly on a topic (no parent group cached yet):
+      # surface the topic's id/name/type so the "Writing in …" chip renders
+      # correctly. Boundary/circles info is already passed in from the page LV.
+      {:ok, %{type: :topic} = topic} ->
+        %{
+          id: context_id,
+          name: Bonfire.Classify.Web.Preview.CategoryLive.name(topic, l("topic")),
+          type: :topic,
+          to_boundaries: to_boundaries,
+          to_circles: to_circles,
+          mentions: mentions,
+          topics: []
+        }
+
+      _ ->
+        nil
     end
   end
 
