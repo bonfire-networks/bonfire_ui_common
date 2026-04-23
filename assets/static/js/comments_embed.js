@@ -8,19 +8,18 @@
  * Optional attributes:
  *   data-post-id        - the Bonfire post/thread ID (optional, otherwise will use media URI)
  *   data-media-uri      - find or create a thread for this URL (optional, defaults to current page URL)
- *   data-boundary       - visibility boundary for the created thread (e.g. "public", "local")
+ *   data-canonical-slug      - find or create a thread for this post/page slug on the original website (eg. Ghost post slug)
+ *   data-canonical-id      - find or create a thread for this post/page ID on the original website (eg. Ghost post ID)
+ *   data-boundary       - visibility boundary for the created thread (e.g. "public", "local") 
+ *   data-group-id       - what Bonfire group to post the article in (if any)
+ *   data-require-topic  - only import the article and generate a comment thread if the canonical category or main tag matches a topic on Bonfire (boolean)
  *   data-creator        - user ID to attribute thread creation to
  *   data-sort-by        - initial sort order: "latest_reply", "reply_count", "boost_count", "like_count", "popularity_score", or "newest" (default: thread order)
  *   data-theme          - DaisyUI theme name to apply inside the iframe (e.g. "dark", "light")
- *   data-token-max-age  - hours before the stored auth token is considered stale and the user
- *                         is prompted to re-authenticate (default: 720 = 30 days).
- *                         The server enforces a hard maximum regardless of this value (1 year by default).
+ *   data-token-max-age  - hours before the stored auth token is considered stale and the user is prompted to re-authenticate (default: 720 = 30 days). The server enforces a hard maximum regardless of this value (1 year by default).
  *
  * Authentication:
- *   Third-party cookies are blocked in cross-origin iframes, so this script implements
- *   a token-based auth flow. After the user signs in on the Bonfire instance, they are
- *   redirected back here with ?bonfire_embed_token=... which is stored in localStorage and
- *   passed to the iframe on future page loads.
+ *   Third-party cookies are blocked in cross-origin iframes, so this script implements a token-based auth flow. After the user signs in on the Bonfire instance, they are redirected back here with ?bonfire_embed_token=... which is stored in localStorage and passed to the iframe on future page loads.
  *
  * The iframe resizes automatically to fit its content.
  */
@@ -87,6 +86,14 @@
   if (boundary) params.set("boundary", boundary);
   if (creator) params.set("creator", creator);
   if (sortBy) params.set("sort_by", sortBy);
+  var canonicalSlug = script.getAttribute("data-canonical-slug");
+  var canonicalId = script.getAttribute("data-canonical-id");
+  var groupId = script.getAttribute("data-group-id");
+  var requireTopic = script.getAttribute("data-require-topic");
+  if (canonicalSlug) params.set("canonical_slug", canonicalSlug);
+  if (canonicalId) params.set("canonical_id", canonicalId);
+  if (groupId) params.set("group_id", groupId);
+  if (requireTopic) params.set("require_topic", requireTopic);
   if (token) params.set("bonfire_embed_token", token);
   if (theme) params.set("theme", theme);
   // Tell the LV the parent article URL so in-iframe actions (sign in, reply)
