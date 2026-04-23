@@ -1,0 +1,48 @@
+<div class="divider" />
+
+<div class="space-y-4">
+  <form class="form-control">
+    <label class="label cursor-pointer justify-start gap-3">
+      <input
+        type="checkbox"
+        checked={@settings.enable}
+        :on-click={@on_update_setting}
+        phx-value-key="enable"
+        phx-value-value={!@settings.enable}
+        class="checkbox checkbox-warning"
+      />
+      <span class="label-text font-medium">Enable crawler blocking</span>
+    </label>
+  </form>
+
+  {#if @settings.enable}
+    <div class="flex items-center justify-between">
+      <h3 class="text-lg font-bold">Server-Side Blocking</h3>
+      <button type="button" :on-click={@on_toggle_advanced} class="btn btn-ghost btn-sm">
+        {#if @show_advanced}Hide Advanced{#else}Show Advanced{/if}
+      </button>
+    </div>
+
+    <form class="form-control">
+      <label class="label cursor-pointer justify-start gap-3">
+        <input
+          type="checkbox"
+          checked={@settings.enable_server_blocking}
+          :on-click={@on_update_setting}
+          phx-value-key="enable_server_blocking"
+          phx-value-value={!@settings.enable_server_blocking}
+          class="checkbox"
+        />
+        <span class="label-text">Enable server-side crawler blocking</span>
+      </label>
+    </form>
+
+    {#if @show_advanced}
+      <div class="collapse collapse-open bg-base-200 rounded-box">
+        <div class="collapse-content">
+          <AdvancedSettings settings={@settings} on_update_setting={@on_update_setting} />
+        </div>
+      </div>
+    {/if}
+  {/if}
+</div>
