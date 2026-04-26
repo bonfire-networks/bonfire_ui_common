@@ -33,7 +33,7 @@
     "lg:max-w-[var(--spacing-1290)]": !@full_width
   }>
     <input id="sidebar-drawer" type="checkbox" class="drawer-toggle">
-    <div class="drawer-content px-safe">
+    <div class="drawer-content px-safe lg:pr-1">
       <div
         data-id="layout"
         data-two-columns={@without_secondary_widgets == true && @without_sidebar != true}

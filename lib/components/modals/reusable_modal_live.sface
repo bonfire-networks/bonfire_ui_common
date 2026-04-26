@@ -36,7 +36,7 @@
     {!-- Close button (always anchored to modal-box top-right, never scrolls) --}
     <div
       style={cond do
-        @image_preview -> nil
+        @image_preview -> ""
         @overflow or @no_backdrop -> "top: -12px; right: -12px;"
         true -> "top: 8px; right: 8px;"
       end}

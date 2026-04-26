@@ -317,6 +317,41 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
      |> push_event("focus-editor", %{})}
   end
 
+  # Preserves draft content, boundaries, and circles — only the context_id moves.
+  def handle_event("pick_context", %{"id" => new_id}, socket) when is_binary(new_id) do
+    existing_group = e(assigns(socket), :context_group, nil)
+
+    cond do
+      is_nil(existing_group) ->
+        {:noreply, socket}
+
+      new_id == e(assigns(socket), :context_id, nil) ->
+        {:noreply, socket}
+
+      true ->
+        current_opts = e(assigns(socket), :smart_input_opts, %{})
+
+        new_context_group =
+          maybe_load_context_group(
+            new_id,
+            existing_group,
+            e(assigns(socket), :to_boundaries, []),
+            e(assigns(socket), :to_circles, []),
+            e(current_opts, :mentions, []) || e(current_opts, "mentions", []),
+            current_user(socket)
+          )
+
+        assigns_to_set = [
+          context_id: new_id,
+          context_group: new_context_group,
+          smart_input_opts: Map.put(current_opts, :context_id, new_id)
+        ]
+
+        set(socket, assigns_to_set)
+        {:noreply, assign(socket, assigns_to_set)}
+    end
+  end
+
   # Drop the group/topic context so the user can publish with default
   # boundaries. Draft content is preserved.
   def handle_event("clear_context", _params, socket) do
@@ -589,19 +624,26 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       e(existing_group, :id, nil) == context_id ->
         existing_group
 
-      # Context is a topic inside the already-loaded group: keep the group's
-      # boundary/circles info but surface the topic's own id, name, and type
-      # so the "Writing in …" chip reads correctly on topic pages.
+      # Cached: switching back to the root group from within a topic.
+      e(existing_group, :group_id, nil) == context_id ->
+        switch_context(existing_group, context_id, e(existing_group, :group_name, ""), :group)
+
+      # Cached: switching to a topic whose siblings were preloaded with the group.
       matching_topic = Enum.find(cached_topics, fn t -> id(t) == context_id end) ->
-        Map.merge(existing_group, %{
-          id: context_id,
-          name: Bonfire.Classify.Web.Preview.CategoryLive.name(matching_topic, l("topic")),
-          type: :topic
-        })
+        switch_context(
+          existing_group,
+          context_id,
+          Bonfire.Classify.Web.Preview.CategoryLive.name(matching_topic, l("topic")),
+          :topic
+        )
 
       true ->
         load_context_group(context_id, to_boundaries, to_circles, mentions, user)
     end
+  end
+
+  defp switch_context(existing_group, id, name, type) do
+    Map.merge(existing_group, %{id: id, name: name, type: type})
   end
 
   defp maybe_load_context_group(_, _, _, _, _, _), do: nil
@@ -609,40 +651,54 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   defp load_context_group(context_id, to_boundaries, to_circles, mentions, user) do
     case Bonfire.Classify.Categories.get(context_id, [[:default], current_user: user]) do
       {:ok, %{type: :group} = group} ->
-        topics =
-          Bonfire.Classify.Categories.list_tree(
-            [:default, parent_category: context_id, type: :topic, tree_max_depth: 1],
-            current_user: user
-          )
-          |> e(:edges, [])
+        name = Bonfire.Classify.Web.Preview.CategoryLive.name(group, l("Group"))
 
         %{
           id: context_id,
-          name: Bonfire.Classify.Web.Preview.CategoryLive.name(group, l("Group")),
+          name: name,
           type: :group,
+          group_id: context_id,
+          group_name: name,
           to_boundaries: to_boundaries,
           to_circles: to_circles,
           mentions: mentions,
-          topics: topics
+          topics: list_subtopics(context_id, user)
         }
 
-      # First visit lands directly on a topic (no parent group cached yet):
-      # surface the topic's id/name/type so the "Writing in …" chip renders
-      # correctly. Boundary/circles info is already passed in from the page LV.
+      # First visit lands directly on a topic: when the parent group is preloaded
+      # we also fetch its sibling topics so the picker still works.
       {:ok, %{type: :topic} = topic} ->
+        parent = e(topic, :parent_category, nil)
+        parent_id = e(parent, :id, nil)
+
         %{
           id: context_id,
           name: Bonfire.Classify.Web.Preview.CategoryLive.name(topic, l("topic")),
           type: :topic,
+          group_id: parent_id,
+          group_name:
+            parent_id && Bonfire.Classify.Web.Preview.CategoryLive.name(parent, l("Group")),
           to_boundaries: to_boundaries,
           to_circles: to_circles,
           mentions: mentions,
-          topics: []
+          topics: list_subtopics(parent_id, user)
         }
 
       _ ->
         nil
     end
+  end
+
+  # Capped at 50 to keep the picker dropdown manageable for groups with many topics.
+  defp list_subtopics(nil, _user), do: []
+
+  defp list_subtopics(parent_id, user) do
+    Bonfire.Classify.Categories.list_tree(
+      [:default, parent_category: parent_id, type: :topic, tree_max_depth: 1],
+      current_user: user,
+      pagination: %{limit: 50}
+    )
+    |> e(:edges, [])
   end
 
   defp maybe_push_opts(js \\ %JS{}, event, opts)

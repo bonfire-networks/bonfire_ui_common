@@ -85,7 +85,7 @@ body {
 #nprogress .bar {
   background: var(--color-primary, #3b82f6) !important;
   height: 4px !important;
-  z-index: 99999 !important;
+  z-index: var(--z-max) !important;
 }
 
 #nprogress .peg {
@@ -95,7 +95,7 @@ body {
 #nprogress .spinner {
   top: 18px !important;
   right: 18px !important;
-  z-index: 99999 !important;
+  z-index: var(--z-max) !important;
 }
 
 #nprogress .spinner-icon {
@@ -193,6 +193,17 @@ select:focus-visible,
 textarea:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+}
+
+/* Composed inputs: when an input/select/textarea lives inside a DaisyUI `.input`
+   (or `.select` / `.textarea`) label wrapper, the wrapper's :focus-within state
+   already indicates focus. Suppress the inner element's outline to avoid doubling. */
+.input > input:focus-visible,
+.input > select:focus-visible,
+.input > textarea:focus-visible,
+.select > select:focus-visible,
+.textarea > textarea:focus-visible {
+  outline: none;
 }
 
 /* Safelist: Ensure these utility classes are always generated */
