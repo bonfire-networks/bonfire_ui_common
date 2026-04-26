@@ -176,23 +176,23 @@
                     {/case}
                   </div>
                 {#match _}
-                <div class="">
-                  <StatelessComponent
-                    module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
-                    to_boundaries={@to_boundaries}
-                    boundary_preset={@boundary_preset}
-                    preview_boundary_for_id={@preview_boundary_for_id}
-                    preview_boundary_for_username={@preview_boundary_for_username}
-                    preview_boundary_verbs={@preview_boundary_verbs}
-                    to_circles={@to_circles}
-                    exclude_circles={@exclude_circles}
-                    verb_permissions={@verb_permissions}
-                    setting_boundaries={:create_object}
-                    context_id={@context_id}
-                    context_group={@context_group}
-                    event_target={@event_target}
-                  />
-                </div>
+                  <div class="">
+                    <StatelessComponent
+                      module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
+                      to_boundaries={@to_boundaries}
+                      boundary_preset={@boundary_preset}
+                      preview_boundary_for_id={@preview_boundary_for_id}
+                      preview_boundary_for_username={@preview_boundary_for_username}
+                      preview_boundary_verbs={@preview_boundary_verbs}
+                      to_circles={@to_circles}
+                      exclude_circles={@exclude_circles}
+                      verb_permissions={@verb_permissions}
+                      setting_boundaries={:create_object}
+                      context_id={@context_id}
+                      context_group={@context_group}
+                      event_target={@event_target}
+                    />
+                  </div>
               {/case}
             {#else}
               <div
