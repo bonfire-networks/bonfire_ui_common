@@ -21,15 +21,23 @@ async function connectDevice(envVar, socketPath) {
   return page;
 }
 
-// Extend A1's test with deviceA2 and deviceB fixtures.
+// Extend A1's test with per-device fixtures. Naming: server{N}_{actor}_{deviceN}.
 // Each yields null when the corresponding env var is unset (test must skip via test.describe tag).
+// s1_alice_d1 = tauriPage (primary, socket 1)
+// s1_alice_d2 = deviceAlice2 (co-device, socket 2)
+// s2_charlie_d1 = deviceCharlie (federated, socket 3)
+// s1_bob_d1 = deviceBob (2nd actor on server 1, socket 4)
 const test = baseTauriTest.extend({
-  deviceA2: async ({}, use) => {
-    const page = await connectDevice('E2E_DEVICE_A2', '/tmp/tauri-playwright-2.sock');
+  deviceAlice2: async ({}, use) => {
+    const page = await connectDevice('E2E_DEVICE_S1_ALICE2', '/tmp/tauri-playwright-2.sock');
     await use(page);
   },
-  deviceB: async ({}, use) => {
-    const page = await connectDevice('E2E_DEVICE_B', '/tmp/tauri-playwright-3.sock');
+  deviceCharlie: async ({}, use) => {
+    const page = await connectDevice('E2E_DEVICE_S2_CHARLIE', '/tmp/tauri-playwright-3.sock');
+    await use(page);
+  },
+  deviceBob: async ({}, use) => {
+    const page = await connectDevice('E2E_DEVICE_S1_BOB', '/tmp/tauri-playwright-4.sock');
     await use(page);
   },
 });
