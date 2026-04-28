@@ -45,7 +45,8 @@ test.describe('co-device', { tag: '@co-device' }, () => {
     // Wait for d2 to receive and join the Welcome for sharedGroupId
     await deviceAlice2!.waitForFunction(
       `(async () => {
-        const ctrl = window.shadowQ('e2ee-chat-view')?._controller;
+        const view = window.shadowQ('e2ee-chat-view');
+        const ctrl = view?._controller || view?.controller;
         await ctrl?.pollInbox();
         const groups = await ctrl?.storage?.listGroupsWithLastMessage?.() ?? [];
         return groups.some(g => g.groupId === ${JSON.stringify(sharedGroupId)});
@@ -82,7 +83,7 @@ test.describe('co-device', { tag: '@co-device' }, () => {
 
     // d2: only d2's leaf remains in the MLS tree (d1 removed)
     const fingerprintCount = await deviceAlice2!.evaluate(`(async () => {
-      const ctrl = window.shadowQ('e2ee-chat-view')?._controller;
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
       const actor = await ctrl.mlsService.getActor?.() || { id: ctrl.currentActorId };
       const fps = await ctrl.mlsService.getGroupFingerprints(actor.id, ${JSON.stringify(sharedGroupId)});
       return fps.filter(f => f.isOwn).length;

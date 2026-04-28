@@ -39,7 +39,7 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
     // charlie: d2 removed (2 remaining: alice as d1, charlie)
     await deviceCharlie!.waitForFunction(
       `(async () => {
-        const ctrl = window.shadowQ('e2ee-chat-view')?._controller;
+        const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
         const members = await ctrl?.getGroupMembers(${JSON.stringify(groupId)}) ?? [];
         return members.length === 2;
       })()`,
@@ -65,7 +65,7 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
     // NOTE: intentionally slow — verifies the safety fallback property, not speed
     await deviceCharlie!.waitForFunction(
       `(async () => {
-        const ctrl = window.shadowQ('e2ee-chat-view')?._controller;
+        const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
         const members = await ctrl?.getGroupMembers(${JSON.stringify(groupId)}) ?? [];
         return members.length === 2;
       })()`,

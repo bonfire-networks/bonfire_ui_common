@@ -16,13 +16,13 @@ test.describe('federated', { tag: '@federated' }, () => {
     await addMemberAndWait(tauriPage, groupId!, deviceCharlie!);
 
     await tauriPage.evaluate(`(async () => {
-      const ctrl = window.shadowQ('e2ee-chat-view')?._controller;
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
       await ctrl.sendMessage(${JSON.stringify(groupId)}, 'hello from alice');
     })()`);
     await pollInbox(deviceCharlie!);
 
     const msgs = await deviceCharlie!.evaluate(`(async () => {
-      const ctrl = window.shadowQ('e2ee-chat-view')?._controller;
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
       const { messages } = await ctrl.loadMessages(${JSON.stringify(groupId)});
       return messages.map(m => m.content?.text || m.text || '');
     })()`);
@@ -56,7 +56,7 @@ test.describe('federated', { tag: '@federated' }, () => {
     for (const device of [deviceBob!, deviceCharlie!]) {
       await device.waitForFunction(
         `(async () => {
-          const ctrl = window.shadowQ('e2ee-chat-view')?._controller;
+          const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
           const members = await ctrl?.getGroupMembers(${JSON.stringify(groupId)}) ?? [];
           return members.length === 2;
         })()`,

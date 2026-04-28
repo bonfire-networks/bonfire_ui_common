@@ -14,6 +14,11 @@ export type Fixtures = TauriFixtures & {
 export const test = _test as unknown as TestType<Fixtures, object>;
 export { expect };
 
+// JS snippets that run inside evaluate() — return view/controller from the shadow DOM.
+// The view stores controller as this.controller (no underscore).
+const GET_VIEW = `window.shadowQ('e2ee-chat-view')`;
+const GET_CTRL = `(() => { const v = ${GET_VIEW}; return v?._controller || v?.controller; })()`;
+
 export async function waitForChatView(tauriPage: any, timeout = 20_000) {
   await tauriPage.waitForFunction(
     'window.shadowQ("e2ee-chat-view") != null',
@@ -32,14 +37,12 @@ export async function shadowExists(tauriPage: any, selector: string): Promise<bo
 
 export async function createGroupAndRefresh(tauriPage: any): Promise<string | null> {
   return tauriPage.evaluate(`(async () => {
-    const view = window.shadowQ('e2ee-chat-view');
-    const controller = view?._controller || view?.controller;
-    if (!controller) return null;
+    const view = ${GET_VIEW};
+    const ctrl = ${GET_CTRL};
+    if (!ctrl) return null;
     try {
-      const id = await controller.createGroup();
-      if (controller.currentActorId) {
-        await controller.persistMembers(id, [controller.currentActorId]);
-      }
+      const id = await ctrl.createGroup();
+      if (ctrl.currentActorId) await ctrl.persistMembers(id, [ctrl.currentActorId]);
       if (typeof view.loadGroups === 'function') await view.loadGroups();
       return id;
     } catch (e) {
@@ -51,28 +54,29 @@ export async function createGroupAndRefresh(tauriPage: any): Promise<string | nu
 
 export async function getActorId(page: any): Promise<string> {
   return page.evaluate(`(async () => {
-    const ctrl = window.shadowQ('e2ee-chat-view')?._controller;
-    return ctrl?.currentActorId;
+    return ${GET_CTRL}?.currentActorId;
   })()`);
 }
 
+// Calls view.pollInbox() so results are processed through the view's full handler chain
+// (coDeviceLeaving → dialog, newDeviceRequest → dialog, etc.)
 export async function pollInbox(page: any): Promise<void> {
   await page.evaluate(`(async () => {
-    const ctrl = window.shadowQ('e2ee-chat-view')?._controller;
-    await ctrl?.pollInbox();
+    const view = ${GET_VIEW};
+    if (typeof view?.pollInbox === 'function') await view.pollInbox();
+    else await ${GET_CTRL}?.pollInbox();
   })()`);
 }
 
 export async function addMemberAndWait(creatorPage: any, groupId: string, memberPage: any): Promise<void> {
   const memberId = await getActorId(memberPage);
   await creatorPage.evaluate(`(async () => {
-    const ctrl = window.shadowQ('e2ee-chat-view')?._controller;
-    await ctrl.addMemberToGroup(${JSON.stringify(groupId)}, ${JSON.stringify(memberId)});
+    await ${GET_CTRL}.addMemberToGroup(${JSON.stringify(groupId)}, ${JSON.stringify(memberId)});
   })()`);
   await pollInbox(memberPage);
   await memberPage.waitForFunction(
     `(async () => {
-      const ctrl = window.shadowQ('e2ee-chat-view')?._controller;
+      const ctrl = ${GET_CTRL};
       const groups = await ctrl?.storage?.listGroupsWithLastMessage?.() ?? [];
       return groups.some(g => g.groupId === ${JSON.stringify(groupId)});
     })()`,
@@ -82,24 +86,19 @@ export async function addMemberAndWait(creatorPage: any, groupId: string, member
 
 export async function leaveGroup(page: any, groupId: string): Promise<void> {
   await page.evaluate(`(async () => {
-    const view = window.shadowQ('e2ee-chat-view');
-    await view._handleLeaveGroup(${JSON.stringify(groupId)});
+    await ${GET_VIEW}._handleLeaveGroup(${JSON.stringify(groupId)});
   })()`);
 }
 
 export async function isNoLongerMember(page: any, groupId: string): Promise<boolean> {
   return page.evaluate(`(async () => {
-    const view = window.shadowQ('e2ee-chat-view');
-    const ctrl = view?._controller || view?.controller;
-    return !!(await ctrl?.storage?.getGroupField(${JSON.stringify(groupId)}, 'noLongerMember', false));
+    return !!(await ${GET_CTRL}?.storage?.getGroupField(${JSON.stringify(groupId)}, 'noLongerMember', false));
   })()`);
 }
 
 export async function getGroupMemberCount(page: any, groupId: string): Promise<number> {
   return page.evaluate(`(async () => {
-    const view = window.shadowQ('e2ee-chat-view');
-    const ctrl = view?._controller || view?.controller;
-    const members = await ctrl?.getGroupMembers(${JSON.stringify(groupId)}) ?? [];
+    const members = await ${GET_CTRL}?.getGroupMembers(${JSON.stringify(groupId)}) ?? [];
     return members.length;
   })()`);
 }
