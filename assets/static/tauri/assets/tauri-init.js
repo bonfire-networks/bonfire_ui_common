@@ -18,25 +18,37 @@
         }
     }
 
+    function rustLog(msg) {
+        try {
+            var inv = window.__TAURI__ && window.__TAURI__.core && window.__TAURI__.core.invoke;
+            if (inv) inv('js_log', { level: 'error', msg: msg }).catch(function () {});
+        } catch (_) {}
+    }
+
     window.addEventListener('error', function (e) {
         var msg = e.error && e.error.stack ? e.error.stack : ((e.message || 'Unknown error') + '\n' + (e.filename || '') + ':' + e.lineno);
         var isDb = e.error && e.error.isDbCorruption;
         errors.push(msg);
+        rustLog('[JS error] ' + msg);
         showErrorOverlay(errors.join('\n\n---\n\n'), isDb);
     });
 
     window.addEventListener('unhandledrejection', function (e) {
         var msg = e.reason && e.reason.stack ? e.reason.stack : String(e.reason);
         var isDb = e.reason && e.reason.isDbCorruption;
+        if (e.reason && e.reason._fetchStack) {
+            msg += '\n\nFetch call site:\n' + e.reason._fetchStack;
+        }
         errors.push('Unhandled promise rejection: ' + msg);
+        rustLog('[JS unhandledrejection] ' + msg);
         showErrorOverlay(errors.join('\n\n---\n\n'), isDb);
     });
 })();
 
-// Forward console.log/warn/error to Rust logs when JS debug mode is active
-// (set automatically after an unclean shutdown via window.__BONFIRE_JS_DEBUG__).
+// Forward console.error/warn/log to Rust logs.
+// errors and warnings always; log/info only in JS debug mode (after unclean shutdown).
 (function () {
-    if (!window.__TAURI__ || !window.__BONFIRE_JS_DEBUG__) return;
+    if (!window.__TAURI__) return;
     var _invoke = null; // lazily resolved after Tauri is ready
     function fwd(level, args) {
         try {
@@ -48,10 +60,12 @@
         } catch (e) {}
     }
     var _log = console.log, _warn = console.warn, _error = console.error;
-    console.log   = function () { _log.apply(console, arguments);   fwd('info',  arguments); };
-    console.warn  = function () { _warn.apply(console, arguments);  fwd('warn',  arguments); };
     console.error = function () { _error.apply(console, arguments); fwd('error', arguments); };
-    console.warn('[tauri-init] JS debug mode active — console forwarded to Rust logs');
+    console.warn  = function () { _warn.apply(console, arguments);  fwd('warn',  arguments); };
+    if (window.__BONFIRE_JS_DEBUG__) {
+        console.log = function () { _log.apply(console, arguments); fwd('info', arguments); };
+        console.warn('[tauri-init] JS debug mode active — all console levels forwarded to Rust logs');
+    }
 })();
 
 // Shadow DOM query helper for tests: shadowQ('selector >>> inner >>> deepest')
@@ -140,13 +154,20 @@ window.shadowQ = function(selector) {
     var doFetch = strategy === 'invoke' ? fetchViaInvoke : fetchViaPlugin;
 
     window.fetch = function (url, options) {
-        if (typeof url === 'string' && url.startsWith('https://')) {
-            return doFetch(url, options).catch(function (err) {
-                console.error('[tauri-init] Tauri fetch (' + strategy + ') failed:', err);
-                return _nativeFetch.call(window, url, options);
+        var callStack = new Error('fetch call site').stack;
+        // Normalise URL objects → strings so the protocol check works
+        var urlStr = (url instanceof URL) ? url.href : (typeof url === 'string' ? url : null);
+        function annotate(err) {
+            if (err && typeof err === 'object') { try { err._fetchStack = callStack; } catch(_) {} }
+            throw err;
+        }
+        if (urlStr && (urlStr.startsWith('https://') || urlStr.startsWith('http://'))) {
+            return doFetch(urlStr, options).catch(function (err) {
+                console.error('[tauri-init] Tauri fetch (' + strategy + ') failed for', urlStr, ':', err, '\nCall stack:', callStack);
+                return _nativeFetch.call(window, url, options).catch(annotate);
             });
         }
-        return _nativeFetch.call(window, url, options);
+        return _nativeFetch.call(window, url, options).catch(annotate);
     };
     console.log('[tauri-init] Overrode window.fetch using strategy: ' + strategy);
 
