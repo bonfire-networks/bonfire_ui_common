@@ -142,7 +142,12 @@
           </div>
           <StatefulComponent
             module={@widget[:module]}
-            id={deterministic_dom_id(__MODULE__, @order, @widget[:page] || @widget[:module], @parent_id)}
+            id={deterministic_dom_id(
+              "stateful_widget",
+              to_string(@widget[:page] || @widget[:module]),
+              to_string(@order),
+              @parent_id
+            )}
             page={@page}
             selected_tab={@selected_tab}
             showing_within={@showing_within}

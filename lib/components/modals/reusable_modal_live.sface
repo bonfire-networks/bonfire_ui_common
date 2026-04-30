@@ -34,19 +34,12 @@
     {...Enums.naughty_to_atoms!(@form_opts)}
   >
     {!-- Close button (always anchored to modal-box top-right, never scrolls) --}
-    <div
-      style={cond do
-        @image_preview -> ""
-        @overflow or @no_backdrop -> "top: -12px; right: -12px;"
-        true -> "top: 8px; right: 8px;"
-      end}
-      class={
-        "absolute block z-popover",
-        "top-0 right-0": !@image_preview,
-        "!top-2 !right-2": @image_preview,
-        "z-tooltip !top-1 h-full": @no_backdrop
-      }
-    >
+    <div class={
+      "absolute block",
+      "top-2 right-2 z-popover": !@no_backdrop and (!@overflow or @image_preview),
+      "-top-3 -right-3 z-popover": !@no_backdrop and @overflow and !@image_preview,
+      "top-1 -right-3 z-tooltip h-full": @no_backdrop
+    }>
       <div class="pt-safe">
         <button
           phx-click="close"

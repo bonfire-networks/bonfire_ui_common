@@ -49,6 +49,18 @@ config :bonfire, :ui,
   terms: [
     conduct: "https://raw.githubusercontent.com/bonfire-networks/blog/master/code_of_conduct.md"
   ],
+  # Email palette for transactional emails (signup confirm, password reset,
+  # login link). Email clients don't support DaisyUI CSS vars, so values
+  # are concrete colors. Flavours and instance admins can override.
+  auth: [
+    email_theme: [
+      primary: "#e63946",
+      primary_content: "#ffffff",
+      body_bg: "#fff7f7",
+      body_text: "#1f1f1f",
+      muted: "#6b6b6b"
+    ]
+  ],
   show_activity_counts: false,
   show_profile_background_image: true,
   # should be enabled if using any extra extensions (other than social) or if you used some in the past and still want to display the old activities

@@ -7,6 +7,15 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   import Bonfire.Common.Utils, only: [current_user: 1]
 
   @doc """
+  Pushes a `set_theme` event so root.html.heex's listener updates `<html data-theme=…>`.
+  No-op for non-binary themes; safe on disconnected sockets (push_event queues until connect).
+  """
+  def push_theme(socket, theme) when is_binary(theme),
+    do: Phoenix.LiveView.push_event(socket, "set_theme", %{theme: theme})
+
+  def push_theme(socket, _), do: socket
+
+  @doc """
   Determines the current theme based on user preferences and context.
   Handles special cases including:
   - Light/dark preference

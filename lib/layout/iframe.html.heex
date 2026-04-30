@@ -1,6 +1,22 @@
 <%= if go = assigns[:go] || e(assigns, :__context__, :go, nil) do %>
   <meta name="session-param-go" content={go} />
 <% end %>
+<%!-- Sync html data-theme to the embed `?theme=` param so the body bg-base-200
+     matches the inner content theme (otherwise the user's preferred theme on
+     <html>, set by root.html.heex, leaks a light/dark bar around the iframe).
+     Reading from window.location is more robust than passing assigns through
+     the inner layout. --%>
+<script>
+  (function () {
+    var match = window.location.search.match(/[?&]theme=([A-Za-z0-9_-]+)/);
+    if (match) document.documentElement.setAttribute("data-theme", match[1]);
+  })();
+</script>
+<%!-- Default 8px body margin shows the html bg as a band inside the iframe
+     (auto-resize uses body.scrollHeight, which excludes margin). --%>
+<style>
+  html, body { margin: 0; padding: 0; }
+</style>
 <div id="iframe-resize-hook" phx-hook="IframeResize">
   {@inner_content}
   <%!-- Many callers hard-code `reusable_modal_id="persistent_modal"` (originally

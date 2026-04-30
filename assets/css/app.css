@@ -270,31 +270,20 @@ textarea:focus-visible {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
   color-scheme: light;
-  --color-base-100: oklch(99% 0.001 260);
-  --color-base-200: oklch(96% 0.002 260);
-  --color-base-300: oklch(92% 0.003 260);
-  --color-base-content: oklch(21% 0.006 260);
-  --color-primary: oklch(52.85% 0.2 251.26);
-  --color-primary-content: oklch(98% 0.005 251);
+  /* base-100 = content surface (#ffffff), base-200 = body bg (#f5f2ef warm off-white),
+     base-300 = deepest layer (#f2eae4 peachy). Matches .bonfire-wrapper's
+     mobile=base-200 / desktop=base-100 split. */
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(96.4% 0.004 60);
+  --color-base-300: oklch(93.6% 0.012 55);
+  --color-base-content: oklch(27.5% 0.018 270);
+  /* Tangerine accent → primary: #f76902 */
+  --color-primary: oklch(65.6% 0.21 41);
+  --color-primary-content: oklch(100% 0 0);
   --color-secondary: oklch(55% 0.14 285);
   --color-secondary-content: oklch(98% 0.005 285);
   --color-accent: oklch(68% 0.16 55);
@@ -303,12 +292,14 @@ textarea:focus-visible {
   --color-neutral-content: oklch(96% 0.005 255);
   --color-info: oklch(62% 0.17 230);
   --color-info-content: oklch(98% 0.005 230);
-  --color-success: oklch(64% 0.16 155);
-  --color-success-content: oklch(98% 0.005 155);
+  /* Tangerine confirm: #79bd9a */
+  --color-success: oklch(74% 0.09 155);
+  --color-success-content: oklch(100% 0 0);
   --color-warning: oklch(78% 0.15 75);
   --color-warning-content: oklch(22% 0.04 75);
-  --color-error: oklch(60% 0.19 25);
-  --color-error-content: oklch(98% 0.005 25);
+  /* Tangerine reject: #df405a */
+  --color-error: oklch(63% 0.2 15);
+  --color-error-content: oklch(100% 0 0);
   --radius-selector: 2rem;
   --radius-field: 1rem;
   --radius-box: 1rem;
@@ -323,12 +314,15 @@ textarea:focus-visible {
   name: "dark";
   prefersdark: true;
   color-scheme: dark;
-  --color-base-100: oklch(23% 0.01 255);
-  --color-base-200: oklch(15% 0.008 255);
-  --color-base-300: oklch(27% 0.012 255);
-  --color-base-content: oklch(92% 0.01 250);
-  --color-primary: oklch(67% 0.17 251);
-  --color-primary-content: oklch(15% 0.02 251);
+  /* Tangerine's signature "punched-out card" effect: content-bg (#030303) is
+     darker than outer bg (#111111). base-100 = card surface, base-200 = body. */
+  --color-base-100: oklch(7% 0 0);
+  --color-base-200: oklch(18% 0 0);
+  --color-base-300: oklch(21% 0.012 55);
+  --color-base-content: oklch(86.5% 0.012 55);
+  /* Tangerine accent dark: #e68933 (muted orange for reduced glare) */
+  --color-primary: oklch(70% 0.16 55);
+  --color-primary-content: oklch(100% 0 0);
   --color-secondary: oklch(65% 0.12 285);
   --color-secondary-content: oklch(15% 0.01 285);
   --color-accent: oklch(74% 0.14 55);
@@ -337,20 +331,22 @@ textarea:focus-visible {
   --color-neutral-content: oklch(92% 0.005 255);
   --color-info: oklch(70% 0.14 230);
   --color-info-content: oklch(15% 0.01 230);
-  --color-success: oklch(70% 0.14 155);
-  --color-success-content: oklch(15% 0.01 155);
+  /* Tangerine confirm (same hex in dark): #79bd9a */
+  --color-success: oklch(74% 0.09 155);
+  --color-success-content: oklch(15% 0 0);
   --color-warning: oklch(80% 0.14 75);
   --color-warning-content: oklch(18% 0.04 75);
-  --color-error: oklch(68% 0.17 25);
-  --color-error-content: oklch(15% 0.01 25);
+  /* Tangerine reject: #df405a */
+  --color-error: oklch(63% 0.2 15);
+  --color-error-content: oklch(15% 0 0);
   --radius-selector: 2rem;
   --radius-field: 1rem;
   --radius-box: 1rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
-  --depth: 0.3;
-  --noise: 0.2;
+  --depth: 0.5;
+  --noise: 0.5;
 }
 
 
@@ -504,6 +500,15 @@ article.unread-activity {
   padding-left: 3.4rem !important;
   margin-left: 0px !important;
   @apply border border-base-content/10 rounded-lg !py-2 !pb-3 mt-2 mb-3;
+  transition: transform 150ms var(--ease-out-expo), border-color 150ms ease-out;
+}
+
+.quote-preview:hover {
+  border-color: color-mix(in oklch, var(--color-primary) 40%, transparent);
+}
+
+.quote-preview:active {
+  transform: scale(0.98);
 }
 
 .quote-preview .prose-bonfire {
@@ -1021,6 +1026,15 @@ div[data-id='activity_note'] .emoji {
   margin: -.2ex .15em .2ex;
   object-fit: contain;
   vertical-align: middle;
+  transition: transform 0.6s 0.6s var(--ease-out-expo);
+  transform-origin: center bottom;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  div[data-id='activity_note'] .emoji:hover {
+    transform: scale(2.5);
+    transition-delay: 0s;
+  }
 }
 
 
@@ -1532,6 +1546,24 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
   to {
     stroke-dashoffset: -20;
   }
+}
+
+/* Skeleton shimmer: opt-in alternative to animate-pulse for
+   placeholder content. Apply via class="skeleton-shimmer". */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-shimmer {
+  background-image: linear-gradient(
+    90deg,
+    color-mix(in oklch, var(--color-base-content) 6%, transparent),
+    color-mix(in oklch, var(--color-base-content) 12%, transparent),
+    color-mix(in oklch, var(--color-base-content) 6%, transparent)
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
 }
 
 /* Button loading states are handled via Phoenix LiveView CSS variants:
