@@ -10,7 +10,6 @@
         {#else}  --}
         <StatefulComponent
           id={"unseen_count_#{feed_id}"}
-          feed_id={@feed_id}
           page={@page}
           module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
           feed_id={feed_id}
