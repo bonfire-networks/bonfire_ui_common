@@ -176,7 +176,9 @@
                     {/case}
                   </div>
                 {#match _}
-                  <div class="">
+                  {!-- In thread_embed the boundary follows the parent thread, so we hide
+                       the boundary picker. --}
+                  <div :if={@showing_within != :thread_embed} class="">
                     <StatelessComponent
                       module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
                       to_boundaries={@to_boundaries}

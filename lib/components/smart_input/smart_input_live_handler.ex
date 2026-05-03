@@ -825,6 +825,18 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     set(socket_or_context, reset_smart_input: true)
   end
 
+  def reset_input(%{assigns: %{showing_within: :thread_embed}} = socket) do
+    # The embed has no PersistentLive / SmartInputContainerLive to route through,
+    # so push the reset event directly. The InlineComposerCollapse hook listens for
+    # `phx:smart_input:reset`: it collapses the composer back to its pill and (when
+    # replying to a sub-comment) pushes `reset_reply_to` so CommentsLive teleports
+    # the portal back to the thread root.
+    socket
+    |> Phoenix.LiveView.push_event("smart_input:reset", %{})
+    |> Phoenix.LiveView.push_event("smart_input:reset_sensitive", %{})
+    |> cancel_all_uploads()
+  end
+
   def reset_input(%{assigns: %{showing_within: :thread}} = socket) do
     # debug("THREad")
 
