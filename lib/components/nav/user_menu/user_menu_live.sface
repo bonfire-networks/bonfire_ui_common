@@ -31,12 +31,12 @@
       {!-- <#Icon iconify="ph:dots-three-outline-duotone" class="w-4 h-4 opacity/70" /> --}
     </label>
   </div>
+  <!-- phx-update="ignore" -->
   <ul
     tabindex="0"
     class="tooltip z-tooltip menu shadow-lg bg-base-100 min-w-52 w-full absolute rounded-box top-0 right-0 hidden"
     role="menu"
     id="user_more_menu_links_list"
-    phx-update="ignore"
     aria-orientation="vertical"
     aria-labelledby="user-profile-menu"
   >
