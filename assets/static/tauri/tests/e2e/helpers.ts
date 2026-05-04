@@ -102,3 +102,51 @@ export async function getGroupMemberCount(page: any, groupId: string): Promise<n
     return members.length;
   })()`);
 }
+
+/**
+ * Inject a synthetic Add { KeyPackage } activity into the controller's handler.
+ * Returns true if the KP was stored (accepted), false if it was rejected.
+ */
+export async function injectKeyPackageAdd(
+  page: any,
+  actorUri: string,
+  kpB64: string,
+  mlsSignature?: { signerKey: string; signature: string }
+): Promise<boolean> {
+  return page.evaluate(`(async () => {
+    const ctrl = ${GET_CTRL};
+    const before = (await ctrl.storage.loadUserState(${JSON.stringify(actorUri)}))?.keyPackage;
+    const activity = {
+      type: 'Add',
+      actor: ${JSON.stringify(actorUri)},
+      object: {
+        type: 'KeyPackage',
+        attributedTo: ${JSON.stringify(actorUri)},
+        mediaType: 'message/mls',
+        encoding: 'base64',
+        content: ${JSON.stringify(kpB64)}
+      },
+      target: ${JSON.stringify(actorUri)} + '/key-packages',
+      ${mlsSignature ? `mlsSignature: ${JSON.stringify(mlsSignature)}` : ''}
+    };
+    await ctrl._handleKeyPackageAdd(activity);
+    const after = (await ctrl.storage.loadUserState(${JSON.stringify(actorUri)}))?.keyPackage;
+    return after === ${JSON.stringify(kpB64)} && after !== before;
+  })()`);
+}
+
+/** Return the current device's MLS signature key (base64). */
+export async function getOwnSignatureKey(page: any): Promise<string> {
+  return page.evaluate(`(async () => {
+    const ctrl = ${GET_CTRL};
+    return await ctrl.mlsService.getOwnSignatureKey(ctrl.currentActorId);
+  })()`);
+}
+
+/** Sign kpB64 with the current device's MLS key. Returns { signerKey, signature }. */
+export async function signData(page: any, data: string): Promise<{ signerKey: string; signature: string }> {
+  return page.evaluate(`(async () => {
+    const ctrl = ${GET_CTRL};
+    return await ctrl.mlsService.signData(ctrl.currentActorId, ${JSON.stringify(data)});
+  })()`);
+}

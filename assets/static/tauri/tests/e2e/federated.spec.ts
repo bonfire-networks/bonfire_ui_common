@@ -3,7 +3,9 @@
 // Run with: just test-tauri-e2e-federated
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD, E2E_S1_BOB_LOGIN/PASSWORD, E2E_S2_CHARLIE_LOGIN/PASSWORD
 
-import { test, expect, waitForChatView, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember, getGroupMemberCount } from './helpers';
+import { test, expect, waitForChatView, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember, getGroupMemberCount, getActorId, injectKeyPackageAdd, signData } from './helpers';
+
+const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })()`;
 
 test.describe('federated', { tag: '@federated' }, () => {
 
@@ -63,6 +65,21 @@ test.describe('federated', { tag: '@federated' }, () => {
         15_000
       );
     }
+  });
+
+  test('Add signed by a different actor\'s key is rejected', async ({ tauriPage, deviceBob }) => {
+    await waitForChatView(tauriPage);
+    await waitForChatView(deviceBob!, 20_000);
+
+    const aliceId = await getActorId(tauriPage);
+    const aliceKpB64 = await tauriPage.evaluate(`(async () => ${GET_CTRL}.mlsService.getKeyPackageHex(${JSON.stringify(aliceId)}))()`);
+
+    // Bob signs alice's KP bytes — bob's signature key is not in alice's known device keys
+    const bobSig = await signData(deviceBob!, aliceKpB64);
+
+    // Inject into alice's controller: should be rejected because bobSig.signerKey ∉ alice's validSigners
+    const stored = await injectKeyPackageAdd(tauriPage, aliceId, aliceKpB64, bobSig);
+    expect(stored).toBe(false);
   });
 
 });
