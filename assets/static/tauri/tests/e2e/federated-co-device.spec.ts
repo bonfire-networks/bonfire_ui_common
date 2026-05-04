@@ -3,7 +3,7 @@
 // Run with: just test-tauri-e2e-federated-co-device
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD, E2E_S2_CHARLIE_LOGIN/PASSWORD
 
-import { test, expect, waitForChatView, shadowClick, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember } from './helpers';
+import { test, expect, waitForChatView, shadowClick, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember, canSendAndReceive } from './helpers';
 
 async function createThreeWayGroup(tauriPage: any, deviceAlice2: any, deviceCharlie: any): Promise<{ groupId: string }> {
   const groupId = await createGroupAndRefresh(tauriPage);
@@ -21,6 +21,10 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
     await waitForChatView(deviceCharlie!, 20_000);
 
     const { groupId } = await createThreeWayGroup(tauriPage, deviceAlice2!, deviceCharlie!);
+
+    // Verify messaging works before d2 leaves.
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId)).toBe(true);
+    expect(await canSendAndReceive(deviceAlice2!, deviceCharlie!, groupId)).toBe(true);
 
     await leaveGroup(deviceAlice2!, groupId);
 
@@ -47,6 +51,9 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
     );
 
     expect(await isNoLongerMember(deviceAlice2!, groupId)).toBe(true);
+
+    // After d2 removal, d1 and charlie should still exchange messages.
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId)).toBe(true);
   });
 
   test('s1_alice_d2 leaves → co-device s1_alice_d1 unresponsive → s2_charlie_d1 fallback commits after 10min', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
@@ -55,6 +62,8 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
     await waitForChatView(deviceCharlie!, 20_000);
 
     const { groupId } = await createThreeWayGroup(tauriPage, deviceAlice2!, deviceCharlie!);
+
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId)).toBe(true);
 
     await leaveGroup(deviceAlice2!, groupId);
 
@@ -73,6 +82,9 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
     );
 
     expect(await isNoLongerMember(deviceAlice2!, groupId)).toBe(true);
+
+    // After fallback commit, charlie and d1 should still exchange messages.
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId)).toBe(true);
   });
 
 });

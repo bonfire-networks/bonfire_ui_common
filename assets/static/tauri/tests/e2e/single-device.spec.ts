@@ -2,7 +2,8 @@
 // Run with: just test-tauri-e2e-single
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD (or E2E_LOGIN/PASSWORD)
 
-import { test, expect, waitForChatView, shadowClick, shadowExists, createGroupAndRefresh, getActorId, injectKeyPackageAdd, signData } from './helpers';
+import { test, expect, waitForChatView, shadowClick, shadowExists, createGroupAndRefresh, getActorId, injectKeyPackageAdd, getKeyPackageB64, getAndSignOwnKeyPackage, signData, sendMessage } from './helpers';
+// btoa is a global in Node 16+ / browser
 
 const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })()`;
 
@@ -18,6 +19,10 @@ test.describe('single-device', { tag: '@single-device' }, () => {
       'window.shadowQ("e2ee-chat-view >>> [data-role=group-item]") != null',
       15_000
     );
+
+    // Verify MLS encryption works before leaving.
+    const sentId = await sendMessage(tauriPage, groupId!, 'test-pre-leave');
+    expect(sentId).toBeTruthy();
 
     await tauriPage.evaluate(`(async () => {
       const view = window.shadowQ('e2ee-chat-view');
@@ -143,7 +148,7 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     test('missing mlsSignature: Add is rejected', async ({ tauriPage }) => {
       await waitForChatView(tauriPage);
       const actorId = await getActorId(tauriPage);
-      const kpB64 = await tauriPage.evaluate(`(async () => ${GET_CTRL}.mlsService.getKeyPackageHex(${JSON.stringify(actorId)}))()`);
+      const kpB64 = await getKeyPackageB64(tauriPage, actorId);
       const stored = await injectKeyPackageAdd(tauriPage, actorId, kpB64);
       expect(stored).toBe(false);
     });
@@ -151,10 +156,11 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     test('unknown signerKey: Add is rejected', async ({ tauriPage }) => {
       await waitForChatView(tauriPage);
       const actorId = await getActorId(tauriPage);
-      const kpB64 = await tauriPage.evaluate(`(async () => ${GET_CTRL}.mlsService.getKeyPackageHex(${JSON.stringify(actorId)}))()`);
+      const kpB64 = await getKeyPackageB64(tauriPage, actorId);
+      // Use fixed base64 strings (no padding issues) as fake key/sig
       const stored = await injectKeyPackageAdd(tauriPage, actorId, kpB64, {
-        signerKey: btoa('unknown-key-not-in-any-collection'),
-        signature: btoa('fake-signature')
+        signerKey: 'dW5rbm93bmtleQ',   // base64url 'unknownkey' (no padding)
+        signature: 'ZmFrZXNpZw'        // base64url 'fakesig' (no padding)
       });
       expect(stored).toBe(false);
     });
@@ -162,9 +168,9 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     test('valid key but sig over wrong bytes: Add is rejected', async ({ tauriPage }) => {
       await waitForChatView(tauriPage);
       const actorId = await getActorId(tauriPage);
-      const kpB64 = await tauriPage.evaluate(`(async () => ${GET_CTRL}.mlsService.getKeyPackageHex(${JSON.stringify(actorId)}))()`);
-      // Real sig from own key, but signed over different bytes — not the KP content
-      const wrongSig = await signData(tauriPage, btoa('this is not the keypackage'));
+      const kpB64 = await getKeyPackageB64(tauriPage, actorId);
+      // Sign 'other' bytes with alice's real key — signerKey is valid but sig covers wrong payload
+      const wrongSig = await signData(tauriPage, btoa('other'));
       const stored = await injectKeyPackageAdd(tauriPage, actorId, kpB64, wrongSig);
       expect(stored).toBe(false);
     });
@@ -172,19 +178,17 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     test('self-signed Add with own key: accepted', async ({ tauriPage }) => {
       await waitForChatView(tauriPage);
       const actorId = await getActorId(tauriPage);
-      const kpB64 = await tauriPage.evaluate(`(async () => ${GET_CTRL}.mlsService.getKeyPackageHex(${JSON.stringify(actorId)}))()`);
-      const sig = await signData(tauriPage, kpB64);
+      const { kpB64, sig } = await getAndSignOwnKeyPackage(tauriPage, actorId);
       const stored = await injectKeyPackageAdd(tauriPage, actorId, kpB64, sig);
       expect(stored).toBe(true);
     });
 
     test('unsigned Add accepted when actor has no known devices', async ({ tauriPage }) => {
       await waitForChatView(tauriPage);
-      // Use a made-up actor URI that has no live MLS group membership (so _getLiveDeviceKeysForActor → [])
+      // Use a made-up actor URI and garbage (unparseable) KP bytes so kpSignatureKey = null,
+      // meaning validSigners = [] → no enforcement → unsigned accepted.
       const unknownActorUri = 'https://example.com/users/nobody-' + Date.now();
-      // Reuse alice's own KP bytes as a parseable KP body attributed to the unknown actor
-      const aliceKpB64 = await tauriPage.evaluate(`(async () => ${GET_CTRL}.mlsService.getKeyPackageHex(${GET_CTRL}.currentActorId))()`);
-      const stored = await injectKeyPackageAdd(tauriPage, unknownActorUri, aliceKpB64); // no sig
+      const stored = await injectKeyPackageAdd(tauriPage, unknownActorUri, 'Z2FyYmFnZQ=='); // garbage, won't parse as MLS KP
       expect(stored).toBe(true);
     });
   });

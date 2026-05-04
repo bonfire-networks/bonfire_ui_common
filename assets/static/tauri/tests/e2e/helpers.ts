@@ -27,8 +27,18 @@ export async function waitForChatView(tauriPage: any, timeout = 20_000) {
 }
 
 export async function shadowClick(tauriPage: any, selector: string, timeout = 15_000) {
-  await tauriPage.waitForFunction(`window.shadowQ(${JSON.stringify(selector)}) != null`, timeout);
-  await tauriPage.evaluate(`window.shadowQ(${JSON.stringify(selector)}).click()`);
+  // Atomic find+click: poll until the element exists AND was successfully clicked in the same
+  // JS microtask, so a ChatController re-init between separate waitForFunction/evaluate calls
+  // can't clear the element before we click it.
+  const deadline = Date.now() + timeout;
+  while (true) {
+    const clicked = await tauriPage.evaluate(
+      `(function(sel) { const el = window.shadowQ(sel); if (el) { el.click(); return true; } return false; })(${JSON.stringify(selector)})`
+    );
+    if (clicked) return;
+    if (Date.now() >= deadline) throw new Error(`shadowClick timeout: ${selector} not found within ${timeout}ms`);
+    await new Promise(r => setTimeout(r, 300));
+  }
 }
 
 export async function shadowExists(tauriPage: any, selector: string): Promise<boolean> {
@@ -135,6 +145,9 @@ export async function injectKeyPackageAdd(
   })()`);
 }
 
+// JS snippet reused across evaluate() calls: converts a hex KP string to base64.
+export const HEX_TO_B64 = `(hex => { const b = new Uint8Array(hex.match(/.{2}/g).map(h => parseInt(h, 16))); return btoa(String.fromCharCode(...Array.from(b))); })`;
+
 /** Return the current device's MLS signature key (base64). */
 export async function getOwnSignatureKey(page: any): Promise<string> {
   return page.evaluate(`(async () => {
@@ -143,10 +156,99 @@ export async function getOwnSignatureKey(page: any): Promise<string> {
   })()`);
 }
 
-/** Sign kpB64 with the current device's MLS key. Returns { signerKey, signature }. */
-export async function signData(page: any, data: string): Promise<{ signerKey: string; signature: string }> {
+/**
+ * Return the current actor's stored KeyPackage as a base64 string (suitable for AP activity content).
+ * getKeyPackageHex() returns hex — this converts it inside the webview using HEX_TO_B64.
+ */
+export async function getKeyPackageB64(page: any, actorId: string): Promise<string> {
   return page.evaluate(`(async () => {
     const ctrl = ${GET_CTRL};
-    return await ctrl.mlsService.signData(ctrl.currentActorId, ${JSON.stringify(data)});
+    const hex = await ctrl.mlsService.getKeyPackageHex(${JSON.stringify(actorId)});
+    if (!hex) return null;
+    return ${HEX_TO_B64}(hex);
+  })()`);
+}
+
+/** Sign base64-encoded data with the current device's MLS key. Returns { signerKey, signature }. */
+export async function signData(page: any, dataB64: string): Promise<{ signerKey: string; signature: string }> {
+  return page.evaluate(`(async () => {
+    const ctrl = ${GET_CTRL};
+    return await ctrl.mlsService.signData(ctrl.currentActorId, ${JSON.stringify(dataB64)});
+  })()`);
+}
+
+/**
+ * Get the current actor's KP as base64 and sign it with their own key — all inside the webview
+ * to avoid cross-boundary base64 encoding issues.
+ * Returns { kpB64, sig: { signerKey, signature } }.
+ */
+export async function getAndSignOwnKeyPackage(page: any, actorId: string): Promise<{ kpB64: string; sig: { signerKey: string; signature: string } }> {
+  return page.evaluate(`(async () => {
+    const ctrl = ${GET_CTRL};
+    const hex = await ctrl.mlsService.getKeyPackageHex(${JSON.stringify(actorId)});
+    if (!hex) return null;
+    const kpB64 = ${HEX_TO_B64}(hex);
+    const sig = await ctrl._signKeyPackage(${JSON.stringify(actorId)}, kpB64);
+    return { kpB64, sig };
+  })()`);
+}
+
+/**
+ * Send a message in a group and return the AP message ID.
+ * Throws if the group's MLS state is lost (EncryptionLostError).
+ */
+export async function sendMessage(page: any, groupId: string, content: string): Promise<string | null> {
+  return page.evaluate(`(async () => {
+    const ctrl = ${GET_CTRL};
+    const { messageApId } = await ctrl.sendMessage(${JSON.stringify(groupId)}, { content: ${JSON.stringify(content)} });
+    return messageApId ?? null;
+  })()`);
+}
+
+/**
+ * Verify that a message with the given AP ID (or content substring) is stored on the receiving page.
+ * Polls storage directly — no inbox poll needed if the message was already processed.
+ */
+export async function hasReceivedMessage(page: any, groupId: string, contentSubstring: string): Promise<boolean> {
+  return page.evaluate(`(async () => {
+    const ctrl = ${GET_CTRL};
+    const msgs = await ctrl?.storage?.listMessages?.(${JSON.stringify(groupId)}) ?? [];
+    return msgs.some(m => {
+      const text = typeof m.content === 'string' ? m.content : m.content?.content ?? '';
+      return text.includes(${JSON.stringify(contentSubstring)});
+    });
+  })()`);
+}
+
+/**
+ * End-to-end round-trip check: senderPage sends a unique message in groupId,
+ * receiverPage polls and must receive+decrypt it. Returns true on success.
+ *
+ * Use before/after MLS operations to catch "E2EE keys lost" regressions.
+ */
+export async function canSendAndReceive(senderPage: any, receiverPage: any, groupId: string): Promise<boolean> {
+  const marker = `e2e-check-${Date.now()}`;
+  try {
+    await sendMessage(senderPage, groupId, marker);
+    await pollInbox(receiverPage);
+    return hasReceivedMessage(receiverPage, groupId, marker);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Check that the stored KP's signature_key matches the device's own signing key —
+ * verifies replenishment preserved identity. Done in-webview to avoid encoding issues.
+ */
+export async function ownKpIsSelfSigned(page: any): Promise<boolean> {
+  return page.evaluate(`(async () => {
+    const ctrl = ${GET_CTRL};
+    const hex = await ctrl.mlsService.getKeyPackageHex(ctrl.currentActorId);
+    if (!hex) return false;
+    const kpB64 = ${HEX_TO_B64}(hex);
+    const fp = await ctrl.mlsService.getKeyPackageFingerprint(kpB64);
+    const { signerKey } = await ctrl._signKeyPackage(ctrl.currentActorId, kpB64);
+    return signerKey === fp?.signatureKey;
   })()`);
 }

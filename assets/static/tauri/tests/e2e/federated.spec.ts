@@ -3,9 +3,7 @@
 // Run with: just test-tauri-e2e-federated
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD, E2E_S1_BOB_LOGIN/PASSWORD, E2E_S2_CHARLIE_LOGIN/PASSWORD
 
-import { test, expect, waitForChatView, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember, getGroupMemberCount, getActorId, injectKeyPackageAdd, signData } from './helpers';
-
-const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })()`;
+import { test, expect, waitForChatView, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember, getActorId, injectKeyPackageAdd, signData, getKeyPackageB64, canSendAndReceive } from './helpers';
 
 test.describe('federated', { tag: '@federated' }, () => {
 
@@ -17,18 +15,8 @@ test.describe('federated', { tag: '@federated' }, () => {
     expect(groupId).toBeTruthy();
     await addMemberAndWait(tauriPage, groupId!, deviceCharlie!);
 
-    await tauriPage.evaluate(`(async () => {
-      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
-      await ctrl.sendMessage(${JSON.stringify(groupId)}, 'hello from alice');
-    })()`);
-    await pollInbox(deviceCharlie!);
-
-    const msgs = await deviceCharlie!.evaluate(`(async () => {
-      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
-      const { messages } = await ctrl.loadMessages(${JSON.stringify(groupId)});
-      return messages.map(m => m.content?.text || m.text || '');
-    })()`);
-    expect((msgs as string[]).some(m => m.includes('hello from alice'))).toBe(true);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId!)).toBe(true);
+    expect(await canSendAndReceive(deviceCharlie!, tauriPage, groupId!)).toBe(true);
   });
 
   test('staggered commit: first committer wins, second cancels on receiving Commit', async ({ tauriPage, deviceBob, deviceCharlie }) => {
@@ -41,6 +29,9 @@ test.describe('federated', { tag: '@federated' }, () => {
     expect(groupId).toBeTruthy();
     await addMemberAndWait(tauriPage, groupId!, deviceCharlie!);
     await addMemberAndWait(tauriPage, groupId!, deviceBob!);
+
+    // Verify messaging works before alice leaves.
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId!)).toBe(true);
 
     // alice leaves — distributes Proposal to bob and charlie
     await leaveGroup(tauriPage, groupId!);
@@ -65,6 +56,9 @@ test.describe('federated', { tag: '@federated' }, () => {
         15_000
       );
     }
+
+    // After alice's removal is committed, bob and charlie should still exchange messages.
+    expect(await canSendAndReceive(deviceBob!, deviceCharlie!, groupId!)).toBe(true);
   });
 
   test('Add signed by a different actor\'s key is rejected', async ({ tauriPage, deviceBob }) => {
@@ -72,7 +66,7 @@ test.describe('federated', { tag: '@federated' }, () => {
     await waitForChatView(deviceBob!, 20_000);
 
     const aliceId = await getActorId(tauriPage);
-    const aliceKpB64 = await tauriPage.evaluate(`(async () => ${GET_CTRL}.mlsService.getKeyPackageHex(${JSON.stringify(aliceId)}))()`);
+    const aliceKpB64 = await getKeyPackageB64(tauriPage, aliceId);
 
     // Bob signs alice's KP bytes — bob's signature key is not in alice's known device keys
     const bobSig = await signData(deviceBob!, aliceKpB64);
