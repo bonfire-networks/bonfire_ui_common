@@ -56,6 +56,7 @@ test.describe('co-device', { tag: '@co-device' }, () => {
   });
 
   test('s1_alice_d1 leaves shared group → s1_alice_d2 sees co-device confirmation → confirms → d1 removed', async ({ tauriPage, deviceAlice2 }) => {
+    test.setTimeout(90_000); // co-device stagger: leafIndex×30s before dialog appears
     await waitForChatView(tauriPage);
     await waitForChatView(deviceAlice2!, 10_000);
     expect(sharedGroupId).toBeTruthy();
@@ -66,13 +67,11 @@ test.describe('co-device', { tag: '@co-device' }, () => {
     // d2 polls → co-device dialog appears at leafIndex×30s slot
     await pollInbox(deviceAlice2!);
 
+    // Wait specifically for the co-device leaving confirmation (not a new-device "Approve" dialog)
     await deviceAlice2!.waitForFunction(
-      'window.shadowQ("e2ee-chat-view >>> #nd-approve") != null',
+      'window.shadowQ("e2ee-chat-view >>> #nd-approve")?.textContent?.trim() === "Confirm removal"',
       40_000
     );
-    expect(await deviceAlice2!.evaluate(
-      'window.shadowQ("e2ee-chat-view >>> #nd-approve")?.textContent?.trim()'
-    )).toContain('Confirm removal');
 
     // d2 confirms → commitCoDeviceLeaving → real Commit distributed
     await shadowClick(deviceAlice2!, 'e2ee-chat-view >>> #nd-approve');

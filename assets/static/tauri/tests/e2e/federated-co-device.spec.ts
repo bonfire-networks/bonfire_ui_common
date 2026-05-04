@@ -29,7 +29,7 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
     await Promise.all([pollInbox(tauriPage), pollInbox(deviceCharlie!)]);
 
     // d1 confirms — charlie's 10-min timer is still pending
-    await tauriPage.waitForFunction('window.shadowQ("e2ee-chat-view >>> #nd-approve") != null', 40_000);
+    await tauriPage.waitForFunction('window.shadowQ("e2ee-chat-view >>> #nd-approve")?.textContent?.trim() === "Confirm removal"', 40_000);
     await shadowClick(tauriPage, 'e2ee-chat-view >>> #nd-approve');
     await tauriPage.waitForFunction('window.shadowQ("e2ee-chat-view >>> #nd-approve") == null', 10_000);
 
