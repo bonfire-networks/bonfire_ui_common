@@ -4,7 +4,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
   """
 
   # TODO: refactor to use a library like https://github.com/thanos/phoenix_prerender ?
-  
+
   use Untangle
   use Bonfire.Common.Config
 
