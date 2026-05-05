@@ -25,9 +25,19 @@ defmodule Bonfire.Common.Settings.LiveHandler do
       {:noreply,
        socket
        |> maybe_assign_context(settings)
+       |> maybe_push_font(attrs)
        |> assign_flash(:info, l("Settings saved"))}
     end
   end
+
+  defp maybe_push_font(socket, %{
+         "_target" => ["ui", "font_family"],
+         "ui" => %{"font_family" => font}
+       })
+       when is_binary(font) and font != "",
+       do: Bonfire.UI.Common.FontHelper.push_font(socket, font)
+
+  defp maybe_push_font(socket, _attrs), do: socket
 
   def handle_event("save", attrs, socket) when is_map(attrs) do
     with {:ok, settings} <-
@@ -49,6 +59,9 @@ defmodule Bonfire.Common.Settings.LiveHandler do
            |> Bonfire.Common.Settings.put(value, scope: params["scope"], socket: socket) do
       {:noreply,
        socket
+       |> Bonfire.UI.Common.ThemeHelper.push_theme(
+         Bonfire.UI.Common.ThemeHelper.current_theme(socket)
+       )
        |> assign_flash(:info, l("Theme changed and loaded :-)"))}
     end
   end

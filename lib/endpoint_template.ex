@@ -279,28 +279,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       def include_assets(conn, :top) do
         endpoint_module = Bonfire.Common.Config.endpoint_module()
 
-        font_family_raw =
-          Bonfire.Common.Settings.get(
-            [:ui, :font_family],
-            "Inter (Latin Languages)",
-            current_user: current_user(conn),
-            name: l("Font"),
-            description: l("Default font to use throughout the interface.")
-          )
-          |> Types.maybe_to_string()
-
-        font_name =
-          font_family_raw
-          |> String.replace(~r/\s*\(.*\)$/, "")
-          |> String.trim()
-          |> String.replace(~r/[^a-zA-Z0-9 \-]/, "")
-
-        font_family =
-          font_family_raw
-          |> String.trim_trailing(" Languages)")
-          |> String.replace([" ", "-", "(", ")"], "-")
-          |> String.replace("--", "-")
-          |> String.downcase()
+        {font_name, font_href} =
+          Bonfire.UI.Common.FontHelper.font_for(current_user: current_user(conn))
 
         # Override x-cloak CSS for tests to ensure hidden elements are visible
         x_cloak_override =
@@ -322,7 +302,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         <link rel="icon" type="image/svg+xml" data-dynamic-href="{svg}">
 
         <link phx-track-static rel='stylesheet' href='#{endpoint_module.static_path("/assets/bonfire_basic.css")}'/>
-        <link phx-track-static rel='stylesheet' href='#{endpoint_module.static_path("/fonts/#{font_family}.css")}'/>
+        <link data-font phx-track-static rel='stylesheet' href='#{font_href}'/>
         <style>:root { --font-sans: "#{font_name}", ui-sans-serif, system-ui, sans-serif; }</style>
 
         #{x_cloak_override}

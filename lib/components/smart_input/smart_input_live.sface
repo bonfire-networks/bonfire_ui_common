@@ -14,7 +14,7 @@
     >
       <div
         :if={not is_nil(current_user_id(@__context__))}
-        class="relative overflow-hidden lg:max-h-[95vh] min-h-0 flex flex-col flex-1 w-full bg-base-200 rounded-xl"
+        class="relative overflow-hidden lg:max-h-[95vh] min-h-0 flex flex-col flex-1 w-full bg-base-100 rounded-xl"
       >
         <div :if={is_map(@activity) || is_map(@reply_to_id)} class="">
           <div class="relative reply_in_composer rounded-t-box max-h-[160px] bg-base-100 overflow-y-auto overflow-x-hidden py-2 flex flex-col">
@@ -57,6 +57,49 @@
             >
               {l("Replying to @brembs@mastodon.social's post")}
             </div> --}
+          </div>
+        </div>
+
+        {!-- Quote preview.
+             The URL is carried separately to the post handler, where it's
+             appended to the body so the publish-side quote pipeline still runs. --}
+        <div :if={is_map(@quoted_object)} id="quote_in_composer" class="p-2">
+          <div class="quote_in_composer relative max-h-[220px] overflow-y-auto overflow-x-hidden rounded-lg border border-base-content/15 bg-base-200/40">
+            <header class="sticky top-0 rounded-t-lg z-10 flex items-center justify-between gap-2 px-3 py-1.5 bg-base-200/80 backdrop-blur-sm border-b border-base-content/10">
+              <span class="inline-flex items-center gap-1.5 text-xs font-medium text-base-content/70">
+                <#Icon iconify="ph:quotes-duotone" class="w-3.5 h-3.5" />
+                {l("Quoting")}
+              </span>
+
+              <button
+                type="button"
+                phx-click="Bonfire.UI.Common.SmartInput:remove_quoted"
+                phx-target="#smart_input"
+                class="inline-flex cursor-pointer items-center gap-1 text-xs text-base-content/55 hover:text-base-content"
+                title={l("Remove quote")}
+                aria-label={l("Remove quote")}
+              >
+                <#Icon iconify="ph:x-bold" class="w-3.5 h-3.5" />
+                <span class="hidden sm:inline">{l("Remove")}</span>
+              </button>
+            </header>
+
+            <div class="p-2">
+              <StatelessComponent
+                module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
+                activity_component_id={deterministic_dom_id(__MODULE__, id(@quoted_object), :quoted)}
+                myself={nil}
+                activity={e(@quoted_object, :activity, nil)}
+                object={@quoted_object}
+                thread_mode={:nested}
+                class="quoted_activity"
+                show_minimal_subject_and_note={Bonfire.UI.Social.ActivityLive.name_or_text(@quoted_object) ||
+                  true}
+                hide_actions
+                showing_within={:smart_input}
+                object_boundary={:skip_boundary_check}
+              />
+            </div>
           </div>
         </div>
 

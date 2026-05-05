@@ -401,6 +401,11 @@ textarea {
   line-height: 140%;
 }
 
+.quoted_activity {
+  padding: 0;
+  padding-left: 40px !important;
+}
+
 .translated-content {
   font-style: italic;
   opacity: 0.8;

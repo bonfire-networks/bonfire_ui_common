@@ -22,6 +22,8 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   # prop hide_smart_input, :boolean, default: false
   prop object, :any, default: nil
   prop activity_inception, :any, default: nil
+  prop quoted_object, :any, default: nil
+  prop quoted_url, :string, default: nil
   # prop title_open, :boolean, default: nil
   prop title_prompt, :string, default: nil
   prop preloaded_recipients, :list, default: nil
@@ -173,6 +175,8 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       |> maybe_preserve_assign(:reply_to_id, e(assigns(socket), :reply_to_id, nil))
       |> maybe_preserve_assign(:to_boundaries, e(assigns(socket), :to_boundaries, nil))
       |> maybe_preserve_assign(:to_circles, e(assigns(socket), :to_circles, nil))
+      |> maybe_preserve_assign(:quoted_object, e(assigns(socket), :quoted_object, nil))
+      |> maybe_preserve_assign(:quoted_url, e(assigns(socket), :quoted_url, nil))
     end
   end
 

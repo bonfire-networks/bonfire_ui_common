@@ -379,6 +379,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       activity: nil,
       object: nil,
       reply_to_id: e(assigns(socket), :thread_id, nil),
+      quoted_object: nil,
+      quoted_url: nil,
       smart_input_opts: default_smart_input_opts()
     )
 
@@ -388,8 +390,17 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
        activity: nil,
        object: nil,
        reply_to_id: e(assigns(socket), :thread_id, nil),
+       quoted_object: nil,
+       quoted_url: nil,
        smart_input_opts: default_smart_input_opts()
      )}
+  end
+
+  # Clears just the quoted post, leaving any other reply state intact.
+  def handle_event("remove_quoted", _params, socket) do
+    set(socket, quoted_object: nil, quoted_url: nil)
+
+    {:noreply, assign(socket, quoted_object: nil, quoted_url: nil)}
   end
 
   def handle_event(action, params, socket)
@@ -846,6 +857,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       reset_smart_input: true,
       activity: nil,
       object: nil,
+      quoted_object: nil,
+      quoted_url: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
@@ -864,6 +877,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       reset_smart_input: true,
       activity: nil,
       object: nil,
+      quoted_object: nil,
+      quoted_url: nil,
       to_circles: [],
       smart_input_opts: default_smart_input_opts(),
       # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
@@ -880,6 +895,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       reset_smart_input: true,
       activity: nil,
       object: nil,
+      quoted_object: nil,
+      quoted_url: nil,
       smart_input_component: nil,
       context_id: nil,
       to_circles: [],

@@ -107,36 +107,34 @@
               />
 
               <!-- data-close-on-inside-click="true" -->
-              <div data-tip={l("Insert emoji")} class="tooltip tooltip-top">
-                <div
-                  phx-hook="Tooltip"
-                  data-position="top"
-                  phx-update="ignore"
-                  id="emoji_picker_in_composer"
-                  data-trigger="click"
+              <div
+                phx-hook="Tooltip"
+                data-position="top"
+                phx-update="ignore"
+                id="emoji_picker_in_composer"
+                data-trigger="click"
+              >
+                <button
+                  title={l("Insert emoji")}
+                  type="button"
+                  class="tooltip-button emoji-button btn btn-ghost btn-circle"
                 >
-                  <button
-                    title={l("Insert emoji")}
-                    type="button"
-                    class="tooltip-button emoji-button btn btn-ghost btn-circle"
-                  >
-                    <#Icon iconify="ph:smiley-wink-duotone" class="w-[20px] h-[20px] text-base-content/70" />
-                  </button>
-                  <div
-                    id="emoji-picker-in-composer"
-                    class="emoji-picker-in-composer w-60 tooltip absolute bottom-full right-0 z-50 mb-2 hidden"
-                    data-emojis={@custom_emojis}
-                  />
-                </div>
+                  <#Icon iconify="ph:smiley-wink-duotone" class="w-[20px] h-[20px] text-base-content/70" />
+                </button>
+                <div
+                  id="emoji-picker-in-composer"
+                  class="emoji-picker-in-composer w-60 tooltip absolute bottom-full right-0 z-50 mb-2 hidden"
+                  data-emojis={@custom_emojis}
+                />
               </div>
 
               <div
                 :if={e(@smart_input_opts, :create_object_type, nil) in [:message, "message", "post", nil]}
-                class="relative z-30 flex items-center tooltip tooltip-top"
-                data-tip={l("Mark the activity as sensitive")}
+                class="relative z-30 flex items-center"
                 id="sensitive_btn"
               >
                 <button
+                  title={l("Mark the activity as sensitive")}
                   type="button"
                   phx-click="Bonfire.UI.Common.SmartInput:toggle_sensitive"
                   phx-target={@event_target || "#smart_input"}
@@ -156,8 +154,13 @@
                     )
                 )}
                 {#match locale}
-                  <div class="dropdown dropdown-top" data-tip={l("Set post language")}>
-                    <label tabindex="0" id="language_btn" class="lang-button btn btn-ghost btn-sm gap-1">
+                  <div class="dropdown dropdown-top">
+                    <label
+                      tabindex="0"
+                      id="language_btn"
+                      title={l("Set post language")}
+                      class="lang-button btn btn-ghost btn-sm gap-1"
+                    >
                       <#Icon iconify="ph:translate-duotone" class="w-[20px] h-[20px] text-base-content/70" />
                       <span
                         id="selected_language_label"

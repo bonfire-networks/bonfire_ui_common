@@ -71,6 +71,8 @@
                   preview_boundary_for_username={@preview_boundary_for_username}
                   preview_boundary_verbs={@preview_boundary_verbs}
                   boundary_preset={@boundary_preset}
+                  quoted_object={@quoted_object}
+                  quoted_url={@quoted_url}
                 />
               </div>
             </div>
@@ -122,6 +124,8 @@
                     preview_boundary_for_username={@preview_boundary_for_username}
                     preview_boundary_verbs={@preview_boundary_verbs}
                     boundary_preset={@boundary_preset}
+                    quoted_object={@quoted_object}
+                    quoted_url={@quoted_url}
                   />
                 </div>
               </div>

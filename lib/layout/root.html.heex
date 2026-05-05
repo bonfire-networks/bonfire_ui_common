@@ -41,6 +41,11 @@
       window.addEventListener("phx:set_theme", function(e) {
         document.documentElement.setAttribute("data-theme", e.detail.theme);
       });
+      window.addEventListener("phx:set_font", function(e) {
+        var link = document.querySelector("link[data-font]");
+        if (link) link.setAttribute("href", e.detail.href);
+        document.documentElement.style.setProperty("--font-sans", '"' + e.detail.font_name + '", ui-sans-serif, system-ui, sans-serif');
+      });
     </script>
   </body>
 </html>
