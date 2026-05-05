@@ -2,7 +2,7 @@
 // Run with: just test-tauri-e2e-single
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD (or E2E_LOGIN/PASSWORD)
 
-import { test, expect, waitForChatView, shadowClick, shadowExists, createGroupAndRefresh, getActorId, injectKeyPackageAdd, getKeyPackageB64, getAndSignOwnKeyPackage, signData, sendMessage } from './helpers';
+import { test, expect, waitForChatView, shadowClick, shadowExists, createGroupAndRefresh, getActorId, injectKeyPackageAdd, getKeyPackageB64, getAndSignOwnKeyPackage, signData, sendMessage, ownKpIsSelfSigned, HEX_TO_B64 } from './helpers';
 // btoa is a global in Node 16+ / browser
 
 const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })()`;
@@ -210,6 +210,43 @@ test.describe('single-device', { tag: '@single-device' }, () => {
       return capturedSig !== null;
     })()`);
     expect(hadSig).toBe(true);
+  });
+
+  test('KP renewed twice: identity key stable, each KP distinct and self-signed', async ({ tauriPage }) => {
+    await waitForChatView(tauriPage);
+
+    type KpInfo = { kpB64: string; sigKey: string | null } | null;
+
+    const getKpSigKey = () => tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const hex = await ctrl.mlsService.getKeyPackageHex(ctrl.currentActorId);
+      if (!hex) return null;
+      const kpB64 = ${HEX_TO_B64}(hex);
+      const fp = await ctrl.mlsService.getKeyPackageFingerprint(kpB64);
+      return { kpB64, sigKey: fp?.signatureKey ?? null };
+    })()`) as Promise<KpInfo>;
+
+    const replenish = () => tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      await ctrl.mlsService.clearKeyPackage(ctrl.currentActorId);
+      const actor = { id: ctrl.currentActorId, ...(JSON.parse(localStorage.getItem('actor') || '{}')) };
+      await ctrl._replenishKeyPackage(actor);
+    })()`);
+
+    const first = await getKpSigKey();
+    expect(first?.sigKey).toBeTruthy();
+
+    await replenish();
+    const second = await getKpSigKey();
+    expect(second?.sigKey).toBe(first!.sigKey);
+    expect(second?.kpB64).not.toBe(first!.kpB64);
+
+    await replenish();
+    const third = await getKpSigKey();
+    expect(third?.sigKey).toBe(first!.sigKey);
+    expect(third?.kpB64).not.toBe(second!.kpB64);
+
+    expect(await ownKpIsSelfSigned(tauriPage)).toBe(true);
   });
 
 });

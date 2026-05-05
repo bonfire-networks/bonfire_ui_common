@@ -222,19 +222,39 @@ export async function hasReceivedMessage(page: any, groupId: string, contentSubs
 
 /**
  * End-to-end round-trip check: senderPage sends a unique message in groupId,
- * receiverPage polls and must receive+decrypt it. Returns true on success.
- *
- * Use before/after MLS operations to catch "E2EE keys lost" regressions.
+ * receiverPage polls (with retries for federation delay) and must receive+decrypt it.
+ * Throws on unexpected errors so test output shows the real cause.
  */
-export async function canSendAndReceive(senderPage: any, receiverPage: any, groupId: string): Promise<boolean> {
+export async function canSendAndReceive(senderPage: any, receiverPage: any, groupId: string, retries = 5, retryDelayMs = 1500): Promise<true> {
   const marker = `e2e-check-${Date.now()}`;
-  try {
-    await sendMessage(senderPage, groupId, marker);
-    await pollInbox(receiverPage);
-    return hasReceivedMessage(receiverPage, groupId, marker);
-  } catch {
-    return false;
+  const errors: string[] = [];
+  await sendMessage(senderPage, groupId, marker);
+  for (let i = 0; i < retries; i++) {
+    try { await pollInbox(receiverPage); } catch (e) { errors.push(`poll ${i + 1}: ${e}`); }
+    if (await hasReceivedMessage(receiverPage, groupId, marker)) return true;
+    if (i < retries - 1) await new Promise(r => setTimeout(r, retryDelayMs));
   }
+  throw new Error(`canSendAndReceive: '${marker}' not received after ${retries} polls${errors.length ? ` — ${errors.join('; ')}` : ''}`);
+}
+
+/**
+ * Poll a page's inbox until the group has at least `minCount` MLS members (Rust state only,
+ * no JS storage fallback). Retries with a delay so join_group can complete between polls.
+ */
+export async function waitForMlsMembers(page: any, groupId: string, minCount: number, retries = 40, retryDelayMs = 1500): Promise<void> {
+  for (let i = 0; i < retries; i++) {
+    await pollInbox(page);
+    const count: number = await page.evaluate(`(async () => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      try {
+        const ids = await ctrl?.mlsService?.getGroupMemberIdentities(${JSON.stringify(groupId)});
+        return ids?.length ?? 0;
+      } catch { return 0; }
+    })()`);
+    if (count >= minCount) return;
+    if (i < retries - 1) await new Promise(r => setTimeout(r, retryDelayMs));
+  }
+  throw new Error(`waitForMlsMembers: group ${JSON.stringify(groupId)} did not reach ${minCount} MLS members after ${retries} polls`);
 }
 
 /**

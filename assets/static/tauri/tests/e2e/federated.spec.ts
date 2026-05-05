@@ -40,10 +40,13 @@ test.describe('federated', { tag: '@federated' }, () => {
     // Both bob and charlie poll — their leafIndex×2s timers fire in order
     await Promise.all([pollInbox(deviceBob!), pollInbox(deviceCharlie!)]);
 
-    // Wait for the first committer's timer to fire (leafIndex×2s, max ~10s for small groups),
-    // then poll again so the second device receives the winning Commit and cancels its timer
-    await new Promise(r => setTimeout(r, 10_000));
-    await Promise.all([pollInbox(deviceBob!), pollInbox(deviceCharlie!)]);
+    // Poll every 1.5s so the second committer can receive the first Commit via federation
+    // and cancel its own timer before it fires. A single 10s wait is too late — the 4s timer
+    // fires before the federated Commit reaches the second device's inbox.
+    for (let i = 0; i < 15; i++) {
+      await new Promise(r => setTimeout(r, 1_500));
+      await Promise.all([pollInbox(deviceBob!), pollInbox(deviceCharlie!)]);
+    }
 
     // Both end up with alice removed (2 remaining members: bob + charlie)
     for (const device of [deviceBob!, deviceCharlie!]) {
