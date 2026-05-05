@@ -9,14 +9,17 @@ async function createThreeWayGroup(tauriPage: any, deviceAlice2: any, deviceChar
   const groupId = await createGroupAndRefresh(tauriPage);
   if (!groupId) throw new Error('Failed to create group');
   await addMemberAndWait(tauriPage, groupId, deviceCharlie);
+  // Poll d1 so it receives d2's Create {KeyPackage} request and shows #nd-approve.
+  await pollInbox(tauriPage);
   // If d2 is not yet approved, use the approval flow (mirrors co-device.spec.ts):
   // approveNewDevice adds d2 to all existing groups including this one.
   // If d2 is already approved (second test in suite), fall back to explicit addMember.
   const approved = await shadowClick(tauriPage, 'e2ee-chat-view >>> #nd-approve', 10_000)
     .then(() => true, () => false);
   if (approved) {
-    await waitForMlsMembers(deviceAlice2, groupId, 3);
-    await waitForMlsMembers(deviceCharlie, groupId, 3);
+    // approveNewDevice processes ALL accumulated groups — allow up to 2 min for Welcome to arrive.
+    await waitForMlsMembers(deviceAlice2, groupId, 3, 80);
+    await waitForMlsMembers(deviceCharlie, groupId, 3, 80);
   } else {
     await addMemberAndWait(tauriPage, groupId, deviceAlice2);
     await waitForMlsMembers(deviceAlice2, groupId, 3);
@@ -29,15 +32,15 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
 
   test('s1_alice_d2 leaves → co-device s1_alice_d1 confirms → s2_charlie_d1 updated', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
     test.setTimeout(240_000);
-    await waitForChatView(tauriPage);
-    await waitForChatView(deviceAlice2!, 20_000);
-    await waitForChatView(deviceCharlie!, 20_000);
+    await waitForChatView(tauriPage, 60_000);
+    await waitForChatView(deviceAlice2!, 60_000);
+    await waitForChatView(deviceCharlie!, 60_000);
 
     const { groupId } = await createThreeWayGroup(tauriPage, deviceAlice2!, deviceCharlie!);
 
     // Verify messaging works before d2 leaves.
-    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId)).toBe(true);
-    expect(await canSendAndReceive(deviceAlice2!, deviceCharlie!, groupId)).toBe(true);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId, 10)).toBe(true);
+    expect(await canSendAndReceive(deviceAlice2!, deviceCharlie!, groupId, 10)).toBe(true);
 
     await leaveGroup(deviceAlice2!, groupId);
 
@@ -66,18 +69,18 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
     expect(await isNoLongerMember(deviceAlice2!, groupId)).toBe(true);
 
     // After d2 removal, d1 and charlie should still exchange messages.
-    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId)).toBe(true);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId, 10)).toBe(true);
   });
 
   test('s1_alice_d2 leaves → co-device s1_alice_d1 unresponsive → s2_charlie_d1 fallback commits after 10min', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
-    test.setTimeout(120_000); // charlie fallback: 10s (debug) + leafIndex×2s + group setup overhead
-    await waitForChatView(tauriPage);
-    await waitForChatView(deviceAlice2!, 20_000);
-    await waitForChatView(deviceCharlie!, 20_000);
+    test.setTimeout(180_000); // charlie fallback: 10s (debug) + leafIndex×2s + group setup overhead + 60s startup
+    await waitForChatView(tauriPage, 60_000);
+    await waitForChatView(deviceAlice2!, 60_000);
+    await waitForChatView(deviceCharlie!, 60_000);
 
     const { groupId } = await createThreeWayGroup(tauriPage, deviceAlice2!, deviceCharlie!);
 
-    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId)).toBe(true);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId, 10)).toBe(true);
 
     await leaveGroup(deviceAlice2!, groupId);
 
@@ -98,7 +101,7 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
     expect(await isNoLongerMember(deviceAlice2!, groupId)).toBe(true);
 
     // After fallback commit, charlie and d1 should still exchange messages.
-    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId)).toBe(true);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId, 10)).toBe(true);
   });
 
 });

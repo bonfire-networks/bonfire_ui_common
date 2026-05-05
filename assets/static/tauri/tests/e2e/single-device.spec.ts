@@ -117,13 +117,7 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     await tauriPage.evaluate(`(async () => {
       const view = window.shadowQ('e2ee-chat-view');
       const controller = view?._controller || view?.controller;
-      const groups = await controller?.storage?.listGroupsWithLastMessage?.();
-      const id = groups?.[0]?.groupId;
-      if (id) {
-        await controller.storage.setGroupField(id, 'pendingCoDeviceLeave', 'synthetic-proposal-id');
-      } else {
-        throw new Error('No groups found to inject pendingCoDeviceLeave');
-      }
+      await controller.storage.setGroupField(${JSON.stringify(groupId)}, 'pendingCoDeviceLeave', 'synthetic-proposal-id');
     })()`);
 
     await tauriPage.reload();
@@ -153,25 +147,22 @@ test.describe('single-device', { tag: '@single-device' }, () => {
       expect(stored).toBe(false);
     });
 
-    test('unknown signerKey: Add is rejected', async ({ tauriPage }) => {
+    test('invalid signature: Add is rejected', async ({ tauriPage }) => {
       await waitForChatView(tauriPage);
       const actorId = await getActorId(tauriPage);
       const kpB64 = await getKeyPackageB64(tauriPage, actorId);
-      // Use fixed base64 strings (no padding issues) as fake key/sig
-      const stored = await injectKeyPackageAdd(tauriPage, actorId, kpB64, {
-        signerKey: 'dW5rbm93bmtleQ',   // base64url 'unknownkey' (no padding)
-        signature: 'ZmFrZXNpZw'        // base64url 'fakesig' (no padding)
-      });
+      // Garbage signature — receiver tries all known keys, none will verify
+      const stored = await injectKeyPackageAdd(tauriPage, actorId, kpB64, 'ZmFrZXNpZw');
       expect(stored).toBe(false);
     });
 
-    test('valid key but sig over wrong bytes: Add is rejected', async ({ tauriPage }) => {
+    test('sig over wrong bytes: Add is rejected', async ({ tauriPage }) => {
       await waitForChatView(tauriPage);
       const actorId = await getActorId(tauriPage);
       const kpB64 = await getKeyPackageB64(tauriPage, actorId);
-      // Sign 'other' bytes with alice's real key — signerKey is valid but sig covers wrong payload
+      // Real signature from alice's key, but over different bytes — verification fails
       const wrongSig = await signData(tauriPage, btoa('other'));
-      const stored = await injectKeyPackageAdd(tauriPage, actorId, kpB64, wrongSig);
+      const stored = await injectKeyPackageAdd(tauriPage, actorId, kpB64, wrongSig.signature);
       expect(stored).toBe(false);
     });
 

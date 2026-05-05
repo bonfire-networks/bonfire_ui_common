@@ -71,11 +71,11 @@ test.describe('federated', { tag: '@federated' }, () => {
     const aliceId = await getActorId(tauriPage);
     const aliceKpB64 = await getKeyPackageB64(tauriPage, aliceId);
 
-    // Bob signs alice's KP bytes — bob's signature key is not in alice's known device keys
+    // Bob signs alice's KP bytes — bob's key won't verify against alice's known MLS keys
     const bobSig = await signData(deviceBob!, aliceKpB64);
 
-    // Inject into alice's controller: should be rejected because bobSig.signerKey ∉ alice's validSigners
-    const stored = await injectKeyPackageAdd(tauriPage, aliceId, aliceKpB64, bobSig);
+    // Inject into alice's controller: receiver tries all alice's known keys; bob's sig verifies with none
+    const stored = await injectKeyPackageAdd(tauriPage, aliceId, aliceKpB64, bobSig.signature);
     expect(stored).toBe(false);
   });
 

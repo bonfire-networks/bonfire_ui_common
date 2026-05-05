@@ -80,9 +80,11 @@ export async function pollInbox(page: any): Promise<void> {
 
 export async function addMemberAndWait(creatorPage: any, groupId: string, memberPage: any): Promise<void> {
   const memberId = await getActorId(memberPage);
+  console.log(`[addMemberAndWait] adding ${memberId} to group ${groupId}`);
   await creatorPage.evaluate(`(async () => {
     await ${GET_CTRL}.addMemberToGroup(${JSON.stringify(groupId)}, ${JSON.stringify(memberId)});
   })()`);
+  console.log(`[addMemberAndWait] addMemberToGroup done, polling member inbox`);
   await pollInbox(memberPage);
   await memberPage.waitForFunction(
     `(async () => {
@@ -116,12 +118,13 @@ export async function getGroupMemberCount(page: any, groupId: string): Promise<n
 /**
  * Inject a synthetic Add { KeyPackage } activity into the controller's handler.
  * Returns true if the KP was stored (accepted), false if it was rejected.
+ * mlsSignature is a bare base64 signature string (no signerKey — receiver iterates known keys).
  */
 export async function injectKeyPackageAdd(
   page: any,
   actorUri: string,
   kpB64: string,
-  mlsSignature?: { signerKey: string; signature: string }
+  mlsSignature?: string
 ): Promise<boolean> {
   return page.evaluate(`(async () => {
     const ctrl = ${GET_CTRL};
@@ -180,9 +183,9 @@ export async function signData(page: any, dataB64: string): Promise<{ signerKey:
 /**
  * Get the current actor's KP as base64 and sign it with their own key — all inside the webview
  * to avoid cross-boundary base64 encoding issues.
- * Returns { kpB64, sig: { signerKey, signature } }.
+ * Returns { kpB64, sig } where sig is a bare base64 signature string.
  */
-export async function getAndSignOwnKeyPackage(page: any, actorId: string): Promise<{ kpB64: string; sig: { signerKey: string; signature: string } }> {
+export async function getAndSignOwnKeyPackage(page: any, actorId: string): Promise<{ kpB64: string; sig: string }> {
   return page.evaluate(`(async () => {
     const ctrl = ${GET_CTRL};
     const hex = await ctrl.mlsService.getKeyPackageHex(${JSON.stringify(actorId)});
@@ -247,10 +250,13 @@ export async function waitForMlsMembers(page: any, groupId: string, minCount: nu
     const count: number = await page.evaluate(`(async () => {
       const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
       try {
-        const ids = await ctrl?.mlsService?.getGroupMemberIdentities(${JSON.stringify(groupId)});
-        return ids?.length ?? 0;
+        // getGroupFingerprints returns one entry per leaf node (not deduplicated by identity),
+        // so co-devices of the same actor each count separately — unlike getGroupMemberIdentities.
+        const fps = await ctrl?.mlsService?.getGroupFingerprints(ctrl.currentActorId, ${JSON.stringify(groupId)});
+        return fps?.length ?? 0;
       } catch { return 0; }
     })()`);
+    console.log(`[waitForMlsMembers] poll ${i + 1}/${retries}: ${count}/${minCount} members in ${groupId}`);
     if (count >= minCount) return;
     if (i < retries - 1) await new Promise(r => setTimeout(r, retryDelayMs));
   }
@@ -268,7 +274,7 @@ export async function ownKpIsSelfSigned(page: any): Promise<boolean> {
     if (!hex) return false;
     const kpB64 = ${HEX_TO_B64}(hex);
     const fp = await ctrl.mlsService.getKeyPackageFingerprint(kpB64);
-    const { signerKey } = await ctrl._signKeyPackage(ctrl.currentActorId, kpB64);
+    const { signerKey } = await ctrl.mlsService.signData(ctrl.currentActorId, kpB64);
     return signerKey === fp?.signatureKey;
   })()`);
 }
