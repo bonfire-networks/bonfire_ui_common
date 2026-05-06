@@ -173,10 +173,12 @@
                       tabindex="0"
                       class="dropdown-content z-dropdown menu flex-col flex-nowrap p-2 shadow-lg bg-base-100 rounded-box border border-base-content/10 w-52 max-h-60 overflow-y-auto"
                     >
-                      {#for lang <-
-                          @__context__[:locales] ||
-                            Bonfire.UI.Common.LivePlugs.Locale.preferred_locales(current_user(@__context__)) ||
-                            Bonfire.Common.Localise.known_locales()}
+                      {#for {lang, name} <-
+                          Bonfire.Common.Localise.locales_with_names(
+                            @__context__[:locales] ||
+                              Bonfire.UI.Common.LivePlugs.Locale.preferred_locales(current_user(@__context__)) ||
+                              Bonfire.Common.Localise.known_locales()
+                          )}
                         <li>
                           <label
                             class="flex items-center gap-2 cursor-pointer"
@@ -189,7 +191,7 @@
                               checked={(e(@smart_input_opts, :selected_language, nil) || locale) == to_string(lang)}
                               class="radio radio-sm"
                             />
-                            {Bonfire.Common.Localise.locale_name(lang)}
+                            {name}
                           </label>
                         </li>
                       {/for}
