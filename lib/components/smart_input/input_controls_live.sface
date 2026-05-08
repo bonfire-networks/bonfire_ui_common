@@ -26,7 +26,8 @@
             </div>
             <div
               class="hidden"
-              :if={@enable_thread_title and e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}
+              :if={@enable_thread_title and
+                e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}
               id="smart_input_post_title"
               phx-update="ignore"
             >
@@ -240,7 +241,8 @@
                     </button>
                     <!-- </div> -->
                   </li>
-                  <li :if={@enable_thread_title and e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}>
+                  <li :if={@enable_thread_title and
+                    e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}>
                     <button
                       type="button"
                       id="title_btn"
