@@ -5,6 +5,7 @@
 .mix
 assets/node_modules
 assets/*.log
+assets/css/_tailwind_sources.css
 priv/cldr
 .bonfire-extension-boilerplate
 .DS_Store

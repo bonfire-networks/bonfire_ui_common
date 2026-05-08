@@ -255,7 +255,8 @@
                     </button>
                   </li>
 
-                  <li :if={e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}>
+                  <li :if={is_nil(@reply_to_id) and
+                    e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}>
                     <button
                       type="button"
                       id="scheduled_at_btn"

@@ -44,7 +44,7 @@
                       <div class="uppercase text-xs tracking-widest mb-0 m-4">{l("spotlight")}</div>
                       <StatefulComponent
                         module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
-                        id={Bonfire.UI.Social.ActivityLive.component_id(id(activity), "pinned_#{id(entry)}")}
+                        id={Bonfire.UI.Social.ActivityLive.component_id(id(activity), "pinned_#{id(entry)}", "pinned_")}
                         activity={activity}
                         showing_within={:smart_input}
                         hide_actions
