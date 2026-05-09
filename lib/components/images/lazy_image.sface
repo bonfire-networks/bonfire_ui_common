@@ -17,10 +17,10 @@
                   data-hash={blurhash}
                   data-src={src}
                   phx-update="ignore"
-                  class="w-full h-full"
+                  class="w-full h-full grid"
                 >
                   <canvas
-                    class={@class}
+                    class={[@class, "col-start-1 row-start-1"]}
                     data-role="placeholder"
                     style="transition: opacity 200ms; opacity: 1;"
                     {...@opts}
@@ -29,7 +29,7 @@
                     src={if @parent_id && String.contains?(@parent_id, "preview"), do: src, else: ""}
                     alt={@alt}
                     title={@title}
-                    class={@class}
+                    class={[@class, "col-start-1 row-start-1"]}
                     data-width={e(@media, :metadata, :width, nil)}
                     data-height={e(@media, :metadata, :height, nil)}
                     data-role="image"
@@ -47,11 +47,11 @@
                   :hook
                   data-src={src}
                   phx-update="ignore"
-                  class="w-full h-full"
+                  class="w-full h-full grid"
                 >
                   {!-- Simple skeleton placeholder --}
                   <div
-                    class={[@class, "bg-base-200 animate-pulse"]}
+                    class={[@class, "bg-base-200 animate-pulse col-start-1 row-start-1"]}
                     data-role="placeholder"
                     style={if @parent_id && String.contains?(@parent_id, "preview"),
                       do: "display: none; transition: opacity 200ms;",
@@ -62,7 +62,7 @@
                     src={if @parent_id && String.contains?(@parent_id, "preview"), do: src, else: ""}
                     alt={@alt}
                     title={@title}
-                    class={@class}
+                    class={[@class, "col-start-1 row-start-1"]}
                     data-role="image"
                     style={if @parent_id && String.contains?(@parent_id, "preview"),
                       do: "display: block; transition: opacity 200ms;",
