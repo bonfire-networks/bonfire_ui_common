@@ -194,11 +194,75 @@
         class="w-80 px-4 px-safe lg:px-0 lg:mr-5 lg:w-[260px] bg-base-200 self-stretch overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-full lg:pb-0"
       >
         <div class="flex flex-col flex-1 h-full pb-[80px] lg:pb-0">
+          {!-- Skeleton mirroring PersistentLive's shape. Always rendered alongside the sticky LV;
+               hidden by CSS (see app.css `[data-role="persistent_skeleton"]:has(...)`) once the
+               sticky child fills its container. Prevents the vertical reflow that happens while
+               the sticky child's separate channel join is in flight. --}
+          {#if @current_user_id && @without_sidebar != true}
+            <div data-role="persistent_skeleton" class="block w-full" aria-hidden="true">
+              <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
+                <div class="flex pt-safe w-full">
+                  <div class="py-4 gap-6 flex flex-col w-full">
+                    <div class="flex items-center justify-between">
+                      <Bonfire.UI.Common.LogoLinkLive
+                        href="/"
+                        image_class="w-16 h-16"
+                        name_class="text-base font-semibold text-base-content text-relaxed"
+                      />
+                      <div class="relative w-full">
+                        <div class="flex w-full ml-2 justify-end">
+                          <div class="btn btn-lg btn-circle">
+                            <div
+                              style="border-width: 2px"
+                              class="border rounded-full p-0 border-primary/50 border-2 relative"
+                            >
+                              <div class="skeleton inline-block rounded-full w-10 h-10" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex-1">
+                      <div class="sticky top-0 flex items-center flex-1 w-full justify-end lg:justify-start">
+                        <div class="skeleton rounded-full w-full h-12" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {#if @__context__[:current_view] not in [
+                  Bonfire.UI.Me.SettingsLive,
+                  Bonfire.UI.Me.InstanceSettingsLive,
+                  Bonfire.UI.Boundaries.BoundariesLive
+                ]}
+                <div class="flex flex-col px-3 lg:px-0">
+                  <div class="gap-1 lg:gap-0">
+                    <div class="menu p-0 w-full gap-0">
+                      <div class="flex items-center gap-3 lg:px-2 lg:py-2">
+                        <div class="skeleton w-6 h-6 rounded" />
+                        <div class="skeleton h-4 w-24 rounded" />
+                      </div>
+                      <div class="flex items-center gap-3 lg:px-2 lg:py-2">
+                        <div class="skeleton w-6 h-6 rounded" />
+                        <div class="skeleton h-4 w-20 rounded" />
+                      </div>
+                      <div class="flex items-center gap-3 lg:px-2 lg:py-2">
+                        <div class="skeleton w-6 h-6 rounded" />
+                        <div class="skeleton h-4 w-16 rounded" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {/if}
+            </div>
+          {/if}
+
           {#if @current_user_id && @without_sidebar != true && socket_connected?(@__context__)}
             <Bonfire.UI.Common.PersistentLive
               id={:persistent}
               sticky
-              container={{:div, class: "contents"}}
+              container={{:div, class: "block w-full"}}
               session={%{
                 "context" => %{
                   sticky: true,
@@ -219,7 +283,7 @@
               <div class="flex pt-safe w-full">
                 <div class="pt-2 flex items-center justify-between">
                   <Bonfire.UI.Common.LogoLinkLive
-                    image_class="w-16 h-16bg-center bg-no-repeat bg-contain"
+                    image_class="w-16 h-16 bg-center bg-no-repeat bg-contain"
                     href="/"
                   />
                 </div>

@@ -1,7 +1,7 @@
 {#if is_binary(@cursor)}
   <button
     data-load-more-type={@infinite_scroll}
-    id={"load_more_#{@context}"}
+    id={"load_more_#{@dom_id_suffix || @context}"}
     data-id="load_more"
     type="button"
     data-page={@cursor}

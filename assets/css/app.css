@@ -41,6 +41,25 @@ body {
   --img-bg-color: rgba(128, 128, 128, .2);
 }
 
+/* Hide the PersistentLive skeleton once its sibling sticky child LiveView has filled its
+   container. Sticky children mount via a separate channel join AFTER the parent's first
+   render, so without this we'd see an empty left sidebar for that round-trip. */
+@supports selector(:has(*)) {
+  [data-role="persistent_skeleton"]:has(+ [data-phx-sticky]:not(:empty)) {
+    display: none;
+  }
+}
+
+/* On browsers without :has() support (Safari <15.4, Chrome <105, Firefox <121), the rule
+   above would never fire and the skeleton would stack above the real content. Suppress
+   the skeleton entirely there — those users keep the pre-fix empty-column behavior
+   rather than getting a worse duplicated-header regression. */
+@supports not selector(:has(*)) {
+  [data-role="persistent_skeleton"] {
+    display: none;
+  }
+}
+
 .figure-upload {
   background-image: linear-gradient(45deg, var(--img-bg-color) 25%, transparent 25%), linear-gradient(-45deg, var(--img-bg-color) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--img-bg-color) 75%), linear-gradient(-45deg, transparent 75%, var(--img-bg-color) 75%);
   background-size: 10px 10px;
@@ -248,6 +267,7 @@ textarea:focus-visible {
 @plugin "daisyui" {
   themes: light --default, silk, caramellatte, nord, cmyk, acid, autumn, lofi, pastel, fantasy, cupcake, bumblebee, emerald, corporate, dark --prefersdark, synthwave, forest, dracula, aqua, luxury, night, coffee, dim, sunset, abyss, retro, cyberpunk, valentine, halloween, garden;
 }
+
 
 
 
@@ -1652,5 +1672,19 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
   background: linear-gradient(to bottom, oklch(var(--b2)), transparent);
   pointer-events: none;
   z-index: 1;
+}
+
+/* Spotlight (instance pinned) carousel: clamp post body to 5 lines */
+.spotlight_clamp .object_body {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+}
+.spotlight_clamp .object_body p {
+  display: contents;
 }
 

@@ -11,6 +11,7 @@ defmodule Bonfire.UI.Common.LoadMoreLive do
   prop url_params, :any, default: []
   prop target, :any, default: nil
   prop context, :any, default: nil
+  prop dom_id_suffix, :any, default: nil
   prop entry_count, :any, default: nil
   prop label, :any, default: nil
 
