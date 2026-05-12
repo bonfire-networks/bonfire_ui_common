@@ -71,7 +71,7 @@
             {#else}
               <textarea
                 id={deterministic_dom_id(__MODULE__, entry.ref, "upload_description", @parent_id)}
-                name={"upload_metadata[#{entry.ref}][label]"}
+                name={"upload_metadata[#{entry.ref}][alt]"}
                 phx-update="ignore"
                 placeholder={l("Describe this file for accessibility")}
                 class="textarea textarea-sm resize-none w-full text-sm bg-base-100/50"
