@@ -52,6 +52,9 @@ defmodule Bonfire.UI.Common.OpenPreviewLive do
   #   )
   # end
 
+  @doc "Returns true if the URL uses a non-web protocol (e.g. ap-mls://), meaning it should not open a preview modal."
+  def external_url?(url), do: is_binary(url) and not String.starts_with?(url, ["/", "http"])
+
   def close() do
     debug("close!")
 
