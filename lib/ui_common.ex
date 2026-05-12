@@ -371,11 +371,11 @@ defmodule Bonfire.UI.Common do
 
           content
           |> debug("to convert to markdown")
-          |> Text.maybe_markdown_to_html(opts)
+          |> Text.maybe_markdown_to_html([link_rel: nil] ++ opts)
         end
         |> debug("rich content")
-        # transform internal links to use LiveView navigation
-        |> Text.make_local_links_live()
+        # transform links for local render: LiveView navigation + nofollow on external
+        |> Text.prepare_links_for_local_render()
         # for use in views
         |> Phoenix.HTML.raw()
 

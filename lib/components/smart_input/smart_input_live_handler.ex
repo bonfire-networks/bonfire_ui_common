@@ -421,6 +421,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   def handle_event("validate", params, socket) do
     # Get text from params and text_suggestion from socket.assigns
     text = e(params, "post", "post_content", "html_body", nil)
+
+    if is_binary(text) and text != "",
+      do: Task.start(fn -> Bonfire.Tag.TextContent.Formatter.prefetch_mentions(text) end)
+
     # text_suggestion = e(socket.assigns.smart_input_opts, :text_suggestion, "")
 
     # Check if uploads exist using simplified check
