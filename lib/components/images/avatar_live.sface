@@ -13,13 +13,13 @@
             {#match url when is_binary(url) and url != avatar_fallback}
               <div title={@title} class={@bg_class}>
                 <LazyImage
-                  parent_id={deterministic_dom_id(__MODULE__, nil, "avatar", @parent_id)}
-                  media={url}
+                  parent_id={deterministic_dom_id(__MODULE__, @user_id, "avatar", @parent_id)}
                   src={url}
                   title={@title}
                   alt={@title}
                   fallback_icon={Icon.icon_name("ph:user-circle-duotone")}
                   fallback_class={e(@fallback_class, nil)}
+                  refetch_key={if @is_remote && @user_id, do: "Bonfire.Federate.ActivityPub:refetch_profile:#{@user_id}"}
                   opts={@opts}
                   disable_lazy={@disable_lazy}
                 />

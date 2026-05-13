@@ -3,7 +3,29 @@
     {#case @disable_lazy}
       {#match true}
         <!-- Plain image mode (no hooks, uses native browser lazy loading) -->
-        <img src={src} alt={@alt} title={@title} class={@class} decoding="auto" {...@opts}>
+        <div
+          id={deterministic_dom_id(__MODULE__, id(@media) || Text.hash(src), "plain_img", @parent_id)}
+          phx-update="ignore"
+          class="w-full h-full grid"
+        >
+          <img
+            src={src}
+            alt={@alt}
+            title={@title}
+            class={[@class, "col-start-1 row-start-1"]}
+            decoding="auto"
+            data-on-error={if @refetch_key, do: JS.push(@refetch_key)}
+            onerror="this.style.display='none';var f=this.parentElement&&this.parentElement.querySelector('[data-role=fallback]');if(f)f.style.display='block';if(window.liveSocket&&this.dataset.onError)liveSocket.execJS(this,this.dataset.onError)"
+            {...@opts}
+          />
+          <div
+            data-role="fallback"
+            class="h-full place-content-center col-start-1 row-start-1"
+            style="display: none;"
+          >
+            <div class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
+          </div>
+        </div>
       {#match _}
         {#case socket_connected?(@__context__)}
           {#match true}
@@ -16,6 +38,7 @@
                   :hook
                   data-hash={blurhash}
                   data-src={src}
+                  data-refetch-key={@refetch_key}
                   phx-update="ignore"
                   class="w-full h-full grid"
                 >
@@ -39,13 +62,21 @@
                     decoding="async"
                     {...@opts}
                   />
+                  <div
+                    data-role="fallback"
+                    class={["h-full place-content-center col-start-1 row-start-1"]}
+                    style="display: none;"
+                  >
+                    <div class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
+                  </div>
                 </div>
               {#match _}
                 <!-- Path B: Simple lazy loading without blurhash for logged-in users -->
                 <div
-                  id={deterministic_dom_id(__MODULE__, id(@media) || Text.hash(src), "lzimg", @parent_id)}
+                  id={deterministic_dom_id(__MODULE__, id(@media) || Text.hash(src), "lazy_img", @parent_id)}
                   :hook
                   data-src={src}
+                  data-refetch-key={@refetch_key}
                   phx-update="ignore"
                   class="w-full h-full grid"
                 >
@@ -70,11 +101,35 @@
                     decoding="async"
                     {...@opts}
                   />
+                  <div
+                    data-role="fallback"
+                    class="h-full place-content-center col-start-1 row-start-1"
+                    style="display: none;"
+                  >
+                    <div class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
+                  </div>
                 </div>
             {/case}
           {#match _}
             <!-- Path C: Simple image for logged-out users (native lazy loading) -->
-            <img src={src} alt={@alt} title={@title} class={@class} decoding="auto" {...@opts}>
+            <div class="w-full h-full grid">
+              <img
+                src={src}
+                alt={@alt}
+                title={@title}
+                class={[@class, "col-start-1 row-start-1"]}
+                decoding="auto"
+                onerror="this.style.display='none';var f=this.nextElementSibling;if(f)f.style.display='block';"
+                {...@opts}
+              />
+              <div
+                data-role="fallback"
+                class="h-full place-content-center col-start-1 row-start-1"
+                style="display: none;"
+              >
+                <div class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
+              </div>
+            </div>
         {/case}
     {/case}
   {#match _}

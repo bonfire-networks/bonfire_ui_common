@@ -29,6 +29,8 @@
               src={Bonfire.Common.Media.avatar_url(current_user(@__context__)) ||
                 @__context__[:current_user_avatar_url]}
               user_id={current_user_id(@__context__)}
+              parent_id={"inline_composer_#{@composer_dom_id}"}
+              is_remote={false}
             />
           </div>
           <span class="flex-1 text-base-content/60 truncate text-sm">

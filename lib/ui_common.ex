@@ -1705,7 +1705,7 @@ defmodule Bonfire.UI.Common do
         id -> id
       end
 
-    [component_type, object_id, context, parent_id]
+    [component_type, parent_id, context, object_id]
     # |> Enum.filter(&(&1 != nil and &1 != ""))
     # |> Enum.map(&to_string/1)
     # |> Enum.join("_")

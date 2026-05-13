@@ -20,6 +20,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
   prop title, :string, default: ""
   prop opts, :any, default: %{}
   prop disable_lazy, :boolean, default: true
+  prop is_remote, :boolean, default: true
 
   def initials(name) when is_binary(name) and name != "" do
     name

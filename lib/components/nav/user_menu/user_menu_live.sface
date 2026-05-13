@@ -19,6 +19,8 @@
           class="inline-block object-cover cursor-pointer rounded-full w-10 h-10"
           src={Media.avatar_url(current_user(@__context__))}
           user_id={current_user_id(@__context__)}
+          parent_id="user_menu"
+          is_remote={false}
         />
         <span
           style="bottom: -4px; right: -4px"
