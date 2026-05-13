@@ -53,6 +53,16 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     )
   end
 
+  @doc "Iconify name for a smart-input type in the composer's picker."
+  def type_icon(component) when is_atom(component) do
+    case component |> apply(:smart_input_module, []) |> List.wrap() |> List.first() do
+      :post -> "ph:note-pencil-duotone"
+      :poll -> "ph:list-checks-duotone"
+      :message -> "ph:chat-circle-text-duotone"
+      _ -> "ph:pencil-line-duotone"
+    end
+  end
+
   def handle_event("toggle_cw", _params, socket) do
     current_opts = e(assigns(socket), :smart_input_opts, %{})
     show_cw = !e(current_opts, :show_cw, false)

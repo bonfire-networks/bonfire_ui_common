@@ -1,12 +1,6 @@
 <div class="flex-1">
   <div>
     <div class="sticky top-0 flex items-center flex-1 w-full justify-end lg:justify-start">
-      {!-- <Bonfire.UI.Common.SmartInputButtonsLive
-      :if={!e(@smart_input_opts, :hide_buttons, nil)}
-      smart_input_opts={@smart_input_opts}
-      smart_input_component={@smart_input_component}
-      class="fixed right-3 md:static bottom-[72px] flex-1 btn text-sm md:w-auto btn-square h-[64px] w-[64px] md:h-[38px] md:min-h-[38px] md:max-h-[38px] bg-base-content/90 text-base-100/90 md:bg-primary md:text-primary-content md:btn-primary rounded-xl md:rounded shadow flex items-center gap-2 normal-case"
-    /> --}
       <Bonfire.UI.Common.SmartInputButtonLive
         id="main_smart_input_button"
         showing_within={:smart_input}
@@ -20,7 +14,7 @@
         )}
       />
 
-      {!-- 
+      {!--
       Note: not including these props because we want the main button to open ther post composer by default, or whatever other type is already selected (until the smart input is reset)
       smart_input_component={@smart_input_component}
       create_object_type={@create_object_type} --}

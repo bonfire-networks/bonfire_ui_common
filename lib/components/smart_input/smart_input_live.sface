@@ -135,6 +135,62 @@
                 user_id={current_user_id(@__context__)}
               />
             </div>
+            {!-- Type picker: switch what kind of object you're creating (post, poll, …). --}
+            {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
+              {#case Bonfire.UI.Common.SmartInputModule.modules() |> Enum.uniq()}
+                {#match [_, _ | _] = available_types}
+                  {#case LiveHandler.active_smart_input_component(
+                      @smart_input_component,
+                      e(@smart_input_opts, :create_object_type, nil)
+                    )}
+                    {#match active_component}
+                      <details class="dropdown">
+                        <summary class="btn btn-sm btn-soft text-sm normal-case gap-1" title={l("Choose what to create")}>
+                          <Iconify.iconify icon={LiveHandler.type_icon(active_component)} class="w-4 h-4" />
+                          <span class="truncate max-w-[10rem]">
+                            {active_component
+                            |> apply(:smart_input_module, [])
+                            |> List.wrap()
+                            |> List.first()
+                            |> to_string()
+                            |> String.capitalize()}
+                          </span>
+                          <#Icon iconify="ph:caret-down-bold" class="w-3 h-3 opacity-60" />
+                        </summary>
+                        <ul
+                          tabindex="0"
+                          class="dropdown-content menu bg-base-100 rounded-box z-10 w-56 p-2 shadow-md border border-base-content/10"
+                        >
+                          <li :for={component <- available_types}>
+                            <a
+                              phx-click={LiveHandler.open_type(%JS{}, component, @smart_input_opts)}
+                              phx-target="#smart_input"
+                              aria-current={if component == active_component, do: "true"}
+                              class={
+                                "flex items-center gap-2",
+                                active: component == active_component
+                              }
+                            >
+                              <Iconify.iconify
+                                icon={LiveHandler.type_icon(component)}
+                                class="w-4 h-4 shrink-0 text-base-content/70"
+                              />
+                              <span>
+                                {component
+                                |> apply(:smart_input_module, [])
+                                |> List.wrap()
+                                |> List.first()
+                                |> to_string()
+                                |> String.capitalize()}
+                              </span>
+                            </a>
+                          </li>
+                        </ul>
+                      </details>
+                  {/case}
+                {#match _}
+              {/case}
+            {/if}
             {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
               {#case e(@context_group, :name, nil)}
                 {#match context_name when is_binary(context_name) and context_name != ""}

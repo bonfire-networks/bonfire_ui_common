@@ -32,7 +32,7 @@
     "drawer lg:drawer-open mx-auto w-full",
     "lg:max-w-[var(--spacing-1290)]": !@full_width
   }>
-    <input id="sidebar-drawer" type="checkbox" class="drawer-toggle">
+    <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" phx-update="ignore">
     <div class="drawer-content px-safe lg:pr-1">
       <div
         data-id="layout"
@@ -49,6 +49,7 @@
           id="widgets-drawer"
           type="checkbox"
           class="drawer-toggle"
+          phx-update="ignore"
         />
         <div class="drawer-content">
           <div
