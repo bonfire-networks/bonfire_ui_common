@@ -9,11 +9,7 @@
         class="flex flex-col items-center gap-2 py-6 text-center text-sm text-base-content/55"
         data-role="widget-empty-state"
       >
-        <Iconify.iconify
-          icon={@empty_icon}
-          class="h-6 w-6 text-base-content/40"
-          aria-hidden="true"
-        />
+        <Iconify.iconify icon={@empty_icon} class="h-6 w-6 text-base-content/40" aria-hidden="true" />
         <span>{@empty_message || l("Nothing here yet.")}</span>
       </div>
     </#slot>
