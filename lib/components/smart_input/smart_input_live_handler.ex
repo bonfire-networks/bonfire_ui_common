@@ -43,7 +43,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def open_type(js \\ %JS{}, component, opts \\ nil) do
     js
-    |> show_main()
+    |> JS.show(to: "#composer_container", display: "flex")
+    |> maximize()
     |> JS.show(to: ".smart_input_show_on_open")
     |> JS.push("Bonfire.UI.Common.SmartInput:select_smart_input",
       value: %{

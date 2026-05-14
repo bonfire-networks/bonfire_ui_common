@@ -119,7 +119,7 @@
             aria-label={l("Widgets sidebar")}
             class="w-[340px] bg-base-200 lg:bg-transparent min-h-screen lg:min-h-0 flex flex-col h-full overflow-y-auto pt-safe lg:pt-0 px-4 lg:px-2 lg:ml-5"
           >
-            {#if not is_nil(@current_user_id) and @__context__[:current_view] != Bonfire.Search.Web.SearchLive and
+            {#if not is_nil(@current_user_id) and
                 socket_connected?(@__context__)}
               <div role="search" class="w-full h-[70px] flex items-center">
                 <StatelessComponent
