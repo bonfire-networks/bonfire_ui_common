@@ -302,84 +302,74 @@
       </aside>
     </div>
   </div>
-  {!-- 
-  Old mobile bottom nav:
   <div
     :if={@no_header != true || current_user(@__context__)}
-    class="dock bg-base-100/80 backdrop-blur-sm z-[9999999999999999] lg:hidden"
-    >
-    <LinkLive to="/">
-      <#Icon
-        iconify="ph:house-duotone"
-        class={
-          "w-6 h-6",
-          "text-primary": @selected_tab == "home"
-        }
-      />
-      <span class="sr-only">{l("Home")}</span>
+    class="dock dock-sm bg-base-100/85 backdrop-blur-sm z-fixed lg:hidden"
+  >
+    <LinkLive to="/" class={"dock-active": @selected_tab == "home"}>
+      <#Icon iconify="ph:house-duotone" class="w-5 h-5" aria-hidden="true" />
+      <span class="dock-label">{l("Home")}</span>
     </LinkLive>
 
-    <LinkLive :if={current_user(@__context__)} to={~p"/search"} class="">
-      <#Icon
-        iconify="ph:magnifying-glass-duotone"
-        class={
-          "w-6 h-6",
-          "text-primary":
-            @selected_tab in [:search, "Bonfire.Data.Identity.User", "Bonfire.Data.Social.Post"]
-        }
-      />
-      <span class="sr-only">{l("Search")}</span>
+    <LinkLive
+      :if={current_user(@__context__)}
+      to={~p"/search"}
+      class={
+        "dock-active":
+          @selected_tab in [:search, "Bonfire.Data.Identity.User", "Bonfire.Data.Social.Post"]
+      }
+    >
+      <#Icon iconify="ph:magnifying-glass-duotone" class="w-5 h-5" aria-hidden="true" />
+      <span class="dock-label">{l("Search")}</span>
     </LinkLive>
-    <span :if={current_user(@__context__)}>
-      <Bonfire.UI.Common.SmartInputButtonLive
-        class="btn btn-ghost btn-square"
-        icon_class="!w-6 !h-6 text-base-content"
-        as_icon
-        icon="ph:note-pencil-fill"
-      />
-      
-    </span>
-    <div :if={current_user(@__context__)}>
-      <LinkLive to={~p"/notifications"} class="relative">
-        <#Icon
-          iconify="ph:bell-duotone"
-          class={
-            "w-6 h-6",
-            "text-primary": @selected_tab == :notifications
-          }
-        />
-        <span class="sr-only">{l("Notifications")}</span>
-        <div class="absolute -top-[12px] right-0">
+
+    <button
+      :if={current_user(@__context__)}
+      type="button"
+      phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open(%JS{}, %{})}
+      phx-target="#smart_input"
+      aria-label={l("Compose")}
+    >
+      <#Icon iconify="ph:note-pencil-duotone" class="w-5 h-5" aria-hidden="true" />
+      <span class="dock-label">{l("Compose")}</span>
+    </button>
+
+    <LinkLive
+      :if={current_user(@__context__)}
+      to={~p"/notifications"}
+      class={"dock-active": @selected_tab == :notifications}
+    >
+      <span class="relative inline-flex">
+        <#Icon iconify="ph:bell-duotone" class="w-5 h-5" aria-hidden="true" />
+        <span class="absolute -top-2 -right-2">
           <StatefulComponent
-            id="notifications"
+            id="dock-notifications-badge"
             module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
             feed_id={e(current_user(@__context__), :character, :notifications_id, nil)}
           />
-        </div>
-      </LinkLive>
-    </div>
-    <div :if={current_user(@__context__)}>
-     
-      <label for="sidebar-drawer" class="xl:hidden btn btn-circle btn-ghost btn-sm">
-            <#Icon iconify="ph:sidebar-simple-duotone" class="w-6 h-6" />
-          </label>
-    </div>
+        </span>
+      </span>
+      <span class="dock-label">{l("Notifications")}</span>
+    </LinkLive>
+
+    <label :if={current_user(@__context__)} for="sidebar-drawer" aria-label={l("Open menu")}>
+      <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5" aria-hidden="true" />
+      <span class="dock-label">{l("Menu")}</span>
+    </label>
+
+    <LinkLive :if={!current_user(@__context__)} to={path(:login, :index)} class="dock-active">
+      <#Icon iconify="ph:sign-in-duotone" class="w-5 h-5" aria-hidden="true" />
+      <span class="dock-label">{l("Login")}</span>
+    </LinkLive>
 
     <LinkLive
-      :if={!current_user(@__context__)}
-      to={path(:login, :index)}
-      class="btn btn-sm w-full btn-primary flex-1 max-w-none"
-    >
-      {l("Login")}
-    </LinkLive>
-    <LinkLive
-      :if={!Bonfire.Me.Accounts.instance_is_invite_only?() && !current_user(@__context__)}
+      :if={!current_user(@__context__) && !Bonfire.Me.Accounts.instance_is_invite_only?()}
       to={path(:signup)}
-      class="btn w-full  btn-sm flex-1 max-w-none ml-3"
     >
-      {l("Signup")}
+      <#Icon iconify="ph:user-plus-duotone" class="w-5 h-5" aria-hidden="true" />
+      <span class="dock-label">{l("Sign up")}</span>
     </LinkLive>
-  </div> --}
+  </div>
 </div>
 <Bonfire.UI.Common.ReusableModalLive id="modal" />
 <div class="relative z-max">
