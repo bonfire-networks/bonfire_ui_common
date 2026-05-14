@@ -46,7 +46,7 @@
                         module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
                         id={Bonfire.UI.Social.ActivityLive.component_id(id(activity), "pinned_#{id(entry)}", "pinned_")}
                         activity={activity}
-                        showing_within={:smart_input}
+                        showing_within={:pinned}
                         hide_actions
                         class="flex-1 reply_to_in_composer overflow-x-auto"
                         show_minimal_subject_and_note
