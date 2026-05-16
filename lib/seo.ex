@@ -7,8 +7,14 @@ defmodule Bonfire.UI.Common.SEO do
     # facebook: &__MODULE__.facebook_config/1,
     twitter: &__MODULE__.twitter_config/1
 
-  use Bonfire.Common.Config
-  # alias Bonfire.Web.Router.Helpers, as: Routes
+  use Bonfire.UI.Common
+
+  # Assign the SEO item only on the guest (non-logged-in) disconnected (dead) render — that is what crawlers/unfurlers (X, Mastodon, Slack, Facebook) actually fetch, and it avoids paying for it on every mount.
+  def maybe_assign_seo(socket, data) do
+    if !socket_connected?(socket) and !current_user_id(socket),
+      do: SEO.assign(socket, data),
+      else: socket
+  end
 
   def site_config(_conn \\ nil) do
     name = Config.get([:ui, :theme, :instance_name]) || Bonfire.Application.name_and_flavour()
