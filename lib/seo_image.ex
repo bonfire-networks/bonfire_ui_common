@@ -2,6 +2,23 @@ defmodule Bonfire.UI.Common.SEOImage do
   use Untangle
   alias Bonfire.Common.Extend
 
+  @doc """
+  Ensure an image path/URL is absolute, as required by social crawlers/unfurlers.
+
+  Note `generate_path/6` returns a bare relative path (no leading `/`), and can
+  return `nil`/`false`, so `Bonfire.Common.URIs.based_url/2` is not a substitute.
+  """
+  def absolute_url(nil), do: nil
+  def absolute_url(false), do: nil
+  def absolute_url("http" <> _ = url), do: url
+  def absolute_url("//" <> _ = url), do: "https:" <> url
+  def absolute_url("/" <> _ = path), do: Bonfire.Common.URIs.base_url() <> path
+
+  def absolute_url(path) when is_binary(path) and path != "",
+    do: Bonfire.Common.URIs.base_url() <> "/" <> path
+
+  def absolute_url(_), do: nil
+
   def generate_path(id, author_id, title, body, author, image \\ nil) do
     filename = og_image_paths(id, author_id)
 
