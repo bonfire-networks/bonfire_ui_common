@@ -53,6 +53,21 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   alias Bonfire.UI.Common.ErrorHandling
 
   @doc """
+  Flatten a namespaced query-param map (e.g. `?Some.Module[after]=…`, used by
+  the no-JS guest pagination fallback) back to the top level, then atomise keys.
+
+  ## Examples
+
+      iex> unwrap_namespaced_params(%{"Bonfire.Users" => %{"after" => "x"}}, "Bonfire.Users")
+      %{after: "x"}
+  """
+  def unwrap_namespaced_params(params, namespace) when is_map(params) do
+    params
+    |> Map.merge(Map.get(params, to_string(namespace)) || %{})
+    |> input_to_atoms()
+  end
+
+  @doc """
   Handles URL parameters and delegates to appropriate LiveHandler modules.
 
   This function first checks if a specific handler function was provided, then attempts to
