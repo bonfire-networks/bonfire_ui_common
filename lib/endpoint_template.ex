@@ -403,8 +403,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       secure: System.get_env("PUBLIC_PORT") == "443",
       signing_salt: Config.get!(:signing_salt),
       encryption_salt: Config.get!(:encryption_salt),
-      # 60 days by default
-      max_age: Config.get(:session_time_to_remember, 60 * 60 * 24 * 60)
+      max_age: Config.get(:session_time_to_remember, div(to_timeout(day: 60), 1_000))
     ]
   end
 

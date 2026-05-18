@@ -20,6 +20,11 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
         _ -> "http://#{hostname}:#{port}"
       end
 
+    config :bonfire_ui_common,
+      session_time_to_remember:
+        System.get_env("SESSION_TTL", "#{div(to_timeout(day: 60), 1_000)}")
+        |> String.to_integer()
+
     extra_api_origins =
       System.get_env("API_CORS_ORIGINS_EXTRAS", "")
       |> String.split(",")
