@@ -99,43 +99,61 @@
            Hrefs are made absolute to the bonfire instance because some browsers resolve
            relative URLs against the *top* window's base when target="_top" is set on a
            cross-origin iframe link, which would point at the embedding page's origin. --}
-      <a
-        href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
-          "/login?" <>
-          URI.encode_query(go: e(@__context__, :go, nil) || e(@__context__, :current_url, "/"))}
-        target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
-        id={"inline_composer_login_#{@composer_dom_id}"}
-        class="btn btn-sm btn-primary rounded-full normal-case"
-      >{l("Login")}</a>
-      <a
-        href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
-          "/signup?" <>
-          URI.encode_query(go: e(@__context__, :go, nil) || e(@__context__, :current_url, "/"))}
-        target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
-        id={"inline_composer_signup_#{@composer_dom_id}"}
-        class="btn btn-sm btn-outline btn-primary rounded-full normal-case"
-      >{l("Register")}</a>
+      {#if @auth_mode == "remote" and is_binary(@remote_interaction_url)}
+        {!-- Only when a canonical URL resolved: an empty `?uri=` dead-ends on
+             the remote server, so otherwise fall through to local Login/Register. --}
+        <a
+          href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
+            @remote_interaction_url}
+          target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
+          id={"inline_composer_remote_interaction_#{@composer_dom_id}"}
+          class="btn btn-sm btn-primary rounded-full normal-case"
+        >{l("Reply")}</a>
+      {#else}
+        <a
+          href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
+            "/login?" <>
+            URI.encode_query(go: e(@__context__, :go, nil) || e(@__context__, :current_url, "/"))}
+          target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
+          id={"inline_composer_login_#{@composer_dom_id}"}
+          class="btn btn-sm btn-primary rounded-full normal-case"
+        >{l("Login")}</a>
+        <a
+          href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
+            "/signup?" <>
+            URI.encode_query(go: e(@__context__, :go, nil) || e(@__context__, :current_url, "/"))}
+          target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
+          id={"inline_composer_signup_#{@composer_dom_id}"}
+          class="btn btn-sm btn-outline btn-primary rounded-full normal-case"
+        >{l("Register")}</a>
+      {/if}
       <div class="flex-1 flex items-center gap-3">
-        <span class="flex-1 text-right text-sm text-primary truncate">
-          {l("Join %{instance_name} to leave comments",
-            instance_name:
-              Config.get([:ui, :theme, :instance_name]) ||
-                Bonfire.Application.name_and_flavour()
-          )}
-        </span>
-        <div class="flex items-center gap-2 text-sm text-base-content/70">
-          <LinkLive
-            to="/conduct"
-            parent_id={"inline_composer_terms_#{@composer_dom_id}"}
-            class="link-hover link"
-          >{l("Terms")}</LinkLive>
-          <span aria-hidden="true">·</span>
-          <LinkLive
-            to="/privacy"
-            parent_id={"inline_composer_privacy_#{@composer_dom_id}"}
-            class="link-hover link"
-          >{l("Privacy")}</LinkLive>
-        </div>
+        {#if @auth_mode == "remote"}
+          <span class="flex-1 text-right text-sm text-primary truncate">
+            {l("Reply with your existing account from any fediverse server")}
+          </span>
+        {#else}
+          <span class="flex-1 text-right text-sm text-primary truncate">
+            {l("Join %{instance_name} to leave comments",
+              instance_name:
+                Config.get([:ui, :theme, :instance_name]) ||
+                  Bonfire.Application.name_and_flavour()
+            )}
+          </span>
+          <div class="flex items-center gap-2 text-sm text-base-content/70">
+            <LinkLive
+              to="/conduct"
+              parent_id={"inline_composer_terms_#{@composer_dom_id}"}
+              class="link-hover link"
+            >{l("Terms")}</LinkLive>
+            <span aria-hidden="true">·</span>
+            <LinkLive
+              to="/privacy"
+              parent_id={"inline_composer_privacy_#{@composer_dom_id}"}
+              class="link-hover link"
+            >{l("Privacy")}</LinkLive>
+          </div>
+        {/if}
       </div>
     </div>
   {/if}

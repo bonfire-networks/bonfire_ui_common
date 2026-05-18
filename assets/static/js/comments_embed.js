@@ -90,10 +90,12 @@
   var canonicalId = script.getAttribute("data-canonical-id");
   var groupId = script.getAttribute("data-group-id");
   var requireTopic = script.getAttribute("data-require-topic");
+  var authMode = script.getAttribute("data-auth-mode");
   if (canonicalSlug) params.set("canonical_slug", canonicalSlug);
   if (canonicalId) params.set("canonical_id", canonicalId);
   if (groupId) params.set("group_id", groupId);
   if (requireTopic) params.set("require_topic", requireTopic);
+  if (authMode) params.set("auth_mode", authMode);
   if (token) params.set("bonfire_embed_token", token);
   if (theme) params.set("theme", theme);
   // Tell the LV the parent article URL so in-iframe actions (sign in, reply)

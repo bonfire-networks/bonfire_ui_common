@@ -500,23 +500,36 @@ defmodule Bonfire.UI.Common do
         {:ok, current_user}
 
       _ ->
-        url =
-          maybe_apply(
-            Bonfire.UI.Me.RemoteInteractionLive,
-            :generate_url,
-            [
-              verb,
-              e(object, :post_content, :name, nil) || e(object, :name, nil),
-              canonical_url(object),
-              socket
-            ],
-            fallback_return: "/login"
-          )
+        case remote_interaction_url(
+               verb,
+               e(object, :post_content, :name, nil) || e(object, :name, nil),
+               object,
+               socket
+             ) do
+          url when is_binary(url) -> redirect_to(socket, url)
+          _ -> redirect_to(socket, "/login")
+        end
+    end
+  end
 
-        redirect_to(
-          socket,
-          url
+  @doc """
+  Builds the local `/remote_interaction` URL for `object_or_id`, or `nil` when
+  no canonical URL can be resolved. Returning `nil` (instead of letting
+  `generate_url` ship `url=` empty) lets callers fall back to local login —
+  otherwise the remote server turns `?uri=` empty into a dead page.
+  """
+  def remote_interaction_url(verb, name, object_or_id, socket_or_ctx) do
+    case canonical_url(object_or_id) do
+      object_url when is_binary(object_url) and object_url != "" ->
+        maybe_apply(
+          Bonfire.UI.Me.RemoteInteractionLive,
+          :generate_url,
+          [verb, name, object_url, socket_or_ctx],
+          fallback_return: nil
         )
+
+      _ ->
+        nil
     end
   end
 

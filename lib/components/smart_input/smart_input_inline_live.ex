@@ -19,6 +19,9 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
   prop preview_boundary_verbs, :list, default: []
   prop smart_input_opts, :map, default: %{}
   prop showing_within, :atom, default: :smart_input
+  # "remote" => guests get a single button to the remote-interaction page
+  # (reply from any fediverse server); otherwise local Login/Register
+  prop auth_mode, :string, default: nil
   prop activity, :any, default: nil
   prop hide_smart_input, :boolean, default: false
   prop object, :any, default: nil
@@ -42,10 +45,24 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
     dom_id =
       to_string(assigns[:id] || assigns[:reply_to_id] || assigns[:context_id] || "default")
 
-    {:ok,
-     socket
-     |> assign(assigns)
-     |> assign(:composer_dom_id, dom_id)}
+    socket =
+      socket
+      |> assign(assigns)
+      |> assign(:composer_dom_id, dom_id)
+
+    # Precompute once (canonical_url may run a Peered query); nil → the
+    # template falls back to local Login/Register instead of a dead link.
+    remote_interaction_url =
+      if socket.assigns[:auth_mode] == "remote" do
+        Bonfire.UI.Common.remote_interaction_url(
+          "reply",
+          l("this discussion"),
+          socket.assigns[:reply_to_id] || socket.assigns[:context_id],
+          socket.assigns[:__context__]
+        )
+      end
+
+    {:ok, assign(socket, :remote_interaction_url, remote_interaction_url)}
   end
 
   defdelegate handle_event(action, attrs, socket),
