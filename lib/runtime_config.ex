@@ -25,6 +25,21 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
         System.get_env("SESSION_TTL", "#{div(to_timeout(day: 60), 1_000)}")
         |> String.to_integer()
 
+    config :bonfire, :rate_limit,
+      disabled: System.get_env("ENABLE_RATE_LIMIT") == "no",
+      forms: [
+        scale_ms:
+          System.get_env("RATE_LIMIT_FORMS_WINDOW_MS", "#{to_timeout(minute: 1)}")
+          |> String.to_integer(),
+        limit: System.get_env("RATE_LIMIT_FORMS_MAX", "5") |> String.to_integer()
+      ],
+      api: [
+        scale_ms:
+          System.get_env("RATE_LIMIT_API_WINDOW_MS", "#{to_timeout(minute: 1)}")
+          |> String.to_integer(),
+        limit: System.get_env("RATE_LIMIT_API_MAX", "60") |> String.to_integer()
+      ]
+
     extra_api_origins =
       System.get_env("API_CORS_ORIGINS_EXTRAS", "")
       |> String.split(",")

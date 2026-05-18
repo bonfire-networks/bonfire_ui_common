@@ -109,22 +109,16 @@ defmodule Bonfire.UI.Common.Routes do
 
         defp do_rate_limit(conn, opts) do
           key_prefix = Keyword.fetch!(opts, :key_prefix)
-
-          # Read from config, falling back to defaults
-          rate_config = Config.get([:bonfire, :rate_limit, key_prefix], [])
-          scale_ms = Keyword.get(rate_config, :scale_ms) || Keyword.fetch!(opts, :scale_ms)
-          limit = Keyword.get(rate_config, :limit) || Keyword.fetch!(opts, :limit)
-
-          # Build rate limit key from IP
           ip = conn.remote_ip |> :inet.ntoa() |> to_string()
-          key = "#{key_prefix}:#{ip}"
+          default_scale_ms = Keyword.fetch!(opts, :scale_ms)
+          default_limit = Keyword.fetch!(opts, :limit)
 
-          case Bonfire.UI.Common.RateLimit.hit(key, scale_ms, limit) do
-            {:allow, _count} ->
+          case Bonfire.UI.Common.RateLimit.check(key_prefix, ip, default_scale_ms, default_limit) do
+            :ok ->
               conn
 
-            {:deny, retry_after} ->
-              Bonfire.UI.Common.Web.rate_limit_reached(conn, retry_after, opts)
+            {:error, retry_after_seconds} ->
+              Bonfire.UI.Common.Web.rate_limit_reached(conn, retry_after_seconds * 1_000, opts)
           end
         end
       end
