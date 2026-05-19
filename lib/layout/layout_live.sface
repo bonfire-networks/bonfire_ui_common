@@ -70,7 +70,7 @@
                   <main
                     id="main-content"
                     class={
-                      "flex flex-col pb-[1px] px-[1px]",
+                      "flex flex-col pb-[1px] px-[1px] dock-offset",
                       hidden: @hide_main,
                       "border-none": @without_sidebar == true
                     }
@@ -304,7 +304,7 @@
   </div>
   <div
     :if={@no_header != true || current_user(@__context__)}
-    class="dock dock-sm bg-base-100/85 backdrop-blur-sm z-fixed lg:hidden"
+    class="dock dock-sm bg-base-100/85 backdrop-blur-sm z-fixed lg:hidden transform-gpu will-change-transform"
   >
     <LinkLive to="/" class={"dock-active": @selected_tab == "home"}>
       <#Icon iconify="ph:house-duotone" class="w-5 h-5" aria-hidden="true" />

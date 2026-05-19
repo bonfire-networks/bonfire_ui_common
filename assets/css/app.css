@@ -1692,3 +1692,12 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
   display: contents;
 }
 
+.dock-offset {
+  padding-bottom: calc(3.5rem + env(safe-area-inset-bottom));
+}
+@media (min-width: 1024px) {
+  .dock-offset {
+    padding-bottom: 0;
+  }
+}
+
