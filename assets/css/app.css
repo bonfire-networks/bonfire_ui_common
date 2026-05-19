@@ -283,14 +283,10 @@ textarea:focus-visible {
   name: "light";
   default: true;
   color-scheme: light;
-  /* base-100 = content surface (#ffffff), base-200 = body bg (#f5f2ef warm off-white),
-     base-300 = deepest layer (#f2eae4 peachy). Matches .bonfire-wrapper's
-     mobile=base-200 / desktop=base-100 split. */
-  --color-base-100: oklch(100% 0 0);
+ --color-base-100: oklch(100% 0 0);
   --color-base-200: oklch(96.4% 0.004 60);
   --color-base-300: oklch(93.6% 0.012 55);
   --color-base-content: oklch(27.5% 0.018 270);
-  /* Tangerine accent → primary: #f76902 */
   --color-primary: oklch(65.6% 0.21 41);
   --color-primary-content: oklch(100% 0 0);
   --color-secondary: oklch(55% 0.14 285);
@@ -301,12 +297,10 @@ textarea:focus-visible {
   --color-neutral-content: oklch(96% 0.005 255);
   --color-info: oklch(62% 0.17 230);
   --color-info-content: oklch(98% 0.005 230);
-  /* Tangerine confirm: #79bd9a */
   --color-success: oklch(74% 0.09 155);
   --color-success-content: oklch(100% 0 0);
   --color-warning: oklch(78% 0.15 75);
   --color-warning-content: oklch(22% 0.04 75);
-  /* Tangerine reject: #df405a */
   --color-error: oklch(63% 0.2 15);
   --color-error-content: oklch(100% 0 0);
   --radius-selector: 2rem;
@@ -316,20 +310,17 @@ textarea:focus-visible {
   --size-field: 0.25rem;
   --border: 1px;
   --depth: 0.3;
-  --noise: 0.5;
+  --noise: 0.1;
 }
 
 @plugin "daisyui/theme" {
   name: "dark";
   prefersdark: true;
   color-scheme: dark;
-  /* Tangerine's signature "punched-out card" effect: content-bg (#030303) is
-     darker than outer bg (#111111). base-100 = card surface, base-200 = body. */
   --color-base-100: oklch(7% 0 0);
   --color-base-200: oklch(18% 0 0);
   --color-base-300: oklch(21% 0.012 55);
   --color-base-content: oklch(86.5% 0.012 55);
-  /* Tangerine accent dark: #e68933 (muted orange for reduced glare) */
   --color-primary: oklch(70% 0.16 55);
   --color-primary-content: oklch(100% 0 0);
   --color-secondary: oklch(65% 0.12 285);
@@ -340,12 +331,10 @@ textarea:focus-visible {
   --color-neutral-content: oklch(92% 0.005 255);
   --color-info: oklch(70% 0.14 230);
   --color-info-content: oklch(15% 0.01 230);
-  /* Tangerine confirm (same hex in dark): #79bd9a */
   --color-success: oklch(74% 0.09 155);
   --color-success-content: oklch(15% 0 0);
   --color-warning: oklch(80% 0.14 75);
   --color-warning-content: oklch(18% 0.04 75);
-  /* Tangerine reject: #df405a */
   --color-error: oklch(63% 0.2 15);
   --color-error-content: oklch(15% 0 0);
   --radius-selector: 2rem;
@@ -355,7 +344,7 @@ textarea:focus-visible {
   --size-field: 0.25rem;
   --border: 1px;
   --depth: 0.5;
-  --noise: 0.5;
+  --noise: 0.1;
 }
 
 
