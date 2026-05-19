@@ -82,11 +82,40 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
      |> assign(smart_input_opts: Map.put(current_opts, :show_sensitive, show_sensitive))}
   end
 
+  def handle_event("clear_sensitive", _params, socket) do
+    current_opts = e(assigns(socket), :smart_input_opts, %{})
+
+    {:noreply,
+     socket
+     |> assign(
+       smart_input_opts:
+         Map.merge(current_opts, %{show_sensitive: false, show_cw: false, cw: nil})
+     )
+     |> Phoenix.LiveView.push_event("smart_input:reset_sensitive", %{})}
+  end
+
+  def handle_event(
+        "reset_to_default",
+        _params,
+        %{assigns: %{showing_within: :thread_embed}} = socket
+      ) do
+    # embed has no PersistentLive/SmartInputContainerLive to route through;
+    # reset locally via reset_input/1's :thread_embed clause
+    {:noreply, socket |> assign(reset_to_default_assigns(socket)) |> reset_input()}
+  end
+
   def handle_event("reset_to_default", _params, socket) do
     replace_input_next_time(assigns(socket))
 
-    clear_assigns = [
-      # triggers reset events via PersistentLive or SmartInputContainerLive fallback
+    clear_assigns = reset_to_default_assigns(socket)
+
+    set(socket, clear_assigns)
+
+    {:noreply, socket |> assign(clear_assigns) |> do_extra_reset_input()}
+  end
+
+  defp reset_to_default_assigns(socket) do
+    [
       reset_smart_input: true,
       activity: nil,
       object: nil,
@@ -96,14 +125,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
       smart_input_opts:
         default_smart_input_opts(%{create_object_type: nil, recipients_editable: false}),
-      # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
       clear_reply_data: true
     ]
-
-    set(socket, clear_assigns)
-
-    # Also assign directly to avoid race with async handler
-    {:noreply, socket |> assign(clear_assigns) |> do_extra_reset_input()}
   end
 
   def close_smart_input(js \\ %JS{}) do

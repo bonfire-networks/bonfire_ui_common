@@ -10,13 +10,13 @@
  *   data-media-uri      - find or create a thread for this URL (optional, defaults to current page URL)
  *   data-canonical-slug      - find or create a thread for this post/page slug on the original website (eg. Ghost post slug)
  *   data-canonical-id      - find or create a thread for this post/page ID on the original website (eg. Ghost post ID)
- *   data-boundary       - visibility boundary for the created thread (e.g. "public", "local") 
+ *   data-boundary       - visibility boundary for the created thread (e.g. "public", "local")
  *   data-group-id       - what Bonfire group to post the article in (if any)
  *   data-require-topic  - only import the article and generate a comment thread if the canonical category or main tag matches a topic on Bonfire (boolean)
  *   data-creator        - user ID to attribute thread creation to
  *   data-sort-by        - initial sort order: "latest_reply", "reply_count", "boost_count", "like_count", "popularity_score", or "newest" (default: thread order)
  *   data-theme          - DaisyUI theme name to apply inside the iframe (e.g. "dark", "light")
- *   data-token-max-age  - hours before the stored auth token is considered stale and the user is prompted to re-authenticate (default: 720 = 30 days). The server enforces a hard maximum regardless of this value (1 year by default).
+ *   data-token-max-age  - hours before the stored auth token is considered stale and the user is prompted to re-authenticate (default: 720 = 30 days). Invalid or non-positive values fall back to the default. The server enforces a hard maximum regardless of this value (1 year by default), and this value is clamped to it.
  *
  * Authentication:
  *   Third-party cookies are blocked in cross-origin iframes, so this script implements a token-based auth flow. After the user signs in on the Bonfire instance, they are redirected back here with ?bonfire_embed_token=... which is stored in localStorage and passed to the iframe on future page loads.
@@ -27,39 +27,67 @@
   var script = document.currentScript;
   if (!script) return;
 
-  var instanceUrl = new URL(script.src).origin;
+  // bail cleanly if the script src can't yield an origin (relative/blob/bad URL)
+  var instanceUrl;
+  try {
+    instanceUrl = new URL(script.src).origin;
+  } catch (_) {
+    return;
+  }
+  if (!instanceUrl || instanceUrl === "null") return;
+
   var postId = script.getAttribute("data-post-id");
-  var tokenMaxAgeHours = parseInt(script.getAttribute("data-token-max-age") || "720", 10);
+
+  // --- Token max age (validated) ---
+  // invalid input must not yield NaN (would silently disable token expiry)
+  var DEFAULT_TOKEN_MAX_AGE_HOURS = 720; // ~30 days
+  var MAX_TOKEN_MAX_AGE_HOURS = 365 * 24; // server hard cap (1 year)
+  var rawMaxAge = parseInt(script.getAttribute("data-token-max-age"), 10);
+  var tokenMaxAgeHours =
+    Number.isFinite(rawMaxAge) && rawMaxAge > 0
+      ? Math.min(rawMaxAge, MAX_TOKEN_MAX_AGE_HOURS)
+      : DEFAULT_TOKEN_MAX_AGE_HOURS;
   var tokenMaxAgeMs = tokenMaxAgeHours * 3600 * 1000;
   var storageKey = "bonfire_embed_token:" + instanceUrl;
 
-  // --- Token lifecycle ---
+  // --- Safe localStorage ---
+  // localStorage access throws (not null) in Safari Private Mode / disabled
+  // storage; wrap every call so the widget still renders (no token persistence)
 
-  function receiveToken(freshToken) {
-    if (freshToken) {
-      saveToken(freshToken);
-      urlParams.delete("bonfire_embed_token");
-      var cleanSearch = urlParams.toString();
-      history.replaceState(
-        null,
-        "",
-        window.location.pathname + (cleanSearch ? "?" + cleanSearch : "") + window.location.hash
-      );
+  function safeGet(key) {
+    try {
+      return window.localStorage.getItem(key);
+    } catch (_) {
+      return null;
     }
   }
 
-  function saveToken(token) {
+  function safeSet(key, value) {
     try {
-      localStorage.setItem(storageKey, JSON.stringify({ token: token, ts: Date.now() }));
+      window.localStorage.setItem(key, value);
     } catch (_) {}
   }
 
-  function storedToken(raw) {
+  function safeRemove(key) {
     try {
-      var entry = raw ? JSON.parse(raw) : null;
-      if (!entry) return null;
+      window.localStorage.removeItem(key);
+    } catch (_) {}
+  }
+
+  // --- Token lifecycle ---
+
+  function saveToken(token) {
+    safeSet(storageKey, JSON.stringify({ token: token, ts: Date.now() }));
+  }
+
+  function storedToken() {
+    var raw = safeGet(storageKey);
+    if (!raw) return null;
+    try {
+      var entry = JSON.parse(raw);
+      if (!entry || !entry.token) return null;
       if (Date.now() - entry.ts > tokenMaxAgeMs) {
-        localStorage.removeItem(storageKey);
+        safeRemove(storageKey);
         return null;
       }
       return entry.token;
@@ -68,15 +96,31 @@
     }
   }
 
-  // Check if we're returning from a Bonfire login redirect with a fresh token
   var urlParams = new URLSearchParams(window.location.search);
+
+  function receiveToken(freshToken) {
+    if (!freshToken) return;
+    saveToken(freshToken);
+    // strip only the token param, leaving the host page's own query/hash
+    urlParams.delete("bonfire_embed_token");
+    var cleanSearch = urlParams.toString();
+    try {
+      history.replaceState(
+        null,
+        "",
+        window.location.pathname + (cleanSearch ? "?" + cleanSearch : "") + window.location.hash
+      );
+    } catch (_) {}
+  }
+
+  // Check if we're returning from a Bonfire login redirect with a fresh token
   receiveToken(urlParams.get("bonfire_embed_token"));
 
   // --- Build iframe src ---
 
   var mediaUri = script.getAttribute("data-media-uri") || window.location.href;
   var src = instanceUrl + "/comments/embed" + (postId ? "/" + postId : "");
-  var token = storedToken(localStorage.getItem(storageKey));
+  var token = storedToken();
   var theme = script.getAttribute("data-theme");
 
   var params = new URLSearchParams({ media_uri: mediaUri });
@@ -111,14 +155,19 @@
   iframe.setAttribute("scrolling", "no");
   iframe.setAttribute("loading", "lazy");
   iframe.setAttribute("title", "Comments");
+
+  if (!script.parentNode) return;
   script.parentNode.insertBefore(iframe, script.nextSibling);
 
   // --- Auto-resize ---
 
   window.addEventListener("message", function (e) {
     if (e.origin !== instanceUrl) return;
-    if (e.data && e.data.type === "bonfire:iframe-resize") {
-      iframe.style.height = e.data.height + "px";
-    }
+    // ignore messages from other frames when a source is available
+    if (e.source && iframe.contentWindow && e.source !== iframe.contentWindow) return;
+    if (!e.data || e.data.type !== "bonfire:iframe-resize") return;
+    var height = Number(e.data.height);
+    if (!Number.isFinite(height) || height <= 0) return;
+    iframe.style.height = Math.min(height, 100000) + "px";
   });
 })();

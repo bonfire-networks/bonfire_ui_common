@@ -17,6 +17,11 @@ TooltipHooks.Tooltip = {
 		const tooltipWrapper = this.el;
 		const position = tooltipWrapper.getAttribute("data-position");
 		const trigger = tooltipWrapper.getAttribute("data-trigger");
+		const noFlip = tooltipWrapper.getAttribute("data-no-flip") === "true";
+		const strategy =
+			tooltipWrapper.getAttribute("data-strategy") === "fixed"
+				? "fixed"
+				: "absolute";
 		const button = this.el.querySelector(".tooltip-button");
 		const tooltip = this.el.querySelector(".tooltip:not(.tooltip-button)");
 		let showTimeout;
@@ -28,6 +33,32 @@ TooltipHooks.Tooltip = {
 		this.isUpdating = false;
 		this.pendingUpdate = false;
 		this.cleanup = null;
+
+		// embed only: nudge the parent iframe to re-measure on panel show/hide
+		const framed = window.parent && window.parent !== window;
+		const notifyParentResize = () => {
+			if (!framed) return;
+			let height = Math.max(
+				document.body.scrollHeight,
+				document.documentElement.scrollHeight,
+			);
+			// a fixed panel doesn't extend scrollHeight
+			if (tooltip && tooltip.style.display === "block") {
+				const rect = tooltip.getBoundingClientRect();
+				const panelBottom = rect.bottom + window.scrollY;
+				height = Math.max(height, Math.ceil(panelBottom) + 8);
+			}
+			window.parent.postMessage(
+				{ type: "bonfire:iframe-resize", height },
+				"*",
+			);
+		};
+
+		// embed only
+		this.panelResizeObserver =
+			framed && typeof ResizeObserver !== "undefined"
+				? new ResizeObserver(notifyParentResize)
+				: null;
 
 		const updatePosition = () => {
 			if (this.isUpdating) {
@@ -41,7 +72,10 @@ TooltipHooks.Tooltip = {
 
 			computePosition(button, tooltip, {
 				placement: position || "top",
-				middleware: [offset(6), flip({ padding: 5 }), shift({ padding: 5 })],
+				strategy,
+				middleware: noFlip
+					? [offset(6), shift({ padding: 5 })]
+					: [offset(6), flip({ padding: 5 }), shift({ padding: 5 })],
 			}).then(({ x, y, placement }) => {
 				if (!this.isUpdating && tooltip) {
 					Object.assign(tooltip.style, {
@@ -91,6 +125,7 @@ TooltipHooks.Tooltip = {
 			tooltip.style.pointerEvents = 'auto';
 			syncExpanded(true);
 			startPositionUpdate();
+			this.panelResizeObserver?.observe(tooltip);
 			if (!prefersReducedMotion()) {
 				tooltip.classList.add('tooltip-animated');
 				tooltip.offsetHeight; // Force reflow for animation
@@ -129,6 +164,9 @@ TooltipHooks.Tooltip = {
 						this.cleanup();
 						this.cleanup = null;
 					}
+					// disconnect before display:none, then let the iframe shrink back
+					this.panelResizeObserver?.disconnect();
+					notifyParentResize();
 				}, delay);
 			}
 		};
@@ -199,6 +237,7 @@ TooltipHooks.Tooltip = {
 
 	destroyed() {
 		this.eventCleanup?.();
+		this.panelResizeObserver?.disconnect();
 	},
 
 	beforeUpdate() {

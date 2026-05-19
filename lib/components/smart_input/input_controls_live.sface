@@ -6,25 +6,6 @@
         <div class="h-full flex flex-col flex-1 grow relative min-h-0">
           <div class="flex-1 min-h-0 overflow-y-auto overscroll-y-contain flex flex-col">
             <div
-              id="sensitive_alert"
-              class={[
-                "sensitive_alert alert-soft items-start alert m-2 p-2 gap-2 cursor-pointer",
-                hidden: !@show_sensitive
-              ]}
-            >
-              <span>{l("This activity is marked as sensitive.")}
-                {#if @show_cw}
-                  <span class="font-semibold">{l("You can add an optional summary.")}</span>
-                {#else}
-                  <span
-                    phx-click="Bonfire.UI.Common.SmartInput:toggle_cw"
-                    phx-target={@event_target || "#smart_input"}
-                    class="font-semibold underline cursor-pointer"
-                    type="button"
-                  >{l("Add a summary to explain the reason.")}</span>
-                {/if}</span>
-            </div>
-            <div
               class="hidden"
               :if={@enable_thread_title and
                 e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}
@@ -45,21 +26,30 @@
                 </label>
               </div>
             </div>
-
-            {!-- Summary/CW field - server controls visibility, phx-update="ignore" only on textarea wrapper --}
-            <div class={[hidden: !@show_cw]} id="smart_input_summary">
-              <div class="px-2 pb-2">
-                <label class="relative w-full">
-                  <div phx-update="ignore" id="smart_input_summary_value">
-                    <textarea
-                      name="post[post_content][summary]"
-                      placeholder={l("Enter an optional summary")}
-                      class="textarea textarea-xs w-full resize-none"
-                      rows="1"
-                      style="field-sizing: content; min-height: 0; max-height: 6rem;"
-                    >{e(@smart_input_opts, :cw, nil)}</textarea>
-                  </div>
-                </label>
+            <div
+              class={[hidden: !(@show_sensitive || @show_cw)]}
+              id="smart_input_summary"
+            >
+              <div class="relative flex items-start border-b border-dashed border-base-content/15">
+                <div phx-update="ignore" id="smart_input_summary_value" class="flex-1 min-w-0">
+                  <textarea
+                    name="post[post_content][summary]"
+                    placeholder={l("Content warning")}
+                    class="block w-full m-0 px-3 py-2 !outline-0 !outline-none bg-transparent border-0 resize-none text-base leading-6 text-base-content placeholder:text-base-content/50 focus:ring-0 focus:outline-none"
+                    rows="1"
+                    style="field-sizing: content; min-height: 0; max-height: 6rem;"
+                  >{e(@smart_input_opts, :cw, nil)}</textarea>
+                </div>
+                <button
+                  type="button"
+                  phx-click="Bonfire.UI.Common.SmartInput:clear_sensitive"
+                  phx-target={@event_target || "#smart_input"}
+                  class="shrink-0 mt-2 mr-2 p-1 rounded-full text-base-content/40 hover:text-base-content/70 hover:bg-base-content/5 transition-colors"
+                  title={l("Remove content warning")}
+                  aria-label={l("Remove content warning")}
+                >
+                  <#Icon iconify="ph:x" class="w-4 h-4" />
+                </button>
               </div>
             </div>
 
@@ -113,9 +103,13 @@
               />
 
               <!-- data-close-on-inside-click="true" -->
+              {!-- embed: position:fixed + no-flip escapes the composer's
+                   overflow-hidden ancestors so the panel isn't clipped --}
               <div
                 phx-hook="Tooltip"
-                data-position="top"
+                data-position={if @showing_within == :thread_embed, do: "bottom", else: "top"}
+                data-no-flip={if @showing_within == :thread_embed, do: "true"}
+                data-strategy={if @showing_within == :thread_embed, do: "fixed"}
                 phx-update="ignore"
                 id="emoji_picker_in_composer"
                 data-trigger="click"
@@ -129,7 +123,11 @@
                 </button>
                 <div
                   id="emoji-picker-in-composer"
-                  class="emoji-picker-in-composer w-60 tooltip absolute bottom-full right-0 z-50 mb-2 hidden"
+                  class={[
+                    "emoji-picker-in-composer w-60 tooltip right-0 hidden",
+                    "absolute bottom-full z-50 mb-2": @showing_within != :thread_embed,
+                    "fixed z-[100]": @showing_within == :thread_embed
+                  ]}
                   data-emojis={@custom_emojis}
                 />
               </div>
@@ -144,9 +142,9 @@
                   type="button"
                   phx-click="Bonfire.UI.Common.SmartInput:toggle_sensitive"
                   phx-target={@event_target || "#smart_input"}
-                  class={["relative btn btn-ghost btn-circle", "bg-warning text-warning-content": @show_sensitive]}
+                  class={["relative btn btn-ghost btn-circle text-base-content/70", "bg-warning !text-warning-content": @show_sensitive]}
                 >
-                  <#Icon iconify="ph:siren-duotone" class="swap-off w-[20px] h-[20px] text-base-content/70" />
+                  <#Icon iconify="ph:siren-duotone" class="swap-off w-[20px] h-[20px]" />
                 </button>
                 <input type="hidden" name="sensitive" value={to_string(@show_sensitive)}>
               </div>
@@ -218,7 +216,8 @@
               {/case}
 
               <div
-                :if={e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}
+                :if={e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"] and
+                  @showing_within != :thread_embed}
                 data-position="top"
                 phx-hook="Tooltip"
                 id="smart_input_more_options"
@@ -239,20 +238,8 @@
                   role="menu"
                   aria-orientation="vertical"
                 >
-                  <li :if={e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}>
-                    <!-- <div id="summary_btn_wrapper" data-tip={l("Add a summary")} class="tooltip tooltip-top"> -->
-                    <button
-                      type="button"
-                      id="summary_btn"
-                      phx-click="Bonfire.UI.Common.SmartInput:toggle_cw"
-                      phx-target={@event_target || "#smart_input"}
-                      class="title-button"
-                    >
-                      <#Icon iconify="ph:text-align-left-duotone" class="w-[20px] h-[20px] text-base-content/70" />
-                      <span class="text-sm">{if @show_cw, do: l("Hide summary"), else: l("Add summary")}</span>
-                    </button>
-                    <!-- </div> -->
-                  </li>
+                  {!-- siren is the sole CW entry point now; toggle_cw/show_cw
+                       handler kept (CW-reply inherit still uses show_cw) --}
                   <li :if={@enable_thread_title and
                     e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}>
                     <button

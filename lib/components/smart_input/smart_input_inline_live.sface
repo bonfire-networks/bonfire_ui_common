@@ -50,7 +50,10 @@
       <div class="overflow-hidden min-h-0">
         <div
           id={"inline_full_#{@composer_dom_id}"}
-          class="inline_composer_full border border-base-content/20 rounded-xl bg-base-100 shadow-lg opacity-0 transition-opacity ease-out duration-200"
+          class={[
+            "inline_composer_full border border-base-content/20 rounded-xl bg-base-100 shadow-lg opacity-0 transition-opacity ease-out duration-200",
+            "flex flex-col min-h-[240px]": @showing_within == :thread_embed
+          ]}
         >
           {#if @reply_to_id && @context_id && to_string(@reply_to_id) != to_string(@context_id)}
             <div class="flex items-center justify-between px-3 pt-2 pb-1 text-xs text-base-content/70">
@@ -62,7 +65,7 @@
                 phx-click="reset_reply_to"
                 title={l("Cancel reply")}
               >
-                <#Icon iconify="px:x-duotone" class="w-4 h-4" />
+                <#Icon iconify="ph:x-duotone" class="w-4 h-4" />
                 <span class="ml-1">{l("Cancel reply")}</span>
               </button>
             </div>

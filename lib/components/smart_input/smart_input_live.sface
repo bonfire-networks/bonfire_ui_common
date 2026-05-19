@@ -14,7 +14,7 @@
     >
       <div
         :if={not is_nil(current_user_id(@__context__))}
-        class="relative overflow-hidden lg:max-h-[95vh] min-h-0 flex flex-col flex-1 w-full bg-base-100 rounded-xl"
+        class="relative overflow-hidden lg:max-h-[95vh] min-h-0 flex flex-col flex-1 w-full bg-base-100 rounded-xl z-max"
       >
         <div :if={is_map(@activity) || is_map(@reply_to_id)} class="">
           <div class="relative reply_in_composer rounded-t-box max-h-[160px] bg-base-100 overflow-y-auto overflow-x-hidden py-2 flex flex-col">
@@ -137,8 +137,8 @@
                 is_remote={false}
               />
             </div>
-            {!-- Type picker: switch what kind of object you're creating (post, poll, …). --}
-            {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
+            {!-- Type picker (hidden in :thread_embed — replies only) --}
+            {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and @showing_within != :thread_embed}
               {#case Bonfire.UI.Common.SmartInputModule.modules() |> Enum.uniq()}
                 {#match [_, _ | _] = available_types}
                   {#case LiveHandler.active_smart_input_component(
@@ -330,6 +330,7 @@
                 <:action_btns>
                   <button
                     phx-click={JS.push("Bonfire.UI.Common.SmartInput:reset_to_default")
+                    |> JS.push("close", target: "#persistent_modal")
                     |> JS.add_class("translate-y-100", to: "#smart_input_container")
                     |> JS.hide(to: "#smart_input_post_title")}
                     phx-target="#smart_input"
