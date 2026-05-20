@@ -51,8 +51,10 @@
     function getClientId() {
         let clientId = localStorage.getItem('appClientId');
         if (!clientId) {
-            clientId = window.location.origin + '/client.jsonld';
-            localStorage.setItem('appClientId', clientId);
+//             clientId = window.location.origin + '/client.jsonld';
+        	clientId = "https://raw.githubusercontent.com/bonfire-networks/bonfire_ui_common/refs/heads/main/assets/static/tauri/client.jsonld";
+
+            localStorage.setItem('appClientId', clientId); 
         }
         return clientId;
     }

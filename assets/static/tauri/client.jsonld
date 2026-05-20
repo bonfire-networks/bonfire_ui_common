@@ -3,7 +3,7 @@
     "https://www.w3.org/ns/activitystreams",
     "https://purl.archive.org/socialweb/oauth"
   ],
-  "id": "http://127.0.0.1:1431/client.jsonld",
+  "id": "https://raw.githubusercontent.com/bonfire-networks/bonfire_ui_common/refs/heads/main/assets/static/tauri/client.jsonld",
   "name": "Bonfire Desktop",
   "summary": "Bonfire desktop client with end-to-end encrypted messaging",
   "redirectURI": "http://127.0.0.1:1431/pick-instance.html",
