@@ -125,6 +125,9 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        user_ip: user_ip,
        #  connect_params: connect_params,
        csrf_socket_token: connect_params["_csrf_token"],
+       # Phoenix LV sets this on live navigations; we keep just the path so
+       # the back button can `<.link navigate>` back without `history.back()`.
+       last_path: live_referer_path(connect_params["_live_referer"]),
        live_action: e(assigns(socket), :live_action, nil),
        socket_connected?: socket_connected?
      )
@@ -138,8 +141,17 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   end
 
   defp maybe_get_connect_info(socket, key) do
-    #  if current_view !=Bonfire.UI.Common.PersistentLive and 
+    #  if current_view !=Bonfire.UI.Common.PersistentLive and
     if socket.private[:connect_info], do: Phoenix.LiveView.get_connect_info(socket, key)
+  end
+
+  defp live_referer_path(nil), do: nil
+
+  defp live_referer_path(url) when is_binary(url) do
+    case URI.parse(url) do
+      %URI{path: path} when is_binary(path) -> path
+      _ -> nil
+    end
   end
 
   defp mount_done(socket, opts \\ []) do

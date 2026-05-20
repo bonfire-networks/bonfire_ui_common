@@ -8,64 +8,35 @@
   >
     <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
   </button>
-{#else}
-  {#if is_binary(@back)}
-    <LinkLive
-      to={@back}
-      label={l("Go back to the previous page")}
-      class="btn btn-sm btn-circle z-50"
-      parent_id="back_button"
-    >
-      <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
-    </LinkLive>
-  {#else}
-    <button
-      class="btn btn-sm btn-circle z-50"
-      onclick="history.length > 1 ? history.back() : window.location.href = '/'"
-    ><#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" /></button>
-  {/if}
-  {!-- {#elseif is_binary(@back) and @back != current_url(@__context__)}
+{#elseif is_binary(@back)}
   <LinkLive
     to={@back}
     label={l("Go back to the previous page")}
     class="btn btn-sm btn-circle z-50"
+    parent_id="back_button"
   >
-    <#Icon iconify="ion:chevron-back" class="w-5 h-5" />
+    <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
   </LinkLive>
-{#elseif @back}
-  <a
-    id="back-button"
-    style="display: none;"
-    phx-mounted={JS.dispatch("check-history-state")}
-    phx-click={JS.dispatch("handle-back-click")}
+{#elseif @back && is_binary(e(@__context__, :last_path, nil))}
+  {!-- An in-app previous page exists (per Phoenix's `_live_referer`). Use
+       `history.back()` so the browser's forward/back stack handles cycles
+       correctly; LV's popstate handler keeps the sticky `PersistentLive`
+       alive by routing through the same `replaceMain` as `<.link navigate>`. --}
+  <button
+    type="button"
     aria-label={l("Go back to the previous page")}
     class="btn btn-sm btn-circle z-50"
+    onclick="history.back()"
   >
-    <#Icon iconify="ion:chevron-back" class="w-4 h-4" />
-  </a>--}
-
-  {!-- <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      const backButton = document.getElementById("back-button");
-      if (backButton && history.length > 1 && document.referrer.indexOf(window.location.host) !== -1) {
-        backButton.style.display = "inline-flex";
-      }
-    });
-
-    document.addEventListener("check-history-state", (e) => {
-      const backButton = document.getElementById("back-button");
-      if (backButton && history.length > 1 && document.referrer.indexOf(window.location.host) !== -1) {
-        backButton.style.display = "inline-flex";
-      }
-    });
-
-    document.addEventListener("handle-back-click", (e) => {
-      e.preventDefault();
-      if (history.length > 1) {
-        history.back();
-      } else {
-        window.location.href = '/';
-      }
-    });
-  </script>  --}
+    <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
+  </button>
+{#elseif @back}
+  <LinkLive
+    to="/"
+    label={l("Go back to the previous page")}
+    class="btn btn-sm btn-circle z-50"
+    parent_id="back_button"
+  >
+    <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
+  </LinkLive>
 {/if}
