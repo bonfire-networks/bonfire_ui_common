@@ -30,7 +30,7 @@
             context_id={@context_id}
             context_group={@context_group}
             without_icon
-            composer_class="btn btn-primary rounded-full w-full"
+            composer_class="btn btn-primary w-full"
             smart_input_opts={@smart_input_opts}
           />
         </div>
