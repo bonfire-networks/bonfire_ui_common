@@ -20,6 +20,7 @@
 :root {
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --fx-noise: none;
 }
 
 /* ============================================
@@ -345,6 +346,8 @@ textarea:focus-visible {
   --border: 1px;
   --depth: 0.5;
   --noise: 0.1;
+  --fx-noise: none;
+
 }
 
 
@@ -1688,5 +1691,9 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
   .dock-offset {
     padding-bottom: 0;
   }
+}
+
+body:has(input:focus, textarea:focus, [contenteditable]:focus) .dock {
+  display: none;
 }
 
