@@ -20,7 +20,7 @@
           />
           <div
             data-role="fallback"
-            class="h-full place-content-center col-start-1 row-start-1"
+            class="h-full place-content-center col-start-1 row-start-1 rounded-full bg-base-content/10"
             style="display: none;"
           >
             <div class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
@@ -64,7 +64,7 @@
                   />
                   <div
                     data-role="fallback"
-                    class={["h-full place-content-center col-start-1 row-start-1"]}
+                    class={["h-full place-content-center col-start-1 row-start-1  rounded-full bg-base-content/10"]}
                     style="display: none;"
                   >
                     <div class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
@@ -103,7 +103,7 @@
                   />
                   <div
                     data-role="fallback"
-                    class="h-full place-content-center col-start-1 row-start-1"
+                    class="h-full place-content-center col-start-1 row-start-1  rounded-full bg-base-content/10"
                     style="display: none;"
                   >
                     <div class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
@@ -124,7 +124,7 @@
               />
               <div
                 data-role="fallback"
-                class="h-full place-content-center col-start-1 row-start-1"
+                class="h-full place-content-center col-start-1 row-start-1  rounded-full bg-base-content/10"
                 style="display: none;"
               >
                 <div class={"iconify", e(@fallback_class, nil)} iconify={@fallback_icon} />
