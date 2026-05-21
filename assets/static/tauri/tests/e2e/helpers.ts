@@ -120,27 +120,28 @@ export async function getGroupMemberCount(page: any, groupId: string): Promise<n
  * Returns true if the KP was stored (accepted), false if it was rejected.
  * mlsSignature is a bare base64 signature string (no signerKey — receiver iterates known keys).
  */
+/**
+ * Inject a synthetic Add { KeyPackage } activity directly into _handleKeyPackageAdd.
+ * Returns true if the KP was stored (accepted), false if it was rejected.
+ * mlsSignature is a bare base64 signature string.
+ * Pass a custom `object` to test variant shapes (mls:-prefixed fields, array type, etc).
+ */
 export async function injectKeyPackageAdd(
   page: any,
   actorUri: string,
   kpB64: string,
-  mlsSignature?: string
+  mlsSignature?: string,
+  object?: any,
 ): Promise<boolean> {
+  const defaultObject = { type: 'KeyPackage', attributedTo: actorUri, mediaType: 'message/mls', encoding: 'base64', content: kpB64 };
   return page.evaluate(`(async () => {
     const ctrl = ${GET_CTRL};
     const before = (await ctrl.storage.loadUserState(${JSON.stringify(actorUri)}))?.keyPackage;
     const activity = {
       type: 'Add',
       actor: ${JSON.stringify(actorUri)},
-      object: {
-        type: 'KeyPackage',
-        attributedTo: ${JSON.stringify(actorUri)},
-        mediaType: 'message/mls',
-        encoding: 'base64',
-        content: ${JSON.stringify(kpB64)}
-      },
-      target: ${JSON.stringify(actorUri)} + '/key-packages',
-      ${mlsSignature ? `mlsSignature: ${JSON.stringify(mlsSignature)}` : ''}
+      object: ${JSON.stringify(object ?? defaultObject)},
+      ${mlsSignature ? `mlsSignature: ${JSON.stringify(mlsSignature)},` : ''}
     };
     await ctrl._handleKeyPackageAdd(activity);
     const after = (await ctrl.storage.loadUserState(${JSON.stringify(actorUri)}))?.keyPackage;

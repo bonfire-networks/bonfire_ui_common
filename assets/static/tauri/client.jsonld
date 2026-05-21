@@ -3,18 +3,26 @@
     "https://www.w3.org/ns/activitystreams",
     "https://purl.archive.org/socialweb/oauth"
   ],
-  "id": "https://raw.githubusercontent.com/bonfire-networks/bonfire_ui_common/refs/heads/main/assets/static/tauri/client.jsonld",
+  "id": "https://bonfirenetworks.org/.well-known/client.jsonld",
   "name": "Bonfire Desktop",
+  "client_name": "Bonfire",
   "summary": "Bonfire desktop client with end-to-end encrypted messaging",
-  "redirectURI": "http://127.0.0.1:1431/pick-instance.html",
+  "client_id": "https://bonfirenetworks.org/.well-known/client.jsonld",
+  "client_uri": "https://bonfirenetworks.org",
+  "logo_uri": "https://bonfirenetworks.org/images/icon.png",
+  "redirectURI": "tauri://localhost/",
+  "redirect_uris": [
+    "tauri://localhost/",
+    "http://127.0.0.1:1430/", "http://127.0.0.1:1431/", "http://localhost:1430/", "http://localhost:1431/"
+  ],
+  "grant_types": ["authorization_code", "refresh_token"],
+  "response_types": ["code"],
+  "token_endpoint_auth_method": "none",
+  "application_type": "native",
   "attributedTo": [
-    {
-    "id": "https://socialwebfoundation.org/author/evanprodromou/",
-    "name": "Evan Prodromou"
-  },
-  {
-    "id": "https://bonfire.cafe/pub/actors/bonfire",
-    "name": "Bonfire Networks"
-  }
-]
+	  {
+		"id": "https://bonfire.cafe/pub/actors/bonfire",
+		"name": "Bonfire Networks"
+	  }
+	]
 }

@@ -138,7 +138,8 @@
               />
             </div>
             {!-- Type picker (hidden in :thread_embed — replies only) --}
-            {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and @showing_within != :thread_embed}
+            {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and
+                @showing_within != :thread_embed}
               {#case Bonfire.UI.Common.SmartInputModule.modules() |> Enum.uniq()}
                 {#match [_, _ | _] = available_types}
                   {#case LiveHandler.active_smart_input_component(

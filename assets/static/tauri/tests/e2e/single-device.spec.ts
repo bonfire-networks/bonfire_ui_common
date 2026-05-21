@@ -240,4 +240,16 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     expect(await ownKpIsSelfSigned(tauriPage)).toBe(true);
   });
 
+  test('fetchActorKeyPackage finds own published keyPackage regardless of storage shape', async ({ tauriPage }) => {
+    await waitForChatView(tauriPage);
+
+    const found = await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const result = await ctrl.fetchLatestKeyPackage(ctrl.currentActorId);
+      return !!result?.content;
+    })()`);
+
+    expect(found).toBe(true);
+  });
+
 });

@@ -52,7 +52,7 @@
         let clientId = localStorage.getItem('appClientId');
         if (!clientId) {
 //             clientId = window.location.origin + '/client.jsonld';
-        	clientId = "https://raw.githubusercontent.com/bonfire-networks/bonfire_ui_common/refs/heads/main/assets/static/tauri/client.jsonld";
+        	clientId = "https://bonfirenetworks.org/.well-known/client.jsonld";
 
             localStorage.setItem('appClientId', clientId); 
         }
@@ -60,7 +60,8 @@
     }
 
     function getRedirectUri() {
-        return window.location.origin + '/pick-instance.html';
+        // Must match redirect_uris in the CIMD document at bonfirenetworks.org/.well-known/client.jsonld
+        return window.__TAURI__ ? "tauri://localhost/" : window.location.origin;
     }
 
     // Set WASM base path for Tauri (bundled resources served via asset protocol)

@@ -26,10 +26,7 @@
                 </label>
               </div>
             </div>
-            <div
-              class={[hidden: !(@show_sensitive || @show_cw)]}
-              id="smart_input_summary"
-            >
+            <div class={[hidden: !(@show_sensitive || @show_cw)]} id="smart_input_summary">
               <div class="relative flex items-start border-b border-dashed border-base-content/15">
                 <div phx-update="ignore" id="smart_input_summary_value" class="flex-1 min-w-0">
                   <textarea
@@ -142,7 +139,10 @@
                   type="button"
                   phx-click="Bonfire.UI.Common.SmartInput:toggle_sensitive"
                   phx-target={@event_target || "#smart_input"}
-                  class={["relative btn btn-ghost btn-circle text-base-content/70", "bg-warning !text-warning-content": @show_sensitive]}
+                  class={[
+                    "relative btn btn-ghost btn-circle text-base-content/70",
+                    "bg-warning !text-warning-content": @show_sensitive
+                  ]}
                 >
                   <#Icon iconify="ph:siren-duotone" class="swap-off w-[20px] h-[20px]" />
                 </button>
