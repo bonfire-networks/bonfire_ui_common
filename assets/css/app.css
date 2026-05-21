@@ -1,6 +1,60 @@
 @import "tailwindcss";
 @import "nprogress/nprogress.css";
 
+/* Vidstack media player (default layout) — see remote_media_live.hooks.js */
+@import "vidstack/player/styles/default/theme.css";
+@import "vidstack/player/styles/default/layouts/video.css";
+@import "vidstack/player/styles/default/layouts/audio.css";
+
+/* Theme the Vidstack player with DaisyUI tokens so it matches the current theme
+   (light or dark) instead of the library's dark default. */
+media-player {
+  --media-brand: var(--color-primary);
+}
+
+/* Video keeps a brand accent on its controls (they sit over the footage). */
+.vds-video-layout {
+  --video-brand: var(--color-primary);
+}
+
+/* Audio: a flat, neutral, theme-matched control bar that sits ON the card
+   surface — no library drop-shadow, no filled/branded play button, no tooltips. */
+.vds-audio-layout {
+  --audio-bg: transparent;
+  --audio-border: none;
+  --audio-filter: none;
+  --audio-brand: var(--color-base-content);
+  --audio-controls-color: var(--color-base-content);
+  --audio-play-button-bg: transparent;
+  --audio-play-button-color: var(--color-base-content);
+  --audio-play-button-border: none;
+  --audio-slider-track-bg: color-mix(in oklch, var(--color-base-content) 18%, transparent);
+  --audio-slider-value-border: 1px solid color-mix(in oklch, var(--color-base-content) 12%, transparent);
+}
+
+/* Legible single-line timestamp (vidstack dims it and lets it wrap when cramped). */
+.vds-audio-layout .vds-time {
+  color: var(--color-base-content);
+  white-space: nowrap;
+}
+
+/* vidstack has no prop to disable tooltips — hide them: they clip the card and
+   add noise on a compact bar. The settings/speed menu uses a portal, so it still
+   opens correctly. */
+.vds-audio-layout .vds-tooltip {
+  display: none;
+}
+
+/* Drop the volume *slider popup*: it pops up vertically and gets clipped by the
+   card / feed overflow. Keep the mute toggle (the common need for feed audio);
+   fine volume is still available via keyboard when focused. !important to beat
+   vidstack's own opacity/visibility rules that reveal it on hover/play. */
+.vds-audio-layout .vds-volume-popup,
+.vds-audio-layout .vds-volume-slider,
+.vds-audio-layout media-volume-slider {
+  display: none !important;
+}
+
 /* Fix mobile double-tap issue: DaisyUI menu hover styles trigger hover state
    on first tap, requiring a second tap to actually click. Replace hover
    background with :active feedback on touch-only devices. */
@@ -318,8 +372,8 @@ textarea:focus-visible {
   name: "dark";
   prefersdark: true;
   color-scheme: dark;
-  --color-base-100: oklch(7% 0 0);
-  --color-base-200: oklch(18% 0 0);
+  --color-base-100: #2E2F30;
+  --color-base-200: #18191A;
   --color-base-300: oklch(21% 0.012 55);
   --color-base-content: oklch(86.5% 0.012 55);
   --color-primary: oklch(70% 0.16 55);
@@ -630,62 +684,6 @@ hex-input::part(input) {
   }
 }
 
-/* Player and controls styling */
-media-player {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16/9;
-  background-color: #000;
-}
-
-video {
-  width: 100%;
-  height: 100%;
-}
-
-media-controls {
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-  pointer-events: auto !important;
-}
-
-.controls-container {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.7);
-  gap: 10px;
-  pointer-events: auto !important;
-}
-
-
-/* Time controls */
-.time-controls {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: white;
-  pointer-events: auto !important;
-}
-
-.time-slider {
-  flex: 1;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  cursor: pointer;
-  pointer-events: auto !important;
-}
-
-.current-time,
-.duration {
-  font-size: 14px;
-  min-width: 40px;
-}
-
 .btn-zenodo {
   background-color: #2f6fa7;
   color: white;
@@ -704,15 +702,6 @@ media-controls {
 }
 
 /* Critical CSS to fix pointer-events */
-.controls-wrapper {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-}
-
-
 .m-entry iframe {
   max-width: 100% !important;
 }
@@ -720,72 +709,6 @@ media-controls {
 /* Media carousel scrollbar hiding for webkit browsers */
 div[data-id='multimedia_carousel']::-webkit-scrollbar {
   display: none;
-}
-
-/* Add this to your CSS */
-media-controls,
-media-play-button,
-media-mute-button,
-media-fullscreen-button,
-.controls-container,
-.custom-button,
-.time-display {
-  pointer-events: auto !important;
-}
-
-/* Style controls */
-.controls-container {
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  background: rgba(0, 0, 0, 0.7);
-  gap: 8px;
-}
-
-
-
-media-time-slider {
-  flex-grow: 1;
-}
-
-.time-display {
-  color: white;
-  margin: 0 8px;
-}
-
-/* Override Vidstack's pointer-events: none */
-.controls-wrapper media-controls {
-  pointer-events: auto !important;
-}
-
-media-controls .controls-container {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.7);
-  gap: 10px;
-}
-
-/* Time controls layout */
-.time-controls {
-  display: flex;
-  align-items: center;
-  flex-grow: 1;
-  gap: 8px;
-}
-
-
-/* Player sizing */
-media-player {
-  aspect-ratio: 16/9;
-  width: 100%;
-  background: #000;
-  position: relative;
-}
-
-video {
-  width: 100%;
-  height: 100%;
 }
 
 @media screen and (max-width: 320px) {

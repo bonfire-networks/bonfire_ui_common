@@ -9,6 +9,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
   # with default nil values. They are set via send_update from assign_flash.
   data notification, :any, default: nil
   data error, :any, default: nil
+  data warning, :any, default: nil
   data info, :any, default: nil
   data error_sentry_event_id, :any, default: nil
 
@@ -27,6 +28,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
        root_flash: nil,
        notification: nil,
        error: nil,
+       warning: nil,
        info: nil,
        error_sentry_event_id: nil
      )}
@@ -128,6 +130,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
   def special_clear_all(socket) do
     socket
     |> special_clear_flash(:info)
+    |> special_clear_flash(:warning)
     |> special_clear_flash(:error)
     |> special_clear_flash(:notification)
   end
@@ -155,6 +158,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
       flash when is_map(flash) and flash != %{} ->
         socket
         |> maybe_set_from_flash(flash, "info", :info)
+        |> maybe_set_from_flash(flash, "warning", :warning)
         |> maybe_set_from_flash(flash, "error", :error)
 
       _ ->

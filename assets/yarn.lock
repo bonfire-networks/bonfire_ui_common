@@ -1042,10 +1042,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"daisyui@npm:^5.1.18":
-  version: 5.5.18
-  resolution: "daisyui@npm:5.5.18"
-  checksum: 10c0/2cff0aefc84e5e7c233bb53ee703b06a4c1dd5decc0eddb06a7a3b1f39b4f82ce287676b54de1a6b1cc1f7f9a4f7a0851fcdda8c6c684ff1b1bf1b078ba9c28e
+"daisyui@npm:^5.5.20":
+  version: 5.5.20
+  resolution: "daisyui@npm:5.5.20"
+  checksum: 10c0/7af259c11bc1cadc58cda4d6fa469b967d45879f4fd446095e310cc0f877ab28b75ebb641bf204abc1bada43bf11a67a941134acdc65c87b2c16118eef85a528
   languageName: node
   linkType: hard
 
@@ -1416,6 +1416,13 @@ __metadata:
   dependencies:
     function-bind: "npm:^1.1.2"
   checksum: 10c0/3769d434703b8ac66b209a4cca0737519925bbdb61dd887f93a16372b14694c63ff4e797686d87c90f08168e81082248b9b028bad60d4da9e0d1148766f56eb9
+  languageName: node
+  linkType: hard
+
+"hls.js@npm:^1.6.16":
+  version: 1.6.16
+  resolution: "hls.js@npm:1.6.16"
+  checksum: 10c0/dedf0255fdea857f29e46caab990b2bbdfde9410e64932466e03fc95018238b94486ce57e4b6a96aa4d0e8f9fd26c877e3905951f900fd58437f5eab2b284722
   languageName: node
   linkType: hard
 
@@ -2322,10 +2329,11 @@ __metadata:
     body-scroll-lock: "npm:^4.0.0-beta.0"
     buffer: "npm:^6.0.3"
     cpx2: "npm:^6.0.1"
-    daisyui: "npm:^5.1.18"
+    daisyui: "npm:^5.5.20"
     emoji-picker-element: "npm:^1.26.1"
     esbuild: "npm:^0.19.9"
     fast-blurhash: "npm:^1.1.2"
+    hls.js: "npm:^1.6.16"
     insert-text-at-cursor: "npm:^0.3.0"
     nprogress: "npm:^0.2.0"
     phoenix: "link:../deps/phoenix"
