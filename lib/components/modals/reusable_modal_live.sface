@@ -40,7 +40,7 @@
       "-top-3 -right-3 z-popover": !@no_backdrop and @overflow and !@image_preview,
       "top-1 -right-3 z-tooltip h-full": @no_backdrop
     }>
-      <div class="pt-safe">
+      <div class={Surface.css_class("pt-safe": @image_preview or @no_backdrop)}>
         <button
           phx-click="close"
           phx-target={"[id='#{@id}']"}

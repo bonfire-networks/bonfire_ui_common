@@ -177,14 +177,34 @@ body {
   border-left-color: var(--color-primary, #3b82f6) !important;
 }
 
-/* Eliminate 300ms touch delay on interactive elements */
 button,
 a,
+summary,
+label[for],
 [phx-click],
 [phx-value-id],
 .btn,
-[role="button"] {
+[role="button"],
+[role="tab"] {
   touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+summary,
+label[for],
+.btn,
+[role="button"],
+[role="tab"] {
+  user-select: none;
+}
+
+/* Most Bonfire buttons are raw DaisyUI `.btn` elements rather than ButtonLive.
+   Give them the same quick, native-feeling interaction polish by default. */
+.btn {
+  transition-property: transform, scale, opacity, background-color, border-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease-out-expo);
 }
 
 /* ============================================
@@ -203,11 +223,14 @@ a,
     min-width: 2.75rem;
   }
 
-  /* Instant press feedback: kill the 200ms transition delay
-     and add a clear scale-down effect so taps feel immediate */
-  .btn:active:not(.btn-active) {
+  .btn:active:not(.btn-active):not(:disabled):not([aria-disabled="true"]) {
     transition-duration: 0s;
-    scale: 0.95;
+    scale: 0.97;
+  }
+
+  .btn-ghost:active:not(.btn-active):not(:disabled):not([aria-disabled="true"]),
+  .btn-circle:active:not(.btn-active):not(:disabled):not([aria-disabled="true"]) {
+    background-color: color-mix(in oklch, var(--color-base-content) 10%, transparent);
   }
 
   /* Prevent icon children from intercepting touch events */
@@ -218,12 +241,48 @@ a,
   }
 }
 
+.tap-feedback {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition-property: transform, scale, opacity, background-color, border-color, box-shadow;
+  transition-duration: 120ms;
+  transition-timing-function: var(--ease-out-expo);
+}
+
+@media (hover: none), (pointer: coarse) {
+  .tap-feedback:active:not(:disabled):not([aria-disabled="true"]),
+  [role="button"]:active:not(.btn):not(:disabled):not([aria-disabled="true"]),
+  [role="tab"]:active:not(.btn):not(:disabled):not([aria-disabled="true"]),
+  summary:active,
+  [phx-click]:active:not(.btn):not(:disabled):not([aria-disabled="true"]) {
+    background-color: color-mix(in oklch, var(--color-base-content) 8%, transparent);
+    scale: 0.98;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover,
+  .btn:active,
+  .tap-feedback:active,
+  [role="button"]:active,
+  [role="tab"]:active,
+  summary:active,
+  [phx-click]:active {
+    scale: 1;
+    transform: none;
+  }
+}
+
 /* ============================================
    TOUCH-FIRST, HOVER-ENHANCED DESIGN
    Only apply hover styles on devices with precise pointing
    Touch devices get active states instead
    ============================================ */
 @media (hover: hover) and (pointer: fine) {
+  .btn:hover:not(.btn-active):not(:disabled):not([aria-disabled="true"]) {
+    scale: 1.02;
+  }
+
   .hover-lift:hover {
     transform: translateY(-2px);
   }
@@ -281,7 +340,7 @@ textarea:focus-visible {
 }
 
 /* Safelist: Ensure these utility classes are always generated */
-@source inline("tabular-nums phx-click-loading:opacity-60 phx-click-loading:opacity-70 phx-click-loading:pointer-events-none phx-click-loading:cursor-wait phx-click-loading:inline phx-click-loading:hidden phx-submit-loading:opacity-70 phx-submit-loading:cursor-wait phx-submit-loading:inline phx-submit-loading:hidden transition-interactive focus-ring touch-target-expanded hover-scale active:scale-95 active:scale-[0.95] active:scale-[0.98] bg-red-400 bg-orange-400 bg-amber-400 bg-yellow-400 bg-lime-400 bg-green-400 bg-emerald-400 bg-teal-400 bg-cyan-400 bg-sky-400 bg-blue-400 bg-indigo-400 bg-violet-400 bg-purple-400 bg-fuchsia-400 bg-pink-400");
+@source inline("tabular-nums phx-click-loading:opacity-60 phx-click-loading:opacity-70 phx-click-loading:pointer-events-none phx-click-loading:cursor-wait phx-click-loading:inline phx-click-loading:hidden phx-submit-loading:opacity-70 phx-submit-loading:cursor-wait phx-submit-loading:inline phx-submit-loading:hidden transition-interactive focus-ring touch-target-expanded tap-feedback hover-scale active:scale-95 active:scale-[0.95] active:scale-[0.98] bg-red-400 bg-orange-400 bg-amber-400 bg-yellow-400 bg-lime-400 bg-green-400 bg-emerald-400 bg-teal-400 bg-cyan-400 bg-sky-400 bg-blue-400 bg-indigo-400 bg-violet-400 bg-purple-400 bg-fuchsia-400 bg-pink-400");
 
 /* Source paths for template scanning.
    NOTE: Tailwind v4 respects .gitignore when expanding wildcards.
@@ -1607,16 +1666,21 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
   display: contents;
 }
 
+:root {
+  --mobile-dock-offset: calc(3.5rem + env(safe-area-inset-bottom));
+}
+
 .dock-offset {
-  padding-bottom: calc(3.5rem + env(safe-area-inset-bottom));
+  padding-bottom: var(--mobile-dock-offset);
+  scroll-padding-bottom: var(--mobile-dock-offset);
 }
 @media (min-width: 1024px) {
   .dock-offset {
     padding-bottom: 0;
+    scroll-padding-bottom: 0;
   }
 }
 
 body:has(input:focus, textarea:focus, [contenteditable]:focus) .dock {
   display: none;
 }
-

@@ -69,9 +69,14 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
       |> send_self(
         hide_main: false,
         preview_sidebar_widgets: [],
-        modal_assigns: Keyword.put(e(assigns(socket), :modal_assigns, []), :loaded, false)
+        modal_assigns: reset_loaded(e(assigns(socket), :modal_assigns, []))
       )
 
     {:noreply, socket}
   end
+
+  @doc false
+  def reset_loaded(assigns) when is_list(assigns), do: Keyword.put(assigns, :loaded, false)
+  def reset_loaded(assigns) when is_map(assigns), do: Map.put(assigns, :loaded, false)
+  def reset_loaded(_assigns), do: [loaded: false]
 end

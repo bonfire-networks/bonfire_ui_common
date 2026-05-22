@@ -1,5 +1,6 @@
 <div
   id={@id}
+  :hook="PreviewContainer"
   data-id="preview_content"
   data-show={e(@show, false)}
   data-hide={!e(@show, false)}

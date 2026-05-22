@@ -33,7 +33,7 @@
     "lg:max-w-[var(--spacing-1290)]": !@full_width
   }>
     <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" phx-update="ignore">
-    <div class="drawer-content px-safe lg:pr-1">
+    <div class="drawer-content px-safe lg:pr-1 dock-offset">
       <div
         data-id="layout"
         data-two-columns={@without_secondary_widgets == true && @without_sidebar != true}
@@ -70,7 +70,7 @@
                   <main
                     id="main-content"
                     class={
-                      "flex flex-col pb-[1px] px-[1px] dock-offset",
+                      "flex flex-col pb-[1px] px-[1px]",
                       hidden: @hide_main,
                       "border-none": @without_sidebar == true
                     }
