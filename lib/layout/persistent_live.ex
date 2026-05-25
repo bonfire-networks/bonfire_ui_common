@@ -68,13 +68,6 @@ defmodule Bonfire.UI.Common.PersistentLive do
       |> Presence.present!(%{@session_key => presence_token})
       |> debug("socket prepared via session")
 
-    # Seed reading positions into our process dict from connect_params
-    # (this is PersistentLive, so the dict persists across live navigations;
-    # the JS hook pushes updates via pushEvent as the user scrolls)
-    Enum.each(connect_params["reading_pos"] || %{}, fn {feed_name, cursor} ->
-      Process.put({:reading_pos, feed_name}, cursor)
-    end)
-
     if initial_parent_pid = session[:context][:initial_parent_pid] do
       debug(
         initial_parent_pid,

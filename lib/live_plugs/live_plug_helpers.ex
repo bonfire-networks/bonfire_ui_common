@@ -130,14 +130,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        last_path: live_referer_path(connect_params["_live_referer"]),
        live_action: e(assigns(socket), :live_action, nil),
        socket_connected?: socket_connected?
-     )
-     |> tap(fn _socket ->
-       # Store reading positions in page LV's process dict as fallback
-       # for when PersistentLive hasn't mounted yet (Presence not available)
-       Enum.each(connect_params["reading_pos"] || %{}, fn {feed_name, cursor} ->
-         Process.put({:reading_pos, feed_name}, cursor)
-       end)
-     end)}
+     )}
   end
 
   defp maybe_get_connect_info(socket, key) do
