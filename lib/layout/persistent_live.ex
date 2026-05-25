@@ -19,6 +19,8 @@ defmodule Bonfire.UI.Common.PersistentLive do
   end
 
   def mount(_params, session, socket) do
+    raw_session = session
+
     # TEMP: monitor memory used by the LV and children
     # Bonfire.Common.MemoryMonitor.start_link(__MODULE__)
 
@@ -62,6 +64,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       #    end
       #  )
       |> assign_defaults()
+      |> assign_persistent_locale_from_session(raw_session)
       |> Presence.present!(%{@session_key => presence_token})
       |> debug("socket prepared via session")
 
@@ -186,6 +189,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       # :page,
       # :page_title,
       :selected_tab,
+      :locale,
       :locales
     ])
     |> Map.put(
@@ -423,6 +427,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       |> assign(assigns)
       |> assign_global(context)
       |> assign_account_users()
+      |> assign_persistent_locale(assigns, context)
 
     # When smart_input_opts changes via page navigation, sync context_id from it
     # so stale group context gets cleared when navigating away
@@ -466,6 +471,25 @@ defmodule Bonfire.UI.Common.PersistentLive do
       end
 
     {:reply, value, socket}
+  end
+
+  defp assign_persistent_locale_from_session(socket, session) do
+    with {:ok, socket} <- Bonfire.UI.Common.LivePlugs.Locale.mount(%{}, session || %{}, socket) do
+      socket
+    else
+      _ -> socket
+    end
+  end
+
+  defp assign_persistent_locale(socket, assigns, context) do
+    case assigns[:locale] || context[:locale] || assigns[:locales] || context[:locales] do
+      nil -> socket
+      locale_or_locales -> assign_persistent_locale(socket, locale_or_locales)
+    end
+  end
+
+  defp assign_persistent_locale(socket, locale_or_locales) do
+    Bonfire.UI.Common.LivePlugs.Locale.assign_put_locale(locale_or_locales, socket)
   end
 
   defp assign_account_users(socket) do

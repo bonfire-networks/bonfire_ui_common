@@ -136,6 +136,36 @@ defmodule Bonfire.UI.Common.LocaleTest do
     end
   end
 
+  describe "PersistentLive locale propagation" do
+    test "applies locale when persistent context update receives locales" do
+      Localise.put_locale("en")
+      socket = %Phoenix.LiveView.Socket{assigns: %{__changed__: %{}, __context__: %{}}}
+
+      assert {:noreply, socket} =
+               Bonfire.UI.Common.PersistentLive.handle_info(
+                 {:assign_persistent_self, %{locales: ["fr"]}},
+                 socket
+               )
+
+      assert socket.assigns.locale == :fr
+      assert Gettext.get_locale() == "fr"
+    end
+
+    test "applies locale when persistent context update receives explicit locale" do
+      Localise.put_locale("en")
+      socket = %Phoenix.LiveView.Socket{assigns: %{__changed__: %{}, __context__: %{}}}
+
+      assert {:noreply, socket} =
+               Bonfire.UI.Common.PersistentLive.handle_info(
+                 {:assign_persistent_self, %{locale: "es"}},
+                 socket
+               )
+
+      assert socket.assigns.locale == "es"
+      assert Gettext.get_locale() == "es"
+    end
+  end
+
   describe "put_locale/1 sets correct Gettext locale (POSIX format)" do
     test "regional locale with hyphen gets converted to underscore for Gettext" do
       Localise.put_locale("fr-CA")
