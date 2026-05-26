@@ -1129,8 +1129,19 @@ div[data-id='object_body'] iframe {
   width: 100% !important;
 }
 
+div[data-id='object_body'].prose h1 {
+  font-size: 1.275rem !important;
+  line-height: 1 !important;
+  margin-top: 0.25em !important;
+  margin-bottom: 0.25em !important;
+}
 
-div[data-id='object_body'] h1 a {}
+div[data-id='object_body'].prose h2 {
+  font-size: 1.275rem !important;
+  line-height: 1 !important;
+  margin-top: 0.25em !important;
+  margin-bottom: 0.25em !important;
+}
 
 /* Select 'a' elements with exactly 3 direct span children */
 div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-type(4)))>span:first-of-type,
