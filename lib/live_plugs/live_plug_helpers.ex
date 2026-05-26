@@ -4,6 +4,8 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   use UI.Common
   # alias Bonfire.UI.Common.LivePlugs
 
+  @max_client_reading_positions 20
+
   def on_mount(modules, params, session, socket) when is_list(modules) do
     UI.Common.undead_on_mount(socket, fn ->
       socket =
@@ -124,6 +126,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        user_agent: maybe_get_connect_info(socket, :user_agent),
        user_ip: user_ip,
        #  connect_params: connect_params,
+       client_reading_positions: connect_param_map(connect_params["reading_pos"]),
        csrf_socket_token: connect_params["_csrf_token"],
        # Phoenix LV sets this on live navigations; we keep just the path so
        # the back button can `<.link navigate>` back without `history.back()`.
@@ -144,6 +147,56 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
     case URI.parse(url) do
       %URI{path: path} when is_binary(path) -> path
       _ -> nil
+    end
+  end
+
+  defp connect_param_map(%{} = params) do
+    params
+    |> Enum.reduce([], fn entry, acc ->
+      case connect_param_entry(entry) do
+        {:ok, feed_name, cursor, last_touched} -> [{feed_name, cursor, last_touched} | acc]
+        :error -> acc
+      end
+    end)
+    |> Enum.sort_by(fn {feed_name, _cursor, last_touched} -> {-last_touched, feed_name} end)
+    |> Enum.take(@max_client_reading_positions)
+    |> Map.new(fn {feed_name, cursor, _last_touched} -> {feed_name, cursor} end)
+  end
+
+  defp connect_param_map(_), do: %{}
+
+  defp connect_param_entry({feed_name, cursor}) when is_binary(feed_name) and is_binary(cursor) do
+    if Bonfire.Common.Types.is_uid?(cursor) do
+      {:ok, feed_name, cursor, 0}
+    else
+      :error
+    end
+  end
+
+  defp connect_param_entry({feed_name, %{"value" => cursor} = params})
+       when is_binary(feed_name) and is_binary(cursor) do
+    if Bonfire.Common.Types.is_uid?(cursor) do
+      {:ok, feed_name, cursor, connect_param_last_touched(params)}
+    else
+      :error
+    end
+  end
+
+  defp connect_param_entry(_), do: :error
+
+  defp connect_param_last_touched(%{} = params) do
+    case Map.get(params, "last_touched") || Map.get(params, "lastTouched") do
+      value when is_integer(value) ->
+        max(value, 0)
+
+      value when is_binary(value) ->
+        case Integer.parse(value) do
+          {parsed, ""} -> max(parsed, 0)
+          _ -> 0
+        end
+
+      _ ->
+        0
     end
   end
 

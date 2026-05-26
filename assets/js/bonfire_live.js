@@ -19,6 +19,7 @@ import { KeyboardShortcutHooks } from "./keyboard_shortcuts.js";
 import { IframeResizeHooks } from "./iframe_resize.js";
 import { InlineComposerHooks } from "./inline_composer.js";
 import { collectBonfireParams, setBonfireParam, removeBonfireParam } from "./local_storage_params";
+import { setupLiveSocketLifecycle } from "./live_socket_lifecycle.js";
 import { ExtensionHooks } from "../../../../config/current_flavour/deps.hooks.js";
 import ComponentHooks from "../../../../config/current_flavour/assets/hooks/index.js";
 
@@ -57,6 +58,21 @@ let JS_exec_attr_event = (selector, attr) => {
 // Expose localStorage param helpers globally for hooks in other extensions
 window.Bonfire = Object.assign(window.Bonfire || {}, { setBonfireParam, removeBonfireParam });
 
+const dispatchLifecycleFlush = (trigger, event) => {
+	window.dispatchEvent(new CustomEvent("bonfire:lifecycle:flush", {
+		detail: {
+			trigger,
+			persisted: event && event.persisted === true,
+			visibilityState: document.visibilityState,
+		},
+	}));
+};
+
+window.addEventListener("visibilitychange", () => {
+	if (document.visibilityState === "hidden") dispatchLifecycleFlush("visibilitychange");
+});
+window.addEventListener("pagehide", (event) => dispatchLifecycleFlush("pagehide", event), { capture: true });
+
 let csrfToken = document
 	.querySelector("meta[name='csrf-token']")
 	.getAttribute("content");
@@ -88,6 +104,8 @@ let liveSocket = new LiveSocket(socketPath, Socket, {
 	},
 	hooks: Hooks,
 });
+
+setupLiveSocketLifecycle(liveSocket);
 
 // Show progress bar on live navigation and form submits
 // Only displays if still loading after 120 msec
@@ -206,4 +224,3 @@ window.disconnectLiveSocket = function () {
 // >> liveSocket.disableLatencySim()
 
 window.liveSocket = liveSocket;
-
