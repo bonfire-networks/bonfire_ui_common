@@ -55,13 +55,51 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   @doc "Iconify name for a smart-input type in the composer's picker."
-  def type_icon(component) when is_atom(component) do
-    case component |> apply(:smart_input_module, []) |> List.wrap() |> List.first() do
-      :post -> "ph:note-pencil-duotone"
-      :poll -> "ph:list-checks-duotone"
-      :message -> "ph:chat-circle-text-duotone"
-      _ -> "ph:pencil-line-duotone"
+  # TODO: config or behavior driven mapping instead of hardcoded here
+  @type_meta %{
+    announcement: %{icon: "ph:megaphone-duotone", label: "Announcement"},
+    post: %{icon: "ph:note-pencil-duotone", label: "Post"},
+    poll: %{icon: "ph:list-checks-duotone", label: "Poll"},
+    message: %{icon: "ph:chat-circle-text-duotone", label: "Message"}
+  }
+
+  defp type_atom(component, create_object_type) do
+    cond do
+      create_object_type in [:announcement, "announcement"] ->
+        :announcement
+
+      create_object_type in [:post, "post"] ->
+        :post
+
+      create_object_type in [:poll, "poll"] ->
+        :poll
+
+      create_object_type in [:message, "message"] ->
+        :message
+
+      is_atom(component) ->
+        component
+        |> maybe_apply(:smart_input_module, [], fallback_return: [])
+        |> List.wrap()
+        |> List.first()
+
+      true ->
+        nil
     end
+  end
+
+  def type_icon(component, create_object_type \\ nil) do
+    ed(@type_meta, type_atom(component, create_object_type), :icon, "ph:pencil-line-duotone")
+  end
+
+  def type_label(component, create_object_type \\ nil) do
+    ed(@type_meta, type_atom(component, create_object_type), :label, nil) ||
+      component
+      |> maybe_apply(:smart_input_module, [], fallback_return: [])
+      |> List.wrap()
+      |> List.first()
+      |> to_string()
+      |> String.capitalize()
   end
 
   def handle_event("toggle_cw", _params, socket) do

@@ -149,14 +149,12 @@
                     {#match active_component}
                       <details class="dropdown">
                         <summary class="btn btn-sm btn-soft text-sm normal-case gap-1" title={l("Choose what to create")}>
-                          <Iconify.iconify icon={LiveHandler.type_icon(active_component)} class="w-4 h-4" />
+                          <Iconify.iconify
+                            icon={LiveHandler.type_icon(active_component, e(@smart_input_opts, :create_object_type, nil))}
+                            class="w-4 h-4"
+                          />
                           <span class="truncate max-w-[10rem]">
-                            {active_component
-                            |> apply(:smart_input_module, [])
-                            |> List.wrap()
-                            |> List.first()
-                            |> to_string()
-                            |> String.capitalize()}
+                            {LiveHandler.type_label(active_component, e(@smart_input_opts, :create_object_type, nil))}
                           </span>
                           <#Icon iconify="ph:caret-down-bold" class="w-3 h-3 opacity-60" />
                         </summary>
@@ -178,14 +176,7 @@
                                 icon={LiveHandler.type_icon(component)}
                                 class="w-4 h-4 shrink-0 text-base-content/70"
                               />
-                              <span>
-                                {component
-                                |> apply(:smart_input_module, [])
-                                |> List.wrap()
-                                |> List.first()
-                                |> to_string()
-                                |> String.capitalize()}
-                              </span>
+                              <span>{LiveHandler.type_label(component)}</span>
                             </a>
                           </li>
                         </ul>
