@@ -21,7 +21,7 @@
           module={maybe_component(Bonfire.UI.Common.PageHeaderLive, @__context__)}
           page="preview"
           page_title={e(@modal_assigns, :activity_type, nil) || l("Discussion")}
-          back={true}
+          back
           back_type={:preview}
           show_right_actions={false}
         />

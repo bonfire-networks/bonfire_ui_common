@@ -57,16 +57,17 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   @doc "Iconify name for a smart-input type in the composer's picker."
   # TODO: config or behavior driven mapping instead of hardcoded here
   @type_meta %{
-    announcement: %{icon: "ph:megaphone-duotone", label: "Announcement"},
+    broadcast: %{icon: "ph:megaphone-duotone", label: "Broadcast"},
     post: %{icon: "ph:note-pencil-duotone", label: "Post"},
     poll: %{icon: "ph:list-checks-duotone", label: "Poll"},
     message: %{icon: "ph:chat-circle-text-duotone", label: "Message"}
   }
 
   defp type_atom(component, create_object_type) do
+    # TODO: config or behavior driven mapping instead of hardcoded here
     cond do
-      create_object_type in [:announcement, "announcement"] ->
-        :announcement
+      create_object_type in [:broadcast, "broadcast"] ->
+        :broadcast
 
       create_object_type in [:post, "post"] ->
         :post
