@@ -20,6 +20,12 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
         _ -> "http://#{hostname}:#{port}"
       end
 
+    config :bonfire_ui_common, :plausible_proxy,
+      enabled: System.get_env("PLAUSIBLE_PROXY_ENABLED") in ["true", "1", "yes"],
+      domain: System.get_env("PLAUSIBLE_DOMAIN"),
+      local_path: System.get_env("PLAUSIBLE_PROXY_LOCAL_PATH", "/js/plausible_script.js"),
+      script_extension: System.get_env("PLAUSIBLE_PROXY_SCRIPT_EXTENSION", "script.js")
+
     config :bonfire_ui_common,
       session_time_to_remember:
         System.get_env("SESSION_TTL", "#{div(to_timeout(day: 60), 1_000)}")

@@ -225,6 +225,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         plug PhoenixAnalytics.Plugs.RequestTracker
       end
 
+      plug Bonfire.UI.Common.MaybePlausibleProxyPlug
+
       plug :save_url_in_process
       plug :log_ip
 
@@ -296,6 +298,17 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
             ""
           end
 
+        plausible_script =
+          with config when is_list(config) <-
+                 Application.get_env(:bonfire_ui_common, :plausible_proxy, []),
+               true <- config[:enabled] == true do
+            domain = config[:domain] || Bonfire.Common.URIs.base_domain()
+            path = config[:local_path] || "/js/plausible_script.js"
+            ~s(<script defer data-domain="#{domain}" src="#{path}"></script>)
+          else
+            _ -> ""
+          end
+
         """
         <link rel="icon" type="image/x-icon" href="/favicon.ico">
         <link rel="icon" type="image/svg+xml" href='#{endpoint_module.static_path("/images/bonfire-icon.svg")}'>
@@ -306,6 +319,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         <style>:root { --font-sans: "#{font_name}", ui-sans-serif, system-ui, sans-serif; }</style>
 
         #{x_cloak_override}
+
+        #{plausible_script}
 
         #{if Extend.module_enabled?(PhoenixGon.View), do: PhoenixGon.View.render_gon_script(conn) |> Phoenix.HTML.safe_to_string()}
 
