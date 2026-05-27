@@ -68,7 +68,7 @@
   <!-- <button class="btn btn-sm btn-ghost">{l "Enable wellness mode"}</button>
 <button class="btn btn-sm btn-ghost">{l "Enable safety mode"}</button> -->
 
-  <div class="bg-base-content/10 rounded px-2 py-1 text-xs inline-block">{#case maybe_apply(Bonfire.Federate.ActivityPub, :federating?, current_user(@__context__),
+  <div class="bg-base-content/10 rounded px-2 py-1 text-xs inline-block">{#case maybe_apply(Bonfire.Federate.ActivityPub, :federation_mode, current_user(@__context__),
         context: @__context__,
         fallback_return: false
       )}
@@ -76,6 +76,8 @@
         {l("Federation disabled")}
       {#match nil}
         {l("Manual federation enabled")}
+      {#match :allowlist_only}
+        {l("Archipelago federation enabled")}
       {#match true}
         {l("Automatic federation enabled")}
     {/case}
