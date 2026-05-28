@@ -18,6 +18,12 @@
   html, body { margin: 0; padding: 0; }
 </style>
 <div id="iframe-resize-hook" phx-hook="IframeResize">
+  <.live_component
+    module={Bonfire.UI.Common.NotificationLive}
+    id={:notification}
+    i={1}
+    root_flash={assigns[:flash]}
+  />
   {@inner_content}
   <%!-- Many callers hard-code `reusable_modal_id="persistent_modal"` (originally
        targeting the sticky PersistentLive in the main app layout, which doesn't

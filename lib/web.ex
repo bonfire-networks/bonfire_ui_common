@@ -68,6 +68,7 @@ defmodule Bonfire.UI.Common.Web do
       alias Bonfire.UI.Common.Plugs.MustLogIn
 
       plug :check_controller_enabled
+      plug :assign_conn_context
 
       # Define the plug function that logs the module name
       def check_controller_enabled(conn, _opts) do
@@ -76,6 +77,12 @@ defmodule Bonfire.UI.Common.Web do
         else
           raise "Sorry, this feature is currently disabled."
         end
+      end
+
+      def assign_conn_context(conn, _opts) do
+        conn
+        |> Plug.Conn.assign(:current_url, Plug.Conn.request_url(conn))
+        |> Plug.Conn.assign(:current_params, conn.params)
       end
 
       unquote(live_view_basic_helpers())
@@ -404,6 +411,10 @@ defmodule Bonfire.UI.Common.Web do
     live_mount_before_compile(env)
   end
 
+  defmacro __live_view_child_mount_before_compile__(env) do
+    live_mount_before_compile(env)
+  end
+
   defp live_mount_before_compile(env) do
     if Module.defines?(env.module, {:mount, 3}) do
       quote do
@@ -666,7 +677,7 @@ defmodule Bonfire.UI.Common.Web do
         # use Bonfire.UI.Common.ComponentRenderHandler
         use Surface.LiveView, unquote(opts)
 
-        @before_compile {Bonfire.UI.Common.Web, :__live_mount_before_compile__}
+        @before_compile {Bonfire.UI.Common.Web, :__live_view_child_mount_before_compile__}
         @before_compile {Bonfire.UI.Common.Web, :__handle_info_before_compile__}
         @before_compile {Bonfire.UI.Common.Web, :__handle_event_before_compile__}
         @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}

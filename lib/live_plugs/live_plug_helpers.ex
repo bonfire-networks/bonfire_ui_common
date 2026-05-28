@@ -52,7 +52,21 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   defp init_mount(:not_mounted_at_router, session, socket) do
     # for embedding views in views/components using `live_render`
     # note that these views can't contain any handle_params
-    from_ok(init_socket(stringify_keys(session["params"]), socket))
+    socket =
+      socket
+      |> Phoenix.Component.assign_new(:current_params, fn -> nil end)
+      |> Phoenix.Component.assign_new(:current_url, fn -> nil end)
+      |> Phoenix.Component.assign_new(:force_static, fn -> false end)
+
+    params = socket.assigns[:current_params] || stringify_keys(session["params"])
+
+    socket =
+      assign_global(socket,
+        current_url: socket.assigns[:current_url],
+        force_static: socket.assigns[:force_static]
+      )
+
+    from_ok(init_socket(params, socket))
   end
 
   defp init_mount(params, _session, socket) do

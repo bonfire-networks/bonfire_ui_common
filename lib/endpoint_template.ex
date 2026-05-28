@@ -370,7 +370,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         # || Utils.current_account(assigns)
 
         js_path =
-          if live_socket? || current_user_id do
+          if live_socket? || (current_user_id && !assigns[:force_static]) do
             endpoint_module.static_path("/assets/bonfire_live.js")
           else
             endpoint_module.static_path("/assets/bonfire_basic.js")

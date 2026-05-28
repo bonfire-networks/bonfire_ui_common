@@ -62,7 +62,28 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
         )
       end
 
-    {:ok, assign(socket, :remote_interaction_url, remote_interaction_url)}
+    context = socket.assigns[:__context__]
+
+    go_url =
+      e(context, :go, nil) ||
+        String.replace(
+          e(context, :current_url, "/"),
+          "/comments/embed/",
+          "/comments/embed/interactive/"
+        )
+
+    can_reply =
+      if current_user = current_user(context) do
+        reply_to_id = socket.assigns[:reply_to_id] || socket.assigns[:context_id]
+        Bonfire.Boundaries.can?(current_user, :reply, reply_to_id)
+      end
+
+    {:ok,
+     assign(socket,
+       remote_interaction_url: remote_interaction_url,
+       go_url: go_url,
+       can_reply: can_reply
+     )}
   end
 
   defdelegate handle_event(action, attrs, socket),
