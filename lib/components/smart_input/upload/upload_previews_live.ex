@@ -6,14 +6,7 @@ defmodule Bonfire.UI.Common.UploadPreviewsLive do
   prop event_target, :any, default: nil
   prop selected_cover, :any, default: nil
 
-  def error_to_string(:too_large), do: l("The file is too large.")
-
-  def error_to_string(:not_accepted),
-    do:
-      l(
-        "You have selected a file type that is not permitted. Contact your instance admin if you want it added."
-      )
-
-  def error_to_string(:too_many_files),
-    do: l("You have selected too many files.")
+  def error_to_string(:too_large), do: Bonfire.Fail.get_error_msg(:file_too_large)
+  def error_to_string(:not_accepted), do: Bonfire.Fail.get_error_msg(:file_type_not_allowed)
+  def error_to_string(error) when is_atom(error), do: Bonfire.Fail.get_error_msg(error)
 end
