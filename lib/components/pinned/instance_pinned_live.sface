@@ -29,7 +29,7 @@
             {!-- Carousel --}
             <div
               id="pinned-carousel"
-              class="flex items-start gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2"
+              class="flex items-start gap-3 overflow-x-auto touch-pan-y scroll-smooth snap-x snap-mandatory pb-2"
               phx-hook="CarouselScroll"
               style="scrollbar-width: thin; scrollbar-color: oklch(var(--p)) oklch(var(--p) / 0.15);"
             >
@@ -48,7 +48,7 @@
                         activity={activity}
                         showing_within={:pinned}
                         hide_actions
-                        class="flex-1 reply_to_in_composer overflow-x-auto"
+                        class="flex-1 reply_to_in_composer"
                         show_minimal_subject_and_note
                       />
                     </div>

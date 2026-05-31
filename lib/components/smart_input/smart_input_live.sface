@@ -200,8 +200,8 @@
                         icon={Bonfire.Classify.Web.Preview.CategoryLive.icon(@context_group)}
                         class="w-4 h-4"
                       />
-                      <span class="truncate max-w-[14rem]">
-                        {l("Writing in %{name}", name: context_name)}
+                      <span class="truncate max-w-[100px]">
+                        {l("In %{name}", name: context_name)}
                       </span>
                       <button
                         type="button"

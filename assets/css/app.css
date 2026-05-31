@@ -736,7 +736,7 @@ hex-input::part(input) {
 
 
 .bonfire-wrapper {
-  @apply md:rounded-xl bg-base-200 md:bg-base-100 md:border md:border-base-content/10;
+  @apply md:rounded-xl bg-transparent md:bg-base-100 md:border md:border-base-content/10;
   @media (min-width: 1024px) {
     box-shadow: 0 1px 3px 0 color-mix(in oklab, currentColor calc(var(--depth) * 8%), #0000),
                 0 1px 2px -1px color-mix(in oklab, currentColor calc(var(--depth) * 6%), #0000);
@@ -1226,10 +1226,17 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
   }
 }
 
-/* Closed state: slide down + subtle scale + fade out */
+/* Closed state: slide down + subtle scale + fade out.
+   `visibility: hidden` + `pointer-events: none` make the off-screen composer
+   non-focusable so its `contenteditable` editor can't hold or re-grab focus
+   while minimized — otherwise `body:has([contenteditable]:focus) .dock` keeps
+   the mobile dock hidden after minimizing. Keyed on the class (not the
+   server-only `data-hidden`) so it covers every hide path reliably. */
 #smart_input_container.translate-y-100 {
   transform: translateY(105%) scale(0.98);
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 /* On mobile, only transition box-shadow (never height/top — those are set

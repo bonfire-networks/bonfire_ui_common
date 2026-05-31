@@ -8,6 +8,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def switch_smart_input_type(_type, js \\ %JS{}) do
     js
+    |> JS.remove_attribute("data-hidden", to: "#smart_input_container")
     |> maximize()
     |> JS.push("Bonfire.UI.Common.SmartInput:select_smart_input",
       value: %{
@@ -18,6 +19,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def show_main(js \\ %JS{}) do
     js
+    |> JS.remove_attribute("data-hidden", to: "#smart_input_container")
     |> JS.show(to: "#composer_container", display: "flex")
     |> maximize()
     |> JS.push("Bonfire.UI.Common.SmartInput:select_smart_input",
@@ -33,6 +35,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     opts = Map.merge(opts, %{open: true})
 
     js
+    |> JS.remove_attribute("data-hidden", to: "#smart_input_container")
     |> JS.show(to: "#composer_container", display: "flex")
     |> maximize()
     # |> show_main(opts)
@@ -43,6 +46,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def open_type(js \\ %JS{}, component, opts \\ nil) do
     js
+    |> JS.remove_attribute("data-hidden", to: "#smart_input_container")
     |> JS.show(to: "#composer_container", display: "flex")
     |> maximize()
     |> JS.show(to: ".smart_input_show_on_open")
