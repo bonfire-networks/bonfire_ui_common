@@ -59,9 +59,7 @@ defmodule Bonfire.Common.Settings.LiveHandler do
            |> Bonfire.Common.Settings.put(value, scope: params["scope"], socket: socket) do
       {:noreply,
        socket
-       |> Bonfire.UI.Common.ThemeHelper.push_theme(
-         Bonfire.UI.Common.ThemeHelper.current_theme(socket)
-       )
+       |> Bonfire.UI.Common.ThemeHelper.push_current_theme()
        |> assign_flash(:info, l("Theme changed and loaded :-)"))}
     end
   end

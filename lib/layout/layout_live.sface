@@ -190,17 +190,18 @@
     }>
       <label for="sidebar-drawer" aria-label={l("Close sidebar")} class="drawer-overlay" />
       <aside
+        id="nav_sidebar"
         data-id="nav_sidebar"
         data-sidebar-minimal={@without_sidebar == :minimal}
-        class="w-80 px-4 px-safe lg:px-0 lg:mr-5 lg:w-[260px] bg-base-200 self-stretch overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-full lg:pb-0"
+        class="w-80 px-4 px-safe lg:px-0 lg:mr-5 lg:w-[260px] bg-base-200 self-stretch flex flex-col overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-0 lg:h-screen lg:pb-0"
       >
-        <div class="flex flex-col flex-1 h-full pb-[80px] lg:pb-0">
+        <div class="flex flex-col flex-1 min-h-full lg:min-h-0 pb-[80px] lg:pb-0">
           {!-- Skeleton mirroring PersistentLive's shape. Always rendered alongside the sticky LV;
                hidden by CSS (see app.css `[data-role="persistent_skeleton"]:has(...)`) once the
                sticky child fills its container. Prevents the vertical reflow that happens while
                the sticky child's separate channel join is in flight. --}
           {#if @current_user_id && @without_sidebar != true}
-            <div data-role="persistent_skeleton" class="block w-full" aria-hidden="true">
+            <div data-role="persistent_skeleton" class="block w-full lg:shrink-0" aria-hidden="true">
               <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
                 <div class="flex pt-safe w-full">
                   <div class="py-4 gap-6 flex flex-col w-full">
@@ -263,7 +264,7 @@
             <Bonfire.UI.Common.PersistentLive
               id={:persistent}
               sticky
-              container={{:div, class: "block w-full"}}
+              container={{:div, class: "block w-full lg:shrink-0"}}
               session={%{
                 "context" => %{
                   sticky: true,
@@ -279,7 +280,7 @@
           {#else}
             <div
               :if={!@current_user_id}
-              class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between"
+              class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky lg:shrink-0 flex items-center lg:min-h-[48px] justify-between"
             >
               <div class="flex pt-safe w-full">
                 <div class="pt-2 flex items-center justify-between">
@@ -292,12 +293,14 @@
             </div>
           {/if}
 
-          <Bonfire.UI.Common.NavSidebarLive
-            page={@page}
-            selected_tab={@selected_tab}
-            nav_items={@nav_items}
-            sidebar_widgets={@sidebar_widgets}
-          />
+          <div id="nav_sidebar_scroll" class="lg:flex-1 lg:min-h-0 lg:overflow-y-auto">
+            <Bonfire.UI.Common.NavSidebarLive
+              page={@page}
+              selected_tab={@selected_tab}
+              nav_items={@nav_items}
+              sidebar_widgets={@sidebar_widgets}
+            />
+          </div>
         </div>
       </aside>
     </div>

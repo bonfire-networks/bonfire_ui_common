@@ -1,13 +1,32 @@
+<% theme = Bonfire.UI.Common.ThemeHelper.theme_config(assigns) %>
 <!DOCTYPE html>
 <html
-  data-theme={Bonfire.UI.Common.ThemeHelper.current_theme(assigns)}
+  data-theme={theme.theme}
+  data-theme-mode={theme.mode}
+  data-theme-light={theme.light}
+  data-theme-dark={theme.dark}
   id="root"
   class="bg-base-100"
   data-open="false"
-  lang="en"
+  lang={Bonfire.Common.Localise.get_locale_id() |> to_string()}
 >
   <head>
     <meta charset="utf-8" />
+    <%!-- Resolve the `:system` theme from the device's prefers-color-scheme before paint (no flash),
+          and keep tracking live OS changes. Fixed themes are left as server-rendered. --%>
+    <script>
+      (function() {
+        var el = document.documentElement;
+        if (el.getAttribute("data-theme-mode") !== "system") return;
+        var mq = window.matchMedia("(prefers-color-scheme: dark)");
+        function apply() {
+          el.setAttribute("data-theme", mq.matches ? el.getAttribute("data-theme-dark") : el.getAttribute("data-theme-light"));
+        }
+        apply();
+        mq.addEventListener("change", apply);
+        window.__bonfireSystemTheme = { mq: mq, apply: apply };
+      })();
+    </script>
     <%= Application.get_env(:live_debugger, :live_debugger_tags) %>
 
     <%= if !@conn.assigns[:current_user_id] do %>
@@ -41,7 +60,27 @@
 
     <script>
       window.addEventListener("phx:set_theme", function(e) {
-        document.documentElement.setAttribute("data-theme", e.detail.theme);
+        var el = document.documentElement;
+        // Tear down any previously attached system listener before switching modes
+        if (window.__bonfireSystemTheme) {
+          window.__bonfireSystemTheme.mq.removeEventListener("change", window.__bonfireSystemTheme.apply);
+          window.__bonfireSystemTheme = null;
+        }
+        if (e.detail.theme === "system") {
+          if (e.detail.light) el.setAttribute("data-theme-light", e.detail.light);
+          if (e.detail.dark) el.setAttribute("data-theme-dark", e.detail.dark);
+          el.setAttribute("data-theme-mode", "system");
+          var mq = window.matchMedia("(prefers-color-scheme: dark)");
+          var apply = function() {
+            el.setAttribute("data-theme", mq.matches ? el.getAttribute("data-theme-dark") : el.getAttribute("data-theme-light"));
+          };
+          apply();
+          mq.addEventListener("change", apply);
+          window.__bonfireSystemTheme = { mq: mq, apply: apply };
+        } else {
+          el.setAttribute("data-theme-mode", "fixed");
+          el.setAttribute("data-theme", e.detail.theme);
+        }
       });
       window.addEventListener("phx:set_font", function(e) {
         var link = document.querySelector("link[data-font]");

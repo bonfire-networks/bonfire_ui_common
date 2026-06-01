@@ -48,33 +48,29 @@ defmodule Bonfire.UI.Common.BasicView do
           |> Map.put_new(:class, "")
       end
 
+    assigns = Map.put(assigns, :theme, Bonfire.UI.Common.ThemeHelper.theme_config(assigns))
+
     ~H"""
     <!DOCTYPE html>
     <html
-      lang="en"
+      lang={Bonfire.Common.Localise.get_locale_id() |> to_string()}
       class={assigns[:class] || "bg-black"}
-      data-theme={
-        if Settings.get(
-             [:ui, :theme, :preferred],
-             :system,
-             assigns[:__context__] || assigns[:current_user] || @conn
-           ) == :light,
-           do:
-             Settings.get(
-               [:ui, :theme, :instance_theme_light],
-               "light",
-               assigns[:__context__] || assigns[:current_user] || @conn
-             ),
-           else:
-             Settings.get(
-               [:ui, :theme, :instance_theme],
-               "bonfire",
-               assigns[:__context__] || assigns[:current_user] || @conn
-             )
-      }
+      data-theme={@theme.theme}
+      data-theme-mode={@theme.mode}
+      data-theme-light={@theme.light}
+      data-theme-dark={@theme.dark}
     >
       <head>
         <meta charset="utf-8" />
+        <%!-- Resolve the `:system` theme from the device's prefers-color-scheme before paint. --%>
+        <script>
+          (function() {
+            var el = document.documentElement;
+            if (el.getAttribute("data-theme-mode") !== "system") return;
+            var mq = window.matchMedia("(prefers-color-scheme: dark)");
+            el.setAttribute("data-theme", mq.matches ? el.getAttribute("data-theme-dark") : el.getAttribute("data-theme-light"));
+          })();
+        </script>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="Bonfire instance" />
