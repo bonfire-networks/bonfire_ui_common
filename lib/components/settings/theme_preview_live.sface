@@ -92,7 +92,7 @@
       <div class="relative">
         <input
           type="text"
-          placeholder="Write something..."
+          placeholder={l("Write something...")}
           class="input input-bordered input-sm w-full pr-10"
           readonly
         />

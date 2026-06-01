@@ -9,7 +9,7 @@
             type="text"
             name="search[term]"
             value={@search_term}
-            placeholder="Search keys or default values..."
+            placeholder={l("Search keys or default values...")}
             class="input input-bordered w-full"
             phx-debounce="300"
           />

@@ -1156,17 +1156,17 @@ defmodule Bonfire.UI.Common do
       Config.get(
         :loading_messages,
         [
-          "Loading...",
-          "Communing with the fediverse...",
-          "Another world is loading...",
-          "Seizing the means of communication...",
-          "Manifesting digital commons...",
-          "Decentralising all the things...",
-          "Tuning into the mycelial network...",
-          "Queering the database...",
-          "Liberating your data...",
-          "Building solidarity networks...",
-          "Organising the bits..."
+          l("Loading..."),
+          l("Communing with the fediverse..."),
+          l("Another world is loading..."),
+          l("Seizing the means of communication..."),
+          l("Manifesting digital commons..."),
+          l("Decentralising all the things..."),
+          l("Tuning into the mycelial network..."),
+          l("Queering the database..."),
+          l("Liberating your data..."),
+          l("Building solidarity networks..."),
+          l("Organising the bits...")
         ],
         name: l("Loading messages"),
         description:

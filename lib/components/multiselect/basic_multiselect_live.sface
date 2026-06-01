@@ -86,7 +86,7 @@
       name={"autocomplete_#{@form_input_name}"}
       :on-focus={e(@focus_event, "")}
       class="w-full p-2 border rounded-md input"
-      placeholder="type here"
+      placeholder={l("type here")}
       autocomplete="off"
       tabindex="1"
       aria-labelledby="multiselect_label"
