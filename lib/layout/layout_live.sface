@@ -162,15 +162,14 @@
                   {/if}
                 </div>
 
-                <img
+                <!-- <Bonfire.UI.Common.NextGenImageLive
                   :if={Config.get([:ui, :theme, :instance_image], nil)}
                   src={Config.get([:ui, :theme, :instance_image], nil)}
                   alt={l("Banner for %{instance}",
                     instance: Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())
                   )}
-                  loading="lazy"
                   class="h-[95px] mb-2 object-cover w-full rounded bg-base-300"
-                />
+                /> -->
 
                 <div class="text-xs text-base-content/70">
                   <div class="flex flex-col gap-2 pb-2">

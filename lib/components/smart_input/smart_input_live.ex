@@ -47,4 +47,34 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   def post_content(object) do
     e(object, :post_content, nil) || object
   end
+
+  @doc """
+  Whether the composer is currently scoped to a reply target.
+
+  Used to switch the composer into "reply mode" (showing the replied-to
+  context, hiding the create-type picker, relabelling the submit button).
+  """
+  def replying?(assigns) do
+    is_map(e(assigns, :activity, nil)) or is_map(e(assigns, :reply_to_id, nil))
+  end
+
+  @doc """
+  Display name and `@handle` of the author of the activity/object being
+  replied to, for the "Replying to …" banner. Falls back gracefully when the
+  subject can't be resolved (e.g. an id-only `reply_to_id`).
+  """
+  def reply_to_author(assigns) do
+    subject =
+      e(assigns, :activity, :subject, nil) ||
+        e(assigns, :object, :created, :creator, nil) ||
+        e(assigns, :object, :creator, nil)
+
+    %{
+      name: e(subject, :profile, :name, nil) || e(subject, :character, :username, nil),
+      handle:
+        maybe_apply(Bonfire.Me.Characters, :display_username, [subject, true],
+          fallback_return: nil
+        )
+    }
+  end
 end

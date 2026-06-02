@@ -506,7 +506,7 @@ textarea {
 @variant phx-change-loading (&.phx-change-loading, .phx-change-loading &);
 
 .reply_to_in_composer {
-  padding-top: 10px !important;
+  padding-top: 0px !important;
   padding-left: 50px !important;
 }
 

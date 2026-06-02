@@ -16,48 +16,84 @@
         :if={not is_nil(current_user_id(@__context__))}
         class="relative overflow-hidden lg:max-h-[95vh] min-h-0 flex flex-col flex-1 w-full bg-base-100 rounded-xl z-max"
       >
-        <div :if={is_map(@activity) || is_map(@reply_to_id)} class="">
-          <div class="relative reply_in_composer rounded-t-box max-h-[160px] bg-base-100 overflow-y-auto overflow-x-hidden py-2 flex flex-col">
-            {!-- show what we're replying to, if any --}
-            <div class="absolute top-[58px] left-[30px] h-full w-[2px] z-10 bg-base-content/20" />
-            <StatelessComponent
-              module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
-              activity_component_id={deterministic_dom_id(
-                __MODULE__,
-                id(@reply_to_id) || id(@object) || id(@activity),
-                e(@reply_to_id, nil)
-              )}
-              myself={nil}
-              activity={@activity}
-              cw={e(post_content(@object), :summary, nil)}
-              object={@object || @reply_to_id}
-              thread_mode={:nested}
-              class={@replied_activity_class}
-              show_minimal_subject_and_note={Bonfire.UI.Social.ActivityLive.name_or_text(@object) || true}
-              showing_within={:smart_input}
-              activity_inception={@activity_inception}
-              object_boundary={:skip_boundary_check}
-            />
-
-            <span
-              phx-click="Bonfire.UI.Common.SmartInput:remove_data"
-              phx-target="#smart_input"
-              class="absolute top-2 right-2 btn btn-xs btn-outline border-base-content/30 text-base-content/70"
-              title={l("Cancel Reply")}
-            >
-              <#Icon iconify="ph:x-duotone" class="w-4 h-4" />
-              <span class="">{l("Cancel Reply")}</span>
-            </span>
-
-            {!--
-            # WIP, also without an at mention you are not necessarily replying to the user (i.e. they may not be notified) but only to a post/comment, so this may be misleading
-            <div
-              class="border-t border-base-content/10 text-xs backdrop-blur-xl sticky bottom-0 p-2 font-semibold text-center text-base-content z-10"
-              style="pointer-events: none;"
-            >
-              {l("Replying to @brembs@mastodon.social's post")}
-            </div> --}
+        {!-- What we're replying to. The post is context: it peeks (clipped), and
+             a centered, frosted "Replying to …" banner overlaps its lower edge as
+             the seam (Phanpy-style). The caret hides the post entirely so only the
+             banner remains; the ✕ detaches the reply. Toggled with LiveView.JS
+             (not Alpine) since the composer renders inside a portal. --}
+        <div :if={replying?(assigns)} class="reply_in_composer rounded-t-box">
+          {!-- Top-anchored peek: clipped to 150px, scroll to read the rest.
+               Collapsing animates max-height to 0 (the caret toggles `!max-h-0`). --}
+          <div
+            id="reply_peek"
+            class="relative max-h-[150px] overflow-y-auto overscroll-y-contain transition-[max-height] duration-300 ease-out bg-base-content/5"
+          >
+            <div class="py-2">
+              <StatelessComponent
+                module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
+                activity_component_id={deterministic_dom_id(
+                  __MODULE__,
+                  id(@reply_to_id) || id(@object) || id(@activity),
+                  e(@reply_to_id, nil)
+                )}
+                myself={nil}
+                activity={@activity}
+                cw={e(post_content(@object), :summary, nil)}
+                object={@object || @reply_to_id}
+                thread_mode={:nested}
+                class={@replied_activity_class}
+                show_minimal_subject_and_note={Bonfire.UI.Social.ActivityLive.name_or_text(@object) || true}
+                showing_within={:smart_input}
+                activity_inception={@activity_inception}
+                object_boundary={:skip_boundary_check}
+              />
+            </div>
           </div>
+
+          {!-- The seam: centered "you are replying to X" anchor. While the post
+               shows it overlaps and frosts the post's lower edge (hiding the clip).
+               The caret hides/shows the post; the ✕ detaches the reply. --}
+          {#case reply_to_author(assigns)}
+            {#match %{name: who_name, handle: who_handle}}
+              <div
+                id="reply_banner"
+                class="relative z-10 flex items-center justify-center border-b border-base-content/10 min-h-9 px-9 -mt-9 bg-base-100/60 backdrop-blur-md transition-[margin] duration-200"
+              >
+                {!-- Toggle fills the whole banner so a click anywhere (except the
+                     ✕, which sits on top as a sibling) hides/shows the post. --}
+                <button
+                  id="reply_toggle"
+                  type="button"
+                  aria-controls="reply_peek"
+                  aria-expanded="true"
+                  phx-click={JS.toggle_class("!max-h-0", to: "#reply_peek")
+                  |> JS.toggle_class("rotate-180", to: "#reply_caret")
+                  |> JS.toggle_class("-mt-9 backdrop-blur-md", to: "#reply_banner")
+                  |> JS.toggle_attribute({"aria-expanded", "true", "false"}, to: "#reply_toggle")}
+                  class="absolute inset-0 flex cursor-pointer items-center justify-center gap-1.5 text-xs text-base-content/80 hover:text-base-content"
+                  title={l("Show or hide the post you're replying to")}
+                >
+                  <span id="reply_caret" class="shrink-0 transition-transform duration-200">
+                    <#Icon iconify="ph:caret-up-bold" class="w-3.5 h-3.5" />
+                  </span>
+                  <span class="truncate">
+                    {l("Replying to")} <span class="font-semibold text-base-content">{who_name || who_handle ||
+                        l("this post")}</span>
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  phx-click="Bonfire.UI.Common.SmartInput:remove_data"
+                  phx-target="#smart_input"
+                  class="absolute right-2 top-1/2 z-10 -translate-y-1/2 inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full p-1 text-base-content/55 hover:bg-base-content/5 hover:text-base-content"
+                  title={l("Don't reply, write a standalone post instead")}
+                  aria-label={l("Don't reply, write a standalone post instead")}
+                >
+                  <#Icon iconify="ph:x-bold" class="w-3.5 h-3.5" />
+                </button>
+              </div>
+          {/case}
         </div>
 
         {!-- Quote preview.
@@ -137,9 +173,11 @@
                 is_remote={false}
               />
             </div>
-            {!-- Type picker (hidden in :thread_embed — replies only) --}
+            {!-- Type picker — hidden in :thread_embed and when replying (a reply
+                 is always a post, so the choice is irrelevant and "Post ▾" would
+                 clash with the "Reply" submit button). --}
             {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and
-                @showing_within != :thread_embed}
+                @showing_within != :thread_embed and not replying?(assigns)}
               {#case Bonfire.UI.Common.SmartInputModule.modules() |> Enum.uniq()}
                 {#match [_, _ | _] = available_types}
                   {#case LiveHandler.active_smart_input_component(
@@ -301,51 +339,60 @@
               </div>
             {/if}
           </div>
-          <div class="flex flex-row gap-3 items-center flex-align-items-stretch flex-nowrap">
-            <span>
-              <Bonfire.UI.Common.OpenModalLive
-                id="close_composer"
-                reusable_modal_id="persistent_modal"
-                title_text={l("Delete the draft")}
-                cancel_label={l("Cancel")}
-                open_btn_wrapper_class=""
-              >
-                <div class="mt-3 prose-sm prose">
-                  <p>{l("Closing the composer will discard your post. Are you sure you want to close it?")}</p>
-                </div>
-                <:open_btn>
-                  <div class="link link-primary link-hover text-sm">
-                    <!-- <#Icon outline="X" class="w-4 h-4 text-primary/70" /> -->
-                    <span class="">{if @showing_within == :thread_embed, do: l("Clear"), else: l("Close")}</span>
-                  </div>
-                </:open_btn>
-                <:action_btns>
-                  <button
-                    phx-click={JS.push("Bonfire.UI.Common.SmartInput:reset_to_default")
-                    |> JS.push("close", target: "#persistent_modal")
-                    |> JS.add_class("translate-y-100", to: "#smart_input_container")
-                    |> JS.hide(to: "#smart_input_post_title")}
-                    phx-target="#smart_input"
-                    type="button"
-                    class="normal-case btn btn-sm btn-error"
-                  >
-                    {l("Delete draft")}
-                  </button>
-                </:action_btns>
-              </Bonfire.UI.Common.OpenModalLive>
-            </span>
+          {!-- Window controls, grouped as one quiet cluster: minimize (keep the
+               draft, hide it) then close (discard). Icon-only and de-emphasised
+               so the primary "Reply"/"Post" button stays the only loud action. --}
+          <div class="flex flex-row items-center gap-1 flex-nowrap">
+            <button
+              :if={@showing_within != :thread_embed}
+              id="minimize_composer_button"
+              phx-click={LiveHandler.minimize()}
+              phx-target="#smart_input"
+              type="button"
+              class="btn btn-sm btn-ghost btn-circle"
+              title={l("Minimise (keep your draft)")}
+              aria-label={l("Minimise the composer, keeping your draft")}
+            >
+              <#Icon iconify="fluent:chevron-double-down-16-filled" class="w-4 h-4 text-base-content/70" />
+            </button>
 
-            <div :if={@showing_within != :thread_embed} class="flex items-center gap-2">
-              <button
-                id="minimize_composer_button"
-                phx-click={LiveHandler.minimize()}
-                phx-target="#smart_input"
-                type="button"
-                class="flex btn btn-sm btn-ghost btn-circle"
-              >
-                <#Icon iconify="fluent:chevron-double-down-16-filled" class="w-4 h-4 text-base-content/70" />
-              </button>
-            </div>
+            <Bonfire.UI.Common.OpenModalLive
+              id="close_composer"
+              reusable_modal_id="persistent_modal"
+              title_text={l("Delete the draft")}
+              cancel_label={l("Cancel")}
+              open_btn_wrapper_class=""
+            >
+              <div class="mt-3 prose-sm prose">
+                <p>{l("Closing the composer will discard your post. Are you sure you want to close it?")}</p>
+              </div>
+              <:open_btn>
+                <div
+                  class="btn btn-sm btn-ghost btn-circle"
+                  title={if @showing_within == :thread_embed,
+                    do: l("Clear the composer"),
+                    else: l("Discard draft and close")}
+                  aria-label={if @showing_within == :thread_embed,
+                    do: l("Clear the composer"),
+                    else: l("Discard draft and close")}
+                >
+                  <#Icon iconify="ph:x-bold" class="w-4 h-4 text-base-content/70" />
+                </div>
+              </:open_btn>
+              <:action_btns>
+                <button
+                  phx-click={JS.push("Bonfire.UI.Common.SmartInput:reset_to_default")
+                  |> JS.push("close", target: "#persistent_modal")
+                  |> JS.add_class("translate-y-100", to: "#smart_input_container")
+                  |> JS.hide(to: "#smart_input_post_title")}
+                  phx-target="#smart_input"
+                  type="button"
+                  class="normal-case btn btn-sm btn-error"
+                >
+                  {l("Delete draft")}
+                </button>
+              </:action_btns>
+            </Bonfire.UI.Common.OpenModalLive>
           </div>
         </header>
 
