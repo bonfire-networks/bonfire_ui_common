@@ -61,7 +61,11 @@
   {#if !@hide_if_no_more}
     <#slot {@if_no_more}>
       <div class="flex items-center pt-3 my-3 place-content-center flex-col">
-        <Bonfire.UI.Common.NextGenImageLive src="/images/bonfire-exausted.png" alt="bonfire" class="h-32 mx-auto" />
+        <Bonfire.UI.Common.NextGenImageLive
+          src="/images/bonfire-exausted.png"
+          alt="bonfire"
+          class="h-32 mx-auto"
+        />
         <p class="text-sm text-base-content/70 font-medium">{l("That's all folks...")}</p>
       </div>
     </#slot>

@@ -1,10 +1,24 @@
 {#case variants(@src)}
   {#match %{avif: avif, webp: webp}}
     <picture>
-      <source srcset={avif} type="image/avif" />
-      <source srcset={webp} type="image/webp" />
-      <img src={@src} alt={@alt} title={@title} loading={@loading} fetchpriority={@fetchpriority} class={@class} />
+      <source srcset={avif} type="image/avif">
+      <source srcset={webp} type="image/webp">
+      <img
+        src={@src}
+        alt={@alt}
+        title={@title}
+        loading={@loading}
+        fetchpriority={@fetchpriority}
+        class={@class}
+      />
     </picture>
   {#match _}
-    <img src={@src} alt={@alt} title={@title} loading={@loading} fetchpriority={@fetchpriority} class={@class} />
+    <img
+      src={@src}
+      alt={@alt}
+      title={@title}
+      loading={@loading}
+      fetchpriority={@fetchpriority}
+      class={@class}
+    />
 {/case}
