@@ -1,5 +1,5 @@
 defmodule Bonfire.UI.Common.NextGenImageLiveTest do
-  use ExUnit.Case, async: true
+  use Bonfire.UI.Common.ConnCase, async: true
 
   alias Bonfire.UI.Common.NextGenImageLive, as: NextGen
 
