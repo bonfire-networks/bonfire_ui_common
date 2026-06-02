@@ -4,7 +4,7 @@
     phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
     :hook={"ClosePreview", from: Bonfire.UI.Common.PreviewContentLive}
     label={l("Go back to the previous page")}
-    class="btn btn-sm btn-circle z-50"
+    class="btn btn-sm btn-circle z-50 btn-ghost"
   >
     <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
   </button>
@@ -12,7 +12,7 @@
   <LinkLive
     to={@back}
     label={l("Go back to the previous page")}
-    class="btn btn-sm btn-circle z-50"
+    class="btn btn-sm btn-circle z-50 btn-ghost"
     parent_id="back_button"
   >
     <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
@@ -25,7 +25,7 @@
   <button
     type="button"
     aria-label={l("Go back to the previous page")}
-    class="btn btn-sm btn-circle z-50"
+    class="btn btn-sm btn-circle z-50 btn-ghost"
     onclick="history.back()"
   >
     <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
@@ -34,7 +34,7 @@
   <LinkLive
     to="/"
     label={l("Go back to the previous page")}
-    class="btn btn-sm btn-circle z-50"
+    class="btn btn-sm btn-circle z-50 btn-ghost"
     parent_id="back_button"
   >
     <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />

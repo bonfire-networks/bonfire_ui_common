@@ -29,7 +29,7 @@ dep_path =
 config :bonfire, :ui,
   theme: [
     # instance_name: "Bonfire",
-    instance_theme: "bonfire",
+    instance_theme: "dark",
     instance_theme_light: "light",
     instance_icon: "/images/bonfire-icon.png",
     instance_image: "/images/bonfires.png",

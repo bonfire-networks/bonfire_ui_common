@@ -4,7 +4,7 @@ defmodule Bonfire.UI.Common.LoadingScreenLive do
   def render(assigns) do
     ~H"""
     <div class="flex w-full flex-col gap-4">
-      <div class="skeleton h-32 w-full"></div>
+      <div class="skeleton h-16 w-16"></div>
       <div class="skeleton h-4 w-[50%]"></div>
       <div class="skeleton h-4 w-full"></div>
       <div class="skeleton h-4 w-full"></div>

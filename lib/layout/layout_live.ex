@@ -48,21 +48,6 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop exclude_circles, :list, default: []
   prop to_boundaries, :any, default: nil
 
-  def maybe_custom_theme(context) do
-    if Settings.get([:ui, :theme, :preferred], nil, context) == :custom do
-      config =
-        Enums.stringify_keys(Settings.get([:ui, :theme, :custom], %{}, context))
-        |> debug("custom theme config")
-
-      # Cache.maybe_apply_cached(&custom_theme_attr/1, [config])
-      custom_theme_attr(config)
-    else
-      ""
-    end
-  end
-
-  def custom_theme_attr(config), do: DaisyTheme.style_attr(config) |> debug("custom theme style")
-
   def render(_, assigns) do
     import Bonfire.UI.Common.Timing
 

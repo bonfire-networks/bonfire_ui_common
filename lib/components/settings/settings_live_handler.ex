@@ -53,14 +53,47 @@ defmodule Bonfire.Common.Settings.LiveHandler do
   end
 
   def handle_event("put_theme", %{"keys" => keys, "values" => value} = params, socket) do
-    with {:ok, _settings} <-
+    with {:ok, settings} <-
            keys
            |> String.split(":")
            |> Bonfire.Common.Settings.put(value, scope: params["scope"], socket: socket) do
+      # refresh context + push the theme so it applies live without a reload
       {:noreply,
        socket
+       |> maybe_assign_context(settings)
        |> Bonfire.UI.Common.ThemeHelper.push_current_theme()
        |> assign_flash(:info, l("Theme changed and loaded :-)"))}
+    end
+  end
+
+  @doc """
+  Non-destructively saves a single custom-theme colour.
+
+  Uses `put_raw` rather than `put` so the colour key isn't run through `input_to_atoms`
+  (which atomises a key only when that atom already exists, yielding an inconsistent
+  atom/string key mix that `deep_merge` splits into duplicate entries). `deep_merge`
+  preserves the other colours, so setting one never resets another.
+  """
+  def handle_event("put_custom_color", %{"keys" => keys, "values" => value} = params, socket)
+      when is_binary(value) do
+    # e.g. "ui:theme:custom:color-base-100" -> "color-base-100"
+    color_key = keys |> String.split(":") |> List.last()
+    theme_key = Bonfire.UI.Common.ThemeHelper.custom_theme_key(params["scope"])
+
+    with {:ok, settings} <-
+           Bonfire.Common.Settings.put_raw([:ui, :theme, theme_key, color_key], value,
+             scope: params["scope"],
+             socket: socket
+           ) do
+      # close+reset the shared modal so the next swatch opens with fresh content
+      Bonfire.UI.Common.OpenModalLive.close()
+
+      {:noreply,
+       socket
+       |> maybe_assign_context(settings)
+       # push the updated palette to <html> so it applies live, document-wide
+       |> Bonfire.UI.Common.ThemeHelper.push_current_theme()
+       |> assign_flash(:info, l("Settings saved"))}
     end
   end
 

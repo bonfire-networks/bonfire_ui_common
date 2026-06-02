@@ -1671,6 +1671,15 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
   z-index: 1;
 }
 
+/* Spotlight (instance pinned) carousel: indent activity body to align under the avatar */
+.spotlight_activity {
+  padding-top: 10px !important;
+  padding-left: 50px !important;
+}
+.spotlight_activity div[data-id='subject_details'] {
+  margin-top: 3px;
+}
+
 /* Spotlight (instance pinned) carousel: clamp post body to 5 lines */
 .spotlight_clamp .object_body {
   overflow: hidden;

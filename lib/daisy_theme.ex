@@ -117,6 +117,29 @@ defmodule DaisyTheme do
     |> Enum.join(" ")
   end
 
+  @doc """
+  Like `style_attr/1`, but emits CSS variables **only** for the keys present in
+  `config` — without merging in `default_theme/0`.
+
+  Use this for the user/instance *custom* palette: emitting only the variables the
+  user actually set lets every other variable fall through to the active base theme
+  (`data-theme`), instead of forcing DaisyTheme's defaults onto the whole document.
+  """
+  def style_attr_overrides(config) when is_map(config) do
+    keys = keys()
+
+    config
+    |> Enum.flat_map(fn {key, value} ->
+      key = to_string(key)
+
+      case Enum.find(keys, &(&1.name == key)) do
+        nil -> []
+        %{variable: variable} -> ["#{variable}: #{format_value(value)};"]
+      end
+    end)
+    |> Enum.join(" ")
+  end
+
   # Format values for CSS
   defp format_value(value) when is_binary(value), do: value
 

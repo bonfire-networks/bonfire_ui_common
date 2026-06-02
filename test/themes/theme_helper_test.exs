@@ -46,4 +46,24 @@ defmodule Bonfire.UI.Common.ThemeHelperTest do
       assert ThemeHelper.current_theme(%{}) == ThemeHelper.theme_config(%{}).theme
     end
   end
+
+  describe "custom_theme_style/1 with no user (instance default)" do
+    test "returns an empty string when the active theme is not :custom" do
+      # instance default preference is :system, so no custom palette is emitted
+      assert ThemeHelper.custom_theme_style(%{}) == ""
+    end
+  end
+
+  describe "custom_theme_key/1" do
+    test "instance scope maps to the :custom_instance key (atom or string)" do
+      assert ThemeHelper.custom_theme_key(:instance) == :custom_instance
+      assert ThemeHelper.custom_theme_key("instance") == :custom_instance
+    end
+
+    test "user and any other scope map to the :custom key" do
+      assert ThemeHelper.custom_theme_key(:user) == :custom
+      assert ThemeHelper.custom_theme_key("user") == :custom
+      assert ThemeHelper.custom_theme_key(nil) == :custom
+    end
+  end
 end

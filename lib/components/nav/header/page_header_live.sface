@@ -41,7 +41,7 @@
         <h1
           data-page={@page}
           data-role="page_title"
-          class="first-letter:capitalize truncate font-semibold text-center text-sm lg:text-base text-base-content"
+          class="first-letter:capitalize truncate font-bold text-center text-lg text-base-content"
         >
           {rich(@page_title)}
         </h1>
@@ -55,10 +55,10 @@
           </#slot>
           <label
             for="widgets-drawer"
-            class="xl:hidden btn btn-circle min-w-[44px] min-h-[44px]"
+            class="xl:hidden btn btn-ghost btn-circle min-w-[44px] min-h-[44px]"
             aria-label={l("Open widgets sidebar")}
           >
-            <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5 text-base-content/70" />
+            <#Icon iconify="ph:sidebar-simple-duotone" class="w-5 h-5 text-primary" />
           </label>
         {#elseif @show_right_actions}
           <!-- <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="guest_actions">{l("Log in")}</LinkLive> -->

@@ -7,6 +7,7 @@
   id="root"
   class="bg-base-100"
   data-open="false"
+  style={Bonfire.UI.Common.ThemeHelper.custom_theme_style(assigns)}
   lang={Bonfire.Common.Localise.get_locale_id() |> to_string()}
 >
   <head>
@@ -25,6 +26,12 @@
         mq.addEventListener("change", apply);
         window.__bonfireSystemTheme = { mq: mq, apply: apply };
       })();
+      // Track the custom-theme vars applied inline on <html> at SSR (by prefix) so the
+      // set_custom_theme listener can clear them all when the palette changes/clears.
+      window.__bonfireCustomVars = Array.prototype.filter.call(
+        document.documentElement.style,
+        function(n) { return /^--(color|radius|size|border|depth|noise)/.test(n); }
+      );
     </script>
     <%= Application.get_env(:live_debugger, :live_debugger_tags) %>
 
@@ -80,6 +87,24 @@
           el.setAttribute("data-theme-mode", "fixed");
           el.setAttribute("data-theme", e.detail.theme);
         }
+      });
+      window.addEventListener("phx:set_custom_theme", function(e) {
+        // apply the custom palette's CSS vars on <html>, overriding the base [data-theme] palette
+        var el = document.documentElement;
+        (window.__bonfireCustomVars || []).forEach(function(name) { el.style.removeProperty(name); });
+        var applied = [];
+        var style = e.detail && e.detail.style;
+        if (style) {
+          style.split(";").forEach(function(decl) {
+            var i = decl.indexOf(":");
+            if (i === -1) return;
+            var name = decl.slice(0, i).trim();
+            if (!name) return;
+            el.style.setProperty(name, decl.slice(i + 1).trim());
+            applied.push(name);
+          });
+        }
+        window.__bonfireCustomVars = applied;
       });
       window.addEventListener("phx:set_font", function(e) {
         var link = document.querySelector("link[data-font]");
