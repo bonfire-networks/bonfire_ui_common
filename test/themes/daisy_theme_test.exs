@@ -33,7 +33,11 @@ defmodule DaisyThemeTest do
     end
 
     test "content variants are emitted independently of their base colour" do
-      css = DaisyTheme.style_attr(%{"color-primary" => "#111111", "color-primary-content" => "#eeeeee"})
+      css =
+        DaisyTheme.style_attr(%{
+          "color-primary" => "#111111",
+          "color-primary-content" => "#eeeeee"
+        })
 
       assert css =~ "--color-primary: #111111;"
       assert css =~ "--color-primary-content: #eeeeee;"

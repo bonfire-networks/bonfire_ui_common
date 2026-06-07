@@ -225,7 +225,12 @@
                   title_text={l("Select color for %{color}", color: String.replace(color, "base-", "Base "))}
                   no_actions
                 >
-                  <div :hook="ColourPicker" id={"color-#{color}"} data-scope={@scope} class="flex flex-col gap-4 p-2">
+                  <div
+                    :hook="ColourPicker"
+                    id={"color-#{color}"}
+                    data-scope={@scope}
+                    class="flex flex-col gap-4 p-2"
+                  >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
@@ -298,7 +303,12 @@
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
-                  <div :hook="ColourPicker" id={"color-#{color}"} data-scope={@scope} class="flex flex-col gap-4 p-2">
+                  <div
+                    :hook="ColourPicker"
+                    id={"color-#{color}"}
+                    data-scope={@scope}
+                    class="flex flex-col gap-4 p-2"
+                  >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
@@ -367,7 +377,12 @@
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
-                  <div :hook="ColourPicker" id={"color-#{color}"} data-scope={@scope} class="flex flex-col gap-4 p-2">
+                  <div
+                    :hook="ColourPicker"
+                    id={"color-#{color}"}
+                    data-scope={@scope}
+                    class="flex flex-col gap-4 p-2"
+                  >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
@@ -437,7 +452,12 @@
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
-                  <div :hook="ColourPicker" id={"color-#{color}"} data-scope={@scope} class="flex flex-col gap-4 p-2">
+                  <div
+                    :hook="ColourPicker"
+                    id={"color-#{color}"}
+                    data-scope={@scope}
+                    class="flex flex-col gap-4 p-2"
+                  >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
@@ -506,7 +526,12 @@
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
-                  <div :hook="ColourPicker" id={"color-#{color}"} data-scope={@scope} class="flex flex-col gap-4 p-2">
+                  <div
+                    :hook="ColourPicker"
+                    id={"color-#{color}"}
+                    data-scope={@scope}
+                    class="flex flex-col gap-4 p-2"
+                  >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
@@ -576,7 +601,12 @@
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
-                  <div :hook="ColourPicker" id={"color-#{color}"} data-scope={@scope} class="flex flex-col gap-4 p-2">
+                  <div
+                    :hook="ColourPicker"
+                    id={"color-#{color}"}
+                    data-scope={@scope}
+                    class="flex flex-col gap-4 p-2"
+                  >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
@@ -645,7 +675,12 @@
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
-                  <div :hook="ColourPicker" id={"color-#{color}"} data-scope={@scope} class="flex flex-col gap-4 p-2">
+                  <div
+                    :hook="ColourPicker"
+                    id={"color-#{color}"}
+                    data-scope={@scope}
+                    class="flex flex-col gap-4 p-2"
+                  >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
@@ -714,7 +749,12 @@
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
-                  <div :hook="ColourPicker" id={"color-#{color}"} data-scope={@scope} class="flex flex-col gap-4 p-2">
+                  <div
+                    :hook="ColourPicker"
+                    id={"color-#{color}"}
+                    data-scope={@scope}
+                    class="flex flex-col gap-4 p-2"
+                  >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
@@ -783,7 +823,12 @@
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
-                  <div :hook="ColourPicker" id={"color-#{color}"} data-scope={@scope} class="flex flex-col gap-4 p-2">
+                  <div
+                    :hook="ColourPicker"
+                    id={"color-#{color}"}
+                    data-scope={@scope}
+                    class="flex flex-col gap-4 p-2"
+                  >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
