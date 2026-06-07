@@ -19,6 +19,7 @@ defmodule Bonfire.Common.Settings.LiveHandler do
   def handle_event("set", attrs, socket) when is_map(attrs) do
     with {:ok, settings} <-
            Map.drop(attrs, ["_target"])
+           |> drop_unused_form_keys()
            |> Map.put("scope", e(attrs, "scope", nil) || e(assigns(socket), :scope, nil))
            |> Bonfire.Common.Settings.set(socket: socket) do
       # debug(settings, "settings saved")
@@ -39,9 +40,24 @@ defmodule Bonfire.Common.Settings.LiveHandler do
 
   defp maybe_push_font(socket, _attrs), do: socket
 
+  # LiveView's client appends `_unused_<field>` markers for form inputs the user
+  # didn't touch (see `Phoenix.Component.used_input?/1`). These are form-tracking
+  # artifacts, not settings: if persisted they pollute stored config (e.g. a stray
+  # `"_unused_reject_unsigned"` string key breaks `Keyword.keyword?` reads of the
+  # whole branch). Strip them recursively before handing params to `Settings.set`.
+  defp drop_unused_form_keys(attrs) when is_map(attrs) and not is_struct(attrs) do
+    attrs
+    |> Enum.reject(fn {k, _v} -> is_binary(k) and String.starts_with?(k, "_unused_") end)
+    |> Map.new(fn {k, v} -> {k, drop_unused_form_keys(v)} end)
+  end
+
+  defp drop_unused_form_keys(other), do: other
+
   def handle_event("save", attrs, socket) when is_map(attrs) do
     with {:ok, settings} <-
-           Map.drop(attrs, ["_target"]) |> Bonfire.Common.Settings.set(socket: socket) do
+           Map.drop(attrs, ["_target"])
+           |> drop_unused_form_keys()
+           |> Bonfire.Common.Settings.set(socket: socket) do
       {
         :noreply,
         socket
@@ -94,6 +110,29 @@ defmodule Bonfire.Common.Settings.LiveHandler do
        # push the updated palette to <html> so it applies live, document-wide
        |> Bonfire.UI.Common.ThemeHelper.push_current_theme()
        |> assign_flash(:info, l("Settings saved"))}
+    end
+  end
+
+  @doc """
+  Resets the whole custom-theme palette back to defaults by removing every stored override.
+
+  Deletes the entire `[:ui, :theme, <custom_key>]` subtree so every colour, radius, etc.
+  falls through to `DaisyTheme.default_theme/0` in the template, instead of persisting
+  redundant copies of the defaults.
+  """
+  def handle_event("reset_custom_theme", params, socket) do
+    theme_key = Bonfire.UI.Common.ThemeHelper.custom_theme_key(params["scope"])
+
+    with {:ok, settings} <-
+           Bonfire.Common.Settings.delete([:ui, :theme, theme_key],
+             scope: params["scope"],
+             socket: socket
+           ) do
+      {:noreply,
+       socket
+       |> maybe_assign_context(settings)
+       |> Bonfire.UI.Common.ThemeHelper.push_current_theme()
+       |> assign_flash(:info, l("Custom theme reset to defaults"))}
     end
   end
 
