@@ -16,14 +16,7 @@
         :if={not is_nil(current_user_id(@__context__))}
         class="relative overflow-hidden lg:max-h-[95vh] min-h-0 flex flex-col flex-1 w-full bg-base-100 rounded-xl z-max"
       >
-        {!-- What we're replying to. The post is context: it peeks (clipped), and
-             a centered, frosted "Replying to …" banner overlaps its lower edge as
-             the seam (Phanpy-style). The caret hides the post entirely so only the
-             banner remains; the ✕ detaches the reply. Toggled with LiveView.JS
-             (not Alpine) since the composer renders inside a portal. --}
         <div :if={replying?(assigns)} class="reply_in_composer rounded-t-box">
-          {!-- Top-anchored peek: clipped to 150px, scroll to read the rest.
-               Collapsing animates max-height to 0 (the caret toggles `!max-h-0`). --}
           <div
             id="reply_peek"
             class="relative max-h-[150px] overflow-y-auto overscroll-y-contain transition-[max-height] duration-300 ease-out bg-base-content/5"
@@ -50,9 +43,6 @@
             </div>
           </div>
 
-          {!-- The seam: centered "you are replying to X" anchor. While the post
-               shows it overlaps and frosts the post's lower edge (hiding the clip).
-               The caret hides/shows the post; the ✕ detaches the reply. --}
           {#case reply_to_author(assigns)}
             {#match %{name: who_name, handle: who_handle}}
               <div
@@ -173,9 +163,6 @@
                 is_remote={false}
               />
             </div>
-            {!-- Type picker — hidden in :thread_embed and when replying (a reply
-                 is always a post, so the choice is irrelevant and "Post ▾" would
-                 clash with the "Reply" submit button). --}
             {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and
                 @showing_within != :thread_embed and not replying?(assigns)}
               {#case Bonfire.UI.Common.SmartInputModule.modules() |> Enum.uniq()}
