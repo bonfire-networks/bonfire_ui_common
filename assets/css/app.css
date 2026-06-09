@@ -349,7 +349,10 @@ textarea:focus-visible {
    with one explicit @source pair per extension. */
 @import "./_tailwind_sources.css";
 @source "../../../config/current_flavour/assets/components.css";
-@import "../static/images/icons/icons.css" layer(utilities);
+/* NOTE: icons.css is NOT imported here on purpose — it is already shipped as its
+   own non-render-blocking stylesheet (endpoint_template.ex include_assets/2 :bottom
+   + Early Hints preload in common_routes.ex). Importing it here would double-ship
+   ~530KB of icon data-URIs inside the render-blocking main bundle. */
 @plugin "@tailwindcss/typography";
 @plugin "tailwindcss-safe-area";
 
@@ -381,6 +384,9 @@ textarea:focus-visible {
 @plugin "daisyui" {
   themes: light --default, silk, caramellatte, nord, cmyk, acid, autumn, lofi, pastel, fantasy, cupcake, bumblebee, emerald, corporate, dark --prefersdark, synthwave, forest, dracula, aqua, luxury, night, coffee, dim, sunset, abyss, retro, cyberpunk, valentine, halloween, garden;
 }
+
+
+
 
 
 

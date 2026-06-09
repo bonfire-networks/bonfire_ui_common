@@ -333,29 +333,34 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         <meta name="apple-mobile-web-app-title" content="Bonfire">
         <link rel="apple-touch-icon" href="/pwa/ios/180.png">
 
-        <!-- iOS Splash Screens -->
-        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/iphone-15-splash.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/iphone-15-plus-splash.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/iphone-15-pro-max-splash.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/iphone-x-splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/iphone-xs-max-splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/iphone-xr-splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/iphone-12-splash.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/iphone-12-pro-max-splash.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/ipad-splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/ipad-pro-11-splash.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/ipad-pro-12.9-splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+        <!-- iOS Splash Screens (home-screen PWA launch only).
+             iOS requires the image's pixel size to EXACTLY equal
+             device-width x device-height x device-pixel-ratio, or it is silently ignored —
+             hence one image per screen geometry, named splash-<pixelWxpixelH>.png. -->
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-1170x2532.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-1284x2778.png" media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-1290x2796.png" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-1206x2622.png" media="(device-width: 402px) and (device-height: 874px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-1320x2868.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-1536x2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-1640x2360.png" media="(device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 
-        <!-- Android PWA theme and background -->
+        <!-- Browser/PWA chrome color — must stay in sync with theme_color and
+             background_color in pwa/manifest.json -->
+        <meta name="theme-color" content="#191e25">
         <meta name="msapplication-navbutton-color" content="#191e25">
         <meta name="msapplication-TileColor" content="#191e25">
-        <!-- PWA Update Prompt - TODO: move to JS hook?
-        <script type="module">
-          import '@pwabuilder/pwaupdate';
-          const el = document.createElement('pwa-update');
-          document.body.appendChild(el);
-        </script>
-        -->
+        <!-- No PWA update prompt needed: the SW calls skipWaiting() so new versions
+             activate immediately, HTML is never SW-cached, asset URLs are content-hashed,
+             and LiveView's phx-track-static already triggers a reload when tracked
+             assets change after a deploy. -->
         """
       end
 

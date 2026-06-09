@@ -8,7 +8,7 @@
 		"build.css": "npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --minify",
 		"build.debug.css": "NODE_ENV=development npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --verbose",
 		"build.postcss": "npx postcss ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css",
-		"build": "yarn prepare.static && yarn build.postcss && yarn build.esbuild && yarn build.vidstack && yarn build.milkdown && yarn build.emoji_picker",
+		"build": "yarn prepare.static && yarn build.css && yarn build.esbuild && yarn build.vidstack && yarn build.milkdown && yarn build.emoji_picker",
 		"prepare.static": "mkdir -p ../../../priv/static/ && cp -r static/*.ico ../../../priv/static/ && cp -r static/images ../../../priv/static/ && cp -r static/fonts ../../../priv/static/  && cp -r static/pwa* ../../../priv/static/ && cp -r static/js ../../../priv/static/",
 		"build.esbuild": "NODE_PATH=./node_modules:../../../deps/bonfire_editor_milkdown/assets/node_modules npx esbuild ./js/bonfire_live.js ./js/bonfire_basic.js --target=es2020 --bundle --sourcemap --loader:.svg=text --loader:.woff=file --loader:.woff2=file --loader:.ttf=file --outdir=../../../priv/static/assets --minify --drop:console --drop:debugger",
 		"build.vidstack": "NODE_PATH=./node_modules npx esbuild ./js/vidstack_player.js --target=es2020 --bundle --format=esm --minify --outfile=../../../priv/static/assets/vidstack_player.js",

@@ -14,13 +14,21 @@
 	"short_name": "Bonfire",
 	"start_url": "/dashboard",
 	"background_color": "#191e25",
-	"theme_color": "#fde047",
+	"theme_color": "#191e25",
 	"screenshots": [
 		{
-			"src": "/images/bonfires.png",
-			"sizes": "580x200",
+			"src": "screenshots/narrow-feed.png",
+			"sizes": "412x915",
 			"type": "image/png",
-			"label": "Bonfire banner"
+			"form_factor": "narrow",
+			"label": "Browse your feeds"
+		},
+		{
+			"src": "screenshots/wide-feed.png",
+			"sizes": "1280x800",
+			"type": "image/png",
+			"form_factor": "wide",
+			"label": "Browse your feeds"
 		}
 	],
 	"shortcuts": [
@@ -54,6 +62,18 @@
 		}
 	},
 	"icons": [
+		{
+			"src": "android/maskable-icon-512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
+		{
+			"src": "android/maskable-icon-192.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "maskable"
+		},
 		{
 			"src": "windows11/SmallTile.scale-100.png",
 			"sizes": "71x71"

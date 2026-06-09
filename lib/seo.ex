@@ -24,8 +24,9 @@ defmodule Bonfire.UI.Common.SEO do
       default_title: name,
       description: description,
       title_suffix: " · #{name}",
-      # TODO: based on selected theme?
-      theme_color: "#1B74E4",
+      # theme_color intentionally not set here: the canonical <meta name="theme-color">
+      # is emitted for every page (not just guest renders) in EndpointTemplate.include_assets/2
+      # and must stay in sync with the PWA manifest's theme_color
       mask_icon_url: "/images/bonfire-icon.svg"
       # manifest_url: "/site.webmanifest"
     )
