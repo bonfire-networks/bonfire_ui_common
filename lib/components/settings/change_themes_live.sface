@@ -268,24 +268,24 @@
                   <!-- <div role="alert" class={if @show_explanation, do: "alert text-sm mt-4"}> -->
                   <:open_btn>
                     <div class="flex flex-col gap-1">
-                    <div
-                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
-                      style={if String.ends_with?(color, "content"),
-                        do: "background-color: var(--color-base-100); color: var(--color-base-content);",
-                        else: "background-color: var(--color-#{color}); color: var(--color-base-content);"}
-                      data-color={"color-#{color}"}
-                    >
-                      {#if String.ends_with?(color, "content")}
-                        <span class="font-bold text-lg">A</span>
-                      {#else}
-                        <span class="text-xs opacity-70">{String.replace(color, "base-", "")}</span>
-                      {/if}
-                    </div>
-                    <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                      Map.merge(DaisyTheme.default_theme(), @custom_colors),
-                      "color-#{color}",
-                      "#000000"
-                    )}</span>
+                      <div
+                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        style={if String.ends_with?(color, "content"),
+                          do: "background-color: var(--color-base-100); color: var(--color-base-content);",
+                          else: "background-color: var(--color-#{color}); color: var(--color-base-content);"}
+                        data-color={"color-#{color}"}
+                      >
+                        {#if String.ends_with?(color, "content")}
+                          <span class="font-bold text-lg">A</span>
+                        {#else}
+                          <span class="text-xs opacity-70">{String.replace(color, "base-", "")}</span>
+                        {/if}
+                      </div>
+                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
+                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          "color-#{color}",
+                          "#000000"
+                        )}</span>
                     </div>
                   </:open_btn>
                 </Bonfire.UI.Common.OpenModalLive>
@@ -345,22 +345,22 @@
                   </div>
                   <:open_btn>
                     <div class="flex flex-col gap-1">
-                    <div
-                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
-                      style={if String.ends_with?(color, "content"),
-                        do: "background-color: var(--color-primary); color: var(--color-primary-content);",
-                        else: "background-color: var(--color-#{color});"}
-                      data-color={"color-#{color}"}
-                    >
-                      {#if String.ends_with?(color, "content")}
-                        <span class="font-bold text-lg">A</span>
-                      {/if}
-                    </div>
-                    <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                      Map.merge(DaisyTheme.default_theme(), @custom_colors),
-                      "color-#{color}",
-                      "#000000"
-                    )}</span>
+                      <div
+                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        style={if String.ends_with?(color, "content"),
+                          do: "background-color: var(--color-primary); color: var(--color-primary-content);",
+                          else: "background-color: var(--color-#{color});"}
+                        data-color={"color-#{color}"}
+                      >
+                        {#if String.ends_with?(color, "content")}
+                          <span class="font-bold text-lg">A</span>
+                        {/if}
+                      </div>
+                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
+                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          "color-#{color}",
+                          "#000000"
+                        )}</span>
                     </div>
                   </:open_btn>
                 </Bonfire.UI.Common.OpenModalLive>
@@ -419,22 +419,22 @@
                   </div>
                   <:open_btn>
                     <div class="flex flex-col gap-1">
-                    <div
-                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
-                      style={if String.ends_with?(color, "content"),
-                        do: "background-color: var(--color-secondary); color: var(--color-secondary-content);",
-                        else: "background-color: var(--color-#{color});"}
-                      data-color={"color-#{color}"}
-                    >
-                      {#if String.ends_with?(color, "content")}
-                        <span class="font-bold text-lg">A</span>
-                      {/if}
-                    </div>
-                    <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                      Map.merge(DaisyTheme.default_theme(), @custom_colors),
-                      "color-#{color}",
-                      "#000000"
-                    )}</span>
+                      <div
+                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        style={if String.ends_with?(color, "content"),
+                          do: "background-color: var(--color-secondary); color: var(--color-secondary-content);",
+                          else: "background-color: var(--color-#{color});"}
+                        data-color={"color-#{color}"}
+                      >
+                        {#if String.ends_with?(color, "content")}
+                          <span class="font-bold text-lg">A</span>
+                        {/if}
+                      </div>
+                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
+                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          "color-#{color}",
+                          "#000000"
+                        )}</span>
                     </div>
                   </:open_btn>
                 </Bonfire.UI.Common.OpenModalLive>
@@ -494,22 +494,22 @@
                   </div>
                   <:open_btn>
                     <div class="flex flex-col gap-1">
-                    <div
-                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
-                      style={if String.ends_with?(color, "content"),
-                        do: "background-color: var(--color-accent); color: var(--color-accent-content);",
-                        else: "background-color: var(--color-#{color});"}
-                      data-color={"color-#{color}"}
-                    >
-                      {#if String.ends_with?(color, "content")}
-                        <span class="font-bold text-lg">A</span>
-                      {/if}
-                    </div>
-                    <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                      Map.merge(DaisyTheme.default_theme(), @custom_colors),
-                      "color-#{color}",
-                      "#000000"
-                    )}</span>
+                      <div
+                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        style={if String.ends_with?(color, "content"),
+                          do: "background-color: var(--color-accent); color: var(--color-accent-content);",
+                          else: "background-color: var(--color-#{color});"}
+                        data-color={"color-#{color}"}
+                      >
+                        {#if String.ends_with?(color, "content")}
+                          <span class="font-bold text-lg">A</span>
+                        {/if}
+                      </div>
+                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
+                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          "color-#{color}",
+                          "#000000"
+                        )}</span>
                     </div>
                   </:open_btn>
                 </Bonfire.UI.Common.OpenModalLive>
@@ -568,22 +568,22 @@
                   </div>
                   <:open_btn>
                     <div class="flex flex-col gap-1">
-                    <div
-                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
-                      style={if String.ends_with?(color, "content"),
-                        do: "background-color: var(--color-neutral); color: var(--color-neutral-content);",
-                        else: "background-color: var(--color-#{color});"}
-                      data-color={"color-#{color}"}
-                    >
-                      {#if String.ends_with?(color, "content")}
-                        <span class="font-bold text-lg">A</span>
-                      {/if}
-                    </div>
-                    <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                      Map.merge(DaisyTheme.default_theme(), @custom_colors),
-                      "color-#{color}",
-                      "#000000"
-                    )}</span>
+                      <div
+                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        style={if String.ends_with?(color, "content"),
+                          do: "background-color: var(--color-neutral); color: var(--color-neutral-content);",
+                          else: "background-color: var(--color-#{color});"}
+                        data-color={"color-#{color}"}
+                      >
+                        {#if String.ends_with?(color, "content")}
+                          <span class="font-bold text-lg">A</span>
+                        {/if}
+                      </div>
+                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
+                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          "color-#{color}",
+                          "#000000"
+                        )}</span>
                     </div>
                   </:open_btn>
                 </Bonfire.UI.Common.OpenModalLive>
@@ -643,22 +643,22 @@
                   </div>
                   <:open_btn>
                     <div class="flex flex-col gap-1">
-                    <div
-                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
-                      style={if String.ends_with?(color, "content"),
-                        do: "background-color: var(--color-info); color: var(--color-info-content);",
-                        else: "background-color: var(--color-#{color});"}
-                      data-color={"color-#{color}"}
-                    >
-                      {#if String.ends_with?(color, "content")}
-                        <span class="font-bold text-lg">A</span>
-                      {/if}
-                    </div>
-                    <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                      Map.merge(DaisyTheme.default_theme(), @custom_colors),
-                      "color-#{color}",
-                      "#000000"
-                    )}</span>
+                      <div
+                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        style={if String.ends_with?(color, "content"),
+                          do: "background-color: var(--color-info); color: var(--color-info-content);",
+                          else: "background-color: var(--color-#{color});"}
+                        data-color={"color-#{color}"}
+                      >
+                        {#if String.ends_with?(color, "content")}
+                          <span class="font-bold text-lg">A</span>
+                        {/if}
+                      </div>
+                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
+                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          "color-#{color}",
+                          "#000000"
+                        )}</span>
                     </div>
                   </:open_btn>
                 </Bonfire.UI.Common.OpenModalLive>
@@ -717,22 +717,22 @@
                   </div>
                   <:open_btn>
                     <div class="flex flex-col gap-1">
-                    <div
-                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
-                      style={if String.ends_with?(color, "content"),
-                        do: "background-color: var(--color-success); color: var(--color-success-content);",
-                        else: "background-color: var(--color-#{color});"}
-                      data-color={"color-#{color}"}
-                    >
-                      {#if String.ends_with?(color, "content")}
-                        <span class="font-bold text-lg">A</span>
-                      {/if}
-                    </div>
-                    <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                      Map.merge(DaisyTheme.default_theme(), @custom_colors),
-                      "color-#{color}",
-                      "#000000"
-                    )}</span>
+                      <div
+                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        style={if String.ends_with?(color, "content"),
+                          do: "background-color: var(--color-success); color: var(--color-success-content);",
+                          else: "background-color: var(--color-#{color});"}
+                        data-color={"color-#{color}"}
+                      >
+                        {#if String.ends_with?(color, "content")}
+                          <span class="font-bold text-lg">A</span>
+                        {/if}
+                      </div>
+                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
+                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          "color-#{color}",
+                          "#000000"
+                        )}</span>
                     </div>
                   </:open_btn>
                 </Bonfire.UI.Common.OpenModalLive>
@@ -791,22 +791,22 @@
                   </div>
                   <:open_btn>
                     <div class="flex flex-col gap-1">
-                    <div
-                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
-                      style={if String.ends_with?(color, "content"),
-                        do: "background-color: var(--color-warning); color: var(--color-warning-content);",
-                        else: "background-color: var(--color-#{color});"}
-                      data-color={"color-#{color}"}
-                    >
-                      {#if String.ends_with?(color, "content")}
-                        <span class="font-bold text-lg">A</span>
-                      {/if}
-                    </div>
-                    <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                      Map.merge(DaisyTheme.default_theme(), @custom_colors),
-                      "color-#{color}",
-                      "#000000"
-                    )}</span>
+                      <div
+                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        style={if String.ends_with?(color, "content"),
+                          do: "background-color: var(--color-warning); color: var(--color-warning-content);",
+                          else: "background-color: var(--color-#{color});"}
+                        data-color={"color-#{color}"}
+                      >
+                        {#if String.ends_with?(color, "content")}
+                          <span class="font-bold text-lg">A</span>
+                        {/if}
+                      </div>
+                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
+                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          "color-#{color}",
+                          "#000000"
+                        )}</span>
                     </div>
                   </:open_btn>
                 </Bonfire.UI.Common.OpenModalLive>
@@ -865,22 +865,22 @@
                   </div>
                   <:open_btn>
                     <div class="flex flex-col gap-1">
-                    <div
-                      class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
-                      style={if String.ends_with?(color, "content"),
-                        do: "background-color: var(--color-error); color: var(--color-error-content);",
-                        else: "background-color: var(--color-#{color});"}
-                      data-color={"color-#{color}"}
-                    >
-                      {#if String.ends_with?(color, "content")}
-                        <span class="font-bold text-lg">A</span>
-                      {/if}
-                    </div>
-                    <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                      Map.merge(DaisyTheme.default_theme(), @custom_colors),
-                      "color-#{color}",
-                      "#000000"
-                    )}</span>
+                      <div
+                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        style={if String.ends_with?(color, "content"),
+                          do: "background-color: var(--color-error); color: var(--color-error-content);",
+                          else: "background-color: var(--color-#{color});"}
+                        data-color={"color-#{color}"}
+                      >
+                        {#if String.ends_with?(color, "content")}
+                          <span class="font-bold text-lg">A</span>
+                        {/if}
+                      </div>
+                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
+                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          "color-#{color}",
+                          "#000000"
+                        )}</span>
                     </div>
                   </:open_btn>
                 </Bonfire.UI.Common.OpenModalLive>

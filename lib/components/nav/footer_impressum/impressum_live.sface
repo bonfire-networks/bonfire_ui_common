@@ -60,9 +60,9 @@
             Bonfire.Common.HTTP.get_cached_body("https://docs.bonfirenetworks.org/VERSION") || ""
           )}
         {#match latest
-            when is_binary(latest) and latest != "" and latest != version and
-                   byte_size(latest) < 32 and
-                   binary_part(latest, 0, 1) >= "0" and binary_part(latest, 0, 1) <= "9"}
+          when is_binary(latest) and latest != "" and latest != version and
+                 byte_size(latest) < 32 and
+                 binary_part(latest, 0, 1) >= "0" and binary_part(latest, 0, 1) <= "9"}
           <span class="badge badge-sm badge-warning badge-soft mt-4">{l("New version available:")} {latest}</span>
         {#match _}
       {/case}
