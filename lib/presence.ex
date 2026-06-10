@@ -125,8 +125,13 @@ defmodule Bonfire.UI.Common.Presence do
   end
 
   def process_put(user_id, key, value) do
+    # NOTE: present_meta returns presence meta maps, not pids — extract the pid
+    # (passing the map to process_put/3 again would silently no-op)
     (present_meta(user_id) || [])
-    |> Enum.each(&process_put(&1, key, value))
+    |> Enum.each(fn
+      %{pid: pid} when is_pid(pid) -> process_put(pid, key, value)
+      _ -> :ok
+    end)
   end
 
   @doc """
