@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.Routes do
       Bonfire.Common.Config.get(
         [Bonfire.UI.Common.Routes, :early_hints, :common],
         [
-          "/css/app.css": [rel: "preload", as: "style"],
+          "/assets/bonfire_basic.css": [rel: "preload", as: "style"],
           "/images/icons/icons.css": [rel: "preload", as: "style"],
           "/images/icons/svg-inject.min.js": [rel: "preload", as: "script"]
         ],
@@ -44,6 +44,11 @@ defmodule Bonfire.UI.Common.Routes do
       )
 
   # ++ early_hints_shared()
+
+  @doc "Expands an early-hint path to its digest-fingerprinted version in prod (no-op in dev)."
+  def expand_static_path(_conn, path) do
+    Bonfire.Common.Config.endpoint_module().static_path(path)
+  end
 
   defmacro __using__(_) do
     quote do
@@ -159,7 +164,11 @@ defmodule Bonfire.UI.Common.Routes do
           "jetpack"
         ])
 
-        plug PlugEarlyHints, paths: Bonfire.UI.Common.Routes.early_hints_guest()
+        # callback expands paths to their digested versions in prod — without it the
+        # hinted URL differs from the one the page references and browsers download both
+        plug PlugEarlyHints,
+          paths: Bonfire.UI.Common.Routes.early_hints_guest(),
+          callback: &Bonfire.UI.Common.Routes.expand_static_path/2
       end
 
       @csrf_opts Plug.CSRFProtection.init([])
