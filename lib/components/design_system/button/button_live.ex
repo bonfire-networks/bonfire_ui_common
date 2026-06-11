@@ -198,8 +198,7 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
           <span
             class="loading loading-spinner loading-sm hidden phx-click-loading:inline phx-submit-loading:inline"
             aria-hidden="true"
-          >
-          </span>
+          ></span>
           <%= if @icon_left do %>
             <Iconify.iconify
               icon={@icon_left}

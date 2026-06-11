@@ -49,8 +49,8 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
             <div style="font-size: 0.875rem; color: #be185d;">Avg Queries</div>
           </div>
         </div>
-        
-    <!-- Controls -->
+
+        <!-- Controls -->
         <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center;">
           <button
             phx-click="toggle_profiling"
@@ -71,8 +71,8 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
             Refresh
           </button>
         </div>
-        
-    <!-- Request Table -->
+
+        <!-- Request Table -->
         <div style="background: #f8f9fa; border-radius: 8px; padding: 1rem; border: 1px solid #dee2e6;">
           <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: #495057;">
             Recent Requests
@@ -146,8 +146,8 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
             </:col>
           </.live_table>
         </div>
-        
-    <!-- Legend -->
+
+        <!-- Legend -->
         <div style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.75rem; color: #6b7280;">
           <span>
             <span style="display: inline-block; width: 12px; height: 12px; background: #6366f1; border-radius: 2px; margin-right: 4px;"></span>Plugs
@@ -177,8 +177,8 @@ defmodule Bonfire.UI.Common.ProfilerDashboardPage do
           = pipeline plugs before LV mount. <strong>Render</strong>
           = dead render (computed).<br /> Mount/Params are wall-clock and include DB time within them.
         </div>
-        
-    <!-- Sub-Timings Detail (latest request with custom metrics) -->
+
+        <!-- Sub-Timings Detail (latest request with custom metrics) -->
         <div style="margin-top: 1.5rem; background: #f8f9fa; border-radius: 8px; padding: 1rem; border: 1px solid #dee2e6;">
           <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: #495057;">
             Sub-Timings

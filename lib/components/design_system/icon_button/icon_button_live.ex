@@ -156,8 +156,7 @@ defmodule Bonfire.UI.Common.DesignSystem.IconButtonLive do
             <span
               class={"loading loading-spinner #{@icon_size} hidden phx-click-loading:inline"}
               aria-hidden="true"
-            >
-            </span>
+            ></span>
             <span class="contents phx-click-loading:hidden" aria-hidden="true">
               <%= render_slot(@inner_block) %>
             </span>
@@ -170,8 +169,7 @@ defmodule Bonfire.UI.Common.DesignSystem.IconButtonLive do
             <span
               class={"loading loading-spinner #{@icon_size} hidden phx-click-loading:inline"}
               aria-hidden="true"
-            >
-            </span>
+            ></span>
             <Iconify.iconify
               icon={@icon}
               class={"#{@icon_size} phx-click-loading:hidden"}
