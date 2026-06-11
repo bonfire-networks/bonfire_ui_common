@@ -61,10 +61,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   @doc "Iconify name for a smart-input type in the composer's picker."
   # TODO: config or behavior driven mapping instead of hardcoded here
   @type_meta %{
-    broadcast: %{icon: "ph:megaphone-duotone", label: "Broadcast"},
-    post: %{icon: "ph:note-pencil-duotone", label: "Post"},
-    poll: %{icon: "ph:list-checks-duotone", label: "Poll"},
-    message: %{icon: "ph:chat-circle-text-duotone", label: "Message"}
+    broadcast: %{icon: "ph:megaphone-duotone"},
+    post: %{icon: "ph:note-pencil-duotone"},
+    poll: %{icon: "ph:list-checks-duotone"},
+    message: %{icon: "ph:chat-circle-text-duotone"}
   }
 
   defp type_atom(component, create_object_type) do
@@ -98,13 +98,22 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def type_label(component, create_object_type \\ nil) do
-    ed(@type_meta, type_atom(component, create_object_type), :label, nil) ||
-      component
-      |> maybe_apply(:smart_input_module, [], fallback_return: [])
-      |> List.wrap()
-      |> List.first()
-      |> to_string()
-      |> String.capitalize()
+    case type_atom(component, create_object_type) do
+      :broadcast -> l("Broadcast")
+      :post -> l("Post")
+      :poll -> l("Poll")
+      :message -> l("Message")
+      _ -> dynamic_type_label(component)
+    end
+  end
+
+  defp dynamic_type_label(component) do
+    component
+    |> maybe_apply(:smart_input_module, [], fallback_return: [])
+    |> List.wrap()
+    |> List.first()
+    |> to_string()
+    |> String.capitalize()
   end
 
   def handle_event("toggle_cw", _params, socket) do

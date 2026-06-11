@@ -6,6 +6,13 @@
     to="/conduct"
     parent_id="impressum"
   >{l("Code of conduct")}</LinkLive> ·
+  {#if Config.get([:terms, :impressum]) not in [nil, ""]}
+    <LinkLive
+      class="text-xs link-hover link text-base-content/70"
+      to="/impressum"
+      parent_id="impressum"
+    >{l("Impressum")}</LinkLive> ·
+  {/if}
   <LinkLive
     class="text-xs link-hover link text-base-content/70"
     to="/privacy"

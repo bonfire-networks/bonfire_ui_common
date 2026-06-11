@@ -22,7 +22,7 @@ defmodule Bonfire.UI.Common.StaticGenerator do
 
   def batch do
     # TODO: paths to cache in config
-    generate(["/", "/about", "/conduct", "/privacy"])
+    generate(["/", "/about", "/conduct", "/privacy", "/impressum"])
   end
 
   def base_path, do: "public"
