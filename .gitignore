@@ -38,3 +38,4 @@ deps.path
 
 install-state.gz
 /assets/static/tauri/test-results
+assets/static/tauri/assets/ap_c2s_client
