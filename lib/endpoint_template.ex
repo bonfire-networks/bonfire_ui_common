@@ -72,6 +72,14 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         plug(Phoenix.Ecto.SQL.Sandbox)
       end
 
+      lv_timeout = String.to_integer(System.get_env("LV_TIMEOUT", "90000"))
+
+      if lv_timeout < 60_000 do
+        IO.warn(
+          "LV_TIMEOUT (#{lv_timeout}ms) is below 2x the phoenix.js 30s heartbeat interval — idle mobile clients will see abnormal 1006 websocket closes"
+        )
+      end
+
       socket("/live", Phoenix.LiveView.Socket,
         websocket: [
           # NOTE: check_origin is set in runtime config instead
@@ -79,8 +87,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
           # check_origin: :conn,
           # whether to enable per message compression on all data frames
           compress: System.get_env("PHX_COMPRESS_LV") not in @no?,
-          # the timeout for keeping websocket connections open after it last received data, usually defaults to 60_000ms (1 minute)
-          timeout: String.to_integer(System.get_env("LV_TIMEOUT", "42000")),
+          timeout: lv_timeout,
           # the maximum number of garbage collections before forcing a fullsweep for the socket process. You can set it to 0 to force more frequent clean-ups of your websocket transport processes. (You can also trigger this manually to force garbage collection in the transport process after processing large messages with `send(socket.transport_pid, :garbage_collect)`)
           fullsweep_after: String.to_integer(System.get_env("LV_FULLSWEEP_AFTER", "20")),
           # NOTE: see also `LV_HIBERNATE_AFTER` in the endpoint config
@@ -104,7 +111,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       socket("/embed_live", Phoenix.LiveView.Socket,
         websocket: [
           compress: System.get_env("PHX_COMPRESS_LV") not in @no?,
-          timeout: String.to_integer(System.get_env("LV_TIMEOUT", "42000")),
+          timeout: lv_timeout,
           fullsweep_after: String.to_integer(System.get_env("LV_FULLSWEEP_AFTER", "20")),
           connect_info: [:user_agent, :peer_data, :x_headers]
         ]

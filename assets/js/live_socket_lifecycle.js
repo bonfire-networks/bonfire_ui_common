@@ -1,19 +1,34 @@
+// Mobile LiveView lifecycle guard.
+//
+// Layering (important): phoenix.js (>= 1.8) already owns *socket* reconnection —
+// it cleanly disconnects on pagehide and reconnects on pageshow, reconnects
+// immediately on visibilitychange->visible after an unclean close, and pauses
+// its reconnect timer while hidden. This module therefore only guards the
+// *LiveView* layer, which still treats mobile lifecycle pauses as unloads and
+// hard-reloads the page via three paths:
+//   1. `unloaded` flag set on pagehide -> location.reload() when the socket reopens
+//   2. the `bindTopLevelEvents` pageshow listener -> location.reload() on BFCache restore
+//   3. `reloadWithJitter` -> scheduled on any code-1000 close with a main view
+//      (which includes phoenix's own clean pagehide disconnect) and on view join errors
+// We suppress those reloads when they look like a recoverable mobile pause and
+// let phoenix's reconnect + LiveView's rejoin resync state instead.
+// Revisit when phoenix_live_view#3896 / phoenix#6534 land here.
+
 const DEBUG_FLAG = "bonfire:live_socket:lifecycle_debug";
 const FORCE_RESUME_GUARD_FLAG = "bonfire:live_socket:force_mobile_resume_guard";
 const DISABLE_RESUME_GUARD_FLAG = "bonfire:live_socket:disable_mobile_resume_guard";
 const EVENTS_STORAGE_KEY = "bonfire:live_socket:lifecycle_events";
 const EVENTS_STORAGE_NAMES = ["sessionStorage", "localStorage"];
-const LIFECYCLE_VERSION = "mobile-resume-guard-feed-state-v6";
+const LIFECYCLE_VERSION = "mobile-resume-guard-feed-state-v7";
 const MAX_LIFECYCLE_EVENTS = 50;
 const PERSIST_DEBOUNCE_MS = 250;
-const RECONNECT_GRACE_MS = 750;
-const RECONNECT_IN_FLIGHT_TIMEOUT_MS = 10000;
 const IMMEDIATE_PERSIST_EVENTS = new Set([
 	"liveview_pageshow_reload_suppressed",
 	"pagehide",
 	"reload_with_jitter_allowed",
 	"reload_with_jitter_suppressed",
 	"socket_close",
+	"guard_inactive",
 ]);
 
 function storageGet(storageName, key) {
@@ -82,8 +97,10 @@ function persistStoredEvents(state, event) {
 }
 
 function mobileBrowser() {
-	if (navigator.userAgentData && typeof navigator.userAgentData.mobile === "boolean") {
-		return navigator.userAgentData.mobile;
+	// Only trust a positive signal: userAgentData.mobile is false on Android
+	// tablets, which need the guard just as much — fall through to UA sniffing.
+	if (navigator.userAgentData && navigator.userAgentData.mobile === true) {
+		return true;
 	}
 
 	const ua = navigator.userAgent || "";
@@ -99,7 +116,7 @@ function eventContext(liveSocket, detail = {}) {
 		visibilityState: document.visibilityState,
 		online: navigator.onLine,
 		wasDiscarded: document.wasDiscarded === true,
-		socketConnected: Boolean(liveSocket && liveSocket.isConnected && liveSocket.isConnected()),
+		socketConnected: Boolean(liveSocket.isConnected?.()),
 	};
 }
 
@@ -126,7 +143,7 @@ function shouldGuardMobileResume(state) {
 }
 
 function hasPendingLink(liveSocket) {
-	return Boolean(liveSocket && liveSocket.hasPendingLink && liveSocket.hasPendingLink());
+	return Boolean(liveSocket.hasPendingLink?.());
 }
 
 function shouldRecoverLifecycleDisconnect(state, liveSocket) {
@@ -149,88 +166,35 @@ function markLifecycleRecovered(state, log, trigger) {
 }
 
 function clearReloadTimer(liveSocket) {
-	if (!liveSocket || !liveSocket.reloadWithJitterTimer) return;
+	if (!liveSocket.reloadWithJitterTimer) return;
 	clearTimeout(liveSocket.reloadWithJitterTimer);
 	liveSocket.reloadWithJitterTimer = null;
 }
 
 function clearLiveViewUnloadFlag(liveSocket, log, event) {
-	if (liveSocket && liveSocket.isUnloaded && liveSocket.isUnloaded()) {
-		// Phoenix LiveView treats pagehide as unload. On mobile, pagehide may
-		// be a recoverable browser lifecycle pause, so keep the view reconnectable.
-		// Revisit this shim when phoenix_live_view#3896 / phoenix#6534 land here.
+	if (liveSocket.isUnloaded?.()) {
+		// Phoenix LiveView treats pagehide as unload and reloads the page as soon
+		// as the socket reopens while the flag is set, so it must be cleared on the
+		// resume paths *before* the reconnect completes (the socket_open clear is
+		// too late: LiveView's own onOpen callback was registered first).
 		liveSocket.unloaded = false;
 		log("liveview_unload_flag_cleared", { trigger: event });
 	}
 }
 
-function socketConnectionState(liveSocket) {
-	const socket = liveSocket && liveSocket.getSocket && liveSocket.getSocket();
-	return socket && socket.connectionState && socket.connectionState();
-}
-
-function beginReconnectAttempt(state, log, trigger) {
-	if (state.reconnectInFlight) {
-		log("manual_reconnect_skipped", { trigger, reason: "in_flight" });
-		return false;
+// Shared resume path: stop any scheduled LiveView reload, keep the view
+// reconnectable, and close the suppression window if the socket survived
+// (otherwise socket_open closes it once phoenix's reconnect completes).
+function resumeFromLifecyclePause(liveSocket, state, log, trigger) {
+	clearReloadTimer(liveSocket);
+	clearLiveViewUnloadFlag(liveSocket, log, trigger);
+	if (liveSocket.isConnected?.()) {
+		markLifecycleRecovered(state, log, trigger);
 	}
-
-	state.reconnectInFlight = true;
-	clearTimeout(state.reconnectInFlightTimer);
-	state.reconnectInFlightTimer = window.setTimeout(() => {
-		state.reconnectInFlight = false;
-		state.reconnectInFlightTimer = null;
-		log("manual_reconnect_timeout", { trigger });
-	}, RECONNECT_IN_FLIGHT_TIMEOUT_MS);
-	return true;
-}
-
-function finishReconnectAttempt(state) {
-	state.reconnectInFlight = false;
-	clearTimeout(state.reconnectInFlightTimer);
-	state.reconnectInFlightTimer = null;
-}
-
-function reconnectSocket(liveSocket, state, log, trigger) {
-	if (!beginReconnectAttempt(state, log, trigger)) return;
-
-	window.setTimeout(() => {
-		if (!liveSocket || !liveSocket.isConnected) {
-			finishReconnectAttempt(state);
-			return;
-		}
-
-		if (liveSocket.isConnected()) {
-			markLifecycleRecovered(state, log, trigger);
-			finishReconnectAttempt(state);
-			return;
-		}
-
-		if (socketConnectionState(liveSocket) === "connecting") {
-			clearReloadTimer(liveSocket);
-			log("manual_reconnect_skipped", { trigger, reason: "connecting" });
-			finishReconnectAttempt(state);
-			return;
-		}
-
-		clearReloadTimer(liveSocket);
-		log("manual_reconnect", { trigger });
-
-		const socket = liveSocket.getSocket && liveSocket.getSocket();
-		if (socket && socket.teardown && socket.connect) {
-			socket.teardown(() => {
-				socket.connect();
-				finishReconnectAttempt(state);
-			});
-		} else {
-			liveSocket.connect();
-			finishReconnectAttempt(state);
-		}
-	}, RECONNECT_GRACE_MS);
 }
 
 function installReloadGuard(liveSocket, state, log) {
-	if (!liveSocket || !liveSocket.reloadWithJitter) return;
+	if (typeof liveSocket.reloadWithJitter !== "function") return false;
 
 	const reloadWithJitter = liveSocket.reloadWithJitter.bind(liveSocket);
 
@@ -241,11 +205,8 @@ function installReloadGuard(liveSocket, state, log) {
 			log("reload_with_jitter_suppressed", {
 				pendingLink: hasPendingLink(liveSocket),
 			});
-
-			if (document.visibilityState === "visible") {
-				reconnectSocket(liveSocket, state, log, "reloadWithJitter");
-			}
-
+			// No manual reconnect here: phoenix reconnects on pageshow /
+			// visibilitychange->visible itself, and channels rejoin on their own.
 			return;
 		}
 
@@ -256,10 +217,12 @@ function installReloadGuard(liveSocket, state, log) {
 		});
 		return reloadWithJitter(view, reloadLog);
 	};
+	return true;
 }
 
 function installLiveViewPageshowGuard(liveSocket, state, log) {
-	if (!liveSocket || !liveSocket.bindTopLevelEvents || liveSocket.__bonfirePageshowGuard) return;
+	if (typeof liveSocket.bindTopLevelEvents !== "function") return false;
+	if (liveSocket.__bonfirePageshowGuard) return true;
 
 	const bindTopLevelEvents = liveSocket.bindTopLevelEvents.bind(liveSocket);
 	const wrappedPageshowListeners = new WeakMap();
@@ -281,10 +244,8 @@ function installLiveViewPageshowGuard(liveSocket, state, log) {
 							!hasPendingLink(liveSocket);
 
 						if (suppressLiveViewReload) {
-							clearReloadTimer(liveSocket);
-							clearLiveViewUnloadFlag(liveSocket, log, "liveview_pageshow");
+							resumeFromLifecyclePause(liveSocket, state, log, "liveview_pageshow");
 							log("liveview_pageshow_reload_suppressed", { persisted: true });
-							reconnectSocket(liveSocket, state, log, "liveview_pageshow");
 							return;
 						}
 
@@ -305,6 +266,7 @@ function installLiveViewPageshowGuard(liveSocket, state, log) {
 			window.addEventListener = originalAddEventListener;
 		}
 	};
+	return true;
 }
 
 export function setupLiveSocketLifecycle(liveSocket) {
@@ -317,13 +279,11 @@ export function setupLiveSocketLifecycle(liveSocket) {
 		previousEvents: storedEvents.events,
 		previousEventsSource: storedEvents.source,
 		persistEventsTimer: null,
-		reconnectInFlight: false,
-		reconnectInFlightTimer: null,
 	};
 
 	window.Bonfire = Object.assign(window.Bonfire || {}, { liveSocketLifecycle: state });
 	const log = makeLogger(liveSocket, state);
-	installLiveViewPageshowGuard(liveSocket, state, log);
+	const pageshowGuardOk = installLiveViewPageshowGuard(liveSocket, state, log);
 
 	window.addEventListener("visibilitychange", () => {
 		log("visibilitychange");
@@ -334,9 +294,7 @@ export function setupLiveSocketLifecycle(liveSocket) {
 		}
 
 		if (shouldRecoverLifecycleDisconnect(state, liveSocket)) {
-			clearReloadTimer(liveSocket);
-			clearLiveViewUnloadFlag(liveSocket, log, "visibilitychange");
-			reconnectSocket(liveSocket, state, log, "visibilitychange");
+			resumeFromLifecyclePause(liveSocket, state, log, "visibilitychange");
 		}
 	});
 
@@ -346,6 +304,9 @@ export function setupLiveSocketLifecycle(liveSocket) {
 		log("pagehide", { persisted: event.persisted === true });
 
 		if (shouldGuardMobileResume(state)) {
+			// Not resumeFromLifecyclePause: we're pausing, so the socket may still
+			// be open and recovery must not be marked yet. The timeout defers the
+			// clears until after LiveView's own pagehide listener has set the flag.
 			window.setTimeout(() => {
 				clearReloadTimer(liveSocket);
 				clearLiveViewUnloadFlag(liveSocket, log, "pagehide");
@@ -364,9 +325,7 @@ export function setupLiveSocketLifecycle(liveSocket) {
 
 			if (!guardResume) return;
 
-			clearReloadTimer(liveSocket);
-			clearLiveViewUnloadFlag(liveSocket, log, "pageshow");
-			reconnectSocket(liveSocket, state, log, "pageshow");
+			resumeFromLifecyclePause(liveSocket, state, log, "pageshow");
 			window.setTimeout(() => {
 				state.pagehidePending = false;
 			}, 0);
@@ -374,12 +333,29 @@ export function setupLiveSocketLifecycle(liveSocket) {
 		true
 	);
 
-	const socket = liveSocket.getSocket && liveSocket.getSocket();
+	const socket = liveSocket.getSocket?.();
+
+	// Phoenix reconnects on visibility changes but not on network regain — after
+	// airplane mode / connection loss it sits out the remaining backoff (up to 5s).
+	// Mirror its visibilitychange->visible logic for the `online` event.
+	// (`closeWasClean` has no public accessor; it's the same predicate phoenix's
+	// own visibilitychange handler reads.)
+	window.addEventListener("online", () => {
+		if (
+			document.visibilityState === "visible" &&
+			socket &&
+			!socket.isConnected() &&
+			socket.closeWasClean === false
+		) {
+			clearReloadTimer(liveSocket);
+			log("online_reconnect");
+			socket.disconnect(() => socket.connect());
+		}
+	});
+
 	if (socket && socket.onOpen) {
 		socket.onOpen(() => {
 			clearReloadTimer(liveSocket);
-			finishReconnectAttempt(state);
-			clearLiveViewUnloadFlag(liveSocket, log, "socket_open");
 			markLifecycleRecovered(state, log, "socket_open");
 			log("socket_open");
 		});
@@ -395,7 +371,22 @@ export function setupLiveSocketLifecycle(liveSocket) {
 		});
 	}
 
-	installReloadGuard(liveSocket, state, log);
+	const reloadGuardOk = installReloadGuard(liveSocket, state, log);
+
+	// The guard monkey-patches LiveView internals (`reloadWithJitter`, `unloaded`,
+	// `bindTopLevelEvents`); surface loudly when an upgrade removed them instead
+	// of silently degrading back to hard reloads.
+	if (!reloadGuardOk || !pageshowGuardOk || typeof liveSocket.isUnloaded !== "function") {
+		log("guard_inactive", {
+			reloadGuard: reloadGuardOk,
+			pageshowGuard: pageshowGuardOk,
+			isUnloaded: typeof liveSocket.isUnloaded === "function",
+		});
+		console.warn(
+			"[bonfire:live_socket] lifecycle guard could not patch LiveView internals — mobile resume guard is (partially) inactive"
+		);
+	}
+
 	log("lifecycle_setup", { mobileBrowser: state.mobileBrowser });
 	state.version = LIFECYCLE_VERSION;
 	log("lifecycle_version", { version: LIFECYCLE_VERSION });

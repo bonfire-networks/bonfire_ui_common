@@ -18,21 +18,18 @@
     data-id="notifications-container"
     class="flex flex-col items-center w-full gap-2 sm:items-end"
   >
-    {!-- 
-        <.flash_connection_group :if={@i == 2} />
-              js-show={show("#connection-status")}
-      js-hide={hide("#connection-status")}
-    --}
     <div
       :if={@i == 2}
       id="connection-status"
-      class="hidden rounded-md bg-red-50 p-4 fade-in-scale z-50"
+      role="status"
+      class="hidden z-50 pointer-events-none delayed-reveal"
       phx-disconnected={show("#connection-status")}
       phx-connected={hide("#connection-status")}
     >
-      <p class="text-sm font-medium text-red-800">
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-base-200 text-base-content text-xs font-medium shadow-lg ring-1 ring-base-content/10">
+        <span class="loading loading-spinner loading-xs opacity-60" />
         {l("Offline - waiting to reconnect...")}
-      </p>
+      </span>
     </div>
 
     <div

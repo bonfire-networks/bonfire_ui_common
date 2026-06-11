@@ -1561,6 +1561,21 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
   }
 }
 
+.delayed-reveal {
+  animation: delayed-reveal 200ms ease-out 1.5s both;
+}
+
+@keyframes delayed-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Skeleton shimmer: opt-in alternative to animate-pulse for
    placeholder content. Apply via class="skeleton-shimmer". */
 @keyframes skeleton-shimmer {

@@ -43,7 +43,7 @@
         {version}
       </LinkLive>
       <span class="ml-1" x-data="{msg: 'JS'}">
-        <span x-text="msg">no JS</span>
+        <span x-text="msg">{l("no JS")}</span>
       </span>
       <LinkLive
         to="https://app.transifex.com/bonfire/bonfire/"

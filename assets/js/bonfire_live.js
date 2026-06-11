@@ -18,7 +18,13 @@ import { TranslateHooks } from "./translate.js";
 import { KeyboardShortcutHooks } from "./keyboard_shortcuts.js";
 import { IframeResizeHooks } from "./iframe_resize.js";
 import { InlineComposerHooks } from "./inline_composer.js";
-import { collectBonfireParams, setBonfireParam, removeBonfireParam } from "./local_storage_params";
+import {
+	collectBonfireParams,
+	setBonfireParam,
+	getBonfireParam,
+	removeBonfireParam,
+	evictExpiredBonfireParams,
+} from "./local_storage_params";
 import { setupLiveSocketLifecycle } from "./live_socket_lifecycle.js";
 import { ExtensionHooks } from "../../../../config/current_flavour/deps.hooks.js";
 import ComponentHooks from "../../../../config/current_flavour/assets/hooks/index.js";
@@ -55,8 +61,42 @@ let JS_exec_attr_event = (selector, attr) => {
 	});
 };
 
+// Editor inputs opt into local draft persistence by carrying this attribute
+// (so new editor extensions get drafts by marking their value-carrying input,
+// without touching this file).
+const DRAFT_INPUT_SELECTOR = "[data-persist-draft]";
+
+// Identifies which composer context a local draft belongs to: the reply target
+// when replying (hidden form field, or data attribute on inline composers),
+// otherwise a single "new" bucket.
+function composerDraftKey(el) {
+	const form = el.closest("form");
+	return (
+		form?.querySelector('[name="reply_to[reply_to_id]"]')?.value ||
+		el.closest("[data-reply-to-id]")?.dataset.replyToId ||
+		"new"
+	);
+}
+
+// Returns the locally-saved draft for el's composer context, but only when the
+// editor is empty — never overwrites server-provided or in-progress text.
+// Editors call this on mount; the save side is the delegated listener below.
+function getComposerDraft(el) {
+	if (!el || (el.value || "").trim()) return null;
+	return getBonfireParam("draft", composerDraftKey(el));
+}
+
 // Expose localStorage param helpers globally for hooks in other extensions
-window.Bonfire = Object.assign(window.Bonfire || {}, { setBonfireParam, removeBonfireParam });
+window.Bonfire = Object.assign(window.Bonfire || {}, {
+	setBonfireParam,
+	getBonfireParam,
+	removeBonfireParam,
+	getComposerDraft,
+});
+
+// Drafts whose composer context is never reopened are otherwise immortal
+// (eviction normally happens on read)
+(window.requestIdleCallback || window.setTimeout)(() => evictExpiredBonfireParams("draft"));
 
 const dispatchLifecycleFlush = (trigger, event) => {
 	window.dispatchEvent(new CustomEvent("bonfire:lifecycle:flush", {
@@ -110,7 +150,10 @@ setupLiveSocketLifecycle(liveSocket);
 // Show progress bar on live navigation and form submits
 // Only displays if still loading after 120 msec
 let topBarScheduled = undefined;
-window.addEventListener("phx:page-loading-start", () => {
+window.addEventListener("phx:page-loading-start", (e) => {
+	// Reconnects/errors are surfaced by #connection-status instead — the nav
+	// progress bar flashing on every brief socket drop reads as a page load.
+	if (e.detail?.kind === "error") return;
 	if (!topBarScheduled) {
 		topBarScheduled = setTimeout(() => NProgress.start(), 120);
 	}
@@ -149,8 +192,31 @@ function setCwTextarea(value) {
 	if (cwTextarea) cwTextarea.value = value;
 }
 
+// Persist composer drafts locally so text survives reloads, socket drops and
+// mobile webview eviction. Saved here (one delegated listener covers every
+// opted-in editor input, which all emit bubbling `input` events), restored by
+// each editor on mount via getComposerDraft, cleared on post/reset.
+const DRAFT_SAVE_DEBOUNCE_MS = 800;
+let draftSaveTimer;
+document.addEventListener("input", (e) => {
+	const el = e.target;
+	if (!el.matches?.(DRAFT_INPUT_SELECTOR)) return;
+	clearTimeout(draftSaveTimer);
+	draftSaveTimer = setTimeout(() => {
+		if (!el.isConnected) return; // composer was closed/reset meanwhile
+		const key = composerDraftKey(el);
+		if (el.value.trim()) setBonfireParam("draft", key, el.value);
+		else removeBonfireParam("draft", key);
+	}, DRAFT_SAVE_DEBOUNCE_MS);
+});
+
 // Reset composer button state after posting
 window.addEventListener("phx:smart_input:reset", () => {
+	// Posted (or explicitly reset): the draft served its purpose
+	clearTimeout(draftSaveTimer);
+	document
+		.querySelectorAll(DRAFT_INPUT_SELECTOR)
+		.forEach((el) => removeBonfireParam("draft", composerDraftKey(el)));
 	// Reset the main smart input button to its default state
 	JS_exec_attr_event("#main_smart_input_button", "phx-reset");
 });

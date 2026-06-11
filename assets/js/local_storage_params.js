@@ -57,6 +57,42 @@ export function setBonfireParam(namespace, key, value, ttlMs = 172800000) {
 }
 
 /**
+ * Read a non-expired bonfire param value from localStorage, or null.
+ * Expired/invalid entries are evicted on read.
+ */
+export function getBonfireParam(namespace, key) {
+  try {
+    const storageKey = `bonfire:${namespace}:${key}`;
+    const raw = window.localStorage.getItem(storageKey);
+    if (!raw) return null;
+    const val = JSON.parse(raw);
+    if (validStoredValue(val, namespace, Date.now())) return val.value;
+    window.localStorage.removeItem(storageKey);
+    return null;
+  } catch (_e) {
+    return null;
+  }
+}
+
+/**
+ * Evict expired/invalid entries for a namespace. Reads every matching key, so
+ * call sparingly (e.g. once per page load in idle time). Needed for namespaces
+ * like drafts whose keys may never be read again (eviction normally happens on
+ * read), and which would otherwise outlive their TTL forever.
+ */
+export function evictExpiredBonfireParams(namespace) {
+  try {
+    const prefix = `bonfire:${namespace}:`;
+    for (let i = window.localStorage.length - 1; i >= 0; i--) {
+      const key = window.localStorage.key(i);
+      if (key && key.startsWith(prefix)) getBonfireParam(namespace, key.slice(prefix.length));
+    }
+  } catch (_e) {
+    // Best effort only.
+  }
+}
+
+/**
  * Remove a bonfire param from localStorage.
  */
 export function removeBonfireParam(namespace, key) {

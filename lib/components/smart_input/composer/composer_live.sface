@@ -7,6 +7,7 @@
     name="html_body"
     resize="none"
     placeholder={l("Start typing...")}
+    data-persist-draft
   >{e(@smart_input_opts, :text_suggestion, nil)}{e(@smart_input_opts, :text, nil)}</textarea>
   <ul
     tabindex="1"
