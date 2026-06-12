@@ -8,11 +8,14 @@
   const path = window.location.pathname;
   const host = window.location.hostname;
 
-  // Skip login page
-  if (path.includes('pick-instance')) return;
-  // Skip non-chat local Tauri pages (OAuth callbacks, etc.)
+  // Only render on the local chat app. Remote instance pages render their own
+  // dock (two docks would stack), and remote origins are deliberately granted
+  // no IPC — app commands are not ACL-gated, so any remote capability would
+  // expose all of them (and, on Android, to embedded iframes too). See
+  // docs/tauri-mobile.md B1/B7; instance-page nav belongs server-side.
+  const isLocal = window.location.protocol === 'tauri:' || host === 'tauri.localhost';
   const isChat = path.includes('ap_c2s_client');
-  if (host === 'tauri.localhost' && !isChat) return;
+  if (!isLocal || !isChat) return;
 
   // Prevent double injection
   if (document.getElementById('bonfire-mobile-nav')) return;
@@ -90,14 +93,14 @@
     nav.id = 'bonfire-mobile-nav';
     nav.className = 'dock dock-sm';
     nav.innerHTML = `
-      <button id="bnav-home" class="${isChat ? '' : 'dock-active'}">
+      <button id="bnav-home">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
         </svg>
         <span class="dock-label">Home</span>
       </button>
-      <button id="bnav-chat" class="${isChat ? 'dock-active' : ''}">
+      <button id="bnav-chat" class="dock-active">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>

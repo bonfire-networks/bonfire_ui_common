@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Bonfire</title>
     <link href="assets/dist/styles.css" rel="stylesheet" />
     <style>
@@ -11,6 +12,14 @@
             height: 100vh;
             border: 0;
             overflow: visible;
+        }
+        /* Keep the login card inside notch/home-indicator safe areas on mobile */
+        #picker {
+            padding: calc(env(safe-area-inset-top, 0px) + 1rem)
+                     calc(env(safe-area-inset-right, 0px) + 1rem)
+                     calc(env(safe-area-inset-bottom, 0px) + 1rem)
+                     calc(env(safe-area-inset-left, 0px) + 1rem);
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -61,7 +70,10 @@
 
     function getRedirectUri() {
         // Must match redirect_uris in the CIMD document at bonfirenetworks.org/.well-known/client.jsonld
-        return window.__TAURI__ ? "tauri://localhost/" : window.location.origin;
+        // The local shell origin differs per platform (tauri://localhost on macOS/iOS,
+        // http://tauri.localhost on Windows/Android, http://localhost:1430 in dev),
+        // so derive it instead of hardcoding.
+        return window.__TAURI__ ? window.location.origin + "/" : window.location.origin;
     }
 
     // Set WASM base path for Tauri (bundled resources served via asset protocol)
@@ -117,24 +129,26 @@
             startupPayload = await window.__TAURI__.core.invoke('get_startup_deep_link');
         } catch (e) { /* no pending deep link */ }
 
-        // On mobile there's only one webview — navigating to dashboard after
-        // opening chat would overwrite it. On desktop, chat is a separate
-        // webview so we can load dashboard in the main webview.
-        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        // __BONFIRE_PLATFORM__ ('ios' | 'android') is injected by the mobile shell —
+        // UA sniffing can't detect iPads (WKWebView reports macOS); undefined = desktop.
+        // iOS has no chat tab (pure instance client for now). On Android the single
+        // webview is shared, so navigating to the instance would overwrite the chat
+        // page; on desktop chat is a separate window and both can happen.
+        const platform = window.__BONFIRE_PLATFORM__;
+        const hasChatTab = platform !== 'ios';
+        const sharedWebview = platform === 'android';
 
-        if (startupPayload && startupPayload.target_tab === 'chat') {
-            // MLS deep link — open chat tab, then navigate to group once loaded
-            await window.__TAURI__.core.invoke('open_secure_chat').catch(e => console.warn('[loggedIn] open_secure_chat:', e));
-            if (!isMobile) {
-                window.location.href = new URL("/dashboard", baseUrl).href;
-            }
-        } else if (startupPayload && startupPayload.path) {
+        const chatDeepLink = startupPayload && startupPayload.target_tab === 'chat' && hasChatTab;
+        if (!chatDeepLink && startupPayload && startupPayload.path) {
             // Bonfire deep link — navigate to the path on the instance
             window.location.href = new URL('/' + startupPayload.path, baseUrl).href;
         } else {
-            // Default: open chat tab/window on login
-            await window.__TAURI__.core.invoke('open_secure_chat').catch(e => console.warn('[loggedIn] open_secure_chat:', e));
-            if (!isMobile) {
+            // Open chat on login (and for MLS deep links, which navigate to the
+            // group once chat loads), then show the instance where possible
+            if (hasChatTab) {
+                await window.__TAURI__.core.invoke('open_secure_chat').catch(e => console.warn('[loggedIn] open_secure_chat:', e));
+            }
+            if (!sharedWebview) {
                 window.location.href = new URL("/dashboard", baseUrl).href;
             }
         }
@@ -145,7 +159,7 @@
         window.location.hash = '';
         cleanup();
         document.getElementById('loading').style.display = 'none';
-        document.getElementById('picker').style.display = 'block';
+        document.getElementById('picker').style.display = 'flex';
         document.getElementById('usernameInput').value = '';
     }
     // Handle OAuth callback (redirected back with ?code=...&state=...)
@@ -166,7 +180,7 @@
     } else {
         // Show the login form if not already logged in or in the middle of OAuth flow
         document.getElementById('loading').style.display = 'none';
-        document.getElementById('picker').style.display = 'block';
+        document.getElementById('picker').style.display = 'flex';
     }
 
     // Login flow: resolve actor via webfinger, then redirect to OAuth authorize

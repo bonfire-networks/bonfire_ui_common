@@ -3,10 +3,10 @@
   "scripts": {
     "build": "yarn build:css && yarn build:js",
     "build:css": "tailwindcss -i ./css/tauri.css -o ./assets/dist/styles.css --minify",
-    "build:js": "yarn --cwd assets/ap_c2s_client/js install --immutable-cache && yarn --cwd assets/ap_c2s_client/js build",
+    "build:js": "sh scripts/chat-client.sh build",
     "watch": "yarn watch:css & yarn watch:js",
     "watch:css": "tailwindcss -i ./css/tauri.css -o ./assets/dist/styles.css --watch",
-    "watch:js": "yarn --cwd assets/ap_c2s_client/js watch",
+    "watch:js": "sh scripts/chat-client.sh watch",
     "test": "npx playwright test --config tests/"
   },
   "devDependencies": {

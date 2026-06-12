@@ -1,4 +1,8 @@
 export function registerServiceWorker() {
+  if (window.__TAURI__ || window.__TAURI_INTERNALS__) {
+    return;
+  }
+
   // Only proceed if service worker is supported
   if (!('serviceWorker' in navigator)) {
     return;
