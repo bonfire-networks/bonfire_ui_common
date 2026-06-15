@@ -6,7 +6,7 @@ IframeResizeHooks.IframeResize = {
 	sendHeight() {
 		window.parent.postMessage(
 			{ type: "bonfire:iframe-resize", height: document.body.scrollHeight },
-			"*"
+			window.__bonfireEmbedParentOrigin || "*"
 		);
 	}
 }

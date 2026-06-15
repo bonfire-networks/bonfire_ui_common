@@ -39,3 +39,6 @@ deps.path
 install-state.gz
 /assets/static/tauri/test-results
 assets/static/tauri/assets/ap_c2s_client
+# iOS build staging dir: a pruned copy of the shell (no chat client) used as
+# frontendDist for `cargo tauri ios build` — see src-tauri/tauri.ios.conf.json
+assets/static/tauri-ios

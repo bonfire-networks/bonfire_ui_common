@@ -130,6 +130,8 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
         end
       end
 
+    user_agent = maybe_get_connect_info(socket, :user_agent)
+
     {:ok,
      if(module_enabled?(Surface), do: Surface.init(socket), else: socket)
      |> assign_global(
@@ -137,7 +139,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        current_app: current_app,
        current_extension: current_extension,
        current_params: params,
-       user_agent: maybe_get_connect_info(socket, :user_agent),
+       user_agent: user_agent,
        user_ip: user_ip,
        #  connect_params: connect_params,
        client_reading_positions: connect_param_map(connect_params["reading_pos"]),

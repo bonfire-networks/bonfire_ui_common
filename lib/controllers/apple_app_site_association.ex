@@ -5,7 +5,10 @@ defmodule Bonfire.UI.Common.AppleAppSiteAssociation do
   The response is generated dynamically from config:
 
     - `APPLE_TEAM_ID` env var (required — 10-char Apple Developer Team ID which must match the one used to sign the app)
-    - `APPLE_APP_BUNDLE_ID` env var (optional, defaults to `cafe.bonfire.desktop` which must match the app's bundle identifier)
+    - `APPLE_APP_BUNDLE_ID` env var (optional, defaults to `cafe.bonfire.desktop,cafe.bonfire.app`).
+      Accepts a comma-separated list so a single instance can serve Universal Links for both the
+      desktop (`cafe.bonfire.desktop`) and mobile (`cafe.bonfire.app`) apps; each bundle id must
+      match a `<team_id>.<bundle_id>` App ID signed with `APPLE_TEAM_ID`.
 
   If `APPLE_TEAM_ID` is not set the endpoint returns 404.
   """
@@ -13,14 +16,18 @@ defmodule Bonfire.UI.Common.AppleAppSiteAssociation do
 
   def show(conn, _params) do
     team_id = System.get_env("APPLE_TEAM_ID")
-    bundle_id = System.get_env("APPLE_APP_BUNDLE_ID", "cafe.bonfire.desktop")
+
+    bundle_ids =
+      System.get_env("APPLE_APP_BUNDLE_ID", "cafe.bonfire.desktop,cafe.bonfire.app")
+      |> String.split(",", trim: true)
+      |> Enum.map(&String.trim/1)
 
     if team_id do
       payload = %{
         applinks: %{
           details: [
             %{
-              appIDs: ["#{team_id}.#{bundle_id}"],
+              appIDs: Enum.map(bundle_ids, &"#{team_id}.#{&1}"),
               components: [
                 # Feeds
                 %{"/" => "/feed"},

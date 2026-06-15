@@ -15,6 +15,8 @@
  *   data-require-topic  - only import the article and generate a comment thread if the canonical category or main tag matches a topic on Bonfire (boolean)
  *   data-creator        - user ID to attribute thread creation to
  *   data-sort-by        - initial sort order: "latest_reply", "reply_count", "boost_count", "like_count", "popularity_score", or "newest" (default: thread order)
+ *   data-sort-order     - sort direction for the chosen sort: "asc" or "desc" (default: per sort type)
+ *   data-mode           - initial thread display mode: "flat" or "nested" (default: instance/user setting)
  *   data-theme          - DaisyUI theme name to apply inside the iframe (e.g. "dark", "light")
  *   data-token-max-age  - hours before the stored auth token is considered stale and the user is prompted to re-authenticate (default: 720 = 30 days). Invalid or non-positive values fall back to the default. The server enforces a hard maximum regardless of this value (1 year by default), and this value is clamped to it.
  *
@@ -127,9 +129,13 @@
   var boundary = script.getAttribute("data-boundary");
   var creator = script.getAttribute("data-creator");
   var sortBy = script.getAttribute("data-sort-by");
+  var sortOrder = script.getAttribute("data-sort-order");
+  var mode = script.getAttribute("data-mode");
   if (boundary) params.set("boundary", boundary);
   if (creator) params.set("creator", creator);
   if (sortBy) params.set("sort_by", sortBy);
+  if (sortOrder) params.set("sort_order", sortOrder);
+  if (mode) params.set("mode", mode);
   var canonicalSlug = script.getAttribute("data-canonical-slug");
   var canonicalId = script.getAttribute("data-canonical-id");
   var groupId = script.getAttribute("data-group-id");
@@ -149,12 +155,24 @@
   // --- Create iframe ---
 
   var iframe = document.createElement("iframe");
-  iframe.id = "bonfire-comments-" + (postId || "embed");
+  // Unique id per embed: a fixed id when a post is pinned, otherwise a shared
+  // counter so two default (postId-less) embeds on one page don't collide.
+  var embedSeq = (window.__bonfireCommentsEmbedCount =
+    (window.__bonfireCommentsEmbedCount || 0) + 1);
+  iframe.id = "bonfire-comments-" + (postId || "embed-" + embedSeq);
   iframe.src = src + "?" + params.toString();
   iframe.style.cssText = "width:100%;min-height:160px;border:none;overflow:hidden;display:block";
   iframe.setAttribute("scrolling", "no");
   iframe.setAttribute("loading", "lazy");
   iframe.setAttribute("title", "Comments");
+  // Same-origin content (the Bonfire instance), but sandbox anyway to drop
+  // unused capabilities. Keep allow-same-origin (LiveView socket) and
+  // allow-top-navigation-by-user-activation (sign-in / remote-interaction
+  // links use target="_top" on user click).
+  iframe.setAttribute(
+    "sandbox",
+    "allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
+  );
 
   if (!script.parentNode) return;
   script.parentNode.insertBefore(iframe, script.nextSibling);

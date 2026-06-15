@@ -105,6 +105,43 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   end
 
   @doc """
+  Simulates typing in a `LiveSelect` autocomplete: notifies the component (un-hides the
+  dropdown), then pushes `"live_select_change"` to `target` (the configured
+  `event_target`). Returns the LiveSelect DOM id; pass `ls_id` if the page has several.
+  """
+  def live_select_simulate_search(view, target, text, ls_id \\ nil) do
+    ls_id =
+      ls_id || find_live_select_id(view) ||
+        (
+          # content may render async (two-phase mount)
+          live_async_wait(view)
+          find_live_select_id(view)
+        ) ||
+        raise "No LiveSelect component found on the page"
+
+    view
+    |> with_target("##{ls_id}")
+    |> render_hook("change", %{"text" => text})
+
+    view
+    |> with_target(target)
+    |> render_hook("live_select_change", %{
+      "id" => ls_id,
+      "text" => text,
+      "field" => "multi_select"
+    })
+
+    ls_id
+  end
+
+  defp find_live_select_id(view) do
+    render(view)
+    |> Floki.parse_document!()
+    |> Floki.attribute("[phx-hook=LiveSelect]", "id")
+    |> List.first()
+  end
+
+  @doc """
   Wait for the LiveView to receive any queued PubSub broadcasts
   """
   def live_pubsub_wait(%{view: %{pid: pid}}) do

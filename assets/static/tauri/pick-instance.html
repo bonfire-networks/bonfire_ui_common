@@ -37,10 +37,16 @@
                 <h2 class="card-title text-2xl">Welcome to Bonfire</h2>
                 <p class="text-base-content/70">Enter your username in the format <code class="kbd kbd-sm">@user@instance.domain</code></p>
                 <input type="text" id="usernameInput" placeholder="@username@yourinstance.domain"
-                    class="input input-bordered w-full" />
+                    class="input input-bordered w-full"
+                    autocapitalize="none" autocorrect="off" spellcheck="false"
+                    autocomplete="username" enterkeyhint="go" />
                 <div class="card-actions w-full">
-                    <button type="submit" class="btn btn-primary w-full">Log in</button>
+                    <button type="submit" id="login-submit" class="btn btn-primary w-full">
+                        <span id="login-spinner" class="loading loading-spinner loading-sm" style="display:none;"></span>
+                        <span id="login-btn-label">Log in</span>
+                    </button>
                 </div>
+                <p id="login-feedback" class="text-sm min-h-[1.25rem] text-base-content/60" role="status" aria-live="polite"></p>
             </div>
         </form>
     </div>
@@ -51,7 +57,7 @@
     import {
         startLogin,
         handleLogin
-    } from './assets/ap_c2s_client/js/dist/activitypub/auth.js'
+    } from './assets/auth/auth.js'
 
     // Load saved username on startup
     const saved = localStorage.getItem('appUsername') || localStorage.getItem('appUrl') || '';
@@ -101,6 +107,13 @@
         console.log("Logged in, go to appUrl:", appUrl);
 
         if (!appUrl) return;
+
+        // No connection → show the offline screen instead of navigating into a
+        // dead webview. offline.html auto-retries (and re-enters here) on reconnect.
+        if (!navigator.onLine) {
+            window.location.href = 'offline.html';
+            return;
+        }
 
         // Update window title with username so multiple instances are distinguishable
         const username = localStorage.getItem('appUsername') || appUrl;
@@ -173,6 +186,16 @@
             loggedIn();
         } catch (err) {
             console.error('[pick-instance] Token exchange failed:', err);
+            // Don't leave the startup spinner up forever — fall back to the login
+            // form with an error so the user can retry (expired code, clock skew,
+            // instance 5xx, dropped connection during token exchange, …).
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('picker').style.display = 'flex';
+            const fb = document.getElementById('login-feedback');
+            if (fb) {
+                fb.className = 'text-sm min-h-[1.25rem] text-error';
+                fb.textContent = 'Sign-in could not be completed. Please try again.';
+            }
         }
     } else if (localStorage.getItem('access_token') && localStorage.getItem('appUrl')) {
         console.log("Already logged in from a previous session");
@@ -181,20 +204,63 @@
         // Show the login form if not already logged in or in the middle of OAuth flow
         document.getElementById('loading').style.display = 'none';
         document.getElementById('picker').style.display = 'flex';
+        document.getElementById('usernameInput').focus();
     }
 
-    // Login flow: resolve actor via webfinger, then redirect to OAuth authorize
-    document.getElementById('login-form').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const input = document.getElementById('usernameInput').value.trim();
-        if (!input) return;
+    // Login flow: resolve actor via webfinger, then redirect to OAuth authorize.
+    const loginForm = document.getElementById('login-form');
+    const usernameInput = document.getElementById('usernameInput');
+    const loginSubmit = document.getElementById('login-submit');
+    const loginSpinner = document.getElementById('login-spinner');
+    const loginBtnLabel = document.getElementById('login-btn-label');
+    const loginFeedback = document.getElementById('login-feedback');
 
+    // Toggle the form's busy state and show a neutral status message.
+    function setLoginBusy(busy, message) {
+        loginSubmit.disabled = busy;
+        usernameInput.disabled = busy;
+        loginSpinner.style.display = busy ? '' : 'none';
+        loginBtnLabel.textContent = busy ? 'Connecting…' : 'Log in';
+        loginFeedback.className = 'text-sm min-h-[1.25rem] text-base-content/60';
+        loginFeedback.textContent = message || '';
+    }
+
+    function showLoginError(message) {
+        setLoginBusy(false);
+        loginFeedback.className = 'text-sm min-h-[1.25rem] text-error';
+        loginFeedback.textContent = message;
+    }
+
+    // Turn the auth library's raw errors into something a person can act on.
+    function friendlyLoginError(err, handle) {
+        const m = (err && err.message) || '';
+        if (/bad Webfinger format/i.test(m)) return `"${handle}" isn't a valid @user@instance handle.`;
+        if (/webfinger/i.test(m) || err instanceof TypeError) return "Couldn't reach that instance — check the address and your connection.";
+        if (/OAuth|endpoint/i.test(m)) return "That instance doesn't support signing in from the app.";
+        return m || 'Login failed. Please try again.';
+    }
+
+    loginForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const handle = usernameInput.value.trim();
+        if (!handle) { usernameInput.focus(); return; }
+
+        // Login needs the network (webfinger + OAuth); show the offline screen rather
+        // than a confusing fetch error when there's no connection.
+        if (!navigator.onLine) {
+            window.location.href = 'offline.html';
+            return;
+        }
+
+        setLoginBusy(true, `Looking up ${handle}…`);
         try {
-            const url = await startLogin(input, getClientId(), getRedirectUri());
+            const url = await startLogin(handle, getClientId(), getRedirectUri());
+            // Success — keep the busy state while the webview navigates to the instance's sign-in.
+            setLoginBusy(true, 'Redirecting to sign in…');
             window.location.href = url;
         } catch (err) {
             console.error('[pick-instance] Login error:', err);
-            alert(err.message || 'Login failed');
+            showLoginError(friendlyLoginError(err, handle));
         }
     });
 

@@ -8,8 +8,15 @@
      the inner layout. --%>
 <script>
   (function () {
-    var match = window.location.search.match(/[?&]theme=([A-Za-z0-9_-]+)/);
+    var qs = window.location.search;
+    var match = qs.match(/[?&]theme=([A-Za-z0-9_-]+)/);
     if (match) document.documentElement.setAttribute("data-theme", match[1]);
+    // Derive the embedder origin from `embed_parent` so resize postMessages can
+    // target it instead of broadcasting to "*". Falls back to "*" if absent.
+    try {
+      var parent = new URLSearchParams(qs).get("embed_parent");
+      if (parent) window.__bonfireEmbedParentOrigin = new URL(parent).origin;
+    } catch (_) {}
   })();
 </script>
 <%!-- Default 8px body margin shows the html bg as a band inside the iframe
@@ -39,7 +46,7 @@
     function sendHeight() {
       window.parent.postMessage(
         { type: "bonfire:iframe-resize", height: document.body.scrollHeight },
-        "*"
+        window.__bonfireEmbedParentOrigin || "*"
       );
     }
     if (typeof ResizeObserver !== "undefined") {

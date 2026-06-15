@@ -72,7 +72,9 @@ defmodule Bonfire.UI.Common.BasicView do
           })();
         </script>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <%!-- viewport-fit=cover matches the main root layout so this fallback page also
+              renders edge-to-edge (under the notch/home indicator) in the native app --%>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
         <meta name="description" content="Bonfire instance" />
         <meta name="keywords" content="bonfire, fediverse" />
         <meta name="author" content="Bonfire" />

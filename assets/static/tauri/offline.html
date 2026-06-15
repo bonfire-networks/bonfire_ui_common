@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html data-theme="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Bonfire — offline</title>
+    <style>
+        /* Self-contained so it renders instantly with no network (it IS the offline page). */
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        html, body { height: 100%; margin: 0; }
+        body {
+            background: #191e25;
+            color: #e7e9ec;
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: calc(env(safe-area-inset-top, 0px) + 2rem)
+                     calc(env(safe-area-inset-right, 0px) + 1.5rem)
+                     calc(env(safe-area-inset-bottom, 0px) + 2rem)
+                     calc(env(safe-area-inset-left, 0px) + 1.5rem);
+        }
+        .flame { width: 84px; height: auto; margin-bottom: 1.5rem; opacity: 0.95; }
+        h1 { font-size: 1.35rem; font-weight: 600; margin: 0 0 0.5rem; }
+        p { font-size: 0.95rem; line-height: 1.5; color: #9aa3ad; margin: 0 0 1.75rem; max-width: 22rem; }
+        button {
+            -webkit-tap-highlight-color: transparent;
+            appearance: none;
+            border: 0;
+            border-radius: 0.75rem;
+            background: #6366f1;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.85rem 2.25rem;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+        }
+        button:active { transform: scale(0.97); background: #4f46e5; }
+        .hint { margin-top: 1.25rem; font-size: 0.8rem; color: #6b7480; min-height: 1.2em; }
+    </style>
+</head>
+
+<body>
+    <svg class="flame" viewBox="0 0 125 189.864" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill="#F36E21" d="M76.553,186.09c0,0-10.178-2.976-15.325-8.226s-9.278-16.82-9.278-16.82s-0.241-6.647-4.136-18.465c0,0,3.357,4.969,5.103,9.938c0,0-5.305-21.086,1.712-30.418c7.017-9.333,0.571-35.654-2.25-37.534c0,0,13.07,5.64,19.875,47.54c6.806,41.899,16.831,45.301,6.088,53.985"/>
+        <path fill="#F6891F" d="M61.693,122.257c4.117-15.4,12.097-14.487-11.589-60.872c0,0,32.016,10.223,52.601,63.123c20.585,52.899-19.848,61.045-19.643,61.582c0.206,0.537-19.401-0.269-14.835-18.532S57.576,137.656,61.693,122.257z"/>
+        <path fill="#FFD04A" d="M81.657,79.192c0,0,11.549,24.845,3.626,40.02c-7.924,15.175-21.126,41.899-0.425,64.998C84.858,184.21,125.705,150.905,81.657,79.192z"/>
+        <path fill="#FDBA16" d="M99.92,101.754c0,0-23.208,47.027-12.043,80.072c0,0,32.741-16.073,20.108-45.79C95.354,106.319,99.92,114.108,99.92,101.754z"/>
+        <path fill="#F36E21" d="M103.143,105.917c0,0,8.927,30.753-1.043,46.868c-9.969,16.115-14.799,29.041-14.799,29.041S134.387,164.603,103.143,105.917z"/>
+        <path fill="#FDBA16" d="M62.049,104.171c0,0-15.645,67.588,10.529,77.655C98.753,191.894,69.033,130.761,62.049,104.171z"/>
+    </svg>
+
+    <h1>You're offline</h1>
+    <p>Bonfire couldn't reach your instance. Check your connection and try again.</p>
+    <button id="retry" type="button">Try again</button>
+    <div class="hint" id="hint"></div>
+
+    <script>
+        const go = () => { window.location.href = 'pick-instance.html'; };
+        const retry = document.getElementById('retry');
+        const hint = document.getElementById('hint');
+
+        retry.addEventListener('click', () => {
+            if (navigator.onLine) {
+                go();
+            } else {
+                hint.textContent = 'Still offline — waiting for a connection…';
+            }
+        });
+
+        // Auto-retry the moment the device regains connectivity.
+        window.addEventListener('online', go);
+    </script>
+</body>
+
+</html>
