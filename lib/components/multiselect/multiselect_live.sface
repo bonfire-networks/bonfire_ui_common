@@ -18,7 +18,8 @@
         max_selectable={@max_selectable}
         allow_clear
       />
-      {#if @show_search}
+      {!-- single mode only: in tags mode this absolute icon would float beside the tags --}
+      {#if @show_search and @mode not in [:tags, :quick_tags]}
         <div
           class="absolute top-[8px] right-[8px] z-30 flex items-center w-[26px] h-[26px] min-h-[26px]"
           phx-click={JS.dispatch("change", to: "#smart_input_form")}
