@@ -2,7 +2,7 @@
 	"version": "0.0.0",
 	"license": "AGPL-3.0",
 	"scripts": {
-		"watch.assets": "npx cpx 'static/**/*' ../../../priv/static --watch",
+		"watch.assets": "npx chokidar 'static/**/*' -c 'cp -r static ../../../priv/'",
 		"watch.js": "NODE_ENV=development NODE_PATH=./node_modules:../../../deps/bonfire_editor_milkdown/assets/node_modules npx esbuild ./js/bonfire_live.js ./js/bonfire_basic.js --target=es2020 --bundle --sourcemap --loader:.svg=text --loader:.woff=file --loader:.woff2=file --loader:.ttf=file --outdir=../../../priv/static/assets --watch & yarn e2ee.watch",
 		"watch.css": "rm -f ../../../priv/static/assets/bonfire_basic.css.gz && NODE_ENV=development npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --watch",
 		"build.css": "npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --minify",
@@ -68,7 +68,7 @@
 		"@tailwindcss/cli": "4.1.17",
 		"@tailwindcss/postcss": "4.1.17",
 		"buffer": "^6.0.3",
-		"cpx2": "^6.0.1",
+		"chokidar-cli": "^3.0.0",
 		"daisyui": "^5.5.20",
 		"esbuild": "^0.19.9",
 		"postcss": "^8.4.38",
