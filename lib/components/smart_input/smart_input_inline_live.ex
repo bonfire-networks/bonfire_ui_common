@@ -74,8 +74,11 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
 
     can_reply =
       if current_user = current_user(context) do
-        reply_to_id = socket.assigns[:reply_to_id] || socket.assigns[:context_id]
-        Bonfire.Boundaries.can?(current_user, :reply, reply_to_id)
+        case socket.assigns[:reply_to_id] || socket.assigns[:context_id] do
+          # standalone compose (e.g. /write): authoring a top-level post, nothing to check `:reply` against
+          nil -> true
+          reply_to_id -> Bonfire.Boundaries.can?(current_user, :reply, reply_to_id)
+        end
       end
 
     {:ok,
