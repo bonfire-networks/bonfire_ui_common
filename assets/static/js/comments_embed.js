@@ -29,16 +29,42 @@
   var script = document.currentScript;
   if (!script) return;
 
-  // bail cleanly if the script src can't yield an origin (relative/blob/bad URL)
-  var instanceUrl;
-  try {
-    instanceUrl = new URL(script.src).origin;
-  } catch (_) {
-    return;
-  }
-  if (!instanceUrl || instanceUrl === "null") return;
-
   var postId = script.getAttribute("data-post-id");
+
+  // --- Shared embed helpers (keep in sync with pins_embed.js) ---
+
+  function getOrigin(scriptEl) {
+    try {
+      var o = new URL(scriptEl.src).origin;
+      return o && o !== "null" ? o : null;
+    } catch (_) { return null; }
+  }
+
+  function embedIframe(id, scriptEl, path, params, title, origin, style) {
+    var qs = params.toString();
+    var iframe = document.createElement("iframe");
+    iframe.id = id;
+    iframe.src = origin + path + (qs ? "?" + qs : "");
+    iframe.style.cssText = "border:none;overflow:hidden;display:block" + (style ? ";" + style : "");
+    iframe.setAttribute("scrolling", "no");
+    iframe.setAttribute("loading", "lazy");
+    iframe.setAttribute("title", title || "Embed");
+    if (!scriptEl.parentNode) return;
+    scriptEl.parentNode.insertBefore(iframe, scriptEl.nextSibling);
+    window.addEventListener("message", function (e) {
+      if (e.origin !== origin) return;
+      if (e.source && iframe.contentWindow && e.source !== iframe.contentWindow) return;
+      if (!e.data || e.data.type !== "bonfire:iframe-resize") return;
+      var height = Number(e.data.height);
+      if (!Number.isFinite(height) || height <= 0) return;
+      iframe.style.height = Math.min(height, 100000) + "px";
+    });
+    return iframe;
+  }
+
+  // bail cleanly if the script src can't yield an origin (relative/blob/bad URL)
+  var instanceUrl = getOrigin(script);
+  if (!instanceUrl) return;
 
   // --- Token max age (validated) ---
   // invalid input must not yield NaN (would silently disable token expiry)
@@ -118,10 +144,9 @@
   // Check if we're returning from a Bonfire login redirect with a fresh token
   receiveToken(urlParams.get("bonfire_embed_token"));
 
-  // --- Build iframe src ---
+  // --- Build iframe ---
 
   var mediaUri = script.getAttribute("data-media-uri") || window.location.href;
-  var src = instanceUrl + "/comments/embed" + (postId ? "/" + postId : "");
   var token = storedToken();
   var theme = script.getAttribute("data-theme");
 
@@ -131,16 +156,17 @@
   var sortBy = script.getAttribute("data-sort-by");
   var sortOrder = script.getAttribute("data-sort-order");
   var mode = script.getAttribute("data-mode");
-  if (boundary) params.set("boundary", boundary);
-  if (creator) params.set("creator", creator);
-  if (sortBy) params.set("sort_by", sortBy);
-  if (sortOrder) params.set("sort_order", sortOrder);
-  if (mode) params.set("mode", mode);
   var canonicalSlug = script.getAttribute("data-canonical-slug");
   var canonicalId = script.getAttribute("data-canonical-id");
   var groupId = script.getAttribute("data-group-id");
   var requireTopic = script.getAttribute("data-require-topic");
   var authMode = script.getAttribute("data-auth-mode");
+
+  if (boundary) params.set("boundary", boundary);
+  if (creator) params.set("creator", creator);
+  if (sortBy) params.set("sort_by", sortBy);
+  if (sortOrder) params.set("sort_order", sortOrder);
+  if (mode) params.set("mode", mode);
   if (canonicalSlug) params.set("canonical_slug", canonicalSlug);
   if (canonicalId) params.set("canonical_id", canonicalId);
   if (groupId) params.set("group_id", groupId);
@@ -152,30 +178,16 @@
   // can redirect back here afterwards with the embed token.
   params.set("embed_parent", window.location.href);
 
-  // --- Create iframe ---
-
-  var iframe = document.createElement("iframe");
   // Unique id so two default (postId-less) embeds on one page don't collide.
   var embedSeq = (window.__bonfireCommentsEmbedCount =
     (window.__bonfireCommentsEmbedCount || 0) + 1);
-  iframe.id = "bonfire-comments-" + (postId || "embed-" + embedSeq);
-  iframe.src = src + "?" + params.toString();
-  iframe.style.cssText = "width:100%;min-height:160px;border:none;overflow:hidden;display:block";
-  iframe.setAttribute("scrolling", "no");
-  iframe.setAttribute("loading", "lazy");
-  iframe.setAttribute("title", "Comments");
-  if (!script.parentNode) return;
-  script.parentNode.insertBefore(iframe, script.nextSibling);
-
-  // --- Auto-resize ---
-
-  window.addEventListener("message", function (e) {
-    if (e.origin !== instanceUrl) return;
-    // ignore messages from other frames when a source is available
-    if (e.source && iframe.contentWindow && e.source !== iframe.contentWindow) return;
-    if (!e.data || e.data.type !== "bonfire:iframe-resize") return;
-    var height = Number(e.data.height);
-    if (!Number.isFinite(height) || height <= 0) return;
-    iframe.style.height = Math.min(height, 100000) + "px";
-  });
+  embedIframe(
+    "bonfire-comments-" + (postId || "embed-" + embedSeq),
+    script,
+    "/comments/embed" + (postId ? "/" + postId : ""),
+    params,
+    "Comments",
+    instanceUrl,
+    "width:100%;min-height:160px"
+  );
 })();
