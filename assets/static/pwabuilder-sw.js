@@ -1,4 +1,4 @@
-const OFFLINE_CACHE = 'bonfire-offline-v2';
+const OFFLINE_CACHE = 'bonfire-offline-v3';
 // App-shell cache: only ever holds content-hashed (immutable) static assets,
 // so entries never go stale — a new deploy produces new URLs.
 const ASSETS_CACHE = 'bonfire-assets-v1';
