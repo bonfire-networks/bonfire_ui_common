@@ -155,8 +155,7 @@
   // --- Create iframe ---
 
   var iframe = document.createElement("iframe");
-  // Unique id per embed: a fixed id when a post is pinned, otherwise a shared
-  // counter so two default (postId-less) embeds on one page don't collide.
+  // Unique id so two default (postId-less) embeds on one page don't collide.
   var embedSeq = (window.__bonfireCommentsEmbedCount =
     (window.__bonfireCommentsEmbedCount || 0) + 1);
   iframe.id = "bonfire-comments-" + (postId || "embed-" + embedSeq);
@@ -165,15 +164,6 @@
   iframe.setAttribute("scrolling", "no");
   iframe.setAttribute("loading", "lazy");
   iframe.setAttribute("title", "Comments");
-  // Same-origin content (the Bonfire instance), but sandbox anyway to drop
-  // unused capabilities. Keep allow-same-origin (LiveView socket) and
-  // allow-top-navigation-by-user-activation (sign-in / remote-interaction
-  // links use target="_top" on user click).
-  iframe.setAttribute(
-    "sandbox",
-    "allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation"
-  );
-
   if (!script.parentNode) return;
   script.parentNode.insertBefore(iframe, script.nextSibling);
 

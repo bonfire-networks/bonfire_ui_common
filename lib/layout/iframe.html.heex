@@ -11,11 +11,12 @@
     var qs = window.location.search;
     var match = qs.match(/[?&]theme=([A-Za-z0-9_-]+)/);
     if (match) document.documentElement.setAttribute("data-theme", match[1]);
-    // Derive the embedder origin from `embed_parent` so resize postMessages can
-    // target it instead of broadcasting to "*". Falls back to "*" if absent.
+    // Target resize postMessages at the embedder origin instead of "*".
+    // Leave unset (→ "*") if absent or an opaque "null" origin.
     try {
       var parent = new URLSearchParams(qs).get("embed_parent");
-      if (parent) window.__bonfireEmbedParentOrigin = new URL(parent).origin;
+      var origin = parent && new URL(parent).origin;
+      if (origin && origin !== "null") window.__bonfireEmbedParentOrigin = origin;
     } catch (_) {}
   })();
 </script>
