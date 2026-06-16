@@ -141,25 +141,50 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
   end
 
   defp maybe_write_static_cache(conn) do
-    if cacheable_response?(conn) do
-      # Use the original request path saved before maybe_make_request_path_static
-      # rewrote it to include /index.html — otherwise we'd write to the wrong path.
-      url = conn.private[:original_request_path] || conn.request_path
-      tags = conn |> get_resp_header("surrogate-key") |> Enum.flat_map(&String.split/1)
-      body = conn.resp_body
-      # Write to disk asynchronously so the response is not delayed by the file write.
-      # In tests, use Process.put([:bonfire_ui_common, :sync_static_write], true)
-      # to write synchronously so assertions can check the file immediately.
-      if Config.get([__MODULE__, :sync_static_write], false) do
-        Bonfire.UI.Common.StaticGenerator.cache_response(url, body, tags: tags)
-      else
-        Task.start(fn ->
-          Bonfire.UI.Common.StaticGenerator.cache_response(url, body, tags: tags)
-        end)
-      end
+    cond do
+      cacheable_response?(conn) ->
+        # Use the original request path saved before maybe_make_request_path_static
+        # rewrote it to include /index.html — otherwise we'd write to the wrong path.
+        url = conn.private[:original_request_path] || conn.request_path
+        do_write_cache(conn, url)
+
+      # Embed routes opted in via cache_query_string: true on CacheControlPlug.
+      # The CacheControlPlug runs after MaybeStaticGeneratorPlug, so the flag is
+      # only visible here (before_send fires after the full pipeline).
+      conn.private[:cache_query_string] == true and conn.query_string != "" and
+        not authenticated?(conn) and not has_flash?(conn) ->
+        url =
+          conn.private[:qs_hashed_path] || qs_hashed_path(conn.request_path, conn.query_string)
+
+        do_write_cache(conn, url)
+
+      true ->
+        :ok
     end
 
     conn
+  end
+
+  defp do_write_cache(conn, url) do
+    tags = conn |> get_resp_header("surrogate-key") |> Enum.flat_map(&String.split/1)
+    body = conn.resp_body
+    # Write to disk asynchronously so the response is not delayed by the file write.
+    # In tests, use Process.put([:bonfire_ui_common, :sync_static_write], true)
+    # to write synchronously so assertions can check the file immediately.
+    if Config.get([__MODULE__, :sync_static_write], false) do
+      Bonfire.UI.Common.StaticGenerator.cache_response(url, body, tags: tags)
+    else
+      Task.start(fn ->
+        Bonfire.UI.Common.StaticGenerator.cache_response(url, body, tags: tags)
+      end)
+    end
+  end
+
+  defp qs_hashed_path(path, ""), do: path
+
+  defp qs_hashed_path(path, qs) do
+    hash = :crypto.hash(:sha256, qs) |> Base.encode16(case: :lower) |> binary_part(0, 8)
+    path <> "/_qs_" <> hash
   end
 
   # A response is written to the static cache when:
@@ -198,28 +223,53 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
 
   def maybe_make_request_path_static(%{assigns: %{current_user: %{}}} = conn, _), do: conn
 
-  # Don't serve the cached HTML if the URI has a non-empty query string —
-  # query params may change what the page shows.
-  def maybe_make_request_path_static(%{query_string: query_string} = conn, _)
-      when query_string != "",
-      do: conn
+  # For embed routes with cache_query_string: true, serve a per-query-string
+  # cache entry keyed by a short hash if it already exists on disk.
+  # Falls through to the controller (and before_send writes the cache) on miss.
+  def maybe_make_request_path_static(
+        %{query_string: qs, request_path: path} = conn,
+        _
+      )
+      when qs != "" do
+    if !get_session(conn, :current_user_id) do
+      hashed = qs_hashed_path(path, qs)
+
+      full =
+        Path.join([StaticGenerator.dest_path(), String.trim_leading(hashed, "/"), "index.html"])
+
+      if File.exists?(full) do
+        conn
+        |> put_private(:qs_hashed_path, hashed)
+        |> serve_from_static(hashed)
+      else
+        conn
+      end
+    else
+      conn
+    end
+  end
 
   # For any other unauthenticated request, try to serve from static disk cache.
   # Uses session (not assigns) because current_user may not be loaded yet in the
   # :cacheable pipeline. Falls through to the controller if no file exists.
   def maybe_make_request_path_static(conn, _) do
     if !get_session(conn, :current_user_id) do
-      # Save original path before StaticGeneratedPlug rewrites request_path to
-      # include /index.html — the cache writer needs the unmodified URL.
-      # Also mark this connection as eligible for static caching — used by
-      # cacheable_response? to decide whether to write the response to disk.
-      conn
-      |> put_private(:original_request_path, conn.request_path)
-      |> put_private(:static_cacheable, true)
-      |> Bonfire.UI.Common.StaticGeneratedPlug.make_request_path_static()
+      serve_from_static(conn, conn.request_path)
     else
       info("do not use cache when signed in")
       conn
     end
+  end
+
+  # Marks conn as eligible for static caching and rewrites request_path and
+  # path_info so Plug.Static (which uses path_info) finds the pre-generated file.
+  defp serve_from_static(conn, path) do
+    path_info = path |> String.trim_leading("/") |> String.split("/", trim: true)
+
+    conn
+    |> put_private(:original_request_path, path)
+    |> put_private(:static_cacheable, true)
+    |> Map.merge(%{request_path: path, path_info: path_info})
+    |> Bonfire.UI.Common.StaticGeneratedPlug.make_request_path_static()
   end
 end

@@ -54,5 +54,6 @@
       new ResizeObserver(sendHeight).observe(document.body);
     }
     sendHeight();
+    window.addEventListener("load", sendHeight);
   })();
 </script>

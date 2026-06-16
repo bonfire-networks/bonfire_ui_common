@@ -16,6 +16,21 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   def push_theme(socket, _), do: socket
 
   @doc """
+  Applies standard iframe-embed assigns: reads `"theme"` from params, pushes it,
+  and sets the layout assigns shared by all embed LiveViews.
+  """
+  def setup_embed(socket, theme, force_static? \\ false) do
+    socket
+    |> push_theme(theme)
+    |> Phoenix.Component.assign_new(:embed_theme, fn -> theme end)
+    |> Phoenix.Component.assign_new(:force_static, fn -> force_static? end)
+    |> Phoenix.Component.assign_new(:no_header, fn -> true end)
+    |> Phoenix.Component.assign_new(:without_sidebar, fn -> true end)
+    |> Phoenix.Component.assign_new(:without_secondary_widgets, fn -> true end)
+    |> Phoenix.Component.assign_new(:sidebar_widgets, fn -> [] end)
+  end
+
+  @doc """
   Pushes the current theme for the given socket/assigns, resolving the user's
   preference. For the `:system` preference it pushes the `"system"` sentinel
   along with the configured light/dark theme names so the client can follow the

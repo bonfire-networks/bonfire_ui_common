@@ -6,7 +6,8 @@
  *   <script src="https://your-instance.social/js/pins_embed.js" data-theme="dark" async></script>
  *
  * Optional attributes:
- *   data-theme  - DaisyUI theme name to apply inside the iframe (e.g. "dark", "light")
+ *   data-theme    - DaisyUI theme name to apply inside the iframe (e.g. "dark", "light")
+ *   data-variant  - "carousel" to use the horizontal carousel layout (default: spotlight grid)
  *
  * The iframe resizes automatically to fit its content.
  */
@@ -54,5 +55,8 @@
   var theme = script.getAttribute("data-theme");
   if (theme) params.set("theme", theme);
 
-  embedIframe("bonfire-pins", script, "/instance/pins/embed", params, "Spotlight", instanceUrl, "width:100%;min-height:140px");
+  var variant = script.getAttribute("data-variant");
+  var path = variant === "carousel" ? "/instance/pins/carousel/embed" : "/instance/pins/embed";
+
+  embedIframe("bonfire-pins", script, path, params, "Spotlight", instanceUrl, "width:100%;min-height:140px");
 })();

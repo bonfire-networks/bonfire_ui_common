@@ -61,6 +61,9 @@ defmodule Bonfire.UI.Common.CacheControlPlug do
   def call(%{assigns: %{current_account: %{}}} = conn, _opts), do: conn
 
   def call(conn, opts) do
+    conn =
+      if opts[:cache_query_string], do: put_private(conn, :cache_query_string, true), else: conn
+
     purgeable? = opts[:purgeable] == true
     ttl = opts[:ttl] || default_ttl(purgeable?)
     cdn_ttl = opts[:cdn_ttl] || default_cdn_ttl(purgeable?, ttl)
