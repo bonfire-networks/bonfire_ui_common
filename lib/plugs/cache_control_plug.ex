@@ -51,8 +51,9 @@ defmodule Bonfire.UI.Common.CacheControlPlug do
 
   def init(opts), do: opts
 
-  # Skip caching outside of prod so template/code changes are seen immediately.
-  if Mix.env() != :prod do
+  # Skip HTTP caching outside of prod (unless STATIC_CACHE_DEV=true at compile time).
+  if Mix.env() != :prod and
+       not Application.compile_env(:bonfire_ui_common, :static_cache_dev, false) do
     def call(conn, _opts), do: put_resp_header(conn, "cache-control", "no-store, max-age=0")
   end
 

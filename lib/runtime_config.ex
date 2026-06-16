@@ -97,6 +97,9 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
     # - `CACHE_PURGE_ADAPTERS` — comma-separated adapter names or fully-qualified module names.
     #   Recognised short names: `varnish`, `nginx`, `cloudflare`, `static_generator`, `null`.
     #   Auto-detected from credentials if not set.
+    # - `STATIC_CACHE_DEV=true` — enable static file caching in dev (writes to priv/static/public).
+    #   Read by `config/dev.exs` into `config :bonfire_ui_common, static_cache_dev: true`,
+    #   which is picked up at compile time by CacheControlPlug and at runtime here.
     # - `VARNISH_URL` — enables Varnish adapter (default: `http://localhost:80`)
     # - `NGINX_URL` — enables Nginx adapter (default: `http://localhost:80`); requires the `ngx_cache_purge` module or Nginx Plus — see `Bonfire.UI.Common.Cache.HTTPPurge.Nginx` for details.
     # - `CLOUDFLARE_ZONE_ID` + `CLOUDFLARE_API_TOKEN` — enables Cloudflare adapter
@@ -105,9 +108,11 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
     nginx_url = System.get_env("NGINX_URL")
     cf_zone = System.get_env("CLOUDFLARE_ZONE_ID")
     cf_token = System.get_env("CLOUDFLARE_API_TOKEN")
+    static_cache_dev = Application.get_env(:bonfire_ui_common, :static_cache_dev, false)
 
     config :bonfire_common, Bonfire.Common.Cache.HTTPPurge,
-      adapters: resolve_http_purge_adapters(varnish_url, nginx_url, cf_zone, cf_token),
+      adapters:
+        resolve_http_purge_adapters(varnish_url, nginx_url, cf_zone, cf_token, static_cache_dev),
       varnish_url: varnish_url || "http://localhost:80",
       nginx_url: nginx_url || "http://localhost:80",
       cloudflare_zone_id: cf_zone,
@@ -119,7 +124,13 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
         System.get_env("STATIC_GENERATE_MEMORY_CACHE_THRESHOLD", "0") |> String.to_integer()
   end
 
-  defp resolve_http_purge_adapters(varnish_url, nginx_url, cf_zone, cf_token) do
+  defp resolve_http_purge_adapters(
+         varnish_url,
+         nginx_url,
+         cf_zone,
+         cf_token,
+         static_cache_dev \\ false
+       ) do
     case System.get_env("CACHE_PURGE_ADAPTERS") do
       env when env not in [nil, ""] ->
         env
@@ -146,6 +157,7 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
         # Auto-detect from presence of credentials
         detected =
           [
+            {static_cache_dev, Bonfire.UI.Common.Cache.HTTPPurge.StaticGenerator},
             {varnish_url, Bonfire.UI.Common.Cache.HTTPPurge.Varnish},
             {nginx_url, Bonfire.UI.Common.Cache.HTTPPurge.Nginx},
             {cf_zone && cf_token, Bonfire.UI.Common.Cache.HTTPPurge.Cloudflare}
