@@ -24,6 +24,8 @@ defmodule Bonfire.UI.Common.MixProject do
       deps:
         Mess.deps([
           {:phoenix_live_reload, "~> 1.2", only: :dev},
+          # render ANSI-colored log output as HTML in the LiveDashboard logs page
+          {:ansi_to_html, "~> 0.6"},
           {:floki, ">= 0.0.0", only: :test},
           {:zest, "~> 0.1", optional: true},
           {:phoenix_test, "~> 0.6", only: :test, runtime: false},
