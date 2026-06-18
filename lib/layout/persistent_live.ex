@@ -412,6 +412,18 @@ defmodule Bonfire.UI.Common.PersistentLive do
     {:noreply, socket}
   end
 
+  # a pin changed in the page LV → tell the groups sidebar in this sticky process to recompute
+  # (resolved via the ComponentID alias the sidebar registers under the user, see SidebarGroupsLive)
+  def handle_info({:assign_persistent_self, {:sidebar_groups, %{user_id: user_id}}}, socket) do
+    maybe_apply(Bonfire.UI.Common.ComponentID, :send_updates, [
+      Bonfire.UI.Groups.SidebarGroupsLive,
+      user_id,
+      %{reload_pins: true}
+    ])
+
+    {:noreply, socket}
+  end
+
   def handle_info({:assign_persistent_self, assigns}, socket) do
     context = Map.merge(assigns(socket)[:__context__] || %{}, assigns[:__context__] || %{})
 
