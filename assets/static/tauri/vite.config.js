@@ -15,7 +15,7 @@ export default defineConfig({
     preserveSymlinks: true,
   },
   server: {
-    host: host || false,
+    host: host || '127.0.0.1',
     port: 1430,
     strictPort: true,
     hmr: host ? { protocol: 'ws', host, port: 1431 } : undefined,
