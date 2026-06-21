@@ -125,7 +125,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       end
 
       # graphql-transport-ws transport for GraphQL subscriptions (Ferry/graphql-ws clients).
-      if Code.ensure_loaded?(Absinthe.GraphqlWS.Socket) do
+      if module_enabled?(Bonfire.API.GraphQL.GraphqlWSSocket) do
         socket("/api/graphql-ws", Bonfire.API.GraphQL.GraphqlWSSocket,
           websocket: [path: "", subprotocols: ["graphql-transport-ws"]],
           longpoll: false
