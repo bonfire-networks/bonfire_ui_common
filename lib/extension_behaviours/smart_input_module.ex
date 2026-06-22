@@ -25,6 +25,14 @@ defmodule Bonfire.UI.Common.SmartInputModule do
   @doc "Declares a smart input module"
   @callback smart_input_module() :: any
 
+  @doc "Iconify icon name to show for a given create-object `type` in the composer picker."
+  @callback smart_input_icon(type :: atom) :: binary
+
+  @doc "Human-readable label to show for a given create-object `type` in the composer picker."
+  @callback smart_input_label(type :: atom) :: binary
+
+  @optional_callbacks smart_input_icon: 1, smart_input_label: 1
+
   def app_modules() do
     Bonfire.Common.ExtensionBehaviour.behaviour_app_modules(__MODULE__)
   end

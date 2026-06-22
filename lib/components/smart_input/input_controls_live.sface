@@ -5,14 +5,16 @@
       <div id="composer_wrapper" class="flex-1 flex flex-col min-h-0">
         <div class="h-full flex flex-col flex-1 grow relative min-h-0">
           <div class="flex-1 min-h-0 overflow-y-auto overscroll-y-contain flex flex-col">
+            {!-- Title: shown expanded when `@title_visible`, or behind a toggle when
+                 `@title_toggle` (per the `enable_fields` config). --}
             <div
-              class="hidden"
-              :if={@enable_thread_title and
-                e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}
+              :if={@title_visible or @title_toggle}
+              class={[hidden: !@title_visible]}
               id="smart_input_post_title"
-              phx-update="ignore"
             >
-              <div class="relative p-2 bg-base-100">
+              {!-- phx-update="ignore" needs its own id (preserves the typed title across re-renders
+                   while the outer div above stays reactive to show/hide) --}
+              <div phx-update="ignore" id="smart_input_post_title_value" class="relative p-2 bg-base-100">
                 <label class="input w-full">
                   <#Icon iconify="ph:text-h-one-duotone" class="w-4 h-4 opacity-50" />
                   <input
@@ -26,12 +28,21 @@
                 </label>
               </div>
             </div>
-            <div class={[hidden: !(@show_sensitive || @show_cw)]} id="smart_input_summary">
+            {!-- The `summary` field doubles as the article summary (shown by default for
+                 articles) and, when `sensitive` is toggled on, as the content warning. --}
+            <div class={[hidden: !@summary_field_shown]} id="smart_input_summary">
+              {!-- Reactive role label: the textarea is `phx-update="ignore"` (to preserve typed
+                   content) so its placeholder is frozen at first render — this label (outside the
+                   ignored node) flips reactively between Summary and Content warning instead. --}
+              <div :if={@summary_field_shown} class="px-3 pt-2 text-xs font-medium text-base-content/50">
+                {if @show_sensitive || @show_cw, do: l("Content warning"), else: l("Summary")}
+              </div>
               <div class="relative flex items-start border-b border-dashed border-base-content/15">
                 <div phx-update="ignore" id="smart_input_summary_value" class="flex-1 min-w-0">
+                  {!-- no placeholder: the reactive label above shows the field's role (this
+                       subtree is `phx-update="ignore"` so a placeholder here would be frozen) --}
                   <textarea
                     name="post[post_content][summary]"
-                    placeholder={l("Content warning")}
                     class="block w-full m-0 px-3 py-2 !outline-0 !outline-none bg-transparent border-0 resize-none text-base leading-6 text-base-content placeholder:text-base-content/50 focus:ring-0 focus:outline-none"
                     rows="1"
                     style="field-sizing: content; min-height: 0; max-height: 6rem;"
@@ -129,11 +140,7 @@
                 />
               </div>
 
-              <div
-                :if={e(@smart_input_opts, :create_object_type, nil) in [:message, "message", "post", nil]}
-                class="relative z-30 flex items-center"
-                id="sensitive_btn"
-              >
+              <div :if={@sensitive_toggle} class="relative z-30 flex items-center" id="sensitive_btn">
                 <button
                   title={l("Mark the activity as sensitive")}
                   type="button"
@@ -240,8 +247,8 @@
                 >
                   {!-- siren is the sole CW entry point now; toggle_cw/show_cw
                        handler kept (CW-reply inherit still uses show_cw) --}
-                  <li :if={@enable_thread_title and
-                    e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}>
+                  {!-- Title toggle button — only for types configured with `toggle: true`. --}
+                  <li :if={@title_toggle}>
                     <button
                       type="button"
                       id="title_btn"

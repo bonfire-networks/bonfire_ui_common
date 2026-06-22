@@ -58,31 +58,19 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     )
   end
 
-  @doc "Iconify name for a smart-input type in the composer's picker."
-  # TODO: config or behavior driven mapping instead of hardcoded here
-  @type_meta %{
-    broadcast: %{icon: "ph:megaphone-duotone"},
-    post: %{icon: "ph:note-pencil-duotone"},
-    poll: %{icon: "ph:list-checks-duotone"},
-    message: %{icon: "ph:chat-circle-text-duotone"}
-  }
+  @default_type_icon "ph:pencil-line-duotone"
 
+  # Resolve the create-object type atom from an explicit `create_object_type` or,
+  # failing that, the component's first declared `smart_input_module/0` type.
   defp type_atom(component, create_object_type) do
-    # TODO: config or behavior driven mapping instead of hardcoded here
     cond do
-      create_object_type in [:broadcast, "broadcast"] ->
-        :broadcast
+      is_atom(create_object_type) and not is_nil(create_object_type) ->
+        create_object_type
 
-      create_object_type in [:post, "post"] ->
-        :post
+      is_binary(create_object_type) and create_object_type != "" ->
+        maybe_to_atom(create_object_type)
 
-      create_object_type in [:poll, "poll"] ->
-        :poll
-
-      create_object_type in [:message, "message"] ->
-        :message
-
-      is_atom(component) ->
+      is_atom(component) and not is_nil(component) ->
         component
         |> maybe_apply(:smart_input_module, [], fallback_return: [])
         |> List.wrap()
@@ -93,18 +81,31 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     end
   end
 
-  def type_icon(component, create_object_type \\ nil) do
-    ed(@type_meta, type_atom(component, create_object_type), :icon, "ph:pencil-line-duotone")
+  # The module that owns a type's presentation: the component itself if it declares
+  # `smart_input_module/0`, otherwise looked up from the registry by type.
+  defp type_module(component, type) do
+    if is_atom(component) and not is_nil(component) and
+         function_exported?(component, :smart_input_module, 0),
+       do: component,
+       else: component_by_type(type)
   end
 
+  @doc "Iconify name for a smart-input type in the composer's picker (behaviour-driven)."
+  def type_icon(component, create_object_type \\ nil) do
+    type = type_atom(component, create_object_type)
+
+    (type &&
+       maybe_apply(type_module(component, type), :smart_input_icon, [type], fallback_return: nil)) ||
+      @default_type_icon
+  end
+
+  @doc "Human-readable label for a smart-input type in the composer's picker (behaviour-driven)."
   def type_label(component, create_object_type \\ nil) do
-    case type_atom(component, create_object_type) do
-      :broadcast -> l("Broadcast")
-      :post -> l("Post")
-      :poll -> l("Poll")
-      :message -> l("Message")
-      _ -> dynamic_type_label(component)
-    end
+    type = type_atom(component, create_object_type)
+
+    (type &&
+       maybe_apply(type_module(component, type), :smart_input_label, [type], fallback_return: nil)) ||
+      dynamic_type_label(component)
   end
 
   defp dynamic_type_label(component) do
@@ -374,12 +375,30 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         current_user(socket)
       )
 
+    selected_component =
+      maybe_to_module(e(params, "component", nil) || e(params, "smart_input_component", nil))
+
+    # Priority: an explicit param override, then (when switching via the dropdown) the
+    # selected component's own type, then the carried-over opts. The component's type must
+    # beat the carried opts — otherwise switching e.g. article→post keeps the stale
+    # `create_object_type` (since opts now carries it), leaving article's fields visible.
+    resolved_create_object_type =
+      e(params, "create_object_type", nil) ||
+        (selected_component && primary_smart_input_type(selected_component)) ||
+        e(opts, :create_object_type, nil)
+
+    # store create_object_type INSIDE smart_input_opts too, since the composer
+    # templates resolve per-type UI (title/summary/cw/handler) from
+    # `@smart_input_opts.create_object_type`
+    opts =
+      if resolved_create_object_type,
+        do: Map.put(opts, :create_object_type, resolved_create_object_type),
+        else: opts
+
     set_assigns =
       [
-        smart_input_component:
-          maybe_to_module(e(params, "component", nil) || e(params, "smart_input_component", nil)),
-        create_object_type:
-          e(opts, :create_object_type, nil) || e(params, "create_object_type", nil),
+        smart_input_component: selected_component,
+        create_object_type: resolved_create_object_type,
         context_id: resolved_context_id,
         smart_input_opts: opts,
         showing_within: e(assigns(socket), :showing_within, nil),
@@ -1138,6 +1157,18 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
        Bonfire.UI.Social.WritePostContentLive)
     |> debug("active component")
   end
+
+  # The primary create-object type a composer module declares (the first entry of
+  # its `smart_input_module/0`), used to set `create_object_type` when a composer is
+  # selected so its hidden form field + per-type UI/routing resolve correctly.
+  defp primary_smart_input_type(module) when is_atom(module) and not is_nil(module) do
+    module
+    |> maybe_apply(:smart_input_module, [], fallback_return: [])
+    |> List.wrap()
+    |> List.first()
+  end
+
+  defp primary_smart_input_type(_), do: nil
 
   defp component_by_type(create_object_type) when is_atom(create_object_type) do
     e(all_smart_input_components(), create_object_type, nil)
