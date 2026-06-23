@@ -57,7 +57,12 @@ defmodule Bonfire.UI.Common.MaybePlausibleProxyPlug do
          {:ok, payload} <- Jason.decode(body),
          remote_ip = determine_ip_address(conn, config),
          headers = build_headers(conn, [{"Content-Type", "application/json"}], remote_ip),
-         event = Jason.encode!(%{"name" => payload["n"], "url" => payload["u"], "domain" => payload["d"]}),
+         event =
+           Jason.encode!(%{
+             "name" => payload["n"],
+             "url" => payload["u"],
+             "domain" => payload["d"]
+           }),
          {:ok, resp} <- HTTPoison.post("#{@plausible_base}/api/event", event, headers) do
       conn
       |> forward_safe_headers(resp.headers)
@@ -79,7 +84,8 @@ defmodule Bonfire.UI.Common.MaybePlausibleProxyPlug do
     end)
   end
 
-  defp build_headers(conn, config), do: build_headers(conn, [], determine_ip_address(conn, config))
+  defp build_headers(conn, config),
+    do: build_headers(conn, [], determine_ip_address(conn, config))
 
   defp build_headers(conn, extra, ip_address) do
     [
