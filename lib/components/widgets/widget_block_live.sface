@@ -1,7 +1,25 @@
 <aside class={@class} aria-label={@widget_title || nil}>
   <div :if={@widget_title} class={"flex items-center justify-between", @title_class}>
     <div>{@widget_title}</div>
-    <#slot {@action} />
+    <div class="flex items-center gap-1">
+      <#slot {@action} />
+      {#if show_reset?(@reset_cache_event, @can_reset, @__context__)}
+        <button
+          type="button"
+          phx-click={@reset_cache_event}
+          phx-target={@reset_cache_target}
+          {...phx_values(@reset_cache_values)}
+          onclick="this.dataset.done='1'"
+          title={l("Refresh")}
+          class="group btn btn-circle btn-xs btn-ghost"
+          data-role="widget-reset"
+        >
+          <span class="sr-only">{l("Refresh")}</span>
+          <#Icon iconify="ph:arrow-counter-clockwise-duotone" class="w-4 h-4 group-data-[done]:hidden" />
+          <#Icon iconify="ph:check-bold" class="hidden w-4 h-4 text-success group-data-[done]:inline" />
+        </button>
+      {/if}
+    </div>
   </div>
   {#if @empty}
     <#slot {@empty_state}>
