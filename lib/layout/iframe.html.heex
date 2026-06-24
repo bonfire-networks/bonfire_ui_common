@@ -24,6 +24,17 @@
      (auto-resize uses body.scrollHeight, which excludes margin). --%>
 <style>
   html, body { margin: 0; padding: 0; }
+  /* Content must flow to its natural height: the parent iframe is sized to this
+     doc's scrollHeight, so a viewport-clamped height would be circular and clip
+     the thread. Neutralize the app shell's viewport heights (h-screen/*vh/*dvh),
+     scoped to #iframe-resize-hook (embed-only). Relative/pixel heights are kept. */
+  #iframe-resize-hook [class*="vh]"],
+  #iframe-resize-hook [class*="dvh]"],
+  #iframe-resize-hook [class*="h-screen"] {
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+  }
 </style>
 <div id="iframe-resize-hook" phx-hook="IframeResize">
   <.live_component
@@ -40,20 +51,31 @@
   <.live_component module={Bonfire.UI.Common.ReusableModalLive} id="persistent_modal" />
 </div>
 <script>
-  // Auto-resize the parent iframe when this page's content changes.
-  // Uses ResizeObserver (no library needed) and postMessage to the embedder.
-  // The IframeResize LiveView hook (bonfire_live.js) also fires on every LV patch.
+  // Auto-resize the embedder's iframe to this page's content. ONE sender: a
+  // ResizeObserver on <body> (also nudged on LV patches via __bonfireEmbedResize).
+  // De-duplicated on `last` so transient mid-render values can't flip-flop height.
   (function () {
-    function sendHeight() {
-      window.parent.postMessage(
-        { type: "bonfire:iframe-resize", height: document.body.scrollHeight },
-        window.__bonfireEmbedParentOrigin || "*"
-      );
+    var last = 0;
+    function measure() {
+      // body.scrollHeight only — documentElement is inflated by hidden
+      // `fixed inset-0` modal overlays.
+      var h = document.body.scrollHeight;
+      if (h > 0 && h !== last) {
+        last = h;
+        window.parent.postMessage(
+          { type: "bonfire:iframe-resize", height: h },
+          window.__bonfireEmbedParentOrigin || "*"
+        );
+      }
     }
+    window.__bonfireEmbedResize = measure; // shared with the IframeResize LV hook
     if (typeof ResizeObserver !== "undefined") {
-      new ResizeObserver(sendHeight).observe(document.body);
+      new ResizeObserver(measure).observe(document.body);
     }
-    sendHeight();
-    window.addEventListener("load", sendHeight);
+    window.addEventListener("load", measure);
+    // Offscreen iframes pause rAF/ResizeObserver but not timers, so a short
+    // bounded poll guarantees convergence; `last` only posts on change.
+    var n = 0, id = setInterval(function () { measure(); if (++n >= 60) clearInterval(id); }, 250);
+    measure();
   })();
 </script>

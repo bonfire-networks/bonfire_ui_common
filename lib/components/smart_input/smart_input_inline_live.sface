@@ -34,10 +34,19 @@
                 is_remote={false}
               />
             </div>
-            <span class="flex-1 text-base-content/60 truncate text-sm">
+            <button
+              type="button"
+              aria-label={@title_prompt || l("Write a comment")}
+              phx-click={LiveHandler.inline_expand(@composer_dom_id)}
+              class="flex-1 text-left text-base-content/70 truncate text-sm bg-transparent cursor-text"
+            >
               {@title_prompt || l("Your message or question…")}
-            </span>
-            <button type="button" class="btn btn-primary btn-sm rounded-full normal-case mr-1">
+            </button>
+            <button
+              type="button"
+              phx-click={LiveHandler.inline_expand(@composer_dom_id)}
+              class="btn btn-primary btn-sm rounded-full normal-case mr-1"
+            >
               {l("Post")}
             </button>
           </div>
@@ -132,11 +141,11 @@
       {/if}
       <div class="flex-1 flex items-center gap-3">
         {#if @auth_mode == "remote"}
-          <span class="flex-1 text-right text-sm text-primary truncate">
+          <span class="flex-1 text-right text-sm text-base-content/70 truncate">
             {l("Reply with your existing account from any fediverse server")}
           </span>
         {#else}
-          <span class="flex-1 text-right text-sm text-primary truncate">
+          <span class="flex-1 text-right text-sm text-base-content/70 truncate">
             {l("Join %{instance_name} to leave comments",
               instance_name:
                 Config.get([:ui, :theme, :instance_name]) ||
