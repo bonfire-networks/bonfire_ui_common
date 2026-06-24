@@ -803,6 +803,18 @@ defmodule Bonfire.UI.Common do
   defp redirect_opts(conn, to, opts) do
     opts = List.wrap(opts)
 
+    # guard against a non-binary redirect target (e.g. an `:ok`/atom leaking through),
+    # which would otherwise crash deep in Phoenix with a cryptic `html_escape` error
+    to =
+      cond do
+        is_binary(to) or is_nil(to) ->
+          to
+
+        true ->
+          error(to, "redirect_to: ignoring non-binary redirect target, using fallback instead")
+          nil
+      end
+
     type =
       case opts[:type] || opts[:external] do
         nil ->
@@ -821,6 +833,7 @@ defmodule Bonfire.UI.Common do
           case to do
             "http" <> _ -> :external
             "/" <> _ -> :to
+            nil -> :to
             _ -> :external
           end
       end

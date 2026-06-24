@@ -116,14 +116,9 @@ export async function getGroupMemberCount(page: any, groupId: string): Promise<n
 }
 
 /**
- * Inject a synthetic Add { KeyPackage } activity into the controller's handler.
+ * Inject a synthetic Add { KeyPackage } activity via the real handleActivity dispatcher.
  * Returns true if the KP was stored (accepted), false if it was rejected.
- * mlsSignature is a bare base64 signature string (no signerKey — receiver iterates known keys).
- */
-/**
- * Inject a synthetic Add { KeyPackage } activity directly into _handleKeyPackageAdd.
- * Returns true if the KP was stored (accepted), false if it was rejected.
- * mlsSignature is a bare base64 signature string.
+ * Pass mlsSignature + mlsSignerKeyId to exercise the cache-keyed verification path.
  * Pass a custom `object` to test variant shapes (mls:-prefixed fields, array type, etc).
  */
 export async function injectKeyPackageAdd(
@@ -132,6 +127,7 @@ export async function injectKeyPackageAdd(
   kpB64: string,
   mlsSignature?: string,
   object?: any,
+  mlsSignerKeyId?: string,
 ): Promise<boolean> {
   const defaultObject = { type: 'KeyPackage', attributedTo: actorUri, mediaType: 'message/mls', encoding: 'base64', content: kpB64 };
   return page.evaluate(`(async () => {
@@ -142,8 +138,9 @@ export async function injectKeyPackageAdd(
       actor: ${JSON.stringify(actorUri)},
       object: ${JSON.stringify(object ?? defaultObject)},
       ${mlsSignature ? `mlsSignature: ${JSON.stringify(mlsSignature)},` : ''}
+      ${mlsSignerKeyId ? `mlsSignerKeyId: ${JSON.stringify(mlsSignerKeyId)},` : ''}
     };
-    await ctrl._handleKeyPackageAdd(activity);
+    await ctrl.handleActivity(activity);
     const after = (await ctrl.storage.loadUserState(${JSON.stringify(actorUri)}))?.keyPackage;
     return after === ${JSON.stringify(kpB64)} && after !== before;
   })()`);
@@ -182,18 +179,17 @@ export async function signData(page: any, dataB64: string): Promise<{ signerKey:
 }
 
 /**
- * Get the current actor's KP as base64 and sign it with their own key — all inside the webview
- * to avoid cross-boundary base64 encoding issues.
- * Returns { kpB64, sig } where sig is a bare base64 signature string.
+ * Fetch the actor's published KeyPackage from the AP server.
+ * Returns { kpB64, mlsSignature, mlsSignerKeyId } — populated by the real publish flow.
  */
-export async function getAndSignOwnKeyPackage(page: any, actorId: string): Promise<{ kpB64: string; sig: string }> {
+export async function fetchPublishedSignedKP(
+  page: any,
+  actorId: string,
+): Promise<{ kpB64: string; mlsSignature: string | null; mlsSignerKeyId: string | null } | null> {
   return page.evaluate(`(async () => {
     const ctrl = ${GET_CTRL};
-    const hex = await ctrl.mlsService.getKeyPackageHex(${JSON.stringify(actorId)});
-    if (!hex) return null;
-    const kpB64 = ${HEX_TO_B64}(hex);
-    const sig = await ctrl._signKeyPackage(${JSON.stringify(actorId)}, kpB64);
-    return { kpB64, sig };
+    const kps = await ctrl.fetchActorKeyPackages(${JSON.stringify(actorId)});
+    return kps?.[0] ?? null;
   })()`);
 }
 

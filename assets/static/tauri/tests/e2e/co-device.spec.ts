@@ -3,7 +3,7 @@
 // Run with: just test-tauri-e2e-co-device
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD
 
-import { test, expect, waitForChatView, shadowClick, shadowExists, createGroupAndRefresh, pollInbox, leaveGroup, isNoLongerMember, getOwnSignatureKey, ownKpIsSelfSigned, canSendAndReceive, addMemberAndWait } from './helpers';
+import { test, expect, waitForChatView, shadowClick, shadowExists, createGroupAndRefresh, pollInbox, leaveGroup, isNoLongerMember, getOwnSignatureKey, ownKpIsSelfSigned, canSendAndReceive, addMemberAndWait, fetchPublishedSignedKP, getActorId } from './helpers';
 
 const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })()`;
 
@@ -152,6 +152,24 @@ test.describe('co-device', { tag: '@co-device' }, () => {
         ? 2 : 1; // _actorHasOtherDevices returns true only if a DIFFERENT key exists
     })()`);
     expect(remainingKpCount).toBe(1); // only d1 remains
+  });
+
+  test('group join populates mlsKnownKeys cache with inviter key', async ({ tauriPage, deviceAlice2 }) => {
+    test.setTimeout(90_000);
+    await waitForChatView(tauriPage);
+    await waitForChatView(deviceAlice2!, 20_000);
+
+    const groupId = await createGroupAndRefresh(tauriPage);
+    const inviterKpInfo = await fetchPublishedSignedKP(tauriPage, await getActorId(tauriPage));
+
+    await addMemberAndWait(tauriPage, groupId, deviceAlice2!);
+
+    // After joining, deviceAlice2's mlsKnownKeys cache should contain the inviter's signature key
+    const cached = await deviceAlice2!.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      return await ctrl.storage.getMlsKnownKey(${JSON.stringify(inviterKpInfo!.mlsSignerKeyId)});
+    })()`);
+    expect(cached).toBeTruthy();
   });
 
 });

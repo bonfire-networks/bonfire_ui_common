@@ -2,7 +2,7 @@
 // Run with: just test-tauri-e2e-single
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD (or E2E_LOGIN/PASSWORD)
 
-import { test, expect, waitForChatView, shadowClick, shadowExists, createGroupAndRefresh, getActorId, injectKeyPackageAdd, getKeyPackageB64, getAndSignOwnKeyPackage, signData, sendMessage, ownKpIsSelfSigned, HEX_TO_B64 } from './helpers';
+import { test, expect, waitForChatView, shadowClick, shadowExists, createGroupAndRefresh, getActorId, injectKeyPackageAdd, getKeyPackageB64, fetchPublishedSignedKP, signData, sendMessage, ownKpIsSelfSigned, HEX_TO_B64 } from './helpers';
 // btoa is a global in Node 16+ / browser
 
 const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })()`;
@@ -169,8 +169,10 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     test('self-signed Add with own key: accepted', async ({ tauriPage }) => {
       await waitForChatView(tauriPage);
       const actorId = await getActorId(tauriPage);
-      const { kpB64, sig } = await getAndSignOwnKeyPackage(tauriPage, actorId);
-      const stored = await injectKeyPackageAdd(tauriPage, actorId, kpB64, sig);
+      const kpInfo = await fetchPublishedSignedKP(tauriPage, actorId);
+      expect(kpInfo?.mlsSignature).toBeTruthy();
+      expect(kpInfo?.mlsSignerKeyId).toBeTruthy();
+      const stored = await injectKeyPackageAdd(tauriPage, actorId, kpInfo!.kpB64, kpInfo!.mlsSignature!, undefined, kpInfo!.mlsSignerKeyId!);
       expect(stored).toBe(true);
     });
 
