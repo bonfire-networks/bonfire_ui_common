@@ -79,6 +79,11 @@ TooltipHooks.Tooltip = {
 			}).then(({ x, y, placement }) => {
 				if (!this.isUpdating && tooltip) {
 					Object.assign(tooltip.style, {
+						// keep the floating element's CSS position in sync with the
+						// computed strategy: "fixed" lets the panel escape ancestor
+						// stacking contexts / overflow (e.g. feed cards' `relative z-10`),
+						// "absolute" matches the default `.dropdown-panel` rule.
+						position: strategy,
 						left: `${x}px`,
 						top: `${y}px`,
 					});
