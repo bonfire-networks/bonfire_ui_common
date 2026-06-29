@@ -315,7 +315,7 @@ test.describe('single-device', { tag: '@single-device' }, () => {
   // Each test creates its own group — no dependency on co-device approval.
   // Single-device: Alice sends to herself; sent messages appear immediately in the chat view.
 
-  test('Article type sent as first-class object and rendered in chat bubble', { tag: '@spec' }, async ({ tauriPage }) => {
+  test('non-Note type (Article) sent and rendered in chat bubble', { tag: '@spec' }, async ({ tauriPage }) => {
     await waitForChatView(tauriPage);
     const groupId = await createGroupAndRefresh(tauriPage);
     expect(groupId).toBeTruthy();
@@ -409,7 +409,7 @@ test.describe('single-device', { tag: '@single-device' }, () => {
   // Both tests expect RED until: Rust strips HTML at decrypt-time + JS uses unsafeHTML(msg.content).
   // Currently: lit-html text-escapes content in <span>, so <p> shows as literal "&lt;p&gt;".
 
-  test('Article with HTML: raw tags not visible as text in chat bubble', { tag: '@spec' }, async ({ tauriPage }) => {
+  test('Article with embedded script: sanitized by Rust (script tag stripped)', { tag: '@spec' }, async ({ tauriPage }) => {
     await waitForChatView(tauriPage);
     const groupId = await createGroupAndRefresh(tauriPage);
     expect(groupId).toBeTruthy();

@@ -80,15 +80,16 @@ export async function pollInbox(page: any): Promise<void> {
 
 export async function addMemberAndWait(creatorPage: any, groupId: string, memberPage: any, maxPolls = 10, { usePrefix = false } = {}): Promise<void> {
   const memberId = await getActorId(memberPage);
-  // Force the member to clear + republish a fresh KP so the creator gets a KP whose private
-  // key the member actually holds in WASM. Without this, a KP left over from a previous test
-  // run (consumed init key) causes NoMatchingKeyPackage and the Welcome is silently skipped.
+  // Republish a fresh KP so the creator gets a KP whose private key the member holds in WASM.
+  // Without this, a KP consumed by a previous test causes NoMatchingKeyPackage and the Welcome
+  // is silently skipped. Do NOT pre-clear via clearKeyPackage: _replenishKeyPackage captures
+  // oldKpHex internally and deletes the old KP from the AP server — pre-clearing nulls oldKpHex
+  // and causes old KPs to accumulate on the server, which slows _fetchKeyPackageForAdd O(N).
   await memberPage.evaluate(`(async () => {
     const ctrl = ${GET_CTRL};
     if (!ctrl) return;
     const actorId = ctrl.currentActorId;
     if (!actorId) return;
-    await ctrl.mlsService.clearKeyPackage(actorId);
     const actor = { id: actorId, ...(JSON.parse(localStorage.getItem('actor') || '{}')) };
     await ctrl._replenishKeyPackage(actor);
   })()`);
