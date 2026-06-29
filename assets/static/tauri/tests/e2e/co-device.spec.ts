@@ -7,10 +7,11 @@ import { test, expect, waitForChatView, shadowExists, createGroupAndRefresh, pol
 
 const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })()`;
 
-// Set by test 2 (before approval) and consumed by test 3
-let sharedGroupId: string | null = null;
+// serial: if the approval test fails, later tests skip rather than failing with "sharedGroupId null".
+test.describe.serial('co-device', { tag: '@co-device' }, () => {
 
-test.describe('co-device', { tag: '@co-device' }, () => {
+  // Set by the approval test, consumed by all subsequent tests.
+  let sharedGroupId: string | null = null;
 
   test('s1_alice_d2: new device with existing co-device shows waiting-for-approval dialog', { tag: '@proposal' }, async ({ tauriPage, deviceAlice2 }) => {
     // https://github.com/swicg/activitypub-e2ee/issues/65
@@ -91,15 +92,13 @@ test.describe('co-device', { tag: '@co-device' }, () => {
     // Explicit poll ensures auto-approve fires (in case the timer hasn't fired yet).
     await pollInbox(tauriPage);
 
-    await deviceAlice2!.waitForFunction(
-      'window.shadowQ("e2ee-chat-view >>> #nd-pending-dialog") == null',
-      20_000
-    );
-
-    // Wait for d2 to receive and join the Welcome for sharedGroupId.
-    // Poll explicitly (separate from the condition check) so accumulated inbox items
-    // don't cause the inline waitForFunction async to time out.
+    // Poll d2's inbox until it joins the group — this processes the Welcome and clears
+    // _awaitingApproval (which closes #nd-pending-dialog). Must come before the dialog check
+    // so d2 actually receives the Welcome rather than relying on the periodic poll timer.
     await waitForMlsMembers(deviceAlice2!, sharedGroupId!, 2); // default 40 retries × 1.5s = up to 60s
+
+    // After joining via Welcome, the pending-approval dialog must be dismissed.
+    expect(await shadowExists(deviceAlice2!, 'e2ee-chat-view >>> #nd-pending-dialog')).toBeFalsy();
 
     // After joining from Welcome, d2 must have replenished its KP (old init_key was consumed).
     // Verify: stored KP is self-signable with d2's own identity key (same signature_key, new init_key).
@@ -216,8 +215,6 @@ test.describe('co-device', { tag: '@co-device' }, () => {
     test.setTimeout(180_000); // addMemberAndWait + removeOwnClient + pollInbox all slow after accumulated inbox state
     await waitForChatView(tauriPage);
     await waitForChatView(deviceAlice2!, 20_000);
-    if (!sharedGroupId) sharedGroupId = await tauriPage.evaluate(`localStorage.getItem('__testSharedGroupId')`);
-    expect(sharedGroupId).toBeTruthy();
 
     // Create a shared group so d1 can distribute a Commit removing d2's leaf during decommission.
     const preDecommissionGroup = await createGroupAndRefresh(tauriPage);
@@ -267,6 +264,7 @@ test.describe('co-device', { tag: '@co-device' }, () => {
     await waitForChatView(deviceAlice2!, 20_000);
 
     const groupId = await createGroupAndRefresh(tauriPage);
+    if (!groupId) throw new Error('createGroupAndRefresh returned null');
     const inviterKpInfo = await fetchPublishedSignedKP(tauriPage, await getActorId(tauriPage));
 
     await addMemberAndWait(tauriPage, groupId, deviceAlice2!);
