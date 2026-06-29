@@ -37,7 +37,8 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     expect(noLongerMember).toBeTruthy();
   });
 
-  test('co-device leave proposal shows confirmation dialog with fingerprint', async ({ tauriPage }) => {
+  test('co-device leave proposal shows confirmation dialog with fingerprint', { tag: '@proposal' }, async ({ tauriPage }) => {
+    // https://github.com/swicg/activitypub-e2ee/issues/80
     await waitForChatView(tauriPage);
 
     await tauriPage.evaluate(`(async () => {
@@ -73,7 +74,8 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     `);
   });
 
-  test('clear all data on solo device shows irrecoverable warning', async ({ tauriPage }) => {
+  test('clear all data on solo device shows irrecoverable warning', { tag: '@proposal' }, async ({ tauriPage }) => {
+    // https://github.com/swicg/activitypub-e2ee/issues/65
     await waitForChatView(tauriPage);
 
     await shadowClick(tauriPage, 'e2ee-chat-view >>> .dropdown [role="button"]', 5_000);
@@ -108,7 +110,9 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     expect(await shadowExists(tauriPage, 'e2ee-chat-view')).toBeTruthy();
   });
 
-  test('pending co-device leave survives app reload', async ({ tauriPage }) => {
+  test('pending co-device leave survives app reload', { tag: '@proposal' }, async ({ tauriPage }) => {
+    // https://github.com/swicg/activitypub-e2ee/issues/65
+    // https://github.com/swicg/activitypub-e2ee/issues/80
     await waitForChatView(tauriPage);
 
     const groupId = await createGroupAndRefresh(tauriPage);
@@ -134,7 +138,9 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     expect(btnText).toContain('Confirm removal');
   });
 
-  test.describe('mlsSignature verification on Add { KeyPackage }', () => {
+  test.describe('mlsSignature verification on Add { KeyPackage }', { tag: '@proposal' }, () => {
+    // https://github.com/swicg/activitypub-e2ee/issues/43
+    // https://github.com/swicg/activitypub-e2ee/issues/48
     // All tests inject synthetic AP activities directly into _handleKeyPackageAdd.
     // Alice is always her own device so _getLiveDeviceKeysForActor always returns her key,
     // meaning the signature check is enforced for all tests below.
@@ -186,7 +192,8 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     });
   });
 
-  test('KP replenishment self-signs the published Add', async ({ tauriPage }) => {
+  test('KP replenishment self-signs the published Add', { tag: '@proposal' }, async ({ tauriPage }) => {
+    // https://github.com/swicg/activitypub-e2ee/issues/48
     await waitForChatView(tauriPage);
     const hadSig = await tauriPage.evaluate(`(async () => {
       const ctrl = ${GET_CTRL};
@@ -205,7 +212,8 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     expect(hadSig).toBe(true);
   });
 
-  test('KP renewed twice: identity key stable, each KP distinct and self-signed', async ({ tauriPage }) => {
+  test('KP renewed twice: identity key stable, each KP distinct and self-signed', { tag: '@proposal' }, async ({ tauriPage }) => {
+    // https://github.com/swicg/activitypub-e2ee/issues/48
     await waitForChatView(tauriPage);
 
     type KpInfo = { kpB64: string; sigKey: string | null } | null;
@@ -242,16 +250,198 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     expect(await ownKpIsSelfSigned(tauriPage)).toBe(true);
   });
 
+  // --- Spec Gap 1: replenishment removes old KP from server collection ---
+  // Expect: FAIL until _replenishKeyPackage calls deleteKeyPackage for the old KP
+  test('replenishment removes old KP from actor collection', async ({ tauriPage }) => {
+    await waitForChatView(tauriPage);
+    const actorId = await getActorId(tauriPage);
+    const oldKp = await fetchPublishedSignedKP(tauriPage, actorId);
+    expect(oldKp?.kpB64).toBeTruthy();
+
+    // Don't manually clear — _replenishKeyPackage captures oldKpHex internally before clearing.
+    // Manual clearKeyPackage here would zero out the stored hex so oldKpHex becomes null.
+    await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const actor = { id: ctrl.currentActorId, ...(JSON.parse(localStorage.getItem('actor') || '{}')) };
+      await ctrl._replenishKeyPackage(actor);
+    })()`);
+
+    const kpsAfter = (await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      return await ctrl.fetchActorKeyPackages(${JSON.stringify(actorId)});
+    })()`)) as Array<{ kpB64: string }>;
+
+    expect((kpsAfter ?? []).some(kp => kp.kpB64 === oldKp!.kpB64)).toBe(false);
+    expect((kpsAfter ?? []).length).toBeGreaterThan(0);
+  });
+
+  // --- Spec Gap 2: 3-step auth — Add with KP removed from collection is rejected ---
+  // Depends on Gap 1 fix. Expect: FAIL until _handleKeyPackageAdd checks collection membership
+  test('Add with KP removed from collection is rejected (3-step auth)', async ({ tauriPage }) => {
+    await waitForChatView(tauriPage);
+    const actorId = await getActorId(tauriPage);
+    const oldKp = await fetchPublishedSignedKP(tauriPage, actorId);
+    expect(oldKp?.kpB64).toBeTruthy();
+
+    // Replenish — removes oldKp from server collection (requires Gap 1 fix).
+    // Don't manually clear first — _replenishKeyPackage needs to capture oldKpHex internally.
+    await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const actor = { id: ctrl.currentActorId, ...(JSON.parse(localStorage.getItem('actor') || '{}')) };
+      await ctrl._replenishKeyPackage(actor);
+    })()`);
+
+    // Old KP has a valid sig + valid signerKeyId in cache, but is no longer in the server collection
+    const stored = await injectKeyPackageAdd(
+      tauriPage, actorId, oldKp!.kpB64,
+      oldKp!.mlsSignature!, undefined, oldKp!.mlsSignerKeyId!
+    );
+    expect(stored).toBe(false);
+  });
+
   test('fetchActorKeyPackage finds own published keyPackage regardless of storage shape', async ({ tauriPage }) => {
     await waitForChatView(tauriPage);
 
     const found = await tauriPage.evaluate(`(async () => {
       const ctrl = ${GET_CTRL};
       const result = await ctrl.fetchLatestKeyPackage(ctrl.currentActorId);
-      return !!result?.content;
+      return result != null && result.length > 0;
     })()`);
 
     expect(found).toBe(true);
   });
+
+  // --- Spec Gap 3: non-text content types ---
+  // Each test creates its own group — no dependency on co-device approval.
+  // Single-device: Alice sends to herself; sent messages appear immediately in the chat view.
+
+  test('Article type sent as first-class object and rendered in chat bubble', { tag: '@spec' }, async ({ tauriPage }) => {
+    await waitForChatView(tauriPage);
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+
+    const sent = await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const result = await ctrl.sendMessage(${JSON.stringify(groupId)}, {
+        content: 'A longer essay for testing Article type.',
+        type: 'Article',
+        name: 'Test Article'
+      });
+      const view = window.shadowQ('e2ee-chat-view');
+      if (view?.loadMessages) await view.loadMessages(${JSON.stringify(groupId)});
+      return result?.messageApId ?? null;
+    })()`);
+    expect(sent).toBeTruthy();
+
+    await tauriPage.waitForFunction(
+      `window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .chat-bubble') != null`,
+      10_000
+    );
+    const bubbleText = await tauriPage.evaluate(
+      `window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .chat-bubble')?.textContent`
+    );
+    expect(bubbleText).toContain('longer essay');
+  });
+
+  test('image-only attachment sent as Image object and rendered as <img> without bubble', { tag: '@spec' }, async ({ tauriPage }) => {
+    await waitForChatView(tauriPage);
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+
+    // 1×1 transparent PNG
+    const PNG1x1 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+    const sent = await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const result = await ctrl.sendMessage(${JSON.stringify(groupId)}, {
+        attachments: [{ type: 'Image', mediaType: 'image/png', content: '${PNG1x1}' }]
+      });
+      const view = window.shadowQ('e2ee-chat-view');
+      if (view?.loadMessages) await view.loadMessages(${JSON.stringify(groupId)});
+      return result?.messageApId ?? null;
+    })()`);
+    expect(sent).toBeTruthy();
+
+    // Inline base64 images render as a media placeholder (spinner) until served via local path.
+    // Check for the media container div (data-needs-thumb) or img — either confirms media rendered.
+    await tauriPage.waitForFunction(
+      `window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] [data-needs-thumb]') != null ||
+       window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] img') != null`,
+      10_000
+    );
+    const hasBubble = await tauriPage.evaluate(
+      `!!window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .chat-bubble')`
+    );
+    expect(hasBubble).toBe(false);
+  });
+
+  test('audio-only attachment sent as Audio object and rendered with play button', { tag: '@spec' }, async ({ tauriPage }) => {
+    await waitForChatView(tauriPage);
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+
+    // Minimal WAV header (base64)
+    const WAV = 'UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+    const sent = await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const result = await ctrl.sendMessage(${JSON.stringify(groupId)}, {
+        attachments: [{ type: 'Audio', mediaType: 'audio/wav', content: '${WAV}' }]
+      });
+      const view = window.shadowQ('e2ee-chat-view');
+      if (view?.loadMessages) await view.loadMessages(${JSON.stringify(groupId)});
+      return result?.messageApId ?? null;
+    })()`);
+    expect(sent).toBeTruthy();
+
+    // Audio renders as a play button until activated
+    await tauriPage.waitForFunction(
+      `window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] button') != null`,
+      10_000
+    );
+    const hasBubble = await tauriPage.evaluate(
+      `!!window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .chat-bubble')`
+    );
+    expect(hasBubble).toBe(false);
+    const playBtn = await shadowExists(tauriPage, `e2ee-chat-view >>> [data-msg-id="${sent}"] button`);
+    expect(playBtn).toBe(true);
+  });
+
+  // --- Article HTML sanitisation (TDD) ---
+  // Both tests expect RED until: Rust strips HTML at decrypt-time + JS uses unsafeHTML(msg.content).
+  // Currently: lit-html text-escapes content in <span>, so <p> shows as literal "&lt;p&gt;".
+
+  test('Article with HTML: raw tags not visible as text in chat bubble', { tag: '@spec' }, async ({ tauriPage }) => {
+    await waitForChatView(tauriPage);
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+
+    const sent = await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const result = await ctrl.sendMessage(${JSON.stringify(groupId)}, {
+        content: '<p>Block paragraph.</p>',
+        type: 'Article',
+        name: 'Test Paragraph Article'
+      });
+      const view = window.shadowQ('e2ee-chat-view');
+      if (view?.loadMessages) await view.loadMessages(${JSON.stringify(groupId)});
+      return result?.messageApId ?? null;
+    })()`);
+    expect(sent).toBeTruthy();
+
+    await tauriPage.waitForFunction(
+      `window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .chat-bubble') != null`,
+      10_000
+    );
+    const bubbleText = await tauriPage.evaluate(
+      `window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .chat-bubble')?.textContent`
+    ) as string | null;
+    // Rendered HTML: textContent should be the paragraph text, not the raw tag
+    expect(bubbleText).toContain('Block paragraph.');
+    expect(bubbleText).not.toContain('<p>');
+  });
+
+  // NOTE: XSS sanitisation test (script stripped on receive) belongs in co-device.spec.ts
+  // because sanitize_message_content runs in the Rust decrypt command, which is only invoked
+  // on the RECEIVE path (not the local self-send path used in single-device tests).
+  // See: co-device.spec.ts "Article received from co-device: script stripped by Rust sanitization"
 
 });

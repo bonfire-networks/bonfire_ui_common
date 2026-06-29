@@ -12,7 +12,9 @@ const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?
 let sharedKpInfo: { kpB64: string; mlsSignature: string | null; mlsSignerKeyId: string | null } | null = null;
 let sharedActorId: string | null = null;
 
-test.describe('KP endorsement signing', { tag: '@single-device' }, () => {
+test.describe('KP endorsement signing', { tag: ['@single-device', '@proposal'] }, () => {
+  // https://github.com/swicg/activitypub-e2ee/issues/43
+  // https://github.com/swicg/activitypub-e2ee/issues/48
 
   test('published KP has mlsSignature and mlsSignerKeyId', async ({ tauriPage }) => {
     await waitForChatView(tauriPage);
@@ -49,13 +51,45 @@ test.describe('KP endorsement signing', { tag: '@single-device' }, () => {
     expect(cached).toBeTruthy();
   });
 
-  test('Add with mlsSignerKeyId in cache + valid sig: accepted', async ({ tauriPage }) => {
+const KP_OBJECT_SHAPES = [
+  {
+    label: 'standard (content/encoding)',
+    buildObject: (actorUri: string, kpB64: string) => ({
+      type: 'KeyPackage', attributedTo: actorUri, mediaType: 'message/mls', encoding: 'base64', content: kpB64,
+    }),
+  },
+  {
+    label: 'mls:-prefixed fields (mls:content / mls:KeyPackage type)',
+    buildObject: (actorUri: string, kpB64: string) => ({
+      type: 'mls:KeyPackage', attributedTo: actorUri, 'mls:encoding': 'base64', 'mls:content': kpB64,
+    }),
+  },
+  {
+    label: 'array type ["Object","mls:KeyPackage"]',
+    buildObject: (actorUri: string, kpB64: string) => ({
+      type: ['Object', 'mls:KeyPackage'], attributedTo: actorUri, 'mls:encoding': 'base64', 'mls:content': kpB64,
+    }),
+  },
+];
+
+for (const shape of KP_OBJECT_SHAPES) {
+  test(`Add KP with ${shape.label}: accepted`, async ({ tauriPage }) => {
     await waitForChatView(tauriPage);
     expect(sharedKpInfo).not.toBeNull();
     const { kpB64, mlsSignature, mlsSignerKeyId } = sharedKpInfo!;
-    const stored = await injectKeyPackageAdd(tauriPage, sharedActorId!, kpB64, mlsSignature!, undefined, mlsSignerKeyId!);
+    // Clear stored KP before each shape iteration so injectKeyPackageAdd's `after !== before` check passes
+    await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      await ctrl.storage.saveUserField(${JSON.stringify(sharedActorId)}, 'keyPackage', null);
+    })()`);
+    const stored = await injectKeyPackageAdd(
+      tauriPage, sharedActorId!, kpB64, mlsSignature!,
+      shape.buildObject(sharedActorId!, kpB64),
+      mlsSignerKeyId!,
+    );
     expect(stored).toBe(true);
   });
+}
 
   test('Add with mlsSignerKeyId NOT in cache: rejected', async ({ tauriPage }) => {
     await waitForChatView(tauriPage);

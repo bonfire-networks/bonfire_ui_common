@@ -78,22 +78,52 @@ export async function pollInbox(page: any): Promise<void> {
   })()`);
 }
 
-export async function addMemberAndWait(creatorPage: any, groupId: string, memberPage: any): Promise<void> {
+export async function addMemberAndWait(creatorPage: any, groupId: string, memberPage: any, maxPolls = 10, { usePrefix = false } = {}): Promise<void> {
   const memberId = await getActorId(memberPage);
+  // Force the member to clear + republish a fresh KP so the creator gets a KP whose private
+  // key the member actually holds in WASM. Without this, a KP left over from a previous test
+  // run (consumed init key) causes NoMatchingKeyPackage and the Welcome is silently skipped.
+  await memberPage.evaluate(`(async () => {
+    const ctrl = ${GET_CTRL};
+    if (!ctrl) return;
+    const actorId = ctrl.currentActorId;
+    if (!actorId) return;
+    await ctrl.mlsService.clearKeyPackage(actorId);
+    const actor = { id: actorId, ...(JSON.parse(localStorage.getItem('actor') || '{}')) };
+    await ctrl._replenishKeyPackage(actor);
+  })()`);
+  // Force-refresh the creator's cached copy of member's KP after republish.
+  await creatorPage.evaluate(`(async () => {
+    const ctrl = ${GET_CTRL};
+    const kps = await ctrl.fetchActorKeyPackages(${JSON.stringify(memberId)});
+    if (kps?.[0]?.kpB64) {
+      await ctrl.storage.saveUserField(${JSON.stringify(memberId)}, 'keyPackage', kps[0].kpB64);
+    }
+  })()`);
   console.log(`[addMemberAndWait] adding ${memberId} to group ${groupId}`);
   await creatorPage.evaluate(`(async () => {
-    await ${GET_CTRL}.addMemberToGroup(${JSON.stringify(groupId)}, ${JSON.stringify(memberId)});
+    await ${GET_CTRL}.addMemberToGroup(${JSON.stringify(groupId)}, ${JSON.stringify(memberId)}, { usePrefix: ${usePrefix} });
   })()`);
   console.log(`[addMemberAndWait] addMemberToGroup done, polling member inbox`);
-  await pollInbox(memberPage);
-  await memberPage.waitForFunction(
-    `(async () => {
+  // Poll until the member has both JS storage record and MLS Rust state for the group.
+  // Federated joins need more polls (pass maxPolls=30) because Welcome travels s1→s2 via Oban.
+  // join_group may also need a retry if the first Welcome decryption fails (stale KP race).
+  for (let i = 0; i < maxPolls; i++) {
+    await pollInbox(memberPage);
+    const joined: boolean = await memberPage.evaluate(`(async () => {
       const ctrl = ${GET_CTRL};
       const groups = await ctrl?.storage?.listGroupsWithLastMessage?.() ?? [];
-      return groups.some(g => g.groupId === ${JSON.stringify(groupId)});
-    })()`,
-    15_000
-  );
+      if (!groups.some(g => g.groupId === ${JSON.stringify(groupId)})) return false;
+      // Verify MLS Rust state exists (not just JS storage entry)
+      try {
+        const fps = await ctrl?.mlsService?.getGroupFingerprints(ctrl.currentActorId, ${JSON.stringify(groupId)});
+        return (fps?.length ?? 0) > 0;
+      } catch { return false; }
+    })()`);
+    if (joined) { console.log(`[addMemberAndWait] member joined group after ${i + 1} polls`); return; }
+    if (i < maxPolls - 1) await new Promise(r => setTimeout(r, 1500));
+  }
+  throw new Error(`addMemberAndWait: member did not join group ${groupId} after ${maxPolls} polls`);
 }
 
 export async function leaveGroup(page: any, groupId: string): Promise<void> {
@@ -197,11 +227,114 @@ export async function fetchPublishedSignedKP(
  * Send a message in a group and return the AP message ID.
  * Throws if the group's MLS state is lost (EncryptionLostError).
  */
-export async function sendMessage(page: any, groupId: string, content: string): Promise<string | null> {
+export async function sendMessage(page: any, groupId: string, content: string, { usePrefix = false, overrides = {} } = {}): Promise<string | null> {
   return page.evaluate(`(async () => {
     const ctrl = ${GET_CTRL};
-    const { messageApId } = await ctrl.sendMessage(${JSON.stringify(groupId)}, { content: ${JSON.stringify(content)} });
+    const { messageApId } = await ctrl.sendMessage(${JSON.stringify(groupId)}, { content: ${JSON.stringify(content)}, usePrefix: ${usePrefix}, overrides: ${JSON.stringify(overrides)} });
     return messageApId ?? null;
+  })()`);
+}
+
+/**
+ * Send a message via the chat UI: fills the textarea, clicks Send, waits for the new
+ * message row to appear in the shadow DOM, and returns its data-msg-id.
+ * Use this when the test needs to interact with the rendered message afterwards (edit, delete, react).
+ * Use sendMessage() when you only need the AP message ID for setup.
+ */
+export async function sendMessageUsingUI(page: any, content: string): Promise<string | null> {
+  // Snapshot current msg-ids via shadowRoot.querySelectorAll (shadowQ only returns one element)
+  const before: string[] = await page.evaluate(
+    `Array.from(window.shadowQ('e2ee-chat-view')?.shadowRoot?.querySelectorAll('[data-msg-id]') ?? []).map(el => el.getAttribute('data-msg-id'))`
+  );
+
+  // Wait for main message textarea (LitElement renders async after group selection)
+  await page.evaluate(`(async () => {
+    const deadline = Date.now() + 5_000;
+    let ta;
+    while (Date.now() < deadline) {
+      ta = window.shadowQ('e2ee-chat-view >>> textarea.textarea-bordered:not([id^="edit-input"])');
+      if (ta) break;
+      await new Promise(r => setTimeout(r, 100));
+    }
+    if (!ta) throw new Error('message textarea not found — is a group selected?');
+    Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(ta, ${JSON.stringify(content)});
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+  })()`);
+
+  // Click Send
+  await shadowClick(page, 'e2ee-chat-view >>> button[type="submit"].btn-primary');
+
+  // Wait for the new [data-msg-id] to appear
+  const deadline = Date.now() + 10_000;
+  while (Date.now() < deadline) {
+    const after: string[] = await page.evaluate(
+      `Array.from(window.shadowQ('e2ee-chat-view')?.shadowRoot?.querySelectorAll('[data-msg-id]') ?? []).map(el => el.getAttribute('data-msg-id'))`
+    );
+    const newId = after.find(id => !before.includes(id));
+    if (newId) return newId;
+    await new Promise(r => setTimeout(r, 200));
+  }
+  return null;
+}
+
+/**
+ * Click the "edit" link on a rendered message, type new content, click Save.
+ * Assumes the message is already visible in the chat view (own message only).
+ */
+export async function clickEditAndSave(page: any, msgId: string, newContent: string, groupId?: string): Promise<void> {
+  // Try clicking the "edit" link in the rendered message row.
+  // Falls back to ctrl.editMessage() when the row or edit link is not found.
+  const usedUI: boolean = await page.evaluate(`(async () => {
+    const root = window.shadowQ('e2ee-chat-view')?.shadowRoot;
+    const row = root?.querySelector('[data-msg-id=${JSON.stringify(msgId)}]');
+    if (!row) return false;
+    const editLink = Array.from(row.querySelectorAll('a.link')).find(a => a.textContent.trim() === 'edit');
+    if (!editLink) return false;
+    editLink.click();
+    return true;
+  })()`);
+
+  if (usedUI) {
+    // Wait for the edit textarea to appear, then fill it and click Save
+    await page.evaluate(`(async () => {
+      const deadline = Date.now() + 5_000;
+      let ta;
+      while (Date.now() < deadline) {
+        ta = window.shadowQ('e2ee-chat-view')?.shadowRoot?.querySelector('[id="edit-input-' + ${JSON.stringify(msgId)} + '"]');
+        if (ta) break;
+        await new Promise(r => setTimeout(r, 100));
+      }
+      if (!ta) throw new Error('edit textarea did not appear for msg ' + ${JSON.stringify(msgId)});
+      Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(ta, ${JSON.stringify(newContent)});
+      ta.dispatchEvent(new Event('input', { bubbles: true }));
+    })()`);
+    await shadowClick(page, 'e2ee-chat-view >>> button.btn-primary.btn-xs');
+  } else {
+    await page.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const gId = ${JSON.stringify(groupId ?? null)} ?? ${GET_VIEW}?.selectedGroupId;
+      await ctrl.editMessage(gId, ${JSON.stringify(msgId)}, ${JSON.stringify(newContent)});
+    })()`);
+  }
+}
+
+/**
+ * Click the "delete" link on a rendered message row (own message only).
+ * Falls back to ctrl.deleteMessage() when the row or delete link is not in the DOM
+ * (e.g. groupEncryptionLost=true → isOwnMsg=false → delete link absent).
+ */
+export async function clickDelete(page: any, msgId: string, groupId?: string): Promise<void> {
+  await page.evaluate(`(async () => {
+    const root = window.shadowQ('e2ee-chat-view')?.shadowRoot;
+    const row = root?.querySelector('[data-msg-id=${JSON.stringify(msgId)}]');
+    const deleteLink = Array.from(row?.querySelectorAll('a.link') ?? []).find(a => a.textContent.trim() === 'delete');
+    if (deleteLink) {
+      deleteLink.click();
+    } else {
+      const ctrl = ${GET_CTRL};
+      const gId = ${JSON.stringify(groupId ?? null)} ?? ${GET_VIEW}?.selectedGroupId;
+      await ctrl.deleteMessage(gId, ${JSON.stringify(msgId)});
+    }
   })()`);
 }
 
@@ -210,14 +343,23 @@ export async function sendMessage(page: any, groupId: string, content: string): 
  * Polls storage directly — no inbox poll needed if the message was already processed.
  */
 export async function hasReceivedMessage(page: any, groupId: string, contentSubstring: string): Promise<boolean> {
-  return page.evaluate(`(async () => {
-    const ctrl = ${GET_CTRL};
-    const msgs = await ctrl?.storage?.listMessages?.(${JSON.stringify(groupId)}) ?? [];
-    return msgs.some(m => {
-      const text = typeof m.content === 'string' ? m.content : m.content?.content ?? '';
-      return text.includes(${JSON.stringify(contentSubstring)});
-    });
+  // Fire the storage query as a background promise so the evaluate returns immediately —
+  // avoids the 120s Tauri IPC timeout that triggers when listMessages is called while
+  // the view's own loadMessages is still awaiting updateComplete (LitElement render).
+  const key = `__hrm_${groupId.slice(-8)}_${contentSubstring.slice(0, 8).replace(/\W/g, '_')}`;
+  await page.evaluate(`(() => {
+    window[${JSON.stringify(key)}] = undefined;
+    (window.__chatStorage?.listMessages?.(${JSON.stringify(groupId)}) ?? Promise.resolve([])).then(msgs => {
+      window[${JSON.stringify(key)}] = msgs.some(m => {
+        const t = typeof m.content === 'string' ? m.content : m.content?.content ?? '';
+        return t.includes(${JSON.stringify(contentSubstring)});
+      });
+    }).catch(() => { window[${JSON.stringify(key)}] = false; });
   })()`);
+  await page.waitForFunction(`window[${JSON.stringify(key)}] != null`, 30_000);
+  const result = await page.evaluate(`window[${JSON.stringify(key)}]`);
+  await page.evaluate(`delete window[${JSON.stringify(key)}]`);
+  return result;
 }
 
 /**
@@ -225,16 +367,36 @@ export async function hasReceivedMessage(page: any, groupId: string, contentSubs
  * receiverPage polls (with retries for federation delay) and must receive+decrypt it.
  * Throws on unexpected errors so test output shows the real cause.
  */
-export async function canSendAndReceive(senderPage: any, receiverPage: any, groupId: string, retries = 5, retryDelayMs = 1500): Promise<true> {
+export async function canSendAndReceive(senderPage: any, receiverPage: any, groupId: string, retries = 5, retryDelayMs = 1500, { usePrefix = false, overrides = {} } = {}): Promise<true> {
   const marker = `e2e-check-${Date.now()}`;
   const errors: string[] = [];
-  await sendMessage(senderPage, groupId, marker);
+  await sendMessage(senderPage, groupId, marker, { usePrefix, overrides });
   for (let i = 0; i < retries; i++) {
     try { await pollInbox(receiverPage); } catch (e) { errors.push(`poll ${i + 1}: ${e}`); }
     if (await hasReceivedMessage(receiverPage, groupId, marker)) return true;
     if (i < retries - 1) await new Promise(r => setTimeout(r, retryDelayMs));
   }
   throw new Error(`canSendAndReceive: '${marker}' not received after ${retries} polls${errors.length ? ` — ${errors.join('; ')}` : ''}`);
+}
+
+/**
+ * Full mesh delivery check: every page sends one message and every other page must receive it.
+ * Polls all non-sender pages concurrently after each send. Throws if any delivery fails.
+ */
+export async function allCanSendAndReceive(pages: any[], groupId: string, retries = 8, retryDelayMs = 1500): Promise<void> {
+  for (let senderIdx = 0; senderIdx < pages.length; senderIdx++) {
+    const sender = pages[senderIdx];
+    const receivers = pages.filter((_, i) => i !== senderIdx);
+    const marker = `e2e-mesh-${senderIdx}-${Date.now()}`;
+    await sendMessage(sender, groupId, marker);
+    for (let i = 0; i < retries; i++) {
+      await Promise.all(receivers.map(r => pollInbox(r).catch(() => {})));
+      const received = await Promise.all(receivers.map(r => hasReceivedMessage(r, groupId, marker)));
+      if (received.every(Boolean)) break;
+      if (i < retries - 1) await new Promise(r => setTimeout(r, retryDelayMs));
+      else throw new Error(`allCanSendAndReceive: sender[${senderIdx}] marker '${marker}' not received by all after ${retries} polls`);
+    }
+  }
 }
 
 /**

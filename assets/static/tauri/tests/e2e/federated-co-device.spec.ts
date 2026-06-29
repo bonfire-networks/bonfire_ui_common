@@ -3,7 +3,7 @@
 // Run with: just test-tauri-e2e-federated-co-device
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD, E2E_S2_CHARLIE_LOGIN/PASSWORD
 
-import { test, expect, waitForChatView, shadowClick, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember, canSendAndReceive, waitForMlsMembers } from './helpers';
+import { test, expect, waitForChatView, shadowClick, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember, canSendAndReceive, allCanSendAndReceive, waitForMlsMembers } from './helpers';
 
 async function createThreeWayGroup(tauriPage: any, deviceAlice2: any, deviceCharlie: any): Promise<{ groupId: string }> {
   const groupId = await createGroupAndRefresh(tauriPage);
@@ -30,7 +30,21 @@ async function createThreeWayGroup(tauriPage: any, deviceAlice2: any, deviceChar
 
 test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
 
-  test('s1_alice_d2 leaves → co-device s1_alice_d1 confirms → s2_charlie_d1 updated', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
+  test('co-device + federated group message delivery — all 3 clients send and all others receive', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
+    test.setTimeout(240_000);
+    await waitForChatView(tauriPage, 60_000);
+    await waitForChatView(deviceAlice2!, 60_000);
+    await waitForChatView(deviceCharlie!, 60_000);
+
+    const { groupId } = await createThreeWayGroup(tauriPage, deviceAlice2!, deviceCharlie!);
+
+    await allCanSendAndReceive([tauriPage, deviceAlice2!, deviceCharlie!], groupId);
+  });
+
+  // https://github.com/swicg/activitypub-e2ee/issues/65
+  // https://github.com/swicg/activitypub-e2ee/issues/80
+
+  test('s1_alice_d2 leaves → co-device s1_alice_d1 confirms → s2_charlie_d1 updated', { tag: '@proposal' }, async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
     test.setTimeout(240_000);
     await waitForChatView(tauriPage, 60_000);
     await waitForChatView(deviceAlice2!, 60_000);
@@ -72,7 +86,7 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
     expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId, 10)).toBe(true);
   });
 
-  test('s1_alice_d2 leaves → co-device s1_alice_d1 unresponsive → s2_charlie_d1 fallback commits after 10min', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
+  test('s1_alice_d2 leaves → co-device s1_alice_d1 unresponsive → s2_charlie_d1 fallback commits after 10min', { tag: '@proposal' }, async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
     test.setTimeout(180_000); // charlie fallback: 10s (debug) + leafIndex×2s + group setup overhead + 60s startup
     await waitForChatView(tauriPage, 60_000);
     await waitForChatView(deviceAlice2!, 60_000);

@@ -39,6 +39,13 @@
         if (e.reason && e.reason._fetchStack) {
             msg += '\n\nFetch call site:\n' + e.reason._fetchStack;
         }
+        // "The resource id X is invalid." is a transient Tauri HTTP-plugin error that fires when
+        // a fetch request's handle is freed before the response is read (e.g. request cancelled or
+        // webview reloaded mid-flight). It is not a crash — log it but don't show the error overlay.
+        if (msg.indexOf('resource id') !== -1 && msg.indexOf('is invalid') !== -1) {
+            rustLog('[JS unhandledrejection suppressed (transient fetch)] ' + msg);
+            return;
+        }
         errors.push('Unhandled promise rejection: ' + msg);
         rustLog('[JS unhandledrejection] ' + msg);
         showErrorOverlay(errors.join('\n\n---\n\n'), isDb);
