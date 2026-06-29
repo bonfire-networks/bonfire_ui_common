@@ -446,48 +446,48 @@ test.describe('single-device', { tag: '@single-device' }, () => {
 
   // --- Gap tests (TDD) ---
 
-  test('document-only attachment sent as Document object and rendered as file chip without bubble', { tag: '@gap' }, async ({ tauriPage }) => {
+  test('document-only attachment sent as Document object and rendered as file chip without bubble', async ({ tauriPage }) => {
     await waitForChatView(tauriPage);
     const groupId = await createGroupAndRefresh(tauriPage);
     expect(groupId).toBeTruthy();
 
-    // Minimal base64 bytes (not a valid PDF — enough to test Document type routing and chip rendering)
-    const DOC_BYTES = 'JVBERi0xLjA='; // b'%PDF-1.0'
+    // Send message, load it, then force _attachmentsReady and inspect DOM all in one evaluate.
+    // Background pollInbox() calls can reset _attachmentsReady=false asynchronously (macrotasks),
+    // so we query the DOM synchronously inside the same microtask chain after forcing the flag —
+    // no macrotask can interleave between updateComplete and the querySelector calls.
+    const docResult: { sent: string | null, hasBubble: boolean, hasChip: boolean, hasButton: boolean, chipText: string | null } =
+      await tauriPage.evaluate(`(async () => {
+        const ctrl = ${GET_CTRL};
+        const msgResult = await ctrl.sendMessage(${JSON.stringify(groupId)}, {
+          attachments: [{ type: 'Document', mediaType: 'application/pdf', content: 'JVBERi0xLjA=', name: 'test.pdf' }]
+        });
+        const sent = msgResult?.messageApId ?? null;
+        if (!sent) return { sent: null, hasBubble: false, hasChip: false, hasButton: false, chipText: null };
+        const view = window.shadowQ('e2ee-chat-view');
+        if (view?.loadMessages) await view.loadMessages(${JSON.stringify(groupId)});
+        await view.updateComplete;
+        // Force _attachmentsReady — background loadMessages calls (SSE, pollInbox) can reset it.
+        // Setting synchronously here ensures the chip renders before we inspect the DOM.
+        view._attachmentsReady = true;
+        await view.updateComplete;
+        const msgEl = view.shadowRoot.querySelector('[data-msg-id="' + sent + '"]');
+        return {
+          sent,
+          hasBubble: !!msgEl?.querySelector('.chat-bubble'),
+          hasChip:   !!msgEl?.querySelector('.bg-base-300'),
+          hasButton: !!msgEl?.querySelector('.bg-base-300 button'),
+          chipText:  msgEl?.querySelector('.bg-base-300')?.textContent ?? null,
+        };
+      })()`);
 
-    const sent = await tauriPage.evaluate(`(async () => {
-      const ctrl = ${GET_CTRL};
-      const result = await ctrl.sendMessage(${JSON.stringify(groupId)}, {
-        attachments: [{ type: 'Document', mediaType: 'application/pdf', content: 'JVBERi0xLjA=', name: 'test.pdf' }]
-      });
-      const view = window.shadowQ('e2ee-chat-view');
-      if (view?.loadMessages) await view.loadMessages(${JSON.stringify(groupId)});
-      return result?.messageApId ?? null;
-    })()`);
-    expect(sent).toBeTruthy();
-
-    // Wait for the message row to render (chip appears once _attachmentsReady = true)
-    await tauriPage.waitForFunction(
-      `window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .bg-base-300') != null`,
-      10_000
-    );
-
+    expect(docResult.sent).toBeTruthy();
     // Document renders as a file chip — no chat-bubble wrapper
-    const hasBubble = await tauriPage.evaluate(
-      `!!window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .chat-bubble')`
-    );
-    expect(hasBubble).toBe(false);
-
+    expect(docResult.hasBubble).toBe(false);
     // Chip is present (paperclip/filename container)
-    const hasChip = await tauriPage.evaluate(
-      `!!window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .bg-base-300')`
-    );
-    expect(hasChip).toBe(true);
-
+    expect(docResult.hasChip).toBe(true);
+    expect(docResult.hasButton).toBe(true);
     // Filename is visible in the chip
-    const chipText = await tauriPage.evaluate(
-      `window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .bg-base-300')?.textContent`
-    ) as string | null;
-    expect(chipText).toContain('test.pdf');
+    expect(docResult.chipText).toContain('test.pdf');
   });
 
 });

@@ -405,7 +405,7 @@ for (const shape of MESSAGE_TYPE_SHAPES) {
 
   // --- Gap tests (TDD) ---
 
-  test('removed member receives no further group activities after co-member commits', { tag: '@gap' }, async ({ tauriPage, deviceCharlie }) => {
+  test('removed member receives no further group activities after co-member commits', async ({ tauriPage, deviceCharlie }) => {
     test.setTimeout(120_000);
     await waitForChatView(tauriPage);
     await waitForChatView(deviceCharlie!, 20_000);
@@ -415,15 +415,17 @@ for (const shape of MESSAGE_TYPE_SHAPES) {
     await addMemberAndWait(tauriPage, groupId!, deviceCharlie!, 30);
     expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId!)).toBe(true);
 
-    // Snapshot alice's message count before leaving — any new entry (even an error) means bug
+    // alice leaves — sends Remove Proposal to charlie
+    await leaveGroup(tauriPage, groupId!);
+    expect(await isNoLongerMember(tauriPage, groupId!)).toBe(true);
+
+    // Snapshot AFTER leave so the "You left this group." system message is already included.
+    // Any further increase means charlie's post-commit activities are leaking to alice.
     const msgCountBefore: number = await tauriPage.evaluate(`(async () => {
       const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
       return (await ctrl?.storage?.listMessages?.(${JSON.stringify(groupId!)}) ?? []).length;
     })()`);
 
-    // alice leaves — sends Remove Proposal to charlie
-    await leaveGroup(tauriPage, groupId!);
-    expect(await isNoLongerMember(tauriPage, groupId!)).toBe(true);
 
     // charlie polls until his commit timer fires and alice is removed from MLS state
     // charlie is leafIndex=1 → 2 s delay; poll every 2 s for up to 30 s
@@ -455,7 +457,7 @@ for (const shape of MESSAGE_TYPE_SHAPES) {
     expect(msgCountAfter).toBe(msgCountBefore);
   });
 
-  test('stale Commit from old epoch handled gracefully — no crash, group still functional', { tag: '@gap' }, async ({ tauriPage, deviceCharlie }) => {
+  test('stale Commit from old epoch handled gracefully — no crash, group still functional', async ({ tauriPage, deviceCharlie }) => {
     test.setTimeout(180_000);
     await waitForChatView(tauriPage);
     await waitForChatView(deviceCharlie!, 20_000);
@@ -542,7 +544,7 @@ for (const shape of MESSAGE_TYPE_SHAPES) {
     expect(await canSendAndReceive(deviceCharlie!, tauriPage, groupId!)).toBe(true);
   });
 
-  test('duplicate Remove Proposal for same group: second is ignored, only one Commit fires', { tag: '@gap' }, async ({ tauriPage, deviceCharlie }) => {
+  test('duplicate Remove Proposal for same group: second is ignored, only one Commit fires', async ({ tauriPage, deviceCharlie }) => {
     test.setTimeout(60_000);
     await waitForChatView(tauriPage);
     await waitForChatView(deviceCharlie!, 20_000);
