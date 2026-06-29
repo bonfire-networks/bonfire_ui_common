@@ -444,4 +444,50 @@ test.describe('single-device', { tag: '@single-device' }, () => {
   // on the RECEIVE path (not the local self-send path used in single-device tests).
   // See: co-device.spec.ts "Article received from co-device: script stripped by Rust sanitization"
 
+  // --- Gap tests (TDD) ---
+
+  test('document-only attachment sent as Document object and rendered as file chip without bubble', { tag: '@gap' }, async ({ tauriPage }) => {
+    await waitForChatView(tauriPage);
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+
+    // Minimal base64 bytes (not a valid PDF — enough to test Document type routing and chip rendering)
+    const DOC_BYTES = 'JVBERi0xLjA='; // b'%PDF-1.0'
+
+    const sent = await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const result = await ctrl.sendMessage(${JSON.stringify(groupId)}, {
+        attachments: [{ type: 'Document', mediaType: 'application/pdf', content: 'JVBERi0xLjA=', name: 'test.pdf' }]
+      });
+      const view = window.shadowQ('e2ee-chat-view');
+      if (view?.loadMessages) await view.loadMessages(${JSON.stringify(groupId)});
+      return result?.messageApId ?? null;
+    })()`);
+    expect(sent).toBeTruthy();
+
+    // Wait for the message row to render (chip appears once _attachmentsReady = true)
+    await tauriPage.waitForFunction(
+      `window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .bg-base-300') != null`,
+      10_000
+    );
+
+    // Document renders as a file chip — no chat-bubble wrapper
+    const hasBubble = await tauriPage.evaluate(
+      `!!window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .chat-bubble')`
+    );
+    expect(hasBubble).toBe(false);
+
+    // Chip is present (paperclip/filename container)
+    const hasChip = await tauriPage.evaluate(
+      `!!window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .bg-base-300')`
+    );
+    expect(hasChip).toBe(true);
+
+    // Filename is visible in the chip
+    const chipText = await tauriPage.evaluate(
+      `window.shadowQ('e2ee-chat-view >>> [data-msg-id="${sent}"] .bg-base-300')?.textContent`
+    ) as string | null;
+    expect(chipText).toContain('test.pdf');
+  });
+
 });

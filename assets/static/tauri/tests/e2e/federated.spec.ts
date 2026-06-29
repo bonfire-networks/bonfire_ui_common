@@ -3,7 +3,7 @@
 // Run with: just test-tauri-e2e-federated
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD, E2E_S1_BOB_LOGIN/PASSWORD, E2E_S2_CHARLIE_LOGIN/PASSWORD
 
-import { test, expect, waitForChatView, pollInbox, createGroupAndRefresh, addMemberAndWait, isNoLongerMember, getActorId, canSendAndReceive, sendMessage, hasReceivedMessage, clickEditAndSave, clickDelete } from './helpers';
+import { test, expect, waitForChatView, pollInbox, createGroupAndRefresh, addMemberAndWait, isNoLongerMember, leaveGroup, getActorId, canSendAndReceive, sendMessage, hasReceivedMessage, getGroupMemberCount, clickEditAndSave, clickDelete } from './helpers';
 
 const MESSAGE_TYPE_SHAPES = [
   { label: 'standard (PrivateMessage / content)', usePrefix: false },
@@ -401,6 +401,213 @@ for (const shape of MESSAGE_TYPE_SHAPES) {
       return msgs.some(m => m.content?.type === 'Video');
     })()`);
     expect(hasVideo).toBe(true);
+  });
+
+  // --- Gap tests (TDD) ---
+
+  test('removed member receives no further group activities after co-member commits', { tag: '@gap' }, async ({ tauriPage, deviceCharlie }) => {
+    test.setTimeout(120_000);
+    await waitForChatView(tauriPage);
+    await waitForChatView(deviceCharlie!, 20_000);
+
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+    await addMemberAndWait(tauriPage, groupId!, deviceCharlie!, 30);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId!)).toBe(true);
+
+    // Snapshot alice's message count before leaving — any new entry (even an error) means bug
+    const msgCountBefore: number = await tauriPage.evaluate(`(async () => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      return (await ctrl?.storage?.listMessages?.(${JSON.stringify(groupId!)}) ?? []).length;
+    })()`);
+
+    // alice leaves — sends Remove Proposal to charlie
+    await leaveGroup(tauriPage, groupId!);
+    expect(await isNoLongerMember(tauriPage, groupId!)).toBe(true);
+
+    // charlie polls until his commit timer fires and alice is removed from MLS state
+    // charlie is leafIndex=1 → 2 s delay; poll every 2 s for up to 30 s
+    let charlieCommitted = false;
+    for (let i = 0; i < 15; i++) {
+      await pollInbox(deviceCharlie!);
+      if (await getGroupMemberCount(deviceCharlie!, groupId!) === 1) { charlieCommitted = true; break; }
+      await new Promise(r => setTimeout(r, 2_000));
+    }
+    expect(charlieCommitted).toBe(true);
+
+    // charlie sends a new message in the post-commit epoch
+    const postLeaveMarker = `post-leave-${Date.now()}`;
+    await sendMessage(deviceCharlie!, groupId!, postLeaveMarker);
+
+    // alice polls multiple times — must NOT receive charlie's post-commit message
+    for (let i = 0; i < 5; i++) {
+      await pollInbox(tauriPage);
+      await new Promise(r => setTimeout(r, 1_000));
+    }
+
+    // alice's storage must have no new messages (neither readable content nor error entries)
+    // Bug: _distributeCommit calls getGroupMembers before _syncMembersFromMLS, so alice is
+    // still in the recipient list — she receives ciphertext she can't decrypt → error stored.
+    const msgCountAfter: number = await tauriPage.evaluate(`(async () => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      return (await ctrl?.storage?.listMessages?.(${JSON.stringify(groupId!)}) ?? []).length;
+    })()`);
+    expect(msgCountAfter).toBe(msgCountBefore);
+  });
+
+  test('stale Commit from old epoch handled gracefully — no crash, group still functional', { tag: '@gap' }, async ({ tauriPage, deviceCharlie }) => {
+    test.setTimeout(180_000);
+    await waitForChatView(tauriPage);
+    await waitForChatView(deviceCharlie!, 20_000);
+
+    const aliceId = await getActorId(tauriPage);
+    const charlieId = await getActorId(deviceCharlie!);
+
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+    await addMemberAndWait(tauriPage, groupId!, deviceCharlie!, 30);
+
+    // Spy on charlie's _handlePrivateMessage to capture the epoch-N ciphertext on the next message
+    await deviceCharlie!.evaluate(`(async () => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      window.__capturedCiphertext = null;
+      const orig = ctrl._handlePrivateMessage.bind(ctrl);
+      ctrl._handlePrivateMessage = async function(groupId, parsed, actor) {
+        if (!window.__capturedCiphertext && parsed?.content && parsed?.attributedTo !== actor?.id) {
+          window.__capturedCiphertext = parsed.content;
+        }
+        return orig(groupId, parsed, actor);
+      };
+    })()`);
+
+    // alice sends — charlie's spy captures the ciphertext at the current epoch
+    await sendMessage(tauriPage, groupId!, 'epoch-n-capture');
+    for (let i = 0; i < 10; i++) {
+      await pollInbox(deviceCharlie!);
+      if (await deviceCharlie!.evaluate(`window.__capturedCiphertext`)) break;
+      await new Promise(r => setTimeout(r, 1_000));
+    }
+    expect(await deviceCharlie!.evaluate(`!!window.__capturedCiphertext`)).toBe(true);
+
+    // Advance epoch: alice removes charlie (epoch N+1)
+    await tauriPage.evaluate(`(async () => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      await ctrl.removeGroupMember(${JSON.stringify(groupId!)}, ${JSON.stringify(charlieId)});
+    })()`);
+    for (let i = 0; i < 10; i++) {
+      await pollInbox(deviceCharlie!);
+      if (await isNoLongerMember(deviceCharlie!, groupId!)) break;
+      await new Promise(r => setTimeout(r, 1_500));
+    }
+    expect(await isNoLongerMember(deviceCharlie!, groupId!)).toBe(true);
+
+    // Re-add charlie — he joins at epoch N+2 via a new Welcome
+    await addMemberAndWait(tauriPage, groupId!, deviceCharlie!, 30);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId!)).toBe(true);
+
+    // Read the group's AP context URL from alice's storage for the injection
+    const groupApId: string = await tauriPage.evaluate(`(async () => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      return await ctrl.storage.getGroupField(${JSON.stringify(groupId!)}, 'apId', null);
+    })()`);
+    expect(groupApId).toBeTruthy();
+
+    // Inject the epoch-N ciphertext to charlie (now at epoch N+2) via handleActivity.
+    // The MLS decrypt call must fail gracefully — error stored, no exception escapes the controller.
+    const injected: string = await deviceCharlie!.evaluate(`(async () => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      try {
+        await ctrl.handleActivity({
+          type: 'Create',
+          actor: ${JSON.stringify(aliceId)},
+          object: {
+            id: 'http://localhost:4000/pub/objects/stale-test-' + Date.now(),
+            type: 'PrivateMessage',
+            attributedTo: ${JSON.stringify(aliceId)},
+            mediaType: 'message/mls',
+            encoding: 'base64',
+            content: window.__capturedCiphertext,
+            context: ${JSON.stringify(groupApId)},
+          }
+        });
+        return 'handled';
+      } catch (e) {
+        return 'threw: ' + String(e);
+      }
+    })()`);
+    expect(injected).toBe('handled');
+
+    // Group must remain functional after receiving a stale ciphertext
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId!)).toBe(true);
+    expect(await canSendAndReceive(deviceCharlie!, tauriPage, groupId!)).toBe(true);
+  });
+
+  test('duplicate Remove Proposal for same group: second is ignored, only one Commit fires', { tag: '@gap' }, async ({ tauriPage, deviceCharlie }) => {
+    test.setTimeout(60_000);
+    await waitForChatView(tauriPage);
+    await waitForChatView(deviceCharlie!, 20_000);
+
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+    await addMemberAndWait(tauriPage, groupId!, deviceCharlie!, 30);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId!)).toBe(true);
+
+    // Spy on charlie: capture parsed from _handleProposal (alreadyDecrypted=true = second-pass)
+    // and count _distributeCommit calls to verify only one Commit is distributed.
+    await deviceCharlie!.evaluate(`(async () => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      window.__capturedProposalArgs = null;
+      window.__commitCount = 0;
+      const origProposal = ctrl._handleProposal.bind(ctrl);
+      ctrl._handleProposal = async function(groupId, parsed, actor, alreadyDecrypted) {
+        if (!window.__capturedProposalArgs && alreadyDecrypted) {
+          window.__capturedProposalArgs = { groupId, parsed: JSON.parse(JSON.stringify(parsed)), actor: JSON.parse(JSON.stringify(actor)) };
+        }
+        return origProposal(groupId, parsed, actor, alreadyDecrypted);
+      };
+      const origDistribute = ctrl._distributeCommit.bind(ctrl);
+      ctrl._distributeCommit = async function(...args) {
+        window.__commitCount++;
+        return origDistribute(...args);
+      };
+    })()`);
+
+    // alice leaves — sends Remove Proposal to charlie
+    await leaveGroup(tauriPage, groupId!);
+
+    // Poll charlie until the spy captures the second-pass _handleProposal call
+    for (let i = 0; i < 10; i++) {
+      await pollInbox(deviceCharlie!);
+      if (await deviceCharlie!.evaluate(`window.__capturedProposalArgs`)) break;
+      await new Promise(r => setTimeout(r, 1_000));
+    }
+    expect(await deviceCharlie!.evaluate(`!!window.__capturedProposalArgs`)).toBe(true);
+
+    // Inject a duplicate: different id to bypass AP-level dedup, same groupId and content.
+    // _pendingProposalTimers guard must block it — timer count must stay at 1.
+    await deviceCharlie!.evaluate(`(async () => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      const { groupId, parsed, actor } = window.__capturedProposalArgs;
+      const duplicate = { ...parsed, id: (parsed.id || 'proposal') + '-dup' };
+      await ctrl._handleProposal(groupId, duplicate, actor, true);
+    })()`);
+
+    const timerCount: number = await deviceCharlie!.evaluate(`(() => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      return ctrl._pendingProposalTimers.size;
+    })()`);
+    expect(timerCount).toBe(1);
+
+    // Let the single commit timer fire (leafIndex=1 → 2 s; wait 5 s to be safe)
+    await new Promise(r => setTimeout(r, 5_000));
+    await pollInbox(deviceCharlie!);
+
+    // Exactly one Commit must have been distributed
+    const commitCount = await deviceCharlie!.evaluate(`window.__commitCount`);
+    expect(commitCount).toBe(1);
+
+    // charlie is the sole remaining member after alice's removal
+    expect(await getGroupMemberCount(deviceCharlie!, groupId!)).toBe(1);
   });
 
 });
