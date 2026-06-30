@@ -3,7 +3,7 @@
 // Run with: just test-tauri-e2e-federated-co-device
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD, E2E_S2_CHARLIE_LOGIN/PASSWORD
 
-import { test, expect, waitForChatView, shadowClick, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember, canSendAndReceive, allCanSendAndReceive, waitForMlsMembers, getActorId } from './helpers';
+import { test, expect, waitForChatView, shadowClick, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember, canSendAndReceive, allCanSendAndReceive, waitForMlsMembers, getActorId, markInboxProcessed } from './helpers';
 
 async function createThreeWayGroup(tauriPage: any, deviceAlice2: any, deviceCharlie: any): Promise<{ groupId: string }> {
   const groupId = await createGroupAndRefresh(tauriPage);
@@ -29,6 +29,18 @@ async function createThreeWayGroup(tauriPage: any, deviceAlice2: any, deviceChar
 }
 
 test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
+
+  // Give each test (and its beforeEach) 120s baseline; individual tests override with test.setTimeout.
+  test.describe.configure({ timeout: 120_000 });
+
+  // Drain activities accumulated by prior tests so pollInbox only sees this test's activities.
+  test.beforeEach(async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
+    await Promise.all([
+      markInboxProcessed(tauriPage),
+      deviceAlice2 ? markInboxProcessed(deviceAlice2) : Promise.resolve(),
+      deviceCharlie ? markInboxProcessed(deviceCharlie) : Promise.resolve(),
+    ]);
+  });
 
   test('co-device + federated group message delivery — all 3 clients send and all others receive', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
     test.setTimeout(240_000);
@@ -149,7 +161,7 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
       const count = await deviceAlice2!.evaluate(`(async () => {
         const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
         return (await ctrl.getGroupMembers(${JSON.stringify(groupId)}) ?? []).length;
-      })()`);
+      })()`) as number;
       if (count >= 2) break; // d2 sees charlie (excludes self, so ≥2 means d1+charlie)
       await new Promise(r => setTimeout(r, 1500));
     }
@@ -182,7 +194,7 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
       const count = await deviceAlice2!.evaluate(`(async () => {
         const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
         return (await ctrl.getGroupMembers(${JSON.stringify(groupId)}) ?? []).length;
-      })()`);
+      })()`) as number;
       if (count < 2) break; // d2 sees charlie gone (only d1 remains, excluding self)
       await new Promise(r => setTimeout(r, 1500));
     }

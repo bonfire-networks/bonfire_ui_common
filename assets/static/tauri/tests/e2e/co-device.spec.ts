@@ -10,6 +10,9 @@ const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?
 // serial: if the approval test fails, later tests skip rather than failing with "sharedGroupId null".
 test.describe.serial('co-device', { tag: '@co-device' }, () => {
 
+  // Give each test (and its beforeEach) 120s baseline; individual tests override with test.setTimeout.
+  test.describe.configure({ timeout: 120_000 });
+
   // Set by the approval test, consumed by all subsequent tests.
   let sharedGroupId: string | null = null;
 
