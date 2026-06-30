@@ -3,7 +3,7 @@
 // Run with: just test-tauri-e2e-federated-co-device
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD, E2E_S2_CHARLIE_LOGIN/PASSWORD
 
-import { test, expect, waitForChatView, shadowClick, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember, canSendAndReceive, allCanSendAndReceive, waitForMlsMembers, getActorId, markInboxProcessed } from './helpers';
+import { test, expect, waitForChatView, shadowClick, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember, canSendAndReceive, allCanSendAndReceive, waitForMlsMembers, getActorId } from './helpers';
 
 async function createThreeWayGroup(tauriPage: any, deviceAlice2: any, deviceCharlie: any): Promise<{ groupId: string }> {
   const groupId = await createGroupAndRefresh(tauriPage);
@@ -29,16 +29,6 @@ async function createThreeWayGroup(tauriPage: any, deviceAlice2: any, deviceChar
 }
 
 test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
-
-  // Drain activities after each test so the next one's pollInbox only sees its own activities.
-  // afterEach (not beforeEach) avoids racing with items generated at test startup (e.g. d2's KP proposal).
-  test.afterEach(async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
-    await Promise.all([
-      markInboxProcessed(tauriPage).catch(() => {}),
-      deviceAlice2 ? markInboxProcessed(deviceAlice2).catch(() => {}) : Promise.resolve(),
-      deviceCharlie ? markInboxProcessed(deviceCharlie).catch(() => {}) : Promise.resolve(),
-    ]);
-  });
 
   test('co-device + federated group message delivery — all 3 clients send and all others receive', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
     test.setTimeout(240_000);

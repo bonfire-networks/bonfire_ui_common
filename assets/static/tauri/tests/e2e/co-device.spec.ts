@@ -3,7 +3,7 @@
 // Run with: just test-tauri-e2e-co-device
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD
 
-import { test, expect, waitForChatView, shadowExists, createGroupAndRefresh, pollInbox, markInboxProcessed, leaveGroup, isNoLongerMember, getOwnSignatureKey, ownKpIsSelfSigned, canSendAndReceive, addMemberAndWait, waitForMlsMembers, hasReceivedMessage, fetchPublishedSignedKP, getActorId } from './helpers';
+import { test, expect, waitForChatView, shadowExists, createGroupAndRefresh, pollInbox, leaveGroup, isNoLongerMember, getOwnSignatureKey, ownKpIsSelfSigned, canSendAndReceive, addMemberAndWait, waitForMlsMembers, hasReceivedMessage, fetchPublishedSignedKP, getActorId } from './helpers';
 
 const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })()`;
 
@@ -12,15 +12,6 @@ test.describe.serial('co-device', { tag: '@co-device' }, () => {
 
   // Set by the approval test, consumed by all subsequent tests.
   let sharedGroupId: string | null = null;
-
-  // Drain activities after each test so the next one's pollInbox only sees its own activities.
-  // afterEach (not beforeEach) avoids racing with items generated at test startup (e.g. d2's KP proposal).
-  test.afterEach(async ({ tauriPage, deviceAlice2 }) => {
-    await Promise.all([
-      markInboxProcessed(tauriPage).catch(() => {}),
-      deviceAlice2 ? markInboxProcessed(deviceAlice2).catch(() => {}) : Promise.resolve(),
-    ]);
-  });
 
   test('s1_alice_d2: new device with existing co-device shows waiting-for-approval dialog', { tag: '@proposal' }, async ({ tauriPage, deviceAlice2 }) => {
     // https://github.com/swicg/activitypub-e2ee/issues/65
@@ -144,7 +135,7 @@ test.describe.serial('co-device', { tag: '@co-device' }, () => {
     // but the MLS decryption + Rust sanitization run regardless on pollInbox.
     let received = false;
     for (let i = 0; i < 5; i++) {
-      await pollInbox(deviceAlice2!);
+      await pollInbox(deviceAlice2!, 15); // bounded; loop covers full backlog
       received = await hasReceivedMessage(deviceAlice2!, sharedGroupId!, 'Legit text from d1');
       if (received) break;
       await new Promise(r => setTimeout(r, 1000));
@@ -184,7 +175,7 @@ test.describe.serial('co-device', { tag: '@co-device' }, () => {
     const pollUntilDialog = async () => {
       const deadline = Date.now() + 70_000;
       while (Date.now() < deadline) {
-        await pollInbox(deviceAlice2!);
+        await pollInbox(deviceAlice2!, 15); // bounded; loop covers full backlog
         const text = await deviceAlice2!.evaluate(
           '(()=>{ const sr=window.shadowQ("e2ee-chat-view")?.shadowRoot; const btn=sr?.querySelector("dialog[data-nd-leaving] #nd-approve"); console.log("[pollUntilDialog] leaving #nd-approve:", btn?.textContent?.trim(), "shadowRoot children:", sr?.children?.length); return btn?.textContent?.trim(); })()'
         );
@@ -261,7 +252,7 @@ test.describe.serial('co-device', { tag: '@co-device' }, () => {
     // d2 polls and should receive the Commit removing it from the group
     let notMember = false;
     for (let i = 0; i < 10; i++) {
-      await pollInbox(deviceAlice2!);
+      await pollInbox(deviceAlice2!, 15); // bounded; loop covers full backlog
       notMember = await isNoLongerMember(deviceAlice2!, groupId!);
       if (notMember) break;
       await new Promise(r => setTimeout(r, 2000));
@@ -304,7 +295,7 @@ test.describe.serial('co-device', { tag: '@co-device' }, () => {
     // Retry a few times in case accumulated inbox state requires multiple polls.
     let notMember = false;
     for (let i = 0; i < 5; i++) {
-      await pollInbox(deviceAlice2!);
+      await pollInbox(deviceAlice2!, 15); // bounded; loop covers full backlog
       notMember = await isNoLongerMember(deviceAlice2!, preDecommissionGroup!);
       if (notMember) break;
       if (i < 4) await new Promise(r => setTimeout(r, 1000));

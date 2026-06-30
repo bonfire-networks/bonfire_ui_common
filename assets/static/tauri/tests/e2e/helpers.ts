@@ -70,11 +70,13 @@ export async function getActorId(page: any): Promise<string> {
 
 // Calls view.pollInbox() so results are processed through the view's full handler chain
 // (coDeviceLeaving → dialog, newDeviceRequest → dialog, etc.)
-export async function pollInbox(page: any): Promise<void> {
+export async function pollInbox(page: any, maxItems?: number): Promise<void> {
+  const opts = maxItems !== undefined ? `{ maxItems: ${maxItems} }` : `{}`;
   await page.evaluate(`(async () => {
+    const ctrl = ${GET_CTRL};
     const view = ${GET_VIEW};
-    if (typeof view?.pollInbox === 'function') await view.pollInbox();
-    else await ${GET_CTRL}?.pollInbox();
+    if (typeof view?.pollInbox === 'function') await view.pollInbox(${opts});
+    else await ctrl?.pollInbox(${opts});
   })()`);
 }
 
@@ -84,12 +86,9 @@ export async function pollInbox(page: any): Promise<void> {
  * so subsequent pollInbox calls only see activities generated during THIS test.
  */
 export async function markInboxProcessed(page: any): Promise<void> {
-  // Drain up to 10 new inbox items — capped so each afterEach stays fast.
-  // Called repeatedly across afterEach hooks so accumulated items don't pile up before test 4+.
-  await page.evaluate(`(async () => {
-    const ctrl = ${GET_CTRL};
-    await ctrl?.pollInbox({ maxItems: 10 });
-  })()`);
+  // Drain up to 10 new inbox items per afterEach call — capped so hooks stay fast.
+  // pollInbox already marks processed items and skips them on re-poll, so this is cumulative.
+  await pollInbox(page, 10);
 }
 
 export async function addMemberAndWait(creatorPage: any, groupId: string, memberPage: any, maxPolls = 10, { usePrefix = false } = {}): Promise<void> {
@@ -124,7 +123,8 @@ export async function addMemberAndWait(creatorPage: any, groupId: string, member
   // Federated joins need more polls (pass maxPolls=30) because Welcome travels s1→s2 via Oban.
   // join_group may also need a retry if the first Welcome decryption fails (stale KP race).
   for (let i = 0; i < maxPolls; i++) {
-    await pollInbox(memberPage);
+    // Cap per-call items so no single IPC evaluate exceeds 120s; loop covers the full backlog.
+    await pollInbox(memberPage, 15);
     const joined: boolean = await memberPage.evaluate(`(async () => {
       const ctrl = ${GET_CTRL};
       const groups = await ctrl?.storage?.listGroupsWithLastMessage?.() ?? [];
@@ -420,7 +420,7 @@ export async function allCanSendAndReceive(pages: any[], groupId: string, retrie
  */
 export async function waitForMlsMembers(page: any, groupId: string, minCount: number, retries = 40, retryDelayMs = 1500): Promise<void> {
   for (let i = 0; i < retries; i++) {
-    await pollInbox(page);
+    await pollInbox(page, 15); // bounded per-call; loop covers full backlog
     const count: number = await page.evaluate(`(async () => {
       const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
       try {
