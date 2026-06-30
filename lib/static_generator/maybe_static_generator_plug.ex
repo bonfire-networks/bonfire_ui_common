@@ -52,7 +52,8 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
       url = conn.private[:original_request_path] || conn.request_path
 
       case memory_cache_get(url) do
-        {content_type, body} ->
+        {content_type, body}
+        when is_binary(content_type) and (is_binary(body) or is_list(body)) ->
           info(url, "serving from memory cache")
 
           conn
@@ -61,13 +62,24 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
           |> halt()
 
         nil ->
-          result = Plug.Static.call(conn, @static_opts)
-          if result.halted, do: maybe_track_and_promote(url, result)
-          result
+          serve_static_from_disk(conn, url)
+
+        other ->
+          # Guard against a malformed/legacy cache entry (e.g. a non-iodata body),
+          # which would otherwise crash deep in Plug.Conn.resp/3. Drop it and
+          # regenerate from disk instead.
+          error(other, "static_gen: unexpected cache entry shape for #{url}, ignoring cache")
+          serve_static_from_disk(conn, url)
       end
     else
       conn
     end
+  end
+
+  defp serve_static_from_disk(conn, url) do
+    result = Plug.Static.call(conn, @static_opts)
+    if result.halted, do: maybe_track_and_promote(url, result)
+    result
   end
 
   defp memory_cache_get(url) do
