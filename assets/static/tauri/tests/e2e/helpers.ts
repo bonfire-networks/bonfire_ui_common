@@ -84,18 +84,11 @@ export async function pollInbox(page: any): Promise<void> {
  * so subsequent pollInbox calls only see activities generated during THIS test.
  */
 export async function markInboxProcessed(page: any): Promise<void> {
+  // Drain up to 10 new inbox items — capped so each afterEach stays fast.
+  // Called repeatedly across afterEach hooks so accumulated items don't pile up before test 4+.
   await page.evaluate(`(async () => {
     const ctrl = ${GET_CTRL};
-    if (!ctrl) return;
-    const { fetchInboxItems } = await import('/assets/ap_c2s_client/js/activitypub/client.js');
-    const actor = await (ctrl.mlsService?.getActor?.() ?? Promise.resolve({ id: ctrl.currentActorId }));
-    if (!actor?.id) return;
-    const actorFull = { ...actor, ...(JSON.parse(localStorage.getItem('actor') || '{}')) };
-    const items = await fetchInboxItems(actorFull).catch(() => []);
-    for (const item of items) {
-      const id = item.id || item.object?.id;
-      if (id) await ctrl.storage.markProcessed(actor.id, id);
-    }
+    await ctrl?.pollInbox({ maxItems: 10 });
   })()`);
 }
 

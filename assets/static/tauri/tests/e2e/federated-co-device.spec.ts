@@ -30,15 +30,13 @@ async function createThreeWayGroup(tauriPage: any, deviceAlice2: any, deviceChar
 
 test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
 
-  // Give each test (and its beforeEach) 120s baseline; individual tests override with test.setTimeout.
-  test.describe.configure({ timeout: 120_000 });
-
-  // Drain activities accumulated by prior tests so pollInbox only sees this test's activities.
-  test.beforeEach(async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
+  // Drain activities after each test so the next one's pollInbox only sees its own activities.
+  // afterEach (not beforeEach) avoids racing with items generated at test startup (e.g. d2's KP proposal).
+  test.afterEach(async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
     await Promise.all([
-      markInboxProcessed(tauriPage),
-      deviceAlice2 ? markInboxProcessed(deviceAlice2) : Promise.resolve(),
-      deviceCharlie ? markInboxProcessed(deviceCharlie) : Promise.resolve(),
+      markInboxProcessed(tauriPage).catch(() => {}),
+      deviceAlice2 ? markInboxProcessed(deviceAlice2).catch(() => {}) : Promise.resolve(),
+      deviceCharlie ? markInboxProcessed(deviceCharlie).catch(() => {}) : Promise.resolve(),
     ]);
   });
 

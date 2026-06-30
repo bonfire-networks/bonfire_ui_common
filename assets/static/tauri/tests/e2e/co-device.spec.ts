@@ -10,17 +10,15 @@ const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?
 // serial: if the approval test fails, later tests skip rather than failing with "sharedGroupId null".
 test.describe.serial('co-device', { tag: '@co-device' }, () => {
 
-  // Give each test (and its beforeEach) 120s baseline; individual tests override with test.setTimeout.
-  test.describe.configure({ timeout: 120_000 });
-
   // Set by the approval test, consumed by all subsequent tests.
   let sharedGroupId: string | null = null;
 
-  // Drain activities accumulated by prior tests so pollInbox only sees this test's activities.
-  test.beforeEach(async ({ tauriPage, deviceAlice2 }) => {
+  // Drain activities after each test so the next one's pollInbox only sees its own activities.
+  // afterEach (not beforeEach) avoids racing with items generated at test startup (e.g. d2's KP proposal).
+  test.afterEach(async ({ tauriPage, deviceAlice2 }) => {
     await Promise.all([
-      markInboxProcessed(tauriPage),
-      deviceAlice2 ? markInboxProcessed(deviceAlice2) : Promise.resolve(),
+      markInboxProcessed(tauriPage).catch(() => {}),
+      deviceAlice2 ? markInboxProcessed(deviceAlice2).catch(() => {}) : Promise.resolve(),
     ]);
   });
 
