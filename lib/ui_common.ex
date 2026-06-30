@@ -763,6 +763,23 @@ defmodule Bonfire.UI.Common do
       conn,
       redirect_opts(conn, to, opts)
     )
+  rescue
+    e ->
+      # Never let a bad target/opts crash the request (e.g. an ArgumentError deep
+      # in Phoenix.Controller.redirect). Log it and fall back to a safe path.
+      error(e, "could not redirect to #{inspect(to)}, falling back")
+      warn(opts, "bad opts")
+
+      # Route by shape so the fallback itself can't re-raise: Phoenix 1.8 rejects
+      # full URLs passed to `to:` (only `external:` allows them).
+      fallback_opt =
+        case path_fallback(conn, List.wrap(opts)) do
+          "/" <> _ = path when path != to -> [to: path]
+          "http" <> _ = url when url != to -> [external: url]
+          _ -> [to: "/error?invalid_path"]
+        end
+
+      Phoenix.Controller.redirect(conn, fallback_opt)
   end
 
   def redirect_to(other, to, _opts) do
