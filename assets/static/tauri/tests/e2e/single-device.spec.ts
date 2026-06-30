@@ -490,4 +490,44 @@ test.describe('single-device', { tag: '@single-device' }, () => {
     expect(docResult.chipText).toContain('test.pdf');
   });
 
+  test('PublicMessage wire format — activity routed to _handlePublicMessage', async ({ tauriPage }) => {
+    test.setTimeout(30_000);
+    await waitForChatView(tauriPage);
+
+    // Spy on _handlePublicMessage to count invocations before injecting the activity
+    await tauriPage.evaluate(`(() => {
+      const ctrl = ${GET_CTRL};
+      window.__pubMsgCallCount = 0;
+      const orig = ctrl._handlePublicMessage.bind(ctrl);
+      ctrl._handlePublicMessage = async (...args) => {
+        window.__pubMsgCallCount++;
+        return orig(...args);
+      };
+    })()`);
+
+    // Inject a PublicMessage with dummy bytes and a fake context URL.
+    // handleActivity routes by type — groupId resolves to null for the fake context (fine for routing).
+    // _handlePublicMessage's MLS decrypt is caught by its internal try/catch — won't throw.
+    await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      await ctrl.handleActivity({
+        type: 'Create',
+        actor: ctrl.currentActorId,
+        object: {
+          id: 'http://localhost:4000/pub/objects/test-pubmsg-routing',
+          type: 'PublicMessage',
+          attributedTo: ctrl.currentActorId,
+          mediaType: 'message/mls',
+          encoding: 'base64',
+          content: 'AAEC',
+          context: 'http://localhost:4000/pub/objects/test-group-ctx',
+          to: [ctrl.currentActorId],
+        }
+      });
+    })()`);
+
+    const callCount = await tauriPage.evaluate(`window.__pubMsgCallCount`);
+    expect(callCount).toBe(1);
+  });
+
 });

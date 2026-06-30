@@ -403,6 +403,352 @@ for (const shape of MESSAGE_TYPE_SHAPES) {
     expect(hasVideo).toBe(true);
   });
 
+  const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })()`;
+
+  test('cross-server listen receipt — charlie clicks play on audio, alice sees listened receipt', async ({ tauriPage, deviceCharlie }) => {
+    test.setTimeout(120_000);
+    await waitForChatView(tauriPage);
+    await waitForChatView(deviceCharlie!, 20_000);
+
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+    await addMemberAndWait(tauriPage, groupId!, deviceCharlie!, 30);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId!)).toBe(true);
+
+    // Alice sends an audio-only message
+    await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      await ctrl.sendMessage(${JSON.stringify(groupId)}, {
+        attachments: [{ type: 'Audio', mediaType: 'audio/wav', content: 'UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=', name: 'test.wav' }],
+      });
+    })()`);
+
+    // Charlie polls until the audio message appears in storage.
+    for (let i = 0; i < 5; i++) {
+      await pollInbox(deviceCharlie!);
+      const hasAudio = await deviceCharlie!.evaluate(`(async () => {
+        const ctrl = ${GET_CTRL};
+        const msgs = await ctrl?.storage?.listMessages?.(${JSON.stringify(groupId)}) ?? [];
+        return msgs.some(m => m.content?.type === 'Audio');
+      })()`);
+      if (hasAudio) break;
+      await new Promise(r => setTimeout(r, 1500));
+    }
+    expect(await deviceCharlie!.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const msgs = await ctrl?.storage?.listMessages?.(${JSON.stringify(groupId)}) ?? [];
+      return msgs.some(m => m.content?.type === 'Audio');
+    })()`)).toBe(true);
+
+    // Charlie triggers a Listen receipt — same controller path as clicking the play button.
+    // Background-promise pattern: evaluate() doesn't await JS Promises, so we must signal completion.
+    const listenKey = `__listen_${groupId!.slice(-6)}`;
+    await deviceCharlie!.evaluate(`(() => {
+      window[${JSON.stringify(listenKey)}] = '__pending__';
+      const ctrl = ${GET_CTRL};
+      (async () => {
+        const msgs = await ctrl?.storage?.listMessages?.(${JSON.stringify(groupId)}) ?? [];
+        const audio = msgs.find(m => m.content?.type === 'Audio');
+        if (audio) await ctrl.markMessageListened(audio.id, ${JSON.stringify(groupId)});
+      })().then(() => { window[${JSON.stringify(listenKey)}] = 'done'; })
+         .catch(() => { window[${JSON.stringify(listenKey)}] = 'error'; });
+    })()`);
+    await deviceCharlie!.waitForFunction(`window[${JSON.stringify(listenKey)}] !== '__pending__'`, 60_000);
+    await deviceCharlie!.evaluate(`delete window[${JSON.stringify(listenKey)}]`);
+
+    // Alice polls and should see a listened receipt in the audio message's deliveryStatus.
+    // Use background-promise pattern to avoid Tauri IPC timeout while view reloads messages.
+    for (let i = 0; i < 5; i++) {
+      await pollInbox(tauriPage);
+      await new Promise(r => setTimeout(r, 1500));
+    }
+    const dsKey1 = `__ds_${groupId!.slice(-6)}_listen`;
+    await tauriPage.evaluate(`(() => {
+      window[${JSON.stringify(dsKey1)}] = '__pending__';
+      (window.__chatStorage?.listMessages?.(${JSON.stringify(groupId)}) ?? Promise.resolve([])).then(msgs => {
+        const sent = msgs.find(m => m.content?.type === 'Audio');
+        window[${JSON.stringify(dsKey1)}] = sent?.deliveryStatus ?? null;
+      }).catch(() => { window[${JSON.stringify(dsKey1)}] = null; });
+    })()`);
+    await tauriPage.waitForFunction(`window[${JSON.stringify(dsKey1)}] !== '__pending__'`, 30_000);
+    const deliveryStatus = await tauriPage.evaluate(`window[${JSON.stringify(dsKey1)}]`);
+    await tauriPage.evaluate(`delete window[${JSON.stringify(dsKey1)}]`);
+    expect(deliveryStatus).not.toBeNull();
+    expect(
+      Object.values(deliveryStatus as Record<string, any>).some((v: any) => v.status === 'Listen')
+    ).toBe(true);
+  });
+
+  test('cross-server view receipt — charlie opens image, alice sees viewed receipt', async ({ tauriPage, deviceCharlie }) => {
+    test.setTimeout(120_000);
+    await waitForChatView(tauriPage);
+    await waitForChatView(deviceCharlie!, 20_000);
+
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+    await addMemberAndWait(tauriPage, groupId!, deviceCharlie!, 30);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId!)).toBe(true);
+
+    // Alice sends a GIF image with inline content
+    await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      await ctrl.sendMessage(${JSON.stringify(groupId)}, {
+        attachments: [{ type: 'Image', mediaType: 'image/gif',
+          content: 'R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+          name: 'test.gif' }],
+      });
+    })()`);
+
+    // Charlie polls until the image appears in storage.
+    for (let i = 0; i < 5; i++) {
+      await pollInbox(deviceCharlie!);
+      const hasImg = await deviceCharlie!.evaluate(`(async () => {
+        const ctrl = ${GET_CTRL};
+        const msgs = await ctrl?.storage?.listMessages?.(${JSON.stringify(groupId)}) ?? [];
+        return msgs.some(m => m.content?.type === 'Image');
+      })()`);
+      if (hasImg) break;
+      await new Promise(r => setTimeout(r, 1500));
+    }
+    expect(await deviceCharlie!.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const msgs = await ctrl?.storage?.listMessages?.(${JSON.stringify(groupId)}) ?? [];
+      return msgs.some(m => m.content?.type === 'Image');
+    })()`)).toBe(true);
+
+    // Charlie triggers a View receipt — same controller path as clicking the image.
+    // Background-promise pattern: evaluate() doesn't await JS Promises, so we signal completion.
+    const viewKey = `__view_${groupId!.slice(-6)}`;
+    await deviceCharlie!.evaluate(`(() => {
+      window[${JSON.stringify(viewKey)}] = '__pending__';
+      const ctrl = ${GET_CTRL};
+      (async () => {
+        const msgs = await ctrl?.storage?.listMessages?.(${JSON.stringify(groupId)}) ?? [];
+        const image = msgs.find(m => m.content?.type === 'Image');
+        if (image) await ctrl.markMessageViewed(image.id, ${JSON.stringify(groupId)});
+      })().then(() => { window[${JSON.stringify(viewKey)}] = 'done'; })
+         .catch(() => { window[${JSON.stringify(viewKey)}] = 'error'; });
+    })()`);
+    await deviceCharlie!.waitForFunction(`window[${JSON.stringify(viewKey)}] !== '__pending__'`, 60_000);
+    await deviceCharlie!.evaluate(`delete window[${JSON.stringify(viewKey)}]`);
+
+    // Alice polls and should see a viewed receipt. Background-promise pattern avoids IPC timeout.
+    for (let i = 0; i < 5; i++) {
+      await pollInbox(tauriPage);
+      await new Promise(r => setTimeout(r, 1500));
+    }
+    const dsKey2 = `__ds_${groupId!.slice(-6)}_view`;
+    await tauriPage.evaluate(`(() => {
+      window[${JSON.stringify(dsKey2)}] = '__pending__';
+      (window.__chatStorage?.listMessages?.(${JSON.stringify(groupId)}) ?? Promise.resolve([])).then(msgs => {
+        const sent = msgs.find(m => m.content?.type === 'Image');
+        window[${JSON.stringify(dsKey2)}] = sent?.deliveryStatus ?? null;
+      }).catch(() => { window[${JSON.stringify(dsKey2)}] = null; });
+    })()`);
+    await tauriPage.waitForFunction(`window[${JSON.stringify(dsKey2)}] !== '__pending__'`, 30_000);
+    const deliveryStatus2 = await tauriPage.evaluate(`window[${JSON.stringify(dsKey2)}]`);
+    await tauriPage.evaluate(`delete window[${JSON.stringify(dsKey2)}]`);
+    expect(deliveryStatus2).not.toBeNull();
+    expect(
+      Object.values(deliveryStatus2 as Record<string, any>).some((v: any) => v.status === 'View')
+    ).toBe(true);
+  });
+
+  test('cross-server Update from wrong actor — message unchanged, system warning shown', async ({ tauriPage, deviceCharlie }) => {
+    test.setTimeout(240_000);
+    await waitForChatView(tauriPage);
+    await waitForChatView(deviceCharlie!, 20_000);
+
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+    await addMemberAndWait(tauriPage, groupId!, deviceCharlie!, 30);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId!)).toBe(true);
+
+    await sendMessage(tauriPage, groupId!, 'alice original message');
+
+    for (let i = 0; i < 5; i++) {
+      await pollInbox(deviceCharlie!);
+      if (await hasReceivedMessage(deviceCharlie!, groupId!, 'alice original message')) break;
+      await new Promise(r => setTimeout(r, 1500));
+    }
+    expect(await hasReceivedMessage(deviceCharlie!, groupId!, 'alice original message')).toBe(true);
+
+    // Background-promise pattern for listMessages to avoid 120s Tauri IPC timeout when
+    // view's loadMessages is holding a LitElement updateComplete (same fix as hasReceivedMessage)
+    const beforeKey = `__sm_before_${groupId!.slice(-6)}`;
+    await tauriPage.evaluate(`(() => {
+      window[${JSON.stringify(beforeKey)}] = undefined;
+      (window.__chatStorage?.listMessages?.(${JSON.stringify(groupId)}) ?? Promise.resolve([])).then(msgs => {
+        window[${JSON.stringify(beforeKey)}] = msgs.filter(m => m.content?.type === 'system').length;
+      }).catch(() => { window[${JSON.stringify(beforeKey)}] = 0; });
+    })()`);
+    await tauriPage.waitForFunction(`window[${JSON.stringify(beforeKey)}] !== undefined`, 30_000);
+    const sysMsgCountBefore: number = await tauriPage.evaluate(`window[${JSON.stringify(beforeKey)}]`);
+    await tauriPage.evaluate(`delete window[${JSON.stringify(beforeKey)}]`);
+
+    // Background-safe: find target message ID in Charlie's storage
+    const targetKey = `__target_${groupId!.slice(-6)}`;
+    await deviceCharlie!.evaluate(`(() => {
+      window[${JSON.stringify(targetKey)}] = undefined;
+      (window.__chatStorage?.listMessages?.(${JSON.stringify(groupId)}) ?? Promise.resolve([])).then(msgs => {
+        const target = msgs.find(m => {
+          const t = typeof m.content === 'string' ? m.content : m.content?.content ?? '';
+          return t.includes('alice original message');
+        });
+        window[${JSON.stringify(targetKey)}] = target?.id ?? null;
+      }).catch(() => { window[${JSON.stringify(targetKey)}] = null; });
+    })()`);
+    await deviceCharlie!.waitForFunction(`window[${JSON.stringify(targetKey)}] !== undefined`, 30_000);
+    const targetId: string = await deviceCharlie!.evaluate(`window[${JSON.stringify(targetKey)}]`);
+    await deviceCharlie!.evaluate(`delete window[${JSON.stringify(targetKey)}]`);
+    expect(targetId).toBeTruthy();
+
+    // Send the wrong-actor Update in a separate evaluate (targetId known, no listMessages needed)
+    await deviceCharlie!.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const { recipients, apId } = await ctrl._groupSendContext(${JSON.stringify(groupId)}, { id: ctrl.currentActorId });
+      await ctrl._sendEncryptedActivity(${JSON.stringify(groupId)}, {
+        type: 'Update',
+        object: { id: ${JSON.stringify(targetId)}, type: 'Note', content: 'tampered by charlie' },
+      }, recipients, apId);
+    })()`);
+
+    for (let i = 0; i < 5; i++) {
+      await pollInbox(tauriPage);
+      await new Promise(r => setTimeout(r, 1500));
+    }
+
+    expect(await hasReceivedMessage(tauriPage, groupId!, 'alice original message')).toBe(true);
+    expect(await hasReceivedMessage(tauriPage, groupId!, 'tampered by charlie')).toBe(false);
+
+    const afterKey = `__sm_after_${groupId!.slice(-6)}`;
+    await tauriPage.evaluate(`(() => {
+      window[${JSON.stringify(afterKey)}] = undefined;
+      (window.__chatStorage?.listMessages?.(${JSON.stringify(groupId)}) ?? Promise.resolve([])).then(msgs => {
+        window[${JSON.stringify(afterKey)}] = msgs.filter(m => m.content?.type === 'system').length;
+      }).catch(() => { window[${JSON.stringify(afterKey)}] = 0; });
+    })()`);
+    await tauriPage.waitForFunction(`window[${JSON.stringify(afterKey)}] !== undefined`, 30_000);
+    const sysMsgCountAfter: number = await tauriPage.evaluate(`window[${JSON.stringify(afterKey)}]`);
+    await tauriPage.evaluate(`delete window[${JSON.stringify(afterKey)}]`);
+    expect(sysMsgCountAfter).toBeGreaterThan(sysMsgCountBefore);
+  });
+
+  test('cross-server Delete from wrong actor — message preserved, system warning shown', async ({ tauriPage, deviceCharlie }) => {
+    test.setTimeout(180_000);
+    await waitForChatView(tauriPage);
+    await waitForChatView(deviceCharlie!, 20_000);
+
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+    await addMemberAndWait(tauriPage, groupId!, deviceCharlie!, 30);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId!)).toBe(true);
+
+    await sendMessage(tauriPage, groupId!, 'alice message to protect');
+
+    for (let i = 0; i < 5; i++) {
+      await pollInbox(deviceCharlie!);
+      if (await hasReceivedMessage(deviceCharlie!, groupId!, 'alice message to protect')) break;
+      await new Promise(r => setTimeout(r, 1500));
+    }
+    expect(await hasReceivedMessage(deviceCharlie!, groupId!, 'alice message to protect')).toBe(true);
+
+    // Background-promise pattern to avoid 120s Tauri IPC timeout (same as hasReceivedMessage)
+    const beforeKey2 = `__sm_before2_${groupId!.slice(-6)}`;
+    await tauriPage.evaluate(`(() => {
+      window[${JSON.stringify(beforeKey2)}] = undefined;
+      (window.__chatStorage?.listMessages?.(${JSON.stringify(groupId)}) ?? Promise.resolve([])).then(msgs => {
+        window[${JSON.stringify(beforeKey2)}] = msgs.filter(m => m.content?.type === 'system').length;
+      }).catch(() => { window[${JSON.stringify(beforeKey2)}] = 0; });
+    })()`);
+    await tauriPage.waitForFunction(`window[${JSON.stringify(beforeKey2)}] !== undefined`, 30_000);
+    const sysMsgCountBefore2: number = await tauriPage.evaluate(`window[${JSON.stringify(beforeKey2)}]`);
+    await tauriPage.evaluate(`delete window[${JSON.stringify(beforeKey2)}]`);
+
+    // Background-safe: find target message ID in Charlie's storage
+    const targetKey2 = `__target2_${groupId!.slice(-6)}`;
+    await deviceCharlie!.evaluate(`(() => {
+      window[${JSON.stringify(targetKey2)}] = undefined;
+      (window.__chatStorage?.listMessages?.(${JSON.stringify(groupId)}) ?? Promise.resolve([])).then(msgs => {
+        const target = msgs.find(m => {
+          const t = typeof m.content === 'string' ? m.content : m.content?.content ?? '';
+          return t.includes('alice message to protect');
+        });
+        window[${JSON.stringify(targetKey2)}] = target?.id ?? null;
+      }).catch(() => { window[${JSON.stringify(targetKey2)}] = null; });
+    })()`);
+    await deviceCharlie!.waitForFunction(`window[${JSON.stringify(targetKey2)}] !== undefined`, 30_000);
+    const targetId2: string = await deviceCharlie!.evaluate(`window[${JSON.stringify(targetKey2)}]`);
+    await deviceCharlie!.evaluate(`delete window[${JSON.stringify(targetKey2)}]`);
+    expect(targetId2).toBeTruthy();
+
+    // Send the wrong-actor Delete in a separate evaluate
+    await deviceCharlie!.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const { recipients, apId } = await ctrl._groupSendContext(${JSON.stringify(groupId)}, { id: ctrl.currentActorId });
+      await ctrl._sendEncryptedActivity(${JSON.stringify(groupId)}, {
+        type: 'Delete',
+        object: ${JSON.stringify(targetId2)},
+      }, recipients, apId);
+    })()`);
+
+    for (let i = 0; i < 5; i++) {
+      await pollInbox(tauriPage);
+      await new Promise(r => setTimeout(r, 1500));
+    }
+
+    expect(await hasReceivedMessage(tauriPage, groupId!, 'alice message to protect')).toBe(true);
+
+    const afterKey2 = `__sm_after2_${groupId!.slice(-6)}`;
+    await tauriPage.evaluate(`(() => {
+      window[${JSON.stringify(afterKey2)}] = undefined;
+      (window.__chatStorage?.listMessages?.(${JSON.stringify(groupId)}) ?? Promise.resolve([])).then(msgs => {
+        window[${JSON.stringify(afterKey2)}] = msgs.filter(m => m.content?.type === 'system').length;
+      }).catch(() => { window[${JSON.stringify(afterKey2)}] = 0; });
+    })()`);
+    await tauriPage.waitForFunction(`window[${JSON.stringify(afterKey2)}] !== undefined`, 30_000);
+    const sysMsgCountAfter2: number = await tauriPage.evaluate(`window[${JSON.stringify(afterKey2)}]`);
+    await tauriPage.evaluate(`delete window[${JSON.stringify(afterKey2)}]`);
+    expect(sysMsgCountAfter2).toBeGreaterThan(sysMsgCountBefore2);
+  });
+
+  test('receiving IntransitiveActivity does nothing — silently discarded, no message shown', async ({ tauriPage, deviceCharlie }) => {
+    test.setTimeout(120_000);
+    await waitForChatView(tauriPage);
+    await waitForChatView(deviceCharlie!, 20_000);
+
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+    await addMemberAndWait(tauriPage, groupId!, deviceCharlie!, 30);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId!)).toBe(true);
+
+    const msgCountBefore: number = await deviceCharlie!.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const msgs = await ctrl?.storage?.listMessages?.(${JSON.stringify(groupId)}) ?? [];
+      return msgs.filter(m => m.content?.type !== 'system').length;
+    })()`);
+
+    await tauriPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const { recipients, apId } = await ctrl._groupSendContext(${JSON.stringify(groupId)}, { id: ctrl.currentActorId });
+      await ctrl._sendEncryptedActivity(${JSON.stringify(groupId)}, {
+        type: 'IntransitiveActivity',
+      }, recipients, apId);
+    })()`);
+
+    for (let i = 0; i < 5; i++) {
+      await pollInbox(deviceCharlie!);
+      await new Promise(r => setTimeout(r, 1000));
+    }
+
+    const msgCountAfter: number = await deviceCharlie!.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      const msgs = await ctrl?.storage?.listMessages?.(${JSON.stringify(groupId)}) ?? [];
+      return msgs.filter(m => m.content?.type !== 'system').length;
+    })()`);
+    expect(msgCountAfter).toBe(msgCountBefore);
+  });
+
   // --- Gap tests (TDD) ---
 
   test('removed member receives no further group activities after co-member commits', async ({ tauriPage, deviceCharlie }) => {

@@ -210,6 +210,51 @@ test.describe.serial('co-device', { tag: '@co-device' }, () => {
 
   });
 
+  test('s1_alice_d1 decommissions s1_alice_d2 via Manage my devices panel → d2 leaves group', async ({ tauriPage, deviceAlice2 }) => {
+    test.setTimeout(120_000);
+    await waitForChatView(tauriPage);
+    await waitForChatView(deviceAlice2!, 20_000);
+
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+    await addMemberAndWait(tauriPage, groupId!, deviceAlice2!);
+    expect(await canSendAndReceive(tauriPage, deviceAlice2!, groupId!)).toBe(true);
+
+    // d1 opens the Manage my devices panel (appends to document.body)
+    await tauriPage.evaluate(`window.shadowQ('e2ee-chat-view')._openMyDevicesPanel()`);
+
+    // Wait for the panel to load and show "Remove device" for d2 (the non-current device)
+    await tauriPage.waitForFunction(
+      `window.shadowQ('my-devices-panel >>> .btn-error') != null`,
+      15_000
+    );
+
+    // Click "Remove device" (only d2's card renders this button since d1 is current)
+    await tauriPage.evaluate(`window.shadowQ('my-devices-panel >>> .btn-error')?.click()`);
+
+    // Wait for decommission: spinner disappears after _loadDevices() completes
+    await tauriPage.waitForFunction(
+      `window.shadowQ('my-devices-panel')?.shadowRoot?.querySelector('span.loading-spinner') == null`,
+      30_000
+    );
+
+    // d2 polls and should receive the Commit removing it from the group
+    let notMember = false;
+    for (let i = 0; i < 5; i++) {
+      await pollInbox(deviceAlice2!);
+      notMember = await isNoLongerMember(deviceAlice2!, groupId!);
+      if (notMember) break;
+      await new Promise(r => setTimeout(r, 1500));
+    }
+    expect(notMember).toBe(true);
+
+    // Panel should no longer show "Remove device" after d2 is decommissioned
+    const removeButtonGone = await tauriPage.evaluate(
+      `window.shadowQ('my-devices-panel >>> .btn-error') == null`
+    );
+    expect(removeButtonGone).toBe(true);
+  });
+
   test('s1_alice_d1: decommission d2 → d2 leaves all groups + KP removed from server', async ({ tauriPage, deviceAlice2 }) => {
     // https://github.com/swicg/activitypub-e2ee/issues/65
     test.setTimeout(180_000); // addMemberAndWait + removeOwnClient + pollInbox all slow after accumulated inbox state
