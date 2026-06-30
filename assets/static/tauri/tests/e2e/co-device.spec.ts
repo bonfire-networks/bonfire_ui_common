@@ -3,7 +3,7 @@
 // Run with: just test-tauri-e2e-co-device
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD
 
-import { test, expect, waitForChatView, shadowExists, createGroupAndRefresh, pollInbox, leaveGroup, isNoLongerMember, getOwnSignatureKey, ownKpIsSelfSigned, canSendAndReceive, addMemberAndWait, waitForMlsMembers, hasReceivedMessage, fetchPublishedSignedKP, getActorId } from './helpers';
+import { test, expect, waitForChatView, shadowExists, createGroupAndRefresh, pollInbox, markInboxProcessed, leaveGroup, isNoLongerMember, getOwnSignatureKey, ownKpIsSelfSigned, canSendAndReceive, addMemberAndWait, waitForMlsMembers, hasReceivedMessage, fetchPublishedSignedKP, getActorId } from './helpers';
 
 const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })()`;
 
@@ -12,6 +12,14 @@ test.describe.serial('co-device', { tag: '@co-device' }, () => {
 
   // Set by the approval test, consumed by all subsequent tests.
   let sharedGroupId: string | null = null;
+
+  // Drain activities accumulated by prior tests so pollInbox only sees this test's activities.
+  test.beforeEach(async ({ tauriPage, deviceAlice2 }) => {
+    await Promise.all([
+      markInboxProcessed(tauriPage),
+      deviceAlice2 ? markInboxProcessed(deviceAlice2) : Promise.resolve(),
+    ]);
+  });
 
   test('s1_alice_d2: new device with existing co-device shows waiting-for-approval dialog', { tag: '@proposal' }, async ({ tauriPage, deviceAlice2 }) => {
     // https://github.com/swicg/activitypub-e2ee/issues/65
@@ -211,7 +219,7 @@ test.describe.serial('co-device', { tag: '@co-device' }, () => {
   });
 
   test('s1_alice_d1 decommissions s1_alice_d2 via Manage my devices panel → d2 leaves group', async ({ tauriPage, deviceAlice2 }) => {
-    test.setTimeout(120_000);
+    test.setTimeout(180_000); // addMemberAndWait slow after accumulated inbox state from prior tests
     await waitForChatView(tauriPage);
     await waitForChatView(deviceAlice2!, 20_000);
 
@@ -229,28 +237,41 @@ test.describe.serial('co-device', { tag: '@co-device' }, () => {
       15_000
     );
 
-    // Click "Remove device" (only d2's card renders this button since d1 is current)
-    await tauriPage.evaluate(`window.shadowQ('my-devices-panel >>> .btn-error')?.click()`);
+    // Click "Remove device" — retry until button is present and not mid-render (Lit may be
+    // updating _loading which hides the button; ?.click() on a missing element is a silent no-op)
+    await tauriPage.waitForFunction(`
+      (function() {
+        const btn = window.shadowQ('my-devices-panel >>> .btn-error');
+        if (btn && !btn.disabled) { btn.click(); return true; }
+        return false;
+      })()
+    `, 15_000);
 
-    // Wait for decommission: spinner disappears after _loadDevices() completes
+    // Wait for decommission: spinner appears then disappears (_handleDecommission → removeOwnClient → _loadDevices)
     await tauriPage.waitForFunction(
-      `window.shadowQ('my-devices-panel')?.shadowRoot?.querySelector('span.loading-spinner') == null`,
-      30_000
+      `window.shadowQ('my-devices-panel')?.shadowRoot?.querySelector('span.loading') != null`,
+      10_000
+    );
+    await tauriPage.waitForFunction(
+      `window.shadowQ('my-devices-panel')?.shadowRoot?.querySelector('span.loading') == null`,
+      60_000
     );
 
     // d2 polls and should receive the Commit removing it from the group
     let notMember = false;
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       await pollInbox(deviceAlice2!);
       notMember = await isNoLongerMember(deviceAlice2!, groupId!);
       if (notMember) break;
-      await new Promise(r => setTimeout(r, 1500));
+      await new Promise(r => setTimeout(r, 2000));
     }
     expect(notMember).toBe(true);
 
-    // Panel should no longer show "Remove device" after d2 is decommissioned
+    // Panel should no longer show "Remove device" after d2 is decommissioned.
+    // Use .card .btn-error — the Advanced section always has a .btn-error ("Delete this device")
+    // and that button is not inside a .card, so we scope to device card buttons only.
     const removeButtonGone = await tauriPage.evaluate(
-      `window.shadowQ('my-devices-panel >>> .btn-error') == null`
+      `window.shadowQ('my-devices-panel >>> .card .btn-error') == null`
     );
     expect(removeButtonGone).toBe(true);
   });

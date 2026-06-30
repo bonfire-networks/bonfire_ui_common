@@ -3,7 +3,7 @@
 // Run with: just test-tauri-e2e-federated-co-device
 // Requires: E2E_S1_ALICE_LOGIN/PASSWORD, E2E_S2_CHARLIE_LOGIN/PASSWORD
 
-import { test, expect, waitForChatView, shadowClick, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember, canSendAndReceive, allCanSendAndReceive, waitForMlsMembers } from './helpers';
+import { test, expect, waitForChatView, shadowClick, pollInbox, createGroupAndRefresh, addMemberAndWait, leaveGroup, isNoLongerMember, canSendAndReceive, allCanSendAndReceive, waitForMlsMembers, getActorId } from './helpers';
 
 async function createThreeWayGroup(tauriPage: any, deviceAlice2: any, deviceCharlie: any): Promise<{ groupId: string }> {
   const groupId = await createGroupAndRefresh(tauriPage);
@@ -116,6 +116,79 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
 
     // After fallback commit, charlie and d1 should still exchange messages.
     expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId, 10)).toBe(true);
+  });
+
+  // Co-device self-CC: _distributeCommit always sends to actor.id so co-devices (same actor inbox)
+  // receive Commits from operations d1 performs and advance their epoch accordingly.
+
+  test('d1 adds charlie — d2 epoch advances so d2 can still send to charlie', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
+    test.setTimeout(240_000);
+    await waitForChatView(tauriPage, 60_000);
+    await waitForChatView(deviceAlice2!, 20_000);
+    await waitForChatView(deviceCharlie!, 20_000);
+
+    // Start with d1+d2 only (no charlie), so d2 is at the initial epoch
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+    await addMemberAndWait(tauriPage, groupId!, deviceAlice2!);
+
+    const charlieId = await getActorId(deviceCharlie!);
+
+    // d1 adds charlie — produces a Commit; _distributeCommit sends it to d2 via actor.id CC
+    await tauriPage.evaluate(`(async () => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      await ctrl.addMemberToGroup(${JSON.stringify(groupId)}, ${JSON.stringify(charlieId)});
+    })()`);
+
+    // Wait for charlie to receive his Welcome and join
+    await waitForMlsMembers(deviceCharlie!, groupId!, 3, 30);
+
+    // d2 polls to receive the Commit — epoch must advance before d2 can encrypt for charlie
+    for (let i = 0; i < 10; i++) {
+      await pollInbox(deviceAlice2!);
+      const count = await deviceAlice2!.evaluate(`(async () => {
+        const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+        return (await ctrl.getGroupMembers(${JSON.stringify(groupId)}) ?? []).length;
+      })()`);
+      if (count >= 2) break; // d2 sees charlie (excludes self, so ≥2 means d1+charlie)
+      await new Promise(r => setTimeout(r, 1500));
+    }
+
+    // d2 can send to charlie (proves d2's epoch matches the 3-member group state)
+    expect(await canSendAndReceive(deviceAlice2!, deviceCharlie!, groupId!)).toBe(true);
+  });
+
+  test('d1 removes charlie — d2 epoch advances so d2 can still send to d1', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
+    test.setTimeout(300_000);
+    await waitForChatView(tauriPage, 60_000);
+    await waitForChatView(deviceAlice2!, 20_000);
+    await waitForChatView(deviceCharlie!, 20_000);
+
+    // 3-way group: d1 + d2 + charlie
+    const { groupId } = await createThreeWayGroup(tauriPage, deviceAlice2, deviceCharlie);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId)).toBe(true);
+
+    const charlieId = await getActorId(deviceCharlie!);
+
+    // d1 removes charlie — produces a Commit; _distributeCommit sends it to d2 via actor.id CC
+    await tauriPage.evaluate(`(async () => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      await ctrl.removeGroupMember(${JSON.stringify(groupId)}, ${JSON.stringify(charlieId)});
+    })()`);
+
+    // d2 polls to receive the Commit — epoch must advance before d2 can encrypt in the new state
+    for (let i = 0; i < 10; i++) {
+      await pollInbox(deviceAlice2!);
+      const count = await deviceAlice2!.evaluate(`(async () => {
+        const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+        return (await ctrl.getGroupMembers(${JSON.stringify(groupId)}) ?? []).length;
+      })()`);
+      if (count < 2) break; // d2 sees charlie gone (only d1 remains, excluding self)
+      await new Promise(r => setTimeout(r, 1500));
+    }
+
+    // d2 can still send to d1 in the now-2-member group (proves d2's epoch advanced correctly)
+    expect(await canSendAndReceive(deviceAlice2!, tauriPage, groupId)).toBe(true);
   });
 
 });

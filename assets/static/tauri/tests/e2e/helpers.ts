@@ -78,6 +78,27 @@ export async function pollInbox(page: any): Promise<void> {
   })()`);
 }
 
+/**
+ * Mark all current inbox items as processed WITHOUT handling them.
+ * Call at the start of a test to drain stale activities accumulated by prior tests,
+ * so subsequent pollInbox calls only see activities generated during THIS test.
+ */
+export async function markInboxProcessed(page: any): Promise<void> {
+  await page.evaluate(`(async () => {
+    const ctrl = ${GET_CTRL};
+    if (!ctrl) return;
+    const { fetchInboxItems } = await import('/assets/ap_c2s_client/js/activitypub/client.js');
+    const actor = await (ctrl.mlsService?.getActor?.() ?? Promise.resolve({ id: ctrl.currentActorId }));
+    if (!actor?.id) return;
+    const actorFull = { ...actor, ...(JSON.parse(localStorage.getItem('actor') || '{}')) };
+    const items = await fetchInboxItems(actorFull).catch(() => []);
+    for (const item of items) {
+      const id = item.id || item.object?.id;
+      if (id) await ctrl.storage.markProcessed(actor.id, id);
+    }
+  })()`);
+}
+
 export async function addMemberAndWait(creatorPage: any, groupId: string, memberPage: any, maxPolls = 10, { usePrefix = false } = {}): Promise<void> {
   const memberId = await getActorId(memberPage);
   // Republish a fresh KP so the creator gets a KP whose private key the member holds in WASM.
