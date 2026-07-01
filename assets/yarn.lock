@@ -1021,10 +1021,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"daisyui@npm:^5.5.20":
-  version: 5.5.20
-  resolution: "daisyui@npm:5.5.20"
-  checksum: 10c0/7af259c11bc1cadc58cda4d6fa469b967d45879f4fd446095e310cc0f877ab28b75ebb641bf204abc1bada43bf11a67a941134acdc65c87b2c16118eef85a528
+"daisyui@npm:^5.6.6":
+  version: 5.6.6
+  resolution: "daisyui@npm:5.6.6"
+  checksum: 10c0/b6c44a931b74d5b88678cb22216489a37cf8e98abd00f0484df9c106c2159c28c117fb252126ef6a5a7f15797881501da6f8883896b8a38583854e45be929c6a
   languageName: node
   linkType: hard
 
@@ -2192,7 +2192,7 @@ __metadata:
     body-scroll-lock: "npm:^4.0.0-beta.0"
     buffer: "npm:^6.0.3"
     chokidar-cli: "npm:^3.0.0"
-    daisyui: "npm:^5.5.20"
+    daisyui: "npm:^5.6.6"
     emoji-picker-element: "npm:^1.26.1"
     esbuild: "npm:^0.19.9"
     fast-blurhash: "npm:^1.1.2"

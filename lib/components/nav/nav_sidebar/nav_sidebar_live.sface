@@ -31,7 +31,7 @@
       {/case}
     {#match _}
   {/case}
-  <nav class="mt-4 mx-3 lg:mx-0">
+  <nav class="mt-4 px-[40px]">
     <ul class="menu p-0 w-full gap-0">
       <li class="p-0 m-0">
         <LinkLive

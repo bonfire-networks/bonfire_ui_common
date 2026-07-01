@@ -232,16 +232,33 @@
           {#else}
             <div
               :if={!@current_user_id}
-              class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky lg:shrink-0 flex items-center lg:min-h-[48px] justify-between"
+              class="px-5 px-[40px] pt-base bg-base-200 lg:bg-base-200 z-sticky lg:shrink-0 flex items-center lg:min-h-[48px] justify-between"
             >
               <div class="flex pt-safe w-full">
-                <div class="pt-2 flex items-center justify-between">
+                <div class="lex items-center justify-between">
                   <Bonfire.UI.Common.LogoLinkLive
                     image_class="w-16 h-16 bg-center bg-no-repeat bg-contain"
                     href="/"
                   />
                 </div>
               </div>
+              {#case to_string(Bonfire.Common.Settings.get([:ui, :sidebar, :section_divider], "none", :instance))}
+                {#match "line"}
+                  <div
+                    class=""
+                    style="border-top: 1px solid color-mix(in oklch, var(--color-base-content) 10%, transparent)"
+                    aria-hidden="true"
+                  />
+                {#match "custom"}
+                  {#case to_string(Bonfire.Common.Settings.get([:ui, :sidebar, :section_divider_image], "", :instance))}
+                    {#match src when src != ""}
+                      <div class="flex justify-center" aria-hidden="true">
+                        <img src={src} class="h-6 w-full object-contain" alt="">
+                      </div>
+                    {#match _}
+                  {/case}
+                {#match _}
+              {/case}
             </div>
           {/if}
 
