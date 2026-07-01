@@ -207,16 +207,6 @@ label[for],
    press feedback on touch devices (iOS HIG / WCAG)
    ============================================ */
 @media (pointer: coarse) {
-  /* Enforce 44px minimum size for small buttons on touch devices.
-     Every mainstream app (iOS, Twitter/X, Instagram, Bluesky) uses
-     visually 44px+ buttons — users aim for what they can see.
-     min-height/min-width override DaisyUI's height/width: var(--size) */
-  .btn-sm,
-  .btn-xs {
-    min-height: 2.75rem;
-    min-width: 2.75rem;
-  }
-
   .btn:active:not(.btn-active):not(:disabled):not([aria-disabled="true"]) {
     transition-duration: 0s;
     scale: 0.97;
