@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common do
   alias Bonfire.UI.Common.ErrorHandling
   alias Phoenix.LiveView.JS
 
-  declare_extension("Common UI components",
+  declare_extension(l("Common UI components"),
     icon: "fluent-mdl2:web-components",
     emoji: "🧩",
     description: l("Reusable user interface components and utilities.")

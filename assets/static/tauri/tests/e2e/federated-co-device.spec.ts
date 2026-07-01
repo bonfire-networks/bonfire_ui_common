@@ -9,30 +9,21 @@ async function createThreeWayGroup(tauriPage: any, deviceAlice2: any, deviceChar
   const groupId = await createGroupAndRefresh(tauriPage);
   if (!groupId) throw new Error('Failed to create group');
   await addMemberAndWait(tauriPage, groupId, deviceCharlie);
-  // Poll d1 so it receives d2's Create {KeyPackage} request and shows #nd-approve.
-  await pollInbox(tauriPage);
-  // If d2 is not yet approved, use the approval flow (mirrors co-device.spec.ts):
-  // approveNewDevice adds d2 to all existing groups including this one.
-  // If d2 is already approved (second test in suite), fall back to explicit addMember.
-  const approved = await shadowClick(tauriPage, 'e2ee-chat-view >>> #nd-approve', 10_000)
-    .then(() => true, () => false);
-  if (approved) {
-    // approveNewDevice processes ALL accumulated groups — allow up to 2 min for Welcome to arrive.
-    await waitForMlsMembers(deviceAlice2, groupId, 3, 80);
-    await waitForMlsMembers(deviceCharlie, groupId, 3, 80);
-  } else {
-    await addMemberAndWait(tauriPage, groupId, deviceAlice2);
-    await waitForMlsMembers(deviceAlice2, groupId, 3);
-    await waitForMlsMembers(deviceCharlie, groupId, 3);
-  }
+  // Co-device path: addMemberAndWait polls d1's inbox to trigger auto-approve
+  // (window.__e2ee_autoApproveNewDevice must be set on tauriPage before calling this).
+  // approveNewDevice publishes d2's KP and adds d2 to all current groups automatically.
+  await addMemberAndWait(tauriPage, groupId, deviceAlice2);
+  // Charlie receives the Commit from approveNewDevice._distributeCommit; confirm 3 members.
+  await waitForMlsMembers(deviceCharlie, groupId, 3, 80);
   return { groupId };
 }
 
 test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
 
   test('co-device + federated group message delivery — all 3 clients send and all others receive', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
-    test.setTimeout(240_000);
+    test.setTimeout(480_000);
     await waitForChatView(tauriPage, 60_000);
+    await tauriPage.evaluate('window.__e2ee_autoApproveNewDevice = true');
     await waitForChatView(deviceAlice2!, 60_000);
     await waitForChatView(deviceCharlie!, 60_000);
 
@@ -122,8 +113,9 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
   // receive Commits from operations d1 performs and advance their epoch accordingly.
 
   test('d1 adds charlie — d2 epoch advances so d2 can still send to charlie', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
-    test.setTimeout(240_000);
+    test.setTimeout(480_000);
     await waitForChatView(tauriPage, 60_000);
+    await tauriPage.evaluate('window.__e2ee_autoApproveNewDevice = true');
     await waitForChatView(deviceAlice2!, 20_000);
     await waitForChatView(deviceCharlie!, 20_000);
 
@@ -158,9 +150,53 @@ test.describe('federated-co-device', { tag: '@federated-co-device' }, () => {
     expect(await canSendAndReceive(deviceAlice2!, deviceCharlie!, groupId!)).toBe(true);
   });
 
-  test('d1 removes charlie — d2 epoch advances so d2 can still send to d1', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
-    test.setTimeout(300_000);
+  test('d1 removes charlie client leaf — d2 epoch advances so d2 can still send to d1', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
+    test.setTimeout(480_000);
     await waitForChatView(tauriPage, 60_000);
+    await tauriPage.evaluate('window.__e2ee_autoApproveNewDevice = true');
+    await waitForChatView(deviceAlice2!, 20_000);
+    await waitForChatView(deviceCharlie!, 20_000);
+
+    const { groupId } = await createThreeWayGroup(tauriPage, deviceAlice2, deviceCharlie);
+    expect(await canSendAndReceive(tauriPage, deviceCharlie!, groupId)).toBe(true);
+
+    const charlieId = await getActorId(deviceCharlie!);
+
+    // Resolve charlie's leaf index from d1's MLS state — removeGroupMemberClient targets a
+    // specific leaf node rather than all leaves matching an actor URI.
+    const charlieLeafIndex: number = await tauriPage.evaluate(`(async () => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      const fps = await ctrl.getGroupFingerprints(${JSON.stringify(groupId)});
+      const leaf = fps.find(f => f.identity === ${JSON.stringify(charlieId)});
+      return leaf?.index ?? -1;
+    })()`);
+    expect(charlieLeafIndex).toBeGreaterThanOrEqual(0);
+
+    // d1 removes charlie by leaf index — produces a Commit; _distributeCommit sends it to d2 via actor.id CC
+    await tauriPage.evaluate(`(async () => {
+      const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+      await ctrl.removeGroupMemberClient(${JSON.stringify(groupId)}, ${charlieLeafIndex});
+    })()`);
+
+    // d2 polls to receive the Commit — epoch must advance before d2 can encrypt in the new state
+    for (let i = 0; i < 10; i++) {
+      await pollInbox(deviceAlice2!);
+      const count = await deviceAlice2!.evaluate(`(async () => {
+        const ctrl = (() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })();
+        return (await ctrl.getGroupMembers(${JSON.stringify(groupId)}) ?? []).length;
+      })()`) as number;
+      if (count < 2) break; // d2 sees charlie gone (only d1 remains, excluding self)
+      await new Promise(r => setTimeout(r, 1500));
+    }
+
+    // d2 can still send to d1 in the now-2-member group (proves d2's epoch advanced correctly)
+    expect(await canSendAndReceive(deviceAlice2!, tauriPage, groupId)).toBe(true);
+  });
+
+  test('d1 removes charlie — d2 epoch advances so d2 can still send to d1', async ({ tauriPage, deviceAlice2, deviceCharlie }) => {
+    test.setTimeout(480_000);
+    await waitForChatView(tauriPage, 60_000);
+    await tauriPage.evaluate('window.__e2ee_autoApproveNewDevice = true');
     await waitForChatView(deviceAlice2!, 20_000);
     await waitForChatView(deviceCharlie!, 20_000);
 

@@ -7,10 +7,9 @@ import { test, expect, waitForChatView, shadowExists, createGroupAndRefresh, pol
 
 const GET_CTRL = `(() => { const v = window.shadowQ('e2ee-chat-view'); return v?._controller || v?.controller; })()`;
 
-// serial: if the approval test fails, later tests skip rather than failing with "sharedGroupId null".
 test.describe.serial('co-device', { tag: '@co-device' }, () => {
 
-  // Set by the approval test, consumed by all subsequent tests.
+  // sharedGroupId: set by the @proposal approve test, used by its dependent @proposal tests.
   let sharedGroupId: string | null = null;
 
   test('s1_alice_d2: new device with existing co-device shows waiting-for-approval dialog', { tag: '@proposal' }, async ({ tauriPage, deviceAlice2 }) => {
@@ -27,7 +26,7 @@ test.describe.serial('co-device', { tag: '@co-device' }, () => {
     expect(approve).toBeFalsy();
   });
 
-  test('s1_alice_d1: existing device can approve s1_alice_d2 KeyPackage proposal', async ({ tauriPage, deviceAlice2 }) => {
+  test('s1_alice_d1: existing device can approve s1_alice_d2 KeyPackage proposal', { tag: '@proposal' }, async ({ tauriPage, deviceAlice2 }) => {
     // https://github.com/swicg/activitypub-e2ee/issues/65
     test.setTimeout(150_000); // approveNewDevice adds d2 to all existing groups (many across runs); pollInbox is slow with accumulated inbox state
     // Set window flag BEFORE waitForChatView so the periodic poll timer can't sneak in between
@@ -109,66 +108,61 @@ test.describe.serial('co-device', { tag: '@co-device' }, () => {
     expect(await canSendAndReceive(deviceAlice2!, tauriPage, sharedGroupId!)).toBe(true);
   });
 
-  test('Article received from co-device: script stripped by Rust sanitization', { tag: '@spec' }, async ({ tauriPage, deviceAlice2 }) => {
-    // Runs here (before d1 leaves) so both d1 and d2 are still members of sharedGroupId.
-    test.setTimeout(60_000);
+  // Core co-device test: d1 adds d2 (auto-confirmed, same actor), they exchange messages.
+  // Sanitization of Article types is already covered in single-device and federated suites.
+  test('co-device message delivery — add device and exchange messages @co-device @spec', async ({ tauriPage, deviceAlice2 }) => {
+    test.setTimeout(90_000);
     await waitForChatView(tauriPage);
     await waitForChatView(deviceAlice2!, 20_000);
-    // Recover from localStorage in case tauri-playwright re-evaluated the module (resetting the var).
-    if (!sharedGroupId) sharedGroupId = await tauriPage.evaluate(`localStorage.getItem('__testSharedGroupId')`);
-    expect(sharedGroupId).toBeTruthy();
 
-    // d1 sends Article with a script payload to the shared group
-    const sent = await tauriPage.evaluate(`(async () => {
-      const ctrl = ${GET_CTRL};
-      const result = await ctrl.sendMessage(${JSON.stringify(sharedGroupId)}, {
-        content: '<script>window.__xss_from_d1=true;<\\/script>Legit text from d1',
-        type: 'Article',
-        name: 'XSS Sanitisation Test'
-      });
-      return result?.messageApId ?? null;
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+    await addMemberAndWait(tauriPage, groupId!, deviceAlice2!);
+
+    // d1 → d2
+    await tauriPage.evaluate(`(async () => {
+      await ${GET_CTRL}.sendMessage(${JSON.stringify(groupId)}, { content: 'hello from d1' });
     })()`);
-    expect(sent).toBeTruthy();
 
-    // d2 polls inbox → ciphertext goes through Rust decrypt → sanitize_message_content strips script.
-    // Check storage directly: d2 has no conversation open so no .chat-bubble exists in the DOM,
-    // but the MLS decryption + Rust sanitization run regardless on pollInbox.
-    let received = false;
+    let d2Received = false;
     for (let i = 0; i < 5; i++) {
-      await pollInbox(deviceAlice2!, 15); // bounded; loop covers full backlog
-      received = await hasReceivedMessage(deviceAlice2!, sharedGroupId!, 'Legit text from d1');
-      if (received) break;
+      await pollInbox(deviceAlice2!, 15);
+      d2Received = await hasReceivedMessage(deviceAlice2!, groupId!, 'hello from d1');
+      if (d2Received) break;
       await new Promise(r => setTimeout(r, 1000));
     }
-    expect(received).toBe(true);
+    expect(d2Received).toBe(true);
 
-    // XSS: the script tag must not have fired (Rust strips it before JS ever sees the content)
-    const xssFired = await deviceAlice2!.evaluate(`!!window.__xss_from_d1`);
-    expect(xssFired).toBe(false);
-
-    // Verify the stored message content has no <script> tags (ammonia stripped it at decrypt time)
-    const storedScriptTag = await deviceAlice2!.evaluate(`(async () => {
-      const ctrl = ${GET_CTRL};
-      const msgs = await ctrl?.storage?.listMessages?.(${JSON.stringify(sharedGroupId)}) ?? [];
-      const msg = msgs.find(m => m.id === ${JSON.stringify(sent)} || (typeof m.content === 'object' && m.content?.id === ${JSON.stringify(sent)}));
-      const txt = typeof msg?.content === 'string' ? msg.content : JSON.stringify(msg?.content ?? '');
-      return txt.includes('<script') || txt.includes('<\\/script>');
+    // d2 → d1
+    await deviceAlice2!.evaluate(`(async () => {
+      await ${GET_CTRL}.sendMessage(${JSON.stringify(groupId)}, { content: 'hello from d2' });
     })()`);
-    expect(storedScriptTag).toBe(false);
+
+    let d1Received = false;
+    for (let i = 0; i < 5; i++) {
+      await pollInbox(tauriPage, 15);
+      d1Received = await hasReceivedMessage(tauriPage, groupId!, 'hello from d2');
+      if (d1Received) break;
+      await new Promise(r => setTimeout(r, 1000));
+    }
+    expect(d1Received).toBe(true);
+
   });
 
   test('s1_alice_d1 leaves shared group → s1_alice_d2 sees co-device confirmation → confirms → d1 removed + d2 leaf rotated', async ({ tauriPage, deviceAlice2 }) => {
-    test.setTimeout(120_000); // co-device stagger: leafIndex×30s before dialog appears
+    test.setTimeout(150_000); // addMemberAndWait + co-device stagger (leafIndex×30s before dialog)
     await waitForChatView(tauriPage);
-    await waitForChatView(deviceAlice2!, 10_000);
-    if (!sharedGroupId) sharedGroupId = await tauriPage.evaluate(`localStorage.getItem('__testSharedGroupId')`);
-    expect(sharedGroupId).toBeTruthy();
+    await waitForChatView(deviceAlice2!, 20_000);
+
+    const groupId = await createGroupAndRefresh(tauriPage);
+    expect(groupId).toBeTruthy();
+    await addMemberAndWait(tauriPage, groupId!, deviceAlice2!);
 
     // Verify messaging works before d1 leaves (catches key state issues early).
-    expect(await canSendAndReceive(tauriPage, deviceAlice2!, sharedGroupId!)).toBe(true);
+    expect(await canSendAndReceive(tauriPage, deviceAlice2!, groupId!)).toBe(true);
 
-    await leaveGroup(tauriPage, sharedGroupId!);
-    expect(await isNoLongerMember(tauriPage, sharedGroupId!)).toBe(true);
+    await leaveGroup(tauriPage, groupId!);
+    expect(await isNoLongerMember(tauriPage, groupId!)).toBe(true);
 
     // SSE doesn't fire in tests — poll d2's inbox repeatedly until the co-device dialog appears.
     // The stagger is leafIndex×30s (d2 is leaf 1 → 30s), so poll every 5s for up to 70s total.
@@ -199,7 +193,7 @@ test.describe.serial('co-device', { tag: '@co-device' }, () => {
     const fingerprintCount = await deviceAlice2!.evaluate(`(async () => {
       const ctrl = ${GET_CTRL};
       const actor = await ctrl.mlsService.getActor?.() || { id: ctrl.currentActorId };
-      const fps = await ctrl.mlsService.getGroupFingerprints(actor.id, ${JSON.stringify(sharedGroupId)});
+      const fps = await ctrl.mlsService.getGroupFingerprints(actor.id, ${JSON.stringify(groupId)});
       return fps.filter(f => f.isOwn).length;
     })()`);
     expect(fingerprintCount).toBe(1);
@@ -237,7 +231,7 @@ test.describe.serial('co-device', { tag: '@co-device' }, () => {
         if (btn && !btn.disabled) { btn.click(); return true; }
         return false;
       })()
-    `, 15_000);
+    `, 45_000);
 
     // Wait for decommission: spinner appears then disappears (_handleDecommission → removeOwnClient → _loadDevices)
     await tauriPage.waitForFunction(

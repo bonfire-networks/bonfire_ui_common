@@ -18,7 +18,9 @@ test.describe('federated-3crowd', { tag: '@federated-3crowd' }, () => {
     await addMemberAndWait(tauriPage, groupId!, deviceCharlie!, 30);
     await addMemberAndWait(tauriPage, groupId!, deviceBob!);
 
-    await allCanSendAndReceive([tauriPage, deviceBob!, deviceCharlie!], groupId!);
+    // Extra retries: cross-server (s2→s1) messages may reach s1 recipients in separate
+    // Oban sub-jobs; the second sub-job can lag behind the first under inline scheduling.
+    await allCanSendAndReceive([tauriPage, deviceBob!, deviceCharlie!], groupId!, 20);
   });
 
   test('remove member — remaining members can still exchange messages in updated epoch', async ({ tauriPage, deviceBob, deviceCharlie }) => {

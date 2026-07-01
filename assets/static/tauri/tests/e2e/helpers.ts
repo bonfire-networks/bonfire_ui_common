@@ -93,20 +93,73 @@ export async function markInboxProcessed(page: any): Promise<void> {
 
 export async function addMemberAndWait(creatorPage: any, groupId: string, memberPage: any, maxPolls = 10, { usePrefix = false } = {}): Promise<void> {
   const memberId = await getActorId(memberPage);
-  // Republish a fresh KP so the creator gets a KP whose private key the member holds in WASM.
-  // Without this, a KP consumed by a previous test causes NoMatchingKeyPackage and the Welcome
-  // is silently skipped. Do NOT pre-clear via clearKeyPackage: _replenishKeyPackage captures
-  // oldKpHex internally and deletes the old KP from the AP server — pre-clearing nulls oldKpHex
-  // and causes old KPs to accumulate on the server, which slows _fetchKeyPackageForAdd O(N).
-  await memberPage.evaluate(`(async () => {
-    const ctrl = ${GET_CTRL};
-    if (!ctrl) return;
-    const actorId = ctrl.currentActorId;
-    if (!actorId) return;
-    const actor = { id: actorId, ...(JSON.parse(localStorage.getItem('actor') || '{}')) };
-    await ctrl._replenishKeyPackage(actor);
-  })()`);
-  // Force-refresh the creator's cached copy of member's KP after republish.
+  const creatorId = await getActorId(creatorPage);
+  // The app calls _replenishKeyPackage inside _tryJoinGroup after every successful joinFromWelcome,
+  // and addMemberAndWait only returns once getGroupFingerprints confirms the join completed — so
+  // the member's KP is already fresh by the time any subsequent test calls this helper. No manual
+  // replenishment here: let the app handle its own KP lifecycle so tests don't mask real bugs.
+
+  if (memberId === creatorId) {
+    // Co-device: d2's KP is in proposal state (sent to creator's inbox), NOT the public
+    // keyPackages collection. Requires window.__e2ee_autoApproveNewDevice = true on creatorPage
+    // so that when d1's poller sees d2's proposal, it calls approveNewDevice (fire-and-forget).
+    // approveNewDevice publishes d2's KP AND adds d2 to all current groups.
+    // Poll creator's inbox to trigger auto-approve, then wait for d2's KP to appear in the
+    // public collection (may take a while with OBAN_TESTING=inline cascade; catch IPC timeouts).
+    for (let attempt = 0; attempt < 5; attempt++) {
+      await pollInbox(creatorPage, 5);
+    }
+    for (let attempt = 0; attempt < 80; attempt++) {
+      let kpCount = 0;
+      try {
+        kpCount = await creatorPage.evaluate(`(async () => {
+          const kps = await ${GET_CTRL}.fetchActorKeyPackages(${JSON.stringify(memberId)});
+          return kps?.length ?? 0;
+        })()`);
+      } catch { /* IPC timeout — server busy with inline Oban chain, retry */ }
+      if (kpCount >= 2) break;
+      await new Promise(r => setTimeout(r, 2000));
+    }
+    // approveNewDevice may have fired at startup (before any groups existed) — publishing d2's KP
+    // but not adding d2 to this group. Check whether d2 is already a member; if not, trigger
+    // addMemberToGroup fire-and-forget (it calls postToOutbox which blocks ~2min with inline Oban —
+    // awaiting it would exhaust the test timeout; instead, start it in the background and poll d2).
+    const alreadyMember: boolean = await creatorPage.evaluate(`(async () => {
+      const ctrl = ${GET_CTRL};
+      try {
+        const fps = await ctrl?.mlsService?.getGroupFingerprints(ctrl.currentActorId, ${JSON.stringify(groupId)});
+        return (fps ?? []).some(f => f.identity === ${JSON.stringify(memberId)});
+      } catch { return false; }
+    })()`);
+    if (!alreadyMember) {
+      console.log(`[addMemberAndWait] co-device KP published but not in group — firing addMemberToGroup in background`);
+      // Fire-and-forget: evaluate returns immediately; postToOutbox runs in the WebView background.
+      await creatorPage.evaluate(`(async () => {
+        ${GET_CTRL}.addMemberToGroup(${JSON.stringify(groupId)}, ${JSON.stringify(memberId)})
+          .catch(e => console.error('[test] co-device addMemberToGroup error:', e));
+      })()`);
+    }
+    // Poll member device until it receives the Welcome and joins.
+    // Use a generous retry count — addMemberToGroup may take ~2min with inline Oban.
+    const coDevicePolls = Math.max(maxPolls, 100);
+    for (let i = 0; i < coDevicePolls; i++) {
+      await pollInbox(memberPage, 15);
+      const joined: boolean = await memberPage.evaluate(`(async () => {
+        const ctrl = ${GET_CTRL};
+        const groups = await ctrl?.storage?.listGroupsWithLastMessage?.() ?? [];
+        if (!groups.some(g => g.groupId === ${JSON.stringify(groupId)})) return false;
+        try {
+          const fps = await ctrl?.mlsService?.getGroupFingerprints(ctrl.currentActorId, ${JSON.stringify(groupId)});
+          return (fps?.length ?? 0) > 0;
+        } catch { return false; }
+      })()`);
+      if (joined) { console.log(`[addMemberAndWait] co-device joined group after ${i + 1} polls`); return; }
+      if (i < coDevicePolls - 1) await new Promise(r => setTimeout(r, 1500));
+    }
+    throw new Error(`addMemberAndWait: co-device did not join group ${groupId} after ${coDevicePolls} polls`);
+  }
+
+  // Force-refresh the creator's cached copy of member's KP to avoid stale-cache races in federated setups.
   await creatorPage.evaluate(`(async () => {
     const ctrl = ${GET_CTRL};
     const kps = await ctrl.fetchActorKeyPackages(${JSON.stringify(memberId)});
