@@ -393,6 +393,10 @@ defmodule Bonfire.UI.Common.Routes do
 
         live("/crash_test", Bonfire.UI.Common.ErrorLive)
         live("/crash_test/:component", Bonfire.UI.Common.ErrorLive)
+
+        # Design-system styleguide — renders the component vocabulary against the
+        # live theme (approval gate / visual-regression anchor for theme work).
+        live("/styleguide", Bonfire.UI.Common.StyleguideLive)
       end
 
       # pages anyone can view, with throttling

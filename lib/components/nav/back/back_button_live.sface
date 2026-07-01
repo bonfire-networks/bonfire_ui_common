@@ -4,18 +4,18 @@
     phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
     :hook={"ClosePreview", from: Bonfire.UI.Common.PreviewContentLive}
     label={l("Go back to the previous page")}
-    class="btn btn-sm btn-circle z-50 btn-ghost"
+    class="btn btn-sm btn-circle z-50 btn-outline"
   >
-    <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
+    <#Icon iconify="ph:caret-left" class="w-4 h-4" />
   </button>
 {#elseif is_binary(@back)}
   <LinkLive
     to={@back}
     label={l("Go back to the previous page")}
-    class="btn btn-sm btn-circle z-50 btn-ghost"
+    class="btn btn-sm btn-circle z-50 btn-outline"
     parent_id="back_button"
   >
-    <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
+    <#Icon iconify="ph:caret-left" class="w-4 h-4" />
   </LinkLive>
 {#elseif @back && is_binary(e(@__context__, :last_path, nil))}
   {!-- An in-app previous page exists (per Phoenix's `_live_referer`). Use
@@ -25,18 +25,18 @@
   <button
     type="button"
     aria-label={l("Go back to the previous page")}
-    class="btn btn-sm btn-circle z-50 btn-ghost"
+    class="btn btn-sm btn-circle z-50 btn-outline"
     onclick="history.back()"
   >
-    <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
+    <#Icon iconify="ph:caret-left" class="w-4 h-4" />
   </button>
 {#elseif @back}
   <LinkLive
     to="/"
     label={l("Go back to the previous page")}
-    class="btn btn-sm btn-circle z-50 btn-ghost"
+    class="btn btn-sm btn-circle z-50 btn-outline"
     parent_id="back_button"
   >
-    <#Icon iconify="ph:arrow-left" class="w-4 h-4 opacity-70" />
+    <#Icon iconify="ph:caret-left" class="w-4 h-4" />
   </LinkLive>
 {/if}

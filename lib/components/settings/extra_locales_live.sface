@@ -2,7 +2,7 @@
 <div class="form-control">
   <fieldset class="fieldset">
     <legend class="fieldset-legend text-balance">{@label || l("Other languages I understand")}</legend>
-    <p :if={@extra_locales != []} class="text-base-content/70 text-sm text-pretty">{@description ||
+    <p :if={@extra_locales != []} class="text-muted text-sm text-pretty">{@description ||
         l(
           "Order the languages you understand by preference. Content will be shown in the first available language from your list."
         )}</p>
@@ -10,7 +10,7 @@
 
   {#if @extra_locales == []}
     <div class="flex flex-col items-center gap-3 py-6 text-base-content/50">
-      <#Icon iconify="ph:translate-duotone" class="size-8" />
+      <#Icon iconify="ph:translate-fill" class="size-8" />
       <p class="text-sm text-pretty text-center">{l("No additional languages added yet.")}</p>
     </div>
   {#else}
@@ -31,11 +31,11 @@
                 phx-value-index={idx}
                 phx-value-scope={@scope}
                 phx-target={@myself}
-                class="btn btn-xs btn-ghost join-item"
+                class="btn btn-sm btn-ghost join-item"
                 disabled={idx == 0}
                 aria-label={l("Move %{locale} up", locale: Localise.locale_name(locale))}
               >
-                <#Icon iconify="ph:arrow-up-duotone" class="size-4" />
+                <#Icon iconify="ph:arrow-up-fill" class="size-4" />
               </button>
               <button
                 type="button"
@@ -43,11 +43,11 @@
                 phx-value-index={idx}
                 phx-value-scope={@scope}
                 phx-target={@myself}
-                class="btn btn-xs btn-ghost join-item"
+                class="btn btn-sm btn-ghost join-item"
                 disabled={idx == length(@extra_locales) - 1}
                 aria-label={l("Move %{locale} down", locale: Localise.locale_name(locale))}
               >
-                <#Icon iconify="ph:arrow-down-duotone" class="size-4" />
+                <#Icon iconify="ph:arrow-down-fill" class="size-4" />
               </button>
             </div>
 
@@ -57,10 +57,10 @@
               phx-value-index={idx}
               phx-value-scope={@scope}
               phx-target={@myself}
-              class="btn btn-xs btn-ghost text-error/70 hover:text-error"
+              class="btn btn-sm btn-ghost text-error/70 hover:text-error"
               aria-label={l("Remove %{locale}", locale: Localise.locale_name(locale))}
             >
-              <#Icon iconify="ph:x-duotone" class="size-4" />
+              <#Icon iconify="ph:x" class="size-4" />
             </button>
           </li>
         {/for}

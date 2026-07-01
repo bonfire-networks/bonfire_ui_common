@@ -1,97 +1,111 @@
-<div class="text-xs text-base-content/70"><span class="font-semibold">{Config.get([:ui, :theme, :instance_name]) || base_domain()}</span>:
-  <LinkLive class="text-xs link-hover link text-base-content/70" to="/about" parent_id="impressum">{l("About")}</LinkLive> ·
-  {!-- <LinkLive class="text-xs link-hover link text-base-content/70">{l "Defaults"}</LinkLive> · --}
-  <LinkLive
-    class="text-xs link-hover link text-base-content/70"
-    to="/conduct"
-    parent_id="impressum"
-  >{l("Code of conduct")}</LinkLive> ·
-  {#if Config.get([:terms, :impressum]) not in [nil, ""]}
-    <LinkLive
-      class="text-xs link-hover link text-base-content/70"
-      to="/impressum"
-      parent_id="impressum"
-    >{l("Impressum")}</LinkLive> ·
+<div class="p-card flex flex-col gap-1">
+  {#if Settings.get([:ui, :auth, :logo], nil, @__context__)}
+    <a href="/" class="inline-block">
+      <img
+        src={Settings.get([:ui, :auth, :logo], nil, @__context__)}
+        alt=""
+        class="w-30 h-30 object-contain"
+      />
+    </a>
   {/if}
-  <LinkLive
-    class="text-xs link-hover link text-base-content/70"
-    to="/privacy"
-    parent_id="impressum"
-  >{l("Privacy")}</LinkLive> ·
-  {#if current_user_id(@__context__) ||
-      Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-    <LinkLive class="text-xs link-hover link text-base-content/70" to="/users" parent_id="impressum">{l("Users")}
-    </LinkLive>
-    <!-- <LinkLive
-      class="text-xs link-hover link text-base-content/70"
-      to="/known_instances"
-      parent_id="impressum"
-    >{l("Instances")}</LinkLive> -->
-  {/if}
-</div>
-
-<div class="mt-4">
-  <a
-    href="https://bonfirenetworks.org/"
-    target="_top"
-    class="text-xs font-semibold link link-hover text-base-content/70"
-  >
-    {Bonfire.Application.name_and_flavour()}
-  </a>
-  ·
-
-  {#case Bonfire.Application.version()}
-    {#match version}
-      <LinkLive
-        to={Bonfire.Application.repository()}
-        parent_id="impressum_version"
-        class="text-xs link link-hover text-base-content/70"
-      >
-        {version}
-      </LinkLive>
-      <span class="ml-1" x-data="{msg: 'JS'}">
-        <span x-text="msg">{l("no JS")}</span>
+  <div class="font-semibold mt-card text-primary">{Config.get([:ui, :theme, :instance_name]) || base_domain()}</div>
+  <div class="text-sm">
+    <LinkLive class="link-hover link" to="/about" parent_id="impressum">{l("About")}</LinkLive><span class="text-primary font-bold">
+      ·
+    </span>
+    <LinkLive class="link-hover link" to="/conduct" parent_id="impressum">{l("Code of conduct")}</LinkLive><span class="text-primary font-bold">
+      ·
+    </span>
+    {#if Config.get([:terms, :impressum]) not in [nil, ""]}
+      <LinkLive class="link-hover link" to="/impressum" parent_id="impressum">{l("Impressum")}</LinkLive><span class="text-primary font-bold">
+        ·
       </span>
-      <LinkLive
-        to="https://app.transifex.com/bonfire/bonfire/"
-        parent_id="impressum_locale"
-        class="text-xs link link-hover text-base-content/70"
-      >
-        <span data-role="locale" class="ml-1">{Bonfire.Common.Localise.get_locale_id() |> to_string()}</span>
-      </LinkLive>
-
-      {!-- guard against a non-version response (e.g. a cached host error page): a real
-        version is short and starts with a digit, so anything else is ignored --}
-      {#case Config.env() != :test and
-          String.trim(
-            Bonfire.Common.HTTP.get_cached_body("https://docs.bonfirenetworks.org/VERSION") || ""
+    {/if}
+    <LinkLive class="link-hover link" to="/privacy" parent_id="impressum">{l("Privacy")}</LinkLive><span class="text-primary font-bold">
+      ·
+    </span>
+    {#for {name, link} <-
+        @links ||
+          Bonfire.UI.Common.WidgetCommunityLinksLive.normalize_links(
+            Config.get([:ui, :theme, :instance_welcome, :links], [])
           )}
-        {#match latest
-          when is_binary(latest) and latest != "" and latest != version and
-                 byte_size(latest) < 32 and
-                 binary_part(latest, 0, 1) >= "0" and binary_part(latest, 0, 1) <= "9"}
-          <span class="badge badge-sm badge-warning badge-soft mt-4">{l("New version available:")} {latest}</span>
-        {#match _}
-      {/case}
-  {/case}
+      <a class="link-hover link" href={link} target="_blank">{name}</a><span class="text-primary font-bold">
+        ·
+      </span>
+    {/for}
+    {#if current_user_id(@__context__) ||
+        Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+      <LinkLive class="link-hover link" to="/users" parent_id="impressum">{l("Users")}
+      </LinkLive>
+    {/if}
+  </div>
 </div>
 
-<div class="">
-  <!-- <button class="btn btn-sm btn-ghost">{l "Enable wellness mode"}</button>
+<div class="p-card text-sm border-t-hair border-secondary">
+  <div class="">
+    <a
+      href="https://bonfirenetworks.org/"
+      target="_top"
+      class="font-medium text-primary link link-hover"
+    >
+      {Bonfire.Application.name_and_flavour()}
+    </a>
+    <span class="text-primary font-bold">
+      ·</span>
+
+    {#case Bonfire.Application.version()}
+      {#match version}
+        <LinkLive
+          to={Bonfire.Application.repository()}
+          parent_id="impressum_version"
+          class="link link-hover"
+        >
+          {version}
+        </LinkLive>
+        <span class="ml-1" x-data="{msg: 'JS'}">
+          <span x-text="msg">{l("no JS")}</span>
+        </span>
+        <LinkLive
+          to="https://app.transifex.com/bonfire/bonfire/"
+          parent_id="impressum_locale"
+          class="link link-hover"
+        >
+          <span data-role="locale" class="ml-1">{Bonfire.Common.Localise.get_locale_id() |> to_string()}</span>
+        </LinkLive>
+
+        {!-- guard against a non-version response (e.g. a cached host error page): a real
+        version is short and starts with a digit, so anything else is ignored --}
+        {#case Config.env() != :test and
+            String.trim(
+              Bonfire.Common.HTTP.get_cached_body("https://docs.bonfirenetworks.org/VERSION") || ""
+            )}
+          {#match latest
+            when is_binary(latest) and latest != "" and latest != version and
+                   byte_size(latest) < 32 and
+                   binary_part(latest, 0, 1) >= "0" and binary_part(latest, 0, 1) <= "9"}
+            <span class="badge badge-sm badge-warning badge-soft mt-4">{l("New version available:")} {latest}</span>
+          {#match _}
+        {/case}
+    {/case}
+  </div>
+
+  <div class="mt-2">
+    <!-- <button class="btn btn-sm btn-ghost">{l "Enable wellness mode"}</button>
 <button class="btn btn-sm btn-ghost">{l "Enable safety mode"}</button> -->
 
-  <div class="bg-base-content/10 rounded px-2 py-1 text-xs inline-block">{#case maybe_apply(Bonfire.Federate.ActivityPub, :federation_mode, current_user(@__context__),
-        context: @__context__,
-        fallback_return: false
-      )}
-      {#match false}
-        {l("Federation disabled")}
-      {#match nil}
-        {l("Manual federation enabled")}
-      {#match :allowlist_only}
-        {l("Archipelago federation enabled")}
-      {#match true}
-        {l("Automatic federation enabled")}
-    {/case}
+    <div class="inline-flex items-center justify-center rounded-box bg-base-100 text-sm px-[16px] py-[6px] ring-[0.7px] ring-inset inline-block">{#case maybe_apply(Bonfire.Federate.ActivityPub, :federation_mode, current_user(@__context__),
+          context: @__context__,
+          fallback_return: false
+        )}
+        {#match false}
+          {l("Federation disabled")}
+        {#match nil}
+          {l("Manual federation enabled")}
+        {#match :allowlist_only}
+          {l("Archipelago federation enabled")}
+        {#match true}
+          {l("Automatic federation enabled")}
+      {/case}
+    </div>
   </div>
 </div>

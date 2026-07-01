@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common.LazyImage do
   prop alt, :string, default: ""
   prop class, :css_class, default: nil
   prop fallback_class, :css_class, default: "w-5 h-5 opacity-50"
-  prop fallback_icon, :string, default: Icon.icon_name("ph:image-broken-duotone")
+  prop fallback_icon, :string, default: Icon.icon_name("ph:image-broken-fill")
   prop refetch_key, :string, default: nil
   prop opts, :any, default: %{}
   prop title, :string, default: ""

@@ -1,12 +1,12 @@
 <div data-scope="avatar" class={@wrapper_class}>
   {#if Media.hide_avatars?(@__context__, @showing_within)}
-    <div class={@class}>
+    <div class={[@class, "ring-[0.7px] ring-primary": @ring]}>
       <div title={@title} class="bg-primary h-full w-full flex items-center justify-center">
         <span class="text-primary-content font-bold text-base select-none">{initials(@title)}</span>
       </div>
     </div>
   {#else}
-    <div class={@class}>
+    <div class={[@class, "ring-[0.7px] ring-primary": @ring]}>
       {#case @avatar_fallback || Media.avatar_fallback(@user_id)}
         {#match avatar_fallback}
           {#case @src}
@@ -17,7 +17,7 @@
                   src={url}
                   title={@title}
                   alt={@title}
-                  fallback_icon={Icon.icon_name("ph:user-circle-duotone")}
+                  fallback_icon={Icon.icon_name("ph:user-circle-fill")}
                   fallback_class={e(@fallback_class, nil)}
                   refetch_key={if @is_remote && @user_id, do: "Bonfire.Federate.ActivityPub:refetch_profile:#{@user_id}"}
                   opts={@opts}

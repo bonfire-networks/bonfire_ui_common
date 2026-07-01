@@ -14,30 +14,32 @@
     parent_id="guest_actions"
   >{l("Log in")}</LinkLive> -->
 
-  <div class="dropdown dropdown-end">
-    <label tabindex="0" class="rounded btn btn-ghost btn-sm btn-circle">
+  <Dropdown
+    id="guest_actions_dropdown"
+    position="bottom-end"
+    trigger_class="rounded btn btn-ghost btn-sm btn-circle"
+    panel_class="text-base-content"
+    label={l("Menu")}
+  >
+    <:trigger>
       <#Icon
-        iconify="ph:dots-three-outline-vertical-duotone"
-        class="w-[18px] h-[18px] md:w-4 md:h-4 text-base-content/70"
+        iconify="ph:dots-three-outline-vertical-fill"
+        class="w-[18px] h-[18px] md:w-4 md:h-4 text-muted"
       />
-    </label>
-    <ul
-      tabindex="0"
-      class="mt-4 rounded-lg shadow menu dropdown-content bg-base-100 shadow-lg border border-base-content/10 w-60 text-base-content"
-    >
-      <li><LinkLive to={path(:login, :index)}>{l("Log in")}</LinkLive></li>
-      <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LinkLive to={path(:signup)}>{l("Sign up")}</LinkLive></li>
-      <li><LinkLive to="/about" class="text-base-content" parent_id="guest_actions">{l("About")}</LinkLive></li>
-      <li><LinkLive class="text-base-content" to="/conduct" parent_id="guest_actions">{l("Code of conduct")}</LinkLive></li>
-      <li><LinkLive class="text-base-content" to="/privacy" parent_id="guest_actions">{l("Privacy")}</LinkLive></li>
-      {#if current_user_id(@__context__) ||
-          Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
-        <li>
-          <LinkLive class="text-base-content" to="/users" parent_id="guest_actions">{l("Users")}</LinkLive></li>
-        <li>
-          <LinkLive class="text-base-content" to="/known_instances" parent_id="guest_actions">{l("Instances")}</LinkLive></li>
-      {/if}
-      <li><a class="text-base-content" href="https://bonfirenetworks.org/" target="_blank">{l("About Bonfire")}</a></li>
-    </ul>
-  </div>
+    </:trigger>
+
+    <li><LinkLive to={path(:login, :index)}>{l("Log in")}</LinkLive></li>
+    <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LinkLive to={path(:signup)}>{l("Sign up")}</LinkLive></li>
+    <li><LinkLive to="/about" class="text-base-content" parent_id="guest_actions">{l("About")}</LinkLive></li>
+    <li><LinkLive class="text-base-content" to="/conduct" parent_id="guest_actions">{l("Code of conduct")}</LinkLive></li>
+    <li><LinkLive class="text-base-content" to="/privacy" parent_id="guest_actions">{l("Privacy")}</LinkLive></li>
+    {#if current_user_id(@__context__) ||
+        Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests}
+      <li>
+        <LinkLive class="text-base-content" to="/users" parent_id="guest_actions">{l("Users")}</LinkLive></li>
+      <li>
+        <LinkLive class="text-base-content" to="/known_instances" parent_id="guest_actions">{l("Instances")}</LinkLive></li>
+    {/if}
+    <li><a class="text-base-content" href="https://bonfirenetworks.org/" target="_blank">{l("About Bonfire")}</a></li>
+  </Dropdown>
 </div>

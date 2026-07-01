@@ -101,7 +101,7 @@ defmodule Bonfire.UI.Common.LinkLive do
         )}
       href={@to}
       target={@target}
-      class="float-right ml-4 flex items-center gap-2 btn btn-xs"
+      class="float-right ml-4 flex items-center gap-2 btn btn-sm"
     >
       <#Icon iconify="ri:file-copy-line" class="w-4 h-4 shrink-0" />
       <span data-role="label">{l("Copy")}</span>
@@ -125,20 +125,20 @@ defmodule Bonfire.UI.Common.LinkLive do
               <Link
                 to={"https://transparencyreport.google.com/safe-browsing/search?url=#{url_encoded}"}
                 opts={@opts |> Keyword.merge(target: "_blank")}
-                class="btn btn-xs"
+                class="btn btn-sm"
               >{l("Google Safe Browsing")}</Link>
 
               <Link
                 to={"https://urlscan.io/search/#page.url.keyword:#{url_encoded}*"}
                 opts={@opts |> Keyword.merge(target: "_blank")}
-                class="btn btn-xs"
+                class="btn btn-sm"
               >{l("URLscan")}</Link>
 
               {!--
                     <Link
             to={"https://www.urlvoid.com/scan/#{url_encoded}"}
             opts={@opts |> Keyword.merge(target: "_blank")}
-            class="btn btn-xs" 
+            class="btn btn-sm"
           >{l("URLvoid")}</Link>
 
           --}
@@ -146,37 +146,37 @@ defmodule Bonfire.UI.Common.LinkLive do
               <Link
                 to={"https://otx.alienvault.com/indicator/domain/#{url_encoded}"}
                 opts={@opts |> Keyword.merge(target: "_blank")}
-                class="btn btn-xs"
+                class="btn btn-sm"
               >{l("AlienVault OTX")}</Link>
 
               <Link
                 to={"https://www.virustotal.com/gui/search/#{url_encoded}"}
                 opts={@opts |> Keyword.merge(target: "_blank")}
-                class="btn btn-xs"
+                class="btn btn-sm"
               >{l("VirusTotal")}</Link>
 
               <Link
                 to={"https://sitecheck.sucuri.net/results/#{url_encoded}"}
                 opts={@opts |> Keyword.merge(target: "_blank")}
-                class="btn btn-xs"
+                class="btn btn-sm"
               >{l("Sucuri")}</Link>
 
               <Link
                 to={"https://safeweb.norton.com/report?url=#{url_encoded}"}
                 opts={@opts |> Keyword.merge(target: "_blank")}
-                class="btn btn-xs"
+                class="btn btn-sm"
               >{l("Norton")}</Link>
 
               <Link
                 to={"https://check.spamhaus.org/results/?query=#{url_encoded}"}
                 opts={@opts |> Keyword.merge(target: "_blank")}
-                class="btn btn-xs"
+                class="btn btn-sm"
               >{l("SpamHaus")}</Link>
 
               <Link
                 to={"https://mxtoolbox.com/SuperTool.aspx?action=blacklist:#{url_encoded}"}
                 opts={@opts |> Keyword.merge(target: "_blank")}
-                class="btn btn-xs"
+                class="btn btn-sm"
               >{l("MX Toolbox")}</Link>
           {/case}
         </p>
@@ -189,19 +189,19 @@ defmodule Bonfire.UI.Common.LinkLive do
               <Link
                 to={"https://www.abuseipdb.com/check/#{ip}"}
                 opts={@opts |> Keyword.merge(target: "_blank")}
-                class="btn btn-xs"
+                class="btn btn-sm"
               >{l("AbuseIPDB")}</Link>
 
               <Link
                 to={"https://otx.alienvault.com/indicator/ip/#{ip}"}
                 opts={@opts |> Keyword.merge(target: "_blank")}
-                class="btn btn-xs"
+                class="btn btn-sm"
               >{l("AlienVault OTX")}</Link>
 
               <Link
                 to={"https://www.projecthoneypot.org/ip_#{ip}"}
                 opts={@opts |> Keyword.merge(target: "_blank")}
-                class="btn btn-xs"
+                class="btn btn-sm"
               >{l("Project Honeypot")}</Link>
             {#match _}
           {/case}

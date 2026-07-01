@@ -38,7 +38,7 @@
         type="button"
         class="flex btn btn-sm btn-ghost btn-circle"
       >
-        <#Icon iconify="fluent:chevron-double-down-16-filled" class="w-4 h-4 text-base-content/70" />
+        <#Icon iconify="fluent:chevron-double-down-16-filled" class="w-4 h-4 text-muted" />
       </button>
     </div>
   </div>

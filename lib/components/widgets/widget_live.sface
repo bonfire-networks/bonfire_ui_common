@@ -108,7 +108,7 @@
             :if={!@widget[:data] && (@with_title or @with_description)}
             class="flex flex-col gap-0.5 mb-3"
           >
-            <div :if={@with_title} class="text-sm font-medium text-base-content/90">{@widget[:text] || @widget[:name]}</div>
+            <div :if={@with_title} class="text-sm font-medium text-base-content">{@widget[:text] || @widget[:name]}</div>
             <div :if={@with_description && @widget[:description]} class="text-sm text-base-content/50">{@widget[:description]}</div>
           </div>
           {#if @widget[:form_change] || @widget[:form_submit]}
@@ -137,7 +137,7 @@
             :if={!@widget[:data] && (@with_title or @with_description)}
             class="flex flex-col gap-0.5 mb-3"
           >
-            <div :if={@with_title} class="text-sm font-medium text-base-content/90">{@widget[:text] || @widget[:name]}</div>
+            <div :if={@with_title} class="text-sm font-medium text-base-content">{@widget[:text] || @widget[:name]}</div>
             <div :if={@with_description && @widget[:description]} class="text-sm text-base-content/50">{@widget[:description]}</div>
           </div>
           <StatefulComponent

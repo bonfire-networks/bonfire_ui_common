@@ -7,8 +7,8 @@
   >
     <LinkLive
       class={
-        "flex text-base-content/70 truncate py-2 flex-col items-center gap-2 place-content-center hover:bg-base-content/5 rounded-md text-[13px]",
-        "!bg-primary/20 !border-primary/60 border":
+        "flex text-muted truncate py-2 flex-col items-center gap-2 place-content-center hover:bg-base-content/5 rounded-md text-[13px]",
+        "!bg-primary/20 !border-secondary border":
           @__context__[:current_extension][:name] ==
             extension[:name]
       }

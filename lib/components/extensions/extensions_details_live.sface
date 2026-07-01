@@ -2,7 +2,7 @@
   {!-- <div :if={@is_extension?}>
     <Iconify.iconify
       icon={e(@dep, :extra, :icon_active, nil) || e(@dep, :extra, :icon, nil) || "heroicons-outline:puzzle"}
-      class={e(@dep, :extra, :icon_class, nil) || "w-8 h-8", "text-base-content/70"}
+      class={e(@dep, :extra, :icon_class, nil) || "w-8 h-8", "text-muted"}
     />
   </div> --}
   <div class="flex flex-col flex-1 gap-1">
@@ -10,7 +10,7 @@
       <span>{e(@dep, :extra, :name, nil) || e(@dep, :app, "Unknown")}</span>
       <span class="bg-base-content/10 rounded px-2 py-1 text-xs  inline-block">{get_version(@dep)}</span>
     </div>
-    <div class="text-sm font-light text-base-content/70">{e(@dep, :extra, :description, nil)}</div>
+    <div class="text-sm font-light text-muted">{e(@dep, :extra, :description, nil)}</div>
   </div>
 
   {#if @is_extension? &&
@@ -30,7 +30,7 @@
         to={"/settings/#{@scope || "user"}/#{e(@dep, :app, nil)}"}
         class="btn btn-ghost btn-sm btn-circle"
       >
-        <#Icon iconify="ph:gear-six-duotone" class="w-5 h-5 opacity-70" />
+        <#Icon iconify="ph:gear-six-fill" class="w-5 h-5 opacity-70" />
         <span class="sr-only">{l("Extension settings")}</span>
       </LinkLive>
     </div>

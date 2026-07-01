@@ -43,7 +43,7 @@
                   <div class="text-sm font-semibold truncate max-w-[180px] text-base-content">{e(current_user(@__context__), :profile, :name, l("Me"))}</div>
                   <div
                     :if={e(current_user(@__context__), :character, :username, nil)}
-                    class="-mt-0.5 text-[13px] font-normal truncate text-base-content/70"
+                    class="-mt-0.5 text-[13px] font-normal truncate text-muted"
                   >@{e(current_user(@__context__), :character, :username, nil)}</div>
                 </div>
               </LinkLive>
@@ -105,7 +105,7 @@
               />
             </nav>
             <div class="p-4">
-              <div class="text-xs text-base-content/70">
+              <div class="text-xs text-muted">
                 <Bonfire.UI.Common.ImpressumLive />
               </div>
 

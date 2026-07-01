@@ -58,7 +58,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     )
   end
 
-  @default_type_icon "ph:pencil-line-duotone"
+  @default_type_icon "ph:pencil-line-fill"
 
   # Resolve the create-object type atom from an explicit `create_object_type` or,
   # failing that, the component's first declared `smart_input_module/0` type.
@@ -912,6 +912,11 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # can race with the mention_suggestions event, causing mentions to flash and disappear.
     # The reset_smart_input: false below is sufficient to prevent resetting.
 
+    # Reply and quote are mutually exclusive composer targets. Opening as a reply must
+    # drop any pending quote, and quoting must drop any pending reply — otherwise the
+    # previous target lingers (preserve_reply_state actively keeps it on nil values).
+    set_assigns = enforce_reply_quote_exclusivity(set_assigns)
+
     # Get current smart_input_opts if available
     current_opts = e(socket_or_context, :assigns, :smart_input_opts, %{})
 
@@ -924,6 +929,44 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       )
     )
   end
+
+  # If opening the composer as a quote, clear any pending reply target; if opening as a
+  # reply, clear any pending quote. `clear_reply_data: true` is required so the container's
+  # preserve_reply_state lets the nil values through instead of restoring the old target.
+  defp enforce_reply_quote_exclusivity(set_assigns) do
+    has_quote =
+      not is_nil(assign_value(set_assigns, :quoted_object)) or
+        not is_nil(assign_value(set_assigns, :quoted_url))
+
+    has_reply = not is_nil(assign_value(set_assigns, :reply_to_id))
+
+    cond do
+      has_quote and not has_reply ->
+        put_assigns(set_assigns,
+          reply_to_id: nil,
+          activity: nil,
+          object: nil,
+          clear_reply_data: true
+        )
+
+      has_reply and not has_quote ->
+        put_assigns(set_assigns,
+          quoted_object: nil,
+          quoted_url: nil,
+          clear_reply_data: true
+        )
+
+      true ->
+        set_assigns
+    end
+  end
+
+  defp assign_value(assigns, key) when is_list(assigns), do: Keyword.get(assigns, key)
+  defp assign_value(assigns, key) when is_map(assigns), do: Map.get(assigns, key)
+  defp assign_value(_assigns, _key), do: nil
+
+  defp put_assigns(assigns, new) when is_list(assigns), do: Keyword.merge(assigns, new)
+  defp put_assigns(assigns, new) when is_map(assigns), do: Map.merge(assigns, Map.new(new))
 
   def set_smart_input_text(socket_or_context, text \\ "\n") do
     # Get current smart_input_opts if available

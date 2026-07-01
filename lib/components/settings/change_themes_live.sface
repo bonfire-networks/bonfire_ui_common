@@ -1,5 +1,5 @@
 <div class="w-full mt-4 form-control">
-  <div class="mb-3 text-sm font-semibold text-base-content/70">{l("Colour mode")}</div>
+  <div class="mb-3 text-sm font-semibold text-muted">{l("Colour mode")}</div>
   <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
     {!-- DARK --}
     <button
@@ -79,7 +79,7 @@
   <div>
     <div id="dark-themes" class={if @preferred not in [:dark, :system], do: "hidden"}>
       <div class="shadow rounded-md border bg-base-200 border-base-content/5 p-4 mt-4">
-        <div class="mb-4 text-sm font-semibold text-base-content/70">{l("Select the active dark theme")}</div>
+        <div class="mb-4 text-sm font-semibold text-muted">{l("Select the active dark theme")}</div>
         <Bonfire.UI.Common.ChangeThemeLive
           label={l("Dark theme")}
           key="instance_theme"
@@ -91,7 +91,7 @@
     </div>
     <div id="light-themes" class={if @preferred not in [:light, :system], do: "hidden"}>
       <div class="shadow rounded-md border bg-base-200 border-base-content/5 p-4 mt-4">
-        <div class="mb-4 text-sm font-semibold text-base-content/70">{l("Select the active light theme")}</div>
+        <div class="mb-4 text-sm font-semibold text-muted">{l("Select the active light theme")}</div>
         <Bonfire.UI.Common.ChangeThemeLive
           label={l("Light theme")}
           key="instance_theme_light"
@@ -131,7 +131,7 @@
     {!-- The custom palette is only applied to the page when it is the active theme.
          Warn (and offer to activate) when the user edits while it is not active. --}
     <div :if={@preferred != :custom} class="alert alert-warning shadow-sm mb-6" role="alert">
-      <#Icon iconify="ph:warning-duotone" class="w-5 h-5 shrink-0" />
+      <#Icon iconify="ph:warning-fill" class="w-5 h-5 shrink-0" />
       <div class="flex-1">
         <div class="font-semibold">{l("The custom theme isn't active yet")}</div>
         <div class="text-sm opacity-80">
@@ -217,7 +217,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
           <!-- Base Colors Group -->
           <div class="col-span-full mb-2">
-            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Base")}</h4>
+            <h4 class="text-xs font-medium text-muted mb-2">{l("Base")}</h4>
             <div class="grid grid-cols-4 gap-2">
               {#for color <- ["base-100", "base-200", "base-300", "base-content"]}
                 <Bonfire.UI.Common.OpenModalLive
@@ -295,7 +295,7 @@
 
           <!-- Primary & Secondary Colors -->
           <div class="col-span-2 mb-2">
-            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Primary")}</h4>
+            <h4 class="text-xs font-medium text-muted mb-2">{l("Primary")}</h4>
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["primary", "primary-content"]}
                 <Bonfire.UI.Common.OpenModalLive
@@ -369,7 +369,7 @@
           </div>
 
           <div class="col-span-2 mb-2">
-            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Secondary")}</h4>
+            <h4 class="text-xs font-medium text-muted mb-2">{l("Secondary")}</h4>
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["secondary", "secondary-content"]}
                 <Bonfire.UI.Common.OpenModalLive
@@ -444,7 +444,7 @@
 
           <!-- Accent & Neutral Colors -->
           <div class="col-span-2 mb-2">
-            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Accent")}</h4>
+            <h4 class="text-xs font-medium text-muted mb-2">{l("Accent")}</h4>
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["accent", "accent-content"]}
                 <Bonfire.UI.Common.OpenModalLive
@@ -518,7 +518,7 @@
           </div>
 
           <div class="col-span-2 mb-2">
-            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Neutral")}</h4>
+            <h4 class="text-xs font-medium text-muted mb-2">{l("Neutral")}</h4>
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["neutral", "neutral-content"]}
                 <Bonfire.UI.Common.OpenModalLive
@@ -593,7 +593,7 @@
 
           <!-- Status Colors: Info, Success, Warning, Error -->
           <div class="col-span-2">
-            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Info")}</h4>
+            <h4 class="text-xs font-medium text-muted mb-2">{l("Info")}</h4>
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["info", "info-content"]}
                 <Bonfire.UI.Common.OpenModalLive
@@ -667,7 +667,7 @@
           </div>
 
           <div class="col-span-2">
-            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Success")}</h4>
+            <h4 class="text-xs font-medium text-muted mb-2">{l("Success")}</h4>
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["success", "success-content"]}
                 <Bonfire.UI.Common.OpenModalLive
@@ -741,7 +741,7 @@
           </div>
 
           <div class="col-span-2">
-            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Warning")}</h4>
+            <h4 class="text-xs font-medium text-muted mb-2">{l("Warning")}</h4>
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["warning", "warning-content"]}
                 <Bonfire.UI.Common.OpenModalLive
@@ -815,7 +815,7 @@
           </div>
 
           <div class="col-span-2">
-            <h4 class="text-xs font-medium text-base-content/70 mb-2">{l("Error")}</h4>
+            <h4 class="text-xs font-medium text-muted mb-2">{l("Error")}</h4>
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["error", "error-content"]}
                 <Bonfire.UI.Common.OpenModalLive
@@ -934,7 +934,7 @@
             <!-- Box Radius -->
             <div class="border border-base-content/10 p-3 bg-base-100 rounded">
               <div class="mb-2 flex flex-col" id="--radius-box-group">
-                <span class="text-base-content/70 text-sm font-medium">{l("Boxes")}</span>
+                <span class="text-muted text-sm font-medium">{l("Boxes")}</span>
                 <span class="text-base-content/50 text-xs italic">{l("card, modal, alert")}</span>
               </div>
               <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="--radius-box-group">
@@ -984,7 +984,7 @@
             <!-- Field Radius -->
             <div class="border border-base-content/10 p-3 bg-base-100 rounded">
               <div class="mb-2 flex flex-col" id="--radius-field-group">
-                <span class="text-base-content/70 text-sm font-medium">{l("Fields")}</span>
+                <span class="text-muted text-sm font-medium">{l("Fields")}</span>
                 <span class="text-base-content/50 text-xs italic">{l("button, input, select, tab")}</span>
               </div>
               <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="--radius-field-group">
@@ -1034,7 +1034,7 @@
             <!-- Selector Radius -->
             <div class="border border-base-content/10 p-3 bg-base-100 rounded">
               <div class="mb-2 flex flex-col" id="--radius-selector-group">
-                <span class="text-base-content/70 text-sm font-medium">{l("Selectors")}</span>
+                <span class="text-muted text-sm font-medium">{l("Selectors")}</span>
                 <span class="text-base-content/50 text-xs italic">{l("checkbox, toggle, badge")}</span>
               </div>
               <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="--radius-selector-group">
@@ -1100,7 +1100,7 @@
           <div class="w-full">
             <label class="flex cursor-pointer items-center justify-between gap-2 p-2 rounded-lg hover:bg-base-200 transition-all">
               <span class="flex flex-col">
-                <span class="text-base-content/70 text-sm font-medium">{l("Depth Effect")}</span>
+                <span class="text-muted text-sm font-medium">{l("Depth Effect")}</span>
                 <span class="text-base-content/50 text-xs italic">{l("3D depth on fields & selectors")}</span>
               </span>
               <input 
@@ -1121,7 +1121,7 @@
           <div class="w-full">
             <label class="flex cursor-pointer items-center justify-between gap-2 p-2 rounded-lg hover:bg-base-200 transition-all">
               <span class="flex flex-col">
-                <span class="text-base-content/70 text-xs font-medium">{l("Noise Effect")}</span>
+                <span class="text-muted text-xs font-medium">{l("Noise Effect")}</span>
                 <span class="text-base-content/40 text-[0.625rem] italic">{l("Noise pattern on fields & selectors")}</span>
               </span>
               <input 
@@ -1141,14 +1141,14 @@
 
           <div class="w-full mt-4">
             <div class="mb-2 flex flex-col" id="--border-group">
-              <span class="text-base-content/70 text-xs font-medium">{l("Border Width")}</span>
+              <span class="text-muted text-xs font-medium">{l("Border Width")}</span>
               <span class="text-base-content/40 text-[0.625rem] italic">{l("All components")}</span>
             </div>
             <div class="bg-base-200 rounded-lg relative p-4">
               <div class="flex flex-col gap-2">
                 <div class="flex justify-between">
                   {#for border <- ["0.5px", "1px", "2px", "4px"]}
-                    <span class="text-xs opacity-60">{border}</span>
+                    <span class="text-xs text-meta break-[word]">{border}</span>
                   {/for}
                 </div>
                 <input 
@@ -1191,7 +1191,7 @@
         <div class="space-y-6 pt-2">
           <div class="w-full">
             <div class="mb-2 flex flex-col" id="--size-field-group">
-              <span class="text-base-content/70 text-xs font-medium">{l("Fields")}</span>
+              <span class="text-muted text-xs font-medium">{l("Fields")}</span>
               <span class="text-base-content/40 text-[0.625rem] italic">{l("button, input, select, tab")}</span>
             </div>
             <div class="bg-base-200 rounded-lg flex items-center justify-between gap-4 p-4">
@@ -1201,7 +1201,7 @@
                     <div class="flex items-end" style={"height:calc(0.3125rem * 14)"}>
                       <div class="bg-base-content w-1 rounded-full" style={"height:calc(0.3125rem * #{String.to_integer(value) / 5})"}></div>
                     </div>
-                    <div class="text-xs flex flex-col items-center text-base-content/60">
+                    <div class="text-xs flex flex-col items-center text-muted">
                       <span class="font-semibold">{label}</span>
                       <span class="text-[10px]">{value}</span>
                     </div>
@@ -1211,7 +1211,7 @@
               
               <div class="flex flex-col gap-2 text-center w-32">
                 <div class="flex flex-col items-center">
-                  <div class="text-xs text-base-content/60">{l("Base size")}</div>
+                  <div class="text-xs text-muted">{l("Base size")}</div>
                   <div id="field-size-display" class="text-2xl font-bold tabular-nums">
                     {
                       case Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "size-field", "0.25rem") do
@@ -1224,7 +1224,7 @@
                       end
                     }
                   </div>
-                  <div class="text-[10px] text-base-content/60">{l("Pixels")}</div>
+                  <div class="text-[10px] text-muted">{l("Pixels")}</div>
                 </div>
                 
                 <input 
@@ -1254,7 +1254,7 @@
 
           <div class="w-full">
             <div class="mb-2 flex flex-col" id="--size-selector-group">
-              <span class="text-base-content/70 text-xs font-medium">{l("Selectors")}</span>
+              <span class="text-muted text-xs font-medium">{l("Selectors")}</span>
               <span class="text-base-content/40 text-[0.625rem] italic">{l("checkbox, toggle, badge")}</span>
             </div>
             <div class="bg-base-200 rounded-lg flex items-center justify-between gap-4 p-4">
@@ -1264,7 +1264,7 @@
                     <div class="flex items-end" style={"height:calc(0.1875rem * 8)"}>
                       <div class="bg-base-content w-1 rounded-full" style={"height:calc(0.1875rem * #{String.to_integer(value) / 3})"}></div>
                     </div>
-                    <div class="text-xs flex flex-col items-center text-base-content/60">
+                    <div class="text-xs flex flex-col items-center text-muted">
                       <span class="font-semibold">{label}</span>
                       <span class="text-[10px]">{value}</span>
                     </div>
@@ -1274,7 +1274,7 @@
               
               <div class="flex flex-col gap-2 text-center w-32">
                 <div class="flex flex-col items-center">
-                  <div class="text-xs text-base-content/60">{l("Base size")}</div>
+                  <div class="text-xs text-muted">{l("Base size")}</div>
                   <div id="selector-size-display" class="text-2xl font-bold tabular-nums">
                     {
                       case Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "size-selector", "0.25rem") do
@@ -1287,7 +1287,7 @@
                       end
                     }
                   </div>
-                  <div class="text-[10px] text-base-content/60">{l("Pixels")}</div>
+                  <div class="text-[10px] text-muted">{l("Pixels")}</div>
                 </div>
                 
                 <input 

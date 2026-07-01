@@ -11,7 +11,7 @@
     :if={@with_icon or @mobile}
     iconify="ic:round-feedback"
     class={
-      "w-5 h-5 text-base-content/70": @mobile,
+      "w-5 h-5 text-muted": @mobile,
       "w-4 h-4": !@mobile
     }
   />

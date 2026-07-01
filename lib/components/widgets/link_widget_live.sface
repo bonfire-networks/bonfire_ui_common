@@ -3,16 +3,7 @@
     do: @to.(@__context__),
     else: @to}
   id={deterministic_dom_id("link_widget", @parent_id, @order, @page)}
-  class={[
-    e(@widget[:link_class], @link_class),
-    "bg-primary/10":
-      String.downcase(to_string(@selected_tab)) == String.downcase(to_string(@widget[:page])) or
-        (is_binary(@widget[:href_prefix]) and
-           String.starts_with?(
-             to_string(e(@__context__, :current_url, "")),
-             @widget[:href_prefix]
-           ))
-  ]}
+  class={e(@widget[:link_class], @link_class)}
   label={@text || @widget[:text] || @widget[:name]}
   phx_hook={@widget[:phx_hook]}
 >
@@ -24,11 +15,11 @@
           class={@widget[:icon_class] || @icon_class, "!text-base-content"}
         />
       {#else} --}
-  <div
-    class="w-8 h-8 flex items-center place-content-center"
-    :if={!@without_icon && (@icon || @widget[:icon])}
-  >
-    <Iconify.iconify icon={@icon || @widget[:icon]} class={@widget[:icon_class] || @icon_class} />
+  <div class="shrink-0 flex items-center" :if={!@without_icon && (@icon || @widget[:icon])}>
+    <Iconify.iconify
+      icon={fill_icon(@icon || @widget[:icon])}
+      class={@widget[:icon_class] || @icon_class}
+    />
   </div>
   {!-- {/if} -->
   <!-- </span>
@@ -47,7 +38,7 @@
           not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
       } 
     >--}
-  <span class="font-normal text-base">{localise_dynamic(
+  <span class={["text-base", active_label_class(@selected_tab, @widget, @__context__)]}>{localise_dynamic(
       @text || @widget[:text] || @widget[:name],
       @widget[:extension] || @widget[:module] || __MODULE__
     )}</span>

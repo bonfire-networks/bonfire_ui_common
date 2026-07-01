@@ -14,6 +14,8 @@ defmodule Bonfire.UI.Common.LoadMoreLive do
   prop dom_id_suffix, :any, default: nil
   prop entry_count, :any, default: nil
   prop label, :any, default: nil
+  # overrides the inner button's base style (default keeps DaisyUI `btn btn-soft`)
+  prop button_class, :css_class, default: nil
 
   prop infinite_scroll, :any, default: false
   prop hide_load_more, :boolean, default: false

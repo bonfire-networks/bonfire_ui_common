@@ -1,0 +1,47 @@
+<div
+  id={@id}
+  phx-hook="Tooltip"
+  data-position={@position}
+  data-trigger={@open_on}
+  data-strategy={@strategy}
+  data-no-flip={if @no_flip, do: "true"}
+  data-close-on-inside-click={if @close_on_select, do: "true"}
+  aria-haspopup="true"
+  class={"relative", @wrapper_class}
+  {...@wrapper_opts}
+>
+  <button
+    type="button"
+    tabindex="0"
+    id={@id <> "_trigger"}
+    class={"tooltip-button", @trigger_class}
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-label={@label}
+    {...@trigger_opts}
+  >
+    <#slot {@trigger} />
+  </button>
+
+  {#if @menu}
+    <ul
+      tabindex="0"
+      id={@id <> "_panel"}
+      class={"tooltip menu dropdown-panel", @panel_class}
+      role="menu"
+      aria-orientation="vertical"
+      aria-labelledby={@id <> "_trigger"}
+    >
+      <#slot />
+    </ul>
+  {#else}
+    <div
+      tabindex="0"
+      id={@id <> "_panel"}
+      class={"tooltip dropdown-panel", @panel_class}
+      aria-labelledby={@id <> "_trigger"}
+    >
+      <#slot />
+    </div>
+  {/if}
+</div>

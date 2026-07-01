@@ -2,7 +2,10 @@
   <div class="flex-1 h-full grow min-h-0" id="compose_content_wrapper">
     <div class="relative !flex flex-col flex-1 h-full min-h-0">
       {!-- here was old/loader.svg --}
-      <div id="composer_wrapper" class="flex-1 flex flex-col min-h-0">
+      <div
+        id="composer_wrapper"
+        class="flex-1 flex flex-col min-h-0 border rounded-b-box border-hair border-secondary"
+      >
         <div class="h-full flex flex-col flex-1 grow relative min-h-0">
           <div class="flex-1 min-h-0 overflow-y-auto overscroll-y-contain flex flex-col">
             {!-- Title: shown expanded when `@title_visible`, or behind a toggle when
@@ -16,7 +19,7 @@
                    while the outer div above stays reactive to show/hide) --}
               <div phx-update="ignore" id="smart_input_post_title_value" class="relative p-2 bg-base-100">
                 <label class="input w-full">
-                  <#Icon iconify="ph:text-h-one-duotone" class="w-4 h-4 opacity-50" />
+                  <#Icon iconify="ph:text-h-one-fill" class="w-4 h-4 opacity-50" />
                   <input
                     value={@smart_input_opts[:title]}
                     name="post[post_content][name]"
@@ -52,7 +55,7 @@
                   type="button"
                   phx-click="Bonfire.UI.Common.SmartInput:clear_sensitive"
                   phx-target={@event_target || "#smart_input"}
-                  class="shrink-0 mt-2 mr-2 p-1 rounded-full text-base-content/40 hover:text-base-content/70 hover:bg-base-content/5 transition-colors"
+                  class="shrink-0 mt-2 mr-2 p-1 rounded-full text-base-content/40 hover:text-muted hover:bg-base-content/5 transition-colors"
                   title={l("Remove content warning")}
                   aria-label={l("Remove content warning")}
                 >
@@ -68,7 +71,7 @@
               phx-update="ignore"
             >
               <label class="input w-full">
-                <span class="text-xs uppercase text-base-content/70">{l("Schedule")}</span>
+                <span class="text-xs uppercase text-muted">{l("Schedule")}</span>
                 <input
                   type="datetime-local"
                   name="scheduled_at"
@@ -94,7 +97,7 @@
         </div>
       </div>
 
-      <div class="z-50 shrink-0 border-t border-base-content/10 h-[56px] rounded-b-xl">
+      <div class="z-50 shrink-0 bg-base-200 h-[56px]">
         <div class="pb-safe">
           <div class="flex justify-between gap-2 p-2 lg:rounded-b-xl md:items-center md:px-3 py-2">
             <div class="flex items-center gap-2">
@@ -127,7 +130,7 @@
                   type="button"
                   class="tooltip-button emoji-button btn btn-ghost btn-circle"
                 >
-                  <#Icon iconify="ph:smiley-wink-duotone" class="w-[20px] h-[20px] text-base-content/70" />
+                  <#Icon iconify="ph:smiley-wink-fill" class="w-[20px] h-[20px] text-primary" />
                 </button>
                 <div
                   id="emoji-picker-in-composer"
@@ -147,11 +150,11 @@
                   phx-click="Bonfire.UI.Common.SmartInput:toggle_sensitive"
                   phx-target={@event_target || "#smart_input"}
                   class={[
-                    "relative btn btn-ghost btn-circle text-base-content/70",
+                    "relative btn btn-ghost btn-circle text-muted",
                     "bg-warning !text-warning-content": @show_sensitive
                   ]}
                 >
-                  <#Icon iconify="ph:siren-duotone" class="swap-off w-[20px] h-[20px]" />
+                  <#Icon iconify="ph:siren-fill" class="swap-off w-[20px] h-[20px] text-primary" />
                 </button>
                 <input type="hidden" name="sensitive" value={to_string(@show_sensitive)}>
               </div>
@@ -165,117 +168,98 @@
                     )
                 )}
                 {#match locale}
-                  <div class="dropdown dropdown-top">
-                    <label
-                      tabindex="0"
-                      id="language_btn"
-                      title={l("Set post language")}
-                      class="lang-button btn btn-ghost btn-sm gap-1"
-                    >
-                      <#Icon iconify="ph:translate-duotone" class="w-[20px] h-[20px] text-base-content/70" />
-                      <span
-                        id="selected_language_label"
-                        phx-update="ignore"
-                        class="text-xs text-base-content/70 uppercase"
-                      >{locale}</span>
-                    </label>
-                    <ul
-                      id="language_dropdown_list"
-                      tabindex="0"
-                      class="dropdown-content z-dropdown menu flex-col flex-nowrap p-2 shadow-lg bg-base-100 rounded-box border border-base-content/10 w-52 max-h-60 overflow-y-auto"
-                    >
-                      {#for {lang, name} <-
-                          Bonfire.Common.Localise.locales_with_names(
-                            @__context__[:locales] ||
-                              Bonfire.UI.Common.LivePlugs.Locale.preferred_locales(current_user(@__context__)) ||
-                              Bonfire.Common.Localise.known_locales()
-                          )}
-                        <li>
-                          <label
-                            class="flex items-center gap-2 cursor-pointer"
-                            onclick={"document.getElementById('selected_language_label').innerText='#{to_string(lang)}'"}
-                          >
-                            <input
-                              type="radio"
-                              name="language"
-                              value={to_string(lang)}
-                              checked={(e(@smart_input_opts, :selected_language, nil) || locale) == to_string(lang)}
-                              class="radio radio-sm"
-                            />
-                            {name}
-                          </label>
-                        </li>
-                      {/for}
-                      <li :if={current_user_id(@__context__)} class="border-t border-base-content/10 mt-1 pt-1">
-                        <a
-                          href="/settings/user/preferences/behaviours"
-                          target="_blank"
-                          rel="noopener"
-                          class="flex items-center gap-2 text-xs text-base-content/70 hover:text-primary"
-                          title={l("Open language preferences in a new tab")}
+                  <Dropdown
+                    id="language_dropdown"
+                    position="top"
+                    trigger_class="lang-button btn btn-ghost btn-sm gap-1"
+                    panel_class="flex-col flex-nowrap max-h-60 overflow-y-auto"
+                    label={l("Set post language")}
+                    trigger_opts={[title: l("Set post language")]}
+                  >
+                    <:trigger>
+                      <#Icon iconify="ph:translate-fill" class="w-[20px] h-[20px] text-primary" />
+                      <span id="selected_language_label" phx-update="ignore" class="text-xs text-muted uppercase">{locale}</span>
+                    </:trigger>
+
+                    {#for {lang, name} <-
+                        Bonfire.Common.Localise.locales_with_names(
+                          @__context__[:locales] ||
+                            Bonfire.UI.Common.LivePlugs.Locale.preferred_locales(current_user(@__context__)) ||
+                            Bonfire.Common.Localise.known_locales()
+                        )}
+                      <li>
+                        <label
+                          class="flex items-center gap-2 cursor-pointer"
+                          onclick={"document.getElementById('selected_language_label').innerText='#{to_string(lang)}'"}
                         >
-                          <#Icon iconify="ph:gear-duotone" class="w-4 h-4" />
-                          {l("Manage languages")}
-                        </a>
+                          <input
+                            type="radio"
+                            name="language"
+                            value={to_string(lang)}
+                            checked={(e(@smart_input_opts, :selected_language, nil) || locale) == to_string(lang)}
+                            class="radio radio-sm"
+                          />
+                          {name}
+                        </label>
                       </li>
-                    </ul>
-                  </div>
+                    {/for}
+                    <li :if={current_user_id(@__context__)} class="border-t border-base-content/10 mt-1 pt-1">
+                      <a
+                        href="/settings/user/preferences/behaviours"
+                        target="_blank"
+                        rel="noopener"
+                        class="flex items-center gap-2 text-xs text-muted hover:text-primary"
+                        title={l("Open language preferences in a new tab")}
+                      >
+                        <#Icon iconify="ph:gear-fill" class="w-4 h-4" />
+                        {l("Manage languages")}
+                      </a>
+                    </li>
+                  </Dropdown>
               {/case}
 
-              <div
+              <Dropdown
                 :if={e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"] and
                   @showing_within != :thread_embed}
-                data-position="top"
-                phx-hook="Tooltip"
                 id="smart_input_more_options"
-                class="relative"
+                position="top"
+                trigger_class="emoji-button btn btn-ghost btn-circle"
+                label={l("More options")}
               >
-                <label
-                  class="tooltip-button emoji-button btn btn-ghost btn-circle"
-                  tabindex="0"
-                  role="button"
-                  aria-haspopup="true"
-                  aria-expanded="true"
-                >
-                  <#Icon iconify="ph:dots-three-duotone" class="w-5 h-5 text-base-content/70" />
-                </label>
-                <ul
-                  tabindex="0"
-                  class="tooltip z-tooltip menu shadow-sm bg-base-100 border border-base-content/10 w-52 absolute rounded-xl top-0 left-0 hidden"
-                  role="menu"
-                  aria-orientation="vertical"
-                >
-                  {!-- siren is the sole CW entry point now; toggle_cw/show_cw
-                       handler kept (CW-reply inherit still uses show_cw) --}
-                  {!-- Title toggle button — only for types configured with `toggle: true`. --}
-                  <li :if={@title_toggle}>
-                    <button
-                      type="button"
-                      id="title_btn"
-                      phx-click={JS.toggle(to: "#smart_input_post_title")
-                      |> JS.focus(to: "#smart_input_post_title input")}
-                      class="title-button"
-                    >
-                      <#Icon iconify="ph:text-h-one-duotone" class="w-[20px] h-[20px] text-base-content/70" />
-                      <span class="text-sm">{l("Add a Title")}</span>
-                    </button>
-                  </li>
+                <:trigger>
+                  <#Icon iconify="ph:dots-three-bold" class="w-5 h-5 text-primary" />
+                </:trigger>
 
-                  <li :if={is_nil(@reply_to_id) and
-                    e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}>
-                    <button
-                      type="button"
-                      id="scheduled_at_btn"
-                      phx-click={JS.toggle(to: "#smart_input_scheduled_at")
-                      |> JS.focus(to: "#smart_input_scheduled_at input[type='date']")}
-                      class="title-button"
-                    >
-                      <#Icon iconify="ph:calendar-duotone" class="w-[20px] h-[20px] text-base-content/70" />
-                      <span class="text-sm">{l("Schedule post")}</span>
-                    </button>
-                  </li>
-                </ul>
-              </div>
+                {!-- siren is the sole CW entry point now; toggle_cw/show_cw
+                       handler kept (CW-reply inherit still uses show_cw) --}
+                {!-- Title toggle button — only for types configured with `toggle: true`. --}
+                <li :if={@title_toggle}>
+                  <button
+                    type="button"
+                    id="title_btn"
+                    phx-click={JS.toggle(to: "#smart_input_post_title")
+                    |> JS.focus(to: "#smart_input_post_title input")}
+                    class="title-button"
+                  >
+                    <#Icon iconify="ph:text-h-one-fill" class="w-[20px] h-[20px] text-primary" />
+                    <span class="text-sm">{l("Add a Title")}</span>
+                  </button>
+                </li>
+
+                <li :if={is_nil(@reply_to_id) and
+                  e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}>
+                  <button
+                    type="button"
+                    id="scheduled_at_btn"
+                    phx-click={JS.toggle(to: "#smart_input_scheduled_at")
+                    |> JS.focus(to: "#smart_input_scheduled_at input[type='date']")}
+                    class="title-button"
+                  >
+                    <#Icon iconify="ph:calendar-fill" class="w-[20px] h-[20px] text-primary" />
+                    <span class="text-sm">{l("Schedule post")}</span>
+                  </button>
+                </li>
+              </Dropdown>
 
               {!-- |> JS.show(to: "#smart_input_summary") --}
             </div>
@@ -286,7 +270,7 @@
                 id="submit_btn"
                 x-on:click="$dispatch('submit')"
                 phx-disable-with
-                class="btn btn-primary"
+                class="btn btn-primary btn-sm"
                 disabled={@smart_input_opts[:input_status] != :draft}
               >
                 {!-- <#Icon iconify="mdi:email-fast-outline" class="w-4 h-4" /> --}

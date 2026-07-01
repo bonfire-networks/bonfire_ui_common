@@ -74,7 +74,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
           <%= if Map.has_key?(option.value, :type) && option.value.type == "circle" do %>
             <span class="w-8 h-8 flex items-center place-content-center">
               <div
-                iconify="ph:circle-duotone"
+                iconify="ph:circle-fill"
                 class="inline-block w-4 h-4 text-primary"
                 aria-hidden="true"
               >
@@ -82,7 +82,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
             </span>
           <% end %>
           <%= if is_binary(option.value) do %>
-            <p class="font-semibold text-base-content/70">
+            <p class="font-semibold text-muted">
               {option.label}
             </p>
           <% else %>
@@ -96,7 +96,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
                 {e(option.value, :name, nil) || e(option.value, :profile, :name, nil) ||
                   e(option.value, :named, :name, nil)}
               </p>
-              <p class="font-light -mt-0.5 text-base-content/70">
+              <p class="font-light -mt-0.5 text-muted">
                 {e(option.value, :username, nil) || e(option.value, :character, :username, nil)}
               </p>
             </div>

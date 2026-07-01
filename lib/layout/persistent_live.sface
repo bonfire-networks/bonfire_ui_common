@@ -4,41 +4,60 @@
   phx-hook="KeyboardShortcuts"
   class="contents"
 >
-  <div
-    id="persistent-header"
-    class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between"
-  >
-    <div class="flex pt-safe w-full">
+  <div id="persistent-header" class="px-[40px] bg-base-200 z-sticky sticky top-0">
+    <div class="pt-safe w-full">
       {#if current_user_id(@__context__)}
-        <div class="py-4 gap-6 flex flex-col w-full">
-          <div class="flex items-center justify-between">
+        <div class="flex flex-col w-full">
+          {!-- header row: logo (70² square) + avatar (70² circle), aligned to the 106px page-header --}
+          <div class="flex items-center justify-between lg:pt-base">
             <Bonfire.UI.Common.LogoLinkLive
               href="/"
-              image_class="w-16 h-16"
+              image_class="w-[70px] h-[70px]"
               name_class="text-base font-semibold text-base-content text-relaxed"
             />
             <div>
               <Bonfire.UI.Common.UserMenuLive />
             </div>
           </div>
-          <Bonfire.UI.Common.SmartInputContainerLive
-            :if={!e(@smart_input_opts, :inline_only, nil) and
-              !e(@smart_input_opts, :disable, nil)}
-            id={:smart_input}
-            to_circles={@to_circles}
-            to_boundaries={@to_boundaries}
-            context_id={@context_id}
-            context_group={@context_group}
-            without_icon
-            composer_class="btn btn-primary w-full"
-            smart_input_opts={@smart_input_opts}
-          />
+          {!-- compose: below the header divider, 18px (base) rhythm --}
+          <div class="py-base lg:pt-[36px]">
+            <Bonfire.UI.Common.SmartInputContainerLive
+              :if={!e(@smart_input_opts, :inline_only, nil) and
+                !e(@smart_input_opts, :disable, nil)}
+              id={:smart_input}
+              to_circles={@to_circles}
+              to_boundaries={@to_boundaries}
+              context_id={@context_id}
+              context_group={@context_group}
+              without_icon
+              composer_class="btn-ds-outline focus-ring w-1/2"
+              smart_input_opts={@smart_input_opts}
+            />
+          </div>
+
+          {#case to_string(Bonfire.Common.Settings.get([:ui, :sidebar, :section_divider], "none", :instance))}
+            {#match "line"}
+              <div
+                class=""
+                style="border-top: 1px solid color-mix(in oklch, var(--color-base-content) 10%, transparent)"
+                aria-hidden="true"
+              />
+            {#match "custom"}
+              {#case to_string(Bonfire.Common.Settings.get([:ui, :sidebar, :section_divider_image], "", :instance))}
+                {#match src when src != ""}
+                  <div class="flex justify-center" aria-hidden="true">
+                    <img src={src} class="h-6 w-full object-contain" alt="">
+                  </div>
+                {#match _}
+              {/case}
+            {#match _}
+          {/case}
         </div>
       {/if}
     </div>
   </div>
 
-  {#if current_user_id(@__context__) && @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
+  <!-- {#if current_user_id(@__context__) && @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
     <div role="search" class="w-full px-6 mb-3 block lg:hidden">
       <StatelessComponent
         module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
@@ -46,7 +65,7 @@
         search_limit={5}
       />
     </div>
-  {/if}
+  {/if} -->
 
   {#if current_user_id(@__context__)}
     {#if @__context__[:current_view] not in [

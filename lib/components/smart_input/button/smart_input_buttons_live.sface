@@ -19,31 +19,22 @@
 
               {#case Enum.reject(components ++ [default_smart_input], &(&1 == main_smart_input))}
                 {#match extra_components}
-                  <div
+                  <Dropdown
                     :if={extra_components != [] or main_smart_input != default_smart_input}
-                    class="dropdown dropdown-end"
+                    id="composer_type_dropdown"
+                    position="bottom-end"
+                    trigger_class="w-[40px] h-[40px] rounded-tl-none rounded-bl-none  shadow-none !border-l !border-base-300 items-center place-content-center flex btn-primary btn-square relative rounded btn btn-sm"
+                    panel_class="menu-sm !bg-neutral"
+                    label={l("Choose what to create")}
                   >
-                    <label
-                      class="w-[40px] h-[40px] rounded-tl-none rounded-bl-none  shadow-none !border-l !border-base-300 items-center place-content-center flex btn-primary btn-square relative rounded btn btn-sm"
-                      tabindex="0"
-                      id="composer dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="true"
-                    >
+                    <:trigger>
                       <#Icon iconify="mdi:chevron-down" class="w-6 h-6" />
-                    </label>
-                    <ul
-                      tabindex="0"
-                      class="mt-1 w-[280px] rounded menu-sm !block shadow menu dropdown-content bg-neutral"
-                      role="menu"
-                      aria-orientation="vertical"
-                      aria-labelledby="composer"
-                    >
-                      <li :for={component <- extra_components}>
-                        <SmartInputButtonLive component={component} showing_within={:smart_input} class="button" />
-                      </li>
-                    </ul>
-                  </div>
+                    </:trigger>
+
+                    <li :for={component <- extra_components}>
+                      <SmartInputButtonLive component={component} showing_within={:smart_input} class="button" />
+                    </li>
+                  </Dropdown>
               {/case}
           {/case}
       {/case}

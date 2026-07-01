@@ -73,7 +73,7 @@ defmodule Bonfire.UI.Common.DesignSystem do
       </ButtonLive>
 
       <IconButtonLive
-        icon="ph:heart-duotone"
+        icon="ph:heart-fill"
         aria_label="Like"
         variant="ghost"
         phx_click="like"
@@ -83,4 +83,7 @@ defmodule Bonfire.UI.Common.DesignSystem do
   # Re-export components for convenient aliasing
   defdelegate button(assigns), to: Bonfire.UI.Common.DesignSystem.ButtonLive, as: :render
   defdelegate icon_button(assigns), to: Bonfire.UI.Common.DesignSystem.IconButtonLive, as: :render
+  defdelegate card(assigns), to: Bonfire.UI.Common.DesignSystem.ElementsLive, as: :card
+  defdelegate badge(assigns), to: Bonfire.UI.Common.DesignSystem.ElementsLive, as: :badge
+  defdelegate avatar(assigns), to: Bonfire.UI.Common.DesignSystem.ElementsLive, as: :avatar
 end

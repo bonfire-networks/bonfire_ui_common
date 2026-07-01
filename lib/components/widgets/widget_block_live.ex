@@ -4,14 +4,14 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
   prop widget_title, :string, default: nil
 
   prop class, :css_class,
-    default: "w-full p-4 flex-auto mx-auto rounded-box border border-base-content/20"
+    default: "w-full p-card flex-auto mx-auto border-y-hair border-secondary"
 
   prop title_class, :css_class,
-    default: "pb-2 text-xs font-medium uppercase tracking-wide text-base-content/60"
+    default: "pb-card text-xs font-normal uppercase tracking-wide text-base-content"
 
   prop empty, :boolean, default: false
   prop empty_message, :string, default: nil
-  prop empty_icon, :string, default: "ph:sparkle-duotone"
+  prop empty_icon, :string, default: "ph:sparkle-fill"
 
   @doc "LiveHandler event (`\"Module:event\"`) to bust this widget's cache. When set, a refresh button is shown in the title bar."
   prop reset_cache_event, :string, default: nil

@@ -1,0 +1,31 @@
+{!--
+  Media preview (link/article unfurl) — faithful to the Figma "Media preview"
+  artboard (62:1056). Token-driven: p-card padding, 18-based rhythm, rounded-box
+  hairline-bordered hero, text-display headline, text-body muted meta.
+--}
+<.card data-component="media-preview">
+  {!-- byline --}
+  <header class="flex items-center gap-avatar">
+    <.avatar src={@avatar_url} alt={@display_name} />
+    <div class="min-w-0">
+      <div class="text-body font-medium text-base-content leading-tight truncate">{@display_name}</div>
+      <div class="text-body text-muted leading-tight truncate">{@username} <span class="text-primary">·</span> {@time_text}</div>
+    </div>
+  </header>
+
+  {!-- the link / article unfurl --}
+  <a class="mt-base block text-body text-muted underline truncate" href="#" onclick="return false">{@url}</a>
+
+  <figure class="mt-content rounded-box overflow-hidden border-hair border-secondary">
+    <div class="aspect-[1.91/1] bg-placeholder flex items-center justify-center text-caption uppercase tracking-[0.1em] text-base-content/40">
+      {l("Article image")}
+    </div>
+  </figure>
+
+  {!-- publisher eyebrow + headline (grouped tight) + description --}
+  <div class="mt-base">
+    <div class="text-caption uppercase tracking-[0.04em] text-base-content font-medium">{@source}</div>
+    <h3 class="mt-half text-display font-medium text-base-content tracking-[-0.03em] leading-[25px]">{@headline}</h3>
+    <p class="mt-content text-body text-muted leading-snug">{@description}</p>
+  </div>
+</.card>

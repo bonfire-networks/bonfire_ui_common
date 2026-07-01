@@ -1,6 +1,6 @@
 <div
   data-id="bonfire_live"
-  class="antialiased bg-base-100 lg:bg-base-200 min-h-screen min-h-screen-safe pb-safe"
+  class="antialiased bg-base-100 lg:bg-base-300 min-h-screen min-h-screen-safe pb-safe"
 >
   <a
     href="#main-content"
@@ -9,32 +9,17 @@
     {l("Skip to main content")}
   </a>
 
-  {!-- <div
-        data-id="layout"
-        data-two-columns={@without_secondary_widgets==true && @without_sidebar !=true}
-        data-single-column={@without_sidebar==true}
-        class="lg:max-w-[var(--spacing-1190)] lg:grid-main lg:grid-full w-full px-0 md:px-4 grid gap-0 md:gap-4 widget xl:px-0 mx-auto"
-      >
-        <Bonfire.UI.Common.GuestHeaderLive
-          selected_tab={@selected_tab}
-          page={@page}
-          :if={is_nil(@current_account_id) and @without_sidebar==true}
-        /> --}
-  <!-- <div class="fixed left-0 top-0 h-screen w-[180px] bg-primary">
-    <img src="assets/jacobinlogo.png" alt="Bonfire logo" class="w-full h-12 absolute left-4 top-4" />
-  </div> -->
   <div class={
-    "drawer lg:drawer-open mx-auto w-full",
+    "drawer lg:drawer-open mx-auto w-full lg:bg-base-200 border-secondary lg:border-l-hair xl:border-r-hair",
     "lg:max-w-[var(--spacing-1290)]": !@full_width
   }>
     <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" phx-update="ignore">
-    <div class="drawer-content px-safe lg:pr-1 dock-offset">
+    <div class="drawer-content lg:border-l-hair lg:border-secondary dock-offset">
       <div
         data-id="layout"
         data-two-columns={@without_secondary_widgets == true && @without_sidebar != true}
         data-single-column={@without_sidebar == true}
         class={[
-          "lg:ml-2": @full_width == false,
           "drawer drawer-end": @without_secondary_widgets != true,
           "xl:drawer-open": @without_secondary_widgets != true
         ]}
@@ -46,7 +31,7 @@
           class="drawer-toggle"
           phx-update="ignore"
         />
-        <div class="drawer-content">
+        <div class="drawer-content xl:border-r-hair xl:border-secondary">
           <div
             data-id="main_section"
             data-single-column={@without_sidebar == true}
@@ -65,16 +50,16 @@
                   <main
                     id="main-content"
                     class={
-                      "flex flex-col pb-[1px] px-[1px]",
+                      "flex flex-col",
                       hidden: @hide_main,
                       "border-none": @without_sidebar == true
                     }
                   >
                     <div
                       :if={!@no_header}
-                      class="sticky top-0 pt-safe z-sticky bg-base-100 mb-[1px] lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center lg:min-h-[70px] border-base-content/10 lg:border-b-0 border-b lg:border-transparent"
+                      class="sticky top-0 pt-safe z-[9999999] bg-base-100 mb-[1px] lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center lg:min-h-page-header"
                     >
-                      <div class="flex px-4 xl:px-0 pt-2 lg:pt-0 pb-2 lg:pb-0 place-content-center flex-1 w-full transition-colors duration-150 ease-in-out">
+                      <div class="flex pt-2 lg:pt-0 pb-2 lg:pb-0 place-content-center flex-1 w-full transition-colors duration-150 ease-in-out">
                         <StatelessComponent
                           module={maybe_component(Bonfire.UI.Common.PageHeaderLive, @__context__)}
                           page={@page}
@@ -112,64 +97,43 @@
             data-id="right_nav_and_widgets"
             role="complementary"
             aria-label={l("Widgets sidebar")}
-            class="w-[340px] bg-base-200 lg:bg-transparent min-h-screen lg:min-h-0 flex flex-col h-full overflow-y-auto pt-safe lg:pt-0 px-4 lg:px-2 lg:ml-5"
+            class="w-rail bg-base-200 lg:bg-transparent xl:border-l-hair xl:border-secondary min-h-screen lg:min-h-0 flex flex-col h-full overflow-y-auto pt-safe lg:pt-0 xl:ml-feed"
           >
-            {#if not is_nil(@current_user_id) and
-                socket_connected?(@__context__)}
-              <div role="search" class="w-full h-[70px] flex items-center">
+            <div
+              :if={not is_nil(@current_user_id) and socket_connected?(@__context__)}
+              class="shrink-0 p-base flex items-center"
+            >
+              <div role="search" class="w-full">
                 <StatelessComponent
                   module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
                   id="sidebar-search"
                   search_limit={5}
                 />
               </div>
-            {/if}
+            </div>
             <div
               data-id="secondary_sidebar_widgets"
-              class={
-                "overflow-x-hidden p-[1px] overflow-y-auto flex-1 flex flex-col",
-                "mt-4": is_nil(@current_user_id)
-              }
+              class="overflow-x-hidden overflow-y-auto flex-1 flex flex-col"
             >
               <Bonfire.UI.Common.SidebarWidgetsLive
                 widgets={if @preview_sidebar_widgets != [], do: @preview_sidebar_widgets, else: @sidebar_widgets}
                 key={:secondary}
                 page={@page}
                 selected_tab={@selected_tab}
-                container_class="flex flex-col gap-5 mb-4"
+                container_class="flex flex-col gap-base mb-4"
                 parent_id="layout_right"
               />
 
-              <div class="">
-                <!-- <div class="text-sm pt-4 border-primary/30 border-t text-left font-bold">{rich(
-                    Config.get(
-                      [:ui, :theme, :instance_tagline],
-                      "Welcome to #{Bonfire.Application.name_and_flavour()}"
-                    )
-                  )}</div>
-                <div class="prose prose-sm text-sm/6">{rich(Config.get([:ui, :theme, :instance_description]))}</div> -->
-
-                <div :if={!@current_user_id} class="flex flex-col gap-2 mb-3">
-                  <LinkLive to={path(:login, :index)} class="btn-primary btn" parent_id="layout">{l("Log in")}</LinkLive>
+              <div>
+                <!-- <div :if={!@current_user_id} class="flex flex-col gap-2 mb-3">
+                  <LinkLive to={path(:login, :index)} class="btn btn-primary" parent_id="layout">{l("Log in")}</LinkLive>
 
                   {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-                    <LinkLive to={path(:signup)} class="btn btn-primary btn-outline" parent_id="layout">{l("Create account")}</LinkLive>
+                    <LinkLive to={path(:signup)} class="btn-ds-outline" parent_id="layout">{l("Create account")}</LinkLive>
                   {/if}
-                </div>
-
-                <!-- <Bonfire.UI.Common.NextGenImageLive
-                  :if={Config.get([:ui, :theme, :instance_image], nil)}
-                  src={Config.get([:ui, :theme, :instance_image], nil)}
-                  alt={l("Banner for %{instance}",
-                    instance: Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())
-                  )}
-                  class="h-[95px] mb-2 object-cover w-full rounded bg-base-300"
-                /> -->
-
-                <div class="text-xs text-base-content/70">
-                  <div class="flex flex-col gap-2 pb-2">
-                    <Bonfire.UI.Common.ImpressumLive />
-                  </div>
+                </div> -->
+                <div class="flex flex-col gap-2 pb-2">
+                  <Bonfire.UI.Common.ImpressumLive />
                 </div>
               </div>
             </div>
@@ -187,7 +151,7 @@
         id="nav_sidebar"
         data-id="nav_sidebar"
         data-sidebar-minimal={@without_sidebar == :minimal}
-        class="w-80 px-4 px-safe lg:px-0 lg:mr-5 lg:w-[260px] bg-base-200 self-stretch flex flex-col overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-0 lg:h-screen lg:pb-0"
+        class="w-80 px-4 px-safe lg:px-0 lg:mr-feed lg:w-rail lg:border-r-hair lg:border-secondary bg-base-200 self-stretch flex flex-col overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-0 lg:h-screen lg:pb-0"
       >
         <div class="flex flex-col flex-1 min-h-full lg:min-h-0 pb-[80px] lg:pb-0">
           {!-- Skeleton mirroring PersistentLive's shape. Always rendered alongside the sticky LV;
@@ -196,32 +160,26 @@
                the sticky child's separate channel join is in flight. --}
           {#if @current_user_id && @without_sidebar != true}
             <div data-role="persistent_skeleton" class="block w-full lg:shrink-0" aria-hidden="true">
-              <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
-                <div class="flex pt-safe w-full">
-                  <div class="py-4 gap-6 flex flex-col w-full">
-                    <div class="flex items-center justify-between">
+              {!-- mirrors PersistentLive's #persistent-header exactly (logo 70² + avatar 60² ring/gear,
+                   40px inset, pt-base header row, 48px → compose) so there's no reflow when the sticky LV fills in --}
+              <div class="px-[40px] bg-base-200 z-sticky sticky top-0">
+                <div class="pt-safe w-full">
+                  <div class="flex flex-col w-full">
+                    <div class="flex items-center justify-between lg:pt-base">
                       <Bonfire.UI.Common.LogoLinkLive
                         href="/"
-                        image_class="w-16 h-16"
+                        image_class="w-[70px] h-[70px]"
                         name_class="text-base font-semibold text-base-content text-relaxed"
                       />
-                      <div class="relative w-full">
-                        <div class="flex w-full ml-2 justify-end">
-                          <div class="btn btn-lg btn-circle">
-                            <div
-                              style="border-width: 2px"
-                              class="border rounded-full p-0 border-primary/50 border-2 relative"
-                            >
-                              <div class="skeleton inline-block rounded-full w-10 h-10" />
-                            </div>
-                          </div>
-                        </div>
+                      <div class="relative">
+                        <div class="skeleton rounded-full w-[50px] h-[50px] ring-[0.7px] ring-primary" />
+                        <span class="rounded-full bg-base-100 absolute -right-1 -bottom-1 leading-none">
+                          <#Icon iconify="ph:gear-fill" class="w-6 h-6 text-primary" />
+                        </span>
                       </div>
                     </div>
-                    <div class="flex-1">
-                      <div class="sticky top-0 flex items-center flex-1 w-full justify-end lg:justify-start">
-                        <div class="skeleton rounded-full w-full h-12" />
-                      </div>
+                    <div class="py-base lg:pt-[36px]">
+                      <div class="skeleton rounded-field h-[41px] w-1/2" />
                     </div>
                   </div>
                 </div>
@@ -301,10 +259,10 @@
   </div>
   <div
     :if={@no_header != true || current_user(@__context__)}
-    class="dock dock-sm bg-base-100/85 backdrop-blur-sm z-fixed lg:hidden"
+    class="dock dock-sm bg-base-100/85 backdrop-blur-sm z-fixed lg:hidden text-primary"
   >
     <LinkLive to="/" class={"dock-active": @selected_tab == "home"}>
-      <#Icon iconify="ph:house-duotone" class="size-6" aria-hidden="true" />
+      <#Icon iconify="ph:house-fill" class="size-6" aria-hidden="true" />
       <span class="sr-only">{l("Home")}</span>
     </LinkLive>
 
@@ -316,7 +274,7 @@
           @selected_tab in [:search, "Bonfire.Data.Identity.User", "Bonfire.Data.Social.Post"]
       }
     >
-      <#Icon iconify="ph:magnifying-glass-duotone" class="size-6" aria-hidden="true" />
+      <#Icon iconify="ph:magnifying-glass-fill" class="size-6" aria-hidden="true" />
       <span class="sr-only">{l("Search")}</span>
     </LinkLive>
 
@@ -327,7 +285,7 @@
       phx-target="#smart_input"
       aria-label={l("Compose")}
     >
-      <#Icon iconify="ph:note-pencil-duotone" class="size-6" aria-hidden="true" />
+      <#Icon iconify="ph:note-pencil-fill" class="size-6" aria-hidden="true" />
       <span class="sr-only">{l("Compose")}</span>
     </button>
 
@@ -337,7 +295,7 @@
       class={"dock-active": @selected_tab == :notifications}
     >
       <span class="relative inline-flex">
-        <#Icon iconify="ph:bell-duotone" class="size-6" aria-hidden="true" />
+        <#Icon iconify="ph:bell-fill" class="size-6" aria-hidden="true" />
         <span class="absolute -top-2 -right-2">
           <StatefulComponent
             id="dock-notifications-badge"
@@ -350,12 +308,12 @@
     </LinkLive>
 
     <label :if={current_user(@__context__)} for="sidebar-drawer" aria-label={l("Open menu")}>
-      <#Icon iconify="ph:sidebar-simple-duotone" class="size-6" aria-hidden="true" />
+      <#Icon iconify="ph:sidebar-simple-fill" class="size-6" aria-hidden="true" />
       <span class="sr-only">{l("Menu")}</span>
     </label>
 
     <LinkLive :if={!current_user(@__context__)} to={path(:login, :index)} class="dock-active">
-      <#Icon iconify="ph:sign-in-duotone" class="size-6" aria-hidden="true" />
+      <#Icon iconify="ph:sign-in-fill" class="size-6" aria-hidden="true" />
       <span class="sr-only">{l("Login")}</span>
     </LinkLive>
 
@@ -363,7 +321,7 @@
       :if={!current_user(@__context__) && !Bonfire.Me.Accounts.instance_is_invite_only?()}
       to={path(:signup)}
     >
-      <#Icon iconify="ph:user-plus-duotone" class="size-6" aria-hidden="true" />
+      <#Icon iconify="ph:user-plus-fill" class="size-6" aria-hidden="true" />
       <span class="sr-only">{l("Sign up")}</span>
     </LinkLive>
   </div>

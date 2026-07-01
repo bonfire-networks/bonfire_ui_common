@@ -1,47 +1,27 @@
-<div data-position="top-end" phx-hook="Tooltip" id="user_more_menu_links" class="relative w-full">
-  <div class="flex w-full ml-2">
-    <label
-      class="tooltip-button btn btn-lg btn-circle"
-      tabindex="0"
-      role="button"
-      id="user-profile-menu"
-      aria-haspopup="true"
-      aria-expanded="true"
-      aria-label={l("User menu")}
-    >
-      <div
-        style="border-width: 2px"
-        class="border rounded-full p-0 border-primary/50 border-2 hover:border-primary transition-colors relative"
-      >
-        <Bonfire.UI.Common.AvatarLive
-          bg_class="rounded-full"
-          title={e(current_user(@__context__), :profile, :name, "Anon")}
-          class="inline-block object-cover cursor-pointer rounded-full w-10 h-10"
-          src={Media.avatar_url(current_user(@__context__))}
-          user_id={current_user_id(@__context__)}
-          parent_id="user_menu"
-          is_remote={false}
-        />
-        <span
-          style="bottom: -4px; right: -4px"
-          class="rounded-full bg-base-100 absolute -right-1 -bottom-1"
-        >
-          <#Icon iconify="ph:list-duotone" class="w-5 h-5 text-primary" />
-        </span>
-      </div>
+<Dropdown
+  id="user_more_menu_links"
+  position="top-end"
+  wrapper_class="w-full"
+  trigger_class="flex w-full ml-2 cursor-pointer"
+  label={l("User menu")}
+>
+  <:trigger>
+    <div class="relative">
+      <Bonfire.UI.Common.AvatarLive
+        ring
+        bg_class="rounded-full"
+        title={e(current_user(@__context__), :profile, :name, "Anon")}
+        class="inline-block object-cover cursor-pointer rounded-full w-[50px] h-[50px]"
+        src={Media.avatar_url(current_user(@__context__))}
+        user_id={current_user_id(@__context__)}
+        parent_id="user_menu"
+        is_remote={false}
+      />
+      <span class="rounded-full bg-base-100 absolute -right-1 -bottom-1 leading-none">
+        <#Icon iconify="ph:gear-fill" class="w-6 h-6 text-primary" />
+      </span>
+    </div>
+  </:trigger>
 
-      {!-- <#Icon iconify="ph:dots-three-outline-duotone" class="w-4 h-4 opacity/70" /> --}
-    </label>
-  </div>
-  <!-- phx-update="ignore" -->
-  <ul
-    tabindex="0"
-    class="tooltip z-tooltip menu shadow-lg bg-base-100 min-w-52 w-full absolute rounded-box top-0 right-0 hidden"
-    role="menu"
-    id="user_more_menu_links_list"
-    aria-orientation="vertical"
-    aria-labelledby="user-profile-menu"
-  >
-    <Bonfire.UI.Common.UserMenuLinksLive page={@page} />
-  </ul>
-</div>
+  <Bonfire.UI.Common.UserMenuLinksLive page={@page} />
+</Dropdown>

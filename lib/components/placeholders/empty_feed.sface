@@ -16,7 +16,7 @@
             else: l("This feed is empty")
           )
         )}</div>
-      <div class="mt-1 text-sm font-medium text-base-content/70">{e(@feedback_message, l("Take a deep breath..."))}</div>
+      <div class="mt-1 text-sm font-medium text-muted">{e(@feedback_message, l("Take a deep breath..."))}</div>
     </#slot>
   </div>
 </div>

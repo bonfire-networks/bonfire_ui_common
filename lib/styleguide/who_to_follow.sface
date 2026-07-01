@@ -1,0 +1,21 @@
+{!--
+  Who-to-follow card — composed from design-system primitives
+  (<.card>, <.avatar>, <.button>) + theme tokens.
+--}
+<.card data-component="who-to-follow">
+  <header class="flex items-center gap-avatar">
+    <.avatar src={@avatar_url} alt={@display_name} />
+    <div class="min-w-0">
+      <div class="text-body font-medium text-base-content leading-tight truncate">{@display_name}</div>
+      <div class="text-body text-muted leading-tight truncate">{@username}</div>
+    </div>
+  </header>
+
+  <p class="mt-base text-body text-base-content tracking-[-0.3px]">{@bio}</p>{!-- header→bio = --spacing-base (18) --}
+
+  {#if @following}
+    <.button variant="muted" full_width icon_left="ph:check-bold" class="mt-row">{@following_label}</.button>
+  {#else}
+    <.button variant="primary" full_width icon_left="ph:users-fill" class="mt-row">{@follow_label}</.button>
+  {/if}
+</.card>

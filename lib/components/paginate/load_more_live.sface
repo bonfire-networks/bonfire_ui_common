@@ -24,7 +24,10 @@
     {...@opts}
   >
     <span
-      class="btn btn-soft phx-click-loading:bg-base-content/10 phx-click-loading:pointer-events-none phx-click-loading:cursor-not-allowed phx-scroll-loading:opacity-15 phx-scroll-loading:cursor-not-allowed relative"
+      class={[
+        @button_class || "btn btn-soft",
+        "phx-click-loading:bg-base-content/10 phx-click-loading:pointer-events-none phx-click-loading:cursor-not-allowed phx-scroll-loading:opacity-15 phx-scroll-loading:cursor-not-allowed relative"
+      ]}
       x-cloak={!@hide_guest_fallback}
       x-show={if @hide_guest_fallback, do: nil, else: "show"}
     >
@@ -66,7 +69,7 @@
           alt="bonfire"
           class="h-32 mx-auto"
         />
-        <p class="text-sm text-base-content/70 font-medium">{l("That's all folks...")}</p>
+        <p class="text-sm text-muted font-medium">{l("That's all folks...")}</p>
       </div>
     </#slot>
   {/if}

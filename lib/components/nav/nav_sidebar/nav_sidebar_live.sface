@@ -1,5 +1,5 @@
 {#if current_user_id(@__context__)}
-  <div class="flex flex-col flex-1 h-full px-3 lg:px-0">
+  <div class="flex flex-col flex-1 h-full px-card">
     <Bonfire.UI.Common.ExtensionMenuNavLive
       parent_id="nav_sidebar"
       selected_tab={@selected_tab}
@@ -14,13 +14,6 @@
     />
   </div>
 {#else}
-  {!-- <div class="px-5 lg:pl-1 lg:pr-0 bg-base-200 lg:bg-base-200 z-sticky sticky top-0 flex items-center lg:min-h-[48px] justify-between">
-    <div class="flex pt-safe w-full">
-      <div class="pt-2 flex items-center justify-between">
-        <Bonfire.UI.Common.LogoLinkLive href="/" />
-      </div>
-    </div>
-  </div> --}
   {#case to_string(Bonfire.Common.Settings.get([:ui, :sidebar, :section_divider], "none", :instance))}
     {#match "line"}
       <div
@@ -43,11 +36,11 @@
       <li class="p-0 m-0">
         <LinkLive
           to="/feed"
-          class="flex items-center w-full gap-3 lg:px-2 lg:py-2"
+          class="flex items-center w-full !gap-[16px] lg:px-2 lg:py-2"
           parent_id="nav_sidebar"
         >
-          <#Icon iconify="ph:compass-duotone" class="w-6 h-6 text-primary" />
-          <div class="opacity-80 font-medium text-base">{l("Explore")}</div>
+          <#Icon iconify="ph:compass-fill" class="w-5 h-5 text-primary" />
+          <div class={nav_text_class(@__context__, @page, pages: ["home"], paths: ["/feed", "/"])}>{l("Explore")}</div>
         </LinkLive>
       </li>
       {!-- 
@@ -55,57 +48,57 @@
         <li class="p-0 m-0 rounded-md">
           <LinkLive to="/feed" class="flex items-center w-full gap-4 px-2 py-2 rounded-md">
             <#Icon iconify="fluent:live-24-regular" class="w-7 h-7 text-base-content/80" />
-            <div class="opacity-80 font-medium text-base">{l("Feeds")}</div>
+            <div class="text-base font-normal text-base-content">{l("Feeds")}</div>
           </LinkLive>
         </li> --}
       <li class="p-0 m-0">
         <LinkLive
           to="/about"
-          class="flex items-center w-full gap-3 lg:px-2 lg:py-2"
+          class="flex items-center w-full !gap-[16px] lg:px-2 lg:py-2"
           parent_id="nav_sidebar"
         >
-          <#Icon iconify="ph:info-duotone" class="w-6 h-6 text-primary" />
-          <div class="opacity-80 font-medium text-base">{l("About")}</div>
+          <#Icon iconify="ph:info-fill" class="w-5 h-5 text-primary" />
+          <div class={nav_text_class(@__context__, @page, pages: ["about"], paths: ["/about"])}>{l("About")}</div>
         </LinkLive>
       </li>
       <li class="p-0 m-0" :if={extension_enabled?(:bonfire_ui_groups, @__context__)}>
         <LinkLive
           to="/groups"
-          class="flex items-center w-full gap-3 lg:px-2 lg:py-2"
+          class="flex items-center w-full !gap-[16px] lg:px-2 lg:py-2"
           parent_id="nav_sidebar"
         >
-          <#Icon iconify="ph:users-three-duotone" class="w-6 h-6 text-primary" />
-          <div class="opacity-80 font-medium text-base">{l("Public Groups")}</div>
+          <#Icon iconify="ph:users-three-fill" class="w-5 h-5 text-primary" />
+          <div class={nav_text_class(@__context__, @page, pages: ["groups"], paths: ["/groups"])}>{l("Public Groups")}</div>
         </LinkLive>
       </li>
       <li :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests} class="p-0 m-0">
         <LinkLive
           to="/users"
-          class="flex items-center w-full gap-3 lg:px-2 lg:py-2"
+          class="flex items-center w-full !gap-[16px] lg:px-2 lg:py-2"
           parent_id="nav_sidebar"
         >
-          <#Icon iconify="ph:users-four-duotone" class="w-6 h-6 text-primary" />
-          <div class="opacity-80 font-medium text-base">{l("Members")}</div>
+          <#Icon iconify="ph:users-four-fill" class="w-5 h-5 text-primary" />
+          <div class={nav_text_class(@__context__, @page, pages: ["users"], paths: ["/users"])}>{l("Members")}</div>
         </LinkLive>
       </li>
       <li class="p-0 m-0">
         <LinkLive
           to="/conduct"
-          class="flex items-center w-full gap-3 lg:px-2 lg:py-2"
+          class="flex items-center w-full !gap-[16px] lg:px-2 lg:py-2"
           parent_id="nav_sidebar"
         >
-          <#Icon iconify="ph:newspaper-duotone" class="w-6 h-6 text-primary" />
-          <div class="opacity-80 font-medium text-base">{l("Code of Conduct")}</div>
+          <#Icon iconify="ph:newspaper-fill" class="w-5 h-5 text-primary" />
+          <div class={nav_text_class(@__context__, @page, pages: ["conduct"], paths: ["/conduct"])}>{l("Code of Conduct")}</div>
         </LinkLive>
       </li>
       {!-- <li class="p-0 m-0">
           <LinkLive
             to="/admins"
-            class="flex items-center w-full gap-3 lg:px-2 lg:py-2"
+            class="flex items-center w-full !gap-[16px] lg:px-2 lg:py-2"
             parent_id="nav_sidebar"
           >
             <#Icon iconify="ri:admin-fill" class="w-4 h-4" />
-            <div class="font-normal hidden lg:block text-base-content/90 flex-1 text-[15px] widget_text">{l("Admins")}</div>
+            <div class="font-normal hidden lg:block text-base-content flex-1 text-[15px] widget_text">{l("Admins")}</div>
           </LinkLive>
         </li> --}
     </ul>

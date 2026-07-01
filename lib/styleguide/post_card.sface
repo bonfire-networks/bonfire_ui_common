@@ -1,0 +1,17 @@
+{!--
+  Post card — composed from the design-system HEEx primitives (<.card>, <.avatar>)
+  + theme spacing/type tokens. Reference component for the Jacobin design system.
+--}
+<.card data-component="post-card">
+  <header class="flex items-center gap-avatar">
+    <.avatar src={@avatar_url} alt={@display_name} />
+    <div class="min-w-0">
+      <div class="text-body font-medium text-base-content leading-tight truncate">{@display_name}</div>
+      <div class="text-body text-muted leading-tight truncate">{@username} <span class="text-primary">·</span> {@time_text}</div>
+    </div>
+  </header>
+
+  <p class="mt-base text-body text-base-content">{@body}</p>{!-- header→body = --spacing-base (18) --}
+
+  <div class="mt-base text-right text-caption uppercase text-base-content">{@more_label}</div>
+</.card>

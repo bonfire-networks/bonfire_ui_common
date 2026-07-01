@@ -866,6 +866,7 @@ defmodule Bonfire.UI.Common.Web do
         alias Bonfire.UI.Common.LazyImage
         alias Bonfire.UI.Common.LinkLive
         alias Bonfire.UI.Common.LinkPatchLive
+        alias Bonfire.UI.Common.DropdownLive, as: Dropdown
         alias Bonfire.UI.Common.C
 
         alias Iconify.Icon

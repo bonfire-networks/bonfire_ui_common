@@ -11,6 +11,8 @@ defmodule Bonfire.UI.Common.AvatarLive do
   # prop size, :any, default: nil
   prop wrapper_class, :css_class, default: "border-0 avatar !flex w-full"
   prop class, :css_class, default: "w-12 h-12 rounded-full bg-base-100 h-full"
+  # show the design-system avatar ring (0.7px inset primary red)
+  prop ring, :boolean, default: false
 
   prop bg_class, :css_class,
     default: ["h-full flex items-centeer place-conten-center w-full flex-1"]

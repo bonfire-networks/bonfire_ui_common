@@ -23,7 +23,7 @@
     "btn-disabled": e(@smart_input_opts, :input_status, nil) == :submit
   }
 >
-  <span :if={!@as_icon and @prompt} class="text-sm font-medium">
+  <span :if={!@as_icon and @prompt} class="text-sm">
     {if e(@smart_input_opts, :input_status, nil) == :draft,
       do: l("Continue"),
       else: @prompt || l("Compose")}
@@ -45,7 +45,7 @@
     {#match :draft}
       {!-- draft in progress --}
       <#Icon
-        iconify="ph:pencil-line-duotone"
+        iconify="ph:pencil-line-fill"
         aria-hidden="true"
         class={
           @icon_class,
@@ -65,7 +65,7 @@
           />
         {#else}
           <#Icon
-            iconify="ph:note-pencil-duotone"
+            iconify="ph:note-pencil-fill"
             aria-hidden="true"
             class={
               @icon_class,

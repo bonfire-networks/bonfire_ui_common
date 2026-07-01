@@ -65,7 +65,7 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
 
   - `xs` - Extra small (32px height, smaller touch target - use sparingly)
   - `sm` - Small (36px height)
-  - `md` - Medium (44px height, default, meets touch target)
+  - `md` - Medium (41px height, default)
   - `lg` - Large (52px height)
   """
 
@@ -78,9 +78,9 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
   @doc "Button style variant"
   attr :variant, :string,
     default: "primary",
-    values: ~w(primary secondary ghost outline danger soft)
+    values: ~w(primary secondary ghost outline muted danger soft)
 
-  @doc "Button size - md is recommended for touch targets"
+  @doc "Button size - md is the default"
   attr :size, :string, default: "md", values: ~w(xs sm md lg)
 
   @doc "Full width button"
@@ -247,14 +247,20 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
   defp variant_class("primary"), do: "btn-primary"
   defp variant_class("secondary"), do: "btn-secondary"
   defp variant_class("ghost"), do: "btn-ghost"
-  defp variant_class("outline"), do: "btn-outline"
+
+  # single source: the shared .btn-ds-outline recipe (subtle base-300 hover, 1.4px ring) — see app.css
+  defp variant_class("outline"), do: "btn-ds-outline"
+  # muted outline (Figma "Du folgst" / "Siehe Ergebnisse"): secondary border + base-content text
+  defp variant_class("muted"),
+    do: "bg-base-200 text-base-content border-secondary hover:bg-base-300"
+
   defp variant_class("danger"), do: "btn-error"
   defp variant_class("soft"), do: "btn-soft"
 
-  # Size styles - md (44px) is the minimum recommended touch target
+  # Size styles - md (41px) is the default size
   defp size_class("xs"), do: "btn-xs h-8 min-h-8"
   defp size_class("sm"), do: "btn-sm h-9 min-h-9"
-  defp size_class("md"), do: "h-11 min-h-11"
+  defp size_class("md"), do: "h-[41px] min-h-[41px]"
   defp size_class("lg"), do: "btn-lg h-13 min-h-13"
 
   # Check if this button will have automatic loading states

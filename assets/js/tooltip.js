@@ -18,6 +18,8 @@ TooltipHooks.Tooltip = {
 		const position = tooltipWrapper.getAttribute("data-position");
 		const trigger = tooltipWrapper.getAttribute("data-trigger");
 		const noFlip = tooltipWrapper.getAttribute("data-no-flip") === "true";
+		const closeOnInsideClick =
+			tooltipWrapper.getAttribute("data-close-on-inside-click") === "true";
 		const strategy =
 			tooltipWrapper.getAttribute("data-strategy") === "fixed"
 				? "fixed"
@@ -204,6 +206,12 @@ TooltipHooks.Tooltip = {
 				if (!tooltip.contains(event.target) && !button.contains(event.target)) {
 					hideTooltip();
 				}
+			},
+			// select-style dropdowns: close once an actionable item inside is picked
+			insideClick: (event) => {
+				if (event.target.closest("button, a, [phx-click], [data-scope], [data-role]")) {
+					hideTooltip();
+				}
 			}
 		};
 
@@ -218,6 +226,9 @@ TooltipHooks.Tooltip = {
 		} else {
 			button.addEventListener('click', handlers.buttonClick);
 			document.addEventListener('click', handlers.clickOutside, true);
+			if (closeOnInsideClick) {
+				tooltip.addEventListener('click', handlers.insideClick);
+			}
 		}
 
 		// Cleanup function
@@ -236,6 +247,9 @@ TooltipHooks.Tooltip = {
 			} else {
 				button.removeEventListener('click', handlers.buttonClick);
 				document.removeEventListener('click', handlers.clickOutside, true);
+				if (closeOnInsideClick) {
+					tooltip.removeEventListener('click', handlers.insideClick);
+				}
 			}
 		};
 	},

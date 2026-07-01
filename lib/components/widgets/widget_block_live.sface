@@ -11,11 +11,14 @@
           {...phx_values(@reset_cache_values)}
           onclick="this.dataset.done='1'"
           title={l("Refresh")}
-          class="group btn btn-circle btn-xs btn-ghost"
+          class="group btn btn-circle btn-sm btn-outline border-secondary"
           data-role="widget-reset"
         >
           <span class="sr-only">{l("Refresh")}</span>
-          <#Icon iconify="ph:arrow-counter-clockwise-duotone" class="w-4 h-4 group-data-[done]:hidden" />
+          <#Icon
+            iconify="ph:arrow-counter-clockwise-fill"
+            class="w-4 h-4 text-primary group-data-[done]:hidden"
+          />
           <#Icon iconify="ph:check-bold" class="hidden w-4 h-4 text-success group-data-[done]:inline" />
         </button>
       {/if}
@@ -24,7 +27,7 @@
   {#if @empty}
     <#slot {@empty_state}>
       <div
-        class="flex flex-col items-center gap-2 py-6 text-center text-sm text-base-content/55"
+        class="flex flex-col items-center gap-2 py-6 text-center text-sm text-muted"
         data-role="widget-empty-state"
       >
         <Iconify.iconify icon={@empty_icon} class="h-6 w-6 text-base-content/40" aria-hidden="true" />

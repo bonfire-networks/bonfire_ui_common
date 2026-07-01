@@ -70,7 +70,6 @@ media-player {
   }
 }
 
-/* Smooth animation easing functions */
 :root {
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -143,11 +142,7 @@ body {
 
 .h-20 {
   height: 5rem;
-  /* 80px */
 }
-
-/* View Transitions API - Modern smooth page transitions */
-
 
 .avoid-scroll {
   touch-action: none;
@@ -155,7 +150,6 @@ body {
   -webkit-overflow-scrolling: touch
 }
 
-/* NProgress customization for better visibility */
 #nprogress .bar {
   background: var(--color-primary, #3b82f6) !important;
   height: 4px !important;
@@ -304,10 +298,7 @@ label[for],
   }
 }
 
-/* ============================================
-   FOCUS-VISIBLE UTILITIES
-   Show focus indicators only for keyboard navigation
-   ============================================ */
+/* Show focus indicators only for keyboard navigation */
 .focus-ring:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
@@ -349,10 +340,6 @@ textarea:focus-visible {
    with one explicit @source pair per extension. */
 @import "./_tailwind_sources.css";
 @source "../../../config/current_flavour/assets/components.css";
-/* NOTE: icons.css is NOT imported here on purpose — it is already shipped as its
-   own non-render-blocking stylesheet (endpoint_template.ex include_assets/2 :bottom
-   + Early Hints preload in common_routes.ex). Importing it here would double-ship
-   ~530KB of icon data-URIs inside the render-blocking main bundle. */
 @plugin "@tailwindcss/typography";
 @plugin "tailwindcss-safe-area";
 
@@ -385,85 +372,32 @@ textarea:focus-visible {
   themes: light --default, silk, caramellatte, nord, cmyk, acid, autumn, lofi, pastel, fantasy, cupcake, bumblebee, emerald, corporate, dark --prefersdark, synthwave, forest, dracula, aqua, luxury, night, coffee, dim, sunset, abyss, retro, cyberpunk, valentine, halloween, garden;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
   color-scheme: light;
- --color-base-100: oklch(100% 0 0);
-  --color-base-200: oklch(96.4% 0.004 60);
-  --color-base-300: oklch(93.6% 0.012 55);
-  --color-base-content: oklch(27.5% 0.018 270);
-  --color-primary: oklch(65.6% 0.21 41);
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(99% 0 0);
+  --color-base-300: oklch(98% 0 0);
+  --color-base-content: oklch(24% 0 0);
+  --color-primary: oklch(52% 0.2 27);
   --color-primary-content: oklch(100% 0 0);
-  --color-secondary: oklch(55% 0.14 285);
-  --color-secondary-content: oklch(98% 0.005 285);
-  --color-accent: oklch(68% 0.16 55);
-  --color-accent-content: oklch(22% 0.04 55);
-  --color-neutral: oklch(32% 0.02 255);
-  --color-neutral-content: oklch(96% 0.005 255);
-  --color-info: oklch(62% 0.17 230);
-  --color-info-content: oklch(98% 0.005 230);
-  --color-success: oklch(74% 0.09 155);
+  --color-secondary: oklch(90% 0 0);
+  --color-secondary-content: oklch(35% 0 0);
+  --color-accent: oklch(58% 0.17 27);
+  --color-accent-content: oklch(100% 0 0);
+  --color-neutral: oklch(30% 0 0);
+  --color-neutral-content: oklch(97% 0 0);
+  --color-info: oklch(52% 0.11 235);
+  --color-info-content: oklch(100% 0 0);
+  --color-success: oklch(52% 0.12 150);
   --color-success-content: oklch(100% 0 0);
-  --color-warning: oklch(78% 0.15 75);
-  --color-warning-content: oklch(22% 0.04 75);
-  --color-error: oklch(63% 0.2 15);
+  --color-warning: oklch(64% 0.13 85);
+  --color-warning-content: oklch(24% 0.04 85);
+  --color-error: oklch(57% 0.19 25);
   --color-error-content: oklch(100% 0 0);
   --radius-selector: 2rem;
-  --radius-field: 1rem;
-  --radius-box: 1rem;
-  --size-selector: 0.25rem;
-  --size-field: 0.25rem;
-  --border: 1px;
-  --depth: 0.3;
-  --noise: 0.1;
-}
-
-@plugin "daisyui/theme" {
-  name: "dark";
-  prefersdark: true;
-  color-scheme: dark;
-  --color-base-100: oklch(28.822% 0.022 277.508);
-  --color-base-200: oklch(26.805% 0.02 277.508);
-  --color-base-300: oklch(24.787% 0.019 277.508);
-  --color-base-content: oklch(97.747% 0.007 106.545);
-  --color-primary: oklch(70% 0.16 55);
-  --color-primary-content: oklch(100% 0 0);
-  --color-secondary: oklch(74.202% 0.148 301.883);
-  --color-secondary-content: oklch(14.84% 0.029 301.883);
-  --color-accent: oklch(83.392% 0.124 66.558);
-  --color-accent-content: oklch(16.678% 0.024 66.558);
-  --color-neutral: oklch(39.445% 0.032 275.524);
-  --color-neutral-content: oklch(87.889% 0.006 275.524);
-  --color-info: oklch(88.263% 0.093 212.846);
-  --color-info-content: oklch(17.652% 0.018 212.846);
-  --color-success: oklch(87.099% 0.219 148.024);
-  --color-success-content: oklch(17.419% 0.043 148.024);
-  --color-warning: oklch(95.533% 0.134 112.757);
-  --color-warning-content: oklch(19.106% 0.026 112.757);
-  --color-error: oklch(68.22% 0.206 24.43);
-  --color-error-content: oklch(13.644% 0.041 24.43);
-  --radius-selector: 2rem;
-  --radius-field: 1rem;
+  --radius-field: 0.75rem;
   --radius-box: 1rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
@@ -472,8 +406,39 @@ textarea:focus-visible {
   --noise: 0;
 }
 
-
-
+@plugin "daisyui/theme" {
+  name: "dark";
+  prefersdark: true;
+  color-scheme: dark;
+  --color-base-100: oklch(23% 0 0);
+  --color-base-200: oklch(20.5% 0 0);
+  --color-base-300: oklch(17% 0 0);
+  --color-base-content: oklch(80% 0 0);
+  --color-primary: oklch(66% 0.21 27);
+  --color-primary-content: oklch(98% 0 0);
+  --color-secondary: oklch(30% 0 0);
+  --color-secondary-content: oklch(82% 0 0);
+  --color-accent: oklch(62% 0.17 25);
+  --color-accent-content: oklch(98% 0 0);
+  --color-neutral: oklch(32% 0 0);
+  --color-neutral-content: oklch(88% 0 0);
+  --color-info: oklch(72% 0.12 235);
+  --color-info-content: oklch(20% 0.04 235);
+  --color-success: oklch(72% 0.13 150);
+  --color-success-content: oklch(20% 0.04 150);
+  --color-warning: oklch(80% 0.13 85);
+  --color-warning-content: oklch(22% 0.04 85);
+  --color-error: oklch(68% 0.17 25);
+  --color-error-content: oklch(20% 0.04 25);
+  --radius-selector: 2rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
 
 input[type="text"],
 input[type="email"],
@@ -513,10 +478,7 @@ textarea {
 @variant phx-submit-loading (&.phx-submit-loading, .phx-submit-loading &);
 @variant phx-change-loading (&.phx-change-loading, .phx-change-loading &);
 
-.reply_to_in_composer {
-  padding-top: 0px !important;
-  padding-left: 50px !important;
-}
+.reply_to_in_composer {}
 
 .prose-bonfire {
   line-height: 140%;
@@ -524,7 +486,6 @@ textarea {
 
 .quoted_activity {
   padding: 0;
-  padding-left: 40px !important;
 }
 
 .translated-content {
@@ -561,21 +522,24 @@ textarea {
   transform: scaleX(1);
 }
 
-article.active-activity {
-  @apply border-r-2 border-primary;
+/* Active/highlighted activity marker — a vertical primary bar. Drawn as an
+   absolutely-positioned ::after (not border-r) so it can sit at the card's true
+   right edge (right: -18px) regardless of any wrapping component's padding, and
+   so it stays out of the article's `flex flex-col` flow. */
+article.active-activity::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -18px;
+  width: 2px;
+  background-color: var(--color-primary);
+  pointer-events: none;
 }
 
 article.unread-activity {
   @apply border-l-2 border-primary !bg-primary/5;
 }
-
-/* 
- * Milkdown Editor Styles
- * Custom styles for the Milkdown editor integration with Bonfire
- */
-
-
-
 
 
 .markdown-editor {
@@ -605,7 +569,6 @@ article.unread-activity {
   width: 100%;
 }
 
-/* Placeholder styling via ::before on empty paragraph */
 .milkdown-editor p.is-empty:first-child::before {
   content: attr(data-placeholder);
   color: var(--color-text-muted, #9ca3af);
@@ -625,7 +588,7 @@ article.unread-activity {
 
 .quote-preview {
   position: relative;
-  padding-left: 3.4rem !important;
+  padding-left: 8px !important;
   margin-left: 0px !important;
   @apply border border-base-content/10 rounded-lg !py-2 !pb-3 mt-2 mb-3;
   transition: transform 150ms var(--ease-out-expo), border-color 150ms ease-out;
@@ -663,7 +626,6 @@ article.unread-activity {
   margin-top: 0 !important;
 }
 
-/* Mention menu styling */
 .milkdown-menu {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   overflow: hidden;
@@ -686,16 +648,47 @@ article.unread-activity {
 }
 
 
-/* Import custom themes */
 @import "./custom_themes.css";
-
-
-/* @source "../../../../deps/bonfire_editor_milkdown/assets/node_modules/@milkdown/crepe/src/theme/common/style.css";
-@source "../../../../deps/bonfire_editor_milkdown/assets/node_modules/@milkdown/crepe/src/theme/frame/style.css"; */
 
 @theme {
   --spacing: 0.25rem;
-  /* This enables all spacing utilities dynamically */
+  --text-body: 15px;
+  --text-body--line-height: 19px;
+  --text-caption: 12px;
+  --text-caption--line-height: 1.1;
+  --text-display: 23px;
+  --text-display--line-height: 25px;
+  --text-feature: 38px;
+  --text-feature--line-height: 40px;
+
+  /* — Editorial / publication text styles — */
+  --text-thema: 58px;            --text-thema--line-height: 56px;       /* Thema */
+  --text-headline: 58px;         --text-headline--line-height: 56px;    /* Large Headline */
+  --text-journal: 55px;          --text-journal--line-height: 40.9px;   /* Journal Header */
+  --text-headline-sm: 29px;      --text-headline-sm--line-height: 30px; /* Small Headline */
+  --text-intro: 28px;            --text-intro--line-height: 34px;       /* Large Intro */
+  --text-author: 24px;           --text-author--line-height: 24px;      /* Author Name */
+  --text-subhead: 22px;          --text-subhead--line-height: 30px;
+  --text-article: 18.5px;        --text-article--line-height: 27px;     /* Article Satz */
+  --text-intro-sm: 18px;         --text-intro-sm--line-height: 22px;    /* Small Intro Mainpage */
+  --text-impressum: 18px;        --text-impressum--line-height: 24px;   /* Impressum */
+  --text-byline: 16px;           --text-byline--line-height: 19px;      /* Author Name Article */
+
+  /* — Neutral grays (no DaisyUI semantic slot) — */
+  --color-muted: #868686;        /* "Grey" — muted text / @handle */
+  --color-placeholder: #c6c6c6;  /* "grey" — image placeholders */
+
+  --spacing-feed: 7px;           /* gap BETWEEN stacked feed cards */
+  --spacing-half: 9px;           /* ½ base */
+  --spacing-content: 12px;       /* tight gap — e.g. radio→label. NOTE: header→body is base/18px, NOT this */
+  --spacing-row: 15px;           /* list-row / tighter gap */
+  --spacing-base: 18px;          /* DOMINANT unit — card padding, avatar→info, most gaps */
+  --spacing-card: 18px;          /* alias of base — card internal padding (was mis-measured as 19) */
+  --spacing-avatar: 18px;        /* alias of base — avatar → name/handle gap */
+  --spacing-section: 36px;       /* between sections (2× base) */
+  --spacing-edge: 75px;          /* full-bleed edge gutter width (the #ffeaea rails) — w-edge */
+  --spacing-rail: 340px;         /* left/right column (nav & widgets) width — w-rail */
+  --spacing-page-header: 80px;  /* page-header bar height — min-h-page-header / h-page-header (NB: --spacing-header is a legacy 60px token) */
 
   /* Breakpoints */
   --breakpoint-lg: 1024px;
@@ -712,7 +705,6 @@ article.unread-activity {
 
   /* ============================================
      Z-INDEX SCALE
-     Use semantic names instead of arbitrary values
      ============================================ */
   --z-base: 0;
   --z-dropdown: 100;
@@ -745,11 +737,7 @@ hex-input::part(input) {
 
 
 .bonfire-wrapper {
-  @apply md:rounded-xl bg-transparent md:bg-base-100 md:border md:border-base-content/10;
-  @media (min-width: 1024px) {
-    box-shadow: 0 1px 3px 0 color-mix(in oklab, currentColor calc(var(--depth) * 8%), #0000),
-                0 1px 2px -1px color-mix(in oklab, currentColor calc(var(--depth) * 6%), #0000);
-  }
+  @apply rounded-box border-hair bg-base-100 border-secondary p-card;
 }
 
 .btn-zenodo {
@@ -769,7 +757,6 @@ hex-input::part(input) {
   padding-bottom: 0 !important;
 }
 
-/* Critical CSS to fix pointer-events */
 .m-entry iframe {
   max-width: 100% !important;
 }
@@ -899,13 +886,79 @@ emoji-picker .favorites {
 }
 
 
-.activity-padding {
-  padding-left: 4.6rem;
+/* ============================================
+   REPLY-CONTEXT NESTING (feed "post with reply")
+   When an activity shows its reply_to parent, the parent renders as the <article>'s
+   first child (a nested <article>); the reply's OWN content (its <div> children:
+   subject / body / media / actions) is nested one level under it. The connector
+   line is layered on top (added separately). One indent level = avatar + gap.
+   ============================================ */
+[data-reply-context] > div:not([data-role="thread_header"]) {
+  margin-left: 34px;
 }
 
-.activity-padding-compact {
-  padding: 8px !important;
-  padding-left: 2.5rem !important;
+/* Gutter: the body + actions align with the byline NAME (avatar 35 + gap 18 = 53px),
+   clearing the avatar column for the connector. The byline (SubjectLive) keeps the
+   avatar inline; only the post-byline siblings indent — fits ActivityLive's flat list.
+   Parent body = 53 (gutter only); reply body/actions = 34 nest + 53 gutter = 87. */
+[data-reply-context] > article > :not([data-role="subject"]) {
+  margin-left: 53px;
+}
+[data-reply-context] > div:not([data-role="subject"]):not([data-role="thread_header"]) {
+  margin-left: 87px;
+}
+
+/* Connector — a hairline thread line linking the parent avatar to the reply avatar.
+   Trunk: on the parent block (a nested <article>), self-sizing top→bottom so it spans
+   the parent's height into the gap. Elbow: on the reply's subject, the └ curve. */
+[data-reply-context] > article,
+[data-reply-context] > [data-role="subject"] {
+  position: relative;
+}
+[data-reply-context] > article::after {
+  content: "";
+  position: absolute;
+  left: 17px; /* parent avatar centre (≈35px avatar / 2) */
+  top: 38px; /* just below the avatar */
+  bottom: -30px; /* extend through the mb-8 gap toward the reply avatar */
+  border-left: var(--border) solid var(--color-secondary);
+  pointer-events: none;
+}
+/* "Continues up" — prominent dotted line in the avatar column, from the card top down to
+   the parent avatar (signals the thread extends above; pairs with "See full thread").
+   Anchored to the header strip whose top == the card edge (via -mt-card), so top:0 is the
+   card top exactly. 3px round dots in the secondary stroke colour. */
+[data-reply-context] > [data-role="thread_header"] {
+  position: relative;
+}
+[data-reply-context] > [data-role="thread_header"]::before {
+  content: "";
+  position: absolute;
+  left: 35px; /* parent avatar centre (strip padding-box starts at the card edge) */
+  top: 0; /* the card top */
+  height: 75px; /* down through the strip + gap to just above the parent avatar */
+  width: 3px;
+  background-image: radial-gradient(circle, var(--color-secondary) 1.5px, transparent 1.6px);
+  background-size: 3px 8px;
+  background-repeat: repeat-y;
+  z-index: 2;
+  pointer-events: none;
+}
+[data-reply-context] > [data-role="subject"]::before {
+  content: "";
+  position: absolute;
+  left: -17px; /* back out to the trunk's x (reply subject is indented 34px) */
+  top: -18px;
+  width: 34px;
+  height: 35px; /* down to ≈ the reply avatar centre */
+  border-left: var(--border) solid var(--color-secondary);
+  border-bottom: var(--border) solid var(--color-secondary);
+  border-bottom-left-radius: 12px;
+  pointer-events: none;
+}
+
+[data-role="comment-activity"] > article.activity > :not([data-role="subject"]) {
+  margin-left: 50px; /* compact avatar 32 + gap 18 */
 }
 
 .tooltip::after {
@@ -944,6 +997,14 @@ emoji-picker .favorites {
   transform: scale(1) translateY(0);
 }
 
+.dropdown-panel {
+  @apply bg-base-100 w-64 p-2 rounded-box border-hair border-secondary absolute top-0 right-0 hidden;
+  z-index: var(--z-tooltip);
+  box-shadow:
+    0 6px 16px -4px oklch(0% 0 0 / calc(var(--depth) * 0.16)),
+    0 2px 6px -2px  oklch(0% 0 0 / calc(var(--depth) * 0.12));
+}
+
 
 .main_object_in_thread {
   @apply !pl-5;
@@ -971,10 +1032,6 @@ div[data-role='subject'][data-main-object] div[data-id='subject_details'] {
 }
 
 
-/* AVATAR */
-
-
-/* Direct element + data combos */
 div[data-id='preview_content'][data-show],
 div[data-id='preview_content'] [data-show] {
   @apply visible inset-0;
@@ -986,7 +1043,6 @@ div[data-id='preview_content'] [data-hide] {
   @apply invisible h-0 overflow-hidden;
 }
 
-/* Simple loading indicator styles */
 div[data-id='preview_content'] [data-id='modal-contents'] div.m-3.text-center {
   @apply animate-pulse;
 }
@@ -1072,7 +1128,6 @@ div[data-id='multimedia_grid'][data-rendered='smart_input'] {
   @apply !grid-cols-1 !grid-rows-1;
 }
 
-/* Article elements */
 article.activity {
   word-break: break-word;
 }
@@ -1112,18 +1167,6 @@ article[data-id='article_media'][data-media='4'] {
   -webkit-line-clamp: none;
 }
 
-article.replied::after {
-  position: absolute;
-  content: '';
-  width: 2px;
-  top: 54px;
-  bottom: -32px;
-  left: -36px;
-  z-index: 1;
-  background-color: var(--color-base-content);
-  opacity: 0.1;
-}
-
 .scrollable {
   overflow-x: auto;
   scrollbar-width: thin;
@@ -1156,39 +1199,16 @@ div[data-id='object_body'].prose h2 {
 div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-type(4)))>span:first-of-type,
 div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-type(4)))>span:last-of-type {
   display: none;
-  /* Use display: none to hide elements */
 }
 
 div[data-id='object_body'] a:has(> span:nth-of-type(3)):not(:has(> span:nth-of-type(4)))>span:nth-of-type(2)::after {
   content: "...";
 }
 
-/*
-  div[data-id='object_body'] a:not(h1 a) {
-    @apply truncate;
-    word-break: break-all;
-    max-width: 300px;
-    display: inline-block;
-    vertical-align: middle;
-    margin: -.3ex 0px .1ex;
-  }
-
-  @media (max-width: 640px) {
-    div[data-id='object_body'] a:not(h1 a) {
-      max-width: 240px;
-    }
-  }
-  
-  div[data-id='object_body'] a span {
-    word-break: break-all;
-  }
-    */
-
 .uploads_preview .scrollable::-webkit-scrollbar {
   height: 8px;
 }
 
-/* composer */
 #smart_input_container[data-hidden] {
   @apply hidden;
 }
@@ -1316,7 +1336,6 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
   overflow-y: auto;
 }
 
-/* Class-based selectors */
 .discussion-preview {
   @apply !p-4;
 }
@@ -1371,7 +1390,6 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
   cursor: col-resize;
 }
 
-/* Prevent text selection while resizing */
 .dragging {
   user-select: none;
 }
@@ -1482,8 +1500,76 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
   /* Expands clickable area without changing visual size */
 }
 
+.btn-ds-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0; /* neutralise DaisyUI .btn's border when combined; the ring is the outline */
+  border-radius: var(--radius-field); /* pill */
+  height: 41px; /* the styleguide button height (py-[11px] + text-body lh) */
+  padding-inline: 26px; /* px-[26px]; horizontal only — height is fixed */
+  font-size: 15px; /* text-body */
+  line-height: 1;
+  font-weight: 500; /* medium, no bold */
+  background-color: var(--color-base-200);
+  color: var(--color-primary);
+  box-shadow: inset 0 0 0 var(--border) var(--color-primary); /* hairline (0.7px) inset ring, primary */
+  cursor: pointer;
+  /* include transform so the primitive's hover-scale eases too (composer has no scale → harmless) */
+  transition-property: color, background-color, box-shadow, transform;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease-out-expo);
+}
+.btn-ds-variant-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0; /* neutralise DaisyUI .btn's border when combined; the ring is the outline */
+  border-radius: var(--radius-field); /* pill */
+  height: 41px; /* the styleguide button height (py-[11px] + text-body lh) */
+  padding-inline: 26px; /* px-[26px]; horizontal only — height is fixed */
+  font-size: 15px; /* text-body */
+  line-height: 1;
+  font-weight: 500; /* medium, no bold */
+  background-color: var(--color-base-300);
+  color: var(--color-primary);
+  box-shadow: inset 0 0 0 var(--border) var(--color-primary); /* hairline (0.7px) inset ring, primary */
+  cursor: pointer;
+  /* include transform so the primitive's hover-scale eases too (composer has no scale → harmless) */
+  transition-property: color, background-color, box-shadow, transform;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease-out-expo);
+}
+.btn-ds-outline:hover {
+  background-color: var(--color-base-300); /* "a bit more dark" — NOT a full red fill */
+}
+
 /* ============================================
-   TRANSITION UTILITIES 
+   HAIRLINE BORDER UTILITIES
+   ============================================ */
+@utility border-hair { border-width: var(--border); }
+@utility border-t-hair { border-top-width: var(--border); }
+@utility border-b-hair { border-bottom-width: var(--border); }
+@utility border-l-hair { border-left-width: var(--border); }
+@utility border-r-hair { border-right-width: var(--border); }
+@utility border-x-hair { border-left-width: var(--border); border-right-width: var(--border); }
+@utility border-y-hair { border-top-width: var(--border); border-bottom-width: var(--border); }
+
+@utility divide-hair {
+  & > :not(:last-child) {
+    border-bottom-width: var(--border);
+    border-top-width: 0;
+  }
+}
+
+@layer components {
+  .divide-hair > :not(:last-child) {
+    border-bottom-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+  }
+}
+
+/* ============================================
+   TRANSITION UTILITIES
    Never use transition-all - always specify properties
    ============================================ */
 @utility transition-interactive {
@@ -1510,11 +1596,7 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
   transition-timing-function: ease-out;
 }
 
-/* ============================================
-   Z-INDEX UTILITIES
-   Semantic z-index scale instead of arbitrary values
-   Using @layer utilities to ensure they're always compiled
-   ============================================ */
+/* Semantic z-index utilities — @layer utilities so they're always compiled */
 @layer utilities {
   .z-base {
     z-index: var(--z-base);
@@ -1695,10 +1777,7 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
 }
 
 /* Spotlight (instance pinned) carousel: indent activity body to align under the avatar */
-.spotlight_activity {
-  padding-top: 10px !important;
-  padding-left: 50px !important;
-}
+.spotlight_activity {}
 .spotlight_activity div[data-id='subject_details'] {
   margin-top: 3px;
 }

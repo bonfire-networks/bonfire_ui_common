@@ -29,7 +29,7 @@
             :for={{name_content, id} <- selected_options}
             :if={name_content || id}
             class={
-              "flex m-0.5 rounded-sm items-center py-0.5 pl-2 text-sm font-medium bg-base-100/40 text-base-content/70",
+              "flex m-0.5 rounded-sm items-center py-0.5 pl-2 text-sm font-medium bg-base-100/40 text-muted",
               "pr-2": @remove_event
             }
           >

@@ -10,13 +10,13 @@ defmodule Bonfire.UI.Common.DesignSystem.IconButtonLive do
   ## Usage
 
       <.icon_button
-        icon="ph:heart-duotone"
+        icon="ph:heart-fill"
         aria_label="Like this post"
         variant="ghost"
       />
 
       <.icon_button
-        icon="ph:x-duotone"
+        icon="ph:x"
         aria_label="Close"
         size="sm"
         phx_click="close"
@@ -68,6 +68,9 @@ defmodule Bonfire.UI.Common.DesignSystem.IconButtonLive do
   @doc "Additional CSS classes"
   attr :class, :any, default: nil
 
+  @doc "Override the size-derived icon size class (e.g. w-[18px] h-[18px])"
+  attr :icon_class, :any, default: nil
+
   @doc "HTML id attribute"
   attr :id, :string, default: nil
 
@@ -107,7 +110,7 @@ defmodule Bonfire.UI.Common.DesignSystem.IconButtonLive do
     assigns =
       assigns
       |> assign(:btn_size, btn_size)
-      |> assign(:icon_size, icon_size)
+      |> assign(:icon_size, assigns[:icon_class] || icon_size)
       |> assign(:needs_expanded_target, needs_expanded_target)
 
     ~H"""

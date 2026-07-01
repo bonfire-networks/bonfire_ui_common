@@ -38,7 +38,7 @@
               type="button"
               aria-label={@title_prompt || l("Write a comment")}
               phx-click={LiveHandler.inline_expand(@composer_dom_id)}
-              class="flex-1 text-left text-base-content/70 truncate text-sm bg-transparent cursor-text"
+              class="flex-1 text-left text-muted truncate text-sm bg-transparent cursor-text"
             >
               {@title_prompt || l("Your message or question…")}
             </button>
@@ -66,16 +66,16 @@
             ]}
           >
             {#if @reply_to_id && @context_id && to_string(@reply_to_id) != to_string(@context_id)}
-              <div class="flex items-center justify-between px-3 pt-2 pb-1 text-xs text-base-content/70">
+              <div class="flex items-center justify-between px-3 pt-2 pb-1 text-xs text-muted">
                 <span class="truncate">{l("Replying to comment")}</span>
                 <button
                   type="button"
                   id={"inline_cancel_reply_#{@composer_dom_id}"}
-                  class="btn btn-ghost btn-xs"
+                  class="btn btn-ghost btn-sm"
                   phx-click="reset_reply_to"
                   title={l("Cancel reply")}
                 >
-                  <#Icon iconify="ph:x-duotone" class="w-4 h-4" />
+                  <#Icon iconify="ph:x" class="w-4 h-4" />
                   <span class="ml-1">{l("Cancel reply")}</span>
                 </button>
               </div>
@@ -141,18 +141,18 @@
       {/if}
       <div class="flex-1 flex items-center gap-3">
         {#if @auth_mode == "remote"}
-          <span class="flex-1 text-right text-sm text-base-content/70 truncate">
+          <span class="flex-1 text-right text-sm text-muted truncate">
             {l("Reply with your existing account from any fediverse server")}
           </span>
         {#else}
-          <span class="flex-1 text-right text-sm text-base-content/70 truncate">
+          <span class="flex-1 text-right text-sm text-muted truncate">
             {l("Join %{instance_name} to leave comments",
               instance_name:
                 Config.get([:ui, :theme, :instance_name]) ||
                   Bonfire.Application.name_and_flavour()
             )}
           </span>
-          <div class="flex items-center gap-2 text-sm text-base-content/70">
+          <div class="flex items-center gap-2 text-sm text-muted">
             <LinkLive
               to="/conduct"
               parent_id={"inline_composer_terms_#{@composer_dom_id}"}

@@ -8,7 +8,7 @@
   </LinkLive>
 
   <LinkLive :if={!current_user_id(@__context__)} to="/feed">
-    <#Icon iconify="carbon:explore" class="w-6 h-6 text-base-content/70" />
+    <#Icon iconify="carbon:explore" class="w-6 h-6 text-muted" />
     <span class="sr-only">{l("Feeds")}</span>
   </LinkLive>
 
@@ -16,7 +16,7 @@
     {#if @page == "search"}
       <#Icon iconify="fluent:search-24-filled" class="w-6 h-6" />
     {#else}
-      <#Icon iconify="fluent:search-24-regular" class="w-6 h-6 text-base-content/70" />
+      <#Icon iconify="fluent:search-24-regular" class="w-6 h-6 text-muted" />
     {/if}
     <span class="sr-only">{l("Search")}</span>
   </LinkLive>
@@ -35,7 +35,7 @@
     {#if @page == "notifications"}
       <#Icon iconify="ph:bell-fill" class="w-6 h-6" />
     {#else}
-      <#Icon iconify="ph:bell" class="w-6 h-6 text-base-content/70" />
+      <#Icon iconify="ph:bell" class="w-6 h-6 text-muted" />
     {/if}
     <span class="sr-only">{l("Notifications")}</span>
   </LinkLive>
@@ -60,7 +60,7 @@
   </div>
 
   <LinkLive :if={!current_user_id(@__context__)} to="/about">
-    <#Icon iconify="ph:dots-three-outline-duotone" class="w-6 h-6 text-base-content/70" />
+    <#Icon iconify="ph:dots-three-outline-duotone" class="w-6 h-6 text-muted" />
     <span class="sr-only">{l("about")}</span>
   </LinkLive>
   {!-- <Bonfire.UI.Common.OpenModalLive
