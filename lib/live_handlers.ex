@@ -598,7 +598,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   Result of the delegated function call, for example `{:noreply, socket}`
   """
   def mod_delegate(mod, fun, args, socket, no_delegation_fn \\ &no_live_handler/2) do
-    handler_chain = Map.get(socket.assigns, :__handler_chain, [])
+    handler_chain = Map.get(assigns(socket), :__handler_chain, [])
 
     mod = maybe_to_module("#{mod}.LiveHandler") || maybe_to_module(mod)
 
