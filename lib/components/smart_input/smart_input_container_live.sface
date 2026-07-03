@@ -1,6 +1,6 @@
 <div class="flex-1">
   <div>
-    <div class="sticky top-0 flex items-center flex-1 w-full justify-end lg:justify-start">
+    <div class="sticky top-0 flex items-center flex-1 w-full">
       <Bonfire.UI.Common.SmartInputButtonLive
         id="main_smart_input_button"
         showing_within={:smart_input}

@@ -33,7 +33,7 @@
                   )}
                 <LazyImage
                   parent_id={deterministic_dom_id(__MODULE__, @user_id, "avatar", @parent_id)}
-                  src={"/gen_avatar/#{@user_id}"}
+                  src={generated_avatar_src(@user_id, @__context__)}
                   title={@title}
                   alt={@title}
                   fallback_icon={Icon.icon_name("material-symbols:person-2-rounded")}

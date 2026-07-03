@@ -24,6 +24,21 @@ defmodule Bonfire.UI.Common.AvatarLive do
   prop disable_lazy, :boolean, default: true
   prop is_remote, :boolean, default: true
 
+  @doc "Returns the image source to use when a user has no uploaded avatar."
+  def generated_avatar_src(user_id, context \\ nil)
+
+  def generated_avatar_src(user_id, context) when is_binary(user_id) and user_id != "" do
+    case generated_avatar_paths(context) do
+      [] ->
+        "/gen_avatar/#{user_id}"
+
+      avatar_paths ->
+        Enum.at(avatar_paths, :erlang.phash2(user_id, length(avatar_paths)))
+    end
+  end
+
+  def generated_avatar_src(_, _), do: nil
+
   def initials(name) when is_binary(name) and name != "" do
     name
     |> String.split(~r/\s+/, trim: true)
@@ -34,6 +49,16 @@ defmodule Bonfire.UI.Common.AvatarLive do
   end
 
   def initials(_), do: ""
+
+  defp generated_avatar_paths(context) do
+    Settings.get([__MODULE__, :generated_avatar_paths], [],
+      context: context,
+      name: l("Generated avatar paths"),
+      description: l("Static image paths to use for users without a profile picture.")
+    )
+    |> List.wrap()
+    |> Enum.filter(&(is_binary(&1) and &1 != ""))
+  end
 
   # def classes(%{class: class}) when not is_nil(class) do
   #   class
