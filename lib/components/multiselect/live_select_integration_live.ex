@@ -36,7 +36,8 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
         if(tags?,
           do:
             "w-full bg-transparent border-0 shadow-none outline-none focus:outline-none focus:ring-0 px-1 py-1 text-sm h-auto",
-          else: "input input-sm border-hair border-secondary bg-base-100 flex items-center gap-2 w-full text-base"
+          else:
+            "input input-sm border-hair border-secondary bg-base-100 flex items-center gap-2 w-full text-base"
         )
       )
       # "" avoids the default `input-primary` orange border on the ghost tags field
