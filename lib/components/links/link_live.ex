@@ -33,8 +33,8 @@ defmodule Bonfire.UI.Common.LinkLive do
   @doc "What element (and it's parent view or stateful component) to send the event to"
   prop event_target, :string, default: nil
 
-  @doc "What browser window/frame to target, eg. `_blank`"
-  prop target, :string, default: "_top"
+  @doc "What browser window/frame to target, eg. `_blank`. Defaults to the `link_target` found in context (set page-wide by embed views), or `_top`."
+  prop target, :string, default: nil
 
   prop external_link_warnings, :boolean, default: false
 
@@ -49,8 +49,26 @@ defmodule Bonfire.UI.Common.LinkLive do
   """
   slot default
 
-  def render(%{event_handler: event_handler, phx_hook: phx_hook} = assigns)
-      when is_binary(event_handler) or is_binary(phx_hook) do
+  defp link_opts(opts, label, target) do
+    opts
+    |> Keyword.merge("aria-label": label)
+    |> maybe_put_noopener(target)
+  end
+
+  defp maybe_put_noopener(opts, "_blank"), do: Keyword.put_new(opts, :rel, "noopener")
+  defp maybe_put_noopener(opts, _), do: opts
+
+  def render(assigns) do
+    assigns
+    |> assign(
+      :target,
+      assigns[:target] || e(assigns[:__context__], :link_target, nil) || "_top"
+    )
+    |> render_link()
+  end
+
+  defp render_link(%{event_handler: event_handler, phx_hook: phx_hook} = assigns)
+       when is_binary(event_handler) or is_binary(phx_hook) do
     # TODO: How can I have a phx-click on an anchor without the browser also triggering the default navigation?
     # <a href={@to}
     if socket_connected?(assigns) do
@@ -71,8 +89,8 @@ defmodule Bonfire.UI.Common.LinkLive do
               )}
         phx-target={@event_target}
         class={@class}
-        opts={@opts}
         aria-label={@label}
+        {...@opts}
       >
         {!-- FIXME: do not generate random ID to avoid re-rendering --}
         <#slot>{@label}</#slot>
@@ -80,11 +98,11 @@ defmodule Bonfire.UI.Common.LinkLive do
       """
     else
       # fallback to only using a link when LiveView is not available
-      render(Map.drop(assigns, [:event_handler]))
+      render_link(Map.drop(assigns, [:event_handler]))
     end
   end
 
-  def render(%{to: "http" <> _, external_link_warnings: true} = assigns) do
+  defp render_link(%{to: "http" <> _, external_link_warnings: true} = assigns) do
     ~F"""
     <p class="mb-4">{l(
         "This is an external link, please check where it leads before following it. If you have concerns it may be malicious you can check one of the URL or IP address reputation services below, or copy and paste the URL into the reputation tool of your choice."
@@ -110,7 +128,7 @@ defmodule Bonfire.UI.Common.LinkLive do
     <Link
       to={@to}
       class={@class}
-      opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+      opts={link_opts(@opts, @label, @target) |> Keyword.merge(target: @target)}
     >
       <#slot>{@label}</#slot>
     </Link>
@@ -210,58 +228,72 @@ defmodule Bonfire.UI.Common.LinkLive do
     """
   end
 
-  def render(%{to: "http" <> _} = assigns) do
-    base = Bonfire.Common.URIs.base_url()
+  defp render_link(%{to: "http" <> _} = assigns) do
+    case local_path(assigns.to) do
+      nil ->
+        ~F"""
+        <Link
+          to={@to}
+          class={@class}
+          opts={link_opts(@opts, @label, @target) |> Keyword.merge(target: @target)}
+        >
+          <#slot>{@label}</#slot>
+        </Link>
+        """
 
-    if base != "" and String.starts_with?(assigns.to, base) do
-      path = String.replace_prefix(assigns.to, base, "")
-      path = if path == "", do: "/", else: path
-
-      assign(assigns, :to, path)
-      |> do_render_link()
-    else
-      ~F"""
-      <Link
-        to={@to}
-        class={@class}
-        opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
-      >
-        <#slot>{@label}</#slot>
-      </Link>
-      """
+      path ->
+        assign(assigns, :to, path)
+        |> do_render_link()
     end
   end
 
-  def render(%{to: "#" <> _} = assigns) do
+  # Returns the local path when the URL points at this instance, or nil. The
+  # base URL prefix must end at a path/query/fragment boundary so e.g.
+  # `https://myhost.evil.com` doesn't count as local when base is `https://myhost`.
+  defp local_path(url) do
+    base = Bonfire.Common.URIs.base_url()
+
+    if base != "" do
+      case String.replace_prefix(url, base, "") do
+        ^url -> nil
+        "" -> "/"
+        "/" <> _ = path -> path
+        "?" <> _ = rest -> "/" <> rest
+        "#" <> _ = rest -> "/" <> rest
+        _ -> nil
+      end
+    end
+  end
+
+  # Fragment links scroll within the current document, so never give them a
+  # `target` (in an embed, `_blank`/`_top` would open a new tab or replace the
+  # top window with the iframe URL instead of scrolling).
+  defp render_link(%{to: "#" <> _} = assigns) do
     ~F"""
-    <Link
-      to={@to}
-      class={@class}
-      opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
-    >
+    <Link to={@to} class={@class} opts={link_opts(@opts, @label, nil)}>
       <#slot>{@label}</#slot>
     </Link>
     """
   end
 
-  def render(%{__context__: %{current_app: :bonfire_pages}} = assigns) do
+  defp render_link(%{__context__: %{current_app: :bonfire_pages}} = assigns) do
     # TODO: this should only apply to links to Page views, not internal pages
     ~F"""
     <Link
       to={@to}
       class={@class}
-      opts={@opts |> Keyword.merge("aria-label": @label, target: @target)}
+      opts={link_opts(@opts, @label, @target) |> Keyword.merge(target: @target)}
     >
       <#slot>{@label}</#slot>
     </Link>
     """
   end
 
-  def render(%{to: to} = assigns) when is_binary(to) and to != "" do
+  defp render_link(%{to: to} = assigns) when is_binary(to) and to != "" do
     do_render_link(assigns)
   end
 
-  def render(assigns) do
+  defp render_link(assigns) do
     ~F"""
     <div data-name="no_link" class={@class} {...@opts |> Keyword.merge("aria-label": @label)}>
       <#slot>{@label}</#slot>
@@ -269,7 +301,10 @@ defmodule Bonfire.UI.Common.LinkLive do
     """
   end
 
-  def do_render_link(%{to: to} = assigns) when is_binary(to) and to != "" do
+  # In-app default (`_top`): use LiveView (SPA) `navigate` — fast client-side nav
+  # that stays in the current window. `target="_top"` is a browser no-op here.
+  def do_render_link(%{to: to, target: target} = assigns)
+      when is_binary(to) and to != "" and target in [nil, "_top"] do
     ~F"""
     <.link
       navigate={@to}
@@ -287,9 +322,22 @@ defmodule Bonfire.UI.Common.LinkLive do
               @label,
               @parent_id || @__context__[:tree_hash]
             )}
-      {...@opts |> Keyword.merge("aria-label": @label)}
+      {...link_opts(@opts, @label, @target)}
     >
       {!-- FIXME: do not generate random ID to avoid re-rendering --}
+      <#slot>{@label}</#slot>
+    </.link>
+    """
+  end
+
+  # Explicit target (e.g. `_blank` in an embed iframe): render a plain `href`
+  # link with NO `data-phx-link`, so the browser opens the target itself. Using
+  # LiveView `navigate` here would double-navigate — the browser opens the new
+  # tab/window AND LiveView's click handler (which ignores `target` on nested
+  # click targets) also runs an in-frame live redirect.
+  def do_render_link(%{to: to} = assigns) when is_binary(to) and to != "" do
+    ~F"""
+    <.link href={@to} class={@class} target={@target} {...link_opts(@opts, @label, @target)}>
       <#slot>{@label}</#slot>
     </.link>
     """

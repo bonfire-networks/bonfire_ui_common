@@ -21,7 +21,7 @@
   })();
 </script>
 <%!-- Default 8px body margin shows the html bg as a band inside the iframe
-     (auto-resize uses body.scrollHeight, which excludes margin). --%>
+     (auto-resize excludes body margin from its height calculation). --%>
 <style>
   html, body { margin: 0; padding: 0; }
   /* Content must flow to its natural height: the parent iframe is sized to this
@@ -51,16 +51,22 @@
   <.live_component module={Bonfire.UI.Common.ReusableModalLive} id="persistent_modal" />
 </div>
 <script>
-  // Auto-resize the embedder's iframe to this page's content. ONE sender: a
-  // ResizeObserver on <body> (also nudged on LV patches via __bonfireEmbedResize).
-  // De-duplicated on `last` so transient mid-render values can't flip-flop height.
+  // Auto-resize the embedder's iframe to this page's content. ONE sender,
+  // nudged by body resizes, DOM changes, resource loads, and LV patches.
+  // De-duplicated on `last` so transient mid-render values don't churn height.
   (function () {
     var last = 0;
-    function measure() {
-      // body.scrollHeight only — documentElement is inflated by hidden
-      // `fixed inset-0` modal overlays.
-      var h = document.body.scrollHeight;
-      if (h > 0 && h !== last) {
+    function measure(force) {
+      var hook = document.getElementById("iframe-resize-hook");
+      var hookBottom = hook ? Math.ceil(hook.getBoundingClientRect().bottom + window.scrollY) : 0;
+      var h = Math.max(
+        document.body.scrollHeight,
+        document.body.offsetHeight,
+        hook ? hook.scrollHeight : 0,
+        hook ? hook.offsetHeight : 0,
+        hookBottom
+      );
+      if (h > 0 && (force || h !== last)) {
         last = h;
         window.parent.postMessage(
           { type: "bonfire:iframe-resize", height: h },
@@ -68,14 +74,90 @@
         );
       }
     }
-    window.__bonfireEmbedResize = measure; // shared with the IframeResize LV hook
-    if (typeof ResizeObserver !== "undefined") {
-      new ResizeObserver(measure).observe(document.body);
+    function scheduleMeasure() {
+      measure(false);
     }
-    window.addEventListener("load", measure);
-    // Offscreen iframes pause rAF/ResizeObserver but not timers, so a short
-    // bounded poll guarantees convergence; `last` only posts on change.
-    var n = 0, id = setInterval(function () { measure(); if (++n >= 60) clearInterval(id); }, 250);
-    measure();
+    window.__bonfireEmbedResize = scheduleMeasure; // shared with the IframeResize LV hook
+    if (typeof ResizeObserver !== "undefined") {
+      var resizeObserver = new ResizeObserver(scheduleMeasure);
+      resizeObserver.observe(document.body);
+      var hook = document.getElementById("iframe-resize-hook");
+      if (hook) resizeObserver.observe(hook);
+    }
+    if (typeof MutationObserver !== "undefined") {
+      new MutationObserver(scheduleMeasure).observe(document.body, { childList: true, subtree: true });
+    }
+    window.addEventListener("load", scheduleMeasure, true);
+    document.addEventListener("load", scheduleMeasure, true);
+    document.addEventListener("error", scheduleMeasure, true);
+    // Offscreen/hidden iframes pause rAF and ResizeObserver but not timers, so a
+    // low-frequency unbounded poll guarantees convergence; `last` only posts on change.
+    setInterval(measure, 2000);
+    var startupTicks = 0;
+    var startupTimer = setInterval(function () {
+      measure(true);
+      startupTicks += 1;
+      if (startupTicks >= 20) clearInterval(startupTimer);
+    }, 250);
+    measure(true);
+  })();
+</script>
+<script>
+  // Some embeds (the pins embed) want links to escape the iframe. They mark
+  // themselves with `data-embed-links="<target>"` on a content element — the
+  // interactive comments embed does NOT (it needs `_top` for its login/reply
+  // flow), so this stays inert there. Server-rendered LinkLive links already
+  // escape (plain href), but local links inside rich text (mentions, hashtags —
+  // emitted as LiveView live-nav links by Text.prepare_links_for_local_render)
+  // would navigate INSIDE the iframe; rewrite them to plain target links.
+  (function () {
+    var marker = document.querySelector("[data-embed-links]");
+    if (!marker) return;
+    var target = marker.getAttribute("data-embed-links") || "_blank";
+    // Rewrite the escape-frame anchors within `el` (and `el` itself if it is one).
+    function rewriteIn(el) {
+      if (!el || el.nodeType !== 1) return;
+      var links = [];
+      if (el.matches && el.matches("a[data-phx-link]")) links.push(el);
+      var found = el.querySelectorAll("a[data-phx-link]");
+      for (var k = 0; k < found.length; k++) links.push(found[k]);
+      for (var i = 0; i < links.length; i++) {
+        var a = links[i];
+        a.removeAttribute("data-phx-link");
+        a.removeAttribute("data-phx-link-state");
+        a.setAttribute("target", target);
+        if (target === "_blank") a.setAttribute("rel", "noopener");
+      }
+    }
+    var root = document.getElementById("iframe-resize-hook") || document.body;
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", function () { rewriteIn(root); });
+    } else {
+      rewriteIn(root);
+    }
+    // The embed is a static render, so links are all present at load; only handle
+    // newly-inserted nodes (e.g. late async content) instead of rescanning the
+    // whole subtree on every mutation. Also watch `data-phx-link` attribute
+    // changes: if the embed ever connects LiveView, the connected-mount morphdom
+    // patch restores the attribute on existing anchors without any childList
+    // mutation — re-strip it. (Our own removeAttribute re-fires the observer
+    // once; the anchor no longer matches, so it's a no-op.)
+    if (typeof MutationObserver !== "undefined") {
+      new MutationObserver(function (mutations) {
+        for (var m = 0; m < mutations.length; m++) {
+          var mut = mutations[m];
+          if (mut.type === "attributes") {
+            rewriteIn(mut.target);
+          } else {
+            for (var n = 0; n < mut.addedNodes.length; n++) rewriteIn(mut.addedNodes[n]);
+          }
+        }
+      }).observe(root, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["data-phx-link"]
+      });
+    }
   })();
 </script>
