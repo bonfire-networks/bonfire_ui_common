@@ -21,10 +21,10 @@
       {!-- single mode only: in tags mode this absolute icon would float beside the tags --}
       {#if @show_search and @mode not in [:tags, :quick_tags]}
         <div
-          class="absolute top-[8px] right-[8px] z-30 flex items-center w-[26px] h-[26px] min-h-[26px]"
+          class="absolute top-[4px] right-[12px] z-30 flex items-center"
           phx-click={JS.dispatch("change", to: "#smart_input_form")}
         >
-          <#Icon iconify="ph:magnifying-glass-fill" class="w-4 h-4 text-primary" />
+          <#Icon iconify="ph:magnifying-glass" class="w-5 h-5 text-primary" />
         </div>
       {/if}
     {#else}
