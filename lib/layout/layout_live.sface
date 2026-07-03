@@ -4,7 +4,7 @@
 >
   <a
     href="#main-content"
-    class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-toast focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-content focus:rounded-lg focus:font-semibold"
+    class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-toast focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-content focus:rounded-lg focus:font-medium"
   >
     {l("Skip to main content")}
   </a>
@@ -169,7 +169,7 @@
                       <Bonfire.UI.Common.LogoLinkLive
                         href="/"
                         image_class="w-[70px] h-[70px]"
-                        name_class="text-base font-semibold text-base-content text-relaxed"
+                        name_class="text-base font-medium text-base-content text-relaxed"
                       />
                       <div class="relative">
                         <div class="skeleton rounded-full w-[50px] h-[50px] ring-[0.7px] ring-primary" />
@@ -242,23 +242,6 @@
                   />
                 </div>
               </div>
-              {#case to_string(Bonfire.Common.Settings.get([:ui, :sidebar, :section_divider], "none", :instance))}
-                {#match "line"}
-                  <div
-                    class=""
-                    style="border-top: 1px solid color-mix(in oklch, var(--color-base-content) 10%, transparent)"
-                    aria-hidden="true"
-                  />
-                {#match "custom"}
-                  {#case to_string(Bonfire.Common.Settings.get([:ui, :sidebar, :section_divider_image], "", :instance))}
-                    {#match src when src != ""}
-                      <div class="flex justify-center" aria-hidden="true">
-                        <img src={src} class="h-6 w-full object-contain" alt="">
-                      </div>
-                    {#match _}
-                  {/case}
-                {#match _}
-              {/case}
             </div>
           {/if}
 

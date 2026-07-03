@@ -26,7 +26,7 @@
       phx-disconnected={show("#connection-status")}
       phx-connected={hide("#connection-status")}
     >
-      <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-base-200 text-base-content text-xs font-medium shadow-lg ring-1 ring-base-content/10">
+      <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-base-200 text-base-content text-xs font-medium ring-1 ring-base-content/10">
         <span class="loading loading-spinner loading-xs opacity-60" />
         {l("Offline - waiting to reconnect...")}
       </span>
@@ -36,7 +36,7 @@
       data-id="notification"
       :if={@notification}
       role="alert"
-      class="w-full max-w-md pointer-events-auto overflow-hidden transition-interactive rounded border border-base-content/10 shadow-xl alert flash"
+      class="w-full max-w-md pointer-events-auto overflow-hidden transition-interactive rounded border border-base-content/10 alert flash"
     >
       <div class="p-4">
         <div class="flex items-start">
@@ -82,7 +82,7 @@
         <div
           data-id="flash_info"
           role="alert"
-          class="pointer-events-auto flex items-center gap-3 pl-4 pr-2 py-2.5 rounded-xl bg-base-200 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.5)] ring-1 ring-base-content/10 max-w-sm"
+          class="pointer-events-auto flex items-center gap-3 pl-4 pr-2 py-2.5 rounded-xl bg-base-200 ring-1 ring-base-content/10 max-w-sm"
         >
           <div class="flex-shrink-0">
             <#Icon iconify="ph:check-fill" class="w-5 h-5 text-success" aria-hidden="true" />
@@ -110,7 +110,7 @@
         <div
           data-id="flash_warning"
           role="alert"
-          class="pointer-events-auto flex items-center gap-3 pl-4 pr-2 py-2.5 rounded-xl bg-base-200 shadow-[0_4px_24px_-2px_rgba(0,0,0,0.5)] ring-1 ring-base-content/10 max-w-sm flash"
+          class="pointer-events-auto flex items-center gap-3 pl-4 pr-2 py-2.5 rounded-xl bg-base-200 ring-1 ring-base-content/10 max-w-sm flash"
         >
           <div class="flex-shrink-0">
             <#Icon iconify="ph:info-fill" class="w-5 h-5 text-warning" aria-hidden="true" />
@@ -139,7 +139,7 @@
         <div
           data-id="flash_error"
           role="alert"
-          class="pointer-events-auto flex items-center gap-3 pl-4 pr-2 py-2.5 rounded-xl bg-error text-error-content shadow-[0_4px_24px_-2px_rgba(0,0,0,0.5)] ring-1 ring-error-content/10 max-w-sm flash"
+          class="pointer-events-auto flex items-center gap-3 pl-4 pr-2 py-2.5 rounded-xl bg-error text-error-content ring-1 ring-error-content/10 max-w-sm flash"
         >
           <div class="flex-shrink-0">
             <#Icon iconify="ph:warning-circle-fill" class="w-5 h-5 text-error-content" aria-hidden="true" />

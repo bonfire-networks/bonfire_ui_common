@@ -1,7 +1,7 @@
 <aside class={@class} aria-label={@widget_title || nil}>
   <div :if={@widget_title} class={"flex items-center justify-between", @title_class}>
     <div>{@widget_title}</div>
-    <div class="flex items-center gap-1">
+    <div class="flex items-center gap-3">
       <#slot {@action} />
       {#if show_reset?(@reset_cache_event, @can_reset, @__context__)}
         <button
@@ -11,7 +11,7 @@
           {...phx_values(@reset_cache_values)}
           onclick="this.dataset.done='1'"
           title={l("Refresh")}
-          class="group btn btn-circle btn-sm btn-outline border-secondary"
+          class="group btn btn-circle btn-xs btn-outline border-secondary"
           data-role="widget-reset"
         >
           <span class="sr-only">{l("Refresh")}</span>

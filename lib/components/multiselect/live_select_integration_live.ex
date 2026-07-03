@@ -64,7 +64,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       text_input_class={@ls_text_input_class}
       text_input_selected_class={@ls_text_input_selected_class}
       container_extra_class={@ls_container_class}
-      tag_class="badge badge-primary rounded-full badge-md gap-1.5 font-semibold"
+      tag_class="badge badge-primary rounded-full badge-md gap-1.5 font-medium"
       dropdown_extra_class={@ls_dropdown_class}
       tags_container_class="flex flex-wrap gap-1.5"
       value_mapper={&value_mapper/1}
@@ -82,7 +82,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
             </span>
           <% end %>
           <%= if is_binary(option.value) do %>
-            <p class="font-semibold text-muted">
+            <p class="font-medium text-muted">
               {option.label}
             </p>
           <% else %>
@@ -92,7 +92,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
               </div>
             <% end %>
             <div class="">
-              <p class="font-semibold">
+              <p class="font-medium">
                 {e(option.value, :name, nil) || e(option.value, :profile, :name, nil) ||
                   e(option.value, :named, :name, nil)}
               </p>
@@ -107,12 +107,12 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       <:tag :let={option}>
         <div class="flex items-center gap-2">
           <%= if is_binary(option.value) do %>
-            <p class="font-semibold text-sm">
+            <p class="font-medium text-sm">
               {option.label}
             </p>
           <% else %>
             <div class="text-sm">
-              <p class="font-semibold">
+              <p class="font-medium">
                 {e(option.value, :name, nil) ||
                   e(option.value, :profile, :name, nil) || e(option.value, :username, nil) ||
                   e(option.value, :named, :name, nil)}

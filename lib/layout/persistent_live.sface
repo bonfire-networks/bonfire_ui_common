@@ -13,7 +13,7 @@
             <Bonfire.UI.Common.LogoLinkLive
               href="/"
               image_class="w-[70px] h-[70px]"
-              name_class="text-base font-semibold text-base-content text-relaxed"
+              name_class="text-base font-medium text-base-content text-relaxed"
             />
             <div>
               <Bonfire.UI.Common.UserMenuLive />

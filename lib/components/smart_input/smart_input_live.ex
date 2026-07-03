@@ -6,6 +6,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   # prop create_object_type, :any, default: nil
   prop reply_to_id, :any, default: nil
   prop context_id, :string, default: nil, required: false
+  prop composer_dom_id, :any, default: nil
   prop smart_input_component, :atom, default: nil
   prop to_boundaries, :any, default: nil
   prop boundary_preset, :any, default: nil

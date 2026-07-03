@@ -67,7 +67,7 @@
                     <#Icon iconify="ph:caret-up-bold" class="w-3.5 h-3.5" />
                   </span>
                   <span class="truncate">
-                    {l("Replying to")} <span class="font-semibold text-base-content">{who_name || who_handle ||
+                    {l("Replying to")} <span class="font-medium text-base-content">{who_name || who_handle ||
                         l("this post")}</span>
                   </span>
                 </button>
@@ -142,7 +142,10 @@
           )}</div>
 
         <!-- <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} /> -->
-        <header class="z-50 flex items-center gap-3 justify-between w-full sticky top-0 px-3 py-2 lg:rounded-t-xl bg-base-100 md:z-auto md:relative">
+        <header
+          :if={@showing_within != :thread_embed}
+          class="z-50 flex items-center gap-3 justify-between w-full sticky top-0 px-3 py-2 lg:rounded-t-xl bg-base-100 md:z-auto md:relative"
+        >
           <div class="flex items-center gap-3">
             <div
               class=""
@@ -163,7 +166,7 @@
             </div>
             <div class="flex items-center gap-0">
               {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and
-                  @showing_within != :thread_embed and not replying?(assigns)}
+                  not replying?(assigns)}
                 {#case Bonfire.UI.Common.SmartInputModule.modules() |> Enum.uniq()}
                   {#match [_, _ | _] = available_types}
                     {#case LiveHandler.active_smart_input_component(
@@ -266,7 +269,7 @@
                                 {/if}
                               </a>
                             </li>
-                            <li class="menu-title text-[11px] font-semibold uppercase tracking-wider text-base-content/40 pt-2">
+                            <li class="menu-title text-[11px] font-medium uppercase tracking-wider text-base-content/40 pt-2">
                               {l("Topics")}
                             </li>
                             {#for topic <- topics}
@@ -329,7 +332,7 @@
           {!-- Window controls, grouped as one quiet cluster: minimize (keep the
                draft, hide it) then close (discard). Icon-only and de-emphasised
                so the primary "Reply"/"Post" button stays the only loud action. --}
-          <div class="flex flex-row items-center gap-1 flex-nowrap">
+          <div :if={@showing_within != :thread_embed} class="flex flex-row items-center gap-1 flex-nowrap">
             <button
               :if={@showing_within != :thread_embed}
               id="minimize_composer_button"

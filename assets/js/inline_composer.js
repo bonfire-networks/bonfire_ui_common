@@ -30,9 +30,14 @@ function runExpand(wrapper) {
   window.liveSocket.execJS(wrapper, spec);
 }
 
+function isAlwaysExpanded(wrapper) {
+  return wrapper.dataset.alwaysExpanded === "true";
+}
+
 InlineComposerHooks.InlineComposerCollapse = {
   mounted() {
     this.onDocClick = (e) => {
+      if (isAlwaysExpanded(this.el)) return;
       if (!isExpanded(this.el)) return;
       if (this.el.contains(e.target)) return;
       if (!isEmpty(this.el)) return;
@@ -40,8 +45,9 @@ InlineComposerHooks.InlineComposerCollapse = {
     };
     document.addEventListener("click", this.onDocClick, true);
 
-    this.onReset = () => {
-      runCollapse(this.el);
+    this.onReset = (e) => {
+      if (!isAlwaysExpanded(this.el)) runCollapse(this.el);
+      if (e.detail?.reset_reply_to === false) return;
       const replyTo = this.el.dataset.replyToId;
       const ctx = this.el.dataset.contextId;
       if (replyTo && ctx && replyTo !== ctx) {

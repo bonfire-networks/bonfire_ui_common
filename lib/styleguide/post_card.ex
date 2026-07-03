@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common.Styleguide.PostCard do
   - avatar: 35px circle, 0.7px inset red ring, #d9d9d9 fill
   - name: 15px Lateral Medium, base-content
   - @handle/time: 15px Lateral Regular, #868686 (--color-muted), red middot
-  - body: 15px Lateral Regular, line-height 19px (text-body)
+  - body: 15px Lateral Regular, line-height 20px (text-body)
   - "SEE FULL POST": 12px uppercase, base-content (NOT red — Figma shows black), right-aligned
   """
   use Bonfire.UI.Common.Web, :stateless_component

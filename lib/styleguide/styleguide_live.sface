@@ -43,63 +43,63 @@
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
 
-  <div class="text-[12px] uppercase tracking-[0.14em] text-muted font-medium mb-3">{l("Brand")}</div>
+  <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-3">{l("Brand")}</div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-[30px]">
     <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
       <div class="h-[88px] bg-primary border-b border-secondary" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Primary red</div><div class="text-[12px] text-primary mt-1.5">--color-primary</div></div>
+      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Primary red</div><div class="type-caption text-primary mt-1.5">--color-primary</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
       <div class="h-[88px] bg-secondary border-b border-secondary" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Muted red</div><div class="text-[12px] text-primary mt-1.5">--color-secondary</div></div>
+      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Muted red</div><div class="type-caption text-primary mt-1.5">--color-secondary</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
       <div class="h-[88px] bg-neutral border-b border-secondary" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Near-black</div><div class="text-[12px] text-primary mt-1.5">--color-neutral</div></div>
+      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Near-black</div><div class="type-caption text-primary mt-1.5">--color-neutral</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
       <div class="h-[88px] bg-accent border-b border-secondary" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Accent</div><div class="text-[12px] text-primary mt-1.5">--color-accent</div></div>
+      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Accent</div><div class="type-caption text-primary mt-1.5">--color-accent</div></div>
     </div>
   </div>
 
-  <div class="text-[12px] uppercase tracking-[0.14em] text-muted font-medium mb-3">{l("Surfaces & base")}</div>
+  <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-3">{l("Surfaces & base")}</div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-[30px]">
     <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
       <div class="h-[88px] bg-base-100 border-b border-secondary" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Card surface</div><div class="text-[12px] text-primary mt-1.5">--color-base-100</div></div>
+      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Card surface</div><div class="type-caption text-primary mt-1.5">--color-base-100</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
       <div class="h-[88px] bg-base-200 border-b border-secondary" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Page background</div><div class="text-[12px] text-primary mt-1.5">--color-base-200</div></div>
+      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Page background</div><div class="type-caption text-primary mt-1.5">--color-base-200</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
       <div class="h-[88px] bg-base-300 border-b border-secondary" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Rail / hover</div><div class="text-[12px] text-primary mt-1.5">--color-base-300</div></div>
+      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Rail / hover</div><div class="type-caption text-primary mt-1.5">--color-base-300</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
       <div class="h-[88px] bg-base-content border-b border-secondary" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Base content</div><div class="text-[12px] text-primary mt-1.5">--color-base-content</div></div>
+      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Base content</div><div class="type-caption text-primary mt-1.5">--color-base-content</div></div>
     </div>
   </div>
 
-  <div class="text-[12px] uppercase tracking-[0.14em] text-muted font-medium mb-3">{l("Semantic & neutral")}</div>
+  <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-3">{l("Semantic & neutral")}</div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
       <div class="h-[88px] bg-success border-b border-secondary flex items-end p-2.5"><span class="text-[11px] text-success-content">OFFEN</span></div>
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Success</div><div class="text-[12px] text-primary mt-1.5">--color-success</div></div>
+      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Success</div><div class="type-caption text-primary mt-1.5">--color-success</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
       <div class="h-[88px] bg-error border-b border-secondary" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Error</div><div class="text-[12px] text-primary mt-1.5">--color-error</div></div>
+      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Error</div><div class="type-caption text-primary mt-1.5">--color-error</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
       <div class="h-[88px] bg-warning border-b border-secondary" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Warning</div><div class="text-[12px] text-primary mt-1.5">--color-warning</div></div>
+      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Warning</div><div class="type-caption text-primary mt-1.5">--color-warning</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
       <div class="h-[88px] bg-info border-b border-secondary" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Info</div><div class="text-[12px] text-primary mt-1.5">--color-info</div></div>
+      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Info</div><div class="type-caption text-primary mt-1.5">--color-info</div></div>
     </div>
   </div>
 
@@ -113,40 +113,44 @@
   {!-- UI type scale — named tokens defined in app.css @theme (text-display … text-caption). --}
   <div class="rounded-box border border-secondary bg-base-100   divide-secondary overflow-hidden">
     <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Display / Title</div><div class="text-[12px] text-base-content/50 mt-[3px]">text-display · 23 / 1.0 · Medium</div></div>
-      <div class="flex-1 min-w-0 text-display font-medium truncate">Die Linke muss antagonistisch bleiben</div>
+      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Display / Title</div><div class="type-caption text-base-content/50 mt-[3px]">type-title · text-display · 23 / 25</div></div>
+      <div class="flex-1 min-w-0 type-title truncate">Die Linke muss antagonistisch bleiben</div>
     </div>
     <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Lead / Compose</div><div class="text-[12px] text-base-content/50 mt-[3px]">text-lead · 21 / 1.0 · Medium</div></div>
-      <div class="flex-1 min-w-0 text-lead font-medium truncate">Compose</div>
+      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Lead / Compose</div><div class="type-caption text-base-content/50 mt-[3px]">type-lead · text-lead · 21 / 24</div></div>
+      <div class="flex-1 min-w-0 type-lead truncate">Compose</div>
     </div>
     <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Nav item</div><div class="text-[12px] text-base-content/50 mt-[3px]">text-nav · 20.8 / 1.0 · Regular</div></div>
-      <div class="flex-1 min-w-0 text-nav font-normal truncate">Benachrichtigungen</div>
+      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Nav item</div><div class="type-caption text-base-content/50 mt-[3px]">type-nav · text-nav · 21 / 24</div></div>
+      <div class="flex-1 min-w-0 type-nav truncate">Benachrichtigungen</div>
     </div>
     <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Heading</div><div class="text-[12px] text-base-content/50 mt-[3px]">text-heading · 18 / 1.2 · Medium</div></div>
-      <div class="flex-1 min-w-0 text-heading font-medium truncate">Die Linke muss antagonistisch bleiben</div>
+      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Heading</div><div class="type-caption text-base-content/50 mt-[3px]">type-heading · text-heading · 18 / 22</div></div>
+      <div class="flex-1 min-w-0 type-heading truncate">Die Linke muss antagonistisch bleiben</div>
     </div>
     <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Body</div><div class="text-[12px] text-base-content/50 mt-[3px]">text-body · 15 / 1.5 · Regular</div></div>
-      <div class="flex-1 min-w-0 text-body font-normal truncate">The linearity they teach is a prison — time doesn't flow, it connects.</div>
+      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Result number</div><div class="type-caption text-base-content/50 mt-[3px]">type-result · text-result · 28 / 24</div></div>
+      <div class="flex-1 min-w-0 type-result truncate">75%</div>
     </div>
     <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Emphasis / name</div><div class="text-[12px] text-base-content/50 mt-[3px]">text-body · 15 / 1.5 · Medium</div></div>
-      <div class="flex-1 min-w-0 text-body font-medium truncate">shevek</div>
+      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Body</div><div class="type-caption text-base-content/50 mt-[3px]">type-body · text-body · 15 / 20</div></div>
+      <div class="flex-1 min-w-0 type-body truncate">The linearity they teach is a prison — time doesn't flow, it connects.</div>
     </div>
     <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Meta / secondary</div><div class="text-[12px] text-base-content/50 mt-[3px]">text-meta · 14 / 1.45 · Regular</div></div>
-      <div class="flex-1 min-w-0 text-meta font-normal text-muted truncate">Die Linkspartei steht ständig unter Druck, sich anzupassen.</div>
+      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Emphasis / name</div><div class="type-caption text-base-content/50 mt-[3px]">type-name · text-body · 15 / 20</div></div>
+      <div class="flex-1 min-w-0 type-name truncate">shevek</div>
     </div>
     <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Caption / @handle</div><div class="text-[12px] text-base-content/50 mt-[3px]">text-caption · 12 / 1.4 · Regular</div></div>
-      <div class="flex-1 min-w-0 text-caption font-normal text-secondary truncate">@colin · vor 3 Tagen</div>
+      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Meta / secondary</div><div class="type-caption text-base-content/50 mt-[3px]">type-meta · text-meta · 14 / 20</div></div>
+      <div class="flex-1 min-w-0 type-meta text-muted truncate">Die Linkspartei steht ständig unter Druck, sich anzupassen.</div>
+    </div>
+    <div class="flex items-baseline gap-6 px-6 py-[18px]">
+      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Caption / @handle</div><div class="type-caption text-base-content/50 mt-[3px]">type-caption · text-caption · 12 / 16</div></div>
+      <div class="flex-1 min-w-0 type-caption text-secondary truncate">@colin · vor 3 Tagen</div>
     </div>
   </div>
-  <p class="mt-3 text-[12px] text-base-content/50">{l(
-      "Named UI type tokens (size / line-height) defined in the theme. No bold anywhere — emphasis is Medium (500); faux-bold is disabled via font-synthesis."
+  <p class="mt-3 type-caption text-base-content/50">{l(
+      "Named UI type tokens define size and line-height. Role utilities add the repeated weight, tracking, and numeric details."
     )}</p>
 
   <div class="h-14" />
@@ -162,28 +166,28 @@
         <div class="w-[90px] h-[46px] bg-base-200 rounded-field ring-[1.4px] ring-inset ring-primary" />
       </div>
       <div class="text-[13px] font-medium mt-2.5">Buttons / inputs</div>
-      <div class="text-[12px] text-base-content/50 mt-[3px]">rounded-field</div>
+      <div class="type-caption text-base-content/50 mt-[3px]">rounded-field</div>
     </div>
     <div class="rounded-box border border-secondary bg-base-100 p-[22px] text-center">
       <div class="h-[70px] flex items-center justify-center">
         <div class="w-[90px] h-[46px] bg-base-200 rounded-box ring-[1.4px] ring-inset ring-primary" />
       </div>
       <div class="text-[13px] font-medium mt-2.5">Cards / boxes</div>
-      <div class="text-[12px] text-base-content/50 mt-[3px]">rounded-box</div>
+      <div class="type-caption text-base-content/50 mt-[3px]">rounded-box</div>
     </div>
     <div class="rounded-box border border-secondary bg-base-100 p-[22px] text-center">
       <div class="h-[70px] flex items-center justify-center">
         <div class="w-[46px] h-[46px] bg-base-200 rounded-full ring-[1.4px] ring-inset ring-primary" />
       </div>
       <div class="text-[13px] font-medium mt-2.5">Avatars</div>
-      <div class="text-[12px] text-base-content/50 mt-[3px]">rounded-full · 50%</div>
+      <div class="type-caption text-base-content/50 mt-[3px]">rounded-full · 50%</div>
     </div>
     <div class="rounded-box border border-secondary bg-base-100 p-[22px] text-center">
       <div class="h-[70px] flex items-center justify-center">
         <div class="h-4 w-[90px] bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
       </div>
       <div class="text-[13px] font-medium mt-2.5">Section divider</div>
-      <div class="text-[12px] text-base-content/50 mt-[3px]">clip-path</div>
+      <div class="type-caption text-base-content/50 mt-[3px]">clip-path</div>
     </div>
   </div>
   <div class="mt-4 flex gap-6 flex-wrap rounded-box border border-secondary bg-base-100 px-6 py-5 text-[13px] text-muted">
@@ -194,8 +198,8 @@
 
   {!-- Spacing tokens (measured from Figma; bars render at the token's exact width) --}
   <div class="mt-4 rounded-box border border-secondary bg-base-100 px-6 py-5">
-    <div class="text-[12px] uppercase tracking-[0.14em] text-muted font-medium mb-1">{l("Spacing")}</div>
-    <div class="text-[12px] text-base-content/50 mb-4">{l("18-based scale — from the Figma \"dashboard with spaces\" annotations")}</div>
+    <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-1">{l("Spacing")}</div>
+    <div class="type-caption text-base-content/50 mb-4">{l("18-based scale — from the Figma \"dashboard with spaces\" annotations")}</div>
     <div class="flex flex-col gap-2 text-[13px]">
       <div class="flex items-baseline gap-4">
         <span class="w-10 shrink-0 font-medium text-base-content">7px</span><code class="w-44 shrink-0 text-primary">--spacing-feed</code><span class="text-muted">gap between stacked feed cards</span>
@@ -208,6 +212,9 @@
       </div>
       <div class="flex items-baseline gap-4">
         <span class="w-10 shrink-0 font-medium text-base-content">15px</span><code class="w-44 shrink-0 text-primary">--spacing-row</code><span class="text-muted">list-row / tighter gap</span>
+      </div>
+      <div class="flex items-baseline gap-4">
+        <span class="w-10 shrink-0 font-medium text-base-content">25px</span><code class="w-44 shrink-0 text-primary">--spacing-panel</code><span class="text-muted">larger panel padding / roomy grouped controls</span>
       </div>
       <div class="flex items-baseline gap-4">
         <span class="w-10 shrink-0 font-medium text-base-content">18px</span><code class="w-44 shrink-0 text-primary">--spacing-base</code><span class="text-muted">card padding · avatar→info · most gaps</span>
@@ -247,7 +254,7 @@
       </button>
     </div>
     <div class="h-px bg-secondary my-6" />
-    <div class="text-[12px] uppercase tracking-[0.14em] text-muted font-medium mb-3.5">{l("Post action row")}</div>
+    <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-3.5">{l("Post action row")}</div>
     <div class="flex items-center gap-[30px]">
       <#Icon iconify="ph:chat-circle" class="w-[22px] h-[22px] text-base-content" />
       <#Icon iconify="ph:rocket" class="w-[22px] h-[22px] text-base-content" />
@@ -370,7 +377,7 @@
           >
             <#Icon iconify="ph:caret-left-bold" class="w-3 h-[13px]" />
           </button>
-          <span class="flex-1 text-[12px] tracking-[0.12em] uppercase font-medium text-center">Schritt 1 von 5</span>
+          <span class="flex-1 type-caption tracking-[0.12em] uppercase font-medium text-center">Schritt 1 von 5</span>
           <button
             type="button"
             class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0"
@@ -417,7 +424,7 @@
             <p class="mt-2 mb-3 text-[13px] leading-[1.45] text-muted">Die Linkspartei steht ständig unter Druck, sich der etablierten Politik anzupassen.</p>
             <div class="text-[13px] font-medium">Wolfgang Streeck</div>
           </div>
-          <div class="h-[120px] bg-gradient-to-br from-[#c6c6c6] to-[#9a9a9a] flex items-center justify-center text-white text-[12px] uppercase tracking-[0.1em]">Article image</div>
+          <div class="h-[120px] bg-gradient-to-br from-[#c6c6c6] to-[#9a9a9a] flex items-center justify-center text-white type-caption uppercase tracking-[0.1em]">Article image</div>
         </div>
       </div>
     </div>
@@ -430,7 +437,7 @@
     <span class="text-[13px] uppercase tracking-[0.18em] font-medium whitespace-nowrap">07 — {l("Notifications")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
-  <div class="text-[12px] text-base-content/50 mb-5">{l(
+  <div class="type-caption text-base-content/50 mb-5">{l(
       "The activity context line from the \"Benachrichtigungen\" artboard — a colored verb icon + actor + verb phrase, optionally followed by the referenced post/profile/quote. Same primitive (SubjectMinimalLive) that prefixes feed activities."
     )}</div>
   <div class="max-w-[600px]">
@@ -444,7 +451,7 @@
     <span class="text-[13px] uppercase tracking-[0.18em] font-medium whitespace-nowrap">08 — {l("Layout")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
-  <div class="text-[12px] text-base-content/50 mb-5">{l(
+  <div class="type-caption text-base-content/50 mb-5">{l(
       "3-column shell from the Figma \"layout\" artboard — 75px edge gutters (#ffeaea), 0.7px secondary divider lines between columns + a header divider, base-200 surfaces, and the 106px page header. Bare structural shell — columns are empty."
     )}</div>
 

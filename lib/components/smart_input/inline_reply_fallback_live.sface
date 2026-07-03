@@ -1,0 +1,29 @@
+{#if current_user_id(@__context__)}
+  <button
+    type="button"
+    id={"inline_reply_fallback_#{@dom_id || "root"}"}
+    phx-click="reset_reply_to"
+    class="inline_composer_fallback flex w-full items-center gap-3 p-1 pl-1 rounded-full border border-base-content/20 bg-base-100 cursor-text transition-colors hover:border-base-content/40 mb-4"
+    aria-label={l("Write a top-level comment")}
+  >
+    <div class="shrink-0">
+      <Bonfire.UI.Common.AvatarLive
+        bg_class="rounded-full"
+        title={e(current_user(@__context__), :profile, :name, "Anon")}
+        wrapper_class="border-0 avatar !flex w-10 h-10"
+        class="inline-block object-cover w-full rounded-full"
+        src={Bonfire.Common.Media.avatar_url(current_user(@__context__)) ||
+          @__context__[:current_user_avatar_url]}
+        user_id={current_user_id(@__context__)}
+        parent_id={"inline_reply_fallback_#{@dom_id || "root"}"}
+        is_remote={false}
+      />
+    </div>
+    <span class="flex-1 text-left text-muted truncate text-sm">
+      {@prompt || l("Write a comment")}
+    </span>
+    <span class="btn btn-primary btn-sm rounded-full normal-case mr-1 pointer-events-none">
+      {l("Post")}
+    </span>
+  </button>
+{/if}

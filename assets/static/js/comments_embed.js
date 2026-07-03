@@ -44,13 +44,10 @@
     var qs = params.toString();
     var iframe = document.createElement("iframe");
     iframe.id = id;
-    iframe.src = origin + path + (qs ? "?" + qs : "");
     iframe.style.cssText = "border:none;overflow:hidden;display:block" + (style ? ";" + style : "");
     iframe.setAttribute("scrolling", "no");
     iframe.setAttribute("loading", "lazy");
     iframe.setAttribute("title", title || "Embed");
-    if (!scriptEl.parentNode) return;
-    scriptEl.parentNode.insertBefore(iframe, scriptEl.nextSibling);
     window.addEventListener("message", function (e) {
       if (e.origin !== origin) return;
       if (e.source && iframe.contentWindow && e.source !== iframe.contentWindow) return;
@@ -59,6 +56,9 @@
       if (!Number.isFinite(height) || height <= 0) return;
       iframe.style.height = Math.min(height, 100000) + "px";
     });
+    iframe.src = origin + path + (qs ? "?" + qs : "");
+    if (!scriptEl.parentNode) return;
+    scriptEl.parentNode.insertBefore(iframe, scriptEl.nextSibling);
     return iframe;
   }
 

@@ -46,7 +46,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   # Active-state label classes — evaluates active?/3 once per item (not twice in the template)
   def active_label_class(selected_tab, widget, context) do
     if active?(selected_tab, widget, context),
-      do: "font-semibold text-primary",
+      do: "font-medium text-primary",
       else: "font-normal text-base-content"
   end
 end

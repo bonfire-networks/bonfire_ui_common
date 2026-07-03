@@ -35,7 +35,7 @@
                 disabled={idx == 0}
                 aria-label={l("Move %{locale} up", locale: Localise.locale_name(locale))}
               >
-                <#Icon iconify="ph:arrow-up-fill" class="size-4" />
+                <#Icon iconify="ph:arrow-up" class="size-4" />
               </button>
               <button
                 type="button"
@@ -47,7 +47,7 @@
                 disabled={idx == length(@extra_locales) - 1}
                 aria-label={l("Move %{locale} down", locale: Localise.locale_name(locale))}
               >
-                <#Icon iconify="ph:arrow-down-fill" class="size-4" />
+                <#Icon iconify="ph:arrow-down" class="size-4" />
               </button>
             </div>
 

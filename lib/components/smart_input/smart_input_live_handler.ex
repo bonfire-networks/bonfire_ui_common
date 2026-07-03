@@ -152,9 +152,18 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         _params,
         %{assigns: %{showing_within: :thread_embed}} = socket
       ) do
-    # embed has no PersistentLive/SmartInputContainerLive to route through;
-    # reset locally via reset_input/1's :thread_embed clause
-    {:noreply, socket |> assign(reset_to_default_assigns(socket)) |> reset_input()}
+    reset_assigns =
+      socket
+      |> reset_to_default_assigns()
+      |> Keyword.put(:reply_to_id, e(assigns(socket), :reply_to_id, nil))
+      |> Keyword.put(:context_id, e(assigns(socket), :context_id, nil))
+
+    {:noreply,
+     socket
+     |> assign(reset_assigns)
+     |> Phoenix.LiveView.push_event("smart_input:reset", %{reset_reply_to: false})
+     |> Phoenix.LiveView.push_event("smart_input:reset_sensitive", %{})
+     |> cancel_all_uploads()}
   end
 
   def handle_event("reset_to_default", _params, socket) do
@@ -250,6 +259,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     |> JS.add_class("grid-rows-[1fr]", to: "#inline_full_slot_#{dom_id}")
     |> JS.remove_class("opacity-0", to: "#inline_full_#{dom_id}")
     |> JS.focus_first(to: "#inline_full_#{dom_id} textarea")
+  end
+
+  def inline_focus(js \\ %JS{}, dom_id) do
+    JS.focus_first(js, to: "#inline_full_#{dom_id} textarea")
   end
 
   def inline_collapse(js \\ %JS{}, dom_id) do

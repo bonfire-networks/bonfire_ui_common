@@ -123,7 +123,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
       ]}
       {@rest}
     >
-      <p :if={@title} class="flex items-center gap-1.5 text-sm font-semibold leading-6">
+      <p :if={@title} class="flex items-center gap-1.5 text-sm font-medium leading-6">
         <.iconify :if={@kind == :info} icon="heroicons-information-circle-mini" class="h-4 w-4" />
         <.iconify :if={@kind == :error} icon="heroicons-exclamation-circle-mini" class="h-4 w-4" />
         {@title}
@@ -497,7 +497,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
   #     type={@type}
   #     class={[
   #       "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 py-2 px-3",
-  #       "text-sm font-semibold leading-6 text-white active:text-white/80",
+  #       "text-sm font-medium leading-6 text-white active:text-white/80",
   #       "focus-ring transition-interactive hover-scale",
   #       @class
   #     ]}
@@ -521,7 +521,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
+        <h1 class="text-lg font-medium leading-8 text-zinc-800">
           {render_slot(@inner_block)}
         </h1>
         <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
@@ -588,7 +588,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
             >
               <div class="block py-4 pr-6">
                 <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
-                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
+                <span class={["relative", i == 0 && "font-medium text-zinc-900"]}>
                   {render_slot(col, @row_item.(row))}
                 </span>
               </div>
@@ -598,7 +598,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
                 <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
                 <span
                   :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+                  class="relative ml-4 font-medium leading-6 text-zinc-900 hover:text-zinc-700"
                 >
                   {render_slot(action, @row_item.(row))}
                 </span>
@@ -653,7 +653,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
     <div class="mt-16">
       <.link
         navigate={@navigate}
-        class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+        class="text-sm font-medium leading-6 text-zinc-900 hover:text-zinc-700"
       >
         <.iconify icon="heroicons-solid-arrow-left" class="h-3 w-3" />
         {render_slot(@inner_block)}

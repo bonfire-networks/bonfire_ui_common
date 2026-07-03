@@ -98,7 +98,7 @@
             parent_id="nav_sidebar"
           >
             <#Icon iconify="ri:admin-fill" class="w-4 h-4" />
-            <div class="font-normal hidden lg:block text-base-content flex-1 text-[15px] widget_text">{l("Admins")}</div>
+            <div class="font-normal hidden lg:block text-base-content flex-1 text-body widget_text">{l("Admins")}</div>
           </LinkLive>
         </li> --}
     </ul>

@@ -29,7 +29,7 @@
             <span class="text-primary text-xs font-bold">A</span>
           </div>
           <div class="flex-1 min-w-0">
-            <div class="text-sm font-semibold truncate">Alice</div>
+            <div class="text-sm font-medium truncate">Alice</div>
             <div class="text-xs text-muted">2h ago</div>
           </div>
         </div>

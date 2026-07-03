@@ -11,7 +11,7 @@
     id="the_preview_contents"
     class={if !e(@show, false),
       do: "hidden",
-      else: "ml-[1px]"}
+      else: ""}
   >
     {!-- Modal background --}
     {!-- Header with back button --}
