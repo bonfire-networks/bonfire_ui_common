@@ -89,8 +89,7 @@ defmodule Bonfire.UI.Common.LinkLive do
               )}
         phx-target={@event_target}
         class={@class}
-        aria-label={@label}
-        {...@opts}
+        {...link_opts(@opts, @label, nil)}
       >
         {!-- FIXME: do not generate random ID to avoid re-rendering --}
         <#slot>{@label}</#slot>
@@ -247,9 +246,9 @@ defmodule Bonfire.UI.Common.LinkLive do
     end
   end
 
-  # Returns the local path when the URL points at this instance, or nil. The
-  # base URL prefix must end at a path/query/fragment boundary so e.g.
-  # `https://myhost.evil.com` doesn't count as local when base is `https://myhost`.
+  # Local path when the URL is on this instance, else nil. The base prefix must
+  # end at a path/query/fragment boundary so `https://myhost.evil.com` isn't
+  # treated as local when base is `https://myhost`.
   defp local_path(url) do
     base = Bonfire.Common.URIs.base_url()
 
@@ -265,9 +264,8 @@ defmodule Bonfire.UI.Common.LinkLive do
     end
   end
 
-  # Fragment links scroll within the current document, so never give them a
-  # `target` (in an embed, `_blank`/`_top` would open a new tab or replace the
-  # top window with the iframe URL instead of scrolling).
+  # Fragment links scroll the current document — never give them a `target`
+  # (in an embed it would open a new tab / navigate _top instead of scrolling).
   defp render_link(%{to: "#" <> _} = assigns) do
     ~F"""
     <Link to={@to} class={@class} opts={link_opts(@opts, @label, nil)}>

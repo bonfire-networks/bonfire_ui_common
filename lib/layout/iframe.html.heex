@@ -135,13 +135,10 @@
     } else {
       rewriteIn(root);
     }
-    // The embed is a static render, so links are all present at load; only handle
-    // newly-inserted nodes (e.g. late async content) instead of rescanning the
-    // whole subtree on every mutation. Also watch `data-phx-link` attribute
-    // changes: if the embed ever connects LiveView, the connected-mount morphdom
-    // patch restores the attribute on existing anchors without any childList
-    // mutation — re-strip it. (Our own removeAttribute re-fires the observer
-    // once; the anchor no longer matches, so it's a no-op.)
+    // Handle newly-inserted nodes (late async content) rather than rescanning.
+    // Also watch `data-phx-link`: a LiveView connected-mount patch can restore it
+    // on existing anchors with no childList mutation, so re-strip it. (Our own
+    // removeAttribute re-fires the observer but the anchor no longer matches.)
     if (typeof MutationObserver !== "undefined") {
       new MutationObserver(function (mutations) {
         for (var m = 0; m < mutations.length; m++) {
