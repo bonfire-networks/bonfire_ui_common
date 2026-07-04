@@ -2,6 +2,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
   use Bonfire.Common.Config
 
   defmacro __using__(_) do
+    ap_base = System.get_env("AP_BASE_PATH", "/pub")
+
     quote do
       # make sure this comes before the Phoenix endpoint
       use Bonfire.UI.Common.ErrorReportingPlug
@@ -54,6 +56,26 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
           [] ->
             conn
         end
+      end
+
+      # Tags the request process with a coarse `caller_class` (Logger metadata → readable by
+      # `Bonfire.Common.Telemetry.StormRecorder`, and on log lines) for storm attribution.
+      # Pure path pattern-matching, zero cost. The web_user/web_guest split happens later at
+      # LV mount (where current_user is already loaded — no session fetch needed here).
+      def mark_process_context(%Plug.Conn{request_path: unquote(ap_base) <> _} = conn, _opts),
+        do: put_caller_class(conn, :ap)
+
+      def mark_process_context(%Plug.Conn{request_path: "/.well-known" <> _} = conn, _opts),
+        do: put_caller_class(conn, :ap)
+
+      def mark_process_context(%Plug.Conn{request_path: "/api" <> _} = conn, _opts),
+        do: put_caller_class(conn, :api)
+
+      def mark_process_context(conn, _opts), do: put_caller_class(conn, :web)
+
+      defp put_caller_class(conn, class) do
+        Logger.metadata(caller_class: class)
+        conn
       end
 
       def plug_timing_checkpoint(conn, key) do
@@ -289,6 +311,9 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       plug :plug_timing_checkpoint, :after_session
 
       plug :save_accept_header
+
+      # after the session plug so guest-vs-user is readable from the cookie (no DB)
+      plug :mark_process_context
 
       def include_assets(conn) do
         include_assets(conn, :top)

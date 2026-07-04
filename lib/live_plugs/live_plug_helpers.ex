@@ -231,6 +231,13 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        )
        |> redirect_to("/error/disabled")}
     else
+      # tag the connected LV process for storm attribution (current_user already loaded by the
+      # LivePlugs above, so the guest/user split is free — no session fetch). See StormRecorder.
+      Logger.metadata(
+        caller_class:
+          if(Bonfire.Common.Utils.current_user_id(socket), do: :web_user, else: :web_guest)
+      )
+
       socket =
         assign_global(
           socket,
