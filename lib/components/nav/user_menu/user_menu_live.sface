@@ -1,10 +1,9 @@
 <Dropdown
   id="user_more_menu_links"
   position="top-start"
-  strategy="fixed"
-  wrapper_class="w-full"
+  wrapper_class="sticky bottom-0 z-sticky mt-auto shrink-0 bg-base-200"
   panel_class="!w-72 max-w-[calc(100vw-2rem)]"
-  trigger_class="focus-ring group flex w-full cursor-pointer items-center gap-3 rounded-box px-3 py-2 text-left transition hover:bg-base-content/5 focus:bg-base-content/5"
+  trigger_class="focus-ring group flex w-full cursor-pointer items-center gap-3 rounded-box px-3 py-2 text-left transition hover:bg-base-content/5 focus:bg-base-content/5 px-3 pb-safe pt-4 lg:px-[24px] lg:pb-base"
   label={l("User menu")}
 >
   <:trigger>
@@ -31,7 +30,7 @@
     </div>
     <#Icon
       iconify="ph:dots-three-bold"
-      class="w-5 h-5 shrink-0 text-base-content/70 transition group-hover:text-primary group-focus:text-primary"
+      class="w-5 h-5 shrink-0 text-base-content transition group-hover:text-primary group-focus:text-primary"
       aria-hidden="true"
     />
   </:trigger>

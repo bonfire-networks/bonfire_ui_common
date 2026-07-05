@@ -256,7 +256,6 @@
 
           <div
             :if={@current_user_id && @without_sidebar != true}
-            class="sticky bottom-0 z-sticky mt-auto shrink-0 bg-base-200 px-3 pb-safe pt-4 lg:px-[24px] lg:pb-base"
           >
             <Bonfire.UI.Common.UserMenuLive />
           </div>

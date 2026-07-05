@@ -6,6 +6,11 @@ defmodule Bonfire.UI.Common.Settings.Calm.OverrideTogglesLive do
   """
   use Bonfire.UI.Common.Web, :stateless_component
 
+  @doc "Event the form posts on change; override to funnel toggles to a component instead of Settings."
+  prop event_name, :string, default: "Bonfire.Common.Settings:set"
+  @doc "Optional `phx-target` (e.g. a component DOM selector) for `event_name`."
+  prop event_target, :any, default: nil
+  @doc "Settings scope; pass `nil` to omit (when not posting to the Settings funnel)."
   prop scope, :atom, default: :instance
   @doc "Used for the form's `data-scope` attribute."
   prop form_name, :string, required: true
@@ -13,7 +18,7 @@ defmodule Bonfire.UI.Common.Settings.Calm.OverrideTogglesLive do
   prop form_role, :string, default: nil
   prop title, :string, default: nil
   prop description, :string, default: nil
-  @doc "Toggle rows: maps with `:key`, `:name`, `:description`, `:on`."
+  @doc "Toggle rows: maps with `:key`, `:name`, `:on` and optionally `:description`."
   prop rows, :list, required: true
   @doc "Form field prefix; each toggle submits as `<field_prefix>[<key>]`."
   prop field_prefix, :string, required: true

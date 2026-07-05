@@ -1,10 +1,11 @@
 <form
-  class="p-4 border-b border-base-content/10 flex flex-col gap-3"
+  class="p-4 border-b-hair border-secondary flex flex-col gap-3"
   data-scope={@form_name}
   data-role={@form_role}
-  phx-change="Bonfire.Common.Settings:set"
+  phx-change={@event_name}
+  phx-target={@event_target}
 >
-  <input name="scope" value={@scope} type="hidden">
+  <input :if={@scope} name="scope" value={@scope} type="hidden">
   <div :if={@title || @description} class="flex flex-col gap-0.5 mb-1">
     <span :if={@title} class="text-sm font-medium text-base-content">{@title}</span>
     <span :if={@description} class="text-xs text-base-content/50">{@description}</span>
@@ -14,7 +15,7 @@
     <label class="flex items-center justify-between gap-3 cursor-pointer" data-role={@row_role}>
       <span class="flex flex-col min-w-0">
         <span class="text-sm font-medium text-base-content">{row.name}</span>
-        <span class="text-xs text-base-content/50 leading-snug">{row.description}</span>
+        <span :if={description = Map.get(row, :description)} class="text-xs text-base-content/50 leading-snug">{description}</span>
       </span>
       <span class="shrink-0">
         {!-- hidden false so unchecking submits a value (standard checkbox pattern) --}
