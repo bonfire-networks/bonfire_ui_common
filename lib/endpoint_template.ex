@@ -46,12 +46,30 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       def save_url_in_process(conn, _), do: conn
 
+      # The session copy of the accept header only feeds LiveView content negotiation (RSS/
+      # markdown variants of browser pages), so AP/API requests skip the session entirely —
+      # fetching + writing it costs cookie decrypt/re-sign crypto on EVERY request, exactly the
+      # federation storm path. Same prefix heads as mark_process_context below.
+      def save_accept_header(%Plug.Conn{request_path: unquote(ap_base) <> _} = conn, _opts),
+        do: conn
+
+      def save_accept_header(%Plug.Conn{request_path: "/.well-known" <> _} = conn, _opts),
+        do: conn
+
+      def save_accept_header(%Plug.Conn{request_path: "/api" <> _} = conn, _opts), do: conn
+
       def save_accept_header(conn, _opts) do
         case Plug.Conn.get_req_header(conn, "accept") do
           [accept_header | _] ->
-            conn
-            |> Plug.Conn.fetch_session()
-            |> Plug.Conn.put_session(:accept_header, accept_header)
+            conn = Plug.Conn.fetch_session(conn)
+
+            # only write when changed: put_session dirties the session, which re-signs the
+            # cookie and adds a Set-Cookie header on every response
+            if Plug.Conn.get_session(conn, :accept_header) == accept_header do
+              conn
+            else
+              Plug.Conn.put_session(conn, :accept_header, accept_header)
+            end
 
           [] ->
             conn
@@ -79,7 +97,9 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       end
 
       def plug_timing_checkpoint(conn, key) do
-        if ProcessTree.get(:server_timing_start) do
+        # local read: ServerTimingPlug sets this key in this same request process (a ProcessTree
+        # MISS here walked the whole ancestry 5×/request whenever the profiler was off)
+        if Process.get(:server_timing_start) do
           Process.put({:server_timing_marker, key}, System.monotonic_time(:microsecond))
         end
 

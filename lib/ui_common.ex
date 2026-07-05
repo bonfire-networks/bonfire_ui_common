@@ -1531,13 +1531,13 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  # NOTE: no ProcessTree read here, nothing sets the key as a process override (and in test env `Config.get` already checks the process tree), while a MISS walked the whole ancestry on every live-update batch
   defp live_update_many_preload_mode,
     do:
-      ProcessTree.get(:live_update_many_preload_mode) ||
-        Config.get(:live_update_many_preload_mode, nil,
-          name: l("Live Update Preload Mode"),
-          description: l("How to preload data during live updates (technical setting).")
-        )
+      Config.get(:live_update_many_preload_mode, nil,
+        name: l("Live Update Preload Mode"),
+        description: l("How to preload data during live updates (technical setting).")
+      )
 
   def uniq_assign(list_of_components, field) do
     case list_of_components

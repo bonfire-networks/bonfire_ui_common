@@ -18,7 +18,7 @@ defmodule Bonfire.UI.Common.C do
     debug(assigns, "HTML comment")
 
     ~F"""
-    {#if Untangle.log_level?(@l)}
+    {#if Untangle.log_enabled?(@l)}
       {raw("<!--")}
       {case @d do
         nil -> nil

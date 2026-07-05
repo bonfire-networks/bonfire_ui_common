@@ -107,6 +107,10 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
     table = :ets.new(@table_name, [:named_table, :set, :public, read_concurrency: true])
 
     sync_persistent_term(enabled)
+    # this module owns the profiling telemetry handlers: they attach only while the profiler is
+    # ON (boot env or live enable), attached-but-idle handlers made every DB query and
+    # router/LV event pay for the "is profiling on?" check
+    if enabled, do: attach_handlers()
 
     {:ok,
      %{
@@ -125,13 +129,25 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
   @impl true
   def handle_call(:enable, _from, state) do
     sync_persistent_term(true)
+    attach_handlers()
     {:reply, :ok, %{state | enabled: true}}
   end
 
   @impl true
   def handle_call(:disable, _from, state) do
     sync_persistent_term(false)
+    detach_handlers()
     {:reply, :ok, %{state | enabled: false}}
+  end
+
+  defp attach_handlers do
+    Bonfire.UI.Common.ServerTimingTelemetry.setup(Bonfire.Common.Config.repo())
+    Bonfire.UI.Common.PageTimingTelemetry.setup()
+  end
+
+  defp detach_handlers do
+    Bonfire.UI.Common.ServerTimingTelemetry.detach()
+    Bonfire.UI.Common.PageTimingTelemetry.detach()
   end
 
   @impl true
@@ -219,23 +235,6 @@ defmodule Bonfire.UI.Common.PageTimingStorage do
     :crypto.strong_rand_bytes(8) |> Base.encode16(case: :lower)
   end
 
-  defp avg([]), do: 0
-  defp avg(list), do: round(Enum.sum(list) / length(list))
-
-  defp percentile([], _p), do: 0
-
-  defp percentile(list, p) do
-    sorted = Enum.sort(list)
-    k = (length(sorted) - 1) * p / 100
-    f = floor(k)
-    c = ceil(k)
-
-    if f == c do
-      Enum.at(sorted, round(k))
-    else
-      lower = Enum.at(sorted, f)
-      upper = Enum.at(sorted, c)
-      round(lower + (upper - lower) * (k - f))
-    end
-  end
+  defdelegate avg(list), to: Bonfire.Common.Enums
+  defdelegate percentile(list, p), to: Bonfire.Common.Enums
 end

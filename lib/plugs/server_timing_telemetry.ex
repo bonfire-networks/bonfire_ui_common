@@ -40,18 +40,10 @@ defmodule Bonfire.UI.Common.ServerTimingTelemetry do
     - `:include_liveview` - Also track LiveView mount/render times (default: false)
   """
   def setup(repo_module, opts \\ []) when is_atom(repo_module) do
-    # Get the telemetry prefix from repo config
-    telemetry_prefix =
-      if repo_module && function_exported?(repo_module, :config, 0) do
-        repo_module.config()[:telemetry_prefix] || [:bonfire, :repo]
-      else
-        [:bonfire, :repo]
-      end
-
     # Attach Ecto query handler
     :telemetry.attach(
       "#{@handler_id}-ecto",
-      telemetry_prefix ++ [:query],
+      EctoSparkles.Log.query_event(repo_module),
       &handle_ecto_query/4,
       %{}
     )
@@ -60,7 +52,7 @@ defmodule Bonfire.UI.Common.ServerTimingTelemetry do
       setup_liveview_handlers()
     end
 
-    Logger.info("Server-Timing telemetry handlers attached for #{inspect(telemetry_prefix)}")
+    Logger.info("Server-Timing telemetry handlers attached for #{inspect(repo_module)}")
     :ok
   rescue
     e ->
@@ -87,8 +79,8 @@ defmodule Bonfire.UI.Common.ServerTimingTelemetry do
          _config
        ) do
     # Convert from native time units to microseconds
-    query_time_us = System.convert_time_unit(total_time || 0, :native, :microsecond)
-    queue_time_us = System.convert_time_unit(queue_time || 0, :native, :microsecond)
+    query_time_us = EctoSparkles.Log.native_us(total_time)
+    queue_time_us = EctoSparkles.Log.native_us(queue_time)
 
     ServerTimingPlug.record_db_query(query_time_us, queue_time_us)
   end
@@ -100,9 +92,9 @@ defmodule Bonfire.UI.Common.ServerTimingTelemetry do
          _config
        ) do
     # Fallback for older Ecto versions or different measurement keys
-    query_time_us = System.convert_time_unit(query_time || 0, :native, :microsecond)
+    query_time_us = EctoSparkles.Log.native_us(query_time)
     queue_time = Map.get(measurements, :queue_time, 0)
-    queue_time_us = System.convert_time_unit(queue_time, :native, :microsecond)
+    queue_time_us = EctoSparkles.Log.native_us(queue_time)
 
     ServerTimingPlug.record_db_query(query_time_us, queue_time_us)
   end
@@ -134,7 +126,7 @@ defmodule Bonfire.UI.Common.ServerTimingTelemetry do
          _metadata,
          _config
        ) do
-    duration_us = System.convert_time_unit(duration, :native, :microsecond)
+    duration_us = EctoSparkles.Log.native_us(duration)
     ServerTimingPlug.record_custom(:"lv_#{action}", duration_us)
   end
 
@@ -144,7 +136,7 @@ defmodule Bonfire.UI.Common.ServerTimingTelemetry do
          _metadata,
          _config
        ) do
-    duration_us = System.convert_time_unit(duration, :native, :microsecond)
+    duration_us = EctoSparkles.Log.native_us(duration)
     ServerTimingPlug.record_custom(:lv_component, duration_us)
   end
 
