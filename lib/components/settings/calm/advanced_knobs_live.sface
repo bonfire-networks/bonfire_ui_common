@@ -1,4 +1,10 @@
-<details class="border-b border-base-content/10" data-role={@details_role}>
+{!-- id + hook: `open` is client-side DOM state that LV patches reset — the hook re-opens after re-renders (e.g. the save-triggered one), so the editor doesn't collapse mid-edit --}
+<details
+  id={@details_role}
+  :hook="PersistDetails"
+  class="border-b border-base-content/10"
+  data-role={@details_role}
+>
   <summary class="p-4 cursor-pointer text-sm font-medium text-base-content flex items-center gap-2 list-none">
     <Iconify.iconify icon={@icon} class="w-4 h-4 text-muted" />
     {@summary}
@@ -11,25 +17,76 @@
 
     <div class="grid sm:grid-cols-2 gap-x-4 gap-y-2">
       {#for row <- @rows}
-        <label class="flex items-center justify-between gap-2 text-sm" data-role={@row_role}>
-          <span class="font-mono text-xs text-muted truncate">{row.name}</span>
-          {#case Map.get(row, :kind, :number)}
-            {#match :bool}
-              <select name={"#{@field_prefix}[#{row.name}]"} class="select select-xs select-bordered w-20">
-                <option value="on" selected={row.value == "on"}>on</option>
-                <option value="off" selected={row.value == "off"}>off</option>
-              </select>
-            {#match _}
-              <input
-                type="number"
-                min={Map.get(row, :min, 1)}
-                step={Map.get(row, :step, 1)}
-                inputmode="numeric"
-                name={"#{@field_prefix}[#{row.name}]"}
-                value={row.value}
-                class="input input-xs input-bordered w-20"
-              />
-          {/case}
+        <label
+          class="flex items-center justify-between gap-2 text-sm"
+          data-role={@row_role}
+          title={Map.get(row, :tooltip)}
+        >
+          {#if label = Map.get(row, :label)}
+            <span class="text-xs text-base-content truncate cursor-help">{label}</span>
+          {#else}
+            <span class="font-mono text-xs text-muted truncate">{row.name}</span>
+          {/if}
+          <span class="flex items-center gap-1 shrink-0">
+            <span :if={note = Map.get(row, :note)} class="text-xs text-muted italic">{note}</span>
+            {#case Map.get(row, :kind, :number)}
+              {#match :read_only}
+                <span class="badge badge-sm font-mono" title={Map.get(row, :tooltip)}>{row.value}</span>
+              {#match :percent}
+                {!-- relative knob: a % of the resource-computed baseline + live preview --}
+                <span class="text-xs text-muted whitespace-nowrap">{Map.get(row, :preview)}</span>
+                <input
+                  type="range"
+                  min="10"
+                  max="400"
+                  step="5"
+                  name={"#{@field_prefix}[#{row.name}]"}
+                  value={row.value}
+                  class="range range-xs w-24"
+                />
+                <span class="text-xs w-9 text-right">{row.value}%</span>
+              {#match :choices}
+                {!-- sentinel-capable knob: curated labeled options, never bare -1/0 magic numbers --}
+                <select name={"#{@field_prefix}[#{row.name}]"} class="select select-xs select-bordered">
+                  {#for {value, label} <- Map.get(row, :choices, [])}
+                    <option value={value} selected={row.value == value}>{label}</option>
+                  {/for}
+                </select>
+              {#match :bool}
+                {!-- unchecked checkboxes don't submit — the hidden "off" is what gets sent then --}
+                <input type="hidden" name={"#{@field_prefix}[#{row.name}]"} value="off">
+                <input
+                  type="checkbox"
+                  name={"#{@field_prefix}[#{row.name}]"}
+                  value="on"
+                  checked={row.value == "on"}
+                  class="toggle toggle-xs"
+                />
+              {#match :enum}
+                {!-- ordered scale (e.g. log levels) as a discrete slider; submits the index --}
+                <input
+                  type="range"
+                  min="0"
+                  max={length(Map.get(row, :values, [])) - 1}
+                  step="1"
+                  name={"#{@field_prefix}[#{row.name}]"}
+                  value={Enum.find_index(Map.get(row, :values, []), &(&1 == row.value)) || 0}
+                  class="range range-xs w-24"
+                />
+                <span class="text-xs w-14 text-right">{row.value}</span>
+              {#match _}
+                <input
+                  type="number"
+                  min={Map.get(row, :min, 1)}
+                  step={Map.get(row, :step, 1)}
+                  inputmode="numeric"
+                  name={"#{@field_prefix}[#{row.name}]"}
+                  value={row.value}
+                  class="input input-xs input-bordered w-20"
+                />
+            {/case}
+            <span :if={unit = Map.get(row, :unit)} class="text-xs text-muted w-6">{unit}</span>
+          </span>
         </label>
       {/for}
     </div>
