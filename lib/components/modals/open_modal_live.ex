@@ -10,6 +10,8 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   @doc "The title of the button used to open the modal. Only used if no `open_btn` slot is passed."
   prop open_btn_text, :string, default: nil
 
+  prop open_modal_wrapper_class, :css_class, default: "w-full open_modal_wrapper flex h-full"
+
   @doc "The accessible label for the button. Falls back to title_text if not provided."
   prop open_btn_aria_label, :string, default: nil
 

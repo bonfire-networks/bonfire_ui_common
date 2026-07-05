@@ -1,26 +1,39 @@
 <Dropdown
   id="user_more_menu_links"
-  position="top-end"
+  position="top-start"
+  strategy="fixed"
   wrapper_class="w-full"
-  trigger_class="flex w-full ml-2 cursor-pointer"
+  panel_class="!w-72 max-w-[calc(100vw-2rem)]"
+  trigger_class="focus-ring group flex w-full cursor-pointer items-center gap-3 rounded-box px-3 py-2 text-left transition hover:bg-base-content/5 focus:bg-base-content/5"
   label={l("User menu")}
 >
   <:trigger>
-    <div class="relative">
+    <div class="shrink-0">
       <Bonfire.UI.Common.AvatarLive
         ring
         bg_class="rounded-full"
         title={e(current_user(@__context__), :profile, :name, "Anon")}
-        class="inline-block object-cover cursor-pointer rounded-full w-[50px] h-[50px]"
+        class="inline-block object-cover cursor-pointer rounded-full w-10 h-10"
         src={Media.avatar_url(current_user(@__context__))}
         user_id={current_user_id(@__context__)}
         parent_id="user_menu"
         is_remote={false}
       />
-      <span class="rounded-full bg-base-100 absolute -right-1 -bottom-1 leading-none">
-        <#Icon iconify="ph:gear-fill" class="w-6 h-6 text-primary" />
-      </span>
     </div>
+    <div class="min-w-0 flex-1">
+      <div class="truncate text-body font-medium leading-tight text-base-content">
+        {e(current_user(@__context__), :profile, :name, nil) || e(current_user(@__context__), :character, :username, l("Anonymous"))}
+      </div>
+      <div class="truncate text-body leading-tight text-muted">
+        {maybe_apply(Bonfire.Me.Characters, :display_username, [current_user(@__context__), true],
+          fallback_return: "@" <> e(current_user(@__context__), :character, :username, ""))}
+      </div>
+    </div>
+    <#Icon
+      iconify="ph:dots-three-bold"
+      class="w-5 h-5 shrink-0 text-base-content/70 transition group-hover:text-primary group-focus:text-primary"
+      aria-hidden="true"
+    />
   </:trigger>
 
   <Bonfire.UI.Common.UserMenuLinksLive page={@page} />

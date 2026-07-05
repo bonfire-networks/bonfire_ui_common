@@ -147,6 +147,11 @@ media-player {
   display: none !important;
 }
 
+.menu {
+    & :where(li > details > summary), & :where(li > .menu-dropdown-toggle) {
+        &:after {
+            content: none !important;
+        }
 /* Fix mobile double-tap issue: DaisyUI menu hover styles trigger hover state
    on first tap, requiring a second tap to actually click. Replace hover
    background with :active feedback on touch-only devices. */
@@ -473,14 +478,14 @@ textarea:focus-visible {
   --color-base-100: oklch(100% 0 0);
   --color-base-200: oklch(99% 0 0);
   --color-base-300: oklch(98% 0 0);
-  --color-base-content: oklch(24% 0 0);
-  --color-primary: oklch(52% 0.2 27);
-  --color-primary-content: oklch(100% 0 0);
-  --color-secondary: oklch(90% 0 0);
-  --color-secondary-content: oklch(35% 0 0);
-  --color-accent: oklch(58% 0.17 27);
+  --color-base-content: oklch(24% 0.006 38);
+  --color-primary: oklch(75% 0.07 58);
+  --color-primary-content: oklch(22% 0.02 38);
+  --color-accent: oklch(71% 0.05 58);
+  --color-secondary: oklch(92% 0.018 38);
+  --color-secondary-content: oklch(34% 0.009 38);
   --color-accent-content: oklch(100% 0 0);
-  --color-neutral: oklch(30% 0 0);
+  --color-neutral: oklch(30% 0.018 38);
   --color-neutral-content: oklch(97% 0 0);
   --color-info: oklch(52% 0.11 235);
   --color-info-content: oklch(100% 0 0);
@@ -491,12 +496,12 @@ textarea:focus-visible {
   --color-error: oklch(57% 0.19 25);
   --color-error-content: oklch(100% 0 0);
   --radius-selector: 2rem;
-  --radius-field: 0.75rem;
-  --radius-box: 1rem;
+  --radius-field: 2rem;
+  --radius-box: 0rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
-  --depth: 1;
+  --depth: 0;
   --noise: 0;
 }
 
@@ -507,14 +512,14 @@ textarea:focus-visible {
   --color-base-100: oklch(23% 0 0);
   --color-base-200: oklch(20.5% 0 0);
   --color-base-300: oklch(17% 0 0);
-  --color-base-content: oklch(80% 0 0);
-  --color-primary: oklch(66% 0.21 27);
-  --color-primary-content: oklch(98% 0 0);
-  --color-secondary: oklch(30% 0 0);
-  --color-secondary-content: oklch(82% 0 0);
-  --color-accent: oklch(62% 0.17 25);
+  --color-base-content: oklch(80% 0.006 38);
+  --color-primary: oklch(75% 0.07 58);
+  --color-primary-content: oklch(22% 0.02 38);
+  --color-accent: oklch(71% 0.05 58);
+  --color-secondary: oklch(30% 0.013 38);
+  --color-secondary-content: oklch(82% 0.005 38);
   --color-accent-content: oklch(98% 0 0);
-  --color-neutral: oklch(32% 0 0);
+  --color-neutral: oklch(32% 0.013 38);
   --color-neutral-content: oklch(88% 0 0);
   --color-info: oklch(72% 0.12 235);
   --color-info-content: oklch(20% 0.04 235);
@@ -525,12 +530,12 @@ textarea:focus-visible {
   --color-error: oklch(68% 0.17 25);
   --color-error-content: oklch(20% 0.04 25);
   --radius-selector: 2rem;
-  --radius-field: 0.75rem;
-  --radius-box: 1rem;
+  --radius-field: 2rem;
+  --radius-box: 0rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
-  --depth: 1;
+  --depth: 0;
   --noise: 0;
 }
 
@@ -1120,11 +1125,6 @@ emoji-picker .favorites {
 
 .main_object_in_thread [data-role='subject'] {
   @apply gap-3;
-}
-
-
-div[data-role='subject'][data-main-object] {
-  @apply mb-3;
 }
 
 div[data-role='subject'][data-main-object] div[data-id='name_username'] {

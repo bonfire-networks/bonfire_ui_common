@@ -5,6 +5,7 @@
     reusable_modal_id="preview_content"
     click_open_event={nil}
     href={@href}
+    open_modal_wrapper_class="contents"
     open_btn_text={@open_btn_text}
     open_btn_wrapper_class={@open_btn_wrapper_class}
     open_btn_class={@open_btn_class}

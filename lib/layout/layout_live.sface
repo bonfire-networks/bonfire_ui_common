@@ -160,23 +160,17 @@
                the sticky child's separate channel join is in flight. --}
           {#if @current_user_id && @without_sidebar != true}
             <div data-role="persistent_skeleton" class="block w-full lg:shrink-0" aria-hidden="true">
-              {!-- mirrors PersistentLive's #persistent-header exactly (logo 70² + avatar 60² ring/gear,
-                   40px inset, pt-base header row, 48px → compose) so there's no reflow when the sticky LV fills in --}
+              {!-- mirrors PersistentLive's #persistent-header exactly (logo 70², 40px inset,
+                   pt-base header row, 48px → compose) so there's no reflow when the sticky LV fills in --}
               <div class="px-4 lg:px-[40px] bg-base-200 z-sticky sticky top-0">
                 <div class="pt-safe w-full">
                   <div class="flex flex-col w-full">
-                    <div class="flex items-center justify-between lg:pt-base">
+                    <div class="flex items-center lg:pt-base">
                       <Bonfire.UI.Common.LogoLinkLive
                         href="/"
                         image_class="w-[70px] h-[70px]"
                         name_class="text-base font-medium text-base-content text-relaxed"
                       />
-                      <div class="relative">
-                        <div class="skeleton rounded-full w-[50px] h-[50px] ring-[0.7px] ring-primary" />
-                        <span class="rounded-full bg-base-100 absolute -right-1 -bottom-1 leading-none">
-                          <#Icon iconify="ph:gear-fill" class="w-6 h-6 text-primary" />
-                        </span>
-                      </div>
                     </div>
                     <div class="py-base lg:pt-[36px]">
                       <div class="skeleton rounded-field h-[41px] w-1/2" />
@@ -192,20 +186,26 @@
                 ]}
                 <div class="flex flex-col px-3 lg:px-0">
                   <div class="gap-1 lg:gap-0">
-                    <div class="menu p-0 w-full gap-0">
-                      <div class="flex items-center gap-3 lg:px-2 lg:py-2">
-                        <div class="skeleton w-6 h-6 rounded" />
-                        <div class="skeleton h-4 w-24 rounded" />
-                      </div>
-                      <div class="flex items-center gap-3 lg:px-2 lg:py-2">
-                        <div class="skeleton w-6 h-6 rounded" />
-                        <div class="skeleton h-4 w-20 rounded" />
-                      </div>
-                      <div class="flex items-center gap-3 lg:px-2 lg:py-2">
-                        <div class="skeleton w-6 h-6 rounded" />
-                        <div class="skeleton h-4 w-16 rounded" />
-                      </div>
-                    </div>
+                    <ul class="menu p-0 w-full gap-0 px-0 lg:px-[24px] mt-2">
+                      <li class="m-0 p-0 justify-end !block">
+                        <div class="!px-0 flex items-center !gap-[16px] py-2">
+                          <div class="skeleton w-[18px] h-[18px] rounded shrink-0" />
+                          <div class="skeleton h-4 w-24 rounded" />
+                        </div>
+                      </li>
+                      <li class="m-0 p-0 justify-end !block">
+                        <div class="!px-0 flex items-center !gap-[16px] py-2">
+                          <div class="skeleton w-[18px] h-[18px] rounded shrink-0" />
+                          <div class="skeleton h-4 w-20 rounded" />
+                        </div>
+                      </li>
+                      <li class="m-0 p-0 justify-end !block">
+                        <div class="!px-0 flex items-center !gap-[16px] py-2">
+                          <div class="skeleton w-[18px] h-[18px] rounded shrink-0" />
+                          <div class="skeleton h-4 w-16 rounded" />
+                        </div>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               {/if}
@@ -252,6 +252,13 @@
               nav_items={@nav_items}
               sidebar_widgets={@sidebar_widgets}
             />
+          </div>
+
+          <div
+            :if={@current_user_id && @without_sidebar != true}
+            class="sticky bottom-0 z-sticky mt-auto shrink-0 bg-base-200 px-3 pb-safe pt-4 lg:px-[24px] lg:pb-base"
+          >
+            <Bonfire.UI.Common.UserMenuLive />
           </div>
         </div>
       </aside>

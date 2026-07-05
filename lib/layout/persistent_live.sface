@@ -8,16 +8,13 @@
     <div class="pt-safe w-full">
       {#if current_user_id(@__context__)}
         <div class="flex flex-col w-full">
-          {!-- header row: logo (70² square) + avatar (70² circle), aligned to the 106px page-header --}
-          <div class="flex items-center justify-between lg:pt-base">
+          {!-- header row: logo (70² square), aligned to the 106px page-header --}
+          <div class="flex items-center lg:pt-base">
             <Bonfire.UI.Common.LogoLinkLive
               href="/"
               image_class="w-[70px] h-[70px]"
               name_class="text-base font-medium text-base-content text-relaxed"
             />
-            <div>
-              <Bonfire.UI.Common.UserMenuLive />
-            </div>
           </div>
           {!-- compose: below the header divider, 18px (base) rhythm --}
           <div class="py-base lg:pt-[36px]">
@@ -30,7 +27,7 @@
               context_id={@context_id}
               context_group={@context_group}
               without_icon
-              composer_class="btn-ds-outline focus-ring w-1/2"
+              composer_class="btn btn-primary focus-ring w-1/2"
               smart_input_opts={@smart_input_opts}
             />
           </div>
