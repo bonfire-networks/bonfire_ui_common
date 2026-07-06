@@ -33,8 +33,10 @@ defmodule Bonfire.UI.Common.Settings.Calm.PresetCardsLive do
 
   @doc "Class of the wrapping form."
   prop class, :css_class, default: "p-4 border-b border-base-content/10"
+
   @doc "Class of the options wrapper (e.g. swap the stacked list for a grid: `grid sm:grid-cols-2 gap-2`)."
   prop options_class, :css_class, default: "grid sm:grid-cols-2 gap-2"
+
   @doc "Class of each card (a `<label>` wrapping a sr-only radio — keep the `has-[:checked]`/`has-[:focus-visible]` variants so selection & focus stay visible)."
   prop card_class, :css_class,
     default:

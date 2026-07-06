@@ -19,6 +19,7 @@ defmodule Bonfire.UI.Common.Settings.Calm.AdvancedKnobsLive do
   prop details_role, :string, default: "calm_advanced"
   @doc "Used for the form's `data-scope` attribute."
   prop form_name, :string, required: true
+
   @doc "The consumer's preset field name — submitted as `custom` alongside any edit. Pass `nil` when knob edits shouldn't flip a preset."
   prop preset_field, :string, default: nil
 

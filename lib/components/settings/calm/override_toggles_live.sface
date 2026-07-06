@@ -15,7 +15,10 @@
     <label class="flex items-center justify-between gap-3 cursor-pointer" data-role={@row_role}>
       <span class="flex flex-col min-w-0">
         <span class="text-sm font-medium text-base-content">{row.name}</span>
-        <span :if={description = Map.get(row, :description)} class="text-xs text-base-content/50 leading-snug">{description}</span>
+        <span
+          :if={description = Map.get(row, :description)}
+          class="text-xs text-base-content/50 leading-snug"
+        >{description}</span>
       </span>
       <span class="shrink-0">
         {!-- hidden false so unchecking submits a value (standard checkbox pattern) --}
