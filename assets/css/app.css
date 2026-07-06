@@ -152,6 +152,9 @@ media-player {
         &:after {
             content: none !important;
         }
+    }
+}
+
 /* Fix mobile double-tap issue: DaisyUI menu hover styles trigger hover state
    on first tap, requiring a second tap to actually click. Replace hover
    background with :active feedback on touch-only devices. */
