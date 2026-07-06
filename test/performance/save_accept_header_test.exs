@@ -8,7 +8,10 @@ defmodule Bonfire.UI.Common.SaveAcceptHeaderTest do
 
   defp with_session(conn) do
     opts = Plug.Session.init(Bonfire.UI.Common.EndpointTemplate.session_options())
-    Plug.Session.call(conn, opts)
+    # the cookie store needs a secret to (attempt to) decode a presented cookie; our fake
+    # cookie just fails verification → empty session, which is all these tests need
+    %{conn | secret_key_base: String.duplicate("x", 64)}
+    |> Plug.Session.call(opts)
   end
 
   test "AP requests skip the session entirely (no cookie crypto, no Set-Cookie)" do
@@ -29,10 +32,21 @@ defmodule Bonfire.UI.Common.SaveAcceptHeaderTest do
     assert @endpoint.save_accept_header(conn, []) == conn
   end
 
-  test "web requests store the accept header, but only dirty the session when it changed" do
+  test "cookie-less guests get NO session write — never mints a cookie (GDPR/caching/shedding)" do
     conn =
       conn(:get, "/feed")
       |> put_req_header("accept", "text/html")
+      |> with_session()
+
+    # returned untouched: not even a session fetch happens without a session cookie
+    assert @endpoint.save_accept_header(conn, []) == conn
+  end
+
+  test "cookie-carrying requests store the accept header, but only dirty the session when it changed" do
+    conn =
+      conn(:get, "/feed")
+      |> put_req_header("accept", "text/html")
+      |> put_req_header("cookie", "_bonfire_key=abc123")
       |> with_session()
       |> @endpoint.save_accept_header([])
 
@@ -44,6 +58,7 @@ defmodule Bonfire.UI.Common.SaveAcceptHeaderTest do
     conn2 =
       conn(:get, "/feed")
       |> put_req_header("accept", "text/html")
+      |> put_req_header("cookie", "_bonfire_key=abc123")
       |> with_session()
       |> fetch_session()
       |> put_session(:accept_header, "text/html")

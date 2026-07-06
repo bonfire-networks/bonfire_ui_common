@@ -1073,6 +1073,24 @@ defmodule Bonfire.UI.Common do
     nil
   end
 
+  @doc """
+  Whether the (fetched) session carries a login, a DB-free check for plugs/layouts.
+
+  Used to keep GUESTS COOKIELESS, with advantages:
+  - GDPR: nothing to consent to; 
+  - caching: no `Set-Cookie` busting shared caches on public pages; 
+  - the `Bonfire.UI.Common.OverloadShedPlug` cookie-presence check stays a correct login discriminator. 
+
+  Guest requests must never trigger a session WRITE, so e.g. the CSRF meta tag is only emitted when someone is logged in (guest LiveViews are dead renders that never connect, so the token would be useless to them anyway, while guest-usable FORMS like login/signup still generate their own hidden token + session write, the strictly-necessary case).
+  """
+  def session_logged_in?(%Plug.Conn{} = conn) do
+    !!(Plug.Conn.get_session(conn, :current_account_id) ||
+         Plug.Conn.get_session(conn, :current_user_id))
+  rescue
+    # session not fetched (e.g. error/static paths)
+    _ -> false
+  end
+
   @doc "Save a `go` redirection path in the session (for redirecting somewhere after auth flows)"
   def set_go_after(conn, path \\ nil) do
     path = path || conn.request_path

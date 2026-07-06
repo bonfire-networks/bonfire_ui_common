@@ -412,6 +412,13 @@ defmodule Bonfire.UI.Common.PersistentLive do
     {:noreply, socket}
   end
 
+  # heavy-load notices from `Bonfire.Common.Overload`: this sticky process holds the i=2 NotificationLive's "bonfire:overload" subscription (it persists across navigations), but has no catch-all handle_info, so route to the shared handler rather than crash
+  def handle_info({:overload_notice, _} = blob, socket),
+    do: Bonfire.UI.Common.LiveHandlers.handle_info(blob, socket, __MODULE__)
+
+  def handle_info({:overload_transition, _} = blob, socket),
+    do: Bonfire.UI.Common.LiveHandlers.handle_info(blob, socket, __MODULE__)
+
   # a pin changed in the page LV → tell the groups sidebar in this sticky process to recompute
   # (resolved via the ComponentID alias the sidebar registers under the user, see SidebarGroupsLive)
   def handle_info({:assign_persistent_self, {:sidebar_groups, %{user_id: user_id}}}, socket) do
@@ -476,6 +483,11 @@ defmodule Bonfire.UI.Common.PersistentLive do
       end
 
     {:reply, value, socket}
+  end
+
+  def handle_call(other, _from, socket) do
+    debug(other, "PersistentLive handle_call fallback (not handled by default)")
+    {:reply, :unhandled, socket}
   end
 
   defp assign_persistent_locale_from_session(socket, session) do

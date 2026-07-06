@@ -59,20 +59,22 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       def save_accept_header(%Plug.Conn{request_path: "/api" <> _} = conn, _opts), do: conn
 
       def save_accept_header(conn, _opts) do
-        case Plug.Conn.get_req_header(conn, "accept") do
-          [accept_header | _] ->
-            conn = Plug.Conn.fetch_session(conn)
+        with [accept_header | _] <- Plug.Conn.get_req_header(conn, "accept"),
+             # only for requests ALREADY carrying a session cookie (≈ logged in / mid-auth —
+             # the LV-mount negotiation copy is a user feature): never MINTS a cookie for
+             # guests (GDPR/caching/the shed plug's presence check), and cookie-less visitors
+             # skip even the session fetch (one less cookie HMAC)
+             true <- EndpointTemplate.session_cookie?(conn) do
+          conn = Plug.Conn.fetch_session(conn)
 
-            # only write when changed: put_session dirties the session, which re-signs the
-            # cookie and adds a Set-Cookie header on every response
-            if Plug.Conn.get_session(conn, :accept_header) == accept_header do
-              conn
-            else
-              Plug.Conn.put_session(conn, :accept_header, accept_header)
-            end
-
-          [] ->
+          # write only on change: a put_session dirties the session → re-signed Set-Cookie
+          if Plug.Conn.get_session(conn, :accept_header) != accept_header do
+            Plug.Conn.put_session(conn, :accept_header, accept_header)
+          else
             conn
+          end
+        else
+          _ -> conn
         end
       end
 
@@ -335,6 +337,10 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       # after the session plug so guest-vs-user is readable from the cookie (no DB)
       plug :mark_process_context
 
+      # reads the caller_class set just above; sheds BEFORE the router (and thus before
+      # HTTP-signature crypto) when Overload reports :hard, near-free when calm
+      plug(Bonfire.UI.Common.OverloadShedPlug)
+
       def include_assets(conn) do
         include_assets(conn, :top)
         include_assets(conn, :bottom)
@@ -472,6 +478,21 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       def reload!(opts \\ ["--no-all-warnings"]),
         do: Phoenix.CodeReloader.reload!(__MODULE__, opts)
     end
+  end
+
+  @doc """
+  Whether the request PRESENTED a session cookie: a free header check, no fetch/HMAC.
+
+  Since guests are kept cookieless (see `Bonfire.UI.Common.session_logged_in?/1`), cookie
+  presence ≈ logged in (or mid-auth flow), used by the overload shed plug's guest tier and to
+  gate session writes like `save_accept_header` so they never MINT a cookie.
+  """
+  def session_cookie?(conn) do
+    key = Keyword.get(session_options(), :key, "_bonfire_key")
+
+    conn
+    |> Plug.Conn.get_req_header("cookie")
+    |> Enum.any?(&String.contains?(&1, key))
   end
 
   def session_options do

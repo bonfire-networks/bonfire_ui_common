@@ -2754,11 +2754,13 @@
         (function () {
             var retry = document.getElementById("retry");
             var hint = document.getElementById("hint");
+            var reducedMotion = false;
 
             // Honour reduced-motion: SMIL can't be stopped via CSS, so freeze the
             // flame's timeline on a frame where it's fully formed.
             try {
-                if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                reducedMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+                if (reducedMotion) {
                     var flame = document.querySelector("svg.flame");
                     if (flame && flame.setCurrentTime && flame.pauseAnimations) {
                         flame.setCurrentTime(0.2);
@@ -2767,28 +2769,128 @@
                 }
             } catch (e) { /* SMIL control unsupported: leave it animating */ }
 
-            // Reload the page the user was actually trying to reach. The address bar
-            // still holds that URL even though the SW served this page, so a reload
-            // re-attempts the original navigation.
-            function reload() {
-                window.location.reload();
+            // ── mode switch: the overload shed plug redirects here with
+            // #overloaded=<secs>&back=<url-encoded original path> ──
+            var params = {};
+            try {
+                location.hash.replace(/^#/, "").split("&").forEach(function (pair) {
+                    var i = pair.indexOf("=");
+                    if (i > 0) params[pair.slice(0, i)] = decodeURIComponent(pair.slice(i + 1));
+                });
+            } catch (e) { /* malformed hash: fall through to offline mode */ }
+
+            var overloadedSecs = parseInt(params["overloaded"], 10);
+            if (overloadedSecs > 0) overloadedMode(overloadedSecs);
+            else offlineMode();
+
+            // Same-origin destinations only: the hash is client-controlled, so blindly
+            // navigating would be an open-redirect gadget. Fallback ladder: same-origin
+            // referrer → home (referrer alone can't be primary: on a redirect it names
+            // where the user came FROM, and it's empty on cold loads).
+            function safeBack() {
+                var back = params["back"];
+                if (back && back.charAt(0) === "/" && back.charAt(1) !== "/") return back;
+                try {
+                    if (document.referrer) {
+                        var ref = new URL(document.referrer);
+                        if (ref.origin === location.origin) return ref.pathname + ref.search;
+                    }
+                } catch (e) { /* unparsable referrer */ }
+                return "/";
             }
 
-            // Progressive enhancement: without JS the link falls back to navigating
-            // home (a real retry). With JS we reload in place and guard against the
-            // still-offline case so the tap gives feedback instead of a silent loop.
-            retry.addEventListener("click", function (event) {
-                event.preventDefault();
-                if (navigator.onLine === false) {
-                    hint.textContent = "Still offline. We'll retry the moment you reconnect.";
-                    return;
-                }
-                hint.textContent = "Reconnecting…";
-                reload();
-            });
+            // "The bonfire is crowded": visible countdown (the wait reads as handled,
+            // not broken) with proportional jitter so returning visitors don't
+            // re-arrive as a synchronized wave, then navigate back to the original
+            // destination (after the redirect, location IS this page — the hash
+            // carries the way home; reload() would just re-show the whale).
+            function overloadedMode(secs) {
+                // count our own arrivals: a retry ("Try now" or the countdown) that finds the
+                // instance still overloaded bounces straight back here with a fresh countdown,
+                // which otherwise reads as "the button did nothing"
+                var attempts = 0;
+                try {
+                    // episode-scoped: arrivals more than 10min apart are a NEW storm, so the
+                    // next one starts with the first-visit copy again
+                    var prev = JSON.parse(sessionStorage.getItem("whale_attempts") || "{}");
+                    attempts = (Date.now() - (prev.t || 0) < 600000 ? prev.n || 0 : 0) + 1;
+                    sessionStorage.setItem("whale_attempts", JSON.stringify({ n: attempts, t: Date.now() }));
+                } catch (e) { /* storage unavailable: first-visit copy every time */ }
 
-            // Auto-retry as soon as the device regains connectivity.
-            window.addEventListener("online", reload);
+                var heading = document.querySelector("main h1");
+                var copy = document.querySelector("main > p");
+                if (heading) {
+                    heading.textContent = attempts > 1 ?
+                        "Still hot in here..." : "It's heating up in here!";
+                }
+                if (copy) {
+                    copy.textContent = attempts > 1 ?
+                        "Tried again but the instance is still under heavy load. Sit tight and we'll keep retrying for you." :
+                        "This instance is under heavy load. Please hang on, we'll connect you automatically in a moment.";
+                }
+
+                var dest = safeBack();
+                retry.textContent = "Try now";
+                retry.setAttribute("href", dest);
+                retry.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    hint.textContent = "Trying…";
+                    go();
+                });
+
+                // ±⅓ proportional jitter — bigger waves need bigger de-synchronization
+                var wait = Math.max(3, Math.round(secs + (Math.random() - 0.5) * (2 / 3) * secs));
+                var remaining = wait;
+
+                function go() { window.location.href = dest; }
+
+                if (reducedMotion) {
+                    // no per-second ticking: sparse updates + the same auto-retry
+                    hint.textContent = "Retrying automatically in about " + wait + "s…";
+                    setTimeout(go, wait * 1000);
+                    var sparse = setInterval(function () {
+                        remaining -= 5;
+                        if (remaining > 0) hint.textContent = "Retrying automatically in about " + remaining + "s…";
+                        else clearInterval(sparse);
+                    }, 5000);
+                } else {
+                    hint.textContent = "Retrying automatically in " + remaining + "s…";
+                    var timer = setInterval(function () {
+                        remaining -= 1;
+                        if (remaining <= 0) {
+                            clearInterval(timer);
+                            go();
+                        } else {
+                            hint.textContent = "Retrying automatically in " + remaining + "s…";
+                        }
+                    }, 1000);
+                }
+            }
+
+            function offlineMode() {
+                // Reload the page the user was actually trying to reach. The address bar
+                // still holds that URL even though the SW served this page, so a reload
+                // re-attempts the original navigation.
+                function reload() {
+                    window.location.reload();
+                }
+
+                // Progressive enhancement: without JS the link falls back to navigating
+                // home (a real retry). With JS we reload in place and guard against the
+                // still-offline case so the tap gives feedback instead of a silent loop.
+                retry.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    if (navigator.onLine === false) {
+                        hint.textContent = "Still offline. We'll retry the moment you reconnect.";
+                        return;
+                    }
+                    hint.textContent = "Reconnecting…";
+                    reload();
+                });
+
+                // Auto-retry as soon as the device regains connectivity.
+                window.addEventListener("online", reload);
+            }
         })();
     </script>
 </body>

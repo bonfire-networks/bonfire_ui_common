@@ -176,6 +176,23 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     {:noreply, socket}
   end
 
+  # heavy-load notice from `Bonfire.Common.Overload` (re-broadcast each sampler tick while elevated, the flash re-asserts and its auto-fade after the notices stop IS the all-clear)
+  def handle_info({:overload_notice, %{level: _level}}, socket, _source_module, _fun) do
+    {:noreply,
+     Bonfire.UI.Common.assign_flash(
+       socket,
+       :warning,
+       l(
+         "This instance is under heavy load. Please wait a moment before continuing, as things may be slow for a bit."
+       )
+     )}
+  end
+
+  def handle_info({:overload_transition, _meta}, socket, _source_module, _fun) do
+    # transitions also arrive on the same topic; the per-tick notices drive the banner
+    {:noreply, socket}
+  end
+
   def handle_info({:persistent_live_context_request, child_pid}, socket, _, _) do
     debug("child LV asked to send our context to it")
 

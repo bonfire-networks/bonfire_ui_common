@@ -53,6 +53,9 @@ defmodule Bonfire.UI.Common.NotificationLive do
     # debug(assigns, "assigns")
     current_user = current_user(socket) || current_user(assigns)
 
+    # heavy-load banner: `Bonfire.Common.Overload` re-broadcasts a notice each tick while elevated — handled by the parent LV via LiveHandlers → assign_flash back to this component, whose natural auto-fade is the all-clear. Same i==2 gate as below so the parent LV process subscribes only once.
+    if assigns[:i] == 2, do: PubSub.subscribe("bonfire:overload", socket)
+
     subscribed? =
       if assigns[:i] == 2 and current_user do
         feed_id =

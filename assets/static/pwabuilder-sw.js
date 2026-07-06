@@ -1,4 +1,5 @@
-const OFFLINE_CACHE = 'bonfire-offline-v3';
+// v4: offline.html gained the overloaded (#overloaded=) hash-mode, installed SWs must re-precache it or the fail-whale redirect lands on the old "you're offline" copy
+const OFFLINE_CACHE = 'bonfire-offline-v5';
 // App-shell cache: only ever holds content-hashed (immutable) static assets,
 // so entries never go stale — a new deploy produces new URLs.
 const ASSETS_CACHE = 'bonfire-assets-v1';

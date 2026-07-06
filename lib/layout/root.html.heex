@@ -56,7 +56,10 @@
       <meta name="robots" content="noindex" />
     <% end %>
 
-    {csrf_meta_tag()}
+    <%!-- session-cookie-carriers only: generating a CSRF token makes Plug.CSRFProtection WRITE it to the session (→ Set-Cookie), and guest LiveViews are dead renders that never connect, so the token would only mint a useless cookie, instead we want guests stay cookieless (GDPR/caching/the overload shed plug's presence check). Guest forms (login/signup) still generate their own hidden token + session write where actually needed. --%>
+    <%= if Bonfire.UI.Common.EndpointTemplate.session_cookie?(@conn) do %>
+      {csrf_meta_tag()}
+    <% end %>
   </head>
 
   <body class="bg-base-100" id="layout-root">

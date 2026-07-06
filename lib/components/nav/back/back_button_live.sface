@@ -31,12 +31,7 @@
     <#Icon iconify="ph:caret-left" class="w-4 h-4" />
   </button>
 {#elseif @back}
-  <LinkLive
-    to="/"
-    label={l("Go back to the previous page")}
-    class={@class}
-    parent_id="back_button"
-  >
+  <LinkLive to="/" label={l("Go back to the previous page")} class={@class} parent_id="back_button">
     <#Icon iconify="ph:caret-left" class="w-4 h-4" />
   </LinkLive>
 {/if}
