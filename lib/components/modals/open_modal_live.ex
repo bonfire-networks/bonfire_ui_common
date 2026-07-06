@@ -58,6 +58,12 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   @doc "Force modal to be open"
   prop show, :boolean, default: false
 
+  @doc "How to reveal the content: `:modal` dispatches to the modal singleton (default), `:expander` expands it inline (accordion-style) below the open button. Combine `:expander` with `click_open_event=\"toggle\"`."
+  prop mode, :atom, default: :modal, values: [:modal, :expander]
+
+  @doc "The classes of the inline content container when using the `:expander` mode"
+  prop expander_wrapper_class, :css_class, default: nil
+
   prop form_opts, :map, default: %{}
 
   @doc "Optional prop to hide the header at the top of the modal"
@@ -101,6 +107,9 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   # prop value, :any, default: nil
   data value, :any, default: nil
 
+  # Internal open state for the `:expander` mode. Must be `data` (not the `show` prop): parent re-renders re-apply prop defaults (see Surface.build_assigns/6), which would collapse the expander e.g. whenever applying its content updates the parent.
+  data expander_open, :boolean, default: false
+
   @doc """
   Slot for the contents of the modal, title, buttons...
   """
@@ -112,7 +121,7 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   @doc """
   Slot for the button that opens the modal
   """
-  slot open_btn, arg: [autocomplete: :list, value: :any]
+  slot open_btn, arg: [autocomplete: :list, value: :any, show: :boolean]
 
   def open(reusable_modal_id \\ nil) do
     debug("open!")
@@ -170,6 +179,11 @@ defmodule Bonfire.UI.Common.OpenModalLive do
     ReusableModalLive.set(assigns(socket))
 
     {:noreply, socket}
+  end
+
+  # Expander mode: toggle inline visibility, no modal singleton involved
+  def handle_event("toggle", _, socket) do
+    {:noreply, assign(socket, expander_open: !e(assigns(socket), :expander_open, false))}
   end
 
   def handle_event("close", _, socket) do

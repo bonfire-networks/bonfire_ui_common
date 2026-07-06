@@ -1,0 +1,19 @@
+<Bonfire.UI.Common.OpenModalLive
+  id={deterministic_dom_id(__MODULE__, e(@modal_assigns, :object_id, nil), "open_expander", @parent_id)}
+  mode={:expander}
+  click_open_event="toggle"
+  open_modal_wrapper_class="w-full"
+  open_btn_wrapper_class={@open_btn_wrapper_class}
+  expander_wrapper_class={@expander_wrapper_class}
+  modal_assigns={@modal_assigns}
+  default={@default}
+>
+  <:open_btn :let={show: show}>
+    <div class={@open_btn_class}>
+      <#slot {@open_btn, show: show}>
+        <span class="flex-1 text-left">{@open_btn_text}</span>
+      </#slot>
+      <#Icon iconify="ph:caret-right-bold" class={[@caret_class, show && "rotate-90"]} />
+    </div>
+  </:open_btn>
+</Bonfire.UI.Common.OpenModalLive>
