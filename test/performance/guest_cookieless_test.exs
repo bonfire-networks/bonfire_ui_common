@@ -45,12 +45,26 @@ defmodule Bonfire.UI.Common.GuestCookielessTest do
           "/feed/local?test=guest_cookieless",
           "/feed?test=guest_cookieless",
           "/about?test=guest_cookieless",
-          "/groups?test=guest_cookieless",
+          "/groups",
           "/conduct?test=guest_cookieless",
           "/"
         ] do
       conn = get_following_redirect(path)
       assert conn.status == 200, "expected 200 for #{path}, got #{conn.status}"
+    end
+  end
+
+  test "auth form pages DO set the strictly-necessary session cookie (CSRF for the form POST)" do
+    # the exempt case (ePrivacy Art. 5(3) via WP194 criterion B): the form the guest explicitly requested cannot POST safely without the session-stored CSRF token
+    for path <- ["/login", "/signup"] do
+      conn =
+        Phoenix.ConnTest.build_conn()
+        |> Plug.Conn.put_req_header("accept", "text/html")
+        |> get(path)
+
+      assert conn.status == 200
+      assert session_cookies(conn) != [], "expected #{path} to set the session cookie"
+      assert Map.has_key?(conn.private[:plug_session] || %{}, "_csrf_token")
     end
   end
 end
