@@ -28,8 +28,10 @@
         </noscript> --}
       {#match _}
         {!-- NOTE: this is only used if no other editor module (like `Bonfire.UI.Common.ComposerLive` by default) is configured --}
+        {!-- `name` so the typed body is serialized into validate/submit params --}
         <TextArea
           opts={[
+            name: @field_name,
             value: e(@smart_input_opts, :text, nil) || e(@smart_input_opts, :text_suggestion, ""),
             placeholder: e(@smart_input_opts, :prompt, "")
           ]}

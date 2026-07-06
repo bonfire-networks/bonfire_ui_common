@@ -470,7 +470,7 @@ textarea:focus-visible {
 }
 
 @plugin "daisyui" {
-  themes: light --default, silk, caramellatte, nord, cmyk, acid, autumn, lofi, pastel, fantasy, cupcake, bumblebee, emerald, corporate, dark --prefersdark, synthwave, forest, dracula, aqua, luxury, night, coffee, dim, sunset, abyss, retro, cyberpunk, valentine, halloween, garden;
+  themes: light --default, dark --prefersdark;
 }
 
 
@@ -480,16 +480,16 @@ textarea:focus-visible {
   default: true;
   color-scheme: light;
   --color-base-100: oklch(100% 0 0);
-  --color-base-200: oklch(99% 0 0);
-  --color-base-300: oklch(98% 0 0);
-  --color-base-content: oklch(24% 0.006 38);
-  --color-primary: oklch(75% 0.07 58);
-  --color-primary-content: oklch(22% 0.02 38);
-  --color-accent: oklch(71% 0.05 58);
-  --color-secondary: oklch(92% 0.018 38);
-  --color-secondary-content: oklch(34% 0.009 38);
+  --color-base-200: oklch(98.5% 0.002 250);
+  --color-base-300: oklch(97% 0.003 250);
+  --color-base-content: oklch(28% 0.012 250);
+  --color-primary: #4169e1;
+  --color-primary-content: oklch(100% 0 0);
+  --color-accent: oklch(58% 0.08 245);
+  --color-secondary: oklch(93% 0.006 250);
+  --color-secondary-content: oklch(38% 0.012 250);
   --color-accent-content: oklch(100% 0 0);
-  --color-neutral: oklch(30% 0.018 38);
+  --color-neutral: oklch(30% 0.012 250);
   --color-neutral-content: oklch(97% 0 0);
   --color-info: oklch(52% 0.11 235);
   --color-info-content: oklch(100% 0 0);
@@ -513,14 +513,14 @@ textarea:focus-visible {
   name: "dark";
   prefersdark: true;
   color-scheme: dark;
-  --color-base-100: oklch(23% 0 0);
-  --color-base-200: oklch(20.5% 0 0);
-  --color-base-300: oklch(17% 0 0);
+  --color-base-100: oklch(22% 0 0);
+  --color-base-200: oklch(21% 0 0);
+  --color-base-300: oklch(20% 0 0);
   --color-base-content: oklch(80% 0.006 38);
-  --color-primary: oklch(75% 0.07 58);
-  --color-primary-content: oklch(22% 0.02 38);
+  --color-primary: oklch(78% 0.155 52);
+  --color-primary-content: oklch(22% 0 0);
+  --color-secondary: oklch(0.26 0.01 0);
   --color-accent: oklch(71% 0.05 58);
-  --color-secondary: oklch(30% 0.013 38);
   --color-secondary-content: oklch(82% 0.005 38);
   --color-accent-content: oklch(98% 0 0);
   --color-neutral: oklch(32% 0.013 38);

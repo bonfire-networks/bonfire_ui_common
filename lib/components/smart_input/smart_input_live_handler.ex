@@ -550,14 +550,33 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     smart_input_opts = e(assigns(socket), :smart_input_opts, nil)
     input_status = smart_input_opts[:input_status]
 
-    # Determine if submit should be disabled
+    # Any content-bearing field counts, not just the body. `e` treats "" as
+    # empty, so these are nil until actually filled in.
+    has_content? =
+      not is_nil(text) or
+        not is_nil(e(params, "post", "post_content", "name", nil)) or
+        not is_nil(e(params, "post", "post_content", "summary", nil)) or
+        not is_nil(e(params, "quoted_url", nil)) or
+        has_choice_content?(params)
+
+    has_uploads? = uploads && uploads[:files] && uploads.files.entries != []
+    target = List.wrap(params["_target"])
+
     input_status =
-      if input_status != :submit and
-           (not is_nil(text) || String.trim(to_string(text || "")) != "" ||
-              (uploads && uploads[:files] && uploads.files.entries != [])) do
-        :draft
-      else
-        input_status
+      cond do
+        input_status == :submit ->
+          input_status
+
+        has_content? or has_uploads? ->
+          :draft
+
+        # only a change to a content field may revert to disabled — other
+        # controls in the same form (e.g. poll toggles) also trigger validate
+        match?(["post", "post_content" | _], target) or match?(["choices" | _], target) ->
+          nil
+
+        true ->
+          input_status
       end
       |> debug("drafting in validation")
 
@@ -572,7 +591,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         smart_input_opts:
           Enum.into(
             %{
-              input_status: input_status
+              input_status: input_status,
+              # lets cancel-upload know whether text content remains
+              has_draft_content: has_content?
             }
             |> maybe_put(:selected_language, selected_language),
             e(assigns(socket), :smart_input_opts, %{})
@@ -593,6 +614,16 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     # Return the updated socket directly
     {:noreply, socket}
+  end
+
+  # `choices[N][name]` fields (e.g. poll options) live outside `post[post_content]`
+  defp has_choice_content?(params) do
+    (e(params, "choices", nil) || %{})
+    |> Enum.any?(fn
+      {_index, choice} -> not is_nil(e(choice, "name", nil))
+      choice when is_map(choice) -> not is_nil(e(choice, "name", nil))
+      _ -> false
+    end)
   end
 
   # # Helper function to update a component's property without replacing the entire component state
@@ -647,25 +678,22 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
       smart_input_opts = e(assigns(socket), :smart_input_opts, nil)
 
-      # Check if we should disable the submit button
-      text = e(socket.assigns.smart_input_opts, :text, nil)
-      # text_suggestion = e(socket.assigns.smart_input_opts, :text_suggestion, "")
+      # content fields still filled? (tracked by validate; falls back to prefilled text)
+      has_content? =
+        e(smart_input_opts, :has_draft_content, nil) ||
+          not is_nil(e(smart_input_opts, :text, nil))
 
-      # Check if there are any remaining uploads
       uploads = e(assigns(socket), :uploads, nil)
 
       input_status = smart_input_opts[:input_status]
 
-      # Determine if submit should be disabled
       input_status =
-        if input_status != :submit and
-             (not is_nil(text) || String.trim(to_string(text || "")) != "" ||
-                (uploads && e(uploads, :files, :entries, []) != [])) do
-          :draft
-        else
-          input_status
+        cond do
+          input_status == :submit -> input_status
+          has_content? || (uploads && e(uploads, :files, :entries, []) != []) -> :draft
+          true -> nil
         end
-        |> debug("drafting in validation")
+        |> debug("drafting after cancel-upload")
 
       # Update the socket first
       socket =
