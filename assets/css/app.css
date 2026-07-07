@@ -770,20 +770,24 @@ article.unread-activity {
   --text-nav--line-height: 24px;
   --text-lead: 21px;
   --text-lead--line-height: 24px;
-  --text-display: 23px;
-  --text-display--line-height: 25px;
+  /* Display tier scales fluidly from a 390px to a 1220px viewport (body tier
+     stays fixed — reading sizes must not shrink on mobile). Larger sizes
+     compress more: ~87% at 23px down to ~59% at 58px. Line-heights are
+     unitless so they track the fluid font-size. */
+  --text-display: clamp(20px, 18.6px + 0.36vw, 23px);
+  --text-display--line-height: 1.1;
   --text-result: 28px;
   --text-result--line-height: 24px;
-  --text-feature: 38px;
-  --text-feature--line-height: 40px;
+  --text-feature: clamp(28px, 23.3px + 1.2vw, 38px);
+  --text-feature--line-height: 1.05;
 
   /* — Editorial / publication text styles — */
-  --text-thema: 58px;            --text-thema--line-height: 56px;       /* Thema */
-  --text-headline: 58px;         --text-headline--line-height: 56px;    /* Large Headline */
-  --text-journal: 55px;          --text-journal--line-height: 40.9px;   /* Journal Header */
-  --text-headline-sm: 29px;      --text-headline-sm--line-height: 30px; /* Small Headline */
-  --text-intro: 28px;            --text-intro--line-height: 34px;       /* Large Intro */
-  --text-author: 24px;           --text-author--line-height: 24px;      /* Author Name */
+  --text-thema: clamp(34px, 22.7px + 2.89vw, 58px);       --text-thema--line-height: 0.97;       /* Thema */
+  --text-headline: clamp(34px, 22.7px + 2.89vw, 58px);    --text-headline--line-height: 0.97;    /* Large Headline */
+  --text-journal: clamp(32px, 21.2px + 2.77vw, 55px);     --text-journal--line-height: 0.74;     /* Journal Header */
+  --text-headline-sm: clamp(24px, 21.7px + 0.6vw, 29px);  --text-headline-sm--line-height: 1.03; /* Small Headline */
+  --text-intro: clamp(22px, 19.2px + 0.72vw, 28px);       --text-intro--line-height: 1.21;       /* Large Intro */
+  --text-author: clamp(20px, 18.1px + 0.48vw, 24px);      --text-author--line-height: 1;         /* Author Name */
   --text-subhead: 22px;          --text-subhead--line-height: 30px;
   --text-article: 18.5px;        --text-article--line-height: 27px;     /* Article Satz */
   --text-intro-sm: 18px;         --text-intro-sm--line-height: 22px;    /* Small Intro Mainpage */
