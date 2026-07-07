@@ -352,6 +352,18 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         {font_name, font_href} =
           Bonfire.UI.Common.FontHelper.font_for(current_user: current_user(conn))
 
+        # Warm the critical font weights in parallel with the (render-blocking)
+        # stylesheets instead of after them. `crossorigin` is required on
+        # `as="font"` preloads (font fetches are CORS-mode) or the browser
+        # re-downloads the file when the CSS requests it.
+        font_preload_links =
+          Bonfire.UI.Common.FontHelper.preload_hrefs(current_user: current_user(conn))
+          |> Enum.map_join("\n", fn href ->
+            type = if String.ends_with?(href, ".woff2"), do: "font/woff2", else: "font/woff"
+
+            "<link rel='preload' as='font' type='#{type}' href='#{href}' crossorigin='anonymous'/>"
+          end)
+
         # Override x-cloak CSS for tests to ensure hidden elements are visible
         x_cloak_override =
           if Config.env() == :test do
@@ -382,6 +394,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         <link rel="icon" type="image/svg+xml" href='#{endpoint_module.static_path("/images/bonfire-icon.svg")}'>
         <link rel="icon" type="image/svg+xml" data-dynamic-href="{svg}">
 
+        #{font_preload_links}
         <link phx-track-static rel='stylesheet' href='#{endpoint_module.static_path("/assets/bonfire_basic.css")}'/>
         <link data-font phx-track-static rel='stylesheet' href='#{font_href}'/>
         <style>:root { --font-sans: "#{font_name}", ui-sans-serif, system-ui, sans-serif; }</style>

@@ -2,6 +2,7 @@
 @font-face {
 	font-family: "Inter";
 	font-style: normal;
+	font-display: swap;
 	font-weight: 100;
 	src: local(""),
 		url("/fonts/inter-v11-vietnamese_latin-ext_latin_greek_cyrillic-100.woff2")
@@ -15,6 +16,7 @@
 @font-face {
 	font-family: "Inter";
 	font-style: normal;
+	font-display: swap;
 	font-weight: 300;
 	src: local(""),
 		url("/fonts/inter-v11-vietnamese_latin-ext_latin_greek_cyrillic-300.woff2")
@@ -28,6 +30,7 @@
 @font-face {
 	font-family: "Inter";
 	font-style: normal;
+	font-display: swap;
 	font-weight: 500;
 	src: local(""),
 		url("/fonts/inter-v11-vietnamese_latin-ext_latin_greek_cyrillic-500.woff2")
@@ -41,6 +44,7 @@
 @font-face {
 	font-family: "Inter";
 	font-style: normal;
+	font-display: swap;
 	font-weight: 400;
 	src: local(""),
 		url("/fonts/inter-v11-vietnamese_latin-ext_latin_greek_cyrillic-regular.woff2")
@@ -54,6 +58,7 @@
 @font-face {
 	font-family: "Inter";
 	font-style: normal;
+	font-display: swap;
 	font-weight: 700;
 	src: local(""),
 		url("/fonts/inter-v11-vietnamese_latin-ext_latin_greek_cyrillic-700.woff2")

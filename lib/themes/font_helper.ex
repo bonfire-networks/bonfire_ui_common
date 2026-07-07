@@ -25,18 +25,64 @@ defmodule Bonfire.UI.Common.FontHelper do
     `"Luciole"`                 → `{"Luciole", "/fonts/luciole.css"}`
   """
   def resolve(font_family_raw) when is_binary(font_family_raw) do
+    {font_name, slug} = parse_label(font_family_raw)
+    {font_name, static_path("/fonts/#{slug}.css")}
+  end
+
+  def resolve(_), do: resolve(@default_font)
+
+
+  @critical_font_files %{
+    "inter-latin" => [
+      "/fonts/inter-v11-latin-regular.woff2",
+      "/fonts/inter-v11-latin-500.woff2"
+    ],
+    "inter-more" => [
+      "/fonts/inter-v11-vietnamese_latin-ext_latin_greek_cyrillic-regular.woff2",
+      "/fonts/inter-v11-vietnamese_latin-ext_latin_greek_cyrillic-500.woff2"
+    ],
+    "noto-sans-latin" => [
+      "/fonts/noto-sans-v27-latin-regular.woff2",
+      "/fonts/noto-sans-v27-latin-500.woff2"
+    ],
+    "noto-sans-more" => [
+      "/fonts/noto-sans-v27-vietnamese_latin-ext_latin_greek_devanagari_cyrillic-regular.woff2",
+      "/fonts/noto-sans-v27-vietnamese_latin-ext_latin_greek_devanagari_cyrillic-500.woff2"
+    ],
+    "luciole" => ["/fonts/Luciole-Regular.woff2"],
+    # no woff2 build of OpenDyslexic exists; its woff is small (33KB)
+    "opendyslexic" => ["/fonts/OpenDyslexic.ttf.woff"]
+  }
+
+  @doc """
+  Static paths (digested when applicable) of the critical font files for the
+  configured font, for `<link rel="preload" as="font">` hints. The paths match
+  the `url()`s inside the font's CSS file, so the preloaded response is reused
+  when the stylesheet requests the same font.
+  """
+  def preload_hrefs(context) do
+    Settings.get([:ui, :font_family], @default_font, context)
+    |> preload_hrefs_for_label()
+  end
+
+  def preload_hrefs_for_label(font_family_raw) when is_binary(font_family_raw) do
+    {_font_name, slug} = parse_label(font_family_raw)
+
+    Map.get(@critical_font_files, slug, [])
+    |> Enum.map(&static_path/1)
+  end
+
+  def preload_hrefs_for_label(_), do: preload_hrefs_for_label(@default_font)
+
+  defp parse_label(font_family_raw) do
     %{"name" => name, "subset" => subset} =
       Regex.named_captures(@label_regex, font_family_raw) ||
         %{"name" => font_family_raw, "subset" => ""}
 
     font_name = String.trim(name)
     slug_input = if subset in [nil, ""], do: font_name, else: "#{font_name} #{subset}"
-    href = static_path("/fonts/#{Text.slug(slug_input)}.css")
-
-    {font_name, href}
+    {font_name, Text.slug(slug_input)}
   end
-
-  def resolve(_), do: resolve(@default_font)
 
   @doc """
   Pushes a `set_font` event so the `phx:set_font` listener in `root.html.heex` swaps the

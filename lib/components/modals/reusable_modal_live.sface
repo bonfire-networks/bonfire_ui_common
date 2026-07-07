@@ -8,6 +8,9 @@
     "opacity-0 scale-100 modal-closed": !@show,
     "opacity-100 scale-100 translate-y-0 modal-open": @show
   }
+  phx-window-keydown={if @show, do: "close-key"}
+  phx-key="escape"
+  phx-target={"[id='#{@id}']"}
   {...@opts}
 >
   <div
@@ -22,6 +25,10 @@
   <Phoenix.Component.dynamic_tag
     tag_name={if @form_opts != %{}, do: "form", else: "div"}
     id={@form_opts[:id] || "#{@id}_box"}
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby={if !@no_header, do: "#{@id}_title"}
+    aria-label={if @no_header, do: @title_text}
     class={Surface.css_class([
       "text-base-content relative",
       "w-full h-full": @image_preview,
@@ -33,7 +40,14 @@
     ])}
     {...Enums.naughty_to_atoms!(@form_opts)}
   >
-    {!-- Close button (always anchored to modal-box top-right, never scrolls) --}
+    {!-- Only render dialog contents when open: mounting `focus_wrap` at open time
+         moves keyboard focus INTO the dialog (its hook focuses the first focusable
+         element on mount, i.e. the close button) and its sentinels keep Tab cycling
+         within the dialog while it's open (WCAG 2.1.2 / 2.4.3).
+         `class="contents"` keeps the box's flex-column layout unaffected. --}
+    {#if @show}
+      <Phoenix.Component.focus_wrap id={"#{@id}_focus_wrap"} class="contents">
+        {!-- Close button (always anchored to modal-box top-right, never scrolls) --}
     <div class={
       "absolute block",
       "top-2 right-2 z-popover": !@no_backdrop and (!@overflow or @image_preview),
@@ -64,7 +78,11 @@
            • @overflow: dropdowns/popovers that must escape the modal box
            • @no_backdrop: sidebar / sticky-mode layout --}
       <div class={"relative z-popover", @wrapper_class}>
-        <h3 :if={!@no_header} class={@title_class || "font-bold text-base line-clamp-1 px-2 max-w-full"}>
+        <h3
+          :if={!@no_header}
+          id={"#{@id}_title"}
+          class={@title_class || "font-bold text-base line-clamp-1 px-2 max-w-full"}
+        >
           <#slot {@title}>{@title_text}</#slot>
         </h3>
 
@@ -119,7 +137,7 @@
     {#else}
       {!-- Default layout: sticky header, scrollable middle, sticky footer --}
       <header :if={!@no_header} class="shrink-0 pl-4 pt-4 pb-3 pr-14 border-b border-base-content/10">
-        <h3 class={@title_class || "font-bold text-base line-clamp-1 max-w-full"}>
+        <h3 id={"#{@id}_title"} class={@title_class || "font-bold text-base line-clamp-1 max-w-full"}>
           <#slot {@title}>{@title_text}</#slot>
         </h3>
       </header>
@@ -176,6 +194,8 @@
           </#slot>
         </div>
       </div>
+    {/if}
+      </Phoenix.Component.focus_wrap>
     {/if}
   </Phoenix.Component.dynamic_tag>
 </div>

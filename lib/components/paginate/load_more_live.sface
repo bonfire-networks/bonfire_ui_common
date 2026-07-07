@@ -6,6 +6,9 @@
     type="button"
     data-page={@cursor}
     data-entry-count={if @infinite_scroll == :preload, do: @entry_count}
+    data-announce-one={l("1 more item loaded")}
+    data-announce-many={l("%{count} more items loaded", count: "{count}")}
+    data-announce-generic={l("More content loaded")}
     phx-scroll={if @infinite_scroll,
       do:
         if(@infinite_scroll == :preload,

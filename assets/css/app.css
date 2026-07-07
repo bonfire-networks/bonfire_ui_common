@@ -795,8 +795,8 @@ article.unread-activity {
   --text-byline: 16px;           --text-byline--line-height: 19px;      /* Author Name Article */
 
   /* — Neutral grays (no DaisyUI semantic slot) — */
-  --color-muted: #868686;        /* "Grey" — muted text / @handle */
-  --color-placeholder: #c6c6c6;  /* "grey" — image placeholders */
+  --color-muted: color-mix(in oklab, var(--color-base-content) 70%, var(--color-base-100));
+  --color-placeholder: #c6c6c6;  /* "grey" — image placeholders (decorative only, never text) */
 
   --spacing-feed: 7px;           /* gap BETWEEN stacked feed cards */
   --spacing-half: 9px;           /* ½ base */
@@ -851,6 +851,9 @@ article.unread-activity {
   --border-opacity: 0.1;
 }
 
+[data-theme] {
+  --color-muted: color-mix(in oklab, var(--color-base-content) 70%, var(--color-base-100));
+}
 
 hex-input::part(input) {
   @apply input;
