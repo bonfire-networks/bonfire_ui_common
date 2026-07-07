@@ -6,7 +6,7 @@
           <img src={gif} />
         </div>
       <% _ -> %>
-        <img src={Bonfire.Common.URIs.static_path("/images/loading.svg")} />
+        <span class="loading loading-ring loading-xl text-primary" />
     <% end %>
 
     <% msg = maybe_loading_msg() || l("Loading...") %>
