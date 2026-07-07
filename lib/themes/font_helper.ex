@@ -31,7 +31,6 @@ defmodule Bonfire.UI.Common.FontHelper do
 
   def resolve(_), do: resolve(@default_font)
 
-
   @critical_font_files %{
     "inter-latin" => [
       "/fonts/inter-v11-latin-regular.woff2",
