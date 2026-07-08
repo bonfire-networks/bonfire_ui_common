@@ -130,6 +130,7 @@ let socketPath = embedToken ? "/embed_live" : "/live";
 // }
 let liveSocket = new LiveSocket(socketPath, Socket, {
 	timeout: 60000,
+	disconnectedTimeout: 2500,
 	params: () => ({
 		_csrf_token: csrfToken,
 		...(embedToken ? { bonfire_embed_token: embedToken } : {}),
