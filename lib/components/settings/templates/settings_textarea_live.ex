@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.SettingsTextareaLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
   prop keys, :any, required: true
-  prop default_value, :number, default: 0
+  prop default_value, :any, default: nil
   prop hidden, :boolean, default: false
 
   prop name, :string, required: true
