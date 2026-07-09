@@ -30,6 +30,12 @@ defmodule DaisyTheme do
     %{name: "noise", variable: "--noise"}
   ]
 
+  @color_names @keys
+               |> Enum.map(& &1.name)
+               |> Enum.filter(&String.starts_with?(&1, "color-"))
+
+  @key_names Enum.map(@keys, & &1.name)
+
   # Using hex color defaults
   @default_theme %{
     # Blue
@@ -106,14 +112,7 @@ defmodule DaisyTheme do
 
   def style_attr(config \\ %{}) do
     generate(config)
-    |> Enum.map(fn %{
-                     variable: variable,
-                     value: value
-                   } ->
-      # Format the value based on its type
-      formatted_value = format_value(value)
-      "#{variable}: #{formatted_value};"
-    end)
+    |> Enum.flat_map(&declaration/1)
     |> Enum.join(" ")
   end
 
@@ -134,27 +133,84 @@ defmodule DaisyTheme do
 
       case Enum.find(keys, &(&1.name == key)) do
         nil -> []
-        %{variable: variable} -> ["#{variable}: #{format_value(value)};"]
+        key_config -> declaration(Map.put(key_config, :value, value))
       end
     end)
     |> Enum.join(" ")
   end
 
-  # Format values for CSS
-  defp format_value(value) when is_binary(value), do: value
+  @doc """
+  Normalizes a DaisyUI theme token before storing or emitting it as CSS.
 
-  defp format_value(value) when is_integer(value) do
-    # Convert integer to hex string if it looks like a color
-    # Maximum value for a 24-bit color (0xFFFFFF)
-    if value <= 16_777_215 do
-      "#" <> String.pad_leading(Integer.to_string(value, 16), 6, "0")
-    else
-      Integer.to_string(value)
+  Colour picker widgets expose bare hex values, while CSS requires the `#` prefix. Other known tokens are kept as simple CSS token values, but declarations with characters that could break out of a CSS custom property are rejected.
+  """
+  def normalize_value(key, value) do
+    key = to_string(key)
+
+    cond do
+      key in @color_names ->
+        normalize_color_value(value)
+
+      key in @key_names ->
+        normalize_css_token(value)
+
+      true ->
+        :error
     end
   end
 
-  defp format_value(value) when is_float(value), do: Float.to_string(value)
-  defp format_value(value) when is_atom(value), do: Atom.to_string(value)
-  # Default for unsupported types
-  defp format_value(_), do: "#000000"
+  defp declaration(%{name: key, variable: variable, value: value}) do
+    case normalize_value(key, value) do
+      {:ok, value} -> ["#{variable}: #{value};"]
+      :error -> []
+    end
+  end
+
+  defp normalize_color_value(value) when is_integer(value) and value <= 16_777_215 do
+    {:ok, "#" <> String.pad_leading(Integer.to_string(value, 16), 6, "0")}
+  end
+
+  defp normalize_color_value(value) when is_binary(value) do
+    value = String.trim(value)
+
+    cond do
+      valid_prefixed_hex?(value) ->
+        {:ok, value}
+
+      valid_bare_hex?(value) ->
+        {:ok, "#" <> value}
+
+      safe_css_token?(value) ->
+        {:ok, value}
+
+      true ->
+        :error
+    end
+  end
+
+  defp normalize_color_value(_), do: :error
+
+  defp normalize_css_token(value) when is_binary(value) do
+    value = String.trim(value)
+
+    if safe_css_token?(value) do
+      {:ok, value}
+    else
+      :error
+    end
+  end
+
+  defp normalize_css_token(value) when is_integer(value), do: {:ok, Integer.to_string(value)}
+  defp normalize_css_token(value) when is_float(value), do: {:ok, Float.to_string(value)}
+  defp normalize_css_token(value) when is_atom(value), do: {:ok, Atom.to_string(value)}
+  defp normalize_css_token(_), do: :error
+
+  defp valid_prefixed_hex?("#" <> hex), do: valid_bare_hex?(hex)
+  defp valid_prefixed_hex?(_), do: false
+
+  defp valid_bare_hex?(value),
+    do: String.match?(value, ~r/\A(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\z/)
+
+  defp safe_css_token?(value),
+    do: value != "" and not String.contains?(value, [";", "{", "}"])
 end

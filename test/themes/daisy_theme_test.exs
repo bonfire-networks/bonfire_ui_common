@@ -27,6 +27,11 @@ defmodule DaisyThemeTest do
       assert css =~ "--color-base-100: #abcdef;"
     end
 
+    test "bare picker hex values are emitted as valid CSS colours" do
+      css = DaisyTheme.style_attr(%{"color-base-100" => "abcdef"})
+      assert css =~ "--color-base-100: #abcdef;"
+    end
+
     test "custom base-content overrides the default text colour" do
       css = DaisyTheme.style_attr(%{"color-base-content" => "#123456"})
       assert css =~ "--color-base-content: #123456;"
@@ -60,6 +65,27 @@ defmodule DaisyThemeTest do
 
     test "ignores unrecognised keys" do
       assert DaisyTheme.style_attr_overrides(%{"not-a-real-key" => "#fff"}) == ""
+    end
+
+    test "normalizes legacy bare hex override values" do
+      css = DaisyTheme.style_attr_overrides(%{"color-base-200" => "fff"})
+
+      assert css =~ "--color-base-200: #fff;"
+      refute css =~ "--color-base-200: fff;"
+    end
+
+    test "drops unsafe CSS values" do
+      assert DaisyTheme.style_attr_overrides(%{"color-base-100" => "fff; --color-primary: red"}) == ""
+    end
+  end
+
+  describe "normalize_value/2" do
+    test "adds the CSS hex prefix to bare colour values" do
+      assert DaisyTheme.normalize_value("color-primary", "123456") == {:ok, "#123456"}
+    end
+
+    test "keeps non-colour theme tokens unchanged when they are safe CSS tokens" do
+      assert DaisyTheme.normalize_value("radius-box", "0.5rem") == {:ok, "0.5rem"}
     end
   end
 

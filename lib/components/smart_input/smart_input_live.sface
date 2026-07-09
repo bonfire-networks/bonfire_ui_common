@@ -19,7 +19,7 @@
         <div :if={replying?(assigns)} class="reply_in_composer rounded-t-box">
           <div
             id="reply_peek"
-            class="relative max-h-[150px] overflow-y-auto overscroll-y-contain transition-[max-height] duration-300 ease-out bg-base-200"
+            class="relative !max-h-0 max-h-[150px] overflow-y-auto overscroll-y-contain transition-[max-height] duration-300 ease-out bg-base-200"
           >
             <div class="p-2">
               <StatelessComponent
@@ -47,7 +47,7 @@
             {#match %{name: who_name, handle: who_handle}}
               <div
                 id="reply_banner"
-                class="relative z-10 flex items-center justify-center border-b-hair border-secondary min-h-9 px-9 -mt-9 bg-base-100/60 backdrop-blur-md transition-[margin] duration-200 mt-px"
+                class="relative z-10 flex items-center justify-center border-b-hair border-secondary min-h-9 px-9 bg-base-100/60 transition-[margin] duration-200 mt-px"
               >
                 {!-- Toggle fills the whole banner so a click anywhere (except the
                      ✕, which sits on top as a sibling) hides/shows the post. --}
@@ -55,7 +55,7 @@
                   id="reply_toggle"
                   type="button"
                   aria-controls="reply_peek"
-                  aria-expanded="true"
+                  aria-expanded="false"
                   phx-click={JS.toggle_class("!max-h-0", to: "#reply_peek")
                   |> JS.toggle_class("rotate-180", to: "#reply_caret")
                   |> JS.toggle_class("-mt-9 backdrop-blur-md", to: "#reply_banner")
@@ -63,7 +63,7 @@
                   class="absolute inset-0 flex cursor-pointer items-center justify-center gap-1.5 text-xs text-base-content/80 hover:text-base-content"
                   title={l("Show or hide the post you're replying to")}
                 >
-                  <span id="reply_caret" class="shrink-0 transition-transform duration-200">
+                  <span id="reply_caret" class="shrink-0 rotate-180 transition-transform duration-200">
                     <#Icon iconify="ph:caret-up-bold" class="w-3.5 h-3.5" />
                   </span>
                   <span class="truncate">

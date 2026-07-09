@@ -1,19 +1,19 @@
 <div x-data={"{ theme: '#{@theme}'}"}>
-  {!-- note: the phx-hook has the advantage of changing the theme instantly without reloading, but it's an odd behaviour if changing the light theme while we're using the dark theme, or if changing the default instance theme while we have a different one in user preferences... --}
-
   <input name={"ui[theme][#{@key}]"} x-model="theme" type="hidden">
-  {!-- note: LV phx-change seems to ignore alpine changing this hidden input, so using phx-click on the options below instead --}
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" tabindex="0">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-3" tabindex="0">
     {#for t <- @themes || []}
       <div class={
-        "rounded-box bg-base-content/5 shadow-xl",
+        "rounded-box bg-base-100",
         "ring-2 ring-primary": to_string(t) == to_string(@theme)
       }>
         <div data-theme={t} class="w-full rounded-box font-sans text-base-content">
           <div class="grid grid-cols-5 grid-rows-3">
-            <div class="flex flex-col col-span-4 col-start-1 row-span-3 row-start-1 gap-1 p-2">
-              <div class="font-bold">{t}</div>
+            <div class="flex flex-col col-span-5 col-start-1 row-span-3 row-start-1 gap-1 p-2">
+              <div class="flex items-center justify-between gap-2">
+                <div class="font-bold">{t}</div>
+                <span :if={to_string(t) == to_string(@theme)} class="badge badge-primary badge-sm">{l("Selected")}</span>
+              </div>
               <div class="flex flex-wrap gap-1">
                 <div class="flex items-center justify-center w-5 rounded bg-primary aspect-square lg:w-6">
                   <div class="text-sm font-bold text-primary-content">A</div>
@@ -48,13 +48,20 @@
             </div>
             <button
               type="button"
-              class="flex-1 min-w-0 btn btn-sm btn-primary btn-soft"
+              class={
+                "flex-1 min-w-0 btn btn-sm",
+                "btn-primary": to_string(t) == to_string(@theme),
+                "btn-primary btn-soft": to_string(t) != to_string(@theme)
+              }
               x-on:click={"theme = '#{t}'"}
               phx-click={JS.push("Bonfire.Common.Settings:put_theme",
                 value: %{keys: "ui:theme:#{@key}", values: t, scope: @scope}
-              )
-              |> JS.set_attribute({"data-theme", t}, to: "#root")}
-            >{l("Enable")}</button>
+              )}
+            >
+              {if to_string(t) == to_string(@theme),
+                do: l("Selected"),
+                else: @action_label || l("Choose theme")}
+            </button>
           </div>
         </div>
       </div>
@@ -63,45 +70,3 @@
     {/for}
   </div>
 </div>
-{!-- <div x-data={"{ theme: '#{@theme}'}"} title="Change Theme" class="w-full text-left dropdown">
- 
-
-  <input name={"ui[theme][#{@key}]"} x-model="theme" type="hidden">
-
-  <div tabindex="0" class="items-center w-full rounded select select-bordered">
-    <span x-text="theme">{@theme}</span>
-  </div>
-
-  <div class="dropdown-content bg-base-200 text-base-content rounded-t-box rounded-b-box top-px max-h-96 h-[70vh] w-full overflow-y-auto shadow-2xl mt-16">
-    <div class="grid grid-cols-1 gap-3 p-3" tabindex="0">
-      {#for t <- @themes}
-        <div
-          data-set-theme={t}
-          data-act-class="ACTIVECLASS"
-          x-on:click={"theme = '#{t}'"}
-          phx-click="Bonfire.Common.Settings:put_theme"
-          phx-value-keys={"ui:theme:#{@key}"}
-          phx-value-values={t}
-          phx-value-scope={@scope}
-          class="overflow-hidden rounded-lg outline-base-content"
-        >
-          <div data-theme={t} class="w-full font-sans cursor-pointer bg-base-100 text-base-content">
-            <div class="grid grid-cols-5 grid-rows-3">
-              <div class="flex col-span-5 row-span-3 row-start-1 gap-1 px-4 py-3">
-                <div class="flex-grow text-sm font-bold">{t}</div>
-                <div class="flex flex-wrap flex-shrink-0 gap-1">
-                  <div class="w-2 rounded bg-primary" />
-                  <div class="w-2 rounded bg-secondary" />
-                  <div class="w-2 rounded bg-accent" />
-                  <div class="w-2 rounded bg-neutral" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      {#else}
-        {l("No known themes")}
-      {/for}
-    </div>
-  </div>
-</div> --}

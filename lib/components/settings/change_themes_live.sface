@@ -1,102 +1,122 @@
 <div class="w-full mt-4 form-control">
-  <div class="mb-3 text-sm font-medium text-muted">{l("Colour mode")}</div>
-  <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+  <div class="mb-3 text-sm font-medium text-muted">{l("Theme mode")}</div>
+  <div class="grid grid-cols-2 gap-2">
     {!-- DARK --}
     <button
-      id="dark-button"
-      class={"btn flex-1 #{if @preferred in [:dark], do: "btn-primary"}"}
+      id={"#{@id_prefix}-dark-button"}
+      class={"btn flex-1 justify-between gap-2 min-h-12 #{if @preferred in [:dark], do: "btn-primary"}"}
       phx-click={JS.push("Bonfire.Common.Settings:put_theme",
         value: %{keys: "ui:theme:preferred", values: :dark, scope: @scope}
       )
-      |> JS.add_class("btn-primary", to: "#dark-button")
-      |> JS.remove_class("btn-primary", to: "#light-button")
-      |> JS.remove_class("btn-primary", to: "#system-button")
-      |> JS.remove_class("btn-primary", to: "#custom-button")
-      |> JS.show(to: "#dark-themes")
-      |> JS.hide(to: "#light-themes")
-      |> JS.hide(to: "#custom-themes")}
+      |> JS.add_class("btn-primary", to: "##{@id_prefix}-dark-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-light-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-system-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-custom-button")
+      |> JS.show(to: "##{@id_prefix}-dark-themes")
+      |> JS.hide(to: "##{@id_prefix}-light-themes")
+      |> JS.hide(to: "##{@id_prefix}-custom-themes")}
     >
-      <span><#Icon iconify="ph:moon" class="w-4 h-4" /></span>
-      <span class="">{l("Dark")}</span>
+      <span class="flex items-center gap-2">
+        <#Icon iconify="ph:moon" class="w-4 h-4" />
+        <span>{l("Use dark")}</span>
+      </span>
+      <span :if={@preferred == :dark} class="badge badge-sm">{l("Active")}</span>
     </button>
 
     <button
-      id="light-button"
-      class={"btn flex-1 #{if @preferred in [:light], do: "btn-primary"}"}
+      id={"#{@id_prefix}-light-button"}
+      class={"btn flex-1 justify-between gap-2 min-h-12 #{if @preferred in [:light], do: "btn-primary"}"}
       phx-click={JS.push("Bonfire.Common.Settings:put_theme",
         value: %{keys: "ui:theme:preferred", values: :light, scope: @scope}
       )
-      |> JS.remove_class("btn-primary", to: "#dark-button")
-      |> JS.add_class("btn-primary", to: "#light-button")
-      |> JS.remove_class("btn-primary", to: "#system-button")
-      |> JS.remove_class("btn-primary", to: "#custom-button")
-      |> JS.hide(to: "#dark-themes")
-      |> JS.show(to: "#light-themes")
-      |> JS.hide(to: "#custom-themes")}
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-dark-button")
+      |> JS.add_class("btn-primary", to: "##{@id_prefix}-light-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-system-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-custom-button")
+      |> JS.hide(to: "##{@id_prefix}-dark-themes")
+      |> JS.show(to: "##{@id_prefix}-light-themes")
+      |> JS.hide(to: "##{@id_prefix}-custom-themes")}
     >
-      <span><#Icon iconify="ph:sun" class="w-4 h-4" /></span>
-      <span class="">{l("Light")}</span>
+      <span class="flex items-center gap-2">
+        <#Icon iconify="ph:sun" class="w-4 h-4" />
+        <span>{l("Use light")}</span>
+      </span>
+      <span :if={@preferred == :light} class="badge badge-sm">{l("Active")}</span>
     </button>
 
     <button
-      id="system-button"
-      class={"btn flex-1 #{if @preferred in [:system], do: "btn-primary"}"}
+      id={"#{@id_prefix}-system-button"}
+      class={"btn flex-1 justify-between gap-2 min-h-12 #{if @preferred in [:system], do: "btn-primary"}"}
       phx-click={JS.push("Bonfire.Common.Settings:put_theme",
         value: %{keys: "ui:theme:preferred", values: :system, scope: @scope}
       )
-      |> JS.add_class("btn-primary", to: "#system-button")
-      |> JS.remove_class("btn-primary", to: "#dark-button")
-      |> JS.remove_class("btn-primary", to: "#light-button")
-      |> JS.remove_class("btn-primary", to: "#custom-button")
-      |> JS.show(to: "#dark-themes", display: @preferred in [:dark, :system])
-      |> JS.show(to: "#light-themes", display: @preferred in [:light, :system])
-      |> JS.hide(to: "#custom-themes")}
+      |> JS.add_class("btn-primary", to: "##{@id_prefix}-system-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-dark-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-light-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-custom-button")
+      |> JS.show(to: "##{@id_prefix}-dark-themes")
+      |> JS.show(to: "##{@id_prefix}-light-themes")
+      |> JS.hide(to: "##{@id_prefix}-custom-themes")}
     >
-      <span><#Icon iconify="ph:desktop" class="w-4 h-4" /></span>
-      <span class="">{l("System")}</span>
+      <span class="flex items-center gap-2">
+        <#Icon iconify="ph:desktop" class="w-4 h-4" />
+        <span>{l("Use system")}</span>
+      </span>
+      <span :if={@preferred == :system} class="badge badge-sm">{l("Active")}</span>
     </button>
 
     <button
       phx-click={JS.push("Bonfire.Common.Settings:put_theme",
         value: %{keys: "ui:theme:preferred", values: :custom, scope: @scope}
       )
-      |> JS.remove_class("btn-primary", to: "#dark-button")
-      |> JS.remove_class("btn-primary", to: "#light-button")
-      |> JS.remove_class("btn-primary", to: "#system-button")
-      |> JS.add_class("btn-primary", to: "#custom-button")
-      |> JS.hide(to: "#dark-themes")
-      |> JS.hide(to: "#light-themes")
-      |> JS.toggle(to: "#custom-themes")}
-      id="custom-button"
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-dark-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-light-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-system-button")
+      |> JS.add_class("btn-primary", to: "##{@id_prefix}-custom-button")
+      |> JS.hide(to: "##{@id_prefix}-dark-themes")
+      |> JS.hide(to: "##{@id_prefix}-light-themes")
+      |> JS.show(to: "##{@id_prefix}-custom-themes")}
+      id={"#{@id_prefix}-custom-button"}
       type="button"
-      class={"btn flex-1 #{if @preferred == :custom, do: "btn-primary"}"}
+      class={"btn flex-1 justify-between gap-2 min-h-12 #{if @preferred == :custom, do: "btn-primary"}"}
     >
-      <span><#Icon iconify="ph:paint-brush-fill" class="w-4 h-4" /></span>
-      <span class="ml-2">{l("Custom")}</span>
+      <span class="flex items-center gap-2">
+        <#Icon iconify="ph:paint-brush-fill" class="w-4 h-4" />
+        <span>{l("Use custom")}</span>
+      </span>
+      <span :if={@preferred == :custom} class="badge badge-sm">{l("Active")}</span>
     </button>
   </div>
 
   <div>
-    <div id="dark-themes" class={if @preferred not in [:dark, :system], do: "hidden"}>
+    <div id={"#{@id_prefix}-dark-themes"} class={if @preferred not in [:dark, :system], do: "hidden"}>
       <div class="shadow rounded-md border bg-base-200 border-base-content/5 p-4 mt-4">
-        <div class="mb-4 text-sm font-medium text-muted">{l("Select the active dark theme")}</div>
+        <div class="mb-1 text-sm font-medium text-muted">{l("Dark mode theme")}</div>
+        <div class="mb-4 text-xs text-base-content/60">
+          {l("Used when theme mode is Dark, or when System switches to dark.")}
+        </div>
         <Bonfire.UI.Common.ChangeThemeLive
           label={l("Dark theme")}
           key="instance_theme"
           theme={@theme}
           themes={@themes}
+          action_label={l("Choose")}
           scope={@scope}
         />
       </div>
     </div>
-    <div id="light-themes" class={if @preferred not in [:light, :system], do: "hidden"}>
+    <div id={"#{@id_prefix}-light-themes"} class={if @preferred not in [:light, :system], do: "hidden"}>
       <div class="shadow rounded-md border bg-base-200 border-base-content/5 p-4 mt-4">
-        <div class="mb-4 text-sm font-medium text-muted">{l("Select the active light theme")}</div>
+        <div class="mb-1 text-sm font-medium text-muted">{l("Light mode theme")}</div>
+        <div class="mb-4 text-xs text-base-content/60">
+          {l("Used when theme mode is Light, or when System switches to light.")}
+        </div>
         <Bonfire.UI.Common.ChangeThemeLive
           label={l("Light theme")}
           key="instance_theme_light"
           theme={@theme_light}
           themes={@themes_light}
+          action_label={l("Choose")}
           scope={@scope}
         />
       </div>
@@ -104,7 +124,7 @@
   </div>
 
   <div
-    id="custom-themes"
+    id={"#{@id_prefix}-custom-themes"}
     class={"shadow rounded-md border bg-base-200 border-base-content/5 p-4 mt-4 #{if @preferred != :custom, do: "hidden"}"}
     data-scope={@scope}
     style={@theme_style}
@@ -112,7 +132,8 @@
     <div class="mb-4 flex items-center justify-between gap-2">
       <div class="flex items-center gap-2">
         <#Icon iconify="ph:paint-brush-fill" class="w-5 h-5 text-primary" />
-        <span class="text-base font-bold">{l("Customize your theme")}</span>
+        <span class="text-base font-bold">{l("Custom theme")}</span>
+        <span :if={@preferred == :custom} class="badge badge-primary badge-sm">{l("Active now")}</span>
       </div>
       {!-- only offer a reset once there's at least one override to clear --}
       <button
@@ -145,19 +166,19 @@
         phx-click={JS.push("Bonfire.Common.Settings:put_theme",
           value: %{keys: "ui:theme:preferred", values: :custom, scope: @scope}
         )
-        |> JS.add_class("btn-primary", to: "#custom-button")
-        |> JS.remove_class("btn-primary", to: "#dark-button")
-        |> JS.remove_class("btn-primary", to: "#light-button")
-        |> JS.remove_class("btn-primary", to: "#system-button")
-        |> JS.hide(to: "#dark-themes")
-        |> JS.hide(to: "#light-themes")
-        |> JS.show(to: "#custom-themes")}
+        |> JS.add_class("btn-primary", to: "##{@id_prefix}-custom-button")
+        |> JS.remove_class("btn-primary", to: "##{@id_prefix}-dark-button")
+        |> JS.remove_class("btn-primary", to: "##{@id_prefix}-light-button")
+        |> JS.remove_class("btn-primary", to: "##{@id_prefix}-system-button")
+        |> JS.hide(to: "##{@id_prefix}-dark-themes")
+        |> JS.hide(to: "##{@id_prefix}-light-themes")
+        |> JS.show(to: "##{@id_prefix}-custom-themes")}
       >
-        {l("Activate")}
+        {l("Use custom theme")}
       </button>
     </div>
 
-    <div :if={@scope == :instance}>
+    <div :if={@custom_key == :custom_instance}>
       <div class="alert alert-info shadow-sm mb-6" role="alert">
         <#Icon iconify="ph:info-fill" class="w-5 h-5 shrink-0" />
         <span>
@@ -175,7 +196,7 @@
       }
       aria-disabled={@preferred != :custom}
     >
-      <!-- Colors Section -->
+      {!-- Colors Section --}
       <section>
         <h3 class="divider divider-start text-sm mt-6">
           <span class="flex items-center gap-1.5">
@@ -215,29 +236,27 @@
         </h3>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
-          <!-- Base Colors Group -->
+          {!-- Base Colors Group --}
           <div class="col-span-full mb-2">
             <h4 class="text-xs font-medium text-muted mb-2">{l("Base")}</h4>
             <div class="grid grid-cols-4 gap-2">
               {#for color <- ["base-100", "base-200", "base-300", "base-content"]}
                 <Bonfire.UI.Common.OpenModalLive
-                  id={"key-#{color}"}
+                  id={"#{@id_prefix}-key-#{color}"}
                   title_text={l("Select color for %{color}", color: String.replace(color, "base-", "Base "))}
                   no_actions
                 >
                   <div
                     :hook="ColourPicker"
-                    id={"color-#{color}"}
+                    id={"#{@id_prefix}-color-#{color}"}
+                    data-color-key={"color-#{color}"}
                     data-scope={@scope}
                     class="flex flex-col gap-4 p-2"
                   >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
-                        Map.merge(
-                          DaisyTheme.default_theme(),
-                          @custom_colors
-                        ),
+                        @display_theme,
                         "color-#{color}",
                         "#000000"
                       )}
@@ -249,23 +268,19 @@
                         <hex-input
                           prefixed
                           class="w-full"
-                          id={"input-#{color}"}
+                          id={"#{@id_prefix}-input-#{color}"}
                           color={Map.get(
-                            Map.merge(
-                              DaisyTheme.default_theme(),
-                              @custom_colors
-                            ),
+                            @display_theme,
                             "color-#{color}",
                             "#000000"
                           )}
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
                       {l("Apply")}
                     </button>
                   </div>
-                  <!-- <div role="alert" class={if @show_explanation, do: "alert text-sm mt-4"}> -->
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
@@ -282,7 +297,7 @@
                         {/if}
                       </div>
                       <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          @display_theme,
                           "color-#{color}",
                           "#000000"
                         )}</span>
@@ -293,29 +308,27 @@
             </div>
           </div>
 
-          <!-- Primary & Secondary Colors -->
+          {!-- Primary & Secondary Colors --}
           <div class="col-span-2 mb-2">
             <h4 class="text-xs font-medium text-muted mb-2">{l("Primary")}</h4>
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["primary", "primary-content"]}
                 <Bonfire.UI.Common.OpenModalLive
-                  id={"key-#{color}"}
+                  id={"#{@id_prefix}-key-#{color}"}
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
                   <div
                     :hook="ColourPicker"
-                    id={"color-#{color}"}
+                    id={"#{@id_prefix}-color-#{color}"}
+                    data-color-key={"color-#{color}"}
                     data-scope={@scope}
                     class="flex flex-col gap-4 p-2"
                   >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
-                        Map.merge(
-                          DaisyTheme.default_theme(),
-                          @custom_colors
-                        ),
+                        @display_theme,
                         "color-#{color}",
                         "#000000"
                       )}
@@ -327,19 +340,16 @@
                         <hex-input
                           prefixed
                           class="w-full"
-                          id={"input-#{color}"}
+                          id={"#{@id_prefix}-input-#{color}"}
                           color={Map.get(
-                            Map.merge(
-                              DaisyTheme.default_theme(),
-                              @custom_colors
-                            ),
+                            @display_theme,
                             "color-#{color}",
                             "#000000"
                           )}
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
                       {l("Apply")}
                     </button>
                   </div>
@@ -357,7 +367,7 @@
                         {/if}
                       </div>
                       <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          @display_theme,
                           "color-#{color}",
                           "#000000"
                         )}</span>
@@ -373,23 +383,21 @@
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["secondary", "secondary-content"]}
                 <Bonfire.UI.Common.OpenModalLive
-                  id={"key-#{color}"}
+                  id={"#{@id_prefix}-key-#{color}"}
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
                   <div
                     :hook="ColourPicker"
-                    id={"color-#{color}"}
+                    id={"#{@id_prefix}-color-#{color}"}
+                    data-color-key={"color-#{color}"}
                     data-scope={@scope}
                     class="flex flex-col gap-4 p-2"
                   >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
-                        Map.merge(
-                          DaisyTheme.default_theme(),
-                          @custom_colors
-                        ),
+                        @display_theme,
                         "color-#{color}",
                         "#000000"
                       )}
@@ -401,19 +409,16 @@
                         <hex-input
                           prefixed
                           class="w-full"
-                          id={"input-#{color}"}
+                          id={"#{@id_prefix}-input-#{color}"}
                           color={Map.get(
-                            Map.merge(
-                              DaisyTheme.default_theme(),
-                              @custom_colors
-                            ),
+                            @display_theme,
                             "color-#{color}",
                             "#000000"
                           )}
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
                       {l("Apply")}
                     </button>
                   </div>
@@ -431,7 +436,7 @@
                         {/if}
                       </div>
                       <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          @display_theme,
                           "color-#{color}",
                           "#000000"
                         )}</span>
@@ -442,29 +447,27 @@
             </div>
           </div>
 
-          <!-- Accent & Neutral Colors -->
+          {!-- Accent & Neutral Colors --}
           <div class="col-span-2 mb-2">
             <h4 class="text-xs font-medium text-muted mb-2">{l("Accent")}</h4>
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["accent", "accent-content"]}
                 <Bonfire.UI.Common.OpenModalLive
-                  id={"key-#{color}"}
+                  id={"#{@id_prefix}-key-#{color}"}
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
                   <div
                     :hook="ColourPicker"
-                    id={"color-#{color}"}
+                    id={"#{@id_prefix}-color-#{color}"}
+                    data-color-key={"color-#{color}"}
                     data-scope={@scope}
                     class="flex flex-col gap-4 p-2"
                   >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
-                        Map.merge(
-                          DaisyTheme.default_theme(),
-                          @custom_colors
-                        ),
+                        @display_theme,
                         "color-#{color}",
                         "#000000"
                       )}
@@ -476,19 +479,16 @@
                         <hex-input
                           prefixed
                           class="w-full"
-                          id={"input-#{color}"}
+                          id={"#{@id_prefix}-input-#{color}"}
                           color={Map.get(
-                            Map.merge(
-                              DaisyTheme.default_theme(),
-                              @custom_colors
-                            ),
+                            @display_theme,
                             "color-#{color}",
                             "#000000"
                           )}
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
                       {l("Apply")}
                     </button>
                   </div>
@@ -506,7 +506,7 @@
                         {/if}
                       </div>
                       <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          @display_theme,
                           "color-#{color}",
                           "#000000"
                         )}</span>
@@ -522,23 +522,21 @@
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["neutral", "neutral-content"]}
                 <Bonfire.UI.Common.OpenModalLive
-                  id={"key-#{color}"}
+                  id={"#{@id_prefix}-key-#{color}"}
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
                   <div
                     :hook="ColourPicker"
-                    id={"color-#{color}"}
+                    id={"#{@id_prefix}-color-#{color}"}
+                    data-color-key={"color-#{color}"}
                     data-scope={@scope}
                     class="flex flex-col gap-4 p-2"
                   >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
-                        Map.merge(
-                          DaisyTheme.default_theme(),
-                          @custom_colors
-                        ),
+                        @display_theme,
                         "color-#{color}",
                         "#000000"
                       )}
@@ -550,19 +548,16 @@
                         <hex-input
                           prefixed
                           class="w-full"
-                          id={"input-#{color}"}
+                          id={"#{@id_prefix}-input-#{color}"}
                           color={Map.get(
-                            Map.merge(
-                              DaisyTheme.default_theme(),
-                              @custom_colors
-                            ),
+                            @display_theme,
                             "color-#{color}",
                             "#000000"
                           )}
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
                       {l("Apply")}
                     </button>
                   </div>
@@ -580,7 +575,7 @@
                         {/if}
                       </div>
                       <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          @display_theme,
                           "color-#{color}",
                           "#000000"
                         )}</span>
@@ -591,29 +586,27 @@
             </div>
           </div>
 
-          <!-- Status Colors: Info, Success, Warning, Error -->
+          {!-- Status Colors: Info, Success, Warning, Error --}
           <div class="col-span-2">
             <h4 class="text-xs font-medium text-muted mb-2">{l("Info")}</h4>
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["info", "info-content"]}
                 <Bonfire.UI.Common.OpenModalLive
-                  id={"key-#{color}"}
+                  id={"#{@id_prefix}-key-#{color}"}
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
                   <div
                     :hook="ColourPicker"
-                    id={"color-#{color}"}
+                    id={"#{@id_prefix}-color-#{color}"}
+                    data-color-key={"color-#{color}"}
                     data-scope={@scope}
                     class="flex flex-col gap-4 p-2"
                   >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
-                        Map.merge(
-                          DaisyTheme.default_theme(),
-                          @custom_colors
-                        ),
+                        @display_theme,
                         "color-#{color}",
                         "#000000"
                       )}
@@ -625,19 +618,16 @@
                         <hex-input
                           prefixed
                           class="w-full"
-                          id={"input-#{color}"}
+                          id={"#{@id_prefix}-input-#{color}"}
                           color={Map.get(
-                            Map.merge(
-                              DaisyTheme.default_theme(),
-                              @custom_colors
-                            ),
+                            @display_theme,
                             "color-#{color}",
                             "#000000"
                           )}
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
                       {l("Apply")}
                     </button>
                   </div>
@@ -655,7 +645,7 @@
                         {/if}
                       </div>
                       <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          @display_theme,
                           "color-#{color}",
                           "#000000"
                         )}</span>
@@ -671,23 +661,21 @@
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["success", "success-content"]}
                 <Bonfire.UI.Common.OpenModalLive
-                  id={"key-#{color}"}
+                  id={"#{@id_prefix}-key-#{color}"}
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
                   <div
                     :hook="ColourPicker"
-                    id={"color-#{color}"}
+                    id={"#{@id_prefix}-color-#{color}"}
+                    data-color-key={"color-#{color}"}
                     data-scope={@scope}
                     class="flex flex-col gap-4 p-2"
                   >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
-                        Map.merge(
-                          DaisyTheme.default_theme(),
-                          @custom_colors
-                        ),
+                        @display_theme,
                         "color-#{color}",
                         "#000000"
                       )}
@@ -699,19 +687,16 @@
                         <hex-input
                           prefixed
                           class="w-full"
-                          id={"input-#{color}"}
+                          id={"#{@id_prefix}-input-#{color}"}
                           color={Map.get(
-                            Map.merge(
-                              DaisyTheme.default_theme(),
-                              @custom_colors
-                            ),
+                            @display_theme,
                             "color-#{color}",
                             "#000000"
                           )}
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
                       {l("Apply")}
                     </button>
                   </div>
@@ -729,7 +714,7 @@
                         {/if}
                       </div>
                       <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          @display_theme,
                           "color-#{color}",
                           "#000000"
                         )}</span>
@@ -745,23 +730,21 @@
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["warning", "warning-content"]}
                 <Bonfire.UI.Common.OpenModalLive
-                  id={"key-#{color}"}
+                  id={"#{@id_prefix}-key-#{color}"}
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
                   <div
                     :hook="ColourPicker"
-                    id={"color-#{color}"}
+                    id={"#{@id_prefix}-color-#{color}"}
+                    data-color-key={"color-#{color}"}
                     data-scope={@scope}
                     class="flex flex-col gap-4 p-2"
                   >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
-                        Map.merge(
-                          DaisyTheme.default_theme(),
-                          @custom_colors
-                        ),
+                        @display_theme,
                         "color-#{color}",
                         "#000000"
                       )}
@@ -773,19 +756,16 @@
                         <hex-input
                           prefixed
                           class="w-full"
-                          id={"input-#{color}"}
+                          id={"#{@id_prefix}-input-#{color}"}
                           color={Map.get(
-                            Map.merge(
-                              DaisyTheme.default_theme(),
-                              @custom_colors
-                            ),
+                            @display_theme,
                             "color-#{color}",
                             "#000000"
                           )}
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
                       {l("Apply")}
                     </button>
                   </div>
@@ -803,7 +783,7 @@
                         {/if}
                       </div>
                       <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          @display_theme,
                           "color-#{color}",
                           "#000000"
                         )}</span>
@@ -819,23 +799,21 @@
             <div class="grid grid-cols-2 gap-2">
               {#for color <- ["error", "error-content"]}
                 <Bonfire.UI.Common.OpenModalLive
-                  id={"key-#{color}"}
+                  id={"#{@id_prefix}-key-#{color}"}
                   title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
                   no_actions
                 >
                   <div
                     :hook="ColourPicker"
-                    id={"color-#{color}"}
+                    id={"#{@id_prefix}-color-#{color}"}
+                    data-color-key={"color-#{color}"}
                     data-scope={@scope}
                     class="flex flex-col gap-4 p-2"
                   >
                     <hex-color-picker
                       class="w-full mt-4"
                       color={Map.get(
-                        Map.merge(
-                          DaisyTheme.default_theme(),
-                          @custom_colors
-                        ),
+                        @display_theme,
                         "color-#{color}",
                         "#000000"
                       )}
@@ -847,19 +825,16 @@
                         <hex-input
                           prefixed
                           class="w-full"
-                          id={"input-#{color}"}
+                          id={"#{@id_prefix}-input-#{color}"}
                           color={Map.get(
-                            Map.merge(
-                              DaisyTheme.default_theme(),
-                              @custom_colors
-                            ),
+                            @display_theme,
                             "color-#{color}",
                             "#000000"
                           )}
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"apply-#{color}"}>
+                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
                       {l("Apply")}
                     </button>
                   </div>
@@ -877,7 +852,7 @@
                         {/if}
                       </div>
                       <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          Map.merge(DaisyTheme.default_theme(), @custom_colors),
+                          @display_theme,
                           "color-#{color}",
                           "#000000"
                         )}</span>
@@ -890,7 +865,7 @@
         </div>
       </section>
 
-      <!-- Radius Section -->
+      {!-- Radius Section --}
       <section>
         <h3 class="divider divider-start text-sm mt-6">
           <span class="flex items-center gap-1.5">
@@ -928,26 +903,23 @@
           </span>
         </h3>
 
-        <!-- Box Radius -->
+        {!-- Box Radius --}
         <div class="space-y-6 pt-2">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <!-- Box Radius -->
+            {!-- Box Radius --}
             <div class="border border-base-content/10 p-3 bg-base-100 rounded">
-              <div class="mb-2 flex flex-col" id="--radius-box-group">
+              <div class="mb-2 flex flex-col" id={"#{@id_prefix}-radius-box-group"}>
                 <span class="text-muted text-sm font-medium">{l("Boxes")}</span>
                 <span class="text-base-content/50 text-xs italic">{l("card, modal, alert")}</span>
               </div>
-              <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="--radius-box-group">
+              <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby={"#{@id_prefix}-radius-box-group"}>
                 {#for radius <- ["0rem", "0.5rem", "1rem", "2rem"]}
                   <label
                     class={
                       "flex-1 rounded-lg bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2 p-1",
                       "bg-primary/10":
                         Map.get(
-                          Map.merge(
-                            DaisyTheme.default_theme(),
-                            @custom_colors
-                          ),
+                          @display_theme,
                           "radius-box"
                         ) == radius
                     }
@@ -956,14 +928,11 @@
                     <input
                       type="radio"
                       class="sr-only"
-                      name="--radius-box"
+                      name={"#{@id_prefix}-radius-box"}
                       value={radius}
                       aria-label={"#{radius} border radius"}
                       checked={Map.get(
-                        Map.merge(
-                          DaisyTheme.default_theme(),
-                          @custom_colors
-                        ),
+                        @display_theme,
                         "radius-box"
                       ) == radius}
                       phx-click={JS.push("Bonfire.Common.Settings:put",
@@ -972,7 +941,7 @@
                     />
                     <div class="pe-3 pt-2" aria-hidden="true">
                       <div
-                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "radius-box") == radius, do: 'border-primary', else: 'border-base-content/10'} bg-base-300"}
+                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(@display_theme, "radius-box") == radius, do: "border-primary", else: "border-base-content/10"} bg-base-300"}
                         style={"border-start-end-radius:#{radius}"}
                       />
                     </div>
@@ -981,23 +950,20 @@
               </div>
             </div>
 
-            <!-- Field Radius -->
+            {!-- Field Radius --}
             <div class="border border-base-content/10 p-3 bg-base-100 rounded">
-              <div class="mb-2 flex flex-col" id="--radius-field-group">
+              <div class="mb-2 flex flex-col" id={"#{@id_prefix}-radius-field-group"}>
                 <span class="text-muted text-sm font-medium">{l("Fields")}</span>
                 <span class="text-base-content/50 text-xs italic">{l("button, input, select, tab")}</span>
               </div>
-              <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="--radius-field-group">
+              <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby={"#{@id_prefix}-radius-field-group"}>
                 {#for radius <- ["0rem", "0.5rem", "1rem", "2rem"]}
                   <label
                     class={
                       "flex-1 rounded-lg bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2 p-1",
                       "bg-primary/10":
                         Map.get(
-                          Map.merge(
-                            DaisyTheme.default_theme(),
-                            @custom_colors
-                          ),
+                          @display_theme,
                           "radius-field"
                         ) == radius
                     }
@@ -1006,14 +972,11 @@
                     <input
                       type="radio"
                       class="sr-only"
-                      name="--radius-field"
+                      name={"#{@id_prefix}-radius-field"}
                       value={radius}
                       aria-label={"#{radius} border radius"}
                       checked={Map.get(
-                        Map.merge(
-                          DaisyTheme.default_theme(),
-                          @custom_colors
-                        ),
+                        @display_theme,
                         "radius-field"
                       ) == radius}
                       phx-click={JS.push("Bonfire.Common.Settings:put",
@@ -1022,7 +985,7 @@
                     />
                     <div class="pe-3 pt-2" aria-hidden="true">
                       <div
-                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "radius-field") == radius, do: 'border-primary', else: 'border-base-content/10'} bg-base-300"}
+                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(@display_theme, "radius-field") == radius, do: "border-primary", else: "border-base-content/10"} bg-base-300"}
                         style={"border-start-end-radius:#{radius}"}
                       />
                     </div>
@@ -1031,23 +994,20 @@
               </div>
             </div>
 
-            <!-- Selector Radius -->
+            {!-- Selector Radius --}
             <div class="border border-base-content/10 p-3 bg-base-100 rounded">
-              <div class="mb-2 flex flex-col" id="--radius-selector-group">
+              <div class="mb-2 flex flex-col" id={"#{@id_prefix}-radius-selector-group"}>
                 <span class="text-muted text-sm font-medium">{l("Selectors")}</span>
                 <span class="text-base-content/50 text-xs italic">{l("checkbox, toggle, badge")}</span>
               </div>
-              <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby="--radius-selector-group">
+              <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby={"#{@id_prefix}-radius-selector-group"}>
                 {#for radius <- ["0rem", "0.5rem", "1rem", "2rem"]}
                   <label
                     class={
                       "flex-1 rounded-lg bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2 p-1",
                       "bg-primary/10":
                         Map.get(
-                          Map.merge(
-                            DaisyTheme.default_theme(),
-                            @custom_colors
-                          ),
+                          @display_theme,
                           "radius-selector"
                         ) == radius
                     }
@@ -1056,14 +1016,11 @@
                     <input
                       type="radio"
                       class="sr-only"
-                      name="--radius-selector"
+                      name={"#{@id_prefix}-radius-selector"}
                       value={radius}
                       aria-label={"#{radius} border radius"}
                       checked={Map.get(
-                        Map.merge(
-                          DaisyTheme.default_theme(),
-                          @custom_colors
-                        ),
+                        @display_theme,
                         "radius-selector"
                       ) == radius}
                       phx-click={JS.push("Bonfire.Common.Settings:put",
@@ -1072,7 +1029,7 @@
                     />
                     <div class="pe-3 pt-2" aria-hidden="true">
                       <div
-                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "radius-selector") == radius, do: 'border-primary', else: 'border-base-content/10'} bg-base-300"}
+                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(@display_theme, "radius-selector") == radius, do: "border-primary", else: "border-base-content/10"} bg-base-300"}
                         style={"border-start-end-radius:#{radius}"}
                       />
                     </div>
@@ -1084,238 +1041,6 @@
         </div>
       </section>
 
-      <!-- Effects Section -->
-      <!-- <section>
-        <h3 class="divider divider-start text-sm">
-          <span class="flex items-center gap-1.5">
-            <svg class="opacity-60 w-4 h-4" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M24.9507 42.3603L30.4164 30.3695L43.1046 26.6501L33.3383 17.7699L33.7059 4.60732L22.2044 11.1099L9.74329 6.69439L12.4013 19.5934L4.33228 30.027L17.4766 31.4965L24.9507 42.3603Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
-              <path d="M36.1777 36.0537L44.1777 44.0179" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-            <span class="font-medium">{l("Effects")}</span>
-          </span>
-        </h3>
-
-        <div class="space-y-4 pt-2">
-          <div class="w-full">
-            <label class="flex cursor-pointer items-center justify-between gap-2 p-2 rounded-lg hover:bg-base-200 transition-all">
-              <span class="flex flex-col">
-                <span class="text-muted text-sm font-medium">{l("Depth Effect")}</span>
-                <span class="text-base-content/50 text-xs italic">{l("3D depth on fields & selectors")}</span>
-              </span>
-              <input 
-                type="checkbox" 
-                class="toggle toggle-primary toggle-sm"
-                checked={Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "depth") == "1"}
-                phx-click={
-                  JS.push("Bonfire.Common.Settings:put", value: %{
-                    keys: "ui:theme:custom:depth", 
-                    scope: @scope,
-                    values: (if Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "depth") == "1", do: "0", else: "1")
-                  })
-                }
-              >
-            </label>
-          </div>
-          
-          <div class="w-full">
-            <label class="flex cursor-pointer items-center justify-between gap-2 p-2 rounded-lg hover:bg-base-200 transition-all">
-              <span class="flex flex-col">
-                <span class="text-muted text-xs font-medium">{l("Noise Effect")}</span>
-                <span class="text-base-content/40 text-[0.625rem] italic">{l("Noise pattern on fields & selectors")}</span>
-              </span>
-              <input 
-                type="checkbox" 
-                class="toggle toggle-primary toggle-sm"
-                checked={Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "noise", "0") == "1"}
-                phx-click={
-                  JS.push("Bonfire.Common.Settings:put", value: %{
-                    keys: "ui:theme:custom:noise", 
-                    scope: @scope,
-                    values: (if Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "noise", "0") == "1", do: "0", else: "1")
-                  })
-                }
-              >
-            </label>
-          </div>
-
-          <div class="w-full mt-4">
-            <div class="mb-2 flex flex-col" id="--border-group">
-              <span class="text-muted text-xs font-medium">{l("Border Width")}</span>
-              <span class="text-base-content/40 text-[0.625rem] italic">{l("All components")}</span>
-            </div>
-            <div class="bg-base-200 rounded-lg relative p-4">
-              <div class="flex flex-col gap-2">
-                <div class="flex justify-between">
-                  {#for border <- ["0.5px", "1px", "2px", "4px"]}
-                    <span class="text-xs text-meta break-[word]">{border}</span>
-                  {/for}
-                </div>
-                <input 
-                  type="range" 
-                  id="border-width-slider"
-                  min="0" 
-                  max="3" 
-                  step="1" 
-                  class="range range-xs range-primary" 
-                  value={
-                    case Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "border", "1px") do
-                      "0.5px" -> 0
-                      "1px" -> 1
-                      "2px" -> 2
-                      "4px" -> 3
-                      _ -> 1
-                    end
-                  }
-                  phx-change={
-                    JS.push("change_border", value: %{target: %{value: "_value_"}})
-                  }
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> -->
-
-      <!-- Size Controls Section -->
-      <!-- <section>
-        <h3 class="divider divider-start text-sm">
-          <span class="flex items-center gap-1.5">
-            <svg class="opacity-60 w-4 h-4" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8 42L42 8M42 8H20M42 8V30" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-            <span class="font-medium">{l("Sizes")}</span>
-          </span>
-        </h3>
-
-        <div class="space-y-6 pt-2">
-          <div class="w-full">
-            <div class="mb-2 flex flex-col" id="--size-field-group">
-              <span class="text-muted text-xs font-medium">{l("Fields")}</span>
-              <span class="text-base-content/40 text-[0.625rem] italic">{l("button, input, select, tab")}</span>
-            </div>
-            <div class="bg-base-200 rounded-lg flex items-center justify-between gap-4 p-4">
-              <div class="flex gap-2 flex-1 justify-center">
-                {#for {size, label, value} <- [{"xs", "XS", "30"}, {"sm", "SM", "40"}, {"md", "MD", "50"}, {"lg", "LG", "60"}, {"xl", "XL", "70"}]}
-                  <div class="flex flex-col items-center gap-1">
-                    <div class="flex items-end" style={"height:calc(0.3125rem * 14)"}>
-                      <div class="bg-base-content w-1 rounded-full" style={"height:calc(0.3125rem * #{String.to_integer(value) / 5})"}></div>
-                    </div>
-                    <div class="text-xs flex flex-col items-center text-muted">
-                      <span class="font-medium">{label}</span>
-                      <span class="text-[10px]">{value}</span>
-                    </div>
-                  </div>
-                {/for}
-              </div>
-              
-              <div class="flex flex-col gap-2 text-center w-32">
-                <div class="flex flex-col items-center">
-                  <div class="text-xs text-muted">{l("Base size")}</div>
-                  <div id="field-size-display" class="text-2xl font-bold tabular-nums">
-                    {
-                      case Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "size-field", "0.25rem") do
-                        "0.1875rem" -> "3.0"
-                        "0.25rem" -> "4.0"
-                        "0.3125rem" -> "5.0"
-                        "0.375rem" -> "6.0"
-                        "0.4375rem" -> "7.0"
-                        _ -> "5.0"
-                      end
-                    }
-                  </div>
-                  <div class="text-[10px] text-muted">{l("Pixels")}</div>
-                </div>
-                
-                <input 
-                  type="range" 
-                  id="field-size-slider"
-                  min="0" 
-                  max="4" 
-                  step="1" 
-                  class="range range-xs range-primary"
-                  value={
-                    case Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "size-field", "0.25rem") do
-                      "0.1875rem" -> 0
-                      "0.25rem" -> 1
-                      "0.3125rem" -> 2
-                      "0.375rem" -> 3
-                      "0.4375rem" -> 4
-                      _ -> 2
-                    end
-                  }
-                  phx-change={
-                    JS.push("change_size_field", value: %{target: %{value: "_value_"}})
-                  }
-                >
-              </div>
-            </div>
-          </div>
-
-          <div class="w-full">
-            <div class="mb-2 flex flex-col" id="--size-selector-group">
-              <span class="text-muted text-xs font-medium">{l("Selectors")}</span>
-              <span class="text-base-content/40 text-[0.625rem] italic">{l("checkbox, toggle, badge")}</span>
-            </div>
-            <div class="bg-base-200 rounded-lg flex items-center justify-between gap-4 p-4">
-              <div class="flex gap-2 flex-1 justify-center">
-                {#for {size, label, value} <- [{"xs", "XS", "12"}, {"sm", "SM", "15"}, {"md", "MD", "18"}, {"lg", "LG", "21"}, {"xl", "XL", "24"}]}
-                  <div class="flex flex-col items-center gap-1">
-                    <div class="flex items-end" style={"height:calc(0.1875rem * 8)"}>
-                      <div class="bg-base-content w-1 rounded-full" style={"height:calc(0.1875rem * #{String.to_integer(value) / 3})"}></div>
-                    </div>
-                    <div class="text-xs flex flex-col items-center text-muted">
-                      <span class="font-medium">{label}</span>
-                      <span class="text-[10px]">{value}</span>
-                    </div>
-                  </div>
-                {/for}
-              </div>
-              
-              <div class="flex flex-col gap-2 text-center w-32">
-                <div class="flex flex-col items-center">
-                  <div class="text-xs text-muted">{l("Base size")}</div>
-                  <div id="selector-size-display" class="text-2xl font-bold tabular-nums">
-                    {
-                      case Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "size-selector", "0.25rem") do
-                        "0.1875rem" -> "3.0"
-                        "0.25rem" -> "4.0"
-                        "0.3125rem" -> "5.0"
-                        "0.375rem" -> "6.0"
-                        "0.4375rem" -> "7.0"
-                        _ -> "3.0"
-                      end
-                    }
-                  </div>
-                  <div class="text-[10px] text-muted">{l("Pixels")}</div>
-                </div>
-                
-                <input 
-                  type="range" 
-                  id="selector-size-slider"
-                  min="0" 
-                  max="4" 
-                  step="1" 
-                  class="range range-xs range-primary"
-                  value={
-                    case Map.get(Map.merge(DaisyTheme.default_theme(), @custom_colors), "size-selector", "0.1875rem") do
-                      "0.1875rem" -> 0
-                      "0.25rem" -> 1
-                      "0.3125rem" -> 2
-                      "0.375rem" -> 3
-                      "0.4375rem" -> 4
-                      _ -> 0
-                    end
-                  }
-                  phx-change={
-                    JS.push("change_size_selector", value: %{target: %{value: "_value_"}})
-                  }
-                >
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> -->
     </div>
   </div>
 </div>

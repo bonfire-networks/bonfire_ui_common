@@ -309,10 +309,23 @@
       <span class="sr-only">{l("Notifications")}</span>
     </LinkLive>
 
-    <label :if={current_user(@__context__)} for="sidebar-drawer" aria-label={l("Open menu")}>
-      <#Icon iconify="ph:sidebar-simple-fill" class="size-6" aria-hidden="true" />
-      <span class="sr-only">{l("Menu")}</span>
-    </label>
+    <LinkLive
+      :if={current_user(@__context__)}
+      to={~p"/messages"}
+      class={"dock-active": @selected_tab == :messages}
+    >
+      <span class="relative inline-flex">
+        <#Icon iconify="ph:tray-fill" class="size-6" aria-hidden="true" />
+        <span class="absolute -top-2 -right-2">
+          <StatefulComponent
+            id="dock-messages-badge"
+            module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
+            feed_id={e(current_user(@__context__), :character, :messages_id, nil)}
+          />
+        </span>
+      </span>
+      <span class="sr-only">{l("Messages")}</span>
+    </LinkLive>
 
     <LinkLive :if={!current_user(@__context__)} to={path(:login, :index)} class="dock-active">
       <#Icon iconify="ph:sign-in-fill" class="size-6" aria-hidden="true" />

@@ -16,9 +16,11 @@ defmodule Bonfire.UI.Common.CustomThemeSaveTest do
     {:ok, user: fake_user!()}
   end
 
-  # mirrors what the `put_custom_color` handler does: a single non-destructive
-  # `put_raw` of one colour, threading the updated context (as the live socket would).
+  # mirrors what the `put_custom_color` handler does: normalize one colour, then do a
+  # non-destructive `put_raw`, threading the updated context (as the live socket would).
   defp put_color!(user, key, value) do
+    assert {:ok, value} = DaisyTheme.normalize_value(key, value)
+
     assert {:ok, %{__context__: %{current_user: updated}}} =
              Settings.put_raw([:ui, :theme, :custom, key], value, current_user: user)
 
@@ -67,6 +69,12 @@ defmodule Bonfire.UI.Common.CustomThemeSaveTest do
       assert custom["color-base-100"] == "#00ff00"
       assert Enum.count(Map.keys(custom), &(&1 == "color-base-100")) == 1
     end
+
+    test "bare picker values are stored as prefixed CSS hex colours", %{user: user} do
+      user = put_color!(user, "color-base-100", "ffffff")
+
+      assert colour(user, "color-base-100") == "#ffffff"
+    end
   end
 
   describe "custom_theme_style/1" do
@@ -83,6 +91,21 @@ defmodule Bonfire.UI.Common.CustomThemeSaveTest do
       assert css =~ "--color-base-content: #123456;"
       # unset variables are NOT emitted, so they fall through to the base theme
       refute css =~ "--color-base-100:"
+    end
+
+    test "emits legacy bare stored colours as valid CSS", %{user: user} do
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :preferred], :custom, current_user: user)
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put_raw([:ui, :theme, :custom, "color-base-200"], "fff",
+                 current_user: user
+               )
+
+      css = ThemeHelper.custom_theme_style(%{current_user: user})
+
+      assert css =~ "--color-base-200: #fff;"
+      refute css =~ "--color-base-200: fff;"
     end
 
     test "returns an empty string when preferred is not :custom", %{user: user} do
@@ -107,6 +130,22 @@ defmodule Bonfire.UI.Common.CustomThemeSaveTest do
 
       css = ThemeHelper.custom_theme_style(%{current_user: user})
       assert css =~ "--color-base-content: #abcabc;"
+    end
+
+    test "custom_theme_style/1 layers user colours over instance colours", %{user: user} do
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :preferred], :custom, current_user: user)
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put_raw([:ui, :theme, :custom_instance, "color-base-content"], "#abcabc",
+                 current_user: user
+               )
+
+      user = put_color!(user, "color-primary", "#123123")
+
+      css = ThemeHelper.custom_theme_style(%{current_user: user})
+      assert css =~ "--color-base-content: #abcabc;"
+      assert css =~ "--color-primary: #123123;"
     end
 
     test "custom_theme_style/1 prefers the user's :custom over :custom_instance", %{user: user} do

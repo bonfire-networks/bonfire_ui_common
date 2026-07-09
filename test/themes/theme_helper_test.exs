@@ -1,6 +1,8 @@
 defmodule Bonfire.UI.Common.ThemeHelperTest do
-  use ExUnit.Case, async: true
+  use Bonfire.UI.Common.DataCase, async: true
 
+  alias Bonfire.Common.Settings
+  alias Bonfire.Common.Settings.LiveHandler
   alias Bonfire.UI.Common.ThemeHelper
 
   doctest ThemeHelper, import: true
@@ -16,8 +18,8 @@ defmodule Bonfire.UI.Common.ThemeHelperTest do
                ThemeHelper.resolve_theme_config(:dark, "lite", "drk")
     end
 
-    test ":custom is fixed on the dark base (custom colours applied via inline styles)" do
-      assert %{mode: :fixed, theme: "dark"} =
+    test ":custom is fixed on the configured dark/base theme" do
+      assert %{mode: :fixed, theme: "drk"} =
                ThemeHelper.resolve_theme_config(:custom, "lite", "drk")
     end
 
@@ -44,6 +46,68 @@ defmodule Bonfire.UI.Common.ThemeHelperTest do
 
     test "current_theme/1 returns the concrete fallback name from theme_config/1" do
       assert ThemeHelper.current_theme(%{}) == ThemeHelper.theme_config(%{}).theme
+    end
+  end
+
+  describe "theme_config/1 with user theme settings" do
+    test "uses the user's configured light theme when light mode is active" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :preferred], :light,
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :instance_theme_light], "user-light",
+                 current_user: user,
+                 scope: :user
+               )
+
+      config = ThemeHelper.theme_config(%{current_user: user})
+
+      assert config.mode == :fixed
+      assert config.light == "user-light"
+      assert config.theme == "user-light"
+    end
+  end
+
+  describe "put_theme handler" do
+    test "normalises an atomised user light theme before pushing it" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :preferred], :light,
+                 current_user: user,
+                 scope: :user
+               )
+
+      socket = %Phoenix.LiveView.Socket{
+        assigns: %{
+          __changed__: %{},
+          __context__: %{current_user: user},
+          current_user: user,
+          flash: %{}
+        }
+      }
+
+      assert {:noreply, socket} =
+               LiveHandler.handle_event(
+                 "put_theme",
+                 %{
+                   "keys" => "ui:theme:instance_theme_light",
+                   "values" => "light",
+                   "scope" => "user"
+                 },
+                 socket
+               )
+
+      config = ThemeHelper.theme_config(socket)
+
+      assert config.mode == :fixed
+      assert config.light == "light"
+      assert config.theme == "light"
     end
   end
 

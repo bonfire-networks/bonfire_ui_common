@@ -63,27 +63,39 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   active preference is `:custom`, otherwise an empty string.
 
   Set as an inline `style` on `<html>` in root.html.heex and pushed via `set_custom_theme`
-  for live updates. Falls back to the instance palette when the user hasn't set their own
-  (the two are stored under distinct keys, see `custom_theme_key/1`).
+  for live updates. Layers the user's palette over the instance palette, so users can override
+  one colour without dropping the rest of the instance defaults (the two are stored under
+  distinct keys, see `custom_theme_key/1`).
   """
   def custom_theme_style(assigns) do
     context = current_user(assigns) || Map.get(assigns, :conn)
 
     if Settings.get([:ui, :theme, :preferred], nil, context) == :custom do
-      palette =
-        case Settings.get([:ui, :theme, :custom], %{}, context) do
-          map when map == %{} -> Settings.get([:ui, :theme, :custom_instance], %{}, context)
-          user_custom -> user_custom
-        end
-
       # only set variables (not merged defaults), so unset ones follow the base theme
-      palette
-      |> Bonfire.Common.Enums.stringify_keys()
+      context
+      |> custom_theme_palette()
       |> DaisyTheme.style_attr_overrides()
     else
       ""
     end
   end
+
+  defp custom_theme_palette(context) do
+    instance_palette =
+      Settings.get([:ui, :theme, :custom_instance], %{}, context)
+      |> normalize_palette()
+
+    user_palette =
+      Settings.get([:ui, :theme, :custom], %{}, context)
+      |> normalize_palette()
+
+    Map.merge(instance_palette, user_palette)
+  end
+
+  defp normalize_palette(palette) when is_map(palette) or is_list(palette),
+    do: Bonfire.Common.Enums.stringify_keys(palette)
+
+  defp normalize_palette(_), do: %{}
 
   @doc """
   The settings key under which a custom palette is stored for the given scope.
@@ -115,7 +127,7 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   Handles special cases:
   - Light/dark preference → fixed
   - System preference → follows device settings client-side (dark as no-JS fallback)
-  - Custom theme → fixed `"dark"` base, custom colors applied via inline styles in `layout_live.ex`
+  - Custom theme → fixed dark/base theme, custom colors applied via inline styles in `layout_live.ex`
   """
   def theme_config(assigns) do
     # `Map.get/2` (not Access) so a `%Phoenix.LiveView.Socket{}` passed from the
@@ -149,12 +161,38 @@ defmodule Bonfire.UI.Common.ThemeHelper do
       %{mode: :system, theme: "dark", light: "light", dark: "dark"}
   """
   def resolve_theme_config(preferred, light, dark) do
+    preferred = normalize_preference(preferred)
+    light = normalize_theme_name(light, "light")
+    dark = normalize_theme_name(dark, "dark")
+
     case preferred do
       :light -> %{mode: :fixed, theme: light, light: light, dark: dark}
       :dark -> %{mode: :fixed, theme: dark, light: light, dark: dark}
-      :custom -> %{mode: :fixed, theme: "dark", light: light, dark: dark}
+      :custom -> %{mode: :fixed, theme: dark, light: light, dark: dark}
       :system -> %{mode: :system, theme: dark, light: light, dark: dark}
       _ -> %{mode: :fixed, theme: dark, light: light, dark: dark}
     end
   end
+
+  defp normalize_preference(preferred) when preferred in [:light, :dark, :custom, :system],
+    do: preferred
+
+  defp normalize_preference("light"), do: :light
+  defp normalize_preference("dark"), do: :dark
+  defp normalize_preference("custom"), do: :custom
+  defp normalize_preference("system"), do: :system
+  defp normalize_preference(preferred), do: preferred
+
+  defp normalize_theme_name(theme, fallback) when is_binary(theme) do
+    if theme == "" do
+      fallback
+    else
+      theme
+    end
+  end
+
+  defp normalize_theme_name(theme, _fallback) when is_atom(theme) and not is_nil(theme),
+    do: Atom.to_string(theme)
+
+  defp normalize_theme_name(_theme, fallback), do: fallback
 end

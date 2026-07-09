@@ -96,7 +96,8 @@ defmodule Bonfire.Common.Settings.LiveHandler do
     color_key = keys |> String.split(":") |> List.last()
     theme_key = Bonfire.UI.Common.ThemeHelper.custom_theme_key(params["scope"])
 
-    with {:ok, settings} <-
+    with {:ok, value} <- DaisyTheme.normalize_value(color_key, value),
+         {:ok, settings} <-
            Bonfire.Common.Settings.put_raw([:ui, :theme, theme_key, color_key], value,
              scope: params["scope"],
              socket: socket
@@ -110,6 +111,9 @@ defmodule Bonfire.Common.Settings.LiveHandler do
        # push the updated palette to <html> so it applies live, document-wide
        |> Bonfire.UI.Common.ThemeHelper.push_current_theme()
        |> assign_flash(:info, l("Settings saved"))}
+    else
+      :error ->
+        {:noreply, assign_flash(socket, :error, l("Invalid colour value"))}
     end
   end
 

@@ -507,6 +507,7 @@ textarea:focus-visible {
   --border: 1px;
   --depth: 0;
   --noise: 0;
+  --spacing-page-header: 68px;
 }
 
 @plugin "daisyui/theme" {
@@ -541,6 +542,7 @@ textarea:focus-visible {
   --border: 1px;
   --depth: 0;
   --noise: 0;
+  --spacing-page-header: 68px;
 }
 
 input[type="text"],
