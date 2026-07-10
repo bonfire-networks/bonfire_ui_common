@@ -162,7 +162,7 @@
             <div data-role="persistent_skeleton" class="block w-full lg:shrink-0" aria-hidden="true">
               {!-- mirrors PersistentLive's #persistent-header exactly (logo 70², 40px inset,
                    pt-base header row, 48px → compose) so there's no reflow when the sticky LV fills in --}
-              <div class="px-4 lg:px-[40px] bg-base-200 z-sticky sticky top-0">
+              <div class="px-4 lg:px-[30px] bg-base-200 z-sticky sticky top-0">
                 <div class="pt-safe w-full">
                   <div class="flex flex-col w-full">
                     <div class="flex items-center lg:pt-base">
@@ -186,7 +186,7 @@
                 ]}
                 <div class="flex flex-col px-3 lg:px-0">
                   <div class="gap-1 lg:gap-0">
-                    <ul class="menu p-0 w-full gap-0 px-0 lg:px-[24px] mt-2">
+                    <ul class="menu p-0 w-full gap-0 px-0 lg:px-card mt-2">
                       <li class="m-0 p-0 justify-end !block">
                         <div class="!px-0 flex items-center !gap-[16px] py-2">
                           <div class="skeleton w-[18px] h-[18px] rounded shrink-0" />

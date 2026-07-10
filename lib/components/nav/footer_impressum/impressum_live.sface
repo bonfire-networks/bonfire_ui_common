@@ -44,11 +44,11 @@
 <div class="p-card text-sm border-t-hair border-secondary">
   <div class="">
     <a
-      href="https://bonfirenetworks.org/"
+      href={powered_by_url()}
       target="_top"
       class="font-medium text-primary link link-hover"
     >
-      {Bonfire.Application.name_and_flavour()}
+      {powered_by_name()}
     </a>
     <span class="text-primary font-bold">
       ·</span>

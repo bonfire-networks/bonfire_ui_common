@@ -169,7 +169,7 @@
                     <Dropdown
                       id="language_dropdown"
                       position="top"
-                      trigger_class="lang-button btn btn-ghost btn-sm gap-1"
+                      trigger_class="lang-button btn btn-ghost btn-sm gap-1 !px-[6px]"
                       panel_class="flex-col flex-nowrap max-h-60 overflow-y-auto"
                       label={l("Set post language")}
                       trigger_opts={[title: l("Set post language")]}
@@ -285,7 +285,7 @@
                 disabled={@smart_input_opts[:input_status] != :draft}
               >
                 {!-- <#Icon iconify="mdi:email-fast-outline" class="w-4 h-4" /> --}
-                <#Icon iconify="lucide:arrow-up" class="w-4 h-4" />
+                <!-- <#Icon iconify="lucide:arrow-up" class="w-4 h-4" /> -->
                 {#case e(@smart_input_opts, :create_object_type, nil)}
                   {#match type when type in [:message, "message"]}
                     {if @smart_input_opts[:input_status] == :submit, do: l("Sending..."), else: l("Send")}

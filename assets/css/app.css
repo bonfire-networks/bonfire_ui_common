@@ -470,8 +470,9 @@ textarea:focus-visible {
 }
 
 @plugin "daisyui" {
-  themes: light --default, dark --prefersdark;
+  themes: light --default, silk, caramellatte, nord, cmyk, acid, autumn, lofi, pastel, fantasy, cupcake, bumblebee, emerald, corporate, dark --prefersdark, synthwave, forest, dracula, aqua, luxury, night, coffee, dim, sunset, abyss, retro, cyberpunk, valentine, halloween, garden;
 }
+
 
 
 
@@ -508,6 +509,7 @@ textarea:focus-visible {
   --depth: 0;
   --noise: 0;
   --spacing-page-header: 68px;
+  --text-display: clamp(20px, 18.6px + 0.36vw, 20px);
 }
 
 @plugin "daisyui/theme" {
@@ -543,6 +545,7 @@ textarea:focus-visible {
   --depth: 0;
   --noise: 0;
   --spacing-page-header: 68px;
+  --text-display: clamp(20px, 18.6px + 0.36vw, 20px);
 }
 
 input[type="text"],
@@ -804,9 +807,9 @@ article.unread-activity {
   --spacing-half: 9px;           /* ½ base */
   --spacing-content: 12px;       /* tight gap — e.g. radio→label. NOTE: header→body is base/18px, NOT this */
   --spacing-row: 15px;           /* list-row / tighter gap */
-  --spacing-base: 18px;          /* DOMINANT unit — card padding, avatar→info, most gaps */
-  --spacing-card: 18px;          /* alias of base — card internal padding (was mis-measured as 19) */
-  --spacing-avatar: 18px;        /* alias of base — avatar → name/handle gap */
+  --spacing-base: 16px;          /* DOMINANT unit — card padding, avatar→info, most gaps */
+  --spacing-card: 16px;          /* alias of base — card internal padding (was mis-measured as 19) */
+  --spacing-avatar: 16px;        /* alias of base — avatar → name/handle gap */
   --spacing-panel: 25px;         /* larger panel padding / roomy grouped controls */
   --spacing-section: 36px;       /* between sections (2× base) */
   --spacing-edge: 75px;          /* full-bleed edge gutter width (the #ffeaea rails) — w-edge */
@@ -1651,7 +1654,7 @@ body:has(#smart_input_container[data-draft]) [data-role="composer-pill-continue"
   padding-inline: 26px; /* px-[26px]; horizontal only, height is fixed */
   font-size: 15px; /* text-body */
   line-height: 1;
-  font-weight: 500; /* medium, no bold */
+  font-weight: 400; 
   background-color: var(--color-base-300);
   color: var(--color-primary);
   box-shadow: inset 0 0 0 var(--border) var(--color-primary); /* hairline (0.7px) inset ring, primary */
