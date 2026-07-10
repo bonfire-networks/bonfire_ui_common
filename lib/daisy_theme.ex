@@ -209,7 +209,11 @@ defmodule DaisyTheme do
   defp valid_prefixed_hex?(_), do: false
 
   defp valid_bare_hex?(value),
-    do: String.match?(value, ~r/\A(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\z/)
+    do:
+      String.match?(
+        value,
+        ~r/\A(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\z/
+      )
 
   defp safe_css_token?(value),
     do: value != "" and not String.contains?(value, [";", "{", "}"])

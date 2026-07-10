@@ -105,7 +105,10 @@
         />
       </div>
     </div>
-    <div id={"#{@id_prefix}-light-themes"} class={if @preferred not in [:light, :system], do: "hidden"}>
+    <div
+      id={"#{@id_prefix}-light-themes"}
+      class={if @preferred not in [:light, :system], do: "hidden"}
+    >
       <div class="shadow rounded-md border bg-base-200 border-base-content/5 p-4 mt-4">
         <div class="mb-1 text-sm font-medium text-muted">{l("Light mode theme")}</div>
         <div class="mb-4 text-xs text-base-content/60">
@@ -277,7 +280,11 @@
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
+                    <button
+                      data-role="apply_custom_color"
+                      class="btn btn-primary w-full"
+                      id={"#{@id_prefix}-apply-#{color}"}
+                    >
                       {l("Apply")}
                     </button>
                   </div>
@@ -349,7 +356,11 @@
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
+                    <button
+                      data-role="apply_custom_color"
+                      class="btn btn-primary w-full"
+                      id={"#{@id_prefix}-apply-#{color}"}
+                    >
                       {l("Apply")}
                     </button>
                   </div>
@@ -418,7 +429,11 @@
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
+                    <button
+                      data-role="apply_custom_color"
+                      class="btn btn-primary w-full"
+                      id={"#{@id_prefix}-apply-#{color}"}
+                    >
                       {l("Apply")}
                     </button>
                   </div>
@@ -488,7 +503,11 @@
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
+                    <button
+                      data-role="apply_custom_color"
+                      class="btn btn-primary w-full"
+                      id={"#{@id_prefix}-apply-#{color}"}
+                    >
                       {l("Apply")}
                     </button>
                   </div>
@@ -557,7 +576,11 @@
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
+                    <button
+                      data-role="apply_custom_color"
+                      class="btn btn-primary w-full"
+                      id={"#{@id_prefix}-apply-#{color}"}
+                    >
                       {l("Apply")}
                     </button>
                   </div>
@@ -627,7 +650,11 @@
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
+                    <button
+                      data-role="apply_custom_color"
+                      class="btn btn-primary w-full"
+                      id={"#{@id_prefix}-apply-#{color}"}
+                    >
                       {l("Apply")}
                     </button>
                   </div>
@@ -696,7 +723,11 @@
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
+                    <button
+                      data-role="apply_custom_color"
+                      class="btn btn-primary w-full"
+                      id={"#{@id_prefix}-apply-#{color}"}
+                    >
                       {l("Apply")}
                     </button>
                   </div>
@@ -765,7 +796,11 @@
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
+                    <button
+                      data-role="apply_custom_color"
+                      class="btn btn-primary w-full"
+                      id={"#{@id_prefix}-apply-#{color}"}
+                    >
                       {l("Apply")}
                     </button>
                   </div>
@@ -834,7 +869,11 @@
                         />
                       </div>
                     </div>
-                    <button data-role="apply_custom_color" class="btn btn-primary w-full" id={"#{@id_prefix}-apply-#{color}"}>
+                    <button
+                      data-role="apply_custom_color"
+                      class="btn btn-primary w-full"
+                      id={"#{@id_prefix}-apply-#{color}"}
+                    >
                       {l("Apply")}
                     </button>
                   </div>
@@ -912,7 +951,11 @@
                 <span class="text-muted text-sm font-medium">{l("Boxes")}</span>
                 <span class="text-base-content/50 text-xs italic">{l("card, modal, alert")}</span>
               </div>
-              <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby={"#{@id_prefix}-radius-box-group"}>
+              <div
+                class="flex flex-wrap gap-2"
+                role="radiogroup"
+                aria-labelledby={"#{@id_prefix}-radius-box-group"}
+              >
                 {#for radius <- ["0rem", "0.5rem", "1rem", "2rem"]}
                   <label
                     class={
@@ -956,7 +999,11 @@
                 <span class="text-muted text-sm font-medium">{l("Fields")}</span>
                 <span class="text-base-content/50 text-xs italic">{l("button, input, select, tab")}</span>
               </div>
-              <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby={"#{@id_prefix}-radius-field-group"}>
+              <div
+                class="flex flex-wrap gap-2"
+                role="radiogroup"
+                aria-labelledby={"#{@id_prefix}-radius-field-group"}
+              >
                 {#for radius <- ["0rem", "0.5rem", "1rem", "2rem"]}
                   <label
                     class={
@@ -1000,7 +1047,11 @@
                 <span class="text-muted text-sm font-medium">{l("Selectors")}</span>
                 <span class="text-base-content/50 text-xs italic">{l("checkbox, toggle, badge")}</span>
               </div>
-              <div class="flex flex-wrap gap-2" role="radiogroup" aria-labelledby={"#{@id_prefix}-radius-selector-group"}>
+              <div
+                class="flex flex-wrap gap-2"
+                role="radiogroup"
+                aria-labelledby={"#{@id_prefix}-radius-selector-group"}
+              >
                 {#for radius <- ["0rem", "0.5rem", "1rem", "2rem"]}
                   <label
                     class={
@@ -1040,7 +1091,6 @@
           </div>
         </div>
       </section>
-
     </div>
   </div>
 </div>

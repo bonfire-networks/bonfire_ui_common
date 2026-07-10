@@ -75,7 +75,8 @@ defmodule DaisyThemeTest do
     end
 
     test "drops unsafe CSS values" do
-      assert DaisyTheme.style_attr_overrides(%{"color-base-100" => "fff; --color-primary: red"}) == ""
+      assert DaisyTheme.style_attr_overrides(%{"color-base-100" => "fff; --color-primary: red"}) ==
+               ""
     end
   end
 
