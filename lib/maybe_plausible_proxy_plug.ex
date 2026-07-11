@@ -53,17 +53,13 @@ defmodule Bonfire.UI.Common.MaybePlausibleProxyPlug do
   end
 
   defp proxy_event(conn, config) do
+    # forward the payload verbatim: newer scripts send events (e.g. "engagement")
+    # with extra required fields (sd/e) that Plausible 400s on if stripped
     with {:ok, body, conn} <- read_body(conn),
-         {:ok, payload} <- Jason.decode(body),
+         {:ok, _payload} <- Jason.decode(body),
          remote_ip = determine_ip_address(conn, config),
          headers = build_headers(conn, [{"Content-Type", "application/json"}], remote_ip),
-         event =
-           Jason.encode!(%{
-             "name" => payload["n"],
-             "url" => payload["u"],
-             "domain" => payload["d"]
-           }),
-         {:ok, resp} <- HTTPoison.post("#{@plausible_base}/api/event", event, headers) do
+         {:ok, resp} <- HTTPoison.post("#{@plausible_base}/api/event", body, headers) do
       conn
       |> forward_safe_headers(resp.headers)
       |> send_resp(resp.status_code, resp.body)
