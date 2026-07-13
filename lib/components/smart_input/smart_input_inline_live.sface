@@ -100,7 +100,7 @@
       </div>
     {/if}
   {#else}
-    <div class="inline_composer_guest flex flex-wrap items-center gap-2 gap-y-1 px-3 py-2 rounded-full border border-base-content/20 bg-base-100">
+    <div class="inline_composer_guest flex flex-wrap items-center gap-0 p-1 rounded-full border border-secondary">
       {!-- Use :go (parent page URL, set by embed_parent param) when inside an iframe embed,
            so the post-login redirect lands back on the embedding page with a
            bonfire_embed_token appended by LoginController.redirect_after_auth.
@@ -117,7 +117,7 @@
             @remote_interaction_url}
           target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
           id={"inline_composer_remote_interaction_#{@composer_dom_id}"}
-          class="btn btn-sm btn-primary rounded-full normal-case"
+          class="btn btn-sm btn-outline border-primary rounded-full normal-case text-primary"
         >{l("Reply")}</a>
       {#else}
         <a
@@ -125,23 +125,23 @@
             "/login?" <> URI.encode_query(go: @go_url)}
           target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
           id={"inline_composer_login_#{@composer_dom_id}"}
-          class="btn btn-sm btn-primary rounded-full normal-case"
+          class="btn btn-sm btn-outline border-primary rounded-full normal-case text-primary"
         >{l("Login")}</a>
         <a
           href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
             "/signup?" <> URI.encode_query(go: @go_url)}
           target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
           id={"inline_composer_signup_#{@composer_dom_id}"}
-          class="btn btn-sm btn-outline btn-primary rounded-full normal-case"
+          class="btn btn-sm btn-outline border-primary rounded-full normal-case text-primary"
         >{l("Register")}</a>
       {/if}
-      <div class="flex-1 flex items-center gap-3">
+      <div class="flex-1 flex items-center gap-3 pr-2">
         {#if @auth_mode == "remote"}
-          <span class="flex-1 text-right text-sm text-muted truncate">
+          <span class="flex-1 text-right text-sm text-primary truncate">
             {l("Reply with your existing account from any fediverse server")}
           </span>
         {#else}
-          <span class="flex-1 text-right text-sm text-muted truncate">
+          <span class="flex-1 text-right text-sm text-primary truncate">
             {l("Join %{instance_name} to leave comments",
               instance_name:
                 Config.get([:ui, :theme, :instance_name]) ||
