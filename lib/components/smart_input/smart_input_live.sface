@@ -20,7 +20,7 @@
         <header
           :if={@showing_within != :thread_embed}
           class="z-50 flex items-center gap-3 justify-between w-full sticky top-0 px-3 py-2 lg:rounded-t-xl bg-base-100 md:z-auto md:relative"
-          > 
+        >
           <div class="flex items-center gap-3">
             <div
               class=""
@@ -260,7 +260,6 @@
             </Bonfire.UI.Common.OpenModalLive>
           </div>
         </header>
-
 
         <div :if={replying?(assigns)} class="reply_in_composer">
           <div
