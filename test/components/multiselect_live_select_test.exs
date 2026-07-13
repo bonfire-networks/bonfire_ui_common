@@ -56,14 +56,15 @@ defmodule Bonfire.UI.Common.MultiselectLiveSelectTest do
     end
   end
 
-  describe ":single mode (unchanged)" do
+  describe ":single mode" do
     setup do
       %{html: render_ls(:single, nil)}
     end
 
-    test "keeps the rounded ghost pill input", %{html: html} do
-      assert html =~ "rounded-full"
-      assert html =~ "input-ghost"
+    test "uses the themed bordered input", %{html: html} do
+      assert html =~ "input input-sm"
+      assert html =~ "border-hair"
+      assert html =~ "border-secondary"
     end
 
     test "does not use the tags bordered-box container", %{html: html} do
