@@ -113,9 +113,9 @@ window.addEventListener("visibilitychange", () => {
 });
 window.addEventListener("pagehide", (event) => dispatchLifecycleFlush("pagehide", event), { capture: true });
 
-let csrfToken = document
-	.querySelector("meta[name='csrf-token']")
-	.getAttribute("content");
+// Absent on session-less embeds (they auth via bonfire_embed_token), so read defensively.
+let csrfMeta = document.querySelector("meta[name='csrf-token']");
+let csrfToken = csrfMeta ? csrfMeta.getAttribute("content") : null;
 
 // For cross-origin iframe embeds: if the page was loaded with a
 // `?bonfire_embed_token=...` param, connect to the session-less `/embed_live`

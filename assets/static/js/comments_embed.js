@@ -10,15 +10,15 @@
  *   data-media-uri      - find or create a thread for this URL (optional, defaults to current page URL)
  *   data-canonical-slug      - find or create a thread for this post/page slug on the original website (eg. Ghost post slug)
  *   data-canonical-id      - find or create a thread for this post/page ID on the original website (eg. Ghost post ID)
- *   data-boundary       - visibility boundary for the created thread (e.g. "public", "local")
- *   data-group-id       - what Bonfire group to post the article in (if any)
- *   data-require-topic  - only import the article and generate a comment thread if the canonical category or main tag matches a topic on Bonfire (boolean)
- *   data-creator        - user ID to attribute thread creation to
  *   data-sort-by        - initial sort order: "latest_reply", "reply_count", "boost_count", "like_count", "popularity_score", or "newest" (default: thread order)
  *   data-sort-order     - sort direction for the chosen sort: "asc" or "desc" (default: per sort type)
  *   data-mode           - initial thread display mode: "flat" or "nested" (default: instance/user setting)
  *   data-theme          - DaisyUI theme name to apply inside the iframe (e.g. "dark", "light")
  *   data-token-max-age  - hours before the stored auth token is considered stale and the user is prompted to re-authenticate (default: 720 = 30 days). Invalid or non-positive values fall back to the default. The server enforces a hard maximum regardless of this value (1 year by default), and this value is clamped to it.
+ *
+ * Removed (data-creator / data-boundary / data-group-id / data-require-topic): anyone can craft
+ * this iframe URL, so the embedding page no longer chooses a created thread's author, audience or
+ * destination — those are instance settings now. Old snippets keep working; the server ignores them.
  *
  * Authentication:
  *   Third-party cookies are blocked in cross-origin iframes, so this script implements a token-based auth flow. After the user signs in on the Bonfire instance, they are redirected back here with ?bonfire_embed_token=... which is stored in localStorage and passed to the iframe on future page loads.
@@ -151,26 +151,20 @@
   var theme = script.getAttribute("data-theme");
 
   var params = new URLSearchParams({ media_uri: mediaUri });
-  var boundary = script.getAttribute("data-boundary");
-  var creator = script.getAttribute("data-creator");
   var sortBy = script.getAttribute("data-sort-by");
   var sortOrder = script.getAttribute("data-sort-order");
   var mode = script.getAttribute("data-mode");
   var canonicalSlug = script.getAttribute("data-canonical-slug");
   var canonicalId = script.getAttribute("data-canonical-id");
-  var groupId = script.getAttribute("data-group-id");
-  var requireTopic = script.getAttribute("data-require-topic");
   var authMode = script.getAttribute("data-auth-mode");
 
-  if (boundary) params.set("boundary", boundary);
-  if (creator) params.set("creator", creator);
+  // data-creator / data-boundary / data-group-id / data-require-topic are deliberately not
+  // forwarded — see the header comment
   if (sortBy) params.set("sort_by", sortBy);
   if (sortOrder) params.set("sort_order", sortOrder);
   if (mode) params.set("mode", mode);
   if (canonicalSlug) params.set("canonical_slug", canonicalSlug);
   if (canonicalId) params.set("canonical_id", canonicalId);
-  if (groupId) params.set("group_id", groupId);
-  if (requireTopic) params.set("require_topic", requireTopic);
   if (authMode) params.set("auth_mode", authMode);
   if (token) params.set("bonfire_embed_token", token);
   if (theme) params.set("theme", theme);
