@@ -389,9 +389,31 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
             _ -> ""
           end
 
+        # An admin-uploaded instance icon (instance settings > appearance) replaces the
+        # bundled favicons; the config default "/images/bonfire-icon.png" means unset.
+        custom_favicon =
+          case Config.__get__([:ui, :theme, :instance_icon], nil) do
+            icon
+            when is_binary(icon) and icon != "" and icon != "/images/bonfire-icon.png" and
+                   icon != "/images/bonfire-icon.svg" ->
+              icon
+
+            _ ->
+              nil
+          end
+
+        favicon_links =
+          if custom_favicon do
+            ~s(<link rel="icon" href="#{custom_favicon}">)
+          else
+            """
+            <link rel="icon" type="image/x-icon" href="/favicon.ico">
+            <link rel="icon" type="image/svg+xml" href='#{endpoint_module.static_path("/images/bonfire-icon.svg")}'>
+            """
+          end
+
         """
-        <link rel="icon" type="image/x-icon" href="/favicon.ico">
-        <link rel="icon" type="image/svg+xml" href='#{endpoint_module.static_path("/images/bonfire-icon.svg")}'>
+        #{favicon_links}
         <link rel="icon" type="image/svg+xml" data-dynamic-href="{svg}">
 
         #{font_preload_links}
