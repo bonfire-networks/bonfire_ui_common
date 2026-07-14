@@ -18,6 +18,9 @@ defmodule Bonfire.UI.Common.Plugs.IframeEmbeddablePlug do
   def call(conn, _opts) do
     conn
     |> delete_resp_header("x-frame-options")
-    |> put_resp_header("content-security-policy", "frame-ancestors #{EmbedOrigins.frame_ancestors()}")
+    |> put_resp_header(
+      "content-security-policy",
+      "frame-ancestors #{EmbedOrigins.frame_ancestors()}"
+    )
   end
 end
