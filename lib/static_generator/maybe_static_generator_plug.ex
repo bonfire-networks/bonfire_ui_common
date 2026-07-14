@@ -46,6 +46,25 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
   @hits_cache_prefix "static_gen_hits:"
 
   def maybe_serve_static(conn, _opts) do
+    if serve_static_cache?() do
+      do_maybe_serve_static(conn)
+    else
+      conn
+    end
+  end
+
+  # In the test env the shared static cache is bypassed by default, so ordinary tests always
+  # exercise the controller/LiveView instead of being served a stale pre-generated `index.html`
+  # left on disk (e.g. from a dev run or the static-generator). Cache-specific tests opt back in
+  # by setting `sync_static_write` (they all do), so their serve-from-cache assertions still run.
+  # Compile-time env branch: outside test this is a constant `true` (no per-request overhead).
+  if Config.env() == :test do
+    defp serve_static_cache?, do: Config.get([__MODULE__, :sync_static_write], false)
+  else
+    defp serve_static_cache?, do: true
+  end
+
+  defp do_maybe_serve_static(conn) do
     request_path = conn.request_path || "/"
     #  workaround for URLs like /@user@localhost:4000
     if not String.contains?(request_path, ":") do
@@ -276,6 +295,14 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
   # Marks conn as eligible for static caching and rewrites request_path and
   # path_info so Plug.Static (which uses path_info) finds the pre-generated file.
   defp serve_from_static(conn, path) do
+    if serve_static_cache?() do
+      do_serve_from_static(conn, path)
+    else
+      conn
+    end
+  end
+
+  defp do_serve_from_static(conn, path) do
     path_info = path |> String.trim_leading("/") |> String.split("/", trim: true)
 
     conn

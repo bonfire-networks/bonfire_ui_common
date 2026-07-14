@@ -519,7 +519,10 @@ defmodule Bonfire.UI.Common do
   otherwise the remote server turns `?uri=` empty into a dead page.
   """
   def remote_interaction_url(verb, name, object_or_id, socket_or_ctx) do
-    case canonical_url(object_or_id) do
+    # cold path: only reached when a logged-out visitor tries to interact, so preload the locality
+    # (`:peered`/`character:[:peered]`) on demand here rather than feed-wide — `canonical_url`
+    # genuinely needs it to build the remote-interaction URL
+    case canonical_url(object_or_id, preload_if_needed: true) do
       object_url when is_binary(object_url) and object_url != "" ->
         maybe_apply(
           Bonfire.UI.Me.RemoteInteractionLive,
