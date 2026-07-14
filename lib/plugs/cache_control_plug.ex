@@ -26,12 +26,8 @@ defmodule Bonfire.UI.Common.CacheControlPlug do
 
   ## Usage
 
-  > #### Do not use with CSRF protection {: .warning}
-  > This plug must **not** be combined with `plug :protect_from_forgery` —
-  > that plug writes a CSRF cookie on every request, which CDNs would then
-  > serve to other users. Reading the session via `plug :fetch_session` is
-  > fine (and used by the `:cacheable` pipeline to detect authenticated users);
-  > just ensure the session is never *modified* so no `Set-Cookie` is emitted.
+  > #### Do not add CSRF protection to guest-cacheable responses {: .warning}
+  > CSRF protection writes a session cookie, which must never be stored in a shared cache. The `:browser_or_cacheable` pipeline applies CSRF protection only to authenticated requests; this plug marks those responses `private, no-store` and preserves their session writes.
 
       # Conservative — no purging on mutations for this page
       plug Bonfire.UI.Common.CacheControlPlug
@@ -51,36 +47,50 @@ defmodule Bonfire.UI.Common.CacheControlPlug do
 
   def init(opts), do: opts
 
+  def call(conn, opts) do
+    if authenticated?(conn) do
+      put_resp_header(conn, "cache-control", "private, no-store")
+    else
+      cache_public_response(conn, opts)
+    end
+  end
+
+  defp authenticated?(conn) do
+    Bonfire.UI.Common.session_logged_in?(conn) or
+      not is_nil(conn.assigns[:current_user]) or
+      not is_nil(conn.assigns[:current_account]) or
+      conn.private[:bonfire_embed_token_authed] == true
+  end
+
   # Skip HTTP caching outside of prod (unless STATIC_CACHE_DEV=true at compile time).
   if Mix.env() != :prod and
        not Application.compile_env(:bonfire_ui_common, :static_cache_dev, false) do
-    def call(conn, _opts), do: put_resp_header(conn, "cache-control", "no-store, max-age=0")
-  end
+    defp cache_public_response(conn, _opts),
+      do: put_resp_header(conn, "cache-control", "no-store, max-age=0")
+  else
+    defp cache_public_response(conn, opts) do
+      conn =
+        if opts[:cache_query_string],
+          do: put_private(conn, :cache_query_string, true),
+          else: conn
 
-  # Skip caching for authenticated users
-  def call(%{assigns: %{current_user: %{}}} = conn, _opts), do: conn
-  def call(%{assigns: %{current_account: %{}}} = conn, _opts), do: conn
+      purgeable? = opts[:purgeable] == true
+      ttl = opts[:ttl] || default_ttl(purgeable?)
+      cdn_ttl = opts[:cdn_ttl] || default_cdn_ttl(purgeable?, ttl)
+      swr = opts[:swr] || default_swr()
 
-  def call(conn, opts) do
-    conn =
-      if opts[:cache_query_string], do: put_private(conn, :cache_query_string, true), else: conn
-
-    purgeable? = opts[:purgeable] == true
-    ttl = opts[:ttl] || default_ttl(purgeable?)
-    cdn_ttl = opts[:cdn_ttl] || default_cdn_ttl(purgeable?, ttl)
-    swr = opts[:swr] || default_swr()
-
-    conn
-    |> put_resp_header(
-      "cache-control",
-      "public, max-age=#{ttl}, s-maxage=#{cdn_ttl}, stale-while-revalidate=#{swr}"
-    )
-    # Reset session write intent so no Set-Cookie is emitted. Some pipeline
-    # plugs (e.g. Cldr.Plug.SetLocale) may touch the session even for
-    # cacheable routes. Resetting to nil here (after all pipeline plugs have
-    # run but before before_send fires) prevents Plug.Session from writing
-    # the cookie, which would poison any CDN or static-file cache.
-    |> put_private(:plug_session_info, nil)
+      conn
+      |> put_resp_header(
+        "cache-control",
+        "public, max-age=#{ttl}, s-maxage=#{cdn_ttl}, stale-while-revalidate=#{swr}"
+      )
+      # Reset session write intent so no Set-Cookie is emitted. Some pipeline
+      # plugs (e.g. Cldr.Plug.SetLocale) may touch the session even for
+      # cacheable routes. Resetting to nil here (after all pipeline plugs have
+      # run but before before_send fires) prevents Plug.Session from writing
+      # the cookie, which would poison any CDN or static-file cache.
+      |> put_private(:plug_session_info, nil)
+    end
   end
 
   @doc "Set Surrogate-Key (Varnish xkey) and Cache-Tag (Cloudflare) headers on a conn."

@@ -288,12 +288,9 @@ defmodule Bonfire.UI.Common.Routes do
         plug(Bonfire.UI.Common.MaybeStaticGeneratorPlug)
       end
 
-      # Convenience pipeline for public HTML pages that should be cached with
-      # default TTLs and/or served from the static disk cache for guests.
-      # Equivalent to :cacheable + CacheControlPlug with purgeable: false defaults.
-      # Use :cacheable to define TTLs per-controller with an explicit CacheControlPlug plug.
+      # Convenience pipeline for public LiveView pages: guests may use the static/shared cache, while authenticated requests get the full browser stack and are marked private by CacheControlPlug.
       pipeline :cacheable_page do
-        plug(:cacheable)
+        plug(:browser_or_cacheable)
         plug(Bonfire.UI.Common.CacheControlPlug, purgeable: false)
       end
 
