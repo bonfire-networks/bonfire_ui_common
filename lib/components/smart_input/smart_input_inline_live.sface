@@ -92,6 +92,7 @@
               object={@object}
               uploads={@uploads}
               uploaded_files={@uploaded_files}
+              selected_cover={@selected_cover}
               trigger_submit={@trigger_submit}
               boundary_preset={[]}
             />
