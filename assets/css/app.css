@@ -1064,9 +1064,9 @@ emoji-picker .favorites {
 [data-reply-context] > [data-role="thread_header"]::before {
   content: "";
   position: absolute;
-  left: 35px; /* parent avatar centre (strip padding-box starts at the card edge) */
-  top: 0; /* the card top */
-  height: 75px; /* down through the strip + gap to just above the parent avatar */
+  left: 32px;
+  top: 0;
+  height: 65px;
   width: 3px;
   background-image: radial-gradient(circle, var(--color-secondary) 1.5px, transparent 1.6px);
   background-size: 3px 8px;
