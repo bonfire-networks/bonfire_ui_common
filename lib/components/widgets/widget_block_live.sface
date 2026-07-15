@@ -1,7 +1,11 @@
 <aside class={@class} aria-label={@widget_title || nil}>
-  <div :if={@widget_title} class={"flex items-center justify-between", @title_class}>
-    <div role="heading" aria-level="2">{@widget_title}</div>
-    <div class="flex items-center gap-3">
+  <div
+    :if={@widget_title || slot_assigned?(:action) ||
+      show_reset?(@reset_cache_event, @can_reset, @__context__)}
+    class={"flex items-center justify-between", @title_class}
+  >
+    <div :if={@widget_title} role="heading" aria-level="2">{@widget_title}</div>
+    <div class="flex items-center gap-3 ml-auto">
       <#slot {@action} />
       {#if show_reset?(@reset_cache_event, @can_reset, @__context__)}
         <button

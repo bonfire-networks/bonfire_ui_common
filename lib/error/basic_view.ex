@@ -41,7 +41,7 @@ defmodule Bonfire.UI.Common.BasicView do
         "error.html" ->
           assigns
           |> Map.put(:title, l("Error"))
-          |> Map.put(:class, "bg-black")
+          |> Map.put(:class, "bg-base-100 text-base-content")
 
         _ ->
           assigns
@@ -54,7 +54,7 @@ defmodule Bonfire.UI.Common.BasicView do
     <!DOCTYPE html>
     <html
       lang={Bonfire.Common.Localise.get_locale_id() |> to_string()}
-      class={assigns[:class] || "bg-black"}
+      class={assigns[:class] || "bg-base-100 text-base-content"}
       data-theme={@theme.theme}
       data-theme-mode={@theme.mode}
       data-theme-light={@theme.light}
@@ -82,33 +82,44 @@ defmodule Bonfire.UI.Common.BasicView do
         <link phx-track-static rel="stylesheet" href="/assets/bonfire_basic.css" />
       </head>
 
-      <body id="layout-root" class="h-screen">
+      <body id="layout-root" class="min-h-screen bg-base-100 text-base-content">
         <div data-phx-main="true">
-          <div id="layout-error">
-            <div class="">
-              <div class="flex flex-col items-center mx-auto mt-16 overflow-hidden">
-                <div class="relative z-10 flex justify-between flex-shrink-0">
-                  <div class="flex items-center flex-shrink-0 lg:px-4">
-                    <a data-phx-link="redirect" data-phx-link-state="push" href="/">
-                      <div class="flex items-center px-4 py-2 rounded">
-                        <div
-                          class="w-16 aspect-square h-16 mb-4 bg-center bg-no-repeat bg-contain"
-                          style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}
-                        >
-                        </div>
-                      </div>
-                    </a>
-                  </div>
-                </div>
+          <div
+            id="layout-error"
+            class="flex flex-col items-center justify-center min-h-screen px-6 py-16 text-center"
+          >
+            <a
+              data-phx-link="redirect"
+              data-phx-link-state="push"
+              href="/"
+              class="inline-block mb-10 transition-opacity hover:opacity-70"
+              aria-label={l("Back to home")}
+            >
+              <div
+                class="w-16 h-16 bg-center bg-no-repeat bg-contain aspect-square"
+                style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}
+              >
+              </div>
+            </a>
+
+            <div class="w-full max-w-md mx-auto">
+              <p class="mb-4 text-xs font-semibold tracking-widest uppercase text-primary">
+                {assigns[:title]}
+              </p>
+
+              <div class="prose max-w-none text-base-content">
+                {assigns[:inner_content]}
               </div>
 
-              <div class="w-full max-w-screen-md mx-auto mt-4">
-                <div class="prose text-center max-w-none">
-                  <div class="flex"><%= assigns[:title] %></div>
-                  <div class="flex flex-col place-content-center">
-                    {assigns[:inner_content]}
-                  </div>
-                </div>
+              <div class="mt-10">
+                <a
+                  data-phx-link="redirect"
+                  data-phx-link-state="push"
+                  href="/"
+                  class="btn btn-primary"
+                >
+                  {l("Back to home")}
+                </a>
               </div>
             </div>
           </div>
