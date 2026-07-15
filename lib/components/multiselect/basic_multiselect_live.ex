@@ -19,5 +19,5 @@ defmodule Bonfire.UI.Common.BasicMultiselectLive do
 
   prop class, :css_class,
     default:
-      "flex items-center w-full px-2 bg-opacity-75 border rounded-md cursor-pointer border-base-content/30 bg-base-100 sm:text-sm"
+      "flex items-center w-full px-2 bg-opacity-75 border rounded-md cursor-pointer border-secondary bg-base-100 sm:text-sm"
 end

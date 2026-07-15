@@ -90,7 +90,7 @@
 
   <div>
     <div id={"#{@id_prefix}-dark-themes"} class={if @preferred not in [:dark, :system], do: "hidden"}>
-      <div class="shadow rounded-md border bg-base-200 border-base-content/5 p-4 mt-4">
+      <div class="shadow rounded-md border bg-base-200 border-secondary p-4 mt-4">
         <div class="mb-1 text-sm font-medium text-muted">{l("Dark mode theme")}</div>
         <div class="mb-4 text-xs text-base-content/60">
           {l("Used when theme mode is Dark, or when System switches to dark.")}
@@ -109,7 +109,7 @@
       id={"#{@id_prefix}-light-themes"}
       class={if @preferred not in [:light, :system], do: "hidden"}
     >
-      <div class="shadow rounded-md border bg-base-200 border-base-content/5 p-4 mt-4">
+      <div class="shadow rounded-md border bg-base-200 border-secondary p-4 mt-4">
         <div class="mb-1 text-sm font-medium text-muted">{l("Light mode theme")}</div>
         <div class="mb-4 text-xs text-base-content/60">
           {l("Used when theme mode is Light, or when System switches to light.")}
@@ -128,7 +128,7 @@
 
   <div
     id={"#{@id_prefix}-custom-themes"}
-    class={"shadow rounded-md border bg-base-200 border-base-content/5 p-4 mt-4 #{if @preferred != :custom, do: "hidden"}"}
+    class={"shadow rounded-md border bg-base-200 border-secondary p-4 mt-4 #{if @preferred != :custom, do: "hidden"}"}
     data-scope={@scope}
     style={@theme_style}
   >
@@ -291,7 +291,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-base-100); color: var(--color-base-content);",
                           else: "background-color: var(--color-#{color}); color: var(--color-base-content);"}
@@ -367,7 +367,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-primary); color: var(--color-primary-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -440,7 +440,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-secondary); color: var(--color-secondary-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -514,7 +514,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-accent); color: var(--color-accent-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -587,7 +587,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-neutral); color: var(--color-neutral-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -661,7 +661,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-info); color: var(--color-info-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -734,7 +734,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-success); color: var(--color-success-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -807,7 +807,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-warning); color: var(--color-warning-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -880,7 +880,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-base-content/10 flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-error); color: var(--color-error-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -946,10 +946,10 @@
         <div class="space-y-6 pt-2">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
             {!-- Box Radius --}
-            <div class="border border-base-content/10 p-3 bg-base-100 rounded">
+            <div class="border border-secondary p-3 bg-base-100 rounded">
               <div class="mb-2 flex flex-col" id={"#{@id_prefix}-radius-box-group"}>
                 <span class="text-muted text-sm font-medium">{l("Boxes")}</span>
-                <span class="text-base-content/50 text-xs italic">{l("card, modal, alert")}</span>
+                <span class="text-muted text-xs italic">{l("card, modal, alert")}</span>
               </div>
               <div
                 class="flex flex-wrap gap-2"
@@ -984,7 +984,7 @@
                     />
                     <div class="pe-3 pt-2" aria-hidden="true">
                       <div
-                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(@display_theme, "radius-box") == radius, do: "border-primary", else: "border-base-content/10"} bg-base-300"}
+                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(@display_theme, "radius-box") == radius, do: "border-primary", else: "border-secondary"} bg-base-300"}
                         style={"border-start-end-radius:#{radius}"}
                       />
                     </div>
@@ -994,10 +994,10 @@
             </div>
 
             {!-- Field Radius --}
-            <div class="border border-base-content/10 p-3 bg-base-100 rounded">
+            <div class="border border-secondary p-3 bg-base-100 rounded">
               <div class="mb-2 flex flex-col" id={"#{@id_prefix}-radius-field-group"}>
                 <span class="text-muted text-sm font-medium">{l("Fields")}</span>
-                <span class="text-base-content/50 text-xs italic">{l("button, input, select, tab")}</span>
+                <span class="text-muted text-xs italic">{l("button, input, select, tab")}</span>
               </div>
               <div
                 class="flex flex-wrap gap-2"
@@ -1032,7 +1032,7 @@
                     />
                     <div class="pe-3 pt-2" aria-hidden="true">
                       <div
-                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(@display_theme, "radius-field") == radius, do: "border-primary", else: "border-base-content/10"} bg-base-300"}
+                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(@display_theme, "radius-field") == radius, do: "border-primary", else: "border-secondary"} bg-base-300"}
                         style={"border-start-end-radius:#{radius}"}
                       />
                     </div>
@@ -1042,10 +1042,10 @@
             </div>
 
             {!-- Selector Radius --}
-            <div class="border border-base-content/10 p-3 bg-base-100 rounded">
+            <div class="border border-secondary p-3 bg-base-100 rounded">
               <div class="mb-2 flex flex-col" id={"#{@id_prefix}-radius-selector-group"}>
                 <span class="text-muted text-sm font-medium">{l("Selectors")}</span>
-                <span class="text-base-content/50 text-xs italic">{l("checkbox, toggle, badge")}</span>
+                <span class="text-muted text-xs italic">{l("checkbox, toggle, badge")}</span>
               </div>
               <div
                 class="flex flex-wrap gap-2"
@@ -1080,7 +1080,7 @@
                     />
                     <div class="pe-3 pt-2" aria-hidden="true">
                       <div
-                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(@display_theme, "radius-selector") == radius, do: "border-primary", else: "border-base-content/10"} bg-base-300"}
+                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(@display_theme, "radius-selector") == radius, do: "border-primary", else: "border-secondary"} bg-base-300"}
                         style={"border-start-end-radius:#{radius}"}
                       />
                     </div>

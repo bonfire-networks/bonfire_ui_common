@@ -509,7 +509,7 @@ textarea:focus-visible {
   --border: 1px;
   --depth: 0;
   --noise: 0;
-  --spacing-page-header: 68px;
+  --spacing-page-header: 64px;
   --text-display: clamp(20px, 18.6px + 0.36vw, 20px);
 }
 
@@ -517,17 +517,17 @@ textarea:focus-visible {
   name: "dark";
   prefersdark: true;
   color-scheme: dark;
-  --color-base-100: oklch(22% 0 0);
-  --color-base-200: oklch(21% 0 0);
-  --color-base-300: oklch(20% 0 0);
+  --color-base-100: oklch(22% 0.006 45);
+  --color-base-200: oklch(19.5% 0.006 45);
+  --color-base-300: oklch(17% 0.005 45);
   --color-base-content: oklch(80% 0.006 38);
-  --color-primary: oklch(78% 0.155 52);
-  --color-primary-content: oklch(22% 0 0);
-  --color-secondary: oklch(0.26 0.01 0);
+  --color-primary: oklch(80% 0.14 72);
+  --color-primary-content: oklch(22% 0.006 45);
+  --color-secondary: oklch(32% 0.012 45);
   --color-accent: oklch(71% 0.05 58);
   --color-secondary-content: oklch(82% 0.005 38);
   --color-accent-content: oklch(98% 0 0);
-  --color-neutral: oklch(32% 0.013 38);
+  --color-neutral: oklch(35% 0.013 45);
   --color-neutral-content: oklch(88% 0 0);
   --color-info: oklch(72% 0.12 235);
   --color-info-content: oklch(20% 0.04 235);
@@ -545,7 +545,7 @@ textarea:focus-visible {
   --border: 1px;
   --depth: 0;
   --noise: 0;
-  --spacing-page-header: 68px;
+  --spacing-page-header: 64px;
   --text-display: clamp(20px, 18.6px + 0.36vw, 20px);
 }
 

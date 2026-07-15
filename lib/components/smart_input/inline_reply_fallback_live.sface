@@ -3,7 +3,7 @@
     type="button"
     id={"inline_reply_fallback_#{@dom_id || "root"}"}
     phx-click="reset_reply_to"
-    class="inline_composer_fallback flex w-full items-center gap-3 p-1 pl-1 rounded-full border border-base-content/20 bg-base-100 cursor-text transition-colors hover:border-base-content/40 mb-4"
+    class="inline_composer_fallback flex w-full items-center gap-3 p-1 pl-1 rounded-full border border-secondary bg-base-100 cursor-text transition-colors hover:border-secondary mb-4"
     aria-label={l("Write a top-level comment")}
   >
     <div class="shrink-0">

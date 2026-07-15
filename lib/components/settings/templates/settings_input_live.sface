@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between">
       <div :if={@name || @description} class="flex flex-col gap-0.5">
         <div :if={@name} class="text-sm font-medium text-base-content">{@name}</div>
-        <div :if={@description} class="text-sm text-base-content/50">{@description}</div>
+        <div :if={@description} class="text-sm text-muted">{@description}</div>
       </div>
       <button
         x-on:click="open = !open"
@@ -12,7 +12,7 @@
         class="rounded btn btn-square btn-sm btn-ghost"
         x-show="open"
       >
-        <#Icon iconify="ph:caret-up-fill" class="w-4 h-4 text-base-content/50" />
+        <#Icon iconify="ph:caret-up-fill" class="w-4 h-4 text-muted" />
       </button>
       <button
         x-on:click="open = !open"
@@ -21,7 +21,7 @@
         class="rounded btn btn-square btn-sm btn-ghost"
         x-show="!open"
       >
-        <#Icon iconify="ph:caret-down-bold" class="w-4 h-4 text-base-content/50" />
+        <#Icon iconify="ph:caret-down-bold" class="w-4 h-4 text-muted" />
       </button>
     </div>
     <div x-show="open" x-collapse>
@@ -44,7 +44,7 @@
   <div>
     <div :if={@name || @description} class="flex flex-col gap-0.5 mb-3">
       <div :if={@name} class="text-sm font-medium text-base-content">{@name}</div>
-      <div :if={@description} class="text-sm text-base-content/50">{@description}</div>
+      <div :if={@description} class="text-sm text-muted">{@description}</div>
     </div>
 
     <input name="scope" value={@scope} type="hidden">

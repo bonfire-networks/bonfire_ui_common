@@ -59,7 +59,7 @@
               session: %{"params" => @modal_assigns}
             )}
           {#else}
-            <div class="m-3 text-center p-8 rounded-lg border border-base-content/30 flex items-center place-content-center">{warn(@modal_assigns, "No preview component or view available") &&
+            <div class="m-3 text-center p-8 rounded-lg border border-secondary flex items-center place-content-center">{warn(@modal_assigns, "No preview component or view available") &&
                 l("Oops, no preview component is available.")}</div>
           {/if}
         </#slot>

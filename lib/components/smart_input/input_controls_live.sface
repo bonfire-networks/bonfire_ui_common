@@ -34,16 +34,16 @@
               {!-- Reactive role label: the textarea is `phx-update="ignore"` (to preserve typed
                    content) so its placeholder is frozen at first render — this label (outside the
                    ignored node) flips reactively between Summary and Content warning instead. --}
-              <div :if={@summary_field_shown} class="px-3 pt-2 text-xs font-medium text-base-content/50">
+              <div :if={@summary_field_shown} class="px-3 pt-2 text-xs font-medium text-muted">
                 {if @show_sensitive || @show_cw, do: l("Content warning"), else: l("Summary")}
               </div>
-              <div class="relative flex items-start border-b border-dashed border-base-content/15">
+              <div class="relative flex items-start border-b border-dashed border-secondary">
                 <div phx-update="ignore" id="smart_input_summary_value" class="flex-1 min-w-0">
                   {!-- no placeholder: the reactive label above shows the field's role (this
                        subtree is `phx-update="ignore"` so a placeholder here would be frozen) --}
                   <textarea
                     name="post[post_content][summary]"
-                    class="block w-full m-0 px-3 py-2 !outline-0 !outline-none bg-transparent border-0 resize-none text-base leading-6 text-base-content placeholder:text-base-content/50 focus:ring-0 focus:outline-none"
+                    class="block w-full m-0 px-3 py-2 !outline-0 !outline-none bg-transparent border-0 resize-none text-base leading-6 text-base-content placeholder:text-muted focus:ring-0 focus:outline-none"
                     rows="1"
                     style="field-sizing: content; min-height: 0; max-height: 6rem;"
                   >{e(@smart_input_opts, :cw, nil)}</textarea>
@@ -201,7 +201,7 @@
                           </label>
                         </li>
                       {/for}
-                      <li :if={current_user_id(@__context__)} class="border-t border-base-content/10 mt-1 pt-1">
+                      <li :if={current_user_id(@__context__)} class="border-t border-secondary mt-1 pt-1">
                         <a
                           href="/settings/user/preferences/behaviours"
                           target="_blank"

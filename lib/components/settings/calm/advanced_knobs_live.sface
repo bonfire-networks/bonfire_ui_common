@@ -2,7 +2,7 @@
 <details
   id={@details_role}
   :hook="PersistDetails"
-  class="border-b border-base-content/10"
+  class="border-b border-secondary"
   data-role={@details_role}
 >
   <summary class="p-4 cursor-pointer text-sm font-medium text-base-content flex items-center gap-2 list-none">

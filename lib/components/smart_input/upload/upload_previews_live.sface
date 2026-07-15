@@ -19,7 +19,7 @@
           "flex flex-col items-center shrink-0 group relative",
           "group-[.expanded]/uploads:flex-row group-[.expanded]/uploads:gap-3",
           "group-[.expanded]/uploads:items-start group-[.expanded]/uploads:p-2.5",
-          "group-[.expanded]/uploads:border-b group-[.expanded]/uploads:border-base-content/10"
+          "group-[.expanded]/uploads:border-b group-[.expanded]/uploads:border-secondary"
         ]}
       >
         {!-- Thumbnail (rendered once — same in both modes) --}
@@ -54,7 +54,7 @@
         ]}>
           {!-- Filename (visible in both modes, styled differently) --}
           <span class={[
-            "text-[10px] truncate max-w-[64px] text-base-content/50 mt-0.5",
+            "text-[10px] truncate max-w-[64px] text-muted mt-0.5",
             "group-[.expanded]/uploads:text-xs group-[.expanded]/uploads:max-w-none",
             "group-[.expanded]/uploads:text-muted group-[.expanded]/uploads:mt-0"
           ]}>{entry.client_name}</span>

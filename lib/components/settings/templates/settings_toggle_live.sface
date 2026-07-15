@@ -11,7 +11,7 @@
           class="badge !border !border-warning/30 badge-outline badge-warning badge-sm"
         >{@label}</div>
       </div>
-      <div class="text-sm text-base-content/50" :if={@description}>{@description}</div>
+      <div class="text-sm text-muted" :if={@description}>{@description}</div>
     </div>
 
     <input

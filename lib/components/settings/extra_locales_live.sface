@@ -9,7 +9,7 @@
   </fieldset>
 
   {#if @extra_locales == []}
-    <div class="flex flex-col items-center gap-3 py-6 text-base-content/50">
+    <div class="flex flex-col items-center gap-3 py-6 text-muted">
       <#Icon iconify="ph:translate-fill" class="size-8" />
       <p class="text-sm text-pretty text-center">{l("No additional languages added yet.")}</p>
     </div>

@@ -11,7 +11,7 @@
 
   <div :if={@title || @description} class="flex flex-col gap-1 mb-4">
     <span :if={@title} class="text-sm font-medium text-base-content">{@title}</span>
-    <p :if={@description} class="text-sm text-base-content/50">{@description}</p>
+    <p :if={@description} class="text-sm text-muted">{@description}</p>
   </div>
 
   <fieldset>

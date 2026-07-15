@@ -9,7 +9,7 @@
     <!-- <li> -->
     <details class="widget_accordion" open>
       <summary class="">
-        <div class="font-bold uppercase text-xs text-base-content/50">{@widget[:text] || @widget[:name]}</div>
+        <div class="font-bold uppercase text-xs text-muted">{@widget[:text] || @widget[:name]}</div>
       </summary>
       <ul
         id={deterministic_dom_id(__MODULE__, @order, "sub_widgets", @parent_id)}
@@ -109,7 +109,7 @@
             class="flex flex-col gap-0.5 mb-3"
           >
             <div :if={@with_title} class="text-sm font-medium text-base-content">{@widget[:text] || @widget[:name]}</div>
-            <div :if={@with_description && @widget[:description]} class="text-sm text-base-content/50">{@widget[:description]}</div>
+            <div :if={@with_description && @widget[:description]} class="text-sm text-muted">{@widget[:description]}</div>
           </div>
           {#if @widget[:form_change] || @widget[:form_submit]}
             <form phx-change={@widget[:form_change]} phx-submit={@widget[:form_submit]}>
@@ -138,7 +138,7 @@
             class="flex flex-col gap-0.5 mb-3"
           >
             <div :if={@with_title} class="text-sm font-medium text-base-content">{@widget[:text] || @widget[:name]}</div>
-            <div :if={@with_description && @widget[:description]} class="text-sm text-base-content/50">{@widget[:description]}</div>
+            <div :if={@with_description && @widget[:description]} class="text-sm text-muted">{@widget[:description]}</div>
           </div>
           <StatefulComponent
             module={@widget[:module]}

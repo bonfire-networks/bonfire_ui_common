@@ -6,6 +6,7 @@
   class={e(@widget[:link_class], @link_class)}
   label={@text || @widget[:text] || @widget[:name]}
   phx_hook={@widget[:phx_hook]}
+  opts={if active?(@selected_tab, @widget, @__context__), do: ["aria-current": "page"], else: []}
 >
   {!-- <div class={@content_class}>
     <span :if={!@without_icon && (@icon || @widget[:icon] || @widget[:icon_active])} class=""> -->

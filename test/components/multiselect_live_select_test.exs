@@ -42,7 +42,7 @@ defmodule Bonfire.UI.Common.MultiselectLiveSelectTest do
 
     test "the container is the bordered box", %{html: html} do
       assert html =~ "rounded-2xl"
-      assert html =~ "border-base-content/20"
+      assert html =~ "border-secondary"
       assert html =~ "focus-within:border-primary"
     end
 

@@ -121,7 +121,7 @@
                           <Dropdown
                             id="composer_subtopic_chooser"
                             position="bottom-end"
-                            trigger_class="btn btn-sm btn-outline border-base-content/30 btn-circle"
+                            trigger_class="btn btn-sm btn-outline border-secondary btn-circle"
                             label={l("Post in a subtopic")}
                             trigger_opts={[title: l("Post in a subtopic")]}
                           >

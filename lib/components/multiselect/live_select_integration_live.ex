@@ -26,7 +26,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
         :ls_container_class,
         if(tags?,
           do:
-            "w-full flex flex-col gap-1.5 rounded-2xl border border-base-content/20 bg-base-content/5 px-3 py-2 transition-colors focus-within:border-primary",
+            "w-full flex flex-col gap-1.5 rounded-2xl border border-secondary bg-base-content/5 px-3 py-2 transition-colors focus-within:border-primary",
           else: "w-full flex flex-col"
         )
       )
@@ -44,7 +44,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       |> assign(:ls_text_input_selected_class, if(tags?, do: "", else: nil))
       |> assign(
         :ls_dropdown_class,
-        "z-50 max-h-liveselect flex-nowrap border border-base-content/10 !bg-base-100 overflow-y-auto " <>
+        "z-50 max-h-liveselect flex-nowrap border border-secondary !bg-base-100 overflow-y-auto " <>
           if(tags?, do: "top-full mt-1", else: "top-12")
       )
 
