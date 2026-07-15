@@ -4,7 +4,7 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   Uses the new OKLCH color format and updated CSS variable naming scheme.
   """
   use Bonfire.Common.Settings
-  import Bonfire.Common.Utils, only: [current_user: 1]
+  import Bonfire.Common.Utils, only: [current_user: 1, current_account: 1]
 
   @doc """
   Pushes a `set_theme` event so root.html.heex's listener updates `<html data-theme=…>`.
@@ -59,37 +59,64 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   end
 
   @doc """
-  The custom theme's CSS variable declarations (`--color-base-100: #fff; …`) when the
-  active preference is `:custom`, otherwise an empty string.
+  The custom theme's CSS variable declarations (`--color-base-100: #fff; …`) when a
+  custom palette is active, otherwise an empty string.
 
   Set as an inline `style` on `<html>` in root.html.heex and pushed via `set_custom_theme`
-  for live updates. Layers the user's palette over the instance palette, so users can override
-  one colour without dropping the rest of the instance defaults (the two are stored under
-  distinct keys, see `custom_theme_key/1`).
+  for live updates.
+
+  The user's and the instance's palettes are stored under distinct keys (see
+  `custom_theme_key/1`) and never mix:
+  - a user/account that explicitly chose the `:custom` mode gets *their own* palette only;
+  - anyone following the instance default (no explicit choice of their own, including
+    guests) gets the *instance* palette when the instance's mode is `:custom`.
   """
   def custom_theme_style(assigns) do
-    context = current_user(assigns) || Map.get(assigns, :conn)
+    user = current_user(assigns)
+    account = current_account(assigns)
+    context = user || account || Map.get(assigns, :conn)
 
-    if Settings.get([:ui, :theme, :preferred], nil, context) == :custom do
-      # only set variables (not merged defaults), so unset ones follow the base theme
-      context
-      |> custom_theme_palette()
-      |> DaisyTheme.style_attr_overrides()
-    else
-      ""
+    case own_theme_preference(user) || own_theme_preference(account) do
+      :custom ->
+        # only set variables (not merged defaults), so unset ones follow the base theme
+        Settings.get([:ui, :theme, :custom], %{}, context)
+        |> normalize_palette()
+        |> DaisyTheme.style_attr_overrides()
+
+      nil ->
+        if normalize_preference(Settings.get([:ui, :theme, :preferred], nil, context)) ==
+             :custom do
+          Settings.get([:ui, :theme, :custom_instance], %{}, context)
+          |> normalize_palette()
+          |> DaisyTheme.style_attr_overrides()
+        else
+          ""
+        end
+
+      _other_fixed_preference ->
+        ""
     end
   end
 
-  defp custom_theme_palette(context) do
-    instance_palette =
-      Settings.get([:ui, :theme, :custom_instance], %{}, context)
-      |> normalize_palette()
+  @doc """
+  The theme mode explicitly chosen by the given scope alone (a user or account),
+  ignoring values inherited from other scopes — `nil` means the scope has no choice
+  of its own and follows the instance default.
+  """
+  def own_theme_preference(nil), do: nil
 
-    user_palette =
-      Settings.get([:ui, :theme, :custom], %{}, context)
-      |> normalize_palette()
-
-    Map.merge(instance_palette, user_palette)
+  def own_theme_preference(scoped) do
+    # `preload: true` so `nil` reliably means "no own preference" rather than "settings
+    # assoc wasn't loaded": a loaded assoc is used as-is (no query), an unloaded one is
+    # fetched — otherwise a scope struct without preloaded settings would wrongly read as
+    # following the instance and drop the user's chosen theme (mirrors the write path)
+    Settings.__get__(
+      [:ui, :theme, :preferred],
+      nil,
+      Bonfire.Common.Opts.to_options(scoped)
+      |> Keyword.merge(one_scope_only: true, preload: true)
+    )
+    |> normalize_preference()
   end
 
   defp normalize_palette(palette) when is_map(palette) or is_list(palette),

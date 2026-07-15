@@ -118,6 +118,172 @@ defmodule Bonfire.UI.Common.ThemeHelperTest do
     end
   end
 
+  describe "custom_theme_style/1 with a user's own custom theme" do
+    test "emits only the user's own palette when they chose :custom" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :preferred], :custom,
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put_raw([:ui, :theme, :custom, "color-primary"], "#abcdef",
+                 current_user: user,
+                 scope: :user
+               )
+
+      style = ThemeHelper.custom_theme_style(%{current_user: user})
+      assert style =~ "--color-primary: #abcdef;"
+    end
+
+    test "emits nothing when the user chose a fixed non-custom mode" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :preferred], :light,
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert ThemeHelper.custom_theme_style(%{current_user: user}) == ""
+    end
+  end
+
+  describe "own_theme_preference/1" do
+    test "is nil for a scope with no theme choice of its own (follows the instance)" do
+      assert ThemeHelper.own_theme_preference(nil) == nil
+      assert ThemeHelper.own_theme_preference(fake_user!()) == nil
+    end
+
+    test "returns the mode the scope explicitly chose" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :preferred], :dark,
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert ThemeHelper.own_theme_preference(user) == :dark
+    end
+
+    test "reads the scope's own choice even when its settings assoc isn't preloaded" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :preferred], :dark,
+                 current_user: user,
+                 scope: :user
+               )
+
+      # a user struct with the same id but the settings assoc NOT loaded (as would come
+      # from a bare fetch) must still resolve to the stored choice, not to :instance_default
+      unloaded = struct(Bonfire.Data.Identity.User, id: user.id)
+      assert %Ecto.Association.NotLoaded{} = unloaded.settings
+
+      assert ThemeHelper.own_theme_preference(unloaded) == :dark
+    end
+  end
+
+  describe "reset_theme handler (Follow instance theme)" do
+    test "deletes the user's own mode + theme names so instance defaults apply again" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :preferred], :light,
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :instance_theme_light], "user-light",
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :instance_theme], "user-dark",
+                 current_user: user,
+                 scope: :user
+               )
+
+      socket = %Phoenix.LiveView.Socket{
+        assigns: %{
+          __changed__: %{},
+          __context__: %{current_user: user},
+          current_user: user,
+          flash: %{}
+        }
+      }
+
+      assert {:noreply, socket} =
+               LiveHandler.handle_event("reset_theme", %{"scope" => nil}, socket)
+
+      # resolves exactly as if the user had no settings at all (instance defaults);
+      # in particular the sequential deletes must not resurrect each other's keys
+      assert ThemeHelper.theme_config(socket) == ThemeHelper.theme_config(%{})
+
+      user = Bonfire.Common.Utils.current_user(socket)
+      assert ThemeHelper.own_theme_preference(user) == nil
+
+      assert Settings.__get__([:ui, :theme, :instance_theme], nil,
+               current_user: user,
+               one_scope_only: true
+             ) == nil
+
+      assert Settings.__get__([:ui, :theme, :instance_theme_light], nil,
+               current_user: user,
+               one_scope_only: true
+             ) == nil
+    end
+
+    test "keeps the user's saved custom palette for when they pick :custom again" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :preferred], :custom,
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put_raw([:ui, :theme, :custom, "color-primary"], "#abcdef",
+                 current_user: user,
+                 scope: :user
+               )
+
+      socket = %Phoenix.LiveView.Socket{
+        assigns: %{
+          __changed__: %{},
+          __context__: %{current_user: user},
+          current_user: user,
+          flash: %{}
+        }
+      }
+
+      assert {:noreply, socket} =
+               LiveHandler.handle_event("reset_theme", %{"scope" => nil}, socket)
+
+      user = Bonfire.Common.Utils.current_user(socket)
+      assert ThemeHelper.own_theme_preference(user) == nil
+
+      # palette not applied while following the instance default…
+      assert ThemeHelper.custom_theme_style(%{current_user: user}) == ""
+
+      # …but kept: picking :custom again brings it back without recreating it
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :preferred], :custom,
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert ThemeHelper.custom_theme_style(%{current_user: user}) =~
+               "--color-primary: #abcdef;"
+    end
+  end
+
   describe "custom_theme_key/1" do
     test "instance scope maps to the :custom_instance key (atom or string)" do
       assert ThemeHelper.custom_theme_key(:instance) == :custom_instance

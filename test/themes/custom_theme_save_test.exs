@@ -117,9 +117,13 @@ defmodule Bonfire.UI.Common.CustomThemeSaveTest do
   end
 
   describe "user vs instance isolation" do
-    test "custom_theme_style/1 falls back to :custom_instance when :custom is empty", %{
-      user: user
-    } do
+    test "custom_theme_style/1 does NOT fall back to :custom_instance for a user's own :custom",
+         %{
+           user: user
+         } do
+      # user and instance palettes are stored under distinct keys and never mix: a user
+      # who explicitly chose :custom gets exactly their own palette, even when empty
+      # (to match the instance's custom theme, use "Follow instance theme" instead)
       assert {:ok, %{__context__: %{current_user: user}}} =
                Settings.put([:ui, :theme, :preferred], :custom, current_user: user)
 
@@ -128,11 +132,12 @@ defmodule Bonfire.UI.Common.CustomThemeSaveTest do
                  current_user: user
                )
 
-      css = ThemeHelper.custom_theme_style(%{current_user: user})
-      assert css =~ "--color-base-content: #abcabc;"
+      assert ThemeHelper.custom_theme_style(%{current_user: user}) == ""
     end
 
-    test "custom_theme_style/1 layers user colours over instance colours", %{user: user} do
+    test "custom_theme_style/1 never mixes instance colours into a user's :custom palette", %{
+      user: user
+    } do
       assert {:ok, %{__context__: %{current_user: user}}} =
                Settings.put([:ui, :theme, :preferred], :custom, current_user: user)
 
@@ -144,8 +149,8 @@ defmodule Bonfire.UI.Common.CustomThemeSaveTest do
       user = put_color!(user, "color-primary", "#123123")
 
       css = ThemeHelper.custom_theme_style(%{current_user: user})
-      assert css =~ "--color-base-content: #abcabc;"
       assert css =~ "--color-primary: #123123;"
+      refute css =~ "#abcabc"
     end
 
     test "custom_theme_style/1 prefers the user's :custom over :custom_instance", %{user: user} do

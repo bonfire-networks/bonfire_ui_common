@@ -83,6 +83,39 @@ defmodule Bonfire.Common.Settings.LiveHandler do
   end
 
   @doc """
+  Reverts the scope's own theme choices (mode + light/dark theme names) so the instance
+  defaults cascade through again ("Follow instance theme", the default for new users).
+
+  Keeps the scope's saved custom palette: it only applies when the `:custom` mode is
+  explicitly chosen again, and this way it isn't lost by trying out the instance theme.
+  """
+  def handle_event("reset_theme", params, socket) do
+    scope = params["scope"]
+
+    # one key at a time, threading the refreshed context into the next call: writes
+    # start from the scope's preloaded settings, so reusing the original socket would
+    # make the last delete resurrect the keys removed before it
+    with {:ok, socket} <- delete_theme_key(socket, :preferred, scope),
+         {:ok, socket} <- delete_theme_key(socket, :instance_theme, scope),
+         {:ok, socket} <- delete_theme_key(socket, :instance_theme_light, scope) do
+      {:noreply,
+       socket
+       |> Bonfire.UI.Common.ThemeHelper.push_current_theme()
+       |> assign_flash(:info, l("You are now following the instance theme"))}
+    else
+      # a failed delete must still return a valid reply (never a bare error tuple, which
+      # would crash the LiveView); re-push the theme so whatever was applied stays in sync
+      other ->
+        error(other, "Could not fully reset the theme to follow the instance")
+
+        {:noreply,
+         socket
+         |> Bonfire.UI.Common.ThemeHelper.push_current_theme()
+         |> assign_flash(:error, l("Could not update your theme, please try again"))}
+    end
+  end
+
+  @doc """
   Non-destructively saves a single custom-theme colour.
 
   Uses `put_raw` rather than `put` so the colour key isn't run through `input_to_atoms`
@@ -250,6 +283,16 @@ defmodule Bonfire.Common.Settings.LiveHandler do
         :noreply,
         socket |> maybe_assign_context(settings)
       }
+    end
+  end
+
+  defp delete_theme_key(socket, key, scope) do
+    with {:ok, settings} <-
+           Bonfire.Common.Settings.delete([:ui, :theme, key],
+             scope: scope,
+             socket: socket
+           ) do
+      {:ok, maybe_assign_context(socket, settings)}
     end
   end
 

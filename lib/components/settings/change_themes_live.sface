@@ -1,14 +1,39 @@
 <div class="w-full mt-4 form-control">
   <div class="mb-3 text-sm font-medium text-muted">{l("Theme mode")}</div>
   <div class="grid grid-cols-2 gap-2">
+    {!-- FOLLOW INSTANCE (the default: no choice of this scope's own, so the instance's
+         theme — light, dark, system or custom — cascades through) --}
+    <button
+      :if={@show_follow_option}
+      id={"#{@id_prefix}-follow-button"}
+      type="button"
+      class={"btn flex-1 justify-between gap-2 min-h-12 col-span-2 #{if @selected == :instance_default, do: "btn-primary"}"}
+      phx-click={JS.push("Bonfire.Common.Settings:reset_theme", value: %{scope: @scope})
+      |> JS.add_class("btn-primary", to: "##{@id_prefix}-follow-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-dark-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-light-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-system-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-custom-button")
+      |> JS.hide(to: "##{@id_prefix}-dark-themes")
+      |> JS.hide(to: "##{@id_prefix}-light-themes")
+      |> JS.hide(to: "##{@id_prefix}-custom-themes")}
+    >
+      <span class="flex items-center gap-2">
+        <#Icon iconify="ph:buildings" class="w-4 h-4" />
+        <span>{l("Follow instance theme")}</span>
+      </span>
+      <span :if={@selected == :instance_default} class="badge badge-sm">{l("Active")}</span>
+    </button>
+
     {!-- DARK --}
     <button
       id={"#{@id_prefix}-dark-button"}
-      class={"btn flex-1 justify-between gap-2 min-h-12 #{if @preferred in [:dark], do: "btn-primary"}"}
+      class={"btn flex-1 justify-between gap-2 min-h-12 #{if @selected in [:dark], do: "btn-primary"}"}
       phx-click={JS.push("Bonfire.Common.Settings:put_theme",
         value: %{keys: "ui:theme:preferred", values: :dark, scope: @scope}
       )
       |> JS.add_class("btn-primary", to: "##{@id_prefix}-dark-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-follow-button")
       |> JS.remove_class("btn-primary", to: "##{@id_prefix}-light-button")
       |> JS.remove_class("btn-primary", to: "##{@id_prefix}-system-button")
       |> JS.remove_class("btn-primary", to: "##{@id_prefix}-custom-button")
@@ -20,15 +45,16 @@
         <#Icon iconify="ph:moon" class="w-4 h-4" />
         <span>{l("Use dark")}</span>
       </span>
-      <span :if={@preferred == :dark} class="badge badge-sm">{l("Active")}</span>
+      <span :if={@selected == :dark} class="badge badge-sm">{l("Active")}</span>
     </button>
 
     <button
       id={"#{@id_prefix}-light-button"}
-      class={"btn flex-1 justify-between gap-2 min-h-12 #{if @preferred in [:light], do: "btn-primary"}"}
+      class={"btn flex-1 justify-between gap-2 min-h-12 #{if @selected in [:light], do: "btn-primary"}"}
       phx-click={JS.push("Bonfire.Common.Settings:put_theme",
         value: %{keys: "ui:theme:preferred", values: :light, scope: @scope}
       )
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-follow-button")
       |> JS.remove_class("btn-primary", to: "##{@id_prefix}-dark-button")
       |> JS.add_class("btn-primary", to: "##{@id_prefix}-light-button")
       |> JS.remove_class("btn-primary", to: "##{@id_prefix}-system-button")
@@ -41,16 +67,17 @@
         <#Icon iconify="ph:sun" class="w-4 h-4" />
         <span>{l("Use light")}</span>
       </span>
-      <span :if={@preferred == :light} class="badge badge-sm">{l("Active")}</span>
+      <span :if={@selected == :light} class="badge badge-sm">{l("Active")}</span>
     </button>
 
     <button
       id={"#{@id_prefix}-system-button"}
-      class={"btn flex-1 justify-between gap-2 min-h-12 #{if @preferred in [:system], do: "btn-primary"}"}
+      class={"btn flex-1 justify-between gap-2 min-h-12 #{if @selected in [:system], do: "btn-primary"}"}
       phx-click={JS.push("Bonfire.Common.Settings:put_theme",
         value: %{keys: "ui:theme:preferred", values: :system, scope: @scope}
       )
       |> JS.add_class("btn-primary", to: "##{@id_prefix}-system-button")
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-follow-button")
       |> JS.remove_class("btn-primary", to: "##{@id_prefix}-dark-button")
       |> JS.remove_class("btn-primary", to: "##{@id_prefix}-light-button")
       |> JS.remove_class("btn-primary", to: "##{@id_prefix}-custom-button")
@@ -62,13 +89,14 @@
         <#Icon iconify="ph:desktop" class="w-4 h-4" />
         <span>{l("Use system")}</span>
       </span>
-      <span :if={@preferred == :system} class="badge badge-sm">{l("Active")}</span>
+      <span :if={@selected == :system} class="badge badge-sm">{l("Active")}</span>
     </button>
 
     <button
       phx-click={JS.push("Bonfire.Common.Settings:put_theme",
         value: %{keys: "ui:theme:preferred", values: :custom, scope: @scope}
       )
+      |> JS.remove_class("btn-primary", to: "##{@id_prefix}-follow-button")
       |> JS.remove_class("btn-primary", to: "##{@id_prefix}-dark-button")
       |> JS.remove_class("btn-primary", to: "##{@id_prefix}-light-button")
       |> JS.remove_class("btn-primary", to: "##{@id_prefix}-system-button")
@@ -78,18 +106,18 @@
       |> JS.show(to: "##{@id_prefix}-custom-themes")}
       id={"#{@id_prefix}-custom-button"}
       type="button"
-      class={"btn flex-1 justify-between gap-2 min-h-12 #{if @preferred == :custom, do: "btn-primary"}"}
+      class={"btn flex-1 justify-between gap-2 min-h-12 #{if @selected == :custom, do: "btn-primary"}"}
     >
       <span class="flex items-center gap-2">
         <#Icon iconify="ph:paint-brush-fill" class="w-4 h-4" />
         <span>{l("Use custom")}</span>
       </span>
-      <span :if={@preferred == :custom} class="badge badge-sm">{l("Active")}</span>
+      <span :if={@selected == :custom} class="badge badge-sm">{l("Active")}</span>
     </button>
   </div>
 
   <div>
-    <div id={"#{@id_prefix}-dark-themes"} class={if @preferred not in [:dark, :system], do: "hidden"}>
+    <div id={"#{@id_prefix}-dark-themes"} class={if @selected not in [:dark, :system], do: "hidden"}>
       <div class="shadow rounded-md border bg-base-200 border-secondary p-4 mt-4">
         <div class="mb-1 text-sm font-medium text-muted">{l("Dark mode theme")}</div>
         <div class="mb-4 text-xs text-base-content/60">
@@ -107,7 +135,7 @@
     </div>
     <div
       id={"#{@id_prefix}-light-themes"}
-      class={if @preferred not in [:light, :system], do: "hidden"}
+      class={if @selected not in [:light, :system], do: "hidden"}
     >
       <div class="shadow rounded-md border bg-base-200 border-secondary p-4 mt-4">
         <div class="mb-1 text-sm font-medium text-muted">{l("Light mode theme")}</div>
@@ -128,7 +156,7 @@
 
   <div
     id={"#{@id_prefix}-custom-themes"}
-    class={"shadow rounded-md border bg-base-200 border-secondary p-4 mt-4 #{if @preferred != :custom, do: "hidden"}"}
+    class={"shadow rounded-md border bg-base-200 border-secondary p-4 mt-4 #{if @selected != :custom, do: "hidden"}"}
     data-scope={@scope}
     style={@theme_style}
   >
@@ -136,7 +164,7 @@
       <div class="flex items-center gap-2">
         <#Icon iconify="ph:paint-brush-fill" class="w-5 h-5 text-primary" />
         <span class="text-base font-bold">{l("Custom theme")}</span>
-        <span :if={@preferred == :custom} class="badge badge-primary badge-sm">{l("Active now")}</span>
+        <span :if={@selected == :custom} class="badge badge-primary badge-sm">{l("Active now")}</span>
       </div>
       {!-- only offer a reset once there's at least one override to clear --}
       <button
@@ -154,7 +182,7 @@
 
     {!-- The custom palette is only applied to the page when it is the active theme.
          Warn (and offer to activate) when the user edits while it is not active. --}
-    <div :if={@preferred != :custom} class="alert alert-warning shadow-sm mb-6" role="alert">
+    <div :if={@selected != :custom} class="alert alert-warning shadow-sm mb-6" role="alert">
       <#Icon iconify="ph:warning-fill" class="w-5 h-5 shrink-0" />
       <div class="flex-1">
         <div class="font-medium">{l("The custom theme isn't active yet")}</div>
@@ -170,6 +198,7 @@
           value: %{keys: "ui:theme:preferred", values: :custom, scope: @scope}
         )
         |> JS.add_class("btn-primary", to: "##{@id_prefix}-custom-button")
+        |> JS.remove_class("btn-primary", to: "##{@id_prefix}-follow-button")
         |> JS.remove_class("btn-primary", to: "##{@id_prefix}-dark-button")
         |> JS.remove_class("btn-primary", to: "##{@id_prefix}-light-button")
         |> JS.remove_class("btn-primary", to: "##{@id_prefix}-system-button")
@@ -195,9 +224,9 @@
     <div
       class={
         "space-y-6 transition-opacity",
-        "opacity-40 pointer-events-none select-none": @preferred != :custom
+        "opacity-40 pointer-events-none select-none": @selected != :custom
       }
-      aria-disabled={@preferred != :custom}
+      aria-disabled={@selected != :custom}
     >
       {!-- Colors Section --}
       <section>
