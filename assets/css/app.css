@@ -147,6 +147,18 @@ media-player {
   display: none !important;
 }
 
+/* diff highlighting emitted by Exdiff in version history (see
+   Bonfire.UI.Social.VersionHistoryLive); .exdiff-eq is unchanged text and
+   deliberately inherits */
+.exdiff-del {
+  color: var(--color-error);
+  text-decoration: line-through;
+}
+
+.exdiff-ins {
+  color: var(--color-success);
+}
+
 .menu {
     & :where(li > details > summary), & :where(li > .menu-dropdown-toggle) {
         &:after {
