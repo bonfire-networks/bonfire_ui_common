@@ -261,7 +261,7 @@
   </div>
   <div
     :if={@no_header != true || current_user(@__context__)}
-    class="dock dock-sm bg-base-100/85 backdrop-blur-sm z-fixed lg:hidden text-primary"
+    class="dock z-fixed lg:hidden text-base-content"
   >
     <LinkLive to="/" class={"dock-active": @selected_tab == "home"}>
       <#Icon iconify="ph:house-fill" class="size-6" aria-hidden="true" />
