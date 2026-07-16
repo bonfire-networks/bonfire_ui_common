@@ -1126,8 +1126,12 @@ defmodule Bonfire.UI.Common do
   def go_query(conn), do: "?" <> Plug.Conn.Query.encode(go: conn.request_path)
 
   @doc "copies the `go` param into a query string, if any"
-  def copy_go(%{go: go}), do: "?" <> Plug.Conn.Query.encode(go: go)
-  def copy_go(%{"go" => go}), do: "?" <> Plug.Conn.Query.encode(go: go)
+  def copy_go(%{go: go}) when is_binary(go) and go != "",
+    do: "?" <> Plug.Conn.Query.encode(go: go)
+
+  def copy_go(%{"go" => go}) when is_binary(go) and go != "",
+    do: "?" <> Plug.Conn.Query.encode(go: go)
+
   def copy_go(_), do: ""
 
   def redirect_to_previous_go(conn, params, default, current_path) do
@@ -1165,8 +1169,12 @@ defmodule Bonfire.UI.Common do
     case session_go do
       go when is_binary(go) and current_path != go ->
         go = URI.decode(go)
-        # needs to support external for oauth/openid and local full URLs
-        if internal_go_path?(go), do: go_redirect_opt(go), else: [external: go]
+        # Internal paths and full local URLs are always fine; a non-internal
+        # (external) `go` is only honored when its origin is on the embed
+        # allow-list — otherwise fall back to the default to avoid open redirects.
+        if internal_go_path?(go) or Bonfire.UI.Common.EmbedOrigins.allowed?(go),
+          do: go_redirect_opt(go),
+          else: [to: default]
 
       _ ->
         # |> debug
@@ -1175,16 +1183,16 @@ defmodule Bonfire.UI.Common do
              e(params, :source, :changes, :go, nil) || default)
           |> URI.decode()
 
-        if current_path != go and internal_go_path?(go),
-          do: go_redirect_opt(go),
-          else: [to: default]
+        if current_path != go and
+             (internal_go_path?(go) or Bonfire.UI.Common.EmbedOrigins.allowed?(go)),
+           do: go_redirect_opt(go),
+           else: [to: default]
     end
     |> debug()
   end
 
-  # TODO: we should validate this a bit harder. Phoenix will prevent
-  # us from sending the user to an external URL, but it'll do so by
-  # means of a 500 error.
+  # Callers (`go_where?`) only reach here for internal paths or allow-listed
+  # external origins, so an `external:` redirect here is already vetted.
   defp go_redirect_opt("http" <> _ = url), do: [external: url]
   defp go_redirect_opt(path), do: [to: path]
 
