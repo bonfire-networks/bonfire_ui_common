@@ -7,6 +7,20 @@ defmodule Bonfire.UI.Common.PersistentLive do
   # @session_key :csrf_token
   @session_key :csrf_socket_token
 
+  # Composer state owned by this sticky process — must not be overwritten by `__context__`
+  # copies merged in on navigation (pages assign_global their own default `to_boundaries`,
+  # and `assign_global` also writes top-level assigns, which would reset the user's
+  # selection). Only mutated via `{:smart_input, ...}` or `{:assign_global, ...}` messages.
+  @composer_state_context_keys [
+    :to_boundaries,
+    :to_circles,
+    :exclude_circles,
+    :context_id,
+    :context_group,
+    :smart_input_opts,
+    :smart_input_component
+  ]
+
   # on_mount {Bonfire.UI.Common.LivePlugs.Helpers, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
 
   def sticky_badges do
@@ -188,6 +202,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     |> Map.put(
       :__context__,
       Enum.into(assigns[:__context__] || %{}, %{sticky: true, parent_pid: self()})
+      |> Map.drop(@composer_state_context_keys)
     )
     |> debug("persistent assigns filtered")
   end
@@ -437,7 +452,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     socket =
       socket
       |> assign(assigns)
-      |> assign_global(context)
+      |> assign_global(Map.drop(context, @composer_state_context_keys))
       |> assign_account_users()
       |> assign_persistent_locale(assigns, context)
 
