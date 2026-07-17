@@ -31,6 +31,7 @@ defmodule Bonfire.UI.Common do
   Pass a pre-resolved boolean as `override` (e.g. assigned once per batch by an `update_many` preload) to skip the per-render settings lookup; `nil` falls back to reading the `[:ui, :show_activity_counts]` setting from the context.
   """
   def show_activity_counts?(override \\ nil, context)
+
   def show_activity_counts?(nil, context),
     do: !!Bonfire.Common.Settings.get([:ui, :show_activity_counts], false, context)
 

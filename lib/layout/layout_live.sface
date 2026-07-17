@@ -126,13 +126,13 @@
 
               <div>
                 <div class="flex flex-col gap-2 pb-2">
-                <div :if={!@current_user_id} class="flex flex-col gap-2 p-card border-b-hair border-secondary">
-                  <LinkLive to={path(:login, :index)} class="btn btn-ds-outline" parent_id="layout">{l("Log in")}</LinkLive>
+                  <div :if={!@current_user_id} class="flex flex-col gap-2 p-card border-b-hair border-secondary">
+                    <LinkLive to={path(:login, :index)} class="btn btn-ds-outline" parent_id="layout">{l("Log in")}</LinkLive>
 
-                  {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-                    <LinkLive to={path(:signup)} class="btn btn-ds-outline" parent_id="layout">{l("Create account")}</LinkLive>
-                  {/if}
-                </div>
+                    {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+                      <LinkLive to={path(:signup)} class="btn btn-ds-outline" parent_id="layout">{l("Create account")}</LinkLive>
+                    {/if}
+                  </div>
                   <Bonfire.UI.Common.ImpressumLive />
                 </div>
               </div>

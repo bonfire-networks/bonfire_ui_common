@@ -110,7 +110,9 @@ defmodule Bonfire.UI.Common.SettingsLinksEditorLiveTest do
       view |> element(~s(button[phx-click="add_link"])) |> render_click()
 
       view
-      |> form(@form, %{"links" => %{"0" => %{"name" => "New", "url" => "https://new.example.com"}}})
+      |> form(@form, %{
+        "links" => %{"0" => %{"name" => "New", "url" => "https://new.example.com"}}
+      })
       |> render_submit()
 
       assert names(stored_links()) == ["New"]
