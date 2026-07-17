@@ -259,10 +259,7 @@
       </aside>
     </div>
   </div>
-  <div
-    :if={@no_header != true || current_user(@__context__)}
-    class="dock z-fixed lg:hidden text-base-content"
-  >
+  <div class="dock z-fixed lg:hidden text-base-content">
     <LinkLive to="/" class={"dock-active": @selected_tab == "home"}>
       <#Icon iconify="ph:house-fill" class="size-6" aria-hidden="true" />
       <span class="sr-only">{l("Home")}</span>
@@ -327,17 +324,15 @@
       <span class="sr-only">{l("Messages")}</span>
     </LinkLive>
 
-    <LinkLive :if={!current_user(@__context__)} to={path(:login, :index)} class="dock-active">
-      <#Icon iconify="ph:sign-in-fill" class="size-6" aria-hidden="true" />
-      <span class="sr-only">{l("Login")}</span>
+    <LinkLive :if={!current_user(@__context__)} to={path(:login, :index)} class="btn btn-ds-outline">
+      <span class="">{l("Login")}</span>
     </LinkLive>
 
     <LinkLive
       :if={!current_user(@__context__) && !Bonfire.Me.Accounts.instance_is_invite_only?()}
       to={path(:signup)}
     >
-      <#Icon iconify="ph:user-plus-fill" class="size-6" aria-hidden="true" />
-      <span class="sr-only">{l("Sign up")}</span>
+      <span class="">{l("Sign up")}</span>
     </LinkLive>
   </div>
 </div>
