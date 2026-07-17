@@ -22,9 +22,10 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
 
     config :bonfire_ui_common, :plausible_proxy,
       enabled: System.get_env("PLAUSIBLE_PROXY_ENABLED") in ["true", "1", "yes"],
-      domain: System.get_env("PLAUSIBLE_DOMAIN"),
+      domain: System.get_env("PLAUSIBLE_DOMAIN", hostname),
       local_path: System.get_env("PLAUSIBLE_PROXY_LOCAL_PATH", "/js/plausible_script.js"),
-      script_extension: System.get_env("PLAUSIBLE_PROXY_SCRIPT_EXTENSION", "script.js")
+      base_domain: System.get_env("PLAUSIBLE_PROXY_DOMAIN", "https://plausible.io"),
+      script_path: System.get_env("PLAUSIBLE_PROXY_SCRIPT_PATH", "/js/script.js")
 
     config :bonfire_ui_common,
       session_time_to_remember:

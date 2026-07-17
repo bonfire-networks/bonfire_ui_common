@@ -1,21 +1,21 @@
 defmodule Bonfire.UI.Common.MaybePlausibleProxyPlug do
   @moduledoc """
-  Proxies the Plausible analytics script and `/api/event` endpoint when enabled via the
-  `:bonfire_ui_common, :plausible_proxy` config (see `Bonfire.UI.Common.RuntimeConfig`).
+  Proxies the Plausible analytics script and `/api/event` endpoint when enabled via the `:bonfire_ui_common, :plausible_proxy` config (see `Bonfire.UI.Common.RuntimeConfig`).
 
-  Re-implemented instead of delegating to `PlausibleProxy.Plug`: that library forwards all
-  of Plausible's upstream response headers (including `Content-Length`), which combined with
-  the one Plug/Cowboy sets produces a duplicate `Content-Length`. A strict reverse proxy
-  (e.g. Traefik) rejects that as invalid and returns `502`. Here we forward only safe headers.
+  Re-implemented instead of delegating to `PlausibleProxy.Plug`: that library forwards all of Plausible's upstream response headers (including `Content-Length`), which combined with the one Plug/Cowboy sets produces a duplicate `Content-Length`. A strict reverse proxy (e.g. Traefik) rejects that as invalid and returns `502`. Here we forward only safe headers.
   """
   @behaviour Plug
 
   require Logger
   import Plug.Conn
 
+  # via the Tesla-based `Bonfire.Common.HTTP` (not HTTPoison directly) so tests can use `Tesla.Mock`
+  # for the default suite AND hit the real upstream for the `:live_federation` integration test
+  alias Bonfire.Common.HTTP
+
   @plausible_base "https://plausible.io"
   @default_local_path "/js/plausible_script.js"
-  @default_script_extension "script.js"
+  @default_script_path "/js/script.js"
   @default_remote_ip_headers ["fly-client-ip", "x-real-ip"]
   @forwardable ~w(content-type cache-control x-content-type-options)
 
@@ -35,14 +35,14 @@ defmodule Bonfire.UI.Common.MaybePlausibleProxyPlug do
   end
 
   defp serve_script(conn, config) do
-    ext = config[:script_extension] || @default_script_extension
-    url = "#{@plausible_base}/js/#{ext}"
+    url =
+      "#{config[:base_domain] || @plausible_base}#{config[:script_path] || @default_script_path}"
 
-    case HTTPoison.get(url, build_headers(conn, config)) do
+    case HTTP.get(url, build_headers(conn, config)) do
       {:ok, resp} ->
         conn
         |> forward_safe_headers(resp.headers)
-        |> send_resp(resp.status_code, resp.body)
+        |> send_resp(resp.status, resp.body)
         |> halt()
 
       {:error, error} ->
@@ -59,10 +59,11 @@ defmodule Bonfire.UI.Common.MaybePlausibleProxyPlug do
          {:ok, _payload} <- Jason.decode(body),
          remote_ip = determine_ip_address(conn, config),
          headers = build_headers(conn, [{"Content-Type", "application/json"}], remote_ip),
-         {:ok, resp} <- HTTPoison.post("#{@plausible_base}/api/event", body, headers) do
+         {:ok, resp} <-
+           HTTP.post("#{config[:base_domain] || @plausible_base}/api/event", body, headers) do
       conn
       |> forward_safe_headers(resp.headers)
-      |> send_resp(resp.status_code, resp.body)
+      |> send_resp(resp.status, resp.body)
       |> halt()
     else
       error ->
