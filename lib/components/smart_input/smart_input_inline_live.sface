@@ -123,18 +123,18 @@
       {#else}
         <a
           href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
-            "/login?" <> URI.encode_query(go: @go_url)}
+            "/remote_interaction?" <> URI.encode_query(type: "reply", url: @go_url)}
           target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
           id={"inline_composer_login_#{@composer_dom_id}"}
           class="btn btn-sm btn-outline border-primary rounded-full normal-case text-primary"
-        >{l("Login")}</a>
-        <!-- <a
+        >{l("Sign in")}</a>
+        {!-- <a
           href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
             "/signup?" <> URI.encode_query(go: @go_url)}
           target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
           id={"inline_composer_signup_#{@composer_dom_id}"}
           class="btn btn-sm btn-outline border-primary rounded-full normal-case text-primary"
-        >{l("Register")}</a> -->
+        >{l("Register")}</a> --}
       {/if}
       <div class="flex-1 flex items-center gap-1 pr-2">
         {#if @auth_mode == "remote"}
