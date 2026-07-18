@@ -348,9 +348,24 @@ defmodule Bonfire.UI.Common.PersistentLive do
             boundaries -> Map.put_new(m, :to_boundaries, boundaries)
           end
         end)
-        # Always set context_id from smart_input_opts (defaults to nil)
-        # so it gets cleared when navigating away from a group page
-        |> Map.put(:context_id, Map.get(smart_input_opts, :context_id))
+        # Sync context_id: an explicit value in opts or assigns wins (incl. explicit nil,
+        # eg. from clear_context/reset); with no signal, an open composer keeps its
+        # current destination instead of losing it
+        |> then(fn m ->
+          cond do
+            Map.has_key?(smart_input_opts, :context_id) ->
+              Map.put(m, :context_id, smart_input_opts[:context_id])
+
+            Map.has_key?(m, :context_id) ->
+              m
+
+            e(assigns(socket), :smart_input_opts, :open, nil) == true ->
+              m
+
+            true ->
+              Map.put(m, :context_id, nil)
+          end
+        end)
       end)
 
     maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, enriched)
@@ -448,6 +463,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
   def handle_info({:assign_persistent_self, assigns}, socket) do
     context = Map.merge(assigns(socket)[:__context__] || %{}, assigns[:__context__] || %{})
+    prev_opts = assigns(socket)[:smart_input_opts]
 
     socket =
       socket
@@ -457,12 +473,23 @@ defmodule Bonfire.UI.Common.PersistentLive do
       |> assign_persistent_locale(assigns, context)
 
     # When smart_input_opts changes via page navigation, sync context_id from it
-    # so stale group context gets cleared when navigating away
+    # so stale group context gets cleared when navigating away — unless the composer
+    # is open: an open draft keeps its picked destination (a clone_context boundary
+    # cannot resolve without it, silently mis-scoping the post)
     socket =
       if Map.has_key?(assigns, :smart_input_opts) do
         opts = assigns[:smart_input_opts] || %{}
         opts = if is_list(opts), do: Map.new(opts), else: opts
-        assign(socket, :context_id, Map.get(opts, :context_id))
+
+        case Map.get(opts, :context_id) do
+          nil ->
+            if e(prev_opts, :open, nil) == true,
+              do: socket,
+              else: assign(socket, context_id: nil, context_group: nil)
+
+          context_id ->
+            assign(socket, :context_id, context_id)
+        end
       else
         socket
       end

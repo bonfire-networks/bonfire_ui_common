@@ -1036,7 +1036,8 @@ emoji-picker .favorites {
    subject / body / media / actions) is nested one level under it. The connector
    line is layered on top (added separately). One indent level = avatar + gap.
    ============================================ */
-[data-reply-context] > div:not([data-role="thread_header"]) {
+[data-reply-context]
+  > div:not([data-role="thread_header"]):not([data-role="published_in"]) {
   margin-left: 34px;
 }
 
@@ -1047,7 +1048,8 @@ emoji-picker .favorites {
 [data-reply-context] > article > :not([data-role="subject"]) {
   margin-left: 53px;
 }
-[data-reply-context] > div:not([data-role="subject"]):not([data-role="thread_header"]) {
+[data-reply-context]
+  > div:not([data-role="subject"]):not([data-role="thread_header"]):not([data-role="published_in"]) {
   margin-left: 87px;
 }
 
@@ -1086,6 +1088,12 @@ emoji-picker .favorites {
   background-repeat: repeat-y;
   z-index: 2;
   pointer-events: none;
+}
+/* When a full-width "published in" banner sits between the header and the parent,
+   stop the dots at the header so they don't run through the banner's icon */
+[data-reply-context]:has(> [data-role="published_in"])
+  > [data-role="thread_header"]::before {
+  height: 100%;
 }
 [data-reply-context] > [data-role="subject"]::before {
   content: "";

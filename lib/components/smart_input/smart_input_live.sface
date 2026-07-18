@@ -264,9 +264,9 @@
         <div :if={replying?(assigns)} class="reply_in_composer">
           <div
             id="reply_peek"
-            class="relative !max-h-0 max-h-[150px] overflow-y-auto overscroll-y-contain transition-[max-height] duration-300 ease-out bg-base-200"
+            class="relative !max-h-0 max-h-[150px] overflow-y-auto overscroll-y-contain transition-[max-height] duration-300 ease-out bg-base-100"
           >
-            <div class="p-2">
+            <div class="p-2 border-t-hair border-secondary">
               <StatelessComponent
                 module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
                 activity_component_id={deterministic_dom_id(

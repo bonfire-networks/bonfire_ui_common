@@ -103,13 +103,10 @@
   })();
 </script>
 <script>
-  // Some embeds (the pins embed) want links to escape the iframe. They mark
-  // themselves with `data-embed-links="<target>"` on a content element — the
-  // interactive comments embed does NOT (it needs `_top` for its login/reply
-  // flow), so this stays inert there. Server-rendered LinkLive links already
-  // escape (plain href), but local links inside rich text (mentions, hashtags —
-  // emitted as LiveView live-nav links by Text.prepare_links_for_local_render)
-  // would navigate INSIDE the iframe; rewrite them to plain target links.
+  // Embeds that want navigation links to escape the iframe mark themselves with
+  // `data-embed-links="<target>"` on a content element. Server-rendered LinkLive
+  // links already escape, but raw/rich-text anchors may not. Rewrite real links
+  // without an explicit target; preserve `_top` login links and local fragments.
   (function () {
     var marker = document.querySelector("[data-embed-links]");
     if (!marker) return;
@@ -118,15 +115,22 @@
     function rewriteIn(el) {
       if (!el || el.nodeType !== 1) return;
       var links = [];
-      if (el.matches && el.matches("a[data-phx-link]")) links.push(el);
-      var found = el.querySelectorAll("a[data-phx-link]");
+      if (el.matches && el.matches("a[href]")) links.push(el);
+      var found = el.querySelectorAll("a[href]");
       for (var k = 0; k < found.length; k++) links.push(found[k]);
       for (var i = 0; i < links.length; i++) {
         var a = links[i];
+        var href = a.getAttribute("href") || "";
+        var liveNav = a.hasAttribute("data-phx-link");
+        if (href.charAt(0) === "#" || (a.hasAttribute("target") && !liveNav)) continue;
         a.removeAttribute("data-phx-link");
         a.removeAttribute("data-phx-link-state");
-        a.setAttribute("target", target);
-        if (target === "_blank") a.setAttribute("rel", "noopener");
+        if (!a.hasAttribute("target")) a.setAttribute("target", target);
+        if (a.getAttribute("target") === "_blank") {
+          var rel = (a.getAttribute("rel") || "").split(/\s+/).filter(Boolean);
+          if (rel.indexOf("noopener") === -1) rel.push("noopener");
+          a.setAttribute("rel", rel.join(" "));
+        }
       }
     }
     var root = document.getElementById("iframe-resize-hook") || document.body;
