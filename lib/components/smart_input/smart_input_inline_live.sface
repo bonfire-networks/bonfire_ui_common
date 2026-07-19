@@ -149,7 +149,7 @@
                   Bonfire.Application.name_and_flavour()
             )}
           </span>
-          <div class="flex items-center gap-1 text-sm text-muted">
+          <!-- <div class="flex items-center gap-1 text-sm text-muted">
             <LinkLive
               to="/conduct"
               parent_id={"inline_composer_terms_#{@composer_dom_id}"}
@@ -161,7 +161,7 @@
               parent_id={"inline_composer_privacy_#{@composer_dom_id}"}
               class="link-hover link"
             >{l("Privacy")}</LinkLive>
-          </div>
+          </div> -->
         {/if}
       </div>
     </div>
