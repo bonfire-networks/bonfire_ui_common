@@ -1,0 +1,18 @@
+<div class="form-control w-full">
+  <label class="label">
+    <span class="label-text text-lg font-bold">Custom Rules</span>
+  </label>
+  <textarea
+    :on-blur={@on_update_setting}
+    phx-value-key="custom_rules"
+    value={@settings.custom_rules || ""}
+    placeholder="User-agent: MyCustomBot&#10;Disallow: /admin/&#10;&#10;User-agent: *&#10;Crawl-delay: 10"
+    rows="6"
+    class="textarea textarea-bordered font-mono text-sm"
+  />
+  <label class="label">
+    <span class="label-text-alt opacity-70">
+      Add custom robots.txt rules. Each rule should be on a new line.
+    </span>
+  </label>
+</div>
