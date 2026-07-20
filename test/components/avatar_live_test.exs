@@ -5,6 +5,10 @@ defmodule Bonfire.UI.Common.AvatarLiveTest do
 
   describe "generated_avatar_src/2" do
     test "falls back to generated animal avatars when no static paths are configured" do
+      # the flavour config may configure paths, explicitly clear for this test
+      # (test-env Config.get reads the process tree first)
+      Process.put([:bonfire_ui_common, AvatarLive, :generated_avatar_paths], [])
+
       assert AvatarLive.generated_avatar_src("user-123") == "/gen_avatar/user-123"
     end
 

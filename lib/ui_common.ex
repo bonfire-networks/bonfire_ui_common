@@ -213,16 +213,13 @@ defmodule Bonfire.UI.Common do
     %{} |> Map.put(key, value)
   end
 
+  # context writes now go through SurfContext (behavior-identical merge into the :__context__ assign; Surface's compiler threads the ASSIGN value regardless of writer, so this is safe while Surface components remain), this was the single Surface.Components.Context coupling point in app code
   def assign_generic_global(%Plug.Conn{} = conn, assigns) do
-    Plug.Conn.assign(
-      conn,
-      :__context__,
-      Map.merge(conn.assigns[:__context__] || %{}, Map.new(assigns))
-    )
+    SurfContext.put(conn, assigns)
   end
 
   def assign_generic_global(%{} = socket_or_assigns, assigns) do
-    Surface.Components.Context.put(socket_or_assigns, assigns)
+    SurfContext.put(socket_or_assigns, assigns)
   end
 
   def assign_global(socket, assigns) when is_map(assigns) do

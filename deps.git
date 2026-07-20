@@ -5,6 +5,7 @@ bonfire_common = "https://github.com/bonfire-networks/bonfire_common"
 
 phoenix_gon = "https://github.com/bonfire-networks/phoenix_gon" # used to pass config to JS
 bonfire_fail = "https://github.com/bonfire-networks/bonfire_fail"
+surf_context = "https://github.com/bonfire-networks/surf_context" # context threading for plain LV (local: forks/surf_context)
 # seo = "https://github.com/bonfire-networks/seo"
 # live_select = "https://github.com/maxmarcon/live_select"
 
