@@ -517,6 +517,15 @@ defmodule Bonfire.UI.Common.Web do
           :ok
         end
 
+        # graceful terminations triggered by navigation (not errors)
+        def terminate({:shutdown, {:live_redirect, _}}, _socket) do
+          :ok
+        end
+
+        def terminate({:shutdown, {:live_patch, _}}, _socket) do
+          :ok
+        end
+
         def terminate(reason, _socket) do
           error(reason, "LiveView exiting: terminating #{__MODULE__} #{inspect(self())}")
           :ok
