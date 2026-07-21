@@ -1114,6 +1114,14 @@ defmodule Bonfire.UI.Common do
     )
   end
 
+  @doc "Stashes a `:go` return path from a params map's `\"go\"`/`:go` key (via `set_go_after/2`) when present, else returns the conn unchanged."
+  def maybe_set_go_after(conn, params) when is_map(params) do
+    case params["go"] || Map.get(params, :go) do
+      go when is_binary(go) and go != "" -> set_go_after(conn, go)
+      _ -> conn
+    end
+  end
+
   @doc """
   Generate a query string adding a `go` redirection path to the URI (for redirecting somewhere after auth flows).
   It is recommended to use `set_go_after/2` where possible instead.
