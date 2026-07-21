@@ -446,6 +446,40 @@ defmodule Bonfire.UI.Common.CoreComponents do
   end
 
   @doc """
+  Joins a list of CSS classes with Surface's `:css_class` semantics — vendored from `Surface.TypeHandler.CssClass` so templates converted from Surface (`class={css_class([...])}`) keep identical behavior without the Surface dependency.
+
+  Accepts strings/atoms (split on whitespace), `{class, boolean-ish}` pairs (included unless the value is `nil` or `false`), and nested lists.
+
+  ## Examples
+
+      iex> Bonfire.UI.Common.CoreComponents.css_class(["card", "max-w-sm", "rounded-2xl": true])
+      "card max-w-sm rounded-2xl"
+
+      iex> Bonfire.UI.Common.CoreComponents.css_class(["a b", nil, "c-1": false, "d-2": 1])
+      "a b d-2"
+
+      iex> Bonfire.UI.Common.CoreComponents.css_class([["a", b: true], "c"])
+      "a b c"
+  """
+  def css_class(value) when is_list(value) do
+    value |> collect_css_classes([]) |> Enum.reverse() |> Enum.join(" ")
+  end
+
+  defp collect_css_classes(list, acc) do
+    Enum.reduce(list, acc, fn
+      nested, acc when is_list(nested) -> collect_css_classes(nested, acc)
+      {class, val}, acc when val not in [nil, false] -> add_css_class(acc, class)
+      {_class, _falsy}, acc -> acc
+      class, acc when is_binary(class) or is_atom(class) -> add_css_class(acc, class)
+      _other, acc -> acc
+    end)
+  end
+
+  defp add_css_class(acc, class) do
+    (class |> to_string() |> String.split(" ", trim: true) |> Enum.reverse()) ++ acc
+  end
+
+  @doc """
   Generates a generic error message.
 
   ## Accessibility
