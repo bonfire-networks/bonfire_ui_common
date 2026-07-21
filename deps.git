@@ -12,3 +12,4 @@ surf_context = "https://github.com/bonfire-networks/surf_context" # context thre
 # source_inspector = "https://github.com/tmbb/source_inspector"
 
 # iconify_ex = "https://github.com/bonfire-networks/iconify_ex"
+surf_live_attr = "https://github.com/bonfire-networks/surf_live_attr" # Surface-style declared assign defaults for stateful LV (local: forks/surf_live_attr)

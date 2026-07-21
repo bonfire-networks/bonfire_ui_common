@@ -196,6 +196,9 @@ defmodule Bonfire.UI.Common.Web do
       # TODO: can we use https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#attach_hook/4 instead?
       # NOTE: registered BEFORE __render_before_compile__ so the default render/1
       # (delegating to render_template/1) exists when the render override wraps it
+      # embed the colocated template at BEFORE_COMPILE (like Surface did):
+      # module-body imports/aliases must be in scope for the template
+      @before_compile {Bonfire.UI.Common.Web, :__main_template_embed_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__main_template_render_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__live_mount_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__handle_params_before_compile__}
@@ -204,6 +207,9 @@ defmodule Bonfire.UI.Common.Web do
       @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
       @after_compile {Bonfire.UI.Common.Web, :__render_after_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__live_terminate_before_compile__}
+
+      # AFTER the hooks above (FIFO): its default-assignment wraps outermost
+      use SurfLiveAttr
 
       unquote(live_view_helpers())
 
@@ -215,9 +221,39 @@ defmodule Bonfire.UI.Common.Web do
       Phoenix.Component.embed_templates("#{template_name}.mjml", suffix: "_mjml")
       Phoenix.Component.embed_templates("#{template_name}.text", suffix: "_text")
 
-      unquote(Bonfire.UI.Common.Web.main_template_embed())
-
       # on_mount(PhoenixProfiler)
+    end
+  end
+
+  # plain-stack analogue of `surface_live_view_child`: a nested LiveView (live_render'd inside another view), child mount hook instead of the regular mount + handle_params chain, no mjml/text variants
+  def live_view_child(caller, opts \\ []) do
+    opts =
+      Keyword.put_new(
+        opts,
+        :layout,
+        {Bonfire.UI.Common.LayoutLive, :live}
+      )
+
+    quote do
+      @moduledoc false
+
+      use Phoenix.LiveView, unquote(opts)
+
+      @before_compile {Bonfire.UI.Common.Web, :__main_template_embed_before_compile__}
+      @before_compile {Bonfire.UI.Common.Web, :__main_template_render_before_compile__}
+      @before_compile {Bonfire.UI.Common.Web, :__live_view_child_mount_before_compile__}
+      @before_compile {Bonfire.UI.Common.Web, :__handle_info_before_compile__}
+      @before_compile {Bonfire.UI.Common.Web, :__handle_event_before_compile__}
+      @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
+      @after_compile {Bonfire.UI.Common.Web, :__render_after_compile__}
+      @before_compile {Bonfire.UI.Common.Web, :__live_terminate_before_compile__}
+
+      # AFTER the hooks above (FIFO): its default-assignment wraps outermost
+      use SurfLiveAttr
+
+      unquote(live_view_helpers())
+
+      alias Bonfire.UI.Common.LivePlugs
     end
   end
 
@@ -229,11 +265,18 @@ defmodule Bonfire.UI.Common.Web do
 
       # NOTE: registered BEFORE __render_before_compile__ (FIFO execution) so the
       # default render/1 exists when the render override wraps it
+      # embed the colocated template at BEFORE_COMPILE (like Surface did):
+      # module-body imports/aliases must be in scope for the template
+      @before_compile {Bonfire.UI.Common.Web, :__main_template_embed_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__main_template_render_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__live_update_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__handle_event_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__render_before_compile__}
       @after_compile {Bonfire.UI.Common.Web, :__render_after_compile__}
+
+      # AFTER the hooks above (FIFO): live_attr defaults complete assigns
+      # before Bonfire's update/mount wrappers and the module's own callbacks run
+      use SurfLiveAttr
 
       unquote(live_view_helpers())
 
@@ -242,8 +285,6 @@ defmodule Bonfire.UI.Common.Web do
       # NOTE: qualified so mjml/text keep their own engines (SurfContext's embed_templates is heex-only)
       Phoenix.Component.embed_templates("#{template_name}.mjml", suffix: "_mjml")
       Phoenix.Component.embed_templates("#{template_name}.text", suffix: "_text")
-
-      unquote(Bonfire.UI.Common.Web.main_template_embed())
 
       # unquote(source_inspector())
     end
@@ -255,7 +296,14 @@ defmodule Bonfire.UI.Common.Web do
       # , unquote(Bonfire.UI.Common.Web.take_components_opts(opts))
       use Phoenix.Component
 
+      # embed the colocated template at BEFORE_COMPILE (like Surface did):
+      # module-body imports/aliases must be in scope for the template
+      @before_compile {Bonfire.UI.Common.Web, :__main_template_embed_before_compile__}
       @before_compile {Bonfire.UI.Common.Web, :__main_template_render_before_compile__}
+
+      # AFTER the render hook (FIFO): the internal-defaults render wrapper
+      # must find the render/1 that hook defines for sface-colocated modules
+      use SurfLiveAttr
 
       unquote(live_view_helpers())
 
@@ -265,8 +313,6 @@ defmodule Bonfire.UI.Common.Web do
       Phoenix.Component.embed_templates("#{template_name}.mjml", suffix: "_mjml")
       Phoenix.Component.embed_templates("#{template_name}.text", suffix: "_text")
 
-      unquote(Bonfire.UI.Common.Web.main_template_embed())
-
       # unquote(source_inspector())
     end
   end
@@ -274,14 +320,21 @@ defmodule Bonfire.UI.Common.Web do
   @doc false
   # Embeds the colocated main `.heex` template (the plain-LV convention, replacing Surface's colocated `.sface`) through SurfContext's engine (so its component call sites thread context) and exposes it as `render_template/1`, the analogue of Surface's `render_sface/1`, enabling the derived-assigns-in-render pattern:
   #     def render(assigns), do: assigns |> assign(...) |> render_template()
+  defmacro __main_template_embed_before_compile__(_env) do
+    main_template_embed()
+  end
+
   def main_template_embed do
     # NOTE: recomputes the template name rather than referencing the outer quote's `template_name` var (vars don't unify across separate quotes)
     quote do
       main_template_name = Bonfire.UI.Common.filename_for_module_template(__ENV__.module)
 
       # compile_all returns [{name, path}] for the templates it just compiled
-      # (and defined as functions — so the name atom already exists)
-      case SurfContext.Component.embed_templates("#{main_template_name}.heex") do
+      # (and defined as functions — so the name atom already exists).
+      # NOTE: the pattern must be EXTENSION-LESS — Phoenix.Template.find_all
+      # appends ".{engine extensions}" itself ("name.heex" would look for
+      # name.heex.heex and silently match nothing)
+      case SurfContext.Component.embed_templates(main_template_name) do
         [{template_fun, _path} | _] ->
           @__main_template_fun__ String.to_existing_atom(template_fun)
           def render_template(assigns), do: apply(__MODULE__, @__main_template_fun__, [assigns])
@@ -424,7 +477,12 @@ defmodule Bonfire.UI.Common.Web do
     quote do
       unquote(live_view_basic_helpers())
 
-      use PhoenixHTMLHelpers
+      # NOT `use PhoenixHTMLHelpers`: Form's helpers are unused in the
+      # codebase (corpus-checked) and Form.label/1 collides with
+      # CoreComponents.label/1 (converted templates call <.label>)
+      import PhoenixHTMLHelpers.Link
+      import PhoenixHTMLHelpers.Tag
+      import PhoenixHTMLHelpers.Format
 
       # Import component helpers
       import Phoenix.Component
