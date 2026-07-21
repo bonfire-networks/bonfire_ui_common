@@ -450,6 +450,10 @@ defmodule Bonfire.UI.Common.Web do
       # Use all HTML functionality (forms, tags, etc)
       import Phoenix.HTML
       import Phoenix.HTML.Form
+      # the classic form-builder helpers (select/4, label/4, text_input/3, …)
+      # still used by not-yet-ejected Surface/HEEx templates during the
+      # migration; except label/1, which is CoreComponents' <.label> component
+      import PhoenixHTMLHelpers.Form, except: [label: 1]
       #  for csrf
       import PhoenixHTMLHelpers.Tag
       # use PhoenixHTMLHelpers
@@ -473,19 +477,39 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
+  # app-level component aliases shared by the Surface path (surface_helpers)
+  # and the plain path (live_view_helpers) — a single source so ejected
+  # modules keep the same ambient names as their Surface originals
+  defp component_aliases do
+    quote do
+      alias Bonfire.UI.Common.LazyImage
+      alias Bonfire.UI.Common.LinkLive
+      alias Bonfire.UI.Common.LinkPatchLive
+      alias Bonfire.UI.Common.DropdownLive, as: Dropdown
+      alias Bonfire.UI.Common.C
+
+      alias Iconify.Icon
+      # icon_name/1 etc. are macros
+      require Iconify.Icon
+    end
+  end
+
   def live_view_helpers do
     quote do
       unquote(live_view_basic_helpers())
 
-      # NOT `use PhoenixHTMLHelpers`: Form's helpers are unused in the
-      # codebase (corpus-checked) and Form.label/1 collides with
-      # CoreComponents.label/1 (converted templates call <.label>)
+      # Form helpers themselves come from basic_view_helpers (imported there so the Surface path gets them too, with label/1 excluded for <.label>)
       import PhoenixHTMLHelpers.Link
       import PhoenixHTMLHelpers.Tag
       import PhoenixHTMLHelpers.Format
 
       # Import component helpers
       import Phoenix.Component
+
+      # same app-level aliases the Surface path provides, so EJECTED modules
+      # (now on this plain path) that reference them in compile-time body code
+      # — e.g. `attr default: Icon.icon_name(...)` — still resolve
+      unquote(component_aliases())
 
       # context threading for plain-LV templates (~H + embed_templates);
       # Surface components are unaffected (they use surface_helpers →
@@ -717,12 +741,28 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
+  # Callee shim for the migration: Surface injects a component's `prop` defaults at the CALL SITE (in the caller's `~F`). A CONVERTED (plain HEEx) caller that invokes a still-Surface `:stateless_component` via `<Mod.render …>` skips that injection, so an omitted defaulted prop would hit `@prop` → KeyError. Fill the component's own declared defaults here so it's self-sufficient regardless of caller. `put_new` makes it a no-op when a Surface caller already injected them.
+  def apply_surface_prop_defaults(module, assigns) do
+    if function_exported?(module, :__props__, 0) do
+      Enum.reduce(module.__props__(), assigns, fn
+        %{name: name, opts: opts}, acc ->
+          if Keyword.has_key?(opts, :default),
+            do: Map.put_new(acc, name, opts[:default]),
+            else: acc
+      end)
+    else
+      assigns
+    end
+  end
+
   defp render_override(env) do
     quote do
       defoverridable render: 1
 
       def render(assigns) do
         import Bonfire.UI.Common.Timing
+
+        assigns = Bonfire.UI.Common.Web.apply_surface_prop_defaults(unquote(env.module), assigns)
 
         # Track component ancestry as a lightweight hash directly in __context__.
         # Bypasses Surface's Context.put overhead (no iteration/Map.merge).
@@ -985,14 +1025,7 @@ defmodule Bonfire.UI.Common.Web do
         alias Surface.Components.Form.FileInput
         alias Surface.Components.Form.TextArea
 
-        alias Bonfire.UI.Common.LazyImage
-        alias Bonfire.UI.Common.LinkLive
-        alias Bonfire.UI.Common.LinkPatchLive
-        alias Bonfire.UI.Common.DropdownLive, as: Dropdown
-        alias Bonfire.UI.Common.C
-
-        alias Iconify.Icon
-        require Iconify.Icon
+        unquote(component_aliases())
 
         Module.register_attribute(__MODULE__, :prop, persist: true)
         Module.register_attribute(__MODULE__, :data, persist: true)

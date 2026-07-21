@@ -61,6 +61,21 @@ defmodule Bonfire.UI.Common do
 
   def maybe_apply_or_ret(assigns, _, _), do: assigns
 
+  @doc """
+  Renders a function component chosen at runtime — the plain-LiveView replacement for Surface's `<StatelessComponent module={...}>` (see the docs' [dynamic component rendering](https://hexdocs.pm/phoenix_live_view/Phoenix.Component.html#module-dynamic-component-rendering)pattern). `module` is applied as a function component (its `render/1`, or
+  `@function`) with the remaining assigns and slots forwarded. Pair it with `maybe_component/2` at the call site, which resolves a disabled module to `DisabledModuleLive` rather than nil, so `module` is always renderable:
+
+      <.dynamic_component module={maybe_component(Some.Live, @__context__)} foo={@bar} />
+
+  A stateful `<StatefulComponent>` maps instead to Phoenix's own
+  `<.live_component module={...}>`, which takes a dynamic module natively.
+  """
+  def dynamic_component(%{module: mod} = assigns) do
+    {mod, assigns} = Map.pop(assigns, :module)
+    {fun, assigns} = Map.pop(assigns, :function, :render)
+    maybe_apply_or_ret(assigns, mod, fun)
+  end
+
   defmacro render_sface_or_native(opts \\ []) do
     if extension_enabled?(:live_view_native) and Version.match?(System.version(), ">= 1.15.0") do
       quote do

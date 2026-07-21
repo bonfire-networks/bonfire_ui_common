@@ -323,6 +323,30 @@ defmodule Bonfire.UI.Common.CoreComponents do
     """
   end
 
+  # Wraps a control in the labelled `<.label>` container ONLY when a `label` is
+  # given. Without a label, the control renders bare (no empty shadow `<label>`)
+  # — so an external `<.label for={@id}>` (e.g. from an ejected Surface Field)
+  # is the sole label and associates via `for`.
+  attr :label, :any, default: nil
+  attr :label_class, :any, default: nil
+  attr :for, :any, default: nil
+  slot :inner_block, required: true
+
+  defp maybe_label(assigns) do
+    ~H"""
+    <%= if @label do %>
+      <.label for={@for} class="form-control w-full max-w-xs">
+        <div class="label">
+          <span class={["label-text", @label_class]}>{@label}</span>
+        </div>
+        {render_slot(@inner_block)}
+      </.label>
+    <% else %>
+      {render_slot(@inner_block)}
+    <% end %>
+    """
+  end
+
   def input(%{type: "select"} = assigns) do
     # Generate error ID for aria-describedby
     error_id =
@@ -334,10 +358,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
 
     ~H"""
     <div>
-      <.label for={@id} class="form-control w-full max-w-xs">
-        <div class="label">
-          <span class={["label-text", @label_class]}>{@label}</span>
-        </div>
+      <.maybe_label label={@label} label_class={@label_class} for={@id}>
         <select
           id={@id}
           name={@name}
@@ -355,7 +376,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
           <option :if={@prompt} value="">{@prompt}</option>
           {Phoenix.HTML.Form.options_for_select(@options, @value)}
         </select>
-      </.label>
+      </.maybe_label>
       <.error_msg :for={msg <- @errors || []} id={@error_id}>{msg}</.error_msg>
     </div>
     """
@@ -372,10 +393,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
 
     ~H"""
     <div>
-      <.label for={@id} class="form-control w-full max-w-xs">
-        <div class="label">
-          <span class={["label-text", @label_class]}>{@label}</span>
-        </div>
+      <.maybe_label label={@label} label_class={@label_class} for={@id}>
         <textarea
           id={@id}
           name={@name}
@@ -388,7 +406,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
           ]}
           {@rest}
         >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
-      </.label>
+      </.maybe_label>
       <.error_msg :for={msg <- @errors || []} id={@error_id}>{msg}</.error_msg>
     </div>
     """
@@ -406,10 +424,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
 
     ~H"""
     <div>
-      <.label for={@id} class="form-control w-full max-w-xs">
-        <div class="label">
-          <span class={["label-text", @label_class]}>{@label}</span>
-        </div>
+      <.maybe_label label={@label} label_class={@label_class} for={@id}>
         <input
           type={@type}
           name={@name}
@@ -424,7 +439,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
           ]}
           {@rest}
         />
-      </.label>
+      </.maybe_label>
       <.error_msg :for={msg <- @errors || []} id={@error_id}>{msg}</.error_msg>
     </div>
     """
