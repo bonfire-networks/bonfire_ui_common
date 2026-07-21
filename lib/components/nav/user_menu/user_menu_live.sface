@@ -30,7 +30,7 @@
         )}
       </div>
     </div>
-    <div class="btn btn-sm btn-outline border-primary btn-circle">
+    <div class="btn btn-sm btn-ghost btn-circle">
       <#Icon iconify="ph:gear-six-fill" class="w-5 h-5 shrink-0 text-primary" aria-hidden="true" />
     </div>
   </:trigger>
