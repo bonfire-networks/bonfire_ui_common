@@ -266,15 +266,25 @@ end
 
 ## Testing Components
 
-### Unit Testing Surface Components
+### Unit Testing UI Components
 
-Test Surface components in isolation:
+Test components in isolation:
 
 ```elixir
 use Bonfire.UI.Common.Testing.ConnCase
 
 test "renders component", %{conn: conn} do
-  html = render_surface(Bonfire.UI.MyComponent, %{
+  html = render_stateless(Bonfire.UI.MyComponent, %{
+    title: "Test Title",
+    __context__: %{current_user: fake_user!()}
+  })
+
+  assert html =~ "Test Title"
+end
+
+test "renders live component", %{conn: conn} do
+  html = render_stateful(Bonfire.UI.MyComponent, %{
+    id: 1,
     title: "Test Title",
     __context__: %{current_user: fake_user!()}
   })

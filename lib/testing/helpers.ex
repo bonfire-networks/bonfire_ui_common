@@ -75,32 +75,49 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   end
 
   @doc """
-  Render stateless Surface or LiveView components
+  Render a STATELESS component (Surface OR converted plain function component) by module.
+  Checks `component_type`: a still-Surface module renders via `render_surface`, a converted
+  plain function component via `render_component(&mod.render/1, …)`.
   """
   def render_stateless(component, assigns \\ [], context \\ []) do
-    assigns = assigns |> Enum.into(%{__context__: context, component: component})
+    case Bonfire.UI.Common.component_type(component) do
+      type when type in [Surface.Component, Surface.LiveComponent] ->
+        assigns = assigns |> Enum.into(%{__context__: context, component: component})
 
-    render_surface do
-      ~F"""
-      <StatelessComponent module={@component} function={:render} {...@assigns} />
-      """
+        render_surface do
+          ~F"""
+          <StatelessComponent module={@component} function={:render} {...@assigns} />
+          """
+        end
+
+      _ ->
+        render_component(&component.render/1, Map.merge(%{__context__: context}, Map.new(assigns)))
     end
   end
 
   @doc """
-  Render stateful Surface or LiveView components
+  Render a STATEFUL component (Surface OR converted plain live component) by module.
+  Checks `component_type`: a still-Surface module renders via `render_surface`, a converted
+  plain live component via `render_component(mod, …)` (with an `id`).
   """
   def render_stateful(component, assigns \\ %{}, context \\ []) do
-    assigns = assigns |> Enum.into(%{__context__: context})
+    case Bonfire.UI.Common.component_type(component) do
+      Surface.LiveComponent ->
+        assigns = assigns |> Enum.into(%{__context__: context})
 
-    render_surface do
-      ~F"""
-      <StatefulComponent
-        module={component}
-        id={e(assigns, :id, nil) || Needle.UID.generate()}
-        {...assigns}
-      />
-      """
+        render_surface do
+          ~F"""
+          <StatefulComponent
+            module={component}
+            id={e(assigns, :id, nil) || Needle.UID.generate()}
+            {...assigns}
+          />
+          """
+        end
+
+      _ ->
+        assigns = Map.merge(%{__context__: context}, Map.new(assigns))
+        render_component(component, Map.put_new_lazy(assigns, :id, &Needle.UID.generate/0))
     end
   end
 
