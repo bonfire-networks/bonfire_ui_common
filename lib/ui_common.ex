@@ -96,38 +96,38 @@ defmodule Bonfire.UI.Common do
 
   def component_type(_), do: Phoenix.Component
 
-  defmacro render_sface_or_native(opts \\ []) do
-    if extension_enabled?(:live_view_native) and Version.match?(System.version(), ">= 1.15.0") do
-      quote do
-        def render(%{format: :html} = assigns) do
-          assigns
-          |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
-          |> render_sface()
-        end
+  # defmacro render_sface_or_native(opts \\ []) do
+  #   if extension_enabled?(:live_view_native) and Version.match?(System.version(), ">= 1.15.0") do
+  #     quote do
+  #       def render(%{format: :html} = assigns) do
+  #         assigns
+  #         |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
+  #         |> render_sface()
+  #       end
 
-        # def render(%{format: _} = assigns) do
-        #   assigns
-        #   |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
-        #   |> render_native() # FIXME
-        # end
+  #       # def render(%{format: _} = assigns) do
+  #       #   assigns
+  #       #   |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
+  #       #   |> render_native() # FIXME
+  #       # end
 
-        def render(assigns) do
-          assigns
-          |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
-          |> render_sface()
-        end
-      end
-    else
-      # fallback to only HTML for backwards compat with older Elixir versions
-      quote do
-        def render(assigns) do
-          assigns
-          |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
-          |> render_sface()
-        end
-      end
-    end
-  end
+  #       def render(assigns) do
+  #         assigns
+  #         |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
+  #         |> render_sface()
+  #       end
+  #     end
+  #   else
+  #     # fallback to only HTML for backwards compat with older Elixir versions
+  #     quote do
+  #       def render(assigns) do
+  #         assigns
+  #         |> maybe_apply_or_ret(__MODULE__, unquote(opts)[:prepare_assigns_fn])
+  #         |> render_sface()
+  #       end
+  #     end
+  #   end
+  # end
 
   @doc """
   Renders a HEEx template inline in a controller.
