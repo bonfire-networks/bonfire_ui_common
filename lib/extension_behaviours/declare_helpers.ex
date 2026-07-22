@@ -193,4 +193,11 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
       end
     end
   end
+
+  # Back-compat forwarder: the declare macros used to generate an UNqualified
+  # `component_type(__MODULE__)` (resolving here via import); modules compiled with
+  # that older expansion still call `DeclareHelpers.component_type/1` at runtime and
+  # aren't reliably rebuilt by incremental compiles. Delegate to keep the logic's
+  # single home in `Bonfire.UI.Common` while those callers resolve.
+  def component_type(module), do: Bonfire.UI.Common.component_type(module)
 end
