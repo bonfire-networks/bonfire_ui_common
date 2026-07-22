@@ -718,7 +718,10 @@ defmodule Bonfire.UI.Common.Web do
 
           time_section_accumulate :"update_#{unquote(env.module)}" do
             undead_update(socket, fn ->
-              super(assigns, socket)
+              super(
+                Bonfire.UI.Common.Web.apply_surface_prop_defaults(__MODULE__, assigns, socket),
+                socket
+              )
             end)
           end
         end
@@ -744,14 +747,62 @@ defmodule Bonfire.UI.Common.Web do
   # Callee shim for the migration: Surface injects a component's `prop` defaults at the CALL SITE (in the caller's `~F`). A CONVERTED (plain HEEx) caller that invokes a still-Surface `:stateless_component` via `<Mod.render …>` skips that injection, so an omitted defaulted prop would hit `@prop` → KeyError. Fill the component's own declared defaults here so it's self-sufficient regardless of caller. `put_new` makes it a no-op when a Surface caller already injected them.
   def apply_surface_prop_defaults(module, assigns) do
     if function_exported?(module, :__props__, 0) do
-      Enum.reduce(module.__props__(), assigns, fn
-        %{name: name, opts: opts}, acc ->
-          if Keyword.has_key?(opts, :default),
-            do: Map.put_new(acc, name, opts[:default]),
-            else: acc
+      # Surface keeps EVERY declared prop in assigns (nil when neither passed nor defaulted), so `@prop` never KeyErrors. Phoenix doesn't, so a plain `.render` from a converted caller must fill every prop with its default, nil included (`opts[:default]` is nil when there's no `default:`).
+      Enum.reduce(module.__props__(), assigns, fn %{name: name, opts: opts}, acc ->
+        Map.put_new(acc, name, opts[:default])
       end)
     else
       assigns
+    end
+  end
+
+  # Stateful analogue of the callee shim, applied in the `update/2` wrapper (see
+  # `live_update_before_compile/1`). For a Surface `LiveComponent`, prop defaults
+  # are injected at the CALL SITE too — its `mount` assigns only DATA defaults and
+  # its `update` wrapper only threads private/context assigns (see
+  # deps/surface/lib/surface/live_component.ex). A CONVERTED plain-HEEx caller
+  # (`<.live_component module={M} id={..}>`) skips that, so a component whose
+  # custom `update/2` ROUTES on a defaulted prop (e.g. FeedLive on `feed`/`loading`)
+  # hits a clause that never re-assigns the incoming assigns — dropping even the
+  # framework `id` — and its template then hits `@id` → KeyError.
+  #
+  # Fill a prop's default only when it's absent from BOTH the incoming assigns AND
+  # the socket: Surface injects defaults once (at the initial render call site) and
+  # they persist, so re-filling on every `update` would clobber `send_update`/
+  # `send_self` PARTIAL assigns (which rely on props being absent to match later
+  # `update` clauses). Checking the socket reproduces the "inject once, then persist"
+  # semantics precisely.
+  def apply_surface_prop_defaults(module, assigns, %{assigns: existing}) do
+    if function_exported?(module, :__props__, 0) do
+      Enum.reduce(module.__props__(), assigns, fn %{name: name, opts: opts}, acc ->
+        if Map.has_key?(acc, name) or Map.has_key?(existing, name) do
+          acc
+        else
+          Map.put(acc, name, opts[:default])
+        end
+      end)
+    else
+      assigns
+    end
+  end
+
+  def apply_surface_prop_defaults(_module, assigns, _socket), do: assigns
+
+  # Wraps a Surface component's render/1 with `apply_surface_prop_defaults`.
+  # MUST be registered as its OWN `@before_compile` AFTER `use Surface.*` in the
+  # component macros: @before_compile hooks run FIFO, and Surface GENERATES the
+  # render/1 of a colocated `.sface` component at its own before_compile — so a
+  # hook registered before `use Surface.*` (like __render_before_compile__)
+  # sees no render/1 yet and never wraps colocated components (the majority).
+  defmacro __surface_prop_defaults_before_compile__(env) do
+    if Module.defines?(env.module, {:render, 1}) do
+      quote do
+        defoverridable render: 1
+
+        def render(assigns) do
+          super(Bonfire.UI.Common.Web.apply_surface_prop_defaults(__MODULE__, assigns))
+        end
+      end
     end
   end
 
@@ -761,8 +812,6 @@ defmodule Bonfire.UI.Common.Web do
 
       def render(assigns) do
         import Bonfire.UI.Common.Timing
-
-        assigns = Bonfire.UI.Common.Web.apply_surface_prop_defaults(unquote(env.module), assigns)
 
         # Track component ancestry as a lightweight hash directly in __context__.
         # Bypasses Surface's Context.put overhead (no iteration/Map.merge).
@@ -936,6 +985,12 @@ defmodule Bonfire.UI.Common.Web do
         # , unquote(opts) #, unquote(Bonfire.UI.Common.Web.take_components_opts(opts))
         # use Bonfire.UI.Common.ComponentRenderHandler
         use Surface.Component
+
+        # AFTER `use Surface.Component` (FIFO) so it wraps the render/1 Surface
+        # generates from the colocated `.sface` — makes this component fill its
+        # own prop defaults, so converted plain-HEEx callers can `<Mod.render>`
+        # it without Surface's call-site injection
+        @before_compile {Bonfire.UI.Common.Web, :__surface_prop_defaults_before_compile__}
 
         # prop current_account, :any, from_context: :current_account
         # prop current_user, :any, from_context: :current_user

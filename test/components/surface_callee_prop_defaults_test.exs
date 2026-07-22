@@ -18,15 +18,23 @@ defmodule Bonfire.UI.Common.SurfaceCalleePropDefaultsTest do
     use Bonfire.UI.Common.Web, :stateless_component
 
     prop label, :string, default: "DEFAULT_LABEL"
+    # a prop with NO default — Surface still keeps it in assigns as nil, so
+    # `@extra` never KeyErrors; the shim must reproduce that
+    prop extra, :any
 
     def render(assigns) do
-      ~F"<span>label:{@label}</span>"
+      ~F"<span>label:{@label} extra:{inspect(@extra)}</span>"
     end
   end
 
   test "a Surface stateless component applies its own prop defaults when rendered via plain .render/1 (default omitted)" do
     html = render_component(&Callee.render/1, %{})
     assert html =~ "label:DEFAULT_LABEL"
+  end
+
+  test "a prop with NO default resolves to nil (not KeyError) via plain .render/1" do
+    html = render_component(&Callee.render/1, %{})
+    assert html =~ "extra:nil"
   end
 
   test "an explicitly-passed prop still wins over the default" do

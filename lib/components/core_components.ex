@@ -22,6 +22,26 @@ defmodule Bonfire.UI.Common.CoreComponents do
   alias Phoenix.LiveView.JS
 
   @doc """
+  Renders a plain (converted) LIVE component chosen at runtime, the stateful analogue of `Bonfire.UI.Common.dynamic_component/1`.
+
+  `Bonfire.UI.Common.dynamic_component/1` renders a stateless module by `apply`ing
+  its `render/1`, but a stateful module needs the `<.live_component>` builtin, which
+  a Surface `~F` template cannot emit directly. So a still-Surface caller (e.g.
+  `WidgetLive`) invokes this as a remote function component instead. `module` + `id`
+  are required (LiveView needs `id` for stateful components); all other assigns pass
+  through to the live component.
+  """
+  # No `attr` declarations: this is a pass-through, so every caller assign
+  # (`__context__`, `page`, …) is forwarded to the live component — declaring only
+  # some would flag all the others as "undeclared attribute".
+  def dynamic_live_component(assigns) do
+    assigns =
+      assign(assigns, :rest, Map.drop(assigns, [:__changed__, :module, :id, :inner_block, :rest]))
+
+    ~H"<.live_component module={@module} id={@id} {@rest} />"
+  end
+
+  @doc """
   Renders a modal.
 
   ## Examples

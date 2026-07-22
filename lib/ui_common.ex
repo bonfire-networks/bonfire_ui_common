@@ -76,6 +76,26 @@ defmodule Bonfire.UI.Common do
     maybe_apply_or_ret(assigns, mod, fun)
   end
 
+  @doc """
+  Classifies a component module:
+
+    * still-Surface module → its own `component_type/0`
+      (`Surface.Component` or `Surface.LiveComponent`)
+    * else, LiveView's `__live__/0` present → `Phoenix.LiveComponent`
+    * else → `Phoenix.Component`
+
+  Order matters: Surface live components ALSO export `__live__/0`, so check Surface's `component_type/0` first.
+  """
+  def component_type(module) when is_atom(module) and not is_nil(module) do
+    cond do
+      function_exported?(module, :component_type, 0) -> module.component_type()
+      function_exported?(module, :__live__, 0) -> Phoenix.LiveComponent
+      true -> Phoenix.Component
+    end
+  end
+
+  def component_type(_), do: Phoenix.Component
+
   defmacro render_sface_or_native(opts \\ []) do
     if extension_enabled?(:live_view_native) and Version.match?(System.version(), ">= 1.15.0") do
       quote do
@@ -1760,25 +1780,64 @@ defmodule Bonfire.UI.Common do
 
   def assigns(_), do: %{}
 
-  def component_props(module) do
-    component_attr(module, :prop)
+  @doc """
+  A component's declared props/attrs (`[%{name:, opts:}]`, `opts` carrying `:default`),
+  regardless of HOW it declares them — unioning every source, each read its native way:
+
+    * still-Surface `prop` → `Surface.API.get_props/1`
+    * plain Phoenix `attr` → `__components__/0` (LiveView-native)
+    * `surf_live_attr` `live_attr` (the cases `attr` can't express: live-component / internal defaults) → `SurfLiveAttr.live_attrs/1`
+
+  `live_attr` wins on a name clash. `fun` is the component function whose attrs to read
+  (defaults to `:render`). A module uses one declaration style, so sources don't overlap.
+  """
+  def component_attrs(module, fun \\ :render) do
+    from_surface =
+      case component_type(module) do
+        t when t in [Surface.Component, Surface.LiveComponent] ->
+          # Surface `prop` AND `data` (converted components fold their data-style state into `live_attr internal:` / `attr`, covered by the branches below)
+          (Surface.API.get_props(module) |> Enum.map(&Map.drop(&1, [:opts_ast, :func, :line]))) ++
+            component_data(module)
+
+        _ ->
+          []
+      end
+
+    from_attr =
+      if function_exported?(module, :__components__, 0) do
+        module.__components__()
+        |> Map.get(fun, %{})
+        |> Map.get(:attrs, [])
+        |> Enum.map(&Map.take(&1, [:name, :type, :opts]))
+      else
+        []
+      end
+
+    from_live_attr =
+      (SurfLiveAttr.live_attrs(module) || []) |> Enum.map(&Map.take(&1, [:name, :type, :opts]))
+
+    Enum.uniq_by(from_surface ++ from_live_attr ++ from_attr, & &1.name)
   end
 
-  def component_data(module) do
-    component_attr(module, :data)
-  end
-
-  defp component_attr(module, key) do
-    apply(Bonfire.UI.Social.FeedLive, :__info__, [:attributes])
-    |> Keyword.get_values(key)
-    |> Enum.flat_map(& &1)
-  end
-
-  def module_default_assigns(module) do
-    for %{name: name, opts: opts} <- component_props(module) ++ component_data(module),
+  def component_default_assigns(module) do
+    for %{name: name, opts: opts} <- component_attrs(module),
         Keyword.has_key?(opts, :default) do
       {name, opts[:default]}
     end
+  end
+
+  def component_data(module) do
+    module_attribute_values(module, :data)
+  end
+
+  # def component_props(module) do
+  #   module_attribute_values(module, :prop)
+  # end
+
+  defp module_attribute_values(module, key) do
+    apply(module, :__info__, [:attributes])
+    |> Keyword.get_values(key)
+    |> Enum.flat_map(& &1)
   end
 
   @doc """

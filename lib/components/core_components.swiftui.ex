@@ -37,7 +37,7 @@ if Code.ensure_loaded?(LiveViewNative.Component) and
         with true <- module_enabled?(assigns[:module]),
              {:ok, assigns} <-
                assigns
-               |> assign(module_default_assigns(assigns[:module]))
+               |> assign(component_default_assigns(assigns[:module]))
                # again so we override defaults
                |> assign(assigns)
                |> assign_new(:myself, fn -> nil end)

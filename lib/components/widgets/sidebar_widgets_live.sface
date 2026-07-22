@@ -5,7 +5,9 @@
       %{
         module: component,
         data: component_assigns,
-        type: component_assigns[:type] || Surface.Component
+        # derive the dispatch kind from the module (Surface vs converted plain,
+        # stateless vs live) so WidgetLive's `{#case @widget[:type]}` renders it right
+        type: component_assigns[:type] || Bonfire.UI.Common.component_type(component)
       }
 
     %{} = widget ->

@@ -100,65 +100,106 @@
             skip_badges={@skip_badges}
             order={@order}
           />
-        {#match Surface.Component}
-          {!-- Only show wrapper title/description for custom components (declare_settings_component)
-               that don't render their own labels. Built-in types (declare_settings) have @widget[:data]
-               populated and render their own name/description internally. --}
+        {#match component_type}
+          {!-- Shared wrapper markup for ALL component widgets (Surface + converted, stateless + live),
+               written ONCE. Only show the title/description for custom components (declare_settings_component)
+               that don't render their own labels; built-in types (declare_settings) populate @widget[:data]
+               and render their own name/description internally. --}
           <div
-            :if={!@widget[:data] && (@with_title or @with_description)}
+            :if={!@widget[:data] && (@with_title || @with_description)}
             class="flex flex-col gap-0.5 mb-3"
           >
             <div :if={@with_title} class="text-sm font-medium text-base-content">{@widget[:text] || @widget[:name]}</div>
             <div :if={@with_description && @widget[:description]} class="text-sm text-muted">{@widget[:description]}</div>
           </div>
-          {#if @widget[:form_change] || @widget[:form_submit]}
-            <form phx-change={@widget[:form_change]} phx-submit={@widget[:form_submit]}>
-              <StatelessComponent
+          {!-- Dispatch by KIND (from each module's own component_type/0, so converting a widget flips it
+               automatically): still-Surface modules via Surface's dynamic <StatelessComponent>/<StatefulComponent>;
+               converted plain modules via dynamic_component / CoreComponents.dynamic_live_component (thread
+               __context__ explicitly, since Surface's dynamic components auto-thread it but plain dispatch doesn't). --}
+          {#case component_type}
+            {#match Surface.Component}
+              {#if @widget[:form_change] || @widget[:form_submit]}
+                <form phx-change={@widget[:form_change]} phx-submit={@widget[:form_submit]}>
+                  <StatelessComponent
+                    module={@widget[:module]}
+                    showing_within={@showing_within}
+                    page={@page}
+                    selected_tab={@selected_tab}
+                    name={@widget[:text] || @widget[:name]}
+                    {...@data}
+                  />
+                </form>
+              {#else}
+                <StatelessComponent
+                  module={@widget[:module]}
+                  showing_within={@showing_within}
+                  page={@page}
+                  selected_tab={@selected_tab}
+                  name={@widget[:text] || @widget[:name]}
+                  {...@data}
+                />
+              {/if}
+            {#match Phoenix.Component}
+              {#if @widget[:form_change] || @widget[:form_submit]}
+                <form phx-change={@widget[:form_change]} phx-submit={@widget[:form_submit]}>
+                  <.dynamic_component
+                    module={@widget[:module]}
+                    __context__={@__context__}
+                    showing_within={@showing_within}
+                    page={@page}
+                    selected_tab={@selected_tab}
+                    name={@widget[:text] || @widget[:name]}
+                    {...@data}
+                  />
+                </form>
+              {#else}
+                <.dynamic_component
+                  module={@widget[:module]}
+                  __context__={@__context__}
+                  showing_within={@showing_within}
+                  page={@page}
+                  selected_tab={@selected_tab}
+                  name={@widget[:text] || @widget[:name]}
+                  {...@data}
+                />
+              {/if}
+            {#match Surface.LiveComponent}
+              <StatefulComponent
                 module={@widget[:module]}
-                showing_within={@showing_within}
+                id={deterministic_dom_id(
+                  "stateful_widget",
+                  to_string(@widget[:page] || @widget[:module]),
+                  to_string(@order),
+                  @parent_id
+                )}
                 page={@page}
                 selected_tab={@selected_tab}
-                name={@widget[:text] || @widget[:name]}
+                showing_within={@showing_within}
+                compact={@compact}
                 {...@data}
               />
-            </form>
-          {#else}
-            <StatelessComponent
-              module={@widget[:module]}
-              showing_within={@showing_within}
-              page={@page}
-              selected_tab={@selected_tab}
-              name={@widget[:text] || @widget[:name]}
-              {...@data}
-            />
-          {/if}
-        {#match Surface.LiveComponent}
-          <div
-            :if={!@widget[:data] && (@with_title or @with_description)}
-            class="flex flex-col gap-0.5 mb-3"
-          >
-            <div :if={@with_title} class="text-sm font-medium text-base-content">{@widget[:text] || @widget[:name]}</div>
-            <div :if={@with_description && @widget[:description]} class="text-sm text-muted">{@widget[:description]}</div>
-          </div>
-          <StatefulComponent
-            module={@widget[:module]}
-            id={deterministic_dom_id(
-              "stateful_widget",
-              to_string(@widget[:page] || @widget[:module]),
-              to_string(@order),
-              @parent_id
-            )}
-            page={@page}
-            selected_tab={@selected_tab}
-            showing_within={@showing_within}
-            compact={@compact}
-            {...@data}
-          />
-        {#match nil}
-        {#match :disabled}
-          {raw("<!-- skipped disabled widget: #{@widget[:name]} -->")}
-        {#match other}
-          {error(other) && "<!-- invalid widget -->"}
+            {#match Phoenix.LiveComponent}
+              <.dynamic_live_component
+                module={@widget[:module]}
+                id={deterministic_dom_id(
+                  "stateful_widget",
+                  to_string(@widget[:page] || @widget[:module]),
+                  to_string(@order),
+                  @parent_id
+                )}
+                __context__={@__context__}
+                page={@page}
+                selected_tab={@selected_tab}
+                showing_within={@showing_within}
+                compact={@compact}
+                {...@data}
+              />
+            {#match nil}
+            {#match :disabled}
+              {raw("<!-- skipped disabled widget: #{@widget[:name]} -->")}
+            {#match other}
+              {error(other) && "<!-- invalid widget -->"}
+          {/case}
       {/case}
     {/if}
   </li>

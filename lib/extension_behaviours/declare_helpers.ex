@@ -12,7 +12,7 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
           name: unquote(name),
           module: __MODULE__,
           app: app(__MODULE__),
-          type: component_type(__MODULE__)
+          type: Bonfire.UI.Common.component_type(__MODULE__)
           # data: @props_specs
         })
       end
@@ -29,7 +29,7 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
           name: unquote(name),
           module: __MODULE__,
           app: app(__MODULE__),
-          type: component_type(__MODULE__)
+          type: Bonfire.UI.Common.component_type(__MODULE__)
           # data: @props_specs
         })
       end
@@ -120,7 +120,7 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
           name: unquote(name),
           module: module,
           app: app(__MODULE__),
-          type: component_type(module),
+          type: Bonfire.UI.Common.component_type(module),
           scope: unquote(opts)[:scope] || :user,
           form_change: unquote(form_change),
           form_submit: unquote(form_submit),
@@ -140,7 +140,7 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
           name: unquote(name),
           module: __MODULE__,
           app: app(__MODULE__),
-          type: component_type(__MODULE__),
+          type: Bonfire.UI.Common.component_type(__MODULE__),
           scope: unquote(opts)[:scope] || :user,
           # Added description field
           description: unquote(opts)[:description]
@@ -160,7 +160,7 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
           name: unquote(name),
           module: __MODULE__,
           app: app(__MODULE__),
-          type: component_type(__MODULE__),
+          type: Bonfire.UI.Common.component_type(__MODULE__),
           scope: unquote(opts)[:scope] || :user
           # data: @props_specs
         })
@@ -193,16 +193,4 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
       end
     end
   end
-
-  def component_type(module),
-    do:
-      List.first(
-        module.__info__(:attributes)[:component_type] ||
-          module.__info__(:attributes)[:behaviour]
-      )
-
-  def component_props(module),
-    do:
-      Surface.API.get_props(module)
-      |> Enum.map(&Map.drop(&1, [:opts_ast, :func, :line]))
 end

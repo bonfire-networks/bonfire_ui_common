@@ -246,7 +246,7 @@ if Bonfire.Common.Extend.extension_enabled?(:live_view_native) do
               params,
               session,
               socket
-              |> assign(module_default_assigns(Bonfire.UI.Common.LayoutLive))
+              |> assign(component_default_assigns(Bonfire.UI.Common.LayoutLive))
               # ^ because we need some default assigns app-wide
             )
 
