@@ -13,6 +13,7 @@
  *   data-sort-by        - initial sort order: "latest_reply", "reply_count", "boost_count", "like_count", "popularity_score", or "newest" (default: thread order)
  *   data-sort-order     - sort direction for the chosen sort: "asc" or "desc" (default: per sort type)
  *   data-mode           - initial thread display mode: "flat" or "nested" (default: instance/user setting)
+ *   data-published-at   - article publication date (ISO 8601 or YYYY-MM-DD): backdates a newly-created thread so importing an old/backfilled article doesn't jump to the top of feeds. Ignored if in the future. A Ghost article is already backdated via API, so this is mainly for other sites.
  *   data-theme          - DaisyUI theme name to apply inside the iframe (e.g. "dark", "light")
  *   data-token-max-age  - hours before the stored auth token is considered stale and the user is prompted to re-authenticate (default: 720 = 30 days). Invalid or non-positive values fall back to the default. The server enforces a hard maximum regardless of this value (1 year by default), and this value is clamped to it.
  *
@@ -157,6 +158,8 @@
   var canonicalSlug = script.getAttribute("data-canonical-slug");
   var canonicalId = script.getAttribute("data-canonical-id");
   var authMode = script.getAttribute("data-auth-mode");
+  // Publication date of the article (ISO 8601 or YYYY-MM-DD). Backdates the created thread so importing an old/backfilled article doesn't jump to the top of feeds. A Ghost article is already backdated from the published date provided by API; this is mainly for other sites.
+  var publishedAt = script.getAttribute("data-published-at");
 
   // data-creator / data-boundary / data-group-id / data-require-topic are deliberately not
   // forwarded — see the header comment
@@ -166,6 +169,7 @@
   if (canonicalSlug) params.set("canonical_slug", canonicalSlug);
   if (canonicalId) params.set("canonical_id", canonicalId);
   if (authMode) params.set("auth_mode", authMode);
+  if (publishedAt) params.set("published_at", publishedAt);
   if (token) params.set("bonfire_embed_token", token);
   if (theme) params.set("theme", theme);
   // Tell the LV the parent article URL so in-iframe actions (sign in, reply)

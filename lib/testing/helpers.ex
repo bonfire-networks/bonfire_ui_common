@@ -91,7 +91,10 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
         end
 
       _ ->
-        render_component(&component.render/1, Map.merge(%{__context__: context}, Map.new(assigns)))
+        render_component(
+          &component.render/1,
+          Map.merge(%{__context__: context}, Map.new(assigns))
+        )
     end
   end
 
