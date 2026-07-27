@@ -20,6 +20,91 @@
     } catch (_) {}
   })();
 </script>
+<script data-scroll-relay>
+  // A cross-origin iframe owns the touch sequence that begins inside it, so
+  // mobile Safari cannot hand that sequence to the embedding page. Embed
+  // loaders opt in explicitly; relay only direction-locked vertical
+  // deltas and leave horizontal/multitouch gestures untouched.
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get("scroll_relay") !== "1") return;
+    var parentOrigin = window.__bonfireEmbedParentOrigin;
+    if (!parentOrigin) return;
+
+    var direction = null;
+    var lastScreenY = 0;
+    var startClientX = 0;
+    var startClientY = 0;
+
+    function resetGesture() {
+      direction = null;
+      lastScreenY = 0;
+      startClientX = 0;
+      startClientY = 0;
+    }
+
+    function screenY(touch) {
+      var value = Number(touch.screenY);
+      return Number.isFinite(value) ? value : touch.clientY;
+    }
+
+    function scrollableElementCanConsume(target, deltaY) {
+      var element = target && target.nodeType === 1 ? target : target && target.parentElement;
+      while (element && element !== document.body && element !== document.documentElement) {
+        var style = window.getComputedStyle(element);
+        var scrollable = /^(auto|scroll|overlay)$/.test(style.overflowY);
+        if (scrollable && element.scrollHeight > element.clientHeight + 1) {
+          if (deltaY > 0 && element.scrollTop + element.clientHeight < element.scrollHeight - 1) {
+            return true;
+          }
+          if (deltaY < 0 && element.scrollTop > 1) return true;
+        }
+        element = element.parentElement;
+      }
+      return false;
+    }
+
+    document.addEventListener("touchstart", function (event) {
+      if (event.touches.length !== 1) {
+        resetGesture();
+        return;
+      }
+      var touch = event.touches[0];
+      startClientX = touch.clientX;
+      startClientY = touch.clientY;
+      lastScreenY = screenY(touch);
+      direction = null;
+    }, { passive: true, capture: true });
+
+    document.addEventListener("touchmove", function (event) {
+      if (event.touches.length !== 1) {
+        resetGesture();
+        return;
+      }
+      var touch = event.touches[0];
+      var totalX = touch.clientX - startClientX;
+      var totalY = touch.clientY - startClientY;
+      if (!direction && Math.max(Math.abs(totalX), Math.abs(totalY)) >= 8) {
+        direction = Math.abs(totalY) > Math.abs(totalX) ? "vertical" : "horizontal";
+      }
+
+      var currentScreenY = screenY(touch);
+      var deltaY = lastScreenY - currentScreenY;
+      lastScreenY = currentScreenY;
+      if (direction !== "vertical" || deltaY === 0) return;
+      if (scrollableElementCanConsume(event.target, deltaY)) return;
+
+      if (event.cancelable) event.preventDefault();
+      window.parent.postMessage(
+        { type: "bonfire:iframe-scroll", deltaY: deltaY },
+        parentOrigin
+      );
+    }, { passive: false, capture: true });
+
+    document.addEventListener("touchend", resetGesture, { passive: true, capture: true });
+    document.addEventListener("touchcancel", resetGesture, { passive: true, capture: true });
+  })();
+</script>
 <%!-- Default 8px body margin shows the html bg as a band inside the iframe
      (auto-resize excludes body margin from its height calculation). --%>
 <style>

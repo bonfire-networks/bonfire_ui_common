@@ -21,7 +21,15 @@
     } catch (_) { return null; }
   }
 
-  function embedIframe(id, scriptEl, path, params, title, origin, style) {
+  function relayPageScroll(rawDelta) {
+    // postMessage already crosses an event loop; another frame made continuous
+    // mobile Safari touch movement arrive at the parent in visible bursts.
+    var delta = Number(rawDelta);
+    if (!Number.isFinite(delta) || delta === 0) return;
+    window.scrollBy(0, Math.max(-120, Math.min(120, delta)));
+  }
+
+  function embedIframe(id, scriptEl, path, params, title, origin, style, relayScroll) {
     var qs = params.toString();
     var iframe = document.createElement("iframe");
     iframe.id = id;
@@ -32,10 +40,18 @@
     window.addEventListener("message", function (e) {
       if (e.origin !== origin) return;
       if (e.source && iframe.contentWindow && e.source !== iframe.contentWindow) return;
-      if (!e.data || e.data.type !== "bonfire:iframe-resize") return;
-      var height = Number(e.data.height);
-      if (!Number.isFinite(height) || height <= 0) return;
-      iframe.style.height = Math.min(height, 100000) + "px";
+      if (!e.data) return;
+      if (e.data.type === "bonfire:iframe-resize") {
+        var height = Number(e.data.height);
+        if (!Number.isFinite(height) || height <= 0) return;
+        iframe.style.height = Math.min(height, 100000) + "px";
+      } else if (
+        relayScroll &&
+        e.source === iframe.contentWindow &&
+        e.data.type === "bonfire:iframe-scroll"
+      ) {
+        relayScroll(e.data.deltaY);
+      }
     });
     iframe.src = origin + path + (qs ? "?" + qs : "");
     if (!scriptEl.parentNode) return;
@@ -57,6 +73,21 @@
 
   var variant = script.getAttribute("data-variant");
   var path = variant === "carousel" ? "/instance/pins/carousel/embed" : "/instance/pins/embed";
+  var relayScroll = null;
+  if (variant === "carousel") {
+    params.set("embed_parent", window.location.origin);
+    params.set("scroll_relay", "1");
+    relayScroll = relayPageScroll;
+  }
 
-  embedIframe("bonfire-pins", script, path, params, "Spotlight", instanceUrl, "width:100%;min-height:140px");
+  embedIframe(
+    "bonfire-pins",
+    script,
+    path,
+    params,
+    "Spotlight",
+    instanceUrl,
+    "width:100%;min-height:140px",
+    relayScroll
+  );
 })();

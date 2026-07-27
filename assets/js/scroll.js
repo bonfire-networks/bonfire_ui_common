@@ -26,8 +26,8 @@ ScrollHooks.CarouselScroll = {
 
 		// Drag/swipe-to-scroll: lets the whole carousel be dragged horizontally even
 		// when the finger lands on nested interactive or scrollable card content.
-		// The template sets `touch-action: pan-y` so the browser hands us horizontal
-		// gestures (we drive scrollLeft) while keeping vertical page scroll native.
+		// Carousel surfaces must allow horizontal gestures so this hook can drive
+		// scrollLeft; it bails out as soon as vertical intent wins.
 		let startX = 0
 		let startY = 0
 		let startScroll = 0

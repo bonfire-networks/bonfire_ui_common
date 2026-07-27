@@ -41,9 +41,45 @@
     } catch (_) { return null; }
   }
 
+  function findScrollTarget(iframe) {
+    var element = iframe.parentElement;
+    while (element && element !== document.body && element !== document.documentElement) {
+      var style = window.getComputedStyle(element);
+      var scrollable = /^(auto|scroll|overlay)$/.test(style.overflowY);
+      if (scrollable && element.scrollHeight > element.clientHeight + 1) return element;
+      element = element.parentElement;
+    }
+    return window;
+  }
+
+  function createScrollRelay(iframe) {
+    var pendingDelta = 0;
+    var framePending = false;
+
+    return function (rawDelta) {
+      var delta = Number(rawDelta);
+      if (!Number.isFinite(delta) || delta === 0) return;
+      pendingDelta += Math.max(-120, Math.min(120, delta));
+      if (framePending) return;
+      framePending = true;
+      window.requestAnimationFrame(function () {
+        var scrollTarget = findScrollTarget(iframe);
+        var deltaToApply = pendingDelta;
+        pendingDelta = 0;
+        framePending = false;
+        if (scrollTarget === window) {
+          window.scrollBy(0, deltaToApply);
+        } else {
+          scrollTarget.scrollTop += deltaToApply;
+        }
+      });
+    };
+  }
+
   function embedIframe(id, scriptEl, path, params, title, origin, style) {
     var qs = params.toString();
     var iframe = document.createElement("iframe");
+    var relayScroll = createScrollRelay(iframe);
     iframe.id = id;
     iframe.style.cssText = "border:none;overflow:hidden;display:block" + (style ? ";" + style : "");
     iframe.setAttribute("scrolling", "no");
@@ -52,10 +88,17 @@
     window.addEventListener("message", function (e) {
       if (e.origin !== origin) return;
       if (e.source && iframe.contentWindow && e.source !== iframe.contentWindow) return;
-      if (!e.data || e.data.type !== "bonfire:iframe-resize") return;
-      var height = Number(e.data.height);
-      if (!Number.isFinite(height) || height <= 0) return;
-      iframe.style.height = Math.min(height, 100000) + "px";
+      if (!e.data) return;
+      if (e.data.type === "bonfire:iframe-resize") {
+        var height = Number(e.data.height);
+        if (!Number.isFinite(height) || height <= 0) return;
+        iframe.style.height = Math.min(height, 100000) + "px";
+      } else if (
+        e.source === iframe.contentWindow &&
+        e.data.type === "bonfire:iframe-scroll"
+      ) {
+        relayScroll(e.data.deltaY);
+      }
     });
     iframe.src = origin + path + (qs ? "?" + qs : "");
     if (!scriptEl.parentNode) return;
@@ -175,6 +218,7 @@
   // Tell the LV the parent article URL so in-iframe actions (sign in, reply)
   // can redirect back here afterwards with the embed token.
   params.set("embed_parent", window.location.href);
+  params.set("scroll_relay", "1");
 
   // Unique id so two default (postId-less) embeds on one page don't collide.
   var embedSeq = (window.__bonfireCommentsEmbedCount =
