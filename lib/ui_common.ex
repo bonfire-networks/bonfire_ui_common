@@ -37,6 +37,32 @@ defmodule Bonfire.UI.Common do
 
   def show_activity_counts?(override, _context), do: !!override
 
+  @doc """
+  Whether the request's `Accept` header includes the given media type, for content negotiation at LiveView mount time (e.g. serving the markdown or RSS variant of a browser page).
+
+  Reads the copy of the header that `save_accept_header/2` (see `Bonfire.UI.Common.EndpointTemplate`) puts in the session, so it takes the LiveView `session` map rather than a conn.
+
+  ## Examples
+
+      iex> http_accepts?(%{"accept_header" => "text/markdown"}, "text/markdown")
+      true
+
+      iex> http_accepts?(%{"accept_header" => "text/html,application/xhtml+xml;q=0.9"}, "text/markdown")
+      false
+
+      iex> http_accepts?(%{}, "text/markdown")
+      false
+  """
+  def http_accepts?(session, media_type) when is_map(session) and is_binary(media_type) do
+    case Map.get(session, "accept_header") do
+      accept_header when is_binary(accept_header) ->
+        String.contains?(accept_header, media_type)
+
+      _ ->
+        false
+    end
+  end
+
   def maybe_component(module, context \\ []) do
     import Bonfire.UI.Common.Timing
 
