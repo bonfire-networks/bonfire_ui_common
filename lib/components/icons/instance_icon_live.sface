@@ -1,0 +1,25 @@
+{#case URIs.permalink(@peered || @object)}
+  {#match nil}
+  {#match link}
+    <a
+      href={link}
+      rel={@link_opts[:rel] || "noopener noreferrer"}
+      target="_blank"
+      data-id="peered"
+      data-tip={l("Originates from a remote instance")}
+      aria-label={l("Originates from a remote instance")}
+      class="z-50 tooltip tooltip-top opacity-70"
+    >
+      {#case maybe_apply(Bonfire.Files.FaviconStore, :favicon_url, [link], fallback_return: nil)}
+        {#match nil}
+          <#Icon iconify="ph:planet-fill" class="w-4 h-4" />
+        {#match image}
+          <img
+            src={image}
+            alt=""
+            class="w-4 h-4"
+            onerror="this.classList.add('iconify'); this.setAttribute('iconify','ph:planet-fill')"
+          />
+      {/case}
+    </a>
+{/case}
