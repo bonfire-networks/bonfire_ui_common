@@ -324,7 +324,12 @@
       <span class="sr-only">{l("Messages")}</span>
     </LinkLive>
 
-    <LinkLive :if={!current_user(@__context__)} to={path(:login, :index)} class="btn btn-ds-outline">
+    <LinkLive
+      :if={!current_user(@__context__) && !@hide_login_action}
+      id="dock-login-action"
+      to={path(:login, :index)}
+      class="btn btn-ds-outline"
+    >
       <span class="">{l("Login")}</span>
     </LinkLive>
 
