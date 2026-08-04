@@ -264,7 +264,7 @@
         <div :if={replying?(assigns)} class="reply_in_composer">
           <div
             id="reply_peek"
-            class="relative !max-h-0 max-h-[150px] overflow-y-auto overscroll-y-contain transition-[max-height] duration-300 ease-out bg-base-100"
+            class="relative !max-h-0 max-h-[150px] overflow-y-auto overscroll-y-contain bg-base-100"
           >
             <div class="p-2 border-t-hair border-secondary">
               <StatelessComponent
@@ -292,7 +292,7 @@
             {#match %{name: who_name, handle: who_handle}}
               <div
                 id="reply_banner"
-                class="relative z-10 flex items-center border-b-hair border-t-hair border-secondary min-h-9 transition-[margin] duration-200 mt-px"
+                class="relative z-10 flex items-center border-b-hair border-t-hair border-secondary min-h-9 mt-px"
               >
                 {!-- Toggle fills the whole banner so a click anywhere (except the
                      ✕, which sits on top as a sibling) hides/shows the post. --}

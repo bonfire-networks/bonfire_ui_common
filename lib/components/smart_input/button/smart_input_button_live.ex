@@ -17,5 +17,5 @@ defmodule Bonfire.UI.Common.SmartInputButtonLive do
 
   prop class, :css_class,
     default:
-      "flex-row grow md:h-[40px] items-center normal-case gap-2 md:btn-sm btn btn-primary transition-transform duration-150 ease-out hover:scale-105 active:scale-95 hover:-translate-y-0.5"
+      "flex-row grow md:h-[40px] items-center normal-case gap-2 md:btn-sm btn btn-primary hover:scale-[1.02] active:scale-[0.97]"
 end

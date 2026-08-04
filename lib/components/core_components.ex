@@ -70,6 +70,8 @@ defmodule Bonfire.UI.Common.CoreComponents do
       phx-mounted={@show && show_modal(@id)}
       phx-remove={hide_modal(@id)}
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
+      data-cancel-keyboard={JS.exec(@on_cancel, "data-hide-keyboard")}
+      data-hide-keyboard={hide_modal_immediately(@id)}
       class="relative z-50 hidden"
     >
       <div id={"#{@id}-bg"} class="bg-zinc-50/90 fixed inset-0 transition-opacity" aria-hidden="true" />
@@ -85,10 +87,10 @@ defmodule Bonfire.UI.Common.CoreComponents do
           <div class="w-full max-w-3xl p-4 sm:p-6 lg:py-8">
             <.focus_wrap
               id={"#{@id}-container"}
-              phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
+              phx-window-keydown={JS.exec("data-cancel-keyboard", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden lg:rounded-2xl bg-white p-14 shadow-lg ring-1 transition"
+              class="modal-motion-content shadow-zinc-700/10 ring-zinc-700/10 relative hidden lg:rounded-2xl bg-white p-14 shadow-lg ring-1"
             >
               <div class="absolute top-6 right-5">
                 <button
@@ -736,9 +738,9 @@ defmodule Bonfire.UI.Common.CoreComponents do
   def show(js \\ %JS{}, selector) do
     JS.show(js,
       to: selector,
-      time: 300,
+      time: 250,
       transition:
-        {"transition-all transform ease-out duration-300",
+        {"transition-[opacity,transform] ease-[cubic-bezier(0.19,1,0.22,1)] duration-250",
          "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95",
          "opacity-100 translate-y-0 sm:scale-100"}
     )
@@ -758,9 +760,9 @@ defmodule Bonfire.UI.Common.CoreComponents do
   def hide(js \\ %JS{}, selector) do
     JS.hide(js,
       to: selector,
-      time: 200,
+      time: 150,
       transition:
-        {"transition-all transform ease-in duration-200",
+        {"transition-[opacity,transform] ease-[cubic-bezier(0.19,1,0.22,1)] duration-150",
          "opacity-100 translate-y-0 sm:scale-100",
          "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"}
     )
@@ -799,6 +801,15 @@ defmodule Bonfire.UI.Common.CoreComponents do
     )
     |> hide("##{id}-container")
     |> JS.hide(to: "##{id}", transition: {"block", "block", "hidden"})
+    |> JS.remove_class("overflow-hidden", to: "body")
+    |> JS.pop_focus()
+  end
+
+  defp hide_modal_immediately(js \\ %JS{}, id) do
+    js
+    |> JS.hide(to: "##{id}-bg")
+    |> JS.hide(to: "##{id}-container")
+    |> JS.hide(to: "##{id}")
     |> JS.remove_class("overflow-hidden", to: "body")
     |> JS.pop_focus()
   end

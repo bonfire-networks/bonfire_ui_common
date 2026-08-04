@@ -503,6 +503,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         """
         <script data-live-socket="#{live_socket? || "false"}" defer phx-track-static crossorigin='anonymous' src='#{js}'></script>
         <link phx-track-static rel='stylesheet' href='#{endpoint_module.static_path("/images/icons/icons.css")}'/>
+        #{Bonfire.UI.Common.ThemeHelper.icon_weight_stylesheet(conn)}
         """
       end
 

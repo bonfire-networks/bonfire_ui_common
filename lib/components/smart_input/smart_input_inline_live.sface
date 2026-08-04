@@ -17,12 +17,12 @@
       <div
         :if={@showing_within != :thread_embed}
         id={"inline_pill_slot_#{@composer_dom_id}"}
-        class="grid grid-rows-[1fr] transition-[grid-template-rows] ease-[cubic-bezier(0.22,1,0.36,1)] duration-300"
+        class="grid grid-rows-[1fr]"
       >
         <div class="overflow-hidden min-h-0">
           <div
             id={"inline_pill_#{@composer_dom_id}"}
-            class="inline_composer_pill flex items-center gap-3 p-1 pl-1 rounded-full border border-secondary bg-base-100 cursor-text transition-opacity ease-out duration-150 hover:border-secondary"
+            class="inline_composer_pill flex items-center gap-3 p-1 pl-1 rounded-full border border-secondary bg-base-100 cursor-text hover:border-secondary"
             phx-click={LiveHandler.inline_expand(@composer_dom_id)}
           >
             <div class="shrink-0">
@@ -62,7 +62,7 @@
         class={[
           "grid",
           "grid-rows-[1fr]": @showing_within == :thread_embed,
-          "grid-rows-[0fr] transition-[grid-template-rows] ease-[cubic-bezier(0.22,1,0.36,1)] duration-300":
+          "grid-rows-[0fr]":
             @showing_within != :thread_embed
         ]}
       >
@@ -71,8 +71,7 @@
             id={"inline_full_#{@composer_dom_id}"}
             class={[
               "inline_composer_full border border-secondary rounded-xl bg-base-100 shadow-lg",
-              "flex flex-col min-h-[160px]": @showing_within == :thread_embed,
-              "opacity-0 transition-opacity ease-out duration-200": @showing_within != :thread_embed
+              "flex flex-col min-h-[160px]": @showing_within == :thread_embed
             ]}
           >
             <Bonfire.UI.Common.SmartInputLive

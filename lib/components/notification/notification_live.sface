@@ -23,8 +23,8 @@
       id="connection-status"
       role="status"
       class="hidden z-50 pointer-events-none delayed-reveal"
-      phx-disconnected={show("#connection-status")}
-      phx-connected={hide("#connection-status")}
+      phx-disconnected={JS.show(to: "#connection-status")}
+      phx-connected={JS.hide(to: "#connection-status")}
     >
       <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-base-200 text-base-content text-xs font-medium ring-1 ring-base-content/10">
         <span class="loading loading-spinner loading-xs opacity-60" />
@@ -95,7 +95,7 @@
               phx-value-key="info"
               type="button"
               aria-label={l("Dismiss message")}
-              class="btn btn-sm btn-circle btn-ghost opacity-50 hover:opacity-100 focus-ring transition-all"
+              class="btn btn-sm btn-circle btn-ghost opacity-50 hover:opacity-100 focus-ring transition-opacity duration-150 ease"
             >
               <span class="sr-only">{l("Close")}</span>
               <#Icon iconify="ph:x" class="w-3.5 h-3.5" aria-hidden="true" />
@@ -123,7 +123,7 @@
               phx-value-key="warning"
               type="button"
               aria-label={l("Dismiss message")}
-              class="btn btn-sm btn-circle btn-ghost opacity-50 hover:opacity-100 focus-ring transition-all"
+              class="btn btn-sm btn-circle btn-ghost opacity-50 hover:opacity-100 focus-ring transition-opacity duration-150 ease"
             >
               <span class="sr-only">{l("Close")}</span>
               <#Icon iconify="ph:x" class="w-3.5 h-3.5" aria-hidden="true" />
@@ -161,7 +161,7 @@
               phx-value-key="error"
               type="button"
               aria-label={l("Dismiss error")}
-              class="btn btn-sm btn-circle btn-ghost opacity-50 hover:opacity-100 focus-ring transition-all"
+              class="btn btn-sm btn-circle btn-ghost opacity-50 hover:opacity-100 focus-ring transition-opacity duration-150 ease"
             >
               <span class="sr-only">{l("Close")}</span>
               <#Icon iconify="ph:x" class="w-3.5 h-3.5" aria-hidden="true" />

@@ -254,10 +254,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     js
     |> JS.remove_class("grid-rows-[1fr]", to: "#inline_pill_slot_#{dom_id}")
     |> JS.add_class("grid-rows-[0fr]", to: "#inline_pill_slot_#{dom_id}")
-    |> JS.add_class("opacity-0", to: "#inline_pill_#{dom_id}")
     |> JS.remove_class("grid-rows-[0fr]", to: "#inline_full_slot_#{dom_id}")
     |> JS.add_class("grid-rows-[1fr]", to: "#inline_full_slot_#{dom_id}")
-    |> JS.remove_class("opacity-0", to: "#inline_full_#{dom_id}")
     |> JS.focus_first(to: "#inline_full_#{dom_id} textarea")
   end
 
@@ -269,10 +267,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     js
     |> JS.remove_class("grid-rows-[1fr]", to: "#inline_full_slot_#{dom_id}")
     |> JS.add_class("grid-rows-[0fr]", to: "#inline_full_slot_#{dom_id}")
-    |> JS.add_class("opacity-0", to: "#inline_full_#{dom_id}")
     |> JS.remove_class("grid-rows-[0fr]", to: "#inline_pill_slot_#{dom_id}")
     |> JS.add_class("grid-rows-[1fr]", to: "#inline_pill_slot_#{dom_id}")
-    |> JS.remove_class("opacity-0", to: "#inline_pill_#{dom_id}")
   end
 
   # def handle_event("set", %{"smart_input_as" => smart_input_as}, socket) do

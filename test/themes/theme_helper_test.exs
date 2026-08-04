@@ -7,6 +7,68 @@ defmodule Bonfire.UI.Common.ThemeHelperTest do
 
   doctest ThemeHelper, import: true
 
+  describe "preview_ui_preset/2" do
+    test "allows the Stream preview from the query string in development" do
+      conn = Plug.Test.conn(:get, "/?ui_preset=stream")
+
+      assert ThemeHelper.preview_ui_preset(conn, :dev) == "stream"
+    end
+
+    test "rejects preview presets outside development" do
+      conn = Plug.Test.conn(:get, "/?ui_preset=stream")
+
+      assert ThemeHelper.preview_ui_preset(conn, :prod) == nil
+    end
+
+    test "rejects presets that are not allow-listed" do
+      conn = Plug.Test.conn(:get, "/?ui_preset=unknown")
+
+      assert ThemeHelper.preview_ui_preset(conn, :dev) == nil
+    end
+  end
+
+  describe "ui_preset/1 (the appearance setting)" do
+    test "defaults to the typographic preset" do
+      assert ThemeHelper.ui_preset(%{}) == "typographic"
+    end
+
+    test "returns a user's chosen preset" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :ui_preset], "stream",
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert ThemeHelper.ui_preset(%{current_user: user}) == "stream"
+    end
+
+    test "normalises atomised stored values (settings round-trip atoms on a warm VM)" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :ui_preset], :stream,
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert ThemeHelper.ui_preset(%{current_user: user}) == "stream"
+    end
+
+    test "normalises unknown values to the default" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :ui_preset], "bogus",
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert ThemeHelper.ui_preset(%{current_user: user}) == "typographic"
+    end
+  end
+
   describe "resolve_theme_config/3" do
     test ":light is fixed and resolves to the light theme name" do
       assert %{mode: :fixed, theme: "lite"} =

@@ -135,7 +135,7 @@ defmodule Bonfire.UI.Common.DesignSystem.IconButtonLive do
         "focus-ring",
         "transition-interactive",
         "hover-scale",
-        "active:scale-[0.95]",
+        "active:scale-[0.97]",
         "disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none",
         "phx-click-loading:opacity-70 phx-click-loading:cursor-wait",
         variant_class(@variant),

@@ -43,7 +43,7 @@
               phx-value-field={@form_input_name}
               phx-value-context_id={@context_id}
               type="button"
-              class="inline-flex items-center justify-center flex-shrink-0 w-4 h-4 ml-1 mr-2 text-primary-content-400 hover:bg-neutral hover:bg-opacity-30 -300 hover:text-primary-content-700 focus:outline-none focus:text-white"
+              class="touch-target-expanded inline-flex items-center justify-center flex-shrink-0 w-4 h-4 ml-1 mr-2 text-primary-content-400 hover:bg-neutral hover:bg-opacity-30 hover:text-primary-content-700 focus:outline-none focus:text-white"
             >
               <span class="sr-only">Remove {raw(name_content || id)}</span>
               <svg class="w-2 h-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
@@ -70,14 +70,14 @@
     </div>
   </div>
   <div
-    x-transition:enter="transition ease-out duration-100"
+    x-transition:enter="transition-[opacity,transform] ease-[cubic-bezier(0.19,1,0.22,1)] duration-150"
     x-transition:enter-start="transform opacity-0 scale-95"
-    x-transition:enter-end="transform opacity-60 scale-100"
-    x-transition:leave="transition ease-in duration-75"
-    x-transition:leave-start="transform opacity-60 scale-100"
+    x-transition:enter-end="transform opacity-100 scale-100"
+    x-transition:leave="transition-[opacity,transform] ease-[cubic-bezier(0.19,1,0.22,1)] duration-100"
+    x-transition:leave-start="transform opacity-100 scale-100"
     x-transition:leave-end="transform opacity-0 scale-95"
     x-show="show === true"
-    class="absolute left-0 right-0 z-40 w-full p-1 border rounded-md shadow-xl bg-base-100 top-12"
+    class="multiselect-panel absolute left-0 right-0 z-40 w-full p-1 border rounded-md shadow-xl bg-base-100 top-12 origin-top"
   >
     <!-- x-ref="autocomplete" -->
     <input
