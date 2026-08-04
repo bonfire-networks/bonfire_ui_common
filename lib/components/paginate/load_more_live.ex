@@ -36,6 +36,12 @@ defmodule Bonfire.UI.Common.LoadMoreLive do
     unwrap(e(page_info, :end_cursor, nil))
   end
 
+  @doc "Return the unwrapped cursor at the beginning of a pagination window."
+  @spec start_cursor(any()) :: any()
+  def start_cursor(page_info) do
+    unwrap(e(page_info, :start_cursor, nil))
+  end
+
   def final_cursor(page_info) do
     unwrap(e(page_info, :final_cursor, nil))
   end

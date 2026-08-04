@@ -6,7 +6,9 @@
   >
     <div :if={@widget_title} role="heading" aria-level="2">{@widget_title}</div>
     <div class="flex items-center gap-3 ml-auto">
-      <#slot {@action} />
+      {!-- header actions (View all, carousel arrows…) are noise when the
+           widget is empty — the empty state carries its own action instead --}
+      <#slot :if={!@empty} {@action} />
       {#if show_reset?(@reset_cache_event, @can_reset, @__context__)}
         <button
           type="button"
@@ -31,11 +33,17 @@
   {#if @empty}
     <#slot {@empty_state}>
       <div
-        class="flex flex-col items-center gap-2 py-6 text-center text-sm text-muted"
+        class="flex flex-col items-center gap-3 px-6 py-8 my-2 text-center"
         data-role="widget-empty-state"
       >
-        <Iconify.iconify icon={@empty_icon} class="h-6 w-6 text-base-content/40" aria-hidden="true" />
-        <span>{@empty_message || l("Nothing here yet.")}</span>
+        <div
+          class="flex h-10 w-10 items-center justify-center rounded-full bg-base-content/5"
+          aria-hidden="true"
+        >
+          <Iconify.iconify icon={@empty_icon} class="h-5 w-5 text-base-content/40" />
+        </div>
+        <span class="max-w-[36ch] text-sm text-muted">{@empty_message || l("Nothing here yet.")}</span>
+        <#slot {@empty_action} />
       </div>
     </#slot>
   {#else}

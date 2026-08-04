@@ -182,7 +182,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   defp connect_param_map(_), do: %{}
 
   defp connect_param_entry({feed_name, cursor}) when is_binary(feed_name) and is_binary(cursor) do
-    if Bonfire.Common.Types.is_uid?(cursor) do
+    if Bonfire.Common.Types.is_ulid?(cursor) do
       {:ok, feed_name, cursor, 0}
     else
       :error
@@ -191,7 +191,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
 
   defp connect_param_entry({feed_name, %{"value" => cursor} = params})
        when is_binary(feed_name) and is_binary(cursor) do
-    if Bonfire.Common.Types.is_uid?(cursor) do
+    if Bonfire.Common.Types.is_ulid?(cursor) do
       {:ok, feed_name, cursor, connect_param_last_touched(params)}
     else
       :error

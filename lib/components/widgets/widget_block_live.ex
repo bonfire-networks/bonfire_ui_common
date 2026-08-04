@@ -31,6 +31,9 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
   @doc "Override the default empty-state placeholder."
   slot empty_state
 
+  @doc "Optional call to action rendered inside the default empty state (e.g. a create button)."
+  slot empty_action
+
   @doc "The main content of the widget"
   slot default, required: true
 

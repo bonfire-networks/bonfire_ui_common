@@ -27,9 +27,27 @@ defmodule Bonfire.Common.Settings.LiveHandler do
        socket
        |> maybe_assign_context(settings)
        |> maybe_push_font(attrs)
+       |> maybe_push_icon_weight(attrs)
+       |> maybe_push_ui_preset(attrs)
        |> assign_flash(:info, l("Settings saved"))}
     end
   end
+
+  defp maybe_push_ui_preset(socket, %{
+         "_target" => ["ui", "theme", "ui_preset"],
+         "ui" => %{"theme" => %{"ui_preset" => preset}}
+       }),
+       do: Bonfire.UI.Common.ThemeHelper.push_ui_preset(socket, preset)
+
+  defp maybe_push_ui_preset(socket, _attrs), do: socket
+
+  defp maybe_push_icon_weight(socket, %{
+         "_target" => ["ui", "theme", "icon_weight"],
+         "ui" => %{"theme" => %{"icon_weight" => weight}}
+       }),
+       do: Bonfire.UI.Common.ThemeHelper.push_icon_weight(socket, weight)
+
+  defp maybe_push_icon_weight(socket, _attrs), do: socket
 
   defp maybe_push_font(socket, %{
          "_target" => ["ui", "font_family"],

@@ -19,31 +19,43 @@ import { KeyboardShortcutHooks } from "./keyboard_shortcuts.js";
 import { IframeResizeHooks } from "./iframe_resize.js";
 import { InlineComposerHooks } from "./inline_composer.js";
 import {
-	collectBonfireParams,
-	setBonfireParam,
-	getBonfireParam,
-	removeBonfireParam,
-	evictExpiredBonfireParams,
+  collectBonfireParams,
+  setBonfireParam,
+  getBonfireParam,
+  removeBonfireParam,
+  evictExpiredBonfireParams,
 } from "./local_storage_params";
 import { setupLiveSocketLifecycle } from "./live_socket_lifecycle.js";
 import { ExtensionHooks } from "../../../../config/current_flavour/deps.hooks.js";
 import ComponentHooks from "../../../../config/current_flavour/assets/hooks/index.js";
 
-Object.assign(Hooks, ExtensionHooks, DraggableHooks, ComponentHooks, CopyHooks, TooltipHooks, ScrollHooks, TranslateHooks, KeyboardShortcutHooks, IframeResizeHooks, InlineComposerHooks);
+Object.assign(
+  Hooks,
+  ExtensionHooks,
+  DraggableHooks,
+  ComponentHooks,
+  CopyHooks,
+  TooltipHooks,
+  ScrollHooks,
+  TranslateHooks,
+  KeyboardShortcutHooks,
+  IframeResizeHooks,
+  InlineComposerHooks,
+);
 
 console.log("Registered LiveView hooks:", Object.keys(Hooks));
 
 // Universal JS executor - uses LiveView JS if connected, vanilla JS if not
 window.JS_exec = function (lv_js_b64, vanilla_js_b64) {
-	if (window.liveSocket && window.liveSocket.isConnected()) {
-		// Execute LiveView JS command on the triggering element
-		const lv_js = atob(lv_js_b64);
-		liveSocket.execJS(this, lv_js);
-	} else {
-		// Execute vanilla JS using Function constructor (rather than eval)
-		const vanilla_js = atob(vanilla_js_b64);
-		new Function(vanilla_js).call(this);
-	}
+  if (window.liveSocket && window.liveSocket.isConnected()) {
+    // Execute LiveView JS command on the triggering element
+    const lv_js = atob(lv_js_b64);
+    liveSocket.execJS(this, lv_js);
+  } else {
+    // Execute vanilla JS using Function constructor (rather than eval)
+    const vanilla_js = atob(vanilla_js_b64);
+    new Function(vanilla_js).call(this);
+  }
 };
 // let JS_exec = (selector, event) => {
 // 	document
@@ -52,13 +64,13 @@ window.JS_exec = function (lv_js_b64, vanilla_js_b64) {
 // };
 
 let JS_exec_attr_event = (selector, attr) => {
-	document.querySelectorAll(selector).forEach((el) => {
-		// console.log(attr);
-		let event = el.getAttribute(attr);
-		// console.log(el);
-		// console.log(event);
-		liveSocket.execJS(el, event);
-	});
+  document.querySelectorAll(selector).forEach((el) => {
+    // console.log(attr);
+    let event = el.getAttribute(attr);
+    // console.log(el);
+    // console.log(event);
+    liveSocket.execJS(el, event);
+  });
 };
 
 // Editor inputs opt into local draft persistence by carrying this attribute
@@ -70,48 +82,57 @@ const DRAFT_INPUT_SELECTOR = "[data-persist-draft]";
 // when replying (hidden form field, or data attribute on inline composers),
 // otherwise a single "new" bucket.
 function composerDraftKey(el) {
-	const form = el.closest("form");
-	return (
-		form?.querySelector('[name="reply_to[reply_to_id]"]')?.value ||
-		el.closest("[data-reply-to-id]")?.dataset.replyToId ||
-		"new"
-	);
+  const form = el.closest("form");
+  return (
+    form?.querySelector('[name="reply_to[reply_to_id]"]')?.value ||
+    el.closest("[data-reply-to-id]")?.dataset.replyToId ||
+    "new"
+  );
 }
 
 // Returns the locally-saved draft for el's composer context, but only when the
 // editor is empty — never overwrites server-provided or in-progress text.
 // Editors call this on mount; the save side is the delegated listener below.
 function getComposerDraft(el) {
-	if (!el || (el.value || "").trim()) return null;
-	return getBonfireParam("draft", composerDraftKey(el));
+  if (!el || (el.value || "").trim()) return null;
+  return getBonfireParam("draft", composerDraftKey(el));
 }
 
 // Expose localStorage param helpers globally for hooks in other extensions
 window.Bonfire = Object.assign(window.Bonfire || {}, {
-	setBonfireParam,
-	getBonfireParam,
-	removeBonfireParam,
-	getComposerDraft,
+  setBonfireParam,
+  getBonfireParam,
+  removeBonfireParam,
+  getComposerDraft,
 });
 
 // Drafts whose composer context is never reopened are otherwise immortal
 // (eviction normally happens on read)
-(window.requestIdleCallback || window.setTimeout)(() => evictExpiredBonfireParams("draft"));
+(window.requestIdleCallback || window.setTimeout)(() =>
+  evictExpiredBonfireParams("draft"),
+);
 
 const dispatchLifecycleFlush = (trigger, event) => {
-	window.dispatchEvent(new CustomEvent("bonfire:lifecycle:flush", {
-		detail: {
-			trigger,
-			persisted: event && event.persisted === true,
-			visibilityState: document.visibilityState,
-		},
-	}));
+  window.dispatchEvent(
+    new CustomEvent("bonfire:lifecycle:flush", {
+      detail: {
+        trigger,
+        persisted: event && event.persisted === true,
+        visibilityState: document.visibilityState,
+      },
+    }),
+  );
 };
 
 window.addEventListener("visibilitychange", () => {
-	if (document.visibilityState === "hidden") dispatchLifecycleFlush("visibilitychange");
+  if (document.visibilityState === "hidden")
+    dispatchLifecycleFlush("visibilitychange");
 });
-window.addEventListener("pagehide", (event) => dispatchLifecycleFlush("pagehide", event), { capture: true });
+window.addEventListener(
+  "pagehide",
+  (event) => dispatchLifecycleFlush("pagehide", event),
+  { capture: true },
+);
 
 // Absent on session-less embeds (they auth via bonfire_embed_token), so read defensively.
 let csrfMeta = document.querySelector("meta[name='csrf-token']");
@@ -122,28 +143,30 @@ let csrfToken = csrfMeta ? csrfMeta.getAttribute("content") : null;
 // socket and forward the token so the LV mount can authenticate the user
 // (the browser blocks the SameSite=Lax session cookie on the WS upgrade
 // from a third-party iframe, making `/live` unreachable for these pages).
-let embedToken = new URLSearchParams(window.location.search).get("bonfire_embed_token");
+let embedToken = new URLSearchParams(window.location.search).get(
+  "bonfire_embed_token",
+);
 let socketPath = embedToken ? "/embed_live" : "/live";
 
 // let random_socket_id = if (window.Gon !== undefined) {
 //   window.Gon.getAsset("random_socket_id"
 // }
 let liveSocket = new LiveSocket(socketPath, Socket, {
-	timeout: 60000,
-	disconnectedTimeout: 2500,
-	params: () => ({
-		_csrf_token: csrfToken,
-		...(embedToken ? { bonfire_embed_token: embedToken } : {}),
-		...collectBonfireParams(),
-	}),
-	dom: {
-		onBeforeElUpdated(from, to) {
-			if (from._x_dataStack) {
-				window.Alpine.clone(from, to);
-			}
-		},
-	},
-	hooks: Hooks,
+  timeout: 60000,
+  disconnectedTimeout: 2500,
+  params: () => ({
+    _csrf_token: csrfToken,
+    ...(embedToken ? { bonfire_embed_token: embedToken } : {}),
+    ...collectBonfireParams(),
+  }),
+  dom: {
+    onBeforeElUpdated(from, to) {
+      if (from._x_dataStack) {
+        window.Alpine.clone(from, to);
+      }
+    },
+  },
+  hooks: Hooks,
 });
 
 setupLiveSocketLifecycle(liveSocket);
@@ -152,17 +175,17 @@ setupLiveSocketLifecycle(liveSocket);
 // Only displays if still loading after 120 msec
 let topBarScheduled = undefined;
 window.addEventListener("phx:page-loading-start", (e) => {
-	// Reconnects/errors are surfaced by #connection-status instead — the nav
-	// progress bar flashing on every brief socket drop reads as a page load.
-	if (e.detail?.kind === "error") return;
-	if (!topBarScheduled) {
-		topBarScheduled = setTimeout(() => NProgress.start(), 120);
-	}
+  // Reconnects/errors are surfaced by #connection-status instead — the nav
+  // progress bar flashing on every brief socket drop reads as a page load.
+  if (e.detail?.kind === "error") return;
+  if (!topBarScheduled) {
+    topBarScheduled = setTimeout(() => NProgress.start(), 120);
+  }
 });
 window.addEventListener("phx:page-loading-stop", () => {
-	clearTimeout(topBarScheduled);
-	topBarScheduled = undefined;
-	NProgress.done();
+  clearTimeout(topBarScheduled);
+  topBarScheduled = undefined;
+  NProgress.done();
 });
 
 // To trigger JS commands from the server, eg using this in LV:
@@ -172,25 +195,25 @@ window.addEventListener("phx:page-loading-stop", () => {
 // })
 // FIXME: see https://elixirforum.com/t/there-should-be-a-built-in-hook-for-running-exec-js-commands/59849/4
 window.addEventListener("phx:js-exec-attr-event", ({ detail }) => {
-	console.log(detail);
-	JS_exec_attr_event(detail.to, detail.attr);
+  console.log(detail);
+  JS_exec_attr_event(detail.to, detail.attr);
 });
 
 // Execute JS commands directly from the server
 // Usage: push_event(socket, "js-exec", %{to: "#selector", js: JS.hide() |> JS.encode()})
 window.addEventListener("phx:js-exec", ({ detail }) => {
-	console.log("js-exec", detail);
-	const target = document.querySelector(detail.to);
-	if (target && detail.js) {
-		liveSocket.execJS(target, detail.js);
-	}
+  console.log("js-exec", detail);
+  const target = document.querySelector(detail.to);
+  if (target && detail.js) {
+    liveSocket.execJS(target, detail.js);
+  }
 });
 
 // Shared helper for CW textarea manipulation
 // (visibility and button state are now server-controlled via show_cw/show_sensitive assigns)
 function setCwTextarea(value) {
-	const cwTextarea = document.querySelector("#smart_input_summary textarea");
-	if (cwTextarea) cwTextarea.value = value;
+  const cwTextarea = document.querySelector("#smart_input_summary textarea");
+  if (cwTextarea) cwTextarea.value = value;
 }
 
 // Persist composer drafts locally so text survives reloads, socket drops and
@@ -200,47 +223,49 @@ function setCwTextarea(value) {
 const DRAFT_SAVE_DEBOUNCE_MS = 800;
 let draftSaveTimer;
 document.addEventListener("input", (e) => {
-	const el = e.target;
-	if (!el.matches?.(DRAFT_INPUT_SELECTOR)) return;
-	clearTimeout(draftSaveTimer);
-	draftSaveTimer = setTimeout(() => {
-		if (!el.isConnected) return; // composer was closed/reset meanwhile
-		const key = composerDraftKey(el);
-		if (el.value.trim()) setBonfireParam("draft", key, el.value);
-		else removeBonfireParam("draft", key);
-	}, DRAFT_SAVE_DEBOUNCE_MS);
+  const el = e.target;
+  if (!el.matches?.(DRAFT_INPUT_SELECTOR)) return;
+  clearTimeout(draftSaveTimer);
+  draftSaveTimer = setTimeout(() => {
+    if (!el.isConnected) return; // composer was closed/reset meanwhile
+    const key = composerDraftKey(el);
+    if (el.value.trim()) setBonfireParam("draft", key, el.value);
+    else removeBonfireParam("draft", key);
+  }, DRAFT_SAVE_DEBOUNCE_MS);
 });
 
 // Reset composer button state after posting
 window.addEventListener("phx:smart_input:reset", () => {
-	// Posted (or explicitly reset): the draft served its purpose
-	clearTimeout(draftSaveTimer);
-	document
-		.querySelectorAll(DRAFT_INPUT_SELECTOR)
-		.forEach((el) => removeBonfireParam("draft", composerDraftKey(el)));
-	// Reset the main smart input button to its default state
-	JS_exec_attr_event("#main_smart_input_button", "phx-reset");
+  // Posted (or explicitly reset): the draft served its purpose
+  clearTimeout(draftSaveTimer);
+  document
+    .querySelectorAll(DRAFT_INPUT_SELECTOR)
+    .forEach((el) => removeBonfireParam("draft", composerDraftKey(el)));
+  // Reset the main smart input button to its default state
+  JS_exec_attr_event("#main_smart_input_button", "phx-reset");
 });
 
 // Reset composer UI after posting
 window.addEventListener("phx:smart_input:reset_sensitive", () => {
-	setCwTextarea("");
+  setCwTextarea("");
 
-	// Also clear title and scheduled_at input values
-	["#smart_input_post_title input", "#smart_input_scheduled_at input"].forEach(sel => {
-		const el = document.querySelector(sel);
-		if (el) el.value = "";
-	});
+  // Also clear title and scheduled_at input values
+  ["#smart_input_post_title input", "#smart_input_scheduled_at input"].forEach(
+    (sel) => {
+      const el = document.querySelector(sel);
+      if (el) el.value = "";
+    },
+  );
 });
 
 // Fill CW textarea when replying to a CW post
 window.addEventListener("phx:smart_input:set_cw", ({ detail }) => {
-	setCwTextarea(detail.cw || "");
+  setCwTextarea(detail.cw || "");
 });
 
 // Clear CW textarea when replying to a non-CW post
 window.addEventListener("phx:smart_input:clear_cw", () => {
-	setCwTextarea("");
+  setCwTextarea("");
 });
 
 // window.addEventListener("phx:js-show", ({ detail }) => {
@@ -259,28 +284,30 @@ window.addEventListener("phx:smart_input:clear_cw", () => {
 // 	.getSocket()
 // 	.onError(() => JS_exec_attr_event("#connection-status", "js-show"));
 
-const shouldAutoConnect = !document.querySelector('script[data-live-socket="false"]');
+const shouldAutoConnect = !document.querySelector(
+  'script[data-live-socket="false"]',
+);
 if (shouldAutoConnect) {
-	// connect if there are any LiveViews on the page
-	console.log("LiveSocket connecting...");
-	liveSocket.connect();
+  // connect if there are any LiveViews on the page
+  console.log("LiveSocket connecting...");
+  liveSocket.connect();
 } else {
-	// Otherwise we don't auto-connect, and wait for potential trigger
-	console.log("LiveSocket *not* auto-connecting");
+  // Otherwise we don't auto-connect, and wait for potential trigger
+  console.log("LiveSocket *not* auto-connecting");
 }
 
 // Function to manually connect the socket
 window.connectLiveSocket = function () {
-	if (!liveSocket.isConnected()) {
-		liveSocket.connect();
-	}
+  if (!liveSocket.isConnected()) {
+    liveSocket.connect();
+  }
 };
 
 // Function to disconnect if needed
 window.disconnectLiveSocket = function () {
-	if (liveSocket.isConnected()) {
-		liveSocket.disconnect();
-	}
+  if (liveSocket.isConnected()) {
+    liveSocket.disconnect();
+  }
 };
 
 // themeChange()

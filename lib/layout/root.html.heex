@@ -4,6 +4,10 @@
   data-theme-mode={theme.mode}
   data-theme-light={theme.light}
   data-theme-dark={theme.dark}
+  data-ui-preset={Bonfire.UI.Common.ThemeHelper.preview_ui_preset(@conn) ||
+    Bonfire.UI.Common.ThemeHelper.ui_preset(assigns)}
+  data-ui-preset-preview={Bonfire.UI.Common.ThemeHelper.preview_ui_preset(@conn) && "true"}
+  data-icon-weight={Bonfire.UI.Common.ThemeHelper.icon_weight(assigns)}
   id="root"
   class="bg-base-200"
   data-open="false"
@@ -108,6 +112,28 @@
           });
         }
         window.__bonfireCustomVars = applied;
+      });
+      window.addEventListener("phx:set_icon_weight", function(e) {
+        var el = document.documentElement;
+        var link = document.querySelector("link[data-icon-weight-css]");
+        if (e.detail.weight) {
+          if (!link) {
+            link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.setAttribute("data-icon-weight-css", "");
+            document.head.appendChild(link);
+          }
+          link.setAttribute("href", e.detail.href);
+          el.setAttribute("data-icon-weight", e.detail.weight);
+        } else {
+          el.removeAttribute("data-icon-weight");
+          if (link) link.remove();
+        }
+      });
+      window.addEventListener("phx:set_ui_preset", function(e) {
+        var el = document.documentElement;
+        if (el.hasAttribute("data-ui-preset-preview")) return;
+        if (e.detail.preset) el.setAttribute("data-ui-preset", e.detail.preset);
       });
       window.addEventListener("phx:set_font", function(e) {
         var link = document.querySelector("link[data-font]");

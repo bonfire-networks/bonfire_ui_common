@@ -320,7 +320,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-base-100); color: var(--color-base-content);",
                           else: "background-color: var(--color-#{color}); color: var(--color-base-content);"}
@@ -396,7 +396,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-primary); color: var(--color-primary-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -469,7 +469,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-secondary); color: var(--color-secondary-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -543,7 +543,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-accent); color: var(--color-accent-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -616,7 +616,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-neutral); color: var(--color-neutral-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -690,7 +690,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-info); color: var(--color-info-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -763,7 +763,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-success); color: var(--color-success-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -836,7 +836,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-warning); color: var(--color-warning-content);",
                           else: "background-color: var(--color-#{color});"}
@@ -909,7 +909,7 @@
                   <:open_btn>
                     <div class="flex flex-col gap-1">
                       <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-all cursor-pointer"
+                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
                         style={if String.ends_with?(color, "content"),
                           do: "background-color: var(--color-error); color: var(--color-error-content);",
                           else: "background-color: var(--color-#{color});"}
