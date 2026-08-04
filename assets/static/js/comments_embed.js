@@ -7,9 +7,9 @@
  *
  * Optional attributes:
  *   data-post-id        - the Bonfire post/thread ID (optional, otherwise will use media URI)
- *   data-media-uri      - find or create a thread for this URL (optional, defaults to current page URL)
- *   data-canonical-slug      - find or create a thread for this post/page slug on the original website (eg. Ghost post slug)
- *   data-canonical-id      - find or create a thread for this post/page ID on the original website (eg. Ghost post ID)
+ *   data-media-uri      - find or create a thread for this URL (optional, defaults to current page URL). For guest visitors a missing thread is only created when the URL's origin is allowlisted in the instance's IFRAME_ALLOWED_ORIGINS; signed-in viewers can anchor any URL (attributed to them).
+ *   data-canonical-slug      - find the already-imported thread for this post/page slug on the original website (eg. Ghost post slug); loading the embed never imports it
+ *   data-canonical-id      - find the already-imported thread for this post/page ID on the original website (eg. Ghost post ID); loading the embed never imports it
  *   data-sort-by        - initial sort order: "latest_reply", "reply_count", "boost_count", "like_count", "popularity_score", or "newest" (default: thread order)
  *   data-sort-order     - sort direction for the chosen sort: "asc" or "desc" (default: per sort type)
  *   data-mode           - initial thread display mode: "flat" or "nested" (default: instance/user setting)
