@@ -30,6 +30,7 @@ TooltipHooks.Tooltip = {
 		let hideTimeout;
 		let isHoveringButton = false;
 		let isHoveringTooltip = false;
+		let isButtonFocused = false;
 
 		// Instance state for lifecycle methods
 		this.isUpdating = false;
@@ -127,13 +128,13 @@ TooltipHooks.Tooltip = {
 		};
 
 		// Display tooltip and start entrance animation
-		const displayTooltip = () => {
+		const displayTooltip = ({ animate = true } = {}) => {
 			tooltip.style.display = 'block';
 			tooltip.style.pointerEvents = 'auto';
 			syncExpanded(true);
 			startPositionUpdate();
 			this.panelResizeObserver?.observe(tooltip);
-			if (!prefersReducedMotion()) {
+			if (animate && !prefersReducedMotion()) {
 				tooltip.classList.add('tooltip-animated');
 				tooltip.offsetHeight; // Force reflow for animation
 				tooltip.classList.add('tooltip-visible');
@@ -151,9 +152,23 @@ TooltipHooks.Tooltip = {
 			}
 		};
 
-		const hideTooltip = () => {
+		const finishHidingTooltip = () => {
+			clearTimeout(showTimeout);
+			tooltip.style.display = '';
+			tooltip.style.pointerEvents = '';
+			tooltip.classList.remove('tooltip-animated');
+			if (this.cleanup) {
+				this.cleanup();
+				this.cleanup = null;
+			}
+			// disconnect before display:none, then let the iframe shrink back
+			this.panelResizeObserver?.disconnect();
+			notifyParentResize();
+		};
+
+		const hideTooltip = ({ animate = true } = {}) => {
 			const shouldHide = trigger === "hover" ?
-				!isHoveringButton && !isHoveringTooltip :
+				!isHoveringButton && !isHoveringTooltip && !isButtonFocused :
 				true;
 
 			if (shouldHide) {
@@ -161,20 +176,16 @@ TooltipHooks.Tooltip = {
 				tooltip.classList.remove('tooltip-visible');
 				syncExpanded(false);
 
-				const delay = prefersReducedMotion() ? 0 : (trigger === "hover" ? 150 : 100);
-				hideTimeout = setTimeout(() => {
-					clearTimeout(showTimeout);
-					tooltip.style.display = '';
-					tooltip.style.pointerEvents = '';
-					tooltip.classList.remove('tooltip-animated');
-					if (this.cleanup) {
-						this.cleanup();
-						this.cleanup = null;
-					}
-					// disconnect before display:none, then let the iframe shrink back
-					this.panelResizeObserver?.disconnect();
-					notifyParentResize();
-				}, delay);
+				const delay =
+					animate && !prefersReducedMotion()
+						? (trigger === "hover" ? 150 : 100)
+						: 0;
+
+				if (delay === 0) {
+					finishHidingTooltip();
+				} else {
+					hideTimeout = setTimeout(finishHidingTooltip, delay);
+				}
 			}
 		};
 
@@ -187,6 +198,16 @@ TooltipHooks.Tooltip = {
 			buttonMouseLeave: () => {
 				isHoveringButton = false;
 				hideTooltip();
+			},
+			buttonFocus: () => {
+				isButtonFocused = true;
+				clearTimeout(showTimeout);
+				clearTimeout(hideTimeout);
+				displayTooltip({ animate: false });
+			},
+			buttonBlur: () => {
+				isButtonFocused = false;
+				hideTooltip({ animate: false });
 			},
 			tooltipMouseEnter: () => {
 				isHoveringTooltip = true;
@@ -207,6 +228,14 @@ TooltipHooks.Tooltip = {
 					hideTooltip();
 				}
 			},
+			escapeKey: (event) => {
+				if (event.key === "Escape" && tooltip.style.display === "block") {
+					event.stopPropagation();
+					hideTooltip();
+					// return focus to the trigger so keyboard users aren't dropped to <body>
+					button.focus();
+				}
+			},
 			// select-style dropdowns: close once an actionable item inside is picked
 			insideClick: (event) => {
 				if (event.target.closest("button, a, [phx-click], [data-scope], [data-role]")) {
@@ -219,13 +248,14 @@ TooltipHooks.Tooltip = {
 		if (trigger === "hover") {
 			button.addEventListener('mouseenter', handlers.buttonMouseEnter);
 			button.addEventListener('mouseleave', handlers.buttonMouseLeave);
-			button.addEventListener('focus', showTooltip);
-			button.addEventListener('blur', hideTooltip);
+			button.addEventListener('focus', handlers.buttonFocus);
+			button.addEventListener('blur', handlers.buttonBlur);
 			tooltip.addEventListener('mouseenter', handlers.tooltipMouseEnter);
 			tooltip.addEventListener('mouseleave', handlers.tooltipMouseLeave);
 		} else {
 			button.addEventListener('click', handlers.buttonClick);
 			document.addEventListener('click', handlers.clickOutside, true);
+			document.addEventListener('keydown', handlers.escapeKey, true);
 			if (closeOnInsideClick) {
 				tooltip.addEventListener('click', handlers.insideClick);
 			}
@@ -240,13 +270,14 @@ TooltipHooks.Tooltip = {
 			if (trigger === "hover") {
 				button.removeEventListener('mouseenter', handlers.buttonMouseEnter);
 				button.removeEventListener('mouseleave', handlers.buttonMouseLeave);
-				button.removeEventListener('focus', showTooltip);
-				button.removeEventListener('blur', hideTooltip);
+				button.removeEventListener('focus', handlers.buttonFocus);
+				button.removeEventListener('blur', handlers.buttonBlur);
 				tooltip.removeEventListener('mouseenter', handlers.tooltipMouseEnter);
 				tooltip.removeEventListener('mouseleave', handlers.tooltipMouseLeave);
 			} else {
 				button.removeEventListener('click', handlers.buttonClick);
 				document.removeEventListener('click', handlers.clickOutside, true);
+				document.removeEventListener('keydown', handlers.escapeKey, true);
 				if (closeOnInsideClick) {
 					tooltip.removeEventListener('click', handlers.insideClick);
 				}

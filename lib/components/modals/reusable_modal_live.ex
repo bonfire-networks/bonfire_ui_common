@@ -32,7 +32,9 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
     open_btn: nil,
     action_btns: nil,
     cancel_btn: nil,
-    title: nil
+    title: nil,
+    close_motion: :animated,
+    close_token: nil
   ]
 
   @doc "The title of the modal. Only used if no title slot is passed."
@@ -87,6 +89,8 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   prop autocomplete, :list, default: []
 
   data value, :any, default: nil
+  data close_motion, :atom, default: :animated
+  data close_token, :any, default: nil
 
   @doc """
   Optional prop to make the modal wider
@@ -108,6 +112,27 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
     {:ok,
      socket
      |> assign(default_assigns())}
+  end
+
+  def update(%{reset_after_close: close_token}, socket) do
+    socket =
+      if close_token == e(assigns(socket), :close_token, nil) and
+           not e(assigns(socket), :show, false) do
+        assign(socket, default_assigns())
+      else
+        socket
+      end
+
+    {:ok, socket}
+  end
+
+  def update(new_assigns, socket) do
+    socket =
+      socket
+      |> assign(new_assigns)
+      |> maybe_reset_close_state(new_assigns)
+
+    {:ok, socket}
   end
 
   def default_assigns do
@@ -213,7 +238,7 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
   end
 
   def handle_event("close-key", %{"key" => "Escape"} = _attrs, socket) do
-    handle_event("close", %{}, socket)
+    {:noreply, start_close(socket, :instant)}
   end
 
   def handle_event("close-key", %{"key" => _}, socket) do
@@ -226,6 +251,29 @@ defmodule Bonfire.UI.Common.ReusableModalLive do
       "reset all assigns to defaults so they don't accidentally get re-used in a different modal"
     )
 
-    {:noreply, assign(socket, [show: false] ++ default_assigns())}
+    {:noreply, start_close(socket, :animated)}
+  end
+
+  defp maybe_reset_close_state(socket, %{show: true}) do
+    assign(socket, close_motion: :animated, close_token: nil)
+  end
+
+  defp maybe_reset_close_state(socket, _new_assigns), do: socket
+
+  defp start_close(socket, close_motion) do
+    close_token = make_ref()
+    reset_delay = if close_motion == :instant, do: 50, else: 300
+
+    Phoenix.LiveView.send_update_after(
+      __MODULE__,
+      [id: socket.assigns.id, reset_after_close: close_token],
+      reset_delay
+    )
+
+    assign(socket,
+      show: false,
+      close_motion: close_motion,
+      close_token: close_token
+    )
   end
 end
