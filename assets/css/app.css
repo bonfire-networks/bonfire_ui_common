@@ -1062,18 +1062,6 @@ hex-input::part(input) {
   }
 }
 
-/* Empty profile banner: a quiet primary-tinted surface instead of a
-   full-chroma slab (the component's bg-primary utility sits in the
-   utilities layer, so this unlayered rule wins; a custom colour or
-   banner image set inline still overrides both). */
-[data-id="hero_background"] {
-  background-color: color-mix(
-    in oklab,
-    var(--color-primary) 18%,
-    var(--color-base-200)
-  );
-}
-
 .btn-zenodo {
   background-color: #2f6fa7;
   color: white;

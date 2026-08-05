@@ -274,10 +274,9 @@ html[data-ui-preset="stream"]
   padding: var(--spacing-base) 0 0;
 }
 
-html[data-ui-preset="stream"]
-  [data-id="right_nav_and_widgets"]
-  [role="search"]
-  :where(input, .input) {
+/* Every search field — rail, search page, drawers — shares the same filled,
+   borderless 44px treatment. */
+html[data-ui-preset="stream"] [role="search"] :where(input, .input) {
   min-height: 44px;
   border-width: 0;
   border-radius: var(--radius-field);
@@ -286,10 +285,7 @@ html[data-ui-preset="stream"]
 }
 
 @media (hover: hover) and (pointer: fine) {
-  html[data-ui-preset="stream"]
-    [data-id="right_nav_and_widgets"]
-    [role="search"]
-    :where(input, .input):hover {
+  html[data-ui-preset="stream"] [role="search"] :where(input, .input):hover {
     background-color: var(--stream-fill-hover);
   }
 }
@@ -346,6 +342,7 @@ html[data-ui-preset="stream"]
   aside
   > div:has([role="heading"][aria-level="2"]) {
   padding-bottom: 10px;
+  padding-left: 0;
 }
 
 /* Widget list rows: deterministic rhythm and quiet rounded hover targets. */
@@ -386,6 +383,14 @@ html[data-ui-preset="stream"]
   > label {
   border-width: 0;
   border-radius: var(--radius-selector);
+}
+
+/* Participants: the title aligns with the widget's own inset (the default
+   preset's px-card is for its full-bleed variant). */
+html[data-ui-preset="stream"]
+  aside:has(#widget_participants_list)
+  > div:has([role="heading"][aria-level="2"]) {
+  padding-inline: 0;
 }
 
 html[data-ui-preset="stream"]
@@ -434,7 +439,6 @@ html[data-ui-preset="stream"] main[data-id="profile"] > section {
 }
 
 html[data-ui-preset="stream"] [data-id="profile_hero"] {
-  overflow: hidden;
   border-width: 0 0 var(--border);
   border-color: var(--color-secondary);
   border-radius: 0;
@@ -458,6 +462,13 @@ html[data-ui-preset="stream"]
 }
 
 /* Discussions and messages continue the same reading column. */
+/* Replies breathe: a base inset added to the per-level indent (consumed by
+   comment_live's inline padding-left calc) plus room above each comment. */
+html[data-ui-preset="stream"] [data-id="comment"] {
+  --comment-base-indent: 8px;
+  padding-top: 8px;
+}
+
 html[data-ui-preset="stream"] [data-role="object-thread"] {
   margin-inline: 0;
 }
