@@ -145,10 +145,16 @@ html[data-ui-preset="stream"] [data-role="dashboard"] .activity_wrapper {
   border-width: 0;
 }
 
-html[data-ui-preset="stream"] [data-role="dashboard"] li.bonfire-wrapper {
-  padding: 0;
+html[data-ui-preset="stream"]
+  [data-id="main_section"]
+  :where(.bonfire-wrapper) {
   border-width: 0;
   border-radius: 0;
+  box-shadow: none;
+}
+
+html[data-ui-preset="stream"] [data-role="dashboard"] li.bonfire-wrapper {
+  padding: 0;
 }
 
 html[data-ui-preset="stream"] .activity_wrapper [data-role="subject"] {
@@ -406,10 +412,6 @@ html[data-ui-preset="stream"]
   border-bottom-width: 0;
 }
 
-/* Top discussions: each conversation is a bounded object — a bordered,
-   radiused card (the dashboard flattening above zeroes bonfire-wrapper
-   chrome, which left content flush against the widget edges). The list is
-   inset to align the cards with the widget title. */
 html[data-ui-preset="stream"] [data-id="trending_discussions"] {
   margin-inline: 0;
   padding-inline: var(--stream-content-padding);
