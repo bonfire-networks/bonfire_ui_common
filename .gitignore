@@ -9,6 +9,7 @@ assets/css/_tailwind_sources.css
 priv/cldr
 .bonfire-extension-boilerplate
 .DS_Store
+/deps
 
 # If you run "mix test --cover", coverage assets end up here.
 /cover/
@@ -42,3 +43,4 @@ assets/static/tauri/assets/ap_c2s_client
 # iOS build staging dir: a pruned copy of the shell (no chat client) used as
 # frontendDist for `cargo tauri ios build` — see src-tauri/tauri.ios.conf.json
 assets/static/tauri-ios
+
