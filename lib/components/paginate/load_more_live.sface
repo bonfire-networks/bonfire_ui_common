@@ -39,8 +39,9 @@
         data-id="load_more_spinner"
         class={
           "loading loading-spinner loading-sm items-center place-content-center",
-          "hidden phx-scroll-loading:flex phx-click-loading:flex": @infinite_scroll in [false, nil, :preload],
-          "flex": @infinite_scroll not in [false, nil, :preload]
+          "hidden phx-scroll-loading:flex phx-click-loading:flex":
+            @infinite_scroll in [false, nil, :preload],
+          flex: @infinite_scroll not in [false, nil, :preload]
         }
         aria-hidden="true"
       />
@@ -49,7 +50,8 @@
         data-id="load_more_loading_label"
         class={
           "sr-only",
-          "hidden phx-scroll-loading:inline phx-click-loading:inline": @infinite_scroll in [false, nil, :preload]
+          "hidden phx-scroll-loading:inline phx-click-loading:inline":
+            @infinite_scroll in [false, nil, :preload]
         }
       >{l("Loading more...")}</span>
 
@@ -58,7 +60,7 @@
         data-id="load_more_label"
         class={
           "phx-scroll-loading:hidden phx-click-loading:hidden",
-          "hidden": @infinite_scroll not in [false, nil, :preload]
+          hidden: @infinite_scroll not in [false, nil, :preload]
         }
       >
         {@label ||

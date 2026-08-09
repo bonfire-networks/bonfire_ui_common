@@ -4,8 +4,10 @@
   data-theme-mode={theme.mode}
   data-theme-light={theme.light}
   data-theme-dark={theme.dark}
-  data-ui-preset={Bonfire.UI.Common.ThemeHelper.preview_ui_preset(@conn) ||
-    Bonfire.UI.Common.ThemeHelper.ui_preset(assigns)}
+  data-ui-preset={
+    Bonfire.UI.Common.ThemeHelper.preview_ui_preset(@conn) ||
+      Bonfire.UI.Common.ThemeHelper.ui_preset(assigns)
+  }
   data-ui-preset-preview={Bonfire.UI.Common.ThemeHelper.preview_ui_preset(@conn) && "true"}
   data-icon-weight={Bonfire.UI.Common.ThemeHelper.icon_weight(assigns)}
   id="root"

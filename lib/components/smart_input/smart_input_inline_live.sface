@@ -62,8 +62,7 @@
         class={[
           "grid",
           "grid-rows-[1fr]": @showing_within == :thread_embed,
-          "grid-rows-[0fr]":
-            @showing_within != :thread_embed
+          "grid-rows-[0fr]": @showing_within != :thread_embed
         ]}
       >
         <div class="overflow-hidden min-h-0">
