@@ -12,11 +12,6 @@ html[data-ui-preset="stream"] {
   --activity-bleed: 0px;
   --activity-radius: 0;
   --activity-border-width: 0 0 var(--border);
-  --activity-hover-bg: color-mix(
-    in oklab,
-    var(--color-base-content) 3%,
-    transparent
-  );
   /* Shell value sheet: one continuous canvas, no column dividers, no
      gutters between the rails and the reading column. */
   --rail-bg: var(--color-base-100);
