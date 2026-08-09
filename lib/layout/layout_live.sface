@@ -289,11 +289,7 @@
       </LinkLive>
     </div>
 
-    <LinkLive
-      :if={current_user(@__context__)}
-      to="/"
-      class={"dock-active": @selected_tab == "home"}
-    >
+    <LinkLive :if={current_user(@__context__)} to="/" class={"dock-active": @selected_tab == "home"}>
       <#Icon iconify="ph:house-fill" class="size-6" aria-hidden="true" />
       <span class="sr-only">{l("Home")}</span>
     </LinkLive>
@@ -356,7 +352,6 @@
       </span>
       <span class="sr-only">{l("Messages")}</span>
     </LinkLive>
-
   </div>
 </div>
 <Bonfire.UI.Common.ReusableModalLive id="modal" />
