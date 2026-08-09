@@ -188,6 +188,44 @@ window.addEventListener("phx:page-loading-stop", () => {
   NProgress.done();
 });
 
+// Scroll restoration for back/forward navigation. LiveView re-applies each
+// entry's stored `state.scroll` on pop, but only once, right after remount —
+// before async content (feed postloads) has streamed in, so on tall pages the
+// scrollTo clamps toward 0 and backs land at top. Retry LiveView's own stored
+// offset until the page has grown tall enough, with a bounded deadline.
+let navRestoreGeneration = 0;
+
+window.addEventListener("phx:navigate", ({ detail }) => {
+  // Any navigation supersedes a pending restore.
+  const generation = ++navRestoreGeneration;
+  if (!detail?.pop) return;
+
+  const state = history.state;
+  // Synthetic preview entries manage their own scroll.
+  if (!state || state.bonfirePreview) return;
+  const target = state.scroll;
+  if (typeof target !== "number" || target <= 0) return;
+
+  const deadline = Date.now() + 3000;
+  let baseline = null;
+  const attempt = () => {
+    if (generation !== navRestoreGeneration) return;
+    const el = document.scrollingElement || document.documentElement;
+    // Yield on any outside movement (user, feed auto-resume) after frame one.
+    if (baseline === null) {
+      baseline = el.scrollTop;
+    } else if (el.scrollTop !== baseline) {
+      return;
+    }
+    if (el.scrollHeight - el.clientHeight >= target) {
+      el.scrollTop = target;
+      return;
+    }
+    if (Date.now() < deadline) requestAnimationFrame(attempt);
+  };
+  requestAnimationFrame(attempt);
+});
+
 // To trigger JS commands from the server, eg using this in LV:
 // push_event(socket, "js-exec", % {
 //   to: "#my_spinner",
