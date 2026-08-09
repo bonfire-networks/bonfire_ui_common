@@ -432,7 +432,12 @@ label[for],
    Touch devices get active states instead
    ============================================ */
 @media (hover: hover) and (pointer: fine) {
-  .btn:hover:not(.btn-active):not(:disabled):not([aria-disabled="true"]) {
+  /* Wide controls are excluded: scaling a full-width button around its
+     center moves its edges sideways, which reads as layout shift. */
+  .btn:hover:not(.btn-active):not(:disabled):not([aria-disabled="true"]):not(
+      .w-full,
+      .btn-block
+    ) {
     scale: 1.02;
   }
 
@@ -2361,4 +2366,13 @@ body:has(#smart_input_container[data-draft])
 
 body:has(input:focus, textarea:focus, [contenteditable]:focus) .dock {
   display: none;
+}
+
+.dock > #dock-guest-actions {
+  flex-basis: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 0.75rem;
+  max-width: none;
+  margin-bottom: 0;
 }

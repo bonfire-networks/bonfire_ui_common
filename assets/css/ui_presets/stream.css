@@ -369,6 +369,125 @@ html[data-ui-preset="stream"]
   border-width: 0;
 }
 
+/* Recent articles are compact list rows inside the widget card, not a second
+   stack of feed cards. Keep this scoped to Stream so other presets retain
+   their existing article-preview treatment. */
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  li[data-item="Elixir.Bonfire.UI.Articles.WidgetRecentArticlesLive"]
+  .bonfire-wrapper {
+  gap: 0;
+  border-width: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  li[data-item="Elixir.Bonfire.UI.Articles.WidgetRecentArticlesLive"]
+  .bonfire-wrapper
+  > :where(.previewable_activity, [data-id="activity_article"]) {
+  padding-block: var(--spacing-content);
+  border-top: var(--border) solid var(--color-secondary);
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  li[data-item="Elixir.Bonfire.UI.Articles.WidgetRecentArticlesLive"]
+  .bonfire-wrapper
+  > :first-child {
+  padding-top: 0;
+  border-top-width: 0;
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  li[data-item="Elixir.Bonfire.UI.Articles.WidgetRecentArticlesLive"]
+  .bonfire-wrapper
+  > :last-child {
+  padding-bottom: 0;
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  li[data-item="Elixir.Bonfire.UI.Articles.WidgetRecentArticlesLive"]
+  [data-id="activity_article"][data-rendered="widget"] {
+  padding-inline: 0;
+  background-color: transparent;
+  overflow: visible;
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  li[data-item="Elixir.Bonfire.UI.Articles.WidgetRecentArticlesLive"]
+  [data-id="activity_article"][data-rendered="widget"]
+  [data-role="name"] {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  font-weight: var(--stream-emphasis-weight);
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  li[data-item="Elixir.Bonfire.UI.Articles.WidgetRecentArticlesLive"]
+  [data-id="activity_article"][data-rendered="widget"]
+  [data-role="summary"] {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--color-muted);
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  li[data-item="Elixir.Bonfire.UI.Articles.WidgetRecentArticlesLive"]
+  [data-role="article_byline"] {
+  margin-top: var(--spacing-half);
+  font-size: var(--text-caption);
+  line-height: var(--text-caption--line-height);
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  li[data-item="Elixir.Bonfire.UI.Articles.WidgetRecentArticlesLive"]
+  [data-id="activity_article"][data-rendered="widget"]
+  > div
+  > div:last-child {
+  margin-top: var(--spacing-half);
+  padding-bottom: 0;
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  li[data-item="Elixir.Bonfire.UI.Articles.WidgetRecentArticlesLive"]
+  [data-id="article_cover"] {
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-selector);
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  li[data-item="Elixir.Bonfire.UI.Articles.WidgetRecentArticlesLive"]
+  .bonfire-wrapper
+  > .previewable_activity:focus-visible {
+  border-radius: var(--radius-selector);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
 html[data-ui-preset="stream"]
   [data-id="widget_customize_feed"]
   [id^="feed_preset_options_"] {
@@ -384,29 +503,45 @@ html[data-ui-preset="stream"]
   border-radius: var(--radius-selector);
 }
 
-/* Participants: the title aligns with the widget's own inset (the default
-   preset's px-card is for its full-bleed variant). */
+/* Participants: the card supplies the inset — the default preset's px-card
+   title padding and per-row card chrome would double it. Title, rows,
+   dividers and the reveal control all share one left edge. */
 html[data-ui-preset="stream"]
-  aside:has(#widget_participants_list)
+  [data-id="secondary_sidebar_widgets"]
+  aside:has([data-role="participants_list"])
   > div:has([role="heading"][aria-level="2"]) {
   padding-inline: 0;
 }
 
 html[data-ui-preset="stream"]
   [data-id="secondary_sidebar_widgets"]
-  #widget_participants_list
-  :where(.border-hair, .rounded-field) {
+  [data-role="participants_list"]
+  > li {
+  padding-inline: 0;
+  /* No divider lines between rows — the avatar rhythm separates them. */
+  border-width: 0;
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  .border-hair.rounded-field:has(.profile-item) {
+  padding-inline: 0;
   border-width: 0;
   border-radius: 0;
   background-color: transparent;
 }
 
 html[data-ui-preset="stream"]
-  [data-id="secondary_sidebar_widgets"]
-  .border-hair.rounded-field:has(.profile-item) {
-  border-width: 0;
-  border-radius: 0;
-  background-color: transparent;
+  [data-role="participants_list"]
+  [data-role="reply_share"] {
+  margin-right: 0;
+}
+
+html[data-ui-preset="stream"]
+  [data-role="participants_list_wrapper"]
+  [data-role="toggle_participants"] {
+  margin-inline: 0;
+  margin-bottom: 0;
 }
 
 html[data-ui-preset="stream"]
@@ -418,7 +553,6 @@ html[data-ui-preset="stream"]
 
 html[data-ui-preset="stream"] [data-id="trending_discussions"] {
   margin-inline: 0;
-  padding-inline: var(--stream-content-padding);
 }
 
 html[data-ui-preset="stream"]
@@ -461,11 +595,17 @@ html[data-ui-preset="stream"]
 }
 
 /* Discussions and messages continue the same reading column. */
-/* Replies breathe: a base inset added to the per-level indent (consumed by
-   comment_live's inline padding-left calc) plus room above each comment. */
-html[data-ui-preset="stream"] [data-id="comment"] {
+/* Replies breathe: a base inset added to the per-level indent plus room above
+   each comment. Declared on <html> (not on the comment) because thread_branch_live's
+   absolutely-positioned thread lines consume them too, and live outside the
+   comment subtree. */
+html[data-ui-preset="stream"] {
   --comment-base-indent: 8px;
-  padding-top: 8px;
+  --comment-top-inset: 8px;
+}
+
+html[data-ui-preset="stream"] [data-id="comment"] {
+  padding-top: var(--comment-top-inset);
 }
 
 html[data-ui-preset="stream"] [data-role="object-thread"] {
