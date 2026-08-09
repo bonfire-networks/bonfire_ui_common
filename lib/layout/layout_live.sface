@@ -126,11 +126,11 @@
 
               <div>
                 <div class="flex flex-col gap-2 pb-2">
-                  <div :if={!@current_user_id} class="flex flex-col gap-2 p-card border-b-hair border-secondary">
+                  <div :if={!@current_user_id} class="flex flex-col gap-2 p-card">
                     <LinkLive to={path(:login, :index)} class="btn btn-ds-outline" parent_id="layout">{l("Log in")}</LinkLive>
 
                     {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-                      <LinkLive to={path(:signup)} class="btn btn-ds-outline" parent_id="layout">{l("Create account")}</LinkLive>
+                      <LinkLive to={path(:signup)} class="btn btn-primary" parent_id="layout">{l("Create account")}</LinkLive>
                     {/if}
                   </div>
                   <Bonfire.UI.Common.ImpressumLive />
@@ -260,7 +260,40 @@
     </div>
   </div>
   <div class="dock z-fixed lg:hidden text-base-content">
-    <LinkLive to="/" class={"dock-active": @selected_tab == "home"}>
+    <div :if={!current_user(@__context__)} id="dock-guest-actions">
+      <Bonfire.UI.Common.LogoLinkLive
+        with_name
+        href="/"
+        container_class="min-w-0 flex flex-1 flex-row items-center gap-2 cursor-pointer"
+        image_class="size-10 shrink-0 object-contain"
+        name_class="truncate text-xl font-bold text-base-content"
+        link_opts={[id: "dock-instance-home"]}
+      />
+
+      <LinkLive
+        :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}
+        id="dock-signup-action"
+        to={path(:signup)}
+        class="btn btn-primary min-h-11 h-11 shrink-0 rounded-full px-4 whitespace-nowrap"
+      >
+        <span>{l("Create account")}</span>
+      </LinkLive>
+
+      <LinkLive
+        :if={!@hide_login_action}
+        id="dock-login-action"
+        to={path(:login, :index)}
+        class="btn btn-soft min-h-11 h-11 shrink-0 rounded-full px-4 whitespace-nowrap"
+      >
+        <span>{l("Log in")}</span>
+      </LinkLive>
+    </div>
+
+    <LinkLive
+      :if={current_user(@__context__)}
+      to="/"
+      class={"dock-active": @selected_tab == "home"}
+    >
       <#Icon iconify="ph:house-fill" class="size-6" aria-hidden="true" />
       <span class="sr-only">{l("Home")}</span>
     </LinkLive>
@@ -324,21 +357,6 @@
       <span class="sr-only">{l("Messages")}</span>
     </LinkLive>
 
-    <LinkLive
-      :if={!current_user(@__context__) && !@hide_login_action}
-      id="dock-login-action"
-      to={path(:login, :index)}
-      class="btn btn-ds-outline"
-    >
-      <span class="">{l("Login")}</span>
-    </LinkLive>
-
-    <LinkLive
-      :if={!current_user(@__context__) && !Bonfire.Me.Accounts.instance_is_invite_only?()}
-      to={path(:signup)}
-    >
-      <span class="">{l("Sign up")}</span>
-    </LinkLive>
   </div>
 </div>
 <Bonfire.UI.Common.ReusableModalLive id="modal" />
