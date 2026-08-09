@@ -46,7 +46,7 @@
         <h1
           data-page={@page}
           data-role="page_title"
-          class="first-letter:capitalize truncate font-medium text-left text-display text-base-content"
+          class="first-letter:capitalize truncate font-medium text-left text-base lg:text-display text-base-content"
         >
           {rich(@page_title)}
         </h1>
