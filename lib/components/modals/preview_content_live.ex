@@ -66,6 +66,7 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
     # When closing, show main content again and clear preview sidebar widgets
     socket =
       socket
+      |> assign(previous_url: nil, previous_scroll: nil)
       |> send_self(
         hide_main: false,
         preview_sidebar_widgets: [],

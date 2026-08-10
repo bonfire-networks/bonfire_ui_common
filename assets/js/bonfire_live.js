@@ -188,24 +188,13 @@ window.addEventListener("phx:page-loading-stop", () => {
   NProgress.done();
 });
 
-// Scroll restoration for back/forward navigation. LiveView re-applies each
-// entry's stored `state.scroll` on pop, but only once, right after remount —
-// before async content (feed postloads) has streamed in, so on tall pages the
-// scrollTo clamps toward 0 and backs land at top. Retry LiveView's own stored
-// offset until the page has grown tall enough, with a bounded deadline.
+// Back/forward scroll restoration: LiveView applies `state.scroll` only once,
+// before streamed content (feed postloads) exists, so it clamps toward 0.
+// Retry its stored offset until the page is tall enough.
 let navRestoreGeneration = 0;
 
-window.addEventListener("phx:navigate", ({ detail }) => {
-  // Any navigation supersedes a pending restore.
+function retryScrollRestore(target) {
   const generation = ++navRestoreGeneration;
-  if (!detail?.pop) return;
-
-  const state = history.state;
-  // Synthetic preview entries manage their own scroll.
-  if (!state || state.bonfirePreview) return;
-  const target = state.scroll;
-  if (typeof target !== "number" || target <= 0) return;
-
   const deadline = Date.now() + 3000;
   let baseline = null;
   const attempt = () => {
@@ -224,6 +213,54 @@ window.addEventListener("phx:navigate", ({ detail }) => {
     if (Date.now() < deadline) requestAnimationFrame(attempt);
   };
   requestAnimationFrame(attempt);
+}
+
+function storedNavScroll() {
+  const state = history.state;
+  // Synthetic preview entries manage their own scroll.
+  if (!state || state.bonfirePreview) return null;
+  return typeof state.scroll === "number" && state.scroll > 0 ? state.scroll : null;
+}
+
+window.addEventListener("phx:navigate", ({ detail }) => {
+  // Any navigation supersedes a pending restore.
+  navRestoreGeneration++;
+  if (!detail?.pop) return;
+
+  const target = storedNavScroll();
+  if (target != null) retryScrollRestore(target);
+});
+
+// Same retry for full loads onto an entry with a stored offset (e.g. the
+// disconnected-popstate fallback below).
+window.addEventListener("load", () => {
+  const target = storedNavScroll();
+  if (target != null) retryScrollRestore(target);
+});
+
+// LiveView's popstate handler remounts over the websocket with no
+// disconnected fallback (its click paths do Browser.redirect). On mobile the
+// socket is often dead right after a back-swipe resumes a suspended page →
+// blank through the reconnect backoff, then a racy rejoin. Registered before
+// liveSocket.connect() so it runs ahead of LiveView's handler: on a dead
+// socket, page-changing pops become a plain browser load instead.
+window.addEventListener("popstate", (e) => {
+  if (liveSocket.isConnected()) return;
+
+  // Mirrors isNewLocation; same-document pops (hash-only, preview entries)
+  // need no remount. currentLocation is unset until a first connect.
+  const registered = liveSocket.currentLocation;
+  if (!registered) return;
+  if (
+    registered.pathname + registered.search ===
+    window.location.pathname + window.location.search
+  ) {
+    return;
+  }
+
+  e.stopImmediatePropagation();
+  // location already shows the popped entry's URL at popstate time
+  window.location.reload();
 });
 
 // To trigger JS commands from the server, eg using this in LV:

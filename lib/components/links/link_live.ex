@@ -309,17 +309,6 @@ defmodule Bonfire.UI.Common.LinkLive do
       class={@class}
       replace={@replace}
       target={@target}
-      phx-hook={if socket_connected?(@__context__) and e(@__context__, :hide_main, false),
-        do: "Bonfire.UI.Common.PreviewContentLive#CloseAll"}
-      id={if socket_connected?(@__context__) and e(@__context__, :hide_main, false),
-        do:
-          @id ||
-            deterministic_dom_id(
-              "LinkLive",
-              @to,
-              @label,
-              @parent_id || @__context__[:tree_hash]
-            )}
       {...link_opts(@opts, @label, @target)}
     >
       {!-- FIXME: do not generate random ID to avoid re-rendering --}

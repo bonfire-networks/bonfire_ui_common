@@ -109,6 +109,13 @@ defmodule Bonfire.UI.Common.LiveHandlers do
              if(is_function(fun, 3), do: fun.(params, uri, socket), else: {:noreply, socket}),
            {:noreply, socket} <-
              maybe_delegate_handle_params(params, uri, socket) do
+        # Patch navigation keeps assigns alive, so a preview's hide_main would
+        # survive the patch and leave a stale overlay over the new content.
+        socket =
+          if socket.assigns[:hide_main],
+            do: Phoenix.Component.assign(socket, hide_main: false),
+            else: socket
+
         # in case we're browsing between LVs, send assigns (eg page_title to PersistentLive's process)
         if socket_connected?(socket), do: LivePlugs.maybe_send_persistent_assigns(socket)
 

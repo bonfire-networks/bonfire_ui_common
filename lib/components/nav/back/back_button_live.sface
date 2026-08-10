@@ -1,7 +1,6 @@
 {#if @type == :preview}
   <button
     id="close_preview"
-    phx-click="Bonfire.UI.Common.OpenPreviewLive:close"
     :hook={"ClosePreview", from: Bonfire.UI.Common.PreviewContentLive}
     label={l("Go back to the previous page")}
     class={@class}
