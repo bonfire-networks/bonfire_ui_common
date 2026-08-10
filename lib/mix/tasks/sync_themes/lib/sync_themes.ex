@@ -3,6 +3,13 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
 
   @shortdoc "Synchronize DaisyUI themes from config to CSS"
 
+  # for running as an escript (`just sync-themes`), so the flavour installer doesn't need a compiled app just to rewrite CSS. Paths below are relative to the CWD, i.e. the app root either way
+  def main(args), do: run(args)
+
+  # plain IO rather than `Mix.shell()`: Mix isn't bundled into an escript, so calling it there raises
+  defp say(msg), do: IO.puts(msg)
+  defp say_error(msg), do: IO.puts(:stderr, msg)
+
   @app_css_path "assets/css/app.css"
   @custom_themes_path "assets/css/custom_themes.css"
   # Regex pattern defined as a function to comply with Erlang/OTP 28
@@ -44,10 +51,10 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
   def run(args) do
     # Check for --debug flag
     debug = @debug or Enum.member?(args, "--debug")
-    if debug, do: Mix.shell().info("DEBUG MODE ENABLED")
+    if debug, do: say("DEBUG MODE ENABLED")
 
     # Load themes from configuration files
-    Mix.shell().info("Loading themes from config files...")
+    say("Loading themes from config files...")
     config = load_themes_from_config()
 
     # Extract themes from config
@@ -56,14 +63,10 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     # TODO: Custom themes parsing needs more work to handle complex nested structures
     # custom_themes = get_custom_themes_from_config(config)
 
-    Mix.shell().info(
-      "Found #{length(light_themes)} light themes and #{length(dark_themes)} dark themes"
-    )
+    say("Found #{length(light_themes)} light themes and #{length(dark_themes)} dark themes")
 
     if Enum.empty?(light_themes) and Enum.empty?(dark_themes) do
-      Mix.shell().error(
-        "No themes found in configuration! Check your bonfire_ui_common.exs file."
-      )
+      say_error("No themes found in configuration! Check your bonfire_ui_common.exs file.")
 
       exit({:shutdown, 1})
     end
@@ -295,7 +298,7 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
 
     # Ensure main CSS file exists
     if not File.exists?(app_css_path) or not File.exists?(custom_themes_path) do
-      Mix.shell().error("CSS file not found at #{app_css_path} and/or #{custom_themes_path}!")
+      say_error("CSS file not found at #{app_css_path} and/or #{custom_themes_path}!")
       exit({:shutdown, 1})
     end
 
@@ -304,7 +307,7 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
 
     # Ensure daisyui plugin pattern exists in main CSS
     unless Regex.match?(daisyui_config_pattern(), css_content) do
-      Mix.shell().error("Could not find DaisyUI configuration in CSS file!")
+      say_error("Could not find DaisyUI configuration in CSS file!")
       exit({:shutdown, 1})
     end
 
@@ -321,10 +324,10 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     # Write updated main CSS
     case File.write(app_css_path, updated_css) do
       :ok ->
-        Mix.shell().info("DaisyUI theme configuration updated in main CSS!")
+        say("DaisyUI theme configuration updated in main CSS!")
 
       {:error, reason} ->
-        Mix.shell().error("Failed to write updated main CSS file: #{inspect(reason)}")
+        say_error("Failed to write updated main CSS file: #{inspect(reason)}")
         exit({:shutdown, 1})
     end
 
@@ -332,14 +335,14 @@ defmodule Mix.Tasks.Bonfire.SyncThemes do
     if custom_theme_configs != "" do
       case File.write(custom_themes_path, custom_themes_content) do
         :ok ->
-          Mix.shell().info("Custom themes successfully synchronized to #{custom_themes_path}!")
+          say("Custom themes successfully synchronized to #{custom_themes_path}!")
 
         {:error, reason} ->
-          Mix.shell().error("Failed to write custom themes file: #{inspect(reason)}")
+          say_error("Failed to write custom themes file: #{inspect(reason)}")
           exit({:shutdown, 1})
       end
     end
 
-    Mix.shell().info("Theme synchronization completed successfully!")
+    say("Theme synchronization completed successfully!")
   end
 end
