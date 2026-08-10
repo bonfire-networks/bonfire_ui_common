@@ -70,16 +70,20 @@ html[data-ui-preset="stream"] #nav_sidebar > .flex > .bg-base-200 {
   background-color: var(--color-base-100);
 }
 
-html[data-ui-preset="stream"] #main-content > .sticky {
+html[data-ui-preset="stream"] #main-content > .sticky,
+html[data-ui-preset="stream"] #the_preview_contents > .sticky {
   margin-bottom: 0;
   border-bottom-width: var(--border);
   border-bottom-color: var(--color-secondary);
   background-color: var(--color-base-100);
 }
 
-/* Translucent header over the passing stream, with a solid fallback above. */
+/* Translucent header over the passing stream, with a solid fallback above.
+   Covers the preview modal header too (its markup ships lg:bg-base-200/70,
+   but stream's canvas is base-100 so a base-200 tint reads off-white). */
 @supports (backdrop-filter: blur(1px)) {
-  html[data-ui-preset="stream"] #main-content > .sticky {
+  html[data-ui-preset="stream"] #main-content > .sticky,
+  html[data-ui-preset="stream"] #the_preview_contents > .sticky {
     background-color: color-mix(
       in oklab,
       var(--color-base-100) 86%,
@@ -689,4 +693,177 @@ html[data-ui-preset="stream"]
   html[data-ui-preset="stream"] .feed_control_wrapper {
     border-bottom: 1px solid CanvasText;
   }
+}
+
+/* ============================================================
+   Reply-context: "rail" treatment (stream only).
+   Replaces the default preset's banner + dotted line + trunk +
+   elbow + 34px reply indent (app.css REPLY-CONTEXT NESTING) with
+   one continuous gutter rail through the whole activity: a 3px
+   base-300 band on the avatar axis (fading out at the top to
+   signal elided ancestors), a small node on the rail as the
+   "see full thread" anchor, both posts sharing one avatar
+   column, and the parent body slightly muted so the reply reads
+   as the payload. Decided from the reply-card prototype
+   (rail variant), 2026-08-10. Geometry: avatar 35px + 18px gap,
+   so the avatar axis is x=17.5 and the text column starts at
+   53px (matches the constants in app.css).
+   ============================================================ */
+
+/* The rail. The activity <article> is the positioning context
+   (it carries `relative`); negative offsets stretch through the
+   wrapper padding so the band spans the full feed row. */
+html[data-ui-preset="stream"] [data-reply-context]::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: calc(-1 * var(--activity-padding, var(--spacing-card)));
+  bottom: calc(-1 * var(--activity-padding, var(--spacing-card)));
+  width: 3px;
+  background: var(--color-base-300);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 32px);
+  mask-image: linear-gradient(to bottom, transparent, black 32px);
+  pointer-events: none;
+}
+
+/* No thread_header means the shown parent IS the thread root
+   (ActivityLive hides the header then): nothing is elided above,
+   so the rail starts at the parent avatar instead of bleeding
+   past the row edge with the "continues up" fade. */
+html[data-ui-preset="stream"]
+  [data-reply-context]:not(:has(> [data-role="thread_header"]))::before {
+  top: 17px;
+  border-radius: 999px;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+/* One shared column: no extra indent on the reply; its body and
+   actions align with the text column. */
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > div:not([data-role="thread_header"]):not([data-role="published_in"]) {
+  margin-left: 0;
+}
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > div:not([data-role="subject"]):not([data-role="thread_header"]):not(
+    [data-role="published_in"]
+  ) {
+  margin-left: 53px;
+}
+
+/* The rail replaces the default connector chrome. */
+html[data-ui-preset="stream"] [data-reply-context] > article::after,
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > [data-role="subject"]::before {
+  content: none;
+}
+
+/* "See full thread" banner becomes a quiet inline affordance:
+   no strip, label on the text column, cause (node on the rail)
+   and effect (label) adjacent. */
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > [data-role="thread_header"] {
+  margin: 0 0 10px;
+  padding: 0;
+  background: transparent;
+  border-bottom: 0;
+  border-radius: 0;
+  justify-content: flex-start;
+  min-height: 24px;
+}
+
+/* The node: a small disc sitting on the rail (was the dotted
+   "continues up" overlay — background-image reset kills it). */
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > [data-role="thread_header"]::before {
+  left: 8px;
+  top: 50%;
+  translate: 0 -50%;
+  height: 19px;
+  width: 19px;
+  border-radius: 50%;
+  background-color: var(--color-base-300);
+  background-image: none;
+  border: var(--border) solid var(--color-secondary);
+  transition: background-color 150ms ease-out;
+}
+
+/* Chevron-up glyph inside the node (border-drawn, no icon font). */
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > [data-role="thread_header"]::after {
+  content: "";
+  position: absolute;
+  left: 14.5px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  translate: 0 calc(-50% + 1px);
+  rotate: 45deg;
+  border-top: 1.5px solid
+    color-mix(in oklab, var(--color-base-content) 60%, transparent);
+  border-left: 1.5px solid
+    color-mix(in oklab, var(--color-base-content) 60%, transparent);
+  z-index: 2;
+  pointer-events: none;
+}
+
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > [data-role="thread_header"]
+  a {
+  margin-left: 53px;
+}
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > [data-role="thread_header"]
+  a
+  span {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 13px;
+  color: color-mix(in oklab, var(--color-base-content) 55%, transparent);
+}
+@media (hover: hover) and (pointer: fine) {
+  html[data-ui-preset="stream"]
+    [data-reply-context]
+    > [data-role="thread_header"]
+    a:hover
+    span {
+    color: var(--color-primary);
+  }
+  html[data-ui-preset="stream"]
+    [data-reply-context]:has(> [data-role="thread_header"] a:hover)
+    > [data-role="thread_header"]::before {
+    background-color: var(--color-secondary);
+  }
+}
+
+/* Parent demotion: hierarchy by subtraction — the reply is the
+   activity, the parent is context. */
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > article
+  [data-role="html_body"] {
+  color: color-mix(in oklab, var(--color-base-content) 85%, transparent);
+}
+
+/* Tighter parent → reply gap (default preset uses mb-8 = 32px);
+   proximity should group the pair more strongly than the feed
+   groups unrelated activities. */
+html[data-ui-preset="stream"] [data-reply-context] > article.replied {
+  margin-bottom: 14px;
+}
+
+/* The "published in <group>" banner sits on top of the rail. */
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > [data-role="published_in"] {
+  position: relative;
+  z-index: 1;
 }
