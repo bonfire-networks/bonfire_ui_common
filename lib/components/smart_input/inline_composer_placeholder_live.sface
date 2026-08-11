@@ -35,7 +35,7 @@
       data-role="composer-pill-post"
       class="btn btn-primary rounded-full normal-case"
     >
-      {lc("verb: action", "Post")}
+      {lc("verb: action", "Post", [], :bonfire_posts)}
     </button>
     <button
       type="button"

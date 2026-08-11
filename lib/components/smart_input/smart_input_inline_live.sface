@@ -51,7 +51,7 @@
               phx-click={LiveHandler.inline_expand(@composer_dom_id)}
               class="btn btn-primary btn-sm rounded-full normal-case mr-1"
             >
-              {lc("verb: action", "Post")}
+              {lc("verb: action", "Post", [], :bonfire_posts)}
             </button>
           </div>
         </div>
@@ -117,7 +117,7 @@
           target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
           id={"inline_composer_remote_interaction_#{@composer_dom_id}"}
           class="btn btn-sm btn-outline border-primary rounded-full normal-case text-primary"
-        >{l("Reply")}</a>
+        >{lc("verb: action", "Reply", [], :bonfire_social)}</a>
       {#else}
         <a
           href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
