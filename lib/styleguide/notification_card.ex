@@ -46,7 +46,7 @@ defmodule Bonfire.UI.Common.Styleguide.NotificationCard do
       %{
         icon: "ph:fire-fill",
         name: "Magdalena",
-        suffix: l("and %{count} others", count: 12),
+        suffix: lp("and %{count} other", "and %{count} others", 12, count: 12),
         phrase: l("liked your activity"),
         body: nil,
         action: nil
@@ -62,7 +62,7 @@ defmodule Bonfire.UI.Common.Styleguide.NotificationCard do
       %{
         icon: "ph:chart-bar-fill",
         name: "Magdalena",
-        suffix: l("and %{count} others", count: 12),
+        suffix: lp("and %{count} other", "and %{count} others", 12, count: 12),
         phrase: l("voted on your poll"),
         body: :poll,
         action: nil

@@ -23,7 +23,7 @@
       {@prompt || l("Write a comment")}
     </span>
     <span class="btn btn-primary btn-sm rounded-full normal-case mr-1 pointer-events-none">
-      {l("Post")}
+      {lc("verb: action", "Post")}
     </span>
   </button>
 {/if}

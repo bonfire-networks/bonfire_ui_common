@@ -26,7 +26,7 @@
                   "text-base-content/100": @selected_tab == tab or to_string(@selected_tab) == to_string(tab)
                 ])}
               >
-                <div class="">{l_name(tab_name)}</div>
+                <div class="">{l_name(tab_name, @extension)}</div>
               </StatelessComponent>
             </li>
           {/for}
@@ -70,7 +70,7 @@
                 @selected_tab == tab or to_string(@selected_tab) == to_string(tab)
             ])}
           >
-            <div class={@item_class}>{l_name(tab_name)}</div>
+            <div class={@item_class}>{l_name(tab_name, @extension)}</div>
             {!-- <#slot :if={@selected_tab == tab or to_string(@selected_tab) == to_string(tab) or
             (is_nil(@selected_tab) and i == 0)} /> --}
           </StatelessComponent>

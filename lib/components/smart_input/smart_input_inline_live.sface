@@ -51,7 +51,7 @@
               phx-click={LiveHandler.inline_expand(@composer_dom_id)}
               class="btn btn-primary btn-sm rounded-full normal-case mr-1"
             >
-              {l("Post")}
+              {lc("verb: action", "Post")}
             </button>
           </div>
         </div>

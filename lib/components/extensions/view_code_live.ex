@@ -78,7 +78,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
 
       {:ok,
        %{
-         page_title: l("View Code") <> ": #{name}",
+         page_title: l("View Code: %{name}", name: name),
          app: app,
          module: module,
          #  modules: Application.spec(Extend.application_for_module(module), :modules),

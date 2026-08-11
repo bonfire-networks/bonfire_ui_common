@@ -295,7 +295,9 @@
                          create-type "Post" label). --}
                     {if @smart_input_opts[:input_status] == :submit, do: l("Replying..."), else: l("Reply")}
                   {#match _}
-                    {if @smart_input_opts[:input_status] == :submit, do: l("Posting..."), else: l("Post")}
+                    {if @smart_input_opts[:input_status] == :submit,
+                      do: l("Posting..."),
+                      else: lc("verb: action", "Post")}
                 {/case}
               </button>
             </div>

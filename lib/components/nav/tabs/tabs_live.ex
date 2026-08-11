@@ -21,6 +21,9 @@ defmodule Bonfire.UI.Common.TabsLive do
   @doc "What element (and it's parent view or stateful component) to send the event to (optional)"
   prop event_target, :string, default: nil
 
+  @doc "Module of the extension that *declares* these tab names, used to resolve their gettext domain. Tab names normally come from another extension's nav config (e.g. `[:ui, :topic, :settings, :navigation]`), and a gettext lookup only ever searches one domain — so without this they are looked up in `bonfire_ui_common`, where they were never extracted, and silently render in English."
+  prop extension, :atom, default: nil
+
   slot default, required: false
 
   defp l_suffix(%{suffix: suffix}), do: "/#{suffix}"
@@ -28,8 +31,14 @@ defmodule Bonfire.UI.Common.TabsLive do
   defp l_suffix([t]), do: l_suffix(t)
   defp l_suffix(_), do: nil
 
-  defp l_suffix(%{name: tab_name}), do: localise_dynamic(tab_name, __MODULE__)
-  defp l_name({_, tab_name}), do: localise_dynamic(tab_name, __MODULE__)
-  defp l_name([t]), do: l_name(t)
-  defp l_name(tab_name), do: localise_dynamic(tab_name, __MODULE__)
+  defp l_name(tab_name, extension \\ nil)
+
+  # was previously written as an `l_suffix/1` clause after its catch-all, so it never matched and
+  # map-shaped tabs fell through to the clause below, handing a map to `localise_dynamic/3`
+  defp l_name(%{name: tab_name}, extension), do: l_name(tab_name, extension)
+  defp l_name({_, tab_name}, extension), do: l_name(tab_name, extension)
+  defp l_name([t], extension), do: l_name(t, extension)
+
+  defp l_name(tab_name, extension),
+    do: localise_dynamic(tab_name, extension || __MODULE__)
 end

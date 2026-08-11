@@ -35,7 +35,7 @@
       data-role="composer-pill-post"
       class="btn btn-primary rounded-full normal-case"
     >
-      {l("Post")}
+      {lc("verb: action", "Post")}
     </button>
     <button
       type="button"
