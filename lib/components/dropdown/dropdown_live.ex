@@ -55,6 +55,9 @@ defmodule Bonfire.UI.Common.DropdownLive do
   @doc "Classes for the trigger button, e.g. `btn btn-ghost btn-circle btn-sm`."
   prop trigger_class, :css_class, default: nil
 
+  @doc "Expand a compact trigger's usable area to 44px without changing its visual size."
+  prop expanded_touch_target, :boolean, default: false
+
   @doc "Extra classes appended to the panel's standard `tooltip menu dropdown-panel`, e.g. `!pt-0   divide-hair divide-secondary` or `!w-72`."
   prop panel_class, :css_class, default: nil
 

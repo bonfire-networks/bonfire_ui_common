@@ -1,65 +1,48 @@
-<LinkLive
-  to={if is_function(@to),
-    do: @to.(@__context__),
-    else: @to}
-  id={deterministic_dom_id("link_widget", @parent_id, @order, @page)}
-  class={e(@widget[:link_class], @link_class)}
-  label={@text || @widget[:text] || @widget[:name]}
-  phx_hook={@widget[:phx_hook]}
-  opts={if active?(@selected_tab, @widget, @__context__), do: ["aria-current": "page"], else: []}
->
-  {!-- <div class={@content_class}>
-    <span :if={!@without_icon && (@icon || @widget[:icon] || @widget[:icon_active])} class=""> -->
-  <!-- {#if not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])}
+{#case active?(@selected_tab, @widget, @__context__)}
+  {#match active}
+    <LinkLive
+      to={if is_function(@to),
+        do: @to.(@__context__),
+        else: @to}
+      id={deterministic_dom_id("link_widget", @parent_id, @order, @page)}
+      class={[
+        e(@widget[:link_class], @link_class),
+        "rounded-selector transition-colors duration-150",
+        active_link_class(active)
+      ]}
+      label={@text || @widget[:text] || @widget[:name]}
+      phx_hook={@widget[:phx_hook]}
+      opts={if active, do: ["aria-current": "page"], else: []}
+    >
+      <div class="shrink-0 flex items-center" :if={!@without_icon && (@icon || @widget[:icon])}>
         <Iconify.iconify
-          icon={@icon || @widget[:icon]}
-          class={@widget[:icon_class] || @icon_class, "!text-base-content"}
-        />
-      {#else} --}
-  <div class="shrink-0 flex items-center" :if={!@without_icon && (@icon || @widget[:icon])}>
-    <Iconify.iconify
-      icon={fill_icon(@icon || @widget[:icon])}
-      class={@widget[:icon_class] || @icon_class}
-    />
-  </div>
-  {!-- {/if} -->
-  <!-- </span>
-    <span
-      :if={(not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])) or
-        (not is_nil(@widget[:module]) and e(@__context__, :current_view, nil) == @widget[:module])}
-      class="sr-only"
-    >{l("Current Page:")}
-    </span> -->
-  <!-- <span
-      data-type="widget_label"
-      :if={!@without_label}
-      class={
-        @text_class,
-        "!font-bold !text-base-content":
-          not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
-      } 
-    >--}
-  <span class={["text-base", active_label_class(@selected_tab, @widget, @__context__)]}>{localise_dynamic(
-      @text || @widget[:text] || @widget[:name],
-      @widget[:extension] || @widget[:module] || __MODULE__
-    )}</span>
-  {!-- </span> -->
-  <!-- </div> --}
-  {#case @widget[:badge]}
-    {#match nil}
-    {#match badge}
-      <div
-        :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
-        data-id="widget_badge"
-        data-highlighted={Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)}
-        class="ml-auto flex shrink-0 items-center place-content-center"
-      >
-        <StatelessComponent
-          module={maybe_component(Bonfire.UI.Common.BadgeCounter, @__context__)}
-          badge={badge}
-          page={@page}
-          widget={@widget}
+          icon={fill_icon(@icon || @widget[:icon])}
+          class={[
+            @widget[:icon_class] || @icon_class,
+            active_icon_class(active)
+          ]}
         />
       </div>
-  {/case}
-</LinkLive>
+      <span class={["text-base", active_label_class(active)]}>{localise_dynamic(
+          @text || @widget[:text] || @widget[:name],
+          @widget[:extension] || @widget[:module] || __MODULE__
+        )}</span>
+      {#case @widget[:badge]}
+        {#match nil}
+        {#match badge}
+          <div
+            :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
+            data-id="widget_badge"
+            data-highlighted={Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)}
+            class="ml-auto flex shrink-0 items-center place-content-center"
+          >
+            <StatelessComponent
+              module={maybe_component(Bonfire.UI.Common.BadgeCounter, @__context__)}
+              badge={badge}
+              page={@page}
+              widget={@widget}
+            />
+          </div>
+      {/case}
+    </LinkLive>
+{/case}

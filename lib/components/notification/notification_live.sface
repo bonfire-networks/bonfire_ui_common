@@ -68,6 +68,7 @@
               aria-label={l("Dismiss notification")}
               class="btn btn-sm btn-circle btn-ghost focus-ring touch-target-expanded transition-interactive"
             >
+              <span class="touch-target-hit-area" aria-hidden="true" />
               <span class="sr-only">{l("Close")}</span>
               <#Icon iconify="ph:x" class="w-4 h-4" aria-hidden="true" />
             </button>

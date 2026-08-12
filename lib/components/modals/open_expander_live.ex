@@ -24,7 +24,11 @@ defmodule Bonfire.UI.Common.OpenExpanderLive do
   prop(open_btn_wrapper_class, :css_class, default: "")
 
   @doc "The classes of the caret icon (a `rotate-90` is added when open)"
-  prop(caret_class, :css_class, default: "w-4 h-4 text-muted transition-transform")
+  prop(
+    caret_class,
+    :css_class,
+    default: "w-4 h-4 text-muted transition-transform motion-reduce:transition-none"
+  )
 
   @doc "The classes of the inline content container"
   prop(expander_wrapper_class, :css_class, default: "border-t-hair border-secondary")

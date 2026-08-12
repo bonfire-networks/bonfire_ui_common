@@ -293,7 +293,9 @@
                     {!-- A reply: the verb is "Reply", not "Post" (matches the
                          "Replying to …" banner and avoids clashing with the
                          create-type "Post" label). --}
-                    {if @smart_input_opts[:input_status] == :submit, do: l("Replying..."), else: lc("verb: action", "Reply", [], :bonfire_social)}
+                    {if @smart_input_opts[:input_status] == :submit,
+                      do: l("Replying..."),
+                      else: lc("verb: action", "Reply", [], :bonfire_social)}
                   {#match _}
                     {if @smart_input_opts[:input_status] == :submit,
                       do: l("Posting..."),

@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.Settings.Calm.PresetCardsLive do
   @moduledoc """
   Level 1 of the calm-empowerment settings pattern (see `Bonfire.Common.Settings.Calm`): rich preset radio-cards.
 
-  Native radios + `peer-checked`/`has-[:checked]` CSS own the selected state (clicking highlights instantly, before the server round-trip); the form posts to the generic `Bonfire.Common.Settings:set` funnel; the optional hidden `clear_field` input resets the consumer's Level-3 overrides so picking a card returns to a pure preset; `phx-update="ignore"` keeps the post-save re-render from resetting the choice.
+  Native radios + `peer-checked`/`has-[:checked]` CSS own the selected state (clicking highlights instantly, before the server round-trip); the form posts to the generic `Bonfire.Common.Settings:set` funnel; the optional hidden `clear_field` input resets the consumer's Level-3 overrides so picking a card returns to a pure preset.
   """
   use Bonfire.UI.Common.Web, :stateless_component
 
@@ -14,6 +14,9 @@ defmodule Bonfire.UI.Common.Settings.Calm.PresetCardsLive do
   prop scope, :atom, default: :instance
   @doc "Used for the form's `name`/`data-scope` attributes."
   prop form_name, :string, required: true
+
+  @doc "Unique DOM id for the form; defaults to `\"<form_name>_form\"` (pass explicitly when several instances of the same form can coexist, e.g. per feed)."
+  prop form_id, :string, default: nil
   prop title, :string, default: nil
   prop description, :string, default: nil
   @doc "Accessible fieldset legend."
@@ -26,7 +29,7 @@ defmodule Bonfire.UI.Common.Settings.Calm.PresetCardsLive do
   prop current, :string, required: true
   @doc "Preset cards: maps with `:value`, `:name`, `:icon` and optionally `:description`."
   prop cards, :list, required: true
-  @doc "Unique DOM id for the `phx-update=\"ignore\"` options wrapper."
+  @doc "Unique DOM id for the options wrapper."
   prop options_id, :string, required: true
   @doc "data-role for each card's name (test selector hook)."
   prop preset_role, :string, default: "calm_preset"

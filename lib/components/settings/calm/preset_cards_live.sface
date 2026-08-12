@@ -1,4 +1,5 @@
 <form
+  id={@form_id || "#{@form_name}_form"}
   class={@class}
   data-scope={@form_name}
   name={@form_name}
@@ -16,8 +17,7 @@
 
   <fieldset>
     <legend :if={@legend} class="sr-only">{@legend}</legend>
-    {!-- Selected state owned by native radios + `peer-checked`/`has-[:checked]` CSS; `phx-update="ignore"`
-      keeps the post-save re-render from resetting the choice (same pattern as FederationModeLive). --}
+    {!-- radios are initialized once; after that, native radio behavior owns selection instantly --}
     <div id={@options_id} phx-update="ignore" class={@options_class}>
       {#for card <- @cards}
         <label class={@card_class}>

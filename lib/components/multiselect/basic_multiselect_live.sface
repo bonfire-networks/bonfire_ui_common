@@ -45,6 +45,7 @@
               type="button"
               class="touch-target-expanded inline-flex items-center justify-center flex-shrink-0 w-4 h-4 ml-1 mr-2 text-primary-content-400 hover:bg-neutral hover:bg-opacity-30 hover:text-primary-content-700 focus:outline-none focus:text-white"
             >
+              <span class="touch-target-hit-area" aria-hidden="true" />
               <span class="sr-only">Remove {raw(name_content || id)}</span>
               <svg class="w-2 h-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
                 <path stroke-linecap="round" stroke-width="1.5" d="M1 1l6 6m0-6L1 7" />

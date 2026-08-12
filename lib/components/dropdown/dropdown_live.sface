@@ -14,12 +14,13 @@
     type="button"
     tabindex="0"
     id={@id <> "_trigger"}
-    class={"tooltip-button", @trigger_class}
+    class={"tooltip-button", @trigger_class, "touch-target-expanded": @expanded_touch_target}
     aria-haspopup="true"
     aria-expanded="false"
     aria-label={@label}
     {...@trigger_opts}
   >
+    <span :if={@expanded_touch_target} class="touch-target-hit-area" aria-hidden="true" />
     <#slot {@trigger} />
   </button>
 

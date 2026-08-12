@@ -1,25 +1,34 @@
 <form
-  class="p-4 border-b-hair border-secondary flex flex-col gap-3"
+  id={@form_id || "#{@form_name}_form"}
+  class={@form_class}
   data-scope={@form_name}
   data-role={@form_role}
-  phx-change={@event_name}
-  phx-target={@event_target}
+  phx-change={if @event_mode == :form, do: @event_name}
+  phx-target={if @event_mode == :form, do: @event_target}
 >
   <input :if={@scope} name="scope" value={@scope} type="hidden">
-  <div :if={@title || @description} class="flex flex-col gap-0.5 mb-1">
-    <span :if={@title} class="text-sm font-medium text-base-content">{@title}</span>
+  <div :if={@title || @description} class="flex flex-col gap-0.5" data-role="calm_override_header">
+    <span :if={@title} class={@title_class} data-role="calm_override_title">{@title}</span>
     <span :if={@description} class="text-xs text-muted">{@description}</span>
   </div>
 
   {#for row <- @rows}
-    <label class="flex items-center justify-between gap-3 cursor-pointer" data-role={@row_role}>
+    <label
+      class="flex min-h-11 items-center justify-between gap-3 py-1 cursor-pointer"
+      data-role={@row_role}
+    >
       <span class="flex flex-col min-w-0">
-        <span class="text-sm font-medium text-base-content">{row.name}</span>
-        <span :if={description = Map.get(row, :description)} class="text-xs text-muted leading-snug">{description}</span>
+        <span class="text-sm font-normal text-base-content" data-role="calm_override_name">{row.name}</span>
+        <span :if={Map.get(row, :description)} class="text-xs text-muted leading-snug">{Map.get(row, :description)}</span>
       </span>
       <span class="shrink-0">
-        {!-- hidden false so unchecking submits a value (standard checkbox pattern) --}
-        <input name={"#{@field_prefix}[#{row.key}]"} value="false" type="hidden">
+        {!-- in :form mode an unchecked checkbox submits nothing, so this carries the off state --}
+        <input
+          :if={@event_mode == :form}
+          type="hidden"
+          name={"#{@field_prefix}[#{row.key}]"}
+          value="false"
+        />
         <input
           type="checkbox"
           name={"#{@field_prefix}[#{row.key}]"}
@@ -27,6 +36,10 @@
           checked={row.on}
           class="toggle toggle-primary toggle-sm"
           data-role={@toggle_role}
+          phx-click={if @event_mode == :click, do: @event_name}
+          phx-target={if @event_mode == :click, do: @event_target}
+          phx-value-key={if @event_mode == :click, do: row.key}
+          phx-value-on={if @event_mode == :click, do: if(row.on, do: "false", else: "true")}
         />
       </span>
     </label>

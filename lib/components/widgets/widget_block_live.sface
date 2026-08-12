@@ -3,8 +3,9 @@
     :if={@widget_title || slot_assigned?(:action) ||
       show_reset?(@reset_cache_event, @can_reset, @__context__)}
     class={"flex items-center justify-between", @title_class}
+    data-role="widget-header"
   >
-    <div :if={@widget_title} role="heading" aria-level="2">{@widget_title}</div>
+    <div :if={@widget_title} role="heading" aria-level="2" data-role="widget-heading">{@widget_title}</div>
     <div class="flex items-center gap-3 ml-auto">
       {!-- header actions (View all, carousel arrows…) are noise when the
            widget is empty — the empty state carries its own action instead --}
@@ -17,9 +18,10 @@
           {...phx_values(@reset_cache_values)}
           onclick="this.dataset.done='1'"
           title={l("Refresh")}
-          class="group btn btn-circle btn-xs btn-outline border-secondary"
+          class="group btn btn-circle touch-target-expanded size-8 min-h-8 min-w-8 p-0 btn-outline border-secondary touch-manipulation"
           data-role="widget-reset"
         >
+          <span class="touch-target-hit-area" aria-hidden="true" />
           <span class="sr-only">{l("Refresh")}</span>
           <#Icon
             iconify="ph:arrow-counter-clockwise-fill"
