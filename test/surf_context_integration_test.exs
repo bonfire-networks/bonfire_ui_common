@@ -57,6 +57,9 @@ defmodule Bonfire.UI.Common.SurfContextIntegrationTest do
   """
   use ExUnit.Case, async: true
 
+  # bucket this into the ui CI leg: bare `ExUnit.Case` skips the tag the extension case templates apply, so without it this also runs in the federation job catch-all
+  @moduletag :ui
+
   # required by Phoenix.LiveViewTest.render_component/2
   @endpoint Bonfire.Web.Endpoint
 

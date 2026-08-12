@@ -2,6 +2,9 @@ defmodule Bonfire.UI.Common.PageTimingAttachTest do
   # async: false — mutates globally-named telemetry handlers
   use ExUnit.Case, async: false
 
+  # bucket this into the ui CI leg: bare `ExUnit.Case` skips the tag the extension case templates apply, so without it this also runs in the federation job catch-all
+  @moduletag :ui
+
   alias Bonfire.UI.Common.PageTimingStorage
 
   defp profiling_handler_ids do

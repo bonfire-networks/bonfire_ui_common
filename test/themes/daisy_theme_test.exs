@@ -1,6 +1,9 @@
 defmodule DaisyThemeTest do
   use ExUnit.Case, async: true
 
+  # bucket this into the ui CI leg: bare `ExUnit.Case` skips the tag the extension case templates apply, so without it this also runs in the federation job catch-all
+  @moduletag :ui
+
   describe "default_theme/0" do
     test "includes base-content (the text colour) as a settable string key" do
       assert %{"color-base-content" => "#" <> _} = DaisyTheme.default_theme()

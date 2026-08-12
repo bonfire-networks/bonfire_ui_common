@@ -1,6 +1,9 @@
 defmodule Bonfire.UI.Common.AvatarLiveTest do
   use ExUnit.Case, async: true
 
+  # bucket this into the ui CI leg: bare `ExUnit.Case` skips the tag the extension case templates apply, so without it this also runs in the federation job catch-all
+  @moduletag :ui
+
   alias Bonfire.UI.Common.AvatarLive
 
   describe "generated_avatar_src/2" do

@@ -1,5 +1,8 @@
 defmodule Bonfire.UI.Common.SaveAcceptHeaderTest do
   use ExUnit.Case, async: true
+
+  # bucket this into the ui CI leg: bare `ExUnit.Case` skips the tag the extension case templates apply, so without it this also runs in the federation job catch-all
+  @moduletag :ui
   import Plug.Test
   import Plug.Conn
 

@@ -1,6 +1,9 @@
 defmodule Bonfire.UI.Common.OverloadShedPlugTest do
   # async: false — mutates the global Overload persistent_term + Logger metadata
   use ExUnit.Case, async: false
+
+  # bucket this into the ui CI leg: bare `ExUnit.Case` skips the tag the extension case templates apply, so without it this also runs in the federation job catch-all
+  @moduletag :ui
   import Plug.Test
 
   alias Bonfire.Common.Overload
