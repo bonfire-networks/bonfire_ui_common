@@ -691,9 +691,19 @@ textarea {
     var(--color-primary) 50%,
     transparent
   );
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 1px;
   text-underline-offset: 2px;
   word-wrap: anywhere;
+}
+
+.prose-bonfire a.mention,
+.prose-bonfire a.hashtag {
+  text-decoration: none;
+}
+
+/* federated HTML often carries empty paragraphs; with margins they render as dead vertical gaps */
+.object_body p:empty {
+  display: none;
 }
 
 .filters_tabbed {
@@ -1006,7 +1016,7 @@ hex-input::part(input) {
     margin-left: calc(-1 * var(--activity-bleed, 1px));
     padding: var(--activity-padding, var(--spacing-card));
     border-style: solid;
-    border-color: var(--color-secondary);
+    border-color: var(--activity-border-color, var(--color-secondary));
     border-width: var(--activity-border-width, var(--border));
     border-radius: var(--activity-radius, var(--radius-box));
     background-color: var(--color-base-100);
@@ -1968,21 +1978,19 @@ body:has(#smart_input_container[data-draft])
   min-width: 44px;
 }
 
-/* For icon buttons that appear smaller but have adequate hit area */
 @utility touch-target-expanded {
   position: relative;
 }
 
-/* Don't apply expanded touch area when element has tooltip (both use ::before) */
-.touch-target-expanded:not(.tooltip)::before {
-  content: "";
+/* A real child avoids competing with DaisyUI tooltips, which also own
+   pseudo-elements. Pointer events on this child bubble to its button. */
+.touch-target-hit-area {
   position: absolute;
   top: 50%;
   left: 50%;
   width: max(100%, 44px);
   height: max(100%, 44px);
   transform: translate(-50%, -50%);
-  /* Expands clickable area without changing visual size. */
 }
 
 .btn-ds-outline {

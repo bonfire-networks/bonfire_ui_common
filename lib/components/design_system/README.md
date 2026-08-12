@@ -27,7 +27,7 @@ import Bonfire.UI.Common.DesignSystem.IconButtonLive
 | Principle | Implementation |
 |-----------|----------------|
 | No layout shift | Fixed dimensions, `tabular-nums` for numbers |
-| Touch-first | 44px minimum targets, `touch-target-expanded` |
+| Touch-first | 44px minimum targets, `touch-target-expanded` + `.touch-target-hit-area` child |
 | Hover-enhanced | `@media (hover: hover)` for hover effects |
 | Keyboard nav | `focus-visible` indicators, proper tab order |
 | Accessibility | `aria-*` attributes, reduced motion support |
@@ -163,7 +163,9 @@ Available in `app.css`:
 ```css
 .focus-ring          /* Keyboard-only focus indicator */
 .touch-target        /* 44x44px minimum dimensions */
-.touch-target-expanded /* Invisible expanded touch area */
+.touch-target-expanded /* Positioning context for an expanded touch area — pair with a
+                          `<span class="touch-target-hit-area" aria-hidden="true" />` child,
+                          which does the actual 44px expansion */
 .transition-interactive /* 150ms transform/opacity/colors */
 .hover-scale         /* scale(1.02) on hover (pointer only) */
 .hover-lift          /* translateY(-2px) on hover */
@@ -188,7 +190,7 @@ Use semantic values instead of arbitrary numbers:
 
 When creating new components:
 
-- [ ] Touch targets are 44px minimum (or use `touch-target-expanded`)
+- [ ] Touch targets are 44px minimum (or use `touch-target-expanded` with a `.touch-target-hit-area` child span)
 - [ ] Icon-only buttons have `aria-label`
 - [ ] Form inputs have `aria-invalid` and `aria-describedby`
 - [ ] Toggle buttons have `aria-pressed`

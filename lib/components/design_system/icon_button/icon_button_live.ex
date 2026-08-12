@@ -24,9 +24,11 @@ defmodule Bonfire.UI.Common.DesignSystem.IconButtonLive do
 
   ## Touch Target Strategy
 
-  The button uses `touch-target-expanded` which adds an invisible pseudo-element
-  that extends the clickable area. This allows the visual button to appear small
-  while maintaining adequate touch targets for mobile users.
+  The button pairs `touch-target-expanded` (positioning context) with an invisible
+  `.touch-target-hit-area` child span that extends the clickable area to 44px. This
+  allows the visual button to appear small while maintaining adequate touch targets
+  for mobile users (a real child rather than a pseudo-element, to avoid clashing with
+  DaisyUI tooltips, which own their `::before`/`::after`).
 
   Visual sizes:
   - `xs` - 24px visual, 44px touch area
@@ -146,6 +148,8 @@ defmodule Bonfire.UI.Common.DesignSystem.IconButtonLive do
         @loading && "cursor-wait"
       ]}
     >
+      <span :if={@needs_expanded_target} class="touch-target-hit-area" aria-hidden="true"></span>
+
       <%!-- Screen reader text --%>
       <span class="sr-only">{@aria_label}</span>
 

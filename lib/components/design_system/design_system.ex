@@ -12,7 +12,7 @@ defmodule Bonfire.UI.Common.DesignSystem do
   - No font weight changes on hover/selected states
 
   ### 2. Touch-First, Hover-Enhanced
-  - Minimum 44px touch targets (or `touch-target-expanded` for smaller visuals)
+  - Minimum 44px touch targets (or `touch-target-expanded` + a `.touch-target-hit-area` child span for smaller visuals)
   - Hover effects only on `@media (hover: hover) and (pointer: fine)`
   - Active states for touch devices
 
@@ -44,7 +44,7 @@ defmodule Bonfire.UI.Common.DesignSystem do
 
   - `.focus-ring` - Keyboard-only focus indicator
   - `.touch-target` - Minimum 44x44px dimensions
-  - `.touch-target-expanded` - Invisible expanded touch area
+  - `.touch-target-expanded` - Positioning context for an expanded touch area; pair it with a `<span class="touch-target-hit-area" aria-hidden="true" />` child, which does the actual 44px expansion (a real child rather than a pseudo-element, to avoid clashing with DaisyUI tooltips)
   - `.transition-interactive` - Standard interactive transition
   - `.hover-scale` - Scale on hover (pointer devices only)
   - `.hover-lift` - Lift on hover (pointer devices only)
