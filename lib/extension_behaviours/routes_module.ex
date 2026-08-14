@@ -23,9 +23,11 @@ defmodule Bonfire.UI.Common.RoutesModule do
   end
 
   defmacro use_modules do
+    modules = Bonfire.UI.Common.RoutesModule.modules()
+
     quote do
       unquote(
-        Bonfire.Common.Extend.quoted_use_many_if_enabled(Bonfire.UI.Common.RoutesModule.modules())
+        Bonfire.Common.Extend.quoted_use_many_if_enabled(modules)
         |> IO.inspect(label: "use_modules")
       )
     end

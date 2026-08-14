@@ -1070,13 +1070,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"emoji-picker-element@npm:^1.26.1":
-  version: 1.28.1
-  resolution: "emoji-picker-element@npm:1.28.1"
-  checksum: 10c0/845784bcc71f4f87736c230a3e6f24e00151967299bc65a0c5fdbd853492a6c8ce8309e19a87c1b17261a3b9c5c8eccb3234ee3d507d373b8890249c4800291e
-  languageName: node
-  linkType: hard
-
 "emoji-regex@npm:^7.0.1":
   version: 7.0.3
   resolution: "emoji-regex@npm:7.0.3"
@@ -2193,7 +2186,6 @@ __metadata:
     buffer: "npm:^6.0.3"
     chokidar-cli: "npm:^3.0.0"
     daisyui: "npm:^5.6.6"
-    emoji-picker-element: "npm:^1.26.1"
     esbuild: "npm:^0.19.9"
     fast-blurhash: "npm:^1.1.2"
     hls.js: "npm:^1.6.16"
