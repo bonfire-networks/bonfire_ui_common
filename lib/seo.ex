@@ -101,11 +101,14 @@ defmodule Bonfire.UI.Common.SEO do
     name = Config.get([:ui, :theme, :instance_name]) || Bonfire.Application.name_and_flavour()
     description = Config.get([:ui, :theme, :instance_description])
 
+    image = Bonfire.UI.Common.SEOImage.instance_icon_url()
+
     SEO.OpenGraph.build(
       description: description,
       site_name: name,
       type: :website,
-      locale: Bonfire.Common.Localise.get_locale_id() |> to_string()
+      locale: Bonfire.Common.Localise.get_locale_id() |> to_string(),
+      image: image
     )
   end
 

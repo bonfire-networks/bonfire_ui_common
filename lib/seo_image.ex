@@ -1,6 +1,31 @@
 defmodule Bonfire.UI.Common.SEOImage do
   use Untangle
+  import Bonfire.Common.Utils, only: [maybe_apply: 4]
+  alias Bonfire.Common.Cache
+  alias Bonfire.Common.Config
   alias Bonfire.Common.Extend
+  require Config
+
+  @instance_icon_size 512
+  # Facebook, Signal and Slack ignore an `og:image` below 200×200 and fall back to whatever
+  # else they can scrape, and `Bonfire.Files.IconUploader` thumbnails uploads to 142px by
+  # default, so a smaller icon is re-rendered rather than advertised as-is.
+  @min_social_icon_size 200
+  @instance_icon_cache_dir "data/uploads/instance/seo"
+  @instance_icon_public_path "/data/uploads/instance/seo"
+  @max_source_bytes 5_000_000
+  # Only ever paid for an icon hosted elsewhere: icons served by this instance are read from disk.
+  @fetch_timeout 5_000
+  # Resolving an icon can stat/read a file, fetch a URL and rasterise, while the result is
+  # needed on every dead render (`SEO.juice` for guests, `include_assets/2` for everyone) and
+  # on every `/favicon.ico` hit. `Cache.maybe_apply_cached/3` also caches errors (with a short
+  # TTL of its own), which is what stops a broken icon from making every render pay again.
+  @resolve_cache_ttl 1_000 * 60 * 60 * 6
+  @bundled_instance_icons [
+    "/images/bonfire-icon.png",
+    "/images/bonfire-icon.svg",
+    "/favicon.ico"
+  ]
 
   @doc """
   Ensure an image path/URL is absolute, as required by social crawlers/unfurlers.
@@ -19,15 +44,298 @@ defmodule Bonfire.UI.Common.SEOImage do
 
   def absolute_url(_), do: nil
 
+  @doc "Returns whether an instance icon is customized rather than one of Bonfire's bundled defaults."
+  def custom_instance_icon?(icon)
+
+  def custom_instance_icon?(icon) when is_binary(icon) and icon != "" do
+    # compared as absolute URLs, because `favicon.ico` and `https://<this instance>/favicon.ico`
+    # are the bundled icon just as much as `/favicon.ico` is: treating those as custom would
+    # make `InstanceFaviconPlug` redirect `/favicon.ico` to itself, forever.
+    case absolute_url(icon) do
+      url when is_binary(url) -> url not in bundled_instance_icon_urls()
+      _ -> false
+    end
+  end
+
+  def custom_instance_icon?(_), do: false
+
+  defp bundled_instance_icon_urls do
+    base = Bonfire.Common.URIs.base_url()
+    Enum.flat_map(@bundled_instance_icons, &[&1, "#{base}#{&1}"])
+  end
+
+  @doc "Returns the configured instance icon as a crawler-compatible absolute URL. SVG icons are rendered once to a square PNG."
+  def instance_icon_url(opts \\ []) do
+    Config.get([:ui, :theme, :instance_icon])
+    |> social_icon_url(opts)
+  end
+
+  @doc """
+  Returns an absolute social-preview icon URL for the given icon path/URL.
+
+  An SVG source, or a raster too small to be accepted as an `og:image`, is rendered once to a
+  square transparent PNG under `#{@instance_icon_public_path}` and served from there; anything
+  else is returned as a plain absolute URL. Any failure falls back to the original URL rather
+  than emitting nothing.
+
+  Results are memoised, so this stays cheap on the render path — see `@resolve_cache_ttl`.
+
+  ## Options
+    * `:cache_dir` / `:public_path` - where rendered PNGs are written and served from
+    * `:fetch_source` - a 1-arity fetcher to use instead of `Bonfire.Common.HTTP`
+    * plus anything `Bonfire.Common.Cache.maybe_apply_cached/3` understands (e.g. `cache: false`)
+  """
+  def social_icon_url(icon, opts \\ [])
+
+  def social_icon_url(icon, _opts) when icon in [nil, false, ""], do: nil
+
+  def social_icon_url(icon, opts) when is_binary(icon) do
+    with icon_url when is_binary(icon_url) <- absolute_url(icon) do
+      case resolve_social_icon(icon_url, opts) do
+        {:ok, url} ->
+          url
+
+        error ->
+          warn(error, "Could not prepare the instance icon for social previews, using it as-is")
+
+          icon_url
+      end
+    end
+  end
+
+  def social_icon_url(_, _opts), do: nil
+
+  defp resolve_social_icon(icon_url, opts) do
+    Cache.maybe_apply_cached(
+      &prepare_social_icon/2,
+      [icon_url, opts],
+      opts
+      # the cache dir is part of the key so that callers pointing at their own dir (i.e. tests)
+      # cannot be served a URL under somebody else's
+      |> Keyword.put(:cache_key, "social_icon_url:#{cache_dir(opts)}:#{icon_url}")
+      |> Keyword.put_new(:expire, @resolve_cache_ttl)
+    )
+  end
+
+  defp prepare_social_icon(icon_url, opts) do
+    case icon_source(icon_url, opts) do
+      {:ok, :as_is} -> {:ok, icon_url}
+      {:ok, {bytes, fingerprint}} -> render_cached_icon(bytes, fingerprint, opts)
+      error -> error
+    end
+  end
+
+  # Decides whether an icon has to be re-rendered at all, and where its bytes would come from.
+  defp icon_source(icon_url, opts) do
+    own_host? = own_host?(icon_url)
+    local_path = if own_host?, do: local_path(icon_url)
+
+    cond do
+      is_binary(local_path) ->
+        with {:ok, bytes} <- File.read(local_path), do: classify_source(icon_url, bytes)
+
+      # a URL on our own host that maps to no file on disk: fetching it would be this instance
+      # calling itself mid-render, so leave it alone rather than pay for that (and its timeouts)
+      own_host? ->
+        {:ok, :as_is}
+
+      svg_url?(icon_url) ->
+        with {:ok, bytes} <- fetch_source(icon_url, opts), do: classify_source(icon_url, bytes)
+
+      # A raster hosted elsewhere is taken at face value: fetching it just to measure it would
+      # put a third-party HTTP round trip on the render path, for a URL an admin set by hand.
+      true ->
+        {:ok, :as_is}
+    end
+  end
+
+  # an SVG always has to be rasterised; a raster only when it is too small to be used as an
+  # og:image. The rendered PNG is named after the source's contents, so it is stable across
+  # nodes and deploys, and never stale — which a name derived from the URL alone would not be,
+  # for a flavour that ships `/images/logo.svg` and updates it in place.
+  defp classify_source(icon_url, bytes) do
+    if svg_url?(icon_url) or too_small_for_social?(bytes),
+      do: {:ok, {bytes, Bonfire.Common.Text.hash(bytes, algorithm: :sha256)}},
+      else: {:ok, :as_is}
+  end
+
+  defp render_cached_icon(bytes, fingerprint, opts) do
+    public_path = Keyword.get(opts, :public_path, @instance_icon_public_path)
+    filename = "instance-icon-#{fingerprint}.png"
+    cached_path = Path.join(cache_dir(opts), filename)
+
+    if File.regular?(cached_path) do
+      {:ok, public_icon_url(public_path, filename)}
+    else
+      with :ok <- ensure_renderer_available(),
+           :ok <- validate_source_size(bytes),
+           {:ok, _path} <- render_square_png(bytes, cached_path, @instance_icon_size) do
+        {:ok, public_icon_url(public_path, filename)}
+      end
+    end
+  end
+
+  defp public_icon_url(public_path, filename) do
+    public_path
+    |> Path.join(filename)
+    |> absolute_url()
+  end
+
+  defp cache_dir(opts), do: Keyword.get(opts, :cache_dir, @instance_icon_cache_dir)
+
+  # Renders image bytes onto a square transparent PNG canvas and writes it atomically.
+  defp render_square_png(bytes, output_path, size) do
+    temporary_path =
+      "#{output_path}.#{System.unique_integer([:positive, :monotonic])}.png"
+
+    result =
+      with :ok <- File.mkdir_p(Path.dirname(output_path)),
+           # `thumbnail_buffer` asks the loader to rasterise at the requested size, so a vector
+           # source is rendered crisply at 512px. Loading it first (`svgload_buffer`) and resizing
+           # the result would instead blow up whatever its intrinsic size happens to be — an icon
+           # authored as `viewBox="0 0 32 32"` renders at 32px and upscales to a blurry mess.
+           {:ok, resized_image} <-
+             Vix.Vips.Operation.thumbnail_buffer(bytes, size,
+               height: size,
+               size: :VIPS_SIZE_BOTH
+             ),
+           {:ok, resized_image} <- ensure_alpha(resized_image),
+           {:ok, square_image} <-
+             Image.embed(resized_image, size, size,
+               x: :center,
+               y: :center,
+               background: {:black, alpha: :transparent}
+             ),
+           {:ok, _image} <- Image.write(square_image, temporary_path),
+           :ok <- replace_file(temporary_path, output_path) do
+        {:ok, output_path}
+      end
+
+    File.rm(temporary_path)
+    result
+  end
+
+  defp svg_url?(url) when is_binary(url) do
+    case URI.parse(url).path do
+      path when is_binary(path) -> String.downcase(Path.extname(path)) == ".svg"
+      _ -> false
+    end
+  end
+
+  defp svg_url?(_), do: false
+
+  defp own_host?(icon_url) do
+    case Bonfire.Common.URIs.base_url() do
+      base when is_binary(base) and base != "" -> String.starts_with?(icon_url, base)
+      _ -> false
+    end
+  end
+
+  # Maps a URL served by this instance back to the file on disk, mirroring the `Plug.Static`
+  # mounts in `EndpointTemplate`. Reading the file keeps a page render from depending on an HTTP
+  # round trip to ourselves, and gives us a fingerprint that changes when the file does.
+  defp local_path(icon_url) do
+    with %URI{path: "/" <> _ = path} <- URI.parse(icon_url),
+         path = URI.decode(path),
+         false <- String.contains?(path, "..") do
+      Enum.find_value(static_mounts(), fn {at, from} ->
+        if String.starts_with?(path, at) do
+          candidate = Path.join(from, String.replace_prefix(path, at, ""))
+          if File.regular?(candidate), do: candidate
+        end
+      end)
+    else
+      _ -> nil
+    end
+  end
+
+  defp static_mounts do
+    [{"/data/uploads/", "data/uploads"}] ++ Enum.map(static_app_dirs(), &{"/", &1})
+  end
+
+  defp static_app_dirs do
+    [Config.top_level_otp_app(), :bonfire_ui_common, :bonfire]
+    |> Enum.uniq()
+    |> Enum.map(&app_static_dir/1)
+    |> Enum.filter(&is_binary/1)
+  end
+
+  defp app_static_dir(app) do
+    dir = Application.app_dir(app, "priv/static")
+    if File.dir?(dir), do: dir
+  rescue
+    # not a loaded application
+    ArgumentError -> nil
+  end
+
+  defp too_small_for_social?(bytes) do
+    # when unmeasurable (or bonfire_files disabled), assume it needs no re-rendering
+    case maybe_apply(Bonfire.Files.MediaEdit, :dimensions, [bytes], fallback_return: nil) do
+      {width, height} -> max(width, height) < @min_social_icon_size
+      _ -> false
+    end
+  end
+
+  defp fetch_source(icon_url, opts) do
+    case Keyword.get(opts, :fetch_source) do
+      fun when is_function(fun, 1) -> fun.(icon_url)
+      _ -> fetch_source(icon_url)
+    end
+  end
+
+  defp fetch_source(icon_url) do
+    with {:ok, %{status: status, body: body}} when status in 200..299 and is_binary(body) <-
+           Bonfire.Common.HTTP.get(icon_url, [],
+             # an unbounded fetch here would stall page renders, not just this one: the names
+             # differ per adapter (Finch vs Hackney), and each ignores the ones it does not know
+             adapter: [
+               receive_timeout: @fetch_timeout,
+               request_timeout: @fetch_timeout,
+               recv_timeout: @fetch_timeout,
+               connect_timeout: @fetch_timeout
+             ]
+           ) do
+      {:ok, body}
+    else
+      error -> {:error, error}
+    end
+  end
+
+  defp ensure_renderer_available do
+    if Extend.module_enabled?(Image) and Extend.module_enabled?(Vix.Vips.Operation),
+      do: :ok,
+      else: {:error, :image_renderer_unavailable}
+  end
+
+  defp validate_source_size(bytes) when byte_size(bytes) <= @max_source_bytes, do: :ok
+  defp validate_source_size(_bytes), do: {:error, :source_too_large}
+
+  defp ensure_alpha(image) do
+    if Image.has_alpha?(image), do: {:ok, image}, else: Image.add_alpha(image, :opaque)
+  end
+
+  defp replace_file(temporary_path, output_path) do
+    case File.rename(temporary_path, output_path) do
+      :ok ->
+        :ok
+
+      error ->
+        # `rename/2` overwrites an existing regular file, so a failure means either a real
+        # problem or another process having just won the same race. Only the latter is `:ok`,
+        # and only because the destination filename is fingerprinted: same name, same contents.
+        if File.regular?(output_path), do: :ok, else: error
+    end
+  end
+
   def generate_path(id, author_id, title, body, author, image \\ nil) do
     filename = og_image_paths(id, author_id)
 
     if not File.exists?(filename) do
-      with true <- Extend.module_enabled?(Image) and Extend.module_enabled?(Vix.Vips.Operation),
+      with :ok <- ensure_renderer_available(),
            {:ok, filename} <- generate_og_image(filename, title, body, author, image) do
         filename
       else
-        false ->
+        {:error, :image_renderer_unavailable} ->
           #  necessary libs not available
           nil
 

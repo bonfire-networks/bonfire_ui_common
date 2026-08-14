@@ -215,6 +215,10 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       cache_control_for_vsn_requests = "public, max-age=#{vsn_max_age}, immutable"
       cache_control_for_etags = "public, max-age=#{etag_max_age}"
 
+      # Custom instances should not expose Bonfire's bundled flame at the conventional
+      # favicon path, which is the first URL tried by many link-preview libraries.
+      plug(Bonfire.UI.Common.InstanceFaviconPlug)
+
       plug(Plug.Static,
         at: "/",
         from: :bonfire_ui_common,
@@ -391,26 +395,32 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
         # An admin-uploaded instance icon (instance settings > appearance) replaces the
         # bundled favicons; the config default "/images/bonfire-icon.png" means unset.
+        instance_icon = Config.__get__([:ui, :theme, :instance_icon], nil)
+
         custom_favicon =
-          case Config.__get__([:ui, :theme, :instance_icon], nil) do
-            icon
-            when is_binary(icon) and icon != "" and icon != "/images/bonfire-icon.png" and
-                   icon != "/images/bonfire-icon.svg" ->
-              icon
+          if Bonfire.UI.Common.SEOImage.custom_instance_icon?(instance_icon),
+            do: Bonfire.UI.Common.SEOImage.social_icon_url(instance_icon),
+            else: nil
 
-            _ ->
-              nil
-          end
+        # iOS silently ignores an SVG touch icon, and `social_icon_url/2` falls back to the
+        # original SVG when rasterising fails, so keep the bundled PNG rather than a
+        # home-screen icon that quietly degrades to a screenshot of the page.
+        apple_touch_icon =
+          if is_binary(custom_favicon) and not String.ends_with?(custom_favicon, ".svg"),
+            do: custom_favicon,
+            else: "/pwa/ios/180.png"
 
+        # escaped because these are admin-set config values going straight into an attribute
         favicon_links =
           if custom_favicon do
-            ~s(<link rel="icon" href="#{custom_favicon}">)
+            ~s(<link rel="icon" href="#{Plug.HTML.html_escape(custom_favicon)}">\n)
           else
             """
             <link rel="icon" type="image/x-icon" href="/favicon.ico">
             <link rel="icon" type="image/svg+xml" href='#{endpoint_module.static_path("/images/bonfire-icon.svg")}'>
             """
-          end
+          end <>
+            ~s(<link rel="apple-touch-icon" href="#{Plug.HTML.html_escape(apple_touch_icon)}">)
 
         """
         #{favicon_links}
@@ -434,7 +444,6 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="apple-mobile-web-app-title" content="Bonfire">
-        <link rel="apple-touch-icon" href="/pwa/ios/180.png">
 
         <!-- iOS Splash Screens (home-screen PWA launch only).
              iOS requires the image's pixel size to EXACTLY equal
