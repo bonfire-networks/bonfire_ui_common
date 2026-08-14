@@ -215,7 +215,13 @@ media-player {
    that explain state changes. Component-specific variants live beside their
    normal motion rules below. */
 @media (prefers-reduced-motion: reduce) {
-  html {
+  /* Unlayered, so it beats both Tailwind's `scroll-smooth` (@layer utilities)
+     and `.carousel-scroll` (@layer components). Resetting `html` alone misses
+     every element that opts into smooth scrolling for itself — carousels,
+     media strips, the thread rail. */
+  html,
+  .scroll-smooth,
+  .carousel-scroll {
     scroll-behavior: auto;
   }
 
@@ -661,6 +667,7 @@ textarea {
 /* Phoenix LiveView loading state variants */
 @variant phx-click-loading (&.phx-click-loading, .phx-click-loading &);
 @variant feed-newer-loading (&.feed-newer-loading, .feed-newer-loading &);
+@variant feed-jump-visible (&.feed-jump-visible, .feed-jump-visible &);
 @variant phx-scroll-loading (&.phx-scroll-loading, .phx-scroll-loading &);
 @variant phx-submit-loading (&.phx-submit-loading, .phx-submit-loading &);
 @variant phx-change-loading (&.phx-change-loading, .phx-change-loading &);
@@ -1003,6 +1010,21 @@ hex-input::part(input) {
   --content-divider-width: var(--border);
   --rail-offset: var(--spacing-feed);
   --user-menu-divider: var(--border);
+  /* Shared ink for every structural divider — the shell's column borders and
+     the hairline between feed activities, which falls back to this. Set it
+     alone and the vertical and horizontal separators stay in step; override
+     `--activity-border-color` only to part them on purpose. */
+  --divider-color: var(--color-secondary);
+}
+
+/* A custom property's var() references are substituted where it is DECLARED,
+   then the resolved value inherits — so `--divider-color` alone would freeze
+   the root theme's secondary and follow a nested `data-theme` subtree (the
+   settings theme previews) no further. Re-declaring restores the per-element
+   resolution the `border-secondary` utilities used to give us. Preset
+   overrides like html[data-ui-preset="stream"] outrank this on specificity. */
+[data-theme] {
+  --divider-color: var(--color-secondary);
 }
 
 @layer components {
@@ -1016,7 +1038,7 @@ hex-input::part(input) {
     margin-left: calc(-1 * var(--activity-bleed, 1px));
     padding: var(--activity-padding, var(--spacing-card));
     border-style: solid;
-    border-color: var(--activity-border-color, var(--color-secondary));
+    border-color: var(--activity-border-color, var(--divider-color));
     border-width: var(--activity-border-width, var(--border));
     border-radius: var(--activity-radius, var(--radius-box));
     background-color: var(--color-base-100);
@@ -1047,6 +1069,34 @@ hex-input::part(input) {
 
   .widget-list > * + * {
     margin-top: var(--widget-overlap, calc(-1 * var(--border)));
+  }
+
+  /* Horizontal carousel track (markup: the Spotlight, Who-to-follow and
+     polls-closing-soon widgets, all driven by the CarouselScroll hook).
+
+     Note what is NOT here: `touch-action`. Pinning it to `pan-x` tells the
+     browser this element handles nothing but horizontal gestures, so a thumb
+     swipe landing on a card can no longer scroll the page — on mobile that
+     leaves most of the widget dead to vertical scroll. Native two-axis
+     panning is the whole point. */
+  .carousel-scroll {
+    display: flex;
+    /* = gap-3, shared by every carousel; a gap-* utility on the element wins */
+    gap: 0.75rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    /* under prefers-reduced-motion the unlayered reset near the top of this
+       file (html, .scroll-smooth, …) turns this back to auto */
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-secondary)
+      color-mix(in oklch, var(--color-secondary) 15%, transparent);
+  }
+
+  .carousel-scroll > * {
+    flex-shrink: 0;
+    scroll-snap-align: start;
   }
 }
 
