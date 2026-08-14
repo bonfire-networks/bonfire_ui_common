@@ -1,3 +1,5 @@
+import { scrollBehavior } from "./motion.js";
+
 let ScrollHooks = {}
 
 ScrollHooks.ScrollTo = {
@@ -9,7 +11,7 @@ ScrollHooks.ScrollTo = {
 		} else {
 			el = this.el
 		}
-		if (el) el.scrollIntoView({ behavior: "smooth", block: "center" })
+		if (el) el.scrollIntoView({ behavior: scrollBehavior(), block: "center" })
 	}
 }
 
@@ -18,81 +20,83 @@ ScrollHooks.CarouselScroll = {
 		const el = this.el
 
 		el.addEventListener("scroll-left", () => {
-			el.scrollBy({ left: -300, behavior: "smooth" });
+			el.scrollBy({ left: -300, behavior: scrollBehavior() });
 		});
 		el.addEventListener("scroll-right", () => {
-			el.scrollBy({ left: 300, behavior: "smooth" });
+			el.scrollBy({ left: 300, behavior: scrollBehavior() });
 		});
 
-		// Drag/swipe-to-scroll: lets the whole carousel be dragged horizontally even
-		// when the finger lands on nested interactive or scrollable card content.
-		// Carousel surfaces must allow horizontal gestures so this hook can drive
-		// scrollLeft; it bails out as soon as vertical intent wins.
+		// Mouse-only drag-to-scroll: lets the whole carousel be dragged even when
+		// the cursor lands on nested interactive or scrollable card content. Touch
+		// is deliberately left alone — `overflow-x-auto` already pans natively
+		// there, and taking over the gesture would steal vertical page scrolling
+		// from the (naturally arced) thumb swipes that start on a carousel.
 		let startX = 0
-		let startY = 0
 		let startScroll = 0
 		let dragging = false
-		let decided = false
-		this._pointer = null
-
-		const onDown = (e) => {
-			if (e.pointerType === "mouse" && e.button !== 0) return
-			this._pointer = e.pointerId
-			startX = e.clientX
-			startY = e.clientY
-			startScroll = el.scrollLeft
-			dragging = false
-			decided = false
-		}
+		let pointer = null
 
 		const onMove = (e) => {
-			if (this._pointer !== e.pointerId) return
+			if (pointer !== e.pointerId) return
+			// the button can come up somewhere we never hear about (another frame,
+			// a native drag, devtools); a moving pointer with nothing held is our
+			// cue that the gesture is over
+			if (e.buttons === 0) return endDrag()
 			const dx = e.clientX - startX
-			const dy = e.clientY - startY
 
-			if (!decided) {
-				if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return
-				decided = true
-				if (Math.abs(dx) > Math.abs(dy)) {
-					// horizontal intent: take over and scroll the carousel
-					dragging = true
-					el.style.scrollSnapType = "none"
-					el.style.scrollBehavior = "auto"
-					el.setPointerCapture(e.pointerId)
-				} else {
-					// vertical intent: bail out and let the page scroll
-					this._pointer = null
-					return
-				}
+			if (!dragging) {
+				// a few pixels of slack, so a click doesn't read as a drag
+				if (Math.abs(dx) < 6) return
+				dragging = true
+				el.style.scrollSnapType = "none"
+				el.style.scrollBehavior = "auto"
+				// keep receiving moves once the cursor leaves the carousel
+				el.setPointerCapture(e.pointerId)
 			}
 
-			if (dragging) {
-				e.preventDefault()
-				el.scrollLeft = startScroll - dx
-			}
+			e.preventDefault()
+			el.scrollLeft = startScroll - dx
 		}
 
 		const onUp = (e) => {
-			if (this._pointer !== e.pointerId) return
-			this._pointer = null
+			if (pointer !== e.pointerId) return
+			endDrag()
+		}
+
+		// Listeners live only for the duration of a gesture, so a carousel sitting
+		// under the cursor doesn't dispatch a pointermove into JS on every frame.
+		// They sit on `window`, not `el`: below the drag threshold there is no
+		// pointer capture yet, so a press that travels off the carousel before
+		// being released would otherwise never see its own pointerup.
+		const endDrag = () => {
+			pointer = null
+			window.removeEventListener("pointermove", onMove)
+			window.removeEventListener("pointerup", onUp)
+			window.removeEventListener("pointercancel", onUp)
 			if (dragging) {
 				dragging = false
-				// restore CSS scroll-snap so it settles to the nearest card
+				// hand scroll-snap back so it settles to the nearest card
 				el.style.scrollSnapType = ""
 				el.style.scrollBehavior = ""
 			}
 		}
 
+		const onDown = (e) => {
+			if (e.pointerType !== "mouse" || e.button !== 0) return
+			pointer = e.pointerId
+			startX = e.clientX
+			startScroll = el.scrollLeft
+			dragging = false
+			window.addEventListener("pointermove", onMove)
+			window.addEventListener("pointerup", onUp)
+			window.addEventListener("pointercancel", onUp)
+		}
+
 		el.addEventListener("pointerdown", onDown)
-		el.addEventListener("pointermove", onMove, { passive: false })
-		el.addEventListener("pointerup", onUp)
-		el.addEventListener("pointercancel", onUp)
 
 		this._carouselCleanup = () => {
 			el.removeEventListener("pointerdown", onDown)
-			el.removeEventListener("pointermove", onMove)
-			el.removeEventListener("pointerup", onUp)
-			el.removeEventListener("pointercancel", onUp)
+			endDrag()
 		}
 	},
 	destroyed() {

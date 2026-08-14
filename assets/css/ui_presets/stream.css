@@ -28,7 +28,6 @@ html[data-ui-preset="stream"] {
   --activity-bleed: 0px;
   --activity-radius: 0;
   --activity-border-width: 0 0 var(--stream-hairline-width);
-  --activity-border-color: var(--stream-hairline);
   --activity-hover-bg: color-mix(
     in oklab,
     var(--color-base-content) 3%,
@@ -77,6 +76,11 @@ html[data-ui-preset="stream"] {
   --rail-divider-width: 0px;
   --rail-offset: 0px;
   --user-menu-divider: 0px;
+  /* One ink for every separator: the shell's remaining column borders and the
+     activity hairline, which inherits this via --activity-border-color's
+     fallback. Left on --color-secondary the vertical borders read as a
+     different, darker line than the separators sitting right beside them. */
+  --divider-color: var(--stream-hairline);
   --widget-gap: var(--stream-section-gap);
   --widget-overlap: 0px;
   /* Field fill (borderless search inputs). Deliberately NOT aliased to
@@ -575,24 +579,6 @@ html[data-ui-preset="stream"] [data-role="widget-reset"] .text-primary {
 @media (hover: hover) and (pointer: fine) {
   html[data-ui-preset="stream"] [data-role="widget-reset"]:hover {
     background-color: var(--stream-fill);
-  }
-}
-
-/* Spotlight carousel arrows follow the same rule: quiet fills, ink
-   glyphs — paging controls are furniture, not calls to action. */
-html[data-ui-preset="stream"]
-  [data-id="instance_pinned_widget"]
-  :where([data-role="carousel-previous"], [data-role="carousel-next"]) {
-  background-color: var(--stream-fill);
-  color: var(--stream-text-interactive-muted);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  html[data-ui-preset="stream"]
-    [data-id="instance_pinned_widget"]
-    :where([data-role="carousel-previous"], [data-role="carousel-next"]):hover {
-    background-color: var(--stream-fill-hover);
-    color: var(--color-base-content);
   }
 }
 

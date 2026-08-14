@@ -10,11 +10,11 @@
   </a>
 
   <div class={
-    "drawer lg:drawer-open mx-auto w-full lg:bg-base-200 border-secondary lg:border-l-hair xl:border-r-hair",
+    "drawer lg:drawer-open mx-auto w-full lg:bg-base-200 border-(color:--divider-color) lg:border-l-hair xl:border-r-hair",
     "lg:max-w-[var(--spacing-1290)]": !@full_width
   }>
     <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" phx-update="ignore">
-    <div class="drawer-content lg:border-l-hair lg:border-secondary dock-offset">
+    <div class="drawer-content lg:border-l-hair lg:border-(color:--divider-color) dock-offset">
       <div
         data-id="layout"
         data-two-columns={@without_secondary_widgets == true && @without_sidebar != true}
@@ -31,7 +31,7 @@
           class="drawer-toggle"
           phx-update="ignore"
         />
-        <div class="drawer-content xl:border-r-(length:--content-divider-width) xl:border-secondary">
+        <div class="drawer-content xl:border-r-(length:--content-divider-width) xl:border-(color:--divider-color)">
           <div
             data-id="main_section"
             data-single-column={@without_sidebar == true}
@@ -97,7 +97,7 @@
             data-id="right_nav_and_widgets"
             role="complementary"
             aria-label={l("Widgets sidebar")}
-            class="w-rail bg-(--rail-bg) lg:bg-transparent xl:border-l-(length:--rail-divider-width) xl:border-secondary min-h-screen lg:min-h-0 flex flex-col h-full overflow-y-auto pt-safe lg:pt-0 xl:ml-(--rail-offset)"
+            class="w-rail bg-(--rail-bg) lg:bg-transparent xl:border-l-(length:--rail-divider-width) xl:border-(color:--divider-color) min-h-screen lg:min-h-0 flex flex-col h-full overflow-y-auto pt-safe lg:pt-0 xl:ml-(--rail-offset)"
           >
             <div
               :if={not is_nil(@current_user_id) and socket_connected?(@__context__)}
@@ -151,7 +151,7 @@
         id="nav_sidebar"
         data-id="nav_sidebar"
         data-sidebar-minimal={@without_sidebar == :minimal}
-        class="w-80 px-4 px-safe lg:px-0 lg:mr-(--rail-offset) lg:w-rail lg:border-r-(length:--rail-divider-width) lg:border-secondary bg-(--rail-bg) self-stretch flex flex-col overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-0 lg:h-screen lg:pb-0"
+        class="w-80 px-4 px-safe lg:px-0 lg:mr-(--rail-offset) lg:w-rail lg:border-r-(length:--rail-divider-width) lg:border-(color:--divider-color) bg-(--rail-bg) self-stretch flex flex-col overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-0 lg:h-screen lg:pb-0"
       >
         <div class="flex flex-col flex-1 min-h-full lg:min-h-0">
           {!-- Skeleton mirroring PersistentLive's shape. Always rendered alongside the sticky LV;

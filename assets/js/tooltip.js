@@ -6,9 +6,7 @@ import {
 	computePosition,
 } from "@floating-ui/dom";
 
-// Check for user's reduced motion preference for accessibility
-const prefersReducedMotion = () =>
-	window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+import { prefersReducedMotion } from "./motion.js";
 
 let TooltipHooks = {};
 
