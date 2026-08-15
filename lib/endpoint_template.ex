@@ -488,26 +488,13 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
         js_path =
           if live_socket? || (current_user_id && !assigns[:force_static]) do
-            endpoint_module.static_path("/assets/bonfire_live.js")
+            "/assets/bonfire_live.js"
           else
-            endpoint_module.static_path("/assets/bonfire_basic.js")
+            "/assets/bonfire_basic.js"
           end
 
-        # In dev, append file mtime as cache buster to avoid stale memory-cached scripts
-        js =
-          if Config.env() != :prod do
-            mtime =
-              Path.join(:code.priv_dir(:bonfire) |> to_string(), "static" <> js_path)
-              |> File.stat()
-              |> case do
-                {:ok, %{mtime: mtime}} -> :erlang.phash2(mtime)
-                _ -> System.system_time(:second)
-              end
-
-            "#{js_path}?v=#{mtime}"
-          else
-            js_path
-          end
+        # digested in prod, mtime-versioned outside it, where there is no digest to bust a cached script
+        js = Bonfire.Common.URIs.versioned_static_path(js_path, endpoint_module)
 
         """
         <script data-live-socket="#{live_socket? || "false"}" defer phx-track-static crossorigin='anonymous' src='#{js}'></script>
