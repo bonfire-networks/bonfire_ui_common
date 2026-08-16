@@ -27,33 +27,51 @@ defmodule Bonfire.UI.Common.ThemeHelperTest do
     end
   end
 
+  describe "default_ui_preset/0 (the flavour or instance default)" do
+    test "a preset configured for the instance beats the built-in default" do
+      # stands in for a flavour's config; `Config.put` would leak app env into the other async tests
+      Process.put([:bonfire, :ui, :theme, :ui_preset], "stream")
+
+      assert ThemeHelper.default_ui_preset() == "stream"
+      assert ThemeHelper.ui_preset(%{}) == "stream"
+    end
+
+    test "normalises a misconfigured preset to the built-in default" do
+      Process.put([:bonfire, :ui, :theme, :ui_preset], "bogus")
+
+      assert ThemeHelper.default_ui_preset() == "typographic"
+    end
+  end
+
   describe "ui_preset/1 (the appearance setting)" do
-    test "defaults to the typographic preset" do
-      assert ThemeHelper.ui_preset(%{}) == "typographic"
+    test "falls back to the flavour or instance default when the scope chose nothing" do
+      assert ThemeHelper.ui_preset(%{}) == ThemeHelper.default_ui_preset()
     end
 
     test "returns a user's chosen preset" do
       user = fake_user!()
+      chosen = non_default_ui_preset()
 
       assert {:ok, %{__context__: %{current_user: user}}} =
-               Settings.put([:ui, :theme, :ui_preset], "stream",
+               Settings.put([:ui, :theme, :ui_preset], chosen,
                  current_user: user,
                  scope: :user
                )
 
-      assert ThemeHelper.ui_preset(%{current_user: user}) == "stream"
+      assert ThemeHelper.ui_preset(%{current_user: user}) == chosen
     end
 
     test "normalises atomised stored values (settings round-trip atoms on a warm VM)" do
       user = fake_user!()
+      chosen = non_default_ui_preset()
 
       assert {:ok, %{__context__: %{current_user: user}}} =
-               Settings.put([:ui, :theme, :ui_preset], :stream,
+               Settings.put([:ui, :theme, :ui_preset], String.to_atom(chosen),
                  current_user: user,
                  scope: :user
                )
 
-      assert ThemeHelper.ui_preset(%{current_user: user}) == "stream"
+      assert ThemeHelper.ui_preset(%{current_user: user}) == chosen
     end
 
     test "normalises unknown values to the default" do
@@ -65,8 +83,13 @@ defmodule Bonfire.UI.Common.ThemeHelperTest do
                  scope: :user
                )
 
-      assert ThemeHelper.ui_preset(%{current_user: user}) == "typographic"
+      assert ThemeHelper.ui_preset(%{current_user: user}) == ThemeHelper.default_ui_preset()
     end
+  end
+
+  # so a user-scoped choice stays distinguishable from the default under any flavour
+  defp non_default_ui_preset do
+    if ThemeHelper.default_ui_preset() == "stream", do: "typographic", else: "stream"
   end
 
   describe "resolve_theme_config/3" do

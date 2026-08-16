@@ -12,8 +12,9 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   @default_ui_preset "typographic"
 
   @doc """
-  The scope's chosen interface preset — `"typographic"` (the default) or `"stream"` —
-  normalising anything unknown to the default.
+  The scope's chosen interface preset — `"typographic"` or `"stream"` — falling back to
+  `default_ui_preset/0` (what the flavour or instance configured) and normalising anything
+  unknown to the built-in default.
 
   Rendered as the `data-ui-preset` attribute on `<html>`; every Stream rule in
   `assets/css/ui_presets/stream.css` is rooted at `html[data-ui-preset="stream"]`,
@@ -24,7 +25,21 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   def ui_preset(assigns) do
     context = current_user(assigns) || current_account(assigns) || Map.get(assigns, :conn)
 
+    # not `default_ui_preset/0`: `Settings.get` already merges the config scope under the user's,
+    # so a flavour's value is found long before this default is reached
     Settings.get([:ui, :theme, :ui_preset], @default_ui_preset, context)
+    |> normalize_ui_preset()
+  end
+
+  @doc """
+  The preset a scope falls back to when it hasn't chosen one: whatever the flavour (or instance
+  admin) set as `config :bonfire, :ui, theme: [ui_preset: ...]`, or `"typographic"` if neither did.
+
+  Ignores any user- or account-scoped choice (`scope: :instance`), so the settings form can
+  preselect the instance default rather than assuming the built-in one.
+  """
+  def default_ui_preset do
+    Settings.get([:ui, :theme, :ui_preset], @default_ui_preset, scope: :instance)
     |> normalize_ui_preset()
   end
 
