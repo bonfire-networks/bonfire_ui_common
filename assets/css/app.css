@@ -360,6 +360,14 @@ label[for],
   font-weight: 400;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .follow-hover-danger:hover:not(.btn-disabled):not(:disabled) {
+    --btn-color: var(--color-error);
+    --btn-fg: var(--color-error-content);
+    --btn-soft-bg: initial;
+  }
+}
+
 .\!btn-sm {
   --fontsize: 0.875rem !important;
   font-weight: 400;
