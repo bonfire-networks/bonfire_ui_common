@@ -26,6 +26,7 @@ import {
   evictExpiredBonfireParams,
 } from "./local_storage_params";
 import { setupLiveSocketLifecycle } from "./live_socket_lifecycle.js";
+import { setupPullToRefresh } from "./pull_to_refresh.js";
 import { ExtensionHooks } from "../../../../config/current_flavour/deps.hooks.js";
 import ComponentHooks from "../../../../config/current_flavour/assets/hooks/index.js";
 
@@ -170,6 +171,9 @@ let liveSocket = new LiveSocket(socketPath, Socket, {
 });
 
 setupLiveSocketLifecycle(liveSocket);
+
+// Self-noops outside PWA standalone mode / non-touch devices
+setupPullToRefresh(liveSocket);
 
 // Show progress bar on live navigation and form submits
 // Only displays if still loading after 120 msec

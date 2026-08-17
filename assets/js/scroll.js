@@ -104,4 +104,19 @@ ScrollHooks.CarouselScroll = {
 	}
 }
 
+// True if an ancestor between target and stopAt (exclusive) is genuinely
+// scrollable — shared touch arbiter for the composer scroll lock and pull-to-refresh.
+export function hasScrollableAncestor(target, stopAt) {
+	// iOS WebKit can report a Text node as a touch target
+	let el = target instanceof Element ? target : (target && target.parentElement) || null
+	while (el && el !== stopAt) {
+		if (el.scrollHeight > el.clientHeight) {
+			const oy = getComputedStyle(el).overflowY
+			if (oy === "auto" || oy === "scroll") return true
+		}
+		el = el.parentElement
+	}
+	return false
+}
+
 export { ScrollHooks };

@@ -40,7 +40,7 @@ function storageGet(storageName, key) {
 	}
 }
 
-function flagEnabled(key) {
+export function flagEnabled(key) {
 	return (
 		storageGet("localStorage", key) === "true" ||
 		storageGet("sessionStorage", key) === "true"
