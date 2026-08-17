@@ -2389,29 +2389,47 @@ body:has(#smart_input_container[data-draft])
 }
 
 :root {
-  --mobile-dock-offset: calc(3.5rem + env(safe-area-inset-bottom));
+  /* daisyUI's `.dock` is `calc(4rem + safe-area)` tall. Declare here so the space the dock occupies and the space content reserves for it can't drift apart.
+  Zero by default: only pages that actually render a dock reserve room for it. */
+  --dock-height: 4rem;
+  --mobile-dock-offset: 0px;
 }
 
+/* The dock is `lg:hidden`, so it only takes space below that breakpoint, and only when one is in the DOM. Deliberately keyed on presence rather than visibility, so the reserved space survives the dock being hidden while an input has focus (below) instead of making the page jump on every focus/blur. */
+@media (max-width: 1023px) {
+  body:has(.dock) {
+    --mobile-dock-offset: calc(var(--dock-height) + env(safe-area-inset-bottom));
+  }
+}
+
+/* Reserves room under content that would otherwise scroll behind the dock. On the page wrapper in `layout_live.sface`; add it to any scroll container outside it. */
 .dock-offset {
   padding-bottom: var(--mobile-dock-offset);
   scroll-padding-bottom: var(--mobile-dock-offset);
 }
-@media (min-width: 1024px) {
-  .dock-offset {
-    padding-bottom: 0;
-    scroll-padding-bottom: 0;
-  }
+
+/* For elements pinned to the bottom of the viewport (sticky/fixed pills, banners, toolbars), which gain nothing from a padded ancestor. Sits directly above the dock, or above the bottom safe area when there is no dock, so users of this utility never need their own `env(safe-area-inset-bottom)` padding. Set `--dock-safe-gap` for breathing room above the dock. */
+.dock-safe-bottom {
+  bottom: calc(
+    max(var(--mobile-dock-offset), env(safe-area-inset-bottom)) + var(--dock-safe-gap, 0px)
+  );
 }
 
-body:has(input:focus, textarea:focus, [contenteditable]:focus) .dock {
+/* Get the dock out of the way of the virtual keyboard. Matched on text-entry inputs only: a bare `input:focus` also matches the drawer toggles (`#sidebar-drawer`, `#widgets-drawer`), which take focus when their label is activated, so opening the sidebar made the dock disappear. */
+body:has(
+    input:is(
+        [type="text"],
+        [type="search"],
+        [type="email"],
+        [type="password"],
+        [type="url"],
+        [type="tel"],
+        [type="number"],
+        :not([type])
+      ):focus,
+    textarea:focus,
+    [contenteditable]:not([contenteditable="false"]):focus
+  )
+  .dock {
   display: none;
-}
-
-.dock > #dock-guest-actions {
-  flex-basis: 100%;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 0.75rem;
-  max-width: none;
-  margin-bottom: 0;
 }

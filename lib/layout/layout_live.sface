@@ -259,102 +259,98 @@
       </aside>
     </div>
   </div>
-  <div class="dock z-fixed lg:hidden text-base-content">
-    <div :if={!current_user(@__context__)} id="dock-guest-actions">
-      <Bonfire.UI.Common.LogoLinkLive
-        with_name
-        href="/"
-        container_class="min-w-0 flex flex-1 flex-row items-center gap-2 cursor-pointer"
-        image_class="size-10 shrink-0 object-contain"
-        name_class="truncate text-xl font-bold text-base-content"
-        link_opts={[id: "dock-instance-home"]}
-      />
 
-      <LinkLive
-        :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}
-        id="dock-signup-action"
-        to={path(:signup)}
-        class="btn btn-primary min-h-11 h-11 shrink-0 rounded-full px-4 whitespace-nowrap"
-      >
-        <span>{l("Create account")}</span>
+  <div :if={!@hide_mobile_dock} class="dock z-fixed lg:hidden text-base-content">
+    {#if current_user(@__context__)}
+      <LinkLive to="/" class={"dock-active": @selected_tab == "home"}>
+        <#Icon iconify="ph:house-fill" class="size-6" aria-hidden="true" />
+        <span class="sr-only">{l("Home")}</span>
       </LinkLive>
 
       <LinkLive
-        :if={!@hide_login_action}
-        id="dock-login-action"
-        to={path(:login, :index)}
-        class="btn btn-soft min-h-11 h-11 shrink-0 rounded-full px-4 whitespace-nowrap"
+        to={~p"/search"}
+        class={
+          "dock-active":
+            @selected_tab in [:search, "Bonfire.Data.Identity.User", "Bonfire.Data.Social.Post"]
+        }
       >
-        <span>{l("Log in")}</span>
+        <#Icon iconify="ph:magnifying-glass-fill" class="size-6" aria-hidden="true" />
+        <span class="sr-only">{l("Search")}</span>
       </LinkLive>
-    </div>
 
-    <LinkLive :if={current_user(@__context__)} to="/" class={"dock-active": @selected_tab == "home"}>
-      <#Icon iconify="ph:house-fill" class="size-6" aria-hidden="true" />
-      <span class="sr-only">{l("Home")}</span>
-    </LinkLive>
+      <button
+        type="button"
+        phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open(%JS{}, %{})}
+        phx-target="#smart_input"
+        aria-label={l("Compose")}
+      >
+        <#Icon iconify="ph:note-pencil-fill" class="size-6" aria-hidden="true" />
+        <span class="sr-only">{l("Compose")}</span>
+      </button>
 
-    <LinkLive
-      :if={current_user(@__context__)}
-      to={~p"/search"}
-      class={
-        "dock-active":
-          @selected_tab in [:search, "Bonfire.Data.Identity.User", "Bonfire.Data.Social.Post"]
-      }
-    >
-      <#Icon iconify="ph:magnifying-glass-fill" class="size-6" aria-hidden="true" />
-      <span class="sr-only">{l("Search")}</span>
-    </LinkLive>
-
-    <button
-      :if={current_user(@__context__)}
-      type="button"
-      phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open(%JS{}, %{})}
-      phx-target="#smart_input"
-      aria-label={l("Compose")}
-    >
-      <#Icon iconify="ph:note-pencil-fill" class="size-6" aria-hidden="true" />
-      <span class="sr-only">{l("Compose")}</span>
-    </button>
-
-    <LinkLive
-      :if={current_user(@__context__)}
-      to={~p"/notifications"}
-      class={"dock-active": @selected_tab == :notifications}
-    >
-      <span class="relative inline-flex">
-        <#Icon iconify="ph:bell-fill" class="size-6" aria-hidden="true" />
-        <span class="absolute -top-2 -right-2">
-          <StatefulComponent
-            id="dock-notifications-badge"
-            module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
-            feed_id={e(current_user(@__context__), :character, :notifications_id, nil)}
-          />
+      <LinkLive to={~p"/notifications"} class={"dock-active": @selected_tab == :notifications}>
+        <span class="relative inline-flex">
+          <#Icon iconify="ph:bell-fill" class="size-6" aria-hidden="true" />
+          <span class="absolute -top-2 -right-2">
+            <StatefulComponent
+              id="dock-notifications-badge"
+              module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
+              feed_id={e(current_user(@__context__), :character, :notifications_id, nil)}
+            />
+          </span>
         </span>
-      </span>
-      <span class="sr-only">{l("Notifications")}</span>
-    </LinkLive>
+        <span class="sr-only">{l("Notifications")}</span>
+      </LinkLive>
 
-    <LinkLive
-      :if={current_user(@__context__)}
-      to={~p"/messages"}
-      class={"dock-active": @selected_tab == :messages}
-    >
-      <span class="relative inline-flex">
-        <#Icon iconify="ph:tray-fill" class="size-6" aria-hidden="true" />
-        <span class="absolute -top-2 -right-2">
-          <StatefulComponent
-            id="dock-messages-badge"
-            module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
-            feed_id={e(current_user(@__context__), :character, :messages_id, nil)}
-          />
+      <LinkLive to={~p"/messages"} class={"dock-active": @selected_tab == :messages}>
+        <span class="relative inline-flex">
+          <#Icon iconify="ph:tray-fill" class="size-6" aria-hidden="true" />
+          <span class="absolute -top-2 -right-2">
+            <StatefulComponent
+              id="dock-messages-badge"
+              module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
+              feed_id={e(current_user(@__context__), :character, :messages_id, nil)}
+            />
+          </span>
         </span>
-      </span>
-      <span class="sr-only">{l("Messages")}</span>
-    </LinkLive>
+        <span class="sr-only">{l("Messages")}</span>
+      </LinkLive>
+    {#else}
+      <div class="flex flex-row items-center justify-between basis-full max-w-none gap-3 mb-0">
+        <Bonfire.UI.Common.LogoLinkLive
+          with_name
+          href="/"
+          container_class="min-w-0 flex flex-1 flex-row items-center gap-2 cursor-pointer"
+          image_class="size-10 shrink-0 object-contain"
+          name_class="truncate text-xl font-bold text-base-content"
+          link_opts={[id: "dock-instance-home"]}
+        />
+
+        {#if !current_account(@__context__)}
+          <LinkLive
+            :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}
+            id="dock-signup-action"
+            to={path(:signup)}
+            class="btn btn-primary min-h-11 h-11 shrink-0 rounded-full px-4 whitespace-nowrap"
+          >
+            <span>{l("Create account")}</span>
+          </LinkLive>
+
+          <LinkLive
+            id="dock-login-action"
+            to={path(:login, :index)}
+            class="btn btn-soft min-h-11 h-11 shrink-0 rounded-full px-4 whitespace-nowrap"
+          >
+            <span>{l("Log in")}</span>
+          </LinkLive>
+        {/if}
+      </div>
+    {/if}
   </div>
 </div>
+
 <Bonfire.UI.Common.ReusableModalLive id="modal" />
+
 <div class="relative z-max">
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} />
   <StatelessComponent module={maybe_component(Bonfire.Notify.PWAInstallBannerLive, @__context__)} />
