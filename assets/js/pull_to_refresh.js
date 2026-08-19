@@ -200,29 +200,29 @@ export function setupPullToRefresh(liveSocket) {
 
   const cancelGesture = () => {
     const wasPulling = state === "pulling";
-    teardownGesture();
+    resetGesture();
     if (wasPulling) retreat();
   };
 
   const onTouchMove = (e) => {
+    if (state === "idle") return; // armed but no gesture: stay out of the way
     if (e.touches.length > 1) return cancelGesture(); // pinch, not a pull
     const touch = e.touches[0];
     const dy = touch.clientY - startY;
     const dx = touch.clientX - startX;
 
     if (state === "tracking") {
-      if (dy < 0 || Math.abs(dx) > Math.abs(dy)) return teardownGesture();
-      if (dy < SLOP_PX) return;
-      // layout-forcing checks, deferred until a pull actually commits
+      if (dy <= 0 || Math.abs(dx) > dy) return resetGesture();
+      // layout-forcing checks, run once per gesture rather than on every touch
       if (
         startTarget &&
         (startTarget.closest('[role="dialog"]') ||
           hasScrollableAncestor(startTarget, document.body))
       ) {
-        return teardownGesture();
+        return resetGesture();
       }
       state = "pulling";
-      showIndicator();
+      showIndicator(); // parked off-screen until the pull clears SLOP_PX
     }
 
     if (state === "pulling") {
@@ -241,7 +241,7 @@ export function setupPullToRefresh(liveSocket) {
       state === "pulling" &&
       lastVisible >= THRESHOLD_PX;
     const wasPulling = state === "pulling";
-    teardownGesture();
+    resetGesture();
     if (!wasPulling) return;
     pill.style.transition = TRANSITION;
     if (commit) {
@@ -254,19 +254,31 @@ export function setupPullToRefresh(liveSocket) {
     }
   };
 
-  function teardownGesture() {
-    window.removeEventListener("touchmove", onTouchMove);
-    window.removeEventListener("touchend", onTouchFinish);
-    window.removeEventListener("touchcancel", onTouchFinish);
+  function resetGesture() {
     if (state === "tracking" || state === "pulling") state = "idle";
   }
+
+  let armed = false;
+  const syncArmed = () => {
+    // <= 0 rather than === 0: iOS rubber-banding reports negative offsets.
+    const atTop = document.scrollingElement.scrollTop <= 0;
+    if (atTop === armed) return;
+    armed = atTop;
+    if (atTop) {
+      window.addEventListener("touchmove", onTouchMove, { passive: false });
+    } else {
+      // the page scrolled out from under a pull we failed to cancel: drop the
+      // gesture rather than leave the indicator stranded on screen
+      window.removeEventListener("touchmove", onTouchMove);
+      cancelGesture();
+    }
+  };
 
   window.addEventListener(
     "touchstart",
     (e) => {
       if (state !== "idle" || e.touches.length !== 1) return;
-      // <= 0 rather than === 0: iOS rubber-banding reports negative offsets.
-      if (document.scrollingElement.scrollTop > 0 || gestureBlocked()) return;
+      if (!armed || gestureBlocked()) return;
       // iOS WebKit can report a Text node as the touch target
       startTarget =
         e.target instanceof Element ? e.target : e.target?.parentElement;
@@ -274,20 +286,20 @@ export function setupPullToRefresh(liveSocket) {
       startY = e.touches[0].clientY;
       lastVisible = 0;
       state = "tracking";
-      // per-gesture listeners only, so the permanent listener stays passive
-      window.addEventListener("touchmove", onTouchMove, { passive: false });
-      window.addEventListener("touchend", onTouchFinish);
-      window.addEventListener("touchcancel", onTouchFinish);
     },
     { passive: true },
   );
+  window.addEventListener("touchend", onTouchFinish);
+  window.addEventListener("touchcancel", onTouchFinish);
+  window.addEventListener("scroll", syncArmed, { passive: true });
+  syncArmed();
 
   // live navigation cancels gesture/refresh — the reload watchdog especially
   // must not survive onto the next page
   window.addEventListener("phx:page-loading-start", (e) => {
     if (e.detail?.kind !== "redirect") return;
     if (state === "tracking" || state === "pulling") {
-      teardownGesture();
+      resetGesture();
       hideIndicator();
     } else if (state === "refreshing") {
       abortRefresh?.();

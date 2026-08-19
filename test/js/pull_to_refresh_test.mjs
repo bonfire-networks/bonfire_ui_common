@@ -88,6 +88,7 @@ function loadModule({
 
   const documentElement = { dataset: {} };
   const bodyChildren = [];
+  const scrollingElement = { scrollTop: 0 };
 
   const context = {
     Math,
@@ -107,7 +108,7 @@ function loadModule({
     navigator: { maxTouchPoints },
     document: {
       documentElement,
-      scrollingElement: { scrollTop: 0 },
+      scrollingElement,
       body: {
         contains: (node) => bodyChildren.includes(node),
         appendChild: (node) => bodyChildren.push(node),
@@ -164,6 +165,11 @@ function loadModule({
   // the indicator wrapper is the first element appended to <body>
   const indicator = () => bodyChildren[0];
 
+  const scrollTo = (y) => {
+    scrollingElement.scrollTop = y;
+    fire("scroll");
+  };
+
   return {
     advance,
     documentElement,
@@ -173,6 +179,7 @@ function loadModule({
     listening,
     pushes,
     reloads: () => reloads,
+    scrollTo,
   };
 }
 
@@ -190,6 +197,32 @@ test("does not install listeners outside PWA mode without the debug flag", () =>
 test("the debug flag enables the gesture outside standalone mode", () => {
   const env = loadModule({ pwa: false, flag: true });
   assert.equal(env.listening("touchstart"), true);
+});
+
+test("the non-passive touchmove listener is registered before any touch begins", () => {
+  // registering it from inside touchstart is too late: a browser fixes a
+  // gesture's cancelability up front, so the pull is lost to native overscroll
+  const env = loadModule({ targets: [makeTarget()] });
+  assert.equal(env.listening("touchmove"), true);
+});
+
+test("touchmove is unregistered once the page is scrolled off the top", () => {
+  const env = loadModule({ targets: [makeTarget()] });
+  env.scrollTo(200);
+  assert.equal(env.listening("touchmove"), false);
+  env.scrollTo(0);
+  assert.equal(env.listening("touchmove"), true);
+});
+
+test("a pull the page scrolls out from under retreats instead of stranding the pill", () => {
+  const env = loadModule({ targets: [makeTarget()] });
+  env.gesture.start();
+  env.gesture.move(100, 400);
+  env.scrollTo(200); // native scroll won the gesture after all
+  env.gesture.end();
+  assert.equal(env.pushes.length, 0);
+  env.advance(1_000);
+  assert.equal(env.indicator().style.display, "none");
 });
 
 test("a pull below the threshold neither pushes nor reloads", () => {
