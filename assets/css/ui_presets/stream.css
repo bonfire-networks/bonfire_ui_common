@@ -404,6 +404,37 @@ html[data-ui-preset="stream"]
   background-color: transparent;
 }
 
+/* Belonging is an eyebrow for the activity, not a detached heading. Give its
+   icon the avatar column and rely on the activity's gap for vertical rhythm. */
+html[data-ui-preset="stream"]
+  .activity_wrapper
+  .activity
+  > [data-role="published_in"] {
+  display: grid;
+  grid-template-columns: 35px minmax(0, 1fr);
+  column-gap: 0;
+  row-gap: 0;
+  margin-bottom: 0;
+}
+
+html[data-ui-preset="stream"]
+  .activity_wrapper
+  .activity
+  > [data-role="published_in"]
+  > :first-child {
+  justify-self: center;
+}
+
+/* A person's boost already explains why the activity appears in Stream.
+   Keep the original publication context in other presets, where the denser
+   provenance line is intentional. */
+html[data-ui-preset="stream"]
+  .activity_wrapper
+  [data-role="boosted_by"]
+  [data-role="published_in"] {
+  display: none;
+}
+
 /* Actions stay visible and steady; counts update without digit jiggle.
    Press feedback (active:scale) is kept — only the hover lift is removed,
    which Tailwind v4 ships as native `scale`/`translate`, not `transform`. */
@@ -1006,65 +1037,48 @@ html[data-ui-preset="stream"]
   }
 }
 
-/* ============================================================
-   Reply-context: "rail" treatment (stream only).
-   Replaces the default preset's banner + dotted line + trunk +
-   elbow + 34px reply indent (app.css REPLY-CONTEXT NESTING) with
-   one continuous gutter rail through the whole activity: a 2px
-   base-300 band on the avatar axis (fading out at the top to
-   signal elided ancestors), a small node on the rail as the
-   "see full thread" anchor, both posts sharing one avatar
-   column, and the parent body slightly muted so the reply reads
-   as the payload. Decided from the reply-card prototype
-   (rail variant), 2026-08-10. Geometry: avatar 35px + 18px gap,
-   so the avatar axis is x=17.5 and the text column starts at
-   53px (matches the constants in app.css).
-   ============================================================ */
+/* Reply context: compact parent → full reply. Demoting the parent preserves
+   useful context without giving it the reply's visual weight; the short
+   connector expresses only the ancestry that is actually shown. */
 
-/* The rail. The activity <article> is the positioning context
-   (it carries `relative`); negative offsets stretch through the
-   wrapper padding so the band spans the full feed row. */
-html[data-ui-preset="stream"] [data-reply-context]::before {
-  content: "";
-  position: absolute;
-  left: 16px;
-  top: calc(-1 * var(--activity-padding, var(--spacing-card)));
-  bottom: calc(-1 * var(--activity-padding, var(--spacing-card)));
-  width: 2px;
-  background: var(--color-base-300);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 32px);
-  mask-image: linear-gradient(to bottom, transparent, black 32px);
-  pointer-events: none;
+html[data-ui-preset="stream"] [data-reply-context] {
+  --stream-reply-avatar-size: 35px;
+  --stream-reply-avatar-axis: 17.5px;
+  --stream-context-avatar-size: 20px;
+  --stream-context-avatar-top: 7.5px;
+  --stream-context-avatar-bottom: 27.5px;
+  --stream-context-avatar-hit-inset: 4.5px;
+  --stream-context-column: 36px;
+  --stream-context-connector-up-reach: 38px;
+  --stream-context-connector-reach: 43.5px;
+  --stream-context-connector: color-mix(
+    in oklab,
+    var(--color-primary) 25%,
+    var(--stream-canvas)
+  );
 }
 
-/* No thread_header means the shown parent IS the thread root
-   (ActivityLive hides the header then): nothing is elided above,
-   so the rail starts at the parent avatar instead of bleeding
-   past the row edge with the "continues up" fade. */
-html[data-ui-preset="stream"]
-  [data-reply-context]:not(:has(> [data-role="thread_header"]))::before {
-  top: 17px;
-  border-radius: 999px;
-  -webkit-mask-image: none;
-  mask-image: none;
+html[data-ui-preset="stream"] [data-reply-context][data-compact="true"] {
+  --stream-reply-avatar-size: 32px;
+  --stream-reply-avatar-axis: 16px;
+  --stream-context-avatar-top: 6px;
+  --stream-context-avatar-bottom: 26px;
+  --stream-context-avatar-hit-inset: 6px;
+  --stream-context-column: 34px;
+  --stream-context-connector-reach: 42px;
 }
 
-/* One shared column: no extra indent on the reply; its body and
-   actions align with the text column. */
+/* The reply keeps the same full-width body and actions as a standard Stream
+   activity. Only the nested parent stays inset, so it reads as context rather
+   than as a second activity with equal weight. */
 html[data-ui-preset="stream"]
   [data-reply-context]
   > div:not([data-role="thread_header"]):not([data-role="published_in"]) {
   margin-left: 0;
 }
-html[data-ui-preset="stream"]
-  [data-reply-context]
-  > div:not([data-role="subject"]):not([data-role="thread_header"]):not(
-    [data-role="published_in"]
-  ) {
-  margin-left: 53px;
-}
 
-/* The rail replaces the default connector chrome. */
+/* Replace the default nested elbow. The context article adds the
+   shorter avatar-to-avatar connector below. */
 html[data-ui-preset="stream"] [data-reply-context] > article::after,
 html[data-ui-preset="stream"]
   [data-reply-context]
@@ -1072,9 +1086,7 @@ html[data-ui-preset="stream"]
   content: none;
 }
 
-/* "See full thread" banner becomes a quiet inline affordance:
-   no strip, label on the text column, cause (node on the rail)
-   and effect (label) adjacent. */
+/* "See full thread" becomes a quiet inline affordance. */
 html[data-ui-preset="stream"]
   [data-reply-context]
   > [data-role="thread_header"] {
@@ -1084,7 +1096,9 @@ html[data-ui-preset="stream"]
   border-bottom: 0;
   border-radius: 0;
   justify-content: flex-start;
+  gap: 8px;
   min-height: 24px;
+  min-width: 0;
 }
 
 html[data-ui-preset="stream"]
@@ -1099,8 +1113,7 @@ html[data-ui-preset="stream"]
   text-transform: none;
 }
 
-/* The node: a small disc sitting on the rail (was the dotted
-   "continues up" overlay — background-image reset kills it). */
+/* The node replaces the default dotted "continues up" overlay. */
 html[data-ui-preset="stream"]
   [data-reply-context]
   > [data-role="thread_header"]::before {
@@ -1139,13 +1152,14 @@ html[data-ui-preset="stream"]
 html[data-ui-preset="stream"]
   [data-reply-context]
   > [data-role="thread_header"]
-  a {
-  margin-left: 53px;
+  > a[data-role="see_full_thread"] {
+  flex: 0 0 auto;
+  margin-left: var(--stream-context-column);
 }
 html[data-ui-preset="stream"]
   [data-reply-context]
   > [data-role="thread_header"]
-  a
+  > a[data-role="see_full_thread"]
   span {
   text-transform: none;
   letter-spacing: 0;
@@ -1156,7 +1170,7 @@ html[data-ui-preset="stream"]
   html[data-ui-preset="stream"]
     [data-reply-context]
     > [data-role="thread_header"]
-    a:hover
+    > a[data-role="see_full_thread"]:hover
     span {
     color: var(--color-primary);
   }
@@ -1171,8 +1185,126 @@ html[data-ui-preset="stream"]
   }
 }
 
-/* Parent demotion: hierarchy by subtraction — the reply is the
-   activity, the parent is context. */
+/* Parent demotion: hierarchy by subtraction — the reply is the activity and
+   the parent is a compact avatar + note. The identity remains available in
+   the avatar link's accessible label without competing visually. */
+html[data-ui-preset="stream"] [data-reply-context] > article.replied {
+  display: grid;
+  grid-template-columns: var(--stream-context-column) minmax(0, 1fr);
+  column-gap: 0;
+  row-gap: 12px;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > article.replied
+  > [data-role="subject"] {
+  grid-column: 1;
+  grid-row: 1;
+  align-items: flex-start;
+}
+
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > article.replied
+  [data-id="subject_details"] {
+  display: none;
+}
+
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > article.replied
+  [data-id="subject_avatar"] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--stream-reply-avatar-size);
+  height: var(--stream-reply-avatar-size);
+}
+
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > article.replied
+  [data-id="subject_avatar"]::before {
+  content: "";
+  position: absolute;
+  inset: calc(-1 * var(--stream-context-avatar-hit-inset));
+}
+
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > article.replied
+  [data-scope="avatar"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--stream-reply-avatar-size);
+  height: var(--stream-reply-avatar-size);
+}
+
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > article.replied
+  [data-scope="avatar"]
+  > div {
+  width: var(--stream-context-avatar-size) !important;
+  height: var(--stream-context-avatar-size) !important;
+}
+
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > article.replied
+  > :not([data-role="subject"]) {
+  grid-column: 2;
+  min-width: 0;
+  margin-left: 0;
+}
+
+/* Translation belongs to the primary activity. On the compact parent it adds
+   a second control row and weakens the parent-as-context hierarchy. */
+html[data-ui-preset="stream"]
+  [data-reply-context]
+  > article.replied
+  > [data-id="activity_note"]
+  > :has(> .translate-btn-client, > .translate-btn-server) {
+  display: none;
+}
+
+/* Continue the thread axis upward to the arrow node. Starting inside the node
+   keeps the join seamless; the small avatar masks the line at the other end. */
+html[data-ui-preset="stream"]
+  [data-reply-context]:has(> [data-role="thread_header"])
+  > article.replied::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--stream-reply-avatar-axis) - 1px);
+  top: calc(-1 * var(--stream-context-connector-up-reach));
+  height: calc(
+    var(--stream-context-connector-up-reach) +
+      var(--stream-context-avatar-top)
+  );
+  width: 2px;
+  border-radius: 999px;
+  background: var(--stream-context-connector);
+  pointer-events: none;
+}
+
+html[data-ui-preset="stream"] [data-reply-context] > article.replied::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--stream-reply-avatar-axis) - 1px);
+  top: var(--stream-context-avatar-bottom);
+  bottom: calc(-1 * var(--stream-context-connector-reach));
+  width: 2px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--stream-context-connector);
+  pointer-events: none;
+}
+
 html[data-ui-preset="stream"]
   [data-reply-context]
   > article
@@ -1180,17 +1312,27 @@ html[data-ui-preset="stream"]
   color: color-mix(in oklab, var(--color-base-content) 85%, transparent);
 }
 
-/* Tighter parent → reply gap (default preset uses mb-8 = 32px);
-   proximity should group the pair more strongly than the feed
-   groups unrelated activities. */
-html[data-ui-preset="stream"] [data-reply-context] > article.replied {
-  margin-bottom: 14px;
-}
-
-/* The "published in <group>" banner sits on top of the rail. */
+/* Group/topic belonging is the broadest context, so Stream establishes it
+   before both thread navigation and post content. Other presets keep the
+   original standalone row in its existing position. */
 html[data-ui-preset="stream"]
   [data-reply-context]
-  > [data-role="published_in"] {
-  position: relative;
-  z-index: 1;
+  > .stream-reply-published-in {
+  display: grid;
+  grid-template-columns: var(--stream-context-column) minmax(0, 1fr);
+  column-gap: 0;
+  row-gap: 0;
+  width: fit-content;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+html[data-ui-preset="stream"]
+  [data-reply-context]:has(> .stream-reply-published-in)
+  > [data-role="published_in"]:not(.stream-reply-published-in) {
+  display: none;
 }
