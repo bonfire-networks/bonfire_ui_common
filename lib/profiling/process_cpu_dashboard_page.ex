@@ -221,7 +221,7 @@ defmodule Bonfire.UI.Common.ProcessCpuDashboardPage do
     rows =
       rank_by_reductions(before || %{}, now, 5_000)
       |> annotate(aggregate, cpu_factor(utilisation))
-      |> Enum.map(&describe/1)
+      |> describe_rows()
 
     state = %{
       state
@@ -262,10 +262,18 @@ defmodule Bonfire.UI.Common.ProcessCpuDashboardPage do
         do: {pid, reductions}
   end
 
-  # only for the rows actually shown, since Process.info/2 on every process would undo the point
+  @doc "Fills in the details shown for each row: only for the rows actually displayed, since `Process.info/2` across every process would undo the point of the page."
+  def describe_rows(rows), do: Enum.map(rows, &describe/1)
+
   defp describe(%{key: pid} = row) do
     info =
-      Process.info(pid, [:registered_name, :initial_call, :current_function, :message_queue_len])
+      Process.info(pid, [
+        :registered_name,
+        :initial_call,
+        :dictionary,
+        :current_function,
+        :message_queue_len
+      ])
 
     Map.merge(row, %{
       pid: inspect(pid),
@@ -280,7 +288,17 @@ defmodule Bonfire.UI.Common.ProcessCpuDashboardPage do
   defp name_of(info) do
     case info[:registered_name] do
       name when is_atom(name) and not is_nil(name) -> inspect(name)
-      _ -> format_mfa(info[:initial_call])
+      _ -> format_mfa(initial_call(info))
+    end
+  end
+
+  # `Process.info(:initial_call)` reports `{:proc_lib, :init_p, 5}` for *every* OTP process, which
+  # names nothing — the real MFA is stashed in the process dictionary, which is where LiveDashboard's
+  # own Processes page reads it from
+  defp initial_call(info) do
+    case info[:dictionary][:"$initial_call"] do
+      {_m, _f, _a} = mfa -> mfa
+      _ -> info[:initial_call]
     end
   end
 

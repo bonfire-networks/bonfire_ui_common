@@ -101,6 +101,50 @@ defmodule Bonfire.UI.Common.ProcessCpuRankTest do
     end
   end
 
+  defmodule NamedFixture do
+    @moduledoc "A plain GenServer: `Process.info(:initial_call)` reports proc_lib for these, and the real MFA is only in the process dictionary."
+    use GenServer
+
+    def start, do: GenServer.start(__MODULE__, :ok)
+
+    @impl GenServer
+    def init(:ok), do: {:ok, :ok}
+  end
+
+  describe "naming" do
+    test "uses the real initial call rather than proc_lib's wrapper" do
+      # every OTP process reports {:proc_lib, :init_p, 5} as its initial_call, so reading only that
+      # renders a whole prod table as ":proc_lib.init_p/5" and identifies nothing
+      {:ok, pid} = NamedFixture.start()
+      on_exit(fn -> if Process.alive?(pid), do: GenServer.stop(pid) end)
+
+      params = %{limit: 5_000, sort_by: :reductions, sort_dir: :desc}
+
+      stale = %{
+        Page.initial_state()
+        | at: System.monotonic_time(:millisecond) - 10_000,
+          sample: %{}
+      }
+
+      {rows, _total, _state} = Page.fetch_processes(params, node(), stale)
+      row = Enum.find(rows, &(&1.key == pid))
+
+      assert row, "the fixture process should appear in the table"
+      refute row.name =~ "proc_lib"
+      assert row.name =~ "NamedFixture"
+    end
+
+    test "prefers a registered name when there is one" do
+      row =
+        %{key: Process.whereis(:code_server), percent: 0.0, reductions: 1}
+        |> List.wrap()
+        |> Page.describe_rows()
+        |> hd()
+
+      assert row.name =~ "code_server"
+    end
+  end
+
   describe "fetch_processes/3" do
     @params %{limit: 50, sort_by: :percent, sort_dir: :desc}
 
