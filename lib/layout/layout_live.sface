@@ -262,10 +262,35 @@
 
   <div :if={!@hide_mobile_dock} class="dock z-fixed lg:hidden text-base-content">
     {#if current_user(@__context__)}
-      <LinkLive to="/" class={"dock-active": @selected_tab == "home"}>
-        <#Icon iconify="ph:house-fill" class="size-6" aria-hidden="true" />
-        <span class="sr-only">{l("Home")}</span>
-      </LinkLive>
+      <label
+          for="sidebar-drawer"
+          aria-label={l("Open navigation sidebar")}
+          class=""
+        >
+          <div class="relative">
+            {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
+              <div class="w-9 h-9 rounded-full ring-[0.7px] ring-primary flex items-center justify-center">
+                <#Icon iconify="ph:gear-fill" class="w-5 h-5 text-primary" />
+              </div>
+            {#else}
+              <Bonfire.UI.Common.AvatarLive
+                ring
+                bg_class="rounded-full"
+                title={e(current_user(@__context__), :profile, :name, "Anon")}
+                class="inline-block object-cover cursor-pointer rounded-full w-9 h-9"
+                src={Media.avatar_url(current_user(@__context__))}
+                user_id={current_user_id(@__context__)}
+                is_remote={false}
+              />
+            {/if}
+            <span
+              aria-hidden="true"
+              class="rounded-full bg-base-100 absolute -right-1 -bottom-1 leading-none"
+            >
+              <#Icon iconify="ph:list-bold" class="w-4 h-4 text-primary" />
+            </span>
+          </div>
+        </label>
 
       <LinkLive
         to={~p"/search"}
