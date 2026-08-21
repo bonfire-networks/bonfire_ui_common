@@ -993,7 +993,7 @@ html[data-ui-preset="stream"]
   [data-role="object-thread"]
   [data-role="thread"]
   > .bonfire-wrapper {
-  padding: 0;
+  padding: 0 var(--stream-content-padding) 0 0;
   border-width: 0 0 var(--stream-hairline-width);
   border-color: var(--stream-hairline);
   border-radius: 0;
