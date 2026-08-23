@@ -9,9 +9,9 @@ defmodule Bonfire.UI.Common.LinkWidgetLiveTest do
   # the class helpers take the boolean `active?/3` returns, rather than recomputing it per styled part, the template evaluates it once per nav item (see the note in `LinkWidgetLive`)
   test "active navigation receives a distinct surface, icon and label treatment" do
     widget = %{page: "home"}
+    active? = LinkWidgetLive.active?("home", widget, %{})
 
-    assert active? = LinkWidgetLive.active?("home", widget, %{})
-
+    assert active?
     assert LinkWidgetLive.active_link_class(active?) == ""
     assert LinkWidgetLive.active_icon_class(active?) == "text-primary"
     assert LinkWidgetLive.active_label_class(active?) == "font-semibold text-base-content"
@@ -19,9 +19,9 @@ defmodule Bonfire.UI.Common.LinkWidgetLiveTest do
 
   test "inactive navigation recedes without losing legibility" do
     widget = %{page: "home"}
+    active? = LinkWidgetLive.active?("notifications", widget, %{})
 
-    refute active? = LinkWidgetLive.active?("notifications", widget, %{})
-
+    refute active?
     assert LinkWidgetLive.active_link_class(active?) == "hover:bg-base-content/5"
     assert LinkWidgetLive.active_icon_class(active?) == "text-muted"
     assert LinkWidgetLive.active_label_class(active?) == "font-normal text-base-content/80"

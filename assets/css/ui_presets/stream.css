@@ -1312,12 +1312,10 @@ html[data-ui-preset="stream"]
   color: color-mix(in oklab, var(--color-base-content) 85%, transparent);
 }
 
-/* Group/topic belonging is the broadest context, so Stream establishes it
-   before both thread navigation and post content. Other presets keep the
-   original standalone row in its existing position. */
 html[data-ui-preset="stream"]
   [data-reply-context]
-  > .stream-reply-published-in {
+  > [data-role="published_in"] {
+  order: -1;
   display: grid;
   grid-template-columns: var(--stream-context-column) minmax(0, 1fr);
   column-gap: 0;
@@ -1329,10 +1327,4 @@ html[data-ui-preset="stream"]
   padding: 0;
   border: 0;
   background: transparent;
-}
-
-html[data-ui-preset="stream"]
-  [data-reply-context]:has(> .stream-reply-published-in)
-  > [data-role="published_in"]:not(.stream-reply-published-in) {
-  display: none;
 }
