@@ -49,6 +49,13 @@ defmodule Bonfire.UI.Common.LinkLive do
   """
   slot default
 
+  # Phoenix's `<.link>` raises on any scheme outside `Phoenix.LiveView.Utils`'s `@valid_uri_schemes`, which is a guard against `javascript:` etc, not a judgement that other protocols are invalid. Federated content routinely carries schemes that aren't on that list (`gemini:`, `ipfs:`, `magnet:`, `matrix:`, …) and one of them was enough to crash a whole activity render, so classify instead of allowlisting: execute-able schemes are shown as plain text, Phoenix's own list goes through `<.link>`, and anything else stays a working link via a plain `<a>`.
+  @unsafe_schemes ~w(javascript data vbscript)
+  # what LiveView's `navigate` accepts (paths and http(s) only — see `valid_live_navigation_destination!`)
+  @navigable_schemes ~w(http https)
+  # the rest of Phoenix's `@valid_uri_schemes`: valid in an href, but not navigable
+  @phoenix_href_schemes ~w(ftp ftps mailto news irc gopher nntp feed telnet mms rtsp svn tel fax xmpp)
+
   defp link_opts(opts, label, target) do
     opts
     |> Keyword.merge("aria-label": label)
@@ -288,10 +295,40 @@ defmodule Bonfire.UI.Common.LinkLive do
   end
 
   defp render_link(%{to: to} = assigns) when is_binary(to) and to != "" do
-    do_render_link(assigns)
+    case scheme_of(to) do
+      # can execute in the page: never render as a link, which is what Phoenix's own guard is for
+      scheme when scheme in @unsafe_schemes -> render_no_link(assigns)
+      # a path or http(s) URL: all that LiveView `navigate` accepts, so let `target` decide as before
+      scheme when is_nil(scheme) or scheme in @navigable_schemes -> do_render_link(assigns)
+      # fine in an href but NOT navigable (`mailto:`, `tel:`, `xmpp:`, …), which would otherwise raise in the `navigate` clause whenever `target` is left at its default
+      scheme when scheme in @phoenix_href_schemes -> render_href_link(assigns)
+      # a real link that `<.link>` refuses to emit: emit the anchor ourselves
+      _unlisted -> render_plain_anchor(assigns)
+    end
   end
 
-  defp render_link(assigns) do
+  defp render_link(assigns), do: render_no_link(assigns)
+
+  defp scheme_of(to) do
+    case URI.parse(to) do
+      %URI{scheme: nil} -> nil
+      %URI{scheme: scheme} -> String.downcase(scheme)
+    end
+  rescue
+    # unparseable: treat as unsafe rather than guessing
+    _ -> "javascript"
+  end
+
+  # for schemes `<.link>` won't emit: same attributes, no LiveView involvement (so no `data-phx-link` and no navigation attempt)
+  defp render_plain_anchor(assigns) do
+    ~F"""
+    <a href={@to} class={@class} target={@target} {...link_opts(@opts, @label, @target)}>
+      <#slot>{@label}</#slot>
+    </a>
+    """
+  end
+
+  defp render_no_link(assigns) do
     ~F"""
     <div data-name="no_link" class={@class} {...@opts |> Keyword.merge("aria-label": @label)}>
       <#slot>{@label}</#slot>
@@ -299,10 +336,20 @@ defmodule Bonfire.UI.Common.LinkLive do
     """
   end
 
-  # In-app default (`_top`): use LiveView (SPA) `navigate` — fast client-side nav
-  # that stays in the current window. `target="_top"` is a browser no-op here.
-  def do_render_link(%{to: to, target: target} = assigns)
-      when is_binary(to) and to != "" and target in [nil, "_top"] do
+  # Only for a path or http(s) URL: `navigate` accepts nothing else, so the scheme dispatch above keeps `mailto:`, `tel:`, `xmpp:` etc away from here (they'd raise).
+  #
+  # In-app default (`_top`): use LiveView (SPA) `navigate` — fast client-side nav that stays in the current window. `target="_top"` is a browser no-op here.
+  defp do_render_link(%{to: to, target: target} = assigns)
+       when is_binary(to) and to != "" and target in [nil, "_top"] do
+    render_navigate_link(assigns)
+  end
+
+  # Explicit target (e.g. `_blank` in an embed iframe): render a plain `href` link with NO `data-phx-link`, so the browser opens the target itself. Using LiveView `navigate` here would double-navigate, so the browser opens the new tab/window AND LiveView's click handler (which ignores `target` on nested click targets) also runs an in-frame live redirect.
+  defp do_render_link(%{to: to} = assigns) when is_binary(to) and to != "" do
+    render_href_link(assigns)
+  end
+
+  defp render_navigate_link(assigns) do
     ~F"""
     <.link
       navigate={@to}
@@ -311,18 +358,12 @@ defmodule Bonfire.UI.Common.LinkLive do
       target={@target}
       {...link_opts(@opts, @label, @target)}
     >
-      {!-- FIXME: do not generate random ID to avoid re-rendering --}
       <#slot>{@label}</#slot>
     </.link>
     """
   end
 
-  # Explicit target (e.g. `_blank` in an embed iframe): render a plain `href`
-  # link with NO `data-phx-link`, so the browser opens the target itself. Using
-  # LiveView `navigate` here would double-navigate — the browser opens the new
-  # tab/window AND LiveView's click handler (which ignores `target` on nested
-  # click targets) also runs an in-frame live redirect.
-  def do_render_link(%{to: to} = assigns) when is_binary(to) and to != "" do
+  defp render_href_link(assigns) do
     ~F"""
     <.link href={@to} class={@class} target={@target} {...link_opts(@opts, @label, @target)}>
       <#slot>{@label}</#slot>

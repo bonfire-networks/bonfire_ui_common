@@ -96,11 +96,14 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
   end
 
   defp load_count(socket, feed_id, for_user) do
+    # Seen is tracked per-account; the switch-user list passes profile structs that don't carry the
+    # account, so pass the account from the socket (same account for all profiles) — see issue #2220.
     unseen_count =
       Bonfire.Common.Utils.maybe_apply(
         Bonfire.Social.FeedActivities,
         :unseen_count,
-        [feed_id, current_user: for_user]
+        [feed_id, [current_user: for_user, current_account: current_account(socket)]],
+        fallback_return: nil
       )
 
     {:ok,
@@ -111,13 +114,16 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
   defp maybe_async_load_count(socket, component_name, feed_id, for_user, persistent?) do
     if socket_connected?(socket) do
       pid = self()
+      # capture the account before spawning (see #2220) — the badge structs lack it
+      current_account = current_account(socket)
 
       apply_task(:start, fn ->
         unseen_count =
           Bonfire.Common.Utils.maybe_apply(
             Bonfire.Social.FeedActivities,
             :unseen_count,
-            [feed_id, current_user: for_user]
+            [feed_id, [current_user: for_user, current_account: current_account]],
+            fallback_return: nil
           )
 
         maybe_send_update(
