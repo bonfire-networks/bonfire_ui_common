@@ -323,7 +323,10 @@
         <span class="sr-only">{l("Notifications")}</span>
       </LinkLive>
 
-      <LinkLive to={~p"/messages"} class={"dock-active": @selected_tab == :messages}>
+      <LinkLive
+        to={~p"/messages"}
+        class={"dock-active": @selected_tab in [:messages, "messages"]}
+      >
         <span class="relative inline-flex">
           <#Icon iconify="ph:tray-fill" class="size-6" aria-hidden="true" />
           <span class="absolute -top-2 -right-2">
