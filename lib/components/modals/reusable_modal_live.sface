@@ -54,8 +54,8 @@
         {!-- Close button (always anchored to modal-box top-right, never scrolls) --}
         <div class={
           "absolute block",
-          "top-2 right-2 z-popover": !@no_backdrop and (!@overflow or @image_preview),
-          "-top-3 -right-3 z-popover": !@no_backdrop and @overflow and !@image_preview,
+          "top-2 right-2 z-tooltip": !@no_backdrop and (!@overflow or @image_preview),
+          "-top-3 -right-3 z-tooltip": !@no_backdrop and @overflow and !@image_preview,
           "top-1 -right-3 z-tooltip h-full": @no_backdrop
         }>
           <div class={Surface.css_class("pt-safe": @image_preview or @no_backdrop)}>
@@ -64,10 +64,12 @@
               phx-target={"[id='#{@id}']"}
               type="button"
               aria-label={l("Close modal")}
+              data-role="close-modal"
               class={
-                "btn btn-circle btn-sm focus-ring transition-interactive sm-only:touch-target",
-                "btn-ghost": !@image_preview,
-                "btn-primary": @image_preview,
+                "btn btn-circle focus-ring transition-interactive cursor-pointer",
+                "size-11 min-h-11 min-w-11 !rounded-full bg-transparent text-base-content/70 hover:bg-base-200 hover:text-base-content":
+                  !@no_backdrop and !@image_preview,
+                "size-11 min-h-11 min-w-11 !rounded-full btn-primary": @image_preview,
                 "!rounded-none btn-ghost !btn-xs opacity-70 btn-secondary": @no_backdrop
               }
             >

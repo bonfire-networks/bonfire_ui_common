@@ -136,7 +136,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
     |> fun.(:smart_input_opts, fn -> %{} end)
     # |> fun.(:showing_within, fn -> nil end)
     |> fun.(:thread_mode, fn -> nil end)
-    # |> fun.(:page, fn -> nil end)
+    |> fun.(:page, fn -> nil end)
     # |> fun.(:page_title, fn -> nil end)
     |> fun.(:selected_tab, fn -> nil end)
     |> fun.(:activity_inception, fn -> nil end)
@@ -193,7 +193,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
       # :page_header_aside,
       # :root_flash,
       # :sidebar_widgets,
-      # :page,
+      :page,
       # :page_title,
       :selected_tab,
       :locale,

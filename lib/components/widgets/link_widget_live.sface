@@ -1,4 +1,4 @@
-{#case active?(@selected_tab, @widget, @__context__)}
+{#case active?(@page, @selected_tab, @widget, @__context__)}
   {#match active}
     <LinkLive
       to={if is_function(@to),

@@ -29,11 +29,12 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   prop skip_badges, :any, default: false
 
   @doc "Returns whether a navigation widget represents the current page."
-  def active?(selected_tab, widget, context) do
-    page = String.downcase(to_string(widget[:page]))
+  def active?(current_page, selected_tab, widget, context) do
+    widget_page = String.downcase(to_string(widget[:page]))
+    current_pages = Enum.map([current_page, selected_tab], &String.downcase(to_string(&1)))
     prefix = widget[:href_prefix]
 
-    (page != "" and String.downcase(to_string(selected_tab)) == page) or
+    (widget_page != "" and widget_page in current_pages) or
       (is_binary(prefix) and
          String.starts_with?(to_string(e(context, :current_url, "")), prefix))
   end
@@ -41,8 +42,8 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   @doc "Returns the filled Phosphor variant while leaving other icon names unchanged."
   def fill_icon(icon), do: String.replace(to_string(icon), "-duotone", "-fill")
 
-  # the class helpers take the precomputed boolean so the template evaluates active?/3
-  # (2 string comparisons + allocations) once per nav item, not once per styled part
+  # the class helpers take the precomputed boolean so the template evaluates active?/4
+  # once per nav item, not once per styled part
 
   @doc "Returns the label classes for an active or inactive navigation item."
   def active_label_class(active?) do

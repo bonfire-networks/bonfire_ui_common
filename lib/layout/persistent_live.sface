@@ -74,6 +74,7 @@
       <div data-id="nav_sidebar_sticky_items" class="flex flex-col px-3 lg:px-0">
         <Bonfire.UI.Common.ExtensionMenuNavLive
           parent_id="nav_sticky"
+          page={@page}
           selected_tab={@selected_tab}
           nav_items={Bonfire.UI.Common.NavModule.default_nav()}
         />

@@ -468,6 +468,11 @@ html[data-ui-preset="stream"] [data-id="feed_newer_loading"] > div {
   }
 }
 
+
+div[data-id="profile_main_actions"] {
+  margin-top: 4px;
+}
+
 /* Media, previews and carousels remain bounded because they are objects
    inside the stream. Avatars, emoji and other already-round images are
    exempt so their own shape survives. */
@@ -490,6 +495,10 @@ html[data-ui-preset="stream"]
 html[data-ui-preset="stream"] [data-id="instance_pinned_widget"] > aside {
   padding-inline: var(--stream-content-padding);
   border-width: 0;
+}
+
+html[data-ui-preset="stream"] [data-id="instance_pinned_widget"] > aside > [data-role="widget-header"] {
+  padding-inline: 0;
 }
 
 html[data-ui-preset="stream"]
@@ -944,7 +953,7 @@ html[data-ui-preset="stream"] {
 }
 
 html[data-ui-preset="stream"] [data-id="comment"] {
-  padding-top: var(--comment-top-inset);
+  padding: var(--comment-top-inset);
 }
 
 html[data-ui-preset="stream"] [data-role="object-thread"] {
