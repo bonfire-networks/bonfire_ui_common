@@ -1,0 +1,11 @@
+{#case maybe_apply(Bonfire.Files.FaviconStore, :favicon_url, [@link], fallback_return: nil)}
+  {#match nil}
+    <div iconify={@icon} class={@class} aria-hidden="true" />
+  {#match image}
+    <img
+      src={image}
+      alt=""
+      class={@class}
+      onerror={"this.classList.add('iconify'); this.setAttribute('iconify','#{@icon}')"}
+    />
+{/case}

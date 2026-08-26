@@ -98,7 +98,8 @@
         {#match nil}
           {l("Manual federation enabled")}
         {#match :allowlist_only}
-          {l("Archipelago federation enabled")}
+          {!-- /about lists who we federate with in this mode --}
+          <LinkLive class="link-hover link" to="/about" parent_id="impressum_federation">{l("Archipelago federation enabled")}</LinkLive>
         {#match true}
           {l("Automatic federation enabled")}
       {/case}
