@@ -18,6 +18,9 @@ TooltipHooks.Tooltip = {
 		const noFlip = tooltipWrapper.getAttribute("data-no-flip") === "true";
 		const closeOnInsideClick =
 			tooltipWrapper.getAttribute("data-close-on-inside-click") === "true";
+		const matchTriggerWidth =
+			tooltipWrapper.getAttribute("data-match-trigger-width") === "true";
+		const focusOnOpen = tooltipWrapper.getAttribute("data-focus-on-open");
 		const strategy =
 			tooltipWrapper.getAttribute("data-strategy") === "fixed"
 				? "fixed"
@@ -29,6 +32,8 @@ TooltipHooks.Tooltip = {
 		let isHoveringButton = false;
 		let isHoveringTooltip = false;
 		let isButtonFocused = false;
+		let pendingRevealOptions = null;
+		let revealPositionedTooltip = () => {};
 
 		// Instance state for lifecycle methods
 		this.isUpdating = false;
@@ -71,6 +76,10 @@ TooltipHooks.Tooltip = {
 				return;
 			}
 
+			if (matchTriggerWidth) {
+				tooltip.style.width = `${button.getBoundingClientRect().width}px`;
+			}
+
 			computePosition(button, tooltip, {
 				placement: position || "top",
 				strategy,
@@ -78,7 +87,14 @@ TooltipHooks.Tooltip = {
 					? [offset(6), shift({ padding: 5 })]
 					: [offset(6), flip({ padding: 5 }), shift({ padding: 5 })],
 			}).then(({ x, y, placement }) => {
-				if (!this.isUpdating && tooltip) {
+				if (this.isUpdating) {
+					// A LiveView patch can land while Floating UI is measuring. Keep the
+					// result pending so the first open is positioned again after the patch.
+					this.pendingUpdate = true;
+					return;
+				}
+
+				if (tooltip) {
 					Object.assign(tooltip.style, {
 						// keep the floating element's CSS position in sync with the
 						// computed strategy: "fixed" lets the panel escape ancestor
@@ -90,6 +106,7 @@ TooltipHooks.Tooltip = {
 					});
 					// Set placement for CSS directional animations
 					tooltip.setAttribute('data-placement', placement);
+					revealPositionedTooltip();
 				}
 			});
 		};
@@ -125,18 +142,35 @@ TooltipHooks.Tooltip = {
 			}
 		};
 
-		// Display tooltip and start entrance animation
-		const displayTooltip = ({ animate = true } = {}) => {
-			tooltip.style.display = 'block';
-			tooltip.style.pointerEvents = 'auto';
-			syncExpanded(true);
-			startPositionUpdate();
-			this.panelResizeObserver?.observe(tooltip);
+		revealPositionedTooltip = () => {
+			if (!pendingRevealOptions || tooltip.style.display !== 'block') {
+				return;
+			}
+
+			const { animate } = pendingRevealOptions;
+			pendingRevealOptions = null;
+			tooltip.style.visibility = '';
+
+			if (focusOnOpen) {
+				tooltip.querySelector(focusOnOpen)?.focus({ preventScroll: true });
+			}
 			if (animate && !prefersReducedMotion()) {
 				tooltip.classList.add('tooltip-animated');
 				tooltip.offsetHeight; // Force reflow for animation
 				tooltip.classList.add('tooltip-visible');
 			}
+		};
+
+		// Measure while invisible so a newly opened floating panel never paints
+		// at the CSS fallback position before Floating UI has anchored it.
+		const displayTooltip = ({ animate = true } = {}) => {
+			pendingRevealOptions = { animate };
+			tooltip.style.visibility = 'hidden';
+			tooltip.style.display = 'block';
+			tooltip.style.pointerEvents = 'auto';
+			syncExpanded(true);
+			startPositionUpdate();
+			this.panelResizeObserver?.observe(tooltip);
 		};
 
 		const showTooltip = () => {
@@ -153,6 +187,7 @@ TooltipHooks.Tooltip = {
 		const finishHidingTooltip = () => {
 			clearTimeout(showTimeout);
 			tooltip.style.display = '';
+			tooltip.style.visibility = '';
 			tooltip.style.pointerEvents = '';
 			tooltip.classList.remove('tooltip-animated');
 			if (this.cleanup) {
@@ -170,6 +205,7 @@ TooltipHooks.Tooltip = {
 				true;
 
 			if (shouldHide) {
+				pendingRevealOptions = null;
 				// Remove visible class first for exit animation
 				tooltip.classList.remove('tooltip-visible');
 				syncExpanded(false);
@@ -238,6 +274,7 @@ TooltipHooks.Tooltip = {
 			insideClick: (event) => {
 				if (event.target.closest("button, a, [phx-click], [data-scope], [data-role]")) {
 					hideTooltip();
+					button.focus({ preventScroll: true });
 				}
 			}
 		};

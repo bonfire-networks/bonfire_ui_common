@@ -43,6 +43,12 @@ defmodule Bonfire.UI.Common.DropdownLive do
   @doc "Set to `fixed` to position relative to the viewport — escapes `overflow: hidden/clip` ancestors."
   prop strategy, :string, default: nil
 
+  @doc "Keep the floating panel exactly as wide as its trigger."
+  prop match_trigger_width, :boolean, default: false
+
+  @doc "Optional selector for the element that should receive focus when the panel opens."
+  prop focus_on_open, :string, default: nil
+
   @doc "Disable floating-ui's auto-flip (keep the menu on the requested side)."
   prop no_flip, :boolean, default: false
 

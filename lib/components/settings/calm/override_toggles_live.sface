@@ -14,7 +14,7 @@
 
   {#for row <- @rows}
     <label
-      class="flex min-h-11 items-center justify-between gap-3 py-1 cursor-pointer"
+      class={"flex min-h-11 items-center justify-between gap-3 py-1 cursor-pointer", @row_class}
       data-role={@row_role}
     >
       <span class="flex flex-col min-w-0">

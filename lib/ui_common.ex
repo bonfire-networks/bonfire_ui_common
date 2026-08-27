@@ -606,6 +606,24 @@ defmodule Bonfire.UI.Common do
     end
   end
 
+  @doc """
+  Where to send a logged-out visitor who tries to `verb` an object.
+
+  Only user profiles have an `/interact/:type` deeplink (the `/@:username/:tab/:extra` route,
+  handled in `Bonfire.UI.Me.ProfileLive`), which renders the remote-interaction form in the
+  context of the profile being acted on. No other object type has such a route, so appending
+  `/interact/<verb>` to eg. a post's path 404s — those go to the standalone
+  `/remote_interaction` page instead, falling back to local login when no canonical URL can be
+  resolved for the object.
+  """
+  def guest_interaction_url(verb, name, object, socket_or_ctx) do
+    if Types.object_type(object) == Bonfire.Data.Identity.User do
+      "#{path(object)}/interact/#{verb}"
+    else
+      remote_interaction_url(verb, name, object, socket_or_ctx) || "/login"
+    end
+  end
+
   # defdelegate content(conn, name, type, opts \\ [do: ""]), to: Bonfire.PublisherThesis.ContentAreas
 
   def maybe_send_update(component, id, assigns, opts \\ [])
