@@ -14,7 +14,6 @@ defmodule Bonfire.UI.Common.PersistentLiveTest do
 
     assert PersistentLive.maybe_send_assigns(assigns)
 
-    assert_receive {:assign_persistent_self,
-                    %{page: "profile", selected_tab: :followers}}
+    assert_receive {:assign_persistent_self, %{page: "profile", selected_tab: :followers}}
   end
 end
