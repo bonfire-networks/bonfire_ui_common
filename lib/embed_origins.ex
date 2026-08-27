@@ -31,6 +31,41 @@ defmodule Bonfire.UI.Common.EmbedOrigins do
 
   def allowed?(_), do: false
 
+  @doc """
+  Whether `url`'s HOST is on the allowlist — a host-only match (any scheme, port or path).
+
+  Deliberately looser than `allowed?/1` (which is for minting bearer tokens and so does a strict
+  full-origin, https-only match): this decides whether a guest-loaded embed may create a thread
+  anchor for a URL, which only needs the operator to have approved the domain. CSP-only values
+  like `*` or `'self'` still never qualify (they aren't concrete hosts).
+  """
+  def host_allowed?(url) when is_binary(url) do
+    case url_host(url) do
+      host when is_binary(host) and host != "" -> String.downcase(host) in allowed_hosts()
+      _ -> false
+    end
+  end
+
+  def host_allowed?(_), do: false
+
+  defp allowed_hosts do
+    System.get_env(@env, "")
+    |> String.split()
+    |> Enum.flat_map(fn entry ->
+      case origin(entry) do
+        {:ok, {_scheme, host, _port}} -> [host]
+        _ -> []
+      end
+    end)
+  end
+
+  defp url_host(url) do
+    case ensure_scheme(String.trim(url)) do
+      nil -> nil
+      u -> URI.parse(u).host
+    end
+  end
+
   defp allowed_origins do
     System.get_env(@env, "")
     |> String.split()
