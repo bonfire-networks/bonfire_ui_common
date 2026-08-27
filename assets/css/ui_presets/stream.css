@@ -573,6 +573,32 @@ html[data-ui-preset="stream"]
 
 html[data-ui-preset="stream"]
   [data-id="secondary_sidebar_widgets"]
+  aside.widget-users
+  > [data-role="widget-header"] {
+  padding-top: 0;
+  padding-inline: 0;
+  border-bottom-width: 0;
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  aside.widget-users
+  [data-role="widget-user-row"] {
+  padding: 4px 0;
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
+  aside.widget-users
+  .widget-user-profile {
+  padding: 0;
+  border-width: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+html[data-ui-preset="stream"]
+  [data-id="secondary_sidebar_widgets"]
   > ul
   > li:has([data-id="widget_customize_feed"])
   > aside {
