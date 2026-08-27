@@ -749,7 +749,7 @@ article.active-activity::after {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: -18px;
+  right: -24px;
   width: 2px;
   background-color: var(--color-primary);
   pointer-events: none;
