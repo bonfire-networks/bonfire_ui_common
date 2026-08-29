@@ -195,6 +195,12 @@ defmodule Bonfire.UI.Common.ErrorHandling do
   defp go_login(msg, socket, return_key) when is_atom(return_key),
     do: go_login(msg, socket, {nil, return_key})
 
+  defp go_login(msg, assigns, {:render, _return_key}) do
+    msg = e(msg, :message, l("You need to log in first."))
+    UI.Common.redirect_self("/login")
+    render_replacement(assigns, msg)
+  end
+
   defp go_login(msg, socket, {via, return_key}) when via in [:update, :render] do
     msg = e(msg, :message, l("You need to log in first."))
 
@@ -422,6 +428,20 @@ defmodule Bonfire.UI.Common.ErrorHandling do
   end
 
   defp live_exception(
+         assigns,
+         {:render, _return_key},
+         msg,
+         exception,
+         stacktrace,
+         kind
+       ) do
+    with {:error, msg} <-
+           Errors.debug_exception(msg, exception, stacktrace, kind, as_markdown: true) do
+      render_replacement(assigns, msg)
+    end
+  end
+
+  defp live_exception(
          socket,
          {via, _return_key} = return_keys,
          msg,
@@ -485,6 +505,13 @@ defmodule Bonfire.UI.Common.ErrorHandling do
         |> UI.Common.redirect_to("/error"),
         return_key
       )
+  end
+
+  # `undead_update` can set `__replace_render__with__` and let the render that follows pick it up (see `Bonfire.UI.Common.Web.render_override/1`). A failure raised during render itself has no such second pass, so it renders the same placeholder here.
+  defp render_replacement(assigns, msg) do
+    assigns
+    |> UI.Common.assign_generic(:__replace_render__with__, msg)
+    |> UI.Common.ErrorComponentLive.replace()
   end
 
   defp db_error,

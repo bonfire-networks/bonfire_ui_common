@@ -816,7 +816,7 @@ defmodule Bonfire.UI.Common do
 
   def undead_on_mount(socket, fun), do: ErrorHandling.undead(socket, fun, {:mount, :halt})
   def undead_update(socket, fun), do: ErrorHandling.undead(socket, fun, {:update, :ok})
-  def undead_render(assigns, fun), do: ErrorHandling.undead(assigns, fun, {nil, :render})
+  def undead_render(assigns, fun), do: ErrorHandling.undead(assigns, fun, {:render, nil})
 
   def maybe_last_sentry_event_id() do
     if Bonfire.Common.Errors.maybe_sentry_dsn() do
