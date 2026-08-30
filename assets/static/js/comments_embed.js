@@ -17,9 +17,7 @@
  *   data-theme          - DaisyUI theme name to apply inside the iframe (e.g. "dark", "light")
  *   data-token-max-age  - hours before the stored auth token is considered stale and the user is prompted to re-authenticate (default: 720 = 30 days). Invalid or non-positive values fall back to the default. The server enforces a hard maximum regardless of this value (1 year by default), and this value is clamped to it.
  *
- * Removed (data-creator / data-boundary / data-group-id / data-require-topic): anyone can craft
- * this iframe URL, so the embedding page no longer chooses a created thread's author, audience or
- * destination — those are instance settings now. Old snippets keep working; the server ignores them.
+ * Removed (data-creator / data-boundary / data-group-id / data-to-circles / data-require-topic): anyone can craft this iframe URL, so the embedding page no longer chooses a created thread's author, audience or destination. Those are instance settings now. Old snippets keep working; the server ignores them.
  *
  * Authentication:
  *   Third-party cookies are blocked in cross-origin iframes, so this script implements a token-based auth flow. After the user signs in on the Bonfire instance, they are redirected back here with ?bonfire_embed_token=... which is stored in localStorage and passed to the iframe on future page loads.
