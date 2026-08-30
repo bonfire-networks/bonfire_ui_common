@@ -1,0 +1,24 @@
+<div class="container mx-auto max-w-6xl p-6">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">Configure Crawler Boundaries</h1>
+    <p class="text-base-content/70">
+      Control AI crawlers for {#if @scope == :user}your account{#else}this instance{/if}
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <ConfigForm
+      settings={@settings}
+      scope={@scope}
+      show_advanced={@show_advanced}
+      on_update_setting="update_setting"
+      on_toggle_category="toggle_category"
+      on_toggle_crawler="toggle_crawler"
+      on_test="test_config"
+      on_reset="reset_to_defaults"
+      on_toggle_advanced="toggle_advanced"
+    />
+
+    <PreviewPanel :if={@scope == :instance} robots_txt_preview={@robots_txt_preview} />
+  </div>
+</div>

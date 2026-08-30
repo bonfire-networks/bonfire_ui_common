@@ -1,0 +1,23 @@
+<div class="space-y-6">
+  <BlockingSettings
+    settings={@settings}
+    show_advanced={@show_advanced}
+    on_update_setting={@on_update_setting}
+    on_toggle_advanced={@on_toggle_advanced}
+  />
+
+  <CrawlerCategoryList
+    :if={@settings.enable}
+    settings={@settings}
+    on_toggle_category={@on_toggle_category}
+    on_toggle_crawler={@on_toggle_crawler}
+  />
+
+  <CustomRules
+    :if={@settings.enable && @scope == :instance}
+    settings={@settings}
+    on_update_setting={@on_update_setting}
+  />
+
+  <ActionButtons on_test={@on_test} on_reset={@on_reset} />
+</div>

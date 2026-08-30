@@ -1,0 +1,90 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text">Block response status</span>
+    </label>
+    <select
+      :on-change={@on_update_setting}
+      phx-value-key="block_response_status"
+      value={@settings.block_response_status}
+      class="select select-bordered"
+    >
+      <option value="403">403 Forbidden</option>
+      <option value="404">404 Not Found</option>
+      <option value="429">429 Too Many Requests</option>
+      <option value="503">503 Service Unavailable</option>
+    </select>
+  </div>
+
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text">Block response message</span>
+    </label>
+    <input
+      type="text"
+      :on-blur={@on_update_setting}
+      phx-value-key="block_response_message"
+      value={@settings.block_response_message}
+      class="input input-bordered"
+    />
+  </div>
+
+  <div class="form-control md:col-span-2">
+    <label class="label cursor-pointer justify-start gap-3">
+      <input
+        type="checkbox"
+        checked={@settings.log_blocked_requests}
+        :on-click={@on_update_setting}
+        phx-value-key="log_blocked_requests"
+        phx-value-value={!@settings.log_blocked_requests}
+        class="checkbox"
+      />
+      <span class="label-text">Log blocked requests</span>
+    </label>
+  </div>
+  <!-- 
+  <div class="form-control md:col-span-2">
+    <label class="label cursor-pointer justify-start gap-3 mb-2">
+      <input 
+        type="checkbox" 
+        checked={@settings.rate_limit_enabled}
+        :on-click={@on_update_setting}
+        phx-value-key="rate_limit_enabled"
+        phx-value-value={!@settings.rate_limit_enabled}
+        class="checkbox"
+      />
+      <span class="label-text">Enable rate limiting</span>
+    </label>
+    
+    {#if @settings.rate_limit_enabled}
+      <div class="grid grid-cols-2 gap-4 ml-8">
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Max requests</span>
+          </label>
+          <input 
+            type="number"
+            :on-blur={@on_update_setting}
+            phx-value-key="rate_limit_requests"
+            value={@settings.rate_limit_requests}
+            min="1"
+            class="input input-bordered input-sm"
+          />
+        </div>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Window (ms)</span>
+          </label>
+          <input 
+            type="number"
+            :on-blur={@on_update_setting}
+            phx-value-key="rate_limit_window_ms"
+            value={@settings.rate_limit_window_ms}
+            min="1000"
+            class="input input-bordered input-sm"
+          />
+        </div>
+      </div>
+    {/if}
+  </div> -->
+</div>

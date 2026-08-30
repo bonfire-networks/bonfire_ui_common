@@ -1,0 +1,52 @@
+<div class="card bg-base-100 shadow-sm border border-base-300">
+  <!-- Category Header -->
+  <div class="card-body p-4 bg-base-200 rounded-t-lg">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-xl">
+          {@category_info.icon}
+        </span>
+        <div>
+          <h4 class="card-title text-base">
+            {@category}
+          </h4>
+          <span class="text-sm opacity-70">
+            ({length(@crawlers)} crawlers)
+          </span>
+        </div>
+      </div>
+
+      <!-- Category Toggle -->
+      <button
+        type="button"
+        :on-click={@on_toggle_category}
+        phx-value-category={@category}
+        class="btn btn-xs btn-primary"
+      >
+        Toggle All
+      </button>
+    </div>
+
+    <div class="mt-2">
+      <p class="text-sm opacity-80">
+        {@category_info.description}
+      </p>
+      <div class="text-xs opacity-60 mt-1">
+        💡 <strong>Recommendation:</strong>
+        {@category_info.recommendation}
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Crawlers -->
+  <div class="divide-y divide-base-300">
+    {#for crawler <- @crawlers}
+      <CrawlerItem
+        crawler={crawler}
+        blocked?={crawler.user_agent in (@settings.blocked_crawlers || [])}
+        disabled?={!@settings.enable}
+        on_toggle_crawler={@on_toggle_crawler}
+      />
+    {/for}
+  </div>
+</div>

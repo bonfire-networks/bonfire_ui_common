@@ -376,6 +376,8 @@ defmodule Bonfire.UI.Common.Routes do
       scope "/" do
         pipe_through(:cacheable)
 
+        get("/robots.txt", Bonfire.UI.Common.CrawlerBoundaries.RobotsController, :txt)
+
         get("/gen_avatar", Bonfire.UI.Common.GenAvatar, :generate)
         get("/gen_avatar/:id", Bonfire.UI.Common.GenAvatar, :generate)
       end
