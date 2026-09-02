@@ -45,4 +45,20 @@
       {/for}
     </div>
   </fieldset>
+
+  {!-- type="button" so it can't submit the surrounding phx-change form --}
+  <div :if={@reset_module} class="flex justify-end mt-3">
+    <button
+      type="button"
+      class="btn btn-ghost btn-xs gap-1 text-muted"
+      data-role="calm_reset"
+      phx-click={@reset_event}
+      phx-target={@event_target}
+      phx-value-module={@reset_module}
+      data-confirm={@reset_confirm}
+    >
+      <#Icon iconify="ph:arrow-counter-clockwise" class="w-4 h-4" />
+      {@reset_label || l("Reset to defaults")}
+    </button>
+  </div>
 </form>

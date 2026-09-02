@@ -16,6 +16,45 @@ defmodule Bonfire.Common.Settings.LiveHandler do
     end
   end
 
+  @doc """
+  Put a calm-settings consumer (see `Bonfire.Common.Settings.Calm`) back to its defaults: drop the admin's saved preset/toggles/knobs and undo whatever those had projected onto the running system.
+
+  The module arrives as a form param, so it is resolved to an EXISTING module and then required to implement the Calm behaviour and expose `reset_to_defaults/0`, as a param can never name something arbitrary to call. Instance settings are admin-only, so it checks that too rather than relying on the page's admin gate alone.
+  """
+  def handle_event("calm_reset", %{"module" => module}, socket) do
+    with true <- admin?(socket),
+         mod when not is_nil(mod) <- calm_consumer(module) do
+      mod.reset_to_defaults()
+
+      {:noreply, assign_flash(socket, :info, l("Reset to the defaults for this instance"))}
+    else
+      _ -> {:noreply, assign_flash(socket, :error, l("Sorry, you cannot change these settings"))}
+    end
+  end
+
+  defp admin?(socket) do
+    Bonfire.Common.Utils.maybe_apply(
+      Bonfire.Me.Accounts,
+      :is_admin?,
+      [current_account(socket)],
+      fallback_return: false
+    ) == true
+  end
+
+  # a param names a module only if that module already exists, implements Calm, and opts into being resettable, anything else resolves to nil
+  defp calm_consumer(name) do
+    with mod when is_atom(mod) and not is_nil(mod) <- Types.maybe_to_module(name),
+         true <- Code.ensure_loaded?(mod),
+         behaviours =
+           mod.module_info(:attributes) |> Keyword.get_values(:behaviour) |> List.flatten(),
+         true <- Bonfire.Common.Settings.Calm in behaviours,
+         true <- function_exported?(mod, :reset_to_defaults, 0) do
+      mod
+    else
+      _ -> nil
+    end
+  end
+
   def handle_event("set", attrs, socket) when is_map(attrs) do
     with {:ok, settings} <-
            Map.drop(attrs, ["_target"])

@@ -34,6 +34,14 @@ defmodule Bonfire.UI.Common.Settings.Calm.PresetCardsLive do
   @doc "data-role for each card's name (test selector hook)."
   prop preset_role, :string, default: "calm_preset"
 
+  @doc "Consumer module to reset (as a string). Set it to show a \"reset to defaults\" button; omit for no button."
+  prop reset_module, :string, default: nil
+  @doc "Event the reset button posts."
+  prop reset_event, :string, default: "Bonfire.Common.Settings:calm_reset"
+  prop reset_label, :string, default: nil
+  @doc "Confirmation prompt; reset is instant and instance-wide, so keep one."
+  prop reset_confirm, :string, default: nil
+
   @doc "Class of the wrapping form."
   prop class, :css_class, default: "p-4 border-b border-secondary"
 
