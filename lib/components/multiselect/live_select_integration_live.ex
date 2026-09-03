@@ -19,33 +19,84 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
     # input would read as a second pill below the tags. Make the container the bordered
     # box with a ghost field inside; single mode keeps the input as the pill.
     tags? = assigns[:mode] in [:tags, :quick_tags]
+    filter_variant? = tags? and assigns[:variant] == :filter
 
     assigns =
       assigns
       |> assign(
         :ls_container_class,
-        if(tags?,
-          do:
-            "w-full flex flex-col gap-1.5 rounded-2xl border border-secondary bg-base-content/5 px-3 py-2 transition-colors focus-within:border-primary",
-          else: "w-full flex flex-col"
-        )
+        cond do
+          filter_variant? ->
+            "relative w-full min-h-[46px] flex flex-wrap items-center gap-1.5 rounded-[14px] border border-base-content/15 bg-base-content/[0.03] px-[7px] py-[5px] transition-[border-color,background-color,box-shadow] duration-150 hover:border-base-content/25 hover:bg-base-content/[0.06] focus-within:border-primary focus-within:ring-[3px] focus-within:ring-primary/20 [&>div]:min-w-[150px] [&>div]:flex-1"
+
+          tags? ->
+            "w-full flex flex-col gap-1.5 rounded-2xl border border-secondary bg-base-content/5 px-3 py-2 transition-colors focus-within:border-primary"
+
+          true ->
+            "w-full flex flex-col"
+        end
       )
       # use class (not extra_class) — LiveSelect forbids passing both
       |> assign(
         :ls_text_input_class,
-        if(tags?,
-          do:
-            "w-full bg-transparent border-0 shadow-none outline-none focus:outline-none focus:ring-0 px-1 py-1 text-sm h-auto",
-          else:
+        cond do
+          filter_variant? ->
+            "w-full min-h-[34px] bg-transparent border-0 shadow-none outline-none focus:outline-none focus:ring-0 px-1.5 py-1 text-base h-auto placeholder:text-base-content/55"
+
+          tags? ->
+            "w-full bg-transparent border-0 shadow-none outline-none focus:outline-none focus:ring-0 px-1 py-1 text-sm h-auto"
+
+          true ->
             "input input-sm border-hair border-secondary bg-base-100 flex items-center gap-2 w-full text-base"
-        )
+        end
       )
       # "" avoids the default `input-primary` orange border on the ghost tags field
       |> assign(:ls_text_input_selected_class, if(tags?, do: "", else: nil))
       |> assign(
         :ls_dropdown_class,
-        "z-50 max-h-liveselect flex-nowrap border border-secondary !bg-base-100 overflow-y-auto " <>
-          if(tags?, do: "top-full mt-1", else: "top-12")
+        if(filter_variant?,
+          do:
+            "z-popover top-full mt-1 max-h-liveselect flex-nowrap overflow-y-auto rounded-[14px] border border-base-content/10 !bg-base-100 p-1.5 shadow-xl",
+          else:
+            "z-50 max-h-liveselect flex-nowrap border border-secondary !bg-base-100 overflow-y-auto " <>
+              if(tags?, do: "top-full mt-1", else: "top-12")
+        )
+      )
+      |> assign(
+        :ls_tag_class,
+        if(filter_variant?,
+          do:
+            "min-h-[34px] inline-flex items-center gap-[7px] rounded-full bg-primary/[0.14] py-[3px] pr-1 pl-2 text-[13px] font-semibold text-primary",
+          else: "badge badge-primary rounded-full badge-md gap-1.5 font-medium"
+        )
+      )
+      |> assign(:ls_tags_container_class, if(filter_variant?, do: "contents", else: "flex flex-wrap gap-1.5"))
+      |> assign(
+        :ls_clear_tag_button_class,
+        if(filter_variant?,
+          do:
+            "touch-target-expanded focus-ring relative grid size-7 min-h-7 min-w-7 place-items-center rounded-full text-primary transition-colors duration-150 hover:bg-primary/10",
+          else: nil
+        )
+      )
+      |> assign(:ls_option_class, if(filter_variant?, do: "rounded-[10px] px-2 py-2", else: nil))
+      |> assign(
+        :ls_active_option_class,
+        if(filter_variant?, do: "bg-primary/[0.12] text-base-content", else: nil)
+      )
+      |> assign(
+        :ls_available_option_class,
+        if(filter_variant?,
+          do: "cursor-pointer rounded-[10px] hover:bg-base-content/[0.06]",
+          else: nil
+        )
+      )
+      |> assign(
+        :ls_selected_option_class,
+        if(filter_variant?,
+          do: "cursor-pointer rounded-[10px] bg-primary/[0.08] text-primary",
+          else: nil
+        )
       )
 
     ~H"""
@@ -65,14 +116,19 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       text_input_class={@ls_text_input_class}
       text_input_selected_class={@ls_text_input_selected_class}
       container_extra_class={@ls_container_class}
-      tag_class="badge badge-primary rounded-full badge-md gap-1.5 font-medium"
+      tag_class={@ls_tag_class}
       dropdown_extra_class={@ls_dropdown_class}
-      tags_container_class="flex flex-wrap gap-1.5"
+      tags_container_class={@ls_tags_container_class}
+      clear_tag_button_class={@ls_clear_tag_button_class}
+      option_class={@ls_option_class}
+      active_option_class={@ls_active_option_class}
+      available_option_class={@ls_available_option_class}
+      selected_option_class={@ls_selected_option_class}
       value_mapper={&value_mapper/1}
     >
       <:option :let={option}>
         <div class="flex p-0 gap-2 items-center">
-          <%= if Map.has_key?(option.value, :type) && option.value.type == "circle" do %>
+          <%= if is_map(option.value) && Map.has_key?(option.value, :type) && option.value.type == "circle" do %>
             <span class="w-8 h-8 flex items-center place-content-center">
               <div
                 iconify="ph:circle-fill"
@@ -122,6 +178,12 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
           <% end %>
         </div>
       </:tag>
+
+      <:clear_button>
+        <span class="touch-target-hit-area" aria-hidden="true"></span>
+        <span class="sr-only">{l("Remove selection")}</span>
+        <span class="pointer-events-none text-base leading-none" aria-hidden="true">×</span>
+      </:clear_button>
     </LiveSelect.live_select>
     """
   end

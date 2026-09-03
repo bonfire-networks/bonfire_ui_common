@@ -1461,10 +1461,7 @@ emoji-picker .favorites {
 }
 
 .motion-modal.modal {
-  /* Static scrim, faded by the wrapper's opacity transition alone. Letting
-     daisyUI also transition background-color multiplies two fade curves on
-     the same pixels, making the darkening ramp unpredictable. */
-  background-color: oklch(0% 0 0 / 0.4);
+  background-color: oklch(0% 0 0 / 0.7);
 }
 
 .motion-modal {

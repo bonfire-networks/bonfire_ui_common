@@ -13,11 +13,12 @@ defmodule Bonfire.UI.Common.MultiselectLiveSelectTest do
   import Phoenix.LiveViewTest
   alias Bonfire.UI.Common.LiveSelectIntegrationLive
 
-  defp render_ls(mode, value) do
+  defp render_ls(mode, value, variant \\ :default) do
     assigns = %{
       form: Phoenix.Component.to_form(%{}, as: :multi_select),
       field: :selected_users,
       mode: mode,
+      variant: variant,
       event_target: "#x",
       options: [],
       value: value,
@@ -69,6 +70,43 @@ defmodule Bonfire.UI.Common.MultiselectLiveSelectTest do
 
     test "does not use the tags bordered-box container", %{html: html} do
       refute html =~ "focus-within:border-primary"
+    end
+  end
+
+  describe ":filter variant in tags mode" do
+    setup do
+      %{
+        html:
+          render_ls(
+            :tags,
+            [%{id: "01ABCDEF", name: "Mira Cohen"}],
+            :filter
+          )
+      }
+    end
+
+    test "renders selected people and the input in one wrapping field", %{html: html} do
+      assert html =~ "min-h-[46px]"
+      assert html =~ "flex-wrap"
+      assert html =~ "rounded-[14px]"
+      assert html =~ "[&amp;&gt;div]:flex-1"
+      assert html =~ ~s(class="contents")
+    end
+
+    test "uses the guided chip and 16px ghost input styling", %{html: html} do
+      assert html =~ "min-h-[34px]"
+      assert html =~ "bg-primary/[0.14]"
+      assert html =~ "text-[13px]"
+      assert html =~ "text-base h-auto"
+    end
+
+    test "gives the remove control a visible icon, accessible name, and expanded hit area", %{
+      html: html
+    } do
+      assert html =~ "Remove selection"
+      assert html =~ "touch-target-hit-area"
+      assert html =~ "×"
+      refute html =~ "<#Icon"
     end
   end
 end

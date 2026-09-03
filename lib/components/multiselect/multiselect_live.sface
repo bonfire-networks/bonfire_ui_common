@@ -5,6 +5,7 @@
         form={@form}
         field={@form_input_name}
         mode={@mode}
+        variant={@variant}
         event_target={@event_target}
         options={@preloaded_options || []}
         value={@selected_options}

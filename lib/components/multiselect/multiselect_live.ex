@@ -40,6 +40,7 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   prop is_editable, :boolean, default: true
   prop implementation, :atom, default: nil
   prop mode, :atom, default: :single
+  prop variant, :atom, default: :default
   prop type, :atom, default: nil
   prop class, :string, default: "bg-transparent text-sm rounded h-10 w-full input liveselect"
   # 0 means unlimited
