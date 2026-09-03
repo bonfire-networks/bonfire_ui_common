@@ -70,7 +70,10 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
           else: "badge badge-primary rounded-full badge-md gap-1.5 font-medium"
         )
       )
-      |> assign(:ls_tags_container_class, if(filter_variant?, do: "contents", else: "flex flex-wrap gap-1.5"))
+      |> assign(
+        :ls_tags_container_class,
+        if(filter_variant?, do: "contents", else: "flex flex-wrap gap-1.5")
+      )
       |> assign(
         :ls_clear_tag_button_class,
         if(filter_variant?,
