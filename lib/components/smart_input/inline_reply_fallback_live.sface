@@ -22,7 +22,7 @@
     <span class="flex-1 text-left text-muted truncate text-sm">
       {@prompt || l("Write a comment")}
     </span>
-    <span class="btn btn-primary btn-sm rounded-full normal-case mr-1 pointer-events-none">
+    <span class="btn btn-primary btn-sm normal-case mr-1 pointer-events-none">
       {lc("verb: action", "Post", [], :bonfire_posts)}
     </span>
   </button>

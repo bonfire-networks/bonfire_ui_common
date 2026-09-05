@@ -216,6 +216,7 @@
   /* shape: full-pill fields & buttons, softly-rounded cards */
   --radius-selector: 9999px;
   --radius-field: 9999px;
+  --radius-button: 9999px;
   --radius-box: 0.75rem;
 
   /* base sizes */
@@ -272,6 +273,7 @@
   /* border radius - same as light */
   --radius-selector: 1.5rem;
   --radius-field: 0.5rem;
+  --radius-button: 9999px;
   --radius-box: 0.5rem;
 
   /* base sizes */

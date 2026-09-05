@@ -49,7 +49,7 @@
             <button
               type="button"
               phx-click={LiveHandler.inline_expand(@composer_dom_id)}
-              class="btn btn-primary btn-sm rounded-full normal-case mr-1"
+              class="btn btn-primary btn-sm normal-case mr-1"
             >
               {lc("verb: action", "Post", [], :bonfire_posts)}
             </button>
@@ -116,7 +116,7 @@
             @remote_interaction_url}
           target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
           id={"inline_composer_remote_interaction_#{@composer_dom_id}"}
-          class="btn btn-sm btn-outline border-primary rounded-full normal-case text-primary"
+          class="btn btn-sm btn-outline border-primary normal-case text-primary"
         >{lc("verb: action", "Reply", [], :bonfire_social)}</a>
       {#else}
         <a
@@ -124,14 +124,14 @@
             "/remote_interaction?" <> URI.encode_query(type: "reply", url: @go_url)}
           target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
           id={"inline_composer_login_#{@composer_dom_id}"}
-          class="btn btn-sm btn-outline border-primary rounded-full normal-case text-primary"
+          class="btn btn-sm btn-outline border-primary normal-case text-primary"
         >{l("Sign in")}</a>
         {!-- <a
           href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
             "/signup?" <> URI.encode_query(go: @go_url)}
           target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
           id={"inline_composer_signup_#{@composer_dom_id}"}
-          class="btn btn-sm btn-outline border-primary rounded-full normal-case text-primary"
+          class="btn btn-sm btn-outline border-primary normal-case text-primary"
         >{l("Register")}</a> --}
       {/if}
       <div class="flex-1 flex items-center gap-1 pr-2">

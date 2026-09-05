@@ -348,16 +348,21 @@ label[for],
 /* Most Bonfire buttons are raw DaisyUI `.btn` elements rather than ButtonLive.
    Give them the same quick, native-feeling interaction polish by default. */
 .btn {
+  font-weight: 600;
   transition-property:
     transform, scale, opacity, background-color, border-color, box-shadow;
   transition-duration: 150ms;
   transition-timing-function: var(--ease-out-expo);
 }
 
+/* Keep button geometry themeable without changing input or icon-button shapes. */
+.btn:not(.btn-circle):not(.btn-square) {
+  --radius-field: var(--radius-button, 0.625rem);
+}
+
 .btn-sm {
   --fontsize: 0.875rem;
   --btn-p: 18px;
-  font-weight: 400;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -370,7 +375,6 @@ label[for],
 
 .\!btn-sm {
   --fontsize: 0.875rem !important;
-  font-weight: 400;
 }
 
 /* ============================================
@@ -2049,50 +2053,38 @@ body:has(#smart_input_container[data-draft])
   transform: translate(-50%, -50%);
 }
 
-.btn-ds-outline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 0; /* neutralise DaisyUI .btn's border when combined; the ring is the outline */
-  border-radius: var(--radius-field); /* pill */
-  height: 41px;
-  padding-inline: 26px;
-  font-size: 15px;
-  line-height: 1;
-  font-weight: 500; /* medium, no bold */
-  background-color: var(--color-base-200);
-  color: var(--color-primary);
-  box-shadow: inset 0 0 0 var(--border) var(--color-primary); /* hairline (0.7px) inset ring, primary */
-  cursor: pointer;
-  /* include transform so the primitive's hover-scale eases too (composer has no scale → harmless) */
-  transition-property: color, background-color, box-shadow, transform;
-  transition-duration: 150ms;
-  transition-timing-function: var(--ease-out-expo);
-}
+.btn-ds-outline,
 .btn-ds-variant-outline {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 0; /* neutralise DaisyUI .btn's border when combined; the ring is the outline */
-  border-radius: var(--radius-field); /* pill */
-  height: 42px; /* matches text-body 15/20 with py-[11px] */
-  padding-inline: 26px; /* px-[26px]; horizontal only, height is fixed */
-  font-size: 15px; /* text-body */
+  gap: 0.5rem;
+  border: 0;
+  height: var(--size, calc(var(--size-field, 0.25rem) * 10));
+  padding-inline: var(--btn-p, 1rem);
+  font-size: var(--fontsize, 0.875rem);
   line-height: 1;
-  font-weight: 400;
-  background-color: var(--color-base-300);
+  font-weight: 600;
+  background-color: var(--color-base-200);
   color: var(--color-primary);
-  box-shadow: inset 0 0 0 var(--border) var(--color-primary); /* hairline (0.7px) inset ring, primary */
+  box-shadow: inset 0 0 0 var(--border) var(--color-primary);
   cursor: pointer;
-  /* include transform so the primitive's hover-scale eases too (composer has no scale → harmless) */
   transition-property: color, background-color, box-shadow, transform;
   transition-duration: 150ms;
   transition-timing-function: var(--ease-out-expo);
 }
+
+.btn-ds-outline:not(.btn-circle):not(.btn-square),
+.btn-ds-variant-outline:not(.btn-circle):not(.btn-square) {
+  border-radius: var(--radius-button, 0.625rem);
+}
+
+.btn-ds-variant-outline {
+  background-color: var(--color-base-300);
+}
+
 .btn-ds-outline:hover {
-  background-color: var(
-    --color-base-300
-  ); /* "a bit more dark" — NOT a full red fill */
+  background-color: var(--color-base-300);
 }
 
 /* ============================================

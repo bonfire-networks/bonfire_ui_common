@@ -1,6 +1,7 @@
 html[data-ui-preset="stream"] {
   --radius-box: 12px;
   --radius-field: 10px;
+  --radius-button: 4px;
   --radius-selector: 8px;
   --stream-content-padding: var(--spacing-card);
   --stream-contained-object-radius: var(--radius-box);
@@ -273,10 +274,6 @@ html[data-ui-preset="stream"] #nav_sidebar .widget_accordion > summary > div {
   font-weight: var(--stream-medium-weight);
   letter-spacing: normal;
   text-transform: none;
-}
-
-html[data-ui-preset="stream"] #persistent-header .btn-primary {
-  border-radius: 9999px;
 }
 
 /* The feed column reads as prose: break only where overflow would occur,

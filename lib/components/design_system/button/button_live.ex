@@ -173,7 +173,6 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
       class={[
         "btn group",
         "inline-flex items-center justify-center gap-2",
-        "font-medium",
         "focus-ring",
         "transition-interactive",
         "hover-scale",
@@ -248,7 +247,6 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
   defp variant_class("secondary"), do: "btn-secondary"
   defp variant_class("ghost"), do: "btn-ghost"
 
-  # single source: the shared .btn-ds-outline recipe (subtle base-300 hover, 1.4px ring) — see app.css
   defp variant_class("outline"), do: "btn-ds-outline"
   # muted outline (Figma "Du folgst" / "Siehe Ergebnisse"): secondary border + base-content text
   defp variant_class("muted"),

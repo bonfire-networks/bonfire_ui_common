@@ -33,14 +33,14 @@
     <button
       type="button"
       data-role="composer-pill-post"
-      class="btn btn-primary rounded-full normal-case"
+      class="btn btn-primary normal-case"
     >
       {lc("verb: action", "Post", [], :bonfire_posts)}
     </button>
     <button
       type="button"
       data-role="composer-pill-continue"
-      class="hidden btn btn-warning rounded-full normal-case  gap-1 items-center"
+      class="hidden btn btn-warning normal-case  gap-1 items-center"
     >
       <#Icon iconify="ph:pencil-line-fill" aria-hidden="true" class="w-4 h-4" />
       {l("Continue")}

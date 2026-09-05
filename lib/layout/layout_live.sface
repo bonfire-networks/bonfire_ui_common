@@ -352,7 +352,7 @@
             :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}
             id="dock-signup-action"
             to={path(:signup)}
-            class="btn btn-primary min-h-11 h-11 shrink-0 rounded-full px-4 whitespace-nowrap"
+            class="btn btn-primary min-h-11 h-11 shrink-0 px-4 whitespace-nowrap"
           >
             <span>{l("Create account")}</span>
           </LinkLive>
@@ -360,7 +360,7 @@
           <LinkLive
             id="dock-login-action"
             to={path(:login, :index)}
-            class="btn btn-soft min-h-11 h-11 shrink-0 rounded-full px-4 whitespace-nowrap"
+            class="btn btn-soft min-h-11 h-11 shrink-0 px-4 whitespace-nowrap"
           >
             <span>{l("Log in")}</span>
           </LinkLive>
