@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "nprogress/nprogress.css";
-@import "./ui_presets/stream.css";
+@import "./interface.css";
+@import "./ui_presets/typographic.css";
 
 @utility trim {
   text-box: trim-both cap alphabetic;
@@ -357,7 +358,7 @@ label[for],
 
 /* Keep button geometry themeable without changing input or icon-button shapes. */
 .btn:not(.btn-circle):not(.btn-square) {
-  --radius-field: var(--radius-button, 0.625rem);
+  --radius-field: var(--radius-button, var(--button-radius-default, 0.625rem));
 }
 
 .btn-sm {
@@ -554,8 +555,6 @@ textarea:focus-visible {
 @plugin "daisyui" {
   themes: light --default, silk, caramellatte, nord, cmyk, acid, autumn, lofi, pastel, fantasy, cupcake, bumblebee, emerald, corporate, dark --prefersdark, synthwave, forest, dracula, aqua, luxury, night, coffee, dim, sunset, abyss, retro, cyberpunk, valentine, halloween, garden;
 }
-
-
 
 
 
@@ -1001,66 +1000,108 @@ hex-input::part(input) {
 }
 
 .bonfire-wrapper {
-  @apply rounded-box border-hair bg-base-100 border-secondary p-card;
+  @apply bg-base-100 border-secondary p-card;
+  border-width: 0;
+  border-radius: 0;
 }
 
-/* ============================================
-   PRESET COMPONENT TOKENS
-   Chrome that UI presets retune by setting CSS variables only — see
-   docs/topics/UI_STREAM_TOKENIZATION.md. Every fallback IS the default
-   preset's value, so with no preset active nothing changes. Lives in
-   @layer components so per-instance utilities still win.
-   ============================================ */
+/* Detached containers retain their frame; reading-column panels are flat. */
+.bonfire-wrapper:not(:where([data-id="main_section"] *)) {
+  @apply rounded-box border-hair;
+}
 
+.thread-stats,
+.feed-controls-toolbar {
+  min-width: 0;
+  border-width: 0 0 var(--divider-width);
+  border-color: var(--divider-color);
+  background-color: var(--color-base-100);
+}
+
+.thread-stats {
+  padding: 8px var(--spacing-card);
+}
+
+/* Branch connectors sit outside comments and must share their inset. */
 :root {
-  --feed-gap: var(--spacing-feed);
-  /* Shell: rail column surface, column dividers, and the gutters between
-     the rails and the reading column. --rail-divider-width draws the rails'
-     own edges; --content-divider-width is the reading column's right edge
-     against the widget rail (kept by Stream, so they are separate knobs). */
-  --rail-bg: var(--color-base-200);
-  --rail-divider-width: var(--border);
-  --content-divider-width: var(--border);
-  --rail-offset: var(--spacing-feed);
-  --user-menu-divider: var(--border);
-  /* Shared ink for every structural divider — the shell's column borders and
-     the hairline between feed activities, which falls back to this. Set it
-     alone and the vertical and horizontal separators stay in step; override
-     `--activity-border-color` only to part them on purpose. */
-  --divider-color: var(--color-secondary);
+  --comment-base-indent: 8px;
+  --comment-top-inset: 8px;
 }
 
-/* A custom property's var() references are substituted where it is DECLARED,
-   then the resolved value inherits — so `--divider-color` alone would freeze
-   the root theme's secondary and follow a nested `data-theme` subtree (the
-   settings theme previews) no further. Re-declaring restores the per-element
-   resolution the `border-secondary` utilities used to give us. Preset
-   overrides like html[data-ui-preset="stream"] outrank this on specificity. */
+[data-role="object-thread"] [data-role="thread"] .thread-stats:not(:has([role="group"])) {
+  display: none;
+}
+
+.feed-controls-toolbar {
+  width: 100%;
+}
+
+[data-role="profile-stats-divider"] {
+  margin-bottom: 4px;
+}
+
+.load_more_container {
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+.activity_wrapper [data-id="subject_secondary"] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* A theme that omits this optional override must not inherit another theme's button shape. Theme definitions in the base layer take precedence. */
+@layer theme {
+  :root,
+  [data-theme] {
+    --radius-button: initial;
+  }
+}
+
+/* Layout values resolve again in nested theme previews so their dividers and surfaces use the local palette. */
+:root,
 [data-theme] {
-  --divider-color: var(--color-secondary);
+  --feed-gap: 0px;
+  --activity-bleed: 0px;
+  --activity-radius: 0px;
+  --activity-border-width: 0 0 var(--divider-width);
+  --activity-hover-bg: color-mix(in oklab, var(--color-base-content) 3%, var(--color-base-100));
+  --rail-bg: var(--color-base-100);
+  --rail-divider-width: 0px;
+  --content-divider-width: var(--border);
+  --rail-offset: 0px;
+  --user-menu-divider: 0px;
+  --divider-color: color-mix(in oklab, var(--color-base-content) 12%, transparent);
+  --divider-width: 1px;
+  --widget-gap: var(--spacing-base);
+  --widget-overlap: 0px;
+}
+
+@media (min-resolution: 2dppx) {
+  :root,
+  [data-theme] {
+    --divider-width: 0.5px;
+  }
 }
 
 @layer components {
-  /* Feed activity chrome (markup: feed_live.sface). Default preset: a
-     bordered rounded card bleeding 1px past the column so side borders
-     tuck under the container edges; presets retune via --activity-*. */
+  /* Typographic adds card borders and overlap through its layout tokens. */
   .activity_wrapper {
     position: relative;
-    width: calc(100% + 2 * var(--activity-bleed, 1px));
-    max-width: calc(100% + 2 * var(--activity-bleed, 1px));
-    margin-left: calc(-1 * var(--activity-bleed, 1px));
+    width: calc(100% + 2 * var(--activity-bleed));
+    max-width: calc(100% + 2 * var(--activity-bleed));
+    margin-left: calc(-1 * var(--activity-bleed));
     padding: var(--activity-padding, var(--spacing-card));
     border-style: solid;
     border-color: var(--activity-border-color, var(--divider-color));
-    border-width: var(--activity-border-width, var(--border));
-    border-radius: var(--activity-radius, var(--radius-box));
+    border-width: var(--activity-border-width);
+    border-radius: var(--activity-radius);
     background-color: var(--color-base-100);
     transition: background-color 150ms ease;
   }
 
   @media (hover: hover) and (pointer: fine) {
     .activity_wrapper:hover {
-      background-color: var(--activity-hover-bg, var(--color-base-100));
+      background-color: var(--activity-hover-bg);
     }
   }
 
@@ -1070,18 +1111,15 @@ hex-input::part(input) {
     }
   }
 
-  /* Sidebar widget stack (markup: sidebar_widgets_live.sface). Default
-     preset: zero gap, with adjacent widget borders collapsed by pulling
-     every widget after the first up by one border width. Presets retune
-     via --widget-gap / --widget-overlap. */
+  /* Only Typographic overlaps adjacent widget borders. */
   .widget-list {
     display: flex;
     flex-direction: column;
-    gap: var(--widget-gap, 0px);
+    gap: var(--widget-gap);
   }
 
   .widget-list > * + * {
-    margin-top: var(--widget-overlap, calc(-1 * var(--border)));
+    margin-top: var(--widget-overlap);
   }
 
   /* Horizontal carousel track (markup: the Spotlight, Who-to-follow and
@@ -1274,88 +1312,26 @@ emoji-picker .favorites {
   translate: 0 1px;
 }
 
-/* ============================================
-   REPLY-CONTEXT NESTING (feed "post with reply")
-   When an activity shows its reply_to parent, the parent renders as the <article>'s
-   first child (a nested <article>); the reply's OWN content (its <div> children:
-   subject / body / media / actions) is nested one level under it. The connector
-   line is layered on top (added separately). One indent level = avatar + gap.
-   ============================================ */
 [data-reply-context]
-  > div:not([data-role="thread_header"]):not([data-role="published_in"]) {
-  margin-left: 34px;
-}
-
-/* Gutter: the body + actions align with the byline NAME (avatar 35 + gap 18 = 53px),
-   clearing the avatar column for the connector. The byline (SubjectLive) keeps the
-   avatar inline; only the post-byline siblings indent — fits ActivityLive's flat list.
-   Parent body = 53 (gutter only); reply body/actions = 34 nest + 53 gutter = 87. */
+  > div:not([data-role="thread_header"]):not([data-role="published_in"]),
 [data-reply-context] > article > :not([data-role="subject"]) {
-  margin-left: 53px;
-}
-[data-reply-context]
-  > div:not([data-role="subject"]):not([data-role="thread_header"]):not(
-    [data-role="published_in"]
-  ) {
-  margin-left: 87px;
+  margin-left: 0;
 }
 
-/* Connector — a hairline thread line linking the parent avatar to the reply avatar.
-   Trunk: on the parent block (a nested <article>), self-sizing top→bottom so it spans
-   the parent's height into the gap. Elbow: on the reply's subject, the └ curve. */
+/* Both connector treatments anchor to the parent and reply subjects. */
 [data-reply-context] > article,
 [data-reply-context] > [data-role="subject"] {
   position: relative;
 }
-[data-reply-context] > article::after {
-  content: "";
-  position: absolute;
-  left: 17px; /* parent avatar centre (≈35px avatar / 2) */
-  top: 38px; /* just below the avatar */
-  bottom: -30px; /* extend through the mb-8 gap toward the reply avatar */
-  border-left: var(--border) solid var(--color-secondary);
-  pointer-events: none;
-}
-/* "Continues up" — prominent dotted line in the avatar column, from the card top down to
-   the parent avatar (signals the thread extends above; pairs with "See full thread").
-   Anchored to the header strip whose top == the card edge (via -mt-card), so top:0 is the
-   card top exactly. 3px round dots in the secondary stroke colour. */
+
 [data-reply-context] > [data-role="thread_header"] {
   position: relative;
 }
+
 [data-reply-context] > [data-role="thread_header"]::before {
   content: "";
   position: absolute;
-  left: 32px;
-  top: 0;
-  height: 65px;
-  width: 3px;
-  background-image: radial-gradient(
-    circle,
-    var(--color-secondary) 1.5px,
-    transparent 1.6px
-  );
-  background-size: 3px 8px;
-  background-repeat: repeat-y;
   z-index: 2;
-  pointer-events: none;
-}
-/* When a full-width "published in" banner sits between the header and the parent,
-   stop the dots at the header so they don't run through the banner's icon */
-[data-reply-context]:has(> [data-role="published_in"])
-  > [data-role="thread_header"]::before {
-  height: 100%;
-}
-[data-reply-context] > [data-role="subject"]::before {
-  content: "";
-  position: absolute;
-  left: -17px; /* back out to the trunk's x (reply subject is indented 34px) */
-  top: -18px;
-  width: 34px;
-  height: 35px; /* down to ≈ the reply avatar centre */
-  border-left: var(--border) solid var(--color-secondary);
-  border-bottom: var(--border) solid var(--color-secondary);
-  border-bottom-left-radius: 0px;
   pointer-events: none;
 }
 
@@ -2076,15 +2052,24 @@ body:has(#smart_input_container[data-draft])
 
 .btn-ds-outline:not(.btn-circle):not(.btn-square),
 .btn-ds-variant-outline:not(.btn-circle):not(.btn-square) {
-  border-radius: var(--radius-button, 0.625rem);
+  border-radius: var(--radius-button, var(--button-radius-default, 0.625rem));
 }
 
 .btn-ds-variant-outline {
   background-color: var(--color-base-300);
 }
 
-.btn-ds-outline:hover {
+.btn-ds-outline:hover:not(:disabled, [disabled], [aria-disabled="true"], .btn-disabled) {
   background-color: var(--color-base-300);
+}
+
+/* DS variants also appear without .btn, so preserve the DaisyUI disabled treatment for both forms. */
+:is(.btn-ds-outline, .btn-ds-variant-outline):is(:disabled, [disabled], [aria-disabled="true"], .btn-disabled) {
+  color: color-mix(in oklch, var(--color-base-content) 20%, transparent);
+  background-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+  background-image: none;
+  box-shadow: none;
+  pointer-events: none;
 }
 
 /* ============================================

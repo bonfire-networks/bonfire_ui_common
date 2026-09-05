@@ -8,7 +8,7 @@
   data-focus-on-open={@focus_on_open}
   data-no-flip={if @no_flip, do: "true"}
   data-close-on-inside-click={if @close_on_select, do: "true"}
-  aria-haspopup="true"
+  aria-haspopup={if @menu, do: "menu", else: nil}
   class={"relative", @wrapper_class}
   {...@wrapper_opts}
 >
@@ -17,7 +17,7 @@
     tabindex="0"
     id={@id <> "_trigger"}
     class={"tooltip-button", @trigger_class, "touch-target-expanded": @expanded_touch_target}
-    aria-haspopup="true"
+    aria-haspopup={if @menu, do: "menu", else: nil}
     aria-expanded="false"
     aria-controls={@id <> "_panel"}
     aria-label={@label}

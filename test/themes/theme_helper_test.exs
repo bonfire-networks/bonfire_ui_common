@@ -14,6 +14,13 @@ defmodule Bonfire.UI.Common.ThemeHelperTest do
       assert ThemeHelper.preview_ui_preset(conn, :dev) == "stream"
     end
 
+    test "allows the Typographic preview from the query string in development" do
+      conn = Plug.Test.conn(:get, "/?ui_preset=typographic")
+
+      assert ThemeHelper.preview_ui_preset(conn, :dev) == "typographic"
+      assert ThemeHelper.preview_ui_preset(conn, :prod) == nil
+    end
+
     test "rejects preview presets outside development" do
       conn = Plug.Test.conn(:get, "/?ui_preset=stream")
 
@@ -36,10 +43,17 @@ defmodule Bonfire.UI.Common.ThemeHelperTest do
       assert ThemeHelper.ui_preset(%{}) == "stream"
     end
 
+    test "preserves an explicit Typographic instance default" do
+      Process.put([:bonfire, :ui, :theme, :ui_preset], "typographic")
+
+      assert ThemeHelper.default_ui_preset() == "typographic"
+      assert ThemeHelper.ui_preset(%{}) == "typographic"
+    end
+
     test "normalises a misconfigured preset to the built-in default" do
       Process.put([:bonfire, :ui, :theme, :ui_preset], "bogus")
 
-      assert ThemeHelper.default_ui_preset() == "typographic"
+      assert ThemeHelper.default_ui_preset() == "stream"
     end
   end
 
@@ -83,7 +97,7 @@ defmodule Bonfire.UI.Common.ThemeHelperTest do
                  scope: :user
                )
 
-      assert ThemeHelper.ui_preset(%{current_user: user}) == ThemeHelper.default_ui_preset()
+      assert ThemeHelper.ui_preset(%{current_user: user}) == "stream"
     end
   end
 

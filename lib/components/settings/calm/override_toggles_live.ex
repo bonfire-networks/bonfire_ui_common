@@ -27,6 +27,8 @@ defmodule Bonfire.UI.Common.Settings.Calm.OverrideTogglesLive do
 
   @doc "Optional classes added to every toggle row, for host-specific inset and interaction styling."
   prop row_class, :css_class, default: nil
+  @doc "Override label typography for the host surface."
+  prop name_class, :css_class, default: "text-sm font-normal text-base-content"
   prop title, :string, default: nil
   @doc "Title typography classes; override to quiet the heading in secondary surfaces."
   prop title_class, :css_class, default: "text-sm font-medium text-base-content"

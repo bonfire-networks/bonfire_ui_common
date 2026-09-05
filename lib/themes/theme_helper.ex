@@ -6,21 +6,13 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   use Bonfire.Common.Settings
   import Bonfire.Common.Utils, only: [current_user: 1, current_account: 1]
 
-  @preview_ui_presets ~w(stream)
-
-  @ui_presets ~w(typographic stream)
-  @default_ui_preset "typographic"
+  @ui_presets ~w(stream typographic)
+  @default_ui_preset "stream"
 
   @doc """
-  The scope's chosen interface preset — `"typographic"` or `"stream"` — falling back to
-  `default_ui_preset/0` (what the flavour or instance configured) and normalising anything
-  unknown to the built-in default.
+  The scope's chosen interface preset, falling back through user, account and instance settings to Stream. Unknown values also resolve to Stream.
 
-  Rendered as the `data-ui-preset` attribute on `<html>`; every Stream rule in
-  `assets/css/ui_presets/stream.css` is rooted at `html[data-ui-preset="stream"]`,
-  while `"typographic"` matches no preset stylesheet and so renders the default
-  interface. Like the theme and icon weight, a user-scoped choice can only reach
-  `<html>` on LiveView pages via a pushed event (see `push_current_ui_preset/1`).
+  Rendered as `data-ui-preset` on `<html>`. `assets/css/interface.css` supplies the default Stream presentation, including when the attribute is absent; explicit Typographic selects the client layout. LiveView updates the root attribute through `push_current_ui_preset/1`.
   """
   def ui_preset(assigns) do
     context = current_user(assigns) || current_account(assigns) || Map.get(assigns, :conn)
@@ -33,7 +25,7 @@ defmodule Bonfire.UI.Common.ThemeHelper do
 
   @doc """
   The preset a scope falls back to when it hasn't chosen one: whatever the flavour (or instance
-  admin) set as `config :bonfire, :ui, theme: [ui_preset: ...]`, or `"typographic"` if neither did.
+  admin) set as `config :bonfire, :ui, theme: [ui_preset: ...]`, or `"stream"` if neither did.
 
   Ignores any user- or account-scoped choice (`scope: :instance`), so the settings form can
   preselect the instance default rather than assuming the built-in one.
@@ -78,7 +70,7 @@ defmodule Bonfire.UI.Common.ThemeHelper do
       |> Map.fetch!(:query_params)
       |> Map.get("ui_preset")
 
-    if environment == :dev and requested_preset in @preview_ui_presets do
+    if environment == :dev and requested_preset in @ui_presets do
       requested_preset
     end
   end

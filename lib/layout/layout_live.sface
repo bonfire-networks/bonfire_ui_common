@@ -113,7 +113,7 @@
             </div>
             <div
               data-id="secondary_sidebar_widgets"
-              class="overflow-x-hidden overflow-y-auto flex-1 flex flex-col"
+              class="sidebar-widgets overflow-x-visible overflow-y-auto flex-1 flex flex-col gap-(--stream-section-gap)"
             >
               <Bonfire.UI.Common.SidebarWidgetsLive
                 widgets={if @preview_sidebar_widgets != [], do: @preview_sidebar_widgets, else: @sidebar_widgets}

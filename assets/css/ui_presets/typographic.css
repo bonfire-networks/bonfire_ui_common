@@ -1,0 +1,224 @@
+/* Client layout: bordered cards, overlapping edges and separated rails. */
+html[data-ui-preset="typographic"],
+html[data-ui-preset="typographic"] [data-theme] {
+  --feed-gap: var(--spacing-feed);
+  --activity-bleed: 1px;
+  --activity-radius: var(--radius-box);
+  --activity-border-width: var(--border);
+  --activity-hover-bg: var(--color-base-100);
+  --rail-bg: var(--color-base-200);
+  --rail-divider-width: var(--border);
+  --rail-offset: var(--spacing-feed);
+  --user-menu-divider: var(--border);
+  --divider-color: var(--color-secondary);
+  --widget-gap: 0px;
+  --widget-overlap: calc(-1 * var(--border));
+  --comment-base-indent: 0px;
+  --comment-top-inset: 0px;
+}
+
+@layer components {
+  /* Client panels overlap the reading-column borders; ordinary page panels stay within them. */
+  html[data-ui-preset="typographic"] .page-panel,
+  html[data-ui-preset="typographic"] [data-role="object-thread"] {
+    margin-inline: -1px;
+  }
+
+  html[data-ui-preset="typographic"] [data-role="search-results"] {
+    margin-block: -1px;
+  }
+}
+
+html[data-ui-preset="typographic"] .bonfire-wrapper {
+  @apply rounded-box border-hair;
+}
+
+html[data-ui-preset="typographic"] .thread-stats {
+  @apply bg-base-200 rounded-field border-hair border-secondary p-1;
+  margin-block: -0.5px;
+}
+
+html[data-ui-preset="typographic"] [data-role="object-thread"] #thread_main_object,
+html[data-ui-preset="typographic"] [data-role="object-thread"] [data-role="thread"] > .thread-replies {
+  @apply rounded-box border-hair border-secondary p-card;
+}
+
+html[data-ui-preset="typographic"] [data-role="object-thread"] [data-role="thread"] {
+  display: block;
+}
+
+html[data-ui-preset="typographic"] [data-role="object-thread"] [data-role="thread"] .thread-stats:not(:has([role="group"])) {
+  display: flex;
+}
+
+html[data-ui-preset="typographic"] .feed-controls-toolbar {
+  @apply bg-base-300 rounded-field border-hair border-secondary;
+  width: calc(100% + 2px);
+  margin-left: -1px;
+  margin-bottom: -1px;
+}
+
+html[data-ui-preset="typographic"] [data-role="profile-stats-divider"] {
+  @apply border-t-hair border-secondary mb-3;
+}
+
+html[data-ui-preset="typographic"] [data-id="profile_hero"] {
+  @apply border-y-hair border-y-secondary;
+}
+
+html[data-ui-preset="typographic"] [data-id="profile_hero"] [data-id="hero_background"] {
+  @apply mb-2;
+  height: auto;
+  aspect-ratio: 3 / 1;
+}
+
+html[data-ui-preset="typographic"] .widget-user-profile {
+  @apply bg-base-100 p-1 rounded-field border-hair border-secondary;
+}
+
+html[data-ui-preset="typographic"] .sidebar-widgets .widget-moderator-profile {
+  @apply px-1 border-hair rounded-field bg-base-100;
+}
+
+html[data-ui-preset="typographic"] .sidebar-widgets [data-role="moderators-heading"] {
+  @apply border-b-hair;
+}
+
+html[data-ui-preset="typographic"] [data-id="trending_discussions"] {
+  @apply mx-0 rounded-none bg-transparent overflow-visible;
+}
+
+html[data-ui-preset="typographic"] [data-id="trending_discussions"] > li {
+  @apply border-t-hair border-secondary;
+}
+
+html[data-ui-preset="typographic"] [data-id="recent_articles"] {
+  @apply gap-4 rounded-box border-hair bg-base-100;
+}
+
+html[data-ui-preset="typographic"] [data-id="recent_articles"] > :where(.previewable_activity, [data-id="activity_article"]) {
+  @apply py-0;
+}
+
+html[data-ui-preset="typographic"] .recent-articles > .previewable_activity:focus-visible {
+  border-radius: 0;
+  outline: revert;
+  outline-offset: revert;
+}
+
+html[data-ui-preset="typographic"] .recent-articles [data-id="activity_article"][data-rendered="widget"] {
+  @apply px-4 overflow-hidden;
+}
+
+html[data-ui-preset="typographic"] .recent-articles [data-role="name"],
+html[data-ui-preset="typographic"] .recent-articles [data-role="summary"] {
+  @apply line-clamp-none;
+  overflow-wrap: normal;
+  text-wrap: wrap;
+}
+
+html[data-ui-preset="typographic"] .recent-articles [data-role="name"] {
+  @apply text-display font-medium;
+}
+
+html[data-ui-preset="typographic"] .recent-articles [data-role="summary"] {
+  color: inherit;
+}
+
+html[data-ui-preset="typographic"] .recent-articles [data-role="article_meta"] {
+  @apply mt-2 pb-card;
+}
+
+html[data-ui-preset="typographic"] .recent-articles [data-role="article_byline"] {
+  @apply mt-card text-body;
+}
+
+html[data-ui-preset="typographic"] .recent-articles [data-id="article_cover"] {
+  @apply aspect-[3/2] rounded-box;
+}
+
+html[data-ui-preset="typographic"] [data-id="secondary_sidebar_widgets"] {
+  @apply gap-0 overflow-x-hidden;
+}
+
+html[data-ui-preset="typographic"] [data-id="widget_customize_feed"] [data-role="feed_override_toggles"] {
+  @apply pb-1;
+}
+
+html[data-ui-preset="typographic"] [data-id="widget_customize_feed"] [data-role="calm_override_name"] {
+  @apply text-base-content;
+}
+
+html[data-ui-preset="typographic"] .sidebar-widgets [data-role="widget-heading"] {
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+html[data-ui-preset="typographic"] [data-id="secondary_sidebar_widgets"] .widget-users > [data-role="widget-header"] {
+  @apply pt-card px-card border-b-hair;
+}
+
+html[data-ui-preset="typographic"] [data-id="secondary_sidebar_widgets"] .widget-users [data-role="widget-user-row"] {
+  @apply p-1;
+}
+
+/* Typographic nests the reply beneath its parent; Stream keeps a full-width reply. */
+html[data-ui-preset="typographic"] [data-reply-context]
+  > div:not([data-role="thread_header"]):not([data-role="published_in"]) {
+  margin-left: 34px;
+}
+
+html[data-ui-preset="typographic"] [data-reply-context] > article > :not([data-role="subject"]) {
+  margin-left: 53px;
+}
+html[data-ui-preset="typographic"] [data-reply-context]
+  > div:not([data-role="subject"]):not([data-role="thread_header"]):not(
+    [data-role="published_in"]
+  ) {
+  margin-left: 87px;
+}
+
+html[data-ui-preset="typographic"] [data-reply-context] > article::after {
+  content: "";
+  position: absolute;
+  left: 17px; /* parent avatar centre (≈35px avatar / 2) */
+  top: 38px; /* just below the avatar */
+  bottom: -30px; /* extend through the mb-8 gap toward the reply avatar */
+  border-left: var(--border) solid var(--color-secondary);
+  pointer-events: none;
+}
+
+html[data-ui-preset="typographic"] [data-reply-context] > [data-role="subject"]::before {
+  content: "";
+  position: absolute;
+  left: -17px; /* back out to the trunk's x (reply subject is indented 34px) */
+  top: -18px;
+  width: 34px;
+  height: 35px; /* down to ≈ the reply avatar centre */
+  border-left: var(--border) solid var(--color-secondary);
+  border-bottom: var(--border) solid var(--color-secondary);
+  border-bottom-left-radius: 0px;
+  pointer-events: none;
+}
+
+/* The client continuation marker uses dots instead of Stream's arrow node. */
+html[data-ui-preset="typographic"] [data-reply-context] > [data-role="thread_header"]::before {
+  left: 32px;
+  top: 0;
+  height: 65px;
+  width: 3px;
+  background-image: radial-gradient(
+    circle,
+    var(--color-secondary) 1.5px,
+    transparent 1.6px
+  );
+  background-size: 3px 8px;
+  background-repeat: repeat-y;
+}
+
+/* Stop the dots above a publication banner. */
+html[data-ui-preset="typographic"] [data-reply-context]:has(> [data-role="published_in"])
+  > [data-role="thread_header"]::before {
+  height: 100%;
+}

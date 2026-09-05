@@ -18,7 +18,7 @@
       data-role={@row_role}
     >
       <span class="flex flex-col min-w-0">
-        <span class="text-sm font-normal text-base-content" data-role="calm_override_name">{row.name}</span>
+        <span class={@name_class} data-role="calm_override_name">{row.name}</span>
         <span :if={Map.get(row, :description)} class="text-xs text-muted leading-snug">{Map.get(row, :description)}</span>
       </span>
       <span class="shrink-0">

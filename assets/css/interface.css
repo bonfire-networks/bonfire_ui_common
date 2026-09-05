@@ -1,15 +1,24 @@
-html[data-ui-preset="stream"] {
+/* Stream is the default interface, including pages without a preset attribute. Typographic explicitly opts out of these component treatments. Keep this selector's specificity aligned with the alternative preset. */
+html:not([data-ui-preset="typographic"]) {
   --radius-box: 12px;
   --radius-field: 10px;
-  --radius-button: 4px;
+  --button-radius-default: 4px;
   --radius-selector: 8px;
   --stream-content-padding: var(--spacing-card);
-  --stream-contained-object-radius: var(--radius-box);
   --stream-section-gap: var(--spacing-base);
   --stream-inline-gap: 6px;
   --stream-emphasis-weight: 600;
   --stream-medium-weight: 500;
   --stream-header-height: 56px;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Resolve derived colours at each theme boundary, including nested previews. */
+html:not([data-ui-preset="typographic"]),
+html:not([data-ui-preset="typographic"]) [data-theme] {
+  --stream-contained-object-radius: var(--radius-box);
   --stream-text-secondary: color-mix(
     in oklab,
     var(--color-base-content) 88%,
@@ -23,15 +32,6 @@ html[data-ui-preset="stream"] {
   --stream-text-interactive-muted: color-mix(
     in oklab,
     var(--color-base-content) 82%,
-    var(--stream-canvas)
-  );
-  --feed-gap: 0px;
-  --activity-bleed: 0px;
-  --activity-radius: 0;
-  --activity-border-width: 0 0 var(--stream-hairline-width);
-  --activity-hover-bg: color-mix(
-    in oklab,
-    var(--color-base-content) 3%,
     var(--stream-canvas)
   );
   /* Derive hierarchy from the active DaisyUI palette so Stream works with
@@ -71,19 +71,6 @@ html[data-ui-preset="stream"] {
     var(--color-primary) 11%,
     var(--stream-surface)
   );
-  /* Shell value sheet: quiet rail surfaces, no structural dividers and no
-     gutters between the rails and the reading column. */
-  --rail-bg: var(--stream-canvas);
-  --rail-divider-width: 0px;
-  --rail-offset: 0px;
-  --user-menu-divider: 0px;
-  /* One ink for every separator: the shell's remaining column borders and the
-     activity hairline, which inherits this via --activity-border-color's
-     fallback. Left on --color-secondary the vertical borders read as a
-     different, darker line than the separators sitting right beside them. */
-  --divider-color: var(--stream-hairline);
-  --widget-gap: var(--stream-section-gap);
-  --widget-overlap: 0px;
   /* Field fill (borderless search inputs). Deliberately NOT aliased to
      --stream-raised: a card can afford to be a whisper above the canvas, but
      a border-less input has to read as an input, so it keeps the full 6% ink
@@ -103,17 +90,6 @@ html[data-ui-preset="stream"] {
     var(--color-base-content) 10%,
     transparent
   );
-  /* Separators derive from ink, not from the theme's secondary colour:
-     an alpha hairline recedes on any palette, while a colour token used
-     as chrome breaks on themes where secondary is saturated (e.g. a
-     salmon secondary would paint every divider salmon). Width drops to
-     half a device pixel on retina — see the resolution query below. */
-  --stream-hairline: color-mix(
-    in oklab,
-    var(--color-base-content) 12%,
-    transparent
-  );
-  --stream-hairline-width: 1px;
   /* Monochrome on-state for feed-customization toggles: the accent budget
      belongs to Compose and the active nav item, so "on" reads as solid
      ink against the 50%-alpha off-state DaisyUI ships. */
@@ -122,9 +98,7 @@ html[data-ui-preset="stream"] {
     var(--color-base-content) 85%,
     var(--color-base-100)
   );
-  font-synthesis: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
 }
 
 /* One ink percentage cannot serve both schemes. Mixing 6% of base-content into
@@ -138,7 +112,8 @@ html[data-ui-preset="stream"] {
    Browsers without it keep the single-value ramp declared above, which is why
    these overrides live in @supports instead of shadowing the originals. */
 @supports (color: light-dark(white, black)) {
-  html[data-ui-preset="stream"] {
+  html:not([data-ui-preset="typographic"]),
+  html:not([data-ui-preset="typographic"]) [data-theme] {
     --stream-surface: light-dark(
       color-mix(in oklab, var(--color-base-content) 2%, var(--color-base-100)),
       color-mix(in oklab, var(--color-base-content) 3%, var(--color-base-100))
@@ -154,13 +129,6 @@ html[data-ui-preset="stream"] {
   }
 }
 
-/* Crisp half-pixel hairlines where the hardware can draw them. */
-@media (min-resolution: 2dppx) {
-  html[data-ui-preset="stream"] {
-    --stream-hairline-width: 0.5px;
-  }
-}
-
 /* Rails yield before the reading column: fluid between 260px and the
    default 340px instead of a fixed claim, so at in-between viewport
    widths the feed column shrinks last. w-rail compiles to
@@ -168,53 +136,53 @@ html[data-ui-preset="stream"] {
    loading skeleton alike. Gated to docked-rail widths — below lg the
    rails are overlay drawers and keep their full 340px. */
 @media (min-width: 1024px) {
-  html[data-ui-preset="stream"] {
+  html:not([data-ui-preset="typographic"]) {
     --spacing-rail: clamp(260px, 24vw, 340px);
   }
 }
 
 /* App shell: one flat canvas with stable column boundaries. */
-html[data-ui-preset="stream"] [data-id="bonfire_live"],
-html[data-ui-preset="stream"] [data-id="bonfire_live"] > .drawer,
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"]) [data-id="bonfire_live"],
+html:not([data-ui-preset="typographic"]) [data-id="bonfire_live"] > .drawer,
+html:not([data-ui-preset="typographic"])
   [data-id="bonfire_live"]
   > .drawer
   > .drawer-content,
-html[data-ui-preset="stream"] [data-id="layout"],
-html[data-ui-preset="stream"] [data-id="layout"] > .drawer-content,
-html[data-ui-preset="stream"] [data-id="main_section"],
-html[data-ui-preset="stream"] #main-content {
+html:not([data-ui-preset="typographic"]) [data-id="layout"],
+html:not([data-ui-preset="typographic"]) [data-id="layout"] > .drawer-content,
+html:not([data-ui-preset="typographic"]) [data-id="main_section"],
+html:not([data-ui-preset="typographic"]) #main-content {
   background-color: var(--stream-canvas);
 }
 
-html[data-ui-preset="stream"] #nav_sidebar,
-html[data-ui-preset="stream"] [data-id="right_nav_and_widgets"] {
+html:not([data-ui-preset="typographic"]) #nav_sidebar,
+html:not([data-ui-preset="typographic"]) [data-id="right_nav_and_widgets"] {
   background-color: var(--stream-canvas);
 }
 
-html[data-ui-preset="stream"] [data-id="bonfire_live"] > .drawer {
+html:not([data-ui-preset="typographic"]) [data-id="bonfire_live"] > .drawer {
   border-inline-width: 0;
 }
 
-html[data-ui-preset="stream"] [data-id="right_nav_and_widgets"] {
+html:not([data-ui-preset="typographic"]) [data-id="right_nav_and_widgets"] {
   gap: var(--stream-section-gap);
   padding: 0 var(--spacing-base) var(--stream-section-gap);
 }
 
-html[data-ui-preset="stream"] #persistent-header,
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"]) #persistent-header,
+html:not([data-ui-preset="typographic"])
   #nav_sidebar
   [data-role="persistent_skeleton"]
   > div:first-child,
-html[data-ui-preset="stream"] #nav_sidebar > .flex > .bg-base-200 {
+html:not([data-ui-preset="typographic"]) #nav_sidebar > .flex > .bg-base-200 {
   background-color: var(--stream-canvas);
 }
 
-html[data-ui-preset="stream"] #main-content > .sticky,
-html[data-ui-preset="stream"] #the_preview_contents > .sticky {
+html:not([data-ui-preset="typographic"]) #main-content > .sticky,
+html:not([data-ui-preset="typographic"]) #the_preview_contents > .sticky {
   margin-bottom: 0;
-  border-bottom-width: var(--stream-hairline-width);
-  border-bottom-color: var(--stream-hairline);
+  border-bottom-width: var(--divider-width);
+  border-bottom-color: var(--divider-color);
   background-color: var(--color-base-100);
 }
 
@@ -222,8 +190,8 @@ html[data-ui-preset="stream"] #the_preview_contents > .sticky {
    Covers the preview modal header too (its markup ships lg:bg-base-200/70,
    but stream's canvas is base-100 so a base-200 tint reads off-white). */
 @supports (backdrop-filter: blur(1px)) {
-  html[data-ui-preset="stream"] #main-content > .sticky,
-  html[data-ui-preset="stream"] #the_preview_contents > .sticky {
+  html:not([data-ui-preset="typographic"]) #main-content > .sticky,
+  html:not([data-ui-preset="typographic"]) #the_preview_contents > .sticky {
     background-color: color-mix(
       in oklab,
       var(--color-base-100) 86%,
@@ -234,22 +202,22 @@ html[data-ui-preset="stream"] #the_preview_contents > .sticky {
   }
 }
 
-html[data-ui-preset="stream"] #main-content > .sticky > div {
+html:not([data-ui-preset="typographic"]) #main-content > .sticky > div {
   min-height: var(--stream-header-height);
 }
 
 /* Anchor jumps and scrollIntoView land clear of the sticky header. */
-html[data-ui-preset="stream"] #main-content :where([id]) {
+html:not([data-ui-preset="typographic"]) #main-content :where([id]) {
   scroll-margin-top: calc(var(--stream-header-height) + 8px);
 }
 
 /* Navigation: generous rows, compact selection, no card treatment. */
-html[data-ui-preset="stream"] #nav_sidebar .menu > li > a,
-html[data-ui-preset="stream"] #nav_sidebar .widget_accordion > summary {
+html:not([data-ui-preset="typographic"]) #nav_sidebar .menu > li > a,
+html:not([data-ui-preset="typographic"]) #nav_sidebar .widget_accordion > summary {
   border-radius: var(--radius-selector);
 }
 
-html[data-ui-preset="stream"] #nav_sidebar :where(.btn-circle.btn-xs) {
+html:not([data-ui-preset="typographic"]) #nav_sidebar :where(.btn-circle.btn-xs) {
   position: relative;
   width: 32px;
   min-width: 32px;
@@ -258,7 +226,7 @@ html[data-ui-preset="stream"] #nav_sidebar :where(.btn-circle.btn-xs) {
   border-width: 0;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   #nav_sidebar
   :where(.btn-circle.btn-xs):not(:has(.touch-target-hit-area))::before {
   content: "";
@@ -266,47 +234,32 @@ html[data-ui-preset="stream"]
   inset: -6px;
 }
 
-html[data-ui-preset="stream"] #nav_sidebar .widget_accordion {
+html:not([data-ui-preset="typographic"]) #nav_sidebar .widget_accordion {
   padding-block: 2px;
 }
 
-html[data-ui-preset="stream"] #nav_sidebar .widget_accordion > summary > div {
+html:not([data-ui-preset="typographic"]) #nav_sidebar .widget_accordion > summary > div {
   font-weight: var(--stream-medium-weight);
   letter-spacing: normal;
   text-transform: none;
 }
 
-/* The feed column reads as prose: break only where overflow would occur,
-   never mid-word everywhere (the default column ships `break-all`). */
-html[data-ui-preset="stream"] .load_more_container {
-  word-break: normal;
-  overflow-wrap: anywhere;
-}
-
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-id="user_dashboard"]
   [data-showing-within="main"]
   > aside,
-html[data-ui-preset="stream"] [data-id="user_dashboard"] .activity_wrapper {
+html:not([data-ui-preset="typographic"]) [data-id="user_dashboard"] .activity_wrapper {
   border-width: 0;
   border-radius: 0;
   background-color: transparent;
   box-shadow: none;
 }
 
-html[data-ui-preset="stream"]
-  [data-id="main_section"]
-  :where(.bonfire-wrapper) {
-  border-width: 0;
-  border-radius: 0;
-  box-shadow: none;
-}
-
-html[data-ui-preset="stream"] [data-id="user_dashboard"] li.bonfire-wrapper {
+html:not([data-ui-preset="typographic"]) [data-id="user_dashboard"] li.bonfire-wrapper {
   padding: 0;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-id="user_dashboard"]
   [data-showing-within="main"]
   > aside
@@ -320,30 +273,28 @@ html[data-ui-preset="stream"]
   letter-spacing: 0.06em;
 }
 
-html[data-ui-preset="stream"] .activity_wrapper [data-role="subject"] {
+html:not([data-ui-preset="typographic"]) .activity_wrapper [data-role="subject"] {
   align-items: flex-start;
 }
 
-html[data-ui-preset="stream"] .activity_wrapper [data-id="name_username"] {
+html:not([data-ui-preset="typographic"]) .activity_wrapper [data-id="name_username"] {
   min-width: 0;
 }
 
-html[data-ui-preset="stream"] .activity_wrapper [data-id="subject_name"] {
+html:not([data-ui-preset="typographic"]) .activity_wrapper [data-id="subject_name"] {
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
   font-weight: var(--stream-emphasis-weight);
 }
 
-html[data-ui-preset="stream"] .activity_wrapper [data-id="subject_secondary"] {
+html:not([data-ui-preset="typographic"]) .activity_wrapper [data-id="subject_secondary"] {
   min-width: 0;
   color: var(--stream-text-tertiary);
   font-size: var(--text-meta);
   line-height: var(--text-meta--line-height);
-  /* Live-updating timestamps keep a constant width instead of jiggling. */
-  font-variant-numeric: tabular-nums;
 }
 
-html[data-ui-preset="stream"] .activity_wrapper [data-role="name"] {
+html:not([data-ui-preset="typographic"]) .activity_wrapper [data-role="name"] {
   color: var(--color-base-content);
   font-size: 16px;
   line-height: 22px;
@@ -351,7 +302,7 @@ html[data-ui-preset="stream"] .activity_wrapper [data-role="name"] {
   text-wrap: pretty;
 }
 
-html[data-ui-preset="stream"] .activity_wrapper [data-role="html_body"] {
+html:not([data-ui-preset="typographic"]) .activity_wrapper [data-role="html_body"] {
   max-width: 70ch;
   color: var(--color-base-content);
   font-size: 16px;
@@ -360,13 +311,13 @@ html[data-ui-preset="stream"] .activity_wrapper [data-role="html_body"] {
   text-wrap: pretty;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   .activity_wrapper
   [data-role="summary"] {
   color: var(--stream-text-secondary);
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   .activity_wrapper
   :where(.translate-btn-client, .translate-btn-server, [data-role="post_language"]) {
   color: var(--stream-text-tertiary);
@@ -374,13 +325,13 @@ html[data-ui-preset="stream"]
   line-height: 18px;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   .activity_wrapper
   :where(.feed_actions .text-muted) {
   color: var(--stream-text-interactive-muted);
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   .activity_wrapper
   :where(
     [data-role="boosted_by"],
@@ -403,7 +354,7 @@ html[data-ui-preset="stream"]
 
 /* Belonging is an eyebrow for the activity, not a detached heading. Give its
    icon the avatar column and rely on the activity's gap for vertical rhythm. */
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   .activity_wrapper
   .activity
   > [data-role="published_in"] {
@@ -414,7 +365,7 @@ html[data-ui-preset="stream"]
   margin-bottom: 0;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   .activity_wrapper
   .activity
   > [data-role="published_in"]
@@ -425,7 +376,7 @@ html[data-ui-preset="stream"]
 /* A person's boost already explains why the activity appears in Stream.
    Keep the original publication context in other presets, where the denser
    provenance line is intentional. */
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   .activity_wrapper
   [data-role="boosted_by"]
   [data-role="published_in"] {
@@ -435,13 +386,13 @@ html[data-ui-preset="stream"]
 /* Actions stay visible and steady; counts update without digit jiggle.
    Press feedback (active:scale) is kept — only the hover lift is removed,
    which Tailwind v4 ships as native `scale`/`translate`, not `transform`. */
-html[data-ui-preset="stream"] .activity_wrapper .feed_actions {
+html:not([data-ui-preset="typographic"]) .activity_wrapper .feed_actions {
   opacity: 1;
   font-variant-numeric: tabular-nums;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  html[data-ui-preset="stream"]
+  html:not([data-ui-preset="typographic"])
     .activity_wrapper
     .feed_actions
     :where(button, a):hover {
@@ -452,19 +403,18 @@ html[data-ui-preset="stream"] .activity_wrapper .feed_actions {
 }
 
 /* Status affordances ease in when they appear instead of popping. */
-html[data-ui-preset="stream"] [data-id="feed_newer_loading"] > div {
+html:not([data-ui-preset="typographic"]) [data-id="feed_newer_loading"] > div {
   transition:
     opacity 250ms var(--ease-out-expo),
     translate 250ms var(--ease-out-expo);
 }
 
 @starting-style {
-  html[data-ui-preset="stream"] [data-id="feed_newer_loading"] > div {
+  html:not([data-ui-preset="typographic"]) [data-id="feed_newer_loading"] > div {
     opacity: 0;
     translate: 0 -6px;
   }
 }
-
 
 div[data-id="profile_main_actions"] {
   margin-top: 4px;
@@ -473,7 +423,7 @@ div[data-id="profile_main_actions"] {
 /* Media, previews and carousels remain bounded because they are objects
    inside the stream. Avatars, emoji and other already-round images are
    exempt so their own shape survives. */
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   .activity_wrapper
   :where(img, video):where(
     :not([data-scope="avatar"] *, [class*="rounded-full"], [class*="emoji"])
@@ -483,22 +433,22 @@ html[data-ui-preset="stream"]
   outline-offset: calc(var(--border) * -1);
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   section:has(> [data-id="instance_pinned_widget"]) {
   padding-inline: 0;
   border-bottom-width: 0;
 }
 
-html[data-ui-preset="stream"] [data-id="instance_pinned_widget"] > aside {
+html:not([data-ui-preset="typographic"]) [data-id="instance_pinned_widget"] > aside {
   padding-inline: var(--stream-content-padding);
   border-width: 0;
 }
 
-html[data-ui-preset="stream"] [data-id="instance_pinned_widget"] > aside > [data-role="widget-header"] {
+html:not([data-ui-preset="typographic"]) [data-id="instance_pinned_widget"] > aside > [data-role="widget-header"] {
   padding-inline: 0;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-id="instance_pinned_widget"]
   .spotlight_clamp {
   border-width: 0;
@@ -508,7 +458,7 @@ html[data-ui-preset="stream"]
 }
 
 /* Right rail: open support content, with shape reserved for search and controls. */
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-id="right_nav_and_widgets"]
   > div:has([role="search"]) {
   padding: var(--spacing-base) 0 0;
@@ -516,7 +466,7 @@ html[data-ui-preset="stream"]
 
 /* Every search field — rail, search page, drawers — shares the same filled,
    borderless 44px treatment. */
-html[data-ui-preset="stream"] [role="search"] :where(input, .input) {
+html:not([data-ui-preset="typographic"]) [role="search"] :where(input, .input) {
   min-height: 44px;
   border-width: 0;
   border-radius: var(--radius-field);
@@ -524,31 +474,26 @@ html[data-ui-preset="stream"] [role="search"] :where(input, .input) {
   transition: background-color 150ms ease;
 }
 
-html[data-ui-preset="stream"] [role="search"] .input:focus-within {
+html:not([data-ui-preset="typographic"]) [role="search"] .input:focus-within {
   outline: 2px solid
     color-mix(in oklab, var(--color-primary) 75%, transparent);
   outline-offset: 2px;
 }
 
-html[data-ui-preset="stream"] [role="search"] button[type="submit"] {
+html:not([data-ui-preset="typographic"]) [role="search"] button[type="submit"] {
   min-width: 44px;
   min-height: 44px;
   border-radius: var(--radius-selector);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  html[data-ui-preset="stream"] [role="search"] :where(input, .input):hover {
+  html:not([data-ui-preset="typographic"]) [role="search"] :where(input, .input):hover {
     background-color: var(--stream-fill-hover);
   }
 }
 
-html[data-ui-preset="stream"] [data-id="secondary_sidebar_widgets"] {
-  gap: var(--stream-section-gap);
-  overflow-x: visible;
-}
-
-html[data-ui-preset="stream"] [data-id="secondary_sidebar_widgets"] aside,
-html[data-ui-preset="stream"] [data-id="secondary_sidebar_widgets"] > div {
+html:not([data-ui-preset="typographic"]) [data-id="secondary_sidebar_widgets"] aside,
+html:not([data-ui-preset="typographic"]) [data-id="secondary_sidebar_widgets"] > div {
   border-width: 0;
   border-radius: 0;
   background-color: transparent;
@@ -556,7 +501,7 @@ html[data-ui-preset="stream"] [data-id="secondary_sidebar_widgets"] > div {
   overflow: visible;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-id="secondary_sidebar_widgets"]
   > ul
   > li
@@ -568,54 +513,7 @@ html[data-ui-preset="stream"]
   overflow: hidden;
 }
 
-html[data-ui-preset="stream"]
-  [data-id="secondary_sidebar_widgets"]
-  aside.widget-users
-  > [data-role="widget-header"] {
-  padding-top: 0;
-  padding-inline: 0;
-  border-bottom-width: 0;
-}
-
-html[data-ui-preset="stream"]
-  [data-id="secondary_sidebar_widgets"]
-  aside.widget-users
-  [data-role="widget-user-row"] {
-  padding: 4px 0;
-}
-
-html[data-ui-preset="stream"]
-  [data-id="secondary_sidebar_widgets"]
-  aside.widget-users
-  .widget-user-profile {
-  padding: 0;
-  border-width: 0;
-  border-radius: 0;
-  background-color: transparent;
-}
-
-html[data-ui-preset="stream"]
-  [data-id="secondary_sidebar_widgets"]
-  > ul
-  > li:has([data-id="widget_customize_feed"])
-  > aside {
-  background-color: var(--stream-surface);
-}
-
-
-/* Widget titles read as headings, not overlines. */
-html[data-ui-preset="stream"]
-  [data-id="secondary_sidebar_widgets"]
-  aside
-  [role="heading"][aria-level="2"] {
-  font-weight: var(--stream-emphasis-weight);
-  font-size: var(--text-body);
-  line-height: 1.3;
-  letter-spacing: normal;
-  text-transform: none;
-}
-
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-id="secondary_sidebar_widgets"]
   aside
   .menu
@@ -630,143 +528,39 @@ html[data-ui-preset="stream"]
    glyph drops from primary to muted ink so a page of module headers
    doesn't scatter accent dots; the transient success check keeps its
    colour — feedback is allowed to speak. */
-html[data-ui-preset="stream"] [data-role="widget-reset"] {
+html:not([data-ui-preset="typographic"]) [data-role="widget-reset"] {
   border-width: 0;
   background-color: transparent;
 }
 
-html[data-ui-preset="stream"] [data-role="widget-reset"] .text-primary {
+html:not([data-ui-preset="typographic"]) [data-role="widget-reset"] .text-primary {
   color: var(--stream-text-interactive-muted);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  html[data-ui-preset="stream"] [data-role="widget-reset"]:hover {
+  html:not([data-ui-preset="typographic"]) [data-role="widget-reset"]:hover {
     background-color: var(--stream-fill);
-  }
-}
-
-/* Recent articles are compact list rows inside the widget card, not a second
-   stack of feed cards. Scoped to Stream so other presets retain their
-   existing article-preview treatment. */
-html[data-ui-preset="stream"] [data-id="recent_articles"] {
-  gap: 0;
-  border-width: 0;
-  border-radius: 0;
-  background-color: transparent;
-  box-shadow: none;
-  overflow: visible;
-
-  > :where(.previewable_activity, [data-id="activity_article"]) {
-    padding-block: var(--spacing-content);
-    border-top-width: 0;
-  }
-
-  > :first-child {
-    padding-top: 0;
-  }
-
-  > :last-child {
-    padding-bottom: 0;
-  }
-
-  > .previewable_activity:focus-visible {
-    border-radius: var(--radius-selector);
-    outline: 2px solid var(--color-primary);
-    outline-offset: 4px;
-  }
-
-  [data-id="activity_article"][data-rendered="widget"] {
-    padding-inline: 0;
-    background-color: transparent;
-    overflow: visible;
-
-    [data-role="name"],
-    [data-role="summary"] {
-      display: -webkit-box;
-      overflow: hidden;
-      font-size: var(--text-body);
-      line-height: var(--text-body--line-height);
-      overflow-wrap: anywhere;
-      text-wrap: pretty;
-      -webkit-box-orient: vertical;
-    }
-
-    [data-role="name"] {
-      font-weight: var(--stream-emphasis-weight);
-      -webkit-line-clamp: 2;
-    }
-
-    [data-role="summary"] {
-      color: var(--color-muted);
-      -webkit-line-clamp: 3;
-    }
-
-    [data-role="article_meta"] {
-      margin-top: var(--spacing-half);
-      padding-bottom: 0;
-    }
-  }
-
-  [data-role="article_byline"] {
-    margin-top: var(--spacing-half);
-    font-size: var(--text-caption);
-    line-height: var(--text-caption--line-height);
-  }
-
-  [data-id="article_cover"] {
-    aspect-ratio: 16 / 9;
-    border-radius: var(--radius-selector);
   }
 }
 
 /* The widget header aligns flush with the list rows, which have no side
    padding of their own. */
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   aside:has([data-id="recent_articles"])
   > [data-role="widget-header"] {
   padding-inline: 0;
 }
 
-html[data-ui-preset="stream"]
-  [data-id="widget_customize_feed"]
-  :where([data-role="feed_preset_title"], [data-role="calm_override_title"]) {
-  font-size: var(--text-caption);
-  line-height: var(--text-caption--line-height);
-}
-
-html[data-ui-preset="stream"]
-  [data-id="widget_customize_feed"]
-  [data-role="feed_preset_disclosure"][open]
-  [data-role="feed_preset_current"] {
-  background-color: var(--stream-fill);
-}
-
-html[data-ui-preset="stream"]
-  [data-id="widget_customize_feed"]
-  [id^="feed_preset_options_"]
-  > label {
-  min-height: 48px;
-}
-
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-id="widget_customize_feed"]
   .text-muted {
   color: var(--stream-text-tertiary);
 }
 
-html[data-ui-preset="stream"]
-  [data-id="widget_customize_feed"]
-  [id^="feed_preset_options_"]
-  > label:has(input:checked) {
-  background-color: var(--stream-active-subtle);
-}
-
 @media (hover: hover) and (pointer: fine) {
-  html[data-ui-preset="stream"]
+  html:not([data-ui-preset="typographic"])
     [data-id="widget_customize_feed"]
     :where(
-      [id^="feed_preset_options_"] > label,
-      [data-role="feed_preset_current"],
       [data-role="calm_override_group"],
       [data-role="open_modal"]
     ):hover {
@@ -777,21 +571,14 @@ html[data-ui-preset="stream"]
     );
   }
 
-  html[data-ui-preset="stream"]
-    [data-id="widget_customize_feed"]
-    [id^="feed_preset_options_"]
-    > label:has(input:checked):hover {
-    background-color: var(--stream-active-subtle-hover);
-  }
-
-  html[data-ui-preset="stream"]
+  html:not([data-ui-preset="typographic"])
     [data-id="widget_customize_feed"]
     [data-role="feed_preset_current"]:hover {
     background-color: var(--stream-fill-hover);
   }
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-id="widget_customize_feed"]
   [data-role="open_modal"] {
   color: var(--stream-text-interactive-muted);
@@ -805,63 +592,52 @@ html[data-ui-preset="stream"]
    readable at a glance. Scoped to the feed surfaces (rail widget, feed
    controls bar, and the advanced-filters expander/modal, whose ids start
    with feed_filters) so settings pages keep their stock toggles. */
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   :where(
     [data-id="widget_customize_feed"],
     [data-id="feed_controls"],
     [id^="feed_filters"]
   )
   :where(.toggle-primary:checked, .toggle-primary[aria-checked="true"]),
-html[data-ui-preset="stream"] [data-role="feed_override_toggle"]:checked {
+html:not([data-ui-preset="typographic"]) [data-role="feed_override_toggle"]:checked {
   --input-color: var(--stream-toggle-on);
   background-color: var(--stream-toggle-on);
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   :where(
     [data-id="widget_customize_feed"],
     [data-id="feed_controls"],
     [id^="feed_filters"]
   )
   :where(.toggle-primary:checked, .toggle-primary[aria-checked="true"])::before,
-html[data-ui-preset="stream"] [data-role="feed_override_toggle"]:checked::before {
+html:not([data-ui-preset="typographic"]) [data-role="feed_override_toggle"]:checked::before {
   background-color: var(--color-base-100);
 }
 
-/* Customize-widget rhythm: the markup now carries the base rhythm for
-   both presets (44px touch rows, shared left edge, text-led
-   advanced-filters row); stream deliberately runs denser 38px rows and
-   quiets the label ink a step below the widget title. */
-html[data-ui-preset="stream"]
-  [data-id="widget_customize_feed"]
-  [data-role="calm_override_group"] {
-  min-height: 38px;
-  padding-block: 0;
+/* Compact rows are for mouse input; touch keeps the shared 44px target. */
+@media (hover: hover) and (pointer: fine) {
+  @media not (any-pointer: coarse) {
+    html:not([data-ui-preset="typographic"])
+      [data-id="widget_customize_feed"]
+      [data-role="calm_override_group"] {
+      min-height: 38px;
+      padding-block: 0;
+    }
+  }
 }
 
-html[data-ui-preset="stream"]
-  [data-id="widget_customize_feed"]
-  [data-role="feed_override_toggles"] {
-  padding-block: 8px 2px;
-}
-
-html[data-ui-preset="stream"]
-  [data-id="widget_customize_feed"]
-  [data-role="calm_override_name"] {
-  color: var(--stream-text-secondary);
-}
-
-/* Participants: the card supplies the inset — the default preset's px-card
+/* Participants: the card supplies the inset — Typographic's px-card
    title padding and per-row card chrome would double it. Title, rows,
    dividers and the reveal control all share one left edge. */
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-id="secondary_sidebar_widgets"]
   aside:has([data-role="participants_list"])
   > [data-role="widget-header"] {
   padding-inline: 0;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-id="secondary_sidebar_widgets"]
   [data-role="participants_list"]
   > li {
@@ -870,65 +646,22 @@ html[data-ui-preset="stream"]
   border-width: 0;
 }
 
-html[data-ui-preset="stream"]
-  [data-id="secondary_sidebar_widgets"]
-  .border-hair.rounded-field:has(.profile-item) {
-  padding-inline: 0;
-  border-width: 0;
-  border-radius: 0;
-  background-color: transparent;
-}
-
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-role="participants_list"]
   [data-role="reply_share"] {
   margin-right: 0;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-role="participants_list_wrapper"]
   [data-role="toggle_participants"] {
   margin-inline: 0;
   margin-bottom: 0;
 }
 
-html[data-ui-preset="stream"]
-  [data-id="secondary_sidebar_widgets"]
-  .border-t-hair
-  > .text-caption.border-b-hair {
-  border-bottom-width: 0;
-}
-
-/* Top discussions: the overline label stays on the canvas while the list
-   itself is one raised card — the same surface as the spotlight cards and
-   the right-rail widgets — inset to the section's content edge, with
-   hairline dividers between rows. */
-html[data-ui-preset="stream"] [data-id="trending_discussions"] {
-  margin-inline: var(--stream-content-padding);
-  border-radius: var(--radius-box);
-  background-color: var(--stream-surface);
-  overflow: hidden;
-}
-
-html[data-ui-preset="stream"]
-  [data-id="trending_discussions"]
-  > li {
-  padding: 0;
-  border-width: 0;
-  background-color: transparent;
-}
-
-html[data-ui-preset="stream"]
-  [data-id="trending_discussions"]
-  > li
-  + li {
-  border-top-width: var(--border);
-  border-top-color: var(--stream-object-outline);
-}
-
 /* Title row and card share one left edge (the markup's sm:px-5 would
    drift 4px past the card's 16px inset on wider viewports). */
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-id="user_dashboard"]
   aside:has([data-id="trending_discussions"])
   > [data-role="widget-header"] {
@@ -936,117 +669,20 @@ html[data-ui-preset="stream"]
 }
 
 /* Profile: a flat identity header integrated into the central column. */
-html[data-ui-preset="stream"] main[data-id="profile"] > section {
+html:not([data-ui-preset="typographic"]) main[data-id="profile"] > section {
   display: flex;
   flex-direction: column;
   gap: 0;
-}
-
-html[data-ui-preset="stream"] [data-id="profile_hero"] {
-  border-width: 0 0 var(--stream-hairline-width);
-  border-color: var(--stream-hairline);
-  border-radius: 0;
-  background-color: var(--color-base-100);
-  box-shadow: none;
-}
-
-html[data-ui-preset="stream"]
-  [data-id="profile_hero"]
-  [data-id="hero_background"] {
-  height: clamp(180px, 22vw, 220px);
-  margin-bottom: 0;
-  aspect-ratio: auto;
-}
-
-html[data-ui-preset="stream"]
-  [data-id="profile_hero"]
-  .border-t-hair.border-secondary.mb-3 {
-  margin-bottom: 4px;
-  border-top-width: 0;
-}
-
-/* Discussions and messages continue the same reading column. */
-/* Replies breathe: a base inset added to the per-level indent plus room above
-   each comment. Declared on <html> (not on the comment) because thread_branch_live's
-   absolutely-positioned thread lines consume them too, and live outside the
-   comment subtree. */
-html[data-ui-preset="stream"] {
-  --comment-base-indent: 8px;
-  --comment-top-inset: 8px;
-}
-
-html[data-ui-preset="stream"] [data-id="comment"] {
-  padding: var(--comment-top-inset);
-}
-
-html[data-ui-preset="stream"] [data-role="object-thread"] {
-  margin-inline: 0;
-}
-
-html[data-ui-preset="stream"] [data-role="object-thread"] #thread_main_object {
-  overflow: visible;
-  padding: var(--stream-content-padding);
-  border-width: 0 0 var(--stream-hairline-width);
-  border-color: var(--stream-hairline);
-  border-radius: 0;
-  background-color: var(--color-base-100);
-  box-shadow: none;
-}
-
-html[data-ui-preset="stream"] [data-role="object-thread"] [data-role="thread"] {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-html[data-ui-preset="stream"]
-  [data-role="object-thread"]
-  [data-role="thread"]
-  .feed_control_wrapper {
-  width: auto;
-  max-width: none;
-  min-width: 0;
-  margin: 0;
-  padding: 8px var(--stream-content-padding);
-  border-width: 0 0 var(--stream-hairline-width);
-  border-color: var(--stream-hairline);
-  border-radius: 0;
-  background-color: var(--color-base-100);
-}
-
-html[data-ui-preset="stream"]
-  [data-role="object-thread"]
-  [data-role="thread"]
-  .feed_control_wrapper:not(:has([role="group"])) {
-  display: none;
-}
-
-html[data-ui-preset="stream"]
-  [data-role="object-thread"]
-  [data-role="thread"]
-  > .bonfire-wrapper {
-  padding: 0 var(--stream-content-padding) 0 0;
-  border-width: 0 0 var(--stream-hairline-width);
-  border-color: var(--stream-hairline);
-  border-radius: 0;
-  background-color: var(--color-base-100);
-  box-shadow: none;
 }
 
 @media (max-width: 639px) {
-  html[data-ui-preset="stream"] [data-id="feed_activity_list"] {
+  html:not([data-ui-preset="typographic"]) [data-id="feed_activity_list"] {
     padding-inline: 0;
-  }
-
-  html[data-ui-preset="stream"]
-    [data-id="profile_hero"]
-    [data-id="hero_background"] {
-    height: 160px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html[data-ui-preset="stream"]
+  html:not([data-ui-preset="typographic"])
     :where(
       .activity_wrapper,
       [data-id="feed_newer_loading"] > div,
@@ -1061,10 +697,10 @@ html[data-ui-preset="stream"]
 }
 
 @media (forced-colors: active) {
-  html[data-ui-preset="stream"] .activity_wrapper,
-  html[data-ui-preset="stream"] [data-id="profile_hero"],
-  html[data-ui-preset="stream"] #thread_main_object,
-  html[data-ui-preset="stream"] .feed_control_wrapper {
+  html:not([data-ui-preset="typographic"]) .activity_wrapper,
+  html:not([data-ui-preset="typographic"]) [data-id="profile_hero"],
+  html:not([data-ui-preset="typographic"]) #thread_main_object,
+  html:not([data-ui-preset="typographic"]) .feed_control_wrapper {
     border-bottom: 1px solid CanvasText;
   }
 }
@@ -1073,7 +709,7 @@ html[data-ui-preset="stream"]
    useful context without giving it the reply's visual weight; the short
    connector expresses only the ancestry that is actually shown. */
 
-html[data-ui-preset="stream"] [data-reply-context] {
+html:not([data-ui-preset="typographic"]) [data-reply-context] {
   --stream-reply-avatar-size: 35px;
   --stream-reply-avatar-axis: 17.5px;
   --stream-context-avatar-size: 20px;
@@ -1090,7 +726,7 @@ html[data-ui-preset="stream"] [data-reply-context] {
   );
 }
 
-html[data-ui-preset="stream"] [data-reply-context][data-compact="true"] {
+html:not([data-ui-preset="typographic"]) [data-reply-context][data-compact="true"] {
   --stream-reply-avatar-size: 32px;
   --stream-reply-avatar-axis: 16px;
   --stream-context-avatar-top: 6px;
@@ -1100,26 +736,8 @@ html[data-ui-preset="stream"] [data-reply-context][data-compact="true"] {
   --stream-context-connector-reach: 42px;
 }
 
-/* The reply keeps the same full-width body and actions as a standard Stream
-   activity. Only the nested parent stays inset, so it reads as context rather
-   than as a second activity with equal weight. */
-html[data-ui-preset="stream"]
-  [data-reply-context]
-  > div:not([data-role="thread_header"]):not([data-role="published_in"]) {
-  margin-left: 0;
-}
-
-/* Replace the default nested elbow. The context article adds the
-   shorter avatar-to-avatar connector below. */
-html[data-ui-preset="stream"] [data-reply-context] > article::after,
-html[data-ui-preset="stream"]
-  [data-reply-context]
-  > [data-role="subject"]::before {
-  content: none;
-}
-
 /* "See full thread" becomes a quiet inline affordance. */
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > [data-role="thread_header"] {
   margin: 0 0 10px;
@@ -1133,7 +751,7 @@ html[data-ui-preset="stream"]
   min-width: 0;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > [data-role="thread_header"]
   span {
@@ -1145,8 +763,8 @@ html[data-ui-preset="stream"]
   text-transform: none;
 }
 
-/* The node replaces the default dotted "continues up" overlay. */
-html[data-ui-preset="stream"]
+/* Continuation marker for the default reply layout. */
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > [data-role="thread_header"]::before {
   left: 8px;
@@ -1156,13 +774,12 @@ html[data-ui-preset="stream"]
   width: 19px;
   border-radius: 50%;
   background-color: var(--color-base-300);
-  background-image: none;
-  border: var(--stream-hairline-width) solid var(--stream-hairline);
+  border: var(--divider-width) solid var(--divider-color);
   transition: background-color 150ms ease-out;
 }
 
 /* Chevron-up glyph inside the node (border-drawn, no icon font). */
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > [data-role="thread_header"]::after {
   content: "";
@@ -1181,14 +798,14 @@ html[data-ui-preset="stream"]
   pointer-events: none;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > [data-role="thread_header"]
   > a[data-role="see_full_thread"] {
   flex: 0 0 auto;
   margin-left: var(--stream-context-column);
 }
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > [data-role="thread_header"]
   > a[data-role="see_full_thread"]
@@ -1199,14 +816,14 @@ html[data-ui-preset="stream"]
   color: color-mix(in oklab, var(--color-base-content) 55%, transparent);
 }
 @media (hover: hover) and (pointer: fine) {
-  html[data-ui-preset="stream"]
+  html:not([data-ui-preset="typographic"])
     [data-reply-context]
     > [data-role="thread_header"]
     > a[data-role="see_full_thread"]:hover
     span {
     color: var(--color-primary);
   }
-  html[data-ui-preset="stream"]
+  html:not([data-ui-preset="typographic"])
     [data-reply-context]:has(> [data-role="thread_header"] a:hover)
     > [data-role="thread_header"]::before {
     background-color: color-mix(
@@ -1220,7 +837,7 @@ html[data-ui-preset="stream"]
 /* Parent demotion: hierarchy by subtraction — the reply is the activity and
    the parent is a compact avatar + note. The identity remains available in
    the avatar link's accessible label without competing visually. */
-html[data-ui-preset="stream"] [data-reply-context] > article.replied {
+html:not([data-ui-preset="typographic"]) [data-reply-context] > article.replied {
   display: grid;
   grid-template-columns: var(--stream-context-column) minmax(0, 1fr);
   column-gap: 0;
@@ -1229,7 +846,7 @@ html[data-ui-preset="stream"] [data-reply-context] > article.replied {
   margin-bottom: 14px;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > article.replied
   > [data-role="subject"] {
@@ -1238,14 +855,14 @@ html[data-ui-preset="stream"]
   align-items: flex-start;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > article.replied
   [data-id="subject_details"] {
   display: none;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > article.replied
   [data-id="subject_avatar"] {
@@ -1257,7 +874,7 @@ html[data-ui-preset="stream"]
   height: var(--stream-reply-avatar-size);
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > article.replied
   [data-id="subject_avatar"]::before {
@@ -1266,7 +883,7 @@ html[data-ui-preset="stream"]
   inset: calc(-1 * var(--stream-context-avatar-hit-inset));
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > article.replied
   [data-scope="avatar"] {
@@ -1277,7 +894,7 @@ html[data-ui-preset="stream"]
   height: var(--stream-reply-avatar-size);
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > article.replied
   [data-scope="avatar"]
@@ -1286,7 +903,7 @@ html[data-ui-preset="stream"]
   height: var(--stream-context-avatar-size) !important;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > article.replied
   > :not([data-role="subject"]) {
@@ -1297,7 +914,7 @@ html[data-ui-preset="stream"]
 
 /* Translation belongs to the primary activity. On the compact parent it adds
    a second control row and weakens the parent-as-context hierarchy. */
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > article.replied
   > [data-id="activity_note"]
@@ -1307,7 +924,7 @@ html[data-ui-preset="stream"]
 
 /* Continue the thread axis upward to the arrow node. Starting inside the node
    keeps the join seamless; the small avatar masks the line at the other end. */
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]:has(> [data-role="thread_header"])
   > article.replied::before {
   content: "";
@@ -1324,7 +941,7 @@ html[data-ui-preset="stream"]
   pointer-events: none;
 }
 
-html[data-ui-preset="stream"] [data-reply-context] > article.replied::after {
+html:not([data-ui-preset="typographic"]) [data-reply-context] > article.replied::after {
   content: "";
   position: absolute;
   left: calc(var(--stream-reply-avatar-axis) - 1px);
@@ -1337,14 +954,14 @@ html[data-ui-preset="stream"] [data-reply-context] > article.replied::after {
   pointer-events: none;
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > article
   [data-role="html_body"] {
   color: color-mix(in oklab, var(--color-base-content) 85%, transparent);
 }
 
-html[data-ui-preset="stream"]
+html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > [data-role="published_in"] {
   order: -1;

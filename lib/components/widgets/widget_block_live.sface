@@ -5,7 +5,13 @@
     class={"flex items-center justify-between", @title_class}
     data-role="widget-header"
   >
-    <div :if={@widget_title} role="heading" aria-level="2" data-role="widget-heading">{@widget_title}</div>
+    <div
+      :if={@widget_title}
+      role="heading"
+      aria-level="2"
+      data-role="widget-heading"
+      class="[.sidebar-widgets_&]:font-(--stream-emphasis-weight) [.sidebar-widgets_&]:text-body [.sidebar-widgets_&]:leading-[1.3] [.sidebar-widgets_&]:tracking-normal [.sidebar-widgets_&]:normal-case"
+    >{@widget_title}</div>
     <div class="flex items-center gap-3 ml-auto">
       {!-- header actions (View all, carousel arrows…) are noise when the
            widget is empty — the empty state carries its own action instead --}
