@@ -24,7 +24,7 @@ defmodule Bonfire.UI.Common.WidgetTypeDispatchTest do
 
   defmodule SurfaceLiveWidget do
     use Bonfire.UI.Common.Web, :stateful_component
-    def render(assigns), do: ~F|<div data-id="surface-live">SURF_LIVE_OK</div>|
+    def render(assigns), do: ~F|<div id={@id} data-id="surface-live">SURF_LIVE_OK</div>|
   end
 
   defmodule PlainStatelessWidget do
@@ -34,7 +34,7 @@ defmodule Bonfire.UI.Common.WidgetTypeDispatchTest do
 
   defmodule PlainLiveWidget do
     use Bonfire.UI.Common.Web, :live_component
-    def render(assigns), do: ~H|<div data-id="plain-live">PLAIN_LIVE_OK</div>|
+    def render(assigns), do: ~H|<div id={@id} data-id="plain-live">PLAIN_LIVE_OK</div>|
   end
 
   defp widget_html(module, type) do
@@ -58,6 +58,17 @@ defmodule Bonfire.UI.Common.WidgetTypeDispatchTest do
 
   test "converted plain live_component widget renders (Phoenix.LiveComponent)" do
     assert widget_html(PlainLiveWidget, Phoenix.LiveComponent) =~ "PLAIN_LIVE_OK"
+  end
+
+  test "stateful widgets honor configured IDs for targeted updates" do
+    for {module, type} <- [{SurfaceLiveWidget, Surface.LiveComponent}, {PlainLiveWidget, Phoenix.LiveComponent}] do
+      html = render_component(&Bonfire.UI.Common.WidgetLive.render/1, %{
+        widget: %{module: module, type: type, data: %{id: "configured-widget"}},
+        data: %{id: "configured-widget"}
+      })
+
+      assert html =~ ~s(id="configured-widget")
+    end
   end
 
   # `component_type/1` is what the sidebar (and declare macros) use to set the

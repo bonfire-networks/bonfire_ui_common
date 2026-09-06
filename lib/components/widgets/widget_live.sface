@@ -166,7 +166,7 @@
             {#match Surface.LiveComponent}
               <StatefulComponent
                 module={@widget[:module]}
-                id={deterministic_dom_id(
+                id={@data[:id] || deterministic_dom_id(
                   "stateful_widget",
                   to_string(@widget[:page] || @widget[:module]),
                   to_string(@order),
@@ -181,7 +181,7 @@
             {#match Phoenix.LiveComponent}
               <.dynamic_live_component
                 module={@widget[:module]}
-                id={deterministic_dom_id(
+                id={@data[:id] || deterministic_dom_id(
                   "stateful_widget",
                   to_string(@widget[:page] || @widget[:module]),
                   to_string(@order),
