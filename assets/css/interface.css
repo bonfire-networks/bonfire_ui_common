@@ -571,11 +571,7 @@ html:not([data-ui-preset="typographic"])
     );
   }
 
-  html:not([data-ui-preset="typographic"])
-    [data-id="widget_customize_feed"]
-    [data-role="feed_preset_current"]:hover {
-    background-color: var(--stream-fill-hover);
-  }
+
 }
 
 html:not([data-ui-preset="typographic"])
@@ -687,9 +683,7 @@ html:not([data-ui-preset="typographic"]) main[data-id="profile"] > section {
       .activity_wrapper,
       [data-id="feed_newer_loading"] > div,
       [role="search"] input,
-      [role="search"] .input,
-      [data-id="widget_customize_feed"] [data-role="feed_preset_current"],
-      [data-id="widget_customize_feed"] [data-role="feed_preset_current"] svg
+      [role="search"] .input
     ) {
     transition: none;
     translate: none;
