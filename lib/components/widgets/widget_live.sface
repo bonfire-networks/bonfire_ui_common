@@ -166,12 +166,13 @@
             {#match Surface.LiveComponent}
               <StatefulComponent
                 module={@widget[:module]}
-                id={@data[:id] || deterministic_dom_id(
-                  "stateful_widget",
-                  to_string(@widget[:page] || @widget[:module]),
-                  to_string(@order),
-                  @parent_id
-                )}
+                id={@data[:id] ||
+                  deterministic_dom_id(
+                    "stateful_widget",
+                    to_string(@widget[:page] || @widget[:module]),
+                    to_string(@order),
+                    @parent_id
+                  )}
                 page={@page}
                 selected_tab={@selected_tab}
                 showing_within={@showing_within}
@@ -181,12 +182,13 @@
             {#match Phoenix.LiveComponent}
               <.dynamic_live_component
                 module={@widget[:module]}
-                id={@data[:id] || deterministic_dom_id(
-                  "stateful_widget",
-                  to_string(@widget[:page] || @widget[:module]),
-                  to_string(@order),
-                  @parent_id
-                )}
+                id={@data[:id] ||
+                  deterministic_dom_id(
+                    "stateful_widget",
+                    to_string(@widget[:page] || @widget[:module]),
+                    to_string(@order),
+                    @parent_id
+                  )}
                 __context__={@__context__}
                 page={@page}
                 selected_tab={@selected_tab}

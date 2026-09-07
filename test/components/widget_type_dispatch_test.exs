@@ -61,11 +61,15 @@ defmodule Bonfire.UI.Common.WidgetTypeDispatchTest do
   end
 
   test "stateful widgets honor configured IDs for targeted updates" do
-    for {module, type} <- [{SurfaceLiveWidget, Surface.LiveComponent}, {PlainLiveWidget, Phoenix.LiveComponent}] do
-      html = render_component(&Bonfire.UI.Common.WidgetLive.render/1, %{
-        widget: %{module: module, type: type, data: %{id: "configured-widget"}},
-        data: %{id: "configured-widget"}
-      })
+    for {module, type} <- [
+          {SurfaceLiveWidget, Surface.LiveComponent},
+          {PlainLiveWidget, Phoenix.LiveComponent}
+        ] do
+      html =
+        render_component(&Bonfire.UI.Common.WidgetLive.render/1, %{
+          widget: %{module: module, type: type, data: %{id: "configured-widget"}},
+          data: %{id: "configured-widget"}
+        })
 
       assert html =~ ~s(id="configured-widget")
     end

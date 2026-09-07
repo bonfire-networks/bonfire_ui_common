@@ -30,11 +30,7 @@
     {!-- Post / Continue swap: CSS toggles these based on data-draft on the
          global composer (see app.css). Continue shows when input_status is
          :draft — i.e. the user has an in-progress draft somewhere. --}
-    <button
-      type="button"
-      data-role="composer-pill-post"
-      class="btn btn-primary normal-case"
-    >
+    <button type="button" data-role="composer-pill-post" class="btn btn-primary normal-case">
       {lc("verb: action", "Post", [], :bonfire_posts)}
     </button>
     <button
