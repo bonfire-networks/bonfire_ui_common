@@ -67,9 +67,9 @@
               data-role="close-modal"
               class={
                 "btn btn-circle focus-ring transition-interactive cursor-pointer",
-                "size-11 min-h-11 min-w-11 !rounded-full bg-transparent text-base-content/70 hover:bg-base-200 hover:text-base-content":
+                "bg-transparent text-base-content/70 hover:bg-base-200 hover:text-base-content":
                   !@no_backdrop and !@image_preview,
-                "size-11 min-h-11 min-w-11 !rounded-full btn-primary": @image_preview,
+                "btn-primary": @image_preview,
                 "!rounded-none btn-ghost !btn-xs opacity-70 btn-secondary": @no_backdrop
               }
             >

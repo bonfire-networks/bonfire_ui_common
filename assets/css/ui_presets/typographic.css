@@ -59,7 +59,76 @@ html[data-ui-preset="typographic"] .feed-controls-toolbar {
 }
 
 html[data-ui-preset="typographic"] [data-role="profile-stats-divider"] {
-  @apply border-t-hair border-secondary mb-3;
+  display: none;
+}
+
+html[data-ui-preset="typographic"] [data-role="profile-links"] {
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+html[data-ui-preset="typographic"] [data-role="profile-also-on"] {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.75rem;
+  row-gap: 0.25rem;
+}
+
+html[data-ui-preset="typographic"] [data-role="profile-also-on"] > :first-child {
+  flex-shrink: 0;
+}
+
+html[data-ui-preset="typographic"] [data-role="profile-also-on"] > :last-child {
+  min-width: 0;
+  max-width: 100%;
+  row-gap: 0.25rem;
+}
+
+html[data-ui-preset="typographic"] [data-role="profile-websites"] .text-primary {
+  color: var(--color-base-content);
+}
+
+html[data-ui-preset="typographic"] [data-role="profile-websites"] span.text-primary {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+html[data-ui-preset="typographic"] [data-role="profile-websites"] a:is(:hover, :focus-visible) .text-primary {
+  color: var(--color-primary);
+}
+
+html[data-ui-preset="typographic"] [data-role="profile-stats"] {
+  align-items: baseline;
+  column-gap: 1.25rem;
+  row-gap: 0.5rem;
+  font-size: var(--text-sm);
+}
+
+html[data-ui-preset="typographic"] [data-role="profile-stats"] > * {
+  position: relative;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+
+html[data-ui-preset="typographic"] [data-role="profile-stats"] > * + *::before {
+  content: "·";
+  position: absolute;
+  inset-inline-start: -0.75rem;
+  color: var(--color-base-content);
+  opacity: 0.5;
+}
+
+html[data-ui-preset="typographic"] [data-role="profile-stats"] .text-body {
+  font-size: inherit;
+  font-weight: 600;
+}
+
+html[data-ui-preset="typographic"] [data-role="profile-stats"] a .text-muted {
+  text-transform: lowercase;
 }
 
 html[data-ui-preset="typographic"] [data-id="profile_hero"] {
