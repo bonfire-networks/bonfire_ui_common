@@ -971,3 +971,11 @@ html:not([data-ui-preset="typographic"])
   border: 0;
   background: transparent;
 }
+
+html:not([data-ui-preset="typographic"]) .inline-composer-placeholder-wrapper {
+  padding-inline: var(--spacing-feed);
+}
+
+html:not([data-ui-preset="typographic"]) .inline-composer-placeholder-button {
+  border-radius: var(--radius-field);
+}
