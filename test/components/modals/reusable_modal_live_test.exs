@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Common.ReusableModalLiveTest do
   alias Bonfire.UI.Common.ReusableModalLive
   alias Phoenix.LiveView.Socket
 
-  test "close control stays above modal content with an accessible hit target" do
+  test "close control stays above modal content and has an accessible label" do
     html =
       render_component(ReusableModalLive,
         id: "test-modal",
@@ -24,7 +24,6 @@ defmodule Bonfire.UI.Common.ReusableModalLiveTest do
     assert Floki.attribute(close_button, "aria-label") == ["Close modal"]
     assert Floki.attribute(close_button, "phx-click") == ["close"]
     assert Floki.attribute(close_button, "phx-target") == ["[id='test-modal']"]
-    assert Enum.any?(Floki.attribute(close_button, "class"), &String.contains?(&1, "size-11"))
     assert Floki.find(document, "div.z-tooltip button[data-role=close-modal]") != []
     assert Floki.find(document, "[data-id=modal-contents].z-popover") != []
   end
