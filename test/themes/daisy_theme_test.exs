@@ -1,105 +1,80 @@
 defmodule DaisyThemeTest do
   use ExUnit.Case, async: true
 
-  # bucket this into the ui CI leg: bare `ExUnit.Case` skips the tag the extension case templates apply, so without it this also runs in the federation job catch-all
   @moduletag :ui
 
-  describe "default_theme/0" do
-    test "includes base-content (the text colour) as a settable string key" do
-      assert %{"color-base-content" => "#" <> _} = DaisyTheme.default_theme()
-    end
-
-    test "uses string keys throughout (the canonical custom-theme key type)" do
-      assert Enum.all?(Map.keys(DaisyTheme.default_theme()), &is_binary/1)
-    end
-  end
-
-  describe "style_attr/1" do
-    test "emits all theme CSS variables, including --color-base-content" do
-      css = DaisyTheme.style_attr(%{})
-
-      assert css =~ "--color-base-content:"
-      assert css =~ "--color-base-100:"
-      assert css =~ "--color-primary:"
-      assert css =~ "--color-primary-content:"
-      assert css =~ "--radius-box:"
-    end
-
-    test "a custom value overrides the default (string-keyed)" do
-      css = DaisyTheme.style_attr(%{"color-base-100" => "#abcdef"})
-      assert css =~ "--color-base-100: #abcdef;"
-    end
-
-    test "bare picker hex values are emitted as valid CSS colours" do
-      css = DaisyTheme.style_attr(%{"color-base-100" => "abcdef"})
-      assert css =~ "--color-base-100: #abcdef;"
-    end
-
-    test "custom base-content overrides the default text colour" do
-      css = DaisyTheme.style_attr(%{"color-base-content" => "#123456"})
-      assert css =~ "--color-base-content: #123456;"
-    end
-
-    test "content variants are emitted independently of their base colour" do
-      css =
-        DaisyTheme.style_attr(%{
-          "color-primary" => "#111111",
-          "color-primary-content" => "#eeeeee"
-        })
-
-      assert css =~ "--color-primary: #111111;"
-      assert css =~ "--color-primary-content: #eeeeee;"
-    end
-  end
-
   describe "style_attr_overrides/1" do
-    test "emits only the variables present in config (no merged defaults)" do
-      css = DaisyTheme.style_attr_overrides(%{"color-base-content" => "#123456"})
-
-      assert css =~ "--color-base-content: #123456;"
-      # unset variables fall through to the base theme, so they're NOT emitted
-      refute css =~ "--color-base-100:"
-      refute css =~ "--color-primary:"
+    test "emits only recognised overrides without filling unset values" do
+      assert DaisyTheme.style_attr_overrides(%{
+               "color-base-content" => "#123456",
+               "not-a-real-key" => "#ffffff"
+             }) == "--color-base-content: #123456;"
     end
 
-    test "returns an empty string for an empty palette" do
+    test "accepts atom keys from historical settings" do
+      assert DaisyTheme.style_attr_overrides(%{"color-primary": "#abcdef"}) ==
+               "--color-primary: #abcdef;"
+    end
+
+    test "returns no declarations for an empty palette" do
       assert DaisyTheme.style_attr_overrides(%{}) == ""
     end
 
-    test "ignores unrecognised keys" do
-      assert DaisyTheme.style_attr_overrides(%{"not-a-real-key" => "#fff"}) == ""
+    test "normalises legacy bare hex values" do
+      assert DaisyTheme.style_attr_overrides(%{"color-base-200" => "fff"}) ==
+               "--color-base-200: #fff;"
     end
 
-    test "normalizes legacy bare hex override values" do
-      css = DaisyTheme.style_attr_overrides(%{"color-base-200" => "fff"})
-
-      assert css =~ "--color-base-200: #fff;"
-      refute css =~ "--color-base-200: fff;"
-    end
-
-    test "drops unsafe CSS values" do
-      assert DaisyTheme.style_attr_overrides(%{"color-base-100" => "fff; --color-primary: red"}) ==
-               ""
+    test "drops values that could escape a CSS declaration" do
+      for unsafe <- [
+            "fff; --color-primary: red",
+            "red}",
+            "{",
+            ""
+          ] do
+        assert DaisyTheme.style_attr_overrides(%{"color-base-100" => unsafe}) == ""
+      end
     end
   end
 
   describe "normalize_value/2" do
-    test "adds the CSS hex prefix to bare colour values" do
-      assert DaisyTheme.normalize_value("color-primary", "123456") == {:ok, "#123456"}
+    test "normalises the opaque hex lengths supported by the picker" do
+      for {input, expected} <- [
+            {"abc", "#abc"},
+            {"abcdef", "#abcdef"},
+            {"#ABCDEF", "#ABCDEF"}
+          ] do
+        assert DaisyTheme.normalize_value("color-primary", input) == {:ok, expected}
+      end
     end
 
-    test "keeps non-colour theme tokens unchanged when they are safe CSS tokens" do
+    test "rejects alpha hex values that the picker cannot preserve" do
+      assert DaisyTheme.normalize_value("color-primary", "abcd") == :error
+      assert DaisyTheme.normalize_value("color-primary", "#abcdef12") == :error
+    end
+
+    test "accepts adapted-theme colour functions such as OKLCH" do
+      assert DaisyTheme.normalize_value("color-primary", "oklch(66% 0.08 230)") ==
+               {:ok, "oklch(66% 0.08 230)"}
+    end
+
+    test "converts integer colours only inside the RGB range" do
+      assert DaisyTheme.normalize_value("color-primary", 0) == {:ok, "#000000"}
+      assert DaisyTheme.normalize_value("color-primary", 16_777_215) == {:ok, "#FFFFFF"}
+      assert DaisyTheme.normalize_value("color-primary", -1) == :error
+      assert DaisyTheme.normalize_value("color-primary", 16_777_216) == :error
+    end
+
+    test "accepts safe shape tokens" do
       assert DaisyTheme.normalize_value("radius-box", "0.5rem") == {:ok, "0.5rem"}
+      assert DaisyTheme.normalize_value(:depth, 1) == {:ok, "1"}
+      assert DaisyTheme.normalize_value(:noise, 0.5) == {:ok, "0.5"}
     end
-  end
 
-  describe "generate/1" do
-    test "ignores keys that aren't recognised theme variables" do
-      generated = DaisyTheme.generate(%{"not-a-real-key" => "#fff"})
-
-      refute Enum.any?(generated, &(&1.name == "not-a-real-key"))
-      # but still includes the known defaults (merged in)
-      assert Enum.any?(generated, &(&1.name == "color-base-content"))
+    test "rejects unknown keys, invalid types and declaration breakers" do
+      assert DaisyTheme.normalize_value("not-a-real-key", "#ffffff") == :error
+      assert DaisyTheme.normalize_value("color-primary", nil) == :error
+      assert DaisyTheme.normalize_value("radius-box", "1rem;") == :error
     end
   end
 end

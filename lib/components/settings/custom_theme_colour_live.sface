@@ -1,0 +1,81 @@
+<Bonfire.UI.Common.OpenModalLive
+  id={"#{@id_prefix}-key-#{@color}"}
+  title_text={l("Select color for %{color}", color: String.replace(@color, "-", " "))}
+  no_actions
+>
+  <div
+    :hook="ColourPicker"
+    id={"#{@id_prefix}-color-#{@color}"}
+    data-color-key={@color_key}
+    data-saved-color={@saved_color || ""}
+    data-scope={@scope}
+    data-theme={@base_theme}
+    style={@theme_style}
+    class="flex flex-col gap-4 p-2"
+  >
+    <hex-color-picker class="w-full mt-4" color={@saved_color || "#000000"} />
+    <div class="flex flex-col gap-2 w-full">
+      <label
+        for={"#{@id_prefix}-input-#{@color}"}
+        class="font-medium text-sm text-base-content/80"
+      >
+        {l("Color value")}
+      </label>
+      <div class="flex items-center gap-2">
+        <div class="colour_preview h-10 w-10 rounded" />
+        <hex-input
+          prefixed
+          class="w-full"
+          id={"#{@id_prefix}-hex-input-#{@color}"}
+          color={@saved_color || "#000000"}
+        >
+          <input
+            id={"#{@id_prefix}-input-#{@color}"}
+            type="text"
+            class="input w-full"
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </hex-input>
+      </div>
+      <div :if={!@saved_color} class="text-xs text-base-content/60">
+        {l("Inherited from %{theme}", theme: @base_theme)}
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <button
+        :if={@saved_color}
+        type="button"
+        class="btn btn-ghost flex-1"
+        id={"#{@id_prefix}-reset-#{@color}"}
+        phx-click={JS.push("Bonfire.Common.Settings:reset_custom_theme_token",
+          value: %{token: @color_key, scope: @scope, close_modal: true}
+        )}
+      >
+        {l("Reset")}
+      </button>
+      <button
+        type="button"
+        data-role="apply_custom_color"
+        class="btn btn-primary flex-1"
+        id={"#{@id_prefix}-apply-#{@color}"}
+      >
+        {l("Apply")}
+      </button>
+    </div>
+  </div>
+  <:open_btn>
+    <div class="flex flex-col gap-1">
+      <div
+        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
+        style={@preview_style}
+        data-color={@color_key}
+      >
+        <span :if={@preview_label} class="font-bold text-lg">{@preview_label}</span>
+      </div>
+      <span class="text-xs opacity-90 font-mono uppercase">
+        {@saved_color || l("Inherited")}
+      </span>
+    </div>
+  </:open_btn>
+</Bonfire.UI.Common.OpenModalLive>

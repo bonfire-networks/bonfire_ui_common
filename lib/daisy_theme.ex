@@ -1,4 +1,6 @@
 defmodule DaisyTheme do
+  @moduledoc "Validates and emits the tokens supported by Bonfire custom themes."
+
   @keys [
     %{name: "color-primary", variable: "--color-primary"},
     %{name: "color-primary-content", variable: "--color-primary-content"},
@@ -36,89 +38,11 @@ defmodule DaisyTheme do
 
   @key_names Enum.map(@keys, & &1.name)
 
-  # Using hex color defaults
-  @default_theme %{
-    # Blue
-    "color-primary" => "#1D4ED8",
-    # White
-    "color-primary-content" => "#FFFFFF",
-    # Purple
-    "color-secondary" => "#9333EA",
-    # White
-    "color-secondary-content" => "#FFFFFF",
-    # Green
-    "color-accent" => "#10B981",
-    # White
-    "color-accent-content" => "#FFFFFF",
-    # Dark gray
-    "color-neutral" => "#1F2937",
-    # White
-    "color-neutral-content" => "#FFFFFF",
-    # White
-    "color-base-100" => "#FFFFFF",
-    # Light gray
-    "color-base-200" => "#F3F4F6",
-    # Lighter gray
-    "color-base-300" => "#E5E7EB",
-    # Dark gray
-    "color-base-content" => "#1F2937",
-    # Info blue
-    "color-info" => "#0EA5E9",
-    # White
-    "color-info-content" => "#FFFFFF",
-    # Success green
-    "color-success" => "#10B981",
-    # White
-    "color-success-content" => "#FFFFFF",
-    # Warning yellow
-    "color-warning" => "#F59E0B",
-    # Dark gray
-    "color-warning-content" => "#1F2937",
-    # Error red
-    "color-error" => "#EF4444",
-    # White
-    "color-error-content" => "#FFFFFF",
-    "radius-selector" => "1rem",
-    "radius-field" => "0.25rem",
-    "radius-box" => "0.5rem",
-    "size-selector" => "0.25rem",
-    "size-field" => "0.25rem",
-    "border" => "1px",
-    "depth" => "1",
-    "noise" => "0"
-  }
-
+  @doc "Returns the custom-theme tokens that Bonfire supports."
   def keys, do: @keys
-  def default_theme, do: @default_theme
-
-  def theme(config), do: Map.merge(default_theme(), config)
-
-  def generate(config \\ %{}) do
-    keys = keys()
-    theme = theme(config)
-
-    # Filter only the keys that exist in our @keys list
-    Enum.flat_map(
-      theme,
-      fn {key, colour} ->
-        case Enum.find(keys, &(&1.name == key)) do
-          # Skip keys that don't match our defined keys
-          nil -> []
-          found -> [Map.put(found, :value, colour)]
-        end
-      end
-    )
-  end
-
-  def style_attr(config \\ %{}) do
-    generate(config)
-    |> Enum.flat_map(&declaration/1)
-    |> Enum.join(" ")
-  end
 
   @doc """
-  Like `style_attr/1`, but emits CSS variables **only** for the keys present in
-  `config` — without merging in `default_theme/0`.
+  Emits CSS variables only for recognised keys present in `config`.
 
   Use this for the user/instance *custom* palette: emitting only the variables the
   user actually set lets every other variable fall through to the active base theme
@@ -140,7 +64,7 @@ defmodule DaisyTheme do
   end
 
   @doc """
-  Normalizes a DaisyUI theme token before storing or emitting it as CSS.
+  Normalizes a Bonfire custom-theme token before storing or emitting it as CSS.
 
   Colour picker widgets expose bare hex values, while CSS requires the `#` prefix. Other known tokens are kept as simple CSS token values, but declarations with characters that could break out of a CSS custom property are rejected.
   """
@@ -166,7 +90,8 @@ defmodule DaisyTheme do
     end
   end
 
-  defp normalize_color_value(value) when is_integer(value) and value <= 16_777_215 do
+  defp normalize_color_value(value)
+       when is_integer(value) and value >= 0 and value <= 16_777_215 do
     {:ok, "#" <> String.pad_leading(Integer.to_string(value, 16), 6, "0")}
   end
 
@@ -179,6 +104,9 @@ defmodule DaisyTheme do
 
       valid_bare_hex?(value) ->
         {:ok, "#" <> value}
+
+      hex_literal?(value) ->
+        :error
 
       safe_css_token?(value) ->
         {:ok, value}
@@ -212,8 +140,10 @@ defmodule DaisyTheme do
     do:
       String.match?(
         value,
-        ~r/\A(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\z/
+        ~r/\A(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})\z/
       )
+
+  defp hex_literal?(value), do: String.match?(value, ~r/\A#?[0-9a-fA-F]+\z/)
 
   defp safe_css_token?(value),
     do: value != "" and not String.contains?(value, [";", "{", "}"])

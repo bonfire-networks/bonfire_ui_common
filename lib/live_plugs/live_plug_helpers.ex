@@ -244,6 +244,14 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
           ui_compact: Settings.get([:ui, :compact], nil, assigns(socket))
         )
 
+      opts =
+        if socket.assigns[:__loading_screen__] do
+          # Guard plugs can call the user loader's mount directly, bypassing its layout option.
+          Keyword.put(opts, :layout, {Bonfire.UI.Common.LayoutView, :loading})
+        else
+          opts
+        end
+
       case opts do
         [] -> {:cont, socket}
         opts -> {:cont, socket, opts}

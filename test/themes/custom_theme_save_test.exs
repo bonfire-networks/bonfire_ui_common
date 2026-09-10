@@ -1,172 +1,218 @@
 defmodule Bonfire.UI.Common.CustomThemeSaveTest do
-  @moduledoc """
-  Covers the custom-theme colour storage guarantees behind the `put_custom_color`
-  LiveHandler (see issue #1747): each colour is saved non-destructively under a
-  consistent string key, so setting one colour never resets another and `-content`
-  variants don't collide with their base colour. Also checks that the custom palette
-  is emitted (for `<html>`) only when the active theme is `:custom`.
-  """
+  @moduledoc "Tests the custom-theme LiveHandler contract through its public events."
   use Bonfire.UI.Common.DataCase, async: true
 
-  alias Bonfire.Common.Settings
   alias Bonfire.Common.Enums
-  alias Bonfire.UI.Common.ThemeHelper
+  alias Bonfire.Common.Settings
+  alias Bonfire.Common.Settings.LiveHandler
 
   setup do
-    {:ok, user: fake_user!()}
+    user = fake_user!()
+    {:ok, socket: socket(user)}
   end
 
-  # mirrors what the `put_custom_color` handler does: normalize one colour, then do a
-  # non-destructive `put_raw`, threading the updated context (as the live socket would).
-  defp put_color!(user, key, value) do
-    assert {:ok, value} = DaisyTheme.normalize_value(key, value)
-
-    assert {:ok, %{__context__: %{current_user: updated}}} =
-             Settings.put_raw([:ui, :theme, :custom, key], value, current_user: user)
-
-    updated
+  defp socket(user) do
+    %Phoenix.LiveView.Socket{
+      assigns: %{
+        __changed__: %{},
+        __context__: %{current_user: user},
+        current_user: user,
+        flash: %{}
+      }
+    }
   end
 
-  defp colour(user, key) do
-    Settings.get([:ui, :theme, :custom], %{}, current_user: user)
+  defp put_token!(socket, token, value) do
+    assert {:noreply, socket} =
+             LiveHandler.handle_event(
+               "put_custom_theme_token",
+               %{
+                 "token" => token,
+                 "value" => value,
+                 "scope" => "user"
+               },
+               socket
+             )
+
+    socket
+  end
+
+  defp reset_token!(socket, token) do
+    assert {:noreply, socket} =
+             LiveHandler.handle_event(
+               "reset_custom_theme_token",
+               %{"token" => token, "scope" => "user"},
+               socket
+             )
+
+    socket
+  end
+
+  defp custom_theme(socket) do
+    Settings.get([:ui, :theme, :custom], %{}, current_user: socket.assigns.current_user)
     |> Enums.stringify_keys()
-    |> Map.get(key)
   end
 
-  describe "saving custom theme colours" do
-    test "setting a second colour does not reset the first", %{user: user} do
-      user = put_color!(user, "color-base-100", "#ff0000")
-      user = put_color!(user, "color-base-200", "#0000ff")
+  describe "put_custom_theme_token" do
+    test "preserves existing colours when another colour is saved", %{socket: socket} do
+      socket = put_token!(socket, "color-base-100", "#ff0000")
+      socket = put_token!(socket, "color-base-200", "#0000ff")
 
-      assert colour(user, "color-base-100") == "#ff0000"
-      assert colour(user, "color-base-200") == "#0000ff"
+      assert custom_theme(socket) == %{
+               "color-base-100" => "#ff0000",
+               "color-base-200" => "#0000ff"
+             }
     end
 
-    test "a -content variant is stored under its own key, not its base colour", %{user: user} do
-      user = put_color!(user, "color-primary", "#111111")
-      user = put_color!(user, "color-primary-content", "#eeeeee")
+    test "stores content colours independently from their surfaces", %{socket: socket} do
+      socket = put_token!(socket, "color-primary", "#111111")
+      socket = put_token!(socket, "color-primary-content", "#eeeeee")
+      socket = put_token!(socket, "color-base-100", "#ffffff")
+      socket = put_token!(socket, "color-base-content", "#000000")
 
-      assert colour(user, "color-primary") == "#111111"
-      assert colour(user, "color-primary-content") == "#eeeeee"
+      assert custom_theme(socket) == %{
+               "color-primary" => "#111111",
+               "color-primary-content" => "#eeeeee",
+               "color-base-100" => "#ffffff",
+               "color-base-content" => "#000000"
+             }
     end
 
-    test "base-content is stored independently of base-100", %{user: user} do
-      user = put_color!(user, "color-base-100", "#ffffff")
-      user = put_color!(user, "color-base-content", "#000000")
+    test "replaces a repeated colour without emitting duplicate declarations", %{socket: socket} do
+      socket = put_token!(socket, "color-base-100", "#ff0000")
+      socket = put_token!(socket, "color-base-100", "#00ff00")
 
-      assert colour(user, "color-base-100") == "#ffffff"
-      assert colour(user, "color-base-content") == "#000000"
+      css = socket |> custom_theme() |> DaisyTheme.style_attr_overrides()
+
+      assert custom_theme(socket)["color-base-100"] == "#00ff00"
+      assert Regex.scan(~r/--color-base-100:/, css) == [["--color-base-100:"]]
     end
 
-    test "keys are stored consistently (one entry per colour after stringifying)", %{user: user} do
-      user = put_color!(user, "color-base-100", "#ff0000")
-      user = put_color!(user, "color-base-100", "#00ff00")
+    test "normalises bare picker values before persistence", %{socket: socket} do
+      socket = put_token!(socket, "color-base-100", "ffffff")
 
-      custom =
-        Settings.get([:ui, :theme, :custom], %{}, current_user: user)
-        |> Enums.stringify_keys()
-
-      assert custom["color-base-100"] == "#00ff00"
-      assert Enum.count(Map.keys(custom), &(&1 == "color-base-100")) == 1
+      assert custom_theme(socket)["color-base-100"] == "#ffffff"
     end
 
-    test "bare picker values are stored as prefixed CSS hex colours", %{user: user} do
-      user = put_color!(user, "color-base-100", "ffffff")
+    test "rejects unsafe values without changing the palette", %{socket: socket} do
+      socket = put_token!(socket, "color-secondary", "#123456")
 
-      assert colour(user, "color-base-100") == "#ffffff"
-    end
-  end
-
-  describe "custom_theme_style/1" do
-    test "emits only the colours the user set (not defaults) when preferred is :custom", %{
-      user: user
-    } do
-      assert {:ok, %{__context__: %{current_user: user}}} =
-               Settings.put([:ui, :theme, :preferred], :custom, current_user: user)
-
-      user = put_color!(user, "color-base-content", "#123456")
-
-      css = ThemeHelper.custom_theme_style(%{current_user: user})
-
-      assert css =~ "--color-base-content: #123456;"
-      # unset variables are NOT emitted, so they fall through to the base theme
-      refute css =~ "--color-base-100:"
-    end
-
-    test "emits legacy bare stored colours as valid CSS", %{user: user} do
-      assert {:ok, %{__context__: %{current_user: user}}} =
-               Settings.put([:ui, :theme, :preferred], :custom, current_user: user)
-
-      assert {:ok, %{__context__: %{current_user: user}}} =
-               Settings.put_raw([:ui, :theme, :custom, "color-base-200"], "fff",
-                 current_user: user
+      assert {:noreply, rejected_socket} =
+               LiveHandler.handle_event(
+                 "put_custom_theme_token",
+                 %{
+                   "token" => "color-primary",
+                   "value" => "fff; --color-secondary: red",
+                   "scope" => "user"
+                 },
+                 socket
                )
 
-      css = ThemeHelper.custom_theme_style(%{current_user: user})
-
-      assert css =~ "--color-base-200: #fff;"
-      refute css =~ "--color-base-200: fff;"
+      assert custom_theme(rejected_socket) == %{"color-secondary" => "#123456"}
     end
 
-    test "returns an empty string when preferred is not :custom", %{user: user} do
-      assert {:ok, %{__context__: %{current_user: user}}} =
-               Settings.put([:ui, :theme, :preferred], :dark, current_user: user)
+    test "rejects unknown theme keys without changing the palette", %{socket: socket} do
+      assert {:noreply, rejected_socket} =
+               LiveHandler.handle_event(
+                 "put_custom_theme_token",
+                 %{
+                   "token" => "not-a-theme-token",
+                   "value" => "#123456",
+                   "scope" => "user"
+                 },
+                 socket
+               )
 
-      assert ThemeHelper.custom_theme_style(%{current_user: user}) == ""
+      assert custom_theme(rejected_socket) == %{}
+    end
+
+    test "validates and stores shape tokens through the same path", %{socket: socket} do
+      socket = put_token!(socket, "radius-box", "0.5rem")
+
+      assert custom_theme(socket)["radius-box"] == "0.5rem"
+      assert DaisyTheme.style_attr_overrides(custom_theme(socket)) =~ "--radius-box: 0.5rem;"
     end
   end
 
-  describe "user vs instance isolation" do
-    test "custom_theme_style/1 does NOT fall back to :custom_instance for a user's own :custom",
-         %{
-           user: user
-         } do
-      # user and instance palettes are stored under distinct keys and never mix: a user
-      # who explicitly chose :custom gets exactly their own palette, even when empty
-      # (to match the instance's custom theme, use "Follow instance theme" instead)
-      assert {:ok, %{__context__: %{current_user: user}}} =
-               Settings.put([:ui, :theme, :preferred], :custom, current_user: user)
+  describe "reset_custom_theme_token" do
+    test "resets the account token without removing the signed-in user's token" do
+      account = fake_account!()
+      user = fake_user!(account)
+      socket = socket(user)
+      socket = Phoenix.Component.assign(socket, :__context__, %{current_user: user, current_account: account})
+      socket = put_token!(socket, "color-primary", "#111111")
 
-      assert {:ok, %{__context__: %{current_user: user}}} =
-               Settings.put_raw([:ui, :theme, :custom_instance, "color-base-content"], "#abcabc",
-                 current_user: user
-               )
+      assert {:noreply, socket} =
+               LiveHandler.handle_event("put_custom_theme_token",
+                 %{"token" => "color-primary", "value" => "#222222", "scope" => "account"}, socket)
 
-      assert ThemeHelper.custom_theme_style(%{current_user: user}) == ""
+      assert {:noreply, socket} =
+               LiveHandler.handle_event("reset_custom_theme_token",
+                 %{"token" => "color-primary", "scope" => "account"}, socket)
+
+      account = socket.assigns.__context__.current_account
+      assert Settings.get([:ui, :theme, :custom], %{},
+               current_account: account,
+               one_scope_only: true
+             )
+             |> Enum.empty?()
+      assert custom_theme(socket)["color-primary"] == "#111111"
     end
 
-    test "custom_theme_style/1 never mixes instance colours into a user's :custom palette", %{
-      user: user
-    } do
-      assert {:ok, %{__context__: %{current_user: user}}} =
-               Settings.put([:ui, :theme, :preferred], :custom, current_user: user)
+    test "removes only the selected colour", %{socket: socket} do
+      socket = put_token!(socket, "color-primary", "#ff0000")
+      socket = put_token!(socket, "color-secondary", "#0000ff")
+      socket = reset_token!(socket, "color-primary")
 
-      assert {:ok, %{__context__: %{current_user: user}}} =
-               Settings.put_raw([:ui, :theme, :custom_instance, "color-base-content"], "#abcabc",
-                 current_user: user
-               )
-
-      user = put_color!(user, "color-primary", "#123123")
-
-      css = ThemeHelper.custom_theme_style(%{current_user: user})
-      assert css =~ "--color-primary: #123123;"
-      refute css =~ "#abcabc"
+      assert custom_theme(socket) == %{"color-secondary" => "#0000ff"}
     end
 
-    test "custom_theme_style/1 prefers the user's :custom over :custom_instance", %{user: user} do
+    test "removes historical atom and string representations deterministically", %{socket: socket} do
       assert {:ok, %{__context__: %{current_user: user}}} =
-               Settings.put([:ui, :theme, :preferred], :custom, current_user: user)
-
-      assert {:ok, %{__context__: %{current_user: user}}} =
-               Settings.put_raw([:ui, :theme, :custom_instance, "color-base-content"], "#abcabc",
-                 current_user: user
+               Settings.put_raw(
+                 [:ui, :theme, :custom],
+                 %{
+                   :"color-primary" => "#111111",
+                   "color-primary" => "#222222",
+                   "color-secondary" => "#333333"
+                 },
+                 current_user: socket.assigns.current_user
                )
 
-      user = put_color!(user, "color-base-content", "#123123")
+      socket = user |> socket() |> reset_token!("color-primary")
 
-      css = ThemeHelper.custom_theme_style(%{current_user: user})
-      assert css =~ "--color-base-content: #123123;"
-      refute css =~ "#abcabc"
+      assert custom_theme(socket) == %{"color-secondary" => "#333333"}
+    end
+
+    test "ignores unknown keys without deleting valid colours", %{socket: socket} do
+      socket = put_token!(socket, "color-primary", "#123456")
+      socket = reset_token!(socket, "not-a-theme-token")
+
+      assert custom_theme(socket) == %{"color-primary" => "#123456"}
+    end
+
+    test "removes a shape override without touching colours", %{socket: socket} do
+      socket = put_token!(socket, "color-primary", "#123456")
+      socket = put_token!(socket, "radius-box", "1rem")
+      socket = reset_token!(socket, "radius-box")
+
+      assert custom_theme(socket) == %{"color-primary" => "#123456"}
+    end
+  end
+
+  describe "reset_custom_theme" do
+    test "removes every override in the current scope", %{socket: socket} do
+      socket = put_token!(socket, "color-primary", "#123456")
+      socket = put_token!(socket, "color-secondary", "#abcdef")
+
+      assert {:noreply, socket} =
+               LiveHandler.handle_event(
+                 "reset_custom_theme",
+                 %{"scope" => "user"},
+                 socket
+               )
+
+      assert custom_theme(socket) == %{}
     end
   end
 end

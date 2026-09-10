@@ -124,7 +124,6 @@
           {l("Used when theme mode is Dark, or when System switches to dark.")}
         </div>
         <Bonfire.UI.Common.ChangeThemeLive
-          label={l("Dark theme")}
           key="instance_theme"
           theme={@theme}
           themes={@themes}
@@ -143,7 +142,6 @@
           {l("Used when theme mode is Light, or when System switches to light.")}
         </div>
         <Bonfire.UI.Common.ChangeThemeLive
-          label={l("Light theme")}
           key="instance_theme_light"
           theme={@theme_light}
           themes={@themes_light}
@@ -158,6 +156,7 @@
     id={"#{@id_prefix}-custom-themes"}
     class={"shadow rounded-md border bg-base-200 border-secondary p-4 mt-4 #{if @selected != :custom, do: "hidden"}"}
     data-scope={@scope}
+    data-theme={@theme}
     style={@theme_style}
   >
     <div class="mb-4 flex items-center justify-between gap-2">
@@ -168,11 +167,11 @@
       </div>
       {!-- only offer a reset once there's at least one override to clear --}
       <button
-        :if={map_size(@custom_colors) > 0}
+        :if={map_size(@custom_tokens) > 0}
         type="button"
         data-role="reset_custom_theme"
         class="btn btn-sm btn-ghost text-error gap-1"
-        data-confirm={l("Reset all custom theme settings back to their defaults? This cannot be undone.")}
+        data-confirm={l("Remove all saved custom theme overrides? This cannot be undone.")}
         phx-click={JS.push("Bonfire.Common.Settings:reset_custom_theme", value: %{scope: @scope})}
       >
         <#Icon iconify="ph:arrow-counter-clockwise" class="w-4 h-4" />
@@ -180,37 +179,7 @@
       </button>
     </div>
 
-    {!-- The custom palette is only applied to the page when it is the active theme.
-         Warn (and offer to activate) when the user edits while it is not active. --}
-    <div :if={@selected != :custom} class="alert alert-warning shadow-sm mb-6" role="alert">
-      <#Icon iconify="ph:warning-fill" class="w-5 h-5 shrink-0" />
-      <div class="flex-1">
-        <div class="font-medium">{l("The custom theme isn't active yet")}</div>
-        <div class="text-sm opacity-80">
-          {l("Your changes are saved, but won't be visible until you activate the custom theme.")}
-        </div>
-      </div>
-      <button
-        type="button"
-        data-role="activate_custom_theme"
-        class="btn btn-sm btn-primary"
-        phx-click={JS.push("Bonfire.Common.Settings:put_theme",
-          value: %{keys: "ui:theme:preferred", values: :custom, scope: @scope}
-        )
-        |> JS.add_class("btn-primary", to: "##{@id_prefix}-custom-button")
-        |> JS.remove_class("btn-primary", to: "##{@id_prefix}-follow-button")
-        |> JS.remove_class("btn-primary", to: "##{@id_prefix}-dark-button")
-        |> JS.remove_class("btn-primary", to: "##{@id_prefix}-light-button")
-        |> JS.remove_class("btn-primary", to: "##{@id_prefix}-system-button")
-        |> JS.hide(to: "##{@id_prefix}-dark-themes")
-        |> JS.hide(to: "##{@id_prefix}-light-themes")
-        |> JS.show(to: "##{@id_prefix}-custom-themes")}
-      >
-        {l("Use custom theme")}
-      </button>
-    </div>
-
-    <div :if={@custom_key == :custom_instance}>
+    <div :if={@show_accessibility_caution}>
       <div class="alert alert-info shadow-sm mb-6" role="alert">
         <#Icon iconify="ph:info-fill" class="w-5 h-5 shrink-0" />
         <span>
@@ -221,13 +190,7 @@
       </div>
     </div>
 
-    <div
-      class={
-        "space-y-6 transition-opacity",
-        "opacity-40 pointer-events-none select-none": @selected != :custom
-      }
-      aria-disabled={@selected != :custom}
-    >
+    <div class="space-y-6">
       {!-- Colors Section --}
       <section>
         <h3 class="divider divider-start text-sm mt-6">
@@ -268,668 +231,23 @@
         </h3>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
-          {!-- Base Colors Group --}
-          <div class="col-span-full mb-2">
-            <h4 class="text-xs font-medium text-muted mb-2">{l("Base")}</h4>
-            <div class="grid grid-cols-4 gap-2">
-              {#for color <- ["base-100", "base-200", "base-300", "base-content"]}
-                <Bonfire.UI.Common.OpenModalLive
-                  id={"#{@id_prefix}-key-#{color}"}
-                  title_text={l("Select color for %{color}", color: String.replace(color, "base-", "Base "))}
-                  no_actions
-                >
-                  <div
-                    :hook="ColourPicker"
-                    id={"#{@id_prefix}-color-#{color}"}
-                    data-color-key={"color-#{color}"}
-                    data-scope={@scope}
-                    class="flex flex-col gap-4 p-2"
-                  >
-                    <hex-color-picker
-                      class="w-full mt-4"
-                      color={Map.get(
-                        @display_theme,
-                        "color-#{color}",
-                        "#000000"
-                      )}
-                    />
-                    <div class="flex flex-col gap-2 w-full">
-                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
-                      <div class="flex items-center gap-2">
-                        <div class="colour_preview h-10 w-10 rounded" />
-                        <hex-input
-                          prefixed
-                          class="w-full"
-                          id={"#{@id_prefix}-input-#{color}"}
-                          color={Map.get(
-                            @display_theme,
-                            "color-#{color}",
-                            "#000000"
-                          )}
-                        />
-                      </div>
-                    </div>
-                    <button
-                      data-role="apply_custom_color"
-                      class="btn btn-primary w-full"
-                      id={"#{@id_prefix}-apply-#{color}"}
-                    >
-                      {l("Apply")}
-                    </button>
-                  </div>
-                  <:open_btn>
-                    <div class="flex flex-col gap-1">
-                      <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
-                        style={if String.ends_with?(color, "content"),
-                          do: "background-color: var(--color-base-100); color: var(--color-base-content);",
-                          else: "background-color: var(--color-#{color}); color: var(--color-base-content);"}
-                        data-color={"color-#{color}"}
-                      >
-                        {#if String.ends_with?(color, "content")}
-                          <span class="font-bold text-lg">A</span>
-                        {#else}
-                          <span class="text-xs opacity-70">{String.replace(color, "base-", "")}</span>
-                        {/if}
-                      </div>
-                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          @display_theme,
-                          "color-#{color}",
-                          "#000000"
-                        )}</span>
-                    </div>
-                  </:open_btn>
-                </Bonfire.UI.Common.OpenModalLive>
-              {/for}
+          {#for group <- @color_groups}
+            <div class={Map.get(group, :wrapper_class, "col-span-2")}>
+              <h4 class="text-xs font-medium text-muted mb-2">{group.label}</h4>
+              <div class={"grid gap-2", Map.get(group, :grid_class, "grid-cols-2")}>
+                {#for color <- group.colors}
+                  <Bonfire.UI.Common.CustomThemeColourLive
+                    color={color}
+                    custom_tokens={@custom_tokens}
+                    id_prefix={@id_prefix}
+                    scope={@scope}
+                    base_theme={@theme}
+                    theme_style={@theme_style}
+                  />
+                {/for}
+              </div>
             </div>
-          </div>
-
-          {!-- Primary & Secondary Colors --}
-          <div class="col-span-2 mb-2">
-            <h4 class="text-xs font-medium text-muted mb-2">{l("Primary")}</h4>
-            <div class="grid grid-cols-2 gap-2">
-              {#for color <- ["primary", "primary-content"]}
-                <Bonfire.UI.Common.OpenModalLive
-                  id={"#{@id_prefix}-key-#{color}"}
-                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
-                  no_actions
-                >
-                  <div
-                    :hook="ColourPicker"
-                    id={"#{@id_prefix}-color-#{color}"}
-                    data-color-key={"color-#{color}"}
-                    data-scope={@scope}
-                    class="flex flex-col gap-4 p-2"
-                  >
-                    <hex-color-picker
-                      class="w-full mt-4"
-                      color={Map.get(
-                        @display_theme,
-                        "color-#{color}",
-                        "#000000"
-                      )}
-                    />
-                    <div class="flex flex-col gap-2 w-full">
-                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
-                      <div class="flex items-center gap-2">
-                        <div class="colour_preview h-10 w-10 rounded" />
-                        <hex-input
-                          prefixed
-                          class="w-full"
-                          id={"#{@id_prefix}-input-#{color}"}
-                          color={Map.get(
-                            @display_theme,
-                            "color-#{color}",
-                            "#000000"
-                          )}
-                        />
-                      </div>
-                    </div>
-                    <button
-                      data-role="apply_custom_color"
-                      class="btn btn-primary w-full"
-                      id={"#{@id_prefix}-apply-#{color}"}
-                    >
-                      {l("Apply")}
-                    </button>
-                  </div>
-                  <:open_btn>
-                    <div class="flex flex-col gap-1">
-                      <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
-                        style={if String.ends_with?(color, "content"),
-                          do: "background-color: var(--color-primary); color: var(--color-primary-content);",
-                          else: "background-color: var(--color-#{color});"}
-                        data-color={"color-#{color}"}
-                      >
-                        {#if String.ends_with?(color, "content")}
-                          <span class="font-bold text-lg">A</span>
-                        {/if}
-                      </div>
-                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          @display_theme,
-                          "color-#{color}",
-                          "#000000"
-                        )}</span>
-                    </div>
-                  </:open_btn>
-                </Bonfire.UI.Common.OpenModalLive>
-              {/for}
-            </div>
-          </div>
-
-          <div class="col-span-2 mb-2">
-            <h4 class="text-xs font-medium text-muted mb-2">{l("Secondary")}</h4>
-            <div class="grid grid-cols-2 gap-2">
-              {#for color <- ["secondary", "secondary-content"]}
-                <Bonfire.UI.Common.OpenModalLive
-                  id={"#{@id_prefix}-key-#{color}"}
-                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
-                  no_actions
-                >
-                  <div
-                    :hook="ColourPicker"
-                    id={"#{@id_prefix}-color-#{color}"}
-                    data-color-key={"color-#{color}"}
-                    data-scope={@scope}
-                    class="flex flex-col gap-4 p-2"
-                  >
-                    <hex-color-picker
-                      class="w-full mt-4"
-                      color={Map.get(
-                        @display_theme,
-                        "color-#{color}",
-                        "#000000"
-                      )}
-                    />
-                    <div class="flex flex-col gap-2 w-full">
-                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
-                      <div class="flex items-center gap-2">
-                        <div class="colour_preview h-10 w-10 rounded" />
-                        <hex-input
-                          prefixed
-                          class="w-full"
-                          id={"#{@id_prefix}-input-#{color}"}
-                          color={Map.get(
-                            @display_theme,
-                            "color-#{color}",
-                            "#000000"
-                          )}
-                        />
-                      </div>
-                    </div>
-                    <button
-                      data-role="apply_custom_color"
-                      class="btn btn-primary w-full"
-                      id={"#{@id_prefix}-apply-#{color}"}
-                    >
-                      {l("Apply")}
-                    </button>
-                  </div>
-                  <:open_btn>
-                    <div class="flex flex-col gap-1">
-                      <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
-                        style={if String.ends_with?(color, "content"),
-                          do: "background-color: var(--color-secondary); color: var(--color-secondary-content);",
-                          else: "background-color: var(--color-#{color});"}
-                        data-color={"color-#{color}"}
-                      >
-                        {#if String.ends_with?(color, "content")}
-                          <span class="font-bold text-lg">A</span>
-                        {/if}
-                      </div>
-                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          @display_theme,
-                          "color-#{color}",
-                          "#000000"
-                        )}</span>
-                    </div>
-                  </:open_btn>
-                </Bonfire.UI.Common.OpenModalLive>
-              {/for}
-            </div>
-          </div>
-
-          {!-- Accent & Neutral Colors --}
-          <div class="col-span-2 mb-2">
-            <h4 class="text-xs font-medium text-muted mb-2">{l("Accent")}</h4>
-            <div class="grid grid-cols-2 gap-2">
-              {#for color <- ["accent", "accent-content"]}
-                <Bonfire.UI.Common.OpenModalLive
-                  id={"#{@id_prefix}-key-#{color}"}
-                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
-                  no_actions
-                >
-                  <div
-                    :hook="ColourPicker"
-                    id={"#{@id_prefix}-color-#{color}"}
-                    data-color-key={"color-#{color}"}
-                    data-scope={@scope}
-                    class="flex flex-col gap-4 p-2"
-                  >
-                    <hex-color-picker
-                      class="w-full mt-4"
-                      color={Map.get(
-                        @display_theme,
-                        "color-#{color}",
-                        "#000000"
-                      )}
-                    />
-                    <div class="flex flex-col gap-2 w-full">
-                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
-                      <div class="flex items-center gap-2">
-                        <div class="colour_preview h-10 w-10 rounded" />
-                        <hex-input
-                          prefixed
-                          class="w-full"
-                          id={"#{@id_prefix}-input-#{color}"}
-                          color={Map.get(
-                            @display_theme,
-                            "color-#{color}",
-                            "#000000"
-                          )}
-                        />
-                      </div>
-                    </div>
-                    <button
-                      data-role="apply_custom_color"
-                      class="btn btn-primary w-full"
-                      id={"#{@id_prefix}-apply-#{color}"}
-                    >
-                      {l("Apply")}
-                    </button>
-                  </div>
-                  <:open_btn>
-                    <div class="flex flex-col gap-1">
-                      <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
-                        style={if String.ends_with?(color, "content"),
-                          do: "background-color: var(--color-accent); color: var(--color-accent-content);",
-                          else: "background-color: var(--color-#{color});"}
-                        data-color={"color-#{color}"}
-                      >
-                        {#if String.ends_with?(color, "content")}
-                          <span class="font-bold text-lg">A</span>
-                        {/if}
-                      </div>
-                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          @display_theme,
-                          "color-#{color}",
-                          "#000000"
-                        )}</span>
-                    </div>
-                  </:open_btn>
-                </Bonfire.UI.Common.OpenModalLive>
-              {/for}
-            </div>
-          </div>
-
-          <div class="col-span-2 mb-2">
-            <h4 class="text-xs font-medium text-muted mb-2">{l("Neutral")}</h4>
-            <div class="grid grid-cols-2 gap-2">
-              {#for color <- ["neutral", "neutral-content"]}
-                <Bonfire.UI.Common.OpenModalLive
-                  id={"#{@id_prefix}-key-#{color}"}
-                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
-                  no_actions
-                >
-                  <div
-                    :hook="ColourPicker"
-                    id={"#{@id_prefix}-color-#{color}"}
-                    data-color-key={"color-#{color}"}
-                    data-scope={@scope}
-                    class="flex flex-col gap-4 p-2"
-                  >
-                    <hex-color-picker
-                      class="w-full mt-4"
-                      color={Map.get(
-                        @display_theme,
-                        "color-#{color}",
-                        "#000000"
-                      )}
-                    />
-                    <div class="flex flex-col gap-2 w-full">
-                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
-                      <div class="flex items-center gap-2">
-                        <div class="colour_preview h-10 w-10 rounded" />
-                        <hex-input
-                          prefixed
-                          class="w-full"
-                          id={"#{@id_prefix}-input-#{color}"}
-                          color={Map.get(
-                            @display_theme,
-                            "color-#{color}",
-                            "#000000"
-                          )}
-                        />
-                      </div>
-                    </div>
-                    <button
-                      data-role="apply_custom_color"
-                      class="btn btn-primary w-full"
-                      id={"#{@id_prefix}-apply-#{color}"}
-                    >
-                      {l("Apply")}
-                    </button>
-                  </div>
-                  <:open_btn>
-                    <div class="flex flex-col gap-1">
-                      <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
-                        style={if String.ends_with?(color, "content"),
-                          do: "background-color: var(--color-neutral); color: var(--color-neutral-content);",
-                          else: "background-color: var(--color-#{color});"}
-                        data-color={"color-#{color}"}
-                      >
-                        {#if String.ends_with?(color, "content")}
-                          <span class="font-bold text-lg">A</span>
-                        {/if}
-                      </div>
-                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          @display_theme,
-                          "color-#{color}",
-                          "#000000"
-                        )}</span>
-                    </div>
-                  </:open_btn>
-                </Bonfire.UI.Common.OpenModalLive>
-              {/for}
-            </div>
-          </div>
-
-          {!-- Status Colors: Info, Success, Warning, Error --}
-          <div class="col-span-2">
-            <h4 class="text-xs font-medium text-muted mb-2">{l("Info")}</h4>
-            <div class="grid grid-cols-2 gap-2">
-              {#for color <- ["info", "info-content"]}
-                <Bonfire.UI.Common.OpenModalLive
-                  id={"#{@id_prefix}-key-#{color}"}
-                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
-                  no_actions
-                >
-                  <div
-                    :hook="ColourPicker"
-                    id={"#{@id_prefix}-color-#{color}"}
-                    data-color-key={"color-#{color}"}
-                    data-scope={@scope}
-                    class="flex flex-col gap-4 p-2"
-                  >
-                    <hex-color-picker
-                      class="w-full mt-4"
-                      color={Map.get(
-                        @display_theme,
-                        "color-#{color}",
-                        "#000000"
-                      )}
-                    />
-                    <div class="flex flex-col gap-2 w-full">
-                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
-                      <div class="flex items-center gap-2">
-                        <div class="colour_preview h-10 w-10 rounded" />
-                        <hex-input
-                          prefixed
-                          class="w-full"
-                          id={"#{@id_prefix}-input-#{color}"}
-                          color={Map.get(
-                            @display_theme,
-                            "color-#{color}",
-                            "#000000"
-                          )}
-                        />
-                      </div>
-                    </div>
-                    <button
-                      data-role="apply_custom_color"
-                      class="btn btn-primary w-full"
-                      id={"#{@id_prefix}-apply-#{color}"}
-                    >
-                      {l("Apply")}
-                    </button>
-                  </div>
-                  <:open_btn>
-                    <div class="flex flex-col gap-1">
-                      <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
-                        style={if String.ends_with?(color, "content"),
-                          do: "background-color: var(--color-info); color: var(--color-info-content);",
-                          else: "background-color: var(--color-#{color});"}
-                        data-color={"color-#{color}"}
-                      >
-                        {#if String.ends_with?(color, "content")}
-                          <span class="font-bold text-lg">A</span>
-                        {/if}
-                      </div>
-                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          @display_theme,
-                          "color-#{color}",
-                          "#000000"
-                        )}</span>
-                    </div>
-                  </:open_btn>
-                </Bonfire.UI.Common.OpenModalLive>
-              {/for}
-            </div>
-          </div>
-
-          <div class="col-span-2">
-            <h4 class="text-xs font-medium text-muted mb-2">{l("Success")}</h4>
-            <div class="grid grid-cols-2 gap-2">
-              {#for color <- ["success", "success-content"]}
-                <Bonfire.UI.Common.OpenModalLive
-                  id={"#{@id_prefix}-key-#{color}"}
-                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
-                  no_actions
-                >
-                  <div
-                    :hook="ColourPicker"
-                    id={"#{@id_prefix}-color-#{color}"}
-                    data-color-key={"color-#{color}"}
-                    data-scope={@scope}
-                    class="flex flex-col gap-4 p-2"
-                  >
-                    <hex-color-picker
-                      class="w-full mt-4"
-                      color={Map.get(
-                        @display_theme,
-                        "color-#{color}",
-                        "#000000"
-                      )}
-                    />
-                    <div class="flex flex-col gap-2 w-full">
-                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
-                      <div class="flex items-center gap-2">
-                        <div class="colour_preview h-10 w-10 rounded" />
-                        <hex-input
-                          prefixed
-                          class="w-full"
-                          id={"#{@id_prefix}-input-#{color}"}
-                          color={Map.get(
-                            @display_theme,
-                            "color-#{color}",
-                            "#000000"
-                          )}
-                        />
-                      </div>
-                    </div>
-                    <button
-                      data-role="apply_custom_color"
-                      class="btn btn-primary w-full"
-                      id={"#{@id_prefix}-apply-#{color}"}
-                    >
-                      {l("Apply")}
-                    </button>
-                  </div>
-                  <:open_btn>
-                    <div class="flex flex-col gap-1">
-                      <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
-                        style={if String.ends_with?(color, "content"),
-                          do: "background-color: var(--color-success); color: var(--color-success-content);",
-                          else: "background-color: var(--color-#{color});"}
-                        data-color={"color-#{color}"}
-                      >
-                        {#if String.ends_with?(color, "content")}
-                          <span class="font-bold text-lg">A</span>
-                        {/if}
-                      </div>
-                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          @display_theme,
-                          "color-#{color}",
-                          "#000000"
-                        )}</span>
-                    </div>
-                  </:open_btn>
-                </Bonfire.UI.Common.OpenModalLive>
-              {/for}
-            </div>
-          </div>
-
-          <div class="col-span-2">
-            <h4 class="text-xs font-medium text-muted mb-2">{l("Warning")}</h4>
-            <div class="grid grid-cols-2 gap-2">
-              {#for color <- ["warning", "warning-content"]}
-                <Bonfire.UI.Common.OpenModalLive
-                  id={"#{@id_prefix}-key-#{color}"}
-                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
-                  no_actions
-                >
-                  <div
-                    :hook="ColourPicker"
-                    id={"#{@id_prefix}-color-#{color}"}
-                    data-color-key={"color-#{color}"}
-                    data-scope={@scope}
-                    class="flex flex-col gap-4 p-2"
-                  >
-                    <hex-color-picker
-                      class="w-full mt-4"
-                      color={Map.get(
-                        @display_theme,
-                        "color-#{color}",
-                        "#000000"
-                      )}
-                    />
-                    <div class="flex flex-col gap-2 w-full">
-                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
-                      <div class="flex items-center gap-2">
-                        <div class="colour_preview h-10 w-10 rounded" />
-                        <hex-input
-                          prefixed
-                          class="w-full"
-                          id={"#{@id_prefix}-input-#{color}"}
-                          color={Map.get(
-                            @display_theme,
-                            "color-#{color}",
-                            "#000000"
-                          )}
-                        />
-                      </div>
-                    </div>
-                    <button
-                      data-role="apply_custom_color"
-                      class="btn btn-primary w-full"
-                      id={"#{@id_prefix}-apply-#{color}"}
-                    >
-                      {l("Apply")}
-                    </button>
-                  </div>
-                  <:open_btn>
-                    <div class="flex flex-col gap-1">
-                      <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
-                        style={if String.ends_with?(color, "content"),
-                          do: "background-color: var(--color-warning); color: var(--color-warning-content);",
-                          else: "background-color: var(--color-#{color});"}
-                        data-color={"color-#{color}"}
-                      >
-                        {#if String.ends_with?(color, "content")}
-                          <span class="font-bold text-lg">A</span>
-                        {/if}
-                      </div>
-                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          @display_theme,
-                          "color-#{color}",
-                          "#000000"
-                        )}</span>
-                    </div>
-                  </:open_btn>
-                </Bonfire.UI.Common.OpenModalLive>
-              {/for}
-            </div>
-          </div>
-
-          <div class="col-span-2">
-            <h4 class="text-xs font-medium text-muted mb-2">{l("Error")}</h4>
-            <div class="grid grid-cols-2 gap-2">
-              {#for color <- ["error", "error-content"]}
-                <Bonfire.UI.Common.OpenModalLive
-                  id={"#{@id_prefix}-key-#{color}"}
-                  title_text={l("Select color for %{color}", color: String.replace(color, "-", " "))}
-                  no_actions
-                >
-                  <div
-                    :hook="ColourPicker"
-                    id={"#{@id_prefix}-color-#{color}"}
-                    data-color-key={"color-#{color}"}
-                    data-scope={@scope}
-                    class="flex flex-col gap-4 p-2"
-                  >
-                    <hex-color-picker
-                      class="w-full mt-4"
-                      color={Map.get(
-                        @display_theme,
-                        "color-#{color}",
-                        "#000000"
-                      )}
-                    />
-                    <div class="flex flex-col gap-2 w-full">
-                      <label class="font-medium text-sm text-base-content/80">{l("Color value")}</label>
-                      <div class="flex items-center gap-2">
-                        <div class="colour_preview h-10 w-10 rounded" />
-                        <hex-input
-                          prefixed
-                          class="w-full"
-                          id={"#{@id_prefix}-input-#{color}"}
-                          color={Map.get(
-                            @display_theme,
-                            "color-#{color}",
-                            "#000000"
-                          )}
-                        />
-                      </div>
-                    </div>
-                    <button
-                      data-role="apply_custom_color"
-                      class="btn btn-primary w-full"
-                      id={"#{@id_prefix}-apply-#{color}"}
-                    >
-                      {l("Apply")}
-                    </button>
-                  </div>
-                  <:open_btn>
-                    <div class="flex flex-col gap-1">
-                      <div
-                        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
-                        style={if String.ends_with?(color, "content"),
-                          do: "background-color: var(--color-error); color: var(--color-error-content);",
-                          else: "background-color: var(--color-#{color});"}
-                        data-color={"color-#{color}"}
-                      >
-                        {#if String.ends_with?(color, "content")}
-                          <span class="font-bold text-lg">A</span>
-                        {/if}
-                      </div>
-                      <span class="text-xs opacity-90 font-mono uppercase">{Map.get(
-                          @display_theme,
-                          "color-#{color}",
-                          "#000000"
-                        )}</span>
-                    </div>
-                  </:open_btn>
-                </Bonfire.UI.Common.OpenModalLive>
-              {/for}
-            </div>
-          </div>
+          {/for}
         </div>
       </section>
 
@@ -971,153 +289,68 @@
           </span>
         </h3>
 
-        {!-- Box Radius --}
-        <div class="space-y-6 pt-2">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {!-- Box Radius --}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+          {#for group <- @radius_groups}
             <div class="border border-secondary p-3 bg-base-100 rounded">
-              <div class="mb-2 flex flex-col" id={"#{@id_prefix}-radius-box-group"}>
-                <span class="text-muted text-sm font-medium">{l("Boxes")}</span>
-                <span class="text-muted text-xs italic">{l("card, modal, alert")}</span>
+              <div class="mb-2 flex flex-col" id={"#{@id_prefix}-#{group.token}-group"}>
+                <span class="text-muted text-sm font-medium">{group.label}</span>
+                <span class="text-muted text-xs italic">{group.description}</span>
               </div>
               <div
                 class="flex flex-wrap gap-2"
                 role="radiogroup"
-                aria-labelledby={"#{@id_prefix}-radius-box-group"}
+                aria-labelledby={"#{@id_prefix}-#{group.token}-group"}
               >
-                {#for radius <- ["0rem", "0.5rem", "1rem", "2rem"]}
+                {#for radius <- [nil, "0rem", "0.5rem", "1rem", "2rem"]}
                   <label
                     class={
-                      "flex-1 rounded-lg bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2 p-1",
-                      "bg-primary/10":
-                        Map.get(
-                          @display_theme,
-                          "radius-box"
-                        ) == radius
+                      "flex-1 min-h-11 rounded-lg bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2 p-1",
+                      "bg-primary/10": radius_selected?(@custom_tokens, group.token, radius)
                     }
-                    title={radius}
+                    title={radius || l("Inherited")}
                   >
                     <input
+                      id={"#{@id_prefix}-#{group.token}-#{String.replace(radius || "inherited", ".", "_")}"}
                       type="radio"
                       class="sr-only"
-                      name={"#{@id_prefix}-radius-box"}
-                      value={radius}
-                      aria-label={"#{radius} border radius"}
-                      checked={Map.get(
-                        @display_theme,
-                        "radius-box"
-                      ) == radius}
-                      phx-click={JS.push("Bonfire.Common.Settings:put",
-                        value: %{keys: "ui:theme:#{@custom_key}:radius-box", values: radius, scope: @scope}
-                      )}
+                      name={"#{@id_prefix}-#{group.token}"}
+                      value={radius || "inherited"}
+                      aria-label={
+                        if(is_nil(radius),
+                          do: l("Inherit %{group} radius", group: group.label),
+                          else: l("%{radius} %{group} radius", radius: radius, group: group.label)
+                        )
+                      }
+                      checked={radius_selected?(@custom_tokens, group.token, radius)}
+                      phx-click={
+                        if(is_nil(radius),
+                          do:
+                            JS.push("Bonfire.Common.Settings:reset_custom_theme_token",
+                              value: %{token: group.token, scope: @scope}
+                            ),
+                          else:
+                            JS.push("Bonfire.Common.Settings:put_custom_theme_token",
+                              value: %{token: group.token, value: radius, scope: @scope}
+                            )
+                        )
+                      }
                     />
-                    <div class="pe-3 pt-2" aria-hidden="true">
+                    <div class="flex flex-col items-center justify-center gap-1 py-1" aria-hidden="true">
                       <div
-                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(@display_theme, "radius-box") == radius, do: "border-primary", else: "border-secondary"} bg-base-300"}
-                        style={"border-start-end-radius:#{radius}"}
+                        class={
+                          "h-5 w-7 border-e-2 border-t-2 bg-base-300",
+                          "border-primary": radius_selected?(@custom_tokens, group.token, radius),
+                          "border-secondary": !radius_selected?(@custom_tokens, group.token, radius)
+                        }
+                        style={"border-start-end-radius:#{radius || "var(--#{group.token})"}"}
                       />
+                      <span class="text-[10px] leading-none">{radius || l("Base")}</span>
                     </div>
                   </label>
                 {/for}
               </div>
             </div>
-
-            {!-- Field Radius --}
-            <div class="border border-secondary p-3 bg-base-100 rounded">
-              <div class="mb-2 flex flex-col" id={"#{@id_prefix}-radius-field-group"}>
-                <span class="text-muted text-sm font-medium">{l("Fields")}</span>
-                <span class="text-muted text-xs italic">{l("button, input, select, tab")}</span>
-              </div>
-              <div
-                class="flex flex-wrap gap-2"
-                role="radiogroup"
-                aria-labelledby={"#{@id_prefix}-radius-field-group"}
-              >
-                {#for radius <- ["0rem", "0.5rem", "1rem", "2rem"]}
-                  <label
-                    class={
-                      "flex-1 rounded-lg bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2 p-1",
-                      "bg-primary/10":
-                        Map.get(
-                          @display_theme,
-                          "radius-field"
-                        ) == radius
-                    }
-                    title={radius}
-                  >
-                    <input
-                      type="radio"
-                      class="sr-only"
-                      name={"#{@id_prefix}-radius-field"}
-                      value={radius}
-                      aria-label={"#{radius} border radius"}
-                      checked={Map.get(
-                        @display_theme,
-                        "radius-field"
-                      ) == radius}
-                      phx-click={JS.push("Bonfire.Common.Settings:put",
-                        value: %{keys: "ui:theme:#{@custom_key}:radius-field", values: radius, scope: @scope}
-                      )}
-                    />
-                    <div class="pe-3 pt-2" aria-hidden="true">
-                      <div
-                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(@display_theme, "radius-field") == radius, do: "border-primary", else: "border-secondary"} bg-base-300"}
-                        style={"border-start-end-radius:#{radius}"}
-                      />
-                    </div>
-                  </label>
-                {/for}
-              </div>
-            </div>
-
-            {!-- Selector Radius --}
-            <div class="border border-secondary p-3 bg-base-100 rounded">
-              <div class="mb-2 flex flex-col" id={"#{@id_prefix}-radius-selector-group"}>
-                <span class="text-muted text-sm font-medium">{l("Selectors")}</span>
-                <span class="text-muted text-xs italic">{l("checkbox, toggle, badge")}</span>
-              </div>
-              <div
-                class="flex flex-wrap gap-2"
-                role="radiogroup"
-                aria-labelledby={"#{@id_prefix}-radius-selector-group"}
-              >
-                {#for radius <- ["0rem", "0.5rem", "1rem", "2rem"]}
-                  <label
-                    class={
-                      "flex-1 rounded-lg bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2 p-1",
-                      "bg-primary/10":
-                        Map.get(
-                          @display_theme,
-                          "radius-selector"
-                        ) == radius
-                    }
-                    title={radius}
-                  >
-                    <input
-                      type="radio"
-                      class="sr-only"
-                      name={"#{@id_prefix}-radius-selector"}
-                      value={radius}
-                      aria-label={"#{radius} border radius"}
-                      checked={Map.get(
-                        @display_theme,
-                        "radius-selector"
-                      ) == radius}
-                      phx-click={JS.push("Bonfire.Common.Settings:put",
-                        value: %{keys: "ui:theme:#{@custom_key}:radius-selector", values: radius, scope: @scope}
-                      )}
-                    />
-                    <div class="pe-3 pt-2" aria-hidden="true">
-                      <div
-                        class={"h-6 w-8 border-e-2 border-t-2 #{if Map.get(@display_theme, "radius-selector") == radius, do: "border-primary", else: "border-secondary"} bg-base-300"}
-                        style={"border-start-end-radius:#{radius}"}
-                      />
-                    </div>
-                  </label>
-                {/for}
-              </div>
-            </div>
-          </div>
+          {/for}
         </div>
       </section>
     </div>

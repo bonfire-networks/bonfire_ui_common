@@ -109,7 +109,7 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   def push_current_theme(socket) do
     socket
     |> push_base_theme()
-    # root.html.heex isn't reactive, so push the custom palette to <html> (empty clears it)
+    # root.html.heex isn't reactive, so push the custom overrides to <html> (empty clears it)
     |> Phoenix.LiveView.push_event("set_custom_theme", %{style: custom_theme_style(socket)})
     |> push_current_icon_weight()
     |> push_current_ui_preset()
@@ -142,16 +142,16 @@ defmodule Bonfire.UI.Common.ThemeHelper do
 
   @doc """
   The custom theme's CSS variable declarations (`--color-base-100: #fff; …`) when a
-  custom palette is active, otherwise an empty string.
+  custom theme is active, otherwise an empty string.
 
   Set as an inline `style` on `<html>` in root.html.heex and pushed via `set_custom_theme`
   for live updates.
 
-  The user's and the instance's palettes are stored under distinct keys (see
+  The user's and the instance's overrides are stored under distinct keys (see
   `custom_theme_key/1`) and never mix:
-  - a user/account that explicitly chose the `:custom` mode gets *their own* palette only;
+  - a user/account that explicitly chose the `:custom` mode gets *their own* overrides only;
   - anyone following the instance default (no explicit choice of their own, including
-    guests) gets the *instance* palette when the instance's mode is `:custom`.
+    guests) gets the *instance* overrides when the instance's mode is `:custom`.
   """
   def custom_theme_style(assigns) do
     user = current_user(assigns)
@@ -162,14 +162,14 @@ defmodule Bonfire.UI.Common.ThemeHelper do
       :custom ->
         # only set variables (not merged defaults), so unset ones follow the base theme
         Settings.get([:ui, :theme, :custom], %{}, context)
-        |> normalize_palette()
+        |> normalize_custom_tokens()
         |> DaisyTheme.style_attr_overrides()
 
       nil ->
         if normalize_preference(Settings.get([:ui, :theme, :preferred], nil, context)) ==
              :custom do
           Settings.get([:ui, :theme, :custom_instance], %{}, context)
-          |> normalize_palette()
+          |> normalize_custom_tokens()
           |> DaisyTheme.style_attr_overrides()
         else
           ""
@@ -253,15 +253,15 @@ defmodule Bonfire.UI.Common.ThemeHelper do
     |> normalize_preference()
   end
 
-  defp normalize_palette(palette) when is_map(palette) or is_list(palette),
-    do: Bonfire.Common.Enums.stringify_keys(palette)
+  defp normalize_custom_tokens(tokens) when is_map(tokens) or is_list(tokens),
+    do: Bonfire.Common.Enums.stringify_keys(tokens)
 
-  defp normalize_palette(_), do: %{}
+  defp normalize_custom_tokens(_), do: %{}
 
   @doc """
-  The settings key under which a custom palette is stored for the given scope.
+  The settings key under which custom-theme overrides are stored for the given scope.
 
-  User and instance palettes use distinct keys so they stay independent — settings
+  User and instance overrides use distinct keys so they stay independent — settings
   merge across scopes, so a shared key would blend a user's colours with the instance's.
   """
   def custom_theme_key(scope) when scope in [:instance, "instance"], do: :custom_instance
@@ -288,7 +288,7 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   Handles special cases:
   - Light/dark preference → fixed
   - System preference → follows device settings client-side (dark as no-JS fallback)
-  - Custom theme → fixed dark/base theme, custom colors applied via inline styles in `layout_live.ex`
+  - Custom theme → fixed dark/base theme, custom colours applied via inline styles in `root.html.heex`
   """
   def theme_config(assigns) do
     # `Map.get/2` (not Access) so a `%Phoenix.LiveView.Socket{}` passed from the

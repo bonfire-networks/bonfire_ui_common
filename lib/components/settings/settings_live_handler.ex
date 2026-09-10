@@ -143,7 +143,7 @@ defmodule Bonfire.Common.Settings.LiveHandler do
   Reverts the scope's own theme choices (mode + light/dark theme names) so the instance
   defaults cascade through again ("Follow instance theme", the default for new users).
 
-  Keeps the scope's saved custom palette: it only applies when the `:custom` mode is
+  Keeps the scope's saved custom-theme overrides: they only apply when the `:custom` mode is
   explicitly chosen again, and this way it isn't lost by trying out the instance theme.
   """
   def handle_event("reset_theme", params, socket) do
@@ -172,47 +172,66 @@ defmodule Bonfire.Common.Settings.LiveHandler do
     end
   end
 
-  @doc """
-  Non-destructively saves a single custom-theme colour.
-
-  Uses `put_raw` rather than `put` so the colour key isn't run through `input_to_atoms`
-  (which atomises a key only when that atom already exists, yielding an inconsistent
-  atom/string key mix that `deep_merge` splits into duplicate entries). `deep_merge`
-  preserves the other colours, so setting one never resets another.
-  """
-  def handle_event("put_custom_color", %{"keys" => keys, "values" => value} = params, socket)
-      when is_binary(value) do
-    # e.g. "ui:theme:custom:color-base-100" -> "color-base-100"
-    color_key = keys |> String.split(":") |> List.last()
+  @doc "Saves one allow-listed custom-theme token, applies the updated theme immediately, and optionally closes the shared colour-picker modal."
+  def handle_event(
+        "put_custom_theme_token",
+        %{"token" => token, "value" => value} = params,
+        socket
+      )
+      when is_binary(token) do
     theme_key = Bonfire.UI.Common.ThemeHelper.custom_theme_key(params["scope"])
 
-    with {:ok, value} <- DaisyTheme.normalize_value(color_key, value),
+    with {:ok, value} <- DaisyTheme.normalize_value(token, value),
          {:ok, settings} <-
-           Bonfire.Common.Settings.put_raw([:ui, :theme, theme_key, color_key], value,
+           Bonfire.Common.Settings.put_raw([:ui, :theme, theme_key, token], value,
              scope: params["scope"],
              socket: socket
            ) do
-      # close+reset the shared modal so the next swatch opens with fresh content
-      Bonfire.UI.Common.OpenModalLive.close()
+      maybe_close_theme_modal(params)
 
       {:noreply,
        socket
        |> maybe_assign_context(settings)
-       # push the updated palette to <html> so it applies live, document-wide
        |> Bonfire.UI.Common.ThemeHelper.push_current_theme()
        |> assign_flash(:info, l("Settings saved"))}
     else
       :error ->
-        {:noreply, assign_flash(socket, :error, l("Invalid colour value"))}
+        {:noreply, assign_flash(socket, :error, l("Invalid theme value"))}
+
+      other ->
+        error(other, "Could not save custom theme token")
+        {:noreply, assign_flash(socket, :error, l("Could not update the theme, please try again"))}
+    end
+  end
+
+  @doc "Removes one stored custom-theme token so it inherits from the configured base theme again."
+  def handle_event("reset_custom_theme_token", %{"token" => token} = params, socket)
+      when is_binary(token) do
+    theme_key = Bonfire.UI.Common.ThemeHelper.custom_theme_key(params["scope"])
+
+    with true <- Enum.any?(DaisyTheme.keys(), &(&1.name == token)),
+         {:ok, socket} <-
+           delete_custom_theme_token_variants(socket, theme_key, token, params["scope"]) do
+      maybe_close_theme_modal(params)
+
+      {:noreply,
+       socket
+       |> Bonfire.UI.Common.ThemeHelper.push_current_theme()
+       |> assign_flash(:info, l("Theme override removed"))}
+    else
+      false ->
+        {:noreply, assign_flash(socket, :error, l("Unknown theme setting"))}
+
+      other ->
+        error(other, "Could not reset custom theme token")
+        {:noreply, assign_flash(socket, :error, l("Could not reset the theme setting, please try again"))}
     end
   end
 
   @doc """
-  Resets the whole custom-theme palette back to defaults by removing every stored override.
+  Resets the whole custom theme by removing every stored override.
 
-  Deletes the entire `[:ui, :theme, <custom_key>]` subtree so every colour, radius, etc.
-  falls through to `DaisyTheme.default_theme/0` in the template, instead of persisting
-  redundant copies of the defaults.
+  Configured instance defaults may return when configuration is reloaded.
   """
   def handle_event("reset_custom_theme", params, socket) do
     theme_key = Bonfire.UI.Common.ThemeHelper.custom_theme_key(params["scope"])
@@ -226,7 +245,11 @@ defmodule Bonfire.Common.Settings.LiveHandler do
        socket
        |> maybe_assign_context(settings)
        |> Bonfire.UI.Common.ThemeHelper.push_current_theme()
-       |> assign_flash(:info, l("Custom theme reset to defaults"))}
+       |> assign_flash(:info, l("Custom theme overrides removed"))}
+    else
+      other ->
+        error(other, "Could not reset custom theme")
+        {:noreply, assign_flash(socket, :error, l("Could not reset the custom theme, please try again"))}
     end
   end
 
@@ -352,6 +375,56 @@ defmodule Bonfire.Common.Settings.LiveHandler do
       {:ok, maybe_assign_context(socket, settings)}
     end
   end
+
+  # Settings loaded from JSON can contain either form even though new writes use strings.
+  # Remove both so old and mixed settings reset reliably without atomising arbitrary input.
+  defp delete_custom_theme_token_variants(socket, theme_key, token, scope) do
+    stored_theme =
+      Bonfire.Common.Settings.__get__(
+        [:ui, :theme, theme_key],
+        %{},
+        scope
+        |> scoped(socket.assigns.__context__)
+        |> Bonfire.Common.Opts.to_options()
+        |> Keyword.merge(scope: scope, one_scope_only: true, preload: true)
+      )
+
+    stored_keys =
+      [token, existing_atom(token)]
+      |> Enum.reject(&is_nil/1)
+      |> Enum.filter(&stored_theme_has_key?(stored_theme, &1))
+
+    Enum.reduce_while(stored_keys, {:ok, socket}, fn stored_key, {:ok, current_socket} ->
+      case Bonfire.Common.Settings.delete([:ui, :theme, theme_key, stored_key],
+             scope: scope,
+             socket: current_socket
+           ) do
+        {:ok, settings} ->
+          {:cont, {:ok, maybe_assign_context(current_socket, settings)}}
+
+        error ->
+          {:halt, error}
+      end
+    end)
+  end
+
+  defp stored_theme_has_key?(theme, key) when is_map(theme), do: Map.has_key?(theme, key)
+
+  defp stored_theme_has_key?(theme, key) when is_list(theme) and is_atom(key),
+    do: Keyword.has_key?(theme, key)
+
+  defp stored_theme_has_key?(_theme, _key), do: false
+
+  defp existing_atom(value) do
+    String.to_existing_atom(value)
+  rescue
+    ArgumentError -> nil
+  end
+
+  defp maybe_close_theme_modal(%{"close_modal" => close?}) when close? in [true, "true"],
+    do: Bonfire.UI.Common.OpenModalLive.close()
+
+  defp maybe_close_theme_modal(_params), do: :ok
 
   defp extension_toggle(extension, disabled?, attrs, socket) do
     scope =

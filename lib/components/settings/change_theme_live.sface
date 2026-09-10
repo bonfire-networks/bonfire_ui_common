@@ -1,10 +1,8 @@
-<div x-data={"{ theme: '#{@theme}'}"}>
-  <input name={"ui[theme][#{@key}]"} x-model="theme" type="hidden">
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-3" tabindex="0">
+<div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
     {#for t <- @themes || []}
       <div class={
-        "rounded-box bg-base-100",
+        "bg-base-100",
         "ring-2 ring-primary": to_string(t) == to_string(@theme)
       }>
         <div data-theme={t} class="w-full rounded-box font-sans text-base-content">
@@ -53,7 +51,6 @@
                 "btn-primary": to_string(t) == to_string(@theme),
                 "btn-primary btn-soft": to_string(t) != to_string(@theme)
               }
-              x-on:click={"theme = '#{t}'"}
               phx-click={JS.push("Bonfire.Common.Settings:put_theme",
                 value: %{keys: "ui:theme:#{@key}", values: t, scope: @scope}
               )}
