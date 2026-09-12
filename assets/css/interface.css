@@ -972,10 +972,27 @@ html:not([data-ui-preset="typographic"])
   background: transparent;
 }
 
-html:not([data-ui-preset="typographic"]) .inline-composer-placeholder-wrapper {
-  padding-inline: var(--spacing-feed);
+
+html:not([data-ui-preset="typographic"]) [data-role="group-sidebar-moderators"] > div {
+  gap: 0.75rem;
 }
 
-html:not([data-ui-preset="typographic"]) .inline-composer-placeholder-button {
-  border-radius: var(--radius-field);
+html:not([data-ui-preset="typographic"]) [data-role="group-sidebar-moderators"] > div > div {
+  border-width: 0;
+  padding: 0;
+}
+
+html:not([data-ui-preset="typographic"]) .widget-moderator-profile .avatar > div {
+  width: 2rem;
+  height: 2rem;
+}
+
+html:not([data-ui-preset="typographic"]) .widget-moderator-profile .profile-item {
+  align-items: center;
+}
+
+html:not([data-ui-preset="typographic"]) .widget-moderator-profile [data-id="profile_name"] + .text-muted {
+  margin-top: 0;
+  font-size: var(--text-sm);
+  line-height: 1.4;
 }

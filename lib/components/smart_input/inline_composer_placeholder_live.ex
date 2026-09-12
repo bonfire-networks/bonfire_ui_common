@@ -11,9 +11,4 @@ defmodule Bonfire.UI.Common.InlineComposerPlaceholderLive do
   def show?(selected_tab),
     do: to_string(selected_tab || "") not in @hidden_tabs
 
-  def scope_label(category) do
-    name = Bonfire.Classify.Web.Preview.CategoryLive.name(category, l("group"))
-
-    if e(category, :type, nil) == :topic, do: "#" <> name, else: name
-  end
 end

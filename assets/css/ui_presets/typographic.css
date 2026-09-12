@@ -63,26 +63,7 @@ html[data-ui-preset="typographic"] [data-role="profile-stats-divider"] {
 }
 
 html[data-ui-preset="typographic"] [data-role="profile-links"] {
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-html[data-ui-preset="typographic"] [data-role="profile-also-on"] {
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  column-gap: 0.75rem;
-  row-gap: 0.25rem;
-}
-
-html[data-ui-preset="typographic"] [data-role="profile-also-on"] > :first-child {
-  flex-shrink: 0;
-}
-
-html[data-ui-preset="typographic"] [data-role="profile-also-on"] > :last-child {
-  min-width: 0;
-  max-width: 100%;
-  row-gap: 0.25rem;
+  --divider-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
 }
 
 html[data-ui-preset="typographic"] [data-role="profile-websites"] .text-primary {
@@ -149,8 +130,20 @@ html[data-ui-preset="typographic"] .sidebar-widgets .widget-moderator-profile {
   @apply px-1 border-hair rounded-field bg-base-100;
 }
 
-html[data-ui-preset="typographic"] .sidebar-widgets [data-role="moderators-heading"] {
-  @apply border-b-hair;
+html[data-ui-preset="typographic"] .sidebar-widgets :is(.group-moderators-widget, .group-topics-widget) {
+  padding: 0;
+}
+
+html[data-ui-preset="typographic"] .sidebar-widgets :is(.group-moderators-widget, .group-topics-widget) > [data-role="widget-header"] {
+  @apply p-card border-b-hair border-secondary;
+}
+
+html[data-ui-preset="typographic"] .sidebar-widgets .group-topics-widget li > a {
+  @apply px-card rounded-none;
+}
+
+html[data-ui-preset="typographic"] .sidebar-widgets .group-topics-widget li + li {
+  @apply border-t-hair border-secondary;
 }
 
 html[data-ui-preset="typographic"] [data-id="trending_discussions"] {

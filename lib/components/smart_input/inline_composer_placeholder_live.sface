@@ -1,55 +1,29 @@
 {#if current_user_id(@__context__) && show?(@selected_tab)}
-  <div class="inline-composer-placeholder-wrapper py-feed">
-    <div
-      id="inline_composer_placeholder"
-      class="inline-composer-placeholder-button flex items-center gap-3 p-1 rounded-full border border-secondary bg-base-100 cursor-text transition-opacity ease-out duration-150 hover:border-primary"
-    >
-      <div class="shrink-0">
-        <Bonfire.UI.Common.AvatarLive
-          bg_class="rounded-full"
-          title={e(current_user(@__context__), :profile, :name, "Anon")}
-          wrapper_class="border-0 avatar !flex w-9 h-9"
-          class="inline-block object-cover w-full rounded-full"
-          src={Bonfire.Common.Media.avatar_url(current_user(@__context__)) ||
-            @__context__[:current_user_avatar_url]}
-          user_id={current_user_id(@__context__)}
-          parent_id="inline_composer_placeholder"
-          is_remote={false}
-        />
-      </div>
-      <button
-        type="button"
-        id="inline_composer_placeholder_open"
-        phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open(%JS{}, @smart_input_opts)}
-        phx-target="#smart_input"
-        class="flex-1 min-w-0 text-left text-muted truncate text-sm self-stretch pointer-coarse:min-h-11"
-      >
-        {@prompt || l("Share something")}
-      </button>
-      {!-- Post / Continue swap: CSS toggles these based on data-draft on the
-           global composer (see app.css). Continue shows when input_status is
-           :draft — i.e. the user has an in-progress draft somewhere. --}
-      <button
-        type="button"
-        id="inline_composer_placeholder_post"
-        phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open(%JS{}, @smart_input_opts)}
-        phx-target="#smart_input"
-        data-role="composer-pill-post"
-        class="btn btn-primary normal-case pointer-coarse:min-h-11"
-      >
-        {lc("verb: action", "Post", [], :bonfire_posts)}
-      </button>
-      <button
-        type="button"
-        id="inline_composer_placeholder_continue"
-        phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open(%JS{}, @smart_input_opts)}
-        phx-target="#smart_input"
-        data-role="composer-pill-continue"
-        class="hidden btn btn-warning normal-case gap-1 items-center pointer-coarse:min-h-11"
-      >
-        <#Icon iconify="ph:pencil-line-fill" aria-hidden="true" class="w-4 h-4" />
-        {l("Continue")}
-      </button>
+  <div
+    id="inline_composer_placeholder"
+    class="p-card flex items-center gap-avatar border-b-(length:--divider-width) border-(color:--divider-color) bg-base-100 cursor-text"
+  >
+    <div class="shrink-0">
+      <Bonfire.UI.Common.AvatarLive
+        bg_class="rounded-full"
+        title={e(current_user(@__context__), :profile, :name, "Anon")}
+        wrapper_class="border-0 avatar !flex w-[35px] h-[35px]"
+        class="inline-block object-cover w-full rounded-full"
+        src={Bonfire.Common.Media.avatar_url(current_user(@__context__)) ||
+          @__context__[:current_user_avatar_url]}
+        user_id={current_user_id(@__context__)}
+        parent_id="inline_composer_placeholder"
+        is_remote={false}
+      />
     </div>
+    <button
+      type="button"
+      id="inline_composer_placeholder_open"
+      phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open(%JS{}, @smart_input_opts)}
+      phx-target="#smart_input"
+      class="flex-1 min-w-0 text-left text-muted truncate text-sm self-stretch pointer-coarse:min-h-11"
+    >
+      {@prompt || l("Share something")}
+    </button>
   </div>
 {/if}
