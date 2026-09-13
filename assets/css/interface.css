@@ -972,6 +972,11 @@ html:not([data-ui-preset="typographic"])
   background: transparent;
 }
 
+html [data-id="profile_hero"] [data-id="hero_background"] {
+  height: auto;
+  aspect-ratio: 3 / 1;
+  @apply mb-2
+}
 
 html:not([data-ui-preset="typographic"]) [data-role="group-sidebar-moderators"] > div {
   gap: 0.75rem;

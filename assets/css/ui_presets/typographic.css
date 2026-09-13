@@ -116,12 +116,6 @@ html[data-ui-preset="typographic"] [data-id="profile_hero"] {
   @apply border-y-hair border-y-secondary;
 }
 
-html[data-ui-preset="typographic"] [data-id="profile_hero"] [data-id="hero_background"] {
-  @apply mb-2;
-  height: auto;
-  aspect-ratio: 3 / 1;
-}
-
 html[data-ui-preset="typographic"] .widget-user-profile {
   @apply bg-base-100 p-1 rounded-field border-hair border-secondary;
 }
