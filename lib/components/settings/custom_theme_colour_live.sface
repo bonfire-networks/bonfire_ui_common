@@ -15,10 +15,7 @@
   >
     <hex-color-picker class="w-full mt-4" color={@saved_color || "#000000"} />
     <div class="flex flex-col gap-2 w-full">
-      <label
-        for={"#{@id_prefix}-input-#{@color}"}
-        class="font-medium text-sm text-base-content/80"
-      >
+      <label for={"#{@id_prefix}-input-#{@color}"} class="font-medium text-sm text-base-content/80">
         {l("Color value")}
       </label>
       <div class="flex items-center gap-2">

@@ -34,6 +34,7 @@ defmodule Bonfire.UI.Common.CustomThemeColourLiveTest do
 
     assert Floki.text(document) =~ "#abcdef"
     refute Floki.text(document) =~ "Inherited"
+
     assert Floki.attribute(document, "[data-color=color-primary-content]", "style") ==
              ["background-color: var(--color-primary); color: var(--color-primary-content)"]
   end

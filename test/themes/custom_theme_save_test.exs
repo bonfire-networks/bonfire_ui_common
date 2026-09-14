@@ -139,23 +139,37 @@ defmodule Bonfire.UI.Common.CustomThemeSaveTest do
       account = fake_account!()
       user = fake_user!(account)
       socket = socket(user)
-      socket = Phoenix.Component.assign(socket, :__context__, %{current_user: user, current_account: account})
+
+      socket =
+        Phoenix.Component.assign(socket, :__context__, %{
+          current_user: user,
+          current_account: account
+        })
+
       socket = put_token!(socket, "color-primary", "#111111")
 
       assert {:noreply, socket} =
-               LiveHandler.handle_event("put_custom_theme_token",
-                 %{"token" => "color-primary", "value" => "#222222", "scope" => "account"}, socket)
+               LiveHandler.handle_event(
+                 "put_custom_theme_token",
+                 %{"token" => "color-primary", "value" => "#222222", "scope" => "account"},
+                 socket
+               )
 
       assert {:noreply, socket} =
-               LiveHandler.handle_event("reset_custom_theme_token",
-                 %{"token" => "color-primary", "scope" => "account"}, socket)
+               LiveHandler.handle_event(
+                 "reset_custom_theme_token",
+                 %{"token" => "color-primary", "scope" => "account"},
+                 socket
+               )
 
       account = socket.assigns.__context__.current_account
+
       assert Settings.get([:ui, :theme, :custom], %{},
                current_account: account,
                one_scope_only: true
              )
              |> Enum.empty?()
+
       assert custom_theme(socket)["color-primary"] == "#111111"
     end
 

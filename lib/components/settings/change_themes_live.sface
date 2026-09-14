@@ -315,25 +315,21 @@
                       class="sr-only"
                       name={"#{@id_prefix}-#{group.token}"}
                       value={radius || "inherited"}
-                      aria-label={
-                        if(is_nil(radius),
-                          do: l("Inherit %{group} radius", group: group.label),
-                          else: l("%{radius} %{group} radius", radius: radius, group: group.label)
-                        )
-                      }
+                      aria-label={if(is_nil(radius),
+                        do: l("Inherit %{group} radius", group: group.label),
+                        else: l("%{radius} %{group} radius", radius: radius, group: group.label)
+                      )}
                       checked={radius_selected?(@custom_tokens, group.token, radius)}
-                      phx-click={
-                        if(is_nil(radius),
-                          do:
-                            JS.push("Bonfire.Common.Settings:reset_custom_theme_token",
-                              value: %{token: group.token, scope: @scope}
-                            ),
-                          else:
-                            JS.push("Bonfire.Common.Settings:put_custom_theme_token",
-                              value: %{token: group.token, value: radius, scope: @scope}
-                            )
-                        )
-                      }
+                      phx-click={if(is_nil(radius),
+                        do:
+                          JS.push("Bonfire.Common.Settings:reset_custom_theme_token",
+                            value: %{token: group.token, scope: @scope}
+                          ),
+                        else:
+                          JS.push("Bonfire.Common.Settings:put_custom_theme_token",
+                            value: %{token: group.token, value: radius, scope: @scope}
+                          )
+                      )}
                     />
                     <div class="flex flex-col items-center justify-center gap-1 py-1" aria-hidden="true">
                       <div

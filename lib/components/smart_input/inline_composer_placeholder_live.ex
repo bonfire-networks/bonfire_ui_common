@@ -10,5 +10,4 @@ defmodule Bonfire.UI.Common.InlineComposerPlaceholderLive do
 
   def show?(selected_tab),
     do: to_string(selected_tab || "") not in @hidden_tabs
-
 end

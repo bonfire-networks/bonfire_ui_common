@@ -152,24 +152,37 @@ defmodule Bonfire.UI.Common.ThemeFollowInstanceTest do
     socket = fake_account!() |> fake_admin!() |> socket()
 
     socket =
-      Enum.reduce([{"color-primary", "#123456"}, {"radius-box", "1rem"}, {"color-secondary", "#abcdef"}], socket, fn {token, value}, socket ->
-        assert {:noreply, socket} =
-                 LiveHandler.handle_event("put_custom_theme_token",
-                   %{"token" => token, "value" => value, "scope" => "instance"}, socket)
-        socket
-      end)
+      Enum.reduce(
+        [{"color-primary", "#123456"}, {"radius-box", "1rem"}, {"color-secondary", "#abcdef"}],
+        socket,
+        fn {token, value}, socket ->
+          assert {:noreply, socket} =
+                   LiveHandler.handle_event(
+                     "put_custom_theme_token",
+                     %{"token" => token, "value" => value, "scope" => "instance"},
+                     socket
+                   )
+
+          socket
+        end
+      )
 
     for token <- ["color-primary", "radius-box"] do
       assert {:noreply, _socket} =
-               LiveHandler.handle_event("reset_custom_theme_token",
-                 %{"token" => token, "scope" => "instance"}, socket)
+               LiveHandler.handle_event(
+                 "reset_custom_theme_token",
+                 %{"token" => token, "scope" => "instance"},
+                 socket
+               )
 
       tokens = Settings.get([:ui, :theme, :custom_instance], %{}, scope: :instance)
       assert tokens |> Bonfire.Common.Enums.stringify_keys() |> Map.get(token) == nil
     end
 
     tokens = Settings.get([:ui, :theme, :custom_instance], %{}, scope: :instance)
-    assert tokens |> Bonfire.Common.Enums.stringify_keys() |> Map.get("color-secondary") == "#abcdef"
+
+    assert tokens |> Bonfire.Common.Enums.stringify_keys() |> Map.get("color-secondary") ==
+             "#abcdef"
   end
 
   defp put_instance_theme(key, value) do

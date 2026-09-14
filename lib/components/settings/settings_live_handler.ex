@@ -200,7 +200,9 @@ defmodule Bonfire.Common.Settings.LiveHandler do
 
       other ->
         error(other, "Could not save custom theme token")
-        {:noreply, assign_flash(socket, :error, l("Could not update the theme, please try again"))}
+
+        {:noreply,
+         assign_flash(socket, :error, l("Could not update the theme, please try again"))}
     end
   end
 
@@ -224,7 +226,9 @@ defmodule Bonfire.Common.Settings.LiveHandler do
 
       other ->
         error(other, "Could not reset custom theme token")
-        {:noreply, assign_flash(socket, :error, l("Could not reset the theme setting, please try again"))}
+
+        {:noreply,
+         assign_flash(socket, :error, l("Could not reset the theme setting, please try again"))}
     end
   end
 
@@ -249,7 +253,9 @@ defmodule Bonfire.Common.Settings.LiveHandler do
     else
       other ->
         error(other, "Could not reset custom theme")
-        {:noreply, assign_flash(socket, :error, l("Could not reset the custom theme, please try again"))}
+
+        {:noreply,
+         assign_flash(socket, :error, l("Could not reset the custom theme, please try again"))}
     end
   end
 
