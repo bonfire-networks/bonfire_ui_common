@@ -1253,7 +1253,6 @@ defmodule Bonfire.UI.Common do
   defp go_where?(session_go, params, default, current_path) do
     case session_go do
       go when is_binary(go) and current_path != go ->
-        go = URI.decode(go)
         # Internal paths and full local URLs are always fine; a non-internal
         # (external) `go` is only honored when its origin is on the embed
         # allow-list — otherwise fall back to the default to avoid open redirects.
@@ -1264,9 +1263,8 @@ defmodule Bonfire.UI.Common do
       _ ->
         # |> debug
         go =
-          (ed(params, :go, nil) || e(params, :data, :go, nil) || e(params, :changes, :go, nil) ||
-             e(params, :source, :changes, :go, nil) || default)
-          |> URI.decode()
+          ed(params, :go, nil) || e(params, :data, :go, nil) || e(params, :changes, :go, nil) ||
+            e(params, :source, :changes, :go, nil) || default
 
         if current_path != go and
              (internal_go_path?(go) or Bonfire.UI.Common.EmbedOrigins.allowed?(go)),
