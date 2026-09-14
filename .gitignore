@@ -44,3 +44,5 @@ assets/static/tauri/assets/ap_c2s_client
 # iOS build staging dir: a pruned copy of the shell (no chat client) used as
 # frontendDist for `cargo tauri ios build` — see src-tauri/tauri.ios.conf.json
 assets/static/tauri-ios
+/lib/mix/tasks/sync_themes/_build
+lib/mix/tasks/sync_themes/sync_themes
