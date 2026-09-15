@@ -21,7 +21,12 @@ defmodule Bonfire.UI.Common.LoginReturnPathTest do
       response = Common.redirect_to_previous_go(conn, params, default, "/login")
 
       assert Plug.Conn.get_resp_header(response, "location") == [destination]
-      assert Phoenix.ConnTest.redirected_to(response) |> URI.parse() |> Map.fetch!(:query) |> Plug.Conn.Query.decode() == values
+
+      assert Phoenix.ConnTest.redirected_to(response)
+             |> URI.parse()
+             |> Map.fetch!(:query)
+             |> Plug.Conn.Query.decode() == values
+
       assert Plug.Conn.get_session(response, :go) == nil
     end
   end
