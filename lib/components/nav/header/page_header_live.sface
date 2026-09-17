@@ -1,6 +1,6 @@
 <header role="banner" class="flex flex-1 w-full transition-colors duration-150 ease-in-out">
   <div class="relative z-20 flex items-center w-full">
-    <div class="flex items-center gap-4 w-full px-base">
+    <div class="flex items-center gap-2 w-full px-base">
       {!-- Back button (when present, all breakpoints) --}
       <div :if={@back} class="shrink-0 flex items-center">
         <Bonfire.UI.Common.BackButtonLive back={@back} type={@back_type} />
@@ -46,7 +46,7 @@
         <h1
           data-page={@page}
           data-role="page_title"
-          class="first-letter:capitalize truncate font-medium text-left text-base lg:text-display text-base-content"
+          class="first-letter:capitalize truncate font-medium text-left text-base text-base-content"
         >
           {rich(@page_title)}
         </h1>
