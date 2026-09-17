@@ -14,7 +14,7 @@
 
   {#for row <- @rows}
     <label
-      class={"flex min-h-11 items-center justify-between gap-3 py-1 cursor-pointer", @row_class}
+      class={"flex items-center justify-between gap-3 py-1 cursor-pointer", @row_class}
       data-role={@row_role}
     >
       <span class="flex flex-col min-w-0">
@@ -34,7 +34,7 @@
           name={"#{@field_prefix}[#{row.key}]"}
           value="true"
           checked={row.on}
-          class="toggle toggle-primary toggle-sm"
+          class="toggle toggle-primary toggle-xs"
           data-role={@toggle_role}
           phx-click={if @event_mode == :click, do: @event_name}
           phx-target={if @event_mode == :click, do: @event_target}

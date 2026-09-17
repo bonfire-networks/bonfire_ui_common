@@ -1078,6 +1078,28 @@ hex-input::part(input) {
   --widget-overlap: 0px;
 }
 
+@utility feed-filter-summary {
+  @apply flex items-center justify-between gap-3 cursor-pointer list-none min-h-10 rounded-selector hover:bg-base-content/5 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary;
+  @media (pointer: coarse) {
+    @apply min-h-11;
+  }
+}
+
+@utility sidebar-child-list {
+  @apply !m-0 !mb-1 !p-0 !gap-0 before:!content-none after:!content-none;
+  background-image: linear-gradient(color-mix(in oklch, var(--color-base-content) 20%, transparent), color-mix(in oklch, var(--color-base-content) 20%, transparent));
+  background-position: calc(var(--spacing) * 5.5 - 0.5px) 0;
+  background-size: 1px 100%;
+  background-repeat: no-repeat;
+}
+
+@utility sidebar-child-link {
+  @apply !flex w-full min-w-0 items-center !min-h-8 !h-8 !px-3 !py-0 rounded-selector text-base leading-6 hover:bg-base-content/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary;
+  @media (pointer: coarse) {
+    @apply !min-h-11 !h-11;
+  }
+}
+
 @layer components {
   /* Typographic adds card borders and overlap through its layout tokens. */
   .activity_wrapper {

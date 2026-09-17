@@ -615,9 +615,16 @@ html:not([data-ui-preset="typographic"]) [data-role="feed_override_toggle"]:chec
 @media (hover: hover) and (pointer: fine) {
   @media not (any-pointer: coarse) {
     html:not([data-ui-preset="typographic"])
-      [data-id="widget_customize_feed"]
-      [data-role="calm_override_group"] {
-      min-height: 38px;
+      [data-role="feed_preferences_widget"]
+      :is(
+        [data-role="widget-header"],
+        [data-role="feed_preferences_reset"],
+        [data-role="feed_order_row"],
+        [data-role="feed_order_row"] select,
+        [data-role="calm_override_group"],
+        [data-role="feed_advanced_filters_wrapper"] [data-role="open_modal"] > div
+      ) {
+      min-height: 36px;
       padding-block: 0;
     }
   }
