@@ -696,6 +696,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@milkdown/theme-nord@npm:^7.22.1":
+  version: 7.22.1
+  resolution: "@milkdown/theme-nord@npm:7.22.1"
+  dependencies:
+    "@milkdown/core": "npm:7.22.1"
+    "@milkdown/ctx": "npm:7.22.1"
+    "@milkdown/prose": "npm:7.22.1"
+    clsx: "npm:^2.0.0"
+  checksum: 10c0/124ce224fe51c500ab14dc31374c0a5c97ddd4cb04f72cf48b0ac3effa29317e4359e7dd8f440173b5389817cfdfd2166c2f652f832320e4dfe6d662fdd6508f
+  languageName: node
+  linkType: hard
+
 "@milkdown/transformer@npm:7.22.1":
   version: 7.22.1
   resolution: "@milkdown/transformer@npm:7.22.1"
@@ -3683,6 +3695,7 @@ __metadata:
     "@iconify/json": "npm:^2.2.458"
     "@milkdown/kit": "npm:^7.22.1"
     "@milkdown/plugin-emoji": "npm:^7.22.1"
+    "@milkdown/theme-nord": "npm:^7.22.1"
     "@picmo/popup-picker": "npm:^5.8.1"
     "@pwabuilder/pwaupdate": "npm:^0.2.1"
     "@splidejs/splide": "npm:^4.1.3"
