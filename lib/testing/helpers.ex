@@ -194,6 +194,17 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   end
 
   @doc """
+  The current assigns of a LiveView, given a `PhoenixTest` session, a `LiveViewTest` view, or a pid.
+
+  For working out why a test sees what it sees; assert on rendered output rather than on assigns.
+
+      live_assigns(session)[:feed_filters]
+  """
+  def live_assigns(%{view: %{pid: pid}}), do: live_assigns(pid)
+  def live_assigns(%{pid: pid}), do: live_assigns(pid)
+  def live_assigns(pid) when is_pid(pid), do: :sys.get_state(pid).socket.assigns
+
+  @doc """
   Stop a specific LiveView
   """
   def live_view_stop(view) do

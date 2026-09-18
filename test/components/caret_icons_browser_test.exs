@@ -33,40 +33,47 @@ defmodule Bonfire.UI.Common.CaretIconsBrowserTest do
 
     session
     |> Browser.visit("about:blank")
-    |> Browser.execute_script("document.open(); document.write(arguments[0]); document.close();", [html])
-    |> Browser.execute_script(~S"""
-    const results = [];
-    const icon = document.createElement('span');
-    icon.style.maskImage = 'var(--Iy)';
-    document.body.append(icon);
-    for (const theme of ['regular', 'fill', 'duotone', 'light']) {
-      document.documentElement.dataset.iconWeight = theme;
-      for (const direction of ['right', 'left', 'down', 'up']) {
-        for (const weight of ['', 'fill', 'duotone', 'bold', 'light', 'thin']) {
-          icon.setAttribute('iconify', `ph:caret-${direction}${weight ? '-' + weight : ''}`);
-          const mask = getComputedStyle(icon).maskImage;
-          const data = mask.match(/^url\(["']?data:image\/svg\+xml[^,]*,(.*?)["']?\)$/);
-          results.push([theme, direction, weight, data ? decodeURIComponent(data[1]) : mask]);
+    |> Browser.execute_script(
+      "document.open(); document.write(arguments[0]); document.close();",
+      [html]
+    )
+    |> Browser.execute_script(
+      ~S"""
+      const results = [];
+      const icon = document.createElement('span');
+      icon.style.maskImage = 'var(--Iy)';
+      document.body.append(icon);
+      for (const theme of ['regular', 'fill', 'duotone', 'light']) {
+        document.documentElement.dataset.iconWeight = theme;
+        for (const direction of ['right', 'left', 'down', 'up']) {
+          for (const weight of ['', 'fill', 'duotone', 'bold', 'light', 'thin']) {
+            icon.setAttribute('iconify', `ph:caret-${direction}${weight ? '-' + weight : ''}`);
+            const mask = getComputedStyle(icon).maskImage;
+            const data = mask.match(/^url\(["']?data:image\/svg\+xml[^,]*,(.*?)["']?\)$/);
+            results.push([theme, direction, weight, data ? decodeURIComponent(data[1]) : mask]);
+          }
         }
       }
-    }
-    return results;
-    """, fn results ->
-      assert length(results) == 96
+      return results;
+      """,
+      fn results ->
+        assert length(results) == 96
 
-      for [theme, direction, weight, svg] <- results do
-        expected_weight =
-          cond do
-            theme == "light" -> "-light"
-            weight in ["bold", "light", "thin"] -> "-#{weight}"
-            true -> ""
-          end
+        for [theme, direction, weight, svg] <- results do
+          expected_weight =
+            cond do
+              theme == "light" -> "-light"
+              weight in ["bold", "light", "thin"] -> "-#{weight}"
+              true -> ""
+            end
 
-        expected = icons["caret-#{direction}#{expected_weight}"]["body"]
-        assert Floki.find(Floki.parse_fragment!(svg), "path") ==
-                 Floki.find(Floki.parse_fragment!(expected), "path"),
-               "Wrong caret outline: #{direction}, weight=#{weight}, theme=#{theme}"
+          expected = icons["caret-#{direction}#{expected_weight}"]["body"]
+
+          assert Floki.find(Floki.parse_fragment!(svg), "path") ==
+                   Floki.find(Floki.parse_fragment!(expected), "path"),
+                 "Wrong caret outline: #{direction}, weight=#{weight}, theme=#{theme}"
+        end
       end
-    end)
+    )
   end
 end
