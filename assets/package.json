@@ -41,6 +41,7 @@
 		"@iconfu/svg-inject": "^1.2.3",
 		"@iconify/json": "^2.2.458",
 		"@milkdown/kit": "^7.22.1",
+		"@milkdown/plugin-emoji": "^7.22.1",
 		"@picmo/popup-picker": "^5.8.1",
 		"@pwabuilder/pwaupdate": "^0.2.1",
 		"@splidejs/splide": "^4.1.3",
