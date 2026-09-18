@@ -46,6 +46,7 @@
 		"@tailwindcss/typography": "^0.5.15",
 		"alpinejs": "^3.14.8",
 		"body-scroll-lock": "^4.0.0-beta.0",
+		"emoji-picker-element": "^1.29.1",
 		"fast-blurhash": "^1.1.2",
 		"hls.js": "^1.6.16",
 		"insert-text-at-cursor": "^0.3.0",
