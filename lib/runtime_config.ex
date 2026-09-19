@@ -10,6 +10,24 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
   def config do
     import Config
 
+    # Getting-started steps for pages this extension serves, plus one that belongs to no feature at all. Declared here so their copy is compiled where `mix gettext.extract` can see it, while where each sends somebody can be an instance's own answer: a step names the config key holding its destination and the widget resolves that while rendering, since a declaration is itself config and cannot read config that has not finished loading.
+    config :bonfire_ui_common, Bonfire.UI.Common.WidgetGettingStartedLive,
+      actions_registry: [
+        read_coc: %{
+          title: l("Read the Code of Conduct"),
+          rationale: l("A short read, so you know what to expect from the people here."),
+          cta_label: l("Open the Code of Conduct"),
+          cta_path: {:config, :code_of_conduct_path, "/conduct"}
+        },
+        # what nobody's feature covers: asking people what they want of the place. An instance that sets no URL is not asking, and the step drops out rather than linking nowhere
+        wishes: %{
+          title: l("Tell us about your wishes"),
+          rationale: l("Help shape what comes next: what you say drives what gets built."),
+          cta_label: l("Share your wishes"),
+          cta_path: {:config, :wishes_url}
+        }
+      ]
+
     hostname = System.get_env("HOSTNAME", "localhost")
     port = System.get_env("PUBLIC_PORT", "4000")
 

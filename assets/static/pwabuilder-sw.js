@@ -140,6 +140,80 @@ self.addEventListener('push', event => {
   }
 });
 
+// A push service may rotate an endpoint whenever it likes, and it tells the service worker rather than the page, often with no page open at all. Without this the old endpoint simply goes dead: the row stays, sends start failing, and the user sees nothing until they toggle push off and on.
+//
+// Re-registering needs the VAPID application server key, which a worker cannot read from the DOM, so the page hands it over (VAPID_KEY below) and it is kept in a cache rather than a variable, since a worker is stopped and restarted freely. The key the existing subscription was made with is tried first, because it is the most reliable copy when the browser gives us the old one.
+const VAPID_CACHE = 'bonfire-push-v1';
+const VAPID_CACHE_KEY = '/__push/vapid-key';
+const SUBSCRIBE_URL = '/api/v1-bonfire/push/subscription';
+
+function rememberVapidKey(key) {
+  if (!key) return Promise.resolve();
+  return caches.open(VAPID_CACHE).then(cache =>
+    cache.put(VAPID_CACHE_KEY, new Response(key, { headers: { 'content-type': 'text/plain' } }))
+  );
+}
+
+function rememberedVapidKey() {
+  return caches.open(VAPID_CACHE)
+    .then(cache => cache.match(VAPID_CACHE_KEY))
+    .then(response => (response ? response.text() : null))
+    .catch(() => null);
+}
+
+// base64url, which is what `pushManager.subscribe` takes and what the page has
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const raw = self.atob(base64);
+  return Uint8Array.from([...raw].map(char => char.charCodeAt(0)));
+}
+
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'VAPID_KEY') {
+    event.waitUntil(rememberVapidKey(event.data.key));
+  }
+});
+
+async function resubscribe(event) {
+  // the browser supplies the new subscription where it can; Firefox has historically fired this
+  // event with both subscriptions null, so re-subscribing ourselves is the normal path, not an edge case
+  let subscription = event.newSubscription;
+
+  if (!subscription) {
+    const oldKey = event.oldSubscription && event.oldSubscription.options &&
+      event.oldSubscription.options.applicationServerKey;
+
+    const key = oldKey || (await rememberedVapidKey().then(k => (k ? urlBase64ToUint8Array(k) : null)));
+
+    if (!key) {
+      console.error('push: cannot re-subscribe without a VAPID key');
+      return;
+    }
+
+    subscription = await self.registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: key
+    });
+  }
+
+  // the session cookie is what authenticates this, and the path says the payload shape we can read.
+  // The dead row is left to the next failed send, which deactivates it: there is no page to tell,
+  // and nothing here knows which of this person's devices the old endpoint was
+  await fetch(SUBSCRIBE_URL, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    credentials: 'same-origin',
+    body: JSON.stringify({ subscription: subscription.toJSON() })
+  });
+}
+
+self.addEventListener('pushsubscriptionchange', event => {
+  event.waitUntil(resubscribe(event).catch(error => {
+    console.error('push: re-subscribe after endpoint rotation failed:', error);
+  }));
+});
+
 self.addEventListener('notificationclose', event => {
   event.waitUntil(updateAppBadge());
 });
