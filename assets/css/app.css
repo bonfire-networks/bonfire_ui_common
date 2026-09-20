@@ -758,8 +758,9 @@ article.active-activity::after {
   pointer-events: none;
 }
 
-article.unread-activity {
-  @apply border-l-2 border-primary !bg-primary/5;
+.activity_wrapper:has(> article.unread-activity) {
+  @apply !bg-primary/5;
+  box-shadow: inset 2px 0 0 var(--color-primary);
 }
 
 .markdown-editor {
