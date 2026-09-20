@@ -19,6 +19,9 @@ html:not([data-ui-preset="typographic"]) {
 html:not([data-ui-preset="typographic"]),
 html:not([data-ui-preset="typographic"]) [data-theme] {
   --stream-contained-object-radius: var(--radius-box);
+  --stream-reply-wash: oklch(78% 0.12 75 / 0.08);
+  --stream-boost-wash: oklch(65% 0.12 285 / 0.08);
+  --stream-group-wash: oklch(70% 0.09 155 / 0.07);
   --stream-text-secondary: color-mix(
     in oklab,
     var(--color-base-content) 88%,
@@ -114,6 +117,18 @@ html:not([data-ui-preset="typographic"]) [data-theme] {
 @supports (color: light-dark(white, black)) {
   html:not([data-ui-preset="typographic"]),
   html:not([data-ui-preset="typographic"]) [data-theme] {
+    --stream-reply-wash: light-dark(
+      oklch(78% 0.12 75 / 0.08),
+      oklch(65% 0.08 75 / 0.06)
+    );
+    --stream-boost-wash: light-dark(
+      oklch(65% 0.12 285 / 0.08),
+      oklch(70% 0.10 285 / 0.10)
+    );
+    --stream-group-wash: light-dark(
+      oklch(70% 0.09 155 / 0.07),
+      oklch(68% 0.08 155 / 0.09)
+    );
     --stream-surface: light-dark(
       color-mix(in oklab, var(--color-base-content) 2%, var(--color-base-100)),
       color-mix(in oklab, var(--color-base-content) 3%, var(--color-base-100))
@@ -273,12 +288,83 @@ html:not([data-ui-preset="typographic"])
   letter-spacing: 0.06em;
 }
 
+/* A fixed-height wash marks provenance without tinting long posts or their media. */
+html:not([data-ui-preset="typographic"])
+  .activity_wrapper:has(> article[data-verb="Boost"]) {
+  --stream-activity-wash: var(--stream-boost-wash);
+}
+
+html:not([data-ui-preset="typographic"])
+  .activity_wrapper:has(> article [data-publication-context]) {
+  --stream-activity-wash: var(--stream-group-wash);
+}
+
+html:not([data-ui-preset="typographic"])
+  .activity_wrapper:has(> article[data-reply-context]) {
+  --stream-activity-wash: var(--stream-reply-wash);
+}
+
+html:not([data-ui-preset="typographic"])
+  .activity_wrapper:has(
+    > article:is([data-reply-context], [data-verb="Boost"]),
+    > article [data-publication-context]
+  ) {
+  background-image: radial-gradient(
+    ellipse 100% 160px at top left,
+    var(--stream-activity-wash) 0%,
+    color-mix(in oklab, var(--stream-activity-wash) 65%, transparent) 30%,
+    color-mix(in oklab, var(--stream-activity-wash) 25%, transparent) 60%,
+    transparent 100%
+  );
+  background-size: 100% 160px;
+  background-repeat: no-repeat;
+}
+
 html:not([data-ui-preset="typographic"]) .activity_wrapper [data-role="subject"] {
   align-items: flex-start;
+  column-gap: 10px;
+}
+
+/* Tighten the author-to-note gap without changing spacing between other card sections. */
+html:not([data-ui-preset="typographic"])
+  .activity_wrapper
+  article.activity:not(.replied)
+  > [data-role="subject"] + [data-id="activity_note"] {
+  margin-top: -6px;
 }
 
 html:not([data-ui-preset="typographic"]) .activity_wrapper [data-id="name_username"] {
   min-width: 0;
+}
+
+/* Both placements stay available for client-side preset switching; Stream reads the group as part of the author line. */
+html:not([data-ui-preset="typographic"])
+  .activity_wrapper article:has(> [data-role="subject"] [data-role="author_group"])
+  > [data-role="published_in"] {
+  display: none;
+}
+
+html:not([data-ui-preset="typographic"])
+  .activity_wrapper [data-id="name_username"]:has(> [data-role="author_group"]) {
+  display: block;
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  overflow-wrap: anywhere;
+}
+
+html:not([data-ui-preset="typographic"])
+  .activity_wrapper [data-id="name_username"]:has(> [data-role="author_group"])
+  > [data-id="subject_name"] {
+  display: inline;
+  white-space: normal;
+}
+
+html:not([data-ui-preset="typographic"]) .activity_wrapper [data-role="author_group"] {
+  display: inline;
+}
+
+html:not([data-ui-preset="typographic"]) .activity_wrapper [data-role="author_group"] a {
+  font-weight: var(--stream-emphasis-weight);
 }
 
 html:not([data-ui-preset="typographic"]) .activity_wrapper [data-id="subject_name"] {
@@ -352,14 +438,13 @@ html:not([data-ui-preset="typographic"])
   background-color: transparent;
 }
 
-/* Belonging is an eyebrow for the activity, not a detached heading. Give its
-   icon the avatar column and rely on the activity's gap for vertical rhythm. */
+/* Standalone fallback for cards without an author line; Typographic keeps its own placement. */
 html:not([data-ui-preset="typographic"])
   .activity_wrapper
   .activity
   > [data-role="published_in"] {
   display: grid;
-  grid-template-columns: 35px minmax(0, 1fr);
+  grid-template-columns: var(--stream-publication-column, 35px) minmax(0, 1fr);
   column-gap: 0;
   row-gap: 0;
   margin-bottom: 0;
@@ -373,13 +458,10 @@ html:not([data-ui-preset="typographic"])
   justify-self: center;
 }
 
-/* A person's boost already explains why the activity appears in Stream.
-   Keep the original publication context in other presets, where the denser
-   provenance line is intentional. */
+/* Stream shows the destination beside the author; Typographic keeps boost attribution. */
 html:not([data-ui-preset="typographic"])
   .activity_wrapper
-  [data-role="boosted_by"]
-  [data-role="published_in"] {
+  [data-publication-context="attribution"] {
   display: none;
 }
 
@@ -719,10 +801,10 @@ html:not([data-ui-preset="typographic"]) [data-reply-context] {
   --stream-context-avatar-hit-inset: 4.5px;
   --stream-context-column: 36px;
   --stream-context-connector-up-reach: 38px;
-  --stream-context-connector-reach: 43.5px;
+  --stream-context-connector-reach: 35.5px;
   --stream-context-connector: color-mix(
     in oklab,
-    var(--color-primary) 25%,
+    var(--color-primary) 15%,
     var(--stream-canvas)
   );
 }
@@ -734,7 +816,7 @@ html:not([data-ui-preset="typographic"]) [data-reply-context][data-compact="true
   --stream-context-avatar-bottom: 26px;
   --stream-context-avatar-hit-inset: 6px;
   --stream-context-column: 34px;
-  --stream-context-connector-reach: 42px;
+  --stream-context-connector-reach: 34px;
 }
 
 /* "See full thread" becomes a quiet inline affordance. */
@@ -844,7 +926,7 @@ html:not([data-ui-preset="typographic"]) [data-reply-context] > article.replied 
   column-gap: 0;
   row-gap: 12px;
   align-items: start;
-  margin-bottom: 14px;
+  margin-bottom: 6px;
 }
 
 html:not([data-ui-preset="typographic"])
@@ -957,26 +1039,20 @@ html:not([data-ui-preset="typographic"]) [data-reply-context] > article.replied:
 
 html:not([data-ui-preset="typographic"])
   [data-reply-context]
-  > article
+  > article.replied
   [data-role="html_body"] {
+  font-size: 14px;
   color: color-mix(in oklab, var(--color-base-content) 85%, transparent);
+}
+
+html:not([data-ui-preset="typographic"]) [data-reply-context] {
+  --stream-publication-column: var(--stream-context-column);
 }
 
 html:not([data-ui-preset="typographic"])
   [data-reply-context]
-  > [data-role="published_in"] {
+  > [data-publication-context="standalone"] {
   order: -1;
-  display: grid;
-  grid-template-columns: var(--stream-context-column) minmax(0, 1fr);
-  column-gap: 0;
-  row-gap: 0;
-  width: fit-content;
-  min-width: 0;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
 }
 
 html [data-id="profile_hero"] [data-id="hero_background"] {
