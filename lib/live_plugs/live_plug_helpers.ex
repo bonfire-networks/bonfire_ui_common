@@ -143,6 +143,7 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        user_ip: user_ip,
        #  connect_params: connect_params,
        client_reading_positions: connect_param_map(connect_params["reading_pos"]),
+       client_push_active: Bonfire.UI.Common.Notifications.client_push_active(connect_params),
        csrf_socket_token: connect_params["_csrf_token"],
        # Phoenix LV sets this on live navigations; we keep just the path so
        # the back button can `<.link navigate>` back without `history.back()`.

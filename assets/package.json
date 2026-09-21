@@ -8,6 +8,7 @@
 		"build.css": "npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --minify && yarn test.theme-css",
 		"test.theme-css": "node --test ../test/js/theme_build_contract_test.mjs && node ./tests/theme-build-contract.mjs",
 		"test.theme-picker": "node --test ../test/js/custom_theme_colour_live_hooks_test.mjs",
+		"test.js": "node --test ../test/js/",
 		"build.debug.css": "NODE_ENV=development npx @tailwindcss/cli -i ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css --verbose",
 		"build.postcss": "npx postcss ./css/app.css -o ../../../priv/static/assets/bonfire_basic.css",
 		"build": "yarn prepare.static && yarn build.css && yarn build.esbuild && yarn build.vidstack",

@@ -1292,6 +1292,22 @@ defmodule Bonfire.UI.Common do
     go_where?(session_go, cs.changes, default, current_path)
   end
 
+  @doc """
+  Whether this instance has a code of conduct at all.
+
+  `/conduct` is always a route and shows whatever `[:bonfire, :terms, :conduct]` holds, so an instance that set nothing has a page with nothing on it. One question with two readers: whether the footer links there, and whether a getting-started step asks anybody to read it.
+
+  Not in `Bonfire.UI.Common.RuntimeConfig`, where the step that uses it is declared, because a config module's `import Config` and this module's `Config` are different modules and cannot both be in scope.
+  """
+  def code_of_conduct_set? do
+    not is_nil(
+      Config.get([:bonfire, :terms, :conduct], nil,
+        name: l("Code of conduct"),
+        description: l("What this instance expects of the people on it.")
+      )
+    )
+  end
+
   def maybe_cute_gif do
     opts =
       Config.get(:cute_gifs, nil,

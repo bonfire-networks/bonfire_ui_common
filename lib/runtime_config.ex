@@ -17,7 +17,9 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
           title: l("Read the Code of Conduct"),
           rationale: l("A short read, so you know what to expect from the people here."),
           cta_label: l("Open the Code of Conduct"),
-          cta_path: {:config, :code_of_conduct_path, "/conduct"}
+          # `/conduct` is where this always is, the way the footer's link to it is also a literal; whether there is anything on it is what this instance's terms say, which is what decides whether either is shown
+          needs: &Bonfire.UI.Common.code_of_conduct_set?/0,
+          cta_path: "/conduct"
         },
         # what nobody's feature covers: asking people what they want of the place. An instance that sets no URL is not asking, and the step drops out rather than linking nowhere
         wishes: %{

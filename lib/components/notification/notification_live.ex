@@ -13,6 +13,9 @@ defmodule Bonfire.UI.Common.NotificationLive do
   data info, :any, default: nil
   data error_sentry_event_id, :any, default: nil
 
+  # Whether push works on this device, as this socket's own hook reported it. `nil` until it has, when the connect param stands in (see `Bonfire.UI.Common.Notifications.client_push_active/1`), and `nil` there too on a first visit, which counts as no push.
+  data push_active, :boolean, default: nil
+
   # for PushNotifyLive
   data vapid_public_key, :string, default: nil
   data is_pwa, :boolean, default: false
@@ -45,9 +48,22 @@ defmodule Bonfire.UI.Common.NotificationLive do
   def update(assigns, %{assigns: %{subscribed: _}} = socket) do
     {:ok,
      socket
-     |> assign(assigns)
+     |> assign(without_duplicate_toast(assigns, socket))
      |> maybe_apply_root_flash()}
   end
+
+  # A notification that arrives while push works on this device is already on screen, shown by the service worker, so a toast would be the same thing twice. Dropped here rather than never sent, because this socket receives it through whatever the page subscribes to (a notifications feed view subscribes to the very topic notifications are broadcast on), so the only place that can decide is the one that knows about push. Unknown counts as "no push": a toast somebody did not need costs less than a notification they never saw.
+  defp without_duplicate_toast(%{notification: notification} = assigns, socket)
+       when not is_nil(notification) do
+    if push_active?(socket) do
+      debug("push works on this device, so the service worker shows this rather than a toast")
+      Map.drop(assigns, [:notification])
+    else
+      assigns
+    end
+  end
+
+  defp without_duplicate_toast(assigns, _socket), do: assigns
 
   def update(assigns, socket) do
     # debug(assigns, "assigns")
@@ -56,33 +72,108 @@ defmodule Bonfire.UI.Common.NotificationLive do
     # heavy-load banner: `Bonfire.Common.Overload` re-broadcasts a notice each tick while elevated — handled by the parent LV via LiveHandlers → assign_flash back to this component, whose natural auto-fade is the all-clear. Same i==2 gate as below so the parent LV process subscribes only once.
     if assigns[:i] == 2, do: PubSub.subscribe("bonfire:overload", socket)
 
+    # only where this device needs the in-page fallback, which the first connect knows from a cached param and the hook confirms a moment later (`push_state` below). Where push works the service worker shows the notification, so subscribing here would mean carrying a message to show a second popup nobody asked for
     subscribed? =
-      if assigns[:i] == 2 and current_user do
-        feed_id =
-          Bonfire.Common.Utils.maybe_apply(
-            Bonfire.Social.Feeds,
-            :my_feed_id,
-            [:notifications, current_user]
-          )
-
-        if feed_id do
-          debug(feed_id, "subscribed to push notifications")
-          PubSub.subscribe(feed_id, socket)
-          true
-        else
-          debug("no feed_id, not subscribing to push notifications")
-          false
-        end
+      if assigns[:i] == 2 and current_user and fallback_needed?(socket, assigns) do
+        subscribe_to_own_notifications(current_user, socket)
       else
-        debug("no current_user, not subscribing to push notifications")
+        debug("not subscribing to the notification fallback")
         false
       end
 
     {:ok,
      socket
-     |> assign(assigns)
+     |> assign(without_duplicate_toast(assigns, socket))
      |> assign(subscribed: subscribed?)
      |> maybe_apply_root_flash()}
+  end
+
+  # What this socket currently believes about push here: its hook's own report wins, and until that arrives the connect param the browser cached last time stands in. Absent from both means a first visit, which counts as no push, since a message nobody needed costs less than a notification nobody saw.
+  defp push_active?(socket, assigns \\ %{}) do
+    case e(assigns, :push_active, nil) do
+      value when is_boolean(value) ->
+        value
+
+      _ ->
+        case socket.assigns[:push_active] do
+          value when is_boolean(value) -> value
+          _ -> e(assigns(socket), :__context__, :client_push_active, nil) == true
+        end
+    end
+  end
+
+  defp fallback_needed?(socket, assigns), do: not push_active?(socket, assigns)
+
+  defp subscribe_to_own_notifications(current_user, socket) do
+    feed_id =
+      maybe_apply(Bonfire.Social.Feeds, :my_feed_id, [:notifications, current_user],
+        fallback_return: nil
+      )
+
+    if feed_id do
+      debug(feed_id, "subscribed to the notification fallback")
+      PubSub.subscribe(feed_id, socket)
+      true
+    else
+      debug("no feed_id, not subscribing to the notification fallback")
+      false
+    end
+  end
+
+  @doc """
+  What the browser knows about push on this device, so this socket can stop carrying what it does not need.
+
+  Two halves make one answer: the browser says whether it holds a subscription, and the server says whether this person is still linked to it, which a shared browser makes a different question (somebody turning push off leaves the browser's subscription in place for everyone else). Push counts as working only if both agree, and anything else leaves the fallback on.
+  """
+  def handle_event("push_state", params, socket) do
+    user = current_user(socket)
+
+    push_active? =
+      e(params, "active", false) == true and
+        maybe_apply(
+          Bonfire.Notify.WebPush,
+          :subscribed_at?,
+          [id(user), e(params, "endpoint", nil)],
+          fallback_return: false
+        ) == true
+
+    {:noreply,
+     socket
+     |> assign(push_active: push_active?)
+     |> update_fallback_subscription(push_active?, user)}
+  end
+
+  # A subscription can start or stop being needed while somebody is looking at the page: they turn push on from the settings panel, or clear site data, or another tab unsubscribes the browser. The hook announces each of those, so this follows rather than waiting for a reload.
+  defp update_fallback_subscription(socket, true, _user) do
+    if socket.assigns[:subscribed] do
+      unsubscribe_from_own_notifications(socket)
+      assign(socket, subscribed: false)
+    else
+      socket
+    end
+  end
+
+  defp update_fallback_subscription(socket, false, user) do
+    if socket.assigns[:subscribed] or is_nil(user) or socket.assigns[:i] != 2 do
+      socket
+    else
+      assign(socket, subscribed: subscribe_to_own_notifications(user, socket))
+    end
+  end
+
+  defp unsubscribe_from_own_notifications(socket) do
+    feed_id =
+      maybe_apply(
+        Bonfire.Social.Feeds,
+        :my_feed_id,
+        [:notifications, current_user(socket)],
+        fallback_return: nil
+      )
+
+    if feed_id do
+      debug(feed_id, "push works here now, so the fallback subscription goes")
+      PubSub.unsubscribe(feed_id)
+    end
   end
 
   # def show(js \\ %JS{}, selector) do

@@ -37,12 +37,18 @@ defmodule Bonfire.UI.Common.WidgetGettingStartedLive do
   Merged from config rather than listed here, so a step lives with the feature it is about. A step whose extension is disabled is not offered: with no such feature on this instance, asking somebody to go and use it would be a dead end.
   """
   def actions_registry(context \\ nil) do
+    declared_actions()
+    |> Enum.filter(fn {_key, spec} -> available?(spec, context) end)
+    |> Map.new()
+  end
+
+  # every step declared, on offer or not, which is what `configured_actions/1` needs in order to tell a step that is switched off from one nobody declared: only the first has a fallback worth using
+  defp declared_actions do
     Config.get([__MODULE__, :actions_registry], [],
       name: l("Getting-started steps"),
       description: l("Every step this instance could offer someone who joins.")
     )
     |> Enum.map(fn {key, spec} -> {key, resolve_path(spec)} end)
-    |> Enum.filter(fn {_key, spec} -> available?(spec, context) end)
     |> Map.new()
   end
 
@@ -57,12 +63,17 @@ defmodule Bonfire.UI.Common.WidgetGettingStartedLive do
 
   defp resolve_path(spec), do: spec
 
-  # two ways a step can turn out not to be on offer: its feature is switched off here, or it is a link with nowhere to go, which is what an instance leaving its destination unset means
+  # two ways a step can turn out not to be on offer: what it needs is not here, or it is a link with nowhere to go, which is what an instance leaving its destination unset means
   defp available?(spec, context) do
     feature_enabled?(e(spec, :needs, nil), context) and has_destination?(spec)
   end
 
   defp feature_enabled?(nil, _context), do: true
+
+  # `needs` is usually a module, and is a function where having the feature is not the same as having anything to show with it: an instance can run the community rules extension and have written no rules
+  defp feature_enabled?(check, _context) when is_function(check, 0), do: !!check.()
+  defp feature_enabled?(check, context) when is_function(check, 1), do: !!check.(context)
+
   defp feature_enabled?(module, context), do: module_enabled?(module, context)
 
   defp has_destination?(spec) do
@@ -72,24 +83,37 @@ defmodule Bonfire.UI.Common.WidgetGettingStartedLive do
   @doc """
   The steps this instance shows, in the order it lists them.
 
-  Every step it names is looked up in the registry, and one that is not there (because no extension declared it, or the extension that would have is disabled) is passed over.
+  Every step it names is looked up among the declared ones, and one nobody declared is passed over. A step that is declared but has nothing to offer here can name a `fallback:` step to stand in, which is used only when the instance is not already showing that one: rules an instance never wrote fall back to its code of conduct, and a flavour that lists both gets them as themselves.
   """
   def configured_actions(context \\ nil) do
-    registry = actions_registry(context)
+    declared = declared_actions()
 
-    Config.get([__MODULE__, :actions], Map.keys(registry), :bonfire_ui_common)
-    |> List.wrap()
-    |> Enum.flat_map(&normalize_action(&1, registry))
+    listed =
+      Config.get([__MODULE__, :actions], Map.keys(declared), :bonfire_ui_common)
+      |> List.wrap()
+      |> Enum.filter(&is_atom/1)
+
+    Enum.flat_map(listed, &resolve_action(&1, declared, listed, context))
   end
 
-  defp normalize_action(key, registry) when is_atom(key) do
-    case Map.fetch(registry, key) do
-      {:ok, spec} -> [Map.put(spec, :key, key)]
-      :error -> []
+  defp resolve_action(key, declared, listed, context, seen \\ []) do
+    case Map.fetch(declared, key) do
+      {:ok, spec} ->
+        cond do
+          available?(spec, context) ->
+            [Map.put(spec, :key, key)]
+
+          (fallback = e(spec, :fallback, nil)) && fallback not in listed && fallback not in seen ->
+            resolve_action(fallback, declared, listed, context, [key | seen])
+
+          true ->
+            []
+        end
+
+      :error ->
+        []
     end
   end
-
-  defp normalize_action(_key, _registry), do: []
 
   def update(assigns, socket) do
     socket = assign(socket, assigns)

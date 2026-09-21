@@ -189,6 +189,77 @@ defmodule Bonfire.UI.Common.WidgetGettingStartedTest do
       assert Enum.map(WidgetGettingStartedLive.configured_actions(), & &1.key) == [:here]
     end
 
+    test "a step whose own check says it has nothing to show is dropped, module or not" do
+      put_config(
+        actions_registry: [
+          nothing_to_show: %{title: "empty", cta_path: "/empty", needs: fn -> false end},
+          something: %{title: "full", cta_path: "/full", needs: fn -> true end}
+        ]
+      )
+
+      assert Enum.map(WidgetGettingStartedLive.configured_actions(), & &1.key) == [:something],
+             "an instance can have a feature and have put nothing in it, which its own check is what knows"
+    end
+
+    test "a step with nothing to show stands aside for the fallback it names" do
+      put_config(
+        actions_registry: [
+          rules: %{
+            title: "rules",
+            cta_path: "/rules",
+            needs: fn -> false end,
+            fallback: :conduct
+          },
+          conduct: %{title: "conduct", cta_path: "/conduct"}
+        ],
+        actions: [:rules]
+      )
+
+      assert [step] = WidgetGettingStartedLive.configured_actions()
+      assert step.key == :conduct, "the nearest thing that answers the same question"
+    end
+
+    test "the fallback stays out where the instance already shows it" do
+      put_config(
+        actions_registry: [
+          rules: %{
+            title: "rules",
+            cta_path: "/rules",
+            needs: fn -> false end,
+            fallback: :conduct
+          },
+          conduct: %{title: "conduct", cta_path: "/conduct"}
+        ],
+        actions: [:rules, :conduct]
+      )
+
+      assert Enum.map(WidgetGettingStartedLive.configured_actions(), & &1.key) == [:conduct],
+             "standing in for the missing step as well would show the same one twice"
+    end
+
+    test "a fallback with nothing to show either takes nothing further" do
+      put_config(
+        actions_registry: [
+          rules: %{
+            title: "rules",
+            cta_path: "/rules",
+            needs: fn -> false end,
+            fallback: :conduct
+          },
+          conduct: %{
+            title: "conduct",
+            cta_path: "/conduct",
+            needs: fn -> false end,
+            fallback: :rules
+          }
+        ],
+        actions: [:rules]
+      )
+
+      assert WidgetGettingStartedLive.configured_actions() == [],
+             "and two steps naming each other do not loop"
+    end
+
     test "drops anything that is not a step name" do
       put_config(
         actions_registry: [here: %{title: "here", cta_path: "/here"}],

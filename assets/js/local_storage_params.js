@@ -2,8 +2,24 @@
 // This deliberately ignores unrelated `bonfire:*` keys such as client debug flags.
 // Values are stored as { value: <any>, expires: <epoch_ms> }.
 
-const READING_POS_NAMESPACE = "reading_pos";
-const SYNC_PARAM_NAMESPACES = new Set([READING_POS_NAMESPACE]);
+// Every namespace allowed to reach the server, with what it may hold and how it travels. One entry each, because adding a namespace used to mean editing three places: the allowlist, the value check, and the shaping in `collectBonfireParams`.
+const SYNC_PARAM_NAMESPACES = {
+  // How far somebody had read in a feed, per feed name.
+  reading_pos: {
+    valid: (value) => typeof value === "string",
+    // The server keeps the furthest position, so it needs to know when this one was written.
+    shape: (stored) => ({ value: stored.value, last_touched: lastTouched(stored) }),
+  },
+  // Whether push notifications work on this device, so the first connect already knows whether this socket needs the in-page fallback. Written by the notification hook, read by `PersistentLive`.
+  // Absent means "not known yet", which the server reads as no push, since a missed notification costs more than a message nobody needed.
+  push: {
+    valid: (value) => typeof value === "boolean",
+  },
+};
+
+function namespaceSpec(namespace) {
+  return Object.hasOwn(SYNC_PARAM_NAMESPACES, namespace) ? SYNC_PARAM_NAMESPACES[namespace] : null;
+}
 
 function syncParamKey(key) {
   if (!key || !key.startsWith("bonfire:")) return null;
@@ -13,7 +29,7 @@ function syncParamKey(key) {
   if (sepIdx === -1) return null;
 
   const namespace = rest.slice(0, sepIdx);
-  if (!SYNC_PARAM_NAMESPACES.has(namespace)) return null;
+  if (!namespaceSpec(namespace)) return null;
 
   return { namespace, subkey: rest.slice(sepIdx + 1) };
 }
@@ -23,7 +39,10 @@ function validStoredValue(val, namespace, now) {
   if (!Number.isFinite(val.expires)) return false;
   if (now > val.expires) return false;
   if (val.value == null || val.value === "undefined" || val.value === "null") return false;
-  if (namespace === READING_POS_NAMESPACE && typeof val.value !== "string") return false;
+
+  const valid = namespaceSpec(namespace)?.valid;
+  if (valid && !valid(val.value)) return false;
+
   return true;
 }
 
@@ -51,8 +70,7 @@ export function setBonfireParam(namespace, key, value, ttlMs = 172800000) {
       JSON.stringify({ value, expires: now + ttlMs, last_touched: now }),
     );
   } catch (_e) {
-    // Best effort only: storage may be blocked or full, but LiveView events
-    // should still continue through the websocket.
+    // Best effort only: storage may be blocked or full, but LiveView events should still continue through the websocket.
   }
 }
 
@@ -75,10 +93,7 @@ export function getBonfireParam(namespace, key) {
 }
 
 /**
- * Evict expired/invalid entries for a namespace. Reads every matching key, so
- * call sparingly (e.g. once per page load in idle time). Needed for namespaces
- * like drafts whose keys may never be read again (eviction normally happens on
- * read), and which would otherwise outlive their TTL forever.
+ * Evict expired/invalid entries for a namespace. Reads every matching key, so call sparingly (e.g. once per page load in idle time). Needed for namespaces like drafts whose keys may never be read again (eviction normally happens on read), and which would otherwise outlive their TTL forever.
  */
 export function evictExpiredBonfireParams(namespace) {
   try {
@@ -133,10 +148,8 @@ export function collectBonfireParams() {
         continue;
       }
       params[namespace] ||= {};
-      params[namespace][subkey] =
-        namespace === READING_POS_NAMESPACE
-          ? { value: val.value, last_touched: lastTouched(val) }
-          : val.value;
+      const shape = namespaceSpec(namespace)?.shape;
+      params[namespace][subkey] = shape ? shape(val) : val.value;
     } catch {
       if (!syncKey) continue;
       try {

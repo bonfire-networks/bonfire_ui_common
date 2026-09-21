@@ -1,6 +1,7 @@
 <div
   id={"notifications-#{@i}"}
   :hook
+  phx-target={@myself}
   aria-live="assertive"
   class="app_notifications z-toast toast toast-center"
 >

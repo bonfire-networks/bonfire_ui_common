@@ -64,6 +64,10 @@ defmodule Bonfire.UI.Common.PersistentLive do
       #  |> debug("socket before assigns")
       |> assign(Map.drop(session, [:context]))
       |> assign_global((session[:context] || %{}) |> debug("persistent_context from session"))
+      # this is the LiveView the notification component lives in, and it reads its own connect params: the sticky child does not inherit the parent's context, so what the main view folded in is not here
+      |> assign_global(
+        client_push_active: Bonfire.UI.Common.Notifications.client_push_active(connect_params)
+      )
 
       #  |> assign_new(
       #    :__context__,

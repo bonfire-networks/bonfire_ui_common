@@ -7,6 +7,9 @@ const CURRENT_CACHES = [OFFLINE_CACHE, ASSETS_CACHE];
 const ASSETS_CACHE_MAX_ENTRIES = 200;
 const OFFLINE_URL = '/pwa/offline.html';
 
+// Last resort for a push that names neither a tag nor an activity, which our own server no longer sends: bucket the clock so everything arriving in the same second shares a tag. That replaces rather than stacks, so a burst of unidentifiable pushes costs one banner per second instead of one each. It is collapse, not throttling, so the newest wins and the ones it replaced are not shown.
+const UNTAGGED_COLLAPSE_SECONDS = 1;
+
 // Matches mix phx.digest fingerprinted filenames, e.g.
 // /assets/bonfire_basic-e9e9e60c06b55d4d6a2ba7cc02a8af41.css
 const DIGESTED_PATH = /-[a-f0-9]{32}\.[a-z0-9]+(\.[a-z0-9]+)*$/;
@@ -108,7 +111,9 @@ self.addEventListener('push', event => {
       icon: data.icon || '/images/bonfire-icon.png',
       badge: data.badge || '/images/bonfire-icon.png',
       data: { ...data.data, defaultUrl: '/' },
-      tag: data.tag || ('notif-' + Date.now()),
+      // What this popup replaces. A server-sent tag wins (a thread's burst collapses into one banner), otherwise the activity itself, which is also what an open page keys on, so the two never show the same activity twice. Ids come from one space in Bonfire, so an activity id cannot collide with anything else used here. The clock bucket is the last resort: as a bare `Date.now()` it made every notification unique, so nothing ever collapsed.
+      tag: data.tag || (data.data && data.data.activity_id) ||
+        ('notif-' + Math.floor(Date.now() / (UNTAGGED_COLLAPSE_SECONDS * 1000))),
       requireInteraction: data.requireInteraction || false,
       actions: data.actions || [],
       silent: false,
