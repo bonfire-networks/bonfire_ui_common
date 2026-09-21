@@ -12,6 +12,9 @@ defmodule Bonfire.UI.Common.SettingsSelectLive do
   prop label, :string, default: nil
   prop label_name, :string, default: nil
 
+  @doc "Places the control beneath its description for settings displayed in a panel grid."
+  prop stacked, :boolean, default: false
+
   prop current_value, :any, default: :load_from_settings
   prop input, :string, default: nil
 

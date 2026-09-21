@@ -218,8 +218,11 @@
               sticky
               container={{:div, class: "block w-full lg:shrink-0"}}
               session={%{
+                "page" => @page,
+                "selected_tab" => @selected_tab,
                 "context" => %{
                   sticky: true,
+                  current_url: current_url(@__context__),
                   initial_parent_pid: self(),
                   csrf_token: @csrf_token,
                   # csrf_socket_token: @__context__[:csrf_socket_token],
