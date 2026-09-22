@@ -471,4 +471,15 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
       PhoenixTest.open_browser(session)
       reraise e, __STACKTRACE__
   end
+
+  @doc """
+  Writes the page as it stands to a file, and returns the session so a pipeline carries on.
+
+  For working out why a selector matched nothing: `open_browser/1` wants a display and leaves nothing behind to grep, while a file on disk can be searched by the next command. Drop the call once the answer is in hand.
+  """
+  def save_page_html(session, path \\ "/tmp/bonfire-test-page.html") do
+    # what the driver hands back is parsed rather than a string, and it is the parsed form the assertions search, so this writes the same thing they see
+    File.write!(path, PhoenixTest.Html.raw(PhoenixTest.Driver.render_html(session)))
+    session
+  end
 end
