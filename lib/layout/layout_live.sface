@@ -333,7 +333,7 @@
             <StatefulComponent
               id="dock-messages-badge"
               module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
-              feed_id={e(current_user(@__context__), :character, :messages_id, nil)}
+              feed_id={e(current_user(@__context__), :character, :inbox_id, nil)}
             />
           </span>
         </span>

@@ -89,6 +89,7 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
         :input -> Bonfire.UI.Common.SettingsInputLive
         :textarea -> Bonfire.UI.Common.SettingsTextareaLive
         :number -> Bonfire.UI.Common.Settings.NumberLive
+        :list -> Bonfire.UI.Common.SettingsListLive
         custom_module -> custom_module
       end
 

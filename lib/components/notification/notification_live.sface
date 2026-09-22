@@ -37,7 +37,7 @@
       data-id="notification"
       :if={@notification}
       role="alert"
-      class="w-full max-w-md pointer-events-auto overflow-hidden transition-interactive rounded border border-secondary alert flash"
+      class="w-auto max-w-md pointer-events-auto overflow-hidden transition-interactive rounded border border-secondary alert flash"
     >
       <div class="p-4">
         <div class="flex items-start">
@@ -46,16 +46,18 @@
               {#match icon when is_binary(icon)}
                 <img src={icon} class="w-10 h-10 rounded">
               {#match _}
-                <#Icon outline="Speakerphone" class="w-5 h-5 text-info-content" />
+                <#Icon outline="Speakerphone" class="w-5 h-5 text-info" />
             {/case}
           </div>
-          <div class="ml-3 w-0 flex-1 pt-0.5">
-            <p class="text-sm font-medium text-info-content">{e(@notification, :title, "Notification")}</p>
-            <div data-id="flash" data-type="notification" class="text-sm text-info-content/80">{rich(e(@notification, :message, ""))}</div>
+          {!-- `min-w-0` rather than `w-0`: inside a `max-content` toast a zero basis collapses the card to a sliver, while this lets a short message stay short and a long one grow to the card's max --}
+          <div class="ml-3 min-w-0 flex-1 pt-0.5">
+            {!-- `*-content` colours are for text on a filled surface of that colour, and this card sits on the base surface, so they read as dark on dark --}
+            <p class="text-sm font-medium text-base-content">{e(@notification, :title, "Notification")}</p>
+            <div data-id="flash" data-type="notification" class="text-sm text-base-content/80">{rich(e(@notification, :message, ""))}</div>
             <LinkLive
               :if={e(@notification, :url, nil)}
               to={e(@notification, :url, nil)}
-              class="text-sm ml-4 capitalize !text-info-content link"
+              class="text-sm ml-4 capitalize link link-hover text-primary"
             >
               {l("Show")}
             </LinkLive>

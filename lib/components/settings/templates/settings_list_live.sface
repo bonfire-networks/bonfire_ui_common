@@ -1,0 +1,46 @@
+<div id={@id} class="form-control">
+  <fieldset :if={@name || @description} class="fieldset">
+    <legend :if={@name} class="text-sm font-medium text-base-content">{@name}</legend>
+    <p :if={@description} class="text-muted text-sm text-pretty">{@description}</p>
+  </fieldset>
+
+  <div class="mt-3">
+    <form phx-submit="add_item" phx-target={@myself} class="flex gap-2 items-end">
+      <input
+        type="text"
+        name="item"
+        placeholder={@placeholder || l("Add...")}
+        class="input input-bordered input-sm flex-1 max-w-xs"
+        aria-label={@name || l("New item")}
+        autocomplete="off"
+      />
+      <button type="submit" class="btn btn-sm btn-primary">
+        {l("Add")}
+      </button>
+    </form>
+
+    <p :if={@allow_bulk_paste} class="text-muted text-xs mt-1">
+      {l("Tip: you can copy/paste a list of them here, separated by commas.")}
+    </p>
+
+    {#if @items != []}
+      <ul class="flex flex-wrap gap-2 mt-3">
+        {#for {item, idx} <- Enum.with_index(@items)}
+          <li id={"settings-list-item-#{idx}"} class="badge badge-lg gap-2 bg-base-200/50 pr-1">
+            <span class="text-sm">{item}</span>
+            <button
+              type="button"
+              phx-click="remove_item"
+              phx-value-index={idx}
+              phx-target={@myself}
+              class="btn btn-sm btn-ghost btn-circle text-error/70 hover:text-error"
+              aria-label={l("Remove: %{item}", item: item)}
+            >
+              <#Icon iconify="ph:x-duotone" class="size-4" />
+            </button>
+          </li>
+        {/for}
+      </ul>
+    {/if}
+  </div>
+</div>

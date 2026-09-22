@@ -514,8 +514,10 @@ textarea:focus-visible {
   outline: none;
 }
 
-/* Safelist: Ensure these utility classes are always generated */
-@source inline("tabular-nums phx-click-loading:opacity-60 phx-click-loading:opacity-70 phx-click-loading:pointer-events-none phx-click-loading:cursor-wait phx-click-loading:inline phx-click-loading:hidden phx-submit-loading:opacity-70 phx-submit-loading:cursor-wait phx-submit-loading:inline phx-submit-loading:hidden transition-interactive focus-ring touch-target-expanded tap-feedback hover-scale active:scale-[0.97] active:scale-[0.98] bg-red-400 bg-orange-400 bg-amber-400 bg-yellow-400 bg-lime-400 bg-green-400 bg-emerald-400 bg-teal-400 bg-cyan-400 bg-sky-400 bg-blue-400 bg-indigo-400 bg-violet-400 bg-purple-400 bg-fuchsia-400 bg-pink-400");
+/* Safelist: Ensure these utility classes are always generated.
+   `fill-info` is the boost icon's colour, declared by a notification category and used in no
+   template, and Tailwind never reads config. */
+@source inline("fill-info tabular-nums phx-click-loading:opacity-60 phx-click-loading:opacity-70 phx-click-loading:pointer-events-none phx-click-loading:cursor-wait phx-click-loading:inline phx-click-loading:hidden phx-submit-loading:opacity-70 phx-submit-loading:cursor-wait phx-submit-loading:inline phx-submit-loading:hidden transition-interactive focus-ring touch-target-expanded tap-feedback hover-scale active:scale-[0.97] active:scale-[0.98] bg-red-400 bg-orange-400 bg-amber-400 bg-yellow-400 bg-lime-400 bg-green-400 bg-emerald-400 bg-teal-400 bg-cyan-400 bg-sky-400 bg-blue-400 bg-indigo-400 bg-violet-400 bg-purple-400 bg-fuchsia-400 bg-pink-400");
 
 /* Source paths for template scanning.
    NOTE: Tailwind v4 respects .gitignore when expanding wildcards.

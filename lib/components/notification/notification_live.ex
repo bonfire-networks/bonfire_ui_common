@@ -74,7 +74,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
 
     # only where this device needs the in-page fallback, which the first connect knows from a cached param and the hook confirms a moment later (`push_state` below). Where push works the service worker shows the notification, so subscribing here would mean carrying a message to show a second popup nobody asked for
     subscribed? =
-      if assigns[:i] == 2 and current_user and fallback_needed?(socket, assigns) do
+      if assigns[:i] == 2 and not is_nil(current_user) and fallback_needed?(socket, assigns) do
         subscribe_to_own_notifications(current_user, socket)
       else
         debug("not subscribing to the notification fallback")
