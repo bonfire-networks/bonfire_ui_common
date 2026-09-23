@@ -12,7 +12,7 @@
         class="rounded btn btn-square btn-sm btn-ghost"
         x-show="open"
       >
-        <#Icon iconify="ph:caret-up-fill" class="w-4 h-4 text-muted" />
+        <#Icon iconify="carbon:chevron-up-fill" class="w-4 h-4 text-muted" />
       </button>
       <button
         x-on:click="open = !open"
@@ -21,7 +21,7 @@
         class="rounded btn btn-square btn-sm btn-ghost"
         x-show="!open"
       >
-        <#Icon iconify="ph:caret-down-bold" class="w-4 h-4 text-muted" />
+        <#Icon iconify="carbon:chevron-down-bold" class="w-4 h-4 text-muted" />
       </button>
     </div>
     <div x-show="open" x-collapse>

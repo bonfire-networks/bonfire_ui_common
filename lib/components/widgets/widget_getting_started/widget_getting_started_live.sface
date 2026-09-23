@@ -55,7 +55,7 @@
                 disabled={@total_count <= 1}
                 class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer"
               >
-                <#Icon iconify="ph:caret-left-bold" class="size-4" />
+                <#Icon iconify="carbon:chevron-left-bold" class="size-4" />
               </button>
               <span
                 class="flex-1 text-center type-caption uppercase tracking-[0.12em]"
@@ -71,7 +71,7 @@
                 disabled={@total_count <= 1}
                 class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer"
               >
-                <#Icon iconify="ph:caret-right-bold" class="size-4" />
+                <#Icon iconify="carbon:chevron-right-bold" class="size-4" />
               </button>
               <button
                 type="button"

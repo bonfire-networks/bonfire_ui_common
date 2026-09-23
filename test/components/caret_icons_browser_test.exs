@@ -47,7 +47,7 @@ defmodule Bonfire.UI.Common.CaretIconsBrowserTest do
         document.documentElement.dataset.iconWeight = theme;
         for (const direction of ['right', 'left', 'down', 'up']) {
           for (const weight of ['', 'fill', 'duotone', 'bold', 'light', 'thin']) {
-            icon.setAttribute('iconify', `ph:caret-${direction}${weight ? '-' + weight : ''}`);
+            icon.setAttribute('iconify', `carbon:chevron-${direction}${weight ? '-' + weight : ''}`);
             const mask = getComputedStyle(icon).maskImage;
             const data = mask.match(/^url\(["']?data:image\/svg\+xml[^,]*,(.*?)["']?\)$/);
             results.push([theme, direction, weight, data ? decodeURIComponent(data[1]) : mask]);

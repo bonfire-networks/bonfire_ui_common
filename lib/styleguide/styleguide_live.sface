@@ -375,14 +375,14 @@
             type="button"
             class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0"
           >
-            <#Icon iconify="ph:caret-left-bold" class="w-3 h-[13px]" />
+            <#Icon iconify="carbon:chevron-left-bold" class="w-3 h-[13px]" />
           </button>
           <span class="flex-1 type-caption tracking-[0.12em] uppercase font-medium text-center">Schritt 1 von 5</span>
           <button
             type="button"
             class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0"
           >
-            <#Icon iconify="ph:caret-right-bold" class="w-3 h-[13px]" />
+            <#Icon iconify="carbon:chevron-right-bold" class="w-3 h-[13px]" />
           </button>
         </div>
         <div class="flex gap-1.5 my-4">
