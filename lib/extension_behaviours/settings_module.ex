@@ -49,7 +49,7 @@ defmodule Bonfire.UI.Common.SettingsModule do
   # end
 
   def nav_function_error(error, _args) do
-    warn(
+    notice(
       error,
       "SettingsModule - there's no settings module declared for this"
     )

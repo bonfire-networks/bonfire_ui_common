@@ -12,7 +12,7 @@
       "md:btn-wide": !@page_header
     }
     parent_id="guest_actions"
-  >{l("Log in")}</LinkLive> -->
+  >{l("Sign in")}</LinkLive> -->
 
   <Dropdown
     id="guest_actions_dropdown"
@@ -28,7 +28,7 @@
       />
     </:trigger>
 
-    <li><LinkLive to={path(:login, :index)}>{l("Log in")}</LinkLive></li>
+    <li><LinkLive to={path(:login, :index)}>{l("Sign in")}</LinkLive></li>
     <li :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}><LinkLive to={path(:signup)}>{l("Sign up")}</LinkLive></li>
     <li><LinkLive to="/about" class="text-base-content" parent_id="guest_actions">{l("About")}</LinkLive></li>
     <li><LinkLive class="text-base-content" to="/conduct" parent_id="guest_actions">{l("Code of conduct")}</LinkLive></li>

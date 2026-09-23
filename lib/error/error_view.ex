@@ -57,6 +57,10 @@ defmodule Bonfire.UI.Common.ErrorView do
     """
   end
 
+  def render("401.html", assigns) do
+    show_error(401, reason(assigns) || l("Please sign in and try again."), true)
+  end
+
   def render("500.html", assigns) do
     debug(assigns)
 
@@ -117,16 +121,6 @@ defmodule Bonfire.UI.Common.ErrorView do
     json_error(500, reason(assigns) || l("Please try again or contact the instance admins."))
   end
 
-  # Return a map for JSON responses - Phoenix will encode it
-  defp json_error(http_code, details) do
-    {codename, msg} = Bonfire.Fail.get_error_tuple(http_code) || {nil, "Error #{http_code}"}
-
-    %{
-      "error" => msg || "Error",
-      "error_description" => details
-    }
-  end
-
   def render(:app, assigns) do
     render("app.html", assigns)
   end
@@ -152,6 +146,16 @@ defmodule Bonfire.UI.Common.ErrorView do
       true ->
         render("app.html", assigns)
     end
+  end
+
+  # Return a map for JSON responses - Phoenix will encode it
+  defp json_error(http_code, details) do
+    {codename, msg} = Bonfire.Fail.get_error_tuple(http_code) || {nil, "Error #{http_code}"}
+
+    %{
+      "error" => msg || "Error",
+      "error_description" => details
+    }
   end
 
   defp show_error(error_or_error_code, details, as_html?, _extra_html \\ nil) do

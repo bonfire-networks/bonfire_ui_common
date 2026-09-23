@@ -127,7 +127,7 @@
               <div>
                 <div class="flex flex-col gap-2 pb-2">
                   <div :if={!@current_user_id} class="flex flex-col gap-2 p-card">
-                    <LinkLive to={path(:login, :index)} class="btn btn-ds-outline" parent_id="layout">{l("Log in")}</LinkLive>
+                    <LinkLive to={path(:login, :index)} class="btn btn-ds-outline" parent_id="layout">{l("Sign in")}</LinkLive>
 
                     {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
                       <LinkLive to={path(:signup)} class="btn btn-primary" parent_id="layout">{l("Create account")}</LinkLive>
@@ -365,7 +365,7 @@
             to={path(:login, :index)}
             class="btn btn-soft min-h-11 h-11 shrink-0 px-4 whitespace-nowrap"
           >
-            <span>{l("Log in")}</span>
+            <span>{l("Sign in")}</span>
           </LinkLive>
         {/if}
       </div>

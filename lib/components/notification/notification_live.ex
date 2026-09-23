@@ -26,7 +26,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
     # debug("mounting")
     # need this if included in a non-Surface view/component which doesn't set Surface prop defaults
     {:ok,
-     (maybe_apply(Bonfire.Notify.LiveHandler, :mount, [socket], fallback_return: nil) || socket)
+     socket
      |> assign(
        root_flash: nil,
        notification: nil,
