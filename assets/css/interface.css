@@ -129,9 +129,12 @@ html:not([data-ui-preset="typographic"]) [data-theme] {
       oklch(70% 0.09 155 / 0.07),
       oklch(68% 0.08 155 / 0.09)
     );
+    /* Dark steps are larger because the dark canvas is near-black (16% L):
+       a 3% ink mix there lifts barely 1.5% L and widgets vanish into the
+       page. 6% / 9% gives cards a clear but quiet plane, like Bluesky's. */
     --stream-surface: light-dark(
       color-mix(in oklab, var(--color-base-content) 2%, var(--color-base-100)),
-      color-mix(in oklab, var(--color-base-content) 3%, var(--color-base-100))
+      color-mix(in oklab, var(--color-base-content) 6%, var(--color-base-100))
     );
     --stream-raised: light-dark(
       color-mix(
@@ -139,7 +142,16 @@ html:not([data-ui-preset="typographic"]) [data-theme] {
         var(--color-base-content) 3.5%,
         var(--color-base-100)
       ),
-      color-mix(in oklab, var(--color-base-content) 6%, var(--color-base-100))
+      color-mix(in oklab, var(--color-base-content) 9%, var(--color-base-100))
+    );
+    /* Keep borderless inputs (search) a step above the widget cards. */
+    --stream-fill: light-dark(
+      color-mix(in oklab, var(--color-base-content) 6%, var(--color-base-100)),
+      color-mix(in oklab, var(--color-base-content) 9%, var(--color-base-100))
+    );
+    --stream-fill-hover: light-dark(
+      color-mix(in oklab, var(--color-base-content) 9%, var(--color-base-100)),
+      color-mix(in oklab, var(--color-base-content) 12%, var(--color-base-100))
     );
   }
 }
