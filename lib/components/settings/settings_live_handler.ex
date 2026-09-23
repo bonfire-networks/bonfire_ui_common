@@ -17,6 +17,24 @@ defmodule Bonfire.Common.Settings.LiveHandler do
   end
 
   @doc """
+  Removes a setting, so whatever it defaults to applies again: the counterpart of `put`, with `keys` the same `"a:b:c"` string.
+
+  What a "Default" choice sends (`SettingsToggleThroupleLive`'s middle segment), since storing a blank would be a value of its own rather than no choice. Keys are read as existing atoms, since that is what a setting is stored under.
+  """
+  def handle_event("delete", %{"keys" => keys} = params, socket) do
+    with {:ok, settings} <-
+           keys
+           |> String.split(":")
+           |> Enum.map(&Types.maybe_to_atom!/1)
+           |> Bonfire.Common.Settings.delete(scope: params["scope"], socket: socket) do
+      {:noreply,
+       socket
+       |> maybe_assign_context(settings)
+       |> assign_flash(:info, l("Settings saved"))}
+    end
+  end
+
+  @doc """
   Put a calm-settings consumer (see `Bonfire.Common.Settings.Calm`) back to its defaults: drop the admin's saved preset/toggles/knobs and undo whatever those had projected onto the running system.
 
   The module arrives as a form param, so it is resolved to an EXISTING module and then required to implement the Calm behaviour and expose `reset_to_defaults/0`, as a param can never name something arbitrary to call. Instance settings are admin-only, so it checks that too rather than relying on the page's admin gate alone.
@@ -59,6 +77,8 @@ defmodule Bonfire.Common.Settings.LiveHandler do
     with {:ok, settings} <-
            Map.drop(attrs, ["_target"])
            |> drop_unused_form_keys()
+           # a control that saves on click (`SettingsToggleThroupleLive`) sends its input name as one flat key, which `Settings.set/2` would drop as unknown
+           |> Enums.as_form_params()
            |> Map.put("scope", e(attrs, "scope", nil) || e(assigns(socket), :scope, nil))
            |> Bonfire.Common.Settings.set(socket: socket) do
       # debug(settings, "settings saved")

@@ -9,49 +9,59 @@
       </div>
       <div class="flex-1 flex items-center justify-end">
         <div class="border text-xs font-medium p-0.5 flex items-center gap-0.5 border-secondary rounded-xl">
-          <button
-            data-id="enabled"
-            data-value={"#{@input}_#{@current_value}"}
-            class={
-              "px-2 py-1.5 sm:px-1.5 sm:py-0.5 text-base-content rounded-lg hover:bg-base-content/10 transition-colors duration-100 text-xs",
-              "active bg-success hover:bg-success text-success-content": @current_value == @enabled_value
-            }
-            phx-click={@event_name}
-            phx-value-scope={@scope}
-            phx-target={@event_target}
-            {...@phx_values_enabled}
-          >
-            <#Icon :if={@with_icons} solid="Check" class="w-3 h-3" />
-            <span class={"sr-only": @with_icons}>{@label_yes || l("Yes")}</span>
-          </button>
-          <button
-            data-id="default"
-            class={
-              "px-2 py-1.5 sm:px-1.5 sm:py-0.5 text-base-content rounded-lg hover:bg-base-content/10 transition-colors duration-100 text-xs",
-              "active bg-base-300 hover:bg-base-300 text-base-content": is_nil(@current_value)
-            }
-            phx-click={@event_name}
-            phx-value-scope={@scope}
-            phx-target={@event_target}
-            {...@phx_values_default}
-          >
-            <#Icon :if={@with_icons} iconify="bi:dot" class="w-3 h-3" />
-            <span class={"sr-only": @with_icons}>{@label_default || l("Default")}</span>
-          </button>
-          <button
-            data-id="disabled"
-            class={
-              "px-2 py-1.5 sm:px-1.5 sm:py-0.5 text-base-content rounded-lg hover:bg-base-content/10 transition-colors duration-100 text-xs",
-              "active bg-error hover:bg-error text-error-content": @current_value == @disabled_value
-            }
-            phx-click={@event_name}
-            phx-value-scope={@scope}
-            phx-target={@event_target}
-            {...@phx_values_disabled}
-          >
-            <#Icon :if={@with_icons} solid="X" class="w-3 h-3" />
-            <span class={"sr-only": @with_icons}>{@label_no || l("No")}</span>
-          </button>
+          {#for segment <- segments(@reversed)}
+            {#case segment}
+              {#match :enabled}
+                <button
+                  data-id="enabled"
+                  data-value={"#{@input}_#{@current_value}"}
+                  class={
+                    "px-2 py-1.5 sm:px-1.5 sm:py-0.5 text-base-content rounded-lg hover:bg-base-content/10 transition-colors duration-100 text-xs",
+                    "active bg-success hover:bg-success text-success-content": @current_value == @enabled_value
+                  }
+                  phx-click={@event_name}
+                  phx-value-scope={@scope}
+                  phx-target={@event_target}
+                  {...@phx_values_enabled}
+                >
+                  <#Icon :if={@with_icons} solid="Check" class="w-3 h-3" />
+                  <span class={"sr-only": @with_icons}>{@label_yes || l("Yes")}</span>
+                </button>
+              {#match :default}
+                <button
+                  data-id="default"
+                  class={
+                    "px-2 py-1.5 sm:px-1.5 sm:py-0.5 text-base-content rounded-lg hover:bg-base-content/10 transition-colors duration-100 text-xs",
+                    "active bg-base-300 hover:bg-base-300 text-base-content": is_nil(@current_value)
+                  }
+                  phx-click={@unset_event_name || @event_name}
+                  phx-value-scope={@scope}
+                  phx-target={@event_target}
+                  {...if(@unset_event_name,
+                    do: %{"phx-value-keys" => Enum.join(List.wrap(@keys), ":")},
+                    else: @phx_values_default
+                  )}
+                >
+                  <#Icon :if={@with_icons} iconify="bi:dot" class="w-3 h-3" />
+                  <span class={"sr-only": @with_icons}>{@label_default || l("Default")}</span>
+                </button>
+              {#match :disabled}
+                <button
+                  data-id="disabled"
+                  class={
+                    "px-2 py-1.5 sm:px-1.5 sm:py-0.5 text-base-content rounded-lg hover:bg-base-content/10 transition-colors duration-100 text-xs",
+                    "active bg-error hover:bg-error text-error-content": @current_value == @disabled_value
+                  }
+                  phx-click={@event_name}
+                  phx-value-scope={@scope}
+                  phx-target={@event_target}
+                  {...@phx_values_disabled}
+                >
+                  <#Icon :if={@with_icons} solid="X" class="w-3 h-3" />
+                  <span class={"sr-only": @with_icons}>{@label_no || l("No")}</span>
+                </button>
+            {/case}
+          {/for}
         </div>
       </div>
     </div>

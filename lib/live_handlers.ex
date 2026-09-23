@@ -203,12 +203,13 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   def handle_info({:persistent_live_context_request, child_pid}, socket, _, _) do
     debug("child LV asked to send our context to it")
 
-    LivePlugs.maybe_send_persistent_assigns(
-      [__context__: Enum.into(assigns(socket)[:__context__] || %{}, %{child_pid: child_pid})],
-      socket
-    )
+    # `Map.put/3` so the pid just announced wins: this page may already hold one, from a child that has since restarted
+    context = Map.put(assigns(socket)[:__context__] || %{}, :child_pid, child_pid)
 
-    {:noreply, socket}
+    LivePlugs.maybe_send_persistent_assigns([__context__: context], socket)
+
+    # kept in our own context too, so what this page sends the child goes to it directly (`PersistentLive.maybe_send/2`'s `child_pid` route) rather than by a Presence lookup of the session token, which a session without one, such as a LiveViewTest session, cannot make at all
+    {:noreply, assign(socket, :__context__, context)}
   end
 
   def handle_info(blob, socket, source_module, fun) do

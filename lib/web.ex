@@ -843,10 +843,11 @@ defmodule Bonfire.UI.Common.Web do
               %{__context__: %{current_params: %{"_email_format" => format}}} ->
                 mod = unquote(env.module)
 
+                # inside a bare layout: a component's MJML is made of its children's, each with its own `<mjml>` root, which only parses once a layout gives them one document. Bare rather than the layout an email is sent with, whose header would repeat on every row of a feed
                 case Bonfire.Common.Utils.maybe_apply(
                        Bonfire.Mailer.Render,
                        :render_templated,
-                       [format, mod, assigns],
+                       [format, mod, assigns, nil, Bonfire.UI.Common.Email.Bare],
                        fallback_return: nil
                      ) do
                   binary when is_binary(binary) and binary != "" ->

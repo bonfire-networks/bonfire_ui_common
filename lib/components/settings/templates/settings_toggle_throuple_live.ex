@@ -14,9 +14,21 @@ defmodule Bonfire.UI.Common.SettingsToggleThroupleLive do
   prop input, :string, default: nil
   prop with_icons, :boolean, default: false
 
+  @doc "What each segment says, for a choice that is not yes/default/no"
+  prop label_yes, :string, default: nil
+  prop label_default, :string, default: nil
+  prop label_no, :string, default: nil
+
+  @doc "Shows the segments as no, default, yes. Reordered in the markup rather than by CSS, so keyboard focus moves the way the segments read"
+  prop reversed, :boolean, default: false
+
   prop phx_values, :map, default: %{}
 
-  prop event_name, :string, required: true
+  @doc "What the yes and no segments send"
+  prop event_name, :string, default: "Bonfire.Common.Settings:set"
+
+  @doc "What the middle segment sends, given the `keys`: removing the setting, so whatever applies without a choice applies again, rather than storing a blank that would count as a choice. Pass `nil` to have it send `event_name` with `default_value` instead"
+  prop unset_event_name, :string, default: "Bonfire.Common.Settings:delete"
   prop event_target, :string, default: nil
 
   def render(assigns) do
@@ -25,6 +37,10 @@ defmodule Bonfire.UI.Common.SettingsToggleThroupleLive do
     |> maybe_assign_phx_values()
     |> render_sface()
   end
+
+  @doc "The segments in the order they are shown"
+  def segments(true), do: [:disabled, :default, :enabled]
+  def segments(_), do: [:enabled, :default, :disabled]
 
   def maybe_assign_phx_values(assigns) do
     input_name = assigns[:input]

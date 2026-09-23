@@ -228,7 +228,8 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
       _ ->
         cond do
-          child_pid = e(context, :child_pid, nil) ->
+          # only a LIVE pid: a `send/2` to a dead one fails silently and would drop what the presence route below still delivers
+          child_pid = live_child_pid(context) ->
             debug(child_pid, "send to PersistentLive liveview process with child_pid")
 
             send(child_pid, {:assign_persistent_self, assigns})
@@ -256,6 +257,14 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
             nil
         end
+    end
+  end
+
+  # the page and its sticky child are two LiveView processes of one socket, so on the same node, and `Process.alive?/1` answers truthfully for the pid
+  defp live_child_pid(context) do
+    case e(context, :child_pid, nil) do
+      pid when is_pid(pid) -> if Process.alive?(pid), do: pid
+      _ -> nil
     end
   end
 

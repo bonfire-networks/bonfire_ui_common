@@ -194,6 +194,35 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   end
 
   @doc """
+  The LiveView the composer lives in: the sticky `PersistentLive` child where the page has one, else the page itself.
+
+  Read or submit the composer through this rather than the page. A Reply press reaches the composer as a message to that child (`PersistentLive.maybe_send/2`), and `render/1` on the child is a synchronous call, so the message is handled before the read. The page's copy can still show the composer's unopened defaults.
+  """
+  def composer_view(%Phoenix.LiveViewTest.View{} = view),
+    do: find_live_child(view, "persistent") || view
+
+  @doc """
+  Submits the composer with `content`, as pressing Post would.
+
+  The fields the composer already holds are sent along, so this finishes whatever the page set up, such as a Reply press's `reply_to`, `context_id` and boundaries. `extra_params` adds or overrides fields, e.g. `%{"context_id" => group_id}` to post into a group from a page that sets none.
+
+  Takes a `PhoenixTest` session, returning the session, or a `LiveViewTest` view, returning the render result. `PhoenixTest` cannot fill the body itself, since the editor fills a hidden input from JS.
+  """
+  def submit_composer(session_or_view, content, extra_params \\ %{})
+
+  def submit_composer(%Phoenix.LiveViewTest.View{} = view, content, extra_params) do
+    view
+    |> composer_view()
+    |> element("#smart_input_form")
+    |> render_submit(
+      Map.merge(%{"post" => %{"post_content" => %{"html_body" => content}}}, extra_params)
+    )
+  end
+
+  def submit_composer(session, content, extra_params),
+    do: PhoenixTest.unwrap(session, &submit_composer(&1, content, extra_params))
+
+  @doc """
   The current assigns of a LiveView, given a `PhoenixTest` session, a `LiveViewTest` view, or a pid.
 
   For working out why a test sees what it sees; assert on rendered output rather than on assigns.
