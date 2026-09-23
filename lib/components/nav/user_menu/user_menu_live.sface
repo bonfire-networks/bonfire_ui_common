@@ -5,6 +5,9 @@
   panel_class="!w-72 max-w-[calc(100vw-2rem)]"
   trigger_class="focus-ring group flex w-full cursor-pointer items-center gap-3 py-2 text-left transition hover:bg-base-content/5 focus:bg-base-content/5 px-3 pb-safe pt-4 lg:px-[20px] border-t-(length:--user-menu-divider) border-(color:--divider-color) lg:pb-base"
   label={l("User menu")}
+  trigger_opts={if module_enabled?(Bonfire.UI.Me.SwitchUserMenuItemsLive, @__context__),
+    do: ["phx-click": JS.push("load", target: "#switch_user_menu_items")],
+    else: []}
 >
   <:trigger>
     <div class="shrink-0">

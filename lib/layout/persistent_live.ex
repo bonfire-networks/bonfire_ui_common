@@ -473,7 +473,6 @@ defmodule Bonfire.UI.Common.PersistentLive do
       socket
       |> assign(assigns)
       |> assign_global(Map.drop(context, @composer_state_context_keys))
-      |> assign_account_users()
       |> assign_persistent_locale(assigns, context)
 
     # When smart_input_opts changes via page navigation, sync context_id from it
@@ -553,26 +552,5 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
   defp assign_persistent_locale(socket, locale_or_locales) do
     Bonfire.UI.Common.LivePlugs.Locale.assign_put_locale(locale_or_locales, socket)
-  end
-
-  defp assign_account_users(socket) do
-    # || if Config.env() == :test, do: Bonfire.UI.Me.LivePlugs.LoadCurrentUser.get_current( current_user_id(socket),   assigns(socket)[:current_account_id])
-    current_user = current_user(socket)
-
-    current_account_users =
-      assigns(socket)[:current_account_users] ||
-        if is_struct(current_user) do
-          if Settings.get([Bonfire.Me.Users, :show_switch_users_inline], false,
-               current_user: current_user
-             ) do
-            if account = assigns(socket)[:current_account] || assigns(socket)[:current_account_id] do
-              Bonfire.Me.Users.by_account(account)
-            end
-          end || :skip
-        end
-
-    socket
-    # |> assign_global(:current_user, current_user)
-    |> assign_global(:current_account_users, current_account_users)
   end
 end

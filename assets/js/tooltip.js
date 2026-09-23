@@ -123,9 +123,10 @@ TooltipHooks.Tooltip = {
 				// For emoji picker, just do a one-time position update
 				updatePosition();
 			} else if (!this.cleanup) {
-				// For regular tooltips, use autoUpdate without elementResize
+				// For regular tooltips, also reposition when the panel resizes, so content
+				// loaded after opening (e.g. the user menu's profile switcher) can't push it off-screen
 				this.cleanup = autoUpdate(button, tooltip, updatePosition, {
-					elementResize: false,
+					elementResize: true,
 					ancestorScroll: true,
 					ancestorResize: true
 				});
