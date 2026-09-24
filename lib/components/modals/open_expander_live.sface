@@ -13,7 +13,7 @@
       <#slot {@open_btn, show: show}>
         <span class="flex-1 text-left">{@open_btn_text}</span>
       </#slot>
-      <#Icon iconify="carbon:chevron-right-bold" class={[@caret_class, show && "rotate-90"]} />
+      <#Icon iconify="carbon:chevron-right" class={[@caret_class, show && "rotate-90"]} />
     </div>
   </:open_btn>
 </Bonfire.UI.Common.OpenModalLive>

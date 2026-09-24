@@ -1068,7 +1068,6 @@ html:not([data-ui-preset="typographic"])
 }
 
 html [data-id="profile_hero"] [data-id="hero_background"] {
-  height: auto;
   aspect-ratio: 3 / 1;
   @apply mb-2
 }

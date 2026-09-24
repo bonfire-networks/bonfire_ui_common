@@ -5,7 +5,7 @@
     label={l("Go back to the previous page")}
     class={@class}
   >
-    <#Icon iconify="carbon:chevron-left" class="w-4 h-4" />
+    <Iconify.iconify icon={@icon} class={@icon_class} />
   </button>
 {#elseif is_binary(@back)}
   <LinkLive
@@ -14,7 +14,7 @@
     class={@class}
     parent_id="back_button"
   >
-    <#Icon iconify="carbon:chevron-left" class="w-4 h-4" />
+    <Iconify.iconify icon={@icon} class={@icon_class} />
   </LinkLive>
 {#elseif @back && is_binary(e(@__context__, :last_path, nil))}
   {!-- An in-app previous page exists (per Phoenix's `_live_referer`). Use
@@ -27,10 +27,10 @@
     class={@class}
     onclick="history.back()"
   >
-    <#Icon iconify="carbon:chevron-left" class="w-4 h-4" />
+    <Iconify.iconify icon={@icon} class={@icon_class} />
   </button>
 {#elseif @back}
   <LinkLive to="/" label={l("Go back to the previous page")} class={@class} parent_id="back_button">
-    <#Icon iconify="carbon:chevron-left" class="w-4 h-4" />
+    <Iconify.iconify icon={@icon} class={@icon_class} />
   </LinkLive>
 {/if}
