@@ -10,6 +10,7 @@ defmodule Bonfire.UI.Common.PageHeaderLive do
   prop page_header_icon, :string, default: nil
   prop extra, :string, default: nil
   prop show_right_actions, :boolean, default: true
+  prop show_widgets_toggle, :boolean, default: true
   prop showing_within, :atom, default: nil
 
   slot default

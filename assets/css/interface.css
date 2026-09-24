@@ -1095,3 +1095,72 @@ html:not([data-ui-preset="typographic"]) .widget-moderator-profile [data-id="pro
   font-size: var(--text-sm);
   line-height: 1.4;
 }
+
+/* The expanded panel shares Stream's surface; nested push controls stay flat. */
+#notification-preferences-panel {
+  background: var(--stream-surface, var(--color-base-100));
+}
+
+#notification-preferences-panel .notification-push-offer {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  min-height: 64px;
+}
+
+#notification-preferences-panel .notification-push-offer > div,
+#notification-preferences-panel .notification-push-device > div {
+  min-width: 0;
+}
+
+#notification-preferences-panel .notification-push-offer > div > span,
+#notification-preferences-panel .notification-push-device > div > span {
+  flex-shrink: 0;
+}
+
+
+#notification-preferences-panel .notification-push-device-list > p {
+  padding: 0;
+  margin-bottom: 8px;
+  font-size: var(--text-xs);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+#notification-preferences-panel .notification-push-device {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+#notification-preferences-panel .notification-push-device p {
+  overflow-wrap: anywhere;
+}
+
+#notification-preferences-panel .notification-push-device .btn {
+  flex-shrink: 0;
+  color: var(--stream-text-secondary, var(--color-base-content));
+}
+
+#notification-preferences-panel .notification-push-device .btn:hover {
+  color: var(--color-error);
+}
+
+#notification-preferences-panel [id$="-email"][role="group"] > div {
+  width: auto;
+}
+
+#notification-preferences-panel .notification-preference-matrix label {
+  min-height: 44px;
+}
+
+#notification-preferences-panel [id$="-email"][role="group"] button {
+  min-height: 36px;
+}
+
+@media (max-width: 480px) {
+  #notification-preferences-panel .notification-push-offer {
+    flex-wrap: wrap;
+  }
+}

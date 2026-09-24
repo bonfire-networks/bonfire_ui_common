@@ -1,11 +1,25 @@
 <mjml>
-  <mj-body>
-    <mj-section>
+  <mj-head>
+    <mj-preview :if={assigns[:preheader]}>{@preheader}</mj-preview>
+    <mj-attributes>
+      <mj-all font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" />
+      <mj-text font-size="15px" line-height="1.55" color={theme()[:body_text]} padding="0" />
+      <mj-section padding="0" />
+    </mj-attributes>
+    <mj-style inline="inline">{css()}</mj-style>
+  </mj-head>
+  <mj-body background-color={theme()[:body_bg]} width="600px">
+    <mj-section padding="32px 24px 20px">
       <mj-column>
-        <mj-text font-size="40px" color="#F45E43">{Bonfire.Mailer.app_name()}</mj-text>
+        <mj-image :if={icon()} src={icon()} alt="" width="40px" height="40px" padding="0 0 8px" />
+        <mj-text align="center" font-size="20px" font-weight="800" color={theme()[:primary]}>
+          {Bonfire.Mailer.app_name()}
+        </mj-text>
       </mj-column>
     </mj-section>
-
-    {@inner_content}
+    <mj-wrapper background-color="#ffffff" border-radius="12px" padding="8px 0">
+      {@inner_content}
+    </mj-wrapper>
+    <mj-section padding="0 0 32px"><mj-column /></mj-section>
   </mj-body>
 </mjml>

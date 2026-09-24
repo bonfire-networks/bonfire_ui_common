@@ -59,6 +59,7 @@
           <#slot {@right_action}>
           </#slot>
           <label
+            :if={@show_widgets_toggle}
             for="widgets-drawer"
             class="xl:hidden btn btn-ghost btn-circle min-w-[44px] min-h-[44px]"
             aria-label={l("Open widgets sidebar")}
