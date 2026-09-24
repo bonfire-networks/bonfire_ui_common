@@ -522,6 +522,8 @@ defmodule Bonfire.Common.Settings.LiveHandler do
             :placeholder,
             l("A default value is already provided. Enter your own to override it.")
           )
+          # for a control with no placeholder to show it in, like a select, which would otherwise show its first option as if it were chosen
+          |> Map.put(:inherited_value, inherited)
         else
           Map.put(assigns, :current_value, assigns[:default_value])
         end

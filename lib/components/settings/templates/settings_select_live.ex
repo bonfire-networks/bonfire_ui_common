@@ -21,6 +21,12 @@ defmodule Bonfire.UI.Common.SettingsSelectLive do
   def render(assigns) do
     assigns
     |> Bonfire.Common.Settings.LiveHandler.maybe_assign_input_value_from_keys()
+    # a select has no placeholder to show an inherited value in, so with none of its own it shows that one as chosen, rather than its first option
+    |> then(fn assigns ->
+      if is_nil(assigns[:current_value]),
+        do: Map.put(assigns, :current_value, assigns[:inherited_value]),
+        else: assigns
+    end)
     |> render_sface()
   end
 end
