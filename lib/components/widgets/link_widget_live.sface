@@ -23,7 +23,7 @@
           ]}
         />
       </div>
-      <span class={["text-base", active_label_class(active)]}>{localise_dynamic(
+      <span class={["text-body", active_label_class(active)]}>{localise_dynamic(
           @text || @widget[:text] || @widget[:name],
           @widget[:extension] || @widget[:module] || __MODULE__
         )}</span>
