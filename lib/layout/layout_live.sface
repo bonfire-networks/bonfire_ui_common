@@ -313,7 +313,10 @@
         <span class="sr-only">{l("Compose")}</span>
       </button>
 
-      <LinkLive to={~p"/notifications"} class={"dock-active": @selected_tab == :notifications}>
+      <LinkLive
+        to={~p"/notifications"}
+        class={"dock-active": @page in [:notifications, "notifications"]}
+      >
         <span class="relative inline-flex">
           <#Icon iconify="ph:bell-fill" class="size-6" aria-hidden="true" />
           <span class="absolute -top-2 -right-2">

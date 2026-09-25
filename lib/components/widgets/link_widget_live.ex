@@ -49,7 +49,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   def active_label_class(active?) do
     if active?,
       do: "font-semibold text-base-content",
-      else: "font-medium text-base-content"
+      else: "font-normal text-base-content"
   end
 
   @doc "Returns the icon colour classes for an active or inactive navigation item."
