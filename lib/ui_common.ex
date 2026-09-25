@@ -592,17 +592,24 @@ defmodule Bonfire.UI.Common do
     # cold path: only reached when a logged-out visitor tries to interact, so preload the locality
     # (`:peered`/`character:[:peered]`) on demand here rather than feed-wide — `canonical_url`
     # genuinely needs it to build the remote-interaction URL
-    case canonical_url(object_or_id, preload_if_needed: true) do
-      object_url when is_binary(object_url) and object_url != "" ->
-        maybe_apply(
-          Bonfire.UI.Me.RemoteInteractionLive,
-          :generate_url,
-          [verb, name, object_url, socket_or_ctx],
-          fallback_return: nil
-        )
-
-      _ ->
-        nil
+    # a local character that doesn't federate cannot be interacted with from another server, so callers fall back to signing in here
+    with true <-
+           maybe_apply(
+             Bonfire.Federate.ActivityPub.AdapterUtils,
+             :remotely_reachable?,
+             [object_or_id],
+             fallback_return: false
+           ),
+         object_url when is_binary(object_url) and object_url != "" <-
+           canonical_url(object_or_id, preload_if_needed: true) do
+      maybe_apply(
+        Bonfire.UI.Me.RemoteInteractionLive,
+        :generate_url,
+        [verb, name, object_url, socket_or_ctx],
+        fallback_return: nil
+      )
+    else
+      _ -> nil
     end
   end
 
