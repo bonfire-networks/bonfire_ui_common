@@ -136,6 +136,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
           fullsweep_after: String.to_integer(System.get_env("LV_FULLSWEEP_AFTER", "20")),
           # NOTE: see also `LV_HIBERNATE_AFTER` in the endpoint config
           connect_info: [
+            # full URL for error reports from a LiveView's mount
+            :uri,
             :user_agent,
             # TODO: check if this gives us the "real IP" as set by `RemoteIp`
             :peer_data,

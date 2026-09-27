@@ -107,7 +107,8 @@ self.addEventListener('push', event => {
     const data = event.data.json();
 
     const options = {
-      body: data.body,
+      // a missing body would otherwise be shown as the word "null"
+      body: data.body || '',
       icon: data.icon || '/images/bonfire-icon.png',
       badge: data.badge || '/images/bonfire-icon.png',
       data: { ...data.data, defaultUrl: '/' },

@@ -69,11 +69,12 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
     from_ok(init_socket(params, socket))
   end
 
-  defp init_mount(params, _session, socket) do
+  defp init_mount(params, session, socket) do
     # debug("MOUNTING SOCKET")
 
     with {:ok, socket} <-
            socket
+           |> maybe_sentry_hook(params, session)
            |> Phoenix.LiveView.attach_hook(
              :params_to_assigns,
              :handle_params,
@@ -93,6 +94,19 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
     #     # workaround to `cannot attach hook with id :params_to_assigns on :handle_params because the view was not mounted at the router with the live/3 macro` on hybrid views
     #     warn(e)
     #     from_ok(init_socket(params, socket))
+  end
+
+  # the LV process has no request context from `Sentry.PlugContext` (that ran in the HTTP request process), so this sets the URL on mount and on every `handle_params`, plus breadcrumbs for events
+  defp maybe_sentry_hook(socket, params, session) do
+    with dsn when is_binary(dsn) <- Bonfire.Common.Errors.maybe_sentry_dsn(),
+         {:cont, socket} <-
+           maybe_apply(Sentry.LiveViewHook, :on_mount, [:default, params, session, socket],
+             fallback_return: nil
+           ) do
+      socket
+    else
+      _ -> socket
+    end
   end
 
   defp init_socket(params, socket) do
