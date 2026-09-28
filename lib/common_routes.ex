@@ -354,6 +354,13 @@ defmodule Bonfire.UI.Common.Routes do
         get("/apple-app-site-association", Bonfire.UI.Common.AppleAppSiteAssociation, :show)
       end
 
+      # PWA manifest with the instance's name/icon, and the protocol handler it declares.
+      # Not shadowed by Plug.Static, which only serves files that exist under /pwa/.
+      scope "/pwa" do
+        get("/manifest.webmanifest", Bonfire.UI.Common.PWAController, :manifest)
+        get("/open", Bonfire.UI.Common.PWAController, :open)
+      end
+
       scope "/extensions/code/raw" do
         match(
           :*,

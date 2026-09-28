@@ -3,7 +3,9 @@ const OFFLINE_CACHE = 'bonfire-offline-v5';
 // App-shell cache: only ever holds content-hashed (immutable) static assets,
 // so entries never go stale — a new deploy produces new URLs.
 const ASSETS_CACHE = 'bonfire-assets-v1';
-const CURRENT_CACHES = [OFFLINE_CACHE, ASSETS_CACHE];
+// VAPID key and badge count: must survive worker updates, hence in CURRENT_CACHES
+const PUSH_CACHE = 'bonfire-push-v1';
+const CURRENT_CACHES = [OFFLINE_CACHE, ASSETS_CACHE, PUSH_CACHE];
 const ASSETS_CACHE_MAX_ENTRIES = 200;
 const OFFLINE_URL = '/pwa/offline.html';
 
@@ -93,10 +95,54 @@ self.addEventListener('fetch', event => {
   }
 });
 
-function updateAppBadge() {
-  return self.registration.getNotifications().then(notifications => {
-    if (!navigator.setAppBadge) return;
-    notifications.length === 0 ? navigator.clearAppBadge() : navigator.setAppBadge(notifications.length);
+// Small values kept in PUSH_CACHE, since a worker is stopped and restarted freely
+function remember(key, value) {
+  return caches.open(PUSH_CACHE).then(cache =>
+    cache.put(key, new Response(String(value), { headers: { 'content-type': 'text/plain' } }))
+  );
+}
+
+function recall(key) {
+  return caches.open(PUSH_CACHE)
+    .then(cache => cache.match(key))
+    .then(response => (response ? response.text() : null))
+    .catch(() => null);
+}
+
+// The app badge shows the unseen count. An open page reports it (badge_counter_live.hooks.js); with no page on screen, each push adds one. Dismissing a notification doesn't lower it, since the activity is still unseen.
+const BADGE_COUNT_KEY = '/__push/badge-count';
+
+function setAppBadge(count) {
+  if (!navigator.setAppBadge) return Promise.resolve();
+  return (count > 0 ? navigator.setAppBadge(count) : navigator.clearAppBadge()).catch(() => {});
+}
+
+function rememberedBadgeCount() {
+  return recall(BADGE_COUNT_KEY).then(text => {
+    const count = parseInt(text, 10);
+    return Number.isFinite(count) ? count : null;
+  });
+}
+
+// Until a page has reported a count, fall back to the notifications on screen
+function fallbackAppBadge() {
+  return rememberedBadgeCount().then(count => {
+    if (count !== null) return;
+    return self.registration.getNotifications().then(notifications => setAppBadge(notifications.length));
+  });
+}
+
+// A visible page already counts this activity over its socket, so adding one here would overcount.
+function appOnScreen() {
+  return self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+    .then(windows => windows.some(w => w.visibilityState === 'visible'));
+}
+
+function bumpAppBadge() {
+  return Promise.all([appOnScreen(), rememberedBadgeCount()]).then(([onScreen, count]) => {
+    if (onScreen) return;
+    if (count === null) return fallbackAppBadge();
+    return remember(BADGE_COUNT_KEY, count + 1).then(() => setAppBadge(count + 1));
   });
 }
 
@@ -124,7 +170,7 @@ self.addEventListener('push', event => {
 
     event.waitUntil(
       self.registration.showNotification(data.title, options)
-        .then(() => updateAppBadge())
+        .then(() => bumpAppBadge())
         .then(() => self.clients.matchAll())
         .then(clients => {
           clients.forEach(client => {
@@ -148,24 +194,9 @@ self.addEventListener('push', event => {
 
 // A push service may rotate an endpoint whenever it likes, and it tells the service worker rather than the page, often with no page open at all. Without this the old endpoint simply goes dead: the row stays, sends start failing, and the user sees nothing until they toggle push off and on.
 //
-// Re-registering needs the VAPID application server key, which a worker cannot read from the DOM, so the page hands it over (VAPID_KEY below) and it is kept in a cache rather than a variable, since a worker is stopped and restarted freely. The key the existing subscription was made with is tried first, because it is the most reliable copy when the browser gives us the old one.
-const VAPID_CACHE = 'bonfire-push-v1';
+// Re-registering needs the VAPID application server key, which a worker cannot read from the DOM, so the page hands it over (VAPID_KEY below) and it is kept in PUSH_CACHE. The key the existing subscription was made with is tried first, because it is the most reliable copy when the browser gives us the old one.
 const VAPID_CACHE_KEY = '/__push/vapid-key';
 const SUBSCRIBE_URL = '/api/v1-bonfire/push/subscription';
-
-function rememberVapidKey(key) {
-  if (!key) return Promise.resolve();
-  return caches.open(VAPID_CACHE).then(cache =>
-    cache.put(VAPID_CACHE_KEY, new Response(key, { headers: { 'content-type': 'text/plain' } }))
-  );
-}
-
-function rememberedVapidKey() {
-  return caches.open(VAPID_CACHE)
-    .then(cache => cache.match(VAPID_CACHE_KEY))
-    .then(response => (response ? response.text() : null))
-    .catch(() => null);
-}
 
 // base64url, which is what `pushManager.subscribe` takes and what the page has
 function urlBase64ToUint8Array(base64String) {
@@ -176,8 +207,12 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'VAPID_KEY') {
-    event.waitUntil(rememberVapidKey(event.data.key));
+  const { type, key, count } = event.data || {};
+  if (type === 'VAPID_KEY' && key) {
+    event.waitUntil(remember(VAPID_CACHE_KEY, key));
+  }
+  if (type === 'APP_BADGE' && Number.isFinite(count)) {
+    event.waitUntil(remember(BADGE_COUNT_KEY, count).then(() => setAppBadge(count)));
   }
 });
 
@@ -190,7 +225,7 @@ async function resubscribe(event) {
     const oldKey = event.oldSubscription && event.oldSubscription.options &&
       event.oldSubscription.options.applicationServerKey;
 
-    const key = oldKey || (await rememberedVapidKey().then(k => (k ? urlBase64ToUint8Array(k) : null)));
+    const key = oldKey || (await recall(VAPID_CACHE_KEY).then(k => (k ? urlBase64ToUint8Array(k) : null)));
 
     if (!key) {
       console.error('push: cannot re-subscribe without a VAPID key');
@@ -221,8 +256,24 @@ self.addEventListener('pushsubscriptionchange', event => {
 });
 
 self.addEventListener('notificationclose', event => {
-  event.waitUntil(updateAppBadge());
+  event.waitUntil(fallbackAppBadge());
 });
+
+// How long an open window gets to ack a tapped notification's URL before the full-reload fallback
+const NAVIGATE_ACK_TIMEOUT_MS = 1000;
+
+// bonfire_live.js navigates over the LiveView socket, keeping the app's state. Resolves false without an ack.
+function askClientToNavigate(client, url) {
+  return new Promise(resolve => {
+    const channel = new MessageChannel();
+    const timer = setTimeout(() => resolve(false), NAVIGATE_ACK_TIMEOUT_MS);
+    channel.port1.onmessage = () => {
+      clearTimeout(timer);
+      resolve(true);
+    };
+    client.postMessage({ type: 'NAVIGATE', url }, [channel.port2]);
+  });
+}
 
 self.addEventListener('notificationclick', event => {
   event.notification.close();
@@ -233,7 +284,7 @@ self.addEventListener('notificationclick', event => {
   const url = new URL(notifUrl, self.location.origin).href;
 
   event.waitUntil(
-    updateAppBadge().then(() => {
+    fallbackAppBadge().then(() => {
       return clients.matchAll({ type: 'window', includeUncontrolled: true });
     }).then(windowClients => {
       for (const client of windowClients) {
@@ -241,12 +292,14 @@ self.addEventListener('notificationclick', event => {
           return client.focus();
         }
       }
-      for (const client of windowClients) {
-        if ('focus' in client) {
-          return client.focus().then(c => c.navigate(url));
-        }
-      }
-      return clients.openWindow(url);
+      const client = windowClients.find(c => 'focus' in c);
+      if (!client) return clients.openWindow(url);
+
+      // navigate() is a full reload; it also rejects for windows this worker doesn't control
+      return client.focus()
+        .then(focused => askClientToNavigate(focused || client, url))
+        .then(handled => handled || client.navigate(url))
+        .catch(() => clients.openWindow(url));
     })
   );
 });

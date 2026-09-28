@@ -27,6 +27,8 @@ import {
 } from "./local_storage_params";
 import { setupLiveSocketLifecycle } from "./live_socket_lifecycle.js";
 import { setupPullToRefresh } from "./pull_to_refresh.js";
+import { onDocumentPatch, setupViewTransitions } from "./view_transitions.js";
+import { setupHideLeavingPage } from "./leaving_page.js";
 import { ExtensionHooks } from "../../../../config/current_flavour/deps.hooks.js";
 import ComponentHooks from "../../../../config/current_flavour/assets/hooks/index.js";
 
@@ -161,6 +163,7 @@ let liveSocket = new LiveSocket(socketPath, Socket, {
     ...collectBonfireParams(),
   }),
   dom: {
+    onDocumentPatch,
     onBeforeElUpdated(from, to) {
       if (from._x_dataStack) {
         window.Alpine.clone(from, to);
@@ -171,6 +174,10 @@ let liveSocket = new LiveSocket(socketPath, Socket, {
 });
 
 setupLiveSocketLifecycle(liveSocket);
+
+setupViewTransitions();
+
+setupHideLeavingPage(liveSocket);
 
 // Self-noops outside PWA standalone mode / non-touch devices
 setupPullToRefresh(liveSocket);
@@ -397,3 +404,23 @@ window.disconnectLiveSocket = function () {
 // >> liveSocket.disableLatencySim()
 
 window.liveSocket = liveSocket;
+
+// A tapped notification's URL (see `notificationclick` in pwabuilder-sw.js):
+// navigate over the socket rather than reload, and ack so the worker doesn't.
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.addEventListener("message", (event) => {
+    const data = event.data;
+    if (data?.type !== "NAVIGATE" || typeof data.url !== "string") return;
+
+    const url = new URL(data.url, window.location.origin);
+    if (url.origin !== window.location.origin) return;
+
+    const href = url.pathname + url.search + url.hash;
+    if (liveSocket.main && liveSocket.isConnected()) {
+      liveSocket.js().navigate(href);
+    } else {
+      window.location.assign(href);
+    }
+    event.ports[0]?.postMessage("ok");
+  });
+}

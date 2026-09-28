@@ -412,6 +412,9 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
             do: custom_favicon,
             else: "/pwa/ios/180.png"
 
+        # same name the manifest gives the installed app (see PWAController)
+        app_title = Bonfire.UI.Common.PWAController.app_name()
+
         # escaped because these are admin-set config values going straight into an attribute
         favicon_links =
           if custom_favicon do
@@ -439,13 +442,13 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
         #{if Extend.module_enabled?(PhoenixGon.View), do: PhoenixGon.View.render_gon_script(conn) |> Phoenix.HTML.safe_to_string()}
 
-        <link rel="manifest" href="/pwa/manifest.json" />
+        <link rel="manifest" href="/pwa/manifest.webmanifest" />
 
         <!-- PWA iOS support -->
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <meta name="apple-mobile-web-app-title" content="Bonfire">
+        <meta name="apple-mobile-web-app-title" content="#{Plug.HTML.html_escape(app_title)}">
 
         <!-- iOS Splash Screens (home-screen PWA launch only).
              iOS requires the image's pixel size to EXACTLY equal
@@ -467,7 +470,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 
         <!-- Browser/PWA chrome color — must stay in sync with theme_color and
-             background_color in pwa/manifest.json -->
+             background_color in pwa/manifest.json (served via PWAController) -->
         <meta name="theme-color" content="#191e25">
         <meta name="msapplication-navbutton-color" content="#191e25">
         <meta name="msapplication-TileColor" content="#191e25">

@@ -13,6 +13,9 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
 
   prop non_async, :boolean, default: false
 
+  # the app icon (colocated hook) only takes counts that were actually fetched
+  data count_loaded, :boolean, default: false
+
   # When true, the component lives in PersistentLive and never re-mounts,
   # so we skip process dict caching and defensive re-mount logic
 

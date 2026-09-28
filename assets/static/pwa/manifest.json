@@ -9,10 +9,12 @@
 		"minimal-ui",
 		"browser"
 	],
-	"orientation": "portrait",
 	"scope": "/",
 	"short_name": "Bonfire",
 	"start_url": "/dashboard",
+	"launch_handler": {
+		"client_mode": ["navigate-existing", "auto"]
+	},
 	"background_color": "#191e25",
 	"theme_color": "#191e25",
 	"screenshots": [
@@ -33,6 +35,16 @@
 	],
 	"shortcuts": [
 		{
+			"name": "Write",
+			"url": "/write",
+			"description": "Write a new post"
+		},
+		{
+			"name": "Notifications",
+			"url": "/notifications",
+			"description": "See your notifications"
+		},
+		{
 			"name": "Feed",
 			"url": "/feed",
 			"description": "View your social feed"
@@ -41,17 +53,18 @@
 			"name": "Profile",
 			"url": "/user",
 			"description": "View your profile"
-		},
-		{
-			"name": "Settings",
-			"url": "/settings",
-			"description": "Manage your settings"
 		}
 	],
-	"protocol_handlers": [{
-		"protocol": "bonfire",
-		"url": "/%s"
-	}],
+	"protocol_handlers": [
+		{
+			"protocol": "web+ap",
+			"url": "/pwa/open?uri=%s"
+		},
+		{
+			"protocol": "web+activitypub",
+			"url": "/pwa/open?uri=%s"
+		}
+	],
 	"share_target": {
 		"action": "/write",
 		"method": "GET",

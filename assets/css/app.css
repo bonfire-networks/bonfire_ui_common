@@ -2373,6 +2373,34 @@ div[data-id="object_body"]
   display: contents;
 }
 
+/* page-to-page crossfade for full loads; live navigations: view_transitions.js */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 150ms;
+}
+
+/* the page being left on back/forward, until replaced (see leaving_page.js) */
+[data-id="main_section"][data-leaving] {
+  visibility: hidden;
+}
+
+/* matched old→new, so it stays put instead of fading with the page */
+.dock {
+  view-transition-name: bonfire-dock;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
 :root {
   /* daisyUI's `.dock` is `calc(4rem + safe-area)` tall. Declare here so the space the dock occupies and the space content reserves for it can't drift apart.
   Zero by default: only pages that actually render a dock reserve room for it. */

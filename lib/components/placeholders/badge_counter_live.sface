@@ -1,4 +1,10 @@
-<div id={@id || "unseen_count_#{@feed_id}"} data-id="unseen_count">
+<div
+  id={@id || "unseen_count_#{@feed_id}"}
+  data-id="unseen_count"
+  :hook
+  data-app-badge-feed={if is_nil(@for_user) and @count_loaded, do: @feed_id}
+  data-app-badge-count={@count}
+>
   {#if @count > 0}
     <div
       :if={@count > 0}
