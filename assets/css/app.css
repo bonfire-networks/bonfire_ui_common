@@ -2446,3 +2446,10 @@ body:has(
   .dock {
   display: none;
 }
+
+/* Streamed rows outlive the last fetched page, so a zero page count is not an empty feed. */
+[data-id="feed"]:has(
+    [data-id="feed_activity_list"] > .activity_wrapper:not(.hidden) > :not([data-hidden="all"])
+  ) [data-id="empty-feed"] {
+  display: none;
+}
