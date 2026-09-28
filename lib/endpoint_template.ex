@@ -312,14 +312,15 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         parsers: [:urlencoded, :multipart, :json],
         pass: ["*/*"],
         json_decoder: Phoenix.json_library(),
-        # Flavours can override to stash the raw body for signed-webhook
-        # verification (e.g. Jacobin points this at `Bonfire.Ghost.BodyReader`).
-        # Default keeps ActivityPub HTTP-signature digest computation intact.
+        # Stashes the raw JSON body (via `Bonfire.UI.Common.RawBodyReader`) for
+        # signed-webhook verification (e.g. Ghost), while still delegating to
+        # `DigestPlug` so ActivityPub HTTP-signature digests keep working.
+        # Flavours can override via config if they need different behaviour.
         body_reader:
           Application.compile_env(
             :bonfire_ui_common,
             :body_reader,
-            {ActivityPub.Web.Plugs.DigestPlug, :read_body, []}
+            {Bonfire.UI.Common.RawBodyReader, :read_body, []}
           )
       ]
       # @opts Plug.Parsers.init(@parser_opts)

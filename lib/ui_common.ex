@@ -275,11 +275,11 @@ defmodule Bonfire.UI.Common do
   end
 
   # context writes now go through SurfContext (behavior-identical merge into the :__context__ assign; Surface's compiler threads the ASSIGN value regardless of writer, so this is safe while Surface components remain), this was the single Surface.Components.Context coupling point in app code
-  def assign_generic_global(%Plug.Conn{} = conn, assigns) do
+  defp put_context(%Plug.Conn{} = conn, assigns) do
     SurfContext.put(conn, assigns)
   end
 
-  def assign_generic_global(%{} = socket_or_assigns, assigns) do
+  defp put_context(%{} = socket_or_assigns, assigns) do
     SurfContext.put(socket_or_assigns, assigns)
   end
 
@@ -311,27 +311,22 @@ defmodule Bonfire.UI.Common do
     socket
     # also put in non-context assigns
     |> assign_generic(assigns)
-    |> assign_generic_global(assigns)
+    |> put_context(assigns)
 
     # |> debug("put in context")
   end
 
-  def assign_global(socket, {_, _} = assign) do
-    assign_global(socket, Keyword.new([assign]))
-  end
+  def assign_global(socket, {key, value}), do: assign_global(socket, [{key, value}])
 
-  def assign_global(socket, key, "") do
-    assign_global(socket, key, nil)
-  end
+  def assign_global(socket, key, ""), do: assign_global(socket, key, nil)
 
-  def assign_global(socket, key, value) when is_atom(key) do
-    assign_global(socket, {key, value})
-  end
+  def assign_global(socket, key, value) when is_atom(key),
+    do: assign_global(socket, [{key, value}])
 
   def assign_global(socket, key, value) when is_binary(key) do
     case maybe_to_atom(key) do
       key when is_atom(key) ->
-        assign_global(socket, {key, value})
+        assign_global(socket, [{key, value}])
 
       _ ->
         warn(key, "Could not assign (key is not an existing atom)")
@@ -748,7 +743,7 @@ defmodule Bonfire.UI.Common do
       do:
         socket
         |> assign_generic(assigns)
-        |> assign_generic_global(assigns)
+        |> put_context(assigns)
   end
 
   def redirect_self(to) do

@@ -200,16 +200,19 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     {:noreply, socket}
   end
 
-  def handle_info({:persistent_live_context_request, child_pid}, socket, _, _) do
+  def handle_info({:persistent_live_context_request, persistent_child_pid}, socket, _, _) do
     debug("child LV asked to send our context to it")
 
     # `Map.put/3` so the pid just announced wins: this page may already hold one, from a child that has since restarted
-    context = Map.put(assigns(socket)[:__context__] || %{}, :child_pid, child_pid)
+    context =
+      Map.put(assigns(socket)[:__context__] || %{}, :persistent_child_pid, persistent_child_pid)
 
     LivePlugs.maybe_send_persistent_assigns([__context__: context], socket)
 
-    # kept in our own context too, so what this page sends the child goes to it directly (`PersistentLive.maybe_send/2`'s `child_pid` route) rather than by a Presence lookup of the session token, which a session without one, such as a LiveViewTest session, cannot make at all
-    {:noreply, assign(socket, :__context__, context)}
+    # kept in this process too, so what this page sends the child goes to it directly (`PersistentLive.maybe_send/2`'s `persistent_child_pid` route) rather than by a Presence lookup of the session token, which a session without one, such as a LiveViewTest session, cannot make at all. Not in our assigns: any write to `__context__` re-renders every component with the props its parent last gave it, which undid a like the moment it was clicked
+    Process.put(:persistent_child_pid, persistent_child_pid)
+
+    {:noreply, socket}
   end
 
   def handle_info(blob, socket, source_module, fun) do
