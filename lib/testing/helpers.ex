@@ -206,11 +206,15 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
 
   The fields the composer already holds are sent along, so this finishes whatever the page set up, such as a Reply press's `reply_to`, `context_id` and boundaries. `extra_params` adds or overrides fields, e.g. `%{"context_id" => group_id}` to post into a group from a page that sets none.
 
+  `open: selector` first presses the button that opens the composer on this page, such as a group page's `#inline_composer_placeholder_open` or the `[data-role=composer_button]` one, so the composer holds what that button gives it (a group's `context_id` and boundaries) rather than what a test passes by hand.
+
   Takes a `PhoenixTest` session, returning the session, or a `LiveViewTest` view, returning the render result. `PhoenixTest` cannot fill the body itself, since the editor fills a hidden input from JS.
   """
-  def submit_composer(session_or_view, content, extra_params \\ %{})
+  def submit_composer(session_or_view, content, extra_params \\ %{}, opts \\ [])
 
-  def submit_composer(%Phoenix.LiveViewTest.View{} = view, content, extra_params) do
+  def submit_composer(%Phoenix.LiveViewTest.View{} = view, content, extra_params, opts) do
+    if selector = opts[:open], do: view |> element(selector) |> render_click()
+
     view
     |> composer_view()
     |> element("#smart_input_form")
@@ -219,8 +223,8 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     )
   end
 
-  def submit_composer(session, content, extra_params),
-    do: PhoenixTest.unwrap(session, &submit_composer(&1, content, extra_params))
+  def submit_composer(session, content, extra_params, opts),
+    do: PhoenixTest.unwrap(session, &submit_composer(&1, content, extra_params, opts))
 
   @doc """
   The current assigns of a LiveView, given a `PhoenixTest` session, a `LiveViewTest` view, or a pid.

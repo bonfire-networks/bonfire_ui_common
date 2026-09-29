@@ -4,14 +4,25 @@
 
   <label for={@id} class={"flex items-center", "justify-between": !@compact}>
     <div class={"flex flex-col gap-0.5 mr-2", "order-last ml-4 !mr-0": @compact}>
-      <div class="flex flex-row gap-2" :if={@name}>
+      <div class="flex flex-row items-center gap-2" :if={@name}>
         <div class="text-sm font-medium text-base-content">{@name}</div>
+        {!-- the description as a tooltip to hover, and the same words for a screen reader, which a tooltip alone doesn't reach --}
+        <span
+          :if={@description && @description_tooltip}
+          class="tooltip tooltip-right inline-flex cursor-help text-base-content/50"
+          data-tip={@description}
+          aria-describedby={"#{@id}-description"}
+          tabindex="0"
+        >
+          <#Icon iconify="ph:info" class="size-4" aria-hidden="true" />
+        </span>
         <div
           :if={@show_label}
           class="badge !border !border-warning/30 badge-outline badge-warning badge-sm"
         >{@label}</div>
       </div>
-      <div class="text-sm text-muted" :if={@description}>{@description}</div>
+      <span :if={@description && @description_tooltip} id={"#{@id}-description"} class="sr-only">{@description}</span>
+      <div class="text-sm text-muted" :if={@description && !@description_tooltip}>{@description}</div>
     </div>
 
     <input

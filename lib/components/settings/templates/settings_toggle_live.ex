@@ -7,6 +7,9 @@ defmodule Bonfire.UI.Common.SettingsToggleLive do
   prop compact, :boolean, default: false
   prop name, :string, default: nil
   prop description, :string, default: nil
+
+  @doc "Show the description as an info icon's tooltip beside the name (and to screen readers), rather than as a line under it"
+  prop description_tooltip, :boolean, default: false
   prop label, :string, default: nil
   prop default_value, :any, default: nil
   prop disabled_value, :any, default: false
