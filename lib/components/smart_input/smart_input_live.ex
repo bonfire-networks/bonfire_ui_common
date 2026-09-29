@@ -45,6 +45,58 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   prop custom_emojis, :any, default: []
 
+  @doc """
+  Labels the composer's current policy, without treating mixed or overridden audiences as a single preset.
+
+      iex> group_audience_label(["members:private"], [], %{})
+      "Members only"
+
+      iex> group_audience_label([{"local", "Ignored display name"}], [], %{})
+      "Local"
+
+      iex> group_audience_label(["public", "members:private"], [], %{})
+      "Custom audience"
+
+      iex> group_audience_label(["public"], ["excluded-circle"], %{})
+      "Custom audience"
+  """
+  def group_audience_label(boundaries, exclusions, permissions) do
+    group_audience_meta(boundaries, exclusions, permissions)
+    |> e(:label, l("Custom audience"))
+  end
+
+  @doc """
+  Uses the audience preset's icon, or a neutral shield for custom permissions.
+
+      iex> group_audience_icon(["members:private"], [], %{})
+      "ph:lock-duotone"
+
+      iex> group_audience_icon(["public"], [], %{})
+      "ph:globe-duotone"
+
+      iex> group_audience_icon(["public"], ["excluded-circle"], %{})
+      "ph:shield-check-duotone"
+  """
+  def group_audience_icon(boundaries, exclusions, permissions) do
+    group_audience_meta(boundaries, exclusions, permissions)
+    |> e(:icon, "ph:shield-check-duotone")
+  end
+
+  defp group_audience_meta(boundaries, [], permissions) when permissions == %{} do
+    case List.wrap(boundaries) do
+      [{slug, _label}] when is_binary(slug) ->
+        group_audience_meta([slug], [], permissions)
+
+      [slug] when is_binary(slug) ->
+        Bonfire.Boundaries.Presets.dimension_meta(:default_content_visibility, slug)
+
+      _ ->
+        nil
+    end
+  end
+
+  defp group_audience_meta(_, _, _), do: nil
+
   def post_content(object) do
     e(object, :post_content, nil) || object
   end

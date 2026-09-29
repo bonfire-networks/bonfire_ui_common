@@ -19,11 +19,11 @@
         <!-- <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} /> -->
         <header
           :if={@showing_within != :thread_embed}
-          class="z-50 flex items-center gap-3 justify-between w-full sticky top-0 px-3 py-2 lg:rounded-t-xl bg-base-100 md:z-auto md:relative"
+          class="z-50 flex items-center gap-3 justify-between w-full sticky top-0 px-4 py-2 border-b border-base-content/10 lg:rounded-t-xl bg-base-100 bg-gradient-to-r from-primary/5 to-transparent md:z-auto md:relative"
         >
-          <div class="flex items-center gap-3">
+          <div class="flex min-w-0 items-center gap-3">
             <div
-              class=""
+              class="shrink-0"
               title={e(current_user(@__context__), :profile, :name, nil) ||
                 e(current_user(@__context__), :character, :username, nil)}
             >
@@ -31,7 +31,7 @@
                 bg_class="rounded-full"
                 ring
                 title={e(current_user(@__context__), :profile, :name, "Anon")}
-                wrapper_class="border-0 avatar !flex w-10 h-10"
+                wrapper_class="border-0 avatar !flex w-9 h-9"
                 class="inline-block object-cover w-full rounded-full"
                 src={Media.avatar_url(current_user(@__context__)) || @__context__[:current_user_avatar_url]}
                 user_id={current_user_id(@__context__)}
@@ -39,96 +39,23 @@
                 is_remote={false}
               />
             </div>
-            <div class="flex items-center gap-0">
-              {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and
-                  not replying?(assigns)}
-                {#case Bonfire.UI.Common.SmartInputModule.modules() |> Enum.uniq()}
-                  {#match [_, _ | _] = available_types}
-                    {#case LiveHandler.active_smart_input_component(
-                        @smart_input_component,
-                        e(@smart_input_opts, :create_object_type, nil)
-                      )}
-                      {#match active_component}
-                        <Dropdown
-                          id="composer_type_chooser"
-                          position="bottom-start"
-                          trigger_class="border-secondary flex items-center gap-2 btn-sm h-[30px] btn btn-primary btn-outline font-normal"
-                          label={l("Choose what to create")}
-                          trigger_opts={[title: l("Choose what to create")]}
-                        >
-                          <:trigger>
-                            <Iconify.iconify
-                              icon={LiveHandler.type_icon(active_component, e(@smart_input_opts, :create_object_type, nil))}
-                              class="w-5 h-5"
-                            />
-                            <span class="text-sm normal-case">
-                              {LiveHandler.type_label(active_component, e(@smart_input_opts, :create_object_type, nil))}
-                            </span>
-                            <#Icon iconify="carbon:chevron-down" class="w-3 h-3 text-primary" />
-                          </:trigger>
-
-                          <li :for={component <- available_types}>
-                            <a
-                              phx-click={LiveHandler.open_type(%JS{}, component, @smart_input_opts)}
-                              phx-target="#smart_input"
-                              aria-current={if component == active_component, do: "true"}
-                              class={
-                                "flex items-center gap-2",
-                                active: component == active_component
-                              }
-                            >
-                              <Iconify.iconify icon={LiveHandler.type_icon(component)} class="w-4 h-4 shrink-0 text-muted" />
-                              <span>{LiveHandler.type_label(component)}</span>
-                            </a>
-                          </li>
-                        </Dropdown>
-                    {/case}
-                  {#match _}
-                {/case}
-              {/if}
+            <div class="flex min-w-0 flex-col items-start gap-1">
               {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
                 {#case e(@context_group, :name, nil)}
                   {#match context_name when is_binary(context_name) and context_name != ""}
-                    {!-- In a group/topic context the boundary is dictated by the group, so
-                        we show a "Writing in …" indicator + picker instead of the boundary
-                        picker. --}
-                    <div class="flex items-center gap-1">
-                      <div
-                        class="flex items-center gap-1 btn btn-sm btn-primary text-sm normal-case pr-2"
-                        title={l("This post will be shared in %{name}", name: context_name)}
+                    <div class="flex min-w-0 flex-col items-start">
+                      <Dropdown
+                        id="composer_destination"
+                        position="bottom-start"
+                        label={l("Posting in %{name}", name: context_name)}
+                        trigger_class="btn btn-ghost btn-sm h-auto min-h-9 text-left whitespace-normal px-0 gap-2"
                       >
-                        <Iconify.iconify
-                          icon={Bonfire.Classify.Web.Preview.CategoryLive.icon(@context_group)}
-                          class="w-4 h-4"
-                        />
-                        <span class="truncate max-w-[100px]">
-                          {l("In %{name}", name: context_name)}
-                        </span>
-                        <button
-                          type="button"
-                          phx-click="Bonfire.UI.Common.SmartInput:clear_context"
-                          phx-target={@event_target || "#smart_input"}
-                          class="flex items-center justify-center ml-1 shrink-0"
-                          aria-label={l("Remove context")}
-                          title={l("Post without group/topic context")}
-                        >
-                          <#Icon iconify="ph:x" class="size-4" />
-                        </button>
-                      </div>
-
-                      {#case e(@context_group, :group_id, nil) && e(@context_group, :topics, [])}
-                        {#match topics when is_list(topics) and topics != []}
-                          <Dropdown
-                            id="composer_subtopic_chooser"
-                            position="bottom-end"
-                            trigger_class="btn btn-sm btn-outline border-secondary btn-circle"
-                            label={l("Post in a subtopic")}
-                            trigger_opts={[title: l("Post in a subtopic")]}
-                          >
-                            <:trigger>
-                              <#Icon iconify="ph:list-fill" class="w-4 h-4" />
-                            </:trigger>
-
+                        <:trigger>
+                          <span class="min-w-0 break-words font-semibold">{context_name}</span>
+                          <#Icon iconify="ph:caret-down" class="size-4 shrink-0 text-muted" />
+                        </:trigger>
+                        {#case e(@context_group, :group_id, nil) && e(@context_group, :topics, [])}
+                          {#match topics when is_list(topics) and topics != []}
                             <li>
                               <a
                                 phx-click="Bonfire.UI.Common.SmartInput:pick_context"
@@ -166,14 +93,43 @@
                                 </a>
                               </li>
                             {/for}
-                          </Dropdown>
-                        {#match _}
-                      {/case}
+                          {#match _}
+                        {/case}
+                        <li>
+                          <button type="button" phx-click="Bonfire.UI.Common.SmartInput:clear_context"
+                            phx-target={@event_target || "#smart_input"}>
+                            {l("Post outside this group or topic")}
+                          </button>
+                        </li>
+                      </Dropdown>
+                      <Bonfire.UI.Common.OpenModalLive
+                        id="composer_group_permissions"
+                        reusable_modal_id="persistent_modal"
+                        title_text={l("Audience details")}
+                        without_form
+                        no_actions
+                        open_btn_wrapper_class="text-left text-muted"
+                      >
+                        <div class="space-y-3 py-3">
+                          <p class="font-semibold">{context_name}</p>
+                          <p>{l("Audience: %{audience}", audience: group_audience_label(@to_boundaries, @exclude_circles, @verb_permissions))}</p>
+                          <p class="text-sm text-muted">{l("This audience is set by the group or topic. Its access rules also apply to participation.")}</p>
+                        </div>
+                        <:open_btn>
+                          <span data-role="group-composer-audience" class="flex flex-wrap items-center gap-2 text-xs leading-5" role="status">
+                            <Iconify.iconify icon={group_audience_icon(@to_boundaries, @exclude_circles, @verb_permissions)} class="size-4 shrink-0 text-primary" />
+                            {group_audience_label(@to_boundaries, @exclude_circles, @verb_permissions)}
+                            <span aria-hidden="true">·</span>
+                            <span class="text-primary underline underline-offset-4 decoration-primary/40">{l("Audience details")}</span>
+                          </span>
+                        </:open_btn>
+                      </Bonfire.UI.Common.OpenModalLive>
                     </div>
                   {#match _}
                     {!-- In thread_embed the boundary follows the parent thread, so we hide
                         the boundary picker. --}
-                    <div :if={@showing_within != :thread_embed} class="">
+                    <div :if={@showing_within != :thread_embed} class="flex flex-col items-start gap-1">
+                      <span class="text-xs text-muted">{l("Audience and permissions")}</span>
                       <StatelessComponent
                         module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
                         to_boundaries={@to_boundaries}
@@ -204,61 +160,17 @@
               {/if}
             </div>
           </div>
-          {!-- Window controls, grouped as one quiet cluster: minimize (keep the
-               draft, hide it) then close (discard). Icon-only and de-emphasised
-               so the primary "Reply"/"Post" button stays the only loud action. --}
-          <div :if={@showing_within != :thread_embed} class="flex flex-row items-center gap-1 flex-nowrap">
-            <button
-              :if={@showing_within != :thread_embed}
-              id="minimize_composer_button"
-              phx-click={LiveHandler.minimize()}
-              phx-target="#smart_input"
-              type="button"
-              class="btn btn-sm btn-ghost btn-circle"
-              title={l("Minimise (keep your draft)")}
-              aria-label={l("Minimise the composer, keeping your draft")}
-            >
-              <#Icon iconify="fluent:chevron-double-down-16-filled" class="w-4 h-4 text-primary" />
-            </button>
-
-            <Bonfire.UI.Common.OpenModalLive
-              id="close_composer"
-              reusable_modal_id="persistent_modal"
-              title_text={l("Delete the draft")}
-              cancel_label={l("Cancel")}
-              open_btn_wrapper_class=""
-            >
-              <div class="mt-3 prose-sm prose">
-                <p>{l("Closing the composer will discard your post. Are you sure you want to close it?")}</p>
-              </div>
-              <:open_btn>
-                <div
-                  class="btn btn-sm btn-ghost btn-circle"
-                  title={if @showing_within == :thread_embed,
-                    do: l("Clear the composer"),
-                    else: l("Discard draft and close")}
-                  aria-label={if @showing_within == :thread_embed,
-                    do: l("Clear the composer"),
-                    else: l("Discard draft and close")}
-                >
-                  <#Icon iconify="ph:x-bold" class="w-4 h-4 text-primary" />
-                </div>
-              </:open_btn>
-              <:action_btns>
-                <button
-                  phx-click={JS.push("Bonfire.UI.Common.SmartInput:reset_to_default")
-                  |> JS.push("close", target: "#persistent_modal")
-                  |> JS.add_class("translate-y-100", to: "#smart_input_container")
-                  |> JS.hide(to: "#smart_input_post_title")}
-                  phx-target="#smart_input"
-                  type="button"
-                  class="normal-case btn btn-sm btn-error"
-                >
-                  {l("Delete draft")}
-                </button>
-              </:action_btns>
-            </Bonfire.UI.Common.OpenModalLive>
-          </div>
+          <button
+            id="minimize_composer_button"
+            phx-click={LiveHandler.minimize()}
+            phx-target="#smart_input"
+            type="button"
+            class="btn btn-sm btn-ghost btn-circle shrink-0 self-start text-muted"
+            title={l("Close composer, keep draft")}
+            aria-label={l("Close composer, keep draft")}
+          >
+            <#Icon iconify="ph:x" class="size-5" />
+          </button>
         </header>
 
         <div :if={replying?(assigns)} class="reply_in_composer">

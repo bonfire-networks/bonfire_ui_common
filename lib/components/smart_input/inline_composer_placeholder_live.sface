@@ -1,7 +1,7 @@
 {#if current_user_id(@__context__) && show?(@selected_tab)}
   <div
     id="inline_composer_placeholder"
-    class="p-card flex items-center gap-avatar border-b-(length:--divider-width) border-(color:--divider-color) bg-base-100 cursor-text"
+    class="p-card flex items-center gap-avatar border-b-(length:--divider-width) border-(color:--divider-color) bg-base-100"
   >
     <div class="shrink-0">
       <Bonfire.UI.Common.AvatarLive
@@ -21,9 +21,14 @@
       id="inline_composer_placeholder_open"
       phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open(%JS{}, @smart_input_opts)}
       phx-target="#smart_input"
-      class="flex-1 min-w-0 text-left text-muted truncate text-sm self-stretch pointer-coarse:min-h-11"
+      class={
+        "flex flex-1 min-w-0 items-center gap-3 text-left text-sm self-stretch min-h-11 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+        "rounded-xl border border-base-content/15 bg-base-200 px-4 py-3 text-base-content/80 hover:bg-base-300 active:bg-base-300": e(@smart_input_opts, :context_id, nil),
+        "text-muted": !e(@smart_input_opts, :context_id, nil)
+      }
     >
-      {@prompt || l("Share something")}
+      <span class="min-w-0 flex-1 break-words">{@prompt || l("Share something")}</span>
+      <#Icon :if={e(@smart_input_opts, :context_id, nil)} iconify="ph:pencil-simple" class="size-5 shrink-0" />
     </button>
   </div>
 {/if}
