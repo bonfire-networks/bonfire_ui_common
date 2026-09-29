@@ -1,0 +1,253 @@
+{#case e(@context_group, :name, nil)}
+  {#match group_name}
+    <div
+      id="composer_header_mockup"
+      class="flex flex-wrap items-center gap-x-1.5 gap-y-1 px-3 py-2 text-sm text-base-content/60 border-t border-dashed border-secondary"
+    >
+      {!-- type, shrunk to an icon: the real list of types, but picking one does nothing --}
+      <Dropdown
+        id="mockup_type"
+        position="bottom-start"
+        trigger_class="btn btn-ghost btn-sm gap-0.5 px-1"
+        label={l("Choose what to create")}
+        trigger_opts={[title: l("Choose what to create")]}
+      >
+        <:trigger>
+          <#Icon iconify="ph:note-pencil-fill" class="w-5 h-5 text-primary" />
+          <#Icon iconify="carbon:chevron-down" class="w-3 h-3" />
+        </:trigger>
+
+        <li class="menu-title">{l("Create")}</li>
+        <li :for={component <- Bonfire.UI.Common.SmartInputModule.modules() |> Enum.uniq()}>
+          <a class="flex items-center gap-2">
+            <Iconify.iconify
+              icon={Bonfire.UI.Common.SmartInput.LiveHandler.type_icon(component)}
+              class="w-4 h-4 shrink-0 text-muted"
+            />
+            <span>{Bonfire.UI.Common.SmartInput.LiveHandler.type_label(component)}</span>
+          </a>
+        </li>
+      </Dropdown>
+
+      
+
+      
+      <span>{l("in")}</span>
+      {!-- where it lives --}
+      <Dropdown
+        id="mockup_place"
+        position="bottom-start"
+        trigger_class="btn btn-ghost btn-sm gap-1 px-1 font-medium text-base-content normal-case"
+        label={l("Post in")}
+      >
+        <:trigger>
+          {#if group_name}
+            <#Icon iconify="ph:users-three-fill" class="w-4 h-4 text-primary" />
+            <span>{group_name}</span>
+          {#else}
+            <#Icon iconify="ph:user-circle-fill" class="w-4 h-4 text-primary" />
+            <span>{l("your profile")}</span>
+          {/if}
+          <#Icon iconify="carbon:chevron-down" class="w-3 h-3" />
+        </:trigger>
+
+        
+        <li class="menu-title">{l("Post in")}</li>
+        <li class="px-3 py-2 text-xs text-base-content/70 max-w-72 whitespace-normal">
+          {if !group_name, do: l("Shows on your profile and in your followers' feeds.")}
+        </li>
+        <li>
+          <a class={active: !group_name}>
+            <#Icon iconify="ph:user-circle-fill" class="w-4 h-4" />
+            <span class="flex-1">{l("Your profile")}</span>
+            <#Icon :if={!group_name} iconify="ph:check" class="w-4 h-4 opacity-60" />
+          </a>
+        </li>
+        
+        
+        <li class="menu-title">{l("In a group")}</li>
+        <li class="px-3 py-2 text-xs text-base-content/70 max-w-72 whitespace-normal">
+          {if group_name, do:
+              l("Lives in %{name}: shown in the group, and to whoever the group's visibility allows.",
+                name: group_name
+              )}
+        </li>
+        <li :if={group_name}>
+          <a class="active">
+            <#Icon iconify="ph:users-three-fill" class="w-4 h-4" />
+            <span class="flex-1">{group_name}</span>
+            <#Icon iconify="ph:check" class="w-4 h-4 opacity-60" />
+          </a>
+        </li>
+        <li>
+          <a>
+            <#Icon iconify="ph:users-three-fill" class="w-4 h-4" />
+            <span>{l("Gardening club")}</span>
+          </a>
+        </li>
+        
+        <li>
+          <a>
+            <#Icon iconify="ph:users-three-fill" class="w-4 h-4" />
+            <span>{l("Coop tech")}</span>
+          </a>
+        </li>
+      </Dropdown>
+
+      <span>{l("as")}</span>
+      {!-- who posts --}
+      <Dropdown
+        id="mockup_identity"
+        position="bottom-start"
+        trigger_class="btn btn-ghost btn-sm gap-1 px-1 font-medium text-base-content normal-case"
+        label={l("as")}
+      >
+        <:trigger>
+          <Bonfire.UI.Common.AvatarLive
+            bg_class="rounded-full"
+            wrapper_class="border-0 avatar !flex w-5 h-5"
+            class="inline-block object-cover w-full rounded-full"
+            src={Media.avatar_url(current_user(@__context__)) || @__context__[:current_user_avatar_url]}
+            user_id={current_user_id(@__context__)}
+            parent_id="composer_header_mockup"
+            is_remote={false}
+          />
+          <!-- <span>{e(current_user(@__context__), :profile, :name, l("you"))}</span> -->
+          <#Icon iconify="carbon:chevron-down" class="w-3 h-3" />
+        </:trigger>
+
+        <li class="menu-title">{l("Post as")}</li>
+        <li>
+          <a class="active">
+            <Bonfire.UI.Common.AvatarLive
+            bg_class="rounded-full"
+            wrapper_class="border-0 avatar !flex w-5 h-5"
+            class="inline-block object-cover w-full rounded-full"
+            src={Media.avatar_url(current_user(@__context__)) || @__context__[:current_user_avatar_url]}
+            user_id={current_user_id(@__context__)}
+            parent_id="composer_header_mockup"
+            is_remote={false}
+          />
+            <span class="flex-1">{e(current_user(@__context__), :profile, :name, l("you"))}</span>
+            <#Icon iconify="ph:check" class="w-4 h-4 opacity-60" />
+          </a>
+        </li>
+        <li>
+          <a>
+            <img src="/images/bonfire-icon.png" alt="Instance logo" loading="eager" fetchpriority="high" class="w-5 h-5">
+            <span class="flex-1">{l("Bonfire")}</span>
+          </a>
+        </li>
+        
+        <li :if={group_name}>
+          <a>
+            <#Icon iconify="ph:users-three-fill" class="w-5 h-5" />
+            <span class="flex-1">{group_name}</span>
+          </a>
+        </li>
+      </Dropdown>
+
+      
+      <span>{l("for")}</span>
+      {!-- who sees it --}
+      {#if group_name}
+        <Dropdown
+          id="mockup_visibility"
+          position="bottom-start"
+          trigger_class="btn btn-ghost btn-sm gap-1 px-1 font-medium text-base-content normal-case"
+          label={l("Shared with")}
+        >
+          <:trigger>
+            <#Icon iconify="ph:lock-fill" class="w-4 h-4 text-primary" />
+            <span>{l("members")}</span>
+          </:trigger>
+          <li class="px-3 py-2 text-xs text-base-content/70 max-w-72 whitespace-normal">
+            {l("Posts in %{name} are shared with its members, unless you choose otherwise.",
+              name: group_name
+            )}
+          </li>
+          <li>
+            <a>
+              <#Icon iconify="ph:globe-fill" class="w-4 h-4" />
+              <span class="flex-1">{l("Everyone (public)")}</span>
+            </a>
+          </li>
+          <li>
+            <a class="active">
+              <#Icon iconify="ph:lock-fill" class="w-4 h-4" />
+              <span class="flex-1">{l("Group members")}</span>
+              <#Icon iconify="ph:check" class="w-4 h-4 opacity-60" />
+            </a>
+          </li>
+          <li>
+            <a>
+              <#Icon iconify="ph:shield-fill" class="w-4 h-4" />
+              <span class="flex-1">{l("Group moderators only")}</span>
+            </a>
+          </li>
+        </Dropdown>
+      {#else}
+        <Dropdown
+          id="mockup_visibility"
+          position="bottom-start"
+          trigger_class="btn btn-ghost btn-sm gap-1 px-1 font-medium text-base-content normal-case"
+          label={l("Visible to")}
+        >
+          <:trigger>
+            <#Icon iconify="ph:globe-fill" class="w-4 h-4 text-primary" />
+            <span>{l("everyone")}</span>
+            <#Icon iconify="carbon:chevron-down" class="w-3 h-3" />
+          </:trigger>
+          <li class="menu-title">{l("Visible to")}</li>
+          <li>
+            <a class="active">
+              <#Icon iconify="ph:globe-fill" class="w-4 h-4" />
+              <span class="flex-1">{l("Everyone (public)")}</span>
+              <#Icon iconify="ph:check" class="w-4 h-4 opacity-60" />
+            </a>
+          </li>
+          <li>
+            <a>
+              <#Icon iconify="ph:map-pin-fill" class="w-4 h-4" />
+              <span>{l("Members of this instance")}</span>
+            </a>
+          </li>
+          <li>
+            <a>
+              <#Icon iconify="ph:at-fill" class="w-4 h-4" />
+              <span>{l("Only people mentioned")}</span>
+            </a>
+          </li>
+          <li>
+            <a>
+              <#Icon iconify="ph:eye-duotone" class="w-4 h-4" />
+              <span>{l("Only people you follow")}</span>
+            </a>
+          </li>
+          {!-- several circles can be picked at once: each row toggles a tick, like the preset rows above, rather than a checkbox --}
+          <li>
+            <details>
+              <summary>
+                <#Icon iconify="ph:circles-three-duotone" class="w-4 h-4" />
+                <span>{l("Specific circles")}</span>
+              </summary>
+              <ul>
+                <li :for={{circle, ticked?} <- [{l("Close friends"), true}, {l("Team"), false}, {l("Coop federation members"), false}]}>
+                  <a class={active: ticked?}>
+                    <span class="flex-1">{circle}</span>
+                    <#Icon :if={ticked?} iconify="ph:check" class="w-4 h-4 opacity-60" />
+                  </a>
+                </li>
+              </ul>
+            </details>
+          </li>
+          <li>
+            <a>
+              <#Icon iconify="ph:sliders-horizontal-duotone" class="w-4 h-4" />
+              <span>{l("Custom boundaries…")}</span>
+            </a>
+          </li>
+        </Dropdown>
+      {/if}
+    </div>
+{/case}

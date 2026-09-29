@@ -173,6 +173,13 @@
           </button>
         </header>
 
+        {!-- TEMPORARY mock-up for #2352/#2303, not wired: remove once the design is decided. Behind the app-wide `:show_unimplemented` flag, which dev turns on --}
+        <Bonfire.UI.Common.ComposerHeaderMockupLive
+          :if={show_unimplemented?() and @showing_within != :thread_embed and
+            e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
+          context_group={@context_group}
+        />
+
         <div :if={replying?(assigns)} class="reply_in_composer">
           <div
             id="reply_peek"
