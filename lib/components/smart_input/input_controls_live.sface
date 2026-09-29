@@ -160,7 +160,6 @@
                   <input type="hidden" name="sensitive" value={to_string(@show_sensitive)}>
                 </div>
 
-
                 <Dropdown
                   :if={@showing_within != :thread_embed}
                   id="smart_input_more_options"
@@ -237,7 +236,10 @@
                 {!-- |> JS.show(to: "#smart_input_summary") --}
               </div>
             </div>
-            <div id="composer_publish_controls" class="flex flex-wrap items-center gap-2 border-t border-base-content/10 pt-2">
+            <div
+              id="composer_publish_controls"
+              class="flex flex-wrap items-center gap-2 border-t border-base-content/10 pt-2"
+            >
               {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and
                   @reply_to_id in [nil, ""] and @showing_within != :thread_embed}
                 {#case Bonfire.UI.Common.SmartInputModule.modules() |> Enum.uniq()}

@@ -16,6 +16,7 @@ defmodule Bonfire.UI.Common.GroupComposerAudienceTest do
       assert SmartInputLive.group_audience_label(boundary, [], %{}) == "Custom audience"
     end
 
-    assert SmartInputLive.group_audience_label(["members:private"], [], %{read: false}) == "Custom audience"
+    assert SmartInputLive.group_audience_label(["members:private"], [], %{read: false}) ==
+             "Custom audience"
   end
 end

@@ -96,8 +96,11 @@
                           {#match _}
                         {/case}
                         <li>
-                          <button type="button" phx-click="Bonfire.UI.Common.SmartInput:clear_context"
-                            phx-target={@event_target || "#smart_input"}>
+                          <button
+                            type="button"
+                            phx-click="Bonfire.UI.Common.SmartInput:clear_context"
+                            phx-target={@event_target || "#smart_input"}
+                          >
                             {l("Post outside this group or topic")}
                           </button>
                         </li>
@@ -112,12 +115,21 @@
                       >
                         <div class="space-y-3 py-3">
                           <p class="font-semibold">{context_name}</p>
-                          <p>{l("Audience: %{audience}", audience: group_audience_label(@to_boundaries, @exclude_circles, @verb_permissions))}</p>
+                          <p>{l("Audience: %{audience}",
+                              audience: group_audience_label(@to_boundaries, @exclude_circles, @verb_permissions)
+                            )}</p>
                           <p class="text-sm text-muted">{l("This audience is set by the group or topic. Its access rules also apply to participation.")}</p>
                         </div>
                         <:open_btn>
-                          <span data-role="group-composer-audience" class="flex flex-wrap items-center gap-2 text-xs leading-5" role="status">
-                            <Iconify.iconify icon={group_audience_icon(@to_boundaries, @exclude_circles, @verb_permissions)} class="size-4 shrink-0 text-primary" />
+                          <span
+                            data-role="group-composer-audience"
+                            class="flex flex-wrap items-center gap-2 text-xs leading-5"
+                            role="status"
+                          >
+                            <Iconify.iconify
+                              icon={group_audience_icon(@to_boundaries, @exclude_circles, @verb_permissions)}
+                              class="size-4 shrink-0 text-primary"
+                            />
                             {group_audience_label(@to_boundaries, @exclude_circles, @verb_permissions)}
                             <span aria-hidden="true">·</span>
                             <span class="text-primary underline underline-offset-4 decoration-primary/40">{l("Audience details")}</span>
