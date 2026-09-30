@@ -49,10 +49,10 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   Labels the composer's reading audience. Reply and quote overrides do not change the readers; mixed, excluded or otherwise overridden audiences remain custom.
 
       iex> group_audience_label(["members:private"], [], %{})
-      "Members only"
+      "Group members only"
 
       iex> group_audience_label([{"local", "Ignored display name"}], [], %{})
-      "Local"
+      "Users of this instance"
 
       iex> group_audience_label(["public", "members:private"], [], %{})
       "Custom audience"
@@ -97,7 +97,8 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   # an unknown permissions shape stays custom, as in `group_audience_label/3`
   def custom_audience?(_, _), do: true
 
-  defp reading_overrides(permissions), do: Map.drop(permissions, [:reply, :quote, "reply", "quote"])
+  defp reading_overrides(permissions),
+    do: Map.drop(permissions, [:reply, :quote, "reply", "quote"])
 
   defp group_audience_meta(boundaries, [], permissions) when is_map(permissions) do
     case {List.wrap(boundaries), reading_overrides(permissions)} do

@@ -1,7 +1,14 @@
 defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
 
-  @reply_context_keys [:context_id, :to_circles, :to_boundaries, :mentions, :reply_destination, :reply_audiences]
+  @reply_context_keys [
+    :context_id,
+    :to_circles,
+    :to_boundaries,
+    :mentions,
+    :reply_destination,
+    :reply_audiences
+  ]
 
   @doc "Keys that scope the composer to a reply target (a group/topic, specific circles, or mentions). Used to clear reply-specific state while preserving the draft."
   def reply_context_keys, do: @reply_context_keys
@@ -460,7 +467,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     category = if category_id, do: %Needle.Pointer{id: category_id}
 
     with false <-
-           e(assigns(socket), :smart_input_opts, :create_object_type, nil) in [:message, "message"],
+           e(assigns(socket), :smart_input_opts, :create_object_type, nil) in [
+             :message,
+             "message"
+           ],
          reply_id when is_binary(reply_id) <- reply_id,
          true <- Bonfire.Boundaries.can?(current_user(socket), :reply, reply_id),
          true <- audience_id in reply_audiences(category, reply_id, current_user(socket)) do
@@ -508,7 +518,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   def handle_event("toggle_audience_circle", %{"id" => circle_id}, socket) do
     circle =
-      Bonfire.Boundaries.Circles.list_my_for_sidebar(current_user(socket), exclude_stereotypes: true)
+      Bonfire.Boundaries.Circles.list_my_for_sidebar(current_user(socket),
+        exclude_stereotypes: true
+      )
       |> Enum.find(&(id(&1) == circle_id))
 
     # circles are only offered for personal posts (the composer passes "" for "none")
@@ -518,7 +530,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
       circles =
         if Bonfire.UI.Boundaries.AudiencePickerLive.circle_selected?(circles, circle_id),
-          do: Bonfire.Boundaries.Circles.LiveHandler.remove_from_circle_tuples([circle_id], circles),
+          do:
+            Bonfire.Boundaries.Circles.LiveHandler.remove_from_circle_tuples([circle_id], circles),
           else: circles ++ [{circle_id, "participate"}]
 
       # Keep an empty selection private too: removing recipients must never broaden access.
@@ -874,7 +887,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   @doc "The audiences a reply to `reply_to` may choose, falling back to the personal choices when groups are not enabled."
   def reply_audiences(category, reply_to, current_user) do
-    maybe_apply(Bonfire.Classify.Boundaries, :list_reply_audiences, [category, reply_to, current_user],
+    maybe_apply(
+      Bonfire.Classify.Boundaries,
+      :list_reply_audiences,
+      [category, reply_to, current_user],
       fallback_return: ["clone_context", "reply_participants"]
     )
   end
@@ -990,7 +1006,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       # First visit lands directly on a topic: when the parent group is preloaded
       # we also fetch its sibling topics so the picker still works.
       {:ok, %{type: :topic} = topic} ->
-        parent = topic |> repo().maybe_preload(parent_category: [:profile]) |> e(:parent_category, nil)
+        parent =
+          topic |> repo().maybe_preload(parent_category: [:profile]) |> e(:parent_category, nil)
+
         parent_id = e(parent, :id, nil)
 
         %{

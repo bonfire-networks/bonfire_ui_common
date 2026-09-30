@@ -3,7 +3,15 @@ defmodule Bonfire.UI.Common.GroupComposerAudienceTest do
   @moduletag :ui
 
   alias Bonfire.UI.Common.SmartInputLive
-  doctest SmartInputLive, import: true, only: [group_audience_label: 3, group_audience_icon: 3, custom_audience?: 2, reply_audience_label: 1]
+
+  doctest SmartInputLive,
+    import: true,
+    only: [
+      group_audience_label: 3,
+      group_audience_icon: 3,
+      custom_audience?: 2,
+      reply_audience_label: 1
+    ]
 
   test "uses the current post visibility instead of inferring privacy from the group" do
     assert SmartInputLive.group_audience_label(["public"], [], %{}) == "Public (federated)"
@@ -25,10 +33,13 @@ defmodule Bonfire.UI.Common.GroupComposerAudienceTest do
         value <- [:can, :cannot, nil],
         {boundary, label, icon} <- [
           {"public", "Public (federated)", "ph:globe-duotone"},
-          {"members:private", "Members only", "ph:lock-duotone"}
+          {"members:private", "Group members only", "ph:lock-duotone"}
         ] do
       permissions = %{verb => %{"circle-id" => value}}
-      assert SmartInputLive.group_audience_label([{boundary, "Ignored"}], [], permissions) == label
+
+      assert SmartInputLive.group_audience_label([{boundary, "Ignored"}], [], permissions) ==
+               label
+
       assert SmartInputLive.group_audience_icon([boundary], [], permissions) == icon
     end
   end
@@ -38,14 +49,22 @@ defmodule Bonfire.UI.Common.GroupComposerAudienceTest do
         value <- [:can, :cannot] do
       permissions = %{"reply" => %{"circle-id" => :cannot}, verb => %{"circle-id" => value}}
       assert SmartInputLive.group_audience_label(["public"], [], permissions) == "Custom audience"
-      assert SmartInputLive.group_audience_icon(["public"], [], permissions) == "ph:shield-check-duotone"
+
+      assert SmartInputLive.group_audience_icon(["public"], [], permissions) ==
+               "ph:shield-check-duotone"
     end
 
     permissions = %{"reply" => %{"circle-id" => :cannot}}
-    assert SmartInputLive.group_audience_label(["public"], ["excluded-circle"], permissions) == "Custom audience"
-    assert SmartInputLive.group_audience_label(["public", "members:private"], [], permissions) == "Custom audience"
-    assert SmartInputLive.group_audience_label(["unknown-policy"], [], permissions) == "Custom audience"
+
+    assert SmartInputLive.group_audience_label(["public"], ["excluded-circle"], permissions) ==
+             "Custom audience"
+
+    assert SmartInputLive.group_audience_label(["public", "members:private"], [], permissions) ==
+             "Custom audience"
+
+    assert SmartInputLive.group_audience_label(["unknown-policy"], [], permissions) ==
+             "Custom audience"
+
     assert SmartInputLive.group_audience_label(["public"], [], nil) == "Custom audience"
   end
-
 end
