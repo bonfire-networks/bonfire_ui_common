@@ -19,185 +19,316 @@
         <!-- <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} /> -->
         <header
           :if={@showing_within != :thread_embed}
-          class="z-50 flex items-center gap-3 justify-between w-full sticky top-0 px-4 py-2 border-b border-base-content/10 lg:rounded-t-xl bg-base-100 bg-gradient-to-r from-primary/5 to-transparent md:z-auto md:relative"
+          class="z-50 flex shrink-0 flex-col w-full sticky top-0 border-b border-base-content/10 lg:rounded-t-xl bg-base-100 md:z-auto md:relative"
         >
-          <div class="flex min-w-0 items-center gap-3">
-            <div
-              class="shrink-0"
-              title={e(current_user(@__context__), :profile, :name, nil) ||
-                e(current_user(@__context__), :character, :username, nil)}
-            >
-              <Bonfire.UI.Common.AvatarLive
-                bg_class="rounded-full"
-                ring
-                title={e(current_user(@__context__), :profile, :name, "Anon")}
-                wrapper_class="border-0 avatar !flex w-9 h-9"
-                class="inline-block object-cover w-full rounded-full"
-                src={Media.avatar_url(current_user(@__context__)) || @__context__[:current_user_avatar_url]}
-                user_id={current_user_id(@__context__)}
-                parent_id="smart_input"
-                is_remote={false}
-              />
+          <div
+            id="composer_resize_handle"
+            data-role="composer_resize"
+            role="separator"
+            tabindex="0"
+            aria-orientation="horizontal"
+            aria-label={l("Resize composer")}
+            aria-controls="smart_input"
+            aria-valuemin="360"
+            aria-valuemax="900"
+            aria-valuenow="500"
+            title={l("Drag to resize, or use Up and Down arrow keys")}
+            class="composer-resize-handle focus-ring"
+          ><span aria-hidden="true"></span></div>
+          <div id="composer_header_actions" class="flex items-center gap-2 px-4 py-1">
+            <div id="composer_author" class="flex shrink-0 items-center">
+              <div
+                class="shrink-0"
+                title={e(current_user(@__context__), :profile, :name, nil) ||
+                  e(current_user(@__context__), :character, :username, nil)}
+              >
+                <Bonfire.UI.Common.AvatarLive
+                  bg_class="rounded-full"
+                  ring
+                  title={e(current_user(@__context__), :profile, :name, "Anon")}
+                  wrapper_class="border-0 avatar !flex w-7 h-7"
+                  class="inline-block object-cover w-full rounded-full"
+                  src={Media.avatar_url(current_user(@__context__)) || @__context__[:current_user_avatar_url]}
+                  user_id={current_user_id(@__context__)}
+                  parent_id="smart_input"
+                  is_remote={false}
+                />
+              </div>
+              <div class="min-w-0">
+                <span class="sr-only">{l("Posting as")}</span>
+                <span class="sr-only">{e(current_user(@__context__), :profile, :name, nil) || e(current_user(@__context__), :character, :username, nil)}</span>
+              </div>
             </div>
-            <div class="flex min-w-0 flex-col items-start gap-1">
-              {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
-                {#case e(@context_group, :name, nil)}
-                  {#match context_name when is_binary(context_name) and context_name != ""}
-                    <div class="flex min-w-0 flex-col items-start">
-                      <Dropdown
-                        id="composer_destination"
-                        position="bottom-start"
-                        label={l("Posting in %{name}", name: context_name)}
-                        trigger_class="btn btn-ghost btn-sm h-auto min-h-9 text-left whitespace-normal px-0 gap-2"
-                      >
-                        <:trigger>
-                          <span class="min-w-0 break-words font-semibold">{context_name}</span>
-                          <#Icon iconify="ph:caret-down" class="size-4 shrink-0 text-muted" />
-                        </:trigger>
-                        {#case e(@context_group, :group_id, nil) && e(@context_group, :topics, [])}
-                          {#match topics when is_list(topics) and topics != []}
-                            <li>
-                              <a
-                                phx-click="Bonfire.UI.Common.SmartInput:pick_context"
-                                phx-value-id={@context_group.group_id}
-                                phx-target={@event_target || "#smart_input"}
-                                aria-current={if e(@context_group, :type, nil) == :group, do: "true"}
-                                class={active: e(@context_group, :type, nil) == :group}
-                              >
-                                <Iconify.iconify icon="ph:users-three-fill" class="w-4 h-4 shrink-0" />
-                                <span class="truncate flex-1">{@context_group.group_name}</span>
-                                {#if e(@context_group, :type, nil) == :group}
-                                  <#Icon iconify="ph:check" class="w-4 h-4 shrink-0 opacity-60" />
-                                {/if}
-                              </a>
-                            </li>
-                            <li class="menu-title text-[11px] font-medium uppercase tracking-wider text-base-content/40 pt-2">
-                              {l("Topics")}
-                            </li>
-                            {#for topic <- topics}
-                              <li>
-                                <a
-                                  phx-click="Bonfire.UI.Common.SmartInput:pick_context"
-                                  phx-value-id={id(topic)}
-                                  phx-target={@event_target || "#smart_input"}
-                                  aria-current={if id(topic) == e(@context_group, :id, nil), do: "true"}
-                                  class={active: id(topic) == e(@context_group, :id, nil)}
-                                >
-                                  <Iconify.iconify icon="ph:hash-fill" class="w-4 h-4 shrink-0" />
-                                  <span class="truncate flex-1">
-                                    {Bonfire.Classify.Web.Preview.CategoryLive.name(topic, l("topic"))}
-                                  </span>
-                                  {#if id(topic) == e(@context_group, :id, nil)}
-                                    <#Icon iconify="ph:check" class="w-4 h-4 shrink-0 opacity-60" />
-                                  {/if}
-                                </a>
-                              </li>
-                            {/for}
-                          {#match _}
-                        {/case}
-                        <li>
-                          <button
-                            type="button"
-                            phx-click="Bonfire.UI.Common.SmartInput:clear_context"
-                            phx-target={@event_target || "#smart_input"}
-                          >
-                            {l("Post outside this group or topic")}
-                          </button>
-                        </li>
-                      </Dropdown>
-                      <Bonfire.UI.Common.OpenModalLive
-                        id="composer_group_permissions"
-                        reusable_modal_id="persistent_modal"
-                        title_text={l("Audience details")}
-                        without_form
-                        no_actions
-                        open_btn_wrapper_class="text-left text-muted"
-                      >
-                        <div class="space-y-3 py-3">
-                          <p class="font-semibold">{context_name}</p>
-                          <p>{l("Audience: %{audience}",
-                              audience: group_audience_label(@to_boundaries, @exclude_circles, @verb_permissions)
-                            )}</p>
-                          <p class="text-sm text-muted">{l("This audience is set by the group or topic. Its access rules also apply to participation.")}</p>
-                        </div>
-                        <:open_btn>
-                          <span
-                            data-role="group-composer-audience"
-                            class="flex flex-wrap items-center gap-2 text-xs leading-5"
-                            role="status"
-                          >
+
+              {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and
+                  @reply_to_id in [nil, ""] and @showing_within != :thread_embed}
+                {#case Bonfire.UI.Common.SmartInputModule.modules() |> Enum.uniq()}
+                  {#match [_, _ | _] = available_types}
+                    {#case LiveHandler.active_smart_input_component(
+                        nil,
+                        e(@smart_input_opts, :create_object_type, nil)
+                      )}
+                      {#match active_component}
+                        <Dropdown
+                          wrapper_opts={["data-boundary": "#composer_container"]}
+                          id="composer_type_chooser"
+                          position="bottom-start"
+                          trigger_class="flex min-h-11 items-center gap-2 rounded-lg px-2 text-left font-semibold hover:bg-base-content/5 focus-ring"
+                          label={l("Choose what to create")}
+                          trigger_opts={[title: l("Choose what to create")]}
+                        >
+                          <:trigger>
                             <Iconify.iconify
-                              icon={group_audience_icon(@to_boundaries, @exclude_circles, @verb_permissions)}
-                              class="size-4 shrink-0 text-primary"
+                              icon={LiveHandler.type_icon(active_component, e(@smart_input_opts, :create_object_type, nil))}
+                              class="w-5 h-5"
                             />
-                            {group_audience_label(@to_boundaries, @exclude_circles, @verb_permissions)}
-                            <span aria-hidden="true">·</span>
-                            <span class="text-primary underline underline-offset-4 decoration-primary/40">{l("Audience details")}</span>
-                          </span>
-                        </:open_btn>
-                      </Bonfire.UI.Common.OpenModalLive>
-                    </div>
+                            <span class="text-sm normal-case">
+                              {LiveHandler.type_label(active_component, e(@smart_input_opts, :create_object_type, nil))}
+                            </span>
+                            <#Icon iconify="carbon:chevron-down" class="w-3 h-3 text-muted" />
+                          </:trigger>
+
+                          <li :for={component <- available_types}>
+                            <a
+                              phx-click={LiveHandler.open_type(%JS{}, component, @smart_input_opts)}
+                              phx-target="#smart_input"
+                              aria-current={if component == active_component, do: "true"}
+                              class={
+                                "flex items-center gap-2",
+                                active: component == active_component
+                              }
+                            >
+                              <Iconify.iconify icon={LiveHandler.type_icon(component)} class="w-4 h-4 shrink-0 text-muted" />
+                              <span>{LiveHandler.type_label(component)}</span>
+                            </a>
+                          </li>
+                        </Dropdown>
+                    {/case}
                   {#match _}
-                    {!-- In thread_embed the boundary follows the parent thread, so we hide
-                        the boundary picker. --}
-                    <div :if={@showing_within != :thread_embed} class="flex flex-col items-start gap-1">
-                      <span class="text-xs text-muted">{l("Audience and permissions")}</span>
-                      <StatelessComponent
-                        module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
-                        to_boundaries={@to_boundaries}
-                        boundary_preset={@boundary_preset}
-                        preview_boundary_for_id={@preview_boundary_for_id}
-                        preview_boundary_for_username={@preview_boundary_for_username}
-                        preview_boundary_verbs={@preview_boundary_verbs}
-                        to_circles={@to_circles}
-                        exclude_circles={@exclude_circles}
-                        verb_permissions={@verb_permissions}
-                        setting_boundaries={:create_object}
-                        context_id={@context_id}
-                        context_group={@context_group}
-                        event_target={@event_target}
-                      />
-                    </div>
                 {/case}
-              {#else}
-                <div
-                  class="border-warning/50 flex items-center gap-2 btn-sm h-[30px] btn text-sm btn-outline font-normal"
-                  title={l(
-                    "Messages on the fediverse are not currently end-to-end encrypted. Do not share any sensitive information."
-                  )}
-                >
-                  <#Icon iconify="ph:lock-simple-open-fill" class="w-4 h-4" />
-                  <span class="text-sm">{l("Not encrypted")}</span>
-                </div>
               {/if}
+
+            <Dropdown :if={replying?(assigns)}
+              wrapper_opts={["data-boundary": "#composer_container"]}
+              id="composer_reply_actions"
+              menu={false}
+              close_on_select
+              position="bottom-start"
+              wrapper_class="min-w-0"
+              trigger_class="flex min-h-11 min-w-0 max-w-full items-center gap-2 rounded-lg px-2 text-left hover:bg-base-content/5 focus-ring"
+              panel_class="!w-72 max-w-[calc(100vw-2rem)] !p-1.5"
+            >
+              <:trigger>
+                <#Icon iconify="ph:arrow-bend-up-left" class="size-5 shrink-0 text-primary" />
+                {#case reply_to_author(assigns)}
+                  {#match %{name: who_name, handle: who_handle}}
+                    <span class="min-w-0 truncate text-sm font-semibold">{l("Replying to %{name}", name: who_name || who_handle || l("this post"))}</span>
+                {/case}
+                <#Icon iconify="ph:caret-down" class="size-4 shrink-0 text-muted" />
+              </:trigger>
+              <button id="toggle_reply_preview" type="button" aria-controls="reply_peek" aria-expanded="false"
+                phx-click={JS.toggle_attribute({"hidden", ""}, to: "#reply_peek") |> JS.toggle_attribute({"aria-expanded", "true", "false"})}
+                class="group flex w-full min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm hover:bg-base-200 focus-ring">
+                <#Icon iconify="ph:text-align-left" class="size-5 shrink-0 text-muted" />
+                <span class="group-aria-expanded:hidden">{l("Show original post")}</span>
+                <span class="hidden group-aria-expanded:inline">{l("Hide original post")}</span>
+              </button>
+            <Bonfire.UI.Common.OpenModalLive
+              id="convert_reply"
+              reusable_modal_id="persistent_modal"
+              title_text={l("Remove reply?")}
+              open_btn_text={l("Remove reply")}
+              open_btn_aria_label={l("Remove reply")}
+              open_modal_wrapper_class="w-full"
+              open_btn_wrapper_class="flex min-h-11 items-start gap-3 rounded-lg px-3 py-2.5 text-left hover:bg-base-200 focus-ring"
+              without_form
+            >
+              <:open_btn>
+                <#Icon iconify="ph:arrow-bend-up-left" class="mt-0.5 size-5 shrink-0 text-muted" />
+                <span class="min-w-0">
+                  <span class="block text-sm font-medium">{l("Remove reply")}</span>
+                  <span class="mt-0.5 block text-xs text-muted">{l("Keep your draft as a new post")}</span>
+                </span>
+              </:open_btn>
+              <p>{l("Keep your text and attachments and turn this reply into a new post.")}</p>
+              <p class="text-sm text-muted">{l("You can change the destination and visibility before publishing. Nothing will be posted now.")}</p>
+              <:cancel_btn><button id="keep_replying" type="button" class="btn btn-ghost">{l("Keep replying")}</button></:cancel_btn>
+              <:action_btns>
+                <button id="confirm_standalone_post" type="button"
+                  phx-click="Bonfire.UI.Common.SmartInput:remove_data" phx-target="#smart_input"
+                  class="btn btn-primary">{l("Remove reply")}</button>
+              </:action_btns>
+            </Bonfire.UI.Common.OpenModalLive>
+            </Dropdown>
+            <div class="ml-auto flex shrink-0 items-center gap-0.5">
+              <button
+                id="expand_composer_button"
+                data-role="composer_fullscreen"
+                data-expand-label={l("Expand composer")}
+                data-restore-label={l("Restore composer size")}
+                type="button"
+                aria-label={l("Expand composer")}
+                title={l("Expand composer")}
+                aria-pressed="false"
+                class="composer-fullscreen-button btn btn-sm btn-ghost btn-circle min-h-11 min-w-11 text-muted focus-ring"
+              >
+                <span class="composer-expand-icon"><#Icon iconify="ph:arrows-out-simple" class="size-5" /></span>
+                <span class="composer-restore-icon"><#Icon iconify="ph:arrows-in-simple" class="size-5" /></span>
+              </button>
+              <button
+                id="minimize_composer_button"
+                phx-click={LiveHandler.minimize()}
+                phx-target="#smart_input"
+                type="button"
+                aria-label={l("Minimise composer, keep draft")}
+                title={l("Minimise composer, keep draft")}
+                class="btn btn-sm btn-ghost btn-circle min-h-11 min-w-11 text-muted focus-ring"
+              ><#Icon iconify="ph:minus" class="size-5" /></button>
             </div>
           </div>
-          <button
-            id="minimize_composer_button"
-            phx-click={LiveHandler.minimize()}
-            phx-target="#smart_input"
-            type="button"
-            class="btn btn-sm btn-ghost btn-circle shrink-0 self-start text-muted"
-            title={l("Close composer, keep draft")}
-            aria-label={l("Close composer, keep draft")}
+          <div
+            id="composer_policy_controls"
+            role="group"
+            aria-label={l("Audience and permissions")}
+            class="w-full min-w-0 border-t border-base-content/10"
           >
-            <#Icon iconify="ph:x" class="size-5" />
-          </button>
+            {#if e(@smart_input_opts, :create_object_type, nil) in ["message", :message]}
+              <div
+                class="flex items-center gap-2 px-4 py-3 text-sm text-warning"
+                title={l(
+                  "Messages on the fediverse are not currently end-to-end encrypted. Do not share any sensitive information."
+                )}
+              >
+                <#Icon iconify="ph:lock-simple-open-fill" class="w-4 h-4" />
+                <span class="text-sm">{l("Not encrypted")}</span>
+              </div>
+            {#elseif replying?(assigns) or group_context?(@context_group) or @showing_within != :thread_embed}
+              {!-- Where it's posted on the left, who can see it on the right. In thread_embed the
+                  boundary follows the parent thread, so personal posts get no policy row there. --}
+              <div class="grid w-full min-w-0 grid-cols-1 sm:grid-cols-2">
+                {#if replying?(assigns)}
+                  <div
+                    id="composer_reply_destination"
+                    data-role="reply_destination"
+                    class="flex min-h-12 min-w-0 items-center gap-2 px-4 py-2"
+                  >
+                    <span class="sr-only">{l("Reply in")}</span>
+                    <span class="flex min-w-0 items-center gap-2 text-sm font-semibold">
+                      <#Icon iconify="ph:chats" class="size-5 shrink-0 text-muted" />
+                      <span class="break-words">
+                        <span :if={e(@smart_input_opts, :reply_destination, :group_name, nil)}>{e(@smart_input_opts, :reply_destination, :group_name, nil)} /</span>
+                        {e(@smart_input_opts, :reply_destination, :name, nil) || l("Original conversation")}
+                      </span>
+                    </span>
+                  </div>
+                {#else}
+                  <StatefulComponent
+                    module={maybe_component(Bonfire.UI.Boundaries.AudiencePickerLive, @__context__)}
+                    id="composer_audience_picker"
+                    mode={:destination}
+                    to_boundaries={@to_boundaries}
+                    context_group={@context_group}
+                    event_target={@event_target}
+                  />
+                {/if}
+                <div class="min-w-0 border-t border-base-content/10 sm:border-t-0 sm:border-l">
+                  {#if replying?(assigns)}
+                    <Bonfire.UI.Common.PolicyDropdownLive
+                      id="composer_reply_visibility"
+                      label={l("Visible to")}
+                      icon="ph:shield-check-duotone"
+                      selected_label={reply_audience_label(@to_boundaries)}
+                      description={l("Replies use the original post's visibility by default. Narrower audiences still include the original author.")}
+                      options={reply_audience_options(@smart_input_opts, @to_boundaries)}
+                      event="Bonfire.UI.Common.SmartInput:select_reply_audience"
+                      option_attr="data-reply-audience"
+                      event_target={@event_target}
+                    />
+                  {#elseif group_context?(@context_group)}
+                    <Bonfire.UI.Common.PolicyDropdownLive
+                      id="composer_group_visibility"
+                      label={l("Visible to")}
+                      icon={group_audience_icon(@to_boundaries, @exclude_circles, @verb_permissions)}
+                      selected_label={group_audience_label(@to_boundaries, @exclude_circles, @verb_permissions)}
+                      status_opts={["data-role": "group-composer-audience"]}
+                      description={l("Choose who can see this post within the group's rules.")}
+                      options={group_audience_options(@context_group, @to_boundaries)}
+                      event="Bonfire.UI.Common.SmartInput:select_group_audience"
+                      option_attr="data-group-audience"
+                      event_target={@event_target}
+                    />
+                  {#else}
+                    <StatelessComponent
+                      module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
+                      to_boundaries={@to_boundaries}
+                      boundary_preset={@boundary_preset}
+                      preview_boundary_for_id={@preview_boundary_for_id}
+                      preview_boundary_for_username={@preview_boundary_for_username}
+                      preview_boundary_verbs={@preview_boundary_verbs}
+                      to_circles={@to_circles}
+                      exclude_circles={@exclude_circles}
+                      verb_permissions={@verb_permissions}
+                      setting_boundaries={:create_object}
+                      context_id={@context_id}
+                      context_group={@context_group}
+                      event_target={@event_target}
+                    />
+                  {/if}
+                </div>
+              </div>
+            {/if}
+          </div>
+          <div
+            :if={not replying?(assigns) and e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and
+              not is_nil(e(@context_group, :group_id, nil)) and e(@context_group, :topics, []) != []}
+            id="composer_topic_controls"
+            class="border-t border-base-content/10 px-2 py-1"
+          >
+            <Dropdown
+              wrapper_opts={["data-boundary": "#composer_container"]}
+              id="composer_destination"
+              menu={false}
+              close_on_select
+              position="bottom-start"
+              trigger_class="flex min-h-11 max-w-full items-center gap-2 rounded px-2 text-sm hover:bg-base-content/5 focus-ring"
+              panel_class="!w-72 max-w-[calc(100vw-2rem)] !p-2 max-h-72 overflow-y-auto overscroll-contain"
+              label={l("Choose an optional topic")}
+            >
+              <:trigger>
+                <#Icon iconify="ph:chats-circle-duotone" class="size-4 shrink-0 text-primary" />
+                <span class="text-muted">{l("Topic")}</span>
+                <span class="min-w-0 break-words font-medium">{if @context_group.id == @context_group.group_id, do: l("Whole group"), else: @context_group.name}</span>
+                <#Icon iconify="ph:caret-down" class="size-4 shrink-0 text-muted" />
+              </:trigger>
+              <button type="button" phx-click="Bonfire.UI.Common.SmartInput:pick_context"
+                phx-value-id={@context_group.group_id} phx-target={@event_target || "#smart_input"}
+                aria-pressed={"#{@context_group.id == @context_group.group_id}"}
+                class="w-full min-h-11 rounded px-2 py-2 text-left hover:bg-base-200 aria-pressed:bg-primary/10 aria-pressed:text-primary focus-ring">
+                {l("Whole group")}
+              </button>
+              {#for topic <- @context_group.topics}
+                <button type="button" phx-click="Bonfire.UI.Common.SmartInput:pick_context"
+                  phx-value-id={id(topic)} phx-target={@event_target || "#smart_input"}
+                  aria-pressed={"#{@context_group.id == id(topic)}"}
+                  class="w-full min-h-11 rounded px-2 py-2 text-left hover:bg-base-200 aria-pressed:bg-primary/10 aria-pressed:text-primary focus-ring">
+                  {Bonfire.Classify.Web.Preview.CategoryLive.name(topic, l("Topic"))}
+                </button>
+              {/for}
+            </Dropdown>
+          </div>
         </header>
 
-        {!-- TEMPORARY mock-up for #2352/#2303, not wired: remove once the design is decided. Behind the app-wide `:show_unimplemented` flag, which dev turns on --}
+        {!-- TEMPORARY mock-up for #2352/#2303, not wired: remove once the design is decided. Behind the app-wide `:show_unimplemented` flag, which dev turns on.
+             Commented out (not deleted) now that the composer implements this design; the component stays for reference.
         <Bonfire.UI.Common.ComposerHeaderMockupLive
           :if={show_unimplemented?() and @showing_within != :thread_embed and
             e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
           context_group={@context_group}
         />
+        --}
 
-        <div :if={replying?(assigns)} class="reply_in_composer">
-          <div
-            id="reply_peek"
-            class="relative !max-h-0 max-h-[150px] overflow-y-auto overscroll-y-contain bg-base-100"
-          >
-            <div class="p-2 border-t-hair border-secondary">
+        <section :if={replying?(assigns)} id="reply_peek" hidden aria-label={l("Original post")}
+          class="reply_in_composer shrink-0 max-h-40 overflow-y-auto overscroll-contain border-b border-base-content/10 bg-base-200/40 px-4 py-3">
               <StatelessComponent
                 module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
                 activity_component_id={deterministic_dom_id(
@@ -211,53 +342,13 @@
                 object={@object || @reply_to_id}
                 thread_mode={:nested}
                 class={@replied_activity_class}
+                hide_activity="subject"
                 show_minimal_subject_and_note={Bonfire.UI.Social.ActivityLive.name_or_text(@object) || true}
                 showing_within={:smart_input}
                 activity_inception={@activity_inception}
                 object_boundary={:skip_boundary_check}
               />
-            </div>
-          </div>
-
-          {#case reply_to_author(assigns)}
-            {#match %{name: who_name, handle: who_handle}}
-              <div
-                id="reply_banner"
-                class="relative z-10 flex items-center border-b-hair border-t-hair border-secondary min-h-9 mt-px"
-              >
-                {!-- Toggle fills the whole banner so a click anywhere (except the
-                     ✕, which sits on top as a sibling) hides/shows the post. --}
-                <button
-                  id="reply_toggle"
-                  type="button"
-                  aria-controls="reply_peek"
-                  aria-expanded="false"
-                  phx-click={JS.toggle_class("!max-h-0", to: "#reply_peek")
-                  |> JS.toggle_class("rotate-180", to: "#reply_caret")
-                  |> JS.toggle_class("-mt-9 backdrop-blur-md", to: "#reply_banner")
-                  |> JS.toggle_attribute({"aria-expanded", "true", "false"}, to: "#reply_toggle")}
-                  class="px-3 flex cursor-pointer items-center gap-1.5 text-body text-base-content hover:text-base-content"
-                  title={l("Show or hide the post you're replying to")}
-                >
-                  <span class="truncate">
-                    {l("Replying to")} <span class="font-medium text-base-content">{who_name || who_handle ||
-                        l("this post")}</span>
-                  </span>
-                </button>
-
-                <button
-                  type="button"
-                  phx-click="Bonfire.UI.Common.SmartInput:remove_data"
-                  phx-target="#smart_input"
-                  class="absolute right-2 top-1/2 z-10 -translate-y-1/2 inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full p-1 text-muted hover:bg-base-content/5 hover:text-base-content"
-                  title={l("Don't reply, write a standalone post instead")}
-                  aria-label={l("Don't reply, write a standalone post instead")}
-                >
-                  <#Icon iconify="ph:x-bold" class="w-3.5 h-3.5" />
-                </button>
-              </div>
-          {/case}
-        </div>
+        </section>
 
         <div :if={is_map(@quoted_object)} id="quote_in_composer" class="">
           <div class="quote_in_composer relative max-h-[160px] overflow-y-auto overflow-x-hidden border-hair border-secondary bg-base-100">

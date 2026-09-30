@@ -1,0 +1,37 @@
+<Dropdown
+  wrapper_opts={["data-boundary": "#composer_container"]}
+  id={@id}
+  menu={false}
+  close_on_select
+  position="bottom-start"
+  wrapper_class="w-full min-w-0"
+  trigger_class="flex w-full min-h-12 items-center justify-between gap-3 px-4 py-2 text-left hover:bg-base-content/5 focus-ring"
+  panel_class="!w-72 max-w-[calc(100vw-2rem)] !p-2"
+  label={@label}
+>
+  <:trigger>
+    <span class="flex min-w-0 flex-col gap-1">
+      <span class="sr-only">{@label}</span>
+      <span class="flex items-center gap-2 text-sm" role="status" {...@status_opts}>
+        <Iconify.iconify icon={@icon} class="size-5 shrink-0 text-muted" />
+        {@selected_label}
+      </span>
+    </span>
+    <#Icon iconify="ph:caret-down" class="size-4 shrink-0 text-muted" />
+  </:trigger>
+  <p :if={@description} class="px-2 py-2 text-sm text-muted">{@description}</p>
+  <button
+    :for={option <- @options}
+    type="button"
+    {...%{@option_attr => option.id}}
+    phx-click={@event}
+    phx-value-id={option.id}
+    phx-target={@event_target || "#smart_input"}
+    aria-pressed={"#{option.selected?}"}
+    class="group flex w-full min-h-11 sm:min-h-10 items-center gap-2 rounded px-2 py-1.5 text-sm text-left hover:bg-base-200 aria-pressed:bg-primary/10 focus-ring"
+  >
+    <Iconify.iconify :if={option[:icon]} icon={option.icon} class="size-5 shrink-0 text-muted" />
+    <span class="grow">{option.label}</span>
+    <#Icon iconify="ph:check" class="size-4 invisible group-aria-pressed:visible" />
+  </button>
+</Dropdown>

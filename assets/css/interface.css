@@ -816,7 +816,7 @@ html:not([data-ui-preset="typographic"]) [data-reply-context] {
   --stream-context-connector-reach: 35.5px;
   --stream-context-connector: color-mix(
     in oklab,
-    var(--color-primary) 15%,
+    var(--color-base-content) 40%,
     var(--stream-canvas)
   );
 }
@@ -1007,6 +1007,16 @@ html:not([data-ui-preset="typographic"])
   margin-left: 0;
 }
 
+html:not([data-ui-preset="typographic"])
+  [data-reply-context]
+  > article.replied
+  > [data-id="activity_note"] {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: var(--stream-reply-avatar-size);
+}
+
 /* Translation belongs to the primary activity. On the compact parent it adds
    a second control row and weakens the parent-as-context hierarchy. */
 html:not([data-ui-preset="typographic"])
@@ -1069,7 +1079,6 @@ html:not([data-ui-preset="typographic"])
 
 html [data-id="profile_hero"] [data-id="hero_background"] {
   aspect-ratio: 3 / 1;
-  @apply mb-2
 }
 
 html:not([data-ui-preset="typographic"]) [data-role="group-sidebar-moderators"] > div {

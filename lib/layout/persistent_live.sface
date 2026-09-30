@@ -86,9 +86,14 @@
   <.portal id="notification_portal" class="relative z-max" target="body">
     <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} i={2} />
   </.portal>
-  <.portal id="reusable_portal" class="relative z-max" target="body">
+  {!-- As with the composer, render directly in tests because portals require JavaScript. --}
+  {#if Bonfire.Common.Config.env() == :test}
     <Bonfire.UI.Common.ReusableModalLive id="persistent_modal" />
-  </.portal>
+  {#else}
+    <.portal id="reusable_portal" class="relative z-max" target="body">
+      <Bonfire.UI.Common.ReusableModalLive id="persistent_modal" />
+    </.portal>
+  {/if}
   <Bonfire.UI.Common.ReusableModalLive id="media_player_modal" />
   <Bonfire.UI.Common.KeyboardShortcutsHelpLive />
 </div>

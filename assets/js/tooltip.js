@@ -1,6 +1,7 @@
 import {
 	flip,
 	shift,
+	size,
 	offset,
 	autoUpdate,
 	computePosition,
@@ -14,6 +15,9 @@ TooltipHooks.Tooltip = {
 	mounted() {
 		const tooltipWrapper = this.el;
 		const position = tooltipWrapper.getAttribute("data-position");
+		const boundarySelector = tooltipWrapper.getAttribute("data-boundary");
+		const boundary = boundarySelector ? tooltipWrapper.closest(boundarySelector) : null;
+		const overflowOptions = boundary ? { boundary, padding: 8 } : { padding: 5 };
 		const trigger = tooltipWrapper.getAttribute("data-trigger");
 		const noFlip = tooltipWrapper.getAttribute("data-no-flip") === "true";
 		const closeOnInsideClick =
@@ -37,7 +41,7 @@ TooltipHooks.Tooltip = {
 
 		// Instance state for lifecycle methods
 		this.isUpdating = false;
-		this.pendingUpdate = false;
+		this.isOpen = false;
 		this.cleanup = null;
 
 		// embed only: nudge the parent iframe to re-measure on panel show/hide
@@ -68,7 +72,6 @@ TooltipHooks.Tooltip = {
 
 		const updatePosition = () => {
 			if (this.isUpdating) {
-				this.pendingUpdate = true;
 				return;
 			}
 
@@ -83,14 +86,24 @@ TooltipHooks.Tooltip = {
 			computePosition(button, tooltip, {
 				placement: position || "top",
 				strategy,
-				middleware: noFlip
-					? [offset(6), shift({ padding: 5 })]
-					: [offset(6), flip({ padding: 5 }), shift({ padding: 5 })],
+				middleware: [
+					offset(6),
+					...(!noFlip ? [flip(overflowOptions)] : []),
+					shift(overflowOptions),
+					...(boundary ? [size({
+						...overflowOptions,
+						apply({ availableHeight, availableWidth, elements }) {
+							const height = `${Math.max(0, availableHeight)}px`;
+							elements.floating.style.maxHeight = height;
+							elements.floating.style.maxWidth = `${Math.max(0, availableWidth)}px`;
+							elements.floating.style.overflowY = "auto";
+							elements.floating.style.setProperty("--dropdown-available-height", height);
+						},
+					})] : []),
+				],
 			}).then(({ x, y, placement }) => {
 				if (this.isUpdating) {
-					// A LiveView patch can land while Floating UI is measuring. Keep the
-					// result pending so the first open is positioned again after the patch.
-					this.pendingUpdate = true;
+					// The updated hook repositions an open panel after the patch.
 					return;
 				}
 
@@ -125,11 +138,17 @@ TooltipHooks.Tooltip = {
 			} else if (!this.cleanup) {
 				// For regular tooltips, also reposition when the panel resizes, so content
 				// loaded after opening (e.g. the user menu's profile switcher) can't push it off-screen
-				this.cleanup = autoUpdate(button, tooltip, updatePosition, {
+				const stopAutoUpdate = autoUpdate(button, tooltip, updatePosition, {
 					elementResize: true,
 					ancestorScroll: true,
 					ancestorResize: true
 				});
+				const boundaryObserver = boundary ? new ResizeObserver(updatePosition) : null;
+				boundaryObserver?.observe(boundary);
+				this.cleanup = () => {
+					stopAutoUpdate();
+					boundaryObserver?.disconnect();
+				};
 			}
 		};
 		
@@ -148,11 +167,11 @@ TooltipHooks.Tooltip = {
 				return;
 			}
 
-			const { animate } = pendingRevealOptions;
+			const { animate, focus } = pendingRevealOptions;
 			pendingRevealOptions = null;
 			tooltip.style.visibility = '';
 
-			if (focusOnOpen) {
+			if (focus && focusOnOpen) {
 				tooltip.querySelector(focusOnOpen)?.focus({ preventScroll: true });
 			}
 			if (animate && !prefersReducedMotion()) {
@@ -164,14 +183,24 @@ TooltipHooks.Tooltip = {
 
 		// Measure while invisible so a newly opened floating panel never paints
 		// at the CSS fallback position before Floating UI has anchored it.
-		const displayTooltip = ({ animate = true } = {}) => {
-			pendingRevealOptions = { animate };
+		const displayTooltip = ({ animate = true, focus = true } = {}) => {
+			this.isOpen = true;
+			pendingRevealOptions = { animate, focus };
 			tooltip.style.visibility = 'hidden';
 			tooltip.style.display = 'block';
 			tooltip.style.pointerEvents = 'auto';
 			syncExpanded(true);
 			startPositionUpdate();
 			this.panelResizeObserver?.observe(tooltip);
+		};
+
+		// LiveView patches replace client-owned styles and aria-expanded while filtering.
+		this.restoreTooltip = () => {
+			if (this.isOpen) {
+				displayTooltip({ animate: false, focus: false });
+			} else {
+				syncExpanded(false);
+			}
 		};
 
 		const showTooltip = () => {
@@ -206,6 +235,7 @@ TooltipHooks.Tooltip = {
 				true;
 
 			if (shouldHide) {
+				this.isOpen = false;
 				pendingRevealOptions = null;
 				// Remove visible class first for exit animation
 				tooltip.classList.remove('tooltip-visible');
@@ -336,16 +366,8 @@ TooltipHooks.Tooltip = {
 	},
 
 	updated() {
-		// Resume positioning after DOM updates
 		this.isUpdating = false;
-		if (this.pendingUpdate) {
-			setTimeout(() => {
-				if (this.startPositionUpdate) {
-					this.startPositionUpdate();
-				}
-				this.pendingUpdate = false;
-			}, 50);
-		}
+		this.restoreTooltip();
 	},
 
 	disconnected() {

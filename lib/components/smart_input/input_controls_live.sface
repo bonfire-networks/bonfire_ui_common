@@ -2,7 +2,7 @@
   <div class="flex-1 h-full grow min-h-0" id="compose_content_wrapper">
     <div class="relative !flex flex-col flex-1 h-full min-h-0">
       {!-- here was old/loader.svg --}
-      <div id="composer_wrapper" class="flex-1 flex flex-col min-h-0">
+      <div id="composer_wrapper" class="flex-1 flex flex-col min-h-0 [&_.milkdown-editor]:px-4">
         <div class="h-full flex flex-col flex-1 grow relative min-h-0">
           <div class="flex-1 min-h-0 overflow-y-auto overscroll-y-contain flex flex-col">
             {!-- Title: shown expanded when `@title_visible`, or behind a toggle when
@@ -14,18 +14,16 @@
             >
               {!-- phx-update="ignore" needs its own id (preserves the typed title across re-renders
                    while the outer div above stays reactive to show/hide) --}
-              <div phx-update="ignore" id="smart_input_post_title_value" class="relative p-2 bg-base-100">
-                <label class="input w-full">
-                  <#Icon iconify="ph:text-h-one-fill" class="w-4 h-4 opacity-50" />
-                  <input
-                    value={@smart_input_opts[:title]}
-                    name="post[post_content][name]"
-                    class="w-full"
-                    placeholder={l("Enter a title")}
-                  />
-                  {!-- <kbd class="kbd kbd-sm">⌘</kbd>
-                <kbd class="kbd kbd-sm">K</kbd> --}
-                </label>
+              <div phx-update="ignore" id="smart_input_post_title_value" class="relative border-b border-base-content/10 bg-base-100 px-4 py-2">
+                <label for="composer_post_title" class="sr-only">{l("Title")}</label>
+                <input
+                  id="composer_post_title"
+                  autocomplete="off"
+                  value={@smart_input_opts[:title]}
+                  name="post[post_content][name]"
+                  class="min-h-11 w-full border-0 bg-transparent p-0 text-base font-semibold placeholder:text-muted focus-visible:outline-offset-2"
+                  placeholder={l("Add a title (optional)")}
+                />
               </div>
             </div>
             {!-- The `summary` field doubles as the article summary (shown by default for
@@ -96,7 +94,7 @@
 
       <div class="z-50 shrink-0 bg-base-200">
         <div class="pb-safe">
-          <div class="flex flex-col gap-2 p-2 lg:rounded-b-xl md:px-3 py-2">
+          <div class="flex flex-col gap-2 p-2 lg:rounded-b-xl md:flex-row md:items-center md:px-3 py-2">
             <div>
               <div :if={@showing_within != :thread_embed} class="flex flex-wrap items-center gap-2">
                 <Bonfire.UI.Common.UploadButtonLive
@@ -161,6 +159,7 @@
                 </div>
 
                 <Dropdown
+                  wrapper_opts={["data-boundary": "#composer_container"]}
                   :if={@showing_within != :thread_embed}
                   id="smart_input_more_options"
                   position="top"
@@ -220,8 +219,7 @@
                         <button
                           phx-click={JS.push("Bonfire.UI.Common.SmartInput:reset_to_default")
                           |> JS.push("close", target: "#persistent_modal")
-                          |> JS.add_class("translate-y-100", to: "#smart_input_container")
-                          |> JS.hide(to: "#smart_input_post_title")}
+                          |> JS.add_class("translate-y-100", to: "#smart_input_container")}
                           phx-target="#smart_input"
                           type="button"
                           class="normal-case btn btn-sm btn-error"
@@ -236,56 +234,7 @@
                 {!-- |> JS.show(to: "#smart_input_summary") --}
               </div>
             </div>
-            <div
-              id="composer_publish_controls"
-              class="flex flex-wrap items-center gap-2 border-t border-base-content/10 pt-2"
-            >
-              {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and
-                  @reply_to_id in [nil, ""] and @showing_within != :thread_embed}
-                {#case Bonfire.UI.Common.SmartInputModule.modules() |> Enum.uniq()}
-                  {#match [_, _ | _] = available_types}
-                    {#case LiveHandler.active_smart_input_component(
-                        nil,
-                        e(@smart_input_opts, :create_object_type, nil)
-                      )}
-                      {#match active_component}
-                        <Dropdown
-                          id="composer_type_chooser"
-                          position="top-start"
-                          trigger_class="border-secondary flex items-center gap-2 btn-sm h-[30px] btn btn-ghost font-normal"
-                          label={l("Choose what to create")}
-                          trigger_opts={[title: l("Choose what to create")]}
-                        >
-                          <:trigger>
-                            <Iconify.iconify
-                              icon={LiveHandler.type_icon(active_component, e(@smart_input_opts, :create_object_type, nil))}
-                              class="w-5 h-5"
-                            />
-                            <span class="text-sm normal-case">
-                              {LiveHandler.type_label(active_component, e(@smart_input_opts, :create_object_type, nil))}
-                            </span>
-                            <#Icon iconify="carbon:chevron-down" class="w-3 h-3 text-muted" />
-                          </:trigger>
-
-                          <li :for={component <- available_types}>
-                            <a
-                              phx-click={LiveHandler.open_type(%JS{}, component, @smart_input_opts)}
-                              phx-target="#smart_input"
-                              aria-current={if component == active_component, do: "true"}
-                              class={
-                                "flex items-center gap-2",
-                                active: component == active_component
-                              }
-                            >
-                              <Iconify.iconify icon={LiveHandler.type_icon(component)} class="w-4 h-4 shrink-0 text-muted" />
-                              <span>{LiveHandler.type_label(component)}</span>
-                            </a>
-                          </li>
-                        </Dropdown>
-                    {/case}
-                  {#match _}
-                {/case}
-              {/if}
+            <div id="composer_publish_controls" class="flex flex-1 flex-wrap items-center gap-2 border-t border-base-content/10 pt-2 md:border-t-0 md:pt-0">
               {#if @showing_within != :thread_embed}
                 <!-- Language selection dropdown -->
                 {#case to_string(
@@ -297,6 +246,7 @@
                   )}
                   {#match locale}
                     <Dropdown
+                      wrapper_opts={["data-boundary": "#composer_container"]}
                       id="language_dropdown"
                       position="top"
                       trigger_class="lang-button btn btn-ghost btn-sm gap-1 !px-[6px]"

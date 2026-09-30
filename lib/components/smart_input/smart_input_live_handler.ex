@@ -1,7 +1,7 @@
 defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
 
-  @reply_context_keys [:context_id, :to_circles, :to_boundaries, :mentions]
+  @reply_context_keys [:context_id, :to_circles, :to_boundaries, :mentions, :reply_destination, :reply_audiences]
 
   @doc "Keys that scope the composer to a reply target (a group/topic, specific circles, or mentions). Used to clear reply-specific state while preserving the draft."
   def reply_context_keys, do: @reply_context_keys
@@ -431,6 +431,126 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
      |> push_event("focus-editor", %{})}
   end
 
+  def handle_event("select_audience_group", %{"id" => group_id}, socket) do
+    with true <- module_enabled?(Bonfire.Classify.Categories, socket),
+         {:ok, %{type: :group} = group} <-
+           Bonfire.Classify.Categories.get(group_id,
+             current_user: current_user(socket),
+             verbs: [:create]
+           ) do
+      boundaries = group |> Bonfire.Classify.Boundaries.list_post_audiences() |> Enum.take(1)
+      context = load_context_group(group_id, boundaries, [], [group_id], current_user(socket))
+      select_audience_context(socket, group_id, context, boundaries, [group_id])
+    else
+      _ -> {:noreply, assign_error(socket, l("You cannot post in this group."))}
+    end
+  end
+
+  def handle_event("select_reply_audience", %{"id" => audience_id}, socket) do
+    reply_id = assigns(socket) |> e(:reply_to_id, nil) |> id()
+    category_id = e(assigns(socket), :smart_input_opts, :reply_destination, :id, nil)
+    category = if category_id, do: %Needle.Pointer{id: category_id}
+
+    with false <-
+           e(assigns(socket), :smart_input_opts, :create_object_type, nil) in [:message, "message"],
+         reply_id when is_binary(reply_id) <- reply_id,
+         true <- Bonfire.Boundaries.can?(current_user(socket), :reply, reply_id),
+         true <- audience_id in reply_audiences(category, reply_id, current_user(socket)) do
+      replace_boundary(
+        socket,
+        audience_id,
+        Bonfire.UI.Common.SmartInputLive.reply_audience_label(audience_id)
+      )
+    else
+      _ -> {:noreply, assign_error(socket, l("This audience is not available for this reply."))}
+    end
+  end
+
+  def handle_event("select_group_audience", %{"id" => audience_id}, socket) do
+    with true <- e(assigns(socket), :reply_to_id, nil) in [nil, ""],
+         {:ok, category} <-
+           Bonfire.Classify.Categories.get(e(assigns(socket), :context_id, nil),
+             current_user: current_user(socket),
+             verbs: [:create]
+           ),
+         true <- audience_id in Bonfire.Classify.Boundaries.list_post_audiences(category) do
+      replace_boundary(
+        socket,
+        audience_id,
+        Bonfire.UI.Common.SmartInputLive.group_audience_label([audience_id], [], %{})
+      )
+    else
+      _ -> {:noreply, assign_error(socket, l("This audience is not available in this group."))}
+    end
+  end
+
+  def handle_event("select_personal_destination", _params, socket) do
+    if e(assigns(socket), :context_group, nil) do
+      select_audience_context(
+        socket,
+        nil,
+        nil,
+        Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
+        []
+      )
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("toggle_audience_circle", %{"id" => circle_id}, socket) do
+    circle =
+      Bonfire.Boundaries.Circles.list_my_for_sidebar(current_user(socket), exclude_stereotypes: true)
+      |> Enum.find(&(id(&1) == circle_id))
+
+    # circles are only offered for personal posts (the composer passes "" for "none")
+    if circle && e(assigns(socket), :context_id, nil) in [nil, ""] &&
+         e(assigns(socket), :reply_to_id, nil) in [nil, ""] do
+      circles = e(assigns(socket), :to_circles, [])
+
+      circles =
+        if Bonfire.UI.Boundaries.AudiencePickerLive.circle_selected?(circles, circle_id),
+          do: Bonfire.Boundaries.Circles.LiveHandler.remove_from_circle_tuples([circle_id], circles),
+          else: circles ++ [{circle_id, "participate"}]
+
+      # Keep an empty selection private too: removing recipients must never broaden access.
+      updates = %{to_boundaries: [{"private", l("Private")}], to_circles: circles}
+
+      maybe_send_update(
+        Bonfire.UI.Boundaries.CustomizeBoundaryLive,
+        "customize_boundary_live",
+        updates
+      )
+
+      set(socket, updates)
+      {:noreply, assign(socket, updates)}
+    else
+      {:noreply, assign_error(socket, l("This audience is not available."))}
+    end
+  end
+
+  def handle_event("select_audience", %{"id" => audience_id}, socket) do
+    label =
+      if audience_id in Bonfire.Boundaries.Presets.preset_order() do
+        Bonfire.Boundaries.Presets.for_preset(audience_id) |> e(:label, audience_id)
+      else
+        current_user_id(socket)
+        |> Bonfire.Boundaries.LiveHandler.my_acls()
+        |> Enum.find_value(fn {id, meta} -> if id == audience_id, do: meta.name end)
+      end
+
+    cond do
+      is_nil(label) ->
+        {:noreply, assign_error(socket, l("This audience is not available."))}
+
+      e(assigns(socket), :context_group, nil) ->
+        select_audience_context(socket, nil, nil, [{audience_id, label}], [])
+
+      true ->
+        replace_boundary(socket, audience_id, label)
+    end
+  end
+
   # Preserves draft content, boundaries, and circles — only the context_id moves.
   def handle_event("pick_context", %{"id" => new_id}, socket) when is_binary(new_id) do
     existing_group = e(assigns(socket), :context_group, nil)
@@ -466,48 +586,29 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     end
   end
 
-  # Drop the group/topic context so the user can publish with default
-  # boundaries. Draft content is preserved.
-  def handle_event("clear_context", _params, socket) do
-    current_opts = e(assigns(socket), :smart_input_opts, %{})
-
-    new_opts = Map.drop(current_opts, reply_context_keys())
-
-    assigns_to_set = [
-      smart_input_opts: new_opts,
-      context_id: nil,
-      context_group: nil,
-      to_circles: [],
-      to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
-      mentions: [],
-      clear_reply_data: true
-    ]
-
-    set(socket, assigns_to_set)
-
-    {:noreply, socket |> assign(assigns_to_set)}
-  end
-
   def handle_event("remove_data", _params, socket) do
-    set(socket,
-      activity: nil,
-      object: nil,
-      reply_to_id: e(assigns(socket), :thread_id, nil),
-      quoted_object: nil,
-      quoted_url: nil,
-      smart_input_opts: default_smart_input_opts()
-    )
+    # The draft becomes a new profile post visible only to its author; nothing is published.
+    socket =
+      reset_addressing(
+        socket,
+        [
+          context_id: nil,
+          context_group: nil,
+          to_boundaries: [{"private", l("Private")}],
+          mentions: [],
+          # a standalone post, as the confirmation promises (not a reply to the thread root)
+          reply_to_id: nil,
+          quoted_object: nil,
+          quoted_url: nil
+        ],
+        context_id: nil,
+        mentions: [],
+        recipients_editable: false,
+        inherit_sensitive: false
+      )
 
-    {:noreply,
-     socket
-     |> assign(
-       activity: nil,
-       object: nil,
-       reply_to_id: e(assigns(socket), :thread_id, nil),
-       quoted_object: nil,
-       quoted_url: nil,
-       smart_input_opts: default_smart_input_opts()
-     )}
+    Bonfire.UI.Common.OpenModalLive.close("persistent_modal")
+    {:noreply, push_event(socket, "focus-editor", %{})}
   end
 
   # Clears just the quoted post, leaving any other reply state intact.
@@ -763,6 +864,61 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
      |> assign(reset_smart_input: false)}
   end
 
+  @doc "The audiences a reply to `reply_to` may choose, falling back to the personal choices when groups are not enabled."
+  def reply_audiences(category, reply_to, current_user) do
+    maybe_apply(Bonfire.Classify.Boundaries, :list_reply_audiences, [category, reply_to, current_user],
+      fallback_return: ["clone_context", "reply_participants"]
+    )
+  end
+
+  defp select_audience_context(socket, context_id, context_group, boundaries, mentions) do
+    {:noreply,
+     reset_addressing(
+       socket,
+       [
+         context_id: context_id,
+         context_group: context_group,
+         to_boundaries: boundaries,
+         mentions: mentions,
+         reply_to_id: nil
+       ],
+       context_id: context_id,
+       mentions: mentions
+     )}
+  end
+
+  defp replace_boundary(socket, audience_id, label) do
+    Bonfire.Boundaries.LiveHandler.handle_event(
+      "replace_boundary",
+      %{"id" => audience_id, "name" => label},
+      socket
+    )
+  end
+
+  # Keep the editor/upload state; reset only the addressing (circles, exclusions, permissions, reply) that belonged to the previous destination.
+  defp reset_addressing(socket, updates, opts_updates) do
+    opts =
+      e(assigns(socket), :smart_input_opts, %{})
+      |> Map.drop(reply_context_keys())
+      |> Map.merge(Map.new(opts_updates))
+      |> Map.put(:open, true)
+
+    updates =
+      [
+        to_circles: [],
+        exclude_circles: [],
+        verb_permissions: %{},
+        activity: nil,
+        object: nil,
+        clear_reply_data: true
+      ]
+      |> Keyword.merge(updates)
+      |> Keyword.put(:smart_input_opts, opts)
+
+    set(socket, updates)
+    assign(socket, updates)
+  end
+
   # Load the parent group + its topics when the composer's context is a
   # group or topic. We remember the original group opts so selecting
   # "Whole group" from the dropdown can restore them.
@@ -819,13 +975,14 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
           to_boundaries: to_boundaries,
           to_circles: to_circles,
           mentions: mentions,
+          audiences: Bonfire.Classify.Boundaries.list_post_audiences(group),
           topics: list_subtopics(context_id, user)
         }
 
       # First visit lands directly on a topic: when the parent group is preloaded
       # we also fetch its sibling topics so the picker still works.
       {:ok, %{type: :topic} = topic} ->
-        parent = e(topic, :parent_category, nil)
+        parent = topic |> repo().maybe_preload(parent_category: [:profile]) |> e(:parent_category, nil)
         parent_id = e(parent, :id, nil)
 
         %{
@@ -838,6 +995,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
           to_boundaries: to_boundaries,
           to_circles: to_circles,
           mentions: mentions,
+          audiences: Bonfire.Classify.Boundaries.list_post_audiences(topic),
           topics: list_subtopics(parent_id, user)
         }
 

@@ -46,7 +46,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop custom_emojis, :any, default: []
 
   @doc """
-  Labels the composer's current policy, without treating mixed or overridden audiences as a single preset.
+  Labels the composer's reading audience. Reply and quote overrides do not change the readers; mixed, excluded or otherwise overridden audiences remain custom.
 
       iex> group_audience_label(["members:private"], [], %{})
       "Members only"
@@ -66,7 +66,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   end
 
   @doc """
-  Uses the audience preset's icon, or a neutral shield for custom permissions.
+  Uses the reading audience's preset icon, or a neutral shield when the audience is custom.
 
       iex> group_audience_icon(["members:private"], [], %{})
       "ph:lock-duotone"
@@ -82,12 +82,32 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     |> e(:icon, "ph:shield-check-duotone")
   end
 
-  defp group_audience_meta(boundaries, [], permissions) when permissions == %{} do
-    case List.wrap(boundaries) do
-      [{slug, _label}] when is_binary(slug) ->
-        group_audience_meta([slug], [], permissions)
+  @doc """
+  Whether exclusions or reading overrides make the audience custom rather than a single preset. Reply and quote overrides don't change who can read.
 
-      [slug] when is_binary(slug) ->
+      iex> custom_audience?([], %{"reply" => %{"circle-id" => :cannot}})
+      false
+
+      iex> custom_audience?([], %{"read" => %{"circle-id" => :cannot}})
+      true
+  """
+  def custom_audience?(exclusions, permissions) when is_map(permissions),
+    do: exclusions != [] or map_size(reading_overrides(permissions)) > 0
+
+  # an unknown permissions shape stays custom, as in `group_audience_label/3`
+  def custom_audience?(_, _), do: true
+
+  defp reading_overrides(permissions), do: Map.drop(permissions, [:reply, :quote, "reply", "quote"])
+
+  defp group_audience_meta(boundaries, [], permissions) when is_map(permissions) do
+    case {List.wrap(boundaries), reading_overrides(permissions)} do
+      {[{slug, _label}], overrides} when is_binary(slug) and map_size(overrides) == 0 ->
+        group_audience_meta([slug], [], overrides)
+
+      {["moderators"], overrides} when map_size(overrides) == 0 ->
+        %{label: l("Group moderators only"), icon: "ph:shield-check-duotone"}
+
+      {[slug], overrides} when is_binary(slug) and map_size(overrides) == 0 ->
         Bonfire.Boundaries.Presets.dimension_meta(:default_content_visibility, slug)
 
       _ ->
@@ -96,6 +116,53 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   end
 
   defp group_audience_meta(_, _, _), do: nil
+
+  @doc """
+  Labels the supported reply ceilings; unknown choices keep the inherited label.
+
+      iex> reply_audience_label("clone_context")
+      "Same as original post"
+
+      iex> reply_audience_label("reply_participants")
+      "Original author and you"
+  """
+  def reply_audience_label([{audience, _} | _]), do: reply_audience_label(to_string(audience))
+  def reply_audience_label([audience | _]), do: reply_audience_label(to_string(audience))
+  def reply_audience_label("reply_members"), do: l("Group members")
+  def reply_audience_label("reply_moderators"), do: l("Group moderators")
+  def reply_audience_label("reply_participants"), do: l("Original author and you")
+  def reply_audience_label(_), do: l("Same as original post")
+
+  @doc "Whether the composer is scoped to a named group or topic, which then decides the post's visibility choices."
+  def group_context?(context_group) do
+    case e(context_group, :name, nil) do
+      name when is_binary(name) and name != "" -> true
+      _ -> false
+    end
+  end
+
+  @doc "Reply visibility choices, from the audiences validated when the reply was opened."
+  def reply_audience_options(smart_input_opts, to_boundaries) do
+    for audience <- e(smart_input_opts, :reply_audiences, ["clone_context"]) do
+      %{
+        id: audience,
+        label: reply_audience_label(audience),
+        selected?: Bonfire.UI.Boundaries.GeneralAccessListLive.matches?(to_boundaries, audience)
+      }
+    end
+  end
+
+  @doc "Visibility choices within the composer's group or topic."
+  def group_audience_options(context_group, to_boundaries) do
+    for audience <- e(context_group, :audiences, []) do
+      %{
+        id: audience,
+        label: group_audience_label([audience], [], %{}),
+        icon: group_audience_icon([audience], [], %{}),
+        selected?: Bonfire.UI.Boundaries.GeneralAccessListLive.matches?(to_boundaries, audience)
+      }
+    end
+  end
 
   def post_content(object) do
     e(object, :post_content, nil) || object

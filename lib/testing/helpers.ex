@@ -202,6 +202,12 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
     do: find_live_child(view, "persistent") || view
 
   @doc """
+  Opens one of the composer's lazily loaded menus (e.g. `composer_audience_picker` or `composer_visibility_picker`) by pressing its trigger, as a person would, so its `load` event runs before its options are read.
+  """
+  def open_menu(composer_view, dropdown_id),
+    do: composer_view |> element("##{dropdown_id}_trigger") |> render_click()
+
+  @doc """
   Submits the composer with `content`, as pressing Post would.
 
   The fields the composer already holds are sent along, so this finishes whatever the page set up, such as a Reply press's `reply_to`, `context_id` and boundaries. `extra_params` adds or overrides fields, e.g. `%{"context_id" => group_id}` to post into a group from a page that sets none.

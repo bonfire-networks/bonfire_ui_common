@@ -366,7 +366,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
           end
         end)
         # Sync context_id: an explicit value in opts or assigns wins (incl. explicit nil,
-        # eg. from clear_context/reset); with no signal, an open composer keeps its
+        # eg. from choosing "Your profile" or a reset); with no signal, an open composer keeps its
         # current destination instead of losing it
         |> then(fn m ->
           cond do

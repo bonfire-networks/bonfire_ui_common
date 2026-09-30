@@ -1775,9 +1775,36 @@ div[data-id="object_body"]
 /* Desktop: constrain composer to a comfortable height */
 @media (min-width: 768px) {
   #smart_input_container {
-    height: min(500px, 70dvh);
+    width: min(64rem, calc(100vw - 2rem));
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    height: min(var(--composer-desktop-height, 500px), calc(100dvh - 2rem));
     overflow: hidden;
   }
+}
+
+.composer-resize-handle { display: none; }
+@media (min-width: 769px) and (pointer: fine), (min-width: 1025px) {
+  #smart_input_container .composer-resize-handle {
+    display: flex;
+    height: 24px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    cursor: ns-resize;
+    touch-action: none;
+    user-select: none;
+  }
+  .composer-resize-handle span {
+    width: 48px;
+    height: 4px;
+    border-radius: 999px;
+    background: color-mix(in srgb, currentColor 30%, transparent);
+    pointer-events: none;
+  }
+  .composer-resize-handle:hover span,
+  .composer-resize-handle:focus-visible span { background: var(--color-primary); }
 }
 
 /* Closed state: slide down + subtle scale + fade out.
@@ -1808,7 +1835,7 @@ div[data-id="object_body"]
 
 @media (min-width: 1024px) {
   #smart_input_container:focus-within {
-    transform: translateY(-2px) scale(1.01);
+    transform: translateY(0) scale(1);
     transition:
       box-shadow 300ms ease-out,
       transform 300ms var(--ease-out-expo);
@@ -2452,4 +2479,26 @@ body:has(
     [data-id="feed_activity_list"] > .activity_wrapper:not(.hidden) > :not([data-hidden="all"])
   ) [data-id="empty-feed"] {
   display: none;
+}
+
+/* Fullscreen is presentation state: the mounted editor and draft stay in place. */
+.composer-restore-icon { display: none; }
+@media (min-width: 769px) and (pointer: fine), (min-width: 1025px) {
+  :root[data-composer-fullscreen] #smart_input_container {
+    inset: 0 !important;
+    width: 100% !important;
+    max-width: none;
+    height: 100dvh !important;
+    border-radius: 0;
+  }
+  :root[data-composer-fullscreen] #smart_input_container #smart_input > div {
+    max-height: none;
+    border-radius: 0;
+  }
+  :root[data-composer-fullscreen] .composer-resize-handle,
+  :root[data-composer-fullscreen] .composer-expand-icon { display: none !important; }
+  :root[data-composer-fullscreen] .composer-restore-icon { display: inline-flex; }
+}
+@media (max-width: 768px), (pointer: coarse) and (max-width: 1024px) {
+  .composer-fullscreen-button { display: none; }
 }
