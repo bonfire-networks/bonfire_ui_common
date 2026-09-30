@@ -28,7 +28,7 @@ defmodule Bonfire.UI.Common.SmartInputModule do
   @doc "Iconify icon name to show for a given create-object `type` in the composer picker."
   @callback smart_input_icon(type :: atom) :: binary
 
-  @doc "Human-readable label to show for a given create-object `type` in the composer picker."
+  @doc "Human-readable label for a given create-object `type` in the composer picker, phrased as the action (e.g. \"Create poll\"), since it is both the picker's trigger and its options."
   @callback smart_input_label(type :: atom) :: binary
 
   @optional_callbacks smart_input_icon: 1, smart_input_label: 1
