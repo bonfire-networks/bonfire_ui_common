@@ -288,7 +288,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     parsed_opts =
       maybe_from_json(e(params, "opts", nil)) || e(assigns(socket), :smart_input_opts, [])
 
-    parsed_opts = input_to_atoms(parsed_opts)
+    # `input_status` is server state (set by validate/submit/reset). Buttons push a JSON
+    # snapshot of the opts, which would turn `:draft` into "draft" and lose the draft.
+    parsed_opts = input_to_atoms(parsed_opts) |> Map.drop([:input_status])
 
     # Get existing smart_input_opts from socket
     existing_opts = e(assigns(socket), :smart_input_opts, %{})
@@ -408,7 +410,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       [
         smart_input_component: selected_component,
         create_object_type: resolved_create_object_type,
-        context_id: resolved_context_id,
         smart_input_opts: opts,
         showing_within: e(assigns(socket), :showing_within, nil),
         activity_inception: "reply_to",
@@ -416,6 +417,13 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         context_group: context_group
       ]
       |> maybe_put(:to_circles, to_circles)
+      # opening/minimising (a merge push) keeps the current destination, eg. a reply's
+      # thread; explicit clears go through reset_addressing/set, and navigating away
+      # clears PersistentLive's context_id
+      |> maybe_put(
+        :context_id,
+        resolved_context_id || (should_merge && e(assigns(socket), :context_id, nil)) || nil
+      )
       |> maybe_put(:to_boundaries, final_to_boundaries)
       |> maybe_put(:clear_reply_data, clear_reply_data)
       |> maybe_put(:exclude_circles, exclude_circles)

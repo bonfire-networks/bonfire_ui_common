@@ -72,6 +72,18 @@
             </div>
           </div>
         </div>
+        <button
+          :if={e(@smart_input_opts, :input_status, nil) == :draft}
+          id="composer_draft_bar"
+          type="button"
+          phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open()}
+          phx-target="#smart_input"
+          class="composer-draft-bar fixed z-popover left-4 right-4 dock-safe-bottom md:bottom-0 flex min-h-12 items-center gap-3 rounded-xl md:rounded-b-none px-4 text-left bg-primary text-primary-content shadow-lg focus-ring"
+        >
+          <#Icon iconify="ph:pencil-line-fill" class="size-5 shrink-0" />
+          <span class="min-w-0 grow truncate text-sm font-medium">{l("Draft in progress. Tap to resume.")}</span>
+          <#Icon iconify="ph:caret-up" class="size-4 shrink-0" />
+        </button>
       {#else}
         <.portal id="composer_portal" class="relative z-max" target="body">
           <div
@@ -125,6 +137,18 @@
               </div>
             </div>
           </div>
+          <button
+            :if={e(@smart_input_opts, :input_status, nil) == :draft}
+            id="composer_draft_bar"
+            type="button"
+            phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open()}
+            phx-target="#smart_input"
+            class="composer-draft-bar fixed z-popover left-4 right-4 dock-safe-bottom md:bottom-0 flex min-h-12 items-center gap-3 rounded-xl md:rounded-b-none px-4 text-left bg-primary text-primary-content shadow-lg focus-ring"
+          >
+            <#Icon iconify="ph:pencil-line-fill" class="size-5 shrink-0" />
+            <span class="min-w-0 grow truncate text-sm font-medium">{l("Draft in progress. Tap to resume.")}</span>
+            <#Icon iconify="ph:caret-up" class="size-4 shrink-0" />
+          </button>
         </.portal>
       {/if}
     {/if}
