@@ -5,6 +5,8 @@ let Hooks = {};
 // import { ImageHooks } from "./image"
 import { CopyHooks } from "./copy";
 import { TooltipHooks } from "./tooltip";
+// carousel drag + prev/next buttons, for the Spotlight on static guest pages
+import { ScrollHooks } from "./scroll.js";
 
 // import { FeedHooks } from "./feed"
 import * as c1 from "../../../../config/current_flavour/assets/hooks/Bonfire.UI.Common.PreviewContentLive.hooks";
@@ -28,7 +30,7 @@ function ns(hooks, nameSpace) {
 let FeedHooks = ns(c1, "Bonfire.UI.Common.PreviewContentLive");
 let TruncatableHooks = ns(c2, "Bonfire.UI.Social.Activity.TruncatableContentLive");
 
-Object.assign(Hooks, CopyHooks, TooltipHooks, FeedHooks, TruncatableHooks);
+Object.assign(Hooks, CopyHooks, TooltipHooks, ScrollHooks, FeedHooks, TruncatableHooks);
 // ImageHooks
 
 // run LiveView Hooks without LiveView

@@ -3,6 +3,15 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
 
   prop widget_title, :string, default: nil
 
+  @doc "Optional line under the title, e.g. to say where the items come from."
+  prop widget_subtitle, :string, default: nil
+
+  @doc "Extra classes for the title text."
+  prop heading_class, :css_class, default: nil
+
+  @doc "Classes for the subtitle."
+  prop subtitle_class, :css_class, default: nil
+
   prop class, :css_class,
     default: "w-full p-card flex-auto mx-auto border-y-hair border-secondary"
 

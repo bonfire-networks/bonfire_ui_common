@@ -1,4 +1,4 @@
-<Bonfire.UI.Common.WidgetBlockLive widget_title={@widget_title} class="">
+<Bonfire.UI.Common.WidgetBlockLive widget_title={@widget_title}>
   <div class={@class}>
     {templated_or_remote_markdown(@text, @info)}
   </div>

@@ -1,0 +1,87 @@
+<div
+  id="guest-board"
+  data-page={@page}
+  class="mx-auto w-full max-w-205 bg-base-100 font-(family-name:--font-inter) text-sm leading-relaxed text-base-content/92 [--stream-canvas:var(--color-base-100)] sm:mb-12 sm:mt-7 sm:border sm:border-base-content/14 theme-light:text-base-content"
+>
+  <header class="flex min-h-14 items-center justify-between gap-4 border-b border-base-content/14 px-5 sm:min-h-16 sm:px-6">
+    <LinkLive
+      to="/"
+      class="group flex min-w-0 items-center gap-2.5 py-2.5 text-base font-medium theme-light:font-bold"
+      opts={[id: "guest-board-home"]}
+    >
+      {#case Config.get([:ui, :theme, :instance_icon], nil)}
+        {#match nil}
+        {#match icon}
+          {!-- decorative (the instance name follows it); hidden via a wrapper because Surface drops an empty `alt=""` --}
+          <span class="inline-flex shrink-0" aria-hidden="true">
+            <Bonfire.UI.Common.NextGenImageLive
+              src={icon}
+              alt=""
+              class="size-8 object-contain"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </span>
+      {/case}
+      <span class="wrap-anywhere underline-offset-3 group-hover:underline">{instance_name()}</span>
+    </LinkLive>
+    <LinkLive
+      to={path(:login, :index)}
+      class="btn btn-outline btn-primary shrink-0 gap-2 px-3.5 text-sm font-medium sm:px-5 theme-light:min-h-11 theme-light:border-transparent theme-light:bg-transparent theme-light:px-2 theme-light:text-base-content"
+      opts={[id: "guest-board-signin"]}
+    >
+      {l("Sign in")}
+      <#Icon iconify="ph:arrow-right" class="size-4" aria-hidden="true" />
+    </LinkLive>
+  </header>
+
+  <nav
+    id="guest-board-nav"
+    class="overflow-x-auto border-b border-base-content/14 bg-base-content/4 px-5 [scrollbar-width:none] sm:px-6 theme-light:bg-base-200"
+    aria-label={l("Community")}
+  >
+    <ul class="flex gap-5 sm:gap-6">
+      <li :for={{page, path, label} <- nav_items(@__context__)}>
+        <LinkLive
+          to={path}
+          class="inline-flex min-h-12 items-center whitespace-nowrap text-xs underline-offset-3 hover:underline sm:text-sm aria-[current=page]:font-semibold aria-[current=page]:text-primary border-b-2 border-transparent aria-[current=page]:border-current"
+          opts={current_opts(@page, page)}
+        >{label}</LinkLive>
+      </li>
+    </ul>
+  </nav>
+
+  <div
+    data-role="guest-board-banner"
+    class={
+      "h-35 bg-cover bg-center",
+      "bg-base-content/4": is_binary(banner_image()),
+      "bg-base-content/10": is_nil(banner_image())
+    }
+    aria-hidden="true"
+    style={Bonfire.UI.Common.NextGenImageLive.background_image_set(banner_image())}
+  />
+
+  <#slot />
+
+  <footer
+    id="guest-board-footer"
+    class="border-t border-base-content/14 bg-base-content/4 px-5 pb-5 pt-4 sm:px-6 theme-light:bg-base-200"
+  >
+    <ul class="flex flex-wrap gap-x-4 text-xs text-muted">
+      <li :for={{path, label} <- footer_pages()}><LinkLive to={path} class="inline-flex min-h-11 items-center gap-1 underline-offset-3 hover:text-base-content hover:underline">{label}</LinkLive></li>
+      <li :for={{name, url} <- community_links()}><a href={url} target="_blank" rel="noopener" class="inline-flex min-h-11 items-center gap-1 underline-offset-3 hover:text-base-content hover:underline">{name}</a></li>
+      <li>
+        <a
+          href={Bonfire.UI.Common.ImpressumLive.powered_by_url()}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex min-h-11 items-center gap-1 underline-offset-3 hover:text-base-content hover:underline"
+        >
+          {l("Powered by %{name}", name: Bonfire.UI.Common.ImpressumLive.powered_by_name())}
+          <#Icon iconify="ph:arrow-up-right" class="size-3" aria-hidden="true" />
+        </a>
+      </li>
+    </ul>
+  </footer>
+</div>

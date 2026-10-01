@@ -7,85 +7,60 @@
   {#case Bonfire.UI.Common.WidgetGettingStartedLive.render_state(assigns)}
     {#match :hidden}
       {!-- empty: hook hides the parent <li> via dataset.state --}
-    {#match :celebrate}
-      <section
-        role="status"
-        aria-live="polite"
-        class="w-full border-b-hair border-t-hair border-secondary p-card"
+    {#match state}
+      <Bonfire.UI.Common.WidgetBlockLive
+        widget_title={l("Getting started")}
+        widget_subtitle={if state == :step,
+          do: l("Step %{n} of %{total}", n: @viewing_index + 1, total: @total_count)}
+        subtitle_class="text-xs tabular-nums text-muted"
       >
-        <div class="flex items-start justify-between gap-3 pb-3">
-          <span class="type-caption font-medium uppercase tracking-[0.12em] text-muted">{l("Getting started")}</span>
-          <button
-            type="button"
-            aria-label={l("Hide getting started")}
-            data-id="widget_getting_started_dismiss"
-            phx-click={JS.push("dismiss", target: @myself)}
-            class="text-base-content/40 hover:text-base-content transition-colors shrink-0"
-          >
-            <#Icon iconify="ph:x" class="w-4 h-4" />
-          </button>
-        </div>
+        <:action>
+          <div class="flex items-center gap-1">
+            <.icon_button
+              :if={state == :step}
+              icon="ph:caret-left"
+              aria_label={l("Previous step")}
+              size="sm"
+              data-id="widget_getting_started_prev"
+              phx_click={JS.push("prev", target: @myself)}
+              disabled={@total_count <= 1}
+            />
+            <.icon_button
+              :if={state == :step}
+              icon="ph:caret-right"
+              aria_label={l("Next step")}
+              size="sm"
+              data-id="widget_getting_started_next"
+              phx_click={JS.push("next", target: @myself)}
+              disabled={@total_count <= 1}
+            />
+            <.icon_button
+              icon="ph:x"
+              aria_label={l("Hide getting started")}
+              size="sm"
+              data-id="widget_getting_started_dismiss"
+              phx_click={JS.push("dismiss", target: @myself)}
+            />
+          </div>
+        </:action>
 
-        <div class="flex gap-1.5 pb-4">
-          {#for _step <- @steps}
-            <span class="h-1 flex-1 rounded-sm bg-primary" />
-          {/for}
-        </div>
+        {#case state == :step && Bonfire.UI.Common.WidgetGettingStartedLive.viewing_step(assigns)}
+          {#match false}
+            <div role="status" aria-live="polite">
+              <div class="flex gap-1.5 pb-4">
+                {#for _step <- @steps}
+                  <span class="h-1 flex-1 rounded-sm bg-primary" />
+                {/for}
+              </div>
 
-        <p class="text-body font-medium text-base-content">{l("You're all set. Welcome to Bonfire.")}</p>
-        <p class="text-body text-muted pt-1">{l("Click the X above to tuck this away.")}</p>
-      </section>
-    {#match :step}
-      {#case Bonfire.UI.Common.WidgetGettingStartedLive.viewing_step(assigns)}
-        {#match nil}
-          {!-- defensive — handled by render_state but keeps Surface happy --}
-        {#match step}
-          <section
-            role="region"
-            aria-label={l("Getting started")}
-            class="w-full border-t-hair  border-b-hair border-secondary p-card"
-          >
-            {!-- header: red-circle prev / centered label / red-circle next / dismiss --}
-            <div class="flex items-center gap-2">
-              <button
-                type="button"
-                aria-label={l("Previous step")}
-                data-id="widget_getting_started_prev"
-                phx-click={JS.push("prev", target: @myself)}
-                disabled={@total_count <= 1}
-                class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer"
-              >
-                <#Icon iconify="carbon:chevron-left" class="size-4" />
-              </button>
-              <span
-                class="flex-1 text-center type-caption uppercase tracking-[0.12em]"
-                data-id="widget_getting_started_progress"
-              >
-                {l("Step %{n} of %{total}", n: @viewing_index + 1, total: @total_count)}
-              </span>
-              <button
-                type="button"
-                aria-label={l("Next step")}
-                data-id="widget_getting_started_next"
-                phx-click={JS.push("next", target: @myself)}
-                disabled={@total_count <= 1}
-                class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0 disabled:opacity-30 transition-opacity cursor-pointer"
-              >
-                <#Icon iconify="carbon:chevron-right" class="size-4" />
-              </button>
-              <button
-                type="button"
-                aria-label={l("Hide getting started")}
-                data-id="widget_getting_started_dismiss"
-                phx-click={JS.push("dismiss", target: @myself)}
-                class="ml-1 text-base-content/40 hover:text-base-content transition-colors shrink-0"
-              >
-                <#Icon iconify="ph:x" class="w-4 h-4" />
-              </button>
+              <p class="text-body font-medium text-base-content">{l("You're all set. Welcome to Bonfire.")}</p>
+              <p class="text-body text-muted pt-1">{l("Click the X above to tuck this away.")}</p>
             </div>
-
+          {#match nil}
+            {!-- defensive — handled by render_state but keeps Surface happy --}
+          {#match step}
             <div
-              class="flex my-card"
+              class="flex mb-card"
               role="progressbar"
               aria-valuemin="0"
               aria-valuemax={@total_count}
@@ -165,7 +140,7 @@
                 </button>
               </div>
             </div>
-          </section>
-      {/case}
+        {/case}
+      </Bonfire.UI.Common.WidgetBlockLive>
   {/case}
 </div>

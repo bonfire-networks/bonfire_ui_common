@@ -19,13 +19,6 @@ ScrollHooks.CarouselScroll = {
 	mounted() {
 		const el = this.el
 
-		el.addEventListener("scroll-left", () => {
-			el.scrollBy({ left: -300, behavior: scrollBehavior() });
-		});
-		el.addEventListener("scroll-right", () => {
-			el.scrollBy({ left: 300, behavior: scrollBehavior() });
-		});
-
 		// Mouse-only drag-to-scroll: lets the whole carousel be dragged even when
 		// the cursor lands on nested interactive or scrollable card content. Touch
 		// is deliberately left alone — `overflow-x-auto` already pans natively
@@ -103,6 +96,27 @@ ScrollHooks.CarouselScroll = {
 		if (this._carouselCleanup) this._carouselCleanup()
 	}
 }
+
+// Carousel prev/next buttons (`data-carousel-scroll` + `aria-controls`), for
+// every `.carousel-scroll`: one delegated listener instead of per-button
+// `JS.dispatch`, so the arrows also work on static guest pages (no LiveView
+// socket, where `JS.dispatch` would be misrouted) and survive re-renders.
+// Steps by one card so a partially visible next card becomes the current one.
+function scrollCarouselStep(button) {
+	const carousel = document.getElementById(button.getAttribute("aria-controls"))
+	if (!carousel) return
+	const card = carousel.firstElementChild
+	const gap = parseFloat(getComputedStyle(carousel).columnGap) || 0
+	const step = card ? card.getBoundingClientRect().width + gap : 300
+	const direction = button.dataset.carouselScroll === "previous" ? -1 : 1
+	carousel.scrollBy({ left: direction * step, behavior: scrollBehavior() })
+}
+
+// module scope runs once per bundle, and each page loads a single bundle
+document.addEventListener("click", (event) => {
+	const button = event.target.closest("[data-carousel-scroll][aria-controls]")
+	if (button) scrollCarouselStep(button)
+})
 
 // True if an ancestor between target and stopAt (exclusive) is genuinely
 // scrollable — shared touch arbiter for the composer scroll lock and pull-to-refresh.

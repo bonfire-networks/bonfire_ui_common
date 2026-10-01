@@ -23,8 +23,23 @@
           page_title={e(@modal_assigns, :activity_type, nil) || l("Discussion")}
           back
           back_type={:preview}
-          show_right_actions={false}
-        />
+          show_right_actions={not is_nil(current_user_id(@__context__)) and
+            e(@modal_assigns, :page_header_aside, []) != []}
+          show_widgets_toggle={false}
+        >
+          {!-- actions for what is previewed (eg. a thread's bell), set by whoever built the modal_assigns, as pages do with the layout's `page_header_aside` --}
+          <:right_action>
+            {#for {component, component_assigns} <- e(@modal_assigns, :page_header_aside, [])}
+              {#if resolved = maybe_component(component, @__context__)}
+                {#if Code.ensure_loaded?(resolved) and function_exported?(resolved, :__live__, 0)}
+                  <StatefulComponent module={resolved} {...component_assigns || []} />
+                {#else}
+                  <StatelessComponent module={resolved} {...component_assigns || []} />
+                {/if}
+              {/if}
+            {/for}
+          </:right_action>
+        </StatelessComponent>
       </div>
     </div>
 

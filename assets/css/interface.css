@@ -595,11 +595,11 @@ html:not([data-ui-preset="typographic"]) [data-id="secondary_sidebar_widgets"] >
   overflow: visible;
 }
 
+/* Every right-rail widget is one filled card, whatever wraps its
+   WidgetBlockLive. */
 html:not([data-ui-preset="typographic"])
   [data-id="secondary_sidebar_widgets"]
-  > ul
-  > li
-  > aside {
+  [data-role="widget"] {
   padding: var(--spacing-card);
   border-width: 0;
   border-radius: var(--radius-box);
@@ -635,14 +635,6 @@ html:not([data-ui-preset="typographic"]) [data-role="widget-reset"] .text-primar
   html:not([data-ui-preset="typographic"]) [data-role="widget-reset"]:hover {
     background-color: var(--stream-fill);
   }
-}
-
-/* The widget header aligns flush with the list rows, which have no side
-   padding of their own. */
-html:not([data-ui-preset="typographic"])
-  aside:has([data-id="recent_articles"])
-  > [data-role="widget-header"] {
-  padding-inline: 0;
 }
 
 html:not([data-ui-preset="typographic"])
@@ -722,16 +714,6 @@ html:not([data-ui-preset="typographic"]) [data-role="feed_override_toggle"]:chec
       padding-block: 0;
     }
   }
-}
-
-/* Participants: the card supplies the inset — Typographic's px-card
-   title padding and per-row card chrome would double it. Title, rows,
-   dividers and the reveal control all share one left edge. */
-html:not([data-ui-preset="typographic"])
-  [data-id="secondary_sidebar_widgets"]
-  aside:has([data-role="participants_list"])
-  > [data-role="widget-header"] {
-  padding-inline: 0;
 }
 
 html:not([data-ui-preset="typographic"])
