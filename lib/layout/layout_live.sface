@@ -98,7 +98,7 @@
             data-id="right_nav_and_widgets"
             role="complementary"
             aria-label={l("Widgets sidebar")}
-            class="w-rail bg-(--rail-bg) lg:bg-transparent xl:border-l-(length:--rail-divider-width) xl:border-(color:--divider-color) min-h-screen lg:min-h-0 flex flex-col h-full overflow-y-auto pt-safe lg:pt-0 xl:ml-(--rail-offset)"
+            class="w-rail bg-(--rail-bg) lg:bg-transparent xl:border-l-(length:--rail-divider-width) xl:border-(color:--divider-color) min-h-0 flex flex-col h-full overflow-y-auto pt-safe lg:pt-0 xl:ml-(--rail-offset)"
           >
             <div
               :if={not is_nil(@current_user_id) and socket_connected?(@__context__)}
@@ -114,7 +114,7 @@
             </div>
             <div
               data-id="secondary_sidebar_widgets"
-              class="sidebar-widgets overflow-x-visible overflow-y-auto flex-1 flex flex-col gap-(--stream-section-gap)"
+              class="sidebar-widgets overflow-x-visible overflow-y-auto flex-1 min-h-0 flex flex-col gap-(--stream-section-gap)"
             >
               <Bonfire.UI.Common.SidebarWidgetsLive
                 widgets={if @preview_sidebar_widgets != [], do: @preview_sidebar_widgets, else: @sidebar_widgets}

@@ -7,6 +7,7 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop smart_input_opts, :map, default: %{}
   prop reply_to_id, :any, default: nil
   prop context_id, :string, default: nil
+  prop context_group, :any, default: nil
   prop composer_dom_id, :any, default: nil
   # prop create_object_type, :any, default: nil
   prop to_boundaries, :any, default: nil
@@ -55,8 +56,14 @@ defmodule Bonfire.UI.Common.InputControlsLive do
     show_cw = e(smart_input_opts, :show_cw, false)
     show_sensitive = e(smart_input_opts, :show_sensitive, false)
 
+    in_group? = Bonfire.UI.Common.SmartInputLive.group_context?(assigns[:context_group])
+
     assigns
-    |> assign(:title_visible, not_a_reply? and title[:show_by_default] == true)
+    |> assign(
+      :title_visible,
+      not_a_reply? and
+        (title[:show_by_default] == true or (in_group? and title[:show_in_group] == true))
+    )
     |> assign(:title_toggle, not_a_reply? and title[:enable_toggle] == true)
     |> assign(:summary_visible, summary_visible)
     |> assign(:sensitive_toggle, sensitive_toggle)
@@ -91,8 +98,8 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   #         sensitive: [default: [enable_toggle: true]]
   #       ]
   #
-  # `:show_by_default` shows the field expanded; `:enable_toggle` shows a button to
-  # reveal/hide it. Falls back to a `:default` type entry when the type isn't configured.
+  # `:show_by_default` shows the field expanded; `:show_in_group` does so only when posting
+  # in a group or topic; `:enable_toggle` shows a button to reveal/hide it. Falls back to a `:default` type entry when the type isn't configured.
   defp field_config(enable_fields, field, create_object_type) do
     config = ed(enable_fields, field, []) || []
     # config keys are atoms, but create_object_type can arrive as a string (e.g. "post"

@@ -98,9 +98,9 @@
 
       <div class="z-50 shrink-0 bg-base-200">
         <div class="pb-safe">
-          <div class="flex flex-col gap-2 p-2 lg:rounded-b-xl md:flex-row md:items-center md:px-3 py-2">
+          <div class="flex flex-row items-center gap-1 p-2 lg:rounded-b-xl md:gap-2 md:px-3">
             <div>
-              <div :if={@showing_within != :thread_embed} class="flex flex-wrap items-center gap-2">
+              <div :if={@showing_within != :thread_embed} class="flex flex-wrap items-center gap-1 md:gap-2">
                 <Bonfire.UI.Common.UploadButtonLive
                   :if={@uploads != false && e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}
                   uploads={@uploads}
@@ -157,7 +157,8 @@
                     ]}
                   >
                     <#Icon iconify="ph:warning-circle" class="size-5" />
-                    <span>{l("Content warning")}</span>
+                    {!-- icon-only on phones so the toolbar fits one row (aria-label above) --}
+                    <span class="hidden sm:inline">{l("Content warning")}</span>
                   </button>
                   <input type="hidden" name="sensitive" value={to_string(@show_sensitive)}>
                 </div>
@@ -240,7 +241,7 @@
             </div>
             <div
               id="composer_publish_controls"
-              class="flex flex-1 flex-wrap items-center gap-2 border-t border-base-content/10 pt-2 md:border-t-0 md:pt-0"
+              class="flex flex-1 items-center gap-2"
             >
               {#if @showing_within != :thread_embed}
                 <!-- Language selection dropdown -->

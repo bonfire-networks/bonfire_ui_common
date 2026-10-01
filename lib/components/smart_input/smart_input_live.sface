@@ -19,7 +19,7 @@
         <!-- <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} /> -->
         <header
           :if={@showing_within != :thread_embed}
-          class="z-50 flex shrink-0 flex-col w-full sticky top-0 border-b border-base-content/10 lg:rounded-t-xl bg-base-100 md:z-auto md:relative"
+          class="z-[51] flex shrink-0 flex-col w-full sticky top-0 border-b border-base-content/10 lg:rounded-t-xl bg-base-100 md:z-auto md:relative"
         >
           <div
             id="composer_resize_handle"
@@ -217,12 +217,12 @@
             {#elseif replying?(assigns) or group_context?(@context_group) or @showing_within != :thread_embed}
               {!-- Where it's posted on the left, who can see it on the right. In thread_embed the
                   boundary follows the parent thread, so personal posts get no policy row there. --}
-              <div class="grid w-full min-w-0 grid-cols-1 sm:grid-cols-2">
+              <div class="grid w-full min-w-0 grid-cols-2">
                 {#if replying?(assigns)}
                   <div
                     id="composer_reply_destination"
                     data-role="reply_destination"
-                    class="flex min-h-12 min-w-0 items-center gap-2 px-4 py-2"
+                    class="flex min-h-12 min-w-0 items-center gap-2 px-3 py-2 sm:px-4"
                   >
                     <span class="sr-only">{l("Reply in")}</span>
                     <span class="flex min-w-0 items-center gap-2 text-sm font-semibold">
@@ -243,7 +243,7 @@
                     event_target={@event_target}
                   />
                 {/if}
-                <div class="min-w-0 border-t border-base-content/10 sm:border-t-0 sm:border-l">
+                <div class="min-w-0 border-l border-base-content/10">
                   {#if replying?(assigns)}
                     <Bonfire.UI.Common.PolicyDropdownLive
                       id="composer_reply_visibility"
