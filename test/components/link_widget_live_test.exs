@@ -24,7 +24,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLiveTest do
     refute active?
     assert LinkWidgetLive.active_link_class(active?) == "hover:bg-base-content/5"
     assert LinkWidgetLive.active_icon_class(active?) == "text-muted"
-    assert LinkWidgetLive.active_label_class(active?) == "font-normal text-base-content/80"
+    assert LinkWidgetLive.active_label_class(active?) == "font-normal text-base-content"
   end
 
   test "outer page keeps the profile link active while navigating profile tabs" do
