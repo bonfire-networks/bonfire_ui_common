@@ -1,7 +1,6 @@
 defmodule Bonfire.UI.Common.ExtensionDiffLive do
   use Bonfire.UI.Common.Web, :live_view
 
-  # alias Bonfire.UI.Common.ExtensionDiffLive
   import Bonfire.Common.Extensions.Diff
   import Untangle
 
@@ -41,19 +40,24 @@ defmodule Bonfire.UI.Common.ExtensionDiffLive do
          socket
          |> assign_flash(
            :info,
-           l("There was no changes to the code found. Showing the entire code instead.")
+           l("There were no changes to the code found. Showing the entire code instead.")
          )
          |> redirect_to("/settings/extensions/code/#{params["app"]}")}
 
-      {:error, error} ->
-        error(error)
+      # any other failure also falls back to the code, with the error shown
+      other ->
+        error(other, "Could not generate the diff")
 
-      error ->
-        error(error)
-        error(error, l("There was an unknown error."))
+        {:ok,
+         socket
+         |> assign_flash(
+           :error,
+           l("Could not generate the diff (%{error}). Showing the entire code instead.",
+             error: Bonfire.Common.Errors.error_msg(other)
+           )
+         )
+         |> redirect_to("/settings/extensions/code/#{params["app"]}")}
     end
-
-    # TODO: handle errors
   end
 
   def render_diff(patch) do

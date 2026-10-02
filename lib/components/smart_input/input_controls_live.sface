@@ -239,10 +239,7 @@
                 {!-- |> JS.show(to: "#smart_input_summary") --}
               </div>
             </div>
-            <div
-              id="composer_publish_controls"
-              class="flex flex-1 items-center gap-2"
-            >
+            <div id="composer_publish_controls" class="flex flex-1 items-center gap-2">
               {#if @showing_within != :thread_embed}
                 <!-- Language selection dropdown -->
                 {#case to_string(

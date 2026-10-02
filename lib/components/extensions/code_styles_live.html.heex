@@ -1,196 +1,187 @@
 <style>
-        <%= Makeup.stylesheet(Makeup.Styles.HTML.StyleMap.paraiso_dark_style()) %>
+  .ghd-container, .ghd-text, .ghd-text span, .ghd-text-user, .ghd-text-user span {
+  font-family: Menlo, Consolas, monospace;
+  font-size: 13px;
+  }
 
-        .ghd-container, .ghd-text, .ghd-text span, .ghd-text-user, .ghd-text-user span {
-          font-family: Menlo, Consolas, monospace;
-          font-size: 13px;
-        }
+  .ghd-container {
+  margin-bottom: 50px;
+  overflow-x: visible;
+  position: relative;
+  }
 
-        .ghd-container {
-          margin-bottom: 50px;
-          overflow-x: visible;
-          position: relative;
-        }
+  .highlight {
+  position: relative;
+  background: transparent !important;
+  }
 
-    .highlight {
-        position: relative;
-        margin-left: 4em;
-        background: transparent !important;
-      }
+  /* line numbers and the selected function's line are styled by the code theme (see `Bonfire.UI.Common.CodeTheme`), a line linked with `#L<n>` is marked here */
+  .ghd-container a.l-line-number {
+  text-decoration: none;
+  }
 
-      .ghd-container pre>code {
-        padding-left: 0em;
-        line-height: 21px;
-      }
+  .ghd-container .l-line:target {
+  background-color: color-mix(in oklab, var(--color-accent) 30%, transparent);
+  }
 
-    ul#left_gutter {
-      position: absolute;
-      left: 0;
-      top: 0;
-      list-style: none;
-      width: 100%;    
-    }
+  /* colours follow the daisy theme */
+  .ghd-file {
+  border: 1px solid var(--color-base-300);
+  border-radius: 3px;
+  margin-bottom: 1em;
+  background-color: var(--color-base-100);
+  }
 
-  ul#left_gutter  li {
-        padding: 0;
-        margin: 0;
-        font-size: 13px;
-        height: 21px;
-        line-height: 24px;
-        cursor: pointer;
-        opacity: 0.50;
+  .ghd-file-header {
+  padding: 10px;
+  border-bottom: 0.1rem solid var(--color-base-300);
+  cursor: pointer;
+  background: var(--color-base-100);
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+  }
 
-      }
+  .ghd-file-header .reveal-diff {
+  display: none;
+  float: right;
+  color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+  }
 
-      ul#left_gutter li:hover {
-          opacity: 1.0;
-        }
+  .ghd-file-header .reveal-diff path {
+  fill: currentColor;
+  }
 
-      ul#left_gutter li:before {
-          content: attr(data-line-number);
-        }
-      
+  .ghd-file-header.collapsed .reveal-diff {
+  display: block;
+  }
 
-      ul#left_gutter  li.highlighted {
-        opacity: 1.0;
-        background-color: oklch(var(--a) / 30%);
-      }
+  .ghd-file-header .collapse-diff {
+  display: block;
+  float: right;
+  color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+  }
 
-        .ghd-file {
-          border: 1px solid #ddd;
-          border-radius: 3px;
-          margin-bottom: 1em;
-          background-color: white;
-        }
+  .ghd-file-header .collapse-diff path {
+  fill: currentColor;
+  }
 
-        .ghd-file-header {
-          padding: 10px;
-          border-bottom: 0.1rem solid #e1e1e1;
-          cursor: pointer;
-          background: #fff;
-          position: -webkit-sticky;
-          position: sticky;
-          top: 0px;
-          z-index: 1;
-        }
+  .ghd-file-header.collapsed .collapse-diff {
+  display: none;
+  }
 
-        .ghd-file-header .reveal-diff {
-          display: none;
-          float: right;
-          color: #999;
-        }
+  .ghd-chunk-header .ghd-line-number {
+  background-color: var(--color-base-200);
+  }
 
-        .ghd-file-header .reveal-diff path {
-          fill: #999;
-        }
+  .ghd-file-status {
+  color: color-mix(in oklab, var(--color-base-content) 50%, transparent);
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 0 3px;
+  display: inline-block;
+  text-transform: uppercase;
+  }
 
-        .ghd-file-header.collapsed .reveal-diff {
-          display: block;
-        }
+  .ghd-file-status-removed {
+  color: var(--color-error);
+  }
 
-        .ghd-file-header .collapse-diff {
-          display: block;
-          float: right;
-          color: #999;
-        }
+  .ghd-file-status-added {
+  color: var(--color-success);
+  }
 
-        .ghd-file-header .collapse-diff path {
-          fill: #999;
-        }
+  .ghd-diff {
+  overflow-y: hidden;
+  }
 
-        .ghd-file-header.collapsed .collapse-diff {
-          display: none;
-        }
+  .ghd-diff.hidden{
+  display: none;
+  }
 
-        .ghd-chunk-header .ghd-line-number {
-          background-color: #f8fafd;
-        }
+  .ghd-chunk-header {
+  background-color: var(--color-base-200);
+  color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+  }
 
-        .ghd-file-status {
-          color: #999;
-          border: 1px solid #999;
-          border-radius: 3px;
-          padding: 0 3px;
-          display: inline-block;
-          text-transform: uppercase;
-        }
+  .ghd-line-number {
+  width: 80px;
+  background-color: var(--color-base-100);
+  display: flex;
+  color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+  cursor: pointer;
+  }
 
-        .ghd-file-status-removed {
-          color: red;
-          border-color: red;
-        }
+  /* a line linked with its `#<id>` (the line number is the link) */
+  .ghd-line:target .ghd-line-number,
+  .ghd-line:target .ghd-text {
+  background-color: color-mix(in oklab, var(--color-warning) 25%, transparent);
+  }
 
-        .ghd-file-status-added {
-          color: rgb(115, 148, 115);
-          border-color: rgb(115, 148, 115);
-        }
+  .ghd-line-number-link {
+  display: flex;
+  color: inherit;
+  text-decoration: none;
+  }
 
-        .ghd-diff {
-          overflow-y: hidden;
-        }
+  .ghd-line-number-from {
+  padding-left: 10px;
+  }
 
-        .ghd-diff.hidden{
-          display: none;
-        }
+  .ghd-line-number-to {
+  padding: 0 10px;
+  }
 
-        .ghd-chunk-header {
-          background-color: #f8fafd;
-          color: rgba(0,0,0,.3);
-        }
+  .ghd-line-type-add {
+  background-color: color-mix(in oklab, var(--color-success) 15%, transparent);
+  }
 
-        .ghd-line-number {
-          width: 80px;
-          background-color: white;
-          display: flex;
-          color: rgba(0,0,0,.3);
-          cursor: pointer;
-        }
+  .ghd-line-type-add .ghd-line-number {
+  background-color: color-mix(in oklab, var(--color-success) 30%, transparent);
+  }
 
-        .ghd-line.selected .ghd-line-number,
-        .ghd-line.selected .ghd-line-number,
-        .ghd-line.selected .ghd-text {
-          background-color: rgb(255, 251, 194);
-        }
+  .ghd-line-type-remove {
+  background-color: color-mix(in oklab, var(--color-error) 15%, transparent);
+  }
 
-        .ghd-line-number-from {
-          padding-left: 10px;
-        }
+  .ghd-line-type-remove .ghd-line-number {
+  background-color: color-mix(in oklab, var(--color-error) 30%, transparent);
+  }
 
-        .ghd-line-number-to {
-          padding: 0 10px;
-        }
+  .ghd-line-number div {
+  width: 35px;
+  }
 
-        .ghd-line-type-add, .ghd-line-type-add .highlight {
-          background-color: #dfd;
-        }
+  /* long lines soft wrap, keeping their indentation */
+  .ghd-text-internal,
+  .ghd-text-user {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  }
 
-        .ghd-line-type-add .ghd-line-number, .ghd-line-type-add .ghd-line-number .highlight {
-          background-color: #bdffbd;
-        }
+  .ghd-text-internal {
+  padding: 0 90px;
+  }
 
-        .ghd-line-type-remove, .ghd-line-type-remove .highlight {
-          background-color: #fee8e9;
-        }
+  .ghd-text-user pre {
+  display: inline;
+  }
 
-        .ghd-line-type-remove .ghd-line-number, .ghd-line-type-remove .ghd-line-number .highlight {
-          background-color: #ffd7d9;
-        }
+  /* code blocks soft wrap via `pre.lumis` in app.css; wrapped rows of a line start after its number, rather than under it */
+  .ghd-container .l-line-number {
+  display: inline-block;
+  width: 4ch;
+  margin-right: 1ch;
+  text-align: right;
+  /* text-indent is inherited, the hanging indent below must not move the number itself */
+  text-indent: 0;
+  }
 
-        .ghd-line-number div {
-          width: 35px;
-        }
-
-        .ghd-text-internal {
-          white-space: pre;
-        }
-
-        .ghd-text-internal {
-          padding: 0 90px;
-        }
-
-        .ghd-text-user pre {
-          display: inline;
-        }
-          
-      
+  .ghd-container .l-line:has(> .l-line-number) {
+  /* Lumis gives each line `width: 100%`, so the indent must fit inside it */
+  box-sizing: border-box;
+  padding-left: 5ch;
+  text-indent: -5ch;
+  }
 </style>

@@ -5,6 +5,8 @@ defmodule Bonfire.UI.Common.TailwindSources do
   Tailwind v4 respects `.gitignore` when expanding wildcards in `@source`, so gitignored extensions and forks match nothing with a wildcard. Explicit per-extension `@source` lines do work, so this module generates one pair per bonfire dep whose `lib/` contains Phoenix/Surface templates or LiveView/View modules.
 
   Registered as a Phoenix watcher in `config/dev.exs` so the file is regenerated whenever the server starts. Can also be run manually via `mix bonfire.gen_tailwind_sources` if necessary (e.g. before a prod build or in CI scripts).
+
+  Also generates the code highlighting theme, see `Bonfire.UI.Common.CodeTheme`.
   """
 
   # CSS file lives 4 dirs deep from the app root — relative paths climb 4 levels.
@@ -22,6 +24,8 @@ defmodule Bonfire.UI.Common.TailwindSources do
 
     File.write!(output_path(), file_content(packages))
     IO.puts("[TailwindSources] Wrote #{length(packages)} source(s) to #{output_path()}")
+
+    Bonfire.UI.Common.CodeTheme.generate()
   end
 
   defp has_ui_files?(dep) do
@@ -53,13 +57,16 @@ defmodule Bonfire.UI.Common.TailwindSources do
     """
   end
 
-  defp output_path do
+  defp output_path, do: css_path("_tailwind_sources.css")
+
+  @doc "Path of a generated file in bonfire_ui_common's `assets/css/`, whether it's a local extension or a dep."
+  def css_path(file) do
     cond do
       File.dir?("extensions/bonfire_ui_common") ->
-        "extensions/bonfire_ui_common/assets/css/_tailwind_sources.css"
+        "extensions/bonfire_ui_common/assets/css/#{file}"
 
       File.dir?("deps/bonfire_ui_common") ->
-        "deps/bonfire_ui_common/assets/css/_tailwind_sources.css"
+        "deps/bonfire_ui_common/assets/css/#{file}"
 
       true ->
         raise "Could not locate bonfire_ui_common under extensions/ or deps/"

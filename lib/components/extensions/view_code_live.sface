@@ -5,19 +5,17 @@
       <div class="text-sm">{markdown(@docs)}</div>
       <div class="w-full">
         <div class="w-full">
-          <section
-            :if={@code != nil}
-            id={"line-#{@selected_line}"}
-            :hook="loadHash"
-            data-line-number={@selected_line}
-            data-theme="night"
-            class="code ghd-container"
-          >
-            <ul id="left_gutter">
-              <li :for={ln <- 1..@lines} :hook="updateHash" id={"L#{ln}"} data-line-number={ln} />
-            </ul>
-
-            {if @enable_formatter, do: raw(Text.code_syntax(@code, @filename)), else: @code}
+          <section :if={@code != nil} id={"line-#{@selected_line}"} class="code ghd-container">
+            {if @enable_formatter,
+              do:
+                raw(
+                  Text.code_syntax(@code, @filename,
+                    line_numbers: true,
+                    highlight_lines:
+                      if(@selected_line > 0, do: %{lines: [@selected_line], class: "l-highlighted"})
+                  )
+                ),
+              else: @code}
           </section>
         </div>
       </div>

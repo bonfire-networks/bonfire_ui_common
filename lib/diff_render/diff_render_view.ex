@@ -38,19 +38,23 @@ defmodule Bonfire.UI.Common.DiffRenderView do
 
   def line_type(line), do: to_string(line.type)
 
-  def line_text("+" <> text),
-    do: [content_tag(:span, "+ ", class: "ghd-line-status"), code_syntax(text)]
+  def line_text("+" <> text, filename),
+    do: [content_tag(:span, "+ ", class: "ghd-line-status"), code_syntax(text, filename)]
 
-  def line_text("-" <> text),
-    do: [content_tag(:span, "- ", class: "ghd-line-status"), code_syntax(text)]
+  def line_text("-" <> text, filename),
+    do: [content_tag(:span, "- ", class: "ghd-line-status"), code_syntax(text, filename)]
 
-  def line_text(" " <> text),
-    do: [content_tag(:span, "  ", class: "ghd-line-status"), code_syntax(text)]
+  def line_text(" " <> text, filename),
+    do: [content_tag(:span, "  ", class: "ghd-line-status"), code_syntax(text, filename)]
 
-  def line_text(text), do: [code_syntax(text)]
+  def line_text(text, filename), do: [code_syntax(text, filename)]
 
-  # def code_syntax(text), do: content_tag(:span, text))
-  def code_syntax(text), do: raw(Text.code_syntax(text, "file.diff"))
+  # the changed file's name picks the language (with the +/- prefix stripped, a diff grammar would see only bare code)
+  def patch_filename(patch), do: patch.to || patch.from
+
+  # only the token spans, since each diff line already sits in its own table cell
+  def code_syntax(text, filename),
+    do: raw(Text.code_syntax(text, filename, structure: :inline))
 
   def render(_, assigns) do
     ~H"""
@@ -85,17 +89,20 @@ defmodule Bonfire.UI.Common.DiffRenderView do
               </td>
             </tr>
             <%= for line <- chunk.lines do %>
-              <tr id={line_id(@patch, line)} class={"ghd-line ghd-line-type-" <> line_type(line)}>
+              <% id = IO.iodata_to_binary(line_id(@patch, line)) %>
+              <tr id={id} class={"ghd-line ghd-line-type-" <> line_type(line)}>
                 <td class="ghd-line-number">
-                  <div class="ghd-line-number-from">
-                    {line_number(line.from_line_number)}
-                  </div>
-                  <div class="ghd-line-number-to">
-                    {line_number(line.to_line_number)}
-                  </div>
+                  <a href={"#" <> id} class="ghd-line-number-link" aria-hidden="true" tabindex="-1">
+                    <div class="ghd-line-number-from">
+                      {line_number(line.from_line_number)}
+                    </div>
+                    <div class="ghd-line-number-to">
+                      {line_number(line.to_line_number)}
+                    </div>
+                  </a>
                 </td>
                 <td class="ghd-text">
-                  <div class="ghd-text-user">{line_text(line.text)}</div>
+                  <div class="ghd-text-user">{line_text(line.text, patch_filename(@patch))}</div>
                 </td>
               </tr>
             <% end %>

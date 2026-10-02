@@ -70,8 +70,16 @@
     class="border-t border-base-content/14 bg-base-content/4 px-5 pb-5 pt-4 sm:px-6 theme-light:bg-base-200"
   >
     <ul class="flex flex-wrap gap-x-4 text-xs text-muted">
-      <li :for={{path, label} <- footer_pages()}><LinkLive to={path} class="inline-flex min-h-11 items-center gap-1 underline-offset-3 hover:text-base-content hover:underline">{label}</LinkLive></li>
-      <li :for={{name, url} <- community_links()}><a href={url} target="_blank" rel="noopener" class="inline-flex min-h-11 items-center gap-1 underline-offset-3 hover:text-base-content hover:underline">{name}</a></li>
+      <li :for={{path, label} <- footer_pages()}><LinkLive
+          to={path}
+          class="inline-flex min-h-11 items-center gap-1 underline-offset-3 hover:text-base-content hover:underline"
+        >{label}</LinkLive></li>
+      <li :for={{name, url} <- community_links()}><a
+          href={url}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex min-h-11 items-center gap-1 underline-offset-3 hover:text-base-content hover:underline"
+        >{name}</a></li>
       <li>
         <a
           href={Bonfire.UI.Common.ImpressumLive.powered_by_url()}

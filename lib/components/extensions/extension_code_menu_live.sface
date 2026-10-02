@@ -12,6 +12,7 @@
       >
         <li class="text-sm" :if={code_link}><a href={code_link} target="_blank" class="text-sm">{l("View code repository")}</a></li>
         <li class="text-sm"><LinkLive to={get_code_link(@dep)} class="text-sm">{l("View source code")}</LinkLive></li>
+        <li class="text-sm"><LinkLive to={get_version_link(@dep)} class="text-sm">{l("View source code diff")}</LinkLive></li>
         <li class="text-sm"><LinkLive to={"#{get_code_link(@dep)}?from=compiled"} class="text-sm">{l("View compiled code")}</LinkLive></li>
         {#case get_link(@dep)}
           {#match version_link}

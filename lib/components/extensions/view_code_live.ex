@@ -1,7 +1,6 @@
 defmodule Bonfire.UI.Common.ViewCodeLive do
   use Bonfire.UI.Common.Web, :surface_live_view
 
-  # import Bonfire.Common.Extensions.Diff
   import Untangle
 
   # NOTE: see for inspiration: https://github.com/hexpm/preview/blob/main/lib/preview_web/live/preview_live.ex
@@ -19,7 +18,6 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
        back: true,
        docs: nil,
        code: nil,
-       lines: 0,
        line: 0,
        selected_line: 0,
        without_sidebar: false,
@@ -91,7 +89,6 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
            if(function,
              do: Extend.function_line_number(code, function, from_beam: from_beam?)
            ) || 0,
-         lines: String.split(code, "\n") |> length(),
          # no right sidebar
          #  without_secondary_widgets: true,
          sidebar_widgets: [
@@ -115,9 +112,10 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
     end
   end
 
-  def handle_event("highlight_line", %{"line-number" => line_number}, socket) do
-    {line_number, _} = Integer.parse(line_number)
+  # NOTE: nothing pushes this event, line selection is handled by `#L<n>` links and `:target` CSS (see `Text.code_syntax/3`)
+  # def handle_event("highlight_line", %{"line-number" => line_number}, socket) do
+  #   {line_number, _} = Integer.parse(line_number)
 
-    {:noreply, assign(socket, :selected_line, line_number)}
-  end
+  #   {:noreply, assign(socket, :selected_line, line_number)}
+  # end
 end
