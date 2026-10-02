@@ -5,15 +5,6 @@
     "!flex lg:!hidden": @page_header
   }
 >
-  <!-- <LinkLive
-    to={path(:login, :index)}
-    class={
-      "md:flex-1 btn-primary btn-sm btn",
-      "md:btn-wide": !@page_header
-    }
-    parent_id="guest_actions"
-  >{l("Sign in")}</LinkLive> -->
-
   <Dropdown
     id="guest_actions_dropdown"
     position="bottom-end"

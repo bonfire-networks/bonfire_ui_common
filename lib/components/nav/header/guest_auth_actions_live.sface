@@ -1,0 +1,6 @@
+{#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+  <LinkLive to={path(:login, :index)} class={@login_class} id={@login_id}>{l("Log in")}</LinkLive>
+  <LinkLive to={path(:signup)} class={@signup_class} id={@signup_id}>{l("Sign up")}</LinkLive>
+{#else}
+  <LinkLive to={path(:login, :index)} class={@login_class} id={@login_id}>{l("Sign in")}</LinkLive>
+{/if}

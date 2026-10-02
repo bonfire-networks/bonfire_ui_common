@@ -25,14 +25,15 @@
       {/case}
       <span class="wrap-anywhere underline-offset-3 group-hover:underline">{instance_name()}</span>
     </LinkLive>
-    <LinkLive
-      to={path(:login, :index)}
-      class="btn btn-outline btn-primary shrink-0 gap-2 px-3.5 text-sm font-medium sm:px-5 theme-light:min-h-11 theme-light:border-transparent theme-light:bg-transparent theme-light:px-2 theme-light:text-base-content"
-      opts={[id: "guest-board-signin"]}
-    >
-      {l("Sign in")}
-      <#Icon iconify="ph:arrow-right" class="size-4" aria-hidden="true" />
-    </LinkLive>
+    {!-- desktop only: below `lg` the guest mobile dock carries the same actions (see `layout_live.sface`) --}
+    <div class="max-lg:hidden flex shrink-0 items-center gap-2">
+      <Bonfire.UI.Common.GuestAuthActionsLive
+        login_id="guest-board-signin"
+        signup_id="guest-board-signup"
+        login_class="btn btn-soft shrink-0 px-4 whitespace-nowrap"
+        signup_class="btn btn-primary shrink-0 px-4 whitespace-nowrap"
+      />
+    </div>
   </header>
 
   <nav

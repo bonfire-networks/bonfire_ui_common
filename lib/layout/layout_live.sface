@@ -128,13 +128,7 @@
               <div>
                 <div class="flex flex-col gap-2 pb-2">
                   <div :if={!@current_user_id} class="flex flex-col gap-2 p-card">
-                    {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-                      <LinkLive to={path(:login, :index)} class="btn btn-ds-outline" parent_id="layout">{l("Log in")}</LinkLive>
-
-                      <LinkLive to={path(:signup)} class="btn btn-primary" parent_id="layout">{l("Sign up")}</LinkLive>
-                    {#else}
-                      <LinkLive to={path(:login, :index)} class="btn btn-ds-outline" parent_id="layout">{l("Sign in")}</LinkLive>
-                    {/if}
+                    <Bonfire.UI.Common.GuestAuthActionsLive login_class="btn btn-ds-outline" />
                   </div>
                   <Bonfire.UI.Common.ImpressumLive />
                 </div>
@@ -348,31 +342,19 @@
     {#else}
       <div class="flex flex-row items-center justify-between basis-full max-w-none gap-3 mb-0">
         <Bonfire.UI.Common.LogoLinkLive
-          with_name
           href="/"
-          container_class="min-w-0 flex flex-1 flex-row items-center gap-2 cursor-pointer"
+          container_class="min-w-0 flex flex-1 flex-row items-center cursor-pointer"
           image_class="size-10 shrink-0 object-contain"
-          name_class="truncate text-xl font-bold text-base-content"
           link_opts={[id: "dock-instance-home"]}
         />
 
         {#if !current_account(@__context__)}
-          <LinkLive
-            id="dock-login-action"
-            to={path(:login, :index)}
-            class="btn btn-soft min-h-11 h-11 shrink-0 px-4 whitespace-nowrap"
-          >
-            <span>{l("Log in")}</span>
-          </LinkLive>
-
-          <LinkLive
-            :if={!Bonfire.Me.Accounts.instance_is_invite_only?()}
-            id="dock-signup-action"
-            to={path(:signup)}
-            class="btn btn-primary min-h-11 h-11 shrink-0 px-4 whitespace-nowrap"
-          >
-            <span>{l("Sign up")}</span>
-          </LinkLive>
+          <Bonfire.UI.Common.GuestAuthActionsLive
+            login_id="dock-login-action"
+            signup_id="dock-signup-action"
+            login_class="btn btn-soft min-h-11 h-11 shrink-0 px-4 whitespace-nowrap"
+            signup_class="btn btn-primary min-h-11 h-11 shrink-0 px-4 whitespace-nowrap"
+          />
         {#else}
           <LinkLive
             id="dock-login-action"
