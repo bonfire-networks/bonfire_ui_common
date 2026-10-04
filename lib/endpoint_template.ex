@@ -242,7 +242,11 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       plug(Plug.Static,
         at: "/data/uploads/",
         from: "data/uploads",
-        gzip: serve_gzip
+        gzip: serve_gzip,
+        # uploads (e.g. SVG) are served from the instance's origin, so stop any script in them from running if opened directly. NOTE: reverse proxies that serve this path themselves need the same header (see config/deploy/)
+        headers: %{
+          "content-security-policy" => "sandbox; default-src 'none'; style-src 'unsafe-inline'"
+        }
       )
 
       # Serve static files from the current flavour's OTP app (e.g. jacobin fonts)
