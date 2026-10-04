@@ -38,7 +38,8 @@ defmodule Bonfire.UI.Common.MaybePlausibleProxyPlug do
     url =
       "#{config[:base_domain] || @plausible_base}#{config[:script_path] || @default_script_path}"
 
-    case HTTP.get(url, build_headers(conn, config)) do
+    # an admin-configured analytics server, which may be on a private address
+    case HTTP.get(url, build_headers(conn, config), ssrf_check: false) do
       {:ok, resp} ->
         conn
         |> forward_safe_headers(resp.headers)
@@ -60,7 +61,9 @@ defmodule Bonfire.UI.Common.MaybePlausibleProxyPlug do
          remote_ip = determine_ip_address(conn, config),
          headers = build_headers(conn, [{"Content-Type", "application/json"}], remote_ip),
          {:ok, resp} <-
-           HTTP.post("#{config[:base_domain] || @plausible_base}/api/event", body, headers) do
+           HTTP.post("#{config[:base_domain] || @plausible_base}/api/event", body, headers,
+             ssrf_check: false
+           ) do
       conn
       |> forward_safe_headers(resp.headers)
       |> send_resp(resp.status, resp.body)

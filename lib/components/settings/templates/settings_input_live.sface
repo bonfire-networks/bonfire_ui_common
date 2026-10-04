@@ -2,7 +2,7 @@
   <div x-data="{open: false}">
     <div class="flex items-center justify-between">
       <div :if={@name || @description} class="flex flex-col gap-0.5">
-        <div :if={@name} class="text-sm font-medium text-base-content">{@name}</div>
+        <label :if={@name} for={@input_id} class="text-sm font-medium text-base-content">{@name}</label>
         <div :if={@description} class="text-sm text-muted">{@description}</div>
       </div>
       <button
@@ -30,6 +30,7 @@
         <input
           type="text"
           placeholder={@placeholder}
+          id={@input_id}
           name={@input}
           value={to_string(@current_value)}
           class="flex-1 input input-bordered input-sm"
@@ -43,7 +44,7 @@
 {#else}
   <div>
     <div :if={@name || @description} class="flex flex-col gap-0.5 mb-3">
-      <div :if={@name} class="text-sm font-medium text-base-content">{@name}</div>
+      <label :if={@name} for={@input_id} class="text-sm font-medium text-base-content">{@name}</label>
       <div :if={@description} class="text-sm text-muted">{@description}</div>
     </div>
 
@@ -52,6 +53,7 @@
       <input
         type="text"
         placeholder={@placeholder}
+        id={@input_id}
         name={@input}
         value={to_string(@current_value)}
         class="flex-1 input input-bordered input-sm"

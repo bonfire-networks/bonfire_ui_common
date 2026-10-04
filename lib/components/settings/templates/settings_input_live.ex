@@ -18,8 +18,15 @@ defmodule Bonfire.UI.Common.SettingsInputLive do
   prop input, :string, default: nil
 
   def render(assigns) do
+    assigns = Bonfire.Common.Settings.LiveHandler.maybe_assign_input_value_from_keys(assigns)
+
     assigns
-    |> Bonfire.Common.Settings.LiveHandler.maybe_assign_input_value_from_keys()
+    # so the setting's name can be the input's `<label>`
+    |> assign(
+      :input_id,
+      "setting_" <>
+        String.replace("#{assigns.scope}_#{assigns.input}", ~r/[^A-Za-z0-9]+/, "_")
+    )
     |> render_sface()
   end
 end

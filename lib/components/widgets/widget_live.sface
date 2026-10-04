@@ -119,7 +119,11 @@
           {#case component_type}
             {#match Surface.Component}
               {#if @widget[:form_change] || @widget[:form_submit]}
-                <form phx-change={@widget[:form_change]} phx-submit={@widget[:form_submit]}>
+                <form
+                  phx-change={@widget[:form_change]}
+                  phx-submit={@widget[:form_submit]}
+                  data-scope={(e(@data, :keys, nil) || e(@widget, :data, :keys, nil)) |> List.wrap() |> Enum.join(".")}
+                >
                   <StatelessComponent
                     module={@widget[:module]}
                     showing_within={@showing_within}
@@ -141,7 +145,11 @@
               {/if}
             {#match Phoenix.Component}
               {#if @widget[:form_change] || @widget[:form_submit]}
-                <form phx-change={@widget[:form_change]} phx-submit={@widget[:form_submit]}>
+                <form
+                  phx-change={@widget[:form_change]}
+                  phx-submit={@widget[:form_submit]}
+                  data-scope={(e(@data, :keys, nil) || e(@widget, :data, :keys, nil)) |> List.wrap() |> Enum.join(".")}
+                >
                   <.dynamic_component
                     module={@widget[:module]}
                     __context__={@__context__}

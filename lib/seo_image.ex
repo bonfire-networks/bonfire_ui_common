@@ -286,6 +286,8 @@ defmodule Bonfire.UI.Common.SEOImage do
   defp fetch_source(icon_url) do
     with {:ok, %{status: status, body: body}} when status in 200..299 and is_binary(body) <-
            Bonfire.Common.HTTP.get(icon_url, [],
+             # the instance's own icon (admin config), which may be on a private address
+             ssrf_check: false,
              # an unbounded fetch here would stall page renders, not just this one: the names
              # differ per adapter (Finch vs Hackney), and each ignores the ones it does not know
              adapter: [
