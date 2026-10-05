@@ -285,6 +285,28 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   def conn(conn, {:user, user_id}) when is_binary(user_id),
     do: put_session(conn, :current_user_id, user_id)
 
+  # where to go after signing in, as the browser would send it back: the encrypted cookie `set_go_after/2` sets
+  def conn(conn, {:go, path}) when is_binary(path) do
+    %{value: value} =
+      conn
+      |> Map.put(
+        :secret_key_base,
+        Bonfire.Common.Config.endpoint_module().config(:secret_key_base)
+      )
+      |> Bonfire.UI.Common.set_go_after(path)
+      |> Map.get(:resp_cookies)
+      |> Map.fetch!("_bonfire_go")
+
+    Plug.Test.put_req_cookie(conn, "_bonfire_go", value)
+  end
+
+  @doc "Where a response says to go after signing in: what the app itself (`Bonfire.UI.Common.go_after/1`) reads on the next request, with the cookies the browser would send back."
+  def go_target(%Plug.Conn{} = response) do
+    Phoenix.ConnTest.recycle(response)
+    |> Map.put(:secret_key_base, Bonfire.Common.Config.endpoint_module().config(:secret_key_base))
+    |> Bonfire.UI.Common.go_after()
+  end
+
   def find_flash(view_or_doc) do
     messages = Floki.find(view_or_doc, ".app_notifications .flash [data-id='flash']")
     # |> info()

@@ -3,19 +3,35 @@ defmodule Bonfire.UI.Common.LoginReturnPathTest do
 
   alias Bonfire.UI.Common
 
+  # the go target is an encrypted cookie, which needs the endpoint's key
+  defp new_conn do
+    Plug.Test.conn(:get, "/login")
+    |> Map.put(:secret_key_base, Bonfire.Common.Config.endpoint_module().config(:secret_key_base))
+    |> Plug.Test.init_test_session(%{})
+  end
+
   for source <- [:session, :form, :nested_form, :default] do
     @source source
     test "preserves encoded path and query values from #{@source}" do
       values = %{"state" => "state & + / café", "next" => "/inbox?filter=a&sort=b"}
       destination = "/search/saved%2Fquery?" <> Plug.Conn.Query.encode(values)
-      conn = Plug.Test.conn(:get, "/login") |> Plug.Test.init_test_session(%{})
+      conn = new_conn()
 
       {conn, params, default} =
         case @source do
-          :session -> {Common.set_go_after(conn, destination), %{}, "/"}
-          :form -> {conn, %{"go" => destination}, "/"}
-          :nested_form -> {conn, %{data: %{go: destination}}, "/"}
-          :default -> {conn, %{}, destination}
+          # saved by one request, read by the next, which gets the cookie back as a browser would send it
+          :session ->
+            {new_conn() |> Plug.Test.recycle_cookies(Common.set_go_after(conn, destination)), %{},
+             "/"}
+
+          :form ->
+            {conn, %{"go" => destination}, "/"}
+
+          :nested_form ->
+            {conn, %{data: %{go: destination}}, "/"}
+
+          :default ->
+            {conn, %{}, destination}
         end
 
       response = Common.redirect_to_previous_go(conn, params, default, "/login")

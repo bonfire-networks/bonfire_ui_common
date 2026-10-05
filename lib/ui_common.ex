@@ -839,9 +839,21 @@ defmodule Bonfire.UI.Common do
   end
 
   def redirect_to(%Phoenix.LiveView.Socket{redirected: nil} = socket, to, opts) do
-    debug(to, "redirect socket to")
-    # debug(socket)
-    do_redirect_to(socket, redirect_opts(socket, to, opts))
+    if is_binary(to) and to == current_url(socket) do
+      # the page it's on: redirecting would load it again, and whatever sent it here would redirect again, forever. Only the exact URL, so another query on the same path still goes. The caller's own fallback if it gave one, else it stays
+      case opts[:fallback] do
+        fallback when is_binary(fallback) and fallback != to ->
+          redirect_to(socket, fallback, Keyword.delete(opts, :fallback))
+
+        _ ->
+          warn(to, "not redirecting a socket to the page it's already on")
+          socket
+      end
+    else
+      debug(to, "redirect socket to")
+      # debug(socket)
+      do_redirect_to(socket, redirect_opts(socket, to, opts))
+    end
   end
 
   def redirect_to(%Phoenix.LiveView.Socket{redirected: already} = socket, to, _opts) do
@@ -1184,15 +1196,58 @@ defmodule Bonfire.UI.Common do
     _ -> false
   end
 
-  @doc "Save a `go` redirection path in the session (for redirecting somewhere after auth flows)"
+  @go_cookie "_bonfire_go"
+
+  @doc """
+  Save a `go` redirection path (for redirecting somewhere after auth flows), in an encrypted cookie of its own that the browser deletes after `[Bonfire.UI.Common, :go_after_max_age]` (15 minutes by default).
+
+  Not in the session, which lasts for weeks: there, the target of a flow someone abandoned (an OAuth authorization, say) waited for their next sign-in and took them back into it.
+  """
   def set_go_after(conn, path \\ nil) do
     path = path || conn.request_path
 
-    Plug.Conn.put_session(
-      conn,
-      :go,
-      path
+    # Plug.Conn.put_session(
+    #   conn,
+    #   :go,
+    #   path
+    # )
+    conn
+    # for the rest of this request, as the cookie only comes back with the next one
+    |> Plug.Conn.put_private(:bonfire_go_after, path)
+    |> Plug.Conn.put_resp_cookie(@go_cookie, path,
+      encrypt: true,
+      max_age: div(go_after_max_age(), 1000),
+      http_only: true,
+      # sent on the top-level GET back from an external identity provider
+      same_site: "Lax",
+      secure: System.get_env("PUBLIC_PORT") == "443"
     )
+  end
+
+  defp go_after_max_age,
+    do:
+      Config.get([Bonfire.UI.Common, :go_after_max_age], to_timeout(minute: 15),
+        name: l("Sign-in return path lifetime"),
+        description: l("How long to remember where to go after signing in, in milliseconds.")
+      )
+
+  @doc """
+  Where to go after signing in, as `set_go_after/2` saved it: earlier in this request, or in the cookie the browser sent back, if it hasn't expired it. A cookie that doesn't decrypt (planted, or from another key) is dropped by Plug.
+  """
+  def go_after(conn) do
+    conn.private[:bonfire_go_after] ||
+      conn
+      |> Plug.Conn.fetch_cookies(encrypted: [@go_cookie])
+      |> Map.get(:cookies, %{})
+      |> Map.get(@go_cookie)
+  end
+
+  # used once, so a later sign-in doesn't go there again. Also clears a target stored in the session before it moved to its own cookie
+  defp forget_go(conn) do
+    conn
+    |> Plug.Conn.delete_session(:go)
+    |> Plug.Conn.put_private(:bonfire_go_after, nil)
+    |> Plug.Conn.delete_resp_cookie(@go_cookie)
   end
 
   @doc "Stashes a `:go` return path from a params map's `\"go\"`/`:go` key (via `set_go_after/2`) when present, else returns the conn unchanged."
@@ -1223,12 +1278,12 @@ defmodule Bonfire.UI.Common do
 
   def redirect_to_previous_go(conn, params, default, current_path) do
     # debug(conn.request_path)
-    case Plug.Conn.get_session(conn, :go)
-         #  |> debug("session_go")
+    # was `Plug.Conn.get_session(conn, :go)`, before the target moved to a cookie of its own
+    case go_after(conn)
          |> go_where?(params, default, current_path) do
       # TODO: add a configurable hook so these can be defined in the relevant extension
       [to: "/oauth/authorize?" <> query] ->
-        conn = Plug.Conn.delete_session(conn, :go)
+        conn = forget_go(conn)
 
         Bonfire.Common.Utils.maybe_apply(
           Bonfire.OpenID.Web.Oauth.AuthorizeController,
@@ -1237,7 +1292,7 @@ defmodule Bonfire.UI.Common do
         )
 
       [to: "/openid/authorize?" <> query] ->
-        conn = Plug.Conn.delete_session(conn, :go)
+        conn = forget_go(conn)
 
         Bonfire.Common.Utils.maybe_apply(
           Bonfire.OpenID.Web.Openid.AuthorizeController,
@@ -1247,7 +1302,7 @@ defmodule Bonfire.UI.Common do
 
       where ->
         conn
-        |> Plug.Conn.delete_session(:go)
+        |> forget_go()
         |> Phoenix.Controller.redirect(where)
     end
   end
