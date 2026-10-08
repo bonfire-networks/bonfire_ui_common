@@ -65,7 +65,7 @@
                           page={@page}
                           page_title={@page_title}
                           page_header_icon={@page_header_icon}
-                          show_widgets_toggle={!@without_secondary_widgets}
+                          show_widgets_toggle={@without_secondary_widgets != true}
                           back={@back}
                           extra={@extra}
                         >
