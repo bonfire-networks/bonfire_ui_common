@@ -27,6 +27,11 @@ defmodule Bonfire.UI.Common.RedirectToSelfTest do
              Common.redirect_to(socket_on("/here"), "/here", fallback: "/fallback")
   end
 
+  test "to the page it's on, with reload: true, it reloads it" do
+    assert %{redirected: {_kind, %{to: "/here"}}} =
+             Common.redirect_to(socket_on("/here"), "/here", reload: true)
+  end
+
   test "to the same page with another query, it redirects" do
     assert %{redirected: {_kind, %{to: "/here?tab=hidden"}}} =
              Common.redirect_to(socket_on("/here"), "/here?tab=hidden")

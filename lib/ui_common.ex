@@ -839,8 +839,8 @@ defmodule Bonfire.UI.Common do
   end
 
   def redirect_to(%Phoenix.LiveView.Socket{redirected: nil} = socket, to, opts) do
-    if is_binary(to) and to == current_url(socket) do
-      # the page it's on: redirecting would load it again, and whatever sent it here would redirect again, forever. Only the exact URL, so another query on the same path still goes. The caller's own fallback if it gave one, else it stays
+    if is_binary(to) and to == current_url(socket) and opts[:reload] != true do
+      # the page it's on: redirecting would load it again, and whatever sent it here would redirect again, forever. Only the exact URL, so another query on the same path still goes. The caller's own fallback if it gave one, else it stays. A caller that reloads on purpose (an event handler refreshing the page after a change) passes `reload: true`
       case opts[:fallback] do
         fallback when is_binary(fallback) and fallback != to ->
           redirect_to(socket, fallback, Keyword.delete(opts, :fallback))
@@ -962,7 +962,7 @@ defmodule Bonfire.UI.Common do
 
     opts
     |> Keyword.put(type, to || path_fallback(conn, opts))
-    |> Keyword.drop([:type])
+    |> Keyword.drop([:type, :reload])
     |> debug("opts")
   end
 
