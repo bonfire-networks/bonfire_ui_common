@@ -168,9 +168,13 @@ html:not([data-ui-preset="typographic"]) [data-theme] {
   }
 }
 
-/* App shell: one flat canvas with stable column boundaries. */
+/* App shell: one canvas with stable column boundaries. The outer gutters and
+   rails follow --rail-bg, which equals the canvas unless a theme tints it. */
 html:not([data-ui-preset="typographic"]) [data-id="bonfire_live"],
-html:not([data-ui-preset="typographic"]) [data-id="bonfire_live"] > .drawer,
+html:not([data-ui-preset="typographic"]) [data-id="bonfire_live"] > .drawer {
+  background-color: var(--rail-bg);
+}
+
 html:not([data-ui-preset="typographic"])
   [data-id="bonfire_live"]
   > .drawer
@@ -184,7 +188,7 @@ html:not([data-ui-preset="typographic"]) #main-content {
 
 html:not([data-ui-preset="typographic"]) #nav_sidebar,
 html:not([data-ui-preset="typographic"]) [data-id="right_nav_and_widgets"] {
-  background-color: var(--stream-canvas);
+  background-color: var(--rail-bg);
 }
 
 html:not([data-ui-preset="typographic"]) [data-id="bonfire_live"] > .drawer {
@@ -202,7 +206,7 @@ html:not([data-ui-preset="typographic"])
   [data-role="persistent_skeleton"]
   > div:first-child,
 html:not([data-ui-preset="typographic"]) #nav_sidebar > .flex > .bg-base-200 {
-  background-color: var(--stream-canvas);
+  background-color: var(--rail-bg);
 }
 
 html:not([data-ui-preset="typographic"]) #main-content > .sticky,
@@ -603,7 +607,9 @@ html:not([data-ui-preset="typographic"])
   padding: var(--spacing-card);
   border-width: 0;
   border-radius: var(--radius-box);
-  background-color: var(--stream-surface);
+  /* A theme with a tinted --rail-bg can lift widgets off it instead. */
+  background-color: var(--rail-widget-bg, var(--stream-surface));
+  box-shadow: var(--rail-widget-ring, none);
   overflow: hidden;
 }
 

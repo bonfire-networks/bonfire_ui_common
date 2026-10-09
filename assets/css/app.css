@@ -567,18 +567,24 @@ textarea:focus-visible {
   name: "light";
   default: true;
   color-scheme: light;
-  --color-base-100: oklch(99.5% 0.003 85);
-  --color-base-200: oklch(96.6% 0.009 85);
-  --color-base-300: oklch(94.5% 0.01 85);
-  --color-base-content: oklch(29% 0.03 305);
-  --color-primary: oklch(43% 0.125 305);
+  /* White reading column on cool blue-grey rails (was one flat warm cream
+     plane for every column). Neutrals share the dark theme's hue (255) so
+     greys read as intentional and both modes feel like one app. */
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(98.3% 0.004 255);
+  --color-base-300: oklch(95.6% 0.007 255);
+  --color-base-content: oklch(23% 0.02 260);
+  /* Royal blue, the same hue as the dark theme's primary (262), reserved for
+     primary actions and the current location. */
+  --color-primary: oklch(52% 0.2 262);
   --color-primary-content: oklch(100% 0 0);
   --color-accent: oklch(72% 0.12 35);
-  --color-secondary: oklch(89% 0.012 85);
-  --color-secondary-content: oklch(38% 0.03 305);
-  --color-accent-content: oklch(25% 0.035 305);
-  --color-neutral: oklch(32% 0.03 305);
-  --color-neutral-content: oklch(97% 0.006 85);
+  /* Hairline/structural colour, also used as the divider colour below. */
+  --color-secondary: oklch(91.5% 0.008 255);
+  --color-secondary-content: oklch(40% 0.02 260);
+  --color-accent-content: oklch(25% 0.035 260);
+  --color-neutral: oklch(26% 0.02 260);
+  --color-neutral-content: oklch(98% 0.004 255);
   --color-info: oklch(52% 0.11 235);
   --color-info-content: oklch(100% 0 0);
   --color-success: oklch(52% 0.12 150);
@@ -590,6 +596,8 @@ textarea:focus-visible {
   --radius-selector: 2rem;
   --radius-field: 2rem;
   --radius-box: 0rem;
+  /* Softly-rounded buttons to match Stream's 10px fields (its default is 4px). */
+  --radius-button: 0.625rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
@@ -1100,6 +1108,14 @@ hex-input::part(input) {
   --divider-width: 1px;
   --widget-gap: var(--spacing-base);
   --widget-overlap: 0px;
+}
+
+
+[data-theme="light"] {
+  --rail-bg: var(--color-base-200);
+  --divider-color: var(--color-secondary);
+  --rail-widget-bg: var(--color-base-100);
+  --rail-widget-ring: inset 0 0 0 1px var(--divider-color);
 }
 
 @utility feed-filter-summary {

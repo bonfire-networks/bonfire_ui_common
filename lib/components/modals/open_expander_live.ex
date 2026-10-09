@@ -23,6 +23,9 @@ defmodule Bonfire.UI.Common.OpenExpanderLive do
 
   prop(open_btn_wrapper_class, :css_class, default: "")
 
+  @doc "The classes of the outer wrapper (holding both the trigger row and the inline content)"
+  prop(open_modal_wrapper_class, :css_class, default: "w-full")
+
   @doc "The classes of the caret icon (a `rotate-90` is added when open)"
   prop(
     caret_class,
