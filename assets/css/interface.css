@@ -802,11 +802,8 @@ html:not([data-ui-preset="typographic"]) [data-reply-context] {
   --stream-context-column: 36px;
   --stream-context-connector-up-reach: 38px;
   --stream-context-connector-reach: 35.5px;
-  --stream-context-connector: color-mix(
-    in oklab,
-    var(--color-base-content) 40%,
-    var(--stream-canvas)
-  );
+  /* Same ink as contained-object outlines: structure, not content. */
+  --stream-context-connector: var(--stream-object-outline);
 }
 
 html:not([data-ui-preset="typographic"]) [data-reply-context][data-compact="true"] {
