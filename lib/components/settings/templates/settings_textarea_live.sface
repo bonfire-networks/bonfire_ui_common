@@ -9,7 +9,7 @@
         x-on:click="open = !open"
         type="button"
         x-cloak
-        class="rounded btn btn-square btn-sm btn-ghost"
+        class="btn btn-square btn-sm btn-ghost"
         x-show="open"
       >
         <#Icon iconify="carbon:chevron-up-fill" class="w-4 h-4 text-muted" />
@@ -18,7 +18,7 @@
         x-on:click="open = !open"
         type="button"
         x-cloak
-        class="rounded btn btn-square btn-sm btn-ghost"
+        class="btn btn-square btn-sm btn-ghost"
         x-show="!open"
       >
         <#Icon iconify="carbon:chevron-down" class="w-4 h-4 text-muted" />

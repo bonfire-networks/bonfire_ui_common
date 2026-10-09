@@ -7,7 +7,7 @@
   >
     <LinkLive
       class={
-        "flex text-muted truncate py-2 flex-col items-center gap-2 place-content-center hover:bg-fill rounded-md text-[13px]",
+        "flex text-muted truncate py-2 flex-col items-center gap-2 place-content-center hover:bg-fill rounded-selector text-sm",
         "!bg-primary/20 !border-divider border":
           @__context__[:current_extension][:name] ==
             extension[:name]

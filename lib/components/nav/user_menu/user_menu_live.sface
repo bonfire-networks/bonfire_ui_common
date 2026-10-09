@@ -23,11 +23,11 @@
       />
     </div>
     <div class="min-w-0 flex-1">
-      <div class="truncate text-body font-medium leading-tight text-base-content">
+      <div class="truncate text-base font-medium leading-tight text-base-content">
         {e(current_user(@__context__), :profile, :name, nil) ||
           e(current_user(@__context__), :character, :username, l("Anonymous"))}
       </div>
-      <div class="truncate text-body leading-tight text-muted">
+      <div class="truncate text-base leading-tight text-muted">
         {maybe_apply(Bonfire.Me.Characters, :display_username, [current_user(@__context__), true],
           fallback_return: "@" <> e(current_user(@__context__), :character, :username, "")
         )}

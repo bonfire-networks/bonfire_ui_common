@@ -1,9 +1,7 @@
+/* OpenDyslexic. No woff2 build exists; the woff is small (33KB). */
 @font-face {
 	font-family: "OpenDyslexic";
-	src: local(""), url("/fonts/OpenDyslexic.ttf.woff") format("woff"),
-		url("/fonts/OpenDyslexic.ttf.svg#OpenDyslexic") format("svg"),
-		url("/fonts/OpenDyslexic.ttf.eot"),
-		url("/fonts/OpenDyslexic.ttf.eot?#iefix") format("embedded-opentype");
+	src: url("/fonts/OpenDyslexic.ttf.woff") format("woff");
 	font-weight: normal;
 	font-style: normal;
 	font-display: swap;

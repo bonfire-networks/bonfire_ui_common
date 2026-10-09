@@ -8,8 +8,8 @@
     <header class="flex items-center gap-avatar">
       <.avatar src={@avatar_url} alt={@display_name} />
       <div class="min-w-0">
-        <div class="text-body font-medium text-base-content leading-tight truncate">{@display_name}</div>
-        <div class="text-body text-muted leading-tight truncate">{@username} <span class="text-primary">·</span> {@time_text}</div>
+        <div class="text-base font-medium text-base-content leading-tight truncate">{@display_name}</div>
+        <div class="text-base text-muted leading-tight truncate">{@username} <span class="text-primary">·</span> {@time_text}</div>
       </div>
     </header>
 
@@ -18,11 +18,11 @@
       <.badge variant="primary">UMFRAGE</.badge>
       <.badge variant="success" dot>{@status_label}</.badge>
       <span class="flex-1" />
-      <span class="text-body font-medium text-base-content">{@vote_count}</span>
+      <span class="text-base font-medium text-base-content">{@vote_count}</span>
     </div>
 
-    {!-- question (full-poll variant = text-display) --}
-    <div class="text-display font-medium text-base-content mt-base">{@question}</div>
+    {!-- question (full-poll variant = text-xl) --}
+    <div class="type-title text-base-content mt-base">{@question}</div>
   </div>
 
   {!-- options --}
@@ -34,7 +34,7 @@
         checked={opt[:selected]}
         class="radio radio-primary radio-xs shrink-0"
       />
-      <span class="text-body text-base-content tracking-[-0.3px]">{opt[:label]}</span>
+      <span class="text-base text-base-content tracking-tight">{opt[:label]}</span>
     </label>
   {/for}
 

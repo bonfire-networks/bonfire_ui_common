@@ -42,14 +42,14 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   prop mode, :atom, default: :single
   prop variant, :atom, default: :default
   prop type, :atom, default: nil
-  prop class, :string, default: "bg-transparent text-sm rounded h-10 w-full input liveselect"
+  prop class, :string, default: "bg-transparent text-sm h-10 w-full input liveselect"
   # 0 means unlimited
   prop max_selectable, :integer, default: 0
   prop update_min_len, :integer, default: 2
   prop debounce, :integer, default: 300
 
   prop text_input_class, :string,
-    default: "bg-transparent text-sm rounded h-10 w-full input liveselect"
+    default: "bg-transparent text-sm h-10 w-full input liveselect"
 
   def render(%{form: form_name} = assigns) when is_atom(form_name) do
     assigns

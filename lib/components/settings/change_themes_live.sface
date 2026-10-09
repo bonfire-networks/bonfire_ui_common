@@ -304,7 +304,7 @@
                 {#for radius <- [nil, "0rem", "0.5rem", "1rem", "2rem"]}
                   <label
                     class={
-                      "flex-1 min-h-11 rounded-lg bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2 p-1",
+                      "flex-1 min-h-11 rounded-selector bg-base-200 hover:bg-base-300 focus-within:outline-base-content relative cursor-pointer overflow-hidden transition-colors focus-within:outline-2 focus-within:outline-offset-2 p-1",
                       "bg-primary/10": radius_selected?(@custom_tokens, group.token, radius)
                     }
                     title={radius || l("Inherited")}
@@ -340,7 +340,7 @@
                         }
                         style={"border-start-end-radius:#{radius || "var(--#{group.token})"}"}
                       />
-                      <span class="text-[10px] leading-none">{radius || l("Base")}</span>
+                      <span class="text-xs leading-none">{radius || l("Base")}</span>
                     </div>
                   </label>
                 {/for}

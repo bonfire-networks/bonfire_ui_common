@@ -51,7 +51,7 @@ defmodule Bonfire.UI.Common.Settings.Calm.PresetCardsLive do
   @doc "Class of each card (a `<label>` wrapping a sr-only radio — keep the `has-[:checked]`/`has-[:focus-visible]` variants so selection & focus stay visible)."
   prop card_class, :css_class,
     default:
-      "relative flex flex-wrap items-start gap-x-3 gap-y-2 rounded-lg border border-divider p-3 cursor-pointer transition-colors hover:border-divider hover:bg-fill has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:ring-1 has-[:checked]:ring-primary has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-1 has-[:focus-visible]:ring-offset-base-100"
+      "relative flex flex-wrap items-start gap-x-3 gap-y-2 rounded-selector border border-divider p-3 cursor-pointer transition-colors hover:border-divider hover:bg-fill has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:ring-1 has-[:checked]:ring-primary has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-1 has-[:focus-visible]:ring-offset-base-100"
 
   @doc "Class of the icon circle (keep the `peer-checked:` variants for the selected state); pass `\"hidden\"` to drop icons entirely."
   prop icon_wrapper_class, :css_class,

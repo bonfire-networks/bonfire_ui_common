@@ -100,7 +100,7 @@ defmodule Bonfire.UI.Common.ViewCodeLive do
                    href:
                      "/settings/extensions/code/#{module}#{if from_beam?, do: "?from=compiled"}",
                    link_class:
-                     "flex items-center w-full rounded-md text-sm hover:bg-fill-strong",
+                     "flex items-center w-full rounded-selector text-sm hover:bg-fill-strong",
                    type: :link,
                    icon: "fluent:code-text-20-filled"
                  }

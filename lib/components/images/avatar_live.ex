@@ -65,11 +65,11 @@ defmodule Bonfire.UI.Common.AvatarLive do
   # end
 
   # def classes(%{viewing_main_object: true}) do
-  #   "w-14 h-14 rounded-lg bg-base-200"
+  #   "w-14 h-14 rounded-box bg-base-200"
   # end
 
   # def classes(%{comment: true}) do
-  #   "w-8 h-8 rounded-lg bg-base-200"
+  #   "w-8 h-8 rounded-box bg-base-200"
   # end
 
   # def classes(_) do

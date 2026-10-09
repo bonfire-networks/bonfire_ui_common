@@ -6,7 +6,7 @@
     </div>
     <div class="flex items-center gap-2">
       {#if @read_only}
-        <span class="flex-none badge h-[1.75rem] font-medium rounded">{@current_value}</span>
+        <span class="flex-none badge h-[1.75rem] font-medium">{@current_value}</span>
       {#else}
         <input name="scope" value={@scope} type="hidden">
         <input type="number" name={@input} value={to_string(@current_value)} class={@class}>

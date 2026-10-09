@@ -4,7 +4,7 @@
 >
   <a
     href="#main-content"
-    class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-toast focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-content focus:rounded-lg focus:font-medium"
+    class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-toast focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-content focus:rounded-box focus:font-medium"
   >
     {l("Skip to main content")}
   </a>

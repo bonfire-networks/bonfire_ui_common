@@ -35,7 +35,7 @@ defmodule Bonfire.UI.Common.DesignSystem.ElementsLive do
 
   # ===================== BADGE =====================
 
-  @doc "Outline pill badge (UMFRAGE / OFFEN): text-body uppercase, 0.7px border, rounded-selector."
+  @doc "Outline pill badge (UMFRAGE / OFFEN): text-base uppercase, 0.7px border, rounded-selector."
   attr :variant, :string, default: "primary", values: ~w(primary success)
   attr :dot, :boolean, default: false, doc: "Show a leading status dot (e.g. OFFEN)"
   attr :class, :any, default: nil
@@ -44,7 +44,7 @@ defmodule Bonfire.UI.Common.DesignSystem.ElementsLive do
   def badge(assigns) do
     ~H"""
     <span class={[
-      "inline-flex items-center gap-[6px] text-body uppercase leading-none px-3 py-[3px]",
+      "inline-flex items-center gap-[6px] text-base uppercase leading-none px-3 py-[3px]",
       "rounded-selector border-hair",
       badge_variant_class(@variant),
       @class

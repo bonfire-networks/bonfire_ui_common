@@ -11,7 +11,7 @@
         aria-level="2"
         data-role="widget-heading"
         class={
-          "[.sidebar-widgets_&]:font-(--stream-emphasis-weight) [.sidebar-widgets_&]:text-body [.sidebar-widgets_&]:leading-[1.3] [.sidebar-widgets_&]:tracking-normal [.sidebar-widgets_&]:normal-case",
+          "[.sidebar-widgets_&]:font-(--stream-emphasis-weight) [.sidebar-widgets_&]:text-base [.sidebar-widgets_&]:leading-[1.3] [.sidebar-widgets_&]:tracking-normal [.sidebar-widgets_&]:normal-case",
           @heading_class
         }
       >{@widget_title}</div>

@@ -27,10 +27,10 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
         :ls_container_class,
         cond do
           filter_variant? ->
-            "relative w-full min-h-[46px] flex flex-wrap items-center gap-1.5 rounded-[14px] border border-divider bg-base-content/[0.03] px-[7px] py-[5px] transition-[border-color,background-color,box-shadow] duration-150 hover:border-base-content/25 hover:bg-base-content/[0.06] focus-within:border-primary focus-within:ring-[3px] focus-within:ring-primary/20 [&>div]:min-w-[150px] [&>div]:flex-1"
+            "relative w-full min-h-[46px] flex flex-wrap items-center gap-1.5 rounded-box border border-divider bg-base-content/[0.03] px-[7px] py-[5px] transition-[border-color,background-color,box-shadow] duration-150 hover:border-base-content/25 hover:bg-base-content/[0.06] focus-within:border-primary focus-within:ring-[3px] focus-within:ring-primary/20 [&>div]:min-w-[150px] [&>div]:flex-1"
 
           tags? ->
-            "w-full flex flex-col gap-1.5 rounded-2xl border border-divider bg-fill px-3 py-2 transition-colors focus-within:border-primary"
+            "w-full flex flex-col gap-1.5 rounded-box border border-divider bg-fill px-3 py-2 transition-colors focus-within:border-primary"
 
           true ->
             "w-full flex flex-col"
@@ -56,7 +56,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
         :ls_dropdown_class,
         if(filter_variant?,
           do:
-            "z-popover top-full mt-1 max-h-liveselect flex-nowrap overflow-y-auto rounded-[14px] border border-divider !bg-base-100 p-1.5 shadow-xl",
+            "z-popover top-full mt-1 max-h-liveselect flex-nowrap overflow-y-auto rounded-box border border-divider !bg-base-100 p-1.5 shadow-xl",
           else:
             "z-50 max-h-liveselect flex-nowrap border border-divider !bg-base-100 overflow-y-auto " <>
               if(tags?, do: "top-full mt-1", else: "top-12")
@@ -66,7 +66,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
         :ls_tag_class,
         if(filter_variant?,
           do:
-            "min-h-[34px] inline-flex items-center gap-[7px] rounded-full bg-primary/[0.14] py-[3px] pr-1 pl-2 text-[13px] font-semibold text-primary",
+            "min-h-[34px] inline-flex items-center gap-[7px] rounded-full bg-primary/[0.14] py-[3px] pr-1 pl-2 text-sm font-bold text-primary",
           else: "badge badge-primary rounded-full badge-md gap-1.5 font-medium"
         )
       )
@@ -156,7 +156,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
                 {e(option.value, :name, nil) || e(option.value, :profile, :name, nil) ||
                   e(option.value, :named, :name, nil)}
               </p>
-              <p class="font-light -mt-0.5 text-muted">
+              <p class="font-normal -mt-0.5 text-muted">
                 {e(option.value, :username, nil) || e(option.value, :character, :username, nil)}
               </p>
             </div>

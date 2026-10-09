@@ -24,68 +24,73 @@
   font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
-@utility type-body {
-  font-size: var(--text-body);
-  line-height: var(--tw-leading, var(--text-body--line-height));
-  font-weight: 400;
-}
-
-@utility type-name {
-  font-size: var(--text-body);
-  line-height: var(--tw-leading, var(--text-body--line-height));
-  font-weight: 500;
-}
-
-@utility type-meta {
-  font-size: var(--text-meta);
-  line-height: var(--tw-leading, var(--text-meta--line-height));
-  font-weight: 400;
+/* Type roles: size + line-height + weight + tracking in one class. Prefer
+   these over combining text-* with font-* and tracking-* by hand. An explicit
+   leading-* still wins (var(--tw-leading, …)). */
+@utility type-overline {
+  font-size: var(--text-2xs);
+  line-height: var(--tw-leading, var(--text-2xs--line-height));
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
 }
 
 @utility type-caption {
-  font-size: var(--text-caption);
-  line-height: var(--tw-leading, var(--text-caption--line-height));
-  font-weight: 400;
+  font-size: var(--text-xs);
+  line-height: var(--tw-leading, var(--text-xs--line-height));
+  font-weight: var(--font-weight-normal);
+}
+
+@utility type-meta {
+  font-size: var(--text-sm);
+  line-height: var(--tw-leading, var(--text-sm--line-height));
+  font-weight: var(--font-weight-normal);
+}
+
+@utility type-body {
+  font-size: var(--text-base);
+  line-height: var(--tw-leading, var(--text-base--line-height));
+  font-weight: var(--font-weight-normal);
+}
+
+@utility type-name {
+  font-size: var(--text-base);
+  line-height: var(--tw-leading, var(--text-base--line-height));
+  font-weight: var(--font-weight-medium);
+}
+
+@utility type-prose {
+  font-size: var(--text-prose);
+  line-height: var(--tw-leading, var(--text-prose--line-height));
+  font-weight: var(--font-weight-normal);
 }
 
 @utility type-heading {
-  font-size: var(--text-heading);
-  line-height: var(--tw-leading, var(--text-heading--line-height));
-  font-weight: 500;
-  letter-spacing: -0.02em;
-}
-
-@utility type-nav {
-  font-size: var(--text-nav);
-  line-height: var(--tw-leading, var(--text-nav--line-height));
-  font-weight: 400;
-}
-
-@utility type-lead {
-  font-size: var(--text-lead);
-  line-height: var(--tw-leading, var(--text-lead--line-height));
-  font-weight: 500;
+  font-size: var(--text-lg);
+  line-height: var(--tw-leading, var(--text-lg--line-height));
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-tight);
 }
 
 @utility type-title {
-  font-size: var(--text-display);
-  line-height: var(--tw-leading, var(--text-display--line-height));
-  font-weight: 500;
-  letter-spacing: -0.03em;
+  font-size: var(--text-xl);
+  line-height: var(--tw-leading, 1.1);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-tight);
 }
 
 @utility type-result {
-  font-size: var(--text-result);
-  line-height: var(--tw-leading, var(--text-result--line-height));
-  font-weight: 500;
+  font-size: var(--text-2xl);
+  line-height: var(--tw-leading, var(--text-2xl--line-height));
+  font-weight: var(--font-weight-medium);
   font-variant-numeric: tabular-nums;
 }
 
 @utility type-feature {
-  font-size: var(--text-feature);
-  line-height: var(--tw-leading, var(--text-feature--line-height));
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-size: var(--text-3xl);
+  line-height: var(--tw-leading, var(--text-3xl--line-height));
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-tight);
 }
 
 /* Vidstack media player (default layout) — see remote_media_live.hooks.js */
@@ -338,7 +343,7 @@ label[for],
 /* Most Bonfire buttons are raw DaisyUI `.btn` elements rather than ButtonLive.
    Give them the same quick, native-feeling interaction polish by default. */
 .btn {
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
   transition-property:
     transform, scale, opacity, background-color, border-color, box-shadow;
   transition-duration: 150ms;
@@ -347,7 +352,7 @@ label[for],
 
 /* Keep button geometry themeable without changing input or icon-button shapes. */
 .btn:not(.btn-circle):not(.btn-square) {
-  --radius-field: var(--radius-button, var(--button-radius-default, 0.625rem));
+  --radius-field: var(--radius-button);
 }
 
 .btn-sm {
@@ -585,8 +590,6 @@ textarea:focus-visible {
   --radius-selector: 2rem;
   --radius-field: 2rem;
   --radius-box: 0rem;
-  /* Softly-rounded buttons to match Stream's 10px fields (its default is 4px). */
-  --radius-button: 0.625rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
@@ -599,7 +602,6 @@ textarea:focus-visible {
   --elevation-popover: 0 2px 6px -2px oklch(0% 0 0 / 0.08),
     0 12px 24px -8px oklch(0% 0 0 / 0.14);
   --spacing-page-header: 64px;
-  --text-display: clamp(20px, 18.6px + 0.36vw, 20px);
 }
 
 @plugin "daisyui/theme" {
@@ -647,7 +649,6 @@ textarea:focus-visible {
   --elevation-modal: 0 0 0 1px oklch(100% 0 0 / 0.1);
   --elevation-popover: 0 0 0 1px oklch(100% 0 0 / 0.08);
   --spacing-page-header: 64px;
-  --text-display: clamp(20px, 18.6px + 0.36vw, 20px);
 }
 
 input[type="text"],
@@ -657,7 +658,8 @@ input[type="number"],
 input[type="tel"],
 input[type="url"],
 textarea {
-  font-size: 16px;
+  /* At least 16px, or iOS zooms the page when an input is focused. */
+  font-size: var(--text-prose);
 }
 
 textarea {
@@ -672,7 +674,7 @@ textarea {
   input[type="tel"],
   input[type="url"],
   textarea {
-    font-size: 14px;
+    font-size: var(--text-sm);
   }
 }
 
@@ -834,7 +836,7 @@ article.active-activity::after {
 }
 
 .quote-preview .prose-bonfire {
-  font-size: 14px;
+  font-size: var(--text-sm);
 }
 
 .quote-preview::after {
@@ -902,52 +904,48 @@ pre.lumis > code {
     "Lateral", var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
 
-  --text-caption: 12px;
-  --text-caption--line-height: 16px;
-  --text-meta: 14px;
-  --text-meta--line-height: 20px;
-  --text-body: 15px;
-  --text-body--line-height: 20px;
-  --text-heading: 18px;
-  --text-heading--line-height: 22px;
-  --text-nav: 21px;
-  --text-nav--line-height: 24px;
-  --text-lead: 21px;
-  --text-lead--line-height: 24px;
-  /* Display tier scales fluidly from a 390px to a 1220px viewport (body tier
-     stays fixed — reading sizes must not shrink on mobile). Larger sizes
-     compress more: ~87% at 23px down to ~59% at 58px. Line-heights are
-     unitless so they track the fluid font-size. */
-  --text-display: clamp(20px, 18.6px + 0.36vw, 23px);
-  --text-display--line-height: 1.1;
-  --text-result: 28px;
-  --text-result--line-height: 24px;
-  --text-feature: clamp(28px, 23.3px + 1.2vw, 38px);
-  --text-feature--line-height: 1.05;
+  /* — Type scale: the only font sizes in Bonfire —
+     Tailwind's own text-* defaults are cleared so every extension snaps to
+     these steps. Use the type-* roles (size + weight + tracking) where a role
+     fits; plain text-* only for size. rem-based so the browser font-size
+     setting scales everything. */
+  --text-*: initial;
+  --text-2xs: 0.6875rem; /* 11px — uppercase labels only (type-overline) */
+  --text-2xs--line-height: 1rem;
+  --text-xs: 0.75rem; /* 12px — captions, helper text, handles */
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem; /* 14px — meta, UI labels, buttons */
+  --text-sm--line-height: 1.25rem;
+  --text-base: 0.9375rem; /* 15px — UI body, names */
+  --text-base--line-height: 1.25rem;
+  --text-prose: 1rem; /* 16px — reading text (post bodies); also the iOS no-zoom minimum for inputs */
+  --text-prose--line-height: 1.5;
+  --text-lg: 1.125rem; /* 18px — headings: sections, modals, cards */
+  --text-lg--line-height: 1.375rem;
+  /* 20px — page titles. A flavour may make it fluid in its theme block
+     (Jacobin: clamp(20px, 18.6px + 0.36vw, 23px)); theme blocks sit in the
+     base layer, so they win over this value. */
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.5rem;
+  --text-2xl: 1.75rem; /* 28px — big numbers, results */
+  --text-2xl--line-height: 2rem;
+  /* Hero headline, fluid from a 390px to a 1220px viewport. Unitless
+     line-height tracks the fluid size. */
+  --text-3xl: clamp(1.75rem, 1.456rem + 1.2vw, 2.375rem);
+  --text-3xl--line-height: 1.05;
 
-  /* — Editorial / publication text styles — */
-  --text-thema: clamp(34px, 22.7px + 2.89vw, 58px);
-  --text-thema--line-height: 0.97; /* Thema */
-  --text-headline: clamp(34px, 22.7px + 2.89vw, 58px);
-  --text-headline--line-height: 0.97; /* Large Headline */
-  --text-journal: clamp(32px, 21.2px + 2.77vw, 55px);
-  --text-journal--line-height: 0.74; /* Journal Header */
-  --text-headline-sm: clamp(24px, 21.7px + 0.6vw, 29px);
-  --text-headline-sm--line-height: 1.03; /* Small Headline */
-  --text-intro: clamp(22px, 19.2px + 0.72vw, 28px);
-  --text-intro--line-height: 1.21; /* Large Intro */
-  --text-author: clamp(20px, 18.1px + 0.48vw, 24px);
-  --text-author--line-height: 1; /* Author Name */
-  --text-subhead: 22px;
-  --text-subhead--line-height: 30px;
-  --text-article: 18.5px;
-  --text-article--line-height: 27px; /* Article Satz */
-  --text-intro-sm: 18px;
-  --text-intro-sm--line-height: 22px; /* Small Intro Mainpage */
-  --text-impressum: 18px;
-  --text-impressum--line-height: 24px; /* Impressum */
-  --text-byline: 16px;
-  --text-byline--line-height: 19px; /* Author Name Article */
+  /* Weights: 400, 500 and 600 only; Tailwind's other weights are cleared.
+     600 is Inter's bold (what DaisyUI and the prose plugin use too); a font
+     without a 600 face (Luciole, Noto) falls back to its 700. */
+  --font-weight-*: initial;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+
+  /* Letter-spacing beyond Tailwind's tight/wide/wider/widest: small labels
+     (tracking-label) and spaced uppercase kickers (tracking-caps). */
+  --tracking-label: 0.04em;
+  --tracking-caps: 0.16em;
 
   /* — Neutral grays (no DaisyUI semantic slot) — */
   --color-muted: color-mix(
@@ -1058,11 +1056,15 @@ hex-input::part(input) {
   font-variant-numeric: tabular-nums;
 }
 
-/* A theme that omits this optional override must not inherit another theme's button shape. Theme definitions in the base layer take precedence. */
+/* Button corners, separate from DaisyUI's --radius-field so pill inputs can sit
+   next to softly-rounded buttons. Declared in the theme layer, below DaisyUI's
+   theme blocks (base layer), so a flavour theme may set its own (Jacobin: pills);
+   repeated on [data-theme] so nested previews don't inherit the parent's shape.
+   Stream re-declares it unlayered with the rest of its shape (interface.css). */
 @layer theme {
   :root,
   [data-theme] {
-    --radius-button: initial;
+    --radius-button: 0.625rem;
   }
 }
 
@@ -1308,7 +1310,7 @@ emoji-picker .favorites {
   border-radius: 0.25rem;
   border: none;
   background: none;
-  font-size: 1rem;
+  font-size: var(--text-prose);
 }
 
 .milkdown-link-tooltip button:hover {
@@ -1745,14 +1747,14 @@ div[data-id="object_body"] iframe {
 }
 
 div[data-id="object_body"].prose h1 {
-  font-size: 1.275rem !important;
+  font-size: var(--text-xl) !important;
   line-height: 1 !important;
   margin-top: 0.25em !important;
   margin-bottom: 0.25em !important;
 }
 
 div[data-id="object_body"].prose h2 {
-  font-size: 1.275rem !important;
+  font-size: var(--text-xl) !important;
   line-height: 1 !important;
   margin-top: 0.25em !important;
   margin-bottom: 0.25em !important;
@@ -2121,7 +2123,7 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   padding-inline: var(--btn-p, 1rem);
   font-size: var(--fontsize, 0.875rem);
   line-height: 1;
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
   background-color: var(--color-base-200);
   color: var(--color-primary);
   box-shadow: inset 0 0 0 var(--border) var(--color-primary);
@@ -2133,7 +2135,7 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
 
 .btn-ds-outline:not(.btn-circle):not(.btn-square),
 .btn-ds-variant-outline:not(.btn-circle):not(.btn-square) {
-  border-radius: var(--radius-button, var(--button-radius-default, 0.625rem));
+  border-radius: var(--radius-button);
 }
 
 .btn-ds-variant-outline {

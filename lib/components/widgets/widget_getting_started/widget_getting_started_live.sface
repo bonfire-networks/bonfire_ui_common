@@ -53,8 +53,8 @@
                 {/for}
               </div>
 
-              <p class="text-body font-medium text-base-content">{l("You're all set. Welcome to Bonfire.")}</p>
-              <p class="text-body text-muted pt-1">{l("Click the X above to tuck this away.")}</p>
+              <p class="text-base font-medium text-base-content">{l("You're all set. Welcome to Bonfire.")}</p>
+              <p class="text-base text-muted pt-1">{l("Click the X above to tuck this away.")}</p>
             </div>
           {#match nil}
             {!-- defensive — handled by render_state but keeps Surface happy --}
@@ -77,7 +77,7 @@
             </div>
 
             <div class="flex items-start gap-2">
-              <h3 class="flex-1 text-[17px] font-medium text-base-content leading-snug">{step.title}</h3>
+              <h3 class="flex-1 type-heading text-base-content leading-snug">{step.title}</h3>
               <#Icon
                 :if={step.done?}
                 iconify="ph:check-circle-fill"
@@ -85,7 +85,7 @@
                 aria-label={l("Done")}
               />
             </div>
-            <p class="text-body text-muted pt-1 leading-snug">{step.rationale}</p>
+            <p class="text-base text-muted pt-1 leading-snug">{step.rationale}</p>
 
             <div class="pt-4 flex flex-col gap-2">
               {#case step[:cta_kind] || :link}

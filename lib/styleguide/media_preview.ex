@@ -14,8 +14,8 @@ defmodule Bonfire.UI.Common.Styleguide.MediaPreview do
     headline (tight) as one group
   - hero image: rounded-box, 0.7px secondary hairline border, neutral placeholder
     (`--color-placeholder` #c6c6c6)
-  - headline: text-display (23px Medium, lh 25, -0.03em tracking)
-  - URL / publisher / description: text-body (15px); URL underlined, publisher
+  - headline: text-xl (23px Medium, lh 25, -0.03em tracking)
+  - URL / publisher / description: text-base (15px); URL underlined, publisher
     uppercase, both muted (`--color-muted`)
   """
   use Bonfire.UI.Common.Web, :stateless_component

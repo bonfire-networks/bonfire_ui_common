@@ -13,7 +13,7 @@
 
   Other fidelity notes:
   - Exact px paddings/gaps/sizes from the prototype are matched via arbitrary
-    utilities; type roles use the named UI scale (text-display … text-caption,
+    utilities; type roles use the named UI scale (text-2xs … text-3xl,
     defined in app.css @theme).
   - Per the handoff there is NO bold — emphasis is Medium (500); where the
     prototype uses 600/700/800 we use font-medium.
@@ -25,11 +25,11 @@
   <div class="flex items-end gap-[22px]">
     <#Icon iconify="ph:campfire-fill" class="w-[50px] h-[61px] text-primary shrink-0" />
     <div class="flex-1">
-      <div class="text-[13px] uppercase tracking-[0.16em] text-primary font-medium">{l("Design system")}</div>
-      <h1 class="mt-1 text-[40px] leading-none font-medium tracking-[-0.01em]">{l("Theme styleguide")}</h1>
+      <div class="text-sm uppercase tracking-caps text-primary font-medium">{l("Design system")}</div>
+      <h1 class="mt-1 type-feature leading-none">{l("Theme styleguide")}</h1>
     </div>
   </div>
-  <p class="mt-5 max-w-[620px] text-body text-muted">
+  <p class="mt-5 max-w-[620px] text-base text-muted">
     {l(
       "The component vocabulary, rendered against the live theme. Switch theme or flavour and everything below re-skins from tokens alone."
     )}
@@ -39,67 +39,67 @@
 
   {!-- ===== 01 Color ===== --}
   <div class="flex items-center gap-4 mb-[22px]">
-    <span class="text-[13px] uppercase tracking-[0.18em] font-medium whitespace-nowrap">01 — {l("Color system")}</span>
+    <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">01 — {l("Color system")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
 
-  <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-3">{l("Brand")}</div>
+  <div class="type-caption uppercase tracking-caps text-muted font-medium mb-3">{l("Brand")}</div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-[30px]">
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
       <div class="h-[88px] bg-primary border-b border-divider" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Primary red</div><div class="type-caption text-primary mt-1.5">--color-primary</div></div>
+      <div class="px-3.5 py-3"><div class="text-sm font-medium">Primary red</div><div class="type-caption text-primary mt-1.5">--color-primary</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
       <div class="h-[88px] bg-secondary border-b border-divider" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Muted red</div><div class="type-caption text-primary mt-1.5">--color-secondary</div></div>
+      <div class="px-3.5 py-3"><div class="text-sm font-medium">Muted red</div><div class="type-caption text-primary mt-1.5">--color-secondary</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
       <div class="h-[88px] bg-neutral border-b border-divider" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Near-black</div><div class="type-caption text-primary mt-1.5">--color-neutral</div></div>
+      <div class="px-3.5 py-3"><div class="text-sm font-medium">Near-black</div><div class="type-caption text-primary mt-1.5">--color-neutral</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
       <div class="h-[88px] bg-accent border-b border-divider" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Accent</div><div class="type-caption text-primary mt-1.5">--color-accent</div></div>
+      <div class="px-3.5 py-3"><div class="text-sm font-medium">Accent</div><div class="type-caption text-primary mt-1.5">--color-accent</div></div>
     </div>
   </div>
 
-  <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-3">{l("Surfaces & base")}</div>
+  <div class="type-caption uppercase tracking-caps text-muted font-medium mb-3">{l("Surfaces & base")}</div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-[30px]">
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
       <div class="h-[88px] bg-base-100 border-b border-divider" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Card surface</div><div class="type-caption text-primary mt-1.5">--color-base-100</div></div>
+      <div class="px-3.5 py-3"><div class="text-sm font-medium">Card surface</div><div class="type-caption text-primary mt-1.5">--color-base-100</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
       <div class="h-[88px] bg-base-200 border-b border-divider" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Page background</div><div class="type-caption text-primary mt-1.5">--color-base-200</div></div>
+      <div class="px-3.5 py-3"><div class="text-sm font-medium">Page background</div><div class="type-caption text-primary mt-1.5">--color-base-200</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
       <div class="h-[88px] bg-base-300 border-b border-divider" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Rail / hover</div><div class="type-caption text-primary mt-1.5">--color-base-300</div></div>
+      <div class="px-3.5 py-3"><div class="text-sm font-medium">Rail / hover</div><div class="type-caption text-primary mt-1.5">--color-base-300</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
       <div class="h-[88px] bg-base-content border-b border-divider" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Base content</div><div class="type-caption text-primary mt-1.5">--color-base-content</div></div>
+      <div class="px-3.5 py-3"><div class="text-sm font-medium">Base content</div><div class="type-caption text-primary mt-1.5">--color-base-content</div></div>
     </div>
   </div>
 
-  <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-3">{l("Semantic & neutral")}</div>
+  <div class="type-caption uppercase tracking-caps text-muted font-medium mb-3">{l("Semantic & neutral")}</div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
-      <div class="h-[88px] bg-success border-b border-divider flex items-end p-2.5"><span class="text-[11px] text-success-content">OFFEN</span></div>
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Success</div><div class="type-caption text-primary mt-1.5">--color-success</div></div>
+      <div class="h-[88px] bg-success border-b border-divider flex items-end p-2.5"><span class="text-xs text-success-content">OFFEN</span></div>
+      <div class="px-3.5 py-3"><div class="text-sm font-medium">Success</div><div class="type-caption text-primary mt-1.5">--color-success</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
       <div class="h-[88px] bg-error border-b border-divider" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Error</div><div class="type-caption text-primary mt-1.5">--color-error</div></div>
+      <div class="px-3.5 py-3"><div class="text-sm font-medium">Error</div><div class="type-caption text-primary mt-1.5">--color-error</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
       <div class="h-[88px] bg-warning border-b border-divider" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Warning</div><div class="type-caption text-primary mt-1.5">--color-warning</div></div>
+      <div class="px-3.5 py-3"><div class="text-sm font-medium">Warning</div><div class="type-caption text-primary mt-1.5">--color-warning</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
       <div class="h-[88px] bg-info border-b border-divider" />
-      <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Info</div><div class="type-caption text-primary mt-1.5">--color-info</div></div>
+      <div class="px-3.5 py-3"><div class="text-sm font-medium">Info</div><div class="type-caption text-primary mt-1.5">--color-info</div></div>
     </div>
   </div>
 
@@ -107,46 +107,50 @@
 
   {!-- ===== 02 Typography ===== --}
   <div class="flex items-center gap-4 mb-[22px]">
-    <span class="text-[13px] uppercase tracking-[0.18em] font-medium whitespace-nowrap">02 — {l("Typography")}</span>
+    <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">02 — {l("Typography")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
-  {!-- UI type scale — named tokens defined in app.css @theme (text-display … text-caption). --}
-  <div class="rounded-box border border-divider bg-base-100   divide-divider overflow-hidden">
-    <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Display / Title</div><div class="type-caption text-muted mt-[3px]">type-title · text-display · 23 / 25</div></div>
+  {!-- UI type scale — the whole scale (app.css @theme: text-2xs … text-3xl, text-prose) and its type-* roles. --}
+  <div class="rounded-box border border-divider bg-base-100 divide-y divide-divider overflow-hidden">
+    <div class="flex items-baseline gap-6 px-6 py-4.5">
+      <div class="w-[200px] shrink-0"><div class="text-sm font-medium">Feature / hero</div><div class="type-caption text-muted mt-0.75">type-feature · text-3xl · 28–38 fluid / 1.05</div></div>
+      <div class="flex-1 min-w-0 type-feature truncate">Die Linke muss antagonistisch bleiben</div>
+    </div>
+    <div class="flex items-baseline gap-6 px-6 py-4.5">
+      <div class="w-[200px] shrink-0"><div class="text-sm font-medium">Title</div><div class="type-caption text-muted mt-0.75">type-title · text-xl · 20 / 1.1</div></div>
       <div class="flex-1 min-w-0 type-title truncate">Die Linke muss antagonistisch bleiben</div>
     </div>
-    <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Lead / Compose</div><div class="type-caption text-muted mt-[3px]">type-lead · text-lead · 21 / 24</div></div>
-      <div class="flex-1 min-w-0 type-lead truncate">Compose</div>
-    </div>
-    <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Nav item</div><div class="type-caption text-muted mt-[3px]">type-nav · text-nav · 21 / 24</div></div>
-      <div class="flex-1 min-w-0 type-nav truncate">Benachrichtigungen</div>
-    </div>
-    <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Heading</div><div class="type-caption text-muted mt-[3px]">type-heading · text-heading · 18 / 22</div></div>
-      <div class="flex-1 min-w-0 type-heading truncate">Die Linke muss antagonistisch bleiben</div>
-    </div>
-    <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Result number</div><div class="type-caption text-muted mt-[3px]">type-result · text-result · 28 / 24</div></div>
+    <div class="flex items-baseline gap-6 px-6 py-4.5">
+      <div class="w-[200px] shrink-0"><div class="text-sm font-medium">Result number</div><div class="type-caption text-muted mt-0.75">type-result · text-2xl · 28 / 32</div></div>
       <div class="flex-1 min-w-0 type-result truncate">75%</div>
     </div>
-    <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Body</div><div class="type-caption text-muted mt-[3px]">type-body · text-body · 15 / 20</div></div>
+    <div class="flex items-baseline gap-6 px-6 py-4.5">
+      <div class="w-[200px] shrink-0"><div class="text-sm font-medium">Heading</div><div class="type-caption text-muted mt-0.75">type-heading · text-lg · 18 / 22</div></div>
+      <div class="flex-1 min-w-0 type-heading truncate">Die Linke muss antagonistisch bleiben</div>
+    </div>
+    <div class="flex items-baseline gap-6 px-6 py-4.5">
+      <div class="w-[200px] shrink-0"><div class="text-sm font-medium">Prose / reading</div><div class="type-caption text-muted mt-0.75">type-prose · text-prose · 16 / 1.5</div></div>
+      <div class="flex-1 min-w-0 type-prose truncate">The linearity they teach is a prison — time doesn't flow, it connects.</div>
+    </div>
+    <div class="flex items-baseline gap-6 px-6 py-4.5">
+      <div class="w-[200px] shrink-0"><div class="text-sm font-medium">Body</div><div class="type-caption text-muted mt-0.75">type-body · text-base · 15 / 20</div></div>
       <div class="flex-1 min-w-0 type-body truncate">The linearity they teach is a prison — time doesn't flow, it connects.</div>
     </div>
-    <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Emphasis / name</div><div class="type-caption text-muted mt-[3px]">type-name · text-body · 15 / 20</div></div>
+    <div class="flex items-baseline gap-6 px-6 py-4.5">
+      <div class="w-[200px] shrink-0"><div class="text-sm font-medium">Emphasis / name</div><div class="type-caption text-muted mt-0.75">type-name · text-base medium · 15 / 20</div></div>
       <div class="flex-1 min-w-0 type-name truncate">shevek</div>
     </div>
-    <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Meta / secondary</div><div class="type-caption text-muted mt-[3px]">type-meta · text-meta · 14 / 20</div></div>
+    <div class="flex items-baseline gap-6 px-6 py-4.5">
+      <div class="w-[200px] shrink-0"><div class="text-sm font-medium">Meta / secondary</div><div class="type-caption text-muted mt-0.75">type-meta · text-sm · 14 / 20</div></div>
       <div class="flex-1 min-w-0 type-meta text-muted truncate">Die Linkspartei steht ständig unter Druck, sich anzupassen.</div>
     </div>
-    <div class="flex items-baseline gap-6 px-6 py-[18px]">
-      <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Caption / @handle</div><div class="type-caption text-muted mt-[3px]">type-caption · text-caption · 12 / 16</div></div>
-      <div class="flex-1 min-w-0 type-caption text-secondary truncate">@colin · vor 3 Tagen</div>
+    <div class="flex items-baseline gap-6 px-6 py-4.5">
+      <div class="w-[200px] shrink-0"><div class="text-sm font-medium">Caption / @handle</div><div class="type-caption text-muted mt-0.75">type-caption · text-xs · 12 / 16</div></div>
+      <div class="flex-1 min-w-0 type-caption text-muted truncate">@colin · vor 3 Tagen</div>
+    </div>
+    <div class="flex items-baseline gap-6 px-6 py-4.5">
+      <div class="w-[200px] shrink-0"><div class="text-sm font-medium">Overline</div><div class="type-caption text-muted mt-0.75">type-overline · text-2xs · 11 / 16 · caps</div></div>
+      <div class="flex-1 min-w-0 type-overline text-muted truncate">Teil von</div>
     </div>
   </div>
   <p class="mt-3 type-caption text-muted">{l(
@@ -157,7 +161,7 @@
 
   {!-- ===== 03 Shape & borders ===== --}
   <div class="flex items-center gap-4 mb-[22px]">
-    <span class="text-[13px] uppercase tracking-[0.18em] font-medium whitespace-nowrap">03 — {l("Shape & borders")}</span>
+    <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">03 — {l("Shape & borders")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -165,32 +169,32 @@
       <div class="h-[70px] flex items-center justify-center">
         <div class="w-[90px] h-[46px] bg-base-200 rounded-field ring-[1.4px] ring-inset ring-primary" />
       </div>
-      <div class="text-[13px] font-medium mt-2.5">Buttons / inputs</div>
+      <div class="text-sm font-medium mt-2.5">Buttons / inputs</div>
       <div class="type-caption text-muted mt-[3px]">rounded-field</div>
     </div>
     <div class="rounded-box border border-divider bg-base-100 p-[22px] text-center">
       <div class="h-[70px] flex items-center justify-center">
         <div class="w-[90px] h-[46px] bg-base-200 rounded-box ring-[1.4px] ring-inset ring-primary" />
       </div>
-      <div class="text-[13px] font-medium mt-2.5">Cards / boxes</div>
+      <div class="text-sm font-medium mt-2.5">Cards / boxes</div>
       <div class="type-caption text-muted mt-[3px]">rounded-box</div>
     </div>
     <div class="rounded-box border border-divider bg-base-100 p-[22px] text-center">
       <div class="h-[70px] flex items-center justify-center">
         <div class="w-[46px] h-[46px] bg-base-200 rounded-full ring-[1.4px] ring-inset ring-primary" />
       </div>
-      <div class="text-[13px] font-medium mt-2.5">Avatars</div>
+      <div class="text-sm font-medium mt-2.5">Avatars</div>
       <div class="type-caption text-muted mt-[3px]">rounded-full · 50%</div>
     </div>
     <div class="rounded-box border border-divider bg-base-100 p-[22px] text-center">
       <div class="h-[70px] flex items-center justify-center">
         <div class="h-4 w-[90px] bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
       </div>
-      <div class="text-[13px] font-medium mt-2.5">Section divider</div>
+      <div class="text-sm font-medium mt-2.5">Section divider</div>
       <div class="type-caption text-muted mt-[3px]">clip-path</div>
     </div>
   </div>
-  <div class="mt-4 flex gap-6 flex-wrap rounded-box border border-divider bg-base-100 px-6 py-5 text-[13px] text-muted">
+  <div class="mt-4 flex gap-6 flex-wrap rounded-box border border-divider bg-base-100 px-6 py-5 text-sm text-muted">
     <div><span class="text-base-content font-medium">Card border</span> · 1px solid secondary (--border)</div>
     <div><span class="text-base-content font-medium">Ring / avatar</span> · inset 0 0 0 1px primary</div>
     <div><span class="text-base-content font-medium">Section divider</span> · skewed red bar (clip-path)</div>
@@ -198,9 +202,9 @@
 
   {!-- Spacing tokens (measured from Figma; bars render at the token's exact width) --}
   <div class="mt-4 rounded-box border border-divider bg-base-100 px-6 py-5">
-    <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-1">{l("Spacing")}</div>
+    <div class="type-caption uppercase tracking-caps text-muted font-medium mb-1">{l("Spacing")}</div>
     <div class="type-caption text-muted mb-4">{l("18-based scale — from the Figma \"dashboard with spaces\" annotations")}</div>
-    <div class="flex flex-col gap-2 text-[13px]">
+    <div class="flex flex-col gap-2 text-sm">
       <div class="flex items-baseline gap-4">
         <span class="w-10 shrink-0 font-medium text-base-content">7px</span><code class="w-44 shrink-0 text-primary">--spacing-feed</code><span class="text-muted">gap between stacked feed cards</span>
       </div>
@@ -229,32 +233,32 @@
 
   {!-- ===== 04 Buttons & fields ===== --}
   <div class="flex items-center gap-4 mb-[22px]">
-    <span class="text-[13px] uppercase tracking-[0.18em] font-medium whitespace-nowrap">04 — {l("Buttons & actions")}</span>
+    <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">04 — {l("Buttons & actions")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
   <div class="rounded-box border border-divider bg-base-100 p-7">
     <div class="flex items-center gap-4 flex-wrap">
       <button
         type="button"
-        class="inline-flex items-center justify-center rounded-field bg-primary text-primary-content text-body font-medium px-[26px] py-[11px] hover:brightness-90 transition"
+        class="inline-flex items-center justify-center rounded-field bg-primary text-primary-content text-base font-medium px-[26px] py-[11px] hover:brightness-90 transition"
       >Abstimmen</button>
       <button
         type="button"
-        class="inline-flex items-center justify-center rounded-field bg-base-200 text-primary text-body font-medium px-[26px] py-[11px] ring-[0.7px] ring-inset ring-primary hover:bg-base-300 transition"
+        class="inline-flex items-center justify-center rounded-field bg-base-200 text-primary text-base font-medium px-[26px] py-[11px] ring-[0.7px] ring-inset ring-primary hover:bg-base-300 transition"
       >Siehe Ergebnisse</button>
       <button
         type="button"
-        class="inline-flex items-center justify-center rounded-field bg-transparent text-primary text-body font-medium px-[18px] py-[11px] hover:bg-base-300 transition"
+        class="inline-flex items-center justify-center rounded-field bg-transparent text-primary text-base font-medium px-[18px] py-[11px] hover:bg-base-300 transition"
       >Compose</button>
       <button
         type="button"
-        class="inline-flex items-center justify-center gap-[9px] rounded-field bg-primary text-primary-content text-body font-medium px-[22px] py-[11px] hover:brightness-90 transition"
+        class="inline-flex items-center justify-center gap-[9px] rounded-field bg-primary text-primary-content text-base font-medium px-[22px] py-[11px] hover:brightness-90 transition"
       >
         <#Icon iconify="ph:users-fill" class="w-[17px] h-[17px]" /> Folgen
       </button>
     </div>
     <div class="h-px bg-secondary my-6" />
-    <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-3.5">{l("Post action row")}</div>
+    <div class="type-caption uppercase tracking-caps text-muted font-medium mb-3.5">{l("Post action row")}</div>
     <div class="flex items-center gap-[30px]">
       <#Icon iconify="ph:chat-circle" class="w-[22px] h-[22px] text-base-content" />
       <#Icon iconify="ph:rocket" class="w-[22px] h-[22px] text-base-content" />
@@ -268,7 +272,7 @@
 
   {!-- ===== 05 Form ===== --}
   <div class="flex items-center gap-4 mb-[22px]">
-    <span class="text-[13px] uppercase tracking-[0.18em] font-medium whitespace-nowrap">05 — {l("Form")}</span>
+    <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">05 — {l("Form")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
   {!-- DaisyUI form primitives customised to the Figma values: 0.7px secondary
@@ -278,18 +282,18 @@
     {!-- Text fields --}
     <div class="grid sm:grid-cols-2 gap-5">
       <div class="flex flex-col gap-2">
-        <span class="text-caption uppercase tracking-[0.04em] text-muted font-medium">{l("Text input")}</span>
+        <span class="text-xs uppercase tracking-label text-muted font-medium">{l("Text input")}</span>
         <input type="text" placeholder="Dein Name" class="input border-divider w-full">
       </div>
       <div class="flex flex-col gap-2">
-        <span class="text-caption uppercase tracking-[0.04em] text-muted font-medium">{l("Search")}</span>
+        <span class="text-xs uppercase tracking-label text-muted font-medium">{l("Search")}</span>
         <label class="input border-divider w-full flex items-center gap-2">
           <#Icon iconify="ph:magnifying-glass" class="w-5 h-5 text-muted" />
           <input type="search" placeholder="Suche …" class="grow">
         </label>
       </div>
       <div class="flex flex-col gap-2">
-        <span class="text-caption uppercase tracking-[0.04em] text-muted font-medium">{l("Select")}</span>
+        <span class="text-xs uppercase tracking-label text-muted font-medium">{l("Select")}</span>
         <select class="select border-divider w-full">
           <option>Alle Themen</option>
           <option>Politik</option>
@@ -297,7 +301,7 @@
         </select>
       </div>
       <div class="flex flex-col gap-2">
-        <span class="text-caption uppercase tracking-[0.04em] text-muted font-medium">{l("Textarea")}</span>
+        <span class="text-xs uppercase tracking-label text-muted font-medium">{l("Textarea")}</span>
         <textarea
           class="textarea border-divider rounded-box w-full"
           rows="3"
@@ -312,26 +316,26 @@
     <div class="flex flex-wrap items-center gap-x-10 gap-y-5">
       <label class="flex items-center gap-2.5 cursor-pointer">
         <input type="checkbox" checked class="checkbox checkbox-primary checkbox-sm">
-        <span class="text-body">{l("Checkbox")}</span>
+        <span class="text-base">{l("Checkbox")}</span>
       </label>
       <label class="flex items-center gap-2.5 cursor-pointer">
         <input type="radio" name="form-demo-radio" checked class="radio radio-primary radio-sm">
-        <span class="text-body">{l("Radio")}</span>
+        <span class="text-base">{l("Radio")}</span>
       </label>
       <label class="flex items-center gap-2.5 cursor-pointer">
         <input type="radio" name="form-demo-radio" class="radio radio-primary radio-sm">
-        <span class="text-body">{l("Option")}</span>
+        <span class="text-base">{l("Option")}</span>
       </label>
       <label class="flex items-center gap-2.5 cursor-pointer">
         <input type="checkbox" checked class="toggle toggle-primary">
-        <span class="text-body">{l("Toggle")}</span>
+        <span class="text-base">{l("Toggle")}</span>
       </label>
     </div>
 
     <div class="h-px bg-secondary" />
 
     {!-- Form-related tokens --}
-    <div class="flex flex-wrap gap-x-8 gap-y-2 text-[13px] text-muted">
+    <div class="flex flex-wrap gap-x-8 gap-y-2 text-sm text-muted">
       <div><span class="text-base-content font-medium">Field radius</span> · --radius-field (pill)</div>
       <div><span class="text-base-content font-medium">Selector radius</span> · --radius-selector</div>
       <div><span class="text-base-content font-medium">Border</span> · --border 0.7px · secondary</div>
@@ -344,7 +348,7 @@
 
   {!-- ===== 06 Components ===== --}
   <div class="flex items-center gap-4 mb-[22px]">
-    <span class="text-[13px] uppercase tracking-[0.18em] font-medium whitespace-nowrap">06 — {l("Components")}</span>
+    <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">06 — {l("Components")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
 
@@ -353,18 +357,18 @@
     <div class="flex flex-col gap-6">
       {!-- Nav --}
       <div class="rounded-box border border-divider bg-base-300 p-[18px]">
-        <div class="text-[11px] uppercase tracking-[0.14em] text-muted font-medium mb-3 ml-1">{l("Navigation")}</div>
+        <div class="type-overline text-muted mb-3 ml-1">{l("Navigation")}</div>
         <a class="flex items-center gap-[14px] py-[9px] px-1 rounded-field cursor-pointer">
           <#Icon iconify="ph:house-fill" class="w-5 h-5 text-primary shrink-0" />
-          <span class="text-nav font-medium text-primary">Dashboard</span>
+          <span class="type-title text-primary">Dashboard</span>
         </a>
         <a class="flex items-center gap-[14px] py-[9px] px-1 rounded-field cursor-pointer hover:bg-base-100/60">
           <#Icon iconify="ph:rss" class="w-5 h-5 shrink-0" />
-          <span class="text-nav font-normal">Feeds</span>
+          <span class="text-xl font-normal">Feeds</span>
         </a>
         <a class="flex items-center gap-[14px] py-[9px] px-1 rounded-field cursor-pointer hover:bg-base-100/60">
           <#Icon iconify="ph:bell" class="w-5 h-5 shrink-0" />
-          <span class="text-nav font-normal">Benachrichtigungen</span>
+          <span class="text-xl font-normal">Benachrichtigungen</span>
         </a>
       </div>
 
@@ -377,7 +381,7 @@
           >
             <#Icon iconify="carbon:chevron-left" class="w-3 h-[13px]" />
           </button>
-          <span class="flex-1 type-caption tracking-[0.12em] uppercase font-medium text-center">Schritt 1 von 5</span>
+          <span class="flex-1 type-caption tracking-widest uppercase font-medium text-center">Schritt 1 von 5</span>
           <button
             type="button"
             class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0"
@@ -392,11 +396,11 @@
           <div class="flex-1 h-1 rounded-sm bg-primary/20" />
           <div class="flex-1 h-1 rounded-sm bg-primary/20" />
         </div>
-        <div class="text-[17px] font-medium mb-1.5">Profilbild und Bio hinzufügen</div>
-        <p class="m-0 mb-4 text-meta text-muted">Wenn Menschen sehen können, wer du bist, wird dir zu folgen zu einer bewussten Entscheidung.</p>
+        <div class="type-heading mb-1.5">Profilbild und Bio hinzufügen</div>
+        <p class="m-0 mb-4 text-sm text-muted">Wenn Menschen sehen können, wer du bist, wird dir zu folgen zu einer bewussten Entscheidung.</p>
         <button
           type="button"
-          class="inline-flex items-center justify-center rounded-field bg-base-200 text-primary text-meta font-medium px-[20px] py-[10px] ring-[0.7px] ring-inset ring-primary hover:bg-base-300 transition"
+          class="inline-flex items-center justify-center rounded-field bg-base-200 text-primary text-sm font-medium px-[20px] py-[10px] ring-[0.7px] ring-inset ring-primary hover:bg-base-300 transition"
         >Open the Code of Conduct</button>
       </div>
     </div>
@@ -420,11 +424,11 @@
         {!-- Recent article --}
         <div class="rounded-box border border-divider bg-base-100 overflow-hidden">
           <div class="px-5 pt-[18px] pb-3.5">
-            <div class="text-heading font-medium">Die Linke muss antagonistisch bleiben</div>
-            <p class="mt-2 mb-3 text-[13px] leading-[1.45] text-muted">Die Linkspartei steht ständig unter Druck, sich der etablierten Politik anzupassen.</p>
-            <div class="text-[13px] font-medium">Wolfgang Streeck</div>
+            <div class="type-heading">Die Linke muss antagonistisch bleiben</div>
+            <p class="mt-2 mb-3 text-sm leading-[1.45] text-muted">Die Linkspartei steht ständig unter Druck, sich der etablierten Politik anzupassen.</p>
+            <div class="text-sm font-medium">Wolfgang Streeck</div>
           </div>
-          <div class="h-[120px] bg-gradient-to-br from-[#c6c6c6] to-[#9a9a9a] flex items-center justify-center text-white type-caption uppercase tracking-[0.1em]">Article image</div>
+          <div class="h-[120px] bg-gradient-to-br from-[#c6c6c6] to-[#9a9a9a] flex items-center justify-center text-white type-caption uppercase tracking-widest">Article image</div>
         </div>
       </div>
     </div>
@@ -434,7 +438,7 @@
 
   {!-- ===== 07 Notifications ===== --}
   <div class="flex items-center gap-4 mb-[22px]">
-    <span class="text-[13px] uppercase tracking-[0.18em] font-medium whitespace-nowrap">07 — {l("Notifications")}</span>
+    <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">07 — {l("Notifications")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
   <div class="type-caption text-muted mb-5">{l(
@@ -448,7 +452,7 @@
 
   {!-- ===== 08 Layout ===== --}
   <div class="flex items-center gap-4 mb-[22px]">
-    <span class="text-[13px] uppercase tracking-[0.18em] font-medium whitespace-nowrap">08 — {l("Layout")}</span>
+    <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">08 — {l("Layout")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
   <div class="type-caption text-muted mb-5">{l(
@@ -470,7 +474,7 @@
       {!-- CENTER — 106px page header ("Home") above the y≈106 divider; feed area empty --}
       <div class="w-[600px] shrink-0 border-x-hair border-divider flex flex-col">
         <div class="border-b-hair border-divider px-base h-page-header flex items-center">
-          <div class="text-display font-medium text-base-content">Home</div>
+          <div class="type-title text-base-content">Home</div>
         </div>
       </div>
 

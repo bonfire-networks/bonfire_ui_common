@@ -6,9 +6,9 @@ defmodule Bonfire.UI.Common.Styleguide.WhoToFollow do
   Confirmed Figma specs:
   - card: base-100, 0.7px secondary stroke, rounded-box, ~19px padding
   - avatar: 35px circle, 0.7px inset red ring
-  - name: text-body Medium; @handle: text-body --color-muted (#868686), red middot
-  - bio: text-body (15/20) base-content, -0.3px tracking (NOT muted)
-  - follow button: full-width, pill (rounded-field), text-body. Height uses the
+  - name: text-base Medium; @handle: text-base --color-muted (#868686), red middot
+  - bio: text-base (15/20) base-content, -0.3px tracking (NOT muted)
+  - follow button: full-width, pill (rounded-field), text-base. Height uses the
     canonical button padding (py-[11px], from the styleguide button section) — NOT
     Figma's 27px, which is below the ~44px touch-target minimum (deliberate deviation).
     - not-following → filled: bg-primary / primary-content + people icon ("Folgen")

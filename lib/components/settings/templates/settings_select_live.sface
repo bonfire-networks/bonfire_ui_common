@@ -20,7 +20,7 @@
       class={
         "select select-bordered",
         "select-sm max-w-xs": !@stacked,
-        "w-full max-w-none min-h-11 text-base rounded-xl": @stacked
+        "w-full max-w-none min-h-11 text-base rounded-box": @stacked
       }
       name={@input}
     >

@@ -32,14 +32,10 @@ defmodule Bonfire.UI.Common.FontHelper do
   def resolve(_), do: resolve(@default_font)
 
   @critical_font_files %{
-    "inter-latin" => [
-      "/fonts/inter-v11-latin-regular.woff2",
-      "/fonts/inter-v11-latin-500.woff2"
-    ],
-    "inter-more" => [
-      "/fonts/inter-v11-vietnamese_latin-ext_latin_greek_cyrillic-regular.woff2",
-      "/fonts/inter-v11-vietnamese_latin-ext_latin_greek_cyrillic-500.woff2"
-    ],
+    # Inter is one variable file per script (all weights); the Latin roman file
+    # is the only one every page needs. Other scripts and italics load on demand.
+    "inter-latin" => ["/fonts/inter-4-latin-normal.woff2"],
+    "inter-more" => ["/fonts/inter-4-latin-normal.woff2"],
     "noto-sans-latin" => [
       "/fonts/noto-sans-v27-latin-regular.woff2",
       "/fonts/noto-sans-v27-latin-500.woff2"

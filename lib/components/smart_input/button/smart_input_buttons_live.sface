@@ -23,7 +23,7 @@
                     :if={extra_components != [] or main_smart_input != default_smart_input}
                     id="composer_type_dropdown"
                     position="bottom-end"
-                    trigger_class="w-[40px] h-[40px] rounded-tl-none rounded-bl-none  shadow-none !border-l !border-base-300 items-center place-content-center flex btn-primary btn-square relative rounded btn btn-sm"
+                    trigger_class="w-[40px] h-[40px] rounded-tl-none rounded-bl-none shadow-none !border-l !border-base-300 items-center place-content-center flex btn-primary btn-square relative btn btn-sm"
                     panel_class="menu-sm !bg-neutral"
                     label={l("Choose what to create")}
                   >

@@ -1,4 +1,4 @@
-<div class="flex flex-col flex-1 h-full bg-base-100 rounded-b-xl min-h-0">
+<div class="flex flex-col flex-1 h-full bg-base-100 rounded-b-box min-h-0">
   <div class="flex-1 h-full grow min-h-0" id="compose_content_wrapper">
     <div class="relative !flex flex-col flex-1 h-full min-h-0">
       {!-- here was old/loader.svg --}
@@ -25,7 +25,7 @@
                   autocomplete="off"
                   value={@smart_input_opts[:title]}
                   name="post[post_content][name]"
-                  class="min-h-11 w-full border-0 bg-transparent p-0 text-base font-semibold placeholder:text-muted focus-visible:outline-offset-2"
+                  class="min-h-11 w-full border-0 bg-transparent p-0 text-base font-bold placeholder:text-muted focus-visible:outline-offset-2"
                   placeholder={l("Add a title (optional)")}
                 />
               </div>
@@ -98,7 +98,7 @@
 
       <div class="z-50 shrink-0 bg-base-200">
         <div class="pb-safe">
-          <div class="flex flex-row items-center gap-1 p-2 lg:rounded-b-xl md:gap-2 md:px-3">
+          <div class="flex flex-row items-center gap-1 p-2 lg:rounded-b-box md:gap-2 md:px-3">
             <div>
               <div :if={@showing_within != :thread_embed} class="flex flex-wrap items-center gap-1 md:gap-2">
                 <Bonfire.UI.Common.UploadButtonLive

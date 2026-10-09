@@ -69,7 +69,7 @@
           <div
             id={"inline_full_#{@composer_dom_id}"}
             class={[
-              "inline_composer_full border border-divider rounded-xl bg-base-100 shadow-lg",
+              "inline_composer_full border border-divider rounded-box bg-base-100 shadow-lg",
               "flex flex-col min-h-[160px]": @showing_within == :thread_embed
             ]}
           >

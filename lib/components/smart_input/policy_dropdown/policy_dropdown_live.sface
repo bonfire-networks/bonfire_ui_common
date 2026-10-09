@@ -28,7 +28,7 @@
     phx-value-id={option.id}
     phx-target={@event_target || "#smart_input"}
     aria-pressed={"#{option.selected?}"}
-    class="group flex w-full min-h-11 sm:min-h-10 items-center gap-2 rounded px-2 py-1.5 text-sm text-left hover:bg-base-200 aria-pressed:bg-primary/10 focus-ring"
+    class="group flex w-full min-h-11 sm:min-h-10 items-center gap-2 rounded-selector px-2 py-1.5 text-sm text-left hover:bg-base-200 aria-pressed:bg-primary/10 focus-ring"
   >
     <Iconify.iconify :if={option[:icon]} icon={option.icon} class="size-5 shrink-0 text-muted" />
     <span class="grow">{option.label}</span>

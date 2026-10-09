@@ -11,7 +11,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
 
   prop content_class, :css_class,
     default:
-      "flex-1  h-auto justify-start relative flex items-center gap-2 widget_content p-2 py-1 text-muted font-medium"
+      "flex-1 h-auto justify-start relative flex items-center gap-2 widget_content p-2 py-1 text-muted font-medium"
 
   prop text_class, :css_class, default: nil
 
@@ -48,7 +48,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   @doc "Returns the label classes for an active or inactive navigation item."
   def active_label_class(active?) do
     if active?,
-      do: "font-semibold text-base-content",
+      do: "font-bold text-base-content",
       else: "font-normal text-base-content"
   end
 

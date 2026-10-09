@@ -1,13 +1,13 @@
 <Bonfire.UI.Common.WidgetBlockLive
   widget_title={@title}
-  class="relative w-full mx-auto rounded-lg"
+  class="relative w-full mx-auto rounded-box"
 >
   <ul class={"grid grid-cols-#{@cols} gap-3 menu"}>
     {#for {app, extension} <- Bonfire.Common.ExtensionModule.declared_extensions()}
       {#case extension_enabled?(app, @context || @__context__)}
         {#match extension_enabled?}
           <li
-            class="rounded-lg bg-fill"
+            class="rounded-box bg-fill"
             :if={(@showing_within != :nav or extension[:exclude_from_nav] != true) |> debug("nav? #{app}") and
               ((@show_disabled_only == true and !extension_enabled?)
                |> debug("disabled? #{app}") or
@@ -15,7 +15,7 @@
                  |> debug("enabled? #{app}") or
                  (@show_enabled_only == false and @show_disabled_only == false) |> debug("any? #{app}"))}
           >
-            <LinkLive class="hover:rounded-lg" to={extension[:href]}>
+            <LinkLive class="hover:rounded-box" to={extension[:href]}>
               <div class="flex flex-col items-center w-full">
                 <Iconify.iconify icon={extension[:icon]} class="w-8 h-8" />
                 <div class="flex-1 max-w-[100px] mt-3 text-xs font-medium text-center truncate text-muted">{extension[:name]}</div>

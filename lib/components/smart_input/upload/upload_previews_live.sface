@@ -23,9 +23,9 @@
         ]}
       >
         {!-- Thumbnail (rendered once — same in both modes) --}
-        <figure class="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-fill">
+        <figure class="w-16 h-16 rounded-box overflow-hidden shrink-0 bg-fill">
           {#if String.starts_with?(entry.client_type, "image")}
-            <Phoenix.Component.live_img_preview class="w-16 h-16 object-cover rounded-lg" entry={entry} />
+            <Phoenix.Component.live_img_preview class="w-16 h-16 object-cover rounded-box" entry={entry} />
           {#elseif String.contains?(entry.client_type, "pdf")}
             <div class="w-16 h-16 flex items-center justify-center">
               <#Icon iconify="bxs:file-pdf" class="w-7 h-7 text-subtle" />
@@ -54,14 +54,14 @@
         ]}>
           {!-- Filename (visible in both modes, styled differently) --}
           <span class={[
-            "text-[10px] truncate max-w-[64px] text-muted mt-0.5",
+            "text-xs truncate max-w-[64px] text-muted mt-0.5",
             "group-[.expanded]/uploads:text-xs group-[.expanded]/uploads:max-w-none",
             "group-[.expanded]/uploads:text-muted group-[.expanded]/uploads:mt-0"
           ]}>{entry.client_name}</span>
 
           {!-- Collapsed: compact error indicators --}
           {#for _err <- upload_errors(@uploads.files, entry)}
-            <span class="text-[10px] text-error group-[.expanded]/uploads:hidden">!</span>
+            <span class="text-xs text-error group-[.expanded]/uploads:hidden">!</span>
           {/for}
 
           {!-- Expanded: metadata editing (alt text, actions) --}

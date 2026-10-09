@@ -103,7 +103,7 @@ defmodule Bonfire.UI.Common.BasicView do
             </a>
 
             <div class="w-full max-w-md mx-auto">
-              <p class="mb-4 text-xs font-semibold tracking-widest uppercase text-primary">
+              <p class="mb-4 text-xs font-bold tracking-widest uppercase text-primary">
                 {assigns[:title]}
               </p>
 

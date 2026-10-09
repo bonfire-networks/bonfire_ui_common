@@ -6,14 +6,14 @@ defmodule Bonfire.UI.Common.Styleguide.PollCard do
 
   Confirmed Figma specs:
   - card: base-100, 0.7px secondary stroke, rounded-box, overflow-hidden
-  - header: 35px avatar (0.7px red ring), name text-body Medium, @handle text-muted + red middot
-  - badges: text-body uppercase, rounded-selector (pill), 0.7px border —
+  - header: 35px avatar (0.7px red ring), name text-base Medium, @handle text-muted + red middot
+  - badges: text-base uppercase, rounded-selector (pill), 0.7px border —
     UMFRAGE = primary (red), OFFEN = success (green) + green dot
-  - vote count: text-body Medium, base-content
-  - question: text-display (23px Medium) — the FULL poll variant (compact/sidebar poll is 15px)
+  - vote count: text-base Medium, base-content
+  - question: text-xl (23px Medium) — the FULL poll variant (compact/sidebar poll is 15px)
   - option row: hairline divider (base-300), real `<input type="radio">` with DaisyUI
     `radio radio-primary radio-xs` (binds to --border 0.7px / --radius-selector / primary;
-    checked renders the red ring + center dot), label text-body
+    checked renders the red ring + center dot), label text-base
   - actions: Abstimmen = filled primary; Siehe Ergebnisse = muted-outline variant
     (secondary border + base-content text). Buttons use the canonical py-[11px] height (not Figma's 27px).
   - action row: comment / boost / like(red flame) / bookmark / more

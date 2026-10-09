@@ -6,12 +6,12 @@
   <header class="flex items-center gap-avatar">
     <.avatar src={@avatar_url} alt={@display_name} />
     <div class="min-w-0">
-      <div class="text-body font-medium text-base-content leading-tight truncate">{@display_name}</div>
-      <div class="text-body text-muted leading-tight truncate">{@username}</div>
+      <div class="text-base font-medium text-base-content leading-tight truncate">{@display_name}</div>
+      <div class="text-base text-muted leading-tight truncate">{@username}</div>
     </div>
   </header>
 
-  <p class="mt-base text-body text-base-content tracking-[-0.3px]">{@bio}</p>{!-- header→bio = --spacing-base (18) --}
+  <p class="mt-base text-base text-base-content tracking-tight">{@bio}</p>{!-- header→bio = --spacing-base (18) --}
 
   {#if @following}
     <.button variant="muted" full_width icon_left="ph:check-bold" class="mt-row">{@following_label}</.button>

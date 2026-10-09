@@ -7,7 +7,7 @@
       <div class="hero-overlay bg-base-100" />
       <div class="hero-content py-12 text-base-content text-center">
         <div class="max-w-md">
-          <h1 class="mb-5 text-5xl font-bold">{l("Bonfire extensions")}</h1>
+          <h1 class="mb-5 type-feature">{l("Bonfire extensions")}</h1>
           <p class="mb-5">
             {l("Extensions are plugins that add new features to Bonfire or modify existing ones.")}
           </p>
@@ -35,10 +35,10 @@
       </div>
     </div>
 
-    <div class="p-4 text-xl font-bold items-start flex flex-col gap-4 border-t border-divider">
+    <div class="p-4 type-title items-start flex flex-col gap-4 border-t border-divider">
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-muted" /> -->
       <span class="text-left">{l("User Interface Extensions")}</span>
-      <div class="flex-1 text-sm font-normal text-info bg-info/10 p-6 flex items-center place-content-center rounded-lg">
+      <div class="flex-1 text-sm font-normal text-info bg-info/10 p-6 flex items-center place-content-center rounded-box">
         {l(
           "Customize your experience by managing your UI extensions. Each extension adds specific features to the interface. Note that disabling a UI extension will hide its associated features from view, but the underlying functionality remains available through the API."
         )}
@@ -56,10 +56,10 @@
     </div>
   </div>
   <div class="">
-    <div class="p-4 text-xl font-bold items-start flex flex-col gap-4 border-t border-divider">
+    <div class="p-4 type-title items-start flex flex-col gap-4 border-t border-divider">
       <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-muted" /> -->
       <span class="text-left">{l("Feature Extensions")}</span>
-      <div class="flex-1 text-sm font-normal text-info bg-info/10 p-6 flex items-center place-content-center rounded-lg">
+      <div class="flex-1 text-sm font-normal text-info bg-info/10 p-6 flex items-center place-content-center rounded-box">
         {l(
           "Customize your experience by managing your feature extensions. Each extension adds whole features. Note that disabling a feature extension will disable its associated features."
         )}
@@ -79,7 +79,7 @@
 
   <div class="">
     <div class="p-4 gap-4 border-t border-divider">
-      <span class="text-xl font-bold">{l("Essential Extensions")}</span>
+      <span class="type-title">{l("Essential Extensions")}</span>
       <p class="text-sm mt-2 text-muted">{l(
           "These extensions can't be disabled at the moment without affecting this flavour's user experience, but a lot of the functionality they provide can be changed, extended, or replaced by other extensions."
         )}</p>
@@ -99,7 +99,7 @@
 
   <div class="">
     <div class="p-4 gap-4 border-t border-divider">
-      <span class="text-xl font-bold">{l("Libraries")}</span>
+      <span class="type-title">{l("Libraries")}</span>
       <p class="text-sm mt-2 text-muted">{l(
           "Bonfire includes many open source libraries, some are maintained by Bonfire contributors and others are provided by third party developers."
         )}</p>

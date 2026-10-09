@@ -64,11 +64,11 @@
   <:open_btn>
     <div class="flex flex-col gap-1">
       <div
-        class="w-full h-12 rounded-lg border border-divider flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
+        class="w-full h-12 rounded-box border border-divider flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
         style={@preview_style}
         data-color={@color_key}
       >
-        <span :if={@preview_label} class="font-bold text-lg">{@preview_label}</span>
+        <span :if={@preview_label} class="type-heading">{@preview_label}</span>
       </div>
       <span class="text-xs opacity-90 font-mono uppercase">
         {@saved_color || l("Inherited")}

@@ -70,16 +70,16 @@
                       </form>
                     </td>
                   {#match _}
-                    <td class="p-4  text-sm">
+                    <td class="p-4 text-sm">
                       {format_key_for_display(item.keys)}
                     </td>
-                    <td class="p-2  text-sm">{format_value(current_value)}
+                    <td class="p-2 text-sm">{format_value(current_value)}
                     </td>
                 {/case}
               {#match _}
-                <td class="p-4  text-sm">{format_key_for_display(item.keys)}
+                <td class="p-4 text-sm">{format_key_for_display(item.keys)}
                 </td>
-                <td class="p-2  text-sm">{format_value(current_value)}
+                <td class="p-2 text-sm">{format_value(current_value)}
                 </td>
             {/case}
         {/case}
@@ -91,7 +91,7 @@
           )
           |> format_value()}</th>
 
-        <td class="p-2  text-sm whitespace-pre-wrap break-all">{#if is_nil(item.default) and item.defaults != []}<span class="badge badge-error">Warning: multiple defaults</span>{#else}{format_value(item.default)}{/if}</td>
+        <td class="p-2 text-sm whitespace-pre-wrap break-all">{#if is_nil(item.default) and item.defaults != []}<span class="badge badge-error">Warning: multiple defaults</span>{#else}{format_value(item.default)}{/if}</td>
         <td class="p-2 text-xs">
           {#for loc <- item.locations}
             <div class="mb-1">

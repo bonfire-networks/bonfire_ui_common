@@ -8,7 +8,7 @@
   <Dropdown
     id="guest_actions_dropdown"
     position="bottom-end"
-    trigger_class="rounded btn btn-ghost btn-sm btn-circle"
+    trigger_class="btn btn-ghost btn-sm btn-circle"
     panel_class="text-base-content"
     label={l("Menu")}
   >

@@ -1,4 +1,4 @@
-<header class="z-50 w-full sticky top-0 lg:rounded-t-xl bg-base-100 md:z-auto md:relative">
+<header class="z-50 w-full sticky top-0 lg:rounded-t-box bg-base-100 md:z-auto md:relative">
   <div class="absolute right-3 p-3 flex flex-row items-center flex-align-items-stretch flex-nowrap">
     <span>
       <Bonfire.UI.Common.OpenModalLive

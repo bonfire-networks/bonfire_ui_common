@@ -45,7 +45,7 @@
       <li :for={{page, path, label} <- nav_items(@__context__)}>
         <LinkLive
           to={path}
-          class="inline-flex min-h-12 items-center whitespace-nowrap text-xs underline-offset-3 hover:underline sm:text-sm aria-[current=page]:font-semibold aria-[current=page]:text-primary border-b-2 border-transparent aria-[current=page]:border-current"
+          class="inline-flex min-h-12 items-center whitespace-nowrap text-xs underline-offset-3 hover:underline sm:text-sm aria-[current=page]:font-bold aria-[current=page]:text-primary border-b-2 border-transparent aria-[current=page]:border-current"
           opts={current_opts(@page, page)}
         >{label}</LinkLive>
       </li>

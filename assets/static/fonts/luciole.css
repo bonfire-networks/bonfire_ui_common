@@ -1,12 +1,8 @@
 /* Webfont: Luciole (accessibility font for low-vision readers)
-   woff2 first — the woff2 files are ~half the size of the woff ones (43KB vs
-   85KB per face). The legacy eot/ttf/svg files are no longer referenced: every
-   browser that can run this app supports woff (2010+), and svg-font support was
-   removed from all engines years ago. */
+   woff2 only: every browser that can run this app supports it (2016+). */
 @font-face {
 	font-family: "Luciole";
-	src: url("/fonts/Luciole-Regular.woff2") format("woff2"),
-		url("/fonts/Luciole-Regular.woff") format("woff");
+	src: url("/fonts/Luciole-Regular.woff2") format("woff2");
 	font-style: normal;
 	font-weight: normal;
 	font-display: swap;
@@ -15,8 +11,7 @@
 
 @font-face {
 	font-family: "Luciole";
-	src: url("/fonts/Luciole-Italic.woff2") format("woff2"),
-		url("/fonts/Luciole-Italic.woff") format("woff");
+	src: url("/fonts/Luciole-Italic.woff2") format("woff2");
 	font-style: italic;
 	font-weight: normal;
 	font-display: swap;
@@ -25,8 +20,7 @@
 
 @font-face {
 	font-family: "Luciole";
-	src: url("/fonts/Luciole-Bold.woff2") format("woff2"),
-		url("/fonts/Luciole-Bold.woff") format("woff");
+	src: url("/fonts/Luciole-Bold.woff2") format("woff2");
 	font-style: normal;
 	font-weight: 700;
 	font-display: swap;
@@ -35,8 +29,7 @@
 
 @font-face {
 	font-family: "Luciole";
-	src: url("/fonts/Luciole-BoldItalic.woff2") format("woff2"),
-		url("/fonts/Luciole-BoldItalic.woff") format("woff");
+	src: url("/fonts/Luciole-BoldItalic.woff2") format("woff2");
 	font-style: italic;
 	font-weight: 700;
 	font-display: swap;

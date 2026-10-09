@@ -2,13 +2,13 @@
 html:not([data-ui-preset="typographic"]) {
   --radius-box: 12px;
   --radius-field: 10px;
-  --button-radius-default: 4px;
+  --radius-button: 10px;
   --radius-selector: 8px;
   --stream-content-padding: var(--spacing-card);
   --stream-section-gap: var(--spacing-base);
   --stream-inline-gap: 6px;
-  --stream-emphasis-weight: 600;
-  --stream-medium-weight: 500;
+  --stream-emphasis-weight: var(--font-weight-bold);
+  --stream-medium-weight: var(--font-weight-medium);
   --stream-header-height: 56px;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
@@ -328,8 +328,8 @@ html:not([data-ui-preset="typographic"])
 html:not([data-ui-preset="typographic"])
   .activity_wrapper [data-id="name_username"]:has(> [data-role="author_group"]) {
   display: block;
-  font-size: var(--text-body);
-  line-height: var(--text-body--line-height);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
   overflow-wrap: anywhere;
 }
 
@@ -349,21 +349,21 @@ html:not([data-ui-preset="typographic"]) .activity_wrapper [data-role="author_gr
 }
 
 html:not([data-ui-preset="typographic"]) .activity_wrapper [data-id="subject_name"] {
-  font-size: var(--text-body);
-  line-height: var(--text-body--line-height);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
   font-weight: var(--stream-emphasis-weight);
 }
 
 html:not([data-ui-preset="typographic"]) .activity_wrapper [data-id="subject_secondary"] {
   min-width: 0;
   color: var(--stream-text-tertiary);
-  font-size: var(--text-meta);
-  line-height: var(--text-meta--line-height);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
 }
 
 html:not([data-ui-preset="typographic"]) .activity_wrapper [data-role="name"] {
   color: var(--color-base-content);
-  font-size: 16px;
+  font-size: var(--text-prose);
   line-height: 22px;
   font-weight: var(--stream-emphasis-weight);
   text-wrap: pretty;
@@ -372,8 +372,8 @@ html:not([data-ui-preset="typographic"]) .activity_wrapper [data-role="name"] {
 html:not([data-ui-preset="typographic"]) .activity_wrapper [data-role="html_body"] {
   max-width: 70ch;
   color: var(--color-base-content);
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: var(--text-prose);
+  line-height: var(--text-prose--line-height);
   overflow-wrap: break-word;
   text-wrap: pretty;
 }
@@ -388,8 +388,8 @@ html:not([data-ui-preset="typographic"])
   .activity_wrapper
   :where(.translate-btn-client, .translate-btn-server, [data-role="post_language"]) {
   color: var(--stream-text-tertiary);
-  font-size: 13px;
-  line-height: 18px;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
 }
 
 html:not([data-ui-preset="typographic"])
@@ -801,8 +801,8 @@ html:not([data-ui-preset="typographic"])
   > [data-role="thread_header"]
   span {
   color: var(--stream-text-secondary);
-  font-size: 13px;
-  line-height: 18px;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
   font-weight: var(--stream-medium-weight);
   letter-spacing: normal;
   text-transform: none;
@@ -857,7 +857,7 @@ html:not([data-ui-preset="typographic"])
   span {
   text-transform: none;
   letter-spacing: 0;
-  font-size: 13px;
+  font-size: var(--text-sm);
   color: color-mix(in oklab, var(--color-base-content) 55%, transparent);
 }
 @media (hover: hover) and (pointer: fine) {
@@ -1013,7 +1013,7 @@ html:not([data-ui-preset="typographic"])
   [data-reply-context]
   > article.replied
   [data-role="html_body"] {
-  font-size: 14px;
+  font-size: var(--text-sm);
   color: color-mix(in oklab, var(--color-base-content) 85%, transparent);
 }
 
