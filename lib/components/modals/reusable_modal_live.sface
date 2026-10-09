@@ -67,7 +67,7 @@
               data-role="close-modal"
               class={
                 "btn btn-circle focus-ring transition-interactive cursor-pointer",
-                "bg-transparent text-base-content/70 hover:bg-base-200 hover:text-base-content":
+                "bg-transparent text-muted hover:bg-base-200 hover:text-base-content":
                   !@no_backdrop and !@image_preview,
                 "btn-primary": @image_preview,
                 "!rounded-none btn-ghost !btn-xs opacity-70 btn-secondary": @no_backdrop
@@ -143,7 +143,7 @@
           </div>
         {#else}
           {!-- Default layout: sticky header, scrollable middle, sticky footer --}
-          <header :if={!@no_header} class="shrink-0 pl-4 pt-4 pb-3 pr-14 border-b-hair border-secondary">
+          <header :if={!@no_header} class="shrink-0 pl-4 pt-4 pb-3 pr-14 border-b-hair border-divider">
             <h3 id={"#{@id}_title"} class={@title_class || "font-bold text-base line-clamp-1 max-w-full"}>
               <#slot {@title}>{@title_text}</#slot>
             </h3>
@@ -189,7 +189,7 @@
           <div
             :if={!@no_actions}
             class={
-              "shrink-0 modal-action px-4 pb-safe-offset-4 pt-3 border-t-hair border-secondary",
+              "shrink-0 modal-action px-4 pb-safe-offset-4 pt-3 border-t-hair border-divider",
               @action_btns_wrapper_class
             }
           >

@@ -22,7 +22,7 @@
         <div class="overflow-hidden min-h-0">
           <div
             id={"inline_pill_#{@composer_dom_id}"}
-            class="inline_composer_pill flex items-center gap-3 p-1 pl-1 rounded-full border border-secondary bg-base-100 cursor-text hover:border-secondary"
+            class="inline_composer_pill flex items-center gap-3 p-1 pl-1 rounded-full border border-divider bg-base-100 cursor-text hover:border-divider"
             phx-click={LiveHandler.inline_expand(@composer_dom_id)}
           >
             <div class="shrink-0">
@@ -69,7 +69,7 @@
           <div
             id={"inline_full_#{@composer_dom_id}"}
             class={[
-              "inline_composer_full border border-secondary rounded-xl bg-base-100 shadow-lg",
+              "inline_composer_full border border-divider rounded-xl bg-base-100 shadow-lg",
               "flex flex-col min-h-[160px]": @showing_within == :thread_embed
             ]}
           >
@@ -99,7 +99,7 @@
       </div>
     {/if}
   {#else}
-    <div class="inline_composer_guest flex flex-wrap items-center gap-0 p-1 rounded-full border border-secondary">
+    <div class="inline_composer_guest flex flex-wrap items-center gap-0 p-1 rounded-full border border-divider">
       {!-- Use :go (parent page URL, set by embed_parent param) when inside an iframe embed,
            so the post-login redirect lands back on the embedding page with a
            bonfire_embed_token appended by LoginController.redirect_after_auth.

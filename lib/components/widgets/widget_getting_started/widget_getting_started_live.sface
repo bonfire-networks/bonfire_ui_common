@@ -71,7 +71,7 @@
                   "h-[7px] flex-1 rounded-sm transition-colors duration-300",
                   "bg-primary": pip_step.done?,
                   "bg-primary/40": idx == @viewing_index and not pip_step.done?,
-                  "border border-secondary": idx != @viewing_index and not pip_step.done?
+                  "border border-divider": idx != @viewing_index and not pip_step.done?
                 ]} />
               {/for}
             </div>

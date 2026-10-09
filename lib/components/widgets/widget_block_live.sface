@@ -29,7 +29,7 @@
           {...phx_values(@reset_cache_values)}
           onclick="this.dataset.done='1'"
           title={l("Refresh")}
-          class="group btn btn-circle touch-target-expanded size-8 min-h-8 min-w-8 p-0 btn-outline border-secondary touch-manipulation"
+          class="group btn btn-circle touch-target-expanded size-8 min-h-8 min-w-8 p-0 btn-outline border-divider touch-manipulation"
           data-role="widget-reset"
         >
           <span class="touch-target-hit-area" aria-hidden="true" />
@@ -50,10 +50,10 @@
         data-role="widget-empty-state"
       >
         <div
-          class="flex h-10 w-10 items-center justify-center rounded-full bg-base-content/5"
+          class="flex h-10 w-10 items-center justify-center rounded-full bg-fill"
           aria-hidden="true"
         >
-          <Iconify.iconify icon={@empty_icon} class="h-5 w-5 text-base-content/40" />
+          <Iconify.iconify icon={@empty_icon} class="h-5 w-5 text-subtle" />
         </div>
         <span class="max-w-[36ch] text-sm text-muted">{@empty_message || l("Nothing here yet.")}</span>
         <#slot {@empty_action} />

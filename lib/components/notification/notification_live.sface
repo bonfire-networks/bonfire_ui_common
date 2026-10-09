@@ -37,7 +37,7 @@
       data-id="notification"
       :if={@notification}
       role="alert"
-      class="w-auto max-w-md pointer-events-auto overflow-hidden transition-interactive rounded border border-secondary alert flash"
+      class="w-auto max-w-md pointer-events-auto overflow-hidden transition-interactive rounded border border-divider alert flash"
     >
       <div class="p-4">
         <div class="flex items-start">
@@ -53,7 +53,7 @@
           <div class="ml-3 min-w-0 flex-1 pt-0.5">
             {!-- `*-content` colours are for text on a filled surface of that colour, and this card sits on the base surface, so they read as dark on dark --}
             <p class="text-sm font-medium text-base-content">{e(@notification, :title, "Notification")}</p>
-            <div data-id="flash" data-type="notification" class="text-sm text-base-content/80">{rich(e(@notification, :message, ""))}</div>
+            <div data-id="flash" data-type="notification" class="text-sm text-muted">{rich(e(@notification, :message, ""))}</div>
             <LinkLive
               :if={e(@notification, :url, nil)}
               to={e(@notification, :url, nil)}

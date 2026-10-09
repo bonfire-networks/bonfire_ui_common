@@ -2,7 +2,7 @@
   {#match group_name}
     <div
       id="composer_header_mockup"
-      class="flex flex-wrap items-center gap-x-1.5 gap-y-1 px-3 py-2 text-sm text-base-content/60 border-t border-dashed border-secondary"
+      class="flex flex-wrap items-center gap-x-1.5 gap-y-1 px-3 py-2 text-sm text-muted border-t border-dashed border-divider"
     >
       {!-- type, shrunk to an icon: the real list of types, but picking one does nothing --}
       <Dropdown
@@ -49,7 +49,7 @@
         </:trigger>
 
         <li class="menu-title">{l("Post in")}</li>
-        <li class="px-3 py-2 text-xs text-base-content/70 max-w-72 whitespace-normal">
+        <li class="px-3 py-2 text-xs text-muted max-w-72 whitespace-normal">
           {if !group_name, do: l("Shows on your profile and in your followers' feeds.")}
         </li>
         <li>
@@ -61,7 +61,7 @@
         </li>
 
         <li class="menu-title">{l("In a group")}</li>
-        <li class="px-3 py-2 text-xs text-base-content/70 max-w-72 whitespace-normal">
+        <li class="px-3 py-2 text-xs text-muted max-w-72 whitespace-normal">
           {if group_name,
             do:
               l("Lives in %{name}: shown in the group, and to whoever the group's visibility allows.",
@@ -162,7 +162,7 @@
             <#Icon iconify="ph:lock-fill" class="w-4 h-4 text-primary" />
             <span>{l("members")}</span>
           </:trigger>
-          <li class="px-3 py-2 text-xs text-base-content/70 max-w-72 whitespace-normal">
+          <li class="px-3 py-2 text-xs text-muted max-w-72 whitespace-normal">
             {l("Posts in %{name} are shared with its members, unless you choose otherwise.",
               name: group_name
             )}

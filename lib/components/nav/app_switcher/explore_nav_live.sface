@@ -5,7 +5,7 @@
   >
     <div class={[
       "flex items-center justify-between rounded-md",
-      "bg-base-content/5": @__context__[:current_extension][:name] == extension[:name]
+      "bg-fill": @__context__[:current_extension][:name] == extension[:name]
     ]}>
       <LinkLive to={extension[:href]} class="flex items-center w-full gap-5 text-left">
         <Iconify.iconify icon={extension[:icon]} class="w-5 h-5" />

@@ -34,13 +34,13 @@ html[data-ui-preset="typographic"] .bonfire-wrapper {
 }
 
 html[data-ui-preset="typographic"] .thread-stats {
-  @apply bg-base-200 rounded-field border-hair border-secondary p-1;
+  @apply bg-base-200 rounded-field border-hair border-divider p-1;
   margin-block: -0.5px;
 }
 
 html[data-ui-preset="typographic"] [data-role="object-thread"] #thread_main_object,
 html[data-ui-preset="typographic"] [data-role="object-thread"] [data-role="thread"] > .thread-replies {
-  @apply rounded-box border-hair border-secondary p-card;
+  @apply rounded-box border-hair border-divider p-card;
 }
 
 html[data-ui-preset="typographic"] [data-role="object-thread"] [data-role="thread"] {
@@ -52,7 +52,7 @@ html[data-ui-preset="typographic"] [data-role="object-thread"] [data-role="threa
 }
 
 html[data-ui-preset="typographic"] .feed-controls-toolbar {
-  @apply bg-base-300 rounded-field border-hair border-secondary;
+  @apply bg-base-300 rounded-field border-hair border-divider;
   width: calc(100% + 2px);
   margin-left: -1px;
   margin-bottom: -1px;
@@ -117,7 +117,7 @@ html[data-ui-preset="typographic"] [data-id="profile_hero"] {
 }
 
 html[data-ui-preset="typographic"] .widget-user-profile {
-  @apply bg-base-100 p-1 rounded-field border-hair border-secondary;
+  @apply bg-base-100 p-1 rounded-field border-hair border-divider;
 }
 
 html[data-ui-preset="typographic"] .sidebar-widgets .widget-moderator-profile {
@@ -129,7 +129,7 @@ html[data-ui-preset="typographic"] .sidebar-widgets :is(.group-moderators-widget
 }
 
 html[data-ui-preset="typographic"] .sidebar-widgets :is(.group-moderators-widget, .group-topics-widget) > [data-role="widget-header"] {
-  @apply p-card border-b-hair border-secondary;
+  @apply p-card border-b-hair border-divider;
 }
 
 html[data-ui-preset="typographic"] .sidebar-widgets .group-topics-widget li > a {
@@ -137,7 +137,7 @@ html[data-ui-preset="typographic"] .sidebar-widgets .group-topics-widget li > a 
 }
 
 html[data-ui-preset="typographic"] .sidebar-widgets .group-topics-widget li + li {
-  @apply border-t-hair border-secondary;
+  @apply border-t-hair border-divider;
 }
 
 html[data-ui-preset="typographic"] [data-id="trending_discussions"] {
@@ -145,7 +145,7 @@ html[data-ui-preset="typographic"] [data-id="trending_discussions"] {
 }
 
 html[data-ui-preset="typographic"] [data-id="trending_discussions"] > li {
-  @apply border-t-hair border-secondary;
+  @apply border-t-hair border-divider;
 }
 
 html[data-ui-preset="typographic"] [data-id="recent_articles"] {

@@ -45,60 +45,60 @@
 
   <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-3">{l("Brand")}</div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-[30px]">
-    <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
-      <div class="h-[88px] bg-primary border-b border-secondary" />
+    <div class="rounded-box overflow-hidden border border-divider bg-base-100">
+      <div class="h-[88px] bg-primary border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Primary red</div><div class="type-caption text-primary mt-1.5">--color-primary</div></div>
     </div>
-    <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
-      <div class="h-[88px] bg-secondary border-b border-secondary" />
+    <div class="rounded-box overflow-hidden border border-divider bg-base-100">
+      <div class="h-[88px] bg-secondary border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Muted red</div><div class="type-caption text-primary mt-1.5">--color-secondary</div></div>
     </div>
-    <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
-      <div class="h-[88px] bg-neutral border-b border-secondary" />
+    <div class="rounded-box overflow-hidden border border-divider bg-base-100">
+      <div class="h-[88px] bg-neutral border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Near-black</div><div class="type-caption text-primary mt-1.5">--color-neutral</div></div>
     </div>
-    <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
-      <div class="h-[88px] bg-accent border-b border-secondary" />
+    <div class="rounded-box overflow-hidden border border-divider bg-base-100">
+      <div class="h-[88px] bg-accent border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Accent</div><div class="type-caption text-primary mt-1.5">--color-accent</div></div>
     </div>
   </div>
 
   <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-3">{l("Surfaces & base")}</div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-[30px]">
-    <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
-      <div class="h-[88px] bg-base-100 border-b border-secondary" />
+    <div class="rounded-box overflow-hidden border border-divider bg-base-100">
+      <div class="h-[88px] bg-base-100 border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Card surface</div><div class="type-caption text-primary mt-1.5">--color-base-100</div></div>
     </div>
-    <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
-      <div class="h-[88px] bg-base-200 border-b border-secondary" />
+    <div class="rounded-box overflow-hidden border border-divider bg-base-100">
+      <div class="h-[88px] bg-base-200 border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Page background</div><div class="type-caption text-primary mt-1.5">--color-base-200</div></div>
     </div>
-    <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
-      <div class="h-[88px] bg-base-300 border-b border-secondary" />
+    <div class="rounded-box overflow-hidden border border-divider bg-base-100">
+      <div class="h-[88px] bg-base-300 border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Rail / hover</div><div class="type-caption text-primary mt-1.5">--color-base-300</div></div>
     </div>
-    <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
-      <div class="h-[88px] bg-base-content border-b border-secondary" />
+    <div class="rounded-box overflow-hidden border border-divider bg-base-100">
+      <div class="h-[88px] bg-base-content border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Base content</div><div class="type-caption text-primary mt-1.5">--color-base-content</div></div>
     </div>
   </div>
 
   <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-3">{l("Semantic & neutral")}</div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
-      <div class="h-[88px] bg-success border-b border-secondary flex items-end p-2.5"><span class="text-[11px] text-success-content">OFFEN</span></div>
+    <div class="rounded-box overflow-hidden border border-divider bg-base-100">
+      <div class="h-[88px] bg-success border-b border-divider flex items-end p-2.5"><span class="text-[11px] text-success-content">OFFEN</span></div>
       <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Success</div><div class="type-caption text-primary mt-1.5">--color-success</div></div>
     </div>
-    <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
-      <div class="h-[88px] bg-error border-b border-secondary" />
+    <div class="rounded-box overflow-hidden border border-divider bg-base-100">
+      <div class="h-[88px] bg-error border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Error</div><div class="type-caption text-primary mt-1.5">--color-error</div></div>
     </div>
-    <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
-      <div class="h-[88px] bg-warning border-b border-secondary" />
+    <div class="rounded-box overflow-hidden border border-divider bg-base-100">
+      <div class="h-[88px] bg-warning border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Warning</div><div class="type-caption text-primary mt-1.5">--color-warning</div></div>
     </div>
-    <div class="rounded-box overflow-hidden border border-secondary bg-base-100">
-      <div class="h-[88px] bg-info border-b border-secondary" />
+    <div class="rounded-box overflow-hidden border border-divider bg-base-100">
+      <div class="h-[88px] bg-info border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-[14px] font-medium">Info</div><div class="type-caption text-primary mt-1.5">--color-info</div></div>
     </div>
   </div>
@@ -111,7 +111,7 @@
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
   {!-- UI type scale — named tokens defined in app.css @theme (text-display … text-caption). --}
-  <div class="rounded-box border border-secondary bg-base-100   divide-secondary overflow-hidden">
+  <div class="rounded-box border border-divider bg-base-100   divide-divider overflow-hidden">
     <div class="flex items-baseline gap-6 px-6 py-[18px]">
       <div class="w-[200px] shrink-0"><div class="text-[13px] font-medium">Display / Title</div><div class="type-caption text-muted mt-[3px]">type-title · text-display · 23 / 25</div></div>
       <div class="flex-1 min-w-0 type-title truncate">Die Linke muss antagonistisch bleiben</div>
@@ -161,28 +161,28 @@
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <div class="rounded-box border border-secondary bg-base-100 p-[22px] text-center">
+    <div class="rounded-box border border-divider bg-base-100 p-[22px] text-center">
       <div class="h-[70px] flex items-center justify-center">
         <div class="w-[90px] h-[46px] bg-base-200 rounded-field ring-[1.4px] ring-inset ring-primary" />
       </div>
       <div class="text-[13px] font-medium mt-2.5">Buttons / inputs</div>
       <div class="type-caption text-muted mt-[3px]">rounded-field</div>
     </div>
-    <div class="rounded-box border border-secondary bg-base-100 p-[22px] text-center">
+    <div class="rounded-box border border-divider bg-base-100 p-[22px] text-center">
       <div class="h-[70px] flex items-center justify-center">
         <div class="w-[90px] h-[46px] bg-base-200 rounded-box ring-[1.4px] ring-inset ring-primary" />
       </div>
       <div class="text-[13px] font-medium mt-2.5">Cards / boxes</div>
       <div class="type-caption text-muted mt-[3px]">rounded-box</div>
     </div>
-    <div class="rounded-box border border-secondary bg-base-100 p-[22px] text-center">
+    <div class="rounded-box border border-divider bg-base-100 p-[22px] text-center">
       <div class="h-[70px] flex items-center justify-center">
         <div class="w-[46px] h-[46px] bg-base-200 rounded-full ring-[1.4px] ring-inset ring-primary" />
       </div>
       <div class="text-[13px] font-medium mt-2.5">Avatars</div>
       <div class="type-caption text-muted mt-[3px]">rounded-full · 50%</div>
     </div>
-    <div class="rounded-box border border-secondary bg-base-100 p-[22px] text-center">
+    <div class="rounded-box border border-divider bg-base-100 p-[22px] text-center">
       <div class="h-[70px] flex items-center justify-center">
         <div class="h-4 w-[90px] bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
       </div>
@@ -190,14 +190,14 @@
       <div class="type-caption text-muted mt-[3px]">clip-path</div>
     </div>
   </div>
-  <div class="mt-4 flex gap-6 flex-wrap rounded-box border border-secondary bg-base-100 px-6 py-5 text-[13px] text-muted">
+  <div class="mt-4 flex gap-6 flex-wrap rounded-box border border-divider bg-base-100 px-6 py-5 text-[13px] text-muted">
     <div><span class="text-base-content font-medium">Card border</span> · 1px solid secondary (--border)</div>
     <div><span class="text-base-content font-medium">Ring / avatar</span> · inset 0 0 0 1px primary</div>
     <div><span class="text-base-content font-medium">Section divider</span> · skewed red bar (clip-path)</div>
   </div>
 
   {!-- Spacing tokens (measured from Figma; bars render at the token's exact width) --}
-  <div class="mt-4 rounded-box border border-secondary bg-base-100 px-6 py-5">
+  <div class="mt-4 rounded-box border border-divider bg-base-100 px-6 py-5">
     <div class="type-caption uppercase tracking-[0.14em] text-muted font-medium mb-1">{l("Spacing")}</div>
     <div class="type-caption text-muted mb-4">{l("18-based scale — from the Figma \"dashboard with spaces\" annotations")}</div>
     <div class="flex flex-col gap-2 text-[13px]">
@@ -232,7 +232,7 @@
     <span class="text-[13px] uppercase tracking-[0.18em] font-medium whitespace-nowrap">04 — {l("Buttons & actions")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
-  <div class="rounded-box border border-secondary bg-base-100 p-7">
+  <div class="rounded-box border border-divider bg-base-100 p-7">
     <div class="flex items-center gap-4 flex-wrap">
       <button
         type="button"
@@ -274,23 +274,23 @@
   {!-- DaisyUI form primitives customised to the Figma values: 0.7px secondary
        border, pill fields (--radius-field), box-radius textarea, primary accent
        (checked). All bind to theme tokens so they re-skin per data-theme. --}
-  <div class="rounded-box border border-secondary bg-base-100 p-7 flex flex-col gap-7">
+  <div class="rounded-box border border-divider bg-base-100 p-7 flex flex-col gap-7">
     {!-- Text fields --}
     <div class="grid sm:grid-cols-2 gap-5">
       <div class="flex flex-col gap-2">
         <span class="text-caption uppercase tracking-[0.04em] text-muted font-medium">{l("Text input")}</span>
-        <input type="text" placeholder="Dein Name" class="input border-secondary w-full">
+        <input type="text" placeholder="Dein Name" class="input border-divider w-full">
       </div>
       <div class="flex flex-col gap-2">
         <span class="text-caption uppercase tracking-[0.04em] text-muted font-medium">{l("Search")}</span>
-        <label class="input border-secondary w-full flex items-center gap-2">
+        <label class="input border-divider w-full flex items-center gap-2">
           <#Icon iconify="ph:magnifying-glass" class="w-5 h-5 text-muted" />
           <input type="search" placeholder="Suche …" class="grow">
         </label>
       </div>
       <div class="flex flex-col gap-2">
         <span class="text-caption uppercase tracking-[0.04em] text-muted font-medium">{l("Select")}</span>
-        <select class="select border-secondary w-full">
+        <select class="select border-divider w-full">
           <option>Alle Themen</option>
           <option>Politik</option>
           <option>Kultur</option>
@@ -299,7 +299,7 @@
       <div class="flex flex-col gap-2">
         <span class="text-caption uppercase tracking-[0.04em] text-muted font-medium">{l("Textarea")}</span>
         <textarea
-          class="textarea border-secondary rounded-box w-full"
+          class="textarea border-divider rounded-box w-full"
           rows="3"
           placeholder="Schreib etwas …"
         />
@@ -352,7 +352,7 @@
     {!-- Left column: nav + stepper --}
     <div class="flex flex-col gap-6">
       {!-- Nav --}
-      <div class="rounded-box border border-secondary bg-base-300 p-[18px]">
+      <div class="rounded-box border border-divider bg-base-300 p-[18px]">
         <div class="text-[11px] uppercase tracking-[0.14em] text-muted font-medium mb-3 ml-1">{l("Navigation")}</div>
         <a class="flex items-center gap-[14px] py-[9px] px-1 rounded-field cursor-pointer">
           <#Icon iconify="ph:house-fill" class="w-5 h-5 text-primary shrink-0" />
@@ -369,7 +369,7 @@
       </div>
 
       {!-- Onboarding stepper --}
-      <div class="rounded-box border border-secondary bg-base-100 p-5">
+      <div class="rounded-box border border-divider bg-base-100 p-5">
         <div class="flex items-center gap-3">
           <button
             type="button"
@@ -418,7 +418,7 @@
         <Bonfire.UI.Common.Styleguide.WhoToFollow />
 
         {!-- Recent article --}
-        <div class="rounded-box border border-secondary bg-base-100 overflow-hidden">
+        <div class="rounded-box border border-divider bg-base-100 overflow-hidden">
           <div class="px-5 pt-[18px] pb-3.5">
             <div class="text-heading font-medium">Die Linke muss antagonistisch bleiben</div>
             <p class="mt-2 mb-3 text-[13px] leading-[1.45] text-muted">Die Linkspartei steht ständig unter Druck, sich der etablierten Politik anzupassen.</p>
@@ -459,17 +459,17 @@
   <div class="relative left-1/2 -translate-x-1/2 w-screen flex justify-center bg-base-200 overflow-hidden">
     <div class="flex min-h-[700px]">
       {!-- left edge gutter --}
-      <div class="w-edge shrink-0 bg-base-300 border-r-hair border-secondary" />
+      <div class="w-edge shrink-0 bg-base-300 border-r-hair border-divider" />
 
       {!-- LEFT RAIL (empty) --}
-      <aside class="hidden lg:block w-rail shrink-0 border-r-hair border-secondary" />
+      <aside class="hidden lg:block w-rail shrink-0 border-r-hair border-divider" />
 
       {!-- 7px divider channel (sidebar | content): rail border · 7px page-bg · center border --}
       <div class="hidden lg:block w-feed shrink-0" />
 
       {!-- CENTER — 106px page header ("Home") above the y≈106 divider; feed area empty --}
-      <div class="w-[600px] shrink-0 border-x-hair border-secondary flex flex-col">
-        <div class="border-b-hair border-secondary px-base h-page-header flex items-center">
+      <div class="w-[600px] shrink-0 border-x-hair border-divider flex flex-col">
+        <div class="border-b-hair border-divider px-base h-page-header flex items-center">
           <div class="text-display font-medium text-base-content">Home</div>
         </div>
       </div>
@@ -478,12 +478,12 @@
       <div class="hidden lg:block w-feed shrink-0" />
 
       {!-- RIGHT RAIL — empty; 106px header bar keeps the header divider across center+right --}
-      <aside class="hidden lg:flex w-rail shrink-0 border-l-hair border-secondary flex-col">
-        <div class="border-b-hair border-secondary h-page-header" />
+      <aside class="hidden lg:flex w-rail shrink-0 border-l-hair border-divider flex-col">
+        <div class="border-b-hair border-divider h-page-header" />
       </aside>
 
       {!-- right edge gutter --}
-      <div class="w-edge shrink-0 bg-base-300 border-l-hair border-secondary" />
+      <div class="w-edge shrink-0 bg-base-300 border-l-hair border-divider" />
     </div>
   </div>
 

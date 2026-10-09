@@ -1,7 +1,7 @@
 <div
   :if={Enum.count(@uploads.files.entries) > 0}
   id={deterministic_dom_id(__MODULE__, nil, "upload-preview", @parent_id)}
-  class="uploads_preview group/uploads relative bg-base-content/5 shrink-0"
+  class="uploads_preview group/uploads relative bg-fill shrink-0"
 >
   {!-- Entries container: horizontal strip (collapsed) / vertical list (expanded) --}
   <div class={[
@@ -19,28 +19,28 @@
           "flex flex-col items-center shrink-0 group relative",
           "group-[.expanded]/uploads:flex-row group-[.expanded]/uploads:gap-3",
           "group-[.expanded]/uploads:items-start group-[.expanded]/uploads:p-2.5",
-          "group-[.expanded]/uploads:border-b group-[.expanded]/uploads:border-secondary"
+          "group-[.expanded]/uploads:border-b group-[.expanded]/uploads:border-divider"
         ]}
       >
         {!-- Thumbnail (rendered once — same in both modes) --}
-        <figure class="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-base-content/5">
+        <figure class="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-fill">
           {#if String.starts_with?(entry.client_type, "image")}
             <Phoenix.Component.live_img_preview class="w-16 h-16 object-cover rounded-lg" entry={entry} />
           {#elseif String.contains?(entry.client_type, "pdf")}
             <div class="w-16 h-16 flex items-center justify-center">
-              <#Icon iconify="bxs:file-pdf" class="w-7 h-7 text-base-content/40" />
+              <#Icon iconify="bxs:file-pdf" class="w-7 h-7 text-subtle" />
             </div>
           {#elseif String.starts_with?(entry.client_type, "video")}
             <div class="w-16 h-16 flex items-center justify-center">
-              <#Icon iconify="majesticons:video" class="w-7 h-7 text-base-content/40" />
+              <#Icon iconify="majesticons:video" class="w-7 h-7 text-subtle" />
             </div>
           {#elseif String.starts_with?(entry.client_type, "audio")}
             <div class="w-16 h-16 flex items-center justify-center">
-              <#Icon iconify="lucide:audio-lines" class="w-7 h-7 text-base-content/40" />
+              <#Icon iconify="lucide:audio-lines" class="w-7 h-7 text-subtle" />
             </div>
           {#else}
             <div class="w-16 h-16 flex items-center justify-center">
-              <#Icon iconify="carbon:document" class="w-7 h-7 text-base-content/40" />
+              <#Icon iconify="carbon:document" class="w-7 h-7 text-subtle" />
             </div>
           {/if}
         </figure>

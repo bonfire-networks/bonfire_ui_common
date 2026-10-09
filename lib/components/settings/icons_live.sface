@@ -3,7 +3,7 @@
     <li><h2 class="mt-2 text-lg text-base-content">{family}</h2>
       <ul>
         {#for icon <- Enum.sort(icons)}
-          <li class="flex gap-4 text-muted"><Iconify.iconify icon={icon} class="w-10 h-10 text-base-content/80" /> <pre>{String.split("#{icon}", ".", parts: 2)
+          <li class="flex gap-4 text-muted"><Iconify.iconify icon={icon} class="w-10 h-10 text-muted" /> <pre>{String.split("#{icon}", ".", parts: 2)
 |> List.last()}</pre></li>
         {/for}
       </ul>

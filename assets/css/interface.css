@@ -47,37 +47,10 @@ html:not([data-ui-preset="typographic"]) [data-theme] {
     var(--color-base-content) 3%,
     var(--color-base-100)
   );
-  --stream-raised: color-mix(
-    in oklab,
-    var(--color-base-content) 6%,
-    var(--color-base-100)
-  );
-  --stream-active: color-mix(
-    in oklab,
-    var(--color-primary) 12%,
-    var(--stream-surface)
-  );
-  /* Quieter steps of --stream-active for selected/open/hovered rows (customize widget):
-     retune the accent tint ramp here, in one place. */
-  --stream-active-subtle: color-mix(
-    in oklab,
-    var(--color-primary) 8%,
-    var(--stream-surface)
-  );
-  --stream-active-subtle-open: color-mix(
-    in oklab,
-    var(--color-primary) 10%,
-    var(--stream-surface)
-  );
-  --stream-active-subtle-hover: color-mix(
-    in oklab,
-    var(--color-primary) 11%,
-    var(--stream-surface)
-  );
-  /* Field fill (borderless search inputs). Deliberately NOT aliased to
-     --stream-raised: a card can afford to be a whisper above the canvas, but
-     a border-less input has to read as an input, so it keeps the full 6% ink
-     in both schemes. */
+  --surface-bg: var(--stream-surface);
+  /* Field fill (borderless search inputs). Stronger than --stream-surface:
+     a card can afford to be a whisper above the canvas, but a border-less
+     input has to read as an input, so it keeps the full 6% ink. */
   --stream-fill: color-mix(
     in oklab,
     var(--color-base-content) 6%,
@@ -135,14 +108,6 @@ html:not([data-ui-preset="typographic"]) [data-theme] {
     --stream-surface: light-dark(
       color-mix(in oklab, var(--color-base-content) 2%, var(--color-base-100)),
       color-mix(in oklab, var(--color-base-content) 6%, var(--color-base-100))
-    );
-    --stream-raised: light-dark(
-      color-mix(
-        in oklab,
-        var(--color-base-content) 3.5%,
-        var(--color-base-100)
-      ),
-      color-mix(in oklab, var(--color-base-content) 9%, var(--color-base-100))
     );
     /* Keep borderless inputs (search) a step above the widget cards. */
     --stream-fill: light-dark(

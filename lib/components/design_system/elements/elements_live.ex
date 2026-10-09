@@ -22,7 +22,7 @@ defmodule Bonfire.UI.Common.DesignSystem.ElementsLive do
     <.dynamic_tag
       tag_name={@tag}
       class={[
-        "bg-base-100 rounded-box border-hair border-secondary",
+        "bg-base-100 rounded-box border-hair border-divider",
         @padded && "p-card",
         @class
       ]}
@@ -87,7 +87,7 @@ defmodule Bonfire.UI.Common.DesignSystem.ElementsLive do
       <Iconify.iconify
         :if={is_nil(@src)}
         icon="ph:user-fill"
-        class={["text-base-content/40", @icon_class]}
+        class={["text-subtle", @icon_class]}
         aria-hidden="true"
       />
     </div>

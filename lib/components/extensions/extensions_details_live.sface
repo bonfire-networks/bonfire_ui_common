@@ -8,7 +8,7 @@
   <div class="flex flex-col flex-1 gap-1">
     <div class="text-sm font-medium flex items-center gap-2">
       <span>{e(@dep, :extra, :name, nil) || e(@dep, :app, "Unknown")}</span>
-      <span class="bg-base-content/10 rounded px-2 py-1 text-xs  inline-block">{get_version(@dep)}</span>
+      <span class="bg-fill-strong rounded px-2 py-1 text-xs  inline-block">{get_version(@dep)}</span>
     </div>
     <div class="text-sm font-light text-muted">{e(@dep, :extra, :description, nil)}</div>
   </div>

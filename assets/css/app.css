@@ -48,14 +48,6 @@
   font-weight: 400;
 }
 
-@utility type-label {
-  font-size: var(--text-caption);
-  line-height: var(--tw-leading, var(--text-caption--line-height));
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
 @utility type-heading {
   font-size: var(--text-heading);
   line-height: var(--tw-leading, var(--text-heading--line-height));
@@ -206,10 +198,7 @@ media-player {
 }
 
 :root {
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
-  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --fx-noise: none;
 }
 
 /* Remove travel under reduced motion while retaining opacity and colour cues
@@ -830,7 +819,7 @@ article.active-activity::after {
   position: relative;
   padding-left: 8px !important;
   margin-left: 0px !important;
-  @apply border border-base-content/10 rounded-lg !py-2 !pb-3 mt-2 mb-3;
+  @apply border border-divider rounded-lg !py-2 !pb-3 mt-2 mb-3;
   transition:
     transform 150ms var(--ease-out-expo),
     border-color 150ms ease-out;
@@ -979,10 +968,9 @@ pre.lumis > code {
   --spacing-section: 36px; /* between sections (2× base) */
   --spacing-edge: 75px; /* full-bleed edge gutter width (the #ffeaea rails) — w-edge */
   --spacing-rail: 340px; /* left/right column (nav & widgets) width — w-rail */
-  --spacing-page-header: 80px; /* page-header bar height — min-h-page-header / h-page-header (NB: --spacing-header is a legacy 60px token) */
+  --spacing-page-header: 80px; /* page-header bar height — min-h-page-header / h-page-header */
 
   /* Breakpoints */
-  --breakpoint-lg: 1024px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1220px;
@@ -992,7 +980,6 @@ pre.lumis > code {
 
   /* Custom grid templates */
   --grid-template-main: 1fr 320px;
-  --width-360: 360px;
 
   /* ============================================
      Z-INDEX SCALE
@@ -1007,18 +994,6 @@ pre.lumis > code {
   --z-tooltip: 700;
   --z-toast: 800;
   --z-max: 9999999999999;
-
-  /* Legacy aliases for gradual migration */
-  --z-layout: 200;
-  --z-header: 300;
-  --z-overlay: 500;
-
-  /* Component spacing */
-  --spacing-header: 60px;
-  --spacing-inner: calc(var(--inner-window-height) - 90px);
-
-  /* Borders */
-  --border-opacity: 0.1;
 }
 
 [data-theme] {
@@ -1034,7 +1009,7 @@ hex-input::part(input) {
 }
 
 .bonfire-wrapper {
-  @apply bg-base-100 border-secondary p-card;
+  @apply bg-base-100 border-divider p-card;
   border-width: 0;
   border-radius: 0;
 }
@@ -1091,9 +1066,33 @@ hex-input::part(input) {
   }
 }
 
-/* Layout values resolve again in nested theme previews so their dividers and surfaces use the local palette. */
+/* Semantic colour roles: templates use these utilities (border-divider,
+   bg-surface, bg-fill, bg-fill-strong, text-subtle, bg-rail) instead of
+   base-content opacities or preset variables. `inline` makes each utility read
+   the knob at the element, so nested theme previews use their own palette.
+   The values are knobs in the block below; presets override the knobs. */
+@theme inline {
+  --color-divider: var(--divider-color);
+  --color-surface: var(--surface-bg);
+  --color-fill: var(--fill-bg);
+  --color-fill-strong: var(--fill-strong-bg);
+  --color-subtle: var(--subtle-color);
+  --color-rail: var(--rail-bg);
+}
+
+/* Preset knobs and role values. Defaults here; Stream (interface.css) and
+   Typographic (ui_presets/typographic.css) override them. They resolve again
+   in nested theme previews so dividers and surfaces use the local palette. */
 :root,
 [data-theme] {
+  /* Card on the canvas (bg-surface). */
+  --surface-bg: var(--color-base-200);
+  /* Translucent ink tints for hover and pressed states, chips and placeholders
+     (bg-fill, bg-fill-strong). Translucent so they work on any surface. */
+  --fill-bg: color-mix(in oklab, var(--color-base-content) 5%, transparent);
+  --fill-strong-bg: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+  /* Secondary text below text-muted (70%); 58% keeps ~4.5:1 on base-100. */
+  --subtle-color: color-mix(in oklab, var(--color-base-content) 58%, var(--color-base-100));
   --feed-gap: 0px;
   --activity-bleed: 0px;
   --activity-radius: 0px;
@@ -1119,7 +1118,7 @@ hex-input::part(input) {
 }
 
 @utility feed-filter-summary {
-  @apply flex items-center justify-between gap-3 cursor-pointer list-none min-h-10 rounded-selector hover:bg-base-content/5 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary;
+  @apply flex items-center justify-between gap-3 cursor-pointer list-none min-h-10 rounded-selector hover:bg-fill focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-primary;
   @media (pointer: coarse) {
     @apply min-h-11;
   }
@@ -1134,7 +1133,7 @@ hex-input::part(input) {
 }
 
 @utility sidebar-child-link {
-  @apply !flex w-full min-w-0 items-center !min-h-8 !h-8 !px-3 !py-0 rounded-selector text-base leading-6 hover:bg-base-content/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary;
+  @apply !flex w-full min-w-0 items-center !min-h-8 !h-8 !px-3 !py-0 rounded-selector text-base leading-6 hover:bg-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary;
   @media (pointer: coarse) {
     @apply !min-h-11 !h-11;
   }
@@ -1567,7 +1566,7 @@ emoji-picker .favorites {
 }
 
 .dropdown-panel {
-  @apply bg-base-100 w-64 p-2 rounded-box border-hair border-secondary absolute top-0 right-0 hidden;
+  @apply bg-base-100 w-64 p-2 rounded-box border-hair border-divider absolute top-0 right-0 hidden;
   z-index: var(--z-tooltip);
   /* Always-on elevation (was gated on --depth, which our themes set to 0, so
      panels floated with no shadow at all). The border stays for the crisp edge;

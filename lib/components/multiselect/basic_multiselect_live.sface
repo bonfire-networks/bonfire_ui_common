@@ -43,7 +43,7 @@
               phx-value-field={@form_input_name}
               phx-value-context_id={@context_id}
               type="button"
-              class="touch-target-expanded inline-flex items-center justify-center flex-shrink-0 w-4 h-4 ml-1 mr-2 text-primary-content-400 hover:bg-neutral hover:bg-opacity-30 hover:text-primary-content-700 focus:outline-none focus:text-white"
+              class="touch-target-expanded inline-flex items-center justify-center flex-shrink-0 w-4 h-4 ml-1 mr-2 text-primary-content-400 hover:bg-neutral/30 hover:text-primary-content-700 focus:outline-none focus:text-white"
             >
               <span class="touch-target-hit-area" aria-hidden="true" />
               <span class="sr-only">Remove {raw(name_content || id)}</span>
@@ -102,7 +102,7 @@
       >
         <li
           :for={{name_content, id} <- MultiselectLive.preloaded_options(@preloaded_options)}
-          class="p-2 text-sm cursor-pointer text-primary-content-800 hover:bg-neutral hover:bg-opacity-30"
+          class="p-2 text-sm cursor-pointer text-primary-content-800 hover:bg-neutral/30"
           role="option"
           tabindex="1"
           aria-selected="false"

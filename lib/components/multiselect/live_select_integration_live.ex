@@ -27,10 +27,10 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
         :ls_container_class,
         cond do
           filter_variant? ->
-            "relative w-full min-h-[46px] flex flex-wrap items-center gap-1.5 rounded-[14px] border border-base-content/15 bg-base-content/[0.03] px-[7px] py-[5px] transition-[border-color,background-color,box-shadow] duration-150 hover:border-base-content/25 hover:bg-base-content/[0.06] focus-within:border-primary focus-within:ring-[3px] focus-within:ring-primary/20 [&>div]:min-w-[150px] [&>div]:flex-1"
+            "relative w-full min-h-[46px] flex flex-wrap items-center gap-1.5 rounded-[14px] border border-divider bg-base-content/[0.03] px-[7px] py-[5px] transition-[border-color,background-color,box-shadow] duration-150 hover:border-base-content/25 hover:bg-base-content/[0.06] focus-within:border-primary focus-within:ring-[3px] focus-within:ring-primary/20 [&>div]:min-w-[150px] [&>div]:flex-1"
 
           tags? ->
-            "w-full flex flex-col gap-1.5 rounded-2xl border border-secondary bg-base-content/5 px-3 py-2 transition-colors focus-within:border-primary"
+            "w-full flex flex-col gap-1.5 rounded-2xl border border-divider bg-fill px-3 py-2 transition-colors focus-within:border-primary"
 
           true ->
             "w-full flex flex-col"
@@ -41,13 +41,13 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
         :ls_text_input_class,
         cond do
           filter_variant? ->
-            "w-full min-h-[34px] bg-transparent border-0 shadow-none outline-none focus:outline-none focus:ring-0 px-1.5 py-1 text-base h-auto placeholder:text-base-content/55"
+            "w-full min-h-[34px] bg-transparent border-0 shadow-none outline-none focus:outline-none focus:ring-0 px-1.5 py-1 text-base h-auto placeholder:text-subtle"
 
           tags? ->
             "w-full bg-transparent border-0 shadow-none outline-none focus:outline-none focus:ring-0 px-1 py-1 text-sm h-auto"
 
           true ->
-            "input input-sm border-hair border-secondary bg-base-100 flex items-center gap-2 w-full text-base"
+            "input input-sm border-hair border-divider bg-base-100 flex items-center gap-2 w-full text-base"
         end
       )
       # "" avoids the default `input-primary` orange border on the ghost tags field
@@ -56,9 +56,9 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
         :ls_dropdown_class,
         if(filter_variant?,
           do:
-            "z-popover top-full mt-1 max-h-liveselect flex-nowrap overflow-y-auto rounded-[14px] border border-base-content/10 !bg-base-100 p-1.5 shadow-xl",
+            "z-popover top-full mt-1 max-h-liveselect flex-nowrap overflow-y-auto rounded-[14px] border border-divider !bg-base-100 p-1.5 shadow-xl",
           else:
-            "z-50 max-h-liveselect flex-nowrap border border-secondary !bg-base-100 overflow-y-auto " <>
+            "z-50 max-h-liveselect flex-nowrap border border-divider !bg-base-100 overflow-y-auto " <>
               if(tags?, do: "top-full mt-1", else: "top-12")
         )
       )

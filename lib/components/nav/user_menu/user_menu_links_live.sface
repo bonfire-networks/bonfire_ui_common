@@ -14,7 +14,7 @@
   </LinkLive>
 </li>
 
-<li class="m-1 border-t border-secondary" />
+<li class="m-1 border-t border-divider" />
 
 <li>
   <LinkLive
@@ -44,7 +44,7 @@
 
   </LinkLive>
 </li> --}
-<li class="m-1 border-t border-secondary" />
+<li class="m-1 border-t border-divider" />
 <li>
   <LinkLive
     to={~p"/blocked"}
@@ -72,7 +72,7 @@
     <#Icon iconify="ph:ghost-fill" class="w-5 h-5 shrink-0 text-muted" />
   </LinkLive>
 </li>
-<li class="m-1 border-t border-secondary" />
+<li class="m-1 border-t border-divider" />
 
 {!-- <li>
   <LinkLive to={~p"/write"} class="flex items-center gap-2 text-sm text-base-content justify-between">

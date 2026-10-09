@@ -7,7 +7,7 @@
       {#case extension_enabled?(app, @context || @__context__)}
         {#match extension_enabled?}
           <li
-            class="rounded-lg bg-base-content/5"
+            class="rounded-lg bg-fill"
             :if={(@showing_within != :nav or extension[:exclude_from_nav] != true) |> debug("nav? #{app}") and
               ((@show_disabled_only == true and !extension_enabled?)
                |> debug("disabled? #{app}") or

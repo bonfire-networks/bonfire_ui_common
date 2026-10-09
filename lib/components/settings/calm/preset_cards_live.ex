@@ -43,7 +43,7 @@ defmodule Bonfire.UI.Common.Settings.Calm.PresetCardsLive do
   prop reset_confirm, :string, default: nil
 
   @doc "Class of the wrapping form."
-  prop class, :css_class, default: "p-4 border-b border-secondary"
+  prop class, :css_class, default: "p-4 border-b border-divider"
 
   @doc "Class of the options wrapper (e.g. swap the stacked list for a grid: `grid sm:grid-cols-2 gap-2`)."
   prop options_class, :css_class, default: "grid sm:grid-cols-2 gap-2"
@@ -51,12 +51,12 @@ defmodule Bonfire.UI.Common.Settings.Calm.PresetCardsLive do
   @doc "Class of each card (a `<label>` wrapping a sr-only radio — keep the `has-[:checked]`/`has-[:focus-visible]` variants so selection & focus stay visible)."
   prop card_class, :css_class,
     default:
-      "relative flex flex-wrap items-start gap-x-3 gap-y-2 rounded-lg border border-secondary p-3 cursor-pointer transition-colors hover:border-secondary hover:bg-base-content/5 has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:ring-1 has-[:checked]:ring-primary has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-1 has-[:focus-visible]:ring-offset-base-100"
+      "relative flex flex-wrap items-start gap-x-3 gap-y-2 rounded-lg border border-divider p-3 cursor-pointer transition-colors hover:border-divider hover:bg-fill has-[:checked]:border-primary has-[:checked]:bg-primary/10 has-[:checked]:ring-1 has-[:checked]:ring-primary has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary has-[:focus-visible]:ring-offset-1 has-[:focus-visible]:ring-offset-base-100"
 
   @doc "Class of the icon circle (keep the `peer-checked:` variants for the selected state); pass `\"hidden\"` to drop icons entirely."
   prop icon_wrapper_class, :css_class,
     default:
-      "flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-full transition-colors bg-base-content/10 text-muted peer-checked:bg-primary peer-checked:text-primary-content"
+      "flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-full transition-colors bg-fill-strong text-muted peer-checked:bg-primary peer-checked:text-primary-content"
 
   @doc "Class of the card name."
   prop name_class, :css_class, default: "text-sm font-medium text-base-content"

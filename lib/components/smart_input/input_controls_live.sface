@@ -17,7 +17,7 @@
               <div
                 phx-update="ignore"
                 id="smart_input_post_title_value"
-                class="relative border-b border-base-content/10 bg-base-100 px-4 py-2"
+                class="relative border-b border-divider bg-base-100 px-4 py-2"
               >
                 <label for="composer_post_title" class="sr-only">{l("Title")}</label>
                 <input
@@ -39,7 +39,7 @@
               <div :if={@summary_field_shown} class="px-3 pt-2 text-xs font-medium text-muted">
                 {if @show_sensitive || @show_cw, do: l("Content warning"), else: l("Summary")}
               </div>
-              <div class="relative flex items-start border-b border-dashed border-secondary">
+              <div class="relative flex items-start border-b border-dashed border-divider">
                 <div phx-update="ignore" id="smart_input_summary_value" class="flex-1 min-w-0">
                   {!-- no placeholder: the reactive label above shows the field's role (this
                        subtree is `phx-update="ignore"` so a placeholder here would be frozen) --}
@@ -54,7 +54,7 @@
                   type="button"
                   phx-click="Bonfire.UI.Common.SmartInput:clear_sensitive"
                   phx-target={@event_target || "#smart_input"}
-                  class="shrink-0 mt-2 mr-2 p-1 rounded-full text-base-content/40 hover:text-muted hover:bg-base-content/5 transition-colors"
+                  class="shrink-0 mt-2 mr-2 p-1 rounded-full text-subtle hover:text-muted hover:bg-fill transition-colors"
                   title={l("Remove content warning")}
                   aria-label={l("Remove content warning")}
                 >
@@ -286,7 +286,7 @@
                           </label>
                         </li>
                       {/for}
-                      <li :if={current_user_id(@__context__)} class="border-t border-secondary mt-1 pt-1">
+                      <li :if={current_user_id(@__context__)} class="border-t border-divider mt-1 pt-1">
                         <a
                           href="/settings/user/preferences/behaviours"
                           target="_blank"

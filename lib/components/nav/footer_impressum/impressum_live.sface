@@ -41,7 +41,7 @@
   </div>
 </div>
 
-<div class="p-card text-sm border-t-hair border-secondary">
+<div class="p-card text-sm border-t-hair border-divider">
   <div class="">
     <a href={powered_by_url()} target="_top" class="font-medium text-primary link link-hover">
       {powered_by_name()}

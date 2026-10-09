@@ -16,8 +16,8 @@
   {!-- the link / article unfurl --}
   <a class="mt-base block text-body text-muted underline truncate" href="#" onclick="return false">{@url}</a>
 
-  <figure class="mt-content rounded-box overflow-hidden border-hair border-secondary">
-    <div class="aspect-[1.91/1] bg-placeholder flex items-center justify-center text-caption uppercase tracking-[0.1em] text-base-content/40">
+  <figure class="mt-content rounded-box overflow-hidden border-hair border-divider">
+    <div class="aspect-[1.91/1] bg-placeholder flex items-center justify-center text-caption uppercase tracking-[0.1em] text-subtle">
       {l("Article image")}
     </div>
   </figure>

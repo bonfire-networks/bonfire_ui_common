@@ -9,7 +9,7 @@
         {!-- the description as a tooltip to hover, and the same words for a screen reader, which a tooltip alone doesn't reach --}
         <span
           :if={@description && @description_tooltip}
-          class="tooltip tooltip-right inline-flex cursor-help text-base-content/50"
+          class="tooltip tooltip-right inline-flex cursor-help text-subtle"
           data-tip={@description}
           aria-describedby={"#{@id}-description"}
           tabindex="0"

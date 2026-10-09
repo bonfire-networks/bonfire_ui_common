@@ -63,6 +63,6 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   def active_link_class(active?) do
     if active?,
       do: "",
-      else: "hover:bg-base-content/5"
+      else: "hover:bg-fill"
   end
 end

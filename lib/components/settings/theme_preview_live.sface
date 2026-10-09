@@ -1,6 +1,6 @@
 <div data-theme="light" class="bg-transparent">
   <div
-    class="rounded-box bg-base-100 border-secondary text-base-content not-prose overflow-hidden border shadow-lg"
+    class="rounded-box bg-base-100 border-divider text-base-content not-prose overflow-hidden border shadow-lg"
     data-theme={@theme}
     style={@custom_styles}
   >
@@ -33,7 +33,7 @@
             <div class="text-xs text-muted">2h ago</div>
           </div>
         </div>
-        <p class="text-sm text-base-content/80 leading-relaxed">
+        <p class="text-sm text-muted leading-relaxed">
           Hello! This is how posts will look with this theme. 🌟
         </p>
         <div class="flex items-center gap-3 pt-1">

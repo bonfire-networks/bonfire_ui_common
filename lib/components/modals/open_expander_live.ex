@@ -18,7 +18,7 @@ defmodule Bonfire.UI.Common.OpenExpanderLive do
     open_btn_class,
     :css_class,
     default:
-      "p-3 w-full text-sm text-base-content/80 flex items-center gap-2 hover:bg-base-content/5 hover:text-base-content transition-colors"
+      "p-3 w-full text-sm text-muted flex items-center gap-2 hover:bg-fill hover:text-base-content transition-colors"
   )
 
   prop(open_btn_wrapper_class, :css_class, default: "")
@@ -34,7 +34,7 @@ defmodule Bonfire.UI.Common.OpenExpanderLive do
   )
 
   @doc "The classes of the inline content container"
-  prop(expander_wrapper_class, :css_class, default: "border-t-hair border-secondary")
+  prop(expander_wrapper_class, :css_class, default: "border-t-hair border-divider")
 
   @doc """
   Additional assigns to pass on to the expanded component (same shape as `OpenModalLive`'s `modal_assigns`)

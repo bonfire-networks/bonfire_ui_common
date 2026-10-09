@@ -15,7 +15,7 @@
   >
     <hex-color-picker class="w-full mt-4" color={@saved_color || "#000000"} />
     <div class="flex flex-col gap-2 w-full">
-      <label for={"#{@id_prefix}-input-#{@color}"} class="font-medium text-sm text-base-content/80">
+      <label for={"#{@id_prefix}-input-#{@color}"} class="font-medium text-sm text-muted">
         {l("Color value")}
       </label>
       <div class="flex items-center gap-2">
@@ -35,7 +35,7 @@
           />
         </hex-input>
       </div>
-      <div :if={!@saved_color} class="text-xs text-base-content/60">
+      <div :if={!@saved_color} class="text-xs text-muted">
         {l("Inherited from %{theme}", theme: @base_theme)}
       </div>
     </div>
@@ -64,7 +64,7 @@
   <:open_btn>
     <div class="flex flex-col gap-1">
       <div
-        class="w-full h-12 rounded-lg border border-secondary flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
+        class="w-full h-12 rounded-lg border border-divider flex items-center justify-center shadow-sm hover:shadow transition-shadow duration-150 ease cursor-pointer"
         style={@preview_style}
         data-color={@color_key}
       >

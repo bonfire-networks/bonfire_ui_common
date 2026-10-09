@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Common.Settings.Calm.OverrideTogglesLive do
   @doc "Optional data-role for the form (test selector hook)."
   prop form_role, :string, default: nil
   @doc "Form layout classes; override when a compact host surface needs a denser rhythm."
-  prop form_class, :css_class, default: "p-4 border-b-hair border-secondary flex flex-col gap-3"
+  prop form_class, :css_class, default: "p-4 border-b-hair border-divider flex flex-col gap-3"
 
   @doc "Optional classes added to every toggle row, for host-specific inset and interaction styling."
   prop row_class, :css_class, default: nil

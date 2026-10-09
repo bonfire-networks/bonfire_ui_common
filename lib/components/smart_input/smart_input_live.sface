@@ -19,7 +19,7 @@
         <!-- <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} /> -->
         <header
           :if={@showing_within != :thread_embed}
-          class="z-[51] flex shrink-0 flex-col w-full sticky top-0 border-b border-base-content/10 lg:rounded-t-xl bg-base-100 md:z-auto md:relative"
+          class="z-[51] flex shrink-0 flex-col w-full sticky top-0 border-b border-divider lg:rounded-t-xl bg-base-100 md:z-auto md:relative"
         >
           <div
             id="composer_resize_handle"
@@ -74,7 +74,7 @@
                         wrapper_opts={["data-boundary": "#composer_container"]}
                         id="composer_type_chooser"
                         position="bottom-start"
-                        trigger_class="flex min-h-11 items-center gap-2 rounded-lg px-2 text-left font-semibold hover:bg-base-content/5 focus-ring"
+                        trigger_class="flex min-h-11 items-center gap-2 rounded-lg px-2 text-left font-semibold hover:bg-fill focus-ring"
                         label={l("Choose what to create")}
                         trigger_opts={[title: l("Choose what to create")]}
                       >
@@ -117,7 +117,7 @@
               close_on_select
               position="bottom-start"
               wrapper_class="min-w-0"
-              trigger_class="flex min-h-11 min-w-0 max-w-full items-center gap-2 rounded-lg px-2 text-left hover:bg-base-content/5 focus-ring"
+              trigger_class="flex min-h-11 min-w-0 max-w-full items-center gap-2 rounded-lg px-2 text-left hover:bg-fill focus-ring"
               panel_class="!w-72 max-w-[calc(100vw-2rem)] !p-1.5"
             >
               <:trigger>
@@ -202,7 +202,7 @@
             id="composer_policy_controls"
             role="group"
             aria-label={l("Audience and permissions")}
-            class="w-full min-w-0 border-t border-base-content/10"
+            class="w-full min-w-0 border-t border-divider"
           >
             {#if e(@smart_input_opts, :create_object_type, nil) in ["message", :message]}
               <div
@@ -243,7 +243,7 @@
                     event_target={@event_target}
                   />
                 {/if}
-                <div class="min-w-0 border-l border-base-content/10">
+                <div class="min-w-0 border-l border-divider">
                   {#if replying?(assigns)}
                     <Bonfire.UI.Common.PolicyDropdownLive
                       id="composer_reply_visibility"
@@ -297,7 +297,7 @@
               e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and
               not is_nil(e(@context_group, :group_id, nil)) and e(@context_group, :topics, []) != []}
             id="composer_topic_controls"
-            class="border-t border-base-content/10 px-2 py-1"
+            class="border-t border-divider px-2 py-1"
           >
             <Dropdown
               wrapper_opts={["data-boundary": "#composer_container"]}
@@ -305,7 +305,7 @@
               menu={false}
               close_on_select
               position="bottom-start"
-              trigger_class="flex min-h-11 max-w-full items-center gap-2 rounded px-2 text-sm hover:bg-base-content/5 focus-ring"
+              trigger_class="flex min-h-11 max-w-full items-center gap-2 rounded px-2 text-sm hover:bg-fill focus-ring"
               panel_class="!w-72 max-w-[calc(100vw-2rem)] !p-2 max-h-72 overflow-y-auto overscroll-contain"
               label={l("Choose an optional topic")}
             >
@@ -355,7 +355,7 @@
           id="reply_peek"
           hidden
           aria-label={l("Original post")}
-          class="reply_in_composer shrink-0 max-h-40 overflow-y-auto overscroll-contain border-b border-base-content/10 bg-base-200/40 px-4 py-3"
+          class="reply_in_composer shrink-0 max-h-40 overflow-y-auto overscroll-contain border-b border-divider bg-base-200/40 px-4 py-3"
         >
           <StatelessComponent
             module={maybe_component(Bonfire.UI.Social.ActivityLive, @__context__)}
@@ -379,8 +379,8 @@
         </section>
 
         <div :if={is_map(@quoted_object)} id="quote_in_composer" class="">
-          <div class="quote_in_composer relative max-h-[160px] overflow-y-auto overflow-x-hidden border-hair border-secondary bg-base-100">
-            <header class="sticky top-0 rounded-t-box z-10 flex items-center justify-between gap-2 px-3 py-1.5 bg-base-200 backdrop-blur-sm border-b-hair border-secondary">
+          <div class="quote_in_composer relative max-h-[160px] overflow-y-auto overflow-x-hidden border-hair border-divider bg-base-100">
+            <header class="sticky top-0 rounded-t-box z-10 flex items-center justify-between gap-2 px-3 py-1.5 bg-base-200 backdrop-blur-sm border-b-hair border-divider">
               <span class="inline-flex items-center gap-1.5 text-sm text-base-content">
                 <#Icon iconify="ph:quotes-fill" class="w-3.5 h-3.5 text-primary" />
                 {l("Quoting")}

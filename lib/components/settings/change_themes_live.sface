@@ -118,9 +118,9 @@
 
   <div>
     <div id={"#{@id_prefix}-dark-themes"} class={if @selected not in [:dark, :system], do: "hidden"}>
-      <div class="shadow rounded-md border bg-base-200 border-secondary p-4 mt-4">
+      <div class="shadow rounded-md border bg-base-200 border-divider p-4 mt-4">
         <div class="mb-1 text-sm font-medium text-muted">{l("Dark mode theme")}</div>
-        <div class="mb-4 text-xs text-base-content/60">
+        <div class="mb-4 text-xs text-muted">
           {l("Used when theme mode is Dark, or when System switches to dark.")}
         </div>
         <Bonfire.UI.Common.ChangeThemeLive
@@ -136,9 +136,9 @@
       id={"#{@id_prefix}-light-themes"}
       class={if @selected not in [:light, :system], do: "hidden"}
     >
-      <div class="shadow rounded-md border bg-base-200 border-secondary p-4 mt-4">
+      <div class="shadow rounded-md border bg-base-200 border-divider p-4 mt-4">
         <div class="mb-1 text-sm font-medium text-muted">{l("Light mode theme")}</div>
-        <div class="mb-4 text-xs text-base-content/60">
+        <div class="mb-4 text-xs text-muted">
           {l("Used when theme mode is Light, or when System switches to light.")}
         </div>
         <Bonfire.UI.Common.ChangeThemeLive
@@ -154,7 +154,7 @@
 
   <div
     id={"#{@id_prefix}-custom-themes"}
-    class={"shadow rounded-md border bg-base-200 border-secondary p-4 mt-4 #{if @selected != :custom, do: "hidden"}"}
+    class={"shadow rounded-md border bg-base-200 border-divider p-4 mt-4 #{if @selected != :custom, do: "hidden"}"}
     data-scope={@scope}
     data-theme={@theme}
     style={@theme_style}
@@ -291,7 +291,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
           {#for group <- @radius_groups}
-            <div class="border border-secondary p-3 bg-base-100 rounded">
+            <div class="border border-divider p-3 bg-base-100 rounded">
               <div class="mb-2 flex flex-col" id={"#{@id_prefix}-#{group.token}-group"}>
                 <span class="text-muted text-sm font-medium">{group.label}</span>
                 <span class="text-muted text-xs italic">{group.description}</span>
@@ -336,7 +336,7 @@
                         class={
                           "h-5 w-7 border-e-2 border-t-2 bg-base-300",
                           "border-primary": radius_selected?(@custom_tokens, group.token, radius),
-                          "border-secondary": !radius_selected?(@custom_tokens, group.token, radius)
+                          "border-divider": !radius_selected?(@custom_tokens, group.token, radius)
                         }
                         style={"border-start-end-radius:#{radius || "var(--#{group.token})"}"}
                       />

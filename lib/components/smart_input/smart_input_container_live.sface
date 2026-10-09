@@ -30,7 +30,7 @@
           data-draft={if e(@smart_input_opts, :input_status, nil) == :draft, do: "true"}
           data-focused={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
           class={
-            "w-full md:h-auto flex flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-xl max-w-full mx-auto z-popover border-secondary border-hair left-0 md:left-auto md:right-4 top-0 md:top-auto md:bottom-4 md:w-[32rem] md:right-4 md:top-auto h-full bg-base-100 overflow-clip md:overflow-visible overscroll-y-contain",
+            "w-full md:h-auto flex flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-xl max-w-full mx-auto z-popover border-divider border-hair left-0 md:left-auto md:right-4 top-0 md:top-auto md:bottom-4 md:w-[32rem] md:right-4 md:top-auto h-full bg-base-100 overflow-clip md:overflow-visible overscroll-y-contain",
             "translate-y-100": e(@smart_input_opts, :open, nil) != true
           }
         >
@@ -93,7 +93,7 @@
             data-draft={if e(@smart_input_opts, :input_status, nil) == :draft, do: "true"}
             data-focused={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}
             class={
-              "w-full md:h-auto flex flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-xl max-w-full mx-auto z-popover border-hair border-secondary left-0 md:left-auto md:right-4 top-0 md:top-auto md:bottom-4 md:w-[32rem] md:right-4 md:top-auto h-full bg-base-100 overflow-clip md:overflow-visible overscroll-y-contain",
+              "w-full md:h-auto flex flex-col flex-1 grow smart_input_show_on_open fixed visible rounded-xl max-w-full mx-auto z-popover border-hair border-divider left-0 md:left-auto md:right-4 top-0 md:top-auto md:bottom-4 md:w-[32rem] md:right-4 md:top-auto h-full bg-base-100 overflow-clip md:overflow-visible overscroll-y-contain",
               "translate-y-100": e(@smart_input_opts, :open, nil) != true
             }
           >

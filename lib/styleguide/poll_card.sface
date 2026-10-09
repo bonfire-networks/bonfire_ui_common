@@ -27,7 +27,7 @@
 
   {!-- options --}
   {#for opt <- @options}
-    <label class="flex items-center gap-content px-base py-row border-t-hair border-secondary cursor-pointer">
+    <label class="flex items-center gap-content px-base py-row border-t-hair border-divider cursor-pointer">
       <input
         type="radio"
         name="poll-demo"
@@ -39,7 +39,7 @@
   {/for}
 
   {!-- vote / results actions --}
-  <div class="flex items-center gap-row px-base py-base border-t-hair border-secondary">
+  <div class="flex items-center gap-row px-base py-base border-t-hair border-divider">
     <.button variant="primary">{@vote_label}</.button>
     <.button variant="muted">{@results_label}</.button>
   </div>

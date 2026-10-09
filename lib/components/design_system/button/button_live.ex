@@ -250,7 +250,7 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
   defp variant_class("outline"), do: "btn-ds-outline"
   # muted outline (Figma "Du folgst" / "Siehe Ergebnisse"): secondary border + base-content text
   defp variant_class("muted"),
-    do: "bg-base-200 text-base-content border-secondary hover:bg-base-300"
+    do: "bg-base-200 text-base-content border-divider hover:bg-base-300"
 
   defp variant_class("danger"), do: "btn-error"
   defp variant_class("soft"), do: "btn-soft"
