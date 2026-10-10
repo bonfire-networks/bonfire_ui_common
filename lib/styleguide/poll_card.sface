@@ -3,9 +3,9 @@
   <.button>) + theme spacing/type tokens. Radio is the DaisyUI input primitive.
 --}
 <.card padded={false} class="overflow-hidden" data-component="poll-card">
-  <div class="px-base pt-base pb-base">
+  <div class="px-4 pt-4 pb-4">
     {!-- header --}
-    <header class="flex items-center gap-avatar">
+    <header class="flex items-center gap-4">
       <.avatar src={@avatar_url} alt={@display_name} />
       <div class="min-w-0">
         <div class="text-base font-medium text-base-content leading-tight truncate">{@display_name}</div>
@@ -14,7 +14,7 @@
     </header>
 
     {!-- badge row --}
-    <div class="flex items-center gap-half mt-base">
+    <div class="flex items-center gap-2 mt-4">
       <.badge variant="primary">UMFRAGE</.badge>
       <.badge variant="success" dot>{@status_label}</.badge>
       <span class="flex-1" />
@@ -22,12 +22,12 @@
     </div>
 
     {!-- question (full-poll variant = text-xl) --}
-    <div class="type-title text-base-content mt-base">{@question}</div>
+    <div class="type-title text-base-content mt-4">{@question}</div>
   </div>
 
   {!-- options --}
   {#for opt <- @options}
-    <label class="flex items-center gap-content px-base py-row border-t-hair border-divider cursor-pointer">
+    <label class="flex items-center gap-3 px-4 py-4 border-t-hair border-divider cursor-pointer">
       <input
         type="radio"
         name="poll-demo"
@@ -39,17 +39,17 @@
   {/for}
 
   {!-- vote / results actions --}
-  <div class="flex items-center gap-row px-base py-base border-t-hair border-divider">
+  <div class="flex items-center gap-4 px-4 py-4 border-t-hair border-divider">
     <.button variant="primary">{@vote_label}</.button>
     <.button variant="muted">{@results_label}</.button>
   </div>
 
   {!-- action row (icon-to-icon gap is component-internal) --}
-  <div class="flex items-center gap-[30px] px-base pb-base">
-    <#Icon iconify="ph:chat-circle" class="w-[22px] h-[22px] text-base-content" />
-    <#Icon iconify="ph:rocket" class="w-[22px] h-[22px] text-base-content" />
-    <#Icon iconify="ph:flame-fill" class="w-[22px] h-[22px] text-primary" />
-    <#Icon iconify="ph:bookmark-simple" class="w-[22px] h-[22px] text-base-content" />
-    <#Icon iconify="ph:dots-three-outline" class="w-[22px] h-[22px] text-base-content" />
+  <div class="flex items-center gap-7.5 px-4 pb-4">
+    <#Icon iconify="ph:chat-circle" class="size-5.5 text-base-content" />
+    <#Icon iconify="ph:rocket" class="size-5.5 text-base-content" />
+    <#Icon iconify="ph:flame-fill" class="size-5.5 text-primary" />
+    <#Icon iconify="ph:bookmark-simple" class="size-5.5 text-base-content" />
+    <#Icon iconify="ph:dots-three-outline" class="size-5.5 text-base-content" />
   </div>
 </.card>

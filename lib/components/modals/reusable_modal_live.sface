@@ -74,7 +74,7 @@
               }
             >
               <span class="sr-only">{l("Close")}</span>
-              <#Icon iconify="ph:x" class="w-5 h-5" aria-hidden="true" />
+              <#Icon iconify="ph:x" class="size-5" aria-hidden="true" />
             </button>
           </div>
         </div>

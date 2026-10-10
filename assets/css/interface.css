@@ -5,7 +5,6 @@ html:not([data-ui-preset="typographic"]) {
   --radius-button: 10px;
   --radius-selector: 8px;
   --stream-content-padding: var(--spacing-card);
-  --stream-section-gap: var(--spacing-base);
   --stream-inline-gap: 6px;
   --stream-emphasis-weight: var(--font-weight-bold);
   --stream-medium-weight: var(--font-weight-medium);
@@ -161,8 +160,8 @@ html:not([data-ui-preset="typographic"]) [data-id="bonfire_live"] > .drawer {
 }
 
 html:not([data-ui-preset="typographic"]) [data-id="right_nav_and_widgets"] {
-  gap: var(--stream-section-gap);
-  padding: 0 var(--spacing-base) var(--stream-section-gap);
+  gap: var(--widget-gap);
+  padding: 0 --spacing(4) var(--widget-gap);
 }
 
 html:not([data-ui-preset="typographic"]) #persistent-header,
@@ -344,8 +343,16 @@ html:not([data-ui-preset="typographic"]) .activity_wrapper [data-role="author_gr
   display: inline;
 }
 
-html:not([data-ui-preset="typographic"]) .activity_wrapper [data-role="author_group"] a {
-  font-weight: var(--stream-emphasis-weight);
+/* The pill marks the destination as a place, so the author's name keeps the only emphasis on the line. */
+html:not([data-ui-preset="typographic"])
+  .activity_wrapper
+  [data-role="author_group"]
+  [data-role="published_in_pill"] {
+  max-width: min(100%, 16rem);
+  margin-inline-start: 0.125rem;
+  font-weight: var(--font-weight-normal);
+  /* middle, not a baseline offset: an inline-flex baseline comes from its first item, so an <img> avatar and the glyph fallback would sit at different heights */
+  vertical-align: middle;
 }
 
 html:not([data-ui-preset="typographic"]) .activity_wrapper [data-id="subject_name"] {
@@ -425,7 +432,7 @@ html:not([data-ui-preset="typographic"])
   .activity
   > [data-role="published_in"] {
   display: grid;
-  grid-template-columns: var(--stream-publication-column, 35px) minmax(0, 1fr);
+  grid-template-columns: var(--stream-publication-column, 40px) minmax(0, 1fr);
   column-gap: 0;
   row-gap: 0;
   margin-bottom: 0;
@@ -524,7 +531,7 @@ html:not([data-ui-preset="typographic"])
 html:not([data-ui-preset="typographic"])
   [data-id="right_nav_and_widgets"]
   > div:has([role="search"]) {
-  padding: var(--spacing-base) 0 0;
+  padding: --spacing(4) 0 0;
 }
 
 /* Every search field — rail, search page, drawers — shares the same filled,
@@ -758,13 +765,13 @@ html:not([data-ui-preset="typographic"]) main[data-id="profile"] > section {
    connector expresses only the ancestry that is actually shown. */
 
 html:not([data-ui-preset="typographic"]) [data-reply-context] {
-  --stream-reply-avatar-size: 35px;
-  --stream-reply-avatar-axis: 17.5px;
+  --stream-reply-avatar-size: 40px;
+  --stream-reply-avatar-axis: 20px;
   --stream-context-avatar-size: 20px;
-  --stream-context-avatar-top: 7.5px;
-  --stream-context-avatar-bottom: 27.5px;
+  --stream-context-avatar-top: 10px;
+  --stream-context-avatar-bottom: 30px;
   --stream-context-avatar-hit-inset: 4.5px;
-  --stream-context-column: 36px;
+  --stream-context-column: 41px;
   --stream-context-connector-up-reach: 38px;
   --stream-context-connector-reach: 35.5px;
   /* Same ink as contained-object outlines: structure, not content. */

@@ -955,15 +955,11 @@ pre.lumis > code {
   );
   --color-placeholder: #c6c6c6; /* "grey" — image placeholders (decorative only, never text) */
 
-  --spacing-feed: 7px; /* gap BETWEEN stacked feed cards */
-  --spacing-half: 9px; /* ½ base */
-  --spacing-content: 12px; /* tight gap — e.g. radio→label. NOTE: header→body is base/18px, NOT this */
-  --spacing-row: 15px; /* list-row / tighter gap */
-  --spacing-base: 16px; /* DOMINANT unit — card padding, avatar→info, most gaps */
-  --spacing-card: 16px; /* alias of base — card internal padding (was mis-measured as 19) */
-  --spacing-avatar: 16px; /* alias of base — avatar → name/handle gap */
-  --spacing-panel: 25px; /* larger panel padding / roomy grouped controls */
-  --spacing-section: 36px; /* between sections (2× base) */
+  --spacing-feed: 7px; /* gap between stacked feed cards in Typographic; off-grid by design */
+  /* Named spacing is only for values a preset or flavour may change; everything
+     else uses Tailwind's 4px scale (p-4, gap-3, size-4.5). */
+  --spacing-card: 16px; /* card and panel padding, card→content inset */
+  --spacing-section: 36px; /* between page sections */
   --spacing-edge: 75px; /* full-bleed edge gutter width (the #ffeaea rails) — w-edge */
   --spacing-rail: 340px; /* left/right column (nav & widgets) width — w-rail */
   --spacing-page-header: 80px; /* page-header bar height — min-h-page-header / h-page-header */
@@ -973,8 +969,6 @@ pre.lumis > code {
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1220px;
   --breakpoint-sm: 640px;
-  /* Grid/Sizing */
-  --spacing-1290: 1290px;
 
   /* Custom grid templates */
   --grid-template-main: 1fr 320px;
@@ -1107,7 +1101,7 @@ hex-input::part(input) {
   --user-menu-divider: 0px;
   --divider-color: color-mix(in oklab, var(--color-base-content) 12%, transparent);
   --divider-width: 1px;
-  --widget-gap: var(--spacing-base);
+  --widget-gap: calc(var(--spacing) * 2);
   --widget-overlap: 0px;
 }
 

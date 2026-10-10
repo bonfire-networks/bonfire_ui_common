@@ -96,7 +96,7 @@ defmodule Bonfire.UI.Common.BasicView do
               aria-label={l("Back to home")}
             >
               <div
-                class="w-16 h-16 bg-center bg-no-repeat bg-contain aspect-square"
+                class="size-16 bg-center bg-no-repeat bg-contain aspect-square"
                 style={"background-image: url(#{Config.get([:ui, :theme, :instance_icon], nil)})"}
               >
               </div>

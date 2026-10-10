@@ -44,12 +44,12 @@ defmodule Bonfire.UI.Common.DesignSystem.ElementsLive do
   def badge(assigns) do
     ~H"""
     <span class={[
-      "inline-flex items-center gap-[6px] text-base uppercase leading-none px-3 py-[3px]",
+      "inline-flex items-center gap-1.5 text-base uppercase leading-none px-3 py-0.75",
       "rounded-selector border-hair",
       badge_variant_class(@variant),
       @class
     ]}>
-      <span :if={@dot} class={["w-2 h-2 rounded-full", badge_dot_class(@variant)]}></span>
+      <span :if={@dot} class={["size-2 rounded-full", badge_dot_class(@variant)]}></span>
       {render_slot(@inner_block)}
     </span>
     """
@@ -69,8 +69,8 @@ defmodule Bonfire.UI.Common.DesignSystem.ElementsLive do
   """
   attr :src, :string, default: nil
   attr :alt, :string, default: nil
-  attr :class, :any, default: "w-[35px] h-[35px]", doc: "size + shape (default 35px)"
-  attr :icon_class, :string, default: "w-6 h-6"
+  attr :class, :any, default: "size-8.75", doc: "size + shape (default 35px)"
+  attr :icon_class, :string, default: "size-6"
   attr :rest, :global
 
   def avatar(assigns) do

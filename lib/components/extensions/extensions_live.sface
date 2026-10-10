@@ -36,7 +36,7 @@
     </div>
 
     <div class="p-4 type-title items-start flex flex-col gap-4 border-t border-divider">
-      <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-muted" /> -->
+      <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="size-6 text-muted" /> -->
       <span class="text-left">{l("User Interface Extensions")}</span>
       <div class="flex-1 text-sm font-normal text-info bg-info/10 p-6 flex items-center place-content-center rounded-box">
         {l(
@@ -57,7 +57,7 @@
   </div>
   <div class="">
     <div class="p-4 type-title items-start flex flex-col gap-4 border-t border-divider">
-      <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-muted" /> -->
+      <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="size-6 text-muted" /> -->
       <span class="text-left">{l("Feature Extensions")}</span>
       <div class="flex-1 text-sm font-normal text-info bg-info/10 p-6 flex items-center place-content-center rounded-box">
         {l(

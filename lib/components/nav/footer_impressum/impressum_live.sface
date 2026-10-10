@@ -4,7 +4,7 @@
       <img
         src={Settings.get([:ui, :auth, :logo], nil, @__context__)}
         alt=""
-        class="w-30 h-30 object-contain"
+        class="size-30 object-contain"
       />
     </a>
   {/if}
@@ -89,7 +89,7 @@
     <!-- <button class="btn btn-sm btn-ghost">{l "Enable wellness mode"}</button>
 <button class="btn btn-sm btn-ghost">{l "Enable safety mode"}</button> -->
 
-    <div class="inline-flex items-center justify-center rounded-box bg-base-100 text-sm p-px px-[6px] ring-[0.7px] ring-inset inline-block">{#case maybe_apply(Bonfire.Federate.ActivityPub, :federation_mode, current_user(@__context__),
+    <div class="inline-flex items-center justify-center rounded-box bg-base-100 text-sm p-px px-1.5 ring-[0.7px] ring-inset inline-block">{#case maybe_apply(Bonfire.Federate.ActivityPub, :federation_mode, current_user(@__context__),
           context: @__context__,
           fallback_return: false
         )}

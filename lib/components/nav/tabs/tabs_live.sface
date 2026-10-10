@@ -4,7 +4,7 @@
       <div class="dropdown">
         <label tabindex="0" class="btn text-lg btn-sm btn-ghost capitalize">
           {@selected_name}
-          <#Icon solid="ChevronDown" class="w-6 h-6 text-muted" />
+          <#Icon solid="ChevronDown" class="size-6 text-muted" />
         </label>
         <ul
           tabindex="0"

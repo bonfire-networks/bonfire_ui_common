@@ -11,8 +11,8 @@
     :if={@with_icon or @mobile}
     iconify="ic:round-feedback"
     class={
-      "w-5 h-5 text-muted": @mobile,
-      "w-4 h-4": !@mobile
+      "size-5 text-muted": @mobile,
+      "size-4": !@mobile
     }
   />
   <div class={if @mobile, do: "text-sm font-normal tracking-wide", else: ""}>{l("Share feedback")}</div>

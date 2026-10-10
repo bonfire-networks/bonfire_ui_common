@@ -1,7 +1,7 @@
 <div role="alert" class={if @show_explanation, do: "alert text-sm mt-4"}>
   {#if @scope in [:admin, :instance] and @can_instance_wide}
     {#if @show_explanation}
-      <#Icon iconify="ph:puzzle-piece" class="w-4 h-4 shrink-0" />
+      <#Icon iconify="ph:puzzle-piece" class="size-4 shrink-0" />
 
       <span>{if @globally_disabled?,
           do: l("You can enable this extension for all users of the instance."),
@@ -27,7 +27,7 @@
     </label>
   {#else}
     {#if @show_explanation}
-      <#Icon iconify="typcn:info-large" class="w-4 h-4 shrink-0" />
+      <#Icon iconify="typcn:info-large" class="size-4 shrink-0" />
 
       <span>{if @my_disabled?,
           do:

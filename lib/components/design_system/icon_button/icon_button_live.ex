@@ -70,7 +70,7 @@ defmodule Bonfire.UI.Common.DesignSystem.IconButtonLive do
   @doc "Additional CSS classes"
   attr :class, :any, default: nil
 
-  @doc "Override the size-derived icon size class (e.g. w-[18px] h-[18px])"
+  @doc "Override the size-derived icon size class (e.g. w-4.5 h-[18px])"
   attr :icon_class, :any, default: nil
 
   @doc "HTML id attribute"
@@ -203,10 +203,10 @@ defmodule Bonfire.UI.Common.DesignSystem.IconButtonLive do
 
   # Visual size + icon size
   # All sizes use touch-target-expanded except lg which naturally meets 44px
-  defp size_class("xs"), do: {"btn-xs w-6 h-6", "w-4 h-4", true}
-  defp size_class("sm"), do: {"btn-sm w-8 h-8", "w-4 h-4", true}
-  defp size_class("md"), do: {"w-10 h-10", "w-5 h-5", true}
-  defp size_class("lg"), do: {"btn-lg w-12 h-12", "w-6 h-6", false}
+  defp size_class("xs"), do: {"btn-xs size-6", "size-4", true}
+  defp size_class("sm"), do: {"btn-sm size-8", "size-4", true}
+  defp size_class("md"), do: {"size-10", "size-5", true}
+  defp size_class("lg"), do: {"btn-lg size-12", "size-6", false}
 
   @doc "Get the icon size class for current size (useful for slot content)"
   def icon_size_class(size) do

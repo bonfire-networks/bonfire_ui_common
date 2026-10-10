@@ -90,33 +90,16 @@ Reference handlers with naming conventions:
 
 ## Styling and Theming
 
-### Using DaisyUI Components
+Follow `DESIGN_SYSTEM.md` in this package. The essentials:
 
-Use semantic DaisyUI classes for consistent styling:
-
-```elixir
-~F"""
-<div class="card bg-base-100 shadow-xl">
-  <div class="card-body">
-    <h2 class="card-title">Title</h2>
-    <div class="card-actions">
-      <button class="btn btn-primary">Action</button>
-    </div>
-  </div>
-</div>
-"""
-```
-
-### Theme-Aware Colors
-
-Use CSS variables for theme-aware colors:
-
-```css
-.my-component {
-  color: var(--color-primary);
-  background-color: var(--base-100);
-}
-```
+- Use tokens, never arbitrary values: no `text-[13px]`, `w-[18px]`, `z-[999]`, `tracking-[…]` or hex colours in templates.
+- Colour roles first: `border-divider` (hairlines), `bg-surface` (card on canvas), `bg-fill` / `bg-fill-strong` (hover, chips), `text-muted` / `text-subtle` (secondary text). Not `border-secondary` or `text-base-content/60`.
+- Text: use `type-*` roles (`type-title`, `type-heading`, `type-body`, `type-name`, `type-meta`, `type-caption`, `type-overline`, `type-prose`, `type-result`, `type-feature`). Sizes are `text-2xs`…`text-3xl` and `text-prose` with Bonfire's values; weights are only `font-normal`, `font-medium`, `font-bold`. Other Tailwind sizes and weights do not exist and silently do nothing.
+- Shape: `rounded-box` (cards), `rounded-selector` (chips, rows), `rounded-full`. Don't add `rounded-*` to DaisyUI controls (`btn`, `input`, `badge`, …).
+- Never reference `--stream-*` variables or check the UI preset in templates; Typographic differences go in `assets/css/ui_presets/typographic.css`.
+- Icons: `<#Icon iconify="ph:name" class="size-5" />`. Dropdowns and popovers: `Bonfire.UI.Common.DropdownLive`.
+- In CSS, read theme values as `var(--color-base-100)`, `var(--color-primary)`, `var(--text-sm)`, `var(--radius-box)`.
+- Run `just css-audit` before submitting.
 
 ### Custom Themes
 

@@ -3,7 +3,7 @@
   + theme spacing/type tokens. Reference component for the Jacobin design system.
 --}
 <.card data-component="post-card">
-  <header class="flex items-center gap-avatar">
+  <header class="flex items-center gap-4">
     <.avatar src={@avatar_url} alt={@display_name} />
     <div class="min-w-0">
       <div class="text-base font-medium text-base-content leading-tight truncate">{@display_name}</div>
@@ -11,7 +11,7 @@
     </div>
   </header>
 
-  <p class="mt-base text-base text-base-content">{@body}</p>{!-- header→body = --spacing-base (18) --}
+  <p class="mt-4 text-base text-base-content">{@body}</p>{!-- header→body = mt-4 (16px) --}
 
-  <div class="mt-base text-right text-xs uppercase text-base-content">{@more_label}</div>
+  <div class="mt-4 text-right text-xs uppercase text-base-content">{@more_label}</div>
 </.card>

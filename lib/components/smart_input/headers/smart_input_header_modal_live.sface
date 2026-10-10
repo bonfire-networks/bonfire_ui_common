@@ -13,7 +13,7 @@
         </div>
         <:open_btn>
           <div class="link link-primary link-hover text-sm">
-            <!-- <#Icon outline="X" class="w-4 h-4 text-primary/70" /> -->
+            <!-- <#Icon outline="X" class="size-4 text-primary/70" /> -->
             <span class="">{l("Close")}</span>
           </div>
         </:open_btn>
@@ -38,7 +38,7 @@
         type="button"
         class="flex btn btn-sm btn-ghost btn-circle"
       >
-        <#Icon iconify="fluent:chevron-double-down-16-filled" class="w-4 h-4 text-muted" />
+        <#Icon iconify="fluent:chevron-double-down-16-filled" class="size-4 text-muted" />
       </button>
     </div>
   </div>

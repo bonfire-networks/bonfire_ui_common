@@ -127,7 +127,7 @@ defmodule Bonfire.UI.Common.LinkLive do
       target={@target}
       class="float-right ml-4 flex items-center gap-2 btn btn-sm"
     >
-      <#Icon iconify="ri:file-copy-line" class="w-4 h-4 shrink-0" />
+      <#Icon iconify="ri:file-copy-line" class="size-4 shrink-0" />
       <span data-role="label">{l("Copy")}</span>
     </a>
 

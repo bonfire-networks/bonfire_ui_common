@@ -19,7 +19,7 @@
         {l("Color value")}
       </label>
       <div class="flex items-center gap-2">
-        <div class="colour_preview h-10 w-10 rounded" />
+        <div class="colour_preview size-10 rounded" />
         <hex-input
           prefixed
           class="w-full"

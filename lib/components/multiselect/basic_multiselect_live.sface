@@ -43,11 +43,11 @@
               phx-value-field={@form_input_name}
               phx-value-context_id={@context_id}
               type="button"
-              class="touch-target-expanded inline-flex items-center justify-center flex-shrink-0 w-4 h-4 ml-1 mr-2 text-primary-content-400 hover:bg-neutral/30 hover:text-primary-content-700 focus:outline-none focus:text-white"
+              class="touch-target-expanded inline-flex items-center justify-center flex-shrink-0 size-4 ml-1 mr-2 text-primary-content-400 hover:bg-neutral/30 hover:text-primary-content-700 focus:outline-none focus:text-white"
             >
               <span class="touch-target-hit-area" aria-hidden="true" />
               <span class="sr-only">Remove {raw(name_content || id)}</span>
-              <svg class="w-2 h-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
+              <svg class="size-2" stroke="currentColor" fill="none" viewBox="0 0 8 8">
                 <path stroke-linecap="round" stroke-width="1.5" d="M1 1l6 6m0-6L1 7" />
               </svg>
             </button>
@@ -58,7 +58,7 @@
     <div class="pl-2 border-l">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="w-5 h-5 text-primary-content-600"
+        class="size-5 text-primary-content-600"
         viewBox="0 0 20 20"
         fill="currentColor"
       >

@@ -42,6 +42,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop extra, :string, default: false
   prop page_header_aside, :any, default: nil
   prop page_header_icon, :string, default: nil
+  # `%{name, path, icon_url}` of where the page lives (eg. a thread's group), shown after the title
+  prop page_title_context, :any, default: nil
 
   prop smart_input_opts, :any, default: %{}
   prop create_object_type, :any, default: nil
@@ -105,6 +107,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:hide_mobile_dock, fn -> false end)
     |> assign_new(:page_header_aside, fn -> nil end)
     |> assign_new(:page_header_icon, fn -> nil end)
+    |> assign_new(:page_title_context, fn -> nil end)
     |> assign_new(:inner_content, fn -> nil end)
     |> assign_new(:back, fn -> false end)
     |> assign_new(:extra, fn -> nil end)

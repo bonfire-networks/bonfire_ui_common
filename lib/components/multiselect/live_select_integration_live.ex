@@ -27,7 +27,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
         :ls_container_class,
         cond do
           filter_variant? ->
-            "relative w-full min-h-[46px] flex flex-wrap items-center gap-1.5 rounded-box border border-divider bg-base-content/[0.03] px-[7px] py-[5px] transition-[border-color,background-color,box-shadow] duration-150 hover:border-base-content/25 hover:bg-base-content/[0.06] focus-within:border-primary focus-within:ring-[3px] focus-within:ring-primary/20 [&>div]:min-w-[150px] [&>div]:flex-1"
+            "relative w-full min-h-11.5 flex flex-wrap items-center gap-1.5 rounded-box border border-divider bg-base-content/[0.03] px-1.75 py-1.25 transition-[border-color,background-color,box-shadow] duration-150 hover:border-base-content/25 hover:bg-base-content/[0.06] focus-within:border-primary focus-within:ring-[3px] focus-within:ring-primary/20 [&>div]:min-w-37.5 [&>div]:flex-1"
 
           tags? ->
             "w-full flex flex-col gap-1.5 rounded-box border border-divider bg-fill px-3 py-2 transition-colors focus-within:border-primary"
@@ -41,7 +41,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
         :ls_text_input_class,
         cond do
           filter_variant? ->
-            "w-full min-h-[34px] bg-transparent border-0 shadow-none outline-none focus:outline-none focus:ring-0 px-1.5 py-1 text-base h-auto placeholder:text-subtle"
+            "w-full min-h-8.5 bg-transparent border-0 shadow-none outline-none focus:outline-none focus:ring-0 px-1.5 py-1 text-base h-auto placeholder:text-subtle"
 
           tags? ->
             "w-full bg-transparent border-0 shadow-none outline-none focus:outline-none focus:ring-0 px-1 py-1 text-sm h-auto"
@@ -66,7 +66,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
         :ls_tag_class,
         if(filter_variant?,
           do:
-            "min-h-[34px] inline-flex items-center gap-[7px] rounded-full bg-primary/[0.14] py-[3px] pr-1 pl-2 text-sm font-bold text-primary",
+            "min-h-8.5 inline-flex items-center gap-1.75 rounded-full bg-primary/[0.14] py-0.75 pr-1 pl-2 text-sm font-bold text-primary",
           else: "badge badge-primary rounded-full badge-md gap-1.5 font-medium"
         )
       )
@@ -132,10 +132,10 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
       <:option :let={option}>
         <div class="flex p-0 gap-2 items-center">
           <%= if is_map(option.value) && Map.has_key?(option.value, :type) && option.value.type == "circle" do %>
-            <span class="w-8 h-8 flex items-center place-content-center">
+            <span class="size-8 flex items-center place-content-center">
               <div
                 iconify="ph:circle-fill"
-                class="inline-block w-4 h-4 text-primary"
+                class="inline-block size-4 text-primary"
                 aria-hidden="true"
               >
               </div>
@@ -147,7 +147,7 @@ defmodule Bonfire.UI.Common.LiveSelectIntegrationLive do
             </p>
           <% else %>
             <%= if Map.has_key?(option.value, :icon) or Map.has_key?(option.value, "icon") do %>
-              <div class="w-8 h-8">
+              <div class="size-8">
                 <img src={e(option.value, :icon, nil)} alt="" class="w-full h-full rounded-full" />
               </div>
             <% end %>

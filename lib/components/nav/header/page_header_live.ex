@@ -8,6 +8,9 @@ defmodule Bonfire.UI.Common.PageHeaderLive do
   prop back, :any, default: nil
   prop back_type, :any, default: nil
   prop page_header_icon, :string, default: nil
+
+  @doc "Where the page lives, as `%{name: _, path: _, icon_url: _}` (eg. the group a thread was posted in), shown as \"<title> in <name>\""
+  prop page_title_context, :any, default: nil
   prop extra, :string, default: nil
   prop show_right_actions, :boolean, default: true
   prop show_widgets_toggle, :boolean, default: true

@@ -5,7 +5,7 @@
 --}
 <.card data-component="media-preview">
   {!-- byline --}
-  <header class="flex items-center gap-avatar">
+  <header class="flex items-center gap-4">
     <.avatar src={@avatar_url} alt={@display_name} />
     <div class="min-w-0">
       <div class="text-base font-medium text-base-content leading-tight truncate">{@display_name}</div>
@@ -14,18 +14,18 @@
   </header>
 
   {!-- the link / article unfurl --}
-  <a class="mt-base block text-base text-muted underline truncate" href="#" onclick="return false">{@url}</a>
+  <a class="mt-4 block text-base text-muted underline truncate" href="#" onclick="return false">{@url}</a>
 
-  <figure class="mt-content rounded-box overflow-hidden border-hair border-divider">
+  <figure class="mt-3 rounded-box overflow-hidden border-hair border-divider">
     <div class="aspect-[1.91/1] bg-placeholder flex items-center justify-center text-xs uppercase tracking-widest text-subtle">
       {l("Article image")}
     </div>
   </figure>
 
   {!-- publisher eyebrow + headline (grouped tight) + description --}
-  <div class="mt-base">
+  <div class="mt-4">
     <div class="text-xs uppercase tracking-label text-base-content font-medium">{@source}</div>
-    <h3 class="mt-half type-title text-base-content leading-[25px]">{@headline}</h3>
-    <p class="mt-content text-base text-muted leading-snug">{@description}</p>
+    <h3 class="mt-2 type-title text-base-content leading-[25px]">{@headline}</h3>
+    <p class="mt-3 text-base text-muted leading-snug">{@description}</p>
   </div>
 </.card>

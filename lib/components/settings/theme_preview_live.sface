@@ -9,23 +9,23 @@
       {!-- Color palette strip --}
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <div class="w-3 h-3 rounded-full bg-primary shadow-sm" title="Primary" />
-          <div class="w-3 h-3 rounded-full bg-secondary shadow-sm" title="Secondary" />
-          <div class="w-3 h-3 rounded-full bg-accent shadow-sm" title="Accent" />
-          <div class="w-3 h-3 rounded-full bg-neutral shadow-sm" title="Neutral" />
+          <div class="size-3 rounded-full bg-primary shadow-sm" title="Primary" />
+          <div class="size-3 rounded-full bg-secondary shadow-sm" title="Secondary" />
+          <div class="size-3 rounded-full bg-accent shadow-sm" title="Accent" />
+          <div class="size-3 rounded-full bg-neutral shadow-sm" title="Neutral" />
         </div>
         <div class="flex items-center gap-1.5">
-          <div class="w-2 h-2 rounded-full bg-info" title="Info" />
-          <div class="w-2 h-2 rounded-full bg-success" title="Success" />
-          <div class="w-2 h-2 rounded-full bg-warning" title="Warning" />
-          <div class="w-2 h-2 rounded-full bg-error" title="Error" />
+          <div class="size-2 rounded-full bg-info" title="Info" />
+          <div class="size-2 rounded-full bg-success" title="Success" />
+          <div class="size-2 rounded-full bg-warning" title="Warning" />
+          <div class="size-2 rounded-full bg-error" title="Error" />
         </div>
       </div>
 
       {!-- Mini post card --}
       <div class="bg-base-200/50 rounded-box p-3 space-y-2">
         <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+          <div class="size-8 rounded-full bg-primary/20 flex items-center justify-center">
             <span class="text-primary text-xs font-bold">A</span>
           </div>
           <div class="flex-1 min-w-0">
@@ -40,7 +40,7 @@
           <button type="button" class="btn btn-ghost btn-sm gap-1 text-muted hover:text-primary">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="w-4 h-4"
+              class="size-4"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -53,7 +53,7 @@
           <button type="button" class="btn btn-ghost btn-sm gap-1 text-muted hover:text-secondary">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="w-4 h-4"
+              class="size-4"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -66,7 +66,7 @@
           <button type="button" class="btn btn-ghost btn-sm gap-1 text-muted hover:text-accent">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="w-4 h-4"
+              class="size-4"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -94,7 +94,7 @@
           readonly
         />
         <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-          <div class="w-4 h-4 rounded-full bg-primary/60" />
+          <div class="size-4 rounded-full bg-primary/60" />
         </div>
       </div>
 

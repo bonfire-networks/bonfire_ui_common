@@ -4,20 +4,20 @@
   phx-hook="KeyboardShortcuts"
   class="contents"
 >
-  <div id="persistent-header" class="px-4 lg:px-[30px] bg-base-200 z-sticky sticky top-0">
+  <div id="persistent-header" class="px-4 lg:px-7.5 bg-base-200 z-sticky sticky top-0">
     <div class="pt-safe w-full">
       {#if current_user_id(@__context__)}
         <div class="flex flex-col w-full">
           {!-- header row: logo (70² square), aligned to the 106px page-header --}
-          <div class="flex items-center lg:pt-base">
+          <div class="flex items-center lg:pt-4">
             <Bonfire.UI.Common.LogoLinkLive
               href="/"
-              image_class="w-[70px] h-[70px]"
+              image_class="size-17.5"
               name_class="text-base font-medium text-base-content text-relaxed"
             />
           </div>
           {!-- compose: below the header divider, 18px (base) rhythm --}
-          <div class="py-base lg:pt-[36px]">
+          <div class="py-4 lg:pt-9">
             <Bonfire.UI.Common.SmartInputContainerLive
               :if={!e(@smart_input_opts, :inline_only, nil) and
                 !e(@smart_input_opts, :disable, nil)}

@@ -11,7 +11,7 @@
 
   <div class={
     "drawer lg:drawer-open mx-auto w-full lg:bg-base-200 border-divider lg:border-l-hair xl:border-r-hair",
-    "lg:max-w-[var(--spacing-1290)]": !@full_width
+    "lg:max-w-[1290px]": !@full_width
   }>
     <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" phx-update="ignore">
     <div class="drawer-content lg:border-l-hair lg:border-divider dock-offset">
@@ -65,6 +65,7 @@
                           page={@page}
                           page_title={@page_title}
                           page_header_icon={@page_header_icon}
+                          page_title_context={@page_title_context}
                           show_widgets_toggle={@without_secondary_widgets != true}
                           back={@back}
                           extra={@extra}
@@ -102,7 +103,7 @@
           >
             <div
               :if={not is_nil(@current_user_id) and socket_connected?(@__context__)}
-              class="shrink-0 p-base flex items-center"
+              class="shrink-0 p-4 flex items-center"
             >
               <div role="search" class="w-full">
                 <StatelessComponent
@@ -121,7 +122,7 @@
                 key={:secondary}
                 page={@page}
                 selected_tab={@selected_tab}
-                container_class="flex flex-col gap-base mb-4"
+                container_class="flex flex-col gap-4 mb-4"
                 parent_id="layout_right"
               />
 
@@ -158,19 +159,19 @@
           {#if @current_user_id && @without_sidebar != true}
             <div data-role="persistent_skeleton" class="block w-full lg:shrink-0" aria-hidden="true">
               {!-- mirrors PersistentLive's #persistent-header exactly (logo 70², 40px inset,
-                   pt-base header row, 48px → compose) so there's no reflow when the sticky LV fills in --}
-              <div class="px-4 lg:px-[30px] bg-base-200 z-sticky sticky top-0">
+                   pt-4 header row, 48px → compose) so there's no reflow when the sticky LV fills in --}
+              <div class="px-4 lg:px-7.5 bg-base-200 z-sticky sticky top-0">
                 <div class="pt-safe w-full">
                   <div class="flex flex-col w-full">
-                    <div class="flex items-center lg:pt-base">
+                    <div class="flex items-center lg:pt-4">
                       <Bonfire.UI.Common.LogoLinkLive
                         href="/"
-                        image_class="w-[70px] h-[70px]"
+                        image_class="size-17.5"
                         name_class="text-base font-medium text-base-content text-relaxed"
                       />
                     </div>
-                    <div class="py-base lg:pt-[36px]">
-                      <div class="skeleton rounded-field h-[41px] w-1/2" />
+                    <div class="py-4 lg:pt-9">
+                      <div class="skeleton rounded-field h-10.25 w-1/2" />
                     </div>
                   </div>
                 </div>
@@ -185,20 +186,20 @@
                   <div class="gap-1 lg:gap-0">
                     <ul class="menu p-0 w-full gap-0 px-0 lg:px-card mt-2">
                       <li class="m-0 p-0 justify-end !block">
-                        <div class="!px-0 flex items-center !gap-[16px] py-2">
-                          <div class="skeleton w-[18px] h-[18px] rounded shrink-0" />
+                        <div class="!px-0 flex items-center !gap-4 py-2">
+                          <div class="skeleton size-4.5 rounded shrink-0" />
                           <div class="skeleton h-4 w-24 rounded" />
                         </div>
                       </li>
                       <li class="m-0 p-0 justify-end !block">
-                        <div class="!px-0 flex items-center !gap-[16px] py-2">
-                          <div class="skeleton w-[18px] h-[18px] rounded shrink-0" />
+                        <div class="!px-0 flex items-center !gap-4 py-2">
+                          <div class="skeleton size-4.5 rounded shrink-0" />
                           <div class="skeleton h-4 w-20 rounded" />
                         </div>
                       </li>
                       <li class="m-0 p-0 justify-end !block">
-                        <div class="!px-0 flex items-center !gap-[16px] py-2">
-                          <div class="skeleton w-[18px] h-[18px] rounded shrink-0" />
+                        <div class="!px-0 flex items-center !gap-4 py-2">
+                          <div class="skeleton size-4.5 rounded shrink-0" />
                           <div class="skeleton h-4 w-16 rounded" />
                         </div>
                       </li>
@@ -232,12 +233,12 @@
           {#else}
             <div
               :if={!@current_user_id}
-              class="px-5 px-[40px] pt-base bg-base-200 lg:bg-base-200 z-sticky lg:shrink-0 flex items-center lg:min-h-[48px] justify-between"
+              class="px-5 px-10 pt-4 bg-base-200 lg:bg-base-200 z-sticky lg:shrink-0 flex items-center lg:min-h-12 justify-between"
             >
               <div class="flex pt-safe w-full">
                 <div class="lex items-center justify-between">
                   <Bonfire.UI.Common.LogoLinkLive
-                    image_class="w-16 h-16 bg-center bg-no-repeat bg-contain"
+                    image_class="size-16 bg-center bg-no-repeat bg-contain"
                     href="/"
                   />
                 </div>
@@ -265,15 +266,15 @@
       <label for="sidebar-drawer" aria-label={l("Open navigation sidebar")} class="">
         <div class="relative">
           {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
-            <div class="w-9 h-9 rounded-full ring-[0.7px] ring-primary flex items-center justify-center">
-              <#Icon iconify="ph:gear-fill" class="w-5 h-5 text-primary" />
+            <div class="size-9 rounded-full ring-[0.7px] ring-primary flex items-center justify-center">
+              <#Icon iconify="ph:gear-fill" class="size-5 text-primary" />
             </div>
           {#else}
             <Bonfire.UI.Common.AvatarLive
               ring
               bg_class="rounded-full"
               title={e(current_user(@__context__), :profile, :name, "Anon")}
-              class="inline-block object-cover cursor-pointer rounded-full w-9 h-9"
+              class="inline-block object-cover cursor-pointer rounded-full size-9"
               src={Media.avatar_url(current_user(@__context__))}
               user_id={current_user_id(@__context__)}
               is_remote={false}
@@ -283,7 +284,7 @@
             aria-hidden="true"
             class="rounded-full bg-base-100 absolute -right-1 -bottom-1 leading-none"
           >
-            <#Icon iconify="ph:list-bold" class="w-4 h-4 text-primary" />
+            <#Icon iconify="ph:list-bold" class="size-4 text-primary" />
           </span>
         </div>
       </label>

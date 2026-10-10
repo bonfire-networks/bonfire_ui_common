@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
   prop comment, :boolean, default: false
   # prop size, :any, default: nil
   prop wrapper_class, :css_class, default: "border-0 avatar !flex w-full"
-  prop class, :css_class, default: "w-12 h-12 rounded-full bg-base-100 h-full"
+  prop class, :css_class, default: "size-12 rounded-full bg-base-100 h-full"
   # show the design-system avatar ring (0.7px inset primary red)
   prop ring, :boolean, default: false
 
@@ -18,7 +18,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
     default: ["h-full flex items-centeer place-conten-center w-full flex-1"]
 
   prop avatar_fallback, :string, default: nil
-  prop fallback_class, :css_class, default: "w-5 h-5 opacity-50"
+  prop fallback_class, :css_class, default: "size-5 opacity-50"
   prop title, :string, default: ""
   prop opts, :any, default: %{}
   prop disable_lazy, :boolean, default: true
@@ -65,15 +65,15 @@ defmodule Bonfire.UI.Common.AvatarLive do
   # end
 
   # def classes(%{viewing_main_object: true}) do
-  #   "w-14 h-14 rounded-box bg-base-200"
+  #   "size-14 rounded-box bg-base-200"
   # end
 
   # def classes(%{comment: true}) do
-  #   "w-8 h-8 rounded-box bg-base-200"
+  #   "size-8 rounded-box bg-base-200"
   # end
 
   # def classes(_) do
-  #   "w-12 h-12 md:w-10 md:h-10 rounded bg-base-300"
+  #   "size-12 md:size-10 rounded bg-base-300"
   # end
 
   # def size(%{size: size}) when not is_nil(size) do

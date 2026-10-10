@@ -39,7 +39,7 @@
         aria-hidden="true"
         class={
           @icon_class,
-          "toggle_button w-5 h-5"
+          "toggle_button size-5"
         }
       />
     {#match :draft}
@@ -49,7 +49,7 @@
         aria-hidden="true"
         class={
           @icon_class,
-          "toggle_button  w-5 h-5"
+          "toggle_button  size-5"
         }
       />
     {#match _}
@@ -60,7 +60,7 @@
             aria-hidden="true"
             class={
               @icon_class,
-              "toggle_button  w-5 h-5"
+              "toggle_button  size-5"
             }
           />
         {#else}
@@ -69,7 +69,7 @@
             aria-hidden="true"
             class={
               @icon_class,
-              "toggle_button  w-5 h-5"
+              "toggle_button  size-5"
             }
           />
         {/if}
@@ -80,7 +80,7 @@
     aria-hidden="true"
     class={
       @icon_class,
-      "submitting_icon !hidden w-5 h-5"
+      "submitting_icon !hidden size-5"
     }
   />
 </button>

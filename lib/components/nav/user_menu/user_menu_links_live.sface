@@ -1,7 +1,7 @@
 <li>
   <LinkLive to={~p"/"} class="flex items-center gap-2 text-sm text-base-content justify-between">
     <div>{l("Home")}</div>
-    <#Icon iconify="ph:house-fill" class="w-5 h-5 shrink-0 text-muted" />
+    <#Icon iconify="ph:house-fill" class="size-5 shrink-0 text-muted" />
   </LinkLive>
 </li>
 <li>
@@ -10,7 +10,7 @@
     class="flex items-center gap-2 text-sm text-base-content justify-between"
   >
     <div>{l("Profile")}</div>
-    <#Icon iconify="ph:user-fill" class="w-5 h-5 shrink-0 text-muted" />
+    <#Icon iconify="ph:user-fill" class="size-5 shrink-0 text-muted" />
   </LinkLive>
 </li>
 
@@ -22,7 +22,7 @@
     class="flex items-center gap-2 text-sm text-base-content justify-between"
   >
     <div>{l("Favourites")}</div>
-    <#Icon iconify="ph:fire-fill" class="w-5 h-5 shrink-0 text-muted" />
+    <#Icon iconify="ph:fire-fill" class="size-5 shrink-0 text-muted" />
   </LinkLive>
 </li>
 <li>
@@ -31,7 +31,7 @@
     class="flex items-center gap-2 text-sm text-base-content justify-between"
   >
     <div>{l("Followed Hashtags")}</div>
-    <#Icon iconify="ph:hash-fill" class="w-5 h-5 shrink-0 text-muted" />
+    <#Icon iconify="ph:hash-fill" class="size-5 shrink-0 text-muted" />
   </LinkLive>
 </li>
 {!-- <li>
@@ -40,7 +40,7 @@
     class="flex items-center gap-2 text-sm text-base-content justify-between"
   >
     <div>{l("Scheduled posts")}</div>
-                <#Icon iconify="ph:calendar-fill" class="w-5 h-5 shrink-0 text-muted" />
+                <#Icon iconify="ph:calendar-fill" class="size-5 shrink-0 text-muted" />
 
   </LinkLive>
 </li> --}
@@ -51,7 +51,7 @@
     class="flex items-center gap-2 text-sm text-base-content justify-between"
   >
     <div>{l("Blocked")}</div>
-    <#Icon iconify="ph:prohibit-fill" class="w-5 h-5 shrink-0 text-muted" />
+    <#Icon iconify="ph:prohibit-fill" class="size-5 shrink-0 text-muted" />
   </LinkLive>
 </li>
 <li>
@@ -60,7 +60,7 @@
     class="flex items-center gap-2 text-sm text-base-content justify-between"
   >
     <div>{l("Silenced")}</div>
-    <#Icon iconify="ph:speaker-simple-x-fill" class="w-5 h-5 shrink-0 text-muted" />
+    <#Icon iconify="ph:speaker-simple-x-fill" class="size-5 shrink-0 text-muted" />
   </LinkLive>
 </li>
 <li>
@@ -69,7 +69,7 @@
     class="flex items-center gap-2 text-sm text-base-content justify-between"
   >
     <div>{l("Ghosted")}</div>
-    <#Icon iconify="ph:ghost-fill" class="w-5 h-5 shrink-0 text-muted" />
+    <#Icon iconify="ph:ghost-fill" class="size-5 shrink-0 text-muted" />
   </LinkLive>
 </li>
 <li class="m-1 border-t border-divider" />
@@ -96,7 +96,7 @@ id="user_menu_new_group"
     class="flex items-center gap-2 text-sm text-base-content justify-between"
   >
     <div>{l("Settings")}</div>
-    <#Icon iconify="ph:gear-fill" class="w-5 h-5 shrink-0 text-muted" />
+    <#Icon iconify="ph:gear-fill" class="size-5 shrink-0 text-muted" />
   </LinkLive>
 </li>
 
@@ -108,7 +108,7 @@ id="user_menu_new_group"
     class="flex items-center gap-2 text-sm text-base-content justify-between"
   >
     <div>{l("Instance Settings")}</div>
-    <#Icon iconify="ph:shield-fill" class="w-5 h-5 shrink-0 text-muted" />
+    <#Icon iconify="ph:shield-fill" class="size-5 shrink-0 text-muted" />
   </LinkLive>
 </li>
 
@@ -123,7 +123,7 @@ id="user_menu_new_group"
     class="flex text-error items-center gap-2 text-sm text-base-content justify-between"
   >
     <div>{l("Sign out")}</div>
-    <#Icon iconify="ph:sign-out-fill" class="w-5 h-5 shrink-0 text-muted" />
+    <#Icon iconify="ph:sign-out-fill" class="size-5 shrink-0 text-muted" />
   </LinkLive>
 </li>
 

@@ -10,7 +10,7 @@
         prompt={e(@smart_input_opts, :prompt, l("Compose"))}
         class={e(
           @composer_class,
-          "!p-0 lg:!p-inherit flex h-[60px] w-[60px] lg:!min-h-auto lg:!px-[1rem] lg:!h-auto lg:!w-full btn btn-primary flex items-center gap-2 place-content-center normal-case"
+          "!p-0 lg:!p-inherit flex size-15 lg:!min-h-auto lg:!px-[1rem] lg:!h-auto lg:!w-full btn btn-primary flex items-center gap-2 place-content-center normal-case"
         )}
       />
 

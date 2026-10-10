@@ -1,13 +1,13 @@
 {#if current_user_id(@__context__) && show?(@selected_tab)}
   <div
     id="inline_composer_placeholder"
-    class="p-card flex items-center gap-avatar border-b-(length:--divider-width) border-divider bg-base-100"
+    class="p-card flex items-center gap-4 border-b-(length:--divider-width) border-divider bg-base-100"
   >
     <div class="shrink-0">
       <Bonfire.UI.Common.AvatarLive
         bg_class="rounded-full"
         title={e(current_user(@__context__), :profile, :name, "Anon")}
-        wrapper_class="border-0 avatar !flex w-[35px] h-[35px]"
+        wrapper_class="border-0 avatar !flex size-8.75"
         class="inline-block object-cover w-full rounded-full"
         src={Bonfire.Common.Media.avatar_url(current_user(@__context__)) ||
           @__context__[:current_user_avatar_url]}

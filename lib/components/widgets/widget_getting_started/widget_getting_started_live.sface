@@ -68,7 +68,7 @@
             >
               {#for {pip_step, idx} <- Enum.with_index(@steps)}
                 <span class={[
-                  "h-[7px] flex-1 rounded-sm transition-colors duration-300",
+                  "h-1.75 flex-1 rounded-sm transition-colors duration-300",
                   "bg-primary": pip_step.done?,
                   "bg-primary/40": idx == @viewing_index and not pip_step.done?,
                   "border border-divider": idx != @viewing_index and not pip_step.done?
@@ -81,7 +81,7 @@
               <#Icon
                 :if={step.done?}
                 iconify="ph:check-circle-fill"
-                class="w-5 h-5 text-primary shrink-0 mt-0.5"
+                class="size-5 text-primary shrink-0 mt-0.5"
                 aria-label={l("Done")}
               />
             </div>

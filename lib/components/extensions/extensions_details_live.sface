@@ -2,7 +2,7 @@
   {!-- <div :if={@is_extension?}>
     <Iconify.iconify
       icon={e(@dep, :extra, :icon_active, nil) || e(@dep, :extra, :icon, nil) || "heroicons-outline:puzzle"}
-      class={e(@dep, :extra, :icon_class, nil) || "w-8 h-8", "text-muted"}
+      class={e(@dep, :extra, :icon_class, nil) || "size-8", "text-muted"}
     />
   </div> --}
   <div class="flex flex-col flex-1 gap-1">
@@ -30,7 +30,7 @@
         to={"/settings/#{@scope || "user"}/#{e(@dep, :app, nil)}"}
         class="btn btn-ghost btn-sm btn-circle"
       >
-        <#Icon iconify="ph:gear-six-fill" class="w-5 h-5 opacity-70" />
+        <#Icon iconify="ph:gear-six-fill" class="size-5 opacity-70" />
         <span class="sr-only">{l("Extension settings")}</span>
       </LinkLive>
     </div>

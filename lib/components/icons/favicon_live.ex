@@ -9,5 +9,5 @@ defmodule Bonfire.UI.Common.Icons.FaviconLive do
 
   prop link, :string, default: nil
   prop icon, :string, default: "ph:planet-fill"
-  prop class, :css_class, default: "w-4 h-4"
+  prop class, :css_class, default: "size-4"
 end

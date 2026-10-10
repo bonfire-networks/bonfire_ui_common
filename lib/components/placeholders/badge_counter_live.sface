@@ -11,9 +11,9 @@
       class={
         @counter_class,
         "indicator-item badge badge-primary badge-xs rounded-full p-1",
-        "w-4 h-4":
+        "size-4":
           Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__) == true,
-        "w-3 h-3":
+        "size-3":
           Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__) == false
       }
       title={l("%{amount} new notifications", amount: @count)}

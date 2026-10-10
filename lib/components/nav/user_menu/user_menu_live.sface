@@ -3,7 +3,7 @@
   position="top-start"
   wrapper_class="sticky bottom-0 z-sticky mt-auto shrink-0 bg-rail"
   panel_class="!w-72 max-w-[calc(100vw-2rem)]"
-  trigger_class="focus-ring group flex w-full cursor-pointer items-center gap-3 py-2 text-left transition hover:bg-fill focus:bg-fill px-3 pb-safe pt-4 lg:px-[20px] border-t-(length:--user-menu-divider) border-divider lg:pb-base"
+  trigger_class="focus-ring group flex w-full cursor-pointer items-center gap-3 py-2 text-left transition hover:bg-fill focus:bg-fill px-3 pb-safe pt-4 lg:px-5 border-t-(length:--user-menu-divider) border-divider lg:pb-4"
   label={l("User menu")}
   trigger_opts={if module_enabled?(Bonfire.UI.Me.SwitchUserMenuItemsLive, @__context__),
     do: ["phx-click": JS.push("load", target: "#switch_user_menu_items")],
@@ -15,7 +15,7 @@
         ring
         bg_class="rounded-full"
         title={e(current_user(@__context__), :profile, :name, "Anon")}
-        class="inline-block object-cover cursor-pointer rounded-full w-10 h-10"
+        class="inline-block object-cover cursor-pointer rounded-full size-10"
         src={Media.avatar_url(current_user(@__context__))}
         user_id={current_user_id(@__context__)}
         parent_id="user_menu"
@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="btn btn-sm btn-ghost btn-circle">
-      <#Icon iconify="ph:list" class="w-5 h-5 shrink-0 text-muted" aria-hidden="true" />
+      <#Icon iconify="ph:list" class="size-5 shrink-0 text-muted" aria-hidden="true" />
     </div>
   </:trigger>
 

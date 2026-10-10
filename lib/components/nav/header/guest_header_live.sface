@@ -44,7 +44,7 @@
           label={l("Menu")}
         >
           <:trigger>
-            <#Icon iconify="ph:dots-three-outline-fill" class="w-4 h-4 opacity/70" />
+            <#Icon iconify="ph:dots-three-outline-fill" class="size-4 opacity/70" />
           </:trigger>
 
           {#if !current_account(@__context__)}

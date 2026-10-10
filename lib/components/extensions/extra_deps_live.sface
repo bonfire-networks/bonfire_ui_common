@@ -5,7 +5,7 @@
 
   <div class="">
     <div class="p-4 type-title flex items-center gap-4 border-b border-divider">
-      <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-muted" /> -->
+      <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="size-6 text-muted" /> -->
       <span>{l("Data Schemas")}</span>
     </div>
     <div class="flex flex-col   divide-hair divide-divider">
@@ -21,7 +21,7 @@
 
   <div class="">
     <div class="p-4 type-title flex items-center gap-4 border-b border-divider">
-      <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-muted" /> -->
+      <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="size-6 text-muted" /> -->
       <span>{l("Bonfire Ecosystem Libraries")}</span>
     </div>
     <div class="flex flex-col   divide-hair divide-divider">
@@ -37,7 +37,7 @@
 
   <div class="">
     <div class="p-4 type-title flex items-center gap-4 border-b border-divider">
-      <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="w-6 h-6 text-muted" /> -->
+      <!-- <#Icon iconify="fluent:paint-brush-20-filled" class="size-6 text-muted" /> -->
       <span>{l("Third-party Libraries")}</span>
     </div>
     <div class="flex flex-col   divide-hair divide-divider">

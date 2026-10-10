@@ -30,7 +30,7 @@ defmodule Bonfire.UI.Common.OpenExpanderLive do
   prop(
     caret_class,
     :css_class,
-    default: "w-4 h-4 text-muted transition-transform motion-reduce:transition-none"
+    default: "size-4 text-muted transition-transform motion-reduce:transition-none"
   )
 
   @doc "The classes of the inline content container"

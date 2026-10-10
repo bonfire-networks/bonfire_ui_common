@@ -15,4 +15,6 @@ Word wrapping and tabular timestamps are shared improvements. Compact customizat
 
 In development, use `?ui_preset=stream` or `?ui_preset=typographic` to preview either layout without saving a preference. Preview parameters are ignored outside development.
 
-Themes control button shape through `--radius-button`. The default interface supplies a 4px fallback; Typographic retains the shared 10px fallback. A theme can set `--radius-button: 9999px` for pill-shaped text buttons. Circular and square icon controls retain their own geometry.
+Button shape comes from `--radius-button`: 10px in Stream, 0.625rem by default elsewhere. Under Typographic a theme can override it (Jacobin sets `9999px` for pill buttons); Stream owns its shape and ignores theme radii. Circular and square icon controls retain their own geometry.
+
+For tokens, colour roles, typography and component conventions, see [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).

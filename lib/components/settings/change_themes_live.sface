@@ -19,7 +19,7 @@
       |> JS.hide(to: "##{@id_prefix}-custom-themes")}
     >
       <span class="flex items-center gap-2">
-        <#Icon iconify="ph:buildings" class="w-4 h-4" />
+        <#Icon iconify="ph:buildings" class="size-4" />
         <span>{l("Follow instance theme")}</span>
       </span>
       <span :if={@selected == :instance_default} class="badge badge-sm">{l("Active")}</span>
@@ -42,7 +42,7 @@
       |> JS.hide(to: "##{@id_prefix}-custom-themes")}
     >
       <span class="flex items-center gap-2">
-        <#Icon iconify="ph:moon" class="w-4 h-4" />
+        <#Icon iconify="ph:moon" class="size-4" />
         <span>{l("Use dark")}</span>
       </span>
       <span :if={@selected == :dark} class="badge badge-sm">{l("Active")}</span>
@@ -64,7 +64,7 @@
       |> JS.hide(to: "##{@id_prefix}-custom-themes")}
     >
       <span class="flex items-center gap-2">
-        <#Icon iconify="ph:sun" class="w-4 h-4" />
+        <#Icon iconify="ph:sun" class="size-4" />
         <span>{l("Use light")}</span>
       </span>
       <span :if={@selected == :light} class="badge badge-sm">{l("Active")}</span>
@@ -86,7 +86,7 @@
       |> JS.hide(to: "##{@id_prefix}-custom-themes")}
     >
       <span class="flex items-center gap-2">
-        <#Icon iconify="ph:desktop" class="w-4 h-4" />
+        <#Icon iconify="ph:desktop" class="size-4" />
         <span>{l("Use system")}</span>
       </span>
       <span :if={@selected == :system} class="badge badge-sm">{l("Active")}</span>
@@ -109,7 +109,7 @@
       class={"btn flex-1 justify-between gap-2 min-h-12 #{if @selected == :custom, do: "btn-primary"}"}
     >
       <span class="flex items-center gap-2">
-        <#Icon iconify="ph:paint-brush-fill" class="w-4 h-4" />
+        <#Icon iconify="ph:paint-brush-fill" class="size-4" />
         <span>{l("Use custom")}</span>
       </span>
       <span :if={@selected == :custom} class="badge badge-sm">{l("Active")}</span>
@@ -161,7 +161,7 @@
   >
     <div class="mb-4 flex items-center justify-between gap-2">
       <div class="flex items-center gap-2">
-        <#Icon iconify="ph:paint-brush-fill" class="w-5 h-5 text-primary" />
+        <#Icon iconify="ph:paint-brush-fill" class="size-5 text-primary" />
         <span class="text-base font-bold">{l("Custom theme")}</span>
         <span :if={@selected == :custom} class="badge badge-primary badge-sm">{l("Active now")}</span>
       </div>
@@ -174,14 +174,14 @@
         data-confirm={l("Remove all saved custom theme overrides? This cannot be undone.")}
         phx-click={JS.push("Bonfire.Common.Settings:reset_custom_theme", value: %{scope: @scope})}
       >
-        <#Icon iconify="ph:arrow-counter-clockwise" class="w-4 h-4" />
+        <#Icon iconify="ph:arrow-counter-clockwise" class="size-4" />
         {l("Reset all")}
       </button>
     </div>
 
     <div :if={@show_accessibility_caution}>
       <div class="alert alert-info shadow-sm mb-6" role="alert">
-        <#Icon iconify="ph:info-fill" class="w-5 h-5 shrink-0" />
+        <#Icon iconify="ph:info-fill" class="size-5 shrink-0" />
         <span>
           {l(
             "Caution: Modifying the color palette can affect readability and accessibility. Consider accessibility guidelines when making changes."
@@ -196,7 +196,7 @@
         <h3 class="divider divider-start text-sm mt-6">
           <span class="flex items-center gap-1.5">
             <svg
-              class="opacity-60 w-5 h-5"
+              class="opacity-60 size-5"
               viewBox="0 0 48 48"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -256,7 +256,7 @@
         <h3 class="divider divider-start text-sm mt-6">
           <span class="flex items-center gap-1.5">
             <svg
-              class="opacity-60 w-5 h-5"
+              class="opacity-60 size-5"
               viewBox="0 0 48 48"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"

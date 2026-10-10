@@ -16,7 +16,7 @@ defmodule Bonfire.UI.Common.DropdownLive do
         label={l("More actions")}
       >
         <:trigger>
-          <#Icon iconify="ph:dots-three-outline-vertical-fill" class="w-[18px] h-[18px]" />
+          <#Icon iconify="ph:dots-three-outline-vertical-fill" class="size-4.5" />
         </:trigger>
 
         <li><button phx-click="...">{l("Copy link")}</button></li>
@@ -25,7 +25,7 @@ defmodule Bonfire.UI.Common.DropdownLive do
   A hover fly-out submenu:
 
       <Dropdown id="ext_submenu" open_on="hover" position="right-start" trigger_class="btn btn-sm btn-ghost btn-square">
-        <:trigger><#Icon iconify="carbon:chevron-right" class="w-4 h-4" /></:trigger>
+        <:trigger><#Icon iconify="carbon:chevron-right" class="size-4" /></:trigger>
         ...
       </Dropdown>
   """

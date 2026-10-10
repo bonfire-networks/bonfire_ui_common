@@ -25,7 +25,7 @@
                 <div class="flex-shrink-0">
                   <Bonfire.UI.Common.AvatarLive
                     parent_id="select_recipients"
-                    class="w-10 h-10 rounded-full"
+                    class="size-10 rounded-full"
                     src={Media.avatar_url(e(user, :edge, :object, nil))}
                     user_id={id(e(user, :edge, :object, nil))}
                   />

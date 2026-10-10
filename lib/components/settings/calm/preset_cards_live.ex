@@ -56,7 +56,7 @@ defmodule Bonfire.UI.Common.Settings.Calm.PresetCardsLive do
   @doc "Class of the icon circle (keep the `peer-checked:` variants for the selected state); pass `\"hidden\"` to drop icons entirely."
   prop icon_wrapper_class, :css_class,
     default:
-      "flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-full transition-colors bg-fill-strong text-muted peer-checked:bg-primary peer-checked:text-primary-content"
+      "flex-shrink-0 flex items-center justify-center size-9 rounded-full transition-colors bg-fill-strong text-muted peer-checked:bg-primary peer-checked:text-primary-content"
 
   @doc "Class of the card name."
   prop name_class, :css_class, default: "text-sm font-medium text-base-content"

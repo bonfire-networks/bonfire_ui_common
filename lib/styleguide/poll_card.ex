@@ -15,7 +15,7 @@ defmodule Bonfire.UI.Common.Styleguide.PollCard do
     `radio radio-primary radio-xs` (binds to --border 0.7px / --radius-selector / primary;
     checked renders the red ring + center dot), label text-base
   - actions: Abstimmen = filled primary; Siehe Ergebnisse = muted-outline variant
-    (secondary border + base-content text). Buttons use the canonical py-[11px] height (not Figma's 27px).
+    (secondary border + base-content text). Buttons use the canonical py-2.75 height (not Figma's 27px).
   - action row: comment / boost / like(red flame) / bookmark / more
   """
   use Bonfire.UI.Common.Web, :stateless_component

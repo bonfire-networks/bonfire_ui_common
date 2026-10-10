@@ -7,8 +7,8 @@
   {#for item <- @items || default_items()}
     <.card class="overflow-hidden">
       {!-- ===== header line: <icon> <name> [+ N others] <verb phrase> ===== --}
-      <div class="flex items-start gap-half">
-        <Iconify.iconify icon={item.icon} class="w-[18px] h-[18px] shrink-0 mt-px text-primary" />
+      <div class="flex items-start gap-2">
+        <Iconify.iconify icon={item.icon} class="size-4.5 shrink-0 mt-px text-primary" />
         <div class="flex-1 min-w-0 text-base text-muted leading-snug">
           <span class="font-medium text-base-content">{item.name}</span>{#if item[:suffix]}
             <span class="font-medium text-base-content">{item.suffix}</span>{/if}
@@ -18,9 +18,9 @@
         {#if item[:action] == :follow_back}
           <button
             type="button"
-            class="shrink-0 inline-flex items-center gap-[7px] rounded-field bg-primary text-primary-content text-base font-medium px-[18px] py-[6px] hover:brightness-90 transition"
+            class="shrink-0 inline-flex items-center gap-1.75 rounded-field bg-primary text-primary-content text-base font-medium px-4.5 py-1.5 hover:brightness-90 transition"
           >
-            <#Icon iconify="ph:users-fill" class="w-[17px] h-[17px]" />{l("Follow back")}
+            <#Icon iconify="ph:users-fill" class="size-4.25" />{l("Follow back")}
           </button>
         {/if}
       </div>
@@ -30,11 +30,11 @@
         {#match nil}
           {!-- header-only notification (no referenced body) --}
         {#match :poll}
-          <div class="mt-base">
+          <div class="mt-4">
             <Bonfire.UI.Common.Styleguide.PollCard />
           </div>
         {#match :profile}
-          <header class="flex items-center gap-avatar mt-base">
+          <header class="flex items-center gap-4 mt-4">
             <.avatar alt={item.name} />
             <div class="min-w-0">
               <div class="text-base font-medium text-base-content leading-tight truncate">{item.name}</div>
@@ -42,56 +42,56 @@
             </div>
           </header>
         {#match :post}
-          <header class="flex items-center gap-avatar mt-base">
+          <header class="flex items-center gap-4 mt-4">
             <.avatar alt={item.name} />
             <div class="min-w-0">
               <div class="text-base font-medium text-base-content leading-tight truncate">shevek</div>
               <div class="text-base text-muted leading-tight truncate">@colin <span class="text-primary">·</span> {l("3 days ago")}</div>
             </div>
           </header>
-          <p class="mt-base text-base text-base-content">
+          <p class="mt-4 text-base text-base-content">
             {l(
               "Just submitted proof that simultaneity is communication across the ansible. The linearity they teach is a prison."
             )}
           </p>
-          <div class="mt-base flex items-center justify-end gap-[26px] text-muted">
-            <#Icon iconify="ph:chat-circle" class="w-5 h-5" />
-            <#Icon iconify="ph:rocket" class="w-5 h-5" />
-            <#Icon iconify="ph:fire-fill" class="w-5 h-5 text-primary" />
-            <#Icon iconify="ph:bookmark-simple" class="w-5 h-5" />
-            <#Icon iconify="ph:dots-three-outline-vertical-fill" class="w-5 h-5" />
+          <div class="mt-4 flex items-center justify-end gap-6.5 text-muted">
+            <#Icon iconify="ph:chat-circle" class="size-5" />
+            <#Icon iconify="ph:rocket" class="size-5" />
+            <#Icon iconify="ph:fire-fill" class="size-5 text-primary" />
+            <#Icon iconify="ph:bookmark-simple" class="size-5" />
+            <#Icon iconify="ph:dots-three-outline-vertical-fill" class="size-5" />
           </div>
         {#match :quote}
-          <header class="flex items-center gap-avatar mt-base">
+          <header class="flex items-center gap-4 mt-4">
             <.avatar alt={item.name} />
             <div class="min-w-0">
               <div class="text-base font-medium text-base-content leading-tight truncate">Ivan</div>
               <div class="text-base text-muted leading-tight truncate">@colin <span class="text-primary">·</span> {l("3 days ago")}</div>
             </div>
           </header>
-          <p class="mt-base text-base text-base-content">@andy {l("said a thing")}</p>
-          <a class="mt-half block text-base text-primary link link-hover truncate">bonfire.jacobin.de/world/2026…</a>
+          <p class="mt-4 text-base text-base-content">@andy {l("said a thing")}</p>
+          <a class="mt-2 block text-base text-primary link link-hover truncate">bonfire.jacobin.de/world/2026…</a>
 
           {!-- the quoted post (nested card) --}
-          <.card class="mt-base bg-base-200/40">
-            <header class="flex items-center gap-avatar">
+          <.card class="mt-4 bg-base-200/40">
+            <header class="flex items-center gap-4">
               <.avatar alt="andy" />
               <div class="min-w-0">
                 <div class="text-base font-medium text-base-content leading-tight truncate">andy</div>
                 <div class="text-base text-muted leading-tight truncate">@colin <span class="text-primary">·</span> {l("3 days ago")}</div>
               </div>
             </header>
-            <p class="mt-base text-base text-base-content">
+            <p class="mt-4 text-base text-base-content">
               {l("Jordan Peterson: Amoebas reproduce asexually and therefore humans should too")}
             </p>
-            <div class="mt-base flex items-center justify-end gap-2">
+            <div class="mt-4 flex items-center justify-end gap-2">
               <button
                 type="button"
-                class="rounded-field text-primary text-base font-medium px-[18px] py-[6px] ring-[0.7px] ring-inset ring-primary hover:bg-base-300 transition"
+                class="rounded-field text-primary text-base font-medium px-4.5 py-1.5 ring-[0.7px] ring-inset ring-primary hover:bg-base-300 transition"
               >{l("Decline")}</button>
               <button
                 type="button"
-                class="rounded-field text-primary text-base font-medium px-[18px] py-[6px] ring-[0.7px] ring-inset ring-primary hover:bg-base-300 transition"
+                class="rounded-field text-primary text-base font-medium px-4.5 py-1.5 ring-[0.7px] ring-inset ring-primary hover:bg-base-300 transition"
               >{l("Accept quote")}</button>
             </div>
           </.card>

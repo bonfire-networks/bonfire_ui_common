@@ -99,7 +99,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
                   class="-m-3 flex-none p-3 opacity-20 hover:opacity-40 focus-ring rounded-full transition-interactive touch-target"
                   aria-label={l("close")}
                 >
-                  <.iconify icon="heroicons-solid-x-mark" class="h-5 w-5" aria-hidden="true" />
+                  <.iconify icon="heroicons-solid-x-mark" class="size-5" aria-hidden="true" />
                 </button>
               </div>
               <div id={"#{@id}-content"}>
@@ -146,13 +146,13 @@ defmodule Bonfire.UI.Common.CoreComponents do
       {@rest}
     >
       <p :if={@title} class="flex items-center gap-1.5 text-sm font-medium leading-6">
-        <.iconify :if={@kind == :info} icon="heroicons-information-circle-mini" class="h-4 w-4" />
-        <.iconify :if={@kind == :error} icon="heroicons-exclamation-circle-mini" class="h-4 w-4" />
+        <.iconify :if={@kind == :info} icon="heroicons-information-circle-mini" class="size-4" />
+        <.iconify :if={@kind == :error} icon="heroicons-exclamation-circle-mini" class="size-4" />
         {@title}
       </p>
       <p class="mt-2 text-sm leading-5">{msg}</p>
       <button type="button" class="group absolute top-1 right-1 p-2" aria-label={l("close")}>
-        <.iconify icon="heroicons-solid-x-mark" class="h-5 w-5 opacity-40 group-hover:opacity-70" />
+        <.iconify icon="heroicons-solid-x-mark" class="size-5 opacity-40 group-hover:opacity-70" />
       </button>
     </div>
     """
@@ -189,7 +189,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
       hidden
     >
       {l("Attempting to reconnect")}
-      <.iconify icon="heroicons-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
+      <.iconify icon="heroicons-arrow-path" class="ml-1 size-3 animate-spin" />
     </.flash>
     """
   end
@@ -531,7 +531,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
     <div id={@id} role="alert" class="alert alert-warning">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 shrink-0 stroke-current"
+        class="size-6 shrink-0 stroke-current"
         fill="none"
         viewBox="0 0 24 24"
         aria-hidden="true"
@@ -726,7 +726,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
         navigate={@navigate}
         class="text-sm font-medium leading-6 text-zinc-900 hover:text-zinc-700"
       >
-        <.iconify icon="heroicons-solid-arrow-left" class="h-3 w-3" />
+        <.iconify icon="heroicons-solid-arrow-left" class="size-3" />
         {render_slot(@inner_block)}
       </.link>
     </div>

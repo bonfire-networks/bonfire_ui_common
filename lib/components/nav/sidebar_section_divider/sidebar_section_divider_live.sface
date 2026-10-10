@@ -8,8 +8,8 @@
   {#match "custom"}
     {#case to_string(Bonfire.Common.Settings.get([:ui, :sidebar, :section_divider_image], "", :instance))}
       {#match src when src != ""}
-        <div class="lg:px-[30px] flex justify-center" aria-hidden="true">
-          <img src={src} class="h-6 w-full object-contain mt-[16px]" alt="">
+        <div class="lg:px-7.5 flex justify-center" aria-hidden="true">
+          <img src={src} class="h-6 w-full object-contain mt-4" alt="">
         </div>
       {#match _}
     {/case}

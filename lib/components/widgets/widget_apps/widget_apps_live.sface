@@ -17,8 +17,8 @@
           >
             <LinkLive class="hover:rounded-box" to={extension[:href]}>
               <div class="flex flex-col items-center w-full">
-                <Iconify.iconify icon={extension[:icon]} class="w-8 h-8" />
-                <div class="flex-1 max-w-[100px] mt-3 text-xs font-medium text-center truncate text-muted">{extension[:name]}</div>
+                <Iconify.iconify icon={extension[:icon]} class="size-8" />
+                <div class="flex-1 max-w-25 mt-3 text-xs font-medium text-center truncate text-muted">{extension[:name]}</div>
               </div>
             </LinkLive>
           </li>

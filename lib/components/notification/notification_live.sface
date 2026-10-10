@@ -44,9 +44,9 @@
           <div class="flex-shrink-0">
             {#case e(@notification, :icon, nil)}
               {#match icon when is_binary(icon)}
-                <img src={icon} class="w-10 h-10 rounded">
+                <img src={icon} class="size-10 rounded">
               {#match _}
-                <#Icon outline="Speakerphone" class="w-5 h-5 text-info" />
+                <#Icon outline="Speakerphone" class="size-5 text-info" />
             {/case}
           </div>
           {!-- `min-w-0` rather than `w-0`: inside a `max-content` toast a zero basis collapses the card to a sliver, while this lets a short message stay short and a long one grow to the card's max --}
@@ -73,7 +73,7 @@
             >
               <span class="touch-target-hit-area" aria-hidden="true" />
               <span class="sr-only">{l("Close")}</span>
-              <#Icon iconify="ph:x" class="w-4 h-4" aria-hidden="true" />
+              <#Icon iconify="ph:x" class="size-4" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -89,7 +89,7 @@
           class="pointer-events-auto flex items-center gap-3 pl-4 pr-2 py-2.5 rounded-box bg-base-200 ring-1 ring-base-content/10 max-w-sm"
         >
           <div class="flex-shrink-0">
-            <#Icon iconify="ph:check-bold" class="w-5 h-5 text-success" aria-hidden="true" />
+            <#Icon iconify="ph:check-bold" class="size-5 text-success" aria-hidden="true" />
           </div>
           <div data-id="flash" data-type="info" class="flex-1 text-sm font-medium text-base-content">{rich(info)}</div>
           <div :if={socket_connected?(@__context__)}>
@@ -102,7 +102,7 @@
               class="btn btn-sm btn-circle btn-ghost opacity-50 hover:opacity-100 focus-ring transition-opacity duration-150 ease"
             >
               <span class="sr-only">{l("Close")}</span>
-              <#Icon iconify="ph:x" class="w-3.5 h-3.5" aria-hidden="true" />
+              <#Icon iconify="ph:x" class="size-3.5" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -117,7 +117,7 @@
           class="pointer-events-auto flex items-center gap-3 pl-4 pr-2 py-2.5 rounded-box bg-base-200 ring-1 ring-base-content/10 max-w-sm flash"
         >
           <div class="flex-shrink-0">
-            <#Icon iconify="ph:info-fill" class="w-5 h-5 text-warning" aria-hidden="true" />
+            <#Icon iconify="ph:info-fill" class="size-5 text-warning" aria-hidden="true" />
           </div>
           <div data-id="flash" data-type="warning" class="flex-1 text-sm font-medium text-base-content">{rich(warning)}</div>
           <div :if={socket_connected?(@__context__)}>
@@ -130,7 +130,7 @@
               class="btn btn-sm btn-circle btn-ghost opacity-50 hover:opacity-100 focus-ring transition-opacity duration-150 ease"
             >
               <span class="sr-only">{l("Close")}</span>
-              <#Icon iconify="ph:x" class="w-3.5 h-3.5" aria-hidden="true" />
+              <#Icon iconify="ph:x" class="size-3.5" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -146,7 +146,7 @@
           class="pointer-events-auto flex items-center gap-3 pl-4 pr-2 py-2.5 rounded-box bg-error text-error-content ring-1 ring-error-content/10 max-w-sm flash"
         >
           <div class="flex-shrink-0">
-            <#Icon iconify="ph:warning-circle-fill" class="w-5 h-5 text-error-content" aria-hidden="true" />
+            <#Icon iconify="ph:warning-circle-fill" class="size-5 text-error-content" aria-hidden="true" />
           </div>
           <div
             data-id="flash"
@@ -168,7 +168,7 @@
               class="btn btn-sm btn-circle btn-ghost opacity-50 hover:opacity-100 focus-ring transition-opacity duration-150 ease"
             >
               <span class="sr-only">{l("Close")}</span>
-              <#Icon iconify="ph:x" class="w-3.5 h-3.5" aria-hidden="true" />
+              <#Icon iconify="ph:x" class="size-3.5" aria-hidden="true" />
             </button>
           </div>
         </div>

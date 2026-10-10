@@ -1,6 +1,6 @@
 <header role="banner" class="flex flex-1 w-full transition-colors duration-150 ease-in-out">
   <div class="relative z-20 flex items-center w-full">
-    <div class="flex items-center gap-2 w-full px-base">
+    <div class="flex items-center gap-2 w-full px-4">
       {!-- Back button (when present, all breakpoints) --}
       <div :if={@back} class="shrink-0 flex items-center">
         <Bonfire.UI.Common.BackButtonLive back={@back} type={@back_type} />
@@ -13,19 +13,19 @@
         <label
           for="sidebar-drawer"
           aria-label={l("Open navigation sidebar")}
-          class="btn btn-circle btn-ghost min-w-[44px] min-h-[44px]"
+          class="btn btn-circle btn-ghost min-w-11 min-h-11"
         >
           <div class="relative">
             {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
-              <div class="w-9 h-9 rounded-full ring-[0.7px] ring-primary flex items-center justify-center">
-                <#Icon iconify="ph:gear-fill" class="w-5 h-5 text-primary" />
+              <div class="size-9 rounded-full ring-[0.7px] ring-primary flex items-center justify-center">
+                <#Icon iconify="ph:gear-fill" class="size-5 text-primary" />
               </div>
             {#else}
               <Bonfire.UI.Common.AvatarLive
                 ring
                 bg_class="rounded-full"
                 title={e(current_user(@__context__), :profile, :name, "Anon")}
-                class="inline-block object-cover cursor-pointer rounded-full w-9 h-9"
+                class="inline-block object-cover cursor-pointer rounded-full size-9"
                 src={Media.avatar_url(current_user(@__context__))}
                 user_id={current_user_id(@__context__)}
                 is_remote={false}
@@ -35,7 +35,7 @@
               aria-hidden="true"
               class="rounded-full bg-base-100 absolute -right-1 -bottom-1 leading-none"
             >
-              <#Icon iconify="ph:list-bold" class="w-4 h-4 text-primary" />
+              <#Icon iconify="ph:list-bold" class="size-4 text-primary" />
             </span>
           </div>
         </label>
@@ -43,13 +43,40 @@
 
       {!-- Center column: title left-aligned --}
       <div class="flex-1 min-w-0">
-        <h1
-          data-page={@page}
-          data-role="page_title"
-          class="first-letter:capitalize truncate font-medium text-left text-base text-base-content"
-        >
-          {rich(@page_title)}
-        </h1>
+        {#if is_map(@page_title_context) and is_binary(@page_title_context[:name])}
+          <h1
+            data-page={@page}
+            data-role="page_title"
+            class="flex items-center gap-1.5 min-w-0 font-medium text-left text-base text-base-content"
+          >
+            <span class="shrink-0 first-letter:capitalize">{rich(@page_title)}</span>
+            <span class="shrink-0">{l("in")}</span>
+            <LinkLive
+              opts={"data-role": "page_title_context"}
+              class="inline-flex items-center gap-1.5 min-w-0 text-primary link link-hover"
+              to={@page_title_context[:path]}
+            >
+              {#if is_binary(@page_title_context[:icon_url])}
+                <img
+                  src={@page_title_context[:icon_url]}
+                  alt=""
+                  class="size-5 shrink-0 rounded-full object-cover"
+                >
+              {#else}
+                <#Icon iconify="ph:users-three-fill" class="size-5 shrink-0" />
+              {/if}
+              <span class="truncate">{@page_title_context[:name]}</span>
+            </LinkLive>
+          </h1>
+        {#else}
+          <h1
+            data-page={@page}
+            data-role="page_title"
+            class="first-letter:capitalize truncate font-medium text-left text-base text-base-content"
+          >
+            {rich(@page_title)}
+          </h1>
+        {/if}
         <div :if={@extra} class="text-xs font-medium text-muted">{@extra}</div>
       </div>
 
@@ -61,10 +88,10 @@
           <label
             :if={@show_widgets_toggle}
             for="widgets-drawer"
-            class="xl:hidden btn btn-ghost btn-circle min-w-[44px] min-h-[44px]"
+            class="xl:hidden btn btn-ghost btn-circle min-w-11 min-h-11"
             aria-label={l("Open widgets sidebar")}
           >
-            <#Icon iconify="ph:sidebar-simple-fill" class="w-5 h-5 text-primary" />
+            <#Icon iconify="ph:sidebar-simple-fill" class="size-5 text-primary" />
           </label>
         {#elseif @show_right_actions}
           <Bonfire.UI.Common.GuestActionsLive page_header page={@page} />

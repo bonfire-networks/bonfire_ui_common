@@ -31,7 +31,7 @@
             phx-target={@myself}
             class="btn btn-sm btn-ghost btn-square text-error/70 hover:text-error"
           >
-            <#Icon iconify="heroicons-outline:trash" class="w-4 h-4" />
+            <#Icon iconify="heroicons-outline:trash" class="size-4" />
           </button>
         </div>
       {/for}
@@ -44,7 +44,7 @@
         phx-target={@myself}
         class="btn btn-sm btn-ghost btn-soft gap-1"
       >
-        <#Icon iconify="heroicons-outline:plus" class="w-4 h-4" />
+        <#Icon iconify="heroicons-outline:plus" class="size-4" />
         {l("Add link")}
       </button>
 

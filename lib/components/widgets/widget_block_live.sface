@@ -36,9 +36,9 @@
           <span class="sr-only">{l("Refresh")}</span>
           <#Icon
             iconify="ph:arrow-counter-clockwise-fill"
-            class="w-4 h-4 text-primary group-data-[done]:hidden"
+            class="size-4 text-primary group-data-[done]:hidden"
           />
-          <#Icon iconify="ph:check-bold" class="hidden w-4 h-4 text-success group-data-[done]:inline" />
+          <#Icon iconify="ph:check-bold" class="hidden size-4 text-success group-data-[done]:inline" />
         </button>
       {/if}
     </div>
@@ -50,10 +50,10 @@
         data-role="widget-empty-state"
       >
         <div
-          class="flex h-10 w-10 items-center justify-center rounded-full bg-fill"
+          class="flex size-10 items-center justify-center rounded-full bg-fill"
           aria-hidden="true"
         >
-          <Iconify.iconify icon={@empty_icon} class="h-5 w-5 text-subtle" />
+          <Iconify.iconify icon={@empty_icon} class="size-5 text-subtle" />
         </div>
         <span class="max-w-[36ch] text-sm text-muted">{@empty_message || l("Nothing here yet.")}</span>
         <#slot {@empty_action} />

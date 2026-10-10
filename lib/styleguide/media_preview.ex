@@ -10,7 +10,7 @@ defmodule Bonfire.UI.Common.Styleguide.MediaPreview do
 
   Confirmed Figma specs (all map to existing tokens — no new tokens needed):
   - card: white (base-100), 0.7px secondary stroke, rounded-box, p-card (18px)
-  - 18-based vertical rhythm (`--spacing-base`); the publisher eyebrow hugs the
+  - 18-based vertical rhythm (`p-4`, 16px); the publisher eyebrow hugs the
     headline (tight) as one group
   - hero image: rounded-box, 0.7px secondary hairline border, neutral placeholder
     (`--color-placeholder` #c6c6c6)

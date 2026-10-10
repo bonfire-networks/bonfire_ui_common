@@ -22,8 +22,8 @@
 --}
 <div class="max-w-[1140px] mx-auto px-8 py-12 text-base-content">
   {!-- ===== Masthead ===== --}
-  <div class="flex items-end gap-[22px]">
-    <#Icon iconify="ph:campfire-fill" class="w-[50px] h-[61px] text-primary shrink-0" />
+  <div class="flex items-end gap-5.5">
+    <#Icon iconify="ph:campfire-fill" class="w-12.5 h-15.25 text-primary shrink-0" />
     <div class="flex-1">
       <div class="text-sm uppercase tracking-caps text-primary font-medium">{l("Design system")}</div>
       <h1 class="mt-1 type-feature leading-none">{l("Theme styleguide")}</h1>
@@ -38,47 +38,47 @@
   <div class="h-10" />
 
   {!-- ===== 01 Color ===== --}
-  <div class="flex items-center gap-4 mb-[22px]">
+  <div class="flex items-center gap-4 mb-5.5">
     <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">01 — {l("Color system")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
 
   <div class="type-caption uppercase tracking-caps text-muted font-medium mb-3">{l("Brand")}</div>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-[30px]">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-7.5">
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
-      <div class="h-[88px] bg-primary border-b border-divider" />
+      <div class="h-22 bg-primary border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-sm font-medium">Primary red</div><div class="type-caption text-primary mt-1.5">--color-primary</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
-      <div class="h-[88px] bg-secondary border-b border-divider" />
+      <div class="h-22 bg-secondary border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-sm font-medium">Muted red</div><div class="type-caption text-primary mt-1.5">--color-secondary</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
-      <div class="h-[88px] bg-neutral border-b border-divider" />
+      <div class="h-22 bg-neutral border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-sm font-medium">Near-black</div><div class="type-caption text-primary mt-1.5">--color-neutral</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
-      <div class="h-[88px] bg-accent border-b border-divider" />
+      <div class="h-22 bg-accent border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-sm font-medium">Accent</div><div class="type-caption text-primary mt-1.5">--color-accent</div></div>
     </div>
   </div>
 
   <div class="type-caption uppercase tracking-caps text-muted font-medium mb-3">{l("Surfaces & base")}</div>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-[30px]">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-7.5">
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
-      <div class="h-[88px] bg-base-100 border-b border-divider" />
+      <div class="h-22 bg-base-100 border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-sm font-medium">Card surface</div><div class="type-caption text-primary mt-1.5">--color-base-100</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
-      <div class="h-[88px] bg-base-200 border-b border-divider" />
+      <div class="h-22 bg-base-200 border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-sm font-medium">Page background</div><div class="type-caption text-primary mt-1.5">--color-base-200</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
-      <div class="h-[88px] bg-base-300 border-b border-divider" />
+      <div class="h-22 bg-base-300 border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-sm font-medium">Rail / hover</div><div class="type-caption text-primary mt-1.5">--color-base-300</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
-      <div class="h-[88px] bg-base-content border-b border-divider" />
+      <div class="h-22 bg-base-content border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-sm font-medium">Base content</div><div class="type-caption text-primary mt-1.5">--color-base-content</div></div>
     </div>
   </div>
@@ -86,19 +86,19 @@
   <div class="type-caption uppercase tracking-caps text-muted font-medium mb-3">{l("Semantic & neutral")}</div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
-      <div class="h-[88px] bg-success border-b border-divider flex items-end p-2.5"><span class="text-xs text-success-content">OFFEN</span></div>
+      <div class="h-22 bg-success border-b border-divider flex items-end p-2.5"><span class="text-xs text-success-content">OFFEN</span></div>
       <div class="px-3.5 py-3"><div class="text-sm font-medium">Success</div><div class="type-caption text-primary mt-1.5">--color-success</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
-      <div class="h-[88px] bg-error border-b border-divider" />
+      <div class="h-22 bg-error border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-sm font-medium">Error</div><div class="type-caption text-primary mt-1.5">--color-error</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
-      <div class="h-[88px] bg-warning border-b border-divider" />
+      <div class="h-22 bg-warning border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-sm font-medium">Warning</div><div class="type-caption text-primary mt-1.5">--color-warning</div></div>
     </div>
     <div class="rounded-box overflow-hidden border border-divider bg-base-100">
-      <div class="h-[88px] bg-info border-b border-divider" />
+      <div class="h-22 bg-info border-b border-divider" />
       <div class="px-3.5 py-3"><div class="text-sm font-medium">Info</div><div class="type-caption text-primary mt-1.5">--color-info</div></div>
     </div>
   </div>
@@ -106,7 +106,7 @@
   <div class="h-14" />
 
   {!-- ===== 02 Typography ===== --}
-  <div class="flex items-center gap-4 mb-[22px]">
+  <div class="flex items-center gap-4 mb-5.5">
     <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">02 — {l("Typography")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
@@ -160,38 +160,38 @@
   <div class="h-14" />
 
   {!-- ===== 03 Shape & borders ===== --}
-  <div class="flex items-center gap-4 mb-[22px]">
+  <div class="flex items-center gap-4 mb-5.5">
     <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">03 — {l("Shape & borders")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <div class="rounded-box border border-divider bg-base-100 p-[22px] text-center">
-      <div class="h-[70px] flex items-center justify-center">
-        <div class="w-[90px] h-[46px] bg-base-200 rounded-field ring-[1.4px] ring-inset ring-primary" />
+    <div class="rounded-box border border-divider bg-base-100 p-5.5 text-center">
+      <div class="h-17.5 flex items-center justify-center">
+        <div class="w-22.5 h-11.5 bg-base-200 rounded-field ring-[1.4px] ring-inset ring-primary" />
       </div>
       <div class="text-sm font-medium mt-2.5">Buttons / inputs</div>
-      <div class="type-caption text-muted mt-[3px]">rounded-field</div>
+      <div class="type-caption text-muted mt-0.75">rounded-field</div>
     </div>
-    <div class="rounded-box border border-divider bg-base-100 p-[22px] text-center">
-      <div class="h-[70px] flex items-center justify-center">
-        <div class="w-[90px] h-[46px] bg-base-200 rounded-box ring-[1.4px] ring-inset ring-primary" />
+    <div class="rounded-box border border-divider bg-base-100 p-5.5 text-center">
+      <div class="h-17.5 flex items-center justify-center">
+        <div class="w-22.5 h-11.5 bg-base-200 rounded-box ring-[1.4px] ring-inset ring-primary" />
       </div>
       <div class="text-sm font-medium mt-2.5">Cards / boxes</div>
-      <div class="type-caption text-muted mt-[3px]">rounded-box</div>
+      <div class="type-caption text-muted mt-0.75">rounded-box</div>
     </div>
-    <div class="rounded-box border border-divider bg-base-100 p-[22px] text-center">
-      <div class="h-[70px] flex items-center justify-center">
-        <div class="w-[46px] h-[46px] bg-base-200 rounded-full ring-[1.4px] ring-inset ring-primary" />
+    <div class="rounded-box border border-divider bg-base-100 p-5.5 text-center">
+      <div class="h-17.5 flex items-center justify-center">
+        <div class="size-11.5 bg-base-200 rounded-full ring-[1.4px] ring-inset ring-primary" />
       </div>
       <div class="text-sm font-medium mt-2.5">Avatars</div>
-      <div class="type-caption text-muted mt-[3px]">rounded-full · 50%</div>
+      <div class="type-caption text-muted mt-0.75">rounded-full · 50%</div>
     </div>
-    <div class="rounded-box border border-divider bg-base-100 p-[22px] text-center">
-      <div class="h-[70px] flex items-center justify-center">
-        <div class="h-4 w-[90px] bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
+    <div class="rounded-box border border-divider bg-base-100 p-5.5 text-center">
+      <div class="h-17.5 flex items-center justify-center">
+        <div class="h-4 w-22.5 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
       </div>
       <div class="text-sm font-medium mt-2.5">Section divider</div>
-      <div class="type-caption text-muted mt-[3px]">clip-path</div>
+      <div class="type-caption text-muted mt-0.75">clip-path</div>
     </div>
   </div>
   <div class="mt-4 flex gap-6 flex-wrap rounded-box border border-divider bg-base-100 px-6 py-5 text-sm text-muted">
@@ -203,28 +203,22 @@
   {!-- Spacing tokens (measured from Figma; bars render at the token's exact width) --}
   <div class="mt-4 rounded-box border border-divider bg-base-100 px-6 py-5">
     <div class="type-caption uppercase tracking-caps text-muted font-medium mb-1">{l("Spacing")}</div>
-    <div class="type-caption text-muted mb-4">{l("18-based scale — from the Figma \"dashboard with spaces\" annotations")}</div>
+    <div class="type-caption text-muted mb-4">{l("Everything else uses Tailwind's 4px scale with quarter steps: p-4 = 16px, size-4.5 = 18px, mt-0.75 = 3px.")}</div>
     <div class="flex flex-col gap-2 text-sm">
       <div class="flex items-baseline gap-4">
-        <span class="w-10 shrink-0 font-medium text-base-content">7px</span><code class="w-44 shrink-0 text-primary">--spacing-feed</code><span class="text-muted">gap between stacked feed cards</span>
+        <span class="w-20 shrink-0 font-medium text-base-content">16px</span><code class="w-44 shrink-0 text-primary">--spacing-card</code><span class="text-muted">card and panel padding (p-card, px-card)</span>
       </div>
       <div class="flex items-baseline gap-4">
-        <span class="w-10 shrink-0 font-medium text-base-content">9px</span><code class="w-44 shrink-0 text-primary">--spacing-half</code><span class="text-muted">½ base</span>
+        <span class="w-20 shrink-0 font-medium text-base-content">36px</span><code class="w-44 shrink-0 text-primary">--spacing-section</code><span class="text-muted">between page sections</span>
       </div>
       <div class="flex items-baseline gap-4">
-        <span class="w-10 shrink-0 font-medium text-base-content">12px</span><code class="w-44 shrink-0 text-primary">--spacing-content</code><span class="text-muted">tight gap (radio → label)</span>
+        <span class="w-20 shrink-0 font-medium text-base-content">7px</span><code class="w-44 shrink-0 text-primary">--spacing-feed</code><span class="text-muted">gap between feed cards in Typographic</span>
       </div>
       <div class="flex items-baseline gap-4">
-        <span class="w-10 shrink-0 font-medium text-base-content">15px</span><code class="w-44 shrink-0 text-primary">--spacing-row</code><span class="text-muted">list-row / tighter gap</span>
+        <span class="w-20 shrink-0 font-medium text-base-content">260–340px</span><code class="w-44 shrink-0 text-primary">--spacing-rail</code><span class="text-muted">side column width (w-rail)</span>
       </div>
       <div class="flex items-baseline gap-4">
-        <span class="w-10 shrink-0 font-medium text-base-content">25px</span><code class="w-44 shrink-0 text-primary">--spacing-panel</code><span class="text-muted">larger panel padding / roomy grouped controls</span>
-      </div>
-      <div class="flex items-baseline gap-4">
-        <span class="w-10 shrink-0 font-medium text-base-content">18px</span><code class="w-44 shrink-0 text-primary">--spacing-base</code><span class="text-muted">card padding · avatar→info · most gaps</span>
-      </div>
-      <div class="flex items-baseline gap-4">
-        <span class="w-10 shrink-0 font-medium text-base-content">36px</span><code class="w-44 shrink-0 text-primary">--spacing-section</code><span class="text-muted">between sections (2× base)</span>
+        <span class="w-20 shrink-0 font-medium text-base-content">64px</span><code class="w-44 shrink-0 text-primary">--spacing-page-header</code><span class="text-muted">page header height (min-h-page-header)</span>
       </div>
     </div>
   </div>
@@ -232,7 +226,7 @@
   <div class="h-14" />
 
   {!-- ===== 04 Buttons & fields ===== --}
-  <div class="flex items-center gap-4 mb-[22px]">
+  <div class="flex items-center gap-4 mb-5.5">
     <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">04 — {l("Buttons & actions")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
@@ -240,38 +234,38 @@
     <div class="flex items-center gap-4 flex-wrap">
       <button
         type="button"
-        class="inline-flex items-center justify-center rounded-field bg-primary text-primary-content text-base font-medium px-[26px] py-[11px] hover:brightness-90 transition"
+        class="inline-flex items-center justify-center rounded-field bg-primary text-primary-content text-base font-medium px-6.5 py-2.75 hover:brightness-90 transition"
       >Abstimmen</button>
       <button
         type="button"
-        class="inline-flex items-center justify-center rounded-field bg-base-200 text-primary text-base font-medium px-[26px] py-[11px] ring-[0.7px] ring-inset ring-primary hover:bg-base-300 transition"
+        class="inline-flex items-center justify-center rounded-field bg-base-200 text-primary text-base font-medium px-6.5 py-2.75 ring-[0.7px] ring-inset ring-primary hover:bg-base-300 transition"
       >Siehe Ergebnisse</button>
       <button
         type="button"
-        class="inline-flex items-center justify-center rounded-field bg-transparent text-primary text-base font-medium px-[18px] py-[11px] hover:bg-base-300 transition"
+        class="inline-flex items-center justify-center rounded-field bg-transparent text-primary text-base font-medium px-4.5 py-2.75 hover:bg-base-300 transition"
       >Compose</button>
       <button
         type="button"
-        class="inline-flex items-center justify-center gap-[9px] rounded-field bg-primary text-primary-content text-base font-medium px-[22px] py-[11px] hover:brightness-90 transition"
+        class="inline-flex items-center justify-center gap-2.25 rounded-field bg-primary text-primary-content text-base font-medium px-5.5 py-2.75 hover:brightness-90 transition"
       >
-        <#Icon iconify="ph:users-fill" class="w-[17px] h-[17px]" /> Folgen
+        <#Icon iconify="ph:users-fill" class="size-4.25" /> Folgen
       </button>
     </div>
     <div class="h-px bg-secondary my-6" />
     <div class="type-caption uppercase tracking-caps text-muted font-medium mb-3.5">{l("Post action row")}</div>
-    <div class="flex items-center gap-[30px]">
-      <#Icon iconify="ph:chat-circle" class="w-[22px] h-[22px] text-base-content" />
-      <#Icon iconify="ph:rocket" class="w-[22px] h-[22px] text-base-content" />
-      <#Icon iconify="ph:flame-fill" class="w-[22px] h-[22px] text-primary" />
-      <#Icon iconify="ph:bookmark-simple" class="w-[22px] h-[22px] text-base-content" />
-      <#Icon iconify="ph:dots-three-outline" class="w-[22px] h-[22px] text-base-content" />
+    <div class="flex items-center gap-7.5">
+      <#Icon iconify="ph:chat-circle" class="size-5.5 text-base-content" />
+      <#Icon iconify="ph:rocket" class="size-5.5 text-base-content" />
+      <#Icon iconify="ph:flame-fill" class="size-5.5 text-primary" />
+      <#Icon iconify="ph:bookmark-simple" class="size-5.5 text-base-content" />
+      <#Icon iconify="ph:dots-three-outline" class="size-5.5 text-base-content" />
     </div>
   </div>
 
   <div class="h-14" />
 
   {!-- ===== 05 Form ===== --}
-  <div class="flex items-center gap-4 mb-[22px]">
+  <div class="flex items-center gap-4 mb-5.5">
     <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">05 — {l("Form")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
@@ -288,7 +282,7 @@
       <div class="flex flex-col gap-2">
         <span class="text-xs uppercase tracking-label text-muted font-medium">{l("Search")}</span>
         <label class="input border-divider w-full flex items-center gap-2">
-          <#Icon iconify="ph:magnifying-glass" class="w-5 h-5 text-muted" />
+          <#Icon iconify="ph:magnifying-glass" class="size-5 text-muted" />
           <input type="search" placeholder="Suche …" class="grow">
         </label>
       </div>
@@ -347,7 +341,7 @@
   <div class="h-14" />
 
   {!-- ===== 06 Components ===== --}
-  <div class="flex items-center gap-4 mb-[22px]">
+  <div class="flex items-center gap-4 mb-5.5">
     <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">06 — {l("Components")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
@@ -356,18 +350,18 @@
     {!-- Left column: nav + stepper --}
     <div class="flex flex-col gap-6">
       {!-- Nav --}
-      <div class="rounded-box border border-divider bg-base-300 p-[18px]">
+      <div class="rounded-box border border-divider bg-base-300 p-4.5">
         <div class="type-overline text-muted mb-3 ml-1">{l("Navigation")}</div>
-        <a class="flex items-center gap-[14px] py-[9px] px-1 rounded-field cursor-pointer">
-          <#Icon iconify="ph:house-fill" class="w-5 h-5 text-primary shrink-0" />
+        <a class="flex items-center gap-3.5 py-2.25 px-1 rounded-field cursor-pointer">
+          <#Icon iconify="ph:house-fill" class="size-5 text-primary shrink-0" />
           <span class="type-title text-primary">Dashboard</span>
         </a>
-        <a class="flex items-center gap-[14px] py-[9px] px-1 rounded-field cursor-pointer hover:bg-base-100/60">
-          <#Icon iconify="ph:rss" class="w-5 h-5 shrink-0" />
+        <a class="flex items-center gap-3.5 py-2.25 px-1 rounded-field cursor-pointer hover:bg-base-100/60">
+          <#Icon iconify="ph:rss" class="size-5 shrink-0" />
           <span class="text-xl font-normal">Feeds</span>
         </a>
-        <a class="flex items-center gap-[14px] py-[9px] px-1 rounded-field cursor-pointer hover:bg-base-100/60">
-          <#Icon iconify="ph:bell" class="w-5 h-5 shrink-0" />
+        <a class="flex items-center gap-3.5 py-2.25 px-1 rounded-field cursor-pointer hover:bg-base-100/60">
+          <#Icon iconify="ph:bell" class="size-5 shrink-0" />
           <span class="text-xl font-normal">Benachrichtigungen</span>
         </a>
       </div>
@@ -377,16 +371,16 @@
         <div class="flex items-center gap-3">
           <button
             type="button"
-            class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0"
+            class="size-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0"
           >
-            <#Icon iconify="carbon:chevron-left" class="w-3 h-[13px]" />
+            <#Icon iconify="carbon:chevron-left" class="w-3 h-3.25" />
           </button>
           <span class="flex-1 type-caption tracking-widest uppercase font-medium text-center">Schritt 1 von 5</span>
           <button
             type="button"
-            class="w-7 h-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0"
+            class="size-7 rounded-full bg-primary text-primary-content flex items-center justify-center shrink-0"
           >
-            <#Icon iconify="carbon:chevron-right" class="w-3 h-[13px]" />
+            <#Icon iconify="carbon:chevron-right" class="w-3 h-3.25" />
           </button>
         </div>
         <div class="flex gap-1.5 my-4">
@@ -400,7 +394,7 @@
         <p class="m-0 mb-4 text-sm text-muted">Wenn Menschen sehen können, wer du bist, wird dir zu folgen zu einer bewussten Entscheidung.</p>
         <button
           type="button"
-          class="inline-flex items-center justify-center rounded-field bg-base-200 text-primary text-sm font-medium px-[20px] py-[10px] ring-[0.7px] ring-inset ring-primary hover:bg-base-300 transition"
+          class="inline-flex items-center justify-center rounded-field bg-base-200 text-primary text-sm font-medium px-5 py-2.5 ring-[0.7px] ring-inset ring-primary hover:bg-base-300 transition"
         >Open the Code of Conduct</button>
       </div>
     </div>
@@ -423,12 +417,12 @@
 
         {!-- Recent article --}
         <div class="rounded-box border border-divider bg-base-100 overflow-hidden">
-          <div class="px-5 pt-[18px] pb-3.5">
+          <div class="px-5 pt-4.5 pb-3.5">
             <div class="type-heading">Die Linke muss antagonistisch bleiben</div>
             <p class="mt-2 mb-3 text-sm leading-[1.45] text-muted">Die Linkspartei steht ständig unter Druck, sich der etablierten Politik anzupassen.</p>
             <div class="text-sm font-medium">Wolfgang Streeck</div>
           </div>
-          <div class="h-[120px] bg-gradient-to-br from-[#c6c6c6] to-[#9a9a9a] flex items-center justify-center text-white type-caption uppercase tracking-widest">Article image</div>
+          <div class="h-30 bg-gradient-to-br from-[#c6c6c6] to-[#9a9a9a] flex items-center justify-center text-white type-caption uppercase tracking-widest">Article image</div>
         </div>
       </div>
     </div>
@@ -437,7 +431,7 @@
   <div class="h-14" />
 
   {!-- ===== 07 Notifications ===== --}
-  <div class="flex items-center gap-4 mb-[22px]">
+  <div class="flex items-center gap-4 mb-5.5">
     <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">07 — {l("Notifications")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
@@ -451,7 +445,7 @@
   <div class="h-14" />
 
   {!-- ===== 08 Layout ===== --}
-  <div class="flex items-center gap-4 mb-[22px]">
+  <div class="flex items-center gap-4 mb-5.5">
     <span class="text-sm uppercase tracking-caps font-medium whitespace-nowrap">08 — {l("Layout")}</span>
     <div class="h-4 flex-1 bg-primary" style="clip-path: polygon(0 0, 100% 0, 100% 26%, 0 100%)" />
   </div>
@@ -473,7 +467,7 @@
 
       {!-- CENTER — 106px page header ("Home") above the y≈106 divider; feed area empty --}
       <div class="w-[600px] shrink-0 border-x-hair border-divider flex flex-col">
-        <div class="border-b-hair border-divider px-base h-page-header flex items-center">
+        <div class="border-b-hair border-divider px-4 h-page-header flex items-center">
           <div class="type-title text-base-content">Home</div>
         </div>
       </div>

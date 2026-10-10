@@ -58,7 +58,7 @@
                   title={l("Remove content warning")}
                   aria-label={l("Remove content warning")}
                 >
-                  <#Icon iconify="ph:x" class="w-4 h-4" />
+                  <#Icon iconify="ph:x" class="size-4" />
                 </button>
               </div>
             </div>
@@ -172,7 +172,7 @@
                   label={l("More options")}
                 >
                   <:trigger>
-                    <#Icon iconify="ph:dots-three-bold" class="w-5 h-5 text-muted" />
+                    <#Icon iconify="ph:dots-three-bold" class="size-5 text-muted" />
                   </:trigger>
 
                   {!-- Title toggle button — only for types configured with `toggle: true`. --}
@@ -254,13 +254,13 @@
                       wrapper_opts={["data-boundary": "#composer_container"]}
                       id="language_dropdown"
                       position="top"
-                      trigger_class="lang-button btn btn-ghost btn-sm gap-1 !px-[6px]"
+                      trigger_class="lang-button btn btn-ghost btn-sm gap-1 !px-1.5"
                       panel_class="flex-col flex-nowrap max-h-60 overflow-y-auto"
                       label={l("Set post language")}
                       trigger_opts={[title: l("Set post language")]}
                     >
                       <:trigger>
-                        <#Icon iconify="ph:translate-fill" class="w-[20px] h-[20px] text-primary" />
+                        <#Icon iconify="ph:translate-fill" class="size-5 text-primary" />
                         <span id="selected_language_label" phx-update="ignore" class="text-xs text-muted uppercase">{locale}</span>
                       </:trigger>
 
@@ -294,7 +294,7 @@
                           class="flex items-center gap-2 text-xs text-muted hover:text-primary"
                           title={l("Open language preferences in a new tab")}
                         >
-                          <#Icon iconify="ph:gear-fill" class="w-4 h-4" />
+                          <#Icon iconify="ph:gear-fill" class="size-4" />
                           {l("Manage languages")}
                         </a>
                       </li>
@@ -324,8 +324,8 @@
                 class="btn btn-primary btn-sm"
                 disabled={@smart_input_opts[:input_status] != :draft}
               >
-                {!-- <#Icon iconify="mdi:email-fast-outline" class="w-4 h-4" /> --}
-                <!-- <#Icon iconify="lucide:arrow-up" class="w-4 h-4" /> -->
+                {!-- <#Icon iconify="mdi:email-fast-outline" class="size-4" /> --}
+                <!-- <#Icon iconify="lucide:arrow-up" class="size-4" /> -->
                 {#case e(@smart_input_opts, :create_object_type, nil)}
                   {#match type when type in [:message, "message"]}
                     {if @smart_input_opts[:input_status] == :submit, do: l("Sending..."), else: l("Send")}

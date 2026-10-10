@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Common.LogoLinkLive do
     default: "flex place-content-center items-center gap-4 cursor-pointer"
 
   prop image_class, :css_class,
-    default: "w-10 h-10 aspect-square rounded-full bg-center bg-no-repeat bg-contain"
+    default: "size-10 aspect-square rounded-full bg-center bg-no-repeat bg-contain"
 
   prop name_class, :css_class, default: "type-title text-base-content lg:block hidden"
 

@@ -201,13 +201,13 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
           <%= if @icon_left do %>
             <Iconify.iconify
               icon={@icon_left}
-              class="w-5 h-5 shrink-0 phx-click-loading:hidden phx-submit-loading:hidden"
+              class="size-5 shrink-0 phx-click-loading:hidden phx-submit-loading:hidden"
               aria-hidden="true"
             />
           <% end %>
         <% else %>
           <%= if @icon_left do %>
-            <Iconify.iconify icon={@icon_left} class="w-5 h-5 shrink-0" aria-hidden="true" />
+            <Iconify.iconify icon={@icon_left} class="size-5 shrink-0" aria-hidden="true" />
           <% end %>
         <% end %>
       <% end %>
@@ -235,7 +235,7 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
           has_auto_loading?(@phx_click, @type, @loading_text) &&
             "phx-click-loading:hidden phx-submit-loading:hidden"
         }>
-          <Iconify.iconify icon={@icon_right} class="w-5 h-5 shrink-0" aria-hidden="true" />
+          <Iconify.iconify icon={@icon_right} class="size-5 shrink-0" aria-hidden="true" />
         </span>
       <% end %>
     </button>
@@ -258,7 +258,7 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
   # Size styles - md (41px) is the default size
   defp size_class("xs"), do: "btn-xs h-8 min-h-8"
   defp size_class("sm"), do: "btn-sm h-9 min-h-9"
-  defp size_class("md"), do: "h-[41px] min-h-[41px]"
+  defp size_class("md"), do: "h-10.25 min-h-10.25"
   defp size_class("lg"), do: "btn-lg h-13 min-h-13"
 
   # Check if this button will have automatic loading states

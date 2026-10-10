@@ -6,7 +6,7 @@
   data-role={@details_role}
 >
   <summary class="p-4 cursor-pointer text-sm font-medium text-base-content flex items-center gap-2 list-none">
-    <Iconify.iconify icon={@icon} class="w-4 h-4 text-muted" />
+    <Iconify.iconify icon={@icon} class="size-4 text-muted" />
     {@summary}
   </summary>
 

@@ -23,7 +23,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
 
   prop wrapper_class, :css_class, default: "m-0 p-0 justify-end !block"
   # nav row: 16px gap between icon and label (Figma). `!gap` beats DaisyUI's .menu grid gap (8px).
-  prop link_class, :any, default: "!px-0 flex items-center !gap-[16px]"
+  prop link_class, :any, default: "!px-0 flex items-center !gap-4"
   prop icon_class, :css_class, required: false, default: "size-5"
 
   prop skip_badges, :any, default: false
