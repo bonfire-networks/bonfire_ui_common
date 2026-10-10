@@ -173,6 +173,17 @@ media-player {
   }
 }
 
+/* daisyUI draws an empty `li` as a 1px base-content line at 10% opacity, which
+   also fades any border the template puts on it. Draw it as a divider instead,
+   so menu separators match every other divider. Unlayered on purpose: it must
+   beat daisyUI's rule and the border utilities on the same element. */
+.menu :where(li:empty) {
+  height: 0;
+  background: none;
+  opacity: 1;
+  border-top: var(--border) solid var(--divider-color);
+}
+
 /* Fix mobile double-tap issue: DaisyUI menu hover styles trigger hover state
    on first tap, requiring a second tap to actually click. Replace hover
    background with :active feedback on touch-only devices. */

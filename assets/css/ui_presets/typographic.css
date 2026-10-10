@@ -10,7 +10,9 @@ html[data-ui-preset="typographic"] [data-theme] {
   --rail-divider-width: var(--border);
   --rail-offset: var(--spacing-feed);
   --user-menu-divider: var(--border);
-  --divider-color: var(--color-secondary);
+  /* Secondary softened toward the surface: at a whole-pixel --border this
+     reads like the old 0.7px hairline without the sub-pixel blending. */
+  --divider-color: color-mix(in oklab, var(--color-secondary) 70%, var(--color-base-100));
   --widget-gap: 0px;
   --widget-overlap: calc(-1 * var(--border));
   --comment-base-indent: 0px;
@@ -113,7 +115,7 @@ html[data-ui-preset="typographic"] [data-role="profile-stats"] a .text-muted {
 }
 
 html[data-ui-preset="typographic"] [data-id="profile_hero"] {
-  @apply border-y-hair border-y-secondary;
+  @apply border-y-hair border-y-divider;
 }
 
 html[data-ui-preset="typographic"] .widget-user-profile {
@@ -241,7 +243,7 @@ html[data-ui-preset="typographic"] [data-reply-context] > article::after {
   left: 17px; /* parent avatar centre (≈35px avatar / 2) */
   top: 38px; /* just below the avatar */
   bottom: -30px; /* extend through the mb-8 gap toward the reply avatar */
-  border-left: var(--border) solid var(--color-secondary);
+  border-left: var(--border) solid var(--divider-color);
   pointer-events: none;
 }
 
@@ -252,8 +254,8 @@ html[data-ui-preset="typographic"] [data-reply-context] > [data-role="subject"]:
   top: -18px;
   width: 34px;
   height: 35px; /* down to ≈ the reply avatar centre */
-  border-left: var(--border) solid var(--color-secondary);
-  border-bottom: var(--border) solid var(--color-secondary);
+  border-left: var(--border) solid var(--divider-color);
+  border-bottom: var(--border) solid var(--divider-color);
   border-bottom-left-radius: 0px;
   pointer-events: none;
 }
@@ -266,7 +268,7 @@ html[data-ui-preset="typographic"] [data-reply-context] > [data-role="thread_hea
   width: 3px;
   background-image: radial-gradient(
     circle,
-    var(--color-secondary) 1.5px,
+    var(--divider-color) 1.5px,
     transparent 1.6px
   );
   background-size: 3px 8px;
