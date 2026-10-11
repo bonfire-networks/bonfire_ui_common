@@ -351,14 +351,7 @@ defmodule Bonfire.Common.Settings.LiveHandler do
         socket
       ) do
     with {:ok, settings} <-
-           Bonfire.Common.Settings.put(
-             [:ui, :widget_order, parent_item],
-             target_order
-             |> Enum.reject(&is_nil/1)
-             |> Enum.with_index()
-             |> Map.new(fn {item, index} -> {maybe_to_atom(item), index} end),
-             current_user: current_user(socket)
-           ) do
+           save_widget_order(parent_item, target_order, current_user: current_user(socket)) do
       {
         :noreply,
         socket |> maybe_assign_context(settings)
@@ -378,18 +371,28 @@ defmodule Bonfire.Common.Settings.LiveHandler do
         socket
       ) do
     with {:ok, settings} <-
-           Bonfire.Common.Settings.put(
-             [:ui, :sub_widget_order, parent_item],
-             target_order
-             |> Enum.with_index()
-             |> Map.new(fn {item, index} -> {maybe_to_atom(item), index} end),
-             current_user: current_user(socket)
+           save_widget_order(parent_item, target_order, [current_user: current_user(socket)],
+             :sub_widget_order
            ) do
       {
         :noreply,
         socket |> maybe_assign_context(settings)
       }
     end
+  end
+
+  @doc """
+  Saves a widget list's order as `%{key => position}` under `[:ui, setting, parent_item]`, as read by `Bonfire.UI.Common.WidgetsLive.sort_by_saved_order/3`.
+  """
+  def save_widget_order(parent_item, target_order, opts, setting \\ :widget_order) do
+    Bonfire.Common.Settings.put(
+      [:ui, setting, parent_item],
+      target_order
+      |> Enum.reject(&is_nil/1)
+      |> Enum.with_index()
+      |> Map.new(fn {item, index} -> {maybe_to_atom(item), index} end),
+      opts
+    )
   end
 
   defp delete_theme_key(socket, key, scope) do

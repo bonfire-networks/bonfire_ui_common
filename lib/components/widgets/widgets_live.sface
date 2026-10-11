@@ -2,7 +2,7 @@
   data-sortable-item
   data-sortable-handler
   id={@id}
-  phx-hook={if @id, do: "Draggable"}
+  phx-hook={if @id && @reorderable, do: "Draggable"}
   data-widget-draggable
   data-grouped="id"
   data-parent={@id}
@@ -22,13 +22,10 @@
       )}
       {#match order_settings}
         {#for {widget, index} <-
-            Enum.sort_by(
-              Enum.with_index(List.wrap(@widgets)),
-              fn {widget, index} ->
-                ((widget[:page] || widget[:module]) &&
-                   e(order_settings, Types.maybe_to_atom(widget[:page] || widget[:module]), nil)) ||
-                  index
-              end
+            Bonfire.UI.Common.WidgetsLive.sort_by_saved_order(
+              @widgets,
+              order_settings,
+              &Bonfire.UI.Common.WidgetsLive.order_key/1
             )}
           <Bonfire.UI.Common.WidgetLive
             widget={widget}

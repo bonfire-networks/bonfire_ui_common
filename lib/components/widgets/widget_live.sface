@@ -30,14 +30,10 @@
           )}
           {#match order_settings}
             {#for {sub_widget, index} <-
-                Enum.sort_by(
-                  Enum.with_index(List.wrap(@widget[:sub_widgets])),
-                  fn {sub_widget, index} ->
-                    ((sub_widget[:page] || sub_widget[:module]) &&
-                       order_settings[
-                         Types.maybe_to_atom(sub_widget[:page] || sub_widget[:module] || "default")
-                       ]) || index
-                  end
+                Bonfire.UI.Common.WidgetsLive.sort_by_saved_order(
+                  @widget[:sub_widgets],
+                  order_settings,
+                  &Bonfire.UI.Common.WidgetsLive.order_key/1
                 )}
               <StatelessComponent
                 module={Bonfire.UI.Common.WidgetLive}

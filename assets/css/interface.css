@@ -239,11 +239,11 @@ html:not([data-ui-preset="typographic"]) #nav_sidebar .widget_accordion > summar
   text-transform: none;
 }
 
+/* flat activities inside dashboard widgets (not the feed) */
 html:not([data-ui-preset="typographic"])
   [data-id="user_dashboard"]
   [data-showing-within="main"]
-  > aside,
-html:not([data-ui-preset="typographic"]) [data-id="user_dashboard"] .activity_wrapper {
+  .activity_wrapper {
   border-width: 0;
   border-radius: 0;
   background-color: transparent;
@@ -254,19 +254,6 @@ html:not([data-ui-preset="typographic"]) [data-id="user_dashboard"] li.bonfire-w
   padding: 0;
 }
 
-html:not([data-ui-preset="typographic"])
-  [data-id="user_dashboard"]
-  [data-showing-within="main"]
-  > aside
-  [role="heading"][aria-level="2"] {
-  color: color-mix(
-    in oklab,
-    var(--color-base-content) 80%,
-    var(--stream-canvas)
-  );
-  font-weight: var(--stream-emphasis-weight);
-  letter-spacing: 0.06em;
-}
 
 /* A fixed-height wash marks provenance without tinting long posts or their media. */
 html:not([data-ui-preset="typographic"])
@@ -518,13 +505,91 @@ html:not([data-ui-preset="typographic"]) [data-id="instance_pinned_widget"] > as
   padding-inline: 0;
 }
 
+/* Carousel tiles (Spotlight, dashboard carousels) */
 html:not([data-ui-preset="typographic"])
-  [data-id="instance_pinned_widget"]
-  .spotlight_clamp {
+  :is([data-id="instance_pinned_widget"] .spotlight_clamp, [data-id="dashboard_main"] .carousel-scroll > *) {
+  overflow: hidden;
   border-width: 0;
   border-radius: var(--stream-contained-object-radius);
   background-color: var(--stream-surface);
   box-shadow: none;
+}
+
+/* Dashboard main area (`Bonfire.UI.Me.DashboardMainLive`): one gutter, heading style and spacing for every widget. */
+html:not([data-ui-preset="typographic"]) [data-id="dashboard_main"] {
+  --dashboard-section-space: --spacing(6);
+}
+
+/* sections; hide those whose widget rendered nothing */
+html:not([data-ui-preset="typographic"]) [data-id="dashboard_main"] > ul > li {
+  padding-block: var(--dashboard-section-space);
+}
+
+html:not([data-ui-preset="typographic"])
+  [data-id="dashboard_main"]
+  > ul
+  > li:not(:has(aside[data-role="widget"])) {
+  display: none;
+}
+
+html:not([data-ui-preset="typographic"]) [data-id="dashboard_main"] > [data-id="dashboard_feed"] {
+  padding-top: var(--dashboard-section-space);
+}
+
+/* divider between visible sections */
+html:not([data-ui-preset="typographic"])
+  [data-id="dashboard_main"]
+  > ul
+  > li:has(aside[data-role="widget"])
+  ~ li:has(aside[data-role="widget"]),
+html:not([data-ui-preset="typographic"])
+  [data-id="dashboard_main"]
+  > ul:has(aside[data-role="widget"])
+  + [data-id="dashboard_feed"] {
+  border-top: var(--divider-width) solid var(--divider-color);
+}
+
+/* flatten each widget's own box */
+html:not([data-ui-preset="typographic"]) [data-id="dashboard_main"] aside[data-role="widget"] {
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+/* headings, larger than the sidebar's */
+html:not([data-ui-preset="typographic"])
+  [data-id="dashboard_main"]
+  :is(aside[data-role="widget"], [data-id="dashboard_feed"])
+  > [data-role="widget-header"] {
+  min-height: 0;
+  padding: 0 var(--stream-content-padding) --spacing(4);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+html:not([data-ui-preset="typographic"])
+  [data-id="dashboard_main"]
+  :is(aside[data-role="widget"], [data-id="dashboard_feed"])
+  [data-role="widget-heading"] {
+  color: var(--color-base-content);
+  font-size: var(--text-xl);
+  font-weight: var(--stream-emphasis-weight);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  text-transform: none;
+}
+
+html:not([data-ui-preset="typographic"]) [data-id="dashboard_main"] .carousel-scroll {
+  padding-inline: var(--stream-content-padding);
+  scroll-padding-inline: var(--stream-content-padding);
+}
+
+/* a lone tile fills the row */
+html:not([data-ui-preset="typographic"]) [data-id="dashboard_main"] .carousel-scroll > :only-child {
+  width: 100%;
 }
 
 /* Right rail: open support content, with shape reserved for search and controls. */
@@ -714,15 +779,6 @@ html:not([data-ui-preset="typographic"])
   [data-role="toggle_participants"] {
   margin-inline: 0;
   margin-bottom: 0;
-}
-
-/* Title row and card share one left edge (the markup's sm:px-5 would
-   drift 4px past the card's 16px inset on wider viewports). */
-html:not([data-ui-preset="typographic"])
-  [data-id="user_dashboard"]
-  aside:has([data-id="trending_discussions"])
-  > [data-role="widget-header"] {
-  padding-inline: var(--stream-content-padding);
 }
 
 /* Profile: a flat identity header integrated into the central column. */

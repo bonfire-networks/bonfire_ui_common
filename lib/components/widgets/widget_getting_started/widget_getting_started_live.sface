@@ -94,7 +94,7 @@
                   <StatefulComponent
                     module={maybe_component(step[:cta_component], @__context__)}
                     id={"widget_getting_started_#{step.key}"}
-                    variant={:compact}
+                    variant={step[:cta_variant] || :compact}
                   />
                 {#match :stateless_component}
                   {!-- a step whose action is to read something we can simply show, like the rules, which are a widget rather than a page --}
