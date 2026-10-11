@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.GuestBoardLive do
   @moduledoc """
-  The public "board" shell for the guest Home, About, People directory and Code of conduct pages: one centred column that owns the header, navigation, banner and footer, so every section shares the same outer edges and gutter.
+  The public "board" shell for the guest Home, About, People directory and Code of conduct pages.
 
   """
   use Bonfire.UI.Common.Web, :stateless_component
@@ -8,8 +8,14 @@ defmodule Bonfire.UI.Common.GuestBoardLive do
   @doc "Which page is being shown (`:home`, `:about`, `:people` or `:conduct`), for the current nav state."
   prop page, :atom, default: :home
 
-  @doc "The page content, placed between the banner and the footer."
+  @doc "Whether the page lays out its own cards (as Home does, one per section) instead of being wrapped in a single card."
+  prop bare, :boolean, default: false
+
+  @doc "The page content, placed after the banner (or hero) and before the footer."
   slot default, required: true
+
+  @doc "An introduction shown below the banner in a hero card, instead of the plain banner strip."
+  slot hero
 
   @doc """
   The layout assigns a view sets to render inside the board: the board owns its chrome (header, nav, footer), so the app sidebars, widgets and page header are turned off. The mobile dock stays, since below `lg` it carries the guest log in / sign up actions. Pass whether the viewer is a guest, since only guests get the board.
