@@ -23,7 +23,7 @@
           ]}
         />
       </div>
-      <span class={["text-base", active_label_class(active)]}>{localise_dynamic(
+      <span class={["truncate min-w-0 text-sm", active_label_class(active)]}>{localise_dynamic(
           @text || @widget[:text] || @widget[:name],
           @widget[:extension] || @widget[:module] || __MODULE__
         )}</span>
@@ -34,7 +34,7 @@
             :if={!@skip_badges or (is_list(@skip_badges) and badge[:id] not in @skip_badges)}
             data-id="widget_badge"
             data-highlighted={Settings.get([Bonfire.UI.Common.BadgeCounterLive, :highlight], false, @__context__)}
-            class="ml-auto flex shrink-0 items-center place-content-center"
+            class="ml-auto flex min-w-5 shrink-0 items-center justify-center"
           >
             <StatelessComponent
               module={maybe_component(Bonfire.UI.Common.BadgeCounter, @__context__)}

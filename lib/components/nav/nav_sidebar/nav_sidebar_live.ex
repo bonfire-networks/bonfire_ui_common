@@ -41,7 +41,7 @@ defmodule Bonfire.UI.Common.NavSidebarLive do
   @doc "Text classes for a nav link, highlighted when active."
   def nav_text_class(context, page, opts \\ []) do
     if nav_active?(context, page, opts),
-      do: "text-base font-medium text-primary",
-      else: "text-base font-normal text-base-content"
+      do: "text-sm font-medium text-primary",
+      else: "text-sm font-normal text-base-content"
   end
 end

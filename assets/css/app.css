@@ -384,9 +384,8 @@ label[for],
 }
 
 /* ============================================
-   MOBILE TOUCH TARGETS & ACTIVE FEEDBACK
-   Enforce 44px minimum button size and instant
-   press feedback on touch devices (iOS HIG / WCAG)
+   MOBILE ACTIVE FEEDBACK
+   Instant press feedback on touch devices (iOS HIG)
    ============================================ */
 @media (pointer: coarse) {
   .btn:active:not(.btn-active):not(:disabled):not([aria-disabled="true"]) {
@@ -972,7 +971,7 @@ pre.lumis > code {
   --spacing-card: 16px; /* card and panel padding, card→content inset */
   --spacing-section: 36px; /* between page sections */
   --spacing-edge: 75px; /* full-bleed edge gutter width (the #ffeaea rails) — w-edge */
-  --spacing-rail: 340px; /* left/right column (nav & widgets) width — w-rail */
+  --spacing-rail: 300px; /* left/right column (nav & widgets) width — w-rail */
   --spacing-page-header: 80px; /* page-header bar height — min-h-page-header / h-page-header */
 
   /* Breakpoints */
@@ -1134,9 +1133,19 @@ hex-input::part(input) {
 @utility sidebar-child-list {
   @apply !m-0 !mb-1 !p-0 !gap-0 before:!content-none after:!content-none;
   background-image: linear-gradient(color-mix(in oklch, var(--color-base-content) 20%, transparent), color-mix(in oklch, var(--color-base-content) 20%, transparent));
-  background-position: calc(var(--spacing) * 5.5 - 0.5px) 0;
+  background-position: calc(var(--spacing) * 4.5 - 0.5px) 0; /* under the 20px group icon (8px row inset + 10px) */
   background-size: 1px 100%;
   background-repeat: no-repeat;
+}
+
+/* One row for every left-rail entry (nav links, groups): 32px tall, 8px inset
+   so icon and label land on the rail's 30px edge (container lg:px-5.5 + 8px),
+   20px leading slot, 12px to the label. */
+@utility nav-row {
+  @apply !flex w-full min-w-0 items-center !gap-3 !min-h-8 !px-2 !py-1 rounded-selector leading-5;
+  @media (pointer: coarse) {
+    @apply !min-h-11;
+  }
 }
 
 @utility sidebar-child-link {
@@ -2461,6 +2470,82 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
 }
 .spotlight_clamp .object_body p {
   display: contents;
+}
+
+/* Carousel tiles (Spotlight, Top discussions): cap the height so one tall post
+   (a poll, an image) doesn't leave a void under its shorter neighbours; the
+   whole tile opens the full post. The tile's own scroll timeline is only
+   active when the content actually overflows, so `--tile-clamped` flips to 1
+   (showing the fade) only on clipped tiles. Browsers without scroll-driven
+   animations keep the uncapped tiles. */
+@property --tile-clamped {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: true;
+}
+
+@keyframes tile-clamped {
+  from,
+  to {
+    --tile-clamped: 1;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  .spotlight_clamp {
+    position: relative;
+    max-height: var(--carousel-tile-max-h, 22rem);
+    overflow: hidden;
+    animation: tile-clamped linear both;
+    animation-timeline: scroll(self block);
+  }
+
+  /* bottom fade on clipped tiles */
+  .spotlight_clamp::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 4rem;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--tile-surface, var(--color-base-100))
+    );
+    opacity: var(--tile-clamped);
+    pointer-events: none;
+  }
+
+  /* Top discussions: keep the reply/participants footer visible on clipped
+     tiles, with the fade sitting just above it. The negative margin cancels
+     the extra padding, so unclipped tiles keep their layout. */
+  .spotlight_clamp:has([data-role="discussion_preview_actions"])::after {
+    content: none;
+  }
+
+  .spotlight_clamp [data-role="discussion_preview_actions"] {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    padding-bottom: var(--spacing-card);
+    margin-bottom: calc(-1 * var(--spacing-card));
+    background-color: var(--tile-surface, var(--color-base-100));
+  }
+
+  .spotlight_clamp [data-role="discussion_preview_actions"]::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 100%;
+    height: 3rem;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--tile-surface, var(--color-base-100))
+    );
+    opacity: var(--tile-clamped);
+    pointer-events: none;
+  }
 }
 
 /* page-to-page crossfade for full loads; live navigations: view_transitions.js */

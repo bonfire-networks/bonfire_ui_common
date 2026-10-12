@@ -48,7 +48,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   @doc "Returns the label classes for an active or inactive navigation item."
   def active_label_class(active?) do
     if active?,
-      do: "font-bold text-base-content",
+      do: "font-medium text-base-content",
       else: "font-normal text-base-content"
   end
 
@@ -62,7 +62,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   @doc "Returns the surface classes for an active or inactive navigation item."
   def active_link_class(active?) do
     if active?,
-      do: "",
+      do: "bg-fill-strong",
       else: "hover:bg-fill"
   end
 end

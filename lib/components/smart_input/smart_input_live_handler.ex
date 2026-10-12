@@ -632,6 +632,27 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     {:noreply, push_event(socket, "focus-editor", %{})}
   end
 
+  # Turns a draft DM into a regular post: drops the recipients and falls back to the
+  # default boundary, keeping the draft text.
+  def handle_event("switch_to_post", _params, socket) do
+    socket =
+      reset_addressing(
+        socket,
+        [
+          smart_input_component: nil,
+          create_object_type: nil,
+          to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
+          mentions: []
+        ],
+        create_object_type: nil,
+        to_circles: [],
+        mentions: [],
+        recipients_editable: false
+      )
+
+    {:noreply, push_event(socket, "focus-editor", %{})}
+  end
+
   # Clears just the quoted post, leaving any other reply state intact.
   def handle_event("remove_quoted", _params, socket) do
     set(socket, quoted_object: nil, quoted_url: nil)

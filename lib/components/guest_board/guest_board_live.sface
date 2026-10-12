@@ -3,8 +3,8 @@
   data-page={@page}
   class="w-full font-(family-name:--font-inter) text-sm leading-relaxed text-base-content [--stream-canvas:var(--color-base-100)] theme-light:text-base-content"
 >
-  {!-- full-width masthead: icon left, instance name centred, actions right (the 1fr side columns keep the name optically centred whatever the actions' width) --}
-  <header class="grid min-h-14 grid-cols-[1fr_auto_1fr] bg-base-100 items-center gap-4 border-b border-divider px-4 sm:min-h-16 sm:px-6">
+  {!-- full-width masthead: icon left, instance name centred, actions right (the 1fr side columns keep the name optically centred whatever the actions' width). No line under it: masthead and tabs read as one header, closed by the nav's border --}
+  <header class="grid min-h-14 grid-cols-[1fr_auto_1fr] bg-base-100 items-center gap-4 px-4 sm:min-h-16 sm:px-6">
     <div class="flex min-w-0 items-center">
       {#case Config.get([:ui, :theme, :instance_icon], nil)}
         {#match nil}
@@ -28,7 +28,7 @@
 
     <LinkLive
       to="/"
-      class="min-w-0 truncate py-2.5 text-center text-lg font-semibold tracking-tight underline-offset-3 hover:underline sm:text-xl theme-light:font-bold"
+      class="min-w-0 truncate py-2.5 text-center text-lg font-semibold tracking-[-0.01em] underline-offset-3 hover:underline sm:text-xl theme-light:font-semibold"
       opts={[id: "guest-board-home"]}
     >{instance_name()}</LinkLive>
 
@@ -61,19 +61,18 @@
   </nav>
 
   {!-- the page as raised cards on the tinted canvas; the gap between cards is the separation, so no section draws its own top border --}
-  <div class="mx-auto flex w-full max-w-205 flex-col gap-4 px-3 pb-10 pt-4 sm:gap-5 sm:px-0 sm:pb-12 sm:pt-6">
+  <div class="mx-auto flex w-full max-w-205 flex-col gap-4 px-3 pb-10 pt-4 sm:px-0 sm:pb-12 sm:pt-6">
     {#if slot_assigned?(:hero)}
       {!-- stacked, not split: the intro is instance-authored (any length, markdown), so it gets the full card width below a short banner --}
       <section id="guest-board-hero" class="board-card">
-        {!-- the inset image follows the card's corner: inner radius = card radius - padding --}
-        <div :if={banner_image()} class="p-2">
-          <div
-            data-role="guest-board-banner"
-            class="aspect-[2/1] rounded-[max(0px,calc(var(--radius-box)-0.5rem))] bg-fill bg-cover bg-center sm:aspect-[3/1]"
-            aria-hidden="true"
-            style={Bonfire.UI.Common.NextGenImageLive.background_image_set(banner_image())}
-          />
-        </div>
+        {!-- flush with the card's edges: the card clips it to its own rounded corners. Same ratio as the other pages' banner below, so it's the same height everywhere on the board --}
+        <div
+          :if={banner_image()}
+          data-role="guest-board-banner"
+          class="aspect-[5/2] bg-fill bg-cover bg-center sm:aspect-[4/1]"
+          aria-hidden="true"
+          style={Bonfire.UI.Common.NextGenImageLive.background_image_set(banner_image())}
+        />
         <#slot {@hero} />
       </section>
     {/if}
@@ -86,7 +85,7 @@
           :if={!slot_assigned?(:hero)}
           data-role="guest-board-banner"
           class={
-            "h-35 bg-cover bg-center",
+            "aspect-[5/2] bg-cover bg-center sm:aspect-[4/1]",
             "bg-fill": is_binary(banner_image()),
             "bg-fill-strong": is_nil(banner_image())
           }

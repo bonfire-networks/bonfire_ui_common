@@ -182,7 +182,7 @@
                 aria-label={l("Expand composer")}
                 title={l("Expand composer")}
                 aria-pressed="false"
-                class="composer-fullscreen-button btn btn-sm btn-ghost btn-circle min-h-11 min-w-11 text-muted focus-ring"
+                class="composer-fullscreen-button btn btn-sm btn-ghost btn-circle text-muted focus-ring"
               >
                 <span class="composer-expand-icon"><#Icon iconify="ph:arrows-out-simple" class="size-5" /></span>
                 <span class="composer-restore-icon"><#Icon iconify="ph:arrows-in-simple" class="size-5" /></span>
@@ -194,7 +194,7 @@
                 type="button"
                 aria-label={l("Minimise composer, keep draft")}
                 title={l("Minimise composer, keep draft")}
-                class="btn btn-sm btn-ghost btn-circle min-h-11 min-w-11 text-muted focus-ring"
+                class="btn btn-sm btn-ghost btn-circle text-muted focus-ring"
               ><#Icon iconify="ph:minus" class="size-5" /></button>
             </div>
           </div>
@@ -213,6 +213,17 @@
               >
                 <#Icon iconify="ph:lock-simple-open-fill" class="size-4" />
                 <span class="text-sm">{l("Not encrypted")}</span>
+                <button
+                  :if={!replying?(assigns) and @showing_within != :messages}
+                  id="composer_switch_to_post"
+                  type="button"
+                  phx-click="Bonfire.UI.Common.SmartInput:switch_to_post"
+                  phx-target="#smart_input"
+                  class="btn btn-ghost btn-xs ml-auto text-base-content focus-ring"
+                >
+                  <#Icon iconify="ph:note-pencil" class="size-4" />
+                  {l("Switch to post")}
+                </button>
               </div>
             {#elseif replying?(assigns) or group_context?(@context_group) or @showing_within != :thread_embed}
               {!-- Where it's posted on the left, who can see it on the right. In thread_embed the

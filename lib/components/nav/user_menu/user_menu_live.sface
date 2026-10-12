@@ -1,9 +1,10 @@
 <Dropdown
   id="user_more_menu_links"
   position="top-start"
-  wrapper_class="sticky bottom-0 z-sticky mt-auto shrink-0 bg-rail"
-  panel_class="!w-72 max-w-[calc(100vw-2rem)]"
-  trigger_class="focus-ring group flex w-full cursor-pointer items-center gap-3 py-2 text-left transition hover:bg-fill focus:bg-fill px-3 pb-safe pt-4 lg:px-5 border-t-(length:--user-menu-divider) border-divider lg:pb-4"
+  wrapper_class="sticky bottom-0 z-sticky mt-auto shrink-0 bg-rail before:pointer-events-none before:absolute before:inset-x-0 before:-top-6 before:h-6 before:bg-linear-to-t before:from-rail before:to-transparent"
+  match_trigger_width
+  panel_class="min-w-64 max-w-[calc(100vw-2rem)]"
+  trigger_class="focus-ring group flex w-full cursor-pointer items-center gap-3 py-2 text-left transition hover:bg-fill focus:bg-fill px-4 pb-safe pt-4 lg:px-7.5 border-t-(length:--user-menu-divider) border-divider lg:pb-4"
   label={l("User menu")}
   trigger_opts={if module_enabled?(Bonfire.UI.Me.SwitchUserMenuItemsLive, @__context__),
     do: ["phx-click": JS.push("load", target: "#switch_user_menu_items")],
@@ -15,7 +16,7 @@
         ring
         bg_class="rounded-full"
         title={e(current_user(@__context__), :profile, :name, "Anon")}
-        class="inline-block object-cover cursor-pointer rounded-full size-10"
+        class="inline-block object-cover cursor-pointer rounded-full size-8"
         src={Media.avatar_url(current_user(@__context__))}
         user_id={current_user_id(@__context__)}
         parent_id="user_menu"
@@ -23,18 +24,18 @@
       />
     </div>
     <div class="min-w-0 flex-1">
-      <div class="truncate text-base font-medium leading-tight text-base-content">
+      <div class="truncate text-sm font-medium leading-5 text-base-content">
         {e(current_user(@__context__), :profile, :name, nil) ||
           e(current_user(@__context__), :character, :username, l("Anonymous"))}
       </div>
-      <div class="truncate text-base leading-tight text-muted">
+      <div class="truncate text-xs leading-4 text-muted">
         {maybe_apply(Bonfire.Me.Characters, :display_username, [current_user(@__context__), true],
           fallback_return: "@" <> e(current_user(@__context__), :character, :username, "")
         )}
       </div>
     </div>
-    <div class="btn btn-sm btn-ghost btn-circle">
-      <#Icon iconify="ph:list" class="size-5 shrink-0 text-muted" aria-hidden="true" />
+    <div class="flex w-5 shrink-0 justify-center">
+      <#Icon iconify="ph:caret-up-down" class="size-4 text-muted" aria-hidden="true" />
     </div>
   </:trigger>
 

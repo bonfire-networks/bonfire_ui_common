@@ -120,15 +120,10 @@ html:not([data-ui-preset="typographic"]) [data-theme] {
   }
 }
 
-/* Rails yield before the reading column: fluid between 260px and the
-   default 340px instead of a fixed claim, so at in-between viewport
-   widths the feed column shrinks last. w-rail compiles to
-   width: var(--spacing-rail), so this reaches the live rails and the
-   loading skeleton alike. Gated to docked-rail widths — below lg the
-   rails are overlay drawers and keep their full 340px. */
+
 @media (min-width: 1024px) {
   html:not([data-ui-preset="typographic"]) {
-    --spacing-rail: clamp(260px, 24vw, 340px);
+    --spacing-rail: clamp(260px, 24vw, 300px);
   }
 }
 
@@ -512,6 +507,8 @@ html:not([data-ui-preset="typographic"])
   border-width: 0;
   border-radius: var(--stream-contained-object-radius);
   background-color: var(--stream-surface);
+  /* colour of the clipped-tile fade, see `.spotlight_clamp` in app.css */
+  --tile-surface: var(--stream-surface);
   box-shadow: none;
 }
 
@@ -616,8 +613,6 @@ html:not([data-ui-preset="typographic"]) [role="search"] .input:focus-within {
 }
 
 html:not([data-ui-preset="typographic"]) [role="search"] button[type="submit"] {
-  min-width: 44px;
-  min-height: 44px;
   border-radius: var(--radius-selector);
 }
 

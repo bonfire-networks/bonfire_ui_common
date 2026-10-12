@@ -30,6 +30,7 @@
           <Bonfire.UI.Common.WidgetLive
             widget={widget}
             wrapper_class={@wrapper_class || ""}
+            link_class={@link_class}
             page={@page}
             selected_tab={@selected_tab}
             showing_within={@showing_within}

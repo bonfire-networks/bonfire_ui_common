@@ -13,7 +13,7 @@
         <label
           for="sidebar-drawer"
           aria-label={l("Open navigation sidebar")}
-          class="btn btn-circle btn-ghost min-w-11 min-h-11"
+          class="btn btn-circle btn-ghost"
         >
           <div class="relative">
             {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
@@ -88,7 +88,7 @@
           <label
             :if={@show_widgets_toggle}
             for="widgets-drawer"
-            class="xl:hidden btn btn-ghost btn-circle min-w-11 min-h-11"
+            class="xl:hidden btn btn-ghost btn-circle"
             aria-label={l("Open widgets sidebar")}
           >
             <#Icon iconify="ph:sidebar-simple-fill" class="size-5 text-primary" />

@@ -116,7 +116,7 @@ import Bonfire.UI.Common.DesignSystem.ButtonLive
 
 <.render
   variant="primary"           # primary|secondary|ghost|outline|danger|soft
-  size="md"                   # xs|sm|md|lg (md = 44px, recommended)
+  size="md"                   # xs|sm|md|lg (md = 41px, recommended)
   loading={false}             # Manual loading state
   loading_text="Saving..."    # Enable auto-loading with this text
   disabled={false}

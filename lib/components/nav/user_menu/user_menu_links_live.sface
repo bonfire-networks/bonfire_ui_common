@@ -1,82 +1,58 @@
 <li>
-  <LinkLive to={~p"/"} class="flex items-center gap-2 text-sm text-base-content justify-between">
-    <div>{l("Home")}</div>
-    <#Icon iconify="ph:house-fill" class="size-5 shrink-0 text-muted" />
+  <LinkLive to={~p"/"} class="flex items-center gap-3 text-sm text-base-content">
+    <#Icon iconify="ph:house-fill" class="size-4 shrink-0 text-muted" />
+    <span class="flex-1 truncate">{l("Home")}</span>
   </LinkLive>
 </li>
 <li>
   <LinkLive
     to={if is_map(current_user(@__context__)), do: path(current_user(@__context__)), else: ~p"/user"}
-    class="flex items-center gap-2 text-sm text-base-content justify-between"
+    class="flex items-center gap-3 text-sm text-base-content"
   >
-    <div>{l("Profile")}</div>
-    <#Icon iconify="ph:user-fill" class="size-5 shrink-0 text-muted" />
+    <#Icon iconify="ph:user-fill" class="size-4 shrink-0 text-muted" />
+    <span class="flex-1 truncate">{l("Profile")}</span>
   </LinkLive>
 </li>
 
-<li class="m-1 border-t border-divider" />
+<li role="separator" class="-mx-2 my-1 border-t border-divider" />
 
 <li>
-  <LinkLive
-    to={~p"/feed/likes"}
-    class="flex items-center gap-2 text-sm text-base-content justify-between"
-  >
-    <div>{l("Favourites")}</div>
-    <#Icon iconify="ph:fire-fill" class="size-5 shrink-0 text-muted" />
+  <LinkLive to={~p"/feed/likes"} class="flex items-center gap-3 text-sm text-base-content">
+    <#Icon iconify="ph:fire-fill" class="size-4 shrink-0 text-muted" />
+    <span class="flex-1 truncate">{l("Favourites")}</span>
   </LinkLive>
 </li>
 <li>
-  <LinkLive
-    to={~p"/hashtags/followed"}
-    class="flex items-center gap-2 text-sm text-base-content justify-between"
-  >
-    <div>{l("Followed Hashtags")}</div>
-    <#Icon iconify="ph:hash-fill" class="size-5 shrink-0 text-muted" />
+  <LinkLive to={~p"/hashtags/followed"} class="flex items-center gap-3 text-sm text-base-content">
+    <#Icon iconify="ph:hash-fill" class="size-4 shrink-0 text-muted" />
+    <span class="flex-1 truncate">{l("Followed Hashtags")}</span>
   </LinkLive>
 </li>
 {!-- <li>
 <LinkLive
     to={~p"/scheduled_posts"}
-    class="flex items-center gap-2 text-sm text-base-content justify-between"
+    class="flex items-center gap-3 text-sm text-base-content"
   >
-    <div>{l("Scheduled posts")}</div>
-                <#Icon iconify="ph:calendar-fill" class="size-5 shrink-0 text-muted" />
-
+    <#Icon iconify="ph:calendar-fill" class="size-4 shrink-0 text-muted" />
+    <span class="flex-1 truncate">{l("Scheduled posts")}</span>
   </LinkLive>
 </li> --}
-<li class="m-1 border-t border-divider" />
+{!-- one entry for blocked/silenced/ghosted: the settings sidebar links all three lists --}
 <li>
   <LinkLive
-    to={~p"/blocked"}
-    class="flex items-center gap-2 text-sm text-base-content justify-between"
+    to={~p"/settings/boundaries/blocked"}
+    class="flex items-center gap-3 text-sm text-base-content"
   >
-    <div>{l("Blocked")}</div>
-    <#Icon iconify="ph:prohibit-fill" class="size-5 shrink-0 text-muted" />
+    <#Icon iconify="ph:prohibit-fill" class="size-4 shrink-0 text-muted" />
+    <span class="flex-1 truncate">{l("Blocks & mutes")}</span>
   </LinkLive>
 </li>
-<li>
-  <LinkLive
-    to={~p"/silenced"}
-    class="flex items-center gap-2 text-sm text-base-content justify-between"
-  >
-    <div>{l("Silenced")}</div>
-    <#Icon iconify="ph:speaker-simple-x-fill" class="size-5 shrink-0 text-muted" />
-  </LinkLive>
-</li>
-<li>
-  <LinkLive
-    to={~p"/ghosted"}
-    class="flex items-center gap-2 text-sm text-base-content justify-between"
-  >
-    <div>{l("Ghosted")}</div>
-    <#Icon iconify="ph:ghost-fill" class="size-5 shrink-0 text-muted" />
-  </LinkLive>
-</li>
-<li class="m-1 border-t border-divider" />
+
+<li role="separator" class="-mx-2 my-1 border-t border-divider" />
 
 {!-- <li>
-  <LinkLive to={~p"/write"} class="flex items-center gap-2 text-sm text-base-content justify-between">
-    <div>{l("Write")}</div>
+  <LinkLive to={~p"/write"} class="flex items-center gap-3 text-sm text-base-content">
+    <span class="flex-1 truncate">{l("Write")}</span>
   </LinkLive>
 </li> --}
 
@@ -85,18 +61,15 @@
     module={maybe_component(Bonfire.UI.Groups.NewGroupLive, @__context__)}
 id="user_menu_new_group"
     parent_id="user_menu_links"
-    open_btn_wrapper_class="flex items-center gap-2 text-sm text-base-content justify-between"
+    open_btn_wrapper_class="flex items-center gap-3 text-sm text-base-content"
     open_btn_class=""
   />
 </li> --}
 
 <li>
-  <LinkLive
-    to={~p"/settings"}
-    class="flex items-center gap-2 text-sm text-base-content justify-between"
-  >
-    <div>{l("Settings")}</div>
-    <#Icon iconify="ph:gear-fill" class="size-5 shrink-0 text-muted" />
+  <LinkLive to={~p"/settings"} class="flex items-center gap-3 text-sm text-base-content">
+    <#Icon iconify="ph:gear-fill" class="size-4 shrink-0 text-muted" />
+    <span class="flex-1 truncate">{l("Settings")}</span>
   </LinkLive>
 </li>
 
@@ -105,30 +78,30 @@ id="user_menu_new_group"
   maybe_apply(Bonfire.Me.Accounts, :is_admin?, [@__context__], fallback_return: nil) == true}>
   <LinkLive
     to={~p"/settings/instance"}
-    class="flex items-center gap-2 text-sm text-base-content justify-between"
+    class="flex items-center gap-3 text-sm text-base-content"
   >
-    <div>{l("Instance Settings")}</div>
-    <#Icon iconify="ph:shield-fill" class="size-5 shrink-0 text-muted" />
+    <#Icon iconify="ph:shield-fill" class="size-4 shrink-0 text-muted" />
+    <span class="flex-1 truncate">{l("Instance Settings")}</span>
   </LinkLive>
 </li>
 
+{!-- renders its own leading separator, only when there are profiles to switch to --}
 <StatefulComponent
   module={maybe_component(Bonfire.UI.Me.SwitchUserMenuItemsLive, @__context__)}
   id="switch_user_menu_items"
 />
 
+<li role="separator" class="-mx-2 my-1 border-t border-divider" />
+
 <li>
-  <LinkLive
-    to={~p"/logout"}
-    class="flex text-error items-center gap-2 text-sm text-base-content justify-between"
-  >
-    <div>{l("Sign out")}</div>
-    <#Icon iconify="ph:sign-out-fill" class="size-5 shrink-0 text-muted" />
+  <LinkLive to={~p"/logout"} class="flex items-center gap-3 text-sm text-base-content">
+    <#Icon iconify="ph:sign-out-fill" class="size-4 shrink-0 text-muted" />
+    <span class="flex-1 truncate">{l("Sign out")}</span>
   </LinkLive>
 </li>
 
 {!-- <li class="border-t border-neutral-content/10">
   <Bonfire.UI.Common.FeedbackButtonLive
-    class="flex items-center gap-2 text-sm text-base-content justify-between"
+    class="flex items-center gap-3 text-sm text-base-content"
   />
 </li> --}

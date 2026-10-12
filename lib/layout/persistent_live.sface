@@ -16,8 +16,8 @@
               name_class="text-base font-medium text-base-content text-relaxed"
             />
           </div>
-          {!-- compose: below the header divider, 18px (base) rhythm --}
-          <div class="py-4 lg:pt-9">
+          {!-- compose: 32px below the logo --}
+          <div class="py-4 lg:pt-8">
             <Bonfire.UI.Common.SmartInputContainerLive
               :if={!e(@smart_input_opts, :inline_only, nil) and
                 !e(@smart_input_opts, :disable, nil)}
@@ -71,7 +71,7 @@
         Bonfire.UI.Me.InstanceSettingsLive,
         Bonfire.UI.Boundaries.BoundariesLive
       ]}
-      <div data-id="nav_sidebar_sticky_items" class="flex flex-col px-3 lg:px-0">
+      <div data-id="nav_sidebar_sticky_items" class="flex flex-col px-2 lg:px-0">
         <Bonfire.UI.Common.ExtensionMenuNavLive
           parent_id="nav_sticky"
           page={@page}

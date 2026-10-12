@@ -7,7 +7,6 @@ defmodule Bonfire.UI.Common.DesignSystem.ButtonLive do
       <LinkLive to="/settings" variant="primary">Go to Settings</LinkLive>
 
 
-  - **Touch targets**: Minimum 44px height for adequate tap targets (WCAG)
   - **Focus-visible**: Keyboard focus indicators only shown for keyboard navigation
   - **Hover media queries**: Hover effects only on devices with precise pointers
   - **Transitions**: Specific properties (never `transition-all`), 150ms duration
