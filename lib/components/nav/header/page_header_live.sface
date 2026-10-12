@@ -61,7 +61,7 @@
                   src={@page_title_context[:icon_url]}
                   alt=""
                   class="size-5 shrink-0 rounded-full object-cover"
-                >
+                />
               {#else}
                 <#Icon iconify="ph:users-three-fill" class="size-5 shrink-0" />
               {/if}

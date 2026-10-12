@@ -97,10 +97,7 @@
     {/if}
   </div>
 
-  <footer
-    id="guest-board-footer"
-    class="pb-6"
-  >
+  <footer id="guest-board-footer" class="pb-6">
     <ul class="mx-auto flex w-full max-w-205 flex-wrap gap-x-4 px-5 text-xs text-muted sm:px-6">
       <li :for={{path, label} <- footer_pages()}><LinkLive
           to={path}

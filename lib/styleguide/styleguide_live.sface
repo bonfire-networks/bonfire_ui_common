@@ -203,7 +203,9 @@
   {!-- Spacing tokens (measured from Figma; bars render at the token's exact width) --}
   <div class="mt-4 rounded-box border border-divider bg-base-100 px-6 py-5">
     <div class="type-caption uppercase tracking-caps text-muted font-medium mb-1">{l("Spacing")}</div>
-    <div class="type-caption text-muted mb-4">{l("Everything else uses Tailwind's 4px scale with quarter steps: p-4 = 16px, size-4.5 = 18px, mt-0.75 = 3px.")}</div>
+    <div class="type-caption text-muted mb-4">{l(
+        "Everything else uses Tailwind's 4px scale with quarter steps: p-4 = 16px, size-4.5 = 18px, mt-0.75 = 3px."
+      )}</div>
     <div class="flex flex-col gap-2 text-sm">
       <div class="flex items-baseline gap-4">
         <span class="w-20 shrink-0 font-medium text-base-content">16px</span><code class="w-44 shrink-0 text-primary">--spacing-card</code><span class="text-muted">card and panel padding (p-card, px-card)</span>

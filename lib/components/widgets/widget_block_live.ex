@@ -12,8 +12,7 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
   @doc "Classes for the subtitle."
   prop subtitle_class, :css_class, default: nil
 
-  prop class, :css_class,
-    default: "w-full p-card flex-auto mx-auto border-y-hair border-divider"
+  prop class, :css_class, default: "w-full p-card flex-auto mx-auto border-y-hair border-divider"
 
   prop title_class, :css_class,
     default: "pb-card text-xs font-normal uppercase tracking-wide text-base-content"

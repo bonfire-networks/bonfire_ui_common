@@ -49,10 +49,7 @@
         class="flex flex-col items-center gap-3 px-6 py-3 text-center"
         data-role="widget-empty-state"
       >
-        <div
-          class="flex size-10 items-center justify-center rounded-full bg-fill"
-          aria-hidden="true"
-        >
+        <div class="flex size-10 items-center justify-center rounded-full bg-fill" aria-hidden="true">
           <Iconify.iconify icon={@empty_icon} class="size-5 text-subtle" />
         </div>
         <span class="max-w-[36ch] text-sm text-muted">{@empty_message || l("Nothing here yet.")}</span>

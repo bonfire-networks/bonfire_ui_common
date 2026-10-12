@@ -42,6 +42,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop extra, :string, default: false
   prop page_header_aside, :any, default: nil
   prop page_header_icon, :string, default: nil
+
   # `%{name, path, icon_url}` of where the page lives (eg. a thread's group), shown after the title
   prop page_title_context, :any, default: nil
 

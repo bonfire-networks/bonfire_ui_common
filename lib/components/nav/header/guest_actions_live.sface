@@ -13,10 +13,7 @@
     label={l("Menu")}
   >
     <:trigger>
-      <#Icon
-        iconify="ph:dots-three-outline-vertical-fill"
-        class="size-4.5 md:size-4 text-muted"
-      />
+      <#Icon iconify="ph:dots-three-outline-vertical-fill" class="size-4.5 md:size-4 text-muted" />
     </:trigger>
 
     <li><LinkLive to={path(:login, :index)}>{l("Sign in")}</LinkLive></li>

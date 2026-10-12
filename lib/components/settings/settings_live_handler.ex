@@ -371,7 +371,10 @@ defmodule Bonfire.Common.Settings.LiveHandler do
         socket
       ) do
     with {:ok, settings} <-
-           save_widget_order(parent_item, target_order, [current_user: current_user(socket)],
+           save_widget_order(
+             parent_item,
+             target_order,
+             [current_user: current_user(socket)],
              :sub_widget_order
            ) do
       {

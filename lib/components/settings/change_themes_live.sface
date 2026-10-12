@@ -195,12 +195,7 @@
       <section>
         <h3 class="divider divider-start text-sm mt-6">
           <span class="flex items-center gap-1.5">
-            <svg
-              class="opacity-60 size-5"
-              viewBox="0 0 48 48"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg class="opacity-60 size-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 fill-rule="evenodd"
                 clip-rule="evenodd"
@@ -255,12 +250,7 @@
       <section>
         <h3 class="divider divider-start text-sm mt-6">
           <span class="flex items-center gap-1.5">
-            <svg
-              class="opacity-60 size-5"
-              viewBox="0 0 48 48"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg class="opacity-60 size-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 d="M24 42V27M42 24H27"
                 stroke="currentColor"
