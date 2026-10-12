@@ -42,8 +42,8 @@ defmodule Bonfire.UI.Common.MultiselectLiveSelectTest do
     end
 
     test "the container is the bordered box", %{html: html} do
-      assert html =~ "rounded-2xl"
-      assert html =~ "border-secondary"
+      assert html =~ "rounded-box"
+      assert html =~ "border-divider"
       assert html =~ "focus-within:border-primary"
     end
 
@@ -65,7 +65,7 @@ defmodule Bonfire.UI.Common.MultiselectLiveSelectTest do
     test "uses the themed bordered input", %{html: html} do
       assert html =~ "input input-sm"
       assert html =~ "border-hair"
-      assert html =~ "border-secondary"
+      assert html =~ "border-divider"
     end
 
     test "does not use the tags bordered-box container", %{html: html} do
@@ -86,17 +86,17 @@ defmodule Bonfire.UI.Common.MultiselectLiveSelectTest do
     end
 
     test "renders selected people and the input in one wrapping field", %{html: html} do
-      assert html =~ "min-h-[46px]"
+      assert html =~ "min-h-11.5"
       assert html =~ "flex-wrap"
-      assert html =~ "rounded-[14px]"
+      assert html =~ "rounded-box"
       assert html =~ "[&amp;&gt;div]:flex-1"
       assert html =~ ~s(class="contents")
     end
 
     test "uses the guided chip and 16px ghost input styling", %{html: html} do
-      assert html =~ "min-h-[34px]"
+      assert html =~ "min-h-8.5"
       assert html =~ "bg-primary/[0.14]"
-      assert html =~ "text-[13px]"
+      assert html =~ "text-sm"
       assert html =~ "text-base h-auto"
     end
 

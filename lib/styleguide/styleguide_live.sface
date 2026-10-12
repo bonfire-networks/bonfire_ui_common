@@ -215,7 +215,10 @@
         <span class="w-20 shrink-0 font-medium text-base-content">7px</span><code class="w-44 shrink-0 text-primary">--spacing-feed</code><span class="text-muted">gap between feed cards in Typographic</span>
       </div>
       <div class="flex items-baseline gap-4">
-        <span class="w-20 shrink-0 font-medium text-base-content">260–340px</span><code class="w-44 shrink-0 text-primary">--spacing-rail</code><span class="text-muted">side column width (w-rail)</span>
+        <span class="w-20 shrink-0 font-medium text-base-content">260–300px</span><code class="w-44 shrink-0 text-primary">--spacing-rail</code><span class="text-muted">left column width (w-rail)</span>
+      </div>
+      <div class="flex items-baseline gap-4">
+        <span class="w-20 shrink-0 font-medium text-base-content">340px</span><code class="w-44 shrink-0 text-primary">--spacing-rail-end</code><span class="text-muted">right column width (w-rail-end)</span>
       </div>
       <div class="flex items-baseline gap-4">
         <span class="w-20 shrink-0 font-medium text-base-content">64px</span><code class="w-44 shrink-0 text-primary">--spacing-page-header</code><span class="text-muted">page header height (min-h-page-header)</span>
@@ -476,7 +479,7 @@
       <div class="hidden lg:block w-feed shrink-0" />
 
       {!-- RIGHT RAIL — empty; 106px header bar keeps the header divider across center+right --}
-      <aside class="hidden lg:flex w-rail shrink-0 border-l-hair border-divider flex-col">
+      <aside class="hidden lg:flex w-rail-end shrink-0 border-l-hair border-divider flex-col">
         <div class="border-b-hair border-divider h-page-header" />
       </aside>
 

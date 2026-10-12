@@ -971,7 +971,9 @@ pre.lumis > code {
   --spacing-card: 16px; /* card and panel padding, card→content inset */
   --spacing-section: 36px; /* between page sections */
   --spacing-edge: 75px; /* full-bleed edge gutter width (the #ffeaea rails) — w-edge */
-  --spacing-rail: 300px; /* left/right column (nav & widgets) width — w-rail */
+  --spacing-rail: 300px; /* left column (nav) width — w-rail */
+  --spacing-rail-end: 340px; /* right column (widgets) width — w-rail-end */
+  --spacing-main: 608px; /* centre (reading) column width at full shell width */
   --spacing-page-header: 80px; /* page-header bar height — min-h-page-header / h-page-header */
 
   /* Breakpoints */
@@ -1108,6 +1110,12 @@ hex-input::part(input) {
   --rail-divider-width: 0px;
   --content-divider-width: var(--border);
   --rail-offset: 0px;
+  /* Desktop shell max width: both rails + the centre column + the borders and
+     rail offsets that sit between them, so the centre resolves to --spacing-main. */
+  --shell-width: calc(
+    var(--spacing-rail) + var(--spacing-main) + var(--spacing-rail-end) +
+      3 * var(--border) + var(--content-divider-width) + 2 * var(--rail-offset)
+  );
   --user-menu-divider: 0px;
   --divider-color: color-mix(in oklab, var(--color-base-content) 12%, transparent);
   --divider-width: 1px;

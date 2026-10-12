@@ -11,7 +11,7 @@
 
   <div class={
     "drawer lg:drawer-open mx-auto w-full lg:bg-base-200 border-divider lg:border-l-hair xl:border-r-hair",
-    "lg:max-w-[1220px]": !@full_width
+    "lg:max-w-(--shell-width)": !@full_width
   }>
     <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" phx-update="ignore">
     <div class="drawer-content lg:border-l-hair lg:border-divider dock-offset">
@@ -99,7 +99,7 @@
             data-id="right_nav_and_widgets"
             role="complementary"
             aria-label={l("Widgets sidebar")}
-            class="w-rail bg-rail lg:bg-transparent xl:border-l-(length:--rail-divider-width) xl:border-divider min-h-0 flex flex-col h-full overflow-y-auto pt-safe lg:pt-0 xl:ml-(--rail-offset)"
+            class="w-rail-end bg-rail lg:bg-transparent xl:border-l-(length:--rail-divider-width) xl:border-divider min-h-0 flex flex-col h-full overflow-y-auto pt-safe lg:pt-0 xl:ml-(--rail-offset)"
           >
             <div
               :if={not is_nil(@current_user_id) and socket_connected?(@__context__)}

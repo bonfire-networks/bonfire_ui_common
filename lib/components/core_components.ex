@@ -490,7 +490,7 @@ defmodule Bonfire.UI.Common.CoreComponents do
   ## Examples
 
       iex> Bonfire.UI.Common.CoreComponents.css_class(["card", "max-w-sm", "rounded-box": true])
-      "card max-w-sm"
+      "card max-w-sm rounded-box"
 
       iex> Bonfire.UI.Common.CoreComponents.css_class(["a b", nil, "c-1": false, "d-2": 1])
       "a b d-2"
