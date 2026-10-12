@@ -76,10 +76,7 @@ id="user_menu_new_group"
 {!-- if current user is also an admin - TODO: use boundaries/roles here instead --}
 <li :if={is_map(current_user(@__context__)) and
   maybe_apply(Bonfire.Me.Accounts, :is_admin?, [@__context__], fallback_return: nil) == true}>
-  <LinkLive
-    to={~p"/settings/instance"}
-    class="flex items-center gap-3 text-sm text-base-content"
-  >
+  <LinkLive to={~p"/settings/instance"} class="flex items-center gap-3 text-sm text-base-content">
     <#Icon iconify="ph:shield-fill" class="size-4 shrink-0 text-muted" />
     <span class="flex-1 truncate">{l("Instance Settings")}</span>
   </LinkLive>

@@ -34,11 +34,7 @@
   <nav class="mt-4 px-2 lg:px-5.5">
     <ul class="menu p-0 w-full gap-0">
       <li class="p-0 m-0">
-        <LinkLive
-          to="/feed"
-          class="nav-row"
-          parent_id="nav_sidebar"
-        >
+        <LinkLive to="/feed" class="nav-row" parent_id="nav_sidebar">
           <#Icon iconify="ph:compass-fill" class="size-5 text-primary" />
           <div class={nav_text_class(@__context__, @page, pages: ["home"], paths: ["/feed", "/"])}>{l("Explore")}</div>
         </LinkLive>
@@ -52,41 +48,25 @@
           </LinkLive>
         </li> --}
       <li class="p-0 m-0">
-        <LinkLive
-          to="/about"
-          class="nav-row"
-          parent_id="nav_sidebar"
-        >
+        <LinkLive to="/about" class="nav-row" parent_id="nav_sidebar">
           <#Icon iconify="ph:info-fill" class="size-5 text-primary" />
           <div class={nav_text_class(@__context__, @page, pages: ["about"], paths: ["/about"])}>{l("About")}</div>
         </LinkLive>
       </li>
       <li class="p-0 m-0" :if={extension_enabled?(:bonfire_ui_groups, @__context__)}>
-        <LinkLive
-          to="/groups"
-          class="nav-row"
-          parent_id="nav_sidebar"
-        >
+        <LinkLive to="/groups" class="nav-row" parent_id="nav_sidebar">
           <#Icon iconify="ph:users-three-fill" class="size-5 text-primary" />
           <div class={nav_text_class(@__context__, @page, pages: ["groups"], paths: ["/groups"])}>{l("Public Groups")}</div>
         </LinkLive>
       </li>
       <li :if={Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests} class="p-0 m-0">
-        <LinkLive
-          to="/users"
-          class="nav-row"
-          parent_id="nav_sidebar"
-        >
+        <LinkLive to="/users" class="nav-row" parent_id="nav_sidebar">
           <#Icon iconify="ph:users-four-fill" class="size-5 text-primary" />
           <div class={nav_text_class(@__context__, @page, pages: ["users"], paths: ["/users"])}>{l("Members")}</div>
         </LinkLive>
       </li>
       <li class="p-0 m-0">
-        <LinkLive
-          to="/conduct"
-          class="nav-row"
-          parent_id="nav_sidebar"
-        >
+        <LinkLive to="/conduct" class="nav-row" parent_id="nav_sidebar">
           <#Icon iconify="ph:newspaper-fill" class="size-5 text-primary" />
           <div class={nav_text_class(@__context__, @page, pages: ["conduct"], paths: ["/conduct"])}>{l("Code of Conduct")}</div>
         </LinkLive>
