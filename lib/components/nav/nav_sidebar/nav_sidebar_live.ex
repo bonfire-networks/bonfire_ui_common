@@ -50,7 +50,7 @@ defmodule Bonfire.UI.Common.NavSidebarLive do
 
   @doc "Icon classes for a nav link, highlighted when active (a string, as `<#Icon>` takes)."
   def nav_icon_class(context, page, opts \\ []) do
-    "size-4.5 " <>
+    "size-5 " <>
       Bonfire.UI.Common.LinkWidgetLive.active_icon_class(nav_active?(context, page, opts))
   end
 

@@ -57,6 +57,7 @@
                   >
                     <div
                       :if={!@no_header}
+                      data-role="page_header_bar"
                       class="sticky top-0 pt-safe z-[9999999] bg-base-100 mb-[1px] lg:bg-base-200/70 backdrop-blur-sm flex items-center place-content-center lg:min-h-page-header"
                     >
                       <div class="flex pt-2 lg:pt-0 pb-2 lg:pb-0 place-content-center flex-1 w-full transition-colors duration-150 ease-in-out">
@@ -196,19 +197,19 @@
                     <ul class="menu p-0 w-full gap-0 px-0 lg:px-5.5 mt-2">
                       <li class="m-0 p-0 justify-end !block">
                         <div class="nav-row">
-                          <div class="skeleton size-4.5 rounded shrink-0" />
+                          <div class="skeleton size-5 rounded shrink-0" />
                           <div class="skeleton h-4 w-24 rounded" />
                         </div>
                       </li>
                       <li class="m-0 p-0 justify-end !block">
                         <div class="nav-row">
-                          <div class="skeleton size-4.5 rounded shrink-0" />
+                          <div class="skeleton size-5 rounded shrink-0" />
                           <div class="skeleton h-4 w-20 rounded" />
                         </div>
                       </li>
                       <li class="m-0 p-0 justify-end !block">
                         <div class="nav-row">
-                          <div class="skeleton size-4.5 rounded shrink-0" />
+                          <div class="skeleton size-5 rounded shrink-0" />
                           <div class="skeleton h-4 w-16 rounded" />
                         </div>
                       </li>
