@@ -55,7 +55,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLive do
   @doc "Returns the icon colour classes for an active or inactive navigation item."
   def active_icon_class(active?) do
     if active?,
-      do: "text-primary",
+      do: "text-base-content",
       else: "text-muted"
   end
 

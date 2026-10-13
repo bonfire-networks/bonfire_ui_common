@@ -13,7 +13,7 @@ defmodule Bonfire.UI.Common.LinkWidgetLiveTest do
 
     assert active?
     assert LinkWidgetLive.active_link_class(active?) == "bg-fill-strong"
-    assert LinkWidgetLive.active_icon_class(active?) == "text-primary"
+    assert LinkWidgetLive.active_icon_class(active?) == "text-base-content"
     assert LinkWidgetLive.active_label_class(active?) == "font-medium text-base-content"
   end
 

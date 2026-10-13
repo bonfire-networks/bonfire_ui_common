@@ -1141,19 +1141,35 @@ hex-input::part(input) {
 @utility sidebar-child-list {
   @apply !m-0 !mb-1 !p-0 !gap-0 before:!content-none after:!content-none;
   background-image: linear-gradient(color-mix(in oklch, var(--color-base-content) 20%, transparent), color-mix(in oklch, var(--color-base-content) 20%, transparent));
-  background-position: calc(var(--spacing) * 4.5 - 0.5px) 0; /* under the 20px group icon (8px row inset + 10px) */
+  background-position: calc(var(--spacing) * 4.25 - 0.5px) 0; /* under the 18px group icon (8px row inset + 9px) */
   background-size: 1px 100%;
   background-repeat: no-repeat;
 }
 
-/* One row for every left-rail entry (nav links, groups): 32px tall, 8px inset
-   so icon and label land on the rail's 30px edge (container lg:px-5.5 + 8px),
-   20px leading slot, 12px to the label. */
+/* One row for every left-rail entry (nav links, groups): 32px tall (40px on touch),
+   8px inset so icon and label land on the rail's 30px edge (container lg:px-5.5 + 8px),
+   18px leading slot, 10px to the label. */
 @utility nav-row {
-  @apply !flex w-full min-w-0 items-center !gap-3 !min-h-8 !px-2 !py-1 rounded-selector leading-5;
+  @apply !flex w-full min-w-0 items-center !gap-2.5 !min-h-8 !px-2 !py-1 rounded-selector leading-5;
   @media (pointer: coarse) {
-    @apply !min-h-9;
+    @apply !min-h-10;
   }
+}
+
+/* Letter tile for a group without an avatar: hue comes from `--tile-hue`
+   (derived from the group id), mixed into the theme so it reads in light and dark. */
+@utility nav-tile {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  background-color: color-mix(in oklch, oklch(0.68 0.12 var(--tile-hue, 250)) 22%, var(--color-base-100));
+  color: color-mix(in oklch, oklch(0.55 0.13 var(--tile-hue, 250)) 75%, var(--color-base-content));
 }
 
 @utility sidebar-child-link {

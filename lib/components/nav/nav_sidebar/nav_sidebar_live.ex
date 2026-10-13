@@ -38,10 +38,27 @@ defmodule Bonfire.UI.Common.NavSidebarLive do
       Enum.any?(paths, fn p -> current == p or String.starts_with?(current, p <> "/") end)
   end
 
+  # the guest links share the signed-in nav's treatment (see `Bonfire.UI.Common.LinkWidgetLive`)
+
+  @doc "Row classes for a nav link, highlighted when active."
+  def nav_link_class(context, page, opts \\ []) do
+    [
+      "nav-row transition-colors duration-150",
+      Bonfire.UI.Common.LinkWidgetLive.active_link_class(nav_active?(context, page, opts))
+    ]
+  end
+
+  @doc "Icon classes for a nav link, highlighted when active (a string, as `<#Icon>` takes)."
+  def nav_icon_class(context, page, opts \\ []) do
+    "size-4.5 " <>
+      Bonfire.UI.Common.LinkWidgetLive.active_icon_class(nav_active?(context, page, opts))
+  end
+
   @doc "Text classes for a nav link, highlighted when active."
   def nav_text_class(context, page, opts \\ []) do
-    if nav_active?(context, page, opts),
-      do: "text-sm font-medium text-primary",
-      else: "text-sm font-normal text-base-content"
+    [
+      "truncate min-w-0 text-sm",
+      Bonfire.UI.Common.LinkWidgetLive.active_label_class(nav_active?(context, page, opts))
+    ]
   end
 end

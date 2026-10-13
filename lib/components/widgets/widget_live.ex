@@ -24,7 +24,8 @@ defmodule Bonfire.UI.Common.WidgetLive do
 
   prop wrapper_class, :css_class, default: nil
   prop link_class, :any, default: ""
-  prop icon_class, :css_class, required: false, default: "size-5 text-primary"
+  # colour comes from `LinkWidgetLive.active_icon_class/1`, so only the size is set here
+  prop icon_class, :css_class, required: false, default: "size-5"
 
   prop skip_badges, :any, default: false
 

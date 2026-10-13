@@ -21,6 +21,8 @@ defmodule Bonfire.UI.Common.WidgetsLive do
   prop wrapper_class, :css_class, default: nil
   @doc "Classes for each `:link` widget's anchor (e.g. `nav-row`)."
   prop link_class, :any, default: ""
+  @doc "Size classes for each `:link` widget's icon (its colour follows the active state)."
+  prop icon_class, :css_class, default: "size-5"
 
   @doc """
   The key a widget's saved position is stored under: its `page`, or else its module.

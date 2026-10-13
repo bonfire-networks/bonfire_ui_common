@@ -162,22 +162,27 @@
           {#if @current_user_id && @without_sidebar != true}
             <div data-role="persistent_skeleton" class="block w-full lg:shrink-0" aria-hidden="true">
               {!-- mirrors PersistentLive's #persistent-header exactly (mobile: 56px row, 32px logo +
-                   compact compose; lg: logo 70², pt-4 header row, 32px → compose) so there's no reflow
-                   when the sticky LV fills in --}
+                   compact compose; lg: large or compact logo, pt-4 header row, then a full-width
+                   compose) so there's no reflow when the sticky LV fills in --}
               <div class="px-4 lg:px-7.5 bg-base-200 z-sticky sticky top-0">
                 <div class="pt-safe w-full">
-                  <div class="flex items-center justify-between gap-3 h-14 lg:h-auto lg:flex-col lg:items-stretch lg:justify-start lg:gap-0">
-                    <div class="flex items-center lg:pt-4">
-                      <Bonfire.UI.Common.LogoLinkLive
-                        href="/"
-                        image_class="size-8 lg:size-17.5"
-                        name_class="text-base font-medium text-base-content text-relaxed"
-                      />
-                    </div>
-                    <div class="shrink-0 lg:pt-8 lg:pb-4">
-                      <div class="skeleton rounded-field h-8 w-24 lg:h-10.25 lg:w-1/2" />
-                    </div>
-                  </div>
+                  {#case Bonfire.UI.Common.LogoLive.compact_sidebar_logo?()}
+                    {#match compact_logo?}
+                      <div class="flex items-center justify-between gap-3 h-14 lg:h-auto lg:flex-col lg:items-stretch lg:justify-start lg:gap-0">
+                        <div class="flex items-center min-w-0 lg:pt-4">
+                          <Bonfire.UI.Common.LogoLinkLive
+                            href="/"
+                            with_name={compact_logo?}
+                            container_class="flex items-center gap-3 min-w-0 cursor-pointer"
+                            image_class={if compact_logo?, do: "size-8 lg:size-9 rounded-[10px] object-cover ring-1 ring-inset ring-base-content/10", else: "size-8 lg:size-17.5"}
+                            name_class="hidden lg:block min-w-0 truncate text-[17px] leading-6 font-bold tracking-tight text-base-content"
+                          />
+                        </div>
+                        <div class={["shrink-0 lg:-mx-2 lg:pb-2", "lg:pt-5": compact_logo?, "lg:pt-8": !compact_logo?]}>
+                          <div class="skeleton rounded-field h-8 w-24 lg:h-9 lg:w-full" />
+                        </div>
+                      </div>
+                  {/case}
                 </div>
               </div>
 
@@ -191,19 +196,19 @@
                     <ul class="menu p-0 w-full gap-0 px-0 lg:px-5.5 mt-2">
                       <li class="m-0 p-0 justify-end !block">
                         <div class="nav-row">
-                          <div class="skeleton size-5 rounded shrink-0" />
+                          <div class="skeleton size-4.5 rounded shrink-0" />
                           <div class="skeleton h-4 w-24 rounded" />
                         </div>
                       </li>
                       <li class="m-0 p-0 justify-end !block">
                         <div class="nav-row">
-                          <div class="skeleton size-5 rounded shrink-0" />
+                          <div class="skeleton size-4.5 rounded shrink-0" />
                           <div class="skeleton h-4 w-20 rounded" />
                         </div>
                       </li>
                       <li class="m-0 p-0 justify-end !block">
                         <div class="nav-row">
-                          <div class="skeleton size-5 rounded shrink-0" />
+                          <div class="skeleton size-4.5 rounded shrink-0" />
                           <div class="skeleton h-4 w-16 rounded" />
                         </div>
                       </li>
