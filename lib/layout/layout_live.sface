@@ -149,7 +149,10 @@
         id="nav_sidebar"
         data-id="nav_sidebar"
         data-sidebar-minimal={@without_sidebar == :minimal}
-        class="w-80 px-4 px-safe lg:px-0 lg:mr-(--rail-offset) lg:w-rail lg:border-r-(length:--rail-divider-width) lg:border-divider bg-rail self-stretch flex flex-col overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] pb-safe lg:min-h-0 lg:h-screen lg:pb-0"
+        class={
+          "w-80 px-4 px-safe lg:px-0 lg:mr-(--rail-offset) lg:w-rail lg:border-r-(length:--rail-divider-width) lg:border-divider bg-rail self-stretch flex flex-col overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] lg:min-h-0 lg:h-screen lg:pb-0",
+          "pb-safe": !(@current_user_id && @without_sidebar != true)
+        }
       >
         <div class="flex flex-col flex-1 min-h-full lg:min-h-0">
           {!-- Skeleton mirroring PersistentLive's shape. Always rendered alongside the sticky LV;
@@ -158,20 +161,21 @@
                the sticky child's separate channel join is in flight. --}
           {#if @current_user_id && @without_sidebar != true}
             <div data-role="persistent_skeleton" class="block w-full lg:shrink-0" aria-hidden="true">
-              {!-- mirrors PersistentLive's #persistent-header exactly (logo 70², 40px inset,
-                   pt-4 header row, 32px → compose) so there's no reflow when the sticky LV fills in --}
+              {!-- mirrors PersistentLive's #persistent-header exactly (mobile: 56px row, 32px logo +
+                   compact compose; lg: logo 70², pt-4 header row, 32px → compose) so there's no reflow
+                   when the sticky LV fills in --}
               <div class="px-4 lg:px-7.5 bg-base-200 z-sticky sticky top-0">
                 <div class="pt-safe w-full">
-                  <div class="flex flex-col w-full">
+                  <div class="flex items-center justify-between gap-3 h-14 lg:h-auto lg:flex-col lg:items-stretch lg:justify-start lg:gap-0">
                     <div class="flex items-center lg:pt-4">
                       <Bonfire.UI.Common.LogoLinkLive
                         href="/"
-                        image_class="size-17.5"
+                        image_class="size-8 lg:size-17.5"
                         name_class="text-base font-medium text-base-content text-relaxed"
                       />
                     </div>
-                    <div class="py-4 lg:pt-8">
-                      <div class="skeleton rounded-field h-10.25 w-1/2" />
+                    <div class="shrink-0 lg:pt-8 lg:pb-4">
+                      <div class="skeleton rounded-field h-8 w-24 lg:h-10.25 lg:w-1/2" />
                     </div>
                   </div>
                 </div>

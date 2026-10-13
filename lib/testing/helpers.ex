@@ -207,6 +207,10 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   def open_menu(composer_view, dropdown_id),
     do: composer_view |> element("##{dropdown_id}_trigger") |> render_click()
 
+  @doc "Opens an activity's \"More actions\" menu in a `PhoenixTest` session, so the rows it loads on opening (boundary details, edit, delete…) are rendered. Expects a single activity menu on the page."
+  def open_more_menu(session),
+    do: PhoenixTest.click_button(session, "[data-id=more_menu] button[id$=_trigger]", "More actions")
+
   @doc """
   Submits the composer with `content`, as pressing Post would.
 

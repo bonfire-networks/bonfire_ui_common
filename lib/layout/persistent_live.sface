@@ -8,28 +8,30 @@
     <div class="pt-safe w-full">
       {#if current_user_id(@__context__)}
         <div class="flex flex-col w-full">
-          {!-- header row: logo (70² square), aligned to the 106px page-header --}
-          <div class="flex items-center lg:pt-4">
-            <Bonfire.UI.Common.LogoLinkLive
-              href="/"
-              image_class="size-17.5"
-              name_class="text-base font-medium text-base-content text-relaxed"
-            />
-          </div>
-          {!-- compose: 32px below the logo --}
-          <div class="py-4 lg:pt-8">
-            <Bonfire.UI.Common.SmartInputContainerLive
-              :if={!e(@smart_input_opts, :inline_only, nil) and
-                !e(@smart_input_opts, :disable, nil)}
-              id={:smart_input}
-              to_circles={@to_circles}
-              to_boundaries={@to_boundaries}
-              context_id={@context_id}
-              context_group={@context_group}
-              without_icon
-              composer_class="btn btn-primary focus-ring w-1/2"
-              smart_input_opts={@smart_input_opts}
-            />
+          {!-- mobile: one 56px row, 32px logo left + compact compose right.
+               lg: stacked, logo (70² square) aligned to the 106px page-header, compose 32px below --}
+          <div class="flex items-center justify-between gap-3 h-14 lg:h-auto lg:flex-col lg:items-stretch lg:justify-start lg:gap-0">
+            <div class="flex items-center lg:pt-4">
+              <Bonfire.UI.Common.LogoLinkLive
+                href="/"
+                image_class="size-8 lg:size-17.5"
+                name_class="text-base font-medium text-base-content text-relaxed"
+              />
+            </div>
+            <div class="shrink-0 lg:pt-8 lg:pb-4">
+              <Bonfire.UI.Common.SmartInputContainerLive
+                :if={!e(@smart_input_opts, :inline_only, nil) and
+                  !e(@smart_input_opts, :disable, nil)}
+                id={:smart_input}
+                to_circles={@to_circles}
+                to_boundaries={@to_boundaries}
+                context_id={@context_id}
+                context_group={@context_group}
+                without_icon
+                composer_class="btn btn-primary focus-ring max-lg:btn-sm max-lg:text-sm max-lg:px-4 lg:w-1/2"
+                smart_input_opts={@smart_input_opts}
+              />
+            </div>
           </div>
 
           {#case to_string(Bonfire.Common.Settings.get([:ui, :sidebar, :section_divider], "none", :instance))}

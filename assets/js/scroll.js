@@ -15,6 +15,51 @@ ScrollHooks.ScrollTo = {
 	}
 }
 
+ScrollHooks.ScrollRow = {
+	mounted() {
+		const el = this.el
+		this.onScroll = () => this.markEdges()
+		this.onWheel = (e) => {
+			if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return
+			const max = el.scrollWidth - el.clientWidth
+			if (max <= 0) return
+			if ((e.deltaY < 0 && el.scrollLeft <= 0) || (e.deltaY > 0 && el.scrollLeft >= max - 1)) return
+			e.preventDefault()
+			el.scrollLeft += e.deltaY
+		}
+		el.addEventListener("scroll", this.onScroll, { passive: true })
+		el.addEventListener("wheel", this.onWheel, { passive: false })
+		this.resizeObserver = new ResizeObserver(this.onScroll)
+		this.resizeObserver.observe(el)
+		this.reveal("auto")
+		this.markEdges()
+	},
+	updated() {
+		this.reveal(scrollBehavior())
+		this.markEdges()
+	},
+	destroyed() {
+		this.el.removeEventListener("scroll", this.onScroll)
+		this.el.removeEventListener("wheel", this.onWheel)
+		this.resizeObserver.disconnect()
+	},
+	reveal(behavior) {
+		const el = this.el
+		const current = el.querySelector('[aria-current="page"]')
+		if (!current || el.scrollWidth <= el.clientWidth) return
+		const row = el.getBoundingClientRect()
+		const chip = current.getBoundingClientRect()
+		const left = el.scrollLeft + chip.left - row.left - (row.width - chip.width) / 2
+		el.scrollTo({ left, behavior })
+	},
+	markEdges() {
+		const el = this.el
+		const max = el.scrollWidth - el.clientWidth
+		el.toggleAttribute("data-fade-start", el.scrollLeft > 1)
+		el.toggleAttribute("data-fade-end", el.scrollLeft < max - 1)
+	}
+}
+
 ScrollHooks.CarouselScroll = {
 	mounted() {
 		const el = this.el

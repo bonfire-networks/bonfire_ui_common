@@ -156,7 +156,9 @@ html:not([data-ui-preset="typographic"]) [data-id="bonfire_live"] > .drawer {
 
 html:not([data-ui-preset="typographic"]) [data-id="right_nav_and_widgets"] {
   gap: var(--widget-gap);
-  padding: 0 --spacing(4) var(--widget-gap);
+  /* No padding-top here: the element's `pt-safe lg:pt-0` keeps the search clear of the status bar in the PWA. */
+  padding-inline: --spacing(4);
+  padding-bottom: var(--widget-gap);
 }
 
 html:not([data-ui-preset="typographic"]) #persistent-header,
