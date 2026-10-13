@@ -13,21 +13,16 @@ defmodule Bonfire.UI.Common.ExtensionsLive do
   prop settings_section_title, :string, default: "Bonfire extensions"
 
   def update(assigns, socket) do
-    if socket_connected?(assigns) do
-      {:ok,
-       socket
-       |> assign(assigns)
-       |> assign_new(:data, fn -> cached_data() end)
-       |> assign_new(:can_instance_wide, fn ->
-         Bonfire.Boundaries.can?(assigns[:__context__], :toggle, :instance)
-       end)}
-    else
-      {:ok,
-       socket
-       |> assign(assigns)
-       |> assign_new(:data, fn -> cached_data() end)
-       |> assign_new(:can_instance_wide, fn -> nil end)}
-    end
+    socket =
+      socket
+      |> assign(assigns)
+      |> assign_new(:data, fn -> cached_data() end)
+
+    # computed on the disconnected render too, so admins don't see the non-admin toggle before the socket connects
+    {:ok,
+     assign_new(socket, :can_instance_wide, fn ->
+       Bonfire.Boundaries.can?(socket, :toggle, :instance)
+     end)}
   end
 
   def cached_data,
