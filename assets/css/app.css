@@ -814,7 +814,6 @@ article.active-activity::after {
   content: attr(data-placeholder);
   color: var(--color-text-muted, #9ca3af);
   pointer-events: none;
-  font-style: italic;
   float: left;
   height: 0;
 }
@@ -1146,9 +1145,6 @@ hex-input::part(input) {
   background-repeat: no-repeat;
 }
 
-/* One row for every left-rail entry (nav links, groups): 32px tall (40px on touch),
-   8px inset so icon and label land on the rail's 30px edge (container lg:px-5.5 + 8px),
-   20px leading slot, 10px to the label. */
 @utility nav-row {
   @apply !flex w-full min-w-0 items-center !gap-2.5 !min-h-8 !px-2 !py-1 rounded-selector leading-5;
   @media (pointer: coarse) {
@@ -1156,8 +1152,16 @@ hex-input::part(input) {
   }
 }
 
-/* Letter tile for a group without an avatar: hue comes from `--tile-hue`
-   (derived from the group id), mixed into the theme so it reads in light and dark. */
+@supports (color: light-dark(white, black)) {
+  #nav_sidebar .nav-row:not([aria-current="page"]) > .text-base-content {
+    color: light-dark(
+      var(--color-base-content),
+      color-mix(in oklch, var(--color-base-content) 80%, transparent)
+    );
+  }
+}
+
+/* Letter tile for a group without an avatar; `--tile-hue` comes from the group id. */
 @utility nav-tile {
   width: 1.25rem;
   height: 1.25rem;
@@ -1822,9 +1826,10 @@ div[data-id="object_body"]
 #smart_input_container {
   transform: translateY(0) scale(1);
   opacity: 1;
+  /* resting elevation: a docked, non-modal sheet must still read as above the feed */
   box-shadow:
-    rgba(136, 153, 166, 0) 0px 0px 0px,
-    rgba(136, 153, 166, 0) 0px 0px 0px 0px;
+    rgba(16, 24, 40, 0.12) 0px 8px 32px,
+    rgba(16, 24, 40, 0.06) 0px 1px 4px;
   transition:
     transform 270ms var(--ease-out-expo),
     opacity 180ms ease;
@@ -1842,19 +1847,22 @@ div[data-id="object_body"]
   }
 }
 
-/* Desktop: constrain composer to a comfortable height */
+/* Desktop: constrain composer to a comfortable height, and to a readable line length (~70 characters) */
 @media (min-width: 768px) {
   #smart_input_container {
-    width: min(64rem, calc(100vw - 2rem));
+    width: min(42.5rem, calc(100vw - 2rem));
     left: 0;
     right: 0;
     margin-inline: auto;
-    height: min(var(--composer-desktop-height, 500px), calc(100dvh - 2rem));
+    height: var(--composer-desktop-height, auto);
+    /* tall enough for the audience menus, which are bounded by the composer */
+    min-height: min(22.5rem, calc(100dvh - 2rem));
+    max-height: calc(100dvh - 2rem);
     overflow: hidden;
   }
   /* the minimised draft bar lines up with the open composer */
   .composer-draft-bar {
-    width: min(64rem, calc(100vw - 2rem));
+    width: min(42.5rem, calc(100vw - 2rem));
     left: 0;
     right: 0;
     margin-inline: auto;
@@ -1865,7 +1873,7 @@ div[data-id="object_body"]
 @media (min-width: 769px) and (pointer: fine), (min-width: 1025px) {
   #smart_input_container .composer-resize-handle {
     display: flex;
-    height: 24px;
+    height: 14px;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
@@ -1879,9 +1887,37 @@ div[data-id="object_body"]
     border-radius: 999px;
     background: color-mix(in srgb, currentColor 30%, transparent);
     pointer-events: none;
+    opacity: 0;
+    transition: opacity 150ms ease-out;
   }
+  #smart_input_container:hover .composer-resize-handle span,
+  .composer-resize-handle:focus-visible span { opacity: 1; }
   .composer-resize-handle:hover span,
   .composer-resize-handle:focus-visible span { background: var(--color-primary); }
+}
+
+/* The post being replied to, above your avatar in the composer: quiet text, capped height, scrolls.
+   The bottom shadow is a scroll hint: the `local` cover hides it when everything fits or is scrolled to the end. */
+#reply_peek .reply-peek-body {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-base-content) 72%, transparent);
+}
+#reply_peek .reply-peek-body :is(p, li, a, span, div) {
+  font-size: inherit;
+  line-height: inherit;
+}
+/* Cut on a line boundary (a multiple of the line height, no paragraph gaps) so no line is sliced in half. */
+#reply_peek .reply-peek-text { max-height: calc(1.5em * 4); overflow-y: auto; overscroll-behavior: contain; } /* scrolls too, so a short-but-tall post is never unreachable */
+#reply_peek .reply-peek-text p { margin-block: 0; }
+#reply_peek[data-expanded] .reply-peek-text { max-height: calc(1.5em * 8); }
+#reply_peek .reply-peek-less-label,
+#reply_peek[data-expanded] .reply-peek-more-label { display: none; }
+#reply_peek[data-expanded] .reply-peek-less-label { display: inline; }
+/* phones (and short windows, e.g. with the keyboard open): 3 lines, so the editor stays in view */
+@media (max-width: 767px), (max-height: 640px) {
+  #reply_peek .reply-peek-text { max-height: calc(1.5em * 3); }
+  #reply_peek[data-expanded] .reply-peek-text { max-height: calc(1.5em * 5); }
 }
 
 #smart_input_container.translate-y-100 {
@@ -1892,6 +1928,12 @@ div[data-id="object_body"]
   transition:
     transform 180ms var(--ease-out-expo),
     opacity 140ms ease;
+}
+
+.composer-draft-bar {
+  box-shadow:
+    rgba(16, 24, 40, 0.28) 0px 12px 32px,
+    rgba(16, 24, 40, 0.16) 0px 2px 6px;
 }
 
 #smart_input_container:not(.translate-y-100) ~ .composer-draft-bar,

@@ -344,6 +344,13 @@ window.addEventListener("phx:smart_input:reset_sensitive", () => {
   );
 });
 
+// Focus the summary/CW field once the server has revealed it
+window.addEventListener("phx:smart_input:focus_summary", () => {
+  requestAnimationFrame(() =>
+    document.querySelector("#smart_input_summary textarea")?.focus(),
+  );
+});
+
 // Fill CW textarea when replying to a CW post
 window.addEventListener("phx:smart_input:set_cw", ({ detail }) => {
   setCwTextarea(detail.cw || "");
