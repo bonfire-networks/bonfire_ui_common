@@ -749,135 +749,62 @@ html:not([data-ui-preset="typographic"]) {
     }
   }
 
-  /* Reply context: compact parent → full reply. Demoting the parent preserves
-     useful context without giving it the reply's visual weight; the short
-     connector expresses only the ancestry that is actually shown. */
   [data-reply-context] {
     --stream-reply-avatar-size: 40px;
     --stream-reply-avatar-axis: 20px;
-    --stream-context-avatar-size: 20px;
-    --stream-context-avatar-top: 10px;
-    --stream-context-avatar-bottom: 30px;
-    --stream-context-avatar-hit-inset: 4.5px;
-    --stream-context-column: 41px;
-    --stream-context-connector-up-reach: 38px;
-    --stream-context-connector-reach: 35.5px;
+    --stream-context-avatar-size: 24px;
+    --stream-context-avatar-hit-inset: 4px;
+    --stream-context-column: 50px;
+    --stream-context-clamp: 2;
+    /* Article row gap (gap-3) minus a 4px breath above the reply avatar. */
+    --stream-context-connector-reach: 8px;
     /* Same ink as contained-object outlines: structure, not content. */
     --stream-context-connector: var(--stream-object-outline);
-    --stream-publication-column: var(--stream-context-column);
+    --stream-publication-column: 41px;
   }
 
-  /* "See full thread" becomes a quiet inline affordance. */
+  /* Elided ancestors: a dotted segment of the rail beside a quiet link. */
   [data-reply-context] > [data-role="thread_header"] {
-    margin: 0 0 10px;
-    padding: 0;
-    background: transparent;
-    border-bottom: 0;
-    border-radius: 0;
-    justify-content: flex-start;
-    gap: 8px;
-    min-height: 24px;
-    min-width: 0;
+    padding-left: var(--stream-context-column);
 
-    & span {
-      color: var(--stream-text-secondary);
-      font-size: var(--text-sm);
-      line-height: var(--text-sm--line-height);
-      font-weight: var(--font-weight-medium);
-      letter-spacing: normal;
-      text-transform: none;
-    }
-
-    /* Continuation marker for the default reply layout. */
     &::before {
-      left: 8px;
-      top: 50%;
-      translate: 0 -50%;
-      height: 19px;
-      width: 19px;
-      border-radius: 50%;
-      background-color: var(--color-base-300);
-      border: var(--divider-width) solid var(--divider-color);
-      transition: background-color 150ms ease-out;
-    }
-
-    /* Chevron-up glyph inside the node (border-drawn, no icon font). */
-    &::after {
-      content: "";
-      position: absolute;
-      left: 14.5px;
-      top: 50%;
-      width: 6px;
-      height: 6px;
-      translate: 0 calc(-50% + 1px);
-      rotate: 45deg;
-      border-top: 1.5px solid
-        color-mix(in oklab, var(--color-base-content) 60%, transparent);
-      border-left: 1.5px solid
-        color-mix(in oklab, var(--color-base-content) 60%, transparent);
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    > a[data-role="see_full_thread"] {
-      flex: 0 0 auto;
-      margin-left: var(--stream-context-column);
-
-      & span {
-        text-transform: none;
-        letter-spacing: 0;
-        font-size: var(--text-sm);
-        color: color-mix(in oklab, var(--color-base-content) 55%, transparent);
-      }
-    }
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    [data-reply-context]
-      > [data-role="thread_header"]
-      > a[data-role="see_full_thread"]:hover
-      span {
-      color: var(--color-primary);
-    }
-
-    [data-reply-context]:has(> [data-role="thread_header"] a:hover)
-      > [data-role="thread_header"]::before {
-      background-color: color-mix(
-        in oklab,
-        var(--color-base-content) 18%,
-        var(--color-base-100)
+      left: calc(var(--stream-reply-avatar-axis) - 1px);
+      top: 2px;
+      height: calc(100% + 0.5rem);
+      width: 2px;
+      background-image: radial-gradient(
+        circle,
+        var(--stream-context-connector) 1px,
+        transparent 1.2px
       );
+      background-size: 2px 6px;
+      background-repeat: repeat-y;
     }
   }
 
-  /* Parent demotion: hierarchy by subtraction — the reply is the activity and
-     the parent is a compact avatar + note. The identity remains available in
-     the avatar link's accessible label without competing visually. */
   [data-reply-context] > article.replied {
     display: grid;
-    grid-template-columns: var(--stream-context-column) minmax(0, 1fr);
-    column-gap: 0;
-    row-gap: 12px;
+    grid-template-columns: var(--stream-reply-avatar-size) minmax(0, 1fr);
+    column-gap: calc(
+      var(--stream-context-column) - var(--stream-reply-avatar-size)
+    );
+    row-gap: 0;
     align-items: start;
-    margin-bottom: 6px;
+    margin-bottom: 0;
 
+    /* Lift avatar and byline into the parent's grid. */
     > [data-role="subject"] {
-      grid-column: 1;
-      grid-row: 1;
-      align-items: flex-start;
-    }
-
-    [data-id="subject_details"] {
-      display: none;
+      display: contents;
     }
 
     [data-id="subject_avatar"] {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      justify-self: center;
       position: relative;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      width: var(--stream-reply-avatar-size);
-      height: var(--stream-reply-avatar-size);
+      width: var(--stream-context-avatar-size);
+      height: var(--stream-context-avatar-size);
 
       &::before {
         content: "";
@@ -888,15 +815,42 @@ html:not([data-ui-preset="typographic"]) {
 
     [data-scope="avatar"] {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      width: var(--stream-reply-avatar-size);
-      height: var(--stream-reply-avatar-size);
+      width: var(--stream-context-avatar-size);
+      height: var(--stream-context-avatar-size);
 
       > div {
         width: var(--stream-context-avatar-size) !important;
         height: var(--stream-context-avatar-size) !important;
       }
+    }
+
+    /* Byline: "Name · 3w" on one line; the handle stays on the profile. */
+    [data-id="subject_details"] {
+      grid-column: 2;
+      grid-row: 1;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 4px;
+      min-width: 0;
+      font-size: var(--text-sm);
+      line-height: var(--text-sm--line-height);
+    }
+
+    [data-id="name_username"] {
+      min-width: 0;
+    }
+
+    [data-id="subject_name"] {
+      font-size: var(--text-sm);
+      line-height: var(--text-sm--line-height);
+    }
+
+    [data-id="subject_username"] {
+      display: none;
+    }
+
+    [data-id="subject_secondary"] {
+      flex: none;
     }
 
     > :not([data-role="subject"]) {
@@ -906,10 +860,7 @@ html:not([data-ui-preset="typographic"]) {
     }
 
     > [data-id="activity_note"] {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: var(--stream-reply-avatar-size);
+      grid-row: 2;
 
       /* Translation belongs to the primary activity. On the compact parent it adds
          a second control row and weakens the parent-as-context hierarchy. */
@@ -918,41 +869,46 @@ html:not([data-ui-preset="typographic"]) {
       }
     }
 
+    /* The excerpt only orients; the whole parent opens the full post. */
+    [data-role="html_body"] {
+      font-size: var(--text-sm);
+      line-height: var(--text-sm--line-height);
+      color: var(--stream-text-secondary);
+      -webkit-line-clamp: var(--stream-context-clamp);
+      line-clamp: var(--stream-context-clamp);
+
+      /* The excerpt sits directly under the byline; the markup's
+         `prose-p:!my-1` would open a gap above the first line. */
+      > :first-child {
+        margin-top: 0 !important;
+      }
+    }
+
+    .read-more-controls {
+      /* the truncation hook writes an inline display */
+      display: none !important;
+    }
+
+    /* Rail: from below the parent avatar to just above the reply avatar. */
     &::after {
       content: "";
       position: absolute;
       left: calc(var(--stream-reply-avatar-axis) - 1px);
-      top: var(--stream-context-avatar-bottom);
+      top: calc(var(--stream-context-avatar-size) + 4px);
       bottom: calc(-1 * var(--stream-context-connector-reach));
       width: 2px;
-      border: 0;
       border-radius: 999px;
       background: var(--stream-context-connector);
       pointer-events: none;
     }
-
-    [data-role="html_body"] {
-      font-size: var(--text-sm);
-      color: color-mix(in oklab, var(--color-base-content) 85%, transparent);
-    }
   }
 
-  /* Continue the thread axis upward to the arrow node. Starting inside the node
-     keeps the join seamless; the small avatar masks the line at the other end. */
-  [data-reply-context]:has(> [data-role="thread_header"])
-    > article.replied::before {
-    content: "";
-    position: absolute;
-    left: calc(var(--stream-reply-avatar-axis) - 1px);
-    top: calc(-1 * var(--stream-context-connector-up-reach));
-    height: calc(
-      var(--stream-context-connector-up-reach) +
-        var(--stream-context-avatar-top)
-    );
-    width: 2px;
-    border-radius: 999px;
-    background: var(--stream-context-connector);
-    pointer-events: none;
+  @media (hover: hover) and (pointer: fine) {
+    [data-reply-context]
+      > article.replied:has([data-id="activity_note"]:hover)
+      [data-role="html_body"] {
+      color: var(--color-base-content);
+    }
   }
 
   [data-reply-context] > [data-publication-context="standalone"] {

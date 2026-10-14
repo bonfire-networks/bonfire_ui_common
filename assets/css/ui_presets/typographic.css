@@ -260,7 +260,24 @@ html[data-ui-preset="typographic"] [data-reply-context] > [data-role="subject"]:
   pointer-events: none;
 }
 
-/* The client continuation marker uses dots instead of Stream's arrow node. */
+/* "See full thread" sits in a full-bleed band across the card top; the markup defaults to Stream's inline link. */
+html[data-ui-preset="typographic"] [data-reply-context] > [data-role="thread_header"] {
+  @apply -mx-card -mt-4 mb-2 px-card py-2 bg-base-200 border-b-hair border-divider rounded-t-box justify-end;
+}
+
+html[data-ui-preset="typographic"] [data-reply-context] > [data-role="thread_header"] span {
+  @apply text-xs font-normal uppercase tracking-label text-base-content;
+}
+
+html[data-ui-preset="typographic"]
+  [data-reply-context]
+  > [data-role="thread_header"]
+  a:hover
+  span {
+  @apply text-primary;
+}
+
+/* The client continuation marker uses dots on the band's left edge. */
 html[data-ui-preset="typographic"] [data-reply-context] > [data-role="thread_header"]::before {
   left: 32px;
   top: 0;
