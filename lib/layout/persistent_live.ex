@@ -325,7 +325,7 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
     # Derive show_cw/show_sensitive for server-controlled visibility
     # and determine which JS push event to send for textarea value
-    hidden_cw_sensitive = %{show_cw: false, show_sensitive: false}
+    hidden_cw_sensitive = %{show_cw: false, show_sensitive: false, show_summary: false}
 
     {smart_input_opts, push_action} =
       cond do
