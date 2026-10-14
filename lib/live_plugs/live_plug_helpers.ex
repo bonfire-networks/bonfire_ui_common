@@ -253,12 +253,6 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
           if(Bonfire.Common.Utils.current_user_id(socket), do: :web_user, else: :web_guest)
       )
 
-      socket =
-        assign_global(
-          socket,
-          ui_compact: Settings.get([:ui, :compact], nil, assigns(socket))
-        )
-
       opts =
         if socket.assigns[:__loading_screen__] do
           # Guard plugs can call the user loader's mount directly, bypassing its layout option.

@@ -1,4 +1,4 @@
-<div class="w-full">
+<div class={if @compact, do: "w-auto", else: "w-full"}>
   <input name="scope" value={@scope} type="hidden">
 
   <div class="flex flex-col gap-1">
@@ -17,6 +17,7 @@
                   data-value={"#{@input}_#{@current_value}"}
                   class={
                     "px-2 py-1.5 sm:px-1.5 sm:py-0.5 text-base-content rounded-selector hover:bg-fill-strong transition-colors duration-100 text-xs",
+                    "min-h-9": @compact,
                     "active bg-success hover:bg-success text-success-content": @current_value == @enabled_value
                   }
                   phx-click={@event_name}
@@ -32,6 +33,7 @@
                   data-id="default"
                   class={
                     "px-2 py-1.5 sm:px-1.5 sm:py-0.5 text-base-content rounded-selector hover:bg-fill-strong transition-colors duration-100 text-xs",
+                    "min-h-9": @compact,
                     "active bg-base-300 hover:bg-base-300 text-base-content": is_nil(@current_value)
                   }
                   phx-click={@unset_event_name || @event_name}
@@ -50,6 +52,7 @@
                   data-id="disabled"
                   class={
                     "px-2 py-1.5 sm:px-1.5 sm:py-0.5 text-base-content rounded-selector hover:bg-fill-strong transition-colors duration-100 text-xs",
+                    "min-h-9": @compact,
                     "active bg-error hover:bg-error text-error-content": @current_value == @disabled_value
                   }
                   phx-click={@event_name}

@@ -116,14 +116,13 @@
             </div>
             <div
               data-id="secondary_sidebar_widgets"
-              class="sidebar-widgets overflow-x-visible overflow-y-auto flex-1 min-h-0 flex flex-col gap-(--stream-section-gap)"
+              class="sidebar-widgets overflow-x-visible overflow-y-auto flex-1 min-h-0 flex flex-col gap-(--widget-gap)"
             >
               <Bonfire.UI.Common.SidebarWidgetsLive
                 widgets={if @preview_sidebar_widgets != [], do: @preview_sidebar_widgets, else: @sidebar_widgets}
                 key={:secondary}
                 page={@page}
                 selected_tab={@selected_tab}
-                container_class="flex flex-col gap-4 mb-4"
                 parent_id="layout_right"
               />
 

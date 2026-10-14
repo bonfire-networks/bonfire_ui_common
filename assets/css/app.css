@@ -1660,10 +1660,6 @@ div[data-id="comment"][data-avatar-hidden] [data-role="comment-pin"] {
   @apply !block;
 }
 
-div[data-id="comment"] div[data-compact] {
-  @apply left-5 !top-[46px];
-}
-
 div[data-id="comment"][data-avatar-hidden] [data-role="comment-lined"] {
   @apply !left-[9px] !bottom-[0px] !top-[44px];
 }
