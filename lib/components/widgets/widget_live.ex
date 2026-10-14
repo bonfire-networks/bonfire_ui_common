@@ -29,6 +29,11 @@ defmodule Bonfire.UI.Common.WidgetLive do
 
   prop skip_badges, :any, default: false
 
+  @doc "Whether sub-widgets can be reordered by dragging."
+  prop reorderable, :boolean, default: true
+  @doc "Whether to apply the user's saved sub-widget order."
+  prop use_saved_order, :boolean, default: true
+
   def render(assigns) do
     widget =
       widget(assigns[:widget], assigns[:__context__])

@@ -13,48 +13,41 @@
       </summary>
       <ul
         id={deterministic_dom_id(__MODULE__, @order, "sub_widgets", @parent_id)}
-        phx-hook={if @parent_id, do: "Draggable"}
+        phx-hook={if @parent_id && @reorderable, do: "Draggable"}
         data-widget-draggable
         data-parent={@widget[:page] || @widget[:module]}
         data-event="Bonfire.Common.Settings:reorder_sub_widget"
         class="menu relative p-0 w-full"
       >
-        {#case ed(
-            Bonfire.Common.Settings.get(
-              [:ui, :sub_widget_order],
-              [],
-              current_user: current_user(@__context__)
-            ),
-            Types.maybe_to_atom(@widget[:page] || @widget[:module]),
-            []
-          )}
-          {#match order_settings}
-            {#for {sub_widget, index} <-
-                Bonfire.UI.Common.WidgetsLive.sort_by_saved_order(
-                  @widget[:sub_widgets],
-                  order_settings,
-                  &Bonfire.UI.Common.WidgetsLive.order_key/1
-                )}
-              <StatelessComponent
-                module={Bonfire.UI.Common.WidgetLive}
-                widget={sub_widget}
-                is_subwidget
-                to={sub_widget[:href]}
-                showing_within={@showing_within}
-                page={@page}
-                parent_item={@widget[:page] || @widget[:module]}
-                parent_id={deterministic_dom_id(__MODULE__, "#{@order}_#{index}", "sub_widget", @parent_id)}
-                selected_tab={@selected_tab}
-                without_label={@without_label}
-                wrapper_class={@wrapper_class}
-                link_class={@link_class}
-                text_class={@text_class}
-                icon_class={@icon_class}
-                skip_badges={@skip_badges}
-                order={index}
-              />
-            {/for}
-        {/case}
+        {#for {sub_widget, index} <-
+            Bonfire.UI.Common.WidgetsLive.ordered(
+              @widget[:sub_widgets],
+              :sub_widget_order,
+              Types.maybe_to_atom(@widget[:page] || @widget[:module]),
+              @use_saved_order,
+              @__context__
+            )}
+          <StatelessComponent
+            module={Bonfire.UI.Common.WidgetLive}
+            widget={sub_widget}
+            is_subwidget
+            to={sub_widget[:href]}
+            showing_within={@showing_within}
+            page={@page}
+            parent_item={@widget[:page] || @widget[:module]}
+            parent_id={deterministic_dom_id(__MODULE__, "#{@order}_#{index}", "sub_widget", @parent_id)}
+            selected_tab={@selected_tab}
+            without_label={@without_label}
+            wrapper_class={@wrapper_class}
+            link_class={@link_class}
+            text_class={@text_class}
+            icon_class={@icon_class}
+            skip_badges={@skip_badges}
+            order={index}
+            reorderable={@reorderable}
+            use_saved_order={@use_saved_order}
+          />
+        {/for}
       </ul>
     </details>
     <!-- </li> -->

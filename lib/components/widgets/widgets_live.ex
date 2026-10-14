@@ -16,6 +16,8 @@ defmodule Bonfire.UI.Common.WidgetsLive do
 
   @doc "Whether the list can be reordered by dragging."
   prop reorderable, :boolean, default: true
+  @doc "Whether to apply the user's saved order (off = always the default order)."
+  prop use_saved_order, :boolean, default: true
 
   prop container_class, :css_class, default: nil
   prop wrapper_class, :css_class, default: nil
@@ -62,5 +64,21 @@ defmodule Bonfire.UI.Common.WidgetsLive do
           end
       end
     end)
+  end
+
+  @doc """
+  Sorts `items` by the user's order saved under `[:ui, setting, list_key]`, returning `{item, default_index}` tuples. With `use_saved_order?` false, keeps the default order.
+  """
+  def ordered(items, setting, list_key, use_saved_order?, context)
+
+  def ordered(items, _setting, _list_key, false, _context),
+    do: sort_by_saved_order(items, nil, &order_key/1)
+
+  def ordered(items, setting, list_key, _, context) do
+    order =
+      Bonfire.Common.Settings.get([:ui, setting], [], current_user: current_user(context))
+      |> ed(list_key, nil)
+
+    sort_by_saved_order(items, order, &order_key/1)
   end
 end

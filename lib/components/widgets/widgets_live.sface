@@ -11,38 +11,31 @@
   data-showing-within={@showing_within}
 >
   {#if is_list(@widgets) and @widgets != []}
-    {#case ed(
-        Bonfire.Common.Settings.get(
-          [:ui, :widget_order],
-          [],
-          current_user: current_user(@__context__)
-        ),
-        @id,
-        []
-      )}
-      {#match order_settings}
-        {#for {widget, index} <-
-            Bonfire.UI.Common.WidgetsLive.sort_by_saved_order(
-              @widgets,
-              order_settings,
-              &Bonfire.UI.Common.WidgetsLive.order_key/1
-            )}
-          <Bonfire.UI.Common.WidgetLive
-            widget={widget}
-            wrapper_class={@wrapper_class || ""}
-            link_class={@link_class}
-            icon_class={@icon_class}
-            page={@page}
-            selected_tab={@selected_tab}
-            showing_within={@showing_within}
-            with_title={@with_title}
-            with_description={@with_description}
-            extra_data={@extra_data}
-            compact={@compact}
-            parent_id={@id}
-            order={index}
-          />
-        {/for}
-    {/case}
+    {#for {widget, index} <-
+        Bonfire.UI.Common.WidgetsLive.ordered(
+          @widgets,
+          :widget_order,
+          @id,
+          @use_saved_order,
+          @__context__
+        )}
+      <Bonfire.UI.Common.WidgetLive
+        widget={widget}
+        wrapper_class={@wrapper_class || ""}
+        link_class={@link_class}
+        icon_class={@icon_class}
+        page={@page}
+        selected_tab={@selected_tab}
+        showing_within={@showing_within}
+        with_title={@with_title}
+        with_description={@with_description}
+        extra_data={@extra_data}
+        compact={@compact}
+        parent_id={@id}
+        order={index}
+        reorderable={@reorderable}
+        use_saved_order={@use_saved_order}
+      />
+    {/for}
   {/if}
 </ul>
