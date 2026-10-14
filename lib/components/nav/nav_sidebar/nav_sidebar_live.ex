@@ -1,15 +1,10 @@
 defmodule Bonfire.UI.Common.NavSidebarLive do
   use Bonfire.UI.Common.Web, :stateless_component
-  alias Bonfire.Me.Users
 
   prop sidebar_widgets, :list, default: []
   prop page, :any, default: nil
   prop selected_tab, :any, default: nil
   prop nav_items, :list, default: []
-  prop csrf_token, :any, default: nil
-  prop current_user_id, :any, default: nil
-  prop current_account_id, :any, default: nil
-  prop exclude_circles, :list, default: []
 
   @doc """
   Returns true if the current nav item is active.
@@ -38,27 +33,18 @@ defmodule Bonfire.UI.Common.NavSidebarLive do
       Enum.any?(paths, fn p -> current == p or String.starts_with?(current, p <> "/") end)
   end
 
-  # the guest links share the signed-in nav's treatment (see `Bonfire.UI.Common.LinkWidgetLive`)
-
-  @doc "Row classes for a nav link, highlighted when active."
-  def nav_link_class(context, page, opts \\ []) do
+  @doc "The guest nav links, each marked `active?` once so the template doesn't recompute it per styled part."
+  def guest_links(context, page) do
     [
-      "nav-row transition-colors duration-150",
-      Bonfire.UI.Common.LinkWidgetLive.active_link_class(nav_active?(context, page, opts))
+      %{to: "/feed", icon: "ph:compass-duotone", label: l("Explore"), pages: ["home"], paths: ["/feed", "/"]},
+      %{to: "/about", icon: "ph:info-duotone", label: l("About"), pages: ["about"], paths: ["/about"]},
+      extension_enabled?(:bonfire_ui_groups, context) &&
+        %{to: "/groups", icon: "ph:users-three-duotone", label: l("Public Groups"), pages: ["groups"], paths: ["/groups"]},
+      Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests &&
+        %{to: "/users", icon: "ph:users-four-duotone", label: l("Members"), pages: ["users"], paths: ["/users"]},
+      %{to: "/conduct", icon: "ph:newspaper-duotone", label: l("Code of Conduct"), pages: ["conduct"], paths: ["/conduct"]}
     ]
-  end
-
-  @doc "Icon classes for a nav link, highlighted when active (a string, as `<#Icon>` takes)."
-  def nav_icon_class(context, page, opts \\ []) do
-    "size-5 " <>
-      Bonfire.UI.Common.LinkWidgetLive.active_icon_class(nav_active?(context, page, opts))
-  end
-
-  @doc "Text classes for a nav link, highlighted when active."
-  def nav_text_class(context, page, opts \\ []) do
-    [
-      "truncate min-w-0 text-sm",
-      Bonfire.UI.Common.LinkWidgetLive.active_label_class(nav_active?(context, page, opts))
-    ]
+    |> Enum.filter(& &1)
+    |> Enum.map(&Map.put(&1, :active?, nav_active?(context, page, pages: &1.pages, paths: &1.paths)))
   end
 end
