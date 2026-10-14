@@ -2,50 +2,87 @@
   <div class="flex-1 h-full grow min-h-0" id="compose_content_wrapper">
     <div class="relative !flex flex-col flex-1 h-full min-h-0">
       {!-- here was old/loader.svg --}
-      <div id="composer_wrapper" class="flex-1 flex flex-col min-h-0 [&_.milkdown-editor]:px-4">
+      <div
+        id="composer_wrapper"
+        class={
+          "flex-1 flex flex-col min-h-0",
+          "[&_.milkdown-editor]:px-4": @showing_within == :thread_embed,
+          "[&_.milkdown-editor]:px-3 sm:[&_.milkdown-editor]:px-4": @showing_within != :thread_embed
+        }
+      >
         <div class="h-full flex flex-col flex-1 grow relative min-h-0">
           <div class="flex-1 min-h-0 overflow-y-auto overscroll-y-contain flex flex-col">
-            {!-- Title: shown expanded when `@title_visible`, or behind a toggle when
-                 `@title_toggle` (per the `enable_fields` config). --}
+            {!-- Title: shown expanded when `@title_visible`, or behind a toggle when `@title_toggle` (per the `enable_fields` config). --}
             <div
               :if={@title_visible or @title_toggle}
               class={[hidden: !@title_visible]}
               id="smart_input_post_title"
             >
-              {!-- phx-update="ignore" needs its own id (preserves the typed title across re-renders
-                   while the outer div above stays reactive to show/hide) --}
+              {!-- phx-update="ignore" needs its own id (preserves the typed title across re-renders while the outer div above stays reactive to show/hide) --}
               <div
                 phx-update="ignore"
                 id="smart_input_post_title_value"
-                class="relative border-b border-divider bg-base-100 px-4 py-2"
+                class={
+                  "py-1",
+                  "px-4": @showing_within == :thread_embed,
+                  "px-3 sm:px-4": @showing_within != :thread_embed
+                }
               >
-                <label for="composer_post_title" class="sr-only">{l("Title")}</label>
-                <input
-                  id="composer_post_title"
-                  autocomplete="off"
-                  value={@smart_input_opts[:title]}
-                  name="post[post_content][name]"
-                  class="min-h-11 w-full border-0 bg-transparent p-0 text-base font-bold placeholder:text-muted focus-visible:outline-offset-2"
-                  placeholder={l("Add a title (optional)")}
-                />
+                <div class="flex items-center gap-2 rounded-box border border-divider bg-base-100 py-1.5 pl-3 pr-3 focus-within:border-base-content/30">
+                  <label
+                    for="composer_post_title"
+                    class="flex shrink-0 items-center gap-1.5 text-sm font-medium leading-7 text-muted"
+                  >
+                    <#Icon iconify="ph:text-h" class="size-4" />
+                    {l("Title")}
+                  </label>
+                  <input
+                    id="composer_post_title"
+                    autocomplete="off"
+                    value={@smart_input_opts[:title]}
+                    name="post[post_content][name]"
+                    class="min-w-0 flex-1 border-0 bg-transparent p-0 text-sm font-medium leading-7 text-base-content placeholder:font-normal placeholder:text-muted focus:outline-none focus-visible:outline-none"
+                    placeholder={l("Optional")}
+                  />
+                </div>
               </div>
             </div>
-            {!-- The `summary` field doubles as the article summary (shown by default for
-                 articles) and, when `sensitive` is toggled on, as the content warning. --}
-            <div class={[hidden: !@summary_field_shown]} id="smart_input_summary">
-              {!-- Reactive role label: the textarea is `phx-update="ignore"` (to preserve typed
-                   content) so its placeholder is frozen at first render — this label (outside the
-                   ignored node) flips reactively between Summary and Content warning instead. --}
-              <div :if={@summary_field_shown} class="px-3 pt-2 text-xs font-medium text-muted">
-                {if @show_sensitive || @show_cw, do: l("Content warning"), else: l("Summary")}
-              </div>
-              <div class="relative flex items-start border-b border-dashed border-divider">
+            {!-- The `summary` field doubles as the article summary (shown by default for articles) and, when `sensitive` is toggled on, as the content warning. --}
+            <div
+              class={[
+                "py-1",
+                "px-4": @showing_within == :thread_embed,
+                "px-3 sm:px-4": @showing_within != :thread_embed,
+                hidden: !@summary_field_shown
+              ]}
+              id="smart_input_summary"
+            >
+              <div class={
+                "flex items-start gap-2 rounded-box border py-1.5 pl-3 pr-1.5",
+                "border-warning/30 bg-warning/10 focus-within:border-warning/70": @show_sensitive || @show_cw,
+                "border-divider bg-base-100 focus-within:border-base-content/30": !(@show_sensitive || @show_cw)
+              }>
+                {!-- Reactive role prefix: the textarea is `phx-update="ignore"` (to keep typed content), so a placeholder there would be frozen; this label flips between Content warning and Summary instead --}
+                <span
+                  :if={@summary_field_shown}
+                  class={
+                    "flex shrink-0 items-center gap-1.5 text-sm font-medium leading-7",
+                    "text-warning": @show_sensitive || @show_cw,
+                    "text-muted": !(@show_sensitive || @show_cw)
+                  }
+                >
+                  <#Icon
+                    iconify={if @show_sensitive || @show_cw, do: "ph:warning-circle", else: "ph:text-align-left"}
+                    class="size-4"
+                  />
+                  {if @show_sensitive || @show_cw, do: l("Content warning"), else: l("Summary")}
+                </span>
                 <div phx-update="ignore" id="smart_input_summary_value" class="flex-1 min-w-0">
-                  {!-- no placeholder: the reactive label above shows the field's role (this
-                       subtree is `phx-update="ignore"` so a placeholder here would be frozen) --}
                   <textarea
                     name="post[post_content][summary]"
-                    class="block w-full m-0 px-3 py-2 !outline-0 !outline-none bg-transparent border-0 resize-none text-base leading-6 text-base-content placeholder:text-muted focus:ring-0 focus:outline-none"
+                    aria-label={l("Content warning or summary")}
+                    placeholder={l("What people see first")}
+                    class="block w-full m-0 p-0 !outline-0 !outline-none bg-transparent border-0 resize-none text-sm leading-7 text-base-content placeholder:text-muted focus:ring-0 focus:outline-none"
                     rows="1"
                     style="field-sizing: content; min-height: 0; max-height: 6rem;"
                   >{e(@smart_input_opts, :cw, nil)}</textarea>
@@ -54,9 +91,9 @@
                   type="button"
                   phx-click="Bonfire.UI.Common.SmartInput:clear_sensitive"
                   phx-target={@event_target || "#smart_input"}
-                  class="shrink-0 mt-2 mr-2 p-1 rounded-full text-subtle hover:text-muted hover:bg-fill transition-colors"
-                  title={l("Remove content warning")}
-                  aria-label={l("Remove content warning")}
+                  class="grid size-7 shrink-0 place-items-center rounded-full text-muted hover:bg-base-200 hover:text-base-content focus-ring"
+                  title={if @show_sensitive || @show_cw, do: l("Remove content warning"), else: l("Remove summary")}
+                  aria-label={if @show_sensitive || @show_cw, do: l("Remove content warning"), else: l("Remove summary")}
                 >
                   <#Icon iconify="ph:x" class="size-4" />
                 </button>
@@ -96,11 +133,15 @@
         </div>
       </div>
 
-      <div class="z-50 shrink-0 bg-base-200">
+      <div class="z-50 shrink-0 bg-base-100">
         <div class="pb-safe">
-          <div class="flex flex-row items-center gap-1 p-2 lg:rounded-b-box md:gap-2 md:px-3">
+          <div class={
+            "flex flex-row items-center gap-1 lg:rounded-b-box",
+            "p-2 md:px-3": @showing_within == :thread_embed,
+            "py-2 pr-3 pl-1.5 sm:pl-2.5": @showing_within != :thread_embed
+          }>
             <div>
-              <div :if={@showing_within != :thread_embed} class="flex flex-wrap items-center gap-1 md:gap-2">
+              <div :if={@showing_within != :thread_embed} class="flex flex-wrap items-center gap-2">
                 <Bonfire.UI.Common.UploadButtonLive
                   :if={@uploads != false && e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}
                   uploads={@uploads}
@@ -128,7 +169,7 @@
                   <button
                     title={l("Insert emoji")}
                     type="button"
-                    class="tooltip-button emoji-button btn btn-ghost btn-circle"
+                    class="tooltip-button emoji-button btn btn-ghost btn-sm btn-circle"
                   >
                     <#Icon iconify="ph:smiley-wink-fill" class="size-5 text-muted" />
                   </button>
@@ -152,13 +193,12 @@
                     phx-click="Bonfire.UI.Common.SmartInput:toggle_sensitive"
                     phx-target={@event_target || "#smart_input"}
                     class={[
-                      "relative btn btn-ghost btn-sm gap-2 text-muted",
+                      "relative btn btn-ghost btn-sm btn-circle text-muted",
                       "bg-warning !text-warning-content": @show_sensitive
                     ]}
                   >
+                    {!-- icon-only, like the other tools (aria-label above) --}
                     <#Icon iconify="ph:warning-circle" class="size-5" />
-                    {!-- icon-only on phones so the toolbar fits one row (aria-label above) --}
-                    <span class="hidden sm:inline">{l("Content warning")}</span>
                   </button>
                   <input type="hidden" name="sensitive" value={to_string(@show_sensitive)}>
                 </div>
@@ -168,7 +208,7 @@
                   :if={@showing_within != :thread_embed}
                   id="smart_input_more_options"
                   position="top"
-                  trigger_class="emoji-button btn btn-ghost btn-circle"
+                  trigger_class="emoji-button btn btn-ghost btn-sm btn-circle"
                   label={l("More options")}
                 >
                   <:trigger>
@@ -189,6 +229,19 @@
                     </button>
                   </li>
 
+                  <li :if={@summary_toggle and !@summary_field_shown}>
+                    <button
+                      type="button"
+                      id="summary_btn"
+                      phx-click="Bonfire.UI.Common.SmartInput:toggle_summary"
+                      phx-target={@event_target || "#smart_input"}
+                      class="title-button"
+                    >
+                      <#Icon iconify="ph:text-align-left" class="size-5 text-muted" />
+                      <span class="text-sm">{l("Add a summary")}</span>
+                    </button>
+                  </li>
+
                   <li :if={is_nil(@reply_to_id) and
                     e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}>
                     <button
@@ -202,44 +255,12 @@
                       <span class="text-sm">{l("Schedule post")}</span>
                     </button>
                   </li>
-                  <li>
-                    <Bonfire.UI.Common.OpenModalLive
-                      id="discard_composer"
-                      without_form
-                      reusable_modal_id="persistent_modal"
-                      title_text={l("Discard draft?")}
-                      cancel_label={l("Cancel")}
-                      open_btn_wrapper_class=""
-                    >
-                      <div class="mt-3 prose-sm prose">
-                        <p>{l("Discard this draft? This cannot be undone.")}</p>
-                      </div>
-                      <:open_btn>
-                        <span class="flex items-center gap-2 text-sm">
-                          <#Icon iconify="ph:trash" class="size-4" />
-                          {l("Discard draft…")}
-                        </span>
-                      </:open_btn>
-                      <:action_btns>
-                        <button
-                          phx-click={JS.push("Bonfire.UI.Common.SmartInput:reset_to_default")
-                          |> JS.push("close", target: "#persistent_modal")
-                          |> JS.add_class("translate-y-100", to: "#smart_input_container")}
-                          phx-target="#smart_input"
-                          type="button"
-                          class="normal-case btn btn-sm btn-error"
-                        >
-                          {l("Discard draft")}
-                        </button>
-                      </:action_btns>
-                    </Bonfire.UI.Common.OpenModalLive>
-                  </li>
                 </Dropdown>
 
-                {!-- |> JS.show(to: "#smart_input_summary") --}
               </div>
             </div>
             <div id="composer_publish_controls" class="flex flex-1 items-center gap-2">
+              <span class="flex-1" />
               {#if @showing_within != :thread_embed}
                 <!-- Language selection dropdown -->
                 {#case to_string(
@@ -254,14 +275,13 @@
                       wrapper_opts={["data-boundary": "#composer_container"]}
                       id="language_dropdown"
                       position="top"
-                      trigger_class="lang-button btn btn-ghost btn-sm gap-1 !px-1.5"
+                      trigger_class="lang-button btn btn-ghost btn-sm !px-2"
                       panel_class="flex-col flex-nowrap max-h-60 overflow-y-auto"
                       label={l("Set post language")}
                       trigger_opts={[title: l("Set post language")]}
                     >
                       <:trigger>
-                        <#Icon iconify="ph:translate-fill" class="size-5 text-primary" />
-                        <span id="selected_language_label" phx-update="ignore" class="text-xs text-muted uppercase">{locale}</span>
+                        <span id="selected_language_label" phx-update="ignore" class="text-xs font-medium text-muted uppercase">{locale}</span>
                       </:trigger>
 
                       {#for {lang, name} <-
@@ -302,7 +322,6 @@
                 {/case}
               {/if}
 
-              <span class="flex-1" />
               <button
                 :if={@showing_within == :thread_embed && @reply_to_id && @context_id &&
                   to_string(@reply_to_id) != to_string(@context_id)}

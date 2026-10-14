@@ -3,9 +3,9 @@
     title={l("Upload an attachment")}
     disabled={Enum.count(@uploads.files.entries) >= @max_uploads}
     for={@uploads.files.ref}
-    class="btn btn-ghost btn-circle"
+    class="btn btn-ghost btn-sm btn-circle"
   >
-    <#Icon iconify="ph:paperclip-bold" class="size-5 text-primary" />
+    <#Icon iconify="ph:paperclip" class="size-5 text-muted" />
     <Phoenix.Component.live_file_input upload={@uploads.files} class="sr-only" />
     <span class="sr-only">
       {l("Upload an attachment")}

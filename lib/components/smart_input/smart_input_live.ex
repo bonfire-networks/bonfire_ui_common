@@ -134,6 +134,43 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   def reply_audience_label("reply_participants"), do: l("Original author and you")
   def reply_audience_label(_), do: l("Same as original post")
 
+  @doc """
+  Whether a reply's audience was narrowed from the default (the original post's audience).
+
+      iex> reply_audience_narrowed?([{"reply_participants", "Original author and you"}])
+      true
+
+      iex> reply_audience_narrowed?([{:clone_context, "Same as original post"}])
+      false
+  """
+  def reply_audience_narrowed?([{audience, _} | _]), do: reply_audience_narrowed?([audience])
+
+  def reply_audience_narrowed?([audience | _]),
+    do: to_string(audience) in ["reply_members", "reply_moderators", "reply_participants"]
+
+  def reply_audience_narrowed?(_), do: false
+
+  @doc """
+  Whether a personal post's boundary is the public default (nothing chosen also means public).
+
+      iex> public_audience?([{"public", "Public"}])
+      true
+
+      iex> public_audience?([])
+      true
+
+      iex> public_audience?([{"local", "Local"}])
+      false
+  """
+  def public_audience?(to_boundaries) do
+    case List.last(List.wrap(to_boundaries)) do
+      nil -> true
+      {slug, _} -> to_string(slug) == "public"
+      slug when is_binary(slug) or is_atom(slug) -> to_string(slug) == "public"
+      _ -> false
+    end
+  end
+
   @doc "Whether the composer is scoped to a named group or topic, which then decides the post's visibility choices."
   def group_context?(context_group) do
     case e(context_group, :name, nil) do
@@ -169,6 +206,14 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     e(object, :post_content, nil) || object
   end
 
+  @doc "Whether the replied-to text is long enough to overflow the peek's line clamp (by visible text, not markup)."
+  def reply_peek_long?(object) do
+    case Bonfire.Common.Text.text_only(e(post_content(object), :html_body, nil)) do
+      text when is_binary(text) -> String.length(text) > 220
+      _ -> false
+    end
+  end
+
   @doc """
   Whether the composer is currently scoped to a reply target.
 
@@ -185,10 +230,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   subject can't be resolved (e.g. an id-only `reply_to_id`).
   """
   def reply_to_author(assigns) do
-    subject =
-      e(assigns, :activity, :subject, nil) ||
-        e(assigns, :object, :created, :creator, nil) ||
-        e(assigns, :object, :creator, nil)
+    subject = reply_to_subject(assigns)
 
     %{
       name: e(subject, :profile, :name, nil) || e(subject, :character, :username, nil),
@@ -197,5 +239,12 @@ defmodule Bonfire.UI.Common.SmartInputLive do
           fallback_return: nil
         )
     }
+  end
+
+  @doc "Author of the activity/object being replied to, or nil if it can't be resolved."
+  def reply_to_subject(assigns) do
+    e(assigns, :activity, :subject, nil) ||
+      e(assigns, :object, :created, :creator, nil) ||
+      e(assigns, :object, :creator, nil)
   end
 end

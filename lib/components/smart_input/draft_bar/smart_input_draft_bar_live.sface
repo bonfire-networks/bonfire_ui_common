@@ -1,0 +1,22 @@
+<button
+  id="composer_draft_bar"
+  type="button"
+  phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open()}
+  phx-target="#smart_input"
+  class="composer-draft-bar group fixed z-popover left-4 right-4 dock-safe-bottom md:bottom-4 flex min-h-14 items-center gap-3 rounded-full border border-base-content/15 bg-base-100 py-2 pl-2 pr-2 text-left text-base-content hover:bg-base-200 focus-ring"
+>
+  <span class="grid size-10 shrink-0 place-items-center rounded-full bg-primary/15 text-primary" aria-hidden="true">
+    <#Icon iconify="ph:pencil-simple-line-fill" class="size-5" />
+  </span>
+  <span class="min-w-0 grow truncate text-sm">
+    <span class="font-medium">{l("Draft")}</span>
+    <span class="text-muted">· {l("Continue writing")}</span>
+  </span>
+  <span
+    class="flex h-10 shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 text-sm font-medium text-primary-content group-hover:brightness-110"
+    aria-hidden="true"
+  >
+    {l("Resume")}
+    <#Icon iconify="ph:caret-up" class="size-4" />
+  </span>
+</button>

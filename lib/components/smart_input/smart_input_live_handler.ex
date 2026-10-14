@@ -139,7 +139,19 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     {:noreply,
      socket
-     |> assign(smart_input_opts: Map.put(current_opts, :show_sensitive, show_sensitive))}
+     |> assign(smart_input_opts: Map.put(current_opts, :show_sensitive, show_sensitive))
+     |> maybe_focus_summary(show_sensitive)}
+  end
+
+  # reveals the optional summary field (for types configured with `summary: [enable_toggle: true]`)
+  def handle_event("toggle_summary", _params, socket) do
+    current_opts = e(assigns(socket), :smart_input_opts, %{})
+    show_summary = !e(current_opts, :show_summary, false)
+
+    {:noreply,
+     socket
+     |> assign(smart_input_opts: Map.put(current_opts, :show_summary, show_summary))
+     |> maybe_focus_summary(show_summary)}
   end
 
   def handle_event("clear_sensitive", _params, socket) do
@@ -149,7 +161,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
      socket
      |> assign(
        smart_input_opts:
-         Map.merge(current_opts, %{show_sensitive: false, show_cw: false, cw: nil})
+         Map.merge(current_opts, %{show_sensitive: false, show_cw: false, show_summary: false, cw: nil})
      )
      |> Phoenix.LiveView.push_event("smart_input:reset_sensitive", %{})}
   end
@@ -1305,6 +1317,13 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     do_extra_reset_input(socket)
   end
 
+  # the server owns the summary field's visibility (a JS class toggle would stick across
+  # patches and outlive a server-side hide), so focus is sent once the field is rendered
+  defp maybe_focus_summary(socket, true),
+    do: Phoenix.LiveView.push_event(socket, "smart_input:focus_summary", %{})
+
+  defp maybe_focus_summary(socket, _), do: socket
+
   defp default_smart_input_opts(extra \\ %{}) do
     Map.merge(
       %{
@@ -1315,7 +1334,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         title: nil,
         cw: nil,
         show_cw: false,
-        show_sensitive: false
+        show_sensitive: false,
+        show_summary: false
       },
       extra
     )

@@ -23,12 +23,12 @@
       phx-target="#smart_input"
       class={
         "flex flex-1 min-w-0 items-center gap-3 text-left text-sm self-stretch min-h-11 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
-        "rounded-box border border-divider bg-base-200 px-4 py-3 text-muted hover:bg-base-300 active:bg-base-300":
+        "rounded-full bg-fill px-4 py-2.5 text-muted hover:bg-fill-strong active:bg-fill-strong":
           e(@smart_input_opts, :context_id, nil),
         "text-muted": !e(@smart_input_opts, :context_id, nil)
       }
     >
-      <span class="min-w-0 flex-1 break-words">{@prompt || l("Share something")}</span>
+      <span class="min-w-0 flex-1 truncate">{@prompt || l("Share something")}</span>
       <#Icon
         :if={e(@smart_input_opts, :context_id, nil)}
         iconify="ph:pencil-simple"

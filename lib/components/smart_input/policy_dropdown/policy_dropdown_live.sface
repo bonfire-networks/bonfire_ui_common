@@ -4,20 +4,17 @@
   menu={false}
   close_on_select
   position="bottom-start"
-  wrapper_class="w-full min-w-0"
-  trigger_class="flex w-full min-h-12 items-center justify-between gap-2 px-3 py-2 sm:gap-3 sm:px-4 text-left hover:bg-fill focus-ring"
+  wrapper_class="min-w-0 max-w-full"
+  trigger_class={"flex h-8 min-w-0 max-w-full items-center gap-1.5 rounded-full border px-3 text-left text-sm font-medium focus-ring " <> if(@emphasis, do: "border-primary/30 bg-primary/10 text-primary hover:bg-primary/15", else: "border-divider bg-base-100 hover:bg-base-200")}
   panel_class="!w-72 max-w-[calc(100vw-2rem)] !p-2"
   label={@label}
 >
   <:trigger>
-    <span class="flex min-w-0 flex-col gap-1">
-      <span class="sr-only">{@label}</span>
-      <span class="flex items-center gap-2 text-sm" role="status" {...@status_opts}>
-        <Iconify.iconify icon={@icon} class="size-5 shrink-0 text-muted" />
-        {@selected_label}
-      </span>
+    <span class="sr-only">{@label}</span>
+    <span class="flex min-w-0 items-center gap-1.5" role="status" {...@status_opts}>
+      <Iconify.iconify icon={@icon} class="size-4 shrink-0 opacity-70" />
+      <span class="min-w-0 truncate">{@selected_label}</span>
     </span>
-    <#Icon iconify="ph:caret-down" class="size-4 shrink-0 text-muted" />
   </:trigger>
   <p :if={@description} class="px-2 py-2 text-sm text-muted">{@description}</p>
   <button

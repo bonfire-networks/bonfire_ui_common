@@ -51,7 +51,9 @@ defmodule Bonfire.UI.Common.InputControlsLive do
     summary = field_config(enable_fields, :summary, create_object_type)
     sensitive = field_config(enable_fields, :sensitive, create_object_type)
 
-    summary_visible = summary[:show_by_default] == true
+    summary_visible =
+      summary[:show_by_default] == true or
+        (summary[:enable_toggle] == true and e(smart_input_opts, :show_summary, false) == true)
     sensitive_toggle = sensitive[:enable_toggle] == true
     show_cw = e(smart_input_opts, :show_cw, false)
     show_sensitive = e(smart_input_opts, :show_sensitive, false)
@@ -66,6 +68,7 @@ defmodule Bonfire.UI.Common.InputControlsLive do
     )
     |> assign(:title_toggle, not_a_reply? and title[:enable_toggle] == true)
     |> assign(:summary_visible, summary_visible)
+    |> assign(:summary_toggle, summary[:enable_toggle] == true)
     |> assign(:sensitive_toggle, sensitive_toggle)
     |> assign(:show_cw, show_cw)
     |> assign(:show_sensitive, show_sensitive)
@@ -94,7 +97,7 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   #     config :bonfire_ui_common, Bonfire.UI.Common.InputControlsLive,
   #       enable_fields: [
   #         title: [article: [show_by_default: true], post: [enable_toggle: true]],
-  #         summary: [article: [show_by_default: true]],
+  #         summary: [article: [enable_toggle: true]],
   #         sensitive: [default: [enable_toggle: true]]
   #       ]
   #

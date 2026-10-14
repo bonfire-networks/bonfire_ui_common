@@ -26,4 +26,7 @@ defmodule Bonfire.UI.Common.PolicyDropdownLive do
   prop option_attr, :string, required: true
 
   prop event_target, :any, default: nil
+
+  @doc "Tints the trigger, e.g. when the choice differs from the default."
+  prop emphasis, :boolean, default: false
 end
