@@ -227,8 +227,9 @@
                 id="composer_policy_controls"
                 role="group"
                 aria-label={l("Audience and permissions")}
-                class="flex min-w-0 max-w-full flex-wrap items-center gap-2"
-              >
+                class="flex min-w-0 flex-1 basis-56 items-center gap-2"
+              >{!-- a small flex-basis keeps the chips on the "Create post" line while ~14rem is left, so they
+                  truncate (group name first) instead of the whole group wrapping; no inner wrap for the same reason --}
                 {#if e(@smart_input_opts, :create_object_type, nil) in ["message", :message]}
                   <span
                     class="flex min-h-10 items-center gap-1.5 px-1.5 text-sm text-warning"
@@ -394,53 +395,6 @@
                 {/if}
               </span>
             </div>
-          </div>
-          <div
-            :if={not replying?(assigns) and
-              e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and
-              not is_nil(e(@context_group, :group_id, nil)) and e(@context_group, :topics, []) != []}
-            id="composer_topic_controls"
-            class="border-t border-divider px-2 py-1"
-          >
-            <Dropdown
-              wrapper_opts={["data-boundary": "#composer_container"]}
-              id="composer_destination"
-              menu={false}
-              close_on_select
-              position="bottom-start"
-              trigger_class="flex min-h-11 max-w-full items-center gap-2 rounded-selector px-2 text-sm hover:bg-fill focus-ring"
-              panel_class="!w-72 max-w-[calc(100vw-2rem)] !p-2 max-h-72 overflow-y-auto overscroll-contain"
-              label={l("Choose an optional topic")}
-            >
-              <:trigger>
-                <#Icon iconify="ph:chats-circle-duotone" class="size-4 shrink-0 text-primary" />
-                <span class="text-muted">{l("Topic")}</span>
-                <span class="min-w-0 break-words font-medium">{if @context_group.id == @context_group.group_id, do: l("Whole group"), else: @context_group.name}</span>
-                <#Icon iconify="ph:caret-down" class="size-4 shrink-0 text-muted" />
-              </:trigger>
-              <button
-                type="button"
-                phx-click="Bonfire.UI.Common.SmartInput:pick_context"
-                phx-value-id={@context_group.group_id}
-                phx-target={@event_target || "#smart_input"}
-                aria-pressed={"#{@context_group.id == @context_group.group_id}"}
-                class="w-full min-h-11 rounded-selector px-2 py-2 text-left hover:bg-base-200 aria-pressed:bg-primary/10 aria-pressed:text-primary focus-ring"
-              >
-                {l("Whole group")}
-              </button>
-              {#for topic <- @context_group.topics}
-                <button
-                  type="button"
-                  phx-click="Bonfire.UI.Common.SmartInput:pick_context"
-                  phx-value-id={id(topic)}
-                  phx-target={@event_target || "#smart_input"}
-                  aria-pressed={"#{@context_group.id == id(topic)}"}
-                  class="w-full min-h-11 rounded-selector px-2 py-2 text-left hover:bg-base-200 aria-pressed:bg-primary/10 aria-pressed:text-primary focus-ring"
-                >
-                  {Bonfire.Classify.Web.Preview.CategoryLive.name(topic, l("Topic"))}
-                </button>
-              {/for}
-            </Dropdown>
           </div>
         </header>
 
