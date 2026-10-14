@@ -5,7 +5,7 @@
         id="main_smart_input_button"
         showing_within={:smart_input}
         as_icon={e(@as_icon, false)}
-        without_icon
+        without_icon={@without_icon}
         smart_input_opts={@smart_input_opts}
         prompt={e(@smart_input_opts, :prompt, l("Compose"))}
         class={e(

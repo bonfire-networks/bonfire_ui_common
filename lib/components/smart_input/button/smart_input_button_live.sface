@@ -60,7 +60,7 @@
             aria-hidden="true"
             class={
               @icon_class,
-              "toggle_button  size-5"
+              "compose-icon toggle_button  size-5"
             }
           />
         {#else}
@@ -69,7 +69,7 @@
             aria-hidden="true"
             class={
               @icon_class,
-              "toggle_button  size-5"
+              "compose-icon toggle_button  size-5"
             }
           />
         {/if}

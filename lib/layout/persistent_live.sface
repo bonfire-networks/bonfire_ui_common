@@ -8,7 +8,8 @@
     <div class="pt-safe w-full">
       {#if current_user_id(@__context__)}
         <div class="flex flex-col w-full">
-          {!-- mobile: one 56px row, 32px logo left + compact compose right.
+          {!-- mobile: one 56px row, 32px logo + instance name left, icon-only ghost compose right
+               (the dock has the primary compose, so the drawer one stays quiet).
                lg: stacked, 70² logo aligned to the
                page-header, then a full-width compose that shares the nav rows' highlight edges --}
           <div class="flex items-center justify-between gap-3 h-14 lg:h-auto lg:flex-col lg:items-stretch lg:justify-start lg:gap-0">
@@ -17,6 +18,8 @@
                 href="/"
                 container_class="flex items-center gap-3 min-w-0 cursor-pointer"
                 image_class="size-8 lg:size-17.5"
+                with_name
+                name_class="lg:hidden min-w-0 truncate text-base font-bold text-base-content"
               />
             </div>
             <div class="shrink-0 lg:-mx-2 lg:pb-2 lg:pt-8">
@@ -28,8 +31,7 @@
                 to_boundaries={@to_boundaries}
                 context_id={@context_id}
                 context_group={@context_group}
-                without_icon
-                composer_class="btn btn-primary focus-ring max-lg:btn-sm max-lg:text-sm max-lg:px-4 lg:w-[60%] lg:h-9 lg:min-h-9"
+                composer_class="btn focus-ring max-lg:btn-ghost max-lg:btn-circle max-lg:btn-sm max-lg:[&>span]:sr-only lg:btn-primary lg:[&_.compose-icon]:hidden lg:w-[60%] lg:h-9 lg:min-h-9"
                 smart_input_opts={@smart_input_opts}
               />
             </div>

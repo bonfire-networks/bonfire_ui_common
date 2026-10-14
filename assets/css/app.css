@@ -2578,16 +2578,13 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
     pointer-events: none;
   }
 
-  /* Top discussions: keep the reply/participants footer visible on clipped
-     tiles, with the fade sitting just above it. The negative margin cancels
-     the extra padding, so unclipped tiles keep their layout. */
   .spotlight_clamp:has([data-role="discussion_preview_actions"])::after {
     content: none;
   }
 
   .spotlight_clamp [data-role="discussion_preview_actions"] {
     position: sticky;
-    bottom: 0;
+    bottom: calc(-1 * var(--spacing-card));
     z-index: 1;
     padding-bottom: var(--spacing-card);
     margin-bottom: calc(-1 * var(--spacing-card));

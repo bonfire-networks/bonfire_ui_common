@@ -162,7 +162,7 @@
           {#if @current_user_id && @without_sidebar != true}
             <div data-role="persistent_skeleton" class="block w-full lg:shrink-0" aria-hidden="true">
               {!-- mirrors PersistentLive's #persistent-header exactly (mobile: 56px row, 32px logo +
-                   compact compose; lg: 70² logo, pt-4 header row, then a full-width
+                   ghost icon compose; lg: 70² logo, pt-4 header row, then a full-width
                    compose) so there's no reflow when the sticky LV fills in --}
               <div class="px-4 lg:px-7.5 bg-base-200 z-sticky sticky top-0">
                 <div class="pt-safe w-full">
@@ -172,10 +172,12 @@
                         href="/"
                         container_class="flex items-center gap-3 min-w-0 cursor-pointer"
                         image_class="size-8 lg:size-17.5"
+                        with_name
+                        name_class="lg:hidden min-w-0 truncate text-base font-bold text-base-content"
                       />
                     </div>
                     <div class="shrink-0 lg:-mx-2 lg:pb-2 lg:pt-8">
-                      <div class="skeleton rounded-field h-8 w-24 lg:h-9 lg:w-full" />
+                      <div class="skeleton rounded-full size-8 lg:rounded-field lg:h-9 lg:w-full" />
                     </div>
                   </div>
                 </div>
@@ -331,19 +333,26 @@
         <span class="sr-only">{l("Notifications")}</span>
       </LinkLive>
 
-      <LinkLive to={~p"/messages"} class={"dock-active": @selected_tab in [:messages, "messages"]}>
-        <span class="relative inline-flex">
-          <#Icon iconify="ph:tray-fill" class="size-6" aria-hidden="true" />
-          <span class="absolute -top-2 -right-2">
-            <StatefulComponent
-              id="dock-messages-badge"
-              module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
-              feed_id={e(current_user(@__context__), :character, :inbox_id, nil)}
-            />
+      {#if extension_enabled?(:bonfire_ui_groups, @__context__)}
+        <LinkLive to="/groups" class={"dock-active": @page in [:groups, "groups"]}>
+          <#Icon iconify="ph:users-three-fill" class="size-6" aria-hidden="true" />
+          <span class="sr-only">{l("Groups")}</span>
+        </LinkLive>
+      {#else}
+        <LinkLive to={~p"/messages"} class={"dock-active": @selected_tab in [:messages, "messages"]}>
+          <span class="relative inline-flex">
+            <#Icon iconify="ph:tray-fill" class="size-6" aria-hidden="true" />
+            <span class="absolute -top-2 -right-2">
+              <StatefulComponent
+                id="dock-messages-badge"
+                module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
+                feed_id={e(current_user(@__context__), :character, :inbox_id, nil)}
+              />
+            </span>
           </span>
-        </span>
-        <span class="sr-only">{l("Messages")}</span>
-      </LinkLive>
+          <span class="sr-only">{l("Messages")}</span>
+        </LinkLive>
+      {/if}
     {#else}
       <div class="flex flex-row items-center justify-between basis-full max-w-none gap-3 mb-0">
         <Bonfire.UI.Common.LogoLinkLive
