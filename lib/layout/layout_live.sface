@@ -150,11 +150,11 @@
         data-id="nav_sidebar"
         data-sidebar-minimal={@without_sidebar == :minimal}
         class={
-          "w-80 px-4 px-safe lg:px-0 lg:mr-(--rail-offset) lg:w-rail lg:border-r-(length:--rail-divider-width) lg:border-divider bg-rail self-stretch flex flex-col overflow-y-auto lg:overflow-y-visible min-h-[calc(var(--inner-window-height))] lg:min-h-0 lg:h-screen lg:pb-0",
+          "w-80 px-4 px-safe lg:px-0 lg:mr-(--rail-offset) lg:w-rail lg:border-r-(length:--rail-divider-width) lg:border-divider bg-rail self-stretch flex flex-col overflow-y-auto min-h-[calc(var(--inner-window-height))] lg:min-h-0 lg:h-screen lg:pb-0",
           "pb-safe": !(@current_user_id && @without_sidebar != true)
         }
       >
-        <div class="flex flex-col flex-1 min-h-full lg:min-h-0">
+        <div class="flex flex-col flex-1 min-h-full lg:flex-none">
           {!-- Skeleton mirroring PersistentLive's shape. Always rendered alongside the sticky LV;
                hidden by CSS (see app.css `[data-role="persistent_skeleton"]:has(...)`) once the
                sticky child fills its container. Prevents the vertical reflow that happens while
@@ -220,7 +220,7 @@
             <Bonfire.UI.Common.PersistentLive
               id={:persistent}
               sticky
-              container={{:div, class: "block w-full lg:shrink-0"}}
+              container={{:div, class: "block w-full lg:contents"}}
               session={%{
                 "page" => @page,
                 "selected_tab" => @selected_tab,
@@ -252,7 +252,7 @@
             </div>
           {/if}
 
-          <div id="nav_sidebar_scroll" class="lg:flex-1 lg:min-h-0 lg:overflow-y-auto">
+          <div id="nav_sidebar_scroll" class="lg:flex-1">
             <Bonfire.UI.Common.NavSidebarLive
               page={@page}
               selected_tab={@selected_tab}

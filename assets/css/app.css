@@ -2498,11 +2498,7 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   }
 }
 
-/* Persistent header: bottom fade using pseudo-element (doesn't clip dropdowns) */
-#persistent-header {
-  position: relative;
-}
-
+/* Persistent header: bottom fade using pseudo-element (doesn't clip dropdowns). No `position` override: the `sticky` class already anchors the ::after */
 #persistent-header::after {
   content: "";
   position: absolute;
