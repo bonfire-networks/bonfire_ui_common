@@ -1,0 +1,21 @@
+<label class="flex gap-3 items-start p-3 mb-3 rounded-selector cursor-pointer bg-fill">
+  {!-- sent when unticked, which otherwise sends nothing at all, so a handler can tell "no" from "not offered" (where a default applies) --}
+  <input type="hidden" name={@name} value="false">
+  <input
+    data-role={@data_role || @name}
+    type="checkbox"
+    name={@name}
+    value="true"
+    checked={@checked}
+    class="mt-1 checkbox checkbox-sm"
+  />
+  <span class="block">
+    <span class="block text-sm font-medium">{@offer}</span>
+    <span :if={@what} class="block mt-1 text-sm text-muted">{@what}</span>
+    {!-- set apart from the description above deliberately: this is what the choice COSTS, so it must not read as more explanation --}
+    <span :if={@risk} class="flex gap-1.5 items-start mt-2 text-sm text-warning">
+      <#Icon iconify="ph:warning-duotone" class="mt-0.5 shrink-0 size-4" />
+      <span>{@risk}</span>
+    </span>
+  </span>
+</label>
