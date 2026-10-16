@@ -43,6 +43,7 @@
                   boundaries_modal_id={:modal_composer}
                   showing_within={@showing_within}
                   reply_to_id={@reply_to_id}
+                  reply_to_boundary={@reply_to_boundary}
                   context_id={@context_id}
                   smart_input_component={@smart_input_component}
                   open_boundaries={@open_boundaries}
@@ -97,6 +98,7 @@
                     boundaries_modal_id={:modal_composer}
                     showing_within={@showing_within}
                     reply_to_id={@reply_to_id}
+                  reply_to_boundary={@reply_to_boundary}
                     context_id={@context_id}
                     smart_input_component={@smart_input_component}
                     open_boundaries={@open_boundaries}

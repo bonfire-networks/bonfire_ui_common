@@ -5,6 +5,9 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   # prop user_image, :string, required: true
   # prop create_object_type, :any, default: nil
   prop reply_to_id, :any, default: nil
+
+  @doc "The loaded boundary of what's replied to (`Bonfire.Boundaries.boundaries_on_objects/2`), so its preview here shows it only if the viewer may read it"
+  prop reply_to_boundary, :any, default: nil
   prop context_id, :string, default: nil, required: false
   prop composer_dom_id, :any, default: nil
   prop smart_input_component, :atom, default: nil

@@ -1,6 +1,6 @@
+{!-- sent when unticked, which otherwise sends nothing at all, so a handler can tell "no" from "not offered" (where a default applies). Before the checkbox, so a ticked one overrides it, and outside the label, which names the checkbox alone --}
+<input type="hidden" name={@name} value="false">
 <label class="flex gap-3 items-start p-3 mb-3 rounded-selector cursor-pointer bg-fill">
-  {!-- sent when unticked, which otherwise sends nothing at all, so a handler can tell "no" from "not offered" (where a default applies) --}
-  <input type="hidden" name={@name} value="false">
   <input
     data-role={@data_role || @name}
     type="checkbox"

@@ -83,7 +83,7 @@
                   show_minimal_subject_and_note={Bonfire.UI.Social.ActivityLive.name_or_text(@object) || true}
                   showing_within={:smart_input}
                   activity_inception={@activity_inception}
-                  object_boundary={:skip_boundary_check}
+                  object_boundary={@reply_to_boundary}
                 />
               </div>
               <button

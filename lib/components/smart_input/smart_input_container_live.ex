@@ -3,6 +3,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   alias Bonfire.UI.Common.SmartInputLive
 
   prop reply_to_id, :any, default: nil
+  prop reply_to_boundary, :any, default: nil
   prop as_icon, :boolean, default: false
   prop context_id, :string, default: nil, required: false
   prop smart_input_component, :atom, default: nil
@@ -173,6 +174,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       |> maybe_preserve_assign(:activity, e(assigns(socket), :activity, nil))
       |> maybe_preserve_assign(:object, e(assigns(socket), :object, nil))
       |> maybe_preserve_assign(:reply_to_id, e(assigns(socket), :reply_to_id, nil))
+      |> maybe_preserve_assign(:reply_to_boundary, e(assigns(socket), :reply_to_boundary, nil))
       |> maybe_preserve_assign(:to_boundaries, e(assigns(socket), :to_boundaries, nil))
       |> maybe_preserve_assign(:to_circles, e(assigns(socket), :to_circles, nil))
       |> maybe_preserve_assign(:quoted_object, e(assigns(socket), :quoted_object, nil))
