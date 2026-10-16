@@ -26,6 +26,7 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   prop object, :any, default: nil
   prop activity_inception, :any, default: nil
   prop quoted_object, :any, default: nil
+  prop quoted_boundary, :any, default: nil
   prop quoted_url, :string, default: nil
   # prop title_open, :boolean, default: nil
   prop title_prompt, :string, default: nil

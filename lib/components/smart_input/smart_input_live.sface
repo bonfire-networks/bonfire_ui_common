@@ -442,7 +442,7 @@
                   true}
                 hide_actions
                 showing_within={:smart_input}
-                object_boundary={:skip_boundary_check}
+                object_boundary={@quoted_boundary}
               />
             </div>
           </div>

@@ -632,7 +632,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
           # a standalone post, as the confirmation promises (not a reply to the thread root)
           reply_to_id: nil,
           quoted_object: nil,
-          quoted_url: nil
+          quoted_url: nil, quoted_boundary: nil
         ],
         context_id: nil,
         mentions: [],
@@ -667,9 +667,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   # Clears just the quoted post, leaving any other reply state intact.
   def handle_event("remove_quoted", _params, socket) do
-    set(socket, quoted_object: nil, quoted_url: nil)
+    set(socket, quoted_object: nil, quoted_url: nil, quoted_boundary: nil)
 
-    {:noreply, assign(socket, quoted_object: nil, quoted_url: nil)}
+    {:noreply, assign(socket, quoted_object: nil, quoted_url: nil, quoted_boundary: nil)}
   end
 
   def handle_event(action, params, socket)
@@ -1161,6 +1161,58 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, assigns)
   end
 
+  @doc """
+  Opens the composer on `object_id` as a quote (quoting it, or broadcasting it with `extra_assigns`), previewed below the composer as a card.
+
+  As replying does (`Threads.LiveHandler`): the card's own object and loaded boundary, which the pressed button's component holds, else loaded here, once, as the person. The preview shows it only from a boundary that lets them read it, so `quoted_boundary` goes with it as `reply_to_boundary` goes with a reply.
+  """
+  def open_quoting(object_id, extra_assigns \\ [], socket) do
+    current_user = current_user_required!(socket)
+
+    with {:ok, object} <- quoted_object(object_id, current_user, socket),
+         url when is_binary(url) <- Bonfire.Common.URIs.canonical_url(object) do
+      open_with_text_suggestion(
+        "",
+        [
+          quoted_object: object,
+          quoted_url: url,
+          quoted_boundary: quoted_boundary(object, current_user, socket)
+        ] ++ extra_assigns,
+        socket
+      )
+
+      {:ok, object}
+    else
+      nil -> error(:no_url, "Could not generate URL for this post")
+      e -> e
+    end
+  end
+
+  defp quoted_object(object_id, current_user, socket) do
+    case e(assigns(socket), :object, nil) do
+      %{id: ^object_id} = object ->
+        {:ok, object}
+
+      # `:with_creator` + `:with_content` so the card can render the author and body without a flash. As them, since they're shown it
+      _ ->
+        Bonfire.Common.Needles.get(object_id,
+          current_user: current_user,
+          preload: [:with_creator, :with_content]
+        )
+    end
+  end
+
+  defp quoted_boundary(object, current_user, socket) do
+    case e(assigns(socket), :object_boundary, nil) do
+      %{object_id: _, verbs: verbs} = loaded when is_list(verbs) ->
+        loaded
+
+      _ ->
+        Bonfire.Boundaries.boundaries_on_objects([id(object)], current_user)
+        |> Map.get(id(object))
+    end
+  end
+
   def open_with_text_suggestion(text, set_assigns, socket_or_context) do
     # NOTE: Do NOT call replace_input_next_time here - it triggers a reset event that
     # can race with the mention_suggestions event, causing mentions to flash and disappear.
@@ -1206,7 +1258,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       has_reply and not has_quote ->
         put_assigns(set_assigns,
           quoted_object: nil,
-          quoted_url: nil,
+          quoted_url: nil, quoted_boundary: nil,
           clear_reply_data: true
         )
 
@@ -1264,7 +1316,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       activity: nil,
       object: nil,
       quoted_object: nil,
-      quoted_url: nil,
+      quoted_url: nil, quoted_boundary: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
@@ -1284,7 +1336,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       activity: nil,
       object: nil,
       quoted_object: nil,
-      quoted_url: nil,
+      quoted_url: nil, quoted_boundary: nil,
       to_circles: [],
       smart_input_opts: default_smart_input_opts(),
       # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
@@ -1302,7 +1354,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       activity: nil,
       object: nil,
       quoted_object: nil,
-      quoted_url: nil,
+      quoted_url: nil, quoted_boundary: nil,
       smart_input_component: nil,
       context_id: nil,
       to_circles: [],

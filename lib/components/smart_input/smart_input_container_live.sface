@@ -67,6 +67,7 @@
                   preview_boundary_verbs={@preview_boundary_verbs}
                   boundary_preset={@boundary_preset}
                   quoted_object={@quoted_object}
+                  quoted_boundary={@quoted_boundary}
                   quoted_url={@quoted_url}
                 />
               </div>
@@ -122,6 +123,7 @@
                     preview_boundary_verbs={@preview_boundary_verbs}
                     boundary_preset={@boundary_preset}
                     quoted_object={@quoted_object}
+                  quoted_boundary={@quoted_boundary}
                     quoted_url={@quoted_url}
                   />
                 </div>
