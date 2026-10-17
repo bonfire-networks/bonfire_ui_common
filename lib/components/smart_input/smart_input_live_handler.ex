@@ -161,7 +161,12 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
      socket
      |> assign(
        smart_input_opts:
-         Map.merge(current_opts, %{show_sensitive: false, show_cw: false, show_summary: false, cw: nil})
+         Map.merge(current_opts, %{
+           show_sensitive: false,
+           show_cw: false,
+           show_summary: false,
+           cw: nil
+         })
      )
      |> Phoenix.LiveView.push_event("smart_input:reset_sensitive", %{})}
   end
@@ -632,7 +637,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
           # a standalone post, as the confirmation promises (not a reply to the thread root)
           reply_to_id: nil,
           quoted_object: nil,
-          quoted_url: nil, quoted_boundary: nil
+          quoted_url: nil,
+          quoted_boundary: nil
         ],
         context_id: nil,
         mentions: [],
@@ -1258,7 +1264,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       has_reply and not has_quote ->
         put_assigns(set_assigns,
           quoted_object: nil,
-          quoted_url: nil, quoted_boundary: nil,
+          quoted_url: nil,
+          quoted_boundary: nil,
           clear_reply_data: true
         )
 
@@ -1316,7 +1323,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       activity: nil,
       object: nil,
       quoted_object: nil,
-      quoted_url: nil, quoted_boundary: nil,
+      quoted_url: nil,
+      quoted_boundary: nil,
       to_circles: [],
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
@@ -1336,7 +1344,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       activity: nil,
       object: nil,
       quoted_object: nil,
-      quoted_url: nil, quoted_boundary: nil,
+      quoted_url: nil,
+      quoted_boundary: nil,
       to_circles: [],
       smart_input_opts: default_smart_input_opts(),
       # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
@@ -1354,7 +1363,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       activity: nil,
       object: nil,
       quoted_object: nil,
-      quoted_url: nil, quoted_boundary: nil,
+      quoted_url: nil,
+      quoted_boundary: nil,
       smart_input_component: nil,
       context_id: nil,
       to_circles: [],

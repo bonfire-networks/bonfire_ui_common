@@ -36,15 +36,47 @@ defmodule Bonfire.UI.Common.NavSidebarLive do
   @doc "The guest nav links, each marked `active?` once so the template doesn't recompute it per styled part."
   def guest_links(context, page) do
     [
-      %{to: "/feed", icon: "ph:compass-duotone", label: l("Explore"), pages: ["home"], paths: ["/feed", "/"]},
-      %{to: "/about", icon: "ph:info-duotone", label: l("About"), pages: ["about"], paths: ["/about"]},
+      %{
+        to: "/feed",
+        icon: "ph:compass-duotone",
+        label: l("Explore"),
+        pages: ["home"],
+        paths: ["/feed", "/"]
+      },
+      %{
+        to: "/about",
+        icon: "ph:info-duotone",
+        label: l("About"),
+        pages: ["about"],
+        paths: ["/about"]
+      },
       extension_enabled?(:bonfire_ui_groups, context) &&
-        %{to: "/groups", icon: "ph:users-three-duotone", label: l("Public Groups"), pages: ["groups"], paths: ["/groups"]},
+        %{
+          to: "/groups",
+          icon: "ph:users-three-duotone",
+          label: l("Public Groups"),
+          pages: ["groups"],
+          paths: ["/groups"]
+        },
       Config.get([Bonfire.UI.Me.UsersDirectoryLive, :show_to]) == :guests &&
-        %{to: "/users", icon: "ph:users-four-duotone", label: l("Members"), pages: ["users"], paths: ["/users"]},
-      %{to: "/conduct", icon: "ph:newspaper-duotone", label: l("Code of Conduct"), pages: ["conduct"], paths: ["/conduct"]}
+        %{
+          to: "/users",
+          icon: "ph:users-four-duotone",
+          label: l("Members"),
+          pages: ["users"],
+          paths: ["/users"]
+        },
+      %{
+        to: "/conduct",
+        icon: "ph:newspaper-duotone",
+        label: l("Code of Conduct"),
+        pages: ["conduct"],
+        paths: ["/conduct"]
+      }
     ]
     |> Enum.filter(& &1)
-    |> Enum.map(&Map.put(&1, :active?, nav_active?(context, page, pages: &1.pages, paths: &1.paths)))
+    |> Enum.map(
+      &Map.put(&1, :active?, nav_active?(context, page, pages: &1.pages, paths: &1.paths))
+    )
   end
 end

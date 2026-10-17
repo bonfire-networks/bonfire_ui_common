@@ -54,6 +54,7 @@ defmodule Bonfire.UI.Common.InputControlsLive do
     summary_visible =
       summary[:show_by_default] == true or
         (summary[:enable_toggle] == true and e(smart_input_opts, :show_summary, false) == true)
+
     sensitive_toggle = sensitive[:enable_toggle] == true
     show_cw = e(smart_input_opts, :show_cw, false)
     show_sensitive = e(smart_input_opts, :show_sensitive, false)

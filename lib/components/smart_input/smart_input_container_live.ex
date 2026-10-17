@@ -25,6 +25,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop activity_inception, :any, default: nil
   prop quoted_object, :any, default: nil
   prop quoted_url, :string, default: nil
+
   # what is quoted's loaded boundary, so its preview shows it (as `reply_to_boundary` does for what is replied to)
   prop quoted_boundary, :any, default: nil
   # prop title_open, :boolean, default: nil

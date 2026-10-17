@@ -256,7 +256,6 @@
                     </button>
                   </li>
                 </Dropdown>
-
               </div>
             </div>
             <div id="composer_publish_controls" class="flex flex-1 items-center gap-2">
@@ -281,7 +280,11 @@
                       trigger_opts={[title: l("Set post language")]}
                     >
                       <:trigger>
-                        <span id="selected_language_label" phx-update="ignore" class="text-xs font-medium text-muted uppercase">{locale}</span>
+                        <span
+                          id="selected_language_label"
+                          phx-update="ignore"
+                          class="text-xs font-medium text-muted uppercase"
+                        >{locale}</span>
                       </:trigger>
 
                       {#for {lang, name} <-

@@ -188,7 +188,7 @@
                   {#case reply_to_author(assigns)}
                     {#match %{name: who_name, handle: who_handle}}
                       <span class="min-w-0 truncate" aria-hidden="true">{l("Reply")}</span>
-                    <span class="sr-only">{l("Replying to %{name}", name: who_name || who_handle || l("this post"))}</span>
+                      <span class="sr-only">{l("Replying to %{name}", name: who_name || who_handle || l("this post"))}</span>
                   {/case}
                   <#Icon iconify="ph:caret-down" class="size-3.5 shrink-0 text-muted" />
                 </:trigger>
@@ -406,7 +406,6 @@
           context_group={@context_group}
         />
         --}
-
 
         <div :if={is_map(@quoted_object)} id="quote_in_composer" class="">
           <div class="quote_in_composer relative max-h-40 overflow-y-auto overflow-x-hidden border-hair border-divider bg-base-100">

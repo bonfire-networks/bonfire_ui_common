@@ -5,7 +5,11 @@
   close_on_select
   position="bottom-start"
   wrapper_class="min-w-0 max-w-full"
-  trigger_class={"flex h-8 min-w-0 max-w-full items-center gap-1.5 rounded-full border px-3 text-left text-sm font-medium focus-ring " <> if(@emphasis, do: "border-primary/30 bg-primary/10 text-primary hover:bg-primary/15", else: "border-divider bg-base-100 hover:bg-base-200")}
+  trigger_class={"flex h-8 min-w-0 max-w-full items-center gap-1.5 rounded-full border px-3 text-left text-sm font-medium focus-ring " <>
+    if(@emphasis,
+      do: "border-primary/30 bg-primary/10 text-primary hover:bg-primary/15",
+      else: "border-divider bg-base-100 hover:bg-base-200"
+    )}
   panel_class="!w-72 max-w-[calc(100vw-2rem)] !p-2"
   label={@label}
 >

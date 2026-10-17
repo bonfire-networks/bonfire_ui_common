@@ -425,7 +425,8 @@ defmodule Bonfire.UI.Common do
 
   @doc "What a disabled action button says, given why `Bonfire.Boundaries.interaction_refusal/4` refused it: federation when that's why, else the button's own `otherwise`."
   def refusal_text(:federation, _otherwise),
-    do: l("Federation can't reach the author: it may be off, paused, or limited to other instances")
+    do:
+      l("Federation can't reach the author: it may be off, paused, or limited to other instances")
 
   def refusal_text(_refusal, otherwise), do: otherwise
 
