@@ -78,9 +78,13 @@ defmodule Bonfire.UI.Common.MultiselectLive.UserSelectorLive do
         Bonfire.Common.Utils.maybe_apply(
           Bonfire.Social.Likes,
           :list_my,
-          current_user: current_user,
-          paginate: false,
-          object_type: type
+          [
+            [
+              current_user: current_user,
+              paginate?: false,
+              object_type: type
+            ]
+          ]
         )
         # |> debug()
         # |> debug()

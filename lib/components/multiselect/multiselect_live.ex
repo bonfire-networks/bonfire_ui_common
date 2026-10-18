@@ -42,6 +42,7 @@ defmodule Bonfire.UI.Common.MultiselectLive do
   prop mode, :atom, default: :single
   prop variant, :atom, default: :default
   prop type, :atom, default: nil
+  prop object, :any, default: nil
   prop class, :string, default: "bg-transparent text-sm h-10 w-full input liveselect"
   # 0 means unlimited
   prop max_selectable, :integer, default: 0

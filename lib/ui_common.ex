@@ -1994,6 +1994,12 @@ defmodule Bonfire.UI.Common do
     # |> Enum.filter(&(&1 != nil and &1 != ""))
     # |> Enum.map(&to_string/1)
     # |> Enum.join("_")
+    # `Text.slug/2` only keeps binaries from a list, so atom/number parts (eg. `form_input_name: :provider`) would be dropped and sibling components would get the same id
+    |> Enum.map(fn
+      part when is_atom(part) and not is_nil(part) -> Atom.to_string(part)
+      part when is_number(part) -> to_string(part)
+      part -> part
+    end)
     |> Text.slug(joiner: "_", lowercase?: false, truncate: false)
   end
 
