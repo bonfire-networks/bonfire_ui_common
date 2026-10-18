@@ -1,0 +1,6 @@
+<span
+  data-role="group_tile"
+  class={["nav-tile", @class]}
+  style={"--tile-hue: #{tile_hue(@object)}"}
+  aria-hidden="true"
+>{initial(@name)}</span>
