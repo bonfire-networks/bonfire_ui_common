@@ -458,21 +458,6 @@ html:not([data-ui-preset="typographic"]) {
     outline-offset: calc(var(--border) * -1);
   }
 
-  & section:has(> [data-id="instance_pinned_widget"]) {
-    padding-inline: 0;
-    border-bottom-width: 0;
-  }
-
-  /* A board card (guest home) brings its own gutters on the header and carousel. */
-  [data-id="instance_pinned_widget"] > aside:not(.board-card) {
-    padding-inline: var(--stream-content-padding);
-    border-width: 0;
-
-    > [data-role="widget-header"] {
-      padding-inline: 0;
-    }
-  }
-
   /* Carousel tiles (Spotlight, dashboard carousels) */
   :is(
     [data-id="instance_pinned_widget"] .spotlight_clamp,
