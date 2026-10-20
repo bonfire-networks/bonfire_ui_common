@@ -466,7 +466,11 @@ defmodule Bonfire.UI.Common.PersistentLive do
   def handle_info({:overload_transition, _} = blob, socket),
     do: Bonfire.UI.Common.LiveHandlers.handle_info(blob, socket, __MODULE__)
 
-  # a pin changed in the page LV → tell the groups sidebar in this sticky process to recompute
+  # the groups sidebar in this sticky process subscribes to pin changes (`Bonfire.Social.Pins.pins_topic/1`), and there's no catch-all handle_info, so route them to the shared handler rather than crash
+  def handle_info({{Bonfire.Social.Pins.LiveHandler, :pins_changed}, _} = blob, socket),
+    do: Bonfire.UI.Common.LiveHandlers.handle_info(blob, socket, __MODULE__)
+
+  # a membership changed in the page LV → tell the groups sidebar in this sticky process to recompute
   # (resolved via the ComponentID alias the sidebar registers under the user, see SidebarGroupsLive)
   def handle_info({:assign_persistent_self, {:sidebar_groups, %{user_id: user_id}}}, socket) do
     maybe_apply(Bonfire.UI.Common.ComponentID, :send_updates, [
