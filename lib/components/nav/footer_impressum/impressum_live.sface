@@ -28,7 +28,11 @@
             Bonfire.UI.Common.WidgetCommunityLinksLive.normalize_links(
               Config.get([:ui, :theme, :instance_welcome, :links], [])
             )}
-        <li><a class="link-hover whitespace-nowrap" href={link} target="_blank" rel="noopener">{name}<#Icon iconify="ph:arrow-up-right" class="size-3 inline ml-0.5 align-baseline" aria-hidden="true" /></a></li>
+        <li><a class="link-hover whitespace-nowrap" href={link} target="_blank" rel="noopener">{name}<#Icon
+              iconify="ph:arrow-up-right"
+              class="size-3 inline ml-0.5 align-baseline"
+              aria-hidden="true"
+            /></a></li>
       {/for}
     </ul>
   </nav>
@@ -44,7 +48,10 @@
           fallback_return: false
         )}
         {#match false}
-          <span class="size-1.5 shrink-0 rounded-full ring-1 ring-inset ring-base-content/40" aria-hidden="true" />
+          <span
+            class="size-1.5 shrink-0 rounded-full ring-1 ring-inset ring-base-content/40"
+            aria-hidden="true"
+          />
           {l("Federation disabled")}
         {#match nil}
           <span class="size-1.5 shrink-0 rounded-full bg-base-content/40" aria-hidden="true" />

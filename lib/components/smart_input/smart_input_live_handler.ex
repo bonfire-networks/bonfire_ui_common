@@ -1503,7 +1503,18 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # Bonfire.Common.Config.get([:ui, :smart_input_components],
     #   post: Bonfire.UI.Social.WritePostContentLive
     # )
-    Bonfire.UI.Common.SmartInputModule.smart_input_modules_types()
+    components = Bonfire.UI.Common.SmartInputModule.smart_input_modules_types()
+
+    # the map holds what the modules declare, enabled or not (extensions are toggled at runtime): leave out the entries of those disabled now. An entry is either `module => types` or `type => module`
+    enabled =
+      Bonfire.UI.Common.SmartInputModule.modules()
+      |> Enum.filter(&Bonfire.Common.Extend.module_enabled?/1)
+      |> MapSet.new()
+
+    Map.filter(components, fn
+      {module, types} when is_list(types) -> module in enabled
+      {_type, module} -> module in enabled
+    end)
   end
 
   def active_smart_input_components(smart_input_component, create_object_type) do
@@ -1553,12 +1564,22 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     component_by_type(create_object_type)
   end
 
+  # Disabled: it expected `all_smart_input_components/0` to be a keyword list of `type: component` and raised on the map it is now (both directions: `type => module`, `schema => module`, `module => types`), with `Keyword.filter/2` failing on it. It had no callers in any extension, fork, template or test when this was replaced.
+  # def smart_input_name(component) do
+  #   all_smart_input_components()
+  #   |> Keyword.filter(fn {_key, val} -> val == component end)
+  #   |> Keyword.keys()
+  #   |> List.first()
+  #   |> display_name()
+  # end
+
+  # A component is named by the first type it declares, provided it is among the components in use (declared, and its extension enabled)
   def smart_input_name(component) do
-    all_smart_input_components()
-    |> Keyword.filter(fn {_key, val} -> val == component end)
-    |> Keyword.keys()
-    |> List.first()
-    |> display_name()
+    name =
+      if Map.has_key?(all_smart_input_components(), component),
+        do: primary_smart_input_type(component)
+
+    display_name(name)
   end
 
   defp display_name(name) do
