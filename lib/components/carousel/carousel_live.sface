@@ -1,0 +1,38 @@
+{!-- the grid keeps a flex parent from growing to the track's full scroll width --}
+<div class="grid grid-cols-1 overflow-hidden">
+  <div
+    id={@id}
+    class={"carousel-scroll gap-2.5", @class}
+    phx-hook="CarouselScroll"
+    role="list"
+  >
+    {#for item <- @items}
+      {!-- one card wide below `sm`, `visible_items` from it up, the next one's edge showing; a lone card full width --}
+      <div
+        data-carousel-card
+        role="listitem"
+        class="w-[var(--carousel-item-w)] sm:w-[var(--carousel-item-w-sm)] self-stretch"
+        style={if match?([_], @items),
+          do: "--carousel-item-w: 100%; --carousel-item-w-sm: 100%;",
+          else: "--carousel-item-w: #{card_width(1)}; --carousel-item-w-sm: #{card_width(@visible_items)};"}
+      >
+        <#slot {@card, item: item} />
+      </div>
+    {/for}
+  </div>
+</div>
+
+{!-- where you are in the track; `CarouselScroll` marks the dot of the card in view --}
+<div
+  :if={match?([_, _ | _], @items)}
+  data-role="carousel_dots"
+  data-carousel-dots={@id}
+  class="mt-3 flex justify-center gap-1.5"
+  aria-hidden="true"
+>
+  <span
+    :for={_item <- @items}
+    data-role="carousel_dot"
+    class="h-1.5 w-1.5 rounded-full bg-divider transition-[width,background-color] duration-200 ease-out data-[on]:w-4 data-[on]:bg-base-content/58"
+  />
+</div>

@@ -135,7 +135,32 @@ ScrollHooks.CarouselScroll = {
 		this._carouselCleanup = () => {
 			el.removeEventListener("pointerdown", onDown)
 			endDrag()
+			this._dotsObserver?.disconnect()
 		}
+
+		this.watchDots()
+	},
+	// re-observed on every patch: the server renders the dots without a current one, so a patch clears what we marked, and the observer's first callback marks it again
+	updated() {
+		this.watchDots()
+	},
+	// A carousel with dots (`data-carousel-dots` naming it) marks the dot of the card mostly in view, so scrolling or swiping shows where you are.
+	watchDots() {
+		this._dotsObserver?.disconnect()
+		const dots = document.querySelectorAll(`[data-carousel-dots="${this.el.id}"] [data-role=carousel_dot]`)
+		if (!dots.length) return
+		const cards = [...this.el.children]
+		this._dotsObserver = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.intersectionRatio < 0.6) continue
+					const current = cards.indexOf(entry.target)
+					dots.forEach((dot, i) => dot.toggleAttribute("data-on", i === current))
+				}
+			},
+			{ root: this.el, threshold: 0.6 }
+		)
+		cards.forEach((card) => this._dotsObserver.observe(card))
 	},
 	destroyed() {
 		if (this._carouselCleanup) this._carouselCleanup()

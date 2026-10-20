@@ -1,0 +1,20 @@
+<div :if={@count > 1} class="flex items-center gap-1">
+  <.icon_button
+    icon="carbon:chevron-left"
+    aria_label={l("Scroll left")}
+    variant="outline"
+    size="sm"
+    class="hidden sm:flex border-transparent bg-transparent text-muted hover:text-base-content"
+    data-carousel-scroll="previous"
+    aria-controls={@track}
+  />
+  <.icon_button
+    icon="carbon:chevron-right"
+    aria_label={l("Scroll right")}
+    variant="outline"
+    size="sm"
+    class="hidden sm:flex border-transparent bg-transparent text-muted hover:text-base-content"
+    data-carousel-scroll="next"
+    aria-controls={@track}
+  />
+</div>
