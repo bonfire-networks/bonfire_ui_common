@@ -187,6 +187,9 @@ TooltipHooks.Tooltip = {
 			this.isOpen = true;
 			pendingRevealOptions = { animate, focus };
 			tooltip.style.visibility = 'hidden';
+			// before measuring: Floating UI measures from the panel's current offsetParent, so a
+			// `fixed` panel still `absolute` from `.dropdown-panel` gets wrapper-relative coords on first open
+			tooltip.style.position = strategy;
 			tooltip.style.display = 'block';
 			tooltip.style.pointerEvents = 'auto';
 			syncExpanded(true);

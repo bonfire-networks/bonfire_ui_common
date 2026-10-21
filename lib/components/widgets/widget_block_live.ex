@@ -52,9 +52,16 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
   def show_reset?(_event, nil, context),
     do: Bonfire.Boundaries.can?(context, :mediate, :instance)
 
-  @doc "Turns the `reset_cache_values` map into `phx-value-*` attributes."
-  def phx_values(values) when is_map(values),
-    do: Enum.map(values, fn {k, v} -> {:"phx-value-#{k}", v} end)
+  @doc """
+  Turns the `reset_cache_values` map into `phx-value-*` attributes.
 
-  def phx_values(_), do: []
+  Keys are strings because Phoenix.HTML dasherizes atom attribute names, which would turn `for_last_x_days` into `for-last-x-days` in the event params. A map (not a list) because Surface's spread only accepts maps or keyword lists.
+
+      iex> Bonfire.UI.Common.WidgetBlockLive.phx_values(%{for_last_x_days: 30})
+      %{"phx-value-for_last_x_days" => 30}
+  """
+  def phx_values(values) when is_map(values),
+    do: Map.new(values, fn {k, v} -> {"phx-value-#{k}", v} end)
+
+  def phx_values(_), do: %{}
 end

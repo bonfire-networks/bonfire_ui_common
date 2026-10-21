@@ -17,6 +17,295 @@ html[data-ui-preset="typographic"] [data-theme] {
   --widget-overlap: calc(-1 * var(--border));
   --comment-base-indent: 0px;
   --comment-top-inset: 0px;
+  /* Item borders and control spacing, shared by the rules below so one change re-tunes every surface. */
+  --hairline: var(--border) solid var(--divider-color);
+  --outline-accent: var(--border) solid var(--color-primary);
+  --pill-height: 2rem;
+  --pill-padding-x: 0.875rem;
+  --pill-gap: 0.5rem;
+  --stack-gap: 0.75rem;
+}
+
+/* Compact pills are for mouse input; touch keeps the shared 44px target. */
+@media (pointer: coarse) {
+  html[data-ui-preset="typographic"],
+  html[data-ui-preset="typographic"] [data-theme] {
+    --pill-height: 2.75rem;
+  }
+}
+
+/* Nav icons stay red at rest; the active row is marked by its red label instead of a filled pill. Icons carry their own colour class from `LinkWidgetLive.active_icon_class/1`, so the colour goes on the child. */
+html[data-ui-preset="typographic"] #nav_sidebar .nav-row > :first-child > :not(.nav-tile) {
+  color: var(--color-primary);
+}
+
+html[data-ui-preset="typographic"] #nav_sidebar .nav-row[aria-current="page"] {
+  background-color: transparent;
+}
+
+html[data-ui-preset="typographic"] #nav_sidebar .nav-row[aria-current="page"] > .truncate {
+  color: var(--color-primary);
+}
+
+/* Filled red is left for in-page primary actions; below lg Compose is already a ghost icon. */
+html[data-ui-preset="typographic"] #nav_sidebar [data-role="composer_button"] {
+  @variant lg {
+    border-color: var(--color-primary);
+    background-color: transparent;
+    color: var(--color-primary);
+  }
+}
+
+/* Unscoped on purpose: the tile should look the same in the nav, the group hero and the "published in" pill. */
+html[data-ui-preset="typographic"] .nav-tile {
+  border-radius: 9999px;
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+html[data-ui-preset="typographic"] [data-role="sidebar-groups"] > div:first-of-type {
+  @apply uppercase tracking-label font-normal text-base-content;
+}
+
+/* The page title stays in the compact sticky bar; size and weight carry the hierarchy instead of a separate scrolling title. */
+html[data-ui-preset="typographic"] [data-role="page_header_bar"] [data-role="page_title"] {
+  font-size: var(--text-xl);
+  line-height: var(--text-xl--line-height);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Feed tabs are neutral pills; the active tab is outlined in red instead of filled with ink. Notification filters, group topics and the messages tabs are separate components with the same look, so they share the rules. */
+html[data-ui-preset="typographic"] :is(a[id^="feed-tab-"], a[id^="notification-filter-"], a#group-topic-all, a[id^="group-topic-link-"], a[id^="messages-tab-"], button[data-role="group-topic-current"]) {
+  height: var(--pill-height);
+  padding-inline: var(--pill-padding-x);
+  border: var(--hairline);
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+}
+
+html[data-ui-preset="typographic"] :is(a[id^="feed-tab-"], a[id^="notification-filter-"], a#group-topic-all, a[id^="group-topic-link-"], a[id^="messages-tab-"], button[data-role="group-topic-current"])[aria-current="page"] {
+  border: var(--outline-accent);
+  color: var(--color-primary);
+}
+
+html[data-ui-preset="typographic"] :is(ul:has(> li > :is(a[id^="feed-tab-"], a[id^="notification-filter-"])), [data-role="group-topics-list"]) {
+  gap: var(--pill-gap);
+}
+
+@media (hover: hover) {
+  html[data-ui-preset="typographic"] :is(a[id^="feed-tab-"], a[id^="notification-filter-"], a#group-topic-all, a[id^="group-topic-link-"], a[id^="messages-tab-"], button[data-role="group-topic-current"]):not([aria-current]):hover {
+    color: var(--color-primary);
+  }
+}
+
+html[data-ui-preset="typographic"] .activity_wrapper [data-id="subject_name"] {
+  font-weight: var(--font-weight-bold);
+}
+
+html[data-ui-preset="typographic"] .activity_wrapper [data-id="subject_secondary"] > span[aria-hidden="true"] {
+  color: var(--color-primary);
+}
+
+/* The publication context is an attached band at the card top, the same treatment as the "See full thread" band. */
+html[data-ui-preset="typographic"] .activity_wrapper .activity > [data-role="published_in"] {
+  @apply -mt-4 py-2 bg-base-200 rounded-t-box;
+}
+
+html[data-ui-preset="typographic"] .activity_wrapper .activity > [data-role="published_in"] a {
+  @apply font-bold text-base-content hover:text-primary;
+}
+
+/* Lighter than Stream's action grey but kept above 3:1 on white; the mockups' #bcbcbc would fail WCAG non-text contrast. Not scoped to `.activity_wrapper`: a thread's main post and its replies sit outside it. */
+html[data-ui-preset="typographic"] .feed_actions :where(button, a).text-muted {
+  color: color-mix(in oklab, var(--color-base-content) 55%, var(--color-base-100));
+}
+
+/* Every "on" state is red: liked carries aria-pressed, a boost only carries text-success. */
+html[data-ui-preset="typographic"] .feed_actions :is([aria-pressed="true"], .text-success) {
+  color: var(--color-primary);
+}
+
+html[data-ui-preset="typographic"] #thread_main_object .feed_actions > div {
+  @variant md {
+    justify-content: flex-end;
+  }
+}
+
+html[data-ui-preset="typographic"] [id^="thread-view-options-"][id$="_trigger"] {
+  height: var(--pill-height);
+  min-height: var(--pill-height);
+  padding-inline: var(--pill-padding-x);
+  border: var(--hairline);
+  border-radius: var(--radius-field);
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+}
+
+/* A group without a banner gets a primary-colour band in its place, the default the mockups show, so the white hero never starts flush under the pink header bar. Same 3:1 ratio as an uploaded banner; the avatar overlaps it as it would a real one. */
+html[data-ui-preset="typographic"] [data-id="group_hero"]:not(:has(> [data-role="group-hero-banner"])) {
+  &::before {
+    content: "";
+    display: block;
+    aspect-ratio: 3 / 1;
+    background-color: var(--color-primary);
+  }
+
+  > div:first-child > div:first-child {
+    position: relative;
+    margin-top: -2.25rem;
+  }
+}
+
+/* Group About rows read as definition triplets: small uppercase label on its own line, bold value, no icon. */
+html[data-ui-preset="typographic"] [data-id="group_widget"] li[data-role^="group-widget-"] > :first-child {
+  display: none;
+}
+
+html[data-ui-preset="typographic"] [data-id="group_widget"] li[data-role^="group-widget-"]:not([data-role="group-widget-created"]) > span {
+  font-weight: var(--font-weight-bold);
+}
+
+html[data-ui-preset="typographic"] [data-id="group_widget"] li[data-role^="group-widget-"] > span > .text-muted:first-child {
+  @apply block type-overline font-normal text-base-content;
+}
+
+/* People lists in the rail (group moderators, users widget, thread participants) share one anatomy: full-width strips between rail-wide hairlines, each holding a white pill. Three templates render them, so each list is matched on its own markup. */
+html[data-ui-preset="typographic"] [data-id="secondary_sidebar_widgets"] {
+  :is([data-role="group-sidebar-moderators"] > div, .widget-users :has(> [data-role="widget-user-row"]), [data-role="participants_list"]) {
+    gap: 0;
+    margin-inline: calc(-1 * var(--spacing-card));
+    border-top: var(--hairline);
+  }
+
+  :is([data-role="group-sidebar-moderators"] > div > div, [data-role="widget-user-row"], [data-role="participants_list"] > li) {
+    padding: 4px;
+    border-width: 0 0 var(--border);
+    border-color: var(--divider-color);
+  }
+
+  :is([data-role="group-sidebar-moderators"] > div > div > div, .widget-user-profile, [data-role="participants_list"] > li > .grid) {
+    align-items: center;
+    column-gap: 1rem;
+    padding: 4px 12px 4px 4px;
+    border: var(--hairline);
+    border-radius: var(--radius-field);
+    background-color: var(--color-base-100);
+  }
+
+  [data-role="participants_list"] > li > .grid {
+    grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+  }
+
+  :is([data-role="group-sidebar-moderators"], .widget-users, [data-role="participants_list"]) [data-scope="avatar"],
+  :is([data-role="group-sidebar-moderators"], .widget-users, [data-role="participants_list"]) [data-scope="avatar"] > div {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  /* Red ring with a white gap, drawn with box-shadow so it replaces the 0.7px Tailwind ring. */
+  :is([data-role="group-sidebar-moderators"], .widget-users, [data-role="participants_list"]) [data-scope="avatar"] > div {
+    box-shadow: 0 0 0 2px var(--color-base-100), 0 0 0 3px var(--color-primary);
+  }
+
+  /* When a people list ends its widget, its last strip closes the widget: no trailing padding, and the widget's hairline stands in for the strip's own. */
+  aside[data-role="widget"]:has(> [data-id="group_widget"] > [data-role="group-sidebar-moderators"]:last-child),
+  aside[data-role="widget"]:has(> [data-role="participants_list_wrapper"]:last-child > [data-role="participants_list"]:last-child) {
+    padding-bottom: 0;
+  }
+
+  [data-id="group_widget"] > [data-role="group-sidebar-moderators"]:last-child {
+    padding-bottom: 0;
+  }
+
+  :is([data-role="group-sidebar-moderators"]:last-child > div, [data-role="participants_list_wrapper"]:last-child > [data-role="participants_list"]:last-child) > :last-child {
+    border-bottom-width: 0;
+  }
+}
+
+/* Rule qualifiers are outline pills; each keeps its semantic colour on the border. */
+html[data-ui-preset="typographic"] [data-role="rule-qualifier"] {
+  border: var(--border) solid currentColor;
+  border-radius: var(--radius-field);
+  background-color: transparent;
+}
+
+/* The New Message button and the search field read as one split bar. The grid has no data-role, so this keys on its Tailwind group name. */
+html[data-ui-preset="typographic"] .group\/message-search {
+  gap: 0;
+
+  > :first-child {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  > form label {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    border-inline-start-width: 0;
+  }
+}
+
+/* Dashboard: one gutter, one hairline between sections, labels for headings and hairline cards for tiles. Mirrors Stream's structure in interface.css, which Typographic opts out of. */
+html[data-ui-preset="typographic"] [data-id="dashboard_main"] {
+  > ul > li {
+    padding-block: --spacing(6);
+  }
+
+  > ul > li:not(:has(aside[data-role="widget"])) {
+    display: none;
+  }
+
+  > [data-id="dashboard_feed"] {
+    padding-top: --spacing(6);
+  }
+
+  > ul > li:has(aside[data-role="widget"]) ~ li:has(aside[data-role="widget"]),
+  > ul:has(aside[data-role="widget"]) + [data-id="dashboard_feed"] {
+    border-top: var(--hairline);
+  }
+
+  & aside[data-role="widget"] {
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    background-color: transparent;
+  }
+
+  :is(aside[data-role="widget"], [data-id="dashboard_feed"]) > [data-role="widget-header"] {
+    padding: 0 var(--spacing-card) --spacing(3);
+  }
+
+  /* "Latest activity" is a plain h2, so every heading gets the label style explicitly. */
+  [data-role="widget-heading"] {
+    @apply text-xs font-normal uppercase tracking-label text-base-content;
+  }
+
+  .carousel-scroll {
+    padding-inline: var(--spacing-card);
+    scroll-padding-inline: var(--spacing-card);
+  }
+}
+
+/* Carousel tiles are hairline cards wherever they appear. Pinned tiles also carry an inset ring; drop it so every tile has the same single hairline. */
+html[data-ui-preset="typographic"] .carousel-scroll > * > .spotlight_clamp {
+  @apply bg-base-100;
+  border: var(--hairline);
+  box-shadow: none;
+}
+
+/* The group's pinned carousel pads with a Stream-only variable, which would resolve to 0 under Typographic. */
+html[data-ui-preset="typographic"] [data-id="instance_pinned_widget"] {
+  --stream-content-padding: var(--spacing-card);
+
+  [data-role="widget-heading"] {
+    @apply text-xs font-normal uppercase tracking-label text-base-content;
+  }
+}
+
+/* The active carousel dot carries the accent, like every other "current" marker in the preset. */
+html[data-ui-preset="typographic"] [data-role="carousel_dot"][data-on] {
+  background-color: var(--color-primary);
 }
 
 @layer components {
@@ -36,13 +325,15 @@ html[data-ui-preset="typographic"] .bonfire-wrapper {
 }
 
 html[data-ui-preset="typographic"] .thread-stats {
-  @apply bg-base-200 rounded-field border-hair border-divider p-1;
+  @apply bg-base-200 rounded-field p-1;
+  border: var(--hairline);
   margin-block: -0.5px;
 }
 
 html[data-ui-preset="typographic"] [data-role="object-thread"] #thread_main_object,
 html[data-ui-preset="typographic"] [data-role="object-thread"] [data-role="thread"] > .thread-replies {
-  @apply rounded-box border-hair border-divider p-card;
+  @apply rounded-box p-card;
+  border: var(--hairline);
 }
 
 html[data-ui-preset="typographic"] [data-role="object-thread"] [data-role="thread"] {
@@ -54,7 +345,8 @@ html[data-ui-preset="typographic"] [data-role="object-thread"] [data-role="threa
 }
 
 html[data-ui-preset="typographic"] .feed-controls-toolbar {
-  @apply bg-base-300 rounded-field border-hair border-divider;
+  @apply bg-base-300 rounded-field;
+  border: var(--hairline);
   width: calc(100% + 2px);
   margin-left: -1px;
   margin-bottom: -1px;
@@ -118,30 +410,6 @@ html[data-ui-preset="typographic"] [data-id="profile_hero"] {
   @apply border-y-hair border-y-divider;
 }
 
-html[data-ui-preset="typographic"] .widget-user-profile {
-  @apply bg-base-100 p-1 rounded-field border-hair border-divider;
-}
-
-html[data-ui-preset="typographic"] .sidebar-widgets .widget-moderator-profile {
-  @apply px-1 border-hair rounded-field bg-base-100;
-}
-
-html[data-ui-preset="typographic"] .sidebar-widgets :is(.group-moderators-widget, .group-topics-widget) {
-  padding: 0;
-}
-
-html[data-ui-preset="typographic"] .sidebar-widgets :is(.group-moderators-widget, .group-topics-widget) > [data-role="widget-header"] {
-  @apply p-card border-b-hair border-divider;
-}
-
-html[data-ui-preset="typographic"] .sidebar-widgets .group-topics-widget li > a {
-  @apply px-card rounded-none;
-}
-
-html[data-ui-preset="typographic"] .sidebar-widgets .group-topics-widget li + li {
-  @apply border-t-hair border-divider;
-}
-
 html[data-ui-preset="typographic"] [data-id="trending_discussions"] {
   @apply mx-0 rounded-none bg-transparent overflow-visible;
 }
@@ -199,6 +467,11 @@ html[data-ui-preset="typographic"] [data-id="secondary_sidebar_widgets"] {
   @apply gap-0 overflow-x-hidden;
 }
 
+/* One gutter for every rail widget, whether or not its template sets p-card (the group widget does not). Same rule as Stream's in interface.css, without its card fill. */
+html[data-ui-preset="typographic"] [data-id="secondary_sidebar_widgets"] [data-role="widget"] {
+  padding: var(--spacing-card);
+}
+
 html[data-ui-preset="typographic"] [data-id="widget_customize_feed"] [data-role="feed_override_toggles"] {
   @apply pb-1;
 }
@@ -207,18 +480,104 @@ html[data-ui-preset="typographic"] [data-id="widget_customize_feed"] [data-role=
   @apply text-base-content;
 }
 
+/* Feed preferences: the widget renders stock controls, so each one is mapped to its atom here. */
+html[data-ui-preset="typographic"] [data-role="feed_preferences_widget"] {
+  /* Same round, outlined reset as every other widget header. */
+  [data-role="feed_preferences_reset"] {
+    width: 2rem;
+    height: 2rem;
+    border: var(--hairline);
+    border-radius: 9999px;
+    color: var(--color-primary);
+  }
+
+  [data-role="feed_order_row"] label {
+    color: var(--color-base-content);
+  }
+
+  /* The sort select is a neutral pill; the form draws the chevron because a select has no pseudo-elements. */
+  /* The form spreads its items with justify-between, which would push the chevron away from the select; the select's auto margin does that job instead. */
+  [data-role="feed_order_row"] {
+    justify-content: flex-start;
+  }
+
+  [data-role="feed_order_row"] select {
+    margin-inline-start: auto;
+    min-height: var(--pill-height);
+    padding: 0 2.25rem 0 var(--pill-padding-x);
+    border: var(--hairline);
+    border-radius: var(--radius-field);
+    background-color: var(--color-base-100);
+    text-decoration: none;
+  }
+
+  [data-role="feed_order_row"]::after {
+    content: "";
+    width: 0.75rem;
+    height: 0.75rem;
+    margin-inline: -2.25rem 0.75rem; /* offsets the form gap so the select stays flush right */
+    background-color: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    pointer-events: none;
+  }
+
+  /* "Save as custom feed" is the outlined accent pill, "More filters" the neutral one. */
+  [data-role="save_custom_feed"] > summary {
+    margin: 0;
+    padding-inline: var(--pill-padding-x);
+    min-height: var(--pill-height);
+    border: var(--outline-accent);
+    border-radius: var(--radius-field);
+  }
+
+  /* One rhythm: every row is a pill-height row, rows sit a stack-gap apart, and the footer keeps the same gap under its divider. */
+  [data-id="widget_customize_feed"],
+  [data-role="feed_override_toggles"] {
+    row-gap: var(--stack-gap);
+    padding-bottom: 0;
+  }
+
+  [data-role="calm_override_group"] {
+    min-height: var(--pill-height);
+    padding-block: 0;
+  }
+
+  [data-role="feed_advanced_filters_wrapper"] {
+    margin-top: 0;
+    padding-top: var(--stack-gap);
+    border-top: var(--hairline);
+    gap: var(--pill-gap);
+  }
+
+  [data-role="feed_advanced_filters_wrapper"] [data-role="open_modal"] {
+    margin: 0;
+
+    > div {
+      min-height: var(--pill-height);
+      padding-inline: var(--pill-padding-x);
+      border: var(--hairline);
+      border-radius: var(--radius-field);
+      color: var(--color-base-content);
+    }
+  }
+}
+
+/* A toggle that is on fills red with a white knob, so the state reads at a glance. Same feed surfaces Stream scopes its ink version to. */
+html[data-ui-preset="typographic"]
+  :where([data-id="widget_customize_feed"], [data-id="feed_controls"], [id^="feed_filters"])
+  :where(.toggle-primary:checked, .toggle-primary[aria-checked="true"]) {
+  --input-color: var(--color-primary);
+  background-color: var(--color-primary);
+
+  &::before {
+    background-color: var(--color-base-100);
+  }
+}
+
 html[data-ui-preset="typographic"] .sidebar-widgets [data-role="widget-heading"] {
   font: inherit;
   letter-spacing: inherit;
   text-transform: inherit;
-}
-
-html[data-ui-preset="typographic"] [data-id="secondary_sidebar_widgets"] .widget-users > [data-role="widget-header"] {
-  @apply pt-card px-card border-b-hair;
-}
-
-html[data-ui-preset="typographic"] [data-id="secondary_sidebar_widgets"] .widget-users [data-role="widget-user-row"] {
-  @apply p-1;
 }
 
 /* Typographic nests the reply beneath its parent; Stream keeps a full-width reply. */
@@ -243,7 +602,7 @@ html[data-ui-preset="typographic"] [data-reply-context] > article::after {
   left: 17px; /* parent avatar centre (≈35px avatar / 2) */
   top: 38px; /* just below the avatar */
   bottom: -30px; /* extend through the mb-8 gap toward the reply avatar */
-  border-left: var(--border) solid var(--divider-color);
+  border-left: var(--hairline);
   pointer-events: none;
 }
 
@@ -254,8 +613,8 @@ html[data-ui-preset="typographic"] [data-reply-context] > [data-role="subject"]:
   top: -18px;
   width: 34px;
   height: 35px; /* down to ≈ the reply avatar centre */
-  border-left: var(--border) solid var(--divider-color);
-  border-bottom: var(--border) solid var(--divider-color);
+  border-left: var(--hairline);
+  border-bottom: var(--hairline);
   border-bottom-left-radius: 0px;
   pointer-events: none;
 }

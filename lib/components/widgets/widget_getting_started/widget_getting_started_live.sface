@@ -18,7 +18,7 @@
           <div class="flex items-center gap-1">
             <.icon_button
               :if={state == :step}
-              icon="ph:caret-left"
+              icon="carbon:chevron-left"
               aria_label={l("Previous step")}
               size="sm"
               data-id="widget_getting_started_prev"
@@ -27,7 +27,7 @@
             />
             <.icon_button
               :if={state == :step}
-              icon="ph:caret-right"
+              icon="carbon:chevron-right"
               aria_label={l("Next step")}
               size="sm"
               data-id="widget_getting_started_next"
