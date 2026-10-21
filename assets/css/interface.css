@@ -552,11 +552,6 @@ html:not([data-ui-preset="typographic"]) {
     .carousel-scroll {
       padding-inline: var(--stream-content-padding);
       scroll-padding-inline: var(--stream-content-padding);
-
-      /* a lone tile fills the row */
-      > :only-child {
-        width: 100%;
-      }
     }
   }
 
