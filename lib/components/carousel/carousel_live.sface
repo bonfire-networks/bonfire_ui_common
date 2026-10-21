@@ -11,7 +11,7 @@
       <div
         data-carousel-card
         role="listitem"
-        class="w-[var(--carousel-item-w)] sm:w-[var(--carousel-item-w-sm)] self-stretch"
+        class="w-[var(--carousel-item-w)] sm:w-[var(--carousel-item-w-sm)] self-start"
         style={if match?([_], @items),
           do: "--carousel-item-w: 100%; --carousel-item-w-sm: 100%;",
           else: "--carousel-item-w: #{card_width(1)}; --carousel-item-w-sm: #{card_width(@visible_items)};"}
