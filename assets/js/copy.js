@@ -24,7 +24,8 @@ CopyHooks.Copy = {
 				console.log(link);
 
 				if (link) {
-					text = link;
+					// `el.href` is the browser-resolved absolute URL, so a relative href still copies a link that works when pasted elsewhere
+					text = el.href || link;
 				} else {
 					text = el.value || el.textContent;
 				}

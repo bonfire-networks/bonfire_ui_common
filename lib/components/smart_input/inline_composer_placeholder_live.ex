@@ -6,6 +6,9 @@ defmodule Bonfire.UI.Common.InlineComposerPlaceholderLive do
 
   prop smart_input_opts, :any, default: nil
 
+  @doc "Draw the bottom rule; off when the caller wraps the composer in a section that draws its own."
+  prop divider, :boolean, default: true
+
   @hidden_tabs ~w(settings members followers mentions submitted)
 
   def show?(selected_tab),

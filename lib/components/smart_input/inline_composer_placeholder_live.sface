@@ -1,7 +1,10 @@
 {#if current_user_id(@__context__) && show?(@selected_tab)}
   <div
     id="inline_composer_placeholder"
-    class="p-card flex items-center gap-4 border-b-(length:--divider-width) border-divider bg-base-100"
+    class={
+      "p-card flex items-center gap-2 bg-base-100",
+      "border-b-(length:--divider-width) border-divider": @divider
+    }
   >
     <div class="shrink-0">
       <Bonfire.UI.Common.AvatarLive
@@ -23,17 +26,20 @@
       phx-target="#smart_input"
       class={
         "flex flex-1 min-w-0 items-center gap-3 text-left text-sm self-stretch min-h-11 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
-        "rounded-full bg-fill px-4 py-2.5 text-muted hover:bg-fill-strong active:bg-fill-strong":
+        "rounded-full bg-fill px-4 py-1 pr-2 text-muted hover:bg-fill-strong active:bg-fill-strong":
           e(@smart_input_opts, :context_id, nil),
         "text-muted": !e(@smart_input_opts, :context_id, nil)
       }
     >
       <span class="min-w-0 flex-1 truncate">{@prompt || l("Share something")}</span>
-      <#Icon
+      {!-- a span styled as a button: the whole pill is already the button, and buttons can't nest --}
+      <span
         :if={e(@smart_input_opts, :context_id, nil)}
-        iconify="ph:pencil-simple"
-        class="size-5 shrink-0"
-      />
+        aria-hidden="true"
+        class="btn btn-primary btn-circle btn-sm shrink-0"
+      >
+        <#Icon iconify="ph:pencil-simple" class="size-4" />
+      </span>
     </button>
   </div>
 {/if}
