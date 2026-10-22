@@ -2,7 +2,7 @@
 html:not([data-ui-preset="typographic"]) {
   --radius-box: 12px;
   --radius-field: 10px;
-  --radius-button: 10px;
+  --radius-button: 9999px;
   --radius-selector: 8px;
   --stream-content-padding: var(--spacing-card);
   --stream-header-height: 56px;
@@ -214,11 +214,13 @@ html:not([data-ui-preset="typographic"]) {
         position: absolute;
         inset-inline: 0;
         top: 100%;
-        height: 16px;
+        height: 28px;
         pointer-events: none;
+        /* Taller and lighter with an eased mid stop, so it fades instead of ending in a dark band. */
         background: radial-gradient(
           farthest-side at 50% 0,
-          light-dark(oklch(0 0 0 / 0.14), oklch(0 0 0 / 0.75)),
+          light-dark(oklch(0 0 0 / 0.1), oklch(0 0 0 / 0.4)),
+          light-dark(oklch(0 0 0 / 0.04), oklch(0 0 0 / 0.15)) 45%,
           transparent
         );
         transform-origin: 50% 0;

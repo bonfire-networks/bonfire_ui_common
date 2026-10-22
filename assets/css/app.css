@@ -571,24 +571,21 @@ textarea:focus-visible {
   name: "light";
   default: true;
   color-scheme: light;
-  /* White reading column on cool blue-grey rails (was one flat warm cream
-     plane for every column). Neutrals share the dark theme's hue (255) so
-     greys read as intentional and both modes feel like one app. */
   --color-base-100: oklch(100% 0 0);
-  --color-base-200: oklch(98.3% 0.004 255);
-  --color-base-300: oklch(95.6% 0.007 255);
-  --color-base-content: oklch(23% 0.02 260);
+  --color-base-200: oklch(98.8% 0.003 85);
+  --color-base-300: oklch(95.6% 0.006 85);
+  --color-base-content: oklch(23% 0.008 75);
   /* Royal blue, the same hue as the dark theme's primary (262), reserved for
      primary actions and the current location. */
   --color-primary: oklch(52% 0.2 262);
   --color-primary-content: oklch(100% 0 0);
   --color-accent: oklch(72% 0.12 35);
   /* Hairline/structural colour, also used as the divider colour below. */
-  --color-secondary: oklch(91.5% 0.008 255);
-  --color-secondary-content: oklch(40% 0.02 260);
+  --color-secondary: oklch(91.5% 0.007 85);
+  --color-secondary-content: oklch(40% 0.008 75);
   --color-accent-content: oklch(25% 0.035 260);
-  --color-neutral: oklch(26% 0.02 260);
-  --color-neutral-content: oklch(98% 0.004 255);
+  --color-neutral: oklch(26% 0.008 75);
+  --color-neutral-content: oklch(98% 0.004 85);
   --color-info: oklch(52% 0.11 235);
   --color-info-content: oklch(100% 0 0);
   --color-success: oklch(52% 0.12 150);
@@ -618,27 +615,20 @@ textarea:focus-visible {
   name: "dark";
   prefersdark: true;
   color-scheme: dark;
-  /* Deep, cool near-black surfaces (were warm brown-grey at 22% L, which read
-     muddy/"turned off"). A faint blue tint (hue 255) keeps them from looking
-     dead-flat while matching the blue primary. */
-  --color-base-100: oklch(16% 0.012 255);
-  /* Steps kept ~3-4% apart so wells and page-behind-cards still read as
-     different planes. */
-  --color-base-200: oklch(13% 0.01 255);
-  --color-base-300: oklch(10.5% 0.008 255);
-  /* Crisp near-white text (was 80% L) — the main driver of perceived energy. */
-  --color-base-content: oklch(94% 0.006 255);
+  --color-base-100: oklch(22.6% 0 0);
+  --color-base-200: oklch(21.8% 0 0);
+  --color-base-300: oklch(20.5% 0 0);
+  --color-base-content: oklch(100% 0 0);
   /* Saturated royal blue (same hue as light's #4169e1) with white text, so
      primary buttons pop instead of looking like a pale pill. */
   --color-primary: oklch(63% 0.19 262);
   --color-primary-content: oklch(100% 0 0);
-  /* Hairline/structural colour: quiet but visible against base-100. */
-  --color-secondary: oklch(30% 0.018 255);
+  --color-secondary: oklch(26% 0 0);
   --color-accent: oklch(74% 0.1 250);
-  --color-secondary-content: oklch(86% 0.01 255);
+  --color-secondary-content: oklch(73.8% 0.006 95);
   --color-accent-content: oklch(18% 0.02 250);
-  --color-neutral: oklch(28% 0.018 255);
-  --color-neutral-content: oklch(94% 0.006 255);
+  --color-neutral: oklch(23.9% 0 0);
+  --color-neutral-content: oklch(100% 0 0);
   --color-info: oklch(72% 0.12 235);
   --color-info-content: oklch(20% 0.04 235);
   --color-success: oklch(72% 0.13 150);
@@ -1117,7 +1107,7 @@ hex-input::part(input) {
   );
   --user-menu-divider: 0px;
   --divider-color: color-mix(in oklab, var(--color-base-content) 12%, transparent);
-  --divider-width: 1px;
+  --divider-width: 0.5px;
   --widget-gap: calc(var(--spacing) * 2);
   --widget-overlap: 0px;
   /* Polls have one UI for every preset; presets restyle them only through
