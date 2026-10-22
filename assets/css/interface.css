@@ -532,21 +532,6 @@ html:not([data-ui-preset="typographic"]) {
         line-height: 22px;
         font-weight: var(--font-weight-bold);
       }
-
-      [data-role="poll-status-band"] {
-        font-size: var(--text-sm);
-        line-height: var(--text-sm--line-height);
-
-        > div {
-          font-size: var(--text-sm);
-        }
-      }
-
-      :is([data-role="poll-kind"], [data-role="poll-state-label"]) {
-        font-size: var(--text-sm);
-        letter-spacing: normal;
-        text-transform: none;
-      }
     }
 
     .carousel-scroll {

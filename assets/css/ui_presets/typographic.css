@@ -24,6 +24,23 @@ html[data-ui-preset="typographic"] [data-theme] {
   --pill-padding-x: 0.875rem;
   --pill-gap: 0.5rem;
   --stack-gap: 0.75rem;
+  /* Polls: white rows outlined in hairline (pills, via the theme's radius),
+     pink result bars with the winner a step stronger, ink meta. Bars sit
+     behind ink text, so full primary red is too dark for them. */
+  --poll-option-bg: var(--color-base-100);
+  --poll-option-bg-hover: var(--color-base-300);
+  --poll-option-border: var(--hairline);
+  --poll-indicator-idle: var(--color-primary);
+  --poll-check-radius: 4px;
+  --poll-bar: var(--color-base-300);
+  --poll-bar-winner: var(--color-secondary);
+  --poll-track: var(--color-base-300);
+  --poll-meta: var(--color-base-content);
+  --poll-meta-strong: var(--color-base-content);
+  --poll-card-radius: var(--radius-box);
+  --poll-question-size: 1.125rem;
+  --poll-question-leading: 1.4;
+  --poll-question-weight: var(--font-weight-bold);
 }
 
 /* Compact pills are for mouse input; touch keeps the shared 44px target. */

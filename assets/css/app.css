@@ -1120,6 +1120,83 @@ hex-input::part(input) {
   --divider-width: 1px;
   --widget-gap: calc(var(--spacing) * 2);
   --widget-overlap: 0px;
+  /* Polls have one UI for every preset; presets restyle them only through
+     these. Defaults are Stream's filled rows; translucent ink mixes keep them
+     right on light and dark surfaces alike. */
+  --poll-option-bg: var(--fill-bg);
+  --poll-option-bg-hover: var(--fill-strong-bg);
+  --poll-option-border: 0px solid transparent;
+  --poll-indicator-idle: var(--subtle-color);
+  /* Checkboxes stay visibly square so multiple choice never reads as single. */
+  --poll-check-radius: 5px;
+  /* Result bars draw inside an option row, so they need a step above its fill.
+     The final winner's bar is the poll's only accent. */
+  --poll-bar: color-mix(in oklab, var(--color-base-content) 12%, transparent);
+  --poll-bar-winner: color-mix(in oklab, var(--color-primary) 26%, transparent);
+  --poll-track: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+  --poll-meta: var(--subtle-color);
+  --poll-meta-strong: color-mix(in oklab, var(--color-base-content) 88%, var(--color-base-100));
+  /* Multi-line rows (group decisions) can't take a pill radius. */
+  --poll-card-radius: var(--radius-field);
+  /* The picked cell of a reaction scale sits raised on the track: the canvas
+     colour in light, a lifted ink mix in dark, where the canvas is the darkest. */
+  --poll-cell-raised: light-dark(
+    var(--color-base-100),
+    color-mix(in oklab, var(--color-base-content) 16%, var(--color-base-100))
+  );
+  /* Reaction tones, Disagree to Great plus Block, from the theme's own status
+     colours so every theme and scheme gets a matching scale. Seems fine mixes
+     Great toward the ink, which lightens it on dark and deepens it on light. */
+  --poll-tone-disagree: var(--color-error);
+  --poll-tone-concern: var(--color-warning);
+  --poll-tone-neutral: var(--subtle-color);
+  --poll-tone-fine: color-mix(in oklab, var(--color-success) 70%, var(--color-base-content));
+  --poll-tone-great: var(--color-success);
+  --poll-tone-block: var(--color-error);
+  /* The question is the post's body, so it reads at body size by default;
+     a preset can raise it to a headline. */
+  --poll-question-size: 1rem;
+  --poll-question-leading: 1.5;
+  --poll-question-weight: var(--font-weight-medium);
+}
+
+/* Without light-dark(), the raised cell falls back to the canvas, which still
+   reads as raised on the track in light. */
+@supports not (color: light-dark(white, black)) {
+  :root,
+  [data-theme] {
+    --poll-cell-raised: var(--color-base-100);
+  }
+}
+
+/* Poll row chrome, shared by voting, result, voted and read-only rows so the
+   --poll-option-* tokens restyle them all. Layout stays in the markup. */
+@utility poll-option {
+  @apply min-h-11 px-3.5 py-2.5 rounded-field [border:var(--poll-option-border)] bg-(--poll-option-bg);
+}
+
+/* Multi-line rows (group decisions), which can't take a pill radius. */
+@utility poll-card {
+  @apply px-3.5 py-2.5 rounded-(--poll-card-radius) [border:var(--poll-option-border)] bg-(--poll-option-bg);
+}
+
+@utility poll-picked {
+  box-shadow: inset 0 0 0 1.5px var(--color-primary);
+}
+
+/* A reaction tone as text: status colours are too light for small type on
+   their own, so they lean toward the ink. Set `--tone` on the element. */
+@utility poll-tone-text {
+  color: color-mix(in oklab, var(--tone) 55%, var(--color-base-content));
+}
+
+@utility poll-meta-line {
+  @apply flex flex-wrap items-center gap-x-3 gap-y-1 py-1.5 text-[13px]/[18px] text-(--poll-meta) tabular-nums;
+}
+
+/* "Open" / "Ongoing", with a live dot. */
+@utility poll-live {
+  @apply inline-flex items-center gap-1.5 text-(--poll-meta-strong) before:size-1.5 before:rounded-full before:bg-success before:content-[''];
 }
 
 
