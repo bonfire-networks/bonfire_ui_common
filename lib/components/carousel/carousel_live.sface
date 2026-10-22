@@ -1,11 +1,6 @@
 {!-- the grid keeps a flex parent from growing to the track's full scroll width --}
 <div class="grid grid-cols-1 overflow-hidden">
-  <div
-    id={@id}
-    class={"carousel-scroll gap-2.5", @class}
-    phx-hook="CarouselScroll"
-    role="list"
-  >
+  <div id={@id} class={"carousel-scroll gap-2.5", @class} phx-hook="CarouselScroll" role="list">
     {#for item <- @items}
       {!-- one card wide below `sm`, `visible_items` from it up, the next one's edge showing; a lone card full width --}
       <div
@@ -14,7 +9,8 @@
         class="w-[var(--carousel-item-w)] sm:w-[var(--carousel-item-w-sm)] self-start"
         style={if match?([_], @items),
           do: "--carousel-item-w: 100%; --carousel-item-w-sm: 100%;",
-          else: "--carousel-item-w: #{card_width(1)}; --carousel-item-w-sm: #{card_width(@visible_items)};"}
+          else:
+            "--carousel-item-w: #{card_width(1)}; --carousel-item-w-sm: #{card_width(@visible_items)};"}
       >
         <#slot {@card, item: item} />
       </div>

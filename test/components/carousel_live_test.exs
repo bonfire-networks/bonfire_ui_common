@@ -36,7 +36,9 @@ defmodule Bonfire.UI.Common.CarouselLiveTest do
 
     assert [track] = Floki.find(doc, "#things-track")
     assert Floki.attribute(track, "phx-hook") == ["CarouselScroll"]
-    assert Floki.find(doc, "#things-track [data-carousel-card] [data-role=thing]") |> length() == 3
+
+    assert Floki.find(doc, "#things-track [data-carousel-card] [data-role=thing]") |> length() ==
+             3
   end
 
   test "visible_items sets how many whole cards show from the sm breakpoint up" do
@@ -52,7 +54,10 @@ defmodule Bonfire.UI.Common.CarouselLiveTest do
   test "several items get one dot each, pointing at the track" do
     doc = carousel(["one", "two"])
 
-    assert Floki.attribute(doc, "[data-role=carousel_dots]", "data-carousel-dots") == ["things-track"]
+    assert Floki.attribute(doc, "[data-role=carousel_dots]", "data-carousel-dots") == [
+             "things-track"
+           ]
+
     assert Floki.find(doc, "[data-role=carousel_dot]") |> length() == 2
   end
 
