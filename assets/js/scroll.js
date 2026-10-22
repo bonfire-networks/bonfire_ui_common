@@ -136,13 +136,40 @@ ScrollHooks.CarouselScroll = {
 			el.removeEventListener("pointerdown", onDown)
 			endDrag()
 			this._dotsObserver?.disconnect()
+			this._clampObserver?.disconnect()
 		}
 
 		this.watchDots()
+		this.watchClamped()
 	},
 	// re-observed on every patch: the server renders the dots without a current one, so a patch clears what we marked, and the observer's first callback marks it again
 	updated() {
 		this.watchDots()
+		this.watchClamped()
+	},
+	// `CarouselLive expandable`: marks the cards whose tile (first child) is clipped, so CSS shows their toggle. Its content is observed too, as a clipped tile keeps its size while an image in it loads. Marked via `this.js()` so the mark survives patches inside the card, which don't call `updated()` here.
+	watchClamped() {
+		if (!this.el.hasAttribute("data-expandable")) return
+		this._clampObserver ??= new ResizeObserver((entries) => {
+			const cards = new Set(entries.map((entry) => entry.target.closest("[data-carousel-card]")))
+			// an expanded card isn't clipped, but keeps its toggle to collapse it
+			const clipped = [...cards]
+				.filter((card) => card && !card.hasAttribute("data-expanded"))
+				.map((card) => [card, card.firstElementChild.scrollHeight > card.firstElementChild.clientHeight + 1])
+			for (const [card, isClipped] of clipped) {
+				if (isClipped === card.hasAttribute("data-clamped")) continue
+				if (isClipped) this.js().setAttribute(card, "data-clamped", "")
+				else this.js().removeAttribute(card, "data-clamped")
+			}
+		})
+		this._observedTiles ??= new WeakSet()
+		for (const card of this.el.children) {
+			for (const target of [card.firstElementChild, card.firstElementChild?.firstElementChild]) {
+				if (!target || this._observedTiles.has(target)) continue
+				this._observedTiles.add(target)
+				this._clampObserver.observe(target)
+			}
+		}
 	},
 	// A carousel with dots (`data-carousel-dots` naming it) marks the dot of the card mostly in view, so scrolling or swiping shows where you are.
 	watchDots() {

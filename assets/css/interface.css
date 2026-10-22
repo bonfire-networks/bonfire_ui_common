@@ -533,15 +533,19 @@ html:not([data-ui-preset="typographic"]) {
   /* Carousel tiles (Spotlight, dashboard carousels) */
   :is(
     [data-id="instance_pinned_widget"] .spotlight_clamp,
-    [data-id="dashboard_main"] [data-carousel-card] > *
+    [data-id="dashboard_main"] [data-carousel-card] > :first-child
   ) {
     overflow: hidden;
     border-width: 0;
     border-radius: var(--radius-box);
     background-color: var(--surface-bg);
-    /* colour of the clipped-tile fade, see `.spotlight_clamp` in app.css */
-    --tile-surface: var(--surface-bg);
     box-shadow: none;
+  }
+
+  /* colour of the clipped-tile fade and the show more pill, see `.spotlight_clamp` and `CarouselLive expandable` in app.css */
+  :is([data-id="instance_pinned_widget"], [data-id="dashboard_main"])
+    [data-carousel-card] {
+    --tile-surface: var(--surface-bg);
   }
 
   /* Dashboard main area (`Bonfire.UI.Me.DashboardMainLive`): one gutter, heading style and spacing for every widget. */

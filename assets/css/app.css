@@ -2607,12 +2607,75 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   display: contents;
 }
 
-/* Carousel tiles (Spotlight, Top discussions): cap the height so one tall post
-   (a poll, an image) doesn't leave a void under its shorter neighbours; the
-   whole tile opens the full post. The tile's own scroll timeline is only
-   active when the content actually overflows, so `--tile-clamped` flips to 1
-   (showing the fade) only on clipped tiles. Browsers without scroll-driven
-   animations keep the uncapped tiles. */
+/* `CarouselLive expandable` (Spotlight, Top discussions): each card keeps its own height up to the cap, so one tall post (a poll, an image) can't stretch the widget; its tile (first child) clips the rest, and a show more/less pill sits on the tile's bottom edge once the `CarouselScroll` hook marks the card `data-clamped`. */
+.carousel-scroll[data-expandable] > [data-carousel-card] {
+  --expand-pill-h: 1.75rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: var(--carousel-tile-max-h, 22rem);
+
+  > :first-child {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* half the pill hangs below the tile */
+  &[data-clamped] {
+    padding-bottom: calc(var(--expand-pill-h) / 2);
+  }
+
+  &[data-expanded] {
+    max-height: none;
+  }
+
+  > [data-role="carousel_card_expand"] {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    z-index: 2;
+    translate: -50% 0;
+    height: var(--expand-pill-h);
+    align-items: center;
+    gap: 0.25rem;
+    padding-inline: 0.75rem;
+    border: 1px solid var(--color-divider);
+    border-radius: 9999px;
+    background-color: var(--tile-surface, var(--color-base-100));
+    box-shadow: 0 1px 2px
+      color-mix(in oklch, var(--color-base-content) 10%, transparent);
+    color: color-mix(in oklch, var(--color-base-content) 72%, transparent);
+    font-size: var(--text-xs);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      color 150ms ease-out,
+      background-color 150ms ease-out;
+
+    &:hover {
+      color: var(--color-base-content);
+      background-color: color-mix(
+        in oklch,
+        var(--color-base-content) 6%,
+        var(--tile-surface, var(--color-base-100))
+      );
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &[data-clamped] > [data-role="carousel_card_expand"] {
+    display: inline-flex;
+  }
+}
+
+/* The tile's own scroll timeline is only active when the content actually overflows, so `--tile-clamped` flips to 1 (showing the fade) only on clipped tiles. Browsers without scroll-driven animations clip without the fade. */
 @property --tile-clamped {
   syntax: "<number>";
   initial-value: 0;
@@ -2629,8 +2692,6 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
 @supports (animation-timeline: scroll()) {
   .spotlight_clamp {
     position: relative;
-    max-height: var(--carousel-tile-max-h, 22rem);
-    overflow: hidden;
     animation: tile-clamped linear both;
     animation-timeline: scroll(self block);
   }

@@ -1,6 +1,12 @@
 {!-- the grid keeps a flex parent from growing to the track's full scroll width --}
 <div class="grid grid-cols-1 overflow-hidden">
-  <div id={@id} class={"carousel-scroll gap-2.5", @class} phx-hook="CarouselScroll" role="list">
+  <div
+    id={@id}
+    class={"carousel-scroll gap-2.5", @class}
+    phx-hook="CarouselScroll"
+    role="list"
+    data-expandable={@expandable}
+  >
     {#for item <- @items}
       {!-- one card wide below `sm`, `visible_items` from it up, the next one's edge showing; a lone card full width --}
       <div
@@ -13,6 +19,20 @@
             "--carousel-item-w: #{card_width(1)}; --carousel-item-w-sm: #{card_width(@visible_items)};"}
       >
         <#slot {@card, item: item} />
+        {!-- hidden until `CarouselScroll` marks the card `data-clamped` --}
+        <button
+          :if={@expandable}
+          type="button"
+          data-role="carousel_card_expand"
+          aria-expanded="false"
+          phx-click={JS.toggle_attribute({"data-expanded", ""}, to: {:closest, "[data-carousel-card]"})
+          |> JS.toggle_attribute({"aria-expanded", "true", "false"})}
+          class="group hidden"
+        >
+          <span class="group-aria-expanded:hidden">{l("Show more")}</span>
+          <span class="hidden group-aria-expanded:inline">{l("Show less")}</span>
+          <#Icon iconify="ph:caret-down-bold" class="w-3 h-3 transition-transform group-aria-expanded:rotate-180" />
+        </button>
       </div>
     {/for}
   </div>

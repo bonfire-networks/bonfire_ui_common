@@ -10,6 +10,9 @@ defmodule Bonfire.UI.Common.CarouselLive do
   @doc "How many whole cards show from the `sm` breakpoint up, always with the next one's edge; one below it"
   prop visible_items, :integer, default: 1
 
+  @doc "Caps each card at `--carousel-tile-max-h` (22rem) and gives clipped ones a show more/less toggle; the card's first child is the tile that gets clipped"
+  prop expandable, :boolean, default: false
+
   @doc "Extra classes for the track, eg. a page's own gutters"
   prop class, :css_class, default: nil
 
