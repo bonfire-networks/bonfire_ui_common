@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common.CacheControlPlug do
   - `purgeable: true` — declare that relevant mutations for this page call
     `Bonfire.Common.Cache.bust_http_*` on write. Enables longer default TTLs
     because stale content can be explicitly evicted. Defaults to `false`.
-  - `ttl:` — explicit browser max-age in seconds (overrides ENV and purgeable defaults)
+  - `ttl:` — explicit browser max-age in seconds (overrides ENV and purgeable defaults). HTML responses ignore it: browsers always revalidate them, see `revalidate_html/2`
   - `cdn_ttl:` — explicit s-maxage in seconds (overrides ENV and purgeable defaults)
   - `swr:` — explicit stale-while-revalidate in seconds (overrides ENV default)
 
@@ -90,6 +90,22 @@ defmodule Bonfire.UI.Common.CacheControlPlug do
       # run but before before_send fires) prevents Plug.Session from writing
       # the cookie, which would poison any CDN or static-file cache.
       |> put_private(:plug_session_info, nil)
+      |> register_before_send(&revalidate_html(&1, cdn_ttl))
+    end
+  end
+
+  # Browsers must not keep a guest page: someone sent back to it after signing in would get their guest copy, look signed out, and have "Log in" bounce them back to it (`must-revalidate` also stops `stale-while-revalidate`). Non-HTML (e.g. avatars) keeps its browser TTL.
+  defp revalidate_html(conn, cdn_ttl) do
+    case get_resp_header(conn, "content-type") do
+      ["text/html" <> _ | _] ->
+        put_resp_header(
+          conn,
+          "cache-control",
+          "public, max-age=0, must-revalidate, s-maxage=#{cdn_ttl}"
+        )
+
+      _ ->
+        conn
     end
   end
 

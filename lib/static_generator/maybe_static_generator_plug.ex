@@ -45,8 +45,9 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
   @memory_cache_prefix "static_gen:"
   @hits_cache_prefix "static_gen_hits:"
 
+  # Only for requests `maybe_make_request_path_static/2` marked as guest ones: the memory tier is keyed by path alone, so it would otherwise hand the guest page to someone signed in.
   def maybe_serve_static(conn, _opts) do
-    if serve_static_cache?() do
+    if serve_static_cache?() and conn.private[:static_cacheable] == true do
       do_maybe_serve_static(conn)
     else
       conn
@@ -262,7 +263,7 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
         _
       )
       when qs != "" do
-    if !get_session(conn, :current_user_id) do
+    if not Bonfire.UI.Common.session_logged_in?(conn) do
       hashed = qs_hashed_path(path, qs)
 
       full =
@@ -283,8 +284,10 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
   # For any other unauthenticated request, try to serve from static disk cache.
   # Uses session (not assigns) because current_user may not be loaded yet in the
   # :cacheable pipeline. Falls through to the controller if no file exists.
+  # An account signed in without a chosen profile counts as signed in, like `GuestOnly` does:
+  # otherwise it gets the guest page, and its "Log in" link bounces straight back to it.
   def maybe_make_request_path_static(conn, _) do
-    if !get_session(conn, :current_user_id) do
+    if not Bonfire.UI.Common.session_logged_in?(conn) do
       serve_from_static(conn, conn.request_path)
     else
       info("do not use cache when signed in")

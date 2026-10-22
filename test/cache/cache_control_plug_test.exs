@@ -71,6 +71,20 @@ defmodule Bonfire.UI.Common.CacheControlPlugTest do
     assert conn.resp_body == "CACHED_SENTINEL"
   end
 
+  # an account signed in without a chosen profile is signed in for `GuestOnly` too, so serving it the guest page made "Log in" bounce straight back to that page
+  test "an account signed in without a profile is not served the guest cache", _ctx do
+    static_dir = Application.app_dir(:bonfire, "priv/static/public")
+    path = Path.join([static_dir, "gen_avatar", "account_only_test", "index.html"])
+    File.mkdir_p!(Path.dirname(path))
+    File.write!(path, "CACHED_SENTINEL")
+    on_exit(fn -> File.rm_rf!(Path.dirname(path)) end)
+
+    conn = get(conn(account: "account-only-session"), "/gen_avatar/account_only_test")
+    assert conn.status == 200
+    refute conn.resp_body == "CACHED_SENTINEL"
+    assert get_resp_header(conn, "cache-control") == ["private, no-store"]
+  end
+
   describe "purging via StaticGenerator adapter" do
     test "request writes a static file to the cache, and bust_urls deletes the cached file for the response URL",
          %{user_id: user_id, dest: dest} do
