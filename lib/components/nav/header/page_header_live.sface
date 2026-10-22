@@ -1,8 +1,8 @@
 <header role="banner" class="flex flex-1 w-full transition-colors duration-150 ease-in-out">
   <div class="relative z-20 flex items-center w-full">
-    <div class="flex items-center gap-2 w-full px-4">
+    <div data-role="page_header_row" class="flex items-center gap-2 w-full px-4">
       {!-- Back button (when present, all breakpoints) --}
-      <div :if={@back} class="shrink-0 flex items-center">
+      <div :if={@back} data-role="page_header_back" class="shrink-0 flex items-center">
         <Bonfire.UI.Common.BackButtonLive back={@back} type={@back_type} />
       </div>
       {!-- Mobile nav toggle (no back, logged in) — hidden on desktop so the title sits flush-left --}
@@ -41,8 +41,8 @@
         </label>
       </div> -->
 
-      {!-- Center column: title left-aligned --}
-      <div class="flex-1 min-w-0">
+      {!-- Center column: title (Stream centres it, see interface.css) --}
+      <div data-role="page_header_title" class="flex-1 min-w-0">
         {#if is_map(@page_title_context) and is_binary(@page_title_context[:name])}
           <h1
             data-page={@page}
@@ -81,7 +81,7 @@
       </div>
 
       {!-- Right column: actions, right-aligned --}
-      <div class="shrink-0 flex justify-end gap-2 items-center">
+      <div data-role="page_header_actions" class="shrink-0 flex justify-end gap-2 items-center">
         {#if @show_right_actions && current_user(@__context__)}
           <#slot {@right_action}>
           </#slot>

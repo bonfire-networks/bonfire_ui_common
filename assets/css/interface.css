@@ -174,8 +174,6 @@ html:not([data-ui-preset="typographic"]) {
   #main-content > .sticky,
   #the_preview_contents > .sticky {
     margin-bottom: 0;
-    border-bottom-width: var(--divider-width);
-    border-bottom-color: var(--divider-color);
     background-color: var(--color-base-100);
 
     /* Translucent header over the passing stream, with a solid fallback above.
@@ -192,8 +190,82 @@ html:not([data-ui-preset="typographic"]) {
     }
   }
 
+  #the_preview_contents > .sticky {
+    border-bottom-width: var(--divider-width);
+    border-bottom-color: var(--divider-color);
+  }
+
+  /* No divider under the page header: once the page scrolls, a soft shadow
+     grows down from its edge, densest at the centre, and recedes as you
+     scroll back to the top. Browsers without scroll timelines keep the divider. */
+  #main-content > .sticky {
+    @supports not (animation-timeline: scroll()) {
+      border-bottom-width: var(--divider-width);
+      border-bottom-color: var(--divider-color);
+    }
+
+    @supports (animation-timeline: scroll()) {
+      animation: page-header-shadow linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 96px;
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset-inline: 0;
+        top: 100%;
+        height: 16px;
+        pointer-events: none;
+        background: radial-gradient(
+          farthest-side at 50% 0,
+          light-dark(oklch(0 0 0 / 0.14), oklch(0 0 0 / 0.75)),
+          transparent
+        );
+        transform-origin: 50% 0;
+        opacity: var(--page-header-shadow);
+        scale: calc(0.6 + 0.4 * var(--page-header-shadow))
+          var(--page-header-shadow);
+        transition: filter 200ms ease-out;
+      }
+
+      /* The feed tabs stick right below the header and carry the shadow
+         themselves; the header's comes back while they scroll out of view. */
+      &:has(+ .sticky:not([data-scroll-hidden]))::after {
+        filter: opacity(0);
+      }
+    }
+  }
+
   #main-content > .sticky > div {
     min-height: var(--stream-header-height);
+  }
+
+  /* Centred page title between the back button and the actions. */
+  [data-role="page_header_row"] {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, max-content) 1fr;
+
+    > [data-role="page_header_back"] {
+      grid-column: 1;
+      justify-self: start;
+    }
+
+    > [data-role="page_header_title"] {
+      grid-column: 2;
+      text-align: center;
+    }
+
+    > [data-role="page_header_actions"] {
+      grid-column: 3;
+    }
+
+    [data-role="page_title"] {
+      justify-content: center;
+      text-align: center;
+      font-size: var(--text-lg);
+      line-height: var(--text-lg--line-height);
+      font-weight: var(--font-weight-bold);
+    }
   }
 
   /* Anchor jumps and scrollIntoView land clear of the sticky header. */
@@ -918,5 +990,18 @@ html:not([data-ui-preset="typographic"]) {
         color: var(--color-error);
       }
     }
+  }
+}
+
+/* Scroll progress (0 → 1) of the page header's shadow, read by its ::after. */
+@property --page-header-shadow {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: true;
+}
+
+@keyframes page-header-shadow {
+  to {
+    --page-header-shadow: 1;
   }
 }
