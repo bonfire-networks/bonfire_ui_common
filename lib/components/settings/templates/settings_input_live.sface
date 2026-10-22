@@ -35,7 +35,7 @@
           value={to_string(@current_value)}
           class="flex-1 input input-bordered input-sm"
         />
-        <button type="submit" class="btn btn-sm btn-soft btn-primary">
+        <button :if={@submit_button} type="submit" class="btn btn-sm btn-soft btn-primary">
           {l("Save")}
         </button>
       </div>
@@ -58,7 +58,7 @@
         value={to_string(@current_value)}
         class="flex-1 input input-bordered input-sm"
       />
-      <button type="submit" class="btn btn-sm btn-soft btn-primary">
+      <button :if={@submit_button} type="submit" class="btn btn-sm btn-soft btn-primary">
         {l("Save")}
       </button>
     </div>

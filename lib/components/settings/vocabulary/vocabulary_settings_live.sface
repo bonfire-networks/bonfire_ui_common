@@ -1,0 +1,42 @@
+{#for kind <- Vocabulary.kinds()}
+  <form
+    class="p-4"
+    data-scope={"set_wording_#{kind}"}
+    name="settings"
+    phx-change="Bonfire.Common.Settings:set"
+  >
+    <Bonfire.UI.Common.SettingsSelectLive
+      id={"set_wording_#{kind}"}
+      name={Vocabulary.kind_name(kind)}
+      description={l("Choose how this is worded.")}
+      keys={[Vocabulary, kind]}
+      default_value={kind}
+      options={Vocabulary.options(kind)}
+      scope={@scope}
+    />
+  </form>
+
+  <form
+    :if={custom?(kind, @scoped)}
+    class="px-4 pb-4 flex flex-col gap-4"
+    data-scope={"set_wording_words_#{kind}"}
+    name="settings"
+    phx-submit="Bonfire.Common.Settings:save"
+  >
+    <div class="text-sm text-muted">
+      {l("Custom phrases are not translated.")} {l("A field left blank uses the default wording.")}
+    </div>
+    {#for key <- Vocabulary.phrase_keys(kind)}
+      <Bonfire.UI.Common.SettingsInputLive
+        name={phrase_label(key)}
+        keys={[Vocabulary, :custom, kind, key]}
+        placeholder={default_text(kind, key)}
+        submit_button={false}
+        scope={@scope}
+      />
+    {/for}
+    <div>
+      <button type="submit" class="btn btn-sm btn-soft btn-primary">{l("Save")}</button>
+    </div>
+  </form>
+{/for}
