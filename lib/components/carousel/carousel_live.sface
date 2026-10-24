@@ -31,7 +31,10 @@
         >
           <span class="group-aria-expanded:hidden">{l("Show more")}</span>
           <span class="hidden group-aria-expanded:inline">{l("Show less")}</span>
-          <#Icon iconify="ph:caret-down-bold" class="w-3 h-3 transition-transform group-aria-expanded:rotate-180" />
+          <#Icon
+            iconify="ph:caret-down-bold"
+            class="w-3 h-3 transition-transform group-aria-expanded:rotate-180"
+          />
         </button>
       </div>
     {/for}
