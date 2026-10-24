@@ -63,6 +63,7 @@ defmodule Bonfire.UI.Common.CacheControlPlug do
   end
 
   # Skip HTTP caching outside of prod (unless STATIC_CACHE_DEV=true at compile time).
+  # NOTE: should this use Config.env/0 ?
   if Mix.env() != :prod and
        not Application.compile_env(:bonfire_ui_common, :static_cache_dev, false) do
     defp cache_public_response(conn, _opts),
