@@ -16,6 +16,15 @@ defmodule Bonfire.UI.Common.Cache.HTTPPurge.Nginx do
   ## Tag-based purging
 
   `bust_tags/1` sends a wildcard `PURGE` request per tag (e.g. tag `"post-123"` → `PURGE /post-123*`). Surrogate keys set via `surrogate-key` / `cache-tag` headers should therefore correspond to URL path prefixes. Matching entries are removed from the cache immediately; disk files are reclaimed on next access or natural expiry.
+
+  ## Skip the cache for signed-in users
+
+  Add these to the `location` that has `proxy_cache`, so requests with the `_bonfire_key` session cookie go to Bonfire and their responses are not stored (see `Bonfire.UI.Common.CacheControlPlug` for why):
+
+      proxy_cache_bypass $cookie__bonfire_key;
+      proxy_no_cache     $cookie__bonfire_key;
+
+  The double underscore is the `$cookie_` prefix plus the leading `_` of the cookie name.
   """
 
   @behaviour Bonfire.Common.Cache.HTTPPurge

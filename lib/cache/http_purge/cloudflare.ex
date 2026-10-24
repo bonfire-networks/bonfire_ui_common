@@ -8,6 +8,13 @@ defmodule Bonfire.UI.Common.Cache.HTTPPurge.Cloudflare do
 
   Note: Cloudflare does not cache HTML by default — you need a Cache Rule
   set to "Cache Everything" for the paths you want cached.
+
+  ## Skip the cache for signed-in users
+
+  Add a second Cache Rule below the "Cache Everything" one (later rules override earlier ones), so requests with the `_bonfire_key` session cookie go to Bonfire (see `Bonfire.UI.Common.CacheControlPlug` for why):
+
+  - Expression: `(http.cookie contains "_bonfire_key")`
+  - Cache eligibility: "Bypass cache"
   """
 
   @behaviour Bonfire.Common.Cache.HTTPPurge

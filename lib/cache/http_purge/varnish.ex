@@ -7,6 +7,16 @@ defmodule Bonfire.UI.Common.Cache.HTTPPurge.Varnish do
 
   Tag-based purging (`bust_tags/1`) requires the `xkey` vmod and is not
   implemented here — extend if your Varnish setup supports it.
+
+  ## Skip the cache for signed-in users
+
+  Pass requests with the `_bonfire_key` session cookie straight to Bonfire (see `Bonfire.UI.Common.CacheControlPlug` for why):
+
+      sub vcl_recv {
+        if (req.http.Cookie ~ "(^|; *)_bonfire_key=") {
+          return (pass);
+        }
+      }
   """
 
   @behaviour Bonfire.Common.Cache.HTTPPurge

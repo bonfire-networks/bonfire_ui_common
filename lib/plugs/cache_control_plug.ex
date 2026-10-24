@@ -29,6 +29,9 @@ defmodule Bonfire.UI.Common.CacheControlPlug do
   > #### Do not add CSRF protection to guest-cacheable responses {: .warning}
   > CSRF protection writes a session cookie, which must never be stored in a shared cache. The `:browser_or_cacheable` pipeline applies CSRF protection only to authenticated requests; this plug marks those responses `private, no-store` and preserves their session writes.
 
+  > #### A shared cache must skip signed-in requests {: .warning}
+  > A CDN or proxy cache keys guest pages by URL only, so it answers a signed-in user with the guest copy before the request reaches Bonfire: they look signed out, and "Log in" sends them back to the same page. Configure it to skip the cache when the request has the `_bonfire_key` session cookie. Guests never get that cookie, so the guest hit rate stays the same. See `Bonfire.UI.Common.Cache.HTTPPurge.Nginx`, `Bonfire.UI.Common.Cache.HTTPPurge.Varnish` and `Bonfire.UI.Common.Cache.HTTPPurge.Cloudflare` for the rules.
+
       # Conservative — no purging on mutations for this page
       plug Bonfire.UI.Common.CacheControlPlug
 
