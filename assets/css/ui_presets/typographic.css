@@ -369,10 +369,6 @@ html[data-ui-preset="typographic"] .feed-controls-toolbar {
   margin-bottom: -1px;
 }
 
-html[data-ui-preset="typographic"] [data-role="profile-stats-divider"] {
-  display: none;
-}
-
 html[data-ui-preset="typographic"] [data-role="profile-links"] {
   --divider-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
 }

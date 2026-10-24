@@ -12,7 +12,7 @@
  * The iframe resizes automatically to fit its content.
  */
 (function () {
-  // --- Shared embed helpers (keep in sync with comments_embed.js) ---
+  // --- Shared embed helpers (keep in sync with comments_embed.js and circle_embed.js) ---
 
   function getOrigin(scriptEl) {
     try {

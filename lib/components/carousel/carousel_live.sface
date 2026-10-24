@@ -27,7 +27,7 @@
           aria-expanded="false"
           phx-click={JS.toggle_attribute({"data-expanded", ""}, to: {:closest, "[data-carousel-card]"})
           |> JS.toggle_attribute({"aria-expanded", "true", "false"})}
-          class="group hidden"
+          class="group hidden expand-pill"
         >
           <span class="group-aria-expanded:hidden">{l("Show more")}</span>
           <span class="hidden group-aria-expanded:inline">{l("Show less")}</span>

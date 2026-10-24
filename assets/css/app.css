@@ -1038,10 +1038,6 @@ hex-input::part(input) {
   width: 100%;
 }
 
-[data-role="profile-stats-divider"] {
-  margin-bottom: 4px;
-}
-
 .load_more_container {
   word-break: normal;
   overflow-wrap: anywhere;
@@ -2597,6 +2593,47 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   display: contents;
 }
 
+/* Show more/less pill, shared by `CarouselLive expandable` and the community rules widget. Each caller sets `display`, so the carousel can keep it hidden until its card is clamped. */
+.expand-pill {
+  height: var(--expand-pill-h, 1.75rem);
+  align-items: center;
+  gap: 0.25rem;
+  padding-inline: 0.75rem;
+  border: 1px solid var(--color-divider);
+  border-radius: 9999px;
+  background-color: var(--tile-surface, var(--color-base-100));
+  box-shadow: 0 1px 2px
+    color-mix(in oklch, var(--color-base-content) 10%, transparent);
+  color: color-mix(in oklch, var(--color-base-content) 72%, transparent);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color 150ms ease-out,
+    background-color 150ms ease-out;
+
+  &:hover {
+    color: var(--color-base-content);
+    background-color: color-mix(
+      in oklch,
+      var(--color-base-content) 6%,
+      var(--tile-surface, var(--color-base-100))
+    );
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+/* The rules widget shows the first 10 rules until its pill sets `data-expanded`. Hidden with CSS rather than by splitting the list so the numbering stays continuous; keep the 10 in sync with `WidgetRulesLive`. */
+[data-id="widget_rules"]:not([data-expanded]) li:nth-child(n + 11) {
+  display: none;
+}
+
 /* `CarouselLive expandable` (Spotlight, Top discussions): each card keeps its own height up to the cap, so one tall post (a poll, an image) can't stretch the widget; its tile (first child) clips the rest, and a show more/less pill sits on the tile's bottom edge once the `CarouselScroll` hook marks the card `data-clamped`. */
 .carousel-scroll[data-expandable] > [data-carousel-card] {
   --expand-pill-h: 1.75rem;
@@ -2626,38 +2663,6 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
     left: 50%;
     z-index: 2;
     translate: -50% 0;
-    height: var(--expand-pill-h);
-    align-items: center;
-    gap: 0.25rem;
-    padding-inline: 0.75rem;
-    border: 1px solid var(--color-divider);
-    border-radius: 9999px;
-    background-color: var(--tile-surface, var(--color-base-100));
-    box-shadow: 0 1px 2px
-      color-mix(in oklch, var(--color-base-content) 10%, transparent);
-    color: color-mix(in oklch, var(--color-base-content) 72%, transparent);
-    font-size: var(--text-xs);
-    font-weight: var(--font-weight-medium);
-    line-height: 1;
-    white-space: nowrap;
-    cursor: pointer;
-    transition:
-      color 150ms ease-out,
-      background-color 150ms ease-out;
-
-    &:hover {
-      color: var(--color-base-content);
-      background-color: color-mix(
-        in oklch,
-        var(--color-base-content) 6%,
-        var(--tile-surface, var(--color-base-100))
-      );
-    }
-
-    &:focus-visible {
-      outline: 2px solid var(--color-primary);
-      outline-offset: 2px;
-    }
   }
 
   &[data-clamped] > [data-role="carousel_card_expand"] {

@@ -385,6 +385,13 @@
 
 <Bonfire.UI.Common.ReusableModalLive id="modal" />
 
+{!-- one profile hover card for the page, logged-in viewers only (guests get cached pages where its load can't run) --}
+<StatefulComponent
+  :if={@current_user_id}
+  module={maybe_component(Bonfire.UI.Me.ProfileHoverCardLive, @__context__)}
+  id="profile_hover_card"
+/>
+
 <div class="relative z-max">
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} />
   <StatelessComponent module={maybe_component(Bonfire.Notify.PWAInstallBannerLive, @__context__)} />
