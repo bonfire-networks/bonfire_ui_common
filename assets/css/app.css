@@ -215,6 +215,8 @@ media-player {
 
 :root {
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  /* iOS-style sheet curve: a slower start and a long, soft settle, for surfaces that travel their full height */
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 /* Remove travel under reduced motion while retaining opacity and colour cues
@@ -1618,13 +1620,16 @@ emoji-picker .favorites {
 .motion-modal {
   transition:
     visibility 250ms allow-discrete,
+    overlay 150ms allow-discrete,
     opacity 150ms var(--ease-out-expo);
 }
 
-.motion-modal.modal-open {
+/* `[open]`: a native <dialog> opened with showModal() (the profile sheet), alongside ReusableModalLive's server-set class */
+.motion-modal:is(.modal-open, [open]) {
   /* Backdrop and box are a paired unit: identical 250ms enter (exit stays 150ms) */
   transition:
     visibility 0ms allow-discrete,
+    overlay 0ms allow-discrete,
     opacity 250ms var(--ease-out-expo);
 }
 
@@ -1647,8 +1652,31 @@ emoji-picker .favorites {
 }
 
 .motion-modal.motion-closing,
-.motion-modal.motion-closing .modal-box {
+.motion-modal.motion-closing .modal-box,
+/* a native dialog has no closing class: closed is simply not [open] */
+dialog.motion-modal:not([open]),
+dialog.motion-modal:not([open]) .modal-box {
   transition-duration: 150ms;
+}
+
+/* A bottom sheet travels its whole height, so it gets the sheet curve and a little more time than a centred
+   modal; still paired with its backdrop, and the reduced-motion block below still removes the travel. */
+.motion-modal.motion-sheet .modal-box {
+  transition:
+    translate 350ms var(--ease-sheet),
+    opacity 180ms var(--ease-out-expo);
+}
+
+.motion-modal.motion-sheet:is(.modal-open, [open]) {
+  transition:
+    visibility 0ms allow-discrete,
+    overlay 0ms allow-discrete,
+    opacity 350ms var(--ease-sheet);
+}
+
+dialog.motion-modal.motion-sheet:not([open]),
+dialog.motion-modal.motion-sheet:not([open]) .modal-box {
+  transition-duration: 200ms;
 }
 
 .motion-modal.motion-instant,
@@ -1672,7 +1700,7 @@ emoji-picker .favorites {
   }
 
   .motion-modal {
-    transition-property: visibility, background-color, opacity;
+    transition-property: visibility, overlay, background-color, opacity;
   }
 
   .motion-modal .modal-box {
