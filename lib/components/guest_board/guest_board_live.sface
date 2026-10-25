@@ -28,7 +28,7 @@
 
     <LinkLive
       to="/"
-      class="min-w-0 truncate py-2.5 text-center text-lg font-semibold tracking-[-0.01em] underline-offset-3 hover:underline sm:text-xl theme-light:font-semibold"
+      class="min-w-0 truncate py-2.5 text-center text-lg font-bold tracking-[-0.01em] underline-offset-3 hover:underline sm:text-xl theme-light:font-bold"
       opts={[id: "guest-board-home"]}
     >{instance_name()}</LinkLive>
 
@@ -53,7 +53,7 @@
       <li :for={{page, path, label} <- nav_items(@__context__)}>
         <LinkLive
           to={path}
-          class="inline-flex min-h-12 items-center whitespace-nowrap border-b-2 border-transparent text-sm text-muted hover:text-base-content aria-[current=page]:border-current aria-[current=page]:font-semibold aria-[current=page]:text-base-content"
+          class="inline-flex min-h-12 items-center whitespace-nowrap border-b-2 border-transparent text-sm text-muted hover:text-base-content aria-[current=page]:border-current aria-[current=page]:font-medium aria-[current=page]:text-base-content"
           opts={current_opts(@page, page)}
         >{label}</LinkLive>
       </li>

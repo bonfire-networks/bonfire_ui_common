@@ -23,7 +23,7 @@
           ]}
         />
       </div>
-      <span class={["truncate min-w-0 text-sm", active_label_class(active)]}>{localise_dynamic(
+      <span class={["nav-label", active_label_class(active)]}>{localise_dynamic(
           @text || @widget[:text] || @widget[:name],
           @widget[:extension] || @widget[:module] || __MODULE__
         )}</span>

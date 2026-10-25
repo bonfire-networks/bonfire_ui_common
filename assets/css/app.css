@@ -1211,7 +1211,15 @@ hex-input::part(input) {
 @utility nav-row {
   @apply !flex w-full min-w-0 items-center !gap-2.5 !min-h-8 !px-2 !py-1 rounded-selector leading-5;
   @media (pointer: coarse) {
-    @apply !min-h-10;
+    @apply !min-h-9;
+  }
+}
+
+/* Touch screens get a larger label; desktop sidebars stay compact at 14px. */
+@utility nav-label {
+  @apply truncate min-w-0 text-sm;
+  @media (pointer: coarse) {
+    @apply text-base;
   }
 }
 
@@ -2629,8 +2637,8 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   }
 }
 
-/* The rules widget shows the first 10 rules until its pill sets `data-expanded`. Hidden with CSS rather than by splitting the list so the numbering stays continuous; keep the 10 in sync with `WidgetRulesLive`. */
-[data-id="widget_rules"]:not([data-expanded]) li:nth-child(n + 11) {
+/* A collapsible rules list (`RulesDisplayBodyLive collapsible`) shows the first 10 rules until its pill sets `data-expanded`. Hidden with CSS rather than by splitting the list so the numbering stays continuous; keep the 10 in sync with `RulesDisplayBodyLive`. */
+[data-rules-collapsible]:not([data-expanded]) li:nth-child(n + 11) {
   display: none;
 }
 

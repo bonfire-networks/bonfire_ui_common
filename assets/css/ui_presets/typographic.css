@@ -60,7 +60,7 @@ html[data-ui-preset="typographic"] #nav_sidebar .nav-row[aria-current="page"] {
   background-color: transparent;
 }
 
-html[data-ui-preset="typographic"] #nav_sidebar .nav-row[aria-current="page"] > .truncate {
+html[data-ui-preset="typographic"] #nav_sidebar .nav-row[aria-current="page"] > .nav-label {
   color: var(--color-primary);
 }
 
@@ -179,7 +179,7 @@ html[data-ui-preset="typographic"] [data-id="group_widget"] li[data-role^="group
   display: none;
 }
 
-html[data-ui-preset="typographic"] [data-id="group_widget"] li[data-role^="group-widget-"]:not([data-role="group-widget-created"]) > span {
+html[data-ui-preset="typographic"] [data-id="group_widget"] li[data-role^="group-widget-"]:not([data-role="group-widget-created"], [data-role="group-widget-preset"]) > span {
   font-weight: var(--font-weight-bold);
 }
 
