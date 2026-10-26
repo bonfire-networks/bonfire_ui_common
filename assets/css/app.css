@@ -206,10 +206,7 @@ media-player {
       var(--color-base-content) 10%,
       transparent
     );
-    transform: scale(0.97);
-    transition:
-      transform 0.1s ease,
-      background-color 0.1s ease;
+    transition: background-color 0.1s ease;
   }
 }
 
@@ -390,7 +387,14 @@ label[for],
    Instant press feedback on touch devices (iOS HIG)
    ============================================ */
 @media (pointer: coarse) {
-  .btn:active:not(.btn-active):not(:disabled):not([aria-disabled="true"]) {
+  /* Wide controls excluded, as in the hover rule below: scaling them moves their edges sideways. Triggers that open something (dropdowns, disclosures) keep only the tint, since they don't perform an action. */
+  .btn:active:not(.btn-active):not(:disabled):not([aria-disabled="true"]):not(
+      .w-full,
+      .btn-block,
+      [aria-expanded],
+      [aria-haspopup],
+      .dropdown > *
+    ) {
     transition-duration: 0s;
     scale: 0.97;
   }
@@ -434,18 +438,24 @@ label[for],
       var(--color-base-content) 8%,
       transparent
     );
+  }
+
+  /* Scale only on opt-in compact targets: on rows and wrappers it shifts the edges and jitters text, like a list row being scrolled past. Triggers are excluded as in the .btn rule above. */
+  .tap-feedback:active:not(:disabled):not([aria-disabled="true"]):not(
+      [aria-expanded],
+      [aria-haspopup],
+      .dropdown > *
+    ) {
     scale: 0.98;
+    /* only the scale waits, so a swipe that starts on the element doesn't flinch it (as iOS delays highlights in scroll views); the tint stays instant, and release has no delay because the base rule has none */
+    transition-delay: 0s, 60ms, 0s, 0s, 0s, 0s;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .btn:hover,
   .btn:active,
-  .tap-feedback:active,
-  [role="button"]:active,
-  [role="tab"]:active,
-  summary:active,
-  [phx-click]:active {
+  .tap-feedback:active {
     scale: 1;
     transform: none;
   }
