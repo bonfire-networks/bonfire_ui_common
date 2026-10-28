@@ -95,8 +95,12 @@ defmodule Bonfire.Common.Settings.LiveHandler do
   defp maybe_push_ui_preset(socket, %{
          "_target" => ["ui", "theme", "ui_preset"],
          "ui" => %{"theme" => %{"ui_preset" => preset}}
-       }),
-       do: Bonfire.UI.Common.ThemeHelper.push_ui_preset(socket, preset)
+       }) do
+    socket
+    |> Bonfire.UI.Common.ThemeHelper.push_ui_preset(preset)
+    # a scope with no icon weight of its own follows the preset's pairing, so the icons change with it
+    |> Bonfire.UI.Common.ThemeHelper.push_current_icon_weight()
+  end
 
   defp maybe_push_ui_preset(socket, _attrs), do: socket
 

@@ -106,6 +106,92 @@ defmodule Bonfire.UI.Common.ThemeHelperTest do
     if ThemeHelper.default_ui_preset() == "stream", do: "typographic", else: "stream"
   end
 
+  describe "icon_weight/1 (the icon style setting)" do
+    test "pairs with the instance default preset when nothing chose a weight" do
+      Process.put([:bonfire, :ui, :theme, :ui_preset], "stream")
+      assert ThemeHelper.icon_weight(%{}) == "duotone"
+
+      Process.put([:bonfire, :ui, :theme, :ui_preset], "typographic")
+      assert ThemeHelper.icon_weight(%{}) == "fill"
+    end
+
+    test "follows a user's chosen preset when they chose no weight" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :ui_preset], "typographic",
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert ThemeHelper.icon_weight(%{current_user: user}) == "fill"
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :ui_preset], "stream",
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert ThemeHelper.icon_weight(%{current_user: user}) == "duotone"
+    end
+
+    test "a user's chosen weight wins over the preset pairing" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :ui_preset], "stream",
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :icon_weight], "light",
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert ThemeHelper.icon_weight(%{current_user: user}) == "light"
+    end
+
+    test "an unknown stored weight falls back to the preset pairing" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :ui_preset], "typographic",
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :icon_weight], "bogus",
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert ThemeHelper.icon_weight(%{current_user: user}) == "fill"
+    end
+  end
+
+  describe "default_icon_weight/2 (what the settings form preselects)" do
+    test "the instance scope pairs with the instance default preset" do
+      Process.put([:bonfire, :ui, :theme, :ui_preset], "typographic")
+
+      assert ThemeHelper.default_icon_weight(:instance, %{}) == "fill"
+    end
+
+    test "a user scope pairs with the user's effective preset" do
+      user = fake_user!()
+
+      assert {:ok, %{__context__: %{current_user: user}}} =
+               Settings.put([:ui, :theme, :ui_preset], "stream",
+                 current_user: user,
+                 scope: :user
+               )
+
+      assert ThemeHelper.default_icon_weight(:user, %{current_user: user}) == "duotone"
+    end
+  end
+
   describe "resolve_theme_config/3" do
     test ":light is fixed and resolves to the light theme name" do
       assert %{mode: :fixed, theme: "lite"} =

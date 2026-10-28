@@ -3,14 +3,14 @@
   data-page={@page}
   class="w-full font-(family-name:--font-inter) text-sm leading-relaxed text-base-content [--stream-canvas:var(--color-base-100)] theme-light:text-base-content"
 >
-  {!-- masthead contained to the sheet's 720px so the icon sits above its left edge and the actions end at its right, instead of at the far edges of a wide screen. No line under it: masthead and tabs read as one header, closed by the nav's border --}
+  {!-- no line under the masthead: with the tabs it reads as one header, closed by the nav's border --}
   <header class={"bg-base-100", "border-b border-divider": !@nav}>
     <div class="mx-auto flex min-h-14 w-full max-w-192 items-center justify-between gap-4 px-4 sm:min-h-16 sm:px-6">
       <div class="flex min-w-0 items-center gap-3">
         {#case Config.get([:ui, :theme, :instance_icon], nil)}
           {#match nil}
           {#match icon}
-            {!-- duplicate of the name link beside it, so it's hidden from assistive tech and the tab order --}
+            {!-- duplicates the name link, so hidden from assistive tech and the tab order --}
             <LinkLive
               to="/"
               class="inline-flex shrink-0 rounded-box"
@@ -33,7 +33,7 @@
         >{instance_name()}</LinkLive>
       </div>
 
-      {!-- desktop only: below `lg` the guest mobile dock carries the same actions (see `layout_live.sface`) --}
+      {!-- below `lg` the mobile dock has these actions --}
       <div :if={@actions} class="max-lg:hidden flex min-w-0 shrink-0 items-center justify-end gap-2">
         <Bonfire.UI.Common.GuestAuthActionsLive
           login_id="guest-board-signin"
@@ -52,7 +52,7 @@
     class="overflow-x-auto border-b border-divider bg-base-100 px-4 [scrollbar-width:none] sm:px-6"
     aria-label={l("Community")}
   >
-    {!-- tabs start at the sheet's edge, under the icon; `w-max` lets them scroll (instead of clipping the first one) when they don't fit --}
+    {!-- `w-max` lets the tabs scroll instead of clipping the first one --}
     <ul class="flex w-max gap-5 sm:ml-[max(0px,calc((100%-720px)/2))] sm:gap-7">
       <li :for={{page, path, label} <- nav_items(@__context__)}>
         <LinkLive
@@ -64,7 +64,7 @@
     </ul>
   </nav>
 
-  {!-- each page is one sheet on the tinted canvas (`board-sheet`): the banner flush across its top, then the page. About lays out its own sheet and passes `bare`. The side padding only goes once the sheet fits with a margin: at `md` for the 720px sheet, at `sm` for the 580px form sheet, which then also takes its border early (`board-sheet` only borders from `md`) --}
+  {!-- side padding only once the sheet fits with a margin: `md` for 720px, `sm` for the 580px form sheet, which also takes its border early --}
   <div class={
     "mx-auto flex w-full flex-col gap-4 px-3 pb-10 pt-4 sm:pb-12 sm:pt-6",
     "max-w-180 md:px-0": @size != :form,

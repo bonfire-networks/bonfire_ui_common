@@ -9,6 +9,6 @@ defmodule Bonfire.UI.Common.GuestAuthActionsLive do
   prop login_id, :string, default: nil
   prop signup_id, :string, default: nil
 
-  @doc "The page being shown (`:login` or `:signup`), whose own action is left out."
+  @doc "The page shown, whose own action is left out."
   prop current, :atom, default: nil
 end

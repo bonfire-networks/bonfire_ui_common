@@ -5,28 +5,27 @@ defmodule Bonfire.UI.Common.GuestBoardLive do
   """
   use Bonfire.UI.Common.Web, :stateless_component
 
-  @doc "Which page is being shown (`:home`, `:about`, `:people`, `:conduct`, or an auth page such as `:login`), for the current nav state and to leave out the masthead action for the page itself."
+  @doc "The page shown, for the nav state and to leave out its own masthead action."
   prop page, :atom, default: :home
 
-  @doc "Whether to show the community tabs. Off on the auth pages, which are a step on the way in rather than a page to browse from."
+  @doc "Whether to show the community tabs."
   prop nav, :boolean, default: true
 
-  @doc "Whether to show the masthead's log in / sign up actions. Off for pages a signed-in person reaches (change password, change email, verification)."
+  @doc "Whether to show the masthead's log in / sign up actions."
   prop actions, :boolean, default: true
 
-  @doc "Width of the sheet: `:page` (720px) for reading pages, `:form` (580px) for a one or two field form."
+  @doc "`:page` (720px) or `:form` (580px)."
   prop size, :atom, default: :page, values: [:page, :form]
 
-  @doc "Whether the page lays out its own sheet (as About does, since members get the same content without the board) instead of being wrapped in the default one, banner on top."
+  @doc "The page lays out its own sheet instead of the default one."
   prop bare, :boolean, default: false
 
   @doc "DOM id of the default sheet."
   prop sheet_id, :string, default: "guest-board-sheet"
 
-  @doc "Id of the heading that names the default sheet, when the page has one (eg. Home's `about-title`)."
+  @doc "Id of the heading that names the default sheet."
   prop labelledby, :string, default: nil
 
-  @doc "The page content, placed after the banner and before the footer."
   slot default, required: true
 
 
