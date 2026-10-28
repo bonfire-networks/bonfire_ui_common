@@ -72,6 +72,17 @@
   letter-spacing: var(--tracking-tight);
 }
 
+/* the heading of a page on the guest board (About, Code of conduct, People, the auth pages) */
+@utility type-page-title {
+  font-size: var(--text-2xl);
+  line-height: var(--tw-leading, var(--leading-tight));
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+  color: var(--color-base-content);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
 @utility type-title {
   font-size: var(--text-xl);
   line-height: var(--tw-leading, 1.1);
@@ -2242,6 +2253,19 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   background-color: var(--color-base-200);
 }
 
+/* A list shows only its first rows until the section's "Show all" checkbox is ticked: no JS, since guest pages can be served static. Rules lists (`RulesDisplayBodyLive collapsible`) mark the rows past their cut with `data-extra`; About's settings rows cut at five */
+[data-show-first]:not(:has(> input:checked)) [data-extra],
+[data-show-first]:not(:has(> input:checked)) [data-role="settings-rows"] > li:nth-child(n + 6),
+[data-show-first]:has(> input:checked) [data-role="show-all"] [data-when="closed"],
+[data-show-first]:not(:has(> input:checked)) [data-role="show-all"] [data-when="open"] {
+  display: none;
+}
+[data-show-first]:has(> input:focus-visible) [data-role="show-all"] {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 @utility board-card {
   background-color: var(--color-base-100);
   border-radius: var(--radius-box);
@@ -2251,6 +2275,19 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
     0 6px 16px -8px rgb(0 0 0 / 0.1);
   /* clip (not hidden) keeps sticky feed indicators working */
   overflow: clip;
+}
+
+/* A whole guest page as one sheet on the canvas (About, Home), edged with a calm border rather than board-card's shadow. Dark themes put base-100 and the canvas (base-200) less than 1% lightness apart, so the sheet is lifted a step the way widget cards are (see --surface-bg in interface.css). Below `md` the 720px sheet can't fit with a margin, so it runs edge to edge there without a border */
+@utility board-sheet {
+  background-color: light-dark(
+    var(--color-base-100),
+    color-mix(in oklab, var(--color-base-content) 5%, var(--color-base-100))
+  );
+  overflow: clip;
+  @variant md {
+    border-radius: var(--radius-box);
+    border: 1px solid color-mix(in oklab, var(--color-base-content) 10%, transparent);
+  }
 }
 
 [data-id="bonfire_live"]:has(#guest-board) > .drawer,
@@ -2675,10 +2712,6 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   }
 }
 
-/* A collapsible rules list (`RulesDisplayBodyLive collapsible`) shows the first 10 rules until its pill sets `data-expanded`. Hidden with CSS rather than by splitting the list so the numbering stays continuous; keep the 10 in sync with `RulesDisplayBodyLive`. */
-[data-rules-collapsible]:not([data-expanded]) li:nth-child(n + 11) {
-  display: none;
-}
 
 /* `CarouselLive expandable` (Spotlight, Top discussions): each card keeps its own height up to the cap, so one tall post (a poll, an image) can't stretch the widget; its tile (first child) clips the rest, and a show more/less pill sits on the tile's bottom edge once the `CarouselScroll` hook marks the card `data-clamped`. */
 .carousel-scroll[data-expandable] > [data-carousel-card] {

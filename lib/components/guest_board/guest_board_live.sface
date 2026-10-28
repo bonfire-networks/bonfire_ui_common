@@ -3,53 +3,57 @@
   data-page={@page}
   class="w-full font-(family-name:--font-inter) text-sm leading-relaxed text-base-content [--stream-canvas:var(--color-base-100)] theme-light:text-base-content"
 >
-  {!-- full-width masthead: icon left, instance name centred, actions right (the 1fr side columns keep the name optically centred whatever the actions' width). No line under it: masthead and tabs read as one header, closed by the nav's border --}
-  <header class="grid min-h-14 grid-cols-[1fr_auto_1fr] bg-base-100 items-center gap-4 px-4 sm:min-h-16 sm:px-6">
-    <div class="flex min-w-0 items-center">
-      {#case Config.get([:ui, :theme, :instance_icon], nil)}
-        {#match nil}
-        {#match icon}
-          {!-- duplicate of the name link below, so it's hidden from assistive tech and the tab order --}
-          <LinkLive
-            to="/"
-            class="inline-flex shrink-0 rounded-box"
-            opts={[id: "guest-board-icon", "aria-hidden": "true", tabindex: "-1"]}
-          >
-            <Bonfire.UI.Common.NextGenImageLive
-              src={icon}
-              alt=""
-              class="size-9 rounded-box object-contain sm:size-10"
-              loading="eager"
-              fetchpriority="high"
-            />
-          </LinkLive>
-      {/case}
-    </div>
+  {!-- masthead contained to the sheet's 720px so the icon sits above its left edge and the actions end at its right, instead of at the far edges of a wide screen. No line under it: masthead and tabs read as one header, closed by the nav's border --}
+  <header class={"bg-base-100", "border-b border-divider": !@nav}>
+    <div class="mx-auto flex min-h-14 w-full max-w-192 items-center justify-between gap-4 px-4 sm:min-h-16 sm:px-6">
+      <div class="flex min-w-0 items-center gap-3">
+        {#case Config.get([:ui, :theme, :instance_icon], nil)}
+          {#match nil}
+          {#match icon}
+            {!-- duplicate of the name link beside it, so it's hidden from assistive tech and the tab order --}
+            <LinkLive
+              to="/"
+              class="inline-flex shrink-0 rounded-box"
+              opts={[id: "guest-board-icon", "aria-hidden": "true", tabindex: "-1"]}
+            >
+              <Bonfire.UI.Common.NextGenImageLive
+                src={icon}
+                alt=""
+                class="size-9 rounded-box object-contain sm:size-10"
+                loading="eager"
+                fetchpriority="high"
+              />
+            </LinkLive>
+        {/case}
 
-    <LinkLive
-      to="/"
-      class="min-w-0 truncate py-2.5 text-center text-lg font-bold tracking-[-0.01em] underline-offset-3 hover:underline sm:text-xl theme-light:font-bold"
-      opts={[id: "guest-board-home"]}
-    >{instance_name()}</LinkLive>
+        <LinkLive
+          to="/"
+          class="min-w-0 truncate py-2.5 text-lg font-bold tracking-[-0.01em] underline-offset-3 hover:underline sm:text-xl theme-light:font-bold"
+          opts={[id: "guest-board-home"]}
+        >{instance_name()}</LinkLive>
+      </div>
 
-    {!-- desktop only: below `lg` the guest mobile dock carries the same actions (see `layout_live.sface`) --}
-    <div class="max-lg:hidden flex min-w-0 items-center justify-end gap-2">
-      <Bonfire.UI.Common.GuestAuthActionsLive
-        login_id="guest-board-signin"
-        signup_id="guest-board-signup"
-        login_class="btn btn-ghost shrink-0 px-4 whitespace-nowrap"
-        signup_class="btn btn-primary shrink-0 px-4 whitespace-nowrap"
-      />
+      {!-- desktop only: below `lg` the guest mobile dock carries the same actions (see `layout_live.sface`) --}
+      <div :if={@actions} class="max-lg:hidden flex min-w-0 shrink-0 items-center justify-end gap-2">
+        <Bonfire.UI.Common.GuestAuthActionsLive
+          login_id="guest-board-signin"
+          signup_id="guest-board-signup"
+          login_class="btn btn-ghost shrink-0 px-4 whitespace-nowrap"
+          signup_class="btn btn-primary shrink-0 px-4 whitespace-nowrap"
+          current={@page}
+        />
+      </div>
     </div>
   </header>
 
   <nav
+    :if={@nav}
     id="guest-board-nav"
     class="overflow-x-auto border-b border-divider bg-base-100 px-4 [scrollbar-width:none] sm:px-6"
     aria-label={l("Community")}
   >
-    {!-- `w-max mx-auto` centres the tabs when they fit and lets them scroll (instead of clipping the first one) when they don't --}
-    <ul class="mx-auto flex w-max gap-5 sm:gap-7">
+    {!-- tabs start at the sheet's edge, under the icon; `w-max` lets them scroll (instead of clipping the first one) when they don't fit --}
+    <ul class="flex w-max gap-5 sm:ml-[max(0px,calc((100%-720px)/2))] sm:gap-7">
       <li :for={{page, path, label} <- nav_items(@__context__)}>
         <LinkLive
           to={path}
@@ -60,45 +64,38 @@
     </ul>
   </nav>
 
-  {!-- the page as raised cards on the tinted canvas; the gap between cards is the separation, so no section draws its own top border --}
-  <div class="mx-auto flex w-full max-w-205 flex-col gap-4 px-3 pb-10 pt-4 sm:px-0 sm:pb-12 sm:pt-6">
-    {#if slot_assigned?(:hero)}
-      {!-- stacked, not split: the intro is instance-authored (any length, markdown), so it gets the full card width below a short banner --}
-      <section id="guest-board-hero" class="board-card">
-        {!-- flush with the card's edges: the card clips it to its own rounded corners. Same ratio as the other pages' banner below, so it's the same height everywhere on the board --}
-        <div
-          :if={banner_image()}
-          data-role="guest-board-banner"
-          class="aspect-[5/2] bg-fill bg-cover bg-center sm:aspect-[4/1]"
-          aria-hidden="true"
-          style={Bonfire.UI.Common.NextGenImageLive.background_image_set(banner_image())}
-        />
-        <#slot {@hero} />
-      </section>
-    {/if}
-
+  {!-- each page is one sheet on the tinted canvas (`board-sheet`): the banner flush across its top, then the page. About lays out its own sheet and passes `bare`. The side padding only goes once the sheet fits with a margin: at `md` for the 720px sheet, at `sm` for the 580px form sheet, which then also takes its border early (`board-sheet` only borders from `md`) --}
+  <div class={
+    "mx-auto flex w-full flex-col gap-4 px-3 pb-10 pt-4 sm:pb-12 sm:pt-6",
+    "max-w-180 md:px-0": @size != :form,
+    "max-w-145 sm:px-0": @size == :form
+  }>
     {#if @bare}
       <#slot />
     {#else}
-      <div class="board-card">
+      <article
+        id={@sheet_id}
+        aria-labelledby={@labelledby}
+        class={
+          "board-sheet w-full",
+          "max-md:-mx-3 max-md:w-auto": @size != :form,
+          "max-sm:-mx-3 max-sm:w-auto sm:rounded-box sm:border sm:border-base-content/10": @size == :form
+        }
+      >
         <div
-          :if={!slot_assigned?(:hero)}
+          :if={banner_image()}
           data-role="guest-board-banner"
-          class={
-            "aspect-[5/2] bg-cover bg-center sm:aspect-[4/1]",
-            "bg-fill": is_binary(banner_image()),
-            "bg-fill-strong": is_nil(banner_image())
-          }
+          class={"aspect-[3/1] bg-fill bg-cover bg-center", "sm:aspect-[4/1]": @size != :form}
           aria-hidden="true"
           style={Bonfire.UI.Common.NextGenImageLive.background_image_set(banner_image())}
         />
         <#slot />
-      </div>
+      </article>
     {/if}
   </div>
 
   <footer id="guest-board-footer" class="pb-6">
-    <ul class="mx-auto flex w-full max-w-205 flex-wrap gap-x-4 px-5 text-xs text-muted sm:px-6">
+    <ul class="mx-auto flex w-full max-w-192 flex-wrap gap-x-4 px-4 text-xs text-muted sm:px-6">
       <li :for={{path, label} <- footer_pages()}><LinkLive
           to={path}
           class="inline-flex min-h-11 items-center gap-1 underline-offset-3 hover:text-base-content hover:underline"

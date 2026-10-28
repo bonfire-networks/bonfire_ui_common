@@ -1,21 +1,34 @@
 defmodule Bonfire.UI.Common.GuestBoardLive do
   @moduledoc """
-  The public "board" shell for the guest Home, About, People directory and Code of conduct pages.
+  The public "board" shell for the pages people see outside the app: the guest Home, About, People directory, Code of conduct, Privacy and Impressum, and the auth pages (log in, sign up, password and email forms).
 
   """
   use Bonfire.UI.Common.Web, :stateless_component
 
-  @doc "Which page is being shown (`:home`, `:about`, `:people` or `:conduct`), for the current nav state."
+  @doc "Which page is being shown (`:home`, `:about`, `:people`, `:conduct`, or an auth page such as `:login`), for the current nav state and to leave out the masthead action for the page itself."
   prop page, :atom, default: :home
 
-  @doc "Whether the page lays out its own cards (as Home does, one per section) instead of being wrapped in a single card."
+  @doc "Whether to show the community tabs. Off on the auth pages, which are a step on the way in rather than a page to browse from."
+  prop nav, :boolean, default: true
+
+  @doc "Whether to show the masthead's log in / sign up actions. Off for pages a signed-in person reaches (change password, change email, verification)."
+  prop actions, :boolean, default: true
+
+  @doc "Width of the sheet: `:page` (720px) for reading pages, `:form` (580px) for a one or two field form."
+  prop size, :atom, default: :page, values: [:page, :form]
+
+  @doc "Whether the page lays out its own sheet (as About does, since members get the same content without the board) instead of being wrapped in the default one, banner on top."
   prop bare, :boolean, default: false
 
-  @doc "The page content, placed after the banner (or hero) and before the footer."
+  @doc "DOM id of the default sheet."
+  prop sheet_id, :string, default: "guest-board-sheet"
+
+  @doc "Id of the heading that names the default sheet, when the page has one (eg. Home's `about-title`)."
+  prop labelledby, :string, default: nil
+
+  @doc "The page content, placed after the banner and before the footer."
   slot default, required: true
 
-  @doc "An introduction shown below the banner in a hero card, instead of the plain banner strip."
-  slot hero
 
   @doc """
   The layout assigns a view sets to render inside the board: the board owns its chrome (header, nav, footer), so the app sidebars, widgets and page header are turned off. The mobile dock stays, since below `lg` it carries the guest log in / sign up actions. Pass whether the viewer is a guest, since only guests get the board.

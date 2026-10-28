@@ -21,16 +21,26 @@
     </div>
     <div class="navbar-end">
       <ul class="menu menu-horizontal items-center gap-4 px-1">
-        <li class="hidden lg:block">
-          <LinkLive
-            to={path(:login, :index)}
-            class={
-              "btn btn-sm btn-primary",
-              "btn-active": @selected_tab == :login
-            }
-          >{l("Login")}</LinkLive>
-        </li>
-        {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+        {#if current_account_id(@__context__)}
+          <li class="hidden lg:block">
+            <LinkLive
+              to={path(:switch_user) || "/switch-user/"}
+              class="btn btn-sm btn-primary"
+              opts={[id: "guest-header-choose-profile"]}
+            >{l("Choose a profile")}</LinkLive>
+          </li>
+        {#else}
+          <li class="hidden lg:block">
+            <LinkLive
+              to={path(:login, :index)}
+              class={
+                "btn btn-sm btn-primary",
+                "btn-active": @selected_tab == :login
+              }
+            >{l("Login")}</LinkLive>
+          </li>
+        {/if}
+        {#if !current_account_id(@__context__) and !Bonfire.Me.Accounts.instance_is_invite_only?()}
           <li class="hidden lg:block">
             <LinkLive to={path(:signup)} class="btn btn-soft btn-sm">{l("Signup")}</LinkLive>
           </li>

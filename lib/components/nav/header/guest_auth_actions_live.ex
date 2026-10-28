@@ -8,4 +8,7 @@ defmodule Bonfire.UI.Common.GuestAuthActionsLive do
   prop signup_class, :css_class, default: "btn btn-primary"
   prop login_id, :string, default: nil
   prop signup_id, :string, default: nil
+
+  @doc "The page being shown (`:login` or `:signup`), whose own action is left out."
+  prop current, :atom, default: nil
 end

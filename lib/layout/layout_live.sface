@@ -40,7 +40,7 @@
             <Bonfire.UI.Common.GuestHeaderLive
               selected_tab={@selected_tab}
               page={@page}
-              :if={is_nil(@current_account_id) and @no_header != true and @without_sidebar == true}
+              :if={is_nil(@current_user_id) and @no_header != true and @without_sidebar == true}
             />
             <div class="h-full mt-0">
               <div class="relative invisible_frame">
@@ -362,22 +362,12 @@
           link_opts={[id: "dock-instance-home"]}
         />
 
-        {#if !current_account(@__context__)}
-          <Bonfire.UI.Common.GuestAuthActionsLive
-            login_id="dock-login-action"
-            signup_id="dock-signup-action"
-            login_class="btn btn-soft shrink-0 px-4 whitespace-nowrap"
-            signup_class="btn btn-primary shrink-0 px-4 whitespace-nowrap"
-          />
-        {#else}
-          <LinkLive
-            id="dock-login-action"
-            to={path(:login, :index)}
-            class="btn btn-soft shrink-0 px-4 whitespace-nowrap"
-          >
-            <span>{l("Sign in")}</span>
-          </LinkLive>
-        {/if}
+        <Bonfire.UI.Common.GuestAuthActionsLive
+          login_id="dock-login-action"
+          signup_id="dock-signup-action"
+          login_class="btn btn-soft shrink-0 px-4 whitespace-nowrap"
+          signup_class="btn btn-primary shrink-0 px-4 whitespace-nowrap"
+        />
       </div>
     {/if}
   </div>
