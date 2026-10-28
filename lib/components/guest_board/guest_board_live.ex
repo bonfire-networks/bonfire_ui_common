@@ -28,7 +28,6 @@ defmodule Bonfire.UI.Common.GuestBoardLive do
 
   slot default, required: true
 
-
   @doc """
   The layout assigns a view sets to render inside the board: the board owns its chrome (header, nav, footer), so the app sidebars, widgets and page header are turned off. The mobile dock stays, since below `lg` it carries the guest log in / sign up actions. Pass whether the viewer is a guest, since only guests get the board.
 
