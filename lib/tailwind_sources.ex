@@ -12,37 +12,39 @@ defmodule Bonfire.UI.Common.TailwindSources do
   # CSS file lives 4 dirs deep from the app root — relative paths climb 4 levels.
   @ups "../../../../"
 
+  # `priv/templates/lib` holds templates a flavour copies into the app's gitignored `lib/` (e.g. ember's), which Tailwind would otherwise never see.
+  @ui_dirs ["/lib", "/priv/templates/lib"]
+
   @ui_globs [
-    "/lib/**/*.{leex,heex,sface}",
-    "/lib/**/*{_live,_view}.ex"
+    "/**/*.{leex,heex,sface}",
+    "/**/*{_live,_view}.ex"
   ]
 
   def generate do
-    packages =
+    sources =
       Bonfire.Mixer.deps_for(:bonfire)
-      |> Enum.filter(&has_ui_files?/1)
+      |> Enum.flat_map(fn dep ->
+        for dir <- @ui_dirs, has_ui_files?(dep, dir), do: {dep, dir}
+      end)
 
-    File.write!(output_path(), file_content(packages))
-    IO.puts("[TailwindSources] Wrote #{length(packages)} source(s) to #{output_path()}")
+    File.write!(output_path(), file_content(sources))
+    IO.puts("[TailwindSources] Wrote #{length(sources)} source(s) to #{output_path()}")
 
     Bonfire.UI.Common.CodeTheme.generate()
   end
 
-  defp has_ui_files?(dep) do
-    Enum.any?(@ui_globs, &(Bonfire.Mixer.dep_paths(dep, &1) != []))
+  defp has_ui_files?(dep, dir) do
+    Enum.any?(@ui_globs, &(Bonfire.Mixer.dep_paths(dep, dir <> &1) != []))
   end
 
-  defp source_lines(dep) do
-    rel = @ups <> Bonfire.Mixer.dep_path(dep)
+  defp source_lines({dep, dir}) do
+    rel = @ups <> Bonfire.Mixer.dep_path(dep) <> dir
 
-    [
-      ~s|@source "#{rel}/lib/**/*.{leex,heex,sface}";|,
-      ~s|@source "#{rel}/lib/**/*{_live,_view}.ex";|
-    ]
+    Enum.map(@ui_globs, &~s|@source "#{rel}#{&1}";|)
   end
 
-  defp file_content(packages) do
-    sources = Enum.flat_map(packages, &source_lines/1)
+  defp file_content(sources) do
+    sources = Enum.flat_map(sources, &source_lines/1)
 
     """
     /*
