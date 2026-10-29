@@ -304,6 +304,7 @@
                       options={group_audience_options(@context_group, @to_boundaries)}
                       event="Bonfire.UI.Common.SmartInput:select_group_audience"
                       option_attr="data-group-audience"
+                      icon_only={topic_context?(@context_group)}
                       event_target={@event_target}
                     />
                   {#else}

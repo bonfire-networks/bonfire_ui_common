@@ -29,4 +29,7 @@ defmodule Bonfire.UI.Common.PolicyDropdownLive do
 
   @doc "Tints the trigger, e.g. when the choice differs from the default."
   prop emphasis, :boolean, default: false
+
+  @doc "Shows only the icon in the trigger; the choice stays as screen-reader text and tooltip, e.g. when the header is crowded."
+  prop icon_only, :boolean, default: false
 end

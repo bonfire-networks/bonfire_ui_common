@@ -183,6 +183,10 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     end
   end
 
+  @doc "Whether the composer is scoped to a topic inside a group, not the group itself."
+  def topic_context?(%{id: id, group_id: group_id}) when is_binary(group_id), do: id != group_id
+  def topic_context?(_), do: false
+
   @doc "Reply visibility choices, from the audiences validated when the reply was opened."
   def reply_audience_options(smart_input_opts, to_boundaries) do
     for audience <- e(smart_input_opts, :reply_audiences, ["clone_context"]) do

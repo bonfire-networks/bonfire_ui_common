@@ -5,19 +5,21 @@
   close_on_select
   position="bottom-start"
   wrapper_class="min-w-0 max-w-full"
-  trigger_class={"flex h-8 min-w-0 max-w-full items-center gap-1.5 rounded-full border px-3 text-left text-sm font-medium focus-ring " <>
+  trigger_class={"flex h-8 min-w-0 max-w-full items-center gap-1.5 rounded-full border text-left text-sm font-medium focus-ring " <>
+    if(@icon_only, do: "px-2 ", else: "px-3 ") <>
     if(@emphasis,
       do: "border-primary/30 bg-primary/10 text-primary hover:bg-primary/15",
       else: "border-divider bg-base-100 hover:bg-base-200"
     )}
   panel_class="!w-72 max-w-[calc(100vw-2rem)] !p-2"
   label={@label}
+  trigger_opts={if @icon_only, do: [title: "#{@label}: #{@selected_label}"], else: []}
 >
   <:trigger>
     <span class="sr-only">{@label}</span>
     <span class="flex min-w-0 items-center gap-1.5" role="status" {...@status_opts}>
       <Iconify.iconify icon={@icon} class="size-4 shrink-0 opacity-70" />
-      <span class="min-w-0 truncate">{@selected_label}</span>
+      <span class={if @icon_only, do: "sr-only", else: "min-w-0 truncate"}>{@selected_label}</span>
     </span>
   </:trigger>
   <p :if={@description} class="px-2 py-2 text-sm text-muted">{@description}</p>
