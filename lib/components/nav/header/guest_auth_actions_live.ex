@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.GuestAuthActionsLive do
   @moduledoc """
-  The guest log in / sign up buttons, shared by the mobile dock, the widgets sidebar and the guest board header so they offer the same actions: "Log in" and "Sign up" when signups are open, a single "Sign in" on invite-only instances. Renders bare links, so the caller owns the wrapper and layout.
+  The guest log in / sign up buttons, shared by the mobile dock, the widgets sidebar and the guest board header so they offer the same actions: "Sign in" and "Sign up" when signups are open, a single "Sign in" on invite-only instances. Renders bare links, so the caller owns the wrapper and layout.
   """
   use Bonfire.UI.Common.Web, :stateless_component
 

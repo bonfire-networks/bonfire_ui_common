@@ -71,7 +71,7 @@ defmodule Bonfire.UI.Common.CacheControlPlugTest do
     assert conn.resp_body == "CACHED_SENTINEL"
   end
 
-  # an account signed in without a chosen profile is signed in for `GuestOnly` too, so serving it the guest page made "Log in" bounce straight back to that page
+  # an account signed in without a chosen profile is signed in for `GuestOnly` too, so serving it the guest page made "Sign in" bounce straight back to that page
   test "an account signed in without a profile is not served the guest cache", _ctx do
     static_dir = Application.app_dir(:bonfire, "priv/static/public")
     path = Path.join([static_dir, "gen_avatar", "account_only_test", "index.html"])

@@ -285,7 +285,7 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
   # Uses session (not assigns) because current_user may not be loaded yet in the
   # :cacheable pipeline. Falls through to the controller if no file exists.
   # An account signed in without a chosen profile counts as signed in, like `GuestOnly` does:
-  # otherwise it gets the guest page, and its "Log in" link bounces straight back to it.
+  # otherwise it gets the guest page, and its "Sign in" link bounces straight back to it.
   def maybe_make_request_path_static(conn, _) do
     if not Bonfire.UI.Common.session_logged_in?(conn) do
       serve_from_static(conn, conn.request_path)
