@@ -19,6 +19,7 @@
         <!-- <Bonfire.UI.Common.SmartInputHeaderModalLive smart_input_opts={@smart_input_opts} /> -->
         <header
           :if={@showing_within != :thread_embed}
+          id="composer_header"
           class="z-[51] flex shrink-0 flex-col w-full sticky top-0 lg:rounded-t-box bg-base-100 md:z-auto md:relative"
         >
           <div
@@ -35,6 +36,88 @@
             title={l("Drag to resize, or use Up and Down arrow keys")}
             class="composer-resize-handle focus-ring"
           ><span aria-hidden="true" /></div>
+          {!-- replaces the header while the phone keyboard is open (:root[data-composer-keyboard]); a tap brings the controls back. Not for messages --}
+          <div
+            :if={replying?(assigns) or e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
+            class="composer-summary items-center gap-1 pt-1 pr-2"
+          >
+            <button
+              id="composer_summary"
+              type="button"
+              aria-controls={if replying?(assigns), do: "reply_peek composer_header_actions", else: "composer_header_actions"}
+              aria-expanded="false"
+              phx-click={JS.toggle_attribute({"data-controls-open", ""}, to: "#composer_header")
+              |> JS.toggle_attribute({"aria-expanded", "true", "false"})}
+              class="flex min-h-8 min-w-0 flex-1 items-center gap-2 px-3 text-left text-sm focus-ring"
+            >
+              <Bonfire.UI.Common.AvatarLive
+                bg_class="rounded-full"
+                wrapper_class="border-0 avatar !flex size-6 shrink-0"
+                class="inline-block object-cover w-full rounded-full"
+                src={Media.avatar_url(current_user(@__context__)) || @__context__[:current_user_avatar_url]}
+                user_id={current_user_id(@__context__)}
+                parent_id="composer_summary"
+                is_remote={false}
+              />
+              <span :if={replying?(assigns)} class="min-w-0 flex-1 truncate text-muted">
+                {#case reply_to_author(assigns)}
+                  {#match %{name: who_name, handle: who_handle}}
+                    {l("Reply to")} <span class="font-medium text-base-content">{who_name || who_handle || l("this post")}</span>
+                {/case}
+                · {reply_audience_label(@to_boundaries)}
+              </span>
+              {!-- only the place truncates; the audience is an icon, as on the desktop chip --}
+              <span :if={!replying?(assigns)} class="flex min-w-0 flex-1 items-baseline gap-1 text-muted">
+                <span class="shrink-0 font-medium text-base-content">{LiveHandler.type_label(
+                    LiveHandler.active_smart_input_component(nil, e(@smart_input_opts, :create_object_type, nil)),
+                    e(@smart_input_opts, :create_object_type, nil)
+                  )}</span>
+                <span class="min-w-0 truncate">· <span
+                    :if={topic_context?(@context_group) and e(@context_group, :group_name, nil)}
+                    class="sr-only"
+                  >{@context_group.group_name} ›</span>{summary_destination_label(@context_group)}</span>
+                <span
+                  class="flex shrink-0 items-center self-center"
+                  title={summary_audience_label(
+                    @to_boundaries,
+                    @to_circles,
+                    @exclude_circles,
+                    @verb_permissions,
+                    @context_group
+                  )}
+                >
+                  <Iconify.iconify
+                    icon={summary_audience_icon(
+                      @to_boundaries,
+                      @to_circles,
+                      @exclude_circles,
+                      @verb_permissions,
+                      @context_group
+                    )}
+                    class="size-4 opacity-70"
+                  />
+                  <span class="sr-only">· {summary_audience_label(
+                      @to_boundaries,
+                      @to_circles,
+                      @exclude_circles,
+                      @verb_permissions,
+                      @context_group
+                    )}</span>
+                </span>
+              </span>
+              <#Icon iconify="ph:caret-down" class="composer-summary-caret size-3.5 shrink-0 text-muted" />
+            </button>
+            {!-- one tap to minimise while typing: the header's own minimise button is hidden with the controls --}
+            <button
+              id="minimize_composer_summary_button"
+              phx-click={LiveHandler.minimize()}
+              phx-target="#smart_input"
+              type="button"
+              aria-label={l("Minimise composer, keep draft")}
+              title={l("Minimise composer, keep draft")}
+              class="btn btn-sm btn-ghost btn-circle text-muted focus-ring"
+            ><#Icon iconify="ph:minus" class="size-4" /></button>
+          </div>
           <section
             :if={replying?(assigns)}
             id="reply_peek"

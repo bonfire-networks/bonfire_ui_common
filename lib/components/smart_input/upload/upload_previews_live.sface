@@ -53,11 +53,14 @@
           "group-[.expanded]/uploads:min-w-0"
         ]}>
           {!-- Filename (visible in both modes, styled differently) --}
-          <span class={[
-            "text-xs truncate max-w-16 text-muted mt-0.5",
-            "group-[.expanded]/uploads:text-xs group-[.expanded]/uploads:max-w-none",
-            "group-[.expanded]/uploads:text-muted group-[.expanded]/uploads:mt-0"
-          ]}>{entry.client_name}</span>
+          <span
+            data-role="upload_filename"
+            class={[
+              "text-xs truncate max-w-16 text-muted mt-0.5",
+              "group-[.expanded]/uploads:text-xs group-[.expanded]/uploads:max-w-none",
+              "group-[.expanded]/uploads:text-muted group-[.expanded]/uploads:mt-0"
+            ]}
+          >{entry.client_name}</span>
 
           {!-- Collapsed: compact error indicators --}
           {#for _err <- upload_errors(@uploads.files, entry)}
@@ -142,6 +145,7 @@
   {!-- Toggle button: Edit / Collapse --}
   <button
     type="button"
+    data-role="upload_toggle"
     class="btn btn-ghost btn-soft btn-sm absolute top-3 right-3 z-10"
     phx-click={JS.toggle_class("expanded",
       to: "#" <> deterministic_dom_id(__MODULE__, nil, "upload-preview", @parent_id)

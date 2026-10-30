@@ -384,5 +384,8 @@
 
 <div class="relative z-max">
   <Bonfire.UI.Common.NotificationLive id={:notification} root_flash={@flash} />
-  <StatelessComponent module={maybe_component(Bonfire.Notify.PWAInstallBannerLive, @__context__)} />
+  <StatefulComponent
+    module={maybe_component(Bonfire.Notify.AppBannerLive, @__context__)}
+    id="app_banner"
+  />
 </div>

@@ -2039,6 +2039,18 @@ div[data-id="object_body"]
   #reply_peek[data-expanded] .reply-peek-text { max-height: calc(1.5em * 5); }
 }
 
+/* Phone keyboard open (the SmartInputContainer hook sets the attribute): the editor gets the space.
+   Replies collapse to one summary line ("Reply to … · audience"), tapping it brings back the original
+   post and the controls; attachments shrink to 40px thumbnails. */
+.composer-summary { display: none; }
+:root[data-composer-keyboard] #composer_header .composer-summary { display: flex; }
+:root[data-composer-keyboard] #composer_header:has(.composer-summary):not([data-controls-open]) :is(#reply_peek, #composer_header_actions) { display: none; }
+#composer_header[data-controls-open] .composer-summary-caret { transform: rotate(180deg); }
+:root[data-composer-keyboard] .uploads_preview:not(.expanded) figure,
+:root[data-composer-keyboard] .uploads_preview:not(.expanded) figure :is(img, div) { width: 2.5rem; height: 2.5rem; }
+:root[data-composer-keyboard] .uploads_preview:not(.expanded) [data-role="upload_filename"] { display: none; }
+:root[data-composer-keyboard] .uploads_preview:not(.expanded) [data-role="upload_toggle"] { top: 50%; transform: translateY(-50%); }
+
 #smart_input_container.translate-y-100 {
   transform: translateY(105%) scale(0.98);
   opacity: 0;

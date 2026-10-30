@@ -10,7 +10,10 @@ defmodule Bonfire.UI.Common.GroupComposerAudienceTest do
       group_audience_label: 3,
       group_audience_icon: 3,
       custom_audience?: 2,
-      reply_audience_label: 1
+      reply_audience_label: 1,
+      summary_audience_label: 5,
+      summary_audience_icon: 5,
+      summary_destination_label: 1
     ]
 
   test "uses the current post visibility instead of inferring privacy from the group" do

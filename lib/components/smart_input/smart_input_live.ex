@@ -187,6 +187,95 @@ defmodule Bonfire.UI.Common.SmartInputLive do
   def topic_context?(%{id: id, group_id: group_id}) when is_binary(group_id), do: id != group_id
   def topic_context?(_), do: false
 
+  @doc """
+  Who can see the post, for the keyboard summary line; same source as the audience chip.
+
+      iex> summary_audience_label(["members:private"], [], [], %{}, %{name: "Cooks"})
+      "Group members only"
+
+      iex> summary_audience_label(["public"], ["circle-id"], [], %{}, nil)
+      "Specific circles"
+  """
+  def summary_audience_label(
+        to_boundaries,
+        to_circles,
+        exclude_circles,
+        verb_permissions,
+        context_group
+      ) do
+    cond do
+      group_context?(context_group) ->
+        group_audience_label(to_boundaries, exclude_circles, verb_permissions)
+
+      name = Bonfire.UI.Boundaries.SetBoundariesButtonLive.clone_context(to_boundaries) ->
+        name
+
+      custom_audience?(exclude_circles, verb_permissions) ->
+        group_audience_label(to_boundaries, exclude_circles, verb_permissions)
+
+      to_circles not in [nil, []] ->
+        l("Specific circles")
+
+      true ->
+        e(Bonfire.Boundaries.Presets.for_preset(List.last(List.wrap(to_boundaries))), :label, nil) ||
+          l("Custom audience")
+    end
+  end
+
+  @doc """
+  The icon for `summary_audience_label/5`.
+
+      iex> summary_audience_icon(["members:private"], [], [], %{}, %{name: "Cooks"})
+      "ph:lock-duotone"
+
+      iex> summary_audience_icon(["public"], ["circle-id"], [], %{}, nil)
+      "ph:circles-three"
+  """
+  def summary_audience_icon(
+        to_boundaries,
+        to_circles,
+        exclude_circles,
+        verb_permissions,
+        context_group
+      ) do
+    cond do
+      group_context?(context_group) or custom_audience?(exclude_circles, verb_permissions) ->
+        group_audience_icon(to_boundaries, exclude_circles, verb_permissions)
+
+      Bonfire.UI.Boundaries.SetBoundariesButtonLive.clone_context(to_boundaries) ->
+        "ph:shield-check-duotone"
+
+      to_circles not in [nil, []] ->
+        "ph:circles-three"
+
+      true ->
+        e(Bonfire.Boundaries.Presets.for_preset(List.last(List.wrap(to_boundaries))), :icon, nil) ||
+          "ph:gear-six-duotone"
+    end
+  end
+
+  @doc """
+  Where the post goes, for the summary line: the topic, the group, or your profile, as the destination chip.
+
+      iex> summary_destination_label(%{id: "t", group_id: "g", group_name: "Cooks", name: "Recipes"})
+      "Recipes"
+
+      iex> summary_destination_label(nil)
+      "Your profile"
+  """
+  def summary_destination_label(context_group) do
+    cond do
+      topic_context?(context_group) ->
+        context_group.name
+
+      group_context?(context_group) ->
+        e(context_group, :group_name, nil) || context_group.name
+
+      true ->
+        l("Your profile")
+    end
+  end
+
   @doc "Reply visibility choices, from the audiences validated when the reply was opened."
   def reply_audience_options(smart_input_opts, to_boundaries) do
     for audience <- e(smart_input_opts, :reply_audiences, ["clone_context"]) do
