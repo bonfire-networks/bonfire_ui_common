@@ -544,6 +544,11 @@ html:not([data-ui-preset="typographic"]) {
     box-shadow: none;
   }
 
+  /* on the guest sheet the tile and the sheet share a colour, so the tile keeps its edge */
+  #guest-board [data-id="instance_pinned_widget"] .spotlight_clamp {
+    box-shadow: inset 0 0 0 1px var(--divider-color);
+  }
+
   /* colour of the clipped-tile fade and the show more pill, see `.spotlight_clamp` and `CarouselLive expandable` in app.css */
   :is([data-id="instance_pinned_widget"], [data-id="dashboard_main"])
     [data-carousel-card] {

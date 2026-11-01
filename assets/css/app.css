@@ -2300,7 +2300,6 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   );
   overflow: clip;
   @variant md {
-    border-radius: var(--radius-box);
     border: 1px solid color-mix(in oklab, var(--color-base-content) 10%, transparent);
   }
 }

@@ -79,7 +79,7 @@
         class={
           "board-sheet w-full",
           "max-md:-mx-3 max-md:w-auto": @size != :form,
-          "max-sm:-mx-3 max-sm:w-auto sm:rounded-box sm:border sm:border-base-content/10": @size == :form
+          "max-sm:-mx-3 max-sm:w-auto sm:border sm:border-base-content/10": @size == :form
         }
       >
         <div
@@ -116,6 +116,17 @@
           {l("Powered by %{name}", name: Bonfire.UI.Common.ImpressumLive.powered_by_name())}
           <#Icon iconify="ph:arrow-up-right" class="size-3" aria-hidden="true" />
         </a>
+      </li>
+      <li class="inline-flex min-h-11 items-center gap-1 tabular-nums">
+        <LinkLive
+          to={Bonfire.Application.repository()}
+          class="underline-offset-3 hover:text-base-content hover:underline"
+        >{Bonfire.Application.version()}</LinkLive>
+        <span aria-hidden="true">·</span>
+        <LinkLive
+          to="https://app.transifex.com/bonfire/bonfire/"
+          class="underline-offset-3 hover:text-base-content hover:underline"
+        ><span data-role="locale">{Bonfire.Common.Localise.get_locale_id() |> to_string()}</span></LinkLive>
       </li>
     </ul>
   </footer>
