@@ -309,7 +309,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       if System.get_env("TIDEWAVE_ENABLED") not in ["false", "0", "no"] and
            Code.ensure_loaded?(Tidewave) do
         # FIXME: remote access should be disabled but it's not working locally without for now
-        plug Tidewave, allow_remote_access: true
+        # toolbar: false stops tidewave >= 0.8 from injecting its toolbar into every page
+        plug Tidewave, allow_remote_access: true, toolbar: false
       end
 
       @parser_opts [

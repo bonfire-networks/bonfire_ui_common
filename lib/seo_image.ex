@@ -204,7 +204,7 @@ defmodule Bonfire.UI.Common.SEOImage do
              Image.embed(resized_image, size, size,
                x: :center,
                y: :center,
-               background: {:black, alpha: :transparent}
+               background: {:black, opacity: :transparent}
              ),
            {:ok, _image} <- Image.write(square_image, temporary_path),
            :ok <- replace_file(temporary_path, output_path) do

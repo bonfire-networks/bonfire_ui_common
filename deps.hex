@@ -14,7 +14,7 @@ phoenix_view = "~> 2.0"
 phoenix_ecto = "~> 4.6"
 # other:
 remote_ip = "~> 1.1"
-plug_cowboy = "~> 2.6"
+# plug_cowboy = "~> 2.6" # Bandit is the default web server, the app's mix.exs adds Cowboy when PLUG_SERVER=cowboy
 cors_plug = "~> 3.0"
 faker_fork = "~> 0.19" # fake data generation, mostly for tests
 # phoenix_gon = "~> 0.4.0" # for JS config keys 
@@ -29,7 +29,7 @@ faker_fork = "~> 0.19" # fake data generation, mostly for tests
 # makeup_sql = "~> 0.1"
 # makeup_graphql = "~> 0.1"
 # makeup_erlang = "~> 1.0 or ~> 1.1"
-solid = "~> 0.13"
+solid = "~> 1.3"
 live_select = "~> 1.7.0"
 #plug_static_index_html = "~> 1.0" 
 chameleon= "~> 2.5"
