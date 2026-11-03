@@ -137,15 +137,60 @@ ScrollHooks.CarouselScroll = {
 			endDrag()
 			this._dotsObserver?.disconnect()
 			this._clampObserver?.disconnect()
+			this._expandObserver?.disconnect()
+			el.removeEventListener("bonfire:content:toggle", this._onContentToggle)
 		}
 
 		this.watchDots()
 		this.watchClamped()
+		this.watchExpanded()
 	},
-	// re-observed on every patch: the server renders the dots without a current one, so a patch clears what we marked, and the observer's first callback marks it again
+	// re-observed on every patch: the server renders the dots without a current one, so a patch clears what we marked, and the observer's first callback marks it again. A patch of the track also drops the shared card height from its inline style.
 	updated() {
 		this.watchDots()
 		this.watchClamped()
+		this.syncExpandedHeight()
+	},
+	// `CarouselLive expandable`: a card's Show more pill and the Read more of the post in it do the same thing, and an expanded card's height becomes the cap of every card.
+	watchExpanded() {
+		if (!this.el.hasAttribute("data-expandable")) return
+
+		// the post's Read more / Read less expands or collapses its card, as the pill does. Set via `this.js()`, like the pill's `JS.toggle_attribute`, so it survives patches.
+		this._onContentToggle = (e) => {
+			const card = e.target.closest("[data-carousel-card]")
+			if (!card || card.parentElement !== this.el) return
+			const expanded = e.detail.expanded
+			if (card.hasAttribute("data-expanded") === expanded) return
+			if (expanded) this.js().setAttribute(card, "data-expanded", "")
+			else this.js().removeAttribute(card, "data-expanded")
+			const pill = card.querySelector(":scope > [data-role=carousel_card_expand]")
+			if (pill) this.js().setAttribute(pill, "aria-expanded", String(expanded))
+		}
+		this.el.addEventListener("bonfire:content:toggle", this._onContentToggle)
+
+		// a card expanded or collapsed, by its pill or by its post: tell its post, which shows or clamps its text, and share the height. The observer also fires when an attribute is set to the value it had, so each card's last state is kept.
+		this._expandedCards = new WeakSet()
+		this._expandObserver = new MutationObserver((records) => {
+			for (const card of new Set(records.map((record) => record.target))) {
+				if (card.parentElement !== this.el) continue
+				const expanded = card.hasAttribute("data-expanded")
+				if (this._expandedCards.has(card) === expanded) continue
+				if (expanded) this._expandedCards.add(card)
+				else this._expandedCards.delete(card)
+				card.dispatchEvent(new CustomEvent("bonfire:carousel:card-toggle", { bubbles: true, detail: { expanded } }))
+			}
+			this.syncExpandedHeight()
+		})
+		this._expandObserver.observe(this.el, { subtree: true, attributeFilter: ["data-expanded"] })
+	},
+	// the tallest expanded card's height caps every card (expanded ones have no cap, so this can't feed back into itself); none expanded, the CSS default cap applies
+	syncExpandedHeight() {
+		if (!this.el.hasAttribute("data-expandable")) return
+		const heights = [...this.el.children]
+			.filter((card) => card.hasAttribute("data-expanded"))
+			.map((card) => card.offsetHeight)
+		if (heights.length) this.el.style.setProperty("--carousel-tile-max-h", `${Math.max(...heights)}px`)
+		else this.el.style.removeProperty("--carousel-tile-max-h")
 	},
 	// `CarouselLive expandable`: marks the cards whose tile (first child) is clipped, so CSS shows their toggle. Its content is observed too, as a clipped tile keeps its size while an image in it loads. Marked via `this.js()` so the mark survives patches inside the card, which don't call `updated()` here.
 	watchClamped() {
@@ -161,6 +206,8 @@ ScrollHooks.CarouselScroll = {
 				if (isClipped) this.js().setAttribute(card, "data-clamped", "")
 				else this.js().removeAttribute(card, "data-clamped")
 			}
+			// an expanded card grows as its images load, and the cap it sets grows with it
+			this.syncExpandedHeight()
 		})
 		this._observedTiles ??= new WeakSet()
 		for (const card of this.el.children) {

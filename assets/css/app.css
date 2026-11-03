@@ -2676,8 +2676,8 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   margin-top: 3px;
 }
 
-/* Spotlight (instance pinned) carousel: clamp post body to 5 lines */
-.spotlight_clamp .object_body {
+/* Spotlight and Top discussions carousels: clamp post body to 5 lines, until Read more (or the card's Show more) expands it */
+.spotlight_clamp .object_body:not(.previewable_expanded) {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: initial;
@@ -2686,7 +2686,7 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   -webkit-line-clamp: 5;
   line-clamp: 5;
 }
-.spotlight_clamp .object_body p {
+.spotlight_clamp .object_body:not(.previewable_expanded) p {
   display: contents;
 }
 
@@ -2727,7 +2727,7 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
 }
 
 
-/* `CarouselLive expandable` (Spotlight, Top discussions): each card keeps its own height up to the cap, so one tall post (a poll, an image) can't stretch the widget; its tile (first child) clips the rest, and a show more/less pill sits on the tile's bottom edge once the `CarouselScroll` hook marks the card `data-clamped`. */
+/* `CarouselLive expandable` (Spotlight, Top discussions): each card keeps its own height up to the cap, so one tall post (a poll, an image) can't stretch the widget; its tile (first child) clips the rest, and a show more/less pill sits on the tile's bottom edge once the `CarouselScroll` hook marks the card `data-clamped`. While a card is expanded, `CarouselScroll` sets `--carousel-tile-max-h` on the track to its height, so the other cards can grow as tall. */
 .carousel-scroll[data-expandable] > [data-carousel-card] {
   --expand-pill-h: 1.75rem;
   position: relative;
