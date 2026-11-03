@@ -360,6 +360,15 @@ label[for],
   user-select: none;
 }
 
+/* Tailwind v4 preflight resets buttons to the default cursor; only daisyUI `.btn` restores it.
+   In the base layer so cursor utilities (cursor-wait, cursor-default) still win. */
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
+
 /* Most Bonfire buttons are raw DaisyUI `.btn` elements rather than ButtonLive.
    Give them the same quick, native-feeling interaction polish by default. */
 .btn {

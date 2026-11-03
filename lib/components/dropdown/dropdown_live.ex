@@ -84,4 +84,17 @@ defmodule Bonfire.UI.Common.DropdownLive do
 
   @doc "The menu items (`<li>`s) or panel content."
   slot default, required: true
+
+  @doc """
+  `trigger_opts` that push `load` to the component with DOM id `target_id` the first time the dropdown `id` opens, for content that asks for its state only when shown (eg. a `lazy` bell). The trigger then drops its own `phx-click`, and LiveView keeps that removal across server patches.
+
+      <Dropdown id="my_menu" trigger_opts={Dropdown.load_on_first_open("my_menu", "my_bell")}>
+  """
+  def load_on_first_open(id, target_id) do
+    [
+      "phx-click":
+        JS.push("load", target: "##{target_id}")
+        |> JS.remove_attribute("phx-click", to: "##{id}_trigger")
+    ]
+  end
 end
