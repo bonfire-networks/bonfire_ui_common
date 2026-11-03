@@ -13,8 +13,9 @@
  *   data-sort-by        - initial sort order: "latest_reply", "reply_count", "boost_count", "like_count", "popularity_score", or "newest" (default: thread order)
  *   data-sort-order     - sort direction for the chosen sort: "asc" or "desc" (default: per sort type)
  *   data-mode           - initial thread display mode: "flat" or "nested" (default: instance/user setting)
- *   data-published-at   - article publication date (ISO 8601 or YYYY-MM-DD): backdates a newly-created thread so importing an old/backfilled article doesn't jump to the top of feeds. Ignored if in the future. A Ghost article is already backdated via API, so this is mainly for other sites.
+ *   data-published-at   - article publication date (YYYY-MM-DD, or a date-time with seconds and a timezone, e.g. 2026-11-02T14:30:00Z or +01:00): backdates a newly-created thread so importing an old/backfilled article doesn't jump to the top of feeds. Ignored if in the future. A Ghost article is already backdated via API, so this is mainly for other sites.
  *   data-theme          - DaisyUI theme name to apply inside the iframe (e.g. "dark", "light")
+ *   data-auth-mode      - "remote": logged-out readers reply from their own fediverse account instead of signing in here (the default on an invite-only, federating instance)
  *   data-token-max-age  - hours before the stored auth token is considered stale and the user is prompted to re-authenticate (default: 720 = 30 days). Invalid or non-positive values fall back to the default. The server enforces a hard maximum regardless of this value (1 year by default), and this value is clamped to it.
  *
  * Removed (data-creator / data-boundary / data-group-id / data-to-circles / data-require-topic): anyone can craft this iframe URL, so the embedding page no longer chooses a created thread's author, audience or destination. Those are instance settings now. Old snippets keep working; the server ignores them.

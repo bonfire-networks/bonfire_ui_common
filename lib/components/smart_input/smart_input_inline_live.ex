@@ -22,6 +22,9 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
   # "remote" => guests get a single button to the remote-interaction page
   # (reply from any fediverse server); otherwise local Login/Register
   prop auth_mode, :string, default: nil
+
+  # set in update/2: an embed guest on an invite-only, federating instance cannot sign up, so replying from their own fediverse account comes first
+  data remote_first, :boolean, default: false
   prop activity, :any, default: nil
   prop hide_smart_input, :boolean, default: false
   prop object, :any, default: nil
@@ -42,6 +45,14 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
        socket
        |> SmartInputContainerLive.maybe_setup_uploads()}
 
+  defp remote_first?(assigns) do
+    assigns[:showing_within] == :thread_embed and
+      is_nil(current_user(assigns[:__context__])) and
+      maybe_apply(Bonfire.Me.Accounts, :instance_is_invite_only?, [], fallback_return: false) ==
+        true and
+      maybe_apply(Bonfire.Federate.ActivityPub, :federating?, [], fallback_return: false) == true
+  end
+
   def update(assigns, socket) do
     dom_id =
       to_string(assigns[:id] || assigns[:reply_to_id] || assigns[:context_id] || "default")
@@ -50,6 +61,13 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
       socket
       |> assign(assigns)
       |> assign(:composer_dom_id, dom_id)
+
+    remote_first? = remote_first?(socket.assigns)
+
+    socket =
+      if remote_first?,
+        do: assign(socket, auth_mode: "remote", remote_first: true),
+        else: assign(socket, :remote_first, false)
 
     # Precompute once (canonical_url may run a Peered query); nil → the
     # template falls back to local Login/Register instead of a dead link.

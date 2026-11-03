@@ -118,6 +118,15 @@
           id={"inline_composer_remote_interaction_#{@composer_dom_id}"}
           class="btn btn-sm btn-outline border-primary normal-case text-primary"
         >{lc("verb: action", "Reply", [], :bonfire_social)}</a>
+        {#if @remote_first}
+          <a
+            href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
+              "/login?" <> URI.encode_query(go: @go_url)}
+            target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
+            id={"inline_composer_signin_#{@composer_dom_id}"}
+            class="link link-hover text-sm text-muted px-2"
+          >{l("Sign in")}</a>
+        {/if}
       {#else}
         <a
           href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
