@@ -327,32 +327,23 @@ defmodule Bonfire.UI.Common.WidgetGettingStartedTest do
     end
   end
 
-  describe "handle_event navigation" do
-    test "next wraps from last index to 0" do
-      socket = build_socket(nil, %{viewing_index: 2, total_count: 3})
-
-      assert {:noreply, socket} =
-               WidgetGettingStartedLive.handle_event("next", %{}, socket)
-
-      assert socket.assigns.viewing_index == 0
-    end
-
-    test "prev wraps from 0 to last index" do
+  describe "handle_event \"view\"" do
+    test "opens the row it is given" do
       socket = build_socket(nil, %{viewing_index: 0, total_count: 3})
 
       assert {:noreply, socket} =
-               WidgetGettingStartedLive.handle_event("prev", %{}, socket)
+               WidgetGettingStartedLive.handle_event("view", %{"index" => "2"}, socket)
 
       assert socket.assigns.viewing_index == 2
     end
 
-    test "next is a no-op when total_count is 0" do
-      socket = build_socket(nil, %{viewing_index: 0, total_count: 0})
+    test "ignores an index outside the list" do
+      socket = build_socket(nil, %{viewing_index: 1, total_count: 3})
 
       assert {:noreply, socket} =
-               WidgetGettingStartedLive.handle_event("next", %{}, socket)
+               WidgetGettingStartedLive.handle_event("view", %{"index" => 3}, socket)
 
-      assert socket.assigns.viewing_index == 0
+      assert socket.assigns.viewing_index == 1
     end
   end
 

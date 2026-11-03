@@ -2,144 +2,167 @@
   id={@id}
   data-id="widget_getting_started"
   data-state={Bonfire.UI.Common.WidgetGettingStartedLive.render_state(assigns) |> Atom.to_string()}
-  :hook
 >
   {#case Bonfire.UI.Common.WidgetGettingStartedLive.render_state(assigns)}
     {#match :hidden}
-      {!-- empty: hook hides the parent <li> via dataset.state --}
+      {!-- empty: data-state="hidden" hides the parent <li> (widget_live.sface) --}
     {#match state}
       <Bonfire.UI.Common.WidgetBlockLive
         widget_title={l("Getting started")}
         widget_subtitle={if state == :step,
-          do: l("Step %{n} of %{total}", n: @viewing_index + 1, total: @total_count)}
+          do: l("%{done} of %{total} done", done: @done_count, total: @total_count)}
         subtitle_class="text-xs tabular-nums text-muted"
       >
         <:action>
-          <div class="flex items-center gap-1">
-            <.icon_button
-              :if={state == :step}
-              icon="carbon:chevron-left"
-              aria_label={l("Previous step")}
-              size="sm"
-              data-id="widget_getting_started_prev"
-              phx_click={JS.push("prev", target: @myself)}
-              disabled={@total_count <= 1}
-            />
-            <.icon_button
-              :if={state == :step}
-              icon="carbon:chevron-right"
-              aria_label={l("Next step")}
-              size="sm"
-              data-id="widget_getting_started_next"
-              phx_click={JS.push("next", target: @myself)}
-              disabled={@total_count <= 1}
-            />
-            <.icon_button
-              icon="ph:x"
-              aria_label={l("Hide getting started")}
-              size="sm"
-              data-id="widget_getting_started_dismiss"
-              phx_click={JS.push("dismiss", target: @myself)}
-            />
-          </div>
+          <.icon_button
+            icon="ph:x"
+            aria_label={l("Hide getting started")}
+            size="sm"
+            data-id="widget_getting_started_dismiss"
+            phx_click={JS.push("dismiss", target: @myself)}
+          />
         </:action>
 
         {#case state == :step && Bonfire.UI.Common.WidgetGettingStartedLive.viewing_step(assigns)}
           {#match false}
             <div role="status" aria-live="polite">
-              <div class="flex gap-1.5 pb-4">
-                {#for _step <- @steps}
-                  <span class="h-1 flex-1 rounded-sm bg-primary" />
-                {/for}
-              </div>
+              <div class="h-1 mb-4 rounded-full bg-primary" />
 
               <p class="text-base font-medium text-base-content">{l("You're all set. Welcome to Bonfire.")}</p>
               <p class="text-base text-muted pt-1">{l("Click the X above to tuck this away.")}</p>
             </div>
           {#match nil}
             {!-- defensive — handled by render_state but keeps Surface happy --}
-          {#match step}
+          {#match _viewing}
             <div
-              class="flex mb-card"
+              class="h-1 mb-3 rounded-full bg-base-content/10 overflow-hidden"
               role="progressbar"
+              aria-label={l("Steps done")}
               aria-valuemin="0"
               aria-valuemax={@total_count}
               aria-valuenow={@done_count}
             >
-              {#for {pip_step, idx} <- Enum.with_index(@steps)}
-                <span class={[
-                  "h-1.75 flex-1 rounded-sm transition-colors duration-300",
-                  "bg-primary": pip_step.done?,
-                  "bg-primary/40": idx == @viewing_index and not pip_step.done?,
-                  "border border-divider": idx != @viewing_index and not pip_step.done?
-                ]} />
-              {/for}
-            </div>
-
-            <div class="flex items-start gap-2">
-              <h3 class="flex-1 type-heading text-base-content leading-snug">{step.title}</h3>
-              <#Icon
-                :if={step.done?}
-                iconify="ph:check-circle-fill"
-                class="size-5 text-primary shrink-0 mt-0.5"
-                aria-label={l("Done")}
+              <div
+                class="h-full rounded-full bg-primary transition-[width] duration-300"
+                style={"width: #{round(@done_count / max(@total_count, 1) * 100)}%"}
               />
             </div>
-            <p class="text-base text-muted pt-1 leading-snug">{step.rationale}</p>
 
-            <div class="pt-4 flex flex-col gap-2">
-              {#case step[:cta_kind] || :link}
-                {#match :stateful_component}
-                  {!-- a step whose action is not somewhere to go but something to do here, like asking this browser for notification permission: the component that owns that flow renders in place of a button, and renders nothing itself where the thing is already done or cannot be offered --}
-                  <StatefulComponent
-                    module={maybe_component(step[:cta_component], @__context__)}
-                    id={"widget_getting_started_#{step.key}"}
-                    variant={step[:cta_variant] || :compact}
-                  />
-                {#match :stateless_component}
-                  {!-- a step whose action is to read something we can simply show, like the rules, which are a widget rather than a page --}
-                  <StatelessComponent module={maybe_component(step[:cta_component], @__context__)} />
-                {#match :composer}
-                  <button
-                    type="button"
-                    data-id="widget_getting_started_cta"
-                    phx-target="#smart_input"
-                    phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open(%JS{})}
-                    class={["btn-ds-outline w-full", "opacity-60": step.done?]}
-                  >
-                    {if step.done?, do: l("Open again"), else: step.cta_label}
-                  </button>
-                {#match :button}
-                  <button
-                    type="button"
-                    data-id="widget_getting_started_cta"
-                    phx-target={step[:cta_target]}
-                    phx-click={step[:cta_event]}
-                    class={["btn-ds-outline w-full", "opacity-60": step.done?]}
-                  >
-                    {if step.done?, do: l("Open again"), else: step.cta_label}
-                  </button>
-                {#match _}
-                  <LinkLive
-                    to={step.cta_path}
-                    data-id="widget_getting_started_cta"
-                    class={["btn-ds-outline w-full", "opacity-60": step.done?]}
-                  >
-                    {if step.done?, do: l("Open again"), else: step.cta_label}
-                  </LinkLive>
-              {/case}
+            <ul class="flex flex-col">
+              {#for {step, idx} <- Enum.with_index(@steps)}
+                <li data-id="widget_getting_started_step" data-key={step.key}>
+                  <div class="-mx-2 flex items-center gap-2.5 rounded-lg px-2 transition-colors hover:bg-base-content/5">
+                    {#if step.done?}
+                      <span
+                        class="size-[18px] shrink-0 grid place-items-center rounded-full bg-primary"
+                        role="img"
+                        aria-label={l("Done")}
+                      >
+                        <#Icon iconify="ph:check-bold" class="size-3 text-primary-content" />
+                      </span>
+                    {#else}
+                      {!-- ticking the circle is how a step is marked done by hand, as in any checklist --}
+                      <button
+                        type="button"
+                        data-id="widget_getting_started_mark_done"
+                        aria-label={l("Mark \"%{title}\" done", title: step.title)}
+                        phx-click={JS.push("mark_done", value: %{key: to_string(step.key)}, target: @myself)}
+                        class={[
+                          "group/tick size-[18px] shrink-0 grid place-items-center rounded-full border-[1.5px] transition-colors hover:border-primary hover:bg-primary",
+                          if(idx == @viewing_index, do: "border-primary", else: "border-base-content/25")
+                        ]}
+                      >
+                        <#Icon
+                          iconify="ph:check-bold"
+                          class="size-3 text-primary-content opacity-0 transition-opacity group-hover/tick:opacity-100"
+                        />
+                      </button>
+                    {/if}
+                    <button
+                      type="button"
+                      data-id="widget_getting_started_step_toggle"
+                      aria-expanded={to_string(idx == @viewing_index)}
+                      aria-controls={"#{@id}_step_#{step.key}"}
+                      phx-click={JS.push("view", value: %{index: idx}, target: @myself)}
+                      class={[
+                        "flex-1 min-w-0 py-1.5 text-left text-sm leading-snug cursor-pointer",
+                        cond do
+                          idx == @viewing_index -> "font-semibold text-base-content"
+                          step.done? -> "text-muted"
+                          true -> "text-base-content"
+                        end
+                      ]}
+                    >
+                      {step.title}
+                    </button>
+                  </div>
 
-              <div :if={not step.done?} class="flex items-center justify-end text-xs text-muted pt-1">
-                <button
-                  type="button"
-                  data-id="widget_getting_started_mark_done"
-                  phx-click={JS.push("mark_done", value: %{key: to_string(step.key)}, target: @myself)}
-                  class="hover:text-base-content transition-colors"
-                >
-                  {l("Mark done")}
-                </button>
-              </div>
-            </div>
+                  {!-- every row's body is rendered and only its height animates, so opening one slides rather than jumps; a closed one is inert so its button can't be tabbed to --}
+                  <div
+                    id={"#{@id}_step_#{step.key}"}
+                    inert={idx != @viewing_index}
+                    class={[
+                      "grid transition-[grid-template-rows,opacity] duration-200 ease-out",
+                      "grid-rows-[1fr] opacity-100": idx == @viewing_index,
+                      "grid-rows-[0fr] opacity-0": idx != @viewing_index
+                    ]}
+                  >
+                    <div class="overflow-hidden min-h-0">
+                      <div class="pl-7 pt-0.5 pb-3">
+                        <p class="text-sm text-muted leading-snug">{step.rationale}</p>
+
+                        {!-- a done step has nothing left to do, so only the components that show something (the rules) or own their own done state (notifications) stay --}
+                        <div
+                          :if={not step.done? or step[:cta_kind] in [:stateful_component, :stateless_component]}
+                          class="pt-2.5 flex"
+                        >
+                          {#case step[:cta_kind] || :link}
+                            {#match :stateful_component}
+                              {!-- a step whose action is not somewhere to go but something to do here, like asking this browser for notification permission: the component that owns that flow renders in place of a button, and renders nothing itself where the thing is already done or cannot be offered --}
+                              <StatefulComponent
+                                module={maybe_component(step[:cta_component], @__context__)}
+                                id={"widget_getting_started_#{step.key}"}
+                                variant={step[:cta_variant] || :compact}
+                              />
+                            {#match :stateless_component}
+                              {!-- a step whose action is to read something we can simply show, like the rules, which are a widget rather than a page --}
+                              <StatelessComponent module={maybe_component(step[:cta_component], @__context__)} />
+                            {#match :composer}
+                              <button
+                                type="button"
+                                data-id="widget_getting_started_cta"
+                                phx-target="#smart_input"
+                                phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open(%JS{})}
+                                class="btn btn-primary btn-sm"
+                              >
+                                {step.cta_label}
+                              </button>
+                            {#match :button}
+                              <button
+                                type="button"
+                                data-id="widget_getting_started_cta"
+                                phx-target={step[:cta_target]}
+                                phx-click={step[:cta_event]}
+                                class="btn btn-primary btn-sm"
+                              >
+                                {step.cta_label}
+                              </button>
+                            {#match _}
+                              <LinkLive
+                                to={step.cta_path}
+                                data-id="widget_getting_started_cta"
+                                class="btn btn-primary btn-sm"
+                              >
+                                {step.cta_label}
+                              </LinkLive>
+                          {/case}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              {/for}
+            </ul>
         {/case}
       </Bonfire.UI.Common.WidgetBlockLive>
   {/case}

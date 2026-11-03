@@ -53,10 +53,12 @@
     <!-- </li> -->
   </div>
 {#else}
+  {!-- an li with nothing in it hides, and so does one whose widget marks its root data-state="hidden" (getting started, once finished). CSS rather than display:none set from a hook, which a LiveView patch of this li can wipe, leaving an empty li that still takes a gap --}
   <li
     :if={@widget[:type] not in [nil, :disabled]}
     class={[
       "[&:not(:has(>*))]:hidden",
+      "[&:has(>[data-state=hidden])]:hidden",
       @widget[:wrapper_class] || @wrapper_class,
       group:
         not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])

@@ -144,16 +144,17 @@ defmodule Bonfire.UI.Common.WidgetGettingStartedLive do
     {:noreply, assign(socket, dismissed?: true, celebrating?: false)}
   end
 
-  def handle_event("prev", _params, socket) do
+  # one row of the checklist is open at a time
+  def handle_event("view", %{"index" => index}, socket) do
     total = socket.assigns.total_count
-    next_index = rem(socket.assigns.viewing_index - 1 + total, max(total, 1))
-    {:noreply, assign(socket, viewing_index: next_index)}
-  end
 
-  def handle_event("next", _params, socket) do
-    total = socket.assigns.total_count
-    next_index = rem(socket.assigns.viewing_index + 1, max(total, 1))
-    {:noreply, assign(socket, viewing_index: next_index)}
+    case Types.maybe_to_integer(index, nil) do
+      index when is_integer(index) and index >= 0 and index < total ->
+        {:noreply, assign(socket, viewing_index: index)}
+
+      _ ->
+        {:noreply, socket}
+    end
   end
 
   @doc false
