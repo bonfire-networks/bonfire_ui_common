@@ -1279,9 +1279,9 @@ hex-input::part(input) {
 }
 
 @utility sidebar-child-link {
-  @apply !flex w-full min-w-0 items-center !min-h-8 !h-8 !px-3 !py-0 rounded-selector text-base leading-6 hover:bg-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary;
+  @apply !flex w-full min-w-0 items-center !min-h-8 !h-8 !px-3 !py-0 rounded-selector text-sm leading-6 hover:bg-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary;
   @media (pointer: coarse) {
-    @apply !min-h-9 !h-9;
+    @apply !min-h-9 !h-9 text-base;
   }
 }
 
