@@ -42,7 +42,7 @@
                     value={@smart_input_opts[:title]}
                     name="post[post_content][name]"
                     class="min-w-0 flex-1 border-0 bg-transparent p-0 text-sm font-medium leading-7 text-base-content placeholder:font-normal placeholder:text-muted focus:outline-none focus-visible:outline-none"
-                    placeholder={l("Optional")}
+                    placeholder={@title_placeholder}
                   />
                 </div>
               </div>

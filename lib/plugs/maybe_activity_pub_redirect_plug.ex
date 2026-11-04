@@ -46,6 +46,24 @@ defmodule Bonfire.UI.Common.Plugs.MaybeActivityRedirectPlug do
     conn
   end
 
+  # the instance root names no actor or object, and a server fetching it as ActivityPub (as Lemmy does after fetching one of our actors, to read the site's actor) is after the instance's own actor: the service actor, the one nodeinfo names
+  def maybe_redirect(%{path_info: []} = conn) do
+    case Bonfire.Common.Utils.maybe_apply(
+           Bonfire.Federate.ActivityPub.NodeinfoAdapter,
+           :application_actor_uri,
+           [],
+           fallback_return: nil
+         ) do
+      url when is_binary(url) ->
+        conn
+        |> Phoenix.Controller.redirect(external: url)
+        |> halt()
+
+      _ ->
+        as_html_if_live_view(conn)
+    end
+  end
+
   def maybe_redirect(%{params: params} = conn) when not is_nil(params) do
     request_url = request_url(conn)
 
@@ -56,13 +74,19 @@ defmodule Bonfire.UI.Common.Plugs.MaybeActivityRedirectPlug do
         |> halt()
 
       _ ->
-        conn
+        as_html_if_live_view(conn)
     end
   end
 
   def maybe_redirect(conn) do
-    conn
+    as_html_if_live_view(conn)
   end
+
+  # a LiveView page renders only as HTML, so when there is no actor or object to send the request to, it gets the page as HTML, as Mastodon does, rather than a 500 for a body that can't be sent in the format asked for
+  defp as_html_if_live_view(%{private: %{phoenix_live_view: _}} = conn),
+    do: Phoenix.Controller.put_format(conn, "html")
+
+  defp as_html_if_live_view(conn), do: conn
 
   # the object the page is about, loaded, since its ActivityPub id can't always be told from the URL: a group's, or any actor's made under the ULID scheme, is `/pub/<type>/<ULID>`, and a mirrored one's is its id on its own server. `nil` when the route names nothing we have, and the URL's params are used as before. No boundary check: this only says where its actor or object lives, which that endpoint guards
   defp page_object(params) do

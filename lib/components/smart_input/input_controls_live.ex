@@ -62,6 +62,8 @@ defmodule Bonfire.UI.Common.InputControlsLive do
     in_group? = Bonfire.UI.Common.SmartInputLive.group_context?(assigns[:context_group])
 
     assigns
+    # in a group the title is recommended rather than optional: without one, threadiverse servers (Mbin, Lemmy) list the post as a short post rather than a thread, and a title added later won't change that there
+    |> assign(:title_placeholder, if(in_group?, do: l("Recommended"), else: l("Optional")))
     |> assign(
       :title_visible,
       not_a_reply? and
