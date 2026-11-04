@@ -335,13 +335,28 @@ window.addEventListener("phx:smart_input:reset", () => {
 window.addEventListener("phx:smart_input:reset_sensitive", () => {
   setCwTextarea("");
 
-  // Also clear title and scheduled_at input values
+  // Also clear title and scheduled_at input values (scheduled_at has a visible and a hidden input)
   ["#smart_input_post_title input", "#smart_input_scheduled_at input"].forEach(
     (sel) => {
-      const el = document.querySelector(sel);
-      if (el) el.value = "";
+      document.querySelectorAll(sel).forEach((el) => (el.value = ""));
     },
   );
+});
+
+// A datetime-local value has no offset, so submit it as UTC: `new Date(value)` reads it as local time on that date, so the offset in effect then (DST included) is applied
+document.addEventListener("change", (event) => {
+  const local = event.target.closest?.(
+    "#smart_input_scheduled_at [data-role=scheduled_at_local]",
+  );
+  if (!local) return;
+
+  const hidden = local
+    .closest("#smart_input_scheduled_at")
+    .querySelector("input[name=scheduled_at]");
+  if (!hidden) return;
+
+  const date = local.value ? new Date(local.value) : null;
+  hidden.value = date && !isNaN(date) ? date.toISOString() : "";
 });
 
 // Focus the summary/CW field once the server has revealed it

@@ -108,12 +108,17 @@
             >
               <label class="input w-full">
                 <span class="text-xs uppercase text-muted">{l("Schedule")}</span>
+                {!-- No name: a datetime-local value has no offset, so JS submits it as UTC through the hidden field below (see bonfire_live.js) --}
                 <input
                   type="datetime-local"
-                  name="scheduled_at"
+                  data-role="scheduled_at_local"
                   class="grow block w-full"
-                  value={e(@smart_input_opts, :scheduled_at, nil)}
                   placeholder={l("Schedule for date")}
+                />
+                <input
+                  type="hidden"
+                  name="scheduled_at"
+                  value={e(@smart_input_opts, :scheduled_at, nil)}
                 />
                 <!-- <span class="badge badge-neutral badge-xs">Optional</span> -->
               </label>
@@ -248,7 +253,7 @@
                       type="button"
                       id="scheduled_at_btn"
                       phx-click={JS.toggle(to: "#smart_input_scheduled_at")
-                      |> JS.focus(to: "#smart_input_scheduled_at input[type='date']")}
+                      |> JS.focus(to: "#smart_input_scheduled_at [data-role=scheduled_at_local]")}
                       class="title-button"
                     >
                       <#Icon iconify="ph:calendar-fill" class="size-5 text-muted" />

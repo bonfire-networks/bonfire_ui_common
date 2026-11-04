@@ -49,7 +49,7 @@ defmodule Bonfire.UI.Common.Plugs.MaybeActivityRedirectPlug do
   def maybe_redirect(%{params: params} = conn) when not is_nil(params) do
     request_url = request_url(conn)
 
-    case Bonfire.Common.URIs.canonical_url(params) do
+    case Bonfire.Common.URIs.canonical_url(page_object(params) || params         ) do
       url when is_binary(url) and url != request_url ->
         conn
         |> Phoenix.Controller.redirect(external: url)
@@ -62,5 +62,40 @@ defmodule Bonfire.UI.Common.Plugs.MaybeActivityRedirectPlug do
 
   def maybe_redirect(conn) do
     conn
+  end
+
+  # the object the page is about, loaded, since its ActivityPub id can't always be told from the URL: a group's, or any actor's made under the ULID scheme, is `/pub/<type>/<ULID>`, and a mirrored one's is its id on its own server. `nil` when the route names nothing we have, and the URL's params are used as before. No boundary check: this only says where its actor or object lives, which that endpoint guards
+  defp page_object(params) do
+    case params["id"] || params["username"] do
+      id_or_username when is_binary(id_or_username) ->
+        if Bonfire.Common.Types.is_uid?(id_or_username),
+          do: loaded(id_or_username),
+          else: by_username(id_or_username)
+
+      _ ->
+        nil
+    end
+  end
+
+  defp by_username(username) do
+    case Bonfire.Common.Utils.maybe_apply(Bonfire.Me.Characters, :by_username, [username],
+           fallback_return: nil
+         ) do
+      {:ok, %{id: id}} -> loaded(id)
+      _ -> nil
+    end
+  end
+
+  # with what its canonical URL is read from: where it came from (an actor's on its character, anything else's on itself), and for a user whether it is a shared account, which makes it an organisation rather than a person (`prune:`, as each object has only some of these)
+  defp loaded(id) do
+    case Bonfire.Common.Needles.get(id, skip_boundary_check: true) do
+      {:ok, object} ->
+        Bonfire.Common.Repo.maybe_preload(object, [:peered, :shared_user, character: [:peered]],
+          prune: true
+        )
+
+      _ ->
+        nil
+    end
   end
 end

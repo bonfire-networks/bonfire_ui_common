@@ -1884,14 +1884,15 @@ article[data-id="article_media"][data-media="4"] {
   @apply !row-span-2 !col-span-2 !h-auto;
 }
 
-.previewable_activity .previewable_truncate {
+/* Long content clamped to 6 lines until Read more: a post's body, a bio, a group's description (`Bonfire.UI.Common.TruncatableLive`, whose hook swaps these classes), and a poll's question. Keyed on the class alone, so it works outside a post too. */
+.previewable_truncate {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 6;
 }
 
-.previewable_activity .previewable_truncate.previewable_expanded {
+.previewable_truncate.previewable_expanded {
   overflow: visible;
   display: block;
   -webkit-box-orient: horizontal;
@@ -1910,6 +1911,11 @@ div[data-id="object_body"] {
 
 div[data-id="object_body"] iframe {
   width: 100% !important;
+}
+
+/* a post's trailing line of hashtags, marked `invisible` when its body is rendered: still tagged and linked, but takes no space under the post, unlike Tailwind's `invisible` (visibility only), which other templates rely on to keep a hidden element's space */
+div[data-id="object_body"] p.invisible {
+  display: none;
 }
 
 div[data-id="object_body"].prose h1 {

@@ -1,0 +1,21 @@
+<div :hook id={@id}>
+  {#if slot_assigned?(:default)}
+    <#slot />
+  {#else}
+    <div data-truncatable class={["previewable_truncate"] ++ @class}>{@html}</div>
+  {/if}
+
+  <div :if={@read_more} id={"#{@id}-controls"} class="read-more-controls">
+    <button
+      type="button"
+      id={"#{@id}-read_more"}
+      class="link text-sm mt-2 font-medium link-hover link-primary normal-case read-more-btn"
+    >{l("Read more")}</button>
+    <button
+      type="button"
+      id={"#{@id}-read_less"}
+      class="link text-sm mt-2 font-medium link-hover link-primary normal-case read-less-btn"
+      style="display: none;"
+    >{l("Read less")}</button>
+  </div>
+</div>

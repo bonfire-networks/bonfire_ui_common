@@ -10,7 +10,8 @@ import { ScrollHooks } from "./scroll.js";
 
 // import { FeedHooks } from "./feed"
 import * as c1 from "../../../../config/current_flavour/assets/hooks/Bonfire.UI.Common.PreviewContentLive.hooks";
-import * as c2 from "../../../../config/current_flavour/assets/hooks/Bonfire.UI.Social.Activity.TruncatableContentLive.hooks";
+// clamps long posts, bios and group descriptions, with Read more
+import * as c2 from "../../../../config/current_flavour/assets/hooks/Bonfire.UI.Common.TruncatableLive.hooks";
 
 // Universal JS executor - uses vanilla JS when there's no LiveView 
 window.JS_exec = function (_lv_js, vanilla_js_b64) {
@@ -28,7 +29,7 @@ function ns(hooks, nameSpace) {
 }
 
 let FeedHooks = ns(c1, "Bonfire.UI.Common.PreviewContentLive");
-let TruncatableHooks = ns(c2, "Bonfire.UI.Social.Activity.TruncatableContentLive");
+let TruncatableHooks = ns(c2, "Bonfire.UI.Common.TruncatableLive");
 
 Object.assign(Hooks, CopyHooks, TooltipHooks, ScrollHooks, FeedHooks, TruncatableHooks);
 // ImageHooks
