@@ -1,0 +1,26 @@
+{#case Bonfire.Application.flavour_version()}
+  {#match nil}
+    <LinkLive to={Bonfire.Application.repository()} parent_id={@parent_id} class={@class}>{Bonfire.Application.version()}</LinkLive>
+  {#match flavour_version}
+    {!-- the distribution first, linked to the url its powered_by config sets (plain text without one), then the platform it runs on --}
+    <span data-role="flavour_version">
+      {#case Config.get([:ui, :theme, :powered_by, :url])}
+        {#match url when is_binary(url) and url != ""}
+          <a href={url} target="_blank" rel="noopener" class={@class}>{Bonfire.Application.flavour_name()} {flavour_version}</a>
+        {#match _}
+          {Bonfire.Application.flavour_name()} {flavour_version}
+      {/case}
+    </span>
+    <span aria-hidden="true">·</span>
+    <span data-role="powered_by">
+      {l("Powered by")}
+      <a
+        data-role="software"
+        href="https://bonfirenetworks.org/"
+        target="_blank"
+        rel="noopener"
+        class={@class}
+      >{Bonfire.Application.project()[:name]}</a>
+      <LinkLive to={Bonfire.Application.repository()} parent_id={@parent_id} class={@class}>{Bonfire.Application.version()}</LinkLive>
+    </span>
+{/case}

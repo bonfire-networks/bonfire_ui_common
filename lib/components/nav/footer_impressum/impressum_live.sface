@@ -67,14 +67,19 @@
     </div>
 
     <div class="text-xs tabular-nums">
-      <a href={powered_by_url()} target="_top" class="link-hover">{powered_by_name()}</a>
+      {!-- VersionLive credits Bonfire itself when the flavour shows its own version --}
+      <a
+        :if={is_nil(Bonfire.Application.flavour_version())}
+        href={powered_by_url()}
+        target="_top"
+        class="link-hover"
+      >{powered_by_name()}</a>
       {#case Bonfire.Application.version()}
         {#match version}
-          <LinkLive
-            to={Bonfire.Application.repository()}
+          <Bonfire.UI.Common.VersionLive
             parent_id="impressum_version"
             class="link-hover whitespace-nowrap"
-          >{version}</LinkLive>
+          />
           <span aria-hidden="true">·</span>
           <LinkLive
             to="https://app.transifex.com/bonfire/bonfire/"

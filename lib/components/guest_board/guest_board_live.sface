@@ -106,7 +106,7 @@
           rel="noopener"
           class="inline-flex min-h-11 items-center gap-1 underline-offset-3 hover:text-base-content hover:underline"
         >{name}</a></li>
-      <li>
+      <li :if={is_nil(Bonfire.Application.flavour_version())}>
         <a
           href={Bonfire.UI.Common.ImpressumLive.powered_by_url()}
           target="_blank"
@@ -118,10 +118,7 @@
         </a>
       </li>
       <li class="inline-flex min-h-11 items-center gap-1 tabular-nums">
-        <LinkLive
-          to={Bonfire.Application.repository()}
-          class="underline-offset-3 hover:text-base-content hover:underline"
-        >{Bonfire.Application.version()}</LinkLive>
+        <Bonfire.UI.Common.VersionLive class="underline-offset-3 hover:text-base-content hover:underline" />
         <span aria-hidden="true">·</span>
         <LinkLive
           to="https://app.transifex.com/bonfire/bonfire/"

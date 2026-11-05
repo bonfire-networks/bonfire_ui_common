@@ -115,11 +115,7 @@
                   class="grow block w-full"
                   placeholder={l("Schedule for date")}
                 />
-                <input
-                  type="hidden"
-                  name="scheduled_at"
-                  value={e(@smart_input_opts, :scheduled_at, nil)}
-                />
+                <input type="hidden" name="scheduled_at" value={e(@smart_input_opts, :scheduled_at, nil)}>
                 <!-- <span class="badge badge-neutral badge-xs">Optional</span> -->
               </label>
             </div>

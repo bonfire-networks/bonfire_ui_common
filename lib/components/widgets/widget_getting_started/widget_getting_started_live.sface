@@ -148,11 +148,7 @@
                                 {step.cta_label}
                               </button>
                             {#match _}
-                              <LinkLive
-                                to={step.cta_path}
-                                data-id="widget_getting_started_cta"
-                                class="btn btn-primary btn-sm"
-                              >
+                              <LinkLive to={step.cta_path} data-id="widget_getting_started_cta" class="btn btn-primary btn-sm">
                                 {step.cta_label}
                               </LinkLive>
                           {/case}

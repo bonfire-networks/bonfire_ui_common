@@ -67,7 +67,7 @@ defmodule Bonfire.UI.Common.Plugs.MaybeActivityRedirectPlug do
   def maybe_redirect(%{params: params} = conn) when not is_nil(params) do
     request_url = request_url(conn)
 
-    case Bonfire.Common.URIs.canonical_url(page_object(params) || params         ) do
+    case Bonfire.Common.URIs.canonical_url(page_object(params) || params) do
       url when is_binary(url) and url != request_url ->
         conn
         |> Phoenix.Controller.redirect(external: url)
