@@ -213,6 +213,11 @@ defmodule Bonfire.UI.Common.ThemeHelperTest do
                ThemeHelper.resolve_theme_config(:system, "lite", "drk")
     end
 
+    test "a flavour with one theme (eg. Jacobin: :custom on \"jacobin\") is fixed on it whatever the device prefers" do
+      assert %{mode: :fixed, theme: "jacobin"} =
+               ThemeHelper.resolve_theme_config(:custom, "jacobin", "jacobin")
+    end
+
     test "unknown preference falls back to a fixed dark theme" do
       assert %{mode: :fixed, theme: "drk"} =
                ThemeHelper.resolve_theme_config(:bogus, "lite", "drk")
@@ -232,10 +237,36 @@ defmodule Bonfire.UI.Common.ThemeHelperTest do
     test "current_theme/1 returns the concrete fallback name from theme_config/1" do
       assert ThemeHelper.current_theme(%{}) == ThemeHelper.theme_config(%{}).theme
     end
+
+    test "the instance default is :system, switching between the configured light and dark themes" do
+      assert Settings.get([:ui, :theme, :preferred], nil, scope: :instance) in [:system, "system"]
+
+      assert %{mode: :system, light: "light", dark: "dark"} = ThemeHelper.theme_config(%{})
+    end
+
+    test "a stale theme name (not in the themes lists) falls back to an existing theme" do
+      Process.put([:bonfire, :ui, :theme, :instance_theme], "bonfire")
+      Process.put([:bonfire, :ui, :theme, :instance_theme_light], "gone")
+
+      assert %{mode: :system, theme: "dark", light: "light", dark: "dark"} =
+               ThemeHelper.theme_config(%{})
+    end
+
+    test "a flavour theme listed for either mode is kept" do
+      Process.put([:bonfire, :ui, :themes_light], ["flavour-light", "light"])
+      Process.put([:bonfire, :ui, :themes_dark], ["dark"])
+      # eg. a flavour that uses its one light theme for both modes
+      Process.put([:bonfire, :ui, :theme, :instance_theme], "flavour-light")
+      Process.put([:bonfire, :ui, :theme, :instance_theme_light], "flavour-light")
+
+      assert %{light: "flavour-light", dark: "flavour-light"} = ThemeHelper.theme_config(%{})
+    end
   end
 
   describe "theme_config/1 with user theme settings" do
     test "uses the user's configured light theme when light mode is active" do
+      # an existing theme: unlisted names fall back to a listed one
+      Process.put([:bonfire, :ui, :themes_light], ["light", "user-light"])
       user = fake_user!()
 
       assert {:ok, %{__context__: %{current_user: user}}} =

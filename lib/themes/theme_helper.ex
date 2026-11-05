@@ -314,10 +314,31 @@ defmodule Bonfire.UI.Common.ThemeHelper do
     context = current_user(assigns) || Map.get(assigns, :conn)
 
     preferred = Settings.get([:ui, :theme, :preferred], :system, context)
-    light = Settings.get([:ui, :theme, :instance_theme_light], "light", context)
-    dark = Settings.get([:ui, :theme, :instance_theme], "dark", context)
+    themes_light = Settings.get([:ui, :themes_light], ["light"], context) |> List.wrap()
+    themes_dark = Settings.get([:ui, :themes_dark], ["dark"], context) |> List.wrap()
+    # a name is kept if either mode lists it (eg. a flavour using its one light theme as dark too)
+    known = Enum.map(themes_light ++ themes_dark, &to_string/1)
+
+    light =
+      Settings.get([:ui, :theme, :instance_theme_light], "light", context)
+      |> known_theme_or_default(known, themes_light, "light")
+
+    dark =
+      Settings.get([:ui, :theme, :instance_theme], "dark", context)
+      |> known_theme_or_default(known, themes_dark, "dark")
 
     resolve_theme_config(preferred, light, dark)
+  end
+
+  # A stale name (eg. a theme that is no longer compiled) matches no CSS, so the page would render unstyled: use the first theme listed for that mode instead.
+  defp known_theme_or_default(theme, known, mode_themes, fallback) do
+    name = normalize_theme_name(theme, fallback)
+
+    if name in known do
+      name
+    else
+      mode_themes |> List.first() |> normalize_theme_name(fallback)
+    end
   end
 
   @doc """

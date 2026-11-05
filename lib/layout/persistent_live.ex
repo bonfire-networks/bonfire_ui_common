@@ -335,11 +335,16 @@ defmodule Bonfire.UI.Common.PersistentLive do
         is_binary(smart_input_opts[:cw]) and smart_input_opts[:cw] != "" ->
           {Map.merge(smart_input_opts, %{
              show_cw: true,
-             show_sensitive: smart_input_opts[:inherit_sensitive] || false
+             show_sensitive:
+               smart_input_opts[:inherit_sensitive] || smart_input_opts[:show_sensitive] || false
            }), :set_cw}
 
+        # an explicit `show_sensitive: true` (eg. a reply in a group marked sensitive) is kept, with no CW text
         Map.has_key?(smart_input_opts, :cw) ->
-          {Map.merge(smart_input_opts, hidden_cw_sensitive), :clear_cw}
+          {Map.merge(
+             smart_input_opts,
+             %{hidden_cw_sensitive | show_sensitive: smart_input_opts[:show_sensitive] == true}
+           ), :clear_cw}
 
         true ->
           {smart_input_opts, :none}

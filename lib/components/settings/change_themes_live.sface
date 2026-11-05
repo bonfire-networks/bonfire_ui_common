@@ -28,6 +28,7 @@
     {!-- DARK --}
     <button
       id={"#{@id_prefix}-dark-button"}
+      type="button"
       class={"btn flex-1 justify-between gap-2 min-h-12 #{if @selected in [:dark], do: "btn-primary"}"}
       phx-click={JS.push("Bonfire.Common.Settings:put_theme",
         value: %{keys: "ui:theme:preferred", values: :dark, scope: @scope}
@@ -50,6 +51,7 @@
 
     <button
       id={"#{@id_prefix}-light-button"}
+      type="button"
       class={"btn flex-1 justify-between gap-2 min-h-12 #{if @selected in [:light], do: "btn-primary"}"}
       phx-click={JS.push("Bonfire.Common.Settings:put_theme",
         value: %{keys: "ui:theme:preferred", values: :light, scope: @scope}
@@ -72,6 +74,7 @@
 
     <button
       id={"#{@id_prefix}-system-button"}
+      type="button"
       class={"btn flex-1 justify-between gap-2 min-h-12 #{if @selected in [:system], do: "btn-primary"}"}
       phx-click={JS.push("Bonfire.Common.Settings:put_theme",
         value: %{keys: "ui:theme:preferred", values: :system, scope: @scope}

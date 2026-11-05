@@ -29,6 +29,9 @@ dep_path =
 config :bonfire, :ui,
   theme: [
     # instance_name: "Bonfire",
+    # the theme mode: `:system` follows the device's light/dark preference, switching between `instance_theme_light` and `instance_theme` (so keep both set), or `:light`, `:dark` or `:custom`
+    preferred: :system,
+    # the dark theme
     instance_theme: "dark",
     instance_theme_light: "light",
     instance_icon: "/images/bonfire-icon.png",
@@ -114,10 +117,7 @@ config :bonfire, :ui,
   # ],
   smart_input_as: :non_blocking
 
-config :bonfire,
-       # used by ActivityLive - TODO: autogenerate?
-       # verb families moved to `bonfire_social`, with the kinds they group and the rest of that vocabulary
-       []
+# verb families moved to `bonfire_social`, alongside the kinds they group
 
 config :bonfire_ui_common, Bonfire.UI.Common.SmartInputLive,
   max_length: 2000,
@@ -151,3 +151,42 @@ config :surface, :components, [
 ]
 
 # variants_prefix: "s-"
+
+# read by `CORSPlug.init/1` as defaults, under the options the endpoint passes (`plug CORSPlug, origin: …, headers: ["*"]` in `Bonfire.UI.Common.EndpointTemplate`), so only the keys the endpoint doesn't pass take effect
+config :cors_plug,
+  # default: "*" # NOTE: we set specific origins per route in Bonfire.UI.Common.RuntimeConfig
+  # origin: [],
+  # ^ commented out: the endpoint passes `origin:` itself, which overrides this
+  # default: 1_728_000
+  max_age: 86_400,
+  # same as default
+  methods: ["POST", "PUT", "DELETE", "GET", "PATCH", "OPTIONS"],
+  # default: []
+  expose: [
+    "Link",
+    "X-RateLimit-Reset",
+    "X-RateLimit-Limit",
+    "X-RateLimit-Remaining",
+    "X-Request-Id",
+    "Idempotency-Key"
+  ]
+
+# send_preflight_response?: true # default: true
+# credentials: true, # default: true
+# headers: ["Authorization", "Content-Type", "Idempotency-Key"]
+# ^ commented out: the endpoint passes `headers: ["*"]` itself, which overrides this
+
+# default headers: [
+#   "Authorization",
+#   "Content-Type",
+#   "Accept",
+#   "Origin",
+#   "User-Agent",
+#   "DNT",
+#   "Cache-Control",
+#   "X-Mx-ReqToken",
+#   "Keep-Alive",
+#   "X-Requested-With",
+#   "If-Modified-Since",
+#   "X-CSRF-Token"
+# ],
