@@ -31,10 +31,8 @@ defmodule Bonfire.UI.Common.SettingsListLive do
       items =
         if connected?(socket),
           do:
-            Settings.get(assigns.keys, [],
-              scope: assigns.scope,
-              current_user: current_user(socket)
-            )
+            assigns.keys
+            |> Settings.get([], read_opts(assigns.scope, socket))
             |> List.wrap(),
           else: []
 
@@ -66,8 +64,13 @@ defmodule Bonfire.UI.Common.SettingsListLive do
   defp normalize(item, fun) when is_function(fun, 1), do: fun.(item)
   defp normalize(item, _), do: String.trim(item)
 
+  # Only the list of the scope being edited: a merged read would show (and on the next save, copy into the user's own settings) the instance's list too, or an admin's own list in the instance's
+  defp read_opts(:user, socket), do: [current_user: current_user(socket), one_scope_only: true]
+  defp read_opts(scope, _socket), do: [scope: scope]
+
+  # `put_raw`, not `put`: the items are strings and stay strings (`put` would turn "2026" into a number and "Enum" into a module)
   defp save(socket, items) do
-    Settings.put(socket.assigns.keys, items,
+    Settings.put_raw(socket.assigns.keys, items,
       scope: socket.assigns.scope,
       current_user: current_user(socket)
     )

@@ -1351,6 +1351,12 @@ hex-input::part(input) {
     flex-shrink: 0;
     scroll-snap-align: start;
   }
+
+  /* a card the viewer may not see renders an empty `hidden` root (`IfCan`, or a widget's `ActivityLive` with `show_restricted={false}`), so its slide goes too rather than leaving a blank one */
+  .carousel-scroll
+    > [data-carousel-card]:has(> [hidden], [data-id="activity_not_visible"][hidden]) {
+    display: none;
+  }
 }
 
 .btn-zenodo {
