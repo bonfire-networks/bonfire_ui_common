@@ -1,0 +1,81 @@
+<div id={@id} class="form-control">
+  <fieldset :if={@name || @description} class="fieldset">
+    <legend :if={@name} class="text-sm font-medium text-base-content">{@name}</legend>
+    <p :if={@description} class="text-muted text-sm text-pretty">{@description}</p>
+  </fieldset>
+
+  {#for {{list, items}, list_index} <- Enum.with_index(Enum.zip(@lists, @items))}
+    <section id={list_id(@id, list)} class="mt-4">
+      <h3 class="text-sm font-medium text-base-content">{list[:name]}</h3>
+      <p :if={list[:description]} class="text-muted text-sm text-pretty">{list[:description]}</p>
+
+      <form
+        id={"#{list_id(@id, list)}_add"}
+        phx-submit="add_item"
+        phx-target={@myself}
+        class="flex gap-2 items-end mt-2"
+      >
+        <input type="hidden" name="list" value={list_index}>
+        <input
+          type="text"
+          name="item"
+          placeholder={@placeholder || l("Add...")}
+          class="input input-bordered input-sm flex-1 max-w-xs"
+          aria-label={list[:name] || l("New item")}
+          autocomplete="off"
+        />
+        <button type="submit" class="btn btn-sm btn-primary">
+          {l("Add")}
+        </button>
+      </form>
+
+      {#if items != []}
+        <ul class="flex flex-wrap gap-2 mt-3">
+          {#for {item, index} <- Enum.with_index(items)}
+            <li id={"#{list_id(@id, list)}-item-#{index}"} class="badge badge-lg gap-1 bg-base-200/50 pr-1">
+              <span class="text-sm">{item}</span>
+              {!-- to the list above or below, as the dashboard's widgets move up or down --}
+              {#for {other, to} <- Enum.with_index(@lists), to in [list_index - 1, list_index + 1]}
+                <button
+                  type="button"
+                  phx-click="move_item"
+                  phx-value-from={list_index}
+                  phx-value-index={index}
+                  phx-value-to={to}
+                  phx-target={@myself}
+                  data-role={if to < list_index, do: "move_up", else: "move_down"}
+                  class="btn btn-ghost btn-xs btn-square"
+                  aria-label={l("Move %{item} to %{list}", item: item, list: other[:name])}
+                  title={l("Move to %{list}", list: other[:name])}
+                >
+                  {!-- icon names are compiled in, so one per branch --}
+                  {#if to < list_index}
+                    <#Icon iconify="ph:caret-up" class="size-4" />
+                  {#else}
+                    <#Icon iconify="ph:caret-down" class="size-4" />
+                  {/if}
+                </button>
+              {/for}
+              <button
+                type="button"
+                phx-click="remove_item"
+                phx-value-list={list_index}
+                phx-value-index={index}
+                phx-target={@myself}
+                class="btn btn-ghost btn-xs btn-square"
+                aria-label={l("Remove: %{item}", item: item)}
+                title={l("Remove")}
+              >
+                <#Icon iconify="ph:x" class="size-4" />
+              </button>
+            </li>
+          {/for}
+        </ul>
+      {/if}
+    </section>
+  {/for}
+
+  <p :if={@allow_bulk_paste} class="text-muted text-xs mt-3">
+    {l("Tip: you can copy/paste a list of them here, separated by commas.")}
+  </p>
+</div>

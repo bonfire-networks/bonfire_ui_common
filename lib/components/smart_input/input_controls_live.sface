@@ -402,6 +402,16 @@
             value={role}
           />
         </label>
+        {!-- exclusions are sent with their `cannot_*` role in `to_circles`, which publishing applies as denials --}
+        <label data-role="exclude_circles">
+          <input
+            :for={{circle, role} <- e(@exclude_circles, [])}
+            type="hidden"
+            data-role="circle-exclude"
+            name={"to_circles[#{id(circle)}]"}
+            value={role || "cannot_read"}
+          />
+        </label>
         <label data-role="circles-binary">
           <input
             :for={value when is_binary(value) <- @to_circles || []}

@@ -566,6 +566,21 @@ defmodule Bonfire.UI.Common do
       )
   end
 
+  @doc """
+  The object this socket holds, when it is the one an event names by `id`, else the `id`. Looked for at each of `paths` in the assigns, in order (by default only `object`), eg. `[[:object], [:activity, :object]]` for a component holding an activity.
+
+  An event carries only an id. When it reaches the component that renders the button, that component's `object` is the one meant, already loaded; when it reaches the page's LiveView, the page's `object` may be something else on the same page (a Follow button for someone taking part in a thread, on the thread's page), so it's used only when the ids match.
+  """
+  def assigned_object_or_id(socket, id, paths \\ [[:object]]) do
+    assigns = assigns(socket)
+
+    (is_binary(id) &&
+       Enum.find_value(paths, fn path ->
+         object = get_in(assigns, Enum.map(path, &Access.key(&1, nil)))
+         if Enums.id(object) == id, do: object
+       end)) || id
+  end
+
   def current_user_or_remote_interaction(socket, verb, object) do
     case current_user(socket) do
       %{id: _} = current_user ->
@@ -585,29 +600,39 @@ defmodule Bonfire.UI.Common do
   end
 
   @doc """
-  Builds the local `/remote_interaction` URL for `object_or_id`, or `nil` when
-  no canonical URL can be resolved. Returning `nil` (instead of letting
-  `generate_url` ship `url=` empty) lets callers fall back to local login —
-  otherwise the remote server turns `?uri=` empty into a dead page.
+  Builds the local `/remote_interaction` URL for an object or an id.
+
+  Given the object, loaded with its locality, it puts the object's address in the link, or returns `nil` when another server couldn't reach it or no address can be worked out, so the caller falls back to signing in here (an empty address dead-ends on the remote server). Given only an id, it links with the id, and the remote interaction page looks the object up when opened and decides there.
   """
-  def remote_interaction_url(verb, name, object_or_id, socket_or_ctx) do
-    # cold path: only reached when a logged-out visitor tries to interact, so preload the locality
-    # (`:peered`/`character:[:peered]`) on demand here rather than feed-wide — `canonical_url`
-    # genuinely needs it to build the remote-interaction URL
+  # a caller holding only an id gets a link with the id, and the remote interaction page looks it up when opened, instead of every page that shows the link looking it up whether anyone clicks or not. Whether another server can reach it is decided there too
+  def remote_interaction_url(verb, name, id, opts) when is_binary(id) do
+    maybe_apply(
+      Bonfire.UI.Me.RemoteInteractionLive,
+      :generate_url_by_id,
+      [verb, name, id, to_options(opts)],
+      fallback_return: nil
+    )
+  end
+
+  def remote_interaction_url(verb, name, object, opts) do
+    opts = to_options(opts)
+
+    # `canonical_url` needs the object's locality (`:peered`, or `character: [:peered]`), loaded by the caller with the object
     # a local character that doesn't federate cannot be interacted with from another server, so callers fall back to signing in here
     with true <-
            maybe_apply(
              Bonfire.Federate.ActivityPub.AdapterUtils,
              :remotely_reachable?,
-             [object_or_id],
+             [object],
              fallback_return: false
            ),
+         # the socket's assigns or the context, as options: what `canonical_url` reads from them is up to the caller
          object_url when is_binary(object_url) and object_url != "" <-
-           canonical_url(object_or_id, preload_if_needed: true) do
+           canonical_url(object, opts) do
       maybe_apply(
         Bonfire.UI.Me.RemoteInteractionLive,
         :generate_url,
-        [verb, name, object_url, socket_or_ctx],
+        [verb, name, object_url, opts],
         fallback_return: nil
       )
     else
