@@ -260,7 +260,11 @@
                 </Dropdown>
 
                 {!-- the type tray: "+" opens the other types as pills; the picked one stays, pressed --}
-                <div :if={@tray_pills != []} id="composer_type_tray" class="group/tray flex min-w-0 items-center gap-1">
+                <div
+                  :if={@tray_pills != []}
+                  id="composer_type_tray"
+                  class="group/tray flex min-w-0 items-center gap-1"
+                >
                   <span class="h-5 w-px shrink-0 bg-base-content/10" aria-hidden="true" />
                   {!-- a disclosure like #composer_summary: client-side, no round trip --}
                   <button

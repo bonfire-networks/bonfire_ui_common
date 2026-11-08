@@ -131,7 +131,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     |> Enum.filter(fn module ->
       # not `maybe_apply`: it warns for each module without the callback
       module != base and Bonfire.Common.Extend.module_enabled?(module) and
-        (not function_exported?(module, :smart_input_tray?, 0) or module.smart_input_tray?() != false)
+        (not function_exported?(module, :smart_input_tray?, 0) or
+           module.smart_input_tray?() != false)
     end)
   end
 
