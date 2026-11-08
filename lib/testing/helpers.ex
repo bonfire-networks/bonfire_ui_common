@@ -194,6 +194,24 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   end
 
   @doc """
+  The static render a browser gets from a GET of `path`, as a `PhoenixTest` session, with no LiveView connected.
+
+  `PhoenixTest.visit/2` connects a LiveView on every LiveView page. A guest has no LiveView socket, so a guest sees only this render: use it to test what a guest gets. Assert on it with `assert_has/3`, `refute_has/3` and the other `PhoenixTest` helpers.
+
+      conn()
+      |> get_conn_render("/groups/discover")
+      |> assert_has("a[data-id=next_page]")
+
+  Redirects are not followed: the session holds the 3xx response. Clicking a link from the session goes through `visit/2`, which connects a LiveView on a LiveView page; call this again with the link's path to stay on the static render.
+  """
+  def get_conn_render(%Plug.Conn{} = conn, path) when is_binary(path) do
+    conn
+    |> Phoenix.ConnTest.dispatch(Bonfire.Common.Config.endpoint_module(), :get, path, nil)
+    # `PhoenixTest.Static` is internal to PhoenixTest 0.14, which has no public route to a session on the static render
+    |> PhoenixTest.Static.build()
+  end
+
+  @doc """
   The LiveView the composer lives in: the sticky `PersistentLive` child where the page has one, else the page itself.
 
   Read or submit the composer through this rather than the page. A Reply press reaches the composer as a message to that child (`PersistentLive.maybe_send/2`), and `render/1` on the child is a synchronous call, so the message is handled before the read. The page's copy can still show the composer's unopened defaults.
