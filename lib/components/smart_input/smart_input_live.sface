@@ -184,7 +184,7 @@
               </button>
             </div>
           </section>
-          <div id="composer_header_actions" class="flex items-start gap-2 px-3 pt-1 pb-0.5 sm:px-4">
+          <div id="composer_header_actions" class="flex items-center gap-2 px-3 pt-1 pb-0.5 sm:px-4">
             <div id="composer_author" class="flex h-10 shrink-0 items-center">
               <div
                 class="shrink-0"
