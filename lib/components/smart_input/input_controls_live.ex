@@ -90,7 +90,29 @@ defmodule Bonfire.UI.Common.InputControlsLive do
         [assigns[:to_boundaries]]
       )
     )
+    |> assign(:tray_pills, tray_pills(create_object_type, not_a_reply?))
     |> render_sface()
+  end
+
+  # the type tray's pills; none for messages and replies
+  defp tray_pills(create_object_type, not_a_reply?) do
+    if not_a_reply? and create_object_type not in ["message", :message] do
+      base = LiveHandler.active_smart_input_component(nil, nil)
+      active = LiveHandler.active_smart_input_component(nil, create_object_type)
+
+      for component <- LiveHandler.tray_types(base) do
+        %{
+          id: Bonfire.UI.Common.deterministic_dom_id("composer_type", component),
+          active?: component == active,
+          # the pressed pill goes back to a note
+          target: if(component == active, do: base, else: component),
+          icon: LiveHandler.type_icon(component),
+          label: LiveHandler.type_label(component)
+        }
+      end
+    else
+      []
+    end
   end
 
   # Per-field, per-type composer field config. Driven by config (keyword lists, so each

@@ -18,6 +18,8 @@ defmodule Bonfire.UI.Common.SmartInputModule do
     icon="mdi:pencil"
   />
   ```
+
+  Switching type carries what was typed as `smart_input_opts.text`: start your body field from it, and post the body as `post[post_content][html_body]` or `post[note]`.
   """
   @behaviour Bonfire.Common.ExtensionBehaviour
   use Bonfire.Common.Utils, only: []
@@ -28,10 +30,13 @@ defmodule Bonfire.UI.Common.SmartInputModule do
   @doc "Iconify icon name to show for a given create-object `type` in the composer picker."
   @callback smart_input_icon(type :: atom) :: binary
 
-  @doc "Human-readable label for a given create-object `type` in the composer picker, phrased as the action (e.g. \"Create poll\"), since it is both the picker's trigger and its options."
+  @doc "Human-readable label for a given create-object `type`, as a noun (e.g. \"Poll\")."
   @callback smart_input_label(type :: atom) :: binary
 
-  @optional_callbacks smart_input_icon: 1, smart_input_label: 1
+  @doc "Whether the composer's type tray offers this type (e.g. not for a form without the composer toolbar, which would leave no way back). Without it, offered."
+  @callback smart_input_tray?() :: boolean
+
+  @optional_callbacks smart_input_icon: 1, smart_input_label: 1, smart_input_tray?: 0
 
   def app_modules() do
     Bonfire.Common.ExtensionBehaviour.behaviour_app_modules(__MODULE__)

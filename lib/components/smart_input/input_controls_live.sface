@@ -141,8 +141,9 @@
             "p-2 md:px-3": @showing_within == :thread_embed,
             "py-2 pr-3 pl-1.5 sm:pl-2.5": @showing_within != :thread_embed
           }>
-            <div>
-              <div :if={@showing_within != :thread_embed} class="flex flex-wrap items-center gap-2">
+            {!-- min-w-0: the type tray scrolls instead of pushing Send out --}
+            <div class="flex min-w-0 flex-1">
+              <div :if={@showing_within != :thread_embed} class="flex min-w-0 items-center gap-2">
                 <Bonfire.UI.Common.UploadButtonLive
                   :if={@uploads != false && e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}
                   uploads={@uploads}
@@ -257,9 +258,62 @@
                     </button>
                   </li>
                 </Dropdown>
+
+                {!-- the type tray: "+" opens the other types as pills; the picked one stays, pressed --}
+                <div :if={@tray_pills != []} id="composer_type_tray" class="group/tray flex min-w-0 items-center gap-1">
+                  <span class="h-5 w-px shrink-0 bg-base-content/10" aria-hidden="true" />
+                  {!-- a disclosure like #composer_summary: client-side, no round trip --}
+                  <button
+                    id="composer_type_tray_toggle"
+                    type="button"
+                    aria-controls="composer_type_tray_rail"
+                    aria-expanded="false"
+                    aria-label={l("Add an article, poll or other type")}
+                    title={l("Add an article, poll or other type")}
+                    phx-click={JS.toggle_attribute({"data-tray-open", ""}, to: "#composer_type_tray")
+                    |> JS.toggle_attribute({"aria-expanded", "true", "false"})}
+                    class="btn btn-ghost btn-sm btn-circle shrink-0 text-muted"
+                  >
+                    <#Icon
+                      iconify="ph:plus-bold"
+                      class="size-5 transition-transform duration-200 ease-out group-data-[tray-open]/tray:rotate-45 motion-reduce:transition-none"
+                    />
+                  </button>
+                  {!-- edge fades as in notification_filters_live.sface --}
+                  <div
+                    id="composer_type_tray_rail"
+                    phx-hook="ScrollRow"
+                    role="group"
+                    aria-label={l("Post types")}
+                    class="flex min-w-0 items-center gap-1 overflow-x-auto [scrollbar-width:none] data-[fade-end]:[mask-image:linear-gradient(to_right,black_calc(100%-2rem),transparent)] data-[fade-start]:[mask-image:linear-gradient(to_right,transparent,black_2rem)] data-[fade-start]:data-[fade-end]:[mask-image:linear-gradient(to_right,transparent,black_2rem,black_calc(100%-2rem),transparent)] [&::-webkit-scrollbar]:hidden"
+                  >
+                    {!-- plain pills, not `.btn` (its unlayered bold and padding) --}
+                    <button
+                      :for={pill <- @tray_pills}
+                      type="button"
+                      id={pill.id}
+                      aria-pressed={to_string(pill.active?)}
+                      phx-click={LiveHandler.open_type(
+                        JS.remove_attribute("data-tray-open", to: "#composer_type_tray")
+                        |> JS.set_attribute({"aria-expanded", "false"}, to: "#composer_type_tray_toggle"),
+                        pill.target,
+                        @smart_input_opts
+                      )}
+                      phx-target="#smart_input"
+                      class={
+                        "h-8 shrink-0 items-center gap-1.5 rounded-full px-2.5 text-sm font-medium transition-colors hover:bg-base-content/5 hover:text-base-content focus:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                        "inline-flex bg-base-content/10 text-base-content": pill.active?,
+                        "hidden text-muted group-data-[tray-open]/tray:inline-flex": !pill.active?
+                      }
+                    >
+                      <Iconify.iconify icon={pill.icon} class="size-4 shrink-0" />
+                      <span>{pill.label}</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-            <div id="composer_publish_controls" class="flex flex-1 items-center gap-2">
+            <div id="composer_publish_controls" class="flex shrink-0 items-center gap-2">
               <span class="flex-1" />
               {#if @showing_within != :thread_embed}
                 <!-- Language selection dropdown -->

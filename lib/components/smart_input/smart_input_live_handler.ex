@@ -124,6 +124,21 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     |> String.capitalize()
   end
 
+  @doc "The types the composer's tray offers: enabled smart input modules other than `base`, unless `smart_input_tray?/0` says no."
+  def tray_types(base) do
+    Bonfire.UI.Common.SmartInputModule.modules()
+    |> Enum.uniq()
+    |> Enum.filter(fn module ->
+      # not `maybe_apply`: it warns for each module without the callback
+      module != base and Bonfire.Common.Extend.module_enabled?(module) and
+        (not function_exported?(module, :smart_input_tray?, 0) or module.smart_input_tray?() != false)
+    end)
+  end
+
+  @doc "Like `open_type/3`, back to the base post composer."
+  def open_base_type(js \\ %JS{}, opts),
+    do: open_type(js, active_smart_input_component(nil, nil), opts)
+
   def handle_event("toggle_cw", _params, socket) do
     current_opts = e(assigns(socket), :smart_input_opts, %{})
     show_cw = !e(current_opts, :show_cw, false)
@@ -430,6 +445,13 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         do: Map.put(opts, :create_object_type, resolved_create_object_type),
         else: opts
 
+    # keep what was typed, still as a draft (see `SmartInputModule`)
+    opts =
+      case selected_component && carried_draft_text(socket) do
+        text when is_binary(text) -> Map.merge(opts, %{text: text, input_status: :draft})
+        _ -> opts
+      end
+
     set_assigns =
       [
         smart_input_component: selected_component,
@@ -696,6 +718,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   def handle_event("validate", params, socket) do
     # Get text from params and text_suggestion from socket.assigns
     text = e(params, "post", "post_content", "html_body", nil)
+    body = draft_body(params)
 
     if is_binary(text) and text != "",
       do: Task.start(fn -> Bonfire.Tag.TextContent.Formatter.prefetch_mentions(text) end)
@@ -710,7 +733,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # Any content-bearing field counts, not just the body. `e` treats "" as
     # empty, so these are nil until actually filled in.
     has_content? =
-      not is_nil(text) or
+      body not in [nil, ""] or
         not is_nil(e(params, "post", "post_content", "name", nil)) or
         not is_nil(e(params, "post", "post_content", "summary", nil)) or
         not is_nil(e(params, "quoted_url", nil)) or
@@ -744,6 +767,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     socket =
       socket
       |> assign(
+        # for switching type; not in `smart_input_opts`, which re-renders every composer part
+        composer_draft_text: kept_draft(body, assigns(socket)[:composer_draft_text]),
         reset_smart_input: e(assigns(socket), :reset_smart_input, false),
         smart_input_opts:
           Enum.into(
@@ -835,10 +860,12 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
       smart_input_opts = e(assigns(socket), :smart_input_opts, nil)
 
-      # content fields still filled? (tracked by validate; falls back to prefilled text)
+      # tracked by validate once anything is typed; before that, prefilled text
       has_content? =
-        e(smart_input_opts, :has_draft_content, nil) ||
-          not is_nil(e(smart_input_opts, :text, nil))
+        case smart_input_opts[:has_draft_content] do
+          tracked when is_boolean(tracked) -> tracked
+          _ -> not is_nil(e(smart_input_opts, :text, nil))
+        end
 
       uploads = e(assigns(socket), :uploads, nil)
 
@@ -1385,6 +1412,28 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     do: Phoenix.LiveView.push_event(socket, "smart_input:focus_summary", %{})
 
   defp maybe_focus_summary(socket, _), do: socket
+
+  # post editor and poll question, or task and offer description
+  defp draft_body(%{"post" => %{"post_content" => %{"html_body" => body}}}) when is_binary(body),
+    do: body
+
+  defp draft_body(%{"post" => %{"note" => note}}) when is_binary(note), do: note
+  defp draft_body(_), do: nil
+
+  # the poll question flattens a multi-line draft: keep the paragraphs while it's unedited (flattening never lengthens text)
+  defp kept_draft(new, previous)
+       when is_binary(new) and is_binary(previous) and new != previous and
+              byte_size(new) <= byte_size(previous) do
+    if new == Bonfire.Common.Text.normalize_whitespace(previous), do: previous, else: new
+  end
+
+  defp kept_draft(new, _previous), do: new
+
+  # only while drafting (a reset sets `input_status` to nil); "" too, so cleared text stays cleared
+  defp carried_draft_text(socket) do
+    if e(assigns(socket), :smart_input_opts, :input_status, nil) == :draft,
+      do: assigns(socket)[:composer_draft_text]
+  end
 
   defp default_smart_input_opts(extra \\ %{}) do
     Map.merge(

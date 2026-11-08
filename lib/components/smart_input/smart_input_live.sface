@@ -210,51 +210,7 @@
               </div>
             </div>
 
-            <div id="composer_sentence" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1.5">{!-- the mode as text, then where and who as chips: "Create post ▾ [Your profile] [Public]"; each chip is a menu with an sr-only label --}
-              {#if e(@smart_input_opts, :create_object_type, nil) not in ["message", :message] and
-                  @reply_to_id in [nil, ""] and @showing_within != :thread_embed}
-                {#case Bonfire.UI.Common.SmartInputModule.modules() |> Enum.uniq()}
-                  {#match [_, _ | _] = available_types}
-                    {#case LiveHandler.active_smart_input_component(
-                        nil,
-                        e(@smart_input_opts, :create_object_type, nil)
-                      )}
-                      {#match active_component}
-                        <Dropdown
-                          wrapper_opts={["data-boundary": "#composer_container"]}
-                          id="composer_type_chooser"
-                          position="bottom-start"
-                          trigger_class="flex min-h-10 min-w-0 max-w-full items-center gap-1.5 rounded-selector px-1.5 text-left text-sm font-medium hover:bg-fill focus-ring"
-                          label={l("Choose what to create")}
-                          trigger_opts={[title: l("Choose what to create")]}
-                        >
-                          <:trigger>
-                            <span class="normal-case">
-                              {LiveHandler.type_label(active_component, e(@smart_input_opts, :create_object_type, nil))}
-                            </span>
-                            <#Icon iconify="ph:caret-down" class="size-3.5 shrink-0 text-muted" />
-                          </:trigger>
-
-                          <li :for={component <- available_types}>
-                            <a
-                              phx-click={LiveHandler.open_type(%JS{}, component, @smart_input_opts)}
-                              phx-target="#smart_input"
-                              aria-current={if component == active_component, do: "true"}
-                              class={
-                                "flex items-center gap-2",
-                                active: component == active_component
-                              }
-                            >
-                              <Iconify.iconify icon={LiveHandler.type_icon(component)} class="size-4 shrink-0 text-muted" />
-                              <span>{LiveHandler.type_label(component)}</span>
-                            </a>
-                          </li>
-                        </Dropdown>
-                    {/case}
-                  {#match _}
-                {/case}
-              {/if}
-
+            <div id="composer_sentence" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1.5">{!-- where and who, as chips with sr-only labels; the type is the tray in InputControlsLive --}
               <Dropdown
                 :if={replying?(assigns)}
                 wrapper_opts={["data-boundary": "#composer_container"]}
@@ -311,7 +267,7 @@
                 role="group"
                 aria-label={l("Audience and permissions")}
                 class="flex min-w-0 flex-1 basis-56 items-center gap-2"
-              >{!-- a small flex-basis keeps the chips on the "Create post" line while ~14rem is left, so they
+              >{!-- a small flex-basis keeps the chips on the avatar's line while ~14rem is left, so they
                   truncate (group name first) instead of the whole group wrapping; no inner wrap for the same reason --}
                 {#if e(@smart_input_opts, :create_object_type, nil) in ["message", :message]}
                   <span
