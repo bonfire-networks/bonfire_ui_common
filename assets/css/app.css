@@ -1234,16 +1234,18 @@ hex-input::part(input) {
 @utility sidebar-child-list {
   @apply !m-0 !mb-1 !p-0 !gap-0 before:!content-none after:!content-none;
   background-image: linear-gradient(color-mix(in oklch, var(--color-base-content) 20%, transparent), color-mix(in oklch, var(--color-base-content) 20%, transparent));
-  background-position: calc(var(--spacing) * 4.5 - 0.5px) 0; /* under the 20px group icon (8px row inset + 10px) */
+  background-position: calc(var(--spacing) * 5 - 0.5px) 0; /* under the group icon centre */
   background-size: 1px 100%;
   background-repeat: no-repeat;
 }
 
 @utility nav-row {
-  @apply !flex w-full min-w-0 items-center !gap-2.5 !min-h-8 !px-2 !py-1 rounded-selector leading-5;
-  @media (pointer: coarse) {
-    @apply !min-h-9;
-  }
+  @apply !flex w-full min-w-0 items-center !gap-2.5 !min-h-9 !px-2 !py-1 rounded-selector leading-5;
+}
+
+/* Icon slot, as wide as a group avatar, so labels line up. */
+@utility nav-icon {
+  @apply size-6 shrink-0 flex items-center justify-center;
 }
 
 /* Touch screens get a larger label; desktop sidebars stay compact at 14px. */

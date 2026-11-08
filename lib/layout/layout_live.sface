@@ -193,19 +193,19 @@
                     <ul class="menu p-0 w-full gap-0 px-0 lg:px-5.5 mt-2">
                       <li class="m-0 p-0 justify-end !block">
                         <div class="nav-row">
-                          <div class="skeleton size-5 rounded shrink-0" />
+                          <div class="nav-icon"><div class="skeleton size-5 rounded" /></div>
                           <div class="skeleton h-4 w-24 rounded" />
                         </div>
                       </li>
                       <li class="m-0 p-0 justify-end !block">
                         <div class="nav-row">
-                          <div class="skeleton size-5 rounded shrink-0" />
+                          <div class="nav-icon"><div class="skeleton size-5 rounded" /></div>
                           <div class="skeleton h-4 w-20 rounded" />
                         </div>
                       </li>
                       <li class="m-0 p-0 justify-end !block">
                         <div class="nav-row">
-                          <div class="skeleton size-5 rounded shrink-0" />
+                          <div class="nav-icon"><div class="skeleton size-5 rounded" /></div>
                           <div class="skeleton h-4 w-16 rounded" />
                         </div>
                       </li>

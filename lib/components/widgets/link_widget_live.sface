@@ -14,7 +14,7 @@
       phx_hook={@widget[:phx_hook]}
       opts={if active, do: ["aria-current": "page"], else: []}
     >
-      <div class="shrink-0 flex items-center" :if={!@without_icon && (@icon || @widget[:icon])}>
+      <div class="nav-icon" :if={!@without_icon && (@icon || @widget[:icon])}>
         <Iconify.iconify
           icon={fill_icon(@icon || @widget[:icon])}
           class={[
