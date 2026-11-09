@@ -7,7 +7,7 @@ defmodule Bonfire.UI.Common.PageHeaderLive do
   prop page, :any, default: nil
   prop back, :any, default: nil
   prop back_type, :any, default: nil
-  @doc "An avatar before the title, `%{id, src, name, object}`; no `src` draws the object's tile. Other values (icon names) are not drawn."
+  @doc "An avatar before the title, `%{id, src, name, object}`; no `src` draws the object's tile."
   prop page_header_icon, :any, default: nil
 
   @doc "Where the page lives, as `%{name: _, path: _, icon_url: _}` (eg. the group a thread was posted in), shown as \"<title> in <name>\""
