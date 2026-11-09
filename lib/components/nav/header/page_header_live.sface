@@ -43,40 +43,62 @@
 
       {!-- Center column: title (Stream centres it, see interface.css) --}
       <div data-role="page_header_title" class="flex-1 min-w-0">
-        {#if is_map(@page_title_context) and is_binary(@page_title_context[:name])}
-          <h1
-            data-page={@page}
-            data-role="page_title"
-            class="flex items-center gap-1.5 min-w-0 font-medium text-left text-base text-base-content"
-          >
-            <span class="shrink-0 first-letter:capitalize">{rich(@page_title)}</span>
-            <span class="shrink-0">{l("in")}</span>
-            <LinkLive
-              opts={"data-role": "page_title_context"}
-              class="inline-flex items-center gap-1.5 min-w-0 text-primary link link-hover"
-              to={@page_title_context[:path]}
+        {!-- an avatar before the title, see the `page_header_icon` prop --}
+        <div class={"flex items-center gap-2 min-w-0": is_map(@page_header_icon)}>
+          <div :if={is_map(@page_header_icon)} data-role="page_header_icon" class="shrink-0">
+            {#if is_nil(@page_header_icon[:src]) and not is_nil(@page_header_icon[:object])}
+              <Bonfire.UI.Common.NavTileLive
+                object={@page_header_icon[:object]}
+                name={@page_header_icon[:name]}
+                class="!size-8 !rounded-box !text-sm"
+              />
+            {#else}
+              <Bonfire.UI.Common.AvatarLive
+                parent_id="page-header-icon"
+                wrapper_class="border-0 avatar !flex shrink-0"
+                title={@page_header_icon[:name]}
+                class="size-8 inline-block object-cover rounded-box"
+                user_id={@page_header_icon[:id]}
+                fallback_class="size-8"
+                src={@page_header_icon[:src]}
+              />
+            {/if}
+          </div>
+          {#if is_map(@page_title_context) and is_binary(@page_title_context[:name])}
+            <h1
+              data-page={@page}
+              data-role="page_title"
+              class="flex items-center gap-1.5 min-w-0 font-medium text-left text-base text-base-content"
             >
-              {#if is_binary(@page_title_context[:icon_url])}
-                <img
-                  src={@page_title_context[:icon_url]}
-                  alt=""
-                  class="size-5 shrink-0 rounded-full object-cover"
-                />
-              {#else}
-                <#Icon iconify="ph:users-three-fill" class="size-5 shrink-0" />
-              {/if}
-              <span class="truncate">{@page_title_context[:name]}</span>
-            </LinkLive>
-          </h1>
-        {#else}
-          <h1
-            data-page={@page}
-            data-role="page_title"
-            class="first-letter:capitalize truncate font-medium text-left text-base text-base-content"
-          >
-            {rich(@page_title)}
-          </h1>
-        {/if}
+              <span class="shrink-0 first-letter:capitalize">{rich(@page_title)}</span>
+              <span class="shrink-0">{l("in")}</span>
+              <LinkLive
+                opts={"data-role": "page_title_context"}
+                class="inline-flex items-center gap-1.5 min-w-0 text-primary link link-hover"
+                to={@page_title_context[:path]}
+              >
+                {#if is_binary(@page_title_context[:icon_url])}
+                  <img
+                    src={@page_title_context[:icon_url]}
+                    alt=""
+                    class="size-5 shrink-0 rounded-full object-cover"
+                  />
+                {#else}
+                  <#Icon iconify="ph:users-three-fill" class="size-5 shrink-0" />
+                {/if}
+                <span class="truncate">{@page_title_context[:name]}</span>
+              </LinkLive>
+            </h1>
+          {#else}
+            <h1
+              data-page={@page}
+              data-role="page_title"
+              class="first-letter:capitalize truncate font-medium text-left text-base text-base-content"
+            >
+              {rich(@page_title)}
+            </h1>
+          {/if}
+        </div>
         <div :if={@extra} class="text-xs font-medium text-muted">{@extra}</div>
       </div>
 
