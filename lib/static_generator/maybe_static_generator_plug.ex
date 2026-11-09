@@ -197,6 +197,7 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
     conn
   end
 
+  # TODO: the cache holds one language per path, so every guest gets the language of whichever guest wrote the file first. Write one file per language (cache key and `bust_urls` purge include the language), and send `Vary: Accept-Language` so a CDN keeps them apart too.
   defp do_write_cache(conn, url) do
     tags = conn |> get_resp_header("surrogate-key") |> Enum.flat_map(&String.split/1)
     body = conn.resp_body

@@ -52,9 +52,18 @@ defmodule Bonfire.UI.Common.Routes do
 
   defmacro __using__(_) do
     quote do
-      def set_locale(conn, _opts) do
+      def set_locale(conn, opts) do
+        if !opts[:detect] and Bonfire.UI.Common.session_logged_in?(conn) do
+          # the session has a login: `Bonfire.UI.Me.Plugs.LoadCurrentUser` sets the locale from their settings once it has loaded them, and a LiveView page sets it in its on_mount. Here only keep the browser's extras for them, with no user load and no browser detection. Nothing needs resetting: each request starts with an empty process dictionary, where Gettext's locale lives (Bandit clears it between keep-alive requests, `clear_process_dict`, and Cowboy uses a process per request), so until the user's locale is set it is the instance default.
+          Bonfire.Common.Localise.put_browser_extras_in_session(conn)
+        else
+          detect_locale(conn)
+        end
+      end
+
+      defp detect_locale(conn) do
         try do
-          Cldr.Plug.SetLocale.call(conn, Bonfire.Common.Localise.set_locale_config())
+          Bonfire.UI.Common.LivePlugs.Locale.detect_for_conn(conn)
         rescue
           e ->
             error(e, "Locale setting failed")
@@ -204,7 +213,16 @@ defmodule Bonfire.UI.Common.Routes do
       # or use a locale-specific cache key in your proxy config.
       pipeline :browser_render do
         plug(:set_locale)
+        plug(:browser_render_common)
+      end
 
+      # Same as :browser_render, but the locale is always detected from the browser, even when the session has a user. For controller pages that never load the user, so nothing would set their locale otherwise.
+      pipeline :browser_render_detect do
+        plug(:set_locale, detect: true)
+        plug(:browser_render_common)
+      end
+
+      pipeline :browser_render_common do
         # detect Accept headers to serve JSON or HTML
         plug(Bonfire.UI.Common.Plugs.MaybeActivityRedirectPlug)
 
@@ -244,6 +262,15 @@ defmodule Bonfire.UI.Common.Routes do
         plug(:browser_accepts)
         plug(:browser_security)
         plug(:browser_ui)
+      end
+
+      # Like :browser, but the locale is always detected from the browser (see :browser_render_detect). For controller routes that a logged-in user can reach and that do not load the user.
+      pipeline :browser_guest do
+        plug(:basic)
+        plug(:browser_accepts)
+        plug(:browser_security)
+        plug(:browser_render_detect)
+        plug(:fetch_live_flash)
       end
 
       # Like :browser but without CSRF — for routes that receive cross-origin
@@ -389,11 +416,16 @@ defmodule Bonfire.UI.Common.Routes do
 
       # pages anyone can view
       scope "/" do
-        pipe_through(:browser)
+        pipe_through(:browser_guest)
 
         get("/guest/crash_test", Bonfire.UI.Common.ErrorController, :crash_test)
         get("/guest/error", Bonfire.UI.Common.ErrorController, as: :error_guest)
         get("/guest/error/:code", Bonfire.UI.Common.ErrorController, as: :error_guest)
+      end
+
+      # LiveView pages anyone can view: their on_mount sets the locale, so they stay on :browser
+      scope "/" do
+        pipe_through(:browser)
 
         live("/crash_test", Bonfire.UI.Common.ErrorLive)
         live("/crash_test/:component", Bonfire.UI.Common.ErrorLive)
@@ -405,7 +437,7 @@ defmodule Bonfire.UI.Common.Routes do
 
       # pages anyone can view, with throttling
       scope "/" do
-        pipe_through([:throttle_forms, :browser])
+        pipe_through([:throttle_forms, :browser_guest])
 
         post(
           "/LiveHandler/:live_handler",

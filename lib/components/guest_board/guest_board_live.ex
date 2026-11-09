@@ -59,7 +59,7 @@ defmodule Bonfire.UI.Common.GuestBoardLive do
   @doc "The instance's configured community links, as `{name, url}` tuples."
   def community_links do
     Config.get([:ui, :theme, :instance_welcome, :links], [])
-    |> Bonfire.UI.Common.WidgetCommunityLinksLive.normalize_links()
+    |> Bonfire.UI.Common.WidgetCommunityLinksLive.localised_links()
   end
 
   @doc """

@@ -3,6 +3,7 @@ defmodule Bonfire.UI.Common.ExtraLocalesLive do
 
   alias Bonfire.Common.Settings
   alias Bonfire.Common.Localise
+  alias Bonfire.Common.Localise.Gettext.Coverage
 
   @doc """
   Component for managing extra locales (languages user understands).

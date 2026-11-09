@@ -80,7 +80,9 @@
         {#for {l, name} <- Localise.known_locales_names_localised()}
           {#if not Enum.any?([@primary_locale | @extra_locales], fn o -> o == l or to_string(o) == l end)}
             <option value={to_string(l)}>
-              {name}
+              {name}{#case Coverage.translated_label(l)}
+                {#match nil}{#match label}
+                  ·               {/case}
             </option>
           {/if}
         {/for}

@@ -4,6 +4,9 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
   @behaviour Bonfire.Common.ConfigModule
   def config_module, do: true
 
+  # The names of the community links in the default config (`instance_welcome: [links: ...]`) are plain keys there, since a config file cannot call `l/1`. They are shown through `WidgetCommunityLinksLive.localised_links/1`, which looks them up in this extension's domain, so they are declared here for `mix gettext.extract` to find.
+  localise_strings(["About Bonfire", "Forum", "Community Chat", "Contribute"])
+
   @doc """
   NOTE: you can override this default config in your app's `runtime.exs`, by placing similarly-named config keys below the `Bonfire.Common.Config.LoadExtensionsConfig.load_configs()` line
   """

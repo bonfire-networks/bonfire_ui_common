@@ -11,7 +11,9 @@
       value={to_string(l)}
       selected={if to_string(@locale) == to_string(l), do: "selected"}
     >
-      {name}
+      {name}{#case Coverage.translated_label(l)}
+        {#match nil}{#match label}
+          ·       {/case}
     </option>
   {#else}
     <option>No localisation available</option>

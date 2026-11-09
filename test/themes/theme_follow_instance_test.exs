@@ -138,6 +138,8 @@ defmodule Bonfire.UI.Common.ThemeFollowInstanceTest do
   end
 
   test "instance mode cascades to users who follow it" do
+    # a theme name is only kept if it is in the configured list, so this one has to be listed
+    Process.put([:bonfire, :ui, :themes_light], ["light", "instance-light"])
     put_instance_theme(:preferred, :light)
     put_instance_theme(:instance_theme_light, "instance-light")
 
@@ -146,6 +148,17 @@ defmodule Bonfire.UI.Common.ThemeFollowInstanceTest do
     config = ThemeHelper.theme_config(%{current_user: user})
     assert config.mode == :fixed
     assert config.theme == "instance-light"
+  end
+
+  test "an instance theme name that isn't in the configured list falls back to the first listed theme" do
+    # a stale name would match no CSS, so the first listed theme is used instead
+    Process.put([:bonfire, :ui, :themes_light], ["light", "other-light"])
+    put_instance_theme(:preferred, :light)
+    put_instance_theme(:instance_theme_light, "no-such-theme")
+
+    config = ThemeHelper.theme_config(%{current_user: fake_user!()})
+    assert config.mode == :fixed
+    assert config.theme == "light"
   end
 
   test "an administrator can reset an instance colour and radius individually" do

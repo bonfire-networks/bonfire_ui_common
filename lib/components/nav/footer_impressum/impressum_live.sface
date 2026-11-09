@@ -25,7 +25,7 @@
     <ul class="flex flex-wrap gap-x-3 gap-y-0.5 mt-2">
       {#for {name, link} <-
           @links ||
-            Bonfire.UI.Common.WidgetCommunityLinksLive.normalize_links(
+            Bonfire.UI.Common.WidgetCommunityLinksLive.localised_links(
               Config.get([:ui, :theme, :instance_welcome, :links], [])
             )}
         <li><a class="link-hover whitespace-nowrap" href={link} target="_blank" rel="noopener">{name}<#Icon
