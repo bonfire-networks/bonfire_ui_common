@@ -459,6 +459,30 @@ label[for],
     );
   }
 
+  /* A tappable feed post: the tint paints on touch, before the preview's open handler runs (measured 275–390 ms of no feedback at 4x CPU without it). `:active` also matches ancestors, so a press on a control inside the post (the same ones `shouldHandlePreviewOpen` ignores) leaves the post untinted. Its own rule: a browser without `:has()` drops the whole selector list it sits in, which would take the tint above with it. */
+  .activity.cursor-pointer:active:not(
+      :has(
+          :is(
+              a,
+              button,
+              form,
+              input,
+              select,
+              textarea,
+              figure,
+              article,
+              .dropdown,
+              [data-id="activity_actions"]
+            ):active
+        )
+    ) {
+    background-color: color-mix(
+      in oklch,
+      var(--color-base-content) 8%,
+      transparent
+    );
+  }
+
   /* Scale only on opt-in compact targets: on rows and wrappers it shifts the edges and jitters text, like a list row being scrolled past. Triggers are excluded as in the .btn rule above. */
   .tap-feedback:active:not(:disabled):not([aria-disabled="true"]):not(
       [aria-expanded],
@@ -1240,7 +1264,10 @@ hex-input::part(input) {
 }
 
 @utility nav-row {
-  @apply !flex w-full min-w-0 items-center !gap-2.5 !min-h-9 !px-2 !py-1 rounded-selector leading-5;
+  @apply !flex w-full min-w-0 items-center !gap-2.5 !min-h-8 !px-2 !py-1 rounded-selector leading-5;
+  @media (pointer: coarse) {
+    @apply !min-h-9;
+  }
 }
 
 /* Icon slot, as wide as a group avatar, so labels line up. */

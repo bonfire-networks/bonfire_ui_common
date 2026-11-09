@@ -43,9 +43,16 @@ function makePreviewElement(display = "none") {
 
 function loadPreviewState(
   currentHref = "http://bonfire.test/feed/local",
-  { previewElement = null, triggers = () => [], performance: performanceOverride } = {}
+  {
+    previewElement = null,
+    mainElement = null,
+    triggers = () => [],
+    performance: performanceOverride
+  } = {}
 ) {
   const store = new Map();
+  const frames = [];
+  const scrollCalls = [];
   const timers = new Map();
   const mutationObservers = [];
   const windowEvents = listenerBag();
@@ -80,6 +87,7 @@ function loadPreviewState(
   };
 
   const document = {
+    location,
     body: {},
     documentElement: { scrollHeight: 0, clientHeight: 0 },
     addEventListener(type, fn) {
@@ -93,8 +101,8 @@ function loadPreviewState(
     querySelectorAll() {
       return triggers();
     },
-    getElementById() {
-      return null;
+    getElementById(id) {
+      return id === "main-content" ? mainElement : null;
     }
   };
 
@@ -134,6 +142,9 @@ function loadPreviewState(
     console,
     Date,
     document,
+    requestAnimationFrame(callback) {
+      frames.push(callback);
+    },
     JSON,
     MutationObserver,
     Number,
@@ -163,7 +174,9 @@ function loadPreviewState(
         return { toString: () => "" };
       },
       location,
-      scrollTo() {}
+      scrollTo(x, y) {
+        scrollCalls.push([x, y]);
+      }
     }
   };
 
@@ -171,7 +184,7 @@ function loadPreviewState(
 
   const runnableSource = hookSource.replace(
     /export\s+\{[^}]+\};\s*$/,
-    "globalThis.__previewState = previewState; globalThis.__previewUtils = utils; globalThis.__PreviewContainer = PreviewContainer;"
+    "globalThis.__previewState = previewState; globalThis.__previewUtils = utils; globalThis.__PreviewContainer = PreviewContainer; globalThis.__PreviewActivity = PreviewActivity;"
   );
 
   vm.runInNewContext(runnableSource, context, {
@@ -182,6 +195,10 @@ function loadPreviewState(
     previewState: context.__previewState,
     previewUtils: context.__previewUtils,
     PreviewContainer: context.__PreviewContainer,
+    PreviewActivity: context.__PreviewActivity,
+    document,
+    frames,
+    scrollCalls,
     history,
     location,
     mutationObservers,
@@ -505,4 +522,157 @@ test("server re-rendering a client-closed overlay gets re-hidden and re-notified
     JSON.parse(JSON.stringify(hook.pushedEvents)),
     [{ target: "#preview_content", event: "close", params: {} }]
   );
+});
+
+function makeMainElement(classes = []) {
+  const classSet = new Set(classes);
+  return {
+    classSet,
+    classList: {
+      remove(name) {
+        classSet.delete(name);
+      }
+    },
+    style: {
+      removeProperty(name) {
+        delete this[name];
+      }
+    }
+  };
+}
+
+// A feed post's hook, tapped once on its text.
+function tapFeedPost(loaded) {
+  const trigger = { getAttribute: () => "/post/01TEST" };
+  const el = {
+    dataset: { href: "/post/01TEST" },
+    addEventListener() {},
+    querySelector: (selector) => (selector === ".open_preview_link" ? trigger : null)
+  };
+  loaded.window.liveSocket = { isConnected: () => true };
+
+  const hook = { ...loaded.PreviewActivity, el, pushedEvents: [] };
+  hook.pushEventTo = (target, event, params) => hook.pushedEvents.push({ target, event, params });
+  hook.mounted();
+
+  const target = { closest: (selector) => (selector === "article" ? el : null) };
+  hook.handleClick({ target, button: 0, defaultPrevented: false, preventDefault() {} });
+  return hook;
+}
+
+function runFrame(frames) {
+  frames.splice(0).forEach((callback) => callback());
+}
+
+test("a tap paints the loading state first and resets the scroll after that paint", () => {
+  const previewElement = makePreviewElement("none");
+  const loaded = loadPreviewState("http://bonfire.test/feed/local", { previewElement });
+
+  const hook = tapFeedPost(loaded);
+
+  assert.equal(previewElement.style.display, "block");
+  assert.equal(hook.pushedEvents[0].event, "open");
+  assert.deepEqual(loaded.scrollCalls, []);
+
+  // the first frame callback runs before the paint, so it must not reset yet
+  runFrame(loaded.frames);
+  assert.deepEqual(loaded.scrollCalls, []);
+
+  runFrame(loaded.frames);
+  assert.deepEqual(loaded.scrollCalls, [[0, 0]]);
+});
+
+test("the page under the preview gets display:none, and closing restores it", () => {
+  const mainElement = makeMainElement();
+  const { previewUtils } = loadPreviewState("http://bonfire.test/feed/local", {
+    previewElement: makePreviewElement("none"),
+    mainElement
+  });
+
+  previewUtils.showLoadingState();
+  // not visibility:hidden, which is inherited and restyles the whole feed
+  assert.equal(mainElement.style.display, "none");
+  assert.equal(mainElement.style.visibility, undefined);
+
+  previewUtils.hidePreviewNow();
+  assert.equal(mainElement.style.display, undefined);
+});
+
+test("closing also drops the server's hidden class, so the feed doesn't wait for the server", () => {
+  // the open patch swaps our inline display:none for `hidden: @hide_main`
+  const mainElement = makeMainElement(["flex", "hidden"]);
+  const { previewUtils } = loadPreviewState("http://bonfire.test/feed/local", {
+    previewElement: makePreviewElement("block"),
+    mainElement
+  });
+
+  previewUtils.hidePreviewNow();
+
+  assert.deepEqual([...mainElement.classSet], ["flex"]);
+});
+
+// An open preview at /post/01TEST, entered from the feed scrolled to `previousScroll`.
+function openPreviewSession(previousScroll, scrollRoot) {
+  const previewElement = makePreviewElement("block");
+  const loaded = loadPreviewState("http://bonfire.test/post/01TEST", {
+    previewElement,
+    mainElement: makeMainElement(["hidden"])
+  });
+  loaded.document.documentElement = scrollRoot;
+  const session = loaded.previewState.save("http://bonfire.test/feed/local", "/post/01TEST", previousScroll);
+  loaded.history.state = loaded.previewState.historyState(session);
+
+  const hook = previewContainerHook(loaded.PreviewContainer);
+  hook.mounted();
+  return { ...loaded, hook, previewElement };
+}
+
+test("Escape restores the feed's scroll once, in the same frame, with no retry when the page is tall enough", () => {
+  const scrollRoot = { scrollHeight: 5000, clientHeight: 900, scrollTop: 0 };
+  const { documentEvents, frames, hook } = openPreviewSession(2500, scrollRoot);
+
+  documentEvents.dispatch("keydown", { key: "Escape", defaultPrevented: false });
+
+  assert.equal(scrollRoot.scrollTop, 2500);
+  assert.equal(frames.length, 0);
+  assert.equal(hook.pushedEvents.filter((p) => p.event === "close").length, 1);
+});
+
+test("a page still too short gets the reachable offset now and the rest on later frames", () => {
+  const scrollRoot = { scrollHeight: 2000, clientHeight: 900, scrollTop: 0 };
+  const { documentEvents, frames } = openPreviewSession(2500, scrollRoot);
+
+  documentEvents.dispatch("keydown", { key: "Escape", defaultPrevented: false });
+  assert.equal(scrollRoot.scrollTop, 1100);
+  assert.equal(frames.length, 1);
+
+  scrollRoot.scrollHeight = 4000;
+  runFrame(frames);
+  assert.equal(scrollRoot.scrollTop, 2500);
+  assert.equal(frames.length, 0);
+});
+
+test("the retry yields once something else moves the page", () => {
+  const scrollRoot = { scrollHeight: 2000, clientHeight: 900, scrollTop: 0 };
+  const { documentEvents, frames } = openPreviewSession(2500, scrollRoot);
+
+  documentEvents.dispatch("keydown", { key: "Escape", defaultPrevented: false });
+  scrollRoot.scrollTop = 300; // the reader scrolled
+  scrollRoot.scrollHeight = 4000;
+  runFrame(frames);
+
+  assert.equal(scrollRoot.scrollTop, 300);
+});
+
+test("while closing, a stale render that re-shows the overlay is re-hidden without a second close", () => {
+  const scrollRoot = { scrollHeight: 5000, clientHeight: 900, scrollTop: 0 };
+  const { documentEvents, hook, previewElement } = openPreviewSession(0, scrollRoot);
+
+  documentEvents.dispatch("keydown", { key: "Escape", defaultPrevented: false });
+  // the reply to "close" renders before the server's hide_main: false
+  previewElement.style.display = "block";
+  hook.updated();
+
+  assert.equal(previewElement.style.display, "none");
+  assert.equal(hook.pushedEvents.filter((p) => p.event === "close").length, 1);
 });
