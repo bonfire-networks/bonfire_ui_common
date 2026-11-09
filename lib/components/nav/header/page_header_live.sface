@@ -3,7 +3,7 @@
     <div data-role="page_header_row" class="flex items-center gap-2 w-full px-4">
       {!-- Back button (when present, all breakpoints) --}
       <div :if={@back} data-role="page_header_back" class="shrink-0 flex items-center">
-        <Bonfire.UI.Common.BackButtonLive back={@back} type={@back_type} />
+        <Bonfire.UI.Common.BackButtonLive back={@back} type={@back_type} patch={@back_patch} />
       </div>
       {!-- Mobile nav toggle (no back, logged in) — hidden on desktop so the title sits flush-left --}
       <!-- <div

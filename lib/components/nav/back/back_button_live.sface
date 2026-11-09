@@ -7,6 +7,10 @@
   >
     <Iconify.iconify icon={@icon} class={@icon_class} />
   </button>
+{#elseif is_binary(@back) and @patch}
+  <LinkPatchLive to={@back} label={l("Go back to the previous page")} class={@class}>
+    <Iconify.iconify icon={@icon} class={@icon_class} />
+  </LinkPatchLive>
 {#elseif is_binary(@back)}
   <LinkLive
     to={@back}

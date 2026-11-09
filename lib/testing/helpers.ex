@@ -212,6 +212,35 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   end
 
   @doc """
+  The `href` of the one element `selector` finds on the static render in a `get_conn_render/2` session, to fetch with `get_conn_render/2` again.
+
+  Clicking the link through `PhoenixTest.click_link/3` goes through `visit/2`, which connects a LiveView, so a guest test reads the href and fetches it instead:
+
+      conn()
+      |> get_conn_render("/users")
+      |> static_href("a[data-id=next_page]")
+  """
+  def static_href(session, selector) do
+    PhoenixTest.unwrap(session, fn conn ->
+      send(
+        self(),
+        {:static_href,
+         conn
+         |> html_response(200)
+         |> Floki.parse_document!()
+         |> Floki.find(selector)
+         |> Floki.attribute("href")}
+      )
+
+      conn
+    end)
+
+    assert_received {:static_href, hrefs}
+    assert [href] = hrefs
+    href
+  end
+
+  @doc """
   The LiveView the composer lives in: the sticky `PersistentLive` child where the page has one, else the page itself.
 
   Read or submit the composer through this rather than the page. A Reply press reaches the composer as a message to that child (`PersistentLive.maybe_send/2`), and `render/1` on the child is a synchronous call, so the message is handled before the read. The page's copy can still show the composer's unopened defaults.

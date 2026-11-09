@@ -69,6 +69,7 @@
                           page_title_context={@page_title_context}
                           show_widgets_toggle={@without_secondary_widgets != true}
                           back={@back}
+                          back_patch={@back_patch}
                           extra={@extra}
                         >
                           <:right_action>

@@ -226,7 +226,8 @@
                   <#Icon iconify="ph:arrow-bend-up-left" class="size-4 shrink-0 text-muted" />
                   {#case reply_to_author(assigns)}
                     {#match %{name: who_name, handle: who_handle}}
-                      <span class="min-w-0 truncate" aria-hidden="true">{l("Reply")}</span>
+                      {!-- the Reply label is a verb, so it uses the shared verb entry, which translates apart from the noun: {l("Reply")} --}
+                      <span class="min-w-0 truncate" aria-hidden="true">{lc("verb: action", "Reply", [], :bonfire_social)}</span>
                       <span class="sr-only">{l("Replying to %{name}", name: who_name || who_handle || l("this post"))}</span>
                   {/case}
                   <#Icon iconify="ph:caret-down" class="size-3.5 shrink-0 text-muted" />

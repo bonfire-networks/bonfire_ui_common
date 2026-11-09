@@ -2,10 +2,8 @@
 <div class="form-control">
   <fieldset class="fieldset">
     <legend class="fieldset-legend text-balance">{@label || l("Other languages I understand")}</legend>
-    <p :if={@extra_locales != []} class="text-muted text-sm text-pretty">{@description ||
-        l(
-          "Order the languages you understand by preference. Content will be shown in the first available language from your list."
-        )}</p>
+    <p :if={@extra_locales != []} class="text-muted text-sm text-pretty">{l("List of other languages you understand, in order of priority.")}
+      {l("Content and user interfaces will be shown in the first available language from your list.")}</p>
   </fieldset>
 
   {#if @extra_locales == []}
@@ -81,8 +79,10 @@
           {#if not Enum.any?([@primary_locale | @extra_locales], fn o -> o == l or to_string(o) == l end)}
             <option value={to_string(l)}>
               {name}{#case Coverage.translated_label(l)}
-                {#match nil}{#match label}
-                  ·               {/case}
+                {#match nil}
+                {#match label}
+                  · {label}
+              {/case}
             </option>
           {/if}
         {/for}

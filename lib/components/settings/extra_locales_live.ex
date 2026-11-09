@@ -9,7 +9,6 @@ defmodule Bonfire.UI.Common.ExtraLocalesLive do
   Component for managing extra locales (languages user understands).
   """
   prop label, :string, default: nil
-  prop description, :string, default: nil
 
   prop extra_locales, :list, required: true
   prop primary_locale, :string, required: true

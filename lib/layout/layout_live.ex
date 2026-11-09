@@ -39,6 +39,8 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop full_width, :boolean, default: false
   prop sidebar_widgets, :list, default: []
   prop back, :any, default: nil
+  # whether `back` is a live patch, see `Bonfire.UI.Common.BackButtonLive`
+  prop back_patch, :boolean, default: false
   prop extra, :string, default: false
   prop page_header_aside, :any, default: nil
   # see `Bonfire.UI.Common.PageHeaderLive`
@@ -112,6 +114,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:page_title_context, fn -> nil end)
     |> assign_new(:inner_content, fn -> nil end)
     |> assign_new(:back, fn -> false end)
+    |> assign_new(:back_patch, fn -> false end)
     |> assign_new(:extra, fn -> nil end)
     |> assign_new(:object_id, fn -> nil end)
     |> assign_new(:post_id, fn -> nil end)

@@ -7,6 +7,8 @@ defmodule Bonfire.UI.Common.PageHeaderLive do
   prop page, :any, default: nil
   prop back, :any, default: nil
   prop back_type, :any, default: nil
+  @doc "Whether `back` is a live patch, see `Bonfire.UI.Common.BackButtonLive`"
+  prop back_patch, :boolean, default: false
   @doc "An avatar before the title, `%{id, src, name, object}`; no `src` draws the object's tile."
   prop page_header_icon, :any, default: nil
 
