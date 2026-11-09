@@ -11,7 +11,8 @@
       value={to_string(l)}
       selected={if to_string(@locale) == to_string(l), do: "selected"}
     >
-      {name}{#case Coverage.translated_label(l)}
+      {!-- the name is wrapped in Unicode isolate marks (U+2068 … U+2069): an option can only hold text, and takes its direction from its first strong letter, so a right-to-left name would reverse the share after it --}
+      {<<0x2068::utf8>> <> name <> <<0x2069::utf8>>}{#case Coverage.translated_label(l)}
         {#match nil}
         {#match label}
           · {label}

@@ -12,6 +12,10 @@ defmodule Bonfire.UI.Common.LocalePickerShareTest do
   @path Path.expand("../support/localisation/coverage.json", __DIR__)
   @full_path Path.expand("../support/localisation/coverage_full.json", __DIR__)
 
+  # Elixir refuses these bidi characters written as-is in source
+  @first_strong_isolate <<0x2068::utf8>>
+  @pop_directional_isolate <<0x2069::utf8>>
+
   setup do
     # per process, so it can't leak into other tests the way a global `Config.put` would
     Process.put([:bonfire_common, Localise, :coverage_path], @path)
@@ -110,5 +114,14 @@ defmodule Bonfire.UI.Common.LocalePickerShareTest do
     assert option_text(doc, @add, "es") =~ "<10% translated"
     assert option_text(doc, @add, "it") =~ "not translated yet"
     assert option_text(doc, @add, "fr-FR") =~ "90% translated"
+  end
+
+  # an option can only hold text (no `<bdi>`), and its direction comes from its first strong letter, so a right-to-left name such as "العربية" would turn "<10% translated" into "translated %10>"
+  test "the language name is isolated in both pickers, so a right-to-left name doesn't reorder the share after it" do
+    isolated =
+      @first_strong_isolate <> "français" <> @pop_directional_isolate <> " · 30% translated"
+
+    assert option_text(user_picker(), @user, "fr") =~ isolated
+    assert option_text(add_picker(), @add, "fr") =~ isolated
   end
 end
