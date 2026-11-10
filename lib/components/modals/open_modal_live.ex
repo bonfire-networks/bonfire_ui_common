@@ -159,10 +159,11 @@ defmodule Bonfire.UI.Common.OpenModalLive do
         previous_scroll: previous_scroll
       )
 
-    send_self(hide_main: true)
-
-    # copy all of this component's assigns to the reusable modal (including slots!)
+    # copy all of this component's assigns to the reusable modal (including slots!). Sent before
+    # `hide_main` so the content ships first; the client hook already hid the page.
     ReusableModalLive.set(assigns(socket))
+
+    send_self(hide_main: true)
 
     {:noreply, socket}
   end

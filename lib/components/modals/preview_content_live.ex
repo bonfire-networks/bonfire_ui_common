@@ -24,9 +24,10 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
   prop modal_class, :string, default: nil
 
   @doc """
-  Additional assigns for the modal
+  What the preview shows, set by `ReusableModalLive.set/1`. `data`, not a prop, so the layout's
+  re-render (which resets props to defaults) doesn't wipe it.
   """
-  prop modal_assigns, :any, default: []
+  data modal_assigns, :any, default: []
 
   @doc """
   Additional attributes to add onto the modal wrapper
@@ -42,6 +43,17 @@ defmodule Bonfire.UI.Common.PreviewContentLive do
   slot cancel_btn
   slot title
   slot extra_contents
+
+  # clear the content whenever hidden (by `close` or a patch navigation), so the next post opened
+  # never shows the last one
+  def update(assigns, socket) do
+    socket = assign(socket, assigns)
+
+    if e(assigns(socket), :show, false),
+      do: {:ok, socket},
+      else:
+        {:ok, assign(socket, modal_assigns: reset_loaded(e(assigns(socket), :modal_assigns, [])))}
+  end
 
   def handle_event("open", params, socket) do
     # When opening the preview, we hide the main content and store navigation info
