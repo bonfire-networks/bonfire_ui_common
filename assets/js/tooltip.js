@@ -11,6 +11,11 @@ import { prefersReducedMotion } from "./motion.js";
 
 let TooltipHooks = {};
 
+// Below `lg` (as the dock, `--mobile-dock-offset` in app.css and the `lg:` utilities) `sheet_on_mobile`
+// dropdowns open as sheets. One query for the whole bundle, made on first use; `.matches` is a cached read.
+let sheetQuery;
+const sheetMatches = () => (sheetQuery ??= window.matchMedia("(max-width: 1023px)")).matches;
+
 TooltipHooks.Tooltip = {
 	mounted() {
 		const tooltipWrapper = this.el;
@@ -25,6 +30,10 @@ TooltipHooks.Tooltip = {
 		const matchTriggerWidth =
 			tooltipWrapper.getAttribute("data-match-trigger-width") === "true";
 		const focusOnOpen = tooltipWrapper.getAttribute("data-focus-on-open");
+		// DropdownLive `sheet_on_mobile`: below lg the panel opens as a bottom sheet. It goes to the
+		// top layer as a popover, so no ancestor's transform, containment or stacking context can trap
+		// it (the drawer, feed cards), and its ::backdrop dims the page.
+		const sheetOnMobile = tooltipWrapper.getAttribute("data-sheet-on-mobile") === "true";
 		const strategy =
 			tooltipWrapper.getAttribute("data-strategy") === "fixed"
 				? "fixed"
@@ -38,6 +47,11 @@ TooltipHooks.Tooltip = {
 		let isButtonFocused = false;
 		let pendingRevealOptions = null;
 		let revealPositionedTooltip = () => {};
+		let sheetOpen = false;
+		const asSheet = () =>
+			sheetOnMobile && typeof tooltip?.showPopover === "function" && sheetMatches();
+		// the page's own overflow, put back when the sheet closes
+		let pageOverflow = null;
 
 		// Instance state for lifecycle methods
 		this.isUpdating = false;
@@ -162,6 +176,14 @@ TooltipHooks.Tooltip = {
 			}
 		};
 
+		// entrance: the hidden state first, a reflow, then the visible state, so the transition runs
+		const animateIn = () => {
+			if (prefersReducedMotion()) return;
+			tooltip.classList.add('tooltip-animated');
+			tooltip.offsetHeight; // Force reflow for animation
+			tooltip.classList.add('tooltip-visible');
+		};
+
 		revealPositionedTooltip = () => {
 			if (!pendingRevealOptions || tooltip.style.display !== 'block') {
 				return;
@@ -174,10 +196,47 @@ TooltipHooks.Tooltip = {
 			if (focus && focusOnOpen) {
 				tooltip.querySelector(focusOnOpen)?.focus({ preventScroll: true });
 			}
-			if (animate && !prefersReducedMotion()) {
-				tooltip.classList.add('tooltip-animated');
-				tooltip.offsetHeight; // Force reflow for animation
-				tooltip.classList.add('tooltip-visible');
+			if (animate) animateIn();
+		};
+
+		// No positioning: the sheet's place comes from `.dropdown-sheet` in app.css.
+		const openSheet = ({ animate, focus }) => {
+			sheetOpen = true;
+			pendingRevealOptions = null;
+			tooltip.classList.add("dropdown-sheet");
+			// placement-specific entrance transforms don't apply to a sheet
+			tooltip.removeAttribute("data-placement");
+			tooltip.setAttribute("popover", "manual");
+			// drop what a desktop open (Floating UI, match_trigger_width) left inline
+			Object.assign(tooltip.style, {
+				position: "", left: "", top: "", width: "", visibility: "",
+				display: "block", pointerEvents: "auto",
+			});
+			if (!tooltip.matches(":popover-open")) tooltip.showPopover();
+			// a sheet is modal: the page behind doesn't scroll
+			if (pageOverflow === null) {
+				pageOverflow = document.documentElement.style.overflow;
+				document.documentElement.style.overflow = "hidden";
+			}
+			syncExpanded(true);
+			// the trigger sits under the backdrop, so focus moves into the sheet
+			if (focus) {
+				const target = (focusOnOpen && tooltip.querySelector(focusOnOpen)) ||
+					tooltip.querySelector("a[href], button:not([disabled]), summary, [tabindex]:not([tabindex='-1'])");
+				target?.focus({ preventScroll: true });
+			}
+			if (animate) animateIn();
+		};
+
+		const closeSheet = () => {
+			if (!sheetOpen) return;
+			sheetOpen = false;
+			if (tooltip.matches(":popover-open")) tooltip.hidePopover();
+			tooltip.removeAttribute("popover");
+			tooltip.classList.remove("dropdown-sheet");
+			if (pageOverflow !== null) {
+				document.documentElement.style.overflow = pageOverflow;
+				pageOverflow = null;
 			}
 		};
 
@@ -185,6 +244,9 @@ TooltipHooks.Tooltip = {
 		// at the CSS fallback position before Floating UI has anchored it.
 		const displayTooltip = ({ animate = true, focus = true } = {}) => {
 			this.isOpen = true;
+			if (asSheet()) return openSheet({ animate, focus });
+			// the viewport may have crossed the breakpoint since the sheet opened
+			closeSheet();
 			pendingRevealOptions = { animate, focus };
 			tooltip.style.visibility = 'hidden';
 			// before measuring: Floating UI measures from the panel's current offsetParent, so a
@@ -223,6 +285,7 @@ TooltipHooks.Tooltip = {
 			tooltip.style.visibility = '';
 			tooltip.style.pointerEvents = '';
 			tooltip.classList.remove('tooltip-animated');
+			closeSheet();
 			if (this.cleanup) {
 				this.cleanup();
 				this.cleanup = null;
@@ -244,9 +307,10 @@ TooltipHooks.Tooltip = {
 				tooltip.classList.remove('tooltip-visible');
 				syncExpanded(false);
 
+				// the sheet slides back down (app.css `.dropdown-sheet`) before it leaves the top layer
 				const delay =
 					animate && !prefersReducedMotion()
-						? (trigger === "hover" ? 150 : 100)
+						? (sheetOpen ? 200 : trigger === "hover" ? 150 : 100)
 						: 0;
 
 				if (delay === 0) {
@@ -255,6 +319,13 @@ TooltipHooks.Tooltip = {
 					hideTimeout = setTimeout(finishHidingTooltip, delay);
 				}
 			}
+		};
+
+		// a menu item, not a control that expands inside the sheet (`<details>`, `aria-expanded`)
+		const isSheetAction = (target) => {
+			const item = target.closest?.("a[href], button, [phx-click]");
+			return !!item && item !== tooltip && tooltip.contains(item) &&
+				!item.closest("summary") && !item.hasAttribute("aria-expanded");
 		};
 
 		// Event Handlers
@@ -294,6 +365,17 @@ TooltipHooks.Tooltip = {
 			clickOutside: (event) => {
 				if (!tooltip.contains(event.target) && !button.contains(event.target)) {
 					hideTooltip();
+				} else if (sheetOpen && event.target === tooltip) {
+					// a tap on the sheet's ::backdrop targets the panel itself: tell it apart by position
+					const rect = tooltip.getBoundingClientRect();
+					if (event.clientY < rect.top) {
+						hideTooltip();
+						button.focus({ preventScroll: true });
+					}
+				} else if (sheetOpen && isSheetAction(event.target)) {
+					// an item opens a modal or acts in place: a sheet left open in the top layer would
+					// cover it, so it goes at once, without the slide
+					hideTooltip({ animate: false });
 				}
 			},
 			escapeKey: (event) => {

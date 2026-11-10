@@ -113,7 +113,7 @@
             class="xl:hidden btn btn-ghost btn-circle"
             aria-label={l("Open widgets sidebar")}
           >
-            <#Icon iconify="ph:sidebar-simple-fill" class="size-5 text-primary" />
+            <#Icon iconify="ph:sidebar-simple-fill" class="size-5" />
           </label>
         {#elseif @show_right_actions}
           <Bonfire.UI.Common.GuestActionsLive page_header page={@page} />

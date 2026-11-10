@@ -475,8 +475,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-1668x2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
         <link rel="apple-touch-startup-image" href="/pwa/ios/splash/splash-2048x2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 
-        <!-- Browser/PWA chrome color — must stay in sync with theme_color and
-             background_color in pwa/manifest.json (served via PWAController) -->
+        <!-- Browser/PWA chrome color until the script in root.html.heex sets the theme's; keep in sync with theme_color and background_color in pwa/manifest.json -->
         <meta name="theme-color" content="#191e25">
         <meta name="msapplication-navbutton-color" content="#191e25">
         <meta name="msapplication-TileColor" content="#191e25">

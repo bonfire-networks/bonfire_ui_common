@@ -67,6 +67,14 @@ defmodule Bonfire.UI.Common.PWAControllerTest do
       refute Enum.any?(icons, &(&1["src"] == "https://example.com/instance-icon.png"))
     end
 
+    test "declares the instance's language and its text direction" do
+      manifest = manifest_json()
+
+      assert manifest["lang"] ==
+               Bonfire.Common.Localise.default_locale() |> to_string() |> String.replace("_", "-")
+      assert manifest["dir"] in ["ltr", "rtl"]
+    end
+
     test "protocol handlers use schemes browsers accept, and point at the open route" do
       # custom schemes without a `web+` prefix are silently dropped
       for handler <- manifest_json()["protocol_handlers"] do

@@ -195,6 +195,20 @@ html:not([data-ui-preset="typographic"]) {
     border-bottom-color: var(--divider-color);
   }
 
+  /* The mobile dock gets the header's glass at the other edge, with no line above it (as Safari 26's bars). Without backdrop-filter it keeps daisyUI's opaque fill and hairline. */
+  .dock {
+    @supports (backdrop-filter: blur(1px)) {
+      border-top-width: 0;
+      background-color: color-mix(
+        in oklab,
+        var(--color-base-100) 86%,
+        transparent
+      );
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+  }
+
   /* No divider under the page header: once the page scrolls, a soft shadow
      grows down from its edge, densest at the centre, and recedes as you
      scroll back to the top. Browsers without scroll timelines keep the divider. */
@@ -267,6 +281,11 @@ html:not([data-ui-preset="typographic"]) {
       font-size: var(--text-lg);
       line-height: var(--text-lg--line-height);
       font-weight: var(--font-weight-bold);
+
+      /* The mobile header matches the native navigation title size, which sits between the scale's 16 and 18. */
+      @media (max-width: 1023px) {
+        font-size: 17px;
+      }
     }
   }
 

@@ -71,6 +71,25 @@ defmodule Bonfire.UI.Common.LayoutLive do
   # @decorate time()
   # render_sface_or_native(prepare_assigns_fn: :prepare_assigns)
 
+  # which mobile dock tab is the current page, worked out once per render for both its look (`dock-active`) and `aria-current`
+  defp dock_active(%{__context__: context, page: page, selected_tab: selected_tab}) do
+    %{
+      # the dashboard assigns `page: "about"`, so Home also matches by URL
+      home:
+        Bonfire.UI.Common.NavSidebarLive.nav_active?(context, page,
+          pages: ["home"],
+          paths: ["/dashboard"]
+        ),
+      groups: page in [:groups, "groups"],
+      messages: selected_tab in [:messages, "messages"],
+      notifications: page in [:notifications, "notifications"]
+    }
+  end
+
+  @doc "LinkLive `opts` marking a dock tab as the current page for screen readers"
+  def aria_current(true), do: ["aria-current": "page"]
+  def aria_current(_), do: []
+
   def prepare_assigns(assigns) do
     import Bonfire.UI.Common.Timing
 
@@ -136,6 +155,7 @@ defmodule Bonfire.UI.Common.LayoutLive do
     |> assign_new(:sidebar_widgets, fn -> [] end)
     |> assign_new(:preview_sidebar_widgets, fn -> [] end)
     |> assign(:nav_items, nav_items)
+    |> then(&assign(&1, :dock_active, dock_active(&1)))
 
     # |> assign_new(:hero, fn -> nil end)
     # |> assign_new(:custom_page_header, fn -> nil end)

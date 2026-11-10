@@ -52,6 +52,9 @@ defmodule Bonfire.UI.Common.DropdownLive do
   @doc "Disable floating-ui's auto-flip (keep the menu on the requested side)."
   prop no_flip, :boolean, default: false
 
+  @doc "Below `lg`, open as a bottom sheet over a dimmed page instead of a floating panel (tooltip.js, `.dropdown-sheet` in app.css)."
+  prop sheet_on_mobile, :boolean, default: false
+
   @doc "Close the panel when an actionable element inside it is clicked — for select-style dropdowns."
   prop close_on_select, :boolean, default: false
 

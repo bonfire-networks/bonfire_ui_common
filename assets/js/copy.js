@@ -1,8 +1,15 @@
 let CopyHooks = {};
 
+const canShare = typeof navigator.share === "function";
+
+// rows with `data-share` render both labels; app.css shows "Share" under this class (<html> is never patched, so it stays)
+if (canShare) document.documentElement.classList.add("can-share");
+
 CopyHooks.Copy = {
 	mounted() {
 		let { to, clipboardText } = this.el.dataset;
+
+		let share = canShare && "share" in this.el.dataset;
 
 		this.el.addEventListener("click", (ev) => {
 			ev.preventDefault();
@@ -31,7 +38,9 @@ CopyHooks.Copy = {
 				}
 			}
 
-			if (text !== undefined) {
+			if (text === undefined) return;
+
+			let copy = () =>
 				navigator.clipboard.writeText(text).then(() => {
 					let msg = "Copied! 👀";
 					console.log(msg);
@@ -57,7 +66,18 @@ CopyHooks.Copy = {
 							}, 2000);
 						}
 					}
+				}).catch((err) => {
+					// e.g. after a failed share sheet the tap no longer counts, so the browser refuses the clipboard
+					console.warn("Could not copy", err);
+					if (this.flash) this.flash("error", "Could not copy the link");
 				});
+
+			if (share) {
+				navigator.share({ url: text }).catch((err) => {
+					if (err.name !== "AbortError") copy(); // AbortError: the sheet was dismissed
+				});
+			} else {
+				copy();
 			}
 		});
 	},

@@ -59,15 +59,17 @@
     </div>
   </div>
 
-  <!-- {#if current_user_id(@__context__) && @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
-    <div role="search" class="w-full px-6 mb-3 block lg:hidden">
+  {!-- below lg the dock has no Search tab, so the drawer opens with the search bar (not on the search page itself).
+       `px-2` lines its edges up with the nav rows below (`nav_sidebar_sticky_items`); `mt-2 mb-3` leaves 20px to the logo above and to Home below. --}
+  {#if current_user_id(@__context__) && @__context__[:current_view] != Bonfire.Search.Web.SearchLive}
+    <div role="search" class="w-full px-2 mt-2 mb-3 block lg:hidden">
       <StatelessComponent
         module={maybe_component(Bonfire.Search.Web.FormLive, @__context__)}
         id="nav-search-persistent"
         search_limit={5}
       />
     </div>
-  {/if} -->
+  {/if}
 
   {#if current_user_id(@__context__)}
     {#if @__context__[:current_view] not in [

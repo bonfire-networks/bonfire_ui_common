@@ -7,7 +7,7 @@ const source = fs.readFileSync(new URL("../../assets/js/tooltip.js", import.meta
   .replace(/import[\s\S]*?from "[^"]+";/g, "")
   .replace("export { TooltipHooks };", "globalThis.hooks = TooltipHooks;");
 
-function mountDropdown({ bounded = false } = {}) {
+function mountDropdown({ bounded = false, sheet = false, narrow = false } = {}) {
   const boundary = {};
   let middleware;
   let resize;
@@ -22,10 +22,12 @@ function mountDropdown({ bounded = false } = {}) {
       classList: {
         add: (...names) => names.forEach(name => classes.add(name)),
         remove: (...names) => names.forEach(name => classes.delete(name)),
+        contains: name => classes.has(name),
       },
       getAttribute: name => attrs[name] ?? null,
       setAttribute: (name, value) => { attrs[name] = value; },
       hasAttribute: name => name in attrs,
+      removeAttribute: name => { delete attrs[name]; },
       addEventListener: (name, fn) => listeners.set(name, fn),
       removeEventListener: name => listeners.delete(name),
       dispatch: (name, event = {}) => listeners.get(name)?.(event),
@@ -42,13 +44,22 @@ function mountDropdown({ bounded = false } = {}) {
   const panel = element();
   panel.contains = target => [panel, search, option].includes(target);
   panel.querySelector = selector => selector === "#search" ? search : null;
+  // the top layer, as far as the hook can see it
+  let popoverOpen = false;
+  panel.showPopover = () => { popoverOpen = true; };
+  panel.hidePopover = () => { popoverOpen = false; };
+  panel.matches = selector => selector === ":popover-open" && popoverOpen;
+  panel.getBoundingClientRect = () => ({ top: 500 });
   const root = element({ "data-trigger": "click", "data-close-on-inside-click": "true", "data-focus-on-open": "#search" });
   if (bounded) root.setAttribute("data-boundary", "#composer_container");
+  if (sheet) root.setAttribute("data-sheet-on-mobile", "true");
   root.closest = selector => selector === "#composer_container" ? boundary : null;
   root.querySelector = selector => selector === ".tooltip-button" ? button : panel;
   const document = element();
   const window = {};
   window.parent = window;
+  window.matchMedia = () => ({ matches: narrow });
+  document.documentElement = { style: {} };
   const context = {
     console, document, window, setTimeout, clearTimeout,
     prefersReducedMotion: () => true,
@@ -65,7 +76,7 @@ function mountDropdown({ bounded = false } = {}) {
     hook, button, search, option, panel, document, boundary,
     middleware: () => middleware, resize: () => resize(), observed: () => resize !== undefined,
     disconnected: () => disconnected,
-    focused: () => focused, positions: () => positions,
+    focused: () => focused, positions: () => positions, popoverOpen: () => popoverOpen,
     async open() { button.dispatch("click"); await Promise.resolve(); },
     async patch() {
       hook.beforeUpdate();
@@ -147,4 +158,38 @@ test("bounded menus size to available space and update when their container resi
   assert.ok(ui.positions() > positions);
   ui.hook.destroyed();
   assert.equal(ui.disconnected(), true);
+});
+
+test("a sheet-on-mobile menu opens as a bottom sheet on a narrow screen, without positioning", async () => {
+  const ui = mountDropdown({ sheet: true, narrow: true });
+  await ui.open();
+  assert.equal(ui.popoverOpen(), true);
+  assert.equal(ui.panel.classList.contains("dropdown-sheet"), true);
+  assert.equal(ui.panel.style.display, "block");
+  assert.equal(ui.button.getAttribute("aria-expanded"), "true");
+  assert.equal(ui.positions(), 0, "a sheet is placed by CSS, not Floating UI");
+  ui.hook.destroyed();
+});
+
+test("a sheet-on-mobile menu keeps the floating panel on a wide screen", async () => {
+  const ui = mountDropdown({ sheet: true, narrow: false });
+  await ui.open();
+  assert.equal(ui.popoverOpen(), false);
+  assert.equal(ui.panel.classList.contains("dropdown-sheet"), false);
+  assert.ok(ui.positions() > 0);
+  ui.hook.destroyed();
+});
+
+test("a tap on the sheet's backdrop closes it; a tap inside does not", async () => {
+  const ui = mountDropdown({ sheet: true, narrow: true });
+  await ui.open();
+  // both target the panel: a ::backdrop tap reports the popover itself
+  ui.document.dispatch("click", { target: ui.panel, clientY: 600 });
+  assert.equal(ui.popoverOpen(), true);
+  ui.document.dispatch("click", { target: ui.panel, clientY: 100 });
+  assert.equal(ui.popoverOpen(), false);
+  assert.equal(ui.panel.hasAttribute("popover"), false);
+  assert.equal(ui.panel.classList.contains("dropdown-sheet"), false);
+  assert.notEqual(ui.panel.style.display, "block");
+  ui.hook.destroyed();
 });

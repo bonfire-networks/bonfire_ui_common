@@ -83,6 +83,7 @@ defmodule Bonfire.UI.Common.SEOImage do
   ## Options
     * `:cache_dir` / `:public_path` - where rendered PNGs are written and served from
     * `:fetch_source` - a 1-arity fetcher to use instead of `Bonfire.Common.HTTP`
+    * `:always_render` - render a raster big enough to use as-is too, so the result is always a 512px PNG of known size (the PWA manifest needs one); an icon hosted elsewhere stays as-is
     * plus anything `Bonfire.Common.Cache.maybe_apply_cached/3` understands (e.g. `cache: false`)
   """
   def social_icon_url(icon, opts \\ [])
@@ -112,7 +113,7 @@ defmodule Bonfire.UI.Common.SEOImage do
       opts
       # the cache dir is part of the key so that callers pointing at their own dir (i.e. tests)
       # cannot be served a URL under somebody else's
-      |> Keyword.put(:cache_key, "social_icon_url:#{cache_dir(opts)}:#{icon_url}")
+      |> Keyword.put(:cache_key, "social_icon_url:#{cache_dir(opts)}:#{always_render?(opts)}:#{icon_url}")
       |> Keyword.put_new(:expire, @resolve_cache_ttl)
     )
   end
@@ -132,7 +133,7 @@ defmodule Bonfire.UI.Common.SEOImage do
 
     cond do
       is_binary(local_path) ->
-        with {:ok, bytes} <- File.read(local_path), do: classify_source(icon_url, bytes)
+        with {:ok, bytes} <- File.read(local_path), do: classify_source(icon_url, bytes, opts)
 
       # a URL on our own host that maps to no file on disk: fetching it would be this instance
       # calling itself mid-render, so leave it alone rather than pay for that (and its timeouts)
@@ -140,7 +141,7 @@ defmodule Bonfire.UI.Common.SEOImage do
         {:ok, :as_is}
 
       svg_url?(icon_url) ->
-        with {:ok, bytes} <- fetch_source(icon_url, opts), do: classify_source(icon_url, bytes)
+        with {:ok, bytes} <- fetch_source(icon_url, opts), do: classify_source(icon_url, bytes, opts)
 
       # A raster hosted elsewhere is taken at face value: fetching it just to measure it would
       # put a third-party HTTP round trip on the render path, for a URL an admin set by hand.
@@ -153,8 +154,8 @@ defmodule Bonfire.UI.Common.SEOImage do
   # og:image. The rendered PNG is named after the source's contents, so it is stable across
   # nodes and deploys, and never stale — which a name derived from the URL alone would not be,
   # for a flavour that ships `/images/logo.svg` and updates it in place.
-  defp classify_source(icon_url, bytes) do
-    if svg_url?(icon_url) or too_small_for_social?(bytes),
+  defp classify_source(icon_url, bytes, opts) do
+    if svg_url?(icon_url) or always_render?(opts) or too_small_for_social?(bytes),
       do: {:ok, {bytes, Bonfire.Common.Text.hash(bytes, algorithm: :sha256)}},
       else: {:ok, :as_is}
   end
@@ -175,6 +176,55 @@ defmodule Bonfire.UI.Common.SEOImage do
     end
   end
 
+  @doc """
+  A maskable variant of an icon `social_icon_url/2` rendered: the icon inside the middle 80% (the safe zone Android's round and squircle masks keep) on an opaque `:background`, rendered once next to the source PNG. `nil` for any other icon, or when it can't be rendered. Memoised like `social_icon_url/2`, failures included, so a broken render isn't retried on every manifest request.
+  """
+  def maskable_icon_url(icon_url, opts \\ []) when is_binary(icon_url) do
+    public_path = Keyword.get(opts, :public_path, @instance_icon_public_path)
+    path = to_string(URI.parse(icon_url).path)
+
+    if String.starts_with?(path, public_path <> "/instance-icon-") and
+         not String.ends_with?(path, "-maskable.png") do
+      background = Keyword.get(opts, :background, "#191e25")
+
+      case Cache.maybe_apply_cached(
+             &prepare_maskable_icon/4,
+             [path, public_path, background, opts],
+             opts
+             |> Keyword.put(:cache_key, "maskable_icon_url:#{cache_dir(opts)}:#{background}:#{path}")
+             |> Keyword.put_new(:expire, @resolve_cache_ttl)
+           ) do
+        {:ok, url} ->
+          url
+
+        error ->
+          warn(error, "Could not render a maskable instance icon")
+          nil
+      end
+    end
+  end
+
+  defp prepare_maskable_icon(path, public_path, background, opts) do
+    filename = Path.basename(path, ".png") <> "-maskable.png"
+    cached_path = Path.join(cache_dir(opts), filename)
+
+    if File.regular?(cached_path) do
+      {:ok, public_icon_url(public_path, filename)}
+    else
+      with :ok <- ensure_renderer_available(),
+           {:ok, bytes} <- File.read(Path.join(cache_dir(opts), Path.basename(path))),
+           {:ok, _path} <-
+             render_square_png(bytes, cached_path, @instance_icon_size,
+               inner: round(@instance_icon_size * 0.8),
+               background: background
+             ) do
+        {:ok, public_icon_url(public_path, filename)}
+      end
+    end
+  end
+
+  defp always_render?(opts), do: opts[:always_render] == true
+
   defp public_icon_url(public_path, filename) do
     public_path
     |> Path.join(filename)
@@ -183,8 +233,10 @@ defmodule Bonfire.UI.Common.SEOImage do
 
   defp cache_dir(opts), do: Keyword.get(opts, :cache_dir, @instance_icon_cache_dir)
 
-  # Renders image bytes onto a square transparent PNG canvas and writes it atomically.
-  defp render_square_png(bytes, output_path, size) do
+  # Renders image bytes onto a square transparent PNG canvas and writes it atomically. `:inner` draws the image smaller in the middle, `:background` fills the canvas (opaque).
+  defp render_square_png(bytes, output_path, size, opts \\ []) do
+    inner = Keyword.get(opts, :inner, size)
+
     temporary_path =
       "#{output_path}.#{System.unique_integer([:positive, :monotonic])}.png"
 
@@ -195,8 +247,8 @@ defmodule Bonfire.UI.Common.SEOImage do
            # the result would instead blow up whatever its intrinsic size happens to be — an icon
            # authored as `viewBox="0 0 32 32"` renders at 32px and upscales to a blurry mess.
            {:ok, resized_image} <-
-             Vix.Vips.Operation.thumbnail_buffer(bytes, size,
-               height: size,
+             Vix.Vips.Operation.thumbnail_buffer(bytes, inner,
+               height: inner,
                size: :VIPS_SIZE_BOTH
              ),
            {:ok, resized_image} <- ensure_alpha(resized_image),
@@ -206,6 +258,7 @@ defmodule Bonfire.UI.Common.SEOImage do
                y: :center,
                background: {:black, opacity: :transparent}
              ),
+           {:ok, square_image} <- maybe_flatten(square_image, opts[:background]),
            {:ok, _image} <- Image.write(square_image, temporary_path),
            :ok <- replace_file(temporary_path, output_path) do
         {:ok, output_path}
@@ -214,6 +267,9 @@ defmodule Bonfire.UI.Common.SEOImage do
     File.rm(temporary_path)
     result
   end
+
+  defp maybe_flatten(image, nil), do: {:ok, image}
+  defp maybe_flatten(image, background), do: Image.flatten(image, background: background)
 
   defp svg_url?(url) when is_binary(url) do
     case URI.parse(url).path do
@@ -250,7 +306,9 @@ defmodule Bonfire.UI.Common.SEOImage do
   end
 
   defp static_mounts do
-    [{"/data/uploads/", "data/uploads"}] ++ Enum.map(static_app_dirs(), &{"/", &1})
+    # uploads are linked through `Bonfire.Files.redirect_entrepot_url/2`; only the `local` storage is on disk
+    [{"/data/uploads/", "data/uploads"}, {"/files/redir/local/data/uploads/", "data/uploads"}] ++
+      Enum.map(static_app_dirs(), &{"/", &1})
   end
 
   defp static_app_dirs do

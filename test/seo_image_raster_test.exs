@@ -97,6 +97,29 @@ if Code.ensure_loaded?(Image) do
                  icon_url
       end
 
+      test "renders even a large raster with always_render, for the PWA manifest" do
+        {icon_url, _path} = local_instance_icon(600)
+        cache_dir = tmp_cache_dir()
+
+        url =
+          SEOImage.social_icon_url(icon_url, cache: false, cache_dir: cache_dir, always_render: true)
+
+        assert url =~ "/instance-icon-"
+        [png_path] = Path.wildcard(Path.join(cache_dir, "*.png"))
+        assert {:ok, image} = Image.open(png_path)
+        assert {512, 512, _bands} = Image.shape(image)
+      end
+
+      test "reads an upload linked through the local storage redirect from disk" do
+        # how an uploaded instance icon is linked (`Bonfire.Files.redirect_entrepot_url/2`)
+        {_icon_url, path} = local_instance_icon(142)
+        redir_url = SEOImage.absolute_url("/files/redir/local/#{path}")
+
+        url = SEOImage.social_icon_url(redir_url, cache: false, cache_dir: tmp_cache_dir())
+
+        assert url =~ "/instance-icon-"
+      end
+
       test "re-renders when the file behind an unchanged icon URL changes" do
         cache_dir = tmp_cache_dir()
         {icon_url, path} = local_instance_icon(142)
@@ -111,6 +134,44 @@ if Code.ensure_loaded?(Image) do
 
         refute second == first
         assert String.ends_with?(second, ".png")
+      end
+    end
+
+    describe "maskable instance icon" do
+      test "draws the rendered icon inside the safe zone, on an opaque background" do
+        cache_dir = tmp_cache_dir()
+
+        svg = """
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+          <rect width="100" height="100" fill="#e63027"/>
+        </svg>
+        """
+
+        opts = [cache: false, cache_dir: cache_dir, fetch_source: fn _url -> {:ok, svg} end]
+        icon_url = SEOImage.social_icon_url("https://example.com/square.svg", opts)
+
+        maskable_url = SEOImage.maskable_icon_url(icon_url, cache_dir: cache_dir, background: "#191e25")
+
+        assert String.ends_with?(maskable_url, "-maskable.png")
+
+        [png_path] = Path.wildcard(Path.join(cache_dir, "*-maskable.png"))
+        assert {:ok, image} = Image.open(png_path)
+        assert {512, 512, _bands} = Image.shape(image)
+        # the corners, which masks cut away, are the background, and opaque
+        assert {:ok, [0x19, 0x1E, 0x25 | _]} = Image.get_pixel(image, 2, 2)
+        # the icon sits in the middle 80%: its edge is ~51px in, not at the border
+        assert {:ok, [r, g, b | _]} = Image.get_pixel(image, 256, 256)
+        assert r > 200 and g < 80 and b < 80
+        assert {:ok, [0x19, 0x1E, 0x25 | _]} = Image.get_pixel(image, 256, 40)
+
+        # rendered once: a second call reuses the file
+        File.write!(png_path, "reused")
+        assert maskable_url == SEOImage.maskable_icon_url(icon_url, cache_dir: cache_dir)
+        assert File.read!(png_path) == "reused"
+      end
+
+      test "is nil for an icon it didn't render" do
+        assert SEOImage.maskable_icon_url("https://example.com/instance-icon.png") == nil
       end
     end
 

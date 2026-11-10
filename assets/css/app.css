@@ -1789,6 +1789,52 @@ dialog.motion-modal.motion-sheet:not([open]) .modal-box {
   );
 }
 
+/* DropdownLive `sheet_on_mobile`, below lg (the breakpoint is in tooltip.js): the panel opens as a
+   popover (top layer) with this class, pinned to the bottom edge like the profile card's sheet.
+   Motion matches `.motion-sheet` (350 ms in on --ease-sheet, 200 ms out); reduced motion gets no
+   `tooltip-animated`, so no slide. */
+.dropdown-panel.dropdown-sheet {
+  position: fixed;
+  inset: auto 0 0 0;
+  margin: 0;
+  width: auto;
+  max-width: none;
+  max-height: 85dvh;
+  overflow-y: auto;
+  /* a long list stops at its ends instead of scrolling the page behind (tooltip.js also locks it) */
+  overscroll-behavior: contain;
+  border-width: var(--border) 0 0;
+  border-radius: var(--radius-box) var(--radius-box) 0 0;
+  padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom));
+}
+
+/* the backdrop fades with the slide, like `.motion-sheet`'s */
+.dropdown-panel.dropdown-sheet::backdrop {
+  background: oklch(0% 0 0 / 0.4);
+  transition: opacity 200ms var(--ease-out-expo);
+}
+
+.tooltip.dropdown-sheet.tooltip-animated::backdrop {
+  opacity: 0;
+}
+
+.tooltip.dropdown-sheet.tooltip-animated.tooltip-visible::backdrop {
+  opacity: 1;
+  transition: opacity 350ms var(--ease-sheet);
+}
+
+.tooltip.dropdown-sheet.tooltip-animated {
+  opacity: 1;
+  transform: none;
+  translate: 0 100%;
+  transition: translate 200ms var(--ease-out-expo);
+}
+
+.tooltip.dropdown-sheet.tooltip-animated.tooltip-visible {
+  translate: 0 0;
+  transition: translate 350ms var(--ease-sheet);
+}
+
 .main_object_in_thread {
   @apply !pl-5;
 }
@@ -2898,9 +2944,15 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   visibility: hidden;
 }
 
-/* matched old→new, so it stays put instead of fading with the page */
+/* matched old→new, so it stays put instead of fading with the page. Height from `--dock-height` (daisyUI hardcodes 4rem), so the dock and the room reserved for it can't drift apart. */
 .dock {
   view-transition-name: bonfire-dock;
+  height: calc(var(--dock-height) + env(safe-area-inset-bottom));
+}
+
+/* The current tab: daisyUI's underline takes currentColor, so both turn primary. */
+.dock > .dock-active {
+  color: var(--color-primary);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2912,9 +2964,9 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
 }
 
 :root {
-  /* daisyUI's `.dock` is `calc(4rem + safe-area)` tall. Declare here so the space the dock occupies and the space content reserves for it can't drift apart.
-  Zero by default: only pages that actually render a dock reserve room for it. */
-  --dock-height: 4rem;
+  /* The dock's height above the bottom safe area (52px, near iOS's 49pt tab bar); `.dock` and the reserve below both read it.
+  The offset is zero by default: only pages that actually render a dock reserve room for it. */
+  --dock-height: 3.25rem;
   --mobile-dock-offset: 0px;
 }
 
@@ -2985,3 +3037,7 @@ body:has(
 @media (max-width: 768px), (pointer: coarse) and (max-width: 1024px) {
   .composer-fullscreen-button { display: none; }
 }
+
+/* `copy.js` adds `can-share` to <html> where the browser has a share sheet; a `data-share` row then reads "Share" instead of "Copy link" */
+:root:not(.can-share) [data-share] [data-role="share-label"],
+:root.can-share [data-share] [data-role="label"] { display: none; }

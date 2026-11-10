@@ -57,6 +57,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     {raw(Bonfire.Common.Config.endpoint_module().include_assets(@conn, :top))}
+    <%!-- The status bar takes the theme's base-100, set here (after the stylesheets and the theme-color meta) so a light theme never loads under a dark bar. --%>
+    <script>
+      (function() {
+        var el = document.documentElement;
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (!meta || !window.CSS || !CSS.supports) return;
+        var ctx = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+        if (!ctx) return;
+        function sync() {
+          var color = getComputedStyle(el).getPropertyValue("--color-base-100").trim();
+          if (!color || !CSS.supports("color", color)) return;
+          ctx.clearRect(0, 0, 1, 1);
+          ctx.fillStyle = "#010203"; // marker: a colour the canvas can't parse leaves fillStyle unchanged
+          ctx.fillStyle = color; // themes are oklch, which not every browser takes in theme-color: read it back as rgb
+          if (ctx.fillStyle === "#010203") return; // keep the server's fallback rather than paint black
+          ctx.fillRect(0, 0, 1, 1);
+          var p = ctx.getImageData(0, 0, 1, 1).data;
+          meta.setAttribute("content", "rgb(" + p[0] + "," + p[1] + "," + p[2] + ")");
+        }
+        sync();
+        new MutationObserver(sync).observe(el, { attributes: true, attributeFilter: ["data-theme"] }); // not `style`: the composer and resize handlers write CSS vars there many times a second
+        window.__bonfireSyncThemeColor = sync;
+      })();
+    </script>
 
     <%= if assigns[:no_index] do %>
       <meta name="robots" content="noindex" />
@@ -114,6 +138,7 @@
           });
         }
         window.__bonfireCustomVars = applied;
+        if (window.__bonfireSyncThemeColor) window.__bonfireSyncThemeColor();
       });
       window.addEventListener("phx:set_icon_weight", function(e) {
         var el = document.documentElement;

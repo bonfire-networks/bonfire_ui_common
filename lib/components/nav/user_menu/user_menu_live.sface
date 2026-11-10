@@ -1,6 +1,7 @@
 <Dropdown
   id="user_more_menu_links"
   position="top-start"
+  sheet_on_mobile
   wrapper_class="sticky bottom-0 z-sticky mt-auto shrink-0 bg-rail before:pointer-events-none before:absolute before:inset-x-0 before:-top-6 before:h-6 before:bg-linear-to-t before:from-rail before:to-transparent"
   match_trigger_width
   panel_class="min-w-64 max-w-[calc(100vw-2rem)]"

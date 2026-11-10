@@ -270,48 +270,51 @@
 
   <div :if={!@hide_mobile_dock} class="dock z-fixed lg:hidden text-base-content">
     {#if current_user(@__context__)}
-      <label for="sidebar-drawer" aria-label={l("Open navigation sidebar")} class="">
-        <div class="relative">
-          {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
-            <div class="size-9 rounded-full ring-[0.7px] ring-primary flex items-center justify-center">
-              <#Icon iconify="ph:gear-fill" class="size-5 text-primary" />
-            </div>
-          {#else}
-            <Bonfire.UI.Common.AvatarLive
-              ring
-              bg_class="rounded-full"
-              title={e(current_user(@__context__), :profile, :name, "Anon")}
-              class="inline-block object-cover cursor-pointer rounded-full size-9"
-              src={Media.avatar_url(current_user(@__context__))}
-              user_id={current_user_id(@__context__)}
-              is_remote={false}
-            />
-          {/if}
-          <span
-            aria-hidden="true"
-            class="rounded-full bg-base-100 absolute -right-1 -bottom-1 leading-none"
-          >
-            <#Icon iconify="ph:list-bold" class="size-4 text-primary" />
-          </span>
-        </div>
-      </label>
-
+      {!-- a named dashboard route if a flavour has one, else `/dashboard` (the default route is unnamed, and `path(:home)` is `/`, which only redirects there); `@dock_active` comes from `layout_live.ex` --}
       <LinkLive
-        to={~p"/search"}
-        class={
-          "dock-active":
-            @selected_tab in [:search, "Bonfire.Data.Identity.User", "Bonfire.Data.Social.Post"]
-        }
+        to={path(:dashboard) || "/dashboard"}
+        class={"tap-feedback", "dock-active": @dock_active.home}
+        opts={aria_current(@dock_active.home)}
       >
-        <#Icon iconify="ph:magnifying-glass-fill" class="size-6" aria-hidden="true" />
-        <span class="sr-only">{l("Search")}</span>
+        <#Icon iconify="ph:house-fill" class="size-6" aria-hidden="true" />
+        <span class="sr-only">{l("Home")}</span>
       </LinkLive>
+
+      {#if extension_enabled?(:bonfire_ui_groups, @__context__)}
+        <LinkLive
+          to="/groups"
+          class={"tap-feedback", "dock-active": @dock_active.groups}
+          opts={aria_current(@dock_active.groups)}
+        >
+          <#Icon iconify="ph:users-three-fill" class="size-6" aria-hidden="true" />
+          <span class="sr-only">{l("Groups")}</span>
+        </LinkLive>
+      {#else}
+        <LinkLive
+          to={~p"/messages"}
+          class={"tap-feedback", "dock-active": @dock_active.messages}
+          opts={aria_current(@dock_active.messages)}
+        >
+          <span class="relative inline-flex">
+            <#Icon iconify="ph:tray-fill" class="size-6" aria-hidden="true" />
+            <span class="absolute -top-2 -right-2">
+              <StatefulComponent
+                id="dock-messages-badge"
+                module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
+                feed_id={e(current_user(@__context__), :character, :inbox_id, nil)}
+              />
+            </span>
+          </span>
+          <span class="sr-only">{l("Messages")}</span>
+        </LinkLive>
+      {/if}
 
       <button
         type="button"
         phx-click={Bonfire.UI.Common.SmartInput.LiveHandler.open(%JS{}, %{})}
         phx-target="#smart_input"
         aria-label={l("Compose")}
+        class="tap-feedback"
       >
         <#Icon iconify="ph:note-pencil-fill" class="size-6" aria-hidden="true" />
         <span class="sr-only">{l("Compose")}</span>
@@ -319,7 +322,8 @@
 
       <LinkLive
         to={~p"/notifications"}
-        class={"dock-active": @page in [:notifications, "notifications"]}
+        class={"tap-feedback", "dock-active": @dock_active.notifications}
+        opts={aria_current(@dock_active.notifications)}
       >
         <span class="relative inline-flex">
           <#Icon iconify="ph:bell-fill" class="size-6" aria-hidden="true" />
@@ -334,26 +338,30 @@
         <span class="sr-only">{l("Notifications")}</span>
       </LinkLive>
 
-      {#if extension_enabled?(:bonfire_ui_groups, @__context__)}
-        <LinkLive to="/groups" class={"dock-active": @page in [:groups, "groups"]}>
-          <#Icon iconify="ph:users-three-fill" class="size-6" aria-hidden="true" />
-          <span class="sr-only">{l("Groups")}</span>
-        </LinkLive>
-      {#else}
-        <LinkLive to={~p"/messages"} class={"dock-active": @selected_tab in [:messages, "messages"]}>
-          <span class="relative inline-flex">
-            <#Icon iconify="ph:tray-fill" class="size-6" aria-hidden="true" />
-            <span class="absolute -top-2 -right-2">
-              <StatefulComponent
-                id="dock-messages-badge"
-                module={maybe_component(Bonfire.UI.Common.BadgeCounterLive, @__context__)}
-                feed_id={e(current_user(@__context__), :character, :inbox_id, nil)}
-              />
-            </span>
-          </span>
-          <span class="sr-only">{l("Messages")}</span>
-        </LinkLive>
-      {/if}
+      {!-- "You": opens the navigation drawer, which holds everything the dock doesn't (profile, settings, search below lg) --}
+      <label
+        for="sidebar-drawer"
+        aria-label={l("Open navigation sidebar")}
+        class="tap-feedback"
+      >
+        {!-- 28px: a little over the 24px tab icons, as native tab bars size a profile picture; `shrink-0` wrapper so it centres in its slot (AvatarLive's default is `w-full`) --}
+        {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
+          <div class="size-7 rounded-full ring-[0.7px] ring-primary flex items-center justify-center">
+            <#Icon iconify="ph:gear-fill" class="size-4 text-primary" />
+          </div>
+        {#else}
+          <Bonfire.UI.Common.AvatarLive
+            ring
+            bg_class="rounded-full"
+            wrapper_class="border-0 avatar !flex shrink-0"
+            title={e(current_user(@__context__), :profile, :name, "Anon")}
+            class="inline-block object-cover cursor-pointer rounded-full size-7"
+            src={Media.avatar_url(current_user(@__context__))}
+            user_id={current_user_id(@__context__)}
+            is_remote={false}
+          />
+        {/if}
+      </label>
     {#else}
       <div class="flex flex-row items-center justify-between basis-full max-w-none gap-3 mb-0">
         <Bonfire.UI.Common.LogoLinkLive

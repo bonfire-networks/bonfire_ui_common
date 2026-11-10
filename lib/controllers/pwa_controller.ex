@@ -34,6 +34,7 @@ defmodule Bonfire.UI.Common.PWAController do
     manifest =
       @base_manifest
       |> Map.merge(%{"name" => name, "short_name" => name})
+      |> Map.merge(language())
       |> maybe_put_icon(custom_icon_url())
 
     case present(Config.get([:ui, :theme, :instance_description])) do
@@ -63,26 +64,42 @@ defmodule Bonfire.UI.Common.PWAController do
     end
   end
 
+  # the instance's default, not the viewer's: the manifest is cached publicly
+  defp language do
+    locale = Bonfire.Common.Localise.default_locale()
+
+    # `{:error, _}` for a locale the Cldr backend isn't configured with
+    dir =
+      case Bonfire.Common.Localise.Cldr.Locale.script_direction_from_locale(locale) do
+        :rtl -> "rtl"
+        _ -> "ltr"
+      end
+
+    # a BCP 47 tag, which browsers require: Gettext-style ids use `_` (`pt_BR`)
+    %{"lang" => locale |> to_string() |> String.replace("_", "-"), "dir" => dir}
+  end
+
   defp present(value) when is_binary(value) and value != "", do: value
   defp present(_), do: nil
 
   defp custom_icon_url do
     if SEOImage.custom_instance_icon?(Config.get([:ui, :theme, :instance_icon])),
-      do: SEOImage.instance_icon_url()
+      do: SEOImage.instance_icon_url(always_render: true)
   end
 
   # Replaces the bundled icons rather than adding to it: browsers pick by size and Android prefers
   # `maskable`, so a Bonfire icon left in the list would win on some devices.
   defp maybe_put_icon(manifest, icon_url) when is_binary(icon_url) do
     if String.starts_with?(to_string(URI.parse(icon_url).path), @rendered_icon_prefix) do
-      Map.put(manifest, "icons", [
-        %{
-          "src" => icon_url,
-          "sizes" => @rendered_icon_size,
-          "type" => "image/png",
-          "purpose" => "any"
-        }
-      ])
+      icon = %{"src" => icon_url, "sizes" => @rendered_icon_size, "type" => "image/png"}
+
+      maskable =
+        case SEOImage.maskable_icon_url(icon_url, background: manifest["background_color"]) do
+          nil -> []
+          url -> [Map.merge(icon, %{"src" => url, "purpose" => "maskable"})]
+        end
+
+      Map.put(manifest, "icons", [Map.put(icon, "purpose", "any") | maskable])
     else
       manifest
     end
