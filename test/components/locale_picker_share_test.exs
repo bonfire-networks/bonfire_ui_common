@@ -82,6 +82,15 @@ defmodule Bonfire.UI.Common.LocalePickerShareTest do
     assert option_text(user_picker(), @user, "it") =~ "not translated yet"
   end
 
+  # Afrikaans is compiled for dates and numbers in the test environment but has no translation catalogue
+  test "a language with no catalogue is listed in both pickers, as not translated yet" do
+    # prove the positive first: a language with a catalogue and no entry in the file is listed the same way
+    assert option_text(user_picker(), @user, "it") =~ "not translated yet"
+
+    assert option_text(user_picker(), @user, "af") =~ "not translated yet"
+    assert option_text(add_picker(), @add, "af") =~ "not translated yet"
+  end
+
   test "the user's language picker shows nothing for English" do
     doc = user_picker()
 

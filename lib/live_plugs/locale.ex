@@ -92,6 +92,19 @@ defmodule Bonfire.UI.Common.LivePlugs.Locale do
       _ -> nil
     end
 
+    # a language with no catalogue (eg. one compiled only for dates and numbers) has no text, so the text is in the best match among the languages the browser sent that have one
+    with %{} = tag <- conn.private[:cldr_locale],
+         false <-
+           Gettext.get_locale(Bonfire.Common.Localise.Gettext)
+           |> String.split(["_", "-"])
+           |> List.first() == tag.language do
+      conn
+      |> Plug.Conn.get_req_header("accept-language")
+      |> List.first()
+      |> Bonfire.Common.Localise.accept_language_extras()
+      |> Bonfire.Common.Localise.put_text_locale()
+    end
+
     # the visitor's other languages from `Accept-Language`, for strings the page language lacks: in this process for controller pages and the first render of a LiveView page
     conn = Bonfire.Common.Localise.put_fallback_extras_from_conn(conn)
 
@@ -115,16 +128,24 @@ defmodule Bonfire.UI.Common.LivePlugs.Locale do
 
   def preferred_locales(%{__struct__: Bonfire.Data.Identity.Account} = account, default, extras) do
     scoped_preferred_locales([current_account: account], default, extras)
+    |> uniq_languages()
   end
 
   def preferred_locales(%{} = current_user, default_locale, browser_extras) do
     scoped_preferred_locales([current_user: current_user], default_locale, browser_extras)
+    |> uniq_languages()
   end
 
   def preferred_locales(_, default_locale, browser_extras) do
-    browser_extras ++
-      [default_locale || Bonfire.Common.Localise.default_locale()] ++
-      instance_extra_locales()
+    (browser_extras ++
+       [default_locale || Bonfire.Common.Localise.default_locale()] ++
+       instance_extra_locales())
+    |> uniq_languages()
+  end
+
+  # each language once, the first (most preferred) entry staying, where `fr_FR` and `fr-FR` are the same
+  defp uniq_languages(locales) do
+    Enum.uniq_by(locales, &(&1 |> to_string() |> String.replace("_", "-")))
   end
 
   # a session with an account and no user (a session with a user gets their own language, which the LiveView's other plugs load)

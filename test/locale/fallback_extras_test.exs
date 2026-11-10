@@ -73,6 +73,17 @@ defmodule Bonfire.UI.Common.FallbackExtrasTest do
       request("fr-FR,en;q=0.9,it;q=0.8")
       assert get_text(@italian_only) == @italian_only
     end
+
+    # Afrikaans is compiled for dates and numbers in the test environment but has no translation catalogue
+    test "a first language with no catalogue gives the text in the next one that has" do
+      request("af, fr;q=0.9")
+      assert Gettext.get_locale(Bonfire.Common.Localise.Gettext) == "fr"
+    end
+
+    test "control: a first language with a catalogue is the text language" do
+      request("it, fr;q=0.9")
+      assert Gettext.get_locale(Bonfire.Common.Localise.Gettext) == "it"
+    end
   end
 
   defp session_cookies(conn) do
@@ -310,7 +321,7 @@ defmodule Bonfire.UI.Common.FallbackExtrasTest do
     end
   end
 
-  # the `lang` of the page's root element: the base language of the locale its LiveView rendered in (`fr` for `fr_FR`)
+  # the `lang` of the page's root element: the Gettext locale its LiveView rendered in, with `-` for `_` (`fr-FR` for `fr_FR`)
   defp page_lang(conn) do
     [_, lang] = Regex.run(~r/<html[^>]*\slang="([^"]*)"/, conn.resp_body)
     lang
@@ -323,22 +334,30 @@ defmodule Bonfire.UI.Common.FallbackExtrasTest do
       user = user_with("fr_FR", [], account)
       conn = request_as(user, account, "it", "/account/password/change")
       assert conn.status == 200
-      assert page_lang(conn) == "fr"
+      assert page_lang(conn) == "fr-FR"
       assert Gettext.get_locale(Bonfire.Common.Localise.Gettext) == "fr_FR"
+    end
+
+    test "a user whose language has no catalogue gets the page language of the next one that has" do
+      account = fake_account!()
+      user = user_with("af", ["fr"], account)
+      conn = request_as(user, account, "it", "/account/password/change")
+      assert conn.status == 200
+      assert page_lang(conn) == "fr"
     end
 
     test "an account-only session keeps the account's language" do
       account = account_with("fr_FR", [])
       conn = account_only_request(account, "it", "/account/password/change")
       assert conn.status == 200
-      assert page_lang(conn) == "fr"
+      assert page_lang(conn) == "fr-FR"
       assert Gettext.get_locale(Bonfire.Common.Localise.Gettext) == "fr_FR"
     end
 
     test "an account-only session with extras keeps the account's language and its extras" do
       account = account_with("fr_FR", ["it"])
       conn = account_only_request(account, "es", "/account/password/change")
-      assert page_lang(conn) == "fr"
+      assert page_lang(conn) == "fr-FR"
       assert Gettext.get_locale(Bonfire.Common.Localise.Gettext) == "fr_FR"
       assert get_text(@italian_only) == @italian_only_it
     end
@@ -354,7 +373,7 @@ defmodule Bonfire.UI.Common.FallbackExtrasTest do
       fake_user!(account)
       conn = account_only_request(account, "it", "/switch-user")
       assert conn.status == 200
-      assert page_lang(conn) == "fr"
+      assert page_lang(conn) == "fr-FR"
       assert Gettext.get_locale(Bonfire.Common.Localise.Gettext) == "fr_FR"
     end
 

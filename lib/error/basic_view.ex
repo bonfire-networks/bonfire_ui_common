@@ -53,7 +53,7 @@ defmodule Bonfire.UI.Common.BasicView do
     ~H"""
     <!DOCTYPE html>
     <html
-      lang={Bonfire.Common.Localise.get_locale_id() |> to_string()}
+      lang={Bonfire.Common.Localise.html_lang()}
       class={assigns[:class] || "bg-base-100 text-base-content"}
       data-theme={@theme.theme}
       data-theme-mode={@theme.mode}
