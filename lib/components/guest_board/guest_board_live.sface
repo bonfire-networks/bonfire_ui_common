@@ -66,9 +66,9 @@
 
   {!-- side padding only once the sheet fits with a margin: `md` for 720px, `sm` for the 580px form sheet, which also takes its border early --}
   <div class={
-    "mx-auto flex w-full flex-col gap-4 px-3 pb-10 pt-4 sm:pb-12 sm:pt-6",
-    "max-w-180 md:px-0": @size != :form,
-    "max-w-145 sm:px-0": @size == :form
+    "mx-auto flex w-full flex-col gap-4 px-3 pb-10 sm:pb-12",
+    "max-w-180 md:px-0 md:pt-6": @size != :form,
+    "max-w-145 sm:px-0 sm:pt-6": @size == :form
   }>
     {#if @bare}
       <#slot />
