@@ -616,8 +616,12 @@ textarea:focus-visible {
   margin: 0 auto;
 }
 
+/* `dropdown` excluded: its `.dropdown > :not(:has(~ [class*=dropdown-content])):focus`
+   made every class change anywhere restyle the whole page (~110 ms per change at 4x CPU,
+   on every LiveView patch that touches a class). Menus use DropdownLive instead. */
 @plugin "daisyui" {
   themes: false;
+  exclude: dropdown;
 }
 
 

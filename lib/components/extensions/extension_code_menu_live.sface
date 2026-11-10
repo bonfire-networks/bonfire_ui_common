@@ -1,23 +1,22 @@
 {#case get_link(@dep)}
   {#match code_link}
-    <div aria-haspopup="true" class="dropdown dropdown-end">
-      <label tabindex="0" class="btn btn-sm btn-circle btn-ghost">
+    <Bonfire.UI.Common.DropdownLive
+      id={"extension_code_menu_#{e(@dep, :app, nil)}"}
+      position="bottom-end"
+      trigger_class="btn btn-sm btn-circle btn-ghost"
+      label={l("Code")}
+      panel_class="!w-60 menu-lg"
+    >
+      <:trigger>
         <#Icon iconify="ph:dots-three-outline-vertical-fill" class="size-4" />
-      </label>
-      <ul
-        tabindex="0"
-        role="menu"
-        aria-orientation="vertical"
-        class="mt-1 z-50 rounded-box dropdown_actions w-60 menu-lg menu dropdown-content bg-base-100 border border-divider"
-      >
-        <li class="text-sm" :if={code_link}><a href={code_link} target="_blank" class="text-sm">{l("View code repository")}</a></li>
-        <li class="text-sm"><LinkLive to={get_code_link(@dep)} class="text-sm">{l("View source code")}</LinkLive></li>
-        <li class="text-sm"><LinkLive to={get_version_link(@dep)} class="text-sm">{l("View source code diff")}</LinkLive></li>
-        <li class="text-sm"><LinkLive to={"#{get_code_link(@dep)}?from=compiled"} class="text-sm">{l("View compiled code")}</LinkLive></li>
-        {#case get_link(@dep)}
-          {#match version_link}
-            <li :if={code_link != version_link}><a href={version_link} target="_blank" class="btn btn-outline btn-sm">{l("View code changes")}</a></li>
-        {/case}
-      </ul>
-    </div>
+      </:trigger>
+      <li class="text-sm" :if={code_link}><a href={code_link} target="_blank" class="text-sm">{l("View code repository")}</a></li>
+      <li class="text-sm"><LinkLive to={get_code_link(@dep)} class="text-sm">{l("View source code")}</LinkLive></li>
+      <li class="text-sm"><LinkLive to={get_version_link(@dep)} class="text-sm">{l("View source code diff")}</LinkLive></li>
+      <li class="text-sm"><LinkLive to={"#{get_code_link(@dep)}?from=compiled"} class="text-sm">{l("View compiled code")}</LinkLive></li>
+      {#case get_link(@dep)}
+        {#match version_link}
+          <li :if={code_link != version_link}><a href={version_link} target="_blank" class="btn btn-outline btn-sm">{l("View code changes")}</a></li>
+      {/case}
+    </Bonfire.UI.Common.DropdownLive>
 {/case}
