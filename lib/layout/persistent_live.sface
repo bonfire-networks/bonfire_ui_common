@@ -8,19 +8,23 @@
     <div class="pt-safe w-full">
       {#if current_user_id(@__context__)}
         <div class="flex flex-col w-full">
-          {!-- mobile: one 56px row, 32px logo + instance name left, icon-only ghost compose right
+          {!-- mobile: one 56px row, 40px logo + instance name and domain left, icon-only ghost compose right
                (the dock has the primary compose, so the drawer one stays quiet).
                lg: stacked, 70² logo aligned to the
                page-header, then a full-width compose that shares the nav rows' highlight edges --}
           <div class="flex items-center justify-between gap-3 h-14 lg:h-auto lg:flex-col lg:items-stretch lg:justify-start lg:gap-0">
             <div class="flex items-center min-w-0 lg:pt-4">
+              {!-- mobile: a workspace header, 40px logo beside the name over the domain; the logo spans both
+                   lines of the grid, its left edge and the name's start match the nav icon and label columns --}
               <Bonfire.UI.Common.LogoLinkLive
                 href="/"
-                container_class="flex items-center gap-3 min-w-0 cursor-pointer"
-                image_class="size-8 lg:size-17.5"
+                container_class="max-lg:grid max-lg:grid-cols-[auto_minmax(0,1fr)] max-lg:gap-x-2.5 flex items-center min-w-0 cursor-pointer"
+                image_class="size-10 row-span-2 lg:size-17.5"
                 with_name
-                name_class="lg:hidden min-w-0 truncate text-base font-bold text-base-content"
-              />
+                name_class="lg:hidden min-w-0 truncate self-end text-[17px] leading-tight font-semibold text-base-content"
+              >
+                <span class="lg:hidden min-w-0 truncate self-start text-xs text-muted">{base_domain()}</span>
+              </Bonfire.UI.Common.LogoLinkLive>
             </div>
             <div class="shrink-0 lg:-mx-2 lg:pb-2 lg:pt-8">
               <Bonfire.UI.Common.SmartInputContainerLive

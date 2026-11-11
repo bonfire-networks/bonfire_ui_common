@@ -157,6 +157,11 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        user_ip: user_ip,
        #  connect_params: connect_params,
        client_reading_positions: connect_param_map(connect_params["reading_pos"]),
+       # `feed_rejoin` (bonfire_live.js, never stored) maps each feed on the page to the post it shows, or "" at its top: a rejoin loads those feeds in the join itself, from that post, so they don't come back empty
+       client_feed_resume: connect_param_map(connect_params["feed_rejoin"]),
+       client_feeds_rejoined: connect_param_names(connect_params["feed_rejoin"]),
+       # LiveView counts this page's joins in `_mounts`: above 0 this mount is a reconnect, not a first visit
+       socket_rejoined?: is_integer(connect_params["_mounts"]) and connect_params["_mounts"] > 0,
        client_push_active: Bonfire.UI.Common.Notifications.client_push_active(connect_params),
        csrf_socket_token: connect_params["_csrf_token"],
        # Phoenix LV sets this on live navigations; we keep just the path so
@@ -195,6 +200,11 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   end
 
   defp connect_param_map(_), do: %{}
+
+  defp connect_param_names(%{} = feeds),
+    do: feeds |> Map.keys() |> Enum.filter(&is_binary/1) |> Enum.take(@max_client_reading_positions)
+
+  defp connect_param_names(_), do: []
 
   defp connect_param_entry({feed_name, cursor}) when is_binary(feed_name) and is_binary(cursor) do
     if Bonfire.Common.Types.is_ulid?(cursor) do

@@ -1265,18 +1265,25 @@ hex-input::part(input) {
   background-position: calc(var(--spacing) * 5 - 0.5px) 0; /* under the group icon centre */
   background-size: 1px 100%;
   background-repeat: no-repeat;
+  @media (pointer: coarse) {
+    background-position: calc(var(--spacing) * 6 - 0.5px) 0; /* touch avatars are 32px */
+  }
 }
 
+/* Touch rows are 40px with 32px avatars and icon slots, so the drawer reads calm at regular weight. */
 @utility nav-row {
   @apply !flex w-full min-w-0 items-center !gap-2.5 !min-h-8 !px-2 !py-1 rounded-selector leading-5;
   @media (pointer: coarse) {
-    @apply !min-h-9;
+    @apply !min-h-10;
   }
 }
 
 /* Icon slot, as wide as a group avatar, so labels line up. */
 @utility nav-icon {
   @apply size-6 shrink-0 flex items-center justify-center;
+  @media (pointer: coarse) {
+    @apply size-8;
+  }
 }
 
 /* Touch screens get a larger label; desktop sidebars stay compact at 14px. */

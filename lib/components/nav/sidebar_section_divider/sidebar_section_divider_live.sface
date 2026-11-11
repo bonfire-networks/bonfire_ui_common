@@ -14,4 +14,9 @@
       {#match _}
     {/case}
   {#match _}
+    <div
+      class="hidden [@media(pointer:coarse)]:block mt-3 mb-0 mx-2"
+      style="border-top: 1px solid color-mix(in oklch, var(--color-base-content) 10%, transparent)"
+      aria-hidden="true"
+    />
 {/case}

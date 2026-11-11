@@ -161,6 +161,8 @@ let liveSocket = new LiveSocket(socketPath, Socket, {
     _csrf_token: csrfToken,
     ...(embedToken ? { bonfire_embed_token: embedToken } : {}),
     ...collectBonfireParams(),
+    // the feeds on the page and the post each shows (FeedScrollTracker, read now, never stored); the server uses them only on a rejoin, to bring the feed back in place instead of empty
+    ...(window.Bonfire?.feedRejoinParams?.() || {}),
   }),
   dom: {
     onDocumentPatch,
