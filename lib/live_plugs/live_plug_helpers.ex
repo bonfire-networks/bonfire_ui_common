@@ -202,7 +202,8 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
   defp connect_param_map(_), do: %{}
 
   defp connect_param_names(%{} = feeds),
-    do: feeds |> Map.keys() |> Enum.filter(&is_binary/1) |> Enum.take(@max_client_reading_positions)
+    do:
+      feeds |> Map.keys() |> Enum.filter(&is_binary/1) |> Enum.take(@max_client_reading_positions)
 
   defp connect_param_names(_), do: []
 

@@ -13,6 +13,12 @@ defmodule Bonfire.UI.Common.RenderErrorHandlingTest do
     def render(_assigns), do: raise("KABOOM_FROM_RENDER")
   end
 
+  # these tests check the placeholder for an unexpected error, so they opt out of the test-env re-raise
+  setup do
+    Process.put(:undead_reraise, false)
+    :ok
+  end
+
   test "a component that raises renders the error placeholder rather than breaking its parent" do
     assert render_component(&Exploding.render/1, %{}) =~ ~s(data-role="render_error")
   end
