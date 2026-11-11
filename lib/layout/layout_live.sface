@@ -341,11 +341,7 @@
       </LinkLive>
 
       {!-- "You": opens the navigation drawer, which holds everything the dock doesn't (profile, settings, search below lg) --}
-      <label
-        for="sidebar-drawer"
-        aria-label={l("Open navigation sidebar")}
-        class="tap-feedback"
-      >
+      <label for="sidebar-drawer" aria-label={l("Open navigation sidebar")} class="tap-feedback">
         {!-- 28px: a little over the 24px tab icons, as native tab bars size a profile picture; `shrink-0` wrapper so it centres in its slot (AvatarLive's default is `w-full`) --}
         {#if @__context__[:current_view] in [Bonfire.UI.Me.SettingsLive, Bonfire.UI.Me.InstanceSettingsLive]}
           <div class="size-7 rounded-full ring-[0.7px] ring-primary flex items-center justify-center">

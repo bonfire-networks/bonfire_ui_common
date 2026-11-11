@@ -113,7 +113,10 @@ defmodule Bonfire.UI.Common.SEOImage do
       opts
       # the cache dir is part of the key so that callers pointing at their own dir (i.e. tests)
       # cannot be served a URL under somebody else's
-      |> Keyword.put(:cache_key, "social_icon_url:#{cache_dir(opts)}:#{always_render?(opts)}:#{icon_url}")
+      |> Keyword.put(
+        :cache_key,
+        "social_icon_url:#{cache_dir(opts)}:#{always_render?(opts)}:#{icon_url}"
+      )
       |> Keyword.put_new(:expire, @resolve_cache_ttl)
     )
   end
@@ -141,7 +144,8 @@ defmodule Bonfire.UI.Common.SEOImage do
         {:ok, :as_is}
 
       svg_url?(icon_url) ->
-        with {:ok, bytes} <- fetch_source(icon_url, opts), do: classify_source(icon_url, bytes, opts)
+        with {:ok, bytes} <- fetch_source(icon_url, opts),
+             do: classify_source(icon_url, bytes, opts)
 
       # A raster hosted elsewhere is taken at face value: fetching it just to measure it would
       # put a third-party HTTP round trip on the render path, for a URL an admin set by hand.
@@ -191,7 +195,10 @@ defmodule Bonfire.UI.Common.SEOImage do
              &prepare_maskable_icon/4,
              [path, public_path, background, opts],
              opts
-             |> Keyword.put(:cache_key, "maskable_icon_url:#{cache_dir(opts)}:#{background}:#{path}")
+             |> Keyword.put(
+               :cache_key,
+               "maskable_icon_url:#{cache_dir(opts)}:#{background}:#{path}"
+             )
              |> Keyword.put_new(:expire, @resolve_cache_ttl)
            ) do
         {:ok, url} ->

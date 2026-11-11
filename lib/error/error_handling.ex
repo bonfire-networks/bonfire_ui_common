@@ -71,6 +71,7 @@ defmodule Bonfire.UI.Common.ErrorHandling do
       )
 
     error in FunctionClauseError ->
+      maybe_reraise(error, __STACKTRACE__)
       # debug(error)
       with %{
              arity: arity,
@@ -100,6 +101,8 @@ defmodule Bonfire.UI.Common.ErrorHandling do
       end
 
     error in WithClauseError ->
+      maybe_reraise(error, __STACKTRACE__)
+
       term_error(
         l("Sorry, a condition didn't match `with` any of the data it was expecting"),
         socket,
@@ -109,6 +112,8 @@ defmodule Bonfire.UI.Common.ErrorHandling do
       )
 
     error in CaseClauseError ->
+      maybe_reraise(error, __STACKTRACE__)
+
       term_error(
         l("Sorry, a condition didn't have any `case` matching the data it was expecting"),
         socket,
@@ -118,6 +123,8 @@ defmodule Bonfire.UI.Common.ErrorHandling do
       )
 
     error in MatchError ->
+      maybe_reraise(error, __STACKTRACE__)
+
       term_error(
         l("Sorry, a condition didn't receive data that matched a format it could recognise"),
         socket,
@@ -127,6 +134,7 @@ defmodule Bonfire.UI.Common.ErrorHandling do
       )
 
     error in ArgumentError ->
+      maybe_reraise(error, __STACKTRACE__)
       error(__STACKTRACE__, inspect(error))
 
       term_error(
@@ -138,6 +146,8 @@ defmodule Bonfire.UI.Common.ErrorHandling do
       )
 
     error ->
+      maybe_reraise(error, __STACKTRACE__)
+
       live_exception(
         socket,
         return_key,
@@ -170,6 +180,12 @@ defmodule Bonfire.UI.Common.ErrorHandling do
         error,
         __STACKTRACE__
       )
+  end
+
+  # An unexpected exception (a bug in the code, not a failure the user can cause) is raised again in the test env, so a test cannot pass on a crash that the notice hides. A process can opt out with `Process.put(:undead_reraise, false)`.
+  defp maybe_reraise(error, stacktrace) do
+    if Bonfire.Common.Config.env() == :test and Process.get(:undead_reraise, true) != false,
+      do: reraise(error, stacktrace)
   end
 
   defp with_return_key({:error, e}, _) do

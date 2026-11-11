@@ -72,6 +72,7 @@ defmodule Bonfire.UI.Common.PWAControllerTest do
 
       assert manifest["lang"] ==
                Bonfire.Common.Localise.default_locale() |> to_string() |> String.replace("_", "-")
+
       assert manifest["dir"] in ["ltr", "rtl"]
     end
 

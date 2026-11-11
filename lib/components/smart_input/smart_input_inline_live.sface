@@ -134,7 +134,8 @@
           target={if @showing_within == :thread_embed, do: "_top", else: "_self"}
           id={"inline_composer_login_#{@composer_dom_id}"}
           class="btn btn-sm btn-outline border-primary normal-case text-primary"
-        >{l("Sign in")}</a>
+        >{lc("verb: action", "Reply", [], :bonfire_social)}</a>
+        {!-- >{l("Sign in")}</a> --}
         {!-- <a
           href={if(@showing_within == :thread_embed, do: Bonfire.Common.URIs.base_url(), else: "") <>
             "/signup?" <> URI.encode_query(go: @go_url)}

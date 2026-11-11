@@ -102,7 +102,11 @@ if Code.ensure_loaded?(Image) do
         cache_dir = tmp_cache_dir()
 
         url =
-          SEOImage.social_icon_url(icon_url, cache: false, cache_dir: cache_dir, always_render: true)
+          SEOImage.social_icon_url(icon_url,
+            cache: false,
+            cache_dir: cache_dir,
+            always_render: true
+          )
 
         assert url =~ "/instance-icon-"
         [png_path] = Path.wildcard(Path.join(cache_dir, "*.png"))
@@ -150,7 +154,8 @@ if Code.ensure_loaded?(Image) do
         opts = [cache: false, cache_dir: cache_dir, fetch_source: fn _url -> {:ok, svg} end]
         icon_url = SEOImage.social_icon_url("https://example.com/square.svg", opts)
 
-        maskable_url = SEOImage.maskable_icon_url(icon_url, cache_dir: cache_dir, background: "#191e25")
+        maskable_url =
+          SEOImage.maskable_icon_url(icon_url, cache_dir: cache_dir, background: "#191e25")
 
         assert String.ends_with?(maskable_url, "-maskable.png")
 

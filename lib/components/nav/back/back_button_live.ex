@@ -8,6 +8,7 @@ defmodule Bonfire.UI.Common.BackButtonLive do
   prop patch, :boolean, default: false
   prop icon, :string, default: "carbon:chevron-left"
   prop icon_class, :css_class, default: "size-5"
+
   @doc "Defaults to the page header's other buttons (bell, widgets toggle); the template adds a 44px hit area"
   prop class, :css_class, default: "btn btn-circle btn-ghost z-50 touch-target-expanded"
 end
