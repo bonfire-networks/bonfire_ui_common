@@ -70,11 +70,9 @@
       </span>
     </span>
     <a
-      :if={!@hide_guest_fallback}
+      :if={!@hide_guest_fallback and !socket_connected?(@__context__)}
       data-id="next_page"
       class="normal-case btn btn-primary btn-soft btn-wide"
-      x-cloak
-      x-show="!show"
       href={append_params_uri(
         @current_url || @__context__[:current_url],
         %{
