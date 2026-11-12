@@ -90,7 +90,9 @@ defmodule Bonfire.UI.Common.Plugs.MaybeActivityRedirectPlug do
 
   # the object the page is about, loaded, since its ActivityPub id can't always be told from the URL: a group's, or any actor's made under the ULID scheme, is `/pub/<type>/<ULID>`, and a mirrored one's is its id on its own server. `nil` when the route names nothing we have, and the URL's params are used as before. No boundary check: this only says where its actor or object lives, which that endpoint guards
   defp page_object(params) do
-    case params["id"] || params["username"] do
+    # a topic's page inside its group (`/&group/topic/<topic>`) names the group as `id` and the page's own object as `topic_id`
+    # case params["id"] || params["username"] do
+    case params["topic_id"] || params["id"] || params["username"] do
       id_or_username when is_binary(id_or_username) ->
         if Bonfire.Common.Types.is_uid?(id_or_username),
           do: loaded(id_or_username),
