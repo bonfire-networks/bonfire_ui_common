@@ -430,19 +430,27 @@ defmodule Bonfire.UI.Common.PersistentLive do
     # Open/close the composer via JS (needed because translate-y-100 may have been
     # added client-side by JS.add_class which server re-renders can't remove)
     socket =
-      if smart_input_opts[:open] == true do
-        open_js =
-          %JS{}
-          |> JS.remove_class("translate-y-100", to: "#smart_input_container")
-          |> JS.show(to: "#composer_container", display: "flex")
+      cond do
+        smart_input_opts[:open] == true ->
+          open_js =
+            %JS{}
+            |> JS.remove_class("translate-y-100", to: "#smart_input_container")
+            |> JS.show(to: "#composer_container", display: "flex")
 
-        socket
-        |> Phoenix.LiveView.push_event("js-exec", %{
-          to: "#smart_input_container",
-          js: Jason.encode!(open_js.ops)
-        })
-      else
-        socket
+          Phoenix.LiveView.push_event(socket, "js-exec", %{
+            to: "#smart_input_container",
+            js: Jason.encode!(open_js.ops)
+          })
+
+        # a reset closes it (a post published, a draft discarded): submitting/1 no longer hides it
+        push_action == :reset ->
+          Phoenix.LiveView.push_event(socket, "js-exec", %{
+            to: "#smart_input_container",
+            js: Jason.encode!(JS.add_class("translate-y-100", to: "#smart_input_container").ops)
+          })
+
+        true ->
+          socket
       end
 
     {:noreply, socket}

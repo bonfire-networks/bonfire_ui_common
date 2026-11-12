@@ -341,9 +341,8 @@
                       <:trigger>
                         <span
                           id="selected_language_label"
-                          phx-update="ignore"
                           class="text-xs font-medium text-muted uppercase"
-                        >{locale}</span>
+                        >{e(@smart_input_opts, :selected_language, nil) || locale}</span>
                       </:trigger>
 
                       {#for {lang, name} <-
@@ -401,27 +400,18 @@
                 type="submit"
                 id="submit_btn"
                 x-on:click="$dispatch('submit')"
-                phx-disable-with
+                phx-disable-with={submit_label(e(@smart_input_opts, :create_object_type, nil), @reply_to_id, true)}
                 class="btn btn-primary btn-sm"
                 disabled={@smart_input_opts[:input_status] != :draft}
               >
                 {!-- <#Icon iconify="mdi:email-fast-outline" class="size-4" /> --}
                 <!-- <#Icon iconify="lucide:arrow-up" class="size-4" /> -->
-                {#case e(@smart_input_opts, :create_object_type, nil)}
-                  {#match type when type in [:message, "message"]}
-                    {if @smart_input_opts[:input_status] == :submit, do: l("Sending..."), else: l("Send")}
-                  {#match _ when not is_nil(@reply_to_id) and @reply_to_id != ""}
-                    {!-- A reply: the verb is "Reply", not "Post" (matches the
-                         "Replying to …" banner and avoids clashing with the
-                         create-type "Post" label). --}
-                    {if @smart_input_opts[:input_status] == :submit,
-                      do: l("Replying..."),
-                      else: lc("verb: action", "Reply", [], :bonfire_social)}
-                  {#match _}
-                    {if @smart_input_opts[:input_status] == :submit,
-                      do: l("Posting..."),
-                      else: lc("verb: action", "Post", [], :bonfire_posts)}
-                {/case}
+                <span data-role="submit_offline" class="hidden">{l("Offline")}</span>
+                <span data-role="submit_label">{submit_label(
+                    e(@smart_input_opts, :create_object_type, nil),
+                    @reply_to_id,
+                    @smart_input_opts[:input_status] == :submit
+                  )}</span>
               </button>
             </div>
           </div>

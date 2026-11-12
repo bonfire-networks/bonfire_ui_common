@@ -427,12 +427,13 @@
                   <button
                     id="close_composer_button"
                     type="button"
-                    phx-click={LiveHandler.minimize()}
+                    phx-click={JS.push("Bonfire.UI.Common.SmartInput:close_empty")
+                    |> JS.add_class("translate-y-100", to: "#smart_input_container")}
                     phx-target="#smart_input"
                     aria-label={l("Close composer")}
                     title={l("Close composer")}
                     class="btn btn-sm btn-ghost btn-circle text-muted focus-ring"
-                  ><#Icon iconify="ph:x" class="size-4" /></button>{!-- hides without resetting: input_status lags typing, so text typed since the last validate is kept, not discarded --}
+                  ><#Icon iconify="ph:x" class="size-4" /></button>{!-- empty composer: close_empty resets the options, keeps any text --}
                 {/if}
               </span>
             </div>

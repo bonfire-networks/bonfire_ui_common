@@ -333,6 +333,7 @@ window.addEventListener("phx:smart_input:reset", () => {
   JS_exec_attr_event("#main_smart_input_button", "phx-reset");
 });
 
+
 // Reset composer UI after posting
 window.addEventListener("phx:smart_input:reset_sensitive", () => {
   setCwTextarea("");
@@ -386,13 +387,23 @@ window.addEventListener("phx:smart_input:clear_cw", () => {
 //   )
 // })
 
-// show socket connection status
-// liveSocket
-// 	.getSocket()
-// 	.onOpen(() => JS_exec_attr_event("#connection-status", "js-hide"));
-// liveSocket
-// 	.getSocket()
-// 	.onError(() => JS_exec_attr_event("#connection-status", "js-show"));
+// Socket down: app.css shows the Offline pill (phx-disconnected doesn't run in its portal) and turns Post off
+const setSocketOffline = (offline) => {
+  document.documentElement.toggleAttribute("data-socket-offline", offline);
+  document.getElementById("submit_btn")?.toggleAttribute("aria-disabled", offline);
+};
+// a composer submit sent offline is lost: block it before LiveView (on window) sees it
+document.addEventListener(
+  "submit",
+  (e) => {
+    if (e.target?.id !== "smart_input_form" || !document.documentElement.hasAttribute("data-socket-offline")) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  },
+  true,
+);
+liveSocket.getSocket().onError(() => setSocketOffline(true));
+liveSocket.getSocket().onOpen(() => setSocketOffline(false));
 
 const shouldAutoConnect = !document.querySelector(
   'script[data-live-socket="false"]',

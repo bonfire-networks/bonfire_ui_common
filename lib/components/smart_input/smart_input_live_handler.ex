@@ -170,6 +170,26 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
      |> maybe_focus_summary(show_summary)}
   end
 
+  # X on an empty composer: reset the options, never the text, title or destination (the server may not have the last keystrokes yet)
+  def handle_event("close_empty", _params, socket) do
+    option_defaults =
+      %{create_object_type: nil, selected_language: nil}
+      |> default_smart_input_opts()
+      |> Map.take([:open, :cw, :show_cw, :show_sensitive, :show_summary, :create_object_type, :selected_language])
+
+    reset = [smart_input_opts: Map.merge(e(assigns(socket), :smart_input_opts, %{}), option_defaults)]
+
+    # the audience too, outside a group or thread
+    reset =
+      if is_nil(e(assigns(socket), :context_id, nil)),
+        do: Keyword.put(reset, :to_boundaries, Bonfire.Boundaries.Presets.default_boundaries(assigns(socket))),
+        else: reset
+
+    set(socket, reset)
+
+    {:noreply, assign(socket, reset)}
+  end
+
   def handle_event("clear_sensitive", _params, socket) do
     current_opts = e(assigns(socket), :smart_input_opts, %{})
 
@@ -258,10 +278,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     |> JS.remove_class("!hidden", to: "#main_smart_input_button .submitting_icon")
     |> JS.add_class("btn-disabled", to: "#main_smart_input_button")
     |> JS.set_attribute({"disabled", "true"}, to: "#main_smart_input_button")
-    # Only do client-side minimize via CSS - don't call minimize() which pushes a
-    # select_smart_input event that would be processed AFTER the form submit handler's
-    # reset_input(), overwriting the reset state (input_status, open, etc.)
-    |> JS.add_class("translate-y-100", to: "#smart_input_container")
   end
 
   def reset_submitting(js \\ %JS{}, to \\ "#main_smart_input_button") do
@@ -1453,11 +1469,16 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     )
   end
 
+  @doc "After the server refused what the composer sent: keep the composer as it is and give back the dock button that `submitting/1` disabled."
+  def refused(socket) do
+    push_event(socket, "js-exec-attr-event", %{to: "#main_smart_input_button", attr: "phx-reset"})
+  end
+
   defp do_extra_reset_input(socket) do
     # Note: smart_input:reset events are pushed from PersistentLive (via maybe_send routing)
     # because push_event is scoped to the LiveView that calls it
     socket
-    |> push_event("js-exec-attr-event", %{to: "#main_smart_input_button", attr: "phx-reset"})
+    |> refused()
     |> cancel_all_uploads()
   end
 

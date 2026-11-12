@@ -721,6 +721,19 @@ textarea {
   font-size: var(--text-prose);
 }
 
+/* other text-like inputs: phones only, wider screens keep their size utilities */
+@media (max-width: 639px) {
+  input:not([type]),
+  input[type="search"],
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="week"] {
+    font-size: var(--text-prose);
+  }
+}
+
 textarea {
   border-radius: 4px !important;
 }
@@ -2062,10 +2075,7 @@ div[data-id="object_body"]
     opacity 180ms ease;
 }
 
-/* Mobile viewport-sync: the SmartInputContainer JS hook sets these CSS custom
-   properties on :root when the virtual keyboard opens. Using :root variables
-   instead of inline styles avoids blink from LiveView DOM patches.
-   Fallbacks match the default (no-keyboard) state so this is always safe. */
+/* Mobile viewport-sync: the SmartInputContainer hook sets these on the container while the keyboard is open (fallbacks = no keyboard) */
 @media (max-width: 767px) {
   #smart_input_container {
     height: var(--composer-height, 100%);
@@ -2161,6 +2171,8 @@ div[data-id="object_body"]
 :root[data-composer-keyboard] .uploads_preview:not(.expanded) figure,
 :root[data-composer-keyboard] .uploads_preview:not(.expanded) figure :is(img, div) { width: 2.5rem; height: 2.5rem; }
 :root[data-composer-keyboard] .uploads_preview:not(.expanded) [data-role="upload_filename"] { display: none; }
+/* the keyboard covers the home indicator area */
+:root[data-composer-keyboard] #smart_input .pb-safe { padding-bottom: 0; }
 :root[data-composer-keyboard] .uploads_preview:not(.expanded) [data-role="upload_toggle"] { top: 50%; transform: translateY(-50%); }
 
 #smart_input_container.translate-y-100 {
@@ -2259,9 +2271,9 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   min-height: 0;
 }
 
+/* one scroller for the text: #editor_milkdown_container (nested scrollers lose the caret on iOS) */
 #editor_milkdown_container .ProseMirror {
   flex: 1;
-  overflow-y: auto;
 }
 
 .discussion-preview {
@@ -2631,6 +2643,21 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   to {
     stroke-dashoffset: -20;
   }
+}
+
+/* socket down (bonfire_live.js) */
+:root[data-socket-offline] #connection-status {
+  display: block;
+}
+:root[data-socket-offline] #submit_btn {
+  pointer-events: none;
+  opacity: 0.5;
+}
+:root[data-socket-offline] #submit_btn [data-role="submit_label"] {
+  display: none;
+}
+:root[data-socket-offline] #submit_btn [data-role="submit_offline"] {
+  display: inline;
 }
 
 .delayed-reveal {

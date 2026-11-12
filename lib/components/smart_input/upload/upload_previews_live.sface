@@ -44,6 +44,14 @@
             </div>
           {/if}
         </figure>
+        {!-- files upload on send (auto_upload: false) --}
+        <progress
+          :if={entry.progress > 0 and entry.progress < 100}
+          class="progress progress-primary w-16 h-1 mt-1"
+          value={entry.progress}
+          max="100"
+          aria-label={l("Uploading %{name}", name: entry.client_name)}
+        />
 
         {!-- Details wrapper: transparent in collapsed (contents), flex column in expanded --}
         <div class={[

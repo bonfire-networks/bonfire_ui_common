@@ -135,4 +135,18 @@ defmodule Bonfire.UI.Common.InputControlsLive do
     type = Bonfire.Common.Types.maybe_to_atom(create_object_type) || create_object_type
     ed(config, type, nil) || ed(config, :default, nil) || []
   end
+
+  # Post button label, idle or sending (phx-disable-with)
+  defp submit_label(create_object_type, reply_to_id, sending?) do
+    cond do
+      create_object_type in [:message, "message"] ->
+        if sending?, do: l("Sending..."), else: l("Send")
+
+      not is_nil(reply_to_id) and reply_to_id != "" ->
+        if sending?, do: l("Replying..."), else: lc("verb: action", "Reply", [], :bonfire_social)
+
+      true ->
+        if sending?, do: l("Posting..."), else: lc("verb: action", "Post", [], :bonfire_posts)
+    end
+  end
 end
