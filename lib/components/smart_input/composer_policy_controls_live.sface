@@ -1,0 +1,101 @@
+<div
+  id="composer_policy_controls"
+  role="group"
+  aria-label={l("Audience and permissions")}
+  class="flex min-w-0 flex-1 basis-56 items-center gap-2"
+>{!-- small flex-basis, no inner wrap: chips truncate (group name first) instead of wrapping --}
+  {#if e(@smart_input_opts, :create_object_type, nil) in ["message", :message]}
+    <span
+      class="flex min-h-10 items-center gap-1.5 px-1.5 text-sm text-warning"
+      title={l(
+        "Messages on the fediverse are not currently end-to-end encrypted. Do not share any sensitive information."
+      )}
+    >
+      <#Icon iconify="ph:lock-simple-open-fill" class="size-4" />
+      {l("Not encrypted")}
+    </span>
+    <button
+      :if={!@replying and @showing_within != :messages}
+      id="composer_switch_to_post"
+      type="button"
+      phx-click="Bonfire.UI.Common.SmartInput:switch_to_post"
+      phx-target="#smart_input"
+      class="btn btn-ghost btn-xs text-base-content focus-ring"
+    >
+      <#Icon iconify="ph:note-pencil" class="size-4" />
+      {l("Switch to post")}
+    </button>
+  {#else}
+    {!-- where it's posted, then who can see it (thread embeds don't render this line) --}
+    {#if @replying}
+      <span
+        :if={e(@smart_input_opts, :reply_destination, nil)}
+        id="composer_reply_destination"
+        data-role="reply_destination"
+        class="flex h-8 min-w-0 max-w-full items-center gap-1.5 text-sm text-muted"
+      >
+        <span class="sr-only">{l("Reply in")}</span>
+        <#Icon iconify="ph:chats" class="size-4 shrink-0" />
+        <span class="min-w-0 truncate">
+          <span :if={e(@smart_input_opts, :reply_destination, :group_name, nil)}>{e(@smart_input_opts, :reply_destination, :group_name, nil)} /</span>
+          {e(@smart_input_opts, :reply_destination, :name, nil)}
+        </span>
+      </span>
+    {#else}
+      <StatefulComponent
+        module={maybe_component(Bonfire.UI.Boundaries.AudiencePickerLive, @__context__)}
+        id="composer_audience_picker"
+        mode={:destination}
+        to_boundaries={@to_boundaries}
+        context_group={@context_group}
+        event_target={@event_target}
+      />
+    {/if}
+    {#if @replying}
+      <Bonfire.UI.Common.PolicyDropdownLive
+        id="composer_reply_visibility"
+        label={l("Visible to")}
+        icon="ph:shield-check-duotone"
+        selected_label={SmartInputLive.reply_audience_label(@to_boundaries)}
+        description={l(
+          "Replies use the original post's visibility by default. Narrower audiences still include the original author."
+        )}
+        options={SmartInputLive.reply_audience_options(@smart_input_opts, @to_boundaries)}
+        event="Bonfire.UI.Common.SmartInput:select_reply_audience"
+        option_attr="data-reply-audience"
+        emphasis={SmartInputLive.reply_audience_narrowed?(@to_boundaries)}
+        event_target={@event_target}
+      />
+    {#elseif SmartInputLive.group_context?(@context_group)}
+      <Bonfire.UI.Common.PolicyDropdownLive
+        id="composer_group_visibility"
+        label={l("Visible to")}
+        icon={SmartInputLive.group_audience_icon(@to_boundaries, @exclude_circles, @verb_permissions)}
+        selected_label={SmartInputLive.group_audience_label(@to_boundaries, @exclude_circles, @verb_permissions)}
+        status_opts={["data-role": "group-composer-audience"]}
+        description={l("Choose who can see this post within the group's rules.")}
+        options={SmartInputLive.group_audience_options(@context_group, @to_boundaries)}
+        event="Bonfire.UI.Common.SmartInput:select_group_audience"
+        option_attr="data-group-audience"
+        icon_only={SmartInputLive.topic_context?(@context_group)}
+        event_target={@event_target}
+      />
+    {#else}
+      <StatelessComponent
+        module={maybe_component(Bonfire.UI.Boundaries.SetBoundariesButtonLive, @__context__)}
+        to_boundaries={@to_boundaries}
+        boundary_preset={@boundary_preset}
+        preview_boundary_for_id={@preview_boundary_for_id}
+        preview_boundary_for_username={@preview_boundary_for_username}
+        preview_boundary_verbs={@preview_boundary_verbs}
+        to_circles={@to_circles}
+        exclude_circles={@exclude_circles}
+        verb_permissions={@verb_permissions}
+        setting_boundaries={:create_object}
+        context_id={@context_id}
+        context_group={@context_group}
+        event_target={@event_target}
+      />
+    {/if}
+  {/if}
+</div>

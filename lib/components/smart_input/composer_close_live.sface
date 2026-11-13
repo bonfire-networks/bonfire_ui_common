@@ -1,0 +1,44 @@
+{#if @input_status == :draft}
+  <Bonfire.UI.Common.OpenModalLive
+    id={@id_prefix <> "discard_composer"}
+    without_form
+    reusable_modal_id="persistent_modal"
+    title_text={l("Discard draft?")}
+    cancel_label={l("Keep editing")}
+    open_modal_wrapper_class="flex"
+    open_btn_wrapper_class={["btn btn-sm btn-ghost btn-circle !w-8 text-muted focus-ring", @btn_class]}
+    open_btn_aria_label={l("Close and discard draft")}
+    open_btn_opts={[title: l("Close and discard draft")]}
+  >
+    <div class="mt-3 prose-sm prose">
+      <p>{l("Discard this draft? This cannot be undone.")}</p>
+    </div>
+    <:cancel_btn><button id={@id_prefix <> "keep_editing"} type="button" class="normal-case btn btn-sm btn-ghost">{l("Keep editing")}</button></:cancel_btn>
+    <:open_btn>
+      <#Icon iconify="ph:x" class={@icon_class} />
+    </:open_btn>
+    <:action_btns>
+      <button
+        phx-click={JS.push("Bonfire.UI.Common.SmartInput:reset_to_default")
+        |> JS.push("close", target: "#persistent_modal")
+        |> JS.add_class("translate-y-100", to: "#smart_input_container")}
+        phx-target="#smart_input"
+        type="button"
+        class="normal-case btn btn-sm btn-error"
+      >
+        {l("Discard draft")}
+      </button>
+    </:action_btns>
+  </Bonfire.UI.Common.OpenModalLive>
+{#else}
+  <button
+    id={@id_prefix <> "close_composer_button"}
+    type="button"
+    phx-click={JS.push("Bonfire.UI.Common.SmartInput:close_empty")
+    |> JS.add_class("translate-y-100", to: "#smart_input_container")}
+    phx-target="#smart_input"
+    aria-label={l("Close composer")}
+    title={l("Close composer")}
+    class={["btn btn-sm btn-ghost btn-circle text-muted focus-ring", @btn_class]}
+  ><#Icon iconify="ph:x" class={@icon_class} /></button>
+{/if}

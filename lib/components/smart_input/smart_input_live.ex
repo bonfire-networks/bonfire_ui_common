@@ -303,12 +303,54 @@ defmodule Bonfire.UI.Common.SmartInputLive do
     e(object, :post_content, nil) || object
   end
 
+  @doc "Whether the post being replied to carries an image, for the excerpt's \"Photo\" tag (by type or file extension, as media previews decide)."
+  def reply_peek_image?(activity, object) do
+    (List.wrap(e(activity, :media, nil)) ++ List.wrap(e(object, :media, nil)))
+    |> Enum.any?(
+      &(maybe_apply(Bonfire.UI.Social.Activity.MediaLive, :is_image?, [
+          e(&1, :path, nil),
+          e(&1, :media_type, nil)
+        ]) == true)
+    )
+  end
+
+  @doc "Whether the post being replied to is a poll, for the excerpt's \"Poll\" tag."
+  def reply_peek_poll?(activity, object),
+    do: Bonfire.Common.Types.object_type(object || e(activity, :object, nil)) == Bonfire.Poll.Question
+
   @doc "Whether the replied-to text is long enough to overflow the peek's line clamp (by visible text, not markup)."
   def reply_peek_long?(object) do
     case Bonfire.Common.Text.text_only(e(post_content(object), :html_body, nil)) do
       text when is_binary(text) -> String.length(text) > 220
       _ -> false
     end
+  end
+
+  def render(assigns) do
+    assigns
+    |> assign(:composer_policy, composer_policy(assigns))
+    |> render_sface()
+  end
+
+  # what the where/who line needs (`ComposerPolicyControlsLive`), as one value every composer form forwards to `InputControlsLive`
+  defp composer_policy(assigns) do
+    assigns
+    |> Map.take([
+      :smart_input_opts,
+      :showing_within,
+      :to_boundaries,
+      :to_circles,
+      :exclude_circles,
+      :verb_permissions,
+      :boundary_preset,
+      :preview_boundary_for_id,
+      :preview_boundary_for_username,
+      :preview_boundary_verbs,
+      :context_id,
+      :context_group,
+      :event_target
+    ])
+    |> Map.put(:replying, replying?(assigns))
   end
 
   @doc """

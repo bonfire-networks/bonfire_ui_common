@@ -1,0 +1,36 @@
+<Bonfire.UI.Common.OpenModalLive
+  id={@id_prefix <> "convert_reply"}
+  reusable_modal_id="persistent_modal"
+  title_text={l("Remove reply?")}
+  open_btn_text={l("Remove reply")}
+  open_btn_aria_label={l("Remove reply")}
+  open_modal_wrapper_class={if @compact, do: "flex shrink-0", else: "w-full"}
+  open_btn_wrapper_class={if @compact,
+    do: "-my-3 flex min-h-11 items-center rounded-selector px-1.5 text-xs font-medium text-muted hover:text-base-content focus-ring",
+    else: "flex min-h-11 items-start gap-3 rounded-selector px-3 py-2.5 text-left hover:bg-base-200 focus-ring"}
+  without_form
+>
+  <:open_btn>
+    {#if @compact}
+      {l("Remove reply")}
+    {#else}
+      <#Icon iconify="ph:arrow-bend-up-left" class="mt-0.5 size-5 shrink-0 text-muted" />
+      <span class="min-w-0">
+        <span class="block text-sm font-medium">{l("Remove reply")}</span>
+        <span class="mt-0.5 block text-xs text-muted">{l("Keep your draft as a new post")}</span>
+      </span>
+    {/if}
+  </:open_btn>
+  <p>{l("Keep your text and attachments and turn this reply into a new post.")}</p>
+  <p class="text-sm text-muted">{l("You can change the destination and visibility before publishing. Nothing will be posted now.")}</p>
+  <:cancel_btn><button id={@id_prefix <> "keep_replying"} type="button" class="btn btn-ghost">{l("Keep replying")}</button></:cancel_btn>
+  <:action_btns>
+    <button
+      id={@id_prefix <> "confirm_standalone_post"}
+      type="button"
+      phx-click="Bonfire.UI.Common.SmartInput:remove_data"
+      phx-target="#smart_input"
+      class="btn btn-primary"
+    >{l("Remove reply")}</button>
+  </:action_btns>
+</Bonfire.UI.Common.OpenModalLive>

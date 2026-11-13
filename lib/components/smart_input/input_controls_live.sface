@@ -135,6 +135,18 @@
       </div>
 
       <div class="z-50 shrink-0 bg-base-100">
+        {!-- where and who, next to Post (moved into the header on wider screens, app.css) --}
+        <div
+          :if={@composer_policy && @showing_within != :thread_embed}
+          id="composer_policy_line"
+          class="flex min-w-0 items-center gap-2 border-t border-divider px-3 pt-2"
+        >
+          <span
+            :if={e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}
+            class="shrink-0 text-sm text-muted"
+          >{if @composer_policy[:replying], do: l("Visible to"), else: l("In")}</span>
+          <Bonfire.UI.Common.ComposerPolicyControlsLive {...@composer_policy} />
+        </div>
         <div class="pb-safe">
           <div class={
             "flex flex-row items-center gap-1 lg:rounded-b-box",
@@ -407,11 +419,7 @@
                 {!-- <#Icon iconify="mdi:email-fast-outline" class="size-4" /> --}
                 <!-- <#Icon iconify="lucide:arrow-up" class="size-4" /> -->
                 <span data-role="submit_offline" class="hidden">{l("Offline")}</span>
-                <span data-role="submit_label">{submit_label(
-                    e(@smart_input_opts, :create_object_type, nil),
-                    @reply_to_id,
-                    @smart_input_opts[:input_status] == :submit
-                  )}</span>
+                <span data-role="submit_label">{submit_label(e(@smart_input_opts, :create_object_type, nil), @reply_to_id)}</span>
               </button>
             </div>
           </div>

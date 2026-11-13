@@ -36,6 +36,8 @@ defmodule Bonfire.UI.Common.InputControlsLive do
   prop boundary_preset, :any, default: nil
 
   prop custom_emojis, :any, default: []
+  # built by SmartInputLive, forwarded by each composer form: what the where/who line needs
+  prop composer_policy, :map, default: nil
   slot default
 
   def render(assigns) do
@@ -136,8 +138,8 @@ defmodule Bonfire.UI.Common.InputControlsLive do
     ed(config, type, nil) || ed(config, :default, nil) || []
   end
 
-  # Post button label, idle or sending (phx-disable-with)
-  defp submit_label(create_object_type, reply_to_id, sending?) do
+  # Post button label; sending? for phx-disable-with
+  defp submit_label(create_object_type, reply_to_id, sending? \\ false) do
     cond do
       create_object_type in [:message, "message"] ->
         if sending?, do: l("Sending..."), else: l("Send")

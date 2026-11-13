@@ -2151,21 +2151,47 @@ div[data-id="object_body"]
 #reply_peek .reply-peek-less-label,
 #reply_peek[data-expanded] .reply-peek-more-label { display: none; }
 #reply_peek[data-expanded] .reply-peek-less-label { display: inline; }
-/* phones (and short windows, e.g. with the keyboard open): 3 lines, so the editor stays in view */
+/* short windows (e.g. keyboard open): 3 lines, so the editor stays in view; phones get one line below */
 @media (max-width: 767px), (max-height: 640px) {
   #reply_peek .reply-peek-text { max-height: calc(1.5em * 3); }
   #reply_peek[data-expanded] .reply-peek-text { max-height: calc(1.5em * 5); }
 }
 
-/* On phones, and whenever the phone keyboard is open (the SmartInputContainer hook sets the attribute),
-   the header collapses to one summary line; tapping it brings back the original post and the controls.
-   With the keyboard open, attachments also shrink to 40px thumbnails. */
+/* one-line header: phone bar, and any header while the keyboard is open; attachments shrink while typing */
 .composer-summary { display: none; }
-:root[data-composer-keyboard] #composer_header .composer-summary { display: flex; }
+:root[data-composer-keyboard] .composer-summary { display: flex; }
 :root[data-composer-keyboard] #composer_header:has(.composer-summary):not([data-controls-open]) :is(#reply_peek, #composer_header_actions) { display: none; }
+@media (min-width: 768px) {
+  #reply_peek .reply-peek-more:not([data-long]) { display: none; } /* phones always offer See more */
+}
+/* wider screens: #composer_policy_line is anchored into the header's #composer_policy_slot; without anchor support it stays above the toolbar */
+@supports (anchor-name: --composer-policy-slot) {
+  @media (min-width: 768px) {
+    #composer_policy_slot { flex: 1; min-width: 0; min-height: 2.5rem; anchor-name: --composer-policy-slot; }
+    /* with the keyboard open the slot's row is hidden, unless the keyboard is for a field in the line (tablets) */
+    #smart_input_container:has(#composer_policy_line:focus-within) #composer_header_actions { display: flex; }
+    :is(:root:not([data-composer-keyboard]) #composer_policy_line, #composer_policy_line:focus-within) {
+      position: fixed; /* contained by #smart_input_container (it has a transform) */
+      position-anchor: --composer-policy-slot;
+      top: anchor(top);
+      left: anchor(left);
+      right: anchor(right);
+      min-height: 2.5rem;
+      padding: 0;
+      border-top: 0;
+      & > span:first-child { display: none; } /* "In" / "Visible to" */
+    }
+  }
+}
+/* while sending (lockWhileSending in milkdown_editor.js) */
+#smart_input_container[data-sending] :is(#composer_header button, #composer_policy_line button) { pointer-events: none; opacity: 0.5; }
+/* phones: top bar and a one-line reply excerpt */
 @media (max-width: 767px) {
-  #composer_header .composer-summary { display: flex; }
-  #composer_header:has(.composer-summary):not([data-controls-open]) :is(#reply_peek, #composer_header_actions) { display: none; }
+  .composer-summary { display: flex; } /* sizes and type: max-md: classes in smart_input_live.sface */
+  #reply_peek .reply-peek-text { max-height: 1.5em; }
+  /* a reply's title is a toggle only while typing, when the excerpt is hidden */
+  :root:not([data-composer-keyboard]) #composer_summary.composer-reply-toggle,
+  :root[data-composer-keyboard] .composer-reply-title { display: none; }
 }
 #composer_header[data-controls-open] .composer-summary-caret { transform: rotate(180deg); }
 :root[data-composer-keyboard] .uploads_preview:not(.expanded) figure,
