@@ -390,7 +390,12 @@ defmodule Bonfire.UI.Common.PersistentLive do
         end)
       end)
 
-    maybe_send_update(Bonfire.UI.Common.SmartInputContainerLive, :smart_input, enriched)
+    # the reset is pushed below: the container must not ask for a second one
+    maybe_send_update(
+      Bonfire.UI.Common.SmartInputContainerLive,
+      :smart_input,
+      if(push_action == :reset, do: Map.put(enriched, :reset_events_pushed, true), else: enriched)
+    )
 
     # Also assign to PersistentLive's own socket so re-renders pass correct values
     # to SmartInputContainerLive via the template (persistent_live.sface)
@@ -409,7 +414,8 @@ defmodule Bonfire.UI.Common.PersistentLive do
 
     # Push JS events for textarea value manipulation and composer visibility
     socket =
-      case push_action do
+      # a reset already pushed with the caller's reply (do_extra_reset_input/1) is not pushed again
+      case if(assigns_map[:reset_events_pushed], do: :none, else: push_action) do
         :reset ->
           socket
           |> Phoenix.LiveView.push_event("smart_input:reset", %{})

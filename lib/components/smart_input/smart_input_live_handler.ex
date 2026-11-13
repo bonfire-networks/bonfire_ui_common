@@ -172,18 +172,33 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   # X on an empty composer: reset the options, never the text, title or destination (the server may not have the last keystrokes yet)
   def handle_event("close_empty", _params, socket) do
-    option_defaults =
-      %{create_object_type: nil, selected_language: nil}
-      |> default_smart_input_opts()
-      |> Map.take([:open, :cw, :show_cw, :show_sensitive, :show_summary, :create_object_type, :selected_language])
+    option_defaults = %{
+      open: false,
+      cw: nil,
+      show_cw: false,
+      show_sensitive: false,
+      show_summary: false,
+      create_object_type: nil,
+      selected_language: nil
+    }
 
     reset = [smart_input_opts: Map.merge(e(assigns(socket), :smart_input_opts, %{}), option_defaults)]
 
     # the audience too, outside a group or thread
     reset =
-      if is_nil(e(assigns(socket), :context_id, nil)),
-        do: Keyword.put(reset, :to_boundaries, Bonfire.Boundaries.Presets.default_boundaries(assigns(socket))),
-        else: reset
+      if is_nil(e(assigns(socket), :context_id, nil)) do
+        audience = %{
+          to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
+          to_circles: [],
+          exclude_circles: [],
+          verb_permissions: %{}
+        }
+
+        maybe_send_update(Bonfire.UI.Boundaries.CustomizeBoundaryLive, "customize_boundary_live", audience)
+        reset ++ Map.to_list(audience)
+      else
+        reset
+      end
 
     set(socket, reset)
 
@@ -227,8 +242,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def handle_event("reset_to_default", _params, socket) do
-    replace_input_next_time(assigns(socket))
-
     clear_assigns = reset_to_default_assigns(socket)
 
     set(socket, clear_assigns)
@@ -239,10 +252,14 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   defp reset_to_default_assigns(socket) do
     [
       reset_smart_input: true,
+      # the caller pushes the reset itself (do_extra_reset_input/1, or the thread_embed clause)
+      reset_events_pushed: true,
       activity: nil,
       object: nil,
       context_id: nil,
       to_circles: [],
+      exclude_circles: [],
+      verb_permissions: %{},
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
       smart_input_opts:
@@ -491,6 +508,12 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       |> maybe_put(:clear_reply_data, clear_reply_data)
       |> maybe_put(:exclude_circles, exclude_circles)
       |> maybe_put(:reply_to_id, final_reply_to_id)
+
+    # a new destination starts without the previous one's exclusions and per-action permissions, as in reset_addressing/3
+    set_assigns =
+      if resolved_context_id && resolved_context_id != e(assigns(socket), :context_id, nil),
+        do: set_assigns |> Keyword.put_new(:exclude_circles, []) |> Keyword.put(:verb_permissions, %{}),
+        else: set_assigns
 
     # Forward assigns to PersistentLive's SmartInputContainerLive
     set(socket, set_assigns)
@@ -1307,6 +1330,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
       has_reply and not has_quote ->
         put_assigns(set_assigns,
+          # a reply starts from its own defaults
+          exclude_circles: [],
+          verb_permissions: %{},
           quoted_object: nil,
           quoted_url: nil,
           quoted_boundary: nil,
@@ -1364,12 +1390,15 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     set(socket,
       # trigger phx-update="replace" for elements that need resetting
       reset_smart_input: true,
+      reset_events_pushed: true,
       activity: nil,
       object: nil,
       quoted_object: nil,
       quoted_url: nil,
       quoted_boundary: nil,
       to_circles: [],
+      exclude_circles: [],
+      verb_permissions: %{},
       reply_to_id: e(assigns(socket), :thread_id, nil),
       to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
       smart_input_opts: default_smart_input_opts(),
@@ -1385,12 +1414,15 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     set(socket,
       # trigger phx-update="replace" for elements that need resetting
       reset_smart_input: true,
+      reset_events_pushed: true,
       activity: nil,
       object: nil,
       quoted_object: nil,
       quoted_url: nil,
       quoted_boundary: nil,
       to_circles: [],
+      exclude_circles: [],
+      verb_permissions: %{},
       smart_input_opts: default_smart_input_opts(),
       # Tell preserve_reply_state to allow clearing activity/object/reply_to_id
       clear_reply_data: true
@@ -1404,6 +1436,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     set(socket,
       # trigger phx-update="replace" for elements that need resetting
       reset_smart_input: true,
+      reset_events_pushed: true,
       activity: nil,
       object: nil,
       quoted_object: nil,
@@ -1412,6 +1445,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       smart_input_component: nil,
       context_id: nil,
       to_circles: [],
+      exclude_circles: [],
+      verb_permissions: %{},
       reply_to_id: e(assigns(socket), :thread_id, nil),
       thread_id: nil,
       to_boundaries: Bonfire.Boundaries.Presets.default_boundaries(assigns(socket)),
@@ -1475,9 +1510,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   defp do_extra_reset_input(socket) do
-    # Note: smart_input:reset events are pushed from PersistentLive (via maybe_send routing)
-    # because push_event is scoped to the LiveView that calls it
+    # the reset goes with this reply, so the editor unlocks and clears at once (PersistentLive skips its own: reset_events_pushed)
     socket
+    |> push_event("smart_input:reset", %{})
+    |> push_event("smart_input:reset_sensitive", %{})
     |> refused()
     |> cancel_all_uploads()
   end

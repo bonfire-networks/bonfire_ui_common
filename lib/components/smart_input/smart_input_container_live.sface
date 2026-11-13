@@ -80,7 +80,7 @@
           <div
             id="smart_input_container"
             :hook
-            phx-mounted={JS.ignore_attributes(["style"])}
+            phx-mounted={JS.ignore_attributes(["style", "data-sending"])}
             data-hidden={e(@smart_input_opts, :open, nil) != true}
             data-draft={if e(@smart_input_opts, :input_status, nil) == :draft, do: "true"}
             data-focused={Settings.get([Bonfire.UI.Common.SmartInputContainerLive, :show_focused], false, @__context__)}

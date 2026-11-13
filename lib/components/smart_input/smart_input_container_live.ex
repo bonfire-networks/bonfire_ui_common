@@ -12,8 +12,9 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop boundary_preset, :any, default: nil
   prop selected_cover, :any, default: nil
   prop to_circles, :list, default: []
-  prop exclude_circles, :list, default: []
-  prop verb_permissions, :map, default: %{}
+  # nil = not given (PersistentLive's re-render), see keep_unless_given/2
+  prop exclude_circles, :list, default: nil
+  prop verb_permissions, :map, default: nil
   prop without_icon, :boolean, default: false
   prop mentions, :list, default: []
   prop context_group, :any, default: nil
@@ -127,7 +128,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     reset_value = Map.get(assigns, :reset_smart_input, false)
 
     # When reset is requested via fallback path, ask parent LiveView to push events
-    if reset_value, do: send(self(), {:push_smart_input_reset_events})
+    if reset_value and !assigns[:reset_events_pushed], do: send(self(), {:push_smart_input_reset_events})
 
     # Skip re-render + boundary prep when the merge is a no-op (e.g. most
     # page navigations, which forward an empty layout-default opts map).
@@ -138,7 +139,7 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       {:ok,
        socket
        |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
-       |> assign(preserve_reply_state(assigns, socket))
+       |> assign(preserve_reply_state(keep_unless_given(assigns, socket), socket))
        |> assign(:smart_input_opts, merged_opts)
        |> assign(:reset_smart_input, reset_value)}
     end
@@ -150,12 +151,12 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
 
     # When reset is requested via fallback path (not through PersistentLive's handle_info),
     # ask parent LiveView to push events since LiveComponents cannot push_event directly
-    if reset_value, do: send(self(), {:push_smart_input_reset_events})
+    if reset_value and !assigns[:reset_events_pushed], do: send(self(), {:push_smart_input_reset_events})
 
     # Custom emojis are loaded lazily when the emoji picker is opened
     {:ok,
      socket
-     |> assign(preserve_reply_state(assigns, socket))
+     |> assign(preserve_reply_state(keep_unless_given(assigns, socket), socket))
      |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
      |> assign(reset_smart_input: reset_value, custom_emojis: "[]")}
   end
@@ -184,6 +185,14 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
       |> maybe_preserve_assign(:quoted_url, e(assigns(socket), :quoted_url, nil))
       |> maybe_preserve_assign(:quoted_boundary, e(assigns(socket), :quoted_boundary, nil))
     end
+  end
+
+  defp keep_unless_given(assigns, socket) do
+    Enum.reduce([exclude_circles: [], verb_permissions: %{}], assigns, fn {key, default}, assigns ->
+      if is_nil(Map.get(assigns, key)),
+        do: Map.put(assigns, key, e(assigns(socket), key, nil) || default),
+        else: assigns
+    end)
   end
 
   defp maybe_preserve_assign(assigns, key, nil), do: assigns
