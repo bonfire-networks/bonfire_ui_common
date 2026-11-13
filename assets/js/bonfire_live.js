@@ -390,7 +390,9 @@ window.addEventListener("phx:smart_input:clear_cw", () => {
 // Socket down: app.css shows the Offline pill (phx-disconnected doesn't run in its portal) and turns Post off
 const setSocketOffline = (offline) => {
   document.documentElement.toggleAttribute("data-socket-offline", offline);
-  document.getElementById("submit_btn")?.toggleAttribute("aria-disabled", offline);
+  const submit = document.getElementById("submit_btn");
+  if (offline) submit?.setAttribute("aria-disabled", "true");
+  else submit?.removeAttribute("aria-disabled");
 };
 // a composer submit sent offline is lost: block it before LiveView (on window) sees it
 document.addEventListener(
