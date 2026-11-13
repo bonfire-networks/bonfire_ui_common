@@ -53,6 +53,14 @@ defmodule Bonfire.UI.Common.WidgetGettingStartedLive do
   end
 
   # `cta_path: {:config, key}` for a step whose destination only an instance knows, such as a form to collect what people want, and `{:config, key, default}` where an extension has a page of its own but a flavour may keep its answer elsewhere. Named rather than read where the step is declared, because a declaration IS config and cannot read config that has not finished loading; this resolves while rendering, by which time a flavour's value is in place
+  # `resolve:` for a step whose words and destination are another component's settings, such as the wishes step, which the feedback widget's settings drive: it is given the step as declared and returns it as it should show
+  defp resolve_path(%{resolve: resolve} = spec) when is_function(resolve, 1) do
+    spec
+    |> Map.delete(:resolve)
+    |> resolve_path()
+    |> resolve.()
+  end
+
   defp resolve_path(%{cta_path: {:config, key}} = spec) do
     %{spec | cta_path: Config.get([__MODULE__, key], nil)}
   end

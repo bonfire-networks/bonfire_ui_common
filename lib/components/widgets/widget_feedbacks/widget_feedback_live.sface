@@ -1,6 +1,12 @@
-<Bonfire.UI.Common.WidgetBlockLive
-  widget_title={l("Have some feedback?")}
-  class="relative w-full mx-auto rounded bg-base-100"
->
-  <div />
-</Bonfire.UI.Common.WidgetBlockLive>
+{#case Bonfire.UI.Common.WidgetFeedbackLive.cta_for(@__context__)}
+  {#match nil}
+  {#match _cta}
+    <div data-id="widget_feedback">
+      <Bonfire.UI.Common.WidgetBlockLive widget_title={Bonfire.UI.Common.WidgetFeedbackLive.title()}>
+        <p class="text-sm text-muted leading-snug">{Bonfire.UI.Common.WidgetFeedbackLive.text()}</p>
+        <div class="pt-2.5 flex">
+          <Bonfire.UI.Common.FeedbackCtaLive />
+        </div>
+      </Bonfire.UI.Common.WidgetBlockLive>
+    </div>
+{/case}

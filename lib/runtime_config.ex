@@ -24,12 +24,13 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
           needs: &Bonfire.UI.Common.code_of_conduct_set?/0,
           cta_path: "/conduct"
         },
-        # what nobody's feature covers: asking people what they want of the place. An instance that sets no URL is not asking, and the step drops out rather than linking nowhere
+        # what nobody's feature covers: asking people what they want of the place. Where it goes, and any words the instance sets in place of these, are the feedback widget's settings, which `resolve` applies; an instance asking nothing (no form and no group) is not asking, and the step drops out rather than linking nowhere
         wishes: %{
           title: l("Tell us about your wishes"),
           rationale: l("Help shape what comes next: what you say drives what gets built."),
           cta_label: l("Share your wishes"),
-          cta_path: {:config, :wishes_url}
+          cta_path: {:config, :wishes_url},
+          resolve: &Bonfire.UI.Common.WidgetFeedbackLive.getting_started_step/1
         }
       ]
 

@@ -1,0 +1,20 @@
+{#case Bonfire.UI.Common.WidgetFeedbackLive.cta_for(@__context__)}
+  {#match {:link, url}}
+    <LinkLive to={url} opts={"data-id": "widget_feedback_cta"} class="btn btn-primary btn-sm">
+      {Bonfire.UI.Common.WidgetFeedbackLive.cta_label()}
+    </LinkLive>
+  {#match {:composer, opts}}
+    {!-- the composer drops text pushed with the opts that open it, so the widget's own event fills it in --}
+    <button
+      type="button"
+      data-id="widget_feedback_cta"
+      phx-target="#smart_input"
+      phx-click={%JS{}
+      |> Bonfire.UI.Common.SmartInput.LiveHandler.open(Map.delete(opts, :text))
+      |> JS.push("Bonfire.UI.Common.WidgetFeedbackLive:fill_composer")}
+      class="btn btn-primary btn-sm"
+    >
+      {Bonfire.UI.Common.WidgetFeedbackLive.cta_label()}
+    </button>
+  {#match _}
+{/case}
