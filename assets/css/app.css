@@ -555,21 +555,26 @@ label[for],
 button:focus-visible,
 a:focus-visible,
 [role="button"]:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
+select:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
-/* Composed inputs: when an input/select/textarea lives inside a DaisyUI `.input`
-   (or `.select` / `.textarea`) label wrapper, the wrapper's :focus-within state
+/* Text fields get no focus outline: the caret, and the wrapper's border where it has one, show focus.
+   This also overrides DaisyUI's `.input` / `.textarea` focus outline. */
+input:focus,
+textarea:focus,
+.input:focus,
+.input:focus-within,
+.textarea:focus,
+.textarea:focus-within {
+  outline: none;
+}
+
+/* Composed selects: the DaisyUI `.input` / `.select` wrapper's :focus-within state
    already indicates focus. Suppress the inner element's outline to avoid doubling. */
-.input > input:focus-visible,
 .input > select:focus-visible,
-.input > textarea:focus-visible,
-.select > select:focus-visible,
-.textarea > textarea:focus-visible {
+.select > select:focus-visible {
   outline: none;
 }
 

@@ -682,12 +682,6 @@ html:not([data-ui-preset="typographic"]) {
         }
       }
     }
-
-    .input:focus-within {
-      outline: 2px solid
-        color-mix(in oklab, var(--color-primary) 75%, transparent);
-      outline-offset: 2px;
-    }
   }
 
   /* Every right-rail widget is one filled card, whatever wraps its
@@ -934,6 +928,22 @@ html:not([data-ui-preset="typographic"]) {
       > :has(> .translate-btn-client, > .translate-btn-server) {
         display: none;
       }
+    }
+
+    /* The grid's row-gap: 0 drops the article's `gap-3`; the parent's media gets
+       a tighter 8px back, and starts on the text's edge. */
+    > [data-id="multimedia_list"] {
+      margin-block: 0.5rem;
+    }
+
+    [data-id="multimedia_carousel"] {
+      padding-left: 0;
+    }
+
+    /* The CW is a box, not a text line: 8px from the byline,
+       and the media's own margin alone sets the gap below it. */
+    > [data-id="activity_note"] button:has(> [data-role="cw"]) {
+      margin-block: 0.5rem 0;
     }
 
     /* The excerpt only orients; the whole parent opens the full post. */
