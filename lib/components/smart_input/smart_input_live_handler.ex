@@ -182,7 +182,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       selected_language: nil
     }
 
-    reset = [smart_input_opts: Map.merge(e(assigns(socket), :smart_input_opts, %{}), option_defaults)]
+    reset = [
+      smart_input_opts: Map.merge(e(assigns(socket), :smart_input_opts, %{}), option_defaults)
+    ]
 
     # the audience too, outside a group or thread
     reset =
@@ -194,7 +196,12 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
           verb_permissions: %{}
         }
 
-        maybe_send_update(Bonfire.UI.Boundaries.CustomizeBoundaryLive, "customize_boundary_live", audience)
+        maybe_send_update(
+          Bonfire.UI.Boundaries.CustomizeBoundaryLive,
+          "customize_boundary_live",
+          audience
+        )
+
         reset ++ Map.to_list(audience)
       else
         reset
@@ -512,7 +519,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # a new destination starts without the previous one's exclusions and per-action permissions, as in reset_addressing/3
     set_assigns =
       if resolved_context_id && resolved_context_id != e(assigns(socket), :context_id, nil),
-        do: set_assigns |> Keyword.put_new(:exclude_circles, []) |> Keyword.put(:verb_permissions, %{}),
+        do:
+          set_assigns
+          |> Keyword.put_new(:exclude_circles, [])
+          |> Keyword.put(:verb_permissions, %{}),
         else: set_assigns
 
     # Forward assigns to PersistentLive's SmartInputContainerLive

@@ -6,8 +6,10 @@
   open_btn_aria_label={l("Remove reply")}
   open_modal_wrapper_class={if @compact, do: "flex shrink-0", else: "w-full"}
   open_btn_wrapper_class={if @compact,
-    do: "-my-3 flex min-h-11 items-center rounded-selector px-1.5 text-xs font-medium text-muted hover:text-base-content focus-ring",
-    else: "flex min-h-11 items-start gap-3 rounded-selector px-3 py-2.5 text-left hover:bg-base-200 focus-ring"}
+    do:
+      "-my-3 flex min-h-11 items-center rounded-selector px-1.5 text-xs font-medium text-muted hover:text-base-content focus-ring",
+    else:
+      "flex min-h-11 items-start gap-3 rounded-selector px-3 py-2.5 text-left hover:bg-base-200 focus-ring"}
   without_form
 >
   <:open_btn>

@@ -1,0 +1,14 @@
+<a
+  phx-hook="Copy"
+  id={@id}
+  href={@url}
+  data-clipboard-text={@url}
+  data-share={@share}
+  data-role={@role}
+  target="_top"
+  class="flex items-center gap-3 w-full text-sm text-base-content"
+>
+  <#Icon iconify="ph:copy-duotone" class="size-4 shrink-0 text-muted" />
+  <span class="flex-1 truncate" data-role="label">{@label || l("Copy link")}</span>
+  <span :if={@share} class="flex-1 truncate" data-role="share-label">{l("Share")}</span>
+</a>

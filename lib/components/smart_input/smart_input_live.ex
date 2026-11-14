@@ -316,7 +316,9 @@ defmodule Bonfire.UI.Common.SmartInputLive do
 
   @doc "Whether the post being replied to is a poll, for the excerpt's \"Poll\" tag."
   def reply_peek_poll?(activity, object),
-    do: Bonfire.Common.Types.object_type(object || e(activity, :object, nil)) == Bonfire.Poll.Question
+    do:
+      Bonfire.Common.Types.object_type(object || e(activity, :object, nil)) ==
+        Bonfire.Poll.Question
 
   @doc "Whether the replied-to text is long enough to overflow the peek's line clamp (by visible text, not markup)."
   def reply_peek_long?(object) do

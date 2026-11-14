@@ -351,10 +351,7 @@
                       trigger_opts={[title: l("Set post language")]}
                     >
                       <:trigger>
-                        <span
-                          id="selected_language_label"
-                          class="text-xs font-medium text-muted uppercase"
-                        >{e(@smart_input_opts, :selected_language, nil) || locale}</span>
+                        <span id="selected_language_label" class="text-xs font-medium text-muted uppercase">{e(@smart_input_opts, :selected_language, nil) || locale}</span>
                       </:trigger>
 
                       {#for {lang, name} <-

@@ -128,7 +128,8 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     reset_value = Map.get(assigns, :reset_smart_input, false)
 
     # When reset is requested via fallback path, ask parent LiveView to push events
-    if reset_value and !assigns[:reset_events_pushed], do: send(self(), {:push_smart_input_reset_events})
+    if reset_value and !assigns[:reset_events_pushed],
+      do: send(self(), {:push_smart_input_reset_events})
 
     # Skip re-render + boundary prep when the merge is a no-op (e.g. most
     # page navigations, which forward an empty layout-default opts map).
@@ -151,7 +152,8 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
 
     # When reset is requested via fallback path (not through PersistentLive's handle_info),
     # ask parent LiveView to push events since LiveComponents cannot push_event directly
-    if reset_value and !assigns[:reset_events_pushed], do: send(self(), {:push_smart_input_reset_events})
+    if reset_value and !assigns[:reset_events_pushed],
+      do: send(self(), {:push_smart_input_reset_events})
 
     # Custom emojis are loaded lazily when the emoji picker is opened
     {:ok,
@@ -188,7 +190,8 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   end
 
   defp keep_unless_given(assigns, socket) do
-    Enum.reduce([exclude_circles: [], verb_permissions: %{}], assigns, fn {key, default}, assigns ->
+    Enum.reduce([exclude_circles: [], verb_permissions: %{}], assigns, fn {key, default},
+                                                                          assigns ->
       if is_nil(Map.get(assigns, key)),
         do: Map.put(assigns, key, e(assigns(socket), key, nil) || default),
         else: assigns

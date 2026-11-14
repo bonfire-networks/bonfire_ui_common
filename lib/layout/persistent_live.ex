@@ -413,8 +413,8 @@ defmodule Bonfire.UI.Common.PersistentLive do
       )
 
     # Push JS events for textarea value manipulation and composer visibility
+    # a reset already pushed with the caller's reply (do_extra_reset_input/1) is not pushed again
     socket =
-      # a reset already pushed with the caller's reply (do_extra_reset_input/1) is not pushed again
       case if(assigns_map[:reset_events_pushed], do: :none, else: push_action) do
         :reset ->
           socket

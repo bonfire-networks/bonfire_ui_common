@@ -72,7 +72,10 @@
                 parent_id="composer_summary"
                 is_remote={false}
               />
-              <span :if={replying?(assigns)} class="min-w-0 flex-1 truncate text-muted max-md:flex-initial max-md:text-base-content">
+              <span
+                :if={replying?(assigns)}
+                class="min-w-0 flex-1 truncate text-muted max-md:flex-initial max-md:text-base-content"
+              >
                 {#case reply_to_author(assigns)}
                   {#match %{name: who_name, handle: who_handle}}
                     {l("Reply to")} <span class="font-medium text-base-content">{who_name || who_handle || l("this post")}</span>
@@ -118,7 +121,10 @@
                     )}</span>
                 </span>
               </span>
-              <#Icon iconify="ph:caret-down" class="composer-summary-caret size-3.5 shrink-0 text-muted max-md:hidden" />
+              <#Icon
+                iconify="ph:caret-down"
+                class="composer-summary-caret size-3.5 shrink-0 text-muted max-md:hidden"
+              />
             </button>
             {!-- phones: plain-text title (a reply's becomes the toggle above while typing, app.css) --}
             <span
@@ -233,7 +239,9 @@
             id="composer_header_actions"
             class={
               "flex items-center gap-2 px-3 pt-1 pb-0.5 sm:px-4",
-              "max-md:hidden": replying?(assigns) or e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]
+              "max-md:hidden":
+                replying?(assigns) or
+                  e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]
             }
           >{!-- phones: replaced by the top bar and the policy line, except for a new message --}
             <div id="composer_author" class="flex h-10 shrink-0 items-center">
