@@ -1,5 +1,7 @@
 defmodule Bonfire.UI.Common.ReusableModalLive do
   use Bonfire.UI.Common.Web, :stateful_component
+
+  @guest_allowed_events ~w(close close-key prompt_external_link)
   alias Bonfire.UI.Common.ReusableModalLive
 
   @moduledoc """

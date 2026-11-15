@@ -2,6 +2,9 @@ defmodule Bonfire.Common.Settings.LiveHandler do
   use Bonfire.UI.Common.Web, :live_handler
   # import Bonfire.Boundaries.Integration
 
+  # a visitor can pick a theme and a language for their own session
+  @guest_allowed_events ~w(put_theme reset_theme put_custom_theme_token reset_custom_theme_token reset_custom_theme set_locale)
+
   def handle_event("put", %{"keys" => keys, "values" => value} = params, socket) do
     with {:ok, settings} <-
            keys
@@ -79,7 +82,7 @@ defmodule Bonfire.Common.Settings.LiveHandler do
            |> drop_unused_form_keys()
            # a control that saves on click (`SettingsToggleThroupleLive`) sends its input name as one flat key, which `Settings.set/2` would drop as unknown
            |> Enums.as_form_params()
-           |> Map.put("scope", e(attrs, "scope", nil) || e(assigns(socket), :scope, nil))
+           |> Map.put("scope", scope_selector(attrs) || e(assigns(socket), :scope, nil))
            |> Bonfire.Common.Settings.set(socket: socket) do
       # debug(settings, "settings saved")
       {:noreply,
@@ -134,10 +137,22 @@ defmodule Bonfire.Common.Settings.LiveHandler do
 
   defp drop_unused_form_keys(other), do: other
 
+  # the scope from the browser is only a selector (`user`, `account`, `instance` or an object id): anything else is ignored, and `Settings.check_scope/2` checks the permission
+  defp maybe_put_scope(attrs, nil), do: attrs
+  defp maybe_put_scope(attrs, scope), do: Map.put(attrs, "scope", scope)
+
+  defp scope_selector(attrs) do
+    case e(attrs, "scope", nil) do
+      scope when is_binary(scope) and scope != "" -> scope
+      _ -> nil
+    end
+  end
+
   def handle_event("save", attrs, socket) when is_map(attrs) do
     with {:ok, settings} <-
-           Map.drop(attrs, ["_target"])
+           Map.drop(attrs, ["_target", "scope"])
            |> drop_unused_form_keys()
+           |> maybe_put_scope(scope_selector(attrs))
            |> Bonfire.Common.Settings.set(socket: socket) do
       {
         :noreply,

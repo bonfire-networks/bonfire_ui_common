@@ -1,6 +1,8 @@
 defmodule Bonfire.UI.Common.PreviewContentLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
+  @guest_allowed_events ~w(open show_extra close)
+
   @moduledoc """
   A special 'modal' for previewing objects from a feed without redirecting to a new view (so we can go back to where we were in the feed)
   """

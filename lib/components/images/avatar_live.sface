@@ -19,7 +19,8 @@
                   alt={@title}
                   fallback_icon={Icon.icon_name("ph:user-circle-fill")}
                   fallback_class={e(@fallback_class, nil)}
-                  refetch_key={if @is_remote && @user_id, do: "Bonfire.Federate.ActivityPub:refetch_profile:#{@user_id}"}
+                  refetch_key={if @is_remote && @user_id && current_user_id(@__context__),
+                    do: "Bonfire.Federate.ActivityPub:refetch_profile:#{@user_id}"}
                   opts={@opts}
                   disable_lazy={@disable_lazy}
                 />

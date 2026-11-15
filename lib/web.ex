@@ -368,6 +368,8 @@ defmodule Bonfire.UI.Common.Web do
       alias Bonfire.UI.Common.ComponentID
       alias Phoenix.LiveView.JS
 
+      @before_compile {Bonfire.UI.Common.Web, :__guest_allowed_events_before_compile__}
+
       unquote(view_helpers())
     end
   end
@@ -678,8 +680,29 @@ defmodule Bonfire.UI.Common.Web do
     end
   end
 
+  # Compiles the module's `@guest_allowed_events` (the events a visitor with no session may send) into `__guest_allowed_events__/0`, which the event funnel checks.
+  defmacro __guest_allowed_events_before_compile__(env) do
+    guest_allowed_events_before_compile(env)
+  end
+
+  defp guest_allowed_events_before_compile(env) do
+    if Module.defines?(env.module, {:__guest_allowed_events__, 0}) do
+      nil
+    else
+      events = List.wrap(Module.get_attribute(env.module, :guest_allowed_events))
+
+      quote do
+        @doc false
+        def __guest_allowed_events__, do: unquote(events)
+      end
+    end
+  end
+
   defmacro __handle_event_before_compile__(env) do
-    handle_event_before_compile(env)
+    quote do
+      unquote(guest_allowed_events_before_compile(env))
+      unquote(handle_event_before_compile(env))
+    end
   end
 
   defp handle_event_before_compile(env) do

@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Common.ErrorHandling do
     undead_maybe_handle_error(fun.(), socket, return_key)
   rescue
     msg in Bonfire.Fail.Auth ->
-      go_login(msg, socket, return_key)
+      refused_or_login(msg, socket, return_key)
 
     msg in Bonfire.Fail ->
       case msg do
@@ -208,6 +208,22 @@ defmodule Bonfire.UI.Common.ErrorHandling do
     {return_key, socket_or_conn}
   end
 
+  # A guest is sent to log in. Someone already signed in who is refused stays on the page, because logging in again would not change the answer.
+  defp refused_or_login(msg, socket, return_key) do
+    code = Map.get(msg, :code)
+
+    if code != :needs_login and current_user_id(socket) do
+      live_exception(socket, return_key, refusal_message(code, msg))
+    else
+      go_login(msg, socket, return_key)
+    end
+  end
+
+  defp refusal_message(code, _msg) when code in [:not_permitted, :unauthorized, :unauthorised],
+    do: l("You do not have permission")
+
+  defp refusal_message(_code, msg), do: e(msg, :message, l("You do not have permission"))
+
   defp go_login(msg, socket, return_key) when is_atom(return_key),
     do: go_login(msg, socket, {nil, return_key})
 
@@ -373,6 +389,9 @@ defmodule Bonfire.UI.Common.ErrorHandling do
           epic.errors,
           e(List.first(epic.errors), :stacktrace, nil)
         )
+
+      refused when refused in [:not_permitted, :unauthorized, :unauthorised] ->
+        refused_or_login(%{code: refused}, socket, return_key)
 
       not_found when not_found in [:not_found, "Not found", 404] ->
         live_exception(socket, return_key, l("Not found"))

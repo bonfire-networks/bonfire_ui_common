@@ -1,6 +1,8 @@
 defmodule Bonfire.UI.Common.NotificationLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
+  @guest_allowed_events ~w(push_state clear-flash click_away)
+
   prop root_flash, :any, default: nil
   #  index of this component instance (2 is usually in PersistentLive)
   prop i, :integer, default: 1

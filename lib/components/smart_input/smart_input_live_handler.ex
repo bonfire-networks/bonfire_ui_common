@@ -536,14 +536,16 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   end
 
   def handle_event("select_audience_group", %{"id" => group_id}, socket) do
+    current_user = current_user(socket)
+
     with true <- module_enabled?(Bonfire.Classify.Categories, socket),
          {:ok, %{type: :group} = group} <-
            Bonfire.Classify.Categories.get(group_id,
-             current_user: current_user(socket),
+             current_user: current_user,
              verbs: [:create]
            ) do
       boundaries = group |> Bonfire.Classify.Boundaries.list_post_audiences() |> Enum.take(1)
-      context = load_context_group(group_id, boundaries, [], [group_id], current_user(socket))
+      context = load_context_group(group_id, boundaries, [], [group_id], current_user)
       select_audience_context(socket, group_id, context, boundaries, [group_id])
     else
       _ -> {:noreply, assign_error(socket, l("You cannot post in this group."))}
@@ -554,6 +556,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     reply_id = assigns(socket) |> e(:reply_to_id, nil) |> id()
     category_id = e(assigns(socket), :smart_input_opts, :reply_destination, :id, nil)
     category = if category_id, do: %Needle.Pointer{id: category_id}
+    current_user = current_user(socket)
 
     with false <-
            e(assigns(socket), :smart_input_opts, :create_object_type, nil) in [
@@ -561,8 +564,8 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
              "message"
            ],
          reply_id when is_binary(reply_id) <- reply_id,
-         true <- Bonfire.Boundaries.can?(current_user(socket), :reply, reply_id),
-         true <- audience_id in reply_audiences(category, reply_id, current_user(socket)) do
+         true <- Bonfire.Boundaries.can?(current_user, :reply, reply_id),
+         true <- audience_id in reply_audiences(category, reply_id, current_user) do
       replace_boundary(
         socket,
         audience_id,

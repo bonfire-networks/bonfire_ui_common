@@ -64,7 +64,13 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
 
   def fake_admin!(account \\ %{}, attrs \\ %{}, opts \\ []) do
     user = fake_user!(account, attrs, opts)
-    {:ok, user} = Bonfire.Common.Utils.maybe_apply(Bonfire.Me.Users, :make_admin, [user])
+
+    {:ok, user} =
+      Bonfire.Common.Utils.maybe_apply(Bonfire.Me.Users, :make_admin, [
+        user,
+        [skip_boundary_check: true]
+      ])
+
     user
   end
 

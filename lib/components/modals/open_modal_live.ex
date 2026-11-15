@@ -3,6 +3,8 @@ defmodule Bonfire.UI.Common.OpenModalLive do
   The classic **modal**
   """
   use Bonfire.UI.Common.Web, :stateful_component
+
+  @guest_allowed_events ~w(open toggle close)
   alias Bonfire.UI.Common.ReusableModalLive
 
   @default_modal_id "modal"

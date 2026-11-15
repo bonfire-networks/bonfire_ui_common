@@ -119,12 +119,14 @@ defmodule Bonfire.UI.Common.PersistentLive do
   # end
 
   defp assign_defaults(socket, fun \\ &assign_new/3) do
+    current_user_id = current_user_id(socket)
+
     current_user =
       current_user(socket) ||
-        if current_user_id(socket),
+        if current_user_id,
           do:
             Bonfire.UI.Me.LivePlugs.LoadCurrentUser.get_current(
-              current_user_id(socket),
+              current_user_id,
               assigns(socket)[:current_account_id]
             )
 

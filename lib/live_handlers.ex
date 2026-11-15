@@ -248,7 +248,6 @@ defmodule Bonfire.UI.Common.LiveHandlers do
 
   ## Built-in Event Handlers
 
-  - `"assign"` - Assigns values from the event parameters to the socket
   - `"redirect"` or `"navigate"` - Redirects to the specified path
   - `"live_select_change"` - Handles `LiveSelect` component events
 
@@ -271,6 +270,8 @@ defmodule Bonfire.UI.Common.LiveHandlers do
     |> ErrorHandling.undead(fn ->
       debug("LiveHandler: handle_event #{inspect(action)} via #{source_module || "delegation"}")
 
+      guard_guest_event!(action, socket, source_module)
+
       with {:noreply, %{assigns: %{__no_live_event_handler__: %{^action => true}}} = socket} <-
              maybe_delegate_event_live_handler(action, attrs, socket),
            {:noreply, socket} <-
@@ -280,6 +281,40 @@ defmodule Bonfire.UI.Common.LiveHandlers do
       end
     end)
   end
+
+  # Someone with no session may only send the events that the handling module declares in `@guest_allowed_events`. Any other event is refused with a redirect to login.
+  defp guard_guest_event!(action, socket, source_module) do
+    if current_user(socket) || guest_event_allowed?(action, source_module) do
+      :ok
+    else
+      current_user_required!(socket)
+    end
+  end
+
+  # the namespaced form "Module:event" is checked when it is delegated as a `{module, event}` tuple
+  defp guest_event_allowed?(action, _source_module)
+       when action in ["redirect", "navigate"],
+       do: true
+
+  defp guest_event_allowed?({module, event}, _source_module),
+    do: guest_declares_event?(handler_module(module), event)
+
+  defp guest_event_allowed?(action, source_module) when is_binary(action) do
+    if String.contains?(action, ":"),
+      do: true,
+      else: guest_declares_event?(source_module, action)
+  end
+
+  defp guest_event_allowed?(_action, _source_module), do: false
+
+  defp guest_declares_event?(module, event) when is_atom(module) and not is_nil(module) do
+    Code.ensure_loaded?(module) and function_exported?(module, :__guest_allowed_events__, 0) and
+      event in module.__guest_allowed_events__()
+  end
+
+  defp guest_declares_event?(_module, _event), do: false
+
+  defp handler_module(mod), do: maybe_to_module("#{mod}.LiveHandler") || maybe_to_module(mod)
 
   @doc """
   Handles upload progress events, delegating to a function or LiveHandler module.
@@ -439,11 +474,6 @@ defmodule Bonfire.UI.Common.LiveHandlers do
        :__no_handle_info_handled__,
        true
      )}
-  end
-
-  # global event handler to set assigns of a view or component
-  defp maybe_delegate_event_live_handler("assign", attrs, socket) do
-    {:noreply, assign_attrs(socket, attrs)}
   end
 
   defp maybe_delegate_event_live_handler(redir_action, %{"to" => to}, socket)
@@ -628,7 +658,7 @@ defmodule Bonfire.UI.Common.LiveHandlers do
   def mod_delegate(mod, fun, args, socket, no_delegation_fn \\ &no_live_handler/2) do
     handler_chain = Map.get(assigns(socket), :__handler_chain, [])
 
-    mod = maybe_to_module("#{mod}.LiveHandler") || maybe_to_module(mod)
+    mod = handler_module(mod)
 
     if mod in handler_chain do
       warn("Circular handler delegation detected: #{inspect(handler_chain ++ [mod])}")

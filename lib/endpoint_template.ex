@@ -360,16 +360,17 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       def include_assets(conn, :top) do
         endpoint_module = Bonfire.Common.Config.endpoint_module()
+        current_user = current_user(conn)
 
         {font_name, font_href} =
-          Bonfire.UI.Common.FontHelper.font_for(current_user: current_user(conn))
+          Bonfire.UI.Common.FontHelper.font_for(current_user: current_user)
 
         # Warm the critical font weights in parallel with the (render-blocking)
         # stylesheets instead of after them. `crossorigin` is required on
         # `as="font"` preloads (font fetches are CORS-mode) or the browser
         # re-downloads the file when the CSS requests it.
         font_preload_links =
-          Bonfire.UI.Common.FontHelper.preload_hrefs(current_user: current_user(conn))
+          Bonfire.UI.Common.FontHelper.preload_hrefs(current_user: current_user)
           |> Enum.map_join("\n", fn href ->
             type = if String.ends_with?(href, ".woff2"), do: "font/woff2", else: "font/woff"
 
