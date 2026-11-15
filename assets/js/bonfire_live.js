@@ -352,12 +352,26 @@ window.addEventListener("phx:smart_input:reset_sensitive", () => {
 });
 
 // datetime-local has no offset: submit it as UTC (scheduled posts, and any [data-role=local_datetime] with a [data-role=utc_value] beside it)
-document.addEventListener("change", (event) => {
-  const local = event.target.closest?.(
-    "#smart_input_scheduled_at [data-role=scheduled_at_local], [data-role=local_datetime]",
-  );
-  if (!local) return;
+const localDatetimeSelector =
+  "#smart_input_scheduled_at [data-role=scheduled_at_local], [data-role=local_datetime]";
 
+document.addEventListener("change", (event) => {
+  const local = event.target.closest?.(localDatetimeSelector);
+  if (local) fillUtcValue(local);
+});
+
+// and again when the form is sent (in the capture phase, so before LiveView reads it): a value the browser restored, or a time zone cleared by the reset after the last post, had no change event. An empty input is skipped, as its hidden value may come from the server (eg. a prefilled scheduled_at)
+document.addEventListener(
+  "submit",
+  (event) => {
+    event.target
+      .querySelectorAll?.(localDatetimeSelector)
+      .forEach((local) => local.value && fillUtcValue(local));
+  },
+  true,
+);
+
+function fillUtcValue(local) {
   const hidden = local.matches("[data-role=local_datetime]")
     ? local.parentElement?.querySelector("input[data-role=utc_value]")
     : local
@@ -370,7 +384,7 @@ document.addEventListener("change", (event) => {
 
   const zone = local.form?.querySelector("input[data-role=browser_timezone]");
   if (zone) zone.value = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
-});
+}
 
 // Focus the summary/CW field once the server has revealed it
 window.addEventListener("phx:smart_input:focus_summary", () => {
