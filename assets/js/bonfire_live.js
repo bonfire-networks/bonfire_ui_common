@@ -338,28 +338,38 @@ window.addEventListener("phx:smart_input:reset", () => {
 window.addEventListener("phx:smart_input:reset_sensitive", () => {
   setCwTextarea("");
 
-  // Also clear title and scheduled_at input values (scheduled_at has a visible and a hidden input)
-  ["#smart_input_post_title input", "#smart_input_scheduled_at input"].forEach(
+  // Also clear title and scheduled_at input values (scheduled_at has a visible and a hidden input), and fields kept by phx-update="ignore" that opt in with data-role=reset_on_post
+  [
+    "#smart_input_post_title input",
+    "#smart_input_scheduled_at input",
+    "[data-role=reset_on_post] input",
+    "[data-role=reset_on_post] textarea",
+  ].forEach(
     (sel) => {
       document.querySelectorAll(sel).forEach((el) => (el.value = ""));
     },
   );
 });
 
-// A datetime-local value has no offset, so submit it as UTC: `new Date(value)` reads it as local time on that date, so the offset in effect then (DST included) is applied
+// datetime-local has no offset: submit it as UTC (scheduled posts, and any [data-role=local_datetime] with a [data-role=utc_value] beside it)
 document.addEventListener("change", (event) => {
   const local = event.target.closest?.(
-    "#smart_input_scheduled_at [data-role=scheduled_at_local]",
+    "#smart_input_scheduled_at [data-role=scheduled_at_local], [data-role=local_datetime]",
   );
   if (!local) return;
 
-  const hidden = local
-    .closest("#smart_input_scheduled_at")
-    .querySelector("input[name=scheduled_at]");
+  const hidden = local.matches("[data-role=local_datetime]")
+    ? local.parentElement?.querySelector("input[data-role=utc_value]")
+    : local
+        .closest("#smart_input_scheduled_at")
+        .querySelector("input[name=scheduled_at]");
   if (!hidden) return;
 
   const date = local.value ? new Date(local.value) : null;
   hidden.value = date && !isNaN(date) ? date.toISOString() : "";
+
+  const zone = local.form?.querySelector("input[data-role=browser_timezone]");
+  if (zone) zone.value = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
 });
 
 // Focus the summary/CW field once the server has revealed it
