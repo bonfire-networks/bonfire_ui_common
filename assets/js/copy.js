@@ -44,6 +44,15 @@ CopyHooks.Copy = {
 				navigator.clipboard.writeText(text).then(() => {
 					let msg = "Copied! 👀";
 					console.log(msg);
+
+					// an element with both icons shows the copied one from now on (until a re-render or reload)
+					let copyIcon = this.el.querySelector('[data-role="copy-icon"]');
+					let copiedIcon = this.el.querySelector('[data-role="copied-icon"]');
+					if (copyIcon && copiedIcon) {
+						copyIcon.classList.add("hidden");
+						copiedIcon.classList.remove("hidden");
+					}
+
 					if (this.flash) {
 						this.flash("success", msg);
 					} else {

@@ -489,6 +489,13 @@ defmodule Bonfire.UI.Common.PersistentLive do
   def handle_info({{Bonfire.Social.Pins.LiveHandler, :pins_changed}, _} = blob, socket),
     do: Bonfire.UI.Common.LiveHandlers.handle_info(blob, socket, __MODULE__)
 
+  # the groups sidebar in this sticky process listens to the feeds of the groups and topics it shows or the user follows, to move them up when something is posted (`Bonfire.UI.Groups.LiveHandler`); no other feed is subscribed to here, and there's no catch-all handle_info, so this would otherwise crash it
+  def handle_info({{Bonfire.Social.Feeds, :new_activity}, data}, socket) do
+    maybe_apply(Bonfire.UI.Groups.LiveHandler, :handle_info, [{:new_activity, data}, socket])
+
+    {:noreply, socket}
+  end
+
   # a membership changed in the page LV → tell the groups sidebar in this sticky process to recompute
   # (resolved via the ComponentID alias the sidebar registers under the user, see SidebarGroupsLive)
   def handle_info({:assign_persistent_self, {:sidebar_groups, %{user_id: user_id}}}, socket) do
