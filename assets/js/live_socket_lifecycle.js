@@ -12,6 +12,7 @@
 //      (which includes phoenix's own clean pagehide disconnect) and on view join errors
 // We suppress those reloads when they look like a recoverable mobile pause and
 // let phoenix's reconnect + LiveView's rejoin resync state instead.
+// Path 3 is also suppressed, on any device, while phoenix is already reconnecting.
 // Revisit when phoenix_live_view#3896 / phoenix#6534 land here.
 
 const DEBUG_FLAG = "bonfire:live_socket:lifecycle_debug";
@@ -19,7 +20,7 @@ const FORCE_RESUME_GUARD_FLAG = "bonfire:live_socket:force_mobile_resume_guard";
 const DISABLE_RESUME_GUARD_FLAG = "bonfire:live_socket:disable_mobile_resume_guard";
 const EVENTS_STORAGE_KEY = "bonfire:live_socket:lifecycle_events";
 const EVENTS_STORAGE_NAMES = ["sessionStorage", "localStorage"];
-const LIFECYCLE_VERSION = "mobile-resume-guard-feed-state-v7";
+const LIFECYCLE_VERSION = "mobile-resume-guard-feed-state-v8";
 const MAX_LIFECYCLE_EVENTS = 50;
 const PERSIST_DEBOUNCE_MS = 250;
 const IMMEDIATE_PERSIST_EVENTS = new Set([
@@ -154,6 +155,14 @@ function shouldRecoverLifecycleDisconnect(state, liveSocket) {
 	);
 }
 
+// phoenix reconnects by itself after a close it did not ask for, code 1000
+// included (eg. a heartbeat timeout); LiveView's reload would cancel that and
+// leave the page 5-10s without a socket. The rejoin re-checks the session.
+function phoenixReconnecting(liveSocket) {
+	const socket = liveSocket.getSocket?.();
+	return Boolean(socket && !socket.isConnected() && socket.closeWasClean === false);
+}
+
 function markLifecyclePause(state) {
 	state.lifecycleResumePending = true;
 }
@@ -199,11 +208,14 @@ function installReloadGuard(liveSocket, state, log) {
 	const reloadWithJitter = liveSocket.reloadWithJitter.bind(liveSocket);
 
 	liveSocket.reloadWithJitter = (view, reloadLog) => {
-		if (shouldRecoverLifecycleDisconnect(state, liveSocket)) {
+		const reconnecting = !hasPendingLink(liveSocket) && phoenixReconnecting(liveSocket);
+
+		if (shouldRecoverLifecycleDisconnect(state, liveSocket) || reconnecting) {
 			clearReloadTimer(liveSocket);
 			clearLiveViewUnloadFlag(liveSocket, log, "reloadWithJitter");
 			log("reload_with_jitter_suppressed", {
 				pendingLink: hasPendingLink(liveSocket),
+				reconnecting,
 			});
 			// No manual reconnect here: phoenix reconnects on pageshow /
 			// visibilitychange->visible itself, and channels rejoin on their own.

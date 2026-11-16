@@ -429,6 +429,8 @@ document.addEventListener(
   true,
 );
 liveSocket.getSocket().onError(() => setSocketOffline(true));
+// a close without an error (eg. a heartbeat timeout) too
+liveSocket.getSocket().onClose(() => setSocketOffline(true));
 liveSocket.getSocket().onOpen(() => setSocketOffline(false));
 
 const shouldAutoConnect = !document.querySelector(
