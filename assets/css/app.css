@@ -2413,10 +2413,13 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   overflow-x: clip;
 }
 
-/* the guest board's cards sit on a recessed canvas (the masthead and nav paint their own base-100) */
+/* the guest board sits on a recessed canvas; in dark themes base-200 is too close to base-100, so it goes toward black */
 [data-id="bonfire_live"]:has(#guest-board) {
-  --stream-canvas: var(--color-base-200);
-  background-color: var(--color-base-200);
+  --stream-canvas: light-dark(
+    var(--color-base-200),
+    color-mix(in oklab, black 30%, var(--color-base-200))
+  );
+  background-color: var(--stream-canvas);
 }
 
 /* "Show all" is a checkbox rather than JS, since guest pages can be served static */
@@ -2443,12 +2446,9 @@ body:has(#main_smart_input_button[disabled]) .composer-draft-bar {
   overflow: clip;
 }
 
-/* dark themes put base-100 and base-200 under 1% lightness apart, so the sheet is lifted a step like widget cards (see --surface-bg in interface.css) */
+/* base-100, as in the signed-in app, so feed rows and cards keep their contrast */
 @utility board-sheet {
-  background-color: light-dark(
-    var(--color-base-100),
-    color-mix(in oklab, var(--color-base-content) 5%, var(--color-base-100))
-  );
+  background-color: var(--color-base-100);
   overflow: clip;
   @variant md {
     border: 1px solid color-mix(in oklab, var(--color-base-content) 10%, transparent);
