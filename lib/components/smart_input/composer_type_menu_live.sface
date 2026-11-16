@@ -1,0 +1,30 @@
+{!-- the sibling is the type dropdown removed in 8e108563; the trigger shows only the current type's icon, the menu keeps icon + word; the trigger has the where/who chips' shape (audience_picker_live.sface), round --}
+<Dropdown
+  :if={length(@types) > 1}
+  wrapper_opts={["data-boundary": "#composer_container"]}
+  id={@id_prefix <> "composer_type_menu"}
+  position="bottom-start"
+  close_on_select
+  expanded_touch_target
+  trigger_class="flex size-8 shrink-0 items-center justify-center rounded-full border border-divider bg-base-100 text-muted hover:bg-base-200 focus-ring"
+  label={l("Post type: %{type}", type: @active_label)}
+  trigger_opts={[title: l("Post type: %{type}", type: @active_label)]}
+>
+  <:trigger>
+    <Iconify.iconify icon={@active_icon} class="size-4" />
+  </:trigger>
+
+  <li :for={type <- @types}>
+    <button
+      type="button"
+      id={@id_prefix <> Bonfire.UI.Common.deterministic_dom_id("composer_type", type.component)}
+      phx-click={if !type.active?, do: LiveHandler.open_type(%JS{}, type.component, @smart_input_opts)}
+      phx-target={if !type.active?, do: "#smart_input"}
+      aria-current={if type.active?, do: "true"}
+      class={"flex items-center gap-2", active: type.active?}
+    >
+      <Iconify.iconify icon={type.icon} class="size-4 shrink-0 text-muted" />
+      <span>{type.label}</span>
+    </button>
+  </li>
+</Dropdown>

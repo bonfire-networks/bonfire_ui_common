@@ -49,6 +49,12 @@
                 icon_class="size-5"
               />
             </span>
+            <span :if={!replying?(assigns)} class="flex md:hidden">
+              <Bonfire.UI.Common.ComposerTypeMenuLive
+                id_prefix="bar_"
+                smart_input_opts={@smart_input_opts}
+              />
+            </span>
             <button
               id="composer_summary"
               type="button"
@@ -244,7 +250,7 @@
                   e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]
             }
           >{!-- phones: replaced by the top bar and the policy line, except for a new message --}
-            <div id="composer_author" class="flex h-10 shrink-0 items-center">
+            <div id="composer_author" class="flex h-10 shrink-0 items-center gap-2">
               <div
                 class="shrink-0"
                 title={e(current_user(@__context__), :profile, :name, nil) ||
@@ -267,9 +273,14 @@
                 <span class="sr-only">{e(current_user(@__context__), :profile, :name, nil) ||
                     e(current_user(@__context__), :character, :username, nil)}</span>
               </div>
+              <Bonfire.UI.Common.ComposerTypeMenuLive
+                :if={!replying?(assigns) and
+                  e(@smart_input_opts, :create_object_type, nil) not in ["message", :message]}
+                smart_input_opts={@smart_input_opts}
+              />
             </div>
 
-            <div id="composer_sentence" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1.5">{!-- where and who, as chips with sr-only labels; the type is the tray in InputControlsLive --}
+            <div id="composer_sentence" class="flex min-w-0 flex-1 flex-wrap items-center gap-x-2 gap-y-1.5">{!-- where and who, as chips with sr-only labels; the type is ComposerTypeMenuLive next to the avatar --}
               <Dropdown
                 :if={replying?(assigns)}
                 wrapper_opts={["data-boundary": "#composer_container"]}
