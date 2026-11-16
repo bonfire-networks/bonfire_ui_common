@@ -93,6 +93,21 @@ defmodule Bonfire.UI.Common.QueryStringCacheTest do
       get(conn, "/instance/pins/embed?theme=dracula")
       refute File.exists?(cache_file)
     end
+
+    # asking for plain text renders the page as its emails (see `Bonfire.UI.Common.Plugs.LiveViewFormat`), which must not be what the cache, or a CDN keying by URL, gives everyone else
+    test "a guest asking for plain text gets HTML, which neither the cache nor a CDN keeps", %{
+      cache_file: cache_file
+    } do
+      conn =
+        build_conn()
+        |> put_req_header("accept", "text/plain,text/html,application/xhtml+xml,application/xml")
+        |> get("/instance/pins/embed?theme=dracula")
+
+      assert conn.status == 200
+      assert ["text/html" <> _] = get_resp_header(conn, "content-type")
+      refute File.exists?(cache_file)
+      assert get_resp_header(conn, "cache-control") == ["private, max-age=0, must-revalidate"]
+    end
   end
 
   describe "route without cache_query_string opt" do

@@ -12,7 +12,8 @@ defmodule Bonfire.UI.Common.AvatarLiveTest do
       # (test-env Config.get reads the process tree first)
       Process.put([:bonfire_ui_common, AvatarLive, :generated_avatar_paths], [])
 
-      assert AvatarLive.generated_avatar_src("user-123") == "/gen_avatar/user-123"
+      assert "/gen_avatar/user-123/" <> sig = AvatarLive.generated_avatar_src("user-123")
+      assert Bonfire.UI.Common.GenAvatar.valid_signature?("user-123", sig)
     end
 
     test "deterministically picks a configured static avatar path" do

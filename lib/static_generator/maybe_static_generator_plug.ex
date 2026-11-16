@@ -174,6 +174,10 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
 
   defp maybe_write_static_cache(conn) do
     cond do
+      # only the page itself: an error, a redirect or an empty answer would be served as the page
+      conn.status != 200 ->
+        :ok
+
       cacheable_response?(conn) ->
         # Use the original request path saved before maybe_make_request_path_static
         # rewrote it to include /index.html — otherwise we'd write to the wrong path.
@@ -229,7 +233,8 @@ defmodule Bonfire.UI.Common.MaybeStaticGeneratorPlug do
   defp cacheable_response?(conn) do
     conn.private[:static_cacheable] == true and
       not authenticated?(conn) and
-      not has_flash?(conn)
+      not has_flash?(conn) and
+      not Bonfire.UI.Common.Plugs.LiveViewFormat.email_mode?(conn)
   end
 
   # Use value-based checks rather than Map.has_key? so that assigns like

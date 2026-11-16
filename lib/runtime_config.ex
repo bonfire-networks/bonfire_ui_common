@@ -56,6 +56,12 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
         System.get_env("SESSION_TTL", "#{div(to_timeout(day: 60), 1_000)}")
         |> String.to_integer()
 
+    # Addresses (CIDR blocks) of reverse proxies whose forwarding headers (`x-forwarded-for` etc.) are believed, on top of loopback and private networks, which always count. A client connecting directly from anywhere else cannot choose its own address. See `Bonfire.UI.Common.Plugs.TrustedRemoteIp`.
+    config :bonfire_ui_common,
+      trusted_proxies:
+        System.get_env("TRUSTED_PROXIES", "")
+        |> String.split([",", " "], trim: true)
+
     config :bonfire, :rate_limit,
       disabled: System.get_env("ENABLE_RATE_LIMIT") == "no",
       forms: [
@@ -69,6 +75,20 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
           System.get_env("RATE_LIMIT_API_WINDOW_MS", "#{to_timeout(minute: 1)}")
           |> String.to_integer(),
         limit: System.get_env("RATE_LIMIT_API_MAX", "60") |> String.to_integer()
+      ],
+      # requests per IP to the GraphQL endpoint
+      graphql: [
+        scale_ms:
+          System.get_env("RATE_LIMIT_GRAPHQL_WINDOW_MS", "#{to_timeout(minute: 1)}")
+          |> String.to_integer(),
+        limit: System.get_env("RATE_LIMIT_GRAPHQL_MAX", "60") |> String.to_integer()
+      ],
+      # reset, sign-in and confirmation emails to one recipient address, whoever asks for them
+      email_address: [
+        scale_ms:
+          System.get_env("RATE_LIMIT_EMAIL_ADDRESS_WINDOW_MS", "#{to_timeout(hour: 1)}")
+          |> String.to_integer(),
+        limit: System.get_env("RATE_LIMIT_EMAIL_ADDRESS_MAX", "10") |> String.to_integer()
       ]
 
     extra_api_origins =

@@ -56,7 +56,7 @@
           :if={name_content || id}
           class="badge badge-ghost bg-fill-strong !h-[1.75rem]"
         >
-          {raw(name_content)}
+          {name_content}
         </span>
     {/case}
   {/if}

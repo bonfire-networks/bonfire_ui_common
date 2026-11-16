@@ -1,5 +1,6 @@
 <div>
   <!-- {@comment} -->
-  {raw(@html_content)}
+  {#if @trusted_html}{raw(@trusted_html)}{/if}
+  {#if @text}<pre>{@text}</pre>{/if}
   <#slot />
 </div>

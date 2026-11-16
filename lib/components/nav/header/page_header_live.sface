@@ -70,7 +70,7 @@
               data-role="page_title"
               class="flex items-center gap-1.5 min-w-0 font-medium text-left text-base text-base-content"
             >
-              <span class="shrink-0 first-letter:capitalize">{rich(@page_title)}</span>
+              <span class="shrink-0 first-letter:capitalize">{@page_title}</span>
               <span class="shrink-0">{l("in")}</span>
               <LinkLive
                 opts={"data-role": "page_title_context"}
@@ -95,7 +95,7 @@
               data-role="page_title"
               class="first-letter:capitalize truncate font-medium text-left text-base text-base-content"
             >
-              {rich(@page_title)}
+              {@page_title}
             </h1>
           {/if}
         </div>

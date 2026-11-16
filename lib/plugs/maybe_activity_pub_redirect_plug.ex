@@ -4,6 +4,7 @@ defmodule Bonfire.UI.Common.Plugs.MaybeActivityRedirectPlug do
 
   def init(_opts), do: nil
 
+  # TODO: an HTML request for a page that has an ActivityPub object (group, user, post) gets no way to find that object: no RFC 8288 `Link: <ap_id>; rel="alternate"; type="application/activity+json"` header, and (checked on one group page) no `<link rel="alternate">` in its head. Other servers, and our own `Fetcher` when a fetch returns HTML, look for one of these to resolve a pasted page URL. Check what pages serve, then add the header here for pages whose object federates, and the `<link>` tag in the layout
   def call(%{req_headers: req_headers} = conn, opts) do
     if Bonfire.Common.Utils.maybe_apply(Bonfire.Federate.ActivityPub, :federating?, [],
          fallback_return: false

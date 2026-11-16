@@ -165,7 +165,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       if module_enabled?(Bonfire.API.GraphQL.UserSocket) do
         socket("/api/socket", Bonfire.API.GraphQL.UserSocket,
-          websocket: true,
+          websocket: [connect_info: [:x_headers]],
           longpoll: false
         )
       end
@@ -283,8 +283,8 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       plug(Plug.RequestId)
 
-      # parses real IP in conn if behind proxy
-      plug(RemoteIp)
+      # parses real IP in conn if behind a trusted proxy (a client connecting directly can't pick its own address with a header)
+      plug(Bonfire.UI.Common.Plugs.TrustedRemoteIp)
 
       plug(Plug.Telemetry, event_prefix: [:phoenix, :endpoint])
 
@@ -538,6 +538,12 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
     |> Enum.any?(&String.contains?(&1, key))
   end
 
+  @doc "Whether a public URL config (the endpoint's `url` options) is https, on any port: port 443 counts as https, as it does everywhere else the public URL is built. The session cookie is only sent over https then."
+  def secure_url?(url_config) when is_list(url_config),
+    do: url_config[:scheme] == "https" or url_config[:port] in [443, "443"]
+
+  def secure_url?(_), do: false
+
   def session_options do
     # TODO: check that this is changeable at runtime
     # The session will be stored in the cookie and signed,
@@ -546,7 +552,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
     [
       store: :cookie,
       key: "_bonfire_key",
-      secure: System.get_env("PUBLIC_PORT") == "443",
+      secure: secure_url?(Application.get_env(:bonfire, Bonfire.Web.Endpoint, [])[:url]),
       signing_salt: Config.get!(:signing_salt),
       encryption_salt: Config.get!(:encryption_salt),
       max_age: Config.get(:session_time_to_remember, div(to_timeout(day: 60), 1_000))

@@ -173,6 +173,9 @@ defmodule Bonfire.UI.Common.Routes do
           "jetpack"
         ])
 
+        # a LiveView page renders only as HTML: this sets that format for one, and for a client asking for plain text renders the page's components as their emails
+        plug(Bonfire.UI.Common.Plugs.LiveViewFormat)
+
         # callback expands paths to their digested versions in prod — without it the
         # hinted URL differs from the one the page references and browsers download both
         plug PlugEarlyHints,
@@ -204,6 +207,7 @@ defmodule Bonfire.UI.Common.Routes do
       pipeline :browser_security do
         plug(:safe_protect_from_forgery)
         plug(:put_secure_browser_headers)
+        plug(Bonfire.UI.Common.Plugs.ContentSecurityPolicy)
       end
 
       # Locale detection, root layout, Gon JS config, and content-type
@@ -279,6 +283,7 @@ defmodule Bonfire.UI.Common.Routes do
         plug(:basic)
         plug(:browser_accepts)
         plug(:put_secure_browser_headers)
+        plug(Bonfire.UI.Common.Plugs.ContentSecurityPolicy)
         plug(:fetch_live_flash)
       end
 
@@ -344,6 +349,7 @@ defmodule Bonfire.UI.Common.Routes do
         # Security headers are response headers — safe to set even on cache hits
         # because they are NOT embedded in the cached HTML body.
         plug(:put_secure_browser_headers)
+        plug(Bonfire.UI.Common.Plugs.ContentSecurityPolicy)
         plug(:browser_render)
         plug(Bonfire.UI.Common.MaybeStaticGeneratorPlug)
         # CSRF only for authenticated users — unauthenticated responses must be
@@ -411,7 +417,9 @@ defmodule Bonfire.UI.Common.Routes do
         pipe_through(:cacheable)
 
         get("/gen_avatar", Bonfire.UI.Common.GenAvatar, :generate)
+        # an address without the signature answers 404 (see `Bonfire.UI.Common.GenAvatar.path/1`)
         get("/gen_avatar/:id", Bonfire.UI.Common.GenAvatar, :generate)
+        get("/gen_avatar/:id/:sig", Bonfire.UI.Common.GenAvatar, :generate)
       end
 
       # pages anyone can view

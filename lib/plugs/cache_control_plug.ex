@@ -51,10 +51,16 @@ defmodule Bonfire.UI.Common.CacheControlPlug do
   def init(opts), do: opts
 
   def call(conn, opts) do
-    if authenticated?(conn) do
-      put_resp_header(conn, "cache-control", "private, no-store")
-    else
-      cache_public_response(conn, opts)
+    cond do
+      authenticated?(conn) ->
+        put_resp_header(conn, "cache-control", "private, no-store")
+
+      # a page showing its components as emails has the same URL as the normal page, so a shared cache keeping it would give it to everyone: the client may keep it the way it keeps a guest page (see `revalidate_html/2`)
+      Bonfire.UI.Common.Plugs.LiveViewFormat.email_mode?(conn) ->
+        put_resp_header(conn, "cache-control", "private, max-age=0, must-revalidate")
+
+      true ->
+        cache_public_response(conn, opts)
     end
   end
 

@@ -60,7 +60,9 @@ defmodule Bonfire.UI.Common.Web do
       @moduledoc false
       use Phoenix.Controller, unquote(opts)
       import Plug.Conn
-      import Phoenix.LiveView.Controller
+      import Phoenix.LiveView.Controller, except: [live_render: 2, live_render: 3]
+      # renders as HTML whatever format the request negotiated
+      import Bonfire.UI.Common.Plugs.LiveViewFormat, only: [live_render: 2, live_render: 3]
       import Phoenix.Component, only: [to_form: 1, to_form: 2]
       import Bonfire.UI.Common.Web, only: [render_inline: 2]
 
@@ -874,12 +876,18 @@ defmodule Bonfire.UI.Common.Web do
                        fallback_return: nil
                      ) do
                   binary when is_binary(binary) and binary != "" ->
-                    binary = if format == "text", do: "<pre>#{binary}</pre>", else: binary
+                    # binary = if format == "text", do: "<pre>#{binary}</pre>", else: binary
+
+                    # a plain-text email holds the content as written, so it is shown escaped; the HTML email is our own rendered markup
+                    content =
+                      if format == "text",
+                        do: [text: binary, trusted_html: nil],
+                        else: [trusted_html: binary, text: nil]
 
                     Bonfire.UI.Common.Empty.render(
-                      Phoenix.Component.assign(assigns,
-                        html_content: binary,
-                        comment: "email mode"
+                      Phoenix.Component.assign(
+                        assigns,
+                        [comment: "email mode"] ++ content
                       )
                     )
 

@@ -51,7 +51,7 @@
           <div class="ml-3 min-w-0 flex-1 pt-0.5">
             {!-- `*-content` colours are for text on a filled surface of that colour, and this card sits on the base surface, so they read as dark on dark --}
             <p class="text-sm font-medium text-base-content">{e(@notification, :title, "Notification")}</p>
-            <div data-id="flash" data-type="notification" class="text-sm text-muted">{rich(e(@notification, :message, ""))}</div>
+            <div data-id="flash" data-type="notification" class="text-sm text-muted">{rich_untrusted(e(@notification, :message, ""))}</div>
             <LinkLive
               :if={e(@notification, :url, nil)}
               to={e(@notification, :url, nil)}
@@ -89,7 +89,7 @@
           <div class="flex-shrink-0">
             <#Icon iconify="ph:check-bold" class="size-5 text-success" aria-hidden="true" />
           </div>
-          <div data-id="flash" data-type="info" class="flex-1 text-sm font-medium text-base-content">{rich(info)}</div>
+          <div data-id="flash" data-type="info" class="flex-1 text-sm font-medium text-base-content">{rich_untrusted(info)}</div>
           <div :if={socket_connected?(@__context__)}>
             <button
               phx-click="clear-flash"
@@ -117,7 +117,7 @@
           <div class="flex-shrink-0">
             <#Icon iconify="ph:info-fill" class="size-5 text-warning" aria-hidden="true" />
           </div>
-          <div data-id="flash" data-type="warning" class="flex-1 text-sm font-medium text-base-content">{rich(warning)}</div>
+          <div data-id="flash" data-type="warning" class="flex-1 text-sm font-medium text-base-content">{rich_untrusted(warning)}</div>
           <div :if={socket_connected?(@__context__)}>
             <button
               phx-click="clear-flash"
@@ -154,7 +154,7 @@
               "!text-xs": Config.env() == :dev
             ]}
           >
-            {markdown(error)}
+            {rich_untrusted(error)}
           </div>
           <div :if={socket_connected?(@__context__)}>
             <button

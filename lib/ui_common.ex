@@ -430,6 +430,18 @@ defmodule Bonfire.UI.Common do
 
   def refusal_text(_refusal, otherwise), do: otherwise
 
+  @doc "Like `rich/2`, for text that was not sanitised when stored (e.g. fields of remote objects kept as received): strings are sanitised first, or escaped when no sanitiser is available, so they never come out as raw HTML."
+  def rich_untrusted(content, opts \\ [])
+
+  def rich_untrusted(content, opts) when is_binary(content) do
+    if Bonfire.Common.Extend.module_enabled?(Bonfire.Common.Text.SanitizeHTML),
+      do: content |> Text.maybe_sane_html() |> rich(opts),
+      else: content |> Text.escape_html() |> rich(opts)
+  end
+
+  def rich_untrusted(content, opts), do: rich(content, opts)
+
+  # The input of `rich/2` must already be sanitised HTML or markdown as stored: a string starting with `<` is output as HTML without being sanitised again. Use `rich_untrusted/2` for data that was not sanitised at storage.
   # @decorate time_tree(10)
   def rich(content, opts \\ []) do
     {skip_markdown?, opts} = Keyword.pop(opts, :skip_markdown, false)
@@ -1368,14 +1380,30 @@ defmodule Bonfire.UI.Common do
   defp go_redirect_opt("http" <> _ = url), do: [external: url]
   defp go_redirect_opt(path), do: [to: path]
 
-  defp internal_go_path?("/" <> _), do: true
-
-  defp internal_go_path?("http" <> _ = url) do
-    local = Bonfire.Common.URIs.base_url()
-    String.starts_with?(url, local)
+  @doc """
+  Whether a `go` target stays on this instance: a local path (a single leading `/`, so neither `//host` nor `/\\host`, which browsers read as another host), or an absolute URL whose scheme, host and port are exactly this instance's (no userinfo, so a look-alike such as `https://our.host@evil.example` never passes).
+  """
+  def internal_go_path?("/" <> rest = url) do
+    not String.starts_with?(rest, ["/", "\\"]) and not String.match?(url, ~r/[\x00-\x1f\x7f]/)
   end
 
-  defp internal_go_path?(_), do: false
+  def internal_go_path?(url) when is_binary(url) do
+    with %URI{scheme: scheme, host: host, port: port, userinfo: nil, authority: authority}
+         when scheme in ["http", "https"] and is_binary(host) <- URI.parse(url),
+         %URI{scheme: local_scheme, host: local_host, port: local_port} <-
+           URI.parse(Bonfire.Common.URIs.base_url()) do
+      host = String.downcase(host)
+
+      # `URI.parse/1` is lenient (it reads `host:4000.evil.local` as host `host`, port 4000), so the authority must be exactly the host, optionally followed by the port
+      String.downcase(authority) in [host, "#{host}:#{port}"] and
+        not String.match?(url, ~r/[\x00-\x1f\x7f\\]/) and
+        {scheme, host, port} == {local_scheme, String.downcase(local_host || ""), local_port}
+    else
+      _ -> false
+    end
+  end
+
+  def internal_go_path?(_), do: false
 
   defp go_where?(session_go, %Ecto.Changeset{} = cs, default, current_path) do
     go_where?(session_go, cs.changes, default, current_path)

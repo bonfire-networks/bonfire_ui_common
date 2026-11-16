@@ -30,7 +30,7 @@ defmodule Bonfire.UI.Common.AvatarLive do
   def generated_avatar_src(user_id, context) when is_binary(user_id) and user_id != "" do
     case generated_avatar_paths(context) do
       [] ->
-        "/gen_avatar/#{user_id}"
+        Bonfire.UI.Common.GenAvatar.path(user_id)
 
       avatar_paths ->
         Enum.at(avatar_paths, :erlang.phash2(user_id, length(avatar_paths)))
