@@ -1,4 +1,4 @@
-{#case Bonfire.UI.Common.WidgetFeedbackLive.cta_for(@__context__)}
+{#case @cta || Bonfire.UI.Common.WidgetFeedbackLive.cta_for(@__context__)}
   {#match {:link, url}}
     <LinkLive to={url} opts={"data-id": "widget_feedback_cta"} class="btn btn-primary btn-sm">
       {Bonfire.UI.Common.WidgetFeedbackLive.cta_label()}

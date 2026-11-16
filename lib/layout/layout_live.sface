@@ -127,6 +127,8 @@
                 parent_id="layout_right"
               />
 
+              <Bonfire.UI.Common.WidgetFeedbackLive :if={Bonfire.UI.Common.LayoutLive.widget?(:wishes)} />
+
               <div>
                 <div class="flex flex-col gap-2 pb-2">
                   <div :if={!@current_user_id} class="flex flex-col gap-2 p-card">

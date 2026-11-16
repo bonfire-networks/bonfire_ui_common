@@ -55,6 +55,17 @@ defmodule Bonfire.UI.Common.LayoutLive do
   prop exclude_circles, :list, default: []
   prop to_boundaries, :any, default: nil
 
+  @doc """
+  Whether a widget is shown on every page: a flavour lists it with `config :bonfire_ui_common, Bonfire.UI.Common.LayoutLive, widgets: [layout: [id]]`, and an admin can turn it off with `[Bonfire.UI.Common.LayoutLive, :include, id]`. Instance scope only, since guests see it too.
+  """
+  def widget?(id) do
+    id in Bonfire.Common.E.e(Bonfire.Common.Config.get([__MODULE__, :widgets], []), :layout, []) and
+      Bonfire.Common.Config.get([__MODULE__, :include, id], true,
+        name: l("Show on every page"),
+        description: l("Whether this widget is shown on every page.")
+      ) != false
+  end
+
   def render(_, assigns) do
     import Bonfire.UI.Common.Timing
 
