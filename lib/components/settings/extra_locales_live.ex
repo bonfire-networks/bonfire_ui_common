@@ -14,18 +14,25 @@ defmodule Bonfire.UI.Common.ExtraLocalesLive do
   prop primary_locale, :string, required: true
   prop scope, :any, required: true
 
-  def handle_event("move_extra_locale_up", %{"index" => idx}, socket) do
-    idx = String.to_integer(idx)
-    extra_locales = socket.assigns.extra_locales
-    new_locales = move_item(extra_locales, idx, idx - 1)
-    save_and_update(socket, new_locales)
-  end
+  # replaced by "move_extra_locale" below, which `MoveButtonsLive` sends with a direction
+  # def handle_event("move_extra_locale_up", %{"index" => idx}, socket) do
+  #   idx = String.to_integer(idx)
+  #   extra_locales = socket.assigns.extra_locales
+  #   new_locales = move_item(extra_locales, idx, idx - 1)
+  #   save_and_update(socket, new_locales)
+  # end
+  #
+  # def handle_event("move_extra_locale_down", %{"index" => idx}, socket) do
+  #   idx = String.to_integer(idx)
+  #   extra_locales = socket.assigns.extra_locales
+  #   new_locales = move_item(extra_locales, idx, idx + 1)
+  #   save_and_update(socket, new_locales)
+  # end
 
-  def handle_event("move_extra_locale_down", %{"index" => idx}, socket) do
+  def handle_event("move_extra_locale", %{"index" => idx, "direction" => direction}, socket) do
     idx = String.to_integer(idx)
-    extra_locales = socket.assigns.extra_locales
-    new_locales = move_item(extra_locales, idx, idx + 1)
-    save_and_update(socket, new_locales)
+    to = if direction == "up", do: idx - 1, else: idx + 1
+    save_and_update(socket, move_item(socket.assigns.extra_locales, idx, to))
   end
 
   def handle_event("remove_extra_locale", %{"index" => idx}, socket) do

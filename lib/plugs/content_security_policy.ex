@@ -33,13 +33,35 @@ defmodule Bonfire.UI.Common.Plugs.ContentSecurityPolicy do
 
   @enforced_header "content-security-policy"
   @report_only_header "content-security-policy-report-only"
+  @report_group "csp-endpoint"
 
   def init(opts), do: opts
 
   def call(conn, _opts) do
     conn
     |> add_missing(@enforced_header, @enforced)
-    |> add_missing(@report_only_header, [{"script-src", script_sources()}])
+    |> add_missing(@report_only_header, [
+      {"script-src", script_sources()},
+      # browsers that know `report-to` use it and ignore `report-uri`; the others use `report-uri`
+      {"report-uri", Bonfire.UI.Common.Plugs.CSPReport.path()},
+      {"report-to", @report_group}
+    ])
+    |> put_reporting_endpoints()
+  end
+
+  @doc "The `Reporting-Endpoints` header value naming the report group, or `nil` when the base URL is not https (browsers ignore the header otherwise)."
+  def reporting_endpoints(base_url) when is_binary(base_url) do
+    if String.starts_with?(base_url, "https://"),
+      do: ~s(#{@report_group}="#{base_url}#{Bonfire.UI.Common.Plugs.CSPReport.path()}")
+  end
+
+  def reporting_endpoints(_), do: nil
+
+  defp put_reporting_endpoints(conn) do
+    case reporting_endpoints(Bonfire.Common.URIs.base_url()) do
+      nil -> conn
+      value -> put_resp_header(conn, "reporting-endpoints", value)
+    end
   end
 
   @doc "Sets one directive of a policy header (the enforced one unless named), replacing that directive if it is there and keeping the others."
@@ -79,7 +101,10 @@ defmodule Bonfire.UI.Common.Plugs.ContentSecurityPolicy do
     do: Enum.map_join(directives, "; ", fn {name, value} -> String.trim("#{name} #{value}") end)
 
   defp script_sources do
-    Bonfire.Common.Config.get([:bonfire_ui_common, :csp_script_sources], @script_sources)
+    # `'report-sample'` makes inline violations carry the first 40 characters of the offending script
+    (Bonfire.Common.Config.get([:bonfire_ui_common, :csp_script_sources], @script_sources) ++
+       ["'report-sample'"])
+    |> Enum.uniq()
     |> Enum.join(" ")
   end
 end

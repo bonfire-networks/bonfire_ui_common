@@ -328,8 +328,10 @@ defmodule Bonfire.UI.Common.WidgetGettingStartedTest do
   end
 
   describe "handle_event \"view\"" do
+    # the event funnel refuses a guest, and the widget only shows for a signed-in user
     test "opens the row it is given" do
-      socket = build_socket(nil, %{viewing_index: 0, total_count: 3})
+      me = fake_user!(fake_account!())
+      socket = build_socket(me, %{viewing_index: 0, total_count: 3})
 
       assert {:noreply, socket} =
                WidgetGettingStartedLive.handle_event("view", %{"index" => "2"}, socket)
@@ -338,7 +340,8 @@ defmodule Bonfire.UI.Common.WidgetGettingStartedTest do
     end
 
     test "ignores an index outside the list" do
-      socket = build_socket(nil, %{viewing_index: 1, total_count: 3})
+      me = fake_user!(fake_account!())
+      socket = build_socket(me, %{viewing_index: 1, total_count: 3})
 
       assert {:noreply, socket} =
                WidgetGettingStartedLive.handle_event("view", %{"index" => 3}, socket)

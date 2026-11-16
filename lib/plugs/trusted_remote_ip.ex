@@ -27,7 +27,21 @@ defmodule Bonfire.UI.Common.Plugs.TrustedRemoteIp do
   def configured_proxies,
     do: Bonfire.Common.Config.get([:bonfire_ui_common, :trusted_proxies], []) |> List.wrap()
 
-  defp trusted_peer?(peer) do
+  @doc """
+  The client's address, by the same rule as the plug: the one in the forwarding `headers` (a list of `{name, value}`, such as a socket's `x_headers`) when the `peer` is a trusted proxy, otherwise the `peer` itself. Falls back to the `peer` when the headers carry no usable address. Both are IP tuples.
+  """
+  def client_ip(peer, headers) when is_tuple(peer) do
+    if trusted_peer?(peer) do
+      RemoteIp.from(headers || [], proxies: {__MODULE__, :configured_proxies, []}) || peer
+    else
+      peer
+    end
+  end
+
+  def client_ip(peer, _headers), do: peer
+
+  @doc "Whether the `peer` address (an IP tuple) is in a loopback or private network, or in the configured trusted proxies."
+  def trusted_peer?(peer) do
     encoded = RemoteIp.Block.encode(peer)
 
     Enum.any?(@private_networks, &RemoteIp.Block.contains?(&1, encoded)) or

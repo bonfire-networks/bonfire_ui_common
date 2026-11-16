@@ -38,6 +38,40 @@ defmodule Bonfire.UI.Common.CSPHeadersTest do
     end
   end
 
+  test "the report-only policy names the report endpoint and asks for script samples; the enforced policy does not" do
+    conn = get(conn(), "/login")
+
+    report_only = header(conn, "content-security-policy-report-only")
+    assert directive(report_only, "report-uri") == "report-uri /csp-report"
+    assert directive(report_only, "report-to") == "report-to csp-endpoint"
+    assert directive(report_only, "script-src") =~ "'report-sample'"
+
+    enforced = header(conn, "content-security-policy")
+    refute enforced =~ "report-uri"
+    refute enforced =~ "report-to"
+    refute enforced =~ "report-sample"
+
+    # the header is sent only when the instance's base URL is https (browsers ignore it otherwise)
+    expected =
+      Bonfire.UI.Common.Plugs.ContentSecurityPolicy.reporting_endpoints(
+        Bonfire.Common.URIs.base_url()
+      )
+
+    assert Plug.Conn.get_resp_header(conn, "reporting-endpoints") == List.wrap(expected)
+  end
+
+  test "Reporting-Endpoints names the route with an absolute https URL, and is skipped for http" do
+    assert Bonfire.UI.Common.Plugs.ContentSecurityPolicy.reporting_endpoints(
+             "https://bonfire.local"
+           ) ==
+             ~s(csp-endpoint="https://bonfire.local/csp-report")
+
+    assert Bonfire.UI.Common.Plugs.ContentSecurityPolicy.reporting_endpoints(
+             "http://bonfire.local"
+           ) ==
+             nil
+  end
+
   test "an embeddable page keeps its own frame-ancestors and still gets the enforced directives" do
     user = fake_user!(fake_account!())
 

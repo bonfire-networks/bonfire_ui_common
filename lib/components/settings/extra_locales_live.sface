@@ -23,30 +23,15 @@
             <span class="flex-1 text-sm font-medium">{Localise.locale_name(locale)}</span>
 
             <div class="join">
-              <button
-                type="button"
-                phx-click="move_extra_locale_up"
-                phx-value-index={idx}
-                phx-value-scope={@scope}
-                phx-target={@myself}
+              <Bonfire.UI.Common.MoveButtonsLive
+                event="move_extra_locale"
+                values={%{index: idx, scope: @scope}}
+                label={Localise.locale_name(locale)}
+                first={idx == 0}
+                last={idx == length(@extra_locales) - 1}
+                target={@myself}
                 class="btn btn-sm btn-ghost join-item"
-                disabled={idx == 0}
-                aria-label={l("Move %{locale} up", locale: Localise.locale_name(locale))}
-              >
-                <#Icon iconify="ph:arrow-up" class="size-4" />
-              </button>
-              <button
-                type="button"
-                phx-click="move_extra_locale_down"
-                phx-value-index={idx}
-                phx-value-scope={@scope}
-                phx-target={@myself}
-                class="btn btn-sm btn-ghost join-item"
-                disabled={idx == length(@extra_locales) - 1}
-                aria-label={l("Move %{locale} down", locale: Localise.locale_name(locale))}
-              >
-                <#Icon iconify="ph:arrow-down" class="size-4" />
-              </button>
+              />
             </div>
 
             <button

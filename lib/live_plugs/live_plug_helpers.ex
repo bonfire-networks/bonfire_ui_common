@@ -134,9 +134,16 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
     connect_params =
       if socket_connected?, do: Phoenix.LiveView.get_connect_params(socket), else: %{}
 
+    # the client's address: the one a trusted proxy forwards, else the socket's own peer (same rule as the `TrustedRemoteIp` plug)
     user_ip =
       if peer_data = maybe_get_connect_info(socket, :peer_data) do
-        with {:error, e} <- :inet_parse.ntoa(peer_data.address) do
+        client =
+          Bonfire.UI.Common.Plugs.TrustedRemoteIp.client_ip(
+            peer_data.address,
+            maybe_get_connect_info(socket, :x_headers)
+          )
+
+        with {:error, e} <- :inet_parse.ntoa(client) do
           nil
         else
           ip ->

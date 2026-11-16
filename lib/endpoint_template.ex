@@ -332,6 +332,9 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       # @decorate time()
       # defp parsers(conn, _), do: Plug.Parsers.call(conn, @opts)
       # plug :parsers
+      # CSP violation reports: answered here, ahead of the parsers, session and CSRF (a report carries none), with a small body cap
+      plug(Bonfire.UI.Common.Plugs.CSPReport)
+
       plug :plug_timing_checkpoint, :before_parsers
       plug(Plug.Parsers, @parser_opts)
       plug :plug_timing_checkpoint, :after_parsers

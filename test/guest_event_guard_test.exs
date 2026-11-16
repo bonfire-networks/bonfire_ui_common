@@ -60,6 +60,11 @@ defmodule Bonfire.UI.Common.GuestEventGuardTest do
       assert_sent_to_login(conn)
     end
 
+    # bonfire_encrypt is not compiled into every flavour
+    if not Code.ensure_loaded?(Bonfire.Encrypt.Secret) do
+      @tag skip: "Bonfire.Encrypt is not compiled in this flavour"
+    end
+
     test "Bonfire.Encrypt:create is refused, and no secret is stored", %{owner: owner} do
       before_count = Bonfire.Encrypt.Secret.count_secrets()
 

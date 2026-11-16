@@ -1,0 +1,26 @@
+<button
+  type="button"
+  id={@id && "#{@id}-up"}
+  data-role="move_up"
+  phx-click={@event}
+  :values={Map.put(@values, :direction, "up")}
+  phx-target={@target}
+  class={@class}
+  disabled={@first}
+  aria-label={l("Move %{name} up", name: @label)}
+>
+  <#Icon iconify="ph:caret-up" class="size-4" />
+</button>
+<button
+  type="button"
+  id={@id && "#{@id}-down"}
+  data-role="move_down"
+  phx-click={@event}
+  :values={Map.put(@values, :direction, "down")}
+  phx-target={@target}
+  class={@class}
+  disabled={@last}
+  aria-label={l("Move %{name} down", name: @label)}
+>
+  <#Icon iconify="ph:caret-down" class="size-4" />
+</button>
