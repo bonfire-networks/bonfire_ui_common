@@ -73,7 +73,7 @@ defmodule Bonfire.UI.Common.UntrustedTextRenderTest do
     end
 
     test "escapes instead of passing the markup raw when no sanitiser is available" do
-      Process.put({:modularity_cache, Bonfire.Common.Text.SanitizeHTML}, :disabled)
+      Process.put([:bonfire_common, Bonfire.Common.Text.SanitizeHTML, :modularity], :disabled)
 
       html = @payload |> rich_untrusted() |> Phoenix.HTML.safe_to_string()
 
