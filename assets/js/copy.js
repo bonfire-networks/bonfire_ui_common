@@ -15,7 +15,10 @@ CopyHooks.Copy = {
 			ev.preventDefault();
 			let el;
 			let text;
-			
+
+			// read at click time: a re-render can change the text (eg. the address in the form the user picked) while the element stays mounted
+			clipboardText = this.el.dataset.clipboardText;
+
 			// Check for explicit clipboard text first
 			if (clipboardText) {
 				text = clipboardText;
