@@ -200,6 +200,22 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   end
 
   @doc """
+  Calls `fun` until it returns something other than `nil`, `false` or `[]`, up to `tries` times 50ms apart (2 seconds by default), and returns its last result. For what arrives a moment later from another process, eg. a broadcast's update to a component, or the `Accept` another instance sends back for a follow, rather than a fixed sleep.
+
+      assert eventually(fn -> Follows.following?(me, someone_elsewhere) end)
+  """
+  def eventually(fun, tries \\ 40) do
+    case fun.() do
+      result when result in [nil, false, []] and tries > 0 ->
+        Process.sleep(50)
+        eventually(fun, tries - 1)
+
+      result ->
+        result
+    end
+  end
+
+  @doc """
   The static render a browser gets from a GET of `path`, as a `PhoenixTest` session, with no LiveView connected.
 
   `PhoenixTest.visit/2` connects a LiveView on every LiveView page. A guest has no LiveView socket, so a guest sees only this render: use it to test what a guest gets. Assert on it with `assert_has/3`, `refute_has/3` and the other `PhoenixTest` helpers.
