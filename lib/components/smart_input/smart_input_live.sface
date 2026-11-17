@@ -50,10 +50,7 @@
               />
             </span>
             <span :if={!replying?(assigns)} class="flex md:hidden">
-              <Bonfire.UI.Common.ComposerTypeMenuLive
-                id_prefix="bar_"
-                smart_input_opts={@smart_input_opts}
-              />
+              <Bonfire.UI.Common.ComposerTypeMenuLive id_prefix="bar_" smart_input_opts={@smart_input_opts} />
             </span>
             <button
               id="composer_summary"
