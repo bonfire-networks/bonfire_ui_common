@@ -159,21 +159,6 @@ html[data-ui-preset="typographic"] [id^="thread-view-options-"][id$="_trigger"] 
   color: var(--color-base-content);
 }
 
-/* A group without a banner gets a primary-colour band in its place, the default the mockups show, so the white hero never starts flush under the pink header bar. Same 3:1 ratio as an uploaded banner; the avatar overlaps it as it would a real one. */
-html[data-ui-preset="typographic"] [data-id="group_hero"]:not(:has(> [data-role="group-hero-banner"])) {
-  &::before {
-    content: "";
-    display: block;
-    aspect-ratio: 3 / 1;
-    background-color: var(--color-primary);
-  }
-
-  > div:first-child > div:first-child {
-    position: relative;
-    margin-top: -2.25rem;
-  }
-}
-
 /* Group About rows read as definition triplets: small uppercase label on its own line, bold value, no icon. */
 html[data-ui-preset="typographic"] [data-id="group_widget"] li[data-role^="group-widget-"] > :first-child {
   display: none;
@@ -185,6 +170,23 @@ html[data-ui-preset="typographic"] [data-id="group_widget"] li[data-role^="group
 
 html[data-ui-preset="typographic"] [data-id="group_widget"] li[data-role^="group-widget-"] > span > .text-muted:first-child {
   @apply block type-overline font-normal text-base-content;
+}
+
+/* The access list (a dl since 2026-10-27) reads the same way: each label stacked over its bold value, a gap between pairs, none inside one. */
+html[data-ui-preset="typographic"] [data-id="group_widget"] [data-role="group-access-list"] {
+  @apply grid-cols-1 gap-y-0;
+
+  dt {
+    @apply type-overline font-normal text-base-content;
+  }
+
+  dd {
+    font-weight: var(--font-weight-bold);
+  }
+
+  > div:not(:last-child) > dd {
+    @apply mb-2.5;
+  }
 }
 
 /* People lists in the rail (group moderators, users widget, thread participants) share one anatomy: full-width strips between rail-wide hairlines, each holding a white pill. Three templates render them, so each list is matched on its own markup. */
@@ -341,10 +343,20 @@ html[data-ui-preset="typographic"] .bonfire-wrapper {
   @apply rounded-box border-hair;
 }
 
+/* Box radius like the post and reply cards it sits between; side padding on the card gutter so its counts and controls line up with theirs. */
 html[data-ui-preset="typographic"] .thread-stats {
-  @apply bg-base-200 rounded-field p-1;
+  @apply bg-base-200 rounded-box p-1;
+  padding-inline: var(--spacing-card);
   border: var(--hairline);
   margin-block: -0.5px;
+}
+
+/* Below lg the band runs edge to edge between the post and its replies, so it drops its rounded ends and side borders. */
+@media (width < 64rem) {
+  html[data-ui-preset="typographic"] .thread-stats {
+    border-radius: 0;
+    border-inline: 0;
+  }
 }
 
 html[data-ui-preset="typographic"] [data-role="object-thread"] #thread_main_object,
@@ -607,6 +619,16 @@ html[data-ui-preset="typographic"] [data-reply-context]
     [data-role="published_in"]
   ) {
   margin-left: 87px;
+}
+
+/* Below lg the reply body drops the avatar offset and starts under the reply avatar, so link cards and media keep their width on phones. The nesting line and the indented reply header stay. */
+@media (width < 64rem) {
+  html[data-ui-preset="typographic"] [data-reply-context]
+    > div:not([data-role="subject"]):not([data-role="thread_header"]):not(
+      [data-role="published_in"]
+    ) {
+    margin-left: 34px;
+  }
 }
 
 html[data-ui-preset="typographic"] [data-reply-context] > article::after {
