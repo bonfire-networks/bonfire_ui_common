@@ -21,8 +21,10 @@ TooltipHooks.Tooltip = {
 		const tooltipWrapper = this.el;
 		const position = tooltipWrapper.getAttribute("data-position");
 		const boundarySelector = tooltipWrapper.getAttribute("data-boundary");
-		const boundary = boundarySelector ? tooltipWrapper.closest(boundarySelector) : null;
-		const overflowOptions = boundary ? { boundary, padding: 8 } : { padding: 5 };
+		// looked up each time, not once at mount: a patch can replace the container while this menu
+		// stays (a composer type switch swaps the form), and a detached one measures 0×0
+		const currentBoundary = () =>
+			boundarySelector ? tooltipWrapper.closest(boundarySelector) : null;
 		const trigger = tooltipWrapper.getAttribute("data-trigger");
 		const noFlip = tooltipWrapper.getAttribute("data-no-flip") === "true";
 		const closeOnInsideClick =
@@ -97,6 +99,9 @@ TooltipHooks.Tooltip = {
 				tooltip.style.width = `${button.getBoundingClientRect().width}px`;
 			}
 
+			const boundary = currentBoundary();
+			const overflowOptions = boundary ? { boundary, padding: 8 } : { padding: 5 };
+
 			computePosition(button, tooltip, {
 				placement: position || "top",
 				strategy,
@@ -157,6 +162,7 @@ TooltipHooks.Tooltip = {
 					ancestorScroll: true,
 					ancestorResize: true
 				});
+				const boundary = currentBoundary();
 				const boundaryObserver = boundary ? new ResizeObserver(updatePosition) : null;
 				boundaryObserver?.observe(boundary);
 				this.cleanup = () => {

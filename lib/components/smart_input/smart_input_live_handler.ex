@@ -243,6 +243,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     {:noreply,
      socket
      |> assign(reset_assigns)
+     |> clear_draft_status()
      |> Phoenix.LiveView.push_event("smart_input:reset", %{reset_reply_to: false})
      |> Phoenix.LiveView.push_event("smart_input:reset_sensitive", %{})
      |> cancel_all_uploads()}
@@ -486,10 +487,10 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         do: Map.put(opts, :create_object_type, resolved_create_object_type),
         else: opts
 
-    # keep what was typed, still as a draft (see `SmartInputModule`)
+    # keep what was typed (see `SmartInputModule`); it stays a draft, `input_status` is untouched
     opts =
       case selected_component && carried_draft_text(socket) do
-        text when is_binary(text) -> Map.merge(opts, %{text: text, input_status: :draft})
+        text when is_binary(text) -> Map.put(opts, :text, text)
         _ -> opts
       end
 
@@ -780,8 +781,13 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     # Check if uploads exist using simplified check
     uploads = e(assigns(socket), :uploads, nil)
-    smart_input_opts = e(assigns(socket), :smart_input_opts, nil)
-    input_status = smart_input_opts[:input_status]
+
+    # the owner's status: on a type component's own socket (see `draft_owner/1`) its local copy can be
+    # older than what the composer renders down to it
+    input_status =
+      if draft_owner(socket),
+        do: e(assigns(socket), :smart_input_opts, :input_status, nil),
+        else: assigns(socket)[:input_status]
 
     # Any content-bearing field counts, not just the body. `e` treats "" as
     # empty, so these are nil until actually filled in.
@@ -797,9 +803,6 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
     input_status =
       cond do
-        input_status == :submit ->
-          input_status
-
         has_content? or has_uploads? ->
           :draft
 
@@ -823,15 +826,14 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
         # for switching type; not in `smart_input_opts`, which re-renders every composer part
         composer_draft_text: kept_draft(body, assigns(socket)[:composer_draft_text]),
         reset_smart_input: e(assigns(socket), :reset_smart_input, false),
+        input_status: input_status,
+        # lets cancel-upload know whether text content remains
+        has_draft_content: has_content?,
         smart_input_opts:
-          Enum.into(
-            %{
-              input_status: input_status,
-              # lets cancel-upload know whether text content remains
-              has_draft_content: has_content?
-            }
-            |> maybe_put(:selected_language, selected_language),
-            e(assigns(socket), :smart_input_opts, %{})
+          maybe_put(
+            e(assigns(socket), :smart_input_opts, %{}),
+            :selected_language,
+            selected_language
           )
       )
 
@@ -847,8 +849,30 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     #   end
     # )
 
-    # Return the updated socket directly
-    {:noreply, socket}
+    {:noreply, send_draft_status(socket)}
+  end
+
+  # A type form that validates on its own component (Surface's `<Form change=…>`, eg. a task or an
+  # offer) hands the draft status to the composer that owns it, which passes itself down as `event_target`
+  defp send_draft_status(socket) do
+    if owner = draft_owner(socket),
+      do:
+        Phoenix.LiveView.send_update(owner,
+          draft_status: Map.take(assigns(socket), [:input_status, :has_draft_content])
+        )
+
+    socket
+  end
+
+  # the composer that owns the draft, when this socket is another component's (nil on the owner itself)
+  defp draft_owner(socket) do
+    assigns = assigns(socket)
+    myself = assigns[:myself]
+
+    case assigns[:event_target] do
+      %Phoenix.LiveComponent.CID{} = owner when owner != myself -> owner
+      _ -> nil
+    end
   end
 
   # `choices[N][name]` fields (e.g. poll options) live outside `post[post_content]`
@@ -911,35 +935,20 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
       # Cancel the upload - check if uploads exist first
       socket = Phoenix.LiveView.cancel_upload(socket, :files, ref)
 
-      smart_input_opts = e(assigns(socket), :smart_input_opts, nil)
-
       # tracked by validate once anything is typed; before that, prefilled text
       has_content? =
-        case smart_input_opts[:has_draft_content] do
+        case assigns(socket)[:has_draft_content] do
           tracked when is_boolean(tracked) -> tracked
-          _ -> not is_nil(e(smart_input_opts, :text, nil))
+          _ -> not is_nil(e(assigns(socket), :smart_input_opts, :text, nil))
         end
 
       uploads = e(assigns(socket), :uploads, nil)
 
-      input_status = smart_input_opts[:input_status]
-
       input_status =
-        cond do
-          input_status == :submit -> input_status
-          has_content? || (uploads && e(uploads, :files, :entries, []) != []) -> :draft
-          true -> nil
-        end
+        if(has_content? || (uploads && e(uploads, :files, :entries, []) != []), do: :draft)
         |> debug("drafting after cancel-upload")
 
-      # Update the socket first
-      socket =
-        socket
-        |> assign(reset_smart_input: false)
-        |> update(
-          :smart_input_opts,
-          &Map.merge(&1, %{input_status: input_status})
-        )
+      socket = assign(socket, reset_smart_input: false, input_status: input_status)
 
       # Return the updated socket directly
       {:noreply, socket}
@@ -1391,6 +1400,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # replying to a sub-comment) pushes `reset_reply_to` so EmbedCommentsLive teleports
     # the portal back to the thread root.
     socket
+    |> clear_draft_status()
     |> Phoenix.LiveView.push_event("smart_input:reset", %{})
     |> Phoenix.LiveView.push_event("smart_input:reset_sensitive", %{})
     |> cancel_all_uploads()
@@ -1496,14 +1506,13 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   # only while drafting (a reset sets `input_status` to nil); "" too, so cleared text stays cleared
   defp carried_draft_text(socket) do
-    if e(assigns(socket), :smart_input_opts, :input_status, nil) == :draft,
+    if assigns(socket)[:input_status] == :draft,
       do: assigns(socket)[:composer_draft_text]
   end
 
   defp default_smart_input_opts(extra \\ %{}) do
     Map.merge(
       %{
-        input_status: nil,
         open: false,
         text_suggestion: nil,
         text: nil,
@@ -1525,11 +1534,15 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
   defp do_extra_reset_input(socket) do
     # the reset goes with this reply, so the editor unlocks and clears at once (PersistentLive skips its own: reset_events_pushed)
     socket
+    |> clear_draft_status()
     |> push_event("smart_input:reset", %{})
     |> push_event("smart_input:reset_sensitive", %{})
     |> refused()
     |> cancel_all_uploads()
   end
+
+  @doc "Ends the draft on the composer that owns it (`SmartInputContainerLive`, or an inline composer): after a post, a discard, or a reset sent from elsewhere."
+  def clear_draft_status(socket), do: assign(socket, input_status: nil, has_draft_content: nil)
 
   def toggle_expanded(js \\ %JS{}, target, btn, class) when is_binary(class) do
     # TODO: document

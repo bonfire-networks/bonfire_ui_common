@@ -8,7 +8,8 @@ const source = fs.readFileSync(new URL("../../assets/js/tooltip.js", import.meta
   .replace("export { TooltipHooks };", "globalThis.hooks = TooltipHooks;");
 
 function mountDropdown({ bounded = false, sheet = false, narrow = false } = {}) {
-  const boundary = {};
+  let boundary = {};
+  let observedTarget;
   let middleware;
   let resize;
   let disconnected = false;
@@ -65,7 +66,7 @@ function mountDropdown({ bounded = false, sheet = false, narrow = false } = {}) 
     prefersReducedMotion: () => true,
     flip: options => ({name: "flip", options}), shift: options => ({name: "shift", options}), offset() {},
     size: options => ({name: "size", options}),
-    ResizeObserver: class { constructor(callback) { resize = callback; } observe(target) { assert.equal(target, boundary); } disconnect() { disconnected = true; } },
+    ResizeObserver: class { constructor(callback) { resize = callback; } observe(target) { observedTarget = target; assert.equal(target, boundary); } disconnect() { disconnected = true; } },
     autoUpdate(_button, _panel, update) { update(); return () => {}; },
     computePosition(_button, _panel, options) { middleware = options.middleware; positions++; return Promise.resolve({ x: 10, y: 20, placement: "bottom-start" }); },
   };
@@ -74,6 +75,9 @@ function mountDropdown({ bounded = false, sheet = false, narrow = false } = {}) 
   hook.mounted();
   return {
     hook, button, search, option, panel, document, boundary,
+    // the container is replaced while the menu stays, as a composer type switch swaps the form
+    swapBoundary: () => (boundary = {}),
+    observedTarget: () => observedTarget,
     middleware: () => middleware, resize: () => resize(), observed: () => resize !== undefined,
     disconnected: () => disconnected,
     focused: () => focused, positions: () => positions, popoverOpen: () => popoverOpen,
@@ -158,6 +162,17 @@ test("bounded menus size to available space and update when their container resi
   assert.ok(ui.positions() > positions);
   ui.hook.destroyed();
   assert.equal(ui.disconnected(), true);
+});
+
+test("a bounded menu measures the container it is in when it opens, not the one it mounted in", async () => {
+  const ui = mountDropdown({ bounded: true });
+  const replacement = ui.swapBoundary();
+  await ui.open();
+  for (const item of ui.middleware().filter(item => item?.options)) {
+    assert.equal(item.options.boundary, replacement);
+  }
+  assert.equal(ui.observedTarget(), replacement, "resizes of the new container reposition the menu");
+  ui.hook.destroyed();
 });
 
 test("a sheet-on-mobile menu opens as a bottom sheet on a narrow screen, without positioning", async () => {

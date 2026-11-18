@@ -38,7 +38,7 @@
         <Bonfire.UI.Common.GuestAuthActionsLive
           login_id="guest-board-signin"
           signup_id="guest-board-signup"
-          login_class="btn btn-ghost shrink-0 px-4 whitespace-nowrap"
+          login_class="btn btn-sm h-9 px-4 border-0 normal-case bg-base-content text-base-100 hover:bg-base-content/90 shrink-0 whitespace-nowrap"
           signup_class="btn btn-primary shrink-0 px-4 whitespace-nowrap"
           current={@page}
         />

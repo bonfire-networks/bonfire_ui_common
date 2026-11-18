@@ -1,6 +1,5 @@
 <button
   id={@id}
-  disabled={e(@smart_input_opts, :input_status, nil) == :submit}
   phx-click={cond do
     @component ->
       LiveHandler.open_type(
@@ -19,8 +18,7 @@
   aria-label={@prompt || l("Compose")}
   class={
     @class,
-    "max-sm:touch-target focus-ring transition-interactive",
-    "btn-disabled": e(@smart_input_opts, :input_status, nil) == :submit
+    "max-sm:touch-target focus-ring transition-interactive"
   }
 >
   <span :if={!@as_icon and @prompt} class="text-sm">
@@ -32,16 +30,6 @@
     phx-value-opts={Jason.encode!(merge_as_map(%{prompt: @prompt}, @smart_input_opts))}
     x-on:click.stop={if @showing_within == :smart_input, do: "show_smart_input('#{@prompt || l("Compose")}')"} --}
   {#case e(@smart_input_opts, :input_status, nil)}
-    {#match :submit}
-      {!-- submitting --}
-      <#Icon
-        iconify="eos-icons:three-dots-loading"
-        aria-hidden="true"
-        class={
-          @icon_class,
-          "toggle_button size-5"
-        }
-      />
     {#match :draft}
       {!-- draft in progress --}
       <#Icon

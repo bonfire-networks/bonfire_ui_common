@@ -326,9 +326,13 @@ document.addEventListener("input", (e) => {
 window.addEventListener("phx:smart_input:reset", () => {
   // Posted (or explicitly reset): the draft served its purpose
   clearTimeout(draftSaveTimer);
-  document
-    .querySelectorAll(DRAFT_INPUT_SELECTOR)
-    .forEach((el) => removeBonfireParam("draft", composerDraftKey(el)));
+  const keys = new Set(
+    [...document.querySelectorAll(DRAFT_INPUT_SELECTOR)].map(composerDraftKey),
+  );
+  // the floating composer's own key too: a type without an editor (e.g. a poll) has no input to find it by
+  const composerForm = document.querySelector("#smart_input form");
+  if (composerForm) keys.add(composerDraftKey(composerForm));
+  keys.forEach((key) => removeBonfireParam("draft", key));
   // Reset the main smart input button to its default state
   JS_exec_attr_event("#main_smart_input_button", "phx-reset");
 });

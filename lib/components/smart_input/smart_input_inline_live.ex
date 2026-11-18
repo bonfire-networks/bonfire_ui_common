@@ -25,6 +25,10 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
 
   # set in update/2: an embed guest on an invite-only, federating instance cannot sign up, so replying from their own fediverse account comes first
   data remote_first, :boolean, default: false
+
+  # this composer's own draft state (validate writes it here, a post or reset clears it, see
+  # `SmartInputContainerLive`); the page's opts may seed it, as they did when it lived inside the opts
+  data input_status, :atom, default: nil
   prop activity, :any, default: nil
   prop hide_smart_input, :boolean, default: false
   prop object, :any, default: nil
@@ -53,6 +57,18 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
       maybe_apply(Bonfire.Federate.ActivityPub, :federating?, [], fallback_return: false) == true
   end
 
+  # only opts that name a status seed it (eg. poll home's `:draft`); a re-render without one keeps what validate set
+  defp seed_input_status(socket, opts) do
+    opts = Map.new(opts || %{})
+
+    if Map.has_key?(opts, :input_status),
+      do: assign(socket, :input_status, opts[:input_status]),
+      else: socket
+  end
+
+  # draft status validated on a type component's own socket (see `SmartInput.LiveHandler`'s validate)
+  def update(%{draft_status: draft}, socket), do: {:ok, assign(socket, draft)}
+
   def update(assigns, socket) do
     dom_id =
       to_string(assigns[:id] || assigns[:reply_to_id] || assigns[:context_id] || "default")
@@ -61,6 +77,7 @@ defmodule Bonfire.UI.Common.SmartInputInlineLive do
       socket
       |> assign(assigns)
       |> assign(:composer_dom_id, dom_id)
+      |> seed_input_status(assigns[:smart_input_opts])
 
     remote_first? = remote_first?(socket.assigns)
 

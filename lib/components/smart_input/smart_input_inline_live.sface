@@ -85,7 +85,7 @@
               to_circles={@to_circles}
               exclude_circles={@exclude_circles}
               verb_permissions={@verb_permissions}
-              smart_input_opts={@smart_input_opts}
+              smart_input_opts={Map.put(Map.new(@smart_input_opts), :input_status, @input_status)}
               activity={@activity}
               object={@object}
               uploads={@uploads}

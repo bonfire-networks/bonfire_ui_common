@@ -43,6 +43,12 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
   prop preview_boundary_for_username, :any, default: nil
   prop preview_boundary_verbs, :list, default: []
 
+  # Draft state lives only here, written by this component's own events (validate, cancel-upload,
+  # discard) and cleared by a reset. The template puts `input_status` into the opts it renders, over
+  # any copy that came back down through PersistentLive, so a stale copy is never read.
+  data input_status, :atom, default: nil
+  data has_draft_content, :boolean, default: nil
+
   def mount(socket),
     do:
       {:ok,
@@ -104,6 +110,9 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
     {:ok, socket |> assign(field, value) |> assign(reset_smart_input: false)}
   end
 
+  # draft status validated on a type component's own socket (see `SmartInput.LiveHandler`'s validate)
+  def update(%{draft_status: draft}, socket), do: {:ok, assign(socket, draft)}
+
   # Merge smart_input_opts when both old and new are maps
   def update(
         %{smart_input_opts: new_smart_input_opts} = assigns,
@@ -142,7 +151,8 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
        |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
        |> assign(preserve_reply_state(keep_unless_given(assigns, socket), socket))
        |> assign(:smart_input_opts, merged_opts)
-       |> assign(:reset_smart_input, reset_value)}
+       |> assign(:reset_smart_input, reset_value)
+       |> maybe_clear_draft(reset_value)}
     end
   end
 
@@ -160,8 +170,15 @@ defmodule Bonfire.UI.Common.SmartInputContainerLive do
      socket
      |> assign(preserve_reply_state(keep_unless_given(assigns, socket), socket))
      |> Bonfire.Boundaries.LiveHandler.prepare_assigns()
-     |> assign(reset_smart_input: reset_value, custom_emojis: "[]")}
+     |> assign(reset_smart_input: reset_value, custom_emojis: "[]")
+     |> maybe_clear_draft(reset_value)}
   end
+
+  # a reset (a post published, a draft discarded) ends the draft
+  defp maybe_clear_draft(socket, true),
+    do: Bonfire.UI.Common.SmartInput.LiveHandler.clear_draft_status(socket)
+
+  defp maybe_clear_draft(socket, _), do: socket
 
   # Preserve reply state fields if they exist and incoming values are nil
   # This ensures minimize/maximize doesn't clear the reply_to state
