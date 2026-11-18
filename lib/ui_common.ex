@@ -759,6 +759,36 @@ defmodule Bonfire.UI.Common do
     socket
   end
 
+  @doc """
+  For each component socket whose `state_key` is `:requested` (eg. a follow or join button showing a pending request), subscribes this LiveView process, once, to where the answer will be broadcast (`Bonfire.Social.Requests.answered_topic/2`), so the button changes when the answer arrives. Returns what it was given.
+
+  Called from a component's `update_many`, which runs in the LiveView process (a preload run in a Task comes back to it as an update).
+  """
+  def listen_for_request_answers(sockets, state_key) when is_list(sockets) do
+    Enum.each(sockets, fn
+      %Phoenix.LiveView.Socket{} = socket ->
+        assigns = assigns(socket)
+
+        with :requested <- assigns[state_key],
+             user_id when is_binary(user_id) <- current_user_id(socket),
+             object_id when is_binary(object_id) <-
+               e(assigns, :object_id, nil) || id(e(assigns, :object, nil)) do
+          Bonfire.Common.Utils.maybe_apply(Bonfire.Social.Requests, :answered_topic, [
+            user_id,
+            object_id
+          ])
+          |> PubSub.subscribe_once(socket)
+        end
+
+      _ ->
+        nil
+    end)
+
+    sockets
+  end
+
+  def listen_for_request_answers(other, _state_key), do: other
+
   def cast_self(socket, assigns_to_broadcast) do
     assign_target_ids = current_account_and_or_user_ids(socket)
 

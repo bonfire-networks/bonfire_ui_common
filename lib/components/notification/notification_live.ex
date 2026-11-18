@@ -72,7 +72,8 @@ defmodule Bonfire.UI.Common.NotificationLive do
     current_user = current_user(socket) || current_user(assigns)
 
     # heavy-load banner: `Bonfire.Common.Overload` re-broadcasts a notice each tick while elevated — handled by the parent LV via LiveHandlers → assign_flash back to this component, whose natural auto-fade is the all-clear. Same i==2 gate as below so the parent LV process subscribes only once.
-    if assigns[:i] == 2, do: PubSub.subscribe("bonfire:overload", socket)
+    # `subscribe_once` since another component mounted in the same process would otherwise subscribe it again
+    if assigns[:i] == 2, do: PubSub.subscribe_once("bonfire:overload", socket)
 
     # only where this device needs the in-page fallback, which the first connect knows from a cached param and the hook confirms a moment later (`push_state` below). Where push works the service worker shows the notification, so subscribing here would mean carrying a message to show a second popup nobody asked for
     subscribed? =
@@ -114,7 +115,7 @@ defmodule Bonfire.UI.Common.NotificationLive do
 
     if feed_id do
       debug(feed_id, "subscribed to the notification fallback")
-      PubSub.subscribe(feed_id, socket)
+      PubSub.subscribe_once(feed_id, socket)
       true
     else
       debug("no feed_id, not subscribing to the notification fallback")

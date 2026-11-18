@@ -58,8 +58,12 @@ defmodule Bonfire.UI.Common.ComponentID do
   end
 
   def deterministic_id(component_module, parent_id) do
-    "#{component_module |> Types.module_to_str() |> String.replace(".", "-")}_#{parent_id |> Types.module_to_str() |> String.replace(".", "-")}"
+    "#{id_prefix(component_module)}_#{parent_id |> Types.module_to_str() |> String.replace(".", "-")}"
   end
+
+  @doc "How every id `new/3` makes for `component_module` starts, whatever the parent (eg. `Bonfire-Classify-Web-JoinButtonLive`)."
+  def id_prefix(component_module),
+    do: component_module |> Types.module_to_str() |> String.replace(".", "-")
 
   def send_updates(component_module, object_id, assigns, pid \\ nil) do
     component_module = Types.maybe_to_atom(component_module)
@@ -90,6 +94,14 @@ defmodule Bonfire.UI.Common.ComponentID do
         )
       end
     end
+  end
+
+  @doc """
+  The same as `send_updates/4`, for a message that another process broadcast, eg. `{{Bonfire.UI.Common.ComponentID, :send_updates}, {component_module, object_id, assigns}}` (see `Bonfire.Social.Requests.broadcast_answered/5`). The component ids are only known in the LiveView process that rendered them, so the broadcast is received here and the lookup runs in this process.
+  """
+  def handle_info({:send_updates, {component_module, object_id, assigns}}, socket) do
+    send_updates(component_module, object_id, assigns)
+    {:noreply, socket}
   end
 
   def send_assigns(component_module, id, set, socket, pid \\ nil) do

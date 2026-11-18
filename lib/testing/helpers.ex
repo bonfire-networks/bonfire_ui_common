@@ -17,6 +17,21 @@ defmodule Bonfire.UI.Common.Testing.Helpers do
   alias Surface.Components.Dynamic.Component, as: StatelessComponent
   alias Surface.Components.Dynamic.LiveComponent, as: StatefulComponent
 
+  @doc """
+  A CSS selector for a stateful component whose id comes from `Bonfire.UI.Common.ComponentID.new/3`, eg. `component_selector(Bonfire.Classify.Web.JoinButtonLive, id(group))`, whichever parent rendered it. Options:
+  - `parent:` only the one rendered with that parent id (as passed to `new/3`), eg. to tell the group hero's Follow button from the Join button's own follow toggle for the same group
+  - `suffix:` an element whose id is derived from the component's, eg. `"-leave"` for the Leave dialog's button
+  """
+  def component_selector(component_module, object_id, opts \\ []) do
+    start =
+      case opts[:parent] do
+        nil -> "#{Bonfire.UI.Common.ComponentID.id_prefix(component_module)}_"
+        parent -> Bonfire.UI.Common.ComponentID.deterministic_id(component_module, parent)
+      end
+
+    "[id^='#{start}'][id$='_for_#{object_id}#{opts[:suffix]}']"
+  end
+
   def fake_account!(attrs \\ %{}, opts \\ []),
     do: Bonfire.Common.Utils.maybe_apply(Bonfire.Me.Fake, :fake_account!, [attrs, opts])
 

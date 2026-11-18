@@ -75,7 +75,7 @@ defmodule Bonfire.UI.Common.BadgeCounterLive do
         load_count(socket, feed_id, for_user)
       else
         # subscribe to count updates
-        PubSub.subscribe("unseen_count:#{feed_id}", socket)
+        PubSub.subscribe_once("unseen_count:#{feed_id}", socket)
 
         if persistent? do
           load_count(socket, feed_id, for_user)

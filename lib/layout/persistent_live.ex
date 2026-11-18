@@ -491,6 +491,13 @@ defmodule Bonfire.UI.Common.PersistentLive do
   def handle_info({{Bonfire.Social.Pins.LiveHandler, :pins_changed}, _} = blob, socket),
     do: Bonfire.UI.Common.LiveHandlers.handle_info(blob, socket, __MODULE__)
 
+  # a follow or join button shown pending in this sticky process listens for the answer (`Bonfire.Social.Requests.answered_topic/2`), and there's no catch-all handle_info, so route it to the shared handler rather than crash
+  def handle_info({{Bonfire.UI.Common.ComponentID, :send_updates}, _} = blob, socket),
+    do: Bonfire.UI.Common.LiveHandlers.handle_info(blob, socket, __MODULE__)
+
+  def handle_info({{Bonfire.Classify.LiveHandler, :refresh_membership}, _} = blob, socket),
+    do: Bonfire.UI.Common.LiveHandlers.handle_info(blob, socket, __MODULE__)
+
   # the groups sidebar in this sticky process listens to the feeds of the groups and topics it shows or the user follows, to move them up when something is posted (`Bonfire.UI.Groups.LiveHandler`); no other feed is subscribed to here, and there's no catch-all handle_info, so this would otherwise crash it
   def handle_info({{Bonfire.Social.Feeds, :new_activity}, data}, socket) do
     maybe_apply(Bonfire.UI.Groups.LiveHandler, :handle_info, [{:new_activity, data}, socket])
