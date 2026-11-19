@@ -75,9 +75,12 @@ defmodule Bonfire.UI.Common.WidgetsLive do
     do: sort_by_saved_order(items, nil, &order_key/1)
 
   def ordered(items, setting, list_key, _, context) do
+    orders = Bonfire.Common.Settings.get([:ui, setting], [], current_user: current_user(context))
+
+    # a user's own orders are a map, where `ed` finds a string `list_key`, but the instance's come from config as a keyword list, keyed by atoms only
     order =
-      Bonfire.Common.Settings.get([:ui, setting], [], current_user: current_user(context))
-      |> ed(list_key, nil)
+      ed(orders, list_key, nil) ||
+        e(orders, Bonfire.Common.Types.maybe_to_atom(list_key), nil)
 
     sort_by_saved_order(items, order, &order_key/1)
   end

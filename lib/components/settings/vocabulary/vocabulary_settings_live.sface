@@ -36,7 +36,7 @@
       />
     {/for}
     <div>
-      <button type="submit" class="btn btn-sm btn-soft btn-primary">{l("Save")}</button>
+      <button type="submit" class="btn btn-sm btn-primary">{l("Save")}</button>
     </div>
   </form>
 {/for}

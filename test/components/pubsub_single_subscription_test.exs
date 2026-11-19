@@ -25,8 +25,11 @@ defmodule Bonfire.UI.Common.PubsubSingleSubscriptionTest do
 
   test "two notification components in one process hear the heavy-load notice once", %{me: me} do
     for _ <- 1..2 do
-      {:ok, socket} = NotificationLive.mount(connected_socket(%{__context__: %{current_user: me}}))
-      {:ok, _} = NotificationLive.update(%{id: "notification_#{Enum.random(1..9999)}", i: 2}, socket)
+      {:ok, socket} =
+        NotificationLive.mount(connected_socket(%{__context__: %{current_user: me}}))
+
+      {:ok, _} =
+        NotificationLive.update(%{id: "notification_#{Enum.random(1..9999)}", i: 2}, socket)
     end
 
     assert_received_once("bonfire:overload")
@@ -34,8 +37,12 @@ defmodule Bonfire.UI.Common.PubsubSingleSubscriptionTest do
 
   test "two notification components in one process hear my notifications once", %{me: me} do
     for _ <- 1..2 do
-      {:ok, socket} = NotificationLive.mount(connected_socket(%{__context__: %{current_user: me}}))
-      {:ok, socket} = NotificationLive.update(%{id: "notification_#{Enum.random(1..9999)}", i: 2}, socket)
+      {:ok, socket} =
+        NotificationLive.mount(connected_socket(%{__context__: %{current_user: me}}))
+
+      {:ok, socket} =
+        NotificationLive.update(%{id: "notification_#{Enum.random(1..9999)}", i: 2}, socket)
+
       assert socket.assigns.subscribed
     end
 
