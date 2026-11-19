@@ -416,6 +416,8 @@ defmodule Bonfire.UI.Common.Routes do
       scope "/" do
         pipe_through(:cacheable)
 
+        get("/robots.txt", Bonfire.UI.Common.CrawlerBoundaries.RobotsController, :txt)
+
         get("/gen_avatar", Bonfire.UI.Common.GenAvatar, :generate)
         # an address without the signature answers 404 (see `Bonfire.UI.Common.GenAvatar.path/1`)
         get("/gen_avatar/:id", Bonfire.UI.Common.GenAvatar, :generate)
