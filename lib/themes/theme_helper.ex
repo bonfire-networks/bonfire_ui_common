@@ -48,14 +48,16 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   previews aren't clobbered on LiveView mount.
   """
   def push_current_ui_preset(socket) do
-    push_ui_preset(socket, ui_preset(socket))
+    push_ui_preset(socket, ui_preset(socket), remember: true)
   end
 
-  @doc "Pushes a specific (normalised) preset — used when applying a just-saved value."
-  def push_ui_preset(socket, preset_raw) do
-    Phoenix.LiveView.push_event(socket, "set_ui_preset", %{
-      preset: normalize_ui_preset(preset_raw)
-    })
+  @doc "Pushes a specific (normalised) preset — used when applying a just-saved value. `remember: true` only for the current user's own resolved value, see `push_current_theme/1`."
+  def push_ui_preset(socket, preset_raw, opts \\ []) do
+    Phoenix.LiveView.push_event(
+      socket,
+      "set_ui_preset",
+      remembered(%{preset: normalize_ui_preset(preset_raw)}, opts)
+    )
   end
 
   @doc """
@@ -79,10 +81,12 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   Pushes a `set_theme` event so root.html.heex's listener updates `<html data-theme=…>`.
   No-op for non-binary themes; safe on disconnected sockets (push_event queues until connect).
   """
-  def push_theme(socket, theme) when is_binary(theme),
-    do: Phoenix.LiveView.push_event(socket, "set_theme", %{theme: theme})
+  def push_theme(socket, theme, opts \\ [])
 
-  def push_theme(socket, _), do: socket
+  def push_theme(socket, theme, opts) when is_binary(theme),
+    do: Phoenix.LiveView.push_event(socket, "set_theme", remembered(%{theme: theme}, opts))
+
+  def push_theme(socket, _, _), do: socket
 
   @doc """
   Applies standard iframe-embed assigns: reads `"theme"` from params, pushes it,
@@ -110,7 +114,10 @@ defmodule Bonfire.UI.Common.ThemeHelper do
     socket
     |> push_base_theme()
     # root.html.heex isn't reactive, so push the custom overrides to <html> (empty clears it)
-    |> Phoenix.LiveView.push_event("set_custom_theme", %{style: custom_theme_style(socket)})
+    |> Phoenix.LiveView.push_event(
+      "set_custom_theme",
+      remembered(%{style: custom_theme_style(socket)}, remember: true)
+    )
     |> push_current_icon_weight()
     |> push_current_ui_preset()
   end
@@ -123,20 +130,20 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   theme, a user-scoped icon weight can only reach `<html>` via a pushed event.
   """
   def push_current_icon_weight(socket) do
-    push_icon_weight(socket, icon_weight(socket))
+    push_icon_weight(socket, icon_weight(socket), remember: true)
   end
 
   defp push_base_theme(socket) do
     case theme_config(socket) do
       %{mode: :system, light: light, dark: dark} ->
-        Phoenix.LiveView.push_event(socket, "set_theme", %{
-          theme: "system",
-          light: light,
-          dark: dark
-        })
+        Phoenix.LiveView.push_event(
+          socket,
+          "set_theme",
+          remembered(%{theme: "system", light: light, dark: dark}, remember: true)
+        )
 
       %{theme: theme} ->
-        push_theme(socket, theme)
+        push_theme(socket, theme, remember: true)
     end
   end
 
@@ -227,10 +234,18 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   def icon_weight_css_href(weight),
     do: Bonfire.Common.Config.endpoint_module().static_path("/images/icons/icons-#{weight}.css")
 
+  @doc "Each icon weight's override stylesheet, as a JSON object of weight to static path, for the root layout's script."
+  def icon_weight_css_hrefs_json,
+    do: @icon_weights |> Map.new(&{&1, icon_weight_css_href(&1)}) |> Jason.encode!()
+
   @doc """
   The `<link>` tag for the current scope's icon-weight override stylesheet.
   Included by `include_assets/2` next to the base `icons.css`.
   """
+  def icon_weight_stylesheet(%{assigns: %{current_user_id: user_id}}) when not is_nil(user_id),
+    # the root layout's script links it instead, for the weight it remembers for this user: a `<link>` here would be fetched before that script can correct it
+    do: ""
+
   def icon_weight_stylesheet(conn) do
     weight = icon_weight(%{conn: conn})
 
@@ -241,14 +256,19 @@ defmodule Bonfire.UI.Common.ThemeHelper do
   Pushes a `set_icon_weight` event so root.html.heex's listener updates the
   `data-icon-weight` attribute on `<html>` and swaps the override stylesheet.
   """
-  def push_icon_weight(socket, weight_raw) do
+  def push_icon_weight(socket, weight_raw, opts \\ []) do
     weight = normalize_icon_weight(weight_raw)
 
-    Phoenix.LiveView.push_event(socket, "set_icon_weight", %{
-      weight: weight,
-      href: icon_weight_css_href(weight)
-    })
+    Phoenix.LiveView.push_event(
+      socket,
+      "set_icon_weight",
+      remembered(%{weight: weight, href: icon_weight_css_href(weight)}, opts)
+    )
   end
+
+  # the root layout remembers a pushed look only when it is the current user's own resolved setting, not an embed's `?theme=` or a value just saved for another scope (eg. the instance)
+  defp remembered(payload, opts),
+    do: if(opts[:remember], do: Map.put(payload, :remember, true), else: payload)
 
   @doc """
   The theme mode explicitly chosen by the given scope alone (a user or account),

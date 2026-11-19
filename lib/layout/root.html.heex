@@ -10,6 +10,9 @@
   }
   data-ui-preset-preview={Bonfire.UI.Common.ThemeHelper.preview_ui_preset(@conn) && "true"}
   data-icon-weight={Bonfire.UI.Common.ThemeHelper.icon_weight(assigns)}
+  data-icon-weight-hrefs={@conn.assigns[:current_user_id] &&
+    Bonfire.UI.Common.ThemeHelper.icon_weight_css_hrefs_json()}
+  data-user={@conn.assigns[:current_user_id]}
   id="root"
   class="bg-base-200"
   data-open="false"
@@ -38,6 +41,109 @@
         document.documentElement.style,
         function(n) { return /^--(color|radius|size|border|depth|noise)/.test(n); }
       );
+      // This layout is rendered without the user (`ThemeHelper.push_current_icon_weight/1`), so on signed-in pages their theme, palette, preset and icon weight only arrive as pushed events once the socket joins. Remembered per user, they are applied here before first paint; the handlers are shared with the listeners at the end of the body.
+      (function() {
+        var el = document.documentElement;
+        var uid = el.getAttribute("data-user");
+        var key = uid && "bonfire:ui:" + uid;
+        var apply = {
+          set_theme: function(d) {
+            // Tear down any previously attached system listener before switching modes
+            if (window.__bonfireSystemTheme) {
+              window.__bonfireSystemTheme.mq.removeEventListener("change", window.__bonfireSystemTheme.apply);
+              window.__bonfireSystemTheme = null;
+            }
+            if (d.theme === "system") {
+              if (d.light) el.setAttribute("data-theme-light", d.light);
+              if (d.dark) el.setAttribute("data-theme-dark", d.dark);
+              el.setAttribute("data-theme-mode", "system");
+              var mq = window.matchMedia("(prefers-color-scheme: dark)");
+              var applySystem = function() {
+                el.setAttribute("data-theme", mq.matches ? el.getAttribute("data-theme-dark") : el.getAttribute("data-theme-light"));
+              };
+              applySystem();
+              mq.addEventListener("change", applySystem);
+              window.__bonfireSystemTheme = { mq: mq, apply: applySystem };
+            } else {
+              el.setAttribute("data-theme-mode", "fixed");
+              el.setAttribute("data-theme", d.theme);
+            }
+          },
+          set_custom_theme: function(d) {
+            // apply the custom palette's CSS vars on <html>, overriding the base [data-theme] palette
+            (window.__bonfireCustomVars || []).forEach(function(name) { el.style.removeProperty(name); });
+            var applied = [];
+            var style = d && d.style;
+            if (style) {
+              style.split(";").forEach(function(decl) {
+                var i = decl.indexOf(":");
+                if (i === -1) return;
+                var name = decl.slice(0, i).trim();
+                if (!name) return;
+                el.style.setProperty(name, decl.slice(i + 1).trim());
+                applied.push(name);
+              });
+            }
+            window.__bonfireCustomVars = applied;
+            if (window.__bonfireSyncThemeColor) window.__bonfireSyncThemeColor();
+          },
+          set_icon_weight: function(d) {
+            var link = document.querySelector("link[data-icon-weight-css]");
+            if (d.weight) {
+              if (!link) {
+                link = document.createElement("link");
+                link.rel = "stylesheet";
+                link.setAttribute("data-icon-weight-css", "");
+                link.setAttribute("phx-track-static", "");
+                document.head.appendChild(link);
+              }
+              if (link.getAttribute("href") !== d.href) link.setAttribute("href", d.href);
+              el.setAttribute("data-icon-weight", d.weight);
+            } else {
+              el.removeAttribute("data-icon-weight");
+              if (link) link.remove();
+            }
+          },
+          set_ui_preset: function(d) {
+            if (el.hasAttribute("data-ui-preset-preview")) return;
+            if (d.preset) el.setAttribute("data-ui-preset", d.preset);
+          }
+        };
+        // anything but an object (storage blocked, or an entry that isn't ours) reads as nothing remembered, and is overwritten by the next save
+        var read = function() {
+          try {
+            var stored = JSON.parse(localStorage.getItem(key) || "{}");
+            return stored && typeof stored === "object" ? stored : {};
+          } catch (_) {
+            return {};
+          }
+        };
+        window.__bonfireUi = {
+          apply: apply,
+          save: function(name, detail) {
+            if (!key) return;
+            try {
+              var saved = read();
+              saved[name] = detail;
+              localStorage.setItem(key, JSON.stringify(saved));
+            } catch (_) {}
+          }
+        };
+        if (!key) return;
+        var saved = read();
+        var hrefs = {};
+        try { hrefs = JSON.parse(el.getAttribute("data-icon-weight-hrefs") || "{}") || {}; } catch (_) {}
+        ["set_theme", "set_custom_theme", "set_ui_preset"].forEach(function(name) {
+          var d = saved[name];
+          if (!d || typeof d !== "object") return;
+          if (name === "set_theme" && typeof d.theme !== "string") return;
+          apply[name](d);
+        });
+        // signed-in pages get no weight stylesheet in the HTML (the browser would fetch it before this runs): link the remembered weight, else the server's; the href comes from this page, as a remembered one goes stale with a deploy
+        var remembered = saved.set_icon_weight && saved.set_icon_weight.weight;
+        var weight = hrefs[remembered] ? remembered : el.getAttribute("data-icon-weight");
+        if (weight && hrefs[weight]) apply.set_icon_weight({ weight: weight, href: hrefs[weight] });
+      })();
     </script>
     <%= Application.get_env(:live_debugger, :live_debugger_tags) %>
 
@@ -98,69 +204,11 @@
     {raw(Bonfire.Common.Config.endpoint_module().include_assets(@conn, :bottom))}
 
     <script>
-      window.addEventListener("phx:set_theme", function(e) {
-        var el = document.documentElement;
-        // Tear down any previously attached system listener before switching modes
-        if (window.__bonfireSystemTheme) {
-          window.__bonfireSystemTheme.mq.removeEventListener("change", window.__bonfireSystemTheme.apply);
-          window.__bonfireSystemTheme = null;
-        }
-        if (e.detail.theme === "system") {
-          if (e.detail.light) el.setAttribute("data-theme-light", e.detail.light);
-          if (e.detail.dark) el.setAttribute("data-theme-dark", e.detail.dark);
-          el.setAttribute("data-theme-mode", "system");
-          var mq = window.matchMedia("(prefers-color-scheme: dark)");
-          var apply = function() {
-            el.setAttribute("data-theme", mq.matches ? el.getAttribute("data-theme-dark") : el.getAttribute("data-theme-light"));
-          };
-          apply();
-          mq.addEventListener("change", apply);
-          window.__bonfireSystemTheme = { mq: mq, apply: apply };
-        } else {
-          el.setAttribute("data-theme-mode", "fixed");
-          el.setAttribute("data-theme", e.detail.theme);
-        }
-      });
-      window.addEventListener("phx:set_custom_theme", function(e) {
-        // apply the custom palette's CSS vars on <html>, overriding the base [data-theme] palette
-        var el = document.documentElement;
-        (window.__bonfireCustomVars || []).forEach(function(name) { el.style.removeProperty(name); });
-        var applied = [];
-        var style = e.detail && e.detail.style;
-        if (style) {
-          style.split(";").forEach(function(decl) {
-            var i = decl.indexOf(":");
-            if (i === -1) return;
-            var name = decl.slice(0, i).trim();
-            if (!name) return;
-            el.style.setProperty(name, decl.slice(i + 1).trim());
-            applied.push(name);
-          });
-        }
-        window.__bonfireCustomVars = applied;
-        if (window.__bonfireSyncThemeColor) window.__bonfireSyncThemeColor();
-      });
-      window.addEventListener("phx:set_icon_weight", function(e) {
-        var el = document.documentElement;
-        var link = document.querySelector("link[data-icon-weight-css]");
-        if (e.detail.weight) {
-          if (!link) {
-            link = document.createElement("link");
-            link.rel = "stylesheet";
-            link.setAttribute("data-icon-weight-css", "");
-            document.head.appendChild(link);
-          }
-          link.setAttribute("href", e.detail.href);
-          el.setAttribute("data-icon-weight", e.detail.weight);
-        } else {
-          el.removeAttribute("data-icon-weight");
-          if (link) link.remove();
-        }
-      });
-      window.addEventListener("phx:set_ui_preset", function(e) {
-        var el = document.documentElement;
-        if (el.hasAttribute("data-ui-preset-preview")) return;
-        if (e.detail.preset) el.setAttribute("data-ui-preset", e.detail.preset);
+      Object.keys(window.__bonfireUi.apply).forEach(function(name) {
+        window.addEventListener("phx:" + name, function(e) {
+          window.__bonfireUi.apply[name](e.detail);
+          if (e.detail && e.detail.remember) window.__bonfireUi.save(name, e.detail);
+        });
       });
       window.addEventListener("phx:set_font", function(e) {
         var link = document.querySelector("link[data-font]");
