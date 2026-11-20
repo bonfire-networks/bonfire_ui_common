@@ -10,8 +10,10 @@
   }
   data-ui-preset-preview={Bonfire.UI.Common.ThemeHelper.preview_ui_preset(@conn) && "true"}
   data-icon-weight={Bonfire.UI.Common.ThemeHelper.icon_weight(assigns)}
-  data-icon-weight-hrefs={@conn.assigns[:current_user_id] &&
-    Bonfire.UI.Common.ThemeHelper.icon_weight_css_hrefs_json()}
+  data-icon-weight-hrefs={
+    @conn.assigns[:current_user_id] &&
+      Bonfire.UI.Common.ThemeHelper.icon_weight_css_hrefs_json()
+  }
   data-user={@conn.assigns[:current_user_id]}
   id="root"
   class="bg-base-200"
