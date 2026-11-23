@@ -1,0 +1,36 @@
+<div class={
+  "p-4 transition-colors",
+  "bg-error/20 hover:bg-error/10": @blocked?,
+  "bg-success/20 hover:bg-success/10": !@blocked?
+}>
+  <div class="form-control">
+    <label class="label cursor-pointer justify-start gap-3">
+      <input
+        type="checkbox"
+        checked={@blocked?}
+        :on-click={@on_toggle_crawler}
+        phx-value-crawler={@crawler.user_agent}
+        class="checkbox checkbox-sm"
+        disabled={@disabled?}
+      />
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="font-medium">
+            {@crawler.name}
+          </span>
+          {#if @crawler.enabled_by_default}
+            <div class="badge badge-error badge-sm">
+              Default Block
+            </div>
+          {/if}
+        </div>
+        <div class="text-sm opacity-70 mt-1">
+          {@crawler.description}
+        </div>
+        <div class="code mt-2 inline-block">
+          <pre class="text-xs"><code>User-agent: {@crawler.user_agent}</code></pre>
+        </div>
+      </div>
+    </label>
+  </div>
+</div>
