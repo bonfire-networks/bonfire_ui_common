@@ -1,0 +1,32 @@
+<div class="flex flex-wrap items-center gap-2" role="group" aria-label={l("Colour")}>
+  {#for name <- swatches(@swatches)}
+    <button
+      type="button"
+      data-swatch={name}
+      aria-pressed={to_string(@selected == name)}
+      phx-click={@event}
+      phx-value-id={@object_id}
+      phx-value-swatch={name}
+      phx-target={@target}
+      style="background-color: var(--topic-ink)"
+      class={
+        Bonfire.Common.Swatches.class(name),
+        "size-7 rounded-full ring-offset-2 ring-offset-base-100 transition-shadow hover:ring-2 hover:ring-base-content/30 focus-visible:ring-2 focus-visible:ring-base-content",
+        "ring-2 ring-base-content": @selected == name
+      }
+    >
+      <span class="sr-only">{name}</span>
+    </button>
+  {/for}
+  <button
+    :if={@selected}
+    type="button"
+    data-role="reset_colour"
+    phx-click={@reset_event}
+    phx-value-id={@object_id}
+    phx-target={@target}
+    class="btn btn-ghost btn-xs normal-case"
+  >
+    {l("Reset")}
+  </button>
+</div>

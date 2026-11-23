@@ -1,0 +1,46 @@
+<div class="flex flex-col gap-2" role="group" aria-label={l("Icon")}>
+  {!-- all of the compiled set is too many to list: search it --}
+  <form :if={is_nil(@icons)} phx-change="search" phx-submit="search" phx-target={@myself}>
+    <input
+      type="search"
+      name="search"
+      value={@search}
+      placeholder={l("Search the icons")}
+      autocomplete="off"
+      phx-debounce="300"
+      class="input input-bordered input-sm w-full max-w-xs"
+    />
+  </form>
+
+  <div class="flex flex-wrap items-center gap-1.5">
+    {#for icon <- shown(@icons, @search)}
+      <button
+        type="button"
+        data-icon={icon}
+        aria-pressed={to_string(@selected == icon)}
+        phx-click={@event}
+        phx-value-id={@object_id}
+        phx-value-icon={icon}
+        phx-target={@target}
+        class={
+          "flex items-center justify-center size-9 rounded-box text-base-content hover:bg-base-200 focus-visible:ring-2 focus-visible:ring-base-content",
+          "bg-base-200 ring-2 ring-base-content": @selected == icon
+        }
+      >
+        <Iconify.iconify icon={icon} class="size-5" />
+        <span class="sr-only">{readable(icon)}</span>
+      </button>
+    {/for}
+    <button
+      :if={@selected}
+      type="button"
+      data-role="reset_icon"
+      phx-click={@reset_event}
+      phx-value-id={@object_id}
+      phx-target={@target}
+      class="btn btn-ghost btn-xs normal-case"
+    >
+      {l("Reset")}
+    </button>
+  </div>
+</div>

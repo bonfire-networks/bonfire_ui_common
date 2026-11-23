@@ -1,0 +1,89 @@
+/* The colours a topic, group or label can have (`Bonfire.Common.Swatches`): one class per swatch, written out here so Tailwind needs to scan nothing for them.
+
+   A swatch sets two roles, and what uses it picks the one it needs:
+   - `--topic-ink`: icons, chip text and borders. Darker on a light theme, lighter on a dark one, so it reads on either.
+   - `--topic-wash`: the background of a chip or of a card with no image: the hue at low strength, a little stronger on a dark theme. Text over it stays `base-content`, so its contrast follows the theme.
+
+   light-dark() resolves against the color-scheme daisyUI sets per theme (as the stream washes in interface.css do), so this follows an explicitly chosen theme rather than the OS preference. Browsers without it keep the single-value fallback below, which is why the two-value rules live in @supports. The shades and strengths are a first guess, to check by eye in both schemes. */
+.topic-red,
+.topic-orange,
+.topic-amber,
+.topic-yellow,
+.topic-lime,
+.topic-green,
+.topic-emerald,
+.topic-teal,
+.topic-cyan,
+.topic-sky,
+.topic-blue,
+.topic-indigo,
+.topic-violet,
+.topic-purple,
+.topic-fuchsia,
+.topic-pink,
+.topic-rose {
+  --topic-ink: oklch(62% 0.19 var(--topic-hue));
+  --topic-wash: oklch(70% 0.17 var(--topic-hue) / 0.2);
+}
+
+@supports (color: light-dark(white, black)) {
+  .topic-red,
+  .topic-orange,
+  .topic-amber,
+  .topic-yellow,
+  .topic-lime,
+  .topic-green,
+  .topic-emerald,
+  .topic-teal,
+  .topic-cyan,
+  .topic-sky,
+  .topic-blue,
+  .topic-indigo,
+  .topic-violet,
+  .topic-purple,
+  .topic-fuchsia,
+  .topic-pink,
+  .topic-rose {
+    --topic-ink: light-dark(
+      oklch(52% 0.2 var(--topic-hue)),
+      oklch(76% 0.16 var(--topic-hue))
+    );
+    --topic-wash: light-dark(
+      oklch(70% 0.17 var(--topic-hue) / 0.15),
+      oklch(70% 0.17 var(--topic-hue) / 0.25)
+    );
+  }
+}
+
+.topic-red { --topic-hue: 27; }
+.topic-orange { --topic-hue: 50; }
+.topic-amber { --topic-hue: 75; }
+.topic-yellow { --topic-hue: 92; }
+.topic-lime { --topic-hue: 128; }
+.topic-green { --topic-hue: 150; }
+.topic-emerald { --topic-hue: 163; }
+.topic-teal { --topic-hue: 183; }
+.topic-cyan { --topic-hue: 211; }
+.topic-sky { --topic-hue: 235; }
+.topic-blue { --topic-hue: 258; }
+.topic-indigo { --topic-hue: 277; }
+.topic-violet { --topic-hue: 293; }
+.topic-purple { --topic-hue: 303; }
+.topic-fuchsia { --topic-hue: 322; }
+.topic-pink { --topic-hue: 355; }
+.topic-rose { --topic-hue: 15; }
+
+/* what uses them */
+.topic-ink {
+  color: var(--topic-ink);
+}
+
+.topic-wash {
+  background-color: var(--topic-wash);
+}
+
+/* a group's tile, with a colour picked: that swatch in place of the one hashed from its id */
+.nav-tile:where([class*="topic-"]) {
+  background-color: var(--topic-wash);
+  color: var(--topic-ink);
+}

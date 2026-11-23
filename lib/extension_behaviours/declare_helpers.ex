@@ -19,6 +19,22 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
     end
   end
 
+  @doc "Declares a stateless component as a control for a feed filter in the feed filters editor, see `Bonfire.UI.Common.FeedFilterControlModule`"
+  defmacro declare_feed_filter_control(name, opts \\ []) do
+    quote do
+      @behaviour Bonfire.UI.Common.FeedFilterControlModule
+
+      def declared_feed_filter_control do
+        Enum.into(unquote(opts), %{
+          name: unquote(name),
+          module: __MODULE__,
+          app: app(__MODULE__),
+          type: Bonfire.UI.Common.component_type(__MODULE__)
+        })
+      end
+    end
+  end
+
   defmacro declare_nav_component(name, opts \\ []) do
     quote do
       @behaviour Bonfire.UI.Common.NavModule

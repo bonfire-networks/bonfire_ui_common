@@ -171,6 +171,8 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        socket_rejoined?: is_integer(connect_params["_mounts"]) and connect_params["_mounts"] > 0,
        client_push_active: Bonfire.UI.Common.Notifications.client_push_active(connect_params),
        csrf_socket_token: connect_params["_csrf_token"],
+       # the browser's time zone, if it's a real one (sent by bonfire_live.js), for dates worked out for the viewer (eg. "today" in feed filters)
+       client_timezone: known_timezone(connect_params["timezone"]),
        # Phoenix LV sets this on live navigations; we keep just the path so
        # the back button can `<.link navigate>` back without `history.back()`.
        last_path: live_referer_path(connect_params["_live_referer"]),
@@ -178,6 +180,12 @@ defmodule Bonfire.UI.Common.LivePlugs.Helpers do
        socket_connected?: socket_connected?
      )}
   end
+
+  defp known_timezone(zone) when is_binary(zone) and zone != "" do
+    if Code.ensure_loaded?(Tzdata) and Tzdata.zone_exists?(zone), do: zone
+  end
+
+  defp known_timezone(_), do: nil
 
   defp maybe_get_connect_info(socket, key) do
     #  if current_view !=Bonfire.UI.Common.PersistentLive and

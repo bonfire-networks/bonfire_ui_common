@@ -1,6 +1,20 @@
-<span
-  data-role="group_tile"
-  class={["nav-tile", @class]}
-  style={"--tile-hue: #{tile_hue(@object)}"}
-  aria-hidden="true"
->{initial(@name)}</span>
+{#case picked_icon(@object)}
+  {#match nil}
+    <span
+      data-role="group_tile"
+      class={["nav-tile", colour_class(@object), @class]}
+      style={"--tile-hue: #{tile_hue(@object)}"}
+      aria-hidden="true"
+    >{initial(@name)}</span>
+  {#match icon}
+    {!-- the picked icon in place of the initial, in the colour picked (else the hash colour, as the initial's) --}
+    <span
+      data-role="group_tile"
+      data-icon={icon}
+      class={["nav-tile", colour_class(@object), @class]}
+      style={"--tile-hue: #{tile_hue(@object)}"}
+      aria-hidden="true"
+    >
+      <Iconify.iconify icon={icon} class="size-[70%]" />
+    </span>
+{/case}

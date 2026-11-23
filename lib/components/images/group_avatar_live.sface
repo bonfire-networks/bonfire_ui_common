@@ -1,0 +1,6 @@
+{#case Bonfire.UI.Common.NavTileLive.uploaded_avatar_url(@object)}
+  {#match nil}
+    <Bonfire.UI.Common.NavTileLive object={@object} name={@name} class={@tile_class} />
+  {#match url}
+    <img src={url} alt="" width={@size} height={@size} class={@image_class}>
+{/case}

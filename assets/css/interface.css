@@ -74,16 +74,10 @@ html:not([data-ui-preset="typographic"]) {
     );
   }
 
-  /* One ink percentage cannot serve both schemes. Mixing 6% of base-content into
-     base-100 is barely a lift off a near-black canvas, but the identical 6% off
-     white lands around #f0f0f1 — a heavy grey that makes every widget, spotlight
-     card and discussion list read as a slab. Light gets a shallower ramp; dark
-     keeps the values it was tuned at.
+  /* One ink percentage cannot serve both schemes. Mixing 6% of base-content into base-100 is barely a lift off a near-black canvas, but the identical 6% off white lands around #f0f0f1: a heavy grey that makes every widget, spotlight card and discussion list read as a slab. Light gets a shallower ramp; dark keeps the values it was tuned at.
 
-     light-dark() resolves against the color-scheme daisyUI sets per theme, so
-     this follows an explicitly chosen theme rather than the OS preference.
-     Browsers without it keep the single-value ramp declared above, which is why
-     these overrides live in @supports instead of shadowing the originals. */
+     light-dark() resolves against the color-scheme daisyUI sets per theme, so this follows an explicitly chosen theme rather than the OS preference.
+     Browsers without it keep the single-value ramp declared above, which is why these overrides live in @supports instead of shadowing the originals. */
   @supports (color: light-dark(white, black)) {
     &,
     & [data-theme] {
@@ -99,9 +93,7 @@ html:not([data-ui-preset="typographic"]) {
         oklch(70% 0.09 155 / 0.07),
         oklch(68% 0.08 155 / 0.09)
       );
-      /* Dark steps are larger because the dark canvas is near-black (16% L):
-         a 3% ink mix there lifts barely 1.5% L and widgets vanish into the
-         page. 6% / 9% gives cards a clear but quiet plane, like Bluesky's. */
+      /* Dark steps are larger because the dark canvas is near-black (16% L): a 3% ink mix there lifts barely 1.5% L and widgets vanish into the page. 6% / 9% gives cards a clear but quiet plane, like Bluesky's. */
       --surface-bg: light-dark(
         color-mix(
           in oklab,
@@ -209,9 +201,7 @@ html:not([data-ui-preset="typographic"]) {
     }
   }
 
-  /* No divider under the page header: once the page scrolls, a soft shadow
-     grows down from its edge, densest at the centre, and recedes as you
-     scroll back to the top. Browsers without scroll timelines keep the divider. */
+  /* No divider under the page header: once the page scrolls, a soft shadow grows down from its edge, densest at the centre, and recedes as you scroll back to the top. Browsers without scroll timelines keep the divider. */
   #main-content > .sticky {
     @supports not (animation-timeline: scroll()) {
       border-bottom-width: var(--divider-width);
@@ -539,9 +529,7 @@ html:not([data-ui-preset="typographic"]) {
     }
   }
 
-  /* Media, previews and carousels remain bounded because they are objects
-     inside the stream. Avatars, emoji and other already-round images are
-     exempt so their own shape survives. */
+  /* Media, previews and carousels remain bounded because they are objects inside the stream. Avatars, emoji and other already-round images are exempt so their own shape survives. */
   .activity_wrapper
     :where(img, video):where(
       :not([data-scope="avatar"] *, [class*="rounded-full"], [class*="emoji"])

@@ -1,0 +1,27 @@
+<details
+  class="group"
+  open={@open}
+  data-row={@name}
+  id={"#{@id}_#{@name}_section"}
+  phx-mounted={Phoenix.LiveView.JS.ignore_attributes("open")}
+>
+  <summary class="feed-filter-summary" phx-click={@click} phx-target={@target}>
+    <h4 id={@label_id} class="text-sm font-normal text-muted">{@label}</h4>
+    <span class="flex items-center gap-2 min-w-0">
+      <span
+        data-role="row_value"
+        class={
+          "text-sm truncate",
+          @value_class,
+          "text-primary": @active == true,
+          "text-muted": @active == false
+        }
+      >{@value}</span>
+      <span
+        aria-hidden="true"
+        class="text-muted text-lg transition-transform duration-150 motion-reduce:transition-none group-open:rotate-90"
+      >›</span>
+    </span>
+  </summary>
+  <#slot />
+</details>

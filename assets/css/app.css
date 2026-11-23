@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "nprogress/nprogress.css";
 @import "./interface.css";
+@import "./topic_swatches.css";
 @import "./ui_presets/typographic.css";
 
 @utility trim {

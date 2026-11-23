@@ -29,6 +29,7 @@ import { setupLiveSocketLifecycle } from "./live_socket_lifecycle.js";
 import { setupPullToRefresh } from "./pull_to_refresh.js";
 import { onDocumentPatch, setupViewTransitions } from "./view_transitions.js";
 import { setupHideLeavingPage } from "./leaving_page.js";
+// the flavour's extension hooks, imported by bare paths (eg. `bonfire_geolocate/assets/js/extension`), which the build's NODE_PATH resolves from a clone in `extensions/` first, then `forks/`, then `deps/`
 import { ExtensionHooks } from "../../../../config/current_flavour/deps.hooks.js";
 import ComponentHooks from "../../../../config/current_flavour/assets/hooks/index.js";
 
@@ -161,6 +162,14 @@ let liveSocket = new LiveSocket(socketPath, Socket, {
     _csrf_token: csrfToken,
     ...(embedToken ? { bonfire_embed_token: embedToken } : {}),
     ...collectBonfireParams(),
+    // the browser's time zone (IANA, eg. "Europe/London"), so dates the server works out (eg. "today" in feed filters) are the viewer's
+    timezone: (() => {
+      try {
+        return Intl.DateTimeFormat().resolvedOptions().timeZone;
+      } catch (_e) {
+        return undefined;
+      }
+    })(),
     // the feeds on the page and the post each shows (FeedScrollTracker, read now, never stored); the server uses them only on a rejoin, to bring the feed back in place instead of empty
     ...(window.Bonfire?.feedRejoinParams?.() || {}),
   }),

@@ -33,4 +33,30 @@ defmodule Bonfire.UI.Common.NavTileLive do
       true
   """
   def tile_hue(object), do: :erlang.phash2(id(object), 360)
+
+  @doc "The URL of the image the group or topic has uploaded, else nil: then it shows its picked icon, else its initial (this component). The one place that choice is made, so every avatar of a group follows it."
+  def uploaded_avatar_url(object) do
+    case Bonfire.Common.Media.avatar_url(object) do
+      "/images/avatar.png" -> nil
+      url -> url
+    end
+  end
+
+  @doc "The icon the group or topic has picked, if any (read from its loaded settings, as `Bonfire.Classify.Appearance.icon/1` does), else nil: then the tile shows the initial."
+  def picked_icon(object) do
+    case maybe_apply(Bonfire.Classify.Appearance, :icon, [object], fallback_return: nil) do
+      icon when is_binary(icon) -> icon
+      _ -> nil
+    end
+  end
+
+  @doc "The CSS class of the swatch the group or topic has set for its colour (nil if none): the tile takes its ink and wash."
+  def colour_class(object) do
+    with colour when is_binary(colour) <-
+           maybe_apply(Bonfire.Classify.Appearance, :own_colour, [object], fallback_return: nil) do
+      Bonfire.Common.Swatches.class(colour)
+    else
+      _ -> nil
+    end
+  end
 end
