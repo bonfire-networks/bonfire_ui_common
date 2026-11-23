@@ -3,9 +3,11 @@
   {#match cta}
     <div data-id="widget_feedback">
       <Bonfire.UI.Common.WidgetBlockLive widget_title={Bonfire.UI.Common.WidgetFeedbackLive.title()}>
-        <p class="text-sm text-muted leading-snug">{Bonfire.UI.Common.WidgetFeedbackLive.text()}</p>
-        <div class="pt-2.5 flex">
-          <Bonfire.UI.Common.FeedbackCtaLive cta={cta} />
+        <div data-role="widget-body">
+          <p class="text-sm text-muted leading-snug">{Bonfire.UI.Common.WidgetFeedbackLive.text()}</p>
+          <div class="pt-2.5 flex">
+            <Bonfire.UI.Common.FeedbackCtaLive cta={cta} />
+          </div>
         </div>
       </Bonfire.UI.Common.WidgetBlockLive>
     </div>

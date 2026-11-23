@@ -16,7 +16,7 @@ DraggableHooks.Draggable = {
 
     const hook = this;
 
-    this.el.sortable = new Sortable(this.el, {
+    const options = {
       animation: 150,
       delay: 100,
       dragClass: "drag-item",
@@ -24,12 +24,14 @@ DraggableHooks.Draggable = {
       draggable: "[data-sortable-item]",
       handle: "[data-sortable-handler]",
       onEnd: e => {
+        // `e.to` is the list the item was dropped in, which is the list it started in unless lists share a group
         const params = {
           old_index: e.oldIndex,
           new_index: e.newIndex,
           parent_item: hook.el.dataset.parent,
           source_item: e.item.dataset.item,
-          target_order: [...e.target.children].map(el => el.dataset.item)
+          target_parent: e.to.dataset.parent,
+          target_order: [...e.to.children].map(el => el.dataset.item)
         };
 
         // Event should be "reorder_widget" or "reorder_sub_widget"
@@ -38,7 +40,12 @@ DraggableHooks.Draggable = {
           hook.pushEventTo(hook.el, event_name, params);
         }
       }
-    });
+    };
+
+    // lists that share a `data-sortable-group` accept each other's items; with none, a list only reorders its own
+    if (this.el.dataset.sortableGroup) options.group = this.el.dataset.sortableGroup;
+
+    this.el.sortable = new Sortable(this.el, options);
   },
 
   destroyed() {

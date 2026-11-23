@@ -1,17 +1,50 @@
-{#if @links && @links != []}
-  <Bonfire.UI.Common.WidgetBlockLive class="px-4">
-    <div class="flex flex-nowrap gap-1 overflow-x-auto">
-      {#for {name, url} <- @links}
-        <a
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="badge badge-primary gap-1.5 shrink-0 whitespace-nowrap"
+{#case links_to_show(@links)}
+  {#match []}
+  {#match links}
+    {#if @showing_within == :main}
+      <Bonfire.UI.Common.WidgetBlockLive class={"w-full", @class}>
+        <ul
+          id="community-links"
+          class="flex flex-col gap-2"
+          aria-label={l("Community links")}
+          data-role="widget-body"
         >
-          <#Icon iconify="ph:link-bold" class="size-4" />
-          {name}
-        </a>
-      {/for}
-    </div>
-  </Bonfire.UI.Common.WidgetBlockLive>
-{/if}
+          {#for {{name, url}, index} <- Enum.with_index(links)}
+            <li>
+              <a
+                id={"community-link-#{index}"}
+                href={url}
+                target="_blank"
+                rel="noopener"
+                title={link_host(url)}
+                class="group flex min-h-12 items-center justify-between gap-3 rounded-box border border-base-content/15 px-4 text-sm font-medium text-base-content hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2"
+              >
+                <span class="min-w-0 truncate">{name}</span>
+                <#Icon
+                  iconify="ph:arrow-up-right"
+                  class="size-4 shrink-0 text-muted group-hover:text-base-content"
+                  aria-hidden="true"
+                />
+              </a>
+            </li>
+          {/for}
+        </ul>
+      </Bonfire.UI.Common.WidgetBlockLive>
+    {#else}
+      <Bonfire.UI.Common.WidgetBlockLive class={"px-4", @class}>
+        <div class="flex flex-nowrap gap-1 overflow-x-auto">
+          {#for {name, url} <- links}
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="badge badge-primary gap-1.5 shrink-0 whitespace-nowrap"
+            >
+              <#Icon iconify="ph:link-bold" class="size-4" />
+              {name}
+            </a>
+          {/for}
+        </div>
+      </Bonfire.UI.Common.WidgetBlockLive>
+    {/if}
+{/case}

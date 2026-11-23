@@ -2,21 +2,53 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
   # alias Bonfire.Common.Extend
   import Bonfire.Common.Modularity.DeclareHelpers
 
+  @doc """
+  Declares a widget, for places (eg. the dashboard or the guest home) and their settings to offer. Options:
+
+  - `id`: the stable atom settings and places key on (default: from the module name, eg. `WidgetInstanceInfoLive` gives `:instance_info`)
+  - `icon`, `description`: shown in settings
+  - `width`: `:wide` for the main area only, `:narrow` for a sidebar only, or `:any` for either (default, so leave it out)
+  - `current_user_required`: only for signed-in people (default false)
+  - `embeddable`: can be embedded on other sites (default: when guests can see it)
+  - `props`: passed to the component wherever it's placed
+  """
   defmacro declare_widget(name, opts \\ []) do
     quote do
       @behaviour Bonfire.UI.Common.WidgetModule
-      # @props_specs component_props(__MODULE__)
 
       def declared_widget do
-        Enum.into(unquote(opts), %{
+        opts = Map.new(unquote(opts))
+        current_user_required = Map.get(opts, :current_user_required, false)
+
+        %{
+          id: Bonfire.UI.Common.Modularity.DeclareHelpers.default_widget_id(__MODULE__),
+          icon: nil,
+          description: nil,
+          width: :any,
+          current_user_required: current_user_required,
+          embeddable: not current_user_required,
+          props: []
+        }
+        |> Map.merge(opts)
+        |> Map.merge(%{
           name: unquote(name),
           module: __MODULE__,
           app: app(__MODULE__),
           type: Bonfire.UI.Common.component_type(__MODULE__)
-          # data: @props_specs
         })
       end
     end
+  end
+
+  @doc "A widget's id when it doesn't declare one: its module's last part without `Widget` and `Live`, eg. `WidgetInstanceInfoLive` gives `:instance_info`."
+  def default_widget_id(module) do
+    module
+    |> Module.split()
+    |> List.last()
+    |> String.replace_prefix("Widget", "")
+    |> String.replace_suffix("Live", "")
+    |> Macro.underscore()
+    |> String.to_atom()
   end
 
   @doc "Declares a stateless component as a control for a feed filter in the feed filters editor, see `Bonfire.UI.Common.FeedFilterControlModule`"

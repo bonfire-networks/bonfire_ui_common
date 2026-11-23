@@ -68,7 +68,8 @@
     data-sortable-item={if @parent_id && (@widget[:page] || @widget[:module]), do: true}
     data-sortable-handler
     data-order={@order}
-    data-item={@widget[:page] || @widget[:module] || "default"}
+    data-item={Bonfire.UI.Common.WidgetsLive.order_key(@widget) || "default"}
+    data-widget-id={@widget[:id]}
   >
     {#if is_list(@widget[:sub_widgets]) and @widget[:sub_widgets] != []}
       {@widget[:text] || @widget[:name]}

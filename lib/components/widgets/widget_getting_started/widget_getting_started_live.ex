@@ -17,6 +17,8 @@ defmodule Bonfire.UI.Common.WidgetGettingStartedLive do
   """
   use Bonfire.UI.Common.Web, :stateful_component
 
+  declare_widget(l("Getting started"), width: :narrow, current_user_required: true)
+
   alias Bonfire.Common.Config
   alias Bonfire.Common.Settings
 

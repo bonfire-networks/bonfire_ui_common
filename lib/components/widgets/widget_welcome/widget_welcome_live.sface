@@ -1,0 +1,7 @@
+{#case Bonfire.UI.Common.WidgetWelcomeLive.welcome()}
+  {#match nil}
+  {#match %{title: title, text: text}}
+    <div data-id="widget_welcome">
+      <Bonfire.UI.Common.WidgetTextLive widget_title={title} text={text} />
+    </div>
+{/case}

@@ -9,7 +9,7 @@
       loading="lazy"
       class="h-[200px] object-cover rounded w-full bg-base-300"
     />
-    <div class="w-full mt-1">
+    <div class="w-full mt-1" data-role="widget-body">
       <LinkLive
         class="type-heading link link-hover text-base-content"
         to={path(Config.get(:home_page, :home))}

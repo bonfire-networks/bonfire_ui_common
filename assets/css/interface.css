@@ -563,8 +563,8 @@ html:not([data-ui-preset="typographic"]) {
     --tile-surface: var(--surface-bg);
   }
 
-  /* Dashboard main area (`Bonfire.UI.Me.DashboardMainLive`): one gutter, heading style and spacing for every widget. */
-  [data-id="dashboard_main"] {
+  /* A place's main area (the dashboard's `Bonfire.UI.Me.DashboardMainLive`, the guest homepage): one gutter (`--stream-content-padding`, which a place can set), heading style and spacing for every widget. */
+  [data-widget-place] {
     --dashboard-section-space: --spacing(6);
 
     /* sections; hide those whose widget rendered nothing */
@@ -576,15 +576,8 @@ html:not([data-ui-preset="typographic"]) {
       display: none;
     }
 
-    > [data-id="dashboard_feed"] {
-      padding-top: var(--dashboard-section-space);
-    }
-
     /* divider between visible sections */
-    > ul
-      > li:has(aside[data-role="widget"])
-      ~ li:has(aside[data-role="widget"]),
-    > ul:has(aside[data-role="widget"]) + [data-id="dashboard_feed"] {
+    > ul > li:has(aside[data-role="widget"]) ~ li:has(aside[data-role="widget"]) {
       border-top: var(--divider-width) solid var(--divider-color);
     }
 
@@ -598,14 +591,13 @@ html:not([data-ui-preset="typographic"]) {
       box-shadow: none;
     }
 
-    :is(aside[data-role="widget"], [data-id="dashboard_feed"]) {
+    aside[data-role="widget"] {
       > [data-role="widget-header"] {
         min-height: --spacing(8);
         padding: 0 var(--stream-content-padding) --spacing(4);
         letter-spacing: normal;
         text-transform: none;
       }
-
       [data-role="widget-heading"] {
         color: var(--color-base-content);
         font-size: var(--text-lg);
@@ -653,7 +645,7 @@ html:not([data-ui-preset="typographic"]) {
   /* The other way round below 80rem: the page header names the page, so the feed's own
      heading ("All activities") stays for screen readers only (it labels the section). */
   @media (width < 80rem) {
-    & main:has([data-id="user_dashboard"]) [data-id="dashboard_feed"] > [data-role="widget-header"] {
+    & main:has([data-id="user_dashboard"]) [data-id="feed"] aside > [data-role="widget-header"] {
       position: absolute;
       width: 1px;
       height: 1px;

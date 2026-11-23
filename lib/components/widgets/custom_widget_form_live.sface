@@ -1,0 +1,47 @@
+<form
+  id={"custom_widget_#{@slug}_form"}
+  data-scope={"custom_widget_#{@slug}"}
+  phx-submit="Bonfire.Common.Settings:save"
+  class="mx-4 rounded-box border border-divider p-4 flex flex-col gap-4"
+>
+  <input name="scope" value="instance" type="hidden">
+  <div class="flex flex-col gap-1">
+    <div class="text-sm font-medium">{l("Your own widget")}</div>
+    <p class="text-sm text-muted">{l(
+        "Write a widget of your own, then turn it on in the lists above. Leave the text empty to take it out everywhere."
+      )}</p>
+  </div>
+  <Bonfire.UI.Common.SettingsInputLive
+    scope={:instance}
+    input={"Bonfire.UI.Common.Widgets[custom][#{@slug}][title]"}
+    name={l("Title")}
+    keys={[Bonfire.UI.Common.Widgets, :custom, @slug, :title]}
+    submit_button={false}
+    class="input w-full"
+  />
+  <Bonfire.UI.Common.SettingsTextareaLive
+    scope={:instance}
+    input={"Bonfire.UI.Common.Widgets[custom][#{@slug}][text]"}
+    name={l("Text")}
+    description={l("Markdown: headings, links and images.")}
+    keys={[Bonfire.UI.Common.Widgets, :custom, @slug, :text]}
+    submit_button={false}
+  />
+  <Bonfire.UI.Common.SettingsSelectLive
+    scope={:instance}
+    id={"custom_widget_#{@slug}_width"}
+    input={"Bonfire.UI.Common.Widgets[custom][#{@slug}][width]"}
+    name={l("Width")}
+    label_name={l("Width")}
+    keys={[Bonfire.UI.Common.Widgets, :custom, @slug, :width]}
+    default_value={:any}
+    options={[
+      any: l("Main area or sidebar"),
+      wide: l("Main area only"),
+      narrow: l("Sidebar only")
+    ]}
+  />
+  <div class="flex justify-end">
+    <button type="submit" class="btn btn-primary btn-sm">{l("Save")}</button>
+  </div>
+</form>

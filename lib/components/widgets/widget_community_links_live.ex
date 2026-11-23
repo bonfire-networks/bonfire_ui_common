@@ -1,7 +1,38 @@
 defmodule Bonfire.UI.Common.WidgetCommunityLinksLive do
+  @moduledoc """
+  The instance's community links (`[:ui, :theme, :instance_welcome, :links]`, in the visitor's language). Renders nothing when there are none.
+
+  In a main area (`showing_within: :main`, eg. the guest homepage and Impressum) as a list of link cards; in a sidebar as badges.
+  """
   use Bonfire.UI.Common.Web, :stateless_component
 
+  declare_widget(l("Community links"), id: :community_links)
+
+  @doc "The links to show, else the instance's own."
   prop links, :list, default: nil
+  prop showing_within, :atom, default: :sidebar
+  @doc "Classes of the block, eg. spacing from what comes before."
+  prop class, :css_class, default: nil
+
+  @doc "The links to show: those given, else the instance's, localised."
+  def links_to_show(nil), do: Bonfire.UI.Common.GuestBoardLive.community_links()
+  def links_to_show(links), do: links
+
+  @doc """
+  The link's host, as its tooltip, rather than a guessed description.
+
+      iex> Bonfire.UI.Common.WidgetCommunityLinksLive.link_host("https://example.org/help")
+      "example.org"
+
+      iex> Bonfire.UI.Common.WidgetCommunityLinksLive.link_host("/help")
+      "/help"
+  """
+  def link_host(url) do
+    case URI.parse(url) do
+      %{host: host} when is_binary(host) -> host
+      _ -> url
+    end
+  end
 
   @doc """
   Normalizes community links from various formats (keyword lists, maps, list of maps,

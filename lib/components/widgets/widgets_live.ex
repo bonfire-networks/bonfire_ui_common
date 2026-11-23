@@ -35,7 +35,8 @@ defmodule Bonfire.UI.Common.WidgetsLive do
       iex> Bonfire.UI.Common.WidgetsLive.order_key({Some.Widget, []})
       Some.Widget
   """
-  def order_key(%{} = widget), do: widget[:page] || widget[:module]
+  # `order_id` for widgets that share a module, eg. custom widgets, which are all `WidgetTextLive`
+  def order_key(%{} = widget), do: widget[:page] || widget[:order_id] || widget[:module]
   def order_key({module, _data}) when is_atom(module), do: module
   def order_key(_), do: nil
 

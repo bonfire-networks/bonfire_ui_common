@@ -1,5 +1,5 @@
 <Bonfire.UI.Common.WidgetBlockLive widget_title={@widget_title}>
-  <div class={@class}>
+  <div class={@class} data-role="widget-body">
     {templated_or_remote_markdown(@text, @info)}
   </div>
 </Bonfire.UI.Common.WidgetBlockLive>
