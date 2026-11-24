@@ -11,4 +11,9 @@ defmodule Bonfire.UI.Common.TruncatableContentLive do
   prop viewing_main_object, :boolean, default: false
   prop activity_inception, :boolean, default: false
   prop object_type, :atom, default: nil
+
+  # media the body places where it sits, by the URL the body has for it (see `Bonfire.Files.InlineMedia`)
+  prop inline_media, :map, default: %{}
+  # a sensitive post: its inline media are blurred, as in the attachment list
+  prop cw, :any, default: nil
 end

@@ -176,6 +176,48 @@ defmodule Bonfire.UI.Common.Widgets do
       module.included_by_default?(place, user) == true
   end
 
+  @doc "The widget `id` (an atom or string) as `Bonfire.UI.Common.WidgetsLive` renders it, for embedding on other sites: only one declared `embeddable` that guests can see, else nil."
+  def embeddable(id) do
+    id = to_string(id)
+
+    case Enum.find(registry(), &(to_string(&1.id) == id)) do
+      %{embeddable: true} = widget ->
+        if fits?(widget, nil, []),
+          do: %{
+            id: widget.id,
+            name: widget.name,
+            module: widget.module,
+            type: widget.type,
+            order_id: widget[:order_id],
+            data: List.wrap(widget.props)
+          }
+
+      _ ->
+        nil
+    end
+  end
+
+  @doc """
+  The cache tag of a widget's embed, which is also the path its copies are saved under, one per query string.
+
+      iex> Bonfire.UI.Common.Widgets.embed_tag(:instance_pinned)
+      "embed/widget/instance_pinned"
+  """
+  def embed_tag(id), do: "embed/widget/#{id}"
+
+  @doc "Purges every saved copy of a widget's embed: the ones on disk right away, and any proxy or CDN's in the background (see `Bonfire.Common.Cache.HTTPPurge`)."
+  def bust_embed(id) do
+    tags = [embed_tag(id)]
+    Bonfire.UI.Common.Cache.HTTPPurge.StaticGenerator.bust_tags(tags)
+
+    for adapter <- Bonfire.Common.Cache.HTTPPurge.adapters(),
+        adapter != Bonfire.UI.Common.Cache.HTTPPurge.StaticGenerator do
+      Task.start(fn -> adapter.bust_tags(tags) end)
+    end
+
+    :ok
+  end
+
   @doc "Every widget, declared and custom, as `declared_widget/0` maps."
   def registry do
     declared() ++ custom()

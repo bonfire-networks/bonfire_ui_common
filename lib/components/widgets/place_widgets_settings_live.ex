@@ -133,7 +133,9 @@ defmodule Bonfire.UI.Common.PlaceWidgetsSettingsLive do
          moved_to =
            Widgets.offered(
              {place_module, to},
-             if(socket.assigns.for_guests, do: nil, else: viewer), scope: socket.assigns.scope),
+             if(socket.assigns.for_guests, do: nil, else: viewer),
+             scope: socket.assigns.scope
+           ),
          {:ok, settings} <-
            Bonfire.Common.Settings.LiveHandler.save_widget_order(
              Widgets.order_key({place_module, to}),

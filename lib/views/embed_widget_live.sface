@@ -1,0 +1,15 @@
+{!-- `?theme=` themes the widget (the iframe layout themes the page around it); `?width=` caps its width in pixels, or `full` for the frame's width --}
+<div
+  data-role="embed_widget"
+  data-embed-links="_blank"
+  data-theme={@embed_theme}
+  class="w-full mx-auto"
+  style={if @max_width, do: "max-width: #{@max_width}px", else: ""}
+>
+  <Bonfire.UI.Common.WidgetLive
+    :if={@widget}
+    widget={@widget}
+    showing_within={:main}
+    parent_id="embed_widget"
+  />
+</div>

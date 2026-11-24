@@ -25,7 +25,8 @@
       selected_tab={@selected_tab}
       showing_within={:sidebar}
       container_class="widget-list"
-      id={deterministic_dom_id(__MODULE__, nil, "extension_nav_links", @parent_id)}
+      id={e(@widgets, :order_key, nil) ||
+        deterministic_dom_id(__MODULE__, nil, "extension_nav_links", @parent_id)}
     />
   {#match _}
     {!-- No widgets --}

@@ -25,12 +25,19 @@
       name={@input}
     >
       {#for {key, val} <- @options || []}
-        <option
-          value={to_string(key)}
-          selected={if @current_value == key or to_string(@current_value) == to_string(key), do: "selected"}
-        >
-          {val}
-        </option>
+        {#if to_string(key) == ""}
+          {!-- an option that picks no value: Surface drops an attribute whose value is "", and an option with no value sends its text, so its empty value is written out literally --}
+          <option value="" selected={if to_string(@current_value) == "", do: "selected"}>
+            {val}
+          </option>
+        {#else}
+          <option
+            value={to_string(key)}
+            selected={if @current_value == key or to_string(@current_value) == to_string(key), do: "selected"}
+          >
+            {val}
+          </option>
+        {/if}
       {/for}
       {#for val when is_binary(val) or is_atom(val) <- @options || []}
         <option

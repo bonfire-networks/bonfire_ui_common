@@ -10,5 +10,7 @@
     showing_within={@showing_within}
     viewing_main_object={@viewing_main_object}
     activity_inception={@activity_inception}
+    inline_media={@inline_media}
+    cw={@cw}
   />
 </Bonfire.UI.Common.TruncatableLive>

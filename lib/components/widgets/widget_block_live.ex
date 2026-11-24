@@ -53,6 +53,34 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
     do: Bonfire.Boundaries.can?(context, :mediate, :instance)
 
   @doc """
+  The refresh button's click: the widget's own reset event, then, for a `"Module:event"` one, a purge of the widget's embed (see `handle_event("bust_embed", ...)`). A stateful widget's event (sent to its `reset_cache_target`) is left as it is.
+  """
+  def reset_click(event, nil) when is_binary(event) do
+    if String.contains?(event, ":"),
+      do:
+        event
+        |> Phoenix.LiveView.JS.push()
+        |> Phoenix.LiveView.JS.push("Bonfire.UI.Common.WidgetBlockLive:bust_embed",
+          value: %{event: event}
+        ),
+      else: event
+  end
+
+  def reset_click(event, _target), do: event
+
+  @doc "Purges the saved copies of the embed of the widget whose refresh button sent `event` (`\"Module:event\"`), for moderators only, as the button is."
+  def handle_event("bust_embed", %{"event" => event}, socket) do
+    with true <- Bonfire.Boundaries.can?(socket.assigns[:__context__], :mediate, :instance),
+         [module, _] <- String.split(event, ":", parts: 2),
+         %{id: id} <-
+           Enum.find(Bonfire.UI.Common.Widgets.declared(), &(inspect(&1.module) == module)) do
+      Bonfire.UI.Common.Widgets.bust_embed(id)
+    end
+
+    {:noreply, socket}
+  end
+
+  @doc """
   Turns the `reset_cache_values` map into `phx-value-*` attributes.
 
   Keys are strings because Phoenix.HTML dasherizes atom attribute names, which would turn `for_last_x_days` into `for-last-x-days` in the event params. A map (not a list) because Surface's spread only accepts maps or keyword lists.

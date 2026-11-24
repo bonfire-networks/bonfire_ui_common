@@ -24,7 +24,7 @@
       {#if show_reset?(@reset_cache_event, @can_reset, @__context__)}
         <button
           type="button"
-          phx-click={@reset_cache_event}
+          phx-click={reset_click(@reset_cache_event, @reset_cache_target)}
           phx-target={@reset_cache_target}
           {...phx_values(@reset_cache_values)}
           onclick="this.dataset.done='1'"

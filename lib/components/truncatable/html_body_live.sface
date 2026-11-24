@@ -20,13 +20,33 @@
     "!text-sm !text-muted": e(@object_type, nil) == :article && @showing_within != :thread
   }
 >
-  {rich(
-    @html_body,
-    # remote content is stored in HTML, but local content may contain markdown and/or HTML
-    skip_markdown: @is_remote,
-    #  we want to sanitize rather than escape HTML in local content
-    sanitize: !@is_remote,
-    # a last line of only hashtags stays tagged but isn't shown (remote content gets this when it arrives)
-    hide_trailing_hashtags: true
-  )}
+  {#if @inline_media == %{} or @is_remote}
+    {rich(
+      @html_body,
+      # remote content is stored in HTML, but local content may contain markdown and/or HTML
+      skip_markdown: @is_remote,
+      #  we want to sanitize rather than escape HTML in local content
+      sanitize: !@is_remote,
+      # a last line of only hashtags stays tagged but isn't shown (remote content gets this when it arrives)
+      hide_trailing_hashtags: true
+    )}
+  {#else}
+    {!-- media placed in the body renders where it sits, between the parts of the text around it --}
+    {#for part <- body_parts(@html_body, @inline_media, @is_remote)}
+      {#case part}
+        {#match {:url, url}}
+          <StatelessComponent
+            module={maybe_component(Bonfire.UI.Social.Activity.MediaLive, @__context__)}
+            media={[@inline_media[url]]}
+            cw={@cw}
+            parent_id={deterministic_dom_id(__MODULE__, id(@inline_media[url]), "inline", @parent_id)}
+            showing_within={@showing_within}
+            viewing_main_object={@viewing_main_object}
+            activity_inception={@activity_inception}
+          />
+        {#match {:html, html}}
+          {rich(html, skip_markdown: true)}
+      {/case}
+    {/for}
+  {/if}
 </div>
