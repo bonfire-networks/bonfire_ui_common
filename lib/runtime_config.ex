@@ -113,8 +113,11 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
           "/.well-known/oauth-authorization-server",
           "/.well-known/openid-configuration",
           "/.well-known/webfinger",
+          "/.well-known/nodeinfo",
           "/openid/register",
-          "/oauth/token"
+          "/oauth/token",
+          # media redirects, so web clients can load avatars and attachments with `crossorigin` (the uploads they redirect to send the same header)
+          "/files/redir/"
         ],
         origins: "*"
       },

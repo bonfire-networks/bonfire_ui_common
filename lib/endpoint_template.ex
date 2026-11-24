@@ -236,6 +236,16 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       # favicon path, which is the first URL tried by many link-preview libraries.
       plug(Bonfire.UI.Common.InstanceFaviconPlug)
 
+      # static images (e.g. the default avatar) are read cross-origin by web clients (`crossorigin` images); anything not found here falls through to the plugs below. NOTE: reverse proxies that serve this path themselves need the same header (see config/templates/)
+      plug(Plug.Static,
+        at: "/images",
+        from: {:bonfire_ui_common, "priv/static/images"},
+        gzip: serve_gzip,
+        cache_control_for_vsn_requests: cache_control_for_vsn_requests,
+        cache_control_for_etags: cache_control_for_etags,
+        headers: %{"access-control-allow-origin" => "*"}
+      )
+
       plug(Plug.Static,
         at: "/",
         from: :bonfire_ui_common,
@@ -258,9 +268,10 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         at: "/data/uploads/",
         from: "data/uploads",
         gzip: serve_gzip,
-        # uploads (e.g. SVG) are served from the instance's origin, so stop any script in them from running if opened directly. NOTE: reverse proxies that serve this path themselves need the same header (see config/deploy/)
+        # uploads (e.g. SVG) are served from the instance's origin, so stop any script in them from running if opened directly; and let web clients on other origins read them (`crossorigin` images). NOTE: reverse proxies that serve this path themselves need the same headers (see config/templates/)
         headers: %{
-          "content-security-policy" => "sandbox; default-src 'none'; style-src 'unsafe-inline'"
+          "content-security-policy" => "sandbox; default-src 'none'; style-src 'unsafe-inline'",
+          "access-control-allow-origin" => "*"
         }
       )
 
