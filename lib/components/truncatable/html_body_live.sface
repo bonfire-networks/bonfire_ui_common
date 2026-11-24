@@ -22,15 +22,9 @@
 >
   <Bonfire.UI.Common.HtmlBodyPartsLive
     html_body={@html_body}
-    rich_opts={[
-      # remote content is stored in HTML, but local content may contain markdown and/or HTML
-      skip_markdown: @is_remote,
-      #  we want to sanitize rather than escape HTML in local content
-      sanitize: !@is_remote,
-      # a last line of only hashtags stays tagged but isn't shown (remote content gets this when it arrives)
-      hide_trailing_hashtags: true
-    ]}
+    rich_opts={rich_opts(@is_remote)}
     inline_media={@inline_media}
+    body_parts={@body_parts}
     cw={@cw}
     is_remote={@is_remote}
     parent_id={@parent_id}

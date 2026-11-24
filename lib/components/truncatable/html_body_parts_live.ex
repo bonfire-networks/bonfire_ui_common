@@ -11,6 +11,9 @@ defmodule Bonfire.UI.Common.HtmlBodyPartsLive do
   prop rich_opts, :list, default: []
   # media the body places where it sits, by the URL the body has for it
   prop inline_media, :map, default: %{}
+
+  # the body already cut at that media, by whoever found it (see `Bonfire.Files.InlineMedia.split/3`), so it isn't cut again
+  prop body_parts, :any, default: nil
   # a sensitive object: its inline media are blurred, as in the attachment list
   prop cw, :any, default: nil
   prop is_remote, :boolean, default: false
@@ -22,15 +25,16 @@ defmodule Bonfire.UI.Common.HtmlBodyPartsLive do
 
   @doc "The body cut at each URL of `inline_media` (see `Bonfire.Common.Text.markdown_parts/3`, and `html_parts/3` for an HTML body), rendered with the same options as the whole body: a body `rich/2` takes as it is (`skip_markdown`, eg. a remote one) gets no other processing in parts either."
   def body_parts(html_body, inline_media, rich_opts) do
+    Bonfire.Common.Text.markdown_parts(html_body, Map.keys(inline_media), parts_opts(rich_opts))
+  end
+
+  @doc "The options a body is cut with (`Bonfire.Common.Text.markdown_parts/3`), from the `rich_opts` it's rendered with, for a caller that cuts it ahead (see `Bonfire.Files.InlineMedia.split/3`)."
+  def parts_opts(rich_opts) do
     drop =
       if rich_opts[:skip_markdown],
         do: [:skip_markdown, :__unsafe__, :hide_trailing_hashtags],
         else: [:skip_markdown, :__unsafe__]
 
-    Bonfire.Common.Text.markdown_parts(
-      html_body,
-      Map.keys(inline_media),
-      [link_rel: nil] ++ Keyword.drop(rich_opts, drop)
-    )
+    [link_rel: nil] ++ Keyword.drop(rich_opts, drop)
   end
 end

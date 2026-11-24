@@ -14,6 +14,9 @@ defmodule Bonfire.UI.Common.TruncatableContentLive do
 
   # media the body places where it sits, by the URL the body has for it (see `Bonfire.Files.InlineMedia`)
   prop inline_media, :map, default: %{}
+
+  # the body already cut at that media (see `Bonfire.Files.InlineMedia.split/3`), so it isn't cut again
+  prop body_parts, :any, default: nil
   # a sensitive post: its inline media are blurred, as in the attachment list
   prop cw, :any, default: nil
 end

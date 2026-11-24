@@ -11,6 +11,7 @@
     viewing_main_object={@viewing_main_object}
     activity_inception={@activity_inception}
     inline_media={@inline_media}
+    body_parts={@body_parts}
     cw={@cw}
   />
 </Bonfire.UI.Common.TruncatableLive>
