@@ -10,22 +10,46 @@
     "group-[.expanded]/uploads:gap-0 group-[.expanded]/uploads:px-0",
     "group-[.expanded]/uploads:pt-10 group-[.expanded]/uploads:pb-0",
     "group-[.expanded]/uploads:max-h-[280px] group-[.expanded]/uploads:overflow-y-auto",
-    "group-[.expanded]/uploads:overflow-x-hidden"
+    # room for an image shown at full width while its alt text is written (see the thumbnail below)
+    "group-[.expanded]/uploads:has-[textarea:focus]:max-h-[560px]",
+    "group-[.expanded]/uploads:overflow-x-hidden",
+    # collapsed: the newest upload wraps to its own row, with its alt text (see the entries below)
+    "group-[:not(.expanded)]/uploads:flex-wrap"
   ]}>
-    {#for {entry, i} <- Enum.with_index(@uploads.files.entries)}
+    {#for entry <- @uploads.files.entries}
+      {!-- collapsed, the newest upload shows its alt text and actions without Edit, on a row of its own, until its Done button adds `alt_done` --}
       <div
-        id={to_string(i) <> deterministic_dom_id(__MODULE__, i, "upload-entry", @parent_id)}
+        id={deterministic_dom_id(__MODULE__, entry.ref, "upload-entry", @parent_id)}
+        data-role="upload_entry"
+        data-ref={entry.ref}
         class={[
-          "flex flex-col items-center shrink-0 group relative",
+          "group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:basis-full group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:flex-row",
+          "group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:items-start group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:gap-3",
+          # room for the Edit button, at the top right
+          "group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:pr-20",
+          "flex flex-col items-center shrink-0 group group/entry relative",
           "group-[.expanded]/uploads:flex-row group-[.expanded]/uploads:gap-3",
           "group-[.expanded]/uploads:items-start group-[.expanded]/uploads:p-2.5",
-          "group-[.expanded]/uploads:border-b group-[.expanded]/uploads:border-divider"
+          "group-[.expanded]/uploads:border-b group-[.expanded]/uploads:border-divider",
+          # an image goes above its alt text while that is written
+          "group-[.expanded]/uploads:has-[textarea:focus]:flex-col group-[.expanded]/uploads:has-[textarea:focus]:items-stretch":
+            String.starts_with?(entry.client_type, "image"),
+          "group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:has-[textarea:focus]:flex-col group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:has-[textarea:focus]:items-stretch":
+            String.starts_with?(entry.client_type, "image")
         ]}
       >
         {!-- Thumbnail (rendered once — same in both modes) --}
-        <figure class="size-16 rounded-box overflow-hidden shrink-0 bg-fill">
+        {!-- an image is shown whole, at full width, while its alt text is written, so the description can follow what it shows --}
+        <figure class={[
+          "size-16 rounded-box overflow-hidden shrink-0 bg-fill",
+          "group-has-[textarea:focus]/entry:w-full group-has-[textarea:focus]/entry:h-auto":
+            String.starts_with?(entry.client_type, "image")
+        ]}>
           {#if String.starts_with?(entry.client_type, "image")}
-            <Phoenix.Component.live_img_preview class="size-16 object-cover rounded-box" entry={entry} />
+            <Phoenix.Component.live_img_preview
+              class="size-16 object-cover rounded-box group-has-[textarea:focus]/entry:w-full group-has-[textarea:focus]/entry:h-auto group-has-[textarea:focus]/entry:max-h-100 group-has-[textarea:focus]/entry:object-contain"
+              entry={entry}
+            />
           {#elseif String.contains?(entry.client_type, "pdf")}
             <div class="size-16 flex items-center justify-center">
               <#Icon iconify="bxs:file-pdf" class="size-7 text-subtle" />
@@ -66,7 +90,8 @@
             class={[
               "text-xs truncate max-w-16 text-muted mt-0.5",
               "group-[.expanded]/uploads:text-xs group-[.expanded]/uploads:max-w-none",
-              "group-[.expanded]/uploads:text-muted group-[.expanded]/uploads:mt-0"
+              "group-[.expanded]/uploads:text-muted group-[.expanded]/uploads:mt-0",
+              "group-[:not(.expanded)]/uploads:group-[:last-child:not(.alt_done)]/entry:hidden"
             ]}
           >{entry.client_name}</span>
 
@@ -76,7 +101,10 @@
           {/for}
 
           {!-- Expanded: metadata editing (alt text, actions) --}
-          <div class="hidden group-[.expanded]/uploads:flex flex-col gap-1.5">
+          <div class={[
+            "hidden group-[.expanded]/uploads:flex flex-col gap-1.5",
+            "group-[:not(.expanded)]/uploads:group-[:last-child:not(.alt_done)]/entry:flex group-[:not(.expanded)]/uploads:group-[:last-child:not(.alt_done)]/entry:flex-1 group-[:not(.expanded)]/uploads:group-[:last-child:not(.alt_done)]/entry:min-w-0"
+          ]}>
             {#for err <- upload_errors(@uploads.files, entry)}
               <p class="text-xs text-error">{error_to_string(err)} {l("Please remove it before continuing.")}</p>
             {#else}
@@ -114,6 +142,18 @@
                   <span class="text-xs">{if @selected_cover == entry.ref, do: l("Cover image"), else: l("Set as cover")}</span>
                 </button>
               {/if}
+              {!-- places the file in the text, where the cursor is, as `upload:<ref>` until publishing gives it a URL (see `Bonfire.Files.InlineMedia.swap_upload_refs/2`) --}
+              <button
+                type="button"
+                data-role="insert_in_text"
+                class="btn btn-ghost btn-soft btn-sm gap-1 shrink-0"
+                phx-click={JS.dispatch("bonfire:insert_at_cursor",
+                  # on the button itself: it goes to the plain field last written in (eg. a poll's question or option), else to the text editor (see `milkdown.hooks.js`)
+                  detail: %{text: "![](upload:#{entry.ref})", markdown: true}
+                )}
+              >
+                <span class="text-xs">{l("Insert in text")}</span>
+              </button>
               <button
                 type="button"
                 class="btn btn-ghost btn-soft btn-sm gap-1 shrink-0 hover:btn-error transition-colors"
@@ -150,13 +190,35 @@
     {/for}
   </div>
 
-  {!-- Toggle button: Edit / Collapse --}
+  {!-- Done, in the toggle's place while the newest upload shows its alt text on its own row (collapsed): puts it back in the strip of thumbnails, which brings the toggle back --}
+  <button
+    type="button"
+    data-role="alt_done"
+    class="hidden btn btn-primary btn-sm absolute top-3 right-3 z-10 gap-1 group-[:not(.expanded):has([data-role=upload_entry]:last-child:not(.alt_done))]/uploads:flex"
+    phx-click={JS.add_class("alt_done",
+      to:
+        "#" <>
+          deterministic_dom_id(__MODULE__, nil, "upload-preview", @parent_id) <>
+          " [data-role=upload_entry]:last-child"
+    )}
+  >
+    <#Icon iconify="ph:check-bold" class="size-4" />
+    {l("Done")}
+  </button>
+
+  {!-- Toggle button: Edit / Collapse. Either also closes the newest upload's own row, so a collapse doesn't reopen it --}
   <button
     type="button"
     data-role="upload_toggle"
-    class="btn btn-ghost btn-soft btn-sm absolute top-3 right-3 z-10"
+    class="btn btn-ghost btn-soft btn-sm absolute top-3 right-3 z-10 group-[:not(.expanded):has([data-role=upload_entry]:last-child:not(.alt_done))]/uploads:hidden"
     phx-click={JS.toggle_class("expanded",
       to: "#" <> deterministic_dom_id(__MODULE__, nil, "upload-preview", @parent_id)
+    )
+    |> JS.add_class("alt_done",
+      to:
+        "#" <>
+          deterministic_dom_id(__MODULE__, nil, "upload-preview", @parent_id) <>
+          " [data-role=upload_entry]:last-child"
     )}
   >
     <span class="flex items-center gap-1 group-[.expanded]/uploads:hidden">

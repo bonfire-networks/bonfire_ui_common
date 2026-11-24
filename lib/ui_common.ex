@@ -1187,7 +1187,58 @@ defmodule Bonfire.UI.Common do
     |> assign_flash(:error, Errors.error_msg(msg), assigns, pid)
   end
 
+  @doc "Stores the files uploaded to `upload_field`, returning the stored media, in upload order."
   def live_upload_files(module \\ nil, upload_field \\ :files, current_user, metadata, socket) do
+    live_upload_files_by_ref(module, upload_field, current_user, metadata, socket)
+    |> Enum.map(fn {_ref, media} -> media end)
+  end
+
+  @doc """
+  For a composer that publishes a body with its uploads (a post, event, page, poll or message): stores the files uploaded to `:files`, and puts each one the body places as `upload:<ref>` at its stored URL (see `Bonfire.Files.InlineMedia.swap_upload_refs/2`). The body is in `attrs` at `opts[:body_path]`, by default `[:post_content, :html_body]`, or at each of `opts[:body_paths]`, where `:each` stands for every value of a map or list (eg. `[:choices, :each, :name]` for a poll's options). Returns `{attrs, media}`, the media in upload order.
+  """
+  def live_upload_files_into(attrs, current_user, metadata, socket, opts \\ []) do
+    uploaded = live_upload_files_by_ref(current_user, metadata, socket)
+    body_paths = opts[:body_paths] || [opts[:body_path] || [:post_content, :html_body]]
+
+    attrs = Enum.reduce(body_paths, attrs, &swap_upload_refs_at(&2, &1, uploaded))
+
+    {attrs, Enum.map(uploaded, fn {_ref, media} -> media end)}
+  end
+
+  defp swap_upload_refs_at(body, [], uploaded) when is_binary(body) do
+    maybe_apply(Bonfire.Files.InlineMedia, :swap_upload_refs, [body, uploaded],
+      fallback_return: body
+    )
+  end
+
+  defp swap_upload_refs_at(values, [:each | path], uploaded) when is_map(values) do
+    Map.new(values, fn {key, value} -> {key, swap_upload_refs_at(value, path, uploaded)} end)
+  end
+
+  defp swap_upload_refs_at(values, [:each | path], uploaded) when is_list(values) do
+    Enum.map(values, &swap_upload_refs_at(&1, path, uploaded))
+  end
+
+  # form input may key by atom or string
+  defp swap_upload_refs_at(%{} = map, [key | path], uploaded) do
+    Enum.reduce(Enum.uniq([key, to_string(key)]), map, fn key, map ->
+      case Map.fetch(map, key) do
+        {:ok, value} -> Map.put(map, key, swap_upload_refs_at(value, path, uploaded))
+        :error -> map
+      end
+    end)
+  end
+
+  defp swap_upload_refs_at(other, _path, _uploaded), do: other
+
+  @doc "Like `live_upload_files/5`, as `{ref, media}` for each stored file (`ref` being its upload entry's), in upload order, eg. to put each stored file where the body has its `upload:<ref>`."
+  def live_upload_files_by_ref(
+        module \\ nil,
+        upload_field \\ :files,
+        current_user,
+        metadata,
+        socket
+      ) do
     maybe_consume_uploaded_entries(socket, upload_field, fn %{path: path} = meta, entry ->
       debug(meta, "consume_uploaded_entries meta")
       debug(entry, "consume_uploaded_entries entry")
@@ -1205,7 +1256,7 @@ defmodule Bonfire.UI.Common do
                ]
              )
              |> debug("uploaded?") do
-        {:ok, uploaded}
+        {:ok, {entry.ref, uploaded}}
       else
         {:error, %{message: message} = e} ->
           {:postpone, error(e, "#{message}: #{entry.client_name}")}
@@ -1215,6 +1266,7 @@ defmodule Bonfire.UI.Common do
       end
     end)
     |> filter_empty([])
+    |> Enum.filter(&match?({_ref, uploaded} when not is_nil(uploaded), &1))
   end
 
   def maybe_consume_uploaded_entries(

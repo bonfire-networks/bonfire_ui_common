@@ -157,7 +157,7 @@
             <div class="flex min-w-0 flex-1">
               <div :if={@showing_within != :thread_embed} class="flex min-w-0 items-center gap-2">
                 <Bonfire.UI.Common.UploadButtonLive
-                  :if={@uploads != false && e(@smart_input_opts, :create_object_type, nil) not in [:message, "message"]}
+                  :if={@uploads != false}
                   uploads={@uploads}
                   max_uploads={Bonfire.Common.Settings.get(
                     [Bonfire.UI.Common.SmartInputLive, :max_uploads],
