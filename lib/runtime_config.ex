@@ -51,7 +51,7 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
       base_domain: System.get_env("PLAUSIBLE_PROXY_DOMAIN", "https://plausible.io"),
       script_path: System.get_env("PLAUSIBLE_PROXY_SCRIPT_PATH", "/js/script.js")
 
-    # whether widget embeds (`/embed/widget/:id`) may be kept by the static cache and a proxy or CDN, purged when the widget changes; off until it's proven
+    # whether widget embeds (`/embed/widget/:id`) may be kept by the static cache and a proxy or CDN, purged when the widget changes; on unless `CACHE_WIDGET_EMBEDS` is `false`
     config :bonfire_ui_common, Bonfire.UI.Common.EmbedWidgetController,
       cache: System.get_env("CACHE_WIDGET_EMBEDS") not in ["false", "0", "no"]
 

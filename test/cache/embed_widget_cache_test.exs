@@ -1,6 +1,6 @@
 defmodule Bonfire.UI.Common.EmbedWidgetCacheTest do
   @moduledoc """
-  Widget embeds are cached for guests when the instance turns it on (`CACHE_WIDGET_EMBEDS`), tagged with the widget so its saved copies, one per query string, are purged together.
+  Widget embeds are cached for guests unless the instance turns it off (`CACHE_WIDGET_EMBEDS`), tagged with the widget so its saved copies, one per query string, are purged together.
 
   Outside prod `CacheControlPlug` never lets a response be cached (unless `STATIC_CACHE_DEV` was set at compile time), so these check what's left to see: the tag, the plug's answer to a signed-in request, and the purge of copies saved on disk.
   """
@@ -41,7 +41,9 @@ defmodule Bonfire.UI.Common.EmbedWidgetCacheTest do
   defp cache_on,
     do: Process.put([:bonfire_ui_common, Bonfire.UI.Common.EmbedWidgetController, :cache], true)
 
-  test "off unless the instance turns it on: the embed isn't tagged for caching" do
+  test "turned off by the instance, the embed isn't tagged for caching" do
+    Process.put([:bonfire_ui_common, Bonfire.UI.Common.EmbedWidgetController, :cache], false)
+
     conn = get(conn(), @path <> "?theme=dark")
 
     assert conn.status == 200

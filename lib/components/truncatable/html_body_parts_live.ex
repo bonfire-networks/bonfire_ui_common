@@ -20,12 +20,17 @@ defmodule Bonfire.UI.Common.HtmlBodyPartsLive do
   prop viewing_main_object, :boolean, default: false
   prop activity_inception, :boolean, default: false
 
-  @doc "The body cut at each URL of `inline_media` (see `Bonfire.Common.Text.markdown_parts/3`), rendered with the same options as the whole body."
+  @doc "The body cut at each URL of `inline_media` (see `Bonfire.Common.Text.markdown_parts/3`, and `html_parts/3` for an HTML body), rendered with the same options as the whole body: a body `rich/2` takes as it is (`skip_markdown`, eg. a remote one) gets no other processing in parts either."
   def body_parts(html_body, inline_media, rich_opts) do
+    drop =
+      if rich_opts[:skip_markdown],
+        do: [:skip_markdown, :__unsafe__, :hide_trailing_hashtags],
+        else: [:skip_markdown, :__unsafe__]
+
     Bonfire.Common.Text.markdown_parts(
       html_body,
       Map.keys(inline_media),
-      [link_rel: nil] ++ Keyword.drop(rich_opts, [:skip_markdown, :__unsafe__])
+      [link_rel: nil] ++ Keyword.drop(rich_opts, drop)
     )
   end
 end

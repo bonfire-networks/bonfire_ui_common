@@ -33,7 +33,7 @@ defmodule Bonfire.UI.Common.QueryStringCacheTest do
     {:ok, dest: dest}
   end
 
-  # the Spotlight's widget embed, which its old address redirects to; widget embeds are cached only when the instance turns it on (`CACHE_WIDGET_EMBEDS`)
+  # the Spotlight's widget embed, which its old address redirects to; widget embeds are cached unless the instance turns it off (`CACHE_WIDGET_EMBEDS`)
   describe "embed route with cache_query_string: true" do
     setup %{dest: dest} do
       Process.put([:bonfire_ui_common, Bonfire.UI.Common.EmbedWidgetController, :cache], true)

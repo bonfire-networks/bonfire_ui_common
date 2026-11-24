@@ -1,14 +1,14 @@
-{#if @inline_media == %{} or @is_remote}
+{#if @inline_media == %{}}
   {rich(@html_body, @rich_opts)}
 {#else}
   {!-- media placed in the body renders where it sits, between the parts of the text around it --}
   {#for part <- body_parts(@html_body, @inline_media, @rich_opts)}
     {#case part}
       {#match {:url, url}}
-        {!-- an image shows at its own size at most, whole (`MediaLive` sets `!object-cover w-full h-full`), in a box that fits it rather than the column (its slide has an inline `width: 100%`). The box doesn't clip (its inline `overflow: hidden`), so a narrow image keeps its alt button and popup whole: the image takes the rounded corners. A caller can cap the height (eg. a poll's question and options). The body's `prose` margins on `img` and `figure` (2em) don't apply: MediaLive spaces itself --}
+        {!-- an image shows at its own size at most, whole (`MediaLive` sets `!object-cover w-full h-full`), in a box that fits it rather than the column (its slide has an inline `width: 100%`). The box doesn't clip (its inline `overflow: hidden`), so a narrow image keeps its alt button and popup whole: the image takes the rounded corners. A caller can cap the height (eg. a poll's question and options). The body's `prose` styles (eg. 2em margins on images, which show the player box's background around its preview) don't apply: MediaLive styles itself --}
         <div
           data-role="inline_media"
-          class="[&_figure]:my-0 [&_article[data-media]_img]:my-0 [&_article[data-media]_img]:w-auto [&_article[data-media]_img]:h-auto [&_article[data-media]_img]:max-w-full [&_article[data-media]_img]:block [&_article[data-media]_img]:object-contain! [&_article[data-media]_img]:rounded-md **:data-carousel-slide:w-fit! **:data-carousel-slide:max-w-full [&_article[data-media]]:w-fit [&_article[data-media]]:overflow-visible!"
+          class="not-prose [&_article[data-media]_img]:w-auto [&_article[data-media]_img]:h-auto [&_article[data-media]_img]:max-w-full [&_article[data-media]_img]:block [&_article[data-media]_img]:object-contain! [&_article[data-media]_img]:rounded-md **:data-carousel-slide:w-fit! **:data-carousel-slide:max-w-full [&_article[data-media]]:w-fit [&_article[data-media]]:overflow-visible!"
         >
           <StatelessComponent
             module={maybe_component(Bonfire.UI.Social.Activity.MediaLive, @__context__)}

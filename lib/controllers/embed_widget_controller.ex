@@ -2,7 +2,7 @@ defmodule Bonfire.UI.Common.EmbedWidgetController do
   @moduledoc """
   Serves `/embed/widget/:id`: a widget declared embeddable, alone in the iframe layout, as guests see it (see `Bonfire.UI.Common.EmbedWidgetLive`). Any other id is a 404.
 
-  With `CACHE_WIDGET_EMBEDS` on, guests' copies are kept by the static cache and a proxy or CDN, one per query string, tagged so `Bonfire.UI.Common.Widgets.bust_embed/1` purges them together.
+  Unless `CACHE_WIDGET_EMBEDS` is `false`, guests' copies are kept by the static cache and a proxy or CDN, one per query string, tagged so `Bonfire.UI.Common.Widgets.bust_embed/1` purges them together.
   """
   use Bonfire.UI.Common.Web, :controller
 
@@ -21,7 +21,7 @@ defmodule Bonfire.UI.Common.EmbedWidgetController do
   end
 
   defp maybe_cache(conn, _opts) do
-    if Bonfire.Common.Config.get([__MODULE__, :cache], false) do
+    if Bonfire.Common.Config.get([__MODULE__, :cache], true) do
       conn
       |> Bonfire.UI.Common.CacheControlPlug.call(purgeable: true, cache_query_string: true)
       |> Bonfire.UI.Common.CacheControlPlug.tag_response([

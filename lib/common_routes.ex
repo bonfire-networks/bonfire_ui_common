@@ -394,7 +394,7 @@ defmodule Bonfire.UI.Common.Routes do
         get("/open", Bonfire.UI.Common.PWAController, :open)
       end
 
-      # any widget declared embeddable, for other sites to frame; cached only with `CACHE_WIDGET_EMBEDS` on (see `Bonfire.UI.Common.EmbedWidgetController`)
+      # any widget declared embeddable, for other sites to frame; cached unless `CACHE_WIDGET_EMBEDS` is `false` (see `Bonfire.UI.Common.EmbedWidgetController`)
       scope "/embed/widget" do
         pipe_through([:browser_or_cacheable, :iframe_embeddable])
 
