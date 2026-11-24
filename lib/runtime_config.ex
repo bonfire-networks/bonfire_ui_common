@@ -53,7 +53,7 @@ defmodule Bonfire.UI.Common.RuntimeConfig do
 
     # whether widget embeds (`/embed/widget/:id`) may be kept by the static cache and a proxy or CDN, purged when the widget changes; off until it's proven
     config :bonfire_ui_common, Bonfire.UI.Common.EmbedWidgetController,
-      cache: System.get_env("CACHE_WIDGET_EMBEDS") in ["true", "1", "yes"]
+      cache: System.get_env("CACHE_WIDGET_EMBEDS") not in ["false", "0", "no"]
 
     config :bonfire_ui_common,
       session_time_to_remember:

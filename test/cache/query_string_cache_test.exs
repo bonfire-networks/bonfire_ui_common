@@ -33,10 +33,13 @@ defmodule Bonfire.UI.Common.QueryStringCacheTest do
     {:ok, dest: dest}
   end
 
+  # the Spotlight's widget embed, which its old address redirects to; widget embeds are cached only when the instance turns it on (`CACHE_WIDGET_EMBEDS`)
   describe "embed route with cache_query_string: true" do
     setup %{dest: dest} do
+      Process.put([:bonfire_ui_common, Bonfire.UI.Common.EmbedWidgetController, :cache], true)
+
       qs = "theme=dracula"
-      path = "/instance/pins/embed"
+      path = "/embed/widget/instance_pinned"
       hashed = hashed_path(path, qs)
       cache_file = Path.join([dest, String.trim_leading(hashed, "/"), "index.html"])
       on_exit(fn -> File.rm_rf!(Path.dirname(cache_file)) end)
@@ -44,14 +47,14 @@ defmodule Bonfire.UI.Common.QueryStringCacheTest do
     end
 
     test "first request writes hash-keyed cache file", %{cache_file: cache_file} do
-      get(build_conn(), "/instance/pins/embed?theme=dracula")
+      get(build_conn(), "/embed/widget/instance_pinned?theme=dracula")
       assert File.exists?(cache_file)
     end
 
     test "different query strings produce different cache entries", %{dest: dest} do
       qs1 = "theme=dark"
       qs2 = "theme=light"
-      path = "/instance/pins/embed"
+      path = "/embed/widget/instance_pinned"
 
       file1 = Path.join([dest, String.trim_leading(hashed_path(path, qs1), "/"), "index.html"])
       file2 = Path.join([dest, String.trim_leading(hashed_path(path, qs2), "/"), "index.html"])
@@ -61,8 +64,8 @@ defmodule Bonfire.UI.Common.QueryStringCacheTest do
         File.rm_rf!(Path.dirname(file2))
       end)
 
-      get(build_conn(), "/instance/pins/embed?#{qs1}")
-      get(build_conn(), "/instance/pins/embed?#{qs2}")
+      get(build_conn(), "/embed/widget/instance_pinned?#{qs1}")
+      get(build_conn(), "/embed/widget/instance_pinned?#{qs2}")
 
       assert File.exists?(file1)
       assert File.exists?(file2)
@@ -71,13 +74,13 @@ defmodule Bonfire.UI.Common.QueryStringCacheTest do
 
     test "second request is served from cache", %{cache_file: cache_file} do
       # Prime the cache
-      get(build_conn(), "/instance/pins/embed?theme=dracula")
+      get(build_conn(), "/embed/widget/instance_pinned?theme=dracula")
       assert File.exists?(cache_file)
 
       # Overwrite with a sentinel
       File.write!(cache_file, "CACHED_SENTINEL")
 
-      conn = get(build_conn(), "/instance/pins/embed?theme=dracula")
+      conn = get(build_conn(), "/embed/widget/instance_pinned?theme=dracula")
       assert conn.status == 200
       assert conn.resp_body == "CACHED_SENTINEL"
     end
@@ -90,7 +93,7 @@ defmodule Bonfire.UI.Common.QueryStringCacheTest do
         build_conn()
         |> init_test_session(%{current_user_id: user.id})
 
-      get(conn, "/instance/pins/embed?theme=dracula")
+      get(conn, "/embed/widget/instance_pinned?theme=dracula")
       refute File.exists?(cache_file)
     end
 
@@ -101,7 +104,7 @@ defmodule Bonfire.UI.Common.QueryStringCacheTest do
       conn =
         build_conn()
         |> put_req_header("accept", "text/plain,text/html,application/xhtml+xml,application/xml")
-        |> get("/instance/pins/embed?theme=dracula")
+        |> get("/embed/widget/instance_pinned?theme=dracula")
 
       assert conn.status == 200
       assert ["text/html" <> _] = get_resp_header(conn, "content-type")
