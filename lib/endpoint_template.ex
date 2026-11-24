@@ -21,6 +21,21 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       @yes? ~w(true yes 1)
       @no? ~w(false no none 0)
 
+      # one source for the streaming socket's path, shared with the echo below
+      @masto_streaming_mount "/api/v1"
+      @masto_streaming_path "streaming"
+      @masto_streaming_path_info String.split(@masto_streaming_mount, "/", trim: true) ++
+                                   [@masto_streaming_path]
+
+      # Mastodon clients send the token as the subprotocol and browsers fail a 101 that echoes none; a socket transport cannot set it per request, so the endpoint does, on the 101 only
+      def call(%{path_info: @masto_streaming_path_info} = conn, opts) do
+        conn
+        |> Plug.Conn.register_before_send(&EndpointTemplate.echo_ws_subprotocol/1)
+        |> super(opts)
+      end
+
+      def call(conn, opts), do: super(conn, opts)
+
       def log_ip(%{remote_ip: remote_ip} = conn, _) when not is_nil(remote_ip) do
         with {:error, e} <- :inet_parse.ntoa(remote_ip) do
           Logger.error(
@@ -181,12 +196,12 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       end
 
       if module_enabled?(Bonfire.Notify.Web.MastoStreamingWebSocket) do
-        socket("/api/v1", Bonfire.Notify.Web.MastoStreamingWebSocket,
+        socket(@masto_streaming_mount, Bonfire.Notify.Web.MastoStreamingWebSocket,
           websocket: [
-            path: "streaming",
+            path: @masto_streaming_path,
             check_origin: false,
             timeout: 120_000,
-            connect_info: [:peer_data, :x_headers, :sec_websocket_headers]
+            connect_info: [:peer_data, :sec_websocket_headers]
           ]
         )
       end
@@ -580,4 +595,16 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
         []
     end) || []
   end
+
+  @doc "Echoes the first offered subprotocol on a 101, as browsers require; nothing for a blank offer or any other status."
+  def echo_ws_subprotocol(%Plug.Conn{status: 101} = conn) do
+    with [offered | _] <- Plug.Conn.get_req_header(conn, "sec-websocket-protocol"),
+         [first | _] <- Plug.Conn.Utils.list(offered) do
+      Plug.Conn.put_resp_header(conn, "sec-websocket-protocol", first)
+    else
+      _ -> conn
+    end
+  end
+
+  def echo_ws_subprotocol(conn), do: conn
 end
