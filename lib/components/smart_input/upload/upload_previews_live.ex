@@ -36,6 +36,11 @@ defmodule Bonfire.UI.Common.UploadPreviewsLive do
       is_nil(url) ->
         nil
 
+      Bonfire.Common.Utils.maybe_apply(Bonfire.Files.Media, :embed_type?, [media],
+        fallback_return: false
+      ) ->
+        url
+
       String.starts_with?(e(media, :media_type, "") || "", ["image", "video", "audio"]) ->
         "![](#{url})"
 

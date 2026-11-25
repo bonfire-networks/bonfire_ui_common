@@ -1228,7 +1228,9 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
              maybe_apply(
                Bonfire.Files.Media,
                :many,
-               [[id: ids, creator: current_user_id(socket)]], fallback_return: nil) do
+               [[id: ids, creator: current_user_id(socket)]],
+               fallback_return: nil
+             ) do
         {:ok, media} ->
           by_id = Map.new(media, &{&1.id, &1})
 
