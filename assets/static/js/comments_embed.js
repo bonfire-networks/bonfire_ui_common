@@ -31,7 +31,7 @@
 
   var postId = script.getAttribute("data-post-id");
 
-  // --- Shared embed helpers (keep in sync with pins_embed.js and circle_embed.js) ---
+  // --- Shared embed helpers (keep in sync with pins_embed.js and widget_embed.js) ---
 
   function getOrigin(scriptEl) {
     try {

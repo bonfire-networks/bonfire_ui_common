@@ -6,6 +6,7 @@ import vm from "node:vm";
 const uiCommon = new URL("../../", import.meta.url);
 const pinsLoaderUrl = new URL("assets/static/js/pins_embed.js", uiCommon);
 const commentsLoaderUrl = new URL("assets/static/js/comments_embed.js", uiCommon);
+const widgetLoaderUrl = new URL("assets/static/js/widget_embed.js", uiCommon);
 
 function loadEmbedLoader(loaderUrl, options = {}) {
   const messageListeners = [];
@@ -21,12 +22,15 @@ function loadEmbedLoader(loaderUrl, options = {}) {
     parentElement: null,
     scrollHeight: 100
   };
-  const attributes = {
+  const attributes = options.attributes || {
     "data-variant": options.variant,
     "data-media-uri": "http://ghost.test/article/"
   };
   const script = {
     src: "http://bonfire.test/js/" + loaderUrl.pathname.split("/").pop(),
+    attributes: Object.entries(attributes)
+      .filter(([, value]) => value !== undefined)
+      .map(([name, value]) => ({ name, value })),
     getAttribute(name) {
       return attributes[name] || null;
     },
@@ -144,6 +148,61 @@ test("pins_embed.js leaves the non-carousel variant out of the scroll relay", ()
     source: loaded.iframeWindow
   });
   assert.deepEqual(loaded.scrollCalls, []);
+});
+
+test("widget_embed.js frames the widget its data-widget names, passing every other data-* attribute as a param", () => {
+  const loaded = loadEmbedLoader(widgetLoaderUrl, {
+    attributes: {
+      "data-widget": "circle_members",
+      "data-circle": "01CIRCLE",
+      "data-variant": "portrait",
+      "data-theme": "dark",
+      "data-width": "full"
+    }
+  });
+  const iframeUrl = new URL(loaded.iframe.src);
+
+  assert.equal(iframeUrl.origin + iframeUrl.pathname, "http://bonfire.test/embed/widget/circle_members");
+  assert.equal(iframeUrl.searchParams.get("circle"), "01CIRCLE");
+  assert.equal(iframeUrl.searchParams.get("variant"), "portrait");
+  assert.equal(iframeUrl.searchParams.get("theme"), "dark");
+  assert.equal(iframeUrl.searchParams.get("width"), "full");
+  assert.equal(iframeUrl.searchParams.has("widget"), false);
+});
+
+test("widget_embed.js frames nothing without a data-widget", () => {
+  const loaded = loadEmbedLoader(widgetLoaderUrl, { attributes: { "data-theme": "dark" } });
+  assert.equal(loaded.iframe, undefined);
+});
+
+// a widget may scroll sideways (the Spotlight is a carousel), which on touch screens holds on to vertical swipes unless they're relayed to the page
+test("widget_embed.js authenticates and immediately relays scrolling", () => {
+  const loaded = loadEmbedLoader(widgetLoaderUrl, {
+    attributes: { "data-widget": "instance_pinned" }
+  });
+  const iframeUrl = new URL(loaded.iframe.src);
+
+  assert.equal(iframeUrl.searchParams.get("scroll_relay"), "1");
+  assert.equal(iframeUrl.searchParams.get("embed_parent"), "http://ghost.test");
+
+  loaded.messageListeners[0]({
+    data: { type: "bonfire:iframe-scroll", deltaY: 24 },
+    origin: "http://evil.test",
+    source: loaded.iframeWindow
+  });
+  loaded.messageListeners[0]({
+    data: { type: "bonfire:iframe-scroll", deltaY: 24 },
+    origin: "http://bonfire.test",
+    source: {}
+  });
+  assert.deepEqual(loaded.scrollCalls, []);
+
+  loaded.messageListeners[0]({
+    data: { type: "bonfire:iframe-scroll", deltaY: 24 },
+    origin: "http://bonfire.test",
+    source: loaded.iframeWindow
+  });
+  assert.deepEqual(loaded.scrollCalls, [[0, 24]]);
 });
 
 test("comments_embed.js enables and authenticates relayed scrolling", () => {
