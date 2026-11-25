@@ -1,17 +1,28 @@
-<Bonfire.UI.Common.NextGenImageLive
-  class={@image_class ||
-    "size-10 aspect-square rounded-full border border-divider object-contain"}
-  src={Config.get([:ui, :theme, :instance_icon], nil,
-    name: l("Instance Icon"),
-    description: l("The icon to display for this instance.")
-  )}
-  alt={l("Instance logo")}
-  loading="eager"
-  fetchpriority="high"
-/>
+{#case Bonfire.UI.Common.LogoLive.banner_as_icon()}
+  {#match nil}
+    <Bonfire.UI.Common.NextGenImageLive
+      class={@image_class ||
+        "size-10 aspect-square rounded-full border border-divider object-contain"}
+      src={Config.get([:ui, :theme, :instance_icon], nil,
+        name: l("Instance Icon"),
+        description: l("The icon to display for this instance.")
+      )}
+      alt={l("Instance logo")}
+      loading="eager"
+      fetchpriority="high"
+    />
+  {#match banner}
+    <Bonfire.UI.Common.NextGenImageLive
+      class="h-10 w-auto max-w-48 rounded-box rounded-l-none object-contain lg:h-auto lg:w-full lg:max-w-none"
+      src={banner}
+      alt={l("Instance logo")}
+      loading="eager"
+      fetchpriority="high"
+    />
+{/case}
 <div
   data-scope="logo_name"
-  :if={@with_name}
+  :if={@with_name && !Bonfire.UI.Common.LogoLive.banner_as_icon()}
   class={@name_class || "text-base font-bold text-base-content"}
 >{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour(),
     name: l("Instance Name"),

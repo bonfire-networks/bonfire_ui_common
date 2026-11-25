@@ -1,5 +1,5 @@
 <LinkLive
-  class={@container_class}
+  class={@container_class, "-ml-4 lg:-ml-7.5 lg:w-[calc(100%+1.875rem)]": Bonfire.UI.Common.LogoLive.banner_as_icon()}
   to={@href || "#{path(Config.get(:home_page, :home))}?dashboard"}
   label={l("Return to homepage")}
   opts={@link_opts}

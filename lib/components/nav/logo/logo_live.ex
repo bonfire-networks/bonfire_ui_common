@@ -6,4 +6,10 @@ defmodule Bonfire.UI.Common.LogoLive do
   prop image_class, :css_class, default: nil
 
   prop name_class, :css_class, default: nil
+
+  @doc "The instance banner to show in place of the icon, or nil when that setting is off or no banner is set"
+  def banner_as_icon do
+    if Config.get([:ui, :theme, :banner_as_icon], false),
+      do: Bonfire.UI.Common.GuestBoardLive.banner_image()
+  end
 end

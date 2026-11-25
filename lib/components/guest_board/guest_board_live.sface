@@ -85,7 +85,7 @@
         <div
           :if={banner_image()}
           data-role="guest-board-banner"
-          class={"aspect-[3/1] bg-fill bg-cover bg-center", "sm:aspect-[4/1]": @size != :form}
+          class="aspect-[3/1] bg-fill bg-cover bg-center"
           aria-hidden="true"
           style={Bonfire.UI.Common.NextGenImageLive.background_image_set(banner_image())}
         />
