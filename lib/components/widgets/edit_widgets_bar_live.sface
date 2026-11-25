@@ -1,0 +1,29 @@
+<div
+  data-role="widgets_edit_bar"
+  role="toolbar"
+  aria-label={l("Customizing your dashboard")}
+  class="hidden widgets-editing:flex fixed z-40 left-1/2 -translate-x-1/2 bottom-6 dock-safe-bottom items-center gap-2 rounded-full bg-base-100 border border-divider shadow-lg p-1.5 pl-4"
+>
+  {#if @removed}
+    <span class="type-meta text-muted">{l("%{widget} removed", widget: @removed.name)}</span>
+    <button
+      type="button"
+      id="undo_remove_widget"
+      data-role="undo_remove_widget"
+      phx-click="Bonfire.UI.Common.Widgets:undo"
+      phx-value-id={@removed.id}
+      class="btn btn-sm btn-ghost opaque-on-click"
+    >{l("Undo")}</button>
+  {#else}
+    <span class="type-meta text-muted">{l("Drag to rearrange")}</span>
+  {/if}
+
+  <span class="w-px h-5 bg-divider" aria-hidden="true" />
+  <button
+    type="button"
+    id="widgets_edit_done"
+    data-role="widgets_edit_done"
+    phx-click={edit_off()}
+    class="btn btn-sm btn-primary"
+  >{l("Done")}</button>
+</div>

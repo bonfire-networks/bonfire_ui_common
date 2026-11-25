@@ -7,7 +7,6 @@ defmodule Bonfire.UI.Common.PlaceWidgetsSettingsLive do
   use Bonfire.UI.Common.Web, :stateful_component
 
   alias Bonfire.UI.Common.Widgets
-  alias Bonfire.UI.Common.WidgetsLive
 
   # `{PlaceModule, key}`, eg. `{Bonfire.Web.Views.DashboardLive, :main}`
   prop place, :any, required: true
@@ -137,9 +136,9 @@ defmodule Bonfire.UI.Common.PlaceWidgetsSettingsLive do
              scope: socket.assigns.scope
            ),
          {:ok, settings} <-
-           Bonfire.Common.Settings.LiveHandler.save_widget_order(
-             Widgets.order_key({place_module, to}),
-             order_keys(moved_to, order),
+           Widgets.save_order(
+             {place_module, to},
+             sort_dropped(moved_to, order),
              save_opts(socket, viewer)
            ) do
       socket = maybe_assign_context(socket, settings)
@@ -160,24 +159,11 @@ defmodule Bonfire.UI.Common.PlaceWidgetsSettingsLive do
     end
   end
 
-  # the order keys of a list's widgets as dropped, those the drop doesn't name after
-  defp order_keys(widgets, order),
-    do: widgets |> sort_dropped(order) |> Enum.map(&WidgetsLive.order_key/1)
+  # this page's lists name each widget by its id (`data-item`)
+  defp sort_dropped(widgets, order), do: Widgets.sort_dropped(widgets, order, &to_string(&1.id))
 
-  defp sort_dropped(widgets, order) do
-    Enum.sort_by(widgets, fn widget ->
-      Enum.find_index(order, &(&1 == to_string(widget.id))) || length(order)
-    end)
-  end
-
-  # the order of every offered widget, hidden ones included so they keep their place
-  defp save_order(widgets, socket) do
-    Bonfire.Common.Settings.LiveHandler.save_widget_order(
-      Widgets.order_key(socket.assigns.place),
-      Enum.map(widgets, &WidgetsLive.order_key/1),
-      save_opts(socket)
-    )
-  end
+  defp save_order(widgets, socket),
+    do: Widgets.save_order(socket.assigns.place, widgets, save_opts(socket))
 
   # `user` is the person with their just-saved settings, when a save follows another
   defp save_opts(socket, user \\ nil) do

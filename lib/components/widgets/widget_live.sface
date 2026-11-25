@@ -53,24 +53,34 @@
     <!-- </li> -->
   </div>
 {#else}
-  {!-- an li with nothing in it hides, and so does one whose widget marks its root data-state="hidden" (getting started, once finished). CSS rather than display:none set from a hook, which a LiveView patch of this li can wipe, leaving an empty li that still takes a gap --}
+  {!-- an li with nothing in it hides (edit mode's controls don't count), and so does one whose widget marks its root data-state="hidden". CSS rather than a hook's display:none, which a LiveView patch can wipe --}
+  {!-- in edit mode only the tile shows, even for an empty widget so it can be removed: `block!` beats the hiding classes above (the main area's own rules are in `interface.css`). The ring is inset so a clipping column can't cut it --}
   <li
     :if={@widget[:type] not in [nil, :disabled]}
     class={[
-      "[&:not(:has(>*))]:hidden",
+      "[&:not(:has(>:not([data-role=widget-edit-controls])))]:hidden",
       "[&:has(>[data-state=hidden])]:hidden",
       @widget[:wrapper_class] || @wrapper_class,
       group:
-        not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page])
+        not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page]),
+      "widgets-editing:block! widgets-editing:[&>:not([data-role=widget-edit-controls])]:hidden":
+        @editable,
+      "widgets-editing:rounded-box widgets-editing:ring-1 widgets-editing:ring-inset widgets-editing:ring-divider widgets-editing:bg-base-100":
+        @editable
     ]}
     data-showing-within={@showing_within}
     data-type={"widgets_#{@parent_id}_#{@parent_item || "default"}"}
     data-sortable-item={if @parent_id && (@widget[:page] || @widget[:module]), do: true}
-    data-sortable-handler
+    data-sortable-handler={!@editable}
     data-order={@order}
     data-item={Bonfire.UI.Common.WidgetsLive.order_key(@widget) || "default"}
     data-widget-id={@widget[:id]}
   >
+    <Bonfire.UI.Common.WidgetEditControlsLive
+      :if={@editable && @widget[:id]}
+      widget={@widget}
+      parent_id={@parent_id}
+    />
     {#if is_list(@widget[:sub_widgets]) and @widget[:sub_widgets] != []}
       {@widget[:text] || @widget[:name]}
     {#else}

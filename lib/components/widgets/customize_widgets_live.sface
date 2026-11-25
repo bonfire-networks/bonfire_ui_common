@@ -1,0 +1,10 @@
+<button
+  type="button"
+  id="customize_widgets"
+  data-role="customize_widgets"
+  phx-click={Bonfire.UI.Common.EditWidgetsBarLive.edit_on()}
+  class="btn btn-sm btn-outline border-divider w-full mt-3 text-base-content/70 hover:text-base-content opaque-on-click widgets-editing:hidden"
+>
+  <#Icon iconify="ph:squares-four" class="size-4" />
+  {l("Customize dashboard")}
+</button>

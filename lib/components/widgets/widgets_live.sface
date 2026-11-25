@@ -2,11 +2,15 @@
   data-sortable-item
   data-sortable-handler
   id={@id}
-  phx-hook={if @id && @reorderable, do: "Draggable"}
+  phx-hook={if @id && (@reorderable || @editable), do: "Draggable"}
   data-widget-draggable
   data-grouped="id"
   data-parent={@id}
-  data-event="Bonfire.Common.Settings:reorder_widget"
+  data-event={if @editable,
+    do: "Bonfire.UI.Common.Widgets:reorder",
+    else: "Bonfire.Common.Settings:reorder_widget"}
+  data-sortable-group={if @editable, do: "#{inspect(@editable)}_widgets"}
+  data-sortable-touch={@editable && "true"}
   class={@container_class || "menu w-full p-0"}
   data-showing-within={@showing_within}
 >
@@ -35,6 +39,7 @@
         order={index}
         reorderable={@reorderable}
         use_saved_order={@use_saved_order}
+        editable={@editable}
       />
     {/for}
   {/if}

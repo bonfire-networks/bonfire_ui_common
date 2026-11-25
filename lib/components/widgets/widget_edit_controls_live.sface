@@ -1,0 +1,64 @@
+<div
+  data-role="widget-edit-controls"
+  class="hidden widgets-editing:grid gap-1 p-3 pt-2"
+>
+  <div class="flex items-center gap-3 pl-1">
+    <span class="type-name truncate flex-1 min-w-0">{@widget.name}</span>
+    <div class="flex items-center gap-1 shrink-0">
+      {#if @widget[:settings]}
+        <Bonfire.UI.Common.DropdownLive
+          id={@settings_id}
+          strategy="fixed"
+          menu={false}
+          label={l("Settings for %{widget}", widget: @widget.name)}
+          trigger_class={if @setting_label,
+            do: "flex items-center gap-1 h-7 max-w-40 px-2.5 rounded-full bg-fill-strong type-caption text-base-content hover:bg-fill",
+            else: "grid place-items-center size-8 rounded-full text-base-content/70 hover:bg-fill-strong"}
+          expanded_touch_target
+          panel_class="w-80 p-4"
+        >
+          <:trigger>
+            {#if @setting_label}
+              <span data-role="widget-setting-chip" class="truncate">{@setting_label}</span>
+              <#Icon iconify="ph:caret-down" class="size-3 shrink-0" />
+            {#else}
+              <#Icon iconify="ph:sliders-horizontal" class="size-4.5" />
+            {/if}
+          </:trigger>
+          <form id={"#{@settings_id}-form"} phx-change="Bonfire.Common.Settings:set">
+            <StatelessComponent
+              module={maybe_component(@widget.settings, @__context__)}
+              id={"#{@settings_id}-select"}
+            />
+          </form>
+        </Bonfire.UI.Common.DropdownLive>
+      {/if}
+
+      <span
+        data-sortable-handler
+        data-role="widget-drag-handle"
+        title={l("Drag to move")}
+        class="relative grid place-items-center size-8 rounded-full cursor-grab active:cursor-grabbing text-base-content/70 hover:bg-fill-strong"
+      >
+        <span class="touch-target-hit-area" aria-hidden="true" />
+        <span class="sr-only">{l("Drag to move %{widget}", widget: @widget.name)}</span>
+        <#Icon iconify="ph:dots-six-vertical-bold" class="size-4.5" />
+      </span>
+
+      <button
+        type="button"
+        id={"#{@parent_id}-#{@widget.id}-remove"}
+        data-role="remove_widget"
+        phx-click="Bonfire.UI.Common.Widgets:remove"
+        phx-value-id={@widget.id}
+        title={l("Remove")}
+        class="relative grid place-items-center size-8 rounded-full text-base-content/70 hover:bg-fill-strong hover:text-base-content opaque-on-click"
+      >
+        <span class="touch-target-hit-area" aria-hidden="true" />
+        <span class="sr-only">{l("Remove %{widget}", widget: @widget.name)}</span>
+        <#Icon iconify="ph:minus-circle" class="size-4.5" />
+      </button>
+    </div>
+  </div>
+  <Bonfire.UI.Common.WidgetSkeletonLive shape={@widget[:skeleton]} />
+</div>

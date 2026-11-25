@@ -7,6 +7,7 @@ defmodule Bonfire.UI.Common.Modularity.DeclareHelpers do
 
   - `id`: the stable atom settings and places key on (default: from the module name, eg. `WidgetInstanceInfoLive` gives `:instance_info`)
   - `icon`, `description`: shown in settings
+  - `skeleton`: the shape edit mode sketches for it, one of `Bonfire.UI.Common.WidgetSkeletonLive.shapes/0` (default `:text`)
   - `width`: `:wide` for the main area only, `:narrow` for a sidebar only, or `:any` for either (default, so leave it out)
   - `current_user_required`: only for signed-in people (default false)
   - `embeddable`: can be embedded on other sites (default: when guests can see it)

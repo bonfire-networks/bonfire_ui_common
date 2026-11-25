@@ -764,6 +764,9 @@ textarea {
 /* The stock light theme only (not custom community palettes), eg. the guest board's editorial light treatment */
 @custom-variant theme-light ([data-theme="light"] &);
 
+/* Edit mode (`data-widgets-editing`, set in the browser). `body:has()` so it also reaches the layout's sidebar. */
+@custom-variant widgets-editing (body:has([data-widgets-editing]) &);
+
 /* Phoenix LiveView loading state variants */
 @variant phx-click-loading (&.phx-click-loading, .phx-click-loading &);
 @variant feed-newer-loading (&.feed-newer-loading, .feed-newer-loading &);

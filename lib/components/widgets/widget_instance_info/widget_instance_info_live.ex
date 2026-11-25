@@ -4,5 +4,5 @@ defmodule Bonfire.UI.Common.WidgetInstanceInfoLive do
   @doc "Show a large instance or app icon?"
   prop display_banner, :boolean, default: true
 
-  declare_widget("Instance Details")
+  declare_widget("Instance Details", skeleton: :status)
 end

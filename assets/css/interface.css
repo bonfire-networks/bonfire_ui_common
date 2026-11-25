@@ -567,17 +567,17 @@ html:not([data-ui-preset="typographic"]) {
   [data-widget-place] {
     --dashboard-section-space: --spacing(6);
 
-    /* sections; hide those whose widget rendered nothing */
-    > ul > li {
+    /* sections; hide those whose widget rendered nothing. Not in edit mode, where each is a tile (`:where` keeps the specificity) */
+    &:where(:not([data-widgets-editing] *)) > ul > li {
       padding-block: var(--dashboard-section-space);
     }
 
-    > ul > li:not(:has(aside[data-role="widget"])) {
+    &:where(:not([data-widgets-editing] *)) > ul > li:not(:has(aside[data-role="widget"])) {
       display: none;
     }
 
     /* divider between visible sections */
-    > ul > li:has(aside[data-role="widget"]) ~ li:has(aside[data-role="widget"]) {
+    &:where(:not([data-widgets-editing] *)) > ul > li:has(aside[data-role="widget"]) ~ li:has(aside[data-role="widget"]) {
       border-top: var(--divider-width) solid var(--divider-color);
     }
 

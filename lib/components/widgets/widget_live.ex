@@ -34,6 +34,9 @@ defmodule Bonfire.UI.Common.WidgetLive do
   @doc "Whether to apply the user's saved sub-widget order."
   prop use_saved_order, :boolean, default: true
 
+  @doc "The page, when this widget gets edit mode's tile."
+  prop editable, :any, default: nil
+
   def render(assigns) do
     widget =
       widget(assigns[:widget], assigns[:__context__])

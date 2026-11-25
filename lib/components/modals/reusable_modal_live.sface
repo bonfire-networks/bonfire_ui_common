@@ -38,6 +38,7 @@
       "w-full h-full": @image_preview,
       "modal-box !p-0 flex flex-col overflow-hidden max-h-[85dvh]":
         !@image_preview and !@overflow and !@no_backdrop,
+      "sm:max-w-3xl": @xl,
       "modal-box p-4": @overflow or (@no_backdrop and !@image_preview),
       "overflow-y-visible": @overflow,
       "h-full": @no_backdrop

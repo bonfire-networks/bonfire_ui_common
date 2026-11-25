@@ -24,6 +24,37 @@ defmodule Bonfire.UI.Common.Widgets do
   end
 
   @doc """
+  A page's widget assigns (main area and sidebar, eg. the dashboard), at mount and after each edit mode change: `main_widgets`, `sidebar_widgets`, `editable_widgets` (the page, for a signed-in viewer), `widgets_addable` (by area) and `widgets_removed` (for Undo).
+  """
+  def place_assigns(place_module, user, removed \\ nil) do
+    editable = if user, do: place_module
+    main = offered({place_module, :main}, user)
+    sidebar = offered({place_module, :sidebar}, user)
+    addable = if editable, do: addable_by_area(main ++ sidebar), else: %{}
+
+    [
+      main_widgets: Enum.filter(main, & &1.included),
+      sidebar_widgets: [
+        users: [secondary: Enum.filter(sidebar, & &1.included)],
+        order_key: order_key({place_module, :sidebar}),
+        editable: editable,
+        addable: addable[:sidebar] || []
+      ],
+      editable_widgets: editable,
+      widgets_addable: addable,
+      widgets_removed: removed
+    ]
+  end
+
+  defp addable_by_area(offered) do
+    hidden = Enum.reject(offered, & &1.included)
+
+    Map.new([:main, :sidebar], fn area ->
+      {area, Enum.filter(hidden, &(area in [&1.area, &1.move_to]))}
+    end)
+  end
+
+  @doc """
   Every widget a place can have, in order, each with whether it's `included`:
 
   - the flavour's defaults come first, in their order (`config <app>, PlaceModule, widgets: [key: [id or {id, props}]]`), then every other widget that fits
@@ -65,6 +96,10 @@ defmodule Bonfire.UI.Common.Widgets do
       %{
         id: widget.id,
         name: widget.name,
+        description: widget[:description],
+        # a component for the widget's own choice, eg. its feed
+        settings: widget[:settings],
+        skeleton: widget[:skeleton],
         module: widget.module,
         type: widget.type,
         order_id: widget[:order_id],
@@ -91,6 +126,29 @@ defmodule Bonfire.UI.Common.Widgets do
       &WidgetsLive.order_key/1
     )
     |> Enum.map(&elem(&1, 0))
+  end
+
+  @doc "Every widget a page can have, across its areas, for the viewer. See `offered/3`."
+  def offered_on_page(place_module, context) do
+    place_module
+    |> areas()
+    |> Enum.flat_map(&offered({place_module, &1}, context))
+  end
+
+  @doc "Widgets in the order a drop left them: `order` is the `Draggable` hook's `target_order`, matched by `key_fun`; unnamed ones go last."
+  def sort_dropped(widgets, order, key_fun) do
+    Enum.sort_by(widgets, fn widget ->
+      Enum.find_index(order, &(&1 == key_fun.(widget))) || length(order)
+    end)
+  end
+
+  @doc "Saves a place's order, hidden widgets included so they keep their place."
+  def save_order(place, widgets, opts) do
+    Bonfire.Common.Settings.LiveHandler.save_widget_order(
+      order_key(place),
+      Enum.map(widgets, &WidgetsLive.order_key/1),
+      opts
+    )
   end
 
   @doc "The key a place's saved order is under, eg. `:dashboard_main_widgets` for `{DashboardLive, :main}`."
@@ -121,8 +179,8 @@ defmodule Bonfire.UI.Common.Widgets do
       Bonfire.Common.Extend.module_enabled?(widget.module, if(user, do: context, else: []))
   end
 
-  # the areas of a page: the keys its flavour lists widgets under
-  defp areas(place_module) do
+  @doc "The areas of a page: the keys its flavour lists widgets under (`[:main]` when it lists none), eg. `[:main, :sidebar]`."
+  def areas(place_module) do
     case Config.get([place_module, :widgets], []) do
       widgets when is_list(widgets) or is_map(widgets) ->
         case Enum.map(widgets, &elem(&1, 0)) do

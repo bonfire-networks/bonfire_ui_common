@@ -8,7 +8,7 @@ defmodule Bonfire.UI.Common.WidgetFeedbackLive do
 
   alias Bonfire.Common.Config
 
-  declare_widget("Feedback", id: :wishes)
+  declare_widget("Feedback", id: :wishes, skeleton: :text)
 
   def title, do: text_setting(:title) || l("Feedback")
 

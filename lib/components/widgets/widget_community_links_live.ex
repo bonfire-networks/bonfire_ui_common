@@ -6,7 +6,7 @@ defmodule Bonfire.UI.Common.WidgetCommunityLinksLive do
   """
   use Bonfire.UI.Common.Web, :stateless_component
 
-  declare_widget(l("Community links"), id: :community_links)
+  declare_widget(l("Community links"), id: :community_links, skeleton: :links)
 
   @doc "The links to show, else the instance's own."
   prop links, :list, default: nil

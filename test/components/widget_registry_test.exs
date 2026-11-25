@@ -10,7 +10,6 @@ defmodule Bonfire.UI.Common.WidgetRegistryTest do
   @dashboard_main_ids [
     :welcome,
     :instance_pinned,
-    :popular_discussions,
     :trending_discussions,
     :polls_closing_soon,
     :suggested_profiles
@@ -98,8 +97,8 @@ defmodule Bonfire.UI.Common.WidgetRegistryTest do
     assert props[:hide_empty] == true
   end
 
-  test "the user status widget is only for signed-in people, so guests' places don't offer it" do
-    assert %{current_user_required: true} = by_id(:user_status)
+  test "Who to follow is only for signed-in people, so guests' places don't offer it" do
+    assert %{current_user_required: true} = by_id(:suggested_profiles)
   end
 
   test "the moderators widget is one widget, for everyone" do

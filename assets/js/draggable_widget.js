@@ -10,9 +10,9 @@ DraggableHooks.Draggable = {
   initializeSortable() {
     if (this.el.sortable) return; // Prevent double initialization
 
-    // Disable dragging on mobile/touch devices
+    // Disable dragging on touch devices, where it fights scrolling, unless the list drags by a handle only (`data-sortable-touch`)
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (isTouchDevice) return;
+    if (isTouchDevice && !("sortableTouch" in this.el.dataset)) return;
 
     const hook = this;
 
@@ -37,7 +37,10 @@ DraggableHooks.Draggable = {
         // Event should be "reorder_widget" or "reorder_sub_widget"
         const event_name = hook.el.dataset.event;
         if (event_name) {
-          hook.pushEventTo(hook.el, event_name, params);
+          // a refused drop: put the item back, since an unchanged render sends no patch
+          hook.pushEventTo(hook.el, event_name, params, reply => {
+            if (reply && reply.refused) e.from.insertBefore(e.item, e.from.children[e.oldIndex] || null);
+          });
         }
       }
     };

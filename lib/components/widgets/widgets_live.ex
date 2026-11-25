@@ -19,6 +19,9 @@ defmodule Bonfire.UI.Common.WidgetsLive do
   @doc "Whether to apply the user's saved order (off = always the default order)."
   prop use_saved_order, :boolean, default: true
 
+  @doc "The page whose widgets get edit mode, see `Bonfire.UI.Common.Widgets.place_assigns/3`."
+  prop editable, :any, default: nil
+
   prop container_class, :css_class, default: nil
   prop wrapper_class, :css_class, default: nil
   @doc "Classes for each `:link` widget's anchor (e.g. `nav-row`)."

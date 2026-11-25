@@ -1,0 +1,74 @@
+<div
+  data-role="widget-skeleton"
+  data-shape={@shape}
+  aria-hidden="true"
+  class="grid gap-2 p-3 rounded-field bg-fill"
+>
+  {#case @shape}
+    {#match :feed}
+      <div class="flex gap-2">
+        {#for w <- ~w(w-11 w-10 w-12 w-9)}
+          <span class={"h-4 rounded-full bg-fill-strong", w} />
+        {/for}
+      </div>
+      {#for w <- ~w(w-4/5 w-3/5)}
+        <div class="flex items-center gap-2">
+          <span class="size-5 shrink-0 rounded-full bg-fill-strong" />
+          <span class={"h-2 rounded bg-fill-strong", w} />
+        </div>
+      {/for}
+    {#match :chips}
+      <div class="flex gap-2">
+        {#for w <- ~w(w-12 w-10 w-16)}
+          <span class={"h-4 rounded-full bg-fill-strong", w} />
+        {/for}
+      </div>
+    {#match :links}
+      <div class="flex gap-2">
+        {#for w <- ~w(w-12 w-14)}
+          <span class={"h-4 rounded-full bg-primary/20", w} />
+        {/for}
+      </div>
+    {#match :people}
+      {#for w <- ~w(w-3/4 w-3/5)}
+        <div class="flex items-center gap-2">
+          <span class="size-5 shrink-0 rounded-full bg-fill-strong" />
+          <span class={"h-2 rounded bg-fill-strong", w} />
+        </div>
+      {/for}
+    {#match :list}
+      {#for w <- ~w(w-4/5 w-3/5 w-2/3)}
+        <span class={"h-2 rounded bg-fill-strong", w} />
+      {/for}
+    {#match :status}
+      <div class="flex items-center gap-2">
+        <span class="size-2 shrink-0 rounded-full bg-success" />
+        <span class="h-2 w-3/5 rounded bg-fill-strong" />
+      </div>
+    {#match :poll}
+      {#for w <- ~w(w-3/5 w-1/4)}
+        <div class="relative h-4 overflow-hidden rounded-selector bg-fill-strong">
+          <span class={"absolute inset-y-0 left-0 bg-primary/20", w} />
+        </div>
+      {/for}
+    {#match :cards}
+      <div class="flex gap-2">
+        {#for _ <- 1..3}
+          <span class="h-11 flex-1 rounded-selector bg-fill-strong" />
+        {/for}
+      </div>
+    {#match :stats}
+      <div class="flex gap-5">
+        {#for _ <- 1..3}
+          <div class="grid gap-1">
+            <span class="h-3.5 w-7 rounded bg-fill-strong" />
+            <span class="h-2 w-10 rounded bg-fill-strong" />
+          </div>
+        {/for}
+      </div>
+    {#match _text}
+      {#for w <- ~w(w-11/12 w-3/4)}
+        <span class={"h-2 rounded bg-fill-strong", w} />
+      {/for}
+  {/case}
+</div>

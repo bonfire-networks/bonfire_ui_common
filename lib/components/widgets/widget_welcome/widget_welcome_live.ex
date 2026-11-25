@@ -4,7 +4,7 @@ defmodule Bonfire.UI.Common.WidgetWelcomeLive do
 
   alias Bonfire.Common.Config
 
-  declare_widget(l("Welcome"), id: :welcome)
+  declare_widget(l("Welcome"), id: :welcome, skeleton: :text)
 
   @doc "The welcome title and text, or `nil` when the instance has written no text."
   def welcome do

@@ -1,0 +1,48 @@
+{!-- mb-24: room to scroll above the fixed edit bar --}
+<div data-role="add_widgets" data-area={@area} class={"hidden widgets-editing:block mb-24", @class}>
+  <Bonfire.UI.Common.OpenModalLive
+    id={"add_widgets_#{@area}"}
+    title_text={@title}
+    modal_class="motion-sheet sm:modal-bottom"
+    xl
+    no_actions
+    open_btn_wrapper_class="btn btn-sm w-full border-dashed border-divider bg-transparent shadow-none text-base-content/70 hover:bg-fill hover:text-base-content"
+    open_modal_wrapper_class="flex w-full"
+  >
+    <:open_btn>
+      <#Icon iconify="ph:plus" class="size-4" />
+      {@title}
+    </:open_btn>
+    {#if @addable == []}
+      <p class="type-meta text-muted">{l("Every widget that fits here is already on your dashboard.")}</p>
+    {#else}
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {#for widget <- @addable}
+          <li
+            data-role="add_widget_card"
+            data-widget-id={widget.id}
+            class="flex flex-col gap-1 rounded-box border border-divider p-4"
+          >
+            <span class="type-name">{widget.name}</span>
+            <span :if={widget.description} class="type-caption text-muted">{widget.description}</span>
+            <Bonfire.UI.Common.WidgetSkeletonLive shape={widget[:skeleton]} />
+            <div class="flex mt-auto pt-2">
+              <button
+                type="button"
+                id={"add_widget_#{@area}_#{widget.id}"}
+                data-role="add_widget"
+                phx-click="Bonfire.UI.Common.Widgets:add"
+                phx-value-id={widget.id}
+                phx-value-area={@area}
+                class="btn btn-sm btn-outline border-divider opaque-on-click"
+              >
+                <#Icon iconify="ph:plus-bold" class="size-4" />
+                {l("Add")}
+              </button>
+            </div>
+          </li>
+        {/for}
+      </ul>
+    {/if}
+  </Bonfire.UI.Common.OpenModalLive>
+</div>
