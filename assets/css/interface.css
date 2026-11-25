@@ -246,28 +246,9 @@ html:not([data-ui-preset="typographic"]) {
     min-height: var(--stream-header-height);
   }
 
-  /* Centred page title between the back button and the actions. */
+  /* Page title, left-aligned after the back button. */
   [data-role="page_header_row"] {
-    display: grid;
-    grid-template-columns: 1fr minmax(0, max-content) 1fr;
-
-    > [data-role="page_header_back"] {
-      grid-column: 1;
-      justify-self: start;
-    }
-
-    > [data-role="page_header_title"] {
-      grid-column: 2;
-      text-align: center;
-    }
-
-    > [data-role="page_header_actions"] {
-      grid-column: 3;
-    }
-
     [data-role="page_title"] {
-      justify-content: center;
-      text-align: center;
       font-size: var(--text-lg);
       line-height: var(--text-lg--line-height);
       font-weight: var(--font-weight-bold);
