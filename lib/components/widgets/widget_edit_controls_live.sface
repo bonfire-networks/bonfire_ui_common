@@ -1,7 +1,4 @@
-<div
-  data-role="widget-edit-controls"
-  class="hidden widgets-editing:grid gap-1 p-3 pt-2"
->
+<div data-role="widget-edit-controls" class="hidden widgets-editing:grid gap-1 p-3 pt-2">
   <div class="flex items-center gap-3 pl-1">
     <span class="type-name truncate flex-1 min-w-0">{@widget.name}</span>
     <div class="flex items-center gap-1 shrink-0">
@@ -12,7 +9,8 @@
           menu={false}
           label={l("Settings for %{widget}", widget: @widget.name)}
           trigger_class={if @setting_label,
-            do: "flex items-center gap-1 h-7 max-w-40 px-2.5 rounded-full bg-fill-strong type-caption text-base-content hover:bg-fill",
+            do:
+              "flex items-center gap-1 h-7 max-w-40 px-2.5 rounded-full bg-fill-strong type-caption text-base-content hover:bg-fill",
             else: "grid place-items-center size-8 rounded-full text-base-content/70 hover:bg-fill-strong"}
           expanded_touch_target
           panel_class="w-80 p-4"

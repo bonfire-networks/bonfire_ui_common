@@ -9,9 +9,13 @@ defmodule Bonfire.UI.Common.EditWidgetsBarLive do
 
   @doc "Switches edit mode on, in the browser only (`data-widgets-editing`)."
   def edit_on,
-    do: Phoenix.LiveView.JS.set_attribute({"data-widgets-editing", "true"}, to: "[data-widgets-editable]")
+    do:
+      Phoenix.LiveView.JS.set_attribute({"data-widgets-editing", "true"},
+        to: "[data-widgets-editable]"
+      )
 
   @doc "Switches edit mode off."
   def edit_off,
-    do: Phoenix.LiveView.JS.remove_attribute("data-widgets-editing", to: "[data-widgets-editable]")
+    do:
+      Phoenix.LiveView.JS.remove_attribute("data-widgets-editing", to: "[data-widgets-editable]")
 end

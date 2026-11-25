@@ -1,4 +1,7 @@
-<div :if={@editable} class="hidden widgets-editing:block px-1 pb-2 type-caption font-medium text-subtle">{l("Sidebar")}</div>
+<div
+  :if={@editable}
+  class="hidden widgets-editing:block px-1 pb-2 type-caption font-medium text-subtle"
+>{l("Sidebar")}</div>
 {#case ((not is_nil(current_user_id(@__context__)) and e(@widgets, :users, @key, nil)) ||
      (is_nil(current_user_id(@__context__)) and e(@widgets, :guests, @key, nil)) || [])
   |> Enum.map(fn
