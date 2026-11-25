@@ -130,6 +130,7 @@
             event_target={@event_target || "#smart_input"}
             :if={@uploads != false}
             uploads={@uploads}
+            picked_media={e(@smart_input_opts, :picked_media, nil) || []}
           />
         </div>
       </div>
@@ -167,6 +168,23 @@
                     description: l("Maximum number of files that can be uploaded at once.")
                   )}
                 />
+
+                {!-- the author's own media, to place or attach again without uploading it again --}
+                <button
+                  :if={@uploads != false}
+                  type="button"
+                  data-role="open_media_picker"
+                  class="btn btn-ghost btn-sm btn-circle"
+                  phx-click="Bonfire.UI.Common.SmartInput:toggle-media-picker"
+                  phx-target={@event_target || "#smart_input"}
+                  phx-value-open={to_string(!e(@smart_input_opts, :media_picker_open, false))}
+                  title={l("Your media")}
+                >
+                  <#Icon iconify="ph:image-fill" class="size-5" />
+                  <span class="sr-only">{l("Your media")}</span>
+                </button>
+
+                {!-- the picker it opens is beside the composer, not in it (see `Bonfire.UI.Common.MediaPickerLive`) --}
 
                 <!-- data-close-on-inside-click="true" -->
                 {!-- embed: position:fixed + no-flip escapes the composer's

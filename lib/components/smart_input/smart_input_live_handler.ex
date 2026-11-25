@@ -963,6 +963,21 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     end
   end
 
+  # The composer's media picker. Its state lives in the composer's `smart_input_opts` (which every composer passes on to `InputControlsLive`), set through `set_smart_input_opts/2`, which the composer merges into its own: these events don't get the composer's current options, so the buttons send what they need (`open`, and the ids already picked).
+  def handle_event("toggle-media-picker", params, socket) do
+    set_smart_input_opts(socket, %{media_picker_open: params["open"] == "true"})
+    {:noreply, socket}
+  end
+
+  # a file picked from the author's own media (Insert or Attach in the picker): shown among the uploads, and sent as `upload_metadata[<media id>][media_id]` (see `Bonfire.UI.Common.picked_media/2`)
+  def handle_event("pick-media", %{"id" => media_id} = params, socket) do
+    set_picked_media(socket, Enum.uniq(picked_ids(socket, params) ++ [media_id]))
+  end
+
+  def handle_event("unpick-media", %{"id" => media_id} = params, socket) do
+    set_picked_media(socket, picked_ids(socket, params) -- [media_id])
+  end
+
   def handle_event("toggle-cover-image", %{"ref" => ref}, socket) do
     current_cover = e(assigns(socket), :selected_cover, nil)
     # Toggle the cover image - if it's already selected, deselect it, otherwise select it
@@ -1192,6 +1207,42 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
 
   defp encode_opts(_), do: nil
   defp do_encode_opts(opts), do: Jason.encode!(Map.drop(opts || %{}, [:text]))
+
+  # the ids picked so far: the composer's own, else those the button sends as a comma-separated `picked` (a picker tile's can be stale, since its feed's rows don't render again after a pick)
+  defp picked_ids(socket, params) do
+    case e(assigns(socket), :smart_input_opts, :picked_media, nil) do
+      [_ | _] = picked -> Enum.map(picked, &e(&1, :id, nil))
+      _ -> picked_ids(params)
+    end
+  end
+
+  defp picked_ids(%{"picked" => picked}) when is_binary(picked),
+    do: String.split(picked, ",", trim: true)
+
+  defp picked_ids(_), do: []
+
+  # the author's own `Media` with these ids, in that order (one query), as plain maps (the composer's options are encoded as JSON, which a `Media` struct isn't) with what their preview needs, including how many objects use each already, for the note by its alt text
+  defp set_picked_media(socket, ids) do
+    picked =
+      case ids != [] &&
+             maybe_apply(
+               Bonfire.Files.Media,
+               :many,
+               [[id: ids, creator: current_user_id(socket)]], fallback_return: nil) do
+        {:ok, media} ->
+          by_id = Map.new(media, &{&1.id, &1})
+
+          for id <- ids,
+              %{} = m <- [by_id[id]],
+              do: Bonfire.UI.Common.UploadPreviewsLive.picked_entry(m)
+
+        _ ->
+          []
+      end
+
+    set_smart_input_opts(socket, %{picked_media: picked})
+    {:noreply, socket}
+  end
 
   def set_smart_input_opts(socket, %{} = opts_to_set) do
     # Make sure smart_input_opts is a map

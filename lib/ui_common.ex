@@ -1202,8 +1202,53 @@ defmodule Bonfire.UI.Common do
 
     attrs = Enum.reduce(body_paths, attrs, &swap_upload_refs_at(&2, &1, uploaded))
 
-    {attrs, Enum.map(uploaded, fn {_ref, media} -> media end)}
+    {attrs,
+     Enum.map(uploaded, fn {_ref, media} -> media end) ++ picked_media(current_user, metadata)}
   end
+
+  @doc """
+  The media picked in the composer from the author's own (see its media picker), which `metadata` (the form's `upload_metadata`) carries as `upload_metadata[<media id>][media_id]`, beside its `alt`: the same `Media`, so it's attached again rather than uploaded again. Only the author's own media are taken (one query). An alt text that differs from the stored one is saved on the `Media`, so it changes for every post using it.
+  """
+  def picked_media(current_user, metadata) when is_map(metadata) do
+    picked =
+      for {_key, %{"media_id" => id} = fields} <- metadata,
+          is_binary(id) and id != "",
+          into: %{},
+          do: {id, fields}
+
+    with [_ | _] = ids <- Map.keys(picked),
+         {:ok, media} <-
+           maybe_apply(Bonfire.Files.Media, :many, [[id: ids, creator: id(current_user)]],
+             fallback_return: {:ok, []}
+           ) do
+      Enum.map(media, &maybe_save_picked_alt(current_user, &1, picked[&1.id]["alt"]))
+    else
+      _ -> []
+    end
+  end
+
+  def picked_media(_current_user, _metadata), do: []
+
+  defp maybe_save_picked_alt(current_user, media, alt) when is_binary(alt) do
+    alt = String.trim(alt)
+
+    if alt != "" and
+         alt != maybe_apply(Bonfire.Files.Media, :media_alt, [media, false], fallback_return: nil) do
+      case maybe_apply(
+             Bonfire.Files.Media,
+             :update,
+             [current_user, media, %{metadata: Map.put(media.metadata || %{}, "alt", alt)}],
+             fallback_return: nil
+           ) do
+        {:ok, updated} -> updated
+        _ -> media
+      end
+    else
+      media
+    end
+  end
+
+  defp maybe_save_picked_alt(_current_user, media, _alt), do: media
 
   defp swap_upload_refs_at(body, [], uploaded) when is_binary(body) do
     maybe_apply(Bonfire.Files.InlineMedia, :swap_upload_refs, [body, uploaded],

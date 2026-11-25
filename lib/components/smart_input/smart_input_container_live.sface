@@ -74,6 +74,11 @@
             </div>
           </div>
         </div>
+        <Bonfire.UI.Common.MediaPickerLive
+          :if={e(@smart_input_opts, :media_picker_open, false)}
+          smart_input_opts={@smart_input_opts}
+          event_target={@myself}
+        />
         <Bonfire.UI.Common.SmartInputDraftBarLive :if={@input_status == :draft} />
       {#else}
         <.portal id="composer_portal" class="relative z-max" target="body">
@@ -131,6 +136,11 @@
               </div>
             </div>
           </div>
+          <Bonfire.UI.Common.MediaPickerLive
+            :if={e(@smart_input_opts, :media_picker_open, false)}
+            smart_input_opts={@smart_input_opts}
+            event_target={@myself}
+          />
           <Bonfire.UI.Common.SmartInputDraftBarLive :if={@input_status == :draft} />
         </.portal>
       {/if}

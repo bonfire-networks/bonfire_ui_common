@@ -1,0 +1,163 @@
+{!-- collapsed, the newest upload shows its alt text and actions without Edit, on a row of its own, until its Done button adds `alt_done` --}
+<div
+  id={@dom_id}
+  data-role="upload_entry"
+  data-ref={@ref}
+  data-media-id={@media_id}
+  class={[
+    "group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:basis-full group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:flex-row",
+    "group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:items-start group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:gap-3",
+    # room for the Edit button, at the top right
+    "group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:pr-20",
+    "flex flex-col items-center shrink-0 group group/entry relative",
+    "group-[.expanded]/uploads:flex-row group-[.expanded]/uploads:gap-3",
+    "group-[.expanded]/uploads:items-start group-[.expanded]/uploads:p-2.5",
+    "group-[.expanded]/uploads:border-b group-[.expanded]/uploads:border-divider",
+    # an image goes above its alt text while that is written
+    "group-[.expanded]/uploads:has-[textarea:focus]:flex-col group-[.expanded]/uploads:has-[textarea:focus]:items-stretch":
+      image?(@type),
+    "group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:has-[textarea:focus]:flex-col group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:has-[textarea:focus]:items-stretch":
+      image?(@type)
+  ]}
+>
+  {!-- Thumbnail (rendered once — same in both modes) --}
+  {!-- an image is shown whole, at full width, while its alt text is written, so the description can follow what it shows --}
+  {#case preview_kind(@type)}
+    {#match kind}
+      <figure
+        data-preview={kind}
+        class={[
+          "size-16 rounded-box overflow-hidden shrink-0 bg-fill",
+          "group-has-[textarea:focus]/entry:w-full group-has-[textarea:focus]/entry:h-auto":
+            kind == "image"
+        ]}
+      >
+        {#case kind}
+          {#match "image"}
+            <#slot {@thumbnail} />
+          {#match "pdf"}
+            <div class="size-16 flex items-center justify-center">
+              <#Icon iconify="bxs:file-pdf" class="size-7 text-subtle" />
+            </div>
+          {#match "video"}
+            <div class="size-16 flex items-center justify-center">
+              <#Icon iconify="majesticons:video" class="size-7 text-subtle" />
+            </div>
+          {#match "audio"}
+            <div class="size-16 flex items-center justify-center">
+              <#Icon iconify="lucide:audio-lines" class="size-7 text-subtle" />
+            </div>
+          {#match _}
+            <div class="size-16 flex items-center justify-center">
+              <#Icon iconify="carbon:document" class="size-7 text-subtle" />
+            </div>
+        {/case}
+      </figure>
+  {/case}
+  {!-- files upload on send (auto_upload: false) --}
+  <progress
+    :if={is_integer(@progress) and @progress > 0 and @progress < 100}
+    class="progress progress-primary w-16 h-1 mt-1"
+    value={@progress}
+    max="100"
+    aria-label={l("Uploading %{name}", name: @name)}
+  />
+
+  <#slot {@hidden} />
+
+  {!-- Details wrapper: transparent in collapsed (contents), flex column in expanded --}
+  <div class={[
+    "contents",
+    "group-[.expanded]/uploads:flex group-[.expanded]/uploads:flex-col",
+    "group-[.expanded]/uploads:gap-1.5 group-[.expanded]/uploads:flex-1",
+    "group-[.expanded]/uploads:min-w-0"
+  ]}>
+    {!-- Filename (visible in both modes, styled differently) --}
+    <span
+      data-role="upload_filename"
+      class={[
+        "text-xs truncate max-w-16 text-muted mt-0.5",
+        "group-[.expanded]/uploads:text-xs group-[.expanded]/uploads:max-w-none",
+        "group-[.expanded]/uploads:text-muted group-[.expanded]/uploads:mt-0",
+        "group-[:not(.expanded)]/uploads:group-[:last-child:not(.alt_done)]/entry:hidden"
+      ]}
+    >{@name}</span>
+
+    {!-- Collapsed: compact error indicators --}
+    {#for _err <- @errors}
+      <span class="text-xs text-error group-[.expanded]/uploads:hidden">!</span>
+    {/for}
+
+    {!-- Expanded: metadata editing (alt text, actions) --}
+    <div class={[
+      "hidden group-[.expanded]/uploads:flex flex-col gap-1.5",
+      "group-[:not(.expanded)]/uploads:group-[:last-child:not(.alt_done)]/entry:flex group-[:not(.expanded)]/uploads:group-[:last-child:not(.alt_done)]/entry:flex-1 group-[:not(.expanded)]/uploads:group-[:last-child:not(.alt_done)]/entry:min-w-0"
+    ]}>
+      {#for err <- @errors}
+        <p class="text-xs text-error">{err} {l("Please remove it before continuing.")}</p>
+      {#else}
+        <textarea
+          id={"#{@dom_id}_description"}
+          name={@alt_name}
+          phx-update="ignore"
+          placeholder={l("Describe this file for accessibility")}
+          class="textarea textarea-sm resize-none w-full text-sm bg-base-100/50"
+          rows="2"
+          style="field-sizing: content; min-height: 2.5rem; max-height: 5rem;"
+        >{@alt_value}</textarea>
+        <p :if={@alt_note} data-role="alt_shared_note" class="text-xs text-muted">{@alt_note}</p>
+      {/for}
+
+      <div class="flex items-center gap-1.5 flex-wrap">
+        <#slot {@actions} />
+        {!-- places the file in the text, where the cursor is --}
+        <button
+          :if={@insert_text}
+          type="button"
+          data-role="insert_in_text"
+          class="btn btn-ghost btn-soft btn-sm gap-1 shrink-0"
+          phx-click={JS.dispatch("bonfire:insert_at_cursor",
+            # on the button itself: it goes to the plain field last written in (eg. a poll's question or option), else to the text editor (see `milkdown.hooks.js`)
+            detail: %{text: @insert_text, markdown: true}
+          )}
+        >
+          <span class="text-xs">{l("Insert in text")}</span>
+        </button>
+        <button
+          type="button"
+          data-role={@remove_role}
+          class="btn btn-ghost btn-soft btn-sm gap-1 shrink-0 hover:btn-error transition-colors"
+          phx-click={@remove_event}
+          phx-target={@event_target}
+          phx-value-ref={@ref}
+          phx-value-id={@media_id}
+          phx-value-picked={@picked}
+        >
+          <#Icon iconify="ph:trash-fill" class="size-3.5" />
+          <span class="text-xs">{l("Remove")}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {!-- Collapsed only: hover remove button overlaid on thumbnail --}
+  <button
+    type="button"
+    class="absolute -top-1 -right-1 btn btn-circle btn-sm bg-base-300/80 border-0 opacity-0 group-hover:opacity-100 transition-opacity z-10 group-[.expanded]/uploads:hidden"
+    phx-click={@remove_event}
+    phx-target={@event_target}
+    phx-value-ref={@ref}
+    phx-value-id={@media_id}
+    phx-value-picked={@picked}
+    aria-label={l("Remove")}
+  >
+    <#Icon iconify="ph:x" class="size-3" />
+  </button>
+
+  {!-- Collapsed only: cover badge --}
+  {#if image?(@type) and @cover?}
+    <div class="absolute top-0.5 left-0.5 size-4 rounded-full bg-primary flex items-center justify-center z-10 group-[.expanded]/uploads:hidden">
+      <#Icon iconify="ph:asterisk-fill" class="size-2.5 text-primary-content" />
+    </div>
+  {/if}
+</div>

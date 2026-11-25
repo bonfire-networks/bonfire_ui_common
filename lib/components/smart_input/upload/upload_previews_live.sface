@@ -1,5 +1,5 @@
 <div
-  :if={Enum.count(@uploads.files.entries) > 0}
+  :if={Enum.count(@uploads.files.entries) > 0 or @picked_media != []}
   id={deterministic_dom_id(__MODULE__, nil, "upload-preview", @parent_id)}
   class="uploads_preview group/uploads relative bg-fill shrink-0"
 >
@@ -16,177 +16,80 @@
     # collapsed: the newest upload wraps to its own row, with its alt text (see the entries below)
     "group-[:not(.expanded)]/uploads:flex-wrap"
   ]}>
-    {#for entry <- @uploads.files.entries}
-      {!-- collapsed, the newest upload shows its alt text and actions without Edit, on a row of its own, until its Done button adds `alt_done` --}
-      <div
-        id={deterministic_dom_id(__MODULE__, entry.ref, "upload-entry", @parent_id)}
-        data-role="upload_entry"
-        data-ref={entry.ref}
-        class={[
-          "group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:basis-full group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:flex-row",
-          "group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:items-start group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:gap-3",
-          # room for the Edit button, at the top right
-          "group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:pr-20",
-          "flex flex-col items-center shrink-0 group group/entry relative",
-          "group-[.expanded]/uploads:flex-row group-[.expanded]/uploads:gap-3",
-          "group-[.expanded]/uploads:items-start group-[.expanded]/uploads:p-2.5",
-          "group-[.expanded]/uploads:border-b group-[.expanded]/uploads:border-divider",
-          # an image goes above its alt text while that is written
-          "group-[.expanded]/uploads:has-[textarea:focus]:flex-col group-[.expanded]/uploads:has-[textarea:focus]:items-stretch":
-            String.starts_with?(entry.client_type, "image"),
-          "group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:has-[textarea:focus]:flex-col group-[:not(.expanded)]/uploads:[&:last-child:not(.alt_done)]:has-[textarea:focus]:items-stretch":
-            String.starts_with?(entry.client_type, "image")
-        ]}
+    {!-- files picked from the author's own media (see the composer's media picker): sent as `upload_metadata[<media id>][media_id]`, attached again rather than uploaded again --}
+    {#for media <- @picked_media}
+      <Bonfire.UI.Common.UploadPreviewEntryLive
+        dom_id={deterministic_dom_id(__MODULE__, media.id, "picked-entry", @parent_id)}
+        media_id={media.id}
+        type={media.media_type || ""}
+        name={media.name}
+        alt_name={"upload_metadata[#{media.id}][alt]"}
+        alt_value={media.alt}
+        alt_note={shared_alt_note(media)}
+        insert_text={media.insert_text}
+        remove_event="Bonfire.UI.Common.SmartInput:unpick-media"
+        remove_role="unpick_media"
+        picked={picked_ids(@picked_media)}
+        event_target={@event_target}
       >
-        {!-- Thumbnail (rendered once — same in both modes) --}
-        {!-- an image is shown whole, at full width, while its alt text is written, so the description can follow what it shows --}
-        <figure class={[
-          "size-16 rounded-box overflow-hidden shrink-0 bg-fill",
-          "group-has-[textarea:focus]/entry:w-full group-has-[textarea:focus]/entry:h-auto":
-            String.starts_with?(entry.client_type, "image")
-        ]}>
+        <:thumbnail>
+          <img
+            src={media.thumbnail_url}
+            alt=""
+            class="size-16 object-cover rounded-box group-has-[textarea:focus]/entry:w-full group-has-[textarea:focus]/entry:h-auto group-has-[textarea:focus]/entry:max-h-100 group-has-[textarea:focus]/entry:object-contain"
+          />
+        </:thumbnail>
+        <:hidden>
+          <input type="hidden" name={"upload_metadata[#{media.id}][media_id]"} value={media.id}>
+        </:hidden>
+      </Bonfire.UI.Common.UploadPreviewEntryLive>
+    {/for}
+    {#for entry <- @uploads.files.entries}
+      {!-- placed in the text as `upload:<ref>` until publishing gives it a URL (see `Bonfire.Files.InlineMedia.swap_upload_refs/2`) --}
+      <Bonfire.UI.Common.UploadPreviewEntryLive
+        dom_id={deterministic_dom_id(__MODULE__, entry.ref, "upload-entry", @parent_id)}
+        ref={entry.ref}
+        type={entry.client_type}
+        name={entry.client_name}
+        errors={Enum.map(upload_errors(@uploads.files, entry), &error_to_string/1)}
+        progress={entry.progress}
+        alt_name={"upload_metadata[#{entry.ref}][alt]"}
+        insert_text={"![](upload:#{entry.ref})"}
+        remove_event="Bonfire.UI.Common.SmartInput:cancel-upload"
+        event_target={@event_target}
+        cover?={@selected_cover == entry.ref}
+      >
+        <:thumbnail>
+          <Phoenix.Component.live_img_preview
+            class="size-16 object-cover rounded-box group-has-[textarea:focus]/entry:w-full group-has-[textarea:focus]/entry:h-auto group-has-[textarea:focus]/entry:max-h-100 group-has-[textarea:focus]/entry:object-contain"
+            entry={entry}
+          />
+        </:thumbnail>
+        <:actions>
           {#if String.starts_with?(entry.client_type, "image")}
-            <Phoenix.Component.live_img_preview
-              class="size-16 object-cover rounded-box group-has-[textarea:focus]/entry:w-full group-has-[textarea:focus]/entry:h-auto group-has-[textarea:focus]/entry:max-h-100 group-has-[textarea:focus]/entry:object-contain"
-              entry={entry}
+            <input
+              type="hidden"
+              name={"upload_metadata[#{entry.ref}][primary_image]"}
+              value={if @selected_cover == entry.ref, do: "true", else: ""}
+              id={deterministic_dom_id(__MODULE__, entry.ref, "primary_image", @parent_id)}
             />
-          {#elseif String.contains?(entry.client_type, "pdf")}
-            <div class="size-16 flex items-center justify-center">
-              <#Icon iconify="bxs:file-pdf" class="size-7 text-subtle" />
-            </div>
-          {#elseif String.starts_with?(entry.client_type, "video")}
-            <div class="size-16 flex items-center justify-center">
-              <#Icon iconify="majesticons:video" class="size-7 text-subtle" />
-            </div>
-          {#elseif String.starts_with?(entry.client_type, "audio")}
-            <div class="size-16 flex items-center justify-center">
-              <#Icon iconify="lucide:audio-lines" class="size-7 text-subtle" />
-            </div>
-          {#else}
-            <div class="size-16 flex items-center justify-center">
-              <#Icon iconify="carbon:document" class="size-7 text-subtle" />
-            </div>
+            <button
+              type="button"
+              class={[
+                "btn btn-sm gap-1 shrink-0",
+                "btn-primary": @selected_cover == entry.ref,
+                "btn-ghost btn-soft": @selected_cover != entry.ref
+              ]}
+              phx-click="Bonfire.UI.Common.SmartInput:toggle-cover-image"
+              phx-target={@event_target}
+              phx-value-ref={entry.ref}
+            >
+              <#Icon iconify="ph:image-fill" class="size-3.5" />
+              <span class="text-xs">{if @selected_cover == entry.ref, do: l("Cover image"), else: l("Set as cover")}</span>
+            </button>
           {/if}
-        </figure>
-        {!-- files upload on send (auto_upload: false) --}
-        <progress
-          :if={entry.progress > 0 and entry.progress < 100}
-          class="progress progress-primary w-16 h-1 mt-1"
-          value={entry.progress}
-          max="100"
-          aria-label={l("Uploading %{name}", name: entry.client_name)}
-        />
-
-        {!-- Details wrapper: transparent in collapsed (contents), flex column in expanded --}
-        <div class={[
-          "contents",
-          "group-[.expanded]/uploads:flex group-[.expanded]/uploads:flex-col",
-          "group-[.expanded]/uploads:gap-1.5 group-[.expanded]/uploads:flex-1",
-          "group-[.expanded]/uploads:min-w-0"
-        ]}>
-          {!-- Filename (visible in both modes, styled differently) --}
-          <span
-            data-role="upload_filename"
-            class={[
-              "text-xs truncate max-w-16 text-muted mt-0.5",
-              "group-[.expanded]/uploads:text-xs group-[.expanded]/uploads:max-w-none",
-              "group-[.expanded]/uploads:text-muted group-[.expanded]/uploads:mt-0",
-              "group-[:not(.expanded)]/uploads:group-[:last-child:not(.alt_done)]/entry:hidden"
-            ]}
-          >{entry.client_name}</span>
-
-          {!-- Collapsed: compact error indicators --}
-          {#for _err <- upload_errors(@uploads.files, entry)}
-            <span class="text-xs text-error group-[.expanded]/uploads:hidden">!</span>
-          {/for}
-
-          {!-- Expanded: metadata editing (alt text, actions) --}
-          <div class={[
-            "hidden group-[.expanded]/uploads:flex flex-col gap-1.5",
-            "group-[:not(.expanded)]/uploads:group-[:last-child:not(.alt_done)]/entry:flex group-[:not(.expanded)]/uploads:group-[:last-child:not(.alt_done)]/entry:flex-1 group-[:not(.expanded)]/uploads:group-[:last-child:not(.alt_done)]/entry:min-w-0"
-          ]}>
-            {#for err <- upload_errors(@uploads.files, entry)}
-              <p class="text-xs text-error">{error_to_string(err)} {l("Please remove it before continuing.")}</p>
-            {#else}
-              <textarea
-                id={deterministic_dom_id(__MODULE__, entry.ref, "upload_description", @parent_id)}
-                name={"upload_metadata[#{entry.ref}][alt]"}
-                phx-update="ignore"
-                placeholder={l("Describe this file for accessibility")}
-                class="textarea textarea-sm resize-none w-full text-sm bg-base-100/50"
-                rows="2"
-                style="field-sizing: content; min-height: 2.5rem; max-height: 5rem;"
-              />
-            {/for}
-
-            <div class="flex items-center gap-1.5 flex-wrap">
-              {#if String.starts_with?(entry.client_type, "image")}
-                <input
-                  type="hidden"
-                  name={"upload_metadata[#{entry.ref}][primary_image]"}
-                  value={if @selected_cover == entry.ref, do: "true", else: ""}
-                  id={deterministic_dom_id(__MODULE__, entry.ref, "primary_image", @parent_id)}
-                />
-                <button
-                  type="button"
-                  class={[
-                    "btn btn-sm gap-1 shrink-0",
-                    "btn-primary": @selected_cover == entry.ref,
-                    "btn-ghost btn-soft": @selected_cover != entry.ref
-                  ]}
-                  phx-click="Bonfire.UI.Common.SmartInput:toggle-cover-image"
-                  phx-target={@event_target}
-                  phx-value-ref={entry.ref}
-                >
-                  <#Icon iconify="ph:image-fill" class="size-3.5" />
-                  <span class="text-xs">{if @selected_cover == entry.ref, do: l("Cover image"), else: l("Set as cover")}</span>
-                </button>
-              {/if}
-              {!-- places the file in the text, where the cursor is, as `upload:<ref>` until publishing gives it a URL (see `Bonfire.Files.InlineMedia.swap_upload_refs/2`) --}
-              <button
-                type="button"
-                data-role="insert_in_text"
-                class="btn btn-ghost btn-soft btn-sm gap-1 shrink-0"
-                phx-click={JS.dispatch("bonfire:insert_at_cursor",
-                  # on the button itself: it goes to the plain field last written in (eg. a poll's question or option), else to the text editor (see `milkdown.hooks.js`)
-                  detail: %{text: "![](upload:#{entry.ref})", markdown: true}
-                )}
-              >
-                <span class="text-xs">{l("Insert in text")}</span>
-              </button>
-              <button
-                type="button"
-                class="btn btn-ghost btn-soft btn-sm gap-1 shrink-0 hover:btn-error transition-colors"
-                phx-click="Bonfire.UI.Common.SmartInput:cancel-upload"
-                phx-target={@event_target}
-                phx-value-ref={entry.ref}
-              >
-                <#Icon iconify="ph:trash-fill" class="size-3.5" />
-                <span class="text-xs">{l("Remove")}</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {!-- Collapsed only: hover remove button overlaid on thumbnail --}
-        <button
-          type="button"
-          class="absolute -top-1 -right-1 btn btn-circle btn-sm bg-base-300/80 border-0 opacity-0 group-hover:opacity-100 transition-opacity z-10 group-[.expanded]/uploads:hidden"
-          phx-click="Bonfire.UI.Common.SmartInput:cancel-upload"
-          phx-target={@event_target}
-          phx-value-ref={entry.ref}
-          aria-label={l("Remove")}
-        >
-          <#Icon iconify="ph:x" class="size-3" />
-        </button>
-
-        {!-- Collapsed only: cover badge --}
-        {#if String.starts_with?(entry.client_type, "image") and @selected_cover == entry.ref}
-          <div class="absolute top-0.5 left-0.5 size-4 rounded-full bg-primary flex items-center justify-center z-10 group-[.expanded]/uploads:hidden">
-            <#Icon iconify="ph:asterisk-fill" class="size-2.5 text-primary-content" />
-          </div>
-        {/if}
-      </div>
+        </:actions>
+      </Bonfire.UI.Common.UploadPreviewEntryLive>
     {/for}
   </div>
 

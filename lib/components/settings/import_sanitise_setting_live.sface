@@ -1,0 +1,17 @@
+<form data-role={@data_role} phx-change="Bonfire.Common.Settings:set">
+  <Bonfire.UI.Common.SettingsSelectLive
+    id={@id}
+    keys={@keys}
+    scope={:instance}
+    current_value={to_string(@current_value)}
+    options={options(@current_value)}
+    name={l("Sanitising")}
+    label_name={l("Sanitising")}
+    description={l(
+      "How the body of each imported post is cleaned before it's stored. Keeping their structure keeps figures, captions and the site's own classes; strict keeps only basic formatting. Neither keeps anything that could run."
+    )}
+  />
+  <p :if={unsafe?(@current_value)} class="text-sm text-warning mt-2">{l(
+      "Unsafe stores the HTML as it came: anyone who can write raw HTML on the site (eg. its HTML blocks or cards) could run script for every reader here, admins included. Choose it only if you trust all of the site's authors."
+    )}</p>
+</form>

@@ -1,0 +1,92 @@
+{!-- full screen on small screens; from md, over the right part of the centred composer (`--composer-width`, set beside its own rule in app.css); once the space right of the composer fits two tiles (89rem wide), flush against its right edge and taking that space to the window's margin. Full height either way. Only rendered while open, so its feed only loads then --}
+<div
+  data-id="media_picker"
+  class="fixed inset-0 z-popover flex flex-col bg-base-100 md:inset-auto md:top-4 md:bottom-4 md:right-[calc((100vw-var(--composer-width))/2)] md:w-88 md:rounded-box md:shadow-xl md:border md:border-divider min-[89rem]:left-[calc(50%+var(--composer-width)/2)] min-[89rem]:right-4 min-[89rem]:w-auto"
+>
+  <div class="flex items-center justify-between gap-2 border-b border-divider px-3 py-2">
+    <span class="font-medium">{l("Your media")}</span>
+    {!-- the feed's own filters, as the events page opens them --}
+    <button
+      type="button"
+      data-role="toggle_filters"
+      aria-expanded="false"
+      aria-controls="media_picker_filters"
+      class="btn btn-ghost btn-sm ml-auto"
+      phx-click={JS.toggle(to: "#media_picker_filters")
+      |> JS.toggle_attribute({"aria-expanded", "true", "false"})}
+    >
+      <#Icon iconify="ph:sliders-horizontal" class="size-4" />
+      {l("Filters")}
+    </button>
+    <button
+      type="button"
+      class="btn btn-ghost btn-sm btn-circle"
+      phx-click="Bonfire.UI.Common.SmartInput:toggle-media-picker"
+      phx-target={@event_target || "#smart_input"}
+      phx-value-open="false"
+      aria-label={l("Close")}
+    >
+      <#Icon iconify="ph:x" class="size-4" />
+    </button>
+  </div>
+  <div
+    id="media_picker_filters"
+    data-id="media_picker_filters"
+    class="hidden border-b border-divider px-3 py-2"
+  >
+    <StatefulComponent
+      module={maybe_component(Bonfire.UI.Social.WidgetCustomizeFeedLive, @__context__)}
+      {...filters_props(@__context__)}
+    />
+  </div>
+  <div class="flex-1 overflow-y-auto">
+    <StatefulComponent
+      module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
+      id={feed_id()}
+      feed_name={:my_media}
+      feed_filters={feed_filters(@__context__)}
+      showing_within={:media_picker}
+      custom_preview={Bonfire.UI.Social.Activity.MediaTileLive}
+      list_class="grid grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] gap-3 p-3 [&>.activity_wrapper:has([data-wide])]:col-span-full"
+      hide_filters
+    >
+      <:activity_extra_actions :let={object: media}>
+        <div class="flex gap-1.5">
+          {!-- places it in the text at the cursor, and adds it to the uploads --}
+          <button
+            type="button"
+            data-role="pick_insert"
+            class="btn btn-primary btn-xs flex-1"
+            phx-click={JS.dispatch("bonfire:insert_at_cursor",
+              detail: %{
+                text: Bonfire.UI.Common.UploadPreviewsLive.insert_text(media),
+                markdown: true
+              }
+            )
+            |> JS.push("Bonfire.UI.Common.SmartInput:pick-media",
+              value: %{
+                id: id(media),
+                picked:
+                  Bonfire.UI.Common.UploadPreviewsLive.picked_ids(e(@smart_input_opts, :picked_media, nil))
+              },
+              target: @event_target || "#smart_input"
+            )}
+          >{l("Insert")}</button>
+          <button
+            type="button"
+            data-role="pick_attach"
+            class="btn btn-ghost btn-soft btn-xs flex-1"
+            phx-click={JS.push("Bonfire.UI.Common.SmartInput:pick-media",
+              value: %{
+                id: id(media),
+                picked:
+                  Bonfire.UI.Common.UploadPreviewsLive.picked_ids(e(@smart_input_opts, :picked_media, nil))
+              },
+              target: @event_target || "#smart_input"
+            )}
+          >{l("Attach")}</button>
+        </div>
+      </:activity_extra_actions>
+    </StatefulComponent>
+  </div>
+</div>

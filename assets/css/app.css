@@ -2090,10 +2090,15 @@ div[data-id="object_body"]
   }
 }
 
+/* the composer's width on desktop, which the media picker beside it reads too (`Bonfire.UI.Common.MediaPickerLive`) */
+:root {
+  --composer-width: min(42.5rem, calc(100vw - 2rem));
+}
+
 /* Desktop: constrain composer to a comfortable height, and to a readable line length (~70 characters) */
 @media (min-width: 768px) {
   #smart_input_container {
-    width: min(42.5rem, calc(100vw - 2rem));
+    width: var(--composer-width);
     left: 0;
     right: 0;
     margin-inline: auto;
@@ -2105,7 +2110,7 @@ div[data-id="object_body"]
   }
   /* the minimised draft bar lines up with the open composer */
   .composer-draft-bar {
-    width: min(42.5rem, calc(100vw - 2rem));
+    width: var(--composer-width);
     left: 0;
     right: 0;
     margin-inline: auto;
