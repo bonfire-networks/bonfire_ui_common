@@ -73,6 +73,12 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
 
       def save_accept_header(%Plug.Conn{request_path: "/api" <> _} = conn, _opts), do: conn
 
+      # Mastodon apps send no Accept header, so an error with no route (or before any pipeline ran) fell back to the first `render_errors` format, html, and the app got a web page it cannot read as an error. A stored format is kept by `render_errors`; a matched route's `:accepts` pipeline still negotiates its own format.
+      def api_errors_as_json(%Plug.Conn{request_path: "/api" <> _} = conn, _opts),
+        do: Phoenix.Controller.put_format(conn, "json")
+
+      def api_errors_as_json(conn, _opts), do: conn
+
       def save_accept_header(conn, _opts) do
         with [accept_header | _] <- Plug.Conn.get_req_header(conn, "accept"),
              # only for requests ALREADY carrying a session cookie (≈ logged in / mid-auth —
@@ -374,6 +380,7 @@ defmodule Bonfire.UI.Common.EndpointTemplate do
       plug :plug_timing_checkpoint, :after_session
 
       plug :save_accept_header
+      plug :api_errors_as_json
 
       # after the session plug so guest-vs-user is readable from the cookie (no DB)
       plug :mark_process_context
