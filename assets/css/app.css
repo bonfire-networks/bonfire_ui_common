@@ -252,6 +252,8 @@ media-player {
 
 body {
   --img-bg-color: rgba(128, 128, 128, 0.2);
+  /* Equal-width digits so counts line up across rows, whatever the font. */
+  font-variant-numeric: tabular-nums;
 }
 
 /* Hide the PersistentLive skeleton once its sibling sticky child LiveView has filled its
@@ -2096,6 +2098,33 @@ div[data-id="object_body"]
 /* the composer's width on desktop, which the media picker beside it reads too (`Bonfire.UI.Common.MediaPickerLive`) */
 :root {
   --composer-width: min(42.5rem, calc(100vw - 2rem));
+}
+
+/* The media picker (`MediaPickerLive`) sits in the room right of the centred composer, so it never covers it: while it's open the composer narrows to leave at least one 13.5rem column on each side. Below 54rem, or over a fullscreen composer, it stays a full-width sheet. */
+@media (min-width: 54rem) {
+  body:has([data-id="media_picker"]) {
+    --composer-width: min(42.5rem, calc(100vw - 29rem));
+  }
+  [data-id="media_picker"] {
+    left: auto;
+    width: max(13.5rem, calc((100vw - var(--composer-width)) / 2 - 0.5rem));
+    border-left: 1px solid var(--color-divider);
+  }
+  :root[data-composer-fullscreen] [data-id="media_picker"] {
+    left: 0;
+    width: auto;
+    border-left: 0;
+  }
+}
+/* its tiles are a grid, not feed rows: the feed wrapper's own spacing, divider and hover are reset; a row (audio, document) takes the whole width */
+[data-id="media_picker"] [data-id="feed_activity_list"] {
+  --activity-padding: 0;
+  --activity-border-width: 0;
+  --activity-hover-bg: var(--color-base-100);
+  --activity-bleed: 0px;
+}
+[data-id="media_picker"] [data-id="feed_activity_list"] > .activity_wrapper:has([data-wide]) {
+  grid-column: 1 / -1;
 }
 
 /* Desktop: constrain composer to a comfortable height, and to a readable line length (~70 characters) */

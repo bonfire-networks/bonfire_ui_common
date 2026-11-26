@@ -5,6 +5,13 @@
    script's file when the page contains one of its characters. Source: Google Fonts
    (Inter v20, SIL Open Font License 1.1). */
 
+/* Inter's single-storey a (cv11) and open digits (ss01). Here rather than in
+   app.css because the feature tags are Inter's own: this file only loads while
+   Inter is the chosen font, so other fonts never get these alternates. */
+:root {
+	font-feature-settings: "cv11", "ss01";
+}
+
 /* Latin-script languages (Latin + Latin Extended). */
 
 @font-face {

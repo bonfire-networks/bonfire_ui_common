@@ -17,10 +17,16 @@ KeyboardShortcutHooks.KeyboardShortcuts = {
 				},
 			},
 			Escape: {
-				description: "Unfocus / close composer",
+				description: "Close the media picker / unfocus / close composer",
 				allowInInput: true,
 				action: () => {
 					const active = document.activeElement;
+					const picker = document.getElementById("media_picker");
+					// closes the media picker before the composer, unless focus is elsewhere (eg. an open composer menu)
+					if (picker && (!active || active === document.body || picker.contains(active))) {
+						document.getElementById("media_picker_close").click();
+						return;
+					}
 					if (active && active !== document.body) {
 						active.blur();
 						return;

@@ -321,7 +321,7 @@ defmodule Bonfire.UI.Common.SmartInput.LiveHandler do
     # |> JS.show(to: ".smart_input_show_on_minimize")
     |> maybe_push_opts(
       "Bonfire.UI.Common.SmartInput:select_smart_input",
-      Map.put(opts, :open, false)
+      Map.merge(opts, %{open: false, media_picker_open: false})
     )
   end
 
