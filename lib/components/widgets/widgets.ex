@@ -126,7 +126,7 @@ defmodule Bonfire.UI.Common.Widgets do
       }
     end)
     |> WidgetsLive.sort_by_saved_order(
-      Settings.get([:ui, :widget_order, order_key(place)], %{}, opts),
+      WidgetsLive.saved_order(:widget_order, order_key(place), opts),
       &WidgetsLive.order_key/1
     )
     |> Enum.map(&elem(&1, 0))

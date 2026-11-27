@@ -76,7 +76,7 @@ defmodule Bonfire.UI.Common.WidgetsLive do
   end
 
   @doc """
-  Sorts `items` by the user's order saved under `[:ui, setting, list_key]`, returning `{item, default_index}` tuples. With `use_saved_order?` false, keeps the default order.
+  Sorts `items` by the order `saved_order/3` finds, returning `{item, default_index}` tuples. With `use_saved_order?` false, keeps the default order.
   """
   def ordered(items, setting, list_key, use_saved_order?, context)
 
@@ -84,13 +84,25 @@ defmodule Bonfire.UI.Common.WidgetsLive do
     do: sort_by_saved_order(items, nil, &order_key/1)
 
   def ordered(items, setting, list_key, _, context) do
-    orders = Bonfire.Common.Settings.get([:ui, setting], [], current_user: current_user(context))
+    user = current_user(context)
 
-    # a user's own orders are a map, where `ed` finds a string `list_key`, but the instance's come from config as a keyword list, keyed by atoms only
-    order =
-      ed(orders, list_key, nil) ||
-        e(orders, Bonfire.Common.Types.maybe_to_atom(list_key), nil)
+    sort_by_saved_order(
+      items,
+      saved_order(setting, list_key, if(user, do: [current_user: user], else: :instance)),
+      &order_key/1
+    )
+  end
 
-    sort_by_saved_order(items, order, &order_key/1)
+  @doc """
+  The order saved under `[:ui, setting, list_key]`, taken whole from one scope: the person's own if they saved one, else the instance's. Never merged across scopes, so a widget the person didn't place can't take the instance's position among theirs. `opts` is `:instance` or `[current_user: user]`.
+  """
+  def saved_order(setting, list_key, opts) do
+    keys = [:ui, setting, Bonfire.Common.Types.maybe_to_atom(list_key)]
+
+    own =
+      if opts != :instance,
+        do: Bonfire.Common.Settings.get(keys, nil, Keyword.put(opts, :one_scope_only, true))
+
+    own || Bonfire.Common.Settings.get(keys, nil, :instance)
   end
 end
