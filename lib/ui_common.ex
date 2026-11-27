@@ -1194,16 +1194,17 @@ defmodule Bonfire.UI.Common do
   end
 
   @doc """
-  For a composer that publishes a body with its uploads (a post, event, page, poll or message): stores the files uploaded to `:files`, and puts each one the body places as `upload:<ref>` at its stored URL (see `Bonfire.Files.InlineMedia.swap_upload_refs/2`). The body is in `attrs` at `opts[:body_path]`, by default `[:post_content, :html_body]`, or at each of `opts[:body_paths]`, where `:each` stands for every value of a map or list (eg. `[:choices, :each, :name]` for a poll's options). Returns `{attrs, media}`, the media in upload order.
+  For a composer that publishes a body with its uploads (a post, event, page, poll or message): stores the files uploaded to `:files`, and puts each one the body places as `upload:<ref>` at its stored URL (see `Bonfire.Files.InlineMedia.swap_upload_refs/2`). The body is in `attrs` at `opts[:body_path]`, by default `[:post_content, :html_body]`, or at each of `opts[:body_paths]`, where `:each` stands for every value of a map or list (eg. `[:choices, :each, :name]` for a poll's options). Returns `{attrs, media}`, the media in upload order. If any file fails to upload it returns `{:error, message}` instead, the message naming each file that failed (by its upload entry's `client_name`) and why, and consumes nothing: every entry stays in the upload so the user can remove the failed one and send again.
   """
   def live_upload_files_into(attrs, current_user, metadata, socket, opts \\ []) do
-    uploaded = live_upload_files_by_ref(current_user, metadata, socket)
-    body_paths = opts[:body_paths] || [opts[:body_path] || [:post_content, :html_body]]
+    with {:ok, uploaded} <- live_upload_files_checked(current_user, metadata, socket) do
+      body_paths = opts[:body_paths] || [opts[:body_path] || [:post_content, :html_body]]
 
-    attrs = Enum.reduce(body_paths, attrs, &swap_upload_refs_at(&2, &1, uploaded))
+      attrs = Enum.reduce(body_paths, attrs, &swap_upload_refs_at(&2, &1, uploaded))
 
-    {attrs,
-     Enum.map(uploaded, fn {_ref, media} -> media end) ++ picked_media(current_user, metadata)}
+      {attrs,
+       Enum.map(uploaded, fn {_ref, media} -> media end) ++ picked_media(current_user, metadata)}
+    end
   end
 
   @doc """
@@ -1284,34 +1285,116 @@ defmodule Bonfire.UI.Common do
         metadata,
         socket
       ) do
-    maybe_consume_uploaded_entries(socket, upload_field, fn %{path: path} = meta, entry ->
-      debug(meta, "consume_uploaded_entries meta")
-      debug(entry, "consume_uploaded_entries entry")
-
-      with {:ok, uploaded} <-
-             Bonfire.Common.Utils.maybe_apply(
-               Bonfire.Files,
-               :upload,
-               [
-                 module,
-                 current_user,
-                 path,
-                 %{client_name: entry.client_name, metadata: metadata[entry.ref] || metadata},
-                 [move_original: true]
-               ]
-             )
-             |> debug("uploaded?") do
-        {:ok, {entry.ref, uploaded}}
-      else
-        {:error, %{message: message} = e} ->
-          {:postpone, error(e, "#{message}: #{entry.client_name}")}
-
-        e ->
-          {:postpone, error(e, "Did not upload #{entry.client_name}")}
+    maybe_consume_uploaded_entries(socket, upload_field, fn meta, entry ->
+      case upload_entry(module, current_user, metadata, meta, entry) do
+        {:ok, uploaded} -> {:ok, uploaded}
+        {:error, e} -> {:postpone, e}
       end
     end)
     |> filter_empty([])
     |> Enum.filter(&match?({_ref, uploaded} when not is_nil(uploaded), &1))
+    |> Enum.reject(&match?({:error, _}, &1))
+  end
+
+  @doc """
+  Like `live_upload_files_by_ref/5`, but all or nothing: `{:ok, [{ref, media}]}` if every file was stored, else `{:error, message}` naming each file that failed and why, with every entry left in the upload, so the user can remove the failed one and send again. The files stored before a later one failed are deleted (their `Media` and every stored version), so the next send doesn't store them twice.
+  """
+  def live_upload_files_checked(
+        module \\ nil,
+        upload_field \\ :files,
+        current_user,
+        metadata,
+        socket
+      ) do
+    named_results =
+      maybe_consume_uploaded_entries(socket, upload_field, fn meta, entry ->
+        # stored from a copy: storing moves the file it is given, and the entry stays for the next send if this one fails
+        {:postpone,
+         {entry.client_name,
+          with_copy(meta, fn meta ->
+            upload_entry(module, current_user, metadata, meta, entry)
+          end)}}
+      end)
+
+    results = Enum.map(named_results, fn {_name, result} -> result end)
+
+    case for({:error, message} <- results, do: message) do
+      [_ | _] = messages ->
+        for {name, {:ok, {_ref, %{} = stored}}} <- named_results do
+          delete_stored_upload(current_user, name, stored)
+        end
+
+        {:error, Enum.join(messages, " ")}
+
+      [] ->
+        # all stored: now drop the entries
+        maybe_consume_uploaded_entries(socket, upload_field, fn _meta, _entry -> {:ok, nil} end)
+
+        {:ok, for({:ok, {_ref, uploaded} = by_ref} <- results, not is_nil(uploaded), do: by_ref)}
+    end
+  end
+
+  defp with_copy(%{path: path} = meta, fun) do
+    copy = path <> ".copy"
+
+    case File.cp(path, copy) do
+      :ok ->
+        try do
+          fun.(%{meta | path: copy})
+        after
+          # a successful store moved the copy away already, so this finds nothing then
+          File.rm(copy)
+        end
+
+      e ->
+        error(e, "Could not copy the upload to store it")
+        fun.(meta)
+    end
+  end
+
+  # a failure here is logged, and the upload error is still what the user gets
+  defp delete_stored_upload(current_user, name, stored) do
+    case maybe_apply(
+           Bonfire.Files.Media,
+           :hard_delete,
+           [nil, stored, [current_user: current_user]],
+           fallback_return: {:error, :unavailable}
+         ) do
+      {:error, e} -> warn(e, "Could not delete the stored upload of #{name}")
+      _ -> :ok
+    end
+  end
+
+  defp upload_entry(module, current_user, metadata, %{path: path} = meta, entry) do
+    debug(meta, "consume_uploaded_entries meta")
+    debug(entry, "consume_uploaded_entries entry")
+
+    with {:ok, uploaded} <-
+           Bonfire.Common.Utils.maybe_apply(
+             Bonfire.Files,
+             :upload,
+             [
+               module,
+               current_user,
+               path,
+               %{client_name: entry.client_name, metadata: metadata[entry.ref] || metadata},
+               [move_original: true]
+             ]
+           )
+           |> debug("uploaded?") do
+      {:ok, {entry.ref, uploaded}}
+    else
+      {:error, %{message: reason} = e} when is_binary(reason) and reason != "" ->
+        error(e, "#{reason}: #{entry.client_name}")
+
+        {:error,
+         l("Could not upload %{name}: %{reason}", name: entry.client_name, reason: reason)}
+
+      e ->
+        message = l("Could not upload %{name}", name: entry.client_name)
+        error(e, message)
+        {:error, message}
+    end
   end
 
   def maybe_consume_uploaded_entries(
