@@ -6,7 +6,9 @@
   class="fixed inset-0 z-popover flex flex-col bg-base-100 transition-transform duration-300 ease-out starting:translate-x-full motion-reduce:transition-none"
   phx-remove={JS.hide(
     time: 200,
-    transition: {"transition-transform duration-200 ease-in motion-reduce:transition-none", "translate-x-0", "translate-x-full"}
+    transition:
+      {"transition-transform duration-200 ease-in motion-reduce:transition-none", "translate-x-0",
+       "translate-x-full"}
   )}
 >
   <div class="flex items-center gap-1 pl-4 pr-2 pt-2">
@@ -72,7 +74,8 @@
           |> JS.push("Bonfire.UI.Common.SmartInput:pick-media",
             value: %{
               id: id(media),
-              picked: Bonfire.UI.Common.UploadPreviewsLive.picked_ids(e(@smart_input_opts, :picked_media, nil))
+              picked:
+                Bonfire.UI.Common.UploadPreviewsLive.picked_ids(e(@smart_input_opts, :picked_media, nil))
             },
             target: @event_target || "#smart_input"
           )}
@@ -84,7 +87,8 @@
           phx-click={JS.push("Bonfire.UI.Common.SmartInput:pick-media",
             value: %{
               id: id(media),
-              picked: Bonfire.UI.Common.UploadPreviewsLive.picked_ids(e(@smart_input_opts, :picked_media, nil))
+              picked:
+                Bonfire.UI.Common.UploadPreviewsLive.picked_ids(e(@smart_input_opts, :picked_media, nil))
             },
             target: @event_target || "#smart_input"
           )}
