@@ -53,13 +53,14 @@
     <!-- </li> -->
   </div>
 {#else}
-  {!-- an li with nothing in it hides (edit mode's controls don't count), and so does one whose widget marks its root data-state="hidden". CSS rather than a hook's display:none, which a LiveView patch can wipe --}
+  {!-- an li with nothing in it hides (edit mode's controls don't count), and so does one whose widget marks its root data-state="hidden", or whose WidgetBlockLive aside one level down does (a widget wrapping its block, eg. the Porch; only that aside, so a data-state deeper inside a widget never hides it). CSS rather than a hook's display:none, which a LiveView patch can wipe --}
   {!-- in edit mode only the tile shows, even for an empty widget so it can be removed: `block!` beats the hiding classes above (the main area's own rules are in `interface.css`). The ring is inset so a clipping column can't cut it --}
   <li
     :if={@widget[:type] not in [nil, :disabled]}
     class={[
       "[&:not(:has(>:not([data-role=widget-edit-controls])))]:hidden",
       "[&:has(>[data-state=hidden])]:hidden",
+      "[&:has(>*>aside[data-role=widget][data-state=hidden])]:hidden",
       @widget[:wrapper_class] || @wrapper_class,
       group:
         not is_nil(@widget[:page]) and (@page == @widget[:page] or @selected_tab == @widget[:page]),
@@ -80,8 +81,11 @@
       :if={@editable && @widget[:id]}
       widget={@widget}
       parent_id={@parent_id}
+      scope={@scope}
     />
-    {#if is_list(@widget[:sub_widgets]) and @widget[:sub_widgets] != []}
+    {#if @tiles_only}
+      {!-- the content isn't rendered at all, so a page that only edits widgets loads none of them (eg. the feed) --}
+    {#elseif is_list(@widget[:sub_widgets]) and @widget[:sub_widgets] != []}
       {@widget[:text] || @widget[:name]}
     {#else}
       {#case @widget[:type]}

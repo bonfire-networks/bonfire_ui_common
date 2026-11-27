@@ -392,6 +392,34 @@ label[for],
   --btn-p: 18px;
 }
 
+/* Widget action button: filled, `-outline`, or `-quiet` for a joined or followed state.
+   Unlayered like `.btn` above, whose bold weight it replaces. */
+.btn.widget-action {
+  --fontsize: var(--text-xs);
+  --btn-p: calc(var(--spacing) * 3.5);
+  --btn-color: var(--fill-bg);
+  --btn-fg: var(--color-base-content);
+  --btn-border: transparent;
+  --btn-shadow: none;
+  font-weight: var(--font-weight-medium);
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      --btn-color: var(--fill-strong-bg);
+    }
+  }
+}
+
+.btn.widget-action-outline {
+  --btn-color: transparent;
+  --btn-border: var(--divider-color);
+}
+
+.btn.widget-action-quiet {
+  --btn-color: transparent;
+  --btn-fg: var(--color-subtle);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .follow-hover-danger:hover:not(.btn-disabled):not(:disabled) {
     --btn-color: var(--color-error);
@@ -1342,6 +1370,90 @@ hex-input::part(input) {
   color: color-mix(in oklch, oklch(0.55 0.13 var(--tile-hue, 250)) 75%, var(--color-base-content));
 }
 
+/* Widget body primitives, so a widget needs no spacing or type of its own and a preset
+   restyles every widget here. */
+@utility widget-rows {
+  display: flex;
+  flex-direction: column;
+
+  & > * + * {
+    border-top: var(--divider-width) solid var(--divider-color);
+  }
+}
+
+@utility widget-row {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: calc(var(--spacing) * 3);
+  padding-block: calc(var(--spacing) * 2.5);
+}
+
+/* 40px avatar or tile; add `rounded-full` for people */
+@utility widget-row-media {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(var(--spacing) * 10);
+  height: calc(var(--spacing) * 10);
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: var(--radius-box);
+}
+
+/* type from `type-name` / `type-meta`, declaration for declaration: no `@apply type-*` inside an `@utility` here yet */
+@utility widget-row-title {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-base);
+  line-height: var(--tw-leading, var(--text-base--line-height));
+  font-weight: var(--font-weight-medium);
+  color: var(--color-base-content);
+}
+
+@utility widget-row-meta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+  line-height: var(--tw-leading, var(--text-sm--line-height));
+  font-weight: var(--font-weight-normal);
+  color: var(--color-muted);
+}
+
+/* the header's one link, eg. "View all" */
+@utility widget-link {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-muted);
+  /* the sidebar header's title is uppercase and tracked; the link never is */
+  text-transform: none;
+  letter-spacing: normal;
+
+  &:hover {
+    color: var(--color-base-content);
+  }
+}
+
+@utility widget-chip {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: calc(var(--spacing) * 1.5);
+  padding: calc(var(--spacing) * 1) calc(var(--spacing) * 2.5);
+  border-radius: var(--radius-button);
+  background-color: var(--fill-bg);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+
+  &:hover {
+    background-color: var(--fill-strong-bg);
+  }
+}
+
 @utility sidebar-child-link {
   @apply !flex w-full min-w-0 items-center !min-h-8 !h-8 !px-3 !py-0 rounded-selector text-sm leading-6 hover:bg-fill focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary;
   @media (pointer: coarse) {
@@ -1388,7 +1500,19 @@ hex-input::part(input) {
     margin-top: var(--widget-overlap);
   }
 
-  /* Horizontal carousel track (markup: the Spotlight, Who-to-follow and
+  /* A widget's refresh stays hidden until the widget is hovered or focused, so headers read
+     as title plus one link. Touch screens keep it visible. */
+  @media (hover: hover) and (pointer: fine) {
+    [data-role="widget"] [data-role="widget-reset"] {
+      transition: opacity 150ms ease-out;
+    }
+
+    [data-role="widget"]:not(:hover, :focus-within) [data-role="widget-reset"] {
+      opacity: 0;
+    }
+  }
+
+  /* Horizontal carousel track (markup: the Spotlight and
      polls-closing-soon widgets, all driven by the CarouselScroll hook).
 
      Note what is NOT here: `touch-action`. Pinning it to `pan-x` tells the

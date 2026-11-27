@@ -72,10 +72,13 @@ defmodule Bonfire.UI.Common.WidgetRegistryTest do
              width: :narrow,
              current_user_required: true
            } = by_id(:getting_started)
+  end
 
+  # no longer narrow since bonfire_articles 2744588: it fits the main area too
+  test "Recent articles fits either area, for signed-in people, with its declared props" do
     assert %{
              module: Bonfire.UI.Articles.WidgetRecentArticlesLive,
-             width: :narrow,
+             width: :any,
              current_user_required: true,
              props: props
            } = by_id(:recent_articles)
@@ -115,11 +118,9 @@ defmodule Bonfire.UI.Common.WidgetRegistryTest do
              by_id(:community_links)
   end
 
-  test "the guest home's introduction and instance facts are declared" do
+  test "the guest home's introduction is declared, and the instance facts are not a widget of their own" do
     assert %{module: Bonfire.UI.Me.WidgetIntroLive, width: :wide} = by_id(:intro)
-
-    assert %{module: Bonfire.UI.Me.WidgetInstanceFactsLive, current_user_required: false} =
-             by_id(:instance_facts)
+    refute by_id(:instance_facts)
   end
 
   test "the feed is one widget, full width, for everyone" do

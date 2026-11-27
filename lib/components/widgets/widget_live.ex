@@ -37,6 +37,11 @@ defmodule Bonfire.UI.Common.WidgetLive do
   @doc "The page, when this widget gets edit mode's tile."
   prop editable, :any, default: nil
 
+  @doc "Renders only edit mode's tile, not the widget's content, for a page that is always editing (eg. a settings page)."
+  prop tiles_only, :boolean, default: false
+  @doc "The tile's setting at `:instance` scope (the instance's default), else the viewer's own."
+  prop scope, :any, default: nil
+
   def render(assigns) do
     widget =
       widget(assigns[:widget], assigns[:__context__])

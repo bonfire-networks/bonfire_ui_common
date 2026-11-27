@@ -1,0 +1,47 @@
+{#if @areas != []}
+  {!-- always editing: data-widgets-editing is set here rather than by Customize; pb-24 is the room to scroll above the fixed edit bar --}
+  <section
+    data-role="widget_areas"
+    data-widgets-editable="true"
+    data-widgets-editing="true"
+    class={
+      "grid grid-cols-1 gap-4 px-4 pb-24",
+      "xl:grid-cols-[2fr_1fr] xl:items-start": length(@areas) > 1
+    }
+  >
+    <div :for={area <- @areas} class="flex flex-col gap-3" data-role="widget_area" data-area={area}>
+      <h3 :if={length(@areas) > 1} class="type-meta text-muted">{Bonfire.UI.Common.SettingsWidgetsLive.area_title(area)}</h3>
+      <Bonfire.UI.Common.WidgetsLive
+        id={Bonfire.UI.Common.SettingsWidgetsLive.list_id(@place, area)}
+        widgets={Bonfire.UI.Common.SettingsWidgetsLive.area_widgets(@widgets, area)}
+        showing_within={:settings}
+        container_class="flex flex-col gap-3 min-h-16"
+        reorderable={false}
+        use_saved_order={false}
+        editable={e(@widgets, :editable_widgets, nil)}
+        tiles_only
+        scope={@scope}
+      />
+      <Bonfire.UI.Common.AddWidgetsLive area={area} addable={e(@widgets, :widgets_addable, area, [])}>
+        {!-- custom widgets are the instance's: written once, in the main area's sheet only (the form's ids are unique) --}
+        <details
+          :if={@scope == :instance and area == :main}
+          data-role="custom_widget"
+          class="group mt-3 rounded-box border border-dashed border-divider"
+        >
+          <summary class="flex items-center gap-2 p-4 cursor-pointer list-none type-name text-base-content/70 hover:text-base-content">
+            <#Icon iconify="ph:pencil-simple-line" class="size-4" />
+            {l("Write your own widget")}
+            <#Icon iconify="ph:caret-down" class="size-4 ml-auto group-open:rotate-180" />
+          </summary>
+          <Bonfire.UI.Common.CustomWidgetFormLive slug={:text} class="px-4 pb-4" />
+        </details>
+      </Bonfire.UI.Common.AddWidgetsLive>
+    </div>
+  </section>
+
+  <Bonfire.UI.Common.EditWidgetsBarLive
+    removed={e(@widgets, :widgets_removed, nil)}
+    with_done={false}
+  />
+{/if}

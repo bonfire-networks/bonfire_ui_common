@@ -1,9 +1,5 @@
-{!-- mb-24: room to scroll above the fixed edit bar --}
-<div
-  data-role="add_widgets"
-  data-area={@area}
-  class={"hidden widgets-editing:block mb-24", @class}
->
+{!-- the room to scroll above the fixed edit bar is the caller's (`class`) --}
+<div data-role="add_widgets" data-area={@area} class={"hidden widgets-editing:block", @class}>
   <Bonfire.UI.Common.OpenModalLive
     id={"add_widgets_#{@area}"}
     title_text={@title}
@@ -48,5 +44,6 @@
         {/for}
       </ul>
     {/if}
+    <#slot />
   </Bonfire.UI.Common.OpenModalLive>
 </div>

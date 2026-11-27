@@ -3,4 +3,5 @@ defmodule Bonfire.UI.Common.CustomWidgetFormLive do
   use Bonfire.UI.Common.Web, :stateless_component
 
   prop slug, :atom, default: :text
+  prop class, :css_class
 end

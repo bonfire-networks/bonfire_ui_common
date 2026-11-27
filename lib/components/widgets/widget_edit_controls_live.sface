@@ -27,6 +27,7 @@
             <StatelessComponent
               module={maybe_component(@widget.settings, @__context__)}
               id={"#{@settings_id}-select"}
+              scope={@scope}
             />
           </form>
         </Bonfire.UI.Common.DropdownLive>

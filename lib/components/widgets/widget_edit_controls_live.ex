@@ -6,6 +6,8 @@ defmodule Bonfire.UI.Common.WidgetEditControlsLive do
 
   prop widget, :map, required: true
   prop parent_id, :string, default: nil
+  @doc "The setting at `:instance` scope (the instance's default), else the viewer's own."
+  prop scope, :any, default: nil
 
   data settings_id, :string, default: nil
   data setting_label, :string, default: nil
@@ -14,14 +16,15 @@ defmodule Bonfire.UI.Common.WidgetEditControlsLive do
     assigns
     |> assign(
       settings_id: "#{assigns.parent_id}-#{assigns.widget.id}-settings",
-      setting_label: setting_label(assigns.widget[:settings], assigns[:__context__])
+      setting_label:
+        setting_label(assigns.widget[:settings], assigns[:__context__], assigns[:scope])
     )
     |> render_sface()
   end
 
-  # from the settings component's optional `current_label/1`
-  defp setting_label(module, context) do
-    if module && Code.ensure_loaded?(module) && function_exported?(module, :current_label, 1),
-      do: module.current_label(context)
+  # from the settings component's optional `current_label/2`
+  defp setting_label(module, context, scope) do
+    if module && Code.ensure_loaded?(module) && function_exported?(module, :current_label, 2),
+      do: module.current_label(context, scope)
   end
 end

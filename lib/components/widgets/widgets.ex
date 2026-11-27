@@ -25,11 +25,15 @@ defmodule Bonfire.UI.Common.Widgets do
 
   @doc """
   A page's widget assigns (main area and sidebar, eg. the dashboard), at mount and after each edit mode change: `main_widgets`, `sidebar_widgets`, `editable_widgets` (the page, for a signed-in viewer), `widgets_addable` (by area) and `widgets_removed` (for Undo).
+
+  With `scope: :instance`, the instance's defaults, for its settings (see `offered/3`). With `for_guests: true`, the widgets guests can see, for a guest page's settings (eg. the homepage): `user` still edits them.
   """
-  def place_assigns(place_module, user, removed \\ nil) do
+  def place_assigns(place_module, user, removed \\ nil, opts \\ []) do
     editable = if user, do: place_module
-    main = offered({place_module, :main}, user)
-    sidebar = offered({place_module, :sidebar}, user)
+    viewer = if opts[:for_guests], do: nil, else: user
+    opts = Keyword.take(opts, [:scope])
+    main = offered({place_module, :main}, viewer, opts)
+    sidebar = offered({place_module, :sidebar}, viewer, opts)
     addable = if editable, do: addable_by_area(main ++ sidebar), else: %{}
 
     [
@@ -129,10 +133,10 @@ defmodule Bonfire.UI.Common.Widgets do
   end
 
   @doc "Every widget a page can have, across its areas, for the viewer. See `offered/3`."
-  def offered_on_page(place_module, context) do
+  def offered_on_page(place_module, context, opts \\ []) do
     place_module
     |> areas()
-    |> Enum.flat_map(&offered({place_module, &1}, context))
+    |> Enum.flat_map(&offered({place_module, &1}, context, opts))
   end
 
   @doc "Widgets in the order a drop left them: `order` is the `Draggable` hook's `target_order`, matched by `key_fun`; unnamed ones go last."

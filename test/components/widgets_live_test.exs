@@ -4,6 +4,7 @@ defmodule Bonfire.UI.Common.WidgetsLiveTest do
   alias Bonfire.UI.Common.WidgetsLive
 
   doctest Bonfire.UI.Common.WidgetsLive
+  doctest Bonfire.UI.Common.WidgetBlockLive
 
   test "a widget added after the order was saved goes last, rather than taking a saved position" do
     saved = %{Widget.C => 0, Widget.A => 1}

@@ -1,0 +1,7 @@
+<Bonfire.UI.Common.SettingsToggleLive
+  name={l("Show At a glance")}
+  description={l("The instance's facts (federation, search) under the welcome text.")}
+  keys={[Bonfire.UI.Common.WidgetWelcomeLive, :show_facts]}
+  default_value
+  scope={@scope}
+/>

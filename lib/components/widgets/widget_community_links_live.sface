@@ -2,7 +2,7 @@
   {#match []}
   {#match links}
     {#if @showing_within == :main}
-      <Bonfire.UI.Common.WidgetBlockLive class={"w-full", @class}>
+      <Bonfire.UI.Common.WidgetBlockLive class={@class}>
         <ul
           id="community-links"
           class="flex flex-col gap-2"

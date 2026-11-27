@@ -19,8 +19,13 @@ defmodule Bonfire.UI.Common.WidgetsLive do
   @doc "Whether to apply the user's saved order (off = always the default order)."
   prop use_saved_order, :boolean, default: true
 
-  @doc "The page whose widgets get edit mode, see `Bonfire.UI.Common.Widgets.place_assigns/3`."
+  @doc "The page whose widgets get edit mode, see `Bonfire.UI.Common.Widgets.place_assigns/4`."
   prop editable, :any, default: nil
+
+  @doc "Renders only edit mode's tiles, not the widgets' content, see `Bonfire.UI.Common.WidgetLive`."
+  prop tiles_only, :boolean, default: false
+  @doc "The tiles' settings at `:instance` scope, else the viewer's own."
+  prop scope, :any, default: nil
 
   prop container_class, :css_class, default: nil
   prop wrapper_class, :css_class, default: nil

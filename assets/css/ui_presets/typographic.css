@@ -265,8 +265,11 @@ html[data-ui-preset="typographic"] .group\/message-search {
   }
 }
 
-/* Dashboard: one gutter, one hairline between sections, labels for headings and hairline cards for tiles. Mirrors Stream's structure in interface.css, which Typographic opts out of. */
-html[data-ui-preset="typographic"] [data-id="dashboard_main"] {
+/* A widget place's main area: one gutter, hairlines between sections, labels for headings. Mirrors Stream's structure in interface.css, which Typographic opts out of. */
+html[data-ui-preset="typographic"] [data-widget-place] {
+  /* widget bodies pad with the same gutter as the header */
+  --stream-content-padding: var(--spacing-card);
+
   > ul > li {
     padding-block: --spacing(6);
   }
@@ -279,8 +282,8 @@ html[data-ui-preset="typographic"] [data-id="dashboard_main"] {
     padding-top: --spacing(6);
   }
 
-  > ul > li:has(aside[data-role="widget"]) ~ li:has(aside[data-role="widget"]),
-  > ul:has(aside[data-role="widget"]) + [data-id="dashboard_feed"] {
+  > ul > li:has(aside[data-role="widget"]:not([data-state="hidden"])) ~ li:has(aside[data-role="widget"]:not([data-state="hidden"])),
+  > ul:has(aside[data-role="widget"]:not([data-state="hidden"])) + [data-id="dashboard_feed"] {
     border-top: var(--hairline);
   }
 
@@ -492,9 +495,10 @@ html[data-ui-preset="typographic"] [data-id="secondary_sidebar_widgets"] {
   @apply gap-0 overflow-x-hidden;
 }
 
-/* One gutter for every rail widget, whether or not its template sets p-card (the group widget does not). Same rule as Stream's in interface.css, without its card fill. */
+/* Every rail widget's box, since WidgetBlockLive's frame is flat. Same as Stream's in interface.css, without its fill. */
 html[data-ui-preset="typographic"] [data-id="secondary_sidebar_widgets"] [data-role="widget"] {
   padding: var(--spacing-card);
+  border-block: var(--hairline);
 }
 
 html[data-ui-preset="typographic"] [data-id="widget_customize_feed"] [data-role="feed_override_toggles"] {

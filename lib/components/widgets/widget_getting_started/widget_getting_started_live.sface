@@ -11,7 +11,6 @@
         widget_title={l("Getting started")}
         widget_subtitle={if state == :step,
           do: l("%{done} of %{total} done", done: @done_count, total: @total_count)}
-        subtitle_class="text-xs tabular-nums text-muted"
       >
         <:action>
           <.icon_button

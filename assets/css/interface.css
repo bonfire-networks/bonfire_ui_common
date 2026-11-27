@@ -270,6 +270,20 @@ html:not([data-ui-preset="typographic"]) {
     }
   }
 
+  /* The nav's Compose button is ink, so the accent stays for links and unread state. */
+  #main_smart_input_button.btn-primary {
+    --btn-color: var(--color-base-content);
+    --btn-fg: var(--color-base-100);
+  }
+
+  /* The layout's composer is primary only from lg; same ink there. */
+  @media (min-width: 1024px) {
+    #main_smart_input_button.lg\:btn-primary {
+      --btn-color: var(--color-base-content);
+      --btn-fg: var(--color-base-100);
+    }
+  }
+
   /* Navigation: generous rows, compact selection, no card treatment. */
   #nav_sidebar .menu > li > a,
   #nav_sidebar .widget_accordion > summary {
@@ -303,7 +317,7 @@ html:not([data-ui-preset="typographic"]) {
   }
 
   /* flat activities inside dashboard widgets (not the feed) */
-  [data-id="user_dashboard"] [data-showing-within="main"] .activity_wrapper {
+  [data-id="user_dashboard"] [data-showing-within="main"] .activity_wrapper:not([data-widget-id="feed"] .activity_wrapper) {
     border-width: 0;
     border-radius: 0;
     background-color: transparent;
@@ -557,9 +571,14 @@ html:not([data-ui-preset="typographic"]) {
       display: none;
     }
 
-    /* divider between visible sections */
-    &:where(:not([data-widgets-editing] *)) > ul > li:has(aside[data-role="widget"]) ~ li:has(aside[data-role="widget"]) {
+    /* divider between visible sections: an empty widget hidden by `data-state="hidden"` doesn't count */
+    &:where(:not([data-widgets-editing] *)) > ul > li:has(aside[data-role="widget"]:not([data-state="hidden"])) ~ li:has(aside[data-role="widget"]:not([data-state="hidden"])) {
       border-top: var(--divider-width) solid var(--divider-color);
+    }
+
+    /* a widget's body (text, a button, rows) takes the header's gutter */
+    & [data-role="widget-body"] {
+      padding-inline: var(--stream-content-padding);
     }
 
     /* flatten each widget's own box */
@@ -575,14 +594,14 @@ html:not([data-ui-preset="typographic"]) {
     aside[data-role="widget"] {
       > [data-role="widget-header"] {
         min-height: --spacing(8);
-        padding: 0 var(--stream-content-padding) --spacing(4);
+        padding: 0 var(--stream-content-padding) --spacing(2);
         letter-spacing: normal;
         text-transform: none;
       }
       [data-role="widget-heading"] {
         color: var(--color-base-content);
         font-size: var(--text-lg);
-        font-weight: var(--font-weight-bold);
+        font-weight: var(--font-weight-medium);
         line-height: var(--leading-snug);
         letter-spacing: -0.01em;
         text-transform: none;
@@ -661,6 +680,16 @@ html:not([data-ui-preset="typographic"]) {
         }
       }
     }
+  }
+
+  /* Right-rail widget headers: 8px above the first row and a medium heading, as the main
+     column's. Unlayered, so it wins over each widget's own title and heading classes. */
+  [data-id="secondary_sidebar_widgets"] [data-role="widget"] > [data-role="widget-header"] {
+    padding-bottom: --spacing(2);
+  }
+
+  [data-id="secondary_sidebar_widgets"] [data-role="widget-heading"] {
+    font-weight: var(--font-weight-medium);
   }
 
   /* Every right-rail widget is one filled card, whatever wraps its
@@ -977,23 +1006,6 @@ html:not([data-ui-preset="typographic"]) {
     > div {
       border-width: 0;
       padding: 0;
-    }
-  }
-
-  .widget-moderator-profile {
-    .avatar > div {
-      width: 2rem;
-      height: 2rem;
-    }
-
-    .profile-item {
-      align-items: center;
-    }
-
-    [data-id="profile_name"] + .text-muted {
-      margin-top: 0;
-      font-size: var(--text-sm);
-      line-height: 1.4;
     }
   }
 

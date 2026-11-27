@@ -3,19 +3,26 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
 
   prop widget_title, :string, default: nil
 
+  @doc "The accessible name for a widget that draws its own heading; falls back to `widget_title`."
+  prop aria_label, :string, default: nil
+
   @doc "Optional line under the title, e.g. to say where the items come from."
   prop widget_subtitle, :string, default: nil
 
   @doc "Extra classes for the title text."
   prop heading_class, :css_class, default: nil
 
-  @doc "Classes for the subtitle."
-  prop subtitle_class, :css_class, default: nil
+  @doc "Extra classes for the flat frame."
+  prop class, :css_class, default: nil
 
-  prop class, :css_class, default: "w-full p-card flex-auto mx-auto border-y-hair border-divider"
+  @doc "Classes for the header row, replacing the default uppercase label style."
+  prop title_class, :css_class, default: nil
 
-  prop title_class, :css_class,
-    default: "pb-card text-xs font-normal uppercase tracking-wide text-base-content"
+  @doc "A page section rather than a widget: a larger, bold heading with more room under it."
+  prop section, :boolean, default: false
+
+  @doc "Rendered outside a widget place: brings its own padding and hairlines."
+  prop standalone, :boolean, default: false
 
   prop empty, :boolean, default: false
   prop empty_message, :string, default: nil
@@ -33,6 +40,12 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
   @doc "Optional `phx-target` for the reset button — pass `@myself` from a STATEFUL widget so its own `handle_event` runs and it can re-render with fresh data. Stateless widgets leave this `nil` and use the `\"Module:event\"` form in `reset_cache_event`."
   prop reset_cache_target, :any, default: nil
 
+  @doc "Where the header's \"View all\" link goes; no link when nil."
+  prop view_all_to, :string, default: nil
+
+  @doc "The accessible name of the \"View all\" link, saying what it lists (eg. \"Browse all groups\")."
+  prop view_all_label, :string, default: nil
+
   @doc "A call to action, usually redirect to the specific page"
   slot action
 
@@ -44,6 +57,45 @@ defmodule Bonfire.UI.Common.WidgetBlockLive do
 
   @doc "The main content of the widget"
   slot default, required: true
+
+  @doc """
+  The header row's classes: the caller's, else a section's, else the default (also for Surface's empty list).
+
+      iex> Bonfire.UI.Common.WidgetBlockLive.header_class(nil, false)
+      "pb-card text-xs font-normal uppercase tracking-wide text-base-content"
+
+      iex> Bonfire.UI.Common.WidgetBlockLive.header_class([], true)
+      "pb-4"
+
+      iex> Bonfire.UI.Common.WidgetBlockLive.header_class("pb-2.5", false)
+      "pb-2.5"
+  """
+  def header_class(title_class, section) when title_class in [nil, [], ""],
+    do:
+      if(section,
+        do: "pb-4",
+        else: "pb-card text-xs font-normal uppercase tracking-wide text-base-content"
+      )
+
+  def header_class(title_class, _section), do: title_class
+
+  @doc """
+  The root's `data-state`: `"hidden"` for an empty block, which hides its widget's `li` (`widget_live.sface`), so a widget place shows no placeholder; edit mode still shows the tile. An embed keeps the placeholder, and so does a block outside a widget place, where no `li` reads it.
+
+      iex> Bonfire.UI.Common.WidgetBlockLive.hidden_state(true, %{})
+      "hidden"
+
+      iex> Bonfire.UI.Common.WidgetBlockLive.hidden_state(true, %{current_view: Bonfire.UI.Common.EmbedWidgetLive})
+      nil
+
+      iex> Bonfire.UI.Common.WidgetBlockLive.hidden_state(false, %{})
+      nil
+  """
+  def hidden_state(true, context) do
+    if context[:current_view] != Bonfire.UI.Common.EmbedWidgetLive, do: "hidden"
+  end
+
+  def hidden_state(_empty, _context), do: nil
 
   @doc "Whether to show the refresh button: only when a reset event is set AND the (overridable, mod-by-default) gate passes."
   def show_reset?(nil, _can_reset, _context), do: false

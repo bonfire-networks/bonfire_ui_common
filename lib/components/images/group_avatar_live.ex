@@ -16,4 +16,13 @@ defmodule Bonfire.UI.Common.GroupAvatarLive do
 
   @doc "Classes of the tile, to size it like the image (the tile's own size classes need `!`)."
   prop tile_class, :css_class, default: nil
+
+  @doc "Lazy-load the uploaded image (in lists)."
+  prop lazy, :boolean, default: false
+
+  @doc "For a group marked sensitive: the DOM id of the blur overlay put over the uploaded image (which gets `data-sensitive`), hidden by `Bonfire.Classify.Web.CategoryLive.show_sensitive/2`. The caller's box around it must be `relative`. Nil for none."
+  prop sensitive_id, :string, default: nil
+
+  @doc "Shown in place of the tile when there is no uploaded image, for a card that keeps its own placeholder."
+  slot default
 end

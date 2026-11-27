@@ -1,8 +1,13 @@
-<aside class={@class} aria-label={@widget_title || nil} data-role="widget">
+<aside
+  class={"w-full", @class, "p-card flex-auto mx-auto border-y-hair border-divider": @standalone}
+  aria-label={@aria_label || @widget_title || nil}
+  data-role="widget"
+  data-state={hidden_state(@empty, @__context__)}
+>
   <div
-    :if={@widget_title || slot_assigned?(:action) ||
+    :if={@widget_title || slot_assigned?(:action) || (@view_all_to && !@empty) ||
       show_reset?(@reset_cache_event, @can_reset, @__context__)}
-    class={"flex items-center justify-between", @title_class}
+    class={"flex items-center justify-between", header_class(@title_class, @section)}
     data-role="widget-header"
   >
     <div :if={@widget_title} class="min-w-0">
@@ -11,16 +16,15 @@
         aria-level="2"
         data-role="widget-heading"
         class={
-          "[.sidebar-widgets_&]:font-bold [.sidebar-widgets_&]:text-base [.sidebar-widgets_&]:leading-[1.3] [.sidebar-widgets_&]:tracking-normal [.sidebar-widgets_&]:normal-case",
-          @heading_class
+          "[.sidebar-widgets_&]:text-base [.sidebar-widgets_&]:leading-[1.3] [.sidebar-widgets_&]:tracking-normal [.sidebar-widgets_&]:normal-case",
+          @heading_class,
+          "text-lg font-bold! leading-snug tracking-[-0.01em] normal-case": @section
         }
       >{@widget_title}</div>
-      <p :if={@widget_subtitle} data-role="widget-subtitle" class={@subtitle_class}>{@widget_subtitle}</p>
+      <p :if={@widget_subtitle} data-role="widget-subtitle" class="widget-row-meta">{@widget_subtitle}</p>
     </div>
     <div class="flex items-center gap-3 ml-auto">
-      {!-- header actions (View all, carousel arrows…) are noise when the
-           widget is empty — the empty state carries its own action instead --}
-      <#slot :if={!@empty} {@action} />
+      {!-- refresh first: hidden until hover, so its space sits left and View all stays flush --}
       {#if show_reset?(@reset_cache_event, @can_reset, @__context__)}
         <button
           type="button"
@@ -41,6 +45,17 @@
           <#Icon iconify="ph:check-bold" class="hidden size-4 text-success group-data-[done]:inline" />
         </button>
       {/if}
+      {!-- no header actions when empty: the empty state carries its own action --}
+      <#slot :if={!@empty} {@action} />
+      {!-- `label` is what `LinkLive` turns into the aria-label, an `aria-label` attribute is not passed on --}
+      <LinkLive
+        :if={@view_all_to && !@empty}
+        to={@view_all_to}
+        class="widget-link"
+        label={@view_all_label}
+      >
+        {l("View all")}
+      </LinkLive>
     </div>
   </div>
   {#if @empty}

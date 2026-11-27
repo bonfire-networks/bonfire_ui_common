@@ -1,14 +1,13 @@
 <form
   id={"custom_widget_#{@slug}_form"}
   data-scope={"custom_widget_#{@slug}"}
-  phx-submit="Bonfire.Common.Settings:save"
-  class="mx-4 rounded-box border border-divider p-4 flex flex-col gap-4"
+  phx-submit="Bonfire.UI.Common.Widgets:save_custom"
+  class={"flex flex-col gap-4", @class}
 >
   <input name="scope" value="instance" type="hidden">
   <div class="flex flex-col gap-1">
-    <div class="text-sm font-medium">{l("Your own widget")}</div>
     <p class="text-sm text-muted">{l(
-        "Write a widget of your own, then turn it on in the lists above. Leave the text empty to take it out everywhere."
+        "Write a widget of your own: once saved, it can be added like the others. Leave the text empty to take it out everywhere."
       )}</p>
   </div>
   <Bonfire.UI.Common.SettingsInputLive

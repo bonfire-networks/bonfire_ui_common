@@ -7,10 +7,13 @@ defmodule Bonfire.UI.Common.AddWidgetsLive do
   @doc "The area the slot ends, eg. `:main` or `:sidebar`."
   prop area, :atom, required: true
 
-  @doc "From `Bonfire.UI.Common.Widgets.place_assigns/3`."
+  @doc "From `Bonfire.UI.Common.Widgets.place_assigns/4` (on a settings page, its `widgets_editing`)."
   prop addable, :list, default: []
 
   prop class, :css_class, default: nil
+
+  @doc "Anything after the widgets in the sheet, eg. the custom widget form on a settings page."
+  slot default
 
   data title, :string, default: nil
 

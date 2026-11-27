@@ -34,6 +34,14 @@ let TruncatableHooks = ns(c2, "Bonfire.UI.Common.TruncatableLive");
 Object.assign(Hooks, CopyHooks, TooltipHooks, ScrollHooks, FeedHooks, TruncatableHooks);
 // ImageHooks
 
+// the part of a hook's `this.js()` our hooks use, done on the DOM directly: without LiveView there are no patches to survive
+const plainJS = {
+	setAttribute: (el, name, value) => el.setAttribute(name, value),
+	removeAttribute: (el, name) => el.removeAttribute(name),
+	addClass: (el, names) => el.classList.add(...String(names).split(/\s+/).filter(Boolean)),
+	removeClass: (el, names) => el.classList.remove(...String(names).split(/\s+/).filter(Boolean)),
+};
+
 // run LiveView Hooks without LiveView
 (function () {
 	[...document.querySelectorAll("[phx-hook]")].map((hookEl) => {
@@ -41,7 +49,7 @@ Object.assign(Hooks, CopyHooks, TooltipHooks, ScrollHooks, FeedHooks, Truncatabl
 		let hook = Hooks[hookName];
 
 		if (hook) {
-			let mountedFn = hook.mounted.bind({ ...hook, el: hookEl });
+			let mountedFn = hook.mounted.bind({ ...hook, el: hookEl, js: () => plainJS });
 			mountedFn();
 		}
 	});

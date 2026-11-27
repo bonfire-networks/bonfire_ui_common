@@ -1,4 +1,5 @@
-<Bonfire.UI.Common.WidgetBlockLive widget_title={@widget_title}>
+{!-- standalone for the text pages, outside a widget place; a place's rules override it --}
+<Bonfire.UI.Common.WidgetBlockLive widget_title={@widget_title} standalone>
   <div class={@class} data-role="widget-body">
     {templated_or_remote_markdown(@text, @info)}
   </div>

@@ -40,6 +40,8 @@
         reorderable={@reorderable}
         use_saved_order={@use_saved_order}
         editable={@editable}
+        tiles_only={@tiles_only}
+        scope={@scope}
       />
     {/for}
   {/if}
