@@ -1438,6 +1438,15 @@ hex-input::part(input) {
   }
 }
 
+/* a chip tab (the feed tabs, the instance's widget places): the current one (`aria-current="page"` or `aria-selected="true"`) is filled */
+@utility tab-chip {
+  @apply flex h-8 items-center whitespace-nowrap rounded-full px-3 text-sm font-bold text-subtle transition-[color,background-color,scale] duration-150 hover:bg-fill hover:text-base-content active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-base-content;
+
+  &:is([aria-current="page"], [aria-selected="true"]) {
+    @apply bg-base-content text-base-100;
+  }
+}
+
 @utility widget-chip {
   display: inline-flex;
   max-width: 100%;
