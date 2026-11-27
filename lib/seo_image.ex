@@ -394,6 +394,11 @@ defmodule Bonfire.UI.Common.SEOImage do
     end
   end
 
+  @doc """
+  Returns the relative path of the generated link-preview card (Open Graph image) for a post, rendering it first if it does not exist yet.
+
+  Returns `nil` when the `Image` library is not part of the build (`WITH_IMAGE_VIX`, off in the default prod Docker images) or when rendering fails. The caller then has no post-specific image, so the page's `og:image` falls back to the instance icon.
+  """
   def generate_path(id, author_id, title, body, author, image \\ nil) do
     filename = og_image_paths(id, author_id)
 
